@@ -68,7 +68,7 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_file_data_by_file_key'
             - '@akeneo_assetmanager.infrastructure.persistence.query.file_exists'
             - '@akeneoassetmanager.infrastructure.persistence.query.get_attribute_identifier'
-
+            - '@akeneo_assetmanager.infrastructure.job.product_link_rule_launcher'
 
     akeneo_assetmanager.tests.back.integration.connector.distribute.get_connector_attributes_context:
         class: Akeneo\AssetManager\Integration\Connector\Api\Context\Distribute\GetConnectorAttributesContext

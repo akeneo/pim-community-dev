@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Job;
 
-use Akeneo\AssetManager\Application\Asset\ExecuteRuleTemplates\RuleTemplateExecutor;
+use Akeneo\AssetManager\Application\Asset\LinkAssets\RuleTemplateExecutor;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -46,8 +46,9 @@ class LinkAssetsToProductsTasklet implements TaskletInterface
     public function execute()
     {
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($this->stepExecution->getJobParameters()->get('asset_family_identifier'));
-        $assetCode = AssetCode::fromString($this->stepExecution->getJobParameters()->get('asset_code'));
 
-        $this->ruleExecutor->execute($assetFamilyIdentifier, $assetCode);
+        foreach ($this->stepExecution->getJobParameters()->get('asset_codes') as $assetCode) {
+            $this->ruleExecutor->execute($assetFamilyIdentifier, AssetCode::fromString($assetCode));
+        }
     }
 }

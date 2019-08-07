@@ -30,7 +30,7 @@ class LinkAssetsToProducts implements ConstraintCollectionProviderInterface, Def
         return new Collection([
             'fields' => [
                 'asset_family_identifier' => new NotBlank(),
-                'asset_code' => new NotBlank(),
+                'asset_codes' => new NotBlank(),
             ]
         ]);
     }
@@ -44,7 +44,7 @@ class LinkAssetsToProducts implements ConstraintCollectionProviderInterface, Def
     {
         return [
             'asset_family_identifier' => null,
-            'asset_code' => null
+            'asset_codes' => []
         ];
     }
 }

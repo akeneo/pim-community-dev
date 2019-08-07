@@ -191,8 +191,8 @@ services:
           - { name: fob.context_service }
 
 
-    akeneo_assetmanager.tests.back.acceptance.context.execute_rule_templates:
-        class: Akeneo\AssetManager\Acceptance\Context\ExecuteRuleTemplatesContext
+    akeneo_assetmanager.tests.back.acceptance.context.link_assets_context:
+        class: Akeneo\AssetManager\Acceptance\Context\LinkAssetsContext
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
@@ -202,5 +202,6 @@ services:
             - '@validator'
             - '@akeneo_assetmanager.tests.back.acceptance.context.exception_context'
             - '@akeneo_assetmanager.infrastructure.job.product_link_rule_launcher'
+            - '@akeneo_assetmanager.application.asset.link_assets.link_assets_handler'
         tags:
             - { name: fob.context_service }

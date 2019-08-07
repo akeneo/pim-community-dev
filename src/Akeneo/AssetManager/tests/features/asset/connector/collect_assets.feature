@@ -4,41 +4,55 @@ Feature: Connection to MDM or ERP systems
   I want to collect assets of an asset family from a MDM or an ERP system
 
   @integration-back
-  Scenario: Collect a asset for a given asset family that exist in the ERP but not in the PIM
-    Given a asset of the Brand asset family existing in the ERP but not in the PIM
+  Scenario: Collect an asset for a given asset family that exist in the ERP but not in the PIM and automatically link them to products
+    Given an asset of the Frontview asset family existing in the ERP but not in the PIM having a rule template
+    When the connector collects this asset from the ERP to synchronize it with the PIM
+    Then the asset is created in the PIM with the information from the ERP
+    And a job runs to automatically link it to products according to the rule template
+
+  @integration-back
+  Scenario: Collect some assets that exist in the ERP but not in the PIM
+    Given an asset of the Frontview asset family existing in the ERP but not in the PIM
     When the connector collects this asset from the ERP to synchronize it with the PIM
     Then the asset is created in the PIM with the information from the ERP
 
   @integration-back
   Scenario: Collect a asset for a given asset family that already exists in the ERP and in the PIM but with different information
-    Given a asset of the Brand asset family existing in the ERP and the PIM with different information
+    Given an asset of the Brand asset family existing in the ERP and the PIM with different information
     When the connector collects this asset from the ERP to synchronize it with the PIM
     Then the asset is correctly synchronized in the PIM with the information from the ERP
 
   @integration-back
   Scenario: Notify an error when collecting a asset that has an invalid format
-    Given the Brand asset family with some assets
+    Given the FrontView asset family with some assets
     When the connector collects a asset that has an invalid format
     Then the PIM notifies the connector about an error indicating that the asset has an invalid format
 
   @integration-back
   Scenario: Notify an error when collecting a asset whose data does not comply with the business rules
-    Given the Brand asset family with some assets
+    Given the FrontView asset family with some assets
     When the connector collects a asset whose data does not comply with the business rules
     Then the PIM notifies the connector about an error indicating that the asset has data that does not comply with the business rules
 
   @integration-back
-  Scenario: Collect assets for a given asset family from the ERP
-    Given some assets of the Brand asset family existing in the ERP but not in the PIM
-    And some assets of the Brand asset family existing in the ERP and in the PIM but with different information
+  Scenario: Collect assets for a given asset family from the ERP and automatically link them to products
+    Given some assets of the Frontview asset family existing in the ERP but not in the PIM
+    And some assets of the Frontview asset family existing in the ERP and in the PIM but with different information
     When the connector collects these assets from the ERP to synchronize them with the PIM
     Then the assets that existed only in the ERP are correctly created in the PIM
     And the assets existing both in the ERP and the PIM are correctly synchronized in the PIM with the information from the ERP
+    And a job runs to automatically link to products the newly created asset according to the rule template
+
+  @integration-back
+  Scenario: Collect bunch of new assets for a given asset family from the ERP and automatically link them to products
+    Given some assets of the Frontview asset family existing in the ERP but not in the PIM
+    When the connector collects these assets from the ERP to synchronize them with the PIM
+    Then a single job runs to automatically link to products the newly created asset according to the rule template
 
   @integration-back
   Scenario: Notify errors when collecting assets whose data do not comply with the business rules
-    Given some assets of the Brand asset family existing in the ERP but not in the PIM
-    And some assets of the Brand asset family existing in the ERP and in the PIM but with different information
+    Given some assets of the Frontview asset family existing in the ERP but not in the PIM
+    And some assets of the Frontview asset family existing in the ERP and in the PIM but with different information
     When the connector collects assets from the ERP among which some assets have data that do not comply with the business rules
     Then the PIM notifies the connector which assets have data that do not comply with the business rules and what are the errors
 

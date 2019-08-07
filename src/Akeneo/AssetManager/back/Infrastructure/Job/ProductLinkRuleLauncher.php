@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Job;
 
-use Akeneo\AssetManager\Application\Asset\ExecuteRuleTemplates\ProductLinkRuleLauncherInterface;
+use Akeneo\AssetManager\Application\Asset\LinkAssets\ProductLinkRuleLauncherInterface;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueue;
+use Webmozart\Assert\Assert;
 
 /**
  * Implementation of the ProductLinkRuleLauncherInterface using Akeneo PIM Job Queue system.
@@ -34,11 +35,15 @@ class ProductLinkRuleLauncher implements ProductLinkRuleLauncherInterface
         $this->publishJobToQueue = $publishJobToQueue;
     }
 
-    public function launch(AssetFamilyIdentifier $assetFamilyIdentifier, AssetCode $assetCode): void
+    public function launch(AssetFamilyIdentifier $assetFamilyIdentifier, array $assetCodes): void
     {
+        Assert::allIsInstanceOf($assetCodes, AssetCode::class);
+
         $config = [
             'asset_family_identifier' => (string) $assetFamilyIdentifier,
-            'asset_code' => (string) $assetCode,
+            'asset_codes' => array_map(function (AssetCode $assetCode) {
+                return (string) $assetCode;
+            }, $assetCodes),
         ];
 
         $this->publishJobToQueue->publish(

@@ -3,29 +3,29 @@
         "method": "PATCH",
         "route": "akeneo_asset_manager_assets_rest_connector_create_or_update",
         "query": {
-            "assetFamilyIdentifier": "brand"
+            "assetFamilyIdentifier": "frontview"
         },
         "body": [
             {
-                "code": "kartell",
+                "code": "house",
                 "values": {
                     "label": [
                         {
                             "locale": "en_US",
                             "channel": null,
-                            "data": "Kartell updated english label"
+                            "data": "House updated english label"
                         },
                         {
                             "locale": "fr_FR",
                             "channel": null,
-                            "data": "Kartell updated french label"
+                            "data": "House updated french label"
                         }
                     ],
                     "name": [
                         {
                             "channel": null,
                             "locale": "en_US",
-                            "data": "Kartell updated english name"
+                            "data": "House updated english name"
                         },
                         {
                             "channel": null,
@@ -37,26 +37,26 @@
                         {
                             "locale": "en_US",
                             "channel": "ecommerce",
-                            "data": "Kartell english description"
+                            "data": "House english description"
                         }
                     ]
                 }
             },
             {
-                "code": "lexon",
+                "code": "flower",
                 "values": {
                     "label": [
                         {
                             "locale": "en_US",
                             "channel": null,
-                            "data": "Lexon updated english label"
+                            "data": "Flower updated english label"
                         }
                     ],
                     "name": [
                         {
                             "channel": null,
                             "locale": "en_US",
-                            "data": "Updated Lexon english name"
+                            "data": "Updated Flower english name"
                         }
                     ],
                     "description": [
@@ -69,20 +69,20 @@
                 }
             },
             {
-                "code": "fatboy",
+                "code": "phone",
                 "values": {
                     "label": [
                         {
                             "locale": "en_US",
                             "channel": null,
-                            "data": "Fatboy label"
+                            "data": "Phone label"
                         }
                     ],
                     "name": [
                         {
                             "channel": null,
                             "locale": "en_US",
-                            "data": "Fatboy name"
+                            "data": "Phone name"
                         }
                     ]
                 }
@@ -93,15 +93,15 @@
         "status": 200,
         "body": [
             {
-                "code": "kartell",
+                "code": "house",
                 "status_code": 204
             },
             {
-                "code": "lexon",
+                "code": "flower",
                 "status_code": 204
             },
             {
-                "code": "fatboy",
+                "code": "phone",
                 "status_code": 201
             }
         ]

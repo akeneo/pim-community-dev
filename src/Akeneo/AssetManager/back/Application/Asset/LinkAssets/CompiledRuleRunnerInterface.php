@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\AssetManager\Application\Asset\ExecuteRuleTemplates;
+namespace Akeneo\AssetManager\Application\Asset\LinkAssets;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\CompiledRule;
 

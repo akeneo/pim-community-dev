@@ -5,7 +5,7 @@ Feature: Connection to MDM or ERP systems
 
   @integration-back
   Scenario: Collect the properties of a given asset family that exist in the ERP but not in the PIM
-    Given the Brand asset family existing in the ERP but not in the PIM
+    Given the Frontview asset family existing in the ERP but not in the PIM
     When the connector collects the properties of the Brand asset family from the ERP to synchronize it with the PIM
     Then the asset family is created with its properties in the PIM with the information from the ERP
 

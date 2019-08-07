@@ -3,27 +3,27 @@
         "method": "PATCH",
         "route": "akeneo_asset_manager_asset_rest_connector_create_or_update",
         "query": {
-            "assetFamilyIdentifier": "brand",
-            "code": "kartell"
+            "assetFamilyIdentifier": "frontview",
+            "code": "house"
         },
         "body": {
-            "code": "kartell",
+            "code": "house",
             "values": {
                 "description": [
                     {
                         "locale": "en_US",
                         "channel": "unknown_channel",
-                        "data": "Kartell english description"
+                        "data": "House english description"
                     },
                     {
                         "locale": "fr_FR",
                         "channel": "ecommerce",
-                        "data": "Kartell french description."
+                        "data": "House french description."
                     },
                     {
                         "locale": "de_DE",
                         "channel": "ecommerce",
-                        "data": "Kartell german description."
+                        "data": "House german description."
                     }
                 ]
             }

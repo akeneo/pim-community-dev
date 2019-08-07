@@ -3,11 +3,11 @@
         "method": "PATCH",
         "route": "akeneo_asset_manager_asset_rest_connector_create_or_update",
         "query": {
-            "assetFamilyIdentifier": "brand",
-            "code": "kartell"
+            "assetFamilyIdentifier": "frontview",
+            "code": "house"
         },
         "body": {
-            "code": "kartell",
+            "code": "house",
             "values": {
                 "name": [
                     {
@@ -17,7 +17,7 @@
                     },
                     {
                         "locale": "en_AU",
-                        "data": "Kartell french description."
+                        "data": "House french description."
                     }
                 ]
             }

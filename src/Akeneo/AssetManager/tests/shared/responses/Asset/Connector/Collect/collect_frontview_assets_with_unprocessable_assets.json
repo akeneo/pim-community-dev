@@ -3,7 +3,7 @@
         "method": "PATCH",
         "route": "akeneo_asset_manager_assets_rest_connector_create_or_update",
         "query": {
-            "assetFamilyIdentifier": "brand"
+            "assetFamilyIdentifier": "frontview"
         },
         "body": [
             {
@@ -12,18 +12,18 @@
                     "description": {
                         "locale": "fr_FR",
                         "channel": null,
-                        "data": "Kartell french description."
+                        "data": "House french description."
                     }
                 }
             },
             {
-                "code": "lexon",
+                "code": "flower",
                 "values": {
                     "name": [
                         {
                             "channel": null,
                             "locale": "en_US",
-                            "data": "Updated Lexon english name"
+                            "data": "Updated Flower english name"
                         }
                     ],
                     "description": [
@@ -36,20 +36,20 @@
                 }
             },
             {
-                "code": "fatboy",
+                "code": "phone",
                 "values": {
                     "label": [
                         {
                             "locale": "en_AU",
                             "channel": null,
-                            "data": "Fatboy label"
+                            "data": "Phone label"
                         }
                     ],
                     "name": [
                         {
                             "channel": null,
                             "locale": "en_US",
-                            "data": "Fatboy name"
+                            "data": "Phone name"
                         }
                     ]
                 }
@@ -75,11 +75,11 @@
                 ]
             },
             {
-                "code": "lexon",
+                "code": "flower",
                 "status_code": 204
             },
             {
-                "code": "fatboy",
+                "code": "phone",
                 "status_code": 422,
                 "message": "The asset has data that does not comply with the business rules.",
                 "errors": [

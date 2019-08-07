@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Acceptance\Context;
 
 use Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetHandler;
-use Akeneo\AssetManager\Application\Asset\ExecuteRuleTemplates\CompiledRuleRunnerInterface;
+use Akeneo\AssetManager\Application\Asset\LinkAssets\CompiledRuleRunnerInterface;
+use Akeneo\AssetManager\Application\Asset\LinkAssets\LinkAssetCommand;
+use Akeneo\AssetManager\Application\Asset\LinkAssets\LinkAssetsHandler;
+use Akeneo\AssetManager\Application\Asset\LinkAssets\LinkMultipleAssetsCommand;
 use Akeneo\AssetManager\Common\Fake\CompiledRuleRunnerSpy;
 use Akeneo\AssetManager\Common\Fake\ProductLinkRuleLauncherSpy;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
@@ -45,7 +48,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ExecuteRuleTemplatesContext implements Context
+class LinkAssetsContext implements Context
 {
     private const ASSET_FAMILY_IDENTIFIER = 'packshot';
     private const ASSET_CODE = 'sofa';
@@ -87,6 +90,9 @@ class ExecuteRuleTemplatesContext implements Context
     /** @var ProductLinkRuleLauncherSpy */
     private $productLinkRuleLauncherSpy;
 
+    /** @var LinkAssetsHandler */
+    private $linkAssetsHandler;
+
     public function __construct(
         AssetRepositoryInterface $assetRepository,
         AssetFamilyRepositoryInterface $assetFamilyRepository,
@@ -95,7 +101,8 @@ class ExecuteRuleTemplatesContext implements Context
         CompiledRuleRunnerInterface $compiledRuleRunnerSpy,
         ValidatorInterface $validator,
         ExceptionContext $exceptionContext,
-        ProductLinkRuleLauncherSpy $productLinkRuleLauncherSpy
+        ProductLinkRuleLauncherSpy $productLinkRuleLauncherSpy,
+        LinkAssetsHandler $linkAssetsHandler
     ) {
         $this->assetRepository = $assetRepository;
         $this->assetFamilyRepository = $assetFamilyRepository;
@@ -105,6 +112,7 @@ class ExecuteRuleTemplatesContext implements Context
         $this->exceptionContext = $exceptionContext;
         $this->compiledRuleRunnerSpy = $compiledRuleRunnerSpy;
         $this->productLinkRuleLauncherSpy = $productLinkRuleLauncherSpy;
+        $this->linkAssetsHandler = $linkAssetsHandler;
     }
 
     /**
@@ -124,35 +132,35 @@ class ExecuteRuleTemplatesContext implements Context
                                 [
                                     'field'    => self::SKU,
                                     'operator' => Operators::EQUALS,
-                                    'value'    => '1111111304'
-                                ]
+                                    'value'    => '1111111304',
+                                ],
                             ],
-                            'assign_assets_to'    => [
+                            'assign_assets_to'   => [
                                 [
-                                    'mode'  => 'add',
+                                    'mode'      => 'add',
                                     'attribute' => 'new_asset_multiple_link',
                                 ],
                                 [
-                                    'mode'  => 'set',
+                                    'mode'      => 'set',
                                     'attribute' => 'new_asset_single_link',
-                                ]
-                            ]
+                                ],
+                            ],
                         ],
                         [
                             'product_selections' => [
                                 [
                                     'field'    => self::SKU,
                                     'operator' => Operators::EQUALS,
-                                    'value'    => '1111111304'
-                                ]
+                                    'value'    => '1111111304',
+                                ],
                             ],
-                            'assign_assets_to'    => [
+                            'assign_assets_to'   => [
                                 [
-                                    'mode'  => 'add',
+                                    'mode'      => 'add',
                                     'attribute' => 'new_asset_multiple_link',
-                                ]
-                            ]
-                        ]
+                                ],
+                            ],
+                        ],
                     ]
                 )
             )
@@ -160,18 +168,13 @@ class ExecuteRuleTemplatesContext implements Context
     }
 
     /**
-     * @When /^I create an asset for this family$/
+     * @When /^I link some assets to some products using this rule template$/
      */
-    public function iCreateAnAssetForThisFamily(): void
+    public function iLinkSomeAssetsToSomeProductsUsingThisRuleTemplate(): void
     {
-        $this->assetRepository->create(
-            Asset::create(
-                AssetIdentifier::fromString('sofa_canape_finger'),
-                AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
-                AssetCode::fromString(self::ASSET_CODE),
-                ValueCollection::fromValues([])
-            )
-        );
+        $this->createAsset(self::ASSET_FAMILY_IDENTIFIER, 'house');
+        $this->createAsset(self::ASSET_FAMILY_IDENTIFIER, 'flower');
+        $this->linkAssets(self::ASSET_FAMILY_IDENTIFIER, ['house', 'flower']);
     }
 
     /**
@@ -179,7 +182,8 @@ class ExecuteRuleTemplatesContext implements Context
      */
     public function aJobHasBeenLaunchedToLinkAssetsToProducts(): void
     {
-        $this->productLinkRuleLauncherSpy->assertHasRunOnce();
+        $this->productLinkRuleLauncherSpy->assertHasRunForAsset(self::ASSET_FAMILY_IDENTIFIER, 'house');
+        $this->productLinkRuleLauncherSpy->assertHasRunForAsset(self::ASSET_FAMILY_IDENTIFIER, 'flower');
     }
 
     /**
@@ -219,25 +223,25 @@ class ExecuteRuleTemplatesContext implements Context
                                 [
                                     'field'    => self::SKU,
                                     'operator' => Operators::EQUALS,
-                                    'value'    => '{{sku}}'
+                                    'value'    => '{{sku}}',
                                 ],
                                 [
                                     'field'    => '{{category_field}}',
                                     'operator' => Operators::EQUALS,
-                                    'value'    => '{{category}}'
-                                ]
+                                    'value'    => '{{category}}',
+                                ],
                             ],
-                            'assign_assets_to'    => [
+                            'assign_assets_to'   => [
                                 [
-                                    'mode'  => 'add',
+                                    'mode'      => 'add',
                                     'attribute' => '{{product_multiple_link}}',
                                 ],
                                 [
-                                    'mode'  => 'set',
+                                    'mode'      => 'set',
                                     'attribute' => '{{another_product_multiple_link}}',
-                                ]
-                            ]
-                        ]
+                                ],
+                            ],
+                        ],
                     ]
                 )
             )
@@ -325,7 +329,7 @@ class ExecuteRuleTemplatesContext implements Context
                             ChannelReference::noReference(),
                             LocaleReference::noReference(),
                             TextData::fromString(self::ANOTHER_PRODUCT_MULTIPLE_LINK_DATA)
-                        )
+                        ),
                     ]
                 )
             )
@@ -346,33 +350,62 @@ class ExecuteRuleTemplatesContext implements Context
                         'operator' => Operators::EQUALS,
                         'value'    => self::SKU_DATA,
                         'channel'  => null,
-                        'locale'   => null
+                        'locale'   => null,
                     ],
                     [
                         'field'    => self::CATEGORY_FIELD_DATA,
                         'operator' => Operators::EQUALS,
                         'value'    => self::CATEGORY_DATA,
                         'channel'  => null,
-                        'locale'   => null
-                    ]
+                        'locale'   => null,
+                    ],
                 ],
                 [
                     [
-                        'type'  => 'add',
-                        'field' => self::PRODUCT_MULTIPLE_LINK_DATA,
-                        'items' => ['sofa'],
-                        'channel'  => null,
-                        'locale'   => null
+                        'type'    => 'add',
+                        'field'   => self::PRODUCT_MULTIPLE_LINK_DATA,
+                        'items'   => ['sofa'],
+                        'channel' => null,
+                        'locale'  => null,
                     ],
                     [
-                        'type'  => 'set',
-                        'field' => self::ANOTHER_PRODUCT_MULTIPLE_LINK_DATA,
-                        'items' => ['sofa'],
-                        'channel'  => null,
-                        'locale'   => null
-                    ]
+                        'type'    => 'set',
+                        'field'   => self::ANOTHER_PRODUCT_MULTIPLE_LINK_DATA,
+                        'items'   => ['sofa'],
+                        'channel' => null,
+                        'locale'  => null,
+                    ],
                 ]
             )
         );
+    }
+
+    private function createAsset(string $assetFamilyIdentifier, string $assetCode): void
+    {
+        $assetIdentifier = sprintf('%s%s_finger', $assetCode, $assetFamilyIdentifier);
+        $this->assetRepository->create(
+            Asset::create(
+                AssetIdentifier::fromString($assetIdentifier),
+                AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+                AssetCode::fromString($assetCode),
+                ValueCollection::fromValues([])
+            )
+        );
+    }
+
+    private function linkAssets(string $assetFamilyIdentifier, array $assetsToLink): void
+    {
+        $linkMultipleAssetsCommand = new LinkMultipleAssetsCommand();
+        $linkMultipleAssetsCommand->linkAssetCommands = array_map(
+            function (string $assetCode) use ($assetFamilyIdentifier) {
+                $LinkAssetCommand = new LinkAssetCommand();
+                $LinkAssetCommand->assetCode = $assetCode;
+                $LinkAssetCommand->assetFamilyIdentifier = $assetFamilyIdentifier;
+
+                return $LinkAssetCommand;
+            },
+            $assetsToLink
+        );
+        $this->linkAssetsHandler->handle($linkMultipleAssetsCommand);
     }
 }

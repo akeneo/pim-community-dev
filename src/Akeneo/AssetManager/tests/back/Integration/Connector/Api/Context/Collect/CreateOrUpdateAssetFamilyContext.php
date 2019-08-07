@@ -97,17 +97,17 @@ class CreateOrUpdateAssetFamilyContext implements Context
     }
 
     /**
-     * @Given the Brand asset family existing in the ERP but not in the PIM
+     * @Given the Frontview asset family existing in the ERP but not in the PIM
      */
-    public function theBrandAssetFamilyExistingInTheErpButNotInThePim()
+    public function theFrontviewAssetFamilyExistingInTheErpButNotInThePim()
     {
-        $this->requestContract = 'successful_brand_asset_family_creation.json';
+        $this->requestContract = 'successful_frontview_asset_family_creation.json';
 
         $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
         $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
         $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
 
-        $image = $this->getBrandImage();
+        $image = $this->getFrontviewImage();
         $this->fileExists->save($image->getKey());
         $this->findFileData->save($image->normalize());
     }
@@ -133,10 +133,10 @@ class CreateOrUpdateAssetFamilyContext implements Context
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
-            self::REQUEST_CONTRACT_DIR . 'successful_brand_asset_family_creation.json'
+            self::REQUEST_CONTRACT_DIR . 'successful_frontview_asset_family_creation.json'
         );
 
-        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('brand');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('frontview');
         $labelIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
             $assetFamilyIdentifier,
             AttributeCode::fromString('label')
@@ -147,20 +147,20 @@ class CreateOrUpdateAssetFamilyContext implements Context
         );
         $ruleTemplate = $this->getExpectedRuleTemplate();
 
-        $brand = $this->assetFamilyRepository->getByIdentifier(AssetFamilyIdentifier::fromString('brand'));
-        $expectedBrand = AssetFamily::createWithAttributes(
+        $frontview = $this->assetFamilyRepository->getByIdentifier(AssetFamilyIdentifier::fromString('frontview'));
+        $expectedFrontview = AssetFamily::createWithAttributes(
             $assetFamilyIdentifier,
             [
-                'en_US' => 'Brand english label',
-                'fr_FR' => 'Brand french label',
+                'en_US' => 'Frontview english label',
+                'fr_FR' => 'Frontview french label',
             ],
-            $this->getBrandImage(),
+            $this->getFrontviewImage(),
             AttributeAsLabelReference::fromAttributeIdentifier($labelIdentifier),
             AttributeAsImageReference::fromAttributeIdentifier($mainImageIdentifier),
             RuleTemplateCollection::createFromProductLinkRules([$ruleTemplate])
         );
 
-        Assert::assertEquals($brand, $expectedBrand);
+        Assert::assertEquals($frontview, $expectedFrontview);
     }
 
     /**
@@ -174,7 +174,7 @@ class CreateOrUpdateAssetFamilyContext implements Context
         $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
         $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
 
-        $image = $this->getBrandImage();
+        $image = $this->getFrontviewImage();
         $this->fileExists->save($image->getKey());
         $this->findFileData->save($image->normalize());
 
@@ -232,7 +232,7 @@ class CreateOrUpdateAssetFamilyContext implements Context
                 'en_US' => 'Brand english label',
                 'fr_FR' => 'Brand french label',
             ],
-            $this->getBrandImage(),
+            $this->getFrontviewImage(),
             AttributeAsLabelReference::fromAttributeIdentifier($labelIdentifier),
             AttributeAsImageReference::fromAttributeIdentifier($mainImageIdentifier),
             RuleTemplateCollection::createFromProductLinkRules([$ruleTemplate])
@@ -309,7 +309,7 @@ class CreateOrUpdateAssetFamilyContext implements Context
         );
     }
 
-    private function getBrandImage(): Image
+    private function getFrontviewImage(): Image
     {
         $imageFileInfo = (new FileInfo())
             ->setKey('2/4/3/7/24378761474c58aeee26016ee881b3b15069de52_brand.png')

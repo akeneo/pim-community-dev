@@ -17,6 +17,7 @@ use Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetCommand;
 use Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetHandler;
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\Connector\EditAssetCommandFactory;
 use Akeneo\AssetManager\Application\Asset\EditAsset\EditAssetHandler;
+use Akeneo\AssetManager\Application\Asset\LinkAssets\LinkAssetsHandler;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\Asset\AssetExistsInterface;
@@ -71,6 +72,9 @@ class CreateOrUpdateAssetsAction
     /** @var AssetListValidator */
     private $assetListValidator;
 
+    /** @var BatchAssetsToLink */
+    private $batchAssetsToLink;
+
     /** @var int */
     private $maximumAssetsPerRequest;
 
@@ -85,6 +89,7 @@ class CreateOrUpdateAssetsAction
         ViolationNormalizer $violationNormalizer,
         AssetValidator $assetStructureValidator,
         AssetListValidator $assetListValidator,
+        BatchAssetsToLink $batchAssetsToLink,
         int $maximumAssetsPerRequest
     ) {
         $this->assetFamilyExists = $assetFamilyExists;
@@ -97,6 +102,7 @@ class CreateOrUpdateAssetsAction
         $this->violationNormalizer = $violationNormalizer;
         $this->assetStructureValidator = $assetStructureValidator;
         $this->assetListValidator = $assetListValidator;
+        $this->batchAssetsToLink = $batchAssetsToLink;
         $this->maximumAssetsPerRequest = $maximumAssetsPerRequest;
     }
 
@@ -204,6 +210,7 @@ class CreateOrUpdateAssetsAction
 
         if (true === $shouldBeCreated) {
             ($this->createAssetHandler)($createAssetCommand);
+            $this->batchAssetsToLink->add($createAssetCommand->assetFamilyIdentifier, $createAssetCommand->code);
         }
 
         ($this->editAssetHandler)($editAssetCommand);

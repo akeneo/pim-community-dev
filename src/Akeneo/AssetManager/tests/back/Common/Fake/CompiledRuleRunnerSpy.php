@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Common\Fake;
 
-use Akeneo\AssetManager\Application\Asset\ExecuteRuleTemplates\CompiledRuleRunnerInterface;
+use Akeneo\AssetManager\Application\Asset\LinkAssets\CompiledRuleRunnerInterface;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\CompiledRule;
 use PHPUnit\Framework\Assert;
 
