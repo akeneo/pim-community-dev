@@ -179,6 +179,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $productDraftBuilder,
         $stepExecution,
         $tokenStorage,
+        $mediaStorer,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         EntityWithValuesDraftInterface $productDraft,
@@ -191,6 +192,9 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $product->isVariant()->willReturn(false);
         $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW)->willReturn($productDraft);
         $values = $this->getValues();
+
+        $mediaStorer->store($values['values'])->willReturn($values['values']);
+
         $updater
             ->update($product, $values)
             ->shouldBeCalled();
