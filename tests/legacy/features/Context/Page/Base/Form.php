@@ -714,8 +714,9 @@ class Form extends Base
 
         if ($label->hasAttribute('for')) {
             $for = $label->getAttribute('for');
+            $forElement = $this->getClosest($label, 'AknFieldContainer')->find('css', '#s2id_' . $for);
 
-            if (0 === strpos($for, 's2id_')) {
+            if (0 === strpos($for, 's2id_') || null !== $forElement) {
                 if ($this->getClosest($label, 'AknFieldContainer')->find('css', '.select2-container-multi')) {
                     return 'multiSelect2';
                 } elseif ($this->getClosest($label, 'AknFieldContainer')->find('css', '.select2-container')) {

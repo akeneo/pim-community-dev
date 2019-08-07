@@ -108,7 +108,9 @@ define(
             setStyleForLinkModal: function (jqueryEvent) {
                 this.moveModalBackdrop();
 
-                const source = $(jqueryEvent.originalEvent.path[0]);
+                const source = jqueryEvent.originalEvent.path ?
+                    $(jqueryEvent.originalEvent.path[0]) :
+                    $(jqueryEvent.originalEvent.originalTarget);
 
                 if (
                     source.hasClass('icon-link')
