@@ -2,7 +2,11 @@
 
 namespace Akeneo\UserManagement\Bundle\Controller;
 
+use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\UserManagement\Bundle\Form\Handler\AclRoleHandler;
 use Akeneo\UserManagement\Component\Model\Role;
+use Akeneo\UserManagement\Component\Repository\RoleRepositoryInterface;
+use Oro\Bundle\SecurityBundle\Acl\Persistence\AclSidManager;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -10,14 +14,44 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class RoleController extends Controller
 {
+    /** @var RoleRepositoryInterface */
+    private $roleRepository;
+
+    /** @var RemoverInterface */
+    private $remover;
+
+    /** @var AclSidManager */
+    private $aclSidManager;
+
+    /** @var AclRoleHandler */
+    private $aclRoleHandler;
+
+    /** @var TranslatorInterface */
+    private $translator;
+
+    public function __construct(
+        RoleRepositoryInterface $roleRepository,
+        RemoverInterface $remover,
+        AclSidManager $aclSidManager,
+        AclRoleHandler $aclRoleHandler,
+        TranslatorInterface $translator
+    ) {
+        $this->roleRepository = $roleRepository;
+        $this->remover = $remover;
+        $this->aclSidManager = $aclSidManager;
+        $this->aclRoleHandler = $aclRoleHandler;
+        $this->translator = $translator;
+    }
+
     /**
      * @AclAncestor("pim_user_role_create")
      * @Template("PimUserBundle:Role:update.html.twig")
      */
-    public function createAction()
+    public function create()
     {
         return $this->update(new Role());
     }
@@ -26,9 +60,9 @@ class RoleController extends Controller
      * @AclAncestor("pim_user_role_edit")
      * @Template("PimUserBundle:Role:update.html.twig")
      */
-    public function updateAction(Role $entity)
+    public function update(Role $entity)
     {
-        return $this->update($entity);
+        return $this->updateUser($entity);
     }
 
     /**
@@ -36,26 +70,23 @@ class RoleController extends Controller
      *
      * @AclAncestor("pim_user_role_remove")
      */
-    public function deleteAction(Request $request, $id)
+    public function delete(Request $request, $id)
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
 
-        $em = $this->get('doctrine.orm.entity_manager');
-        $roleClass = $this->container->getParameter('pim_user.entity.role.class');
-        $role = $em->getRepository($roleClass)->find($id);
+        $role = $this->roleRepository->find($id);
 
-        if (!$role) {
+        if (null === $role) {
             throw $this->createNotFoundException(sprintf('Role with id %d could not be found.', $id));
         }
 
         try {
-            $this->container->get('pim_user.remover.role')->remove($role);
+            $this->remover->remove($role);
 
-            $aclSidManager = $this->get('oro_security.acl.sid_manager');
-            if ($aclSidManager->isAclEnabled()) {
-                $aclSidManager->deleteSid($aclSidManager->getSid($role));
+            if ($this->aclSidManager->isAclEnabled()) {
+                $this->aclSidManager->deleteSid($this->aclSidManager->getSid($role));
             }
         } catch (\InvalidArgumentException $e) {
             return new JsonResponse(['message' => $e->getMessage()], Response::HTTP_UNPROCESSABLE_ENTITY);
@@ -69,15 +100,14 @@ class RoleController extends Controller
      *
      * @return array|JsonResponse
      */
-    private function update(Role $entity)
+    private function updateUser(Role $entity)
     {
-        $aclRoleHandler = $this->get('pim_user.form.handler.acl_role');
-        $aclRoleHandler->createForm($entity);
+        $this->aclRoleHandler->createForm($entity);
 
-        if ($aclRoleHandler->process($entity)) {
-            $this->get('session')->getFlashBag()->add(
+        if ($this->aclRoleHandler->process($entity)) {
+            $this->addFlash(
                 'success',
-                $this->get('translator')->trans('pim_user.controller.role.message.saved')
+                $this->translator->trans('pim_user.controller.role.message.saved')
             );
 
             return new JsonResponse(
@@ -86,7 +116,7 @@ class RoleController extends Controller
         }
 
         return [
-            'form'             => $aclRoleHandler->createView(),
+            'form' => $this->aclRoleHandler->createView(),
             'privilegesConfig' => $this->container->getParameter('pim_user.privileges'),
         ];
     }

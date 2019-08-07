@@ -1,19 +1,60 @@
 <?php
+
 namespace Akeneo\UserManagement\Bundle\Controller;
 
+use Akeneo\UserManagement\Bundle\Form\Handler\ResetHandler;
+use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Swift_Mailer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class ResetController extends Controller
 {
     const SESSION_EMAIL = 'pim_user_reset_email';
 
+    /** @var UserManager */
+    private $userManager;
+
+    /** @var Swift_Mailer */
+    private $mailer;
+
+    /** @var SessionInterface */
+    private $session;
+
+    /** @var ResetHandler */
+    private $resetHandler;
+
+    /** @var TokenStorageInterface */
+    private $tokenStorage;
+
+    /** @var FormInterface */
+    private $form;
+
+    public function __construct(
+        UserManager $userManager,
+        Swift_Mailer $mailer,
+        SessionInterface $session,
+        ResetHandler $resetHandler,
+        TokenStorageInterface $tokenStorage,
+        FormInterface $form
+    ) {
+        $this->userManager = $userManager;
+        $this->mailer = $mailer;
+        $this->session = $session;
+        $this->resetHandler = $resetHandler;
+        $this->tokenStorage = $tokenStorage;
+        $this->form = $form;
+    }
+
     /**
-     * @Template
+     * @Template("PimUserBundle:Reset:request.html.twig")
      */
-    public function requestAction()
+    public function request()
     {
         return [];
     }
@@ -21,19 +62,19 @@ class ResetController extends Controller
     /**
      * Request reset user password
      *
-     * @Template
+     * @Template("PimUserBundle:Reset:sendEmail.html.twig")
      */
-    public function sendEmailAction(Request $request)
+    public function sendEmail(Request $request)
     {
         $username = $request->request->get('username');
-        $user = $this->get('pim_user.manager')->findUserByUsernameOrEmail($username);
+        $user = $this->userManager->findUserByUsernameOrEmail($username);
 
         if (null === $user) {
             return [];
         }
 
         if ($user->isPasswordRequestNonExpired($this->container->getParameter('pim_user.reset.ttl'))) {
-            $this->get('session')->getFlashBag()->add(
+            $this->addFlash(
                 'warn',
                 'The password for this user has already been requested within the last 24 hours.'
             );
@@ -45,7 +86,7 @@ class ResetController extends Controller
             $user->setConfirmationToken($user->generateToken());
         }
 
-        $this->get('session')->set(static::SESSION_EMAIL, $this->getObfuscatedEmail($user));
+        $this->session->set(static::SESSION_EMAIL, $this->getObfuscatedEmail($user));
 
         /**
          * @todo Move to postUpdate lifecycle event handler as service
@@ -60,8 +101,8 @@ class ResetController extends Controller
 
         $user->setPasswordRequestedAt(new \DateTime('now', new \DateTimeZone('UTC')));
 
-        $this->get('mailer')->send($message);
-        $this->get('pim_user.manager')->updateUser($user);
+        $this->mailer->send($message);
+        $this->userManager->updateUser($user);
 
         return [];
     }
@@ -71,12 +112,11 @@ class ResetController extends Controller
      *
      * @Template
      */
-    public function checkEmailAction()
+    public function checkEmail()
     {
-        $session = $this->get('session');
-        $email = $session->get(static::SESSION_EMAIL);
+        $email = $this->session->get(static::SESSION_EMAIL);
 
-        $session->remove(static::SESSION_EMAIL);
+        $this->session->remove(static::SESSION_EMAIL);
 
         if (empty($email)) {
             // the user does not come from the sendEmail action
@@ -91,12 +131,11 @@ class ResetController extends Controller
     /**
      * Reset user password
      *
-     * @Template
+     * @Template("PimUserBundle:Reset:reset.html.twig")
      */
-    public function resetAction($token)
+    public function reset($token)
     {
-        $user = $this->get('pim_user.manager')->findUserByConfirmationToken($token);
-        $session = $this->get('session');
+        $user = $this->userManager->findUserByConfirmationToken($token);
 
         if (null === $user) {
             throw $this->createNotFoundException(
@@ -105,7 +144,7 @@ class ResetController extends Controller
         }
 
         if (!$user->isPasswordRequestNonExpired($this->container->getParameter('pim_user.reset.ttl'))) {
-            $session->getFlashBag()->add(
+            $this->addFlash(
                 'warn',
                 'The password for this user has already been requested within the last 24 hours.'
             );
@@ -113,19 +152,19 @@ class ResetController extends Controller
             return $this->redirect($this->generateUrl('pim_user_reset_request'));
         }
 
-        if ($this->get('pim_user.form.handler.reset')->process($user)) {
-            $session->getFlashBag()->add('success', 'Your password has been successfully reset. You may login now.');
+        if ($this->resetHandler->process($user)) {
+            $this->addFlash('success', 'Your password has been successfully reset. You may login now.');
 
             // force user logout
-            $session->invalidate();
-            $this->get('security.token_storage')->setToken(null);
+            $this->session->invalidate();
+            $this->tokenStorage->setToken(null);
 
             return $this->redirect($this->generateUrl('pim_user_security_login'));
         }
 
         return [
             'token' => $token,
-            'form'  => $this->get('pim_user.form.reset')->createView(),
+            'form'  => $this->form->createView(),
         ];
     }
 

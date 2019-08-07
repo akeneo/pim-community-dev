@@ -42,6 +42,7 @@ $rules = [
         'Symfony\Bundle\FrameworkBundle',
         'FOS\OAuthServerBundle\Entity\ClientManager', // used by API client controller
         'OAuth2\OAuth2', // used by API client controller
+        'Swift_Mailer',
 
         // TIP-1007: Clean VisibilityChecker system
         'Akeneo\Platform\Bundle\UIBundle\ViewElement\Checker\NonEmptyPropertyVisibilityChecker',
