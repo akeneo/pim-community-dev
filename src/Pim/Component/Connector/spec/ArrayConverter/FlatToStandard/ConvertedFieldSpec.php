@@ -4,7 +4,6 @@ namespace spec\Pim\Component\Connector\ArrayConverter\FlatToStandard;
 
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\ConvertedField;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class ConvertedFieldSpec extends ObjectBehavior
 {
@@ -25,6 +24,33 @@ class ConvertedFieldSpec extends ObjectBehavior
             'associations' => [
                 'UP_SELL' => ['groups' => ['value2', 'test2']],
                 'X_SELL' => ['groups' => ['value', 'test']],
+            ]
+        ]);
+    }
+
+    function it_appends_association_with_number_to_converted_item()
+    {
+        $this->beConstructedWith('associations', [1234 => ['groups' => ['value', 'test']]]);
+
+        $this->appendTo([
+            'associations' => ['UP_SELL' => ['groups' => ['value2', 'test2']]]
+        ])->shouldReturn([
+            'associations' => [
+                'UP_SELL' => ['groups' => ['value2', 'test2']],
+                1234 => ['groups' => ['value', 'test']],
+            ]
+        ]);
+    }
+
+    function it_appends_associations_with_numbers_to_converted_item()
+    {
+        $this->beConstructedWith('associations', [1234 => ['groups' => ['value', 'test']]]);
+
+        $this->appendTo([
+            'associations' => [1234 => ['products' => ['value2', 'test2']]]
+        ])->shouldReturn([
+            'associations' => [
+                1234 => ['products' => ['value2', 'test2'], 'groups' => ['value', 'test']],
             ]
         ]);
     }
