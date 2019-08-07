@@ -55,7 +55,7 @@ class ListProductGridAvailableColumns implements ListProductGridAvailableColumns
             $attributeColumns = $this->fetchAttributesAsColumn($locale, $limit, $offset, $groupCode, $searchOnLabel);
         }
 
-        return array_merge($systemColumns, $attributeColumns);
+        return array_replace($systemColumns, $attributeColumns);
     }
 
     /**
