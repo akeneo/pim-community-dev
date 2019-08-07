@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Bundle\BatchQueueBundle\tests\integration\Query;
+namespace Akeneo\Tool\Bundle\BatchQueueBundle\tests\integration\Query;
 
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\BatchBundle\Job\DoctrineJobRepository;

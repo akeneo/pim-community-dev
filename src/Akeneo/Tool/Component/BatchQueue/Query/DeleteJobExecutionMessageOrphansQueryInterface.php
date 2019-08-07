@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Component\BatchQueue\Query;
+namespace Akeneo\Tool\Component\BatchQueue\Query;
 
 /**
  * Deletes the job execution messages whose job execution doesn't exist anymore.
