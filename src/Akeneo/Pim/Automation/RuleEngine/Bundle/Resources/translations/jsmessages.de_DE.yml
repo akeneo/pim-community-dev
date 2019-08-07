@@ -1,4 +1,5 @@
 pimee_catalog_rule:
+  overview: "] -Inf, 1] {{ count }} Regel|] 1, Inf [{{ count }} Regeln"
   execution_button: Regeln anwenden
   selected: 'Regeln ausgewählt'
   popin:
@@ -19,10 +20,10 @@ pimee_catalog_rule:
       if.label: wenn
     action:
       then.label: dann
-      set_value.label: ist gesetzt in
-      copy_value.label: ist kopiert in
-      set.label: ist gesetzt in
-      copy.label: ist kopiert in
+      set_value.label: wird gesetzt in
+      copy_value.label: wird kopiert nach
+      set.label: wird gesetzt in
+      copy.label: wird kopiert nach
       add.label: wird hinzugefügt zu
       remove.label: wurde entfernt von
   datagrid:
@@ -66,7 +67,7 @@ pim_datagrid:
           success: Regel erfolgreich entfernt
 flash:
   rule:
-    impacted_product_count: Die Berechnung, der von dieser Regel betroffenen Produkte wurde gestartet. Sie werden benachrichtigt, sobald der Vorgang abgeschlossen ist.
+    impacted_product_count: Die Berechnung der von dieser Regel betroffenen Produkte wurde gestartet. Sie werden benachrichtigt, sobald der Vorgang abgeschlossen ist.
     executed: Die Anwendung der Regel wurde gestartet. Sie werden benachrichtigt, sobald der Vorgang abgeschlossen ist.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Regeleinstellungen
 batch_jobs:
@@ -85,17 +86,18 @@ batch_jobs:
     perform.label: Anzahl der betroffenen Produkte
   csv_product_import_with_rules:
     label: Produktimport in CSV mit Regeln
-    import.label: Produkt import
+    import.label: Produkt-Import
   csv_product_model_import_with_rules:
     label: Produktmodell-Import in CSV mit Regeln
   xlsx_product_import_with_rules:
     label: Produktimport in XLSX mit Regeln
-    import.label: Produkt import
+    import.label: Produkt-Import
   xlsx_product_model_import_with_rules:
     label: Produktmodell-Import in XLSX mit Regeln
 pim_notification:
   types:
     rule: Regeleinstellungen
+    mass_edit_rule: Massenbearbeitung Regel
 pim_menu:
   item:
     rule: Regeln

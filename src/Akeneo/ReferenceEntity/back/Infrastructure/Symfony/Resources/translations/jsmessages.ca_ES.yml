@@ -205,7 +205,7 @@ pim_reference_entity:
       delete: Eliminar l'atribut
       title: Editar atribut {{ code }}
       save: Desar
-      cancel: Cancelar
+      cancel: Cancel·lar
       input:
         code: Codi (requerit)
         label: Etiqueta
@@ -261,7 +261,7 @@ pim_reference_entity:
     delete:
       subtitle: Confirmar l'eliminació
       button:
-        cancel: Cancelar
+        cancel: Cancel·lar
         confirm: Suprimir
 pim_enrich:
   confirmation:

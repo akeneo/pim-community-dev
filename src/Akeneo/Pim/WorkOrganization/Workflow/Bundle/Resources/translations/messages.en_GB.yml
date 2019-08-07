@@ -1,0 +1,4 @@
+pimee_workflow:
+  product_draft:
+    status_message:
+      in_progress: This proposal is currently in progress and has not been submitted yet.

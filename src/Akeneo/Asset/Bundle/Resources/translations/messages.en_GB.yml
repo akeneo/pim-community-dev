@@ -1,0 +1,151 @@
+pimee_product_asset:
+  acl:
+    asset:
+      index: Enrich asset
+      create: Create an asset
+      remove: Remove asset
+      categories_view: Consult the categories of an asset
+      mass_upload: Mass-upload assets
+      remove_from_collection: Remove an asset from an asset collection
+    category_asset_picker:
+      list: List asset categories in the asset picker
+    category:
+      create: Create an asset category
+      edit: Edit an asset category
+      list: List asset categories
+      remove: Remove an asset category
+      manage: Manage asset category permissions
+      history: View asset category history
+  acl_group:
+    asset: Product assets
+    category: Asset categories
+  enrich_asset:
+    button:
+      upload: Upload
+      delete: Delete
+      download: Download
+      generate_from_reference: Generate from reference
+      reset_variations: Reset variations
+    confirmation.remove: Are you sure you want to remove the asset "%asset%" ?
+    confirmation.subTitle: Assets
+    grid:
+      edit: Edit properties of the asset
+    view:
+      title: Product asset
+      code: Code
+      description: Description
+      end_of_use: End of use date
+      reference: Reference
+      filename: File name
+      width: Width
+      height: Height
+      resolution: Resolution
+      colors: Colour space
+      filesize: File size
+      filetype: File type
+      actions: Actions
+      download: Download
+      tag: Tags
+      no_reference: No reference file has been uploaded yet.
+      no_variation: No variation file has been generated yet.
+    flash:
+      update:
+        success: Asset has been updated.
+        error: An error occurred, asset could not be updated.
+      create:
+        success: Asset has been created.
+        error: An error occurred, asset could not be created.
+      remove:
+        success: Asset has been successfully removed.
+  enrich_reference:
+    flash:
+      delete:
+        success: Reference file has been successfully deleted.
+        error: An error occurred, the reference file could not be deleted.
+  enrich_variation:
+    flash:
+      transformation:
+        missing_asset_transformation_for_channel: Impossible to generate the variation %channel%, please set an asset transformation for this channel.
+        error: Impossible to generate the variation %channel%.
+        success: Variation files have been generated successfully.
+      update:
+        success: Variation file has been updated.
+        error: An error occurred, variation file could not be updated.
+      delete:
+        success: Variation file has been deleted.
+        error: An error occurred, variation file could not be deleted.
+  popin.create:
+    title: Create a new asset
+    is_localized: Localisable
+  menu: Assets
+  page_tab:
+    title:
+      view: Product asset %asset.code% | View
+      edit: Product asset %asset.code% | Edit
+      index: Product assets
+  code:
+    label: Code
+  thumbnail:
+    label: Thumbnail
+  status:
+    label: Status
+  description:
+    label: Description
+  endOfUse:
+    label: End of use
+  createdAt:
+    label: Created at
+  updatedAt:
+    label: Last updated at
+  tags:
+    label: Tags
+  tabs:
+    properties.title: Properties
+  validation:
+    code:
+      not_empty: Code cannot be empty.
+      unique: Code must be unique.
+      new_generation: We generated a new one for you.
+  mass_upload:
+    new: A new asset will be created
+    add_files: add files
+    start: Start upload
+    error:
+      upload: An error occurred while uploading
+      code: Invalid code format for asset
+      localizable: An asset exists but it is not localisable
+  category:
+    permissions:
+      no_access_to_products: You do not have access to any tree of assets, please contact your administrator
+      apply_on_children.help: Copy the permissions changes on all children, existing permissions on children will be kept
+  mass_edit_action:
+    asset:
+      confirm: You are about to update an asset with the following information, please confirm.|You are about to update %count% assets with the following information, please confirm.
+pim_enrich:
+  mass_edit_action:
+    add-tags-to-assets:
+      launched_flash: The "Add tags to assets" bulk action has been launched. You will be notified when it is done.
+      message.error: The provided tag does not exist
+pim:
+  grid:
+    mass_action:
+      mass_classify_assets: Classify
+      add_tags_to_assets: Add tags
+pim_datagrid:
+  cells:
+    type:
+      compute_completeness_of_products_linked_to_assets: Compute completeness of products linked to assets
+pimee_enrich:
+  asset_transformation:
+    not_found: No transformation found
+    title:
+      transformation: Transformation
+      options: Options
+    colorspace:
+      title: Colourspace
+      options:
+        colorspace: '%value% colourspace'
+    resize:
+      title: Resize
+      options:
+        width: '%value%px width'

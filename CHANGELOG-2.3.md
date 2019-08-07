@@ -1,5 +1,17 @@
 # 2.3.x
 
+# 2.3.57 (2019-07-31)
+
+## Bug fixes
+
+- PIM-7850: Ignore empty parent for simple products in the proposal product import job
+
+# 2.3.56 (2019-07-24)
+
+## Bug fixes
+
+- PIM-7667: Display draft icon for modified attributes in product model edit form
+
 # 2.3.55 (2019-07-23)
 
 ## Bug fixes

@@ -137,9 +137,9 @@ pim_reference_entity:
         counter: '{{ matchesCount }} resultados|{{ matchesCount }} resultados'
         completeness:
           label: Completo
-          all: Todo
-          'yes': 'Sí'
-          'no': 'No'
+          all: TODOS
+          'yes': 'SÍ'
+          'no': 'NO'
         option:
           all: Todo
           operator:
