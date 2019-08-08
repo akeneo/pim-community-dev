@@ -194,7 +194,6 @@ pim_datagrid:
     cells:
         type:
             mass_upload: Mass Upload Assets
-            compute_completeness_of_products_linked_to_assets: Compute completeness of products linked to assets
 
 pim_analytics:
     info_type:
