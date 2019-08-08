@@ -88,6 +88,31 @@
      `Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager`  
 - Change constructor of `Oro\Bundle\PimDataGridBundle\Normalizer\ProductAssociationNormalizer` to add `Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses`
 - Change constructor of `Oro\Bundle\PimDataGridBundle\Normalizer\ProductNormalizer` to add `Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses`
+- Removed the following class and the corresponding command:
+    - `Akeneo\Pim\Enrichment\Bundle\Command\CreateProductCommand`
+    - `Akeneo\Pim\Enrichment\Bundle\Command\GetProductCommand`
+    - `Akeneo\Pim\Enrichment\Bundle\Command\QueryProductCommand`
+    - `Akeneo\Pim\Enrichment\Bundle\Command\RemoveProductCommand`
+    - `Akeneo\Pim\Enrichment\Bundle\Command\RemoveWrongBooleanValuesOnVariantProductsBatchCommand`
+    - `Akeneo\Pim\Enrichment\Bundle\Command\RemoveWrongBooleanValuesOnVariantProductsCommand`
+    - `Akeneo\Pim\Enrichment\Bundle\Command\UpdateProductCommand`
+    - `Akeneo\Pim\Enrichment\Bundle\Command\ValidateObjectsCommand`
+    - `Akeneo\Pim\Enrichment\Bundle\Command\ValidateProductCommand`
+    - `Akeneo\Pim\Enrichment\Bundle\Command\AnalyzeProductCsvCommand`
+
+### CLI Commands
+
+The following CLI commands have been deleted:
+- pim:product:create
+- pim:product:get
+- pim:product:query
+- pim:product:remove
+- pim:catalog:remove-wrong-boolean-values-on-variant-products-batch
+- pim:catalog:remove-wrong-boolean-values-on-variant-products
+- pim:product:update
+- pim:objects:validate
+- pim:product:validate
+- pim:connector:analyzer:csv-products
 
 ### Services
 
