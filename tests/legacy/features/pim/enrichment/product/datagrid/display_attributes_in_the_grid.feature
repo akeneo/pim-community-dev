@@ -54,3 +54,18 @@ Feature: Display product attributes in the grid
       | column    | title       |
       | Side view | **empty**   |
       | Top view  | akeneo2.jpg |
+
+  @jira https://akeneo.atlassian.net/browse/PIM-8631
+  Scenario: Successfully display attributes in the datagrid with code as integer
+    Given the "default" catalog configuration
+    And the following attribute:
+      | code | type             | group | useable_as_grid_filter |
+      | 1234 | pim_catalog_text | other | 1                      |
+    And the following product:
+      | sku      | 1234    |
+      | sneakers | a value |
+    And I am logged in as "Mary"
+    And I am on the products grid
+    When I display in the products grid the columns [1234]
+    Then I should see the text "[1234]"
+    And I should see the text "a value"
