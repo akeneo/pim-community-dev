@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-8632: Fix empty column in the product datagrid when product model doest not have any shared value
+
 # 3.0.36 (2019-08-08)
 
 ## Bug fixes
