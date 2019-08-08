@@ -10,6 +10,7 @@
 - PIM-8623: Fix wysiwyg edit link modal on Firefox
 - PIM-8628: Display label translations on configuration screens even you don't have "Allowed to view information" permission on a locale
 - PIM-8624: Fix default product grid view selector in user profile when there is more than 20 views
+- PIM-8631: Fix column selector in the case of an attribute code as integer
 
 # 3.0.35 (2019-08-05)
 
