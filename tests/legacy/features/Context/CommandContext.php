@@ -57,79 +57,6 @@ class CommandContext extends PimContext
     }
 
     /**
-     * @Then /^I should get the following products after apply the following updater to it:$/
-     *
-     * @param TableNode $updates
-     *
-     * @throws \Exception
-     */
-    public function iShouldGetTheFollowingProductsAfterApplyTheFollowingUpdaterToIt(TableNode $updates)
-    {
-        $application = $this->getApplicationsForUpdaterProduct();
-
-        $updateCommand = $application->find('pim:product:update');
-        $updateCommand->setContainer($this->getMainContext()->getContainer());
-        $updateCommandTester = new CommandTester($updateCommand);
-
-        $getCommand = $application->find('pim:product:get');
-        $getCommand->setContainer($this->getMainContext()->getContainer());
-        $getCommandTester = new CommandTester($getCommand);
-
-        foreach ($updates->getHash() as $update) {
-            $username = isset($update['username']) ? $update['username'] : null;
-
-            $updateCommandTester->execute(
-                [
-                    'command'      => $updateCommand->getName(),
-                    'identifier'   => $update['product'],
-                    'json_updates' => $this->sanitizeProductActions($update['actions']),
-                    'username'     => $username
-                ]
-            );
-
-            $expected = json_decode($update['result'], true);
-            if (isset($expected['product'])) {
-                $getCommandTester->execute(
-                    [
-                        'command'    => $getCommand->getName(),
-                        'identifier' => $expected['product']
-                    ]
-                );
-                unset($expected['product']);
-            } else {
-                $getCommandTester->execute(
-                    [
-                        'command'    => $getCommand->getName(),
-                        'identifier' => $update['product']
-                    ]
-                );
-            }
-
-            $actual = json_decode($getCommandTester->getDisplay(), true);
-
-            if (null === $actual) {
-                throw new \Exception(sprintf(
-                    'An error occured during the execution of the update command : %s',
-                    $getCommandTester->getDisplay()
-                ));
-            }
-
-            if (null === $expected) {
-                throw new \Exception(sprintf(
-                    'Looks like the expected result is not valid json : %s',
-                    $update['result']
-                ));
-            }
-            $diff = $this->arrayIntersect($actual, $expected);
-
-            Assert::assertEquals(
-                $expected,
-                $diff
-            );
-        }
-    }
-
-    /**
      * @When /^I launch the purge versions command for entity "([^"]*)"$/
      * @When /^I launch the purge versions command"$/
      *
@@ -159,18 +86,6 @@ class CommandContext extends PimContext
         }
 
         return json_encode($actions);
-    }
-
-    /**
-     * @return Application
-     */
-    protected function getApplicationsForUpdaterProduct()
-    {
-        $application = new Application();
-        $application->add(new UpdateProductCommand());
-        $application->add(new GetProductCommand());
-
-        return $application;
     }
 
     /**
