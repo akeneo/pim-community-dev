@@ -27,8 +27,8 @@ define(
              */
             fetchItems: function (searchParameters) {
                 return this.getItemsToExclude()
-                    .then(function (familyCode) {
-                        searchParameters.options.excluded_family = familyCode;
+                    .then(function (attributeCodes) {
+                        searchParameters.options.excluded_identifiers = attributeCodes.join(',');
 
                         return FetcherRegistry.getFetcher(this.mainFetcher).search(searchParameters)
                             .then(function (attributes) {
@@ -46,7 +46,11 @@ define(
              * {@inheritdoc}
              */
             getItemsToExclude: function () {
-                return $.Deferred().resolve(this.getFormData().code);
+                return $.Deferred().resolve(
+                    this.getFormData().attributes.map((attribute) => {
+                        return attribute.code;
+                    })
+                );
             },
 
             /**

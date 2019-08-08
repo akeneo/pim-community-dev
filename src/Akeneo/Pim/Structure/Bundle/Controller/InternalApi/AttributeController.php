@@ -155,8 +155,8 @@ class AttributeController
             $options['identifiers'] = array_unique(explode(',', $request->get('identifiers')));
         }
 
-        if ($request->get('excluded_family', null) !== null) {
-            $options['excluded_family'] = $request->get('excluded_family');
+        if (isset($options['excluded_identifiers'])) {
+            $options['excluded_identifiers'] = array_unique(explode(',', $options['excluded_identifiers']));
         }
 
         if (count($options['identifiers']) > 0) {
