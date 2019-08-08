@@ -14,6 +14,7 @@ use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command\SendDraftForApprovalComm
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Behat\Gherkin\Node\TableNode;
 use Context\Spin\SpinCapableTrait;
+use Negotiation\Exception\InvalidArgument;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -30,37 +31,26 @@ class EnterpriseCommandContext extends CommandContext
     use SpinCapableTrait;
 
     /**
-     * @param string $product
+     * @param string $productIdentifier
      *
      * @throws \Exception
      *
      * @Given /^I publish the product "([^"]*)"$/
      */
-    public function iPublishTheProduct($product)
+    public function iPublishTheProduct($productIdentifier)
     {
-        $application = new Application();
-        $application->add(new PublishProductCommand());
+        $publishedProductManager = $this->getContainer()->get('pimee_workflow.manager.published_product');
+        $productRepository = $this->getContainer()->get('pim_catalog.repository.product');
 
-        $publishCommand = $application->find('pim:product:publish');
-        $publishCommand->setContainer($this->getContainer());
-        $publishCommandTester = new CommandTester($publishCommand);
+        $product = $productRepository->findOneByIdentifier($productIdentifier);
 
-        $publishCommandTester->execute(
-            [
-                'command'    => $publishCommand->getName(),
-                'identifier' => $product
-            ]
-        );
+        if (null === $product) {
+            throw new \LogicException(sprintf('Product "%s" not found.', $productIdentifier));
+        }
+        $publishedProduct = $publishedProductManager->publish($product);
 
-        $result = json_decode($publishCommandTester->getDisplay());
-
-        if (0 != $result) {
-            throw new \Exception(
-                sprintf(
-                    'An error occured during the execution of the publish command : %s',
-                    $publishCommandTester->getDisplay()
-                )
-            );
+        if (null === $publishedProduct) {
+            throw new \LogicException(sprintf('Product "%s" not published.', $productIdentifier));
         }
     }
 
@@ -235,177 +225,6 @@ class EnterpriseCommandContext extends CommandContext
     }
 
     /**
-     * @param string $not
-     * @param string $product
-     * @param string $username
-     *
-     * @throws \Exception
-     *
-     * @Given /^I( failed to)? approve the proposal of the product "([^"]*)" created by user "([^"]*)"$/
-     */
-    public function iApproveTheProposal($not, $product, $username)
-    {
-        $userRepository = $this->getContainer()->get('pim_user.repository.user');
-        $user = $userRepository->findOneByIdentifier('admin');
-
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-        $this->getContainer()->get('security.token_storage')->setToken($token);
-
-        $application = new Application();
-        $application->add(new ApproveProposalCommand());
-
-        $proposal = $application->find('pim:proposal:approve');
-        $proposal->setContainer($this->getContainer());
-        $proposalTester = new CommandTester($proposal);
-
-        $proposalTester->execute(
-            [
-                'command'    => $proposal->getName(),
-                'identifier' => $product,
-                'username'   => $username,
-            ]
-        );
-
-        $result         = trim($proposalTester->getDisplay());
-        $expectedResult = sprintf('Proposal "%s" has been approved', $product);
-
-        if ('' === $not && $result !== $expectedResult) {
-            throw new \Exception($result);
-        } elseif ('' !== $not && $result === $expectedResult) {
-            throw new \Exception($result);
-        }
-    }
-
-    /**
-     * @param string $product
-     * @param string $username
-     *
-     * @throws \Exception
-     *
-     * @Given /^I send draft "([^"]+)" created by "([^"]+)" for approval$/
-     */
-    public function iSendDraftForApproval($product, $username)
-    {
-        $application = new Application();
-        $application->add(new SendDraftForApprovalCommand());
-
-        $proposal = $application->find('pim:draft:send-for-approval');
-        $proposal->setContainer($this->getContainer());
-        $proposalTester = new CommandTester($proposal);
-
-        $proposalTester->execute(
-            [
-                'command'    => $proposal->getName(),
-                'identifier' => $product,
-                'username'   => $username,
-            ]
-        );
-    }
-
-    /**
-     * @Then /^I should get the following product drafts after apply the following updater to it:$/
-     *
-     * @param TableNode $updates
-     *
-     * @throws \Exception
-     */
-    public function iShouldGetTheFollowingProductDraftsAfterApplyTheFollowingUpdaterToIt(TableNode $updates)
-    {
-        $application = $this->getApplicationsForUpdaterProduct();
-
-        $draftCommand = $application->find('pim:draft:create');
-        $draftCommand->setContainer($this->getMainContext()->getContainer());
-        $draftCommandTester = new CommandTester($draftCommand);
-
-        $getCommand = $application->find('pim:product:get');
-        $getCommand->setContainer($this->getMainContext()->getContainer());
-        $getCommandTester = new CommandTester($getCommand);
-
-        foreach ($updates->getHash() as $update) {
-            $username = isset($update['username']) ? $update['username'] : null;
-
-            $draftCommandTester->execute(
-                [
-                    'command'      => $draftCommand->getName(),
-                    'identifier'   => $update['product'],
-                    'json_updates' => $update['actions'],
-                    'username'     => $username
-                ]
-            );
-
-            $expected = json_decode($update['result'], true);
-            if (isset($expected['product'])) {
-                $getCommandTester->execute(
-                    [
-                        'command'    => $getCommand->getName(),
-                        'identifier' => $expected['product']
-                    ]
-                );
-                unset($expected['product']);
-            } else {
-                $getCommandTester->execute(
-                    [
-                        'command'    => $getCommand->getName(),
-                        'identifier' => $update['product']
-                    ]
-                );
-            }
-
-            $actual = json_decode($getCommandTester->getDisplay(), true);
-
-            if (null === $actual) {
-                throw new \Exception(sprintf(
-                    'An error occurred during the execution of the update command : %s',
-                    $getCommandTester->getDisplay()
-                ));
-            }
-
-            if (null === $expected) {
-                throw new \Exception(sprintf(
-                    'Looks like the expected result is not valid json : %s',
-                    $update['result']
-                ));
-            }
-            $diff = $this->arrayIntersect($actual, $expected);
-
-            Assert::assertEquals(
-                $expected,
-                $diff
-            );
-        }
-    }
-
-    /**
-     * @param TableNode $filters
-     *
-     * @Then /^I should get the following published products results for the given filters:$/
-     */
-    public function iShouldGetTheFollowingPublishedProductsResultsForTheGivenFilters(TableNode $filters)
-    {
-        $application = new Application();
-        $application->add(new QueryPublishedProductCommand());
-
-        $command = $application->find('pim:published-product:query');
-        $command->setContainer($this->getMainContext()->getContainer());
-
-        foreach ($filters->getHash() as $filter) {
-            $this->spin(function () use ($filter, $command) {
-                $commandTester = new CommandTester($command);
-                $commandTester->execute(
-                    ['command' => $command->getName(), '--json-output' => true, 'json_filters' => $filter['filter']]
-                );
-
-                $expected = json_decode($filter['result']);
-                $actual   = json_decode($commandTester->getDisplay());
-
-                Assert::assertEquals($expected, $actual);
-
-                return true;
-            }, sprintf('Impossible to assert result "%s" for filter "%s"', $filter['result'], $filter['filter']));
-        }
-    }
-
-    /**
      * @param array $changes
      *
      * @return array
@@ -427,20 +246,6 @@ class EnterpriseCommandContext extends CommandContext
         }
 
         return $changes;
-    }
-
-    /**
-     * @return Application
-     */
-    protected function getApplicationsForUpdaterProduct()
-    {
-        $application = new Application();
-        $application->add(new UpdateProductCommand());
-        $application->add(new CreateDraftCommand());
-        $application->add(new SendDraftForApprovalCommand());
-        $application->add(new GetProductCommand());
-
-        return $application;
     }
 
     /**

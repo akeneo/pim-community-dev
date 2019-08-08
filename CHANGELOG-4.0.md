@@ -25,6 +25,29 @@
 - Remove `Akeneo\Pim\Permission\Bundle\Datagrid\MassAction\ProductFieldsBuilder`
 - Rename `Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\SkipVersionSubscriber` in `Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\SkipVersionListener`
 - Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer\PublishedProductNormalizer` to add `Symfony\Component\Serializer\Normalizer\NormalizerInterface`
+ - Removed the following class and the corresponding command:
+     - `Akeneo\Asset\Bundle\Command\GenerateVariationFilesFromReferenceCommand`
+     - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command\ApproveProposalCommand  `
+     - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command\CreateDraftCommand`
+     - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command\PublishProductCommand `
+     - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command\QueryPublishedProductCommand`
+     - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command\SendDraftForApprovalCommand`
+     - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command\UnpublishProductCommand `
+     - `Akeneo\Platform\Bundle\InstallerBundle\Command\GiveAllRightsToAllUsersCommand`
+     - `Akeneo\Platform\Bundle\InstallerBundle\Command\GiveBackendProcessesRightsToAllUsersCommand`
+     
+### CLI commands
+
+The following CLI commands have been deleted:
+- pim:installer:grant-backend-processes-accesses
+- pim:installer:grant-user-accesses
+- pim:product:unpublish
+- pim:draft:send-for-approval
+- pim:published-product:query
+- pim:product:publish
+- pim:draft:create
+- pim:proposal:approve
+- pim:asset:generate-variation-files-from-reference
  
 ### Services
 
