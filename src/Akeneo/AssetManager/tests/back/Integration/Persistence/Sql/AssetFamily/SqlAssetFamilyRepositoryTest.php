@@ -279,7 +279,7 @@ class SqlAssetFamilyRepositoryTest extends SqlIntegrationTestCase
             ],
             'assign_assets_to' => [
                 [
-                    'mode'      => 'set',
+                    'mode'      => 'replace',
                     'attribute' => '{{attribute}}'
                 ]
             ]

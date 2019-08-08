@@ -41,6 +41,16 @@ class ActionSpec extends ObjectBehavior
         $this->shouldHaveType(Action::class);
     }
 
+    public function it_could_not_create_from_product_link_rule_when_the_mode_is_not_allowed()
+    {
+        $action = [
+            'mode'  => 'wrong_mode',
+            'attribute' => '{{attribute}}'
+        ];
+        $this->beConstructedThrough('createFromProductLinkRule', [$action]);
+        $this->shouldThrow(new \InvalidArgumentException(sprintf('The action mode allowed should be one of these : "add, replace"')))->duringInstantiation();
+    }
+
     public function it_could_not_create_an_action_without_field()
     {
         $action = [

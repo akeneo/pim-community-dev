@@ -381,7 +381,7 @@ final class EditAssetFamilyContext implements Context
             ],
             'assign_assets_to'    => [
                 [
-                    'mode'  => 'set',
+                    'mode'  => 'replace',
                     'attribute' => '{{attribute}}'
                 ]
             ]
