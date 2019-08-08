@@ -109,8 +109,6 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.query.channel_exists'
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers'
             - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_activated_locales_per_channels'
-            - '@akeneo_assetmanager.infrastructure.persistence.query.find_file_data_by_file_key'
-            - '@akeneo_assetmanager.infrastructure.persistence.query.file_exists'
             - '@akeneoassetmanager.infrastructure.persistence.query.get_attribute_identifier'
 
 

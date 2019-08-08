@@ -24,46 +24,34 @@
             "_links": {
               "self": {
                 "href": "http://localhost/api/rest/v1/asset-families/asset_family_1"
-              },
-              "image_download": {
-                "href": "http://localhost/api/rest/v1/asset-media-files/test/image_asset_family_1.jpg"
               }
             },
             "code": "asset_family_1",
             "labels": {
               "fr_FR": "Marque"
-            },
-            "image": "test/image_asset_family_1.jpg"
+            }
           },
           {
             "_links": {
               "self": {
                 "href": "http://localhost/api/rest/v1/asset-families/asset_family_2"
-              },
-              "image_download": {
-                "href": "http://localhost/api/rest/v1/asset-media-files/test/image_asset_family_2.jpg"
               }
             },
             "code": "asset_family_2",
             "labels": {
               "fr_FR": "Marque"
-            },
-            "image": "test/image_asset_family_2.jpg"
+            }
           },
           {
             "_links": {
               "self": {
                 "href": "http://localhost/api/rest/v1/asset-families/asset_family_3"
-              },
-              "image_download": {
-                "href": "http://localhost/api/rest/v1/asset-media-files/test/image_asset_family_3.jpg"
               }
             },
             "code": "asset_family_3",
             "labels": {
               "fr_FR": "Marque"
-            },
-            "image": "test/image_asset_family_3.jpg"
+            }
           }
         ]
       }
