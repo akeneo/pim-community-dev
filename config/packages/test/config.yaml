@@ -1,6 +1,16 @@
-imports:
-    - { resource: config_dev.yml }
-    - { resource: security_test.yml }
+monolog:
+    handlers:
+        main:
+            type:     stream
+            path:     "%kernel.logs_dir%/%kernel.environment%.log"
+            level:    debug
+            channels: ['!event']
+        firephp:
+            type:     firephp
+            level:    info
+        console:
+            type:     console
+            channels: ['!event', '!doctrine']
 
 framework:
     test: ~
@@ -9,6 +19,7 @@ framework:
     csrf_protection: true
     profiler:
         collect: false
+        only_exceptions: false
 
 web_profiler:
     toolbar: false
