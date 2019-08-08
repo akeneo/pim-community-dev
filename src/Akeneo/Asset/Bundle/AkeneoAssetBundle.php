@@ -65,7 +65,6 @@ class AkeneoAssetBundle extends Bundle
     {
         $application->add(new GenerateMissingVariationFilesCommand());
         $application->add(new GenerateVariationFileCommand());
-        $application->add(new GenerateVariationFilesFromReferenceCommand());
         $application->add(new SendAlertNotificationsCommand());
         $application->add(new ProcessMassUploadCommand());
         $application->add(new CopyAssetFilesCommand());

@@ -225,36 +225,6 @@ class EnterpriseCommandContext extends CommandContext
     }
 
     /**
-     * @param TableNode $filters
-     *
-     * @Then /^I should get the following published products results for the given filters:$/
-     */
-    public function iShouldGetTheFollowingPublishedProductsResultsForTheGivenFilters(TableNode $filters)
-    {
-        $application = new Application();
-        $application->add(new QueryPublishedProductCommand());
-
-        $command = $application->find('pim:published-product:query');
-        $command->setContainer($this->getMainContext()->getContainer());
-
-        foreach ($filters->getHash() as $filter) {
-            $this->spin(function () use ($filter, $command) {
-                $commandTester = new CommandTester($command);
-                $commandTester->execute(
-                    ['command' => $command->getName(), '--json-output' => true, 'json_filters' => $filter['filter']]
-                );
-
-                $expected = json_decode($filter['result']);
-                $actual   = json_decode($commandTester->getDisplay());
-
-                Assert::assertEquals($expected, $actual);
-
-                return true;
-            }, sprintf('Impossible to assert result "%s" for filter "%s"', $filter['result'], $filter['filter']));
-        }
-    }
-
-    /**
      * @param array $changes
      *
      * @return array
