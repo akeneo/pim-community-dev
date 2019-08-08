@@ -1,0 +1,10 @@
+authentication:
+  sso:
+    configuration:
+      download_logs_button: Download log
+      info:
+        update_successful: The configuration has been saved
+        update_failed: The configuration could not be saved
+      field:
+        logout_url:
+          label: Logout URL

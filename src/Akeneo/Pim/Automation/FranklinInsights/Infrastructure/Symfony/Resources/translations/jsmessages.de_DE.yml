@@ -1,3 +1,7 @@
+pim_title:
+  akeneo_franklin_insights_connection_edit: 'Franklin Insights Verbindung'
+  akeneo_franklin_insights_identifiers_mapping_edit: 'Franklin Insights Einstellungen'
+  akeneo_franklin_insights_attributes_mapping_edit: 'Franklin Insights Einstellungen'
 pim_menu:
   item:
     franklin: Franklin Insights
@@ -59,6 +63,7 @@ akeneo_franklin_insights:
           pending: Noch nicht genehmigt
           active: Aktiv
           inactive: Inaktiv
+        values_summary: "Zusammenfassung der Werte: {{ label }}"
         create_attribute:
           btn: Attribut erstellen
         add_attribute_to_family:
