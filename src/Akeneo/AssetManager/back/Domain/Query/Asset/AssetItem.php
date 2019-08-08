@@ -54,7 +54,7 @@ class AssetItem
     {
         return [
             self::IDENTIFIER                  => $this->identifier,
-            self::ASSET_FAMILY_IDENTIFIER => $this->assetFamilyIdentifier,
+            self::ASSET_FAMILY_IDENTIFIER     => $this->assetFamilyIdentifier,
             self::CODE                        => $this->code,
             self::LABELS                      => $this->labels,
             self::IMAGE                       => $this->image,

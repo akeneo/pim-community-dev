@@ -77,6 +77,12 @@ class MediaLinkImageGenerator implements PreviewGeneratorInterface
                 $binary = $this->dataManager->find(self::SUPPORTED_TYPES[$type], $url);
             } catch (NotLoadableException $e) {
                 return $this->defaultImageProvider->getImageUrl(self::DEFAULT_IMAGE, self::SUPPORTED_TYPES[$type]);
+            } catch (\LogicException $e) { //Here we catch different levels of exception to display a different default image in the future
+                // Trigerred when the mime type was not the good one
+                return $this->defaultImageProvider->getImageUrl(self::DEFAULT_IMAGE, self::SUPPORTED_TYPES[$type]);
+            } catch (\Exception $e) {
+                // Triggered When a general exception arrised
+                return $this->defaultImageProvider->getImageUrl(self::DEFAULT_IMAGE, self::SUPPORTED_TYPES[$type]);
             }
 
             $this->cacheManager->store(

@@ -32,6 +32,16 @@ export interface NormalizableAdditionalProperty {
   normalize(): any;
 }
 
+export const wrapNormalizableAdditionalProperty = <NormalizedAdditionalProperty>(
+  normalizedAdditionalProperty: NormalizedAdditionalProperty
+): NormalizableAdditionalProperty => {
+  return {
+    normalize: (): NormalizedAdditionalProperty => {
+      return normalizedAdditionalProperty;
+    },
+  };
+};
+
 /**
  * @api
  */

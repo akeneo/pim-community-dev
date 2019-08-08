@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFacto
 
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateMediaLinkAttributeCommand;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 
 /**
@@ -31,6 +32,7 @@ class CreateMediaLinkAttributeCommandFactory extends AbstractCreateAttributeComm
     public function create(array $normalizedCommand): AbstractCreateAttributeCommand
     {
         $this->checkCommonProperties($normalizedCommand);
+        $normalizedCommand['media_type'] = isset($normalizedCommand['media_type']) ? $normalizedCommand['media_type'] : MediaType::OTHER;
         $this->checkAdditionalProperties($normalizedCommand);
 
         $command = new CreateMediaLinkAttributeCommand(
@@ -69,6 +71,6 @@ class CreateMediaLinkAttributeCommandFactory extends AbstractCreateAttributeComm
     private function stringOrNull(array $normalizedCommand, string $key): ?string
     {
         return isset($normalizedCommand[$key]) && '' !== $normalizedCommand[$key]
-            ? (string)$normalizedCommand[$key] : null;
+            ? (string) $normalizedCommand[$key] : null;
     }
 }
