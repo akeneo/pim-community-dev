@@ -27,7 +27,6 @@ class PimAnalyticsExtension extends Extension
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('controllers.yml');
-        $loader->load('repositories.yml');
         $loader->load('data_collectors.yml');
         $loader->load('twig.yml');
     }
