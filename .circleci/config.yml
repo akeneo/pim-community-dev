@@ -234,11 +234,6 @@ jobs:
             TESTFILES=$(docker-compose exec -T fpm vendor/bin/behat --list-scenarios -p legacy -s critical | circleci tests split --split-by=timings)
             vendor/akeneo/pim-community-dev/.circleci/run_behat.sh critical $TESTFILES
       - run:
-          name: Franklin Insights Behat
-          command: |
-            TESTFILES=$(docker-compose exec -T fpm vendor/bin/behat --list-scenarios -p legacy -s insights | circleci tests split --split-by=timings)
-            vendor/akeneo/pim-community-dev/.circleci/run_behat.sh insights $TESTFILES
-      - run:
           name: Gather Junit test result files in the same directory to improve the render of failing tests
           command: |
               set -e

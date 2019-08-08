@@ -48,7 +48,7 @@ class FeatureContext extends EnterpriseFeatureContext
     }
 
     /**
-     * @param BeforeStepScope $scope
+     * @param AfterStepScope $scope
      * @AfterStep
      */
     public function clearConnectionStatusCache(AfterStepScope $scope): void
