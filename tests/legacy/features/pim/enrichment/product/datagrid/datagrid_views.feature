@@ -252,7 +252,7 @@ Feature: Datagrid views
 
   @ce
   Scenario: Don't display view type switcher if there is only one view type
-    Given I am on the products grid
+    Given I am on the products page
     Then I should not see the text "Views"
 
   Scenario: Successfully display filter values when refreshing a saved view
