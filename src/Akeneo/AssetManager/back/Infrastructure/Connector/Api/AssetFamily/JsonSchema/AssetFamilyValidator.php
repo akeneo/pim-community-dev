@@ -19,6 +19,7 @@ class AssetFamilyValidator
 {
     public function validate(array $normalizedAsset): array
     {
+        $normalizedAsset['labels'] =  empty($normalizedAsset['labels']) ? (object) [] : $normalizedAsset['labels'] ;
         $validator = new Validator();
         $normalizedAssetObject = Validator::arrayToObjectRecursive($normalizedAsset);
         $validator->validate($normalizedAssetObject, $this->getJsonSchema());

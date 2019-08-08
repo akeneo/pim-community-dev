@@ -56,6 +56,21 @@ class AssetAttributeValidatorSpec extends ObjectBehavior
         $this->validate($attribute)->shouldReturn([]);
     }
 
+    function it_does_not_return_any_error_when_no_labels()
+    {
+        $attribute = [
+            'code' => 'starck',
+            'type' => 'text',
+            'value_per_channel' => true,
+            'value_per_locale' => true,
+            'labels' => [],
+            'is_required_for_completeness' => false,
+            'asset_family_code' => 'brand',
+        ];
+
+        $this->validate($attribute)->shouldReturn([]);
+    }
+
     function it_is_mandatory_to_provide_the_code_of_the_attribute()
     {
         $attribute = [
