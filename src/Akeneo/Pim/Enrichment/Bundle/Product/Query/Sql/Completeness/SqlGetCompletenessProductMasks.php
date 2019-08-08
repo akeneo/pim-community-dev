@@ -75,16 +75,21 @@ SQL;
         )->fetchAll();
 
         $attributeCodes = [];
-        foreach ($rows as &$row) {
-            $row['cleanedRawValues'] = $this->cleanEmptyValues(json_decode($row['rawValues'], true));
-            foreach (array_keys($row['cleanedRawValues']) as $attributeCode) {
+        $rowsWithCleanedRawValues = [];
+
+        foreach ($rows as $row) {
+            $rowsWithCleanedRawValue = $row;
+            $rowsWithCleanedRawValue['cleanedRawValues'] = $this->cleanEmptyValues(json_decode($rowsWithCleanedRawValue['rawValues'], true));
+            foreach (array_keys($rowsWithCleanedRawValue['cleanedRawValues']) as $attributeCode) {
                 $attributeCodes[] = $attributeCode;
             }
+            $rowsWithCleanedRawValues[] = $rowsWithCleanedRawValue;
         }
+
         $attributes = $this->getAttributes->forCodes(array_unique($attributeCodes));
 
         $result = [];
-        foreach ($rows as $row) {
+        foreach ($rowsWithCleanedRawValues as $row) {
             $result[] = new CompletenessProductMask(
                 intval($row['id']),
                 $row['identifier'],
