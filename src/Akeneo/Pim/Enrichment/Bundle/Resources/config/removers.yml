@@ -1,6 +1,5 @@
 parameters:
     pim_catalog.remover.base.class:                  Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\BaseRemover
-    pim_catalog.remover.base_options_resolver.class: Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\BaseRemovingOptionsResolver
     pim_catalog.remover.completeness.class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\CompletenessRemover
 
 services:
@@ -75,9 +74,6 @@ services:
             - '@pim_catalog.elasticsearch.indexer.product'
             - 'pim_catalog_completeness'
             - '@akeneo_storage_utils.doctrine.object_detacher'
-
-    pim_catalog.remover.base_options_resolver:
-        class: '%pim_catalog.remover.base_options_resolver.class%'
 
     pim_comment.remover.comment:
         class: '%pim_catalog.remover.base.class%'
