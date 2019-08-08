@@ -2,6 +2,12 @@
 
 ## Bug fixes
 
+- PIM-8631: Fix column selector in the case of an attribute code as integer
+
+# 3.0.36 (2019-08-08)
+
+## Bug fixes
+
 - PIM-8604: Fix typos in the word 'occurred'
 - PIM-8387: Fix product export builder on simple/multi select attribute filters
 - PIM-8321: Do not display navigation blocks when there is no links inside

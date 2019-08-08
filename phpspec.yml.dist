@@ -157,6 +157,11 @@ suites:
         psr4_prefix: Oro\Bundle\FilterBundle
         spec_path: src/Oro/Bundle/FilterBundle
         src_path: src/Oro/Bundle/FilterBundle
+    OroDataGridBundle:
+        namespace: Oro\Bundle\DataGridBundle
+        psr4_prefix: Oro\Bundle\DataGridBundle
+        spec_path: src/Oro/Bundle/DataGridBundle
+        src_path: src/Oro/Bundle/DataGridBundle
 
     ## Test
     Acceptance:
