@@ -35,6 +35,16 @@ class AttributeOptionValidatorSpec extends ObjectBehavior
         $this->validate($validOptions)->shouldReturn([]);
     }
 
+    function it_does_not_return_any_error_when_no_labels()
+    {
+        $validOptions = [
+            'code' => 'Dog',
+            'labels' => (object) []
+        ];
+
+        $this->validate($validOptions)->shouldReturn([]);
+    }
+
     function it_returns_an_empty_array_if_an_option_without_labels_is_valid()
     {
         $validOptions = [

@@ -58,6 +58,16 @@ class AssetFamilyValidatorSpec extends ObjectBehavior
         $this->validate($assetFamily)->shouldReturn([]);
     }
 
+    function it_does_not_return_any_error_when_no_labels()
+    {
+        $assetFamily = [
+            'code' => 'starck',
+            'labels' => (object) []
+        ];
+
+        $this->validate($assetFamily)->shouldReturn([]);
+    }
+
     function it_is_only_mandatory_to_provide_the_code_of_the_asset_family()
     {
         $assetFamily = [
