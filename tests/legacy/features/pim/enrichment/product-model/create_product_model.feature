@@ -175,5 +175,4 @@ Feature: Create a product model
     Then I should see 20 items in the autocomplete
     And I should not see the choices [variant_23] and [variant_30] in Variant
     When I search "3" in the Variant select field
-    # The real display is [variant_3] but the search style will split the HTML
-    Then I should see the choices [variant_ 3 ], [variant_1 3 ], [variant_2 3 ] and [variant_ 3 0] in Variant
+    Then I should see the choices [variant_3], [variant_13], [variant_23] and [variant_30] in Variant
