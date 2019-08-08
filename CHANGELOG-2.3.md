@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.58 (2019-08-08)
+
 ## Bug fixes
 
 - PIM-8302: Fix missing action to remove a product model draft
