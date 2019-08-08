@@ -28,6 +28,7 @@ final class AttributeTypes
     const REFERENCE_ENTITY_SIMPLE_SELECT = 'akeneo_reference_entity';
     const ASSET_SINGLE_LINK = 'akeneo_asset_single_link';
     const ASSET_MULTIPLE_LINK = 'akeneo_asset_multiple_link';
+    const ASSETS_COLLECTION = 'pim_assets_collection';
 
     const BACKEND_TYPE_BOOLEAN = 'boolean';
     const BACKEND_TYPE_COLLECTION = 'collections';

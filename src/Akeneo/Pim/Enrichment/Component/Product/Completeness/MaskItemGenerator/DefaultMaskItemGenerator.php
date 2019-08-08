@@ -43,6 +43,7 @@ class DefaultMaskItemGenerator implements MaskItemGeneratorForAttributeType
             AttributeTypes::REFERENCE_ENTITY_SIMPLE_SELECT,
             AttributeTypes::ASSET_SINGLE_LINK,
             AttributeTypes::ASSET_MULTIPLE_LINK,
+            AttributeTypes::ASSETS_COLLECTION,
         ];
     }
 }
