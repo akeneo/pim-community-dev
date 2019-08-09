@@ -1,13 +1,3 @@
-imports:
-    - { resource: '../../vendor/akeneo/pim-community-dev/src/Akeneo/Platform/config/pim.yml' }
-    - { resource: '../../src/Akeneo/Platform/config/pimee.yml' }
-
-akeneo_pim_structure:
-    reference_data:
-        assets:
-            class: Akeneo\Asset\Component\Model\Asset
-            type: multi
-
 parameters:
     pim_ee_dev_src_folder_location: '%kernel.project_dir%'
     product_proposal_index_name: '%env(APP_PRODUCT_PROPOSAL_INDEX_NAME)%'
