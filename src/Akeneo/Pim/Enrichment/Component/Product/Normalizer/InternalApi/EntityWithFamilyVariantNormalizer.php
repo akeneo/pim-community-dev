@@ -53,9 +53,6 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
     /** @var ProductCompletenessCollectionNormalizer */
     private $completenessCollectionNormalizer;
 
-    /** @var CompletenessCalculatorInterface */
-    private $completenessCalculator;
-
     /** @var VariantProductRatioInterface */
     private $variantProductRatioQuery;
 
@@ -79,7 +76,6 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
         LocaleRepositoryInterface $localeRepository,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         ProductCompletenessCollectionNormalizer $completenessCollectionNormalizer,
-        CompletenessCalculatorInterface $completenessCalculator,
         VariantProductRatioInterface $variantProductRatioQuery,
         ImageAsLabel $imageAsLabel,
         CatalogContext $catalogContext,
@@ -91,7 +87,6 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
         $this->localeRepository                 = $localeRepository;
         $this->attributesProvider               = $attributesProvider;
         $this->completenessCollectionNormalizer = $completenessCollectionNormalizer;
-        $this->completenessCalculator           = $completenessCalculator;
         $this->variantProductRatioQuery         = $variantProductRatioQuery;
         $this->imageAsLabel                     = $imageAsLabel;
         $this->catalogContext                   = $catalogContext;
@@ -227,24 +222,6 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
 
         if ($entity instanceof ProductInterface && $entity->isVariant()) {
             $completenessCollection = $this->getProductCompletenesses->fromProductId($entity->getId());
-            if ($completenessCollection->isEmpty()) {
-                $completenessCollection = new ProductCompletenessCollection(
-                    $entity->getId(),
-                    array_map(
-                        function (CompletenessInterface $completeness) {
-                            return new ProductCompleteness(
-                                $completeness->getChannel()->getCode(),
-                                $completeness->getLocale()->getCode(),
-                                $completeness->getRequiredCount(),
-                                array_map(function (AttributeInterface $attribute) {
-                                    return $attribute->getCode();
-                                }, $completeness->getMissingAttributes()->toArray())
-                            );
-                        },
-                        $this->completenessCalculator->calculate($entity)
-                    )
-                );
-            }
 
             return $this->completenessCollectionNormalizer->normalize($completenessCollection);
         }

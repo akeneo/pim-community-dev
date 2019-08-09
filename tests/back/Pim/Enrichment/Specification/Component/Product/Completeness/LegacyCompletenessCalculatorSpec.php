@@ -19,6 +19,7 @@ use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
+/** TODO REMOVE THAT */
 class LegacyCompletenessCalculatorSpec extends ObjectBehavior
 {
     function let(

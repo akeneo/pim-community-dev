@@ -81,9 +81,6 @@ class ProductNormalizer implements NormalizerInterface
     /** @var UserContext */
     protected $userContext;
 
-    /** @var CompletenessCalculatorInterface */
-    private $completenessCalculator;
-
     /** @var EntityWithFamilyValuesFillerInterface */
     protected $productValuesFiller;
 
@@ -127,7 +124,6 @@ class ProductNormalizer implements NormalizerInterface
         CollectionFilterInterface $collectionFilter,
         ProductCompletenessCollectionNormalizer $completenessCollectionNormalizer,
         UserContext $userContext,
-        CompletenessCalculatorInterface $completenessCalculator,
         EntityWithFamilyValuesFillerInterface $productValuesFiller,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         VariantNavigationNormalizer $navigationNormalizer,
@@ -152,7 +148,6 @@ class ProductNormalizer implements NormalizerInterface
         $this->collectionFilter                 = $collectionFilter;
         $this->completenessCollectionNormalizer = $completenessCollectionNormalizer;
         $this->userContext                      = $userContext;
-        $this->completenessCalculator           = $completenessCalculator;
         $this->productValuesFiller              = $productValuesFiller;
         $this->attributesProvider               = $attributesProvider;
         $this->navigationNormalizer             = $navigationNormalizer;
@@ -281,24 +276,6 @@ class ProductNormalizer implements NormalizerInterface
     protected function getNormalizedCompletenesses(ProductInterface $product)
     {
         $completenessCollection = $this->getProductCompletenesses->fromProductId($product->getId());
-        if ($completenessCollection->isEmpty()) {
-            $completenessCollection = new ProductCompletenessCollection(
-                $product->getId(),
-                array_map(
-                    function (CompletenessInterface $completeness) {
-                        return new ProductCompleteness(
-                            $completeness->getChannel()->getCode(),
-                            $completeness->getLocale()->getCode(),
-                            $completeness->getRequiredCount(),
-                            array_map(function (AttributeInterface $attribute) {
-                                return $attribute->getCode();
-                            }, $completeness->getMissingAttributes()->toArray())
-                        );
-                    },
-                    $this->completenessCalculator->calculate($product)
-                )
-            );
-        }
 
         return $this->completenessCollectionNormalizer->normalize($completenessCollection);
     }

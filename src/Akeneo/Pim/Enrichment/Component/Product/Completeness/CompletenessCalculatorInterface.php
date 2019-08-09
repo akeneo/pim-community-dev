@@ -7,6 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
 
 /**
+ * TODO REMOVE
  * Calculates the completenesses for a provided product.
  *
  * @author    Damien Carcel (damien.carcel@akeneo.com)

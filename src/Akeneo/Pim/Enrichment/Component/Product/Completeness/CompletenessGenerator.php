@@ -4,10 +4,12 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Completeness;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Doctrine\Common\Collections\Collection;
 
 /**
+ * TODO REMOVE
  * Simple object version of the completeness generator.
  *
  * In this implementation, methods that generate missing completenesses do NOT save the products.
@@ -23,19 +25,15 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /** @var ProductQueryBuilderFactoryInterface */
     protected $pqbFactory;
 
-    /** @var CompletenessCalculatorInterface */
-    protected $completenessCalculator;
+    /** @var GetProductCompletenesses */
+    private $getProductCompletenesses;
 
-    /**
-     * @param ProductQueryBuilderFactoryInterface $pqbFactory
-     * @param CompletenessCalculatorInterface     $completenessCalculator
-     */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
-        CompletenessCalculatorInterface $completenessCalculator
+        GetProductCompletenesses $getProductCompletenesses
     ) {
         $this->pqbFactory = $pqbFactory;
-        $this->completenessCalculator = $completenessCalculator;
+        $this->getProductCompletenesses = $getProductCompletenesses;
     }
 
     /**
@@ -54,39 +52,40 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      */
     protected function calculateProductCompletenesses(ProductInterface $product)
     {
-        $completenessCollection = $product->getCompletenesses();
-
-        $newCompletenesses = $this->completenessCalculator->calculate($product);
-
-        $this->updateExistingCompletenesses($completenessCollection, $newCompletenesses);
-
-        $completenessLocaleAndChannelCodes = [];
-        foreach ($completenessCollection as $updatedCompleteness) {
-            $completenessLocaleAndChannelCodes[] =
-                $updatedCompleteness->getLocale()->getId().'/'.$updatedCompleteness->getChannel()->getId();
-        }
-
-        $newLocalesChannels = [];
-        foreach ($newCompletenesses as $newCompleteness) {
-            $newLocalesChannels[] =
-                $newCompleteness->getLocale()->getId().'/'.$newCompleteness->getChannel()->getId();
-        }
-
-        $localeAndChannelCodesOfCompletenessesToAdd = array_diff(
-            $newLocalesChannels,
-            $completenessLocaleAndChannelCodes
-        );
-        $this->addNewCompletenesses(
-            $completenessCollection,
-            $newCompletenesses,
-            $localeAndChannelCodesOfCompletenessesToAdd
-        );
-
-        $localeAndChannelCodesOfCompletenessesToRemove = array_diff(
-            $completenessLocaleAndChannelCodes,
-            $newLocalesChannels
-        );
-        $this->removeOutdatedCompletenesses($completenessCollection, $localeAndChannelCodesOfCompletenessesToRemove);
+//        $completenessCollection = $this->getProductCompletenesses->fromProductId($product->getId());
+//
+//        $newCompletenesses = $this->completenessCalculator->fromProductIdentifier($product->getIdentifier());
+//
+//        $this->updateExistingCompletenesses($completenessCollection, $newCompletenesses);
+//
+//        $completenessLocaleAndChannelCodes = [];
+//        foreach ($completenessCollection as $updatedCompleteness) {
+//            $completenessLocaleAndChannelCodes[] =
+//                $updatedCompleteness->getLocale()->getId().'/'.$updatedCompleteness->getChannel()->getId();
+//        }
+//
+//        $newLocalesChannels = [];
+//        foreach ($newCompletenesses as $newCompleteness) {
+//            $newLocalesChannels[] =
+//                $newCompleteness->getLocale()->getId().'/'.$newCompleteness->getChannel()->getId();
+//        }
+//
+//        $localeAndChannelCodesOfCompletenessesToAdd = array_diff(
+//            $newLocalesChannels,
+//            $completenessLocaleAndChannelCodes
+//        );
+//        $this->addNewCompletenesses(
+//            $completenessCollection,
+//            $newCompletenesses,
+//            $localeAndChannelCodesOfCompletenessesToAdd
+//        );
+//
+//        $localeAndChannelCodesOfCompletenessesToRemove = array_diff(
+//            $completenessLocaleAndChannelCodes,
+//            $newLocalesChannels
+//        );
+//
+//        $this->removeOutdatedCompletenesses($completenessCollection, $localeAndChannelCodesOfCompletenessesToRemove);
     }
 
     /**

@@ -8,7 +8,6 @@ use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Query\AscendantCategoriesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
@@ -53,7 +52,6 @@ class ProductNormalizerSpec extends ObjectBehavior
         CollectionFilterInterface $collectionFilter,
         ProductCompletenessCollectionNormalizer $completenessCollectionNormalizer,
         UserContext $userContext,
-        CompletenessCalculatorInterface $completenessCalculator,
         EntityWithFamilyValuesFillerInterface $productValuesFiller,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         VariantNavigationNormalizer $navigationNormalizer,
@@ -79,7 +77,6 @@ class ProductNormalizerSpec extends ObjectBehavior
             $collectionFilter,
             $completenessCollectionNormalizer,
             $userContext,
-            $completenessCalculator,
             $productValuesFiller,
             $attributesProvider,
             $navigationNormalizer,
@@ -114,7 +111,6 @@ class ProductNormalizerSpec extends ObjectBehavior
         $incompleteValuesNormalizer,
         $missingAssociationAdder,
         $getProductCompletenesses,
-        $completenessCalculator,
         $completenessCollectionNormalizer,
         ProductInterface $mug,
         AssociationInterface $upsell,
@@ -201,7 +197,6 @@ class ProductNormalizerSpec extends ObjectBehavior
 
         $productCompletenessCollection = new ProductCompletenessCollection(12, []);
         $getProductCompletenesses->fromProductId(12)->willReturn($productCompletenessCollection);
-        $completenessCalculator->calculate($mug)->willReturn([]);
         $completenessCollectionNormalizer->normalize($productCompletenessCollection)->willReturn(['normalizedCompleteness']);
 
         $structureVersionProvider->getStructureVersion()->willReturn(12);
@@ -273,7 +268,6 @@ class ProductNormalizerSpec extends ObjectBehavior
         $incompleteValuesNormalizer,
         $missingAssociationAdder,
         $getProductCompletenesses,
-        $completenessCalculator,
         $completenessCollectionNormalizer,
         ProductInterface $mug,
         AssociationInterface $upsell,
@@ -365,7 +359,6 @@ class ProductNormalizerSpec extends ObjectBehavior
 
         $productCompletenessCollection = new ProductCompletenessCollection(12, []);
         $getProductCompletenesses->fromProductId(12)->willReturn($productCompletenessCollection);
-        $completenessCalculator->calculate($mug)->willReturn([]);
         $completenessCollectionNormalizer->normalize($productCompletenessCollection)->willReturn(['normalizedCompletenesses']);
 
         $structureVersionProvider->getStructureVersion()->willReturn(12);

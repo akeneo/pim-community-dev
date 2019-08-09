@@ -3,6 +3,7 @@ parameters:
     pim_catalog.completeness.generator.class: Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessGenerator
 
 services:
+    # TODO REMOVE THAT
     pim_catalog.completeness.legacy_calculator:
         class: '%pim_catalog.completeness.legacy_calculator.class%'
         arguments:
@@ -16,11 +17,12 @@ services:
             - '@akeneo.pim.enrichment.completeness.query.get_product_masks'
             - '@akeneo.pim.enrichment.completeness.query.get_family_masks'
 
+    #TODO REMOVE THAT
     pim_catalog.completeness.generator:
         class: '%pim_catalog.completeness.generator.class%'
         arguments:
             - '@pim_catalog.query.product_query_builder_factory'
-            - '@pim_catalog.completeness.legacy_calculator'
+            - '@akeneo.pim.enrichment.product.query.get_product_completenesses'
 
     pim_catalog.completeness.product.compute_and_persist:
         class: 'Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses'

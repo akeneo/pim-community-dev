@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Completeness;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
+ * TODO REMOVE
  * Completeness generator interface.
  *
  * @author    Benoit Jacquemont <benoit@akeneo.com>

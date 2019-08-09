@@ -14,7 +14,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer;
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
@@ -37,7 +36,6 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         LocaleRepositoryInterface $localeRepository,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         ProductCompletenessCollectionNormalizer $completenessCollectionNormalizer,
-        CompletenessCalculatorInterface $completenessCalculator,
         VariantProductRatioInterface $variantProductRatioQuery,
         ImageAsLabel $imageAsLabel,
         CatalogContext $catalogContext,
@@ -51,7 +49,6 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
             $localeRepository,
             $attributesProvider,
             $completenessCollectionNormalizer,
-            $completenessCalculator,
             $variantProductRatioQuery,
             $imageAsLabel,
             $catalogContext,
@@ -74,7 +71,6 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         $localeRepository,
         $attributesProvider,
         $completenessCollectionNormalizer,
-        $completenessCalculator,
         $getProductCompletenesses,
         ProductInterface $variantProduct,
         AttributeInterface $colorAttribute,
@@ -143,9 +139,12 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
 
         $variantProduct->getImage()->willReturn(null);
 
-        $emptyCompletenessCollection = new ProductCompletenessCollection(42, []);
-        $getProductCompletenesses->fromProductId(42)->willReturn($emptyCompletenessCollection);
-        $completenessCalculator->calculate($variantProduct)->willReturn([$completeness1, $completeness2]);
+        $completenessCollection =new ProductCompletenessCollection(42, [
+            new ProductCompleteness('ecommerce', 'fr_FR', 0, []),
+            new ProductCompleteness('ecommerce', 'en_US', 0, [])
+        ]);
+
+        $getProductCompletenesses->fromProductId(42)->willReturn($completenessCollection);
         $completeness1->getChannel()->willReturn($ecommerce);
         $completeness2->getChannel()->willReturn($ecommerce);
         $completeness1->getLocale()->willReturn($localeEn);
@@ -157,10 +156,7 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         $ecommerce->getCode()->willReturn('ecommerce');
         $localeFr->getCode()->willReturn('fr_FR');
         $localeEn->getCode()->willReturn('en_US');
-        $completenessCollectionNormalizer->normalize(new ProductCompletenessCollection(42, [
-            new ProductCompleteness('ecommerce', 'fr_FR', 0, []),
-            new ProductCompleteness('ecommerce', 'en_US', 0, [])
-        ]))->willReturn(['NORMALIZED_COMPLETENESS']);
+        $completenessCollectionNormalizer->normalize($completenessCollection)->willReturn(['NORMALIZED_COMPLETENESS']);
 
         $simpleSelectOptionNormalizer->supports(Argument::any())->willReturn(false);
         $simpleSelectOptionNormalizer->supports('pim_catalog_simpleselect')->willReturn(true);

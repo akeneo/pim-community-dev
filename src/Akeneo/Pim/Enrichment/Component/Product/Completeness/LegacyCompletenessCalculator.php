@@ -14,6 +14,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 /**
+ * TODO REMOVE
  * @deprecated
  * Calculates the completenesses for a provided product.
  *
