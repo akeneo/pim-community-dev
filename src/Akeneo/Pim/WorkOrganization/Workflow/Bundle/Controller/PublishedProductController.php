@@ -13,7 +13,6 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller;
 
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager;
 use Akeneo\Pim\Permission\Bundle\User\UserContext;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\PublishedProductManager;
@@ -54,9 +53,6 @@ class PublishedProductController
     /** @var PublishedProductManager */
     protected $manager;
 
-    /** @var CompletenessManager */
-    protected $completenessManager;
-
     /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
@@ -70,7 +66,6 @@ class PublishedProductController
      * @param TranslatorInterface           $translator
      * @param UserContext                   $userContext
      * @param PublishedProductManager       $manager
-     * @param CompletenessManager           $completenessManager
      * @param ChannelRepositoryInterface    $channelRepository
      * @param AuthorizationCheckerInterface $authorizationChecker
      */
@@ -81,7 +76,6 @@ class PublishedProductController
         TranslatorInterface $translator,
         UserContext $userContext,
         PublishedProductManager $manager,
-        CompletenessManager $completenessManager,
         ChannelRepositoryInterface $channelRepository,
         AuthorizationCheckerInterface $authorizationChecker
     ) {
@@ -91,7 +85,6 @@ class PublishedProductController
         $this->translator = $translator;
         $this->userContext = $userContext;
         $this->manager = $manager;
-        $this->completenessManager = $completenessManager;
         $this->channelRepository = $channelRepository;
         $this->authorizationChecker = $authorizationChecker;
     }

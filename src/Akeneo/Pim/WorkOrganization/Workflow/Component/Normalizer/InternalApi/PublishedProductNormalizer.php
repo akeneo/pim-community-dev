@@ -77,9 +77,6 @@ class PublishedProductNormalizer implements NormalizerInterface
     /** @var GetPublishedProductCompletenesses */
     private $getPublishedProductCompletenesses;
 
-    /** @var CompletenessCalculatorInterface */
-    private $completenessCalculator;
-
     /** @var NormalizerInterface */
     private $incompleteValuesNormalizer;
 
@@ -113,7 +110,6 @@ class PublishedProductNormalizer implements NormalizerInterface
         FormProviderInterface $formProvider,
         StructureVersionProviderInterface $structureVersionProvider,
         GetPublishedProductCompletenesses $getPublishedProductCompletenesses,
-        CompletenessCalculatorInterface $completenessCalculator,
         NormalizerInterface $incompleteValuesNormalizer,
         ImageNormalizer $imageNormalizer,
         LocaleRepositoryInterface $localeRepository,
@@ -133,7 +129,6 @@ class PublishedProductNormalizer implements NormalizerInterface
         $this->formProvider = $formProvider;
         $this->structureVersionProvider = $structureVersionProvider;
         $this->getPublishedProductCompletenesses = $getPublishedProductCompletenesses;
-        $this->completenessCalculator = $completenessCalculator;
         $this->incompleteValuesNormalizer = $incompleteValuesNormalizer;
         $this->imageNormalizer = $imageNormalizer;
         $this->localeRepository = $localeRepository;
@@ -239,22 +234,6 @@ class PublishedProductNormalizer implements NormalizerInterface
     private function getNormalizedCompletenesses(PublishedProductInterface $publishedProduct): array
     {
         $completenessCollection = $this->getPublishedProductCompletenesses->fromPublishedProductId($publishedProduct->getId());
-        if ($completenessCollection->isEmpty()) {
-            $newCompletenesses = $this->completenessCalculator->calculate($publishedProduct);
-            $completenessCollection = new PublishedProductCompletenessCollection(
-                $publishedProduct->getId(),
-                array_map(function (CompletenessInterface $completeness) {
-                    return new PublishedProductCompleteness(
-                        $completeness->getChannel()->getCode(),
-                        $completeness->getLocale()->getCode(),
-                        $completeness->getRequiredCount(),
-                        $completeness->getMissingAttributes()->map(function (AttributeInterface $attribute) {
-                            return $attribute->getCode();
-                        })->toArray()
-                    );
-                }, $newCompletenesses)
-            );
-        }
 
         return $this->completenessCollectionNormalizer->normalize($completenessCollection, 'internal_api');
     }

@@ -126,6 +126,8 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager',
         'Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness',
+        'Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses',
         'Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface',

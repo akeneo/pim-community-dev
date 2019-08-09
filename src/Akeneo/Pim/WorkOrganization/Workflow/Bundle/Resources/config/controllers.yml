@@ -38,7 +38,6 @@ services:
             - '@translator'
             - '@pim_user.context.user'
             - '@pimee_workflow.manager.published_product'
-            - '@pim_catalog.manager.completeness'
             - '@pim_catalog.repository.channel'
             - '@security.authorization_checker'
 
