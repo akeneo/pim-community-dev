@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Context;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeRequirement;
 use Akeneo\Pim\Structure\Component\Model\Family;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
@@ -12,6 +13,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
 
 class EnterpriseReferenceEntityContext extends PimContext
@@ -67,17 +69,18 @@ class EnterpriseReferenceEntityContext extends PimContext
      */
     public function aProductWithAValueForThisReferenceEntitySimpleLinkAttribute()
     {
-        $attribute = $this->getService('pim_catalog.repository.attribute')
-            ->findOneByIdentifier('brand');
-
         // Create family
-        $family = new Family();
-        $family->setCode('chair');
-        $family->setLocale('en_US')->setLabel('Chair');
-        $family->addAttribute($attribute);
+        $family = $this->getService('pim_catalog.factory.family')->create();
+        $updater = $this->getService('pim_catalog.updater.family');
+        $updater->update($family, [
+            'code' => 'chair',
+            'attributes' => ['sku', 'brand'],
+        ]);
 
-        $this->getService('pim_catalog.saver.family')
-            ->save($family);
+        $errors = $this->getService('validator')->validate($family);
+        Assert::assertCount(0, $errors);
+
+        $this->getService('pim_catalog.saver.family')->save($family);
 
         // Create product
         $product = $this->getService('pim_catalog.builder.product')

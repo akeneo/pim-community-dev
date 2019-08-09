@@ -40,7 +40,7 @@ services:
         tags:
             - { name: pim_datagrid_serializer.normalizer }
         lazy: true
-    
+
     pimee_workflow.normalizer.datagrid.published_product:
         class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Normalizer\PublishedProductNormalizer'
         arguments:
@@ -65,7 +65,7 @@ services:
             - '@pim_enrich.provider.form.chained'
             - '@pim_structure_version.provider.structure_version.product'
             - '@pimee_workflow.query.get_published_product_completenesses'
-            - '@pim_catalog.completeness.calculator'
+            - '@pim_catalog.completeness.legacy_calculator'
             - '@pim_enrich.normalizer.incomplete_values'
             - '@pim_enrich.normalizer.image'
             - '@pim_catalog.repository.locale'
@@ -75,7 +75,7 @@ services:
             - '@pimee_workflow.normalizer.internal_api.published_product_completeness_collection'
         tags:
             - { name: pim_internal_api_serializer.normalizer, priority: 130 }
-    
+
     pimee_workflow.normalizer.internal_api.published_product_completeness_collection:
         class: 'Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\InternalApi\PublishedProductCompletenessCollectionNormalizer'
         arguments:
@@ -84,7 +84,7 @@ services:
             - '@akeneo.pim.enrichment.attribute.query.get_labels'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
-    
+
     pimee_workflow.normalizer.internal_api.published_product_completeness:
         class: 'Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\InternalApi\PublishedProductCompletenessNormalizer'
 
