@@ -232,6 +232,11 @@ services:
             - '@validator'
             - '@akeneo_assetmanager.infrastructure.connector.action.asset.batch_assets_to_link'
 
+    akeneo_assetmanager.infrastructure.connector.action.asset.delete:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\DeleteAssetAction
+        arguments:
+            - '@akeneo_assetmanager.application.asset.delete_asset_handler'
+
     akeneo_assetmanager.infrastructure.connector.action.assets.create_or_update:
         class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\CreateOrUpdateAssetsAction
         arguments:

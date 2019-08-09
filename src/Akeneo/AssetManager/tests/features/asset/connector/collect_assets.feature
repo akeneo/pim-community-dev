@@ -1,4 +1,4 @@
-Feature: Connection to MDM or ERP systems
+Feature: Connection to DAM systems
   In order to centralize the asset family assets that contributes to the good final product experience
   As a connector
   I want to collect assets of an asset family from a MDM or an ERP system
@@ -17,7 +17,7 @@ Feature: Connection to MDM or ERP systems
     Then the asset is created in the PIM with the information from the ERP
 
   @integration-back
-  Scenario: Collect a asset for a given asset family that already exists in the ERP and in the PIM but with different information
+  Scenario: Collect an asset for a given asset family that already exists in the ERP and in the PIM but with different information
     Given an asset of the Brand asset family existing in the ERP and the PIM with different information
     When the connector collects this asset from the ERP to synchronize it with the PIM
     Then the asset is correctly synchronized in the PIM with the information from the ERP
@@ -61,3 +61,15 @@ Feature: Connection to MDM or ERP systems
     Given the Brand asset family with some assets
     When the connector collects a number of assets exceeding the maximum number of assets in one request
     Then the PIM notifies the connector that there were too many assets to collect in one request
+
+  @integration-back
+  Scenario: Delete an asset for a given asset family that exists in the PIM but not in the DAM anymore
+    Given an asset of the Packshot asset family existing in the PIM
+    When the connector deletes this asset
+    Then the asset is not in the PIM anymore
+
+  @integration-back
+  Scenario: Notify an error when deleting an asset that does not exist in the PIM
+    Given an asset of the Packshot asset family existing in the PIM
+    When the connector deletes a wrong asset
+    Then the PIM notifies the connector that the asset does not exist in the PIM

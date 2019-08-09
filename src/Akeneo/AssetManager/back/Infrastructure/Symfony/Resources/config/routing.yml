@@ -177,3 +177,8 @@ akeneo_asset_manager_assets_rest_connector_create_or_update:
     path: '/api/rest/v1/asset-families/{assetFamilyIdentifier}/assets'
     defaults: { _controller: akeneo_assetmanager.infrastructure.connector.action.assets.create_or_update }
     methods: [PATCH]
+
+akeneo_asset_manager_asset_rest_connector_delete:
+    path: '/api/rest/v1/asset-families/{assetFamilyIdentifier}/assets/{code}'
+    defaults: { _controller: akeneo_assetmanager.infrastructure.connector.action.asset.delete }
+    methods: [DELETE]

@@ -70,6 +70,22 @@ services:
             - '@akeneoassetmanager.infrastructure.persistence.query.get_attribute_identifier'
             - '@akeneo_assetmanager.infrastructure.job.product_link_rule_launcher'
 
+    akeneo_assetmanager.tests.back.integration.connector.collect.delete_asset_context:
+        class: Akeneo\AssetManager\Integration\Connector\Api\Context\Collect\DeleteAssetContext
+        arguments:
+            - '@akeneoasset_manager.tests.helper.oauth_authenticated_client_factory'
+            - '@akeneoasset_manager.tests.helper.web_client_helper'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.channel_exists'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_activated_locales_per_channels'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_file_data_by_file_key'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.file_exists'
+            - '@akeneoassetmanager.infrastructure.persistence.query.get_attribute_identifier'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+
+
     akeneo_assetmanager.tests.back.integration.connector.distribute.get_connector_attributes_context:
         class: Akeneo\AssetManager\Integration\Connector\Api\Context\Distribute\GetConnectorAttributesContext
         arguments:
