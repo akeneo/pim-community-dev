@@ -70,40 +70,36 @@ class MediaLinkAttributeValidatorSpec extends ObjectBehavior
         $this->validate($attribute)->shouldReturn([]);
     }
 
+    function it_can_be_created_without_channel()
+    {
+        $attribute = [
+            'code' => 'preview',
+            'type' => 'media_link',
+            'value_per_locale' => true,
+            'media_type' => 'image',
+        ];
+
+        $this->validate($attribute)->shouldReturn([]);
+    }
+
+    function it_can_be_created_without_locale()
+    {
+        $attribute = [
+            'code' => 'preview',
+            'type' => 'media_link',
+            'value_per_channel' => true,
+            'media_type' => 'image',
+        ];
+
+        $this->validate($attribute)->shouldReturn([]);
+    }
+
     function it_is_mandatory_to_provide_the_code_of_the_attribute()
     {
         $attribute = [
             'type' => 'media_link',
             'value_per_channel' => true,
             'value_per_locale' => true,
-            'media_type' => 'image',
-        ];
-
-        $errors = $this->validate($attribute);
-        $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
-    }
-
-    function it_is_mandatory_to_provide_the_channel_of_the_attribute()
-    {
-        $attribute = [
-            'code' => 'preview',
-            'type' => 'media_link',
-            'value_per_locale' => true,
-            'media_type' => 'image',
-        ];
-
-        $errors = $this->validate($attribute);
-        $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
-    }
-
-    function it_is_mandatory_to_provide_the_locale_of_the_attribute()
-    {
-        $attribute = [
-            'code' => 'preview',
-            'type' => 'media_link',
-            'value_per_channel' => true,
             'media_type' => 'image',
         ];
 

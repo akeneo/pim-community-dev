@@ -37,8 +37,8 @@ class CreateNumberAttributeCommandFactory extends AbstractCreateAttributeCommand
             $normalizedCommand['code'],
             $normalizedCommand['labels'] ?? [],
             $normalizedCommand['is_required'] ?? false,
-            $normalizedCommand['value_per_channel'],
-            $normalizedCommand['value_per_locale'],
+            $normalizedCommand['value_per_channel'] ?? false,
+            $normalizedCommand['value_per_locale'] ?? false,
             $normalizedCommand['decimals_allowed'] ?? false,
             $this->stringOrNull($normalizedCommand, 'min_value'),
             $this->stringOrNull($normalizedCommand, 'max_value')

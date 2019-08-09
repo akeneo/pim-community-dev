@@ -41,7 +41,7 @@ class AssetAttributeValidator implements AttributeValidatorInterface
     {
         return [
             'type' => 'object',
-            'required' => ['code', 'type', 'value_per_locale', 'value_per_channel', 'asset_family_code'],
+            'required' => ['code', 'type', 'asset_family_code'],
             'properties' => [
                 'code' => [
                     'type' => ['string'],

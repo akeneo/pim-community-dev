@@ -78,8 +78,8 @@ class CreateAttributeContext implements Context
         $attributeData['code'] = $attributeCode;
         $attributeData['order'] = (int) $attributeData['order'];
         $attributeData['is_required'] = json_decode($attributeData['is_required']);
-        $attributeData['value_per_channel'] = json_decode($attributeData['value_per_channel']);
-        $attributeData['value_per_locale'] = json_decode($attributeData['value_per_locale']);
+        $attributeData['value_per_channel'] = key_exists('value_per_channel', $attributeData) ? json_decode($attributeData['value_per_channel']) : null;
+        $attributeData['value_per_locale'] = key_exists('value_per_locale', $attributeData) ? json_decode($attributeData['value_per_locale']) : null;
         $attributeData['labels'] = json_decode($attributeData['labels'], true);
         $attributeData['max_length'] = (int) $attributeData['max_length'];
         $attributeData['is_textarea'] = key_exists('is_textarea', $attributeData) ? json_decode($attributeData['is_textarea']) : null;

@@ -5,7 +5,6 @@ namespace spec\Akeneo\AssetManager\Application\Attribute\CreateAttribute\Command
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFactory\CreateOptionAttributeCommandFactory;
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateOptionAttributeCommand;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class CreateOptionAttributeCommandFactorySpec extends ObjectBehavior
 {
@@ -44,12 +43,30 @@ class CreateOptionAttributeCommandFactorySpec extends ObjectBehavior
     {
         $command = [
             'asset_family_identifier' => 'designer',
-            'code' => 'picture',
+//            'code' => 'picture', // For the test purpose, this one is missing
             'is_required' => false,
-            //'value_per_channel' => false, // For the test purpose, this one is missing
+            'value_per_channel' => false,
             'value_per_locale' => false,
         ];
 
         $this->shouldThrow(\InvalidArgumentException::class)->during('create', [$command]);
+    }
+
+    public function it_builds_the_command_with_some_default_values()
+    {
+        $command = $this->create([
+            'asset_family_identifier' => 'designer',
+            'code' => 'picture',
+        ]);
+
+        $command->shouldBeAnInstanceOf(CreateOptionAttributeCommand::class);
+        $command->assetFamilyIdentifier->shouldBeEqualTo('designer');
+        $command->code->shouldBeEqualTo('picture');
+
+        // default values:
+        $command->labels->shouldBeEqualTo([]);
+        $command->isRequired->shouldBeEqualTo(false);
+        $command->valuePerChannel->shouldBeEqualTo(false);
+        $command->valuePerLocale->shouldBeEqualTo(false);
     }
 }
