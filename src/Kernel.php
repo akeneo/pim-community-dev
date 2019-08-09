@@ -43,8 +43,9 @@ class Kernel extends BaseKernel
 
         $loader->load($confDir.'/{packages}/*.yaml', 'glob');
         $loader->load($confDir.'/{packages}/'.$this->environment.'/**/*.yaml', 'glob');
-        $loader->load($confDir.'/{services}.yaml', 'glob');
-        $loader->load($confDir.'/{services}_'.$this->environment.'.yaml', 'glob');
+
+        $loader->load($confDir.'/{services}/*.yaml', 'glob');
+        $loader->load($confDir.'/{services}/'.$this->environment.'/**/*.yaml', 'glob');
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes): void
