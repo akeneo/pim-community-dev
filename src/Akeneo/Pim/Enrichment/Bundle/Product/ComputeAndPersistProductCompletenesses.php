@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Product;
 
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
 use Akeneo\Pim\Enrichment\Component\Product\Query\SaveProductCompletenesses;
 
 /**
@@ -14,14 +14,14 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\SaveProductCompletenesses;
  */
 class ComputeAndPersistProductCompletenesses
 {
-    /** @var CompletenessCalculatorInterface */
+    /** @var CompletenessCalculator */
     private $completenessCalculator;
 
     /** @var SaveProductCompletenesses */
     private $saveProductCompletenesses;
 
     public function __construct(
-        CompletenessCalculatorInterface $completenessCalculator,
+        CompletenessCalculator $completenessCalculator,
         SaveProductCompletenesses $saveProductCompletenesses
     ) {
         $this->completenessCalculator = $completenessCalculator;

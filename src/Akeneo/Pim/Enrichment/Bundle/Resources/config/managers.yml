@@ -1,15 +1,7 @@
 parameters:
-    pim_catalog.manager.completeness.class:        Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager
     pim_catalog.resolver.attribute_values.class:         Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolver
 
 services:
-    # Managers
-    # TODO: REMOVE
-    pim_catalog.manager.completeness:
-        class: '%pim_catalog.manager.completeness.class%'
-        arguments:
-            - '@pim_catalog.completeness.generator'
-
     pim_catalog.resolver.attribute_values:
         class: '%pim_catalog.resolver.attribute_values.class%'
         arguments:
