@@ -20,7 +20,6 @@ Feature: View the completeness of a published product
       | sandals  | description | Super sandales        | fr_FR  | tablet |
       | sandals  | description | Super sandales        | fr_FR  | mobile |
     And I am logged in as "Julia"
-    And I launched the completeness calculator
     And I publish the product "sneakers"
     And I publish the product "sandals"
 

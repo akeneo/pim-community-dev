@@ -44,7 +44,6 @@ Feature: Export published products
     And I visit the "Variations" tab
     And I upload the reference file akeneo.jpg
     And I save the asset
-    And I launched the completeness calculator
     And I edit the "jacket-white" product
     When I press the secondary action "Publish"
     And I confirm the publishing

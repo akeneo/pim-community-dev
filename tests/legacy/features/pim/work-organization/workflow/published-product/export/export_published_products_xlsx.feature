@@ -42,8 +42,7 @@ Feature: Export published products in XLSX
     And I upload the reference file akeneo.jpg
     And I save the asset
     Then I should not see the text "There are unsaved changes."
-    When I launched the completeness calculator
-    And I edit the "jacket-white" product
+    When I edit the "jacket-white" product
     And I press the secondary action "Publish"
     And I confirm the publishing
     And I edit the "jacket-black" product
