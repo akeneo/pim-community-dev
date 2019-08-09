@@ -22,7 +22,6 @@ Feature: Export products with an assets collection
       | pant    | name      | Pant     | en_US  |
       | pant    | name      | Pantalon | fr_FR  |
       | pant    | name      | Hose     | de_DE  |
-    And I launched the completeness calculator
     When I am on the "csv_clothing_product_export" export job page
     And I launch the export job
     And I wait for the "csv_clothing_product_export" job to finish
