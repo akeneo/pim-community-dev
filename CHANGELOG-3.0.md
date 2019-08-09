@@ -2,7 +2,8 @@
 
 ## Bug fixes
 
-- PIM-8632: Fix empty column in the product datagrid when product model doest not have any shared value
+- PIM-8632: Fix empty column in the product datagrid when product model does not have any shared value
+- PIM-8633: Fix query to get product models when root product model does not have any shared value
 - PIM-8631: Fix column selector in the case of an attribute code as integer
 - PIM-8313: Do not display already added attributes in the family attributes selector dropdown
 
