@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-7675: Fix file input style
+
 # 2.3.58 (2019-08-08)
 
 ## Bug fixes
