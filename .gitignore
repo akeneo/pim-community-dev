@@ -38,6 +38,7 @@ phpcs.xml
 phpspec.yml
 npm-debug.log
 /docker/*
+!/docker/php
 !/docker/akeneo.conf
 !/docker/akeneo-behat.conf
 !/docker/httpd.conf
@@ -49,6 +50,5 @@ yarn.lock
 package-lock.json
 yarn-error.log
 coverage/*
-docker-compose.override.yml
 /web/test_dist/*
 .phpunit.result.cache
