@@ -242,7 +242,7 @@ final class CreateAssetFamilyContext implements Context
             ],
             'assign_assets_to'    => [
                 [
-                    'mode'      => 'set',
+                    'mode'      => 'replace',
                     'attribute' => '{{attribute}}'
                 ]
             ]

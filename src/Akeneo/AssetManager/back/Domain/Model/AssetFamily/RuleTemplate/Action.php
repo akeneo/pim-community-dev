@@ -31,6 +31,9 @@ use Webmozart\Assert\Assert;
 class Action
 {
     private const ITEM_PATTERN = '{{code}}';
+    private const ADD_MODE = 'add';
+    private const REPLACE_MODE = 'replace';
+    private const ALLOWED_MODES = [self::ADD_MODE, self::REPLACE_MODE];
 
     /** @var Field */
     private $field;
@@ -73,8 +76,11 @@ class Action
 
     public static function createFromProductLinkRule(array $action): self
     {
+        $allowedModes = implode(self::ALLOWED_MODES, ', ');
+        Assert::oneOf($action['mode'], self::ALLOWED_MODES, sprintf('The action mode allowed should be one of these : "%s"', $allowedModes));
+
         $action['field'] = $action['attribute'];
-        $action['type'] = $action['mode'];
+        $action['type'] = self::REPLACE_MODE === $action['mode'] ? 'set' : 'add';
         $action['items'] = [self::ITEM_PATTERN];
 
         return self::createFromNormalized($action);

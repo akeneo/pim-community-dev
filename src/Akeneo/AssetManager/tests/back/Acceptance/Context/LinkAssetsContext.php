@@ -141,7 +141,7 @@ class LinkAssetsContext implements Context
                                     'attribute' => 'new_asset_multiple_link',
                                 ],
                                 [
-                                    'mode'      => 'set',
+                                    'mode'      => 'replace',
                                     'attribute' => 'new_asset_single_link',
                                 ],
                             ],
