@@ -39,7 +39,6 @@ Feature: Export products in XLSX
   Scenario: Successfully export products to multiple channels
     Given the following job "xlsx_tablet_product_export" configuration:
       | filePath | %tmp%/xlsx_tablet_product_export/xlsx_tablet_product_export.xlsx |
-    When I launched the completeness calculator
     And I am on the "xlsx_tablet_product_export" export job page
     And I launch the export job
     And I wait for the "xlsx_tablet_product_export" job to finish
@@ -82,7 +81,6 @@ Feature: Export products in XLSX
       | tshirt-green  | description     | Ein elegantes schwarzes T-Shirt      | de_DE  | ecommerce |
       | tshirt-green  | description     | A really stylish green t-shirt       | en_US  | print     |
       | tshirt-green  | description     | Ein sehr elegantes schwarzes T-Shirt | de_DE  | print     |
-    And I launched the completeness calculator
     When I am on the "xlsx_tablet_product_export" export job page
     And I launch the export job
     And I wait for the "xlsx_tablet_product_export" job to finish

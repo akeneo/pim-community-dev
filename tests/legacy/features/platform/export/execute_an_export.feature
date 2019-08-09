@@ -28,7 +28,6 @@ Feature: Execute a job
       | boots-001 | boots  | winter_collection | Boots 1    | 20 EUR, 25 USD | 40   | black |
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |
-    And I launched the completeness calculator
     And I am on the "csv_footwear_product_export" export job page
     When I launch the "csv_footwear_product_export" export job
     And I wait for the "csv_footwear_product_export" job to finish

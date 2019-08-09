@@ -21,7 +21,6 @@ Feature: Export products with media
       | SNKRS-1R | side_view | %fixtures%/SNKRS-1R.png   |
       | SNKRS-1C | side_view | %fixtures%/SNKRS-1C-s.png |
       | SNKRS-1C | top_view  | %fixtures%/SNKRS-1C-t.png |
-    And I launched the completeness calculator
     And I am on the "csv_footwear_product_export" export job page
     When I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish
@@ -67,7 +66,6 @@ Feature: Export products with media
     And I attach file "" to "Picture"
     And I confirm mass edit
     And I wait for the "edit_common_attributes" job to finish
-    And I launched the completeness calculator
     And I am on the "csv_footwear_product_export" export job page
     When I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish
@@ -89,7 +87,6 @@ Feature: Export products with media
     And the following product values:
       | product   | attribute | value                   |
       | SN/KRS-1B | side_view | %fixtures%/SNKRS-1R.png |
-    And I launched the completeness calculator
     And I am on the "csv_footwear_product_export" export job page
     When I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish

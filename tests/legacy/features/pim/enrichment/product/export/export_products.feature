@@ -39,7 +39,6 @@ Feature: Export products
       | tshirt-black | description | Ein elegantes schwarzes T-Shirt      | de_DE  | ecommerce |
       | tshirt-black | description | A really stylish black t-shirt       | en_US  | print     |
       | tshirt-black | description | Ein sehr elegantes schwarzes T-Shirt | de_DE  | print     |
-    And I launched the completeness calculator
     And I am logged in as "Julia"
     When I am on the "ecommerce_product_export" export job page
     And I launch the export job
@@ -90,7 +89,6 @@ Feature: Export products
       | tshirt-black | name      | Black t-shirt     | en_GB  |       |
       | tshirt-black | name      | T-shirt noir      | fr_FR  |       |
       | tshirt-black | name      | Schwarzes T-Shirt | de_DE  |       |
-    And I launched the completeness calculator
     And I am logged in as "Julia"
     When I am on the "tablet_product_export" export job page
     And I launch the export job
@@ -128,7 +126,6 @@ Feature: Export products
       | tshirt-black | name                      | Black t-shirt GB    | en_GB  |       |
       | tshirt-black | name                      | T-shirt noir        | fr_FR  |       |
       | tshirt-black | name                      | Schwarzes T-Shirt   | de_DE  |       |
-    And I launched the completeness calculator
     And I am logged in as "Julia"
     When I am on the "tablet_product_export" export job page
     And I launch the export job
@@ -161,7 +158,6 @@ Feature: Export products
       | tshirt-black | description     | Un T-shirt noir élégant         | fr_FR  | ecommerce |
       | tshirt-black | description     | Ein elegantes schwarzes T-Shirt | de_DE  | ecommerce |
       | tshirt-black | number_in_stock | 98                              |        | ecommerce |
-    And I launched the completeness calculator
     And I am logged in as "Julia"
     When I am on the "ecommerce_product_export" export job page
     And I launch the export job
@@ -195,7 +191,6 @@ Feature: Export products
       | tshirt-black | description         | Un T-shirt noir élégant         | fr_FR  | ecommerce |
       | tshirt-black | description         | Ein elegantes schwarzes T-Shirt | de_DE  | ecommerce |
       | tshirt-black | washing_temperature | 40 CELSIUS                      |        |           |
-    And I launched the completeness calculator
     And I am logged in as "Julia"
     When I am on the "ecommerce_product_export" export job page
     And I launch the export job

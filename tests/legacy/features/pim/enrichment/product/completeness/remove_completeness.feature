@@ -20,9 +20,7 @@ Feature: Display the completeness of a product
       | sandals  | description | Super sandales        | fr_FR  | tablet |
       | sandals  | description | Super sandales        | fr_FR  | mobile |
     And I am logged in as "Julia"
-    And I launched the completeness calculator
-
-  Scenario: Remove completeness when locales of a channel are deleted
+    Scenario: Remove completeness when locales of a channel are deleted
     Given I am on the "tablet" channel page
     When I change the "Locales" to "French (France)"
     And I press the "Save" button

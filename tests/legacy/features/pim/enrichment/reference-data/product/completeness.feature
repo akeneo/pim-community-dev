@@ -25,9 +25,7 @@ Feature: Display the completeness of a product with reference data
       | black-heels | highheels | Black      | Wool        |                          |                          | Nylon                    | Kevlar,Jute              |                    | Nylon              |                  | Black            |
       | green-heels | highheels | Green      | PVC         |                          |                          |                          |                          |                    |                    | Green            | Light green      |
       | high-heels  | highheels |            |             |                          |                          |                          |                          |                    |                    |                  |                  |
-    And I launched the completeness calculator
-
-  @critical
+    @critical
   Scenario: Successfully display the completeness of the products with reference data
     Given I am on the "red-heels" product page
     When I visit the "Completeness" column tab

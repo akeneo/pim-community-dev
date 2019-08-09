@@ -41,7 +41,6 @@ Feature: Export of metric values
       | tshirt-black | description | An elegant black t-shirt      | en_GB  | ecommerce |
       | tshirt-black | description | Un T-shirt noir élégant       | fr_FR  | ecommerce |
       | tshirt-black | description | Ein elegantes schwarz T-Shirt | de_DE  | ecommerce |
-    And I launched the completeness calculator
     When I am on the "ecommerce_product_export" export job page
     And I launch the export job
     And I wait for the "ecommerce_product_export" job to finish
@@ -81,7 +80,6 @@ Feature: Export of metric values
     When I press the "Save" button
     And I am on the "tshirt-black" product page
     When I press the "Save" button
-    And I launched the completeness calculator
     When I am on the "ecommerce_product_export" export job page
     And I launch the export job
     And I wait for the "ecommerce_product_export" job to finish

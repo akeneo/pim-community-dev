@@ -21,42 +21,6 @@ use Symfony\Component\Console\Tester\CommandTester;
 class CommandContext extends PimContext
 {
     /**
-     * @Given /^I launched the completeness calculator$/
-     */
-    public function iLaunchedTheCompletenessCalculator()
-    {
-        $commandLauncher = $this->getService('pim_catalog.command_launcher');
-        $commandLauncher->executeForeground('pim:completeness:calculate');
-    }
-
-    /**
-     * @param TableNode $filters
-     *
-     * @Then /^I should get the following results for the given filters:$/
-     */
-    public function iShouldGetTheFollowingResultsForTheGivenFilters(TableNode $filters)
-    {
-        $application = new Application();
-        $application->add(new QueryProductCommand());
-
-        $command = $application->find('pim:product:query');
-        $command->setContainer($this->getMainContext()->getContainer());
-        $commandTester = new CommandTester($command);
-
-        foreach ($filters->getHash() as $filter) {
-            $commandTester->execute(
-                ['command' => $command->getName(), '--json-output' => true, 'json_filters' => $filter['filter']]
-            );
-
-            $expected = json_decode($filter['result']);
-            $actual   = json_decode($commandTester->getDisplay());
-            sort($expected);
-            sort($actual);
-            Assert::assertEquals($expected, $actual);
-        }
-    }
-
-    /**
      * @When /^I launch the purge versions command for entity "([^"]*)"$/
      * @When /^I launch the purge versions command"$/
      *
