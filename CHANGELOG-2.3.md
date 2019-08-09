@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-6942: Add margin to the "Send for approval" button
+
 # 2.3.58 (2019-08-08)
 
 ## Bug fixes
