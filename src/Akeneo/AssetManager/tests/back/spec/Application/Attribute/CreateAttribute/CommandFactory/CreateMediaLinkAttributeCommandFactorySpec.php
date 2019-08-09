@@ -66,24 +66,6 @@ class CreateMediaLinkAttributeCommandFactorySpec extends ObjectBehavior
             ->during('create', [$command]);
     }
 
-    function it_throws_an_exception_if_there_is_one_missing_additional_property()
-    {
-        $command = [
-            'asset_family_identifier' => 'packshot',
-            'code' => 'full_resolution',
-            'labels' => ['en_US' => 'Full resolution'],
-            'is_required' => true,
-            'value_per_channel' => true,
-            'value_per_locale' => true,
-//            'media_type' => 'image', // For the test purpose, this one is missing
-            'prefix' => 'http://my.dam/',
-            'suffix' => '/full',
-        ];
-
-        $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('create', [$command]);
-    }
-
     public function it_builds_the_command_with_some_default_values()
     {
         $command = $this->create([
