@@ -16,6 +16,8 @@
 
 ### Codebase
 
+- Remove service `pimee_workflow.completeness.calculator`
+- Remove service `pimee_workflow.completeness.generator`
 - All the table names used by the TeamWork Assistant are now hardcoded. 
 - Remove `published_product_and_published_product_model` ES index. To search on published products, use `PublishedProductQueryBuilder`
 - Remove `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command\QueryProductProposalCommand`
