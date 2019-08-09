@@ -3,12 +3,6 @@ imports:
     - { resource: ../../src/Akeneo/Pim/Automation/FranklinInsights/tests/back/Acceptance/Resources/config/pim/data_providers.yml }
     - { resource: ../../src/Akeneo/Pim/Automation/FranklinInsights/tests/back/EndToEnd/Resources/config/behat/services.yml }
 
-framework:
-    test: ~
-
-pim_import_export:
-    record_mails: true
-
 akeneo_pim_structure:
     reference_data:
         fabrics:
@@ -20,14 +14,3 @@ akeneo_pim_structure:
 
 parameters:
     installer_data:       PimEnterpriseInstallerBundle:minimal
-
-monolog:
-    handlers:
-        main:
-            type:         fingers_crossed
-            action_level: error
-            handler:      nested
-        nested:
-            type:  stream
-            path:  '%kernel.logs_dir%/%kernel.environment%.log'
-            level: debug

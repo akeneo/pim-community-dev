@@ -1,19 +1,8 @@
 imports:
-    - { resource: config.yml }
-    - { resource: security_test.yml }
     - { resource: ../../src/Akeneo/ReferenceEntity/tests/back/Common/Resources/helpers.yml }
     - { resource: ../../src/Akeneo/AssetManager/tests/back/Common/Resources/helpers.yml }
     - { resource: ../../src/Akeneo/AssetManager/tests/back/Common/Resources/fake_anti_corruption_layer.yml }
     - { resource: ../../src/Akeneo/Pim/Automation/FranklinInsights/tests/back/Acceptance/Resources/config/pim/data_providers.yml }
-
-framework:
-    test: ~
-    session:
-        storage_id: session.storage.mock_file
-
-web_profiler:
-    toolbar: false
-    intercept_redirects: false
 
 swiftmailer:
     disable_delivery: true
@@ -29,10 +18,5 @@ akeneo_pim_structure:
 
 parameters:
     installer_data:       PimEnterpriseInstallerBundle:minimal
-    upload_dir:           '%kernel.root_dir%/../var/cache/uploads/product'
-    archive_dir:          '%kernel.root_dir%/../var/cache/archive'
-    catalog_storage_dir:  '%kernel.root_dir%/../var/cache/file_storage/catalog'
     asset_storage_dir:    '%kernel.root_dir%/../var/cache/file_storage/asset'
-    tmp_storage_dir:      '%kernel.root_dir%/../var/cache/tmp/pim/file_storage'
-    upload_tmp_dir:       '%kernel.root_dir%/../var/cache/tmp/pim/upload_tmp_dir'
     pimee_mass_edit_asset_batch_size: 5
