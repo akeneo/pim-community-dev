@@ -85,6 +85,30 @@ class TextAttributeValidatorSpec extends ObjectBehavior
         $this->validate($attribute)->shouldReturn([]);
     }
 
+    function it_does_not_return_any_error_when_no_labels()
+    {
+        $attribute = [
+            'code' => 'name',
+            'type' => 'text',
+            'value_per_channel' => true,
+            'value_per_locale' => true,
+            'labels' => [],
+            'is_required_for_completeness' => false,
+            'is_textarea' => false,
+            'max_characters' => 12,
+            'validation_rule' => 'regular_expression',
+            'validation_regexp' => 'foo',
+            'is_rich_text_editor' => true,
+            '_links' => [
+                'self' => [
+                    'href' => 'http://localhost/api/rest/v1/asset-families/designer/attributes/name'
+                ]
+            ],
+        ];
+
+        $this->validate($attribute)->shouldReturn([]);
+    }
+
     function it_does_not_return_any_error_when_only_the_code_is_provided()
     {
         $attribute = [

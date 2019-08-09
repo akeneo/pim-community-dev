@@ -55,6 +55,26 @@ class TextAttributeValidatorSpec extends ObjectBehavior
         $this->validate($attribute)->shouldReturn([]);
     }
 
+    function it_does_not_return_any_error_when_no_labels()
+    {
+        $attribute = [
+            'code' => 'starck',
+            'type' => 'text',
+            'value_per_channel' => true,
+            'value_per_locale' => true,
+            'labels' => [],
+            'is_required_for_completeness' => false,
+            'is_textarea' => false,
+            'max_characters' => 12,
+            'validation_rule' => 'regular_expression',
+            'validation_regexp' => 'foo',
+            'is_rich_text_editor' => true
+        ];
+
+
+        $this->validate($attribute)->shouldReturn([]);
+    }
+
     function it_is_mandatory_to_provide_the_code_of_the_attribute()
     {
         $attribute = [

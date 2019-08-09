@@ -53,6 +53,23 @@ class MediaLinkAttributeValidatorSpec extends ObjectBehavior
         $this->validate($attribute)->shouldReturn([]);
     }
 
+    function it_does_not_return_any_error_when_no_labels()
+    {
+        $attribute = [
+            'code' => 'preview',
+            'type' => 'media_link',
+            'value_per_channel' => true,
+            'value_per_locale' => true,
+            'labels' => [],
+            'is_required_for_completeness' => false,
+            'media_type' => 'image',
+            'prefix' => 'http://mydam.com/pic/',
+            'suffix' => null,
+        ];
+
+        $this->validate($attribute)->shouldReturn([]);
+    }
+
     function it_is_mandatory_to_provide_the_code_of_the_attribute()
     {
         $attribute = [

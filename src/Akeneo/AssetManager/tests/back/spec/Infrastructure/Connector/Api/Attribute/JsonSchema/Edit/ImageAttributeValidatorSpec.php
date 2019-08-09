@@ -80,6 +80,27 @@ class ImageAttributeValidatorSpec extends ObjectBehavior
         $this->validate($attribute)->shouldReturn([]);
     }
 
+    function it_does_not_return_any_error_when_no_labels()
+    {
+        $attribute = [
+            'code' => 'photo',
+            'type' => 'image',
+            'value_per_channel' => true,
+            'value_per_locale' => true,
+            'labels' => [],
+            'is_required_for_completeness' => false,
+            'allowed_extensions' => ['jpg'],
+            'max_file_size' => '10',
+            '_links' => [
+                'self' => [
+                    'href' => 'http://localhost/api/rest/v1/asset-families/designer/attributes/photo'
+                ]
+            ],
+        ];
+
+        $this->validate($attribute)->shouldReturn([]);
+    }
+
     function it_does_not_return_any_error_when_only_the_code_is_provided()
     {
         $attribute = [
