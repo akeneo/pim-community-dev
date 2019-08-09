@@ -4,8 +4,6 @@ namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscri
 
 use Akeneo\Channel\Component\Model\Channel;
 use Akeneo\Channel\Component\Model\Locale;
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Completeness;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
@@ -15,7 +13,6 @@ use Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompletenessCollection;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\SavePublishedProductCompletenesses;
-use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

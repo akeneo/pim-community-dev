@@ -41,7 +41,6 @@ class AkeneoPimWorkflowExtension extends Extension
         $loader->load('connector/readers.yml');
         $loader->load('connector/writers.yml');
         $loader->load('controllers.yml');
-        $loader->load('completeness.yml');
         $loader->load('cursors.yml');
         $loader->load('datagrid.yml');
         $loader->load('entities.yml');

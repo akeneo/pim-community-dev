@@ -15,7 +15,6 @@ namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Component\Normalize
 use Akeneo\Asset\Component\Normalizer\InternalApi\ImageNormalizer;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;

@@ -13,11 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct;
 
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompleteness;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompletenessCollection;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
