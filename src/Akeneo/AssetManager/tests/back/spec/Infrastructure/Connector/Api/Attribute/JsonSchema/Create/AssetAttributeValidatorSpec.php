@@ -71,40 +71,36 @@ class AssetAttributeValidatorSpec extends ObjectBehavior
         $this->validate($attribute)->shouldReturn([]);
     }
 
+    function it_can_be_created_without_channel()
+    {
+        $attribute = [
+            'code' => 'starck',
+            'type' => 'text',
+            'value_per_locale' => true,
+            'asset_family_code' => 'brand',
+        ];
+
+        $this->validate($attribute)->shouldReturn([]);
+    }
+
+    function it_can_be_created_without_locale()
+    {
+        $attribute = [
+            'code' => 'starck',
+            'type' => 'text',
+            'value_per_channel' => true,
+            'asset_family_code' => 'brand',
+        ];
+
+        $this->validate($attribute)->shouldReturn([]);
+    }
+
     function it_is_mandatory_to_provide_the_code_of_the_attribute()
     {
         $attribute = [
             'type' => 'text',
             'value_per_channel' => true,
             'value_per_locale' => true,
-            'asset_family_code' => 'brand',
-        ];
-
-        $errors = $this->validate($attribute);
-        $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
-    }
-
-    function it_is_mandatory_to_provide_the_channel_of_the_attribute()
-    {
-        $attribute = [
-            'code' => 'starck',
-            'type' => 'text',
-            'value_per_locale' => true,
-            'asset_family_code' => 'brand',
-        ];
-
-        $errors = $this->validate($attribute);
-        $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
-    }
-
-    function it_is_mandatory_to_provide_the_locale_of_the_attribute()
-    {
-        $attribute = [
-            'code' => 'starck',
-            'type' => 'text',
-            'value_per_channel' => true,
             'asset_family_code' => 'brand',
         ];
 

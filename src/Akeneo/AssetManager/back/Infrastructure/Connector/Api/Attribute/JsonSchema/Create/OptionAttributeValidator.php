@@ -42,7 +42,7 @@ class OptionAttributeValidator implements AttributeValidatorInterface
     {
         return [
             'type' => 'object',
-            'required' => ['code', 'type', 'value_per_locale', 'value_per_channel'],
+            'required' => ['code', 'type'],
             'properties' => [
                 'code' => [
                     'type' => ['string'],

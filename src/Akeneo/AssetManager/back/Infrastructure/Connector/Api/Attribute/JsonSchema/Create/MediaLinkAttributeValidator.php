@@ -37,7 +37,7 @@ class MediaLinkAttributeValidator implements AttributeValidatorInterface
     {
         return [
             'type' => 'object',
-            'required' => ['code', 'type', 'value_per_locale', 'value_per_channel', 'media_type'],
+            'required' => ['code', 'type', 'media_type'],
             'properties' => [
                 'code' => [
                     'type' => ['string'],
