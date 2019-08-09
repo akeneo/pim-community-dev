@@ -82,32 +82,6 @@ class NumberAttributeValidatorSpec extends ObjectBehavior
         $errors->shouldHaveCount(1);
     }
 
-    function it_is_mandatory_to_provide_the_channel_of_the_attribute()
-    {
-        $attribute = [
-            'code' => 'view_number',
-            'type' => 'number',
-            'value_per_locale' => true,
-        ];
-
-        $errors = $this->validate($attribute);
-        $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
-    }
-
-    function it_is_mandatory_to_provide_the_locale_of_the_attribute()
-    {
-        $attribute = [
-            'code' => 'view_number',
-            'type' => 'number',
-            'value_per_channel' => true,
-        ];
-
-        $errors = $this->validate($attribute);
-        $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
-    }
-
     function it_is_mandatory_to_provide_the_type_of_the_attribute()
     {
         $attribute = [
