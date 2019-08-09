@@ -7,7 +7,7 @@ Feature: Edit sequentially some products
   Background:
     Given a "catalog_modeling" catalog configuration
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
 
   @ce
   Scenario: Successfully sequentially edit some products but not the product models 1/2

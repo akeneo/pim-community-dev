@@ -24,7 +24,7 @@ Feature: Apply a mass action on products only (and not product models)
       | cult-of-luna-black-m | clothing    | long_sleeves,summer,supplier_zaro | black | m    |
       | another-watch        | accessories | supplier_zaro                     | black |      |
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
 
   Scenario: Mass edits family of only products within a selection of products and product models
     Given I type "col" in the manage filter input

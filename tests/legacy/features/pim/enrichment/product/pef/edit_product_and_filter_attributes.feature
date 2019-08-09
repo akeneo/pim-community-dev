@@ -7,7 +7,7 @@ Feature: Edit product and filter attributes
   Background:
     Given the "footwear" catalog configuration
     And I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
     And I create a product
     And I fill in the following information in the popin:
       | SKU    | boots |

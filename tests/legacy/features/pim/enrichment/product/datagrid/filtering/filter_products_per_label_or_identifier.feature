@@ -27,7 +27,7 @@ Feature: Filter products by label or identifier field
       | 6589              | office | paper                | post          |            |
       | mug               | home   | Mug                  | 2412          |            |
       | 50_shades_of_grey | book   | 50 shades of grey    | 1212          | 2424       |
-    And I am on the products page
+    And I am on the products grid
     Then the grid should contain 4 elements
     And I should see products 125824, 6589, mug and 50_shades_of_grey
     And I should be able to use the following filters:

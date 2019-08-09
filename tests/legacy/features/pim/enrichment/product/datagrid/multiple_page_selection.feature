@@ -11,7 +11,7 @@ Feature: Select items on several pages
   @jira https://akeneo.atlassian.net/browse/PIM-7214
   Scenario: Select multiple products on multiple pages
     Given 30 empty products
-    When I am on the products page
+    When I am on the products grid
     And I sort by "ID" value ascending
     And I select row product_1
     And I select all visible entities

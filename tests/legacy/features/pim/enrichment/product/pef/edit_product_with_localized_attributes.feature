@@ -64,6 +64,7 @@ Feature: Edit a product with localized attributes
     And I save the user
     And I should see the text "System Navigation"
     And I am on the "foo" product page
+    And I wait 3 seconds
     Then the field Date should contain "05/28/2015"
 
   Scenario: Successfully show datetimepicker in my UI locale

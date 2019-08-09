@@ -19,7 +19,7 @@ Feature: Sort products
       | postit  | heel_color  | Pink              |
       | postit  | sole_fabric | Cashmerewool,Silk |
     And I am logged in as "Mary"
-    When I am on the products page
+    When I am on the products grid
     Then the grid should contain 2 elements
     When I display the columns SKU, Sole color, Heel color and Sole fabric
     Then I sort by "Sole color" value ascending
