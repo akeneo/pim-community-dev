@@ -53,7 +53,6 @@ class Kernel extends BaseKernel
 
         $routes->import($confDir.'/{routes}/'.$this->environment.'/**/*.yaml', '/', 'glob');
         $routes->import($confDir.'/{routes}/*.yaml', '/', 'glob');
-        $routes->import($confDir.'/{routes}.yaml', '/', 'glob');
     }
 
     /**
