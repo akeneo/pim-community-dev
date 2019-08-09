@@ -29,7 +29,7 @@ define(
         FormModal
     ) {
         return BaseForm.extend({
-            className: 'btn-group',
+            className: 'btn-group AknButtonList-item',
             submitTemplate: _.template(submitTemplate),
             confirmationMessage: __('pimee_enrich.entity.product_draft.confirmation.discard_changes'),
             confirmationTitle: __('pimee_enrich.entity.product_draft.confirmation.discard_changes_title'),
