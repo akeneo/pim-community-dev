@@ -45,7 +45,7 @@ default:
                 tags: '@integration-back'
     extensions:
         FriendsOfBehat\SymfonyExtension:
-            bootstrap: app/bootstrap.php
+            bootstrap: config/bootstrap.php
             kernel:
                 path: src/Kernel.php
                 class: Kernel
