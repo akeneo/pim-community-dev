@@ -35,7 +35,7 @@ Feature: Publish many products at once by skipping the product models
       | bag_2_large_red   | bag_2_large | bags   | red   |      |
       | bag_2_large_black | bag_2_large | bags   | black |      |
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
 
   Scenario: Successfully publish variant products of selected root product models
     Given I select rows bag_1 and bag_2
