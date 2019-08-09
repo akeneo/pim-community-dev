@@ -155,10 +155,6 @@ class AttributeController
             $options['identifiers'] = array_unique(explode(',', $request->get('identifiers')));
         }
 
-        if (isset($options['excluded_identifiers'])) {
-            $options['excluded_identifiers'] = array_unique(explode(',', $options['excluded_identifiers']));
-        }
-
         if (count($options['identifiers']) > 0) {
             $options['limit'] = count($options['identifiers']);
         }

@@ -28,7 +28,7 @@ define(
             fetchItems: function (searchParameters) {
                 return this.getItemsToExclude()
                     .then(function (attributeCodes) {
-                        searchParameters.options.excluded_identifiers = attributeCodes.join(',');
+                        searchParameters.options.excluded_identifiers = attributeCodes;
 
                         return FetcherRegistry.getFetcher(this.mainFetcher).search(searchParameters)
                             .then(function (attributes) {
