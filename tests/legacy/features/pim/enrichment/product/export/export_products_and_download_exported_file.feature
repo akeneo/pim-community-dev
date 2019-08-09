@@ -34,7 +34,6 @@ Feature: Export and download exported products file
       | tshirt-black | description | Ein elegantes schwarzes T-Shirt      | de_DE  | ecommerce |
       | tshirt-black | description | A really stylish black t-shirt       | en_US  | print     |
       | tshirt-black | description | Ein sehr elegantes schwarzes T-Shirt | de_DE  | print     |
-    And I launched the completeness calculator
     And I am logged in as "Julia"
     When I am on the "ecommerce_product_export" export job page
     And I launch the export job

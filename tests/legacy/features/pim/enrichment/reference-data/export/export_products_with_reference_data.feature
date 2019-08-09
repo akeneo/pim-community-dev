@@ -25,7 +25,6 @@ Feature: Export products
       | SNKRS-1R | heel_color  | Red            |
       | SNKRS-1R | sole_fabric | Neoprene, Silk |
       | SNKRS-1R | sole_color  | Red            |
-    And I launched the completeness calculator
     When I am on the "csv_footwear_product_export" export job page
     And I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish

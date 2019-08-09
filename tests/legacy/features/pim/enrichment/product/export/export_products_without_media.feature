@@ -23,7 +23,6 @@ Feature: Export products without media
       | SNKRS-1R | side_view | %fixtures%/SNKRS-1R.png   |
       | SNKRS-1C | side_view | %fixtures%/SNKRS-1C-s.png |
       | SNKRS-1C | top_view  | %fixtures%/SNKRS-1C-t.png |
-    And I launched the completeness calculator
     And I am on the "csv_footwear_product_export" export job page
     When I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish

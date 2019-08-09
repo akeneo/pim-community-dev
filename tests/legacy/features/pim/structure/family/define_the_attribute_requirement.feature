@@ -41,7 +41,6 @@ Feature: Define the attribute requirement
     Given the following product:
       | sku      | family | name-en_US | price          | size | color |
       | BIGBOOTS | Boots  | Big boots  | 20 EUR, 20 USD | 35   | Black |
-    And I launched the completeness calculator
     When I am on the "BIGBOOTS" product page
     And I visit the "Completeness" column tab
     Then I should see the completeness:
@@ -59,9 +58,8 @@ Feature: Define the attribute requirement
     And I save the family
     And I should not see the text "There are unsaved changes."
     Then I should not see the "rating" attribute
-    When I launched the completeness calculator
-    And I wait for the "compute_completeness_of_products_family" job to finish
-    When I am on the "BIGBOOTS" product page
+    When I wait for the "compute_completeness_of_products_family" job to finish
+    And I am on the "BIGBOOTS" product page
     And I visit the "Completeness" column tab
     Then I should see the completeness:
       | channel | locale | state   | missing_values | ratio |

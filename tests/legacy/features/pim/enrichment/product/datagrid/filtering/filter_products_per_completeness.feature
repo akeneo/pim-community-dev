@@ -20,7 +20,6 @@ Feature: Filter products
       | product1 | family | code-product-model | black |
       | product2 | family | code-product-model | red   |
       | product3 | family |                    | black |
-    And I launched the completeness calculator
     And I am logged in as "Mary"
     And I am on the products grid
     And I switch the locale to "en_US"

@@ -42,7 +42,6 @@ Feature: Export products with localized dates
     Given the following job "ecommerce_product_export" configuration:
       | filePath   | %tmp%/ecommerce_product_export/ecommerce_product_export.csv |
       | dateFormat | dd/MM/yyyy                                                  |
-    And I launched the completeness calculator
     When I am on the "ecommerce_product_export" export job page
     And I press the "Edit" button
     And I visit the "Global settings" tab

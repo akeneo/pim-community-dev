@@ -35,7 +35,6 @@ Feature: Apply a mass action on all entities
       | name-en_US | Same product |
 
   Scenario: Edit family of all products, filtered by category and completeness
-    Given I launched the completeness calculator
     When I am on the products grid
     And I hide the filter "family"
     And I open the category tree

@@ -31,7 +31,6 @@ Feature: Export products with localized numbers
       | sandal-black  | cotton    | 75    |
       | sandal-yellow | cotton    |       |
       | sandal-blue   | cotton    | 75.00 |
-    And I launched the completeness calculator
     When I am on the "ecommerce_product_export" export job page
     And I launch the export job
     And I wait for the "ecommerce_product_export" job to finish
@@ -54,7 +53,6 @@ Feature: Export products with localized numbers
       | sandal-black  | metric    | 95.5500 GRAM |
       | sandal-yellow | metric    | 85 GRAM      |
       | sandal-blue   | metric    | -5 GRAM      |
-    And I launched the completeness calculator
     When I am on the "ecommerce_product_export" export job page
     And I launch the export job
     And I wait for the "ecommerce_product_export" job to finish

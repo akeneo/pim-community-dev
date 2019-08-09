@@ -20,9 +20,7 @@ Feature: Display the completeness of a product
       | sandals  | description | Super sandales        | fr_FR  | tablet |
       | sandals  | description | Super sandales        | fr_FR  | mobile |
     And I am logged in as "Julia"
-    And I launched the completeness calculator
-
-  @critical
+    @critical
   Scenario: Successfully update the completeness at product save
     Given I am on the "sneakers" product page
     When I visit the "Completeness" column tab
