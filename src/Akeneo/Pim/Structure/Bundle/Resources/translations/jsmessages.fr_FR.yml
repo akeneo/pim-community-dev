@@ -5,7 +5,6 @@ pim_enrich.entity.family:
   flash:
     update:
       success: Famille mise à jour avec succès.
-      fail: Une erreur s'est produite à la mise à jour de la famille.
       cant_remove_attribute_as_label: Impossible de supprimer un attribut utilisé comme libellé
       cant_remove_attribute_as_image: Impossible de supprimer un attribut utilisé comme image principale
       cant_remove_attribute_used_as_axis: Impossible d'enlever cet attribut car il est utilisé comme axe de variation de la variante de famille
@@ -67,7 +66,6 @@ pim_enrich.entity.attribute_option:
   flash:
     create:
       success: L'option d'attribut a été créée avec succès.
-      fail: Une erreur s'est produite en essayant de créer l'option d'attribut.
     update:
       fail: Impossible d'enregistrer l'option de l'attribut
     delete:

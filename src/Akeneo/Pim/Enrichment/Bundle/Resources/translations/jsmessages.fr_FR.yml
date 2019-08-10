@@ -5,13 +5,10 @@ flash:
   comment:
     create:
       success: Votre commentaire a été ajouté.
-      error: Une erreur s'est produite lors de la création de votre commentaire.
     delete:
       success: Votre commentaire a été supprimé.
-      error: Une erreur s'est produite lors de la suppression de votre commentaire.
     reply:
       success: Votre réponse a été ajoutée.
-      error: Une erreur s'est produite lors de la création de votre réponse.
 pim_enrich.entity.product:
   label: produit
   uppercase_label: Produit
@@ -22,7 +19,6 @@ pim_enrich.entity.product:
       fail: Le produit n'a pas pu être mis à jour.
       fields_not_ready: "Le produit ne peut actuellement pas être sauvegardé. Les champs suivants ne sont pas prêts : {{ fields }}"
       already_in_upload: Un fichier est déjà en téléchargement pour cet attribut pour la locale "{{ locale }}" et le canal "{{ scope }}"
-      file_upload: Une erreur s'est produite lors du transfert du fichier.
     delete:
       success: Les produits ont bien été supprimés.
       fail: Le produit n'a pas pu être supprimé.
@@ -265,8 +261,6 @@ pim_enrich.mass_edit.product:
       label: Configurez l'opération à effectuer
     confirm:
       label: Confirmation
-    launch_error:
-      label: Une erreur s’est produite lors du lancement de l'édition de masse
     launched:
       label: L'action de masse "{{ operation }}" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
   operation:
@@ -333,7 +327,6 @@ pim_datagrid:
     delete:
       confirm_content: Êtes-vous sûr(e) de vouloir supprimer les produits sélectionnés ?
       success: Les produits sélectionnés ont été supprimés.
-      error: Une erreur s'est produite lors de la suppression des produits sélectionnés, merci d'essayer à nouveau.
     quick_export:
       csv_all: CSV (tous les attributs)
       csv_grid_context: CSV (contexte de la grille)

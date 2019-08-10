@@ -2,7 +2,6 @@
 "Yes, do it": "Sí, hazlo"
 "Ok, got it.": "De acuerdo."
 "Edit": "Editar"
-"Unexpected error occurred. Please contact system administrator.": "Ocurrió un error inesperado. Por favor, póngase en contacto con el administrador del sistema."
 "Yes, revoke": "Si, revocar"
 "Revoke Confirmation": "Revocar confirmación"
 Prev: Ant
@@ -179,17 +178,14 @@ pim_common:
     STARTS WITH: Comienza por
     ENDS WITH: Termina por
 error:
-  exception: Oups! Un error {{ status_code }} ha ocurrido...
   forbidden: Prohibido. Usted no tiene permitido acceder a esta página
 alert:
   attribute_option:
-    error_occurred_during_submission: Se produjo un error durante el envío del formulario al servidor
     save_before_edit_other: Por favor registre sus modificaciones en otras filas antes de editar este
   session_storage:
     not_available: Su navegador parece no ser compatible con sessionStorage. Por favor contacte a su administrador
 pim_enrich.entity.fallback:
   flash:
-    generic_error: Ocurrió un error
     update:
       fail: Error al actualizar
       success: Actualización exitosa
