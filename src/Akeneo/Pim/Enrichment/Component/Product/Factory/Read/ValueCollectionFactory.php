@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Factory\Read;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\EmptyValuesCleaner;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\ChainedNonExistentValuesFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\OnGoingFilteredRawValues;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\TransformRawValuesCollections;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 
@@ -27,16 +28,21 @@ class ValueCollectionFactory
     /** @var EmptyValuesCleaner */
     private $emptyValuesCleaner;
 
+    /** @var TransformRawValuesCollections */
+    private $transformRawValuesCollections;
+
     public function __construct(
         ReadValueFactory $valueFactory,
         GetAttributes $getAttributeByCodes,
         ChainedNonExistentValuesFilterInterface $chainedNonExistentValuesFilter,
-        EmptyValuesCleaner $emptyValuesCleaner
+        EmptyValuesCleaner $emptyValuesCleaner,
+        TransformRawValuesCollections $transformRawValuesCollections
     ) {
         $this->valueFactory = $valueFactory;
         $this->getAttributeByCodes = $getAttributeByCodes;
         $this->chainedNonExistentValuesFilter = $chainedNonExistentValuesFilter;
         $this->emptyValuesCleaner = $emptyValuesCleaner;
+        $this->transformRawValuesCollections = $transformRawValuesCollections;
     }
 
     public function createFromStorageFormat(array $rawValues): ReadValueCollection
@@ -48,9 +54,7 @@ class ValueCollectionFactory
 
     public function createMultipleFromStorageFormat(array $rawValueCollections): array
     {
-        $attributes = $this->getAttributesUsedByProducts($rawValueCollections);
-
-        $rawValueCollectionsIndexedByType = $this->sortRawValueCollectionsToValueCollectionsIndexedByType($rawValueCollections, $attributes);
+        $rawValueCollectionsIndexedByType = $this->transformRawValuesCollections->toValueCollectionsIndexedByType($rawValueCollections);
         $valueCollections = [];
 
         if (empty($rawValueCollectionsIndexedByType)) {
@@ -69,7 +73,7 @@ class ValueCollectionFactory
 
         $cleanRawValueCollection = $this->emptyValuesCleaner->cleanAllValues($rawValueCollection);
 
-        $valueCollections = $this->createValues($cleanRawValueCollection, $attributes);
+        $valueCollections = $this->createValues($cleanRawValueCollection);
 
         $identifiersWithOnlyUnknownAttributes = array_diff(array_keys($rawValueCollections), array_keys($valueCollections));
 
@@ -121,9 +125,10 @@ class ValueCollectionFactory
         return $typesToValues;
     }
 
-    private function createValues(array $rawValueCollections, array $attributes): array
+    private function createValues(array $rawValueCollections): array
     {
         $entities = [];
+        $attributes = $this->getAttributesUsedByProducts($rawValueCollections);
 
         foreach ($rawValueCollections as $productIdentifier => $valueCollection) {
             $values = [];

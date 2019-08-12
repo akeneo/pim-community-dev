@@ -13,6 +13,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\OptionValueFactor
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\TextAreaValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\TextValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueCollectionFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\TransformRawValuesCollections;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
@@ -49,7 +50,8 @@ class ValueCollectionFactorySpec extends ObjectBehavior
             $valueFactory,
             $getAttributeByCodes,
             $chainedObsoleteValueFilter,
-            new EmptyValuesCleaner()
+            new EmptyValuesCleaner(),
+            new TransformRawValuesCollections($getAttributeByCodes->getWrappedObject())
         );
     }
 
@@ -174,6 +176,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
 
         $color = new Attribute('color', AttributeTypes::OPTION_SIMPLE_SELECT, [], false, false, null, false);
         $getAttributeByCodes->forCodes(['unknown_attribute', 'color'])->willReturn(['color' => $color, 'unknown_attribute' => null]);
+        $getAttributeByCodes->forCodes(['color'])->willReturn(['color' => $color]);
 
         $typesToCode = [
             AttributeTypes::OPTION_SIMPLE_SELECT => [
@@ -217,6 +220,8 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         $getAttributeByCodes->forCodes(['color'])->willReturn([
             'color' => new Attribute('color', AttributeTypes::OPTION_SIMPLE_SELECT, [], false, false, null, false)
         ]);
+        $getAttributeByCodes->forCodes([])->willReturn([]);
+
 
         $rawValueCollectionIndexedByType = [
             AttributeTypes::OPTION_SIMPLE_SELECT => [
