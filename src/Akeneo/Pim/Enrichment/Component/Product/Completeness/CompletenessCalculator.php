@@ -8,7 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessProdu
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetCompletenessFamilyMasks;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetCompletenessProductMasks;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodesCollection;
 
 /**
  * @author    Pierre Allard <pierre.allard@akeneo.com>
@@ -50,7 +50,7 @@ final class CompletenessCalculator
         return $result;
     }
 
-    public function fromProductIdentifier($productIdentifier): ProductCompletenessCollection
+    public function fromProductIdentifier($productIdentifier): ProductCompletenessWithMissingAttributeCodesCollection
     {
         return $this->fromProductIdentifiers([$productIdentifier])[$productIdentifier];
     }

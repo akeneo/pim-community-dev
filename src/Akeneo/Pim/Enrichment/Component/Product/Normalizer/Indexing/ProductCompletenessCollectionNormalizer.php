@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodesCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -18,7 +18,7 @@ class ProductCompletenessCollectionNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      *
-     * @var ProductCompletenessCollection $completenesses
+     * @var ProductCompletenessWithMissingAttributeCodesCollection $completenesses
      */
     public function normalize($completenesses, $format = null, array $context = [])
     {
@@ -42,6 +42,6 @@ class ProductCompletenessCollectionNormalizer implements NormalizerInterface
             in_array($format, [
                 ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
             ]) &&
-            $data instanceof ProductCompletenessCollection;
+            $data instanceof ProductCompletenessWithMissingAttributeCodesCollection;
     }
 }

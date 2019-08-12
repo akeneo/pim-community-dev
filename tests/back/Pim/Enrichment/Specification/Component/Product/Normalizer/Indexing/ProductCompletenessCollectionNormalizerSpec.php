@@ -2,8 +2,8 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodes;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodesCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductCompletenessCollectionNormalizer;
 use PhpSpec\ObjectBehavior;
@@ -27,20 +27,20 @@ class ProductCompletenessCollectionNormalizerSpec extends ObjectBehavior
 
     function it_supports_completenesses_for_indexing_formats()
     {
-        $completenesses = new ProductCompletenessCollection(42, []);
+        $completenesses = new ProductCompletenessWithMissingAttributeCodesCollection(42, []);
         $this->supportsNormalization($completenesses, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
              ->shouldReturn(true);
     }
 
     function it_normalizes_completenesses()
     {
-        $completenesses = new ProductCompletenessCollection(
+        $completenesses = new ProductCompletenessWithMissingAttributeCodesCollection(
             42,
             [
-                new ProductCompleteness('ecommerce', 'en_US', 0, []),
-                new ProductCompleteness('ecommerce', 'fr_FR', 1, []),
-                new ProductCompleteness('ecommerce', 'de_DE', 2, ['fake_attr']),
-                new ProductCompleteness('tablet', 'en_US', 3, ['fake_attr']),
+                new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 0, []),
+                new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'fr_FR', 1, []),
+                new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'de_DE', 2, ['fake_attr']),
+                new ProductCompletenessWithMissingAttributeCodes('tablet', 'en_US', 3, ['fake_attr']),
             ]
         );
 

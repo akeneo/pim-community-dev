@@ -4,7 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Completeness;
 
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;
@@ -29,7 +29,7 @@ abstract class AbstractCompletenessTestCase extends TestCase
     /**
      * @param ProductInterface $product
      *
-     * @return ProductCompleteness
+     * @return ProductCompletenessWithMissingAttributeCodes
      */
     protected function getCurrentCompleteness(ProductInterface $product)
     {
@@ -39,10 +39,10 @@ abstract class AbstractCompletenessTestCase extends TestCase
     }
 
     /**
-     * @param ProductCompleteness $completeness
+     * @param ProductCompletenessWithMissingAttributeCodes $completeness
      * @param string[]            $expectedAttributeCodes
      */
-    protected function assertMissingAttributeCodes(ProductCompleteness $completeness, array $expectedAttributeCodes)
+    protected function assertMissingAttributeCodes(ProductCompletenessWithMissingAttributeCodes $completeness, array $expectedAttributeCodes)
     {
         $missingAttributeCodes = $completeness->missingAttributeCodes();
 

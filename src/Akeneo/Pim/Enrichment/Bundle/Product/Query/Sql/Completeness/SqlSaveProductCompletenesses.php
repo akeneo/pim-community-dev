@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\Completeness;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodesCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\CannotSaveProductCompletenessCollectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\SaveProductCompletenesses;
 use Doctrine\DBAL\Connection;
@@ -27,7 +27,7 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
     /**
      * {@inheritdoc}
      */
-    public function save(ProductCompletenessCollection $completenesses): void
+    public function save(ProductCompletenessWithMissingAttributeCodesCollection $completenesses): void
     {
         $this->connection->beginTransaction();
 

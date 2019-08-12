@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product\Query\Sql\Completeness;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodesCollection;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -107,14 +107,14 @@ class GetProductCompletenessesIntegration extends TestCase
         return $productId ? (int)$productId : null;
     }
 
-    private function getCompletenesses(int $productId): ProductCompletenessCollection
+    private function getCompletenesses(int $productId): ProductCompletenessWithMissingAttributeCodesCollection
     {
         return $this->get('akeneo.pim.enrichment.product.query.get_product_completenesses')
                     ->fromProductId($productId);
     }
 
     private function assertCompletenessContains(
-        ProductCompletenessCollection $completenesses,
+        ProductCompletenessWithMissingAttributeCodesCollection $completenesses,
         string $channelCode,
         string $localeCode,
         int $requiredCount,

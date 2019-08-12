@@ -3,7 +3,7 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\Completeness\AttributeType;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 
@@ -72,7 +72,7 @@ class IdentifierAttributeTypeCompletenessIntegration extends AbstractCompletenes
 
         $this->assertCount(1, $completenesses);
 
-        /** @var ProductCompleteness $completeness */
+        /** @var ProductCompletenessWithMissingAttributeCodes $completeness */
         $completeness = $completenesses->getIterator()->current();
 
         $this->assertEquals('en_US', $completeness->localeCode());

@@ -2,8 +2,8 @@
 
 namespace spec\Oro\Bundle\PimDataGridBundle\Normalizer;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodes;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodesCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
@@ -113,8 +113,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         $normalizer->normalize($updated, 'datagrid', $context)->willReturn('2017-01-01T01:04:34+01:00');
         $product->getLabel('en_US', 'ecommerce')->willReturn('Purple tshirt');
 
-        $getProductCompletenesses->fromProductId(78)->willReturn(new ProductCompletenessCollection(78, [
-            new ProductCompleteness('ecommerce', 'en_US', 10, ['fake_attribute'])
+        $getProductCompletenesses->fromProductId(78)->willReturn(new ProductCompletenessWithMissingAttributeCodesCollection(78, [
+            new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 10, ['fake_attribute'])
         ]));
 
         $product->getImage()->willReturn($image);
@@ -215,8 +215,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         $normalizer->normalize($updated, 'datagrid', $context)->willReturn('2017-01-01T01:04:34+01:00');
         $product->getLabel('en_US', 'ecommerce')->willReturn('Purple tshirt');
 
-        $getProductCompletenesses->fromProductId(78)->willReturn(new ProductCompletenessCollection(78, [
-            new ProductCompleteness('ecommerce', 'en_US', 10, ['fake_attribute'])
+        $getProductCompletenesses->fromProductId(78)->willReturn(new ProductCompletenessWithMissingAttributeCodesCollection(78, [
+            new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 10, ['fake_attribute'])
         ]));
         $product->getImage()->willReturn($image);
         $imageNormalizer->normalize($image, Argument::any())->willReturn([
@@ -318,8 +318,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         $normalizer->normalize($updated, 'datagrid', $context)->willReturn('2017-01-01T01:04:34+01:00');
         $product->getLabel('en_US', 'ecommerce')->willReturn('Purple tshirt');
 
-        $getProductCompletenesses->fromProductId(78)->willReturn(new ProductCompletenessCollection(78, [
-            new ProductCompleteness('ecommerce', 'en_US', 10, ['fake_attr'])
+        $getProductCompletenesses->fromProductId(78)->willReturn(new ProductCompletenessWithMissingAttributeCodesCollection(78, [
+            new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 10, ['fake_attr'])
         ]));
         $product->getImage()->willReturn($image);
         $imageNormalizer->normalize($image, Argument::any())->willReturn([

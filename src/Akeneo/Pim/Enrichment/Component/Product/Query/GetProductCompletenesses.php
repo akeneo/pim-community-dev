@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Query;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodesCollection;
 
 /**
  * @author    Mathias METAYER <mathias.metayer@akeneo.com>
@@ -16,7 +16,7 @@ interface GetProductCompletenesses
     /**
      * @param int $productId
      *
-     * @return ProductCompletenessCollection
+     * @return ProductCompletenessWithMissingAttributeCodesCollection
      */
-    public function fromProductId(int $productId): ProductCompletenessCollection;
+    public function fromProductId(int $productId): ProductCompletenessWithMissingAttributeCodesCollection;
 }

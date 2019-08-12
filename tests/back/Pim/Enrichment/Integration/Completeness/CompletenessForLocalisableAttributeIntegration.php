@@ -3,7 +3,7 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\Completeness;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodes;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 /**
@@ -173,8 +173,8 @@ class CompletenessForLocalisableAttributeIntegration extends AbstractCompletenes
      * @param ProductInterface $product
      * @param string           $localeCode
      *
+     * @return ProductCompletenessWithMissingAttributeCodes
      * @throws \Exception
-     * @return ProductCompleteness
      */
     private function getCompletenessByLocaleCode(ProductInterface $product, $localeCode)
     {

@@ -15,7 +15,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodesCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductCompletenessCollectionNormalizer;
@@ -195,7 +195,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $groups->toArray()->willReturn([$group]);
         $group->getId()->willReturn(12);
 
-        $productCompletenessCollection = new ProductCompletenessCollection(12, []);
+        $productCompletenessCollection = new ProductCompletenessWithMissingAttributeCodesCollection(12, []);
         $getProductCompletenesses->fromProductId(12)->willReturn($productCompletenessCollection);
         $completenessCollectionNormalizer->normalize($productCompletenessCollection)->willReturn(['normalizedCompleteness']);
 
@@ -357,7 +357,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $groups->toArray()->willReturn([$group]);
         $group->getId()->willReturn(12);
 
-        $productCompletenessCollection = new ProductCompletenessCollection(12, []);
+        $productCompletenessCollection = new ProductCompletenessWithMissingAttributeCodesCollection(12, []);
         $getProductCompletenesses->fromProductId(12)->willReturn($productCompletenessCollection);
         $completenessCollectionNormalizer->normalize($productCompletenessCollection)->willReturn(['normalizedCompletenesses']);
 

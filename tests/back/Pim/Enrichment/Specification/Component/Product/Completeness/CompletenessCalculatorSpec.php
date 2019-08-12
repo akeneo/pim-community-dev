@@ -7,8 +7,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessFamil
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessProductMask;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetCompletenessFamilyMasks;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetCompletenessProductMasks;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodes;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodesCollection;
 use PhpSpec\ObjectBehavior;
 
 class CompletenessCalculatorSpec extends ObjectBehavior
@@ -42,9 +42,9 @@ class CompletenessCalculatorSpec extends ObjectBehavior
         $getCompletenessFamilyMasks->fromFamilyCodes(['tshirt'])->willReturn(['tshirt' => $familyMask]);
 
         $getCompletenessProductMasks->fromProductIdentifiers(['michel'])->willReturn([$productCompleteness]);
-        $this->fromProductIdentifier("michel")->shouldBeLike(new ProductCompletenessCollection(5, [
-            new ProductCompleteness('ecommerce', 'en_US', 2, [1 => 'view']),
-            new ProductCompleteness('<all_channels>', '<all_locales>', 1, [])
+        $this->fromProductIdentifier("michel")->shouldBeLike(new ProductCompletenessWithMissingAttributeCodesCollection(5, [
+            new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 2, [1 => 'view']),
+            new ProductCompletenessWithMissingAttributeCodes('<all_channels>', '<all_locales>', 1, [])
         ]));
     }
 
@@ -76,13 +76,13 @@ class CompletenessCalculatorSpec extends ObjectBehavior
 
         $getCompletenessProductMasks->fromProductIdentifiers(['michel', 'jean'])->willReturn([$michelCompleteness, $anotherCompleteness]);
         $this->fromProductIdentifiers(["michel", "jean"])->shouldBeLike([
-            'michel' => new ProductCompletenessCollection(5, [
-                new ProductCompleteness('ecommerce', 'en_US', 2, [1 => 'view']),
-                new ProductCompleteness('<all_channels>', '<all_locales>', 1, [])
+            'michel' => new ProductCompletenessWithMissingAttributeCodesCollection(5, [
+                new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 2, [1 => 'view']),
+                new ProductCompletenessWithMissingAttributeCodes('<all_channels>', '<all_locales>', 1, [])
             ]),
-            'jean' => new ProductCompletenessCollection(2, [
-                new ProductCompleteness('ecommerce', 'en_US', 2, ['name', 'view']),
-                new ProductCompleteness('<all_channels>', '<all_locales>', 1, ['desc'])
+            'jean' => new ProductCompletenessWithMissingAttributeCodesCollection(2, [
+                new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 2, ['name', 'view']),
+                new ProductCompletenessWithMissingAttributeCodes('<all_channels>', '<all_locales>', 1, ['desc'])
             ]),
         ]);
     }

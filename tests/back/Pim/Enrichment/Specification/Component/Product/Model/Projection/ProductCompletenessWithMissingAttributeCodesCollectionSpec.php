@@ -2,11 +2,11 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Model\Projection;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodes;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodesCollection;
 use PhpSpec\ObjectBehavior;
 
-class ProductCompletenessCollectionSpec extends ObjectBehavior
+class ProductCompletenessWithMissingAttributeCodesCollectionSpec extends ObjectBehavior
 {
     function let()
     {
@@ -15,7 +15,7 @@ class ProductCompletenessCollectionSpec extends ObjectBehavior
 
     function it_is_a_product_completeness_collection()
     {
-        $this->shouldHaveType(ProductCompletenessCollection::class);
+        $this->shouldHaveType(ProductCompletenessWithMissingAttributeCodesCollection::class);
     }
 
     function it_is_an_iterator_aggregate()
@@ -36,8 +36,8 @@ class ProductCompletenessCollectionSpec extends ObjectBehavior
 
     function it_can_store_product_completenesses()
     {
-        $completeness = new ProductCompleteness('ecommerce', 'en_US', 4, []);
-        $otherCompleteness = new ProductCompleteness('ecommerce', 'fr_FR', 4, []);
+        $completeness = new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 4, []);
+        $otherCompleteness = new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'fr_FR', 4, []);
         $this->beConstructedWith(42, [$completeness, $otherCompleteness]);
 
         $this->getIterator()->count()->shouldReturn(2);
@@ -49,8 +49,8 @@ class ProductCompletenessCollectionSpec extends ObjectBehavior
 
     function it_does_not_store_two_completenesses_with_the_same_channel_and_locale()
     {
-        $completeness = new ProductCompleteness('ecommerce', 'en_US', 4, []);
-        $otherCompleteness = new ProductCompleteness('ecommerce', 'en_US', 5, ['description', 'price']);
+        $completeness = new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 4, []);
+        $otherCompleteness = new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 5, ['description', 'price']);
         $this->beConstructedWith(42, [$completeness, $otherCompleteness]);
 
         $this->getIterator()->count()->shouldReturn(1);
@@ -59,8 +59,8 @@ class ProductCompletenessCollectionSpec extends ObjectBehavior
 
     function it_can_retriev_a_completeness_by_channel_and_locale()
     {
-        $completeness = new ProductCompleteness('ecommerce', 'en_US', 4, []);
-        $otherCompleteness = new ProductCompleteness('ecommerce', 'fr_FR', 4, []);
+        $completeness = new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 4, []);
+        $otherCompleteness = new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'fr_FR', 4, []);
         $this->beConstructedWith(42, [$completeness, $otherCompleteness]);
 
         $this->getCompletenessForChannelAndLocale('ecommerce', 'fr_FR')->shouldReturn($otherCompleteness);

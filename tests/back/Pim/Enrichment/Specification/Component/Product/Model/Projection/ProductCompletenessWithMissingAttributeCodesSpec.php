@@ -2,10 +2,10 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Model\Projection;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodes;
 use PhpSpec\ObjectBehavior;
 
-class ProductCompletenessSpec extends ObjectBehavior
+class ProductCompletenessWithMissingAttributeCodesSpec extends ObjectBehavior
 {
     function it_is_a_product_completeness()
     {
@@ -15,7 +15,7 @@ class ProductCompletenessSpec extends ObjectBehavior
             30,
             ['name', 'brand', 'description', 'picture']
         );
-        $this->shouldHaveType(ProductCompleteness::class);
+        $this->shouldHaveType(ProductCompletenessWithMissingAttributeCodes::class);
     }
 
     function it_throws_an_exception_if_required_count_is_negative()

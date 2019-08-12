@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product\Query\Sql\Completeness;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodes;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodesCollection;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 
@@ -22,7 +22,7 @@ class SaveProductCompletenessesIntegration extends TestCase
         Assert::assertNotEmpty($this->getCompletenessesFromDB($productId));
         Assert::assertNotEmpty($this->getMissingAttributesFromDb($productId));
 
-        $this->executeSave(new ProductCompletenessCollection($productId, []));
+        $this->executeSave(new ProductCompletenessWithMissingAttributeCodesCollection($productId, []));
         Assert::assertEmpty($this->getCompletenessesFromDB($productId));
         Assert::assertEmpty($this->getMissingAttributesFromDb($productId));
     }
@@ -30,8 +30,8 @@ class SaveProductCompletenessesIntegration extends TestCase
     public function test_that_it_saves_completenesses_given_a_product_id()
     {
         $productId = $this->createProduct('a_great_product');
-        $collection = new ProductCompletenessCollection($productId, [
-            new ProductCompleteness('ecommerce', 'en_US', 5, [])
+        $collection = new ProductCompletenessWithMissingAttributeCodesCollection($productId, [
+            new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 5, [])
         ]);
         $this->executeSave($collection);
 
@@ -54,9 +54,9 @@ class SaveProductCompletenessesIntegration extends TestCase
     {
         $productId = $this->createProduct('a_great_product');
 
-        $collection = new ProductCompletenessCollection($productId, [
-            new ProductCompleteness('ecommerce', 'en_US', 5, ['a_text']),
-            new ProductCompleteness(
+        $collection = new ProductCompletenessWithMissingAttributeCodesCollection($productId, [
+            new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 5, ['a_text']),
+            new ProductCompletenessWithMissingAttributeCodes(
                 'tablet',
                 'fr_FR',
                 10,
@@ -118,7 +118,7 @@ class SaveProductCompletenessesIntegration extends TestCase
         return $this->catalog->useTechnicalCatalog();
     }
 
-    private function executeSave(ProductCompletenessCollection $completenesses): void
+    private function executeSave(ProductCompletenessWithMissingAttributeCodesCollection $completenesses): void
     {
         $this->get('akeneo.pim.enrichment.product.query.save_product_completenesses')->save($completenesses);
     }

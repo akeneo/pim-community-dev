@@ -4,8 +4,8 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Index
 
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodes;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodesCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -96,8 +96,8 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         $product->getCategoryCodes()->willReturn([]);
         $valueCollection->isEmpty()->willReturn(true);
 
-        $completeness = new ProductCompleteness('channelCode', 'localeCode', 0, []);
-        $completenessCollection = new ProductCompletenessCollection(67, [$completeness]);
+        $completeness = new ProductCompletenessWithMissingAttributeCodes('channelCode', 'localeCode', 0, []);
+        $completenessCollection = new ProductCompletenessWithMissingAttributeCodesCollection(67, [$completeness]);
         $getProductCompletenesses->fromProductId(67)->willReturn($completenessCollection);
 
         $serializer->normalize(
@@ -182,8 +182,8 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
             ]
         );
 
-        $completeness = new ProductCompleteness('ecommerce', 'en_US', 3, ['fake_attr']);
-        $completenessCollection = new ProductCompletenessCollection(67, [$completeness]);
+        $completeness = new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 3, ['fake_attr']);
+        $completenessCollection = new ProductCompletenessWithMissingAttributeCodesCollection(67, [$completeness]);
         $getProductCompletenesses->fromProductId(67)->willReturn($completenessCollection);
         $serializer->normalize($completenessCollection, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
             [])->willReturn(
@@ -317,11 +317,11 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
             ]
         );
 
-        $completeness1 = new ProductCompleteness('ecommerce', 'en_US', 3, ['fake_attr']);
-        $completeness2 = new ProductCompleteness('ecommerce', 'fr_FR', 3, ['fake_attr']);
-        $completeness3 = new ProductCompleteness('print', 'en_US', 3, ['fake_attr']);
-        $completeness4 = new ProductCompleteness('print', 'fr_FR', 3, ['fake_attr']);
-        $completenessCollection = new ProductCompletenessCollection(67, [
+        $completeness1 = new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 3, ['fake_attr']);
+        $completeness2 = new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'fr_FR', 3, ['fake_attr']);
+        $completeness3 = new ProductCompletenessWithMissingAttributeCodes('print', 'en_US', 3, ['fake_attr']);
+        $completeness4 = new ProductCompletenessWithMissingAttributeCodes('print', 'fr_FR', 3, ['fake_attr']);
+        $completenessCollection = new ProductCompletenessWithMissingAttributeCodesCollection(67, [
             $completeness1,
             $completeness2,
             $completeness3,
@@ -527,8 +527,8 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
             ]
         );
 
-        $completeness = new ProductCompleteness('ecommerce', 'en_US', 0, []);
-        $completenessCollection = new ProductCompletenessCollection(67, [$completeness]);
+        $completeness = new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 0, []);
+        $completenessCollection = new ProductCompletenessWithMissingAttributeCodesCollection(67, [$completeness]);
         $getProductCompletenesses->fromProductId(67)->willReturn($completenessCollection);
         $serializer->normalize($completenessCollection, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])
             ->willReturn(['normalized_completeness']);
@@ -652,8 +652,8 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
             ]
         );
 
-        $completeness = new ProductCompleteness('ecommerce', 'en_US', 3, ['fake_attr']);
-        $completenessCollection = new ProductCompletenessCollection(67, [$completeness]);
+        $completeness = new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 3, ['fake_attr']);
+        $completenessCollection = new ProductCompletenessWithMissingAttributeCodesCollection(67, [$completeness]);
         $getProductCompletenesses->fromProductId(67)->willReturn($completenessCollection);
         $serializer->normalize($completenessCollection, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
             [])->willReturn(
@@ -814,8 +814,8 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         $product->getCategoryCodes()->willReturn([]);
         $valueCollection->isEmpty()->willReturn(true);
 
-        $completeness = new ProductCompleteness('channelCode', 'localeCode', 0, []);
-        $completenessCollection = new ProductCompletenessCollection(67, [$completeness]);
+        $completeness = new ProductCompletenessWithMissingAttributeCodes('channelCode', 'localeCode', 0, []);
+        $completenessCollection = new ProductCompletenessWithMissingAttributeCodesCollection(67, [$completeness]);
         $getProductCompletenesses->fromProductId(67)->willReturn($completenessCollection);
 
         $serializer->normalize($completenessCollection, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,

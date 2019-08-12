@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Query;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodesCollection;
 
 /**
  * @author    Mathias METAYER <mathias.metayer@akeneo.com>
@@ -16,5 +16,5 @@ interface SaveProductCompletenesses
     /**
      * @throws CannotSaveProductCompletenessCollectionException
      */
-    public function save(ProductCompletenessCollection $completenesses): void;
+    public function save(ProductCompletenessWithMissingAttributeCodesCollection $completenesses): void;
 }
