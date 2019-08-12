@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product\Query\Sql\Completeness;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodesCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -49,8 +49,8 @@ class GetProductCompletenessesIntegration extends TestCase
         // tablet + (en_US, de_DE, fr_FR)
         // ecommerce_china + (en_US, zh_CN)
         Assert::assertCount(6, $completenesses);
-        $this->assertCompletenessContains($completenesses, 'ecommerce', 'en_US', 4, ['a_simple_select']);
-        $this->assertCompletenessContains($completenesses, 'tablet', 'en_US', 4, ['a_simple_select', 'a_localized_and_scopable_text_area']);
+        $this->assertCompletenessContains($completenesses, 'ecommerce', 'en_US', 4, 1);
+        $this->assertCompletenessContains($completenesses, 'tablet', 'en_US', 4, 2);
     }
 
     public function test_that_it_returns_an_empty_array_for_a_product_without_family()
@@ -107,23 +107,23 @@ class GetProductCompletenessesIntegration extends TestCase
         return $productId ? (int)$productId : null;
     }
 
-    private function getCompletenesses(int $productId): ProductCompletenessWithMissingAttributeCodesCollection
+    private function getCompletenesses(int $productId): ProductCompletenessCollection
     {
         return $this->get('akeneo.pim.enrichment.product.query.get_product_completenesses')
                     ->fromProductId($productId);
     }
 
     private function assertCompletenessContains(
-        ProductCompletenessWithMissingAttributeCodesCollection $completenesses,
+        ProductCompletenessCollection $completenesses,
         string $channelCode,
         string $localeCode,
         int $requiredCount,
-        array $missingAttributeCodes
+        int $missingCount
     ): void {
         foreach ($completenesses as $completeness) {
             if ($completeness->channelCode() === $channelCode && $completeness->localeCode() === $localeCode) {
                 Assert::assertSame($requiredCount, $completeness->requiredCount());
-                Assert::assertEqualsCanonicalizing($missingAttributeCodes, $completeness->missingAttributeCodes());
+                Assert::assertSame($missingCount, $completeness->missingCount());
 
                 return;
             }

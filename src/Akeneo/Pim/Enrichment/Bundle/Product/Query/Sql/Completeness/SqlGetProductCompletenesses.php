@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\Completeness;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodes;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodesCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Doctrine\DBAL\Connection;
 
@@ -24,31 +24,28 @@ final class SqlGetProductCompletenesses implements GetProductCompletenesses
         $this->connection = $connection;
     }
 
-    public function fromProductId(int $productId): ProductCompletenessWithMissingAttributeCodesCollection
+    public function fromProductId(int $productId): ProductCompletenessCollection
     {
         $sql = <<<SQL
 SELECT 
        channel.code AS channel_code,
        locale.code AS locale_code,
        completeness.required_count AS required_count,
-       JSON_ARRAYAGG(attribute.code) AS missing_attribute_codes
+       completeness.missing_count AS missing_count
 FROM pim_catalog_completeness completeness
     INNER JOIN pim_catalog_channel channel ON completeness.channel_id = channel.id
     INNER JOIN pim_catalog_locale locale ON completeness.locale_id = locale.id
-    LEFT JOIN pim_catalog_completeness_missing_attribute missing_attributes on completeness.id = missing_attributes.completeness_id
-    LEFT JOIN pim_catalog_attribute attribute ON attribute.id = missing_attributes.missing_attribute_id
 WHERE completeness.product_id = :productId
-GROUP BY completeness.required_count, channel.code, locale.code
 SQL;
         $rows = $this->connection->executeQuery($sql, ['productId' => $productId])->fetchAll();
 
-        return new ProductCompletenessWithMissingAttributeCodesCollection($productId, array_map(
-            function (array $row): ProductCompletenessWithMissingAttributeCodes {
-                return new ProductCompletenessWithMissingAttributeCodes(
+        return new ProductCompletenessCollection($productId, array_map(
+            function (array $row): ProductCompleteness {
+                return new ProductCompleteness(
                     $row['channel_code'],
                     $row['locale_code'],
                     (int)$row['required_count'],
-                    array_filter(json_decode($row['missing_attribute_codes']))
+                    (int)$row['missing_count']
                 );
             },
             $rows

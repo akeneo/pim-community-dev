@@ -2,28 +2,28 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodes;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodesCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\AxisValueLabelsNormalizer\AxisValueLabelsNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductCompletenessCollectionNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\ProductModel\ImageAsLabel;
+use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\CompleteVariantProducts;
+use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\VariantProductRatioInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValueInterface;
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer;
-use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionValueInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\ProductModel\ImageAsLabel;
-use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\CompleteVariantProducts;
-use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\VariantProductRatioInterface;
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
@@ -131,9 +131,9 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
 
         $variantProduct->getImage()->willReturn(null);
 
-        $completenessCollection =new ProductCompletenessWithMissingAttributeCodesCollection(42, [
-            new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'fr_FR', 0, []),
-            new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 0, [])
+        $completenessCollection = new ProductCompletenessCollection(42, [
+            new ProductCompleteness('ecommerce', 'fr_FR', 0, 0),
+            new ProductCompleteness('ecommerce', 'en_US', 0, 0)
         ]);
 
         $getProductCompletenesses->fromProductId(42)->willReturn($completenessCollection);
