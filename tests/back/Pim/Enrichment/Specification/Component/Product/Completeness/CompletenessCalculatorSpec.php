@@ -2,7 +2,6 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Completeness;
 
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessFamilyMask;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessFamilyMaskPerChannelAndLocale;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessProductMask;
@@ -19,11 +18,6 @@ class CompletenessCalculatorSpec extends ObjectBehavior
         GetCompletenessFamilyMasks $getCompletenessFamilyMasks
     ) {
         $this->beConstructedWith($getCompletenessProductMasks, $getCompletenessFamilyMasks);
-    }
-
-    function it_is_a_completeness_calculator()
-    {
-        $this->shouldImplement(CompletenessCalculatorInterface::class);
     }
 
     function it_calculates_completeness_for_a_product(
