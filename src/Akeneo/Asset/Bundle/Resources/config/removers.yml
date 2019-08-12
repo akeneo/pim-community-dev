@@ -1,6 +1,5 @@
 parameters:
     pimee_product_asset.remover.category_asset.class: Akeneo\Asset\Bundle\Doctrine\ORM\Remover\CategoryAssetRemover
-    pimee_product_asset.remover.completeness.class: Akeneo\Pim\Enrichment\Asset\Bundle\Doctrine\ORM\CompletenessRemover
 
 services:
     pimee_product_asset.remover.variation:
@@ -30,12 +29,6 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
             - '@pimee_product_asset.saver.asset'
-
-    pimee_product_asset.remover.completeness:
-        class: '%pimee_product_asset.remover.completeness.class%'
-        parent: pim_catalog.remover.completeness
-        arguments:
-            - '@pim_catalog.repository.attribute'
 
     pimee_product_asset.persistence.delete_variation_for_channel_id:
         class: 'Akeneo\Asset\Bundle\Persistence\Query\DeleteVariationsForChannelIdFromDB'

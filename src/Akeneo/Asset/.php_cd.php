@@ -40,9 +40,6 @@ $rules = [
         // TIP-952: Asset should not be linked to User
         'Akeneo\UserManagement\Component\Model\UserInterface',
 
-        // TIP-953: Compute product completeness from an Asset event
-        'Akeneo\Pim\Enrichment\Asset\Component\Completeness\CompletenessRemoverInterface',
-
         // TIP-954: Move AssetCollectionType
         'Akeneo\Pim\Structure\Component\AttributeType\AbstractAttributeType',
 
@@ -89,7 +86,6 @@ $rules = [
 
         // TIP-963: Define the Products public API
         'Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessGeneratorInterface',
-        'Akeneo\Pim\Enrichment\Asset\Component\Completeness\CompletenessRemoverInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators', // Should we move them in Akeneo\Tool?
         'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface',
 
