@@ -1,12 +1,4 @@
 services:
-    akeneo.pim.enrichment.command.purge_product_completeness:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Command\PurgeProductsCompletenessCommand'
-        arguments:
-            - '@pim_catalog.remover.completeness'
-            - '@pim_catalog.query.product_query_builder_factory'
-        tags:
-            - { name: 'console.command' }
-
     akeneo.pim.enrichment.command.calculate_product_completeness:
         class: 'Akeneo\Pim\Enrichment\Bundle\Command\CalculateCompletenessCommand'
         arguments:
