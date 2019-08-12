@@ -29,7 +29,7 @@ class Kernel extends BaseKernel
 
     public function registerBundles(): iterable
     {
-        $contents = require $this->getProjectDir().'/config/bundles.php';
+        $contents = require $this->getProjectDir() . '/config/bundles.php';
         foreach ($contents as $class => $envs) {
             if ($envs[$this->environment] ?? $envs['all'] ?? false) {
                 yield new $class();
@@ -44,23 +44,23 @@ class Kernel extends BaseKernel
 
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
     {
-        $container->addResource(new FileResource($this->getProjectDir().'/config/bundles.php'));
+        $container->addResource(new FileResource($this->getProjectDir() . '/config/bundles.php'));
         $container->setParameter('container.dumper.inline_class_loader', true);
-        $confDir = $this->getProjectDir().'/config';
 
-        $loader->load($confDir.'/{packages}/*.yaml', 'glob');
-        $loader->load($confDir.'/{packages}/'.$this->environment.'/**/*.yaml', 'glob');
+        $eeConfDir = $this->getProjectDir() . '/config';
+        $ceConfDir = $this->getProjectDir() . '/vendor/akeneo/pim-community-dev/config';
 
-        $loader->load($confDir.'/{services}/*.yaml', 'glob');
-        $loader->load($confDir.'/{services}/'.$this->environment.'/**/*.yaml', 'glob');
+        $this->loadPackagesConfigurationExceptSecurity($loader, $ceConfDir);
+        $this->loadPackagesConfiguration($loader, $eeConfDir);
+
+        $this->loadContainerConfiguration($loader, $ceConfDir);
+        $this->loadContainerConfiguration($loader, $eeConfDir);
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes): void
     {
-        $confDir = $this->getProjectDir().'/config';
-
-        $routes->import($confDir.'/{routes}/'.$this->environment.'/**/*.yaml', '/', 'glob');
-        $routes->import($confDir.'/{routes}/*.yaml', '/', 'glob');
+        $this->loadRoutesConfiguration($routes, $this->getProjectDir() . '/vendor/akeneo/pim-community-dev/config');
+        $this->loadRoutesConfiguration($routes, $this->getProjectDir() . '/config');
     }
 
     /**
@@ -68,7 +68,7 @@ class Kernel extends BaseKernel
      */
     public function getCacheDir(): string
     {
-        return $this->getProjectDir().'/var/cache/'.$this->environment;
+        return $this->getProjectDir() . '/var/cache/' . $this->environment;
     }
 
     /**
@@ -76,6 +76,31 @@ class Kernel extends BaseKernel
      */
     public function getLogDir(): string
     {
-        return $this->getProjectDir().'/var/logs';
+        return $this->getProjectDir() . '/var/logs';
+    }
+
+    private function loadRoutesConfiguration(RouteCollectionBuilder $routes, string $confDir): void
+    {
+        $routes->import($confDir . '/{routes}/' . $this->environment . '/**/*.yaml', '/', 'glob');
+        $routes->import($confDir . '/{routes}/*.yaml', '/', 'glob');
+    }
+
+    private function loadPackagesConfiguration(LoaderInterface $loader, string $confDir): void
+    {
+        $loader->load($confDir . '/{packages}/*.yaml', 'glob');
+        $loader->load($confDir . '/{packages}/' . $this->environment . '/**/*.yaml', 'glob');
+    }
+
+    private function loadPackagesConfigurationExceptSecurity(LoaderInterface $loader, string $confDir): void
+    {
+        # ideally, it should be something like '/{packages}/*!(security).yaml', but it doesn't work :/
+        $loader->load($confDir . '/{packages}/config.yaml', 'glob');
+        $loader->load($confDir . '/{packages}/' . $this->environment . '/**/*.yaml', 'glob');
+    }
+
+    private function loadContainerConfiguration(LoaderInterface $loader, string $confDir): void
+    {
+        $loader->load($confDir . '/{services}/*.yaml', 'glob');
+        $loader->load($confDir . '/{services}/' . $this->environment . '/**/*.yaml', 'glob');
     }
 }
