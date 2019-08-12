@@ -11,6 +11,10 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Webmozart\Assert\Assert;
 
 /**
+ * This value factory bypasses the validation done in the write value factory.
+ * The validation when reading data from the database is useless.
+ * It is done for performance reason, as validation is costly.
+ *
  * @author    Anael Chardan <anael.chardan@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -29,12 +33,12 @@ final class ReadValueFactory
     public function __construct(iterable $readValueFactories, WriteValueFactory $writeValueFactory, IdentifiableObjectRepositoryInterface $attributeRepository)
     {
         Assert::allIsInstanceOf($readValueFactories, ValueFactory::class);
-        
+
         /** @var ReadValueFactory $readValueFactory */
         foreach ($readValueFactories as $readValueFactory) {
             $this->readValueFactories[$readValueFactory->supportedAttributeType()] = $readValueFactory;
         }
-        
+
         $this->writeValueFactory = $writeValueFactory;
         $this->attributeRepository = $attributeRepository;
     }
@@ -48,6 +52,10 @@ final class ReadValueFactory
         return $this->fallbackToWriteModelValueFactory($attribute->code(), $channelCode, $localeCode, $data);
     }
 
+    /**
+     * This fallback is useful if a new attribute type is added but the read value factory is missing.
+     * In that case, it fallbacks on the write value factory.
+     */
     private function fallbackToWriteModelValueFactory(string $attributeCode, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
         $attributeFromWriteModel = $this->attributeRepository->findOneByIdentifier($attributeCode);
