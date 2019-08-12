@@ -89,6 +89,7 @@ services:
             - '@akeneo.pim.structure.query.get_attributes'
             - '@akeneo.pim.enrichment.factory.non_existent_values_filter.chained'
             - '@akeneo.pim.enrichment.factory.empty_values_cleaner'
+            - '@akeneo.pim.enrichment.factory.transform_raw_values_collections'
 
     pim_catalog.factory.value:
         class: '%pim_catalog.factory.value.class%'
@@ -270,3 +271,8 @@ services:
 
     akeneo.pim.enrichment.factory.empty_values_cleaner:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Factory\EmptyValuesCleaner'
+
+    akeneo.pim.enrichment.factory.transform_raw_values_collections:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Factory\TransformRawValuesCollections'
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'

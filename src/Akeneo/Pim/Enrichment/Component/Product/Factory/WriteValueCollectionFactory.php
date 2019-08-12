@@ -34,25 +34,30 @@ class WriteValueCollectionFactory
     private $getAttributeByCodes;
 
     /** @var ChainedNonExistentValuesFilterInterface */
-    private $chainedObsoleteValueFilter;
+    private $chainedNonExistentValuesFilter;
 
     /** @var EmptyValuesCleaner */
     private $emptyValuesCleaner;
+
+    /** @var TransformRawValuesCollections */
+    private $transformRawValuesCollections;
 
     public function __construct(
         ValueFactory $valueFactory,
         IdentifiableObjectRepositoryInterface $attributeRepository,
         LoggerInterface $logger,
         GetAttributes $getAttributeByCodes,
-        ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter,
-        EmptyValuesCleaner $emptyValuesCleaner
+        ChainedNonExistentValuesFilterInterface $chainedNonExistentValuesFilter,
+        EmptyValuesCleaner $emptyValuesCleaner,
+        TransformRawValuesCollections $transformRawValuesCollections
     ) {
         $this->valueFactory = $valueFactory;
         $this->attributeRepository = $attributeRepository;
         $this->logger = $logger;
         $this->getAttributeByCodes = $getAttributeByCodes;
-        $this->chainedObsoleteValueFilter = $chainedObsoleteValueFilter;
+        $this->chainedNonExistentValuesFilter = $chainedNonExistentValuesFilter;
         $this->emptyValuesCleaner = $emptyValuesCleaner;
+        $this->transformRawValuesCollections = $transformRawValuesCollections;
     }
 
     public function createFromStorageFormat(array $rawValues): WriteValueCollection
@@ -64,7 +69,7 @@ class WriteValueCollectionFactory
 
     public function createMultipleFromStorageFormat(array $rawValueCollections): array
     {
-        $rawValueCollectionsIndexedByType = $this->sortRawValueCollectionsToValueCollectionsIndexedByType($rawValueCollections);
+        $rawValueCollectionsIndexedByType = $this->transformRawValuesCollections->toValueCollectionsIndexedByType($rawValueCollections);
         $valueCollections = [];
 
         if (empty($rawValueCollectionsIndexedByType)) {
@@ -75,7 +80,7 @@ class WriteValueCollectionFactory
             return $valueCollections;
         }
 
-        $filtered = $this->chainedObsoleteValueFilter->filterAll(
+        $filtered = $this->chainedNonExistentValuesFilter->filterAll(
             OnGoingFilteredRawValues::fromNonFilteredValuesCollectionIndexedByType($rawValueCollectionsIndexedByType)
         );
 
@@ -92,40 +97,6 @@ class WriteValueCollectionFactory
         }
 
         return $valueCollections;
-    }
-
-    private function sortRawValueCollectionsToValueCollectionsIndexedByType(array $rawValueCollections): array
-    {
-        $attributeCodes = [];
-        $attributeCodesPerProduct = [];
-
-        foreach ($rawValueCollections as $productIdentifier => $rawValues) {
-            foreach (array_keys($rawValues) as $attributeCode) {
-                $attributeCodes[] = (string) $attributeCode;
-                $attributeCodesPerProduct[$productIdentifier][] = $attributeCode;
-            }
-        }
-
-        $attributes = array_filter($this->getAttributeByCodes->forCodes(array_values(array_unique($attributeCodes))));
-
-        $typesToValues = [];
-
-        foreach ($rawValueCollections as $productIdentifier => $rawValues) {
-            foreach ($rawValues as $attributeCode => $values) {
-                if (isset($attributes[$attributeCode])) {
-                    $type = $attributes[$attributeCode]->type();
-                    $properties = $attributes[$attributeCode]->properties();
-
-                    $typesToValues[$type][$attributeCode][] = [
-                        'identifier' => $productIdentifier,
-                        'values' => $values,
-                        'properties' => $properties
-                    ];
-                }
-            }
-        }
-
-        return $typesToValues;
     }
 
     private function createValues(array $rawValueCollections): array

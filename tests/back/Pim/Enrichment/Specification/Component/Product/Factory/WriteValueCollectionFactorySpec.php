@@ -5,6 +5,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\EmptyValuesCleaner;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\ChainedNonExistentValuesFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\OnGoingFilteredRawValues;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\TransformRawValuesCollections;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
@@ -38,7 +39,8 @@ class WriteValueCollectionFactorySpec extends ObjectBehavior
             $logger,
             $getAttributeByCodes,
             $chainedObsoleteValueFilter,
-            new EmptyValuesCleaner()
+            new EmptyValuesCleaner(),
+            new TransformRawValuesCollections($getAttributeByCodes->getWrappedObject())
         );
     }
 
