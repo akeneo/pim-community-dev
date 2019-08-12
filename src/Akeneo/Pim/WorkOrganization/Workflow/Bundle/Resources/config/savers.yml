@@ -43,7 +43,6 @@ services:
         class: '%pimee_workflow.saver.product_delegating.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.manager.completeness'
             - '@event_dispatcher'
             - '@security.authorization_checker'
             - '@pimee_workflow.product.builder.draft'

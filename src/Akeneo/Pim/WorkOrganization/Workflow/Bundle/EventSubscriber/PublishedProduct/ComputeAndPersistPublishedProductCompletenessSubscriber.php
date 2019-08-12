@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct;
 
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompleteness;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompletenessCollection;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
@@ -29,18 +28,18 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class ComputeAndPersistPublishedProductCompletenessSubscriber implements EventSubscriberInterface
 {
-    /** @var CompletenessCalculatorInterface */
-    private $completenessCalculator;
-
     /** @var SavePublishedProductCompletenesses */
     private $savePublishedProductCompletenesses;
 
+    /** @var GetProductCompletenesses */
+    private $getProductCompletenesses;
+
     public function __construct(
-        CompletenessCalculatorInterface $completenessCalculator,
-        SavePublishedProductCompletenesses $savePublishedProductCompletenesses
+        SavePublishedProductCompletenesses $savePublishedProductCompletenesses,
+        GetProductCompletenesses $getProductCompletenesses
     ) {
-        $this->completenessCalculator = $completenessCalculator;
         $this->savePublishedProductCompletenesses = $savePublishedProductCompletenesses;
+        $this->getProductCompletenesses = $getProductCompletenesses;
     }
 
     /**
@@ -61,26 +60,20 @@ class ComputeAndPersistPublishedProductCompletenessSubscriber implements EventSu
             return;
         }
 
-        $completenesses = $this->completenessCalculator->calculate($publishedProduct);
+        $originalProductId = $publishedProduct->getOriginalProduct()->getId();
+        $originalProductCompletenesses = $this->getProductCompletenesses->fromProductId($originalProductId);
 
-        $collection = new PublishedProductCompletenessCollection(
-            $publishedProduct->getId(),
-            array_map(
-                function (CompletenessInterface $completeness): PublishedProductCompleteness {
-                    return new PublishedProductCompleteness(
-                        $completeness->getChannel()->getCode(),
-                        $completeness->getLocale()->getCode(),
-                        $completeness->getRequiredCount(),
-                        $completeness->getMissingAttributes()->map(
-                            function (AttributeInterface $missingAttribute): string {
-                                return $missingAttribute->getCode();
-                            }
-                        )->toArray()
-                    );
-                },
-                $completenesses
-            )
-        );
+        $publishedProductCompletenesses = array_map(function (ProductCompleteness $productCompleteness): PublishedProductCompleteness {
+            return new PublishedProductCompleteness(
+                $productCompleteness->channelCode(),
+                $productCompleteness->localeCode(),
+                $productCompleteness->requiredCount(),
+                $productCompleteness->missingAttributeCodes()
+            );
+        }, iterator_to_array($originalProductCompletenesses));
+
+        $collection = new PublishedProductCompletenessCollection($publishedProduct->getId(), $publishedProductCompletenesses);
+
         $this->savePublishedProductCompletenesses->save($collection);
     }
 }

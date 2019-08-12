@@ -43,8 +43,3 @@ services:
             - '@pimee_workflow.saver.product_model_draft'
             - '@pimee_workflow.remover.product_model_draft'
             - '@pim_enrich.filter.product_values_edit_data'
-
-    pimee_workflow.manager.completeness:
-        class: '%pim_catalog.manager.completeness.class%'
-        arguments:
-            - '@pimee_workflow.completeness.generator'

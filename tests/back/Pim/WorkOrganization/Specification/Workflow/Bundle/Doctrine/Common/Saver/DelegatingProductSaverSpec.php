@@ -10,7 +10,6 @@ use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer;
-use Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
@@ -29,7 +28,6 @@ class DelegatingProductSaverSpec extends ObjectBehavior
 {
     function let(
         ObjectManager $objectManager,
-        CompletenessManager $completenessManager,
         EventDispatcherInterface $eventDispatcher,
         AuthorizationCheckerInterface $authorizationChecker,
         EntityWithValuesDraftBuilderInterface $filteredProductDraftBuilder,
@@ -42,7 +40,6 @@ class DelegatingProductSaverSpec extends ObjectBehavior
     ) {
         $this->beConstructedWith(
             $objectManager,
-            $completenessManager,
             $eventDispatcher,
             $authorizationChecker,
             $filteredProductDraftBuilder,
@@ -67,7 +64,6 @@ class DelegatingProductSaverSpec extends ObjectBehavior
 
     function it_saves_the_product_when_user_is_the_owner(
         $objectManager,
-        $completenessManager,
         $eventDispatcher,
         $authorizationChecker,
         $tokenStorage,
@@ -91,7 +87,6 @@ class DelegatingProductSaverSpec extends ObjectBehavior
 
         $objectManager->persist($filteredProduct)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
-        $completenessManager->generateMissingForProduct($filteredProduct)->shouldBeCalled();
         $uniqueDataSynchronizer->synchronize($filteredProduct)->shouldBeCalled();
 
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
@@ -132,7 +127,6 @@ class DelegatingProductSaverSpec extends ObjectBehavior
 
     function it_saves_the_product_when_user_is_not_the_owner_and_product_not_exists(
         $objectManager,
-        $completenessManager,
         $eventDispatcher,
         $mergeDataOnProduct,
         ProductInterface $filteredProduct
@@ -143,7 +137,6 @@ class DelegatingProductSaverSpec extends ObjectBehavior
 
         $objectManager->persist($filteredProduct)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
-        $completenessManager->generateMissingForProduct($filteredProduct)->shouldBeCalled();
 
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
         $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
@@ -319,7 +312,6 @@ class DelegatingProductSaverSpec extends ObjectBehavior
 
     function it_saves_several_product_and_product_drafts_depending_on_user_ownership(
         $objectManager,
-        $completenessManager,
         $eventDispatcher,
         $authorizationChecker,
         $filteredProductDraftBuilder,

@@ -4,14 +4,15 @@ namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscri
 
 use Akeneo\Channel\Component\Model\Channel;
 use Akeneo\Channel\Component\Model\Locale;
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Completeness;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\ComputeAndPersistPublishedProductCompletenessSubscriber;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompletenessCollection;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\SavePublishedProductCompletenesses;
-use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -20,10 +21,10 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class ComputeAndPersistPublishedProductCompletenessSubscriberSpec extends ObjectBehavior
 {
     function let(
-        CompletenessCalculatorInterface $completenessCalculator,
-        SavePublishedProductCompletenesses $savePublishedProductCompletenesses
+        SavePublishedProductCompletenesses $savePublishedProductCompletenesses,
+        GetProductCompletenesses $getProductCompletenesses
     ) {
-        $this->beConstructedWith($completenessCalculator, $savePublishedProductCompletenesses);
+        $this->beConstructedWith($savePublishedProductCompletenesses, $getProductCompletenesses);
     }
 
     function it_is_an_event_subscriber()
@@ -37,7 +38,7 @@ class ComputeAndPersistPublishedProductCompletenessSubscriberSpec extends Object
     }
 
     function it_computes_and_saves_completenesses_for_a_published_product(
-        CompletenessCalculatorInterface $completenessCalculator,
+        GetProductCompletenesses $getProductCompletenesses,
         SavePublishedProductCompletenesses $savePublishedProductCompletenesses
     ) {
         $publishedProduct = new PublishedProduct();
@@ -52,13 +53,14 @@ class ComputeAndPersistPublishedProductCompletenessSubscriberSpec extends Object
         $description->setCode('description');
         $picture = new Attribute();
         $picture->setCode('picture');
+        $product = new Product();
+        $product->setId(1);
+        $publishedProduct->setOriginalProduct($product);
 
-        $completenessCalculator->calculate($publishedProduct)->willReturn(
-            [
-                new Completeness($publishedProduct, $ecommerce, $enUs, new ArrayCollection([$description]), 1, 20),
-                new Completeness($publishedProduct, $ecommerce, $enUs, new ArrayCollection([$description, $picture]), 2, 25),
-            ]
-        )->shouldBeCalled();
+        $getProductCompletenesses->fromProductId(1)->willReturn(new ProductCompletenessCollection(1, [
+            new ProductCompleteness('ecommerce', 'en_US', 1, ['description']),
+            new ProductCompleteness('mobile', 'en_US', 2, ['description']),
+        ]));
 
         $savePublishedProductCompletenesses->save(Argument::type(PublishedProductCompletenessCollection::class))->shouldBeCalled();
 
@@ -66,10 +68,8 @@ class ComputeAndPersistPublishedProductCompletenessSubscriberSpec extends Object
     }
 
     function it_does_nothing_for_anything_but_a_published_product(
-        CompletenessCalculatorInterface $completenessCalculator,
         SavePublishedProductCompletenesses $savePublishedProductCompletenesses
     ) {
-        $completenessCalculator->calculate(Argument::any())->shouldNotBeCalled();
         $savePublishedProductCompletenesses->save(Argument::any())->shouldNotBeCalled();
 
         $this->computePublishedProductCompleteness(new GenericEvent(new \stdClass()));

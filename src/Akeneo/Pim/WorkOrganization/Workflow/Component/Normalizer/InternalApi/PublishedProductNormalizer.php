@@ -14,19 +14,14 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\InternalApi;
 use Akeneo\Asset\Component\Normalizer\InternalApi\ImageNormalizer;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\FileNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer\PublishedProductNormalizer as StandardPublishedProductNormalizer;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompleteness;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompletenessCollection;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\GetPublishedProductCompletenesses;
 use Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface;
@@ -77,9 +72,6 @@ class PublishedProductNormalizer implements NormalizerInterface
     /** @var GetPublishedProductCompletenesses */
     private $getPublishedProductCompletenesses;
 
-    /** @var CompletenessCalculatorInterface */
-    private $completenessCalculator;
-
     /** @var NormalizerInterface */
     private $incompleteValuesNormalizer;
 
@@ -113,7 +105,6 @@ class PublishedProductNormalizer implements NormalizerInterface
         FormProviderInterface $formProvider,
         StructureVersionProviderInterface $structureVersionProvider,
         GetPublishedProductCompletenesses $getPublishedProductCompletenesses,
-        CompletenessCalculatorInterface $completenessCalculator,
         NormalizerInterface $incompleteValuesNormalizer,
         ImageNormalizer $imageNormalizer,
         LocaleRepositoryInterface $localeRepository,
@@ -133,7 +124,6 @@ class PublishedProductNormalizer implements NormalizerInterface
         $this->formProvider = $formProvider;
         $this->structureVersionProvider = $structureVersionProvider;
         $this->getPublishedProductCompletenesses = $getPublishedProductCompletenesses;
-        $this->completenessCalculator = $completenessCalculator;
         $this->incompleteValuesNormalizer = $incompleteValuesNormalizer;
         $this->imageNormalizer = $imageNormalizer;
         $this->localeRepository = $localeRepository;
@@ -239,22 +229,6 @@ class PublishedProductNormalizer implements NormalizerInterface
     private function getNormalizedCompletenesses(PublishedProductInterface $publishedProduct): array
     {
         $completenessCollection = $this->getPublishedProductCompletenesses->fromPublishedProductId($publishedProduct->getId());
-        if ($completenessCollection->isEmpty()) {
-            $newCompletenesses = $this->completenessCalculator->calculate($publishedProduct);
-            $completenessCollection = new PublishedProductCompletenessCollection(
-                $publishedProduct->getId(),
-                array_map(function (CompletenessInterface $completeness) {
-                    return new PublishedProductCompleteness(
-                        $completeness->getChannel()->getCode(),
-                        $completeness->getLocale()->getCode(),
-                        $completeness->getRequiredCount(),
-                        $completeness->getMissingAttributes()->map(function (AttributeInterface $attribute) {
-                            return $attribute->getCode();
-                        })->toArray()
-                    );
-                }, $newCompletenesses)
-            );
-        }
 
         return $this->completenessCollectionNormalizer->normalize($completenessCollection, 'internal_api');
     }
