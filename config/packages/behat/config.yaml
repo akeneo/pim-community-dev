@@ -4,9 +4,6 @@ framework:
 pim_import_export:
     record_mails: true
 
-parameters:
-    installer_data: PimInstallerBundle:minimal
-
 monolog:
     handlers:
         main:
