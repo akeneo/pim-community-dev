@@ -87,6 +87,7 @@ extensions:
         module: pim/product-edit-form/start-copy
         parent: pim-product-model-edit-form-secondary-actions
         targetZone: secondary-actions
+        aclResourceId: pim_enrich_product_model_edit_attributes
         position: 80
 
     pim-product-model-edit-form-delete:
