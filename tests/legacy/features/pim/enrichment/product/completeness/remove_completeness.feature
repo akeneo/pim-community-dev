@@ -20,7 +20,15 @@ Feature: Display the completeness of a product
       | sandals  | description | Super sandales        | fr_FR  | tablet |
       | sandals  | description | Super sandales        | fr_FR  | mobile |
     And I am logged in as "Julia"
-    Scenario: Remove completeness when locales of a channel are deleted
+
+    # there are a lot of bugs with this kind of deletion actually
+    # the completeness is removed the wrong way: the elasticsearch index is not updated
+    #
+    # ideally, a job should:
+    # - remove all the values of this locale in the values of all the products
+    # - which triggers the completeness calculation if one of the attribute is required in the values
+    # - and trigger the indexation
+  Scenario: Remove completeness when locales of a channel are deleted
     Given I am on the "tablet" channel page
     When I change the "Locales" to "French (France)"
     And I press the "Save" button

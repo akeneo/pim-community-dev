@@ -80,20 +80,6 @@ Feature: Edit common attributes of many products at once
       | dry   |
       | hot   |
 
-  @info https://akeneo.atlassian.net/browse/PIM-2163
-  Scenario: Successfully mass edit product values that does not belong yet to the product
-    Given I am on the products grid
-    And I set product "pump" family to "sneakers"
-    When I select rows pump and sneakers
-    And I press the "Bulk actions" button
-    And I choose the "Edit attributes values" operation
-    And I display the Name attribute
-    And I change the "Name" to "boots"
-    And I confirm mass edit
-    And I wait for the "edit_common_attributes" job to finish
-    Then the english localizable value name of "pump" should be "boots"
-    And the english localizable value name of "sneakers" should be "boots"
-
   @critical
   @info https://akeneo.atlassian.net/browse/PIM-3070
   Scenario: Successfully mass edit a price not added to the product
@@ -119,46 +105,6 @@ Feature: Edit common attributes of many products at once
       | 100    | USD      |
       | 150    | EUR      |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3426
-  Scenario: Successfully update multi-valued value at once where the product have already one of the value
-    Given the following product values:
-      | product | attribute          | value   |
-      | boots   | weather_conditions | dry,hot |
-    And I am on the products grid
-    And I select rows boots and sneakers
-    And I press the "Bulk actions" button
-    And I choose the "Edit attributes values" operation
-    And I display the Weather conditions attribute
-    And I change the "Weather conditions" to "Dry, Hot"
-    And I confirm mass edit
-    And I wait for the "edit_common_attributes" job to finish
-    Then the options "weather_conditions" of products boots and sneakers should be:
-      | value |
-      | dry   |
-      | hot   |
-
-  @jira https://akeneo.atlassian.net/browse/PIM-4528
-  Scenario: See previously selected fields on mass edit error
-    Given I am on the products grid
-    And I select rows boots and sandals
-    And I press the "Bulk actions" button
-    And I choose the "Edit attributes values" operation
-    And I display the Weight and Name attribute
-    Then I visit the "Other" group
-    And I change the "Weight" to "Edith"
-    And I move on to the next step
-    And I should see the text "Weight"
-    Then I visit the "Product information" group
-    And I should see the text "Name"
-    When I am on the attributes page
-    And I am on the products grid
-    And I select rows boots and sandals
-    And I press the "Bulk actions" button
-    And I choose the "Edit attributes values" operation
-    Then I should not see the text "Product information"
-    And I should not see the text "Weight"
-    And I should not see the text "Name"
-
   @critical
   @jira https://akeneo.atlassian.net/browse/PIM-6008
   Scenario: Successfully mass edit scoped product values with special chars
@@ -173,87 +119,6 @@ Feature: Edit common attributes of many products at once
     And I wait for the "edit_common_attributes" job to finish
     Then the english tablet Description of "boots" should be "&$@(B°ar'<"
     And the english tablet Description of "pump" should be "&$@(B°ar'<"
-
-  Scenario: Successfully mass edit products and the completeness should be computed
-    Given I am on the "sneakers" product page
-    When I visit the "Completeness" column tab
-    Then I should see the completeness:
-      | channel | locale | state   | missing_values | ratio |
-      | tablet  | en_US  | warning | 8              | 11%   |
-      | mobile  | en_US  | warning | 4              | 20%   |
-    And I am on the "sandals" product page
-    When I visit the "Completeness" column tab
-    Then I should see the completeness:
-      | channel | locale | state   | missing_values | ratio |
-      | tablet  | en_US  | warning | 7              | 12%   |
-      | mobile  | en_US  | warning | 4              | 20%   |
-    Then I am on the products grid
-    And I select rows sandals, sneakers
-    And I press the "Bulk actions" button
-    And I choose the "Edit attributes values" operation
-    And I display the Name, Price and Size attribute
-    And I change the "Name" to "boots"
-    Then I visit the "Marketing" group
-    And I change the "Price" to "100 USD"
-    And I change the "Price" to "150 EUR"
-    Then I visit the "Sizes" group
-    And I change the "Size" to "37"
-    And I confirm mass edit
-    And I wait for the "edit_common_attributes" job to finish
-    Then I am on the products grid
-    And I should see the text "44"
-    And I should see the text "50"
-    Then I am on the "sneakers" product page
-    When I visit the "Completeness" column tab
-    And I should see the completeness:
-      | channel | locale | state   | missing_values | ratio |
-      | tablet  | en_US  | warning | 5              | 44%   |
-      | mobile  | en_US  | warning | 1              | 80%   |
-    And I am on the "sandals" product page
-    When I visit the "Completeness" column tab
-    And I should see the completeness:
-      | channel | locale | state   | missing_values | ratio |
-      | tablet  | en_US  | warning | 4              | 50%   |
-      | mobile  | en_US  | warning | 1              | 80%   |
-
-  @jira https://akeneo.atlassian.net/browse/PIM-6022
-  Scenario: Successfully mass edit product values preventing Shell Command Injection
-    Given I am on the "boots" family page
-    And I visit the "Attributes" tab
-    And I add available attributes Comment
-    And I save the family
-    And I should not see the text "There are unsaved changes."
-    And I am on the "sneakers" family page
-    And I visit the "Attributes" tab
-    And I add available attributes Comment
-    And I save the family
-    And I should not see the text "There are unsaved changes."
-    And I am on the "sandals" family page
-    And I visit the "Attributes" tab
-    And I add available attributes Comment
-    And I save the family
-    And I should not see the text "There are unsaved changes."
-    And I am on the products grid
-    When I select rows boots, sandals and sneakers
-    And I press the "Bulk actions" button
-    And I choose the "Edit attributes values" operation
-    And I display the Description and Name and Comment attribute
-    And I change the "Name" to "\$\(touch \/tmp\/inject.txt\) && \$\$ || `ls`; \"echo \"SHELL_INJECTION\"\""
-    And I change the "Description" to ";`echo \"SHELL_INJECTION\"`"
-    And I visit the "Other" group
-    And I change the "Comment" to "$(echo "shell_injection" > shell_injection.txt)"
-    And I confirm mass edit
-    And I wait for the "edit_common_attributes" job to finish
-    Then the english localizable value name of "boots" should be "\$\(touch \/tmp\/inject.txt\) && \$\$ || `ls`; \"echo \"SHELL_INJECTION\"\""
-    And the english localizable value name of "sandals" should be "\$\(touch \/tmp\/inject.txt\) && \$\$ || `ls`; \"echo \"SHELL_INJECTION\"\""
-    And the english localizable value name of "sneakers" should be "\$\(touch \/tmp\/inject.txt\) && \$\$ || `ls`; \"echo \"SHELL_INJECTION\"\""
-    And the english tablet description of "boots" should be ";`echo \"SHELL_INJECTION\"`"
-    And the english tablet description of "sandals" should be ";`echo \"SHELL_INJECTION\"`"
-    And the english tablet description of "sneakers" should be ";`echo \"SHELL_INJECTION\"`"
-    And attribute Comment of "boots" should be "$(echo "shell_injection" > shell_injection.txt)"
-    And attribute Comment of "sandals" should be "$(echo "shell_injection" > shell_injection.txt)"
-    And attribute Comment of "sneakers" should be "$(echo "shell_injection" > shell_injection.txt)"
-    And file "%web%shell_injection.txt" should not exist
 
   @jira https://akeneo.atlassian.net/browse/PIM-6240
   Scenario: Allow editing all attributes on configuration screen
@@ -286,28 +151,3 @@ Feature: Edit common attributes of many products at once
     And I display the Name attribute
     And I move on to the next step
     Then I should not see the text "There are errors in the attributes form"
-
-  @jira https://akeneo.atlassian.net/browse/PIM-6199
-  Scenario: Successfully disable form when we are in validation step on mass edit products
-    Given I am on the products grid
-    And I select rows boots, sandals and sneakers
-    And I press the "Bulk actions" button
-    When I choose the "Edit attributes values" operation
-    Then The available attributes button should be enabled
-    And I display the Name attribute
-    And I change the "Name" to "boots"
-    And I move to the confirm page
-    Then I should not see the text "Add Attribute"
-
-  @jira https://akeneo.atlassian.net/browse/PIM-6271
-  Scenario: Successfully keep mass edit form fields disabled after switching groups
-    Given I am on the products grid
-    And I select rows boots, sandals and sneakers
-    And I press the "Bulk actions" button
-    When I choose the "Edit attributes values" operation
-    And I display the Price attribute
-    And I display the Name attribute
-    And I move to the confirm page
-    Then the field Name should be disabled
-    When I visit the "Marketing" group
-    Then the field Price should be disabled
