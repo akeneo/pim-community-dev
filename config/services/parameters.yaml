@@ -1,4 +1,5 @@
 parameters:
+    pim_ce_dev_src_folder_location: '%kernel.project_dir%/vendor/akeneo/pim-community-dev'
     pim_ee_dev_src_folder_location: '%kernel.project_dir%'
     product_proposal_index_name: '%env(APP_PRODUCT_PROPOSAL_INDEX_NAME)%'
     published_product_index_name: '%env(APP_PUBLISHED_PRODUCT_INDEX_NAME)%'
