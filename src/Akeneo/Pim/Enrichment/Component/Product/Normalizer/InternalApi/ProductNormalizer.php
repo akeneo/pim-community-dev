@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Query\AscendantCategoriesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
@@ -70,7 +71,7 @@ class ProductNormalizer implements NormalizerInterface
     /** @var CollectionFilterInterface */
     protected $collectionFilter;
 
-    /** @var ProductCompletenessCollectionNormalizer */
+    /** @var ProductCompletenessWithMissingAttributeCodesCollectionNormalizer */
     protected $completenessCollectionNormalizer;
 
     /** @var UserContext */
@@ -101,8 +102,8 @@ class ProductNormalizer implements NormalizerInterface
     /** @var CatalogContext */
     protected $catalogContext;
 
-    /** @var GetProductCompletenesses */
-    private $getProductCompletenesses;
+    /** @var CompletenessCalculator */
+    private $completenessCalculator;
 
     public function __construct(
         NormalizerInterface $normalizer,
@@ -117,7 +118,7 @@ class ProductNormalizer implements NormalizerInterface
         ObjectManager $productManager,
         ChannelRepositoryInterface $channelRepository,
         CollectionFilterInterface $collectionFilter,
-        ProductCompletenessCollectionNormalizer $completenessCollectionNormalizer,
+        ProductCompletenessWithMissingAttributeCodesCollectionNormalizer $completenessCollectionNormalizer,
         UserContext $userContext,
         EntityWithFamilyValuesFillerInterface $productValuesFiller,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
@@ -127,7 +128,7 @@ class ProductNormalizer implements NormalizerInterface
         MissingAssociationAdder $missingAssociationAdder,
         NormalizerInterface $parentAssociationsNormalizer,
         CatalogContext $catalogContext,
-        GetProductCompletenesses $getProductCompletenesses
+        CompletenessCalculator $completenessCalculator
     ) {
         $this->normalizer                       = $normalizer;
         $this->versionNormalizer                = $versionNormalizer;
@@ -151,7 +152,7 @@ class ProductNormalizer implements NormalizerInterface
         $this->parentAssociationsNormalizer     = $parentAssociationsNormalizer;
         $this->missingAssociationAdder          = $missingAssociationAdder;
         $this->catalogContext                   = $catalogContext;
-        $this->getProductCompletenesses = $getProductCompletenesses;
+        $this->completenessCalculator           = $completenessCalculator;
     }
 
     /**
@@ -262,7 +263,9 @@ class ProductNormalizer implements NormalizerInterface
     }
 
     /**
-     * Get Product Completeness and normalize it
+     * Calculates the product completenesses, and normalizes them
+     * It is costly, but needed to get the missing attribute codes as we do not store them anymore
+     * Also, this normlizer is (and should be) only used to normalize a single product for the PEF
      *
      * @param ProductInterface $product
      *
@@ -270,7 +273,7 @@ class ProductNormalizer implements NormalizerInterface
      */
     protected function getNormalizedCompletenesses(ProductInterface $product)
     {
-        $completenessCollection = $this->getProductCompletenesses->fromProductId($product->getId());
+        $completenessCollection = $this->completenessCalculator->fromProductIdentifier($product->getIdentifier());
 
         return $this->completenessCollectionNormalizer->normalize($completenessCollection);
     }

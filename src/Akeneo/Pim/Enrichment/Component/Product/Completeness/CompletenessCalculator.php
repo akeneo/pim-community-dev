@@ -7,7 +7,6 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Completeness;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessProductMask;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetCompletenessFamilyMasks;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetCompletenessProductMasks;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodesCollection;
 
 /**
@@ -15,7 +14,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class CompletenessCalculator
+class CompletenessCalculator
 {
     /** @var GetCompletenessProductMasks */
     private $getCompletenessProductMasks;

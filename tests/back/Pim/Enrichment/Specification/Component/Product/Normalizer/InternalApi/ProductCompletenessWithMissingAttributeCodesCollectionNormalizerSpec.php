@@ -4,14 +4,14 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Inter
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodesCollection;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductCompletenessCollectionNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductCompletenessWithMissingAttributeCodesCollectionNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetAttributeLabelsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetChannelLabelsInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class ProductCompletenessCollectionNormalizerSpec extends ObjectBehavior
+class ProductCompletenessWithMissingAttributeCodesCollectionNormalizerSpec extends ObjectBehavior
 {
     function let(
         NormalizerInterface $normalizer,
@@ -28,7 +28,7 @@ class ProductCompletenessCollectionNormalizerSpec extends ObjectBehavior
 
     function it_is_a_product_completeness_collection_normalizer()
     {
-        $this->shouldHaveType(ProductCompletenessCollectionNormalizer::class);
+        $this->shouldHaveType(ProductCompletenessWithMissingAttributeCodesCollectionNormalizer::class);
     }
 
     function it_normalizes_completenesses_and_indexes_them(

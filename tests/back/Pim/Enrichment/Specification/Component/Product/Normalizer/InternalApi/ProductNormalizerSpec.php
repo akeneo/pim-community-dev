@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Query\AscendantCategoriesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
@@ -15,12 +16,11 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodesCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductCompletenessCollectionNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductCompletenessWithMissingAttributeCodesCollectionNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\VariantNavigationNormalizer;
-use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -50,7 +50,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         ObjectManager $productManager,
         ChannelRepositoryInterface $channelRepository,
         CollectionFilterInterface $collectionFilter,
-        ProductCompletenessCollectionNormalizer $completenessCollectionNormalizer,
+        ProductCompletenessWithMissingAttributeCodesCollectionNormalizer $completenessCollectionNormalizer,
         UserContext $userContext,
         EntityWithFamilyValuesFillerInterface $productValuesFiller,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
@@ -60,7 +60,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         MissingAssociationAdder $missingAssociationAdder,
         NormalizerInterface $parentAssociationsNormalizer,
         CatalogContext $catalogContext,
-        GetProductCompletenesses $getProductCompletenesses
+        CompletenessCalculator $completenessCalculator
     ) {
         $this->beConstructedWith(
             $normalizer,
@@ -85,7 +85,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             $missingAssociationAdder,
             $parentAssociationsNormalizer,
             $catalogContext,
-            $getProductCompletenesses
+            $completenessCalculator
         );
     }
 
@@ -110,7 +110,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $productValuesFiller,
         $incompleteValuesNormalizer,
         $missingAssociationAdder,
-        $getProductCompletenesses,
+        $completenessCalculator,
         $completenessCollectionNormalizer,
         ProductInterface $mug,
         AssociationInterface $upsell,
@@ -172,6 +172,7 @@ class ProductNormalizerSpec extends ObjectBehavior
 
         $mug->isVariant()->willReturn(false);
         $mug->getId()->willReturn(12);
+        $mug->getIdentifier()->willReturn('mug');
         $versionManager->getOldestLogEntry($mug)->willReturn('create_version');
         $versionNormalizer->normalize('create_version', 'internal_api', ['timezone' => 'Pacific/Kiritimati'])
             ->willReturn('normalized_create_version');
@@ -195,9 +196,9 @@ class ProductNormalizerSpec extends ObjectBehavior
         $groups->toArray()->willReturn([$group]);
         $group->getId()->willReturn(12);
 
-        $productCompletenessCollection = new ProductCompletenessCollection(12, []);
-        $getProductCompletenesses->fromProductId(12)->willReturn($productCompletenessCollection);
-        $completenessCollectionNormalizer->normalize($productCompletenessCollection)->willReturn(['normalizedCompleteness']);
+        $ProductCompletenessWithMissingAttributeCodesCollection = new ProductCompletenessWithMissingAttributeCodesCollection(12, []);
+        $completenessCalculator->fromProductIdentifier('mug')->willReturn($ProductCompletenessWithMissingAttributeCodesCollection);
+        $completenessCollectionNormalizer->normalize($ProductCompletenessWithMissingAttributeCodesCollection)->willReturn(['normalizedCompleteness']);
 
         $structureVersionProvider->getStructureVersion()->willReturn(12);
         $formProvider->getForm($mug)->willReturn('product-edit-form');
@@ -267,7 +268,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $ascendantCategories,
         $incompleteValuesNormalizer,
         $missingAssociationAdder,
-        $getProductCompletenesses,
+        $completenessCalculator,
         $completenessCollectionNormalizer,
         ProductInterface $mug,
         AssociationInterface $upsell,
@@ -334,6 +335,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $productValueConverter->convert($valuesLocalized)->willReturn($valuesConverted);
 
         $mug->getId()->willReturn(12);
+        $mug->getIdentifier()->willReturn('mug');
         $versionManager->getOldestLogEntry($mug)->willReturn('create_version');
         $versionNormalizer->normalize('create_version', 'internal_api', ['timezone' => 'Pacific/Kiritimati'])
             ->willReturn('normalized_create_version');
@@ -357,9 +359,9 @@ class ProductNormalizerSpec extends ObjectBehavior
         $groups->toArray()->willReturn([$group]);
         $group->getId()->willReturn(12);
 
-        $productCompletenessCollection = new ProductCompletenessCollection(12, []);
-        $getProductCompletenesses->fromProductId(12)->willReturn($productCompletenessCollection);
-        $completenessCollectionNormalizer->normalize($productCompletenessCollection)->willReturn(['normalizedCompletenesses']);
+        $ProductCompletenessWithMissingAttributeCodesCollection = new ProductCompletenessWithMissingAttributeCodesCollection(12, []);
+        $completenessCalculator->fromProductIdentifier('mug')->willReturn($ProductCompletenessWithMissingAttributeCodesCollection);
+        $completenessCollectionNormalizer->normalize($ProductCompletenessWithMissingAttributeCodesCollection)->willReturn(['normalizedCompletenesses']);
 
         $structureVersionProvider->getStructureVersion()->willReturn(12);
         $formProvider->getForm($mug)->willReturn('product-edit-form');

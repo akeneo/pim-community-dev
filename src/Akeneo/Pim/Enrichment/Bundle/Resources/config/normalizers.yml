@@ -75,7 +75,7 @@ services:
             - '@pim_catalog.product_models.image_as_label'
             - '@pim_catalog.context.catalog'
             - '@pim_catalog.repository.cached_attribute_option'
-            - '@akeneo.pim.enrichment.product.query.get_product_completenesses'
+            - '@pim_catalog.completeness.calculator'
 
     pim_enrich.normalizer.entity_with_family_variant.simple_select.label.normalizer:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\AxisValueLabelsNormalizer\SimpleSelectOptionNormalizer'
@@ -126,7 +126,7 @@ services:
             - '@pim_internal_api_serializer'
 
     pim_enrich.normalizer.product_completeness_collection:
-        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductCompletenessCollectionNormalizer'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductCompletenessWithMissingAttributeCodesCollectionNormalizer'
         arguments:
             - '@pim_enrich.normalizer.product_completeness'
             - '@akeneo.pim.enrichment.channel.query.get_labels'
@@ -173,7 +173,7 @@ services:
             - '@pim_catalog.association.missing_association_adder'
             - '@pim_catalog.normalizer.standard.product.parent_associations'
             - '@pim_catalog.context.catalog'
-            - '@akeneo.pim.enrichment.product.query.get_product_completenesses'
+            - '@pim_catalog.completeness.calculator'
         tags:
             - { name: pim_internal_api_serializer.normalizer, priority: 110 }
 
