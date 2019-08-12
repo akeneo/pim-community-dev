@@ -1,14 +1,36 @@
-version: '3'
+version: '3.4'
 
 services:
-  fpm:
-    image: 'akeneo/fpm:php-7.2'
-    user: 'docker'
+  php:
+    image: 'akeneo/pim-dev/php:7.2'
+    user: '${CURRENT_USER_IDS:-1000:1000}'
     environment:
       APP_ENV: ${APP_ENV:-prod}
+      COMPOSER_HOME: '/home/docker/.composer'
+      BEHAT_TMPDIR: '/srv/pim/var/cache/tmp'
+      PHP_IDE_CONFIG: 'serverName=pim-ee-cli'
+      XDEBUG_ENABLED: "${XDEBUG_ENABLED:-0}"
+      XDEBUG_CONFIG: 'remote_host=172.17.0.1'
     volumes:
       - './:/srv/pim'
+      - '${HOST_COMPOSER_HOME:-~/.composer}:/home/docker/.composer'
     working_dir: '/srv/pim'
+    command: php
+    networks:
+      - 'akeneo'
+      - 'behat'
+
+  fpm:
+    image: 'akeneo/pim-dev/php:7.2-fpm'
+    environment:
+      BEHAT_TMPDIR: '/srv/pim/var/cache/tmp'
+      PHP_IDE_CONFIG: 'serverName=pim-ee-cli'
+      XDEBUG_ENABLED: "${XDEBUG_ENABLED:-0}"
+      XDEBUG_CONFIG: 'remote_host=172.17.0.1'
+    volumes:
+      - './:/srv/pim:ro'
+    working_dir: '/srv/pim'
+    command: php-fpm -F
     networks:
       - 'akeneo'
       - 'behat'
