@@ -228,6 +228,34 @@ class ProductModelDraftController
         ));
     }
 
+    public function removeAction(Request $request, $id): Response
+    {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
+        $productModelDraft = $this->findProductModelDraftOr404($id);
+
+        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productModelDraft->getEntityWithValue())) {
+            throw new AccessDeniedHttpException();
+        }
+
+        $this->manager->remove($productModelDraft, [
+            'comment' => $request->request->get('comment')
+        ]);
+
+        $normalizationContext = $this->userContext->toArray() + [
+            'filter_types'               => ['pim.internal_api.product_value.view'],
+            'disable_grouping_separator' => true
+        ];
+
+        return new JsonResponse($this->normalizer->normalize(
+            $productModelDraft->getEntityWithValue(),
+            'internal_api',
+            $normalizationContext
+        ));
+    }
+
     private function findProductModelOr404(string $productModelId): ProductModelInterface
     {
         $productModel = $this->productModelRepository->find($productModelId);
