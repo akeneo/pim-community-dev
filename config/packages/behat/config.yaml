@@ -1,16 +1,6 @@
 imports:
-    - { resource: config.yml }
     - { resource: ../../src/Akeneo/Pim/Automation/FranklinInsights/tests/back/Acceptance/Resources/config/pim/data_providers.yml }
     - { resource: ../../src/Akeneo/Pim/Automation/FranklinInsights/tests/back/EndToEnd/Resources/config/behat/services.yml }
-
-akeneo_pim_structure:
-    reference_data:
-        fabrics:
-            class: AcmeEnterprise\Bundle\AppBundle\Entity\Fabric
-            type: multi
-        color:
-            class: AcmeEnterprise\Bundle\AppBundle\Entity\Color
-            type: simple
 
 parameters:
     installer_data:       PimEnterpriseInstallerBundle:minimal

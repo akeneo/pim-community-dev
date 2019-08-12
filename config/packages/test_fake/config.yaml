@@ -1,5 +1,4 @@
 imports:
-    - { resource: config_behat.yml }
     - { resource: ../../tests/back/Acceptance/Resources/config/pim/repositories.yml }
     - { resource: ../../vendor/akeneo/pim-community-dev/tests/back/Platform/Acceptance/CatalogVolumeMonitoring/Resources/config/pim/queries.yml }
     - { resource: ../../tests/back/Asset/Acceptance/Resources/config/pim/queries.yml }
@@ -28,6 +27,7 @@ imports:
     - { resource: ../../tests/back/AssetManager/Acceptance/Resources/config/behat/services.yml }
     - { resource: ../../tests/back/AssetManager/Acceptance/Resources/config/pim/queries.yml }
 
+# do we need it? maybe it should go in CE if we need it
 framework:
     cache:
         pools:
