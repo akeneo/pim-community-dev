@@ -33,7 +33,3 @@ framework:
         pools:
             name:
                 adapter: cache.adapter.array
-
-parameters:
-    reference_entity_record_limit_per_reference_entity: 1000
-    asset_manager_asset_limit_per_asset_family: 1000
