@@ -78,15 +78,6 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Product:
                 - persist
                 - refresh
                 - detach
-        completenesses:
-            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface
-            orphanRemoval: true
-            mappedBy: product
-            cascade:
-                - remove
-                - persist
-                - refresh
-                - detach
         uniqueData:
             targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductUniqueDataInterface
             orphanRemoval: true
