@@ -91,10 +91,24 @@ class Kernel extends BaseKernel
         $loader->load($confDir . '/{packages}/' . $this->environment . '/**/*.yaml', 'glob');
     }
 
+    /**
+     * "security.yaml" is the only configuration file that can not be override
+     * Thus, we don't load it from the Community Edition.
+     * We copied/pasted its content into Enterprise Edition and added what was missing.
+     */
     private function loadPackagesConfigurationExceptSecurity(LoaderInterface $loader, string $confDir): void
     {
-        # ideally, it should be something like '/{packages}/*!(security).yaml', but it doesn't work :/
-        $loader->load($confDir . '/{packages}/config.yaml', 'glob');
+        $files = array_filter(
+            glob($confDir . '/{packages}/*.yaml', GLOB_BRACE),
+            function ($file) {
+                return 'security.yaml' !== basename($file);
+            }
+        );
+
+        foreach ($files as $file) {
+            $loader->load($file, 'yaml');
+        }
+
         $loader->load($confDir . '/{packages}/' . $this->environment . '/**/*.yaml', 'glob');
     }
 
