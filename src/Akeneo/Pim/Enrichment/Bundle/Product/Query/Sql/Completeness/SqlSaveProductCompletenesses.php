@@ -46,17 +46,6 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
                     'channelCode' => $completeness->channelCode(),
                 ]
             );
-            $completenessId = $this->connection->lastInsertId();
-            $this->connection->executeUpdate(
-                $this->getInsertMissingAttributesQuery(),
-                [
-                    'completenessId' => $completenessId,
-                    'attributeCodes' => $completeness->missingAttributeCodes(),
-                ],
-                [
-                    'attributeCodes' => Connection::PARAM_STR_ARRAY,
-                ]
-            );
         }
 
         try {
@@ -85,16 +74,6 @@ FROM pim_catalog_locale locale,
      pim_catalog_channel channel
 WHERE locale.code = :localeCode
   AND channel.code = :channelCode
-SQL;
-    }
-
-    private function getInsertMissingAttributesQuery(): string
-    {
-        return <<<SQL
-INSERT INTO pim_catalog_completeness_missing_attribute(completeness_id, missing_attribute_id)
-SELECT :completenessId, attribute.id
-FROM pim_catalog_attribute attribute
-WHERE attribute.code IN (:attributeCodes)
 SQL;
     }
 }

@@ -20,11 +20,9 @@ class SaveProductCompletenessesIntegration extends TestCase
     {
         $productId = $this->createProduct('a_great_product');
         Assert::assertNotEmpty($this->getCompletenessesFromDB($productId));
-        Assert::assertNotEmpty($this->getMissingAttributesFromDb($productId));
 
         $this->executeSave(new ProductCompletenessWithMissingAttributeCodesCollection($productId, []));
         Assert::assertEmpty($this->getCompletenessesFromDB($productId));
-        Assert::assertEmpty($this->getMissingAttributesFromDb($productId));
     }
 
     public function test_that_it_saves_completenesses_given_a_product_id()
@@ -47,10 +45,9 @@ class SaveProductCompletenessesIntegration extends TestCase
             ],
             $dbCompletenesses['ecommerce-en_US']
         );
-        Assert::assertEmpty($this->getMissingAttributesFromDb($productId));
     }
 
-    public function test_that_it_saves_completenesses_and_missing_attributes()
+    public function test_that_it_saves_completenesses()
     {
         $productId = $this->createProduct('a_great_product');
 
@@ -95,22 +92,6 @@ class SaveProductCompletenessesIntegration extends TestCase
             ],
             $dbCompletenesses['tablet-fr_FR']
         );
-
-        $missingAttributeCodesFromDb = $this->getMissingAttributesFromDb($productId);
-        Assert:self::assertCount(2, $missingAttributeCodesFromDb);
-
-        Assert::assertEquals(['a_text'], $missingAttributeCodesFromDb['ecommerce-en_US']);
-        Assert::assertEqualsCanonicalizing(
-            [
-                'a_localized_and_scopable_text_area',
-                'a_yes_no',
-                'a_multi_select',
-                'a_file',
-                'a_price',
-                'a_number_float',
-            ],
-            $missingAttributeCodesFromDb['tablet-fr_FR']
-        );
     }
 
     protected function getConfiguration()
@@ -145,28 +126,6 @@ SQL;
         foreach ($rows as $row) {
             $key = sprintf('%s-%s', $row['channel_code'], $row['locale_code']);
             $results[$key] = $row;
-        }
-
-        return $results;
-    }
-
-    private function getMissingAttributesFromDb(int $productId): array
-    {
-        $sql = <<<SQL
-SELECT channel.code as channel_code, locale.code as locale_code, attribute.code as missing_attribute_code
-FROM pim_catalog_completeness completeness
-    INNER JOIN pim_catalog_channel channel ON channel.id = completeness.channel_id
-    INNER JOIN pim_catalog_locale locale ON locale.id = completeness.locale_id
-    INNER JOIN pim_catalog_completeness_missing_attribute missing_attribute ON completeness.id = missing_attribute.completeness_id
-    INNER JOIN pim_catalog_attribute attribute on missing_attribute.missing_attribute_id = attribute.id
-WHERE completeness.product_id = :productId
-SQL;
-        $results = [];
-        $rows = $this->get('database_connection')->executeQuery($sql, ['productId' => $productId])->fetchAll();
-
-        foreach ($rows as $row) {
-            $key = sprintf('%s-%s', $row['channel_code'], $row['locale_code']);
-            $results[$key][] = $row['missing_attribute_code'];
         }
 
         return $results;
