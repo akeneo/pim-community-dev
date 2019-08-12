@@ -14,7 +14,7 @@ services:
     pim_catalog.doctrine.query.complete_filter:
         class: '%pim_catalog.doctrine.query.complete_filter.class%'
         arguments:
-            - '@doctrine.orm.entity_manager'
+            - '@database_connection'
 
     pim_catalog.doctrine.query.attribute_is_an_family_variant_axis:
         class: '%pim_catalog.doctrine.query.attribute_is_an_family_variant_axis.class%'

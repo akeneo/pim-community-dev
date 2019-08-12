@@ -179,7 +179,7 @@ class SavingProductModelDescendantsIntegration extends TestCase
     private function assertCompletenessForChannel(string $productName, string $expectedChannelCode, int $expectedRatio): void
     {
         $productVariant2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier($productName);
-        $completenessCollection = $this->getProductCompletenesses()->fromProductId($productVariant2->getIdentifier());
+        $completenessCollection = $this->getProductCompletenesses()->fromProductId($productVariant2->getId());
 
         foreach ($completenessCollection as $completeness) {
             if ($expectedChannelCode === $completeness->channelCode()) {
