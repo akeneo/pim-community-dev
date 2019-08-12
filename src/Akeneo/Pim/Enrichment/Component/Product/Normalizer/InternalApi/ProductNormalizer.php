@@ -8,18 +8,13 @@ use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Query\AscendantCategoriesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
@@ -81,9 +76,6 @@ class ProductNormalizer implements NormalizerInterface
     /** @var UserContext */
     protected $userContext;
 
-    /** @var CompletenessCalculatorInterface */
-    private $completenessCalculator;
-
     /** @var EntityWithFamilyValuesFillerInterface */
     protected $productValuesFiller;
 
@@ -127,7 +119,6 @@ class ProductNormalizer implements NormalizerInterface
         CollectionFilterInterface $collectionFilter,
         ProductCompletenessCollectionNormalizer $completenessCollectionNormalizer,
         UserContext $userContext,
-        CompletenessCalculatorInterface $completenessCalculator,
         EntityWithFamilyValuesFillerInterface $productValuesFiller,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         VariantNavigationNormalizer $navigationNormalizer,
@@ -152,7 +143,6 @@ class ProductNormalizer implements NormalizerInterface
         $this->collectionFilter                 = $collectionFilter;
         $this->completenessCollectionNormalizer = $completenessCollectionNormalizer;
         $this->userContext                      = $userContext;
-        $this->completenessCalculator           = $completenessCalculator;
         $this->productValuesFiller              = $productValuesFiller;
         $this->attributesProvider               = $attributesProvider;
         $this->navigationNormalizer             = $navigationNormalizer;
@@ -281,24 +271,6 @@ class ProductNormalizer implements NormalizerInterface
     protected function getNormalizedCompletenesses(ProductInterface $product)
     {
         $completenessCollection = $this->getProductCompletenesses->fromProductId($product->getId());
-        if ($completenessCollection->isEmpty()) {
-            $completenessCollection = new ProductCompletenessCollection(
-                $product->getId(),
-                array_map(
-                    function (CompletenessInterface $completeness) {
-                        return new ProductCompleteness(
-                            $completeness->getChannel()->getCode(),
-                            $completeness->getLocale()->getCode(),
-                            $completeness->getRequiredCount(),
-                            array_map(function (AttributeInterface $attribute) {
-                                return $attribute->getCode();
-                            }, $completeness->getMissingAttributes()->toArray())
-                        );
-                    },
-                    $this->completenessCalculator->calculate($product)
-                )
-            );
-        }
 
         return $this->completenessCollectionNormalizer->normalize($completenessCollection);
     }

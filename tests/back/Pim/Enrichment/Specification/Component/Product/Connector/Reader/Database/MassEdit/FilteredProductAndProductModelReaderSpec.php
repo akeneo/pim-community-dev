@@ -4,7 +4,6 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Reader
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\MassEdit\FilteredProductAndProductModelReader;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
@@ -54,7 +53,6 @@ class FilteredProductAndProductModelReaderSpec extends ObjectBehavior
     function it_reads_products_only_and_not_product_models(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         ChannelRepositoryInterface $channelRepository,
-        CompletenessManager $completenessManager,
         MetricConverter $metricConverter,
         StepExecution $stepExecution,
         ChannelInterface $channel,
@@ -139,7 +137,6 @@ class FilteredProductAndProductModelReaderSpec extends ObjectBehavior
     function it_reads_products_only_and_not_product_models_with_children(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         ChannelRepositoryInterface $channelRepository,
-        CompletenessManager $completenessManager,
         MetricConverter $metricConverter,
         StepExecution $stepExecution,
         ChannelInterface $channel,

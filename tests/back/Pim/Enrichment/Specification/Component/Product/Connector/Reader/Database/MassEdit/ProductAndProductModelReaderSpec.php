@@ -5,7 +5,6 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Reader
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\MassEdit\ProductAndProductModelReader;
-use Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
@@ -20,8 +19,7 @@ class ProductAndProductModelReaderSpec extends ObjectBehavior
 {
     function it_is_initializable(
         ProductQueryBuilderFactoryInterface $pqbFactory,
-        ChannelRepositoryInterface $channelRepository,
-        CompletenessManager $completenessManager
+        ChannelRepositoryInterface $channelRepository
     ) {
         $this->beConstructedWith(
             $pqbFactory,

@@ -1,26 +1,9 @@
-parameters:
-    pim_catalog.completeness.legacy_calculator.class: Akeneo\Pim\Enrichment\Component\Product\Completeness\LegacyCompletenessCalculator
-    pim_catalog.completeness.generator.class: Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessGenerator
-
 services:
-    pim_catalog.completeness.legacy_calculator:
-        class: '%pim_catalog.completeness.legacy_calculator.class%'
-        arguments:
-            - '@pim_catalog.entity_with_family.required_value_collection_factory'
-            - '@pim_catalog.entity_with_family.incomplete_value_collection_factory'
-            - '%pim_catalog.entity.completeness.class%'
-
     pim_catalog.completeness.calculator:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator'
         arguments:
             - '@akeneo.pim.enrichment.completeness.query.get_product_masks'
             - '@akeneo.pim.enrichment.completeness.query.get_family_masks'
-
-    pim_catalog.completeness.generator:
-        class: '%pim_catalog.completeness.generator.class%'
-        arguments:
-            - '@pim_catalog.query.product_query_builder_factory'
-            - '@pim_catalog.completeness.legacy_calculator'
 
     pim_catalog.completeness.product.compute_and_persist:
         class: 'Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses'
