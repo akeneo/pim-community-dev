@@ -16,6 +16,7 @@
 
 ### Codebase
 
+- Remove service `pimee_workflow.manager.completeness`
 - Remove service `pimee_workflow.completeness.calculator`
 - Remove service `pimee_workflow.completeness.generator`
 - All the table names used by the TeamWork Assistant are now hardcoded. 

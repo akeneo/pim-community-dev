@@ -12,7 +12,6 @@
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\Common\Saver;
 
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer;
-use Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
@@ -71,7 +70,6 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
 
     /**
      * @param ObjectManager                            $objectManager
-     * @param CompletenessManager                      $completenessManager
      * @param EventDispatcherInterface                 $eventDispatcher
      * @param AuthorizationCheckerInterface            $authorizationChecker
      * @param EntityWithValuesDraftBuilderInterface    $entityWithValuesDraftBuilder
