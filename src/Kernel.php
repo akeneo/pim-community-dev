@@ -109,7 +109,16 @@ class Kernel extends BaseKernel
             $loader->load($file, 'yaml');
         }
 
-        $loader->load($confDir . '/{packages}/' . $this->environment . '/**/*.yaml', 'glob');
+        $filesForEnv = array_filter(
+            glob($confDir . '/{packages}/' . $this->environment . '/**/*.yml', GLOB_BRACE),
+            function ($file) {
+                return 'security.yml' !== basename($file);
+            }
+        );
+
+        foreach ($filesForEnv as $file) {
+            $loader->load($file, 'yaml');
+        }
     }
 
     private function loadContainerConfiguration(LoaderInterface $loader, string $confDir): void
