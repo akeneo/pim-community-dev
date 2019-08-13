@@ -2,9 +2,6 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Completeness;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-
 /**
  * Checks that the completeness has been well calculated for localisable and scopable attributes.
  *

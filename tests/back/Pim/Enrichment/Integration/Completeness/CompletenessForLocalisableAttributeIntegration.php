@@ -2,7 +2,6 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Completeness;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
