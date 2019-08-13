@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.37 (2019-08-13)
+
 ## Bug fixes
 
 - PIM-8356: Fix margin on Mass publish action
