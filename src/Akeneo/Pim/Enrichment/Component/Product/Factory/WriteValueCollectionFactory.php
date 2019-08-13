@@ -99,15 +99,31 @@ class WriteValueCollectionFactory
         return $valueCollections;
     }
 
+    private function getAttributesUsedByProducts(array $rawValueCollections): array
+    {
+        $attributeCodes = [];
+
+        foreach ($rawValueCollections as $productIdentifier => $rawValues) {
+            foreach (array_keys($rawValues) as $attributeCode) {
+                $attributeCodes[] = (string) $attributeCode;
+            }
+        }
+
+        $attributes = $this->getAttributeByCodes->forCodes(array_unique($attributeCodes));
+
+        return $attributes;
+    }
+
     private function createValues(array $rawValueCollections): array
     {
         $entities = [];
+        $attributes = $this->getAttributesUsedByProducts($rawValueCollections);
 
         foreach ($rawValueCollections as $productIdentifier => $valueCollection) {
             $values = [];
 
             foreach ($valueCollection as $attributeCode => $channelRawValue) {
-                $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+                $attribute = $attributes[$attributeCode];
 
                 foreach ($channelRawValue as $channelCode => $localeRawValue) {
                     if ('<all_channels>' === $channelCode) {
@@ -119,33 +135,7 @@ class WriteValueCollectionFactory
                             $localeCode = null;
                         }
 
-                        try {
-                            $values[] = $this->valueFactory->create($attribute, $channelCode, $localeCode, $data, true);
-                        } catch (InvalidAttributeException $e) {
-                            $this->logger->warning(
-                                sprintf(
-                                    'Tried to load a product value with an invalid attribute "%s". %s',
-                                    $attributeCode,
-                                    $e->getMessage()
-                                )
-                            );
-                        } catch (InvalidPropertyException $e) {
-                            $this->logger->warning(
-                                sprintf(
-                                    'Tried to load a product value with the property "%s" that does not exist.',
-                                    $e->getPropertyValue()
-                                )
-                            );
-                        } catch (InvalidPropertyTypeException $e) {
-                            $this->logger->warning(
-                                sprintf(
-                                    'Tried to load a product value for attribute "%s" that does not have the ' .
-                                    'good type in database.',
-                                    $attribute->getCode()
-                                )
-                            );
-                            $values[] = $this->valueFactory->create($attribute, $channelCode, $localeCode, null);
-                        }
+                        $values[] = $this->valueFactory->create($attribute, $channelCode, $localeCode, $data, true);
                     }
                 }
             }

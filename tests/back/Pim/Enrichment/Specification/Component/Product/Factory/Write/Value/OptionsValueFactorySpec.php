@@ -1,11 +1,11 @@
 <?php
 
-namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory\Value;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\OptionsValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\OptionsValueFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValue;
 use Prophecy\Argument;

@@ -126,6 +126,8 @@ Please, make sure the folder upgrades/schema/ does not contain former migration 
     ```bash
     find ./src/ -type f -print0 | xargs -0 sed -i 's#Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber\AddVersionSubscriber#Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber\AddVersionListener#g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's#Akeneo\UserManagement\Bundle\EventListener\UserPreferencesSubscriber#Akeneo\UserManagement\Bundle\EventListener\UserPreferencesListener#g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's#Akeneo\Pim\Enrichment\Component\Product\Factory\Value#Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value#g'
+
     ```
 
 2. Adapt your custom codes to handle this breaking changes we introduced:

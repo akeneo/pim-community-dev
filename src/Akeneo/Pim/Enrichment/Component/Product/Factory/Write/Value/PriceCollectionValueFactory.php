@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Factory\Value;
+namespace Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value;
 
 use Akeneo\Channel\Component\Query\FindActivatedCurrenciesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\PriceFactory;

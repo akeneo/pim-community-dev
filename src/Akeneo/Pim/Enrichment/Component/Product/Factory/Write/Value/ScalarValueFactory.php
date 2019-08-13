@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Factory\Value;
+namespace Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;

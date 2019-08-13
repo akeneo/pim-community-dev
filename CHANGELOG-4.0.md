@@ -123,6 +123,8 @@
     `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer`
 - Update constructor of `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CompleteFilter`, remove `Doctrine\ORM\EntityManagerInterface` and add `Doctrine\DBAL\Connection`
 - Remove methods `getCompletenesses` and `setCompletenesses` from `Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface`
+- Rename namespace `Akeneo\Pim\Enrichment\Component\Product\Factory\Value` into `Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value`
+- Replace `Akeneo\Pim\Enrichment\Component\Product\Factory\Write` by `Akeneo\Pim\Enrichment\Component\Product\Factory\Read` with method `createByCheckingData`
 
 ### CLI Commands
 

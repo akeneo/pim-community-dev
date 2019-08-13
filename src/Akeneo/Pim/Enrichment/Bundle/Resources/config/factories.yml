@@ -6,13 +6,13 @@ parameters:
 
     pim_catalog.factory.value_collection.class:       Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory
     pim_catalog.factory.value.class:                  Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory
-    pim_catalog.factory.value.scalar.class:           Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ScalarValueFactory
-    pim_catalog.factory.value.metric.class:           Akeneo\Pim\Enrichment\Component\Product\Factory\Value\MetricValueFactory
-    pim_catalog.factory.value.price_collection.class: Akeneo\Pim\Enrichment\Component\Product\Factory\Value\PriceCollectionValueFactory
-    pim_catalog.factory.value.option.class:           Akeneo\Pim\Enrichment\Component\Product\Factory\Value\OptionValueFactory
-    pim_catalog.factory.value.options.class:          Akeneo\Pim\Enrichment\Component\Product\Factory\Value\OptionsValueFactory
-    pim_catalog.factory.value.media.class:            Akeneo\Pim\Enrichment\Component\Product\Factory\Value\MediaValueFactory
-    pim_catalog.factory.value.date.class:             Akeneo\Pim\Enrichment\Component\Product\Factory\Value\DateValueFactory
+    pim_catalog.factory.value.scalar.class:           Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\ScalarValueFactory
+    pim_catalog.factory.value.metric.class:           Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\MetricValueFactory
+    pim_catalog.factory.value.price_collection.class: Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\PriceCollectionValueFactory
+    pim_catalog.factory.value.option.class:           Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\OptionValueFactory
+    pim_catalog.factory.value.options.class:          Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\OptionsValueFactory
+    pim_catalog.factory.value.media.class:            Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\MediaValueFactory
+    pim_catalog.factory.value.date.class:             Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\DateValueFactory
 
 services:
     pim_catalog.factory.family_variant:
@@ -210,7 +210,7 @@ services:
             - { name: pim_catalog.factory.value }
 
     pim_reference_data.factory.product_value.reference_data:
-        class: 'Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ReferenceDataValueFactory'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\ReferenceDataValueFactory'
         public: false
         arguments:
             - '@pim_reference_data.repository_resolver'
@@ -220,7 +220,7 @@ services:
             - { name: pim_catalog.factory.value }
 
     pim_reference_data.factory.product_value.reference_data_collection:
-        class: 'Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ReferenceDataCollectionValueFactory'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\ReferenceDataCollectionValueFactory'
         public: false
         arguments:
             - '@pim_reference_data.repository_resolver'

@@ -3,7 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Factory;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidAttributeException;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\ValueFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
