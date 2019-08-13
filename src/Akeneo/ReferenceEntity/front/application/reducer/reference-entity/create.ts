@@ -68,7 +68,7 @@ export default (
       };
       break;
 
-    case 'REFERENCE_ENTITY_CREATION_ERROR_OCCURED':
+    case 'REFERENCE_ENTITY_CREATION_ERROR_OCCURRED':
       state = {
         ...state,
         errors: action.errors,

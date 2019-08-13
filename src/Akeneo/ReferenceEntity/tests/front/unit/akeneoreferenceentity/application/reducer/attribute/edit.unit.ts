@@ -354,7 +354,7 @@ describe('akeneo > reference entity > application > reducer > attribute --- edit
     ];
 
     const newState = reducer(state, {
-      type: 'ATTRIBUTE_EDITION_ERROR_OCCURED',
+      type: 'ATTRIBUTE_EDITION_ERROR_OCCURRED',
       errors,
     });
 

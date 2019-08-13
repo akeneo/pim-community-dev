@@ -271,7 +271,7 @@ describe('akeneo > reference entity > application > reducer > reference-entity -
     ];
 
     const newState = reducer(state, {
-      type: 'REFERENCE_ENTITY_CREATION_ERROR_OCCURED',
+      type: 'REFERENCE_ENTITY_CREATION_ERROR_OCCURRED',
       errors,
     });
 

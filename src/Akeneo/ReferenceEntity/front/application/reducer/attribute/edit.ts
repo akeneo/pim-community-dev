@@ -164,7 +164,7 @@ export const editReducer = (getAttributeReducer: (normalizedAttribute: Normalize
       };
       break;
 
-    case 'ATTRIBUTE_EDITION_ERROR_OCCURED':
+    case 'ATTRIBUTE_EDITION_ERROR_OCCURRED':
       state = {
         ...state,
         errors: errors,

@@ -7,7 +7,7 @@ akeneo_franklin_insights:
         data_provider:
             ask_franklin_down: "Sorry, something went wrong. Please try again later."
             authentication_error: "Sorry, failed to authenticate to Franklin Insights, your token is invalid. Please enter a valid token or contact us for help."
-            bad_request_error: "Sorry, an problem occured communicating with Franklin Insights. Please contact your administrator."
+            bad_request_error: "Sorry, an problem occurred communicating with Franklin Insights. Please contact your administrator."
         identifier_mapping:
             plural_label: Identifiers
             flash:
@@ -114,7 +114,7 @@ akeneo_franklin_insights:
         flash:
             success: Franklin Insights activation code saved successfully.
             invalid: Sorry, invalid activation code. Please try again with a valid one.
-            error: Sorry, an error occured.
+            error: Sorry, an error occurred.
         module:
             title:
                 sub_title: 'Welcome to the <span class="AknDescriptionHeader-title--highlight">Product Information AI assistant</span>!'

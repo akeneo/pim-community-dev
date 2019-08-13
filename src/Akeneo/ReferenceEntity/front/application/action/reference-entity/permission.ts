@@ -1,5 +1,5 @@
 import {
-  permissionEditionErrorOccured,
+  permissionEditionErrorOccurred,
   permissionEditionSucceeded,
   permissionEditionReceived,
 } from 'akeneoreferenceentity/domain/event/reference-entity/permission';
@@ -24,7 +24,7 @@ export const savePermission = () => async (dispatch: any, getState: () => EditSt
 
     if (errors) {
       const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-      dispatch(permissionEditionErrorOccured(validationErrors));
+      dispatch(permissionEditionErrorOccurred(validationErrors));
       dispatch(notifyPermissionSaveFailed());
 
       return;

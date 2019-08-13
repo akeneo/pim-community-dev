@@ -91,7 +91,7 @@ class RefreshRecordsCommand extends ContainerAwareCommand
         $stmt = $this->sqlConnection->executeQuery('SELECT COUNT(*) FROM akeneo_reference_entity_record;');
         $result = $stmt->fetch(\PDO::FETCH_COLUMN);
         if (false === $result) {
-            throw new \RuntimeException('An exception occured while connecting the database');
+            throw new \RuntimeException('An exception occurred while connecting the database');
         }
 
         return Type::getType('integer')->convertToPHPValue($result, $this->sqlConnection->getDatabasePlatform());

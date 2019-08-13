@@ -30,6 +30,6 @@ export const referenceEntityEditionSucceeded = () => {
   return {type: 'REFERENCE_ENTITY_EDITION_SUCCEEDED'};
 };
 
-export const referenceEntityEditionErrorOccured = (errors: ValidationError[]) => {
-  return {type: 'REFERENCE_ENTITY_EDITION_ERROR_OCCURED', errors};
+export const referenceEntityEditionErrorOccurred = (errors: ValidationError[]) => {
+  return {type: 'REFERENCE_ENTITY_EDITION_ERROR_OCCURRED', errors};
 };

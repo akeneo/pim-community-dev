@@ -41,7 +41,7 @@ export const notifyRecordDeleteFailed = () => {
   return notify('error', 'pim_reference_entity.record.notification.delete.fail');
 };
 
-export const notifyRecordDeletionErrorOccured = (errors: ValidationError[]) => {
+export const notifyRecordDeletionErrorOccurred = (errors: ValidationError[]) => {
   const firstError = errors[0];
 
   return notify('error', firstError.message);

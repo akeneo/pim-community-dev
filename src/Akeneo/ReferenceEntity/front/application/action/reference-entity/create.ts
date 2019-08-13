@@ -1,7 +1,7 @@
 import referenceEntitySaver from 'akeneoreferenceentity/infrastructure/saver/reference-entity';
 import {
   referenceEntityCreationSucceeded,
-  referenceEntityCreationErrorOccured,
+  referenceEntityCreationErrorOccurred,
 } from 'akeneoreferenceentity/domain/event/reference-entity/create';
 import {
   notifyReferenceEntityWellCreated,
@@ -21,7 +21,7 @@ export const createReferenceEntity = () => async (dispatch: any, getState: () =>
 
     if (errors) {
       const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-      dispatch(referenceEntityCreationErrorOccured(validationErrors));
+      dispatch(referenceEntityCreationErrorOccurred(validationErrors));
 
       return;
     }
