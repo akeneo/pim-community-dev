@@ -199,7 +199,7 @@ flash:
     created: グループタイプを作成しました
   user:
     removed: ユーザーを削除しました
-  error ocurred: アクションに失敗しました。やり直してください。
+  error occurred: アクションに失敗しました。やり直してください。
 info:
   updated: 保存されていない変更があります。
   category:

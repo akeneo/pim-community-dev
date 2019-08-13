@@ -109,7 +109,7 @@ class CommandContext extends PimContext
 
             if (null === $actual) {
                 throw new \Exception(sprintf(
-                    'An error occured during the execution of the update command : %s',
+                    'An error occurred during the execution of the update command : %s',
                     $getCommandTester->getDisplay()
                 ));
             }

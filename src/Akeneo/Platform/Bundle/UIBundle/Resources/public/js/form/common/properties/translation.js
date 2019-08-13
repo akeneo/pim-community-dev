@@ -62,7 +62,7 @@ define([
                 );
 
                 return $.when(
-                    this.getLocales(true)
+                    this.getLocales()
                         .then(function (locales) {
                             this.locales = locales;
                         }.bind(this)),
@@ -134,7 +134,7 @@ define([
              * Updates locales if were updated
              */
             onLocalesUpdated: function () {
-                this.getLocales(false)
+                this.getLocales()
                     .then(function (locales) {
                             this.locales = locales;
 
@@ -145,13 +145,10 @@ define([
             /**
              * Fetches and returns activated locales.
              *
-             * @param {Boolean} cached
-             *
              * @returns {Promise}
              */
-            getLocales: function (cached) {
-                return FetcherRegistry.getFetcher('locale')
-                    .search({activated: true, cached: cached});
+            getLocales: function () {
+                return FetcherRegistry.getFetcher('locale').fetchActivated({filter_locales: false});
             }
         });
     }

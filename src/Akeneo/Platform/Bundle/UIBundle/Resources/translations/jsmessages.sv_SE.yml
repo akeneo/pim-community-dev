@@ -2,7 +2,7 @@
 "Yes, do it": "Ja, gör det"
 "Ok, got it.": "Ok, jag förstår."
 "Edit": "Redigera"
-"Unexpected error occured. Please contact system administrator.": "Oväntat fel uppstod. Vänligen kontakta systemadministratören."
+"Unexpected error occurred. Please contact system administrator.": "Oväntat fel uppstod. Vänligen kontakta systemadministratören."
 Prev: Föregående
 Today: Idag
 Wk: V.
@@ -172,7 +172,7 @@ error:
   exception: Oh snap! Ett {{ status_code }} fel uppstod...
 alert:
   attribute_option:
-    error_occured_during_submission: Ett fel uppstod på servern när formuläret skulle skickas
+    error_occurred_during_submission: Ett fel uppstod på servern när formuläret skulle skickas
     save_before_edit_other: Vänligen registrera dina ändringar på andra rader innan du redigerar denna
   session_storage:
     not_available: Din webbläsare inte verkar kompatibel med 'sessionStorage'. Vänligen kontakta administratören

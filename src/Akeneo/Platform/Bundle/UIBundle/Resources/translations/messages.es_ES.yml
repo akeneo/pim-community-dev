@@ -214,7 +214,7 @@ flash:
     created: Tipo de grupo creado correctamente
   user:
     removed: Usuario eliminado correctamente
-  error ocurred: Acción fallida. Por favor vuelva a intentarlo.
+  error occurred: Acción fallida. Por favor vuelva a intentarlo.
 info:
   updated: Hay cambios sin guardar.
   category:

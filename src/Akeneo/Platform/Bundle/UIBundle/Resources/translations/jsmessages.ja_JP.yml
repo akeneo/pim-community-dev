@@ -2,7 +2,7 @@
 "Yes, do it": "はい、実行します"
 "Ok, got it.": "はい、わかりました。"
 "Edit": "編集"
-"Unexpected error occured. Please contact system administrator.": "予期しないエラーが発生しました。システム管理者に問い合わせてください。"
+"Unexpected error occurred. Please contact system administrator.": "予期しないエラーが発生しました。システム管理者に問い合わせてください。"
 "Yes, revoke": "削除する"
 "Revoke Confirmation": "削除の確認"
 Prev: 前
@@ -176,7 +176,7 @@ error:
   forbidden: このページにアクセスすることはできません
 alert:
   attribute_option:
-    error_occured_during_submission: フォームの情報をサーバーに送信中にエラーが発生しました
+    error_occurred_during_submission: フォームの情報をサーバーに送信中にエラーが発生しました
     save_before_edit_other: 他を編集する前に、あなたが他の行で行った変更を確定してください
   session_storage:
     not_available: あなたのウェブブラウザはsessionStorageと互換性がありません。管理者に問い合わせてください。

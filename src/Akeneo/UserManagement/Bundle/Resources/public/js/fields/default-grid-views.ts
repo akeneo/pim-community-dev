@@ -42,9 +42,9 @@ class DefaultGridView extends BaseView {
           datagridAlias: datagridAlias,
           fieldName: 'default_' + datagridAlias.replace(/-/g, '_') + '_view',
           label: 'pim_user_management.entity.user.properties.default_' + datagridAlias.replace(/-/g, '_') + '_view',
-          allowClear: true,
-          isMultiple: false,
           readOnly: this.config.readOnly,
+          choiceUrl: 'pim_datagrid_view_rest_index',
+          placeholder: 'pim_datagrid.view_selector.default_view',
         }
       });
       datagridViewSelector.configure().then(() => {
