@@ -3,7 +3,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 /**
  * @author    Anael Chardan <anael.chardan@akeneo.com>
@@ -12,6 +15,19 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
  */
 final class IdentifierValueFactory extends ScalarValueFactory implements ReadValueFactory
 {
+    public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
+    {
+        if (!is_scalar($data) || (is_string($data) && trim($data) === '')) {
+            throw InvalidPropertyTypeException::scalarExpected(
+                $attribute->code(),
+                static::class,
+                $data
+            );
+        }
+
+        return parent::createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
+    }
+
     public function supportedAttributeType(): string
     {
         return AttributeTypes::IDENTIFIER;

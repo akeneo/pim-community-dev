@@ -6,9 +6,11 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Val
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\ReadValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\PriceCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPrice;
+use Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -33,10 +35,8 @@ final class PriceCollectionValueFactorySpec extends ObjectBehavior
         $priceCollection = new PriceCollection([new ProductPrice(5, 'EUR'), new ProductPrice(5, 'USD')]);
         $attribute = $this->getAttribute(true, true);
         /** @var ScalarValue $value */
-        $value = $this->create($attribute, 'ecommerce', 'fr_FR', [['amount' => 5, 'currency' => 'EUR'], ['amount' => 5, 'currency' => 'USD']]);
-        $value->isLocalizable()->shouldBe(true);
-        $value->isScopable()->shouldBe(true);
-        $value->getData()->shouldBeLike($priceCollection);
+        $value = $this->createWithoutCheckingData($attribute, 'ecommerce', 'fr_FR', [['amount' => 5, 'currency' => 'EUR'], ['amount' => 5, 'currency' => 'USD']]);
+        $value->shouldBeLike(PriceCollectionValue::scopableLocalizableValue('an_attribute', $priceCollection, 'ecommerce', 'fr_FR'));
     }
 
     public function it_creates_a_localizable_value()
@@ -44,10 +44,8 @@ final class PriceCollectionValueFactorySpec extends ObjectBehavior
         $priceCollection = new PriceCollection([new ProductPrice(5, 'EUR'), new ProductPrice(5, 'USD')]);
         $attribute = $this->getAttribute(true, false);
         /** @var ScalarValue $value */
-        $value = $this->create($attribute, null, 'fr_FR', [['amount' => 5, 'currency' => 'EUR'], ['amount' => 5, 'currency' => 'USD']]);
-        $value->isLocalizable()->shouldBe(true);
-        $value->isScopable()->shouldBe(false);
-        $value->getData()->shouldBeLike($priceCollection);
+        $value = $this->createWithoutCheckingData($attribute, null, 'fr_FR', [['amount' => 5, 'currency' => 'EUR'], ['amount' => 5, 'currency' => 'USD']]);
+        $value->shouldBeLike(PriceCollectionValue::localizableValue('an_attribute', $priceCollection, 'fr_FR'));
     }
 
     public function it_creates_a_scopable_value()
@@ -55,10 +53,8 @@ final class PriceCollectionValueFactorySpec extends ObjectBehavior
         $priceCollection = new PriceCollection([new ProductPrice(5, 'EUR'), new ProductPrice(5, 'USD')]);
         $attribute = $this->getAttribute(false, true);
         /** @var ScalarValue $value */
-        $value = $this->create($attribute, 'ecommerce', null, [['amount' => 5, 'currency' => 'EUR'], ['amount' => 5, 'currency' => 'USD']]);
-        $value->isLocalizable()->shouldBe(false);
-        $value->isScopable()->shouldBe(true);
-        $value->getData()->shouldBeLike($priceCollection);
+        $value = $this->createWithoutCheckingData($attribute, 'ecommerce', null, [['amount' => 5, 'currency' => 'EUR'], ['amount' => 5, 'currency' => 'USD']]);
+        $value->shouldBeLike(PriceCollectionValue::scopableValue('an_attribute', $priceCollection, 'ecommerce'));
     }
 
     public function it_creates_a_non_localizable_and_non_scopable_value()
@@ -66,10 +62,8 @@ final class PriceCollectionValueFactorySpec extends ObjectBehavior
         $priceCollection = new PriceCollection([new ProductPrice(5, 'EUR'), new ProductPrice(5, 'USD')]);
         $attribute = $this->getAttribute(false, false);
         /** @var ScalarValue $value */
-        $value = $this->create($attribute, null, null, [['amount' => 5, 'currency' => 'EUR'], ['amount' => 5, 'currency' => 'USD']]);
-        $value->isLocalizable()->shouldBe(false);
-        $value->isScopable()->shouldBe(false);
-        $value->getData()->shouldBeLike($priceCollection);
+        $value = $this->createWithoutCheckingData($attribute, null, null, [['amount' => 5, 'currency' => 'EUR'], ['amount' => 5, 'currency' => 'USD']]);
+        $value->shouldBeLike(PriceCollectionValue::value('an_attribute', $priceCollection));
     }
 
     public function it_sorts_the_result()
@@ -77,11 +71,16 @@ final class PriceCollectionValueFactorySpec extends ObjectBehavior
         $priceCollection = new PriceCollection([new ProductPrice(5, 'EUR'), new ProductPrice(5, 'USD')]);
         $attribute = $this->getAttribute(false, false);
         /** @var ScalarValue $value */
-        $value = $this->create($attribute, null, null, [['amount' => 5, 'currency' => 'USD'], ['amount' => 5, 'currency' => 'EUR']]);
-        $value->isLocalizable()->shouldBe(false);
-        $value->isScopable()->shouldBe(false);
-        $value->getData()->shouldBeLike($priceCollection);
+        $value = $this->createWithoutCheckingData($attribute, null, null, [['amount' => 5, 'currency' => 'USD'], ['amount' => 5, 'currency' => 'EUR']]);
+        $value->shouldBeLike(PriceCollectionValue::value('an_attribute', $priceCollection));
     }
+
+    public function it_throws_an_exception_if_it_is_not_a_string_neither_numeric()
+    {
+        $this->shouldThrow(InvalidPropertyTypeException::class)
+            ->during('createByCheckingData', [$this->getAttribute(false, false), null, null, new \stdClass()]);
+    }
+
 
     private function getAttribute(bool $isLocalizable, bool $isScopable): Attribute
     {

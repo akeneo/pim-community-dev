@@ -7,6 +7,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\ReadValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -30,51 +32,53 @@ final class BooleanValueFactorySpec extends ObjectBehavior
     {
         $attribute = $this->getAttribute(true, true);
         /** @var ScalarValue $value */
-        $value = $this->create($attribute, 'ecommerce', 'fr_FR', true);
-        $value->isLocalizable()->shouldBe(true);
-        $value->isScopable()->shouldBe(true);
-        $value->getData()->shouldBe(true);
+        $value = $this->createWithoutCheckingData($attribute, 'ecommerce', 'fr_FR', true);
+        $value->shouldBeLike(ScalarValue::scopableLocalizableValue('an_attribute', true, 'ecommerce', 'fr_FR'));
     }
 
     public function it_creates_a_localizable_value()
     {
         $attribute = $this->getAttribute(true, false);
         /** @var ScalarValue $value */
-        $value = $this->create($attribute, null, 'fr_FR', true);
-        $value->isLocalizable()->shouldBe(true);
-        $value->isScopable()->shouldBe(false);
-        $value->getData()->shouldBe(true);
+        $value = $this->createWithoutCheckingData($attribute, null, 'fr_FR', true);
+        $value->shouldBeLike(ScalarValue::localizableValue('an_attribute', true, 'fr_FR'));
     }
 
     public function it_creates_a_scopable_value()
     {
         $attribute = $this->getAttribute(false, true);
         /** @var ScalarValue $value */
-        $value = $this->create($attribute, 'ecommerce', null, true);
-        $value->isLocalizable()->shouldBe(false);
-        $value->isScopable()->shouldBe(true);
-        $value->getData()->shouldBe(true);
+        $value = $this->createWithoutCheckingData($attribute, 'ecommerce', null, true);
+        $value->shouldBeLike(ScalarValue::scopableValue('an_attribute', true, 'ecommerce'));
     }
 
     public function it_creates_a_non_localizable_and_non_scopable_value()
     {
         $attribute = $this->getAttribute(false, false);
         /** @var ScalarValue $value */
-        $value = $this->create($attribute, null, null, true);
-        $value->isLocalizable()->shouldBe(false);
-        $value->isScopable()->shouldBe(false);
-        $value->getData()->shouldBe(true);
+        $value = $this->createWithoutCheckingData($attribute, null, null, true);
+        $value->shouldBeLike(ScalarValue::value('an_attribute', true));
     }
 
-    public function it_convert_to_boolean_type_the_value()
+    public function it_converts_to_boolean_type_the_value()
     {
         $attribute = $this->getAttribute(true, true);
         /** @var ScalarValue $value */
-        $value = $this->create($attribute, 'ecommerce', 'fr_FR', 1);
-        $value->getData()->shouldBe(true);
+        $value = $this->createWithoutCheckingData($attribute, 'ecommerce', 'fr_FR', 1);
+        $value->shouldBeLike(ScalarValue::scopableLocalizableValue('an_attribute', 1, 'ecommerce', 'fr_FR'));
 
-        $value = $this->create($attribute, 'ecommerce', 'fr_FR', '1');
-        $value->getData()->shouldBe(true);
+        $value = $this->createWithoutCheckingData($attribute, 'ecommerce', 'fr_FR', '1');
+        $value->shouldBeLike(ScalarValue::scopableLocalizableValue('an_attribute', 1, 'ecommerce', 'fr_FR'));
+    }
+
+    public function it_throws_an_exception_if_it_is_not_a_boolean()
+    {
+        $this->shouldThrow(InvalidPropertyTypeException::class)->during('createByCheckingData', [
+            $this->getAttribute(true, true),
+            'ecommerce',
+            'fr_FR',
+            'michel'
+        ]);
     }
 
     private function getAttribute(bool $isLocalizable, bool $isScopable): Attribute

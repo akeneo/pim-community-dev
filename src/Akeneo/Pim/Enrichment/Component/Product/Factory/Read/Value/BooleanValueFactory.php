@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 /**
  * @author    Anael Chardan <anael.chardan@akeneo.com>
@@ -14,9 +15,32 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
  */
 final class BooleanValueFactory extends ScalarValueFactory implements ReadValueFactory
 {
-    public function create(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
+    public function createWithoutCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
-        return parent::create($attribute, $channelCode, $localeCode, (bool) $data);
+        return parent::createWithoutCheckingData($attribute, $channelCode, $localeCode, (bool) $data);
+    }
+
+    public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
+    {
+        $dataToPersist = $data;
+
+        if (is_string($data) && ('1' === $data || '0' === $data)) {
+            $dataToPersist = boolval($data);
+        }
+
+        if (is_string($data) && ('true' === $data || 'false' === $data)) {
+            $dataToPersist = (bool) $data;
+        }
+
+        if (!is_bool($dataToPersist)) {
+            throw InvalidPropertyTypeException::booleanExpected(
+                $attribute->code(),
+                static::class,
+                $data
+            );
+        }
+
+        return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
     }
 
     public function supportedAttributeType(): string
