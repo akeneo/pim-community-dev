@@ -16,11 +16,7 @@ final class BooleanValueFactory extends ScalarValueFactory implements ReadValueF
 {
     public function create(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
-        if (1 === $data || '1' === $data || 0 === $data || '0' === $data) {
-            $data = boolval($data);
-        }
-
-        return parent::create($attribute, $channelCode, $localeCode, $data);
+        return parent::create($attribute, $channelCode, $localeCode, (bool) $data);
     }
 
     public function supportedAttributeType(): string
