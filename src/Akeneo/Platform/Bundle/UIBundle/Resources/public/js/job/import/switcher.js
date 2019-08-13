@@ -46,6 +46,10 @@ define(
                     return;
                 }
 
+                const { configuration } = this.getRoot().getFormData();
+
+                this.actions = this.filterByPermission(this.actions, configuration || {});
+
                 if (null === this.currentActionCode) {
                     this.setCurrentActionCode(_.first(this.actions).code);
                 }
@@ -56,6 +60,25 @@ define(
                 }));
 
                 return BaseForm.prototype.render.apply(this, arguments);
+            },
+
+            /**
+             * Filters allowed switcher-items by permission. The permission is defined by specifying a permissionKey
+             * in the configuration of a switcher-item. This permissionKey corresponds to a key on the import
+             * profile configuration.
+             *
+             * @param actions
+             * @param configuration
+             * @returns {*}
+             */
+            filterByPermission: function (actions, configuration) {
+                return actions.filter(({ permissionKey }) => {
+                    if (permissionKey === undefined || configuration[permissionKey] === undefined) {
+                        return true;
+                    }
+
+                    return configuration[permissionKey];
+                });
             },
 
             /**

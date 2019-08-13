@@ -37,7 +37,8 @@ define(
 
                 this.getRoot().trigger('switcher:register', {
                     label: __(this.config.label),
-                    code: this.code
+                    code: this.code,
+                    permissionKey: this.config.permissionKey
                 });
 
                 return BaseForm.prototype.configure.apply(this, arguments);
