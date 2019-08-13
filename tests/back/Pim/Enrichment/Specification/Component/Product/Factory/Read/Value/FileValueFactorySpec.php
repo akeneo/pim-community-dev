@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\ReadValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Value\DateValue;
+use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
@@ -39,11 +41,8 @@ final class FileValueFactorySpec extends ObjectBehavior
         $fileInfo = new FileInfo();
         $fileInfoRepository->findOneByIdentifier('a_file')->willReturn($fileInfo);
         $attribute = $this->getAttribute(true, true);
-        /** @var ScalarValue $value */
-        $value = $this->create($attribute, 'ecommerce', 'fr_FR', 'a_file');
-        $value->isLocalizable()->shouldBe(true);
-        $value->isScopable()->shouldBe(true);
-        $value->getData()->shouldBeLike($fileInfo);
+        $value = $this->createByCheckingData($attribute, 'ecommerce', 'fr_FR', 'a_file');
+        $value->shouldBeLike(MediaValue::scopableLocalizableValue('an_attribute', $fileInfo, 'ecommerce', 'fr_FR'));
     }
 
     public function it_creates_a_localizable_value(FileInfoRepositoryInterface $fileInfoRepository)
@@ -52,10 +51,9 @@ final class FileValueFactorySpec extends ObjectBehavior
         $fileInfoRepository->findOneByIdentifier('a_file')->willReturn($fileInfo);
         $attribute = $this->getAttribute(true, false);
         /** @var ScalarValue $value */
-        $value = $this->create($attribute, null, 'fr_FR', 'a_file');
-        $value->isLocalizable()->shouldBe(true);
-        $value->isScopable()->shouldBe(false);
-        $value->getData()->shouldBeLike($fileInfo);
+        $value = $this->createByCheckingData($attribute, null, 'fr_FR', 'a_file');
+        $value->shouldBeLike(MediaValue::localizableValue('an_attribute', $fileInfo, 'fr_FR'));
+
     }
 
     public function it_creates_a_scopable_value(FileInfoRepositoryInterface $fileInfoRepository)
@@ -63,11 +61,8 @@ final class FileValueFactorySpec extends ObjectBehavior
         $fileInfo = new FileInfo();
         $fileInfoRepository->findOneByIdentifier('a_file')->willReturn($fileInfo);
         $attribute = $this->getAttribute(false, true);
-        /** @var ScalarValue $value */
-        $value = $this->create($attribute, 'ecommerce', null, 'a_file');
-        $value->isLocalizable()->shouldBe(false);
-        $value->isScopable()->shouldBe(true);
-        $value->getData()->shouldBeLike($fileInfo);
+        $value = $this->createByCheckingData($attribute, 'ecommerce', null, 'a_file');
+        $value->shouldBeLike(MediaValue::scopableValue('an_attribute', $fileInfo, 'ecommerce'));
     }
 
     public function it_creates_a_non_localizable_and_non_scopable_value(FileInfoRepositoryInterface $fileInfoRepository)
@@ -75,18 +70,25 @@ final class FileValueFactorySpec extends ObjectBehavior
         $fileInfo = new FileInfo();
         $fileInfoRepository->findOneByIdentifier('a_file')->willReturn($fileInfo);
         $attribute = $this->getAttribute(false, false);
-        /** @var ScalarValue $value */
-        $value = $this->create($attribute, null, null, 'a_file');
-        $value->isLocalizable()->shouldBe(false);
-        $value->isScopable()->shouldBe(false);
-        $value->getData()->shouldBeLike($fileInfo);
+        $value = $this->createByCheckingData($attribute, null, null, 'a_file');
+        $value->shouldBeLike(MediaValue::value('an_attribute', $fileInfo));
+    }
+
+
+    public function it_creates_a_value_without_checking_data(FileInfoRepositoryInterface $fileInfoRepository)
+    {
+        $fileInfo = new FileInfo();
+        $fileInfoRepository->findOneByIdentifier('a_file')->willReturn($fileInfo);
+        $attribute = $this->getAttribute(false, false);
+        $value = $this->createWithoutCheckingData($attribute, null, null, 'a_file');
+        $value->shouldBeLike(MediaValue::value('an_attribute', $fileInfo));
     }
 
     public function it_throws_an_exception_if_the_file_does_not_exist(FileInfoRepositoryInterface $fileInfoRepository)
     {
         $fileInfoRepository->findOneByIdentifier('a_file')->willReturn(null);
         $attribute = $this->getAttribute(false, false);
-        $this->shouldThrow(InvalidPropertyException::class)->during('create', [$attribute, null, null, 'a_file']);
+        $this->shouldThrow(InvalidPropertyException::class)->during('createByCheckingData', [$attribute, null, null, 'a_file']);
     }
 
     private function getAttribute(bool $isLocalizable, bool $isScopable): Attribute

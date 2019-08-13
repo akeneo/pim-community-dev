@@ -25,7 +25,7 @@ final class FileValueFactory implements ReadValueFactory
         $this->fileInfoRepository = $fileInfoRepository;
     }
 
-    public function create(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
+    public function createWithoutCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
         $fileInfo = $this->fileInfoRepository->findOneByIdentifier($data);
 
@@ -54,6 +54,11 @@ final class FileValueFactory implements ReadValueFactory
         }
 
         return MediaValue::value($attributeCode, $fileInfo);
+    }
+
+    public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
+    {
+        return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
     }
 
     public function supportedAttributeType(): string
