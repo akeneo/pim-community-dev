@@ -123,6 +123,8 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory',
         'Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection',
         'Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory',
+        'Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodes',
+        'Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator',
         'Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness',
         'Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses',
         'Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface',

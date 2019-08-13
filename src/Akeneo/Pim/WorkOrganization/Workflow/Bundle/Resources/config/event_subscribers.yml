@@ -181,6 +181,6 @@ services:
         class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\ComputeAndPersistPublishedProductCompletenessSubscriber'
         arguments:
             - '@pimee_workflow.query.save_published_product_completenesses'
-            - '@akeneo.pim.enrichment.product.query.get_product_completenesses'
+            - '@pim_catalog.completeness.calculator'
         tags:
             - { name: kernel.event_subscriber }

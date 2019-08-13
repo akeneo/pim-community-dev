@@ -4,10 +4,11 @@ namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscri
 
 use Akeneo\Channel\Component\Model\Channel;
 use Akeneo\Channel\Component\Model\Locale;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
-use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodes;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodesCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\ComputeAndPersistPublishedProductCompletenessSubscriber;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompletenessCollection;
@@ -22,9 +23,9 @@ class ComputeAndPersistPublishedProductCompletenessSubscriberSpec extends Object
 {
     function let(
         SavePublishedProductCompletenesses $savePublishedProductCompletenesses,
-        GetProductCompletenesses $getProductCompletenesses
+        CompletenessCalculator $completenessCalculator
     ) {
-        $this->beConstructedWith($savePublishedProductCompletenesses, $getProductCompletenesses);
+        $this->beConstructedWith($savePublishedProductCompletenesses, $completenessCalculator);
     }
 
     function it_is_an_event_subscriber()
@@ -38,8 +39,8 @@ class ComputeAndPersistPublishedProductCompletenessSubscriberSpec extends Object
     }
 
     function it_computes_and_saves_completenesses_for_a_published_product(
-        GetProductCompletenesses $getProductCompletenesses,
-        SavePublishedProductCompletenesses $savePublishedProductCompletenesses
+        SavePublishedProductCompletenesses $savePublishedProductCompletenesses,
+        CompletenessCalculator $completenessCalculator
     ) {
         $publishedProduct = new PublishedProduct();
         $publishedProduct->setId(42);
@@ -54,15 +55,20 @@ class ComputeAndPersistPublishedProductCompletenessSubscriberSpec extends Object
         $picture = new Attribute();
         $picture->setCode('picture');
         $product = new Product();
-        $product->setId(1);
+        $product->setIdentifier(ScalarValue::value('identifier', 'my_published_product'));
         $publishedProduct->setOriginalProduct($product);
 
-        $getProductCompletenesses->fromProductId(1)->willReturn(new ProductCompletenessCollection(1, [
-            new ProductCompleteness('ecommerce', 'en_US', 1, ['description']),
-            new ProductCompleteness('mobile', 'en_US', 2, ['description']),
-        ]));
+        $completenessCalculator->fromProductIdentifier('my_published_product')->willReturn(
+            new ProductCompletenessWithMissingAttributeCodesCollection(
+                1, [
+                new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 1, ['description']),
+                new ProductCompletenessWithMissingAttributeCodes('mobile', 'en_US', 2, ['description']),
+            ])
+        );
 
-        $savePublishedProductCompletenesses->save(Argument::type(PublishedProductCompletenessCollection::class))->shouldBeCalled();
+        $savePublishedProductCompletenesses
+            ->save(Argument::type(PublishedProductCompletenessCollection::class))
+            ->shouldBeCalled();
 
         $this->computePublishedProductCompleteness(new GenericEvent($publishedProduct));
     }
