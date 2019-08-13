@@ -62,10 +62,8 @@ class CalculateCompletenessCommandIntegration extends AbstractCompletenessTestCa
 
     private function removeAllCompletenesses($product)
     {
-        $sql = 'DELETE FROM pim_catalog_completeness';
-        $this->get('doctrine.orm.entity_manager')->getConnection()->prepare($sql)->execute();
-        $sql = 'DELETE FROM pim_catalog_completeness_missing_attribute';
-        $this->get('doctrine.orm.entity_manager')->getConnection()->prepare($sql)->execute();
+        $this->get('database_connection')->executeQuery('DELETE FROM pim_catalog_completeness');
+        $this->get('database_connection')->executeQuery('DELETE FROM pim_catalog_completeness_missing_attribute');
 
         $this->get('pim_catalog.elasticsearch.indexer.product')->index($product);
     }
