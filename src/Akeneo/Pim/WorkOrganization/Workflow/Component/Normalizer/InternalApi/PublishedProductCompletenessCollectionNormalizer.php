@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\InternalApi;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetAttributeLabelsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetChannelLabelsInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompleteness;
@@ -171,7 +170,7 @@ class PublishedProductCompletenessCollectionNormalizer implements NormalizerInte
     /**
      * Returns the average completeness of a specific channel
      *
-     * @param CompletenessInterface[] $completenesses
+     * @param PublishedProductCompleteness[] $completenesses
      *
      * @return int
      */
