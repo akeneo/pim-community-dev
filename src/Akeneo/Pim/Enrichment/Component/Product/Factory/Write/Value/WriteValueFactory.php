@@ -7,16 +7,15 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 
 /**
- * The goal of this factory is create values without doing any check of the validity of the data,
+ * The goal of this factory is create values by doing check on the validity of the data,
  * such as validation of a date is effectively a date or a scalar is really a scalar.
  *
- * It has been designed for performance purpose, as doing check on type when reading from database should not be done.
+ * This kind of check is useful to guarantee the data in your domain when creating a value from the outside world (API, UI, etc).
  *
- * @author    Anael Chardan <anael.chardan@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface ReadValueFactory
+interface WriteValueFactory
 {
     public function create(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface;
     public function supportedAttributeType(): string;
