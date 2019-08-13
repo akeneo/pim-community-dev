@@ -11,6 +11,8 @@ data "template_file" "helm_pim_config" {
     mailgun_password    = "${random_string.mailgun_password.result}"
     mailgun_host        = "${var.mailgun_host}"
     mailgun_port        = "${var.mailgun_port}"
+    bucketName          = "${google_storage_bucket.srnt_bucket.name}"
+    pimStoragekey       = "${google_service_account_key.pimstorage.private_key}"
   }
 }
 

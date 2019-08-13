@@ -50,3 +50,15 @@ variable "mailgun_host" {
 variable "mailgun_port" {
   default = "2525"
 }
+
+variable "bucket_name" {
+  default = ""
+}
+
+variable "google_storage_location" {
+  default = ""
+}
+
+variable "force_destroy_storage" {
+  default = "false"
+}

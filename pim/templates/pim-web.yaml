@@ -72,9 +72,10 @@ spec:
           volumeMounts:
             - name: web-src
               mountPath: /var/www/html/web
-            - name: fpm-data
-              mountPath: /data
-              readOnly: false
+            - name: google-cloud-pim-storage-key
+              mountPath: /var/secrets/google/srnt.json
+              subPath: srnt.json
+              readOnly: true
             {{- if .Values.onboarder.enabled }}
             - name: google-cloud-onboarder-key
               mountPath: /var/secrets/google/key.json
@@ -156,9 +157,6 @@ spec:
       volumes:
         - name: web-src
           emptyDir: {}
-        - name: fpm-data
-          persistentVolumeClaim:
-            claimName: pvc-data-pim-{{required ".Values.global.extraLabels.instanceName is required" .Values.global.extraLabels.instanceName }}
         - name: conf-httpd
           configMap:
             name: pim-config
@@ -167,6 +165,12 @@ spec:
                 path: httpd.conf
               - key: mime.types
                 path: mime.types
+        - name: google-cloud-pim-storage-key
+          secret:
+            secretName: pim-secrets
+            items:
+            - key: srntPimStorageKey
+              path: srnt.json
         {{- if .Values.onboarder.enabled }}
         - name: google-cloud-onboarder-key
           secret:

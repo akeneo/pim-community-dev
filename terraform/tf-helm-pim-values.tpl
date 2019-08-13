@@ -21,3 +21,7 @@ mailer:
   password: ${mailgun_password}
   host: ${mailgun_host}
   port: ${mailgun_port}
+pim:
+  storage:
+    bucketName: ${bucketName}
+    serviceAccountKey: ${pimStoragekey}

@@ -1,11 +1,11 @@
-{{- if .Values.pim.hook.upgradePim.enabled }}
+{{- if .Values.pim.hook.installPim.enabled }}
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: pim-upgrader
+  name: pim-catalog-installer
   labels:
     app: {{ template "pim.fullName" . }}
-    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    chart: {{ printf "%s-%s" .Chart.Name (.Chart.Version | replace "+" "_") }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
     component: {{ template "pim.fullName" . }}
@@ -13,23 +13,23 @@ metadata:
   annotations:
     # This is what defines this resource as a hook. Without this line, the
     # job is considered part of the release.
-    "helm.sh/hook": {{ .Values.pim.hook.upgradePim.hook | quote }}
-    "helm.sh/hook-weight": "-1"
-    "helm.sh/hook-delete-policy": "before-hook-creation"
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "0"
+    "helm.sh/hook-delete-policy": hook-succeeded
 spec:
   template:
     metadata:
       labels:
         component: {{ template "pim.fullName" . }}
-        role: pim-upgrade
+        role: pim-install
         {{ include "pim.extraLabels" . | indent 8 }}
     spec:
       restartPolicy: Never
       containers:
-        - name: pim-upgrade
-          image: {{ template "pim.imageNameAndTag" . }}
+        - name: pim-install-catalog
+          image:  {{ template "pim.imageNameAndTag" . }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
-          command: ['sh', '-c', 'export HOME=/var/www && su -m -l www-data -s /bin/bash -c "rm -rf var/cache && bin/console doctrine:migration:migrate -vvv --allow-no-migration --no-interaction"']
+          command: ['sh', '-c', 'export HOME=/var/www/ && su -m -l www-data -s /bin/bash -c "php bin/console pim:install"']
           envFrom: [ configMapRef: { name: {{ template "pim.fullName" . }}-env } ]
           env:
             - { name: MAILER_USER, valueFrom: { secretKeyRef: { name: pim-secrets, key: mailerLogin } } }
@@ -40,5 +40,30 @@ spec:
 {{- if .Values.common.phpConfCLI }}
 {{ toYaml .Values.common.phpConfCLI  | indent 12 }}
 {{- end }}
+          volumeMounts:
+            - name: google-cloud-pim-storage-key
+              mountPath: /var/secrets/google/srnt.json
+              subPath: srnt.json
+              readOnly: true
+            {{- if .Values.onboarder.enabled }}
+            - name: google-cloud-onboarder-key
+              mountPath: /var/secrets/google/key.json
+              subPath: key.json
+              readOnly: true
+            {{- end }}
+      volumes:
+        - name: google-cloud-pim-storage-key
+          secret:
+            secretName: pim-secrets
+            items:
+            - key: srntPimStorageKey
+              path: srnt.json
+        {{- if .Values.onboarder.enabled }}
+        - name: google-cloud-onboarder-key
+          secret:
+            secretName: pim-secrets
+            items:
+            - key: akobOnboarderKey
+              path: key.json
+        {{- end }}
 {{- end }}
-

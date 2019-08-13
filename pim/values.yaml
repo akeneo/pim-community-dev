@@ -21,6 +21,13 @@ backup:
     export:
       enabled: true
       snapshotAge: 24h
+  storage:
+    schedule: "0 0 */24 * * *"
+    retentionPolicy:
+      dailyBackups: 10
+      weeklyBackups: 5
+      monthlyBackups: 12
+      yearlyBackups: 10
 
 common:
   extraLabels: {}
@@ -87,19 +94,28 @@ image:
 
 pim:
   hook:
+    addAdmin:
+      enabled: true
+    migrateStorage:
+      enabled: false # Set me to true when upgrading to a minor version
+      hook: "pre-upgrade"
     installPim:
       enabled: true
     upgradePim:
       enabled: false # Set me to true when upgrading to a minor version
       hook: "pre-upgrade"
+    upgradeES:
+      enabled: false
+      hook: "pre-upgrade"
+  storage:
+    bucketName: nil
+    serviceAccountKey: nil
   updateStrategy:
     type: RollingUpdate
   replicas: 2
   numDaemon: 2
   extraLabels: {}
   secret: nil # Generate me with `uuidgen`
-  persistence:
-    diskSize: 150Gi
   resources:
     limits:
       memory: "2048Mi"
@@ -107,20 +123,13 @@ pim:
       cpu: "200m"
       memory: "512Mi"
   defaultCatalog: minimal
-  users:
-    admin:
-      firstName: nil # Fill me
-      lastName: nil # Fill me
-      email: nil # Fill me
-      password: nil # Generate me with `pwgen -sB 22`
-      catalogDefaultLocale: en_US # Change me if needed
-      userDefaultLocale: en_US # Change me if needed
-      catalogDefaultScope: ecommerce
-      defaultCategoryTree: master
-      roles: ROLE_ADMINISTRATOR
-      groups: IT support
-      enabled: 1
-      defaultAssetTree: asset_main_catalog
+  defaultAdminUser:
+    login : nil # Fill me
+    firstName: nil # Fill me
+    lastName: nil # Fill me
+    email: nil # Fill me
+    password: nil # Generate me with `pwgen -sB 22`
+    uiLocale: en_US # Change me if needs be
   jobs:
     batch-purge:
       enabled: true
@@ -134,7 +143,6 @@ pim:
       enabled: true
       pimCommand: "akeneo:rule:run"
       schedule: "0 5 * * *"
-      mountPimData: true
     versionning-refresh:
       enabled: true
       pimCommand: "pim:versioning:refresh"
@@ -158,7 +166,7 @@ pim:
     franklin-insights-fetch-products:
       enabled: true
       pimCommand: "pimee:franklin-insights:fetch-products"
-      schedule: "30 */1 * * *"
+      schedule: "*/30 * * * *"
     reference-entity-refresh-records:
       enabled: true
       pimCommand: "akeneo:reference-entity:refresh-records --all"
@@ -181,16 +189,6 @@ onboarder:
     queueName: nil
   serviceAccount: nil
 
-nfs:
-  nameOverride: ""
-  persistence:
-    enabled: true
-    storageClass: ssd-retain
-    size: 155Gi # Add +3% based on pim.persistence.diskSize
-  storageClass:
-    name: nfs
-    reclaimPolicy: Retain
-    
 mysql:
   common:
     class: ssd-retain
@@ -296,4 +294,3 @@ catalog:
     onboarder:
       path: vendor/akeneo/pim-onboarder/src/Bundle/Resources/fixtures/onboarder
       class: PimOnboarderBundle:onboarder
-

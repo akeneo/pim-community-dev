@@ -59,9 +59,10 @@ spec:
             successThreshold: 1
             timeoutSeconds: 1
           volumeMounts:
-            - name: fpm-data
-              mountPath: /data
-              readOnly: false
+            - name: google-cloud-pim-storage-key
+              mountPath: /var/secrets/google/srnt.json
+              subPath: srnt.json
+              readOnly: true
             {{- if .Values.onboarder.enabled }}
             - name: google-cloud-onboarder-key
               mountPath: /var/secrets/google/key.json
@@ -79,9 +80,12 @@ spec:
 {{ toYaml .Values.common.phpConfCLI  | indent 12 }}
 {{- end }}
       volumes:
-        - name: fpm-data
-          persistentVolumeClaim:
-            claimName: pvc-data-pim-{{ .Values.global.extraLabels.instanceName }}
+        - name: google-cloud-pim-storage-key
+          secret:
+            secretName: pim-secrets
+            items:
+            - key: srntPimStorageKey
+              path: srnt.json
         {{- if .Values.onboarder.enabled }}
         - name: google-cloud-onboarder-key
           secret:

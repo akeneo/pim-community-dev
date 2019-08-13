@@ -19,12 +19,12 @@ pim:
     diskSize: 10Gi
   replicas: 1
   numDaemon: 1
-  users:
-    admin:
-      firstName: cloud
-      lastName: Admin
-      email: tech-cloud@akeneo.com
-      password: generateme
+  defaultAdminUser:
+    login: cloud-admin
+    firstName: du Cloud
+    lastName: Jean-Claude
+    email: tech-cloud@akeneo.com
+    password: generateme
 
 mysql:
   common:

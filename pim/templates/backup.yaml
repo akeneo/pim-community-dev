@@ -18,7 +18,6 @@ spec:
   snapshot:
     schedule: {{ .Values.backup.snapshot.schedule }}
     pvcNames:
-      - data-{{ .Release.Name }}-nfs-0
       - pvc-data-{{ .Release.Name }}-mysql-server-0
 {{ if .Values.backup.snapshot.export.enabled }}
     export:
@@ -26,4 +25,10 @@ spec:
 {{end }}
     retentionPolicy:
 {{toYaml .Values.backup.snapshot.retentionPolicy | indent 6 }}
+  storage:
+    schedule: {{ .Values.backup.storage.schedule }}
+    sourcesUrls:
+      - gs://{{ .Values.pim.storage.bucketName }}
+    retentionPolicy:
+{{toYaml .Values.backup.storage.retentionPolicy | indent 6}}
 {{ end }}

@@ -27,12 +27,11 @@ spec:
             command: ['sh', '-c', 'export HOME=/var/www/ && su -m -l www-data -s /bin/bash -c "php bin/console {{ $jobOptions.pimCommand }}"']
             resources:
   {{ toYaml $tplCtx.Values.pim.resources | indent 12 }}
-            {{- if $jobOptions.mountPimData }}
             volumeMounts:
-              - name: fpm-data
-                mountPath: /data
-                readOnly: false
-            {{- end }}
+              - name: google-cloud-pim-storage-key
+                mountPath: /var/secrets/google/srnt.json
+                subPath: srnt.json
+                readOnly: true
             envFrom: [ configMapRef: { name: {{ template "pim.fullName" $tplCtx }}-env } ]
             env:
               - { name: MAILER_USER, valueFrom: { secretKeyRef: { name: pim-secrets, key: mailerLogin } } }
@@ -44,12 +43,13 @@ spec:
 {{ toYaml $tplCtx.Values.common.phpConfCLI  | indent 14 }}
 {{- end }}
           restartPolicy: OnFailure
-          {{- if $jobOptions.mountPimData }}
           volumes:
-            - name: fpm-data
-              persistentVolumeClaim:
-                claimName: pvc-data-pim-{{ $tplCtx.Values.global.extraLabels.instanceName }}
-          {{- end }}
+            - name: google-cloud-pim-storage-key
+              secret:
+                secretName: pim-secrets
+                items:
+                - key: srntPimStorageKey
+                  path: srnt.json
 ---
 {{- end }}
 {{- end }}

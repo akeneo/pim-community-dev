@@ -8,27 +8,29 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 data:
-  LC_ALL: C.UTF-8 
-  SYMFONY_ENV: prod
-  TRUSTED_PROXY_IPS: 10.0.0.0/8
-  PIM_INSTALLER_DATA: {{ with (index .Values.catalog.EE .Values.pim.defaultCatalog ) }}{{ .class }}{{ end }}
-  PIM_SECRET: {{ .Values.pim.secret }}
-  PIM_ELASTICSEARCH_HOST: {{ .Values.elasticsearch.fullnameOverride }}-client
-  PIM_ELASTICSEARCH_PORT: "9200"
-  PIM_SHARED_STORAGE: /data
-  PIM_DATABASE_HOST: {{ .Values.mysql.mysql.serviceName | quote }}
-  PIM_DATABASE_PORT: "3306"
-  PIM_DATABASE_NAME: {{ .Values.mysql.mysql.defaultDatabase | quote }}
-  PIM_DATABASE_USER: {{ .Values.mysql.mysql.defaultUser | quote }}
   AKENEO_PIM_URL: {{ printf "https://%s" .Values.common.pimMasterDomain  | quote }}
   CONTAINER_NAME: pim
-  GOOGLE_LOCATION: {{ .Values.common.googleZone | quote }}
   GOOGLE_CLOUD_PROJECT: {{ .Values.common.gcpProjectID | quote }}
+  GOOGLE_LOCATION: {{ .Values.common.googleZone | quote }}
   K8S_CLUSTER_NAME: {{ .Values.common.googleZone | quote }}
+  LC_ALL: C.UTF-8 
+  MAILER_FROM_ADDRESS: {{ .Values.mailer.from_address | quote }}
   MAILER_HOST: {{ .Values.mailer.host | quote }}
   MAILER_PORT: {{ .Values.mailer.port | quote }}
-  MAILER_FROM_ADDRESS: {{ .Values.mailer.from_address | quote }}
   MEMCACHED_SVC:  {{ .Values.memcached.fullnameOverride | quote}}
+  PIM_DATABASE_HOST: {{ .Values.mysql.mysql.serviceName | quote }}
+  PIM_DATABASE_NAME: {{ .Values.mysql.mysql.defaultDatabase | quote }}
+  PIM_DATABASE_PORT: "3306"
+  PIM_DATABASE_USER: {{ .Values.mysql.mysql.defaultUser | quote }}
+  PIM_ELASTICSEARCH_HOST: {{ .Values.elasticsearch.fullnameOverride }}-client
+  PIM_ELASTICSEARCH_PORT: "9200"
+  PIM_INSTALLER_DATA: {{ with (index .Values.catalog.EE .Values.pim.defaultCatalog ) }}{{ .class }}{{ end }}
+  PIM_SECRET: {{ .Values.pim.secret }}
+  PIM_SHARED_STORAGE: /data
+  SRNT_GOOGLE_APPLICATION_CREDENTIALS: /var/secrets/google/srnt.json
+  SRNT_GOOGLE_BUCKET_NAME: {{ .Values.pim.storage.bucketName | quote }}
+  SYMFONY_ENV: prod
+  TRUSTED_PROXY_IPS: 10.0.0.0/8
   {{- if .Values.onboarder.enabled }}
   ONBOARDER_ENABLED: "1"
   GCP_PROJECT_ID: {{ .Values.common.gcpProjectID | quote }}

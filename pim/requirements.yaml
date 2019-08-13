@@ -5,10 +5,6 @@ dependencies:
 - name: elasticsearch
   version: "1.21.3"
   repository: "@stable"
-- name: nfs-server-provisioner
-  version: "0.2.1"
-  repository: "@stable"
-  alias: nfs
 - name: memcached
   version: "2.6.0"
   repository: "@stable"

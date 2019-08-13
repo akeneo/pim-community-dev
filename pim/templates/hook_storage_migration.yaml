@@ -1,0 +1,81 @@
+{{- if .Values.pim.hook.migrateStorage.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: storage-migration
+  labels:
+    app: {{ template "pim.fullName" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: {{ template "pim.fullName" . }}
+    {{ include "pim.extraLabels" . | indent 4 }}
+  annotations:
+    # This is what defines this resource as a hook. Without this line, the
+    # job is considered part of the release.
+    "helm.sh/hook": {{ .Values.pim.hook.migrateStorage.hook | quote }}
+    "helm.sh/hook-weight": "-1"
+    "helm.sh/hook-delete-policy": "before-hook-creation"
+spec:
+  backoffLimit: 1
+  completions: 1
+  parallelism: 1
+  template:
+    metadata:
+      labels:
+        component: {{ template "pim.fullName" . }}
+        role: storage-migration
+        {{ include "pim.extraLabels" . | indent 8 }}
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: storage-migration
+          image: {{ template "pim.imageNameAndTag" . }}
+          imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
+          resources:
+{{ toYaml .Values.pim.resources | indent 12 }}          
+          command: 
+            - 'sh'
+            - '-c'
+            - |
+              export APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=DontWarn && export CLOUD_SDK_REPO="cloud-sdk-buster"  && \
+              echo "deb http://packages.cloud.google.com/apt ${CLOUD_SDK_REPO} main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
+              curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && \
+              apt-get update && apt-get install google-cloud-sdk -y  && \
+              gcloud init && mkdir -p /var/secrets/google && \
+              $(echo "$GOOGLE_STORAGE_KEY" | base64 -d > ${SRNT_GOOGLE_APPLICATION_CREDENTIALS}) && echo "${SRNT_GOOGLE_BUCKET_NAME}"&& \
+              echo "${SRNT_GOOGLE_APPLICATION_CREDENTIALS}" && cat ${SRNT_GOOGLE_APPLICATION_CREDENTIALS} &&\
+              echo "    archive_dir:                          '%env(PIM_SHARED_STORAGE)%/archive'" >> app/config/parameters.yml && \
+              echo "    logs_dir:                             '%env(PIM_SHARED_STORAGE)%/logs'" >> app/config/parameters.yml && \
+              gcloud auth activate-service-account --key-file=${SRNT_GOOGLE_APPLICATION_CREDENTIALS} && \
+              rm -rf var/cache/* && \
+              php upgrades/schema/remove_orphan_archives.php && \
+              php upgrades/schema/archived_logs_local_filesystem_to_object_storage.php && \
+              touch ${PIM_SHARED_STORAGE}/archive/export/export.txt && touch ${PIM_SHARED_STORAGE}/archive/import/import.txt && \
+              gsutil -m cp -r ${PIM_SHARED_STORAGE}/archive/export/* gs://${SRNT_GOOGLE_BUCKET_NAME}/archivist/export/ && \
+              gsutil -m cp -r ${PIM_SHARED_STORAGE}/archive/import/* gs://${SRNT_GOOGLE_BUCKET_NAME}/archivist/import/ && \ 
+              gsutil -m cp -r ${PIM_SHARED_STORAGE}/file_storage/catalog/* gs://${SRNT_GOOGLE_BUCKET_NAME}/catalog_storage/ && \
+              gsutil -m cp -r ${PIM_SHARED_STORAGE}/file_storage/assets/* gs://${SRNT_GOOGLE_BUCKET_NAME}/asset_storage/
+          envFrom: [ configMapRef: { name: {{ template "pim.fullName" . }}-env } ]
+          env:
+            - { name: LC_ALL, value: C.UTF-8 }
+            - { name: SRNT_GOOGLE_BUCKET_NAME, value: {{ .Values.pim.storage.bucketName | quote }} }
+            - { name: SRNT_GOOGLE_APPLICATION_CREDENTIALS, value: "/var/secrets/google/srnt.json" }
+            - { name: MAILER_USER, valueFrom: { secretKeyRef: { name: pim-secrets, key: mailerLogin } } }
+            - { name: MAILER_PASSWORD, valueFrom: { secretKeyRef: { name: pim-secrets, key: mailerPassword } } }
+            - { name: PIM_DATABASE_PASSWORD, valueFrom: { secretKeyRef: { name: pim-secrets, key: mysqlPimUserPassword } } }
+            - { name: GOOGLE_NAMESPACE, valueFrom: { fieldRef: { fieldPath: metadata.namespace } } }
+            - { name: GOOGLE_POD_NAME, valueFrom: { fieldRef: { fieldPath: metadata.name } } }
+            - { name: GOOGLE_STORAGE_KEY, value: {{ .Values.pim.storage.serviceAccountKey }} }
+{{- if .Values.common.phpConfCLI }}
+{{ toYaml .Values.common.phpConfCLI  | indent 12 }}
+{{- end }}
+          volumeMounts:
+            - name: fpm-data
+              mountPath: /data
+      volumes:
+        - name: fpm-data
+          persistentVolumeClaim:
+            claimName: pvc-data-pim-{{required ".Values.global.extraLabels.instanceName is required" .Values.global.extraLabels.instanceName }}
+{{- end }}
+
