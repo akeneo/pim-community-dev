@@ -6,7 +6,7 @@ if (!file_exists(__DIR__ . '/../../src/Kernel.php')) {
 
 require __DIR__ . '/../../vendor/autoload.php';
 require __DIR__ . '/../../src/Kernel.php';
-require __DIR__ . '/../../app/bootstrap.php';
+require __DIR__ . '/../../config/bootstrap.php';
 
 $kernel = new Kernel('prod', false);
 $kernel->boot();
