@@ -257,7 +257,8 @@ SQL;
         $sql = <<<SQL
             SELECT 
                 p.identifier,
-                c.ratio
+                c.required_count,
+                c.missing_count
             FROM
                 pim_catalog_product p
                 JOIN pim_catalog_completeness c ON c.product_id = p.id
@@ -276,7 +277,8 @@ SQL;
         )->fetchAll();
 
         foreach ($rows as $row) {
-            $result[$row['identifier']]['completeness'] = (int) $row['ratio'];
+            $ratio = (int)floor(100 * ((int)$row['required_count'] - (int)$row['missing_count']) / (int)$row['required_count']);
+            $result[$row['identifier']]['completeness'] = $ratio;
         }
 
         return $result;

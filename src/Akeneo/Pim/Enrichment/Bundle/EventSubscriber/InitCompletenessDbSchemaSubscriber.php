@@ -36,37 +36,24 @@ class InitCompletenessDbSchemaSubscriber implements EventSubscriberInterface
 
     public function initDbSchema(InstallerEvent $event): void
     {
-        $completenessTableSql = "
-        CREATE TABLE IF NOT EXISTS `pim_catalog_completeness` (
-            `id` int(11) NOT NULL AUTO_INCREMENT,
-            `locale_id` int(11) NOT NULL,
-            `channel_id` int(11) NOT NULL,
-            `product_id` int(11) NOT NULL,
-            `ratio` int(11) NOT NULL,
-            `missing_count` int(11) NOT NULL,
-            `required_count` int(11) NOT NULL,
-            PRIMARY KEY (`id`),
-            UNIQUE KEY `searchunique_idx` (`channel_id`,`locale_id`,`product_id`),
-            KEY `IDX_113BA854E559DFD1` (`locale_id`),
-            KEY `IDX_113BA85472F5A1AA` (`channel_id`),
-            KEY `IDX_113BA8544584665A` (`product_id`),
-            KEY `ratio_idx` (`ratio`),
-            CONSTRAINT `FK_113BA8544584665A` FOREIGN KEY (`product_id`) REFERENCES `pim_catalog_product` (`id`) ON DELETE CASCADE,
-            CONSTRAINT `FK_113BA85472F5A1AA` FOREIGN KEY (`channel_id`) REFERENCES `pim_catalog_channel` (`id`) ON DELETE CASCADE,
-            CONSTRAINT `FK_113BA854E559DFD1` FOREIGN KEY (`locale_id`) REFERENCES `pim_catalog_locale` (`id`) ON DELETE CASCADE
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
+        $completenessTableSql = <<<SQL
+CREATE TABLE IF NOT EXISTS `pim_catalog_completeness` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `locale_id` int(11) NOT NULL,
+    `channel_id` int(11) NOT NULL,
+    `product_id` int(11) NOT NULL,
+    `missing_count` int(11) NOT NULL,
+    `required_count` int(11) NOT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `searchunique_idx` (`channel_id`,`locale_id`,`product_id`),
+    KEY `IDX_113BA854E559DFD1` (`locale_id`),
+    KEY `IDX_113BA85472F5A1AA` (`channel_id`),
+    KEY `IDX_113BA8544584665A` (`product_id`),
+    CONSTRAINT `FK_113BA8544584665A` FOREIGN KEY (`product_id`) REFERENCES `pim_catalog_product` (`id`) ON DELETE CASCADE,
+    CONSTRAINT `FK_113BA85472F5A1AA` FOREIGN KEY (`channel_id`) REFERENCES `pim_catalog_channel` (`id`) ON DELETE CASCADE,
+    CONSTRAINT `FK_113BA854E559DFD1` FOREIGN KEY (`locale_id`) REFERENCES `pim_catalog_locale` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+SQL;
         $this->connection->exec($completenessTableSql);
-
-        $missingTableSql = "
-        CREATE TABLE IF NOT EXISTS `pim_catalog_completeness_missing_attribute` (
-            `completeness_id` int(11) NOT NULL,
-            `missing_attribute_id` int(11) NOT NULL,
-            PRIMARY KEY (`completeness_id`,`missing_attribute_id`),
-            KEY `IDX_DF61BBD3B640FBA5` (`completeness_id`),
-            KEY `IDX_DF61BBD3762147F6` (`missing_attribute_id`),
-            CONSTRAINT `FK_DF61BBD3762147F6` FOREIGN KEY (`missing_attribute_id`) REFERENCES `pim_catalog_attribute` (`id`) ON DELETE CASCADE,
-            CONSTRAINT `FK_DF61BBD3B640FBA5` FOREIGN KEY (`completeness_id`) REFERENCES `pim_catalog_completeness` (`id`) ON DELETE CASCADE
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
-        $this->connection->exec($missingTableSql);
     }
 }

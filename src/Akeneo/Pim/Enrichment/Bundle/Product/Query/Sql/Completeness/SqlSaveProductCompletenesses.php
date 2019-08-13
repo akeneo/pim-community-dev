@@ -39,7 +39,6 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
                 $this->getInsertCompletenessQuery(),
                 [
                     'productId' => $productId,
-                    'ratio' => $completeness->ratio(),
                     'missingCount' => count($completeness->missingAttributeCodes()),
                     'requiredCount' => $completeness->requiredCount(),
                     'localeCode' => $completeness->localeCode(),
@@ -68,8 +67,8 @@ SQL;
     private function getInsertCompletenessQuery(): string
     {
         return <<<SQL
-INSERT INTO pim_catalog_completeness(locale_id, channel_id, product_id, ratio, missing_count, required_count)
-SELECT locale.id, channel.id, :productId, :ratio, :missingCount, :requiredCount  
+INSERT INTO pim_catalog_completeness(locale_id, channel_id, product_id, missing_count, required_count)
+SELECT locale.id, channel.id, :productId, :missingCount, :requiredCount  
 FROM pim_catalog_locale locale,
      pim_catalog_channel channel
 WHERE locale.code = :localeCode
