@@ -2,7 +2,6 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
-use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
@@ -10,7 +9,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\AxisValueLabe
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductCompletenessCollectionNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValueInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer;
@@ -19,7 +17,6 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionValueInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -82,11 +79,6 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         MetricInterface $weightData,
         AttributeOptionInterface $colorAttributeOption,
         AttributeOptionValueInterface $colorAttributeOptionValue,
-        CompletenessInterface $completeness1,
-        CompletenessInterface $completeness2,
-        AttributeInterface $ecommerce,
-        LocaleInterface $localeEn,
-        LocaleInterface $localeFr,
         $attributeOptionRepository,
         $simpleSelectOptionNormalizer,
         $metricNormalizer
@@ -145,17 +137,6 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         ]);
 
         $getProductCompletenesses->fromProductId(42)->willReturn($completenessCollection);
-        $completeness1->getChannel()->willReturn($ecommerce);
-        $completeness2->getChannel()->willReturn($ecommerce);
-        $completeness1->getLocale()->willReturn($localeEn);
-        $completeness2->getLocale()->willReturn($localeFr);
-        $completeness1->getRequiredCount()->willReturn(0);
-        $completeness2->getRequiredCount()->willReturn(0);
-        $completeness1->getMissingAttributes()->willReturn(new ArrayCollection());
-        $completeness2->getMissingAttributes()->willReturn(new ArrayCollection());
-        $ecommerce->getCode()->willReturn('ecommerce');
-        $localeFr->getCode()->willReturn('fr_FR');
-        $localeEn->getCode()->willReturn('en_US');
         $completenessCollectionNormalizer->normalize($completenessCollection)->willReturn(['NORMALIZED_COMPLETENESS']);
 
         $simpleSelectOptionNormalizer->supports(Argument::any())->willReturn(false);

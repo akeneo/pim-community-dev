@@ -8,11 +8,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use PhpSpec\ObjectBehavior;
 use Oro\Bundle\PimDataGridBundle\Normalizer\ProductAssociationNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer;
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Completeness;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyTranslationInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Prophecy\Argument;
@@ -127,9 +124,6 @@ class ProductAssociationNormalizerSpec extends ObjectBehavior
         ProductInterface $product,
         FamilyInterface $family,
         FamilyTranslationInterface $familyEN,
-        Completeness $completeness,
-        LocaleInterface $localeEN,
-        ChannelInterface $channelEcommerce,
         ProductInterface $currentProduct,
         ValueInterface $image
     ) {
