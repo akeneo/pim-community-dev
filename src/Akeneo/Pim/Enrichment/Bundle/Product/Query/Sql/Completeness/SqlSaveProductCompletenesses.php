@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\Completeness;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodesCollection;
-use Akeneo\Pim\Enrichment\Component\Product\Query\CannotSaveProductCompletenessCollectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\SaveProductCompletenesses;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\ParameterType;
 
 /**
  * @author    Mathias METAYER <mathias.metayer@akeneo.com>
@@ -29,50 +29,93 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
      */
     public function save(ProductCompletenessWithMissingAttributeCodesCollection $completenesses): void
     {
-        $this->connection->beginTransaction();
+        $this->saveAll([$completenesses]);
+    }
 
-        $productId = $completenesses->productId();
-        $this->connection->executeQuery($this->getDeleteQuery(), ['productId' => $productId]);
+    /**
+     * We use INSERT statements with multiple VALUES lists to insert several rows at a time. Performance is 7 times better
+     * on the icecat catalog this way, instead of using separate single-row INSERT statements.
+     *
+     *
+     * @see https://dev.mysql.com/doc/refman/5.7/en/insert-optimization.html
+     *
+     * {@inheritdoc}
+     */
+    public function saveAll(array $productCompletenessCollections): void
+    {
+        $this->connection->transactional(function (Connection $connection) use ($productCompletenessCollections) {
+            $productIds = array_unique(array_map(function (ProductCompletenessWithMissingAttributeCodesCollection $productCompletenessCollection) {
+                return $productCompletenessCollection->productId();
+            }, $productCompletenessCollections));
 
-        foreach ($completenesses as $completeness) {
-            $this->connection->executeUpdate(
-                $this->getInsertCompletenessQuery(),
-                [
-                    'productId' => $productId,
-                    'missingCount' => count($completeness->missingAttributeCodes()),
-                    'requiredCount' => $completeness->requiredCount(),
-                    'localeCode' => $completeness->localeCode(),
-                    'channelCode' => $completeness->channelCode(),
-                ]
+
+            $localeIdsFromCode = $this->localeIdsIndexedByLocaleCodes();
+            $channelIdsFromCode = $this->channelIdsIndexedByChannelCodes();
+
+            $connection->executeQuery(
+                'DELETE FROM pim_catalog_completeness WHERE product_id IN (:product_ids)',
+                ['product_ids' => $productIds],
+                ['product_ids' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
             );
-        }
 
-        try {
-            $this->connection->commit();
-        } catch (\Exception $e) {
-            $this->connection->rollBack();
+            $numberCompletenessRow = 0;
+            foreach ($productCompletenessCollections as $productCompletenessCollection) {
+                $numberCompletenessRow += count($productCompletenessCollection);
+            }
+            $placeholders = implode(',', array_fill(0, $numberCompletenessRow, '(?, ?, ?, ?, ?)'));
 
-            throw new CannotSaveProductCompletenessCollectionException($productId, $e->getCode(), $e);
-        }
+            if (empty($placeholders)) {
+                return;
+            }
+
+            $insert = <<<SQL
+                INSERT INTO pim_catalog_completeness
+                    (locale_id, channel_id, product_id, missing_count, required_count)
+                VALUES
+                    $placeholders
+SQL;
+
+            $stmt = $this->connection->prepare($insert);
+
+            $placeholderIndex = 1;
+            foreach ($productCompletenessCollections as $productCompletenessCollection) {
+                foreach ($productCompletenessCollection as $productCompleteness) {
+                    $stmt ->bindValue($placeholderIndex++, $localeIdsFromCode[$productCompleteness->localeCode()]);
+                    $stmt ->bindValue($placeholderIndex++, $channelIdsFromCode[$productCompleteness->channelCode()]);
+                    $stmt ->bindValue($placeholderIndex++, $productCompletenessCollection->productId(), ParameterType::INTEGER);
+                    $stmt ->bindValue($placeholderIndex++, count($productCompleteness->missingAttributeCodes()), ParameterType::INTEGER);
+                    $stmt ->bindValue($placeholderIndex++, $productCompleteness->requiredCount(), ParameterType::INTEGER);
+                }
+            }
+
+            $stmt->execute();
+        });
     }
 
-    private function getDeleteQuery(): string
+    private function localeIdsIndexedByLocaleCodes(): array
     {
-        return <<<SQL
-DELETE FROM pim_catalog_completeness
-WHERE product_id = :productId
-SQL;
+        $query = 'SELECT locale.id as locale_id, locale.code as locale_code FROM pim_catalog_locale locale';
+
+        $rows = $this->connection->fetchAll($query);
+
+        $result = [];
+        foreach ($rows as $row) {
+            $result[$row['locale_code']] = $row['locale_id'];
+        }
+
+        return $result;
     }
 
-    private function getInsertCompletenessQuery(): string
+    private function channelIdsIndexedByChannelCodes(): array
     {
-        return <<<SQL
-INSERT INTO pim_catalog_completeness(locale_id, channel_id, product_id, missing_count, required_count)
-SELECT locale.id, channel.id, :productId, :missingCount, :requiredCount  
-FROM pim_catalog_locale locale,
-     pim_catalog_channel channel
-WHERE locale.code = :localeCode
-  AND channel.code = :channelCode
-SQL;
+        $query = 'SELECT channel.id as channel_id, channel.code as channel_code FROM pim_catalog_channel channel';
+        $rows = $this->connection->fetchAll($query);
+
+        $result = [];
+        foreach ($rows as $row) {
+            $result[$row['channel_code']] = $row['channel_id'];
+        }
+
+        return $result;
     }
 }
