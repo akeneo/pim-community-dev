@@ -613,24 +613,6 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setCompletenesses(Collection $completenesses)
-    {
-        $this->completenesses = $completenesses;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCompletenesses()
-    {
-        return $this->completenesses;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getReference()
     {
         return $this->getIdentifier();

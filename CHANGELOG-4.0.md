@@ -10,6 +10,12 @@
 
 - Remove akeneo_pim_product and akeneo_pim_product_model ES indexes and merge into akeneo_pim_product_and_product_model.
  
+### Doctrine mapping
+
+- The entity `Akeneo\Pim\Enrichment\Component\Product\Model\Completeness` is removed, and is no more an association of the `Product` entity.
+  The methods `getCompletenesses` and `setCompletenesses` of a `Product` are removed.
+  If you want to access the Completeness of products, please use the dedicated class `Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses`.
+ 
 ### Codebase
 
 - Remove class `Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager`
@@ -115,6 +121,8 @@
     `Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface` and add
     `Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses` and
     `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer`
+- Update constructor of `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CompleteFilter`, remove `Doctrine\ORM\EntityManagerInterface` and add `Doctrine\DBAL\Connection`
+- Remove methods `getCompletenesses` and `setCompletenesses` from `Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface`
 
 ### CLI Commands
 

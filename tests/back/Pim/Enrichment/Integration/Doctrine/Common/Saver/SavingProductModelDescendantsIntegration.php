@@ -2,6 +2,7 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Doctrine\Common\Saver;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
@@ -172,21 +173,20 @@ class SavingProductModelDescendantsIntegration extends TestCase
 
     /**
      * @param string $productName
-     * @param string $expectedChannel
+     * @param string $expectedChannelCode
      * @param int    $expectedRatio
      */
-    private function assertCompletenessForChannel(string $productName, string $expectedChannel, int $expectedRatio): void
+    private function assertCompletenessForChannel(string $productName, string $expectedChannelCode, int $expectedRatio): void
     {
-        $productVariant2 = $this->get('pim_catalog.repository.product')
-            ->findOneByIdentifier($productName);
-        $completenessCollection = $productVariant2->getCompletenesses();
+        $productVariant2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier($productName);
+        $completenessCollection = $this->getProductCompletenesses()->fromProductId($productVariant2->getId());
 
         foreach ($completenessCollection as $completeness) {
-            if ($expectedChannel === $completeness->getChannel()->getCode()) {
+            if ($expectedChannelCode === $completeness->channelCode()) {
                 $this->assertSame(
                     $expectedRatio,
-                    $completeness->getRatio(),
-                    sprintf('Expect ratio to be "%s", "%s" given', $expectedRatio, $completeness->getRatio())
+                    $completeness->ratio(),
+                    sprintf('Expect ratio to be "%s", "%s" given', $expectedRatio, $completeness->ratio())
                 );
             }
         }
@@ -197,5 +197,10 @@ class SavingProductModelDescendantsIntegration extends TestCase
         $user = $this->get('pim_user.provider.user')->loadUserByUsername('admin');
         $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
         $this->get('security.token_storage')->setToken($token);
+    }
+
+    private function getProductCompletenesses(): GetProductCompletenesses
+    {
+        return $this->get('akeneo.pim.enrichment.product.query.get_product_completenesses');
     }
 }

@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\CompleteFilterData;
 use Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\CompleteFilterInterface;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\DBAL\Connection;
 
 /**
  * Find data used by the datagrid completeness filter. We need to know if a product model has at least one
@@ -18,15 +18,12 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class CompleteFilter implements CompleteFilterInterface
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    /** @var Connection */
+    private $connection;
 
-    /**
-     * @param EntityManagerInterface $entityManager
-     */
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(Connection $connection)
     {
-        $this->entityManager = $entityManager;
+        $this->connection = $connection;
     }
 
     /**
@@ -34,39 +31,41 @@ class CompleteFilter implements CompleteFilterInterface
      */
     public function findCompleteFilterData(ProductModelInterface $productModel): CompleteFilterData
     {
-        $select = <<<SELECT
-channel.code AS channel_code,
-locale.code AS locale_code,
-CASE WHEN (completeness.ratio = 100) THEN 1 ELSE 0 END AS complete, 
-CASE WHEN (completeness.ratio < 100) THEN 1 ELSE 0 END AS incomplete
-SELECT;
-
-        $queryBuilder = $this->entityManager->createQueryBuilder();
-        $queryBuilder->select($select);
-
         if (2 === $productModel->getFamilyVariant()->getNumberOfLevel() && $productModel->isRootProductModel()) {
-            $queryBuilder
-                ->from(ProductModelInterface::class, 'root_product_model')
-                ->innerJoin('root_product_model.productModels', 'sub_product_model')
-                ->innerJoin('sub_product_model.products', 'variant_product')
-                ->where('root_product_model.id = :product_model')
-            ;
+            $sql = <<<SQL
+SELECT
+    channel.code AS channel_code,
+    locale.code AS locale_code,
+    CASE WHEN (completeness.ratio = 100) THEN 1 ELSE 0 END AS complete, 
+    CASE WHEN (completeness.ratio < 100) THEN 1 ELSE 0 END AS incomplete
+FROM pim_catalog_product_model root_product_model
+INNER JOIN pim_catalog_product_model sub_product_model ON root_product_model.id = sub_product_model.parent_id
+INNER JOIN pim_catalog_product product ON sub_product_model.id = product.product_model_id
+INNER JOIN pim_catalog_completeness completeness ON product.id = completeness.product_id
+INNER JOIN pim_catalog_locale locale ON completeness.locale_id = locale.id
+INNER JOIN pim_catalog_channel channel ON completeness.channel_id = channel.id
+WHERE root_product_model.id = :product_model_id
+SQL;
         } else {
-            $queryBuilder
-                ->from(ProductModelInterface::class, 'sub_product_model')
-                ->innerJoin('sub_product_model.products', 'variant_product')
-                ->where('sub_product_model.id = :product_model')
-            ;
+            $sql = <<<SQL
+SELECT
+    channel.code AS channel_code,
+    locale.code AS locale_code,
+    CASE WHEN (completeness.ratio = 100) THEN 1 ELSE 0 END AS complete, 
+    CASE WHEN (completeness.ratio < 100) THEN 1 ELSE 0 END AS incomplete
+FROM pim_catalog_product_model root_product_model
+INNER JOIN pim_catalog_product product ON root_product_model.id = product.product_model_id
+INNER JOIN pim_catalog_completeness completeness ON product.id = completeness.product_id
+INNER JOIN pim_catalog_locale locale ON completeness.locale_id = locale.id
+INNER JOIN pim_catalog_channel channel ON completeness.channel_id = channel.id
+WHERE root_product_model.id = :product_model_id
+SQL;
         }
 
-        $queryBuilder
-            ->innerJoin('variant_product.completenesses', 'completeness')
-            ->innerJoin('completeness.locale', 'locale')
-            ->innerJoin('completeness.channel', 'channel')
-            ->setParameter(':product_model', $productModel->getId());
+        $data = $this->connection->executeQuery($sql, [
+            'product_model_id' => $productModel->getId()
+        ])->fetchAll();
 
-        $result = $queryBuilder->getQuery()->getArrayResult();
-
-        return new CompleteFilterData($result);
+        return new CompleteFilterData($data);
     }
 }

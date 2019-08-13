@@ -16,6 +16,7 @@ $rules = [
         'Akeneo\Tool',
         'Akeneo\Pim\Enrichment\Component',
         'Akeneo\Pim\Structure\Component\Query\PublicApi',
+        'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent',
         'Oro\Bundle\SecurityBundle\SecurityFacade',
         'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         'Liip\ImagineBundle',
