@@ -41,19 +41,19 @@ class Kernel extends BaseKernel
         $container->setParameter('container.dumper.inline_class_loader', true);
         $confDir = $this->getProjectDir().'/config';
 
-        $loader->load($confDir.'/{packages}/*.yaml', 'glob');
-        $loader->load($confDir.'/{packages}/'.$this->environment.'/**/*.yaml', 'glob');
+        $loader->load($confDir.'/{packages}/*.yml', 'glob');
+        $loader->load($confDir.'/{packages}/'.$this->environment.'/**/*.yml', 'glob');
 
-        $loader->load($confDir.'/{services}/*.yaml', 'glob');
-        $loader->load($confDir.'/{services}/'.$this->environment.'/**/*.yaml', 'glob');
+        $loader->load($confDir.'/{services}/*.yml', 'glob');
+        $loader->load($confDir.'/{services}/'.$this->environment.'/**/*.yml', 'glob');
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes): void
     {
         $confDir = $this->getProjectDir().'/config';
 
-        $routes->import($confDir.'/{routes}/'.$this->environment.'/**/*.yaml', '/', 'glob');
-        $routes->import($confDir.'/{routes}/*.yaml', '/', 'glob');
+        $routes->import($confDir.'/{routes}/'.$this->environment.'/**/*.yml', '/', 'glob');
+        $routes->import($confDir.'/{routes}/*.yml', '/', 'glob');
     }
 
     /**

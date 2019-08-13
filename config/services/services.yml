@@ -9,7 +9,7 @@ parameters:
     product_and_product_model_index_name: '%env(APP_PRODUCT_AND_PRODUCT_MODEL_INDEX_NAME)%'
 
 imports:
-    - { resource: pim_parameters.yaml }
+    - { resource: pim_parameters.yml }
 
 services:
     # default configuration for services in *this* file
