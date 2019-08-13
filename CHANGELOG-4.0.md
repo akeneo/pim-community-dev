@@ -14,6 +14,12 @@
 
 `published_product_and_published_product_model` is removed as it was useless.
 
+### Doctrine mapping
+
+- The entity `Akeneo\Pim\Enrichment\Component\Product\Model\Completeness` is is no more an association of the `PublishedProduct` entity.
+  The methods `getCompletenesses` and `setCompletenesses` of a `PublishedProduct` are removed.
+  If you want to access the Completeness of published products, please use the dedicated class `Akeneo\Pim\WorkOrganization\Workflow\Component\Query\GetPublishedProductCompletenesses`.
+
 ### Codebase
 
 - Remove service `pimee_workflow.manager.completeness`
@@ -39,7 +45,8 @@
      - `Akeneo\Platform\Bundle\InstallerBundle\Command\GiveAllRightsToAllUsersCommand`
      - `Akeneo\Platform\Bundle\InstallerBundle\Command\GiveBackendProcessesRightsToAllUsersCommand`
 - Remove class `Akeneo\Pim\Enrichment\Asset\Bundle\Doctrine\ORM\CompletenessRemover`
-- Remove interface `Akeneo\Pim\Enrichment\Asset\Component\Completeness\CompletenessRemoverInterface`
+- Remove interface `Akeneo\Pim\Enrichment\Asset\Component\Completeness\CompletenessRemoverInterface` 
+- Remove methods `getCompletenesses` and `setCompletenesses` from `Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct`
 
 ### CLI commands
 
