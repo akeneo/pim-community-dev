@@ -643,24 +643,6 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setCompletenesses(Collection $completenesses)
-    {
-        $this->completenesses = $completenesses;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCompletenesses()
-    {
-        return $this->completenesses;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getReference()
     {
         return $this->getIdentifier();

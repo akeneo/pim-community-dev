@@ -2,7 +2,8 @@
 
 namespace AkeneoTestEnterprise\Pim\Permission\Integration\Import\Product;
 
-use Akeneo\Test\Integration\Configuration;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
@@ -61,7 +62,7 @@ CSV;
 
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_viewable_by_everybody_1');
 
-        $completenesses = $product->getCompletenesses()->toArray();
+        $completenesses = $this->getProductCompletenesses()->fromProductId($product->getId());
 
         $this->assertCompleteness('ecommerce', 'en_US', 50, $completenesses);
         $this->assertCompleteness('ecommerce_china', 'en_US', 33, $completenesses);
@@ -84,7 +85,7 @@ CSV;
 
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_viewable_by_everybody_1');
 
-        $completenesses = $product->getCompletenesses()->toArray();
+        $completenesses = $this->getProductCompletenesses()->fromProductId($product->getId());
 
         $this->assertCompleteness('ecommerce', 'en_US', 50, $completenesses);
         $this->assertCompleteness('ecommerce_china', 'en_US', 33, $completenesses);
@@ -106,7 +107,7 @@ CSV;
 
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_viewable_by_everybody_1');
 
-        $completenesses = $product->getCompletenesses()->toArray();
+        $completenesses = $this->getProductCompletenesses()->fromProductId($product->getId());
 
         $this->assertCompleteness('ecommerce', 'en_US', 50, $completenesses);
         $this->assertCompleteness('ecommerce_china', 'en_US', 66, $completenesses);
@@ -125,7 +126,7 @@ CSV;
 
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_viewable_by_everybody_1');
 
-        $completenesses = $product->getCompletenesses()->toArray();
+        $completenesses = $this->getProductCompletenesses()->fromProductId($product->getId());
 
         $this->assertCompleteness('ecommerce', 'en_US', 50, $completenesses);
         $this->assertCompleteness('ecommerce_china', 'en_US', 66, $completenesses);
@@ -167,21 +168,25 @@ CSV;
     }
 
     /**
-     * @param string $channel
-     * @param string $locale
-     * @param int    $ratio
-     * @param array  $completenesses
+     * @param string                        $channelCode
+     * @param string                        $localeCode
+     * @param int                           $ratio
+     * @param ProductCompletenessCollection $completenesses
      *
      * @throws \LogicException
      */
-    protected function assertCompleteness(string $channel, string $locale, int $ratio, array $completenesses) : void
-    {
+    protected function assertCompleteness(
+        string $channelCode,
+        string $localeCode,
+        int $ratio,
+        ProductCompletenessCollection $completenesses
+    ): void {
         foreach ($completenesses as $completeness) {
-            if ($channel === $completeness->getChannel()->getCode() && $locale === $completeness->getLocale()->getCode()) {
+            if ($channelCode === $completeness->channelCode() && $localeCode === $completeness->localeCode()) {
                 $this->assertSame(
-                    $completeness->getRatio(),
+                    $completeness->ratio(),
                     $ratio,
-                    sprintf('Wrong completeness for channel "%s" and locale "%s"', $channel, $locale)
+                    sprintf('Wrong completeness for channel "%s" and locale "%s"', $channelCode, $localeCode)
                 );
 
                 return;
@@ -189,7 +194,7 @@ CSV;
         }
 
         throw new \LogicException(
-            sprintf('Completeness for the channel "%s" and locale "%s" does not exist.', $channel, $locale)
+            sprintf('Completeness for the channel "%s" and locale "%s" does not exist.', $channelCode, $localeCode)
         );
     }
 
@@ -199,5 +204,10 @@ CSV;
     protected function getConfiguration()
     {
         return $this->catalog->useTechnicalCatalog();
+    }
+
+    private function getProductCompletenesses(): GetProductCompletenesses
+    {
+        return $this->get('akeneo.pim.enrichment.product.query.get_product_completenesses');
     }
 }
