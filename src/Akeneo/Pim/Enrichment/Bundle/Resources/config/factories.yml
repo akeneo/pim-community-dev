@@ -4,7 +4,7 @@ parameters:
     pim_catalog.factory.group.class:                 Akeneo\Pim\Enrichment\Component\Product\Factory\GroupFactory
     pim_catalog.factory.product_unique_data.class:   Akeneo\Pim\Enrichment\Component\Product\Factory\ProductUniqueDataFactory
 
-    pim_catalog.factory.value_collection.class:       Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory
+    pim_catalog.factory.value_collection.class:       Akeneo\Pim\Enrichment\Component\Product\Factory\Write\WriteValueCollectionFactory
     pim_catalog.factory.value.class:                  Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory
     pim_catalog.factory.value.scalar.class:           Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\ScalarValueFactory
     pim_catalog.factory.value.metric.class:           Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\MetricValueFactory

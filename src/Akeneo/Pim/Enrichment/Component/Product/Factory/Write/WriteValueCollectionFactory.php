@@ -1,10 +1,13 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Factory;
+namespace Akeneo\Pim\Enrichment\Component\Product\Factory\Write;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidAttributeException;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\EmptyValuesCleaner;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\ChainedNonExistentValuesFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\OnGoingFilteredRawValues;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\TransformRawValuesCollections;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
