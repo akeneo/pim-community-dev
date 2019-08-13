@@ -99,32 +99,6 @@ class ValueCollectionFactory
         return $attributes;
     }
 
-    private function sortRawValueCollectionsToValueCollectionsIndexedByType(array $rawValueCollections, array $attributes): array
-    {
-        if (empty($attributes)) {
-            return [];
-        }
-
-        $typesToValues = [];
-
-        foreach ($rawValueCollections as $productIdentifier => $rawValues) {
-            foreach ($rawValues as $attributeCode => $values) {
-                if (isset($attributes[$attributeCode])) {
-                    $type = $attributes[$attributeCode]->type();
-                    $properties = $attributes[$attributeCode]->properties();
-
-                    $typesToValues[$type][$attributeCode][] = [
-                        'identifier' => $productIdentifier,
-                        'values' => $values,
-                        'properties' => $properties
-                    ];
-                }
-            }
-        }
-
-        return $typesToValues;
-    }
-
     private function createValues(array $rawValueCollections): array
     {
         $entities = [];
