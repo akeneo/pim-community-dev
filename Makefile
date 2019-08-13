@@ -39,11 +39,11 @@ build-dev: build-dev-cli build-dev-fpm
 
 .PHONY: build-prod-cli
 build-prod-cli:
-	DOCKER_BUILDKIT=1 docker build --pull . --tag akeneo/pim-prod:${IMAGE_TAG} --target prod --build-arg BASE_IMAGE=php:7.2-alpine
+	DOCKER_BUILDKIT=1 docker build --pull . --tag eu.gcr.io/akeneo-cloud:${IMAGE_TAG} --target prod --build-arg BASE_IMAGE=php:7.2-alpine
 
 .PHONY: build-prod-fpm
 build-prod-fpm:
-	DOCKER_BUILDKIT=1 docker build --pull . --tag akeneo/pim-prod:${IMAGE_TAG}-fpm --target prod --build-arg BASE_IMAGE=php:7.2-fpm-alpine
+	DOCKER_BUILDKIT=1 docker build --pull . --tag eu.gcr.io/akeneo-cloud:${IMAGE_TAG}-fpm --target prod --build-arg BASE_IMAGE=php:7.2-fpm-alpine
 
 .PHONY: build-prod
 build-prod: build-prod-cli build-prod-fpm

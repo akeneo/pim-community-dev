@@ -56,7 +56,7 @@ COPY docker/php/akeneo.ini $PHP_INI_DIR/conf.d/akeneo.ini
 
 FROM base AS dev
 
-ENV VALIDATE_TIMESTAMPS=1
+ENV PHP_OPCACHE_VALIDATE_TIMESTAMP=1
 
 # Install XDEBUG
 RUN apk add --no-cache --virtual .build-deps \
@@ -73,7 +73,7 @@ COPY docker/php/xdebug.ini $PHP_INI_DIR/conf.d/
 
 # Make XDEBUG activable at container start
 COPY docker/php/docker-php-entrypoint /usr/local/bin/
-RUN chmod +x /usr/local/bin/docker-php-entrypoint && chmod 666 /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+RUN chmod +x /usr/local/bin/docker-php-entrypoint
 
 ##################################
 # Image used for CLI development #
@@ -100,11 +100,7 @@ FROM dev AS fpm-dev
 # Configure entrypoint for FPM
 RUN sed -i 's/PROCESS_TO_RUN/php-fpm/g' /usr/local/bin/docker-php-entrypoint
 
-# Create volumes
-RUN mkdir -p /srv/pim/var && chmod 777 /srv/pim/var
-
 # Expose volumes
-VOLUME /srv/pim/var
 VOLUME /srv/pim
 
 #######################################
@@ -135,15 +131,16 @@ RUN composer install --optimize-autoloader --no-scripts --no-interaction --no-an
 FROM base AS prod
 
 ENV APP_ENV=prod \
-    VALIDATE_TIMESTAMPS=0
+    PHP_OPCACHE_VALIDATE_TIMESTAMP=0
 
 # Configure PHP
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
 # Copy the application with its dependencies
 WORKDIR /var/www/html
-USER www-data
-COPY --chown=www-data:www-data --from=builder /var/www/html .
+COPY --from=builder /var/www/html .
 
 # Prepare the application
-RUN bin/console cache:clear
+RUN chown -R www-data:www-data /var/www/html/web/media /var/www/html/var
+USER www-data
+RUN rm -rf var/cache && bin/console cache:warmup
