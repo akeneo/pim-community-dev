@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-8357: Fix styling of actions on history grid
+
 # 3.0.37 (2019-08-13)
 
 ## Bug fixes
@@ -8,7 +12,6 @@
 - PIM-8633: Fix query to get product models when root product model does not have any shared value
 - PIM-8631: Fix column selector in the case of an attribute code as integer
 - PIM-8313: Do not display already added attributes in the family attributes selector dropdown
-- PIM-8537: Fix styling of actions on history grid
 
 # 3.0.36 (2019-08-08)
 
