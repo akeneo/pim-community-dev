@@ -35,6 +35,17 @@ class ProductCompletenessSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
+    function it_throws_an_exception_if_missing_count_is_greater_than_required_count()
+    {
+        $this->beConstructedWith(
+            'ecommerce',
+            'fr_FR',
+            5,
+            10
+        );
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
     function it_calculates_the_completeness_ratio()
     {
         $this->beConstructedWith(

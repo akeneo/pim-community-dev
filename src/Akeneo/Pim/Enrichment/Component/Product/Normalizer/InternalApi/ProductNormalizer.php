@@ -265,7 +265,7 @@ class ProductNormalizer implements NormalizerInterface
     /**
      * Calculates the product completenesses, and normalizes them
      * It is costly, but needed to get the missing attribute codes as we do not store them anymore
-     * Also, this normlizer is (and should be) only used to normalize a single product for the PEF
+     * Also, this normalizer is (and should be) only used to normalize a single product for the PEF
      *
      * @param ProductInterface $product
      *

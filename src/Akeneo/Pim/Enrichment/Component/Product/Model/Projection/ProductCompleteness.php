@@ -31,6 +31,9 @@ final class ProductCompleteness
         if ($missingCount < 0) {
             throw new \InvalidArgumentException('$missingCount expects a positive integer');
         }
+        if ($missingCount > $requiredCount) {
+            throw new \InvalidArgumentException('$requiredCount must be greater than or equal to $missingCount');
+        }
 
         $this->channelCode = $channelCode;
         $this->localeCode = $localeCode;
