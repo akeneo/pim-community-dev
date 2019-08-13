@@ -877,3 +877,24 @@ As we weren't really confident about the modifications it could happen on the ne
 So, we update the format expected by the asset family API to follow the one from the product link rules. But we keep the Domain and the DB with the one from the rule engine.
 
 Like that, we are preventing all changes on the format used for the product link rule and preserving as well our domain layer.
+
+## 12/08/2019
+
+### Validating product link rules
+
+#### Problem:
+
+- Today, we don't have any validators for product link (except for JSON schema)
+- We cannot directly create a rule definition (from Automation/RuleEngine Bounded Context) from our product link rule because they hold dynamic placeholders that can only be resolved with an asset.
+- Yet, we want to make sure our user gets proper validation messages in cases where:
+    - A product attribute does not exist,
+    - An asset attribute does not exist
+    - An operator is not supported for the product attribute type
+    - etc.
+
+#### Solution:
+
+We decided to reuse some parts of the rule Automation/RuleEngine bounded context validators to make sure the product link rule is executable by the rule engine.
+We will use the following validators to validate non-dynamic conditions or actions:
+    - Validators of ProductConditionInterface
+    - Validators of ProductActionInterface
