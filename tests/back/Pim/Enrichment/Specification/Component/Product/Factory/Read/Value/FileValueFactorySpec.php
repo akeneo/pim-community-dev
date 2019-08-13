@@ -50,7 +50,6 @@ final class FileValueFactorySpec extends ObjectBehavior
         $fileInfo = new FileInfo();
         $fileInfoRepository->findOneByIdentifier('a_file')->willReturn($fileInfo);
         $attribute = $this->getAttribute(true, false);
-        /** @var ScalarValue $value */
         $value = $this->createByCheckingData($attribute, null, 'fr_FR', 'a_file');
         $value->shouldBeLike(MediaValue::localizableValue('an_attribute', $fileInfo, 'fr_FR'));
 

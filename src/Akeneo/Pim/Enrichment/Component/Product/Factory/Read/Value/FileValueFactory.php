@@ -56,7 +56,7 @@ final class FileValueFactory implements ReadValueFactory
         return MediaValue::value($attributeCode, $fileInfo);
     }
 
-    public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
+    public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data) : ValueInterface
     {
         return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
     }
