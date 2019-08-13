@@ -48,7 +48,7 @@ class CompletenessCalculatorSpec extends ObjectBehavior
         ]));
     }
 
-    function it_calculates_completeness_for_multiple_product(
+    function it_calculates_completeness_for_multiple_products(
         GetCompletenessProductMasks $getCompletenessProductMasks,
         GetCompletenessFamilyMasks $getCompletenessFamilyMasks
     ) {
@@ -85,5 +85,20 @@ class CompletenessCalculatorSpec extends ObjectBehavior
                 new ProductCompletenessWithMissingAttributeCodes('<all_channels>', '<all_locales>', 1, ['desc'])
             ]),
         ]);
+    }
+
+    function it_returns_an_empty_collection_for_a_product_without_family(
+        GetCompletenessProductMasks $getCompletenessProductMasks,
+        GetCompletenessFamilyMasks $getCompletenessFamilyMasks
+    ) {
+        $productCompleteness = new CompletenessProductMask(5, 'product_without_family', null, []);
+        $getCompletenessProductMasks->fromProductIdentifiers(['product_without_family'])->willReturn([$productCompleteness]);
+
+        $getCompletenessFamilyMasks->fromFamilyCodes([])->willReturn([]);
+
+
+        $this->fromProductIdentifier('product_without_family')->shouldBeLike(
+            new ProductCompletenessWithMissingAttributeCodesCollection(5, [])
+        );
     }
 }

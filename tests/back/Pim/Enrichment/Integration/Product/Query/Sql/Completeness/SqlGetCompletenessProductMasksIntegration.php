@@ -44,6 +44,17 @@ class SqlGetCompletenessProductMasksIntegration extends TestCase
         $this->assertSameCompletenessProductMasks($expected, $result);
     }
 
+    public function test_it_returns_mask_for_a_product_without_family()
+    {
+        $this->createProduct('product_without_family', null, []);
+
+        $expected = [
+            new CompletenessProductMask(-1, 'product_without_family', null, ['sku-<all_channels>-<all_locales>'])
+        ];
+        $result = $this->getCompletenessProductMasks()->fromProductIdentifiers(['product_without_family']);
+        $this->assertSameCompletenessProductMasks($expected, $result);
+    }
+
     public function test_it_returns_default_masks()
     {
         $this->createProduct('complex_product', 'familyA', [

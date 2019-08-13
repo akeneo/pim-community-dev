@@ -38,12 +38,16 @@ class CompletenessCalculator
             return $product->familyCode();
         }, $productMasks);
 
-        $familyMasks = $this->getCompletenessFamilyMasks->fromFamilyCodes(array_unique($familyCodes));
+        $familyMasks = $this->getCompletenessFamilyMasks->fromFamilyCodes(array_unique(array_filter($familyCodes)));
 
         $result = [];
         foreach ($productMasks as $productMask) {
-            $familyMask = $familyMasks[$productMask->familyCode()];
-            $result[$productMask->identifier()] = $familyMask->completenessCollectionForProduct($productMask);
+            if (null === $productMask->familyCode()) {
+                $collection = new ProductCompletenessWithMissingAttributeCodesCollection($productMask->id(), []);
+            } else {
+                $collection = $familyMasks[$productMask->familyCode()]->completenessCollectionForProduct($productMask);
+            }
+            $result[$productMask->identifier()] = $collection;
         }
 
         return $result;

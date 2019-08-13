@@ -26,7 +26,7 @@ class CompletenessProductMask
     public function __construct(
         int $id,
         string $identifier,
-        string $familyCode,
+        ?string $familyCode,
         array $mask
     ) {
         $this->id = $id;
@@ -35,7 +35,7 @@ class CompletenessProductMask
         $this->mask = $mask;
     }
 
-    public function familyCode(): string
+    public function familyCode(): ?string
     {
         return $this->familyCode;
     }

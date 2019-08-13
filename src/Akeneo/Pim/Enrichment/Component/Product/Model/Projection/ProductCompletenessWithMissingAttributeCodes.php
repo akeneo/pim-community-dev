@@ -36,7 +36,7 @@ final class ProductCompletenessWithMissingAttributeCodes
         $this->channelCode = $channelCode;
         $this->localeCode = $localeCode;
         $this->requiredCount = $requiredCount;
-        $this->missingAttributeCodes = $missingAttributeCodes;
+        $this->missingAttributeCodes = array_values($missingAttributeCodes);
     }
 
     public function channelCode(): string
