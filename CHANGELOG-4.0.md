@@ -28,7 +28,7 @@
 - Remove `Akeneo\Pim\Permission\Bundle\Datagrid\MassAction\ProductFieldsBuilder`
 - Rename `Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\SkipVersionSubscriber` in `Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\SkipVersionListener`
 - Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer\PublishedProductNormalizer` to add `Symfony\Component\Serializer\Normalizer\NormalizerInterface`
- - Removed the following class and the corresponding command:
+- Remove the following class and the corresponding command:
      - `Akeneo\Asset\Bundle\Command\GenerateVariationFilesFromReferenceCommand`
      - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command\ApproveProposalCommand  `
      - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command\CreateDraftCommand`
@@ -38,7 +38,9 @@
      - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command\UnpublishProductCommand `
      - `Akeneo\Platform\Bundle\InstallerBundle\Command\GiveAllRightsToAllUsersCommand`
      - `Akeneo\Platform\Bundle\InstallerBundle\Command\GiveBackendProcessesRightsToAllUsersCommand`
-     
+- Remove class `Akeneo\Pim\Enrichment\Asset\Bundle\Doctrine\ORM\CompletenessRemover`
+- Remove interface `Akeneo\Pim\Enrichment\Asset\Component\Completeness\CompletenessRemoverInterface`
+
 ### CLI commands
 
 The following CLI commands have been deleted:
