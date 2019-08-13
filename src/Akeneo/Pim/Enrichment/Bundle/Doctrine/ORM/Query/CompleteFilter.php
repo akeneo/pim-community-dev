@@ -63,8 +63,10 @@ WHERE root_product_model.id = :product_model_id
 SQL;
         }
 
-        return new CompleteFilterData(
-            $this->connection->executeQuery($sql, ['product_model_id' => $productModel->getId()])->fetchAll()
-        );
+        $data = $this->connection->executeQuery($sql, [
+            'product_model_id' => $productModel->getId()
+        ])->fetchAll();
+
+        return new CompleteFilterData($data);
     }
 }
