@@ -81,27 +81,27 @@ class Kernel extends BaseKernel
 
     private function loadRoutesConfiguration(RouteCollectionBuilder $routes, string $confDir): void
     {
-        $routes->import($confDir . '/{routes}/' . $this->environment . '/**/*.yaml', '/', 'glob');
-        $routes->import($confDir . '/{routes}/*.yaml', '/', 'glob');
+        $routes->import($confDir . '/{routes}/' . $this->environment . '/**/*.yml', '/', 'glob');
+        $routes->import($confDir . '/{routes}/*.yml', '/', 'glob');
     }
 
     private function loadPackagesConfiguration(LoaderInterface $loader, string $confDir): void
     {
-        $loader->load($confDir . '/{packages}/*.yaml', 'glob');
-        $loader->load($confDir . '/{packages}/' . $this->environment . '/**/*.yaml', 'glob');
+        $loader->load($confDir . '/{packages}/*.yml', 'glob');
+        $loader->load($confDir . '/{packages}/' . $this->environment . '/**/*.yml', 'glob');
     }
 
     /**
-     * "security.yaml" is the only configuration file that can not be override
+     * "security.yml" is the only configuration file that can not be override
      * Thus, we don't load it from the Community Edition.
      * We copied/pasted its content into Enterprise Edition and added what was missing.
      */
     private function loadPackagesConfigurationExceptSecurity(LoaderInterface $loader, string $confDir): void
     {
         $files = array_filter(
-            glob($confDir . '/{packages}/*.yaml', GLOB_BRACE),
+            glob($confDir . '/{packages}/*.yml', GLOB_BRACE),
             function ($file) {
-                return 'security.yaml' !== basename($file);
+                return 'security.yml' !== basename($file);
             }
         );
 
@@ -123,7 +123,7 @@ class Kernel extends BaseKernel
 
     private function loadContainerConfiguration(LoaderInterface $loader, string $confDir): void
     {
-        $loader->load($confDir . '/{services}/*.yaml', 'glob');
-        $loader->load($confDir . '/{services}/' . $this->environment . '/**/*.yaml', 'glob');
+        $loader->load($confDir . '/{services}/*.yml', 'glob');
+        $loader->load($confDir . '/{services}/' . $this->environment . '/**/*.yml', 'glob');
     }
 }
