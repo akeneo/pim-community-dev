@@ -70,6 +70,7 @@ final class CreateAssetFamilyContext implements Context
         $this->violationsContext = $violationsContext;
         $this->activatedLocales = $activatedLocales;
         $this->ruleTemplateByAssetFamilyLimit = $ruleTemplateByAssetFamilyLimit;
+        $this->activateDefaultLocales();
     }
 
     /**
@@ -81,15 +82,18 @@ final class CreateAssetFamilyContext implements Context
         $command = new CreateAssetFamilyCommand(
             $code,
             json_decode($updates['labels'], true),
-            []
+            json_decode($updates['product_link_rules'] ?? '[]', true)
         );
 
-        $this->violationsContext->addViolations($this->validator->validate($command));
+        $violationList = $this->validator->validate($command);
+        $this->violationsContext->addViolations($violationList);
 
-        try {
-            ($this->createAssetFamilyHandler)($command);
-        } catch (\Exception $e) {
-            $this->exceptionContext->setException($e);
+        if (0 === $violationList->count()) {
+            try {
+                ($this->createAssetFamilyHandler)($command);
+            } catch (\Exception $e) {
+                $this->exceptionContext->setException($e);
+            }
         }
     }
 
@@ -105,6 +109,7 @@ final class CreateAssetFamilyContext implements Context
             json_decode($expectedInformation['labels'], true),
             $actualAssetFamily
         );
+        $this->assertSameProductLinkRules(json_decode($expectedInformation['product_link_rules'] ?? '[]', true), $actualAssetFamily);
     }
 
     private function assertSameLabels(array $expectedLabels, AssetFamily $actualAssetFamily)
@@ -247,5 +252,40 @@ final class CreateAssetFamilyContext implements Context
                 ]
             ]
         ];
+    }
+
+    private function activateDefaultLocales(): void
+    {
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
+    }
+
+    private function assertSameProductLinkRules(array $expectedNormalizedProductLinkRules, AssetFamily $actualAssetFamily): void
+    {
+        $actualProductLinks = $actualAssetFamily->getRuleTemplateCollection()->normalize();
+        $expectedNormalizedProductLinkRules = [
+            [
+                'conditions' => [
+                    [
+                        'field'    => $expectedNormalizedProductLinkRules[0]['product_selections'][0]['field'],
+                        'operator' => $expectedNormalizedProductLinkRules[0]['product_selections'][0]['operator'],
+                        'value'    => $expectedNormalizedProductLinkRules[0]['product_selections'][0]['value'],
+                        'channel'  => $expectedNormalizedProductLinkRules[0]['product_selections'][0]['channel'],
+                        'locale'   => $expectedNormalizedProductLinkRules[0]['product_selections'][0]['locale'],
+                    ],
+                ],
+                'actions'    => [
+                    [
+                        'type'    => $expectedNormalizedProductLinkRules[0]['assign_assets_to'][0]['mode'],
+                        'field'   => $expectedNormalizedProductLinkRules[0]['assign_assets_to'][0]['attribute'],
+                        'channel' => null,
+                        'locale'  => null,
+                        'items'   => ['{{code}}'],
+                    ],
+                ],
+            ],
+        ];
+
+        Assert::assertEquals($expectedNormalizedProductLinkRules, $actualProductLinks);
     }
 }
