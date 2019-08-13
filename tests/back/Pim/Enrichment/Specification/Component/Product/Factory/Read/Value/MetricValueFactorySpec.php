@@ -4,12 +4,16 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Factory\MetricFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\MetricValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\ReadValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Metric;
-use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
+use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 /**
  * @author    Anael Chardan <anael.chardan@akeneo.com>
@@ -38,11 +42,9 @@ final class MetricValueFactorySpec extends ObjectBehavior
         $metric = new Metric('distance', 'centimeters', 5, 'meters', 0.05);
         $metricFactory->createMetric('distance', 'centimeters', 5)->willReturn($metric);
         $attribute = $this->getAttribute(true, true);
-        /** @var ScalarValue $value */
-        $value = $this->create($attribute, 'ecommerce', 'fr_FR', ['unit' => 'centimeters', 'amount' => 5]);
-        $value->isLocalizable()->shouldBe(true);
-        $value->isScopable()->shouldBe(true);
-        $value->getData()->shouldBe($metric);
+        $value = $this->createByCheckingData($attribute, 'ecommerce', 'fr_FR', ['unit' => 'centimeters', 'amount' => 5]);
+        $value->shouldBeLike(MetricValue::scopableLocalizableValue('an_attribute', $metric, 'ecommerce', 'fr_FR'));
+
     }
 
     public function it_creates_a_localizable_value(MetricFactory $metricFactory)
@@ -50,11 +52,9 @@ final class MetricValueFactorySpec extends ObjectBehavior
         $metric = new Metric('distance', 'centimeters', 5, 'meters', 0.05);
         $metricFactory->createMetric('distance', 'centimeters', 5)->willReturn($metric);
         $attribute = $this->getAttribute(true, false);
-        /** @var ScalarValue $value */
-        $value = $this->create($attribute, null, 'fr_FR', ['unit' => 'centimeters', 'amount' => 5]);
-        $value->isLocalizable()->shouldBe(true);
-        $value->isScopable()->shouldBe(false);
-        $value->getData()->shouldBe($metric);
+        $value = $this->createByCheckingData($attribute, null, 'fr_FR', ['unit' => 'centimeters', 'amount' => 5]);
+        $value->shouldBeLike(MetricValue::localizableValue('an_attribute', $metric, 'fr_FR'));
+
     }
 
     public function it_creates_a_scopable_value(MetricFactory $metricFactory)
@@ -62,11 +62,9 @@ final class MetricValueFactorySpec extends ObjectBehavior
         $metric = new Metric('distance', 'centimeters', 5, 'meters', 0.05);
         $metricFactory->createMetric('distance', 'centimeters', 5)->willReturn($metric);
         $attribute = $this->getAttribute(false, true);
-        /** @var ScalarValue $value */
-        $value = $this->create($attribute, 'ecommerce', null, ['unit' => 'centimeters', 'amount' => 5]);
-        $value->isLocalizable()->shouldBe(false);
-        $value->isScopable()->shouldBe(true);
-        $value->getData()->shouldBe($metric);
+        $value = $this->createByCheckingData($attribute, 'ecommerce', null, ['unit' => 'centimeters', 'amount' => 5]);
+        $value->shouldBeLike(MetricValue::scopableValue('an_attribute', $metric, 'ecommerce'));
+
     }
 
     public function it_creates_a_non_localizable_and_non_scopable_value(MetricFactory $metricFactory)
@@ -74,11 +72,63 @@ final class MetricValueFactorySpec extends ObjectBehavior
         $metric = new Metric('distance', 'centimeters', 5, 'meters', 0.05);
         $metricFactory->createMetric('distance', 'centimeters', 5)->willReturn($metric);
         $attribute = $this->getAttribute(false, false);
-        /** @var ScalarValue $value */
-        $value = $this->create($attribute, null, null, ['unit' => 'centimeters', 'amount' => 5]);
-        $value->isLocalizable()->shouldBe(false);
-        $value->isScopable()->shouldBe(false);
-        $value->getData()->shouldBe($metric);
+        $value = $this->createByCheckingData($attribute, null, null, ['unit' => 'centimeters', 'amount' => 5]);
+        $value->shouldBeLike(MetricValue::value('an_attribute', $metric));
+    }
+
+    public function it_creates_a_value_without_checking_data(MetricFactory $metricFactory)
+    {
+        $metric = new Metric('distance', 'centimeters', 5, 'meters', 0.05);
+        $metricFactory->createMetric('distance', 'centimeters', 5)->willReturn($metric);
+        $attribute = $this->getAttribute(false, false);
+        $value = $this->createWithoutCheckingData($attribute, null, null, ['unit' => 'centimeters', 'amount' => 5]);
+        $value->shouldBeLike(MetricValue::value('an_attribute', $metric));
+    }
+
+    function it_throws_an_exception_if_provided_data_is_not_an_array(MetricFactory $metricFactory)
+    {
+        $attribute = $this->getAttribute(false, false);
+        $exception = InvalidPropertyTypeException::arrayExpected(
+            'an_attribute',
+            MetricValueFactory::class,
+            'foobar'
+        );
+
+        $this
+            ->shouldThrow($exception)
+            ->during('createByCheckingData', [$attribute, 'ecommerce', 'en_US', 'foobar']);
+    }
+
+    function it_throws_an_exception_if_provided_data_has_no_amount(MetricFactory $metricFactory)
+    {
+        $attribute = $this->getAttribute(false, false);
+
+        $exception = InvalidPropertyTypeException::arrayKeyExpected(
+            'an_attribute',
+            'amount',
+            MetricValueFactory::class,
+            ['foo' => 42, 'unit' => 'GRAM']
+        );
+
+        $this
+            ->shouldThrow($exception)
+            ->during('createByCheckingData', [$attribute, 'ecommerce', 'en_US', ['foo' => 42, 'unit' => 'GRAM']]);
+    }
+
+    function it_throws_an_exception_if_provided_data_has_no_unit(MetricFactory $metricFactory)
+    {
+        $attribute = $this->getAttribute(false, false);
+
+        $exception = InvalidPropertyTypeException::arrayKeyExpected(
+            'an_attribute',
+            'unit',
+            MetricValueFactory::class,
+            ['amount' => 42, 'bar' => 'GRAM']
+        );
+
+        $this
+            ->shouldThrow($exception)
+            ->during('createByCheckingData', [$attribute, 'ecommerce', 'en_US', ['amount' => 42, 'bar' => 'GRAM']]);
     }
 
     private function getAttribute(bool $isLocalizable, bool $isScopable): Attribute

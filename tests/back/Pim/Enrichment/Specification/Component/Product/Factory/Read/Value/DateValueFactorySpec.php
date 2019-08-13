@@ -100,7 +100,7 @@ final class DateValueFactorySpec extends ObjectBehavior
             ->during('createByCheckingData', [$attribute, 'ecommerce', 'en_US', 'foobar is no date']);
     }
 
-    function it_throws_an_exception_when_provided_date_format_is_invalid(AttributeInterface $attribute)
+    function it_throws_an_exception_when_provided_date_format_is_invalid()
     {
         $attribute = $this->getAttribute(false, false);
 
