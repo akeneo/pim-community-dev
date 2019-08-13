@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AkeneoTest\Pim\Enrichment\Integration\Completeness;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodes;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
@@ -103,13 +103,13 @@ class CalculateCompletenessOnFamilyUpdateIntegration extends AbstractCompletenes
      * @param string           $channelCode
      * @param string           $localeCode
      *
-     * @return null|ProductCompletenessWithMissingAttributeCodes
+     * @return null|ProductCompleteness
      */
     private function getCompletenesses(
         ProductInterface $product,
         string $channelCode,
         string $localeCode
-    ): ?ProductCompletenessWithMissingAttributeCodes {
+    ): ?ProductCompleteness {
         $completenesses = $this->getProductCompletenesses()->fromProductId($product->getId());
 
         foreach ($completenesses as $completeness) {

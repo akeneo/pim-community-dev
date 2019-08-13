@@ -34,7 +34,7 @@ abstract class AbstractCompletenessPerAttributeTypeTestCase extends AbstractComp
         $this->assertEquals('ecommerce', $completeness->channelCode());
         $this->assertEquals(100, $completeness->ratio());
         $this->assertEquals(2, $completeness->requiredCount());
-        $this->assertEquals(0, count($completeness->missingAttributeCodes()));
+        $this->assertEquals(0, $completeness->missingCount());
     }
 
     /**
@@ -52,17 +52,6 @@ abstract class AbstractCompletenessPerAttributeTypeTestCase extends AbstractComp
         $this->assertEquals('ecommerce', $completeness->channelCode());
         $this->assertEquals(50, $completeness->ratio());
         $this->assertEquals(2, $completeness->requiredCount());
-        $this->assertEquals(1, count($completeness->missingAttributeCodes()));
-    }
-
-    /**
-     * @param ProductInterface $product
-     * @param string[]         $expectedAttributeCodes
-     */
-    protected function assertMissingAttributeForProduct(ProductInterface $product, array $expectedAttributeCodes)
-    {
-        $completeness = $this->getCurrentCompleteness($product);
-
-        $this->assertMissingAttributeCodes($completeness, $expectedAttributeCodes);
+        $this->assertEquals(1, $completeness->missingCount());
     }
 }

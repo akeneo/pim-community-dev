@@ -86,7 +86,6 @@ class MetricAttributeTypeCompletenessIntegration extends AbstractCompletenessPer
             ]
         );
         $this->assertNotComplete($productDataNull);
-        $this->assertMissingAttributeForProduct($productDataNull, ['a_metric']);
 
         $productAmountNull = $this->createProductWithStandardValues(
             $family,
@@ -104,7 +103,6 @@ class MetricAttributeTypeCompletenessIntegration extends AbstractCompletenessPer
             ]
         );
         $this->assertNotComplete($productAmountNull);
-        $this->assertMissingAttributeForProduct($productAmountNull, ['a_metric']);
 
         $productAmountAndUnitNull = $this->createProductWithStandardValues(
             $family,
@@ -122,7 +120,6 @@ class MetricAttributeTypeCompletenessIntegration extends AbstractCompletenessPer
             ]
         );
         $this->assertNotComplete($productAmountAndUnitNull);
-        $this->assertMissingAttributeForProduct($productAmountAndUnitNull, ['a_metric']);
     }
 
     /**

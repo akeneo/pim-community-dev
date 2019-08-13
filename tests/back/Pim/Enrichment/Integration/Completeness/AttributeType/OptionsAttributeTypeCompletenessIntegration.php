@@ -72,7 +72,6 @@ class OptionsAttributeTypeCompletenessIntegration extends AbstractCompletenessPe
             ]
         );
         $this->assertNotComplete($productDataEmptyArray);
-        $this->assertMissingAttributeForProduct($productDataEmptyArray, ['a_multi_select']);
 
         $productDataNull = $this->createProductWithStandardValues(
             $family,
@@ -90,7 +89,6 @@ class OptionsAttributeTypeCompletenessIntegration extends AbstractCompletenessPe
             ]
         );
         $this->assertNotComplete($productDataNull);
-        $this->assertMissingAttributeForProduct($productDataNull, ['a_multi_select']);
     }
 
     /**

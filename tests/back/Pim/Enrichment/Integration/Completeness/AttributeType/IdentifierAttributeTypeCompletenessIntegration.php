@@ -4,7 +4,6 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Completeness\AttributeType;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodes;
-use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 
 /**
@@ -79,6 +78,6 @@ class IdentifierAttributeTypeCompletenessIntegration extends AbstractCompletenes
         $this->assertEquals('ecommerce', $completeness->channelCode());
         $this->assertEquals(100, $completeness->ratio());
         $this->assertEquals(1, $completeness->requiredCount());
-        $this->assertEquals(0, count($completeness->missingAttributeCodes()));
+        $this->assertEquals(0, $completeness->missingCount());
     }
 }

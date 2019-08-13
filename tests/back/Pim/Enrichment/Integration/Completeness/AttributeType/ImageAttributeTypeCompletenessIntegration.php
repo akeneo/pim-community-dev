@@ -66,10 +66,8 @@ class ImageAttributeTypeCompletenessIntegration extends AbstractCompletenessPerA
             ]
         );
         $this->assertNotComplete($productDataNull);
-        $this->assertMissingAttributeForProduct($productDataNull, ['an_image']);
 
         $productWithoutValues = $this->createProductWithStandardValues($family, 'product_without_values');
         $this->assertNotComplete($productWithoutValues);
-        $this->assertMissingAttributeForProduct($productWithoutValues, ['an_image']);
     }
 }

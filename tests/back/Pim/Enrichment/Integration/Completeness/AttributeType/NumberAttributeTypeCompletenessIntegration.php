@@ -82,10 +82,8 @@ class NumberAttributeTypeCompletenessIntegration extends AbstractCompletenessPer
             ]
         );
         $this->assertNotComplete($productDataNull);
-        $this->assertMissingAttributeForProduct($productDataNull, ['a_number_integer']);
 
         $productWithoutValue = $this->createProductWithStandardValues($family, 'product_without_values');
         $this->assertNotComplete($productWithoutValue);
-        $this->assertMissingAttributeForProduct($productWithoutValue, ['a_number_integer']);
     }
 }

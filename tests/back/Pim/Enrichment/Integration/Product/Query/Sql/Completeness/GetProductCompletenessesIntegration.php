@@ -82,7 +82,7 @@ class GetProductCompletenessesIntegration extends TestCase
         );
 
         $completenesses = $this->getCompletenesses($this->getProductId('product_without_family'));
-        Assert::assertTrue($completenesses->isEmpty());
+        Assert::assertSame(0, $completenesses->count());
     }
 
     protected function getConfiguration()
