@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.3 (2019-08-13)
+
 ## Bug fixes
 
 - PIM-8601: Fix purge of the job execution according to the date of creation and not deletion
