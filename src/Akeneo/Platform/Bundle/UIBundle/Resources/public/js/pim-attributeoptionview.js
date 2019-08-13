@@ -11,6 +11,7 @@ define(
         'pim/template/attribute-option/index',
         'pim/template/attribute-option/edit',
         'pim/template/attribute-option/show',
+        'oro/messenger',
         'jquery-ui'
     ],
     function (
@@ -24,7 +25,8 @@ define(
         Dialog,
         indexTemplate,
         editTemplate,
-        showTemplate
+        showTemplate,
+        messenger
     ) {
         'use strict';
 
@@ -176,10 +178,7 @@ define(
                         .tooltip('destroy')
                         .tooltip('show');
                 } else {
-                    Dialog.alert(
-                        __('alert.attribute_option.error_occurred_during_submission'),
-                        __('pim_enrich.entity.attribute_option.flash.update.fail')
-                    );
+                    messenger.notify('error', response.optionValues);
                 }
             },
             cancelSubmit: function (e) {
@@ -360,7 +359,7 @@ define(
             requestRowEdition: function (attributeOptionRow) {
                 if (this.currentlyEditedItemView) {
                     if (this.currentlyEditedItemView.dirty) {
-                        Dialog.alert(__('alert.attribute_option.save_before_edit_other'));
+                        messenger.notify('error', __('alert.attribute_option.save_before_edit_other'));
 
                         return false;
                     } else {
@@ -414,7 +413,7 @@ define(
                             message = response.responseText;
                         }
 
-                        Dialog.alert(message, __('pim_enrich.entity.attribute_option.flash.delete.fail'));
+                        messenger.notify('error', message);
                     }.bind(this)
                 });
             },
