@@ -20,7 +20,7 @@ class CalculateCompletenessCommandIntegration extends AbstractCompletenessTestCa
             false
         );
 
-        $this->createProductWithStandardValues(
+        $product = $this->createProductWithStandardValues(
             $family,
             'product_complete',
             [
@@ -38,14 +38,14 @@ class CalculateCompletenessCommandIntegration extends AbstractCompletenessTestCa
 
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
-        $commandLauncher = new CommandLauncher(static::$kernel);
+        $this->assertSame(1, $this->getCountRowCompleteness());
 
-        $exitCode = $commandLauncher->execute('pim:completeness:purge');
-        $this->assertSame(0, $exitCode);
+        $this->removeAllCompletenesses($product);
         $this->assertSame(0, $this->getCountRowCompleteness());
 
         $this->get('pim_connector.doctrine.cache_clearer')->clear();
 
+        $commandLauncher = new CommandLauncher(static::$kernel);
         $exitCode = $commandLauncher->execute('pim:completeness:calculate');
         $this->assertSame(0, $exitCode);
         $this->assertSame(1, $this->getCountRowCompleteness());
@@ -58,5 +58,13 @@ class CalculateCompletenessCommandIntegration extends AbstractCompletenessTestCa
         $stmt->execute();
 
         return (int) $stmt->fetch()['count'];
+    }
+
+    private function removeAllCompletenesses($product)
+    {
+        $this->get('database_connection')->executeQuery('DELETE FROM pim_catalog_completeness');
+        $this->get('database_connection')->executeQuery('DELETE FROM pim_catalog_completeness_missing_attribute');
+
+        $this->get('pim_catalog.elasticsearch.indexer.product')->index($product);
     }
 }

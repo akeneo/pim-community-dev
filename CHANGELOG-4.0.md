@@ -11,6 +11,7 @@
 - Remove akeneo_pim_product and akeneo_pim_product_model ES indexes and merge into akeneo_pim_product_and_product_model.
  
 ### Codebase
+
 - Remove class `Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager`
 - Remove service `pim_catalog.manager.completeness`
 - Remove class `Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessGenerator`
@@ -106,6 +107,14 @@
     - `Akeneo\Pim\Enrichment\Bundle\Command\ValidateObjectsCommand`
     - `Akeneo\Pim\Enrichment\Bundle\Command\ValidateProductCommand`
     - `Akeneo\Pim\Enrichment\Bundle\Command\AnalyzeProductCsvCommand`
+- Remove class `Akeneo\Pim\Enrichment\Bundle\Command\PurgeCompletenessCommand`
+- Remove class `Akeneo\Pim\Enrichment\Bundle\Command\PurgeProductsCompletenessCommand`
+- Remove class `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\CompletenessRemover`
+- Remove class `Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessRemoverInterface`
+- Change constructor or `Akeneo\Pim\Enrichment\Bundle\Command\CalculateCompletenessCommand` to remove 
+    `Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface` and add
+    `Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses` and
+    `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer`
 
 ### CLI Commands
 
@@ -114,12 +123,16 @@ The following CLI commands have been deleted:
 - pim:product:get
 - pim:product:query
 - pim:product:remove
+- pim:product:validate
+- pim:product:update
 - pim:catalog:remove-wrong-boolean-values-on-variant-products-batch
 - pim:catalog:remove-wrong-boolean-values-on-variant-products
-- pim:product:update
 - pim:objects:validate
-- pim:product:validate
 - pim:connector:analyzer:csv-products
+- pim:completeness:purge
+- pim:completeness:purge-products  
+
+If you want to purge the completeness in order to recalculate it, please use the dedicated command `pim:completeness:calculate`
 
 ### Services
 

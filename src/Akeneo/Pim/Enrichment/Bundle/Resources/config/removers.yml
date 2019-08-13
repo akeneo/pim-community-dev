@@ -1,6 +1,5 @@
 parameters:
     pim_catalog.remover.base.class:                  Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\BaseRemover
-    pim_catalog.remover.completeness.class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\CompletenessRemover
 
 services:
     pim_catalog.remover.group_type:
@@ -65,15 +64,6 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
             - '%pim_catalog.entity.group.class%'
-
-    pim_catalog.remover.completeness:
-        class: '%pim_catalog.remover.completeness.class%'
-        arguments:
-            - '@pim_catalog.query.product_query_builder_factory'
-            - '@pim_catalog.object_manager.product'
-            - '@pim_catalog.elasticsearch.indexer.product'
-            - 'pim_catalog_completeness'
-            - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_comment.remover.comment:
         class: '%pim_catalog.remover.base.class%'
