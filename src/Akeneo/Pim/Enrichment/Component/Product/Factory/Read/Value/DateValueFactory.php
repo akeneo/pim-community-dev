@@ -39,10 +39,6 @@ final class DateValueFactory implements ReadValueFactory
 
     public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
-        if (null === $data) {
-            return null;
-        }
-
         if (!is_string($data)) {
             throw InvalidPropertyTypeException::stringExpected(
                 $attribute->code(),
