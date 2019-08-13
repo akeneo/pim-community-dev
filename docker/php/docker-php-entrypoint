@@ -1,0 +1,29 @@
+#!/bin/sh
+set -e
+
+XDEBUG_INI_PATH="/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini"
+
+function activateXdebug {
+    echo "zend_extension=/usr/local/lib/php/extensions/no-debug-non-zts-20170718/xdebug.so" > ${XDEBUG_INI_PATH}
+}
+
+function deactivateXdebug {
+    echo "" > ${XDEBUG_INI_PATH}
+}
+
+if [[ ! -z "${XDEBUG_ENABLED}" ]]; then
+    if [[ "1" == "${XDEBUG_ENABLED}" ]]; then
+        activateXdebug
+    elif [[ "0" == "${XDEBUG_ENABLED}" ]]; then
+        deactivateXdebug
+    fi
+else
+    deactivateXdebug
+fi
+
+# first arg is `-f` or `--some-option`
+if [[ "${1#-}" != "$1" ]]; then
+	set -- PROCESS_TO_RUN "$@"
+fi
+
+exec "$@"
