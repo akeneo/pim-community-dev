@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 
 /**
  * The goal of this factory is create values WITHOUT doing any check on the validity of the data,
@@ -18,6 +19,24 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
  */
 interface ReadValueFactory
 {
-    public function create(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface;
+    /**
+     * Create the data by validating the data type.
+     * For example, it checks that an expected scalar is a indeed scalar.
+     *
+     * This is done to guarantee that data coming in to the domain are good.
+     * This validation has a non-negligeable cost though.
+     */
+    public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface;
+
+    /**
+     * Create the data without validating the data type.
+     * For example, it will NOT check that the data for a text attribute is a scalar.
+     *
+     * It has been designed for performance purpose, as doing check on type when reading from database should not be done.
+     *
+     * @throws PropertyException
+     */
+    public function createWithoutCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface;
+
     public function supportedAttributeType(): string;
 }

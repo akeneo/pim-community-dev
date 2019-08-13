@@ -7,6 +7,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\DateValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 /**
  * @author    Anael Chardan <anael.chardan@akeneo.com>
@@ -15,7 +17,7 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
  */
 final class DateValueFactory implements ReadValueFactory
 {
-    public function create(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
+    public function createWithoutCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
         $date = new \DateTime($data);
         $attributeCode = $attribute->code();
@@ -33,6 +35,43 @@ final class DateValueFactory implements ReadValueFactory
         }
 
         return DateValue::value($attributeCode, $date);
+    }
+
+    public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
+    {
+        if (null === $data) {
+            return null;
+        }
+
+        if (!is_string($data)) {
+            throw InvalidPropertyTypeException::stringExpected(
+                $attribute->code(),
+                static::class,
+                $data
+            );
+        }
+
+        try {
+            $date = new \DateTime($data);
+
+            if (!preg_match('/^\d{4}-\d{2}-\d{2}/', $data)) {
+                throw InvalidPropertyException::dateExpected(
+                    $attribute->code(),
+                    'yyyy-mm-dd',
+                    static::class,
+                    $data
+                );
+            }
+        } catch (\Exception $e) {
+            throw InvalidPropertyException::dateExpected(
+                $attribute->code(),
+                'yyyy-mm-dd',
+                static::class,
+                $data
+            );
+        }
+
+        return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
     }
 
     public function supportedAttributeType(): string
