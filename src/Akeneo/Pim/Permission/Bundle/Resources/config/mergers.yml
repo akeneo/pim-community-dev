@@ -20,7 +20,7 @@ services:
             - '@security.authorization_checker'
             - '@pim_catalog.repository.cached_attribute'
             - '@pim_catalog.repository.cached_locale'
-            - '@pim_catalog.factory.value_collection'
+            - '@akeneo.pim.enrichment.factory.write.value_collection'
 
     pimee_catalog.security.merger.merge_data_on_product:
         class: 'Akeneo\Pim\Permission\Component\Merger\MergeDataOnProduct'

@@ -14,18 +14,19 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Asset\Component;
 
 use Akeneo\Asset\Bundle\AttributeType\AttributeTypes;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\ReadValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValue;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 /**
  * @author    Anael Chardan <anael.chardan@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-final class ReadAssetCollectionValueFactory implements ReadValueFactory
+final class ReadAssetCollectionValueFactory implements ValueFactory
 {
-    public function create(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
+    public function createWithoutCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
         $attributeCode = $attribute->code();
 
@@ -42,6 +43,36 @@ final class ReadAssetCollectionValueFactory implements ReadValueFactory
         }
 
         return ReferenceDataCollectionValue::value($attributeCode, $data);
+    }
+
+    public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
+    {
+        if (null === $data) {
+            $data = [];
+        }
+
+        if (!is_array($data)) {
+            throw InvalidPropertyTypeException::arrayExpected(
+                $attribute->code(),
+                static::class,
+                $data
+            );
+        }
+
+        foreach ($data as $key => $value) {
+            if (!is_string($value)) {
+                throw InvalidPropertyTypeException::validArrayStructureExpected(
+                    $attribute->code(),
+                    sprintf('array key "%s" expects a string as value, "%s" given', $key, gettype($value)),
+                    static::class,
+                    $data
+                );
+            }
+        }
+
+        //SHALL WE TEST THE EXISTENCE OF ASSETS?
+
+        return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
     }
 
     public function supportedAttributeType(): string

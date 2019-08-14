@@ -14,11 +14,13 @@ declare(strict_types=1);
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Builder;
 
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorRegistry;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Builder\EntityWithValuesDraftBuilderInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\EntityWithValuesDraftFactory;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
@@ -85,6 +87,7 @@ class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterf
 
         $values = [];
         foreach ($newValues as $code => $newValue) {
+            /** @var AttributeInterface $attribute */
             $attribute = $this->attributeRepository->findOneByIdentifier($code);
 
             if (null === $attribute) {
@@ -100,9 +103,17 @@ class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterf
 
                 if (null !== $diffAttribute) {
                     $diff['values'][$code][] = $diffAttribute;
+                    $attribute = new Attribute(
+                        $attribute->getCode(),
+                        $attribute->getType(),
+                        $attribute->getProperties(),
+                        $attribute->isLocalizable(),
+                        $attribute->isScopable(),
+                        $attribute->getMetricFamily() === '' ? null : $attribute->getMetricFamily(),
+                        $attribute->isDecimalsAllowed()
+                    );
 
-                    $attribute = $this->attributeRepository->findOneByIdentifier($code);
-                    $values[] = $this->valueFactory->create(
+                    $values[] = $this->valueFactory->createByCheckingData(
                         $attribute,
                         $changes['scope'],
                         $changes['locale'],

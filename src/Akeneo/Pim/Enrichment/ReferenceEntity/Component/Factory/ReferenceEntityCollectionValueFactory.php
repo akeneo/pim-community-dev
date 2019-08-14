@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\ReferenceEntity\Component\Factory;
 
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\AbstractValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\AbstractValueFactory;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Value\ReferenceEntityCollectionValue;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;

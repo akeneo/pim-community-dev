@@ -11,8 +11,8 @@ services:
             - '@pim_catalog.repository.cached_attribute'
             - '@pimee_workflow.factory.product_draft'
             - '@pimee_workflow.repository.product_draft'
-            - '@pim_catalog.factory.value_collection'
-            - '@pim_catalog.factory.value'
+            - '@akeneo.pim.enrichment.factory.write.value_collection'
+            - '@akeneo.pim.enrichment.factory.read.value'
 
     pimee_workflow.product_model.builder.draft:
         class: '%pimee_workflow.builder.draft.class%'
@@ -22,8 +22,8 @@ services:
             - '@pim_catalog.repository.cached_attribute'
             - '@pimee_workflow.factory.product_model_draft'
             - '@pimee_workflow.repository.product_model_draft'
-            - '@pim_catalog.factory.value_collection'
-            - '@pim_catalog.factory.value'
+            - '@akeneo.pim.enrichment.factory.write.value_collection'
+            - '@akeneo.pim.enrichment.factory.read.value'
 
     pimee_workflow.builder.published_product:
         class: '%pimee_workflow.builder.published_product.class%'

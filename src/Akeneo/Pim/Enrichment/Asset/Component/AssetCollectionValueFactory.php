@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Asset\Component;
 
 use Akeneo\Asset\Bundle\AttributeType\AttributeTypes;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\AbstractValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\AbstractValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryResolverInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 /**
- * Copy of the {@see Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ReferenceDataCollectionValueFactory} but without
+ * Copy of the {@see Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\ReferenceDataCollectionValueFactory} but without
  * sorting data.
  *
  * @internal  Please, do not use this class directly. You must use \Akeneo\Pim\Enrichment\Component\Product\Factory\ProductValueFactory.
