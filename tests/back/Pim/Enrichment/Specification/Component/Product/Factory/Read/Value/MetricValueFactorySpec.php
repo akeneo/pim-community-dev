@@ -9,11 +9,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Metric;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 /**
  * @author    Anael Chardan <anael.chardan@akeneo.com>
@@ -37,6 +35,15 @@ final class MetricValueFactorySpec extends ObjectBehavior
         $this->supportedAttributeType()->shouldReturn(AttributeTypes::METRIC);
     }
 
+    public function it_supports_null(MetricFactory $metricFactory)
+    {
+        $metric = new Metric('distance', 'centimeters', 5, 'meters', 0.05);
+        $metricFactory->createMetric('distance', null, null)->willReturn($metric);
+        $attribute = $this->getAttribute(true, true);
+        $value = $this->createByCheckingData($attribute, 'ecommerce', 'fr_FR', null);
+        $value->shouldBeLike(MetricValue::scopableLocalizableValue('an_attribute', $metric, 'ecommerce', 'fr_FR'));
+    }
+
     public function it_creates_a_localizable_and_scopable_value(MetricFactory $metricFactory)
     {
         $metric = new Metric('distance', 'centimeters', 5, 'meters', 0.05);
@@ -44,7 +51,6 @@ final class MetricValueFactorySpec extends ObjectBehavior
         $attribute = $this->getAttribute(true, true);
         $value = $this->createByCheckingData($attribute, 'ecommerce', 'fr_FR', ['unit' => 'centimeters', 'amount' => 5]);
         $value->shouldBeLike(MetricValue::scopableLocalizableValue('an_attribute', $metric, 'ecommerce', 'fr_FR'));
-
     }
 
     public function it_creates_a_localizable_value(MetricFactory $metricFactory)
@@ -54,7 +60,6 @@ final class MetricValueFactorySpec extends ObjectBehavior
         $attribute = $this->getAttribute(true, false);
         $value = $this->createByCheckingData($attribute, null, 'fr_FR', ['unit' => 'centimeters', 'amount' => 5]);
         $value->shouldBeLike(MetricValue::localizableValue('an_attribute', $metric, 'fr_FR'));
-
     }
 
     public function it_creates_a_scopable_value(MetricFactory $metricFactory)
@@ -64,7 +69,6 @@ final class MetricValueFactorySpec extends ObjectBehavior
         $attribute = $this->getAttribute(false, true);
         $value = $this->createByCheckingData($attribute, 'ecommerce', null, ['unit' => 'centimeters', 'amount' => 5]);
         $value->shouldBeLike(MetricValue::scopableValue('an_attribute', $metric, 'ecommerce'));
-
     }
 
     public function it_creates_a_non_localizable_and_non_scopable_value(MetricFactory $metricFactory)

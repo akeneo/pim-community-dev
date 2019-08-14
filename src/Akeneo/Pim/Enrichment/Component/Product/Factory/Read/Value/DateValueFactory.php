@@ -19,7 +19,7 @@ final class DateValueFactory implements ValueFactory
 {
     public function createWithoutCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
-        $date = new \DateTime($data);
+        $date = null === $data ? null : new \DateTime($data);
         $attributeCode = $attribute->code();
 
         if ($attribute->isLocalizableAndScopable()) {
@@ -39,6 +39,10 @@ final class DateValueFactory implements ValueFactory
 
     public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
+        if (null === $data) {
+            return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
+        }
+
         if (!is_string($data)) {
             throw InvalidPropertyTypeException::stringExpected(
                 $attribute->code(),

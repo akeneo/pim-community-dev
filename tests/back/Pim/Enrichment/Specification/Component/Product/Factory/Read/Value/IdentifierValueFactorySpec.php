@@ -28,6 +28,13 @@ final class IdentifierValueFactorySpec extends ObjectBehavior
         $this->supportedAttributeType()->shouldReturn(AttributeTypes::IDENTIFIER);
     }
 
+    public function it_supports_null()
+    {
+        $attribute = $this->getAttribute(true, true);
+        $value = $this->createByCheckingData($attribute, 'ecommerce', 'fr_FR', null);
+        $value->shouldBeLike(ScalarValue::scopableLocalizableValue('an_attribute', null, 'ecommerce', 'fr_FR'));
+    }
+
     public function it_creates_a_localizable_and_scopable_value()
     {
         $attribute = $this->getAttribute(true, true);

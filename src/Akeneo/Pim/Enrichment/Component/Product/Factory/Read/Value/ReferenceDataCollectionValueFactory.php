@@ -39,6 +39,11 @@ final class ReferenceDataCollectionValueFactory implements ValueFactory
 
     public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
+        if ([] === $data || null === $data) {
+            return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, []);
+        }
+
+        //QUESTION: SHALL WE TEST IF IT EXISTS ?
         try {
             Assert::allString($data);
         } catch (\Exception $exception) {

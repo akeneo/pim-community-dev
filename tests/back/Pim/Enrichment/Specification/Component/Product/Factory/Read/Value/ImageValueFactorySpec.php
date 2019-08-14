@@ -5,7 +5,6 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Val
 
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValue;
-use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
@@ -33,6 +32,13 @@ final class ImageValueFactorySpec extends ObjectBehavior
     public function it_supports_file_attribute_types()
     {
         $this->supportedAttributeType()->shouldReturn(AttributeTypes::IMAGE);
+    }
+
+    public function it_supports_null()
+    {
+        $attribute = $this->getAttribute(true, true);
+        $value = $this->createByCheckingData($attribute, 'ecommerce', 'fr_FR', null);
+        $value->shouldBeLike(MediaValue::scopableLocalizableValue('an_attribute', null, 'ecommerce', 'fr_FR'));
     }
 
     public function it_creates_a_localizable_and_scopable_value(FileInfoRepositoryInterface $fileInfoRepository)

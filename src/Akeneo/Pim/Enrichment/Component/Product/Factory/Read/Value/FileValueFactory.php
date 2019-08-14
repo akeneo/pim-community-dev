@@ -27,16 +27,20 @@ final class FileValueFactory implements ValueFactory
 
     public function createWithoutCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
-        $fileInfo = $this->fileInfoRepository->findOneByIdentifier($data);
+        $fileInfo = null;
 
-        if (null === $fileInfo) {
-            throw InvalidPropertyException::validEntityCodeExpected(
-                $attribute->code(),
-                'fileinfo key',
-                'The media does not exist',
-                static::class,
-                $data
-            );
+        if (null !== $data) {
+            $fileInfo = $this->fileInfoRepository->findOneByIdentifier($data);
+
+            if ($fileInfo === null) {
+                throw InvalidPropertyException::validEntityCodeExpected(
+                    $attribute->code(),
+                    'fileinfo key',
+                    'The media does not exist',
+                    static::class,
+                    $data
+                );
+            }
         }
 
         $attributeCode = $attribute->code();

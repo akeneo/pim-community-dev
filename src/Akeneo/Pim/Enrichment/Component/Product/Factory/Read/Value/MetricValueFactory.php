@@ -47,6 +47,13 @@ final class MetricValueFactory implements ValueFactory
 
     public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
+        if (null === $data) {
+            $data = [
+                'amount' => null,
+                'unit'   => null,
+            ];
+        }
+
         if (!is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected(
                 $attribute->code(),

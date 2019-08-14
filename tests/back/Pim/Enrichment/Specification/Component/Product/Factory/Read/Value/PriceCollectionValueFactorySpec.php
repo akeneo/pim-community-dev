@@ -29,6 +29,14 @@ final class PriceCollectionValueFactorySpec extends ObjectBehavior
         $this->supportedAttributeType()->shouldReturn(AttributeTypes::PRICE_COLLECTION);
     }
 
+    public function it_supports_null()
+    {
+        $priceCollection = new PriceCollection([]);
+        $attribute = $this->getAttribute(true, true);
+        $value = $this->createByCheckingData($attribute, 'ecommerce', 'fr_FR', null);
+        $value->shouldBeLike(PriceCollectionValue::scopableLocalizableValue('an_attribute', $priceCollection, 'ecommerce', 'fr_FR'));
+    }
+
     public function it_creates_a_localizable_and_scopable_value()
     {
         $priceCollection = new PriceCollection([new ProductPrice(5, 'EUR'), new ProductPrice(5, 'USD')]);

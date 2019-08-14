@@ -17,6 +17,10 @@ final class IdentifierValueFactory extends ScalarValueFactory implements ValueFa
 {
     public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
+        if (null === $data) {
+            return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
+        }
+
         if (!is_scalar($data) || (is_string($data) && trim($data) === '')) {
             throw InvalidPropertyTypeException::scalarExpected(
                 $attribute->code(),

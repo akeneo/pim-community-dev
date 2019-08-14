@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\ValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
@@ -24,6 +25,13 @@ final class ReferenceDataCollectionValueFactorySpec extends ObjectBehavior
     public function it_supports_reference_data_attribute_type()
     {
         $this->supportedAttributeType()->shouldReturn(AttributeTypes::REFERENCE_DATA_MULTI_SELECT);
+    }
+
+    public function it_supports_null()
+    {
+        $attribute = $this->getAttribute(true, true);
+        $value = $this->createByCheckingData($attribute, 'ecommerce', 'fr_FR', null);
+        $value->shouldBeLike(ReferenceDataCollectionValue::scopableLocalizableValue('an_attribute', [], 'ecommerce', 'fr_FR'));
     }
 
     public function it_creates_a_localizable_and_scopable_value()

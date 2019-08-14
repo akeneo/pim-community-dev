@@ -22,6 +22,10 @@ final class BooleanValueFactory extends ScalarValueFactory implements ValueFacto
 
     public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
+        if (null === $data) {
+            return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
+        }
+
         $dataToPersist = $data;
 
         if (is_string($data) && ('1' === $data || '0' === $data)) {

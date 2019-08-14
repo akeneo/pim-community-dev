@@ -28,6 +28,13 @@ final class OptionValueFactorySpec extends ObjectBehavior
         $this->supportedAttributeType()->shouldReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
     }
 
+    public function it_supports_null()
+    {
+        $attribute = $this->getAttribute(true, true);
+        $value = $this->createByCheckingData($attribute, 'ecommerce', 'fr_FR', null);
+        $value->shouldBeLike(OptionValue::scopableLocalizableValue('an_attribute', null, 'ecommerce', 'fr_FR'));
+    }
+
     public function it_creates_a_localizable_and_scopable_value()
     {
         $attribute = $this->getAttribute(true, true);
