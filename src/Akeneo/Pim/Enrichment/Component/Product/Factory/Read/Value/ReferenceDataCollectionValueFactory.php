@@ -7,6 +7,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Webmozart\Assert\Assert;
 
 /**
  * @author    Anael Chardan <anael.chardan@akeneo.com>
@@ -15,7 +17,7 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
  */
 final class ReferenceDataCollectionValueFactory implements ReadValueFactory
 {
-    public function create(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
+    public function createWithoutCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
         $data = array_unique($data);
         $attributeCode = $attribute->code();
@@ -33,6 +35,21 @@ final class ReferenceDataCollectionValueFactory implements ReadValueFactory
         }
 
         return ReferenceDataCollectionValue::value($attributeCode, $data);
+    }
+
+    public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
+    {
+        try {
+            Assert::allString($data);
+        } catch (\Exception $exception) {
+            throw InvalidPropertyTypeException::validArrayStructureExpected(
+                $attribute->code(),
+                'one of the reference data code is not a string',
+                static::class,
+                $data
+            );
+        }
+        return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
     }
 
     public function supportedAttributeType(): string

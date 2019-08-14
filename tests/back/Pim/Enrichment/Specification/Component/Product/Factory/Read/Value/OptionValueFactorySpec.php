@@ -60,7 +60,7 @@ final class OptionValueFactorySpec extends ObjectBehavior
         $value->shouldBeLike(OptionValue::value('an_attribute', 'michel'));
     }
 
-    public function it_throws_an_exception_if_it_is_not_a_string_neither_numeric()
+    public function it_throws_an_exception_if_it_is_not_a_string()
     {
         $this->shouldThrow(InvalidPropertyTypeException::class)
             ->during('createByCheckingData', [$this->getAttribute(false, false), null, null, new \stdClass()]);

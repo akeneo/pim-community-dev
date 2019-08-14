@@ -39,15 +39,15 @@ final class OptionsValueFactory implements ReadValueFactory
 
     public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
-        foreach ($data as $value) {
-            if (!is_string($value) || !is_numeric($value)) {
-                throw InvalidPropertyTypeException::validArrayStructureExpected(
-                    $attribute->code(),
-                    sprintf('one of the options is not a string, "%s" given', gettype($value)),
-                    static::class,
-                    $data
-                );
-            }
+        try {
+            Assert::allString($data);
+        } catch (\Exception $exception) {
+            throw InvalidPropertyTypeException::validArrayStructureExpected(
+                $attribute->code(),
+                'one of the options is not a string',
+                static::class,
+                $data
+            );
         }
 
         return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);

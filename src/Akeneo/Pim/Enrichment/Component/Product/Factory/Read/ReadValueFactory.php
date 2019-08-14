@@ -46,7 +46,7 @@ final class ReadValueFactory
     public function create(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
         if (isset($this->readValueFactories[$attribute->type()])) {
-            return $this->readValueFactories[$attribute->type()]->create($attribute, $channelCode, $localeCode, $data);
+            return $this->readValueFactories[$attribute->type()]->createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
         }
 
         return $this->fallbackToWriteModelValueFactory($attribute->code(), $channelCode, $localeCode, $data);

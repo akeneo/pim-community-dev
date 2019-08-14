@@ -28,7 +28,7 @@ final class ReadValueFactorySpec extends ObjectBehavior
     public function it_calls_the_right_factory(ReadValueFactory $factory2, ValueInterface $value)
     {
         $attribute = new Attribute('an_attribute', 'an_attribute_type2', [], false, false, null, false);
-        $factory2->create($attribute, null, null, 'data')->willReturn($value);
+        $factory2->createWithoutCheckingData($attribute, null, null, 'data')->willReturn($value);
         $this->create($attribute, null, null, 'data')->shouldReturn($value);
     }
 

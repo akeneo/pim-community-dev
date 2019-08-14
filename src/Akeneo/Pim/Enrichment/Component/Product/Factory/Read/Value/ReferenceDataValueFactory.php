@@ -7,6 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 /**
  * @author    Anael Chardan <anael.chardan@akeneo.com>
@@ -15,7 +16,7 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
  */
 final class ReferenceDataValueFactory implements ReadValueFactory
 {
-    public function create(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
+    public function createWithoutCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
         $attributeCode = $attribute->code();
 
@@ -32,6 +33,19 @@ final class ReferenceDataValueFactory implements ReadValueFactory
         }
 
         return ReferenceDataValue::value($attributeCode, $data);
+    }
+
+    public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
+    {
+        if (!is_string($data)) {
+            throw InvalidPropertyTypeException::stringExpected(
+                $attribute->code(),
+                static::class,
+                $data
+            );
+        }
+
+        return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
     }
 
     public function supportedAttributeType(): string
