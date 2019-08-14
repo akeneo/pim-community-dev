@@ -1,32 +1,28 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-// import RecordSelector from 'akeneoreferenceentity/application/component/app/record-selector';
-// import {createIdentifier as createReferenceEntityIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-// import RecordCode, {createCode as createRecordCode} from 'akeneoreferenceentity/domain/model/record/code';
-// import LocaleReference from 'akeneoreferenceentity/domain/model/locale-reference';
-// import ChannelReference from 'akeneoreferenceentity/domain/model/channel-reference';
 import __ from 'akeneoreferenceentity/tools/translator';
 import List from 'akeneopimenrichmentassetmanager/assets-collection/list';
-import {combineReducers, createStore} from 'redux';
+import {createStore, Store} from 'redux';
 import {Provider} from 'react-redux';
-import generate from "../../assets-collection/application/value-generator";
+import generate from 'akeneopimenrichmentassetmanager/assets-collection/application/value-generator';
+import {localeUpdated, channelUpdated} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
+import {valuesUpdated} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';
+import {assetCollectionReducer, AssetCollectionState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/asset-collection';
+import {attributeListUpdated, Attribute} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/structure';
 
 const Form = require('pim/form');
 const fetcherRegistry = require('pim/fetcher-registry');
 const UserContext = require('pim/user-context');
 
+
 class AssetTabForm extends (Form as {new (config: any): any}) {
   attributes = [];
-  store: any;
+  store: Store<AssetCollectionState>;
 
   constructor(config: any) {
     super(config);
 
-    this.store = createStore(combineReducers({
-      context: contextReducer,
-      structure: structureReducer,
-      values: dataReducer
-    }));
+    this.store = createStore(assetCollectionReducer);
   }
 
   configure() {
@@ -49,18 +45,16 @@ class AssetTabForm extends (Form as {new (config: any): any}) {
 
     return $.when(
       Form.prototype.configure.apply(this, arguments),
-      fetcherRegistry.getFetcher('attribute').fetchByTypes(['akeneo_asset_multiple_link']).then((attributes: any[]) => {
+      fetcherRegistry.getFetcher('attribute').fetchByTypes(['akeneo_asset_multiple_link']).then((attributes: Attribute[]) => {
         this.store.dispatch(attributeListUpdated(attributes));
       })
     );
   }
 
   render() {
-    const values = this.getFormData().values;
-
     ReactDOM.render(
       (<Provider store={this.store}>
-        <List values={values} />
+        <List />
       </Provider>),
       this.el
     );
@@ -75,63 +69,5 @@ class AssetTabForm extends (Form as {new (config: any): any}) {
   }
 }
 
-const localeUpdated = (locale: string) => {
-  return {type: 'LOCALE_UPDATED', locale}
-};
-
-const channelUpdated = (channel: string) => {
-  return {type: 'CHANNEL_UPDATED', channel}
-};
-
-const attributeListUpdated = (attributes: any[]) => {
-  return {type: 'ATTRIBUTE_LIST_UPDATED', attributes};
-};
-
-const valuesUpdated = (values: any[]) => {
-  return {type: 'VALUE_COLLECTION_UPDATED', values};
-};
-
-const structureReducer = (state: any = {attributes: []}, action: any) => {
-  switch (action.type) {
-    case 'ATTRIBUTE_LIST_UPDATED':
-      state = {...state, attributes: action.attributes};
-      break;
-    default:
-      break;
-  }
-
-  return state;
-};
-
-const contextReducer = (state: {locale: String, channel: String} = {locale: '', channel: ''}, action: {type: String, channel?: String, locale?: String}) => {
-  switch (action.type) {
-    case 'LOCALE_UPDATED':
-      if (action.locale) {
-        state = {...state, locale: action.locale};
-      }
-      break;
-    case 'CHANNEL_UPDATED':
-      if (action.channel) {
-        state = {...state, channel: action.channel};
-      }
-      break;
-    default:
-      break;
-  }
-
-  return state;
-};
-
-const dataReducer = (state: any[] = [], action: {type: string, values: any[]}) => {
-  switch (action.type) {
-    case 'VALUE_COLLECTION_UPDATED':
-      state = action.values;
-      break;
-    default:
-      break;
-  }
-
-  return state;
-};
 
 module.exports = AssetTabForm;

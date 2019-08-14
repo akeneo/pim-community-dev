@@ -1,6 +1,5 @@
 extensions:
     pim-product-edit-form-assets:
-#        module: akeneopimenrichmentassetmanager/product/tab/asset.tsx
         module: pim/product-edit-form/assets
         parent: pim-product-edit-form-column-tabs
         targetZone: container

@@ -1,42 +1,53 @@
-const fetcherRegistry = require('pim/fetcher-registry');
-import promisify from 'akeneoassetmanager/tools/promisify';
+import {
+  ValueCollection,
+  Value,
+  Product,
+  LegacyValueCollection,
+  Meta,
+  CategoryCode,
+  LegacyValue,
+} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';
+import {Attribute, AttributeCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/structure';
+import {
+  fetchPermissions,
+  AttributeGroupPersmissions,
+  LocalePermissions,
+  CategoryPermissions,
+  isLocaleEditable,
+  isAttributeGroupEditable,
+  Permissions,
+} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/permission';
+import {fetchAssetAttributes} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/attribute';
 
-type Value = {
-  attribute: any,
-  locale: string|null,
-  channel: string|null,
-  data: any,
-  editable: boolean
-};
-
-type ValueCollection = Value[];
-
-const transformValues = (legacyValues: any, assetAttributes: any[]): ValueCollection => {
-  const attributeCodes = assetAttributes.map((attribute: any) => attribute.code);
-  const assetValueAttributeCodes = Object.keys(legacyValues).filter(
-    (attributeCode: string) => attributeCodes.includes(attributeCode)
+const transformValues = (legacyValues: LegacyValueCollection, assetAttributes: Attribute[]): ValueCollection => {
+  const attributeCodes = assetAttributes.map((attribute: Attribute) => attribute.code);
+  const assetValueAttributeCodes = Object.keys(legacyValues).filter((attributeCode: AttributeCode) =>
+    attributeCodes.includes(attributeCode)
   );
 
-  return assetValueAttributeCodes.reduce((result: ValueCollection, key: string) => {
-    const attribute = assetAttributes.find((attribute) => attribute.code === key);
+  return assetValueAttributeCodes.reduce((result: ValueCollection, attributeCode: AttributeCode) => {
+    const attribute = assetAttributes.find(attribute => attribute.code === attributeCode);
+    if (undefined === attribute) return result;
 
-    const values = legacyValues[key].map((legacyValue: any) => ({
-      attribute: attribute,
-      locale: legacyValue.locale,
-      channel: legacyValue.scope,
-      data: legacyValue.data,
-      editable: true
-    }));
+    const values = legacyValues[attributeCode].map(
+      (legacyValue: LegacyValue): Value => ({
+        attribute,
+        locale: legacyValue.locale,
+        channel: legacyValue.scope,
+        data: legacyValue.data,
+        editable: true,
+      })
+    );
 
     return result.concat(values);
   }, []);
 };
 
-const generate = async (product: any) => {
-  const assetAttributes = await fetchAssetAttributes();
-  let valueCollection = transformValues(product.values, assetAttributes);
+const generate = async (product: Product): Promise<ValueCollection> => {
+  const assetAttributes: Attribute[] = await fetchAssetAttributes();
+  let valueCollection: ValueCollection = transformValues(product.values, assetAttributes);
 
-  const permissions = await fetchPermissions();
+  const permissions: Permissions = await fetchPermissions();
   valueCollection = filterAttributeGroups(valueCollection, permissions.attribute_groups);
   valueCollection = filterLocales(valueCollection, permissions.locales);
   valueCollection = filterReadOnlyAttribute(valueCollection);
@@ -46,58 +57,58 @@ const generate = async (product: any) => {
   return valueCollection;
 };
 
-const filterAttributeGroups = (values: ValueCollection, attributeGroupPermissions: any): ValueCollection => {
-  return values.map((value: Value) => ({
-    ...value,
-      editable: value.editable && attributeGroupPermissions.find(
-        (attributeGroupPermission: any) => attributeGroupPermission.code === value.attribute.group
-      ).edit
-  }));
+const filterAttributeGroups = (
+  values: ValueCollection,
+  attributeGroupPermissions: AttributeGroupPersmissions
+): ValueCollection => {
+  return values.map((value: Value) => {
+    return {
+      ...value,
+      editable: value.editable && isAttributeGroupEditable(attributeGroupPermissions, value.attribute.group),
+    };
+  });
 };
 
-const filterLocales = (values: ValueCollection, localePermissions: any): ValueCollection => {
-  return values.map((value: Value) => ({
-    ...value,
-    editable: value.editable && (
-      value.locale === null
-      || localePermissions.find((localePermission: any) => localePermission.code === value.locale).edit
-    )
-  }));
+const filterLocales = (values: ValueCollection, localePermissions: LocalePermissions): ValueCollection => {
+  return values.map((value: Value) => {
+    return {
+      ...value,
+      editable: value.editable && isLocaleEditable(localePermissions, value.locale),
+    };
+  });
 };
 
 const filterReadOnlyAttribute = (values: ValueCollection): ValueCollection => {
   return values.map((value: Value) => ({
     ...value,
-    editable: value.editable && !value.attribute.is_read_only
+    editable: value.editable && !value.attribute.is_read_only,
   }));
 };
 
-const filterParentAttribute = (values: ValueCollection, meta: any): ValueCollection => {
+const filterParentAttribute = (values: ValueCollection, meta: Meta): ValueCollection => {
   if (meta.level === null) return values;
 
   return values.map((value: Value) => ({
     ...value,
-    editable: value.editable && meta.attributes_for_this_level.includes(value.attribute.code)
+    editable: value.editable && meta.attributes_for_this_level.includes(value.attribute.code),
   }));
 };
 
-const filterCategories = (values: ValueCollection, categories: string[], categoryPermissions: any): ValueCollection => {
+const filterCategories = (
+  values: ValueCollection,
+  categories: CategoryCode[],
+  categoryPermissions: CategoryPermissions
+): ValueCollection => {
   if (categories.length === 0) return values;
 
-  const categoryRight = categories.some((categoryCode: string) => categoryPermissions.EDIT_ITEMS.includes(categoryCode));
+  const categoryRight = categories.some((categoryCode: string) =>
+    categoryPermissions.EDIT_ITEMS.includes(categoryCode)
+  );
 
   return values.map((value: Value) => ({
     ...value,
-    editable: value.editable && categoryRight
+    editable: value.editable && categoryRight,
   }));
-};
-
-const fetchPermissions = async (): Promise<any> => {
-  return promisify(fetcherRegistry.getFetcher('permission').fetchAll());
-};
-
-const fetchAssetAttributes = async (): Promise<any> => {
-  return promisify(fetcherRegistry.getFetcher('attribute').fetchByTypes(['akeneo_asset_multiple_link']));
 };
 
 export default generate;
