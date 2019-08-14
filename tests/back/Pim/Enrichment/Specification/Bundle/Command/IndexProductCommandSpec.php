@@ -22,16 +22,28 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class IndexProductCommandSpec extends ObjectBehavior
 {
-    function let(ContainerInterface $container, Client $productAndProductModelClient)
-    {
-        $container->get('akeneo_elasticsearch.client.product_and_product_model')->willReturn($productAndProductModelClient);
+    function let(
+        ContainerInterface $container,
+        ProductRepositoryInterface $productRepository,
+        BulkIndexerInterface $bulkProductIndexer,
+        ObjectManager $objectManager,
+        Client $productAndProductModelClient
+    ) {
+        $this->beConstructedWith(
+            $productRepository,
+            $bulkProductIndexer,
+            $objectManager,
+            $productAndProductModelClient,
+            'akeneo_pim_product_and_product_model'
+        );
+        $this->setContainer($container);
 
         $productAndProductModelClient->hasIndex()->willReturn(true);
     }
 
     function it_has_a_name()
     {
-        $this->getName()->shouldReturn('pim:product:index');
+        $this->getDefaultName()->shouldReturn('pim:product:index');
     }
 
     function it_is_a_command()
@@ -40,9 +52,8 @@ class IndexProductCommandSpec extends ObjectBehavior
     }
 
     function it_indexes_all_products(
-        $container,
         ProductRepositoryInterface $productRepository,
-        BulkIndexerInterface $productIndexer,
+        BulkIndexerInterface $bulkProductIndexer,
         ObjectManager $objectManager,
         InputInterface $input,
         OutputInterface $output,
@@ -60,19 +71,15 @@ class IndexProductCommandSpec extends ObjectBehavior
         $output->getVerbosity()->willReturn(OutputInterface::VERBOSITY_NORMAL);
         $output->getFormatter()->willReturn($formatter);
 
-        $container->get('pim_catalog.repository.product')->willReturn($productRepository);
-        $container->get('pim_catalog.elasticsearch.indexer.product')->willReturn($productIndexer);
-        $container->get('doctrine.orm.default_entity_manager')->willReturn($objectManager);
-
         $productRepository->countAll()->willReturn(5);
         $productRepository->searchAfter(null, 100)->willReturn([$product1, $product2]);
         $productRepository->searchAfter($product2, 100)->willReturn([$product3, $product4]);
         $productRepository->searchAfter($product4, 100)->willReturn([$product5]);
         $productRepository->searchAfter($product5, 100)->willReturn([]);
 
-        $productIndexer->indexAll([$product1, $product2], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
-        $productIndexer->indexAll([$product3, $product4], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
-        $productIndexer->indexAll([$product5], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
+        $bulkProductIndexer->indexAll([$product1, $product2], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
+        $bulkProductIndexer->indexAll([$product3, $product4], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
+        $bulkProductIndexer->indexAll([$product5], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
 
         $objectManager->clear()->shouldBeCalledTimes(3);
 
@@ -93,7 +100,6 @@ class IndexProductCommandSpec extends ObjectBehavior
         $application->getDefinition()->willReturn($definition);
 
         $this->setApplication($application);
-        $this->setContainer($container);
         $input->bind(Argument::any())->shouldBeCalled();
         $input->isInteractive()->shouldBeCalled();
         $input->hasArgument(Argument::any())->shouldBeCalled();
@@ -104,9 +110,8 @@ class IndexProductCommandSpec extends ObjectBehavior
     }
 
     function it_indexes_a_product_with_identifier(
-        $container,
         ProductRepositoryInterface $productRepository,
-        BulkIndexerInterface $productIndexer,
+        BulkIndexerInterface $bulkProductIndexer,
         ObjectManager $objectManager,
         InputInterface $input,
         OutputInterface $output,
@@ -120,13 +125,9 @@ class IndexProductCommandSpec extends ObjectBehavior
         $output->getVerbosity()->willReturn(OutputInterface::VERBOSITY_NORMAL);
         $output->getFormatter()->willReturn($formatter);
 
-        $container->get('pim_catalog.repository.product')->willReturn($productRepository);
-        $container->get('pim_catalog.elasticsearch.indexer.product')->willReturn($productIndexer);
-        $container->get('doctrine.orm.default_entity_manager')->willReturn($objectManager);
-
         $productRepository->findBy(['identifier' => ['product_identifier_to_index']])->willReturn([$productToIndex]);
 
-        $productIndexer->indexAll([$productToIndex], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
+        $bulkProductIndexer->indexAll([$productToIndex], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
         $objectManager->clear()->shouldBeCalled();
 
         $output->writeln('<info>1 products found for indexing</info>')->shouldBeCalled();
@@ -147,7 +148,6 @@ class IndexProductCommandSpec extends ObjectBehavior
         $application->getDefinition()->willReturn($definition);
 
         $this->setApplication($application);
-        $this->setContainer($container);
         $input->bind(Argument::any())->shouldBeCalled();
         $input->isInteractive()->shouldBeCalled();
         $input->hasArgument(Argument::any())->shouldBeCalled();
@@ -158,9 +158,8 @@ class IndexProductCommandSpec extends ObjectBehavior
     }
 
     function it_indexes_multiple_products_with_identifiers(
-        $container,
         ProductRepositoryInterface $productRepository,
-        BulkIndexerInterface $productIndexer,
+        BulkIndexerInterface $bulkProductIndexer,
         ObjectManager $objectManager,
         InputInterface $input,
         OutputInterface $output,
@@ -175,13 +174,9 @@ class IndexProductCommandSpec extends ObjectBehavior
         $output->getVerbosity()->willReturn(OutputInterface::VERBOSITY_NORMAL);
         $output->getFormatter()->willReturn($formatter);
 
-        $container->get('pim_catalog.repository.product')->willReturn($productRepository);
-        $container->get('pim_catalog.elasticsearch.indexer.product')->willReturn($productIndexer);
-        $container->get('doctrine.orm.default_entity_manager')->willReturn($objectManager);
-
         $productRepository->findBy(['identifier' => ['product_1', 'product_2']])->willReturn([$product1, $product2]);
 
-        $productIndexer->indexAll([$product1, $product2], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
+        $bulkProductIndexer->indexAll([$product1, $product2], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
         $objectManager->clear()->shouldBeCalled();
 
         $output->writeln('<info>2 products found for indexing</info>')->shouldBeCalled();
@@ -202,7 +197,6 @@ class IndexProductCommandSpec extends ObjectBehavior
         $application->getDefinition()->willReturn($definition);
 
         $this->setApplication($application);
-        $this->setContainer($container);
         $input->bind(Argument::any())->shouldBeCalled();
         $input->isInteractive()->shouldBeCalled();
         $input->hasArgument(Argument::any())->shouldBeCalled();
@@ -213,9 +207,8 @@ class IndexProductCommandSpec extends ObjectBehavior
     }
 
     function it_does_not_index_non_existing_products(
-        $container,
         ProductRepositoryInterface $productRepository,
-        BulkIndexerInterface $productIndexer,
+        BulkIndexerInterface $bulkProductIndexer,
         ObjectManager $objectManager,
         InputInterface $input,
         OutputInterface $output,
@@ -229,15 +222,11 @@ class IndexProductCommandSpec extends ObjectBehavior
         $output->getVerbosity()->willReturn(OutputInterface::VERBOSITY_NORMAL);
         $output->getFormatter()->willReturn($formatter);
 
-        $container->get('pim_catalog.repository.product')->willReturn($productRepository);
-        $container->get('pim_catalog.elasticsearch.indexer.product')->willReturn($productIndexer);
-        $container->get('doctrine.orm.default_entity_manager')->willReturn($objectManager);
-
         $productRepository->findBy(['identifier' => ['product_1', 'wrong_product']])->willReturn([$productToIndex]);
 
         $productToIndex->getIdentifier()->willReturn('product_1');
 
-        $productIndexer->indexAll([$productToIndex], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
+        $bulkProductIndexer->indexAll([$productToIndex], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
         $objectManager->clear()->shouldBeCalled();
 
         $output->writeln('<error>Some products were not found for the given identifiers: wrong_product</error>')->shouldBeCalled();
@@ -259,7 +248,6 @@ class IndexProductCommandSpec extends ObjectBehavior
         $application->getDefinition()->willReturn($definition);
 
         $this->setApplication($application);
-        $this->setContainer($container);
         $input->bind(Argument::any())->shouldBeCalled();
         $input->isInteractive()->shouldBeCalled();
         $input->hasArgument(Argument::any())->shouldBeCalled();
@@ -270,10 +258,6 @@ class IndexProductCommandSpec extends ObjectBehavior
     }
 
     function it_does_not_index_products_if_the_all_flag_is_not_set_and_no_identifier_is_passed(
-        $container,
-        ProductRepositoryInterface $productRepository,
-        BulkIndexerInterface $productIndexer,
-        ObjectManager $objectManager,
         InputInterface $input,
         OutputInterface $output,
         Application $application,
@@ -284,10 +268,6 @@ class IndexProductCommandSpec extends ObjectBehavior
         $output->isDecorated()->willReturn(true);
         $output->getVerbosity()->willReturn(OutputInterface::VERBOSITY_NORMAL);
         $output->getFormatter()->willReturn($formatter);
-
-        $container->get('pim_catalog.repository.product')->willReturn($productRepository);
-        $container->get('pim_catalog.elasticsearch.indexer.product')->willReturn($productIndexer);
-        $container->get('doctrine.orm.default_entity_manager')->willReturn($objectManager);
 
         $output->writeln('<error>Please specify a list of product identifiers to index or use the flag --all to index all products</error>')
             ->shouldBeCalled();
@@ -307,7 +287,6 @@ class IndexProductCommandSpec extends ObjectBehavior
         $application->getDefinition()->willReturn($definition);
 
         $this->setApplication($application);
-        $this->setContainer($container);
         $input->bind(Argument::any())->shouldBeCalled();
         $input->isInteractive()->shouldBeCalled();
         $input->hasArgument(Argument::any())->shouldBeCalled();
@@ -318,7 +297,6 @@ class IndexProductCommandSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_the_product_and_product_model_index_does_not_exist(
-        $container,
         $productAndProductModelClient,
         Application $application,
         InputInterface $input,
@@ -332,7 +310,6 @@ class IndexProductCommandSpec extends ObjectBehavior
         $output->getFormatter()->willReturn($formatter);
 
         $productAndProductModelClient->hasIndex()->willReturn(false);
-        $container->getParameter('product_and_product_model_index_name')->willReturn('foo');
 
         $commandInput = new ArrayInput([
             'command'    => 'pim:product:index',
@@ -346,7 +323,6 @@ class IndexProductCommandSpec extends ObjectBehavior
         $application->getHelperSet()->willReturn($helperSet);
         $application->getDefinition()->willReturn($definition);
         $this->setApplication($application);
-        $this->setContainer($container);
         $input->bind(Argument::any())->shouldBeCalled();
         $input->isInteractive()->shouldBeCalled();
         $input->hasArgument(Argument::any())->shouldBeCalled();

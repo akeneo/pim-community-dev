@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Command;
 
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -24,7 +25,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class IndexProductCommand extends ContainerAwareCommand
 {
-    public const NAME = 'pim:product:index';
+    protected static $defaultName = 'pim:product:index';
+
     private const BULK_SIZE = 100;
     private const ERROR_CODE_USAGE = 1;
 
@@ -37,13 +39,33 @@ class IndexProductCommand extends ContainerAwareCommand
     /** @var ObjectManager */
     private $objectManager;
 
+    /** @var Client */
+    private $productAndProductModelClient;
+
+    /** @var string */
+    private $productAndProductModelIndexName;
+
+    public function __construct(
+        ProductRepositoryInterface $productRepository,
+        BulkIndexerInterface $bulkProductIndexer,
+        ObjectManager $objectManager,
+        Client $productAndProductModelClient,
+        string $productAndProductModelIndexName
+    ) {
+        parent::__construct();
+        $this->productRepository = $productRepository;
+        $this->bulkProductIndexer = $bulkProductIndexer;
+        $this->objectManager = $objectManager;
+        $this->productAndProductModelClient = $productAndProductModelClient;
+        $this->productAndProductModelIndexName = $productAndProductModelIndexName;
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
         $this
-            ->setName(self::NAME)
             ->addArgument(
                 'identifiers',
                 InputArgument::OPTIONAL | InputArgument::IS_ARRAY,
@@ -65,10 +87,6 @@ class IndexProductCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->checkIndexesExist();
-
-        $this->productRepository = $this->getContainer()->get('pim_catalog.repository.product');
-        $this->bulkProductIndexer = $this->getContainer()->get('pim_catalog.elasticsearch.indexer.product');
-        $this->objectManager = $this->getContainer()->get('doctrine.orm.default_entity_manager');
 
         $isIndexAll = $input->getOption('all');
         $productIdentifiers = $input->getArgument('identifiers');
@@ -187,14 +205,11 @@ class IndexProductCommand extends ContainerAwareCommand
      */
     private function checkIndexesExist()
     {
-        $productAndProductModelClient = $this->getContainer()->get(
-            'akeneo_elasticsearch.client.product_and_product_model'
-        );
-        if (!$productAndProductModelClient->hasIndex()) {
+        if (!$this->productAndProductModelClient->hasIndex()) {
             throw new \RuntimeException(
                 sprintf(
                     'The index "%s" does not exist in Elasticsearch.',
-                    $this->getContainer()->getParameter('product_and_product_model_index_name')
+                    $this->productAndProductModelIndexName
                 )
             );
         }

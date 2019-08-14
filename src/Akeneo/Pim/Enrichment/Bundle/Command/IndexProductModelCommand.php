@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Command;
 
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -24,7 +25,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class IndexProductModelCommand extends ContainerAwareCommand
 {
-    public const NAME = 'pim:product-model:index';
+    protected static $defaultName = 'pim:product-model:index';
+
     private const BULK_SIZE = 100;
 
     /** @var ProductModelRepositoryInterface */
@@ -39,13 +41,35 @@ class IndexProductModelCommand extends ContainerAwareCommand
     /** @var ObjectManager */
     private $objectManager;
 
+    /** @var Client */
+    private $productAndProductModelClient;
+
+    /** @var string */
+    private $productAndProductModelIndexName;
+
+    public function __construct(
+        ProductModelRepositoryInterface $productModelRepository,
+        BulkIndexerInterface $bulkProductModelIndexer,
+        BulkIndexerInterface $bulkProductModelDescendantsIndexer,
+        ObjectManager $objectManager,
+        Client $productAndProductModelClient,
+        string $productAndProductModelIndexName
+    ) {
+        parent::__construct();
+        $this->productModelRepository = $productModelRepository;
+        $this->bulkProductModelIndexer = $bulkProductModelIndexer;
+        $this->bulkProductModelDescendantsIndexer = $bulkProductModelDescendantsIndexer;
+        $this->objectManager = $objectManager;
+        $this->productAndProductModelClient = $productAndProductModelClient;
+        $this->productAndProductModelIndexName = $productAndProductModelIndexName;
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
         $this
-            ->setName(self::NAME)
             ->addArgument(
                 'codes',
                 InputArgument::OPTIONAL | InputArgument::IS_ARRAY,
@@ -56,7 +80,7 @@ class IndexProductModelCommand extends ContainerAwareCommand
                 'all',
                 true,
                 InputOption::VALUE_NONE,
-                'Index all existing products into Elasticsearch'
+                'Index all existing product models into Elasticsearch'
             )
             ->setDescription('Index all or some product models into Elasticsearch');
     }
@@ -69,12 +93,6 @@ class IndexProductModelCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->checkIndexesExist();
-
-        $this->productModelRepository = $this->getContainer()->get('pim_catalog.repository.product_model');
-        $this->bulkProductModelIndexer = $this->getContainer()->get('pim_catalog.elasticsearch.indexer.product_model');
-        $this->bulkProductModelDescendantsIndexer = $this->getContainer()
-            ->get('pim_catalog.elasticsearch.indexer.product_model_descendance');
-        $this->objectManager = $this->getContainer()->get('doctrine.orm.default_entity_manager');
 
         $isIndexAll = $input->getOption('all');
         $productModelCodes = $input->getArgument('codes');
@@ -197,14 +215,11 @@ class IndexProductModelCommand extends ContainerAwareCommand
      */
     private function checkIndexesExist()
     {
-        $productAndProductModelClient = $this->getContainer()->get(
-            'akeneo_elasticsearch.client.product_and_product_model'
-        );
-        if (!$productAndProductModelClient->hasIndex()) {
+        if (!$this->productAndProductModelClient->hasIndex()) {
             throw new \RuntimeException(
                 sprintf(
                     'The index "%s" does not exist in Elasticsearch.',
-                    $this->getContainer()->getParameter('product_and_product_model_index_name')
+                    $this->productAndProductModelIndexName
                 )
             );
         }

@@ -11,3 +11,25 @@ services:
         tags:
             - { name: 'console.command' }
 
+    akeneo.pim.enrichment.command.index_product:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Command\IndexProductCommand'
+        arguments:
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.elasticsearch.indexer.product'
+            - '@doctrine.orm.default_entity_manager'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '%product_and_product_model_index_name%'
+        tags:
+            - { name: 'console.command' }
+
+    akeneo.pim.enrichment.command.index_product_model:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Command\IndexProductModelCommand'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.elasticsearch.indexer.product_model'
+            - '@pim_catalog.elasticsearch.indexer.product_model_descendance'
+            - '@doctrine.orm.default_entity_manager'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '%product_and_product_model_index_name%'
+        tags:
+            - { name: 'console.command' }
