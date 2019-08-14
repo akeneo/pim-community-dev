@@ -22,6 +22,8 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
+use Akeneo\AssetManager\Common\Fake\Anticorruption\RuleEngineValidatorACLStub;
+use Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\RuleEngineValidatorACLInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
@@ -33,6 +35,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 final class CreateAssetFamilyContext implements Context
 {
+    private const RULE_ENGINE_VALIDATION_MESSAGE = 'RULE ENGINE WILL NOT EXECUTE';
+
     /** @var InMemoryAssetFamilyRepository */
     private $assetFamilyRepository;
 
@@ -54,6 +58,9 @@ final class CreateAssetFamilyContext implements Context
     /** @var int  */
     private $ruleTemplateByAssetFamilyLimit;
 
+    /** @var RuleEngineValidatorACLStub */
+    private $ruleEngineValidatorACLStub;
+
     public function __construct(
         AssetFamilyRepositoryInterface $assetFamilyRepository,
         CreateAssetFamilyHandler $createAssetFamilyHandler,
@@ -61,6 +68,7 @@ final class CreateAssetFamilyContext implements Context
         ExceptionContext $exceptionContext,
         ConstraintViolationsContext $violationsContext,
         InMemoryFindActivatedLocalesByIdentifiers $activatedLocales,
+        RuleEngineValidatorACLInterface $ruleEngineValidatorACLStub,
         int $ruleTemplateByAssetFamilyLimit
     ) {
         $this->assetFamilyRepository = $assetFamilyRepository;
@@ -70,6 +78,7 @@ final class CreateAssetFamilyContext implements Context
         $this->violationsContext = $violationsContext;
         $this->activatedLocales = $activatedLocales;
         $this->ruleTemplateByAssetFamilyLimit = $ruleTemplateByAssetFamilyLimit;
+        $this->ruleEngineValidatorACLStub = $ruleEngineValidatorACLStub;
         $this->activateDefaultLocales();
     }
 
@@ -81,20 +90,11 @@ final class CreateAssetFamilyContext implements Context
         $updates = current($updateTable->getHash());
         $command = new CreateAssetFamilyCommand(
             $code,
-            json_decode($updates['labels'], true),
+            json_decode($updates['labels'] ?? '[]', true),
             json_decode($updates['product_link_rules'] ?? '[]', true)
         );
 
-        $violationList = $this->validator->validate($command);
-        $this->violationsContext->addViolations($violationList);
-
-        if (0 === $violationList->count()) {
-            try {
-                ($this->createAssetFamilyHandler)($command);
-            } catch (\Exception $e) {
-                $this->exceptionContext->setException($e);
-            }
-        }
+        $this->createAssetFamily($command);
     }
 
     /**
@@ -157,16 +157,7 @@ final class CreateAssetFamilyContext implements Context
                 ['en_US' => uniqid('label_')],
                 []
             );
-
-            $violations = $this->validator->validate($command);
-            if ($violations->count() > 0) {
-                $errorMessage = $violations->get(0)->getMessage();
-                throw new \RuntimeException(
-                    sprintf('Cannot create the asset family, command not valid (%s)', $errorMessage)
-                );
-            }
-
-            ($this->createAssetFamilyHandler)($command);
+            $this->createAssetFamily($command);
         }
     }
 
@@ -183,13 +174,7 @@ final class CreateAssetFamilyContext implements Context
             [$ruleTemplate]
         );
 
-        $this->violationsContext->addViolations($this->validator->validate($command));
-
-        try {
-            ($this->createAssetFamilyHandler)($command);
-        } catch (\Exception $e) {
-            $this->exceptionContext->setException($e);
-        }
+        $this->createAssetFamily($command);
     }
 
     /**
@@ -223,13 +208,30 @@ final class CreateAssetFamilyContext implements Context
             $ruleTemplates
         );
 
-        $this->violationsContext->addViolations($this->validator->validate($command));
+        $this->createAssetFamily($command);
+    }
 
-        try {
-            ($this->createAssetFamilyHandler)($command);
-        } catch (\Exception $e) {
-            $this->exceptionContext->setException($e);
-        }
+    /**
+     * @When /^the user creates an asset family "([^"]*)" with a product link rule not executable by the rule engine$/
+     */
+    public function theUserCreatesAnAssetFamilyWithAProductLinkRuleNotExecutableByTheRuleEngine(string $assetFamilyCode): void
+    {
+        $this->ruleEngineValidatorACLStub->stubWithViolationMessage(self::RULE_ENGINE_VALIDATION_MESSAGE);
+        $invalidProductLinkRules = [['product_selections' => [['field' => 'family', 'operator' => 'IN', 'camcorders']], 'assign_assets_to' => [['mode' => 'set', 'attribute' => 'collection']]]];
+        $createAssetFamilyWithInvalidProductLinkRulesCommand = new CreateAssetFamilyCommand(
+            'asset_family',
+            [],
+            $invalidProductLinkRules
+        );
+        $this->createAssetFamily($createAssetFamilyWithInvalidProductLinkRulesCommand);
+    }
+
+    /**
+     * @Then /^there should be a validation error stating why the rule engine cannot execute the product link rule$/
+     */
+    public function thereShouldBeAValidationErrorStatingWhyTheRuleEngineCannotExecuteTheProductLinkRule()
+    {
+        $this->violationsContext->thereShouldBeAValidationErrorWithMessage(self::RULE_ENGINE_VALIDATION_MESSAGE);
     }
 
     /**
@@ -287,5 +289,21 @@ final class CreateAssetFamilyContext implements Context
         ];
 
         Assert::assertEquals($expectedNormalizedProductLinkRules, $actualProductLinks);
+    }
+
+    private function createAssetFamily(CreateAssetFamilyCommand $command): void
+    {
+        $violationList = $this->validator->validate($command);
+        if (0 !== $violationList->count()) {
+            $this->violationsContext->addViolations($violationList);
+
+            return;
+        }
+
+        try {
+            ($this->createAssetFamilyHandler)($command);
+        } catch (\Exception $e) {
+            $this->exceptionContext->setException($e);
+        }
     }
 }

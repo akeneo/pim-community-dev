@@ -220,3 +220,17 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.attribute.attribute_option_should_exist' }
+
+    akeneo_assetmanager.validator.asset_family.product_link_rules:
+        class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\ProductLinkRulesValidator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.validation.asset_family.product_link_rule.rule_engine_validator_acl'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset_family.product_link_rules.rule_engine_validator_acl' }
+
+    akeneo_assetmanager.infrastructure.validation.asset_family.product_link_rule.rule_engine_validator_acl:
+        class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\RuleEngineValidatorACL
+        arguments:
+            - '@pimee_catalog_rule.denormalizer.product_rule.chained'
+            - '@validator'
+            - '@validator'
