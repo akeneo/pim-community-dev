@@ -16,11 +16,10 @@ class Version_3_2_X_20190729083904_asset_manager_add_job_link_assets_to_products
     public function up(Schema $schema)
     {
         $this->addSql(<<<SQL
-            INSERT INTO akeneo_batch_job_instance
-                (`code`, `label`, `alias`, `status`, `connector`, `rawConfiguration`, `type`)
-            VALUES
-			    ('asset_manager_link_assets_to_products', 'asset manager link assets to products', 'asset_manager_link_assets_to_products', 0, 'internal', 'a:0:{}', 'asset_manager_link_assets_to_products')
-            ;
+        INSERT INTO `akeneo_batch_job_instance` (`code`, `label`, `job_name`, `status`, `connector`, `raw_parameters`, `type`)
+        VALUES
+	        ('asset_manager_link_assets_to_products', 'asset manager link assets to products', 'asset_manager_link_assets_to_products', 0, 'internal', 'a:0:{}', 'asset_manager_link_assets_to_products')
+        ;
 SQL
         );
     }
