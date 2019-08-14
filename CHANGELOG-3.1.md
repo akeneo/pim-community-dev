@@ -1,5 +1,9 @@
 # 3.1.x
 
+## Bug fixes
+
+- PIM-8540: Display option label instead of code in product PDF
+
 # 3.1.18 (2019-08-06)
 
 # 3.1.17 (2019-07-30)
