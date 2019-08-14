@@ -4,6 +4,7 @@
 
 - PIM-8270: Update export jobs after a change on a channel category
 - GITHUB-10314: Fix family locale on mass edit product - cheers @gauquier!
+- GITHUB-10304: Fix rest user controller condition bug
 
 ## BC Breaks
 

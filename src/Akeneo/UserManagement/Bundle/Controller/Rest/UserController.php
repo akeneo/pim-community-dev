@@ -183,7 +183,7 @@ class UserController
 
         $token = $this->tokenStorage->getToken();
         $currentUser = null !== $token ? $token->getUser() : null;
-        if (null === $currentUser || $user->getId() !== $user->getId()) {
+        if (null === $currentUser || $user->getId() !== $currentUser->getId()) {
             throw new AccessDeniedHttpException();
         }
 
