@@ -42,6 +42,7 @@ class CompletenessCalculator
 
         $result = [];
         foreach ($productMasks as $productMask) {
+            // TODO - TIP-1212: only keep the 'else' statement
             if (null === $productMask->familyCode()) {
                 $collection = new ProductCompletenessWithMissingAttributeCodesCollection($productMask->id(), []);
             } else {
@@ -53,8 +54,8 @@ class CompletenessCalculator
         return $result;
     }
 
-    public function fromProductIdentifier($productIdentifier): ProductCompletenessWithMissingAttributeCodesCollection
+    public function fromProductIdentifier($productIdentifier): ?ProductCompletenessWithMissingAttributeCodesCollection
     {
-        return $this->fromProductIdentifiers([$productIdentifier])[$productIdentifier];
+        return $this->fromProductIdentifiers([$productIdentifier])[$productIdentifier] ?? null;
     }
 }

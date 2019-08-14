@@ -50,6 +50,7 @@ final class SqlGetCompletenessProductMasks implements GetCompletenessProductMask
      */
     public function fromProductIdentifiers(array $productIdentifiers): array
     {
+        // TODO - TIP-1212: Replace the first LEFT JOIN (to pim_catalog_family) by an INNER JOIN
         $sql = <<<SQL
 SELECT
     product.id AS id,
@@ -111,6 +112,9 @@ SQL;
     {
         $masks = [];
         foreach ($rawValues as $attributeCode => $valuesByChannel) {
+            if (!isset($attributes[$attributeCode])) {
+                continue;
+            }
             $attributeType = $attributes[$attributeCode]->type();
             foreach ($valuesByChannel as $channelCode => $valuesByLocale) {
                 foreach ($valuesByLocale as $localeCode => $value) {

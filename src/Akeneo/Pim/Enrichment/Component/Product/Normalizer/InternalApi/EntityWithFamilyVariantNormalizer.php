@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFa
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodesCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\AxisValueLabelsNormalizer\AxisValueLabelsNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\ImageAsLabel;
@@ -218,6 +219,9 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
 
         if ($entity instanceof ProductInterface && $entity->isVariant()) {
             $completenessCollection = $this->completenessCalculator->fromProductIdentifier($entity->getIdentifier());
+            if (null === $completenessCollection) {
+                $completenessCollection = new ProductCompletenessWithMissingAttributeCodesCollection($entity->getId(), []);
+            }
 
             return $this->completenessCollectionNormalizer->normalize($completenessCollection);
         }

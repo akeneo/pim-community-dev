@@ -153,7 +153,7 @@ class SqlGetCompletenessProductMasksIntegration extends TestCase
         ]);
 
         $expected = [
-            'simple_product' => new CompletenessProductMask(-1, 'product_with_prices', 'familyA', [
+            new CompletenessProductMask(-1, 'product_with_prices', 'familyA', [
                 'sku-<all_channels>-<all_locales>',
                 'a_yes_no-<all_channels>-<all_locales>',
                 'a_price-EUR-<all_channels>-<all_locales>',
@@ -161,6 +161,48 @@ class SqlGetCompletenessProductMasksIntegration extends TestCase
             ])
         ];
         $result = $this->getCompletenessProductMasks()->fromProductIdentifiers(['product_with_prices']);
+        $this->assertSameCompletenessProductMasks($expected, $result);
+    }
+
+    function test_that_it_returns_masks_even_if_an_attribute_was_deleted()
+    {
+        $this->createProduct(
+            'productA',
+            'familyA',
+            [
+                'a_price' => [
+                    [
+                        'locale' => null,
+                        'scope' => null,
+                        'data' => [['amount' => 50.00, 'currency' => 'EUR']]
+                    ]
+                ],
+            ]
+        );
+        $expected = [
+            new CompletenessProductMask(
+                -1, 'productA', 'familyA', [
+                    'sku-<all_channels>-<all_locales>',
+                    'a_yes_no-<all_channels>-<all_locales>',
+                    'a_price-EUR-<all_channels>-<all_locales>',
+                ]
+            )
+        ];
+        $result = $this->getCompletenessProductMasks()->fromProductIdentifiers(['productA']);
+        $this->assertSameCompletenessProductMasks($expected, $result);
+
+        $aPrice = $this->get('pim_catalog.repository.attribute')->findOneByIdentifier('a_price');
+        $this->get('pim_catalog.remover.attribute')->remove($aPrice);
+
+        $expected = [
+            new CompletenessProductMask(
+                -1, 'productA', 'familyA', [
+                    'sku-<all_channels>-<all_locales>',
+                    'a_yes_no-<all_channels>-<all_locales>',
+                ]
+            ),
+        ];
+        $result = $this->getCompletenessProductMasks()->fromProductIdentifiers(['productA']);
         $this->assertSameCompletenessProductMasks($expected, $result);
     }
 

@@ -23,6 +23,7 @@ class CompletenessProductMask
     /** @var array */
     private $mask;
 
+    // TODO - TIP-1212: familyCode should not be nullable
     public function __construct(
         int $id,
         string $identifier,

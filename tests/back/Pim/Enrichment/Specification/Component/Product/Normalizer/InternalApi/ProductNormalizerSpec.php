@@ -47,9 +47,6 @@ class ProductNormalizerSpec extends ObjectBehavior
         FormProviderInterface $formProvider,
         AttributeConverterInterface $localizedConverter,
         ConverterInterface $productValueConverter,
-        ObjectManager $productManager,
-        ChannelRepositoryInterface $channelRepository,
-        CollectionFilterInterface $collectionFilter,
         ProductCompletenessWithMissingAttributeCodesCollectionNormalizer $completenessCollectionNormalizer,
         UserContext $userContext,
         EntityWithFamilyValuesFillerInterface $productValuesFiller,
@@ -72,9 +69,6 @@ class ProductNormalizerSpec extends ObjectBehavior
             $formProvider,
             $localizedConverter,
             $productValueConverter,
-            $productManager,
-            $channelRepository,
-            $collectionFilter,
             $completenessCollectionNormalizer,
             $userContext,
             $productValuesFiller,
@@ -104,9 +98,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $formProvider,
         $localizedConverter,
         $productValueConverter,
-        $channelRepository,
         $userContext,
-        $collectionFilter,
         $productValuesFiller,
         $incompleteValuesNormalizer,
         $missingAssociationAdder,
@@ -164,9 +156,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             ]
         ];
 
-        $channelRepository->getFullChannels()->willReturn([]);
         $userContext->getUserLocales()->willReturn([]);
-        $collectionFilter->filterCollection([], 'pim.internal_api.locale.view')->willReturn([]);
 
         $productValueConverter->convert($valuesLocalized)->willReturn($valuesConverted);
 
@@ -259,9 +249,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $formProvider,
         $localizedConverter,
         $productValueConverter,
-        $channelRepository,
         $userContext,
-        $collectionFilter,
         $productValuesFiller,
         $navigationNormalizer,
         $attributesProvider,
@@ -328,9 +316,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             ]
         ];
 
-        $channelRepository->getFullChannels()->willReturn([]);
         $userContext->getUserLocales()->willReturn([]);
-        $collectionFilter->filterCollection([], 'pim.internal_api.locale.view')->willReturn([]);
 
         $productValueConverter->convert($valuesLocalized)->willReturn($valuesConverted);
 
