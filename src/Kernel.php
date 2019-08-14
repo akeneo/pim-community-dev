@@ -98,25 +98,20 @@ class Kernel extends BaseKernel
      */
     private function loadPackagesConfigurationExceptSecurity(LoaderInterface $loader, string $confDir): void
     {
-        $files = array_filter(
+        $files = array_merge(
             glob($confDir . '/{packages}/*.yml', GLOB_BRACE),
+            glob($confDir . '/{packages}/' . $this->environment . '/*.yml', GLOB_BRACE),
+            glob($confDir . '/{packages}/' . $this->environment . '/**/*.yml', GLOB_BRACE)
+        );
+
+        $files = array_filter(
+            $files,
             function ($file) {
                 return 'security.yml' !== basename($file);
             }
         );
 
         foreach ($files as $file) {
-            $loader->load($file, 'yaml');
-        }
-
-        $filesForEnv = array_filter(
-            glob($confDir . '/{packages}/' . $this->environment . '/**/*.yml', GLOB_BRACE),
-            function ($file) {
-                return 'security.yml' !== basename($file);
-            }
-        );
-
-        foreach ($filesForEnv as $file) {
             $loader->load($file, 'yaml');
         }
     }
