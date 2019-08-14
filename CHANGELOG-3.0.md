@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8357: Fix styling of actions on history grid
+- PIM-8438: Add an explicit error message when an attribute label is too long
 
 # 3.0.37 (2019-08-13)
 
