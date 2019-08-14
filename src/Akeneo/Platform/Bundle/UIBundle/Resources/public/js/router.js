@@ -121,7 +121,7 @@ define(
 
             handleError: function (xhr) {
                 if (undefined !== xhr) {
-                    this.displayErrorPage('An error occured');
+                    this.displayErrorPage('An error occurred');
                 }
 
                 switch (xhr.status) {

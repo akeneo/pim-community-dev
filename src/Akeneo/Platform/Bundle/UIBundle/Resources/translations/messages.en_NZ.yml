@@ -212,7 +212,7 @@ flash:
     created: Group type successfully created
   user:
     removed: User successfully removed
-  error ocurred: Action failed. Please retry.
+  error occurred: Action failed. Please retry.
 info:
   updated: There are unsaved changes.
   category:

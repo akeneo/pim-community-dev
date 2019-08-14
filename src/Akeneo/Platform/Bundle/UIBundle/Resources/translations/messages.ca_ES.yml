@@ -214,7 +214,7 @@ flash:
     created: Tipus de grup creat correctament
   user:
     removed: Usuari suprimit correctament
-  error ocurred: Acció fallida. Si us plau, torneu-ho a provar.
+  error occurred: Acció fallida. Si us plau, torneu-ho a provar.
 info:
   updated: Hi ha canvis sense guardar.
   category:
