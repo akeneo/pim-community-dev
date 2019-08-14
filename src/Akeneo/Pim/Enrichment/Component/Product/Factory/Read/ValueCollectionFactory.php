@@ -120,7 +120,7 @@ class ValueCollectionFactory
                             $localeCode = null;
                         }
 
-                        $values[] = $this->valueFactory->create($attribute, $channelCode, $localeCode, $data);
+                        $values[] = $this->valueFactory->createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
                     }
                 }
             }
