@@ -16,7 +16,7 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
  */
 class ValueCollectionFactory
 {
-    /** @var ReadValueFactory */
+    /** @var ValueFactory */
     private $valueFactory;
 
     /** @var GetAttributes */
@@ -32,7 +32,7 @@ class ValueCollectionFactory
     private $transformRawValuesCollections;
 
     public function __construct(
-        ReadValueFactory $valueFactory,
+        ValueFactory $valueFactory,
         GetAttributes $getAttributeByCodes,
         ChainedNonExistentValuesFilterInterface $chainedNonExistentValuesFilter,
         EmptyValuesCleaner $emptyValuesCleaner,

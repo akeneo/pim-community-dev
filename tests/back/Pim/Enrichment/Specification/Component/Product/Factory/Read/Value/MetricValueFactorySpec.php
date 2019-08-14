@@ -5,7 +5,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Val
 
 use Akeneo\Pim\Enrichment\Component\Product\Factory\MetricFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\MetricValueFactory;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\ReadValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Metric;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
@@ -29,7 +29,7 @@ final class MetricValueFactorySpec extends ObjectBehavior
 
     public function it_is_a_read_value_factory()
     {
-        $this->shouldBeAnInstanceOf(ReadValueFactory::class);
+        $this->shouldBeAnInstanceOf(ValueFactory::class);
     }
 
     public function it_supports_metric_attribute_type()

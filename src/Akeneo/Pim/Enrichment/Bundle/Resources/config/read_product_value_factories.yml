@@ -62,7 +62,7 @@ services:
         tags: ['akeneo.pim.enrichment.factory.read.product_value']
 
     akeneo.pim.enrichment.factory.read.value:
-        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ReadValueFactory
+        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueFactory
         arguments:
             $valueFactories: !tagged akeneo.pim.enrichment.factory.read.product_value
 

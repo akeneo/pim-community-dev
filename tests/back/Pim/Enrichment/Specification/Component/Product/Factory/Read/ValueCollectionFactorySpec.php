@@ -5,7 +5,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory\Read;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\EmptyValuesCleaner;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\ChainedNonExistentValuesFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\OnGoingFilteredRawValues;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ReadValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\BooleanValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\IdentifierValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\NumberValueFactory;
@@ -14,26 +14,22 @@ use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\TextAreaValueFact
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\TextValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\TransformRawValuesCollections;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 
 class ValueCollectionFactorySpec extends ObjectBehavior
 {
     function let(
-        ValueFactory $writeValueFactory,
         GetAttributes $getAttributeByCodes,
-        IdentifiableObjectRepositoryInterface $attributeRepository,
         ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter
     ) {
 
-        $valueFactory = new ReadValueFactory(
+        $valueFactory = new ValueFactory(
             [
                 new OptionValueFactory(),
                 new BooleanValueFactory(),
@@ -41,9 +37,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
                 new IdentifierValueFactory(),
                 new TextAreaValueFactory(),
                 new TextValueFactory(),
-            ],
-            $writeValueFactory->getWrappedObject(),
-            $attributeRepository->getWrappedObject()
+            ]
         );
 
         $this->beConstructedWith(

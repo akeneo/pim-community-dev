@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value;
 
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\ReadValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
@@ -19,7 +19,7 @@ final class NumberValueFactorySpec extends ObjectBehavior
 {
     public function it_is_a_read_value_factory()
     {
-        $this->shouldBeAnInstanceOf(ReadValueFactory::class);
+        $this->shouldBeAnInstanceOf(ValueFactory::class);
     }
 
     public function it_supports_number_attribute_type()
