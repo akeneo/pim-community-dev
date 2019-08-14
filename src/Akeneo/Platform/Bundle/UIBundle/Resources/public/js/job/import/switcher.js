@@ -63,21 +63,20 @@ define(
             },
 
             /**
-             * Filters allowed switcher-items by permission. The permission is defined by specifying a permissionKey
-             * in the configuration of a switcher-item. This permissionKey corresponds to a key on the import
-             * profile configuration.
+             * This function filters actions based on whether they are allowed to be shown. The allowedKey is defined
+             * on switcher-items and corresponds to a property in the import profile configuration.
              *
              * @param actions
              * @param configuration
              * @returns {*}
              */
             filterByPermission: function (actions, configuration) {
-                return actions.filter(({ permissionKey }) => {
-                    if (permissionKey === undefined || configuration[permissionKey] === undefined) {
+                return actions.filter(({ allowedKey }) => {
+                    if (allowedKey === undefined || configuration[allowedKey] === undefined) {
                         return true;
                     }
 
-                    return configuration[permissionKey];
+                    return configuration[allowedKey];
                 });
             },
 

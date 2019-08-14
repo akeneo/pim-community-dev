@@ -63,7 +63,7 @@ extensions:
         aclResourceId: pim_importexport_import_profile_launch
         position: 50
         config:
-            permissionKey: uploadAllowed
+            allowedKey: uploadAllowed
             label: pim_import_export.form.job_instance.button.import.upload_file
 
     pim-job-instance-csv-base-import-show-upload:
