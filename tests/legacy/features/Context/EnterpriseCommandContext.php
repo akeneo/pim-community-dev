@@ -57,7 +57,7 @@ class EnterpriseCommandContext extends CommandContext
         if (0 != $result) {
             throw new \Exception(
                 sprintf(
-                    'An error occured during the execution of the publish command : %s',
+                    'An error occurred during the execution of the publish command : %s',
                     $publishCommandTester->getDisplay()
                 )
             );
@@ -89,7 +89,7 @@ class EnterpriseCommandContext extends CommandContext
         if (0 !== $commandResult) {
             throw new \Exception(
                 sprintf(
-                    'An error occured during the execution of the generate variations command : %s',
+                    'An error occurred during the execution of the generate variations command : %s',
                     $commandTester->getDisplay()
                 )
             );

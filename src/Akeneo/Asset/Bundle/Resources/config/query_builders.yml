@@ -1,0 +1,8 @@
+services:
+    pim_catalog.query.elasticsearch.sorter.asset_collection:
+        class: '%pim_catalog.query.elasticsearch.sorter.attribute.base.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - ['pim_assets_collection']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }

@@ -202,7 +202,7 @@ describe('akeneo > reference entity > application > reducer > reference-entity -
       },
     };
     const newState = reducer(previousState, {
-      type: 'REFERENCE_ENTITY_EDITION_ERROR_OCCURED',
+      type: 'REFERENCE_ENTITY_EDITION_ERROR_OCCURRED',
       errors: [
         {
           my: 'error',
