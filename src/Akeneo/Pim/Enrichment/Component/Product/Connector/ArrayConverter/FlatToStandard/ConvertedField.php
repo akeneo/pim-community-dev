@@ -30,7 +30,7 @@ class ConvertedField
     public function appendTo(array $convertedField): array
     {
         if (array_key_exists($this->columnName, $convertedField)) {
-            $convertedField[$this->columnName] = array_merge_recursive($convertedField[$this->columnName], $this->value);
+            $convertedField[$this->columnName] = array_replace_recursive($convertedField[$this->columnName], $this->value);
         } else {
             $convertedField[$this->columnName] = $this->value;
         }

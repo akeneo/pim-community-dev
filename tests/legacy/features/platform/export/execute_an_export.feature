@@ -20,7 +20,7 @@ Feature: Execute a job
     And I am on the "csv_footwear_product_export" export job page
     When I launch the "csv_footwear_product_export" export job
     Then I should not see the text "The export is running."
-    And I should not see the text "An error occured during the export execution."
+    And I should not see the text "An error occurred during the export execution."
 
   Scenario: Successfully launch a valid job
     Given the following product:

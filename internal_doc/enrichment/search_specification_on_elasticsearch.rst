@@ -227,7 +227,7 @@ DOES NOT CONTAIN
 """"""""""""""""
 :Specific field: preprocessed
 
-Same syntax than the ``contains`` but must be included in a ``must_not`` boolean occured type instead of ``filter``.
+Same syntax than the ``contains`` but must be included in a ``must_not`` boolean occurred type instead of ``filter``.
 
 .. code-block:: php
 
@@ -462,7 +462,7 @@ In case of performances problems, a faster solution would be to add a subfield w
 DOES NOT CONTAIN
 """"""""""""""""
 
-Same syntax than the contains but must be include in a ``must_not`` boolean occured type instead of ``filter``.
+Same syntax than the contains but must be include in a ``must_not`` boolean occurred type instead of ``filter``.
 
 .. code-block:: yaml
 
@@ -647,7 +647,7 @@ CONTAINS
 
 DOES NOT CONTAIN
 """"""""""""""""
-Same syntax than the ``contains`` but must be included in a ``must_not`` boolean occured type instead of ``filter``.
+Same syntax than the ``contains`` but must be included in a ``must_not`` boolean occurred type instead of ``filter``.
 
 .. code-block:: php
 
@@ -1964,7 +1964,7 @@ NOT IN
 ~~~~~~
 :Type: filter
 
-Same as ``IN``, but with ``must_not`` occured type instead of ``filter``
+Same as ``IN``, but with ``must_not`` occurred type instead of ``filter``
 
 UNCLASSIFIED
 ~~~~~~~~~~~~
@@ -1980,7 +1980,7 @@ UNCLASSIFIED
 IN OR UNCLASSIFIED
 ~~~~~~~~~~~~~~~~~~
 
-We use the ``should`` occured type to join both conditions on a ``bool`` filter
+We use the ``should`` occurred type to join both conditions on a ``bool`` filter
 
 .. code-block:: php
 
@@ -2015,7 +2015,7 @@ NOT IN CHILDREN
 ~~~~~~~~~~~~~~~
 :Type: filter
 
-Same as above but with a ``must_not`` occured type
+Same as above but with a ``must_not`` occurred type
 
 Price
 *****
