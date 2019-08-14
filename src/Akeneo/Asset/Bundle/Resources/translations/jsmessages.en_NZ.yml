@@ -44,9 +44,9 @@ pimee_product_asset:
       need_refresh: <b>Asset import has been launched</b><br> To see imported assets in the product form, please refresh the product page as soon as you receive the import notification.
     error:
       list: Cannot read already uploaded files
-      upload: An error occured while uploading
+      upload: An error occurred while uploading
       delete: Cannot delete file from server
-      import: An error occured during import
+      import: An error occurred during import
       filename: Invalid file name for asset
       code: Invalid code format for asset
       locale: An asset exists but is not localizable
@@ -65,7 +65,7 @@ pimee_product_asset:
       delete:
         confirm_content: Are you sure you want to delete the selected assets?
         success: Selected assets successfully deleted.
-        error: Error ocurred when trying to delete selected assets, please try again.
+        error: Error occurred when trying to delete selected assets, please try again.
         empty_selection: No asset selected
 pim_enrich:
   entity:

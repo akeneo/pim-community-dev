@@ -29,8 +29,8 @@ export const optionEditionSucceeded = () => {
   return {type: 'OPTIONS_EDITION_SUCCEEDED'};
 };
 
-export const optionEditionErrorOccured = (errors: ValidationError[]) => {
-  return {type: 'OPTIONS_EDITION_ERROR_OCCURED', errors};
+export const optionEditionErrorOccurred = (errors: ValidationError[]) => {
+  return {type: 'OPTIONS_EDITION_ERROR_OCCURRED', errors};
 };
 
 export const optionEditionDelete = (id: any) => {

@@ -31,6 +31,6 @@ export const recordEditionSucceeded = () => {
   return {type: 'RECORD_EDITION_SUCCEEDED'};
 };
 
-export const recordEditionErrorOccured = (errors: ValidationError[]) => {
-  return {type: 'RECORD_EDITION_ERROR_OCCURED', errors};
+export const recordEditionErrorOccurred = (errors: ValidationError[]) => {
+  return {type: 'RECORD_EDITION_ERROR_OCCURRED', errors};
 };

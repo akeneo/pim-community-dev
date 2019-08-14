@@ -428,7 +428,7 @@ describe('akeneo > reference entity > application > reducer > attribute --- crea
     ];
 
     const newState = reducer(state, {
-      type: 'ATTRIBUTE_CREATION_ERROR_OCCURED',
+      type: 'ATTRIBUTE_CREATION_ERROR_OCCURRED',
       errors,
     });
 

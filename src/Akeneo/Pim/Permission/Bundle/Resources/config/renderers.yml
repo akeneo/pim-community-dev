@@ -18,5 +18,6 @@ services:
             - 'AkeneoPimEnrichmentBundle:Product:renderPdf.html.twig'
             - '%upload_dir%'
             - '%pim_pdf_generator_font%'
+            - '@pim_catalog.repository.cached_attribute_option'
         tags:
             - { name: pim_pdf_generator.renderer, priority: 100 }

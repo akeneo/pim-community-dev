@@ -1,5 +1,18 @@
 # 2.3.x
 
+# 2.3.59 (2019-08-12)
+
+## Bug fixes
+
+- PIM-6942: Add margin to the "Send for approval" button
+
+# 2.3.58 (2019-08-08)
+
+## Bug fixes
+
+- PIM-8302: Fix missing action to remove a product model draft
+- PIM-7959: Fix association screen when associated products contain asset_collection
+
 # 2.3.57 (2019-07-31)
 
 ## Bug fixes

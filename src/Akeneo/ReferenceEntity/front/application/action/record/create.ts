@@ -4,7 +4,7 @@ import {
 } from 'akeneoreferenceentity/application/action/record/notify';
 import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
 import {
-  recordCreationErrorOccured,
+  recordCreationErrorOccurred,
   recordCreationSucceeded,
   recordCreationStart,
 } from 'akeneoreferenceentity/domain/event/record/create';
@@ -40,7 +40,7 @@ export const createRecord = (createAnother: boolean) => async (
 
     if (errors) {
       const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-      dispatch(recordCreationErrorOccured(validationErrors));
+      dispatch(recordCreationErrorOccurred(validationErrors));
 
       return;
     }
