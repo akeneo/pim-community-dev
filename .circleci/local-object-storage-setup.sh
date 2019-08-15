@@ -3,9 +3,8 @@
 SCRIPT_DIR=$(dirname $0)
 
 
-cat >> $SCRIPT_DIR/../app/config/config.yml <<OBJECT_STORAGE_CONF
+cat >> $SCRIPT_DIR/../config/services/services.yaml <<OBJECT_STORAGE_CONF
 
-services:
     acme.s3_client:
         class: Aws\S3\S3Client
         factory_class: Aws\S3\S3Client

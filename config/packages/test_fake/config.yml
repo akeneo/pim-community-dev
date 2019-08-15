@@ -1,0 +1,13 @@
+framework:
+    test: ~
+    session:
+        storage_id: session.storage.mock_file
+    csrf_protection: true
+    profiler:
+        collect: false
+
+swiftmailer:
+    disable_delivery: true
+
+pim_import_export:
+    record_mails: true

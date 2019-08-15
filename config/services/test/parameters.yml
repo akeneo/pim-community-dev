@@ -1,22 +1,3 @@
-imports:
-    - { resource: config_dev.yml }
-    - { resource: security_test.yml }
-
-framework:
-    test: ~
-    session:
-        storage_id: session.storage.mock_file
-    csrf_protection: true
-    profiler:
-        collect: false
-
-web_profiler:
-    toolbar: false
-    intercept_redirects: false
-
-swiftmailer:
-    disable_delivery: true
-
 parameters:
     max_products_category_removal: 20
     installer_data:       PimInstallerBundle:minimal

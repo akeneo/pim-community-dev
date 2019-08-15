@@ -1,0 +1,18 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    pim_ce_dev_src_folder_location: '%kernel.project_dir%'
+    index_hosts: '%env(APP_INDEX_HOSTS)%'
+    product_and_product_model_index_name: '%env(APP_PRODUCT_AND_PRODUCT_MODEL_INDEX_NAME)%'
+
+imports:
+    - { resource: pim_parameters.yml }
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: false      # Automatically injects dependencies in your services.
+        autoconfigure: false # Automatically registers your services as commands, event subscribers, etc.
