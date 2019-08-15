@@ -29,7 +29,7 @@ final class ReferenceEntityValueFactory implements ValueFactory
     public function createWithoutCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
         $attributeCode = $attribute->code();
-        $data = RecordCode::fromString($data);
+        $data = null === $data ? null : RecordCode::fromString($data);
 
         if ($attribute->isLocalizableAndScopable()) {
             return ReferenceEntityValue::scopableLocalizableValue($attributeCode, $data, $channelCode, $localeCode);
