@@ -1,0 +1,34 @@
+# PIM
+pimee_teamwork_assistant:
+    resource: "@AkeneoPimTeamworkAssistantBundle/Resources/config/routing/routing.yml"
+
+pimee_workflow:
+    resource: "@AkeneoPimWorkflowBundle/Resources/config/routing.yml"
+
+pim_versioning:
+    resource: "@AkeneoPimProductRevertBundle/Resources/config/routing.yml"
+
+pim_catalog_rule:
+    resource: "@AkeneoPimRuleEngineBundle/Resources/config/routing.yml"
+
+pimee_product_asset:
+    resource: "@AkeneoAssetBundle/Resources/config/routing.yml"
+
+pimee_reference_entity:
+    resource: "@AkeneoReferenceEntityBundle/Resources/config/routing.yml"
+
+pimee_asset_manager:
+    resource: "@AkeneoAssetManagerBundle/Resources/config/routing.yml"
+
+pim_security:
+    resource: "@AkeneoPimPermissionBundle/Resources/config/routing.yml"
+
+pim_franklin_insights:
+    resource: "@AkeneoFranklinInsightsBundle/Resources/config/routing.yml"
+
+# SSO
+akeneo_authentication:
+    resource: "@AkeneoAuthenticationBundle/Resources/config/routing.yml"
+
+hslavich_saml_sp:
+    resource: "@HslavichOneloginSamlBundle/Resources/config/routing.yml"

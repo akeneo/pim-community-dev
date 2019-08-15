@@ -1,0 +1,6 @@
+# do we need it? maybe it should go in CE if we need it
+framework:
+    cache:
+        pools:
+            name:
+                adapter: cache.adapter.array

@@ -1,0 +1,33 @@
+# this file contains all non local parameters required by the PIM to work
+# if you need to override one of these parameter, you can do it directly in your own parameters.yml file
+parameters:
+    session_handler:      ~
+
+    asset_storage_dir:    '%kernel.root_dir%/file_storage/asset'
+
+    # You can use installer_data to install an outside catalog (like one from akeneo/catalogs)
+    # installer_data: %kernel.root_dir%/../vendor/akeneo/catalogs/master/enterprise/small/fixtures
+    # or you can use one of the provided catalogs
+    # use PimEnterpriseInstallerBundle:minimal for minimal data set
+    installer_data:       PimEnterpriseInstallerBundle:icecat_demo_dev
+
+
+    # Files used as configuration for the Elasticsearch index
+    elasticsearch_index_configuration_files:
+        - '%pim_ce_dev_src_folder_location%/src/Akeneo/Pim/Enrichment/Bundle/Resources/elasticsearch/settings.yml'
+        - '%pim_ce_dev_src_folder_location%/src/Akeneo/Pim/Enrichment/Bundle/Resources/elasticsearch/product_mapping.yml'
+        - '%pim_ee_dev_src_folder_location%/src/Akeneo/Pim/Automation/FranklinInsights/Infrastructure/Symfony/Resources/config/elasticsearch/product_mapping.yml'
+
+    elasticsearch_index_configuration_files_product_proposal:
+        - '%pim_ce_dev_src_folder_location%/src/Akeneo/Pim/Enrichment/Bundle/Resources/elasticsearch/settings.yml'
+        - '%pim_ee_dev_src_folder_location%/src/Akeneo/Pim/WorkOrganization/Workflow/Bundle/Resources/elasticsearch/product_proposal_mapping.yml'
+
+    elasticsearch_index_configuration_files_published_product:
+        - '%pim_ce_dev_src_folder_location%/src/Akeneo/Pim/Enrichment/Bundle/Resources/elasticsearch/settings.yml'
+        - '%pim_ee_dev_src_folder_location%/src/Akeneo/Pim/WorkOrganization/Workflow/Bundle/Resources/elasticsearch/published_product_mapping.yml'
+
+    # these parameters indicate the advisable limitations of the PIM in term of volume
+    # if your volume of data exceeds these limits, it can impact the performance
+    count_assets_limit: -1
+    count_asset_categories_limit: -1
+    count_asset_category_trees_limit: -1

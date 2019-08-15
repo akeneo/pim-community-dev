@@ -825,7 +825,7 @@ legacy:
             files_path: 'tests/legacy/features/Context/fixtures/'
         Behat\Symfony2Extension:
             kernel:
-                bootstrap: app/bootstrap.php
+                bootstrap: config/bootstrap.php
                 path: src/Kernel.php
                 class: Kernel
                 env: behat
@@ -927,7 +927,7 @@ acceptance:
                 tags: '@acceptance-back'
     extensions:
         FriendsOfBehat\SymfonyExtension:
-            bootstrap: app/bootstrap.php
+            bootstrap: config/bootstrap.php
             kernel:
                 path: src/Kernel.php
                 class: Kernel

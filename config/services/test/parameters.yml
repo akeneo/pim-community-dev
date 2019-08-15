@@ -1,0 +1,4 @@
+parameters:
+    installer_data:       PimEnterpriseInstallerBundle:minimal
+    asset_storage_dir:    '%kernel.root_dir%/../var/cache/file_storage/asset'
+    pimee_mass_edit_asset_batch_size: 5

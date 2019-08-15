@@ -1,0 +1,11 @@
+swiftmailer:
+    disable_delivery: true
+
+akeneo_pim_structure:
+    reference_data:
+        fabrics:
+            class: AcmeEnterprise\Bundle\AppBundle\Entity\Fabric
+            type: multi
+        color:
+            class: AcmeEnterprise\Bundle\AppBundle\Entity\Color
+            type: simple

@@ -1,0 +1,2 @@
+parameters:
+    installer_data:       PimEnterpriseInstallerBundle:minimal

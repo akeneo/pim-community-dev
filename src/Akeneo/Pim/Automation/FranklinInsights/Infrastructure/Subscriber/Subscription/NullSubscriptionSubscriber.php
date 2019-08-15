@@ -19,5 +19,6 @@ class NullSubscriptionSubscriber implements EventSubscriberInterface
 {
     public static function getSubscribedEvents(): array
     {
+        return [];
     }
 }

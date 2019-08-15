@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
@@ -26,12 +27,9 @@ class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
 
-    /**
-     * {@inheritdoc}
-     */
     public function registerBundles(): iterable
     {
-        $contents = require $this->getProjectDir().'/app/bundles.php';
+        $contents = require $this->getProjectDir() . '/config/bundles.php';
         foreach ($contents as $class => $envs) {
             if ($envs[$this->environment] ?? $envs['all'] ?? false) {
                 yield new $class();
@@ -39,28 +37,30 @@ class Kernel extends BaseKernel
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function configureRoutes(RouteCollectionBuilder $routes): void
+    public function getProjectDir(): string
     {
-        $confDir = $this->getProjectDir().'/app/config';
-
-        $routes->import($confDir.'/routing.yml');
-
-        if ('dev' === $this->environment) {
-            $routes->import($confDir.'/routing_dev.yml');
-        }
+        return \dirname(__DIR__);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function configureContainer(ContainerBuilder $c, LoaderInterface $loader): void
+    protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
     {
-        $confDir = $this->getProjectDir().'/app/config';
+        $container->addResource(new FileResource($this->getProjectDir() . '/config/bundles.php'));
+        $container->setParameter('container.dumper.inline_class_loader', true);
 
-        $loader->load($confDir.'/config_'.$this->environment.'.yml');
+        $eeConfDir = $this->getProjectDir() . '/config';
+        $ceConfDir = $this->getProjectDir() . '/vendor/akeneo/pim-community-dev/config';
+
+        $this->loadPackagesConfigurationExceptSecurity($loader, $ceConfDir);
+        $this->loadPackagesConfiguration($loader, $eeConfDir);
+
+        $this->loadContainerConfiguration($loader, $ceConfDir);
+        $this->loadContainerConfiguration($loader, $eeConfDir);
+    }
+
+    protected function configureRoutes(RouteCollectionBuilder $routes): void
+    {
+        $this->loadRoutesConfiguration($routes, $this->getProjectDir() . '/vendor/akeneo/pim-community-dev/config');
+        $this->loadRoutesConfiguration($routes, $this->getProjectDir() . '/config');
     }
 
     /**
@@ -68,7 +68,7 @@ class Kernel extends BaseKernel
      */
     public function getCacheDir(): string
     {
-        return $this->getProjectDir().'/var/cache/'.$this->environment;
+        return $this->getProjectDir() . '/var/cache/' . $this->environment;
     }
 
     /**
@@ -76,6 +76,49 @@ class Kernel extends BaseKernel
      */
     public function getLogDir(): string
     {
-        return $this->getProjectDir().'/var/logs';
+        return $this->getProjectDir() . '/var/logs';
+    }
+
+    private function loadRoutesConfiguration(RouteCollectionBuilder $routes, string $confDir): void
+    {
+        $routes->import($confDir . '/{routes}/' . $this->environment . '/**/*.yml', '/', 'glob');
+        $routes->import($confDir . '/{routes}/*.yml', '/', 'glob');
+    }
+
+    private function loadPackagesConfiguration(LoaderInterface $loader, string $confDir): void
+    {
+        $loader->load($confDir . '/{packages}/*.yml', 'glob');
+        $loader->load($confDir . '/{packages}/' . $this->environment . '/**/*.yml', 'glob');
+    }
+
+    /**
+     * "security.yml" is the only configuration file that can not be override
+     * Thus, we don't load it from the Community Edition.
+     * We copied/pasted its content into Enterprise Edition and added what was missing.
+     */
+    private function loadPackagesConfigurationExceptSecurity(LoaderInterface $loader, string $confDir): void
+    {
+        $files = array_merge(
+            glob($confDir . '/{packages}/*.yml', GLOB_BRACE),
+            glob($confDir . '/{packages}/' . $this->environment . '/*.yml', GLOB_BRACE),
+            glob($confDir . '/{packages}/' . $this->environment . '/**/*.yml', GLOB_BRACE)
+        );
+
+        $files = array_filter(
+            $files,
+            function ($file) {
+                return 'security.yml' !== basename($file);
+            }
+        );
+
+        foreach ($files as $file) {
+            $loader->load($file, 'yaml');
+        }
+    }
+
+    private function loadContainerConfiguration(LoaderInterface $loader, string $confDir): void
+    {
+        $loader->load($confDir . '/{services}/*.yml', 'glob');
+        $loader->load($confDir . '/{services}/' . $this->environment . '/**/*.yml', 'glob');
     }
 }

@@ -1,0 +1,6 @@
+monolog:
+    handlers:
+        authentication:
+            type: service
+            id: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\FlySystemLogHandler'
+            channels: ['security', 'request']

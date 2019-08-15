@@ -3,7 +3,7 @@
 SCRIPT_DIR=$(dirname $0)
 
 
-cat >> $SCRIPT_DIR/../app/config/config.yml <<OBJECT_STORAGE_CONF
+cat >> $SCRIPT_DIR/../config/services/parameters.yml <<OBJECT_STORAGE_CONF
 
 services:
     acme.s3_client:
