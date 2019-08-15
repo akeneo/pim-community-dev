@@ -74,3 +74,12 @@ services:
             $chainedNonExistentValuesFilter: '@akeneo.pim.enrichment.factory.non_existent_values_filter.chained'
             $emptyValuesCleaner: '@akeneo.pim.enrichment.factory.empty_values_cleaner'
             $transformRawValuesCollections: '@akeneo.pim.enrichment.factory.transform_raw_values_collections'
+
+    akeneo.pim.enrichment.factory.read.write_value_collection:
+        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Read\WriteValueCollectionFactory
+        arguments:
+            $valueFactory: '@akeneo.pim.enrichment.factory.read.value'
+            $getAttributeByCodes: '@akeneo.pim.structure.query.get_attributes'
+            $chainedNonExistentValuesFilter: '@akeneo.pim.enrichment.factory.non_existent_values_filter.chained'
+            $emptyValuesCleaner: '@akeneo.pim.enrichment.factory.empty_values_cleaner'
+            $transformRawValuesCollections: '@akeneo.pim.enrichment.factory.transform_raw_values_collections'

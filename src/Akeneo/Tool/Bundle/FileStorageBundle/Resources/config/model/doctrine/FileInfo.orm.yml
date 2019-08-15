@@ -1,5 +1,6 @@
 Akeneo\Tool\Component\FileStorage\Model\FileInfo:
     type: entity
+    repositoryClass: Akeneo\Tool\Bundle\FileStorageBundle\Doctrine\ORM\Repository\FileInfoRepository
     table: akeneo_file_storage_file_info
     fields:
         id:

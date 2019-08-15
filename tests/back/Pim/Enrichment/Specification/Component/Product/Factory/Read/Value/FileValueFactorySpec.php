@@ -94,7 +94,7 @@ final class FileValueFactorySpec extends ObjectBehavior
     {
         $fileInfoRepository->findOneByIdentifier('a_file')->willReturn(null);
         $attribute = $this->getAttribute(false, false);
-        $this->shouldThrow(InvalidPropertyException::class)->during('createByCheckingData', [$attribute, null, null, 'a_file']);
+        $this->shouldThrow(InvalidPropertyException::class)->during('createWithoutCheckingData', [$attribute, null, null, 'a_file']);
     }
 
     private function getAttribute(bool $isLocalizable, bool $isScopable): Attribute

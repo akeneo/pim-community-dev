@@ -5,11 +5,9 @@ namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\LoadEntityWithValuesSubscriber;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Write\WriteValueCollectionFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
-use Prophecy\Argument;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class LoadEntityWithValuesSubscriberSpec extends ObjectBehavior
 {

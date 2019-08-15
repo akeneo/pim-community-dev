@@ -81,7 +81,7 @@ final class ImageValueFactorySpec extends ObjectBehavior
     {
         $fileInfoRepository->findOneByIdentifier('a_file')->willReturn(null);
         $attribute = $this->getAttribute(false, false);
-        $this->shouldThrow(InvalidPropertyException::class)->during('createByCheckingData', [$attribute, null, null, 'a_file']);
+        $this->shouldThrow(InvalidPropertyException::class)->during('createWithoutCheckingData', [$attribute, null, null, 'a_file']);
     }
 
     public function it_creates_a_value_without_checking_data(FileInfoRepositoryInterface $fileInfoRepository)

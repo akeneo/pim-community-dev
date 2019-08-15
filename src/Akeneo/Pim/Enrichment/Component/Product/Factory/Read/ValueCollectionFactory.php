@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\OnGo
 use Akeneo\Pim\Enrichment\Component\Product\Factory\TransformRawValuesCollections;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 
 /**
  * @author    Anael Chardan <anael.chardan@akeneo.com>
@@ -55,15 +56,6 @@ class ValueCollectionFactory
     public function createMultipleFromStorageFormat(array $rawValueCollections): array
     {
         $rawValueCollectionsIndexedByType = $this->transformRawValuesCollections->toValueCollectionsIndexedByType($rawValueCollections);
-        $valueCollections = [];
-
-        if (empty($rawValueCollectionsIndexedByType)) {
-            foreach (array_keys($rawValueCollections) as $identifier) {
-                $valueCollections[$identifier] = new ReadValueCollection([]);
-            }
-
-            return $valueCollections;
-        }
 
         $filtered = $this->chainedNonExistentValuesFilter->filterAll(
             OnGoingFilteredRawValues::fromNonFilteredValuesCollectionIndexedByType($rawValueCollectionsIndexedByType)
@@ -120,7 +112,11 @@ class ValueCollectionFactory
                             $localeCode = null;
                         }
 
-                        $values[] = $this->valueFactory->createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
+                        try {
+                            //TEMPORARY
+                            $values[] = $this->valueFactory->createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
+                        } catch (InvalidPropertyException $exception) {
+                        }
                     }
                 }
             }

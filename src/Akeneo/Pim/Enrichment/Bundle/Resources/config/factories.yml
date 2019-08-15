@@ -79,18 +79,6 @@ services:
         arguments:
             - '%pim_catalog.entity.product_unique_data.class%'
 
-    pim_catalog.factory.value_collection:
-        class: '%pim_catalog.factory.value_collection.class%'
-        lazy: true
-        arguments:
-            - '@pim_catalog.factory.value'
-            - '@pim_catalog.repository.cached_attribute'
-            - '@logger'
-            - '@akeneo.pim.structure.query.get_attributes'
-            - '@akeneo.pim.enrichment.factory.non_existent_values_filter.chained'
-            - '@akeneo.pim.enrichment.factory.empty_values_cleaner'
-            - '@akeneo.pim.enrichment.factory.transform_raw_values_collections'
-
     pim_catalog.factory.value:
         class: '%pim_catalog.factory.value.class%'
         arguments:
