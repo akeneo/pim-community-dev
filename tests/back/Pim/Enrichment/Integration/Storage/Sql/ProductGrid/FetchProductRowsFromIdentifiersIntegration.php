@@ -95,12 +95,21 @@ class FetchProductRowsFromIdentifiersIntegration extends TestCase
 
         Assert::count($result, 1);
         $row = $result[0];
+
+        $expectedAttributesCodes = ['sku', 'a_simple_select'];
+        $expectedData = ['productVariant', 'optionA'];
+
         $skuValue = $row->values()->getValues()[0];
-        Assert::same($skuValue->getAttributeCode(), 'sku');
-        Assert::same($skuValue->getData(), 'productVariant');
         $simpleSelectValue = $row->values()->getValues()[1];
-        Assert::same($simpleSelectValue->getAttributeCode(), 'a_simple_select');
-        Assert::same($simpleSelectValue->getData(), 'optionA');
+
+        \PHPUnit\Framework\Assert::assertEqualsCanonicalizing($expectedAttributesCodes, [
+            $skuValue->getAttributeCode(),
+            $simpleSelectValue->getAttributeCode()
+        ]);
+        \PHPUnit\Framework\Assert::assertEqualsCanonicalizing($expectedData, [
+            $skuValue->getData(),
+            $simpleSelectValue->getData()
+        ]);
     }
 
     /**

@@ -15,6 +15,12 @@ use Webmozart\Assert\Assert;
  */
 class DatagridViewRepositoryIntegration extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->createAdminUser();
+    }
+
     /**
      * {@inheritdoc}
      */
