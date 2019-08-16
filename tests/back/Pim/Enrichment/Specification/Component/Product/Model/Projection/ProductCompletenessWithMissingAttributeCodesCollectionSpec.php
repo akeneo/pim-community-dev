@@ -57,7 +57,7 @@ class ProductCompletenessWithMissingAttributeCodesCollectionSpec extends ObjectB
         $this->getIterator()->getArrayCopy()->shouldReturn(['ecommerce-en_US' => $otherCompleteness]);
     }
 
-    function it_can_retriev_a_completeness_by_channel_and_locale()
+    function it_can_retrieve_a_completeness_by_channel_and_locale()
     {
         $completeness = new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 4, []);
         $otherCompleteness = new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'fr_FR', 4, []);
