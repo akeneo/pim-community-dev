@@ -57,7 +57,7 @@ class CompletenessForLocalisableAttributeIntegration extends AbstractCompletenes
         );
 
         $this->assertComplete($product, 'en_US', 2);
-        $this->assertNotComplete($product, 'fr_FR', 2, ['a_text']);
+        $this->assertNotComplete($product, 'fr_FR', 2);
     }
 
     public function testNotCompleteLocaleSpecificNoLocale()
@@ -78,7 +78,7 @@ class CompletenessForLocalisableAttributeIntegration extends AbstractCompletenes
             $family,
             'product_locale_specific_no_locale'
         );
-        $this->assertNotComplete($productLocaleSpecificNoLocale, 'fr_FR', 2, ['a_text']);
+        $this->assertNotComplete($productLocaleSpecificNoLocale, 'fr_FR', 2);
         $this->assertComplete($productLocaleSpecificNoLocale, 'en_US', 1);
     }
 
@@ -111,7 +111,7 @@ class CompletenessForLocalisableAttributeIntegration extends AbstractCompletenes
                 ]
             ]
         );
-        $this->assertNotComplete($productLocaleSpecificLocaleEmpty, 'fr_FR', 2, ['a_text']);
+        $this->assertNotComplete($productLocaleSpecificLocaleEmpty, 'fr_FR', 2);
         $this->assertComplete($productLocaleSpecificLocaleEmpty, 'en_US', 1);
     }
 
@@ -173,8 +173,8 @@ class CompletenessForLocalisableAttributeIntegration extends AbstractCompletenes
      * @param ProductInterface $product
      * @param string           $localeCode
      *
-     * @throws \Exception
      * @return ProductCompleteness
+     * @throws \Exception
      */
     private function getCompletenessByLocaleCode(ProductInterface $product, $localeCode)
     {
@@ -192,13 +192,11 @@ class CompletenessForLocalisableAttributeIntegration extends AbstractCompletenes
      * @param ProductInterface $product
      * @param string           $localeCode
      * @param int              $requiredCount
-     * @param array            $expectedAttributeCodes
      */
     private function assertNotComplete(
         ProductInterface $product,
         $localeCode,
-        $requiredCount,
-        array $expectedAttributeCodes
+        $requiredCount
     ) {
         $this->assertCompletenessesCount($product, 2);
 
@@ -208,7 +206,7 @@ class CompletenessForLocalisableAttributeIntegration extends AbstractCompletenes
         $this->assertEquals('ecommerce', $completeness->channelCode());
         $this->assertEquals(50, $completeness->ratio());
         $this->assertEquals($requiredCount, $completeness->requiredCount());
-        $this->assertMissingAttributeCodes($completeness, $expectedAttributeCodes);
+        $this->assertEquals(1, $completeness->missingCount());
     }
 
     /**
@@ -226,6 +224,6 @@ class CompletenessForLocalisableAttributeIntegration extends AbstractCompletenes
         $this->assertEquals('ecommerce', $completeness->channelCode());
         $this->assertEquals(100, $completeness->ratio());
         $this->assertEquals($requiredCount, $completeness->requiredCount());
-        $this->assertEquals(0, count($completeness->missingAttributeCodes()));
+        $this->assertEquals(0, $completeness->missingCount());
     }
 }

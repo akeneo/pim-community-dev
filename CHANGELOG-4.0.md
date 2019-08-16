@@ -9,13 +9,13 @@
 ### Elasticsearch
 
 - Remove akeneo_pim_product and akeneo_pim_product_model ES indexes and merge into akeneo_pim_product_and_product_model.
- 
+
 ### Doctrine mapping
 
 - The entity `Akeneo\Pim\Enrichment\Component\Product\Model\Completeness` is removed, and is no more an association of the `Product` entity.
   The methods `getCompletenesses` and `setCompletenesses` of a `Product` are removed.
   If you want to access the Completeness of products, please use the dedicated class `Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses`.
- 
+
 ### Codebase
 
 - Remove class `Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager`
@@ -83,9 +83,9 @@
 - Remove class `Oro\Bundle\DataGridBundle\Extension\MassAction\WindowMassAction`
 - Remove class `Oro\Bundle\DataGridBundle\Extension\MassAction\DeleteMassAction`
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductModelDescendantsSaver`, to remove
-    `Doctrine\Common\Persistence\ObjectManager`, 
-    `Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager` and 
-    `Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface`, and add 
+    `Doctrine\Common\Persistence\ObjectManager`,
+    `Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager` and
+    `Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface`, and add
     `Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses`
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver`, to remove `Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager`
 - Delete `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\CompletenessNormalizer` (use `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductCompletenessNormalizer` instead)
@@ -94,12 +94,13 @@
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product` to add `Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses`
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel` to add `Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses`
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\EntityWithFamilyVariantNormalizer` to add
-     `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductCompletenessCollectionNormalizer`,
-     `Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses` and remove
-     `Symfony\Component\Serializer\Normalizer\NormalizerInterface`
-- Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductNormalizer` to add
-     `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductCompletenessCollectionNormalizer` and remove
-     `Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager`  
+     `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductCompletenessWithMissingAttributeCodesCollectionNormalizer`,
+     `Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator` and remove
+     `Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface` and `Symfony\Component\Serializer\Normalizer\NormalizerInterface` 
+- Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductNormalizer` to remove
+    `Doctrine\Common\Persistence\ObjectManager`, `Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager`, `Akeneo\Channel\Component\Repository\ChannelRepositoryInterface`,
+    `Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface`and `Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface` and `Symfony\Component\Serializer\Normalizer\NormalizerInterface, and to add
+    `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductCompletenessCollectionWithMissingAttributeCodesNormalizer` and `Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator`
 - Change constructor of `Oro\Bundle\PimDataGridBundle\Normalizer\ProductAssociationNormalizer` to add `Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses`
 - Change constructor of `Oro\Bundle\PimDataGridBundle\Normalizer\ProductNormalizer` to add `Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses`
 - Removed the following class and the corresponding command:
@@ -117,7 +118,7 @@
 - Remove class `Akeneo\Pim\Enrichment\Bundle\Command\PurgeProductsCompletenessCommand`
 - Remove class `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\CompletenessRemover`
 - Remove class `Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessRemoverInterface`
-- Change constructor or `Akeneo\Pim\Enrichment\Bundle\Command\CalculateCompletenessCommand` to remove 
+- Change constructor or `Akeneo\Pim\Enrichment\Bundle\Command\CalculateCompletenessCommand` to remove
     `Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface` and add
     `Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses` and
     `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer`
@@ -138,7 +139,7 @@ The following CLI commands have been deleted:
 - pim:objects:validate
 - pim:connector:analyzer:csv-products
 - pim:completeness:purge
-- pim:completeness:purge-products  
+- pim:completeness:purge-products
 
 If you want to purge the completeness in order to recalculate it, please use the dedicated command `pim:completeness:calculate`
 

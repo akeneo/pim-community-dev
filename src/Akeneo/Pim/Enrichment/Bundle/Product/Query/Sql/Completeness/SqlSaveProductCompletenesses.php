@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\Completeness;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodesCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\CannotSaveProductCompletenessCollectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\SaveProductCompletenesses;
 use Doctrine\DBAL\Connection;
@@ -27,7 +27,7 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
     /**
      * {@inheritdoc}
      */
-    public function save(ProductCompletenessCollection $completenesses): void
+    public function save(ProductCompletenessWithMissingAttributeCodesCollection $completenesses): void
     {
         $this->connection->beginTransaction();
 
@@ -44,17 +44,6 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
                     'requiredCount' => $completeness->requiredCount(),
                     'localeCode' => $completeness->localeCode(),
                     'channelCode' => $completeness->channelCode(),
-                ]
-            );
-            $completenessId = $this->connection->lastInsertId();
-            $this->connection->executeUpdate(
-                $this->getInsertMissingAttributesQuery(),
-                [
-                    'completenessId' => $completenessId,
-                    'attributeCodes' => $completeness->missingAttributeCodes(),
-                ],
-                [
-                    'attributeCodes' => Connection::PARAM_STR_ARRAY,
                 ]
             );
         }
@@ -85,16 +74,6 @@ FROM pim_catalog_locale locale,
      pim_catalog_channel channel
 WHERE locale.code = :localeCode
   AND channel.code = :channelCode
-SQL;
-    }
-
-    private function getInsertMissingAttributesQuery(): string
-    {
-        return <<<SQL
-INSERT INTO pim_catalog_completeness_missing_attribute(completeness_id, missing_attribute_id)
-SELECT :completenessId, attribute.id
-FROM pim_catalog_attribute attribute
-WHERE attribute.code IN (:attributeCodes)
 SQL;
     }
 }

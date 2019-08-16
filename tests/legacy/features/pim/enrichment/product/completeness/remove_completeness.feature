@@ -43,7 +43,6 @@ Feature: Display the completeness of a product
     When I visit the "Completeness" column tab
     Then I should see the completeness:
       | channel | locale | state   | missing_values | ratio |
-      | tablet  | en_US  | warning | 1              | 88%   |
       | tablet  | fr_FR  | warning | 2              | 77%   |
       | mobile  | en_US  | success | 0              | 100%  |
       | mobile  | fr_FR  | success | 0              | 100%  |
@@ -51,7 +50,6 @@ Feature: Display the completeness of a product
     And I visit the "Completeness" column tab
     Then I should see the completeness:
       | channel | locale | state   | missing_values | ratio |
-      | tablet  | en_US  | warning | 6              | 25%   |
       | tablet  | fr_FR  | warning | 4              | 50%   |
       | mobile  | en_US  | warning | 3              | 40%   |
       | mobile  | fr_FR  | warning | 2              | 60%   |

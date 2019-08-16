@@ -26,9 +26,6 @@ class ProductAssociationNormalizer implements NormalizerInterface, SerializerAwa
     /** @var GetProductCompletenesses */
     private $getProductCompletenesses;
 
-    /**
-     * @param ImageNormalizer $imageNormalizer
-     */
     public function __construct(
         ImageNormalizer $imageNormalizer,
         GetProductCompletenesses $getProductCompletenesses

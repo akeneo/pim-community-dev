@@ -31,31 +31,28 @@ class CompletenessForScopableAndLocalisableAttributeIntegration extends Abstract
         $this->assertEquals('mobile', $completeness->channelCode());
         $this->assertEquals(40, $completeness->ratio());
         $this->assertEquals(5, $completeness->requiredCount());
-        $this->assertMissingAttributeCodes($completeness, ['name', 'price', 'size']);
+        $this->assertEquals(3, $completeness->missingCount());
 
         $completeness = $completenesses->getCompletenessForChannelAndLocale('tablet', 'en_US');
         $this->assertEquals('en_US', $completeness->localeCode());
         $this->assertEquals('tablet', $completeness->channelCode());
         $this->assertEquals(25, $completeness->ratio());
         $this->assertEquals(8, $completeness->requiredCount());
-        $this->assertMissingAttributeCodes(
-            $completeness,
-            ['name', 'price', 'size', 'description', 'rating', 'side_view']
-        );
+        $this->assertEquals(6, $completeness->missingCount());
 
         $completeness = $completenesses->getCompletenessForChannelAndLocale('mobile', 'fr_FR');
         $this->assertEquals('fr_FR', $completeness->localeCode());
         $this->assertEquals('mobile', $completeness->channelCode());
         $this->assertEquals(60, $completeness->ratio());
         $this->assertEquals(5, $completeness->requiredCount());
-        $this->assertMissingAttributeCodes($completeness, ['price', 'size']);
+        $this->assertEquals(2, $completeness->missingCount());
 
         $completeness = $completenesses->getCompletenessForChannelAndLocale('tablet', 'fr_FR');
         $this->assertEquals('fr_FR', $completeness->localeCode());
         $this->assertEquals('tablet', $completeness->channelCode());
         $this->assertEquals(50, $completeness->ratio());
         $this->assertEquals(8, $completeness->requiredCount());
-        $this->assertMissingAttributeCodes($completeness, ['price', 'size', 'rating', 'side_view']);
+        $this->assertEquals(4, $completeness->missingCount());
     }
 
     public function testProductCompleteOnOneChannel()
@@ -76,28 +73,28 @@ class CompletenessForScopableAndLocalisableAttributeIntegration extends Abstract
         $this->assertEquals('mobile', $completeness->channelCode());
         $this->assertEquals(100, $completeness->ratio());
         $this->assertEquals(5, $completeness->requiredCount());
-        $this->assertEquals(0, count($completeness->missingAttributeCodes()));
+        $this->assertEquals(0, $completeness->missingCount());
 
         $completeness = $completenesses->getCompletenessForChannelAndLocale('tablet', 'en_US');
         $this->assertEquals('en_US', $completeness->localeCode());
         $this->assertEquals('tablet', $completeness->channelCode());
         $this->assertEquals(88, $completeness->ratio());
         $this->assertEquals(9, $completeness->requiredCount());
-        $this->assertMissingAttributeCodes($completeness, ['side_view']);
+        $this->assertEquals(1, $completeness->missingCount());
 
         $completeness = $completenesses->getCompletenessForChannelAndLocale('mobile', 'fr_FR');
         $this->assertEquals('fr_FR', $completeness->localeCode());
         $this->assertEquals('mobile', $completeness->channelCode());
         $this->assertEquals(100, $completeness->ratio());
         $this->assertEquals(5, $completeness->requiredCount());
-        $this->assertEquals(0, count($completeness->missingAttributeCodes()));
+        $this->assertEquals(0, $completeness->missingCount());
 
         $completeness = $completenesses->getCompletenessForChannelAndLocale('tablet', 'fr_FR');
         $this->assertEquals('fr_FR', $completeness->localeCode());
         $this->assertEquals('tablet', $completeness->channelCode());
         $this->assertEquals(77, $completeness->ratio());
         $this->assertEquals(9, $completeness->requiredCount());
-        $this->assertMissingAttributeCodes($completeness, ['description', 'side_view']);
+        $this->assertEquals(2, $completeness->missingCount());
     }
 
     /**

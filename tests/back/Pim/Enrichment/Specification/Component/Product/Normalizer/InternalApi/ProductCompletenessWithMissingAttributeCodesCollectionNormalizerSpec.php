@@ -2,16 +2,16 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductCompletenessCollectionNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodes;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodesCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductCompletenessWithMissingAttributeCodesCollectionNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetAttributeLabelsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetChannelLabelsInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class ProductCompletenessCollectionNormalizerSpec extends ObjectBehavior
+class ProductCompletenessWithMissingAttributeCodesCollectionNormalizerSpec extends ObjectBehavior
 {
     function let(
         NormalizerInterface $normalizer,
@@ -28,7 +28,7 @@ class ProductCompletenessCollectionNormalizerSpec extends ObjectBehavior
 
     function it_is_a_product_completeness_collection_normalizer()
     {
-        $this->shouldHaveType(ProductCompletenessCollectionNormalizer::class);
+        $this->shouldHaveType(ProductCompletenessWithMissingAttributeCodesCollectionNormalizer::class);
     }
 
     function it_normalizes_completenesses_and_indexes_them(
@@ -37,15 +37,15 @@ class ProductCompletenessCollectionNormalizerSpec extends ObjectBehavior
         GetAttributeLabelsInterface $getAttributeLabels
     )
     {
-        $completenessCollection = new ProductCompletenessCollection(
+        $completenessCollection = new ProductCompletenessWithMissingAttributeCodesCollection(
             42,
             [
-                new ProductCompleteness('mobile', 'en_US', 2, ['name']),
-                new ProductCompleteness('mobile', 'fr_FR', 2, ['sku']),
-                new ProductCompleteness('print', 'en_US', 2, ['description']),
-                new ProductCompleteness('print', 'fr_FR', 2, ['name']),
-                new ProductCompleteness('1234567890', 'en_US', 2, ['name']),
-                new ProductCompleteness('1234567890', 'fr_FR', 2, ['name']),
+                new ProductCompletenessWithMissingAttributeCodes('mobile', 'en_US', 2, ['name']),
+                new ProductCompletenessWithMissingAttributeCodes('mobile', 'fr_FR', 2, ['sku']),
+                new ProductCompletenessWithMissingAttributeCodes('print', 'en_US', 2, ['description']),
+                new ProductCompletenessWithMissingAttributeCodes('print', 'fr_FR', 2, ['name']),
+                new ProductCompletenessWithMissingAttributeCodes('1234567890', 'en_US', 2, ['name']),
+                new ProductCompletenessWithMissingAttributeCodes('1234567890', 'fr_FR', 2, ['name']),
             ]
         );
 
@@ -70,7 +70,7 @@ class ProductCompletenessCollectionNormalizerSpec extends ObjectBehavior
         ]);
 
         $normalizer->normalize(
-            Argument::type(ProductCompleteness::class),
+            Argument::type(ProductCompletenessWithMissingAttributeCodes::class),
             'internal_api'
         )->willReturn([])->shouldBeCalledTimes(6);
 

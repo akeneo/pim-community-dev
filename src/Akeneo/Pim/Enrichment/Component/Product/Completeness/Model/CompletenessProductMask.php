@@ -23,10 +23,11 @@ class CompletenessProductMask
     /** @var array */
     private $mask;
 
+    // TODO - TIP-1212: familyCode should not be nullable
     public function __construct(
         int $id,
         string $identifier,
-        string $familyCode,
+        ?string $familyCode,
         array $mask
     ) {
         $this->id = $id;
@@ -35,7 +36,7 @@ class CompletenessProductMask
         $this->mask = $mask;
     }
 
-    public function familyCode(): string
+    public function familyCode(): ?string
     {
         return $this->familyCode;
     }

@@ -5,8 +5,8 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Completeness\Mod
 
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessFamilyMaskPerChannelAndLocale;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessProductMask;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodes;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodesCollection;
 use PhpSpec\ObjectBehavior;
 
 final class CompletenessFamilyMaskSpec extends ObjectBehavior
@@ -27,9 +27,9 @@ final class CompletenessFamilyMaskSpec extends ObjectBehavior
         ];
 
         $this->beConstructedWith('tshirt', $familyMasksPerChannelAndLocale);
-        $this->completenessCollectionForProduct($productCompleteness)->shouldBeLike(new ProductCompletenessCollection(5, [
-            new ProductCompleteness('ecommerce', 'en_US', 2, [1 => 'view']),
-            new ProductCompleteness('<all_channels>', '<all_locales>', 1, [])
+        $this->completenessCollectionForProduct($productCompleteness)->shouldBeLike(new ProductCompletenessWithMissingAttributeCodesCollection(5, [
+            new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 2, [1 => 'view']),
+            new ProductCompletenessWithMissingAttributeCodes('<all_channels>', '<all_locales>', 1, [])
         ]));
     }
 }

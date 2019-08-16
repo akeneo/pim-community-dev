@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodes;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -17,7 +17,7 @@ class ProductCompletenessNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      *
-     * @var ProductCompleteness $completeness
+     * @var ProductCompletenessWithMissingAttributeCodes $completeness
      */
     public function normalize($completeness, $format = null, array $context = [])
     {
@@ -35,6 +35,6 @@ class ProductCompletenessNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ProductCompleteness && $format === 'internal_api';
+        return $data instanceof ProductCompletenessWithMissingAttributeCodes && $format === 'internal_api';
     }
 }

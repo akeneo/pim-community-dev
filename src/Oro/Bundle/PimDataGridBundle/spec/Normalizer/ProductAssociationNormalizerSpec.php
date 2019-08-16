@@ -2,16 +2,16 @@
 
 namespace spec\Oro\Bundle\PimDataGridBundle\Normalizer;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
-use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
-use PhpSpec\ObjectBehavior;
-use Oro\Bundle\PimDataGridBundle\Normalizer\ProductAssociationNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyTranslationInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Oro\Bundle\PimDataGridBundle\Normalizer\ProductAssociationNormalizer;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
@@ -89,7 +89,7 @@ class ProductAssociationNormalizerSpec extends ObjectBehavior
         $product->getLabel('en_US', 'ecommerce')->willReturn('Purple tshirt');
 
         $getProductCompletenesses->fromProductId(42)->willReturn(new ProductCompletenessCollection(42, [
-            new ProductCompleteness('ecommerce', 'en_US', 10, ['fake_attr'])
+            new ProductCompleteness('ecommerce', 'en_US', 10, 1)
         ]));
 
         $product->getImage()->willReturn($image);
@@ -156,7 +156,7 @@ class ProductAssociationNormalizerSpec extends ObjectBehavior
         $product->getLabel('en_US', 'ecommerce')->willReturn('Purple tshirt');
 
         $getProductCompletenesses->fromProductId(42)->willReturn(new ProductCompletenessCollection(42, [
-            new ProductCompleteness('ecommerce', 'en_US', 10, ['fake_attr'])
+            new ProductCompleteness('ecommerce', 'en_US', 10, 1)
         ]));
 
         $product->getImage()->willReturn($image);

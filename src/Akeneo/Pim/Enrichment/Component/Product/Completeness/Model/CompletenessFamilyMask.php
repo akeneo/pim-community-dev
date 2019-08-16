@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Completeness\Model;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodes;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodesCollection;
 
 /**
  * This mask is done to gather all the masks for a given family
@@ -44,16 +44,16 @@ class CompletenessFamilyMask
         return $this->masks;
     }
 
-    public function completenessCollectionForProduct(CompletenessProductMask $completenessProductMask): ProductCompletenessCollection
+    public function completenessCollectionForProduct(CompletenessProductMask $completenessProductMask): ProductCompletenessWithMissingAttributeCodesCollection
     {
         $productCompletenesses = array_map(
-            function (CompletenessFamilyMaskPerChannelAndLocale $completenessFamilyMaskPerChannelAndLocale) use ($completenessProductMask): ProductCompleteness {
+            function (CompletenessFamilyMaskPerChannelAndLocale $completenessFamilyMaskPerChannelAndLocale) use ($completenessProductMask): ProductCompletenessWithMissingAttributeCodes {
                 return $completenessFamilyMaskPerChannelAndLocale->productCompleteness($completenessProductMask);
             },
             $this->masks
         );
 
-        return new ProductCompletenessCollection($completenessProductMask->id(), $productCompletenesses);
+        return new ProductCompletenessWithMissingAttributeCodesCollection($completenessProductMask->id(), $productCompletenesses);
     }
 
 

@@ -33,10 +33,6 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
     /** @var GetProductCompletenesses */
     private $getProductCompletenesses;
 
-    /**
-     * @param CollectionFilterInterface $filter
-     * @param ImageNormalizer           $imageNormalizer
-     */
     public function __construct(
         CollectionFilterInterface $filter,
         ImageNormalizer $imageNormalizer,

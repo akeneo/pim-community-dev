@@ -93,7 +93,7 @@ class CompletenessForNonRequiredAttributeIntegration extends AbstractCompletenes
         $this->assertEquals('ecommerce', $completeness->channelCode());
         $this->assertEquals(100, $completeness->ratio());
         $this->assertEquals($requiredCount, $completeness->requiredCount());
-        $this->assertEquals(0, count($completeness->missingAttributeCodes()));
+        $this->assertEquals(0, $completeness->missingCount());
     }
 
     /**

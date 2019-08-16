@@ -83,7 +83,6 @@ class BooleanAttributeTypeCompletenessIntegration extends AbstractCompletenessPe
             ]
         );
         $this->assertNotComplete($productDataNull);
-        $this->assertMissingAttributeForProduct($productDataNull, ['a_boolean']);
 
         $productWithoutValues = $this->createProductWithStandardValues($family, 'product_without_values');
         $this->assertComplete($productWithoutValues);

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Completeness\Model;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodes;
 
 /**
  * @author Pierre Allard <pierre.allard@akeneo.com>
@@ -61,7 +61,7 @@ class CompletenessFamilyMaskPerChannelAndLocale
             return substr($mask, 0, strpos($mask, self::ATTRIBUTE_CHANNEL_LOCALE_SEPARATOR));
         }, $difference);
 
-        return new ProductCompleteness(
+        return new ProductCompletenessWithMissingAttributeCodes(
             $this->channelCode,
             $this->localeCode,
             count($this->mask),

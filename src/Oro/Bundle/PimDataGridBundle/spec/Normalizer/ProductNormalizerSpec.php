@@ -2,23 +2,23 @@
 
 namespace spec\Oro\Bundle\PimDataGridBundle\Normalizer;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
-use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
-use Oro\Bundle\PimDataGridBundle\Normalizer\ProductNormalizer;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer;
 use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyTranslationInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupTranslationInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyTranslationInterface;
+use Oro\Bundle\PimDataGridBundle\Normalizer\ProductNormalizer;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -114,7 +114,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $product->getLabel('en_US', 'ecommerce')->willReturn('Purple tshirt');
 
         $getProductCompletenesses->fromProductId(78)->willReturn(new ProductCompletenessCollection(78, [
-            new ProductCompleteness('ecommerce', 'en_US', 10, ['fake_attribute'])
+            new ProductCompleteness('ecommerce', 'en_US', 10, 1)
         ]));
 
         $product->getImage()->willReturn($image);
@@ -216,7 +216,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $product->getLabel('en_US', 'ecommerce')->willReturn('Purple tshirt');
 
         $getProductCompletenesses->fromProductId(78)->willReturn(new ProductCompletenessCollection(78, [
-            new ProductCompleteness('ecommerce', 'en_US', 10, ['fake_attribute'])
+            new ProductCompleteness('ecommerce', 'en_US', 10, 1)
         ]));
         $product->getImage()->willReturn($image);
         $imageNormalizer->normalize($image, Argument::any())->willReturn([
@@ -319,7 +319,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $product->getLabel('en_US', 'ecommerce')->willReturn('Purple tshirt');
 
         $getProductCompletenesses->fromProductId(78)->willReturn(new ProductCompletenessCollection(78, [
-            new ProductCompleteness('ecommerce', 'en_US', 10, ['fake_attr'])
+            new ProductCompleteness('ecommerce', 'en_US', 10, 1)
         ]));
         $product->getImage()->willReturn($image);
         $imageNormalizer->normalize($image, Argument::any())->willReturn([

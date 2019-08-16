@@ -66,10 +66,8 @@ class FileAttributeTypeCompletenessIntegration extends AbstractCompletenessPerAt
             ]
         );
         $this->assertNotComplete($productDataNull);
-        $this->assertMissingAttributeForProduct($productDataNull, ['a_file']);
 
         $productWithoutValues = $this->createProductWithStandardValues($family, 'product_without_values');
         $this->assertNotComplete($productWithoutValues);
-        $this->assertMissingAttributeForProduct($productWithoutValues, ['a_file']);
     }
 }

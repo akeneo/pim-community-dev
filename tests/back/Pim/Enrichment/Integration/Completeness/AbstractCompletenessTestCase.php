@@ -39,19 +39,6 @@ abstract class AbstractCompletenessTestCase extends TestCase
     }
 
     /**
-     * @param ProductCompleteness $completeness
-     * @param string[]            $expectedAttributeCodes
-     */
-    protected function assertMissingAttributeCodes(ProductCompleteness $completeness, array $expectedAttributeCodes)
-    {
-        $missingAttributeCodes = $completeness->missingAttributeCodes();
-
-        sort($expectedAttributeCodes);
-        sort($missingAttributeCodes);
-        $this->assertEquals($expectedAttributeCodes, $missingAttributeCodes);
-    }
-
-    /**
      * @param ProductInterface $product
      * @param int              $expectedNumberOfCompletenesses
      */

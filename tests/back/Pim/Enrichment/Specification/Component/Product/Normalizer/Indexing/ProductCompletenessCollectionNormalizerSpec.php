@@ -37,10 +37,10 @@ class ProductCompletenessCollectionNormalizerSpec extends ObjectBehavior
         $completenesses = new ProductCompletenessCollection(
             42,
             [
-                new ProductCompleteness('ecommerce', 'en_US', 0, []),
-                new ProductCompleteness('ecommerce', 'fr_FR', 1, []),
-                new ProductCompleteness('ecommerce', 'de_DE', 2, ['fake_attr']),
-                new ProductCompleteness('tablet', 'en_US', 3, ['fake_attr']),
+                new ProductCompleteness('ecommerce', 'en_US', 0, 0),
+                new ProductCompleteness('ecommerce', 'fr_FR', 1, 0),
+                new ProductCompleteness('ecommerce', 'de_DE', 2, 1),
+                new ProductCompleteness('tablet', 'en_US', 3, 1),
             ]
         );
 
