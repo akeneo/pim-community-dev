@@ -8,7 +8,7 @@ services:
         arguments:
             - '@pim_standard_format_serializer'
             - '@pim_catalog.comparator.registry'
-            - '@pim_catalog.repository.cached_attribute'
+            - '@akeneo.pim.structure.query.get_attributes'
             - '@pimee_workflow.factory.product_draft'
             - '@pimee_workflow.repository.product_draft'
             - '@akeneo.pim.enrichment.factory.read.write_value_collection'
@@ -19,7 +19,7 @@ services:
         arguments:
             - '@pim_standard_format_serializer'
             - '@pim_catalog.comparator.registry'
-            - '@pim_catalog.repository.cached_attribute'
+            - '@akeneo.pim.structure.query.get_attributes'
             - '@pimee_workflow.factory.product_model_draft'
             - '@pimee_workflow.repository.product_model_draft'
             - '@akeneo.pim.enrichment.factory.read.write_value_collection'
