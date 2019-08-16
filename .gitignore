@@ -42,7 +42,6 @@ npm-debug.log
 !/docker/akeneo-behat.conf
 !/docker/httpd.conf
 !/docker/sso_authsources.php
-.env
 docker-compose.override.yml
 composer.lock
 yarn.lock
