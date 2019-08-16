@@ -6,3 +6,16 @@ akeneo_pim_structure:
         color:
             class: AcmeEnterprise\Bundle\AppBundle\Entity\Color
             type: simple
+
+monolog:
+    handlers:
+        main:
+            type:         fingers_crossed
+            action_level: warning
+            handler:      nested
+        nested:
+            type: stream
+            path: '%kernel.logs_dir%/%kernel.environment%.log'
+            level: info
+        console:
+            type:  console

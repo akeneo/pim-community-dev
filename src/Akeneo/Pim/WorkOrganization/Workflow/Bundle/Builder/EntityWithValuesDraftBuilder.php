@@ -110,7 +110,7 @@ class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterf
                         $attribute->isLocalizable(),
                         $attribute->isScopable(),
                         $attribute->getMetricFamily() === '' ? null : $attribute->getMetricFamily(),
-                        $attribute->isDecimalsAllowed()
+                        $attribute->isDecimalsAllowed() ?? false
                     );
 
                     $values[] = $this->valueFactory->createByCheckingData(

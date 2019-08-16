@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace AkeneoTestEnterprise\Pim\Enrichment\ReferenceEntity\Integration;
 
-use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityType;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -53,7 +53,7 @@ final class ValueCollectionFactoryIntegration extends TestCase
     public function test_it_can_instantiate_a_value_collection_containing_reference_entities_single_link_attribute()
     {
         /** @var WriteValueCollectionFactory $valueCollectionFactory */
-        $valueCollectionFactory = $this->get('pim_catalog.factory.value_collection');
+        $valueCollectionFactory = $this->get('akeneo.pim.enrichment.factory.read.write_value_collection');
         $valueCollection = $valueCollectionFactory->createFromStorageFormat([
             'singleColor' => [
                 '<all_channels>' => [
