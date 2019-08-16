@@ -261,7 +261,7 @@ Feature: Lists all attributes related to a reference entity
   #   And the translation helper displays "Red"
 
   # @acceptance-front
-  Scenario: A validation occured because the code is not valid
+  Scenario: A validation occurred because the code is not valid
     Given a valid reference entity
     And the user has the following rights:
       | akeneo_referenceentity_attribute_edit | true |
@@ -276,7 +276,7 @@ Feature: Lists all attributes related to a reference entity
     And there is an error message next to the "gre-een" field
 
   #  @acceptance-front
-  Scenario: A validation occured because the code is duplicated
+  Scenario: A validation occurred because the code is duplicated
     Given a valid reference entity
     And the user has the following rights:
       | akeneo_referenceentity_attribute_edit | true |
@@ -290,7 +290,7 @@ Feature: Lists all attributes related to a reference entity
     Then there is an error message next to the "red" field
 
   @acceptance-front
-  Scenario: A validation occured because the number of attribute options has reached the limit
+  Scenario: A validation occurred because the number of attribute options has reached the limit
     Given a valid reference entity
     And the user has the following rights:
       | akeneo_referenceentity_attribute_edit | true |

@@ -141,7 +141,7 @@ describe('akeneo > reference entity > application > reducer > reference-entity -
 
   test('An error can occur', () => {
     const newState = reducer(initialState, {
-      type: 'PERMISSION_EDITION_ERROR_OCCURED',
+      type: 'PERMISSION_EDITION_ERROR_OCCURRED',
       errors: [
         {
           an: 'error',

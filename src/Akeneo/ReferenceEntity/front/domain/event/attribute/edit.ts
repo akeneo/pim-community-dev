@@ -36,6 +36,6 @@ export const attributeEditionSucceeded = () => {
   return {type: 'ATTRIBUTE_EDITION_SUCCEEDED'};
 };
 
-export const attributeEditionErrorOccured = (errors: ValidationError[]) => {
-  return {type: 'ATTRIBUTE_EDITION_ERROR_OCCURED', errors};
+export const attributeEditionErrorOccurred = (errors: ValidationError[]) => {
+  return {type: 'ATTRIBUTE_EDITION_ERROR_OCCURRED', errors};
 };

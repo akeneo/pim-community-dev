@@ -51,17 +51,17 @@ pimee_product_asset:
         flash:
             update:
                 success: Asset has been updated.
-                error: Asset has not been updated. An error occured.
+                error: Asset has not been updated. An error occurred.
             create:
                 success: Asset has been created.
-                error: Asset has not been created. An error occured.
+                error: Asset has not been created. An error occurred.
             remove:
                 success: Asset has been removed.
     enrich_reference:
         flash:
             delete:
                 success: Reference file has been deleted.
-                error: Reference file has not been deleted. An error occured.
+                error: Reference file has not been deleted. An error occurred.
     enrich_variation:
         flash:
             transformation:
@@ -75,10 +75,10 @@ pimee_product_asset:
                 success: Variation files have been generated successfully.
             update:
                 success: Variation file has been updated.
-                error: Variation file has not been updated. An error occured.
+                error: Variation file has not been updated. An error occurred.
             delete:
                 success: Variation file has been deleted.
-                error: Variation file has not been deleted. An error occured.
+                error: Variation file has not been deleted. An error occurred.
     popin.create:
         title: Create a new asset
         is_localized: Localizable
@@ -126,7 +126,7 @@ pimee_product_asset:
         import: Import
         executed: Mass upload executed
         error:
-            upload: An error occured while uploading
+            upload: An error occurred while uploading
             code: Invalid code format for asset
             localizable: An asset exists but is not localizable
             invalid_locale: The locale is disabled or invalid

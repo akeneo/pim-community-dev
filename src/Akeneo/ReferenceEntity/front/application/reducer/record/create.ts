@@ -72,7 +72,7 @@ export default (
       };
       break;
 
-    case 'RECORD_CREATION_ERROR_OCCURED':
+    case 'RECORD_CREATION_ERROR_OCCURRED':
       state = {
         ...state,
         errors: action.errors,
