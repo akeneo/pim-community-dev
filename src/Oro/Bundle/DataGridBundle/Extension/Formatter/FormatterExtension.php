@@ -69,7 +69,7 @@ class FormatterExtension extends AbstractExtension
 
         $columns = $config->offsetGetOr(Configuration::COLUMNS_KEY, []);
         $properties = $config->offsetGetOr(Configuration::PROPERTIES_KEY, []);
-        $toProcess = array_merge($columns, $properties);
+        $toProcess = array_replace($columns, $properties);
 
         foreach ($rows as $key => $row) {
             $currentRow = [];

@@ -135,6 +135,8 @@ define([
                 operator: operator,
                 value: cleanedValues
             });
+
+            this.render();
         },
 
         /**

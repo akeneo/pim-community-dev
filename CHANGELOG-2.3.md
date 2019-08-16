@@ -1,5 +1,19 @@
 # 2.3.x
 
+# 2.3.59 (2019-08-12)
+
+## Bug fixes
+
+- PIM-7675: Fix file input style
+
+# 2.3.58 (2019-08-08)
+
+## Bug fixes
+
+- PIM-8461: Do not display 'Compare/translate' if user has no permission to edit product attributes
+- PIM-7583: Allow user to import custom locales without '_'
+- PIM-8630: Fix revert action when it exists an association type with integer as code
+
 # 2.3.57 (2019-07-31)
 
 ## Bug fixes

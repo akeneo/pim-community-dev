@@ -121,6 +121,7 @@ extensions:
         module: pim/product-edit-form/start-copy
         parent: pim-product-edit-form-secondary-actions
         targetZone: secondary-actions
+        aclResourceId: pim_enrich_product_edit_attributes
         position: 80
 
     pim-product-edit-form-save-buttons:

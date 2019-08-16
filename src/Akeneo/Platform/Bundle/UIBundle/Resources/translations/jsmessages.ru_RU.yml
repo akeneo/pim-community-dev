@@ -2,7 +2,7 @@
 "Yes, do it": "Да, сделать это"
 "Ok, got it.": "Ок, я понял."
 "Edit": "Редактировать"
-"Unexpected error occured. Please contact system administrator.": "Произошла непредвиденная ошибка. Пожалуйста, свяжитесь с системным администратором."
+"Unexpected error occurred. Please contact system administrator.": "Произошла непредвиденная ошибка. Пожалуйста, свяжитесь с системным администратором."
 Prev: Предыдущий
 Today: Сегодня
 Wk: Нед
@@ -168,7 +168,7 @@ error:
   forbidden: Запрещено. У вас нет доступа к этой странице
 alert:
   attribute_option:
-    error_occured_during_submission: Во время отправки формы на сервер произошла ошибка
+    error_occurred_during_submission: Во время отправки формы на сервер произошла ошибка
     save_before_edit_other: Пожалуйста зафиксируйте ваши изменения на других строках перед редактированием этой
   session_storage:
     not_available: Ваш веб-браузер кажется не совместим с sessionStorage. Обратитесь к администратору
