@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
-use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodes;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompleteness;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompletenessCollection;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
@@ -31,15 +31,15 @@ class ComputeAndPersistPublishedProductCompletenessSubscriber implements EventSu
     /** @var SavePublishedProductCompletenesses */
     private $savePublishedProductCompletenesses;
 
-    /** @var GetProductCompletenesses */
-    private $getProductCompletenesses;
+    /** @var CompletenessCalculator */
+    private $completenessCalculator;
 
     public function __construct(
         SavePublishedProductCompletenesses $savePublishedProductCompletenesses,
-        GetProductCompletenesses $getProductCompletenesses
+        CompletenessCalculator $completenessCalculator
     ) {
         $this->savePublishedProductCompletenesses = $savePublishedProductCompletenesses;
-        $this->getProductCompletenesses = $getProductCompletenesses;
+        $this->completenessCalculator = $completenessCalculator;
     }
 
     /**
@@ -60,10 +60,10 @@ class ComputeAndPersistPublishedProductCompletenessSubscriber implements EventSu
             return;
         }
 
-        $originalProductId = $publishedProduct->getOriginalProduct()->getId();
-        $originalProductCompletenesses = $this->getProductCompletenesses->fromProductId($originalProductId);
+        $originalProductIdentifier = $publishedProduct->getOriginalProduct()->getIdentifier();
+        $originalProductCompletenesses = $this->completenessCalculator->fromProductIdentifier($originalProductIdentifier);
 
-        $publishedProductCompletenesses = array_map(function (ProductCompleteness $productCompleteness): PublishedProductCompleteness {
+        $publishedProductCompletenesses = array_map(function (ProductCompletenessWithMissingAttributeCodes $productCompleteness): PublishedProductCompleteness {
             return new PublishedProductCompleteness(
                 $productCompleteness->channelCode(),
                 $productCompleteness->localeCode(),
