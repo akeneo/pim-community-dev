@@ -27,6 +27,6 @@ services:
     pim_catalog.validator.constraints.locale_validator:
         class: 'Akeneo\Channel\Component\Validator\Constraint\LocaleValidator'
         arguments:
-            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.repository.cached_locale'
         tags:
             - { name: validator.constraint_validator, alias: pim_locale_validator }

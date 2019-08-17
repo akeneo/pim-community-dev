@@ -2,9 +2,9 @@
 
 namespace Specification\Akeneo\Channel\Component\Validator\Constraint;
 
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Channel\Component\Validator\Constraint\Locale;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class LocaleValidatorSpec extends ObjectBehavior
 {
-    function let(LocaleRepositoryInterface $localeRepository, ExecutionContextInterface $context)
+    function let(IdentifiableObjectRepositoryInterface $localeRepository, ExecutionContextInterface $context)
     {
         $this->beConstructedWith($localeRepository);
         $this->initialize($context);
