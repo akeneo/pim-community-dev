@@ -1,7 +1,3 @@
-pim_title:
-  akeneo_franklin_insights_connection_edit: 'Franklin Insights Verbindung'
-  akeneo_franklin_insights_identifiers_mapping_edit: 'Franklin Insights Einstellungen'
-  akeneo_franklin_insights_attributes_mapping_edit: 'Franklin Insights Einstellungen'
 pim_menu:
   item:
     franklin: Franklin Insights
@@ -51,8 +47,10 @@ akeneo_franklin_insights:
       label: Zuordnen von Attributen
       flash:
         do_not_map_attribute_success: 'Attribut erfolgreich aktualisiert.'
+        create_attribute_success: '{0} Sorry, keines der {{ requestCount }} Attribute wurde erstellt. |{1} Attribut wurde erfolgreich erstellt und an die Familie "{{ family }}". |[2,Inf[ {{ successCount }} Attribute von {{ requestCount }} wurden erfolgreich erstellt und der Familie "{{ family }}" beigefügt.'
         create_attribute_error: 'Leider ist ein Fehler beim Erstellen oder Anhängen des Attributs an die Familie aufgetreten.'
         suggest_attribute_mapping_error: 'Katalog-Attribut "[{{ catalogAttributeCode }}]" ist bereits auf dem Franklin-Attribut "{{ franklinAttributeLabel }}" zugeordnet.'
+        add_attribute_to_family_success: '{1} Attribut "{{ attribute }}" erfolgreich an die Familie "{{ family }}". |[2,Inf[ Attribute erfolgreich mit der Familie "{{ family }} " verbunden ".'
         add_attribute_to_family_error: 'Leider ist ein Fehler aufgetreten, während das Attribut der Familie angehängt wurde.'
       fields:
         franklin_attribute: 'Franklin-Attribut'
@@ -63,7 +61,6 @@ akeneo_franklin_insights:
           pending: Noch nicht genehmigt
           active: Aktiv
           inactive: Inaktiv
-        values_summary: "Zusammenfassung der Werte: {{ label }}"
         create_attribute:
           btn: Attribut erstellen
         add_attribute_to_family:
@@ -86,11 +83,27 @@ akeneo_franklin_insights:
             title: 'Anzahl der zugeordneten Attribute'
             description: "Benutze diese Leiste, um deinen Arbeitsstatus auf einen Blick zu sehen"
             mapped_attribute_count: '{{ count }} zugeordnete Attribute'
+        toolbar:
+          bulk_create_attribute: Attribut erstellen
+          bulk_add_to_family: Zur Familie hinzufügen
+          selection_count: '{{ count }} Element ausgewählt | {{ count }} Elemente ausgewählt'
       modal:
         deactivate_franklin_attribute:
           title: "Sind Sie sicher, dass Sie dieses Attribut nicht zuordnen möchten?"
           subtitle: 'Franklin Insights'
           ok: "Nicht zuordnen"
+        bulk_create_attribute:
+          title: '{1} Erstelle 1 Attribut |[2,Inf[ Erstellen {{ count }} Attribute'
+          subtitle: 'Franklin Insights'
+          description: '{1} Das ausgewählte Attribut wird erstellt und der Familie hinzugefügt |[2,Inf[ Die ausgewählten Attribute werden erstellt und der Familie hinzugefügt'
+          warning: '{1} Bitte bestätigen Sie die Erstellung eines neuen Attributs. |[2,Inf[ Bitte bestätigen Sie die Erstellung von {{ count }} neuen Attributen.'
+          ok: Bestätigen
+        bulk_add_to_family:
+          title: '{1} Füge der Familie 1 Attribut hinzu |[2,Inf[ {{ count }} Attribute der Familie hinzu'
+          subtitle: 'Franklin Insights'
+          description: '{1} Das ausgewählte Attribut wird der Familie hinzugefügt |[2,Inf[ Die ausgewählten Attribute werden der Familie hinzugefügt'
+          warning: '{1} Bitte bestätigen Sie das Hinzufügen eines neuen Attributs für die Familie. |[2,Inf[ Bitte bestätigen Sie das Hinzufügen von {{ count }} neuen Attributen für die Familie.'
+          ok: Bestätigen
       constraint:
         missing_target_key: 'Fehlender Zielschlüssel für das Mapping'
         missing_attribute_key: 'Fehlender {{ expectedKey }}} Schlüssel für die Zuordnung mit Zielschlüssel "{{ targetKey }}"'

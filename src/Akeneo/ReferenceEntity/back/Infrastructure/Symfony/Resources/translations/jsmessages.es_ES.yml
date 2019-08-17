@@ -152,9 +152,9 @@ pim_reference_entity:
       filter:
         completeness:
           label: Completo
-          all: TODOS
-          'yes': 'SÍ'
-          'no': 'NO'
+          all: Todo
+          'yes': 'Sí'
+          'no': 'No'
         option:
           all: Todo
           no_value: Seleccione una opción para filtrar

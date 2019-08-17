@@ -127,6 +127,7 @@ pim_reference_entity:
         title: Hier ist es ein bisschen voll. Wir zeigen dir {{ productCount }} / {{ totalCount }} Produkte.
         subtitle:
           usable_in_grid: Um alle Produkte anzuzeigen, klicken Sie hier!
+          not_usable_in_grid: Um alle verknüpften Produkte zu ermitteln, muss das Produktattribut als "verwendbar im Raster" eingestellt sein.
         button: Alle Produkte anzeigen
       no_product:
         title: Es gibt keine Produkte, die für das Produktattribut "{{ entityLabel }}" verlinkt sind
@@ -154,7 +155,6 @@ pim_reference_entity:
     grid:
       search: Suche nach Label-, Code- und Textattributen
       filter:
-        counter: '{{ matchesCount }} Ergebnis|{{ matchesCount }} Ergebnisse'
         completeness:
           label: Vollständig
           all: Alle
