@@ -211,7 +211,7 @@ flash:
     created: Tipo di gruppo creato con successo
   user:
     removed: Utente rimosso con successo
-  error occurred: Azione non riuscita. Si prega di riprovare.
+  error ocurred: Azione non riuscita. Si prega di riprovare.
 info:
   updated: Ci sono modifiche non salvate.
   category:

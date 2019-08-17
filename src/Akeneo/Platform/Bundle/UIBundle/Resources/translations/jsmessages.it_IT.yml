@@ -2,7 +2,7 @@
 "Yes, do it": "Sì, prosegui"
 "Ok, got it.": "Ok, capito."
 "Edit": "Modifica"
-"Unexpected error occurred. Please contact system administrator.": "Si è verificato un errore imprevisto. Contattare l'amministratore di sistema."
+"Unexpected error occured. Please contact system administrator.": "Si è verificato un errore imprevisto. Contattare l'amministratore di sistema."
 "Yes, revoke": "Si, revoca"
 "Revoke Confirmation": "Revoca conferma"
 Prev: Precedente
@@ -182,7 +182,7 @@ error:
   forbidden: Vietato. Non è consentito accedere a questa pagina
 alert:
   attribute_option:
-    error_occurred_during_submission: Si è verificato un errore durante l'invio del modulo al server
+    error_occured_during_submission: Si è verificato un errore durante l'invio del modulo al server
     save_before_edit_other: Si prega di registrare le modifiche sulle altre righe prima di modificare questa
   session_storage:
     not_available: Il tuo browser non sembra compatibile con il sessionStorage. Contattare l'amministratore

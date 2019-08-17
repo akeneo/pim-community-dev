@@ -214,7 +214,7 @@ flash:
     created: Le type de groupe a bien été créé
   user:
     removed: L'utilisateur a bien été supprimé
-  error occurred: Opération échouée. Merci de réessayer.
+  error ocurred: Opération échouée. Merci de réessayer.
 info:
   updated: Des modifications n'ont pas encore été sauvegardées.
   category:

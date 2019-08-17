@@ -5,13 +5,13 @@ flash:
   comment:
     create:
       success: Your comment has been created successfully.
-      error: An error occurred during the creation of your comment.
+      error: An error occured during the creation of your comment.
     delete:
       success: Your comment has been deleted successfully.
-      error: An error occurred during the deletion of your comment.
+      error: An error occured during the deletion of your comment.
     reply:
       success: Your reply has been created successfully.
-      error: An error occurred during the creation of your reply.
+      error: An error occured during the creation of your reply.
 pim_enrich.entity.product:
   label: product
   uppercase_label: Product
@@ -22,7 +22,7 @@ pim_enrich.entity.product:
       fail: The product could not be updated.
       fields_not_ready: "The product cannot be saved right now. The following fields are not ready: {{ fields }}"
       already_in_upload: A file is already in upload for this attribute in the locale "{{ locale }}" and scope "{{ scope }}"
-      file_upload: An error occurred during the file upload
+      file_upload: An error occured during the file upload
     delete:
       success: Product successfully deleted.
       fail: The product could not be deleted.
@@ -266,7 +266,7 @@ pim_enrich.mass_edit.product:
     confirm:
       label: Confirm
     launch_error:
-      label: An error occurred during the launching of the mass edit operation
+      label: An error occured during the launching of the mass edit operation
     launched:
       label: The bulk action "{{ operation }}" has been launched. You will be notified when it is done.
   operation:
@@ -329,7 +329,7 @@ pim_datagrid:
     delete:
       confirm_content: Are you sure you want to delete the selected products?
       success: Selected products successfully deleted.
-      error: Error occurred when trying to delete selected products, please try again.
+      error: Error ocurred when trying to delete selected products, please try again.
     quick_export:
       csv_all: CSV (All attributes)
       csv_grid_context: CSV (Grid context)

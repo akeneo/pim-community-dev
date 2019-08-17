@@ -2,7 +2,7 @@
 "Yes, do it": "Ja, ausführen"
 "Ok, got it.": "Ja, verstanden."
 "Edit": "Bearbeiten"
-"Unexpected error occurred. Please contact system administrator.": "Es ist ein unerwarteter Fehler aufgetreten. Bitte wenden Sie sich an den Systemadministrator."
+"Unexpected error occured. Please contact system administrator.": "Es ist ein unerwarteter Fehler aufgetreten. Bitte wenden Sie sich an den Systemadministrator."
 "Yes, revoke": "Ja, widerrufen"
 "Revoke Confirmation": "Bestätigung widerrufen"
 Prev: Zurück
@@ -183,7 +183,7 @@ error:
   forbidden: Sie haben keine Berechtigung, diese Seite anzuzeigen
 alert:
   attribute_option:
-    error_occurred_during_submission: Während der Formularübertragung auf dem Server ist ein Fehler aufgetreten
+    error_occured_during_submission: Während der Formularübertragung auf dem Server ist ein Fehler aufgetreten
     save_before_edit_other: Bitte speichern Sie die Änderungen in den anderen Zeilen bevor Sie diese bearbeiten
   session_storage:
     not_available: Ihr Webbrowser scheint nicht kompatibel mit sessionStorage zu sein. Bitte kontaktieren Sie Ihren Administrator
