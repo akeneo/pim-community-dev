@@ -43,8 +43,6 @@ class ComputeAndPersistProductCompletenesses
     {
         $completenessCollections = $this->completenessCalculator->fromProductIdentifiers($productIdentifiers);
 
-        foreach ($completenessCollections as $completenessCollection) {
-            $this->saveProductCompletenesses->save($completenessCollection);
-        }
+        $this->saveProductCompletenesses->saveAll($completenessCollections);
     }
 }

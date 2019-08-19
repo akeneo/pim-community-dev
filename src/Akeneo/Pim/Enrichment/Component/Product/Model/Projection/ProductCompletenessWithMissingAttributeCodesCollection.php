@@ -46,14 +46,14 @@ final class ProductCompletenessWithMissingAttributeCodesCollection implements \I
         return $this->completenesses[$key] ?? null;
     }
 
+    public function count()
+    {
+        return count($this->completenesses);
+    }
+
     private function add(ProductCompletenessWithMissingAttributeCodes $completeness): void
     {
         $key = sprintf('%s-%s', $completeness->channelCode(), $completeness->localeCode());
         $this->completenesses[$key] = $completeness;
-    }
-
-    public function count()
-    {
-        return count($this->completenesses);
     }
 }

@@ -3,6 +3,7 @@
 namespace Akeneo\Channel\Component\Validator\Constraint;
 
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -15,13 +16,13 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class LocaleValidator extends ConstraintValidator
 {
-    /** @var LocaleRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $localeRepository;
 
     /**
-     * @param LocaleRepositoryInterface $localeRepository
+     * @param IdentifiableObjectRepositoryInterface $localeRepository
      */
-    public function __construct(LocaleRepositoryInterface $localeRepository)
+    public function __construct(IdentifiableObjectRepositoryInterface $localeRepository)
     {
         $this->localeRepository = $localeRepository;
     }
