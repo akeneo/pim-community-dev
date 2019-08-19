@@ -4,6 +4,8 @@ services:
   fpm:
     image: 'akeneo/fpm:php-7.2'
     user: 'docker'
+    environment:
+      APP_ENV: ${APP_ENV:-prod}
     volumes:
       - './:/srv/pim'
     working_dir: '/srv/pim'
