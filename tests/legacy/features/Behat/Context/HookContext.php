@@ -275,12 +275,7 @@ class HookContext extends PimContext
                     $script = 'return window.coverage;';
                     $coverage = $this->getSession()->evaluateScript($script);
 
-                    // @TODO: randomise the filename in case of writing a report for the same scenario that contains page reloads
-                    $dir = './.coverage';
-                    $filename = strstr($event->getFeature()->getFile(), 'features/');
-                    $lineNum  = $event->getFeature()->getLine();
-                    $path = sprintf('%s/%s-%s.json', $dir, str_replace('/', '__', $filename), $lineNum);
-
+                    $path = sprintf('%s/%s.json', './.coverage', uniqid());
                     $fs = new \Symfony\Component\Filesystem\Filesystem();
                     $fs->dumpFile($path, json_encode($coverage));
                 } catch (\Exception $e) {
