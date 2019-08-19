@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Asset\Bundle\MassUpload\MassUpload;
+namespace Specification\Akeneo\Asset\Bundle\MassUpload;
 
 use Akeneo\Asset\Bundle\MassUpload\MassUploadIntoAssetCollectionTasklet;
 use Akeneo\Asset\Component\ProcessedItem;
