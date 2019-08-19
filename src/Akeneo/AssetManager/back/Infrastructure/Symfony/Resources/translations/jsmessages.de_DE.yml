@@ -1,0 +1,4 @@
+pim_asset_manager:
+  asset:
+    selector:
+      no_value: Klicken Sie hier, um ein Asset auszuwählen.

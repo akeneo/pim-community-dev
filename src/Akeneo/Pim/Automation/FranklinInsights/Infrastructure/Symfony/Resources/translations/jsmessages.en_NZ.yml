@@ -85,7 +85,7 @@ akeneo_franklin_insights:
     flash:
       success: Franklin Insights activation code saved successfully.
       invalid: Sorry, invalid activation code. Please try again with a valid one.
-      error: Sorry, an error occurred.
+      error: Sorry, an error occured.
     module:
       title:
         sub_title: 'Welcome to the <span class="AknDescriptionHeader-title--highlight">Product Information AI assistant</span>!'
