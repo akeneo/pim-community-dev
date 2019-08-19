@@ -280,6 +280,10 @@ define(
                                 clickedIndex++;
                             }
                         }
+
+                        if (thumbnails.length === 0) {
+                            return closeModal();
+                        }
                         navigateToItem($(thumbnails[(clickedIndex + side + thumbnails.length) % thumbnails.length]));
                     };
 
@@ -291,6 +295,17 @@ define(
                             modal.$('.remove-confirmation').addClass(hiddenClass);
                         }
                     };
+
+                    const closeModal = function () {
+                        const thumbnails = modal.$('.asset-thumbnail-item');
+                        let assetCodes = [];
+                        thumbnails.each(function (i, thumbnail) {
+                            assetCodes.push($(thumbnail).data('asset').toString());
+                        });
+                        modal.close();
+
+                        deferred.resolve(assetCodes);
+                    }
 
                     modal.$('.AknAssetCollectionField-listItem').click(function () {
                         navigateToItem($(this));
@@ -320,16 +335,7 @@ define(
                         toggleRemoveConfirmation(false);
                     });
 
-                    modal.on('cancel', function () {
-                        const thumbnails = modal.$('.asset-thumbnail-item');
-                        let assetCodes = [];
-                        thumbnails.each(function (i, thumbnail) {
-                            assetCodes.push($(thumbnail).data('asset').toString());
-                        });
-                        modal.close();
-
-                        deferred.resolve(assetCodes);
-                    }.bind(this));
+                    modal.on('cancel', closeModal);
 
                     this.modal = modal;
                     navigateToItem(modal.$('.asset-thumbnail-item[data-asset="' + currentAssetCode + '"]'));
