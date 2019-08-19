@@ -1,6 +1,6 @@
 <?php
 
-namespace Specification\Akeneo\Platform\Platform\Bundle\ImportExportBundle\Factory;
+namespace Specification\Akeneo\Platform\Bundle\ImportExportBundle\Factory;
 
 use Akeneo\Platform\Bundle\NotificationBundle\Entity\Notification;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Specification\Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Usecase;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase;
 
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
