@@ -174,6 +174,22 @@ const webpackConfig = {
         ],
       },
 
+      {
+        test: /\.js$|\.jsx|\.tsx|\.ts$/,
+        use: {
+          loader: 'istanbul-instrumenter-loader',
+          options: {
+            esModules: true,
+            produceSourceMap: true,
+            preserveComments: true,
+            coverageVariable: 'coverage',
+            debug: true
+          }
+        },
+        enforce: 'post',
+        exclude: /node_modules|\.spec\.js$/,
+      },
+
       // Process the typescript loader files
       {
         test: /\.tsx?$/,
