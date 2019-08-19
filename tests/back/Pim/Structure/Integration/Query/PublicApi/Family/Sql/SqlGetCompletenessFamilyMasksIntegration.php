@@ -2,16 +2,12 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Pim\Enrichment\Integration\Product\Query\Sql\Completeness;
+namespace AkeneoTest\Pim\Structure\Integration\Query\PublicApi\Family\Sql;
 
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessFamilyMask;
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessFamilyMaskPerChannelAndLocale;
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetCompletenessFamilyMasks;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\NonExistingFamiliesException;
+use Akeneo\Pim\Structure\Bundle\Query\PublicApi\Family\GetCompletenessFamilyMasks;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
-use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -151,7 +147,7 @@ class SqlGetCompletenessFamilyMasksIntegration extends TestCase
 
     private function getCompletenessFamilyMasks(): GetCompletenessFamilyMasks
     {
-        return $this->get('akeneo.pim.enrichment.completeness.query.get_family_masks');
+        return $this->get('akeneo.pim.structure.query.sql_get_family_masks');
     }
 
     private function givenAttributes(array $attributesData): void

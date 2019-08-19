@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Completeness\Query;
+namespace Akeneo\Pim\Structure\Bundle\Query\PublicApi\Family;
 
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessFamilyMask;
 
