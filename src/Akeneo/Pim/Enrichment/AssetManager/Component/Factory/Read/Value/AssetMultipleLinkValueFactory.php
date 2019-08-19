@@ -73,8 +73,6 @@ final class AssetMultipleLinkValueFactory implements ValueFactory
             }
         }
 
-        //SHALL WE TEST THE EXISTENCE OF DATA
-
         return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
     }
 

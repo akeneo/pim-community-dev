@@ -73,8 +73,6 @@ final class ReferenceEntityCollectionValueFactory implements ValueFactory
             }
         }
 
-        //SHALL WE TEST THE EXISTENCE OF THE RECORD?
-
         return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
     }
 
