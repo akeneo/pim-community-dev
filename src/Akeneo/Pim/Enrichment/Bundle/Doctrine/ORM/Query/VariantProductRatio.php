@@ -76,10 +76,14 @@ SQL;
         //It helps the MySQL Optimizer to choose the right path
         //Otherwise we could have used the querybuilder
         $query = <<<SQL
-            SELECT channel.code AS channel_code, locale.code AS locale_code, product.identifier as product_identifier, CASE WHEN (product.product_ratio = 100) THEN 1 ELSE 0 END as complete
+            SELECT
+                channel.code AS channel_code,
+                locale.code AS locale_code,
+                product.identifier as product_identifier,
+                CASE WHEN (product.product_missing_count = 0) THEN 1 ELSE 0 END as complete
             FROM
               (
-                SELECT DISTINCT product.identifier, completeness.locale_id, completeness.channel_id, completeness.ratio as product_ratio
+                SELECT DISTINCT product.identifier, completeness.locale_id, completeness.channel_id, completeness.missing_count as product_missing_count
                 %s
                 INNER JOIN pim_catalog_completeness completeness ON product.id = completeness.product_id
                 WHERE

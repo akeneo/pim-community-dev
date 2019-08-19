@@ -46,18 +46,8 @@ INSERT INTO `pim_catalog_association_product` VALUES (7,47),(7,48),(9,47);
 --
 
 /*!40000 ALTER TABLE `pim_catalog_completeness` DISABLE KEYS */;
-INSERT INTO `pim_catalog_completeness` VALUES (773,21058,209,49,100,0,19),(774,21039,210,49,89,2,19),(775,21058,210,49,100,0,19),(776,21090,210,49,100,0,19);
+INSERT INTO `pim_catalog_completeness` VALUES (773,21058,209,49,0,19),(774,21039,210,49,2,19),(775,21058,210,49,0,19),(776,21090,210,49,0,19);
 /*!40000 ALTER TABLE `pim_catalog_completeness` ENABLE KEYS */;
-
-
---
--- Dumping data for table `pim_catalog_completeness_missing_attribute`
---
-
-
-/*!40000 ALTER TABLE `pim_catalog_completeness_missing_attribute` DISABLE KEYS */;
-INSERT INTO pim_catalog_completeness_missing_attribute VALUES (774, 2541), (774, 2539);
-/*!40000 ALTER TABLE `pim_catalog_completeness_missing_attribute` ENABLE KEYS */;
 
 
 --

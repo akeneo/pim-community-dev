@@ -39,7 +39,6 @@ class SaveProductCompletenessesIntegration extends TestCase
             [
                 'channel_code' => 'ecommerce',
                 'locale_code' => 'en_US',
-                'ratio' => 100,
                 'missing_count' => 0,
                 'required_count' => 5,
             ],
@@ -76,7 +75,6 @@ class SaveProductCompletenessesIntegration extends TestCase
             [
                 'channel_code' => 'ecommerce',
                 'locale_code' => 'en_US',
-                'ratio' => 80,
                 'missing_count' => 1,
                 'required_count' => 5,
             ],
@@ -86,7 +84,6 @@ class SaveProductCompletenessesIntegration extends TestCase
             [
                 'channel_code' => 'tablet',
                 'locale_code' => 'fr_FR',
-                'ratio' => 40,
                 'missing_count' => 6,
                 'required_count' => 10,
             ],
@@ -115,7 +112,7 @@ class SaveProductCompletenessesIntegration extends TestCase
     private function getCompletenessesFromDB(int $productId): array
     {
         $sql = <<<SQL
-SELECT channel.code as channel_code, locale.code as locale_code, completeness.ratio, completeness.missing_count, completeness.required_count
+SELECT channel.code as channel_code, locale.code as locale_code, completeness.missing_count, completeness.required_count
 FROM pim_catalog_completeness completeness
     INNER JOIN pim_catalog_channel channel on channel.id = completeness.channel_id
     INNER JOIN pim_catalog_locale locale on locale.id = completeness.locale_id
