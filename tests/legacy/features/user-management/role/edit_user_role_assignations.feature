@@ -32,19 +32,3 @@ Feature: Edit a user groups and roles
     And I save the role
     And I should not see the text "There are unsaved changes."
     Then the row "Peter" should be checked
-
-  @jira https://akeneo.atlassian.net/browse/PIM-5201
-  Scenario: Successfully remove a role from the group page
-    Given I edit the "User" Role
-    When I visit the "Permissions" tab
-    And I grant rights to group System
-    And I revoke rights to resource Edit roles
-    And I save the Role
-    Then I should not see the text "There are unsaved changes."
-    When I logout
-    And I am logged in as "Mary"
-    And I am on the Role index page
-    Then I should not be able to access the edit "User" Role page
-    When I logout
-    And I am logged in as "Peter"
-    Then I am on the Role index page

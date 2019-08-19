@@ -29,18 +29,3 @@ Feature: Create and delete a user role
     When I click on the "Delete" action of the row which contains "Administrator"
     And I cancel the deletion
     And I should see the text "Administrator"
-
-  Scenario: Successfully display validation errors when creating or editing a user role
-    Given I am on the role creation page
-    When I save the role
-    Then I should see validation tooltip "This value should not be blank."
-    When I edit the "Administrator" role
-    And I fill in the following information:
-      | Role |  |
-    When I save the role
-    Then I should see validation tooltip "This value should not be blank."
-    When I edit the "Administrator" role
-    And I fill in the following information:
-      | Role | ThisIsARoleLabelWith27Chars |
-    When I save the role
-    Then I should see validation tooltip "This value is too long. It should have 25 characters or less."
