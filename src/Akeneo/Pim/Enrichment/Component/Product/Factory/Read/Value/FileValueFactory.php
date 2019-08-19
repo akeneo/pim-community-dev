@@ -7,9 +7,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
-use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
-use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 
 /**
  * @author    Anael Chardan <anael.chardan@akeneo.com>
@@ -18,47 +15,23 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
  */
 final class FileValueFactory implements ValueFactory
 {
-    /** @var FileInfoRepositoryInterface */
-    private $fileInfoRepository;
-
-    public function __construct(FileInfoRepositoryInterface $fileInfoRepository)
-    {
-        $this->fileInfoRepository = $fileInfoRepository;
-    }
-
     public function createWithoutCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
-        $fileInfo = null;
-
-        if (null !== $data) {
-            $fileInfo = $this->fileInfoRepository->findOneByIdentifier($data);
-
-            if ($fileInfo === null) {
-                throw InvalidPropertyException::validEntityCodeExpected(
-                    $attribute->code(),
-                    'fileinfo key',
-                    'The media does not exist',
-                    static::class,
-                    $data
-                );
-            }
-        }
-
         $attributeCode = $attribute->code();
 
         if ($attribute->isLocalizableAndScopable()) {
-            return MediaValue::scopableLocalizableValue($attributeCode, $fileInfo, $channelCode, $localeCode);
+            return MediaValue::scopableLocalizableValue($attributeCode, $data, $channelCode, $localeCode);
         }
 
         if ($attribute->isScopable()) {
-            return MediaValue::scopableValue($attributeCode, $fileInfo, $channelCode);
+            return MediaValue::scopableValue($attributeCode, $data, $channelCode);
         }
 
         if ($attribute->isLocalizable()) {
-            return MediaValue::localizableValue($attributeCode, $fileInfo, $localeCode);
+            return MediaValue::localizableValue($attributeCode, $data, $localeCode);
         }
 
-        return MediaValue::value($attributeCode, $fileInfo);
+        return MediaValue::value($attributeCode, $data);
     }
 
     public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data) : ValueInterface

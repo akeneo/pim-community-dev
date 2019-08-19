@@ -112,11 +112,7 @@ class WriteValueCollectionFactory
                             $localeCode = null;
                         }
 
-                        try {
-                            //TEMPORARY
-                            $values[] = $this->valueFactory->createByCheckingData($attribute, $channelCode, $localeCode, $data);
-                        } catch (InvalidPropertyException $exception) {
-                        }
+                        $values[] = $this->valueFactory->createByCheckingData($attribute, $channelCode, $localeCode, $data);
                     }
                 }
             }

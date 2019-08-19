@@ -9,14 +9,10 @@ services:
 
     akeneo.pim.enrichment.factory.read.value.file:
         class: Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\FileValueFactory
-        arguments:
-            $fileInfoRepository: '@akeneo_file_storage.repository.file_info'
         tags: ['akeneo.pim.enrichment.factory.read.product_value']
 
     akeneo.pim.enrichment.factory.read.value.image:
         class: Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\ImageValueFactory
-        arguments:
-            $fileInfoRepository: '@akeneo_file_storage.repository.file_info'
         tags: ['akeneo.pim.enrichment.factory.read.product_value']
 
     akeneo.pim.enrichment.factory.read.value.identifier:
