@@ -17,7 +17,7 @@ jobs:
             command: docker-compose pull
       - run:
           name: Setup tests results folder and log folder
-          command: mkdir -p var/tests/phpunit var/tests/behat var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots
+          command: mkdir -p var/tests/phpunit var/tests/behat var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots .nyc_output .coverage
       - run:
           name: Setup the parameters.yml files
           command: ./bin/docker/pim-setup.sh
@@ -235,6 +235,15 @@ jobs:
               sudo chmod -R 777 .
               for subdir in */*; do mv "${subdir}" "${subdir/\//_}"; done
           when: always
+      - run: 
+          name: Merge JS code coverage reports and output HTML
+          command: |
+            yarn instrument-merge
+            yarn instrument-report
+      - store_artifacts: 
+          path: .coverage
+      - store_artifacts:
+          path: .nyc_output
       - store_test_results:
           path: var/tests/behat
       - store_artifacts:
