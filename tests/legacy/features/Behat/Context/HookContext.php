@@ -269,7 +269,7 @@ class HookContext extends PimContext
      */
     public function writeJSCoverageReport(AfterScenarioScope $event)
     {
-        if ($event->getTestResult() !== StepResult::UNDEFINED || $event === null ) {
+        if ($event->getTestResult() !== StepResult::UNDEFINED || $event === null) {
             if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
                 try {
                     $script = 'return window.coverage;';
