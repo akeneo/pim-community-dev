@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8357: Fix styling of actions on history grid
+- PIM-8438: Add an explicit error message when an attribute label is too long
 - PIM-8629: Fix hiding of upload button on import profiles
 
 # 3.0.37 (2019-08-13)
