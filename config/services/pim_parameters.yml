@@ -17,7 +17,7 @@ parameters:
     websocket_port:       8080
 
     upload_dir:           '%kernel.project_dir%/app/uploads/product'
-    archive_dir:          '%kernel.project_dir%/app/archive'
+    archive_dir:          '%kernel.project_dir%/var/archive'
     catalog_storage_dir:  '%kernel.project_dir%/app/file_storage/catalog'
     tmp_storage_dir:      '/tmp/pim/file_storage'
     upload_tmp_dir:       '/tmp/pim/upload_tmp_dir'

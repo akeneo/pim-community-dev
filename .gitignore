@@ -12,7 +12,7 @@ web/log
 web/app_local.php
 app/AppKernel_local.php
 app/console_local
-app/archive/*
+var/archive/*
 var/*
 !var/SymfonyRequirements.php
 app/config/*_local.yml
