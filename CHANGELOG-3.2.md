@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes
+
+- PIM-8661: API: Fix getting values from a variant product when one of its ancestors has empty values
+
 # 3.2.4 (2019-08-14)
 
 # 3.2.3 (2019-08-13)

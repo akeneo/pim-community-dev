@@ -27,6 +27,8 @@ final class GetValuesAndPropertiesFromProductIdentifiers
 
     public function fetchByProductIdentifiers(array $productIdentifiers): array
     {
+        // TODO TIP-1231: remove the 'IF' conditions in the JSON_MERGE_PRESERVE statement,
+        // and simply keep 'COALESCE(xxx.raw_values, '{}')
         $query = <<<SQL
 SELECT
     p.id,
@@ -37,7 +39,11 @@ SELECT
     p.updated,
     f.code AS family_code,
     JSON_ARRAYAGG(g.code) AS group_codes,
-    JSON_MERGE(COALESCE(pm1.raw_values, '{}'), COALESCE(pm2.raw_values, '{}'), p.raw_values) as raw_values
+    JSON_MERGE_PRESERVE(
+       IF(pm1.raw_values = JSON_ARRAY(), '{}', COALESCE(pm1.raw_values, '{}')),
+       IF(pm2.raw_values = JSON_ARRAY(), '{}', COALESCE(pm2.raw_values, '{}')),
+       IF(p.raw_values = JSON_ARRAY(), '{}', COALESCE(p.raw_values, '{}'))
+   ) as raw_values
 FROM pim_catalog_product p
 LEFT JOIN pim_catalog_family f ON p.family_id = f.id
 LEFT JOIN pim_catalog_group_product pg ON p.id = pg.product_id
