@@ -34,7 +34,7 @@ class ProductLinkRulesValidator extends ConstraintValidator
     private function validateProductConditions(array $productConditions): ConstraintViolationListInterface
     {
         foreach ($productConditions['product_selections'] as $productCondition) {
-            $ruleEngineViolations = $this->ruleEngineValidatorACL->validateProductCondition($productCondition);
+            $ruleEngineViolations = $this->ruleEngineValidatorACL->validateProductSelection($productCondition);
         }
 
         return $ruleEngineViolations;

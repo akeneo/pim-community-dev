@@ -7,7 +7,6 @@ namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkR
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCondition;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -32,15 +31,16 @@ class RuleEngineValidatorACL implements RuleEngineValidatorACLInterface
     public function __construct(
         DenormalizerInterface $actionDenormalizer,
         ValidatorInterface $productConditionValidator,
-        ValidatorInterface $productAtionValidator
+        ValidatorInterface $productActionValidator
     ) {
         $this->productConditionValidator = $productConditionValidator;
-        $this->productAtionValidator = $productAtionValidator;
+        $this->productAtionValidator = $productActionValidator;
         $this->actionDenormalizer = $actionDenormalizer;
     }
 
-    public function validateProductCondition(array $normalizedProductCondition): ConstraintViolationListInterface
+    public function validateProductSelection(array $normalizedProductCondition): ConstraintViolationListInterface
     {
+        $normalizedProductCondition['scope'] = $normalizedProductCondition['channel'] ?? null;
         $productCondition = new ProductCondition($normalizedProductCondition);
 
         return $this->productConditionValidator->validate($productCondition);
@@ -57,7 +57,7 @@ class RuleEngineValidatorACL implements RuleEngineValidatorACLInterface
     {
         $productAction['type'] = $this->getRuleEngineActionType($productAction['mode']);
         $productAction['field'] = $productAction['attribute'];
-        $productAction['items'] = ['test'];
+        $productAction['items'] = ['VALIDATION_TEST'];
 
         return $this->actionDenormalizer->denormalize($productAction, ActionInterface::class);
     }
