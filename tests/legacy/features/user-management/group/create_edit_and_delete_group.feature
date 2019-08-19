@@ -11,7 +11,7 @@ Feature: Create a group
   Scenario: Successfully create and delete a user group
     Given I am on the user groups creation page
     And I fill in the following information:
-      | Name | DummyGroup1 |
+      | Name | DummyGroup |
     When I save the group
     Then there should be a "DummyGroup" user group
     When I am on the user groups page
