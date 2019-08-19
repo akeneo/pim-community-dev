@@ -41,7 +41,6 @@ final class ReferenceDataValueFactory implements ValueFactory
             return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
         }
 
-        //QUESTION: SHALL WE TEST IF IT EXISTS ?
         if (!is_string($data)) {
             throw InvalidPropertyTypeException::stringExpected(
                 $attribute->code(),

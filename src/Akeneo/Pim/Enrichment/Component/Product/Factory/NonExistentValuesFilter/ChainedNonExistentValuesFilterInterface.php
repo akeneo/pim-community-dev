@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter;
 
 /**
- * As we store the values in JSON, the consistency of teh data is not guaranteed.
+ * As we store the values in JSON, the consistency of the data is not guaranteed.
  * It means that attribute codes, option codes, locale codes, channels codes (etc) in the values
  * can reference data that are not existing any more.
  *

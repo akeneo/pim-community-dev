@@ -43,7 +43,6 @@ final class ReferenceDataCollectionValueFactory implements ValueFactory
             return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, []);
         }
 
-        //QUESTION: SHALL WE TEST IF IT EXISTS ?
         try {
             Assert::allString($data);
         } catch (\Exception $exception) {
