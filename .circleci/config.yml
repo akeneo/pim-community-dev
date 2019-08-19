@@ -240,6 +240,8 @@ jobs:
           command: |
             yarn instrument-merge
             yarn instrument-report
+      - store_artifacts:
+          path: coverage
       - store_artifacts: 
           path: .coverage
       - store_artifacts:
