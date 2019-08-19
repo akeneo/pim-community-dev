@@ -46,6 +46,10 @@ define(
                     return;
                 }
 
+                const { configuration } = this.getRoot().getFormData();
+
+                this.actions = this.filterByPermission(this.actions, configuration || {});
+
                 if (null === this.currentActionCode) {
                     this.setCurrentActionCode(_.first(this.actions).code);
                 }
@@ -56,6 +60,24 @@ define(
                 }));
 
                 return BaseForm.prototype.render.apply(this, arguments);
+            },
+
+            /**
+             * This function filters actions based on whether they are allowed to be shown. The allowedKey is defined
+             * on switcher-items and corresponds to a property in the import profile configuration.
+             *
+             * @param actions
+             * @param configuration
+             * @returns {*}
+             */
+            filterByPermission: function (actions, configuration) {
+                return actions.filter(({ allowedKey }) => {
+                    if (allowedKey === undefined || configuration[allowedKey] === undefined) {
+                        return true;
+                    }
+
+                    return configuration[allowedKey];
+                });
             },
 
             /**
