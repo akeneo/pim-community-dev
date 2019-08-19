@@ -383,6 +383,7 @@ class NavigationContext extends PimContext implements PageObjectAware
      */
     public function iRefreshCurrentPage()
     {
+        // @TODO write a report
         $this->getMainContext()->getSession()->reload();
         $this->wait();
     }

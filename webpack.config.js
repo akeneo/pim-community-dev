@@ -180,10 +180,9 @@ const webpackConfig = {
           loader: 'istanbul-instrumenter-loader',
           options: {
             esModules: true,
-            produceSourceMap: true,
-            preserveComments: true,
+            preserveComments: false,
             coverageVariable: 'coverage',
-            debug: true
+            compact: true
           }
         },
         enforce: 'post',

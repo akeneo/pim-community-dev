@@ -267,16 +267,24 @@ class HookContext extends PimContext
      *
      * @AfterScenario
      */
-    public function writeCoverageReport(AfterScenarioScope $event)
+    public function writeJSCoverageReport(AfterScenarioScope $event)
     {
         if ($event->getTestResult() !== StepResult::UNDEFINED) {
             if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
                 try {
-                    $script = 'console.log(JSON.stringify(window.coverage));';
+                    $script = 'return window.coverage;';
                     $coverage = $this->getSession()->evaluateScript($script);
-                    var_dump($coverage);
+
+                    // @TODO: randomise the filename in case of writing a report for the same scenario that contains page reloads
+                    $dir = './.coverage';
+                    $filename = strstr($event->getFeature()->getFile(), 'features/');
+                    $lineNum  = $event->getFeature()->getLine();
+                    $path = sprintf('%s/%s-%s.json', $dir, str_replace('/', '__', $filename), $lineNum);
+
+                    $fs = new \Symfony\Component\Filesystem\Filesystem();
+                    $fs->dumpFile($path, json_encode($coverage));
                 } catch (\Exception $e) {
-                    //
+                    var_dump($e->getMessage());
                 }
             }
         }
