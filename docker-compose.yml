@@ -21,7 +21,7 @@ services:
       - 'behat'
 
   fpm:
-    image: 'akeneo/pim-dev/php:7.2-fpm'
+    image: 'akeneo/pim-dev/php:7.2'
     environment:
       BEHAT_TMPDIR: '/srv/pim/var/cache/tmp'
       PHP_IDE_CONFIG: 'serverName=pim-ee-cli'

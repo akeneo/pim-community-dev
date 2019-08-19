@@ -70,6 +70,10 @@ RUN chmod +x /usr/local/bin/composer
 # Make XDEBUG activable at container start
 COPY docker/build/docker-php-entrypoint /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-php-entrypoint
+
+RUN chown www-data:www-data /etc/php/7.2/mods-available/xdebug.ini && \
+     sed -i "s~listen = /run/php/php7.2-fpm.sock~listen = 9000~g" /etc/php/7.2/fpm/pool.d/www.conf
+
 ENTRYPOINT ["/usr/local/bin/docker-php-entrypoint"]
 
 VOLUME /srv/pim
