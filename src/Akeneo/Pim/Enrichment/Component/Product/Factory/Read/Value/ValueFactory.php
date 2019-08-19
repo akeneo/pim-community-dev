@@ -15,16 +15,16 @@ use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 interface ValueFactory
 {
     /**
-     * Create the data by validating the data type.
+     * Create the value by validating the data type.
      * For example, it checks that an expected scalar is a indeed scalar.
      *
      * This is done to guarantee that data coming in to the domain are good.
-     * This validation has a non-negligeable cost though.
+     * This validation has a non-negligible cost though.
      */
     public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface;
 
     /**
-     * Create the data without validating the data type.
+     * Create the value without validating the data type.
      * For example, it will NOT check that the data for a text attribute is a scalar.
      *
      * It has been designed for performance purpose, as doing check on type when reading from database should not be done.

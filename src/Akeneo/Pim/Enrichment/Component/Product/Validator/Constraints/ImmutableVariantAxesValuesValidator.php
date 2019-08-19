@@ -24,12 +24,12 @@ class ImmutableVariantAxesValuesValidator extends ConstraintValidator
     /** @var EntityWithFamilyVariantAttributesProvider */
     private $attributesProvider;
 
-    /** @var \Akeneo\Pim\Enrichment\Component\Product\Factory\Read\WriteValueCollectionFactory */
+    /** @var WriteValueCollectionFactory */
     private $valueCollectionFactory;
 
     /**
-     * @param EntityWithFamilyVariantAttributesProvider                                          $attributesProvider
-     * @param \Akeneo\Pim\Enrichment\Component\Product\Factory\Read\WriteValueCollectionFactory $valueCollectionFactory
+     * @param EntityWithFamilyVariantAttributesProvider $attributesProvider
+     * @param WriteValueCollectionFactory $valueCollectionFactory
      */
     public function __construct(
         EntityWithFamilyVariantAttributesProvider $attributesProvider,

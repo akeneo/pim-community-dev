@@ -68,7 +68,7 @@ final class BooleanValueFactorySpec extends ObjectBehavior
         $value->shouldBeLike(ScalarValue::value('an_attribute', true));
     }
 
-    public function it_converts_to_boolean_type_the_value()
+    public function it_converts_a_value_to_boolean_type()
     {
         $attribute = $this->getAttribute(true, true);
         /** @var ScalarValue $value */
