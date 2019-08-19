@@ -9,11 +9,49 @@ import {localeUpdated, channelUpdated} from 'akeneopimenrichmentassetmanager/ass
 import {valuesUpdated} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';
 import {assetCollectionReducer, AssetCollectionState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/asset-collection';
 import {attributeListUpdated, Attribute} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/structure';
+import {ThemeProvider, ThemedStyledProps} from 'styled-components';
 
 const Form = require('pim/form');
 const fetcherRegistry = require('pim/fetcher-registry');
 const UserContext = require('pim/user-context');
 
+type AkeneoTheme = {
+  color: {
+    grey60: string,
+    grey80: string,
+    grey100: string,
+    grey120: string,
+    grey140: string,
+    purple100: string,
+    yellow100: string,
+  },
+  fontSize: {
+    bigger: string,
+    big: string,
+    default: string,
+    small: string,
+  }
+}
+
+export type ThemedProps<P> = ThemedStyledProps<P, AkeneoTheme>;
+
+const akeneoTheme: AkeneoTheme = {
+  color: {
+    grey60: '#f9f9fb',
+    grey80: '#d9dde2',
+    grey100: '#a1a9b7',
+    grey120: '#67768a',
+    grey140: '#11324d',
+    purple100: '#9452ba',
+    yellow100: '#f9b53f',
+  },
+  fontSize: {
+    bigger: '17px',
+    big: '15px',
+    default: '13px',
+    small: '11px',
+  }
+}
 
 class AssetTabForm extends (Form as {new (config: any): any}) {
   attributes = [];
@@ -41,7 +79,7 @@ class AssetTabForm extends (Form as {new (config: any): any}) {
     });
 
     this.store.dispatch(localeUpdated(UserContext.get('catalogLocale')));
-    this.store.dispatch(channelUpdated(UserContext.get('scopeLocale')));
+    this.store.dispatch(channelUpdated(UserContext.get('catalogScope')));
 
     return $.when(
       Form.prototype.configure.apply(this, arguments),
@@ -54,7 +92,9 @@ class AssetTabForm extends (Form as {new (config: any): any}) {
   render() {
     ReactDOM.render(
       (<Provider store={this.store}>
-        <List />
+        <ThemeProvider theme={akeneoTheme}>
+          <List />
+        </ThemeProvider>
       </Provider>),
       this.el
     );

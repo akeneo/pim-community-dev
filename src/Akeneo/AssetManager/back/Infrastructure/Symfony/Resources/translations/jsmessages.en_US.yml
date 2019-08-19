@@ -3,6 +3,10 @@
 #  akeneo_asset_manager_asset_family_edit: Edit an asset family
 #  akeneo_asset_manager_asset_edit: Edit an asset
 pim_asset_manager:
+  asset_collection:
+    asset_count:
+      '{{ count }} asset|{{ count }} assets'
+    add_asset: 'Add asset'
 #  app:
 #    image:
 #      wide:
@@ -91,7 +95,7 @@ pim_asset_manager:
 #      title: You have no user group
 #      subtitle: To manage permission on asset family you need to have at least one user group.
 #      link: Clic here to add your first user group
- asset:
+  asset:
 #    validation:
 #      limit_reached: 'You cannot create the asset "{{ %asset_label% }}" because you have reached the limit of {{ %limit% }} assets for this asset family'
 #      code:
@@ -103,8 +107,8 @@ pim_asset_manager:
 #    no_result:
 #      title: There are no result for your search
 #      subtitle: Try again with new search criteria.
-   selector:
-     no_value: Click here to select an asset.
+    selector:
+      no_value: Click here to select an asset.
 #    error:
 #      value: Oops, it seems that the rendering of the "{{ fieldName }}" field failed. See the developer console for more details.
 #    button:
@@ -198,7 +202,7 @@ pim_asset_manager:
 #        fail: An error occured during the deletion of all this asset family's assets
 #    completeness:
 #      label: Complete
-#  attribute:
+  attribute:
 #    validation:
 #      limit_reached: 'You cannot create the attribute "{{ %attribute_label% }}" because you have reached the limit of {{ %limit% }} attributes for this asset family'
 #    default:
@@ -213,7 +217,7 @@ pim_asset_manager:
 #      option: Single option
 #      option_collection: Multiple options
 #      number: Number
-#    is_required: required for completeness
+    is_required: required for completeness
 #    no_data:
 #      title: There are no custom attributes for {{ entityLabel }}
 #      subtitle: Click on the button "Add an attribute" to configure your first custom attribute
