@@ -16,6 +16,7 @@ namespace Akeneo\Pim\Enrichment\Asset\Component;
 use Akeneo\Asset\Bundle\AttributeType\AttributeTypes;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetExistingReferenceDataCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValue;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -26,6 +27,14 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
  */
 final class ReadAssetCollectionValueFactory implements ValueFactory
 {
+    /** @var GetExistingReferenceDataCodes */
+    private $getExistingReferenceDataCodes;
+
+    public function __construct(GetExistingReferenceDataCodes $getExistingReferenceDataCodes)
+    {
+        $this->getExistingReferenceDataCodes = $getExistingReferenceDataCodes;
+    }
+
     public function createWithoutCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
         $attributeCode = $attribute->code();
@@ -70,9 +79,10 @@ final class ReadAssetCollectionValueFactory implements ValueFactory
             }
         }
 
-        //SHALL WE TEST THE EXISTENCE OF ASSETS?
+        $referenceDataName = $attribute->properties()['reference_data_name'];
+        $existingData = $this->getExistingReferenceDataCodes->fromReferenceDataNameAndCodes($referenceDataName, $data);
 
-        return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
+        return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, $existingData);
     }
 
     public function supportedAttributeType(): string

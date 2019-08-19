@@ -1,9 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Enrichment\Asset\EnrichmentComponent;
+namespace Specification\Akeneo\Pim\Enrichment\Asset\Component;
 
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\ValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetExistingReferenceDataCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValue;
 use Akeneo\Asset\Bundle\AttributeType\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
@@ -16,6 +17,11 @@ use PhpSpec\ObjectBehavior;
  */
 final class ReadAssetCollectionValueFactorySpec extends ObjectBehavior
 {
+    public function let(GetExistingReferenceDataCodes $getExistingReferenceDataCodes)
+    {
+        $this->beConstructedWith($getExistingReferenceDataCodes);
+    }
+
     public function it_is_a_read_value_factory()
     {
         $this->shouldBeAnInstanceOf(ValueFactory::class);
@@ -26,37 +32,42 @@ final class ReadAssetCollectionValueFactorySpec extends ObjectBehavior
         $this->supportedAttributeType()->shouldReturn(AttributeTypes::ASSETS_COLLECTION);
     }
 
-    public function it_supports_null()
+    public function it_supports_null(GetExistingReferenceDataCodes $getExistingReferenceDataCodes)
     {
         $attribute = $this->getAttribute(true, true);
+        $getExistingReferenceDataCodes->fromReferenceDataNameAndCodes('color', []);
         $value = $this->createByCheckingData($attribute, 'ecommerce', 'fr_FR', null);
         $value->shouldBeLike(ReferenceDataCollectionValue::scopableLocalizableValue('an_attribute', [], 'ecommerce', 'fr_FR'));
     }
 
-    public function it_creates_a_localizable_and_scopable_value()
+    public function it_creates_a_localizable_and_scopable_value(GetExistingReferenceDataCodes $getExistingReferenceDataCodes)
     {
         $attribute = $this->getAttribute(true, true);
+        $getExistingReferenceDataCodes->fromReferenceDataNameAndCodes('color', ['michel', 'sardou']);
         $value = $this->createWithoutCheckingData($attribute, 'ecommerce', 'fr_FR', ['michel', 'sardou']);
         $value->shouldBeLike(ReferenceDataCollectionValue::scopableLocalizableValue('an_attribute', ['michel', 'sardou'], 'ecommerce', 'fr_FR'));
     }
 
-    public function it_creates_a_localizable_value()
+    public function it_creates_a_localizable_value(GetExistingReferenceDataCodes $getExistingReferenceDataCodes)
     {
         $attribute = $this->getAttribute(true, false);
+        $getExistingReferenceDataCodes->fromReferenceDataNameAndCodes('color', ['michel', 'sardou']);
         $value = $this->createWithoutCheckingData($attribute, null, 'fr_FR', ['michel', 'sardou']);
         $value->shouldBeLike(ReferenceDataCollectionValue::localizableValue('an_attribute', ['michel', 'sardou'], 'fr_FR'));
     }
 
-    public function it_creates_a_scopable_value()
+    public function it_creates_a_scopable_value(GetExistingReferenceDataCodes $getExistingReferenceDataCodes)
     {
         $attribute = $this->getAttribute(false, true);
+        $getExistingReferenceDataCodes->fromReferenceDataNameAndCodes('color', ['michel', 'sardou']);
         $value = $this->createWithoutCheckingData($attribute, 'ecommerce', null, ['michel', 'sardou']);
         $value->shouldBeLike(ReferenceDataCollectionValue::scopableValue('an_attribute', ['michel', 'sardou'], 'ecommerce'));
     }
 
-    public function it_creates_a_non_localizable_and_non_scopable_value()
+    public function it_creates_a_non_localizable_and_non_scopable_value(GetExistingReferenceDataCodes $getExistingReferenceDataCodes)
     {
         $attribute = $this->getAttribute(false, false);
+        $getExistingReferenceDataCodes->fromReferenceDataNameAndCodes('color', ['michel', 'sardou']);
         $value = $this->createWithoutCheckingData($attribute, null, null, ['michel', 'sardou']);
         $value->shouldBeLike(ReferenceDataCollectionValue::value('an_attribute', ['michel', 'sardou']));
     }
