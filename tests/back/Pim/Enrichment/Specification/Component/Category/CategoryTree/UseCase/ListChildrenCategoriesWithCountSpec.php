@@ -1,9 +1,7 @@
 <?php
 
-namespace Specification\Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Usecase;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase;
 
-use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\UserManagement\Component\Model\UserInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase\ListChildrenCategoriesWithCount;
 

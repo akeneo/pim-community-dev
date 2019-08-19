@@ -92,6 +92,9 @@ jobs:
                 name: PhpSpec
                 command: docker-compose exec -T fpm vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
           - run:
+                name: Find non executed PhpSpec files
+                command: ./.circleci/find_non_executed_phpspec.sh
+          - run:
                 name: PhpCsFixer
                 command: docker-compose exec -T fpm vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
                 when: always

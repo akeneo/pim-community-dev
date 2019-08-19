@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Enrichment\Specification\Component\Product\Connector\ReadModel;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModelList;

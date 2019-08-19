@@ -5,7 +5,7 @@ namespace spec\Akeneo\Tool\Component\Connector\Reader\File;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 
-class FileIteratorSpec extends ObjectBehavior
+class FlatFileIteratorSpec extends ObjectBehavior
 {
     function let()
     {
@@ -74,7 +74,6 @@ Est'
             [
                 'CAT-001',
                 'boots',
-                'caterpillar_boots',
                 'winter_collection',
                 'Caterpillar 1',
                 'Model 1 boots',
@@ -131,13 +130,17 @@ Est'
 
     private function getPath()
     {
-        return __DIR__ . DIRECTORY_SEPARATOR . '..' .
+        return __DIR__ .
+               DIRECTORY_SEPARATOR  . '..' .
                DIRECTORY_SEPARATOR  . '..' .
                DIRECTORY_SEPARATOR  . '..'.
                DIRECTORY_SEPARATOR  . '..'.
                DIRECTORY_SEPARATOR  . '..'.
                DIRECTORY_SEPARATOR  . '..' .
                DIRECTORY_SEPARATOR  . '..' .
+               DIRECTORY_SEPARATOR  . '..' .
+               DIRECTORY_SEPARATOR  . 'tests' .
+               DIRECTORY_SEPARATOR  . 'legacy' .
                DIRECTORY_SEPARATOR  . 'features' .
                DIRECTORY_SEPARATOR  . 'Context' .
                DIRECTORY_SEPARATOR  . 'fixtures';
