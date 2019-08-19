@@ -15,6 +15,7 @@ app/console_local
 var/archive/*
 var/*
 !var/SymfonyRequirements.php
+!var/PimRequirements.php
 app/config/*_local.yml
 app/import/*
 app/export/*

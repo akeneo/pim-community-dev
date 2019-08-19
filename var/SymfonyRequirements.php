@@ -1,5 +1,7 @@
 <?php
 
+// TODO: This file should not be in var/. Handle this properly via TIP-1232
+
 /*
  * This file is part of the Symfony package.
  *
