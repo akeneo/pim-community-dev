@@ -191,17 +191,6 @@ const List = ({values, context}: ListProps) => {
           </SectionTitle>
           <div>
             <AssetCollection assetFamilyIdentifier={value.attribute.reference_data_name} assetCodes={value.data} context={context} />
-            {/* <AssetSelector
-              value={value.data}
-              assetFamilyIdentifier={createIdentifier(value.attribute.reference_data_name)}
-              multiple={true}
-              readOnly={!value.editable}
-              compact={false}
-              locale={createLocaleReference(context.locale)}
-              channel={createChannelReference(context.channel)}
-              placeholder={'nice'}
-              onChange={() => {}}
-            /> */}
           </div>
         </React.Fragment>
       ))}

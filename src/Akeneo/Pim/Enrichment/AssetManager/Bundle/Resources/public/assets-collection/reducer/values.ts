@@ -5,7 +5,7 @@ import {AssetCollectionState} from 'akeneopimenrichmentassetmanager/assets-colle
 
 export type Meta = {
   attributes_for_this_level: AttributeCode[];
-  level?: number;
+  level: number | null;
 };
 export type LocaleReference = LocaleCode | null;
 export type ChannelReference = ChannelCode | null;
@@ -18,7 +18,7 @@ export type LegacyValue = {
   data: any;
   scope: ChannelReference;
   locale: LocaleReference;
-  attribute: string;
+  attribute: AttributeCode;
 };
 export type LegacyValueCollection = {
   [key: string]: LegacyValue[];
