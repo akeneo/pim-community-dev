@@ -13,14 +13,13 @@ Feature: Create a group
     And I fill in the following information:
       | Name | DummyGroup1 |
     When I save the group
-    Then there should be a "DummyGroup1" user group
-    When I am on the user groups page
-    Then the grid should contain 4 elements
-    And I should see the text "DummyGroup1"
+    Then there should be a "DummyGroup" user group
     When I am on the user groups page
     Then the grid should contain 4 elements
     And I should see the text "DummyGroup"
-    But I should not see the text "DummyGroup1"
+    When I am on the user groups page
+    Then the grid should contain 4 elements
+    And I should see the text "DummyGroup"
     When I click on the "Delete" action of the row which contains "DummyGroup"
     Then I should see a confirm dialog with the following content:
       | title   | Confirm deletion                            |
