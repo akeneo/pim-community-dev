@@ -1,0 +1,12 @@
+#!/bin/sh
+set -e
+
+XDEBUG_INI_PATH="/etc/php/7.2/mods-available/xdebug.ini"
+
+if [ "1" = "${XDEBUG_ENABLED}" ]; then
+    echo "zend_extension=xdebug.so" > ${XDEBUG_INI_PATH}
+else
+    echo "" > ${XDEBUG_INI_PATH}
+fi
+
+exec "$@"

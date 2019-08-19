@@ -26,27 +26,13 @@ help:
 include make-file/*.mk
 
 ## Build docker image
-.PHONY: build-dev-cli
-build-dev-cli:
-	DOCKER_BUILDKIT=1 docker build --pull . --tag akeneo/pim-dev/php:7.2 --target cli-dev --build-arg BASE_IMAGE=php:7.2-alpine
-
-.PHONY: build-dev-fpm
-build-dev-fpm:
-	DOCKER_BUILDKIT=1 docker build --pull . --tag akeneo/pim-dev/php:7.2-fpm --target fpm-dev --build-arg BASE_IMAGE=php:7.2-fpm-alpine
-
 .PHONY: build-dev
-build-dev: build-dev-cli build-dev-fpm
-
-.PHONY: build-prod-cli
-build-prod-cli:
-	DOCKER_BUILDKIT=1 docker build --pull . --tag eu.gcr.io/akeneo-cloud:${IMAGE_TAG} --target prod --build-arg BASE_IMAGE=php:7.2-alpine
-
-.PHONY: build-prod-fpm
-build-prod-fpm:
-	DOCKER_BUILDKIT=1 docker build --pull . --tag eu.gcr.io/akeneo-cloud:${IMAGE_TAG}-fpm --target prod --build-arg BASE_IMAGE=php:7.2-fpm-alpine
+build-dev:
+	DOCKER_BUILDKIT=1 docker build --progress=plain --pull --tag akeneo/pim-dev/php:7.2 --target dev .
 
 .PHONY: build-prod
-build-prod: build-prod-cli build-prod-fpm
+build-prod:
+	DOCKER_BUILDKIT=1 docker build --progress=plain --pull --tag eu.gcr.io/akeneo-cloud:${IMAGE_TAG} --target prod .
 
 .PHONY: build
 build: build-dev build-prod

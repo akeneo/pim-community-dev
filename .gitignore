@@ -37,7 +37,7 @@ phpcs.xml
 phpspec.yml
 npm-debug.log
 /docker/*
-!/docker/php
+!/docker/build
 !/docker/akeneo.conf
 !/docker/akeneo-behat.conf
 !/docker/httpd.conf
