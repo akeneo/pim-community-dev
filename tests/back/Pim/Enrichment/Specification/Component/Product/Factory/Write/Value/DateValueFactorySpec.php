@@ -1,11 +1,11 @@
 <?php
 
-namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory\Value;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\DateValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\DateValueFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\DateValue;
 

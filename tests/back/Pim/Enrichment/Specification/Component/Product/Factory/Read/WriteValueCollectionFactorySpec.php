@@ -13,6 +13,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\OptionValueFactor
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\TextAreaValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\TextValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueCollectionFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\TransformRawValuesCollections;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
@@ -20,9 +21,9 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 
-class ValueCollectionFactorySpec extends ObjectBehavior
+class WriteValueCollectionFactorySpec extends ObjectBehavior
 {
     function let(
         GetAttributes $getAttributeByCodes,
@@ -51,7 +52,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(ValueCollectionFactory::class);
+        $this->shouldHaveType(WriteValueCollectionFactory::class);
     }
 
     function it_creates_a_values_collection_from_the_storage_format_from_single(
@@ -120,8 +121,8 @@ class ValueCollectionFactorySpec extends ObjectBehavior
 
         $actualValues = $this->createFromStorageFormat($rawValues);
 
-        $actualValues->shouldReturnAnInstanceOf(ReadValueCollection::class);
-        $actualValues->shouldBeLike(new ReadValueCollection(
+        $actualValues->shouldReturnAnInstanceOf(WriteValueCollection::class);
+        $actualValues->shouldBeLike(new WriteValueCollection(
             [
                 ScalarValue::value('sku', 'foo'),
                 ScalarValue::scopableLocalizableValue('description', 'a text area for ecommerce in English', 'ecommerce', 'en_US'),
@@ -148,7 +149,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         $chainedObsoleteValueFilter->filterAll(OnGoingFilteredRawValues::fromNonFilteredValuesCollectionIndexedByType([]))->willReturn(new OnGoingFilteredRawValues([], []));
 
 
-        $this->createFromStorageFormat($rawValues)->shouldBeLike(new ReadValueCollection([]));
+        $this->createFromStorageFormat($rawValues)->shouldBeLike(new WriteValueCollection([]));
     }
 
     function it_skips_unknown_attributes_when_there_are_multiple_product(
@@ -198,8 +199,8 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         $chainedObsoleteValueFilter->filterAll($onGoingNonFilteredRawValues)->willReturn($onGoingFilteredRawValues);
 
         $this->createMultipleFromStorageFormat($rawValueCollection)->shouldBeLike([
-            'productB' => new ReadValueCollection([OptionValue::value('color', 'red')]),
-            'productA' => new ReadValueCollection([]),
+            'productB' => new WriteValueCollection([OptionValue::value('color', 'red')]),
+            'productA' => new WriteValueCollection([]),
         ]);
     }
 
@@ -258,7 +259,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
             new OnGoingFilteredRawValues($filteredRawValues, [])
         );
 
-        $this->createFromStorageFormat($rawValues)->shouldBeLike(new ReadValueCollection([]));
+        $this->createFromStorageFormat($rawValues)->shouldBeLike(new WriteValueCollection([]));
     }
 
     function it_does_not_filter_falsy_values(
@@ -336,9 +337,9 @@ class ValueCollectionFactorySpec extends ObjectBehavior
 
         $actualValues = $this->createFromStorageFormat($rawValues);
 
-        $actualValues->shouldBeAnInstanceOf(ReadValueCollection::class);
+        $actualValues->shouldBeAnInstanceOf(WriteValueCollection::class);
         $actualValues->shouldHaveCount(3);
-        $actualValues->shouldBeLike(new ReadValueCollection([
+        $actualValues->shouldBeLike(new WriteValueCollection([
             ScalarValue::value('number', 0.0),
             ScalarValue::value('text', '0'),
             ScalarValue::value('yes_no', false),

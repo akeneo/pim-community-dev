@@ -80,14 +80,14 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid\FetchProductModelRowsFromCodes'
         arguments:
             - '@database_connection'
-            - '@pim_catalog.factory.value_collection'
+            - '@akeneo.pim.enrichment.factory.read.write_value_collection'
             - '@akeneo.pim.enrichment.product.grid.query.product_model_images_from_codes'
 
     akeneo.pim.enrichment.product.grid.query.fetch_product_rows_from_identifiers:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid\FetchProductRowsFromIdentifiers'
         arguments:
             - '@database_connection'
-            - '@pim_catalog.factory.value_collection'
+            - '@akeneo.pim.enrichment.factory.read.write_value_collection'
             -
     akeneo.pim.enrichment.product.grid.query.add_additional_product_properties:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Grid\Query\AddAdditionalProductPropertiesRegistry'
@@ -104,7 +104,7 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid\ProductModelImagesFromCodes'
         arguments:
             - '@database_connection'
-            - '@pim_catalog.factory.value_collection'
+            - '@akeneo.pim.enrichment.factory.read.write_value_collection'
 
     akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_family_codes:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector\Writer\File\Flat\GenerateHeadersFromFamilyCodes'

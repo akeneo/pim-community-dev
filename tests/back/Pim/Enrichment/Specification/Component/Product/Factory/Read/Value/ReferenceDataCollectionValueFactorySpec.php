@@ -3,10 +3,9 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value;
 
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\ReadValueFactory;
-use Akeneo\Pim\Enrichment\Component\Product\Model\PriceCollection;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPrice;
-use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\ValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValue;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use PhpSpec\ObjectBehavior;
@@ -20,7 +19,7 @@ final class ReferenceDataCollectionValueFactorySpec extends ObjectBehavior
 {
     public function it_is_a_read_value_factory()
     {
-        $this->shouldBeAnInstanceOf(ReadValueFactory::class);
+        $this->shouldBeAnInstanceOf(ValueFactory::class);
     }
 
     public function it_supports_reference_data_attribute_type()
@@ -28,44 +27,39 @@ final class ReferenceDataCollectionValueFactorySpec extends ObjectBehavior
         $this->supportedAttributeType()->shouldReturn(AttributeTypes::REFERENCE_DATA_MULTI_SELECT);
     }
 
+    public function it_supports_null()
+    {
+        $attribute = $this->getAttribute(true, true);
+        $value = $this->createByCheckingData($attribute, 'ecommerce', 'fr_FR', null);
+        $value->shouldBeLike(ReferenceDataCollectionValue::scopableLocalizableValue('an_attribute', [], 'ecommerce', 'fr_FR'));
+    }
+
     public function it_creates_a_localizable_and_scopable_value()
     {
         $attribute = $this->getAttribute(true, true);
-        /** @var ScalarValue $value */
-        $value = $this->create($attribute, 'ecommerce', 'fr_FR', ['blue', 'green']);
-        $value->isLocalizable()->shouldBe(true);
-        $value->isScopable()->shouldBe(true);
-        $value->getData()->shouldBeLike(['blue', 'green']);
+        $value = $this->createWithoutCheckingData($attribute, 'ecommerce', 'fr_FR', ['blue', 'green']);
+        $value->shouldBeLike(ReferenceDataCollectionValue::scopableLocalizableValue('an_attribute', ['blue', 'green'], 'ecommerce', 'fr_FR'));
     }
 
     public function it_creates_a_localizable_value()
     {
         $attribute = $this->getAttribute(true, false);
-        /** @var ScalarValue $value */
-        $value = $this->create($attribute, null, 'fr_FR', ['blue', 'green']);
-        $value->isLocalizable()->shouldBe(true);
-        $value->isScopable()->shouldBe(false);
-        $value->getData()->shouldBeLike(['blue', 'green']);
+        $value = $this->createWithoutCheckingData($attribute, null, 'fr_FR', ['blue', 'green']);
+        $value->shouldBeLike(ReferenceDataCollectionValue::localizableValue('an_attribute', ['blue', 'green'], 'fr_FR'));
     }
 
     public function it_creates_a_scopable_value()
     {
         $attribute = $this->getAttribute(false, true);
-        /** @var ScalarValue $value */
-        $value = $this->create($attribute, 'ecommerce', null, ['blue', 'green']);
-        $value->isLocalizable()->shouldBe(false);
-        $value->isScopable()->shouldBe(true);
-        $value->getData()->shouldBeLike(['blue', 'green']);
+        $value = $this->createWithoutCheckingData($attribute, 'ecommerce', null, ['blue', 'green']);
+        $value->shouldBeLike(ReferenceDataCollectionValue::scopableValue('an_attribute', ['blue', 'green'], 'ecommerce'));
     }
 
     public function it_creates_a_non_localizable_and_non_scopable_value()
     {
         $attribute = $this->getAttribute(false, false);
-        /** @var ScalarValue $value */
-        $value = $this->create($attribute, null, null, ['blue', 'green']);
-        $value->isLocalizable()->shouldBe(false);
-        $value->isScopable()->shouldBe(false);
-        $value->getData()->shouldBeLike(['blue', 'green']);
+        $value = $this->createWithoutCheckingData($attribute, null, null, ['blue', 'green']);
+        $value->shouldBeLike(ReferenceDataCollectionValue::value('an_attribute', ['blue', 'green']));
     }
 
     private function getAttribute(bool $isLocalizable, bool $isScopable): Attribute

@@ -1,12 +1,12 @@
 <?php
 
-namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory\Value;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value;
 
 use Akeneo\Channel\Component\Query\FindActivatedCurrenciesInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\PriceFactory;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\PriceCollectionValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\PriceCollectionValueFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\PriceCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;

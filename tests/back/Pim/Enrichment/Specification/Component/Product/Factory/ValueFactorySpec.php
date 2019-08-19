@@ -3,7 +3,7 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory;
 
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\ValueFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;

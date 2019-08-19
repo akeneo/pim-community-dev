@@ -7,6 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 
@@ -15,7 +16,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class FileValueFactory implements ReadValueFactory
+final class FileValueFactory implements ValueFactory
 {
     /** @var FileInfoRepositoryInterface */
     private $fileInfoRepository;
@@ -25,18 +26,22 @@ final class FileValueFactory implements ReadValueFactory
         $this->fileInfoRepository = $fileInfoRepository;
     }
 
-    public function create(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
+    public function createWithoutCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
-        $fileInfo = $this->fileInfoRepository->findOneByIdentifier($data);
+        $fileInfo = null;
 
-        if (null === $fileInfo) {
-            throw InvalidPropertyException::validEntityCodeExpected(
-                $attribute->code(),
-                'fileinfo key',
-                'The media does not exist',
-                static::class,
-                $data
-            );
+        if (null !== $data) {
+            $fileInfo = $this->fileInfoRepository->findOneByIdentifier($data);
+
+            if ($fileInfo === null) {
+                throw InvalidPropertyException::validEntityCodeExpected(
+                    $attribute->code(),
+                    'fileinfo key',
+                    'The media does not exist',
+                    static::class,
+                    $data
+                );
+            }
         }
 
         $attributeCode = $attribute->code();
@@ -54,6 +59,11 @@ final class FileValueFactory implements ReadValueFactory
         }
 
         return MediaValue::value($attributeCode, $fileInfo);
+    }
+
+    public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data) : ValueInterface
+    {
+        return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
     }
 
     public function supportedAttributeType(): string
