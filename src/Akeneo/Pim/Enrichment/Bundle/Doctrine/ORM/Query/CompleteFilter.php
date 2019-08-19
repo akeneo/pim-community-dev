@@ -36,8 +36,8 @@ class CompleteFilter implements CompleteFilterInterface
 SELECT
     channel.code AS channel_code,
     locale.code AS locale_code,
-    CASE WHEN (completeness.ratio = 100) THEN 1 ELSE 0 END AS complete, 
-    CASE WHEN (completeness.ratio < 100) THEN 1 ELSE 0 END AS incomplete
+    CASE WHEN (completeness.missing_count = 0) THEN 1 ELSE 0 END AS complete,
+    CASE WHEN (completeness.missing_count > 0) THEN 1 ELSE 0 END AS incomplete
 FROM pim_catalog_product_model root_product_model
 INNER JOIN pim_catalog_product_model sub_product_model ON root_product_model.id = sub_product_model.parent_id
 INNER JOIN pim_catalog_product product ON sub_product_model.id = product.product_model_id
@@ -51,8 +51,8 @@ SQL;
 SELECT
     channel.code AS channel_code,
     locale.code AS locale_code,
-    CASE WHEN (completeness.ratio = 100) THEN 1 ELSE 0 END AS complete, 
-    CASE WHEN (completeness.ratio < 100) THEN 1 ELSE 0 END AS incomplete
+    CASE WHEN (completeness.missing_count = 0) THEN 1 ELSE 0 END AS complete,
+    CASE WHEN (completeness.missing_count > 0) THEN 1 ELSE 0 END AS incomplete
 FROM pim_catalog_product_model root_product_model
 INNER JOIN pim_catalog_product product ON root_product_model.id = product.product_model_id
 INNER JOIN pim_catalog_completeness completeness ON product.id = completeness.product_id

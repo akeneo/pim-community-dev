@@ -171,7 +171,7 @@ SQL;
             SELECT 
                 pm.code,
                 COUNT(p_child.id) AS nb_children,
-                SUM(IF(completeness.ratio = 100, 1, 0)) AS nb_children_complete
+                SUM(IF(completeness.missing_count = 0, 1, 0)) AS nb_children_complete
             FROM 
                 pim_catalog_product_model pm
                 LEFT JOIN pim_catalog_product_model pm_child ON pm_child.parent_id = pm.id

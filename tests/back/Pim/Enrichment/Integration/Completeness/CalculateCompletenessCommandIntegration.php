@@ -63,7 +63,6 @@ class CalculateCompletenessCommandIntegration extends AbstractCompletenessTestCa
     private function removeAllCompletenesses($product)
     {
         $this->get('database_connection')->executeQuery('DELETE FROM pim_catalog_completeness');
-        $this->get('database_connection')->executeQuery('DELETE FROM pim_catalog_completeness_missing_attribute');
 
         $this->get('pim_catalog.elasticsearch.indexer.product')->index($product);
     }

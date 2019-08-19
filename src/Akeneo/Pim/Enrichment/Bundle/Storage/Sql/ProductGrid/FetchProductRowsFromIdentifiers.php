@@ -257,7 +257,7 @@ SQL;
         $sql = <<<SQL
             SELECT 
                 p.identifier,
-                c.ratio
+                FLOOR(100 * (c.required_count - c.missing_count) / c.required_count) AS ratio
             FROM
                 pim_catalog_product p
                 JOIN pim_catalog_completeness c ON c.product_id = p.id
