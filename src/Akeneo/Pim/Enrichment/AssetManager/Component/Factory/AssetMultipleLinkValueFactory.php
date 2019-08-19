@@ -18,7 +18,7 @@ use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetMultipleLinkType;
 use Akeneo\Pim\Enrichment\AssetManager\Component\Value\AssetMultipleLinkValue;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\AbstractValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\AbstractValueFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 

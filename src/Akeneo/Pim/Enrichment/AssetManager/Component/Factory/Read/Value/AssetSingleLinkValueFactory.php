@@ -15,17 +15,18 @@ namespace Akeneo\Pim\Enrichment\AssetManager\Component\Factory\Read\Value;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetSingleLinkType;
 use Akeneo\Pim\Enrichment\AssetManager\Component\Value\AssetSingleLinkValue;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\ReadValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 /**
  * @author    Anael Chardan <anael.chardan@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-final class AssetSingleLinkValueFactory implements ReadValueFactory
+final class AssetSingleLinkValueFactory implements ValueFactory
 {
-    public function create(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
+    public function createWithoutCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
         $attributeCode = $attribute->code();
         $data = AssetCode::fromString($data);
@@ -43,6 +44,23 @@ final class AssetSingleLinkValueFactory implements ReadValueFactory
         }
 
         return AssetSingleLinkValue::value($attributeCode, $data);
+    }
+
+    public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
+    {
+        if (null === $data) {
+            return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
+        }
+
+        if (!is_string($data)) {
+            throw InvalidPropertyTypeException::stringExpected(
+                $attribute->getCode(),
+                static::class,
+                $data
+            );
+        }
+
+        return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
     }
 
     public function supportedAttributeType(): string

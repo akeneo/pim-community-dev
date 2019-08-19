@@ -11,7 +11,7 @@
 
 namespace Akeneo\Pim\Enrichment\ReferenceEntity\Component\Factory;
 
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\AbstractValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\AbstractValueFactory;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityType;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Value\ReferenceEntityValue;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;

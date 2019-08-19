@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace AkeneoTestEnterprise\Pim\Enrichment\ReferenceEntity\EndToEnd;
 
-use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityType;
@@ -203,7 +203,7 @@ final class GetProductsLinkedToARecordActionIntegration extends TestCase
     private function withLinkedProduct(string $identifier): self
     {
         /** @var WriteValueCollectionFactory $valueCollectionFactory */
-        $valueCollectionFactory = $this->get('pim_catalog.factory.value_collection');
+        $valueCollectionFactory = $this->get('akeneo.pim.enrichment.factory.read.write_value_collection');
         $valueCollection = $valueCollectionFactory->createFromStorageFormat(
             [
                 $this->sku->getCode()           => [
@@ -249,7 +249,7 @@ final class GetProductsLinkedToARecordActionIntegration extends TestCase
         $this->get('pim_catalog.saver.family_variant')->save($familyVariant);
 
         /** @var WriteValueCollectionFactory $valueCollectionFactory */
-        $valueCollectionFactory = $this->get('pim_catalog.factory.value_collection');
+        $valueCollectionFactory = $this->get('akeneo.pim.enrichment.factory.read.write_value_collection');
         $valueCollection = $valueCollectionFactory->createFromStorageFormat(
             [
                 $this->attributeLink->getCode() => [

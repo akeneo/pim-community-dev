@@ -135,6 +135,10 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProductCodesByProduct',
         'Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorRegistry',
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer',
+        'Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueFactory',
+        'Akeneo\Pim\Enrichment\Component\Product\Factory\Read\WriteValueCollectionFactory',
+        'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute',
+        'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes',
 
         // TIP-1004: WidgetInterface located in Platform is used in multiple contexts
         'Akeneo\Platform\Bundle\DashboardBundle\Widget\WidgetInterface',

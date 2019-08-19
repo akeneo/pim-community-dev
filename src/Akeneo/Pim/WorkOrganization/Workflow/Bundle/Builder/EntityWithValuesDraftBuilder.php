@@ -14,16 +14,16 @@ declare(strict_types=1);
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Builder;
 
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorRegistry;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Builder\EntityWithValuesDraftBuilderInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\EntityWithValuesDraftFactory;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -39,8 +39,8 @@ class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterf
     /** @var ComparatorRegistry */
     protected $comparatorRegistry;
 
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $attributeRepository;
+    /** @var GetAttributes */
+    protected $getAttributes;
 
     /** @var EntityWithValuesDraftFactory */
     protected $factory;
@@ -57,7 +57,7 @@ class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterf
     public function __construct(
         NormalizerInterface $normalizer,
         ComparatorRegistry $comparatorRegistry,
-        IdentifiableObjectRepositoryInterface $attributeRepository,
+        GetAttributes $getAttributes,
         EntityWithValuesDraftFactory $factory,
         EntityWithValuesDraftRepositoryInterface $entityWithValuesDraftRepository,
         WriteValueCollectionFactory $valueCollectionFactory,
@@ -65,7 +65,7 @@ class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterf
     ) {
         $this->normalizer = $normalizer;
         $this->comparatorRegistry = $comparatorRegistry;
-        $this->attributeRepository = $attributeRepository;
+        $this->getAttributes = $getAttributes;
         $this->factory = $factory;
         $this->entityWithValuesDraftRepository = $entityWithValuesDraftRepository;
         $this->valueCollectionFactory = $valueCollectionFactory;
@@ -85,14 +85,14 @@ class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterf
 
         $values = [];
         foreach ($newValues as $code => $newValue) {
-            $attribute = $this->attributeRepository->findOneByIdentifier($code);
+            $attribute = $this->getAttributes->forCode($code);
 
             if (null === $attribute) {
                 throw new \LogicException(sprintf('Cannot find attribute with code "%s".', $code));
             }
 
             foreach ($newValue as $index => $changes) {
-                $comparator = $this->comparatorRegistry->getAttributeComparator($attribute->getType());
+                $comparator = $this->comparatorRegistry->getAttributeComparator($attribute->type());
                 $diffAttribute = $comparator->compare(
                     $changes,
                     $this->getOriginalValue($originalValues, $code, $changes['locale'], $changes['scope'])
@@ -101,8 +101,7 @@ class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterf
                 if (null !== $diffAttribute) {
                     $diff['values'][$code][] = $diffAttribute;
 
-                    $attribute = $this->attributeRepository->findOneByIdentifier($code);
-                    $values[] = $this->valueFactory->create(
+                    $values[] = $this->valueFactory->createByCheckingData(
                         $attribute,
                         $changes['scope'],
                         $changes['locale'],

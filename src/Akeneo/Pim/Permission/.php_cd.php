@@ -216,6 +216,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue',
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Factory\Read\WriteValueCollectionFactory'
     ])->in('Akeneo\Pim\Permission\Component'),
 ];
 

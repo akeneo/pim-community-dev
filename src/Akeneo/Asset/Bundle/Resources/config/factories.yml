@@ -61,6 +61,8 @@ services:
     pimee_product_asset.factory.read.product_value.asset_collection:
         class: 'Akeneo\Pim\Enrichment\Asset\Component\ReadAssetCollectionValueFactory'
         public: false
+        arguments:
+            - '@akeneo.pim.enrichment.product.query.get_existing_reference_data_codes'
         tags:
             - { name: akeneo.pim.enrichment.factory.read.product_value }
 

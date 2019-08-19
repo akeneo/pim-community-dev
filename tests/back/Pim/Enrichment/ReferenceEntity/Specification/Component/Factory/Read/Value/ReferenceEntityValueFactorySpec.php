@@ -3,11 +3,12 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\ReferenceEntity\Component\Factory\Read\Value;
 
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\ReadValueFactory;
-use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\ValueFactory;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityType;
+use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Value\ReferenceEntityValue;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -18,7 +19,7 @@ final class ReferenceEntityValueFactorySpec extends ObjectBehavior
 {
     public function it_is_a_read_value_factory()
     {
-        $this->shouldBeAnInstanceOf(ReadValueFactory::class);
+        $this->shouldBeAnInstanceOf(ValueFactory::class);
     }
 
     public function it_supports_reference_entity_attribute_type()
@@ -26,44 +27,50 @@ final class ReferenceEntityValueFactorySpec extends ObjectBehavior
         $this->supportedAttributeType()->shouldReturn(ReferenceEntityType::REFERENCE_ENTITY);
     }
 
+    public function it_supports_null()
+    {
+        $attribute = $this->getAttribute(true, true);
+        $value = $this->createByCheckingData($attribute, 'ecommerce', 'fr_FR', null);
+        $value->shouldBeLike(ReferenceEntityValue::scopableLocalizableValue('an_attribute', [], 'ecommerce', 'fr_FR'));
+    }
+
     public function it_creates_a_localizable_and_scopable_value()
     {
         $attribute = $this->getAttribute(true, true);
-        /** @var ScalarValue $value */
-        $value = $this->create($attribute, 'ecommerce', 'fr_FR', 'blue');
-        $value->isLocalizable()->shouldBe(true);
-        $value->isScopable()->shouldBe(true);
-        $value->getData()->shouldBeLike(RecordCode::fromString('blue'));
+        $value = $this->createWithoutCheckingData($attribute, 'ecommerce', 'fr_FR', 'michel');
+        $value->shouldBeLike(ReferenceEntityValue::scopableLocalizableValue('an_attribute', RecordCode::fromString('michel'), 'ecommerce', 'fr_FR'));
     }
 
     public function it_creates_a_localizable_value()
     {
         $attribute = $this->getAttribute(true, false);
-        /** @var ScalarValue $value */
-        $value = $this->create($attribute, null, 'fr_FR', 'blue');
-        $value->isLocalizable()->shouldBe(true);
-        $value->isScopable()->shouldBe(false);
-        $value->getData()->shouldBeLike(RecordCode::fromString('blue'));
+        $value = $this->createWithoutCheckingData($attribute, null, 'fr_FR', 'michel');
+        $value->shouldBeLike(ReferenceEntityValue::localizableValue('an_attribute', RecordCode::fromString('michel'), 'fr_FR'));
     }
 
     public function it_creates_a_scopable_value()
     {
         $attribute = $this->getAttribute(false, true);
-        /** @var ScalarValue $value */
-        $value = $this->create($attribute, 'ecommerce', null, 'blue');
-        $value->isLocalizable()->shouldBe(false);
-        $value->isScopable()->shouldBe(true);
-        $value->getData()->shouldBeLike(RecordCode::fromString('blue'));
+        $value = $this->createWithoutCheckingData($attribute, 'ecommerce', null, 'michel');
+        $value->shouldBeLike(ReferenceEntityValue::scopableValue('an_attribute', RecordCode::fromString('michel'), 'ecommerce'));
     }
 
     public function it_creates_a_non_localizable_and_non_scopable_value()
     {
         $attribute = $this->getAttribute(false, false);
-        /** @var ScalarValue $value */
-        $value = $this->create($attribute, null, null, 'blue');
-        $value->isLocalizable()->shouldBe(false);
-        $value->isScopable()->shouldBe(false);
-        $value->getData()->shouldBeLike(RecordCode::fromString('blue'));
+        $value = $this->createWithoutCheckingData($attribute, null, null, 'michel');
+        $value->shouldBeLike(ReferenceEntityValue::value('an_attribute', RecordCode::fromString('michel')));
+    }
+
+    public function it_throws_an_exception_if_not_an_array_of_string()
+    {
+        $this->shouldThrow(InvalidPropertyTypeException::class)
+            ->during('createByCheckingData', [
+                $this->getAttribute(true, true),
+                null,
+                null,
+                [new \stdClass()]
+            ]);
     }
 
     private function getAttribute(bool $isLocalizable, bool $isScopable): Attribute
