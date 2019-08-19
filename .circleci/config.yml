@@ -97,6 +97,9 @@ jobs:
                 name: PhpSpec (Reference Entities)
                 command: docker-compose exec fpm vendor/bin/phpspec run -c src/Akeneo/ReferenceEntity/tests/back/phpspec.yml.dist --no-interaction -vvv
           - run:
+                name: PhpSpec (Asset Manager)
+                command: docker-compose exec fpm vendor/bin/phpspec run -c src/Akeneo/AssetManager/tests/back/phpspec.yml.dist --no-interaction -vvv
+          - run:
                 name: PhpCsFixer
                 command: docker-compose exec -T fpm vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
                 when: always
