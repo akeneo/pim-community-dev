@@ -21,7 +21,7 @@ app/export/*
 app/emails/*
 app/uploads/*
 app/uploads/product/*
-app/file_storage/*
+var/file_storage/*
 app/phpunit.xml
 app/build
 vendor
