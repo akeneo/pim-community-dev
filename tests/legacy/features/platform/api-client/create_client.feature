@@ -18,7 +18,3 @@ Feature: Create an API connection
     Then I should see the text "API connection successfully created"
     And the grid should contain 1 elements
     And I should see client "Magento connector"
-
-  Scenario: Fail to create an API connection with an empty
-    And I press the "Save" button
-    Then I should see validation error "This value should not be blank."

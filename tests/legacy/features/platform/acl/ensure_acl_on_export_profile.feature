@@ -10,13 +10,6 @@ Feature: Ensures acl are respected on the export profile tabs
     And I am on the "Catalog manager" role page
     And I visit the "Permissions" tab
 
-  Scenario: Disable show general property right
-    Given I revoke rights to resources Show an export profile general properties
-    And I grant rights to resources Show an export profile content
-    And I save the role
-    When I am on the "csv_footwear_product_export" export job page
-    Then I should not see the text "General properties"
-
   Scenario: Disable show general property and show content tab
     Given I revoke rights to resources Show an export profile general properties
     And I revoke rights to resources Show an export profile content
@@ -37,11 +30,3 @@ Feature: Ensures acl are respected on the export profile tabs
     Then I should not see the text "There are unsaved changes"
     And I press the "Edit" button
     Then I should see the text "Boots"
-
-  Scenario: Disable edit general property and show content tab read rights
-    Given I revoke rights to resources Edit an export profile general properties
-    And I revoke rights to resources Edit an export profile content
-    And I save the role
-    When I am on the "csv_footwear_product_export" export job edit page
-    Then I should not see the text "General properties"
-    And I should not see the text "Content"
