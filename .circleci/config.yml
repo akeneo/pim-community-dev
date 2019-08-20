@@ -217,11 +217,11 @@ jobs:
       - run:
             name: Install database
             command: docker-compose exec fpm bin/console --env=behat pim:install:db
-      - run:
-            name: Non critical Behat
-            command: |
-                TESTFILES=$(docker-compose exec -T fpm vendor/bin/behat --list-scenarios -p legacy -s $TESTSUITE | circleci tests split --split-by=timings)
-                .circleci/run_behat.sh $TESTSUITE $TESTFILES
+    #   - run:
+    #         name: Non critical Behat
+    #         command: |
+    #             TESTFILES=$(docker-compose exec -T fpm vendor/bin/behat --list-scenarios -p legacy -s $TESTSUITE | circleci tests split --split-by=timings)
+    #             .circleci/run_behat.sh $TESTSUITE $TESTFILES
       - run:
             name: Critical Behat
             command: |
@@ -304,22 +304,22 @@ workflows:
           - setup:
                 requires:
                     - wait_for_user_approval
-          - back_static_and_acceptance:
-                requires:
-                    - setup
-          - front_static_acceptance_and_integration:
-                requires:
-                    - setup
-          - back_phpunit_integration:
-                requires:
-                    - back_static_and_acceptance
-                    - front_static_acceptance_and_integration
-          - back_phpunit_end_to_end:
-                requires:
-                    - back_phpunit_integration
+        #   - back_static_and_acceptance:
+        #         requires:
+        #             - setup
+        #   - front_static_acceptance_and_integration:
+        #         requires:
+        #             - setup
+        #   - back_phpunit_integration:
+        #         requires:
+        #             - back_static_and_acceptance
+        #             - front_static_acceptance_and_integration
+        #   - back_phpunit_end_to_end:
+        #         requires:
+        #             - back_phpunit_integration
           - back_behat_legacy:
                 requires:
-                    - back_phpunit_end_to_end
+                    - setup
           - collect_js_coverage:
                 requires:
                     - back_behat_legacy
