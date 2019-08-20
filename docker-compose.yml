@@ -3,7 +3,6 @@ version: '3.4'
 services:
   php:
     image: 'akeneo/pim-dev/php:7.2'
-    user: '${CURRENT_USER_IDS:-1000:1000}'
     environment:
       APP_ENV: ${APP_ENV:-prod}
       COMPOSER_HOME: '/home/docker/.composer'
@@ -24,7 +23,7 @@ services:
     image: 'akeneo/pim-dev/php:7.2'
     environment:
       BEHAT_TMPDIR: '/srv/pim/var/cache/tmp'
-      PHP_IDE_CONFIG: 'serverName=pim-ee-cli'
+      PHP_IDE_CONFIG: 'serverName=pim-ee'
       XDEBUG_ENABLED: "${XDEBUG_ENABLED:-0}"
       XDEBUG_CONFIG: 'remote_host=172.17.0.1'
     volumes:
