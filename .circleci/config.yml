@@ -250,15 +250,16 @@ jobs:
     machine:
       enabled: true
       docker_layer_caching: true
-    - run: 
-      name: Merge JS code coverage reports and output HTML
-      command: |
-        docker-compose run --rm node yarn run instrument-merge
-        docker-compose run --rm node yarn run instrument-report
+    steps: 
+      - run: 
+        name: Merge JS code coverage reports and output HTML
+        command: |
+            docker-compose run --rm node yarn run instrument-merge
+            docker-compose run --rm node yarn run instrument-report
     - store_artifacts:
-        path: coverage
-     - store_artifacts:
-        path: .nyc_output
+      path: coverage
+    - store_artifacts:
+      path: .nyc_output
 
   front_static_acceptance_and_integration:
       machine:
