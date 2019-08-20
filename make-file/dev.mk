@@ -23,7 +23,7 @@ behat-acceptance-debug: behat.yml
 
 .PHONY: phpunit
 phpunit:
-	${PHP_EXEC} vendor/bin/phpunit -c app ${F}
+	${PHP_EXEC} vendor/bin/phpunit -c phpunit.xml.dist ${F}
 
 .PHONY: behat-legacy
 behat-legacy: behat.yml

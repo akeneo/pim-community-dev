@@ -154,7 +154,7 @@ jobs:
                 name: PHPunit Integration
                 command: |
                     TESTFILES=$(docker-compose exec -T fpm vendor/akeneo/pim-community-dev/.circleci/find_phpunit.sh PIM_Integration_Test | circleci tests split)
-                    vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh app $TESTFILES
+                    vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh . $TESTFILES
           - run:
                 name: PHPunit Integration (Reference Entities)
                 command: |
@@ -190,7 +190,7 @@ jobs:
                 name: PHPunit End to end
                 command: |
                     TESTFILES=$(docker-compose exec -T fpm vendor/akeneo/pim-community-dev/.circleci/find_phpunit.sh End_to_End  | circleci tests split)
-                    vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh app $TESTFILES
+                    vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh . $TESTFILES
           - store_test_results:
                 path: var/tests/phpunit
           - store_artifacts:
