@@ -2,7 +2,6 @@
 # This first image will be use as a base
 # for production and development images
 #
-
 FROM debian:stretch-slim AS base
 
 ENV PHP_CONF_DATE_TIMEZONE=UTC \
@@ -15,7 +14,6 @@ ENV PHP_CONF_DATE_TIMEZONE=UTC \
 
 COPY docker/build/sury_org_php.gpg /etc/apt/trusted.gpg.d/sury_org_php.gpg
 
-# Install needed PHP extensions and related libraries
 RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/apt.conf.d/01-no-recommended && \
     echo 'path-exclude=/usr/share/man/*' > /etc/dpkg/dpkg.cfg.d/path_exclusions && \
     echo 'path-exclude=/usr/share/doc/*' >> /etc/dpkg/dpkg.cfg.d/path_exclusions && \
@@ -43,6 +41,7 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
     rm -rf /var/lib/apt/lists/* && \
     ln -s /usr/sbin/php-fpm7.2 /usr/local/sbin/php-fpm && \
     mkdir /srv/pim && \
+    sed -i "s#listen = /run/php/php7.2-fpm.sock#listen = 9000#g" /etc/php/7.2/fpm/pool.d/www.conf && \
     mkdir -p /run/php
 
 COPY docker/build/akeneo.ini /etc/php/7.2/cli/conf.d/99-akeneo.ini
@@ -51,13 +50,15 @@ COPY docker/build/akeneo.ini /etc/php/7.2/fpm/conf.d/99-akeneo.ini
 #
 # Image used for development
 #
-
 FROM base AS dev
 
 ENV PHP_OPCACHE_VALIDATE_TIMESTAMP=1
 
 RUN apt-get update && \
     apt-get --yes install php7.2-xdebug && \
+    phpdismod xdebug && \
+    mkdir /etc/php/7.2/enable-xdebug && \
+    ln -s /etc/php/7.2/mods-available/xdebug.ini /etc/php/7.2/enable-xdebug/xdebug.ini && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -71,9 +72,6 @@ RUN chmod +x /usr/local/bin/composer
 COPY docker/build/docker-php-entrypoint /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-php-entrypoint
 
-RUN chown www-data:www-data /etc/php/7.2/mods-available/xdebug.ini && \
-     sed -i "s~listen = /run/php/php7.2-fpm.sock~listen = 9000~g" /etc/php/7.2/fpm/pool.d/www.conf
-
 ENTRYPOINT ["/usr/local/bin/docker-php-entrypoint"]
 
 VOLUME /srv/pim
@@ -82,7 +80,6 @@ VOLUME /srv/pim
 # Intermediate image to install
 # the app dependencies for production
 #
-
 FROM dev AS builder
 
 COPY docker/build/yarnpkg_com.gpg /etc/apt/trusted.gpg.d/yarnpkg_com.gpg
@@ -112,7 +109,6 @@ RUN php -d 'memory_limit=3G' /usr/local/bin/composer install --optimize-autoload
 #
 # Image used for production
 #
-
 FROM base AS prod
 
 ENV APP_ENV=prod \
