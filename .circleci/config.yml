@@ -235,8 +235,6 @@ jobs:
               sudo chmod -R 777 .
               for subdir in */*; do mv "${subdir}" "${subdir/\//_}"; done
           when: always
-      - store_artifacts:
-          path: .coverage
       - store_test_results:
           path: var/tests/behat
       - store_artifacts:
@@ -245,6 +243,10 @@ jobs:
           path: var/tests/screenshots
       - store_artifacts:
           path: var/logs
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/.coverage
 
   collect_js_coverage:
       machine:
