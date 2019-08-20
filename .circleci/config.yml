@@ -235,17 +235,8 @@ jobs:
               sudo chmod -R 777 .
               for subdir in */*; do mv "${subdir}" "${subdir/\//_}"; done
           when: always
-      - run: 
-          name: Merge JS code coverage reports and output HTML
-          command: |
-            docker-compose run --rm node yarn run instrument-merge
-            docker-compose run --rm node yarn run instrument-report
-      - store_artifacts:
-          path: coverage
       - store_artifacts: 
           path: .coverage
-      - store_artifacts:
-          path: .nyc_output
       - store_test_results:
           path: var/tests/behat
       - store_artifacts:
@@ -254,6 +245,20 @@ jobs:
           path: var/tests/screenshots
       - store_artifacts:
           path: var/logs
+  
+  collect_js_coverage: 
+    machine:
+      enabled: true
+      docker_layer_caching: true
+    - run: 
+      name: Merge JS code coverage reports and output HTML
+      command: |
+        docker-compose run --rm node yarn run instrument-merge
+        docker-compose run --rm node yarn run instrument-report
+    - store_artifacts:
+        path: coverage
+     - store_artifacts:
+        path: .nyc_output
 
   front_static_acceptance_and_integration:
       machine:
@@ -310,6 +315,9 @@ workflows:
           - back_behat_legacy:
                 requires:
                     - back_phpunit_end_to_end
+          - collect_js_coverage:
+                requires:
+                    - back_behat_legacy
 
   nightly:
       triggers:
