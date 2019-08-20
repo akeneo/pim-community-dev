@@ -256,8 +256,12 @@ jobs:
         command: |
             docker-compose run --rm node yarn run instrument-merge
             docker-compose run --rm node yarn run instrument-report
+      - run:
+        name: Compress HTML coverage report
+        command: tar -cvf coverage.tar ./coverage/
     - store_artifacts:
-      path: coverage
+      path: coverage.tar
+      destination: coverage_report
     - store_artifacts:
       path: .nyc_output
 
