@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.38 (2019-08-20)
+
 ## Bug fixes
 
 - PIM-8667: Fix grid filters for numeric attribute codes
