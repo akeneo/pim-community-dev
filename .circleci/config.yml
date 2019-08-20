@@ -11,9 +11,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Copy env file
-          command: cp .env.dist .env
-      - run:
           name: Copy docker-compose.override.yml.dist
           command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
       - run:

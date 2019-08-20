@@ -117,7 +117,7 @@ php-image-prod:
 php-image: php-image-dev php-image-prod
 
 .PHONY: up
-up: .env docker-compose.override.yml
+up: docker-compose.override.yml
 	$(DOCKER_COMPOSE) up -d --remove-orphan
 
 .PHONY: down
@@ -135,6 +135,3 @@ behat.yml:
 
 docker-compose.override.yml:
 	cp docker-compose.override.yml.dist docker-compose.override.yml
-
-.env:
-	cp .env.dist .env
