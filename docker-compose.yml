@@ -16,8 +16,7 @@ services:
     working_dir: '/srv/pim'
     command: 'php'
     networks:
-      - 'akeneo'
-      - 'behat'
+      - 'pim'
 
   fpm:
     image: 'akeneo/pim-dev/php:7.2'
@@ -32,8 +31,7 @@ services:
     working_dir: '/srv/pim'
     command: 'php-fpm -F'
     networks:
-      - 'akeneo'
-      - 'behat'
+      - 'pim'
 
   node:
     image: 'akeneo/node:10'
@@ -42,8 +40,7 @@ services:
       - './:/srv/pim'
     working_dir: '/srv/pim'
     networks:
-      - 'akeneo'
-      - 'behat'
+      - 'pim'
 
   selenium:
     image: 'selenium/standalone-firefox-debug:2.53.1-beryllium'
@@ -52,7 +49,7 @@ services:
     ports:
       - '5910:5900'
     networks:
-      - 'behat'
+      - 'pim'
 
   httpd:
     image: 'httpd:2.4'
@@ -67,22 +64,7 @@ services:
       - './docker/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro'
       - './docker/akeneo.conf:/usr/local/apache2/conf/vhost.conf:ro'
     networks:
-      - 'akeneo'
-
-  httpd-behat:
-    image: 'httpd:2.4'
-    environment:
-      APP_ENV: 'behat'
-    depends_on:
-      - 'fpm'
-    ports:
-      - '${DOCKER_PORT_HTTP_BEHAT:-8081}:80'
-    volumes:
-      - './:/srv/pim:ro'
-      - './docker/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro'
-      - './docker/akeneo.conf:/usr/local/apache2/conf/vhost.conf:ro'
-    networks:
-      - 'behat'
+      - 'pim'
 
   mysql:
     image: 'mysql:5.7'
@@ -94,17 +76,7 @@ services:
     ports:
       - '33006:3306'
     networks:
-      - 'akeneo'
-
-  mysql-behat:
-    image: 'mysql:5.7'
-    environment:
-      MYSQL_ROOT_PASSWORD: 'root'
-      MYSQL_USER: '${APP_DATABASE_USER}'
-      MYSQL_DATABASE: '${APP_DATABASE_NAME}'
-      MYSQL_PASSWORD: '${APP_DATABASE_PASSWORD}'
-    networks:
-      - 'behat'
+      - 'pim'
 
   elasticsearch:
     image: 'docker.elastic.co/elasticsearch/elasticsearch-oss:6.5.4'
@@ -114,8 +86,7 @@ services:
     ports:
       - '9210:9200'
     networks:
-      - 'akeneo'
-      - 'behat'
+      - 'pim'
 
   sso-idp-server:
     image: 'kristophjunge/test-saml-idp'
@@ -139,9 +110,8 @@ services:
     ports:
         - '9090:9000'
     networks:
-      - 'akeneo'
+      - 'pim'
 
 networks:
-  akeneo:
-  behat:
+  pim:
   sso:
