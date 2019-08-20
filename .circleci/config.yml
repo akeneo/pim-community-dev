@@ -248,22 +248,22 @@ jobs:
   
   collect_js_coverage: 
       machine:
-        enabled: true
-        docker_layer_caching: true
+          enabled: true
+          docker_layer_caching: true
       steps: 
         - run: 
           name: Merge JS code coverage reports and output HTML
           command: |
-             docker-compose run --rm node yarn run instrument-merge
-             docker-compose run --rm node yarn run instrument-report
-      - run:
-          name: Compress HTML coverage report
-          command: tar -cvf coverage.tar ./coverage/
-      - store_artifacts:
-          path: coverage.tar
-          destination: coverage_report
-      - store_artifacts:
-          path: .nyc_output
+            docker-compose run --rm node yarn run instrument-merge
+            docker-compose run --rm node yarn run instrument-report
+        - run:
+            name: Compress HTML coverage report
+            command: tar -cvf coverage.tar ./coverage/
+        - store_artifacts:
+            path: coverage.tar
+            destination: coverage_report
+        - store_artifacts:
+            path: .nyc_output
 
   front_static_acceptance_and_integration:
       machine:
