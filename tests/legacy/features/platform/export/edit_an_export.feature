@@ -8,16 +8,6 @@ Feature: Edit an export
     Given a "footwear" catalog configuration
     And I am logged in as "Peter"
 
-  Scenario: Successfully edit an export job
-    Given I am on the "csv_footwear_product_export" export job edit page
-    Then I should see the Code field
-    And the field Code should be disabled
-    When I fill in the following information:
-      | Label | My export |
-    And I press the "Save" button
-    Then I should not see the text "There are unsaved changes"
-    Then I should see the text "My export"
-
   Scenario: Successfully update export job configuration
     Given I am on the "csv_footwear_product_export" export job edit page
     When I visit the "Global settings" tab
@@ -61,26 +51,3 @@ Feature: Edit an export
     And I should see the text "Boots"
     And I should see the text "Not complete on all selected locales"
     And I should see the text "identifier1, identifier2, identifier3, identifier4"
-
-  @skip-nav
-  Scenario: Successfully display a dialog when we quit a page with unsaved changes
-    Given I am on the "csv_footwear_product_export" export job edit page
-    When I fill in the following information:
-      | Label | My export |
-    When I click on the Akeneo logo
-    Then I should see "You will lose changes to the export profile if you leave this page." in popup
-
-  @skip
-  Scenario: Successfully display a message when there are unsaved changes
-    Given I am on the "csv_footwear_product_export" export job edit page
-    When I fill in the following information:
-      | Label | My export |
-    Then I should see the text "There are unsaved changes."
-
-  @jira https://akeneo.atlassian.net/browse/PIM-5965
-  Scenario: Successfully display export filter in expected order
-    Given I am on the "csv_footwear_product_export" export job edit page
-    And I visit the "Content" tab
-    Then I should see the ordered filters family, enabled, completeness, updated, categories and sku
-    When I add available attributes Name and Weight
-    Then I should see the ordered filters family, enabled, completeness, updated, categories, name, weight and sku
