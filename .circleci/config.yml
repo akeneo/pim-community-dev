@@ -252,10 +252,10 @@ jobs:
           docker_layer_caching: true
       steps: 
         - run: 
-          name: Merge JS code coverage reports and output HTML
-          command: |
-            docker-compose run --rm node yarn run instrument-merge
-            docker-compose run --rm node yarn run instrument-report
+            name: Merge JS code coverage reports and output HTML
+            command: |
+                docker-compose run --rm node yarn run instrument-merge
+                docker-compose run --rm node yarn run instrument-report
         - run:
             name: Compress HTML coverage report
             command: tar -cvf coverage.tar ./coverage/
