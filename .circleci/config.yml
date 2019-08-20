@@ -251,6 +251,8 @@ jobs:
           enabled: true
           docker_layer_caching: true
       steps: 
+        - attach_workspace:
+            at: ~/
         - run: 
             name: Merge JS code coverage reports and output HTML
             command: |
