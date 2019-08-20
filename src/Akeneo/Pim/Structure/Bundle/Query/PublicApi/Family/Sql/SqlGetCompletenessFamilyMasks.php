@@ -6,8 +6,8 @@ namespace Akeneo\Pim\Structure\Bundle\Query\PublicApi\Family\Sql;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\CompletenessFamilyMask;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\CompletenessFamilyMaskPerChannelAndLocale;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\NonExistingFamiliesException;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetCompletenessFamilyMasks;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\NonExistingFamiliesException;
 use Doctrine\DBAL\Connection;
 
 /**
