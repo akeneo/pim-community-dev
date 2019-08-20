@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\Completeness;
+namespace Akeneo\Pim\Structure\Bundle\Query\PublicApi\Family\Sql;
 
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessFamilyMask;
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessFamilyMaskPerChannelAndLocale;
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetCompletenessFamilyMasks;
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\NonExistingFamiliesException;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\CompletenessFamilyMask;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\CompletenessFamilyMaskPerChannelAndLocale;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetCompletenessFamilyMasks;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\NonExistingFamiliesException;
 use Doctrine\DBAL\Connection;
 
 /**

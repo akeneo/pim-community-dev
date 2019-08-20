@@ -69,7 +69,10 @@ final class LRUCache
             }
         }
 
-        $resultFromQuery = $queryNotFoundKeys($valuesNotFoundKeysInCache);
+        $resultFromQuery = [];
+        if (count($valuesNotFoundKeysInCache) > 0) {
+            $resultFromQuery = $queryNotFoundKeys($valuesNotFoundKeysInCache);
+        }
 
         foreach ($resultFromQuery as $key => $value) {
             $this->put((string) $key, $value);
