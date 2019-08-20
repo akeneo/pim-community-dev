@@ -156,7 +156,21 @@ const webpackConfig = {
           },
         ],
       },
-
+      {
+        test: /\.js$|\.jsx|\.tsx|\.ts$/,
+        use: {
+          loader: 'istanbul-instrumenter-loader',
+          options: {
+            esModules: true,
+            extension: ['.js', '.ts', '.tsx'],
+            produceSourceMap: true,
+            preserveComments: true,
+            coverageVariable: 'coverage'
+          }
+        },
+        enforce: 'pre',
+        exclude: /node_modules|\.spec\.js$/,
+      },
       // Process the pim webpack files with babel
       {
         test: /\.js$/,
@@ -172,22 +186,6 @@ const webpackConfig = {
             },
           }
         ],
-      },
-
-      {
-        test: /\.js$|\.jsx|\.tsx|\.ts$/,
-        use: {
-          loader: 'istanbul-instrumenter-loader',
-          options: {
-            esModules: true,
-            extension: ['.js', '.ts', '.tsx'],
-            produceSourceMap: true,
-            preserveComments: true,
-            coverageVariable: 'coverage'
-          }
-        },
-        enforce: 'post',
-        exclude: /node_modules|\.spec\.js$/,
       },
 
       // Process the typescript loader files
@@ -209,6 +207,7 @@ const webpackConfig = {
             },
           },
         ],
+        enforce: 'pre',
         include: /(web\/bundles)/,
         exclude: [
           path.resolve(rootDir, 'node_modules'),
