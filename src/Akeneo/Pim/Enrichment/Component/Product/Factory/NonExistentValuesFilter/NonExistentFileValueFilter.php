@@ -85,7 +85,7 @@ final class NonExistentFileValueFilter implements NonExistentValuesFilter
 
         /** @var FileInfoInterface $file */
         foreach ($files as $file) {
-            $filesIndexedByKey[$file->getKey()] = $file;
+            $filesIndexedByKey[$file->getKey()] = $file->getKey();
         }
 
         return $filesIndexedByKey;

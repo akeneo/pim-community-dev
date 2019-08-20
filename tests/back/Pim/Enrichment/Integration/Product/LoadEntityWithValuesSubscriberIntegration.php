@@ -5,6 +5,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Test\Integration\TestCase;
 
 /**
@@ -158,8 +159,18 @@ class LoadEntityWithValuesSubscriberIntegration extends TestCase
      */
     private function createProductValue(AttributeInterface $attribute, $scope, $locale, $data)
     {
-        return $this->get('pim_catalog.factory.value')->create(
-            $attribute,
+        $publicApiAttribute = new Attribute(
+            $attribute->getCode(),
+            $attribute->getType(),
+            $attribute->getProperties(),
+            $attribute->isLocalizable(),
+            $attribute->isScopable(),
+            $attribute->getMetricFamily() === '' ? null : $attribute->getMetricFamily(),
+            $attribute->isDecimalsAllowed() ?? false
+        );
+
+        return $this->get('akeneo.pim.enrichment.factory.read.value')->createByCheckingData(
+            $publicApiAttribute,
             $scope,
             $locale,
             $data
@@ -364,7 +375,6 @@ class LoadEntityWithValuesSubscriberIntegration extends TestCase
                     'locale' => null,
                     'scope'  => 'ecommerce',
                     'data'   => [
-                        ['amount' => '15.00', 'currency' => 'EUR'],
                         ['amount' => '20.00', 'currency' => 'USD'],
                     ],
                 ],
@@ -373,7 +383,6 @@ class LoadEntityWithValuesSubscriberIntegration extends TestCase
                     'scope'  => 'tablet',
                     'data'   => [
                         ['amount' => '17.00', 'currency' => 'EUR'],
-                        ['amount' => '24.00', 'currency' => 'USD'],
                     ],
                 ],
             ],

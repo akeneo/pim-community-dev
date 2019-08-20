@@ -1,85 +1,52 @@
 <?php
+declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory;
 
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\ValueFactoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactory as SingleValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use OutOfBoundsException;
+use PhpSpec\ObjectBehavior;
 
-class ValueFactorySpec extends ObjectBehavior
+/**
+ * @author    Anael Chardan <anael.chardan@akeneo.com>
+ * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+final class ValueFactorySpec extends ObjectBehavior
 {
-    function let(AttributeValidatorHelper $attributeValidatorHelper)
+    public function let(SingleValueFactory $factory1, SingleValueFactory $factory2)
     {
-        $this->beConstructedWith($attributeValidatorHelper, []);
+        $factory1->supportedAttributeType()->willReturn('an_attribute_type1');
+        $factory2->supportedAttributeType()->willReturn('an_attribute_type2');
+        $this->beConstructedWith([$factory1, $factory2]);
     }
 
-    function it_is_initializable()
+    public function it_calls_the_right_factory_without_checking_data(SingleValueFactory $factory2, ValueInterface $value)
     {
-        $this->shouldHaveType(ValueFactory::class);
+        $attribute = new Attribute('an_attribute', 'an_attribute_type2', [], false, false, null, false);
+        $factory2->createWithoutCheckingData($attribute, null, null, 'data')->willReturn($value);
+        $this->createWithoutCheckingData($attribute, null, null, 'data')->shouldReturn($value);
     }
 
-    function it_creates_a_simple_empty_product_value(
-        $attributeValidatorHelper,
-        AttributeInterface $attribute,
-        ValueFactoryInterface $productValueFactory,
-        ValueInterface $productValue
-    ) {
-        $productValueFactory->supports('text')->willReturn(true);
-        $this->registerFactory($productValueFactory);
-
-        $attribute->isScopable()->willReturn(false);
-        $attribute->isLocalizable()->willReturn(false);
-        $attribute->getCode()->willReturn('simple_attribute');
-        $attribute->getBackendType()->willReturn('text');
-        $attribute->isBackendTypeReferenceData()->willReturn(false);
-        $attribute->getType()->willReturn('text');
-
-        $attributeValidatorHelper->validateLocale($attribute, null)->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($attribute, null)->shouldBeCalled();
-
-        $productValueFactory->create($attribute, null, null, 'foobar', false)->willReturn($productValue);
-
-        $this->create($attribute, null, null, 'foobar')->shouldReturn($productValue);
+    public function it_calls_the_right_factory_by_checking_data(SingleValueFactory $factory2, ValueInterface $value)
+    {
+        $attribute = new Attribute('an_attribute', 'an_attribute_type2', [], false, false, null, false);
+        $factory2->createByCheckingData($attribute, null, null, 'data')->willReturn($value);
+        $this->createByCheckingData($attribute, null, null, 'data')->shouldReturn($value);
     }
 
-    function it_creates_a_simple_localizable_and_scopable_empty_product_value(
-        $attributeValidatorHelper,
-        AttributeInterface $attribute,
-        ValueFactoryInterface $productValueFactory,
-        ValueInterface $productValue
-    ) {
-        $productValueFactory->supports('text')->willReturn(true);
-        $this->registerFactory($productValueFactory);
-
-        $attribute->isScopable()->willReturn(true);
-        $attribute->isLocalizable()->willReturn(true);
-        $attribute->getCode()->willReturn('simple_attribute');
-        $attribute->isScopable()->willReturn(true);
-        $attribute->isLocalizable()->willReturn(true);
-        $attribute->getBackendType()->willReturn('text');
-        $attribute->isBackendTypeReferenceData()->willReturn(false);
-        $attribute->getType()->willReturn('text');
-
-        $attributeValidatorHelper->validateScope($attribute, 'ecommerce')->shouldBeCalled();
-        $attributeValidatorHelper->validateLocale($attribute, 'en_US')->shouldBeCalled();
-
-        $productValueFactory->create($attribute, 'ecommerce', 'en_US', 'foobar', false)->willReturn($productValue);
-
-        $this->create($attribute, 'ecommerce', 'en_US', 'foobar')->shouldReturn($productValue);
-    }
-
-    function it_throws_an_exception_when_there_is_no_registered_factory(
-        ValueFactoryInterface $factory,
-        AttributeInterface $attribute
-    ) {
-        $this->registerFactory($factory);
-        $attribute->getType()->willReturn('text');
-
-        $factory->supports('text')->willReturn(false);
-
-        $this->shouldThrow('\OutOfBoundsException')->during('create', [$attribute, null, null, 'foobar']);
+    public function it_throws_an_exception_if_the_attribute_type_is_not_supported()
+    {
+        $this->shouldThrow(OutOfBoundsException::class)->during(
+            'createWithoutCheckingData',
+            [
+                new Attribute('an_attribute', 'non_supported_attribute_type', [], false, false, null, false),
+                null,
+                null,
+                'data'
+            ]
+        );
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid;
 
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\WriteValueCollectionFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Doctrine\DBAL\Connection;
@@ -19,7 +19,7 @@ final class FetchProductRowsFromIdentifiers
     /** @var Connection */
     private $connection;
 
-    /** @var \Akeneo\Pim\Enrichment\Component\Product\Factory\Read\WriteValueCollectionFactory */
+    /** @var WriteValueCollectionFactory */
     private $valueCollectionFactory;
 
     /**

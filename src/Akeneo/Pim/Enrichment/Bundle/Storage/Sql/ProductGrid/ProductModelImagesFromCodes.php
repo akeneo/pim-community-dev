@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid;
 
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\WriteValueCollectionFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -33,7 +33,7 @@ final class ProductModelImagesFromCodes
     /** @var Connection */
     private $connection;
 
-    /** @var \Akeneo\Pim\Enrichment\Component\Product\Factory\Read\WriteValueCollectionFactory */
+    /** @var WriteValueCollectionFactory */
     private $valueCollectionFactory;
 
     public function __construct(Connection $connection, WriteValueCollectionFactory $valueCollectionFactory)

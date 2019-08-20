@@ -54,7 +54,7 @@ services:
         class: '%pim_catalog.event_subscriber.add_boolean_values_to_new_product.class%'
         arguments:
             - '@pim_catalog.resolver.attribute_values'
-            - '@pim_catalog.factory.value'
+            - '@akeneo.pim.enrichment.factory.read.value'
         tags:
             - { name: kernel.event_subscriber}
 

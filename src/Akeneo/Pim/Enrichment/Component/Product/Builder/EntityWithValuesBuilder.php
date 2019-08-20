@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 
 /**
  * @author    Julien Janvier <julien.janvier@akeneo.com>
@@ -62,11 +63,20 @@ class EntityWithValuesBuilder implements EntityWithValuesBuilderInterface
             $entityWithValues->removeValue($value);
         }
 
-        $value = $this->productValueFactory->create($attribute, $scopeCode, $localeCode, $data);
+        $attr = new Attribute(
+            $attribute->getCode(),
+            $attribute->getType(),
+            $attribute->getProperties(),
+            $attribute->isLocalizable(),
+            $attribute->isScopable(),
+            $attribute->getMetricFamily() === '' ? null : $attribute->getMetricFamily(),
+            $attribute->isDecimalsAllowed() ?? false
+        );
+        $value = $this->productValueFactory->createByCheckingData($attr, $scopeCode, $localeCode, $data);
         $entityWithValues->addValue($value);
 
         // TODO: TIP-722: This is a temporary fix, Product identifier should be used only as a field
-        if (AttributeTypes::IDENTIFIER === $attribute->getType() &&
+        if (AttributeTypes::IDENTIFIER === $attr->type() &&
             null !== $data &&
             $entityWithValues instanceof ProductInterface
         ) {

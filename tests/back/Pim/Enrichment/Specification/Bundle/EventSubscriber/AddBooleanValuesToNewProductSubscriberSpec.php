@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\AddBooleanValuesToNewProductSubscriber;
@@ -76,6 +77,11 @@ class AddBooleanValuesToNewProductSubscriberSpec extends ObjectBehavior
         $textAttribute->getType()->willReturn(AttributeTypes::TEXT);
         $booleanAttribute->getType()->willReturn(AttributeTypes::BOOLEAN);
         $booleanAttribute->getCode()->willReturn('is_boolean');
+        $booleanAttribute->getMetricFamily()->willReturn('');
+        $booleanAttribute->isDecimalsAllowed()->willReturn(false);
+        $booleanAttribute->isScopable()->willReturn(true);
+        $booleanAttribute->isLocalizable()->willReturn(true);
+        $booleanAttribute->getProperties()->willReturn([]);
 
         $valuesResolver->resolveEligibleValues([$booleanAttribute])->willReturn([
             [
@@ -90,9 +96,10 @@ class AddBooleanValuesToNewProductSubscriberSpec extends ObjectBehavior
 
         $product->getValue('is_boolean', 'en_US', 'ecommerce')->willReturn(null);
         $product->getValue('is_boolean', 'fr_FR', 'ecommerce')->willReturn(null);
+        $publicApiBooleanAttribute = new Attribute('is_boolean', AttributeTypes::BOOLEAN, [], true, true, '', false);
 
-        $productValueFactory->create($booleanAttribute, 'ecommerce', 'en_US', false)->willReturn($valueEn);
-        $productValueFactory->create($booleanAttribute, 'ecommerce', 'fr_FR', false)->willReturn($valueFr);
+        $productValueFactory->createByCheckingData($publicApiBooleanAttribute, 'ecommerce', 'en_US', false)->willReturn($valueEn);
+        $productValueFactory->createByCheckingData($publicApiBooleanAttribute, 'ecommerce', 'fr_FR', false)->willReturn($valueFr);
 
         $product->addValue($valueEn)->shouldBeCalled();
         $product->addValue($valueFr)->shouldBeCalled();
@@ -115,6 +122,11 @@ class AddBooleanValuesToNewProductSubscriberSpec extends ObjectBehavior
         $family->getAttributes()->willReturn([$booleanAttribute]);
         $booleanAttribute->getType()->willReturn(AttributeTypes::BOOLEAN);
         $booleanAttribute->getCode()->willReturn('is_boolean');
+        $booleanAttribute->getMetricFamily()->willReturn('');
+        $booleanAttribute->isDecimalsAllowed()->willReturn(false);
+        $booleanAttribute->isScopable()->willReturn(true);
+        $booleanAttribute->isLocalizable()->willReturn(true);
+        $booleanAttribute->getProperties()->willReturn([]);
 
         $valuesResolver->resolveEligibleValues([$booleanAttribute])->willReturn([
             [
@@ -150,6 +162,11 @@ class AddBooleanValuesToNewProductSubscriberSpec extends ObjectBehavior
 
         $booleanAttribute->getType()->willReturn(AttributeTypes::BOOLEAN);
         $booleanAttribute->getCode()->willReturn('is_boolean');
+        $booleanAttribute->getMetricFamily()->willReturn('');
+        $booleanAttribute->isDecimalsAllowed()->willReturn(false);
+        $booleanAttribute->isScopable()->willReturn(true);
+        $booleanAttribute->isLocalizable()->willReturn(true);
+        $booleanAttribute->getProperties()->willReturn([]);
 
         $familyVariant->getVariantAttributeSet(1)->willReturn($variantAttributeSet);
         $variantAttributeSet->getAttributes()->willReturn(new ArrayCollection([$booleanAttribute->getWrappedObject()]));
@@ -163,7 +180,8 @@ class AddBooleanValuesToNewProductSubscriberSpec extends ObjectBehavior
         ]);
 
         $variantProduct->getValue('is_boolean', 'en_US', 'ecommerce')->willReturn(null);
-        $productValueFactory->create($booleanAttribute, 'ecommerce', 'en_US', false)->willReturn($value);
+        $publicApiBooleanAttribute = new Attribute('is_boolean', AttributeTypes::BOOLEAN, [], true, true, '', false);
+        $productValueFactory->createByCheckingData($publicApiBooleanAttribute, 'ecommerce', 'en_US', false)->willReturn($value);
 
         $variantProduct->addValue($value)->shouldBeCalled();
 
@@ -191,6 +209,11 @@ class AddBooleanValuesToNewProductSubscriberSpec extends ObjectBehavior
 
         $booleanAttribute->getType()->willReturn(AttributeTypes::BOOLEAN);
         $booleanAttribute->getCode()->willReturn('is_boolean');
+        $booleanAttribute->getMetricFamily()->willReturn('');
+        $booleanAttribute->isDecimalsAllowed()->willReturn(false);
+        $booleanAttribute->isScopable()->willReturn(true);
+        $booleanAttribute->isLocalizable()->willReturn(true);
+        $booleanAttribute->getProperties()->willReturn([]);
 
         $booleanAxis->getType()->willReturn(AttributeTypes::BOOLEAN);
 
@@ -208,8 +231,9 @@ class AddBooleanValuesToNewProductSubscriberSpec extends ObjectBehavior
             ]
         ]);
 
+        $publicApiBooleanAttribute = new Attribute('is_boolean', AttributeTypes::BOOLEAN, [], true, true, '', false);
         $variantProduct->getValue('is_boolean', 'en_US', 'ecommerce')->willReturn(null);
-        $productValueFactory->create($booleanAttribute, 'ecommerce', 'en_US', false)->willReturn($value);
+        $productValueFactory->createByCheckingData($publicApiBooleanAttribute, 'ecommerce', 'en_US', false)->willReturn($value);
 
         $variantProduct->addValue($value)->shouldBeCalled();
 

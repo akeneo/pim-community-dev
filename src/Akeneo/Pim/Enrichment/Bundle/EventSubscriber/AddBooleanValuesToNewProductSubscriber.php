@@ -12,6 +12,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -67,13 +68,22 @@ class AddBooleanValuesToNewProductSubscriber implements EventSubscriberInterface
             : $this->getBooleanAttributesFromFamily($product);
 
         foreach ($booleanAttributes as $attribute) {
+            $publicApiAttribute = new Attribute(
+                $attribute->getCode(),
+                $attribute->getType(),
+                $attribute->getProperties(),
+                $attribute->isLocalizable(),
+                $attribute->isScopable(),
+                null,
+                false
+            );
             $eligibleValues = $this->valuesResolver->resolveEligibleValues([$attribute]);
 
             foreach ($eligibleValues as $valueData) {
-                $value = $product->getValue($attribute->getCode(), $valueData['locale'], $valueData['scope']);
+                $value = $product->getValue($publicApiAttribute->code(), $valueData['locale'], $valueData['scope']);
 
                 if (null === $value) {
-                    $value = $this->productValueFactory->create($attribute, $valueData['scope'], $valueData['locale'], false);
+                    $value = $this->productValueFactory->createByCheckingData($publicApiAttribute, $valueData['scope'], $valueData['locale'], false);
                     $product->addValue($value);
                 }
             }

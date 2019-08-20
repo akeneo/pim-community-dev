@@ -97,7 +97,7 @@ final class NonExistentFileValueFilterSpec extends ObjectBehavior
         $imageB->getKey()->willReturn('imageB');
 
         $images = ['imageA', 'imageB',];
-        $files = ['fileA', 'fileB',];
+        $files = ['fileA', 'fileB'];
 
         $fileInfoRepository->findBy(['key' => $images])->willReturn([$imageA, $imageB]);
         $fileInfoRepository->findBy(['key' => $files])->willReturn([$fileA, $fileB]);
@@ -112,7 +112,7 @@ final class NonExistentFileValueFilterSpec extends ObjectBehavior
                             'identifier' => 'product_A',
                             'values' => [
                                 '<all_channels>' => [
-                                    '<all_locales>' => $imageA
+                                    '<all_locales>' => 'imageA'
                                 ],
                             ]
                         ],
@@ -120,7 +120,7 @@ final class NonExistentFileValueFilterSpec extends ObjectBehavior
                             'identifier' => 'product_B',
                             'values' => [
                                 'ecommerce' => [
-                                    'en_US' => $imageB
+                                    'en_US' => 'imageB'
                                 ],
                             ]
                         ]
@@ -132,7 +132,7 @@ final class NonExistentFileValueFilterSpec extends ObjectBehavior
                             'identifier' => 'product_A',
                             'values' => [
                                 '<all_channels>' => [
-                                    '<all_locales>' => $fileA
+                                    '<all_locales>' => 'fileA'
                                 ],
                             ]
                         ],
@@ -140,7 +140,7 @@ final class NonExistentFileValueFilterSpec extends ObjectBehavior
                             'identifier' => 'product_B',
                             'values' => [
                                 'ecommerce' => [
-                                    'en_US' => $fileB
+                                    'en_US' => 'fileB'
                                 ],
                             ]
                         ]
