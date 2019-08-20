@@ -6,13 +6,8 @@ web/dist/*
 web/test_dist/*
 web/cache/*
 var/archive/*
-app/cache/*
-app/logs/*
 var/*
 !var/SymfonyRequirements.php
-app/import/*
-app/export/*
-app/emails/*
 var/uploads/*
 var/uploads/product/*
 var/file_storage/*
