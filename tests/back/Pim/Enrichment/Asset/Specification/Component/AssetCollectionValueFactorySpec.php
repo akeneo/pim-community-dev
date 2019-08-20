@@ -1,6 +1,6 @@
 <?php
 
-namespace Specification\Akeneo\Pim\Enrichment\Asset\EnrichmentComponent;
+namespace Specification\Akeneo\Pim\Enrichment\Asset\Component;
 
 use Acme\Bundle\AppBundle\Entity\Fabric;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;

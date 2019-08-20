@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Pim\Enrichment\Asset\EnrichmentComponent\Comparator\Attribute;
+namespace Specification\Akeneo\Pim\Enrichment\Asset\Component\Comparator\Attribute;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\AttributeTypes;

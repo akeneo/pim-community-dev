@@ -1,6 +1,6 @@
 <?php
 
-namespace Specification\Akeneo\Asset\Bundle\Doctrine\Remover;
+namespace Specification\Akeneo\Asset\Bundle\Doctrine\ORM\Remover;
 
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;

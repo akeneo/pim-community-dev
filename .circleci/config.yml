@@ -89,10 +89,16 @@ jobs:
                 command: docker-compose exec fpm bin/console --env=dev cache:clear
           - run:
                 name: PhpSpec
-                command: docker-compose exec fpm vendor/bin/phpspec run -vvv
+                command: docker-compose exec -T fpm vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
+          - run:
+                name: Find non executed PhpSpec files
+                command: vendor/akeneo/pim-community-dev/.circleci/find_non_executed_phpspec.sh
           - run:
                 name: PhpSpec (Reference Entities)
                 command: docker-compose exec fpm vendor/bin/phpspec run -c src/Akeneo/ReferenceEntity/tests/back/phpspec.yml.dist --no-interaction -vvv
+          - run:
+                name: PhpSpec (Asset Manager)
+                command: docker-compose exec fpm vendor/bin/phpspec run -c src/Akeneo/AssetManager/tests/back/phpspec.yml.dist --no-interaction -vvv
           - run:
                 name: PhpCsFixer
                 command: docker-compose exec -T fpm vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
