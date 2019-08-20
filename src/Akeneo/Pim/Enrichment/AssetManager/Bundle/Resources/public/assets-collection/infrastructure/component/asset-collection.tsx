@@ -13,43 +13,27 @@ import __ from 'akeneoreferenceentity/tools/translator';
 import {fetchAssetByCodes} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/asset';
 
 const AssetCard = styled.div`
-display: flex;
-flex-direction: column;
-height: 165px;
-margin-top: 10px;
-justify-content: space-between;
-margin-right: 20px;
+  display: flex;
+  flex-direction: column;
+  height: 165px;
+  margin-top: 10px;
+  justify-content: space-between;
+  margin-right: 20px;
 `;
 const Container = styled.div`
-display: flex;
+  display: flex;
+  flex-wrap: wrap;
 `;
 
 const AssetTitle = styled.div`
-display: flex;
-width: 140px;
-align-items: baseline;
+  display: flex;
+  width: 140px;
+  align-items: baseline;
+  min-height: 15px
 `;
-const LoadingTitle = styled(AssetTitle)`
-  position: relative;
-  border: none;
-
-  &:after {
-    animation: loading-breath 2s infinite;
-    content: "";
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    height: 100%;
-
-    background: linear-gradient(270deg, #fdfdfd, #eee);
-    background-size: 400% 400%;
-    border-radius: 5px;
-  }
-`
 
 const BaselinePill = styled(Pill)`
-align-self: unset;
+  align-self: unset;
 `;
 
 const Img = styled.img`
@@ -107,9 +91,9 @@ export const AssetCollection = ({assetFamilyIdentifier, assetCodes, context}: As
       {0 === assets.length && 0 !== assetCodes.length ? (
         <React.Fragment>
           {assetCodes.map((assetCode: AssetCode) => (
-            <AssetCard key={assetCode} className='AknLoadingPlaceHolder'>
+            <AssetCard key={assetCode} className='AknLoadingPlaceHolderContainer'>
               <Thumbnail asset={emptyAsset()}/>
-              <LoadingTitle />
+              <AssetTitle />
             </AssetCard>
           ))}
         </React.Fragment>

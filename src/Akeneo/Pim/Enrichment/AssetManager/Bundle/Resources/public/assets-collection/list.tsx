@@ -32,6 +32,7 @@ const AttributeBreadCrumb = styled.div`
   font-size: 15px;
   font-weight: normal;
   text-transform: uppercase;
+  white-space: nowrap;
   color: ${(props: ThemedProps<void>) => props.theme.color.grey140}
 `;
 
@@ -40,7 +41,9 @@ const IncompleteIndicator = styled.div`
 `;
 
 const AssetCounter = styled.div`
+  white-space: nowrap;
   color: ${(props: ThemedProps<void>) => props.theme.color.purple100};
+  margin-left: 10px;
 `;
 
 type ButtonProps = {
@@ -60,10 +63,11 @@ const Button = styled.div`
         return '32px';
     }
   }};
+  white-space: nowrap;
   line-height: ${(props: ThemedProps<ButtonProps>) => 'micro' === props.buttonSize ? '19xp' : '23px'};
   border-radius: ${(props: ThemedProps<ButtonProps>) => 'micro' === props.buttonSize ? '10xp' : '16px'};
   font-size: ${(props: ThemedProps<ButtonProps>) => 'micro' === props.buttonSize ? props.theme.fontSize.small : props.theme.fontSize.default};
-  minimum-width: ${(props: ThemedProps<ButtonProps>) => 'micro' === props.buttonSize ? '60px' : '100px'};
+  min-width: ${(props: ThemedProps<ButtonProps>) => 'micro' === props.buttonSize ? '60px' : '100px'};
   color: ${(props: ThemedProps<ButtonProps>) => 'outline' !== props.color ? 'white' : props.theme.color.grey120};
   background-color: ${(props: ThemedProps<ButtonProps>) => 'outline' !== props.color ? (props.theme.color as any)[props.color + '100'] : 'white'};
   cursor: pointer;
@@ -71,13 +75,23 @@ const Button = styled.div`
   border: 1px solid ${(props: ThemedProps<ButtonProps>) => 'outline' !== props.color ? 'transparent' : props.theme.color.grey80};
 `;
 
+const AssetCollectionContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+`;
 
+const AssetCollectionList = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+`;
 
 const List = ({values, context}: ListProps) => {
   return (
-    <React.Fragment>
+    <AssetCollectionList>
       {values.map((value: Value) => (
-        <React.Fragment key={value.attribute.code}>
+        <AssetCollectionContainer key={value.attribute.code}>
           <SectionTitle>
             <AttributeBreadCrumb>
               {value.attribute.group} / {getAttributeLabel(value.attribute, context.locale)}
@@ -102,12 +116,10 @@ const List = ({values, context}: ListProps) => {
             ): null}
             <Button buttonSize='medium' color='outline'>{__('pim_asset_manager.asset_collection.add_asset')}</Button>
           </SectionTitle>
-          <div>
-            <AssetCollection assetFamilyIdentifier={value.attribute.reference_data_name} assetCodes={value.data} context={context} />
-          </div>
-        </React.Fragment>
+          <AssetCollection assetFamilyIdentifier={value.attribute.reference_data_name} assetCodes={value.data} context={context} />
+        </AssetCollectionContainer>
       ))}
-    </React.Fragment>
+    </AssetCollectionList>
   )
 };
 
