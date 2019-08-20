@@ -194,7 +194,7 @@ class FilterExtension extends AbstractExtension
                     sprintf('[%s][%s][label]', FormatterConfiguration::COLUMNS_KEY, $column)
                 );
             }
-            $filters[] = $this->getFilterObject($column, $filter);
+            $filters[] = $this->getFilterObject((string)$column, $filter);
         }
 
         // TODO: Try to make filter without views, to remove this kind of stuff
