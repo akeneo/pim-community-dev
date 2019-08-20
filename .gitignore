@@ -5,7 +5,7 @@ web/js/*
 web/dist/*
 web/test_dist/*
 web/cache/*
-app/archive/*
+var/archive/*
 app/cache/*
 app/logs/*
 var/*
