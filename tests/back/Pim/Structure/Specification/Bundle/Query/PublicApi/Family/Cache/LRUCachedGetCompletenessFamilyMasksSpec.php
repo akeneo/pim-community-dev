@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Structure\Bundle\Query\PublicApi\Family\Cache;
 
-use Akeneo\Pim\Structure\Bundle\Query\PublicApi\Family\GetCompletenessFamilyMasks;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetCompletenessFamilyMasks;
 use PhpSpec\ObjectBehavior;
 
 class LRUCachedGetCompletenessFamilyMasksSpec extends ObjectBehavior

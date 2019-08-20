@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Bundle\Query\PublicApi\Family\Cache;
 
-use Akeneo\Pim\Structure\Bundle\Query\PublicApi\Family\GetCompletenessFamilyMasks;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetCompletenessFamilyMasks;
 use Akeneo\Tool\Component\StorageUtils\Cache\LRUCache;
 
 /**

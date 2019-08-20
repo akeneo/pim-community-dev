@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Completeness\Model;
+namespace Specification\Akeneo\Pim\Structure\Component\Query\PublicApi\Family;
 
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessProductMask;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodes;

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Structure\Integration\Query\PublicApi\Family\Sql;
 
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\NonExistingFamiliesException;
-use Akeneo\Pim\Structure\Bundle\Query\PublicApi\Family\GetCompletenessFamilyMasks;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\NonExistingFamiliesException;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetCompletenessFamilyMasks;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\TestCase;
 use Webmozart\Assert\Assert;
