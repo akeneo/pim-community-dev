@@ -118,7 +118,7 @@ php-image: php-image-dev php-image-prod
 
 .PHONY: up
 up:
-	$(DOCKER_COMPOSE) up -d --remove-orphan
+	$(DOCKER_COMPOSE) up -d --remove-orphan ${C}
 
 .PHONY: down
 down:
