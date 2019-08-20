@@ -37,23 +37,23 @@ css:
 	$(YARN_EXEC) run less
 
 .PHONY: javascript-cloud
-javascript-cloud: docker-compose.override.yml
+javascript-cloud:
 	$(DOCKER_COMPOSE) run -e EDITION=cloud --rm node yarn run webpack
 
 .PHONY: javascript-prod
-javascript-prod: docker-compose.override.yml
+javascript-prod:
 	$(YARN_EXEC) run webpack
 
 .PHONY: javascript-dev
-javascript-dev: docker-compose.override.yml
+javascript-dev:
 	$(YARN_EXEC) run webpack-dev
 
 .PHONY: javascript-test
-javascript-test: docker-compose.override.yml
+javascript-test:
 	$(YARN_EXEC) run webpack-test
 
 .PHONY: front
-front: clean-front docker-compose.override.yml assets css javascript-test
+front: clean-front assets css javascript-test
 
 ##
 ## Back
@@ -70,7 +70,7 @@ vendor: composer.lock
 	$(PHP_RUN) /usr/local/bin/composer install
 
 .PHONY: database
-database: docker-compose.override.yml
+database:
 	$(PHP_RUN) bin/console pim:installer:db
 
 ##
@@ -117,7 +117,7 @@ php-image-prod:
 php-image: php-image-dev php-image-prod
 
 .PHONY: up
-up: docker-compose.override.yml
+up:
 	$(DOCKER_COMPOSE) up -d --remove-orphan
 
 .PHONY: down
@@ -132,6 +132,3 @@ behat.yml:
 	cp ./behat.yml.dist ./behat.yml
 	sed -i "s/127.0.0.1\//httpd-behat\//g" ./behat.yml
 	sed -i "s/127.0.0.1/selenium/g" ./behat.yml
-
-docker-compose.override.yml:
-	cp docker-compose.override.yml.dist docker-compose.override.yml

@@ -48,6 +48,8 @@ services:
     image: 'selenium/standalone-firefox-debug:2.53.1-beryllium'
     volumes:
       - './:/srv/pim:ro'
+    ports:
+      - '5910:5900'
     networks:
       - 'behat'
 
@@ -88,6 +90,8 @@ services:
       MYSQL_USER: '${APP_DATABASE_USER}'
       MYSQL_DATABASE: '${APP_DATABASE_NAME}'
       MYSQL_PASSWORD: '${APP_DATABASE_PASSWORD}'
+    ports:
+      - '33006:3306'
     networks:
       - 'akeneo'
 
@@ -106,6 +110,8 @@ services:
     environment:
       ES_JAVA_OPTS: '${ES_JAVA_OPTS:--Xms512m -Xmx512m}'
       discovery.type: 'single-node'
+    ports:
+      - '9210:9200'
     networks:
       - 'akeneo'
       - 'behat'
@@ -129,6 +135,8 @@ services:
     environment:
       MINIO_ACCESS_KEY: 'AKENEO_OBJECT_STORAGE_ACCESS_KEY'
       MINIO_SECRET_KEY: 'AKENEO_OBJECT_STORAGE_SECRET_KEY'
+    ports:
+        - '9090:9000'
     networks:
       - akeneo
 
