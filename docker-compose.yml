@@ -74,7 +74,7 @@ services:
       MYSQL_DATABASE: '${APP_DATABASE_NAME}'
       MYSQL_PASSWORD: '${APP_DATABASE_PASSWORD}'
     ports:
-      - '33006:3306'
+      - '${DOCKER_PORT_MYSQL:-33006}:3306'
     networks:
       - 'pim'
 
@@ -84,7 +84,7 @@ services:
       ES_JAVA_OPTS: '${ES_JAVA_OPTS:--Xms512m -Xmx512m}'
       discovery.type: 'single-node'
     ports:
-      - '9210:9200'
+      - '${DOCKER_PORT_ELASTICSEARCH:-9210}:9200'
     networks:
       - 'pim'
 
@@ -108,7 +108,7 @@ services:
       MINIO_ACCESS_KEY: 'AKENEO_OBJECT_STORAGE_ACCESS_KEY'
       MINIO_SECRET_KEY: 'AKENEO_OBJECT_STORAGE_SECRET_KEY'
     ports:
-        - '9090:9000'
+        - '${DOCKER_PORT_OBJECT_STORAGE:-9090}:9000'
     networks:
       - 'pim'
 
