@@ -238,8 +238,8 @@ jobs:
       - run: 
           name: Merge JS code coverage reports and output HTML
           command: |
-            yarn instrument-merge
-            yarn instrument-report
+            docker-compose run --rm node yarn run instrument-merge
+            docker-compose run --rm node yarn run instrument-report
       - store_artifacts:
           path: coverage
       - store_artifacts: 
