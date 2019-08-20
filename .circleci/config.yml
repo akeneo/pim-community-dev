@@ -66,7 +66,7 @@ jobs:
                 name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
                 command: sudo chown -R 1000:1000 ../project
           - run:
-                name: Start containers
+                name: Load archived docker image
                 command: docker load -i php-pim-image.tar
           - run:
                 name: Generate dev cache for Symfony's Phpstan extension
@@ -132,15 +132,16 @@ jobs:
           - run:
                 name: Start containers
                 command: |
-                    docker-compose up -d
+                    docker load -i php-pim-image.tar
+                    APP_ENV=test make up
                     vendor/akeneo/pim-community-dev/.circleci/wait_docker_up.sh
           - run:
                 name: Install database
-                command: docker-compose exec fpm bin/console --env=behat pim:install:db
+                command: APP_ENV=test make database
           - run:
                 name: PHPunit Integration
                 command: |
-                    TESTFILES=$(docker-compose exec -T fpm vendor/akeneo/pim-community-dev/.circleci/find_phpunit.sh PIM_Integration_Test | circleci tests split)
+                    TESTFILES=$(docker-compose run --rm -T php vendor/akeneo/pim-community-dev/.circleci/find_phpunit.sh PIM_Integration_Test | circleci tests split)
                     vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh . $TESTFILES
           - run:
                 name: PHPunit Integration (Reference Entities)
@@ -168,15 +169,16 @@ jobs:
           - run:
                 name: Start containers
                 command: |
+                    docker load -i php-pim-image.tar
                     docker-compose up -d
                     vendor/akeneo/pim-community-dev/.circleci/wait_docker_up.sh
           - run:
                 name: Install database
-                command: docker-compose exec fpm bin/console --env=behat pim:install:db
+                command: APP_ENV=test make database
           - run:
                 name: PHPunit End to end
                 command: |
-                    TESTFILES=$(docker-compose exec -T fpm vendor/akeneo/pim-community-dev/.circleci/find_phpunit.sh End_to_End  | circleci tests split)
+                    TESTFILES=$(docker-compose run --rm -T php vendor/akeneo/pim-community-dev/.circleci/find_phpunit.sh End_to_End  | circleci tests split)
                     vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh . $TESTFILES
           - store_test_results:
                 path: var/tests/phpunit
