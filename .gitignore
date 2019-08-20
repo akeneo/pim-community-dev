@@ -13,8 +13,8 @@ var/*
 app/import/*
 app/export/*
 app/emails/*
-app/uploads/*
-app/uploads/product/*
+var/uploads/*
+var/uploads/product/*
 var/file_storage/*
 app/phpunit.xml
 app/build
