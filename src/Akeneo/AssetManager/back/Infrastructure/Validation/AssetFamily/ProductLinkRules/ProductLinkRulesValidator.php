@@ -6,6 +6,7 @@ namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkR
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
@@ -24,6 +25,7 @@ class ProductLinkRulesValidator extends ConstraintValidator
 
     public function validate($productLinkRules, Constraint $constraint): void
     {
+        $ruleEngineViolations = new ConstraintViolationList();
         foreach ($productLinkRules as $productLinkRule) {
             $ruleEngineViolations = $this->validateProductConditions($productLinkRule);
             $ruleEngineViolations->addAll($this->validateProductActions($productLinkRule));
@@ -33,6 +35,7 @@ class ProductLinkRulesValidator extends ConstraintValidator
 
     private function validateProductConditions(array $productConditions): ConstraintViolationListInterface
     {
+        $ruleEngineViolations = new ConstraintViolationList();
         foreach ($productConditions['product_selections'] as $productCondition) {
             $ruleEngineViolations = $this->ruleEngineValidatorACL->validateProductSelection($productCondition);
         }
@@ -42,6 +45,7 @@ class ProductLinkRulesValidator extends ConstraintValidator
 
     private function validateProductActions($productActions): ConstraintViolationListInterface
     {
+        $ruleEngineViolations = new ConstraintViolationList();
         foreach ($productActions['assign_assets_to'] as $productAction) {
             $ruleEngineViolations = $this->ruleEngineValidatorACL->validateProductAction($productAction);
         }
