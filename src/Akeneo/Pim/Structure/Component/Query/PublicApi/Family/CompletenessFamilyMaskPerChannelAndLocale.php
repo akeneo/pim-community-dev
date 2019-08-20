@@ -17,7 +17,7 @@ class CompletenessFamilyMaskPerChannelAndLocale
      *
      * @var string
      */
-    private const ATTRIBUTE_CHANNEL_LOCALE_SEPARATOR = '-';
+    public const ATTRIBUTE_CHANNEL_LOCALE_SEPARATOR = '-';
 
     /** @var string */
     private $channelCode;
