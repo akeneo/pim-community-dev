@@ -65,49 +65,49 @@ jobs:
                 command: sudo chown -R 1000:1000 ../project
           - run:
                 name: Start containers
-                command: docker-compose up -d fpm
+                command: make up
           - run:
                 name: Generate dev cache for Symfony's Phpstan extension
-                command: docker-compose exec fpm bin/console --env=dev cache:clear
+                command: APP_ENV=dev make clean-back
           - run:
                 name: PhpSpec
-                command: docker-compose exec -T fpm vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
+                command: docker-compose run --rm -T php vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
           - run:
                 name: Find non executed PhpSpec files
                 command: vendor/akeneo/pim-community-dev/.circleci/find_non_executed_phpspec.sh
           - run:
                 name: PhpSpec (Reference Entities)
-                command: docker-compose exec fpm vendor/bin/phpspec run -c src/Akeneo/ReferenceEntity/tests/back/phpspec.yml.dist --no-interaction -vvv
+                command: docker-compose run --rm php vendor/bin/phpspec run -c src/Akeneo/ReferenceEntity/tests/back/phpspec.yml.dist --no-interaction -vvv
           - run:
                 name: PhpSpec (Asset Manager)
-                command: docker-compose exec fpm vendor/bin/phpspec run -c src/Akeneo/AssetManager/tests/back/phpspec.yml.dist --no-interaction -vvv
+                command: docker-compose run --rm php vendor/bin/phpspec run -c src/Akeneo/AssetManager/tests/back/phpspec.yml.dist --no-interaction -vvv
           - run:
                 name: PhpCsFixer
-                command: docker-compose exec -T fpm vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
+                command: docker-compose run --rm -T php vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
                 when: always
           - run:
                 name: PhpCoupling Detector
-                command: DOCKER=true make coupling
+                command: make coupling
                 when: always
           - run:
                 name: PHPStan on Reference Entities
-                command: docker-compose exec -T fpm vendor/bin/phpstan analyse --configuration src/Akeneo/ReferenceEntity/tests/back/phpstan.neon.dist
+                command: docker-compose run --rm -T php vendor/bin/phpstan analyse --configuration src/Akeneo/ReferenceEntity/tests/back/phpstan.neon.dist
                 when: always
           - run:
                 name: PHPStan
-                command: docker-compose exec -T fpm vendor/bin/phpstan analyse src/Akeneo/Pim -l 1
+                command: docker-compose run --rm -T php vendor/bin/phpstan analyse src/Akeneo/Pim -l 1
                 when: always
           - run:
                 name: Check Pullup
-                command: docker-compose exec -T fpm vendor/akeneo/pim-community-dev/bin/check-pullup
+                command: docker-compose run --rm -T php vendor/akeneo/pim-community-dev/bin/check-pullup
                 when: always
           - run:
                 name: Acceptance back
-                command: docker-compose exec fpm vendor/bin/behat --strict -p acceptance -vv
+                command: docker-compose run --rm php vendor/bin/behat --strict -p acceptance -vv
                 when: always
           - run:
                 name: Acceptance back (Reference Entities)
-                command: docker-compose exec fpm vendor/bin/behat --config src/Akeneo/ReferenceEntity/tests/back/behat.yml.dist --no-interaction --format=progress
+                command: docker-compose run --rm php vendor/bin/behat --config src/Akeneo/ReferenceEntity/tests/back/behat.yml.dist --no-interaction --format=progress
                 when: always
           - store_test_results:
                 path: var/tests
