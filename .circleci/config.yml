@@ -6,7 +6,7 @@ jobs:
             type: boolean
             default: true
     machine:
-      enabled: true
+      image: ubuntu-1604:201903-01
       docker_layer_caching: true
     steps:
       - checkout
@@ -70,7 +70,7 @@ jobs:
 
   back_static_and_acceptance:
       machine:
-          enabled: true
+          image: ubuntu-1604:201903-01
           docker_layer_caching: true
       steps:
           - attach_workspace:
@@ -133,7 +133,7 @@ jobs:
 
   back_phpunit_integration:
       machine:
-          enabled: true
+          image: ubuntu-1604:201903-01
           docker_layer_caching: true
       parallelism: 10
       steps:
@@ -169,7 +169,7 @@ jobs:
 
   back_phpunit_end_to_end:
       machine:
-          enabled: true
+          image: ubuntu-1604:201903-01
           docker_layer_caching: true
       parallelism: 10
       steps:
@@ -200,8 +200,8 @@ jobs:
 
   back_behat_legacy:
     machine:
-      enabled: true
-      docker_layer_caching: true
+        image: ubuntu-1604:201903-01
+        docker_layer_caching: true
     parallelism: 20
     steps:
       - attach_workspace:
@@ -264,7 +264,7 @@ jobs:
 
   front_static_acceptance_and_integration:
       machine:
-          enabled: true
+          image: ubuntu-1604:201903-01
           docker_layer_caching: true
       steps:
         - attach_workspace:
@@ -284,7 +284,7 @@ jobs:
 
   back_performance:
     machine:
-        enabled: true
+        image: ubuntu-1604:201903-01
         docker_layer_caching: true
     steps:
       - attach_workspace:
