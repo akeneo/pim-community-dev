@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-8663: Fix category tree selector
 - PIM-8601: Fix purge of the job execution according to the date of creation and not deletion
 
 # 3.2.2 (2019-08-01)
