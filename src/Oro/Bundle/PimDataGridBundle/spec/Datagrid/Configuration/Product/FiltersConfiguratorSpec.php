@@ -33,8 +33,8 @@ class FiltersConfiguratorSpec extends ObjectBehavior
                 'group'               => 'General',
                 'groupOrder'          => 1
             ],
-            'name' => [
-                'code'                => 'name',
+            123456 => [
+                'code'                => '123456',
                 'label'               => 'Name',
                 'useableAsGridFilter' => 1,
                 'type'                => 'pim_catalog_text',
@@ -61,9 +61,9 @@ class FiltersConfiguratorSpec extends ObjectBehavior
                 'group'      => 'General',
                 'groupOrder' => 1
             ],
-            'name' => [
+            '123456' => [
                 0            => 'text_config',
-                'data_name'  => 'name',
+                'data_name'  => '123456',
                 'label'      => 'Name',
                 'enabled'    => false,
                 'order'      => 2,
