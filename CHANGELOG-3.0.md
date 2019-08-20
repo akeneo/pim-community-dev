@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.38 (2019-08-20)
+
 ## Bug fixes
 
 - PIM-8357: Fix styling of actions on history grid
