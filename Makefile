@@ -1,6 +1,6 @@
 DOCKER_COMPOSE = docker-compose
 YARN_EXEC = $(DOCKER_COMPOSE) run --rm node yarn
-PHP_RUN = $(DOCKER_COMPOSE) run -u www-data --rm fpm php
+PHP_RUN = $(DOCKER_COMPOSE) run -u www-data --rm php php
 PHP_EXEC = $(DOCKER_COMPOSE) exec -u www-data fpm php
 IMAGE_TAG ?= master
 
