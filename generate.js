@@ -11,7 +11,7 @@ const forbiden = [
   '/logs/',
   '.DS_Store',
   'tests/legacy/',
-  'app/file_storage/',
+  'var/file_storage/',
   'generate.js',
   'coverage/src',
   '.png',
