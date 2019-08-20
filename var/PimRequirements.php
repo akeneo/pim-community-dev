@@ -1,9 +1,11 @@
 <?php
 
-require_once __DIR__ . '/../var/SymfonyRequirements.php';
+require_once __DIR__ . '/SymfonyRequirements.php';
 
 use Akeneo\Platform\CommunityRequirements;
 use Akeneo\Platform\Requirement as PlatformRequirement;
+
+// TODO: This file should not be in var/. Handle this properly via TIP-1232
 
 /**
  * Akeneo PIM requirements

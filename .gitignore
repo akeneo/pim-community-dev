@@ -8,6 +8,7 @@ web/cache/*
 var/archive/*
 var/*
 !var/SymfonyRequirements.php
+!var/PimRequirements.php
 var/uploads/*
 var/uploads/product/*
 var/file_storage/*
