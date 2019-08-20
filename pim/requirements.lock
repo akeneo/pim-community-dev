@@ -5,9 +5,6 @@ dependencies:
 - name: elasticsearch
   repository: https://kubernetes-charts.storage.googleapis.com
   version: 1.21.3
-- name: nfs-server-provisioner
-  repository: https://kubernetes-charts.storage.googleapis.com
-  version: 0.2.1
 - name: memcached
   repository: https://kubernetes-charts.storage.googleapis.com
   version: 2.6.0

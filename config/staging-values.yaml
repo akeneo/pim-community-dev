@@ -9,10 +9,6 @@ backup:
     export:
       enabled: false # No export
 
-nfs:
-  persistence:
-    size: 83Gi
-
 pim:
   persistence:
     diskSize: 80Gi

@@ -24,7 +24,6 @@ spec:
       labels:
         component: {{ template "pim.fullName" . }}
         role: pim-web
-        nfs-recovery: "true"
         {{ include "pim.extraLabels" . | indent 8 }}
     spec:
       affinity:
@@ -98,18 +97,6 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 1
             successThreshold: 3
-          readinessProbe:
-            exec:
-              command:
-              - timeout
-              - "1"
-              - touch
-              - /data/readinessProbeNFS
-            failureThreshold: 1
-            initialDelaySeconds: 1
-            periodSeconds: 1
-            successThreshold: 1
-            timeoutSeconds: 1
           livenessProbe:
             failureThreshold: 3
             initialDelaySeconds: 5

@@ -12,10 +12,6 @@ backup:
   projectId: ${projectId}
   zone: ${googleZone}
 
-nfs:
-  storageClass:
-    name: nfs-${instanceName}
-
 mailer:
   login: ${mailgun_login_email}
   password: ${mailgun_password}
