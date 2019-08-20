@@ -12,7 +12,9 @@ jobs:
       - checkout
       - run:
           name: Pull and build the latest Docker images
-          command: make php-image-dev
+          command: |
+              make php-image-dev
+              docker save -o php-pim-image.tar akeneo/pim-dev/php:7.2
       - run:
           name: Setup tests results folder and log folder
           command: mkdir -p var/tests/phpunit var/tests/behat var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots
@@ -65,7 +67,7 @@ jobs:
                 command: sudo chown -R 1000:1000 ../project
           - run:
                 name: Start containers
-                command: make up
+                command: docker load -i php-pim-image.tar
           - run:
                 name: Generate dev cache for Symfony's Phpstan extension
                 command: APP_ENV=dev make clean-back
