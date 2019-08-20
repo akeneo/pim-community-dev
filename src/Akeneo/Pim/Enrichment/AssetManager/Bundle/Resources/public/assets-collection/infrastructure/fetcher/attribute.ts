@@ -1,5 +1,5 @@
-import {Attribute} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/structure';
 import promisify from 'akeneoassetmanager/tools/promisify';
+import {Attribute} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
 const fetcherRegistry = require('pim/fetcher-registry');
 
 export const fetchAssetAttributes = async (): Promise<Attribute[]> => {

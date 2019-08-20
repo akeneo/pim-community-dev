@@ -1,18 +1,19 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import {AssetCollectionState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/asset-collection';
-import {selectAttributeList, Attribute, getAttributeLabel} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/structure';
-import {selectContext, ContextState, ChannelCode, LocaleCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
-import {ValueCollection, Value, selectCurrentValues, AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';
-// import AssetSelector from 'akeneoassetmanager/application/component/app/asset-selector';
-// import {createIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
-// import {createChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
-// import {createLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
+import {selectAttributeList} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/structure';
+import {selectContext, ContextState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
+import {ValueCollection, Value, selectCurrentValues} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';
 import styled from 'styled-components';
-import {ThemedProps} from 'akeneopimenrichmentassetmanager/product/tab/asset';
 import __ from 'akeneoreferenceentity/tools/translator';
-import {fetchAssetByCodes, AssetFamilyIdentifier, Asset, getImage, isComplete} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/asset';
-import {getLabel} from 'pimui/js/i18n';
+import {Label} from 'akeneopimenrichmentassetmanager/platform/component/common/label';
+import {getAttributeLabel, Attribute} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
+import {ChannelLabel} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/channel';
+import {LocaleLabel} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/locale';
+import {ContextLabel} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/context';
+import {ThemedProps} from 'akeneopimenrichmentassetmanager/platform/component/theme';
+import {Pill, Spacer, Separator} from 'akeneopimenrichmentassetmanager/platform/component/common';
+import {AssetCollection} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-collection';
 
 type ListProps = {
   attributes: Attribute[],
@@ -38,18 +39,8 @@ const IncompleteIndicator = styled.div`
   display: flex;
 `;
 
-const Spacer = styled.div`
-  flex: 1;
-`;
-
 const AssetCounter = styled.div`
   color: ${(props: ThemedProps<void>) => props.theme.color.purple100};
-`;
-
-const Separator = styled.div`
-  border-left: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey100};
-  margin: 0 10px;
-  height: 24px;
 `;
 
 type ButtonProps = {
@@ -80,94 +71,7 @@ const Button = styled.div`
   border: 1px solid ${(props: ThemedProps<ButtonProps>) => 'outline' !== props.color ? 'transparent' : props.theme.color.grey80};
 `;
 
-const Pill = styled.div`
-  background-color: ${(props: ThemedProps<void>) => props.theme.color.yellow100}
-  width: 8px;
-  min-width: 8px; // to fix a glitch on chrome when the pill is smashed
-  height: 8px;
-  border-radius: 8px;
-  margin: 0 6px;
-  align-self: center;
-`
 
-const Label = styled.div`
-  color: ${(props: ThemedProps<{small: boolean, grey: boolean}>) => props.theme.color.grey120};
-  font-size: ${(props: ThemedProps<{small: boolean, grey: boolean}>) => props.theme.fontSize.default};
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-
-  ::first-letter {
-    text-transform: capitalize
-  }
-`
-
-const Thumbnail = ({asset}: {asset: Asset}) => {
-  const Img = styled.img`
-    width: 140px;
-    height: 140px;
-    border: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey100}
-  `;
-
-  return (<Img src={getImage(asset)} />)
-}
-
-type AssetCollectionProps = {
-  assetFamilyIdentifier: AssetFamilyIdentifier
-  assetCodes: AssetCode[],
-  context: {channel: ChannelCode, locale: LocaleCode}
-}
-const AssetCollection = ({assetFamilyIdentifier, assetCodes, context}: AssetCollectionProps) => {
-  const [assets, assetsReceived] = React.useState<Asset[]>([]);
-  const noChangeInCollection = (assetCodes: AssetCode[], assets: Asset[]) => {
-    return assets.length !== assetCodes.length || !assets.sort().every((asset: Asset, index: number) => assetCodes.sort().indexOf(asset.code) === index )
-  }
-  React.useEffect(() => {
-    if (assetCodes.length !== 0 && (noChangeInCollection(assetCodes, assets))) {
-      fetchAssetByCodes(assetFamilyIdentifier, assetCodes, context).then((receivedAssets: Asset[]) => {
-        assetsReceived(receivedAssets);
-      })
-    }
-  });
-
-  const AssetCard = styled.div`
-    display: flex;
-    flex-direction: column;
-    height: 165px;
-    margin-top: 10px;
-    justify-content: space-between;
-    margin-right: 20px;
-  `;
-  const Container = styled.div`
-    display: flex;
-  `;
-
-  const AssetTitle = styled.div`
-    display: flex;
-    width: 140px;
-    align-items: baseline;
-  `;
-
-  const BaselinePill = styled(Pill)`
-    align-self: unset;
-  `;
-
-  return (
-    <Container>
-      {assets.map((asset: Asset) => (
-        <AssetCard>
-          <Thumbnail asset={asset} />
-          <AssetTitle>
-            <Label>
-              {getLabel(asset.labels, context.locale, asset.code)}
-            </Label>
-            {!isComplete(asset) ? <BaselinePill /> : null}
-          </AssetTitle>
-        </AssetCard>
-      ))}
-    </Container>
-  )
-}
 
 const List = ({values, context}: ListProps) => {
   return (
@@ -187,6 +91,15 @@ const List = ({values, context}: ListProps) => {
               {__('pim_asset_manager.asset_collection.asset_count', {count: value.data.length})}
             </AssetCounter>
             <Separator />
+            {value.channel !== null || value.locale !== null ? (
+              <React.Fragment>
+                <ContextLabel>
+                  {value.channel !== null ? <ChannelLabel channelCode={value.channel}/> : null}
+                  {value.locale !== null ? <LocaleLabel localeCode={value.locale}/> : null}
+                </ContextLabel>
+                <Separator />
+              </React.Fragment>
+            ): null}
             <Button buttonSize='medium' color='outline'>{__('pim_asset_manager.asset_collection.add_asset')}</Button>
           </SectionTitle>
           <div>

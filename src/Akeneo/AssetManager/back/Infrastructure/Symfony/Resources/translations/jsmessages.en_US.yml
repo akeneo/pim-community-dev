@@ -7,6 +7,7 @@ pim_asset_manager:
     asset_count:
       '{{ count }} asset|{{ count }} assets'
     add_asset: 'Add asset'
+    no_asset: 'Sorry, there is no asset in this collection.'
 #  app:
 #    image:
 #      wide:

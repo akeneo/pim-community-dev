@@ -1,14 +1,13 @@
 import {Action} from 'redux';
-import {AttributeCode, Attribute} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/structure';
-import {LocaleCode, ChannelCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
+import {AttributeCode, Attribute} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
 import {AssetCollectionState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/asset-collection';
+import {ChannelReference} from 'akeneopimenrichmentassetmanager/platform/model/channel/channel';
+import {LocaleReference} from 'akeneopimenrichmentassetmanager/platform/model/channel/locale';
 
 export type Meta = {
   attributes_for_this_level: AttributeCode[];
   level: number | null;
 };
-export type LocaleReference = LocaleCode | null;
-export type ChannelReference = ChannelCode | null;
 
 export type CategoryCode = string;
 
