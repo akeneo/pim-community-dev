@@ -40,6 +40,7 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     ln -s /usr/sbin/php-fpm7.2 /usr/local/sbin/php-fpm && \
+    usermod --uid 1000 www-data && groupmod --gid 1000 www-data && \
     mkdir /srv/pim && \
     sed -i "s#listen = /run/php/php7.2-fpm.sock#listen = 9000#g" /etc/php/7.2/fpm/pool.d/www.conf && \
     mkdir -p /run/php

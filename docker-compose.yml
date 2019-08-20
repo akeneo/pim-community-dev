@@ -27,7 +27,7 @@ services:
       XDEBUG_ENABLED: '${XDEBUG_ENABLED:-0}'
       XDEBUG_CONFIG: 'remote_host=172.17.0.1'
     volumes:
-      - './:/srv/pim:ro'
+      - './:/srv/pim'
     working_dir: '/srv/pim'
     command: 'php-fpm -F'
     networks:
