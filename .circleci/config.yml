@@ -195,12 +195,6 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/
-      # The version of docker compose used by circle ci does not support `-e` option (`docker-composer exec -e ENV_VAR=value`) to set environment variables to containers.
-      # To load .env.behat (from config/bootstrap.php) we need to set APP_ENV=behat but it is not possible because of the version of docker-compose.
-      # To avoid to upgrade it, we use this little trick
-      - run:
-          name: Copy env file
-          command: cp .env.behat .env
       - run:
           name: Get Behat Suite name to run
           command: |
@@ -219,20 +213,21 @@ jobs:
       - run:
           name: Start containers
           command: |
-            docker-compose up -d
+            docker load -i php-pim-image.tar
+            APP_ENV=behat make up
             vendor/akeneo/pim-community-dev/.circleci/wait_docker_up.sh
       - run:
           name: Install database
-          command: docker-compose exec fpm bin/console --env=behat pim:install:db
+          command: APP_ENV=behat make database
       - run:
           name: Non critical Behat
           command: |
-            TESTFILES=$(docker-compose exec -T fpm vendor/bin/behat --list-scenarios -p legacy -s $TESTSUITE | circleci tests split --split-by=timings)
+            TESTFILES=$(docker-compose run --rm -T php vendor/bin/behat --list-scenarios -p legacy -s $TESTSUITE | circleci tests split --split-by=timings)
             vendor/akeneo/pim-community-dev/.circleci/run_behat.sh $TESTSUITE $TESTFILES
       - run:
           name: Critical Behat
           command: |
-            TESTFILES=$(docker-compose exec -T fpm vendor/bin/behat --list-scenarios -p legacy -s critical | circleci tests split --split-by=timings)
+            TESTFILES=$(docker-compose run --rm -T php vendor/bin/behat --list-scenarios -p legacy -s critical | circleci tests split --split-by=timings)
             vendor/akeneo/pim-community-dev/.circleci/run_behat.sh critical $TESTFILES
       - run:
           name: Gather Junit test result files in the same directory to improve the render of failing tests
