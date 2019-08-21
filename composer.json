@@ -52,7 +52,9 @@
         "justinrainbow/json-schema": "^5.2",
         "hslavich/oneloginsaml-bundle": "1.4.0",
         "phpseclib/phpseclib": "~2.0",
-        "blackfire/php-sdk": "^1.18"
+        "blackfire/php-sdk": "^1.18",
+        "superbalist/flysystem-google-storage": "7.2.1",
+        "google/cloud-error-reporting": "0.14.5"
     },
     "require-dev": {
         "akeneo/php-coupling-detector": "0.3.*",
