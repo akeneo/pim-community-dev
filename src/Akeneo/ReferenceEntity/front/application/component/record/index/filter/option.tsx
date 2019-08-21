@@ -66,12 +66,19 @@ const OptionFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
 
   return (
     <React.Fragment>
-      <span className="AknFilterBox-filterLabel" onClick={(event: any) => {openPopup(event);}}>
+      <span
+        className="AknFilterBox-filterLabel"
+        onClick={(event: any) => {
+          openPopup(event);
+        }}
+      >
         {attribute.getLabel(context.locale)}
       </span>
       <span
         className="AknFilterBox-filterCriteria AknFilterBox-filterCriteria--limited"
-        onClick={(event: any) => {openPopup(event);}}
+        onClick={(event: any) => {
+          openPopup(event);
+        }}
       >
         <span className="AknFilterBox-filterCriteriaHint">
           {0 === labels.length ? __('pim_reference_entity.record.grid.filter.option.all') : labels.join(', ')}
@@ -81,7 +88,10 @@ const OptionFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
       {isOpen ? (
         <div>
           <div className="AknDropdown-mask" onClick={() => setIsOpen(false)} />
-          <div className={"AknFilterBox-filterDetails " + (displayRight ? "AknFilterBox-filterDetails--rightAlign" : "")} id={"filterDetails" + attribute.code.stringValue()}>
+          <div
+            className={'AknFilterBox-filterDetails ' + (displayRight ? 'AknFilterBox-filterDetails--rightAlign' : '')}
+            id={'filterDetails' + attribute.code.stringValue()}
+          >
             <div className="AknFilterChoice">
               <div className="AknFilterChoice-header">
                 <div className="AknFilterChoice-title">{attribute.getLabel(context.locale)}</div>
@@ -109,7 +119,7 @@ const OptionFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
                       const formerResult = '<span class="select2-match"></span>' + result.text;
                       container.attr('title', result.text);
                       return formerResult;
-                    }
+                    },
                   }}
                   onChange={(optionCodes: string[]) => {
                     onFilterUpdated({

@@ -62,6 +62,7 @@ type AssetCollectionProps = {
   assetCodes: AssetCode[],
   context: {channel: ChannelCode, locale: LocaleCode}
 }
+
 export const AssetCollection = ({assetFamilyIdentifier, assetCodes, context}: AssetCollectionProps) => {
   const [assets, assetsReceived] = React.useState<Asset[]>([]);
   const noChangeInCollection = (assetCodes: AssetCode[], assets: Asset[]) => {
@@ -77,17 +78,21 @@ export const AssetCollection = ({assetFamilyIdentifier, assetCodes, context}: As
 
   return (
     <Container>
-      {assets.map((asset: Asset) => (
-        <AssetCard key={asset.code}>
-          <Thumbnail asset={asset} />
-          <AssetTitle>
-            <Label>
-              {getLabel(asset.labels, context.locale, asset.code)}
-            </Label>
-            {!isComplete(asset) ? <BaselinePill /> : null}
-          </AssetTitle>
-        </AssetCard>
-      ))}
+      {0 !== assets.length ? (
+        <React.Fragment>
+          {assets.map((asset: Asset) => (
+            <AssetCard key={asset.code}>
+              <Thumbnail asset={asset} />
+              <AssetTitle>
+                <Label>
+                  {getLabel(asset.labels, context.locale, asset.code)}
+                </Label>
+                {!isComplete(asset) ? <BaselinePill /> : null}
+              </AssetTitle>
+            </AssetCard>
+          ))}
+        </React.Fragment>
+      ) : null}
       {0 === assets.length && 0 !== assetCodes.length ? (
         <React.Fragment>
           {assetCodes.map((assetCode: AssetCode) => (
