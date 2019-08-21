@@ -133,7 +133,7 @@ jobs:
                 name: Start containers
                 command: |
                     docker load -i php-pim-image.tar
-                    APP_ENV=test C='mysql elasticsearch' make up
+                    APP_ENV=test C='mysql elasticsearch object-storage' make up
                     vendor/akeneo/pim-community-dev/.circleci/wait_docker_up.sh
           - run:
                 name: Install database
@@ -170,7 +170,7 @@ jobs:
                 name: Start containers
                 command: |
                     docker load -i php-pim-image.tar
-                    APP_ENV=test C='mysql elasticsearch' make up
+                    APP_ENV=test C='mysql elasticsearch object-storage' make up
                     vendor/akeneo/pim-community-dev/.circleci/wait_docker_up.sh
           - run:
                 name: Install database
