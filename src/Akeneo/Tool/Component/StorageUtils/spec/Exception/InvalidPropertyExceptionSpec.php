@@ -56,7 +56,7 @@ class InvalidPropertyExceptionSpec extends ObjectBehavior
         $this->getCode()->shouldReturn($exception->getCode());
     }
 
-    function it_creates_an_invalid_date_exception()
+    function it_creates_an_invalid_date_format_exception()
     {
         $exception = InvalidPropertyException::dateExpected(
             'created_date',
@@ -70,6 +70,30 @@ class InvalidPropertyExceptionSpec extends ObjectBehavior
             '2017/12/12',
             'Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\DateAttributeSetter',
             'Property "created_date" expects a string with the format "yyyy-mm-dd" as data, "2017/12/12" given.',
+            InvalidPropertyException::DATE_EXPECTED_CODE
+        );
+
+        $this->shouldBeAnInstanceOf(get_class($exception));
+        $this->getPropertyName()->shouldReturn($exception->getPropertyName());
+        $this->getPropertyValue()->shouldReturn($exception->getPropertyValue());
+        $this->getClassName()->shouldReturn($exception->getClassName());
+        $this->getMessage()->shouldReturn($exception->getMessage());
+        $this->getCode()->shouldReturn($exception->getCode());
+    }
+
+    function it_creates_an_invalid_date_exception()
+    {
+        $exception = InvalidPropertyException::validDateExpected(
+            'created_date',
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\DateAttributeSetter',
+            '2019-02-31'
+        );
+
+        $this->beConstructedWith(
+            'created_date',
+            '2019-02-31',
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\DateAttributeSetter',
+            'Property "created_date" expects a valid date as data, "2019-02-31" given.',
             InvalidPropertyException::DATE_EXPECTED_CODE
         );
 
