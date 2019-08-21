@@ -214,7 +214,7 @@ jobs:
           name: Start containers
           command: |
             docker load -i php-pim-image.tar
-            APP_ENV=behat C='mysql elasticsearch httpd object-storage selenium' make up
+            APP_ENV=behat C='fpm mysql elasticsearch httpd object-storage selenium' make up
             vendor/akeneo/pim-community-dev/.circleci/wait_docker_up.sh
       - run:
           name: Install database
