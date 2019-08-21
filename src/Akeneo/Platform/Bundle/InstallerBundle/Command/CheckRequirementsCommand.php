@@ -3,6 +3,7 @@
 namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 
 use Akeneo\Platform\Bundle\InstallerBundle\PimDirectoriesRegistry;
+use Akeneo\Platform\Bundle\InstallerBundle\PimRequirements;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
@@ -45,7 +46,7 @@ class CheckRequirementsCommand extends ContainerAwareCommand
     protected function getRequirements()
     {
         if (!class_exists('PimRequirements')) {
-            $path = $this->getContainer()->getParameter('kernel.project_dir').'/app/PimRequirements.php';
+            $path = $this->getContainer()->getParameter('kernel.project_dir').'/var/PimRequirements.php';
             require_once $path;
         }
 

@@ -28,23 +28,11 @@ framework:
             frontend:
                 version_strategy: pim_enrich.version_strategy
 
-# Twig Configuration
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
-    globals:
-        uservoice_key: '%uservoice_key%'
 
-# Swiftmailer Configuration
 swiftmailer:
     url: '%env(MAILER_URL)%'
     spool: { type: 'memory' }
 
-akeneo_pim_structure:
-    reference_data:
-        fabrics:
-            class: Acme\Bundle\AppBundle\Entity\Fabric
-            type: multi
-        color:
-            class: Acme\Bundle\AppBundle\Entity\Color
-            type: simple

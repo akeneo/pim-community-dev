@@ -117,17 +117,17 @@ Test suites are defined in the file [app/phpunit.xml.dist](https://github.com/ak
 
 If you want to run all the tests at once (not recommended, as it is way to long; that's why the Akeneo CI uses a queue and multiple machines in parallel to run them):
 ```bash
-$ phpunit -c app/phpunit.xml.dist
+$ phpunit -c phpunit.xml.dist
 ```
 
 If you want to use `docker-compose`:
 ```bash
-$ docker-compose exec fpm phpunit -c app/phpunit.xml.dist
+$ docker-compose exec fpm phpunit -c phpunit.xml.dist
 ```
 
 If you want to run a specific test suite (in this example, the legacy unit tests suite):
 ```bash
-$ phpunit -c app/phpunit.xml.dist --testsuite="PIM_Unit_Test"
+$ phpunit -c phpunit.xml.dist --testsuite="PIM_Unit_Test"
 ```
 
 If you want to run the tests from a specific folder, you need to copy `phpunit.xml.dist` as `phpunit.xml`
@@ -138,12 +138,12 @@ $ phpunit -c app/phpunit.xml --testsuite="my_own_test_suite"
 
 If you want to run the tests from a specific file:
 ```bash
-$ phpunit -c app/phpunit.xml.dist src/Akeneo/UserManagement/Component/tests/integration/Updater/UserUpdaterIntegration.php
+$ phpunit -c phpunit.xml.dist src/Akeneo/UserManagement/Component/tests/integration/Updater/UserUpdaterIntegration.php
 ```
 
 If you want to run a specific test, filter the name of the test:
 ```bash
-$ phpunit -c app/phpunit.xml.dist src/Akeneo/UserManagement/Component/tests/integration/Updater/UserUpdaterIntegration.php --filter testSuccessfullyToCreateAUser
+$ phpunit -c phpunit.xml.dist src/Akeneo/UserManagement/Component/tests/integration/Updater/UserUpdaterIntegration.php --filter testSuccessfullyToCreateAUser
 ```
 
 ### Behat

@@ -28,7 +28,6 @@ imports:
 #
 parameters:
     pim_job_product_batch_size: 100
-    env(AKENEO_PIM_URL): ''
 
 services:
     oro.cache.abstract:
