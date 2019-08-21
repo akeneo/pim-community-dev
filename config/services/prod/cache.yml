@@ -1,0 +1,17 @@
+parameters:
+    oro_security.acl.cache.class: 'Doctrine\Common\Cache\MemcachedCache'
+
+services:
+    security.acl.cache.doctrine.cache_impl:
+        public: false
+        class: '%oro_security.acl.cache.class%'
+        calls:
+            - method: setMemcached
+              arguments:
+                  - '@memcached'
+
+    memcached:
+        class: Memcached
+        calls:
+            - method: addServer
+              arguments: ['%env(MEMCACHED_SVC)%', 11211]

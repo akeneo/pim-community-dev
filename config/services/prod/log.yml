@@ -1,0 +1,36 @@
+services:
+    monolog_psr_batch_logger:
+        class: Monolog\Handler\PsrHandler
+        arguments: ['@psr_batch_logger']
+
+    psr_batch_logger:
+        class: Google\Cloud\Logging\PsrLogger
+        factory: ['Google\Cloud\Logging\LoggingClient', 'psrBatchLogger']
+        arguments:
+            - 'app'
+            - { metadataProvider: '@gcp_metadata_provider' }
+
+    akecld_exception_subscriber:
+        class: Akeneo\Platform\ExceptionSubscriber
+        arguments: ['@psr_batch_logger']
+        tags:
+            - { name: kernel.event_subscriber }
+
+    gcp_metadata_provider:
+        class: Google\Cloud\Core\Report\SimpleMetadataProvider
+        arguments:
+            -
+                type: "k8s_container"
+                labels:
+                    container_name: '%env(CONTAINER_NAME)%'
+                    cluster_name: '%env(K8S_CLUSTER_NAME)%'
+                    location: '%env(GOOGLE_LOCATION)%'
+                    namespace_name: '%env(GOOGLE_NAMESPACE)%'
+                    pod_name: '%env(GOOGLE_POD_NAME)%'
+                    project_id: '%env(GOOGLE_CLOUD_PROJECT)%'
+            - '%env(GOOGLE_CLOUD_PROJECT)%'
+            - 'pim'
+            - '%env(HOSTNAME)%'
+            -
+                php_version: '%env(PHP_VERSION)%'
+                symfony_env: '%env(SYMFONY_ENV)%'
