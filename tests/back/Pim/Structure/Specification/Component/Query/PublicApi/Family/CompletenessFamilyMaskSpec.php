@@ -44,26 +44,4 @@ final class CompletenessFamilyMaskSpec extends ObjectBehavior
     {
         $this->shouldThrow(\InvalidArgumentException::class)->during('familyMaskForChannelAndLocale', ['test', 'en_US']);
     }
-
-    public function it_returns_the_right_product_completenesss_collection()
-    {
-        $productCompleteness = new CompletenessProductMask(5, "bob", "tshirt", [
-            'name-ecommerce-en_US',
-            'name-ecommerce-fr_FR',
-            'desc-<all_channels>-<all_locales>',
-            'price-tablet-fr_FR',
-            'size-ecommerce-en_US'
-        ]);
-
-        $familyMasksPerChannelAndLocale = [
-                new \Akeneo\Pim\Structure\Component\Query\PublicApi\Family\CompletenessFamilyMaskPerChannelAndLocale('ecommerce', 'en_US', ['name-ecommerce-en_US', 'view-ecommerce-en_US']),
-                new CompletenessFamilyMaskPerChannelAndLocale('<all_channels>', '<all_locales>', ['desc-<all_channels>-<all_locales>']),
-            ];
-
-        $this->beConstructedWith('tshirt', $familyMasksPerChannelAndLocale);
-        $this->completenessCollectionForProduct($productCompleteness)->shouldBeLike(new ProductCompletenessWithMissingAttributeCodesCollection(5, [
-            new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 2, [1 => 'view']),
-            new ProductCompletenessWithMissingAttributeCodes('<all_channels>', '<all_locales>', 1, [])
-        ]));
-    }
 }

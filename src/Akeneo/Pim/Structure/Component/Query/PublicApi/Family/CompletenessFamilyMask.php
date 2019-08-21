@@ -46,19 +46,6 @@ class CompletenessFamilyMask
         return $this->masks;
     }
 
-    public function completenessCollectionForProduct(CompletenessProductMask $completenessProductMask): ProductCompletenessWithMissingAttributeCodesCollection
-    {
-        $productCompletenesses = array_map(
-            function (CompletenessFamilyMaskPerChannelAndLocale $completenessFamilyMaskPerChannelAndLocale) use ($completenessProductMask): ProductCompletenessWithMissingAttributeCodes {
-                return $completenessFamilyMaskPerChannelAndLocale->productCompleteness($completenessProductMask);
-            },
-            $this->masks
-        );
-
-        return new ProductCompletenessWithMissingAttributeCodesCollection($completenessProductMask->id(), $productCompletenesses);
-    }
-
-
     public function familyMaskForChannelAndLocale(string $channelCode, string $localeCode): CompletenessFamilyMaskPerChannelAndLocale
     {
         foreach ($this->masks as $completenessFamilyMaskPerChannelAndLocale) {
