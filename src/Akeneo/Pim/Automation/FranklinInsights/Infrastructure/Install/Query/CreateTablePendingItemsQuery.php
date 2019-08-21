@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS pimee_franklin_insights_pending_items
 	entity_id int not null,
 	date DATETIME not null DEFAULT CURRENT_TIMESTAMP,
 	action tinyint null,
+	status tinyint default 0 null,
 	INDEX pimee_franklin_insights_pending_items_action_index (action),
 	INDEX pimee_franklin_insights_pending_items_entity_type_index (entity_type)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB ROW_FORMAT = DYNAMIC;
