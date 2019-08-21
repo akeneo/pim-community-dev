@@ -4,6 +4,7 @@
 
 - PIM-8663: Fix category tree selector
 - PIM-8674: Check date validity when creating a date value
+- PIM-8673: Add a fallback to get the mime-type of files loaded without metadata.
 
 # 3.2.5 (2019-08-19)
 
