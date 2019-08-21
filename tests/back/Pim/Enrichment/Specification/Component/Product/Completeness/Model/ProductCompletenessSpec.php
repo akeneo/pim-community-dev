@@ -1,8 +1,8 @@
 <?php
 
-namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Model\Projection;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Completeness\Model;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompleteness;
 use PhpSpec\ObjectBehavior;
 
 class ProductCompletenessSpec extends ObjectBehavior

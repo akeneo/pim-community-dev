@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product\Query\Sql\Completeness;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodes;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodesCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodes;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 

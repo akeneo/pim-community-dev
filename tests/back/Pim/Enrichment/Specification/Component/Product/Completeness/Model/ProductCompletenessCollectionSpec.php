@@ -1,12 +1,12 @@
 <?php
 
-namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Model\Projection;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Completeness\Model;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodes;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodesCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompleteness;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessCollection;
 use PhpSpec\ObjectBehavior;
 
-class ProductCompletenessWithMissingAttributeCodesCollectionSpec extends ObjectBehavior
+class ProductCompletenessCollectionSpec extends ObjectBehavior
 {
     function let()
     {
@@ -15,7 +15,7 @@ class ProductCompletenessWithMissingAttributeCodesCollectionSpec extends ObjectB
 
     function it_is_a_product_completeness_collection()
     {
-        $this->shouldHaveType(ProductCompletenessWithMissingAttributeCodesCollection::class);
+        $this->shouldHaveType(ProductCompletenessCollection::class);
     }
 
     function it_is_an_iterator_aggregate()
@@ -36,31 +36,38 @@ class ProductCompletenessWithMissingAttributeCodesCollectionSpec extends ObjectB
 
     function it_can_store_product_completenesses()
     {
-        $completeness = new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 4, []);
-        $otherCompleteness = new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'fr_FR', 4, []);
+        $completeness = new ProductCompleteness('ecommerce', 'en_US', 4, 1);
+        $otherCompleteness = new ProductCompleteness('ecommerce', 'fr_FR', 4, 2);
         $this->beConstructedWith(42, [$completeness, $otherCompleteness]);
 
         $this->getIterator()->count()->shouldReturn(2);
-        $this->getIterator()->getArrayCopy()->shouldReturn([
-            'ecommerce-en_US' => $completeness,
-            'ecommerce-fr_FR' => $otherCompleteness,
-        ]);
+        $this->getIterator()->getArrayCopy()->shouldReturn(
+            [
+                'ecommerce-en_US' => $completeness,
+                'ecommerce-fr_FR' => $otherCompleteness,
+            ]
+        );
     }
 
     function it_does_not_store_two_completenesses_with_the_same_channel_and_locale()
     {
-        $completeness = new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 4, []);
-        $otherCompleteness = new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 5, ['description', 'price']);
+        $completeness = new ProductCompleteness('ecommerce', 'en_US', 4, 1);
+        $otherCompleteness = new ProductCompleteness(
+            'ecommerce',
+            'en_US',
+            5,
+            2
+        );
         $this->beConstructedWith(42, [$completeness, $otherCompleteness]);
 
         $this->getIterator()->count()->shouldReturn(1);
         $this->getIterator()->getArrayCopy()->shouldReturn(['ecommerce-en_US' => $otherCompleteness]);
     }
 
-    function it_can_retrieve_a_completeness_by_channel_and_locale()
+    function it_can_retriev_a_completeness_by_channel_and_locale()
     {
-        $completeness = new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 4, []);
-        $otherCompleteness = new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'fr_FR', 4, []);
+        $completeness = new ProductCompleteness('ecommerce', 'en_US', 4, 0);
+        $otherCompleteness = new ProductCompleteness('ecommerce', 'fr_FR', 4, 0);
         $this->beConstructedWith(42, [$completeness, $otherCompleteness]);
 
         $this->getCompletenessForChannelAndLocale('ecommerce', 'fr_FR')->shouldReturn($otherCompleteness);

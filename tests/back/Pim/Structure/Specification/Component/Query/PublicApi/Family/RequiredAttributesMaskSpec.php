@@ -6,8 +6,8 @@ namespace Specification\Akeneo\Pim\Structure\Component\Query\PublicApi\Family;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMask;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMaskForChannelAndLocale;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessProductMask;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodes;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodesCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodes;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
 use PhpSpec\ObjectBehavior;
 
 final class RequiredAttributesMaskSpec extends ObjectBehavior
