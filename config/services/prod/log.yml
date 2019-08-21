@@ -33,4 +33,4 @@ services:
             - '%env(HOSTNAME)%'
             -
                 php_version: '%env(PHP_VERSION)%'
-                symfony_env: '%env(SYMFONY_ENV)%'
+                symfony_env: '%env(APP_ENV)%'

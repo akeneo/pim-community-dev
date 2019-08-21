@@ -1,5 +1,8 @@
 monolog:
     handlers:
+        nested:
+            type: service
+            id: monolog_psr_batch_logger
         authentication:
             type: service
             id: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\FlySystemLogHandler'
