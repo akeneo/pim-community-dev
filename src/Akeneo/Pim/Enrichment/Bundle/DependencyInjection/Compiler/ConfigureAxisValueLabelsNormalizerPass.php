@@ -21,14 +21,15 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 class ConfigureAxisValueLabelsNormalizerPass implements CompilerPassInterface
 {
+    private const SERVICE_TAG = 'pim_axis_value_label_normalizer';
+
     public function process(ContainerBuilder $container)
     {
         $normalizer = $container->getDefinition('pim_enrich.normalizer.entity_with_family_variant');
 
-        $simpleSelectLabelNormalizer = $container->getDefinition('pim_enrich.normalizer.entity_with_family_variant.simple_select.label.normalizer');
-        $normalizer->addArgument($simpleSelectLabelNormalizer);
-
-        $metricLabelNormalizer = $container->getDefinition('pim_enrich.normalizer.entity_with_family_variant.metric.label.normalizer');
-        $normalizer->addArgument($metricLabelNormalizer);
+        $taggedServices = $container->findTaggedServiceIds(self::SERVICE_TAG);
+        foreach ($taggedServices as $serviceId => $taggedService) {
+            $normalizer->addArgument($container->getDefinition($serviceId));
+        }
     }
 }

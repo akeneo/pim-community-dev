@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-8615: Fix issue issue with boolean attribute used as variant axis
+
 # 3.0.38 (2019-08-20)
 
 ## Bug fixes
