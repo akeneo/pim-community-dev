@@ -6,8 +6,8 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Completeness\Model;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodesCollection;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\CompletenessFamilyMask;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\CompletenessFamilyMaskPerChannelAndLocale;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMask;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMaskForChannelAndLocale;
 
 /**
  * @author    Pierre Allard <pierre.allard@akeneo.com>
@@ -62,7 +62,7 @@ class CompletenessProductMask
     }
 
     // TODO: TIP-1212: remove null on accepted argument for the mask (a product could be currently without a family)
-    public function completenessCollectionForProduct(?CompletenessFamilyMask $attributeRequirementMask)
+    public function completenessCollectionForProduct(?RequiredAttributesMask $attributeRequirementMask)
     {
         if (null === $this->familyCode && null !== $attributeRequirementMask) {
             throw new \InvalidArgumentException('You cannot provide an attribute requirement mask when a product is not in a family.');
@@ -74,7 +74,7 @@ class CompletenessProductMask
             return new ProductCompletenessWithMissingAttributeCodesCollection($this->id, []);
         } else {
             $productCompletenesses = array_map(
-                function (CompletenessFamilyMaskPerChannelAndLocale $attributeRequirementMaskPerLocaleAndChannel): ProductCompletenessWithMissingAttributeCodes {
+                function (RequiredAttributesMaskForChannelAndLocale $attributeRequirementMaskPerLocaleAndChannel): ProductCompletenessWithMissingAttributeCodes {
                     return $this->completenessForChannelAndLocale($this->mask, $attributeRequirementMaskPerLocaleAndChannel);
                 },
                 $attributeRequirementMask->masks()
@@ -84,12 +84,12 @@ class CompletenessProductMask
         }
     }
 
-    private function completenessForChannelAndLocale(array $productMask, CompletenessFamilyMaskPerChannelAndLocale $attributeRequirementMaskPerChannelAndLocale): ProductCompletenessWithMissingAttributeCodes
+    private function completenessForChannelAndLocale(array $productMask, RequiredAttributesMaskForChannelAndLocale $attributeRequirementMaskPerChannelAndLocale): ProductCompletenessWithMissingAttributeCodes
     {
         $difference = array_diff($attributeRequirementMaskPerChannelAndLocale->mask(), $productMask);
 
         $missingAttributeCodes = array_map(function (string $mask) : string {
-            return substr($mask, 0, strpos($mask, CompletenessFamilyMaskPerChannelAndLocale::ATTRIBUTE_CHANNEL_LOCALE_SEPARATOR));
+            return substr($mask, 0, strpos($mask, RequiredAttributesMaskForChannelAndLocale::ATTRIBUTE_CHANNEL_LOCALE_SEPARATOR));
         }, $difference);
 
         return new ProductCompletenessWithMissingAttributeCodes(

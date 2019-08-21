@@ -7,7 +7,7 @@ namespace Akeneo\Pim\Structure\Component\Query\PublicApi\Family;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessProductMask;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodesCollection;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\CompletenessFamilyMaskPerChannelAndLocale;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMaskForChannelAndLocale;
 
 /**
  * This mask is done to gather all the masks for a given family
@@ -24,12 +24,12 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\CompletenessFamilyMask
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CompletenessFamilyMask
+class RequiredAttributesMask
 {
     /** @var string */
     private $familyCode;
 
-    /** @var CompletenessFamilyMaskPerChannelAndLocale[] */
+    /** @var RequiredAttributesMaskForChannelAndLocale[] */
     private $masks;
 
     public function __construct(string $familyCode, array $masksPerChannelAndLocale)
@@ -39,18 +39,18 @@ class CompletenessFamilyMask
     }
 
     /**
-     * @return CompletenessFamilyMaskPerChannelAndLocale[]
+     * @return RequiredAttributesMaskForChannelAndLocale[]
      */
     public function masks(): array
     {
         return $this->masks;
     }
 
-    public function familyMaskForChannelAndLocale(string $channelCode, string $localeCode): CompletenessFamilyMaskPerChannelAndLocale
+    public function requiredAttributesMaskForChannelAndLocale(string $channelCode, string $localeCode): RequiredAttributesMaskForChannelAndLocale
     {
-        foreach ($this->masks as $completenessFamilyMaskPerChannelAndLocale) {
-            if ($channelCode === $completenessFamilyMaskPerChannelAndLocale->channelCode() && $localeCode === $completenessFamilyMaskPerChannelAndLocale->localeCode()) {
-                return $completenessFamilyMaskPerChannelAndLocale;
+        foreach ($this->masks as $requiredAttributesMaskPerChannelAndLocale) {
+            if ($channelCode === $requiredAttributesMaskPerChannelAndLocale->channelCode() && $localeCode === $requiredAttributesMaskPerChannelAndLocale->localeCode()) {
+                return $requiredAttributesMaskPerChannelAndLocale;
             }
         }
 

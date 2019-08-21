@@ -14,12 +14,12 @@ services:
         arguments:
             $getAttributes: '@akeneo.pim.structure.query.sql_get_attributes'
 
-    akeneo.pim.structure.query.sql_get_family_masks:
-        class: 'Akeneo\Pim\Structure\Bundle\Query\PublicApi\Family\Sql\SqlGetCompletenessFamilyMasks'
+    akeneo.pim.structure.query.sql_get_required_attributes_masks:
+        class: 'Akeneo\Pim\Structure\Bundle\Query\PublicApi\Family\Sql\SqlGetRequiredAttributesMasks'
         arguments:
             - '@database_connection'
 
-    akeneo.pim.structure.query.get_family_masks:
-        class: 'Akeneo\Pim\Structure\Bundle\Query\PublicApi\Family\Cache\LRUCachedGetCompletenessFamilyMasks'
+    akeneo.pim.structure.query.get_required_attributes_masks:
+        class: 'Akeneo\Pim\Structure\Bundle\Query\PublicApi\Family\Cache\LRUCachedGetRequiredAttributesMasks'
         arguments:
-            - '@akeneo.pim.structure.query.sql_get_family_masks'
+            - '@akeneo.pim.structure.query.sql_get_required_attributes_masks'

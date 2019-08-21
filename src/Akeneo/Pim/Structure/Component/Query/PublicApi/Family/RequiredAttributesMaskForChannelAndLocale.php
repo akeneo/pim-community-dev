@@ -10,7 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompleteness
 /**
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-class CompletenessFamilyMaskPerChannelAndLocale
+class RequiredAttributesMaskForChannelAndLocale
 {
     /**
      * This separator should not be allowed in attribute codes

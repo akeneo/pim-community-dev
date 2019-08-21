@@ -7,7 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessProdu
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodes;
 use PhpSpec\ObjectBehavior;
 
-final class CompletenessFamilyMaskPerChannelAndLocaleSpec extends ObjectBehavior
+final class RequiredAttributesMaskForChannelAndLocaleSpec extends ObjectBehavior
 {
     public function it_returns_the_right_product_completeness_for_a_given_local_and_channel()
     {

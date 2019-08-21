@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AkeneoTest\Pim\Structure\Integration\Query\PublicApi\Family\Sql;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\NonExistingFamiliesException;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetCompletenessFamilyMasks;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetRequiredAttributesMasks;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\TestCase;
 use Webmozart\Assert\Assert;
@@ -15,7 +15,7 @@ use Webmozart\Assert\Assert;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SqlGetCompletenessFamilyMasksIntegration extends TestCase
+class SqlGetRequiredAttributesMasksIntegration extends TestCase
 {
     protected function getConfiguration()
     {
@@ -85,13 +85,13 @@ class SqlGetCompletenessFamilyMasksIntegration extends TestCase
 
     public function test_that_the_generated_masks_are_ok()
     {
-        $result = $this->getCompletenessFamilyMasks()->fromFamilyCodes(['familyA']);
+        $result = $this->getRequiredAttributesMasks()->fromFamilyCodes(['familyA']);
         $familyAMask = $result['familyA'];
         Assert::count($familyAMask->masks(), 3);
 
-        $ecommerceEnUsMask = $familyAMask->familyMaskForChannelAndLocale('ecommerce', 'en_US');
-        $tabletEnUS = $familyAMask->familyMaskForChannelAndLocale('tablet', 'en_US');
-        $tabletFrFr = $familyAMask->familyMaskForChannelAndLocale('tablet', 'fr_FR');
+        $ecommerceEnUsMask = $familyAMask->requiredAttributesMaskForChannelAndLocale('ecommerce', 'en_US');
+        $tabletEnUS = $familyAMask->requiredAttributesMaskForChannelAndLocale('tablet', 'en_US');
+        $tabletFrFr = $familyAMask->requiredAttributesMaskForChannelAndLocale('tablet', 'fr_FR');
 
         $this->assertEqualsCanonicalizing([
             'sku-<all_channels>-<all_locales>',
@@ -126,7 +126,7 @@ class SqlGetCompletenessFamilyMasksIntegration extends TestCase
 
     public function test_the_generated_mask_is_ok_for_a_family_without_requirement()
     {
-        $result = $this->getCompletenessFamilyMasks()->fromFamilyCodes(['familyB', 'familyC']);
+        $result = $this->getRequiredAttributesMasks()->fromFamilyCodes(['familyB', 'familyC']);
         Assert::count($result['familyB']->masks(), 3);
         foreach ($result['familyB']->masks() as $maskPerChannelAndLocale) {
             $this->assertEqualsCanonicalizing(['sku-<all_channels>-<all_locales>'], $maskPerChannelAndLocale->mask());
@@ -142,10 +142,10 @@ class SqlGetCompletenessFamilyMasksIntegration extends TestCase
         $this->expectException(NonExistingFamiliesException::class);
         $this->expectExceptionMessage("The following family codes do not exist: familyZ, familyY");
 
-        $this->getCompletenessFamilyMasks()->fromFamilyCodes(['familyA', 'familyZ', 'familyY']);
+        $this->getRequiredAttributesMasks()->fromFamilyCodes(['familyA', 'familyZ', 'familyY']);
     }
 
-    private function getCompletenessFamilyMasks(): GetCompletenessFamilyMasks
+    private function getRequiredAttributesMasks(): GetRequiredAttributesMasks
     {
         return $this->get('akeneo.pim.structure.query.sql_get_family_masks');
     }

@@ -5,8 +5,8 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Completeness\Mod
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessProductMask;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodesCollection;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\CompletenessFamilyMask;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\CompletenessFamilyMaskPerChannelAndLocale;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMask;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMaskForChannelAndLocale;
 use PhpSpec\ObjectBehavior;
 
 class CompletenessProductMaskSpec extends ObjectBehavior
@@ -28,9 +28,9 @@ class CompletenessProductMaskSpec extends ObjectBehavior
 
     function it_returns_the_product_completeness_collection_from_an_attribute_requirement_mask()
     {
-        $attributeRequirementMask = new CompletenessFamilyMask('family_code', [
-            new CompletenessFamilyMaskPerChannelAndLocale('ecommerce', 'en_US', ['name-ecommerce-en_US', 'view-ecommerce-en_US', 'desc-<all_channels>-<all_locales>']),
-            new CompletenessFamilyMaskPerChannelAndLocale('tablet', 'fr_FR', ['desc-<all_channels>-<all_locales>']),
+        $attributeRequirementMask = new RequiredAttributesMask('family_code', [
+            new RequiredAttributesMaskForChannelAndLocale('ecommerce', 'en_US', ['name-ecommerce-en_US', 'view-ecommerce-en_US', 'desc-<all_channels>-<all_locales>']),
+            new RequiredAttributesMaskForChannelAndLocale('tablet', 'fr_FR', ['desc-<all_channels>-<all_locales>']),
         ]);
 
         $this->completenessCollectionForProduct($attributeRequirementMask)->shouldBeLike(
@@ -60,9 +60,9 @@ class CompletenessProductMaskSpec extends ObjectBehavior
     {
         $this->beConstructedWith(1, 'identifier', null, []);
 
-        $attributeRequirementMask = new CompletenessFamilyMask('family_code', [
-            new CompletenessFamilyMaskPerChannelAndLocale('ecommerce', 'en_US', ['name-ecommerce-en_US', 'view-ecommerce-en_US', 'desc-<all_channels>-<all_locales>']),
-            new CompletenessFamilyMaskPerChannelAndLocale('tablet', 'fr_FR', ['desc-<all_channels>-<all_locales>']),
+        $attributeRequirementMask = new RequiredAttributesMask('family_code', [
+            new RequiredAttributesMaskForChannelAndLocale('ecommerce', 'en_US', ['name-ecommerce-en_US', 'view-ecommerce-en_US', 'desc-<all_channels>-<all_locales>']),
+            new RequiredAttributesMaskForChannelAndLocale('tablet', 'fr_FR', ['desc-<all_channels>-<all_locales>']),
         ]);
 
         $this->shouldThrow(\InvalidArgumentException::class)->during('completenessCollectionForProduct', [$attributeRequirementMask]);

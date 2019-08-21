@@ -2,27 +2,27 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Completeness;
 
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\CompletenessFamilyMask;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\CompletenessFamilyMaskPerChannelAndLocale;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMask;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMaskForChannelAndLocale;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessProductMask;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetCompletenessProductMasks;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodesCollection;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetCompletenessFamilyMasks;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetRequiredAttributesMasks;
 use PhpSpec\ObjectBehavior;
 
 class CompletenessCalculatorSpec extends ObjectBehavior
 {
     function let(
         GetCompletenessProductMasks $getCompletenessProductMasks,
-        GetCompletenessFamilyMasks $getCompletenessFamilyMasks
+        GetRequiredAttributesMasks $getRequiredAttributesMasks
     ) {
-        $this->beConstructedWith($getCompletenessProductMasks, $getCompletenessFamilyMasks);
+        $this->beConstructedWith($getCompletenessProductMasks, $getRequiredAttributesMasks);
     }
 
     function it_calculates_completeness_for_a_product(
         GetCompletenessProductMasks $getCompletenessProductMasks,
-        GetCompletenessFamilyMasks $getCompletenessFamilyMasks
+        GetRequiredAttributesMasks $getRequiredAttributesMasks
     ) {
         $productCompleteness = new CompletenessProductMask(5, "michel", "tshirt", [
             'name-ecommerce-en_US',
@@ -32,14 +32,14 @@ class CompletenessCalculatorSpec extends ObjectBehavior
             'size-ecommerce-en_US'
         ]);
 
-        $familyMasksPerChannelAndLocale = [
-            new CompletenessFamilyMaskPerChannelAndLocale('ecommerce', 'en_US', ['name-ecommerce-en_US', 'view-ecommerce-en_US']),
-            new CompletenessFamilyMaskPerChannelAndLocale('<all_channels>', '<all_locales>', ['desc-<all_channels>-<all_locales>']),
+        $requiredAttributesMasksPerChannelAndLocale = [
+            new RequiredAttributesMaskForChannelAndLocale('ecommerce', 'en_US', ['name-ecommerce-en_US', 'view-ecommerce-en_US']),
+            new RequiredAttributesMaskForChannelAndLocale('<all_channels>', '<all_locales>', ['desc-<all_channels>-<all_locales>']),
         ];
 
-        $familyMask = new CompletenessFamilyMask("tshirt", $familyMasksPerChannelAndLocale);
+        $requiredAttributesMask = new RequiredAttributesMask("tshirt", $requiredAttributesMasksPerChannelAndLocale);
 
-        $getCompletenessFamilyMasks->fromFamilyCodes(['tshirt'])->willReturn(['tshirt' => $familyMask]);
+        $getRequiredAttributesMasks->fromFamilyCodes(['tshirt'])->willReturn(['tshirt' => $requiredAttributesMask]);
 
         $getCompletenessProductMasks->fromProductIdentifiers(['michel'])->willReturn([$productCompleteness]);
         $this->fromProductIdentifier("michel")->shouldBeLike(new ProductCompletenessWithMissingAttributeCodesCollection(5, [
@@ -50,7 +50,7 @@ class CompletenessCalculatorSpec extends ObjectBehavior
 
     function it_calculates_completeness_for_multiple_products(
         GetCompletenessProductMasks $getCompletenessProductMasks,
-        GetCompletenessFamilyMasks $getCompletenessFamilyMasks
+        GetRequiredAttributesMasks $getRequiredAttributesMasks
     ) {
         $michelCompleteness = new CompletenessProductMask(5, "michel", "tshirt", [
             'name-ecommerce-en_US',
@@ -65,14 +65,14 @@ class CompletenessCalculatorSpec extends ObjectBehavior
             'size-ecommerce-en_US'
         ]);
 
-        $familyMasksPerChannelAndLocale = [
-            new CompletenessFamilyMaskPerChannelAndLocale('ecommerce', 'en_US', ['name-ecommerce-en_US', 'view-ecommerce-en_US']),
-            new CompletenessFamilyMaskPerChannelAndLocale('<all_channels>', '<all_locales>', ['desc-<all_channels>-<all_locales>']),
+        $requiredAttributesMasksPerChannelAndLocale = [
+            new RequiredAttributesMaskForChannelAndLocale('ecommerce', 'en_US', ['name-ecommerce-en_US', 'view-ecommerce-en_US']),
+            new RequiredAttributesMaskForChannelAndLocale('<all_channels>', '<all_locales>', ['desc-<all_channels>-<all_locales>']),
         ];
 
-        $familyMask = new CompletenessFamilyMask("tshirt", $familyMasksPerChannelAndLocale);
+        $requiredAttributesMask = new RequiredAttributesMask("tshirt", $requiredAttributesMasksPerChannelAndLocale);
 
-        $getCompletenessFamilyMasks->fromFamilyCodes(['tshirt'])->willReturn(['tshirt' => $familyMask]);
+        $getRequiredAttributesMasks->fromFamilyCodes(['tshirt'])->willReturn(['tshirt' => $requiredAttributesMask]);
 
         $getCompletenessProductMasks->fromProductIdentifiers(['michel', 'jean'])->willReturn([$michelCompleteness, $anotherCompleteness]);
         $this->fromProductIdentifiers(["michel", "jean"])->shouldBeLike([
@@ -89,12 +89,12 @@ class CompletenessCalculatorSpec extends ObjectBehavior
 
     function it_returns_an_empty_collection_for_a_product_without_family(
         GetCompletenessProductMasks $getCompletenessProductMasks,
-        GetCompletenessFamilyMasks $getCompletenessFamilyMasks
+        GetRequiredAttributesMasks $getRequiredAttributesMasks
     ) {
         $productCompleteness = new CompletenessProductMask(5, 'product_without_family', null, []);
         $getCompletenessProductMasks->fromProductIdentifiers(['product_without_family'])->willReturn([$productCompleteness]);
 
-        $getCompletenessFamilyMasks->fromFamilyCodes([])->willReturn([]);
+        $getRequiredAttributesMasks->fromFamilyCodes([])->willReturn([]);
 
 
         $this->fromProductIdentifier('product_without_family')->shouldBeLike(
