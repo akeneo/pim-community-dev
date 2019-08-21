@@ -66,11 +66,9 @@ class CompletenessProductMask
     {
         if (null === $this->familyCode && null !== $attributeRequirementMask) {
             throw new \InvalidArgumentException('You cannot provide an attribute requirement mask when a product is not in a family.');
-        }
-        else if (null !== $this->familyCode && null === $attributeRequirementMask) {
+        } elseif (null !== $this->familyCode && null === $attributeRequirementMask) {
             throw new \InvalidArgumentException('You have to provide an attribute requirement mask when a product is in a family.');
-        }
-        else if (null === $this->familyCode && null === $attributeRequirementMask) {
+        } elseif (null === $this->familyCode && null === $attributeRequirementMask) {
             return new ProductCompletenessWithMissingAttributeCodesCollection($this->id, []);
         } else {
             $productCompletenesses = array_map(
