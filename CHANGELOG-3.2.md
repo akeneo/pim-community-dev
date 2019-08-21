@@ -12,6 +12,7 @@
 
 ## Bug fixes
 
+- PIM-8663: Fix category tree selector
 - PIM-8601: Fix purge of the job execution according to the date of creation and not deletion
 - PIM-8583: Add missing translations on role deletion
 
