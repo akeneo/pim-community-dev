@@ -19,20 +19,3 @@ Feature: Association type creation
     Then I should see the text "Association type successfully created"
     And I should be on the "up_sell" association type page
     And I should see the text "up_sell"
-
-  Scenario: Fail to create an association type with an empty or invalid code
-    Given I press the "Save" button
-    Then I should see validation error "This value should not be blank."
-    When I fill in the following information in the popin:
-      | Code | =( |
-    And I press the "Save" button
-    Then I should see validation error "Association type code may contain only letters, numbers and underscores"
-
-  Scenario: Fail to create an association type with an already used code
-    Given the following association type:
-      | code       |
-      | cross_sell |
-    When I fill in the following information in the popin:
-      | Code | cross_sell |
-    And I press the "Save" button
-    Then I should see validation error "This value is already used."
