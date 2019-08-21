@@ -16,10 +16,11 @@ class AppKernelTest extends Kernel
      *
      * Necessary to make gedmo extension tree work. Otherwise the path located in
      * "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/config/bundles/gedmo_doctrine_extensions.yml"
-     * is never the right one...
+     * is never the right one and you get the following error:
+     *      InvalidArgumentException: Bundle "tree" does not exist or it is not enabled.
      */
     public function getRootDir(): string
     {
-        return $this->getProjectDir() . DIRECTORY_SEPARATOR . 'app';
+        return $this->getProjectDir() . DIRECTORY_SEPARATOR . 'config';
     }
 }

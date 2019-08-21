@@ -9,7 +9,7 @@
     processIsolation="false"
     stopOnFailure="false"
     beStrictAboutTestsThatDoNotTestAnything="false"
-    bootstrap="../config/bootstrap.php">
+    bootstrap="config/bootstrap.php">
 
     <php>
         <ini name="date.timezone" value="Europe/Paris"/>
@@ -30,21 +30,21 @@
 
     <testsuites>
         <testsuite name="PIM_Integration_Test">
-            <directory suffix="Integration.php">../src</directory>
-            <directory suffix="Integration.php">../tests/back</directory>
-            <directory suffix="Integration.php">../vendor/akeneo/pim-community-dev/src</directory>
-            <directory suffix="Integration.php">../vendor/akeneo/pim-community-dev/tests/back</directory>
+            <directory suffix="Integration.php">src</directory>
+            <directory suffix="Integration.php">tests/back</directory>
+            <directory suffix="Integration.php">vendor/akeneo/pim-community-dev/src</directory>
+            <directory suffix="Integration.php">vendor/akeneo/pim-community-dev/tests/back</directory>
         </testsuite>
         <testsuite name="Franklin_Insights">
-            <directory suffix="Integration.php">../src/Akeneo/Pim/Automation/FranklinInsights/tests/back/Integration</directory>
+            <directory suffix="Integration.php">src/Akeneo/Pim/Automation/FranklinInsights/tests/back/Integration</directory>
         </testsuite>
         <testsuite name="End_to_End">
-            <directory suffix="EndToEnd.php">../tests/back</directory>
-            <directory suffix="EndToEnd.php">../vendor/akeneo/pim-community-dev/src</directory>
-            <directory suffix="EndToEnd.php">../vendor/akeneo/pim-community-dev/tests/back</directory>
+            <directory suffix="EndToEnd.php">tests/back</directory>
+            <directory suffix="EndToEnd.php">vendor/akeneo/pim-community-dev/src</directory>
+            <directory suffix="EndToEnd.php">vendor/akeneo/pim-community-dev/tests/back</directory>
         </testsuite>
         <testsuite name="PIM_Performance_Test">
-            <directory suffix="Performance.php">../tests/back</directory>
+            <directory suffix="Performance.php">tests/back</directory>
         </testsuite>
     </testsuites>
 </phpunit>
