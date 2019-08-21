@@ -15,11 +15,6 @@ Feature: Change system locale
     Then the user "Peter" should have "en" locale
     And the user "Julia" should have "en" locale
 
-  Scenario: Should only see translated locales
-    Given I am on the System index page
-    Then I should see English locale option
-    And I should not see Breton locale option
-
   Scenario: Successfully display a localized login form according to the system locale
     Given I am on the System index page
     And I select French locale

@@ -15,8 +15,3 @@ Feature: Browse locales
     And I filter by "activated" with operator "" and value "yes"
     Then the grid should contain 2 elements
     Then I should see entity en_US and fr_FR
-
-  Scenario: Successfully search on label
-    When I search "as"
-    Then the grid should contain 1 element
-    Then I should see entity as_IN
