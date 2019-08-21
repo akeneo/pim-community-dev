@@ -33,15 +33,3 @@ Feature: Edit an identifier attribute
     And I should see history:
       | version | property       | value |
       | 2       | max_characters | 199   |
-
-  @skip-nav
-  Scenario: Successfully display a dialog when we quit a page with unsaved changes
-    Given I am on the "SKU" attribute page
-    And I change the "Validation rule" to "Regular expression"
-    And I click on the Akeneo logo
-    Then I should see "You will lose changes to the attribute if you leave this page." in popup
-
-  Scenario: Successfully display a message when there are unsaved changes
-    Given I am on the "SKU" attribute page
-    And I change the "Validation rule" to "Regular expression"
-    Then I should see the text "There are unsaved changes."
