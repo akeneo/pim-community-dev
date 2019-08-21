@@ -7,23 +7,27 @@ coupling: twa-coupling asset-coupling franklin-insights-coupling reference-entit
 
 .PHONY: phpspec
 phpspec:
-	PHP_XDEBUG_ENABLED=0 ${PHP_RUN} vendor/bin/phpspec run ${F}
+	XDEBUG_ENABLED=0 ${PHP_RUN} vendor/bin/phpspec run ${F}
 
 .PHONY: phpspec-debug
 phpspec-debug:
-	PHP_XDEBUG_ENABLED=1 ${PHP_RUN} vendor/bin/phpspec run ${F}
+	XDEBUG_ENABLED=1 ${PHP_RUN} vendor/bin/phpspec run ${F}
 
 .PHONY: behat-acceptance
 behat-acceptance: behat.yml
-	PHP_XDEBUG_ENABLED=0 ${PHP_RUN} vendor/bin/behat -p acceptance ${F}
+	XDEBUG_ENABLED=0 ${PHP_RUN} vendor/bin/behat -p acceptance ${F}
 
 .PHONY: behat-acceptance-debug
 behat-acceptance-debug: behat.yml
-	PHP_XDEBUG_ENABLED=1 ${PHP_RUN} vendor/bin/behat -p acceptance ${F}
+	XDEBUG_ENABLED=1 ${PHP_RUN} vendor/bin/behat -p acceptance ${F}
 
 .PHONY: phpunit
 phpunit:
-	${PHP_EXEC} vendor/bin/phpunit -c phpunit.xml.dist ${F}
+	XDEBUG_ENABLED=0 ${PHP_RUN} vendor/bin/phpunit -c phpunit.xml.dist ${F}
+
+.PHONY: phpunit-debug
+phpunit-debug:
+	XDEBUG_ENABLED=1 ${PHP_RUN} vendor/bin/phpunit -c phpunit.xml.dist ${F}
 
 .PHONY: behat-legacy
 behat-legacy: behat.yml
@@ -35,10 +39,10 @@ behat-legacy: behat.yml
 
 ## Enable Xdebug
 .PHONY: xdebug-on
-xdebug-on: docker-compose.override.yml
-	PHP_XDEBUG_ENABLED=1 $(MAKE) up
+xdebug-on:
+	XDEBUG_ENABLED=1 $(MAKE) up
 
 ## Disable Xdebug
 .PHONY: xdebug-off
-xdebug-off: docker-compose.override.yml
-	PHP_XDEBUG_ENABLED=0 $(MAKE) up
+xdebug-off:
+	XDEBUG_ENABLED=0 $(MAKE) up
