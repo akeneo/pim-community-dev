@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Install\EventSub
 
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Install\Query\CreateTableAttributeAddedToFamilyQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Install\Query\CreateTableAttributeCreatedQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Install\Query\CreateTablePendingItemsQuery;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Doctrine\DBAL\Connection;
@@ -43,5 +44,6 @@ class InitFranklinInsightsDbSchemaSubscriber implements EventSubscriberInterface
     {
         $this->dbalConnection->executeQuery(CreateTableAttributeCreatedQuery::QUERY);
         $this->dbalConnection->executeQuery(CreateTableAttributeAddedToFamilyQuery::QUERY);
+        $this->dbalConnection->executeQuery(CreateTablePendingItemsQuery::QUERY);
     }
 }
