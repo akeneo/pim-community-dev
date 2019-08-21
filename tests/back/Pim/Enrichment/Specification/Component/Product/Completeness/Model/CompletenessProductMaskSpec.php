@@ -40,4 +40,31 @@ class CompletenessProductMaskSpec extends ObjectBehavior
             ])
         );
     }
+
+    function it_returns_an_empty_product_completeness_collection_when_there_is_no_attribute_requirement_mask_because_the_product_is_not_in_a_family()
+    {
+        $this->beConstructedWith(1, 'identifier', null, []);
+
+        $this->completenessCollectionForProduct(null)->shouldBeLike(
+            new ProductCompletenessWithMissingAttributeCodesCollection(1, [])
+        );
+    }
+
+
+    function it_throws_an_exception_when_there_is_no_attribute_requirement_mask_but_the_product_is_in_a_family()
+    {
+        $this->shouldThrow(\InvalidArgumentException::class)->during('completenessCollectionForProduct', [null]);
+    }
+
+    function it_throws_an_exception_when_there_is_an_attribute_requirement_mask_but_the_product_is_not_in_a_family()
+    {
+        $this->beConstructedWith(1, 'identifier', null, []);
+
+        $attributeRequirementMask = new CompletenessFamilyMask('family_code', [
+            new CompletenessFamilyMaskPerChannelAndLocale('ecommerce', 'en_US', ['name-ecommerce-en_US', 'view-ecommerce-en_US', 'desc-<all_channels>-<all_locales>']),
+            new CompletenessFamilyMaskPerChannelAndLocale('tablet', 'fr_FR', ['desc-<all_channels>-<all_locales>']),
+        ]);
+
+        $this->shouldThrow(\InvalidArgumentException::class)->during('completenessCollectionForProduct', [$attributeRequirementMask]);
+    }
 }

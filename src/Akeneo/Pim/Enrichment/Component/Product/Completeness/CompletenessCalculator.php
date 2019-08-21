@@ -42,13 +42,8 @@ class CompletenessCalculator
 
         $result = [];
         foreach ($productMasks as $productMask) {
-            // TODO - TIP-1212: only keep the 'else' statement
-            if (null === $productMask->familyCode()) {
-                $collection = new ProductCompletenessWithMissingAttributeCodesCollection($productMask->id(), []);
-            } else {
-                $collection = $familyMasks[$productMask->familyCode()]->completenessCollectionForProduct($productMask);
-            }
-            $result[$productMask->identifier()] = $collection;
+            $attributeRequirementMask = $familyMasks[$productMask->familyCode()] ?? null;
+            $result[$productMask->identifier()] = $productMask->completenessCollectionForProduct($attributeRequirementMask);
         }
 
         return $result;

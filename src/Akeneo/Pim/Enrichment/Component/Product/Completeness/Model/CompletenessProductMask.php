@@ -61,16 +61,27 @@ class CompletenessProductMask
         return $this->identifier;
     }
 
-    public function completenessCollectionForProduct(CompletenessFamilyMask $attributeRequirementMask)
+    // TODO: TIP-1212: remove null on accepted argument for the mask (a product could be currently without a family)
+    public function completenessCollectionForProduct(?CompletenessFamilyMask $attributeRequirementMask)
     {
-        $productCompletenesses = array_map(
-            function (CompletenessFamilyMaskPerChannelAndLocale $attributeRequirementMaskPerLocaleAndChannel): ProductCompletenessWithMissingAttributeCodes {
-                return $this->completenessForChannelAndLocale($this->mask, $attributeRequirementMaskPerLocaleAndChannel);
-            },
-            $attributeRequirementMask->masks()
-        );
+        if (null === $this->familyCode && null !== $attributeRequirementMask) {
+            throw new \InvalidArgumentException('You cannot provide an attribute requirement mask when a product is not in a family.');
+        }
+        else if (null !== $this->familyCode && null === $attributeRequirementMask) {
+            throw new \InvalidArgumentException('You have to provide an attribute requirement mask when a product is in a family.');
+        }
+        else if (null === $this->familyCode && null === $attributeRequirementMask) {
+            return new ProductCompletenessWithMissingAttributeCodesCollection($this->id, []);
+        } else {
+            $productCompletenesses = array_map(
+                function (CompletenessFamilyMaskPerChannelAndLocale $attributeRequirementMaskPerLocaleAndChannel): ProductCompletenessWithMissingAttributeCodes {
+                    return $this->completenessForChannelAndLocale($this->mask, $attributeRequirementMaskPerLocaleAndChannel);
+                },
+                $attributeRequirementMask->masks()
+            );
 
-        return new ProductCompletenessWithMissingAttributeCodesCollection($this->id, $productCompletenesses);
+            return new ProductCompletenessWithMissingAttributeCodesCollection($this->id, $productCompletenesses);
+        }
     }
 
     private function completenessForChannelAndLocale(array $productMask, CompletenessFamilyMaskPerChannelAndLocale $attributeRequirementMaskPerChannelAndLocale): ProductCompletenessWithMissingAttributeCodes

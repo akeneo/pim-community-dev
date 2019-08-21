@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Component\Query\PublicApi\Family;
 
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\CompletenessFamilyMask;
-
 /**
  * @author    Pierre Allard <pierre.allard@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
