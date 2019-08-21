@@ -6,6 +6,7 @@
 - PIM-8438: Add an explicit error message when an attribute label is too long
 - PIM-8629: Fix hiding of upload button on import profiles
 - PIM-8667: Fix grid filters for numeric attribute codes
+- PIM-6138: Fix display of remove icons on family grid and category tree when user does not have permission
 
 # 3.0.37 (2019-08-13)
 
@@ -26,7 +27,6 @@
 - PIM-8623: Fix wysiwyg edit link modal on Firefox
 - PIM-8628: Display label translations on configuration screens even you don't have "Allowed to view information" permission on a locale
 - PIM-8624: Fix default product grid view selector in user profile when there is more than 20 views
-- PIM-6138: Fix display of remove icons on family grid and category tree when user does not have permission
 
 # 3.0.35 (2019-08-05)
 
