@@ -22,9 +22,9 @@ class ValueFactory
     {
         Assert::allIsInstanceOf($valueFactories, SingleValueFactory::class);
 
-        /** @var ValueFactory $readValueFactory */
-        foreach ($valueFactories as $readValueFactory) {
-            $this->valueFactories[$readValueFactory->supportedAttributeType()] = $readValueFactory;
+        /** @var ValueFactory $valueFactory */
+        foreach ($valueFactories as $valueFactory) {
+            $this->valueFactories[$valueFactory->supportedAttributeType()] = $valueFactory;
         }
     }
 
