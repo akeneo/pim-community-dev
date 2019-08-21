@@ -56,7 +56,8 @@ FROM base AS dev
 ENV PHP_OPCACHE_VALIDATE_TIMESTAMP=1
 
 RUN apt-get update && \
-    apt-get install curl && \
+    apt-get --yes install curl && \
+    apt-get --yes install mysql-client && \
     apt-get --yes install php7.2-xdebug && \
     phpdismod xdebug && \
     mkdir /etc/php/7.2/enable-xdebug && \
