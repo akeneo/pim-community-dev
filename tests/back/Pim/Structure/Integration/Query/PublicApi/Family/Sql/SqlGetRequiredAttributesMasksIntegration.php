@@ -147,7 +147,7 @@ class SqlGetRequiredAttributesMasksIntegration extends TestCase
 
     private function getRequiredAttributesMasks(): GetRequiredAttributesMasks
     {
-        return $this->get('akeneo.pim.structure.query.sql_get_family_masks');
+        return $this->get('akeneo.pim.structure.query.sql_get_required_attributes_masks');
     }
 
     private function givenAttributes(array $attributesData): void
