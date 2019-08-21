@@ -205,9 +205,6 @@ jobs:
             echo "Behat Suite to run: "$TESTSUITE
             echo "export TESTSUITE=$TESTSUITE" >> $BASH_ENV
       - run:
-          name: Pull the latest Docker images
-          command: docker-compose pull
-      - run:
           name: Change owner on project dir in order to archive the project into the workspace
           command: sudo chown -R 1000:1000 ../project
       - run:
@@ -280,7 +277,8 @@ jobs:
           name: Start containers
           command: |
             export ES_JAVA_OPTS='-Xms2g -Xmx2g'
-            docker-compose up -d
+            docker load -i php-pim-image.tar
+            APP_ENV=behat C='mysql elasticsearch object-storage' make up
             vendor/akeneo/pim-community-dev/.circleci/wait_docker_up.sh
       - run:
           name: Run performance tests
