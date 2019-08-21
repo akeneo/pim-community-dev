@@ -126,12 +126,13 @@ Please, make sure the folder upgrades/schema/ does not contain former migration 
     ```bash
     find ./src/ -type f -print0 | xargs -0 sed -i 's#Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber\AddVersionSubscriber#Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber\AddVersionListener#g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's#Akeneo\UserManagement\Bundle\EventListener\UserPreferencesSubscriber#Akeneo\UserManagement\Bundle\EventListener\UserPreferencesListener#g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's#Akeneo\Pim\Enrichment\Component\Product\Factory\Value#Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value#g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's#Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory#Akeneo\Pim\Enrichment\Component\Product\Factory\Write\WriteValueCollectionFactory#g'
     ```
 
 2. Adapt your custom codes to handle this breaking changes we introduced:
 
+For the creation of the product values, we changed the implementation of the factory. You have to use `Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory::createByCheckingData` if you create a value coming from the outside world (CSV import, UI, API).
+
+If you want to create a value and the data is loaded from the database, you should use `Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory::createWithoutCheckingData`. This has been done for performance purpose: the checks are time consuming and useless as data is already validated and persisted in database.
 
 3. Reactivate your custom code
 
