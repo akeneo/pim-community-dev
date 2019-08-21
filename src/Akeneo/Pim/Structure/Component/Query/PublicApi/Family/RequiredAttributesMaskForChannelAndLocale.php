@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Component\Query\PublicApi\Family;
 
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessProductMask;
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodes;
-
 /**
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
@@ -52,21 +49,5 @@ class RequiredAttributesMaskForChannelAndLocale
     public function mask(): array
     {
         return $this->mask;
-    }
-
-    public function productCompleteness(CompletenessProductMask $completenessProductMask)
-    {
-        $difference = array_diff($this->mask, $completenessProductMask->mask());
-
-        $missingAttributeCodes = array_map(function (string $mask) : string {
-            return substr($mask, 0, strpos($mask, self::ATTRIBUTE_CHANNEL_LOCALE_SEPARATOR));
-        }, $difference);
-
-        return new ProductCompletenessWithMissingAttributeCodes(
-            $this->channelCode,
-            $this->localeCode,
-            count($this->mask),
-            $missingAttributeCodes
-        );
     }
 }

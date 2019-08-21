@@ -94,11 +94,6 @@ $rules = [
 
         // TIP-914 FamilyNormalizer should not use PIM/Enrichment
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel',
-
-        // TIP-1159: family mask for the completeness should not be aware of completeness mask, it should be the opposite
-        'Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessProductMask',
-        'Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodes',
-        'Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodesCollection'
     ])->in('Akeneo\Pim\Structure\Component'),
 ];
 
