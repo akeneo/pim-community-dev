@@ -49,7 +49,13 @@ jobs:
                           echo "No CE branch $CIRCLE_BRANCH found. I don't touch the composer.json file."
       - run:
           name: Install PIM
-          command: make pim-test
+          command: |
+              make vendor
+              make node_modules
+              make assets
+              make css
+              make javascript-test
+              make javascript-dev
       - run:
             name: Change owner on project dir after installing when there is no cache
             command: sudo chmod -R 777 ../project
