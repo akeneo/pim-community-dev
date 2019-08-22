@@ -80,3 +80,8 @@ services:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectAttributesToApplyQuery'
         arguments:
             - '@database_connection'
+
+    akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_attributes_options_by_attribute_code:
+        class: Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectAttributeOptionsByAttributeCodeQuery
+        arguments:
+            - '@database_connection'

@@ -74,3 +74,9 @@ services:
         arguments:
             - '@akeneo.pim.automation.franklin_insights.franklin_client.uri_generator'
             - '@akeneo.pim.automation.franklin_insights.franklin_client.http_client'
+
+    akeneo.pim.automation.franklin_insights.franklin_client.quality_highlights:
+        class: Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\QualityHighlights\QualityHighlightsWebService
+        arguments:
+            - '@akeneo.pim.automation.franklin_insights.franklin_client.uri_generator'
+            - '@akeneo.pim.automation.franklin_insights.franklin_client.http_client'

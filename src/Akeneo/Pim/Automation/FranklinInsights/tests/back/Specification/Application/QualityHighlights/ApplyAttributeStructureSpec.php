@@ -47,7 +47,7 @@ class ApplyAttributeStructureSpec extends ObjectBehavior
         $selectAttributesToApplyQuery->execute([1, 42])->willReturn([
             $attributeCode1 => [
                 'code' => $attributeCode1,
-                'type' => AttributeTypes::TEXT,
+                'type' => AttributeTypes::OPTION_SIMPLE_SELECT,
                 'labels' => [
                     [
                         'locale' => 'en_US',
@@ -88,12 +88,12 @@ class ApplyAttributeStructureSpec extends ObjectBehavior
                 ],
             ],
         ]);
-        $selectAttributeOptions->execute($attributeCode2)->willReturn([]);
+        $selectAttributeOptions->execute($attributeCode2)->shouldNotBeCalled();
 
         $expectedAppliedAttributes = [
             $attributeCode1 => [
                 'code' => $attributeCode1,
-                'type' => AttributeMapping::AUTHORIZED_ATTRIBUTE_TYPE_MAPPINGS[AttributeTypes::TEXT],
+                'type' => AttributeMapping::AUTHORIZED_ATTRIBUTE_TYPE_MAPPINGS[AttributeTypes::OPTION_SIMPLE_SELECT],
                 'labels' => [
                     [
                         'locale' => 'en_US',

@@ -25,6 +25,7 @@ services:
             - '@akeneo.pim.automation.franklin_insights.application.configuration.query.get_connection_status_handler'
             - '@akeneo.pim.automation.franklin_insights.repository.identifiers_mapping'
             - '@akeneo.pim.automation.franklin_insights.handler.update_identifiers_mapping'
+            - '@akeneo.pim.automation.franklin_insights.application.quality_highlights.apply_attribute_structure'
         tags:
             - { name: kernel.event_subscriber }
 

@@ -41,3 +41,9 @@ services:
         parent: akeneo.pim.automation.franklin_insights.data_provider
         arguments:
             - '@akeneo.pim.automation.franklin_insights.franklin_client.statistics'
+
+    akeneo.pim.automation.franklin_insights.data_provider.quality_highlights:
+        class: Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Adapter\QualityHighlightsProvider
+        parent: akeneo.pim.automation.franklin_insights.data_provider
+        arguments:
+            - '@akeneo.pim.automation.franklin_insights.franklin_client.quality_highlights'

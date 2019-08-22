@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\QualityHighl
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectAttributeOptionsByAttributeCodeQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectAttributesToApplyQueryInterface;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 class ApplyAttributeStructure
 {
@@ -47,12 +48,13 @@ class ApplyAttributeStructure
         }
 
         foreach ($attributes as $attributeCode => $attribute) {
-            $attributeOptions = $this->selectAttributeOptions->execute($attributeCode);
-            if (! empty($attributeOptions)) {
-                $attributes[$attributeCode]['options'] = $attributeOptions;
+            if ($attribute['type'] === AttributeTypes::OPTION_SIMPLE_SELECT || $attribute['type'] === AttributeTypes::OPTION_MULTI_SELECT) {
+                $attributeOptions = $this->selectAttributeOptions->execute($attributeCode);
+                if (! empty($attributeOptions)) {
+                    $attributes[$attributeCode]['options'] = $attributeOptions;
+                }
             }
         }
-
         $attributes = $this->convertPimAttributeTypesToFranklinTypes($attributes);
 
         $this->qualityHighlightsProvider->applyAttributeStructure($attributes);
