@@ -40,9 +40,7 @@ class PuppeteerEnvironment extends NodeEnvironment {
           body: baseFile,
         });
       }
-
-      console.log(req.url());
-
+      
       if (req.url() === 'http://pim.com/rest/user/') {
         req.respond({
           contentType: 'application/json',

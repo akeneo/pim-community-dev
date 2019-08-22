@@ -1,0 +1,101 @@
+[
+   {
+      "attr":{
+         "id":"node_3",
+         "data-code":"tvs_projectors"
+      },
+      "data":"TVs and projectors (219)",
+      "state":"closed",
+      "children":[
+
+      ]
+   },
+   {
+      "attr":{
+         "id":"node_6",
+         "data-code":"cameras"
+      },
+      "data":"Cameras (300)",
+      "state":"closed",
+      "children":[
+
+      ]
+   },
+   {
+      "attr":{
+         "id":"node_10",
+         "data-code":"audio_video"
+      },
+      "data":"Audio and Video (184)",
+      "state":"closed",
+      "children":[
+
+      ]
+   },
+   {
+      "attr":{
+         "id":"node_14",
+         "data-code":"print_scan"
+      },
+      "data":"Print and scan (294)",
+      "state":"closed",
+      "children":[
+
+      ]
+   },
+   {
+      "attr":{
+         "id":"node_109",
+         "data-code":"clothes"
+      },
+      "data":"Clothes (0)",
+      "state":"closed",
+      "children":[
+
+      ]
+   },
+   {
+      "attr":{
+         "id":"node_121",
+         "data-code":"office"
+      },
+      "data":"Office (1)",
+      "state":"closed",
+      "children":[
+
+      ]
+   },
+   {
+      "attr":{
+         "id":"node_140",
+         "data-code":"master_accessories"
+      },
+      "data":"Accessories (7)",
+      "state":"closed",
+      "children":[
+
+      ]
+   },
+   {
+      "attr":{
+         "id":"node_146",
+         "data-code":"master_men"
+      },
+      "data":"Men (170)",
+      "state":"closed",
+      "children":[
+
+      ]
+   },
+   {
+      "attr":{
+         "id":"node_154",
+         "data-code":"master_women"
+      },
+      "data":"Women (68)",
+      "state":"closed",
+      "children":[
+
+      ]
+   }
+]
