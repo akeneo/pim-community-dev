@@ -53,4 +53,29 @@ class QualityHighlightsWebService extends AbstractApi implements AuthenticatedAp
             ));
         }
     }
+
+    public function delete(string $attributeCode)
+    {
+        $route = $this->uriGenerator->generate(sprintf('/api/quality-highlights/structure/attributes/%s', $attributeCode));
+
+        try {
+            $this->httpClient->request('DELETE', $route);
+        } catch (ServerException $e) {
+            throw new FranklinServerException(
+                sprintf(
+                    'Something went wrong on Ask Franklin side when deleting an attribute : %s',
+                    $e->getMessage()
+                )
+            );
+        } catch (ClientException $e) {
+            if (Response::HTTP_UNAUTHORIZED === $e->getCode()) {
+                throw new InvalidTokenException();
+            }
+
+            throw new BadRequestException(sprintf(
+                'Something went wrong when deleting an attribute (bad request) : %s',
+                $e->getMessage()
+            ));
+        }
+    }
 }

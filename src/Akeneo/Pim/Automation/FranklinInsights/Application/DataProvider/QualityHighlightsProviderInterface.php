@@ -15,5 +15,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider;
 
 interface QualityHighlightsProviderInterface
 {
-    public function applyAttributeStructure(array $attributes);
+    public function applyAttributeStructure(array $attributes): void;
+
+    public function deleteAttribute(string $attributeCode): void;
 }

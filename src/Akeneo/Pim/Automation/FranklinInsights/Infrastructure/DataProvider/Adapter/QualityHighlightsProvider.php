@@ -31,10 +31,17 @@ class QualityHighlightsProvider extends AbstractProvider implements QualityHighl
         $this->api = $api;
     }
 
-    public function applyAttributeStructure(array $attributes)
+    public function applyAttributeStructure(array $attributes): void
     {
         $this->api->setToken($this->getToken());
 
         $this->api->save($attributes);
+    }
+
+    public function deleteAttribute(string $attributeCode): void
+    {
+        $this->api->setToken($this->getToken());
+
+        $this->api->delete($attributeCode);
     }
 }
