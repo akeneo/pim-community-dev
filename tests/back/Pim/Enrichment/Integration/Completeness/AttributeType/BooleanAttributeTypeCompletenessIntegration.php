@@ -67,6 +67,7 @@ class BooleanAttributeTypeCompletenessIntegration extends AbstractCompletenessPe
             AttributeTypes::BOOLEAN
         );
 
+        // as the boolean is automatically set at false, the product should be complete
         $productDataNull = $this->createProductWithStandardValues(
             $family,
             'product_data_null',
@@ -82,7 +83,7 @@ class BooleanAttributeTypeCompletenessIntegration extends AbstractCompletenessPe
                 ],
             ]
         );
-        $this->assertNotComplete($productDataNull);
+        $this->assertComplete($productDataNull);
 
         $productWithoutValues = $this->createProductWithStandardValues($family, 'product_without_values');
         $this->assertComplete($productWithoutValues);
