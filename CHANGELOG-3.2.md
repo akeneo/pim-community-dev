@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.6 (2019-08-22)
+
 ## Bug fixes:
 
 - PIM-8663: Fix category tree selector
