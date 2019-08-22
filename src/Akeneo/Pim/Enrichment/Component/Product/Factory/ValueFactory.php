@@ -54,6 +54,10 @@ class ValueFactory
      */
     public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data, $ignoreUnknownData = false)
     {
+        if (null === $data || [] === $data || '' === $data || [''] === $data || [null] === $data) {
+            throw new \Exception(sprintf('Data should not be empty, %s found', json_encode($data)));
+        }
+
         try {
             $this->attributeValidatorHelper->validateScope($attribute, $channelCode);
             $this->attributeValidatorHelper->validateLocale($attribute, $localeCode);
