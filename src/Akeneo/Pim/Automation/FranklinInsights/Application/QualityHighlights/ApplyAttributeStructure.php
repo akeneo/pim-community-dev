@@ -42,7 +42,6 @@ class ApplyAttributeStructure
     public function apply(array $attributeIds): void
     {
         $attributes = $this->selectAttributesToApplyQuery->execute($attributeIds);
-
         if (empty($attributes)) {
             return;
         }
