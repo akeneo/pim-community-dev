@@ -1,3 +1,7 @@
+const process = require('process')
+const fs = require('fs')
+const datagridLoad = fs.readFileSync(`${process.cwd()}/tests/front/integration/common/contracts/product_grid.json`, 'utf-8');
+
 const renderProductGrid = async (page) => {
   await page.evaluate(async () => await require('pim/user-context').initialize());
   await page.evaluate(async () => await require('pim/init-translator').fetch());
@@ -15,6 +19,14 @@ const renderProductGrid = async (page) => {
           body: JSON.stringify(["identifier","image","label","family","enabled","completeness","created","updated","complete_variant_products"]),
       })
     }
+
+    if(req.url().includes('/datagrid/product-grid/load')) {
+      req.respond({
+        contentType: 'application/json',
+        body: datagridLoad
+      })
+    }
+    
   })
 
   return page.evaluate(({data, extension}) => {
