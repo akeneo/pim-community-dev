@@ -57,8 +57,8 @@ SELECT
     product.identifier AS identifier,
     family.code AS familyCode,
     JSON_MERGE(
-           CASE pm1.raw_values WHEN '[]' THEN '{}' ELSE COALESCE(pm1.raw_values, '{}') END,
-           CASE pm2.raw_values WHEN '[]' THEN '{}' ELSE COALESCE(pm2.raw_values, '{}') END,
+           COALESCE(pm1.raw_values, '{}'),
+           COALESCE(pm2.raw_values, '{}'),
            product.raw_values
     ) AS rawValues
 FROM pim_catalog_product product

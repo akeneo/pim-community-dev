@@ -384,4 +384,10 @@ class ProductModelSpec extends ObjectBehavior
 
         $this->__toString()->shouldReturn('shovel');
     }
+
+    function it_saves_empty_raw_values()
+    {
+        $this->setRawValues([]);
+        $this->getRawValues()->shouldReturn([]);
+    }
 }

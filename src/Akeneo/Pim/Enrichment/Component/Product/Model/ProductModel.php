@@ -22,7 +22,7 @@ class ProductModel implements ProductModelInterface
     /** @var string */
     protected $code;
 
-    /** @var array */
+    /** @var array|object */
     protected $rawValues;
 
     /**
@@ -106,17 +106,32 @@ class ProductModel implements ProductModelInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @see ProductModel::setRawValues()
      */
     public function getRawValues(): array
     {
+        if (is_object($this->rawValues)) {
+            return [];
+        }
+
         return $this->rawValues;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * If the raw values are empty (i.e. []), Doctrine will save it as JSON as an array ([]), instead of an associative
+     * array ({}). But we use JSON_MERGE to merge the values from product models and product in several queries, and the
+     * SQL method JSON_MERGE([], {...}) does not have the same behavior than JSON_MERGE({}, {...}).
+     * We have to trick a little bit before saving the value in database, by setting the raw value to an object, it
+     * will be saved as {} and avoid issues with JSON_MERGE.
      */
     public function setRawValues(array $rawValues): ProductModelInterface
     {
+        if ([] === $rawValues) {
+            $rawValues = (object) [];
+        }
         $this->rawValues = $rawValues;
 
         return $this;

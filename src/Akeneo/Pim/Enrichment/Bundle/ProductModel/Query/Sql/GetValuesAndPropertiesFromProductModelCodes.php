@@ -43,8 +43,8 @@ SELECT
        family_variant.code as 'family_variant',
        parent_product_model.code as 'parent',
        JSON_MERGE(
-           CASE parent_product_model.raw_values WHEN '[]' THEN '{}' ELSE COALESCE(parent_product_model.raw_values, '{}') END,
-           CASE product_model.raw_values WHEN '[]' THEN '{}' ELSE product_model.raw_values END
+           COALESCE(parent_product_model.raw_values, '{}'),
+           product_model.raw_values
        ) as raw_values,
        product_model.created as 'created',
        product_model.updated as 'updated'
