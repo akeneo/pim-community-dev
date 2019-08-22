@@ -1,0 +1,13 @@
+{
+   "date":{
+      "format":"MM\/dd\/yyyy",
+      "defaultFormat":"yyyy-MM-dd"
+   },
+   "time":{
+      "format":"MM\/dd\/yyyy hh:mm a",
+      "defaultFormat":"yyyy-MM-dd HH:mm"
+   },
+   "timezone":"UTC",
+   "language":"en_US",
+   "12_hour_format":true
+}
