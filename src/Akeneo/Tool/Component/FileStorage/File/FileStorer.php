@@ -73,7 +73,12 @@ class FileStorer implements FileStorerInterface
             $options = [];
             $mimeType = $file->getMimeType();
             if (null !== $mimeType) {
-                $options['ContentType'] = $mimeType;
+                /*
+                 * AWS S3 (see PIM-5405) and Google Cloud Storage (see PIM-8673) require a Content-Type metadata to properly handle a file type.
+                 * But each Flysystem adapter use is own Config format.
+                 */
+                $options['ContentType'] = $mimeType; // AWS S3
+                $options['metadata']['contentType'] = $mimeType; // Google Cloud Storage
             }
             $isFileWritten = $filesystem->writeStream($file->getKey(), $resource, $options);
         } catch (FileExistsException $e) {

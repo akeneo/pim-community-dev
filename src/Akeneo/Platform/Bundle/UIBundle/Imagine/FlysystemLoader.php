@@ -3,6 +3,7 @@
 namespace Akeneo\Platform\Bundle\UIBundle\Imagine;
 
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
+use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Liip\ImagineBundle\Binary\Loader\LoaderInterface;
 use Liip\ImagineBundle\Exception\Binary\Loader\NotLoadableException;
 use Liip\ImagineBundle\Model\Binary;
@@ -23,14 +24,15 @@ class FlysystemLoader implements LoaderInterface
     /** @var string */
     protected $filesystemAliases;
 
-    /**
-     * @param FilesystemProvider $filesystemProvider
-     * @param array              $filesystemAliases
-     */
-    public function __construct(FilesystemProvider $filesystemProvider, array $filesystemAliases)
+    /** @var FileInfoRepositoryInterface | null */
+    protected $fileInfoRepository;
+
+    // TODO merge master/4.0: Make '$fileInfoRepository' mandatory.
+    public function __construct(FilesystemProvider $filesystemProvider, array $filesystemAliases, FileInfoRepositoryInterface $fileInfoRepository = null)
     {
         $this->filesystemProvider = $filesystemProvider;
         $this->filesystemAliases = $filesystemAliases;
+        $this->fileInfoRepository = $fileInfoRepository;
     }
 
     /**
@@ -83,6 +85,14 @@ class FlysystemLoader implements LoaderInterface
 
         if (false === $content) {
             throw new NotLoadableException(sprintf('Unable to read the file "%s" from the filesystem.', $path));
+        }
+
+        // TODO merge master/4.0: Remove 'null' check on '$this->fileInfoRepository'.
+        if ('application/octet-stream' === $mimeType && null !== $this->fileInfoRepository) {
+            $fileInfo = $this->fileInfoRepository->findOneByIdentifier($path);
+            if (null !== $fileInfo) {
+                $mimeType = $fileInfo->getMimetype();
+            }
         }
 
         if (false === $mimeType || null === $mimeType) {
