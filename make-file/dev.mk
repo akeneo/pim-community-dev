@@ -31,7 +31,7 @@ phpunit-debug:
 
 .PHONY: behat-legacy
 behat-legacy: behat.yml
-	$(DOCKER_COMPOSE) exec -u docker -e APP_ENV=behat fpm php vendor/bin/behat -p legacy ${F}
+	APP_ENV=behat $(PHP_EXEC) vendor/bin/behat -p legacy ${F}
 
 ##
 ## Xdebug
