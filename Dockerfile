@@ -53,7 +53,7 @@ COPY docker/build/akeneo.ini /etc/php/7.2/fpm/conf.d/99-akeneo.ini
 #
 FROM base AS dev
 
-ENV PHP_OPCACHE_VALIDATE_TIMESTAMP=1
+ENV PHP_CONF_OPCACHE_VALIDATE_TIMESTAMP=1
 
 RUN apt-get update && \
     apt-get --yes install curl && \
