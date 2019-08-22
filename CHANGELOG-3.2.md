@@ -1,5 +1,10 @@
 # 3.2.x
 
+## Bug fixes:
+
+- PIM-8663: Fix category tree selector
+- PIM-8674: Check date validity when creating a date value
+
 # 3.2.5 (2019-08-19)
 
 ## Bug fixes
@@ -12,7 +17,6 @@
 
 ## Bug fixes
 
-- PIM-8663: Fix category tree selector
 - PIM-8601: Fix purge of the job execution according to the date of creation and not deletion
 - PIM-8583: Add missing translations on role deletion
 

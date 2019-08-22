@@ -136,6 +136,28 @@ class InvalidPropertyException extends PropertyException
     }
 
     /**
+     * Build an exception when the provided date is invalid
+     *
+     * @param string $propertyName
+     * @param string $className
+     * @param string $propertyValue
+     *
+     * @return InvalidPropertyException
+     */
+    public static function validDateExpected($propertyName, $className, $propertyValue)
+    {
+        $message = 'Property "%s" expects a valid date as data, "%s" given.';
+
+        return new static(
+            $propertyName,
+            $propertyValue,
+            $className,
+            sprintf($message, $propertyName, $propertyValue),
+            self::DATE_EXPECTED_CODE
+        );
+    }
+
+    /**
      * Build an exception when the group type is invalid or is not allowed.
      *
      * @param string $propertyName
