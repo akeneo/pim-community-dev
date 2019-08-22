@@ -59,6 +59,7 @@ RUN apt-get update && \
     apt-get --yes install curl && \
     apt-get --yes install mysql-client && \
     apt-get --yes install php7.2-xdebug && \
+    apt-get --yes install procps && \
     phpdismod xdebug && \
     mkdir /etc/php/7.2/enable-xdebug && \
     ln -s /etc/php/7.2/mods-available/xdebug.ini /etc/php/7.2/enable-xdebug/xdebug.ini && \
