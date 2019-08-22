@@ -46,3 +46,5 @@ yarn-error.log
 coverage/*
 /web/test_dist/*
 .phpunit.result.cache
+.env.local
+config/credentials_gcp.json
