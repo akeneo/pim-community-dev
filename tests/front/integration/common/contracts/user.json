@@ -1,0 +1,46 @@
+{
+   "ui_locale_decimal_separator":".",
+   "code":"admin",
+   "enabled":true,
+   "username":"admin",
+   "email":"admin@example.com",
+   "name_prefix":null,
+   "first_name":"John",
+   "middle_name":null,
+   "last_name":"Doe",
+   "name_suffix":null,
+   "phone":null,
+   "image":null,
+   "last_login":1566465889,
+   "login_count":1,
+   "catalog_default_locale":"en_US",
+   "user_default_locale":"en_US",
+   "catalog_default_scope":"ecommerce",
+   "default_category_tree":"master",
+   "email_notifications":false,
+   "timezone":"UTC",
+   "groups":[
+      "IT support",
+      "All"
+   ],
+   "roles":[
+      "ROLE_ADMINISTRATOR"
+   ],
+   "product_grid_filters":[
+
+   ],
+   "avatar":{
+      "filePath":null,
+      "originalFilename":null
+   },
+   "meta":{
+      "id":1,
+      "form":"pim-user-edit-form",
+      "image":{
+         "filePath":null
+      }
+   },
+   "properties":[
+
+   ]
+}
