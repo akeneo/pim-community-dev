@@ -28,7 +28,7 @@ use Symfony\Bundle\FrameworkBundle\Client;
 final class ImagePreviewActionTest extends ControllerIntegrationTestCase
 {
     private const URL_VALUE_PREVIEW_ROUTE = 'akeneo_asset_manager_image_preview';
-    private const FILENAME = 'Akeneo-DSC_2109-2.jpg';
+    private const FILENAME = '2016/04/Fred-site-web.jpg';
 
     /* @var Client */
     private $client;

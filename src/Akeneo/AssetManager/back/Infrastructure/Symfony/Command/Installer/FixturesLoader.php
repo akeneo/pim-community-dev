@@ -498,7 +498,7 @@ class FixturesLoader
                 AttributeIsRequired::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
-                Prefix::fromString('https://akeneodemo.getbynder.com/m/1e567bef001b08fa/'),
+                Prefix::fromString('https://www.akeneo.com/wp-content/uploads/'),
                 Suffix::empty(),
                 MediaType::fromString(MediaType::IMAGE)
             );
