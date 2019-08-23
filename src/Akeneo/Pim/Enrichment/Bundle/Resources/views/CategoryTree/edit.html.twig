@@ -38,6 +38,9 @@
 
                 PageTitle.set({ 'category.label': '{{ form.vars.value.label }}' });
 
+                // On the initial page load the routing is completed before we set the PageTitle params so we need to trigger it manually (see PIM-8655).
+                PageTitle.render('pim_enrich_categorytree_edit', { 'category.label': '{{ form.vars.value.label }}' });
+
                 FetcherRegistry.initialize().done(function () {
                     FormBuilder.build('pim-menu-user-navigation').then(function (form) {
                         $('.user-menu').append(form.el);
