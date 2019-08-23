@@ -26,17 +26,39 @@ final class SelectPendingAttributesQueryIntegration extends TestCase
             ->getUpdatedAttributeIds();
         $this->assertEmpty($results);
 
-        $this->insertUpdatedAttribute(1, SelectPendingAttributesQuery::STATUS_UNLOCKED);
-        $this->insertUpdatedAttribute(2, SelectPendingAttributesQuery::STATUS_LOCKED);
-        $this->insertUpdatedAttribute(3, SelectPendingAttributesQuery::STATUS_UNLOCKED);
-        $this->insertDeletedAttribute(4, SelectPendingAttributesQuery::STATUS_UNLOCKED);
-        $this->insertDeletedAttribute(5, SelectPendingAttributesQuery::STATUS_LOCKED);
+        $this->createDataSet();
 
         $results = $this
             ->getFromTestContainer('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_pending_attributes')
             ->getUpdatedAttributeIds();
 
         $this->assertSame([1, 3], $results);
+    }
+
+    public function test_it_returns_deleted_attribute_ids()
+    {
+        $results = $this
+            ->getFromTestContainer('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_pending_attributes')
+            ->getDeletedAttributeIds();
+        $this->assertEmpty($results);
+
+        $this->createDataSet();
+
+        $results = $this
+            ->getFromTestContainer('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_pending_attributes')
+            ->getDeletedAttributeIds();
+
+        $this->assertSame([4, 6], $results);
+    }
+
+    private function createDataSet(): void
+    {
+        $this->insertUpdatedAttribute(1, SelectPendingAttributesQuery::STATUS_UNLOCKED);
+        $this->insertUpdatedAttribute(2, SelectPendingAttributesQuery::STATUS_LOCKED);
+        $this->insertUpdatedAttribute(3, SelectPendingAttributesQuery::STATUS_UNLOCKED);
+        $this->insertDeletedAttribute(4, SelectPendingAttributesQuery::STATUS_UNLOCKED);
+        $this->insertDeletedAttribute(5, SelectPendingAttributesQuery::STATUS_LOCKED);
+        $this->insertDeletedAttribute(6, SelectPendingAttributesQuery::STATUS_UNLOCKED);
     }
 
     private function insertUpdatedAttribute(int $attributeId, int $status)

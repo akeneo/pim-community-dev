@@ -40,7 +40,7 @@ class SelectPendingAttributesQuery implements SelectPendingAttributesQueryInterf
 
     public function getUpdatedAttributeIds(): array
     {
-        $sql = <<<'SQL'
+        $query = <<<'SQL'
             SELECT entity_id
             FROM pimee_franklin_insights_pending_items AS pending_items
             WHERE `action` = :action
@@ -49,10 +49,29 @@ class SelectPendingAttributesQuery implements SelectPendingAttributesQueryInterf
             ORDER BY `date` ASC
 SQL;
 
+        return $this->executeQuery($query, self::ACTION_ATTRIBUTE_UPDATED);
+    }
+
+    public function getDeletedAttributeIds(): array
+    {
+        $query = <<<'SQL'
+            SELECT entity_id
+            FROM pimee_franklin_insights_pending_items AS pending_items
+            WHERE `action` = :action
+            AND entity_type = :entity_type
+            AND status = :status
+            ORDER BY `date` ASC
+SQL;
+
+        return $this->executeQuery($query, self::ACTION_ATTRIBUTE_DELETED);
+    }
+
+    private function executeQuery(string $query, int $action)
+    {
         $statement = $this->connection->executeQuery(
-            $sql,
+            $query,
             [
-                'action' => self::ACTION_ATTRIBUTE_UPDATED,
+                'action' => $action,
                 'entity_type' => self::ENTITY_TYPE_ATTRIBUTE,
                 'status' => self::STATUS_UNLOCKED,
             ],
