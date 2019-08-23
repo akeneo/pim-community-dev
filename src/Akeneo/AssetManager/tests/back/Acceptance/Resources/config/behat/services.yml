@@ -16,6 +16,7 @@ services:
             - '@validator'
             - '@akeneo_assetmanager.tests.back.acceptance.context.constraint_violations_context'
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers'
+            - '@akeneo_assetmanager.infrastructure.validation.asset_family.product_link_rule.rule_engine_validator_acl'
             - '%asset_manager_rule_template_by_asset_family_limit%'
 
 
