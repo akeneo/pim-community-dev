@@ -85,3 +85,8 @@ services:
         class: Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\QualityHighlights\SelectAttributeOptionsByAttributeCodeQuery
         arguments:
             - '@database_connection'
+
+    akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_pending_attributes:
+        class: Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\QualityHighlights\SelectPendingAttributesQuery
+        arguments:
+            - '@database_connection'

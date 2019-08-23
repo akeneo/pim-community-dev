@@ -57,6 +57,7 @@ SQL;
         );
 
         $searchResults = $statement->fetchAll();
+
         return $searchResults;
     }
 
