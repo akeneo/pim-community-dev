@@ -62,17 +62,26 @@ class EntityWithValuesBuilder implements EntityWithValuesBuilderInterface
             $entityWithValues->removeValue($value);
         }
 
-        $value = $this->productValueFactory->create($attribute, $scopeCode, $localeCode, $data);
-        $entityWithValues->addValue($value);
+        if (!($this->isProductIdentifier($attribute, $entityWithValues, $data) && '' === $data)) {
+            $value = $this->productValueFactory->create($attribute, $scopeCode, $localeCode, $data);
+            $entityWithValues->addValue($value);
+        }
 
-        // TODO: TIP-722: This is a temporary fix, Product identifier should be used only as a field
-        if (AttributeTypes::IDENTIFIER === $attribute->getType() &&
-            null !== $data &&
-            $entityWithValues instanceof ProductInterface
-        ) {
+        if ($this->isProductIdentifier($attribute, $entityWithValues, $data)) {
             $entityWithValues->setIdentifier($value);
         }
 
         return $value;
+    }
+
+    private function isProductIdentifier(
+        AttributeInterface $attribute,
+        EntityWithValuesInterface $entityWithValues,
+        $data
+    ) {
+        // TODO: TIP-722: This is a temporary fix, Product identifier should be used only as a field
+        return AttributeTypes::IDENTIFIER === $attribute->getType() &&
+            null !== $data &&
+            $entityWithValues instanceof ProductInterface;
     }
 }

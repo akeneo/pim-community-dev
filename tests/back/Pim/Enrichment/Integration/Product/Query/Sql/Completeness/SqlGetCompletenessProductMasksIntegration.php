@@ -17,7 +17,6 @@ class SqlGetCompletenessProductMasksIntegration extends TestCase
         $expected = [
             new CompletenessProductMask(-1, 'simple_product', 'familyA', [
                 'sku-<all_channels>-<all_locales>',
-                'a_yes_no-<all_channels>-<all_locales>',
             ])
         ];
         $result = $this->getCompletenessProductMasks()->fromProductIdentifiers(['simple_product']);
@@ -32,11 +31,9 @@ class SqlGetCompletenessProductMasksIntegration extends TestCase
         $expected = [
             new CompletenessProductMask(-1, 'product1', 'familyA', [
                 'sku-<all_channels>-<all_locales>',
-                'a_yes_no-<all_channels>-<all_locales>',
             ]),
             new CompletenessProductMask(-1, 'product2', 'familyA', [
                 'sku-<all_channels>-<all_locales>',
-                'a_yes_no-<all_channels>-<all_locales>',
             ])
         ];
 
@@ -111,7 +108,6 @@ class SqlGetCompletenessProductMasksIntegration extends TestCase
         $expected = [
             new CompletenessProductMask(-1, 'product_with_scopable_data', 'familyA', [
                 'sku-<all_channels>-<all_locales>',
-                'a_yes_no-<all_channels>-<all_locales>',
                 'a_localized_and_scopable_text_area-ecommerce-en_US',
                 'a_scopable_price-USD-ecommerce-<all_locales>',
             ])
@@ -134,7 +130,6 @@ class SqlGetCompletenessProductMasksIntegration extends TestCase
         $expected = [
             new CompletenessProductMask(-1, 'product_with_localizable_data', 'familyA', [
                 'sku-<all_channels>-<all_locales>',
-                'a_yes_no-<all_channels>-<all_locales>',
                 'a_localizable_image-<all_channels>-en_US',
                 'a_localized_and_scopable_text_area-ecommerce-en_US',
             ])
@@ -155,7 +150,6 @@ class SqlGetCompletenessProductMasksIntegration extends TestCase
         $expected = [
             new CompletenessProductMask(-1, 'product_with_prices', 'familyA', [
                 'sku-<all_channels>-<all_locales>',
-                'a_yes_no-<all_channels>-<all_locales>',
                 'a_price-EUR-<all_channels>-<all_locales>',
                 'a_scopable_price-USD-ecommerce-<all_locales>',
             ])
@@ -183,7 +177,6 @@ class SqlGetCompletenessProductMasksIntegration extends TestCase
             new CompletenessProductMask(
                 -1, 'productA', 'familyA', [
                     'sku-<all_channels>-<all_locales>',
-                    'a_yes_no-<all_channels>-<all_locales>',
                     'a_price-EUR-<all_channels>-<all_locales>',
                 ]
             )
@@ -198,7 +191,6 @@ class SqlGetCompletenessProductMasksIntegration extends TestCase
             new CompletenessProductMask(
                 -1, 'productA', 'familyA', [
                     'sku-<all_channels>-<all_locales>',
-                    'a_yes_no-<all_channels>-<all_locales>',
                 ]
             ),
         ];

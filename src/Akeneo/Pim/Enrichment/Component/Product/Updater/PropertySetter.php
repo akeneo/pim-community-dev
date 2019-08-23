@@ -55,7 +55,7 @@ class PropertySetter implements PropertySetterInterface
         if ($setter instanceof AttributeSetterInterface) {
             $attribute = $this->getAttribute($field);
             $setter->setAttributeData($entity, $attribute, $data, $options);
-        } else if ($setter instanceof FieldSetterInterface) {
+        } elseif ($setter instanceof FieldSetterInterface) {
             $setter->setFieldData($entity, $field, $data, $options);
         } else {
             throw UnknownPropertyException::unknownProperty($field);

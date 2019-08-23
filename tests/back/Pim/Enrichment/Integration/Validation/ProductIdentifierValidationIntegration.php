@@ -99,11 +99,9 @@ class ProductIdentifierValidationIntegration extends TestCase
 
         $wrongProduct = $this->createProduct('');
         $violations = $this->validateProduct($wrongProduct);
-        $this->assertCount(2, $violations);
+        $this->assertCount(1, $violations);
         $this->assertSame($violations->get(0)->getMessage(), 'This value should not be blank.');
-        $this->assertSame($violations->get(1)->getMessage(), 'This value should not be blank.');
         $this->assertSame($violations->get(0)->getPropertyPath(), 'identifier');
-        $this->assertSame($violations->get(1)->getPropertyPath(), 'values[sku-<all_channels>-<all_locales>].data');
     }
 
     /**
