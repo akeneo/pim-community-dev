@@ -33,20 +33,20 @@ class ProductLinkRulesValidator extends ConstraintValidator
         $this->addViolationsToContextIfAny($ruleEngineViolations);
     }
 
-    private function validateProductSelections(array $productSelections): ConstraintViolationListInterface
+    private function validateProductSelections(array $productLinkRule): ConstraintViolationListInterface
     {
         $ruleEngineViolations = new ConstraintViolationList();
-        foreach ($productSelections['product_selections'] as $productSelection) {
+        foreach ($productLinkRule['product_selections'] as $productSelection) {
             $ruleEngineViolations = $this->ruleEngineValidatorACL->validateProductSelection($productSelection);
         }
 
         return $ruleEngineViolations;
     }
 
-    private function validateProductAssignments(array $productAssignments): ConstraintViolationListInterface
+    private function validateProductAssignments(array $productLinkRule): ConstraintViolationListInterface
     {
         $ruleEngineViolations = new ConstraintViolationList();
-        foreach ($productAssignments['assign_assets_to'] as $productAssignment) {
+        foreach ($productLinkRule['assign_assets_to'] as $productAssignment) {
             $ruleEngineViolations = $this->ruleEngineValidatorACL->validateProductAssignment($productAssignment);
         }
 

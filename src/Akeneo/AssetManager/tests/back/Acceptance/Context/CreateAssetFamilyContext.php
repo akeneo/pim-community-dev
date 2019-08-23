@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Acceptance\Context;
 
 use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyCommand;
 use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyHandler;
+use Akeneo\AssetManager\Common\Fake\Anticorruption\RuleEngineValidatorACLStub;
 use Akeneo\AssetManager\Common\Fake\InMemoryAssetFamilyRepository;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
@@ -22,7 +23,6 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
-use Akeneo\AssetManager\Common\Fake\Anticorruption\RuleEngineValidatorACLStub;
 use Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\RuleEngineValidatorACLInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
