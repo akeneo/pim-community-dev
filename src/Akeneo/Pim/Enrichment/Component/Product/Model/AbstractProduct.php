@@ -67,7 +67,7 @@ abstract class AbstractProduct implements ProductInterface
     /** @var Collection $completenesses */
     protected $completenesses;
 
-    /** @var string */
+    /** @var string|null */
     protected $identifier;
 
     /** @var ArrayCollection */
@@ -273,6 +273,16 @@ abstract class AbstractProduct implements ProductInterface
 
         $this->values->removeByAttributeCode($identifier->getAttributeCode());
         $this->values->add($identifier);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setIdentifierValue(?string $identifierValue): ProductInterface
+    {
+        $this->identifier = $identifierValue;
 
         return $this;
     }

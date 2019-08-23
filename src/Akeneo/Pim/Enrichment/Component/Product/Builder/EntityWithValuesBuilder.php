@@ -58,33 +58,47 @@ class EntityWithValuesBuilder implements EntityWithValuesBuilderInterface
         $data
     ): ?ValueInterface {
         $formerValue = $entityWithValues->getValue($attribute->getCode(), $localeCode, $scopeCode);
-        if (null !== $formerValue) {
-            $entityWithValues->removeValue($formerValue);
-        }
+        $isNewValueFilled = '' !== $data && null !== $data && [] !== $data;
 
-        $value = null;
-        if ($this->isProductIdentifier($attribute, $entityWithValues, $data)) {
-            if ('' !== $data) {
-                $value = $this->productValueFactory->create($attribute, $scopeCode, $localeCode, $data);
-                $entityWithValues->addValue($value);
-                $entityWithValues->setIdentifier($value);
+        if (null === $formerValue) {
+            if ($isNewValueFilled) {
+                // Value created
+                $newValue = $this->productValueFactory->create($attribute, $scopeCode, $localeCode, $data);
+                $entityWithValues->addValue($newValue);
+                $this->updateProductIdentiferIfNeeded($attribute, $entityWithValues, $data);
+
+                return $newValue;
+            } else {
+                // Nothing changed, empty to empty.
+                return null;
             }
         } else {
-            $value = $this->productValueFactory->create($attribute, $scopeCode, $localeCode, $data);
-            $entityWithValues->addValue($value);
-        }
+            if ($isNewValueFilled) {
+                // Value changed
+                $updatedValue = $this->productValueFactory->create($attribute, $scopeCode, $localeCode, $data);
+                $entityWithValues->removeValue($formerValue)->addValue($updatedValue);
+                $this->updateProductIdentiferIfNeeded($attribute, $entityWithValues, $data);
 
-        return $value;
+
+                return $updatedValue;
+            } else {
+                // Value removed
+                $entityWithValues->removeValue($formerValue);
+                $this->updateProductIdentiferIfNeeded($attribute, $entityWithValues, $data);
+
+                return null;
+            }
+        }
     }
 
-    private function isProductIdentifier(
+    private function updateProductIdentiferIfNeeded(
         AttributeInterface $attribute,
         EntityWithValuesInterface $entityWithValues,
         $data
-    ) {
+    ): void {
         // TODO: TIP-722: This is a temporary fix, Product identifier should be used only as a field
-        return AttributeTypes::IDENTIFIER === $attribute->getType() &&
-            null !== $data &&
-            $entityWithValues instanceof ProductInterface;
+        if (AttributeTypes::IDENTIFIER === $attribute->getType() && $entityWithValues instanceof ProductInterface) {
+            $entityWithValues->setIdentifierValue($data);
+        }
     }
 }

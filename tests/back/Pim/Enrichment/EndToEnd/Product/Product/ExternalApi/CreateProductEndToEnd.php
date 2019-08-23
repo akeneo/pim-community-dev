@@ -69,9 +69,6 @@ JSON;
                 'sku' => [
                     ['locale' => null, 'scope' => null, 'data' => 'product_creation_family'],
                 ],
-                'a_yes_no' => [
-                    ['locale' => null, 'scope' => null, 'data' => false],
-                ]
             ],
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',

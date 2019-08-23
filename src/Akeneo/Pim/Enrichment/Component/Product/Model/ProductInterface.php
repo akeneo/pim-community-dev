@@ -57,8 +57,16 @@ interface ProductInterface extends
      *
      * @return ProductInterface
      *
+     * @deprecated
      */
     public function setIdentifier(ValueInterface $identifier);
+
+    /**
+     * @param string|null $identifierValue
+     *
+     * @return ProductInterface
+     */
+    public function setIdentifierValue(?string $identifierValue): ProductInterface;
 
     /**
      * Get the product groups
