@@ -202,19 +202,23 @@ class ProductPdfRenderer implements RendererInterface
         foreach ($this->getAttributeCodes($product) as $attributeCode) {
             $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
 
-            if (null !== $attribute && AttributeTypes::OPTION_SIMPLE_SELECT === $attribute->getType()) {
-                $optionCode = $product->getValue($attributeCode, null, null)->getData();
-                $option = $this->attributeOptionRepository->findOneByIdentifier($attributeCode.'.'.$optionCode);
+            $locale = $attribute->isLocalizable() ? $localeCode : null;
+            $scope = $attribute->isScopable() ? $scopeCode : null;
 
-                $translation = $option->getTranslation($localeCode);
+            if (null !== $attribute && AttributeTypes::OPTION_SIMPLE_SELECT === $attribute->getType()) {
+                $optionCode = $product->getValue($attributeCode, $locale, $scope)->getData();
+                $option = $this->attributeOptionRepository->findOneByIdentifier($attributeCode.'.'.$optionCode);
+                $option->setLocale($localeCode);
+                $translation = $option->getTranslation();
                 $options[$attributeCode] = null !== $translation->getValue() ? $translation->getValue() : sprintf('[%s]', $option->getCode());
             }
             if (null !== $attribute && AttributeTypes::OPTION_MULTI_SELECT === $attribute->getType()) {
-                $optionCodes = $product->getValue($attributeCode, null, null)->getData();
+                $optionCodes = $product->getValue($attributeCode, $locale, $scope)->getData();
                 $labels = [];
                 foreach ($optionCodes as $optionCode) {
                     $option = $this->attributeOptionRepository->findOneByIdentifier($attributeCode.'.'.$optionCode);
-                    $translation = $option->getTranslation($localeCode);
+                    $option->setLocale($localeCode);
+                    $translation = $option->getTranslation();
                     $labels[] = null !== $translation->getValue() ? $translation->getValue() : sprintf('[%s]', $option->getCode());
                 }
                 $options[$attributeCode] = implode(', ', $labels);
