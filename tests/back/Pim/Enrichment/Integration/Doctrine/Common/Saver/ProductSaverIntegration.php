@@ -9,17 +9,22 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Test\Integration\TestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use Doctrine\DBAL\Statement;
+use PHPUnit\Framework\Assert;
 
 /**
  * Integration tests to verify a product is well saved in database.
  */
 class ProductSaverIntegration extends TestCase
 {
+    /**
+     * TIP-1248: price values should not be persisted and validation should trigger an error
+     */
     public function testRawValuesForProductWithAllAttributes()
     {
         $product = $this->createProduct('just-a-product-with-all-possible-values', 'familyA');
         $standardValues = $this->getStandardValuesWithAllAttributes();
         $this->updateProduct($product, $standardValues);
+        Assert::assertCount(0, $this->get('validator')->validate($product));
         $this->saveProduct($product);
 
         $stmt = $this->createStatement('SELECT raw_values FROM pim_catalog_product WHERE identifier = "just-a-product-with-all-possible-values"');
@@ -330,6 +335,7 @@ class ProductSaverIntegration extends TestCase
     }
 
     /**
+     * TIP-
      * @return array
      */
     private function getStorageValuesWithAllAttributes(): array
@@ -479,12 +485,14 @@ class ProductSaverIntegration extends TestCase
             'a_scopable_price' => [
                 'ecommerce' => [
                     '<all_locales>' => [
+                        ['amount' => '15.00', 'currency' => 'EUR'], // TIP-1248: it should not be persist but it will be filtered
                         ['amount' => '20.00', 'currency' => 'USD'],
                     ],
                 ],
                 'tablet' => [
                     '<all_locales>' => [
                         ['amount' => '17.00', 'currency' => 'EUR'],
+                        ['amount' => '24.00', 'currency' => 'USD'], // TIP-1248: it should not be persist but it will be filtered
                     ],
                 ],
             ],
