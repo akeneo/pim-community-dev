@@ -11,6 +11,7 @@ const activatedLocales = fs.readFileSync(`${process.cwd()}/tests/front/integrati
 const user = fs.readFileSync(`${process.cwd()}/tests/front/integration/common/contracts/user.json`, 'utf-8');
 const translations = fs.readFileSync(path.join(process.cwd(), './web/js/translation/en_US.js'), 'utf-8');
 const pimCSS = fs.readFileSync(`${process.cwd()}/web/css/pim.css`, 'utf-8');
+const dateFormat = fs.readFileSync(`${process.cwd()}/tests/front/integration/common/contracts/date_format.json`, 'utf-8');
 
 class PuppeteerEnvironment extends NodeEnvironment {
   constructor(config) {
@@ -35,36 +36,36 @@ class PuppeteerEnvironment extends NodeEnvironment {
 
     page.on('request', req => {
       if (req.url() === 'http://pim.com/') {
-        req.respond({
+        return req.respond({
           contentType: 'text/html;charset=UTF-8',
           body: baseFile,
         });
       }
-      
+
       if (req.url() === 'http://pim.com/rest/user/') {
-        req.respond({
+        return req.respond({
           contentType: 'application/json',
           body: user,
         });
       }
 
       if (req.url() === 'http://pim.com/rest/security/') {
-        req.respond({
+        return req.respond({
           contentType: 'application/json',
           body: restSecurity
         })
       }
 
       if (req.url() === 'http://pim.com/js/extensions.json') {
-        req.respond({
+        return req.respond({
           contentType: 'application/json',
           body: extensions
         });
       }
 
-      if(req.url().includes('/notification/count_unread') || 
+      if(req.url().includes('/notification/count_unread') ||
       req.url().includes('/notification/list?skip=0')) {
-        req.respond({
+        return req.respond({
           contentType: 'application/json',
           body: 0
         });
@@ -72,31 +73,44 @@ class PuppeteerEnvironment extends NodeEnvironment {
 
       if(req.url().includes('thumbnail_small') ||
         req.url().includes('style.css') ||
-        req.url().includes('favicon.ico') || 
+        req.url().includes('favicon.ico') ||
         req.url().includes('info-user.png')) {
-        req.respond({
+        return req.respond({
           contentType: 'application/json',
           status: 200
         });
       }
 
       if(req.url() === 'http://pim.com/configuration/locale/rest?activated=true') {
-        req.respond({
+        return req.respond({
           contentType: 'application/json',
           body: activatedLocales
         })
       }
 
       if (req.url().includes('/js/translation')) {
-        req.respond({
+        return req.respond({
           contentType: 'application/json',
-          body: `${JSON.stringify(translations)}`,
+          body: translations,
+        });
+      }
+
+      if (req.url().includes('/localization/format/date')) {
+        return req.respond({
+          contentType: 'application/json',
+          body: dateFormat
         });
       }
     });
 
     await page.goto('http://pim.com');
+    await page.addStyleTag({ content: pimCSS });
     await page.evaluate(async () => await require('pim/fetcher-registry').initialize());
+    await page.evaluate(async () => await require('pim/init')());
+    await page.evaluate(async () => await require('pim/user-context').initialize());
+    await page.evaluate(async () => await require('pim/date-context').initialize());
+    await page.evaluate(async () => await require('pim/init-translator').fetch());
+    await page.evaluate(async () => await require('oro/init-layout')());
 
     this.global.__PAGE__ = page;
   }
