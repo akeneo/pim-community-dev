@@ -156,8 +156,10 @@ resource "null_resource" "metric" {
   }
 
   provisioner "local-exec" {
+    interpreter = ["/usr/bin/env", "bash", "-c"]
+
     command = <<EOF
-      if [[ -z "$(gcloud beta logging metrics list --project ${var.google_project_id} --quiet --format='value(name)' --filter='name~^${local.pfid}-${local.metrics[count.index]}$')" ]]; then \ 
+      if [[ -z "$(gcloud beta logging metrics list --project ${var.google_project_id} --quiet --format='value(name)' --filter='name~^${local.pfid}-${local.metrics[count.index]}$')" ]]; then
         gcloud beta logging metrics create ${local.pfid}-${local.metrics[count.index]} \
           --config-from-file ${local_file.metric-rendered.*.filename[count.index]} \
           --project ${var.google_project_id} \
@@ -165,18 +167,19 @@ resource "null_resource" "metric" {
         for limit in {1..600}; do \
           [[ ! -z "$(gcloud beta logging metrics list --project ${var.google_project_id} --quiet --format='value(name)' --filter='name~^${local.pfid}-${local.metrics[count.index]}$')" ]] \
           && break || echo "wait $limit"; sleep 1; \
-        done; \
-      else \
+        done;
+      else
         gcloud beta logging metrics update ${local.pfid}-${local.metrics[count.index]} \
           --config-from-file ${local_file.metric-rendered.*.filename[count.index]} \
           --project ${var.google_project_id} \
-          --quiet; \
+          --quiet;
       fi
 EOF
   }
 
   provisioner "local-exec" {
-    when = "destroy"
+    when        = "destroy"
+    interpreter = ["/usr/bin/env", "bash", "-c"]
 
     command = <<EOF
       gcloud logging metrics delete ${local.pfid}-${local.metrics[count.index]} \

@@ -56,7 +56,7 @@ variable "bucket_name" {
 }
 
 variable "google_storage_location" {
-  default = ""
+  type = "string"
 }
 
 variable "force_destroy_storage" {

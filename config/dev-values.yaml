@@ -28,10 +28,10 @@ mysql:
     dataDiskSize: 10Gi
     resources:
       requests:
-        memory: 1048Mi
+        memory: 1024Mi
         cpu: 200m
-    innodbBufferPoolSize: 1G
-    innodbPoolInstances: 1
+    innodbBufferPoolSize: 512M
+    innodbPoolInstances: 4
 
 elasticsearch:
   cluster:

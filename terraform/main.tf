@@ -34,6 +34,8 @@ resource "null_resource" "mailgun_credential" {
   }
 
   provisioner "local-exec" {
+    interpreter = ["/usr/bin/env", "bash", "-c"]
+
     command = <<EOF
 curl -s --user 'api:${var.mailgun_api_key}' \
 		https://api.mailgun.net/v3/domains/${var.mailgun_domain}/credentials \
@@ -43,7 +45,8 @@ EOF
   }
 
   provisioner "local-exec" {
-    when = "destroy"
+    when        = "destroy"
+    interpreter = ["/usr/bin/env", "bash", "-c"]
 
     command = <<EOF
 # If you've changed mailgun_email, this command will fail
