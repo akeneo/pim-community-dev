@@ -75,6 +75,13 @@ final class ReferenceDataCollectionValueFactorySpec extends ObjectBehavior
         $this->shouldThrow(InvalidPropertyTypeException::class)->during('createByCheckingData', [$attribute, null, null, [[]]]);
     }
 
+    public function it_orders_reference_data_by_alphabetic_order()
+    {
+        $attribute = $this->getAttribute(false, false);
+        $value = $this->createByCheckingData($attribute, null, null, ['green', 'blue']);
+        $value->shouldBeLike(ReferenceDataCollectionValue::value('an_attribute', ['blue', 'green']));
+    }
+
     private function getAttribute(bool $isLocalizable, bool $isScopable): Attribute
     {
         return new Attribute('an_attribute', AttributeTypes::REFERENCE_DATA_MULTI_SELECT, ['reference_data_name' => 'color'], $isLocalizable, $isScopable, null, false);

@@ -19,7 +19,6 @@ final class ReferenceDataCollectionValueFactory implements ValueFactory
 {
     public function createWithoutCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
-        $data = array_unique($data);
         $attributeCode = $attribute->code();
 
         if ($attribute->isLocalizableAndScopable()) {
@@ -61,6 +60,10 @@ final class ReferenceDataCollectionValueFactory implements ValueFactory
                 $data
             );
         }
+
+        $data = array_unique($data);
+        sort($data);
+
         return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
     }
 

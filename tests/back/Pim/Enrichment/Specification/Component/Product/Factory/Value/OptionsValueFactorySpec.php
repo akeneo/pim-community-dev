@@ -80,6 +80,18 @@ final class OptionsValueFactorySpec extends ObjectBehavior
             ]);
     }
 
+    public function it_throws_an_exception_when_it_is_not_an_array()
+    {
+        $attribute = $this->getAttribute(false, false);
+        $this->shouldThrow(InvalidPropertyTypeException::class)->during('createByCheckingData', [$attribute, null, null, 'no an array']);
+    }
+
+    public function it_throws_an_exception_when_it_is_not_an_array_of_string()
+    {
+        $attribute = $this->getAttribute(false, false);
+        $this->shouldThrow(InvalidPropertyTypeException::class)->during('createByCheckingData', [$attribute, null, null, [[]]]);
+    }
+
     private function getAttribute(bool $isLocalizable, bool $isScopable): Attribute
     {
         return new Attribute('an_attribute', AttributeTypes::OPTION_MULTI_SELECT, [], $isLocalizable, $isScopable, null, false);
