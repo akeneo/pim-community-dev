@@ -49,19 +49,21 @@ final class FileValueFactory implements ValueFactory
 
     public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data) : ValueInterface
     {
-        $file = $this->getFile($data);
+        if (null !== $data) {
+            $file = $this->getFile($data);
 
-        if (null === $file) {
-            throw InvalidPropertyException::validEntityCodeExpected(
-                $attribute->code(),
-                'fileinfo key',
-                'The media does not exist',
-                static::class,
-                $data
-            );
+            if (null === $file) {
+                throw InvalidPropertyException::validEntityCodeExpected(
+                    $attribute->code(),
+                    'fileinfo key',
+                    'The media does not exist',
+                    static::class,
+                    $data
+                );
+            }
         }
 
-        return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, $file);
+        return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
     }
 
     public function supportedAttributeType(): string

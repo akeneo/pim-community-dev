@@ -78,6 +78,13 @@ final class ImageValueFactorySpec extends ObjectBehavior
         $value->shouldBeLike(MediaValue::value('an_attribute', $fileInfo));
     }
 
+    public function it_creates_a_null_value()
+    {
+        $attribute = $this->getAttribute(false, false);
+        $value = $this->createByCheckingData($attribute, null, null, null);
+        $value->shouldBeLike(MediaValue::value('an_attribute', null));
+    }
+
     private function getAttribute(bool $isLocalizable, bool $isScopable): Attribute
     {
         return new Attribute('an_attribute', AttributeTypes::FILE, [], $isLocalizable, $isScopable, null, false);
