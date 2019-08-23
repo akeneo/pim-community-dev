@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Completeness;
 
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessProductMask;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetCompletenessProductMasks;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodesCollection;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetCompletenessFamilyMasks;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetRequiredAttributesMasks;
 
 /**
  * @author    Pierre Allard <pierre.allard@akeneo.com>
@@ -19,15 +19,15 @@ class CompletenessCalculator
     /** @var GetCompletenessProductMasks */
     private $getCompletenessProductMasks;
 
-    /** @var GetCompletenessFamilyMasks */
-    private $getCompletenessFamilyMasks;
+    /** @var GetRequiredAttributesMasks */
+    private $getRequiredAttributesMasks;
 
     public function __construct(
         GetCompletenessProductMasks $getCompletenessProductMasks,
-        GetCompletenessFamilyMasks $getCompletenessFamilyMasks
+        GetRequiredAttributesMasks $getRequiredAttributesMasks
     ) {
         $this->getCompletenessProductMasks = $getCompletenessProductMasks;
-        $this->getCompletenessFamilyMasks = $getCompletenessFamilyMasks;
+        $this->getRequiredAttributesMasks = $getRequiredAttributesMasks;
     }
 
     public function fromProductIdentifiers($productIdentifiers): array
@@ -38,17 +38,12 @@ class CompletenessCalculator
             return $product->familyCode();
         }, $productMasks);
 
-        $familyMasks = $this->getCompletenessFamilyMasks->fromFamilyCodes(array_unique(array_filter($familyCodes)));
+        $requiredAttributesMasks = $this->getRequiredAttributesMasks->fromFamilyCodes(array_unique(array_filter($familyCodes)));
 
         $result = [];
         foreach ($productMasks as $productMask) {
-            // TODO - TIP-1212: only keep the 'else' statement
-            if (null === $productMask->familyCode()) {
-                $collection = new ProductCompletenessWithMissingAttributeCodesCollection($productMask->id(), []);
-            } else {
-                $collection = $familyMasks[$productMask->familyCode()]->completenessCollectionForProduct($productMask);
-            }
-            $result[$productMask->identifier()] = $collection;
+            $attributeRequirementMask = $requiredAttributesMasks[$productMask->familyCode()] ?? null;
+            $result[$productMask->identifier()] = $productMask->completenessCollectionForProduct($attributeRequirementMask);
         }
 
         return $result;

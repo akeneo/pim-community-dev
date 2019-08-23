@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Bundle\Query\PublicApi\Family\Sql;
 
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\CompletenessFamilyMask;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\CompletenessFamilyMaskPerChannelAndLocale;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetCompletenessFamilyMasks;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetRequiredAttributesMasks;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\NonExistingFamiliesException;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMask;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMaskForChannelAndLocale;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -15,7 +15,7 @@ use Doctrine\DBAL\Connection;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class SqlGetCompletenessFamilyMasks implements GetCompletenessFamilyMasks
+final class SqlGetRequiredAttributesMasks implements GetRequiredAttributesMasks
 {
     /** @var Connection */
     private $connection;
@@ -97,7 +97,7 @@ SQL;
 
         $masksPerFamily = [];
         foreach ($rows as $masksPerChannelAndLocale) {
-            $masksPerFamily[$masksPerChannelAndLocale['family_code']][] = new CompletenessFamilyMaskPerChannelAndLocale(
+            $masksPerFamily[$masksPerChannelAndLocale['family_code']][] = new RequiredAttributesMaskForChannelAndLocale(
                 $masksPerChannelAndLocale['channel_code'],
                 $masksPerChannelAndLocale['locale_code'],
                 json_decode($masksPerChannelAndLocale['mask'], true)
@@ -106,7 +106,7 @@ SQL;
 
         $result = [];
         foreach ($masksPerFamily as $familyCode => $masksPerChannelAndLocale) {
-            $result[$familyCode] = new CompletenessFamilyMask($familyCode, $masksPerChannelAndLocale);
+            $result[$familyCode] = new RequiredAttributesMask($familyCode, $masksPerChannelAndLocale);
         }
 
         return $result;

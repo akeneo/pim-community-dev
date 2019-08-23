@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Model\Projection;
+namespace Akeneo\Pim\Enrichment\Component\Product\Completeness\Model;
 
 /**
  * @author    Mathias METAYER <mathias.metayer@akeneo.com>

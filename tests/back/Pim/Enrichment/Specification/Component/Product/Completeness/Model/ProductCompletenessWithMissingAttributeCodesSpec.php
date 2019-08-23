@@ -1,8 +1,8 @@
 <?php
 
-namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Model\Projection;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Completeness\Model;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\Projection\ProductCompletenessWithMissingAttributeCodes;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodes;
 use PhpSpec\ObjectBehavior;
 
 class ProductCompletenessWithMissingAttributeCodesSpec extends ObjectBehavior
