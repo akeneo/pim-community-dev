@@ -26,21 +26,29 @@ const renderProductGrid = async (page) => {
     })
 
     await page.setRequestInterception(true);
-    await page.goto('http://localhost:4000/#/enrich/product/');
+
+    return page.goto('http://localhost:4000/#/enrich/product/', {
+      timeout: 0
+    });
   }
 
 describe('Product grid > number filter', () => {
   let page = global.__PAGE__;
 
   beforeEach(async () => {
-    try {
-     await renderProductGrid(page)
-    } catch (e) {
-      console.log("Error", e)
-    }
+    await renderProductGrid(page)
   }, 60000);
 
-  it('filters by the "is empty" operator', async () => {
-    expect(true).toEqual(true)
-  }, 60000);
+  it('filters a number attribute by the "is empty" operator', async () => {
+    await page.waitForSelector('tr.AknGrid-bodyRow:nth-child(3)', {visible: true});
+    await page.click('button.AknFilterBox-addFilterButton')
+    await page.waitFor(500)
+    await page.click('.filters-column label[for="weight"]')
+    await page.click('.AknButton.AknButton--apply.close')
+    await page.click('.filter-box [data-name="weight"]')
+    await page.click('.open-filter .AknDropdown.operator')
+    await page.click('.open-filter .operator_choice[data-value="empty"]')
+    await page.click('.open-filter .filter-update')
+    expect(true).toBeTruthy()
+  }, 100000);
 });

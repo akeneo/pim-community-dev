@@ -25,8 +25,9 @@ class PuppeteerEnvironment extends NodeEnvironment {
 
     const page = await this.global.__BROWSER__.newPage();
     // await page.setRequestInterception(true);
-    await page.goto('http://localhost:4000');
-    await page.waitForSelector('.AknTitleContainer-title')
+
+    await page.setDefaultNavigationTimeout(0);
+    await page.setViewport({ width: 1920, height: 1080})
 
     this.global.__PAGE__ = page;
   }
