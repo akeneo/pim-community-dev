@@ -118,6 +118,7 @@ $rules = [
             'Akeneo\Tool\Component\StorageUtils',
             'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\JobInstanceNames',
             'Akeneo\Tool\Component\Batch\Job\BatchStatus',
+            'Akeneo\Pim\Structure\Component\AttributeTypes',
 
             // External dependencies
             'Doctrine',
