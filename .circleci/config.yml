@@ -140,7 +140,7 @@ jobs:
           - run:
                 name: PHPunit Integration
                 command: |
-                    TESTFILES=$(docker-compose exec -T fpm .circleci/find_phpunit.sh PIM_Integration_Test | circleci tests split)
+                    TESTFILES=$(docker-compose exec -T fpm .circleci/find_phpunit.sh PIM_Integration_Test | circleci tests split --split-by=timings --timings-type=classname)
                     .circleci/run_phpunit.sh . $TESTFILES
           - store_test_results:
                 path: var/tests/phpunit
@@ -171,7 +171,7 @@ jobs:
           - run:
                 name: PHPunit End to end
                 command: |
-                    TESTFILES=$(docker-compose exec -T fpm .circleci/find_phpunit.sh End_to_End | circleci tests split)
+                    TESTFILES=$(docker-compose exec -T fpm .circleci/find_phpunit.sh End_to_End | circleci tests split --split-by=timings --timings-type=classname)
                     .circleci/run_phpunit.sh . $TESTFILES
           - store_test_results:
                 path: var/tests/phpunit

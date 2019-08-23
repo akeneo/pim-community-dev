@@ -21,5 +21,9 @@ SUITES=$@
 # - PimEnterprise\Bundle\ApiBundle\tests\EndToEnd\Controller\Asset\CreateAssetIntegration::testCreationOfAnAsset
 # - PimEnterprise\Bundle\ApiBundle\tests\EndToEnd\Controller\Asset\CreateAssetIntegration::testResponseWhenContentIsEmpty
 # - PimEnterprise\Bundle\ApiBundle\tests\EndToEnd\Controller\Asset\CreateAssetIntegration::testResponseWhenValidationFailed
-
-vendor/bin/phpunit -c phpunit.xml.dist --testsuite=$SUITES --list-tests | tail -n +4 | cut -c4- | cut -d ':' -f 1 | sort | uniq | sed -e 's/\\/\\\\/g'
+#
+#
+# We replace the slashe by dots to have the same classname format as for the junit files. It allows to split by timing in Circle CI.
+#
+#@see https://github.com/sebastianbergmann/phpunit/blob/8.3.4/src/Util/Log/JUnit.php#L301
+vendor/bin/phpunit -c phpunit.xml.dist --testsuite=$SUITES --list-tests | tail -n +4 | cut -c4- | cut -d ':' -f 1 | sort | uniq | sed -e 's/\\/./g'
