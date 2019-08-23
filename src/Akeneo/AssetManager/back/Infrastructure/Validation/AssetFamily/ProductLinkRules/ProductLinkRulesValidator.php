@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules;
 
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Validator\Validation;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -35,8 +37,10 @@ class ProductLinkRulesValidator extends ConstraintValidator
 
     private function validateProductSelections(array $productLinkRule): ConstraintViolationListInterface
     {
-        $ruleEngineViolations = new ConstraintViolationList();
-        foreach ($productLinkRule['product_selections'] as $productSelection) {
+        $productSelections = $productLinkRule['product_selections'];
+        $validator = Validation::createValidator();
+        $ruleEngineViolations = $validator->validate($productSelections, [new NotBlank(['message' => ProductLinkRules::PRODUCT_SELECTION_CANNOT_BE_EMPTY])]);
+        foreach ($productSelections as $productSelection) {
             $ruleEngineViolations = $this->ruleEngineValidatorACL->validateProductSelection($productSelection);
         }
 
@@ -45,8 +49,10 @@ class ProductLinkRulesValidator extends ConstraintValidator
 
     private function validateProductAssignments(array $productLinkRule): ConstraintViolationListInterface
     {
-        $ruleEngineViolations = new ConstraintViolationList();
-        foreach ($productLinkRule['assign_assets_to'] as $productAssignment) {
+        $productAssignments = $productLinkRule['assign_assets_to'];
+        $validator = Validation::createValidator();
+        $ruleEngineViolations = $validator->validate($productAssignments, [new NotBlank(['message' => ProductLinkRules::PRODUCT_ASSIGNMENT_CANNOT_BE_EMPTY])]);
+        foreach ($productAssignments as $productAssignment) {
             $ruleEngineViolations = $this->ruleEngineValidatorACL->validateProductAssignment($productAssignment);
         }
 

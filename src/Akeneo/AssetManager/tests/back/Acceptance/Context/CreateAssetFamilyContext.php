@@ -314,14 +314,28 @@ final class CreateAssetFamilyContext implements Context
     /**
      * @When /^the user creates an asset family "([^"]*)" with no product selections$/
      */
-    public function theUserCreatesAnAssetFamilyWithNoProductSelections($arg1)
+    public function theUserCreatesAnAssetFamilyWithNoProductSelections(string $assetFamilyCode)
     {
         $emptyProductSelection = [['product_selections' => [], 'assign_assets_to' => [['mode' => 'set', 'attribute' => 'collection']]]];
         $createAssetFamilyWithEmptyProductSelection = new CreateAssetFamilyCommand(
-            'asset_family',
+            $assetFamilyCode,
             [],
             $emptyProductSelection
         );
         $this->createAssetFamily($createAssetFamilyWithEmptyProductSelection);
+    }
+
+    /**
+     * @When /^the user creates an asset family "([^"]*)" with no product assignment$/
+     */
+    public function theUserCreatesAnAssetFamilyWithNoProductAssignment(string $assetFamilyCode)
+    {
+        $emptyProductAssignment = [['product_selections' => [['field' => 'family', 'operator' => 'IN', 'camcorders']], 'assign_assets_to' => []]];
+        $createAssetFamilyWithEmptyProductAssignment = new CreateAssetFamilyCommand(
+            $assetFamilyCode,
+            [],
+            $emptyProductAssignment
+        );
+        $this->createAssetFamily($createAssetFamilyWithEmptyProductAssignment);
     }
 }

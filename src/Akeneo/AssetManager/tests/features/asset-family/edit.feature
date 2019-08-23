@@ -50,6 +50,16 @@ Feature: Edit an asset family
     Then the asset family 'packshot' should have the collection of rule templates
 
   @acceptance-back
+  Scenario: Cannot update an asset family if there is no product selections
+    When the user updates an asset family "packshot" with no product selections
+    Then there should be a validation error with message 'You must specify at least one product selection in your product link rule'
+
+  @acceptance-back
+  Scenario: Cannot update an asset family if there is no product assignment
+    When the user updates an asset family "packshot" with no product assignment
+    Then there should be a validation error with message 'You must specify at least one product assignment in your product link rule'
+
+  @acceptance-back
   Scenario: Cannot update an asset family with a collection of rule templates that contains more than 2 items
     Given an empty rule template collection on the asset family 'packshot'
     When the user updates the asset family 'packshot' to set a collection of rule templates having more items than the limit

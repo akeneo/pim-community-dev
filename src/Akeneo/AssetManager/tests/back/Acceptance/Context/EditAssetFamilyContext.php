@@ -399,7 +399,7 @@ final class EditAssetFamilyContext implements Context
     /**
      * @When /^the user updates the asset family \'([^\']*)\' with a product link rule not executable by the rule engine$/
      */
-    public function theUserUpdatesTheAssetFamilyWithAProductLinkRuleNotExecutableByTheRuleEngine($arg1)
+    public function theUserUpdatesTheAssetFamilyWithAProductLinkRuleNotExecutableByTheRuleEngine(string $assetFamilyIdentifier)
     {
         $this->ruleEngineValidatorACLStub->stubWithViolationMessage(self::RULE_ENGINE_VALIDATION_MESSAGE);
         $invalidProductLinkRules = [['product_selections' => [['field' => 'family', 'operator' => 'IN', 'camcorders']], 'assign_assets_to' => [['mode' => 'set', 'attribute' => 'collection']]]];
@@ -409,6 +409,26 @@ final class EditAssetFamilyContext implements Context
             null,
             $invalidProductLinkRules
         );
+        $this->editAssetFamily($editAssetFamilyCommand);
+    }
+
+    /**
+     * @When /^the user updates an asset family "([^"]*)" with no product selections$/
+     */
+    public function theUserUpdatesAnAssetFamilyWithNoProductSelections(string $assetFamilyCode): void
+    {
+        $noProductSelection = [['product_selections' => [], 'assign_assets_to' => [['mode' => 'set', 'attribute' => 'collection']]]];
+        $editAssetFamilyCommand = new EditAssetFamilyCommand($assetFamilyCode, [], null, $noProductSelection);
+        $this->editAssetFamily($editAssetFamilyCommand);
+    }
+
+    /**
+     * @When /^the user updates an asset family "([^"]*)" with no product assignment$/
+     */
+    public function theUserUpdatesAnAssetFamilyWithNoProductAssignment(string $assetFamilyCode): void
+    {
+        $noProductAssignment = [['product_selections' => [['field' => 'family', 'operator' => 'IN', 'camcorders']], 'assign_assets_to' => []]];
+        $editAssetFamilyCommand = new EditAssetFamilyCommand($assetFamilyCode, [], null, $noProductAssignment);
         $this->editAssetFamily($editAssetFamilyCommand);
     }
 }
