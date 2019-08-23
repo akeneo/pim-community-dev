@@ -1,0 +1,1325 @@
+[
+   {
+      "name":"name",
+      "label":"Name",
+      "choices":[
+         {
+            "label":"contains",
+            "value":"1",
+            "data":1,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"does not contain",
+            "value":"2",
+            "data":2,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is equal to",
+            "value":"3",
+            "data":3,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"starts with",
+            "value":"4",
+            "data":4,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is empty",
+            "value":"empty",
+            "data":"empty",
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is not empty",
+            "value":"not empty",
+            "data":"not empty",
+            "attr":[
+
+            ]
+         }
+      ],
+      "enabled":false,
+      "type":"string",
+      "order":2,
+      "group":"Marketing",
+      "groupOrder":0
+   },
+   {
+      "name":"collection",
+      "label":"Collection",
+      "enabled":false,
+      "choices":[
+
+      ],
+      "type":"select2-choice",
+      "order":2,
+      "group":"Marketing",
+      "groupOrder":0,
+      "populateDefault":true,
+      "choiceUrl":"pim_ui_ajaxentity_list",
+      "choiceUrlParams":{
+         "class":"Akeneo\\Pim\\Structure\\Component\\Model\\AttributeOption",
+         "dataLocale":"en_US",
+         "collectionId":65,
+         "options":{
+            "type":"code"
+         }
+      },
+      "emptyChoice":true
+   },
+   {
+      "name":"description",
+      "label":"Description",
+      "choices":[
+         {
+            "label":"contains",
+            "value":"1",
+            "data":1,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"does not contain",
+            "value":"2",
+            "data":2,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is equal to",
+            "value":"3",
+            "data":3,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"starts with",
+            "value":"4",
+            "data":4,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is empty",
+            "value":"empty",
+            "data":"empty",
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is not empty",
+            "value":"not empty",
+            "data":"not empty",
+            "attr":[
+
+            ]
+         }
+      ],
+      "enabled":false,
+      "type":"string",
+      "order":3,
+      "group":"Marketing",
+      "groupOrder":0
+   },
+   {
+      "name":"variation_name",
+      "label":"Variant Name",
+      "choices":[
+         {
+            "label":"contains",
+            "value":"1",
+            "data":1,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"does not contain",
+            "value":"2",
+            "data":2,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is equal to",
+            "value":"3",
+            "data":3,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"starts with",
+            "value":"4",
+            "data":4,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is empty",
+            "value":"empty",
+            "data":"empty",
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is not empty",
+            "value":"not empty",
+            "data":"not empty",
+            "attr":[
+
+            ]
+         }
+      ],
+      "enabled":false,
+      "type":"string",
+      "order":4,
+      "group":"Marketing",
+      "groupOrder":0
+   },
+   {
+      "name":"response_time",
+      "label":"Response time (ms)",
+      "choices":[
+         {
+            "label":"=",
+            "value":"3",
+            "data":3,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"\u003E=",
+            "value":"1",
+            "data":1,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"\u003E",
+            "value":"2",
+            "data":2,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"\u003C=",
+            "value":"4",
+            "data":4,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"\u003C",
+            "value":"5",
+            "data":5,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is empty",
+            "value":"empty",
+            "data":"empty",
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is not empty",
+            "value":"not empty",
+            "data":"not empty",
+            "attr":[
+
+            ]
+         }
+      ],
+      "enabled":false,
+      "type":"number",
+      "order":4,
+      "group":"Marketing",
+      "groupOrder":0,
+      "formatterOptions":{
+         "decimals":0,
+         "grouping":false,
+         "orderSeparator":"",
+         "decimalSeparator":"."
+      }
+   },
+   {
+      "name":"variation_description",
+      "label":"Variant description",
+      "choices":[
+         {
+            "label":"contains",
+            "value":"1",
+            "data":1,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"does not contain",
+            "value":"2",
+            "data":2,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is equal to",
+            "value":"3",
+            "data":3,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"starts with",
+            "value":"4",
+            "data":4,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is empty",
+            "value":"empty",
+            "data":"empty",
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is not empty",
+            "value":"not empty",
+            "data":"not empty",
+            "attr":[
+
+            ]
+         }
+      ],
+      "enabled":false,
+      "type":"string",
+      "order":5,
+      "group":"Marketing",
+      "groupOrder":0
+   },
+   {
+      "name":"release_date",
+      "label":"Release date",
+      "choices":[
+         {
+            "label":"between",
+            "value":"1",
+            "data":1,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"not between",
+            "value":"2",
+            "data":2,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"more than",
+            "value":"3",
+            "data":3,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"less than",
+            "value":"4",
+            "data":4,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is empty",
+            "value":"empty",
+            "data":"empty",
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is not empty",
+            "value":"not empty",
+            "data":"not empty",
+            "attr":[
+
+            ]
+         }
+      ],
+      "enabled":false,
+      "type":"date",
+      "order":5,
+      "group":"Marketing",
+      "groupOrder":0,
+      "typeValues":{
+         "between":1,
+         "notBetween":2,
+         "moreThan":3,
+         "lessThan":4
+      },
+      "externalWidgetOptions":{
+         "firstDay":0
+      }
+   },
+   {
+      "name":"ean",
+      "label":"EAN",
+      "choices":[
+         {
+            "label":"contains",
+            "value":"1",
+            "data":1,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"does not contain",
+            "value":"2",
+            "data":2,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is equal to",
+            "value":"3",
+            "data":3,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"starts with",
+            "value":"4",
+            "data":4,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is empty",
+            "value":"empty",
+            "data":"empty",
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is not empty",
+            "value":"not empty",
+            "data":"not empty",
+            "attr":[
+
+            ]
+         }
+      ],
+      "enabled":false,
+      "type":"string",
+      "order":0,
+      "group":"ERP",
+      "groupOrder":1
+   },
+   {
+      "name":"sku",
+      "label":"SKU",
+      "choices":[
+         {
+            "label":"contains",
+            "value":"1",
+            "data":1,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"does not contain",
+            "value":"2",
+            "data":2,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is equal to",
+            "value":"3",
+            "data":3,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"starts with",
+            "value":"4",
+            "data":4,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is empty",
+            "value":"empty",
+            "data":"empty",
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"in list",
+            "value":"in",
+            "data":"in",
+            "attr":[
+
+            ]
+         }
+      ],
+      "enabled":true,
+      "type":"identifier",
+      "order":1,
+      "group":"ERP",
+      "groupOrder":1
+   },
+   {
+      "name":"supplier",
+      "label":"Supplier",
+      "enabled":false,
+      "choices":[
+
+      ],
+      "type":"select2-choice",
+      "order":2,
+      "group":"ERP",
+      "groupOrder":1,
+      "populateDefault":true,
+      "choiceUrl":"pim_ui_ajaxentity_list",
+      "choiceUrlParams":{
+         "class":"Akeneo\\Pim\\Structure\\Component\\Model\\AttributeOption",
+         "dataLocale":"en_US",
+         "collectionId":76,
+         "options":{
+            "type":"code"
+         }
+      },
+      "emptyChoice":true
+   },
+   {
+      "name":"price",
+      "label":"Price",
+      "choices":[
+         {
+            "label":"=",
+            "value":"3",
+            "data":3,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"\u003E=",
+            "value":"1",
+            "data":1,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"\u003E",
+            "value":"2",
+            "data":2,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"\u003C=",
+            "value":"4",
+            "data":4,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"\u003C",
+            "value":"5",
+            "data":5,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is empty",
+            "value":"empty",
+            "data":"empty",
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is not empty",
+            "value":"not empty",
+            "data":"not empty",
+            "attr":[
+
+            ]
+         }
+      ],
+      "enabled":false,
+      "type":"price",
+      "order":6,
+      "group":"ERP",
+      "groupOrder":1,
+      "formatterOptions":{
+         "decimals":2,
+         "grouping":true,
+         "orderSeparator":",",
+         "decimalSeparator":"."
+      },
+      "currencies":{
+         "EUR":"EUR",
+         "USD":"USD"
+      }
+   },
+   {
+      "name":"erp_name",
+      "label":"ERP name",
+      "choices":[
+         {
+            "label":"contains",
+            "value":"1",
+            "data":1,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"does not contain",
+            "value":"2",
+            "data":2,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is equal to",
+            "value":"3",
+            "data":3,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"starts with",
+            "value":"4",
+            "data":4,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is empty",
+            "value":"empty",
+            "data":"empty",
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is not empty",
+            "value":"not empty",
+            "data":"not empty",
+            "attr":[
+
+            ]
+         }
+      ],
+      "enabled":false,
+      "type":"string",
+      "order":10,
+      "group":"ERP",
+      "groupOrder":1
+   },
+   {
+      "name":"weight",
+      "label":"Weight",
+      "choices":[
+         {
+            "label":"=",
+            "value":"3",
+            "data":3,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"\u003E=",
+            "value":"1",
+            "data":1,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"\u003E",
+            "value":"2",
+            "data":2,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"\u003C=",
+            "value":"4",
+            "data":4,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"\u003C",
+            "value":"5",
+            "data":5,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is empty",
+            "value":"empty",
+            "data":"empty",
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is not empty",
+            "value":"not empty",
+            "data":"not empty",
+            "attr":[
+
+            ]
+         }
+      ],
+      "enabled":false,
+      "type":"metric",
+      "order":1,
+      "group":"Technical",
+      "groupOrder":2,
+      "family":"Weight",
+      "formatterOptions":{
+         "decimals":2,
+         "grouping":true,
+         "orderSeparator":",",
+         "decimalSeparator":"."
+      },
+      "units":{
+         "MILLIGRAM":"mg",
+         "GRAM":"g",
+         "KILOGRAM":"kg",
+         "TON":"t",
+         "GRAIN":"gr",
+         "DENIER":"denier",
+         "ONCE":"once",
+         "MARC":"marc",
+         "LIVRE":"livre",
+         "OUNCE":"oz",
+         "POUND":"lb"
+      }
+   },
+   {
+      "name":"maximum_scan_size",
+      "label":"Maximum scan size",
+      "choices":[
+         {
+            "label":"=",
+            "value":"3",
+            "data":3,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"\u003E=",
+            "value":"1",
+            "data":1,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"\u003E",
+            "value":"2",
+            "data":2,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"\u003C=",
+            "value":"4",
+            "data":4,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"\u003C",
+            "value":"5",
+            "data":5,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is empty",
+            "value":"empty",
+            "data":"empty",
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is not empty",
+            "value":"not empty",
+            "data":"not empty",
+            "attr":[
+
+            ]
+         }
+      ],
+      "enabled":false,
+      "type":"metric",
+      "order":2,
+      "group":"Technical",
+      "groupOrder":2,
+      "family":"Length",
+      "formatterOptions":{
+         "decimals":2,
+         "grouping":true,
+         "orderSeparator":",",
+         "decimalSeparator":"."
+      },
+      "units":{
+         "MILLIMETER":"mm",
+         "CENTIMETER":"cm",
+         "DECIMETER":"dm",
+         "METER":"m",
+         "DEKAMETER":"dam",
+         "HECTOMETER":"hm",
+         "KILOMETER":"km",
+         "MIL":"mil",
+         "INCH":"in",
+         "FEET":"ft",
+         "YARD":"yd",
+         "CHAIN":"ch",
+         "FURLONG":"fur",
+         "MILE":"mi"
+      }
+   },
+   {
+      "name":"color_scanning",
+      "label":"Color scanning",
+      "choices":[
+         {
+            "label":"yes",
+            "value":"1"
+         },
+         {
+            "label":"no",
+            "value":"0"
+         }
+      ],
+      "enabled":false,
+      "type":"boolean",
+      "order":3,
+      "group":"Technical",
+      "groupOrder":2,
+      "populateDefault":true
+   },
+   {
+      "name":"power_requirements",
+      "label":"Power requirements",
+      "choices":[
+         {
+            "label":"contains",
+            "value":"1",
+            "data":1,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"does not contain",
+            "value":"2",
+            "data":2,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is equal to",
+            "value":"3",
+            "data":3,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"starts with",
+            "value":"4",
+            "data":4,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is empty",
+            "value":"empty",
+            "data":"empty",
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is not empty",
+            "value":"not empty",
+            "data":"not empty",
+            "attr":[
+
+            ]
+         }
+      ],
+      "enabled":false,
+      "type":"string",
+      "order":4,
+      "group":"Technical",
+      "groupOrder":2
+   },
+   {
+      "name":"maximum_print_size",
+      "label":"Maximum print size",
+      "enabled":false,
+      "choices":[
+
+      ],
+      "type":"select2-choice",
+      "order":5,
+      "group":"Technical",
+      "groupOrder":2,
+      "populateDefault":true,
+      "choiceUrl":"pim_ui_ajaxentity_list",
+      "choiceUrlParams":{
+         "class":"Akeneo\\Pim\\Structure\\Component\\Model\\AttributeOption",
+         "dataLocale":"en_US",
+         "collectionId":11,
+         "options":{
+            "type":"code"
+         }
+      },
+      "emptyChoice":true
+   },
+   {
+      "name":"sensor_type",
+      "label":"Sensor type",
+      "enabled":false,
+      "choices":[
+
+      ],
+      "type":"select2-choice",
+      "order":6,
+      "group":"Technical",
+      "groupOrder":2,
+      "populateDefault":true,
+      "choiceUrl":"pim_ui_ajaxentity_list",
+      "choiceUrlParams":{
+         "class":"Akeneo\\Pim\\Structure\\Component\\Model\\AttributeOption",
+         "dataLocale":"en_US",
+         "collectionId":12,
+         "options":{
+            "type":"code"
+         }
+      },
+      "emptyChoice":true
+   },
+   {
+      "name":"total_megapixels",
+      "label":"Total megapixels",
+      "choices":[
+         {
+            "label":"contains",
+            "value":"1",
+            "data":1,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"does not contain",
+            "value":"2",
+            "data":2,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is equal to",
+            "value":"3",
+            "data":3,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"starts with",
+            "value":"4",
+            "data":4,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is empty",
+            "value":"empty",
+            "data":"empty",
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is not empty",
+            "value":"not empty",
+            "data":"not empty",
+            "attr":[
+
+            ]
+         }
+      ],
+      "enabled":false,
+      "type":"string",
+      "order":7,
+      "group":"Technical",
+      "groupOrder":2
+   },
+   {
+      "name":"optical_zoom",
+      "label":"Optical zoom",
+      "choices":[
+         {
+            "label":"=",
+            "value":"3",
+            "data":3,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"\u003E=",
+            "value":"1",
+            "data":1,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"\u003E",
+            "value":"2",
+            "data":2,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"\u003C=",
+            "value":"4",
+            "data":4,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"\u003C",
+            "value":"5",
+            "data":5,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is empty",
+            "value":"empty",
+            "data":"empty",
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is not empty",
+            "value":"not empty",
+            "data":"not empty",
+            "attr":[
+
+            ]
+         }
+      ],
+      "enabled":false,
+      "type":"number",
+      "order":8,
+      "group":"Technical",
+      "groupOrder":2,
+      "formatterOptions":{
+         "decimals":0,
+         "grouping":false,
+         "orderSeparator":"",
+         "decimalSeparator":"."
+      }
+   },
+   {
+      "name":"image_stabilizer",
+      "label":"Image stabilizer",
+      "choices":[
+         {
+            "label":"yes",
+            "value":"1"
+         },
+         {
+            "label":"no",
+            "value":"0"
+         }
+      ],
+      "enabled":false,
+      "type":"boolean",
+      "order":9,
+      "group":"Technical",
+      "groupOrder":2,
+      "populateDefault":true
+   },
+   {
+      "name":"camera_type",
+      "label":"Camera type",
+      "enabled":false,
+      "choices":[
+
+      ],
+      "type":"select2-choice",
+      "order":10,
+      "group":"Technical",
+      "groupOrder":2,
+      "populateDefault":true,
+      "choiceUrl":"pim_ui_ajaxentity_list",
+      "choiceUrlParams":{
+         "class":"Akeneo\\Pim\\Structure\\Component\\Model\\AttributeOption",
+         "dataLocale":"en_US",
+         "collectionId":16,
+         "options":{
+            "type":"code"
+         }
+      },
+      "emptyChoice":true
+   },
+   {
+      "name":"thd",
+      "label":"Total Harmonic Distortion (THD)",
+      "choices":[
+         {
+            "label":"=",
+            "value":"3",
+            "data":3,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"\u003E=",
+            "value":"1",
+            "data":1,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"\u003E",
+            "value":"2",
+            "data":2,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"\u003C=",
+            "value":"4",
+            "data":4,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"\u003C",
+            "value":"5",
+            "data":5,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is empty",
+            "value":"empty",
+            "data":"empty",
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is not empty",
+            "value":"not empty",
+            "data":"not empty",
+            "attr":[
+
+            ]
+         }
+      ],
+      "enabled":false,
+      "type":"number",
+      "order":11,
+      "group":"Technical",
+      "groupOrder":2,
+      "formatterOptions":{
+         "decimals":0,
+         "grouping":false,
+         "orderSeparator":"",
+         "decimalSeparator":"."
+      }
+   },
+   {
+      "name":"snr",
+      "label":"Signal-to-Noise Ratio (SNR)",
+      "choices":[
+         {
+            "label":"=",
+            "value":"3",
+            "data":3,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"\u003E=",
+            "value":"1",
+            "data":1,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"\u003E",
+            "value":"2",
+            "data":2,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"\u003C=",
+            "value":"4",
+            "data":4,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"\u003C",
+            "value":"5",
+            "data":5,
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is empty",
+            "value":"empty",
+            "data":"empty",
+            "attr":[
+
+            ]
+         },
+         {
+            "label":"is not empty",
+            "value":"not empty",
+            "data":"not empty",
+            "attr":[
+
+            ]
+         }
+      ],
+      "enabled":false,
+      "type":"number",
+      "order":12,
+      "group":"Technical",
+      "groupOrder":2,
+      "formatterOptions":{
+         "decimals":0,
+         "grouping":false,
+         "orderSeparator":"",
+         "decimalSeparator":"."
+      }
+   },
+   {
+      "name":"headphone_connectivity",
+      "label":"Headphone connectivity",
+      "enabled":false,
+      "choices":[
+
+      ],
+      "type":"select2-choice",
+      "order":13,
+      "group":"Technical",
+      "groupOrder":2,
+      "populateDefault":true,
+      "choiceUrl":"pim_ui_ajaxentity_list",
+      "choiceUrlParams":{
+         "class":"Akeneo\\Pim\\Structure\\Component\\Model\\AttributeOption",
+         "dataLocale":"en_US",
+         "collectionId":19,
+         "options":{
+            "type":"code"
+         }
+      },
+      "emptyChoice":true
+   }
+]
