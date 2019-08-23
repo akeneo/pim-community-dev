@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\QualityHighlights;
 
-use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectPendingAttributesQueryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectPendingAttributesIdQueryInterface;
 use Doctrine\DBAL\Connection;
 
-class SelectPendingAttributesQuery implements SelectPendingAttributesQueryInterface
+class SelectPendingAttributeIdsQuery implements SelectPendingAttributesIdQueryInterface
 {
     //TODO: move the constants elsewhere, they will be needed to insert data
 
