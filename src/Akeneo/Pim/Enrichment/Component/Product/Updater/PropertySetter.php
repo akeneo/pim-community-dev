@@ -2,7 +2,10 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AttributeSetterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\SetterRegistryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
@@ -39,6 +42,8 @@ class PropertySetter implements PropertySetterInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @param ProductInterface|ProductModelInterface $entity
      */
     public function setData($entity, $field, $data, array $options = [])
     {
@@ -50,8 +55,10 @@ class PropertySetter implements PropertySetterInterface
         if ($setter instanceof AttributeSetterInterface) {
             $attribute = $this->getAttribute($field);
             $setter->setAttributeData($entity, $attribute, $data, $options);
-        } else {
+        } else if ($setter instanceof FieldSetterInterface) {
             $setter->setFieldData($entity, $field, $data, $options);
+        } else {
+            throw UnknownPropertyException::unknownProperty($field);
         }
 
         return $this;
