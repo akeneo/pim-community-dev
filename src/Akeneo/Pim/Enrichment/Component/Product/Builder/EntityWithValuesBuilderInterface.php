@@ -24,5 +24,5 @@ interface EntityWithValuesBuilderInterface
         ?string $localeCode,
         ?string $scopeCode,
         $data
-    ): ValueInterface;
+    ): ?ValueInterface;
 }
