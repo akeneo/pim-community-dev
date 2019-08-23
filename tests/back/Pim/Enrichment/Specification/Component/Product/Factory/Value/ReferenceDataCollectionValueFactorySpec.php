@@ -7,6 +7,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -59,6 +61,18 @@ final class ReferenceDataCollectionValueFactorySpec extends ObjectBehavior
         $attribute = $this->getAttribute(false, false);
         $value = $this->createWithoutCheckingData($attribute, null, null, ['blue', 'green']);
         $value->shouldBeLike(ReferenceDataCollectionValue::value('an_attribute', ['blue', 'green']));
+    }
+
+    public function it_throws_an_exception_when_it_is_not_an_array()
+    {
+        $attribute = $this->getAttribute(false, false);
+        $this->shouldThrow(InvalidPropertyTypeException::class)->during('createByCheckingData', [$attribute, null, null, 'no an array']);
+    }
+
+    public function it_throws_an_exception_when_it_is_not_an_array_of_string()
+    {
+        $attribute = $this->getAttribute(false, false);
+        $this->shouldThrow(InvalidPropertyTypeException::class)->during('createByCheckingData', [$attribute, null, null, [[]]]);
     }
 
     private function getAttribute(bool $isLocalizable, bool $isScopable): Attribute

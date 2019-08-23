@@ -43,6 +43,14 @@ final class ReferenceDataCollectionValueFactory implements ValueFactory
             return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, []);
         }
 
+        if (!is_array($data)) {
+            throw InvalidPropertyTypeException::arrayExpected(
+                $attribute->code(),
+                static::class,
+                $data
+            );
+        }
+
         try {
             Assert::allString($data);
         } catch (\Exception $exception) {
