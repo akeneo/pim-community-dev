@@ -15,7 +15,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query;
 
 interface SelectPendingAttributesQueryInterface
 {
-    public function getUpdatedAttributeIds(): array;
+    public function getUpdatedAttributeIds(int $offset, int $batchSize): array;
 
-    public function getDeletedAttributeIds(): array;
+    public function getDeletedAttributeIds(int $offset, int $batchSize): array;
 }

@@ -38,7 +38,7 @@ class SelectPendingAttributesQuery implements SelectPendingAttributesQueryInterf
         $this->connection = $connection;
     }
 
-    public function getUpdatedAttributeIds(): array
+    public function getUpdatedAttributeIds(int $offset, int $batchSize): array
     {
         $query = <<<'SQL'
             SELECT entity_id
@@ -47,12 +47,13 @@ class SelectPendingAttributesQuery implements SelectPendingAttributesQueryInterf
             AND entity_type = :entity_type
             AND status = :status
             ORDER BY `date` ASC
+            LIMIT :offset, :limit
 SQL;
 
-        return $this->executeQuery($query, self::ACTION_ATTRIBUTE_UPDATED);
+        return $this->executeQuery($query, $offset, $batchSize, self::ACTION_ATTRIBUTE_UPDATED);
     }
 
-    public function getDeletedAttributeIds(): array
+    public function getDeletedAttributeIds(int $offset, int $batchSize): array
     {
         $query = <<<'SQL'
             SELECT entity_id
@@ -61,12 +62,13 @@ SQL;
             AND entity_type = :entity_type
             AND status = :status
             ORDER BY `date` ASC
+            LIMIT :offset, :limit
 SQL;
 
-        return $this->executeQuery($query, self::ACTION_ATTRIBUTE_DELETED);
+        return $this->executeQuery($query, $offset, $batchSize, self::ACTION_ATTRIBUTE_DELETED);
     }
 
-    private function executeQuery(string $query, int $action)
+    private function executeQuery(string $query, int $offset, int $limit, int $action)
     {
         $statement = $this->connection->executeQuery(
             $query,
@@ -74,11 +76,15 @@ SQL;
                 'action' => $action,
                 'entity_type' => self::ENTITY_TYPE_ATTRIBUTE,
                 'status' => self::STATUS_UNLOCKED,
+                'offset' => $offset,
+                'limit' => $limit,
             ],
             [
                 'action' => \PDO::PARAM_INT,
                 'entity_type' => \PDO::PARAM_INT,
                 'status' => \PDO::PARAM_INT,
+                'offset' => \PDO::PARAM_INT,
+                'limit' => \PDO::PARAM_INT,
             ]
         );
 

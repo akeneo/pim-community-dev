@@ -23,32 +23,50 @@ final class SelectPendingAttributesQueryIntegration extends TestCase
     {
         $results = $this
             ->getFromTestContainer('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_pending_attributes')
-            ->getUpdatedAttributeIds();
+            ->getUpdatedAttributeIds(0, 100);
         $this->assertEmpty($results);
 
         $this->createDataSet();
 
         $results = $this
             ->getFromTestContainer('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_pending_attributes')
-            ->getUpdatedAttributeIds();
-
+            ->getUpdatedAttributeIds(0, 100);
         $this->assertSame([1, 3], $results);
+
+        $results = $this
+            ->getFromTestContainer('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_pending_attributes')
+            ->getUpdatedAttributeIds(0, 1);
+        $this->assertSame([1], $results);
+
+        $results = $this
+            ->getFromTestContainer('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_pending_attributes')
+            ->getUpdatedAttributeIds(1, 100);
+        $this->assertSame([3], $results);
     }
 
     public function test_it_returns_deleted_attribute_ids()
     {
         $results = $this
             ->getFromTestContainer('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_pending_attributes')
-            ->getDeletedAttributeIds();
+            ->getDeletedAttributeIds(0, 100);
         $this->assertEmpty($results);
 
         $this->createDataSet();
 
         $results = $this
             ->getFromTestContainer('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_pending_attributes')
-            ->getDeletedAttributeIds();
-
+            ->getDeletedAttributeIds(0, 100);
         $this->assertSame([4, 6], $results);
+
+        $results = $this
+            ->getFromTestContainer('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_pending_attributes')
+            ->getDeletedAttributeIds(0, 1);
+        $this->assertSame([4], $results);
+
+        $results = $this
+            ->getFromTestContainer('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_pending_attributes')
+            ->getDeletedAttributeIds(1, 100);
+        $this->assertSame([6], $results);
     }
 
     private function createDataSet(): void
