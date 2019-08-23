@@ -27,27 +27,27 @@ class ProductLinkRulesValidator extends ConstraintValidator
     {
         $ruleEngineViolations = new ConstraintViolationList();
         foreach ($productLinkRules as $productLinkRule) {
-            $ruleEngineViolations = $this->validateProductConditions($productLinkRule);
-            $ruleEngineViolations->addAll($this->validateProductActions($productLinkRule));
+            $ruleEngineViolations = $this->validateProductSelections($productLinkRule);
+            $ruleEngineViolations->addAll($this->validateProductAssignments($productLinkRule));
         }
         $this->addViolationsToContextIfAny($ruleEngineViolations);
     }
 
-    private function validateProductConditions(array $productConditions): ConstraintViolationListInterface
+    private function validateProductSelections(array $productSelections): ConstraintViolationListInterface
     {
         $ruleEngineViolations = new ConstraintViolationList();
-        foreach ($productConditions['product_selections'] as $productCondition) {
-            $ruleEngineViolations = $this->ruleEngineValidatorACL->validateProductSelection($productCondition);
+        foreach ($productSelections['product_selections'] as $productSelection) {
+            $ruleEngineViolations = $this->ruleEngineValidatorACL->validateProductSelection($productSelection);
         }
 
         return $ruleEngineViolations;
     }
 
-    private function validateProductActions($productActions): ConstraintViolationListInterface
+    private function validateProductAssignments(array $productAssignments): ConstraintViolationListInterface
     {
         $ruleEngineViolations = new ConstraintViolationList();
-        foreach ($productActions['assign_assets_to'] as $productAction) {
-            $ruleEngineViolations = $this->ruleEngineValidatorACL->validateProductAction($productAction);
+        foreach ($productAssignments['assign_assets_to'] as $productAssignment) {
+            $ruleEngineViolations = $this->ruleEngineValidatorACL->validateProductAssignment($productAssignment);
         }
 
         return $ruleEngineViolations;

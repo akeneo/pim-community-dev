@@ -265,6 +265,10 @@ final class CreateAssetFamilyContext implements Context
     private function assertSameProductLinkRules(array $expectedNormalizedProductLinkRules, AssetFamily $actualAssetFamily): void
     {
         $actualProductLinks = $actualAssetFamily->getRuleTemplateCollection()->normalize();
+        Assert::assertSameSize($expectedNormalizedProductLinkRules, $actualProductLinks, 'Expected to have the same number of product link rules');
+        if (empty($expectedNormalizedProductLinkRules)) {
+            return;
+        }
         $expectedNormalizedProductLinkRules = [
             [
                 'conditions' => [

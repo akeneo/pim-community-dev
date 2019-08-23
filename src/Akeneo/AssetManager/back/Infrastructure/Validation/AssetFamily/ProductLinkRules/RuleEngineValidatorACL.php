@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules;
 
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\Action;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCondition;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -38,33 +39,33 @@ class RuleEngineValidatorACL implements RuleEngineValidatorACLInterface
         $this->actionDenormalizer = $actionDenormalizer;
     }
 
-    public function validateProductSelection(array $normalizedProductCondition): ConstraintViolationListInterface
+    public function validateProductSelection(array $normalizedProductSelection): ConstraintViolationListInterface
     {
-        $normalizedProductCondition['scope'] = $normalizedProductCondition['channel'] ?? null;
-        $productCondition = new ProductCondition($normalizedProductCondition);
+        $normalizedProductSelection['scope'] = $normalizedProductSelection['channel'] ?? null;
+        $productCondition = new ProductCondition($normalizedProductSelection);
 
         return $this->productConditionValidator->validate($productCondition);
     }
 
-    public function validateProductAction(array $normalizedProductAction): ConstraintViolationListInterface
+    public function validateProductAssignment(array $normalizedProductAssignment): ConstraintViolationListInterface
     {
-        $productAction = $this->createProductAction($normalizedProductAction);
+        $productAction = $this->createProductAction($normalizedProductAssignment);
 
         return $this->productAtionValidator->validate($productAction);
     }
 
-    private function createProductAction(array $productAction): ActionInterface
+    private function createProductAction(array $productSelection): ActionInterface
     {
-        $productAction['type'] = $this->getRuleEngineActionType($productAction['mode']);
-        $productAction['field'] = $productAction['attribute'];
-        $productAction['items'] = ['VALIDATION_TEST'];
+        $productSelection['type'] = $this->getRuleEngineActionType($productSelection['mode']);
+        $productSelection['field'] = $productSelection['attribute'];
+        $productSelection['items'] = ['VALIDATION_TEST'];
 
-        return $this->actionDenormalizer->denormalize($productAction, ActionInterface::class);
+        return $this->actionDenormalizer->denormalize($productSelection, ActionInterface::class);
     }
 
     private function getRuleEngineActionType(string $type): string
     {
-        if ($type === 'replace') {
+        if ($type === Action::REPLACE_MODE) {
             return 'set';
         }
 

@@ -23,12 +23,12 @@ class RuleEngineValidatorACLStub implements RuleEngineValidatorACLInterface
         $this->violations = new ConstraintViolationList();
     }
 
-    public function validateProductSelection(array $normalizedProductCondition): ConstraintViolationListInterface
+    public function validateProductSelection(array $normalizedProductSelection): ConstraintViolationListInterface
     {
         return $this->violations;
     }
 
-    public function validateProductAction(array $normalizedProductAction): ConstraintViolationListInterface
+    public function validateProductAssignment(array $normalizedProductAssignment): ConstraintViolationListInterface
     {
         return $this->violations;
     }

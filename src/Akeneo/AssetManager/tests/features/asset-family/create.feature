@@ -26,7 +26,7 @@ Feature: Create an asset family
     When the user creates an asset family "invalid/identifier" with:
       | labels |
       | {}     |
-    Then an exception is thrown with message "Asset family identifier may contain only letters, numbers and underscores. "invalid/identifier" given"
+    Then there should be a validation error with message 'This field may only contain letters, numbers and underscores.'
     And there should be no asset family
 
   @acceptance-back

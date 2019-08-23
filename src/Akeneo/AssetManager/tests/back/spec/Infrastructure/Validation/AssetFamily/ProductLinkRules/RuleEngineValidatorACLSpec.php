@@ -86,7 +86,7 @@ class RuleEngineValidatorACLSpec extends ObjectBehavior
             })
         )->willReturn($oneViolation);
 
-        $this->validateProductAction($productAction)->shouldReturn($oneViolation);
+        $this->validateProductAssignment($productAction)->shouldReturn($oneViolation);
     }
 
     function it_validates_a_product_add_action_and_returns_violations(
@@ -116,7 +116,7 @@ class RuleEngineValidatorACLSpec extends ObjectBehavior
             })
         )->willReturn($oneViolation);
 
-        $this->validateProductAction($productAction)->shouldReturn($oneViolation);
+        $this->validateProductAssignment($productAction)->shouldReturn($oneViolation);
     }
 
     private function oneViolation(): ConstraintViolationList
