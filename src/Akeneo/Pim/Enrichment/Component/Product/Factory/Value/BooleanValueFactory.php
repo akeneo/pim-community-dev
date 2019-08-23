@@ -17,26 +17,16 @@ final class BooleanValueFactory extends ScalarValueFactory implements ValueFacto
 {
     public function createWithoutCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
+        // boolean values does not support null
+        if (null === $data) {
+            $data = false;
+        }
         return parent::createWithoutCheckingData($attribute, $channelCode, $localeCode, (bool) $data);
     }
 
-    public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
+    public function createByCheckingData(Attribute $attribute , ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
-        if (null === $data) {
-            return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
-        }
-
-        $dataToPersist = $data;
-
-        if (is_string($data) && ('1' === $data || '0' === $data)) {
-            $dataToPersist = boolval($data);
-        }
-
-        if (is_string($data) && ('true' === $data || 'false' === $data)) {
-            $dataToPersist = (bool) $data;
-        }
-
-        if (!is_bool($dataToPersist)) {
+        if (null !== $data && !is_bool($data)) {
             throw InvalidPropertyTypeException::booleanExpected(
                 $attribute->code(),
                 static::class,

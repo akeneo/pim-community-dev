@@ -32,7 +32,7 @@ final class BooleanValueFactorySpec extends ObjectBehavior
         $attribute = $this->getAttribute(true, true);
         /** @var ScalarValue $value */
         $value = $this->createByCheckingData($attribute, 'ecommerce', 'fr_FR', null);
-        $value->shouldBeLike(ScalarValue::scopableLocalizableValue('an_attribute', null, 'ecommerce', 'fr_FR'));
+        $value->shouldBeLike(ScalarValue::scopableLocalizableValue('an_attribute', false, 'ecommerce', 'fr_FR'));
     }
 
     public function it_creates_a_localizable_and_scopable_value()
@@ -65,17 +65,6 @@ final class BooleanValueFactorySpec extends ObjectBehavior
         /** @var ScalarValue $value */
         $value = $this->createWithoutCheckingData($attribute, null, null, true);
         $value->shouldBeLike(ScalarValue::value('an_attribute', true));
-    }
-
-    public function it_converts_a_value_to_boolean_type()
-    {
-        $attribute = $this->getAttribute(true, true);
-        /** @var ScalarValue $value */
-        $value = $this->createWithoutCheckingData($attribute, 'ecommerce', 'fr_FR', 1);
-        $value->shouldBeLike(ScalarValue::scopableLocalizableValue('an_attribute', 1, 'ecommerce', 'fr_FR'));
-
-        $value = $this->createWithoutCheckingData($attribute, 'ecommerce', 'fr_FR', '1');
-        $value->shouldBeLike(ScalarValue::scopableLocalizableValue('an_attribute', 1, 'ecommerce', 'fr_FR'));
     }
 
     public function it_throws_an_exception_if_it_is_not_a_boolean()
