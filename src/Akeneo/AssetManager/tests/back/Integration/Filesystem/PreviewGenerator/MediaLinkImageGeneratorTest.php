@@ -65,7 +65,7 @@ final class MediaLinkImageGeneratorTest extends PreviewGeneratorIntegrationTestC
      */
     public function it_get_a_preview_for_an_image_media_link_attribute()
     {
-        $this->mediaLinkImageGenerator->supports('google-logo.png', $this->mediaLinkAttribute, MediaLinkImageGenerator::THUMBNAIL_TYPE);
+        $this->mediaLinkImageGenerator->supports('2016/04/Ben-site-web.jpg', $this->mediaLinkAttribute, MediaLinkImageGenerator::THUMBNAIL_TYPE);
         $previewImage = $this->mediaLinkImageGenerator->generate(self::FILENAME, $this->mediaLinkAttribute, MediaLinkImageGenerator::THUMBNAIL_TYPE);
 
         $this->assertStringContainsString('media/cache/', $previewImage);
@@ -76,7 +76,7 @@ final class MediaLinkImageGeneratorTest extends PreviewGeneratorIntegrationTestC
      */
     public function it_get_a_preview_for_an_image_media_link_attribute_from_the_cache()
     {
-        $this->mediaLinkImageGenerator->supports('akeneo.png', $this->mediaLinkAttribute, MediaLinkImageGenerator::THUMBNAIL_TYPE);
+        $this->mediaLinkImageGenerator->supports('2016/04/Site-web-Nico.jpg', $this->mediaLinkAttribute, MediaLinkImageGenerator::THUMBNAIL_TYPE);
         $previewImage = $this->mediaLinkImageGenerator->generate(self::FILENAME, $this->mediaLinkAttribute, MediaLinkImageGenerator::THUMBNAIL_TYPE);
 
         $this->assertStringContainsString('media/cache/', $previewImage);
