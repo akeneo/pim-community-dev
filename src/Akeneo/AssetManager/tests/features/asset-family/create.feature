@@ -6,11 +6,11 @@ Feature: Create an asset family
   @acceptance-back
   Scenario: Creating an asset family
     When the user creates an asset family "designer" with:
-      | labels                                    |
-      | {"en_US": "Stylist", "fr_FR": "Styliste"} |
+      | labels                                    | product_link_rules                                                                                                                                                    |
+      | {"en_US": "Stylist", "fr_FR": "Styliste"} | [{"product_selections": [{"field": "family", "operator": "=", "value": "camcorders", "channel": "ecommerce", "locale": "fr_FR"}], "assign_assets_to": [{ "mode": "add", "attribute": "my_asset_collection" }]}] |
     Then there is an asset family "designer" with:
-      | identifier | labels                                    |
-      | designer   | {"en_US": "Stylist", "fr_FR": "Styliste"} |
+      | identifier | labels                                    | product_link_rules                                                                                                                                                                                                                      |
+      | designer   | {"en_US": "Stylist", "fr_FR": "Styliste"} | [{"product_selections": [{"field": "family", "operator": "=", "value": "camcorders", "channel": "ecommerce", "locale": "fr_FR" }], "assign_assets_to": [{ "mode": "add", "attribute": "my_asset_collection", "channel": null, "locale": null }]}] |
 
   @acceptance-back
   Scenario: Creating an asset family with no labels
@@ -26,8 +26,13 @@ Feature: Create an asset family
     When the user creates an asset family "invalid/identifier" with:
       | labels |
       | {}     |
-    Then an exception is thrown with message "Asset family identifier may contain only letters, numbers and underscores. "invalid/identifier" given"
+    Then there should be a validation error with message 'This field may only contain letters, numbers and underscores.'
     And there should be no asset family
+
+  @acceptance-back
+  Scenario: Cannot create an asset family if one of the product link rule is not executable by the rule engine
+    When the user creates an asset family "packshot" with a product link rule not executable by the rule engine
+    Then there should be a validation error stating why the rule engine cannot execute the product link rule
 
   @acceptance-back
   Scenario: Cannot create more asset families than the limit

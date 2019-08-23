@@ -30,10 +30,10 @@ use Webmozart\Assert\Assert;
  */
 class Action
 {
+    public const ADD_MODE = 'add';
+    public const REPLACE_MODE = 'replace';
     private const ITEM_PATTERN = '{{code}}';
-    private const ADD_MODE = 'add';
-    private const REPLACE_MODE = 'replace';
-    private const ALLOWED_MODES = [self::ADD_MODE, self::REPLACE_MODE];
+    public const ALLOWED_MODES = [self::ADD_MODE, self::REPLACE_MODE];
 
     /** @var Field */
     private $field;

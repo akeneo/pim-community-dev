@@ -8,6 +8,8 @@ Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyComma
             - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\LabelCollection: ~
         image:
             - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Image: ~
+        productLinkRules:
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\ProductLinkRules: ~
     constraints:
         - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ThereShouldBeLessRuleTemplateThanLimit: { groups: [other_constraints] }
 
@@ -20,6 +22,8 @@ Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyC
             - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Code: ~
         labels:
             - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\LabelCollection: ~
+        productLinkRules:
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\ProductLinkRules: ~
     constraints:
         - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\AssetFamilyCodeShouldBeUnique: { groups: [other_constraints] }
         - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ThereShouldBeLessAssetFamilyThanLimit: { groups: [other_constraints] }

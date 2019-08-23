@@ -290,3 +290,7 @@ services:
 
     akeneo_file_storage.file_storage.file.file_storer:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFileStorer
+
+    # Anti-corruption layer
+    akeneo_assetmanager.infrastructure.validation.asset_family.product_link_rule.rule_engine_validator_acl:
+        class: Akeneo\AssetManager\Common\Fake\Anticorruption\RuleEngineValidatorACLStub

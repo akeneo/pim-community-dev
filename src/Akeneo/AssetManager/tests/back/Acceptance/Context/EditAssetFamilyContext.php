@@ -17,6 +17,7 @@ use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFam
 use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyHandler;
 use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyCommand;
 use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyHandler;
+use Akeneo\AssetManager\Common\Fake\Anticorruption\RuleEngineValidatorACLStub;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
@@ -38,6 +39,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 final class EditAssetFamilyContext implements Context
 {
+    private const RULE_ENGINE_VALIDATION_MESSAGE = 'RULE ENGINE WILL NOT EXECUTE';
+
     /** @var AssetFamilyRepositoryInterface */
     private $assetFamilyRepository;
 
@@ -62,6 +65,9 @@ final class EditAssetFamilyContext implements Context
     /** @var int */
     private $ruleTemplateByAssetFamilyLimit;
 
+    /** @var RuleEngineValidatorACLStub */
+    private $ruleEngineValidatorACLStub;
+
     public function __construct(
         AssetFamilyRepositoryInterface $assetFamilyRepository,
         EditAssetFamilyHandler $editAssetFamilyHandler,
@@ -69,6 +75,7 @@ final class EditAssetFamilyContext implements Context
         ValidatorInterface $validator,
         ConstraintViolationsContext $constraintViolationsContext,
         InMemoryFindActivatedLocalesByIdentifiers $activatedLocales,
+        RuleEngineValidatorACLStub $ruleEngineValidatorACLStub,
         int $ruleTemplateByAssetFamilyLimit
     ) {
         $this->assetFamilyRepository = $assetFamilyRepository;
@@ -78,6 +85,7 @@ final class EditAssetFamilyContext implements Context
         $this->constraintViolationsContext = $constraintViolationsContext;
         $this->activatedLocales = $activatedLocales;
         $this->ruleTemplateByAssetFamilyLimit = $ruleTemplateByAssetFamilyLimit;
+        $this->ruleEngineValidatorACLStub = $ruleEngineValidatorACLStub;
     }
 
     /**
@@ -386,5 +394,21 @@ final class EditAssetFamilyContext implements Context
                 ]
             ]
         ];
+    }
+
+    /**
+     * @When /^the user updates the asset family \'([^\']*)\' with a product link rule not executable by the rule engine$/
+     */
+    public function theUserUpdatesTheAssetFamilyWithAProductLinkRuleNotExecutableByTheRuleEngine($arg1)
+    {
+        $this->ruleEngineValidatorACLStub->stubWithViolationMessage(self::RULE_ENGINE_VALIDATION_MESSAGE);
+        $invalidProductLinkRules = [['product_selections' => [['field' => 'family', 'operator' => 'IN', 'camcorders']], 'assign_assets_to' => [['mode' => 'set', 'attribute' => 'collection']]]];
+        $editAssetFamilyCommand = new EditAssetFamilyCommand(
+            'asset_family',
+            [],
+            null,
+            $invalidProductLinkRules
+        );
+        $this->editAssetFamily($editAssetFamilyCommand);
     }
 }
