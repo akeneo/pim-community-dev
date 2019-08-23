@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes:
+
+- PIM-8655: Fix page title of the categories settings
+
 # 3.2.6 (2019-08-22)
 
 ## Bug fixes:
