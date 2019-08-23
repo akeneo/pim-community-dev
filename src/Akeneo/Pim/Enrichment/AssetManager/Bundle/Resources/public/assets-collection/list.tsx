@@ -1,9 +1,9 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import {AssetCollectionState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/asset-collection';
-import {selectAttributeList} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/structure';
+import {selectAttributeList, selectFamily} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/structure';
 import {selectContext, ContextState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
-import {ValueCollection, Value, selectCurrentValues} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';
+import {selectCurrentValues, ValueCollection, Value} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';
 import styled from 'styled-components';
 import __ from 'akeneoreferenceentity/tools/translator';
 import {Label} from 'akeneopimenrichmentassetmanager/platform/component/common/label';
@@ -14,10 +14,12 @@ import {ContextLabel} from 'akeneopimenrichmentassetmanager/assets-collection/in
 import {ThemedProps} from 'akeneopimenrichmentassetmanager/platform/component/theme';
 import {Pill, Spacer, Separator} from 'akeneopimenrichmentassetmanager/platform/component/common';
 import {AssetCollection} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-collection';
+import {isValueComplete, Family} from 'akeneopimenrichmentassetmanager/enrich/domain/model/product';
 
 type ListProps = {
   attributes: Attribute[],
   values: ValueCollection,
+  family: Family|null
   context: ContextState
 }
 
@@ -87,7 +89,7 @@ const AssetCollectionList = styled.div`
   align-items: stretch;
 `;
 
-const List = ({values, context}: ListProps) => {
+const List = ({values, family, context}: ListProps) => {
   return (
     <AssetCollectionList>
       {values.map((value: Value) => (
@@ -96,10 +98,12 @@ const List = ({values, context}: ListProps) => {
             <AttributeBreadCrumb>
               {value.attribute.group} / {getAttributeLabel(value.attribute, context.locale)}
             </AttributeBreadCrumb>
-            <IncompleteIndicator>
-              <Pill />
-              <Label small grey>{__('pim_asset_manager.attribute.is_required')}</Label>
-            </IncompleteIndicator>
+            {!isValueComplete(value, family, context.channel) ? (
+              <IncompleteIndicator>
+                <Pill />
+                <Label small grey>{__('pim_asset_manager.attribute.is_required')}</Label>
+              </IncompleteIndicator>
+            ) : null}
             <Spacer />
             <AssetCounter>
               {__('pim_asset_manager.asset_collection.asset_count', {count: value.data.length})}
@@ -126,7 +130,8 @@ const List = ({values, context}: ListProps) => {
 export default connect((state: AssetCollectionState): ListProps => ({
   attributes: selectAttributeList(state),
   context: selectContext(state),
-  values: selectCurrentValues(state)
+  values: selectCurrentValues(state),
+  family: selectFamily(state)
 }))(List);
 
 

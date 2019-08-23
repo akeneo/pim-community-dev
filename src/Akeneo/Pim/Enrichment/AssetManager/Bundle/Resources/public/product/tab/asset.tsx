@@ -9,7 +9,7 @@ import {localeUpdated, channelUpdated} from 'akeneopimenrichmentassetmanager/ass
 import {valuesUpdated} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';
 import {assetCollectionReducer, AssetCollectionState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/asset-collection';
 import {ThemeProvider} from 'styled-components';
-import {updateChannels} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/structure';
+import {updateChannels, updateFamily} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/structure';
 import thunkMiddleware from 'redux-thunk';
 import {akeneoTheme} from 'akeneopimenrichmentassetmanager/platform/component/theme';
 
@@ -51,6 +51,10 @@ class AssetTabForm extends (Form as {new (config: any): any}) {
   }
 
   render() {
+    if (null === this.store.getState().structure.family) {
+      this.store.dispatch(updateFamily(this.getFormData().family) as any);
+    }
+
     ReactDOM.render(
       (<Provider store={this.store}>
         <ThemeProvider theme={akeneoTheme}>

@@ -6,7 +6,7 @@ import {
   Meta,
   CategoryCode,
   LegacyValue,
-} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';
+} from 'akeneopimenrichmentassetmanager/enrich/domain/model/product';
 import {Attribute, AttributeCode} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
 import {
   fetchPermissions,

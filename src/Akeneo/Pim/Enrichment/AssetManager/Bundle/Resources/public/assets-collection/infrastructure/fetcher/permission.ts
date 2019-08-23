@@ -1,8 +1,8 @@
 const fetcherRegistry = require('pim/fetcher-registry');
 import promisify from 'akeneoassetmanager/tools/promisify';
 import {AttributeGroupCode} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
-import {CategoryCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';
 import {LocaleCode, LocaleReference} from 'akeneopimenrichmentassetmanager/platform/model/channel/locale';
+import {CategoryCode} from 'akeneopimenrichmentassetmanager/enrich/domain/model/product';
 
 export type AttributeGroupPersmission = {
   code: AttributeGroupCode;
