@@ -1,0 +1,162 @@
+
+
+    <div class="AknDefault-mainContent">
+
+    <header class="AknTitleContainer navigation">
+        <div class="AknTitleContainer-line">
+            <div class="AknTitleContainer-imageContainer" data-drop-zone="main-image"></div>
+            <div class="AknTitleContainer-mainContainer">
+                <div>
+                    <div class="AknTitleContainer-line">
+                        <div class="AknTitleContainer-breadcrumbs" data-drop-zone="breadcrumbs"></div>
+                        <div class="AknTitleContainer-buttonsContainer">
+                            <div class="AknTitleContainer-userMenuContainer user-menu" data-drop-zone="user-menu"></div>
+                            <div class="AknTitleContainer-actionsContainer AknButtonList" data-drop-zone="buttons"></div>
+                        </div>
+                    </div>
+                    <div class="AknTitleContainer-line">
+                        <div class="AknTitleContainer-title" data-drop-zone="title">
+                                                            Dashboard
+                                                    </div>
+                        <div class="AknTitleContainer-state" data-drop-zone="state"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="AknTitleContainer-line">
+                        <div class="AknTitleContainer-context AknButtonList" data-drop-zone="context">
+
+                        </div>
+                    </div>
+                    <div class="AknTitleContainer-line">
+                        <div class="AknTitleContainer-meta" data-drop-zone="meta">
+
+                                                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="AknTitleContainer-line">
+            <div data-drop-zone="navigation"></div>
+        </div>
+    </header>
+
+
+            <div class="AknWidget">
+                                    <div class="AknWidget-header widget-header">
+                    Completeness Over Channels and Locales
+                    <div class="AknButtonList AknButtonList--right widget-actions"></div>
+                </div>
+                                        <div class="AknWidget-content widget-content">
+                        <div id="completeness-widget" class="completeness-widget"></div>
+
+    <script type="text/javascript">
+        require(
+            ['jquery', 'pim/dashboard/widget-container', 'pim/dashboard/completeness-widget'],
+            function ($, widgetContainer, CompletenessWidget) {
+                'use strict';
+                $(function () {
+                    var options = {el: '#completeness-widget', alias: 'completeness'};
+                    var widget = widgetContainer.getWidget(options, CompletenessWidget);
+                    widget.render().delayedLoad();
+                });
+            }
+        );
+    </script>
+
+                </div>
+                        </div>
+    <div class="AknWidget">
+                                    <div class="AknWidget-header widget-header">
+                    Last operations
+                    <div class="AknButtonList AknButtonList--right widget-actions"></div>
+                </div>
+                                        <div class="AknWidget-content widget-content">
+                        <table id="last-operations-widget" class="AknGrid AknGrid--unclickable"></table>
+
+    <script type="text/javascript">
+        require(
+            ['jquery', 'pim/dashboard/widget-container', 'pim/importexport/widget/last-operations-widget'],
+            function ($, widgetContainer, LastOperationsWidget) {
+                'use strict';
+                $(function () {
+                    var options = {el: '#last-operations-widget', alias: 'last_operations'};
+                    var widget = widgetContainer.getWidget(options, LastOperationsWidget);
+                    widget.render().delayedLoad();
+                });
+            }
+        );
+    </script>
+
+                </div>
+                        </div>
+
+
+        <div class="AknFooter">
+            <div class="AknFooter-item current-version"><span>Version:</span><span>CE 3.2.0 Slick Hare</span></div>
+                <div class="AknFooter-item last-version"><span>New patch available:</span><span></span></div>
+
+    <script type="text/javascript">
+        require(
+            ['jquery', 'pim/patch-fetcher'],
+            function ($, Fetcher) {
+                $(function() {
+                    try {
+                        var updateServerUrl = 'https://updates.akeneo.com';
+                        Fetcher.fetch(updateServerUrl).then(function (patch) {
+                            var currentVersionName = $('.current-version:first span:last').text();
+                            var currentVersion = currentVersionName.split(' ')[1];
+                            if (patch !== null && currentVersion < patch) {
+                                $('.last-version span:last').text(patch);
+                            } else {
+                                $('.last-version').remove();
+                            }
+                        });
+                    } catch (err) {
+                        $('.last-version').remove();
+                    }
+                });
+            }
+        );
+    </script>
+        </div>
+    </div>
+    <script>
+        require(
+            [
+                'pim/common/breadcrumbs',
+                'pim/fetcher-registry',
+                'pim/form-builder',
+                'pim/form/common/user-main-image'
+            ],
+            function(
+                Breadcrumbs,
+                FetcherRegistry,
+                FormBuilder,
+                UserMainImage
+            ) {
+                $(function() {
+                    var breadcrumbs = new Breadcrumbs({
+                        config: {
+                            tab: 'pim-menu-activity',
+                            item: 'pim-menu-activity-dashboard'
+                        }
+                    });
+                    breadcrumbs.configure().then(function () {
+                        breadcrumbs.render();
+                        $('*[data-drop-zone="breadcrumbs"]').append(breadcrumbs.$el);
+                    });
+
+                    FetcherRegistry.initialize().done(function () {
+                        FormBuilder.build('pim-menu-user-navigation').then(function (form) {
+                            $('.user-menu').append(form.el);
+                            form.render();
+                        }.bind(this));
+                    });
+
+                    const userMainImage = new UserMainImage({ config: {} });
+                    $('*[data-drop-zone="main-image"]').append(userMainImage.el);
+                    userMainImage.render();
+                });
+            }
+        );
+    </script>

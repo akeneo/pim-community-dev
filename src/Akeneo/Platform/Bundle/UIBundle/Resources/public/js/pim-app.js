@@ -90,6 +90,7 @@ define(
                     Backbone.history.start();
                 }
 
+                console.log('render');
                 return BaseForm.prototype.render.apply(this, arguments);
             }
         });

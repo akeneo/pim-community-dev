@@ -106,11 +106,11 @@ class PuppeteerEnvironment extends NodeEnvironment {
     await page.goto('http://pim.com');
     await page.addStyleTag({ content: pimCSS });
     await page.evaluate(async () => await require('pim/fetcher-registry').initialize());
-    await page.evaluate(async () => await require('pim/init')());
-    await page.evaluate(async () => await require('pim/user-context').initialize());
-    await page.evaluate(async () => await require('pim/date-context').initialize());
-    await page.evaluate(async () => await require('pim/init-translator').fetch());
-    await page.evaluate(async () => await require('oro/init-layout')());
+    // await page.evaluate(async () => await require('pim/init')());
+    // await page.evaluate(async () => await require('pim/user-context').initialize());
+    // await page.evaluate(async () => await require('pim/date-context').initialize());
+    // await page.evaluate(async () => await require('pim/init-translator').fetch());
+    // await page.evaluate(async () => await require('oro/init-layout')());
 
     this.global.__PAGE__ = page;
   }
