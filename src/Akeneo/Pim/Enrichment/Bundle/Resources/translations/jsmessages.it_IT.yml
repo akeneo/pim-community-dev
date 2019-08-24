@@ -295,6 +295,7 @@ pim_enrich.mass_edit.product:
       label_count: "{1}Aggiungi <span class=\"AknFullPage-title--highlight\">1 prodotto</span> ai gruppo|]1, Inf[Aggiungi <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span> ai gruppi"
       description: Selezionare i gruppi in cui aggiungere gli articoli selezionati
       field: Gruppi
+      no_update: Seleziona un gruppo per continuare
     add_to_category:
       label: Aggiungi alle categorie
       label_count: "{1}Aggiungi <span class=\"AknFullPage-title--highlight\">1 prodotto</span> alle categorie|]1, Inf[Aggiungi <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span> alle categorie"
@@ -311,6 +312,7 @@ pim_enrich.mass_edit.product:
       label: Aggiungere ad un modello di prodotto esistente
       label_count: "{1}Aggiungi <span class=\"AknFullPage-title--highlight\">1 prodotto</span> ad un modello di prodotto esistente|]1, Inf[Aggiungi <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span> ad un modello di prodotto esistente"
       description: Il modello di prodotto selezionato raccoglierà i prodotti e permetterà l'arricchimento delle loro proprietà comuni.
+      no_update: Seleziona un modello di prodotto per continuare
     associate_to_product_and_product_model:
       label: Associa
       label_count: "{1}Associa <span class=\"AknFullPage-title--highlight\">1 prodotto</span> a prodotti o modelli di prodotto|]1, Inf[Associa <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span> a prodotti o modelli di prodotto"

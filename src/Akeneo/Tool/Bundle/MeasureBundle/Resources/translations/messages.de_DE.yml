@@ -134,7 +134,6 @@ pim_measure:
     GALLON: Gallone
     LITER: Liter
     MILLILITER: Milliliter
-    OUNCE: Unze
     PINT: Pint
     DENIER: Denier
     GRAIN: Korn
@@ -144,6 +143,7 @@ pim_measure:
     MARC: Mark
     MILLIGRAM: Milligramm
     ONCE: Unze
+    OUNCE: Unze
     POUND: Pfund
     TON: Tonne
     BAR: Bar
