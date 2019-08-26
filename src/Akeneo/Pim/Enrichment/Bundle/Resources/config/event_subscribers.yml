@@ -77,8 +77,6 @@ services:
         class: '%pim_catalog.event_subscriber.index_products.class%'
         arguments:
               - '@pim_catalog.elasticsearch.indexer.product'
-              - '@pim_catalog.elasticsearch.indexer.product'
-              - '@pim_catalog.elasticsearch.indexer.product'
         tags:
             - { name: kernel.event_subscriber }
 

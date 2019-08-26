@@ -6,9 +6,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
-use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
-use Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface;
-use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -25,28 +23,15 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class IndexProductsSubscriber implements EventSubscriberInterface
 {
-    /** @var IndexerInterface */
+    /** @var ProductIndexerInterface */
     private $productIndexer;
 
-    /** @var BulkIndexerInterface */
-    private $productBulkIndexer;
-
-    /** @var RemoverInterface */
-    private $productIndexRemover;
-
     /**
-     * @param IndexerInterface     $productIndexer
-     * @param BulkIndexerInterface $productBulkIndexer
-     * @param RemoverInterface     $productIndexRemover
+     * @param ProductIndexerInterface $productIndexer
      */
-    public function __construct(
-        IndexerInterface $productIndexer,
-        BulkIndexerInterface $productBulkIndexer,
-        RemoverInterface $productIndexRemover
-    ) {
+    public function __construct(ProductIndexerInterface $productIndexer)
+    {
         $this->productIndexer = $productIndexer;
-        $this->productBulkIndexer = $productBulkIndexer;
-        $this->productIndexRemover = $productIndexRemover;
     }
 
     /**
@@ -77,7 +62,7 @@ class IndexProductsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->productIndexer->index($product);
+        $this->productIndexer->indexFromProductIdentifier($product->getIdentifier());
     }
 
     /**
@@ -92,11 +77,18 @@ class IndexProductsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (!current($products) instanceof ProductInterface) {
+        $identifiers = [];
+        foreach ($products as $product) {
+            if ($product instanceof ProductInterface) {
+                $identifiers[] = $product->getIdentifier();
+            }
+        }
+
+        if (empty($identifiers)) {
             return;
         }
 
-        $this->productBulkIndexer->indexAll($products);
+        $this->productIndexer->indexFromProductIdentifiers($identifiers);
     }
 
     /**
@@ -111,6 +103,6 @@ class IndexProductsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->productIndexRemover->remove($event->getSubjectId());
+        $this->productIndexer->removeFromProductIdentifier($product->getIdentifier());
     }
 }

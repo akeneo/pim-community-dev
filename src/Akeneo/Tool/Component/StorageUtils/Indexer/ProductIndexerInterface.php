@@ -18,8 +18,8 @@ interface ProductIndexerInterface
     public function indexFromProductIdentifier(string $productIdentifier, array $options = []);
 
     /**
-     * @param array $productIdentifiers
-     * @param array $options
+     * @param string[] $productIdentifiers
+     * @param array    $options
      */
     public function indexFromProductIdentifiers(array $productIdentifiers, array $options = []);
 
@@ -30,8 +30,8 @@ interface ProductIndexerInterface
     public function removeFromProductIdentifier(string $productIdentifier, array $options = []);
 
     /**
-     * @param array $productIdentifiers
-     * @param array $options
+     * @param string[] $productIdentifiers
+     * @param array    $options
      */
     public function removeManyFromProductIdentifiers(array $productIdentifiers, array $options = []);
 }

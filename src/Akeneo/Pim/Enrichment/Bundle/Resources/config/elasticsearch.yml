@@ -22,6 +22,5 @@ services:
         class: '%pim_catalog.elasticsearch.indexer.product_model_descendants_indexer.class%'
         arguments:
             - '@pim_catalog.elasticsearch.indexer.product'
-            - '@pim_catalog.elasticsearch.indexer.product'
             - '@pim_catalog.elasticsearch.indexer.product_model'
             - '@pim_catalog.elasticsearch.indexer.product_model'

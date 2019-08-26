@@ -101,24 +101,24 @@ class CalculateCompletenessCommand extends ContainerAwareCommand
             $productsToSave[] = $product;
 
             if (count($productsToSave) === $this->batchSize) {
-                $this->computeAndPersistProductCompletenesses->fromProductIdentifiers(
-                    array_map(function (ProductInterface $product) {
-                        return $product->getIdentifier();
-                    }, $productsToSave)
-                );
-                $this->productIndexer->indexAll($productsToSave);
+                $identifiers = array_map(function (ProductInterface $product) {
+                    return $product->getIdentifier();
+                }, $productsToSave);
+
+                $this->computeAndPersistProductCompletenesses->fromProductIdentifiers($identifiers);
+                $this->productIndexer->indexFromProductIdentifiers($identifiers);
                 $this->cacheClearer->clear();
                 $productsToSave = [];
             }
         }
 
         if (!empty($productsToSave)) {
-            $this->computeAndPersistProductCompletenesses->fromProductIdentifiers(
-                array_map(function (ProductInterface $product) {
-                    return $product->getIdentifier();
-                }, $productsToSave)
-            );
-            $this->productIndexer->indexAll($productsToSave);
+            $identifiers = array_map(function (ProductInterface $product) {
+                return $product->getIdentifier();
+            }, $productsToSave);
+
+            $this->computeAndPersistProductCompletenesses->fromProductIdentifiers($identifiers);
+            $this->productIndexer->indexFromProductIdentifiers($productsToSave);
         }
 
         $output->writeln("<info>Missing completenesses generated.</info>");

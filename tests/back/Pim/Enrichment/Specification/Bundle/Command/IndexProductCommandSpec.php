@@ -5,6 +5,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Bundle\Command;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
+use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -25,13 +26,13 @@ class IndexProductCommandSpec extends ObjectBehavior
     function let(
         ContainerInterface $container,
         ProductRepositoryInterface $productRepository,
-        BulkIndexerInterface $bulkProductIndexer,
+        ProductIndexerInterface $productIndexer,
         ObjectManager $objectManager,
         Client $productAndProductModelClient
     ) {
         $this->beConstructedWith(
             $productRepository,
-            $bulkProductIndexer,
+            $productIndexer,
             $objectManager,
             $productAndProductModelClient,
             'akeneo_pim_product_and_product_model'
@@ -53,7 +54,7 @@ class IndexProductCommandSpec extends ObjectBehavior
 
     function it_indexes_all_products(
         ProductRepositoryInterface $productRepository,
-        BulkIndexerInterface $bulkProductIndexer,
+        ProductIndexerInterface $productIndexer,
         ObjectManager $objectManager,
         InputInterface $input,
         OutputInterface $output,
@@ -77,9 +78,16 @@ class IndexProductCommandSpec extends ObjectBehavior
         $productRepository->searchAfter($product4, 100)->willReturn([$product5]);
         $productRepository->searchAfter($product5, 100)->willReturn([]);
 
-        $bulkProductIndexer->indexAll([$product1, $product2], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
-        $bulkProductIndexer->indexAll([$product3, $product4], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
-        $bulkProductIndexer->indexAll([$product5], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
+        $product1->getIdentifier()->willReturn('10');
+        $product2->getIdentifier()->willReturn('20');
+        $product3->getIdentifier()->willReturn('30');
+        $product4->getIdentifier()->willReturn('40');
+        $product5->getIdentifier()->willReturn('50');
+        $productIndexer->indexFromProductIdentifiers(['10', '20'], ['index_refresh' => Refresh::disable()])
+            ->shouldBeCalled();
+        $productIndexer->indexFromProductIdentifiers(['30', '40'], ['index_refresh' => Refresh::disable()])
+            ->shouldBeCalled();
+        $productIndexer->indexFromProductIdentifiers(['50'], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
 
         $objectManager->clear()->shouldBeCalledTimes(3);
 
@@ -111,7 +119,7 @@ class IndexProductCommandSpec extends ObjectBehavior
 
     function it_indexes_a_product_with_identifier(
         ProductRepositoryInterface $productRepository,
-        BulkIndexerInterface $bulkProductIndexer,
+        ProductIndexerInterface $productIndexer,
         ObjectManager $objectManager,
         InputInterface $input,
         OutputInterface $output,
@@ -127,7 +135,9 @@ class IndexProductCommandSpec extends ObjectBehavior
 
         $productRepository->findBy(['identifier' => ['product_identifier_to_index']])->willReturn([$productToIndex]);
 
-        $bulkProductIndexer->indexAll([$productToIndex], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
+        $productToIndex->getIdentifier()->willReturn('foo');
+        $productIndexer->indexFromProductIdentifiers(['foo'], ['index_refresh' => Refresh::disable()])
+            ->shouldBeCalled();
         $objectManager->clear()->shouldBeCalled();
 
         $output->writeln('<info>1 products found for indexing</info>')->shouldBeCalled();
@@ -159,7 +169,7 @@ class IndexProductCommandSpec extends ObjectBehavior
 
     function it_indexes_multiple_products_with_identifiers(
         ProductRepositoryInterface $productRepository,
-        BulkIndexerInterface $bulkProductIndexer,
+        ProductIndexerInterface $productIndexer,
         ObjectManager $objectManager,
         InputInterface $input,
         OutputInterface $output,
@@ -176,7 +186,10 @@ class IndexProductCommandSpec extends ObjectBehavior
 
         $productRepository->findBy(['identifier' => ['product_1', 'product_2']])->willReturn([$product1, $product2]);
 
-        $bulkProductIndexer->indexAll([$product1, $product2], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
+        $product1->getIdentifier()->willReturn('foo');
+        $product2->getIdentifier()->willReturn('bar');
+        $productIndexer->indexFromProductIdentifiers(['foo', 'bar'], ['index_refresh' => Refresh::disable()])
+            ->shouldBeCalled();
         $objectManager->clear()->shouldBeCalled();
 
         $output->writeln('<info>2 products found for indexing</info>')->shouldBeCalled();
@@ -208,7 +221,7 @@ class IndexProductCommandSpec extends ObjectBehavior
 
     function it_does_not_index_non_existing_products(
         ProductRepositoryInterface $productRepository,
-        BulkIndexerInterface $bulkProductIndexer,
+        ProductIndexerInterface $productIndexer,
         ObjectManager $objectManager,
         InputInterface $input,
         OutputInterface $output,
@@ -226,7 +239,8 @@ class IndexProductCommandSpec extends ObjectBehavior
 
         $productToIndex->getIdentifier()->willReturn('product_1');
 
-        $bulkProductIndexer->indexAll([$productToIndex], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
+        $productIndexer->indexFromProductIdentifiers(['product_1'], ['index_refresh' => Refresh::disable()])
+            ->shouldBeCalled();
         $objectManager->clear()->shouldBeCalled();
 
         $output->writeln('<error>Some products were not found for the given identifiers: wrong_product</error>')->shouldBeCalled();
