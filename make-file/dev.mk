@@ -46,3 +46,15 @@ xdebug-on:
 .PHONY: xdebug-off
 xdebug-off:
 	XDEBUG_ENABLED=0 $(MAKE) up
+
+.PHONY: pim-behat
+pim-behat:
+	APP_ENV=behat C='fpm mysql elasticsearch httpd object-storage selenium' make up
+	APP_ENV=behat $(MAKE) clean
+	$(MAKE) assets
+	$(MAKE) css
+	$(MAKE) javascript-test
+	$(MAKE) javascript-dev
+	APP_ENV=behat $(MAKE) database
+	APP_ENV=behat $(PHP_RUN) bin/console pim:user:create --admin -n -- admin admin test@example.com John Doe en_US
+
