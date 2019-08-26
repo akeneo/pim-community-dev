@@ -15,14 +15,6 @@ module.exports = function(cucumber) {
     }
   };
 
-  // Given('the "default" catalog configuration', function (callback) {
-  //   callback(null, 'pending');
-  // });
-
-  // Given('I am logged in as "Mary"', function (callback) {
-  //   callback(null, 'pending');
-  // });
-
   Given('the following attributes:', function (dataTable, callback) {
     this.page.on('request', request => {
       if (request.url().includes('attributes-filters')) {
@@ -36,7 +28,12 @@ module.exports = function(cucumber) {
   Given('the following products:', function (products, callback) {
     const followingProducts = convertItemTable(products)
     const productData = followingProducts.map((product) => {
-      return new DatagridProductBuilder().withIdentifier(product.sku).withLabel(product.sku).build()
+      return new DatagridProductBuilder()
+        .withIdentifier(product.sku)
+        .withLabel(product.sku)
+        .withAttribute('count', product.count)
+        .withAttribute('rate', product.rate)
+        .build()
     })
 
     const productGridData = {
@@ -79,7 +76,7 @@ module.exports = function(cucumber) {
       }
 
       if (request.url().includes('datagrid_view/rest/product-grid/default-columns')) {
-        return answerJson(request, ["identifier","image","label","family","enabled","completeness","created","updated"])
+        return answerJson(request, ["identifier","image","label","count", "rate"])
       }
 
       if (request.url().includes('/enrich/product-category-tree/product-grid/list-tree')) {

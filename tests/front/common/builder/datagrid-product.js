@@ -30,6 +30,12 @@ class DatagridProductBuilder {
     }
   }
 
+  withAttribute(name, value) {
+    this.product[name] = value;
+
+    return this;
+  }
+
   withIdentifier(identifier) {
     this.product.identifier = identifier;
 

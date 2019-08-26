@@ -288,27 +288,20 @@
         "sortable": true
       },
       {
-        "label": "Created at",
+        "label": "Count",
         "type": "string",
         "editable": false,
         "renderable": true,
-        "name": "created",
+        "name": "count",
         "sortable": true
       },
       {
-        "label": "Updated at",
+        "label": "Rate",
         "type": "string",
         "editable": false,
         "renderable": true,
-        "name": "updated",
+        "name": "rate",
         "sortable": true
-      },
-      {
-        "label": "Variant products",
-        "type": "complete-variant-product",
-        "editable": false,
-        "renderable": true,
-        "name": "complete_variant_products"
       }
     ],
     "state": {
