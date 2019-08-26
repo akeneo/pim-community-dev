@@ -413,7 +413,7 @@ final class EditAssetFamilyContext implements Context
     }
 
     /**
-     * @When /^the user updates an asset family "([^"]*)" with no product selections$/
+     * @When /^the user updates an asset family "([^"]*)" with an empty product selections$/
      */
     public function theUserUpdatesAnAssetFamilyWithNoProductSelections(string $assetFamilyCode): void
     {
@@ -423,7 +423,7 @@ final class EditAssetFamilyContext implements Context
     }
 
     /**
-     * @When /^the user updates an asset family "([^"]*)" with no product assignment$/
+     * @When /^the user updates an asset family "([^"]*)" with an empty product assignment$/
      */
     public function theUserUpdatesAnAssetFamilyWithNoProductAssignment(string $assetFamilyCode): void
     {

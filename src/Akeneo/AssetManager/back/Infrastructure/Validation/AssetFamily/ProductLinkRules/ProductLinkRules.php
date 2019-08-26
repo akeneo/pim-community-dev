@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraint;
 class ProductLinkRules extends Constraint
 {
     public const PRODUCT_SELECTION_CANNOT_BE_EMPTY = 'pim_asset_manager.asset_family.validation.rule_template.product_selection_cannot_be_empty';
-    public const PRODUCT_ASSIGNMENT_CANNOT_BE_EMPTY = 'pim_asset_manager.asset_family.validation.rule_template.product_assignment_to_cannot_be_empty';
+    public const PRODUCT_ASSIGNMENT_CANNOT_BE_EMPTY = 'pim_asset_manager.asset_family.validation.rule_template.product_assignment_cannot_be_empty';
 
     public function validatedBy()
     {

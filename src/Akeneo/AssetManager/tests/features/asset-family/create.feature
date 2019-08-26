@@ -31,12 +31,12 @@ Feature: Create an asset family
 
   @acceptance-back
   Scenario: Cannot create an asset family if there is no product selections
-    When the user creates an asset family "packshot" with no product selections
+    When the user creates an asset family "packshot" with an empty product selections
     Then there should be a validation error with message 'You must specify at least one product selection in your product link rule'
 
   @acceptance-back
   Scenario: Cannot create an asset family if there is no product assignment
-    When the user creates an asset family "packshot" with no product assignment
+    When the user creates an asset family "packshot" with an empty product assignment
     Then there should be a validation error with message 'You must specify at least one product assignment in your product link rule'
 
   @acceptance-back

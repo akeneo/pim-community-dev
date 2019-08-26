@@ -312,7 +312,7 @@ final class CreateAssetFamilyContext implements Context
     }
 
     /**
-     * @When /^the user creates an asset family "([^"]*)" with no product selections$/
+     * @When /^the user creates an asset family "([^"]*)" with an empty product selections$/
      */
     public function theUserCreatesAnAssetFamilyWithNoProductSelections(string $assetFamilyCode)
     {
@@ -326,7 +326,7 @@ final class CreateAssetFamilyContext implements Context
     }
 
     /**
-     * @When /^the user creates an asset family "([^"]*)" with no product assignment$/
+     * @When /^the user creates an asset family "([^"]*)" with an empty product assignment$/
      */
     public function theUserCreatesAnAssetFamilyWithNoProductAssignment(string $assetFamilyCode)
     {
