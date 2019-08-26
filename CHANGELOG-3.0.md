@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8615: Fix issue issue with boolean attribute used as variant axis
+- PIM-8678: Fill the updated property on Family entity update
 
 # 3.0.38 (2019-08-20)
 
