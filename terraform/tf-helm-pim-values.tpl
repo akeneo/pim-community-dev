@@ -7,6 +7,7 @@ common:
   gcpProjectID: ${projectId}
   googleZone: ${googleZone}
   pimMasterDomain: ${pimmaster_dns_name}
+  containerName: ${container_name}
 
 backup:
   projectId: ${projectId}
