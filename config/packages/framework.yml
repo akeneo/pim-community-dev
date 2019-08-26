@@ -27,12 +27,3 @@ framework:
         packages:
             frontend:
                 version_strategy: pim_enrich.version_strategy
-
-twig:
-    debug: '%kernel.debug%'
-    strict_variables: '%kernel.debug%'
-
-swiftmailer:
-    url: '%env(MAILER_URL)%'
-    spool: { type: 'memory' }
-
