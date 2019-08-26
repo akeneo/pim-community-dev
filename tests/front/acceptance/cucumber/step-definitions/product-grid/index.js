@@ -83,10 +83,10 @@ module.exports = function(cucumber) {
     await renderView(this.page, 'pim-product-index', {});
   });
 
-  Then('the grid should contain 3 elements', async function () {
+  Then('the grid should contain {int} elements', async function (x) {
     const productGrid = await createElementDecorator(config)(this.page, 'Product grid')
     const productCount = await productGrid.getRowCount();
-    assert.equal(productCount, 3)
+    assert.equal(productCount, x)
   });
 
   Then('I should see products postit, book and mug', async function () {
