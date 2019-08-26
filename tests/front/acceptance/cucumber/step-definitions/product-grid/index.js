@@ -1,7 +1,8 @@
 module.exports = function(cucumber) {
   const { Given, Then } = cucumber;
   const assert = require('assert');
-  const  { answerJson, renderView } = require('../../tools');
+  const  { answerJson, renderView, convertItemTable } = require('../../tools');
+  const DatagridProductBuilder = require('../../../../common/builder/datagrid-product')
   const createElementDecorator = require('../../decorators/common/create-element-decorator');
   const datagridLoad = require('../../contracts/datagrid-load.json')
   const datagridProducts = require('../../contracts/datagrid-products.json')
@@ -33,14 +34,31 @@ module.exports = function(cucumber) {
     callback();
   });
 
-  Given('the following products:', function (dataTable, callback) {
+  Given('the following products:', function (products, callback) {
+    const followingProducts = convertItemTable(products)
+    const productData = followingProducts.map((product) => {
+      return new DatagridProductBuilder().withIdentifier(product.sku).build()
+    })
+
+    const productGridData = {
+      data: productData,
+      totalRecords: 1049,
+      options: {
+        totalRecords: null
+      }
+    }
+
+    const productLoadData = Object.assign(datagridLoad, {
+      data: JSON.stringify(productGridData)
+    })
+
     this.page.on('request', request => {
       if (request.url().includes('/datagrid/product-grid/load?dataLocale=en_US')) {
-        return answerJson(request, datagridLoad)
+        return answerJson(request, productLoadData)
       }
 
       if (request.url().includes('/datagrid/product-grid')) {
-        return answerJson(request, datagridProducts)
+        return answerJson(request, productGridData)
       }
     })
 
@@ -72,8 +90,6 @@ module.exports = function(cucumber) {
       if (request.url().includes('/enrich/product-category-tree/product-grid/children')) {
         return answerJson(request, categoryTreeChildren)
       }
-
-      // request.continue();
     })
 
     await renderView(this.page, 'pim-product-index', {});
@@ -82,7 +98,7 @@ module.exports = function(cucumber) {
   Then('the grid should contain 3 elements', async function () {
     const productGrid = await createElementDecorator(config)(this.page, 'Product grid')
     const productCount = await productGrid.getRowCount();
-    assert.equal(productCount, 26)
+    assert.equal(productCount, 3)
   });
 
   Then('I should see products postit, book and mug', function (callback) {

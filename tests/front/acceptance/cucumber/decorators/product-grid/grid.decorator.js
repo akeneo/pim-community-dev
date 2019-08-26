@@ -3,7 +3,7 @@ const Row = require('./row.decorator')
 const Grid = async (nodeElement, createElementDecorator, parent) => {
   const children = {
     'Rows':  {
-      selector: '.AknGrid-bodyRow',
+      selector: '.AknGrid-bodyRow.row-click-action',
       decorator: Row,
       multiple: true
     },
