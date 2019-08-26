@@ -28,14 +28,14 @@ use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 class LinkAssetsToProductsTasklet implements TaskletInterface
 {
     /** @var RuleTemplateExecutor */
-    private $ruleExecutor;
+    private $ruleTemplateExecutor;
 
     /** @var StepExecution */
     private $stepExecution;
 
     public function __construct(RuleTemplateExecutor $ruleExecutor)
     {
-        $this->ruleExecutor = $ruleExecutor;
+        $this->ruleTemplateExecutor = $ruleExecutor;
     }
 
     public function setStepExecution(StepExecution $stepExecution): void
@@ -48,7 +48,7 @@ class LinkAssetsToProductsTasklet implements TaskletInterface
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($this->stepExecution->getJobParameters()->get('asset_family_identifier'));
 
         foreach ($this->stepExecution->getJobParameters()->get('asset_codes') as $assetCode) {
-            $this->ruleExecutor->execute($assetFamilyIdentifier, AssetCode::fromString($assetCode));
+            $this->ruleTemplateExecutor->execute($assetFamilyIdentifier, AssetCode::fromString($assetCode));
         }
     }
 }
