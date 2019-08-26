@@ -1,4 +1,3 @@
-import {NormalizedValue} from 'akeneoassetmanager/domain/model/asset/value';
 import {Labels} from 'akeneopimenrichmentassetmanager/platform/model/label';
 import {NormalizedFile} from 'akeneoassetmanager/domain/model/file';
 import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';
@@ -9,7 +8,6 @@ export type AssetIdentifier = string;
 
 type AssetFamilyCode = string;
 type AttributeIdentifier = string;
-type Value = NormalizedValue;
 type Image = string;
 
 const emptyAssetFamily = (): AssetFamily => ({
@@ -37,7 +35,6 @@ export type Asset = {
   image: Image;
   assetFamily: AssetFamily;
   labels: Labels;
-  values: Value[];
   completeness: NormalizedCompleteness;
 };
 
@@ -52,9 +49,19 @@ export const emptyAsset = (): Asset => ({
   labels: {},
   image: '',
   assetFamily: emptyAssetFamily(),
-  values: [],
   completeness: {
     complete: 0,
     required: 0,
   },
 });
+export const validateLabels = (labels: any): boolean => {
+  if (typeof labels !== 'object') {
+    return false;
+  }
+
+  if (Object.keys(labels).some((key: string) => typeof key !== 'string' || typeof labels[key] !== 'string')) {
+    return false;
+  }
+
+  return true;
+};

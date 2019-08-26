@@ -81,7 +81,7 @@ const filterLocales = (values: ValueCollection, localePermissions: LocalePermiss
 const filterReadOnlyAttribute = (values: ValueCollection): ValueCollection => {
   return values.map((value: Value) => ({
     ...value,
-    editable: value.editable && !value.attribute.is_read_only,
+    editable: value.editable && !value.attribute.isReadOnly,
   }));
 };
 

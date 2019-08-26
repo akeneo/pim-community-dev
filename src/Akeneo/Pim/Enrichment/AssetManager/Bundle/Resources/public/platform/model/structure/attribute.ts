@@ -10,8 +10,8 @@ export type Attribute = {
     [locale: string]: string;
   };
   group: AttributeGroupCode;
-  is_read_only: boolean;
-  reference_data_name: ReferenceDataName;
+  isReadOnly: boolean;
+  referenceDataName: ReferenceDataName;
 };
 
 export const getAttributeLabel = (attribute: Attribute, locale: LocaleCode) => {

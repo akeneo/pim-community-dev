@@ -120,7 +120,7 @@ const List = ({values, family, context}: ListProps) => {
             ): null}
             <Button buttonSize='medium' color='outline'>{__('pim_asset_manager.asset_collection.add_asset')}</Button>
           </SectionTitle>
-          <AssetCollection assetFamilyIdentifier={value.attribute.reference_data_name} assetCodes={value.data} context={context} />
+          <AssetCollection assetFamilyIdentifier={value.attribute.referenceDataName} assetCodes={value.data} context={context} />
         </AssetCollectionContainer>
       ))}
     </AssetCollectionList>
