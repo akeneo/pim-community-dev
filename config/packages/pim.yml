@@ -1,18 +1,3 @@
-imports:
-    - { resource: '../../src/Akeneo/Platform/config/bundles/akeneo_batch.yml' }
-    - { resource: '../../src/Akeneo/Platform/config/bundles/akeneo_api.yml' }
-    - { resource: '../../src/Akeneo/Platform/config/bundles/doctrine.yml' }
-    - { resource: '../../src/Akeneo/Platform/config/bundles/fos_auth_server.yml' }
-    - { resource: '../../src/Akeneo/Platform/config/bundles/fos_js_routing.yml' }
-    - { resource: '../../src/Akeneo/Platform/config/bundles/fos_rest.yml' }
-    - { resource: '../../src/Akeneo/Platform/config/bundles/gedmo_doctrine_extensions.yml' }
-    - { resource: '../../src/Akeneo/Platform/config/bundles/liip_imagine.yml' }
-    - { resource: '../../src/Akeneo/Platform/config/bundles/oneup_flysystem.yml' }
-    - { resource: '../../src/Akeneo/Platform/config/bundles/oro_filter.yml' }
-    - { resource: '../../src/Akeneo/Platform/config/bundles/oro_translation.yml' }
-    - { resource: '../../src/Akeneo/Platform/config/bundles/pim_user.yml' }
-    - { resource: '../../src/Akeneo/Platform/config/bundles/twig.yml' }
-
 # To have more details on the effect of this "pim_job_product_batch_size", on performances
 # memory leak, please have a look at this documentation part:
 # https://docs.akeneo.com/latest/technical_architecture/performances_guide/batch_page_size.html
