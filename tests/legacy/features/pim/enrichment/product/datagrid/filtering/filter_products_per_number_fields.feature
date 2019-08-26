@@ -8,6 +8,7 @@ Feature: Filter products by number field
     Given the "default" catalog configuration
     And I am logged in as "Mary"
 
+  @acceptance-front
   Scenario: Successfully filter products by empty value for number attributes
     Given the following attributes:
       | label-en_US | type               | localizable | scopable | useable_as_grid_filter | decimals_allowed | negative_allowed | group | code  |

@@ -229,7 +229,7 @@ jobs:
             when: always
         - run:
             name: Front acceptance tests
-            command: MAX_RANDOM_LATENCY_MS=100 docker-compose run --rm node yarn run acceptance ./tests/features
+            command: MAX_RANDOM_LATENCY_MS=100 docker-compose run --rm node yarn run acceptance ./tests/features ./tests/legacy/features
             when: always
         - run:
             name: Front integration tests
