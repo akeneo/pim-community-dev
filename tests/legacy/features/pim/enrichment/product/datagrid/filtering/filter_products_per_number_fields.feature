@@ -15,8 +15,6 @@ Feature: Filter products by number field
       | postit | 200   |      |
       | book   |       | 9.5  |
       | mug    |       |      |
-    # And the "book" product has the "count" attribute
-    # And the "mug" product has the "rate" attribute
     And I am on the products grid
     Then the grid should contain 3 elements
     And I should see products postit, book and mug

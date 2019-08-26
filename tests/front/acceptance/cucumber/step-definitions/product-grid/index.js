@@ -61,14 +61,6 @@ module.exports = function(cucumber) {
     callback();
   });
 
-  // Given('the "book" product has the "count" attribute', function (string, string2, callback) {
-  //   callback(null, 'pending');
-  // });
-
-  // Given('the "mug" product has the "rate" attribute', function (string, string2, callback) {
-  //   callback(null, 'pending');
-  // });
-
   Given('I am on the products grid', async function () {
     this.page.on('request', request => {
       if (request.url() === 'http://pim.com/datagrid_view/rest/product-grid/default') {
