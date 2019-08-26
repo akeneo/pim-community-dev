@@ -47,23 +47,23 @@ class ApplyAttributeStructure
             return;
         }
 
-        foreach ($attributes as $attributeCode => $attribute) {
+        foreach ($attributes as $index => $attribute) {
             if ($attribute['type'] === AttributeTypes::OPTION_SIMPLE_SELECT || $attribute['type'] === AttributeTypes::OPTION_MULTI_SELECT) {
-                $attributeOptions = $this->selectAttributeOptions->execute($attributeCode);
+                $attributeOptions = $this->selectAttributeOptions->execute($attribute['code']);
                 if (! empty($attributeOptions)) {
-                    $attributes[$attributeCode]['options'] = $attributeOptions;
+                    $attributes[$index]['options'] = $attributeOptions;
                 }
             }
         }
         $attributes = $this->convertPimAttributeTypesToFranklinTypes($attributes);
 
-        $this->qualityHighlightsProvider->applyAttributeStructure($attributes);
+        $this->qualityHighlightsProvider->applyAttributeStructure(['attributes' => $attributes]);
     }
 
     private function convertPimAttributeTypesToFranklinTypes(array $attributes): array
     {
-        foreach ($attributes as $attributeCode => $attribute) {
-            $attributes[$attributeCode]['type'] = AttributeMapping::AUTHORIZED_ATTRIBUTE_TYPE_MAPPINGS[$attribute['type']];
+        foreach ($attributes as $index => $attribute) {
+            $attributes[$index]['type'] = AttributeMapping::AUTHORIZED_ATTRIBUTE_TYPE_MAPPINGS[$attribute['type']];
         }
 
         return $attributes;

@@ -33,7 +33,7 @@ class SelectAttributesToApplyQuery implements SelectAttributesToApplyQueryInterf
 
         $attributes = [];
         foreach ($searchResults as $attribute) {
-            $attributes[$attribute['code']] = $this->buildAttribute($attribute);
+            $attributes[] = $this->buildAttribute($attribute);
         }
 
         return $attributes;
@@ -43,7 +43,7 @@ class SelectAttributesToApplyQuery implements SelectAttributesToApplyQueryInterf
     {
         $sql = <<<'SQL'
             SELECT 
-                DISTINCT attribute.code, attribute.attribute_type, attribute.metric_family, 
+                DISTINCT attribute.code, attribute.attribute_type as `type`, attribute.metric_family, 
                 attribute.default_metric_unit AS unit,
             (SELECT JSON_OBJECTAGG(IFNULL(locale, 0), label) FROM pim_catalog_attribute_translation WHERE foreign_key = attribute.id) AS labels
             FROM pim_catalog_attribute AS attribute
@@ -73,7 +73,7 @@ SQL;
             ];
         }, $translations, array_keys($translations));
 
-        if ($attributeResult['attribute_type'] !== AttributeTypes::METRIC) {
+        if ($attributeResult['type'] !== AttributeTypes::METRIC) {
             unset($attribute['metric_family']);
             unset($attribute['unit']);
         }

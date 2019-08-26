@@ -60,7 +60,7 @@ final class SelectAttributesToApplyQueryIntegration extends TestCase
         $attributes = $this->query->execute([$attributeId1, $attributeId2, $attributeId3]);
 
         $expectedResult = [
-            'weight' => [
+            [
                 'code' => 'weight',
                 'type' => AttributeTypes::TEXT,
                 'labels' => [
@@ -70,7 +70,7 @@ final class SelectAttributesToApplyQueryIntegration extends TestCase
                     ],
                 ],
             ],
-            'color' => [
+            [
                 'code' => 'color',
                 'type' => AttributeTypes::OPTION_SIMPLE_SELECT,
                 'labels' => [
@@ -84,7 +84,7 @@ final class SelectAttributesToApplyQueryIntegration extends TestCase
                     ],
                 ],
             ],
-            'size' => [
+            [
                 'code' => 'size',
                 'type' => AttributeTypes::METRIC,
                 'metric_family' => 'Length',
@@ -98,7 +98,7 @@ final class SelectAttributesToApplyQueryIntegration extends TestCase
             ]
         ];
 
-        $this->assertEqualsCanonicalizing($expectedResult, $attributes);
+        $this->assertEquals($expectedResult, $attributes);
     }
 
     private function createTextAttribute(string $attributeCode): AttributeInterface

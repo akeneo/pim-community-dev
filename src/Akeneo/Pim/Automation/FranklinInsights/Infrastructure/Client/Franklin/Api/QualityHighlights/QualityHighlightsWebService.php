@@ -33,7 +33,7 @@ class QualityHighlightsWebService extends AbstractApi implements AuthenticatedAp
 
         try {
             $this->httpClient->request('POST', $route, [
-                'form_params' => $attributes,
+                'json' => $attributes,
             ]);
         } catch (ServerException $e) {
             throw new FranklinServerException(

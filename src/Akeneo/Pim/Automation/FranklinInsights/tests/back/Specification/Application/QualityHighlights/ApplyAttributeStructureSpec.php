@@ -45,7 +45,7 @@ class ApplyAttributeStructureSpec extends ObjectBehavior
         $attributeCode1 = 'color';
         $attributeCode2 = 'size';
         $selectAttributesToApplyQuery->execute([1, 42])->willReturn([
-            $attributeCode1 => [
+            [
                 'code' => $attributeCode1,
                 'type' => AttributeTypes::OPTION_SIMPLE_SELECT,
                 'labels' => [
@@ -59,7 +59,7 @@ class ApplyAttributeStructureSpec extends ObjectBehavior
                     ],
                 ],
             ],
-            $attributeCode2 => [
+            [
                 'code' => $attributeCode2,
                 'type' => AttributeTypes::METRIC,
                 'metric_family' => 'length',
@@ -91,47 +91,49 @@ class ApplyAttributeStructureSpec extends ObjectBehavior
         $selectAttributeOptions->execute($attributeCode2)->shouldNotBeCalled();
 
         $expectedAppliedAttributes = [
-            $attributeCode1 => [
-                'code' => $attributeCode1,
-                'type' => AttributeMapping::AUTHORIZED_ATTRIBUTE_TYPE_MAPPINGS[AttributeTypes::OPTION_SIMPLE_SELECT],
-                'labels' => [
-                    [
-                        'locale' => 'en_US',
-                        'label' => 'Color',
+            'attributes' => [
+                [
+                    'code' => $attributeCode1,
+                    'type' => AttributeMapping::AUTHORIZED_ATTRIBUTE_TYPE_MAPPINGS[AttributeTypes::OPTION_SIMPLE_SELECT],
+                    'labels' => [
+                        [
+                            'locale' => 'en_US',
+                            'label' => 'Color',
+                        ],
+                        [
+                            'locale' => 'fr_FR',
+                            'label' => 'Couleur',
+                        ],
                     ],
-                    [
-                        'locale' => 'fr_FR',
-                        'label' => 'Couleur',
-                    ],
-                ],
-                'options' => [
-                    [
-                        'code' => 'blue',
-                        'labels' => [
-                            [
-                                'locale' => 'en_US',
-                                'label' => 'Blue',
-                            ],
-                            [
-                                'locale' => 'fr_FR',
-                                'label' => 'Bleu',
+                    'options' => [
+                        [
+                            'code' => 'blue',
+                            'labels' => [
+                                [
+                                    'locale' => 'en_US',
+                                    'label' => 'Blue',
+                                ],
+                                [
+                                    'locale' => 'fr_FR',
+                                    'label' => 'Bleu',
+                                ],
                             ],
                         ],
                     ],
                 ],
-            ],
-            $attributeCode2 => [
-                'code' => 'size',
-                'type' => AttributeMapping::AUTHORIZED_ATTRIBUTE_TYPE_MAPPINGS[AttributeTypes::METRIC],
-                'metric_family' => 'length',
-                'unit' => 'inches',
-                'labels' => [
-                    [
-                        'locale' => 'en_US',
-                        'label' => 'US size',
+                [
+                    'code' => 'size',
+                    'type' => AttributeMapping::AUTHORIZED_ATTRIBUTE_TYPE_MAPPINGS[AttributeTypes::METRIC],
+                    'metric_family' => 'length',
+                    'unit' => 'inches',
+                    'labels' => [
+                        [
+                            'locale' => 'en_US',
+                            'label' => 'US size',
+                        ],
                     ],
-                ],
-            ]
+                ]
+            ],
         ];
 
         $qualityHighlightsProvider->applyAttributeStructure($expectedAppliedAttributes)->shouldBeCalled();
