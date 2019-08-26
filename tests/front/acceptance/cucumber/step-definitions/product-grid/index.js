@@ -5,7 +5,6 @@ module.exports = function(cucumber) {
   const DatagridProductBuilder = require('../../../../common/builder/datagrid-product')
   const createElementDecorator = require('../../decorators/common/create-element-decorator');
   const datagridLoad = require('../../contracts/datagrid-load.json')
-  const datagridProducts = require('../../contracts/datagrid-products.json')
   const categoryListTree = require('../../contracts/category-list-tree.json')
   const categoryTreeChildren = require('../../contracts/category-tree-children.json')
 
