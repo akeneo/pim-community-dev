@@ -16,11 +16,8 @@ namespace Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\Action\Field;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\Action\Item;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\Action\ItemCollection;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\Action\Items;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\Action\Type;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\Action\Value;
 use Akeneo\AssetManager\Domain\Query\Asset\PropertyAccessibleAsset;
 use Webmozart\Assert\Assert;
 

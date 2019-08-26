@@ -12,7 +12,26 @@
       "code": "brand",
       "labels": {
         "fr_FR": "Marque"
-      }
+      },
+      "product_link_rules": [
+        {
+          "product_selections": [
+            {
+              "field": "sku",
+              "operator": "EQUALS",
+              "value": "{{product_ref}}",
+              "locale": null
+            }
+          ],
+          "assign_assets_to": [
+            {
+              "attribute": "user_instructions",
+              "locale": "{{locale}}",
+              "mode": "replace"
+            }
+          ]
+        }
+      ]
     }
   }
 }

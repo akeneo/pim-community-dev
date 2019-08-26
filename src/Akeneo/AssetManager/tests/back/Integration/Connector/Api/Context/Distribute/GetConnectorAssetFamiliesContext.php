@@ -72,10 +72,34 @@ class GetConnectorAssetFamiliesContext implements Context
                 ->setOriginalFilename(sprintf('%s.jpg', $rawIdentifier))
                 ->setKey(sprintf('test/image_%s.jpg', $rawIdentifier));
 
+            $productLinkRules = [];
+            if (1 === $i) {
+                $productLinkRules = [
+                    [
+                        'product_selections' => [
+                            [
+                                'field' => 'sku',
+                                'operator' => 'EQUALS',
+                                'value' => '{{product_ref}}',
+                                'locale' => null,
+                            ],
+                        ],
+                        'assign_assets_to' => [
+                            [
+                                'attribute' => 'user_instructions',
+                                'locale' => '{{locale}}',
+                                'mode' => 'replace',
+                            ],
+                        ],
+                    ],
+                ];
+            }
+
             $assetFamily = new ConnectorAssetFamily(
                 $assetFamilyIdentifier,
                 LabelCollection::fromArray(['fr_FR' => 'Marque']),
-                Image::fromFileInfo($imageInfo)
+                Image::fromFileInfo($imageInfo),
+                $productLinkRules
             );
 
             $this->findConnectorAssetFamily->save(

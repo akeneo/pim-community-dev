@@ -29,7 +29,26 @@
             "code": "asset_family_1",
             "labels": {
               "fr_FR": "Marque"
-            }
+            },
+            "product_link_rules": [
+              {
+                "product_selections": [
+                  {
+                    "field": "sku",
+                    "operator": "EQUALS",
+                    "value": "{{product_ref}}",
+                    "locale": null
+                  }
+                ],
+                "assign_assets_to": [
+                  {
+                    "attribute": "user_instructions",
+                    "locale": "{{locale}}",
+                    "mode": "replace"
+                  }
+                ]
+              }
+            ]
           },
           {
             "_links": {
@@ -40,7 +59,8 @@
             "code": "asset_family_2",
             "labels": {
               "fr_FR": "Marque"
-            }
+            },
+            "product_link_rules": []
           },
           {
             "_links": {
@@ -51,7 +71,8 @@
             "code": "asset_family_3",
             "labels": {
               "fr_FR": "Marque"
-            }
+            },
+            "product_link_rules": []
           }
         ]
       }

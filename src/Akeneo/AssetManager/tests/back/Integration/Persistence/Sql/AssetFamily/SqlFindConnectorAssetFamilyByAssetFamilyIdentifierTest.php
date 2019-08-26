@@ -51,7 +51,8 @@ class SqlFindConnectorAssetFamilyByAssetFamilyIdentifierTest extends SqlIntegrat
         $expectedAssetFamily = new ConnectorAssetFamily(
             $assetFamily->getIdentifier(),
             LabelCollection::fromArray(['en_US' => 'designer', 'fr_FR' => 'designer']),
-            Image::createEmpty()
+            Image::createEmpty(),
+            []
         );
 
         $assetFamilyFound = $this->findConnectorAssetFamilyQuery->find(AssetFamilyIdentifier::fromString('designer'));

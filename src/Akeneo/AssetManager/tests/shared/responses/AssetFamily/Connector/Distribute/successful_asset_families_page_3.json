@@ -28,7 +28,8 @@
             "code": "asset_family_7",
             "labels": {
               "fr_FR": "Marque"
-            }
+            },
+            "product_link_rules": []
           }
         ]
       }

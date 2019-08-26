@@ -31,7 +31,8 @@
             "code": "asset_family_4",
             "labels": {
               "fr_FR": "Marque"
-            }
+            },
+            "product_link_rules": []
           },
           {
             "_links": {
@@ -42,7 +43,8 @@
             "code": "asset_family_5",
             "labels": {
               "fr_FR": "Marque"
-            }
+            },
+            "product_link_rules": []
           },
           {
             "_links": {
@@ -53,7 +55,8 @@
             "code": "asset_family_6",
             "labels": {
               "fr_FR": "Marque"
-            }
+            },
+            "product_link_rules": []
           }
         ]
       }

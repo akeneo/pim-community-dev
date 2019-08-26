@@ -51,7 +51,8 @@ class InMemoryFindConnectorAssetFamilyByAssetFamilyIdentifierTest extends TestCa
         $assetFamily = new ConnectorAssetFamily(
             AssetFamilyIdentifier::fromString('asset_family_identifier'),
             LabelCollection::fromArray([]),
-            Image::createEmpty()
+            Image::createEmpty(),
+            []
         );
 
         $this->query->save(

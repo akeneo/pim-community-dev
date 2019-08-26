@@ -32,23 +32,30 @@ class ConnectorAssetFamily
     /** @var Image */
     private $image;
 
+    /** @var array */
+    private $productLinkRules;
+
     public function __construct(
         AssetFamilyIdentifier $identifier,
         LabelCollection $labelCollection,
-        Image $image
+        Image $image,
+        array $productLinkRules
     ) {
         $this->identifier = $identifier;
         $this->labelCollection = $labelCollection;
         $this->image = $image;
+        $this->productLinkRules = $productLinkRules;
     }
 
     public function normalize(): array
     {
         $normalizedLabels = $this->labelCollection->normalize();
+
         return [
             'code' => $this->identifier->normalize(),
             'labels' => empty($normalizedLabels) ? (object) [] : $normalizedLabels,
-            'image' => $this->image->isEmpty() ? null : $this->image->getKey()
+            'image' => $this->image->isEmpty() ? null : $this->image->getKey(),
+            'product_link_rules' => $this->productLinkRules,
         ];
     }
 

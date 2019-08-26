@@ -31,10 +31,15 @@ class ConnectorAssetFamilyHydrator
     /** @var AbstractPlatform */
     private $platform;
 
+    /** @var ConnectorProductLinkRulesHydrator */
+    private $productLinkRulesHydrator;
+
     public function __construct(
-        Connection $connection
+        Connection $connection,
+        ConnectorProductLinkRulesHydrator $productLinkRulesHydrator
     ) {
         $this->platform = $connection->getDatabasePlatform();
+        $this->productLinkRulesHydrator = $productLinkRulesHydrator;
     }
 
     public function hydrate(array $row): ConnectorAssetFamily
@@ -47,6 +52,8 @@ class ConnectorAssetFamilyHydrator
             ->convertToPHPValue($row['image_file_key'], $this->platform);
         $imageFilename = Type::getType(Type::STRING)
             ->convertToPHPValue($row['image_original_filename'], $this->platform);
+        $ruleTemplates = Type::getType(Type::JSON_ARRAY)
+            ->convertToPHPValue($row['rule_templates'], $this->platform);
 
         $image = Image::createEmpty();
 
@@ -57,10 +64,13 @@ class ConnectorAssetFamilyHydrator
             $image = Image::fromFileInfo($file);
         }
 
+        $productLinkRules = $this->productLinkRulesHydrator->hydrate($ruleTemplates);
+
         $connectorAssetFamily = new ConnectorAssetFamily(
             AssetFamilyIdentifier::fromString($identifier),
             LabelCollection::fromArray($labels),
-            $image
+            $image,
+            $productLinkRules
         );
 
         return $connectorAssetFamily;

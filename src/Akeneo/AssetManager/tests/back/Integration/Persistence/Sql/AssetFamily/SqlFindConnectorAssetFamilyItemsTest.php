@@ -54,7 +54,8 @@ class SqlFindConnectorAssetFamilyItemsTest extends SqlIntegrationTestCase
             $assetFamilies[] = new ConnectorAssetFamily(
                 $assetFamily->getIdentifier(),
                 LabelCollection::fromArray(['en_US' => sprintf('asset_family_%s', $i)]),
-                Image::createEmpty()
+                Image::createEmpty(),
+                []
             );
         }
 
@@ -86,7 +87,8 @@ class SqlFindConnectorAssetFamilyItemsTest extends SqlIntegrationTestCase
             $assetFamilies[] = new ConnectorAssetFamily(
                 $assetFamily->getIdentifier(),
                 LabelCollection::fromArray(['en_US' => sprintf('asset_family_%s', $i)]),
-                Image::createEmpty()
+                Image::createEmpty(),
+                []
             );
         }
 
