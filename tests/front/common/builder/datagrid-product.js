@@ -10,7 +10,6 @@ class DatagridProductBuilder {
   constructor() {
     this.product = {
       identifier: '',
-      values: [],
       enabled: true,
       family: 'scanner',
       label: '',
@@ -33,12 +32,6 @@ class DatagridProductBuilder {
 
   withIdentifier(identifier) {
     this.product.identifier = identifier;
-
-    return this;
-  }
-
-  withValues(values) {
-    this.product.values = values;
 
     return this;
   }

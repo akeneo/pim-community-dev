@@ -36,7 +36,7 @@ module.exports = function(cucumber) {
   Given('the following products:', function (products, callback) {
     const followingProducts = convertItemTable(products)
     const productData = followingProducts.map((product) => {
-      return new DatagridProductBuilder().withIdentifier(product.sku).build()
+      return new DatagridProductBuilder().withIdentifier(product.sku).withLabel(product.sku).build()
     })
 
     const productGridData = {
@@ -100,8 +100,10 @@ module.exports = function(cucumber) {
     assert.equal(productCount, 3)
   });
 
-  Then('I should see products postit, book and mug', function (callback) {
-    callback(null, 'pending');
+  Then('I should see products postit, book and mug', async function () {
+    const productGrid = await createElementDecorator(config)(this.page, 'Product grid')
+    const rowNames = await productGrid.getRowNames();
+    assert.notStrictEqual(rowNames, ['postit', 'book', 'mug'])
   });
 
   Then('I should be able to use the following filters:', function (dataTable, callback) {
