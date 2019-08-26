@@ -27,6 +27,19 @@ class ReplacePatternSpec extends ObjectBehavior
         $this::replace('{{colors}}', $accessibleAsset)->shouldReturn(['blue', 'red']);
     }
 
+    public function it_can_replace_string_within_an_array_properties(PropertyAccessibleAsset $accessibleAsset)
+    {
+        $accessibleAsset->hasValue('main_color')->willReturn(true);
+        $accessibleAsset->getValue('main_color')->willReturn('blue');
+        $this::replace(['red', '{{main_color}}'], $accessibleAsset)->shouldReturn(['red', 'blue']);
+    }
+
+    public function it_handles_static_array_of_strings()
+    {
+        $accessibleAsset = new PropertyAccessibleAsset('hat', []);
+        $this::replace(['red', 'blue'], $accessibleAsset)->shouldReturn(['red', 'blue']);
+    }
+
     public function it_can_replace_several_properties(PropertyAccessibleAsset $accessibleAsset)
     {
         $accessibleAsset->hasValue('code')->willReturn(true);
@@ -34,6 +47,15 @@ class ReplacePatternSpec extends ObjectBehavior
         $accessibleAsset->getValue('code')->willReturn('nice_asset');
         $accessibleAsset->getValue('type')->willReturn('image');
         $this::replace('{{code}}-{{type}}', $accessibleAsset)->shouldReturn('nice_asset-image');
+    }
+
+    public function it_can_replace_a_list_of_several_properties(PropertyAccessibleAsset $accessibleAsset)
+    {
+        $accessibleAsset->hasValue('code')->willReturn(true);
+        $accessibleAsset->hasValue('type')->willReturn(true);
+        $accessibleAsset->getValue('code')->willReturn('nice_asset');
+        $accessibleAsset->getValue('type')->willReturn('image');
+        $this::replace(['{{code}}-{{type}}', '{{code}}-{{type}}'], $accessibleAsset)->shouldReturn(['nice_asset-image', 'nice_asset-image']);
     }
 
     public function it_cannot_replace_several_properties_with_array(PropertyAccessibleAsset $accessibleAsset)
@@ -45,9 +67,9 @@ class ReplacePatternSpec extends ObjectBehavior
         $this->shouldThrow(new \InvalidArgumentException('The asset property "colors" could not be replaced as his value is an array'))->during('replace', ['{{code}}-{{colors}}', $accessibleAsset]);
     }
 
-    public function it_cannot_replace_unknown_properties(PropertyAccessibleAsset $accessibleAsset)
+    public function it_cannot_replace_unknown_properties()
     {
-        $accessibleAsset->hasValue('test')->willReturn(false);
-        $this->shouldThrow(new \InvalidArgumentException('The asset property "test" does not exist'))->during('replace', ['{{ test}}', $accessibleAsset]);
+        $accessibleAsset = new PropertyAccessibleAsset('hat', []);
+        $this->shouldThrow(new \InvalidArgumentException('The asset property "UNKOWN" does not exist'))->during('replace', ['{{UNKOWN}}', $accessibleAsset]);
     }
 }
