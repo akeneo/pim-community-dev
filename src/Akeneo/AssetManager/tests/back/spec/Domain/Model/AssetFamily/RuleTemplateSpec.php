@@ -35,6 +35,37 @@ class RuleTemplateSpec extends ObjectBehavior
         $this->shouldThrow(new \InvalidArgumentException('Expected the key "product_selections" to exist.'))->duringInstantiation();
     }
 
+    public function it_should_contain_at_least_one_product_selection()
+    {
+        $content = [
+            'product_selections' => [],
+            'assign_assets_to' => [
+                [
+                    'mode'      => 'add',
+                    'attribute' => '{{attribute}}'
+                ]
+            ]
+        ];
+        $this->beConstructedThrough('createFromProductLinkRule', [$content]);
+        $this->shouldThrow(new \InvalidArgumentException('A rule template should have at least have one condition'))->duringInstantiation();
+    }
+
+    public function it_should_contain_at_least_one_product_action()
+    {
+        $content = [
+            'product_selections' => [
+                [
+                    'field'      => 'sku',
+                    'operator' => '=',
+                    'value' => '{{code}}'
+                ]
+            ],
+            'assign_assets_to' => []
+        ];
+        $this->beConstructedThrough('createFromProductLinkRule', [$content]);
+        $this->shouldThrow(new \InvalidArgumentException('A rule template should have at least have one action'))->duringInstantiation();
+    }
+
     public function it_should_contain_assign_assets()
     {
         $content = [

@@ -310,4 +310,32 @@ final class CreateAssetFamilyContext implements Context
             $this->exceptionContext->setException($e);
         }
     }
+
+    /**
+     * @When /^the user creates an asset family "([^"]*)" with an empty product selections$/
+     */
+    public function theUserCreatesAnAssetFamilyWithNoProductSelections(string $assetFamilyCode)
+    {
+        $emptyProductSelection = [['product_selections' => [], 'assign_assets_to' => [['mode' => 'set', 'attribute' => 'collection']]]];
+        $createAssetFamilyWithEmptyProductSelection = new CreateAssetFamilyCommand(
+            $assetFamilyCode,
+            [],
+            $emptyProductSelection
+        );
+        $this->createAssetFamily($createAssetFamilyWithEmptyProductSelection);
+    }
+
+    /**
+     * @When /^the user creates an asset family "([^"]*)" with an empty product assignment$/
+     */
+    public function theUserCreatesAnAssetFamilyWithNoProductAssignment(string $assetFamilyCode)
+    {
+        $emptyProductAssignment = [['product_selections' => [['field' => 'family', 'operator' => 'IN', 'camcorders']], 'assign_assets_to' => []]];
+        $createAssetFamilyWithEmptyProductAssignment = new CreateAssetFamilyCommand(
+            $assetFamilyCode,
+            [],
+            $emptyProductAssignment
+        );
+        $this->createAssetFamily($createAssetFamilyWithEmptyProductAssignment);
+    }
 }

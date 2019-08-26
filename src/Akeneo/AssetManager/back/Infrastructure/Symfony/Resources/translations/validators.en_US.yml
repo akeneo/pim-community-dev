@@ -16,6 +16,8 @@ pim_asset_manager:
             should_exist: 'The asset family "%asset_family_code%" was not found.'
             rule_template:
                 limit_reached: 'You cannot create the asset family "%asset_family_label%" because you have reached the limit of %limit% product link rules'
+                product_selection_cannot_be_empty: 'You must specify at least one product selection in your product link rule'
+                product_assignment_cannot_be_empty: 'You must specify at least one product assignment in your product link rule'
     asset:
         validation:
             code:

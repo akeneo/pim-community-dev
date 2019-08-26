@@ -40,6 +40,8 @@ class RuleTemplate
 
     private function __construct(array $conditions, array $actions)
     {
+        Assert::notEmpty($conditions, 'A rule template should have at least have one condition');
+        Assert::notEmpty($actions, 'A rule template should have at least have one action');
         Assert::allIsInstanceOf($conditions, Condition::class);
         Assert::allIsInstanceOf($actions, Action::class);
 
