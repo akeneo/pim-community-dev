@@ -1,0 +1,7 @@
+akeneo_elasticsearch:
+    hosts: "%index_hosts%"
+    indexes:
+        -
+            service_name: "akeneo_elasticsearch.client.product_and_product_model"
+            index_name: "%product_and_product_model_index_name%"
+            configuration_files: "%elasticsearch_index_configuration_files%"

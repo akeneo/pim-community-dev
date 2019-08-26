@@ -23,3 +23,7 @@ framework:
         packages:
             frontend:
                 version_strategy: pim_enrich.version_strategy
+    cache:
+        pools:
+            name:
+                adapter: cache.adapter.apcu
