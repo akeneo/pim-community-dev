@@ -44,3 +44,8 @@ services:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Doctrine\FranklinAttributeAddedToFamilyRepository'
         arguments:
             - '@database_connection'
+
+    akeneo.pim.automation.franklin_insights.repository.quality_highlights_pending_attributes:
+        class: Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Doctrine\QualityHighlights\PendingAttributesRepository
+        arguments:
+            - '@database_connection'

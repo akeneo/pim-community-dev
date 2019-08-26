@@ -14,22 +14,11 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\QualityHighlights;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectPendingAttributesIdQueryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Doctrine\QualityHighlights\PendingAttributesRepository;
 use Doctrine\DBAL\Connection;
 
 class SelectPendingAttributeIdsQuery implements SelectPendingAttributesIdQueryInterface
 {
-    //TODO: move the constants elsewhere, they will be needed to insert data
-
-    public CONST ACTION_ATTRIBUTE_UPDATED = 1;
-
-    public CONST ACTION_ATTRIBUTE_DELETED = 2;
-
-    public const ENTITY_TYPE_ATTRIBUTE = 1;
-
-    public const STATUS_UNLOCKED = 0;
-
-    public const STATUS_LOCKED = 1;
-
     /** @var Connection */
     private $connection;
 
@@ -50,7 +39,7 @@ class SelectPendingAttributeIdsQuery implements SelectPendingAttributesIdQueryIn
             LIMIT :offset, :limit
 SQL;
 
-        return $this->executeQuery($query, $offset, $batchSize, self::ACTION_ATTRIBUTE_UPDATED);
+        return $this->executeQuery($query, $offset, $batchSize, PendingAttributesRepository::ACTION_ATTRIBUTE_UPDATED);
     }
 
     public function getDeletedAttributeIds(int $offset, int $batchSize): array
@@ -65,7 +54,7 @@ SQL;
             LIMIT :offset, :limit
 SQL;
 
-        return $this->executeQuery($query, $offset, $batchSize, self::ACTION_ATTRIBUTE_DELETED);
+        return $this->executeQuery($query, $offset, $batchSize, PendingAttributesRepository::ACTION_ATTRIBUTE_DELETED);
     }
 
     private function executeQuery(string $query, int $offset, int $limit, int $action)
@@ -74,8 +63,8 @@ SQL;
             $query,
             [
                 'action' => $action,
-                'entity_type' => self::ENTITY_TYPE_ATTRIBUTE,
-                'status' => self::STATUS_UNLOCKED,
+                'entity_type' => PendingAttributesRepository::ENTITY_TYPE_ATTRIBUTE,
+                'status' => PendingAttributesRepository::STATUS_UNLOCKED,
                 'offset' => $offset,
                 'limit' => $limit,
             ],

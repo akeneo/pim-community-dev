@@ -45,7 +45,7 @@ SQL;
 
         $results = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
-        return array_map(function(array $row) {
+        return array_map(function (array $row) {
             return [
                 'code' => $row['code'],
                 'labels' => $this->buildLabelsFromjsonString($row['labels']),

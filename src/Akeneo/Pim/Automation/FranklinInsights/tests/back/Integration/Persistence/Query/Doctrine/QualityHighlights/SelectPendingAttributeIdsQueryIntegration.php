@@ -14,6 +14,7 @@ declare (strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\tests\back\Integration\Persistence\Query\Doctrine\QualityHighlights;
 
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\QualityHighlights\SelectPendingAttributeIdsQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Doctrine\QualityHighlights\PendingAttributesRepository;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
@@ -71,20 +72,20 @@ final class SelectPendingAttributeIdsQueryIntegration extends TestCase
 
     private function createDataSet(): void
     {
-        $this->insertUpdatedAttribute(1, SelectPendingAttributeIdsQuery::STATUS_UNLOCKED);
-        $this->insertUpdatedAttribute(2, SelectPendingAttributeIdsQuery::STATUS_LOCKED);
-        $this->insertUpdatedAttribute(3, SelectPendingAttributeIdsQuery::STATUS_UNLOCKED);
-        $this->insertDeletedAttribute(4, SelectPendingAttributeIdsQuery::STATUS_UNLOCKED);
-        $this->insertDeletedAttribute(5, SelectPendingAttributeIdsQuery::STATUS_LOCKED);
-        $this->insertDeletedAttribute(6, SelectPendingAttributeIdsQuery::STATUS_UNLOCKED);
+        $this->insertUpdatedAttribute(1, PendingAttributesRepository::STATUS_UNLOCKED);
+        $this->insertUpdatedAttribute(2, PendingAttributesRepository::STATUS_LOCKED);
+        $this->insertUpdatedAttribute(3, PendingAttributesRepository::STATUS_UNLOCKED);
+        $this->insertDeletedAttribute(4, PendingAttributesRepository::STATUS_UNLOCKED);
+        $this->insertDeletedAttribute(5, PendingAttributesRepository::STATUS_LOCKED);
+        $this->insertDeletedAttribute(6, PendingAttributesRepository::STATUS_UNLOCKED);
     }
 
     private function insertUpdatedAttribute(int $attributeId, int $status)
     {
         $this->getFromTestContainer('database_connection')->executeQuery($this->getInsertSql(), [
-            'entity_type' => SelectPendingAttributeIdsQuery::ENTITY_TYPE_ATTRIBUTE,
+            'entity_type' => PendingAttributesRepository::ENTITY_TYPE_ATTRIBUTE,
             'entity_id' => $attributeId,
-            'action' => SelectPendingAttributeIdsQuery::ACTION_ATTRIBUTE_UPDATED,
+            'action' => PendingAttributesRepository::ACTION_ATTRIBUTE_UPDATED,
             'status' => $status,
         ]);
     }
@@ -92,9 +93,9 @@ final class SelectPendingAttributeIdsQueryIntegration extends TestCase
     private function insertDeletedAttribute(int $attributeId, int $status)
     {
         $this->getFromTestContainer('database_connection')->executeQuery($this->getInsertSql(), [
-            'entity_type' => SelectPendingAttributeIdsQuery::ENTITY_TYPE_ATTRIBUTE,
+            'entity_type' => PendingAttributesRepository::ENTITY_TYPE_ATTRIBUTE,
             'entity_id' => $attributeId,
-            'action' => SelectPendingAttributeIdsQuery::ACTION_ATTRIBUTE_DELETED,
+            'action' => PendingAttributesRepository::ACTION_ATTRIBUTE_DELETED,
             'status' => $status,
         ]);
     }

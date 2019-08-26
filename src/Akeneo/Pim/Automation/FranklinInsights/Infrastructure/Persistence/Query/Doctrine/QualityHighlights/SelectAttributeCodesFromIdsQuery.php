@@ -39,7 +39,7 @@ SQL;
             ['attributeIds' => Connection::PARAM_INT_ARRAY]
         );
 
-        return array_map(function(array $result) {
+        return array_map(function (array $result) {
             return $result['code'];
         }, $statement->fetchAll());
     }

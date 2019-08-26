@@ -24,7 +24,9 @@ CREATE TABLE IF NOT EXISTS pimee_franklin_insights_quality_highlights_pending_it
 	action tinyint null,
 	status tinyint default 0 null,
 	INDEX pending_items_action_index (action),
-	INDEX pending_items_entity_type_index (entity_type)
+	INDEX pending_items_entity_type_index (entity_type),
+	UNIQUE KEY(entity_type, entity_id, status)
+	
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB ROW_FORMAT = DYNAMIC;
 
 SQL;
