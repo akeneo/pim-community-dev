@@ -42,7 +42,7 @@ class SelectPendingAttributeIdsQuery implements SelectPendingAttributesIdQueryIn
     {
         $query = <<<'SQL'
             SELECT entity_id
-            FROM pimee_franklin_insights_pending_items AS pending_items
+            FROM pimee_franklin_insights_quality_highlights_pending_items AS pending_items
             WHERE `action` = :action
             AND entity_type = :entity_type
             AND status = :status
@@ -57,7 +57,7 @@ SQL;
     {
         $query = <<<'SQL'
             SELECT entity_id
-            FROM pimee_franklin_insights_pending_items AS pending_items
+            FROM pimee_franklin_insights_quality_highlights_pending_items AS pending_items
             WHERE `action` = :action
             AND entity_type = :entity_type
             AND status = :status

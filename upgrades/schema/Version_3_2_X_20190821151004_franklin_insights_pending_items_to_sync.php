@@ -22,7 +22,7 @@ class Version_3_2_X_20190821151004_franklin_insights_pending_items_to_sync exten
     public function down(Schema $schema)
     {
         $sqlQuery = <<<'SQL'
-DROP TABLE pimee_franklin_insights_pending_items
+DROP TABLE pimee_franklin_insights_quality_highlights_pending_items
 SQL;
         $this->connection->executeQuery($sqlQuery);
     }

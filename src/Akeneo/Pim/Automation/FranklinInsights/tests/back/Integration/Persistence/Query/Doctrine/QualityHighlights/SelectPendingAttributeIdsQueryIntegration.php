@@ -102,7 +102,7 @@ final class SelectPendingAttributeIdsQueryIntegration extends TestCase
     private function getInsertSql(): string
     {
         return <<<SQL
-            INSERT INTO pimee_franklin_insights_pending_items (entity_type, entity_id, `action`, status)
+            INSERT INTO pimee_franklin_insights_quality_highlights_pending_items (entity_type, entity_id, `action`, status)
             VALUES (:entity_type, :entity_id, :action, :status);
 SQL;
     }
