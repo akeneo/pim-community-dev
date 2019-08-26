@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "code": "master",
+    "label": "Master catalog (1320)",
+    "selected": "true"
+  },
+  {
+    "id": 160,
+    "code": "print",
+    "label": "Print (113)",
+    "selected": "false"
+  },
+  {
+    "id": 2,
+    "code": "sales",
+    "label": "Sales catalog (993)",
+    "selected": "false"
+  },
+  {
+    "id": 164,
+    "code": "suppliers",
+    "label": "Suppliers (233)",
+    "selected": "false"
+  }
+]

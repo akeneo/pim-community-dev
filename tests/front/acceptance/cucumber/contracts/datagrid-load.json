@@ -1,0 +1,578 @@
+{
+  "metadata": {
+    "requireJSModules": [],
+    "options": {
+      "gridName": "product-grid",
+      "entityHint": "product",
+      "filtersAsColumn": true,
+      "displayTypes": {
+        "default": {
+          "label": "pim_datagrid.display_selector.list"
+        },
+        "gallery": {
+          "label": "pim_datagrid.display_selector.gallery",
+          "rowView": "oro\/datagrid\/product-row",
+          "manageColumns": false
+        }
+      },
+      "toolbarOptions": {
+        "hide": false,
+        "pageSize": {
+          "hide": false,
+          "default_per_page": 25,
+          "items": [
+            10,
+            25,
+            50,
+            100
+          ]
+        },
+        "pagination": {
+          "hide": false
+        }
+      },
+      "multipleSorting": false,
+      "url": "\/datagrid\/product-grid?product-grid%5BdataLocale%5D=en_US\u0026product-grid%5B_parameters%5D%5Bview%5D%5Bcolumns%5D=identifier%2Cimage%2Clabel%2Cfamily%2Cenabled%2Ccompleteness%2Ccreated%2Cupdated%2Ccomplete_variant_products%2Csuccess%2C%5Bobject%20Object%5D"
+    },
+    "rowActions": {
+      "edit": {
+        "type": "navigate-product-and-product-model",
+        "label": null,
+        "icon": null,
+        "rowAction": true,
+        "name": "edit",
+        "launcherOptions": {
+          "onClickReturnValue": false,
+          "runAction": true,
+          "className": "no-hash"
+        }
+      },
+      "edit_attributes": {
+        "launcherOptions": {
+          "onClickReturnValue": false,
+          "runAction": true,
+          "className": "AknIconButton AknIconButton--small AknIconButton--edit"
+        },
+        "type": "navigate-product-and-product-model",
+        "label": "pim_datagrid.actions.edit_product_attributes",
+        "tabRedirects": {
+          "product": "pim-product-edit-form-attributes",
+          "product_model": "pim-product-model-edit-form-attributes"
+        },
+        "name": "edit_attributes"
+      },
+      "edit_categories": {
+        "launcherOptions": {
+          "onClickReturnValue": false,
+          "runAction": true,
+          "className": "AknIconButton AknIconButton--small AknIconButton--folder"
+        },
+        "type": "navigate-product-and-product-model",
+        "label": "pim_datagrid.actions.classify_product",
+        "tabRedirects": {
+          "product": "pim-product-edit-form-categories",
+          "product_model": "pim-product-edit-form-categories"
+        },
+        "name": "edit_categories"
+      },
+      "delete": {
+        "launcherOptions": {
+          "className": "AknIconButton AknIconButton--small AknIconButton--trash"
+        },
+        "type": "delete-product",
+        "label": "pim_datagrid.actions.delete_product",
+        "link": "delete_link",
+        "name": "delete",
+        "confirmation": true
+      },
+      "toggle_status": {
+        "launcherOptions": {
+          "className": "AknIconButton AknIconButton--small AknIconButton--switch"
+        },
+        "type": "toggle-product",
+        "label": "pim_datagrid.actions.toggle_status",
+        "link": "toggle_status_link",
+        "name": "toggle_status",
+        "frontend_type": "ajax"
+      }
+    },
+    "massActions": {
+      "product_edit": {
+        "type": "edit",
+        "label": "pim_datagrid.mass_action.mass_edit",
+        "route": "pim_enrich_mass_edit_action",
+        "className": "AknButton AknButton--action AknButtonList-item",
+        "route_parameters": {
+          "actionName": "product-edit"
+        },
+        "name": "product_edit",
+        "handler": "mass_edit",
+        "frontend_type": "redirect"
+      },
+      "sequential_edit": {
+        "type": "sequential_edit",
+        "label": "pim_datagrid.mass_action.sequential_edit",
+        "className": "AknButton AknButton--action AknButtonList-item",
+        "name": "sequential_edit"
+      },
+      "delete_products_and_product_models": {
+        "type": "mass_delete",
+        "label": "Delete",
+        "entity_name": "product",
+        "handler": "product_mass_delete",
+        "className": "AknButton AknButton--important AknButtonList-item",
+        "messages": {
+          "confirm_title": "pim_common.confirm_deletion",
+          "confirm_content": "pim_datagrid.mass_action.delete.confirm_content",
+          "confirm_ok": "pim_common.ok",
+          "success": "pim_datagrid.mass_action.delete.success",
+          "error": "pim_datagrid.mass_action.delete.error",
+          "empty_selection": "pim_datagrid.mass_action.delete.empty_selection"
+        },
+        "name": "delete_products_and_product_models",
+        "frontend_type": "ajax",
+        "route": "oro_datagrid_mass_action",
+        "route_parameters": [],
+        "confirmation": true
+      },
+      "quick_export_grid_context_xlsx": {
+        "type": "export",
+        "label": "pim_datagrid.mass_action.quick_export.xlsx_grid_context",
+        "handler": "product_quick_export",
+        "route": "pim_datagrid_export_product_index",
+        "route_parameters": {
+          "_format": "xlsx",
+          "_contentType": "application\/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          "_jobCode": "xlsx_product_grid_context_quick_export",
+          "_displayedColumnsOnly": 1
+        },
+        "context": {
+          "withHeader": true
+        },
+        "messages": {
+          "empty_selection": "pim_datagrid.mass_action.delete.empty_selection"
+        },
+        "launcherOptions": {
+          "group": "quick_export"
+        },
+        "name": "quick_export_grid_context_xlsx",
+        "frontend_type": "export",
+        "frontend_options": []
+      },
+      "quick_export_xlsx": {
+        "type": "export",
+        "label": "pim_datagrid.mass_action.quick_export.xlsx_all",
+        "handler": "product_quick_export",
+        "route": "pim_datagrid_export_product_index",
+        "route_parameters": {
+          "_format": "xlsx",
+          "_contentType": "application\/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          "_jobCode": "xlsx_product_quick_export",
+          "_displayedColumnsOnly": 0
+        },
+        "context": {
+          "withHeader": true
+        },
+        "messages": {
+          "empty_selection": "pim_datagrid.mass_action.delete.empty_selection"
+        },
+        "launcherOptions": {
+          "group": "quick_export"
+        },
+        "name": "quick_export_xlsx",
+        "frontend_type": "export",
+        "frontend_options": []
+      },
+      "quick_export_grid_context_csv": {
+        "type": "export",
+        "label": "pim_datagrid.mass_action.quick_export.csv_grid_context",
+        "handler": "product_quick_export",
+        "route": "pim_datagrid_export_product_index",
+        "route_parameters": {
+          "_format": "csv",
+          "_contentType": "text\/csv",
+          "_jobCode": "csv_product_grid_context_quick_export",
+          "_displayedColumnsOnly": 1
+        },
+        "context": {
+          "withHeader": true
+        },
+        "messages": {
+          "empty_selection": "pim_datagrid.mass_action.delete.empty_selection"
+        },
+        "launcherOptions": {
+          "group": "quick_export"
+        },
+        "name": "quick_export_grid_context_csv",
+        "frontend_type": "export",
+        "frontend_options": []
+      },
+      "quick_export_csv": {
+        "type": "export",
+        "label": "pim_datagrid.mass_action.quick_export.csv_all",
+        "handler": "product_quick_export",
+        "route": "pim_datagrid_export_product_index",
+        "route_parameters": {
+          "_format": "csv",
+          "_contentType": "text\/csv",
+          "_jobCode": "csv_product_quick_export",
+          "_displayedColumnsOnly": 0
+        },
+        "context": {
+          "withHeader": true
+        },
+        "messages": {
+          "empty_selection": "pim_datagrid.mass_action.delete.empty_selection"
+        },
+        "launcherOptions": {
+          "group": "quick_export"
+        },
+        "name": "quick_export_csv",
+        "frontend_type": "export",
+        "frontend_options": []
+      }
+    },
+    "massActionsGroups": {
+      "bulk_actions": {
+        "label": "pim_datagrid.mass_action_group.bulk_actions.label"
+      },
+      "quick_export": {
+        "label": "pim_datagrid.mass_action_group.quick_export.label"
+      }
+    },
+    "columns": [
+      {
+        "label": "ID",
+        "type": "string",
+        "editable": false,
+        "renderable": true,
+        "name": "identifier",
+        "sortable": true
+      },
+      {
+        "label": "Image",
+        "type": "product-and-product-model-image",
+        "editable": false,
+        "renderable": true,
+        "name": "image"
+      },
+      {
+        "label": "Label",
+        "type": "product-and-product-model-label",
+        "editable": false,
+        "renderable": true,
+        "name": "label"
+      },
+      {
+        "label": "Family",
+        "type": "string",
+        "editable": false,
+        "renderable": true,
+        "name": "family",
+        "sortable": true
+      },
+      {
+        "label": "Status",
+        "type": "enabled",
+        "editable": false,
+        "renderable": true,
+        "name": "enabled",
+        "sortable": true
+      },
+      {
+        "label": "Complete",
+        "type": "completeness",
+        "editable": false,
+        "renderable": true,
+        "name": "completeness",
+        "sortable": true
+      },
+      {
+        "label": "Created at",
+        "type": "string",
+        "editable": false,
+        "renderable": true,
+        "name": "created",
+        "sortable": true
+      },
+      {
+        "label": "Updated at",
+        "type": "string",
+        "editable": false,
+        "renderable": true,
+        "name": "updated",
+        "sortable": true
+      },
+      {
+        "label": "Variant products",
+        "type": "complete-variant-product",
+        "editable": false,
+        "renderable": true,
+        "name": "complete_variant_products"
+      }
+    ],
+    "state": {
+      "filters": [],
+      "sorters": {
+        "updated": "DESC"
+      },
+      "currentPage": 1,
+      "pageSize": 25
+    },
+    "filters": [
+      {
+        "name": "family",
+        "label": "Family",
+        "enabled": true,
+        "choices": [],
+        "type": "select2-rest-choice",
+        "populateDefault": true,
+        "choiceUrl": "pim_enrich_family_rest_index",
+        "choiceUrlParams": {
+          "options": {
+            "expanded": 0
+          }
+        },
+        "emptyChoice": true
+      },
+      {
+        "name": "groups",
+        "label": "Groups",
+        "enabled": true,
+        "choices": [],
+        "type": "select2-choice",
+        "populateDefault": true,
+        "choiceUrl": "pim_ui_ajaxentity_list",
+        "choiceUrlParams": {
+          "class": "Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Group",
+          "dataLocale": "en_US",
+          "collectionId": null,
+          "options": {
+            "type": "code"
+          }
+        },
+        "emptyChoice": false
+      },
+      {
+        "name": "enabled",
+        "label": "Status",
+        "choices": [
+          {
+            "label": "Enabled",
+            "value": "1"
+          },
+          {
+            "label": "Disabled",
+            "value": "0"
+          }
+        ],
+        "enabled": true,
+        "type": "choice",
+        "populateDefault": true
+      },
+      {
+        "name": "scope",
+        "label": "Channel",
+        "choices": [
+          {
+            "label": "Ecommerce",
+            "value": "ecommerce"
+          },
+          {
+            "label": "Mobile",
+            "value": "mobile"
+          },
+          {
+            "label": "Print",
+            "value": "print"
+          }
+        ],
+        "enabled": true,
+        "type": "product_scope",
+        "populateDefault": false
+      },
+      {
+        "name": "completeness",
+        "label": "Complete",
+        "choices": [
+          {
+            "label": "yes",
+            "value": "1"
+          },
+          {
+            "label": "no",
+            "value": "2"
+          }
+        ],
+        "enabled": true,
+        "type": "product_and_product_model_completeness",
+        "populateDefault": true
+      },
+      {
+        "name": "created",
+        "label": "Created at",
+        "choices": [
+          {
+            "label": "between",
+            "value": "1",
+            "data": 1,
+            "attr": []
+          },
+          {
+            "label": "not between",
+            "value": "2",
+            "data": 2,
+            "attr": []
+          },
+          {
+            "label": "more than",
+            "value": "3",
+            "data": 3,
+            "attr": []
+          },
+          {
+            "label": "less than",
+            "value": "4",
+            "data": 4,
+            "attr": []
+          }
+        ],
+        "enabled": true,
+        "type": "date",
+        "typeValues": {
+          "between": 1,
+          "notBetween": 2,
+          "moreThan": 3,
+          "lessThan": 4
+        },
+        "externalWidgetOptions": {
+          "firstDay": 0
+        }
+      },
+      {
+        "name": "updated",
+        "label": "Updated at",
+        "choices": [
+          {
+            "label": "between",
+            "value": "1",
+            "data": 1,
+            "attr": []
+          },
+          {
+            "label": "not between",
+            "value": "2",
+            "data": 2,
+            "attr": []
+          },
+          {
+            "label": "more than",
+            "value": "3",
+            "data": 3,
+            "attr": []
+          },
+          {
+            "label": "less than",
+            "value": "4",
+            "data": 4,
+            "attr": []
+          }
+        ],
+        "enabled": true,
+        "type": "date",
+        "typeValues": {
+          "between": 1,
+          "notBetween": 2,
+          "moreThan": 3,
+          "lessThan": 4
+        },
+        "externalWidgetOptions": {
+          "firstDay": 0
+        }
+      },
+      {
+        "name": "label_or_identifier",
+        "label": "Label or identifier",
+        "choices": [
+          {
+            "label": "contains",
+            "value": "1",
+            "data": 1,
+            "attr": []
+          },
+          {
+            "label": "does not contain",
+            "value": "2",
+            "data": 2,
+            "attr": []
+          },
+          {
+            "label": "is equal to",
+            "value": "3",
+            "data": 3,
+            "attr": []
+          },
+          {
+            "label": "starts with",
+            "value": "4",
+            "data": 4,
+            "attr": []
+          },
+          {
+            "label": "is empty",
+            "value": "empty",
+            "data": "empty",
+            "attr": []
+          }
+        ],
+        "enabled": true,
+        "type": "label_or_identifier"
+      },
+      {
+        "name": "parent",
+        "label": "Parent",
+        "choices": [
+          {
+            "label": "contains",
+            "value": "1",
+            "data": 1,
+            "attr": []
+          },
+          {
+            "label": "does not contain",
+            "value": "2",
+            "data": 2,
+            "attr": []
+          },
+          {
+            "label": "is equal to",
+            "value": "3",
+            "data": 3,
+            "attr": []
+          },
+          {
+            "label": "starts with",
+            "value": "4",
+            "data": 4,
+            "attr": []
+          },
+          {
+            "label": "is empty",
+            "value": "empty",
+            "data": "empty",
+            "attr": []
+          },
+          {
+            "label": "in list",
+            "value": "in",
+            "data": "in",
+            "attr": []
+          }
+        ],
+        "enabled": true,
+        "type": "parent"
+      }
+    ]
+  },
+  "data": "{\u0022data\u0022:[{\u0022identifier\u0022:\u0022594877\u0022,\u0022image\u0022:null,\u0022label\u0022:\u0022Xerox DocuMate 152\u0022,\u0022family\u0022:\u0022Scanners\u0022,\u0022enabled\u0022:true,\u0022completeness\u0022:60,\u0022created\u0022:\u002208\\\/26\\\/2019\u0022,\u0022updated\u0022:\u002208\\\/26\\\/2019\u0022,\u0022complete_variant_products\u0022:[],\u0022id\u0022:\u0022product_1207\u0022,\u0022document_type\u0022:\u0022product\u0022,\u0022technical_id\u0022:\u00221207\u0022,\u0022delete_link\u0022:\u0022\\\/enrich\\\/product\\\/rest\\\/1207\u0022,\u0022toggle_status_link\u0022:\u0022\\\/enrich\\\/product\\\/1207\\\/toggle-status\u0022},{\u0022identifier\u0022:\u002213710067\u0022,\u0022image\u0022:null,\u0022label\u0022:\u0022Fujifilm FinePix S4200\u0022,\u0022family\u0022:\u0022Digital cameras\u0022,\u0022enabled\u0022:true,\u0022completeness\u0022:28,\u0022created\u0022:\u002208\\\/26\\\/2019\u0022,\u0022updated\u0022:\u002208\\\/26\\\/2019\u0022,\u0022complete_variant_products\u0022:[],\u0022id\u0022:\u0022product_1218\u0022,\u0022document_type\u0022:\u0022product\u0022,\u0022technical_id\u0022:\u00221218\u0022,\u0022delete_link\u0022:\u0022\\\/enrich\\\/product\\\/rest\\\/1218\u0022,\u0022toggle_status_link\u0022:\u0022\\\/enrich\\\/product\\\/1218\\\/toggle-status\u0022},{\u0022identifier\u0022:\u002216466450\u0022,\u0022image\u0022:null,\u0022label\u0022:\u0022Lenovo M0620\u0022,\u0022family\u0022:\u0022Loudspeakers\u0022,\u0022enabled\u0022:true,\u0022completeness\u0022:50,\u0022created\u0022:\u002208\\\/26\\\/2019\u0022,\u0022updated\u0022:\u002208\\\/26\\\/2019\u0022,\u0022complete_variant_products\u0022:[],\u0022id\u0022:\u0022product_1229\u0022,\u0022document_type\u0022:\u0022product\u0022,\u0022technical_id\u0022:\u00221229\u0022,\u0022delete_link\u0022:\u0022\\\/enrich\\\/product\\\/rest\\\/1229\u0022,\u0022toggle_status_link\u0022:\u0022\\\/enrich\\\/product\\\/1229\\\/toggle-status\u0022},{\u0022identifier\u0022:\u002215705882\u0022,\u0022image\u0022:null,\u0022label\u0022:\u0022Lexmark MS812dtn\u0022,\u0022family\u0022:\u0022Laser and LED printers\u0022,\u0022enabled\u0022:true,\u0022completeness\u0022:60,\u0022created\u0022:\u002208\\\/26\\\/2019\u0022,\u0022updated\u0022:\u002208\\\/26\\\/2019\u0022,\u0022complete_variant_products\u0022:[],\u0022id\u0022:\u0022product_1111\u0022,\u0022document_type\u0022:\u0022product\u0022,\u0022technical_id\u0022:\u00221111\u0022,\u0022delete_link\u0022:\u0022\\\/enrich\\\/product\\\/rest\\\/1111\u0022,\u0022toggle_status_link\u0022:\u0022\\\/enrich\\\/product\\\/1111\\\/toggle-status\u0022},{\u0022identifier\u0022:\u00221314976\u0022,\u0022image\u0022:{\u0022filePath\u0022:\u0022a\\\/4\\\/9\\\/2\\\/a492b238b18e0564dfb8bb86b1df2292cf14af06_1314976_5566.jpg\u0022,\u0022originalFilename\u0022:\u00221314976-5566.jpg\u0022},\u0022label\u0022:\u0022Sony SS-SP32FWB\u0022,\u0022family\u0022:\u0022Loudspeakers\u0022,\u0022enabled\u0022:true,\u0022completeness\u0022:50,\u0022created\u0022:\u002208\\\/26\\\/2019\u0022,\u0022updated\u0022:\u002208\\\/26\\\/2019\u0022,\u0022complete_variant_products\u0022:[],\u0022id\u0022:\u0022product_1122\u0022,\u0022document_type\u0022:\u0022product\u0022,\u0022technical_id\u0022:\u00221122\u0022,\u0022delete_link\u0022:\u0022\\\/enrich\\\/product\\\/rest\\\/1122\u0022,\u0022toggle_status_link\u0022:\u0022\\\/enrich\\\/product\\\/1122\\\/toggle-status\u0022},{\u0022identifier\u0022:\u00223669355\u0022,\u0022image\u0022:null,\u0022label\u0022:\u0022Trust MiDo 2.1 Speaker Set\u0022,\u0022family\u0022:\u0022Loudspeakers\u0022,\u0022enabled\u0022:true,\u0022completeness\u0022:50,\u0022created\u0022:\u002208\\\/26\\\/2019\u0022,\u0022updated\u0022:\u002208\\\/26\\\/2019\u0022,\u0022complete_variant_products\u0022:[],\u0022id\u0022:\u0022product_1133\u0022,\u0022document_type\u0022:\u0022product\u0022,\u0022technical_id\u0022:\u00221133\u0022,\u0022delete_link\u0022:\u0022\\\/enrich\\\/product\\\/rest\\\/1133\u0022,\u0022toggle_status_link\u0022:\u0022\\\/enrich\\\/product\\\/1133\\\/toggle-status\u0022},{\u0022identifier\u0022:\u002213689212\u0022,\u0022image\u0022:null,\u0022label\u0022:\u0022Canon LEGRIA HF M52\u0022,\u0022family\u0022:\u0022Camcorders\u0022,\u0022enabled\u0022:true,\u0022completeness\u0022:66,\u0022created\u0022:\u002208\\\/26\\\/2019\u0022,\u0022updated\u0022:\u002208\\\/26\\\/2019\u0022,\u0022complete_variant_products\u0022:[],\u0022id\u0022:\u0022product_1134\u0022,\u0022document_type\u0022:\u0022product\u0022,\u0022technical_id\u0022:\u00221134\u0022,\u0022delete_link\u0022:\u0022\\\/enrich\\\/product\\\/rest\\\/1134\u0022,\u0022toggle_status_link\u0022:\u0022\\\/enrich\\\/product\\\/1134\\\/toggle-status\u0022},{\u0022identifier\u0022:\u002210977324\u0022,\u0022image\u0022:null,\u0022label\u0022:\u0022Brother MFC-J5910DW multifunctional\u0022,\u0022family\u0022:\u0022Multifunctionals\u0022,\u0022enabled\u0022:true,\u0022completeness\u0022:66,\u0022created\u0022:\u002208\\\/26\\\/2019\u0022,\u0022updated\u0022:\u002208\\\/26\\\/2019\u0022,\u0022complete_variant_products\u0022:[],\u0022id\u0022:\u0022product_1145\u0022,\u0022document_type\u0022:\u0022product\u0022,\u0022technical_id\u0022:\u00221145\u0022,\u0022delete_link\u0022:\u0022\\\/enrich\\\/product\\\/rest\\\/1145\u0022,\u0022toggle_status_link\u0022:\u0022\\\/enrich\\\/product\\\/1145\\\/toggle-status\u0022},{\u0022identifier\u0022:\u0022127469\u0022,\u0022image\u0022:null,\u0022label\u0022:\u0022HP LaserJet 1160 Printer\u0022,\u0022family\u0022:\u0022Laser and LED printers\u0022,\u0022enabled\u0022:true,\u0022completeness\u0022:40,\u0022created\u0022:\u002208\\\/26\\\/2019\u0022,\u0022updated\u0022:\u002208\\\/26\\\/2019\u0022,\u0022complete_variant_products\u0022:[],\u0022id\u0022:\u0022product_1152\u0022,\u0022document_type\u0022:\u0022product\u0022,\u0022technical_id\u0022:\u00221152\u0022,\u0022delete_link\u0022:\u0022\\\/enrich\\\/product\\\/rest\\\/1152\u0022,\u0022toggle_status_link\u0022:\u0022\\\/enrich\\\/product\\\/1152\\\/toggle-status\u0022},{\u0022identifier\u0022:\u002214962869\u0022,\u0022image\u0022:null,\u0022label\u0022:\u0022GEAR4 Classic Red Bird\u0022,\u0022family\u0022:\u0022Loudspeakers\u0022,\u0022enabled\u0022:true,\u0022completeness\u0022:50,\u0022created\u0022:\u002208\\\/26\\\/2019\u0022,\u0022updated\u0022:\u002208\\\/26\\\/2019\u0022,\u0022complete_variant_products\u0022:[],\u0022id\u0022:\u0022product_1163\u0022,\u0022document_type\u0022:\u0022product\u0022,\u0022technical_id\u0022:\u00221163\u0022,\u0022delete_link\u0022:\u0022\\\/enrich\\\/product\\\/rest\\\/1163\u0022,\u0022toggle_status_link\u0022:\u0022\\\/enrich\\\/product\\\/1163\\\/toggle-status\u0022},{\u0022identifier\u0022:\u00228617001\u0022,\u0022image\u0022:null,\u0022label\u0022:\u0022Samsung 100UP\u0022,\u0022family\u0022:\u0022Camcorders\u0022,\u0022enabled\u0022:true,\u0022completeness\u0022:66,\u0022created\u0022:\u002208\\\/26\\\/2019\u0022,\u0022updated\u0022:\u002208\\\/26\\\/2019\u0022,\u0022complete_variant_products\u0022:[],\u0022id\u0022:\u0022product_1174\u0022,\u0022document_type\u0022:\u0022product\u0022,\u0022technical_id\u0022:\u00221174\u0022,\u0022delete_link\u0022:\u0022\\\/enrich\\\/product\\\/rest\\\/1174\u0022,\u0022toggle_status_link\u0022:\u0022\\\/enrich\\\/product\\\/1174\\\/toggle-status\u0022},{\u0022identifier\u0022:\u002212830519\u0022,\u0022image\u0022:null,\u0022label\u0022:\u0022HP LD4730G\u0022,\u0022family\u0022:\u0022PC Monitors\u0022,\u0022enabled\u0022:true,\u0022completeness\u0022:60,\u0022created\u0022:\u002208\\\/26\\\/2019\u0022,\u0022updated\u0022:\u002208\\\/26\\\/2019\u0022,\u0022complete_variant_products\u0022:[],\u0022id\u0022:\u0022product_1185\u0022,\u0022document_type\u0022:\u0022product\u0022,\u0022technical_id\u0022:\u00221185\u0022,\u0022delete_link\u0022:\u0022\\\/enrich\\\/product\\\/rest\\\/1185\u0022,\u0022toggle_status_link\u0022:\u0022\\\/enrich\\\/product\\\/1185\\\/toggle-status\u0022},{\u0022identifier\u0022:\u002214191635\u0022,\u0022image\u0022:null,\u0022label\u0022:\u0022Samsung DV 300F\u0022,\u0022family\u0022:\u0022Digital cameras\u0022,\u0022enabled\u0022:true,\u0022completeness\u0022:28,\u0022created\u0022:\u002208\\\/26\\\/2019\u0022,\u0022updated\u0022:\u002208\\\/26\\\/2019\u0022,\u0022complete_variant_products\u0022:[],\u0022id\u0022:\u0022product_1196\u0022,\u0022document_type\u0022:\u0022product\u0022,\u0022technical_id\u0022:\u00221196\u0022,\u0022delete_link\u0022:\u0022\\\/enrich\\\/product\\\/rest\\\/1196\u0022,\u0022toggle_status_link\u0022:\u0022\\\/enrich\\\/product\\\/1196\\\/toggle-status\u0022},{\u0022identifier\u0022:\u002211704300\u0022,\u0022image\u0022:null,\u0022label\u0022:\u0022Canon i-SENSYS MF4410\u0022,\u0022family\u0022:\u0022Multifunctionals\u0022,\u0022enabled\u0022:true,\u0022completeness\u0022:66,\u0022created\u0022:\u002208\\\/26\\\/2019\u0022,\u0022updated\u0022:\u002208\\\/26\\\/2019\u0022,\u0022complete_variant_products\u0022:[],\u0022id\u0022:\u0022product_1011\u0022,\u0022document_type\u0022:\u0022product\u0022,\u0022technical_id\u0022:\u00221011\u0022,\u0022delete_link\u0022:\u0022\\\/enrich\\\/product\\\/rest\\\/1011\u0022,\u0022toggle_status_link\u0022:\u0022\\\/enrich\\\/product\\\/1011\\\/toggle-status\u0022},{\u0022identifier\u0022:\u00221712634\u0022,\u0022image\u0022:null,\u0022label\u0022:\u0022Sony NWZ-E438F\u0022,\u0022family\u0022:\u0022MP3 players\u0022,\u0022enabled\u0022:true,\u0022completeness\u0022:50,\u0022created\u0022:\u002208\\\/26\\\/2019\u0022,\u0022updated\u0022:\u002208\\\/26\\\/2019\u0022,\u0022complete_variant_products\u0022:[],\u0022id\u0022:\u0022product_1022\u0022,\u0022document_type\u0022:\u0022product\u0022,\u0022technical_id\u0022:\u00221022\u0022,\u0022delete_link\u0022:\u0022\\\/enrich\\\/product\\\/rest\\\/1022\u0022,\u0022toggle_status_link\u0022:\u0022\\\/enrich\\\/product\\\/1022\\\/toggle-status\u0022},{\u0022identifier\u0022:\u002216672632\u0022,\u0022image\u0022:null,\u0022label\u0022:\u0022HP KQ245AA\u0022,\u0022family\u0022:\u0022Webcams\u0022,\u0022enabled\u0022:true,\u0022completeness\u0022:66,\u0022created\u0022:\u002208\\\/26\\\/2019\u0022,\u0022updated\u0022:\u002208\\\/26\\\/2019\u0022,\u0022complete_variant_products\u0022:[],\u0022id\u0022:\u0022product_1023\u0022,\u0022document_type\u0022:\u0022product\u0022,\u0022technical_id\u0022:\u00221023\u0022,\u0022delete_link\u0022:\u0022\\\/enrich\\\/product\\\/rest\\\/1023\u0022,\u0022toggle_status_link\u0022:\u0022\\\/enrich\\\/product\\\/1023\\\/toggle-status\u0022},{\u0022identifier\u0022:\u002214101037\u0022,\u0022image\u0022:null,\u0022label\u0022:\u0022Toshiba 23DL933G LED TV\u0022,\u0022family\u0022:\u0022LED TVs\u0022,\u0022enabled\u0022:true,\u0022completeness\u0022:75,\u0022created\u0022:\u002208\\\/26\\\/2019\u0022,\u0022updated\u0022:\u002208\\\/26\\\/2019\u0022,\u0022complete_variant_products\u0022:[],\u0022id\u0022:\u0022product_1034\u0022,\u0022document_type\u0022:\u0022product\u0022,\u0022technical_id\u0022:\u00221034\u0022,\u0022delete_link\u0022:\u0022\\\/enrich\\\/product\\\/rest\\\/1034\u0022,\u0022toggle_status_link\u0022:\u0022\\\/enrich\\\/product\\\/1034\\\/toggle-status\u0022},{\u0022identifier\u0022:\u002210627329\u0022,\u0022image\u0022:{\u0022filePath\u0022:\u0022b\\\/3\\\/6\\\/2\\\/b3627ed6f45794f7e97fce31633117287bb68f62_10627329_7290.jpg\u0022,\u0022originalFilename\u0022:\u002210627329-7290.jpg\u0022},\u0022label\u0022:\u0022NEC EX201W\u0022,\u0022family\u0022:\u0022PC Monitors\u0022,\u0022enabled\u0022:true,\u0022completeness\u0022:60,\u0022created\u0022:\u002208\\\/26\\\/2019\u0022,\u0022updated\u0022:\u002208\\\/26\\\/2019\u0022,\u0022complete_variant_products\u0022:[],\u0022id\u0022:\u0022product_1045\u0022,\u0022document_type\u0022:\u0022product\u0022,\u0022technical_id\u0022:\u00221045\u0022,\u0022delete_link\u0022:\u0022\\\/enrich\\\/product\\\/rest\\\/1045\u0022,\u0022toggle_status_link\u0022:\u0022\\\/enrich\\\/product\\\/1045\\\/toggle-status\u0022},{\u0022identifier\u0022:\u002211275331\u0022,\u0022image\u0022:null,\u0022label\u0022:\u0022Viewsonic Value Series VA2703\u0022,\u0022family\u0022:\u0022PC Monitors\u0022,\u0022enabled\u0022:true,\u0022completeness\u0022:60,\u0022created\u0022:\u002208\\\/26\\\/2019\u0022,\u0022updated\u0022:\u002208\\\/26\\\/2019\u0022,\u0022complete_variant_products\u0022:[],\u0022id\u0022:\u0022product_1056\u0022,\u0022document_type\u0022:\u0022product\u0022,\u0022technical_id\u0022:\u00221056\u0022,\u0022delete_link\u0022:\u0022\\\/enrich\\\/product\\\/rest\\\/1056\u0022,\u0022toggle_status_link\u0022:\u0022\\\/enrich\\\/product\\\/1056\\\/toggle-status\u0022},{\u0022identifier\u0022:\u00221320064\u0022,\u0022image\u0022:null,\u0022label\u0022:\u0022Lenovo Flat Panel Performance ThinkVision L190x\u0022,\u0022family\u0022:\u0022PC Monitors\u0022,\u0022enabled\u0022:true,\u0022completeness\u0022:60,\u0022created\u0022:\u002208\\\/26\\\/2019\u0022,\u0022updated\u0022:\u002208\\\/26\\\/2019\u0022,\u0022complete_variant_products\u0022:[],\u0022id\u0022:\u0022product_1067\u0022,\u0022document_type\u0022:\u0022product\u0022,\u0022technical_id\u0022:\u00221067\u0022,\u0022delete_link\u0022:\u0022\\\/enrich\\\/product\\\/rest\\\/1067\u0022,\u0022toggle_status_link\u0022:\u0022\\\/enrich\\\/product\\\/1067\\\/toggle-status\u0022},{\u0022identifier\u0022:\u00228009612\u0022,\u0022image\u0022:null,\u0022label\u0022:\u0022Kodak i2400\u0022,\u0022family\u0022:\u0022Scanners\u0022,\u0022enabled\u0022:true,\u0022completeness\u0022:60,\u0022created\u0022:\u002208\\\/26\\\/2019\u0022,\u0022updated\u0022:\u002208\\\/26\\\/2019\u0022,\u0022complete_variant_products\u0022:[],\u0022id\u0022:\u0022product_1078\u0022,\u0022document_type\u0022:\u0022product\u0022,\u0022technical_id\u0022:\u00221078\u0022,\u0022delete_link\u0022:\u0022\\\/enrich\\\/product\\\/rest\\\/1078\u0022,\u0022toggle_status_link\u0022:\u0022\\\/enrich\\\/product\\\/1078\\\/toggle-status\u0022},{\u0022identifier\u0022:\u00221325806\u0022,\u0022image\u0022:null,\u0022label\u0022:\u0022Kodak EasyShare ZD710\u0022,\u0022family\u0022:\u0022Digital cameras\u0022,\u0022enabled\u0022:true,\u0022completeness\u0022:28,\u0022created\u0022:\u002208\\\/26\\\/2019\u0022,\u0022updated\u0022:\u002208\\\/26\\\/2019\u0022,\u0022complete_variant_products\u0022:[],\u0022id\u0022:\u0022product_1089\u0022,\u0022document_type\u0022:\u0022product\u0022,\u0022technical_id\u0022:\u00221089\u0022,\u0022delete_link\u0022:\u0022\\\/enrich\\\/product\\\/rest\\\/1089\u0022,\u0022toggle_status_link\u0022:\u0022\\\/enrich\\\/product\\\/1089\\\/toggle-status\u0022},{\u0022identifier\u0022:\u00227820677\u0022,\u0022image\u0022:null,\u0022label\u0022:\u0022Microsoft LifeCam Studio for Business\u0022,\u0022family\u0022:\u0022Webcams\u0022,\u0022enabled\u0022:true,\u0022completeness\u0022:66,\u0022created\u0022:\u002208\\\/26\\\/2019\u0022,\u0022updated\u0022:\u002208\\\/26\\\/2019\u0022,\u0022complete_variant_products\u0022:[],\u0022id\u0022:\u0022product_1100\u0022,\u0022document_type\u0022:\u0022product\u0022,\u0022technical_id\u0022:\u00221100\u0022,\u0022delete_link\u0022:\u0022\\\/enrich\\\/product\\\/rest\\\/1100\u0022,\u0022toggle_status_link\u0022:\u0022\\\/enrich\\\/product\\\/1100\\\/toggle-status\u0022},{\u0022identifier\u0022:\u002212249740\u0022,\u0022image\u0022:{\u0022filePath\u0022:\u00229\\\/e\\\/d\\\/d\\\/9edde49c1c15886ce83995c01868fed38cd3dbf0_12249740_4511.jpg\u0022,\u0022originalFilename\u0022:\u002212249740-4511.jpg\u0022},\u0022label\u0022:\u0022Avision AV36\u0022,\u0022family\u0022:\u0022Scanners\u0022,\u0022enabled\u0022:true,\u0022completeness\u0022:60,\u0022created\u0022:\u002208\\\/26\\\/2019\u0022,\u0022updated\u0022:\u002208\\\/26\\\/2019\u0022,\u0022complete_variant_products\u0022:[],\u0022id\u0022:\u0022product_1000\u0022,\u0022document_type\u0022:\u0022product\u0022,\u0022technical_id\u0022:\u00221000\u0022,\u0022delete_link\u0022:\u0022\\\/enrich\\\/product\\\/rest\\\/1000\u0022,\u0022toggle_status_link\u0022:\u0022\\\/enrich\\\/product\\\/1000\\\/toggle-status\u0022},{\u0022identifier\u0022:\u002210646015\u0022,\u0022image\u0022:{\u0022filePath\u0022:\u00228\\\/6\\\/f\\\/8\\\/86f800fa0d24b555d232df51192d8499f51c4e49_10646015_963.jpg\u0022,\u0022originalFilename\u0022:\u002210646015-963.jpg\u0022},\u0022label\u0022:\u0022DELL U2412M\u0022,\u0022family\u0022:\u0022PC Monitors\u0022,\u0022enabled\u0022:true,\u0022completeness\u0022:60,\u0022created\u0022:\u002208\\\/26\\\/2019\u0022,\u0022updated\u0022:\u002208\\\/26\\\/2019\u0022,\u0022complete_variant_products\u0022:[],\u0022id\u0022:\u0022product_901\u0022,\u0022document_type\u0022:\u0022product\u0022,\u0022technical_id\u0022:\u0022901\u0022,\u0022delete_link\u0022:\u0022\\\/enrich\\\/product\\\/rest\\\/901\u0022,\u0022toggle_status_link\u0022:\u0022\\\/enrich\\\/product\\\/901\\\/toggle-status\u0022}],\u0022totalRecords\u0022:1049,\u0022options\u0022:{\u0022totalRecords\u0022:null}}"
+}
