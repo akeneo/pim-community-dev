@@ -1,4 +1,5 @@
 const UserBuilder = require('../../common/builder/user');
+const LocaleBuilder = require('../../common/builder/locale');
 const puppeteer = require('puppeteer');
 const extensions = require(`${process.cwd()}/web/js/extensions.json`);
 const fs = require('fs');
@@ -6,16 +7,18 @@ const path = require('path');
 const htmlTemplate = fs.readFileSync(process.cwd() + '/web/test_dist/index.html', 'utf-8');
 const translations = fs.readFileSync(path.join(process.cwd(), './web/js/translation/en_US.js'), 'utf-8');
 const userBuilder = new UserBuilder();
+const localeBuilder = new LocaleBuilder();
+
 module.exports = function(cucumber) {
   const {Before, After, Status} = cucumber;
 
   Before({timeout: 10 * 1000}, async function() {
     this.baseUrl = 'http://pim.com';
     this.browser = await puppeteer.launch({
-      devtools: this.parameters.debug,
+      devtools: true,
       ignoreHTTPSErrors: true,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
-      headless: !this.parameters.debug,
+      headless: true,
       slowMo: 0,
       pipe: true,
     });
@@ -33,31 +36,49 @@ module.exports = function(cucumber) {
 
     this.page.on('request', request => {
       if (request.url() === `${this.baseUrl}/`) {
-        request.respond({
+        return request.respond({
           contentType: 'text/html; charset=UTF-8',
           body: htmlTemplate,
         });
       }
       if (request.url().includes('/rest/user/')) {
-        request.respond({
+        return request.respond({
           contentType: 'application/json',
           body: `${JSON.stringify(userBuilder.build())}`,
         });
       }
 
       if (request.url().includes('/js/extensions.json')) {
-        request.respond({
+        return request.respond({
           contentType: 'application/json',
           body: `${JSON.stringify(extensions)}`,
         });
       }
 
       if (request.url().includes('/js/translation')) {
-        request.respond({
+        return request.respond({
           contentType: 'application/json',
           body: `${JSON.stringify(translations)}`,
         });
       }
+
+      if (request.url().includes('/security')) {
+        request.respond({
+          contentType: 'application/json',
+          body: `${JSON.stringify({})}`
+        })
+      }
+
+      if (request.url().includes('/configuration/locale')) {
+        const en_US = localeBuilder.withCode('en_US').build();
+
+        request.respond({
+          contentType: 'application/json',
+          body: `${JSON.stringify([en_US])}`
+        })
+      }
+
+      return request.continue();
     });
 
     await this.page.goto(this.baseUrl);
@@ -77,9 +98,9 @@ module.exports = function(cucumber) {
       }
     }
 
-    if (!this.parameters.debug) {
-      await this.page.close();
-      await this.browser.close();
-    }
+    // if (!this.parameters.debug) {
+    //   await this.page.close();
+    //   await this.browser.close();
+    // }
   });
 };

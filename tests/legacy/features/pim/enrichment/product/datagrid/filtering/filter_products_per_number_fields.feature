@@ -4,9 +4,9 @@ Feature: Filter products by number field
   As a regular user
   I need to be able to filter products in the catalog
 
-  Background:
-    Given the "default" catalog configuration
-    And I am logged in as "Mary"
+  # Background:
+    # Given the "default" catalog configuration
+    # And I am logged in as "Mary"
 
   @acceptance-front
   Scenario: Successfully filter products by empty value for number attributes
@@ -19,8 +19,8 @@ Feature: Filter products by number field
       | postit | 200   |      |
       | book   |       | 9.5  |
       | mug    |       |      |
-    And the "book" product has the "count" attribute
-    And the "mug" product has the "rate" attribute
+    # And the "book" product has the "count" attribute
+    # And the "mug" product has the "rate" attribute
     And I am on the products grid
     Then the grid should contain 3 elements
     And I should see products postit, book and mug

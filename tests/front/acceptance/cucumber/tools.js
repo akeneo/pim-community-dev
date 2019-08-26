@@ -54,16 +54,16 @@ const convertItemTable = dataTable => {
 };
 
 const renderView = async (page, extension, data) => {
-  return await page.evaluate(volumes => {
+  return await page.evaluate((volumes, extension) => {
     const FormBuilder = require('pim/form-builder');
 
-    return FormBuilder.build('pim-catalog-volume-index').then(form => {
+    return FormBuilder.build(extension).then(form => {
       form.setData(volumes);
       form.setElement(document.getElementById('app')).render();
 
       return form;
     });
-  }, data);
+  }, data, extension);
 };
 
 module.exports = {
