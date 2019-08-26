@@ -7,19 +7,19 @@ coupling: structure-coupling user-management-coupling channel-coupling enrichmen
 
 .PHONY: phpspec
 phpspec: vendor
-	PHP_XDEBUG_ENABLED=0 ${PHP_RUN} vendor/bin/phpspec run ${F}
+	XDEBUG_ENABLED=0 ${PHP_RUN} vendor/bin/phpspec run ${F}
 
 .PHONY: phpspec-debug
 phpspec-debug: vendor
-	PHP_XDEBUG_ENABLED=1 ${PHP_RUN} vendor/bin/phpspec run ${F}
+	XDEBUG_ENABLED=1 ${PHP_RUN} vendor/bin/phpspec run ${F}
 
 .PHONY: behat-acceptance
 behat-acceptance: behat.yml vendor
-	PHP_XDEBUG_ENABLED=0 ${PHP_RUN} vendor/bin/behat -p acceptance ${F}
+	XDEBUG_ENABLED=0 ${PHP_RUN} vendor/bin/behat -p acceptance ${F}
 
 .PHONY: behat-acceptance-debug
 behat-acceptance-debug: behat.yml vendor
-	PHP_XDEBUG_ENABLED=1 ${PHP_RUN} vendor/bin/behat -p acceptance ${F}
+	XDEBUG_ENABLED=1 ${PHP_RUN} vendor/bin/behat -p acceptance ${F}
 
 .PHONY: phpunit
 phpunit: vendor
@@ -36,10 +36,10 @@ behat-legacy: behat.yml vendor
 ## Enable Xdebug
 .PHONY: xdebug-on
 xdebug-on: docker-compose.override.yml
-	PHP_XDEBUG_ENABLED=1 $(MAKE) up
+	XDEBUG_ENABLED=1 $(MAKE) up
 
 ## Disable Xdebug
 .PHONY: xdebug-off
 xdebug-off: docker-compose.override.yml
-	PHP_XDEBUG_ENABLED=0 $(MAKE) up
+	XDEBUG_ENABLED=0 $(MAKE) up
 

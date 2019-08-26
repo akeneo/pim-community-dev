@@ -1,17 +1,37 @@
-version: '3'
+version: '3.4'
 
 services:
-  fpm:
-    image: 'akeneo/fpm:php-7.2'
-    user: 'docker'
+  php:
+    image: 'akeneo/pim-dev/php:7.2'
     environment:
-      APP_ENV: ${APP_ENV:-prod}
+      APP_ENV: '${APP_ENV:-prod}'
+      COMPOSER_HOME: '/home/docker/.composer'
+      PHP_IDE_CONFIG: 'serverName=pim-ce-cli'
+      XDEBUG_ENABLED: '${XDEBUG_ENABLED:-0}'
+      XDEBUG_CONFIG: 'remote_host=172.17.0.1'
+    volumes:
+      - './:/srv/pim'
+      - '${HOST_COMPOSER_HOME:-~/.composer}:/home/docker/.composer'
+    working_dir: '/srv/pim'
+    command: 'php'
+    networks:
+      - 'pim'
+
+  fpm:
+    image: 'akeneo/pim-dev/php:7.2'
+    environment:
+      APP_ENV: '${APP_ENV:-prod}'
+      BEHAT_TMPDIR: '/srv/pim/var/cache/tmp'
+      BEHAT_SCREENSHOT_PATH: '/srv/pim/var/tests/screenshots'
+      PHP_IDE_CONFIG: 'serverName=pim-ce'
+      XDEBUG_ENABLED: '${XDEBUG_ENABLED:-0}'
+      XDEBUG_CONFIG: 'remote_host=172.17.0.1'
     volumes:
       - './:/srv/pim'
     working_dir: '/srv/pim'
+    command: 'php-fpm -F'
     networks:
-      - 'akeneo'
-      - 'behat'
+      - 'pim'
 
   node:
     image: 'akeneo/node:10'
@@ -20,15 +40,16 @@ services:
       - './:/srv/pim'
     working_dir: '/srv/pim'
     networks:
-      - 'akeneo'
-      - 'behat'
+      - 'pim'
 
   selenium:
     image: 'selenium/standalone-firefox-debug:2.53.1-beryllium'
     volumes:
       - './:/srv/pim:ro'
+    ports:
+      - '${DOCKER_PORT_HTTP:-5910}:5900'
     networks:
-      - 'behat'
+      - 'pim'
 
   httpd:
     image: 'httpd:2.4'
@@ -43,22 +64,7 @@ services:
       - './docker/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro'
       - './docker/akeneo.conf:/usr/local/apache2/conf/vhost.conf:ro'
     networks:
-      - 'akeneo'
-
-  httpd-behat:
-    image: 'httpd:2.4'
-    environment:
-      APP_ENV: 'behat'
-    depends_on:
-      - 'fpm'
-    ports:
-      - '${DOCKER_PORT_HTTP_BEHAT:-8091}:80'
-    volumes:
-      - './:/srv/pim:ro'
-      - './docker/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro'
-      - './docker/akeneo.conf:/usr/local/apache2/conf/vhost.conf:ro'
-    networks:
-      - 'behat'
+      - 'pim'
 
   mysql:
     image: 'mysql:5.7'
@@ -67,37 +73,31 @@ services:
       MYSQL_USER: '${APP_DATABASE_USER}'
       MYSQL_DATABASE: '${APP_DATABASE_NAME}'
       MYSQL_PASSWORD: '${APP_DATABASE_PASSWORD}'
+    ports:
+      - '${DOCKER_PORT_MYSQL:-33016}:3306'
     networks:
-      - 'akeneo'
-
-  mysql-behat:
-    image: 'mysql:5.7'
-    environment:
-      MYSQL_ROOT_PASSWORD: 'root'
-      MYSQL_USER: '${APP_DATABASE_USER}'
-      MYSQL_DATABASE: '${APP_DATABASE_NAME}'
-      MYSQL_PASSWORD: '${APP_DATABASE_PASSWORD}'
-    networks:
-      - 'behat'
+      - 'pim'
 
   elasticsearch:
     image: 'docker.elastic.co/elasticsearch/elasticsearch-oss:6.5.4'
     environment:
       ES_JAVA_OPTS: '${ES_JAVA_OPTS:--Xms512m -Xmx512m}'
       discovery.type: 'single-node'
+    ports:
+      - '${DOCKER_PORT_ELASTICSEARCH:-9220}:9200'
     networks:
-      - 'akeneo'
-      - 'behat'
+      - 'pim'
 
   object-storage:
     image: 'minio/minio'
-    entrypoint: '/bin/sh -c "mkdir -p /data/archive /data/catalog/ /data/jobs && minio server /data"'
+    entrypoint: '/bin/sh -c "mkdir -p /data/asset /data/archive /data/catalog/ /data/jobs && minio server /data"'
     environment:
       MINIO_ACCESS_KEY: 'AKENEO_OBJECT_STORAGE_ACCESS_KEY'
       MINIO_SECRET_KEY: 'AKENEO_OBJECT_STORAGE_SECRET_KEY'
+    ports:
+      - '${DOCKER_PORT_OBJECT_STORAGE:-9010}:9000'
     networks:
-      - akeneo
+      - 'pim'
 
 networks:
-  akeneo:
-  behat:
+  pim:

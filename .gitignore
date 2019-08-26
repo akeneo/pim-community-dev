@@ -40,6 +40,7 @@ uploads_test/
 /node_modules
 npm-debug.log
 /docker/*
+!/docker/build
 !/docker/akeneo.conf
 !/docker/akeneo-behat.conf
 !/docker/httpd.conf
