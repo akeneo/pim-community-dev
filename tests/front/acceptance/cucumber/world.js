@@ -17,10 +17,14 @@ module.exports = function(cucumber) {
     this.browser = await puppeteer.launch({
       devtools: true,
       ignoreHTTPSErrors: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      args: ['--no-sandbox', '--disable-setuid-sandbox', '--window-size=1920,1080'],
       headless: true,
       slowMo: 0,
       pipe: true,
+      defaultViewport: {
+        width: 1920,
+        height: 1080
+      }
     });
 
     this.page = await this.browser.newPage();
