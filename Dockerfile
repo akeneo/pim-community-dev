@@ -11,6 +11,7 @@ ENV PHP_CONF_DATE_TIMEZONE=UTC \
     PHP_CONF_MAX_INPUT_VARS=1000\
     PHP_CONF_UPLOAD_LIMIT=40M\
     PHP_CONF_MAX_POST_SIZE=40M
+    XDEBUG_ENABLED=0
 
 COPY docker/build/sury_org_php.gpg /etc/apt/trusted.gpg.d/sury_org_php.gpg
 
@@ -35,8 +36,7 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
         php7.2-bcmath \
         php7.2-imagick \
         php7.2-apcu \
-        php7.2-exif \
-        php-memcached && \
+        php7.2-exif && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     ln -s /usr/sbin/php-fpm7.2 /usr/local/sbin/php-fpm && \
