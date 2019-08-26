@@ -37,6 +37,12 @@ doctrine:
         auto_mapping: true
         resolve_target_entities:
             placeholder: placeholder
+        mappings:
+            tree:
+                type: annotation
+                alias: Gedmo
+                prefix: Gedmo\Tree\Entity
+                dir: '%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Tree/Entity'
 
 doctrine_migrations:
     dir_name: '%doctrine_migrations_dir%'
