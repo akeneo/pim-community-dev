@@ -1,0 +1,27 @@
+oneup_flysystem:
+    adapters:
+        catalog_storage_adapter:
+            googlecloudstorage:
+                client: 'Google\Cloud\Storage\StorageClient'
+                bucket: 'Google\Cloud\Storage\Bucket'
+                prefix: 'catalog_storage'
+        jobs_storage_adapter:
+            googlecloudstorage:
+                client: 'Google\Cloud\Storage\StorageClient'
+                bucket: 'Google\Cloud\Storage\Bucket'
+                prefix: 'jobs_storage'
+        asset_storage_adapter:
+            googlecloudstorage:
+                client: 'Google\Cloud\Storage\StorageClient'
+                bucket: 'Google\Cloud\Storage\Bucket'
+                prefix: 'asset_storage'
+        archivist_adapter:
+            googlecloudstorage:
+                client: 'Google\Cloud\Storage\StorageClient'
+                bucket: 'Google\Cloud\Storage\Bucket'
+                prefix: 'archivist'
+        logs_adapter:
+            googlecloudstorage:
+                client: 'Google\Cloud\Storage\StorageClient'
+                bucket: 'Google\Cloud\Storage\Bucket'
+                prefix: 'log'
