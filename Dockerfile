@@ -8,6 +8,9 @@ ENV PHP_CONF_DATE_TIMEZONE=UTC \
     PHP_CONF_MAX_EXECUTION_TIME=60 \
     PHP_CONF_MEMORY_LIMIT=512M \
     PHP_CONF_OPCACHE_VALIDATE_TIMESTAMP=0 \
+    PHP_CONF_MAX_INPUT_VARS=1000 \
+    PHP_CONF_UPLOAD_LIMIT=40M \
+    PHP_CONF_MAX_POST_SIZE=40M \
     XDEBUG_ENABLED=0
 
 COPY docker/build/sury_org_php.gpg /etc/apt/trusted.gpg.d/sury_org_php.gpg
@@ -33,7 +36,8 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
         php7.2-bcmath \
         php7.2-imagick \
         php7.2-apcu \
-        php7.2-exif && \
+        php7.2-exif \
+        php-memcached && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     ln -s /usr/sbin/php-fpm7.2 /usr/local/sbin/php-fpm && \
@@ -53,6 +57,7 @@ FROM base AS dev
 ENV PHP_CONF_OPCACHE_VALIDATE_TIMESTAMP=1
 
 RUN apt-get update && \
+    apt-get --yes install unzip && \
     apt-get --yes install curl && \
     apt-get --yes install mysql-client && \
     apt-get --yes install php7.2-xdebug && \
@@ -74,6 +79,8 @@ RUN chmod +x /usr/local/bin/composer
 COPY docker/build/docker-php-entrypoint /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-php-entrypoint
 
+RUN mkdir -p /var/www/.composer && chown www-data:www-data /var/www/.composer
+
 ENTRYPOINT ["/usr/local/bin/docker-php-entrypoint"]
 
 VOLUME /srv/pim
@@ -92,7 +99,6 @@ RUN echo "deb https://deb.nodesource.com/node_10.x stretch main" > /etc/apt/sour
     apt-get update && \
     apt-get --yes install yarn \
         nodejs \
-        unzip && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 

@@ -16,7 +16,7 @@ jobs:
                 docker save -o php-pim-image.tar akeneo/pim-dev/php:7.2
       - run:
           name: Setup tests results folder and log folder
-          command: mkdir -p var/tests/phpunit var/tests/behat var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots
+          command: mkdir -p var/tests/phpunit var/tests/behat var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.composer
       - run:
           name: Setup behat
           command: make behat.yml
@@ -39,7 +39,9 @@ jobs:
             - vendor-{{ .Environment.CACHE_VERSION }}-{{ checksum "composer.lock" }}
       - run:
           name: Change owner on project dir after restoring cache
-          command: sudo chown -R 1000:1000 ../project
+          command: |
+              sudo chown -R 1000:1000 ../project
+              sudo chown -R 1000:1000 ~/.composer
       - run:
           name: Install PIM
           command: |
@@ -129,7 +131,7 @@ jobs:
                 name: Start containers
                 command: |
                     docker load -i php-pim-image.tar
-                    APP_ENV=test C='mysql elasticsearch object-storage' make up
+                    APP_ENV=test C='fpm mysql elasticsearch object-storage' make up
                     .circleci/wait_docker_up.sh
           - run:
                 name: Install database
@@ -161,7 +163,7 @@ jobs:
                 name: Start containers
                 command: |
                     docker load -i php-pim-image.tar
-                    APP_ENV=test C='mysql elasticsearch object-storage' make up
+                    APP_ENV=test C='fpm mysql elasticsearch object-storage' make up
                     .circleci/wait_docker_up.sh
           - run:
                 name: Install database
