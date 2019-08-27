@@ -38,7 +38,7 @@ module.exports = function(cucumber) {
 
     const productGridData = {
       data: productData,
-      totalRecords: 1049,
+      totalRecords: productData.length,
       options: {
         totalRecords: null
       }
