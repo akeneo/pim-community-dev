@@ -11,11 +11,11 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct;
 
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Indexer\PublishedProductIndexer;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
+use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -38,18 +38,20 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class IndexProductsSubscriber implements EventSubscriberInterface
 {
-    /** @var ProductIndexer */
+    /** @var ProductIndexerInterface */
     protected $productIndexer;
 
     /** @var PublishedProductIndexer */
     protected $publishedProductIndexer;
 
     /**
-     * @param ProductIndexer $productIndexer
+     * @param ProductIndexerInterface $productIndexer
      * @param PublishedProductIndexer $publishedProductIndexer
      */
-    public function __construct(ProductIndexer $productIndexer, PublishedProductIndexer $publishedProductIndexer)
-    {
+    public function __construct(
+        ProductIndexerInterface $productIndexer,
+        PublishedProductIndexer $publishedProductIndexer
+    ) {
         $this->productIndexer = $productIndexer;
         $this->publishedProductIndexer = $publishedProductIndexer;
     }
@@ -85,7 +87,7 @@ class IndexProductsSubscriber implements EventSubscriberInterface
         if ($product instanceof PublishedProductInterface) {
             $this->publishedProductIndexer->index($product);
         } else {
-            $this->productIndexer->index($product);
+            $this->productIndexer->indexFromProductIdentifier($product->getIdentifier());
         }
     }
 
@@ -108,7 +110,14 @@ class IndexProductsSubscriber implements EventSubscriberInterface
         if (current($products) instanceof PublishedProductInterface) {
             $this->publishedProductIndexer->indexAll($products);
         } else {
-            $this->productIndexer->indexAll($products);
+            $this->productIndexer->indexFromProductIdentifiers(
+                array_map(
+                    function (ProductInterface $product) {
+                        return $product->getIdentifier();
+                    },
+                    $products
+                )
+            );
         }
     }
 
@@ -127,7 +136,7 @@ class IndexProductsSubscriber implements EventSubscriberInterface
         if ($product instanceof PublishedProductInterface) {
             $this->publishedProductIndexer->remove($event->getSubjectId());
         } else {
-            $this->productIndexer->remove($event->getSubjectId());
+            $this->productIndexer->removeFromProductIdentifier($event->getSubject()->getIdentifier());
         }
     }
 }

@@ -1,0 +1,8 @@
+services:
+    # CE override
+    pim_catalog.elasticsearch.indexer.product:
+        class: '%pim_catalog.elasticsearch.indexer.product.class%'
+        arguments:
+            - '@pim_indexing_serializer'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@pim_catalog.repository.product_without_permission'

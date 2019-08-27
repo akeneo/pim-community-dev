@@ -28,7 +28,10 @@ class ProductSubscriptionUpdaterIntegration extends TestCase
         $family = $this->createFamily('family');
         $subscribedProduct = $this->createProduct('subscribed_product', $family->getCode());
         $unsubscribedProduct = $this->createProduct('unsubscribed_product', $family->getCode());
-        $this->get('pim_catalog.elasticsearch.indexer.product')->indexAll([$subscribedProduct, $unsubscribedProduct], ['index_refresh' => Refresh::waitFor()]);
+        $this->get('pim_catalog.elasticsearch.indexer.product')->indexFromProductIdentifiers(
+            ['subscribed_product', 'unsubscribed_product'],
+            ['index_refresh' => Refresh::waitFor()]
+        );
 
         $this->insertSubscription($subscribedProduct->getId());
         $productSubscriptionUpdater = $this->get('akeneo.pim.automation.franklin_insights.elasticsearch.updater.product_subscription');

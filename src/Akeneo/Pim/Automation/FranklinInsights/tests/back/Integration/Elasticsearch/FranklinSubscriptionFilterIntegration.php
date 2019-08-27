@@ -40,7 +40,10 @@ class FranklinSubscriptionFilterIntegration extends TestCase
         $this->insertSubscription($product1->getId(), true);
         $this->insertSubscription($product2->getId(), true);
 
-        $this->get('pim_catalog.elasticsearch.indexer.product')->indexAll([$product1, $product2], ['index_refresh' => Refresh::waitFor()]);
+        $this->get('pim_catalog.elasticsearch.indexer.product')->indexFromProductIdentifiers(
+            ['product1', 'product2'],
+            ['index_refresh' => Refresh::waitFor()]
+        );
     }
 
     public function test_products_are_filterable_by_franklin_subscription(): void
