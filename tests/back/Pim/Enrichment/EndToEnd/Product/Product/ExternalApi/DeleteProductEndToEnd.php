@@ -25,7 +25,9 @@ class DeleteProductEndToEnd extends AbstractProductTestCase
         $this->assertCount(7, $this->getFromTestContainer('pim_catalog.repository.product')->findAll());
 
         $fooProduct = $this->getFromTestContainer('pim_catalog.repository.product')->findOneByIdentifier('foo');
-        $this->getFromTestContainer('pim_catalog.elasticsearch.indexer.product')->index($fooProduct);
+        $this->getFromTestContainer('pim_catalog.elasticsearch.indexer.product')->indexFromProductIdentifier(
+            $fooProduct->getIdentitifer()
+        );
         $client->request('DELETE', 'api/rest/v1/products/foo');
 
         $response = $client->getResponse();

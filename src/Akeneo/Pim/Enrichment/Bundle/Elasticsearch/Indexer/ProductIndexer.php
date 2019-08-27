@@ -27,7 +27,7 @@ class ProductIndexer implements ProductIndexerInterface
     /**
      * Index type is not used anymore in elasticsearch 6, but is still needed by Client
      */
-    private const INDEX_TYPE = '';
+    const INDEX_TYPE = 'pim_catalog_product';
 
     /** @var NormalizerInterface */
     private $normalizer;
@@ -85,28 +85,28 @@ class ProductIndexer implements ProductIndexerInterface
     {
         $indexRefresh = $options['index_refresh'] ?? Refresh::disable();
 
-        $normalizedProductModels = [];
+        $normalizedProducts = [];
         foreach ($productIdentifiers as $productIdentifier) {
             $object = $this->productRepository->findOneByIdentifier($productIdentifier);
             if (!$object instanceof ProductInterface) {
                 continue;
             }
 
-            $normalizedProductModel = $this->normalizer->normalize(
+            $normalizedProduct = $this->normalizer->normalize(
                 $object,
                 ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
             );
-            $this->validateObjectNormalization($normalizedProductModel);
-            $normalizedProductModels[] = $normalizedProductModel;
+            $this->validateObjectNormalization($normalizedProduct);
+            $normalizedProducts[] = $normalizedProduct;
         }
 
-        if (empty($normalizedProductModels)) {
+        if (empty($normalizedProducts)) {
             return;
         }
 
         $this->productAndProductModelClient->bulkIndexes(
             self::INDEX_TYPE,
-            $normalizedProductModels,
+            $normalizedProducts,
             'id',
             $indexRefresh
         );
@@ -119,9 +119,14 @@ class ProductIndexer implements ProductIndexerInterface
      */
     public function removeFromProductIdentifier(string $productIdentifier, array $options = []): void
     {
+        $object = $this->productRepository->findOneByIdentifier($productIdentifier);
+        if (!$object instanceof ProductInterface) {
+            return;
+        }
+
         $this->productAndProductModelClient->delete(
             self::INDEX_TYPE,
-            self::PRODUCT_IDENTIFIER_PREFIX . $productIdentifier
+            self::PRODUCT_IDENTIFIER_PREFIX . (string) $object->getId()
         );
     }
 
@@ -132,19 +137,19 @@ class ProductIndexer implements ProductIndexerInterface
      */
     public function removeManyFromProductIdentifiers(array $productIdentifiers, array $options = []): void
     {
-        if (empty($productIdentifiers)) {
+        $objectIds = [];
+        foreach ($productIdentifiers as $productIdentifier) {
+            $object = $this->productRepository->findOneByIdentifier($productIdentifier);
+            if ($object instanceof ProductInterface) {
+                $objectIds[] = self::PRODUCT_IDENTIFIER_PREFIX . (string) $object->getId();
+            }
+        }
+
+        if (empty($objectIds)) {
             return;
         }
 
-        $this->productAndProductModelClient->bulkDelete(
-            self::INDEX_TYPE,
-            array_map(
-                function (string $productIdentifiers) {
-                    return self::PRODUCT_IDENTIFIER_PREFIX . $productIdentifiers;
-                },
-                $productIdentifiers
-            )
-        );
+        $this->productAndProductModelClient->bulkDelete(self::INDEX_TYPE, $objectIds);
     }
 
     /**

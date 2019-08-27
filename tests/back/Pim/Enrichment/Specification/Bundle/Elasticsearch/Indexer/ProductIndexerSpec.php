@@ -49,7 +49,7 @@ class ProductIndexerSpec extends ObjectBehavior
             ->normalize($product, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->willReturn(['id' => $identifier, 'a key' => 'a value']);
         $productAndProductModelIndexClient
-            ->index('', $identifier, ['id' => $identifier, 'a key' => 'a value'])
+            ->index(ProductIndexer::INDEX_TYPE, $identifier, ['id' => $identifier, 'a key' => 'a value'])
             ->shouldBeCalled();
 
         $this->indexFromProductIdentifier($identifier);
@@ -67,7 +67,7 @@ class ProductIndexerSpec extends ObjectBehavior
             ->normalize(null, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldNotBeCalled();
         $productAndProductModelIndexClient
-            ->index('', $identifier, ['id' => $identifier, 'a key' => 'a value'])
+            ->index(ProductIndexer::INDEX_TYPE, $identifier, ['id' => $identifier, 'a key' => 'a value'])
             ->shouldNotBeCalled();
 
         $this->indexFromProductIdentifier($identifier);
@@ -93,7 +93,7 @@ class ProductIndexerSpec extends ObjectBehavior
         $normalizer->normalize(null, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldNotBeCalled();
 
-        $productAndProductModelIndexClient->bulkIndexes('', [
+        $productAndProductModelIndexClient->bulkIndexes(ProductIndexer::INDEX_TYPE, [
             ['id' => $identifiers[0], 'a key' => 'a value'],
             ['id' => $identifiers[1], 'a key' => 'another value'],
         ], 'id', Refresh::disable())->shouldBeCalled();
@@ -113,16 +113,32 @@ class ProductIndexerSpec extends ObjectBehavior
         $this->indexFromProductIdentifiers([]);
     }
 
-    function it_deletes_products_from_elasticsearch_index($productAndProductModelIndexClient)
-    {
-        $productAndProductModelIndexClient->delete('', 'product_40')->shouldBeCalled();
+    function it_deletes_products_from_elasticsearch_index(
+        $productAndProductModelIndexClient,
+        $productRepository,
+        ProductInterface $product
+    ) {
+        $productRepository->findOneByIdentifier('40')->willReturn($product);
+        $product->getId()->willReturn(40);
+
+        $productAndProductModelIndexClient->delete(ProductIndexer::INDEX_TYPE, 'product_40')->shouldBeCalled();
 
         $this->removeFromProductIdentifier(40)->shouldReturn(null);
     }
 
-    function it_bulk_deletes_products_from_elasticsearch_index($productAndProductModelIndexClient)
-    {
-        $productAndProductModelIndexClient->bulkDelete('', ['product_40', 'product_33'])->shouldBeCalled();
+    function it_bulk_deletes_products_from_elasticsearch_index(
+        $productAndProductModelIndexClient,
+        $productRepository,
+        ProductInterface $product1,
+        ProductInterface $product2
+    ) {
+        $productRepository->findOneByIdentifier('40')->willReturn($product1);
+        $product1->getId()->willReturn(40);
+        $productRepository->findOneByIdentifier('33')->willReturn($product2);
+        $product2->getId()->willReturn(33);
+
+        $productAndProductModelIndexClient->bulkDelete(ProductIndexer::INDEX_TYPE, ['product_40', 'product_33'])
+            ->shouldBeCalled();
 
         $this->removeManyFromProductIdentifiers([40, 33])->shouldReturn(null);
     }
@@ -147,7 +163,7 @@ class ProductIndexerSpec extends ObjectBehavior
         $normalizer->normalize(null, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldNotBeCalled();
 
-        $productAndProductModelIndexClient->bulkIndexes('', [
+        $productAndProductModelIndexClient->bulkIndexes(ProductIndexer::INDEX_TYPE, [
             ['id' => $identifiers[0], 'a key' => 'a value'],
             ['id' => $identifiers[1], 'a key' => 'another value'],
         ], 'id', Refresh::waitFor())->shouldBeCalled();
@@ -175,7 +191,7 @@ class ProductIndexerSpec extends ObjectBehavior
         $normalizer->normalize(null, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldNotBeCalled();
 
-        $productAndProductModelIndexClient->bulkIndexes('', [
+        $productAndProductModelIndexClient->bulkIndexes(ProductIndexer::INDEX_TYPE, [
             ['id' => $identifiers[0], 'a key' => 'a value'],
             ['id' => $identifiers[1], 'a key' => 'another value'],
         ], 'id', Refresh::disable())->shouldBeCalled();
@@ -203,7 +219,7 @@ class ProductIndexerSpec extends ObjectBehavior
         $normalizer->normalize(null, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldNotBeCalled();
 
-        $productAndProductModelIndexClient->bulkIndexes('', [
+        $productAndProductModelIndexClient->bulkIndexes(ProductIndexer::INDEX_TYPE, [
             ['id' => $identifiers[0], 'a key' => 'a value'],
             ['id' => $identifiers[1], 'a key' => 'another value'],
         ], 'id', Refresh::enable())->shouldBeCalled();

@@ -135,6 +135,11 @@
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductModelController` to make `Akeneo\Tool\Bundle\ElasticsearchBundle\Client` mandatory
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\ProductPdfRenderer` to make `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface` mandatory and `string $customFont` becomes the last argument
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\UniqueVariantAxisValidator` to make `Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetValuesOfSiblings` mandatory and remove `Akeneo\Pim\Enrichment\Component\Product\Repository\EntityWithFamilyVariantRepositoryInterface`
+- Replace methods and following interface from `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer` by the single interface `Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface` and its new methods:
+    - `Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface`
+    - `Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface`
+    - `Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface`
+    - `Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface`
 
 ### CLI Commands
 

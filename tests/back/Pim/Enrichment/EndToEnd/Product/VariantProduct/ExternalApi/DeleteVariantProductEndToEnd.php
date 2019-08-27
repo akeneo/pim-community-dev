@@ -17,7 +17,9 @@ class DeleteVariantProductEndToEnd extends AbstractProductTestCase
         $this->assertCount(242, $this->getFromTestContainer('pim_catalog.repository.product')->findAll());
 
         $bikerJacketLeatherXxs = $this->getFromTestContainer('pim_catalog.repository.product')->findOneByIdentifier('biker-jacket-leather-xxs');
-        $this->get('pim_catalog.elasticsearch.indexer.product')->index($bikerJacketLeatherXxs);
+        $this->get('pim_catalog.elasticsearch.indexer.product')->indexFromProductIdentifier(
+            $bikerJacketLeatherXxs->getIdentifier()
+        );
         $client->request('DELETE', 'api/rest/v1/products/biker-jacket-leather-xxs');
 
         $response = $client->getResponse();
