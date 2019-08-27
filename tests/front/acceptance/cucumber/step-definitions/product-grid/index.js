@@ -3,6 +3,7 @@ module.exports = function(cucumber) {
   const assert = require('assert');
   const  { answerJson, renderView, convertItemTable, csvToArray } = require('../../tools');
   const DatagridProductBuilder = require('../../../../common/builder/datagrid-product')
+  const NumberFilterBuilder = require('../../../../common/builder/filter/number')
   const createElementDecorator = require('../../decorators/common/create-element-decorator');
   const datagridLoad = require('../../contracts/datagrid-load.json')
   const categoryListTree = require('../../contracts/category-list-tree.json')
@@ -15,10 +16,20 @@ module.exports = function(cucumber) {
     }
   };
 
-  Given('the following attributes:', function (dataTable, callback) {
+  Given('the following attributes:', function (attributes, callback) {
+    const followingAttributes = convertItemTable(attributes);
+    const datagridFilters = followingAttributes.map((attribute) => {
+      return new NumberFilterBuilder()
+        .withEnabled(true)
+        .withLabel(attribute['label-en_US'])
+        .withName(attribute['label-en_US'].split(' ').join('_'))
+        .withGroup(attribute.group)
+        .build()
+    });
+
     this.page.on('request', request => {
       if (request.url().includes('attributes-filters')) {
-        answerJson(request, []);
+        answerJson(request, datagridFilters);
       }
     });
 
@@ -53,7 +64,7 @@ module.exports = function(cucumber) {
         return answerJson(request, productLoadData)
       }
 
-      if (request.url().includes('/datagrid/product-grid')) {
+      if (request.url().includes('/datagrid/product-grid?dataLocale=en_US')) {
         return answerJson(request, productGridData)
       }
     })

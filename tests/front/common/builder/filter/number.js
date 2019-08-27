@@ -11,7 +11,15 @@ class NumberFilterBuilder {
     this.filter = {
       name: '',
       label: '',
-      choices: [],
+      choices: [
+        { label:"=", value: 3, data: 3, attr: [] },
+        { label:">=", value: 1, data: 1, attr: [] },
+        { label:">", value: 2, data: 2, attr: [] },
+        { label:"<=", value: 4, data: 4, attr: [] },
+        { label:"<", value: 5, data: 5, attr: [] },
+        { label:"is empty", value: "empty", data:"empty", attr: [] },
+        { label:"is not empty", value: "not empty", data:"not empty", attr: [] }
+      ],
       enabled: false,
       type: 'number',
       order: 0,
@@ -27,55 +35,55 @@ class NumberFilterBuilder {
   }
 
   withName(name) {
-    this.name = name
+    this.filter.name = name
 
     return this;
   }
 
   withLabel(label) {
-    this.label = label
+    this.filter.label = label
 
     return this;
   }
 
   withChoices(choices) {
-    this.choices = choices
+    this.filter.choices = choices
 
     return this;
   }
 
   withEnabled(enabled) {
-    this.enabled = enabled
+    this.filter.enabled = enabled
 
     return this;
   }
 
   withType(type) {
-    this.type = type
+    this.filter.type = type
 
     return this;
   }
 
   withOrder(order) {
-    this.order = order
+    this.filter.order = order
 
     return this;
   }
 
   withGroup(group) {
-    this.group = group
+    this.filter.group = group
 
     return this;
   }
 
   withGroupOrder(groupOrder) {
-    this.groupOrder = groupOrder
+    this.filter.groupOrder = groupOrder
 
     return this;
   }
 
   withFormatterOptions(formatterOptions) {
-    this.formatterOptions = formatterOptions
+    this.filter.formatterOptions = formatterOptions
 
     return this;
   }
