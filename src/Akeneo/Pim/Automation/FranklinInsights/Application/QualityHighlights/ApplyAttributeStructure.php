@@ -40,9 +40,9 @@ class ApplyAttributeStructure
         $this->selectAttributeOptions = $selectAttributeOptions;
     }
 
-    public function apply(array $attributeIds): void
+    public function apply(array $attributeCodes): void
     {
-        $attributes = $this->selectAttributesToApplyQuery->execute($attributeIds);
+        $attributes = $this->selectAttributesToApplyQuery->execute($attributeCodes);
         if (empty($attributes)) {
             return;
         }

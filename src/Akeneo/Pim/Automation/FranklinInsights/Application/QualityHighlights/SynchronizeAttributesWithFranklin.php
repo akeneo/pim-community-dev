@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\QualityHighlights;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\QualityHighlightsProviderInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectAttributeCodesFromIdsQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectPendingAttributesIdQueryInterface;
 
 class SynchronizeAttributesWithFranklin
@@ -25,21 +24,16 @@ class SynchronizeAttributesWithFranklin
     /** @var ApplyAttributeStructure */
     private $applyAttributeStructure;
 
-    /** @var SelectAttributeCodesFromIdsQueryInterface */
-    private $selectAttributeCodesFromIdsQuery;
-
     /** @var QualityHighlightsProviderInterface */
     private $qualityHighlightsProvider;
 
     public function __construct(
         SelectPendingAttributesIdQueryInterface $pendingAttributesQuery,
         ApplyAttributeStructure $applyAttributeStructure,
-        SelectAttributeCodesFromIdsQueryInterface $selectAttributeCodesFromIdsQuery,
         QualityHighlightsProviderInterface $qualityHighlightsProvider
     ) {
         $this->pendingAttributesQuery = $pendingAttributesQuery;
         $this->applyAttributeStructure = $applyAttributeStructure;
-        $this->selectAttributeCodesFromIdsQuery = $selectAttributeCodesFromIdsQuery;
         $this->qualityHighlightsProvider = $qualityHighlightsProvider;
     }
 
@@ -51,38 +45,40 @@ class SynchronizeAttributesWithFranklin
 
     private function synchronizeUpdatedAttributes(int $batchSize)
     {
-        $index = 0;
+        $lastId = 0;
         while (true) {
-            $attributeIds = $this->pendingAttributesQuery->getUpdatedAttributeIds($index, $batchSize);
-            if (! empty($attributeIds)) {
-                $this->applyAttributeStructure->apply($attributeIds);
+            $attributeCodes = $this->pendingAttributesQuery->getUpdatedAttributeCodes($lastId, $batchSize);
+            if (! empty($attributeCodes)) {
+                $this->applyAttributeStructure->apply(array_values($attributeCodes));
             }
 
-            if (count($attributeIds) < $batchSize) {
+            if (count($attributeCodes) < $batchSize) {
                 break;
             }
 
-            $index += $batchSize;
+            //Cannot be done in 1 line because of a PHP warning
+            $pendingItemIds = array_keys($attributeCodes);
+            $lastId = end($pendingItemIds);
         }
     }
 
     private function synchronizeDeletedAttributes(int $batchSize)
     {
-        $index = 0;
+        $lastId = 0;
         while (true) {
-            $attributeIds = $this->pendingAttributesQuery->getDeletedAttributeIds($index, $batchSize);
-            if (! empty($attributeIds)) {
-                $attributeCodes = $this->selectAttributeCodesFromIdsQuery->execute($attributeIds);
+            $attributeCodes = $this->pendingAttributesQuery->getDeletedAttributeCodes($lastId, $batchSize);
+            if (! empty($attributeCodes)) {
                 foreach ($attributeCodes as $attributeCode) {
                     $this->qualityHighlightsProvider->deleteAttribute($attributeCode);
                 }
             }
 
-            if (count($attributeIds) < $batchSize) {
+            if (count($attributeCodes) < $batchSize) {
                 break;
             }
 
-            $index += $batchSize;
+            $pendingItemIds = array_keys($attributeCodes);
+            $lastId = end($pendingItemIds);
         }
     }
 }

@@ -24,22 +24,19 @@ class SynchronizeAttributesWithFranklinSpec extends ObjectBehavior
     public function it_synchronizes_attributes(
         SelectPendingAttributesIdQueryInterface $pendingAttributesQuery,
         ApplyAttributeStructure $applyAttributeStructure,
-        SelectAttributeCodesFromIdsQueryInterface $selectAttributeCodeFromIdQuery,
         QualityHighlightsProviderInterface $qualityHighlightsProvider
     ) {
-        $this->beConstructedWith($pendingAttributesQuery, $applyAttributeStructure, $selectAttributeCodeFromIdQuery, $qualityHighlightsProvider);
+        $this->beConstructedWith($pendingAttributesQuery, $applyAttributeStructure, $qualityHighlightsProvider);
 
-        $pendingAttributesQuery->getUpdatedAttributeIds(0, 1)->willReturn([1]);
-        $pendingAttributesQuery->getUpdatedAttributeIds(1, 1)->willReturn([42]);
-        $pendingAttributesQuery->getUpdatedAttributeIds(2, 1)->willReturn([]);
-        $applyAttributeStructure->apply([1])->shouldBeCalled();
-        $applyAttributeStructure->apply([42])->shouldBeCalled();
+        $pendingAttributesQuery->getUpdatedAttributeCodes(0, 1)->willReturn([1 => 'size']);
+        $pendingAttributesQuery->getUpdatedAttributeCodes(1, 1)->willReturn([42 => 'height']);
+        $pendingAttributesQuery->getUpdatedAttributeCodes(42, 1)->willReturn([]);
+        $applyAttributeStructure->apply(['size'])->shouldBeCalled();
+        $applyAttributeStructure->apply(['height'])->shouldBeCalled();
 
-        $pendingAttributesQuery->getDeletedAttributeIds(0, 1)->willReturn([39]);
-        $pendingAttributesQuery->getDeletedAttributeIds(1, 1)->willReturn([14]);
-        $pendingAttributesQuery->getDeletedAttributeIds(2, 1)->willReturn([]);
-        $selectAttributeCodeFromIdQuery->execute([39])->willReturn(['color']);
-        $selectAttributeCodeFromIdQuery->execute([14])->willReturn(['weight']);
+        $pendingAttributesQuery->getDeletedAttributeCodes(0, 1)->willReturn([3 => 'color']);
+        $pendingAttributesQuery->getDeletedAttributeCodes(3, 1)->willReturn([14 => 'weight']);
+        $pendingAttributesQuery->getDeletedAttributeCodes(14, 1)->willReturn([]);
         $qualityHighlightsProvider->deleteAttribute('color')->shouldBeCalled();
         $qualityHighlightsProvider->deleteAttribute('weight')->shouldBeCalled();
 

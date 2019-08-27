@@ -15,7 +15,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Quali
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingAttributesRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -26,27 +26,23 @@ class AttributeDeletedSubscriber implements EventSubscriberInterface
     /** @var GetConnectionStatusHandler */
     private $connectionStatusHandler;
 
-    /** @var PendingAttributesRepositoryInterface */
+    /** @var PendingItemsRepositoryInterface */
     private $pendingAttributesRepository;
 
-    private $attributeIdToDelete;
-
-    public function __construct(GetConnectionStatusHandler $connectionStatusHandler, PendingAttributesRepositoryInterface $pendingAttributesRepository)
+    public function __construct(GetConnectionStatusHandler $connectionStatusHandler, PendingItemsRepositoryInterface $pendingAttributesRepository)
     {
         $this->connectionStatusHandler = $connectionStatusHandler;
         $this->pendingAttributesRepository = $pendingAttributesRepository;
-        $this->attributeIdToDelete = null;
     }
 
     public static function getSubscribedEvents()
     {
         return [
-            StorageEvents::PRE_REMOVE => 'onPreDelete',
-            StorageEvents::POST_REMOVE => 'onPostDelete',
+            StorageEvents::POST_REMOVE => 'onPostRemove',
         ];
     }
 
-    public function onPreDelete(GenericEvent $event)
+    public function onPostRemove(GenericEvent $event): void
     {
         $attribute = $event->getSubject();
         if (!$attribute instanceof AttributeInterface) {
@@ -57,23 +53,7 @@ class AttributeDeletedSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->attributeIdToDelete = (int) $attribute->getId();
-    }
-
-    public function onPostDelete(GenericEvent $event): void
-    {
-        $attribute = $event->getSubject();
-        if (!$attribute instanceof AttributeInterface) {
-            return;
-        }
-
-        if (!$this->isFranklinInsightsActivated()) {
-            return;
-        }
-
-        if ($this->attributeIdToDelete !== null) {
-            $this->pendingAttributesRepository->addDeletedAttributeId($this->attributeIdToDelete);
-        }
+        $this->pendingAttributesRepository->addDeletedAttributeCode($attribute->getCode());
     }
 
     private function isFranklinInsightsActivated(): bool

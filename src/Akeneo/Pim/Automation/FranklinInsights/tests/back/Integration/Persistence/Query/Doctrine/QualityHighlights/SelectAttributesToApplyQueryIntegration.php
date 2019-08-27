@@ -53,11 +53,11 @@ final class SelectAttributesToApplyQueryIntegration extends TestCase
 
     public function test_it_returns_pim_attribute_code_exact_match_on_code()
     {
-        $attributeId1 = $this->createTextAttribute('weight')->getId();
-        $attributeId2 = $this->createSimpleSelectAttribute('color')->getId();
-        $attributeId3 = $this->createMetricAttribute('size')->getId();
+        $attributeCode1 = $this->createTextAttribute('weight')->getCode();
+        $attributeCode2 = $this->createSimpleSelectAttribute('color')->getCode();
+        $attributeCode3 = $this->createMetricAttribute('size')->getCode();
 
-        $attributes = $this->query->execute([$attributeId1, $attributeId2, $attributeId3]);
+        $attributes = $this->query->execute([$attributeCode1, $attributeCode2, $attributeCode3]);
 
         $expectedResult = [
             [

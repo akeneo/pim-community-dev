@@ -105,7 +105,6 @@ services:
     akeneo.pim.automation.franklin_insights.application.quality_highlights.synchronize_attributes_with_franklin:
         class: Akeneo\Pim\Automation\FranklinInsights\Application\QualityHighlights\SynchronizeAttributesWithFranklin
         arguments:
-            - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_pending_attributes'
+            - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_pending_items'
             - '@akeneo.pim.automation.franklin_insights.application.quality_highlights.apply_attribute_structure'
-            - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_attribute_codes_from_ids'
             - '@akeneo.pim.automation.franklin_insights.data_provider.quality_highlights'

@@ -33,18 +33,18 @@ class ApplyAttributeStructureSpec extends ObjectBehavior
 
     public function it_applies_nothing_if_no_attributes($selectAttributesToApplyQuery, $qualityHighlightsProvider, $selectAttributeOptions)
     {
-        $selectAttributesToApplyQuery->execute([1, 42])->willReturn([]);
+        $selectAttributesToApplyQuery->execute(['color', 'size'])->willReturn([]);
         $selectAttributeOptions->execute(Argument::any())->shouldNotBeCalled();
         $qualityHighlightsProvider->applyAttributeStructure(Argument::any())->shouldNotBeCalled();
 
-        $this->apply([1, 42]);
+        $this->apply(['color', 'size']);
     }
 
     public function it_applies_new_attributes($selectAttributesToApplyQuery, $qualityHighlightsProvider, $selectAttributeOptions)
     {
         $attributeCode1 = 'color';
         $attributeCode2 = 'size';
-        $selectAttributesToApplyQuery->execute([1, 42])->willReturn([
+        $selectAttributesToApplyQuery->execute([$attributeCode1, $attributeCode2])->willReturn([
             [
                 'code' => $attributeCode1,
                 'type' => AttributeTypes::OPTION_SIMPLE_SELECT,
@@ -138,6 +138,6 @@ class ApplyAttributeStructureSpec extends ObjectBehavior
 
         $qualityHighlightsProvider->applyAttributeStructure($expectedAppliedAttributes)->shouldBeCalled();
 
-        $this->apply([1, 42]);
+        $this->apply([$attributeCode1, $attributeCode2]);
     }
 }

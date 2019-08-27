@@ -15,7 +15,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Quali
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingAttributesRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -27,10 +27,10 @@ class AttributeOptionDeletedSubscriber implements EventSubscriberInterface
     /** @var GetConnectionStatusHandler */
     private $connectionStatusHandler;
 
-    /** @var PendingAttributesRepositoryInterface */
+    /** @var PendingItemsRepositoryInterface */
     private $pendingAttributesRepository;
 
-    public function __construct(GetConnectionStatusHandler $connectionStatusHandler, PendingAttributesRepositoryInterface $pendingAttributesRepository)
+    public function __construct(GetConnectionStatusHandler $connectionStatusHandler, PendingItemsRepositoryInterface $pendingAttributesRepository)
     {
         $this->connectionStatusHandler = $connectionStatusHandler;
         $this->pendingAttributesRepository = $pendingAttributesRepository;
@@ -39,11 +39,11 @@ class AttributeOptionDeletedSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            StorageEvents::POST_REMOVE => 'onRemove',
+            StorageEvents::POST_REMOVE => 'onPostRemove',
         ];
     }
 
-    public function onRemove(GenericEvent $event): void
+    public function onPostRemove(GenericEvent $event): void
     {
         $attributeOption = $event->getSubject();
         if (!$attributeOption instanceof AttributeOptionInterface) {
@@ -58,7 +58,7 @@ class AttributeOptionDeletedSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->pendingAttributesRepository->addUpdatedAttributeId($attributeOption->getAttribute()->getId());
+        $this->pendingAttributesRepository->addUpdatedAttributeCode($attributeOption->getAttribute()->getCode());
     }
 
     private function isFranklinInsightsActivated(): bool

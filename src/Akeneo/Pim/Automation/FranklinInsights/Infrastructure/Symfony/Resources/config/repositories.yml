@@ -45,7 +45,7 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo.pim.automation.franklin_insights.repository.quality_highlights_pending_attributes:
-        class: Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Doctrine\QualityHighlights\PendingAttributesRepository
+    akeneo.pim.automation.franklin_insights.repository.quality_highlights_pending_items:
+        class: Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Doctrine\QualityHighlights\PendingItemsRepository
         arguments:
             - '@database_connection'

@@ -27,9 +27,9 @@ class SelectAttributesToApplyQuery implements SelectAttributesToApplyQueryInterf
         $this->connection = $connection;
     }
 
-    public function execute(array $attributeIds): array
+    public function execute(array $attributeCodes): array
     {
-        $searchResults = $this->executeQuery($attributeIds);
+        $searchResults = $this->executeQuery($attributeCodes);
 
         $attributes = [];
         foreach ($searchResults as $attribute) {
@@ -39,7 +39,7 @@ class SelectAttributesToApplyQuery implements SelectAttributesToApplyQueryInterf
         return $attributes;
     }
 
-    private function executeQuery(array $attributeIds): array
+    private function executeQuery(array $attributeCodes): array
     {
         $sql = <<<'SQL'
             SELECT 
@@ -47,13 +47,13 @@ class SelectAttributesToApplyQuery implements SelectAttributesToApplyQueryInterf
                 attribute.default_metric_unit AS unit,
             (SELECT JSON_OBJECTAGG(IFNULL(locale, 0), label) FROM pim_catalog_attribute_translation WHERE foreign_key = attribute.id) AS labels
             FROM pim_catalog_attribute AS attribute
-            WHERE attribute.id IN(:attributeIds)
+            WHERE attribute.code IN(:attributeCodes)
 SQL;
 
         $statement = $this->connection->executeQuery(
             $sql,
-            ['attributeIds' => $attributeIds],
-            ['attributeIds' => Connection::PARAM_INT_ARRAY]
+            ['attributeCodes' => $attributeCodes],
+            ['attributeCodes' => Connection::PARAM_STR_ARRAY]
         );
 
         $searchResults = $statement->fetchAll();

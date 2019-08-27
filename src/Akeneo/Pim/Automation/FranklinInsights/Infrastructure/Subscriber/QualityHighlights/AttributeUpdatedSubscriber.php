@@ -15,7 +15,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Quali
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingAttributesRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -26,10 +26,10 @@ class AttributeUpdatedSubscriber implements EventSubscriberInterface
     /** @var GetConnectionStatusHandler */
     private $connectionStatusHandler;
 
-    /** @var PendingAttributesRepositoryInterface */
+    /** @var PendingItemsRepositoryInterface */
     private $pendingAttributesRepository;
 
-    public function __construct(GetConnectionStatusHandler $connectionStatusHandler, PendingAttributesRepositoryInterface $pendingAttributesRepository)
+    public function __construct(GetConnectionStatusHandler $connectionStatusHandler, PendingItemsRepositoryInterface $pendingAttributesRepository)
     {
         $this->connectionStatusHandler = $connectionStatusHandler;
         $this->pendingAttributesRepository = $pendingAttributesRepository;
@@ -54,20 +54,20 @@ class AttributeUpdatedSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->pendingAttributesRepository->addUpdatedAttributeId($attribute->getId());
+        $this->pendingAttributesRepository->addUpdatedAttributeCode($attribute->getCode());
     }
 
     public function onSaveAll(GenericEvent $event)
     {
         $attributes = $event->getSubject();
-        $attributeIds = [];
+        $attributeCodes = [];
         foreach ($attributes as $attribute) {
             if ($attribute instanceof AttributeInterface) {
-                $attributeIds[] = $attribute->getId();
+                $attributeCodes[] = $attribute->getCode();
             }
         }
 
-        if (empty($attributeIds)) {
+        if (empty($attributeCodes)) {
             return;
         }
 
@@ -75,8 +75,8 @@ class AttributeUpdatedSubscriber implements EventSubscriberInterface
             return;
         }
 
-        foreach ($attributeIds as $attributeId) {
-            $this->pendingAttributesRepository->addUpdatedAttributeId($attributeId);
+        foreach ($attributeCodes as $attributeCode) {
+            $this->pendingAttributesRepository->addUpdatedAttributeCode($attributeCode);
         }
     }
 

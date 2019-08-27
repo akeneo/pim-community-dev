@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository;
 
-interface PendingAttributesRepositoryInterface
+interface PendingItemsRepositoryInterface
 {
-    public function addUpdatedAttributeId(int $id): void;
+    public function addUpdatedAttributeCode(string $code): void;
 
-    public function addDeletedAttributeId(int $id): void;
+    public function addDeletedAttributeCode(string $code): void;
 }

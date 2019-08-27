@@ -15,5 +15,5 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query;
 
 interface SelectAttributesToApplyQueryInterface
 {
-    public function execute(array $attributeIds): array;
+    public function execute(array $attributeCodes): array;
 }
