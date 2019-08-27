@@ -130,7 +130,7 @@
 - Update constructor of `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CompleteFilter`, remove `Doctrine\ORM\EntityManagerInterface` and add `Doctrine\DBAL\Connection`
 - Remove methods `getCompletenesses` and `setCompletenesses` from `Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface`
 - Replace `Akeneo\Pim\Enrichment\Component\Product\Factory\Write` by `Akeneo\Pim\Enrichment\Component\Product\Factory\Read` with method `createByCheckingData`
-- Replace interfaces from `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer` by the single interface `Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface` and change methods accordingly. Removed interfaces are:
+- Replace interfaces from `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer` by the single interface `Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface` and change methods accordingly. Replaced interfaces are:
     - `Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface`
     - `Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface`
     - `Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface`
