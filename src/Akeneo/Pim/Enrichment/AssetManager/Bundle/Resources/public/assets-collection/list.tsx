@@ -8,13 +8,14 @@ import styled from 'styled-components';
 import __ from 'akeneoreferenceentity/tools/translator';
 import {Label} from 'akeneopimenrichmentassetmanager/platform/component/common/label';
 import {getAttributeLabel, Attribute} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
-import {ChannelLabel} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/channel';
-import {LocaleLabel} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/locale';
+import {LocaleLabel, ChannelLabel} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/context';
 import {ContextLabel} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/context';
 import {ThemedProps} from 'akeneopimenrichmentassetmanager/platform/component/theme';
 import {Pill, Spacer, Separator} from 'akeneopimenrichmentassetmanager/platform/component/common';
 import {AssetCollection} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-collection';
-import {isValueComplete, Family} from 'akeneopimenrichmentassetmanager/enrich/domain/model/product';
+import {isValueComplete} from 'akeneopimenrichmentassetmanager/enrich/domain/model/product';
+import {Button} from 'akeneopimenrichmentassetmanager/platform/component/common/button';
+import {Family} from 'akeneopimenrichmentassetmanager/platform/model/structure/family';
 
 type ListProps = {
   attributes: Attribute[],
@@ -48,35 +49,6 @@ const AssetCounter = styled.div`
   margin-left: 10px;
 `;
 
-type ButtonProps = {
-  buttonSize: 'micro' | 'medium' | 'default',
-  color: 'green' | 'blue' | 'red' | 'grey' | 'outline'
-}
-
-const Button = styled.div`
-  padding: 0 ${(props: ThemedProps<ButtonProps>) => 'micro' === props.buttonSize ? '10xp' : '15px'};
-  height: ${(props: ThemedProps<ButtonProps>) => {
-    switch (props.buttonSize) {
-      case 'micro':
-        return '20px';
-      case 'medium':
-        return '24px';
-      default:
-        return '32px';
-    }
-  }};
-  white-space: nowrap;
-  line-height: ${(props: ThemedProps<ButtonProps>) => 'micro' === props.buttonSize ? '19xp' : '23px'};
-  border-radius: ${(props: ThemedProps<ButtonProps>) => 'micro' === props.buttonSize ? '10xp' : '16px'};
-  font-size: ${(props: ThemedProps<ButtonProps>) => 'micro' === props.buttonSize ? props.theme.fontSize.small : props.theme.fontSize.default};
-  min-width: ${(props: ThemedProps<ButtonProps>) => 'micro' === props.buttonSize ? '60px' : '100px'};
-  color: ${(props: ThemedProps<ButtonProps>) => 'outline' !== props.color ? 'white' : props.theme.color.grey120};
-  background-color: ${(props: ThemedProps<ButtonProps>) => 'outline' !== props.color ? (props.theme.color as any)[props.color + '100'] : 'white'};
-  cursor: pointer;
-  text-transform: uppercase;
-  border: 1px solid ${(props: ThemedProps<ButtonProps>) => 'outline' !== props.color ? 'transparent' : props.theme.color.grey80};
-`;
-
 const AssetCollectionContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -106,7 +78,7 @@ const List = ({values, family, context}: ListProps) => {
             ) : null}
             <Spacer />
             <AssetCounter>
-              {__('pim_asset_manager.asset_collection.asset_count', {count: value.data.length})}
+              {__('pim_asset_manager.asset_collection.asset_count', {count: value.data.length}, value.data.length)}
             </AssetCounter>
             <Separator />
             {value.channel !== null || value.locale !== null ? (
@@ -118,9 +90,11 @@ const List = ({values, family, context}: ListProps) => {
                 <Separator />
               </React.Fragment>
             ): null}
-            <Button buttonSize='medium' color='outline'>{__('pim_asset_manager.asset_collection.add_asset')}</Button>
+            {value.editable ? (
+              <Button buttonSize='medium' color='outline'>{__('pim_asset_manager.asset_collection.add_asset')}</Button>
+            ) : null}
           </SectionTitle>
-          <AssetCollection assetFamilyIdentifier={value.attribute.referenceDataName} assetCodes={value.data} context={context} />
+          <AssetCollection assetFamilyIdentifier={value.attribute.referenceDataName} assetCodes={value.data} context={context} readonly={!value.editable}/>
         </AssetCollectionContainer>
       ))}
     </AssetCollectionList>

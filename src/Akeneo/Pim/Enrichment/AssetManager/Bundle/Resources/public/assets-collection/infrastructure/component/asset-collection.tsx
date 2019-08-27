@@ -12,13 +12,14 @@ import AssetIllustration from 'akeneopimenrichmentassetmanager/platform/componen
 import __ from 'akeneoreferenceentity/tools/translator';
 import {fetchAssetByCodes} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/asset';
 
-const AssetCard = styled.div`
+const AssetCard = styled.div<{readonly: boolean}>`
   display: flex;
   flex-direction: column;
   height: 165px;
   margin-top: 10px;
   justify-content: space-between;
   margin-right: 20px;
+  opacity: ${(props: ThemedProps<{readonly: boolean}>) => props.readonly ? .8 : 1}
 `;
 const Container = styled.div`
   display: flex;
@@ -36,13 +37,14 @@ const BaselinePill = styled(Pill)`
   align-self: unset;
 `;
 
-const Img = styled.img`
-  width: 140px;
-  height: 140px;
-  border: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey100}
-`;
 
 const Thumbnail = ({asset}: {asset: Asset}) => {
+  const Img = styled.img`
+    width: 140px;
+    height: 140px;
+    border: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey100}
+  `;
+
   return (<Img src={getImage(asset)}/>)
 }
 
@@ -60,10 +62,11 @@ const EmptyAssetCollection = styled.div`
 type AssetCollectionProps = {
   assetFamilyIdentifier: AssetFamilyIdentifier
   assetCodes: AssetCode[],
+  readonly: boolean
   context: {channel: ChannelCode, locale: LocaleCode}
 }
 
-export const AssetCollection = ({assetFamilyIdentifier, assetCodes, context}: AssetCollectionProps) => {
+export const AssetCollection = ({assetFamilyIdentifier, assetCodes, readonly, context}: AssetCollectionProps) => {
   const [assets, assetsReceived] = React.useState<Asset[]>([]);
   const noChangeInCollection = (assetCodes: AssetCode[], assets: Asset[]) => {
     return assets.length !== assetCodes.length || !assets.sort().every((asset: Asset, index: number) => assetCodes.sort().indexOf(asset.code) === index )
@@ -78,10 +81,11 @@ export const AssetCollection = ({assetFamilyIdentifier, assetCodes, context}: As
 
   return (
     <Container>
+      {/* Collection is not empty and is loaded */}
       {0 !== assets.length ? (
         <React.Fragment>
           {assets.map((asset: Asset) => (
-            <AssetCard key={asset.code}>
+            <AssetCard key={asset.code} readonly={readonly}>
               <Thumbnail asset={asset} />
               <AssetTitle>
                 <Label>
@@ -93,16 +97,18 @@ export const AssetCollection = ({assetFamilyIdentifier, assetCodes, context}: As
           ))}
         </React.Fragment>
       ) : null}
+      {/* Collection is not empty and is not loaded */}
       {0 === assets.length && 0 !== assetCodes.length ? (
         <React.Fragment>
           {assetCodes.map((assetCode: AssetCode) => (
-            <AssetCard key={assetCode} className='AknLoadingPlaceHolderContainer'>
+            <AssetCard key={assetCode} className='AknLoadingPlaceHolderContainer' readonly={false}>
               <Thumbnail asset={emptyAsset()}/>
               <AssetTitle />
             </AssetCard>
           ))}
         </React.Fragment>
       ) : null}
+      {/* Collection is empty */}
       {0 === assetCodes.length ? (
         <EmptyAssetCollection>
           <AssetIllustration size={80}/>

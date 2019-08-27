@@ -4,7 +4,7 @@ import {Channel} from 'akeneopimenrichmentassetmanager/platform/model/channel/ch
 import {Attribute} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
 import {Locale} from 'akeneopimenrichmentassetmanager/platform/model/channel/locale';
 import {fetchChannels} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/channel';
-import {Family, FamilyCode} from 'akeneopimenrichmentassetmanager/enrich/domain/model/product';
+import {Family, FamilyCode} from 'akeneopimenrichmentassetmanager/platform/model/structure/family';
 import {fetchFamily} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/family';
 
 export type StructureState = {

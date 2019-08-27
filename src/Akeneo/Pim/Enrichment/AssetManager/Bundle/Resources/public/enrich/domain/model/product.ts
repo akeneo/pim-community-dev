@@ -1,26 +1,27 @@
 import {ChannelReference, ChannelCode} from 'akeneopimenrichmentassetmanager/platform/model/channel/channel';
 import {LocaleReference} from 'akeneopimenrichmentassetmanager/platform/model/channel/locale';
 import {AttributeCode, Attribute} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
-// import {Labels} from 'akeneopimenrichmentassetmanager/platform/model/label';
+import {Labels} from 'akeneopimenrichmentassetmanager/platform/model/label';
+import {Family} from 'akeneopimenrichmentassetmanager/platform/model/structure/family';
 
-// type LocaleCompleteness = {
-//   completeness: {
-//     required: number;
-//     missing: number;
-//   };
-// };
+type LocaleCompleteness = {
+  completeness: {
+    required: number;
+    missing: number;
+  };
+};
 
-// type ChannelCompteness = {
-//   channel: ChannelCode;
-//   labels: Labels;
-//   locales: {[key: string]: LocaleCompleteness};
-// };
-// export type Completeness = ChannelCompteness[];
+type ChannelCompteness = {
+  channel: ChannelCode;
+  labels: Labels;
+  locales: {[key: string]: LocaleCompleteness};
+};
+export type Completeness = ChannelCompteness[];
 
 export type Meta = {
   attributes_for_this_level: AttributeCode[];
   level: number | null;
-  // completeness: Completeness;
+  completeness: Completeness;
 };
 
 export type CategoryCode = string;
@@ -39,15 +40,6 @@ export type Product = {
   meta: Meta;
   values: LegacyValueCollection;
   categories: CategoryCode[];
-};
-export type FamilyCode = string;
-type AttributeRequirements = {
-  [key: string]: AttributeCode[];
-};
-
-export type Family = {
-  code: FamilyCode;
-  attribute_requirements: AttributeRequirements;
 };
 
 export type Value = {
