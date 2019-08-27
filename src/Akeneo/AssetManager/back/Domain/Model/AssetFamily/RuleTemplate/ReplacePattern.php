@@ -21,12 +21,14 @@ use Akeneo\AssetManager\Domain\Query\Asset\PropertyAccessibleAsset;
  */
 class ReplacePattern
 {
+    public const PATTERN_REGEXP = '#{{(.*?)}}#';
+
     /**
      * @throws \InvalidArgumentException When the rule value has more than one pattern to replace and the asset value is an array
      *
      * @return array|string
      */
-    public static function replace(string $ruleValue, PropertyAccessibleAsset $propertyAccessibleAsset)
+    public static function replace($ruleValue, PropertyAccessibleAsset $propertyAccessibleAsset)
     {
         $patterns = self::detectPatterns($ruleValue);
         $valueForPatterns = self::findValuesForPatterns($propertyAccessibleAsset, $patterns);
@@ -39,12 +41,12 @@ class ReplacePattern
         if (is_array($ruleValue)) {
             $result = [];
             foreach ($ruleValue as $item) {
-                preg_match_all('#{{(.*?)}}#', $item, $matchedPatterns);
+                preg_match_all(self::PATTERN_REGEXP, $item, $matchedPatterns);
                 $matchedPatterns = $matchedPatterns[1];
                 $result = array_merge($result, $matchedPatterns);
             }
         } else {
-            preg_match_all('#{{(.*?)}}#', $ruleValue, $matchedPatterns);
+            preg_match_all(self::PATTERN_REGEXP, $ruleValue, $matchedPatterns);
             $result = $matchedPatterns[1];
         }
 
