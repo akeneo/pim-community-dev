@@ -1,3 +1,0 @@
-imports:
-    - { resource: '../../src/Akeneo/Platform/config/pimee.yml' }
-

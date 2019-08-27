@@ -1,6 +1,5 @@
 imports:
     - { resource: '@AkeneoAssetBundle/Resources/config/external_api/config.yml' }
-    - { resource: 'bundles/oneup_flysystem.yml' }
     - { resource: '@AkeneoReferenceEntityBundle/Resources/config/search/elasticsearch.yml' }
     - { resource: '@AkeneoReferenceEntityBundle/Resources/config/connector/api.yml' }
     - { resource: '@AkeneoAssetManagerBundle/Resources/config/search/elasticsearch.yml' }
