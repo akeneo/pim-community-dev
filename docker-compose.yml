@@ -84,7 +84,7 @@ services:
       ES_JAVA_OPTS: '${ES_JAVA_OPTS:--Xms512m -Xmx512m}'
       discovery.type: 'single-node'
     ports:
-      - '${DOCKER_PORT_ELASTICSEARCH:-9220}:9200'
+      - '${DOCKER_PORT_ELASTICSEARCH:-9210}:9200'
     networks:
       - 'pim'
 
