@@ -105,7 +105,7 @@ class ProductIndexerSpec extends ObjectBehavior
         $normalizer,
         $productAndProductModelIndexClient,
         $productRepository
-    )     {
+    ) {
         $productRepository->findOneByIdentifier(Argument::cetera())->shouldNotBeCalled();
         $normalizer->normalize(Argument::cetera())->shouldNotBeCalled();
         $productAndProductModelIndexClient->bulkIndexes(Argument::cetera())->shouldNotBeCalled();
