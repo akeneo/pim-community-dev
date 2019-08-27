@@ -23,6 +23,11 @@ class ReplacePattern
 {
     public const PATTERN_REGEXP = '#{{(.*?)}}#';
 
+    public static function isExtrapolation($someValue): bool
+    {
+        return !empty(self::detectPatterns($someValue));
+    }
+
     /**
      * @throws \InvalidArgumentException When the rule value has more than one pattern to replace and the asset value is an array
      *
@@ -36,7 +41,7 @@ class ReplacePattern
         return self::replacePatterns($ruleValue, $valueForPatterns);
     }
 
-    private static function detectPatterns($ruleValue): array
+    public static function detectPatterns($ruleValue): array
     {
         if (is_array($ruleValue)) {
             $result = [];

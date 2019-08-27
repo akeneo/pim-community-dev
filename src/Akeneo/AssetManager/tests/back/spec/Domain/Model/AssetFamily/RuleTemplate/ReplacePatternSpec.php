@@ -13,6 +13,14 @@ use Akeneo\AssetManager\Domain\Query\Asset\PropertyAccessibleAsset;
  */
 class ReplacePatternSpec extends ObjectBehavior
 {
+    public function it_tells_if_a_field_has_an_extrapolation()
+    {
+        $this::isExtrapolation('color')->shouldReturn(false);
+        $this::isExtrapolation('{{attribute}}')->shouldReturn(true);
+        $this::isExtrapolation(['red', '{{attribute}}', 'blue'])->shouldReturn(true);
+        $this::isExtrapolation(['red', 'blue'])->shouldReturn(false);
+    }
+
     public function it_can_replace_string_properties(PropertyAccessibleAsset $accessibleAsset)
     {
         $accessibleAsset->hasValue('code')->willReturn(true);

@@ -30,21 +30,6 @@ Feature: Create an asset family
     And there should be no asset family
 
   @acceptance-back
-  Scenario: Cannot create an asset family if there is no product selections
-    When the user creates an asset family "packshot" with an empty product selections
-    Then there should be a validation error with message 'You must specify at least one product selection in your product link rule'
-
-  @acceptance-back
-  Scenario: Cannot create an asset family if there is no product assignment
-    When the user creates an asset family "packshot" with an empty product assignment
-    Then there should be a validation error with message 'You must specify at least one product assignment in your product link rule'
-
-  @acceptance-back
-  Scenario: Cannot create an asset family if one of the product link rule is not executable by the rule engine
-    When the user creates an asset family "packshot" with a product link rule not executable by the rule engine
-    Then there should be a validation error stating why the rule engine cannot execute the product link rule
-
-  @acceptance-back
   Scenario: Cannot create more asset families than the limit
     Given 100 random asset families
     When the user creates an asset family "color" with:
@@ -85,6 +70,36 @@ Feature: Create an asset family
   Scenario: Cannot create an asset family with a collection of rule templates that contains more than 2 items
     When the user tries to create an asset family 'packshot' with a collection of rule templates having more items than the limit
     Then there should be a validation error with message 'You cannot create the asset family "Packshot" because you have reached the limit of 2 product link rules'
+
+  @acceptance-back
+  Scenario: Cannot create an asset family if there is no product selections
+    When the user creates an asset family "packshot" with an empty product selections
+    Then there should be a validation error with message 'You must specify at least one product selection in your product link rule'
+
+  @acceptance-back
+  Scenario: Cannot create an asset family if there is no product assignment
+    When the user creates an asset family "packshot" with an empty product assignment
+    Then there should be a validation error with message 'You must specify at least one product assignment in your product link rule'
+
+  @acceptance-back
+  Scenario: Cannot create an asset family if one of the product link rule is not executable by the rule engine
+    When the user creates an asset family "packshot" with a product link rule not executable by the rule engine
+    Then there should be a validation error stating why the rule engine cannot execute the product link rule
+
+  @acceptance-back
+  Scenario: Cannot create an asset family if one of the product link rule has an extrapolated product selection field which references an unexisting attribute
+    When the user creates an asset family with a product link rule having an extrapolated product selection field which references an attribute that does not exist
+    Then there should be a validation error stating that the product link rule cannot be created because the extrapolated product selection field references an attribute that does not exist
+
+  @acceptance-back
+  Scenario: Cannot create an asset family if one of the product link rule has an extrapolated product selection value which references an unexisting attribute
+    When the user creates an asset family with a product link rule having an extrapolated product selection value which references an attribute that does not exist
+    Then there should be a validation error stating that the product link rule cannot be created because the extrapolated product selection value references an attribute that does not exist
+
+#  @acceptance-back
+#  Scenario: Cannot create an asset family if one of the product link rule has an extrapolated product assignment attribute which references an unexisting attribute
+#    When the user creates an asset family with a product link rule having an extrapolated product assignment attribute which references an attribute that does not exist
+#    Then there should be a validation error stating that the product link rule cannot be created because the extrapolated product assignment attribute references an attribute that does not exist
 
   @acceptance-front
   Scenario: Creating an asset family
