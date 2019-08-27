@@ -117,7 +117,7 @@ class CalculateCompletenessCommand extends Command
             }, $productsToSave);
 
             $this->computeAndPersistProductCompletenesses->fromProductIdentifiers($identifiers);
-            $this->productIndexer->indexFromProductIdentifiers($productsToSave);
+            $this->productIndexer->indexFromProductIdentifiers($identifiers);
         }
 
         $output->writeln("<info>Missing completenesses generated.</info>");
