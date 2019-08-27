@@ -54,27 +54,17 @@ class ProductIndexer implements ProductIndexerInterface
     }
 
     /**
-     * Indexes a product in both the product index and the product and product model index.
+     * Indexes a product in the product and product model index from their identifiers.
      *
      * {@inheritdoc}
      */
     public function indexFromProductIdentifier(string $productIdentifier, array $options = []): void
     {
-        $object = $this->productRepository->findOneByIdentifier($productIdentifier);
-        if (!$object instanceof ProductInterface) {
-            return;
-        }
-
-        $normalizedObject = $this->normalizer->normalize(
-            $object,
-            ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
-        );
-        $this->validateObjectNormalization($normalizedObject);
-        $this->productAndProductModelClient->index(self::INDEX_TYPE, $normalizedObject['id'], $normalizedObject);
+        $this->indexFromProductIdentifiers([$productIdentifier], $options);
     }
 
     /**
-     * Indexes a list of products in both the product index and the product and product model index.
+     * Indexes a list of products in the product and product model index from their identifiers.
      *
      * If the index_refresh is provided, it uses the refresh strategy defined.
      * Otherwise the waitFor strategy is by default.
@@ -100,16 +90,20 @@ class ProductIndexer implements ProductIndexerInterface
             $normalizedProducts[] = $normalizedProduct;
         }
 
-        if (empty($normalizedProducts)) {
-            return;
+        if (count($normalizedProducts) === 1) {
+            $this->productAndProductModelClient->index(
+                self::INDEX_TYPE,
+                $normalizedProducts[0]['id'],
+                $normalizedProducts[0]
+            );
+        } elseif (count($normalizedProducts) > 1) {
+            $this->productAndProductModelClient->bulkIndexes(
+                self::INDEX_TYPE,
+                $normalizedProducts,
+                'id',
+                $indexRefresh
+            );
         }
-
-        $this->productAndProductModelClient->bulkIndexes(
-            self::INDEX_TYPE,
-            $normalizedProducts,
-            'id',
-            $indexRefresh
-        );
     }
 
     /**

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Tool\Component\StorageUtils\Indexer;
 
 /**
@@ -15,23 +17,23 @@ interface ProductIndexerInterface
      * @param string $productIdentifier
      * @param array  $options
      */
-    public function indexFromProductIdentifier(string $productIdentifier, array $options = []);
+    public function indexFromProductIdentifier(string $productIdentifier, array $options = []): void;
 
     /**
      * @param string[] $productIdentifiers
      * @param array    $options
      */
-    public function indexFromProductIdentifiers(array $productIdentifiers, array $options = []);
+    public function indexFromProductIdentifiers(array $productIdentifiers, array $options = []): void;
 
     /**
      * @param string $productIdentifier
      * @param array  $options
      */
-    public function removeFromProductIdentifier(string $productIdentifier, array $options = []);
+    public function removeFromProductIdentifier(string $productIdentifier, array $options = []): void;
 
     /**
      * @param string[] $productIdentifiers
      * @param array    $options
      */
-    public function removeManyFromProductIdentifiers(array $productIdentifiers, array $options = []);
+    public function removeManyFromProductIdentifiers(array $productIdentifiers, array $options = []): void;
 }

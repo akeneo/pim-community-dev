@@ -4,27 +4,24 @@ namespace Specification\Akeneo\Pim\Enrichment\Bundle\Command;
 
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Prophecy\Argument;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class IndexProductCommandSpec extends ObjectBehavior
 {
     function let(
-        ContainerInterface $container,
         ProductRepositoryInterface $productRepository,
         ProductIndexerInterface $productIndexer,
         ObjectManager $objectManager,
@@ -37,7 +34,6 @@ class IndexProductCommandSpec extends ObjectBehavior
             $productAndProductModelClient,
             'akeneo_pim_product_and_product_model'
         );
-        $this->setContainer($container);
 
         $productAndProductModelClient->hasIndex()->willReturn(true);
     }
@@ -49,7 +45,7 @@ class IndexProductCommandSpec extends ObjectBehavior
 
     function it_is_a_command()
     {
-        $this->shouldBeAnInstanceOf(ContainerAwareCommand::class);
+        $this->shouldBeAnInstanceOf(Command::class);
     }
 
     function it_indexes_all_products(

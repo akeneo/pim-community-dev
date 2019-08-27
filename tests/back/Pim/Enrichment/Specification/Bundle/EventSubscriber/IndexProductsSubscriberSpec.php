@@ -98,12 +98,11 @@ class IndexProductsSubscriberSpec extends ObjectBehavior
         $this->indexProduct($event);
     }
 
-    function it_does_not_index_a_non_product_entity($indexer, GenericEvent $event, \stdClass $subject)
+    function it_does_not_index_a_non_product_entity($indexer)
     {
-        $event->getSubject()->willReturn($subject);
         $indexer->indexFromProductIdentifier(Argument::cetera())->shouldNotBeCalled();
 
-        $this->indexProduct($event);
+        $this->indexProduct(new GenericEvent(new \stdClass()));
     }
 
     function it_does_not_bulk_index_non_product_entities(
@@ -118,21 +117,17 @@ class IndexProductsSubscriberSpec extends ObjectBehavior
         $this->bulkIndexProducts($event);
     }
 
-    function it_does_not_bulk_index_non_collections($indexer, GenericEvent $event, \stdClass $subject1)
+    function it_does_not_bulk_index_non_collections($indexer)
     {
-        $event->getSubject()->willReturn($subject1);
-
         $indexer->indexFromProductIdentifiers(Argument::any())->shouldNotBeCalled();
 
-        $this->bulkIndexProducts($event);
+        $this->bulkIndexProducts(new GenericEvent(new \stdClass()));
     }
 
-    function it_does_not_delete_non_product_entity_from_elasticsearch($indexer, RemoveEvent $event, \stdClass $subject)
+    function it_does_not_delete_non_product_entity_from_elasticsearch($indexer)
     {
-        $event->getSubject()->willReturn($subject);
-
         $indexer->removeFromProductIdentifier(40)->shouldNotBeCalled();
 
-        $this->deleteProduct($event)->shouldReturn(null);
+        $this->deleteProduct(new RemoveEvent(new \stdClass(), 40))->shouldReturn(null);
     }
 }
