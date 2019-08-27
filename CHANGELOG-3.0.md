@@ -2,8 +2,11 @@
 
 ## Bug fixes
 
-- PIM-8615: Fix issue issue with boolean attribute used as variant axis
+- PIM-8615: Fix issue with boolean attribute used as variant axis
 - PIM-8678: Fill the updated property on Family entity update
+
+## BC Breaks
+- Change `Akeneo\Pim\Structure\Component\Mode\FamilyInterface` to extend `Akeneo\Tool\Component\Versioning\Model\TimestampableInterface`
 
 # 3.0.38 (2019-08-20)
 
