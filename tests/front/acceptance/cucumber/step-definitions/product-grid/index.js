@@ -27,7 +27,7 @@ module.exports = function(cucumber) {
 
   Given('the following products:', function (products, callback) {
     const followingProducts = convertItemTable(products)
-    const productData = followingProducts.map((product) => {
+    const datagridProducts = followingProducts.map((product) => {
       return new DatagridProductBuilder()
         .withIdentifier(product.sku)
         .withLabel(product.sku)
@@ -37,10 +37,10 @@ module.exports = function(cucumber) {
     })
 
     const productGridData = {
-      data: productData,
-      totalRecords: productData.length,
+      data: datagridProducts,
+      totalRecords: datagridProducts.length,
       options: {
-        totalRecords: null
+        totalRecords: datagridProducts.length
       }
     }
 
