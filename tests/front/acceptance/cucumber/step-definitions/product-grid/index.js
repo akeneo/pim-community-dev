@@ -13,6 +13,10 @@ module.exports = function(cucumber) {
     'Product grid':  {
       selector: '.AknGrid.AknGrid--withCheckbox',
       decorator: require('../../decorators/product-grid/grid.decorator')
+    },
+    'Product grid filter list': {
+      selector: '.filter-box',
+      decorator: require('../../decorators/product-grid/filter-list.decorator')
     }
   };
 
@@ -107,8 +111,12 @@ module.exports = function(cucumber) {
     assert.notStrictEqual(rowNames, products)
   });
 
-  Then('I should be able to use the following filters:', function (dataTable, callback) {
-    callback(null, 'pending');
+  Then('I should be able to use the following filters:', async function (itemTable) {
+    const filterList = await createElementDecorator(config)(this.page, 'Product grid filter list')
+    const countFilter = await filterList.setFilterValue('count', '=', 2)
+    // await countFilter.setValue('=', 2)
+
+    const filters = convertItemTable(itemTable);
   });
 };
 
