@@ -8,8 +8,3 @@ imports:
 parameters:
     pimee_mass_edit_asset_batch_size: 100
     pim_catalog.version.class: Akeneo\Platform\EnterpriseVersion
-
-doctrine_migrations:
-    dir_name: '%doctrine_migrations_dir%'
-    namespace: Pim\Upgrade\Schema
-    name: PIM Enterprise Migrations
