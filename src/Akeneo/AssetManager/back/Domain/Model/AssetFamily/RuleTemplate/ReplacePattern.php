@@ -21,34 +21,94 @@ use Akeneo\AssetManager\Domain\Query\Asset\PropertyAccessibleAsset;
  */
 class ReplacePattern
 {
+    public const PATTERN_REGEXP = '#{{(.*?)}}#';
+
     /**
      * @throws \InvalidArgumentException When the rule value has more than one pattern to replace and the asset value is an array
      *
      * @return array|string
      */
-    public static function replace(string $ruleValue, PropertyAccessibleAsset $propertyAccessibleAsset)
+    public static function replace($ruleValue, PropertyAccessibleAsset $propertyAccessibleAsset)
     {
-        preg_match_all('#{{(.*?)}}#', $ruleValue, $matchedPatterns);
-        $matchedPatterns = $matchedPatterns[1];
+        $patterns = self::detectPatterns($ruleValue);
+        $valueForPatterns = self::findValuesForPatterns($propertyAccessibleAsset, $patterns);
 
-        foreach ($matchedPatterns as $pattern) {
-            if (!$propertyAccessibleAsset->hasValue(trim($pattern))) {
-                throw new \InvalidArgumentException(sprintf('The asset property "%s" does not exist', trim($pattern)));
+        return self::replacePatterns($ruleValue, $valueForPatterns);
+    }
+
+    private static function detectPatterns($ruleValue): array
+    {
+        if (is_array($ruleValue)) {
+            $result = [];
+            foreach ($ruleValue as $item) {
+                preg_match_all(self::PATTERN_REGEXP, $item, $matchedPatterns);
+                $matchedPatterns = $matchedPatterns[1];
+                $result = array_merge($result, $matchedPatterns);
             }
-
-            $assetValue = $propertyAccessibleAsset->getValue(trim($pattern));
-
-            if (is_array($assetValue)) {
-                if (1 < count($matchedPatterns)) {
-                    throw new \InvalidArgumentException(sprintf('The asset property "%s" could not be replaced as his value is an array', trim($pattern)));
-                }
-
-                return $assetValue;
-            }
-
-            $ruleValue = str_replace(sprintf('{{%s}}', $pattern), $assetValue, $ruleValue);
+        } else {
+            preg_match_all(self::PATTERN_REGEXP, $ruleValue, $matchedPatterns);
+            $result = $matchedPatterns[1];
         }
 
-        return $ruleValue;
+        return $result;
+    }
+
+    private static function findValuesForPatterns(
+        PropertyAccessibleAsset $propertyAccessibleAsset,
+        array $patterns
+    ): array {
+        $valueForPatterns = [];
+        foreach ($patterns as $pattern) {
+            $assetValue = self::value($propertyAccessibleAsset, $pattern);
+            if (is_array($assetValue)) {
+                if (1 < count($patterns)) {
+                    throw new \InvalidArgumentException(
+                        sprintf('The asset property "%s" could not be replaced as his value is an array',
+                            trim($pattern)
+                        )
+                    );
+                }
+            }
+            $valueForPatterns[$pattern] = $assetValue;
+        }
+
+        return $valueForPatterns;
+    }
+
+    private static function value(PropertyAccessibleAsset $propertyAccessibleAsset, $pattern)
+    {
+        if (!$propertyAccessibleAsset->hasValue(trim($pattern))) {
+            throw new \InvalidArgumentException(sprintf('The asset property "%s" does not exist', trim($pattern)));
+        }
+        $assetValue = $propertyAccessibleAsset->getValue(trim($pattern));
+
+        return $assetValue;
+    }
+
+    /**
+     * Recursive function that replaces every pattern for a value.
+     *
+     * It leverages the valueForPatterns array which holds a mapping between a pattern and the value for this array.
+     */
+    private static function replacePatterns($ruleValue, array $valueForPatterns)
+    {
+        $result = $ruleValue;
+        foreach ($valueForPatterns as $pattern => $assetValue) {
+            if (is_array($ruleValue)) {
+                $replacedValue = [];
+                foreach ($ruleValue as $value) {
+                    $replacedValue[] = self::replacePatterns($value, $valueForPatterns);
+                }
+                $result = $replacedValue;
+            } else {
+                if (is_array($assetValue)) {
+                    $result = $assetValue;
+                } else {
+                    $result = str_replace(sprintf('{{%s}}', $pattern), $assetValue, $result);
+                }
+            }
+        }
+
+        return $result;
     }
 }
