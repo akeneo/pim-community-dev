@@ -31,12 +31,6 @@ const FilterList = async (nodeElement, createElementDecorator, parent) => {
   const setFilterValue = async (name, operator, value) =>  {
     const getChildren = createElementDecorator(children);
     const matchingFilter = await getMatchingFilter(await getChildren(parent, 'Filter'), name)
-
-    await matchingFilter.open();
-
-    // const getOpenedChildren = createElementDecorator(children)
-    // const openedFilter = await getMatchingFilter(await getOpenedChildren(parent, 'Filter'), name)
-
     await matchingFilter.setValue(operator, value)
 
 

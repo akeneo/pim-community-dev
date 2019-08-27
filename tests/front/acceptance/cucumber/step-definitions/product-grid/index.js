@@ -1,7 +1,7 @@
 module.exports = function(cucumber) {
   const { Given, Then } = cucumber;
   const assert = require('assert');
-  const  { answerJson, renderView, convertItemTable, csvToArray } = require('../../tools');
+  const  { answerJson, renderView, convertItemTable, csvToArray, RequestListener } = require('../../tools');
   const DatagridProductBuilder = require('../../../../common/builder/datagrid-product')
   const NumberFilterBuilder = require('../../../../common/builder/filter/number')
   const createElementDecorator = require('../../decorators/common/create-element-decorator');
@@ -112,11 +112,16 @@ module.exports = function(cucumber) {
   });
 
   Then('I should be able to use the following filters:', async function (itemTable) {
+    const listener = new RequestListener(this.page)
+
+    // Make an abstraction for answering filters
     const filterList = await createElementDecorator(config)(this.page, 'Product grid filter list')
     const countFilter = await filterList.setFilterValue('count', '=', 2)
     // await countFilter.setValue('=', 2)
 
+    console.log(listener, listener.requests);
     const filters = convertItemTable(itemTable);
+
   });
 };
 

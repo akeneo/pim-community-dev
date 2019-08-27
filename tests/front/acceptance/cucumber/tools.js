@@ -66,6 +66,18 @@ const renderView = async (page, extension, data) => {
   }, data, extension);
 };
 
+function RequestListener(page) {
+  this.requests = [];
+
+  this.start = () => {
+    page.on('request', request => this.requests.push(request.url()));
+  }
+
+  this.start();
+
+  return this;
+}
+
 module.exports = {
   answer,
   answerJson,
@@ -74,4 +86,5 @@ module.exports = {
   renderView,
   convertDataTable,
   convertItemTable,
+  RequestListener,
 };

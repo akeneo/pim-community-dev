@@ -1,7 +1,3 @@
-const timeout = (ms) => {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 const Filter = async (nodeElement) => {
   const getName = async () => {
     const name = await nodeElement.$('.AknFilterBox-filterLabel')
@@ -10,22 +6,38 @@ const Filter = async (nodeElement) => {
     return text.trim();
   };
 
-  const open = async (operator, value) => {
-    return nodeElement.click()
-    // await timeout(1000);
-    // // nodeElement is out of date
-    // console.log((await nodeElement.getProperty('innerHTML')).jsonValue())
-    // // await nodeElement.waitForSelector('.operator', { visible: true })
-    // const operatorDropdown = await nodeElement.$('.operator')
-    // console.log(operatorDropdown)
-    // return true;
+  const getOperatorChoiceByLabel = async (choiceLabel) => {
+    const operatorChoices = await nodeElement.$$('.operator_choice');
+    let matchingChoice = null;
+
+    for(let i = 0; i < operatorChoices.length; i++) {
+      const text = await (await operatorChoices[i].getProperty('textContent')).jsonValue();
+      if (text.trim() === choiceLabel) {
+        matchingChoice = operatorChoices[i];
+        break;
+      }
+    }
+
+    return matchingChoice;
   }
 
   const setValue = async (operator, value) => {
-     console.log((await nodeElement.getProperty('innerHTML')).jsonValue())
+    await nodeElement.click()
+
+    const valueInput = await nodeElement.$('input')
+    await valueInput.type(new String(value), { delay: 800 })
+
+    const operatorDropdown = await nodeElement.$('.operator');
+    await operatorDropdown.click()
+
+    const operatorChoice = await getOperatorChoiceByLabel(operator);
+    await operatorChoice.click();
+
+    const updateButton = await nodeElement.$('button')
+    await updateButton.click();
   }
 
-  return { getName, open, setValue };
+  return { getName, setValue };
 };
 
 module.exports = Filter;
