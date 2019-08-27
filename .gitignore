@@ -50,3 +50,6 @@ package-lock.json
 yarn-error.log
 coverage/*
 .phpunit.result.cache
+.env.local
+.env.behat.local
+.env.test.local
