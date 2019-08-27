@@ -56,6 +56,7 @@ FROM base AS dev
 ENV PHP_CONF_OPCACHE_VALIDATE_TIMESTAMP=1
 
 RUN apt-get update && \
+    apt-get --yes install unzip && \
     apt-get --yes install curl && \
     apt-get --yes install mysql-client && \
     apt-get --yes install php7.2-xdebug && \
@@ -95,7 +96,6 @@ RUN echo "deb https://deb.nodesource.com/node_10.x stretch main" > /etc/apt/sour
     apt-get update && \
     apt-get --yes install yarn \
         nodejs \
-        unzip && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
