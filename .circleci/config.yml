@@ -20,7 +20,7 @@ jobs:
               docker save -o php-pim-image.tar akeneo/pim-dev/php:7.2
       - run:
           name: Setup tests results folder and log folder
-          command: mkdir -p var/tests/phpunit var/tests/behat var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots
+          command: mkdir -p var/tests/phpunit var/tests/behat var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.composer
       - run:
           name: Setup behat
           command: make behat.yml
@@ -29,7 +29,9 @@ jobs:
           command: ./.circleci/local-object-storage-setup.sh
       - run:
           name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
-          command: sudo chown -R 1000:1000 ../project
+          command: |
+              sudo chown -R 1000:1000 ../project
+              sudo chown -R 1000:1000 ~/.composer
       - run:
           name: Start containers
           command: make up
@@ -44,7 +46,7 @@ jobs:
                       command: >
                           curl --output /dev/null --silent --head --fail
                           https://github.com/akeneo/pim-community-dev/tree/${CIRCLE_BRANCH} &&
-                          docker-compose exec fpm php
+                          docker-compose exec -u www-data:www-data fpm php
                           /usr/local/bin/composer require "akeneo/pim-community-dev:dev-${CIRCLE_BRANCH}" --no-update ||
                           echo "No CE branch $CIRCLE_BRANCH found. I don't touch the composer.json file."
       - run:
