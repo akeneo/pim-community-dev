@@ -36,7 +36,8 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
         php7.2-bcmath \
         php7.2-imagick \
         php7.2-apcu \
-        php7.2-exif && \
+        php7.2-exif \
+        php-memcached && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     ln -s /usr/sbin/php-fpm7.2 /usr/local/sbin/php-fpm && \
