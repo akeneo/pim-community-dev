@@ -1,9 +1,3 @@
 imports:
     - { resource: '../../src/Akeneo/Platform/config/pimee.yml' }
 
-akeneo_pim_structure:
-    reference_data:
-        assets:
-            class: Akeneo\Asset\Component\Model\Asset
-            type: multi
-
