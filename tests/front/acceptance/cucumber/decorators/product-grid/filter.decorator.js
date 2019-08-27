@@ -1,3 +1,7 @@
+const timeout = (ms) => {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 const Filter = async (nodeElement) => {
   const getName = async () => {
     const name = await nodeElement.$('.AknFilterBox-filterLabel')
@@ -25,7 +29,10 @@ const Filter = async (nodeElement) => {
     await nodeElement.click()
 
     const valueInput = await nodeElement.$('input')
-    await valueInput.type(new String(value), { delay: 800 })
+
+    if (null !== valueInput) {
+      await valueInput.type(new String(value))
+    }
 
     const operatorDropdown = await nodeElement.$('.operator');
     await operatorDropdown.click()

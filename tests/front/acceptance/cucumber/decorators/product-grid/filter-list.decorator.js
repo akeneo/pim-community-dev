@@ -32,9 +32,7 @@ const FilterList = async (nodeElement, createElementDecorator, parent) => {
     const getChildren = createElementDecorator(children);
     const matchingFilter = await getMatchingFilter(await getChildren(parent, 'Filter'), name)
     await matchingFilter.setValue(operator, value)
-
-
-    return matchingFilter;
+    await parent.waitFor(100);
   }
 
   return { setFilterValue };

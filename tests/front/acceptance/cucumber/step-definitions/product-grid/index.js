@@ -111,17 +111,23 @@ module.exports = function(cucumber) {
     assert.notStrictEqual(rowNames, products)
   });
 
-  Then('I should be able to use the following filters:', async function (itemTable) {
+  Then('I should be able to use the following filters:', { timeout: 60000 }, async function (itemTable) {
     const listener = new RequestListener(this.page)
-
-    // Make an abstraction for answering filters
     const filterList = await createElementDecorator(config)(this.page, 'Product grid filter list')
-    const countFilter = await filterList.setFilterValue('count', '=', 2)
-    // await countFilter.setValue('=', 2)
-
-    console.log(listener, listener.requests);
     const filters = convertItemTable(itemTable);
 
+    for (let i = 0; i < filters.length; i++) {
+      await filterList.setFilterValue(
+        filters[i].filter,
+        filters[i].operator,
+        filters[i].value
+      )
+
+      const datagridRequest = listener.getLatestRequest();
+      console.log(filters[i], datagridRequest.searchParams)
+    }
+
+    await 'test';
   });
 };
 

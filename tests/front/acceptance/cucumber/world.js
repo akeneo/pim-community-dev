@@ -105,6 +105,7 @@ module.exports = function (cucumber) {
     });
 
     await this.page.goto(this.baseUrl);
+    await this.page.setViewport({ width: 1920, height:1080 })
     await this.page.addStyleTag({ content: readFileSync(`${process.cwd()}/web/css/pim.css`, 'utf-8') })
     await this.page.evaluate(async () => await require('pim/fetcher-registry').initialize());
     await this.page.evaluate(async () => await require('pim/init')());

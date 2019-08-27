@@ -1,3 +1,6 @@
+const URL = require('url');
+const queryString = require('querystring');
+
 const random = process.env.RANDOM_LATENCY || true;
 const maxRandomLatency = undefined !== process.env.MAX_RANDOM_LATENCY_MS ? process.env.MAX_RANDOM_LATENCY_MS : 1000;
 
@@ -70,7 +73,15 @@ function RequestListener(page) {
   this.requests = [];
 
   this.start = () => {
-    page.on('request', request => this.requests.push(request.url()));
+    page.on('request', request => this.requests.push(request));
+  }
+
+  this.getLatestRequest = () => {
+    const parsedURL = URL.parse(this.requests[this.requests.length - 1].url())
+    return {
+      url: parsedURL.path,
+      searchParams: queryString.parse(parsedURL.query)
+    }
   }
 
   this.start();
