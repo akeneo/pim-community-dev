@@ -79,6 +79,8 @@ RUN chmod +x /usr/local/bin/composer
 COPY docker/build/docker-php-entrypoint /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-php-entrypoint
 
+RUN mkdir /var/www/.composer && chown www-data:www-data /var/www/.composer
+
 ENTRYPOINT ["/usr/local/bin/docker-php-entrypoint"]
 
 VOLUME /srv/pim

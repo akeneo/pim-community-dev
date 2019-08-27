@@ -5,13 +5,13 @@ services:
     image: 'akeneo/pim-dev/php:7.2'
     environment:
       APP_ENV: '${APP_ENV:-prod}'
-      COMPOSER_HOME: '/tmp/composer'
+      COMPOSER_HOME: '/var/www/.composer'
       PHP_IDE_CONFIG: 'serverName=pim-ee-cli'
       XDEBUG_ENABLED: '${XDEBUG_ENABLED:-0}'
       XDEBUG_CONFIG: 'remote_host=172.17.0.1'
     volumes:
       - './:/srv/pim'
-      - '${HOST_COMPOSER_HOME:-~/.composer}:/tmp/composer'
+      - '${HOST_COMPOSER_HOME:-~/.composer}:/var/www/.composer'
     working_dir: '/srv/pim'
     command: 'php'
     networks:
