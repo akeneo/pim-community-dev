@@ -17,7 +17,7 @@ Feature: Filter products by number field
       | mug    |       |      |
     And I am on the products grid
     Then the grid should contain 3 elements
-    And I should see products postit, book and mug
+    And I should see products "postit, book, mug"
     And I should be able to use the following filters:
       | filter | operator     | value | result |
       | count  | is empty     |       |        |

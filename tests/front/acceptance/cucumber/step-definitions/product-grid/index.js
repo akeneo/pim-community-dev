@@ -1,7 +1,7 @@
 module.exports = function(cucumber) {
   const { Given, Then } = cucumber;
   const assert = require('assert');
-  const  { answerJson, renderView, convertItemTable } = require('../../tools');
+  const  { answerJson, renderView, convertItemTable, csvToArray } = require('../../tools');
   const DatagridProductBuilder = require('../../../../common/builder/datagrid-product')
   const createElementDecorator = require('../../decorators/common/create-element-decorator');
   const datagridLoad = require('../../contracts/datagrid-load.json')
@@ -89,10 +89,11 @@ module.exports = function(cucumber) {
     assert.equal(productCount, x)
   });
 
-  Then('I should see products postit, book and mug', async function () {
+  Then('I should see products {string}', async function (csvString) {
+    const products = csvToArray(csvString);
     const productGrid = await createElementDecorator(config)(this.page, 'Product grid')
     const rowNames = await productGrid.getRowNames();
-    assert.notStrictEqual(rowNames, ['postit', 'book', 'mug'])
+    assert.notStrictEqual(rowNames, products)
   });
 
   Then('I should be able to use the following filters:', function (dataTable, callback) {
