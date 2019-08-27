@@ -130,6 +130,11 @@
 - Update constructor of `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CompleteFilter`, remove `Doctrine\ORM\EntityManagerInterface` and add `Doctrine\DBAL\Connection`
 - Remove methods `getCompletenesses` and `setCompletenesses` from `Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface`
 - Replace `Akeneo\Pim\Enrichment\Component\Product\Factory\Write` by `Akeneo\Pim\Enrichment\Component\Product\Factory\Read` with method `createByCheckingData`
+- Replace methods and following interface from `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer` by the single interface `Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface` and its new methods:
+    - `Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface`
+    - `Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface`
+    - `Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface`
+    - `Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface`
 - Change constructor of `Akeneo\Platform\Bundle\UIBundle\Imagine\FlysystemLoader` to make `Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface` mandatory
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\AxisValueLabelsNormalizer\MetricNormalizer` to make `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\MetricNormalizer as StandardMetricNormalizer` and `Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\MetricLocalizer` mandatory
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductController` to make `Akeneo\Tool\Bundle\ElasticsearchBundle\Client` mandatory
