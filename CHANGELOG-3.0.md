@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8702: Fix sso configuration page reload after toggling
+- PIM-8704: Redirect bad credentials to login form when SSO is activated
 
 # 3.0.38 (2019-08-20)
 
