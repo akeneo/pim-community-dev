@@ -374,13 +374,12 @@ class FixturesLoader implements FixturesLoaderInterface
      */
     protected function indexProducts(): void
     {
-        $products = $this->container->get('pim_catalog.repository.product')->findAll();
         $this->container->get('pim_catalog.elasticsearch.indexer.product')->indexFromProductIdentifiers(
-            array_map(
-                function (ProductInterface $product) {
-                    return $product->getIdentifier();
-                },
-                $products
+            array_column(
+                $this->container->get('database_connection')->fetchAll(
+                    'SELECT p.identifier as identifier from pim_catalog_product p;'
+                ),
+                'identifier'
             )
         );
     }
