@@ -1,4 +1,3 @@
-import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
 import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';
 import {createIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
@@ -11,10 +10,12 @@ import {
   Asset,
   AssetFamilyIdentifier,
   AssetFamily,
-  validateLabels,
+  Completeness
 } from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
+import {isNumber, isString} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/utils';
+import {isLabels} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 
-export const fetchAssetByCodes = async (
+export const getAssetFetcher = (assetFetcher: any) => async (
   assetFamilyIdentifier: AssetFamilyIdentifier,
   codes: AssetCode[],
   context: {channel: ChannelCode; locale: LocaleCode}
@@ -49,43 +50,43 @@ const denormalizeAssetCollection = (assets: any, assetFamilyResult: any): Asset[
 };
 
 const denormalizeAsset = (asset: any): NormalizedItemAsset => {
-  if (asset.identifier === undefined || typeof asset.identifier !== 'string') {
+  if (!isString(asset.identifier)) {
     throw Error('The identifier is not well formated');
   }
 
-  if (asset.asset_family_identifier === undefined || typeof asset.asset_family_identifier !== 'string') {
+  if (!isString(asset.asset_family_identifier)) {
     throw Error('The asset family identifier is not well formated');
   }
 
-  if (asset.code === undefined || typeof asset.code !== 'string') {
+  if (!isString(asset.code)) {
     throw Error('The code is not well formated');
   }
 
-  if (asset.completeness === undefined || !validateNormalizedCompleteness(asset.completeness)) {
+  if (!isCompleteness(asset.completeness)) {
     throw Error('The completeness is not well formated');
   }
 
-  if (asset.image === undefined || typeof asset.image !== 'string') {
+  if (!isString(asset.image)) {
     throw Error('The image is not well formated');
   }
 
-  if (asset.labels === undefined || !validateLabels(asset.labels)) {
+  if (!isLabels(asset.labels)) {
     throw Error('The labels is not well formated');
   }
 
   return asset;
 };
 
-const validateNormalizedCompleteness = (completeness: any): boolean => {
-  if (typeof completeness !== 'object') {
+const isCompleteness = (completeness: any): completeness is Completeness => {
+  if (undefined === completeness || typeof completeness !== 'object') {
     return false;
   }
 
-  if (completeness.complete === undefined || typeof completeness.complete !== 'number') {
+  if (!isNumber(completeness.complete)) {
     return false;
   }
 
-  if (completeness.required === undefined || typeof completeness.required !== 'number') {
+  if (!isNumber(completeness.required)) {
     return false;
   }
 

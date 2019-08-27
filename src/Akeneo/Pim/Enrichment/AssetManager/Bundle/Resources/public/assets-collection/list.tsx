@@ -94,6 +94,8 @@ const List = ({values, family, context}: ListProps) => {
               <Button buttonSize='medium' color='outline'>{__('pim_asset_manager.asset_collection.add_asset')}</Button>
             ) : null}
           </SectionTitle>
+          {/* Smart attribute indication isSmartAttribute(value.attribute.code, ruleRelations)*/}
+          {/* Validation error indication hasValidationError(value.attribute.code, errors)*/}
           <AssetCollection assetFamilyIdentifier={value.attribute.referenceDataName} assetCodes={value.data} context={context} readonly={!value.editable}/>
         </AssetCollectionContainer>
       ))}

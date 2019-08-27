@@ -24,7 +24,8 @@ class AssetTabForm extends (Form as {new (config: any): any}) {
     super(config);
 
     this.store = createStore(assetCollectionReducer, applyMiddleware(
-      thunkMiddleware
+      thunkMiddleware,
+      
     ));
   }
 
@@ -43,9 +44,14 @@ class AssetTabForm extends (Form as {new (config: any): any}) {
       this.store.dispatch(valuesUpdated(values));
     });
 
+    //Validation errors
+    //this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_save', remove errors from state);
+    //this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', add errors to state);
+
     this.store.dispatch(localeUpdated(UserContext.get('catalogLocale')));
     this.store.dispatch(channelUpdated(UserContext.get('catalogScope')));
     this.store.dispatch(updateChannels() as any);
+    //this.store.dispatch(updateRuleRelations() as any);
 
     return Form.prototype.configure.apply(this, arguments)
   }

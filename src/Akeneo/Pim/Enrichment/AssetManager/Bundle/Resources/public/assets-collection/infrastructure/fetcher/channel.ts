@@ -1,16 +1,18 @@
 import promisify from 'akeneoassetmanager/tools/promisify';
 import {Channel} from 'akeneopimenrichmentassetmanager/platform/model/channel/channel';
-import {validateLabels} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
+import {Locale} from 'akeneopimenrichmentassetmanager/platform/model/channel/locale';
+import {isLabels} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
+import {isString, isArray} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/utils';
 const fetcherRegistry = require('pim/fetcher-registry');
 
 export const fetchChannels = async (): Promise<Channel[]> => {
   const channels = await promisify(fetcherRegistry.getFetcher('channel').fetchAll());
 
-  return denormalizeChannelsCollection(channels);
+  return denormalizeChannelCollection(channels);
 };
 
-const denormalizeChannelsCollection = (channels: any): Channel[] => {
-  if (!Array.isArray(channels)) {
+const denormalizeChannelCollection = (channels: any): Channel[] => {
+  if (!isArray(channels)) {
     throw Error('not a valid channel collection');
   }
 
@@ -18,41 +20,30 @@ const denormalizeChannelsCollection = (channels: any): Channel[] => {
 };
 
 const denormalizeChannel = (channel: any): Channel => {
-  if (undefined === channel.code || typeof channel.code !== 'string') {
+  if (!isString(channel.code)) {
     throw Error('The code is not well formated');
   }
 
-  if (undefined === channel.labels || !validateLabels(channel.labels)) {
+  if (!isLabels(channel.labels)) {
     throw Error('The code is not well formated');
   }
 
-  if (undefined === channel.locales || !validateLocales(channel.locale)) {
+  if (!isLocales(channel.locales)) {
     throw Error('The code is not well formated');
   }
 
   return channel;
 };
 
-const validateLocales = (locale: any): boolean => {
-  if (typeof locale !== 'object') {
+const isLocales = (locales: any): locales is Locale[] => {
+  if (!isArray(locales)) {
     return false;
   }
 
-  if (undefined === locale.code || typeof locale.code !== 'string') {
-    return false;
-  }
-
-  if (undefined === locale.label || typeof locale.label !== 'string') {
-    return false;
-  }
-
-  if (undefined === locale.region || typeof locale.region !== 'string') {
-    return false;
-  }
-
-  if (undefined === locale.language || typeof locale.language !== 'string') {
-    return false;
-  }
-
-  return true;
+  return !locales.some((locale: any) => {
+    return !isString(locale.code) ||
+      !isString(locale.label) ||
+      !isString(locale.region) ||
+      !isString(locale.language)
+  });
 };

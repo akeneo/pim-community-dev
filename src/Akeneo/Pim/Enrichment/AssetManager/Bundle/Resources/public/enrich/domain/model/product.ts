@@ -54,7 +54,7 @@ export type ValueCollection = Value[];
 
 export const isValueComplete = (value: Value, family: Family | null, channel: ChannelCode) => {
   if (null === family) return true;
-  if (undefined === family.attribute_requirements[channel]) return true;
+  if (undefined === family.attributeRequirements[channel]) return true;
 
-  return !family.attribute_requirements[channel].includes(value.attribute.code) || value.data.length > 0;
+  return !family.attributeRequirements[channel].includes(value.attribute.code) || value.data.length > 0;
 };

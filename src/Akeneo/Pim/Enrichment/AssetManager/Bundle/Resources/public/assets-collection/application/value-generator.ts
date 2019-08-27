@@ -10,8 +10,8 @@ import {
 import {Attribute, AttributeCode} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
 import {
   fetchPermissions,
-  AttributeGroupPersmissions,
-  LocalePermissions,
+  AttributeGroupPermission,
+  LocalePermission,
   CategoryPermissions,
   isLocaleEditable,
   isAttributeGroupEditable,
@@ -48,7 +48,7 @@ const generate = async (product: Product): Promise<ValueCollection> => {
   let valueCollection: ValueCollection = transformValues(product.values, assetAttributes);
 
   const permissions: Permissions = await fetchPermissions();
-  valueCollection = filterAttributeGroups(valueCollection, permissions.attribute_groups);
+  valueCollection = filterAttributeGroups(valueCollection, permissions.attributeGroups);
   valueCollection = filterLocales(valueCollection, permissions.locales);
   valueCollection = filterReadOnlyAttribute(valueCollection);
   valueCollection = filterParentAttribute(valueCollection, product.meta);
@@ -59,7 +59,7 @@ const generate = async (product: Product): Promise<ValueCollection> => {
 
 const filterAttributeGroups = (
   values: ValueCollection,
-  attributeGroupPermissions: AttributeGroupPersmissions
+  attributeGroupPermissions: AttributeGroupPermission[]
 ): ValueCollection => {
   return values.map((value: Value) => {
     return {
@@ -69,7 +69,7 @@ const filterAttributeGroups = (
   });
 };
 
-const filterLocales = (values: ValueCollection, localePermissions: LocalePermissions): ValueCollection => {
+const filterLocales = (values: ValueCollection, localePermissions: LocalePermission[]): ValueCollection => {
   return values.map((value: Value) => {
     return {
       ...value,

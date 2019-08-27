@@ -10,7 +10,8 @@ import {getLabel} from 'pimui/js/i18n';
 import {Label} from 'akeneopimenrichmentassetmanager/platform/component/common/label';
 import AssetIllustration from 'akeneopimenrichmentassetmanager/platform/component/visual/illustration/asset';
 import __ from 'akeneoreferenceentity/tools/translator';
-import {fetchAssetByCodes} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/asset';
+import {getAssetFetcher} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/asset';
+import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 
 const AssetCard = styled.div<{readonly: boolean}>`
   display: flex;
@@ -71,6 +72,8 @@ export const AssetCollection = ({assetFamilyIdentifier, assetCodes, readonly, co
   const noChangeInCollection = (assetCodes: AssetCode[], assets: Asset[]) => {
     return assets.length !== assetCodes.length || !assets.sort().every((asset: Asset, index: number) => assetCodes.sort().indexOf(asset.code) === index )
   }
+
+  const fetchAssetByCodes = getAssetFetcher(assetFetcher);
   React.useEffect(() => {
     if (assetCodes.length !== 0 && (noChangeInCollection(assetCodes, assets))) {
       fetchAssetByCodes(assetFamilyIdentifier, assetCodes, context).then((receivedAssets: Asset[]) => {

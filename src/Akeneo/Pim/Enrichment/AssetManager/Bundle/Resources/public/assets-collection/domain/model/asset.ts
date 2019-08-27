@@ -9,6 +9,7 @@ export type AssetIdentifier = string;
 type AssetFamilyCode = string;
 type AttributeIdentifier = string;
 type Image = string;
+export type Completeness = NormalizedCompleteness;
 
 const emptyAssetFamily = (): AssetFamily => ({
   identifier: '',
@@ -35,7 +36,7 @@ export type Asset = {
   image: Image;
   assetFamily: AssetFamily;
   labels: Labels;
-  completeness: NormalizedCompleteness;
+  completeness: Completeness;
 };
 
 export const getImage = (asset: Asset): Image => {
@@ -54,8 +55,8 @@ export const emptyAsset = (): Asset => ({
     required: 0,
   },
 });
-export const validateLabels = (labels: any): boolean => {
-  if (typeof labels !== 'object') {
+export const isLabels = (labels: any): boolean => {
+  if (undefined === labels || typeof labels !== 'object') {
     return false;
   }
 
