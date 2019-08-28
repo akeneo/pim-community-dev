@@ -1,5 +1,25 @@
 # 3.0.x
 
+# 3.0.39 (2019-08-28)
+
+## Bug fixes
+
+- PIM-8615: Fix issue with boolean attribute used as variant axis
+- PIM-8678: Fill the updated property on Family entity update
+
+## BC Breaks
+- Change `Akeneo\Pim\Structure\Component\Mode\FamilyInterface` to extend `Akeneo\Tool\Component\Versioning\Model\TimestampableInterface`
+
+# 3.0.38 (2019-08-20)
+
+## Bug fixes
+
+- PIM-8357: Fix styling of actions on history grid
+- PIM-8438: Add an explicit error message when an attribute label is too long
+- PIM-8629: Fix hiding of upload button on import profiles
+- PIM-8667: Fix grid filters for numeric attribute codes
+- PIM-6138: Fix display of remove icons on family grid and category tree when user does not have permission
+
 # 3.0.37 (2019-08-13)
 
 ## Bug fixes

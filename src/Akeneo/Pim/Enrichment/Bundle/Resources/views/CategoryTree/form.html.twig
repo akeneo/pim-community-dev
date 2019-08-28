@@ -24,7 +24,7 @@
 }) }}
 
     {% set buttons %}
-        {% if form.vars.value.id %}
+        {% if form.vars.value.id and resource_granted(acl ~ '_category_remove') %}
             <div class="AknSecondaryActions AknDropdown AknButtonList-item secondary-actions">
               <div class="AknSecondaryActions-button dropdown-button" data-toggle="dropdown"></div>
               <div class="AknDropdown-menu AknDropdown-menu--right">
