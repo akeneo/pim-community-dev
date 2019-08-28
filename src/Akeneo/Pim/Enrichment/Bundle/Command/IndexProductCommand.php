@@ -169,14 +169,12 @@ class IndexProductCommand extends Command
         $output->writeln(sprintf('<info>%d products found for indexing</info>', $productsCount));
 
         $i = 0;
-        $productBulk = [];
         $identifiers = [];
         $totalProductsIndexed = 0;
-        $progressBar = new ProgressBar($output, $totalProductsIndexed);
+        $progressBar = new ProgressBar($output, $productsCount);
 
         $progressBar->start();
         foreach ($products as $product) {
-            $productBulk[] = $product;
             $identifiers[] = $product->getIdentifier();
 
             $i++;
@@ -189,25 +187,24 @@ class IndexProductCommand extends Command
 
                 $this->objectManager->clear();
 
-                $progressBar->advance(count($productBulk));
+                $progressBar->advance(count($identifiers));
 
-                $productBulk = [];
                 $identifiers = [];
 
                 $totalProductsIndexed += self::BULK_SIZE;
             }
         }
 
-        if (!empty($productBulk)) {
+        if (!empty($identifiers)) {
             $this->productIndexer->indexFromProductIdentifiers(
                 $identifiers,
                 ['index_refresh' => Refresh::disable()]
             );
             $this->objectManager->clear();
 
-            $progressBar->advance(count($productBulk));
+            $progressBar->advance(count($identifiers));
 
-            $totalProductsIndexed += count($productBulk);
+            $totalProductsIndexed += count($identifiers);
         }
         $progressBar->finish();
 
