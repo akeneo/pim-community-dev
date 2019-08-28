@@ -32,7 +32,8 @@ class SelectFamiliesToApplyQuery implements SelectFamiliesToApplyQueryInterface
 
         $families = [];
         foreach ($searchResults as $family) {
-            $families[] = $this->buildFamily($family);
+            $family['attributes'] = json_decode($family['attributes'], true);
+            $families[] = $this->buildFamilyLabels($family);
         }
 
         return $families;
@@ -62,14 +63,10 @@ SQL;
         return $searchResults;
     }
 
-    private function buildFamily($familyResult): array
+    private function buildFamilyLabels(array $family): array
     {
-        $family = $familyResult;
-
-        $family['attributes'] = json_decode($familyResult['attributes'], true);
-
-        if (! empty($familyResult['labels'])) {
-            $translations = json_decode($familyResult['labels'], true);
+        if (! empty($family['labels'])) {
+            $translations = json_decode($family['labels'], true);
             $family['labels'] = array_map(function ($label, $locale) {
                 return [
                     'locale' => $locale,
@@ -77,7 +74,7 @@ SQL;
                 ];
             }, $translations, array_keys($translations));
         } else {
-            unset($family['labels']);
+            $family['labels'] = [];
         }
 
         return $family;

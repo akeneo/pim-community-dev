@@ -18,4 +18,8 @@ interface SelectPendingItemIdentifiersQueryInterface
     public function getUpdatedAttributeCodes(int $offsetId, int $batchSize): array;
 
     public function getDeletedAttributeCodes(int $offsetId, int $batchSize): array;
+
+    public function getUpdatedFamilyCodes(int $offsetId, int $batchSize): array;
+
+    public function getDeletedFamilyCodes(int $offsetId, int $batchSize): array;
 }

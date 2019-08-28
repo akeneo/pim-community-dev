@@ -108,7 +108,7 @@ final class SelectAttributesToApplyQueryIntegration extends TestCase
             ],
         ];
 
-        $this->assertEquals($expectedResult, $attributes);
+        $this->assertEqualsCanonicalizing($expectedResult, $attributes);
     }
 
     private function createTextAttribute(string $attributeCode, array $labels): AttributeInterface

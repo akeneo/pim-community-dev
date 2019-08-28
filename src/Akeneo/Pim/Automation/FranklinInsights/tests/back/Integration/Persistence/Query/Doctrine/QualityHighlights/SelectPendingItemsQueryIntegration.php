@@ -92,16 +92,6 @@ final class SelectPendingItemsQueryIntegration extends TestCase
         $this->assertSame([$deletedAttr3Id => 'del_attr_3'], $results);
     }
 
-    private function createDataSet(): void
-    {
-        $this->insertUpdatedAttribute('up_attr_1', PendingItemsRepository::STATUS_UNLOCKED);
-        $this->updatedAttribute2Id = $this->insertUpdatedAttribute('up_attr_2', PendingItemsRepository::STATUS_LOCKED);
-        $this->insertUpdatedAttribute('up_attr_3', PendingItemsRepository::STATUS_UNLOCKED);
-        $this->insertDeletedAttribute('del_attr_1', PendingItemsRepository::STATUS_UNLOCKED);
-        $this->deletedAttribute2Id = $this->insertDeletedAttribute('del_attr_2', PendingItemsRepository::STATUS_LOCKED);
-        $this->insertDeletedAttribute('del_attr_3', PendingItemsRepository::STATUS_UNLOCKED);
-    }
-
     private function insertUpdatedAttribute(string $attributeCode, int $locked)
     {
         $this->getFromTestContainer('database_connection')->executeQuery($this->getInsertSql(), [

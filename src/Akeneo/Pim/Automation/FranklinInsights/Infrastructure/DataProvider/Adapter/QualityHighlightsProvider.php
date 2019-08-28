@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Ada
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\QualityHighlightsProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectFamiliesToApplyQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\QualityHighlights\QualityHighlightsWebService;
 
 class QualityHighlightsProvider extends AbstractProvider implements QualityHighlightsProviderInterface
@@ -22,26 +23,47 @@ class QualityHighlightsProvider extends AbstractProvider implements QualityHighl
     /** @var QualityHighlightsWebService */
     private $api;
 
+    /** @var SelectFamiliesToApplyQueryInterface */
+    private $selectFamiliesToApplyQuery;
+
     public function __construct(
         ConfigurationRepositoryInterface $configurationRepository,
-        QualityHighlightsWebService $api
+        QualityHighlightsWebService $api,
+        SelectFamiliesToApplyQueryInterface $selectFamiliesToApplyQuery
     ) {
         parent::__construct($configurationRepository);
 
         $this->api = $api;
+        $this->selectFamiliesToApplyQuery = $selectFamiliesToApplyQuery;
     }
 
     public function applyAttributeStructure(array $attributes): void
     {
         $this->api->setToken($this->getToken());
 
-        $this->api->save($attributes);
+        $this->api->applyAttributes($attributes);
     }
 
     public function deleteAttribute(string $attributeCode): void
     {
         $this->api->setToken($this->getToken());
 
-        $this->api->delete($attributeCode);
+        $this->api->deleteAttribute($attributeCode);
+    }
+
+    public function applyFamilies(array $familyCodes): void
+    {
+        $families = $this->selectFamiliesToApplyQuery->execute($familyCodes);
+
+        $this->api->setToken($this->getToken());
+
+        $this->api->applyFamilies(['families' => $families]);
+    }
+
+    public function deleteFamily(string $familyCode): void
+    {
+        $this->api->setToken($this->getToken());
+
+        $this->api->deleteFamily($familyCode);
     }
 }

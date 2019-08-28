@@ -64,10 +64,11 @@ final class SelectFamiliesToApplyQueryIntegration extends TestCase
             [
                 'code' => 'router',
                 'attributes' => ['sku', 'size'],
+                'labels' => [],
             ],
         ];
 
-        $this->assertEquals($expectedFamilies, $families);
+        $this->assertEqualsCanonicalizing($expectedFamilies, $families);
     }
 
     private function createAttribute(string $attributeCode, $labels): string

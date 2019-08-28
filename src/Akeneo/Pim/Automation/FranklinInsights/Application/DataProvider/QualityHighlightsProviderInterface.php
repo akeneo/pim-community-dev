@@ -18,4 +18,8 @@ interface QualityHighlightsProviderInterface
     public function applyAttributeStructure(array $attributes): void;
 
     public function deleteAttribute(string $attributeCode): void;
+
+    public function applyFamilies(array $familyCodes): void;
+
+    public function deleteFamily(string $familyCode): void;
 }

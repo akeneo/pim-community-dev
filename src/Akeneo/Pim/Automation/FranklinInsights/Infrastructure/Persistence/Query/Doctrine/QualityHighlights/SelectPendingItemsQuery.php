@@ -37,6 +37,16 @@ class SelectPendingItemsQuery implements SelectPendingItemIdentifiersQueryInterf
         return $this->executeQuery($offsetId, $batchSize, PendingItemsRepository::ENTITY_TYPE_ATTRIBUTE, PendingItemsRepository::ACTION_ENTITY_DELETED);
     }
 
+    public function getUpdatedFamilyCodes(int $offsetId, int $batchSize): array
+    {
+        return $this->executeQuery($offsetId, $batchSize, PendingItemsRepository::ENTITY_TYPE_FAMILY, PendingItemsRepository::ACTION_ENTITY_UPDATED);
+    }
+
+    public function getDeletedFamilyCodes(int $offsetId, int $batchSize): array
+    {
+        return $this->executeQuery($offsetId, $batchSize, PendingItemsRepository::ENTITY_TYPE_FAMILY, PendingItemsRepository::ACTION_ENTITY_DELETED);
+    }
+
     private function executeQuery(int $offsetId, int $limit, string $entityType, string $action)
     {
         $query = <<<'SQL'

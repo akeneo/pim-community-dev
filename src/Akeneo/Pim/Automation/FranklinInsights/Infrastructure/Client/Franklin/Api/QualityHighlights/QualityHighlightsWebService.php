@@ -27,7 +27,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class QualityHighlightsWebService extends AbstractApi implements AuthenticatedApiInterface
 {
-    public function save(array $attributes): void
+    public function applyAttributes(array $attributes): void
     {
         $route = $this->uriGenerator->generate('/api/quality-highlights/structure/attributes');
 
@@ -54,7 +54,7 @@ class QualityHighlightsWebService extends AbstractApi implements AuthenticatedAp
         }
     }
 
-    public function delete(string $attributeCode)
+    public function deleteAttribute(string $attributeCode)
     {
         $route = $this->uriGenerator->generate(sprintf('/api/quality-highlights/structure/attributes/%s', $attributeCode));
 
@@ -74,6 +74,58 @@ class QualityHighlightsWebService extends AbstractApi implements AuthenticatedAp
 
             throw new BadRequestException(sprintf(
                 'Something went wrong when deleting an attribute (bad request) : %s',
+                $e->getMessage()
+            ));
+        }
+    }
+
+    public function applyFamilies(array $families): void
+    {
+        $route = $this->uriGenerator->generate('/api/quality-highlights/structure/families');
+
+        try {
+            $this->httpClient->request('POST', $route, [
+                'json' => $families,
+            ]);
+        } catch (ServerException $e) {
+            throw new FranklinServerException(
+                sprintf(
+                    'Something went wrong on Ask Franklin side when sending families : %s',
+                    $e->getMessage()
+                )
+            );
+        } catch (ClientException $e) {
+            if (Response::HTTP_UNAUTHORIZED === $e->getCode()) {
+                throw new InvalidTokenException();
+            }
+
+            throw new BadRequestException(sprintf(
+                'Something went wrong when sending families (bad request) : %s',
+                $e->getMessage()
+            ));
+        }
+    }
+
+    public function deleteFamily(string $familyCode)
+    {
+        $route = $this->uriGenerator->generate(sprintf('/api/quality-highlights/structure/families/%s', $familyCode));
+
+        try {
+            $this->httpClient->request('DELETE', $route);
+        } catch (ServerException $e) {
+            throw new FranklinServerException(
+                sprintf(
+                    'Something went wrong on Ask Franklin side when deleting a family : %s',
+                    $e->getMessage()
+                )
+            );
+        } catch (ClientException $e) {
+            if (Response::HTTP_UNAUTHORIZED === $e->getCode()) {
+                throw new InvalidTokenException();
+            }
+
+            throw new BadRequestException(sprintf(
+                'Something went wrong when deleting a family (bad request) : %s',
                 $e->getMessage()
             ));
         }
