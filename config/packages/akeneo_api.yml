@@ -16,3 +16,13 @@ pim_api:
                 methods: ['PATCH']
                 content_types: ['application/vnd.akeneo.collection+json']
                 priority: 20
+            -
+                path: '^/api/rest/v\d+/reference-entities-media-files'
+                methods: ['POST']
+                content_types: ['multipart/form-data']
+                priority: 10
+            -
+                path: '^/api/rest/v\d+/asset-families-media-files'
+                methods: ['POST']
+                content_types: ['multipart/form-data']
+                priority: 10

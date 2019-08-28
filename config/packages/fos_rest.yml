@@ -1,0 +1,6 @@
+fos_rest:
+    exception:
+        codes:
+            Akeneo\Pim\WorkOrganization\Workflow\Component\Exception\PublishedProductConsistencyException: 422
+        messages:
+            Akeneo\Pim\WorkOrganization\Workflow\Component\Exception\PublishedProductConsistencyException: true
