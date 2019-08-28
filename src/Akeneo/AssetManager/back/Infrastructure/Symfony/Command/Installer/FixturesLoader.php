@@ -6,7 +6,6 @@ namespace Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer;
 
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
-use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
@@ -42,7 +41,6 @@ use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\ValueHydratorInterface;
-use Akeneo\AssetManager\Infrastructure\Validation\Attribute\DecimalsAllowed;
 
 class FixturesLoader
 {
@@ -63,6 +61,9 @@ class FixturesLoader
 
     /** @var string[] */
     private $loadedAttributes = [];
+
+    /** @var string[] */
+    private $customLoadedAttributes = [];
 
     /** @var string */
     private $loadedAssetFamilyOfAsset;
@@ -89,6 +90,7 @@ class FixturesLoader
     {
         $this->loadedAssetFamily = $identifier;
         $this->loadedAttributes = [];
+        $this->customLoadedAttributes = [];
 
         return $this;
     }
@@ -120,11 +122,38 @@ class FixturesLoader
         return $this;
     }
 
+    public function withAttributeOfTypeText(string $assetFamilyIdentifier, string $attributeCode): self
+    {
+        if (null === $this->loadedAssetFamily) {
+            throw new \LogicException('You need to call "assetFamily()" first before calling "withAttributes()"');
+        }
+
+        $this->customLoadedAttributes[] = TextAttribute::createText(
+            $this->attributeRepository->nextIdentifier(
+                AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+                AttributeCode::fromString($attributeCode)
+            ),
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+            AttributeCode::fromString($attributeCode),
+            LabelCollection::fromArray([]),
+            $this->getOrderForAttribute($attributeCode),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxLength::fromInteger(25),
+            AttributeValidationRule::none(),
+            AttributeRegularExpression::createEmpty()
+        );
+
+        return $this;
+    }
+
     public function load(): array
     {
         if (null !== $this->loadedAssetFamily) {
             $assetFamily = $this->loadAssetFamily();
             $attributes = $this->loadAttributes($assetFamily->getIdentifier());
+            $customAttributes = $this->loadCustomAttributes();
         }
 
         if (null !== $this->loadedAssetCode) {
@@ -138,7 +167,8 @@ class FixturesLoader
 
         return [
             'asset_family' => $assetFamily ?? null,
-            'attributes' => $attributes ?? []
+            'attributes' => $attributes ?? [],
+            'customAttributes' => $customAttributes ?? []
         ];
     }
 
@@ -569,5 +599,14 @@ class FixturesLoader
         $realIndex = $index + 2; // Because there are always label+image attributes first.
 
         return AttributeOrder::fromInteger($realIndex);
+    }
+
+    private function loadCustomAttributes(): array
+    {
+        foreach ($this->customLoadedAttributes as $attribute) {
+            $this->attributeRepository->create($attribute);
+        }
+
+        return $this->customLoadedAttributes;
     }
 }
