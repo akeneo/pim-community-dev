@@ -42,6 +42,7 @@ final class EditAssetFamilyContext implements Context
 {
     private const RULE_ENGINE_VALIDATION_MESSAGE = 'RULE ENGINE WILL NOT EXECUTE';
     private const ASSET_FAMILY_IDENTIFIER = 'packshot';
+    private const ATTRIBUTE_CODE = 'attribute_code';
 
     /** @var AssetFamilyRepositoryInterface */
     private $assetFamilyRepository;
@@ -437,19 +438,19 @@ final class EditAssetFamilyContext implements Context
     {
         $this->fixturesLoader
             ->assetFamily(self::ASSET_FAMILY_IDENTIFIER)
-            ->withAttributeOfTypeText(self::ASSET_FAMILY_IDENTIFIER, 'attribute')
+            ->withAttributeOfTypeText(self::ASSET_FAMILY_IDENTIFIER, self::ATTRIBUTE_CODE)
             ->load();
     }
 
     /**
-     * @When /^the user updates this asset family with a dynamic product link rule having a product selection field which references text this attribute$/
+     * @When /^the user updates this asset family with a dynamic product link rule having a product selection field which references this text attribute$/
      */
     public function theUserCreatesAnAssetFamilyWithADynamicProductLinkRuleWhichReferencesThoseAttributes()
     {
         $dynamicRuleTemplate = [
             'product_selections' => [
                 [
-                    'field' => '{{attribute}}',
+                    'field' => $this->toExtrapolation(self::ATTRIBUTE_CODE),
                     'operator'  => '=',
                     'value'     => '123456789',
                     'channel' => 'ecommerce',
@@ -470,9 +471,9 @@ final class EditAssetFamilyContext implements Context
     }
 
     /**
-     * @Then /^there is an asset family with a dynamic product link rule$/
+     * @Then /^there is an asset family with a product link rule$/
      */
-    public function thereIsAnAssetFamilyCreatedWithADynamicProductLinkRule()
+    public function thereIsAnAssetFamilyCreatedWithADynamicProductLinkRule(): void
     {
         $assetFamily = $this->assetFamilyRepository->getByIdentifier(AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER));
         Assert::assertFalse($assetFamily->getRuleTemplateCollection()->isEmpty());
@@ -488,7 +489,7 @@ final class EditAssetFamilyContext implements Context
                 [
                     'field' => 'sku',
                     'operator'  => '=',
-                    'value'     => '{{attribute}}',
+                    'value'     => $this->toExtrapolation(self::ATTRIBUTE_CODE),
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
                 ]
@@ -524,7 +525,7 @@ final class EditAssetFamilyContext implements Context
             'assign_assets_to'    => [
                 [
                     'mode'      => 'replace',
-                    'attribute' => '{{attribute}}',
+                    'attribute' => $this->toExtrapolation(self::ATTRIBUTE_CODE),
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
                 ]
@@ -541,7 +542,7 @@ final class EditAssetFamilyContext implements Context
     {
         $this->fixturesLoader
             ->assetFamily(self::ASSET_FAMILY_IDENTIFIER)
-            ->withAttributeOfTypeSingleOption(self::ASSET_FAMILY_IDENTIFIER, 'attribute')
+            ->withAttributeOfTypeSingleOption(self::ASSET_FAMILY_IDENTIFIER, self::ATTRIBUTE_CODE)
             ->load();
     }
 
@@ -555,7 +556,7 @@ final class EditAssetFamilyContext implements Context
                 [
                     'field' => 'sku',
                     'operator'  => '=',
-                    'value'     => '{{attribute}}',
+                    'value'     => $this->toExtrapolation(self::ATTRIBUTE_CODE),
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
                 ]
@@ -580,7 +581,7 @@ final class EditAssetFamilyContext implements Context
     {
         $this->fixturesLoader
             ->assetFamily(self::ASSET_FAMILY_IDENTIFIER)
-            ->withAttributeOfTypeMultipleOption(self::ASSET_FAMILY_IDENTIFIER, 'attribute')
+            ->withAttributeOfTypeMultipleOption(self::ASSET_FAMILY_IDENTIFIER, self::ATTRIBUTE_CODE)
             ->load();
     }
 
@@ -594,7 +595,7 @@ final class EditAssetFamilyContext implements Context
                 [
                     'field' => 'sku',
                     'operator'  => '=',
-                    'value'     => '{{attribute}}',
+                    'value'     => $this->toExtrapolation(self::ATTRIBUTE_CODE),
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
                 ]
@@ -623,7 +624,7 @@ final class EditAssetFamilyContext implements Context
                     'field' => 'sku',
                     'operator'  => '=',
                     'value'     => '11234567899',
-                    'channel' => '{{attribute}}',
+                    'channel' => $this->toExtrapolation(self::ATTRIBUTE_CODE),
                     'locale' => 'en_US',
                 ]
             ],
@@ -652,7 +653,7 @@ final class EditAssetFamilyContext implements Context
                     'operator'  => '=',
                     'value'     => '11234567899',
                     'channel' => 'ecommerce',
-                    'locale' => '{{attribute}}',
+                    'locale' => $this->toExtrapolation(self::ATTRIBUTE_CODE),
                 ]
             ],
             'assign_assets_to'    => [
@@ -687,7 +688,7 @@ final class EditAssetFamilyContext implements Context
                 [
                     'mode'      => 'replace',
                     'attribute' => 'asset_collection',
-                    'channel' => '{{attribute}}',
+                    'channel' => $this->toExtrapolation(self::ATTRIBUTE_CODE),
                     'locale' => 'en_US',
                 ]
             ]
@@ -716,7 +717,7 @@ final class EditAssetFamilyContext implements Context
                     'mode'      => 'replace',
                     'attribute' => 'asset_collection',
                     'channel' => 'ecommerce',
-                    'locale' => '{{attribute}}',
+                    'locale' => $this->toExtrapolation(self::ATTRIBUTE_CODE),
                 ]
             ]
         ];
@@ -731,5 +732,10 @@ final class EditAssetFamilyContext implements Context
         if (!$this->constraintViolationsContext->hasViolations()) {
             ($this->editAssetFamilyHandler)($editAssetFamilyCommand);
         }
+    }
+
+    private function toExtrapolation(string $attributeCode): string
+    {
+        return sprintf('{{%s}}', $attributeCode);
     }
 }

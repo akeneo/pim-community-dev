@@ -52,56 +52,56 @@ Feature: Edit an asset family
   @acceptance-back
   Scenario: Updating an asset family with a product link rule having a dynamic product selection field
     Given an asset family with no product link rules and a text attribute
-    When the user updates this asset family with a dynamic product link rule having a product selection field which references text this attribute
-    Then there is an asset family with a dynamic product link rule
+    When the user updates this asset family with a dynamic product link rule having a product selection field which references this text attribute
+    Then there is an asset family with a product link rule
 
   @acceptance-back
   Scenario: Updating an asset family with a product link rule having a dynamic product selection value
     Given an asset family with no product link rules and a text attribute
     When the user updates this asset family with a dynamic product link rule having a product selection value which references this text attribute
-    Then there is an asset family with a dynamic product link rule
+    Then there is an asset family with a product link rule
 
   @acceptance-back
   Scenario: Updating an asset family with a product link rule having a dynamic product selection value which references a single option attribute
     Given an asset family with no product link rules and a single option attribute
     When the user updates this asset family with a dynamic product link rule having a product selection value which references this single option attribute
-    Then there is an asset family with a dynamic product link rule
+    Then there is an asset family with a product link rule
 
   @acceptance-back
   Scenario: Updating an asset family with a product link rule having a dynamic product selection value which references a multiple option attribute
     Given an asset family with no product link rules and a multiple option attribute
     When the user updates this asset family with a dynamic product link rule having a product selection value which references this multiple option attribute
-    Then there is an asset family with a dynamic product link rule
+    Then there is an asset family with a product link rule
 
   @acceptance-back
   Scenario: Updating an asset family with a product link rule having a dynamic product selection channel
     Given an asset family with no product link rules and a text attribute
     When the user updates this asset family with a dynamic product link rule having a product selection channel this text attribute
-    Then there is an asset family with a dynamic product link rule
+    Then there is an asset family with a product link rule
 
   @acceptance-back
   Scenario: Updating an asset family with a product link rule having a dynamic product selection locale
     Given an asset family with no product link rules and a text attribute
     When the user updates this asset family with a dynamic product link rule having a product selection locale which references this text attribute
-    Then there is an asset family with a dynamic product link rule
+    Then there is an asset family with a product link rule
 
   @acceptance-back
   Scenario: Updating an asset family with a product link rule having a dynamic assignment attribute
     Given an asset family with no product link rules and a text attribute
     When the user updates this asset family with a dynamic product link rule having a dynamic assignment value which references this text attribute
-    Then there is an asset family with a dynamic product link rule
+    Then there is an asset family with a product link rule
 
   @acceptance-back
   Scenario: Updating an asset family with a product link rule having a dynamic assignment channel
     Given an asset family with no product link rules and a text attribute
     When the user updates this asset family with a dynamic product link rule having a dynamic assignment channel which references this text attribute
-    Then there is an asset family with a dynamic product link rule
+    Then there is an asset family with a product link rule
 
   @acceptance-back
   Scenario: Updating an asset family with a product link rule having a dynamic assignment locale
     Given an asset family with no product link rules and a text attribute
     When the user updates this asset family with a dynamic product link rule having a dynamic assignment locale which references this text attribute
-    Then there is an asset family with a dynamic product link rule
+    Then there is an asset family with a product link rule
 
   @acceptance-back
   Scenario: Cannot update an asset family if there is no product selections
