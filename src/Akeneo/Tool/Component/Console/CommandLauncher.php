@@ -53,14 +53,9 @@ class CommandLauncher
      */
     protected function buildCommandString($command)
     {
-        return sprintf(
-            '%s %s%sconsole --env=%s %s',
-            $this->getPhp(),
-            sprintf('%s%s..%sbin', escapeshellarg($this->rootDir), DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR),
-            DIRECTORY_SEPARATOR,
-            $this->environment,
-            $command
-        );
+        $memoryLimit = ini_get('memory_limit');
+
+        return "{$this->getPhp()} -d memory_limit={$memoryLimit} {$this->rootDir}/../bin/console --env={$this->environment} {$command}";
     }
 
     /**
