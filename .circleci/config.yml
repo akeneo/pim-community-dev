@@ -43,14 +43,26 @@ jobs:
               sudo chown -R 1000:1000 ../project
               sudo chown -R 1000:1000 ~/.composer
       - run:
-          name: Install PIM
-          command: |
-              make vendor
-              make node_modules
-              make assets
-              make css
-              make javascript-test
-              make javascript-dev
+            name: Install back dependencies
+            command: |
+                make vendor
+      - run:
+            name: Install front dependencies
+            command: |
+                make node_modules
+      - run:
+            name: Install asset
+            command: |
+                make assets
+      - run:
+            name: Build CSS
+            command: |
+                make css
+      - run:
+            name: Build Javascript
+            command: |
+                make javascript-test
+                make javascript-dev
       - run:
             name: Change owner on project dir after install
             command: sudo chmod -R 777 ../project
