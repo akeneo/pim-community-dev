@@ -51,20 +51,16 @@ jobs:
                           echo "No CE branch $CIRCLE_BRANCH found. I don't touch the composer.json file."
       - run:
           name: Install back dependencies
-          command: |
-              make vendor
+          command: make vendor
       - run:
           name: Install front dependencies
-          command: |
-              make node_modules
+          command: make node_modules
       - run:
           name: Install asset
-          command: |
-              make assets
+          command: make assets
       - run:
           name: Build CSS
-          command: |
-              make css
+          command: make css
       - run:
           name: Build Javascript
           command: |

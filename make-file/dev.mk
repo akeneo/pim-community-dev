@@ -17,8 +17,8 @@ acceptance: behat.yml
 phpunit:
 	${PHP_RUN} vendor/bin/phpunit -c phpunit.xml.dist ${F}
 
-.PHONY: end-to-end
-end-to-end: behat.yml
+.PHONY: behat-legacy
+behat-legacy: behat.yml
 	APP_ENV=behat $(PHP_EXEC) vendor/bin/behat -p legacy -s all ${F}
 
 ##
