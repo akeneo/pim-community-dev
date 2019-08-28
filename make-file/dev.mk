@@ -2,32 +2,24 @@
 ## Run tests suite
 ##
 
-.PHONY: coupling ## Run the coupling-detector on Everything
-coupling: structure-coupling user-management-coupling channel-coupling enrichment-coupling
+.PHONY: coupling
+coupling: twa-coupling asset-coupling franklin-insights-coupling reference-entity-coupling rule-engine-coupling workflow-coupling permission-coupling
 
 .PHONY: phpspec
-phpspec: vendor
-	XDEBUG_ENABLED=0 ${PHP_RUN} vendor/bin/phpspec run ${F}
+phpspec:
+	${PHP_RUN} vendor/bin/phpspec run ${F}
 
-.PHONY: phpspec-debug
-phpspec-debug: vendor
-	XDEBUG_ENABLED=1 ${PHP_RUN} vendor/bin/phpspec run ${F}
-
-.PHONY: behat-acceptance
-behat-acceptance: behat.yml vendor
-	XDEBUG_ENABLED=0 ${PHP_RUN} vendor/bin/behat -p acceptance ${F}
-
-.PHONY: behat-acceptance-debug
-behat-acceptance-debug: behat.yml vendor
-	XDEBUG_ENABLED=1 ${PHP_RUN} vendor/bin/behat -p acceptance ${F}
+.PHONY: acceptance
+acceptance: behat.yml
+	${PHP_RUN} vendor/bin/behat -p acceptance ${F}
 
 .PHONY: phpunit
-phpunit: vendor
-	${PHP_EXEC} vendor/bin/phpunit -c phpunit.xml.dist ${F}
+phpunit:
+	${PHP_RUN} vendor/bin/phpunit -c phpunit.xml.dist ${F}
 
-.PHONY: behat-legacy
-behat-legacy: behat.yml vendor
-	$(DOCKER_COMPOSE) exec -u docker -e APP_ENV=behat fpm php vendor/bin/behat -p legacy ${F}
+.PHONY: end-to-end
+end-to-end: behat.yml
+	APP_ENV=behat $(PHP_EXEC) vendor/bin/behat -p legacy -s all ${F}
 
 ##
 ## Xdebug
