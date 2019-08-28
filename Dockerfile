@@ -87,11 +87,7 @@ VOLUME /srv/pim
 #
 FROM dev AS builder
 
-COPY docker/build/yarnpkg_com.gpg /etc/apt/trusted.gpg.d/yarnpkg_com.gpg
-
-RUN echo "deb http://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list && \
-    apt-get update && \
-    apt-get --yes install yarn \
+RUN apt-get --yes install yarnpkg \
         nodejs \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
