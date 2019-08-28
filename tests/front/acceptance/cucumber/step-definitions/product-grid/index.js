@@ -1,7 +1,7 @@
 module.exports = function(cucumber) {
   const { Given, Then } = cucumber;
   const assert = require('assert');
-  const  { answerJson, renderView, convertItemTable, csvToArray, RequestListener } = require('../../tools');
+  const { answerJson, renderView, convertItemTable, csvToArray, getQueryParamsFromRequest } = require('../../tools');
   const DatagridProductBuilder = require('../../../../common/builder/datagrid-product')
   const NumberFilterBuilder = require('../../../../common/builder/filter/number')
   const createElementDecorator = require('../../decorators/common/create-element-decorator');
@@ -19,11 +19,6 @@ module.exports = function(cucumber) {
       decorator: require('../../decorators/product-grid/filter-list.decorator')
     }
   };
-
-  const timeout = (ms) => {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
-
 
   Given('the following attributes:', function (attributes, callback) {
     const followingAttributes = convertItemTable(attributes);
@@ -69,6 +64,9 @@ module.exports = function(cucumber) {
     })
 
     this.page.on('request', request => {
+
+
+
       if (request.url().includes('/datagrid/product-grid/load?dataLocale=en_US')) {
         return answerJson(request, productLoadData)
       }
@@ -87,7 +85,7 @@ module.exports = function(cucumber) {
         return answerJson(request, { view: null })
       }
 
-      if (request.url().includes('datagrid_view/rest/product-grid/default-columns')) {
+      if (request.url().includes('/datagrid_view/rest/product-grid/default-columns')) {
         return answerJson(request, ["identifier","image","label","count", "rate"])
       }
 
@@ -117,9 +115,14 @@ module.exports = function(cucumber) {
   });
 
   Then('I should be able to use the following filters:', { timeout: 60000 }, async function (itemTable) {
-    // const listener = new RequestListener(this.page)
     const filterList = await createElementDecorator(config)(this.page, 'Product grid filter list')
     const filters = convertItemTable(itemTable);
+
+    // this.page.on('request', request => {
+    //   const params = getQueryParamsFromRequest(request);
+    //   console.log(params)
+    //   request.continue();
+    // })
 
     for (let i = 0; i < filters.length; i++) {
       await filterList.setFilterValue(
@@ -132,6 +135,8 @@ module.exports = function(cucumber) {
 
       const productGrid = await createElementDecorator(config)(this.page, 'Product grid')
       const rowNames = await productGrid.getRowNames();
+
+      console.log(filters[i].result)
 
       assert.deepEqual(rowNames, [filters[i].result]);
     }

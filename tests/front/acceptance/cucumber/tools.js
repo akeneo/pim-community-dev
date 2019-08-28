@@ -69,6 +69,11 @@ const renderView = async (page, extension, data) => {
   }, data, extension);
 };
 
+const getQueryParamsFromRequest = (request) => {
+  const parsedURL = URL.parse(request.url())
+  return queryString.parse(parsedURL.query);
+}
+
 function RequestListener(page) {
   this.requests = [];
 
@@ -98,4 +103,5 @@ module.exports = {
   convertDataTable,
   convertItemTable,
   RequestListener,
+  getQueryParamsFromRequest
 };
