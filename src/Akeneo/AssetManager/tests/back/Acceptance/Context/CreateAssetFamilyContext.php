@@ -207,9 +207,9 @@ final class CreateAssetFamilyContext implements Context
     }
 
     /**
-     * @When /^the user creates an asset family "([^"]*)" with a product link rule not executable by the rule engine$/
+     * @When /^the user creates an asset family with a product link rule not executable by the rule engine$/
      */
-    public function theUserCreatesAnAssetFamilyWithAProductLinkRuleNotExecutableByTheRuleEngine(string $assetFamilyCode): void
+    public function theUserCreatesAnAssetFamilyWithAProductLinkRuleNotExecutableByTheRuleEngine(): void
     {
         $this->ruleEngineValidatorACLStub->stubWithViolationMessage(self::RULE_ENGINE_VALIDATION_MESSAGE);
         $invalidProductLinkRules = [['product_selections' => [['field' => 'family', 'operator' => 'IN', 'value' => 'camcorders']], 'assign_assets_to' => [['mode' => 'set', 'attribute' => 'collection']]]];
@@ -228,14 +228,15 @@ final class CreateAssetFamilyContext implements Context
     {
         $this->violationsContext->thereShouldBeAValidationErrorWithMessage(self::RULE_ENGINE_VALIDATION_MESSAGE);
     }
+
     /**
-     * @When /^the user creates an asset family "([^"]*)" with an empty product selections$/
+     * @When /^the user creates an asset family with an empty product selections$/
      */
-    public function theUserCreatesAnAssetFamilyWithNoProductSelections(string $assetFamilyCode)
+    public function theUserCreatesAnAssetFamilyWithNoProductSelections()
     {
         $emptyProductSelection = [['product_selections' => [], 'assign_assets_to' => [['mode' => 'set', 'attribute' => 'collection']]]];
         $createAssetFamilyWithEmptyProductSelection = new CreateAssetFamilyCommand(
-            $assetFamilyCode,
+            'packshot',
             [],
             $emptyProductSelection
         );
@@ -243,13 +244,13 @@ final class CreateAssetFamilyContext implements Context
     }
 
     /**
-     * @When /^the user creates an asset family "([^"]*)" with an empty product assignment$/
+     * @When /^the user creates an asset family with an empty product assignment$/
      */
-    public function theUserCreatesAnAssetFamilyWithNoProductAssignment(string $assetFamilyCode)
+    public function theUserCreatesAnAssetFamilyWithNoProductAssignment()
     {
         $emptyProductAssignment = [['product_selections' => [['field' => 'family', 'operator' => 'IN', 'value' => 'camcorders']], 'assign_assets_to' => []]];
         $createAssetFamilyWithEmptyProductAssignment = new CreateAssetFamilyCommand(
-            $assetFamilyCode,
+            'packshot',
             [],
             $emptyProductAssignment
         );

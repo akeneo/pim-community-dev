@@ -73,17 +73,17 @@ Feature: Create an asset family
 
   @acceptance-back
   Scenario: Cannot create an asset family if there is no product selections
-    When the user creates an asset family "packshot" with an empty product selections
+    When the user creates an asset family with an empty product selections
     Then there should be a validation error with message 'You must specify at least one product selection in your product link rule'
 
   @acceptance-back
   Scenario: Cannot create an asset family if there is no product assignment
-    When the user creates an asset family "packshot" with an empty product assignment
+    When the user creates an asset family with an empty product assignment
     Then there should be a validation error with message 'You must specify at least one product assignment in your product link rule'
 
   @acceptance-back
   Scenario: Cannot create an asset family if one of the product link rule is not executable by the rule engine
-    When the user creates an asset family "packshot" with a product link rule not executable by the rule engine
+    When the user creates an asset family with a product link rule not executable by the rule engine
     Then there should be a validation error stating why the rule engine cannot execute the product link rule
 
   @acceptance-back
