@@ -2,14 +2,18 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Doctrine\ORM\Repository;
 
-use Doctrine\DBAL\Connection;
-use Doctrine\ORM\EntityManager;
-use PhpSpec\ObjectBehavior;
+use Akeneo\Channel\Component\Model\Channel;
+use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Doctrine\ORM\Repository\PreProcessingRepository;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Doctrine\ORM\TableNameMapper;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\PreProcessingRepositoryInterface;
+use Doctrine\DBAL\Connection;
+use Doctrine\ORM\EntityManager;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class PreProcessingRepositorySpec extends ObjectBehavior
 {
@@ -68,5 +72,138 @@ class PreProcessingRepositorySpec extends ObjectBehavior
         ])->shouldBeCalled();
 
         $this->prepareProjectCalculation($project)->shouldReturn(null);
+    }
+
+    function it_is_processable_attribute_group_completeness(
+        $entityManager,
+        $tableNameMapper,
+        ProductInterface $product,
+        ProjectInterface $project,
+        FamilyInterface $family,
+        Connection $connection,
+        Channel $channel,
+        Locale $locale
+    ) {
+        $productId = '11111111';
+        $productUpdated = new \Datetime('2019-08-01 10:00:00');
+        $familyUpdated = new \Datetime('2019-08-26 13:46:35');
+        $projectChannelId = 'ecommerce';
+        $projectLocaleId = 'en_US';
+        $calculatedAt = '2019-08-01 10:00:10';
+
+        $product->getId()->willReturn($productId);
+        $product->getFamily()->willReturn($family);
+        $product->getUpdated()->willReturn($productUpdated);
+
+        $project->getChannel()->willReturn($channel);
+        $project->getLocale()->willReturn($locale);
+
+        $channel->getId()->willReturn($projectChannelId);
+        $locale->getId()->willReturn($projectLocaleId);
+        $family->getUpdated()->willReturn($familyUpdated);
+
+        $entityManager->getConnection()->willReturn($connection);
+        $tableNameMapper
+            ->getTableName('pimee_teamwork_assistant.completeness_per_attribute_group')
+            ->willReturn('pimee_teamwork_assistant_completeness_per_attribute_group');
+
+        $connection
+            ->fetchColumn(Argument::type('string'), [
+                'product_id' => $productId,
+                'channel_id' => $projectChannelId,
+                'locale_id'  => $projectLocaleId,
+            ])
+            ->willReturn($calculatedAt);
+
+        $product->getUpdated()->shouldBeCalled();
+        $family->getUpdated()->shouldBeCalled();
+
+        $this->isProcessableAttributeGroupCompleteness($product, $project)->shouldReturn(true);
+    }
+
+    function it_is_processable_attribute_group_completeness_when_product_has_not_family(
+        $entityManager,
+        $tableNameMapper,
+        ProductInterface $product,
+        ProjectInterface $project,
+        Connection $connection,
+        Channel $channel,
+        Locale $locale
+    ) {
+        $productId = '11111111';
+        $productUpdated = new \Datetime('2019-08-01 11:00:00');
+        $projectChannelId = 'ecommerce';
+        $projectLocaleId = 'en_US';
+        $calculatedAt = '2019-08-01 10:00:00';
+
+        $product->getId()->willReturn($productId);
+        $product->getFamily()->willReturn(null);
+        $product->getUpdated()->willReturn($productUpdated);
+
+        $project->getChannel()->willReturn($channel);
+        $project->getLocale()->willReturn($locale);
+
+        $channel->getId()->willReturn($projectChannelId);
+        $locale->getId()->willReturn($projectLocaleId);
+
+        $entityManager->getConnection()->willReturn($connection);
+        $tableNameMapper
+            ->getTableName('pimee_teamwork_assistant.completeness_per_attribute_group')
+            ->willReturn('pimee_teamwork_assistant_completeness_per_attribute_group');
+
+        $connection
+            ->fetchColumn(Argument::type('string'), [
+                'product_id' => $productId,
+                'channel_id' => $projectChannelId,
+                'locale_id'  => $projectLocaleId,
+            ])
+            ->willReturn($calculatedAt);
+
+        $product->getUpdated()->shouldBeCalled();
+
+        $this->isProcessableAttributeGroupCompleteness($product, $project)->shouldReturn(true);
+    }
+
+    function it_is_processable_attribute_group_completeness_when_project_has_not_been_calculated_yet(
+        $entityManager,
+        $tableNameMapper,
+        ProductInterface $product,
+        ProjectInterface $project,
+        Connection $connection,
+        Channel $channel,
+        Locale $locale
+    ) {
+        $productId = '11111111';
+        $productUpdated = new \Datetime('2019-08-01 11:00:00');
+        $projectChannelId = 'ecommerce';
+        $projectLocaleId = 'en_US';
+        $calculatedAt = null;
+
+        $product->getId()->willReturn($productId);
+        $product->getFamily()->willReturn(null);
+        $product->getUpdated()->willReturn($productUpdated);
+
+        $project->getChannel()->willReturn($channel);
+        $project->getLocale()->willReturn($locale);
+
+        $channel->getId()->willReturn($projectChannelId);
+        $locale->getId()->willReturn($projectLocaleId);
+
+        $entityManager->getConnection()->willReturn($connection);
+        $tableNameMapper
+            ->getTableName('pimee_teamwork_assistant.completeness_per_attribute_group')
+            ->willReturn('pimee_teamwork_assistant_completeness_per_attribute_group');
+
+        $connection
+            ->fetchColumn(Argument::type('string'), [
+                'product_id' => $productId,
+                'channel_id' => $projectChannelId,
+                'locale_id'  => $projectLocaleId,
+            ])
+            ->willReturn($calculatedAt);
+
+        $product->getUpdated()->shouldNotBeCalled();
+
+        $this->isProcessableAttributeGroupCompleteness($product, $project)->shouldReturn(true);
     }
 }
