@@ -7,6 +7,7 @@ namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkR
 use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyCommand;
 use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyCommand;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\ReplacePattern;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
@@ -37,14 +38,19 @@ class ProductLinkRulesShouldBeExecutableValidator extends ConstraintValidator
     /** @var ProductSelectionsValidator */
     private $productSelectionValidator;
 
+    /** @var ProductAssignmentsValidator */
+    private $productAssignmentsValidator;
+
     public function __construct(
         RuleEngineValidatorACLInterface $ruleEngineValidatorACL,
         AttributeExistsInterface $attributeExists,
-        ProductSelectionsValidator $productSelectionValidator
+        ProductSelectionsValidator $productSelectionValidator,
+        ProductAssignmentsValidator $productAssignmentsValidator
     ) {
         $this->ruleEngineValidatorACL = $ruleEngineValidatorACL;
         $this->attributeExists = $attributeExists;
         $this->productSelectionValidator = $productSelectionValidator;
+        $this->productAssignmentsValidator = $productAssignmentsValidator;
     }
 
     public function validate($createOrUpdateAssetFamily, Constraint $constraint): void
@@ -56,28 +62,15 @@ class ProductLinkRulesShouldBeExecutableValidator extends ConstraintValidator
         } elseif ($createOrUpdateAssetFamily instanceof EditAssetFamilyCommand) {
             $assetFamilyIdentifier = $createOrUpdateAssetFamily->identifier;
         }
-        $ruleEngineViolations = new ConstraintViolationList();
+
         foreach ($createOrUpdateAssetFamily->productLinkRules as $productLinkRule) {
-            $ruleEngineViolations->addAll($this->productSelectionValidator->validate(
-                $productLinkRule['product_selections'],
-                $assetFamilyIdentifier
-            ));
-            $ruleEngineViolations->addAll($this->validateProductAssignments($productLinkRule));
+            $this->addViolationsToContextIfAny(
+                $this->productSelectionValidator->validate($productLinkRule[RuleTemplate::PRODUCT_SELECTIONS], $assetFamilyIdentifier)
+            );
+            $this->addViolationsToContextIfAny(
+                $this->productAssignmentsValidator->validate($productLinkRule[RuleTemplate::ASSIGN_ASSETS_TO], $assetFamilyIdentifier)
+            );
         }
-        $this->addViolationsToContextIfAny($ruleEngineViolations);
-    }
-
-
-    private function validateProductAssignments(array $productLinkRule): ConstraintViolationListInterface
-    {
-        $productAssignments = $productLinkRule['assign_assets_to'];
-        $validator = Validation::createValidator();
-        $ruleEngineViolations = $validator->validate($productAssignments, [new NotBlank(['message' => ProductLinkRulesShouldBeExecutable::PRODUCT_ASSIGNMENT_CANNOT_BE_EMPTY])]);
-        foreach ($productAssignments as $productAssignment) {
-            $ruleEngineViolations = $this->ruleEngineValidatorACL->validateProductAssignment($productAssignment);
-        }
-
-        return $ruleEngineViolations;
     }
 
     private function addViolationsToContextIfAny(ConstraintViolationListInterface $violations): void
@@ -86,7 +79,4 @@ class ProductLinkRulesShouldBeExecutableValidator extends ConstraintValidator
             $this->context->addViolation($violation->getMessage(), $violation->getParameters());
         }
     }
-
-
-
 }
