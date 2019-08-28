@@ -1,5 +1,19 @@
 # 3.0.x
 
+# 3.0.39 (2019-08-28)
+
+## Bug fixes
+
+- PIM-8702: Fix sso configuration page reload after toggling
+- PIM-8704: Redirect bad credentials to login form when SSO is activated
+- PIM-8678: Fix the Project Completeness Calculations when families are updated
+
+# 3.0.38 (2019-08-20)
+
+## Bug fixes
+
+- PIM-8667: Fix grid filters for numeric attribute codes
+
 # 3.0.37 (2019-08-13)
 
 ## Bug fixes

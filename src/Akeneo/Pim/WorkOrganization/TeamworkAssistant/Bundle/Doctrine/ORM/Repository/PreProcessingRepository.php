@@ -69,6 +69,10 @@ SQL;
 
         $calculatedAt = new \DateTime($calculatedAt);
 
+        if (null !== $product->getFamily()) {
+            return $calculatedAt < $product->getUpdated() || $calculatedAt < $product->getFamily()->getUpdated();
+        }
+
         return $calculatedAt < $product->getUpdated();
     }
 

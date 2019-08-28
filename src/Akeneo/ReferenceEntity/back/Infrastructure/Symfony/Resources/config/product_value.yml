@@ -130,6 +130,8 @@ services:
         arguments:
             - '@pim_catalog.repository.attribute'
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_record_details'
+        tags:
+            - { name: pim_axis_value_label_normalizer }
 
     pimee_datagrid.normalizer.product.reference_entity_value:
         class: Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\Datagrid\Normalizer\ReferenceEntityValueNormalizer

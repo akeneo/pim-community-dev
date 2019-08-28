@@ -16,9 +16,9 @@ class ConfigurationController extends BaseController {
       });
 
       // Reload to page after SSO has been enabled or disabled
-      const isEnabledInitialState: boolean = data[0].is_enabled;
+      const isEnabledInitialState: boolean = data[0].configuration.is_enabled;
       form.on('pim_enrich:form:entity:post_save', () => {
-        const isEnabledCurrentState: boolean = form.getFormData().is_enabled;
+        const isEnabledCurrentState: boolean = form.getFormData().configuration.is_enabled;
 
         if (isEnabledInitialState !== isEnabledCurrentState) {
           setTimeout(() => window.location.reload(), 1000);

@@ -91,12 +91,10 @@ Feature: Ensure that a published product is safe
   Scenario: Fail to remove an option linked to a published product
     Given I am on the "manufacturer" attribute page
     And I visit the "Options" tab
-    And I remove the "Volcom" option
+    When I remove the "Volcom" option
     And I confirm the deletion
-    And I confirm the error message
-    When I save the attribute
-    And I should see the flash message "Attribute successfully updated"
-    Then the Options section should contain 4 options
+    Then I should see the text "Impossible to remove attribute option linked to a published product"
+    And the Options section should contain 4 options
 
   Scenario: Successfully remove an option not linked to a published product
     Given I am on the "manufacturer" attribute page
@@ -110,12 +108,10 @@ Feature: Ensure that a published product is safe
   Scenario: Fail to remove a multi-option linked to a published product
     Given I am on the "weather_conditions" attribute page
     And I visit the "Options" tab
-    And I remove the "dry" option
+    When I remove the "dry" option
     And I confirm the deletion
-    And I confirm the error message
-    When I save the attribute
-    And I should see the flash message "Attribute successfully updated"
-    Then the Options section should contain 5 options
+    Then I should see the text "Impossible to remove attribute option linked to a published product"
+    And the Options section should contain 5 options
 
   @jira https://akeneo.atlassian.net/browse/PIM-4600
   Scenario: Successfully remove a multi-option not linked to a published product
