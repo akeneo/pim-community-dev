@@ -96,10 +96,10 @@ Feature: Create an asset family
     When the user creates an asset family with a product link rule having an extrapolated product selection value which references an attribute that does not exist
     Then there should be a validation error stating that the product link rule cannot be created because the extrapolated product selection value references an attribute that does not exist
 
-#  @acceptance-back
-#  Scenario: Cannot create an asset family if one of the product link rule has an extrapolated product assignment attribute which references an unexisting attribute
-#    When the user creates an asset family with a product link rule having an extrapolated product assignment attribute which references an attribute that does not exist
-#    Then there should be a validation error stating that the product link rule cannot be created because the extrapolated product assignment attribute references an attribute that does not exist
+  @acceptance-back
+  Scenario: Cannot create an asset family if one of the product link rule has an extrapolated product assignment attribute which references an unexisting attribute
+    When the user creates an asset family with a product link rule having an extrapolated product assignment attribute which references an attribute that does not exist
+    Then there should be a validation error stating that the product link rule cannot be created because the extrapolated product assignment attribute references an attribute that does not exist
 
   @acceptance-front
   Scenario: Creating an asset family

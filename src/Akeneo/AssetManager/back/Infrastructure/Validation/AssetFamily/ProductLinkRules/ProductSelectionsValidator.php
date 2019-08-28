@@ -35,13 +35,12 @@ class ProductSelectionsValidator
 
     public function validate(array $productSelections, string $assetFamilyIdentifier): ConstraintViolationListInterface
     {
-        $validator = Validation::createValidator();
-        $ruleEngineViolations = $validator->validate($productSelections, [new NotBlank(['message' => ProductLinkRulesShouldBeExecutable::PRODUCT_SELECTION_CANNOT_BE_EMPTY])]);
+        $violationList = $this->checkNotEmpty($productSelections);
         foreach ($productSelections as $productSelection) {
-            $ruleEngineViolations = $this->validateProductSelection($productSelection, $assetFamilyIdentifier);
+            $violationList->addAll($this->validateProductSelection($productSelection, $assetFamilyIdentifier));
         }
 
-        return $ruleEngineViolations;
+        return $violationList;
     }
 
     private function validateProductSelection(array $productSelection, string $assetFamilyIdentifier): ConstraintViolationListInterface
@@ -76,9 +75,10 @@ class ProductSelectionsValidator
                 AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
                 AttributeCode::fromString($extrapolatedAttributeCode)
             );
-            $violations = $validator->validate($isAttributeExisting,
-                new Callback(function ($value, ExecutionContextInterface $context, $payload) use ($extrapolatedAttributeCode) {
-                    if (null !== $value && !is_numeric($value)) {
+            $violations = $validator->validate(
+                $isAttributeExisting,
+                new Callback(function ($attributeExists, ExecutionContextInterface $context) use ($extrapolatedAttributeCode) {
+                    if (!$attributeExists) {
                         $context
                             ->buildViolation(ProductLinkRulesShouldBeExecutable::EXTRAPOLATED_ATTRIBUTE_SHOULD_EXIST, ['%attribute_code%' => $extrapolatedAttributeCode])
                             ->addViolation();
@@ -88,4 +88,20 @@ class ProductSelectionsValidator
         }
         return $violations;
     }
+
+    /**
+     * @param array $productSelections
+     *
+     * @return ConstraintViolationListInterface
+     *
+     */
+    private function checkNotEmpty(array $productSelections): ConstraintViolationListInterface
+    {
+        $validator = Validation::createValidator();
+        $ruleEngineViolations = $validator->validate($productSelections,
+            [new NotBlank(['message' => ProductLinkRulesShouldBeExecutable::PRODUCT_SELECTION_CANNOT_BE_EMPTY])]
+        );
+
+        return $ruleEngineViolations;
+}
 }
