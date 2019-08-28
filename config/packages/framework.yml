@@ -1,7 +1,3 @@
-# TODO: everything here should be split into different files, this will be done in another PR
-imports:
-    - { resource: '../../src/Akeneo/Platform/config/pim.yml' }
-
 framework:
     translator:
         fallback: en_US
@@ -27,12 +23,7 @@ framework:
         packages:
             frontend:
                 version_strategy: pim_enrich.version_strategy
-
-twig:
-    debug: '%kernel.debug%'
-    strict_variables: '%kernel.debug%'
-
-swiftmailer:
-    url: '%env(MAILER_URL)%'
-    spool: { type: 'memory' }
-
+    cache:
+        pools:
+            name:
+                adapter: cache.adapter.apcu

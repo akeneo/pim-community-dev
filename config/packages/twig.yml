@@ -1,0 +1,10 @@
+twig:
+    debug: '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
+    exception_controller: FOS\RestBundle\Controller\ExceptionController::showAction
+    form_theme: ['PimUIBundle:Form:pim-fields.html.twig']
+    globals:
+        ws:
+            port:        '%websocket_port%'
+            host:        '%websocket_host%'
+        akeneo_pim_url: '%env(AKENEO_PIM_URL)%'
