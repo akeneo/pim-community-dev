@@ -52,6 +52,7 @@ FROM base AS dev
 ENV PHP_CONF_OPCACHE_VALIDATE_TIMESTAMP=1
 
 RUN apt-get update && \
+    apt-get --yes install git && \
     apt-get --yes install unzip && \
     apt-get --yes install curl && \
     apt-get --yes install default-mysql-client && \
