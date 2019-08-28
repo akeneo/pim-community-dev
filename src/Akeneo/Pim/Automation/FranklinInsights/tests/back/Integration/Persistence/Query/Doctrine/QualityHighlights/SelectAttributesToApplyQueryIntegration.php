@@ -111,7 +111,7 @@ final class SelectAttributesToApplyQueryIntegration extends TestCase
                 'labels' => ['en_US' => 'Weight'],
             ]
         );
-        $this->getFromTestContainer('validator')->validate($attribute);
+        $this->validator->validate($attribute);
         $this->attributeSaver->save($attribute);
 
         return $attribute;
@@ -127,7 +127,7 @@ final class SelectAttributesToApplyQueryIntegration extends TestCase
                 'labels' => ['en_US' => 'Color', 'fr_FR' => 'Couleur'],
             ]
         );
-        $this->getFromTestContainer('validator')->validate($attribute);
+        $this->validator->validate($attribute);
         $this->attributeSaver->save($attribute);
 
         return $attribute;
@@ -146,7 +146,7 @@ final class SelectAttributesToApplyQueryIntegration extends TestCase
                 'default_metric_unit' => 'INCHES',
             ]
         );
-        $this->getFromTestContainer('validator')->validate($attribute);
+        $this->validator->validate($attribute);
         $this->attributeSaver->save($attribute);
 
         return $attribute;

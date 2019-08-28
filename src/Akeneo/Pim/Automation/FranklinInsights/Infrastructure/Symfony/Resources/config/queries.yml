@@ -90,3 +90,8 @@ services:
         class: Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\QualityHighlights\SelectPendingItemsQuery
         arguments:
             - '@database_connection'
+
+    akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_families_to_apply:
+        class: Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\QualityHighlights\SelectFamiliesToApplyQuery
+        arguments:
+            - '@database_connection'
