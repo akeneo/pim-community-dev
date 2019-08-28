@@ -87,10 +87,8 @@ VOLUME /srv/pim
 FROM dev AS builder
 
 COPY docker/build/yarnpkg_com.gpg /etc/apt/trusted.gpg.d/yarnpkg_com.gpg
-COPY docker/build/nodesource_com.gpg /etc/apt/trusted.gpg.d/nodesource_com.gpg
 
-RUN echo "deb https://deb.nodesource.com/node_10.x buster main" > /etc/apt/sources.list.d/nodejs.list && \
-    echo "deb http://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list && \
+RUN echo "deb http://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list && \
     apt-get update && \
     apt-get --yes install yarn \
         nodejs \
