@@ -124,10 +124,6 @@ class FixturesLoader
 
     public function withAttributeOfTypeText(string $assetFamilyIdentifier, string $attributeCode): self
     {
-        if (null === $this->loadedAssetFamily) {
-            throw new \LogicException('You need to call "assetFamily()" first before calling "withAttributes()"');
-        }
-
         $this->customLoadedAttributes[] = TextAttribute::createText(
             $this->attributeRepository->nextIdentifier(
                 AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
@@ -143,6 +139,44 @@ class FixturesLoader
             AttributeMaxLength::fromInteger(25),
             AttributeValidationRule::none(),
             AttributeRegularExpression::createEmpty()
+        );
+
+        return $this;
+    }
+
+    public function withAttributeOfTypeSingleOption(string $assetFamilyIdentifier, string $attributeCode): self
+    {
+        $this->customLoadedAttributes[] = OptionAttribute::create(
+            $this->attributeRepository->nextIdentifier(
+                AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+                AttributeCode::fromString($attributeCode)
+            ),
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+            AttributeCode::fromString($attributeCode),
+            LabelCollection::fromArray([]),
+            $this->getOrderForAttribute($attributeCode),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false)
+        );
+
+        return $this;
+    }
+
+    public function withAttributeOfTypeMultipleOption(string $assetFamilyIdentifier, string $attributeCode)
+    {
+        $this->customLoadedAttributes[] = OptionCollectionAttribute::create(
+            $this->attributeRepository->nextIdentifier(
+                AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+                AttributeCode::fromString($attributeCode)
+            ),
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+            AttributeCode::fromString($attributeCode),
+            LabelCollection::fromArray([]),
+            $this->getOrderForAttribute('materials'),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false)
         );
 
         return $this;
