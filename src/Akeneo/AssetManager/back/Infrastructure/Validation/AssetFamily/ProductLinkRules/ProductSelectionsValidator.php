@@ -103,5 +103,5 @@ class ProductSelectionsValidator
         );
 
         return $ruleEngineViolations;
-}
+    }
 }

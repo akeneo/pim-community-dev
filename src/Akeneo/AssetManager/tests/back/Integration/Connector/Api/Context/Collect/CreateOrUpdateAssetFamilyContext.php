@@ -297,13 +297,13 @@ class CreateOrUpdateAssetFamilyContext implements Context
                 [
                     'field'    => 'sku',
                     'operator' => 'equals',
-                    'value'    => '{{product_sku}}'
+                    'value'    => '123134124123'
                 ]
             ],
             'assign_assets_to'    => [
                 [
                     'mode'  => 'add',
-                    'attribute' => '{{attribute}}',
+                    'attribute' => 'product_asset_collection',
                 ]
             ]
         ];

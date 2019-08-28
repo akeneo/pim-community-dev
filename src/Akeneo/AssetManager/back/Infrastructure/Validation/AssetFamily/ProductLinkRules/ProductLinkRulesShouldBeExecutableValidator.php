@@ -55,7 +55,6 @@ class ProductLinkRulesShouldBeExecutableValidator extends ConstraintValidator
 
     public function validate($createOrUpdateAssetFamily, Constraint $constraint): void
     {
-        //TODO: to rework ? maybe two separate validators ?
         $assetFamilyIdentifier = null;
         if ($createOrUpdateAssetFamily instanceof CreateAssetFamilyCommand) {
             $assetFamilyIdentifier = $createOrUpdateAssetFamily->code;
