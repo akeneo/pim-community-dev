@@ -98,15 +98,15 @@ SQL;
         $masksPerFamily = [];
         foreach ($rows as $masksPerChannelAndLocale) {
             $masksPerFamily[$masksPerChannelAndLocale['family_code']][] = new RequiredAttributesMaskForChannelAndLocale(
-                $masksPerChannelAndLocale['channel_code'],
-                $masksPerChannelAndLocale['locale_code'],
+                (string) $masksPerChannelAndLocale['channel_code'],
+                (string) $masksPerChannelAndLocale['locale_code'],
                 json_decode($masksPerChannelAndLocale['mask'], true)
             );
         }
 
         $result = [];
         foreach ($masksPerFamily as $familyCode => $masksPerChannelAndLocale) {
-            $result[$familyCode] = new RequiredAttributesMask($familyCode, $masksPerChannelAndLocale);
+            $result[$familyCode] = new RequiredAttributesMask((string) $familyCode, $masksPerChannelAndLocale);
         }
 
         return $result;
