@@ -13,14 +13,9 @@ ENV PHP_CONF_DATE_TIMEZONE=UTC \
     PHP_CONF_MAX_POST_SIZE=40M \
     XDEBUG_ENABLED=0
 
-COPY docker/build/sury_org_php.gpg /etc/apt/trusted.gpg.d/sury_org_php.gpg
-
 RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/apt.conf.d/01-no-recommended && \
     echo 'path-exclude=/usr/share/man/*' > /etc/dpkg/dpkg.cfg.d/path_exclusions && \
     echo 'path-exclude=/usr/share/doc/*' >> /etc/dpkg/dpkg.cfg.d/path_exclusions && \
-    apt-get update && \
-    apt-get --yes install apt-transport-https ca-certificates && \
-    echo 'deb https://packages.sury.org/php/ buster main' > /etc/apt/sources.list.d/php-packages-sury-org.list && \
     apt-get update && \
     apt-get --yes install imagemagick \
         php7.3-fpm \
