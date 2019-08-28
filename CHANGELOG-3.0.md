@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.39 (2019-08-28)
+
 ## Bug fixes
 
 - PIM-8702: Fix sso configuration page reload after toggling
