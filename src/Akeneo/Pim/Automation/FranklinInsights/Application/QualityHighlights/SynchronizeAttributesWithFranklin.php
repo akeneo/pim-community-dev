@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\QualityHighlights;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\QualityHighlightsProviderInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectPendingAttributesIdQueryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectPendingItemIdentifiersQueryInterface;
 
 class SynchronizeAttributesWithFranklin
 {
-    /** @var SelectPendingAttributesIdQueryInterface */
-    private $pendingAttributesQuery;
+    /** @var SelectPendingItemIdentifiersQueryInterface */
+    private $pendingItemIdentifiersQuery;
 
     /** @var ApplyAttributeStructure */
     private $applyAttributeStructure;
@@ -28,11 +28,11 @@ class SynchronizeAttributesWithFranklin
     private $qualityHighlightsProvider;
 
     public function __construct(
-        SelectPendingAttributesIdQueryInterface $pendingAttributesQuery,
+        SelectPendingItemIdentifiersQueryInterface $pendingItemIdentifiersQuery,
         ApplyAttributeStructure $applyAttributeStructure,
         QualityHighlightsProviderInterface $qualityHighlightsProvider
     ) {
-        $this->pendingAttributesQuery = $pendingAttributesQuery;
+        $this->pendingItemIdentifiersQuery = $pendingItemIdentifiersQuery;
         $this->applyAttributeStructure = $applyAttributeStructure;
         $this->qualityHighlightsProvider = $qualityHighlightsProvider;
     }
@@ -47,7 +47,7 @@ class SynchronizeAttributesWithFranklin
     {
         $lastId = 0;
         while (true) {
-            $attributeCodes = $this->pendingAttributesQuery->getUpdatedAttributeCodes($lastId, $batchSize);
+            $attributeCodes = $this->pendingItemIdentifiersQuery->getUpdatedAttributeCodes($lastId, $batchSize);
             if (! empty($attributeCodes)) {
                 $this->applyAttributeStructure->apply(array_values($attributeCodes));
             }
@@ -66,7 +66,7 @@ class SynchronizeAttributesWithFranklin
     {
         $lastId = 0;
         while (true) {
-            $attributeCodes = $this->pendingAttributesQuery->getDeletedAttributeCodes($lastId, $batchSize);
+            $attributeCodes = $this->pendingItemIdentifiersQuery->getDeletedAttributeCodes($lastId, $batchSize);
             if (! empty($attributeCodes)) {
                 foreach ($attributeCodes as $attributeCode) {
                     $this->qualityHighlightsProvider->deleteAttribute($attributeCode);

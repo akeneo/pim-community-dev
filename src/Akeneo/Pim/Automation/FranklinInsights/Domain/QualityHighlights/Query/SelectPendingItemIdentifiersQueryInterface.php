@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query;
 
-interface SelectPendingAttributesIdQueryInterface
+interface SelectPendingItemIdentifiersQueryInterface
 {
     public function getUpdatedAttributeCodes(int $offsetId, int $batchSize): array;
 
