@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\QualityHighlights;
+namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\QualityHighlights\Attribute;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
@@ -15,7 +15,7 @@ use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-class AttributeDeletedSubscriberSpec extends ObjectBehavior
+class AttributeUpdatedSubscriberSpec extends ObjectBehavior
 {
     public function let(GetConnectionStatusHandler $connectionStatusHandler, PendingItemsRepositoryInterface $pendingAttributesRepository)
     {
@@ -27,22 +27,24 @@ class AttributeDeletedSubscriberSpec extends ObjectBehavior
         $this->shouldImplement(EventSubscriberInterface::class);
     }
 
-    public function it_subscribes_to_post_remove(): void
+    public function it_subscribes_to_post_save_events(): void
     {
-        $this->getSubscribedEvents()->shouldHaveKey(StorageEvents::POST_REMOVE);
+        $this->getSubscribedEvents()->shouldHaveKey(StorageEvents::POST_SAVE);
+        $this->getSubscribedEvents()->shouldHaveKey(StorageEvents::POST_SAVE_ALL);
     }
 
-    public function it_is_only_applied_when_an_attribute_is_removed(
+    public function it_is_only_applied_on_post_save_event_when_an_attribute_is_removed(
         GenericEvent $event,
+        \stdClass $object,
         $connectionStatusHandler
     ): void {
-        $event->getSubject()->willReturn(new \stdClass());
+        $event->getSubject()->willReturn($object);
         $connectionStatusHandler->handle(Argument::any())->shouldNotBeCalled();
 
-        $this->onPostRemove($event);
+        $this->onSave($event);
     }
 
-    public function it_is_only_applied_when_franklin_insights_is_activated(
+    public function it_is_only_applied_on_post_save_when_franklin_insights_is_activated(
         GenericEvent $event,
         AttributeInterface $attribute,
         $connectionStatusHandler,
@@ -52,12 +54,12 @@ class AttributeDeletedSubscriberSpec extends ObjectBehavior
 
         $connectionStatus = new ConnectionStatus(false, false, false, 0);
         $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
-        $pendingAttributesRepository->addDeletedAttributeCode(Argument::any())->shouldNotBeCalled();
+        $pendingAttributesRepository->addUpdatedAttributeCode(Argument::any())->shouldNotBeCalled();
 
-        $this->onPostRemove($event);
+        $this->onSave($event);
     }
 
-    public function it_saves_the_deleted_attribute_code(
+    public function it_saves_the_updated_attribute_code(
         GenericEvent $event,
         AttributeInterface $attribute,
         $connectionStatusHandler,
@@ -68,8 +70,27 @@ class AttributeDeletedSubscriberSpec extends ObjectBehavior
 
         $connectionStatus = new ConnectionStatus(true, false, false, 0);
         $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
-        $pendingAttributesRepository->addDeletedAttributeCode('size')->shouldBeCalled();
+        $pendingAttributesRepository->addUpdatedAttributeCode('size')->shouldBeCalled();
 
-        $this->onPostRemove($event);
+        $this->onSave($event);
+    }
+
+    public function it_saves_multiple_updated_attribute_codes(
+        GenericEvent $event,
+        AttributeInterface $attribute1,
+        AttributeInterface $attribute2,
+        $connectionStatusHandler,
+        $pendingAttributesRepository
+    ): void {
+        $attribute1->getCode()->willReturn('size');
+        $attribute2->getCode()->willReturn('weight');
+        $event->getSubject()->willReturn([$attribute1, $attribute2]);
+
+        $connectionStatus = new ConnectionStatus(true, false, false, 0);
+        $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
+        $pendingAttributesRepository->addUpdatedAttributeCode('size')->shouldBeCalled();
+        $pendingAttributesRepository->addUpdatedAttributeCode('weight')->shouldBeCalled();
+
+        $this->onSaveAll($event);
     }
 }

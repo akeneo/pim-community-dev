@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\QualityHighlights;
+namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\QualityHighlights\Attribute;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
@@ -16,7 +16,7 @@ use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-class AttributeOptionUpdatedSubscriberSpec extends ObjectBehavior
+class AttributeOptionDeletedSubscriberSpec extends ObjectBehavior
 {
     public function let(GetConnectionStatusHandler $connectionStatusHandler, PendingItemsRepositoryInterface $pendingAttributesRepository)
     {
@@ -30,21 +30,20 @@ class AttributeOptionUpdatedSubscriberSpec extends ObjectBehavior
 
     public function it_subscribes_to_post_remove(): void
     {
-        $this->getSubscribedEvents()->shouldHaveKey(StorageEvents::POST_SAVE);
-        $this->getSubscribedEvents()->shouldHaveKey(StorageEvents::POST_SAVE_ALL);
+        $this->getSubscribedEvents()->shouldHaveKey(StorageEvents::POST_REMOVE);
     }
 
-    public function it_is_only_applied_on_post_save_when_an_attribute_option_is_updated(
+    public function it_is_only_applied_when_an_attribute_option_is_removed(
         GenericEvent $event,
         $connectionStatusHandler
     ): void {
         $event->getSubject()->willReturn(new \stdClass());
         $connectionStatusHandler->handle(Argument::any())->shouldNotBeCalled();
 
-        $this->onSave($event);
+        $this->onPostRemove($event);
     }
 
-    public function it_is_only_applied_on_post_save_when_franklin_insights_is_activated(
+    public function it_is_only_applied_when_franklin_insights_is_activated(
         GenericEvent $event,
         AttributeOptionInterface $attributeOption,
         $connectionStatusHandler,
@@ -58,7 +57,7 @@ class AttributeOptionUpdatedSubscriberSpec extends ObjectBehavior
         $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
         $pendingAttributesRepository->addUpdatedAttributeCode(Argument::any())->shouldNotBeCalled();
 
-        $this->onSave($event);
+        $this->onPostRemove($event);
     }
 
     public function it_saves_the_option_attribute_code(
@@ -78,31 +77,6 @@ class AttributeOptionUpdatedSubscriberSpec extends ObjectBehavior
         $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
         $pendingAttributesRepository->addUpdatedAttributeCode('size')->shouldBeCalled();
 
-        $this->onSave($event);
-    }
-
-    public function it_saves_multiple_updated_options_attribute_codes(
-        GenericEvent $event,
-        AttributeOptionInterface $attributeOption1,
-        AttributeOptionInterface $attributeOption2,
-        AttributeInterface $attribute1,
-        AttributeInterface $attribute2,
-        $connectionStatusHandler,
-        $pendingAttributesRepository
-    ): void {
-        $attributeOption1->getAttribute()->willReturn($attribute1);
-        $attributeOption2->getAttribute()->willReturn($attribute2);
-        $attribute1->getCode()->willReturn('size');
-        $attribute2->getCode()->willReturn('weight');
-        $event->getSubject()->willReturn([$attributeOption1, $attributeOption2]);
-        $event->hasArgument('unitary')->willReturn(true);
-        $event->getArgument('unitary')->willReturn(false);
-
-        $connectionStatus = new ConnectionStatus(true, false, false, 0);
-        $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
-        $pendingAttributesRepository->addUpdatedAttributeCode('size')->shouldBeCalled();
-        $pendingAttributesRepository->addUpdatedAttributeCode('weight')->shouldBeCalled();
-
-        $this->onSaveAll($event);
+        $this->onPostRemove($event);
     }
 }

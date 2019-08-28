@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\QualityHighlights;
+namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\QualityHighlights\Attribute;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
@@ -21,7 +21,7 @@ use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-class AttributeDeletedSubscriber implements EventSubscriberInterface
+class AttributeUpdatedSubscriber implements EventSubscriberInterface
 {
     /** @var GetConnectionStatusHandler */
     private $connectionStatusHandler;
@@ -38,11 +38,12 @@ class AttributeDeletedSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            StorageEvents::POST_REMOVE => 'onPostRemove',
+            StorageEvents::POST_SAVE => 'onSave',
+            StorageEvents::POST_SAVE_ALL => 'onSaveAll',
         ];
     }
 
-    public function onPostRemove(GenericEvent $event): void
+    public function onSave(GenericEvent $event): void
     {
         $attribute = $event->getSubject();
         if (!$attribute instanceof AttributeInterface) {
@@ -53,7 +54,30 @@ class AttributeDeletedSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->pendingAttributesRepository->addDeletedAttributeCode($attribute->getCode());
+        $this->pendingAttributesRepository->addUpdatedAttributeCode($attribute->getCode());
+    }
+
+    public function onSaveAll(GenericEvent $event)
+    {
+        $attributes = $event->getSubject();
+        $attributeCodes = [];
+        foreach ($attributes as $attribute) {
+            if ($attribute instanceof AttributeInterface) {
+                $attributeCodes[] = $attribute->getCode();
+            }
+        }
+
+        if (empty($attributeCodes)) {
+            return;
+        }
+
+        if (!$this->isFranklinInsightsActivated()) {
+            return;
+        }
+
+        foreach ($attributeCodes as $attributeCode) {
+            $this->pendingAttributesRepository->addUpdatedAttributeCode($attributeCode);
+        }
     }
 
     private function isFranklinInsightsActivated(): bool
