@@ -107,7 +107,7 @@ class ProductIndexer implements ProductIndexerInterface
     }
 
     /**
-     * Removes the products from both the product index and the product and product model index.
+     * Removes the product from the product index and the product model index.
      *
      * {@inheritdoc}
      */
@@ -125,7 +125,7 @@ class ProductIndexer implements ProductIndexerInterface
     }
 
     /**
-     * Removes the products from both the product index and the product and product model index.
+     * Removes the products from the product index and the product model index.
      *
      * {@inheritdoc}
      */
