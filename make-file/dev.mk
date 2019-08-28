@@ -7,31 +7,19 @@ coupling: twa-coupling asset-coupling franklin-insights-coupling reference-entit
 
 .PHONY: phpspec
 phpspec:
-	XDEBUG_ENABLED=0 ${PHP_RUN} vendor/bin/phpspec run ${F}
+	${PHP_RUN} vendor/bin/phpspec run ${F}
 
-.PHONY: phpspec-debug
-phpspec-debug:
-	XDEBUG_ENABLED=1 ${PHP_RUN} vendor/bin/phpspec run ${F}
-
-.PHONY: behat-acceptance
-behat-acceptance: behat.yml
-	XDEBUG_ENABLED=0 ${PHP_RUN} vendor/bin/behat -p acceptance ${F}
-
-.PHONY: behat-acceptance-debug
-behat-acceptance-debug: behat.yml
-	XDEBUG_ENABLED=1 ${PHP_RUN} vendor/bin/behat -p acceptance ${F}
+.PHONY: acceptance
+acceptance: behat.yml
+	${PHP_RUN} vendor/bin/behat -p acceptance ${F}
 
 .PHONY: phpunit
 phpunit:
-	XDEBUG_ENABLED=0 ${PHP_RUN} vendor/bin/phpunit -c phpunit.xml.dist ${F}
+	${PHP_RUN} vendor/bin/phpunit -c phpunit.xml.dist ${F}
 
-.PHONY: phpunit-debug
-phpunit-debug:
-	XDEBUG_ENABLED=1 ${PHP_RUN} vendor/bin/phpunit -c phpunit.xml.dist ${F}
-
-.PHONY: behat-legacy
-behat-legacy: behat.yml
-	APP_ENV=behat $(PHP_EXEC) vendor/bin/behat -p legacy ${F}
+.PHONY: end-to-end
+end-to-end: behat.yml
+	APP_ENV=behat $(PHP_EXEC) vendor/bin/behat -p legacy -s all ${F}
 
 ##
 ## Xdebug
