@@ -47,7 +47,7 @@ services:
     volumes:
       - './:/srv/pim:ro'
     ports:
-      - '${DOCKER_PORT_SELENIUM:-5900}:5900'
+      - '${DOCKER_PORT_SELENIUM:-5910}:5900'
     networks:
       - 'pim'
 
@@ -84,14 +84,14 @@ services:
       ES_JAVA_OPTS: '${ES_JAVA_OPTS:--Xms512m -Xmx512m}'
       discovery.type: 'single-node'
     ports:
-      - '${DOCKER_PORT_ELASTICSEARCH:-9200}:9200'
+      - '${DOCKER_PORT_ELASTICSEARCH:-9210}:9200'
     networks:
       - 'pim'
 
   sso-idp-server:
     image: 'kristophjunge/test-saml-idp'
     ports:
-      - '${DOCKER_PORT_SSO_IDP:-8088}:8088'
+      - '${DOCKER_PORT_SSO_IDP:-8083}:8088'
     volumes:
       - './docker/sso_authsources.php:/var/www/simplesamlphp/config/authsources.php'
     environment:
