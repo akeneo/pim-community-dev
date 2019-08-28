@@ -29,7 +29,7 @@
         "classmap": [ "tests/back/Integration/AppKernelTest.php" ]
     },
     "require": {
-        "php": "7.2.*",
+        "php": "7.3.*",
         "ext-apcu": "*",
         "ext-bcmath": "*",
         "ext-curl": ">=7.0",
