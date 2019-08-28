@@ -32,6 +32,9 @@ class ProductFamilyUpdateSubscriberIntegration extends TestCase
 
         $this->activateFranklinConnection();
         $this->createIdentifiersMapping();
+
+        $this->getFromTestContainer('akeneo.pim.automation.franklin_insights.application.configuration.query.get_connection_status_handler')
+            ->clearCache();
     }
 
     public function test_it_removes_the_subscription_only_if_the_family_is_removed_from_the_subscribed_product()

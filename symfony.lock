@@ -1,4 +1,49 @@
 {
+    "behat/mink-selenium2-driver": {
+        "version": "v1.3.1"
+    },
+    "firebase/php-jwt": {
+        "version": "v5.0.0"
+    },
+    "google/auth": {
+        "version": "v1.5.2"
+    },
+    "google/cloud-core": {
+        "version": "v1.32.0"
+    },
+    "google/cloud-error-reporting": {
+        "version": "v0.14.5"
+    },
+    "google/cloud-logging": {
+        "version": "v1.17.0"
+    },
+    "google/cloud-storage": {
+        "version": "v1.14.0"
+    },
+    "google/common-protos": {
+        "version": "1.1"
+    },
+    "google/crc32": {
+        "version": "v0.1.0"
+    },
+    "google/gax": {
+        "version": "1.1.1"
+    },
+    "google/grpc-gcp": {
+        "version": "0.1.4"
+    },
+    "google/protobuf": {
+        "version": "v3.9.1"
+    },
+    "grpc/grpc": {
+        "version": "1.22.0"
+    },
+    "rize/uri-template": {
+        "version": "0.3.2"
+    },
+    "superbalist/flysystem-google-storage": {
+        "version": "7.2.1"
+    },
     "symfony/flex": {
         "version": "1.0",
         "recipe": {
