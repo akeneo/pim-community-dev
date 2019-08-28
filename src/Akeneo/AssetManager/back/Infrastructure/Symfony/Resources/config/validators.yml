@@ -226,8 +226,15 @@ services:
         arguments:
             - '@akeneo_assetmanager.infrastructure.validation.asset_family.product_link_rule.rule_engine_validator_acl'
             - '@akeneo_assetmanager.infrastructure.persistence.query.attribute_exists'
+            - '@akeneo_assetmanager.validator.asset_family.product_link_rules.product_selections_validator'
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset_family.product_link_rules.rule_engine_validator_acl' }
+
+    akeneo_assetmanager.validator.asset_family.product_link_rules.product_selections_validator:
+        class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\ProductSelectionsValidator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.validation.asset_family.product_link_rule.rule_engine_validator_acl'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.attribute_exists'
 
     akeneo_assetmanager.infrastructure.validation.asset_family.product_link_rule.rule_engine_validator_acl:
         class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\RuleEngineValidatorACL
