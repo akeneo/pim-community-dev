@@ -20,6 +20,11 @@ module.exports = function(cucumber) {
     }
   };
 
+  const timeout = (ms) => {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+
   Given('the following attributes:', function (attributes, callback) {
     const followingAttributes = convertItemTable(attributes);
     const datagridFilters = followingAttributes.map((attribute) => {
@@ -108,11 +113,11 @@ module.exports = function(cucumber) {
     const products = csvToArray(csvString);
     const productGrid = await createElementDecorator(config)(this.page, 'Product grid')
     const rowNames = await productGrid.getRowNames();
-    assert.notStrictEqual(rowNames, products)
+    assert.deepEqual(rowNames, products)
   });
 
   Then('I should be able to use the following filters:', { timeout: 60000 }, async function (itemTable) {
-    const listener = new RequestListener(this.page)
+    // const listener = new RequestListener(this.page)
     const filterList = await createElementDecorator(config)(this.page, 'Product grid filter list')
     const filters = convertItemTable(itemTable);
 
@@ -123,8 +128,12 @@ module.exports = function(cucumber) {
         filters[i].value
       )
 
-      const datagridRequest = listener.getLatestRequest();
-      console.log(filters[i], datagridRequest.searchParams)
+      await this.page.waitForSelector('.AknLoadingMask.loading-mask', {hidden: true});
+
+      const productGrid = await createElementDecorator(config)(this.page, 'Product grid')
+      const rowNames = await productGrid.getRowNames();
+
+      assert.deepEqual(rowNames, [filters[i].result]);
     }
 
     await 'test';

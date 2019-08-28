@@ -1,7 +1,3 @@
-const timeout = (ms) => {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 const Filter = async (nodeElement) => {
   const getName = async () => {
     const name = await nodeElement.$('.AknFilterBox-filterLabel')
