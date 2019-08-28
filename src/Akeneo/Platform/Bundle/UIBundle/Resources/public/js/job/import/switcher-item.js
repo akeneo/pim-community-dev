@@ -38,7 +38,8 @@ define(
                 this.getRoot().trigger('switcher:register', {
                     label: __(this.config.label),
                     code: this.code,
-                    hideForCloudEdition: this.config.hideForCloudEdition
+                    hideForCloudEdition: this.config.hideForCloudEdition,
+                    allowedKey: this.config.allowedKey
                 });
 
                 return BaseForm.prototype.configure.apply(this, arguments);

@@ -259,6 +259,8 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
                 $data = $value->getData();
                 $orderArray[] = $data->getUnit();
                 $orderArray[] = floatval($data->getData());
+            } elseif (AttributeTypes::BOOLEAN === $axisAttribute->getType()) {
+                $orderArray[] = (true === $value->getData() ? '1' : '0');
             } else {
                 $orderArray[] = (string) $value;
             }
