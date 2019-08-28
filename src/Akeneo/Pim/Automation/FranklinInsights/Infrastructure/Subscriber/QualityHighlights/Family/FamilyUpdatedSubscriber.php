@@ -5,23 +5,23 @@ declare(strict_types=1);
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2019 Akeneo SAS (http://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\QualityHighlights\Attribute;
+namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\QualityHighlights\Family;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-class AttributeDeletedSubscriber implements EventSubscriberInterface
+class FamilyUpdatedSubscriber implements EventSubscriberInterface
 {
     /** @var GetConnectionStatusHandler */
     private $connectionStatusHandler;
@@ -38,14 +38,15 @@ class AttributeDeletedSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            StorageEvents::POST_REMOVE => 'onPostRemove',
+            StorageEvents::POST_SAVE => 'onSave',
+            StorageEvents::POST_SAVE_ALL => 'onSaveAll',
         ];
     }
 
-    public function onPostRemove(GenericEvent $event): void
+    public function onSave(GenericEvent $event): void
     {
-        $attribute = $event->getSubject();
-        if (!$attribute instanceof AttributeInterface) {
+        $family = $event->getSubject();
+        if (!$family instanceof FamilyInterface) {
             return;
         }
 
@@ -53,7 +54,30 @@ class AttributeDeletedSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->pendingItemsRepository->addDeletedAttributeCode($attribute->getCode());
+        $this->pendingItemsRepository->addUpdatedFamilyCode($family->getCode());
+    }
+
+    public function onSaveAll(GenericEvent $event)
+    {
+        $families = $event->getSubject();
+        $familyCodes = [];
+        foreach ($families as $family) {
+            if ($family instanceof FamilyInterface) {
+                $familyCodes[] = $family->getCode();
+            }
+        }
+
+        if (empty($familyCodes)) {
+            return;
+        }
+
+        if (!$this->isFranklinInsightsActivated()) {
+            return;
+        }
+
+        foreach ($familyCodes as $familyCode) {
+            $this->pendingItemsRepository->addUpdatedFamilyCode($familyCode);
+        }
     }
 
     private function isFranklinInsightsActivated(): bool

@@ -11,17 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\QualityHighlights\Attribute;
+namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\QualityHighlights\Family;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-class AttributeDeletedSubscriber implements EventSubscriberInterface
+class FamilyDeletedSubscriber implements EventSubscriberInterface
 {
     /** @var GetConnectionStatusHandler */
     private $connectionStatusHandler;
@@ -44,8 +44,8 @@ class AttributeDeletedSubscriber implements EventSubscriberInterface
 
     public function onPostRemove(GenericEvent $event): void
     {
-        $attribute = $event->getSubject();
-        if (!$attribute instanceof AttributeInterface) {
+        $family = $event->getSubject();
+        if (!$family instanceof FamilyInterface) {
             return;
         }
 
@@ -53,7 +53,7 @@ class AttributeDeletedSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->pendingItemsRepository->addDeletedAttributeCode($attribute->getCode());
+        $this->pendingItemsRepository->addDeletedFamilyCode($family->getCode());
     }
 
     private function isFranklinInsightsActivated(): bool

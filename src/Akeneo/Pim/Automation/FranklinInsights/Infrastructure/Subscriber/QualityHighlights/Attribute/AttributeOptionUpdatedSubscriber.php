@@ -28,12 +28,12 @@ class AttributeOptionUpdatedSubscriber implements EventSubscriberInterface
     private $connectionStatusHandler;
 
     /** @var PendingItemsRepositoryInterface */
-    private $pendingAttributesRepository;
+    private $pendingItemsRepository;
 
-    public function __construct(GetConnectionStatusHandler $connectionStatusHandler, PendingItemsRepositoryInterface $pendingAttributesRepository)
+    public function __construct(GetConnectionStatusHandler $connectionStatusHandler, PendingItemsRepositoryInterface $pendingItemsRepository)
     {
         $this->connectionStatusHandler = $connectionStatusHandler;
-        $this->pendingAttributesRepository = $pendingAttributesRepository;
+        $this->pendingItemsRepository = $pendingItemsRepository;
     }
 
     public static function getSubscribedEvents()
@@ -59,7 +59,7 @@ class AttributeOptionUpdatedSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->pendingAttributesRepository->addUpdatedAttributeCode($attributeOption->getAttribute()->getCode());
+        $this->pendingItemsRepository->addUpdatedAttributeCode($attributeOption->getAttribute()->getCode());
     }
 
     public function onSaveAll(GenericEvent $event)
@@ -85,7 +85,7 @@ class AttributeOptionUpdatedSubscriber implements EventSubscriberInterface
         }
 
         foreach ($attributeCodes as $attributeCode) {
-            $this->pendingAttributesRepository->addUpdatedAttributeCode($attributeCode);
+            $this->pendingItemsRepository->addUpdatedAttributeCode($attributeCode);
         }
     }
 

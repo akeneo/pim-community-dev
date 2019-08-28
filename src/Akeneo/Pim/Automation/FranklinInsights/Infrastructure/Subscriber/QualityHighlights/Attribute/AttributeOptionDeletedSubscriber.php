@@ -28,12 +28,12 @@ class AttributeOptionDeletedSubscriber implements EventSubscriberInterface
     private $connectionStatusHandler;
 
     /** @var PendingItemsRepositoryInterface */
-    private $pendingAttributesRepository;
+    private $pendingItemsRepository;
 
-    public function __construct(GetConnectionStatusHandler $connectionStatusHandler, PendingItemsRepositoryInterface $pendingAttributesRepository)
+    public function __construct(GetConnectionStatusHandler $connectionStatusHandler, PendingItemsRepositoryInterface $pendingItemsRepository)
     {
         $this->connectionStatusHandler = $connectionStatusHandler;
-        $this->pendingAttributesRepository = $pendingAttributesRepository;
+        $this->pendingItemsRepository = $pendingItemsRepository;
     }
 
     public static function getSubscribedEvents()
@@ -58,7 +58,7 @@ class AttributeOptionDeletedSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->pendingAttributesRepository->addUpdatedAttributeCode($attributeOption->getAttribute()->getCode());
+        $this->pendingItemsRepository->addUpdatedAttributeCode($attributeOption->getAttribute()->getCode());
     }
 
     private function isFranklinInsightsActivated(): bool

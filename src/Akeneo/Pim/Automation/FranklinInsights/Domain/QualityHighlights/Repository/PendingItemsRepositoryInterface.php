@@ -18,4 +18,8 @@ interface PendingItemsRepositoryInterface
     public function addUpdatedAttributeCode(string $code): void;
 
     public function addDeletedAttributeCode(string $code): void;
+
+    public function addUpdatedFamilyCode(string $code): void;
+
+    public function addDeletedFamilyCode(string $code): void;
 }

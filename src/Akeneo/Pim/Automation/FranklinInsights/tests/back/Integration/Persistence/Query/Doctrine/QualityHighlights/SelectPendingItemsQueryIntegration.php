@@ -107,7 +107,7 @@ final class SelectPendingItemsQueryIntegration extends TestCase
         $this->getFromTestContainer('database_connection')->executeQuery($this->getInsertSql(), [
             'entity_type' => PendingItemsRepository::ENTITY_TYPE_ATTRIBUTE,
             'entity_id' => $attributeCode,
-            'action' => PendingItemsRepository::ACTION_ATTRIBUTE_UPDATED,
+            'action' => PendingItemsRepository::ACTION_ENTITY_UPDATED,
             'locked' => $locked,
         ]);
 
@@ -119,7 +119,7 @@ final class SelectPendingItemsQueryIntegration extends TestCase
         $this->getFromTestContainer('database_connection')->executeQuery($this->getInsertSql(), [
             'entity_type' => PendingItemsRepository::ENTITY_TYPE_ATTRIBUTE,
             'entity_id' => $attributeCode,
-            'action' => PendingItemsRepository::ACTION_ATTRIBUTE_DELETED,
+            'action' => PendingItemsRepository::ACTION_ENTITY_DELETED,
             'locked' => $locked,
         ]);
 

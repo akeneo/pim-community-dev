@@ -17,9 +17,9 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 class AttributeDeletedSubscriberSpec extends ObjectBehavior
 {
-    public function let(GetConnectionStatusHandler $connectionStatusHandler, PendingItemsRepositoryInterface $pendingAttributesRepository)
+    public function let(GetConnectionStatusHandler $connectionStatusHandler, PendingItemsRepositoryInterface $pendingItemsRepository)
     {
-        $this->beConstructedWith($connectionStatusHandler, $pendingAttributesRepository);
+        $this->beConstructedWith($connectionStatusHandler, $pendingItemsRepository);
     }
 
     public function it_is_an_event_subscriber(): void
@@ -46,13 +46,13 @@ class AttributeDeletedSubscriberSpec extends ObjectBehavior
         GenericEvent $event,
         AttributeInterface $attribute,
         $connectionStatusHandler,
-        $pendingAttributesRepository
+        $pendingItemsRepository
     ): void {
         $event->getSubject()->willReturn($attribute);
 
         $connectionStatus = new ConnectionStatus(false, false, false, 0);
         $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
-        $pendingAttributesRepository->addDeletedAttributeCode(Argument::any())->shouldNotBeCalled();
+        $pendingItemsRepository->addDeletedAttributeCode(Argument::any())->shouldNotBeCalled();
 
         $this->onPostRemove($event);
     }
@@ -61,14 +61,14 @@ class AttributeDeletedSubscriberSpec extends ObjectBehavior
         GenericEvent $event,
         AttributeInterface $attribute,
         $connectionStatusHandler,
-        $pendingAttributesRepository
+        $pendingItemsRepository
     ): void {
         $attribute->getCode()->willReturn('size');
         $event->getSubject()->willReturn($attribute);
 
         $connectionStatus = new ConnectionStatus(true, false, false, 0);
         $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
-        $pendingAttributesRepository->addDeletedAttributeCode('size')->shouldBeCalled();
+        $pendingItemsRepository->addDeletedAttributeCode('size')->shouldBeCalled();
 
         $this->onPostRemove($event);
     }

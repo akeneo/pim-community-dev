@@ -2,38 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\QualityHighlights\Attribute;
+namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\QualityHighlights\Family;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Tool\Component\StorageUtils\StorageEvents;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-class AttributeUpdatedSubscriberSpec extends ObjectBehavior
+class FamilyUpdatedSubscriberSpec extends ObjectBehavior
 {
     public function let(GetConnectionStatusHandler $connectionStatusHandler, PendingItemsRepositoryInterface $pendingItemsRepository)
     {
         $this->beConstructedWith($connectionStatusHandler, $pendingItemsRepository);
     }
 
-    public function it_is_an_event_subscriber(): void
-    {
-        $this->shouldImplement(EventSubscriberInterface::class);
-    }
-
-    public function it_subscribes_to_post_save_events(): void
-    {
-        $this->getSubscribedEvents()->shouldHaveKey(StorageEvents::POST_SAVE);
-        $this->getSubscribedEvents()->shouldHaveKey(StorageEvents::POST_SAVE_ALL);
-    }
-
-    public function it_is_only_applied_on_post_save_event_when_an_attribute_is_updated(
+    public function it_is_only_applied_on_post_save_event_when_a_family_is_updated(
         GenericEvent $event,
         \stdClass $object,
         $connectionStatusHandler
@@ -46,50 +33,50 @@ class AttributeUpdatedSubscriberSpec extends ObjectBehavior
 
     public function it_is_only_applied_on_post_save_when_franklin_insights_is_activated(
         GenericEvent $event,
-        AttributeInterface $attribute,
+        FamilyInterface $family,
         $connectionStatusHandler,
         $pendingItemsRepository
     ): void {
-        $event->getSubject()->willReturn($attribute);
+        $event->getSubject()->willReturn($family);
 
         $connectionStatus = new ConnectionStatus(false, false, false, 0);
         $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
-        $pendingItemsRepository->addUpdatedAttributeCode(Argument::any())->shouldNotBeCalled();
+        $pendingItemsRepository->addUpdatedFamilyCode(Argument::any())->shouldNotBeCalled();
 
         $this->onSave($event);
     }
 
-    public function it_saves_the_updated_attribute_code(
+    public function it_saves_the_updated_family_code(
         GenericEvent $event,
-        AttributeInterface $attribute,
+        FamilyInterface $family,
         $connectionStatusHandler,
         $pendingItemsRepository
     ): void {
-        $attribute->getCode()->willReturn('size');
-        $event->getSubject()->willReturn($attribute);
+        $family->getCode()->willReturn('headphones');
+        $event->getSubject()->willReturn($family);
 
         $connectionStatus = new ConnectionStatus(true, false, false, 0);
         $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
-        $pendingItemsRepository->addUpdatedAttributeCode('size')->shouldBeCalled();
+        $pendingItemsRepository->addUpdatedFamilyCode('headphones')->shouldBeCalled();
 
         $this->onSave($event);
     }
 
-    public function it_saves_multiple_updated_attribute_codes(
+    public function it_saves_multiple_updated_family_codes(
         GenericEvent $event,
-        AttributeInterface $attribute1,
-        AttributeInterface $attribute2,
+        FamilyInterface $family1,
+        FamilyInterface $family2,
         $connectionStatusHandler,
         $pendingItemsRepository
     ): void {
-        $attribute1->getCode()->willReturn('size');
-        $attribute2->getCode()->willReturn('weight');
-        $event->getSubject()->willReturn([$attribute1, $attribute2]);
+        $family1->getCode()->willReturn('headphones');
+        $family2->getCode()->willReturn('router');
+        $event->getSubject()->willReturn([$family1, $family2]);
 
         $connectionStatus = new ConnectionStatus(true, false, false, 0);
         $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
-        $pendingItemsRepository->addUpdatedAttributeCode('size')->shouldBeCalled();
-        $pendingItemsRepository->addUpdatedAttributeCode('weight')->shouldBeCalled();
+        $pendingItemsRepository->addUpdatedFamilyCode('headphones')->shouldBeCalled();
+        $pendingItemsRepository->addUpdatedFamilyCode('router')->shouldBeCalled();
 
         $this->onSaveAll($event);
     }

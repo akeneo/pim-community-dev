@@ -34,7 +34,7 @@ class PendingItemsRepositoryIntegration extends TestCase
             [
                 'entity_type' => PendingItemsRepository::ENTITY_TYPE_ATTRIBUTE,
                 'entity_id' => 'weight',
-                'action' => PendingItemsRepository::ACTION_ATTRIBUTE_UPDATED,
+                'action' => PendingItemsRepository::ACTION_ENTITY_UPDATED,
                 'locked' => (string) PendingItemsRepository::STATUS_UNLOCKED,
             ],
             $updatedAttributes[0]
@@ -50,7 +50,7 @@ SQL;
         $bindParams = [
             'entity_type' => PendingItemsRepository::ENTITY_TYPE_ATTRIBUTE,
             'entity_id' => 'size',
-            'action' => PendingItemsRepository::ACTION_ATTRIBUTE_DELETED,
+            'action' => PendingItemsRepository::ACTION_ENTITY_DELETED,
             'locked' => PendingItemsRepository::STATUS_UNLOCKED,
         ];
         $this->getDbConnection()->executeQuery($sqlQuery, $bindParams);
@@ -63,7 +63,7 @@ SQL;
             [
                 'entity_type' => PendingItemsRepository::ENTITY_TYPE_ATTRIBUTE,
                 'entity_id' => 'size',
-                'action' => PendingItemsRepository::ACTION_ATTRIBUTE_UPDATED,
+                'action' => PendingItemsRepository::ACTION_ENTITY_UPDATED,
                 'locked' => (string) PendingItemsRepository::STATUS_UNLOCKED,
             ],
             $updatedAttributes[0]

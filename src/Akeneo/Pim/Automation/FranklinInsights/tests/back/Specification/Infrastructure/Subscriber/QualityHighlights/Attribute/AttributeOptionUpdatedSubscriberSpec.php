@@ -18,9 +18,9 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 class AttributeOptionUpdatedSubscriberSpec extends ObjectBehavior
 {
-    public function let(GetConnectionStatusHandler $connectionStatusHandler, PendingItemsRepositoryInterface $pendingAttributesRepository)
+    public function let(GetConnectionStatusHandler $connectionStatusHandler, PendingItemsRepositoryInterface $pendingItemsRepository)
     {
-        $this->beConstructedWith($connectionStatusHandler, $pendingAttributesRepository);
+        $this->beConstructedWith($connectionStatusHandler, $pendingItemsRepository);
     }
 
     public function it_is_an_event_subscriber(): void
@@ -48,7 +48,7 @@ class AttributeOptionUpdatedSubscriberSpec extends ObjectBehavior
         GenericEvent $event,
         AttributeOptionInterface $attributeOption,
         $connectionStatusHandler,
-        $pendingAttributesRepository
+        $pendingItemsRepository
     ): void {
         $event->getSubject()->willReturn($attributeOption);
         $event->hasArgument('unitary')->willReturn(true);
@@ -56,7 +56,7 @@ class AttributeOptionUpdatedSubscriberSpec extends ObjectBehavior
 
         $connectionStatus = new ConnectionStatus(false, false, false, 0);
         $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
-        $pendingAttributesRepository->addUpdatedAttributeCode(Argument::any())->shouldNotBeCalled();
+        $pendingItemsRepository->addUpdatedAttributeCode(Argument::any())->shouldNotBeCalled();
 
         $this->onSave($event);
     }
@@ -66,7 +66,7 @@ class AttributeOptionUpdatedSubscriberSpec extends ObjectBehavior
         AttributeInterface $attribute,
         AttributeOptionInterface $attributeOption,
         $connectionStatusHandler,
-        $pendingAttributesRepository
+        $pendingItemsRepository
     ): void {
         $attributeOption->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('size');
@@ -76,7 +76,7 @@ class AttributeOptionUpdatedSubscriberSpec extends ObjectBehavior
 
         $connectionStatus = new ConnectionStatus(true, false, false, 0);
         $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
-        $pendingAttributesRepository->addUpdatedAttributeCode('size')->shouldBeCalled();
+        $pendingItemsRepository->addUpdatedAttributeCode('size')->shouldBeCalled();
 
         $this->onSave($event);
     }
@@ -88,7 +88,7 @@ class AttributeOptionUpdatedSubscriberSpec extends ObjectBehavior
         AttributeInterface $attribute1,
         AttributeInterface $attribute2,
         $connectionStatusHandler,
-        $pendingAttributesRepository
+        $pendingItemsRepository
     ): void {
         $attributeOption1->getAttribute()->willReturn($attribute1);
         $attributeOption2->getAttribute()->willReturn($attribute2);
@@ -100,8 +100,8 @@ class AttributeOptionUpdatedSubscriberSpec extends ObjectBehavior
 
         $connectionStatus = new ConnectionStatus(true, false, false, 0);
         $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
-        $pendingAttributesRepository->addUpdatedAttributeCode('size')->shouldBeCalled();
-        $pendingAttributesRepository->addUpdatedAttributeCode('weight')->shouldBeCalled();
+        $pendingItemsRepository->addUpdatedAttributeCode('size')->shouldBeCalled();
+        $pendingItemsRepository->addUpdatedAttributeCode('weight')->shouldBeCalled();
 
         $this->onSaveAll($event);
     }
