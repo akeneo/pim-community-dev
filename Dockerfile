@@ -2,7 +2,7 @@
 # This first image will be use as a base
 # for production and development images
 #
-FROM debian:stretch-slim AS base
+FROM debian:buster-slim AS base
 
 ENV PHP_CONF_DATE_TIMEZONE=UTC \
     PHP_CONF_MAX_EXECUTION_TIME=60 \
@@ -20,34 +20,34 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
     echo 'path-exclude=/usr/share/doc/*' >> /etc/dpkg/dpkg.cfg.d/path_exclusions && \
     apt-get update && \
     apt-get --yes install apt-transport-https ca-certificates && \
-    echo 'deb https://packages.sury.org/php/ stretch main' > /etc/apt/sources.list.d/php-packages-sury-org.list && \
+    echo 'deb https://packages.sury.org/php/ buster main' > /etc/apt/sources.list.d/php-packages-sury-org.list && \
     apt-get update && \
     apt-get --yes install imagemagick \
-        php7.2-fpm \
-        php7.2-cli \
-        php7.2-intl \
-        php7.2-opcache \
-        php7.2-mysql \
-        php7.2-zip \
-        php7.2-xml \
-        php7.2-gd \
-        php7.2-curl \
-        php7.2-mbstring \
-        php7.2-bcmath \
-        php7.2-imagick \
-        php7.2-apcu \
-        php7.2-exif \
+        php7.3-fpm \
+        php7.3-cli \
+        php7.3-intl \
+        php7.3-opcache \
+        php7.3-mysql \
+        php7.3-zip \
+        php7.3-xml \
+        php7.3-gd \
+        php7.3-curl \
+        php7.3-mbstring \
+        php7.3-bcmath \
+        php7.3-imagick \
+        php7.3-apcu \
+        php7.3-exif \
         php-memcached && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
-    ln -s /usr/sbin/php-fpm7.2 /usr/local/sbin/php-fpm && \
+    ln -s /usr/sbin/php-fpm7.3 /usr/local/sbin/php-fpm && \
     usermod --uid 1000 www-data && groupmod --gid 1000 www-data && \
     mkdir /srv/pim && \
-    sed -i "s#listen = /run/php/php7.2-fpm.sock#listen = 9000#g" /etc/php/7.2/fpm/pool.d/www.conf && \
+    sed -i "s#listen = /run/php/php7.3-fpm.sock#listen = 9000#g" /etc/php/7.3/fpm/pool.d/www.conf && \
     mkdir -p /run/php
 
-COPY docker/build/akeneo.ini /etc/php/7.2/cli/conf.d/99-akeneo.ini
-COPY docker/build/akeneo.ini /etc/php/7.2/fpm/conf.d/99-akeneo.ini
+COPY docker/build/akeneo.ini /etc/php/7.3/cli/conf.d/99-akeneo.ini
+COPY docker/build/akeneo.ini /etc/php/7.3/fpm/conf.d/99-akeneo.ini
 
 #
 # Image used for development
@@ -59,18 +59,18 @@ ENV PHP_CONF_OPCACHE_VALIDATE_TIMESTAMP=1
 RUN apt-get update && \
     apt-get --yes install unzip && \
     apt-get --yes install curl && \
-    apt-get --yes install mysql-client && \
-    apt-get --yes install php7.2-xdebug && \
+    apt-get --yes install default-mysql-client && \
+    apt-get --yes install php7.3-xdebug && \
     apt-get --yes install procps && \
     apt-get --yes install perceptualdiff && \
     phpdismod xdebug && \
-    mkdir /etc/php/7.2/enable-xdebug && \
-    ln -s /etc/php/7.2/mods-available/xdebug.ini /etc/php/7.2/enable-xdebug/xdebug.ini && \
+    mkdir /etc/php/7.3/enable-xdebug && \
+    ln -s /etc/php/7.3/mods-available/xdebug.ini /etc/php/7.3/enable-xdebug/xdebug.ini && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-COPY docker/build/xdebug.ini /etc/php/7.2/cli/conf.d/99-akeneo-xdebug.ini
-COPY docker/build/xdebug.ini /etc/php/7.2/fpm/conf.d/99-akeneo-xdebug.ini
+COPY docker/build/xdebug.ini /etc/php/7.3/cli/conf.d/99-akeneo-xdebug.ini
+COPY docker/build/xdebug.ini /etc/php/7.3/fpm/conf.d/99-akeneo-xdebug.ini
 
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 RUN chmod +x /usr/local/bin/composer
