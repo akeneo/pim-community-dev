@@ -7,6 +7,8 @@ namespace Akeneo\Test\IntegrationTestsBundle\Loader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
+use League\Flysystem\Filesystem;
+use League\Flysystem\Plugin\ListPaths;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -42,6 +44,9 @@ class FixturesLoader implements FixturesLoaderInterface
     /** @var Configuration */
     protected $configuration;
 
+    /** @var Filesystem */
+    private $archivistFilesystem;
+
     /**
      * @param KernelInterface         $kernel
      * @param DatabaseSchemaHandler   $databaseSchemaHandler
@@ -62,6 +67,8 @@ class FixturesLoader implements FixturesLoaderInterface
         $this->container = $kernel->getContainer();
         $this->cli = new Application($kernel);
         $this->cli->setAutoExit(false);
+
+        $this->archivistFilesystem = $this->container->get('oneup_flysystem.archivist_filesystem');
     }
 
     public function __destruct()
@@ -82,6 +89,7 @@ class FixturesLoader implements FixturesLoaderInterface
     public function load(): void
     {
         $this->resetElasticsearchIndex();
+        $this->resetFilesystem();
 
         $files = $this->getFilesToLoad($this->configuration->getCatalogDirectories());
         $fixturesHash = $this->getHashForFiles($files);
@@ -392,5 +400,15 @@ class FixturesLoader implements FixturesLoaderInterface
     private function refreshES(): void
     {
         $this->container->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+    }
+
+    private function resetFilesystem(): void
+    {
+        $this->archivistFilesystem->addPlugin(new ListPaths());
+        $paths = $this->archivistFilesystem->listPaths();
+
+        foreach ($paths as $path) {
+            $this->archivistFilesystem->deleteDir($path);
+        }
     }
 }

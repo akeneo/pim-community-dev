@@ -63,6 +63,7 @@ extensions:
         aclResourceId: pim_importexport_import_profile_launch
         position: 50
         config:
+            allowedKey: uploadAllowed
             label: pim_import_export.form.job_instance.button.import.upload_file
             hideForCloudEdition: false
 
@@ -70,6 +71,8 @@ extensions:
         module: pim/job/common/edit/upload
         parent: pim-job-instance-xlsx-product-model-import-show-upload-switcher-item
         position: 50
+        config:
+            type: xlsx
 
     pim-job-instance-xlsx-product-model-import-show-upload-button:
         module: pim/job/common/edit/upload-launch

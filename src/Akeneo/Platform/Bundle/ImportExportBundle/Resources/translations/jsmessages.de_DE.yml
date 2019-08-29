@@ -1,6 +1,6 @@
 job_execution:
   summary:
-    display_item: Element anzeigen
+    display_item: Artikel anzeigen
     hide_item: Element ausblenden
 pim_connector:
   export:
@@ -8,6 +8,7 @@ pim_connector:
       selector:
         modal:
           title: Kategorienauswahl
+        label: "{0}Alle Produkte|{1}Eine ausgewählte Kategorie|]1,Inf[{{ count }} ausgewählte Kategorien"
         title: Kategorie(n) auswählen
     locales:
       validation:
@@ -27,6 +28,10 @@ pim_import_export:
       flash:
         create:
           success: Importprofil erfolgreich erstellt
+        upload:
+          error: Datei kann nicht hochgeladen werden. Die Größe kann die konfigurierte maximale Upload-Größe auf der PHP- oder HTTP-Server-Konfiguration überschreiten
+      page_title:
+        index: "] -Inf, 1] {{ count }} Importprofil|] 1, Inf [{{ count }} Importprofile"
       module:
         create:
           button: Importprofil anlegen
@@ -35,6 +40,8 @@ pim_import_export:
       flash:
         create:
           success: Exportprofil erfolgreich erstellt
+      page_title:
+        index: "] -Inf, 1] {{ count }} Exportprofil|] 1, Inf [{{ count }} Exportprofile"
       module:
         create:
           button: Exportprofil anlegen
@@ -134,9 +141,10 @@ pim_import_export:
       job_type:
         import: Import
         export: Export
-        mass_edit: Massenbearbeitung
+        mass_edit: Mehrere bearbeiten
         quick_export: Schnellexport
         compute_product_models_descendants: Vererbungen der Produktmodelle berechnen
+        compute_family_variant_structure_changes: Änderungen in der Struktur von Varianten der Produktfamilie berechnen
         compute_completeness_of_products_family: Vollständigkeit der Produktfamilie berechnen
         mass_delete: Massenlöschung von Produkten
       header.view_all: Alle anzeigen
@@ -160,14 +168,24 @@ pim_enrich:
       module:
         delete:
           confirm: Möchten Sie dieses Importprofil wirklich löschen?
+      flash:
+        delete:
+          success: Importprofil erfolgreich entfernt
     export_profile:
       module:
         delete:
           confirm: Möchten Sie dieses Exportprofil wirklich löschen?
+      flash:
+        delete:
+          success: Exportprofil erfolgreich entfernt
 pim_title:
   pim_importexport_export_profile_index: Verwaltung der Export-Profile
+  pim_importexport_export_profile_edit: Export-Profil {{ job.label }} | Bearbeiten
+  pim_importexport_export_profile_show: Export-Profile {{ job.label }} | Anzeigen
   pim_importexport_export_execution_index: Historie der ausgeführten Exporte
   pim_importexport_export_execution_show: Ausgeführte Exporte | Details
   pim_importexport_import_profile_index: Verwaltung der Import-Profile
+  pim_importexport_import_profile_edit: Import-Profile {{ job.label }} | Bearbeiten
+  pim_importexport_import_profile_show: Import-Profile {{ job.label }} | Anzeigen
   pim_importexport_import_execution_index: Historie der ausgeführten Importe
   pim_importexport_import_execution_show: Ausgeführte Importe | Details

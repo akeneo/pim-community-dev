@@ -131,9 +131,9 @@ class GetValuesAndPropertiesFromProductIdentifiersIntegration extends TestCase
                 'family_code' => 'FamilyWithVariant',
                 'group_codes' => [],
                 'raw_values' => [
-                    'first_no_yes' => ['<all_channels>' => ['<all_locales>' => false]],
+                    'first_yes_no' => ['<all_channels>' => ['<all_locales>' => false]],
                     'sku' => ['<all_channels>' => ['<all_locales>' => 'VariantProductA']],
-                    'second_no_yes' => ['<all_channels>' => ['<all_locales>' => true]]
+                    'second_yes_no' => ['<all_channels>' => ['<all_locales>' => true]]
                 ]
             ]
         ];
@@ -143,6 +143,56 @@ class GetValuesAndPropertiesFromProductIdentifiersIntegration extends TestCase
         unset($expected['VariantProductA']['id'], $actual['VariantProductA']['id']);
 
         $this->assertEqualsCanonicalizing($expected, $actual);
+    }
+
+    /**
+     * Test that the merging of raw_values works as intended even if raw_values from parents are empty
+     * @todo TIP-1231: remove this test
+     */
+    public function testVariantProductWithEmptyValuesFromParent()
+    {
+        $entityBuilder = new EntityBuilder($this->testKernel->getContainer());
+        $entityBuilder->createFamilyVariant(
+            [
+                'code' => 'familyVariantWithOneLevel',
+                'family' => 'FamilyWithVariant',
+                'variant_attribute_sets' => [
+                    [
+                        'level' => 1,
+                        'axes' => ['first_yes_no', 'second_yes_no'],
+                        'attributes' => [],
+                    ],
+                ],
+            ]
+        );
+        $rootProductModelOneLevel = $entityBuilder->createProductModel(
+            'root_product_model_one_level',
+            'familyVariantWithOneLevel',
+            null,
+            []
+        );
+        $entityBuilder->createVariantProduct(
+            'VariantProductWithEmptyValuesFromPM',
+            'FamilyWithVariant',
+            'familyVariantWithOneLevel',
+            $rootProductModelOneLevel,
+            [
+                'values' => [
+                    'first_yes_no' => [['data' => true, 'locale' => null, 'scope' => null]],
+                    'second_yes_no' => [['data' => false, 'locale' => null, 'scope' => null]],
+                ]
+            ]
+        );
+        $results = $this->getQuery()->fetchByProductIdentifiers(['VariantProductWithEmptyValuesFromPM']);
+
+        $expected = [
+            'sku' => ['<all_channels>' => ['<all_locales>' => 'VariantProductWithEmptyValuesFromPM']],
+            'first_yes_no' => ['<all_channels>' => ['<all_locales>' => true]],
+            'second_yes_no' => ['<all_channels>' => ['<all_locales>' => false]]
+        ];
+
+        static::assertArrayHasKey('VariantProductWithEmptyValuesFromPM', $results);
+        static::assertEqualsCanonicalizing($expected, $results['VariantProductWithEmptyValuesFromPM']['raw_values']);
     }
 
     private function getQuery(): GetValuesAndPropertiesFromProductIdentifiers

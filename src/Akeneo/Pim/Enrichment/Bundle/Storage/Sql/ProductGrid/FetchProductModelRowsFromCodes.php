@@ -248,7 +248,10 @@ SQL;
             SELECT 
                 pm.code,
                 a_label.code attribute_as_label_code,
-                JSON_MERGE(COALESCE(parent.raw_values, '{}'), pm.raw_values) as raw_values
+                JSON_MERGE(
+                    CASE parent.raw_values WHEN '[]' THEN '{}' ELSE COALESCE(parent.raw_values, '{}') END,
+                    pm.raw_values
+                ) as raw_values
             FROM
                 pim_catalog_product_model pm
                 JOIN pim_catalog_family_variant fv ON fv.id = pm.family_variant_id

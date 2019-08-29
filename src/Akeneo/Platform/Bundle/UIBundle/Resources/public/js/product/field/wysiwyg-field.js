@@ -25,7 +25,7 @@ define(
             fieldTemplate: _.template(fieldTemplate),
             events: {
                 'change .field-input:first textarea:first': 'updateModel',
-                'click .note-insert': 'moveModalBackdrop'
+                'click .note-insert': 'setStyleForLinkModal'
             },
 
             /**
@@ -40,7 +40,6 @@ define(
              */
             postRender: function () {
                 this.$('textarea:not(.note-codable)').summernote({
-                    onToolbarClick: this.setStyleForLinkModal,
                     disableResizeEditor: true,
                     height: 200,
                     iconPrefix: 'icon-',
@@ -107,10 +106,19 @@ define(
              * @param jqueryEvent
              */
             setStyleForLinkModal: function (jqueryEvent) {
-                const source = $(jqueryEvent.originalEvent.path[0]);
+                this.moveModalBackdrop();
 
-                if (source.hasClass('icon-link') || source.hasClass('btn-sm')) {
-                    const modal = $('.note-link-dialog.modal');
+                const source = jqueryEvent.originalEvent.path ?
+                    $(jqueryEvent.originalEvent.path[0]) :
+                    $(jqueryEvent.originalEvent.originalTarget);
+
+                if (
+                    source.hasClass('icon-link')
+                   || source.hasClass('icon-edit')
+                    || (source.hasClass('btn-sm') && ('showLinkDialog' === source.data('event')))
+                ) {
+                    const editor = source.closest('.note-editor');
+                    const modal = editor.find('.note-link-dialog.modal');
 
                     // Set PIM style
                     modal.find('.note-link-text, .note-link-url').addClass('AknTextField');

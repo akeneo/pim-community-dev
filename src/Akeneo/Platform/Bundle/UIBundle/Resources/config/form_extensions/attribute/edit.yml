@@ -57,7 +57,7 @@ extensions:
         position: 110
 
     pim-attribute-edit-form-save:
-        module: pim/form/common/save-form
+        module: pim/attribute-edit-form/save-form
         parent: pim-attribute-edit-form
         targetZone: buttons
         position: 0

@@ -2,12 +2,12 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value;
 
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\DateValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Value\DateValue;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\DateValueFactory;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Value\DateValue;
 
 class DateValueFactorySpec extends ObjectBehavior
 {
@@ -183,6 +183,26 @@ class DateValueFactorySpec extends ObjectBehavior
         $this
             ->shouldThrow($exception)
             ->during('create', [$attribute, 'ecommerce', 'en_US', '03-04-2013']);
+    }
+
+    function it_throws_an_exception_when_provided_date_is_invalid(AttributeInterface $attribute)
+    {
+        $attribute->isScopable()->willReturn(true);
+        $attribute->isLocalizable()->willReturn(true);
+        $attribute->getCode()->willReturn('date_attribute');
+        $attribute->getType()->willReturn('pim_catalog_date');
+        $attribute->getBackendType()->willReturn('date');
+        $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $exception = InvalidPropertyException::validDateExpected(
+            'date_attribute',
+            DateValueFactory::class,
+            '0000-00-00'
+        );
+
+        $this
+            ->shouldThrow($exception)
+            ->during('create', [$attribute, 'ecommerce', 'en_US', '0000-00-00']);
     }
 
     public function getMatchers(): array

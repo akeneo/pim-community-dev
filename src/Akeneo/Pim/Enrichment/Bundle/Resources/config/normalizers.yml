@@ -81,9 +81,21 @@ services:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\AxisValueLabelsNormalizer\SimpleSelectOptionNormalizer'
         arguments:
             - '@pim_catalog.repository.attribute_option'
+        tags:
+            - { name: pim_axis_value_label_normalizer }
 
     pim_enrich.normalizer.entity_with_family_variant.metric.label.normalizer:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\AxisValueLabelsNormalizer\MetricNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.product.metric'
+            - '@pim_catalog.localization.localizer.metric'
+        tags:
+            - { name: pim_axis_value_label_normalizer }
+
+    pim_enrich.normalizer.entity_with_family_variant.boolean.label.normalizer:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\AxisValueLabelsNormalizer\BooleanNormalizer'
+        tags:
+            - { name: pim_axis_value_label_normalizer }
 
     pim_enrich.normalizer.product_completeness:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductCompletenessNormalizer'

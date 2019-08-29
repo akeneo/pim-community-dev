@@ -4,7 +4,7 @@
     </li>
     <% filters.forEach(filter => { %>
     <li>
-        <label for="<%- filter.name %>" title="" class="ui-corner-all ui-state-hover">
+        <label for="<%- filter.name %>" title="<%- filter.label %>" class="ui-corner-all ui-state-hover">
             <input
                     id="<%- filter.name %>"
                     name="multiselect_add-filter-select"

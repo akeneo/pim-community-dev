@@ -4,27 +4,16 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\BatchQueueBundle\Command;
 
-use Akeneo\Tool\Component\Batch\Event\EventInterface;
-use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Job\JobParametersFactory;
-use Akeneo\Tool\Component\Batch\Job\JobParametersValidator;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
-use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
-use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
-use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
-use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionQueueInterface;
-use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\ConstraintViolationList;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Push a registered job instance to execute into the job execution queue.
@@ -79,52 +68,24 @@ class PublishJobToQueueCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $code = $input->getArgument('code');
-        $jobInstanceClass = $this->getContainer()->getParameter('akeneo_batch.entity.job_instance.class');
-        $jobInstance = $this->getJobManager()->getRepository($jobInstanceClass)->findOneBy(['code' => $code]);
+        $publishJobToQueue = $this->getContainer()->get('akeneo_batch_queue.queue.publish_job_to_queue');
 
-        if (null === $jobInstance) {
-            throw new \InvalidArgumentException(sprintf('Could not find job instance "%s".', $code));
-        }
-
-        $options = ['env' => $this->getContainer()->getParameter('kernel.environment')];
-        $validator = $this->getValidator();
+        $jobInstanceCode = $input->getArgument('code');
+        $config = $input->getOption('config') ? $this->decodeConfiguration($input->getOption('config')) : [];
+        $noLog = $input->getOption('no-log') ? true : false;
+        $username = $input->getOption('username');
         $email = $input->getOption('email');
 
-        if (null !== $email) {
-            $errors = $validator->validate($email, new Assert\Email());
-            if (count($errors) > 0) {
-                throw new \RuntimeException(
-                    sprintf('Email "%s" is invalid: %s', $email, $this->getErrorMessages($errors))
-                );
-            }
-            $options['email'] = $email;
-        }
+        $publishJobToQueue->publish(
+            $jobInstanceCode,
+            $config,
+            $noLog,
+            $username,
+            $email
+        );
 
-        $noLog = $input->getOption('no-log');
-
-        if (true === $noLog) {
-            $options['no-log'] = true;
-        }
-
-        $job = $this->getJobRegistry()->get($jobInstance->getJobName());
-        $jobParameters = $this->createJobParameters($jobInstance, $input);
-        $this->validateJobParameters($jobInstance, $jobParameters, $code);
-        $jobExecution = $this->getJobRepository()->createJobExecution($jobInstance, $jobParameters);
-
-        $username = $input->getOption('username');
-        if (null !== $username) {
-            $jobExecution->setUser($username);
-            $this->getJobRepository()->updateJobExecution($jobExecution);
-        }
-
-        $this->getJobRepository()->updateJobExecution($jobExecution);
-
-        $jobExecutionMessage = JobExecutionMessage::createJobExecutionMessage($jobExecution->getId(), $options);
-
-        $this->getJobExecutionQueue()->publish($jobExecutionMessage);
-
-        $this->dispatchJobExecutionEvent(EventInterface::JOB_EXECUTION_CREATED, $jobExecution);
+        $jobInstanceClass = $this->getContainer()->getParameter('akeneo_batch.entity.job_instance.class');
+        $jobInstance = $this->getJobManager()->getRepository($jobInstanceClass)->findOneBy(['code' => $jobInstanceCode]);
 
         $output->writeln(
             sprintf(
@@ -135,18 +96,6 @@ class PublishJobToQueueCommand extends ContainerAwareCommand
         );
 
         return self::EXIT_SUCCESS_CODE;
-    }
-
-    /**
-     * Trigger event linked to JobExecution
-     *
-     * @param string       $eventName    Name of the event
-     * @param JobExecution $jobExecution Object to store job execution
-     */
-    private function dispatchJobExecutionEvent($eventName, JobExecution $jobExecution): void
-    {
-        $event = new JobExecutionEvent($jobExecution);
-        $this->getContainer()->get('event_dispatcher')->dispatch($eventName, $event);
     }
 
     /**
@@ -167,53 +116,6 @@ class PublishJobToQueueCommand extends ContainerAwareCommand
         $jobParameters = $jobParamsFactory->create($job, $rawParameters);
 
         return $jobParameters;
-    }
-
-    /**
-     * @param JobInstance   $jobInstance
-     * @param JobParameters $jobParameters
-     * @param string        $code
-     *
-     * @throws \RuntimeException
-     */
-    protected function validateJobParameters(JobInstance $jobInstance, JobParameters $jobParameters, string $code) : void
-    {
-        // We merge the JobInstance from the JobManager EntityManager to the DefaultEntityManager
-        // in order to be able to have a working UniqueEntity validation
-        $defaultJobInstance = $this->getDefaultEntityManager()->merge($jobInstance);
-        $job = $this->getJobRegistry()->get($jobInstance->getJobName());
-        $paramsValidator = $this->getJobParametersValidator();
-        $errors = $paramsValidator->validate($job, $jobParameters, ['Default', 'Execution']);
-
-        if (count($errors) > 0) {
-            throw new \RuntimeException(
-                sprintf(
-                    'Job instance "%s" running the job "%s" with parameters "%s" is invalid because of "%s"',
-                    $code,
-                    $job->getName(),
-                    print_r($jobParameters->all(), true),
-                    $this->getErrorMessages($errors)
-                )
-            );
-        }
-
-        $this->getDefaultEntityManager()->clear(ClassUtils::getClass($jobInstance));
-    }
-
-    /**
-     * @param ConstraintViolationList $errors
-     *
-     * @return string
-     */
-    private function getErrorMessages(ConstraintViolationList $errors): string
-    {
-        $errorsStr = '';
-
-        foreach ($errors as $error) {
-            $errorsStr .= sprintf("\n  - %s", $error);
-        }
-
-        return $errorsStr;
     }
 
     /**
@@ -253,31 +155,15 @@ class PublishJobToQueueCommand extends ContainerAwareCommand
     /**
      * @return EntityManagerInterface
      */
-    protected function getJobManager(): EntityManagerInterface
+    private function getJobManager(): EntityManagerInterface
     {
         return $this->getContainer()->get('akeneo_batch.job_repository')->getJobManager();
     }
 
     /**
-     * @return EntityManagerInterface
-     */
-    protected function getDefaultEntityManager(): EntityManagerInterface
-    {
-        return $this->getContainer()->get('doctrine')->getManager();
-    }
-
-    /**
-     * @return ValidatorInterface
-     */
-    protected function getValidator(): ValidatorInterface
-    {
-        return $this->getContainer()->get('validator');
-    }
-
-    /**
      * @return JobRegistry
      */
-    protected function getJobRegistry(): JobRegistry
+    private function getJobRegistry(): JobRegistry
     {
         return $this->getContainer()->get('akeneo_batch.job.job_registry');
     }
@@ -285,32 +171,8 @@ class PublishJobToQueueCommand extends ContainerAwareCommand
     /**
      * @return JobParametersFactory
      */
-    protected function getJobParametersFactory(): JobParametersFactory
+    private function getJobParametersFactory(): JobParametersFactory
     {
         return $this->getContainer()->get('akeneo_batch.job_parameters_factory');
-    }
-
-    /**
-     * @return JobParametersValidator
-     */
-    protected function getJobParametersValidator(): JobParametersValidator
-    {
-        return $this->getContainer()->get('akeneo_batch.job.job_parameters_validator');
-    }
-
-    /**
-     * @return JobRepositoryInterface
-     */
-    protected function getJobRepository(): JobRepositoryInterface
-    {
-        return $this->getContainer()->get('akeneo_batch.job_repository');
-    }
-
-    /**
-     * @return JobExecutionQueueInterface
-     */
-    protected function getJobExecutionQueue(): JobExecutionQueueInterface
-    {
-        return $this->getContainer()->get('akeneo_batch_queue.queue.database_job_execution_queue');
     }
 }

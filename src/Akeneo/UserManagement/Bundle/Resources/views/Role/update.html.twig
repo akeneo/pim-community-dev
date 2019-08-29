@@ -145,6 +145,8 @@
                                 <ul class="AknVerticalNavtab AknVerticalNavtab--condensed">
                                     <li class="AknVerticalNavtab-item AknVerticalNavtab-header"></li>
                                     {% for group in groups[privilegeBlock] %}
+                                        {# TODO: remove when release Asset Manager UI #}
+                                        {% if group.name != 'akeneo_assetmanager.acl_group.asset_manager' %}
                                         <li class="AknVerticalNavtab-item tab{{ loop.index == 1 ? ' active' : '' }}">
                                             <a class="AknVerticalNavtab-link" href="#tabs-{{ group.name|replace({' ': '-', '.': '-'})|lower }}" data-toggle="tab">
                                                 <span class="AknAcl">
@@ -153,6 +155,7 @@
                                                 </span>
                                             </a>
                                         </li>
+                                        {% endif %}
                                     {% endfor %}
                                     {% for child in form[privilegeBlock].children|reverse if child.vars.value.group not in groups[privilegeBlock] and child.vars.value.extensionKey == 'entity' and child.vars.value.identity.name != '(default)' %}
                                         {% set groupName = 'oro_security.acl_group.' ~ child.vars.value.identity.name|lower %}

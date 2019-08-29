@@ -1,5 +1,57 @@
 # 3.2.x
 
+# 3.2.7 (2019-08-27)
+
+## Bug fixes:
+
+- PIM-8655: Fix page title of the categories settings
+- PIM-8701: Fix PDF rendering for scopable/localizable simple or multi select attributes
+
+# 3.2.6 (2019-08-22)
+
+## Bug fixes:
+
+- PIM-8663: Fix category tree selector
+- PIM-8674: Check date validity when creating a date value
+- PIM-8673: Add a fallback to get the mime-type of files loaded without metadata.
+
+# 3.2.5 (2019-08-19)
+
+## Bug fixes
+
+- PIM-8661: API: Fix getting values from a variant product when one of its ancestors has empty values
+
+# 3.2.4 (2019-08-14)
+
+# 3.2.3 (2019-08-13)
+
+## Bug fixes
+
+- PIM-8601: Fix purge of the job execution according to the date of creation and not deletion
+- PIM-8583: Add missing translations on role deletion
+
+# 3.2.2 (2019-08-01)
+
+## Bug fixes
+
+- PIM-8595: Fix missing translation (pim_common.code) in attributes list / family list
+
+# 3.2.1 (2019-07-31)
+
+# 3.2.0 (2019-07-24)
+
+# 3.2.0-BETA3 (2019-07-22)
+
+# 3.2.0-BETA2 (2019-07-22)
+
+# 3.2.0-BETA1 (2019-07-19)
+
+## Features
+
+- Performance enhancements: Export products with the API way faster than before
+- API: Add the family code in the product model format
+- API: New filter to retrieve the variant products of a given product model
+
 ## Bug fixes
 
 - PIM-8270: Update export jobs after a change on a channel category

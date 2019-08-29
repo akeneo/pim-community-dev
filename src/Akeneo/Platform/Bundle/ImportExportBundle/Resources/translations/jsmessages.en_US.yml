@@ -95,6 +95,7 @@ pim_import_export:
                     file_path:
                         title: File path
                         help: Where to write the generated file on the file system
+                        help_import: The directory of the file to be used for the import
                     delimiter:
                         title: Delimiter
                         help: One character used to set the field delimiter

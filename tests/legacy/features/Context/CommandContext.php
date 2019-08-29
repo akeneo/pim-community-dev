@@ -2,14 +2,7 @@
 
 namespace Context;
 
-use Akeneo\Pim\Enrichment\Bundle\Command\GetProductCommand;
-use Akeneo\Pim\Enrichment\Bundle\Command\QueryProductCommand;
-use Akeneo\Pim\Enrichment\Bundle\Command\UpdateProductCommand;
-use Behat\Gherkin\Node\TableNode;
-use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
-use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Tester\CommandTester;
 
 /**
  * Context for commands

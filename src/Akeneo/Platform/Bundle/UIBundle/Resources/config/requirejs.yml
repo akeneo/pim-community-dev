@@ -828,6 +828,7 @@ config:
     # Attribute
     pim/attribute-edit-form/tab/choices:                    pimui/js/attribute/form/choices
     pim/attribute-edit-form/choices/options-grid:           pimui/js/attribute/form/choices/options-grid
+    pim/attribute-edit-form/save-form:                      pimui/js/attribute/form/save
     pim/attribute-edit-form/delete:                         pimui/js/attribute/form/delete
     pim/attribute-edit-form/properties/available-locales:   pimui/js/attribute/form/properties/available-locales
     pim/attribute-edit-form/properties/default-metric-unit: pimui/js/attribute/form/properties/default-metric-unit

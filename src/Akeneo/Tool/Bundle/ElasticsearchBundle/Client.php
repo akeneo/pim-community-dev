@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\ElasticsearchBundle;
 
+use Akeneo\Platform\CommunityVersion;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Exception\IndexationException;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Exception\MissingIdentifierException;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
 use Elasticsearch\Client as NativeClient;
 use Elasticsearch\ClientBuilder;
+use Ramsey\Uuid\Uuid;
 
 /**
  * Wrapper for the PHP Elasticsearch client.
@@ -252,9 +254,10 @@ class Client
     {
         $configuration = $this->configurationLoader->load();
         $body = $configuration->buildAggregated();
+        $body['aliases'] = [$this->indexName => (object) []];
 
         $params = [
-            'index' => $this->indexName,
+            'index' => strtolower($this->indexName . '_' . str_replace('.', '_', CommunityVersion::VERSION) . '_' . Uuid::uuid4()),
             'body' => $body,
         ];
 
@@ -266,9 +269,14 @@ class Client
      *
      * @return bool
      */
-    public function hasIndex()
+    public function hasIndex(): bool
     {
         return $this->client->indices()->exists(['index' => $this->indexName]);
+    }
+
+    public function hasIndexForAlias(): bool
+    {
+        return $this->client->indices()->existsAlias(['name' => $this->indexName]);
     }
 
     /**
@@ -282,9 +290,9 @@ class Client
     /**
      * Deletes an index if it exists and recreates it with its associated configuration.
      */
-    public function resetIndex()
+    public function resetIndex(): void
     {
-        if ($this->hasIndex()) {
+        if ($this->hasIndexForAlias() || $this->hasIndex()) {
             $this->deleteIndex();
         }
 

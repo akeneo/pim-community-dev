@@ -21,7 +21,7 @@ class DeleteJobExecutionIntegration extends TestCase
         $numberOfJobs = (int) $this->getConnection()->executeQuery('SELECT COUNT(*) as number_of_jobs FROM akeneo_batch_job_execution')->fetch()['number_of_jobs'];
         Assert::assertSame(2, $numberOfJobs);
 
-        $this->getConnection()->executeUpdate('UPDATE akeneo_batch_job_execution SET end_time = Date_ADD(end_time, INTERVAL -10 day)');
+        $this->getConnection()->executeUpdate('UPDATE akeneo_batch_job_execution SET create_time = Date_ADD(end_time, INTERVAL -10 day)');
 
         $deleteJobExecution = $this->getDeleteQuery();
         $deleteJobExecution->olderThanDays(1);

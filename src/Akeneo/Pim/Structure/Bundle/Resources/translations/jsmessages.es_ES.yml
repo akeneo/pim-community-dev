@@ -1,4 +1,5 @@
 pim_enrich.entity.family:
+  label: familia
   uppercase_label: Familia
   plural_label: Familias
   flash:
@@ -178,6 +179,7 @@ pim_enrich.entity.attribute:
       label: Regla de validación
       email: E-mail
       regexp: Expresión regular
+      url: URL
     wysiwyg_enabled: Editor de texto enriquecido habilitado
   module:
     add_attribute:
@@ -195,6 +197,7 @@ pim_enrich.entity.attribute:
       confirm_from_group: '¿Está seguro que desea eliminar el atributo {{ attribute }} de este grupo de atributos?'
       confirm_from_product: '¿Está usted seguro que desea eliminar el atributo de este producto?'
 pim_enrich.entity.attribute_group:
+  label: grupo de atributo
   uppercase_label: Grupo de atributos
   plural_label: Grupos de atributos
   flash:

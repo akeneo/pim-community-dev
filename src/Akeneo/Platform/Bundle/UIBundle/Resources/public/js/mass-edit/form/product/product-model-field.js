@@ -101,7 +101,7 @@ define(
             convertBackendItem(item) {
                 return {
                     id: item.code,
-                    text: `${item.code} - ${item.meta.label[UserContext.get('uiLocale')]}`,
+                    text: `${item.code} - ${item.meta.label[UserContext.get('catalogLocale')]}`,
                     image: item.meta.image || null
                 };
             },

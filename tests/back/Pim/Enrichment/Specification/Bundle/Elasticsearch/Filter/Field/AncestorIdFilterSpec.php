@@ -88,14 +88,6 @@ class AncestorIdFilterSpec extends ObjectBehavior
             ]
         )->shouldBeCalled();
 
-        $sqb->addFilter(
-            [
-                'exists' => [
-                    'field' => 'ancestors.ids',
-                ],
-            ]
-        )->shouldBeCalled();
-
         $this->setQueryBuilder($sqb);
         $this->addFieldFilter(
             'ancestor.id',
