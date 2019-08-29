@@ -24,15 +24,14 @@ class AssetTabForm extends (Form as {new (config: any): any}) {
     super(config);
 
     this.store = createStore(assetCollectionReducer, applyMiddleware(
-      thunkMiddleware,
-      
+      thunkMiddleware
     ));
   }
 
   configure() {
     this.trigger('tab:register', {
       code: this.code,
-      label: __('pim_enrich.entity.product.module.comment.title')
+      label: __('pim_enrich.entity.product.module.asset.title')
     });
 
     UserContext.off('change:catalogLocale change:catalogScope', this.updateContext);
