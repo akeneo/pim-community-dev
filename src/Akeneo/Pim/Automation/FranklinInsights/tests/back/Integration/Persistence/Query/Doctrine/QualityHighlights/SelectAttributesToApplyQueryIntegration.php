@@ -53,11 +53,12 @@ final class SelectAttributesToApplyQueryIntegration extends TestCase
 
     public function test_it_returns_pim_attribute_code_exact_match_on_code()
     {
-        $attributeCode1 = $this->createTextAttribute('weight')->getCode();
+        $attributeCode1 = $this->createTextAttribute('weight', ['en_US' => 'Weight', 'fr_FR' => 'Poids'])->getCode();
         $attributeCode2 = $this->createSimpleSelectAttribute('color')->getCode();
         $attributeCode3 = $this->createMetricAttribute('size')->getCode();
+        $attributeCode4 = $this->createTextAttribute('attr_without_label', [])->getCode();
 
-        $attributes = $this->query->execute([$attributeCode1, $attributeCode2, $attributeCode3]);
+        $attributes = $this->query->execute([$attributeCode1, $attributeCode2, $attributeCode3, $attributeCode4]);
 
         $expectedResult = [
             [
@@ -67,6 +68,10 @@ final class SelectAttributesToApplyQueryIntegration extends TestCase
                     [
                         'locale' => 'en_US',
                         'label' => 'Weight',
+                    ],
+                    [
+                        'locale' => 'fr_FR',
+                        'label' => 'Poids',
                     ],
                 ],
             ],
@@ -95,20 +100,25 @@ final class SelectAttributesToApplyQueryIntegration extends TestCase
                         'label' => 'Size',
                     ],
                 ],
-            ]
+            ],
+            [
+                'code' => 'attr_without_label',
+                'type' => AttributeTypes::TEXT,
+                'labels' => [],
+            ],
         ];
 
         $this->assertEquals($expectedResult, $attributes);
     }
 
-    private function createTextAttribute(string $attributeCode): AttributeInterface
+    private function createTextAttribute(string $attributeCode, array $labels): AttributeInterface
     {
         $attribute = $this->attributeBuilder->build(
             [
                 'code' => $attributeCode,
                 'type' => AttributeTypes::TEXT,
                 'group' => AttributeGroup::DEFAULT_GROUP_CODE,
-                'labels' => ['en_US' => 'Weight'],
+                'labels' => $labels,
             ]
         );
         $this->validator->validate($attribute);

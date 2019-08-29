@@ -61,19 +61,21 @@ SQL;
         return $searchResults;
     }
 
-    private function buildAttribute($attributeResult): array
+    private function buildAttribute(array $attribute): array
     {
-        $attribute = $attributeResult;
+        if (! empty($attribute['labels'])) {
+            $translations = json_decode($attribute['labels'], true);
+            $attribute['labels'] = array_map(function ($label, $locale) {
+                return [
+                    'locale' => $locale,
+                    'label' => $label,
+                ];
+            }, $translations, array_keys($translations));
+        } else {
+            $attribute['labels'] = [];
+        }
 
-        $translations = json_decode($attributeResult['labels'], true);
-        $attribute['labels'] = array_map(function ($label, $locale) {
-            return [
-                'locale' => $locale,
-                'label' => $label,
-            ];
-        }, $translations, array_keys($translations));
-
-        if ($attributeResult['type'] !== AttributeTypes::METRIC) {
+        if ($attribute['type'] !== AttributeTypes::METRIC) {
             unset($attribute['metric_family']);
             unset($attribute['unit']);
         }
