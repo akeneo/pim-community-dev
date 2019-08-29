@@ -5,7 +5,7 @@ namespace spec\Akeneo\Tool\Component\Connector\ArrayConverter;
 use Akeneo\Tool\Component\Connector\Exception\DataArrayConversionException;
 use PhpSpec\ObjectBehavior;
 
-class StringArrayConverterSpec extends ObjectBehavior
+class InvalidDataItemConverterSpec extends ObjectBehavior
 {
     function it_can_not_convert_because_of_multi_dimensional_array()
     {

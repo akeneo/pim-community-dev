@@ -127,7 +127,7 @@ services:
     pim_connector.writer.file.invalid_items_xlsx:
         class: '%pim_connector.writer.file.xlsx.class%'
         arguments:
-            - '@pim_connector.array_converter.string_array'
+            - '@pim_connector.array_converter.invalid_data_item'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_invalid_item_buffer_flusher'
 
