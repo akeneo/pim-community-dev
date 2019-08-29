@@ -64,9 +64,9 @@ class IndexProductsSubscriberSpec extends ObjectBehavior
     function it_delete_product_from_elasticsearch_index($indexer, RemoveEvent $event, ProductInterface $product)
     {
         $event->getSubject()->willReturn($product);
-        $product->getIdentifier()->willReturn('40');
+        $product->getId()->willReturn(40);
 
-        $indexer->removeFromProductIdentifier('40')->shouldBeCalled();
+        $indexer->removeFromProductId('40')->shouldBeCalled();
 
         $this->deleteProduct($event)->shouldReturn(null);
     }
@@ -126,7 +126,7 @@ class IndexProductsSubscriberSpec extends ObjectBehavior
 
     function it_does_not_delete_non_product_entity_from_elasticsearch($indexer)
     {
-        $indexer->removeFromProductIdentifier(40)->shouldNotBeCalled();
+        $indexer->removeFromProductId(Argument::any())->shouldNotBeCalled();
 
         $this->deleteProduct(new RemoveEvent(new \stdClass(), 40))->shouldReturn(null);
     }

@@ -176,12 +176,12 @@ class ProductModelDescendantsIndexer implements
         }
 
         if ($productModelChildren->first() instanceof ProductInterface) {
-            $identifiers = [];
+            $productIds = [];
             foreach ($productModelChildren as $productModelChild) {
-                $identifiers[] = $productModelChild->getIdentifier();
+                $productIds[] = (string) $productModelChild->getId();
             }
 
-            $this->productIndexer->removeManyFromProductIdentifiers($identifiers);
+            $this->productIndexer->removeManyFromProductIds($productIds);
 
             return;
         }

@@ -111,16 +111,11 @@ class ProductIndexer implements ProductIndexerInterface
      *
      * {@inheritdoc}
      */
-    public function removeFromProductIdentifier(string $productIdentifier, array $options = []): void
+    public function removeFromProductId(string $productId, array $options = []): void
     {
-        $object = $this->productRepository->findOneByIdentifier($productIdentifier);
-        if (!$object instanceof ProductInterface) {
-            return;
-        }
-
         $this->productAndProductModelClient->delete(
             self::INDEX_TYPE,
-            self::PRODUCT_IDENTIFIER_PREFIX . (string) $object->getId()
+            self::PRODUCT_IDENTIFIER_PREFIX . (string) $productId
         );
     }
 
@@ -129,21 +124,14 @@ class ProductIndexer implements ProductIndexerInterface
      *
      * {@inheritdoc}
      */
-    public function removeManyFromProductIdentifiers(array $productIdentifiers, array $options = []): void
+    public function removeManyFromProductIds(array $productIds, array $options = []): void
     {
-        $objectIds = [];
-        foreach ($productIdentifiers as $productIdentifier) {
-            $object = $this->productRepository->findOneByIdentifier($productIdentifier);
-            if ($object instanceof ProductInterface) {
-                $objectIds[] = self::PRODUCT_IDENTIFIER_PREFIX . (string) $object->getId();
-            }
-        }
-
-        if (empty($objectIds)) {
-            return;
-        }
-
-        $this->productAndProductModelClient->bulkDelete(self::INDEX_TYPE, $objectIds);
+        $this->productAndProductModelClient->bulkDelete(self::INDEX_TYPE, array_map(
+            function ($productId) {
+                return self::PRODUCT_IDENTIFIER_PREFIX . (string) $productId;
+            },
+            $productIds
+        ));
     }
 
     /**

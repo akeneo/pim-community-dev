@@ -113,34 +113,19 @@ class ProductIndexerSpec extends ObjectBehavior
         $this->indexFromProductIdentifiers([]);
     }
 
-    function it_deletes_products_from_elasticsearch_index(
-        $productAndProductModelIndexClient,
-        $productRepository,
-        ProductInterface $product
-    ) {
-        $productRepository->findOneByIdentifier('40')->willReturn($product);
-        $product->getId()->willReturn(40);
-
+    function it_deletes_products_from_elasticsearch_index($productAndProductModelIndexClient)
+    {
         $productAndProductModelIndexClient->delete(ProductIndexer::INDEX_TYPE, 'product_40')->shouldBeCalled();
 
-        $this->removeFromProductIdentifier(40)->shouldReturn(null);
+        $this->removeFromProductId(40)->shouldReturn(null);
     }
 
-    function it_bulk_deletes_products_from_elasticsearch_index(
-        $productAndProductModelIndexClient,
-        $productRepository,
-        ProductInterface $product1,
-        ProductInterface $product2
-    ) {
-        $productRepository->findOneByIdentifier('40')->willReturn($product1);
-        $product1->getId()->willReturn(40);
-        $productRepository->findOneByIdentifier('33')->willReturn($product2);
-        $product2->getId()->willReturn(33);
-
+    function it_bulk_deletes_products_from_elasticsearch_index($productAndProductModelIndexClient)
+    {
         $productAndProductModelIndexClient->bulkDelete(ProductIndexer::INDEX_TYPE, ['product_40', 'product_33'])
             ->shouldBeCalled();
 
-        $this->removeManyFromProductIdentifiers([40, 33])->shouldReturn(null);
+        $this->removeManyFromProductIds([40, 33])->shouldReturn(null);
     }
 
     function it_indexes_products_from_identifiers_and_waits_for_index_refresh(
