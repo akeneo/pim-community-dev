@@ -16,3 +16,6 @@ services:
     _defaults:
         autowire: false      # Automatically injects dependencies in your services.
         autoconfigure: false # Automatically registers your services as commands, event subscribers, etc.
+
+    monolog.formatter.deprecation:
+        class: Akeneo\DeprecationFormatter

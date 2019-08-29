@@ -10,3 +10,12 @@ monolog:
             level: info
         console:
             type:  console
+        deprecation:
+            type: stream
+            path: '%kernel.logs_dir%/%kernel.environment%.deprecations.log'
+            formatter: 'monolog.formatter.deprecation'
+        deprecation_filter:
+            type: filter
+            handler: deprecation
+            max_level: warning
+            channels: ['php']
