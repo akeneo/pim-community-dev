@@ -58,7 +58,7 @@ services:
     depends_on:
       - 'fpm'
     ports:
-      - '${DOCKER_PORT_HTTP:-8090}:80'
+      - '${DOCKER_PORT_HTTP:-8080}:80'
     volumes:
       - './:/srv/pim:ro'
       - './docker/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro'
@@ -74,7 +74,7 @@ services:
       MYSQL_DATABASE: '${APP_DATABASE_NAME}'
       MYSQL_PASSWORD: '${APP_DATABASE_PASSWORD}'
     ports:
-      - '${DOCKER_PORT_MYSQL:-33016}:3306'
+      - '${DOCKER_PORT_MYSQL:-33006}:3306'
     networks:
       - 'pim'
 
@@ -95,7 +95,7 @@ services:
       MINIO_ACCESS_KEY: 'AKENEO_OBJECT_STORAGE_ACCESS_KEY'
       MINIO_SECRET_KEY: 'AKENEO_OBJECT_STORAGE_SECRET_KEY'
     ports:
-      - '${DOCKER_PORT_OBJECT_STORAGE:-9010}:9000'
+      - '${DOCKER_PORT_OBJECT_STORAGE:-9090}:9000'
     networks:
       - 'pim'
 
