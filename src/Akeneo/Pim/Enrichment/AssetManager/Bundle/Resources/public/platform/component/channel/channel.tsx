@@ -22,7 +22,7 @@ export const ChannelLabel = ({channelCode, locale, channels}: {channelCode: Chan
 const getChannelLabel = (channelCode: ChannelCode, locale: LocaleCode, channels: Channel[]) => {
   const channel = channels.find((channel: Channel) => channel.code === channelCode);
 
-  if (undefined === channel) return channelCode;
+  if (undefined === channel) return `[${channelCode}]`;
 
   return getLabel(channel.labels, locale, channelCode)
 }

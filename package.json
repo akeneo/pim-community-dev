@@ -33,6 +33,8 @@
     "update-extensions": "node vendor/akeneo/pim-community-dev/frontend/build/update-extensions.js"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^4.1.0",
+    "@testing-library/react": "^9.1.3",
     "@types/draft-js": "^0.10.25",
     "@types/enzyme": "^3.1.12",
     "@types/jest": "^22.2.3",
@@ -86,7 +88,7 @@
     "merge-objects": "1.0.5",
     "raw-loader": "1.0.0",
     "react": "^16.8.0",
-    "react-dom": "^16.8.0",
+    "react-dom": "^16.9.0",
     "react-draft-wysiwyg": "^1.12.13",
     "react-redux": "^5.1.0",
     "redux": "^4.0.0",
