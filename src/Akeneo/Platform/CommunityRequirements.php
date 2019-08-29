@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Platform;
 
 use \PDO;
-use RuntimeException;
 use Symfony\Component\Intl\Intl;
-use Symfony\Component\Yaml\Yaml;
+use Symfony\Requirements\Requirement;
 
 /**
  * Akeneo PIM requirements
@@ -57,6 +56,8 @@ class CommunityRequirements
     /**
      * Generate the requirements by executing test and providing the result and the
      * associated messages
+     *
+     * @return Requirement[]
      */
     public function getRequirements(): array
     {
@@ -99,7 +100,8 @@ class CommunityRequirements
             null !== $curlVersion && version_compare($curlVersion['version'], self::REQUIRED_CURL_VERSION, '>='),
             'cURL extension must be at least ' . self::REQUIRED_CURL_VERSION,
             'Install and enable the <strong>cURL</strong> extension at least ' . self::REQUIRED_CURL_VERSION . ' version',
-            false
+            null,
+            true
         );
 
         $mem = $this->getBytes(ini_get('memory_limit'));
@@ -150,7 +152,8 @@ class CommunityRequirements
             ini_get('apc.enable_cli') == 1,
             'APCu should be enabled in CLI to get better performances',
             'Set <strong>apc.enable_cli</strong> to <strong>1</strong>',
-            false
+            null,
+            true
         );
 
         foreach ($this->directoriesToCheck as $directoryToCheck) {

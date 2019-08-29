@@ -1,11 +1,10 @@
 <?php
 
-require_once __DIR__ . '/SymfonyRequirements.php';
+namespace Akeneo\Platform;
 
-use Akeneo\Platform\CommunityRequirements;
-use Akeneo\Platform\Requirement as PlatformRequirement;
-
-// TODO: This file should not be in var/. Handle this properly via TIP-1232
+use Symfony\Requirements\PhpConfigRequirement;
+use Symfony\Requirements\Requirement;
+use Symfony\Requirements\SymfonyRequirements;
 
 /**
  * Akeneo PIM requirements
@@ -22,18 +21,18 @@ class PimRequirements extends SymfonyRequirements
     /**
      * {@inheritdoc}
      */
-    public function __construct(array $directoriesToCheck = [])
+    public function __construct(string $baseDirectory, array $directoriesToCheck = [])
     {
-        parent::__construct();
+        parent::__construct($baseDirectory);
 
-        $communityRequirements = new CommunityRequirements(__DIR__.'/..', $directoriesToCheck);
+        $communityRequirements = new CommunityRequirements($baseDirectory, $directoriesToCheck);
 
-        foreach($communityRequirements->getRequirements() as $requirement) {
-            if ($requirement->isMandatory()) {
+        foreach ($communityRequirements->getRequirements() as $requirement) {
+            if (!$requirement->isOptional()) {
                 $this->addPimRequirement($requirement);
             } else {
                 $this->addRecommendation(
-                    $requirement->isFullfilled(),
+                    $requirement->isFulfilled(),
                     $requirement->getTestMessage(),
                     $requirement->getHelpText()
                 );
@@ -44,15 +43,9 @@ class PimRequirements extends SymfonyRequirements
     /**
      * Adds an Akeneo PIM specific mandatory requirement
      */
-    private function addPimRequirement(PlatformRequirement $requirement)
+    private function addPimRequirement(Requirement $requirement): void
     {
-        $this->add(
-            new PimRequirement(
-                $requirement->isFullfilled(),
-                $requirement->getTestMessage(),
-                $requirement->getHelpText()
-            )
-        );
+        $this->add($requirement);
     }
 
     /**
@@ -61,7 +54,7 @@ class PimRequirements extends SymfonyRequirements
     public function getPimRequirements(): array
     {
         return array_filter($this->getRequirements(), function ($requirement) {
-            return $requirement instanceof PimRequirement;
+            return $requirement instanceof Requirement;
         });
     }
 
@@ -71,7 +64,7 @@ class PimRequirements extends SymfonyRequirements
     public function getMandatoryRequirements(): array
     {
         return array_filter($this->getRequirements(), function ($requirement) {
-            return !($requirement instanceof PhpIniRequirement) && !($requirement instanceof PimRequirement);
+            return !($requirement instanceof PhpConfigRequirement) && !($requirement instanceof Requirement);
         });
     }
 
@@ -81,18 +74,7 @@ class PimRequirements extends SymfonyRequirements
     public function getPhpIniRequirements(): array
     {
         return array_filter($this->getRequirements(), function ($requirement) {
-            return $requirement instanceof PhpIniRequirement;
+            return $requirement instanceof PhpConfigRequirement;
         });
     }
-}
-
-/**
- * PimRequirement class
- *
- * @author    Romain Monceau <romain@akeneo.com>
- * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
-class PimRequirement extends Requirement
-{
 }
