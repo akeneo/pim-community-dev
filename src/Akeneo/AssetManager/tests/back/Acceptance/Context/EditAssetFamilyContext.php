@@ -26,6 +26,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
+use Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer\FixturesLoader;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -40,6 +41,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 final class EditAssetFamilyContext implements Context
 {
     private const RULE_ENGINE_VALIDATION_MESSAGE = 'RULE ENGINE WILL NOT EXECUTE';
+    private const ASSET_FAMILY_IDENTIFIER = 'packshot';
+    private const ATTRIBUTE_CODE = 'attribute_code';
 
     /** @var AssetFamilyRepositoryInterface */
     private $assetFamilyRepository;
@@ -68,6 +71,9 @@ final class EditAssetFamilyContext implements Context
     /** @var RuleEngineValidatorACLStub */
     private $ruleEngineValidatorACLStub;
 
+    /** @var FixturesLoader */
+    private $fixturesLoader;
+
     public function __construct(
         AssetFamilyRepositoryInterface $assetFamilyRepository,
         EditAssetFamilyHandler $editAssetFamilyHandler,
@@ -76,6 +82,7 @@ final class EditAssetFamilyContext implements Context
         ConstraintViolationsContext $constraintViolationsContext,
         InMemoryFindActivatedLocalesByIdentifiers $activatedLocales,
         RuleEngineValidatorACLStub $ruleEngineValidatorACLStub,
+        FixturesLoader $fixturesLoader,
         int $ruleTemplateByAssetFamilyLimit
     ) {
         $this->assetFamilyRepository = $assetFamilyRepository;
@@ -84,8 +91,9 @@ final class EditAssetFamilyContext implements Context
         $this->validator = $validator;
         $this->constraintViolationsContext = $constraintViolationsContext;
         $this->activatedLocales = $activatedLocales;
-        $this->ruleTemplateByAssetFamilyLimit = $ruleTemplateByAssetFamilyLimit;
         $this->ruleEngineValidatorACLStub = $ruleEngineValidatorACLStub;
+        $this->fixturesLoader = $fixturesLoader;
+        $this->ruleTemplateByAssetFamilyLimit = $ruleTemplateByAssetFamilyLimit;
     }
 
     /**
@@ -311,15 +319,6 @@ final class EditAssetFamilyContext implements Context
         Assert::assertTrue($assetFamilyImage->isEmpty());
     }
 
-    private function editAssetFamily(EditAssetFamilyCommand $editAssetFamilyCommand): void
-    {
-        $this->constraintViolationsContext->addViolations($this->validator->validate($editAssetFamilyCommand));
-
-        if (!$this->constraintViolationsContext->hasViolations()) {
-            ($this->editAssetFamilyHandler)($editAssetFamilyCommand);
-        }
-    }
-
     /**
      * @Given /^an empty rule template collection on the asset family \'([^\']*)\'$/
      */
@@ -404,7 +403,7 @@ final class EditAssetFamilyContext implements Context
         $this->ruleEngineValidatorACLStub->stubWithViolationMessage(self::RULE_ENGINE_VALIDATION_MESSAGE);
         $invalidProductLinkRules = [['product_selections' => [['field' => 'family', 'operator' => 'IN', 'value' => 'camcorders']], 'assign_assets_to' => [['mode' => 'set', 'attribute' => 'collection']]]];
         $editAssetFamilyCommand = new EditAssetFamilyCommand(
-            'asset_family',
+            self::ASSET_FAMILY_IDENTIFIER,
             [],
             null,
             $invalidProductLinkRules
@@ -430,5 +429,313 @@ final class EditAssetFamilyContext implements Context
         $noProductAssignment = [['product_selections' => [['field' => 'family', 'operator' => 'IN', 'value' => 'camcorders']], 'assign_assets_to' => []]];
         $editAssetFamilyCommand = new EditAssetFamilyCommand($assetFamilyCode, [], null, $noProductAssignment);
         $this->editAssetFamily($editAssetFamilyCommand);
+    }
+
+    /**
+     * @Given /^an asset family with no product link rules and a text attribute$/
+     */
+    public function anAssetFamilyWithSomeAttributes()
+    {
+        $this->fixturesLoader
+            ->assetFamily(self::ASSET_FAMILY_IDENTIFIER)
+            ->withAttributeOfTypeText(self::ASSET_FAMILY_IDENTIFIER, self::ATTRIBUTE_CODE)
+            ->load();
+    }
+
+    /**
+     * @When /^the user updates this asset family with a dynamic product link rule having a product selection field which references this text attribute$/
+     */
+    public function theUserCreatesAnAssetFamilyWithADynamicProductLinkRuleWhichReferencesThoseAttributes()
+    {
+        $dynamicRuleTemplate = [
+            'product_selections' => [
+                [
+                    'field' => $this->toExtrapolation(self::ATTRIBUTE_CODE),
+                    'operator'  => '=',
+                    'value'     => '123456789',
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
+                ]
+            ],
+            'assign_assets_to'    => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => 'asset_collection',
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
+                ]
+            ]
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
+     * @Then /^there is an asset family with a product link rule$/
+     */
+    public function thereIsAnAssetFamilyCreatedWithADynamicProductLinkRule(): void
+    {
+        $assetFamily = $this->assetFamilyRepository->getByIdentifier(AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER));
+        Assert::assertFalse($assetFamily->getRuleTemplateCollection()->isEmpty());
+    }
+
+    /**
+     * @When /^the user updates this asset family with a dynamic product link rule having a product selection value which references this text attribute$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithADynamicProductLinkRuleHavingAProductSelectionValueWhichReferencesThisAttribute()
+    {
+        $dynamicRuleTemplate = [
+            'product_selections' => [
+                [
+                    'field' => 'sku',
+                    'operator'  => '=',
+                    'value'     => $this->toExtrapolation(self::ATTRIBUTE_CODE),
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
+                ]
+            ],
+            'assign_assets_to'    => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => 'asset_collection',
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
+                ]
+            ]
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
+     * @When /^the user updates this asset family with a dynamic product link rule having a dynamic assignment value which references this text attribute$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithADynamicProductLinkRuleHavingADynamicAssignmentAttributeValueWhichReferencesThisAttribute(
+    ) {
+        $dynamicRuleTemplate = [
+            'product_selections' => [
+                [
+                    'field' => 'sku',
+                    'operator'  => '=',
+                    'value'     => '123456789',
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
+                ]
+            ],
+            'assign_assets_to'    => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => $this->toExtrapolation(self::ATTRIBUTE_CODE),
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
+                ]
+            ]
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
+     * @Given /^an asset family with no product link rules and a single option attribute$/
+     */
+    public function anAssetFamilyWithNoProductLinkRulesAndASingleOptionAttribute()
+    {
+        $this->fixturesLoader
+            ->assetFamily(self::ASSET_FAMILY_IDENTIFIER)
+            ->withAttributeOfTypeSingleOption(self::ASSET_FAMILY_IDENTIFIER, self::ATTRIBUTE_CODE)
+            ->load();
+    }
+
+    /**
+     * @When /^the user updates this asset family with a dynamic product link rule having a product selection value which references this single option attribute$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithADynamicProductLinkRuleHavingAProductSelectionValueWhichReferencesThisSingleOptionAttribute()
+    {
+        $dynamicRuleTemplate = [
+            'product_selections' => [
+                [
+                    'field' => 'sku',
+                    'operator'  => '=',
+                    'value'     => $this->toExtrapolation(self::ATTRIBUTE_CODE),
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
+                ]
+            ],
+            'assign_assets_to'    => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => 'asset_collection',
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
+                ]
+            ]
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
+     * @Given /^an asset family with no product link rules and a multiple option attribute$/
+     */
+    public function anAssetFamilyWithNoProductLinkRulesAndAMultipleOptionAttribute()
+    {
+        $this->fixturesLoader
+            ->assetFamily(self::ASSET_FAMILY_IDENTIFIER)
+            ->withAttributeOfTypeMultipleOption(self::ASSET_FAMILY_IDENTIFIER, self::ATTRIBUTE_CODE)
+            ->load();
+    }
+
+    /**
+     * @When /^the user updates this asset family with a dynamic product link rule having a product selection value which references this multiple option attribute$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithADynamicProductLinkRuleHavingAProductSelectionValueWhichReferencesThisMultipleOptionAttribute()
+    {
+        $dynamicRuleTemplate = [
+            'product_selections' => [
+                [
+                    'field' => 'sku',
+                    'operator'  => '=',
+                    'value'     => $this->toExtrapolation(self::ATTRIBUTE_CODE),
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
+                ]
+            ],
+            'assign_assets_to'    => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => 'asset_collection',
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
+                ]
+            ]
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
+     * @When /^the user updates this asset family with a dynamic product link rule having a product selection channel this text attribute$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithADynamicProductLinkRuleHavingAProductSelectionChannelWhichReferencesThisMultipleOptionAttribute()
+    {
+        $dynamicRuleTemplate = [
+            'product_selections' => [
+                [
+                    'field' => 'sku',
+                    'operator'  => '=',
+                    'value'     => '11234567899',
+                    'channel' => $this->toExtrapolation(self::ATTRIBUTE_CODE),
+                    'locale' => 'en_US',
+                ]
+            ],
+            'assign_assets_to'    => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => 'asset_collection',
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
+                ]
+            ]
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
+     * @When /^the user updates this asset family with a dynamic product link rule having a product selection locale which references this text attribute$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithADynamicProductLinkRuleHavingAProductSelectionLocaleWhichReferencesThisTextAttribute()
+    {
+        $dynamicRuleTemplate = [
+            'product_selections' => [
+                [
+                    'field' => 'sku',
+                    'operator'  => '=',
+                    'value'     => '11234567899',
+                    'channel' => 'ecommerce',
+                    'locale' => $this->toExtrapolation(self::ATTRIBUTE_CODE),
+                ]
+            ],
+            'assign_assets_to'    => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => 'asset_collection',
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
+                ]
+            ]
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
+     * @When /^the user updates this asset family with a dynamic product link rule having a dynamic assignment channel which references this text attribute$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithADynamicProductLinkRuleHavingADynamicAssignmentChannelWhichReferencesThisTextAttribute()
+    {
+        $dynamicRuleTemplate = [
+            'product_selections' => [
+                [
+                    'field' => 'sku',
+                    'operator'  => '=',
+                    'value'     => '11234567899',
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
+                ]
+            ],
+            'assign_assets_to'    => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => 'asset_collection',
+                    'channel' => $this->toExtrapolation(self::ATTRIBUTE_CODE),
+                    'locale' => 'en_US',
+                ]
+            ]
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
+     * @When /^the user updates this asset family with a dynamic product link rule having a dynamic assignment locale which references this text attribute$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithADynamicProductLinkRuleHavingADynamicAssignmentLocaleWhichReferencesThisTextAttribute()
+    {
+        $dynamicRuleTemplate = [
+            'product_selections' => [
+                [
+                    'field' => 'sku',
+                    'operator'  => '=',
+                    'value'     => '11234567899',
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
+                ]
+            ],
+            'assign_assets_to'    => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => 'asset_collection',
+                    'channel' => 'ecommerce',
+                    'locale' => $this->toExtrapolation(self::ATTRIBUTE_CODE),
+                ]
+            ]
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $this->editAssetFamily($command);
+    }
+
+    private function editAssetFamily(EditAssetFamilyCommand $editAssetFamilyCommand): void
+    {
+        $this->constraintViolationsContext->addViolations($this->validator->validate($editAssetFamilyCommand));
+
+        if (!$this->constraintViolationsContext->hasViolations()) {
+            ($this->editAssetFamilyHandler)($editAssetFamilyCommand);
+        }
+    }
+
+    private function toExtrapolation(string $attributeCode): string
+    {
+        return sprintf('{{%s}}', $attributeCode);
     }
 }

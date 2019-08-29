@@ -23,6 +23,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
+use Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer\FixturesLoader;
 use Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\RuleEngineValidatorACLInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -37,6 +38,7 @@ final class CreateAssetFamilyContext implements Context
 {
     private const RULE_ENGINE_VALIDATION_MESSAGE = 'RULE ENGINE WILL NOT EXECUTE';
     private const UNEXISTING_ATTRIBUTE_CODE = 'unexisting_attribute';
+    private const ASSET_FAMILY_IDENTIFIER = 'packshot';
 
     /** @var InMemoryAssetFamilyRepository */
     private $assetFamilyRepository;
@@ -78,8 +80,8 @@ final class CreateAssetFamilyContext implements Context
         $this->exceptionContext = $exceptionContext;
         $this->violationsContext = $violationsContext;
         $this->activatedLocales = $activatedLocales;
-        $this->ruleTemplateByAssetFamilyLimit = $ruleTemplateByAssetFamilyLimit;
         $this->ruleEngineValidatorACLStub = $ruleEngineValidatorACLStub;
+        $this->ruleTemplateByAssetFamilyLimit = $ruleTemplateByAssetFamilyLimit;
         $this->activateDefaultLocales();
     }
 
@@ -163,23 +165,23 @@ final class CreateAssetFamilyContext implements Context
     }
 
     /**
-     * @When /^the user creates an asset family '([^"]*)' with a collection of rule templates$/
+     * @When /^the user creates an asset family '([^"]*)' with a collection of static rule templates$/
      */
     public function theUserCreatesAnAssetFamilyWithACollectionOfRuleTemplates(string $code): void
     {
-        $ruleTemplate = $this->getRuleTemplate();
+        $ruleTemplate = $this->staticRuleTemplate();
         $command = new CreateAssetFamilyCommand($code, [], [$ruleTemplate]);
         $this->createAssetFamily($command);
     }
 
     /**
-     * @Then /^there is an asset family '([^"]*)' with a collection of rule templates$/
+     * @Then /^there is an asset family '([^"]*)' with a collection of static rule templates$/
      */
     public function thereIsAnAssetFamilyWithACollectionOfRuleTemplates(string $code): void
     {
         $expectedIdentifier = AssetFamilyIdentifier::fromString($code);
         $actualAssetFamily = $this->assetFamilyRepository->getByIdentifier($expectedIdentifier);
-        $expectedRuleTemplate = $this->getRuleTemplate();
+        $expectedRuleTemplate = $this->staticRuleTemplate();
         $expectedRuleTemplateCollection = RuleTemplateCollection::createFromProductLinkRules([$expectedRuleTemplate]);
 
         Assert::assertEquals($expectedRuleTemplateCollection, $actualAssetFamily->getRuleTemplateCollection());
@@ -194,7 +196,7 @@ final class CreateAssetFamilyContext implements Context
 
         $ruleTemplates = [];
         for ($i = 1; $i <= $this->ruleTemplateByAssetFamilyLimit+1; $i++) {
-            $ruleTemplates[] = $this->getRuleTemplate();
+            $ruleTemplates[] = $this->staticRuleTemplate();
         }
 
         $command = new CreateAssetFamilyCommand(
@@ -214,7 +216,7 @@ final class CreateAssetFamilyContext implements Context
         $this->ruleEngineValidatorACLStub->stubWithViolationMessage(self::RULE_ENGINE_VALIDATION_MESSAGE);
         $invalidProductLinkRules = [['product_selections' => [['field' => 'family', 'operator' => 'IN', 'value' => 'camcorders']], 'assign_assets_to' => [['mode' => 'set', 'attribute' => 'collection']]]];
         $createAssetFamilyWithInvalidProductLinkRulesCommand = new CreateAssetFamilyCommand(
-            'asset_family',
+            self::ASSET_FAMILY_IDENTIFIER,
             [],
             $invalidProductLinkRules
         );
@@ -236,7 +238,7 @@ final class CreateAssetFamilyContext implements Context
     {
         $emptyProductSelection = [['product_selections' => [], 'assign_assets_to' => [['mode' => 'set', 'attribute' => 'collection']]]];
         $createAssetFamilyWithEmptyProductSelection = new CreateAssetFamilyCommand(
-            'packshot',
+            self::ASSET_FAMILY_IDENTIFIER,
             [],
             $emptyProductSelection
         );
@@ -250,7 +252,7 @@ final class CreateAssetFamilyContext implements Context
     {
         $emptyProductAssignment = [['product_selections' => [['field' => 'family', 'operator' => 'IN', 'value' => 'camcorders']], 'assign_assets_to' => []]];
         $createAssetFamilyWithEmptyProductAssignment = new CreateAssetFamilyCommand(
-            'packshot',
+            self::ASSET_FAMILY_IDENTIFIER,
             [],
             $emptyProductAssignment
         );
@@ -270,7 +272,7 @@ final class CreateAssetFamilyContext implements Context
             ],
         ];
         $createAssetFamilyWithInvalidProductLinkRulesCommand = new CreateAssetFamilyCommand(
-            'asset_family',
+            self::ASSET_FAMILY_IDENTIFIER,
             [],
             $productLinkRuleRefencingAnUnexistingAttribute
         );
@@ -297,7 +299,7 @@ final class CreateAssetFamilyContext implements Context
             ],
         ];
         $createAssetFamilyWithInvalidProductLinkRulesCommand = new CreateAssetFamilyCommand(
-            'asset_family',
+            self::ASSET_FAMILY_IDENTIFIER,
             [],
             $productLinkRuleRefencingAnUnexistingAttribute
         );
@@ -324,7 +326,7 @@ final class CreateAssetFamilyContext implements Context
             ],
         ];
         $createAssetFamilyWithInvalidProductLinkRulesCommand = new CreateAssetFamilyCommand(
-            'asset_family',
+            self::ASSET_FAMILY_IDENTIFIER,
             [],
             $productLinkRuleRefencingAnUnexistingAttribute
         );
@@ -347,7 +349,7 @@ final class CreateAssetFamilyContext implements Context
     /**
      * @return array
      */
-    private function getRuleTemplate(): array
+    private function staticRuleTemplate(): array
     {
         return [
             'product_selections' => [

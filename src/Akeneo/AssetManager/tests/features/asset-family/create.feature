@@ -62,9 +62,9 @@ Feature: Create an asset family
       | designer   | {"en_US": "Designer", "fr_FR": "Designer"} | image              |
 
   @acceptance-back
-  Scenario: Creating an asset family with a collection of rule templates
-    When the user creates an asset family 'packshot' with a collection of rule templates
-    Then there is an asset family 'packshot' with a collection of rule templates
+  Scenario: Creating an asset family with a collection of static rule templates
+    When the user creates an asset family 'packshot' with a collection of static rule templates
+    Then there is an asset family 'packshot' with a collection of static rule templates
 
   @acceptance-back
   Scenario: Cannot create an asset family with a collection of rule templates that contains more than 2 items
