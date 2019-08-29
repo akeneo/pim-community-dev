@@ -52,7 +52,7 @@ export type Value = {
 
 export type ValueCollection = Value[];
 
-export const isValueComplete = (value: Value, family: Family | null, channel: ChannelCode) => {
+export const isValueComplete = (value: Value, family: Family | null, channel: ChannelCode): boolean => {
   if (null === family) return true;
   if (undefined === family.attributeRequirements[channel]) return true;
 
