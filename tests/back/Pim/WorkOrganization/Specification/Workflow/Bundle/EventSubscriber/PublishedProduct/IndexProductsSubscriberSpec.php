@@ -180,10 +180,10 @@ class IndexProductsSubscriberSpec extends ObjectBehavior
         ProductInterface $product
     ) {
         $event = new RemoveEvent($product->getWrappedObject(), 40);
-        $product->getIdentifier()->willReturn('40');
+        $product->getId()->willReturn(40);
 
         $publishedProductIndexer->remove(Argument::any())->shouldNotBeCalled();
-        $productIndexer->removeFromProductIdentifier('40')->shouldBeCalled();
+        $productIndexer->removeFromProductId('40')->shouldBeCalled();
 
         $this->deleteProduct($event)->shouldReturn(null);
     }
@@ -196,7 +196,7 @@ class IndexProductsSubscriberSpec extends ObjectBehavior
         $event = new RemoveEvent($product->getWrappedObject(), 40);
 
         $publishedProductIndexer->remove(40)->shouldBeCalled();
-        $productIndexer->removeFromProductIdentifier(Argument::any())->shouldNotBeCalled();
+        $productIndexer->removeFromProductId(Argument::any())->shouldNotBeCalled();
 
         $this->deleteProduct($event)->shouldReturn(null);
     }
@@ -209,7 +209,7 @@ class IndexProductsSubscriberSpec extends ObjectBehavior
         $event = new RemoveEvent(new \stdClass(), 1);
 
         $publishedProductIndexer->remove(Argument::any())->shouldNotBeCalled();
-        $productIndexer->removeFromProductIdentifier(Argument::any())->shouldNotBeCalled();
+        $productIndexer->removeFromProductId(Argument::any())->shouldNotBeCalled();
 
         $this->deleteProduct($event)->shouldReturn(null);
     }
