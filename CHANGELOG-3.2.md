@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes
+
+- PIM-8596: add translation for the Attribute type filter `akeneo_asset_multiple_link`q
+
 # 3.2.7 (2019-08-27)
 
 # 3.2.6 (2019-08-22)
