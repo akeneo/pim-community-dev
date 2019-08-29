@@ -36,6 +36,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 final class CreateAssetFamilyContext implements Context
 {
     private const RULE_ENGINE_VALIDATION_MESSAGE = 'RULE ENGINE WILL NOT EXECUTE';
+    private const UNEXISTING_ATTRIBUTE_CODE = 'unexisting_attribute';
 
     /** @var InMemoryAssetFamilyRepository */
     private $assetFamilyRepository;
@@ -167,13 +168,7 @@ final class CreateAssetFamilyContext implements Context
     public function theUserCreatesAnAssetFamilyWithACollectionOfRuleTemplates(string $code): void
     {
         $ruleTemplate = $this->getRuleTemplate();
-
-        $command = new CreateAssetFamilyCommand(
-            $code,
-            [],
-            [$ruleTemplate]
-        );
-
+        $command = new CreateAssetFamilyCommand($code, [], [$ruleTemplate]);
         $this->createAssetFamily($command);
     }
 
@@ -212,12 +207,12 @@ final class CreateAssetFamilyContext implements Context
     }
 
     /**
-     * @When /^the user creates an asset family "([^"]*)" with a product link rule not executable by the rule engine$/
+     * @When /^the user creates an asset family with a product link rule not executable by the rule engine$/
      */
-    public function theUserCreatesAnAssetFamilyWithAProductLinkRuleNotExecutableByTheRuleEngine(string $assetFamilyCode): void
+    public function theUserCreatesAnAssetFamilyWithAProductLinkRuleNotExecutableByTheRuleEngine(): void
     {
         $this->ruleEngineValidatorACLStub->stubWithViolationMessage(self::RULE_ENGINE_VALIDATION_MESSAGE);
-        $invalidProductLinkRules = [['product_selections' => [['field' => 'family', 'operator' => 'IN', 'camcorders']], 'assign_assets_to' => [['mode' => 'set', 'attribute' => 'collection']]]];
+        $invalidProductLinkRules = [['product_selections' => [['field' => 'family', 'operator' => 'IN', 'value' => 'camcorders']], 'assign_assets_to' => [['mode' => 'set', 'attribute' => 'collection']]]];
         $createAssetFamilyWithInvalidProductLinkRulesCommand = new CreateAssetFamilyCommand(
             'asset_family',
             [],
@@ -235,6 +230,121 @@ final class CreateAssetFamilyContext implements Context
     }
 
     /**
+     * @When /^the user creates an asset family with an empty product selections$/
+     */
+    public function theUserCreatesAnAssetFamilyWithNoProductSelections()
+    {
+        $emptyProductSelection = [['product_selections' => [], 'assign_assets_to' => [['mode' => 'set', 'attribute' => 'collection']]]];
+        $createAssetFamilyWithEmptyProductSelection = new CreateAssetFamilyCommand(
+            'packshot',
+            [],
+            $emptyProductSelection
+        );
+        $this->createAssetFamily($createAssetFamilyWithEmptyProductSelection);
+    }
+
+    /**
+     * @When /^the user creates an asset family with an empty product assignment$/
+     */
+    public function theUserCreatesAnAssetFamilyWithNoProductAssignment()
+    {
+        $emptyProductAssignment = [['product_selections' => [['field' => 'family', 'operator' => 'IN', 'value' => 'camcorders']], 'assign_assets_to' => []]];
+        $createAssetFamilyWithEmptyProductAssignment = new CreateAssetFamilyCommand(
+            'packshot',
+            [],
+            $emptyProductAssignment
+        );
+        $this->createAssetFamily($createAssetFamilyWithEmptyProductAssignment);
+    }
+
+    /**
+     * @When /^the user creates an asset family with a product link rule having an extrapolated product selection value which references an attribute that does not exist$/
+     */
+    public function theUserCreatesAnAssetFamilyWithAProductLinkRuleHavingAnExtrapolatedValueWhichReferencesAnAttributeThatDoesNotExist()
+    {
+        $value = self::UNEXISTING_ATTRIBUTE_CODE;
+        $productLinkRuleRefencingAnUnexistingAttribute = [
+            [
+                'product_selections' => [['field' => 'family', 'operator' => 'IN', 'value' => [$this->toExtrapolation($value)]]],
+                'assign_assets_to'   => [['mode' => 'set', 'attribute' => 'collection']],
+            ],
+        ];
+        $createAssetFamilyWithInvalidProductLinkRulesCommand = new CreateAssetFamilyCommand(
+            'asset_family',
+            [],
+            $productLinkRuleRefencingAnUnexistingAttribute
+        );
+        $this->createAssetFamily($createAssetFamilyWithInvalidProductLinkRulesCommand);
+    }
+
+    /**
+     * @Then /^there should be a validation error stating that the product link rule cannot be created because the extrapolated product selection value references an attribute that does not exist$/
+     */
+    public function thereShouldBeAValidationErrorStatingThatTheProductLinkRuleCannotBeCreatedBecauseTheExtrapolatedValueReferencesAnAttributeThatDoesNotExist()
+    {
+        $this->assertExtrapolatedAttributeDoesNotExists();
+    }
+
+    /**
+     * @When /^the user creates an asset family with a product link rule having an extrapolated product selection field which references an attribute that does not exist$/
+     */
+    public function theUserCreatesAnAssetFamilyWithAProductLinkRuleHavingAnExtrapolatedFieldWhichReferencesAnAttributeThatDoesNotExist()
+    {
+        $productLinkRuleRefencingAnUnexistingAttribute = [
+            [
+                'product_selections' => [['field' => $this->toExtrapolation(self::UNEXISTING_ATTRIBUTE_CODE), 'operator' => '=', 'value'=> '111120101']],
+                'assign_assets_to' => [['mode' => 'set', 'attribute' => 'collection']]
+            ],
+        ];
+        $createAssetFamilyWithInvalidProductLinkRulesCommand = new CreateAssetFamilyCommand(
+            'asset_family',
+            [],
+            $productLinkRuleRefencingAnUnexistingAttribute
+        );
+        $this->createAssetFamily($createAssetFamilyWithInvalidProductLinkRulesCommand);
+    }
+
+    /**
+     * @Then /^there should be a validation error stating that the product link rule cannot be created because the extrapolated product selection field references an attribute that does not exist$/
+     */
+    public function thereShouldBeAValidationErrorStatingThatTheProductLinkRuleCannotBeCreatedBecauseTheExtrapolatedFieldReferencesAnAttributeThatDoesNotExist()
+    {
+        $this->assertExtrapolatedAttributeDoesNotExists();
+    }
+
+    /**
+     * @When /^the user creates an asset family with a product link rule having an extrapolated product assignment attribute which references an attribute that does not exist$/
+     */
+    public function theUserCreatesAnAssetFamilyWithAProductLinkRuleHavingAnExtrapolatedProductAssignmentAttributeWhichReferencesAnAttributeThatDoesNotExist()
+    {
+        $productLinkRuleRefencingAnUnexistingAttribute = [
+            [
+                'product_selections' => [['field' => 'sku', 'operator' => '=', 'value'=> '111120101']],
+                'assign_assets_to' => [['mode' => 'set', 'attribute' => $this->toExtrapolation(self::UNEXISTING_ATTRIBUTE_CODE)]]
+            ],
+        ];
+        $createAssetFamilyWithInvalidProductLinkRulesCommand = new CreateAssetFamilyCommand(
+            'asset_family',
+            [],
+            $productLinkRuleRefencingAnUnexistingAttribute
+        );
+        $this->createAssetFamily($createAssetFamilyWithInvalidProductLinkRulesCommand);
+    }
+
+    /**
+     * @Then /^there should be a validation error stating that the product link rule cannot be created because the extrapolated product assignment attribute references an attribute that does not exist$/
+     */
+    public function thereShouldBeAValidationErrorStatingThatTheProductLinkRuleCannotBeCreatedBecauseTheExtrapolatedProductAssignmentAttributeReferencesAnAttributeThatDoesNotExist()
+    {
+        $this->assertExtrapolatedAttributeDoesNotExists();
+    }
+
+    private function toExtrapolation(string $value): string
+    {
+        return sprintf('{{%s}}', $value);
+    }
+
+    /**
      * @return array
      */
     private function getRuleTemplate(): array
@@ -244,13 +354,13 @@ final class CreateAssetFamilyContext implements Context
                 [
                     'field' => 'sku',
                     'operator'  => '=',
-                    'value'     => '{{product_sku}}'
+                    'value'     => 'sku'
                 ]
             ],
             'assign_assets_to'    => [
                 [
                     'mode'      => 'replace',
-                    'attribute' => '{{attribute}}'
+                    'attribute' => 'attribute'
                 ]
             ]
         ];
@@ -311,31 +421,10 @@ final class CreateAssetFamilyContext implements Context
         }
     }
 
-    /**
-     * @When /^the user creates an asset family "([^"]*)" with an empty product selections$/
-     */
-    public function theUserCreatesAnAssetFamilyWithNoProductSelections(string $assetFamilyCode)
+    private function assertExtrapolatedAttributeDoesNotExists(): void
     {
-        $emptyProductSelection = [['product_selections' => [], 'assign_assets_to' => [['mode' => 'set', 'attribute' => 'collection']]]];
-        $createAssetFamilyWithEmptyProductSelection = new CreateAssetFamilyCommand(
-            $assetFamilyCode,
-            [],
-            $emptyProductSelection
+        $this->violationsContext->thereShouldBeAValidationErrorWithMessage(
+            sprintf('The attribute "%s" does not exist for this asset family', self::UNEXISTING_ATTRIBUTE_CODE)
         );
-        $this->createAssetFamily($createAssetFamilyWithEmptyProductSelection);
-    }
-
-    /**
-     * @When /^the user creates an asset family "([^"]*)" with an empty product assignment$/
-     */
-    public function theUserCreatesAnAssetFamilyWithNoProductAssignment(string $assetFamilyCode)
-    {
-        $emptyProductAssignment = [['product_selections' => [['field' => 'family', 'operator' => 'IN', 'camcorders']], 'assign_assets_to' => []]];
-        $createAssetFamilyWithEmptyProductAssignment = new CreateAssetFamilyCommand(
-            $assetFamilyCode,
-            [],
-            $emptyProductAssignment
-        );
-        $this->createAssetFamily($createAssetFamilyWithEmptyProductAssignment);
     }
 }

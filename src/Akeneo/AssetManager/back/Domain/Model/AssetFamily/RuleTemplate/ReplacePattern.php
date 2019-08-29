@@ -24,6 +24,17 @@ class ReplacePattern
     public const PATTERN_REGEXP = '#{{(.*?)}}#';
 
     /**
+     * This method helps figuring out if some value is an extrapolation. This means, that this value is a pattern and it
+     * can be replaced by a value in a PropertyAccessibleAsset when executing a product link rule.
+     *
+     * For more, see the api documentation on "Asset values extrapolation".
+     */
+    public static function isExtrapolation($someValue): bool
+    {
+        return !empty(self::detectPatterns($someValue));
+    }
+
+    /**
      * @throws \InvalidArgumentException When the rule value has more than one pattern to replace and the asset value is an array
      *
      * @return array|string
@@ -36,7 +47,7 @@ class ReplacePattern
         return self::replacePatterns($ruleValue, $valueForPatterns);
     }
 
-    private static function detectPatterns($ruleValue): array
+    public static function detectPatterns($ruleValue): array
     {
         if (is_array($ruleValue)) {
             $result = [];

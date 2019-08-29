@@ -29,8 +29,8 @@ class RuleTemplate
 {
     private const CONDITIONS = 'conditions';
     private const ACTIONS = 'actions';
-    private const PRODUCT_SELECTIONS = 'product_selections';
-    private const ASSIGN_ASSETS_TO = 'assign_assets_to';
+    public const PRODUCT_SELECTIONS = 'product_selections';
+    public const ASSIGN_ASSETS_TO = 'assign_assets_to';
 
     /** @var Condition[] */
     private $conditions;

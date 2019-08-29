@@ -8,4 +8,3 @@ Feature: Automatically link assets to products
     Given an asset family with some rule templates
     When I link some assets to some products using this rule template
     Then a job has been launched to link assets to products
-

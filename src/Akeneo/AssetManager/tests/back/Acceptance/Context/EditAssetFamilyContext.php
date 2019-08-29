@@ -384,13 +384,13 @@ final class EditAssetFamilyContext implements Context
                 [
                     'field' => 'sku',
                     'operator'  => '=',
-                    'value'     => '{{product_sku}}'
+                    'value'     => '11121313'
                 ]
             ],
             'assign_assets_to'    => [
                 [
                     'mode'  => 'replace',
-                    'attribute' => '{{attribute}}'
+                    'attribute' => '1234'
                 ]
             ]
         ];
@@ -402,7 +402,7 @@ final class EditAssetFamilyContext implements Context
     public function theUserUpdatesTheAssetFamilyWithAProductLinkRuleNotExecutableByTheRuleEngine(string $assetFamilyIdentifier)
     {
         $this->ruleEngineValidatorACLStub->stubWithViolationMessage(self::RULE_ENGINE_VALIDATION_MESSAGE);
-        $invalidProductLinkRules = [['product_selections' => [['field' => 'family', 'operator' => 'IN', 'camcorders']], 'assign_assets_to' => [['mode' => 'set', 'attribute' => 'collection']]]];
+        $invalidProductLinkRules = [['product_selections' => [['field' => 'family', 'operator' => 'IN', 'value' => 'camcorders']], 'assign_assets_to' => [['mode' => 'set', 'attribute' => 'collection']]]];
         $editAssetFamilyCommand = new EditAssetFamilyCommand(
             'asset_family',
             [],
@@ -427,7 +427,7 @@ final class EditAssetFamilyContext implements Context
      */
     public function theUserUpdatesAnAssetFamilyWithNoProductAssignment(string $assetFamilyCode): void
     {
-        $noProductAssignment = [['product_selections' => [['field' => 'family', 'operator' => 'IN', 'camcorders']], 'assign_assets_to' => []]];
+        $noProductAssignment = [['product_selections' => [['field' => 'family', 'operator' => 'IN', 'value' => 'camcorders']], 'assign_assets_to' => []]];
         $editAssetFamilyCommand = new EditAssetFamilyCommand($assetFamilyCode, [], null, $noProductAssignment);
         $this->editAssetFamily($editAssetFamilyCommand);
     }
