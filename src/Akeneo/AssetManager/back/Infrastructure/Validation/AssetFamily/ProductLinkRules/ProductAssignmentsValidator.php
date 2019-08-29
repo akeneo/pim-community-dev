@@ -43,27 +43,27 @@ class ProductAssignmentsValidator
         return $violations;
     }
 
-    private function validateProductAssignment(array $productSelection, string $assetFamilyIdentifier): ConstraintViolationListInterface
+    private function validateProductAssignment(array $productAssignment, string $assetFamilyIdentifier): ConstraintViolationListInterface
     {
-        if ($this->hasAnyExtrapolation($productSelection)) {
-            return $this->checkExtrapolatedAttributes($productSelection, $assetFamilyIdentifier);
+        if ($this->hasAnyExtrapolation($productAssignment)) {
+            return $this->checkExtrapolatedAttributes($productAssignment, $assetFamilyIdentifier);
         }
 
-        return $this->ruleEngineValidatorACL->validateProductSelection($productSelection);
+        return $this->ruleEngineValidatorACL->validateProductSelection($productAssignment);
     }
 
-    private function hasAnyExtrapolation(array $productSelection): bool
+    private function hasAnyExtrapolation(array $productAssignment): bool
     {
-        $isFieldExtrapolated = ReplacePattern::isExtrapolation($productSelection['attribute']);
-        $isLocaleExtrapolated = isset($productSelection['locale']) ? ReplacePattern::isExtrapolation($productSelection['locale']) : false;
-        $isChannelExtrapolated = isset($productSelection['channel']) ? ReplacePattern::isExtrapolation($productSelection['channel']) : false;
+        $isFieldExtrapolated = ReplacePattern::isExtrapolation($productAssignment['attribute']);
+        $isLocaleExtrapolated = isset($productAssignment['locale']) ? ReplacePattern::isExtrapolation($productAssignment['locale']) : false;
+        $isChannelExtrapolated = isset($productAssignment['channel']) ? ReplacePattern::isExtrapolation($productAssignment['channel']) : false;
 
         return $isFieldExtrapolated || $isLocaleExtrapolated || $isChannelExtrapolated;
     }
 
-    private function checkExtrapolatedAttributes(array $productSelection, string $assetFamilyIdentifier): ConstraintViolationListInterface
+    private function checkExtrapolatedAttributes(array $productAssignment, string $assetFamilyIdentifier): ConstraintViolationListInterface
     {
-        $extrapolatedAttributeCodes = ReplacePattern::detectPatterns($productSelection['attribute']);
+        $extrapolatedAttributeCodes = ReplacePattern::detectPatterns($productAssignment['attribute']);
         $validator = Validation::createValidator();
         $violations = new ConstraintViolationList();
         foreach ($extrapolatedAttributeCodes as $extrapolatedAttributeCode) {
