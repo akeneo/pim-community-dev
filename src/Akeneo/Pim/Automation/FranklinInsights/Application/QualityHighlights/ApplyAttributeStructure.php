@@ -54,18 +54,9 @@ class ApplyAttributeStructure
                     $attributes[$index]['options'] = $attributeOptions;
                 }
             }
-        }
-        $attributes = $this->convertPimAttributeTypesToFranklinTypes($attributes);
-
-        $this->qualityHighlightsProvider->applyAttributeStructure(['attributes' => $attributes]);
-    }
-
-    private function convertPimAttributeTypesToFranklinTypes(array $attributes): array
-    {
-        foreach ($attributes as $index => $attribute) {
             $attributes[$index]['type'] = AttributeMapping::AUTHORIZED_ATTRIBUTE_TYPE_MAPPINGS[$attribute['type']];
         }
 
-        return $attributes;
+        $this->qualityHighlightsProvider->applyAttributeStructure(['attributes' => $attributes]);
     }
 }
