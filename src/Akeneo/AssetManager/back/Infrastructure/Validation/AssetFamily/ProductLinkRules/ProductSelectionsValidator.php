@@ -7,7 +7,11 @@ namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkR
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\ReplacePattern;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeExistsInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\GetAttributeTypeInterface;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -27,10 +31,17 @@ class ProductSelectionsValidator
     /** @var AttributeExistsInterface */
     private $attributeExists;
 
-    public function __construct(RuleEngineValidatorACLInterface $ruleEngineValidatorACL, AttributeExistsInterface $attributeExists)
-    {
+    /** @var GetAttributeTypeInterface */
+    private $getAttributeType;
+
+    public function __construct(
+        RuleEngineValidatorACLInterface $ruleEngineValidatorACL,
+        AttributeExistsInterface $attributeExists,
+        GetAttributeTypeInterface $getAttributeType
+    ) {
         $this->attributeExists = $attributeExists;
         $this->ruleEngineValidatorACL = $ruleEngineValidatorACL;
+        $this->getAttributeType = $getAttributeType;
     }
 
     public function validate(array $productSelections, string $assetFamilyIdentifier): ConstraintViolationListInterface
@@ -43,8 +54,20 @@ class ProductSelectionsValidator
         return $violationList;
     }
 
-    private function validateProductSelection(array $productSelection, string $assetFamilyIdentifier): ConstraintViolationListInterface
+    private function checkNotEmpty(array $productSelections): ConstraintViolationListInterface
     {
+        $validator = Validation::createValidator();
+        $ruleEngineViolations = $validator->validate($productSelections,
+            [new NotBlank(['message' => ProductLinkRulesShouldBeExecutable::PRODUCT_SELECTION_CANNOT_BE_EMPTY])]
+        );
+
+        return $ruleEngineViolations;
+    }
+
+    private function validateProductSelection(
+        array $productSelection,
+        string $assetFamilyIdentifier
+    ): ConstraintViolationListInterface {
         if ($this->hasAnyExtrapolation($productSelection)) {
             return $this->checkExtrapolatedAttributes($productSelection, $assetFamilyIdentifier);
         }
@@ -56,52 +79,119 @@ class ProductSelectionsValidator
     {
         $isFieldExtrapolated = ReplacePattern::isExtrapolation($productSelection['field']);
         $isValueExtrapolated = ReplacePattern::isExtrapolation($productSelection['value']);
-        $isLocaleExtrapolated = isset($productSelection['locale']) ? ReplacePattern::isExtrapolation($productSelection['locale']) : false;
-        $isChannelExtrapolated = isset($productSelection['channel']) ? ReplacePattern::isExtrapolation($productSelection['channel']) : false;
+        $isLocaleExtrapolated = isset($productSelection['locale'])
+            ? ReplacePattern::isExtrapolation($productSelection['locale']) : false;
+        $isChannelExtrapolated = isset($productSelection['channel'])
+            ? ReplacePattern::isExtrapolation($productSelection['channel']) : false;
 
         return $isFieldExtrapolated || $isValueExtrapolated || $isLocaleExtrapolated || $isChannelExtrapolated;
     }
 
-    private function checkExtrapolatedAttributes(array $productSelection, string $assetFamilyIdentifier): ConstraintViolationList
-    {
-        $extrapolatedAttributeCodes = array_merge(
-            ReplacePattern::detectPatterns($productSelection['field']),
-            ReplacePattern::detectPatterns($productSelection['value'])
-        );
-        $validator = Validation::createValidator();
-        $violations = new ConstraintViolationList();
-        foreach ($extrapolatedAttributeCodes as $extrapolatedAttributeCode) {
-            $isAttributeExisting = $this->attributeExists->withAssetFamilyAndCode(
-                AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
-                AttributeCode::fromString($extrapolatedAttributeCode)
-            );
-            $violations = $validator->validate(
-                $isAttributeExisting,
-                new Callback(function ($attributeExists, ExecutionContextInterface $context) use ($extrapolatedAttributeCode) {
-                    if (!$attributeExists) {
-                        $context
-                            ->buildViolation(ProductLinkRulesShouldBeExecutable::EXTRAPOLATED_ATTRIBUTE_SHOULD_EXIST, ['%attribute_code%' => $extrapolatedAttributeCode])
-                            ->addViolation();
-                    }
-                })
-            );
-        }
+    private function checkExtrapolatedAttributes(
+        array $productSelection,
+        string $assetFamilyIdentifier
+    ): ConstraintViolationListInterface {
+        $violations = $this->checkField($productSelection, $assetFamilyIdentifier);
+        $violations->addAll($this->checkValue($productSelection, $assetFamilyIdentifier));
+
         return $violations;
     }
 
-    /**
-     * @param array $productSelections
-     *
-     * @return ConstraintViolationListInterface
-     *
-     */
-    private function checkNotEmpty(array $productSelections): ConstraintViolationListInterface
+    private function checkField(array $productSelection, string $assetFamilyIdentifier): ConstraintViolationListInterface
     {
+        $violations = new ConstraintViolationList();
+        $fieldAttributeCodes = ReplacePattern::detectPatterns($productSelection['field']);
+        foreach ($fieldAttributeCodes as $fieldAttributeCode) {
+            $violations->addAll($this->checkAttributeExists($assetFamilyIdentifier, $fieldAttributeCode));
+            $violations->addAll($this->checkAttributeTypeIsSupported($assetFamilyIdentifier,
+                $fieldAttributeCode,
+                [TextAttribute::ATTRIBUTE_TYPE]
+            )
+            );
+        }
+
+        return $violations;
+    }
+
+    private function checkValue(array $productSelection, string $assetFamilyIdentifier): ConstraintViolationListInterface
+    {
+        $violations = new ConstraintViolationList();
+        ReplacePattern::detectPatterns($productSelection['value']);
+        $fieldAttributeCodes = ReplacePattern::detectPatterns($productSelection['value']);
+        foreach ($fieldAttributeCodes as $fieldAttributeCode) {
+            $violations->addAll($this->checkAttributeExists($assetFamilyIdentifier, $fieldAttributeCode));
+            $violations->addAll($this->checkAttributeTypeIsSupported(
+                $assetFamilyIdentifier,
+                $fieldAttributeCode,
+                [
+                    TextAttribute::ATTRIBUTE_TYPE,
+                    OptionAttribute::ATTRIBUTE_TYPE,
+                    OptionCollectionAttribute::ATTRIBUTE_TYPE
+                ]
+            )
+            );
+        }
+
+        return $violations;
+    }
+
+    private function checkAttributeExists(
+        string $assetFamilyIdentifier,
+        $extrapolatedAttributeCode
+    ): ConstraintViolationListInterface {
         $validator = Validation::createValidator();
-        $ruleEngineViolations = $validator->validate($productSelections,
-            [new NotBlank(['message' => ProductLinkRulesShouldBeExecutable::PRODUCT_SELECTION_CANNOT_BE_EMPTY])]
+        $isAttributeExisting = $this->attributeExists->withAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+            AttributeCode::fromString($extrapolatedAttributeCode)
         );
 
-        return $ruleEngineViolations;
+        return $validator->validate(
+            $isAttributeExisting,
+            new Callback(function ($attributeExists, ExecutionContextInterface $context) use (
+                $extrapolatedAttributeCode
+            ) {
+                if (!$attributeExists) {
+                    $context
+                        ->buildViolation(ProductLinkRulesShouldBeExecutable::EXTRAPOLATED_ATTRIBUTE_SHOULD_EXIST,
+                            ['%attribute_code%' => $extrapolatedAttributeCode]
+                        )
+                        ->addViolation();
+                }
+            }
+            )
+        );
+    }
+
+    private function checkAttributeTypeIsSupported(
+        string $assetFamilyIdentifier,
+        string $attributeCode,
+        array $supportedAttributeTypes
+    ): ConstraintViolationListInterface {
+        $validator = Validation::createValidator();
+        $attributeType = $this->getAttributeType->fetch(
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+            AttributeCode::fromString($attributeCode)
+        );
+        $isAttributeTypeSupported = in_array($attributeType, $supportedAttributeTypes);
+
+        return $validator->validate(
+            $isAttributeTypeSupported,
+            new Callback(function ($isAttributeTypeSupported, ExecutionContextInterface $context) use ($attributeCode, $attributeType, $supportedAttributeTypes)
+            {
+                if (!$isAttributeTypeSupported) {
+                    $context
+                        ->buildViolation(
+                            ProductLinkRulesShouldBeExecutable::EXTRAPOLATED_ATTRIBUTE_TYPE_SHOULD_BE_SUPPORTED,
+                            [
+                                '%attribute_code%' => $attributeCode,
+                                '%attribute_type%' => $attributeType,
+                                '%supported_attribute_type%' => implode(', ', $supportedAttributeTypes)
+                            ]
+                        )
+                        ->addViolation();
+                }
+            }
+            )
+        );
     }
 }

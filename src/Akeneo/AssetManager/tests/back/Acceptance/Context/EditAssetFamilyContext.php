@@ -56,9 +56,6 @@ final class EditAssetFamilyContext implements Context
     /** @var ValidatorInterface */
     private $validator;
 
-    /** @var ConstraintViolationListInterface */
-    private $violations;
-
     /** @var ConstraintViolationsContext */
     private $constraintViolationsContext;
 
@@ -762,6 +759,16 @@ final class EditAssetFamilyContext implements Context
         ];
         $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
         $this->editAssetFamily($command);
+    }
+
+    /**
+     * @Then /^there should be a validation error stating that the product selection field does not support extrapolated image attribute$/
+     */
+    public function thereShouldBeAValidationErrorStatingThatTheProductSelectionFieldDoesNotSupportExtrapolatedImageAttribute()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            sprintf('The attribute "%s" of type "image" is not supported, only the following attribute types are supported for this field: text',self::ATTRIBUTE_CODE)
+        );
     }
 
     private function editAssetFamily(EditAssetFamilyCommand $editAssetFamilyCommand): void
