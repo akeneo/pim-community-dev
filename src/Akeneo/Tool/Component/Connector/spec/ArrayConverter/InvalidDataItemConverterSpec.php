@@ -47,7 +47,7 @@ class InvalidDataItemConverterSpec extends ObjectBehavior
         $convertedItem = [
             'string_key' => 'effeacef4848484',
             'array_key' => 'foo,foobar',
-            'date_key' => '2019-08-29 00:00:00',
+            'date_key' => '2019-08-29',
             'numeric_key' => '666',
             'null_key' => '',
             'object_key' => 'objectValue',

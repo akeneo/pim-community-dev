@@ -36,7 +36,7 @@ class InvalidDataItemConverter implements ArrayConverterInterface
         $convertedData = null;
 
         if ($data instanceof \DateTime) {
-            $convertedData = $data->format('Y-m-d H:i:s');
+            $convertedData = $data->format('Y-m-d');
         } elseif (is_array($data)) {
             if (count($data) !== count($data, COUNT_RECURSIVE)) {
                 throw new DataArrayConversionException(
