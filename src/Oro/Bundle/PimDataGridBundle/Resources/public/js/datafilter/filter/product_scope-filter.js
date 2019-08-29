@@ -18,6 +18,7 @@ define(
         'oro/datafilter/select-filter',
         'pim/user-context',
         'pim/datagrid/state',
+        'oro/app',
         'pim/template/datagrid/filter/scope-filter'
     ],
     function (
@@ -27,6 +28,7 @@ define(
         SelectFilter,
         UserContext,
         DatagridState,
+        app,
         template
     ) {
         'use strict';
