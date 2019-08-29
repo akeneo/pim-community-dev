@@ -3,19 +3,19 @@ import {isValueComplete} from 'akeneopimenrichmentassetmanager/enrich/domain/mod
 test('The value is complete when the family is null', () => {
   const value = {
     attribute: {
-        code: 'packshot',
-        labels: {
-          'en_US': 'Packshot'
-        },
-        group: 'marketing',
-        isReadOnly: false,
-        referenceDataName: 'packshot'
+      code: 'packshot',
+      labels: {
+        en_US: 'Packshot',
       },
-      locale: 'en_US',
-      channel: 'ecommerce',
-      data: ['iphone'],
-      editable: true
-  }
+      group: 'marketing',
+      isReadOnly: false,
+      referenceDataName: 'packshot',
+    },
+    locale: 'en_US',
+    channel: 'ecommerce',
+    data: ['iphone'],
+    editable: true,
+  };
   const channel = 'ecommerce';
 
   expect(isValueComplete(value, null, channel)).toEqual(true);
@@ -24,23 +24,23 @@ test('The value is complete when the family is null', () => {
 test('The value is complete when the required family attributes are not defined for the channel provided', () => {
   const value = {
     attribute: {
-        code: 'packshot',
-        labels: {
-          'en_US': 'Packshot'
-        },
-        group: 'marketing',
-        isReadOnly: false,
-        referenceDataName: 'packshot'
+      code: 'packshot',
+      labels: {
+        en_US: 'Packshot',
       },
-      locale: 'en_US',
-      channel: 'ecommerce',
-      data: ['iphone'],
-      editable: true
-  }
+      group: 'marketing',
+      isReadOnly: false,
+      referenceDataName: 'packshot',
+    },
+    locale: 'en_US',
+    channel: 'ecommerce',
+    data: ['iphone'],
+    editable: true,
+  };
   const family = {
     code: 'scanners',
-    attributeRequirements: {}
-  }
+    attributeRequirements: {},
+  };
   const channel = 'ecommerce';
 
   expect(isValueComplete(value, family, channel)).toEqual(true);
@@ -49,23 +49,23 @@ test('The value is complete when the required family attributes are not defined 
 test('The value is complete when the attribute code of the value is not a required family attribute', () => {
   const value = {
     attribute: {
-        code: 'packshot',
-        labels: {
-          'en_US': 'Packshot'
-        },
-        group: 'marketing',
-        isReadOnly: false,
-        referenceDataName: 'packshot'
+      code: 'packshot',
+      labels: {
+        en_US: 'Packshot',
       },
-      locale: 'en_US',
-      channel: 'ecommerce',
-      data: [],
-      editable: true
-  }
+      group: 'marketing',
+      isReadOnly: false,
+      referenceDataName: 'packshot',
+    },
+    locale: 'en_US',
+    channel: 'ecommerce',
+    data: [],
+    editable: true,
+  };
   const family = {
     code: 'scanners',
-    attributeRequirements: {'ecommerce': ['notices']}
-  }
+    attributeRequirements: {ecommerce: ['notices']},
+  };
   const channel = 'ecommerce';
 
   expect(isValueComplete(value, family, channel)).toEqual(true);
@@ -74,23 +74,23 @@ test('The value is complete when the attribute code of the value is not a requir
 test('The value is complete when the attribute code of the value is a required family attribute and has at least one data', () => {
   const value = {
     attribute: {
-        code: 'packshot',
-        labels: {
-          'en_US': 'Packshot'
-        },
-        group: 'marketing',
-        isReadOnly: false,
-        referenceDataName: 'packshot'
+      code: 'packshot',
+      labels: {
+        en_US: 'Packshot',
       },
-      locale: 'en_US',
-      channel: 'ecommerce',
-      data: ['iphone'],
-      editable: true
-  }
+      group: 'marketing',
+      isReadOnly: false,
+      referenceDataName: 'packshot',
+    },
+    locale: 'en_US',
+    channel: 'ecommerce',
+    data: ['iphone'],
+    editable: true,
+  };
   const family = {
     code: 'scanners',
-    attributeRequirements: {'ecommerce': ['packshot']}
-  }
+    attributeRequirements: {ecommerce: ['packshot']},
+  };
   const channel = 'ecommerce';
 
   expect(isValueComplete(value, family, channel)).toEqual(true);
@@ -99,23 +99,23 @@ test('The value is complete when the attribute code of the value is a required f
 test('The value is not complete when the attribute code of the value is a required family attribute and has no data', () => {
   const value = {
     attribute: {
-        code: 'packshot',
-        labels: {
-          'en_US': 'Packshot'
-        },
-        group: 'marketing',
-        isReadOnly: false,
-        referenceDataName: 'packshot'
+      code: 'packshot',
+      labels: {
+        en_US: 'Packshot',
       },
-      locale: 'en_US',
-      channel: 'ecommerce',
-      data: [],
-      editable: true
-  }
+      group: 'marketing',
+      isReadOnly: false,
+      referenceDataName: 'packshot',
+    },
+    locale: 'en_US',
+    channel: 'ecommerce',
+    data: [],
+    editable: true,
+  };
   const family = {
     code: 'scanners',
-    attributeRequirements: {'ecommerce': ['packshot']}
-  }
+    attributeRequirements: {ecommerce: ['packshot']},
+  };
   const channel = 'ecommerce';
 
   expect(isValueComplete(value, family, channel)).toEqual(false);

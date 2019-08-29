@@ -1,5 +1,6 @@
 import * as React from 'react'
-import {AssetFamilyIdentifier, Asset, getImage, isComplete, emptyAsset} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
+import {AssetFamilyIdentifier} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset-family';
+import {Asset, getImage, isComplete, emptyAsset} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';
 import {ChannelCode} from 'akeneopimenrichmentassetmanager/platform/model/channel/channel';
 import {LocaleCode} from 'akeneopimenrichmentassetmanager/platform/model/channel/locale';
@@ -10,7 +11,7 @@ import {getLabel} from 'pimui/js/i18n';
 import {Label} from 'akeneopimenrichmentassetmanager/platform/component/common/label';
 import AssetIllustration from 'akeneopimenrichmentassetmanager/platform/component/visual/illustration/asset';
 import __ from 'akeneoreferenceentity/tools/translator';
-import {getAssetFetcher} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/asset';
+import {fetchAssetCollection} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/asset';
 import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 
 const AssetCard = styled.div<{readonly: boolean}>`
@@ -73,10 +74,9 @@ export const AssetCollection = ({assetFamilyIdentifier, assetCodes, readonly, co
     return assets.length !== assetCodes.length || !assets.sort().every((asset: Asset, index: number) => assetCodes.sort().indexOf(asset.code) === index )
   }
 
-  const fetchAssetByCodes = getAssetFetcher(assetFetcher);
   React.useEffect(() => {
     if (assetCodes.length !== 0 && (noChangeInCollection(assetCodes, assets))) {
-      fetchAssetByCodes(assetFamilyIdentifier, assetCodes, context).then((receivedAssets: Asset[]) => {
+      fetchAssetCollection(assetFetcher)(assetFamilyIdentifier, assetCodes, context).then((receivedAssets: Asset[]) => {
         assetsReceived(receivedAssets);
       })
     }

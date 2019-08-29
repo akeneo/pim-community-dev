@@ -1,7 +1,10 @@
 import generate from 'akeneopimenrichmentassetmanager/assets-collection/application/value-generator';
 import {fetchAssetAttributes} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/attribute';
 import {fetchPermissions} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/permission';
-import {AttributeGroupPermission, LocalePermission} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/permission';
+import {
+  AttributeGroupPermission,
+  LocalePermission,
+} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/permission';
 import {AttributeCode} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
 import {CategoryCode} from 'akeneopimenrichmentassetmanager/enrich/domain/model/product';
 
@@ -14,7 +17,7 @@ test('It should generate a value collection from the product with all attributes
     code: 'marketing',
     view: true,
     edit: true,
-  }
+  };
   const localePermission = {
     code: 'en_US',
     view: true,
@@ -25,7 +28,9 @@ test('It should generate a value collection from the product with all attributes
   const categoriesEditPermission = ['scanners'];
 
   fetchAssetAttributes.mockImplementation(() => getMockAssetAttributes(isReadOnly));
-  fetchPermissions.mockImplementation(() => getMockPermissions(attributeGroupPermission, localePermission, categoriesEditPermission));
+  fetchPermissions.mockImplementation(() =>
+    getMockPermissions(attributeGroupPermission, localePermission, categoriesEditPermission)
+  );
   const product = getMockProduct(attributesForThisLevel);
   const expectedValueCollection = [
     {
@@ -69,7 +74,7 @@ test('It should generate a value collection from the product with an attribute g
     code: 'marketing',
     view: true,
     edit: false,
-  }
+  };
   const localePermission = {
     code: 'en_US',
     view: true,
@@ -80,7 +85,9 @@ test('It should generate a value collection from the product with an attribute g
   const categoriesEditPermission = ['scanners'];
 
   fetchAssetAttributes.mockImplementation(() => getMockAssetAttributes(isReadOnly));
-  fetchPermissions.mockImplementation(() => getMockPermissions(attributeGroupPermission, localePermission, categoriesEditPermission));
+  fetchPermissions.mockImplementation(() =>
+    getMockPermissions(attributeGroupPermission, localePermission, categoriesEditPermission)
+  );
   const product = getMockProduct(attributesForThisLevel);
   const expectedValueCollection = [
     {
@@ -124,7 +131,7 @@ test('It should generate a value collection from the product with a locale non e
     code: 'marketing',
     view: true,
     edit: true,
-  }
+  };
   const localePermission = {
     code: 'en_US',
     view: true,
@@ -135,7 +142,9 @@ test('It should generate a value collection from the product with a locale non e
   const categoriesEditPermission = ['scanners'];
 
   fetchAssetAttributes.mockImplementation(() => getMockAssetAttributes(isReadOnly));
-  fetchPermissions.mockImplementation(() => getMockPermissions(attributeGroupPermission, localePermission, categoriesEditPermission));
+  fetchPermissions.mockImplementation(() =>
+    getMockPermissions(attributeGroupPermission, localePermission, categoriesEditPermission)
+  );
   const product = getMockProduct(attributesForThisLevel);
   const expectedValueCollection = [
     {
@@ -168,7 +177,7 @@ test('It should generate a value collection from the product with a locale non e
       data: [],
       editable: true,
     },
-  ];;
+  ];
 
   const valueCollection = await generate(product);
   expect(valueCollection).toEqual(expectedValueCollection);
@@ -179,7 +188,7 @@ test('It should generate a value collection from the product with a read only at
     code: 'marketing',
     view: true,
     edit: true,
-  }
+  };
   const localePermission = {
     code: 'en_US',
     view: true,
@@ -190,7 +199,9 @@ test('It should generate a value collection from the product with a read only at
   const categoriesEditPermission = ['scanners'];
 
   fetchAssetAttributes.mockImplementation(() => getMockAssetAttributes(isReadOnly));
-  fetchPermissions.mockImplementation(() => getMockPermissions(attributeGroupPermission, localePermission, categoriesEditPermission));
+  fetchPermissions.mockImplementation(() =>
+    getMockPermissions(attributeGroupPermission, localePermission, categoriesEditPermission)
+  );
   const product = getMockProduct(attributesForThisLevel);
   const expectedValueCollection = [
     {
@@ -234,7 +245,7 @@ test('It should generate a value collection from the product with a non editable
     code: 'marketing',
     view: true,
     edit: true,
-  }
+  };
   const localePermission = {
     code: 'en_US',
     view: true,
@@ -245,7 +256,9 @@ test('It should generate a value collection from the product with a non editable
   const categoriesEditPermission = ['scanners'];
 
   fetchAssetAttributes.mockImplementation(() => getMockAssetAttributes(isReadOnly));
-  fetchPermissions.mockImplementation(() => getMockPermissions(attributeGroupPermission, localePermission, categoriesEditPermission));
+  fetchPermissions.mockImplementation(() =>
+    getMockPermissions(attributeGroupPermission, localePermission, categoriesEditPermission)
+  );
   const product = getMockProduct(attributesForThisLevel);
   const expectedValueCollection = [
     {
@@ -289,7 +302,7 @@ test('It should generate a value collection from the product with a non editable
     code: 'marketing',
     view: true,
     edit: true,
-  }
+  };
   const localePermission = {
     code: 'en_US',
     view: true,
@@ -300,7 +313,9 @@ test('It should generate a value collection from the product with a non editable
   const categoriesEditPermission = [];
 
   fetchAssetAttributes.mockImplementation(() => getMockAssetAttributes(isReadOnly));
-  fetchPermissions.mockImplementation(() => getMockPermissions(attributeGroupPermission, localePermission, categoriesEditPermission));
+  fetchPermissions.mockImplementation(() =>
+    getMockPermissions(attributeGroupPermission, localePermission, categoriesEditPermission)
+  );
   const product = getMockProduct(attributesForThisLevel);
   const expectedValueCollection = [
     {
@@ -360,9 +375,13 @@ const getMockAssetAttributes = (isReadOnly: boolean) => {
       referenceDataName: 'notices',
     },
   ];
-}
+};
 
-const getMockPermissions = (attributeGroupPermission: AttributeGroupPermission, localePermission: LocalePermission, categoriesEditPermission: CategoryCode[]) => {
+const getMockPermissions = (
+  attributeGroupPermission: AttributeGroupPermission,
+  localePermission: LocalePermission,
+  categoriesEditPermission: CategoryCode[]
+) => {
   return {
     attributeGroups: [attributeGroupPermission],
     locales: [localePermission],
@@ -370,7 +389,7 @@ const getMockPermissions = (attributeGroupPermission: AttributeGroupPermission, 
       EDIT_ITEMS: categoriesEditPermission,
     },
   };
-}
+};
 
 const getMockProduct = (attributesForThisLevel: AttributeCode[]) => {
   return {
@@ -408,4 +427,4 @@ const getMockProduct = (attributesForThisLevel: AttributeCode[]) => {
     },
     categories: ['scanners', 'xerox'],
   };
-}
+};

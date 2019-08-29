@@ -1,4 +1,10 @@
-import {contextReducer, localeUpdated, channelUpdated, selectContext, selectCurrentLocale} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
+import {
+  contextReducer,
+  localeUpdated,
+  channelUpdated,
+  selectContext,
+  selectCurrentLocale,
+} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
 
 describe('akeneo > enrichment > asset collection > reducer > context', () => {
   test('It ignore other commands', () => {
@@ -22,7 +28,7 @@ describe('akeneo > enrichment > asset collection > reducer > context', () => {
     const state = {locale: '', channel: ''};
     const newState = contextReducer(state, {
       type: 'LOCALE_UPDATED',
-      locale: 'en_US'
+      locale: 'en_US',
     });
 
     expect(newState).toMatchObject({locale: 'en_US', channel: ''});
@@ -32,38 +38,38 @@ describe('akeneo > enrichment > asset collection > reducer > context', () => {
     const state = {locale: '', channel: ''};
     const newState = contextReducer(state, {
       type: 'CHANNEL_UPDATED',
-      channel: 'ecommerce'
+      channel: 'ecommerce',
     });
 
     expect(newState).toMatchObject({locale: '', channel: 'ecommerce'});
   });
 
   test('It should have an action to update the locale', () => {
-    const locale = 'en_US'
+    const locale = 'en_US';
     const expectedAction = {
       type: 'LOCALE_UPDATED',
-      locale
-    }
+      locale,
+    };
 
-    expect(localeUpdated(locale)).toMatchObject(expectedAction)
+    expect(localeUpdated(locale)).toMatchObject(expectedAction);
   });
 
   test('It should have an action to update the channel', () => {
-    const channel = 'ecommerce'
+    const channel = 'ecommerce';
     const expectedAction = {
       type: 'CHANNEL_UPDATED',
-      channel
-    }
+      channel,
+    };
 
-    expect(channelUpdated(channel)).toMatchObject(expectedAction)
+    expect(channelUpdated(channel)).toMatchObject(expectedAction);
   });
 
   test('It should be able to select the context from the state', () => {
     const state = {
       context: {channel: 'ecommerce', locale: 'en_US'},
       structure: {attributes: [], channels: [], family: null},
-      values: []
-    }
+      values: [],
+    };
     const expectedContext = {channel: 'ecommerce', locale: 'en_US'};
 
     expect(selectContext(state)).toMatchObject(expectedContext);
@@ -73,10 +79,10 @@ describe('akeneo > enrichment > asset collection > reducer > context', () => {
     const state = {
       context: {channel: 'ecommerce', locale: 'en_US'},
       structure: {attributes: [], channels: [], family: null},
-      values: []
-    }
+      values: [],
+    };
     const expectedCurrentLocale = 'en_US';
-    
+
     expect(selectCurrentLocale(state)).toEqual(expectedCurrentLocale);
   });
 });

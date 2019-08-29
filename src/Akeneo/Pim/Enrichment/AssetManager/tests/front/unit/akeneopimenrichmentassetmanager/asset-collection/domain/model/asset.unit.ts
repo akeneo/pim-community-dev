@@ -1,4 +1,9 @@
-import {getImage, isComplete, emptyAsset, isLabels} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
+import {
+  getImage,
+  isComplete,
+  emptyAsset,
+  isLabels,
+} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 
 test('It should get the image from the asset', () => {
   const image = '/rest/asset/image/thumbnail/iphone.jpg';
@@ -9,17 +14,17 @@ test('It should get the image from the asset', () => {
     assetFamily: {
       identifier: 'packshot',
       code: 'packshot',
-      labels: {'en_US': 'Packshot'},
+      labels: {en_US: 'Packshot'},
       image: null,
       attributeAsLabel: null,
-      attributeAsImage: null
+      attributeAsImage: null,
     },
-    labels: {'en_US': 'Iphone'},
+    labels: {en_US: 'Iphone'},
     completeness: {
       complete: 2,
-      required: 3
-    }
-  }
+      required: 3,
+    },
+  };
 
   expect(getImage(asset)).toEqual(image);
 });
@@ -33,13 +38,13 @@ test('The asset is complete', () => {
     assetFamily: {
       identifier: 'packshot',
       code: 'packshot',
-      labels: {'en_US': 'Packshot'},
+      labels: {en_US: 'Packshot'},
       image: null,
       attributeAsLabel: null,
-      attributeAsImage: null
+      attributeAsImage: null,
     },
-    labels: {'en_US': 'Iphone'},
-    completeness: complete
+    labels: {en_US: 'Iphone'},
+    completeness: complete,
   };
 
   expect(isComplete(asset)).toEqual(true);
@@ -54,13 +59,13 @@ test('The asset is incomplete', () => {
     assetFamily: {
       identifier: 'packshot',
       code: 'packshot',
-      labels: {'en_US': 'Packshot'},
+      labels: {en_US: 'Packshot'},
       image: null,
       attributeAsLabel: null,
-      attributeAsImage: null
+      attributeAsImage: null,
     },
-    labels: {'en_US': 'Iphone'},
-    completeness: incomplete
+    labels: {en_US: 'Iphone'},
+    completeness: incomplete,
   };
 
   expect(isComplete(asset)).toEqual(false);
@@ -80,14 +85,14 @@ test('It could return an empty asset', () => {
         originalFilename: '',
       },
       attributeAsLabel: '',
-      attributeAsImage: ''
+      attributeAsImage: '',
     },
     labels: {},
     completeness: {
       complete: 0,
-      required: 0
-    }
-  }
+      required: 0,
+    },
+  };
 
   expect(emptyAsset()).toMatchObject(asset);
 });
@@ -97,9 +102,9 @@ test('It could validate if the label object is well formated', () => {
   expect(isLabels(stringLabel)).toEqual(false);
   expect(isLabels(undefined)).toEqual(false);
 
-  const wrongFormatedLabels = {'en_US': 123};
+  const wrongFormatedLabels = {en_US: 123};
   expect(isLabels(wrongFormatedLabels)).toEqual(false);
 
-  const labels = {'en_US': 'Packshot'};
+  const labels = {en_US: 'Packshot'};
   expect(isLabels(labels)).toEqual(true);
 });

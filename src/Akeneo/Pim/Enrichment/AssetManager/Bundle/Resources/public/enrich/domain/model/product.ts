@@ -11,12 +11,12 @@ type LocaleCompleteness = {
   };
 };
 
-type ChannelCompteness = {
+type ChannelCompleteness = {
   channel: ChannelCode;
   labels: Labels;
   locales: {[key: string]: LocaleCompleteness};
 };
-export type Completeness = ChannelCompteness[];
+export type Completeness = ChannelCompleteness[];
 
 export type Meta = {
   attributes_for_this_level: AttributeCode[];

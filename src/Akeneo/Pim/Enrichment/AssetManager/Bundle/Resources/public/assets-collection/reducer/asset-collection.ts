@@ -13,5 +13,4 @@ export const assetCollectionReducer = combineReducers({
   context: contextReducer,
   structure: structureReducer,
   values: valuesReducer,
-  //errors: errorsReducer
 });

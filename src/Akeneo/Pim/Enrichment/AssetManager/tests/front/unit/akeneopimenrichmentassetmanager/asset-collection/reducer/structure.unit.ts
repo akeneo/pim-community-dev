@@ -279,7 +279,7 @@ test('It should be able to dispatch an action to update the channels', async () 
   ];
   const dispatch = jest.fn();
   fetchChannels.mockImplementation(() => channels);
-  
+
   await updateChannels()(dispatch);
   expect(dispatch).toBeCalledWith({type: 'CHANNEL_LIST_UPDATED', channels})
 });

@@ -11,7 +11,6 @@ export type StructureState = {
   attributes: Attribute[];
   channels: Channel[];
   family: Family | null;
-  //ruleRelations: RuleRelation[]
 };
 
 // Reducer

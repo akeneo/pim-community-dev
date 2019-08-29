@@ -1,35 +1,13 @@
 import {Labels} from 'akeneopimenrichmentassetmanager/platform/model/label';
-import {NormalizedFile} from 'akeneoassetmanager/domain/model/file';
 import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';
 import {NormalizedCompleteness} from 'akeneoassetmanager/domain/model/asset/completeness';
+import {AssetFamily, emptyAssetFamily} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset-family';
 
-export type AssetFamilyIdentifier = string;
 export type AssetIdentifier = string;
 
-type AssetFamilyCode = string;
-type AttributeIdentifier = string;
 type Image = string;
 export type Completeness = NormalizedCompleteness;
 
-const emptyAssetFamily = (): AssetFamily => ({
-  identifier: '',
-  code: '',
-  image: {
-    filePath: '',
-    originalFilename: '',
-  },
-  labels: {},
-  attributeAsLabel: '',
-  attributeAsImage: '',
-});
-export type AssetFamily = {
-  identifier: AssetFamilyIdentifier;
-  code: AssetFamilyCode;
-  labels: Labels;
-  image: NormalizedFile;
-  attributeAsLabel: AttributeIdentifier;
-  attributeAsImage: AttributeIdentifier;
-};
 export type Asset = {
   identifier: AssetIdentifier;
   code: AssetCode;
