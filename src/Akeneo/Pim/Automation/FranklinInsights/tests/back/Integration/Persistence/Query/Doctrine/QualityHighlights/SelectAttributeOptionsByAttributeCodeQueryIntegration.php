@@ -53,6 +53,7 @@ class SelectAttributeOptionsByAttributeCodeQueryIntegration extends TestCase
         $attribute = $this->createAttribute('color');
         $this->createBlueAttributeOption($attribute);
         $this->createRedAttributeOption($attribute);
+        $this->createGreenAttributeOption($attribute);
 
         $options = $this->query->execute('color');
 
@@ -82,6 +83,10 @@ class SelectAttributeOptionsByAttributeCodeQueryIntegration extends TestCase
                         'label' => 'Rouge',
                     ],
                 ],
+            ],
+            [
+                'code' => 'green',
+                'labels' => [],
             ],
         ];
 
@@ -122,6 +127,17 @@ class SelectAttributeOptionsByAttributeCodeQueryIntegration extends TestCase
         $attributeOption->setAttribute($attribute);
         $attributeOption->addOptionValue($optionValueEn);
         $attributeOption->addOptionValue($optionValueFr);
+
+        $this->attributeOptionSaver->save($attributeOption);
+
+        return $attributeOption;
+    }
+
+    private function createGreenAttributeOption(AttributeInterface $attribute): AttributeOption
+    {
+        $attributeOption = new AttributeOption();
+        $attributeOption->setCode('green');
+        $attributeOption->setAttribute($attribute);
 
         $this->attributeOptionSaver->save($attributeOption);
 

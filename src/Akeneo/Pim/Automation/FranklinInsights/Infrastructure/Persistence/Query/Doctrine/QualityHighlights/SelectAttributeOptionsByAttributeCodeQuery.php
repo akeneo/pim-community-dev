@@ -48,20 +48,25 @@ SQL;
         return array_map(function (array $row) {
             return [
                 'code' => $row['code'],
-                'labels' => $this->buildLabelsFromjsonString($row['labels']),
+                'labels' => $this->buildLabelsFromJsonString($row['labels']),
             ];
         }, $results);
     }
 
-    private function buildLabelsFromjsonString(string $labels): array
+    private function buildLabelsFromJsonString(?string $labelsJson): array
     {
-        $translations = json_decode($labels, true);
+        $labels = [];
 
-        return array_map(function ($label, $locale) {
-            return [
-                'locale' => $locale,
-                'label' => $label,
-            ];
-        }, $translations, array_keys($translations));
+        if (! empty($labelsJson)) {
+            $translations = json_decode($labelsJson, true);
+            $labels = array_map(function ($label, $locale) {
+                return [
+                    'locale' => $locale,
+                    'label' => $label,
+                ];
+            }, $translations, array_keys($translations));
+        }
+
+        return $labels;
     }
 }
