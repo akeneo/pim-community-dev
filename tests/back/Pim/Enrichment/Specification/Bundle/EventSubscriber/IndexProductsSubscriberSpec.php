@@ -64,7 +64,7 @@ class IndexProductsSubscriberSpec extends ObjectBehavior
     function it_delete_product_from_elasticsearch_index($indexer, RemoveEvent $event, ProductInterface $product)
     {
         $event->getSubject()->willReturn($product);
-        $product->getId()->willReturn(40);
+        $event->getSubjectId()->willReturn('40');
 
         $indexer->removeFromProductId('40')->shouldBeCalled();
 

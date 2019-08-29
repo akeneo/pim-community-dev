@@ -113,10 +113,7 @@ class ProductIndexer implements ProductIndexerInterface
      */
     public function removeFromProductId(string $productId, array $options = []): void
     {
-        $this->productAndProductModelClient->delete(
-            self::INDEX_TYPE,
-            self::PRODUCT_IDENTIFIER_PREFIX . (string) $productId
-        );
+        $this->productAndProductModelClient->delete(self::INDEX_TYPE, self::PRODUCT_IDENTIFIER_PREFIX . $productId);
     }
 
     /**
