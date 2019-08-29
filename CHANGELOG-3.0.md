@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-8978: Fix the double loading of the product grid after login
+
 # 3.0.39 (2019-08-28)
 
 ## Bug fixes
