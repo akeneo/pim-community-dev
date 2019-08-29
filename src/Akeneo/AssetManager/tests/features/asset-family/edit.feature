@@ -56,6 +56,12 @@ Feature: Edit an asset family
     Then there is an asset family with a product link rule
 
   @acceptance-back
+  Scenario: Updating an asset family with a product link rule having a dynamic product selection field referencing an unsupported attribute type
+    Given an asset family with no product link rules and an image attribute
+    When the user updates this asset family with a dynamic product link rule having a product selection field which references an attribute having an unsupported attribute type
+    Then there should be a validation error with message 'A product selection field can only be extrapolated by text attributes'
+
+  @acceptance-back
   Scenario: Updating an asset family with a product link rule having a dynamic product selection value
     Given an asset family with no product link rules and a text attribute
     When the user updates this asset family with a dynamic product link rule having a product selection value which references this text attribute
