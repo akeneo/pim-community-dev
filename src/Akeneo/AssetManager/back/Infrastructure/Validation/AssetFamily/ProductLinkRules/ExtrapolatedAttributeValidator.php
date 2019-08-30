@@ -27,10 +27,7 @@ class ExtrapolatedAttributeValidator
     /** @var GetAttributeTypeInterface */
     private $getAttributeType;
 
-    public function __construct(
-        AttributeExistsInterface $attributeExists,
-        GetAttributeTypeInterface $getAttributeType
-    )
+    public function __construct(AttributeExistsInterface $attributeExists, GetAttributeTypeInterface $getAttributeType)
     {
         $this->attributeExists = $attributeExists;
         $this->getAttributeType = $getAttributeType;
@@ -41,13 +38,16 @@ class ExtrapolatedAttributeValidator
         string $assetFamilyIdentifier,
         array $supportedTypes
     ): ConstraintViolationListInterface {
-        $violations = new ConstraintViolationList();
+        $allViolations = new ConstraintViolationList();
         $fieldAttributeCodes = ReplacePattern::detectPatterns($fieldValue);
         foreach ($fieldAttributeCodes as $fieldAttributeCode) {
-            $violations->addAll($this->checkAttributeExists($assetFamilyIdentifier, $fieldAttributeCode));
-            $violations->addAll(
-                $this->checkAttributeTypeIsSupported($assetFamilyIdentifier, $fieldAttributeCode, $supportedTypes)
-            );
+            $violations = $this->checkAttributeExists($assetFamilyIdentifier, $fieldAttributeCode);
+            if (0 === $violations->count()) {
+                $allViolations->addAll(
+                    $this->checkAttributeTypeIsSupported($assetFamilyIdentifier, $fieldAttributeCode, $supportedTypes)
+                );
+            }
+            $allViolations->addAll($violations);
         }
 
         return $violations;
@@ -111,8 +111,7 @@ class ExtrapolatedAttributeValidator
                         )
                         ->addViolation();
                 }
-            }
-            )
+            })
         );
     }
 }
