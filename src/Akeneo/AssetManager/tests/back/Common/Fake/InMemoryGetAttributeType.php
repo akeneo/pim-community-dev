@@ -18,12 +18,14 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeExistsInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\GetAttributeTypeInterface;
+use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class InMemoryAttributeExists implements AttributeExistsInterface
+class InMemoryGetAttributeType implements GetAttributeTypeInterface
 {
     /** @var InMemoryAttributeRepository */
     private $attributeRepository;
@@ -33,48 +35,19 @@ class InMemoryAttributeExists implements AttributeExistsInterface
         $this->attributeRepository = $attributeRepository;
     }
 
-    public function withIdentifier(AttributeIdentifier $identifier): bool
+    public function fetch(AssetFamilyIdentifier $assetFamilyIdentifier, AttributeCode $attributeCode): string
     {
         $attributes = $this->attributeRepository->getAttributes();
-        $found = false;
 
-        foreach ($attributes as $attribute) {
-            if ($attribute->getIdentifier()->equals($identifier)) {
-                $found = true;
-            }
-        }
-
-        return $found;
-    }
-
-    public function withAssetFamilyAndCode(AssetFamilyIdentifier $assetFamilyIdentifier, AttributeCode $attributeCode): bool
-    {
-        $attributes = $this->attributeRepository->getAttributes();
         foreach ($attributes as $attribute) {
             $sameAssetFamily = $attribute->getAssetFamilyIdentifier()->equals($assetFamilyIdentifier);
             $sameCode = $attribute->getCode()->equals($attributeCode);
 
             if ($sameAssetFamily && $sameCode) {
-                return true;
+                return $attribute->getType();
             }
         }
 
-        return false;
-    }
-
-    public function withAssetFamilyIdentifierAndOrder(
-        AssetFamilyIdentifier $assetFamilyIdentifier,
-        AttributeOrder $order
-    ): bool {
-        $attributes = $this->attributeRepository->getAttributes();
-        foreach ($attributes as $attribute) {
-            if ((string) $assetFamilyIdentifier === (string) $attribute->getAssetFamilyIdentifier() &&
-                $attribute->hasOrder($order)
-            ) {
-                return true;
-            }
-        }
-
-        return false;
+        throw AttributeNotFoundException::withAssetFamilyAndAttributeCode($assetFamilyIdentifier, $attributeCode);
     }
 }

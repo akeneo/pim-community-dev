@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Domain\Repository;
 
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 
 /**
@@ -25,6 +27,13 @@ class AttributeNotFoundException extends \RuntimeException
     public static function withIdentifier(AttributeIdentifier $identifier): self
     {
         $message = sprintf('Could not find attribute with identifier "%s"', $identifier);
+
+        return new self($message);
+    }
+
+    public static function withAssetFamilyAndAttributeCode(AssetFamilyIdentifier $assetFamilyIdentifier, AttributeCode $attributeCode): self
+    {
+        $message = sprintf('Could not find attribute for asset family "%s" and attribute code "%s"', $assetFamilyIdentifier, $attributeCode);
 
         return new self($message);
     }
