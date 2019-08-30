@@ -21,6 +21,11 @@ const Filter = async (nodeElement) => {
     return matchingChoice;
   }
 
+  const remove = async () => {
+    const closeButton = await nodeElement.$('.AknFilterBox-disableFilter')
+    await closeButton.click()
+  }
+
   const setValue = async (operator, value) => {
     await nodeElement.click()
 
@@ -40,7 +45,7 @@ const Filter = async (nodeElement) => {
     await updateButton.click();
   }
 
-  return { getName, setValue };
+  return { getName, setValue, remove };
 };
 
 module.exports = Filter;

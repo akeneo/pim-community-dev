@@ -28,6 +28,14 @@ const FilterList = async (nodeElement, createElementDecorator, parent) => {
     return matchingFilter;
   }
 
+  const resetFilters = async (filters) => {
+    for (let i = 0; i < filters.length; i++) {
+      const getChildren = createElementDecorator(children);
+      const matchingFilter = await getMatchingFilter(await getChildren(parent, 'Filter'), filters[i])
+      await matchingFilter.remove();
+    }
+  }
+
   const setFilterValue = async (name, operator, value) =>  {
     const getChildren = createElementDecorator(children);
     const matchingFilter = await getMatchingFilter(await getChildren(parent, 'Filter'), name)
@@ -35,7 +43,7 @@ const FilterList = async (nodeElement, createElementDecorator, parent) => {
     await parent.waitFor(100);
   }
 
-  return { setFilterValue };
+  return { setFilterValue, resetFilters };
 };
 
 module.exports = FilterList;
