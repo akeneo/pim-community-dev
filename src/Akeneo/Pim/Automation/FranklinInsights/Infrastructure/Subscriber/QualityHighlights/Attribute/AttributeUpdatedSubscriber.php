@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Quali
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -50,6 +51,10 @@ class AttributeUpdatedSubscriber implements EventSubscriberInterface
             return;
         }
 
+        if (! $this->isTypeSupported($attribute)) {
+            return;
+        }
+
         if (!$this->isFranklinInsightsActivated()) {
             return;
         }
@@ -62,7 +67,7 @@ class AttributeUpdatedSubscriber implements EventSubscriberInterface
         $attributes = $event->getSubject();
         $attributeCodes = [];
         foreach ($attributes as $attribute) {
-            if ($attribute instanceof AttributeInterface) {
+            if ($attribute instanceof AttributeInterface && $this->isTypeSupported($attribute)) {
                 $attributeCodes[] = $attribute->getCode();
             }
         }
@@ -85,5 +90,10 @@ class AttributeUpdatedSubscriber implements EventSubscriberInterface
         $connectionStatus = $this->connectionStatusHandler->handle(new GetConnectionStatusQuery(false));
 
         return $connectionStatus->isActive();
+    }
+
+    private function isTypeSupported(AttributeInterface $attribute): bool
+    {
+        return array_key_exists($attribute->getType(), AttributeMapping::AUTHORIZED_ATTRIBUTE_TYPE_MAPPINGS);
     }
 }

@@ -8,6 +8,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetCo
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
@@ -44,6 +45,18 @@ class AttributeUpdatedSubscriberSpec extends ObjectBehavior
         $this->onSave($event);
     }
 
+    public function it_is_only_applied_if_attribute_type_is_handled(
+        GenericEvent $event,
+        AttributeInterface $attribute,
+        $connectionStatusHandler
+    ): void {
+        $event->getSubject()->willReturn($attribute);
+        $attribute->getType()->willReturn(AttributeTypes::PRICE_COLLECTION);
+        $connectionStatusHandler->handle(Argument::any())->shouldNotBeCalled();
+
+        $this->onSave($event);
+    }
+
     public function it_is_only_applied_on_post_save_when_franklin_insights_is_activated(
         GenericEvent $event,
         AttributeInterface $attribute,
@@ -51,6 +64,7 @@ class AttributeUpdatedSubscriberSpec extends ObjectBehavior
         $pendingItemsRepository
     ): void {
         $event->getSubject()->willReturn($attribute);
+        $attribute->getType()->willReturn(AttributeTypes::TEXT);
 
         $connectionStatus = new ConnectionStatus(false, false, false, 0);
         $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
@@ -66,6 +80,7 @@ class AttributeUpdatedSubscriberSpec extends ObjectBehavior
         $pendingItemsRepository
     ): void {
         $attribute->getCode()->willReturn('size');
+        $attribute->getType()->willReturn(AttributeTypes::TEXT);
         $event->getSubject()->willReturn($attribute);
 
         $connectionStatus = new ConnectionStatus(true, false, false, 0);
@@ -83,7 +98,9 @@ class AttributeUpdatedSubscriberSpec extends ObjectBehavior
         $pendingItemsRepository
     ): void {
         $attribute1->getCode()->willReturn('size');
+        $attribute1->getType()->willReturn(AttributeTypes::TEXT);
         $attribute2->getCode()->willReturn('weight');
+        $attribute2->getType()->willReturn(AttributeTypes::TEXT);
         $event->getSubject()->willReturn([$attribute1, $attribute2]);
 
         $connectionStatus = new ConnectionStatus(true, false, false, 0);

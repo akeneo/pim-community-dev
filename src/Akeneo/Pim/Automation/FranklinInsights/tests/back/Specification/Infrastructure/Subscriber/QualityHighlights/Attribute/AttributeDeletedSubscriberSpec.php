@@ -8,6 +8,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetCo
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
@@ -42,6 +43,18 @@ class AttributeDeletedSubscriberSpec extends ObjectBehavior
         $this->onPostRemove($event);
     }
 
+    public function it_is_only_applied_if_attribute_type_is_handled(
+        GenericEvent $event,
+        AttributeInterface $attribute,
+        $connectionStatusHandler
+    ): void {
+        $event->getSubject()->willReturn($attribute);
+        $attribute->getType()->willReturn(AttributeTypes::PRICE_COLLECTION);
+        $connectionStatusHandler->handle(Argument::any())->shouldNotBeCalled();
+
+        $this->onPostRemove($event);
+    }
+
     public function it_is_only_applied_when_franklin_insights_is_activated(
         GenericEvent $event,
         AttributeInterface $attribute,
@@ -49,6 +62,7 @@ class AttributeDeletedSubscriberSpec extends ObjectBehavior
         $pendingItemsRepository
     ): void {
         $event->getSubject()->willReturn($attribute);
+        $attribute->getType()->willReturn(AttributeTypes::TEXT);
 
         $connectionStatus = new ConnectionStatus(false, false, false, 0);
         $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
@@ -64,6 +78,7 @@ class AttributeDeletedSubscriberSpec extends ObjectBehavior
         $pendingItemsRepository
     ): void {
         $attribute->getCode()->willReturn('size');
+        $attribute->getType()->willReturn(AttributeTypes::TEXT);
         $event->getSubject()->willReturn($attribute);
 
         $connectionStatus = new ConnectionStatus(true, false, false, 0);
