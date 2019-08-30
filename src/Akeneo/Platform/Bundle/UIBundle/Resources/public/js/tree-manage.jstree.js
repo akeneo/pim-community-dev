@@ -20,7 +20,7 @@ define(
             }
             var selectedNode       = $el.attr('data-node-id') || -1;
             var selectedTree       = $el.attr('data-tree-id') || -1;
-            var selectedNodeOrTree = selectedNode in [0, -1] ? selectedTree : selectedNode;
+            var selectedNodeOrTree = [0, -1].indexOf(selectedNode) !== -1 ? selectedTree : selectedNode;
             var preventFirst       = selectedNode > 0;
             var loadingMask        = new LoadingMask();
 
