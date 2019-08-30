@@ -64,6 +64,7 @@ pim_common:
     properties: Properties
     name: Name
     remove: Remove
+    code: Code
 
 pim_enrich:
     # ACLs
