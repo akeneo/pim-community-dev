@@ -93,6 +93,7 @@ class ProductSelectionsValidator
     ): ConstraintViolationListInterface {
         $violations = $this->checkField($productSelection, $assetFamilyIdentifier);
         $violations->addAll($this->checkValue($productSelection, $assetFamilyIdentifier));
+        $violations->addAll($this->checkChannel($productSelection, $assetFamilyIdentifier));
 
         return $violations;
     }
@@ -117,17 +118,35 @@ class ProductSelectionsValidator
     {
         $violations = new ConstraintViolationList();
         ReplacePattern::detectPatterns($productSelection['value']);
-        $fieldAttributeCodes = ReplacePattern::detectPatterns($productSelection['value']);
-        foreach ($fieldAttributeCodes as $fieldAttributeCode) {
-            $violations->addAll($this->checkAttributeExists($assetFamilyIdentifier, $fieldAttributeCode));
+        $valueAttributeCodes = ReplacePattern::detectPatterns($productSelection['value']);
+        foreach ($valueAttributeCodes as $valueAttributeCode) {
+            $violations->addAll($this->checkAttributeExists($assetFamilyIdentifier, $valueAttributeCode));
             $violations->addAll($this->checkAttributeTypeIsSupported(
                 $assetFamilyIdentifier,
-                $fieldAttributeCode,
+                $valueAttributeCode,
                 [
                     TextAttribute::ATTRIBUTE_TYPE,
                     OptionAttribute::ATTRIBUTE_TYPE,
                     OptionCollectionAttribute::ATTRIBUTE_TYPE
                 ]
+            )
+            );
+        }
+
+        return $violations;
+    }
+
+    private function checkChannel(array $productSelection, string $assetFamilyIdentifier)
+    {
+        $violations = new ConstraintViolationList();
+        ReplacePattern::detectPatterns($productSelection['value']);
+        $channelAttributeCodes = ReplacePattern::detectPatterns($productSelection['channel']);
+        foreach ($channelAttributeCodes as $channelAttributeCode) {
+            $violations->addAll($this->checkAttributeExists($assetFamilyIdentifier, $channelAttributeCode));
+            $violations->addAll($this->checkAttributeTypeIsSupported(
+                $assetFamilyIdentifier,
+                $channelAttributeCode,
+                [TextAttribute::ATTRIBUTE_TYPE]
             )
             );
         }

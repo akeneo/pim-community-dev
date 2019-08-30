@@ -43,71 +43,12 @@ Feature: Edit an asset family
       | "/path/image.jpg" | false          | This value should not be blank.      |
       | "/path/image.jpg" | 150            | This value should be of type string. |
 
+  # Product link rules
   @acceptance-back
   Scenario: Updating an asset family to set a collection of static rule templates
     Given an empty rule template collection on the asset family 'packshot'
     When the user updates the asset family 'packshot' to set a collection of rule templates
     Then the asset family 'packshot' should have the collection of rule templates
-
-  @acceptance-back
-  Scenario: Updating an asset family with a product link rule having a dynamic product selection field
-    Given an asset family with no product link rules and a text attribute
-    When the user updates this asset family with a dynamic product link rule having a product selection field which references this text attribute
-    Then there is an asset family with a product link rule
-
-  @acceptance-back
-  Scenario: Updating an asset family with a product link rule having a dynamic product selection field referencing an unsupported attribute type
-    Given an asset family with no product link rules and an image attribute
-    When the user updates this asset family with a dynamic product link rule having a product selection field which references an attribute having an unsupported attribute type
-    Then there should be a validation error stating that the product selection field does not support extrapolated image attribute
-
-  @acceptance-back
-  Scenario: Updating an asset family with a product link rule having a dynamic product selection value
-    Given an asset family with no product link rules and a text attribute
-    When the user updates this asset family with a dynamic product link rule having a product selection value which references this text attribute
-    Then there is an asset family with a product link rule
-
-  @acceptance-back
-  Scenario: Updating an asset family with a product link rule having a dynamic product selection value which references a single option attribute
-    Given an asset family with no product link rules and a single option attribute
-    When the user updates this asset family with a dynamic product link rule having a product selection value which references this single option attribute
-    Then there is an asset family with a product link rule
-
-  @acceptance-back
-  Scenario: Updating an asset family with a product link rule having a dynamic product selection value which references a multiple option attribute
-    Given an asset family with no product link rules and a multiple option attribute
-    When the user updates this asset family with a dynamic product link rule having a product selection value which references this multiple option attribute
-    Then there is an asset family with a product link rule
-
-  @acceptance-back
-  Scenario: Updating an asset family with a product link rule having a dynamic product selection channel
-    Given an asset family with no product link rules and a text attribute
-    When the user updates this asset family with a dynamic product link rule having a product selection channel this text attribute
-    Then there is an asset family with a product link rule
-
-  @acceptance-back
-  Scenario: Updating an asset family with a product link rule having a dynamic product selection locale
-    Given an asset family with no product link rules and a text attribute
-    When the user updates this asset family with a dynamic product link rule having a product selection locale which references this text attribute
-    Then there is an asset family with a product link rule
-
-  @acceptance-back
-  Scenario: Updating an asset family with a product link rule having a dynamic assignment attribute
-    Given an asset family with no product link rules and a text attribute
-    When the user updates this asset family with a dynamic product link rule having a dynamic assignment value which references this text attribute
-    Then there is an asset family with a product link rule
-
-  @acceptance-back
-  Scenario: Updating an asset family with a product link rule having a dynamic assignment channel
-    Given an asset family with no product link rules and a text attribute
-    When the user updates this asset family with a dynamic product link rule having a dynamic assignment channel which references this text attribute
-    Then there is an asset family with a product link rule
-
-  @acceptance-back
-  Scenario: Updating an asset family with a product link rule having a dynamic assignment locale
-    Given an asset family with no product link rules and a text attribute
-    When the user updates this asset family with a dynamic product link rule having a dynamic assignment locale which references this text attribute
-    Then there is an asset family with a product link rule
 
   @acceptance-back
   Scenario: Cannot update an asset family if there is no product selections
@@ -129,6 +70,85 @@ Feature: Edit an asset family
   Scenario: Cannot update an asset family if one of the product link rule is not executable by the rule engine
     When the user updates the asset family 'packshot' with a product link rule not executable by the rule engine
     Then there should be a validation error stating why the rule engine cannot execute the product link rule
+
+  # Product selection field
+  @acceptance-back @nominal
+  Scenario: Updating an asset family with a product link rule having a dynamic product selection field
+    Given an asset family with no product link rules and a text attribute
+    When the user updates this asset family with a dynamic product link rule having a product selection field which references this text attribute
+    Then there is an asset family with a product link rule
+
+  @acceptance-back @error
+  Scenario: Updating an asset family with a product link rule having a dynamic product selection field referencing an unsupported attribute type
+    Given an asset family with no product link rules and an image attribute
+    When the user updates this asset family with a dynamic product link rule having a product selection field which references an attribute having an unsupported attribute type
+    Then there should be a validation error stating that the product selection field does not support extrapolated image attribute
+
+  # Product selection value
+  @acceptance-back @nominal
+  Scenario: Updating an asset family with a product link rule having a dynamic product selection value
+    Given an asset family with no product link rules and a text attribute
+    When the user updates this asset family with a dynamic product link rule having a product selection value which references this text attribute
+    Then there is an asset family with a product link rule
+
+  @acceptance-back @nominal
+  Scenario: Updating an asset family with a product link rule having a dynamic product selection value which references a single option attribute
+    Given an asset family with no product link rules and a single option attribute
+    When the user updates this asset family with a dynamic product link rule having a product selection value which references this single option attribute
+    Then there is an asset family with a product link rule
+
+  @acceptance-back @nominal
+  Scenario: Updating an asset family with a product link rule having a dynamic product selection value which references a multiple option attribute
+    Given an asset family with no product link rules and a multiple option attribute
+    When the user updates this asset family with a dynamic product link rule having a product selection value which references this multiple option attribute
+    Then there is an asset family with a product link rule
+
+  @acceptance-back @error
+  Scenario: Updating an asset family with a product link rule having a dynamic product selection value referencing an unsupported attribute type
+    Given an asset family with no product link rules and an image attribute
+    When the user updates this asset family with a dynamic product link rule having a product selection value which references an attribute having an unsupported attribute type
+    Then there should be a validation error stating that the product selection value does not support extrapolated image attribute
+
+  # Product selection channel
+  @acceptance-back @nominal
+  Scenario: Updating an asset family with a product link rule having a dynamic product selection channel
+    Given an asset family with no product link rules and a text attribute
+    When the user updates this asset family with a dynamic product link rule having a product selection channel this text attribute
+    Then there is an asset family with a product link rule
+
+  @acceptance-back @error
+  Scenario: Updating an asset family with a product link rule having a dynamic product selection channel referencing an unsupported attribute type
+    Given an asset family with no product link rules and an image attribute
+    When the user updates this asset family with a dynamic product link rule having a product selection channel which references an attribute having an unsupported attribute type
+    Then there should be a validation error stating that the product selection channel does not support extrapolated image attribute
+
+  # Product selection locale
+  @acceptance-back
+  Scenario: Updating an asset family with a product link rule having a dynamic product selection locale
+    Given an asset family with no product link rules and a text attribute
+    When the user updates this asset family with a dynamic product link rule having a product selection locale which references this text attribute
+    Then there is an asset family with a product link rule
+
+  # Product assignment attribute
+  @acceptance-back
+  Scenario: Updating an asset family with a product link rule having a dynamic assignment attribute
+    Given an asset family with no product link rules and a text attribute
+    When the user updates this asset family with a dynamic product link rule having a dynamic assignment value which references this text attribute
+    Then there is an asset family with a product link rule
+
+  # Product assignment channel
+  @acceptance-back
+  Scenario: Updating an asset family with a product link rule having a dynamic assignment channel
+    Given an asset family with no product link rules and a text attribute
+    When the user updates this asset family with a dynamic product link rule having a dynamic assignment channel which references this text attribute
+    Then there is an asset family with a product link rule
+
+  # Product assignment channel
+  @acceptance-back
+  Scenario: Updating an asset family with a product link rule having a dynamic assignment locale
+    Given an asset family with no product link rules and a text attribute
+    When the user updates this asset family with a dynamic product link rule having a dynamic assignment locale which references this text attribute
+    Then there is an asset family with a product link rule
 
   @acceptance-front
   Scenario: Updating an asset family labels
