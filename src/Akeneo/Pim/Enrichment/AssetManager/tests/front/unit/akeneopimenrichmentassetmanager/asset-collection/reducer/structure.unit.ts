@@ -17,7 +17,7 @@ jest.mock('pim/fetcher-registry', () => {});
 fetchChannels = jest.fn();
 fetchFamily = jest.fn();
 
-test('It ignore other commands', () => {
+test('It ignores other commands', () => {
   const state = {};
   const newState = structureReducer(state, {
     type: 'ANOTHER_ACTION',

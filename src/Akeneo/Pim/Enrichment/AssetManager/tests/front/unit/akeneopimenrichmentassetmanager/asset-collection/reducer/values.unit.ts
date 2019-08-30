@@ -4,7 +4,7 @@ import {
   selectCurrentValues,
 } from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';
 
-test('It ignore other commands', () => {
+test('It ignores other commands', () => {
   const state = {};
   const newState = valuesReducer(state, {
     type: 'ANOTHER_ACTION',

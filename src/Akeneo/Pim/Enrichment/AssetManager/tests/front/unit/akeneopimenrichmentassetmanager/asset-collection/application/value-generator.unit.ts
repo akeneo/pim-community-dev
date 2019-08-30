@@ -13,6 +13,7 @@ fetchAssetAttributes = jest.fn();
 fetchPermissions = jest.fn();
 
 test('It should generate a value collection from the product with all attributes editable', async () => {
+  // The values returns are editable
   const attributeGroupPermission = {
     code: 'marketing',
     view: true,
@@ -70,6 +71,7 @@ test('It should generate a value collection from the product with all attributes
 });
 
 test('It should generate a value collection from the product with an attribute group non editable', async () => {
+  // The attribute group doesn't have the edit permission
   const attributeGroupPermission = {
     code: 'marketing',
     view: true,
@@ -103,7 +105,7 @@ test('It should generate a value collection from the product with an attribute g
       locale: 'en_US',
       channel: 'ecommerce',
       data: ['iphone'],
-      editable: false,
+      editable: false, // so the values aren't editable
     },
     {
       attribute: {
@@ -118,7 +120,7 @@ test('It should generate a value collection from the product with an attribute g
       locale: null,
       channel: 'ecommerce',
       data: [],
-      editable: false,
+      editable: false, // so the values aren't editable
     },
   ];
 
@@ -132,6 +134,7 @@ test('It should generate a value collection from the product with a locale non e
     view: true,
     edit: true,
   };
+  // The locale for the packshot doesn't have the edit permission 
   const localePermission = {
     code: 'en_US',
     view: true,
@@ -160,7 +163,7 @@ test('It should generate a value collection from the product with a locale non e
       locale: 'en_US',
       channel: 'ecommerce',
       data: ['iphone'],
-      editable: false,
+      editable: false, // so the value packshot isn't editable
     },
     {
       attribute: {
@@ -194,6 +197,7 @@ test('It should generate a value collection from the product with a read only at
     view: true,
     edit: true,
   };
+  // The attributes are read only 
   const isReadOnly = true;
   const attributesForThisLevel = ['packshot', 'notices'];
   const categoriesEditPermission = ['scanners'];
@@ -217,7 +221,7 @@ test('It should generate a value collection from the product with a read only at
       locale: 'en_US',
       channel: 'ecommerce',
       data: ['iphone'],
-      editable: false,
+      editable: false, // so the values aren't editable
     },
     {
       attribute: {
@@ -232,7 +236,7 @@ test('It should generate a value collection from the product with a read only at
       locale: null,
       channel: 'ecommerce',
       data: [],
-      editable: false,
+      editable: false, // so the values aren't editable
     },
   ];
 
@@ -252,6 +256,7 @@ test('It should generate a value collection from the product with a non editable
     edit: true,
   };
   const isReadOnly = false;
+  // The packshot attribute is not an attribute for this product level
   const attributesForThisLevel = ['notices'];
   const categoriesEditPermission = ['scanners'];
 
@@ -274,7 +279,7 @@ test('It should generate a value collection from the product with a non editable
       locale: 'en_US',
       channel: 'ecommerce',
       data: ['iphone'],
-      editable: false,
+      editable: false, // so the value packshot isn't editable
     },
     {
       attribute: {
@@ -310,6 +315,7 @@ test('It should generate a value collection from the product with a non editable
   };
   const isReadOnly = false;
   const attributesForThisLevel = ['packshot', 'notices'];
+  // The category scanner doesn't have the edit permission
   const categoriesEditPermission = [];
 
   fetchAssetAttributes.mockImplementation(() => getMockAssetAttributes(isReadOnly));
@@ -331,7 +337,7 @@ test('It should generate a value collection from the product with a non editable
       locale: 'en_US',
       channel: 'ecommerce',
       data: ['iphone'],
-      editable: false,
+      editable: false, // so the values aren't editable
     },
     {
       attribute: {
@@ -346,7 +352,7 @@ test('It should generate a value collection from the product with a non editable
       locale: null,
       channel: 'ecommerce',
       data: [],
-      editable: false,
+      editable: false, // so the values aren't editable
     },
   ];
 

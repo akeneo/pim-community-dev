@@ -6,7 +6,7 @@ import {
   selectCurrentLocale,
 } from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
 
-test('It ignore other commands', () => {
+test('It ignores other commands', () => {
   const state = {};
   const newState = contextReducer(state, {
     type: 'ANOTHER_ACTION',
