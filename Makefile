@@ -49,7 +49,7 @@ javascript-test:
 	$(YARN_EXEC) run webpack-test
 
 .PHONY: front
-front: clean-front assets css javascript-test
+front: clean-front assets css javascript-test javascript-dev
 
 ##
 ## Back
@@ -77,11 +77,15 @@ database:
 ## PIM install
 ##
 
+.PHONY: dependencies
+dependencies: vendor node_modules
+
 .PHONY: clean
 clean: clean-back clean-front
 
 .PHONY: pim-behat
 pim-behat:
+	APP_ENV=behat $(MAKE) up
 	APP_ENV=behat $(MAKE) clean
 	$(MAKE) assets
 	$(MAKE) css
@@ -92,11 +96,13 @@ pim-behat:
 
 .PHONY: pim-test
 pim-test:
+	APP_ENV=test $(MAKE) up
 	APP_ENV=test $(MAKE) clean
 	APP_ENV=test $(MAKE) database
 
 .PHONY: pim-dev
 pim-dev:
+	APP_ENV=dev $(MAKE) up
 	APP_ENV=dev $(MAKE) clean
 	$(MAKE) assets
 	$(MAKE) css
@@ -105,6 +111,7 @@ pim-dev:
 
 .PHONY: pim-prod
 pim-prod:
+	APP_ENV=prod $(MAKE) up
 	APP_ENV=prod $(MAKE) clean
 	$(MAKE) assets
 	$(MAKE) css
