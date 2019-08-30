@@ -11,8 +11,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
-use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
-use Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 
@@ -30,9 +28,6 @@ class ProductModelDescendantsSaver implements SaverInterface
 {
     private const INDEX_BULK_SIZE = 100;
 
-    /** @var BulkIndexerInterface */
-    private $bulkProductModelIndexer;
-
     /** @var ProductQueryBuilderFactoryInterface */
     private $pqbFactory;
 
@@ -42,7 +37,7 @@ class ProductModelDescendantsSaver implements SaverInterface
     /** @var ProductModelRepositoryInterface */
     private $productModelRepository;
 
-    /** @var IndexerInterface */
+    /** @var ProductIndexerInterface */
     private $productModelIndexer;
 
     /** @var ComputeAndPersistProductCompletenesses */
@@ -55,15 +50,13 @@ class ProductModelDescendantsSaver implements SaverInterface
         ProductModelRepositoryInterface $productModelRepository,
         ProductQueryBuilderFactoryInterface $pqbFactory,
         ProductIndexerInterface $productIndexer,
-        BulkIndexerInterface $bulkProductModelIndexer,
-        IndexerInterface $productModelIndexer,
+        ProductIndexerInterface $productModelIndexer,
         ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses,
         int $batchSize
     ) {
         $this->productModelRepository = $productModelRepository;
         $this->pqbFactory = $pqbFactory;
         $this->productIndexer = $productIndexer;
-        $this->bulkProductModelIndexer = $bulkProductModelIndexer;
         $this->productModelIndexer = $productModelIndexer;
         $this->computeAndPersistProductCompletenesses = $computeAndPersistProductCompletenesses;
         $this->batchSize = $batchSize;
@@ -124,7 +117,15 @@ class ProductModelDescendantsSaver implements SaverInterface
     {
         $productModelsChildren = $this->productModelRepository->findChildrenProductModels($productModel);
         if (!empty($productModelsChildren)) {
-            $this->bulkProductModelIndexer->indexAll($productModelsChildren, ['index_refresh' => Refresh::disable()]);
+            $this->productModelIndexer->indexFromProductIdentifiers(
+                array_map(
+                    function (ProductModelInterface $productModelsChild) {
+                        return $productModelsChild->getCode();
+                    },
+                    $productModelsChildren
+                ),
+                ['index_refresh' => Refresh::disable()]
+            );
         }
 
         /**
@@ -134,7 +135,7 @@ class ProductModelDescendantsSaver implements SaverInterface
          *
          * You should have a look to https://akeneo.atlassian.net/browse/PIM-7388
          */
-        $this->productModelIndexer->index($productModel);
+        $this->productModelIndexer->indexFromProductIdentifier($productModel->getCode());
     }
 
     /**

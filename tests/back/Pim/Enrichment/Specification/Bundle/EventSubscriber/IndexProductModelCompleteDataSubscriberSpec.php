@@ -3,11 +3,8 @@
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelIndexer;
-use Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
-use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
-use Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface;
+use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\IndexProductModelCompleteDataSubscriber;
 use PhpSpec\ObjectBehavior;
@@ -19,7 +16,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 class IndexProductModelCompleteDataSubscriberSpec extends ObjectBehavior
 {
-    function let(IndexerInterface $productModelIndexer)
+    function let(ProductIndexerInterface $productModelIndexer)
     {
         $this->beConstructedWith($productModelIndexer);
     }
@@ -50,14 +47,14 @@ class IndexProductModelCompleteDataSubscriberSpec extends ObjectBehavior
     ) {
         $event->getSubject()->willReturn($productModel);
         $event->getArguments()->willReturn([]);
-        $productModelIndexer->index(Argument::any())->shouldNotBeCalled();
+        $productModelIndexer->indexFromProductIdentifier(Argument::any())->shouldNotBeCalled();
         $this->computeNumberOfCompleteVariantProduct($event);
 
         $event->getSubject()->willReturn($product);
         $event->getArguments()->willReturn([]);
         $product->isVariant()->willReturn(false);
         $product->getParent()->willReturn(null);
-        $productModelIndexer->index(Argument::any())->shouldNotBeCalled();
+        $productModelIndexer->indexFromProductIdentifier(Argument::any())->shouldNotBeCalled();
         $this->computeNumberOfCompleteVariantProduct($event);
     }
 
@@ -73,7 +70,8 @@ class IndexProductModelCompleteDataSubscriberSpec extends ObjectBehavior
         $product->getParent()->willReturn($rootProductModel);
         $rootProductModel->getParent()->willReturn(null);
 
-        $productModelIndexer->index($rootProductModel)->shouldBeCalled();
+        $rootProductModel->getCode()->willReturn('foo');
+        $productModelIndexer->indexFromProductIdentifier('foo')->shouldBeCalled();
         $this->computeNumberOfCompleteVariantProduct($event)->shouldReturn(null);
     }
 
@@ -92,29 +90,28 @@ class IndexProductModelCompleteDataSubscriberSpec extends ObjectBehavior
         $product->getParent()->willReturn($rootProductModel);
         $rootProductModel->getParent()->willReturn(null);
 
-        $productModelIndexer->index($rootProductModel)->shouldBeCalled();
-        $productModelIndexer->index($rootProductModel)->shouldBeCalled();
+        $rootProductModel->getCode()->willReturn('foo');
+        $productModelIndexer->indexFromProductIdentifier('foo')->shouldBeCalled();
         $this->computeNumberOfCompleteVariantProduct($event)->shouldReturn(null);
     }
 
-    function it_does_not_compute_if_it_is_not_unitary_for_save(
-        ProductModelIndexer $productModelIndexer
-    ) {
-        $productModelIndexer->index(Argument::any())->shouldNotBeCalled();
+    function it_does_not_compute_if_it_is_not_unitary_for_save(ProductModelIndexer $productModelIndexer)
+    {
+        $productModelIndexer->indexFromProductIdentifier(Argument::any())->shouldNotBeCalled();
 
         $product = new Product();
 
         $this->computeNumberOfCompleteVariantProduct(new GenericEvent($product, ['unitary' => false]));
     }
 
-    function it_indexes_multiple_products(
-        ProductModelIndexer $productModelIndexer
-    ) {
+    function it_indexes_multiple_products(ProductModelIndexer $productModelIndexer, ProductModelInterface $productModel)
+    {
         $productA = new Product();
-        $parent = new ProductModel();
-        $productA->setParent($parent);
+        $productA->setParent($productModel->getWrappedObject());
+        $productModel->getCode()->willReturn('foo');
+        $productModel->getParent()->willReturn(null);
 
-        $productModelIndexer->index($parent)->shouldBeCalled();
+        $productModelIndexer->indexFromProductIdentifier('foo')->shouldBeCalled();
         $this->computeNumberOfCompleteVariantProducts(new GenericEvent([$productA]));
     }
 }

@@ -31,25 +31,17 @@ class ProductModelDescendantsIndexer implements
     /** @var ProductIndexerInterface */
     private $productIndexer;
 
-    /** @var BulkIndexerInterface */
+    /** @var ProductIndexerInterface */
     private $productModelIndexer;
-
-    /** @var BulkRemoverInterface */
-    private $productModelRemover;
 
     /**
      * @param ProductIndexerInterface $productIndexer
-     * @param BulkIndexerInterface    $productModelIndexer
-     * @param BulkRemoverInterface    $productModelRemover
+     * @param ProductIndexerInterface $productModelIndexer
      */
-    public function __construct(
-        ProductIndexerInterface $productIndexer,
-        BulkIndexerInterface $productModelIndexer,
-        BulkRemoverInterface $productModelRemover
-    ) {
+    public function __construct(ProductIndexerInterface $productIndexer, ProductIndexerInterface $productModelIndexer)
+    {
         $this->productIndexer = $productIndexer;
         $this->productModelIndexer = $productModelIndexer;
-        $this->productModelRemover = $productModelRemover;
     }
 
     /**
@@ -156,7 +148,10 @@ class ProductModelDescendantsIndexer implements
             return;
         }
 
-        $this->productModelIndexer->indexAll($productModelChildren->toArray(), $options);
+        $this->productModelIndexer->indexFromProductIdentifiers(
+            $this->getProductModelCodes($productModelChildren),
+            $options
+        );
 
         foreach ($productModelChildren as $productModelChild) {
             $this->indexProductModelChildren($productModelChild->getProductModels(), $options);
@@ -186,11 +181,26 @@ class ProductModelDescendantsIndexer implements
             return;
         }
 
-        $this->productModelRemover->removeAll($productModelChildren->toArray());
+        $this->productModelIndexer->removeManyFromProductIds($this->getProductModelCodes($productModelChildren));
 
         foreach ($productModelChildren as $productModelChild) {
             $this->removeProductModelChildren($productModelChild->getProductModels());
             $this->removeProductModelChildren($productModelChild->getProducts());
         }
+    }
+
+    /**
+     * @param Collection $productModels
+     * @return array
+     */
+    private function getProductModelCodes(Collection $productModels): array
+    {
+        $codes = [];
+        /** @var ProductModelInterface $productModel */
+        foreach ($productModels as $productModel) {
+            $codes[] = $productModel->getCode();
+        }
+
+        return $codes;
     }
 }

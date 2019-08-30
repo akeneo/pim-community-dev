@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
-use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
-use Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface;
-use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
-use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -20,101 +19,130 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductModelIndexer implements IndexerInterface, BulkIndexerInterface, RemoverInterface, BulkRemoverInterface
+class ProductModelIndexer implements ProductIndexerInterface
 {
     private const PRODUCT_MODEL_IDENTIFIER_PREFIX = 'product_model_';
+
+    /**
+     * Index type is not used anymore in elasticsearch 6, but is still needed by Client
+     */
+    const INDEX_TYPE = 'pim_catalog_product';
+
     /** @var NormalizerInterface */
     private $normalizer;
 
     /** @var Client */
     private $productAndProductModelClient;
 
-    /** @var string */
-    private $indexType;
+    /** @var ProductModelRepositoryInterface */
+    private $productModelRepository;
 
     /**
-     * @param NormalizerInterface $normalizer
-     * @param Client              $productAndProductModelClient
-     * @param string              $indexType
+     * @param NormalizerInterface             $normalizer
+     * @param Client                          $productAndProductModelClient
+     * @param ProductModelRepositoryInterface $productModelRepository
      */
     public function __construct(
         NormalizerInterface $normalizer,
         Client $productAndProductModelClient,
-        string $indexType
+        ProductModelRepositoryInterface $productModelRepository
     ) {
         $this->normalizer = $normalizer;
         $this->productAndProductModelClient = $productAndProductModelClient;
-        $this->indexType = $indexType;
+        $this->productModelRepository = $productModelRepository;
     }
 
     /**
-     * Indexes a product in both the product model index and the product and product model index.
-     *
-     * {@inheritdoc}
+     * @param string $productModelIdentifier
+     * @param array  $options
      */
-    public function index($object, array $options = []) : void
+    public function indexFromProductIdentifier(string $productModelIdentifier, array $options = []): void
     {
-        $normalizedObject = $this->normalizer->normalize(
-            $object,
-            ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
-        );
-        $this->validateObjectNormalization($normalizedObject);
-        $this->productAndProductModelClient->index($this->indexType, $normalizedObject['id'], $normalizedObject);
+        $this->indexFromProductIdentifiers([$productModelIdentifier], $options);
     }
 
     /**
-     * Indexes a product in both the product model index and the product and product model index.
-     *
-     * If the index_refresh is provided, it uses the refresh strategy defined.
-     * Otherwise the waitFor strategy is by default.
-     *
-     * {@inheritdoc}
+     * @param array $productModelIdentifiers
+     * @param array $options
      */
-    public function indexAll(array $objects, array $options = []) : void
+    public function indexFromProductIdentifiers(array $productModelIdentifiers, array $options = []): void
     {
-        if (empty($objects)) {
-            return;
-        }
+        $normalizedProductModels = [];
+        foreach ($productModelIdentifiers as $productModelIdentifier) {
+            $object = $this->productModelRepository->findOneByIdentifier($productModelIdentifier);
+            if (!$object instanceof ProductModelInterface) {
+                continue;
+            }
 
-        $indexRefresh = $options['index_refresh'] ?? Refresh::disable();
-
-        $normalizedObjects = [];
-        foreach ($objects as $object) {
-            $normalizedObject = $this->normalizer->normalize(
+            $normalizedProductModel = $this->normalizer->normalize(
                 $object,
                 ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
             );
-            $this->validateObjectNormalization($normalizedObject);
-            $normalizedObjects[] = $normalizedObject;
+            $this->validateObjectNormalization($normalizedProductModel);
+            $normalizedProductModels[] = $normalizedProductModel;
         }
 
-        $this->productAndProductModelClient->bulkIndexes(
-            $this->indexType,
-            $normalizedObjects,
-            'id',
-            $indexRefresh
-        );
+        if (count($normalizedProductModels) === 1) {
+            $this->productAndProductModelClient->index(
+                self::INDEX_TYPE,
+                $normalizedProductModels[0]['id'],
+                $normalizedProductModels[0]
+            );
+        } elseif (count($normalizedProductModels) > 1) {
+            $this->productAndProductModelClient->bulkIndexes(
+                self::INDEX_TYPE,
+                $normalizedProductModels,
+                'id',
+                $options['index_refresh'] ?? Refresh::disable()
+            );
+        }
     }
 
     /**
-     * Removes the product from both the product model index and the product and product model index.
+     * Removes the products from both the product index and the product model index.
      *
      * {@inheritdoc}
      */
-    public function remove($objectId, array $options = []) : void
+    public function removeFromProductId(string $productModelId, array $options = []): void
     {
-        $this->productAndProductModelClient->delete(
-            $this->indexType,
-            self::PRODUCT_MODEL_IDENTIFIER_PREFIX . (string) $objectId
-        );
+        $this->removeManyFromProductIds([$productModelId], $options);
+    }
 
-        $this->removeDescendantsOf($objectId);
+    /**
+     * Removes the products from both the product index and the product and product model index.
+     *
+     * {@inheritdoc}
+     */
+    public function removeManyFromProductIds(array $productModelIds, array $options = []): void
+    {
+        if (empty($productModelIds)) {
+            return;
+        }
+
+        if (count($productModelIds) === 1) {
+            $this->productAndProductModelClient->delete(
+                self::INDEX_TYPE,
+                self::PRODUCT_MODEL_IDENTIFIER_PREFIX . $productModelIds[0]
+            );
+            $this->removeDescendantsOf($productModelIds[0]);
+
+            return;
+        }
+
+        $this->productAndProductModelClient->bulkDelete(self::INDEX_TYPE, array_map(
+            function ($productModelId) {
+                return self::PRODUCT_MODEL_IDENTIFIER_PREFIX . $productModelId;
+            },
+            $productModelIds
+        ));
     }
 
     /**
      * Queries all the different ES indexes to remove any document having a reference to this objectId in its ancestors
+     *
+     * @param string $objectId
      */
-    private function removeDescendantsOf($objectId): void
+    private function removeDescendantsOf(string $objectId): void
     {
         $this->productAndProductModelClient->deleteByQuery([
             'query' => [
@@ -136,7 +164,7 @@ class ProductModelIndexer implements IndexerInterface, BulkIndexerInterface, Rem
         foreach ($objects as $objectId) {
             $objectIds[]  = self::PRODUCT_MODEL_IDENTIFIER_PREFIX . (string) $objectId;
         }
-        $this->productAndProductModelClient->bulkDelete($this->indexType, $objectIds);
+        $this->productAndProductModelClient->bulkDelete(self::INDEX_TYPE, $objectIds);
     }
 
     /**

@@ -3,9 +3,7 @@
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
-use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
-use Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface;
-use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\IndexProductModelsSubscriber;
@@ -15,9 +13,9 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 class IndexProductModelsSubscriberSpec extends ObjectBehavior
 {
-    function let(IndexerInterface $indexer, BulkIndexerInterface $bulkIndexer, RemoverInterface $remover)
+    function let(ProductIndexerInterface $productModelIndexer)
     {
-        $this->beConstructedWith($indexer, $bulkIndexer, $remover);
+        $this->beConstructedWith($productModelIndexer);
     }
 
     function it_is_initializable()
@@ -34,7 +32,7 @@ class IndexProductModelsSubscriberSpec extends ObjectBehavior
         ]);
     }
 
-    function it_indexes_a_single_product_model($indexer, GenericEvent $event, ProductModelInterface $productModel)
+    function it_indexes_a_single_product_model($productModelIndexer, GenericEvent $event, ProductModelInterface $productModel)
     {
         $event->getSubject()->willReturn($productModel);
         $event->hasArgument('unitary')->willReturn(true);
@@ -42,13 +40,13 @@ class IndexProductModelsSubscriberSpec extends ObjectBehavior
 
         $productModel->getCode()->willReturn('identifier');
 
-        $indexer->index($productModel)->shouldBeCalled();
+        $productModelIndexer->indexFromProductIdentifier('identifier')->shouldBeCalled();
 
         $this->indexProductModel($event);
     }
 
     function it_bulk_indexes_products(
-        $bulkIndexer,
+        $productModelIndexer,
         GenericEvent $event,
         ProductModelInterface $productModel1,
         ProductModelInterface $productModel2
@@ -58,34 +56,34 @@ class IndexProductModelsSubscriberSpec extends ObjectBehavior
         $productModel1->getCode()->willReturn('identifier1');
         $productModel2->getCode()->willReturn('identifier2');
 
-        $bulkIndexer->indexAll([$productModel1, $productModel2])->shouldBeCalled();
+        $productModelIndexer->indexFromProductIdentifiers(['identifier1', 'identifier2'])->shouldBeCalled();
 
         $this->bulkIndexProductModels($event);
     }
 
     function it_deletes_a_product_model_from_elasticsearch_index(
-        $remover,
+        $productModelIndexer,
         RemoveEvent $event,
         ProductModelInterface $productModel
     ) {
         $event->getSubjectId()->willReturn(40);
         $event->getSubject()->willReturn($productModel);
 
-        $remover->remove(40)->shouldBeCalled();
+        $productModelIndexer->removeFromProductId(40)->shouldBeCalled();
 
         $this->deleteProductModel($event)->shouldReturn(null);
     }
 
-    function it_does_not_index_a_non_product_model_entity($indexer, GenericEvent $event, \stdClass $subject)
+    function it_does_not_index_a_non_product_model_entity($productModelIndexer, GenericEvent $event, \stdClass $subject)
     {
         $event->getSubject()->willReturn($subject);
-        $indexer->index(Argument::cetera())->shouldNotBeCalled();
+        $productModelIndexer->indexFromProductIdentifier(Argument::cetera())->shouldNotBeCalled();
 
         $this->indexProductModel($event);
     }
 
     function it_does_not_index_a_non_unitary_save_of_a_product_model(
-        $indexer,
+        $productModelIndexer,
         GenericEvent $event,
         ProductModelInterface $productModel
     ) {
@@ -93,53 +91,53 @@ class IndexProductModelsSubscriberSpec extends ObjectBehavior
         $event->hasArgument('unitary')->willReturn(true);
         $event->getArgument('unitary')->willReturn(false);
 
-        $indexer->index(Argument::any())->shouldNotBeCalled();
+        $productModelIndexer->indexFromProductIdentifier(Argument::any())->shouldNotBeCalled();
 
         $this->indexProductModel($event);
     }
 
     function it_does_not_index_a_non_unitary_save_of_a_product_model_bis(
-        $indexer,
+        $productModelIndexer,
         GenericEvent $event,
         ProductModelInterface $productModel
     ) {
         $event->getSubject()->willReturn($productModel);
         $event->hasArgument('unitary')->willReturn(false);
 
-        $indexer->index(Argument::any())->shouldNotBeCalled();
+        $productModelIndexer->indexFromProductIdentifier(Argument::any())->shouldNotBeCalled();
 
         $this->indexProductModel($event);
     }
 
     function it_does_not_bulk_index_non_product_model_entities(
-        $bulkIndexer,
+        $productModelIndexer,
         GenericEvent $event,
         \stdClass $subject1
     ) {
         $event->getSubject()->willReturn([$subject1]);
 
-        $bulkIndexer->indexAll(Argument::any())->shouldNotBeCalled();
+        $productModelIndexer->indexFromProductIdentifiers(Argument::any())->shouldNotBeCalled();
 
         $this->bulkIndexProductModels($event);
     }
 
-    function it_does_not_bulk_index_non_collections($bulkIndexer, GenericEvent $event, \stdClass $subject1)
+    function it_does_not_bulk_index_non_collections($productModelIndexer, GenericEvent $event, \stdClass $subject1)
     {
         $event->getSubject()->willReturn($subject1);
 
-        $bulkIndexer->indexAll(Argument::any())->shouldNotBeCalled();
+        $productModelIndexer->indexFromProductIdentifiers(Argument::any())->shouldNotBeCalled();
 
         $this->bulkIndexProductModels($event);
     }
 
     function it_does_not_delete_non_product_model_entity_from_elasticsearch(
-        $remover,
+        $productModelIndexer,
         RemoveEvent $event,
         \stdClass $subject
     ) {
         $event->getSubject()->willReturn($subject);
 
-        $remover->remove(40)->shouldNotBeCalled();
+        $productModelIndexer->removeFromProductId(40)->shouldNotBeCalled();
 
         $this->deleteProductModel($event)->shouldReturn(null);
     }

@@ -5,8 +5,6 @@ namespace Specification\Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver;
 use Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
-use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
-use Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductModelDescendantsSaver;
@@ -24,15 +22,13 @@ class ProductModelDescendantsSaverSpec extends ObjectBehavior
         ProductModelRepositoryInterface $productModelRepository,
         ProductQueryBuilderFactoryInterface $pqbFactory,
         ProductIndexerInterface $productIndexer,
-        BulkIndexerInterface $bulkProductModelIndexer,
-        IndexerInterface $productModelIndexer,
+        ProductIndexerInterface $productModelIndexer,
         ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses
     ) {
         $this->beConstructedWith(
             $productModelRepository,
             $pqbFactory,
             $productIndexer,
-            $bulkProductModelIndexer,
             $productModelIndexer,
             $computeAndPersistProductCompletenesses,
             100
@@ -48,12 +44,12 @@ class ProductModelDescendantsSaverSpec extends ObjectBehavior
         $productModelRepository,
         $pqbFactory,
         $productIndexer,
-        $bulkProductModelIndexer,
         $productModelIndexer,
         ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses,
         ProductQueryBuilderInterface $pqb,
         ProductModelInterface $productModel,
-        ProductModelInterface $productModelsChildren,
+        ProductModelInterface $productModelsChildren1,
+        ProductModelInterface $productModelsChildren2,
         ProductInterface $variantProduct1,
         ProductInterface $variantProduct2,
         CursorInterface $cursor
@@ -78,10 +74,14 @@ class ProductModelDescendantsSaverSpec extends ObjectBehavior
 
         $productIndexer->indexFromProductIdentifiers(['product_1', 'product_2'], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
 
-        $productModelRepository->findChildrenProductModels($productModel)->willReturn([$productModelsChildren]);
-        $bulkProductModelIndexer->indexAll([$productModelsChildren]);
+        $productModelRepository->findChildrenProductModels($productModel)->willReturn(
+            [$productModelsChildren1, $productModelsChildren2]
+        );
+        $productModelsChildren1->getCode()->willReturn('foo');
+        $productModelsChildren2->getCode()->willReturn('bar');
+        $productModelIndexer->indexFromProductIdentifiers(['foo', 'bar'], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
 
-        $productModelIndexer->index($productModel);
+        $productModelIndexer->indexFromProductIdentifier('product_model_code')->shouldBeCalled();
 
         $this->save($productModel);
     }
@@ -90,7 +90,6 @@ class ProductModelDescendantsSaverSpec extends ObjectBehavior
         $productModelRepository,
         $pqbFactory,
         $productIndexer,
-        $bulkProductModelIndexer,
         $productModelIndexer,
         ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses,
         ProductQueryBuilderInterface $pqb,
@@ -110,9 +109,9 @@ class ProductModelDescendantsSaverSpec extends ObjectBehavior
         $productIndexer->indexFromProductIdentifiers(Argument::cetera())->shouldNotBeCalled();
 
         $productModelRepository->findChildrenProductModels($productModel)->willReturn([]);
-        $bulkProductModelIndexer->indexAll(Argument::cetera())->shouldNotBeCalled();
+        $productModelIndexer->indexFromProductIdentifiers(Argument::cetera())->shouldNotBeCalled();
 
-        $productModelIndexer->index($productModel);
+        $productModelIndexer->indexFromProductIdentifier('product_model_code')->shouldBeCalled();
 
         $this->save($productModel);
     }

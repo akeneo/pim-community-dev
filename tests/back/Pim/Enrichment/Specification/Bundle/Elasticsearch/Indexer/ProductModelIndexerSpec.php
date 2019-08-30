@@ -2,12 +2,10 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ProductModelRepository;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
-use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
-use Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface;
-use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
-use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelIndexer;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
@@ -17,13 +15,12 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductModelIndexerSpec extends ObjectBehavior
 {
-    function let(NormalizerInterface $normalizer, Client $productAndProductModelClient)
-    {
-        $this->beConstructedWith(
-            $normalizer,
-            $productAndProductModelClient,
-            'an_index_type_for_test_purpose'
-        );
+    function let(
+        NormalizerInterface $normalizer,
+        Client $productAndProductModelClient,
+        ProductModelRepository $productModelRepository
+    ) {
+        $this->beConstructedWith($normalizer, $productAndProductModelClient, $productModelRepository);
     }
 
     function it_is_initializable()
@@ -33,74 +30,65 @@ class ProductModelIndexerSpec extends ObjectBehavior
 
     function it_is_an_indexer()
     {
-        $this->shouldImplement(IndexerInterface::class);
-        $this->shouldImplement(BulkIndexerInterface::class);
-    }
-
-    function it_is_a_index_remover()
-    {
-        $this->shouldImplement(RemoverInterface::class);
-        $this->shouldImplement(BulkRemoverInterface::class);
-    }
-
-    function it_throws_an_exception_when_attempting_to_index_a_product_model_without_id(
-        $normalizer,
-        $productAndProductModelClient,
-        \stdClass $aWrongProductModel
-    ) {
-        $normalizer->normalize($aWrongProductModel, ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->willReturn([]);
-        $productAndProductModelClient->index(Argument::cetera())->shouldNotBeCalled();
-
-        $this->shouldThrow(\InvalidArgumentException::class)->during('index', [$aWrongProductModel]);
-    }
-
-    function it_throws_an_exception_when_attempting_to_bulk_index_a_product_model_without_an_id(
-        $normalizer,
-        $productAndProductModelClient,
-        ProductModelInterface $productModel,
-        \stdClass $aWrongProductModel
-    ) {
-        $normalizer->normalize($productModel, ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->willReturn(['id' => 'baz']);
-        $normalizer->normalize($aWrongProductModel, ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->willReturn([]);
-
-        $productAndProductModelClient->bulkIndexes(Argument::cetera())->shouldNotBeCalled();
-
-        $this->shouldThrow(\InvalidArgumentException::class)->during('indexAll', [[$productModel, $aWrongProductModel]]);
+        $this->shouldImplement(ProductIndexerInterface::class);
     }
 
     function it_indexes_a_single_product_model(
         $normalizer,
         $productAndProductModelClient,
+        $productModelRepository,
         ProductModelInterface $productModel
     ) {
+        $identifier = 'foobar';
+        $productModelRepository->findOneByIdentifier($identifier)->willReturn($productModel);
         $normalizer->normalize($productModel, ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->willReturn(['id' => 'foobar', 'a key' => 'a value']);
-        $productAndProductModelClient->index('an_index_type_for_test_purpose', 'foobar', ['id' => 'foobar', 'a key' => 'a value'])
+            ->willReturn(['id' => $identifier, 'a key' => 'a value']);
+        $productAndProductModelClient->index(ProductModelIndexer::INDEX_TYPE, 'foobar', ['id' => $identifier, 'a key' => 'a value'])
             ->shouldBeCalled();
 
-        $this->index($productModel);
+        $this->indexFromProductIdentifier($identifier);
+    }
+
+    function it_does_not_index_anything_if_identifier_is_unknown(
+        $normalizer,
+        $productAndProductModelClient,
+        $productModelRepository,
+        ProductModelInterface $product
+    ) {
+        $identifier = 'foobar';
+        $productModelRepository->findOneByIdentifier($identifier)->willReturn(null);
+        $normalizer->normalize(null, ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+            ->shouldNotBeCalled();
+        $productAndProductModelClient->index(ProductModelIndexer::INDEX_TYPE, $identifier, ['id' => $identifier, 'a key' => 'a value'])
+            ->shouldNotBeCalled();
+
+        $this->indexFromProductIdentifier($identifier);
     }
 
     function it_bulk_indexes_product_models(
         $normalizer,
         $productAndProductModelClient,
+        $productModelRepository,
         ProductModelInterface $productModel1,
         ProductModelInterface $productModel2
     ) {
+        $identifier1 = 'foo';
+        $identifier2 = 'bar';
+        $identifier3 = 'baz';
+        $productModelRepository->findOneByIdentifier($identifier1)->willReturn($productModel1);
+        $productModelRepository->findOneByIdentifier($identifier2)->willReturn($productModel2);
+        $productModelRepository->findOneByIdentifier($identifier3)->willReturn(null);
         $normalizer->normalize($productModel1, ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->willReturn(['id' => 'foo', 'a key' => 'a value']);
+            ->willReturn(['id' => $identifier1, 'a key' => 'a value']);
         $normalizer->normalize($productModel2, ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->willReturn(['id' => 'bar', 'a key' => 'another value']);
+            ->willReturn(['id' => $identifier2, 'a key' => 'another value']);
 
-        $productAndProductModelClient->bulkIndexes('an_index_type_for_test_purpose', [
-            ['id' => 'foo', 'a key' => 'a value'],
-            ['id' => 'bar', 'a key' => 'another value'],
+        $productAndProductModelClient->bulkIndexes(ProductModelIndexer::INDEX_TYPE, [
+            ['id' => $identifier1, 'a key' => 'a value'],
+            ['id' => $identifier2, 'a key' => 'another value'],
         ], 'id', Refresh::disable())->shouldBeCalled();
 
-        $this->indexAll([$productModel1, $productModel2]);
+        $this->indexFromProductIdentifiers([$identifier1, $identifier2, $identifier3]);
     }
 
     function it_does_not_bulk_index_empty_arrays_of_product_models($normalizer, $productAndProductModelClient)
@@ -108,12 +96,12 @@ class ProductModelIndexerSpec extends ObjectBehavior
         $normalizer->normalize(Argument::cetera())->shouldNotBeCalled();
         $productAndProductModelClient->bulkIndexes(Argument::cetera())->shouldNotBeCalled();
 
-        $this->indexAll([]);
+        $this->indexFromProductIdentifiers([]);
     }
 
     function it_deletes_product_models_from_elasticsearch_index($productAndProductModelClient)
     {
-        $productAndProductModelClient->delete('an_index_type_for_test_purpose', 'product_model_40')->shouldBeCalled();
+        $productAndProductModelClient->delete('pim_catalog_product', 'product_model_40')->shouldBeCalled();
 
         $productAndProductModelClient->deleteByQuery([
             'query' => [
@@ -123,72 +111,66 @@ class ProductModelIndexerSpec extends ObjectBehavior
             ],
         ])->shouldBeCalled();
 
-        $this->remove(40)->shouldReturn(null);
+        $this->removeFromProductId(40)->shouldReturn(null);
     }
 
     function it_bulk_deletes_product_models_from_elasticsearch_index($productAndProductModelClient)
     {
-        $productAndProductModelClient->bulkDelete('an_index_type_for_test_purpose', ['product_model_40', 'product_model_33'])
+        $productAndProductModelClient->bulkDelete('pim_catalog_product', ['product_model_40', 'product_model_33'])
             ->shouldBeCalled();
 
-        $this->removeAll([40, 33])->shouldReturn(null);
-    }
-
-    function it_indexes_product_models_and_disables_refresh_of_the_index_by_default(
-        $normalizer,
-        $productAndProductModelClient,
-        ProductModelInterface $productModel1,
-        ProductModelInterface $productModel2
-    ) {
-        $normalizer->normalize($productModel1, ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->willReturn(['id' => 'foo', 'a key' => 'a value']);
-        $normalizer->normalize($productModel2, ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->willReturn(['id' => 'bar', 'a key' => 'another value']);
-
-        $productAndProductModelClient->bulkIndexes('an_index_type_for_test_purpose', [
-            ['id' => 'foo', 'a key' => 'a value'],
-            ['id' => 'bar', 'a key' => 'another value'],
-        ], 'id', Refresh::disable())->shouldBeCalled();
-
-        $this->indexAll([$productModel1, $productModel2]);
+        $this->removeManyFromProductIds([40, 33])->shouldReturn(null);
     }
 
     function it_indexes_product_models_and_disable_index_refresh(
         $normalizer,
         $productAndProductModelClient,
+        $productModelRepository,
         ProductModelInterface $productModel1,
         ProductModelInterface $productModel2
     ) {
-
+        $identifier1 = 'foo';
+        $identifier2 = 'bar';
+        $identifier3 = 'baz';
+        $productModelRepository->findOneByIdentifier($identifier1)->willReturn($productModel1);
+        $productModelRepository->findOneByIdentifier($identifier2)->willReturn($productModel2);
+        $productModelRepository->findOneByIdentifier($identifier3)->willReturn(null);
         $normalizer->normalize($productModel1, ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->willReturn(['id' => 'foo', 'a key' => 'a value']);
+            ->willReturn(['id' => $identifier1, 'a key' => 'a value']);
         $normalizer->normalize($productModel2, ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->willReturn(['id' => 'bar', 'a key' => 'another value']);
+            ->willReturn(['id' => $identifier2, 'a key' => 'another value']);
 
-        $productAndProductModelClient->bulkIndexes('an_index_type_for_test_purpose', [
-            ['id' => 'foo', 'a key' => 'a value'],
-            ['id' => 'bar', 'a key' => 'another value'],
+        $productAndProductModelClient->bulkIndexes(ProductModelIndexer::INDEX_TYPE, [
+            ['id' => $identifier1, 'a key' => 'a value'],
+            ['id' => $identifier2, 'a key' => 'another value'],
         ], 'id', Refresh::disable())->shouldBeCalled();
 
-        $this->indexAll([$productModel1, $productModel2], ['index_refresh' => Refresh::disable()]);
+        $this->indexFromProductIdentifiers([$identifier1, $identifier2, $identifier3], ['index_refresh' => Refresh::disable()]);
     }
 
     function it_indexes_product_models_and_enable_index_refresh_without_waiting_for_it(
         $normalizer,
         $productAndProductModelClient,
+        $productModelRepository,
         ProductModelInterface $productModel1,
         ProductModelInterface $productModel2
     ) {
+        $identifier1 = 'foo';
+        $identifier2 = 'bar';
+        $identifier3 = 'baz';
+        $productModelRepository->findOneByIdentifier($identifier1)->willReturn($productModel1);
+        $productModelRepository->findOneByIdentifier($identifier2)->willReturn($productModel2);
+        $productModelRepository->findOneByIdentifier($identifier3)->willReturn(null);
         $normalizer->normalize($productModel1, ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->willReturn(['id' => 'foo', 'a key' => 'a value']);
+            ->willReturn(['id' => $identifier1, 'a key' => 'a value']);
         $normalizer->normalize($productModel2, ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->willReturn(['id' => 'bar', 'a key' => 'another value']);
+            ->willReturn(['id' => $identifier2, 'a key' => 'another value']);
 
-        $productAndProductModelClient->bulkIndexes('an_index_type_for_test_purpose', [
-            ['id' => 'foo', 'a key' => 'a value'],
-            ['id' => 'bar', 'a key' => 'another value'],
-        ], 'id', Refresh::disable())->shouldBeCalled();
+        $productAndProductModelClient->bulkIndexes(ProductModelIndexer::INDEX_TYPE, [
+            ['id' => $identifier1, 'a key' => 'a value'],
+            ['id' => $identifier2, 'a key' => 'another value'],
+        ], 'id', Refresh::waitFor())->shouldBeCalled();
 
-        $this->indexAll([$productModel1, $productModel2], ['index_refresh' => Refresh::disable()]);
+        $this->indexFromProductIdentifiers([$identifier1, $identifier2, $identifier3], ['index_refresh' => Refresh::waitFor()]);
     }
 }

@@ -6,9 +6,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
-use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
-use Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface;
-use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -22,28 +20,15 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class IndexProductModelsSubscriber implements EventSubscriberInterface
 {
-    /** @var IndexerInterface */
+    /** @var ProductIndexerInterface */
     private $productModelIndexer;
 
-    /** @var BulkIndexerInterface */
-    private $productModelBulkIndexer;
-
-    /** @var RemoverInterface */
-    private $productModelIndexRemover;
-
     /**
-     * @param IndexerInterface     $productModelIndexer
-     * @param BulkIndexerInterface $productModelBulkIndexer
-     * @param RemoverInterface     $productModelIndexRemover
+     * @param ProductIndexerInterface $productModelIndexer
      */
-    public function __construct(
-        IndexerInterface $productModelIndexer,
-        BulkIndexerInterface $productModelBulkIndexer,
-        RemoverInterface $productModelIndexRemover
-    ) {
+    public function __construct(ProductIndexerInterface $productModelIndexer)
+    {
         $this->productModelIndexer = $productModelIndexer;
-        $this->productModelBulkIndexer = $productModelBulkIndexer;
-        $this->productModelIndexRemover = $productModelIndexRemover;
     }
 
     /**
@@ -74,7 +59,7 @@ class IndexProductModelsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->productModelIndexer->index($product);
+        $this->productModelIndexer->indexFromProductIdentifier($product->getCode());
     }
 
     /**
@@ -93,7 +78,11 @@ class IndexProductModelsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->productModelBulkIndexer->indexAll($products);
+        $this->productModelIndexer->indexFromProductIdentifiers(
+            array_map(function (ProductModelInterface $product) {
+                return $product->getCode();
+            }, $products)
+        );
     }
 
     /**
@@ -108,6 +97,6 @@ class IndexProductModelsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->productModelIndexRemover->remove((string) $event->getSubjectId());
+        $this->productModelIndexer->removeFromProductId((string) $event->getSubjectId());
     }
 }
