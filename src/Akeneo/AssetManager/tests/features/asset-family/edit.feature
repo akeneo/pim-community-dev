@@ -142,6 +142,12 @@ Feature: Edit an asset family
     When the user updates this asset family with a dynamic product link rule having a dynamic assignment value which references this text attribute
     Then there is an asset family with a product link rule
 
+  @acceptance-back @error
+  Scenario: Updating an asset family with a product link rule having a dynamic assignment attribute referencing an unsupported attribute type
+    Given an asset family with no product link rules and an image attribute
+    When the user updates this asset family with a dynamic product link rule having an assignment attribute which references an attribute having an unsupported attribute type
+    Then there should be a validation error stating that the assignment attribute does not support this extrapolated attribute type
+
   # Product assignment channel
   @acceptance-back
   Scenario: Updating an asset family with a product link rule having a dynamic assignment channel
