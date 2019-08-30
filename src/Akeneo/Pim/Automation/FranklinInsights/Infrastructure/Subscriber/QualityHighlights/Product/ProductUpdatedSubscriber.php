@@ -46,7 +46,7 @@ class ProductUpdatedSubscriber implements EventSubscriberInterface
     public function onSave(GenericEvent $event): void
     {
         $product = $event->getSubject();
-        if (!$product instanceof ProductInterface) {
+        if (!$product instanceof ProductInterface || $product->isVariant()) {
             return;
         }
 
@@ -62,7 +62,7 @@ class ProductUpdatedSubscriber implements EventSubscriberInterface
         $products = $event->getSubject();
         $productCodes = [];
         foreach ($products as $product) {
-            if ($product instanceof ProductInterface) {
+            if ($product instanceof ProductInterface && ! $product->isVariant()) {
                 $productCodes[] = $product->getId();
             }
         }

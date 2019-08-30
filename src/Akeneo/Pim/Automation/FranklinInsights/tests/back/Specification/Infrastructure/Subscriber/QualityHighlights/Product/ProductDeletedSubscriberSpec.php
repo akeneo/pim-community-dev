@@ -42,6 +42,18 @@ class ProductDeletedSubscriberSpec extends ObjectBehavior
         $this->onPostRemove($event);
     }
 
+    public function it_is_only_applied_when_a_product_no_variant_is_removed(
+        GenericEvent $event,
+        ProductInterface $product,
+        $connectionStatusHandler
+    ): void {
+        $event->getSubject()->willReturn($product);
+        $product->isVariant()->willReturn(true);
+        $connectionStatusHandler->handle(Argument::any())->shouldNotBeCalled();
+
+        $this->onPostRemove($event);
+    }
+
     public function it_is_only_applied_when_franklin_insights_is_activated(
         GenericEvent $event,
         ProductInterface $product,
@@ -49,6 +61,7 @@ class ProductDeletedSubscriberSpec extends ObjectBehavior
         $pendingItemsRepository
     ): void {
         $event->getSubject()->willReturn($product);
+        $product->isVariant()->willReturn(false);
 
         $connectionStatus = new ConnectionStatus(false, false, false, 0);
         $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
@@ -65,6 +78,7 @@ class ProductDeletedSubscriberSpec extends ObjectBehavior
     ): void {
         $product->getId()->willReturn(42);
         $event->getSubject()->willReturn($product);
+        $product->isVariant()->willReturn(false);
 
         $connectionStatus = new ConnectionStatus(true, false, false, 0);
         $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);

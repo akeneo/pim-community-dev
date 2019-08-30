@@ -49,7 +49,7 @@ class ProductDeletedSubscriber implements EventSubscriberInterface
     public function onPreRemove(GenericEvent $event): void
     {
         $product = $event->getSubject();
-        if (!$product instanceof ProductInterface) {
+        if (!$product instanceof ProductInterface || $product->isVariant()) {
             return;
         }
 
@@ -63,7 +63,7 @@ class ProductDeletedSubscriber implements EventSubscriberInterface
     public function onPostRemove(GenericEvent $event): void
     {
         $product = $event->getSubject();
-        if (!$product instanceof ProductInterface) {
+        if (!$product instanceof ProductInterface || $product->isVariant()) {
             return;
         }
 
