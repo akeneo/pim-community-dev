@@ -34,6 +34,11 @@ class AddUsernameToGridListener
         $dataSource->setParameters($parameters);
 
         $qb = $dataSource->getQueryBuilder();
-        $qb->andWhere($qb->expr()->eq('e.user', ':user'));
+        $qb->andWhere(
+            $qb->expr()->orX(
+                $qb->expr()->eq('e.user', ':user'),
+                $qb->expr()->eq('e.jobInstance', '') // put the job instance related to link product rules
+            )
+        );
     }
 }
