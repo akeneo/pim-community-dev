@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-8978: Fix the double loading of the product grid after login
 - PIM-8710: New converter to flatten invalid import values
 - PIM-8713: Fix category tree selector
 
