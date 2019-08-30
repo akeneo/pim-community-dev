@@ -55,8 +55,8 @@ front: clean-front assets css javascript-test
 ## Back
 ##
 
-.PHONY: fix-back
-fix-back:
+.PHONY: fix-cs-back
+fix-cs-back:
 	$(PHP_RUN) vendor/bin/php-cs-fixer fix --config=.php_cs.php
 
 .PHONY: clean-back
