@@ -20,7 +20,7 @@ module.exports = function(cucumber) {
     },
     'Product grid filter search': {
       selector: '.AknFilterBox-column',
-      decoratior: require('../../decorators/product-grid/filter-search.decorator')
+      decorator: require('../../decorators/product-grid/filter-search.decorator')
     }
   };
 
@@ -68,9 +68,6 @@ module.exports = function(cucumber) {
     })
 
     this.page.on('request', request => {
-
-
-
       if (request.url().includes('/datagrid/product-grid/load?dataLocale=en_US')) {
         return answerJson(request, productLoadData)
       }
@@ -124,7 +121,9 @@ module.exports = function(cucumber) {
   Then('I should be able to use the following filters:', { timeout: 60000 }, async function (itemTable) {
     const filterList = await createElementDecorator(config)(this.page, 'Product grid filter list')
     const filters = convertItemTable(itemTable);
+    const filterSearch = await createElementDecorator(config)(this.page, 'Product grid filter search')
 
+    // console.log(filterSearch)
     // this.page.on('request', request => {
     //   const params = getQueryParamsFromRequest(request);
     //   console.log(params)
@@ -132,25 +131,26 @@ module.exports = function(cucumber) {
     // })
 
     for (let i = 0; i < filters.length; i++) {
-      await filterList.resetFilters(filters.map(filter => filter.filter))
+      const uniqueFilters = Array.from(new Set(filters.map(filter => filter.filter)))
+      await filterSearch.disableFilters(uniqueFilters);
+      await filterSearch.enableFilter(filters[i].filter);
+      console.log('enabled filter', filters[i].filter)
+      // await filterList.setFilterValue(
+      //   filters[i].filter,
+      //   filters[i].operator,
+      //   filters[i].value
+      // )
 
-      await filterList.setFilterValue(
-        filters[i].filter,
-        filters[i].operator,
-        filters[i].value
-      )
+      // await this.page.waitForSelector('.AknLoadingMask.loading-mask', {hidden: true});
 
-      await this.page.waitForSelector('.AknLoadingMask.loading-mask', {hidden: true});
+      // const productGrid = await createElementDecorator(config)(this.page, 'Product grid')
+      // const rowNames = await productGrid.getRowNames();
 
-      const productGrid = await createElementDecorator(config)(this.page, 'Product grid')
-      const rowNames = await productGrid.getRowNames();
-
-      console.log(filters[i].result)
+      // console.log(filters[i].result)
 
       // assert.deepEqual(rowNames, [filters[i].result]);
     }
 
-    await 'test';
   });
 };
 
