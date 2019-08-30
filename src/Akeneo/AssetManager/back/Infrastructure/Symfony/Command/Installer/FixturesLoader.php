@@ -182,6 +182,27 @@ class FixturesLoader
         return $this;
     }
 
+    public function withAttributeOfTypeImage(string $assetFamilyIdentifier, string $attributeCode): self
+    {
+        $this->customLoadedAttributes[] = ImageAttribute::create(
+            $this->attributeRepository->nextIdentifier(
+                AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+                AttributeCode::fromString($attributeCode)
+            ),
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+            AttributeCode::fromString($attributeCode),
+            LabelCollection::fromArray([]),
+            $this->getOrderForAttribute($attributeCode),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxFileSize::fromString('1000'),
+            AttributeAllowedExtensions::fromList(['png'])
+        );
+
+        return $this;
+    }
+
     public function load(): array
     {
         if (null !== $this->loadedAssetFamily) {

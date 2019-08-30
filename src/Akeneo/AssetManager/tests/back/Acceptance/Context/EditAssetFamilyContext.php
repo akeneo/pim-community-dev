@@ -56,9 +56,6 @@ final class EditAssetFamilyContext implements Context
     /** @var ValidatorInterface */
     private $validator;
 
-    /** @var ConstraintViolationListInterface */
-    private $violations;
-
     /** @var ConstraintViolationsContext */
     private $constraintViolationsContext;
 
@@ -723,6 +720,169 @@ final class EditAssetFamilyContext implements Context
         ];
         $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
         $this->editAssetFamily($command);
+    }
+
+    /**
+     * @Given /^an asset family with no product link rules and an attribute with a type unsupported for extrapolation$/
+     */
+    public function anAssetFamilyWithNoProductLinkRulesAndAnImageAttribute()
+    {
+        $this->fixturesLoader
+            ->assetFamily(self::ASSET_FAMILY_IDENTIFIER)
+            ->withAttributeOfTypeImage(self::ASSET_FAMILY_IDENTIFIER, self::ATTRIBUTE_CODE)
+            ->load();
+    }
+
+    /**
+     * @When /^the user updates this asset family with a dynamic product link rule having a product selection field which references this attribute$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithADynamicProductLinkRuleHavingAProductSelectionFieldWhichReferencesAnAttributeHavingAnUnsupportedAttributeType()
+    {
+        $dynamicRuleTemplate = [
+            'product_selections' => [
+                [
+                    'field' => $this->toExtrapolation(self::ATTRIBUTE_CODE),
+                    'operator'  => '=',
+                    'value'     => '123456789',
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
+                ]
+            ],
+            'assign_assets_to'    => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => 'asset_collection',
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
+                ]
+            ]
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
+     * @Then /^there should be a validation error stating that the product selection field does not support this attribute for extrapolation$/
+     */
+    public function thereShouldBeAValidationErrorStatingThatTheProductSelectionFieldDoesNotSupportExtrapolatedImageAttribute()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            sprintf('The attribute "%s" of type "image" is not supported, only the following attribute types are supported for this field: text', self::ATTRIBUTE_CODE)
+        );
+    }
+
+    /**
+     * @When /^the user updates this asset family with a dynamic product link rule having a product selection value which references this attribute$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithADynamicProductLinkRuleHavingAProductSelectionValueWhichReferencesAnAttributeHavingAnUnsupportedAttributeType()
+    {
+        $dynamicRuleTemplate = [
+            'product_selections' => [
+                [
+                    'field' => 'sku',
+                    'operator'  => '=',
+                    'value'     => $this->toExtrapolation(self::ATTRIBUTE_CODE),
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
+                ]
+            ],
+            'assign_assets_to'    => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => 'asset_collection',
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
+                ]
+            ]
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
+     * @When /^there should be a validation error stating that the product selection value does not support this attribute for extrapolation/
+     */
+    public function there_should_be_a_validation_error_stating_that_the_product_selection_value_does_not_support_extrapolated_image_attribute()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            sprintf('The attribute "%s" of type "image" is not supported, only the following attribute types are supported for this field: text, option, option_collection', self::ATTRIBUTE_CODE)
+        );
+    }
+
+    /**
+     * @When /^the user updates this asset family with a dynamic product link rule having a product selection channel which references this attribute$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithADynamicProductLinkRuleHavingAProductSelectionChannelWhichReferencesAnAttributeHavingAnUnsupportedAttributeType()
+    {
+        $dynamicRuleTemplate = [
+            'product_selections' => [
+                [
+                    'field' => 'sku',
+                    'operator'  => '=',
+                    'value'     => '123444456789',
+                    'channel' => $this->toExtrapolation(self::ATTRIBUTE_CODE),
+                    'locale' => 'en_US',
+                ]
+            ],
+            'assign_assets_to'    => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => 'asset_collection',
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
+                ]
+            ]
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
+     * @Then /^there should be a validation error stating that the product selection channel does not support this attribute for extrapolation$/
+     */
+    public function thereShouldBeAValidationErrorStatingThatTheProductSelectionChannelDoesNotSupportExtrapolatedImageAttribute()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            sprintf('The attribute "%s" of type "image" is not supported, only the following attribute types are supported for this field: text', self::ATTRIBUTE_CODE)
+        );
+    }
+
+    /**
+     * @When /^the user updates this asset family with a dynamic product link rule having a product selection locale which references this attribute$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithADynamicProductLinkRuleHavingAProductSelectionLocaleWhichReferencesAnAttributeHavingAnUnsupportedAttributeType()
+    {
+        $dynamicRuleTemplate = [
+            'product_selections' => [
+                [
+                    'field' => 'sku',
+                    'operator'  => '=',
+                    'value'     => '123444456789',
+                    'channel' => 'ecommerce',
+                    'locale' => $this->toExtrapolation(self::ATTRIBUTE_CODE),
+                ]
+            ],
+            'assign_assets_to'    => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => 'asset_collection',
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
+                ]
+            ]
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
+     * @Then /^there should be a validation error stating that the product selection locale does not support this attribute for extrapolation$/
+     */
+    public function thereShouldBeAValidationErrorStatingThatTheProductSelectionLocaleDoesNotSupportExtrapolatedImageAttribute()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            sprintf('The attribute "%s" of type "image" is not supported, only the following attribute types are supported for this field: text', self::ATTRIBUTE_CODE)
+        );
     }
 
     private function editAssetFamily(EditAssetFamilyCommand $editAssetFamilyCommand): void

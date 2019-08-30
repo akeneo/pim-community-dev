@@ -243,6 +243,11 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo_assetmanager.infrastructure.persistence.query.get_attribute_type:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlGetAttributeType
+        arguments:
+            - '@database_connection'
+
     # attribute hydrators
     akeneo_assetmanager.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator\AttributeHydratorRegistry
