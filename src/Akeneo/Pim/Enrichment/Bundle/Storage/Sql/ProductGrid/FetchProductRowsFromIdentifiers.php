@@ -123,11 +123,7 @@ SQL;
                 p.identifier,
                 a_label.code attribute_as_label_code,
                 a_image.code attribute_as_image_code,
-                JSON_MERGE(
-                   CASE pm1.raw_values WHEN '[]' THEN '{}' ELSE COALESCE(pm1.raw_values, '{}') END,
-                   CASE pm2.raw_values WHEN '[]' THEN '{}' ELSE COALESCE(pm2.raw_values, '{}') END,
-                   p.raw_values
-                ) as raw_values
+                JSON_MERGE(COALESCE(pm1.raw_values, '{}'), COALESCE(pm2.raw_values, '{}'), p.raw_values) as raw_values
             FROM
                 pim_catalog_product p
                 LEFT JOIN pim_catalog_product_model pm1 ON pm1.id = p.product_model_id
