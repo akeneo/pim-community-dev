@@ -45,7 +45,7 @@ test('It should render the locale code when it has no locale defined', () => {
   expect(getByText('en_US')).toBeInTheDocument();
 });
 
-test('It should render the locale code when it has no locale defined for the current locale', () => {
+test('It should render the locale code when it has no locale defined for the current locale code', () => {
   const localeCode = 'fr_FR';
   const locales = [
     {
