@@ -123,11 +123,17 @@ Feature: Edit an asset family
     Then there should be a validation error stating that the product selection channel does not support extrapolated image attribute
 
   # Product selection locale
-  @acceptance-back
+  @acceptance-back @nominal
   Scenario: Updating an asset family with a product link rule having a dynamic product selection locale
     Given an asset family with no product link rules and a text attribute
     When the user updates this asset family with a dynamic product link rule having a product selection locale which references this text attribute
     Then there is an asset family with a product link rule
+
+  @acceptance-back @error
+  Scenario: Updating an asset family with a product link rule having a dynamic product selection locale referencing an unsupported attribute type
+    Given an asset family with no product link rules and an image attribute
+    When the user updates this asset family with a dynamic product link rule having a product selection locale which references an attribute having an unsupported attribute type
+    Then there should be a validation error stating that the product selection locale does not support extrapolated image attribute
 
   # Product assignment attribute
   @acceptance-back

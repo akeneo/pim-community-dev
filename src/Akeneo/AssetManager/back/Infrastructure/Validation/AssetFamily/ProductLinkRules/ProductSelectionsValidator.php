@@ -110,6 +110,11 @@ class ProductSelectionsValidator
             $assetFamilyIdentifier,
             [TextAttribute::ATTRIBUTE_TYPE]
         ));
+        $violations->addAll($this->checkAttributeExistsAndHasASupportedType(
+            $productSelection['locale'],
+            $assetFamilyIdentifier,
+            [TextAttribute::ATTRIBUTE_TYPE]
+        ));
         return $violations;
     }
 
