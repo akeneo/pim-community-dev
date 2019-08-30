@@ -80,9 +80,9 @@ Feature: Edit an asset family
 
   @acceptance-back @error
   Scenario: Updating an asset family with a product link rule having a dynamic product selection field referencing an unsupported attribute type
-    Given an asset family with no product link rules and an image attribute
-    When the user updates this asset family with a dynamic product link rule having a product selection field which references an attribute having an unsupported attribute type
-    Then there should be a validation error stating that the product selection field does not support extrapolated image attribute
+    Given an asset family with no product link rules and an attribute with a type unsupported for extrapolation
+    When the user updates this asset family with a dynamic product link rule having a product selection field which references this attribute
+    Then there should be a validation error stating that the product selection field does not support this attribute for extrapolation
 
   # Product selection value
   @acceptance-back @nominal
@@ -105,9 +105,9 @@ Feature: Edit an asset family
 
   @acceptance-back @error
   Scenario: Updating an asset family with a product link rule having a dynamic product selection value referencing an unsupported attribute type
-    Given an asset family with no product link rules and an image attribute
-    When the user updates this asset family with a dynamic product link rule having a product selection value which references an attribute having an unsupported attribute type
-    Then there should be a validation error stating that the product selection value does not support extrapolated image attribute
+    Given an asset family with no product link rules and an attribute with a type unsupported for extrapolation
+    When the user updates this asset family with a dynamic product link rule having a product selection value which references this attribute
+    Then there should be a validation error stating that the product selection value does not support this attribute for extrapolation
 
   # Product selection channel
   @acceptance-back @nominal
@@ -118,9 +118,9 @@ Feature: Edit an asset family
 
   @acceptance-back @error
   Scenario: Updating an asset family with a product link rule having a dynamic product selection channel referencing an unsupported attribute type
-    Given an asset family with no product link rules and an image attribute
-    When the user updates this asset family with a dynamic product link rule having a product selection channel which references an attribute having an unsupported attribute type
-    Then there should be a validation error stating that the product selection channel does not support extrapolated image attribute
+    Given an asset family with no product link rules and an attribute with a type unsupported for extrapolation
+    When the user updates this asset family with a dynamic product link rule having a product selection channel which references this attribute
+    Then there should be a validation error stating that the product selection channel does not support this attribute for extrapolation
 
   # Product selection locale
   @acceptance-back @nominal
@@ -131,9 +131,9 @@ Feature: Edit an asset family
 
   @acceptance-back @error
   Scenario: Updating an asset family with a product link rule having a dynamic product selection locale referencing an unsupported attribute type
-    Given an asset family with no product link rules and an image attribute
-    When the user updates this asset family with a dynamic product link rule having a product selection locale which references an attribute having an unsupported attribute type
-    Then there should be a validation error stating that the product selection locale does not support extrapolated image attribute
+    Given an asset family with no product link rules and an attribute with a type unsupported for extrapolation
+    When the user updates this asset family with a dynamic product link rule having a product selection locale which references this attribute
+    Then there should be a validation error stating that the product selection locale does not support this attribute for extrapolation
 
   # Product assignment attribute
   @acceptance-back

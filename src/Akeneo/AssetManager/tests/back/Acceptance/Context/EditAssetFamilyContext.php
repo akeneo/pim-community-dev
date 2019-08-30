@@ -723,7 +723,7 @@ final class EditAssetFamilyContext implements Context
     }
 
     /**
-     * @Given /^an asset family with no product link rules and an image attribute$/
+     * @Given /^an asset family with no product link rules and an attribute with a type unsupported for extrapolation$/
      */
     public function anAssetFamilyWithNoProductLinkRulesAndAnImageAttribute()
     {
@@ -734,7 +734,7 @@ final class EditAssetFamilyContext implements Context
     }
 
     /**
-     * @When /^the user updates this asset family with a dynamic product link rule having a product selection field which references an attribute having an unsupported attribute type$/
+     * @When /^the user updates this asset family with a dynamic product link rule having a product selection field which references this attribute$/
      */
     public function theUserUpdatesThisAssetFamilyWithADynamicProductLinkRuleHavingAProductSelectionFieldWhichReferencesAnAttributeHavingAnUnsupportedAttributeType()
     {
@@ -762,7 +762,7 @@ final class EditAssetFamilyContext implements Context
     }
 
     /**
-     * @Then /^there should be a validation error stating that the product selection field does not support extrapolated image attribute$/
+     * @Then /^there should be a validation error stating that the product selection field does not support this attribute for extrapolation$/
      */
     public function thereShouldBeAValidationErrorStatingThatTheProductSelectionFieldDoesNotSupportExtrapolatedImageAttribute()
     {
@@ -772,7 +772,7 @@ final class EditAssetFamilyContext implements Context
     }
 
     /**
-     * @When /^the user updates this asset family with a dynamic product link rule having a product selection value which references an attribute having an unsupported attribute type$/
+     * @When /^the user updates this asset family with a dynamic product link rule having a product selection value which references this attribute$/
      */
     public function theUserUpdatesThisAssetFamilyWithADynamicProductLinkRuleHavingAProductSelectionValueWhichReferencesAnAttributeHavingAnUnsupportedAttributeType()
     {
@@ -800,7 +800,7 @@ final class EditAssetFamilyContext implements Context
     }
 
     /**
-     * @When /^there should be a validation error stating that the product selection value does not support extrapolated image attribute/
+     * @When /^there should be a validation error stating that the product selection value does not support this attribute for extrapolation/
      */
     public function there_should_be_a_validation_error_stating_that_the_product_selection_value_does_not_support_extrapolated_image_attribute()
     {
@@ -810,7 +810,7 @@ final class EditAssetFamilyContext implements Context
     }
 
     /**
-     * @When /^the user updates this asset family with a dynamic product link rule having a product selection channel which references an attribute having an unsupported attribute type$/
+     * @When /^the user updates this asset family with a dynamic product link rule having a product selection channel which references this attribute$/
      */
     public function theUserUpdatesThisAssetFamilyWithADynamicProductLinkRuleHavingAProductSelectionChannelWhichReferencesAnAttributeHavingAnUnsupportedAttributeType()
     {
@@ -838,7 +838,7 @@ final class EditAssetFamilyContext implements Context
     }
 
     /**
-     * @Then /^there should be a validation error stating that the product selection channel does not support extrapolated image attribute$/
+     * @Then /^there should be a validation error stating that the product selection channel does not support this attribute for extrapolation$/
      */
     public function thereShouldBeAValidationErrorStatingThatTheProductSelectionChannelDoesNotSupportExtrapolatedImageAttribute()
     {
@@ -848,7 +848,7 @@ final class EditAssetFamilyContext implements Context
     }
 
     /**
-     * @When /^the user updates this asset family with a dynamic product link rule having a product selection locale which references an attribute having an unsupported attribute type$/
+     * @When /^the user updates this asset family with a dynamic product link rule having a product selection locale which references this attribute$/
      */
     public function theUserUpdatesThisAssetFamilyWithADynamicProductLinkRuleHavingAProductSelectionLocaleWhichReferencesAnAttributeHavingAnUnsupportedAttributeType()
     {
@@ -876,7 +876,7 @@ final class EditAssetFamilyContext implements Context
     }
 
     /**
-     * @Then /^there should be a validation error stating that the product selection locale does not support extrapolated image attribute$/
+     * @Then /^there should be a validation error stating that the product selection locale does not support this attribute for extrapolation$/
      */
     public function thereShouldBeAValidationErrorStatingThatTheProductSelectionLocaleDoesNotSupportExtrapolatedImageAttribute()
     {
