@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Improvement
+
+- PIM-7127: Hide version from CSS call
+
 # 2.3.59 (2019-08-12)
 
 ## Bug fixes
