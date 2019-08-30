@@ -60,7 +60,7 @@ class ProductPdfRenderer extends PimProductPdfRenderer
         AssetRepositoryInterface $assetRepository,
         string $template,
         string $uploadDirectory,
-        IdentifiableObjectRepositoryInterface $attributeOptionRepository ,
+        IdentifiableObjectRepositoryInterface $attributeOptionRepository,
         ?string $customFont = null
 
     ) {

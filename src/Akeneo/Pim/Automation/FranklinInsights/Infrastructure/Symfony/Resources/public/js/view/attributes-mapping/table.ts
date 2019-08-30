@@ -18,16 +18,16 @@ import {EscapeHtml} from '../../common/escape-html';
 import {Filterable} from '../../common/filterable';
 
 import NormalizedAttribute from 'pim/model/attribute';
+import BaseView = require('pimui/js/view/base');
 import IAttributeMapping from '../../model/attribute-mapping';
 import AttributeMappingStatus from '../../model/attribute-mapping-status';
 import IAttributesMapping from '../../model/attributes-mapping';
 import IAttributesMappingModel from '../../model/attributes-mapping-model';
+import AttributeOptionsMapping = require('../attribute-options-mapping/edit');
 import SimpleSelectAttribute from '../common/simple-select-attribute';
 import AddAttributeToFamilyButton from './add-to-family/add-attribute-to-family-button';
 import AttributeTypeMismatchWarning from './attribute-type-mismatch-warning';
 import CreateAttributeButton from './create-attribute/create-attribute-button';
-import BaseView = require('pimui/js/view/base');
-import AttributeOptionsMapping = require('../attribute-options-mapping/edit');
 
 const __ = require('oro/translator');
 const FetcherRegistry = require('pim/fetcher-registry');

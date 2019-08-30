@@ -8,10 +8,10 @@
  */
 
 import {EventsHash} from 'backbone';
+import BaseForm = require('pimui/js/view/base');
 import * as _ from 'underscore';
 import {Filter, FilterValue} from '../../common/filterable';
 import {AttributeMappingStatus} from '../../model/attribute-mapping-status';
-import BaseForm = require('pimui/js/view/base');
 
 const __ = require('oro/translator');
 const template = require('akeneo/franklin-insights/template/common/status-filter');

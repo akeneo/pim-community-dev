@@ -7,12 +7,12 @@
  * file that was distributed with this source code.
  */
 
+import View = require('pimui/js/view/base');
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {isAbleToAddAttributeToFamily, isAbleToCreateAttribute} from '../../../common/attribute-mapping-helper';
 import AttributesMappingModel from '../../../model/attributes-mapping-model';
 import Toolbar, {AttributeData} from './toolbar';
-import View = require('pimui/js/view/base');
 
 class ToolbarView extends View {
   public configure(): any {
