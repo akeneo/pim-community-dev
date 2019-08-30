@@ -9,6 +9,7 @@ const unitConfig = {
   moduleNameMapper: {
     '^require-context$': `${__dirname}/../../../../frontend/webpack/require-context.js`,
     '^module-registry$': `${__dirname}/../../../../web/js/module-registry.js`,
+    'pim/fetcher-registry': '<rootDir>/web/bundles/pimui/js/fetcher/fetcher-registry.js',
   },
   testRegex: '(tests/front/unit)(.*)(unit).(jsx?|tsx?)$',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
@@ -20,12 +21,13 @@ const unitConfig = {
       isolatedModules: true,
     },
   },
-  coverageReporters: ['text-summary'],
+  coverageReporters: ['text-summary', 'html'],
+  coverageDirectory: '<rootDir>/coverage/',
   coverageThreshold: {
     global: {
-      statements: 100,
-      functions: 100,
-      lines: 100,
+      statements: 95,
+      functions: 95,
+      lines: 95,
     },
   },
   setupFiles: [`${__dirname}/enzyme.js`],
