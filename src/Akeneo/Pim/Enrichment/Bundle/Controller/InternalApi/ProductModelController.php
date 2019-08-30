@@ -109,9 +109,8 @@ class ProductModelController
      * @param NormalizerInterface               $violationNormalizer
      * @param FamilyVariantRepositoryInterface  $familyVariantRepository
      * @param AttributeFilterInterface          $productModelAttributeFilter
-     * @param Client|null                       $productAndProductModelClient
+     * @param Client                            $productAndProductModelClient
      *
-     * TODO: merge master remove null
      */
     public function __construct(
         ProductModelRepositoryInterface $productModelRepository,
@@ -131,7 +130,7 @@ class ProductModelController
         NormalizerInterface $violationNormalizer,
         FamilyVariantRepositoryInterface $familyVariantRepository,
         AttributeFilterInterface $productModelAttributeFilter,
-        Client $productAndProductModelClient = null
+        Client $productAndProductModelClient
     ) {
         $this->productModelRepository = $productModelRepository;
         $this->normalizer = $normalizer;
@@ -391,9 +390,7 @@ class ProductModelController
         $productModel = $this->findProductModelOr404($id);
         $this->productModelRemover->remove($productModel);
 
-        if (null !== $this->productAndProductModelClient) {
-            $this->productAndProductModelClient->refreshIndex();
-        }
+        $this->productAndProductModelClient->refreshIndex();
 
         return new JsonResponse();
     }

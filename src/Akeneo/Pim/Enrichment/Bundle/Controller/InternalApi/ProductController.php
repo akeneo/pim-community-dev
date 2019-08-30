@@ -116,9 +116,8 @@ class ProductController
      * @param NormalizerInterface           $constraintViolationNormalizer
      * @param ProductBuilderInterface       $variantProductBuilder
      * @param AttributeFilterInterface      $productAttributeFilter
-     * @param Client|null                   $productAndProductModelClient
+     * @param Client                        $productAndProductModelClient
      *
-     * TODO: merge master remove null
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
@@ -139,7 +138,7 @@ class ProductController
         NormalizerInterface $constraintViolationNormalizer,
         ProductBuilderInterface $variantProductBuilder,
         AttributeFilterInterface $productAttributeFilter,
-        Client $productAndProductModelClient = null
+        Client $productAndProductModelClient
     ) {
         $this->productRepository = $productRepository;
         $this->cursorableRepository = $cursorableRepository;
@@ -329,9 +328,7 @@ class ProductController
         $product = $this->findProductOr404($id);
         $this->productRemover->remove($product);
 
-        if (null !== $this->productAndProductModelClient) {
-            $this->productAndProductModelClient->refreshIndex();
-        }
+        $this->productAndProductModelClient->refreshIndex();
 
         return new JsonResponse();
     }

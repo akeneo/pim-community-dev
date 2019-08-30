@@ -14,16 +14,13 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
  */
 class MetricNormalizer implements AxisValueLabelsNormalizer
 {
-    /** @var StandardMetricNormalizer|null */
+    /** @var StandardMetricNormalizer */
     private $metricNormalizer;
 
-    /** @var MetricLocalizer|null */
+    /** @var MetricLocalizer */
     private $metricLocalizer;
 
-    /**
-     * TODO: merge -> remove nullable and add BC break on UPGRADE
-     */
-    public function __construct(?StandardMetricNormalizer $metricNormalizer = null, ?MetricLocalizer $metricLocalizer = null)
+    public function __construct(StandardMetricNormalizer $metricNormalizer, MetricLocalizer $metricLocalizer)
     {
         $this->metricNormalizer = $metricNormalizer;
         $this->metricLocalizer = $metricLocalizer;
@@ -37,10 +34,6 @@ class MetricNormalizer implements AxisValueLabelsNormalizer
      */
     public function normalize(ValueInterface $value, string $locale): string
     {
-        if ($this->metricLocalizer === null || $this->metricNormalizer === null) {
-            return sprintf('%s %s', $value->getData(), $value->getUnit());
-        }
-
         $context = ['locale' => $locale];
 
         $normalizedMetric = $this->metricNormalizer->normalize($value, 'standard', $context);

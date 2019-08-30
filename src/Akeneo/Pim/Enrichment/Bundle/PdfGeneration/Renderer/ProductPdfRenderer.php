@@ -52,13 +52,12 @@ class ProductPdfRenderer implements RendererInterface
     /** @var string */
     protected $uploadDirectory;
 
-    /** @var string */
+    /** @var string|null */
     protected $customFont;
 
     /** @var IdentifiableObjectRepositoryInterface|null */
     private $attributeOptionRepository;
 
-    // TODO: on master we must remove null for the $attributeOptionRepository and change the order with $customFont
     public function __construct(
         EngineInterface $templating,
         PdfBuilderInterface $pdfBuilder,
@@ -68,8 +67,8 @@ class ProductPdfRenderer implements RendererInterface
         IdentifiableObjectRepositoryInterface $attributeRepository,
         string $template,
         string $uploadDirectory,
-        ?string $customFont = null,
-        ?IdentifiableObjectRepositoryInterface $attributeOptionRepository = null
+        IdentifiableObjectRepositoryInterface $attributeOptionRepository,
+        ?string $customFont = null
     ) {
         $this->templating = $templating;
         $this->pdfBuilder = $pdfBuilder;
@@ -79,8 +78,8 @@ class ProductPdfRenderer implements RendererInterface
         $this->attributeRepository = $attributeRepository;
         $this->template = $template;
         $this->uploadDirectory = $uploadDirectory;
-        $this->customFont = $customFont;
         $this->attributeOptionRepository = $attributeOptionRepository;
+        $this->customFont = $customFont;
     }
 
     /**
@@ -194,10 +193,6 @@ class ProductPdfRenderer implements RendererInterface
     protected function getOptionLabels(ProductInterface $product, ?string $localeCode = null, ?string $scopeCode = null): array
     {
         $options = [];
-
-        if (null === $this->attributeOptionRepository) {
-            return [];
-        }
 
         foreach ($this->getAttributeCodes($product) as $attributeCode) {
             $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);

@@ -24,12 +24,14 @@ class FlysystemLoader implements LoaderInterface
     /** @var string */
     protected $filesystemAliases;
 
-    /** @var FileInfoRepositoryInterface | null */
+    /** @var FileInfoRepositoryInterface */
     protected $fileInfoRepository;
 
-    // TODO merge master/4.0: Make '$fileInfoRepository' mandatory.
-    public function __construct(FilesystemProvider $filesystemProvider, array $filesystemAliases, FileInfoRepositoryInterface $fileInfoRepository = null)
-    {
+    public function __construct(
+        FilesystemProvider $filesystemProvider,
+        array $filesystemAliases,
+        FileInfoRepositoryInterface $fileInfoRepository
+    ) {
         $this->filesystemProvider = $filesystemProvider;
         $this->filesystemAliases = $filesystemAliases;
         $this->fileInfoRepository = $fileInfoRepository;
@@ -87,8 +89,7 @@ class FlysystemLoader implements LoaderInterface
             throw new NotLoadableException(sprintf('Unable to read the file "%s" from the filesystem.', $path));
         }
 
-        // TODO merge master/4.0: Remove 'null' check on '$this->fileInfoRepository'.
-        if ('application/octet-stream' === $mimeType && null !== $this->fileInfoRepository) {
+        if ('application/octet-stream' === $mimeType) {
             $fileInfo = $this->fileInfoRepository->findOneByIdentifier($path);
             if (null !== $fileInfo) {
                 $mimeType = $fileInfo->getMimetype();

@@ -8,7 +8,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterfa
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetValuesOfSiblings;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\EntityWithFamilyVariantRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueAxesCombinationSet;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Symfony\Component\Validator\Constraint;
@@ -29,24 +28,18 @@ class UniqueVariantAxisValidator extends ConstraintValidator
     /** @var EntityWithFamilyVariantAttributesProvider */
     private $axesProvider;
 
-    /** @var EntityWithFamilyVariantRepositoryInterface */
-    private $entityWithFamilyVariantRepository;
-
     /** @var UniqueAxesCombinationSet */
     private $uniqueAxesCombinationSet;
 
     /** @var GetValuesOfSiblings */
     private $getValuesOfSiblings;
 
-    // TODO merge master/4.0: remove the second argument ($repository), and make the fourth one non nullable ($getValuesOfSiblings)
     public function __construct(
         EntityWithFamilyVariantAttributesProvider $axesProvider,
-        EntityWithFamilyVariantRepositoryInterface $repository,
         UniqueAxesCombinationSet $uniqueAxesCombinationSet,
-        ?GetValuesOfSiblings $getValuesOfSiblings = null
+        GetValuesOfSiblings $getValuesOfSiblings
     ) {
         $this->axesProvider = $axesProvider;
-        $this->entityWithFamilyVariantRepository = $repository;
         $this->uniqueAxesCombinationSet = $uniqueAxesCombinationSet;
         $this->getValuesOfSiblings = $getValuesOfSiblings;
     }
@@ -97,12 +90,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
             return;
         }
 
-        // TODO merge master/4.0: remove the test, and the whole 'else' statement
-        if (null !== $this->getValuesOfSiblings) {
-            $siblingValues = $this->getValuesOfSiblings->for($entity);
-        } else {
-            $siblingValues = $this->getSiblingValues($entity);
-        }
+        $siblingValues = $this->getValuesOfSiblings->for($entity);
 
         if (empty($siblingValues)) {
             return;
@@ -233,16 +221,5 @@ class UniqueVariantAxisValidator extends ConstraintValidator
         }
 
         return $entity->getCode();
-    }
-
-    // TODO merge master/4.0 : remove this method
-    private function getSiblingValues(EntityWithFamilyVariantInterface $entity): array
-    {
-        $valuesIndexedByIdentifier = [];
-        $siblings = $this->entityWithFamilyVariantRepository->findSiblings($entity);
-        foreach ($siblings as $sibling) {
-            $valuesIndexedByIdentifier[$this->getEntityIdentifier($sibling)] = $sibling->getValuesForVariation();
-        }
-        return $valuesIndexedByIdentifier;
     }
 }
