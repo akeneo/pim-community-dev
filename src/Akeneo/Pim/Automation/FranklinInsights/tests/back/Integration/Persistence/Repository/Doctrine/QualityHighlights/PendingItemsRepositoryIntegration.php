@@ -20,7 +20,7 @@ use Doctrine\DBAL\Connection;
 
 class PendingItemsRepositoryIntegration extends TestCase
 {
-    public function test_it_saves_an_updated_attribute_id(): void
+    public function test_it_saves_an_updated_attribute_code(): void
     {
         $sqlQuery = 'SELECT * FROM pimee_franklin_insights_quality_highlights_pending_items';
         $updatedAttributes = $this->getDbConnection()->query($sqlQuery)->fetchAll();
@@ -67,6 +67,27 @@ SQL;
                 'locked' => (string) PendingItemsRepository::STATUS_UNLOCKED,
             ],
             $updatedAttributes[0]
+        );
+    }
+
+    public function test_it_saves_an_updated_product_id(): void
+    {
+        $sqlQuery = 'SELECT * FROM pimee_franklin_insights_quality_highlights_pending_items';
+        $updatedProducts = $this->getDbConnection()->query($sqlQuery)->fetchAll();
+        $this->assertCount(0, $updatedProducts);
+
+        $this->getRepository()->addUpdatedProductIdentifier(42);
+        $sqlQuery = 'SELECT entity_type, entity_id, action, locked FROM pimee_franklin_insights_quality_highlights_pending_items';
+        $updatedProducts = $this->getDbConnection()->query($sqlQuery)->fetchAll();
+        $this->assertCount(1, $updatedProducts);
+        $this->assertSame(
+            [
+                'entity_type' => PendingItemsRepository::ENTITY_TYPE_PRODUCT,
+                'entity_id' => '42',
+                'action' => PendingItemsRepository::ACTION_ENTITY_UPDATED,
+                'locked' => (string) PendingItemsRepository::STATUS_UNLOCKED,
+            ],
+            $updatedProducts[0]
         );
     }
 

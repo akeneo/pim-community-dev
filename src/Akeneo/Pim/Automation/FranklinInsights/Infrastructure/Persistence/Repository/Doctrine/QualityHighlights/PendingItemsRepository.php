@@ -20,8 +20,11 @@ class PendingItemsRepository implements PendingItemsRepositoryInterface
 {
     public const ACTION_ENTITY_UPDATED = 'update';
     public const ACTION_ENTITY_DELETED = 'delete';
+
     public const ENTITY_TYPE_ATTRIBUTE = 'attribute';
     public const ENTITY_TYPE_FAMILY = 'family';
+    public const ENTITY_TYPE_PRODUCT = 'product';
+
     public const STATUS_LOCKED = 1;
     public const STATUS_UNLOCKED = 0;
 
@@ -75,6 +78,18 @@ class PendingItemsRepository implements PendingItemsRepositoryInterface
             'entity_type' => self::ENTITY_TYPE_FAMILY,
             'entity_id' => $code,
             'action' => self::ACTION_ENTITY_DELETED,
+            'locked' => self::STATUS_UNLOCKED,
+        ];
+
+        $this->connection->executeQuery($this->getInsertQuery(), $bindParams);
+    }
+
+    public function addUpdatedProductIdentifier(int $identifier): void
+    {
+        $bindParams = [
+            'entity_type' => self::ENTITY_TYPE_PRODUCT,
+            'entity_id' => (string) $identifier,
+            'action' => self::ACTION_ENTITY_UPDATED,
             'locked' => self::STATUS_UNLOCKED,
         ];
 
