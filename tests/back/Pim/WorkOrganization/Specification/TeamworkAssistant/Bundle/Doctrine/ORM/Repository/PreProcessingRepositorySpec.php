@@ -68,7 +68,6 @@ class PreProcessingRepositorySpec extends ObjectBehavior
 
     function it_is_processable_attribute_group_completeness(
         $entityManager,
-        $tableNameMapper,
         ProductInterface $product,
         ProjectInterface $project,
         FamilyInterface $family,
@@ -95,9 +94,6 @@ class PreProcessingRepositorySpec extends ObjectBehavior
         $family->getUpdated()->willReturn($familyUpdated);
 
         $entityManager->getConnection()->willReturn($connection);
-        $tableNameMapper
-            ->getTableName('pimee_teamwork_assistant.completeness_per_attribute_group')
-            ->willReturn('pimee_teamwork_assistant_completeness_per_attribute_group');
 
         $connection
             ->fetchColumn(Argument::type('string'), [
@@ -115,7 +111,6 @@ class PreProcessingRepositorySpec extends ObjectBehavior
 
     function it_is_processable_attribute_group_completeness_when_product_has_not_family(
         $entityManager,
-        $tableNameMapper,
         ProductInterface $product,
         ProjectInterface $project,
         Connection $connection,
@@ -139,9 +134,6 @@ class PreProcessingRepositorySpec extends ObjectBehavior
         $locale->getId()->willReturn($projectLocaleId);
 
         $entityManager->getConnection()->willReturn($connection);
-        $tableNameMapper
-            ->getTableName('pimee_teamwork_assistant.completeness_per_attribute_group')
-            ->willReturn('pimee_teamwork_assistant_completeness_per_attribute_group');
 
         $connection
             ->fetchColumn(Argument::type('string'), [
@@ -158,7 +150,6 @@ class PreProcessingRepositorySpec extends ObjectBehavior
 
     function it_is_processable_attribute_group_completeness_when_project_has_not_been_calculated_yet(
         $entityManager,
-        $tableNameMapper,
         ProductInterface $product,
         ProjectInterface $project,
         Connection $connection,
@@ -182,9 +173,6 @@ class PreProcessingRepositorySpec extends ObjectBehavior
         $locale->getId()->willReturn($projectLocaleId);
 
         $entityManager->getConnection()->willReturn($connection);
-        $tableNameMapper
-            ->getTableName('pimee_teamwork_assistant.completeness_per_attribute_group')
-            ->willReturn('pimee_teamwork_assistant_completeness_per_attribute_group');
 
         $connection
             ->fetchColumn(Argument::type('string'), [

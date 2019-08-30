@@ -38,7 +38,8 @@ class ProductPdfRendererSpec extends ObjectBehavior
         FilterProductValuesHelper $filterHelper,
         ChannelRepositoryInterface $channelRepository,
         LocaleRepositoryInterface $localeRepository,
-        AssetRepositoryInterface $assetRepository
+        AssetRepositoryInterface $assetRepository,
+        IdentifiableObjectRepositoryInterface $attributeOptionRepository
     ) {
         $uploadDirectory = realpath(__DIR__ . '/../../../../../features/Context/fixtures/');
         $this->beConstructedWith(
@@ -54,6 +55,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
             $assetRepository,
             self::TEMPLATE_NAME,
             $uploadDirectory,
+            $attributeOptionRepository,
             null
         );
     }
@@ -77,12 +79,14 @@ class ProductPdfRendererSpec extends ObjectBehavior
 
         $blue->getAttributeCode()->willReturn('color');
         $attributeRepository->findOneByIdentifier('color')->willReturn($color);
+
         $color->getCode()->willReturn('color');
-
         $color->getGroup()->willReturn($design);
-        $design->getLabel()->willReturn('Design');
-
         $color->getType()->willReturn('pim_catalog_text');
+        $color->isScopable()->willReturn(false);
+        $color->isLocalizable()->willReturn(false);
+
+        $design->getLabel()->willReturn('Design');
 
         $renderingDate = new \DateTime();
 

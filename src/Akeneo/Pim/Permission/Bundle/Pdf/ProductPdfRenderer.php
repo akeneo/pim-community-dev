@@ -47,7 +47,6 @@ class ProductPdfRenderer extends PimProductPdfRenderer
     /** @var AssetRepositoryInterface */
     private $assetRepository;
 
-    // TODO: on master we must remove null for the $attributeOptionRepository and change the order with $customFont
     public function __construct(
         EngineInterface $templating,
         PdfBuilderInterface $pdfBuilder,
@@ -61,8 +60,8 @@ class ProductPdfRenderer extends PimProductPdfRenderer
         AssetRepositoryInterface $assetRepository,
         string $template,
         string $uploadDirectory,
-        ?string $customFont = null,
-        ?IdentifiableObjectRepositoryInterface $attributeOptionRepository = null
+        IdentifiableObjectRepositoryInterface $attributeOptionRepository ,
+        ?string $customFont = null
 
     ) {
         parent::__construct(
@@ -74,8 +73,8 @@ class ProductPdfRenderer extends PimProductPdfRenderer
             $attributeRepository,
             $template,
             $uploadDirectory,
-            $customFont,
-            $attributeOptionRepository
+            $attributeOptionRepository,
+            $customFont
         );
 
         $this->filterHelper = $filterHelper;
