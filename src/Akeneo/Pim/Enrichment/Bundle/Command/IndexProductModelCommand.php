@@ -9,7 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInt
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
-use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
+use Akeneo\Tool\Component\StorageUtils\Indexer\ProductModelIndexerInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -34,8 +34,8 @@ class IndexProductModelCommand extends ContainerAwareCommand
     /** @var ProductModelRepositoryInterface */
     private $productModelRepository;
 
-    /** @var ProductIndexerInterface */
-    private $productIndexer;
+    /** @var ProductModelIndexerInterface */
+    private $productModelIndexer;
 
     /** @var BulkIndexerInterface */
     private $bulkProductModelDescendantsIndexer;
@@ -51,7 +51,7 @@ class IndexProductModelCommand extends ContainerAwareCommand
 
     public function __construct(
         ProductModelRepositoryInterface $productModelRepository,
-        ProductIndexerInterface $productIndexer,
+        ProductModelIndexerInterface $productModelIndexer,
         BulkIndexerInterface $bulkProductModelDescendantsIndexer,
         ObjectManager $objectManager,
         Client $productAndProductModelClient,
@@ -59,7 +59,7 @@ class IndexProductModelCommand extends ContainerAwareCommand
     ) {
         parent::__construct();
         $this->productModelRepository = $productModelRepository;
-        $this->productIndexer = $productIndexer;
+        $this->productModelIndexer = $productModelIndexer;
         $this->bulkProductModelDescendantsIndexer = $bulkProductModelDescendantsIndexer;
         $this->objectManager = $objectManager;
         $this->productAndProductModelClient = $productAndProductModelClient;
@@ -133,7 +133,7 @@ class IndexProductModelCommand extends ContainerAwareCommand
         $progressBar->start();
         while (!empty($rootProductModels =
             $this->productModelRepository->searchRootProductModelsAfter($lastRootProductModel, self::BULK_SIZE))) {
-            $this->productIndexer->indexFromProductIdentifiers(
+            $this->productModelIndexer->indexFromProductModelCodes(
                 array_map(function (ProductModelInterface $productModel) {
                     return $productModel->getCode();
                 }, $rootProductModels),
@@ -191,7 +191,7 @@ class IndexProductModelCommand extends ContainerAwareCommand
             $i++;
 
             if (0 === $i % self::BULK_SIZE) {
-                $this->productIndexer->indexFromProductIdentifiers(
+                $this->productModelIndexer->indexFromProductModelCodes(
                     array_map(function (ProductModelInterface $productModel) {
                         return $productModel->getCode();
                     }, $productModelBulk),
@@ -209,7 +209,7 @@ class IndexProductModelCommand extends ContainerAwareCommand
         }
 
         if (!empty($productModelBulk)) {
-            $this->productIndexer->indexFromProductIdentifiers(
+            $this->productModelIndexer->indexFromProductModelCodes(
                 array_map(function (ProductModelInterface $productModel) {
                     return $productModel->getCode();
                 }, $productModelBulk),

@@ -5,7 +5,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Bundle\Command;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
-use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
+use Akeneo\Tool\Component\StorageUtils\Indexer\ProductModelIndexerInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
@@ -26,7 +26,7 @@ class IndexProductModelCommandSpec extends ObjectBehavior
     function let(
         ContainerInterface $container,
         ProductModelRepositoryInterface $productModelRepository,
-        ProductIndexerInterface $productModelIndexer,
+        ProductModelIndexerInterface $productModelIndexer,
         BulkIndexerInterface $bulkProductModelDescendantsIndexer,
         ObjectManager $objectManager,
         Client $productAndProductModelClient
@@ -56,8 +56,7 @@ class IndexProductModelCommandSpec extends ObjectBehavior
 
     function it_indexes_all_product_models(
         ProductModelRepositoryInterface $productModelRepository,
-        ProductIndexerInterface $productModelIndexer,
-        BulkIndexerInterface $bulkProductModelDescendantsIndexer,
+        ProductModelIndexerInterface $productModelIndexer,
         ObjectManager $objectManager,
         InputInterface $input,
         OutputInterface $output,
@@ -86,11 +85,11 @@ class IndexProductModelCommandSpec extends ObjectBehavior
         $productModel3->getCode()->willReturn('code3');
         $productModel4->getCode()->willReturn('code4');
         $productModel5->getCode()->willReturn('code5');
-        $productModelIndexer->indexFromProductIdentifiers(['code1', 'code2'], ['index_refresh' => Refresh::disable()])
+        $productModelIndexer->indexFromProductModelCodes(['code1', 'code2'], ['index_refresh' => Refresh::disable()])
             ->shouldBeCalled();
-        $productModelIndexer->indexFromProductIdentifiers(['code3', 'code4'], ['index_refresh' => Refresh::disable()])
+        $productModelIndexer->indexFromProductModelCodes(['code3', 'code4'], ['index_refresh' => Refresh::disable()])
             ->shouldBeCalled();
-        $productModelIndexer->indexFromProductIdentifiers(['code5'], ['index_refresh' => Refresh::disable()])
+        $productModelIndexer->indexFromProductModelCodes(['code5'], ['index_refresh' => Refresh::disable()])
             ->shouldBeCalled();
 
         $objectManager->clear()->shouldBeCalledTimes(3);
@@ -124,8 +123,7 @@ class IndexProductModelCommandSpec extends ObjectBehavior
 
     function it_indexes_a_product_with_identifier(
         ProductModelRepositoryInterface $productModelRepository,
-        ProductIndexerInterface $productModelIndexer,
-        BulkIndexerInterface $bulkProductModelDescendantsIndexer,
+        ProductModelIndexerInterface $productModelIndexer,
         ObjectManager $objectManager,
         InputInterface $input,
         OutputInterface $output,
@@ -142,7 +140,7 @@ class IndexProductModelCommandSpec extends ObjectBehavior
         $productModelRepository->findBy(['code' => ['product_model_code_to_index']])->willReturn([$productModelToIndex]);
 
         $productModelToIndex->getCode()->willReturn('code');
-        $productModelIndexer->indexFromProductIdentifiers(['code'], ['index_refresh' => Refresh::disable()])
+        $productModelIndexer->indexFromProductModelCodes(['code'], ['index_refresh' => Refresh::disable()])
             ->shouldBeCalled();
         $objectManager->clear()->shouldBeCalled();
 
@@ -176,8 +174,7 @@ class IndexProductModelCommandSpec extends ObjectBehavior
 
     function it_indexes_multiple_product_models_with_identifiers(
         ProductModelRepositoryInterface $productModelRepository,
-        ProductIndexerInterface $productModelIndexer,
-        BulkIndexerInterface $bulkProductModelDescendantsIndexer,
+        ProductModelIndexerInterface $productModelIndexer,
         ObjectManager $objectManager,
         InputInterface $input,
         OutputInterface $output,
@@ -198,7 +195,7 @@ class IndexProductModelCommandSpec extends ObjectBehavior
         $productModel1->getCode()->willReturn('product_model_1');
         $productModel2->getCode()->willReturn('product_model_2');
 
-        $productModelIndexer->indexFromProductIdentifiers(['product_model_1', 'product_model_2'], ['index_refresh' => Refresh::disable()])
+        $productModelIndexer->indexFromProductModelCodes(['product_model_1', 'product_model_2'], ['index_refresh' => Refresh::disable()])
             ->shouldBeCalled();
         $objectManager->clear()->shouldBeCalled();
 
@@ -232,8 +229,7 @@ class IndexProductModelCommandSpec extends ObjectBehavior
 
     function it_does_not_index_non_existing_product_models(
         ProductModelRepositoryInterface $productModelRepository,
-        ProductIndexerInterface $productModelIndexer,
-        BulkIndexerInterface $bulkProductModelDescendantsIndexer,
+        ProductModelIndexerInterface $productModelIndexer,
         ObjectManager $objectManager,
         InputInterface $input,
         OutputInterface $output,
@@ -254,7 +250,7 @@ class IndexProductModelCommandSpec extends ObjectBehavior
         $productModel1->getCode()->willReturn('product_model_1');
         $productModel2->getCode()->willReturn('product_model_2');
 
-        $productModelIndexer->indexFromProductIdentifiers(['product_model_1', 'product_model_2'], ['index_refresh' => Refresh::disable()])
+        $productModelIndexer->indexFromProductModelCodes(['product_model_1', 'product_model_2'], ['index_refresh' => Refresh::disable()])
             ->shouldBeCalled();
         $objectManager->clear()->shouldBeCalled();
 

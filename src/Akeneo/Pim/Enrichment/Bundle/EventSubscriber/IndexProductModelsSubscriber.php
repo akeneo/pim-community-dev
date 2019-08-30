@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
-use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
+use Akeneo\Tool\Component\StorageUtils\Indexer\ProductModelIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -20,13 +20,13 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class IndexProductModelsSubscriber implements EventSubscriberInterface
 {
-    /** @var ProductIndexerInterface */
+    /** @var ProductModelIndexerInterface */
     private $productModelIndexer;
 
     /**
-     * @param ProductIndexerInterface $productModelIndexer
+     * @param ProductModelIndexerInterface $productModelIndexer
      */
-    public function __construct(ProductIndexerInterface $productModelIndexer)
+    public function __construct(ProductModelIndexerInterface $productModelIndexer)
     {
         $this->productModelIndexer = $productModelIndexer;
     }
@@ -59,7 +59,7 @@ class IndexProductModelsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->productModelIndexer->indexFromProductIdentifier($product->getCode());
+        $this->productModelIndexer->indexFromProductModelCode($product->getCode());
     }
 
     /**
@@ -78,7 +78,7 @@ class IndexProductModelsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->productModelIndexer->indexFromProductIdentifiers(
+        $this->productModelIndexer->indexFromProductModelCodes(
             array_map(function (ProductModelInterface $product) {
                 return $product->getCode();
             }, $products)
@@ -97,6 +97,6 @@ class IndexProductModelsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->productModelIndexer->removeFromProductId((string) $event->getSubjectId());
+        $this->productModelIndexer->removeFromProductModelId((string) $event->getSubjectId());
     }
 }

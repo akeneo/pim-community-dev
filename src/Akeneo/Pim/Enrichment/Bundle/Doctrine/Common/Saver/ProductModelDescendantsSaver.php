@@ -12,6 +12,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInte
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
+use Akeneo\Tool\Component\StorageUtils\Indexer\ProductModelIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 
 /**
@@ -37,7 +38,7 @@ class ProductModelDescendantsSaver implements SaverInterface
     /** @var ProductModelRepositoryInterface */
     private $productModelRepository;
 
-    /** @var ProductIndexerInterface */
+    /** @var ProductModelIndexerInterface */
     private $productModelIndexer;
 
     /** @var ComputeAndPersistProductCompletenesses */
@@ -50,7 +51,7 @@ class ProductModelDescendantsSaver implements SaverInterface
         ProductModelRepositoryInterface $productModelRepository,
         ProductQueryBuilderFactoryInterface $pqbFactory,
         ProductIndexerInterface $productIndexer,
-        ProductIndexerInterface $productModelIndexer,
+        ProductModelIndexerInterface $productModelIndexer,
         ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses,
         int $batchSize
     ) {
@@ -117,7 +118,7 @@ class ProductModelDescendantsSaver implements SaverInterface
     {
         $productModelsChildren = $this->productModelRepository->findChildrenProductModels($productModel);
         if (!empty($productModelsChildren)) {
-            $this->productModelIndexer->indexFromProductIdentifiers(
+            $this->productModelIndexer->indexFromProductModelCodes(
                 array_map(
                     function (ProductModelInterface $productModelsChild) {
                         return $productModelsChild->getCode();
@@ -135,7 +136,7 @@ class ProductModelDescendantsSaver implements SaverInterface
          *
          * You should have a look to https://akeneo.atlassian.net/browse/PIM-7388
          */
-        $this->productModelIndexer->indexFromProductIdentifier($productModel->getCode());
+        $this->productModelIndexer->indexFromProductModelCode($productModel->getCode());
     }
 
     /**

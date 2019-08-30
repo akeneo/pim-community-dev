@@ -6,6 +6,7 @@ use Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
+use Akeneo\Tool\Component\StorageUtils\Indexer\ProductModelIndexerInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductModelDescendantsSaver;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
@@ -22,7 +23,7 @@ class ProductModelDescendantsSaverSpec extends ObjectBehavior
         ProductModelRepositoryInterface $productModelRepository,
         ProductQueryBuilderFactoryInterface $pqbFactory,
         ProductIndexerInterface $productIndexer,
-        ProductIndexerInterface $productModelIndexer,
+        ProductModelIndexerInterface $productModelIndexer,
         ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses
     ) {
         $this->beConstructedWith(
@@ -79,9 +80,9 @@ class ProductModelDescendantsSaverSpec extends ObjectBehavior
         );
         $productModelsChildren1->getCode()->willReturn('foo');
         $productModelsChildren2->getCode()->willReturn('bar');
-        $productModelIndexer->indexFromProductIdentifiers(['foo', 'bar'], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
+        $productModelIndexer->indexFromProductModelCodes(['foo', 'bar'], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
 
-        $productModelIndexer->indexFromProductIdentifier('product_model_code')->shouldBeCalled();
+        $productModelIndexer->indexFromProductModelCode('product_model_code')->shouldBeCalled();
 
         $this->save($productModel);
     }
@@ -109,9 +110,9 @@ class ProductModelDescendantsSaverSpec extends ObjectBehavior
         $productIndexer->indexFromProductIdentifiers(Argument::cetera())->shouldNotBeCalled();
 
         $productModelRepository->findChildrenProductModels($productModel)->willReturn([]);
-        $productModelIndexer->indexFromProductIdentifiers(Argument::cetera())->shouldNotBeCalled();
+        $productModelIndexer->indexFromProductModelCodes(Argument::cetera())->shouldNotBeCalled();
 
-        $productModelIndexer->indexFromProductIdentifier('product_model_code')->shouldBeCalled();
+        $productModelIndexer->indexFromProductModelCode('product_model_code')->shouldBeCalled();
 
         $this->save($productModel);
     }

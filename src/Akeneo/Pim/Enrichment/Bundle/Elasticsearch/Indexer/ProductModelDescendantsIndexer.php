@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
+use Akeneo\Tool\Component\StorageUtils\Indexer\ProductModelIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Doctrine\Common\Collections\Collection;
@@ -31,15 +32,17 @@ class ProductModelDescendantsIndexer implements
     /** @var ProductIndexerInterface */
     private $productIndexer;
 
-    /** @var ProductIndexerInterface */
+    /** @var ProductModelIndexerInterface */
     private $productModelIndexer;
 
     /**
      * @param ProductIndexerInterface $productIndexer
-     * @param ProductIndexerInterface $productModelIndexer
+     * @param ProductModelIndexerInterface $productModelIndexer
      */
-    public function __construct(ProductIndexerInterface $productIndexer, ProductIndexerInterface $productModelIndexer)
-    {
+    public function __construct(
+        ProductIndexerInterface $productIndexer,
+        ProductModelIndexerInterface $productModelIndexer
+    ) {
         $this->productIndexer = $productIndexer;
         $this->productModelIndexer = $productModelIndexer;
     }
@@ -148,7 +151,7 @@ class ProductModelDescendantsIndexer implements
             return;
         }
 
-        $this->productModelIndexer->indexFromProductIdentifiers(
+        $this->productModelIndexer->indexFromProductModelCodes(
             $this->getProductModelCodes($productModelChildren),
             $options
         );
@@ -181,7 +184,7 @@ class ProductModelDescendantsIndexer implements
             return;
         }
 
-        $this->productModelIndexer->removeManyFromProductIds($this->getProductModelCodes($productModelChildren));
+        $this->productModelIndexer->removeManyFromProductModelIds($this->getProductModelCodes($productModelChildren));
 
         foreach ($productModelChildren as $productModelChild) {
             $this->removeProductModelChildren($productModelChild->getProductModels());

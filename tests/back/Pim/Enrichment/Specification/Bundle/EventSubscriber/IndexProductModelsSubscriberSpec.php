@@ -3,7 +3,7 @@
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
-use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
+use Akeneo\Tool\Component\StorageUtils\Indexer\ProductModelIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\IndexProductModelsSubscriber;
@@ -13,7 +13,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 class IndexProductModelsSubscriberSpec extends ObjectBehavior
 {
-    function let(ProductIndexerInterface $productModelIndexer)
+    function let(ProductModelIndexerInterface $productModelIndexer)
     {
         $this->beConstructedWith($productModelIndexer);
     }
@@ -40,7 +40,7 @@ class IndexProductModelsSubscriberSpec extends ObjectBehavior
 
         $productModel->getCode()->willReturn('identifier');
 
-        $productModelIndexer->indexFromProductIdentifier('identifier')->shouldBeCalled();
+        $productModelIndexer->indexFromProductModelCode('identifier')->shouldBeCalled();
 
         $this->indexProductModel($event);
     }
@@ -56,7 +56,7 @@ class IndexProductModelsSubscriberSpec extends ObjectBehavior
         $productModel1->getCode()->willReturn('identifier1');
         $productModel2->getCode()->willReturn('identifier2');
 
-        $productModelIndexer->indexFromProductIdentifiers(['identifier1', 'identifier2'])->shouldBeCalled();
+        $productModelIndexer->indexFromProductModelCodes(['identifier1', 'identifier2'])->shouldBeCalled();
 
         $this->bulkIndexProductModels($event);
     }
@@ -69,7 +69,7 @@ class IndexProductModelsSubscriberSpec extends ObjectBehavior
         $event->getSubjectId()->willReturn(40);
         $event->getSubject()->willReturn($productModel);
 
-        $productModelIndexer->removeFromProductId(40)->shouldBeCalled();
+        $productModelIndexer->removeFromProductModelId(40)->shouldBeCalled();
 
         $this->deleteProductModel($event)->shouldReturn(null);
     }
@@ -77,7 +77,7 @@ class IndexProductModelsSubscriberSpec extends ObjectBehavior
     function it_does_not_index_a_non_product_model_entity($productModelIndexer, GenericEvent $event, \stdClass $subject)
     {
         $event->getSubject()->willReturn($subject);
-        $productModelIndexer->indexFromProductIdentifier(Argument::cetera())->shouldNotBeCalled();
+        $productModelIndexer->indexFromProductModelCode(Argument::cetera())->shouldNotBeCalled();
 
         $this->indexProductModel($event);
     }
@@ -91,7 +91,7 @@ class IndexProductModelsSubscriberSpec extends ObjectBehavior
         $event->hasArgument('unitary')->willReturn(true);
         $event->getArgument('unitary')->willReturn(false);
 
-        $productModelIndexer->indexFromProductIdentifier(Argument::any())->shouldNotBeCalled();
+        $productModelIndexer->indexFromProductModelCode(Argument::any())->shouldNotBeCalled();
 
         $this->indexProductModel($event);
     }
@@ -104,7 +104,7 @@ class IndexProductModelsSubscriberSpec extends ObjectBehavior
         $event->getSubject()->willReturn($productModel);
         $event->hasArgument('unitary')->willReturn(false);
 
-        $productModelIndexer->indexFromProductIdentifier(Argument::any())->shouldNotBeCalled();
+        $productModelIndexer->indexFromProductModelCode(Argument::any())->shouldNotBeCalled();
 
         $this->indexProductModel($event);
     }
@@ -116,7 +116,7 @@ class IndexProductModelsSubscriberSpec extends ObjectBehavior
     ) {
         $event->getSubject()->willReturn([$subject1]);
 
-        $productModelIndexer->indexFromProductIdentifiers(Argument::any())->shouldNotBeCalled();
+        $productModelIndexer->indexFromProductModelCodes(Argument::any())->shouldNotBeCalled();
 
         $this->bulkIndexProductModels($event);
     }
@@ -125,7 +125,7 @@ class IndexProductModelsSubscriberSpec extends ObjectBehavior
     {
         $event->getSubject()->willReturn($subject1);
 
-        $productModelIndexer->indexFromProductIdentifiers(Argument::any())->shouldNotBeCalled();
+        $productModelIndexer->indexFromProductModelCodes(Argument::any())->shouldNotBeCalled();
 
         $this->bulkIndexProductModels($event);
     }
@@ -137,7 +137,7 @@ class IndexProductModelsSubscriberSpec extends ObjectBehavior
     ) {
         $event->getSubject()->willReturn($subject);
 
-        $productModelIndexer->removeFromProductId(40)->shouldNotBeCalled();
+        $productModelIndexer->removeFromProductModelId(40)->shouldNotBeCalled();
 
         $this->deleteProductModel($event)->shouldReturn(null);
     }

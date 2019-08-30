@@ -9,7 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProduc
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
-use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
+use Akeneo\Tool\Component\StorageUtils\Indexer\ProductModelIndexerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -19,7 +19,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductModelIndexer implements ProductIndexerInterface
+class ProductModelIndexer implements ProductModelIndexerInterface
 {
     private const PRODUCT_MODEL_IDENTIFIER_PREFIX = 'product_model_';
 
@@ -53,23 +53,23 @@ class ProductModelIndexer implements ProductIndexerInterface
     }
 
     /**
-     * @param string $productModelIdentifier
+     * @param string $productModelCode
      * @param array  $options
      */
-    public function indexFromProductIdentifier(string $productModelIdentifier, array $options = []): void
+    public function indexFromProductModelCode(string $productModelCode, array $options = []): void
     {
-        $this->indexFromProductIdentifiers([$productModelIdentifier], $options);
+        $this->indexFromProductModelCodes([$productModelCode], $options);
     }
 
     /**
-     * @param array $productModelIdentifiers
+     * @param array $productModelCodes
      * @param array $options
      */
-    public function indexFromProductIdentifiers(array $productModelIdentifiers, array $options = []): void
+    public function indexFromProductModelCodes(array $productModelCodes, array $options = []): void
     {
         $normalizedProductModels = [];
-        foreach ($productModelIdentifiers as $productModelIdentifier) {
-            $object = $this->productModelRepository->findOneByIdentifier($productModelIdentifier);
+        foreach ($productModelCodes as $productModelCode) {
+            $object = $this->productModelRepository->findOneByIdentifier($productModelCode);
             if (!$object instanceof ProductModelInterface) {
                 continue;
             }
@@ -103,9 +103,9 @@ class ProductModelIndexer implements ProductIndexerInterface
      *
      * {@inheritdoc}
      */
-    public function removeFromProductId(string $productModelId, array $options = []): void
+    public function removeFromProductModelId(string $productModelId, array $options = []): void
     {
-        $this->removeManyFromProductIds([$productModelId], $options);
+        $this->removeManyFromProductModelIds([$productModelId], $options);
     }
 
     /**
@@ -113,7 +113,7 @@ class ProductModelIndexer implements ProductIndexerInterface
      *
      * {@inheritdoc}
      */
-    public function removeManyFromProductIds(array $productModelIds, array $options = []): void
+    public function removeManyFromProductModelIds(array $productModelIds, array $options = []): void
     {
         if (empty($productModelIds)) {
             return;
@@ -151,20 +151,6 @@ class ProductModelIndexer implements ProductIndexerInterface
                 ],
             ],
         ]);
-    }
-
-    /**
-     * Removes the products from both the product model index and the product and product model index.
-     *
-     * {@inheritdoc}
-     */
-    public function removeAll(array $objects, array $options = []) : void
-    {
-        $objectIds = [];
-        foreach ($objects as $objectId) {
-            $objectIds[]  = self::PRODUCT_MODEL_IDENTIFIER_PREFIX . (string) $objectId;
-        }
-        $this->productAndProductModelClient->bulkDelete(self::INDEX_TYPE, $objectIds);
     }
 
     /**
