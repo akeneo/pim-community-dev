@@ -34,7 +34,7 @@ class ExtrapolatedAttributeValidator
     }
 
     public function checkAttributeExistsAndHasASupportedType(
-        string $fieldValue,
+        $fieldValue,
         string $assetFamilyIdentifier,
         array $supportedTypes
     ): ConstraintViolationListInterface {
@@ -50,7 +50,7 @@ class ExtrapolatedAttributeValidator
             $allViolations->addAll($violations);
         }
 
-        return $violations;
+        return $allViolations;
     }
 
     public function checkAttributeExists(

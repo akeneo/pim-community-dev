@@ -947,7 +947,7 @@ final class EditAssetFamilyContext implements Context
     public function thereShouldBeAValidationErrorStatingThatTheProductAssignmentChannelDoesNotSupportThisAttributeForExtrapolation()
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
-            sprintf('The attribute "%s" of type "image" is not supported, only the following attribute types are supported for this field: text',self::ATTRIBUTE_CODE)
+            sprintf('The attribute "%s" of type "image" is not supported, only the following attribute types are supported for this field: text', self::ATTRIBUTE_CODE)
         );
     }
 
@@ -991,5 +991,15 @@ final class EditAssetFamilyContext implements Context
     private function toExtrapolation(string $attributeCode): string
     {
         return sprintf('{{%s}}', $attributeCode);
+    }
+
+    /**
+     * @Then /^there should be a validation error stating that the product assignment locale does not support this attribute for extrapolation$/
+     */
+    public function thereShouldBeAValidationErrorStatingThatTheProductAssignmentLocaleDoesNotSupportThisAttributeForExtrapolation()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            sprintf('The attribute "%s" of type "image" is not supported, only the following attribute types are supported for this field: text', self::ATTRIBUTE_CODE)
+        );
     }
 }
