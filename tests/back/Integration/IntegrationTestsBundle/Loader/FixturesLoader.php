@@ -376,9 +376,7 @@ class FixturesLoader implements FixturesLoaderInterface
     {
         $this->container->get('pim_catalog.elasticsearch.indexer.product')->indexFromProductIdentifiers(
             array_column(
-                $this->container->get('database_connection')->fetchAll(
-                    'SELECT p.identifier as identifier from pim_catalog_product p;'
-                ),
+                $this->container->get('database_connection')->fetchAll('SELECT identifier FROM pim_catalog_product'),
                 'identifier'
             )
         );
@@ -389,8 +387,12 @@ class FixturesLoader implements FixturesLoaderInterface
      */
     protected function indexProductModels(): void
     {
-        $productModels = $this->container->get('pim_catalog.repository.product_model')->findAll();
-        $this->container->get('pim_catalog.elasticsearch.indexer.product_model')->indexAll($productModels);
+        $this->container->get('pim_catalog.elasticsearch.indexer.product_model')->indexFromProductIdentifiers(
+            array_column(
+                $this->container->get('database_connection')->fetchAll('SELECT code FROM pim_catalog_product_model'),
+                'code'
+            )
+        );
     }
 
     protected function resetElasticsearchIndex(): void
