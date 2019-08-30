@@ -105,31 +105,38 @@ class ProductSelectionsValidator
                 OptionCollectionAttribute::ATTRIBUTE_TYPE
             ]
         ));
-        $violations->addAll($this->checkAttributeExistsAndHasASupportedType(
-            $productSelection['channel'],
-            $assetFamilyIdentifier,
-            [TextAttribute::ATTRIBUTE_TYPE]
-        ));
-        $violations->addAll($this->checkAttributeExistsAndHasASupportedType(
-            $productSelection['locale'],
-            $assetFamilyIdentifier,
-            [TextAttribute::ATTRIBUTE_TYPE]
-        ));
+        if (isset($productSelection['channel'])) {
+            $violations->addAll($this->checkAttributeExistsAndHasASupportedType(
+                $productSelection['channel'],
+                $assetFamilyIdentifier,
+                [TextAttribute::ATTRIBUTE_TYPE]
+            ));
+        }
+        if (isset($productSelection['locale'])) {
+            $violations->addAll($this->checkAttributeExistsAndHasASupportedType(
+                $productSelection['locale'],
+                $assetFamilyIdentifier,
+                [TextAttribute::ATTRIBUTE_TYPE]
+            ));
+        }
         return $violations;
     }
 
-    private function checkAttributeExistsAndHasASupportedType(string $fieldValue, string $assetFamilyIdentifier, array $supportedTypes): ConstraintViolationListInterface
+    private function checkAttributeExistsAndHasASupportedType($fieldValue, string $assetFamilyIdentifier, array $supportedTypes): ConstraintViolationListInterface
     {
-        $violations = new ConstraintViolationList();
+        $allViolations = new ConstraintViolationList();
         $fieldAttributeCodes = ReplacePattern::detectPatterns($fieldValue);
         foreach ($fieldAttributeCodes as $fieldAttributeCode) {
-            $violations->addAll($this->checkAttributeExists($assetFamilyIdentifier, $fieldAttributeCode));
-            $violations->addAll(
-                $this->checkAttributeTypeIsSupported($assetFamilyIdentifier, $fieldAttributeCode, $supportedTypes)
-            );
+            $violations = $this->checkAttributeExists($assetFamilyIdentifier, $fieldAttributeCode);
+            if (0 === $violations->count()) {
+                $violations->addAll(
+                    $this->checkAttributeTypeIsSupported($assetFamilyIdentifier, $fieldAttributeCode, $supportedTypes)
+                );
+            }
+            $allViolations->addAll($violations);
         }
 
-        return $violations;
+        return $allViolations;
     }
 
     private function checkAttributeExists(
@@ -173,8 +180,7 @@ class ProductSelectionsValidator
 
         return $validator->validate(
             $isAttributeTypeSupported,
-            new Callback(function ($isAttributeTypeSupported, ExecutionContextInterface $context) use ($attributeCode, $attributeType, $supportedAttributeTypes)
-            {
+            new Callback(function ($isAttributeTypeSupported, ExecutionContextInterface $context) use ($attributeCode, $attributeType, $supportedAttributeTypes) {
                 if (!$isAttributeTypeSupported) {
                     $context
                         ->buildViolation(

@@ -11,7 +11,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-Interface GetAttributeTypeInterface
+interface GetAttributeTypeInterface
 {
     public function fetch(AssetFamilyIdentifier $assetFamilyIdentifier, AttributeCode $attributeCode): string;
 }

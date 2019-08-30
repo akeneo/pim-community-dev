@@ -767,7 +767,7 @@ final class EditAssetFamilyContext implements Context
     public function thereShouldBeAValidationErrorStatingThatTheProductSelectionFieldDoesNotSupportExtrapolatedImageAttribute()
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
-            sprintf('The attribute "%s" of type "image" is not supported, only the following attribute types are supported for this field: text',self::ATTRIBUTE_CODE)
+            sprintf('The attribute "%s" of type "image" is not supported, only the following attribute types are supported for this field: text', self::ATTRIBUTE_CODE)
         );
     }
 
@@ -805,7 +805,7 @@ final class EditAssetFamilyContext implements Context
     public function there_should_be_a_validation_error_stating_that_the_product_selection_value_does_not_support_extrapolated_image_attribute()
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
-            sprintf('The attribute "%s" of type "image" is not supported, only the following attribute types are supported for this field: text, option, option_collection',self::ATTRIBUTE_CODE)
+            sprintf('The attribute "%s" of type "image" is not supported, only the following attribute types are supported for this field: text, option, option_collection', self::ATTRIBUTE_CODE)
         );
     }
 
@@ -843,7 +843,7 @@ final class EditAssetFamilyContext implements Context
     public function thereShouldBeAValidationErrorStatingThatTheProductSelectionChannelDoesNotSupportExtrapolatedImageAttribute()
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
-            sprintf('The attribute "%s" of type "image" is not supported, only the following attribute types are supported for this field: text',self::ATTRIBUTE_CODE)
+            sprintf('The attribute "%s" of type "image" is not supported, only the following attribute types are supported for this field: text', self::ATTRIBUTE_CODE)
         );
     }
 
@@ -881,7 +881,7 @@ final class EditAssetFamilyContext implements Context
     public function thereShouldBeAValidationErrorStatingThatTheProductSelectionLocaleDoesNotSupportExtrapolatedImageAttribute()
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
-            sprintf('The attribute "%s" of type "image" is not supported, only the following attribute types are supported for this field: text',self::ATTRIBUTE_CODE)
+            sprintf('The attribute "%s" of type "image" is not supported, only the following attribute types are supported for this field: text', self::ATTRIBUTE_CODE)
         );
     }
 
