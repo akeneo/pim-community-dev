@@ -23,5 +23,7 @@ interface PendingItemsRepositoryInterface
 
     public function addDeletedFamilyCode(string $code): void;
 
-    public function addUpdatedProductIdentifier(int $code): void;
+    public function addUpdatedProductIdentifier(int $identifier): void;
+
+    public function addDeletedProductIdentifier(int $identifier): void;
 }

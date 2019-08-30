@@ -96,6 +96,18 @@ class PendingItemsRepository implements PendingItemsRepositoryInterface
         $this->connection->executeQuery($this->getInsertQuery(), $bindParams);
     }
 
+    public function addDeletedProductIdentifier(int $identifier): void
+    {
+        $bindParams = [
+            'entity_type' => self::ENTITY_TYPE_PRODUCT,
+            'entity_id' => (string) $identifier,
+            'action' => self::ACTION_ENTITY_DELETED,
+            'locked' => self::STATUS_UNLOCKED,
+        ];
+
+        $this->connection->executeQuery($this->getInsertQuery(), $bindParams);
+    }
+
     private function getInsertQuery(): string
     {
         return <<<'SQL'
