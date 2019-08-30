@@ -95,8 +95,8 @@ Feature: Edit a text attribute of an asset family
   @acceptance-back
   Scenario: Updating the validation rule
     Given an asset family with a text attribute 'email' with no validation rule
-    When the user changes the validation rule of 'email' to '"mediaLink"'
-    Then the validation rule of 'email' should be 'mediaLink'
+    When the user changes the validation rule of 'email' to '"url"'
+    Then the validation rule of 'email' should be 'url'
 
   @acceptance-back
   Scenario: Remove a validation rule from a text attribute (also removes the regular expression)
@@ -108,7 +108,7 @@ Feature: Edit a text attribute of an asset family
   @acceptance-back
   Scenario: Updating the validation rule when it already has a regular expression removes the regular expression
     Given an asset family with a text attribute 'regex' with a regular expression '"[0-9]+"'
-    When the user changes the validation rule of 'regex' to '"mediaLink"'
+    When the user changes the validation rule of 'regex' to '"url"'
     Then the regular expression of 'regex' should be empty
 
   @acceptance-back
@@ -124,14 +124,14 @@ Feature: Edit a text attribute of an asset family
   @acceptance-back
   Scenario: Updating the validation rule if it's not a simple text fails
     Given an asset family with a text area attribute 'description'
-    When the user changes the validation rule of 'description' to '"mediaLink"'
+    When the user changes the validation rule of 'description' to '"url"'
     Then there should be a validation error with message 'A text area attribute cannot have a validation rule'
 
   @acceptance-back
   Scenario: Updating the validation rule and text area if it is not a simple text
     Given an asset family with a text area attribute 'description'
-    When the user changes the text area flag to 'false' and the validation rule of 'description' to 'mediaLink'
-    Then the validation rule of 'description' should be 'mediaLink'
+    When the user changes the text area flag to 'false' and the validation rule of 'description' to 'url'
+    Then the validation rule of 'description' should be 'url'
 
   # Regular expression
   @acceptance-back

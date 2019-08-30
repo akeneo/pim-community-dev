@@ -130,6 +130,8 @@ pimee_enrich.entity.product:
     approval:
       send: Enviar a aprobar
       sent: Enviado a aprobar
+      send_and_next: Enviar y siguiente
+      send_and_finish: Enviar y finalizar
 pimee_enrich.entity.published_product:
   flash:
     publish:
@@ -163,6 +165,7 @@ pimee_enrich.entity.product_draft:
     create:
       success: El borrador del producto ha sido enviado a aprobación
       fail: No puede enviar este borrador para aprobación
+      skip: El borrador de producto no ha sido enviado para su aprobación porque no se ha editado ningún valor
   module:
     proposal:
       accept: Aceptar propuesta

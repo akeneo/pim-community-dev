@@ -15,8 +15,6 @@ namespace Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator;
 
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType;
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 use Liip\ImagineBundle\Exception\Binary\Loader\NotLoadableException;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Data\DataManager;
@@ -74,7 +72,7 @@ class BinaryImageGenerator implements PreviewGeneratorInterface
             try {
                 $binary = $this->dataManager->find($type, $data);
             } catch (NotLoadableException $e) {
-                return $this->defaultImageProvider->getImageMediaLink(self::DEFAULT_IMAGE, $type);
+                return $this->defaultImageProvider->getImageUrl(self::DEFAULT_IMAGE, $type);
             }
 
             $this->cacheManager->store(

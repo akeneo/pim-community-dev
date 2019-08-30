@@ -9,14 +9,14 @@ import PermissionCollectionEditor from 'akeneoassetmanager/tools/component/permi
 import {FormState} from 'akeneoassetmanager/application/reducer/state';
 import {permissionEditionUpdated} from 'akeneoassetmanager/domain/event/asset-family/permission';
 import {
-  RightLevel,
-  denormalizePermissionCollection,
-  PermissionCollection,
+    denormalizePermissionCollection,
+    PermissionCollection,
+    RightLevel,
 } from 'akeneoassetmanager/domain/model/asset-family/permission';
 import {savePermission} from 'akeneoassetmanager/application/action/asset-family/permission';
 import {canEditAssetFamily} from 'akeneoassetmanager/application/reducer/right';
 
-const securityContext = require('pim/security-context');
+// const securityContext = require('pim/security-context');
 const routing = require('routing');
 
 interface StateProps {
@@ -126,12 +126,13 @@ export default connect(
       rights: {
         assetFamily: {
           edit:
-            securityContext.isGranted('akeneo_assetmanager_asset_family_manage_permission') &&
+            // securityContext.isGranted('akeneo_assetmanager_asset_family_manage_permission') &&
             canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
         },
         userGroup: {
           create:
-            securityContext.isGranted('pim_user_group_index') && securityContext.isGranted('pim_user_group_create'),
+            // securityContext.isGranted('pim_user_group_index') && securityContext.isGranted('pim_user_group_create'),
+            true,
         },
       },
     };

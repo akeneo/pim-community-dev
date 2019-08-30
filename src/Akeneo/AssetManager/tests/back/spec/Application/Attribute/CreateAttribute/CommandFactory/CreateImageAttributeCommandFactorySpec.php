@@ -47,9 +47,9 @@ class CreateImageAttributeCommandFactorySpec extends ObjectBehavior
     {
         $command = [
             'asset_family_identifier' => 'designer',
-            'code' => 'picture',
+//            'code' => 'picture', // For the test purpose, this one is missing
             'is_required' => false,
-            //'value_per_channel' => false, // For the test purpose, this one is missing
+            'value_per_channel' => false,
             'value_per_locale' => false,
             'max_file_size' => '1512.12',
             'allowed_extensions' => ['pdf', 'png'],
@@ -65,13 +65,13 @@ class CreateImageAttributeCommandFactorySpec extends ObjectBehavior
             'asset_family_identifier' => 'designer',
             'code' => 'picture',
             'labels' => ['fr_FR' => 'Portrait'],
-            'value_per_channel' => false,
-            'value_per_locale' => false,
         ]);
 
         $command->shouldBeAnInstanceOf(CreateImageAttributeCommand::class);
         $command->isRequired->shouldBeEqualTo(false);
         $command->maxFileSize->shouldBeEqualTo(null);
         $command->allowedExtensions->shouldBeEqualTo([]);
+        $command->valuePerChannel->shouldBeEqualTo(false);
+        $command->valuePerLocale->shouldBeEqualTo(false);
     }
 }

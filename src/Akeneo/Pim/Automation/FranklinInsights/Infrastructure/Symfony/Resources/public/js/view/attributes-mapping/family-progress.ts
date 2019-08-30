@@ -10,7 +10,7 @@
 import View = require('pimui/js/view/base');
 import * as _ from 'underscore';
 import AttributesMapping from '../../model/attributes-mapping';
-import AttributesMappingForFamily from '../../model/attributes-mapping-for-family';
+import FamilyMapping from '../../model/family-mapping';
 
 const __ = require('oro/translator');
 const template = require('akeneo/franklin-insights/template/settings/attributes-mapping/family-progress');
@@ -26,7 +26,7 @@ class FamilyProgress extends View {
 
   public render() {
     const [attributeCount, mappedAttributeCount] = this.getMappingProgress(
-      (this.getFormData() as AttributesMappingForFamily).mapping
+      (this.getFormData() as FamilyMapping).mapping
     );
 
     this.$el.html(this.template({__, attributeCount, mappedAttributeCount}));

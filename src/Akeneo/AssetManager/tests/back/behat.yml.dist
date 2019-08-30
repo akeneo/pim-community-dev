@@ -22,8 +22,8 @@ default:
                 - akeneo_assetmanager.tests.back.acceptance.context.constraint_violations_context
                 - akeneo_assetmanager.tests.back.acceptance.context.index_assets_context
                 - akeneo_assetmanager.tests.back.acceptance.context.set_asset_family_permission_context
-                - akeneo_assetmanager.tests.back.acceptance.context.edit_asset.edit_mediaLink
-                - akeneo_assetmanager.tests.back.acceptance.context.execute_rule_templates
+                - akeneo_assetmanager.tests.back.acceptance.context.edit_asset.edit_media_link
+                - akeneo_assetmanager.tests.back.acceptance.context.link_assets_context
             filters:
                 tags: '@acceptance-back'
         integration:
@@ -31,6 +31,7 @@ default:
                 - '%paths.base%/../features'
             contexts:
                 - akeneo_assetmanager.tests.back.integration.connector.collect.create_or_update_asset_context
+                - akeneo_assetmanager.tests.back.integration.connector.collect.delete_asset_context
                 - akeneo_assetmanager.tests.back.integration.connector.collect.create_or_update_asset_family_context
                 - akeneo_assetmanager.tests.back.integration.connector.collect.create_or_update_attribute_context
                 - akeneo_assetmanager.tests.back.integration.connector.collection.create_or_update_attribute_option_context

@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create;
 
-use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
-use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\AttributeValidatorInterface;
 use JsonSchema\Validator;
 
 class TextAttributeValidator implements AttributeValidatorInterface
@@ -23,6 +21,7 @@ class TextAttributeValidator implements AttributeValidatorInterface
 
     public function validate(array $normalizedAttribute): array
     {
+        $normalizedAttribute['labels'] =  empty($normalizedAttribute['labels']) ? (object) [] : $normalizedAttribute['labels'] ;
         $asset = Validator::arrayToObjectRecursive($normalizedAttribute);
         $validator = new Validator();
         $validator->validate($asset, $this->getJsonSchema());
@@ -39,7 +38,7 @@ class TextAttributeValidator implements AttributeValidatorInterface
     {
         return [
             'type' => 'object',
-            'required' => ['code', 'type', 'value_per_locale', 'value_per_channel'],
+            'required' => ['code', 'type'],
             'properties' => [
                 'code' => [
                     'type' => ['string'],

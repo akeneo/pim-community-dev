@@ -1,12 +1,12 @@
 import {
-  notifyRecordCreateFailed,
-  notifyRecordWellCreated,
+    notifyRecordCreateFailed,
+    notifyRecordWellCreated,
 } from 'akeneoreferenceentity/application/action/record/notify';
 import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
 import {
-  recordCreationErrorOccured,
-  recordCreationSucceeded,
-  recordCreationStart,
+    recordCreationErrorOccurred,
+    recordCreationStart,
+    recordCreationSucceeded,
 } from 'akeneoreferenceentity/domain/event/record/create';
 import {createIdentifier as createReferenceEntityIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 import {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
@@ -40,7 +40,7 @@ export const createRecord = (createAnother: boolean) => async (
 
     if (errors) {
       const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-      dispatch(recordCreationErrorOccured(validationErrors));
+      dispatch(recordCreationErrorOccurred(validationErrors));
 
       return;
     }

@@ -1,55 +1,52 @@
 import Identifier, {createIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
-import AssetFamilyIdentifier, {
-  createIdentifier as createAssetFamilyIdentifier,
-} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import AssetFamilyIdentifier, {createIdentifier as createAssetFamilyIdentifier,} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import LabelCollection, {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import AttributeCode, {createCode} from 'akeneoassetmanager/domain/model/attribute/code';
-import {NormalizedAttribute, Attribute, ConcreteAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
-import {MaxLength, NormalizedMaxLength} from 'akeneoassetmanager/domain/model/attribute/type/text/max-length';
-import {IsTextarea, NormalizedIsTextarea} from 'akeneoassetmanager/domain/model/attribute/type/text/is-textarea';
+import {Attribute, ConcreteAttribute, NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {
-  IsRichTextEditor,
-  NormalizedIsRichTextEditor,
-} from 'akeneoassetmanager/domain/model/attribute/type/text/is-rich-text-editor';
+    createPrefixFromNormalized,
+    isValidPrefix,
+    NormalizedPrefix,
+    normalizePrefix,
+    Prefix,
+} from 'akeneoassetmanager/domain/model/attribute/type/media-link/prefix';
 import {
-  ValidationRule,
-  NormalizedValidationRule,
-  ValidationRuleOption,
-} from 'akeneoassetmanager/domain/model/attribute/type/text/validation-rule';
+    createSuffixFromNormalized,
+    isValidSuffix,
+    NormalizedSuffix,
+    normalizeSuffix,
+    Suffix,
+} from 'akeneoassetmanager/domain/model/attribute/type/media-link/suffix';
 import {
-  RegularExpression,
-  NormalizedRegularExpression,
-} from 'akeneoassetmanager/domain/model/attribute/type/text/regular-expression';
+    createMediaTypeFromNormalized,
+    isValidMediaType,
+    MediaType,
+    NormalizedMediaType,
+    normalizeMediaType,
+} from 'akeneoassetmanager/domain/model/attribute/type/media-link/media-type';
 
-export type TextAdditionalProperty = MaxLength | IsTextarea | IsRichTextEditor | ValidationRule | RegularExpression;
-export type NormalizedTextAdditionalProperty =
-  | NormalizedMaxLength
-  | NormalizedIsTextarea
-  | NormalizedIsRichTextEditor
-  | NormalizedValidationRule
-  | NormalizedRegularExpression;
+export type NormalizedMediaLinkAdditionalProperty = NormalizedPrefix | NormalizedSuffix | NormalizedMediaType;
+export type MediaLinkAdditionalProperty = Prefix | Suffix | MediaType;
 
-export interface NormalizedTextAttribute extends NormalizedAttribute {
-  type: 'text';
-  max_length: NormalizedMaxLength;
-  is_textarea: NormalizedIsTextarea;
-  is_rich_text_editor: NormalizedIsRichTextEditor;
-  validation_rule: NormalizedValidationRule;
-  regular_expression: NormalizedRegularExpression;
+export const MEDIA_LINK_ATTRIBUTE_TYPE = 'media_link';
+
+export interface NormalizedMediaLinkAttribute extends NormalizedAttribute {
+  type: 'media_link';
+  prefix: NormalizedPrefix;
+  suffix: NormalizedSuffix;
+  media_type: NormalizedMediaType;
 }
 
-export interface TextAttribute extends Attribute {
-  maxLength: MaxLength;
-  isTextarea: IsTextarea;
-  isRichTextEditor: IsRichTextEditor;
-  validationRule: ValidationRule;
-  regularExpression: RegularExpression;
-  normalize(): NormalizedTextAttribute;
+export interface MediaLinkAttribute extends Attribute {
+  prefix: Prefix;
+  suffix: Suffix;
+  mediaType: MediaType;
+  normalize(): NormalizedMediaLinkAttribute;
 }
 
 export class InvalidArgumentError extends Error {}
 
-export class ConcreteTextAttribute extends ConcreteAttribute implements TextAttribute {
+export class ConcreteMediaLinkAttribute extends ConcreteAttribute implements MediaLinkAttribute {
   private constructor(
     identifier: Identifier,
     assetFamilyIdentifier: AssetFamilyIdentifier,
@@ -59,90 +56,62 @@ export class ConcreteTextAttribute extends ConcreteAttribute implements TextAttr
     valuePerChannel: boolean,
     order: number,
     is_required: boolean,
-    readonly maxLength: MaxLength,
-    readonly isTextarea: IsTextarea,
-    readonly isRichTextEditor: IsRichTextEditor,
-    readonly validationRule: ValidationRule,
-    readonly regularExpression: RegularExpression
+    readonly prefix: Prefix,
+    readonly suffix: Suffix,
+    readonly mediaType: MediaType
   ) {
     super(
       identifier,
       assetFamilyIdentifier,
       code,
       labelCollection,
-      'text',
+      MEDIA_LINK_ATTRIBUTE_TYPE,
       valuePerLocale,
       valuePerChannel,
       order,
       is_required
     );
 
-    if (!(maxLength instanceof MaxLength)) {
-      throw new InvalidArgumentError('Attribute expects a MaxLength as maxLength');
+    if (!isValidPrefix(prefix)) {
+      throw new InvalidArgumentError('Attribute expects a valid Prefix as prefix');
     }
 
-    if (!(isTextarea instanceof IsTextarea)) {
-      throw new InvalidArgumentError('Attribute expects a Textarea as isTextarea');
+    if (!isValidSuffix(suffix)) {
+      throw new InvalidArgumentError('Attribute expects a valid Suffix as suffix');
     }
 
-    if (!(isRichTextEditor instanceof IsRichTextEditor)) {
-      throw new InvalidArgumentError('Attribute expects a IsRichTextEditor as isRichTextEditor');
-    }
-
-    if (false === isTextarea.booleanValue() && true === isRichTextEditor.booleanValue()) {
-      throw new InvalidArgumentError('Attribute cannot be rich text editor and not textarea');
-    }
-
-    if (!(validationRule instanceof ValidationRule)) {
-      throw new InvalidArgumentError('Attribute expects a ValidationRule as validationRule');
-    }
-
-    if (true === isTextarea.booleanValue() && ValidationRuleOption.None !== validationRule.stringValue()) {
-      throw new InvalidArgumentError('Attribute cannot have a validation rule while being a textarea');
-    }
-
-    if (!(regularExpression instanceof RegularExpression)) {
-      throw new InvalidArgumentError('Attribute expects a RegularExpression as regularExpression');
-    }
-
-    if (!regularExpression.isNull() && ValidationRuleOption.RegularExpression !== validationRule.stringValue()) {
-      throw new InvalidArgumentError(
-        'Attribute cannot have a regular expression while the validation rule is not ValidationRuleOption.RegularExpression'
-      );
+    if (!isValidMediaType(mediaType)) {
+      throw new InvalidArgumentError('Attribute expects a valid MediaType as mediaType');
     }
 
     Object.freeze(this);
   }
 
-  public static createFromNormalized(normalizedTextAttribute: NormalizedTextAttribute) {
-    return new ConcreteTextAttribute(
-      createIdentifier(normalizedTextAttribute.identifier),
-      createAssetFamilyIdentifier(normalizedTextAttribute.asset_family_identifier),
-      createCode(normalizedTextAttribute.code),
-      createLabelCollection(normalizedTextAttribute.labels),
-      normalizedTextAttribute.value_per_locale,
-      normalizedTextAttribute.value_per_channel,
-      normalizedTextAttribute.order,
-      normalizedTextAttribute.is_required,
-      MaxLength.createFromNormalized(normalizedTextAttribute.max_length),
-      IsTextarea.createFromNormalized(normalizedTextAttribute.is_textarea),
-      IsRichTextEditor.createFromNormalized(normalizedTextAttribute.is_rich_text_editor),
-      ValidationRule.createFromNormalized(normalizedTextAttribute.validation_rule),
-      RegularExpression.createFromNormalized(normalizedTextAttribute.regular_expression)
+  public static createFromNormalized(normalizedMediaLinkAttribute: NormalizedMediaLinkAttribute) {
+    return new ConcreteMediaLinkAttribute(
+      createIdentifier(normalizedMediaLinkAttribute.identifier),
+      createAssetFamilyIdentifier(normalizedMediaLinkAttribute.asset_family_identifier),
+      createCode(normalizedMediaLinkAttribute.code),
+      createLabelCollection(normalizedMediaLinkAttribute.labels),
+      normalizedMediaLinkAttribute.value_per_locale,
+      normalizedMediaLinkAttribute.value_per_channel,
+      normalizedMediaLinkAttribute.order,
+      normalizedMediaLinkAttribute.is_required,
+      createPrefixFromNormalized(normalizedMediaLinkAttribute.prefix),
+      createSuffixFromNormalized(normalizedMediaLinkAttribute.suffix),
+      createMediaTypeFromNormalized(normalizedMediaLinkAttribute.media_type)
     );
   }
 
-  public normalize(): NormalizedTextAttribute {
+  public normalize(): NormalizedMediaLinkAttribute {
     return {
       ...super.normalize(),
-      type: 'text',
-      max_length: this.maxLength.normalize(),
-      is_textarea: this.isTextarea.normalize(),
-      is_rich_text_editor: this.isRichTextEditor.normalize(),
-      validation_rule: this.validationRule.normalize(),
-      regular_expression: this.regularExpression.normalize(),
+      type: MEDIA_LINK_ATTRIBUTE_TYPE,
+      prefix: normalizePrefix(this.prefix),
+      suffix: normalizeSuffix(this.suffix),
+      media_type: normalizeMediaType(this.mediaType),
     };
   }
 }
 
-export const denormalize = ConcreteTextAttribute.createFromNormalized;
+export const denormalize = ConcreteMediaLinkAttribute.createFromNormalized;

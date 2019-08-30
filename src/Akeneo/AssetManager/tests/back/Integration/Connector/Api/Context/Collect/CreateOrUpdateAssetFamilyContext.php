@@ -14,10 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Integration\Connector\Api\Context\Collect;
 
 use Akeneo\AssetManager\Common\Fake\InMemoryChannelExists;
-use Akeneo\AssetManager\Common\Fake\InMemoryFileExists;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesPerChannels;
-use Akeneo\AssetManager\Common\Fake\InMemoryFindFileDataByFileKey;
 use Akeneo\AssetManager\Common\Fake\InMemoryGetAttributeIdentifier;
 use Akeneo\AssetManager\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
@@ -25,14 +23,12 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
-use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
@@ -65,12 +61,6 @@ class CreateOrUpdateAssetFamilyContext implements Context
     /** @var InMemoryFindActivatedLocalesPerChannels */
     private $activatedLocalesPerChannels;
 
-    /** @var InMemoryFindFileDataByFileKey */
-    private $findFileData;
-
-    /** @var InMemoryFileExists */
-    private $fileExists;
-
     /** @var InMemoryGetAttributeIdentifier */
     private $getAttributeIdentifier;
 
@@ -81,8 +71,6 @@ class CreateOrUpdateAssetFamilyContext implements Context
         InMemoryChannelExists $channelExists,
         InMemoryFindActivatedLocalesByIdentifiers $activatedLocales,
         InMemoryFindActivatedLocalesPerChannels $activatedLocalesPerChannels,
-        InMemoryFindFileDataByFileKey $findFileData,
-        InMemoryFileExists $fileExists,
         InMemoryGetAttributeIdentifier $getAttributeIdentifier
     ) {
         $this->clientFactory = $clientFactory;
@@ -91,25 +79,19 @@ class CreateOrUpdateAssetFamilyContext implements Context
         $this->channelExists = $channelExists;
         $this->activatedLocales = $activatedLocales;
         $this->activatedLocalesPerChannels = $activatedLocalesPerChannels;
-        $this->findFileData = $findFileData;
-        $this->fileExists = $fileExists;
         $this->getAttributeIdentifier = $getAttributeIdentifier;
     }
 
     /**
-     * @Given the Brand asset family existing in the ERP but not in the PIM
+     * @Given the Frontview asset family existing in the ERP but not in the PIM
      */
-    public function theBrandAssetFamilyExistingInTheErpButNotInThePim()
+    public function theFrontviewAssetFamilyExistingInTheErpButNotInThePim()
     {
-        $this->requestContract = 'successful_brand_asset_family_creation.json';
+        $this->requestContract = 'successful_frontview_asset_family_creation.json';
 
         $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
         $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
         $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
-
-        $image = $this->getBrandImage();
-        $this->fileExists->save($image->getKey());
-        $this->findFileData->save($image->normalize());
     }
 
     /**
@@ -133,10 +115,10 @@ class CreateOrUpdateAssetFamilyContext implements Context
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
-            self::REQUEST_CONTRACT_DIR . 'successful_brand_asset_family_creation.json'
+            self::REQUEST_CONTRACT_DIR . 'successful_frontview_asset_family_creation.json'
         );
 
-        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('brand');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('frontview');
         $labelIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
             $assetFamilyIdentifier,
             AttributeCode::fromString('label')
@@ -147,20 +129,20 @@ class CreateOrUpdateAssetFamilyContext implements Context
         );
         $ruleTemplate = $this->getExpectedRuleTemplate();
 
-        $brand = $this->assetFamilyRepository->getByIdentifier(AssetFamilyIdentifier::fromString('brand'));
-        $expectedBrand = AssetFamily::createWithAttributes(
+        $frontview = $this->assetFamilyRepository->getByIdentifier(AssetFamilyIdentifier::fromString('frontview'));
+        $expectedFrontview = AssetFamily::createWithAttributes(
             $assetFamilyIdentifier,
             [
-                'en_US' => 'Brand english label',
-                'fr_FR' => 'Brand french label',
+                'en_US' => 'Frontview english label',
+                'fr_FR' => 'Frontview french label',
             ],
-            $this->getBrandImage(),
+            Image::createEmpty(),
             AttributeAsLabelReference::fromAttributeIdentifier($labelIdentifier),
             AttributeAsImageReference::fromAttributeIdentifier($mainImageIdentifier),
-            RuleTemplateCollection::createFromNormalized([$ruleTemplate])
+            RuleTemplateCollection::createFromProductLinkRules([$ruleTemplate])
         );
 
-        Assert::assertEquals($brand, $expectedBrand);
+        Assert::assertEquals($frontview, $expectedFrontview);
     }
 
     /**
@@ -174,16 +156,12 @@ class CreateOrUpdateAssetFamilyContext implements Context
         $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
         $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
 
-        $image = $this->getBrandImage();
-        $this->fileExists->save($image->getKey());
-        $this->findFileData->save($image->normalize());
-
         $assetFamily = AssetFamily::create(
             AssetFamilyIdentifier::fromString('brand'),
             [
                 'en_US' => 'It is an english label'
             ],
-            $image,
+            Image::createEmpty(),
             RuleTemplateCollection::empty()
         );
 
@@ -232,10 +210,10 @@ class CreateOrUpdateAssetFamilyContext implements Context
                 'en_US' => 'Brand english label',
                 'fr_FR' => 'Brand french label',
             ],
-            $this->getBrandImage(),
+            Image::createEmpty(),
             AttributeAsLabelReference::fromAttributeIdentifier($labelIdentifier),
             AttributeAsImageReference::fromAttributeIdentifier($mainImageIdentifier),
-            RuleTemplateCollection::createFromNormalized([$ruleTemplate])
+            RuleTemplateCollection::createFromProductLinkRules([$ruleTemplate])
         );
 
         Assert::assertEquals($brand, $expectedBrand);
@@ -309,35 +287,23 @@ class CreateOrUpdateAssetFamilyContext implements Context
         );
     }
 
-    private function getBrandImage(): Image
-    {
-        $imageFileInfo = (new FileInfo())
-            ->setKey('2/4/3/7/24378761474c58aeee26016ee881b3b15069de52_brand.png')
-            ->setOriginalFilename('brand.png');
-
-        $image = Image::fromFileInfo($imageFileInfo);
-
-        return $image;
-    }
-
     /**
      * @return array
      */
     private function getExpectedRuleTemplate(): array
     {
         return [
-            'conditions' => [
+            'product_selections' => [
                 [
                     'field'    => 'sku',
                     'operator' => 'equals',
-                    'value'    => '{{product_sku}}'
+                    'value'    => '123134124123'
                 ]
             ],
-            'actions'    => [
+            'assign_assets_to'    => [
                 [
-                    'type'  => 'add',
-                    'field' => '{{attribute}}',
-                    'value' => '{{code}}'
+                    'mode'  => 'add',
+                    'attribute' => 'product_asset_collection',
                 ]
             ]
         ];

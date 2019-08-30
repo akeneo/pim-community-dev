@@ -40,9 +40,9 @@ class PrefixSpec extends ObjectBehavior
         $this->normalize()->shouldReturn('http://www.binder.com');
     }
 
-    public function it_throws_if_it_is_created_with_an_empty_value()
+    public function it_can_be_created_empty_from_string()
     {
         $this->beConstructedThrough('fromString', ['']);
-        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+        $this->normalize()->shouldReturn(null);
     }
 }

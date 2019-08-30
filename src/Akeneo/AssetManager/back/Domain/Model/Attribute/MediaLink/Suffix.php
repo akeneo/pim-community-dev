@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Domain\Model\Attribute\MediaLink;
 
-use Webmozart\Assert\Assert;
-
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -33,9 +31,7 @@ class Suffix
 
     public static function fromString(?string $suffix): self
     {
-        Assert::nullOrStringNotEmpty($suffix, 'The suffix cannot be an empty string');
-
-        return new self($suffix);
+        return new self('' === $suffix ? self::EMPTY : $suffix);
     }
 
     public static function empty(): self
@@ -51,5 +47,10 @@ class Suffix
     public function normalize(): ?string
     {
         return $this->suffix;
+    }
+
+    public function stringValue(): string
+    {
+        return $this->suffix === self::EMPTY ? '' : $this->suffix;
     }
 }

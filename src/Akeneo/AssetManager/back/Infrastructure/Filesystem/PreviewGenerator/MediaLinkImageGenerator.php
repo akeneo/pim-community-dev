@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator;
 
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 use Liip\ImagineBundle\Exception\Binary\Loader\NotLoadableException;
@@ -71,22 +70,28 @@ class MediaLinkImageGenerator implements PreviewGeneratorInterface
 
     public function generate(string $data, AbstractAttribute $attribute, string $type): string
     {
-        $mediaLink = sprintf('%s%s%s', $attribute->getPrefix()->normalize(), $data, $attribute->getSuffix()->normalize()) ;
+        $url = sprintf('%s%s%s', $attribute->getPrefix()->normalize(), $data, $attribute->getSuffix()->normalize()) ;
 
-        if (!$this->cacheManager->isStored($mediaLink, self::SUPPORTED_TYPES[$type])) {
+        if (!$this->cacheManager->isStored($url, self::SUPPORTED_TYPES[$type])) {
             try {
-                $binary = $this->dataManager->find(self::SUPPORTED_TYPES[$type], $mediaLink);
+                $binary = $this->dataManager->find(self::SUPPORTED_TYPES[$type], $url);
             } catch (NotLoadableException $e) {
-                return $this->defaultImageProvider->getImageMediaLink(self::DEFAULT_IMAGE, self::SUPPORTED_TYPES[$type]);
+                return $this->defaultImageProvider->getImageUrl(self::DEFAULT_IMAGE, self::SUPPORTED_TYPES[$type]);
+            } catch (\LogicException $e) { //Here we catch different levels of exception to display a different default image in the future
+                // Trigerred when the mime type was not the good one
+                return $this->defaultImageProvider->getImageUrl(self::DEFAULT_IMAGE, self::SUPPORTED_TYPES[$type]);
+            } catch (\Exception $e) {
+                // Triggered When a general exception arrised
+                return $this->defaultImageProvider->getImageUrl(self::DEFAULT_IMAGE, self::SUPPORTED_TYPES[$type]);
             }
 
             $this->cacheManager->store(
                 $this->filterManager->applyFilter($binary, self::SUPPORTED_TYPES[$type]),
-                $mediaLink,
-                $type
+                $url,
+                self::SUPPORTED_TYPES[$type]
             );
         }
 
-        return $this->cacheManager->resolve($mediaLink, self::SUPPORTED_TYPES[$type]);
+        return $this->cacheManager->resolve($url, self::SUPPORTED_TYPES[$type]);
     }
 }

@@ -3,9 +3,18 @@ pim_menu:
     franklin: Franklin Insights
 akeneo_franklin_insights:
   entity:
+    franklin_attribute:
+      type:
+        boolean: Booleano
+        metric: Métrica
+        multiselect: 'Selección múltiple'
+        number: Número
+        select: Seleccionar
+        text: Texto
     data_provider:
       ask_franklin_down: "¡Vaya, algo ha fallado! Inténtalo de nuevo más tarde."
       authentication_error: "Lo sentimos, no se pudo autenticar en Franklin Insights, tu token no es válido. Por favor, introduce un token válido o contacta con nosotros para ayuda."
+      bad_request_error: "Lo sentimos, ha ocurrido un problema al comunicarse con Franklin Insights. Por favor, póngase en contacto con su administrador."
     identifier_mapping:
       plural_label: Identificadores
       flash:
@@ -29,13 +38,25 @@ akeneo_franklin_insights:
         attribute_type: "No se puede definir el tipo de este atributo como un identificador"
         localizable_not_allowed: "Los atributos localizables no están permitidos como identificador"
     attributes_mapping:
+      label: Mapeo de los atributos
+      flash:
+        do_not_map_attribute_success: 'Atributo exitosamente actualizado.'
+        suggest_attribute_mapping_error: 'El atributo de catálogo "[{{ catalogAttributeCode }}]" ya está mapeado en el atributo Franklin "{{ franklinAttributeLabel }}".'
       fields:
         franklin_attribute: 'Atributo de Franklin'
+        franklin_attribute_type: 'atributo {{ type }}'
+        franklin_value_sample: 'Ejemplo de valor:'
         franklin_insights:
           label: Estado del atributo de Franklin
           pending: Pendiente
           active: Activo
           inactive: Inactivo
+        create_attribute:
+          btn: Crear atributo
+        add_attribute_to_family:
+          btn: Añadir a la Familia
+        secondary_actions:
+          deactivate_franklin_attribute: "No mapear"
       module:
         subscribe:
           subscribe: 'Suscribir familia a Franklin'

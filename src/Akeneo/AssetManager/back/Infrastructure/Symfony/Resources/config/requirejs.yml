@@ -18,6 +18,10 @@ config:
                 denormalize: '@akeneoassetmanager/domain/model/asset/data/text'
                 view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/text.tsx'
                 cell: '@akeneoassetmanager/application/component/asset/index/cell/text.tsx'
+            media_link:
+                denormalize: '@akeneoassetmanager/domain/model/asset/data/media-link'
+                view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/media-link.tsx'
+                cell: '@akeneoassetmanager/application/component/asset/index/cell/media-link.tsx'
             number:
                 denormalize: '@akeneoassetmanager/domain/model/asset/data/number'
                 view: '@akeneoassetmanager/application/component/asset/edit/enrich/data/number.tsx'
@@ -79,6 +83,11 @@ config:
                 denormalize: '@akeneoassetmanager/domain/model/attribute/type/option-collection'
                 reducer: '@akeneoassetmanager/application/reducer/attribute/type/option'
                 view: '@akeneoassetmanager/application/component/attribute/edit/option.tsx'
+            media_link:
+                icon: bundles/pimui/images/attribute/icon-medialink.svg
+                denormalize: '@akeneoassetmanager/domain/model/attribute/type/media-link'
+                reducer: '@akeneoassetmanager/application/reducer/attribute/type/media-link'
+                view: '@akeneoassetmanager/application/component/attribute/edit/media-link.tsx'
 
         akeneoassetmanager/application/configuration/sidebar:
             akeneo_asset_manager_asset_family_edit:
@@ -110,13 +119,9 @@ config:
                 akeneo_asset_multiple_link:
                     create: pim-attribute-form-asset
                     edit:   pim-attribute-form-asset
-                akeneo_asset_single_link:
-                    create: pim-attribute-form-asset
-                    edit:   pim-attribute-form-asset
         pim/form/common/attributes/create-button:
             attribute_icons:
                 akeneo_asset_multiple_link: asset-multiple-link
-                akeneo_asset_single_link: asset-single-link
 
     paths:
         pim/controller/asset-family/list: akeneoassetmanager/infrastructure/controller/asset-family/list.tsx

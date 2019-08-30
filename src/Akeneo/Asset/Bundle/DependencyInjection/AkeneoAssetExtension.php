@@ -64,6 +64,7 @@ class AkeneoAssetExtension extends Extension
         $loader->load('providers.yml');
         $loader->load('queries.yml');
         $loader->load('queries.yml');
+        $loader->load('query_builders.yml');
         $loader->load('readers.yml');
         $loader->load('removers.yml');
         $loader->load('repositories.yml');

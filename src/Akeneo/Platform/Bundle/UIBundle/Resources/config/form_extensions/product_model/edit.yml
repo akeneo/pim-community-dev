@@ -45,3 +45,18 @@ extensions:
         position: 115
         config:
             datagridName: product-model-draft-grid
+
+    pim-product-model-edit-form-copy:
+        module: pimee/product-edit-form/attributes/copy
+    
+    pim-product-model-edit-form-copy-source-switcher:
+        module: pimee/product-edit-form/source-switcher
+        parent: pim-product-model-edit-form-copy
+        targetZone: context-selectors
+        position: 120
+
+    pim-product-model-edit-form-working-copy:
+        module: pimee/product-edit-form/working-copy
+        parent: pim-product-model-edit-form
+        targetZone: self
+        position: 100

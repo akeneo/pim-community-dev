@@ -1,11 +1,11 @@
 import {
-  permissionEditionErrorOccured,
-  permissionEditionSucceeded,
-  permissionEditionReceived,
+    permissionEditionErrorOccurred,
+    permissionEditionReceived,
+    permissionEditionSucceeded,
 } from 'akeneoreferenceentity/domain/event/reference-entity/permission';
 import {
-  notifyPermissionWellSaved,
-  notifyPermissionSaveFailed,
+    notifyPermissionSaveFailed,
+    notifyPermissionWellSaved,
 } from 'akeneoreferenceentity/application/action/reference-entity/notify';
 import permissionSaver from 'akeneoreferenceentity/infrastructure/saver/permission';
 import permissionFetcher from 'akeneoreferenceentity/infrastructure/fetcher/permission';
@@ -24,7 +24,7 @@ export const savePermission = () => async (dispatch: any, getState: () => EditSt
 
     if (errors) {
       const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-      dispatch(permissionEditionErrorOccured(validationErrors));
+      dispatch(permissionEditionErrorOccurred(validationErrors));
       dispatch(notifyPermissionSaveFailed());
 
       return;

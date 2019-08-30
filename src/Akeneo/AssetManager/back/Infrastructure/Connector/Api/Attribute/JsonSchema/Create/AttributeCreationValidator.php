@@ -2,7 +2,6 @@
 
 namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create;
 
-use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\AttributeValidatorInterface;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Webmozart\Assert\Assert;
 
@@ -23,7 +22,7 @@ final class AttributeCreationValidator
     public function validate(array $normalizedAttribute): array
     {
         if (!isset($normalizedAttribute['type'])) {
-            throw new UnprocessableEntityHttpException('Attribute type  is mandatory.');
+            throw new UnprocessableEntityHttpException('Attribute type is mandatory.');
         }
 
         if (!is_string($normalizedAttribute['type'])) {

@@ -14,19 +14,16 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Adapter;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\AttributesMappingProviderInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMapping as DomainAttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMappingCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributesMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\InvalidTokenExceptionFactory;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\AttributesMapping\AttributesMappingWebService;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\BadRequestException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\FranklinServerException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\InvalidTokenException;
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Normalizer\AttributesMappingNormalizer;
 
 /**
@@ -37,17 +34,11 @@ class AttributesMappingProvider extends AbstractProvider implements AttributesMa
     /** @var AttributesMappingWebService */
     private $api;
 
-    /**
-     * @param AttributesMappingWebService $api
-     * @param ConfigurationRepositoryInterface $configurationRepository
-     * @param InvalidTokenExceptionFactory $invalidTokenExceptionFactory
-     */
     public function __construct(
         ConfigurationRepositoryInterface $configurationRepository,
-        InvalidTokenExceptionFactory $invalidTokenExceptionFactory,
         AttributesMappingWebService $api
     ) {
-        parent::__construct($configurationRepository, $invalidTokenExceptionFactory);
+        parent::__construct($configurationRepository);
 
         $this->api = $api;
     }
@@ -64,7 +55,7 @@ class AttributesMappingProvider extends AbstractProvider implements AttributesMa
         } catch (FranklinServerException $e) {
             throw DataProviderException::serverIsDown($e);
         } catch (InvalidTokenException $e) {
-            throw $this->invalidTokenExceptionFactory->create($e);
+            throw DataProviderException::authenticationError($e);
         } catch (BadRequestException $e) {
             throw DataProviderException::badRequestError($e);
         }
@@ -99,7 +90,7 @@ class AttributesMappingProvider extends AbstractProvider implements AttributesMa
         } catch (FranklinServerException $e) {
             throw DataProviderException::serverIsDown($e);
         } catch (InvalidTokenException $e) {
-            throw $this->invalidTokenExceptionFactory->create($e);
+            throw DataProviderException::authenticationError($e);
         } catch (BadRequestException $e) {
             throw DataProviderException::badRequestError($e);
         }

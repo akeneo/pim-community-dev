@@ -271,7 +271,7 @@ describe('akeneo > reference entity > application > reducer > record --- create'
     ];
 
     const newState = reducer(state, {
-      type: 'RECORD_CREATION_ERROR_OCCURED',
+      type: 'RECORD_CREATION_ERROR_OCCURRED',
       errors,
     });
 

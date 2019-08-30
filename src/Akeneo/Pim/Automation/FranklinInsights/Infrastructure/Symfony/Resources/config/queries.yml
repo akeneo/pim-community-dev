@@ -29,8 +29,8 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_user_ids_and_family_codes_with_missing_mapping:
-        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectUserIdsAndFamilyCodesWithMissingMappingQuery'
+    akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_users_able_to_complete_families_missing_mapping:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectUsersAbleToCompleteFamiliesMissingMappingQuery'
         arguments:
             - '@database_connection'
 
@@ -68,5 +68,10 @@ services:
 
     akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_exact_match_attribute_code_from_other_family_query:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectExactMatchAttributeCodesFromOtherFamiliesQuery'
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.filter_users_to_notify_about_given_family_missing_mapping:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\FilterUsersToNotifyAboutGivenFamilyMissingMappingQuery'
         arguments:
             - '@database_connection'

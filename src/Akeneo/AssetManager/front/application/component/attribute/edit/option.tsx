@@ -5,13 +5,13 @@ import {getLabel} from 'pimui/js/i18n';
 import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {
-  optionEditionStart,
-  optionEditionCancel,
-  optionEditionSubmission,
-  optionEditionCodeUpdated,
-  optionEditionSelected,
-  optionEditionLabelUpdated,
-  optionEditionDelete,
+    optionEditionCancel,
+    optionEditionCodeUpdated,
+    optionEditionDelete,
+    optionEditionLabelUpdated,
+    optionEditionSelected,
+    optionEditionStart,
+    optionEditionSubmission,
 } from 'akeneoassetmanager/domain/event/attribute/option';
 import Key from 'akeneoassetmanager/tools/key';
 import {NormalizedOption, Option} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
@@ -27,7 +27,7 @@ import Close from 'akeneoassetmanager/application/component/app/icon/close';
 import Flag from 'akeneoassetmanager/tools/component/flag';
 import {NormalizedAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 
-const securityContext = require('pim/security-context');
+// const securityContext = require('pim/security-context');
 
 const OptionView = ({onOptionEditionStart}: {onOptionEditionStart: () => void}) => {
   return (
@@ -490,11 +490,13 @@ export default connect(
           edit: ownProps.rights.locale.edit,
         },
         attribute: {
-          edit: ownProps.rights.attribute.edit && securityContext.isGranted('akeneo_assetmanager_option_edit'),
+          edit:
+            // securityContext.isGranted('akeneo_assetmanager_option_edit') &&
+            ownProps.rights.attribute.edit,
           delete:
-            ownProps.rights.attribute.edit &&
-            securityContext.isGranted('akeneo_assetmanager_option_delete') &&
-            securityContext.isGranted('akeneo_assetmanager_option_edit'),
+            // securityContext.isGranted('akeneo_assetmanager_option_delete') &&
+            // securityContext.isGranted('akeneo_assetmanager_option_edit') &&
+            ownProps.rights.attribute.edit,
         },
       },
     };

@@ -25,7 +25,7 @@ export const notifyReferenceEntityDeleteFailed = () => {
   return notify('error', 'pim_reference_entity.reference_entity.notification.delete.fail');
 };
 
-export const notifyReferenceEntityDeletionErrorOccured = (errors: ValidationError[]) => {
+export const notifyReferenceEntityDeletionErrorOccurred = (errors: ValidationError[]) => {
   const firstError = errors[0];
 
   return notify('error', firstError.message);

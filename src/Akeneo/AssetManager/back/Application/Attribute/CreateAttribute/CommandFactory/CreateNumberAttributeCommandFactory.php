@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFacto
 
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateNumberAttributeCommand;
+use Akeneo\AssetManager\Domain\Model\Attribute\NumberAttribute;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -24,7 +25,7 @@ class CreateNumberAttributeCommandFactory extends AbstractCreateAttributeCommand
 {
     public function supports(array $normalizedCommand): bool
     {
-        return isset($normalizedCommand['type']) && 'number' === $normalizedCommand['type'];
+        return isset($normalizedCommand['type']) && NumberAttribute::ATTRIBUTE_TYPE === $normalizedCommand['type'];
     }
 
     public function create(array $normalizedCommand): AbstractCreateAttributeCommand
@@ -36,8 +37,8 @@ class CreateNumberAttributeCommandFactory extends AbstractCreateAttributeCommand
             $normalizedCommand['code'],
             $normalizedCommand['labels'] ?? [],
             $normalizedCommand['is_required'] ?? false,
-            $normalizedCommand['value_per_channel'],
-            $normalizedCommand['value_per_locale'],
+            $normalizedCommand['value_per_channel'] ?? false,
+            $normalizedCommand['value_per_locale'] ?? false,
             $normalizedCommand['decimals_allowed'] ?? false,
             $this->stringOrNull($normalizedCommand, 'min_value'),
             $this->stringOrNull($normalizedCommand, 'max_value')

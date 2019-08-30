@@ -6,17 +6,14 @@ import {NormalizedAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import * as React from 'react';
 import __ from 'akeneoassetmanager/tools/translator';
 import AssetFamily from 'akeneoassetmanager/domain/model/asset-family/asset-family';
-import {Column} from 'akeneoassetmanager/application/reducer/grid';
+import {Column, Filter} from 'akeneoassetmanager/application/reducer/grid';
 import {CellViews, FilterViews} from 'akeneoassetmanager/application/component/asset-family/edit/asset';
 import {MAX_DISPLAYED_ASSETS} from 'akeneoassetmanager/application/action/asset/search';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {getLabel} from 'pimui/js/i18n';
-import {Filter} from 'akeneoassetmanager/application/reducer/grid';
-import {getFilter, getCompletenessFilter, getAttributeFilterKey} from 'akeneoassetmanager/tools/filter';
+import {getAttributeFilterKey, getCompletenessFilter, getFilter} from 'akeneoassetmanager/tools/filter';
 import SearchField from 'akeneoassetmanager/application/component/asset/index/search-field';
-import CompletenessFilter, {
-  CompletenessValue,
-} from 'akeneoassetmanager/application/component/asset/index/completeness-filter';
+import CompletenessFilter, {CompletenessValue,} from 'akeneoassetmanager/application/component/asset/index/completeness-filter';
 import ItemsCounter from 'akeneoassetmanager/application/component/asset/index/items-counter';
 import {NormalizedAttributeIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
 
@@ -305,7 +302,7 @@ export default class Table extends React.Component<TableProps, {columns: Column[
               <div className="AknDescriptionHeader AknDescriptionHeader--sticky">
                 <div
                   className="AknDescriptionHeader-icon"
-                  style={{backgroundImage: 'mediaLink("/bundles/pimui/images/illustrations/Product.svg")'}}
+                  style={{backgroundImage: 'url("/bundles/pimui/images/illustrations/Product.svg")'}}
                 />
                 <div className="AknDescriptionHeader-title">
                   {__('pim_asset_manager.asset.grid.more_result.title')}

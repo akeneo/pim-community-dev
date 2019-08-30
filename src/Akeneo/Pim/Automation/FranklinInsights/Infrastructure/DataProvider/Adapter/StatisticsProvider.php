@@ -15,7 +15,6 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Ada
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\StatisticsProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\InvalidTokenExceptionFactory;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\KeyFigure\Model\Read\CreditsUsageStatistics;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\Statistics\StatisticsWebService;
@@ -30,10 +29,9 @@ final class StatisticsProvider extends AbstractProvider implements StatisticsPro
 
     public function __construct(
         ConfigurationRepositoryInterface $configurationRepository,
-        InvalidTokenExceptionFactory $invalidTokenExceptionFactory,
         StatisticsWebService $api
     ) {
-        parent::__construct($configurationRepository, $invalidTokenExceptionFactory);
+        parent::__construct($configurationRepository);
 
         $this->api = $api;
     }
@@ -47,7 +45,7 @@ final class StatisticsProvider extends AbstractProvider implements StatisticsPro
         } catch (FranklinServerException $e) {
             throw DataProviderException::serverIsDown($e);
         } catch (InvalidTokenException $e) {
-            throw $this->invalidTokenExceptionFactory->create($e);
+            throw DataProviderException::authenticationError($e);
         } catch (BadRequestException $e) {
             throw DataProviderException::badRequestError($e);
         }

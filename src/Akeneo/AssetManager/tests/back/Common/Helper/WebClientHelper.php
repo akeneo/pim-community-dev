@@ -46,8 +46,8 @@ class WebClientHelper
         array $headers = [],
         $content = null
     ): void {
-        $mediaLink = $this->router->generate($route, $arguments);
-        $client->request($method, $mediaLink, [], [], $headers, json_encode($content));
+        $url = $this->router->generate($route, $arguments);
+        $client->request($method, $url, [], [], $headers, json_encode($content));
     }
 
     public function assertResponse(Response $response, int $statusCode, string $expectedContent = ''): void
@@ -148,9 +148,9 @@ HTML;
         $headers = $this->getRequestHeaders($request);
         $requestFiles = $this->getRequestFiles($request);
         $body = $this->getBody($request);
-        $mediaLink = $this->router->generate($request['route'], $request['query']);
+        $url = $this->router->generate($request['route'], $request['query']);
 
-        $client->request($request['method'], $mediaLink, [], $requestFiles, $headers, $body);
+        $client->request($request['method'], $url, [], $requestFiles, $headers, $body);
 
         return $client->getResponse();
     }

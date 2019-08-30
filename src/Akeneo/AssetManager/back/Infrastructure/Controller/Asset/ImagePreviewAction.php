@@ -18,10 +18,11 @@ use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\PreviewGeneratorInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Fetches the binary preview of the mediaLink
+ * Fetches the binary preview of the image
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2019 Akeneo SAS (https://www.akeneo.com)
@@ -41,13 +42,15 @@ class ImagePreviewAction
     }
 
     public function __invoke(
-        string $data,
+        Request $request,
         string $attributeIdentifier,
         string $type
     ): Response {
+        $data = $request->get('data');
+
         /** @var MediaLinkAttribute $attribute */
         $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::fromString($attributeIdentifier));
-        $imagePreview = $this->previewGenerator->generate(urldecode($data), $attribute, $type);
+        $imagePreview = $this->previewGenerator->generate($data, $attribute, $type);
 
         return new RedirectResponse($imagePreview, Response::HTTP_MOVED_PERMANENTLY);
     }

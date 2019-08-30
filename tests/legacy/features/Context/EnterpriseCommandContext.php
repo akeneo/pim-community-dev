@@ -14,11 +14,9 @@ use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command\SendDraftForApprovalComm
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Behat\Gherkin\Node\TableNode;
 use Context\Spin\SpinCapableTrait;
-use Negotiation\Exception\InvalidArgument;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * A context for commands
@@ -79,7 +77,7 @@ class EnterpriseCommandContext extends CommandContext
         if (0 !== $commandResult) {
             throw new \Exception(
                 sprintf(
-                    'An error occured during the execution of the generate variations command : %s',
+                    'An error occurred during the execution of the generate variations command : %s',
                     $commandTester->getDisplay()
                 )
             );

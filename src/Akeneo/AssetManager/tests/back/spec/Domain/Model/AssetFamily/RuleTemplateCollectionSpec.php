@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Domain\Model\AssetFamily;
 
-use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
-use Box\Spout\Reader\IteratorInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -29,7 +27,7 @@ class RuleTemplateCollectionSpec extends ObjectBehavior
                 [
                     'type' => 'add',
                     'field' => '{{target_attribute}}',
-                    'value' => '{{ code }}'
+                    'items' => ['{{ code }}']
                 ]
             ]
         ];
@@ -68,13 +66,17 @@ class RuleTemplateCollectionSpec extends ObjectBehavior
                     'field' => 'sku',
                     'operator' => 'EQUALS',
                     'value' => '{{product_sku}}',
+                    'channel' => null,
+                    'locale' => null
                 ]
             ],
             'actions' => [
                 [
-                    'type' => 'add',
                     'field' => '{{target_attribute}}',
-                    'value' => '{{ code }}'
+                    'type' => 'add',
+                    'items' => ['{{ code }}'],
+                    'channel' => null,
+                    'locale' => null
                 ]
             ]
         ];

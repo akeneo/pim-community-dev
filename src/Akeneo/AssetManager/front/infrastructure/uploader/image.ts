@@ -1,6 +1,7 @@
 import Uploader from 'akeneoassetmanager/domain/uploader/uploader';
-import Image, {NormalizedFile, denormalizeFile} from 'akeneoassetmanager/domain/model/file';
+import Image, {denormalizeFile, NormalizedFile} from 'akeneoassetmanager/domain/model/file';
 import * as $ from 'jquery';
+
 const routing = require('routing');
 
 export class ConcreteImageUploader implements Uploader<Image> {
@@ -19,7 +20,7 @@ export class ConcreteImageUploader implements Uploader<Image> {
 
       this.jQuery
         .ajax({
-          mediaLink: this.router.generate(this.route),
+          url: this.router.generate(this.route),
           type: 'POST',
           data: formData,
           contentType: false,

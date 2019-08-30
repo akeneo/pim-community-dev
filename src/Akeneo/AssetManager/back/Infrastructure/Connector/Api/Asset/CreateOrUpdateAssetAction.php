@@ -65,6 +65,9 @@ class CreateOrUpdateAssetAction
     /** @var ValidatorInterface */
     private $assetDataValidator;
 
+    /** @var BatchAssetsToLink */
+    private $batchAssetsToLink;
+
     public function __construct(
         AssetFamilyExistsInterface $assetFamilyExists,
         AssetExistsInterface $assetExists,
@@ -73,7 +76,8 @@ class CreateOrUpdateAssetAction
         CreateAssetHandler $createAssetHandler,
         Router $router,
         AssetValidator $assetStructureValidator,
-        ValidatorInterface $assetDataValidator
+        ValidatorInterface $assetDataValidator,
+        BatchAssetsToLink $batchAssetsToLink
     ) {
         $this->assetFamilyExists = $assetFamilyExists;
         $this->assetExists = $assetExists;
@@ -83,6 +87,7 @@ class CreateOrUpdateAssetAction
         $this->router = $router;
         $this->assetStructureValidator = $assetStructureValidator;
         $this->assetDataValidator = $assetDataValidator;
+        $this->batchAssetsToLink = $batchAssetsToLink;
     }
 
     public function __invoke(Request $request, string $assetFamilyIdentifier, string $code): Response
@@ -117,6 +122,7 @@ class CreateOrUpdateAssetAction
         if (null !== $createAssetCommand) {
             $responseStatusCode = Response::HTTP_CREATED;
             ($this->createAssetHandler)($createAssetCommand);
+            $this->batchAssetsToLink->add($createAssetCommand->assetFamilyIdentifier, $createAssetCommand->code);
         }
 
         ($this->editAssetHandler)($editAssetCommand);

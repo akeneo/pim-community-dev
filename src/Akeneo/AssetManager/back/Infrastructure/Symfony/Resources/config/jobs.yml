@@ -1,0 +1,40 @@
+services:
+    akeneo_assetmanager.infrastructure.job.product_link_rule_launcher:
+        class: 'Akeneo\AssetManager\Infrastructure\Job\ProductLinkRuleLauncher'
+        arguments:
+            - '@akeneo_batch_queue.queue.publish_job_to_queue'
+
+    akeneo_assetmanager.infrastructure.job.provider.link_assets_to_products:
+        class: 'Akeneo\AssetManager\Infrastructure\Job\Provider\LinkAssetsToProducts'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    # JOB
+    akeneo_assetmanager.job.link_assets_to_products:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'asset_manager_link_assets_to_products'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@akeneo_assetmanager.step.link_assets_to_products'
+        tags:
+            - { name: akeneo_batch.job, connector: 'internal', type: 'akeneo_assetmanager.link_assets_to_products' }
+
+    # STEP
+    akeneo_assetmanager.step.link_assets_to_products:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'link_assets_to_products'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo_assetmanager.tasklet.link_assets_to_products'
+        public: false
+
+    # TASKLET
+    akeneo_assetmanager.tasklet.link_assets_to_products:
+        class: 'Akeneo\AssetManager\Infrastructure\Job\LinkAssetsToProductsTasklet'
+        arguments:
+            - '@akeneo_assetmanager.application.asset.execute_rule_templates.rule_template_executor'
+        public: false

@@ -44,7 +44,6 @@ akeneo_franklin_insights:
     attributes_mapping:
       label: Mapatge dels atributs
       flash:
-        create_attribute_success: 'Atribut creat satisfactòriament i vinculat a la família "{{ family }}".'
         create_attribute_error: 'Ho sentim, s''ha produït un error al crear o adjuntar l''atribut a la família.'
       fields:
         franklin_attribute: 'Atribut de Franklin'

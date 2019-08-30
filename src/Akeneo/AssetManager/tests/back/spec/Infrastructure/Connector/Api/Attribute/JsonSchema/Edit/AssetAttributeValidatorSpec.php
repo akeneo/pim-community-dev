@@ -13,18 +13,18 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit;
 
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\AttributeValidatorInterface;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\AssetAttributeValidator;
+use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\AttributeValidatorInterface;
 use PhpSpec\ObjectBehavior;
 
 class AssetAttributeValidatorSpec extends ObjectBehavior
@@ -83,6 +83,26 @@ class AssetAttributeValidatorSpec extends ObjectBehavior
             'labels' => [
                 'en_US' => 'Country'
             ],
+            'is_required_for_completeness' => false,
+            'asset_family_code' => 'country',
+            '_links' => [
+                'self' => [
+                    'href' => 'http://localhost/api/rest/v1/asset-families/designer/attributes/country'
+                ]
+            ],
+        ];
+
+        $this->validate($attribute)->shouldReturn([]);
+    }
+
+    function it_does_not_return_any_error_when_no_labels()
+    {
+        $attribute = [
+            'code' => 'country',
+            'type' => 'asset',
+            'value_per_channel' => true,
+            'value_per_locale' => true,
+            'labels' => [],
             'is_required_for_completeness' => false,
             'asset_family_code' => 'country',
             '_links' => [

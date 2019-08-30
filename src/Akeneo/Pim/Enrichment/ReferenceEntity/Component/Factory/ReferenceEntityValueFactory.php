@@ -19,6 +19,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 /**
@@ -58,31 +59,46 @@ class ReferenceEntityValueFactory extends AbstractValueFactory
             );
         }
 
-        return $this->getRecordCode($attribute, $data);
+        return $this->getRecordCode($attribute, $data, $ignoreUnknownData);
     }
 
     /**
      * Gets the Record code (or null) for the given $code
      */
-    private function getRecordCode(AttributeInterface $attribute, $code): ?RecordCode
+    private function getRecordCode(AttributeInterface $attribute, string $code, bool $ignoreUnknownData): ?RecordCode
     {
         if (null === $code) {
             return null;
         }
 
         $referenceEntityIdentifier = $attribute->getReferenceDataName();
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
-        $recordCode = RecordCode::fromString($code);
+
+        try {
+            $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
+        } catch (\InvalidArgumentException $exception) {
+            if ($ignoreUnknownData) {
+                return null;
+            }
+            throw InvalidPropertyException::expected($exception->getMessage(), ReferenceEntityIdentifier::class);
+        }
+
+        try {
+            $recordCode = RecordCode::fromString($code);
+        } catch (\InvalidArgumentException $exception) {
+            if ($ignoreUnknownData) {
+                return null;
+            }
+            throw InvalidPropertyException::expected($exception->getMessage(), RecordCode::class);
+        }
 
         try {
             $record = $this->recordRepository->getByReferenceEntityAndCode($referenceEntityIdentifier, $recordCode);
-        } catch (RecordNotFoundException $e) {
-            // The record has been removed, we don't crash the app but set record to null.
-            $record = null;
-        }
-
-        if (null === $record) {
-            return null;
+        } catch (RecordNotFoundException $exception) {
+            if ($ignoreUnknownData) {
+                // The record has been removed, we don't crash the app but set record to null.
+                return null;
+            }
+            throw $exception;
         }
 
         return $record->getCode();

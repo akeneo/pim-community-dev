@@ -1,0 +1,41 @@
+{
+  "request": {
+    "method": "PATCH",
+    "route": "akeneo_asset_manager_asset_family_rest_connector_create_or_update",
+    "query": {
+      "assetFamilyIdentifier": "frontview"
+    },
+    "body": {
+      "code": "frontview",
+      "labels": {
+        "en_US": "Frontview english label",
+        "fr_FR": "Frontview french label"
+      },
+      "product_link_rules": [
+        {
+          "product_selections": [
+            {
+              "field": "sku",
+              "operator": "equals",
+              "value": "123134124123"
+            }
+          ],
+          "assign_assets_to": [
+            {
+              "mode": "add",
+              "attribute": "product_asset_collection"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "response": {
+    "status": 201,
+    "body": "",
+    "headers": {
+      "location": "http://localhost/api/rest/v1/asset-families/frontview"
+    }
+  }
+}
+

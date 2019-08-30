@@ -46,7 +46,8 @@ class InMemoryFindConnectorAssetFamilyItemsTest extends TestCase
             $connectorAssetFamily = new ConnectorAssetFamily(
                 $assetFamily->getIdentifier(),
                 LabelCollection::fromArray(['en_US' => sprintf('asset_family_%s', $i)]),
-                Image::createEmpty()
+                Image::createEmpty(),
+                []
             );
             $assetFamilies[] = $connectorAssetFamily;
             $this->findConnectorAssetFamilyItems->save($assetFamily->getIdentifier(), $connectorAssetFamily);
@@ -80,7 +81,8 @@ class InMemoryFindConnectorAssetFamilyItemsTest extends TestCase
             $connectorAssetFamily = new ConnectorAssetFamily(
                 $assetFamily->getIdentifier(),
                 LabelCollection::fromArray(['en_US' => sprintf('asset_family_%s', $i)]),
-                Image::createEmpty()
+                Image::createEmpty(),
+                []
             );
             $assetFamilies[] = $connectorAssetFamily;
             $this->findConnectorAssetFamilyItems->save($assetFamily->getIdentifier(), $connectorAssetFamily);

@@ -24,11 +24,9 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
  */
 class OptionAttributeHydrator extends AbstractAttributeHydrator
 {
-    private const ATTRIBUTE_TYPE = 'option';
-
     public function supports(array $row): bool
     {
-        return isset($row['attribute_type']) && self::ATTRIBUTE_TYPE === $row['attribute_type'];
+        return isset($row['attribute_type']) && OptionAttribute::ATTRIBUTE_TYPE === $row['attribute_type'];
     }
 
     public function convertAdditionalProperties(AbstractPlatform $platform, array $row): array

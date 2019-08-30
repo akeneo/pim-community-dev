@@ -11,15 +11,15 @@
 
 namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create;
 
-use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\AttributeValidatorInterface;
 use JsonSchema\Validator;
 
 class MediaLinkAttributeValidator implements AttributeValidatorInterface
 {
-    private const API_URL_ATTRIBUTE_TYPE = 'mediaLink';
+    private const API_URL_ATTRIBUTE_TYPE = 'media_link';
 
     public function validate(array $normalizedAttribute): array
     {
+        $normalizedAttribute['labels'] =  empty($normalizedAttribute['labels']) ? (object) [] : $normalizedAttribute['labels'] ;
         $asset = Validator::arrayToObjectRecursive($normalizedAttribute);
         $validator = new Validator();
         $validator->validate($asset, $this->getJsonSchema());
@@ -36,7 +36,7 @@ class MediaLinkAttributeValidator implements AttributeValidatorInterface
     {
         return [
             'type' => 'object',
-            'required' => ['code', 'type', 'value_per_locale', 'value_per_channel', 'media_type'],
+            'required' => ['code', 'type', 'media_type'],
             'properties' => [
                 'code' => [
                     'type' => ['string'],

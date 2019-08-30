@@ -9,16 +9,29 @@
   "response": {
     "status": 200,
     "body": {
-      "_links": {
-        "image_download": {
-          "href": "http://localhost/api/rest/v1/asset-families-media-files/5/6/a/5/56a5955ca1fbdf74d8d18ca6e5f62bc74b867a5d_brand.jpg"
-        }
-      },
       "code": "brand",
       "labels": {
         "fr_FR": "Marque"
       },
-      "image": "5/6/a/5/56a5955ca1fbdf74d8d18ca6e5f62bc74b867a5d_brand.jpg"
+      "product_link_rules": [
+        {
+          "product_selections": [
+            {
+              "field": "sku",
+              "operator": "EQUALS",
+              "value": "{{product_ref}}",
+              "locale": null
+            }
+          ],
+          "assign_assets_to": [
+            {
+              "attribute": "user_instructions",
+              "locale": "{{locale}}",
+              "mode": "replace"
+            }
+          ]
+        }
+      ]
     }
   }
 }

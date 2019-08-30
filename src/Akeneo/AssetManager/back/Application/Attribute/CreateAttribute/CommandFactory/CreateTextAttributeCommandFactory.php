@@ -17,6 +17,7 @@ use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AbstractCreateAttr
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -26,7 +27,7 @@ class CreateTextAttributeCommandFactory extends AbstractCreateAttributeCommandFa
 {
     public function supports(array $normalizedCommand): bool
     {
-        return isset($normalizedCommand['type']) && 'text' === $normalizedCommand['type'];
+        return isset($normalizedCommand['type']) && TextAttribute::ATTRIBUTE_TYPE === $normalizedCommand['type'];
     }
 
     public function create(array $normalizedCommand): AbstractCreateAttributeCommand
@@ -38,8 +39,8 @@ class CreateTextAttributeCommandFactory extends AbstractCreateAttributeCommandFa
             $normalizedCommand['code'],
             $normalizedCommand['labels'] ?? [],
             $normalizedCommand['is_required'] ?? false,
-            $normalizedCommand['value_per_channel'],
-            $normalizedCommand['value_per_locale'],
+            $normalizedCommand['value_per_channel'] ?? false,
+            $normalizedCommand['value_per_locale'] ?? false,
             $normalizedCommand['max_length'] ?? AttributeMaxLength::NO_LIMIT,
             $normalizedCommand['is_textarea'] ?? false,
             $normalizedCommand['is_rich_text_editor'] ?? false,

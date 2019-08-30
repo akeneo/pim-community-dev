@@ -3,18 +3,18 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Domain\Model\Attribute;
 
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Prefix;
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Suffix;
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Prefix;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Suffix;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use PhpSpec\ObjectBehavior;
 
 
@@ -55,7 +55,7 @@ class MediaLinkAttributeSpec extends ObjectBehavior
         $this->hasOrder(AttributeOrder::fromInteger(1))->shouldReturn(false);
     }
 
-    function it_creates_an_image_mediaLink()
+    function it_creates_an_image_media_link()
     {
         $this->beConstructedThrough(
             'create',
@@ -75,7 +75,7 @@ class MediaLinkAttributeSpec extends ObjectBehavior
         );
     }
 
-    function it_creates_an_image_mediaLink_without_prefix_and_suffix()
+    function it_creates_an_image_media_link_without_prefix_and_suffix()
     {
         $this->beConstructedThrough(
             'create',
@@ -107,7 +107,7 @@ class MediaLinkAttributeSpec extends ObjectBehavior
                 'is_required'                 => true,
                 'value_per_channel'           => true,
                 'value_per_locale'            => true,
-                'type'                        => 'mediaLink',
+                'type'                        => 'media_link',
                 'media_type'                => 'image',
                 'prefix'                      => 'http:://www.binder.com',
                 'suffix'                      => '/500x500'

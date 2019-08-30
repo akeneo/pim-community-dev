@@ -14,13 +14,13 @@ namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
-use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\AttributeValidatorInterface;
 use JsonSchema\Validator;
 
 class AssetAttributeValidator implements AttributeValidatorInterface
 {
     public function validate(array $normalizedAttribute): array
     {
+        $normalizedAttribute['labels'] =  empty($normalizedAttribute['labels']) ? (object) [] : $normalizedAttribute['labels'] ;
         $asset = Validator::arrayToObjectRecursive($normalizedAttribute);
         $validator = new Validator();
         $validator->validate($asset, $this->getJsonSchema());

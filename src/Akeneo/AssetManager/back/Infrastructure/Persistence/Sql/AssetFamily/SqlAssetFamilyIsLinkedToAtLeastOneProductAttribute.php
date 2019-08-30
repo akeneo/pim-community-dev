@@ -50,8 +50,7 @@ SQL;
             $query,
             [
                 'attribute_types' => [
-                    AssetMultipleLinkType::ASSET_MULTIPLE_LINK,
-                    AssetSingleLinkType::ASSET_SINGLE_LINK,
+                    AssetMultipleLinkType::ASSET_MULTIPLE_LINK
                 ]
             ],
             [

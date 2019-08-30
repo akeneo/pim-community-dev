@@ -25,6 +25,7 @@ class NumberAttributeValidator implements AttributeValidatorInterface
 {
     public function validate(array $normalizedAttribute): array
     {
+        $normalizedAttribute['labels'] =  empty($normalizedAttribute['labels']) ? (object) [] : $normalizedAttribute['labels'] ;
         $asset = Validator::arrayToObjectRecursive($normalizedAttribute);
         $validator = new Validator();
         $validator->validate($asset, $this->getJsonSchema());
@@ -41,7 +42,7 @@ class NumberAttributeValidator implements AttributeValidatorInterface
     {
         return [
             'type' => 'object',
-            'required' => ['code', 'min_value', 'max_value'],
+            'required' => ['code'],
             'properties' => [
                 'code' => [
                     'type' => ['string'],
@@ -72,6 +73,9 @@ class NumberAttributeValidator implements AttributeValidatorInterface
                 ],
                 'max_value' => [
                     'type' => [ 'string', 'integer', 'null'],
+                ],
+                '_links' => [
+                    'type' => 'object'
                 ],
             ],
             'additionalProperties' => false,

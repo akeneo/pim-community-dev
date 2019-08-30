@@ -1,7 +1,7 @@
 import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
 import {
-  NormalizedReferenceEntityCreation,
-  createEmptyReferenceEntityCreation,
+    createEmptyReferenceEntityCreation,
+    NormalizedReferenceEntityCreation,
 } from 'akeneoreferenceentity/domain/model/reference-entity/creation';
 import sanitize from 'akeneoreferenceentity/tools/sanitize';
 
@@ -68,7 +68,7 @@ export default (
       };
       break;
 
-    case 'REFERENCE_ENTITY_CREATION_ERROR_OCCURED':
+    case 'REFERENCE_ENTITY_CREATION_ERROR_OCCURRED':
       state = {
         ...state,
         errors: action.errors,

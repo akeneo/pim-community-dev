@@ -21,13 +21,14 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCo
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeLabel;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeType;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeGroup;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Model\Write\Attribute;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Structure\Service\CreateAttribute;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\AttributeSaver;
 use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Updater\AttributeUpdater;
-use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use PhpSpec\ObjectBehavior;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -43,7 +44,8 @@ class CreateAttributeSpec extends ObjectBehavior
         AttributeSaver $saver,
         ValidatorInterface $validator,
         EnsureFranklinAttributeGroupExistsInterface $ensureFranklinAttributeGroupExists,
-        SelectActiveLocaleCodesManagedByFranklinQueryInterface $activeLocaleCodesQuery
+        SelectActiveLocaleCodesManagedByFranklinQueryInterface $activeLocaleCodesQuery,
+        LoggerInterface $logger
     ): void {
         $activeLocaleCodesQuery->execute()->willReturn([new LocaleCode('en_US')]);
 
@@ -53,7 +55,8 @@ class CreateAttributeSpec extends ObjectBehavior
             $saver,
             $validator,
             $ensureFranklinAttributeGroupExists,
-            $activeLocaleCodesQuery
+            $activeLocaleCodesQuery,
+            $logger
         );
     }
 
@@ -94,11 +97,125 @@ class CreateAttributeSpec extends ObjectBehavior
         $violations->count()->willReturn(0);
         $saver->save($attribute)->shouldBeCalled();
 
-        $this->create(
+        $this->create(new Attribute(
             AttributeCode::fromLabel('Foo bar'),
             new AttributeLabel('Foo bar'),
             new AttributeType('pim_catalog_text')
-        )->shouldReturn(null);
+        ))->shouldReturn(null);
+    }
+
+    public function it_creates_multiple_attributes(
+        $factory,
+        $updater,
+        $validator,
+        $saver,
+        $ensureFranklinAttributeGroupExists,
+        AttributeInterface $attribute1,
+        AttributeInterface $attribute2,
+        ConstraintViolationListInterface $violations
+    ): void {
+        $attribute1Data = [
+            'code' => 'Foo_bar',
+            'group' => FranklinAttributeGroup::CODE,
+            'labels' => [
+                'en_US' => 'Foo bar'
+            ],
+            'localizable' => false,
+            'scopable' => false
+        ];
+        $attribute2Data = [
+            'code' => 'Color',
+            'group' => FranklinAttributeGroup::CODE,
+            'labels' => [
+                'en_US' => 'Color'
+            ],
+            'localizable' => false,
+            'scopable' => false
+        ];
+
+        $ensureFranklinAttributeGroupExists->ensureExistence()->shouldBeCalled();
+
+        $factory->createAttribute('pim_catalog_text')->willReturn($attribute1, $attribute2);
+        $updater->update($attribute1, $attribute1Data)->shouldBeCalled();
+        $updater->update($attribute2, $attribute2Data)->shouldBeCalled();
+        $validator->validate($attribute1)->willReturn($violations->getWrappedObject());
+        $validator->validate($attribute2)->willReturn($violations->getWrappedObject());
+        $violations->count()->willReturn(0);
+        $saver->saveAll([$attribute1, $attribute2])->shouldBeCalled();
+
+        $attributes = [
+            new Attribute(
+                AttributeCode::fromLabel('Foo bar'),
+                new AttributeLabel('Foo bar'),
+                new AttributeType('pim_catalog_text')
+            ),
+            new Attribute(
+                AttributeCode::fromLabel('Color'),
+                new AttributeLabel('Color'),
+                new AttributeType('pim_catalog_text')
+            ),
+        ];
+
+        $this->bulkCreate($attributes)->shouldReturn($attributes);
+    }
+
+    public function it_creates_multiple_attributes_and_returns_only_the_attributes_successfully_created(
+        $factory,
+        $updater,
+        $validator,
+        $saver,
+        $ensureFranklinAttributeGroupExists,
+        AttributeInterface $pimAttribute1,
+        AttributeInterface $pimAttribute2,
+        ConstraintViolationListInterface $violations1,
+        ConstraintViolationListInterface $violations2,
+        ConstraintViolationInterface $violation
+    ): void {
+        $attribute1Data = [
+            'code' => 'Foo_bar',
+            'group' => FranklinAttributeGroup::CODE,
+            'labels' => [
+                'en_US' => 'Foo bar'
+            ],
+            'localizable' => false,
+            'scopable' => false
+        ];
+        $attribute2Data = [
+            'code' => 'Color',
+            'group' => FranklinAttributeGroup::CODE,
+            'labels' => [
+                'en_US' => 'Color'
+            ],
+            'localizable' => false,
+            'scopable' => false
+        ];
+
+        $ensureFranklinAttributeGroupExists->ensureExistence()->shouldBeCalled();
+
+        $factory->createAttribute('pim_catalog_text')->willReturn($pimAttribute1, $pimAttribute2);
+        $updater->update($pimAttribute1, $attribute1Data)->shouldBeCalled();
+        $updater->update($pimAttribute2, $attribute2Data)->shouldBeCalled();
+        $validator->validate($pimAttribute1)->willReturn($violations1->getWrappedObject());
+        $validator->validate($pimAttribute2)->willReturn($violations2->getWrappedObject());
+        $violations1->count()->willReturn(1);
+        $violations2->count()->willReturn(0);
+        $violations1->get(0)->willReturn($violation);
+        $violation->getMessage()->willReturn('Invalid attribute');
+
+        $saver->saveAll([$pimAttribute2])->shouldBeCalled();
+
+        $attribute1 = new Attribute(
+            AttributeCode::fromLabel('Foo bar'),
+            new AttributeLabel('Foo bar'),
+            new AttributeType('pim_catalog_text')
+        );
+        $attribute2 = new Attribute(
+            AttributeCode::fromLabel('Color'),
+            new AttributeLabel('Color'),
+            new AttributeType('pim_catalog_text')
+        );
+
+        $this->bulkCreate([$attribute1, $attribute2])->shouldReturn([$attribute2]);
     }
 
     public function it_creates_an_attribute_number(
@@ -130,11 +247,11 @@ class CreateAttributeSpec extends ObjectBehavior
         $violations->count()->willReturn(0);
         $saver->save($attribute)->shouldBeCalled();
 
-        $this->create(
+        $this->create(new Attribute(
             AttributeCode::fromLabel('Foo bar'),
             new AttributeLabel('Foo bar'),
             new AttributeType('pim_catalog_number')
-        )->shouldReturn(null);
+        ))->shouldReturn(null);
     }
 
     public function it_throws_an_exception_when_there_are_some_violations(
@@ -173,9 +290,11 @@ class CreateAttributeSpec extends ObjectBehavior
             ->during(
                 'create',
                 [
-                    AttributeCode::fromLabel('Foo bar'),
-                    new AttributeLabel('Foo bar'),
-                    new AttributeType('pim_catalog_text')
+                    new Attribute(
+                        AttributeCode::fromLabel('Foo bar'),
+                        new AttributeLabel('Foo bar'),
+                        new AttributeType('pim_catalog_text')
+                    )
                 ]
             );
     }

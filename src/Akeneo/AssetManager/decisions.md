@@ -153,7 +153,7 @@ For the external API, import and exports we will need to map the code and asset 
 
 #### Problem:
 
-In almost all cases, we identify the asset with it's code and asset family (import/export, api, mediaLinks, rules, product values, etc). We also did a refactor to use a unique identifier (not the composite key) on the asset.
+In almost all cases, we identify the asset with it's code and asset family (import/export, api, urls, rules, product values, etc). We also did a refactor to use a unique identifier (not the composite key) on the asset.
 
 So we have a situation where, we almost always have to do a mapping step to convert this composite key to the unique identifier.
 
@@ -583,12 +583,12 @@ To support our new search usecases, we need to update the index with the "links"
             ],
         ],
     ]
-    
+
 ##### Results
 
 | Batch Size                | Refresh 10 000 assets    | Refresh 1 000 000 assets  |
 |---------------------------|---------------------------|---------------------------|
-| 100 Assets               | 35.87 s                   | ~1 hour                    | 
+| 100 Assets               | 35.87 s                   | ~1 hour                    |
 
 
 ## 07/01/19
@@ -814,3 +814,87 @@ Pistes d'amélioration:
 - Bulk get assets from identifiers
 - Build SearchableAssets From Asset object instead of fetch from DB
 - Adaptater SQL => SqlElasticsearch (remove Event)
+
+## 25/07/2019
+
+### Product link rules
+
+#### Problem:
+
+To link the assets to a product, we decided to have a rule on the asset family. Like that each time we create an asset in
+the regarding asset family, it will execute the rule and link the asset to the product selected.
+
+The format used for the product link rules is following that :
+```
+“product_link_rule”:{
+  “product_selections”:[{
+     “field”: “sku”,
+     “operator”: “EQUALS”,
+     “value”: “product_ref”,
+     “channel”: “ecommerce”, (optional)
+     “locale”: “fr_FR” (optional)
+  }],
+  “assign_assets_to”:[{
+     “attribute”:”my_product_attribute”,
+     “channel”:”ecommerce”, (optional)
+     “locale”:”fr_FR”, (optional)
+     “mode”:”add” or “replace”
+  }]
+}
+```
+
+However, to be faster in our development we decided to use the existing rule engine to execute it.
+The problem is the rule engine isn't able to read the latter format. So, we need to compile the rule in this
+following format :
+```
+“rule_templates”:{
+  “conditions”:[{
+     “field”: “sku”,
+     “operator”: “EQUALS”,
+     “value”: “product_ref”,
+     “channel”: “ecommerce”, (optional)
+     “locale”: “fr_FR” (optional)
+  }],
+  “actions”:[{
+     “type”:”add”,
+     “field”:”target_attribute”,
+     “items”:[”code”],
+     “channel”:”ecommerce”, (optional)
+     “locale”:”fr_FR”, (optional)
+  }]
+}
+```
+
+The question we were asking ourselves about this difference of those two formats is : 
+
+"Should we have to update our Domain and the DB to be compliant with the format for the product link rules or keep the naming from the rule engine ?"
+
+
+### Solution :
+
+As we weren't really confident about the modifications it could happen on the new format used for the product link rule, we have chosen to see this format only as a presentational one.
+
+So, we update the format expected by the asset family API to follow the one from the product link rules. But we keep the Domain and the DB with the one from the rule engine.
+
+Like that, we are preventing all changes on the format used for the product link rule and preserving as well our domain layer.
+
+## 12/08/2019
+
+### Validating product link rules
+
+#### Problem:
+
+- Today, we don't have any validators for product link (except for JSON schema)
+- We cannot directly create a rule definition (from Automation/RuleEngine Bounded Context) from our product link rule because they hold dynamic placeholders that can only be resolved with an asset.
+- Yet, we want to make sure our user gets proper validation messages in cases where:
+    - A product attribute does not exist,
+    - An asset attribute does not exist
+    - An operator is not supported for the product attribute type
+    - etc.
+
+#### Solution:
+
+We decided to reuse some parts of the rule Automation/RuleEngine bounded context validators to make sure the product link rule is executable by the rule engine.
+We will use the following validators to validate non-dynamic conditions or actions:
+    - Validators of ProductConditionInterface
+    - Validators of ProductActionInterface

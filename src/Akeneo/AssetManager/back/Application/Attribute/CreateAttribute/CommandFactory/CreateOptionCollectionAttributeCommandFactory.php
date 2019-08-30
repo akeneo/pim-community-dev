@@ -6,6 +6,7 @@ namespace Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFacto
 
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateOptionCollectionAttributeCommand;
+use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -15,7 +16,7 @@ class CreateOptionCollectionAttributeCommandFactory extends AbstractCreateAttrib
 {
     public function supports(array $normalizedCommand): bool
     {
-        return isset($normalizedCommand['type']) && 'option_collection' === $normalizedCommand['type'];
+        return isset($normalizedCommand['type']) && OptionCollectionAttribute::ATTRIBUTE_TYPE === $normalizedCommand['type'];
     }
 
     public function create(array $normalizedCommand): AbstractCreateAttributeCommand
@@ -27,8 +28,8 @@ class CreateOptionCollectionAttributeCommandFactory extends AbstractCreateAttrib
             $normalizedCommand['code'],
             $normalizedCommand['labels'] ?? [],
             $normalizedCommand['is_required'] ?? false,
-            $normalizedCommand['value_per_channel'],
-            $normalizedCommand['value_per_locale']
+            $normalizedCommand['value_per_channel'] ?? false,
+            $normalizedCommand['value_per_locale'] ?? false
         );
 
         return $command;

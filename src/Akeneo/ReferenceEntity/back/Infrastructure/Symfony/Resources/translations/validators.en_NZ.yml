@@ -7,3 +7,10 @@ pim_reference_entity:
     validation:
       code:
         pattern: 'This field may only contain letters, numbers and underscores.'
+  attribute:
+    validation:
+      options:
+        code:
+          pattern: 'This field may only contain letters, numbers and underscores.'
+      code:
+        pattern: 'This field may only contain letters, numbers and underscores.'

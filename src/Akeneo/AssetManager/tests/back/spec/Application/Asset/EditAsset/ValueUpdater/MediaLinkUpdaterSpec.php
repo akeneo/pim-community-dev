@@ -3,26 +3,26 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater;
 
-use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditStoredFileValueCommand;
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditMediaLinkValueCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditStoredFileValueCommand;
 use Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater\MediaLinkUpdater;
-use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
-use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Prefix;
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType;
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Suffix;
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
-use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\MediaLinkData;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Prefix;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Suffix;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
+use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -36,7 +36,7 @@ class MediaLinkUpdaterSpec extends ObjectBehavior
         $this->shouldHaveType(MediaLinkUpdater::class);
     }
 
-    function it_only_supports_edit_mediaLink_value_command(
+    function it_only_supports_edit_media_link_value_command(
         EditStoredFileValueCommand $editStoredFileValueCommand,
         EditMediaLinkValueCommand $editTextValueCommand
     ) {
@@ -44,7 +44,7 @@ class MediaLinkUpdaterSpec extends ObjectBehavior
         $this->supports($editTextValueCommand)->shouldReturn(true);
     }
 
-    function it_edits_the_mediaLink_value_of_a_asset(Asset $asset) {
+    function it_edits_the_media_link_value_of_a_asset(Asset $asset) {
         $mediaLinkAttribute = $this->mediaLinkAttribute();
 
         $editTextValueCommand = new EditMediaLinkValueCommand(

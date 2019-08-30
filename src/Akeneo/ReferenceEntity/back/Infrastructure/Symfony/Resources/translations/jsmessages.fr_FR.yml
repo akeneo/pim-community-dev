@@ -124,6 +124,7 @@ pim_reference_entity:
         subtitle: "Pour commencer à lier les produits à cette entité de référence, vous pouvez en créer un nouveau : "
         link: Créer un nouvel attribut de produit
       not_enough_items:
+        title: Il y a un peu trop de monde ici, nous ne vous montrons que {{ productCount }}/{{ totalCount }} produits.
         subtitle:
           usable_in_grid: Pour découvrir tous les produits liés, cliquez ci-dessous !
         button: Voir tous les produits

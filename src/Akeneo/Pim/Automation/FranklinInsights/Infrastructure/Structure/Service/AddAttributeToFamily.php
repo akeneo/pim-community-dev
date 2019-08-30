@@ -21,7 +21,6 @@ use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\FamilySaver;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Updater\FamilyUpdater;
-use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -61,7 +60,7 @@ class AddAttributeToFamily implements AddAttributeToFamilyInterface
         $this->validator = $validator;
     }
 
-    private function getFamily(FamilyCode $familyCode): ?FamilyInterface
+    private function getFamily(FamilyCode $familyCode): FamilyInterface
     {
         $family = $this->repository->findOneByIdentifier((string) $familyCode);
         if (null === $family) {
@@ -79,10 +78,24 @@ class AddAttributeToFamily implements AddAttributeToFamilyInterface
 
         $familyAttributeCodes = $family->getAttributeCodes();
         array_push($familyAttributeCodes, (string) $attributeCode);
-        $data = [
-            'attributes' => $familyAttributeCodes,
-        ];
 
+        $this->saveFamily($family, ['attributes' => $familyAttributeCodes]);
+    }
+
+    public function bulkAddAttributesToFamily(FamilyCode $familyCode, array $attributeCodes): void
+    {
+        $family = $this->getFamily($familyCode);
+        $familyAttributeCodes = $family->getAttributeCodes();
+
+        foreach ($attributeCodes as $attributeCode) {
+            $familyAttributeCodes[] = (string) $attributeCode;
+        }
+
+        $this->saveFamily($family, ['attributes' => $familyAttributeCodes]);
+    }
+
+    private function saveFamily(FamilyInterface $family, array $data): void
+    {
         $this->updater->update($family, $data);
 
         $violations = $this->validator->validate($family);

@@ -230,6 +230,12 @@ services:
             - '@router'
             - '@akeneo_assetmanager.infrastructure.connector.api.asset_validator'
             - '@validator'
+            - '@akeneo_assetmanager.infrastructure.connector.action.asset.batch_assets_to_link'
+
+    akeneo_assetmanager.infrastructure.connector.action.asset.delete:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\DeleteAssetAction
+        arguments:
+            - '@akeneo_assetmanager.application.asset.delete_asset_handler'
 
     akeneo_assetmanager.infrastructure.connector.action.assets.create_or_update:
         class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\CreateOrUpdateAssetsAction
@@ -244,7 +250,15 @@ services:
             - '@pim_api.normalizer.exception.violation'
             - '@akeneo_assetmanager.infrastructure.connector.api.asset_validator'
             - '@akeneo_assetmanager.infrastructure.connector.api.asset_list_validator'
+            - '@akeneo_assetmanager.infrastructure.connector.action.asset.batch_assets_to_link'
             - '%asset_family_connector_maximum_assets_to_process_per_request%'
+
+    akeneo_assetmanager.infrastructure.connector.action.asset.batch_assets_to_link:
+        class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\BatchAssetsToLink
+        arguments:
+            - '@akeneo_assetmanager.application.asset.link_assets.link_assets_handler'
+        tags:
+            - { name: kernel.event_listener, event: kernel.terminate }
 
     akeneo_assetmanager.infrastructure.connector.action.asset_family_attributes.get:
         class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\GetConnectorAssetFamilyAttributesAction

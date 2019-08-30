@@ -8,10 +8,10 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\CreateA
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeLabel;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeType;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Model\Write\Attribute;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 
@@ -32,12 +32,14 @@ class CreateAttributeIntegration extends TestCase
     /**
      * @dataProvider provideAttributeCreation
      */
-    public function test_it_creates_an_attribute($code, $label, $type, $expectedCode): void
+    public function test_it_creates_attribute($code, $label, $type, $expectedCode): void
     {
         $this->createAttributeService->create(
-            new AttributeCode($code),
-            new AttributeLabel($label),
-            new AttributeType($type)
+            new Attribute(
+                new AttributeCode($code),
+                new AttributeLabel($label),
+                new AttributeType($type)
+            )
         );
         $query = <<<SQL
 SELECT code, attribute_type FROM pim_catalog_attribute WHERE code = :code
@@ -61,9 +63,11 @@ SQL;
         $this->expectException(\Exception::class);
 
         $this->createAttributeService->create(
-            new AttributeCode($attributeCodeText),
-            new AttributeLabel('A simple select'),
-            new AttributeType(AttributeTypes::TEXT)
+            new Attribute(
+                new AttributeCode($attributeCodeText),
+                new AttributeLabel('A simple select'),
+                new AttributeType(AttributeTypes::TEXT)
+            )
         );
 
         $afterStatement = $this->executeGetAttributeQuery($attributeCodeText);

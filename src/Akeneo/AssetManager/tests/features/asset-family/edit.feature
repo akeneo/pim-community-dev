@@ -31,12 +31,6 @@ Feature: Edit an asset family
     Then the asset family 'designer' should have an empty image
 
   @acceptance-back
-  Scenario: Updating an asset family to set a collection of rule templates
-    Given an empty rule template collection on the asset family 'packshot'
-    When the user updates the asset family 'packshot' to set a collection of rule templates
-    Then the asset family 'packshot' should have the collection of rule templates
-
-  @acceptance-back
   Scenario Outline: Updating with an invalid image
     Given a valid asset family
     When the user updates the image of the asset family 'designer' with path '<wrong_path>' and filename '<wrong_filename>'
@@ -48,6 +42,87 @@ Feature: Edit an asset family
       | 150               | "image.jpg"    | This value should be of type string. |
       | "/path/image.jpg" | false          | This value should not be blank.      |
       | "/path/image.jpg" | 150            | This value should be of type string. |
+
+  @acceptance-back
+  Scenario: Updating an asset family to set a collection of static rule templates
+    Given an empty rule template collection on the asset family 'packshot'
+    When the user updates the asset family 'packshot' to set a collection of rule templates
+    Then the asset family 'packshot' should have the collection of rule templates
+
+  @acceptance-back
+  Scenario: Updating an asset family with a product link rule having a dynamic product selection field
+    Given an asset family with no product link rules and a text attribute
+    When the user updates this asset family with a dynamic product link rule having a product selection field which references this text attribute
+    Then there is an asset family with a product link rule
+
+  @acceptance-back
+  Scenario: Updating an asset family with a product link rule having a dynamic product selection value
+    Given an asset family with no product link rules and a text attribute
+    When the user updates this asset family with a dynamic product link rule having a product selection value which references this text attribute
+    Then there is an asset family with a product link rule
+
+  @acceptance-back
+  Scenario: Updating an asset family with a product link rule having a dynamic product selection value which references a single option attribute
+    Given an asset family with no product link rules and a single option attribute
+    When the user updates this asset family with a dynamic product link rule having a product selection value which references this single option attribute
+    Then there is an asset family with a product link rule
+
+  @acceptance-back
+  Scenario: Updating an asset family with a product link rule having a dynamic product selection value which references a multiple option attribute
+    Given an asset family with no product link rules and a multiple option attribute
+    When the user updates this asset family with a dynamic product link rule having a product selection value which references this multiple option attribute
+    Then there is an asset family with a product link rule
+
+  @acceptance-back
+  Scenario: Updating an asset family with a product link rule having a dynamic product selection channel
+    Given an asset family with no product link rules and a text attribute
+    When the user updates this asset family with a dynamic product link rule having a product selection channel this text attribute
+    Then there is an asset family with a product link rule
+
+  @acceptance-back
+  Scenario: Updating an asset family with a product link rule having a dynamic product selection locale
+    Given an asset family with no product link rules and a text attribute
+    When the user updates this asset family with a dynamic product link rule having a product selection locale which references this text attribute
+    Then there is an asset family with a product link rule
+
+  @acceptance-back
+  Scenario: Updating an asset family with a product link rule having a dynamic assignment attribute
+    Given an asset family with no product link rules and a text attribute
+    When the user updates this asset family with a dynamic product link rule having a dynamic assignment value which references this text attribute
+    Then there is an asset family with a product link rule
+
+  @acceptance-back
+  Scenario: Updating an asset family with a product link rule having a dynamic assignment channel
+    Given an asset family with no product link rules and a text attribute
+    When the user updates this asset family with a dynamic product link rule having a dynamic assignment channel which references this text attribute
+    Then there is an asset family with a product link rule
+
+  @acceptance-back
+  Scenario: Updating an asset family with a product link rule having a dynamic assignment locale
+    Given an asset family with no product link rules and a text attribute
+    When the user updates this asset family with a dynamic product link rule having a dynamic assignment locale which references this text attribute
+    Then there is an asset family with a product link rule
+
+  @acceptance-back
+  Scenario: Cannot update an asset family if there is no product selections
+    When the user updates an asset family "packshot" with an empty product selections
+    Then there should be a validation error with message 'You must specify at least one product selection in your product link rule'
+
+  @acceptance-back
+  Scenario: Cannot update an asset family if there is no product assignment
+    When the user updates an asset family "packshot" with an empty product assignment
+    Then there should be a validation error with message 'You must specify at least one product assignment in your product link rule'
+
+  @acceptance-back
+  Scenario: Cannot update an asset family with a collection of rule templates that contains more than 2 items
+    Given an empty rule template collection on the asset family 'packshot'
+    When the user updates the asset family 'packshot' to set a collection of rule templates having more items than the limit
+    Then there should be a validation error with message 'You cannot create the asset family "Packshot" because you have reached the limit of 2 product link rules'
+
+  @acceptance-back
+  Scenario: Cannot update an asset family if one of the product link rule is not executable by the rule engine
+    When the user updates the asset family 'packshot' with a product link rule not executable by the rule engine
+    Then there should be a validation error stating why the rule engine cannot execute the product link rule
 
   @acceptance-front
   Scenario: Updating an asset family labels

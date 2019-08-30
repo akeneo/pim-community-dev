@@ -11,16 +11,3 @@ parameters:
                     attr:
                         empty_choice: true
         sorter: ~
-
-    pim_datagrid.product.attribute_type.akeneo_asset_single_link:
-        column:
-            type:          asset_single_link
-        filter:
-            type:    .asset_multiple_link
-            ftype:    asset_single_link
-            options:
-                field_options:
-                    multiple: false
-                    attr:
-                        empty_choice: true
-        sorter: ~

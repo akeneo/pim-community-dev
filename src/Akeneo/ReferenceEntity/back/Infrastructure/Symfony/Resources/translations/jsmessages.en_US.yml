@@ -44,8 +44,8 @@ pim_reference_entity:
       title: Record attributes
       attribute:
         error:
-          render_list: 'An error occured during the rendering of the "{{ %attribute_code% }}" attribute'
-          render_edit: 'An error occured during the rendering of the "{{ %attribute_code% }}" attribute additional properties fields'
+          render_list: 'An error occurred during the rendering of the "{{ %attribute_code% }}" attribute'
+          render_edit: 'An error occurred during the rendering of the "{{ %attribute_code% }}" attribute additional properties fields'
     module:
       delete:
         button: Delete entity
@@ -75,13 +75,13 @@ pim_reference_entity:
     notification:
       save:
         success: Reference entity successfully updated.
-        fail: An error occured during the save of the reference entity
+        fail: An error occurred during the save of the reference entity
       create:
         success: Reference entity successfully created.
-        fail: An error occured during the creation of the reference entity
+        fail: An error occurred during the creation of the reference entity
       delete:
         success: Reference entity successfully deleted.
-        fail: An error occured during the deletion of the reference entity
+        fail: An error occurred during the deletion of the reference entity
   permission:
     notification:
       save:
@@ -127,7 +127,7 @@ pim_reference_entity:
         title: It's a bit crowded around here, we show you {{ productCount }}/{{ totalCount }} products.
         subtitle:
           usable_in_grid: To discover all the products linked, just click below!
-          not_usable_in_grid: To display all the products, just click here!
+          not_usable_in_grid: To discover all the products linked, the product attribute must be set as "usable in grid".
         button: View all products
       no_product:
         title: There are no products linked for the product attribute "{{ entityLabel }}"
@@ -185,17 +185,17 @@ pim_reference_entity:
     notification:
       save:
         success: Record successfully updated.
-        fail: An error occured during the save of the record
+        fail: An error occurred during the save of the record
         validation_error: The record could not be updated
       create:
         success: Record successfully created.
-        fail: An error occured during the creation of the record
+        fail: An error occurred during the creation of the record
       delete:
         success: Record "{{ code }}" successfully deleted.
-        fail: An error occured during the deletion of the record
+        fail: An error occurred during the deletion of the record
       delete_all:
         success: All "{{ entityIdentifier }}" records successfully deleted.
-        fail: An error occured during the deletion of all this reference entity's records
+        fail: An error occurred during the deletion of all this reference entity's records
     completeness:
       label: Complete
   attribute:
@@ -277,18 +277,18 @@ pim_reference_entity:
       title: Attribute
     notification:
       list:
-        fail: An error occured during the update of the attribute list
+        fail: An error occurred during the update of the attribute list
       save:
         success: Attribute successfully updated.
-        fail: An error occured during the save of the attribute
+        fail: An error occurred during the save of the attribute
         validation_error: The attribute could not be updated
       create:
         success: Attribute successfully created.
-        fail: An error occured during the creation of the attribute
+        fail: An error occurred during the creation of the attribute
         validation_error: The attribute could not be created
       delete:
         success: Attribute successfully deleted.
-        fail: An error occured during the deletion of the attribute
+        fail: An error occurred during the deletion of the attribute
     options:
       no_value: Click here to select an option.
       sub_title: Reference Entities

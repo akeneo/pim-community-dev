@@ -1,0 +1,28 @@
+pim_title:
+  akeneo_franklin_insights_connection_edit: 'Franklin Insights connection'
+  akeneo_franklin_insights_identifiers_mapping_edit: 'Franklin Insights settings'
+  akeneo_franklin_insights_attributes_mapping_edit: 'Franklin Insights settings'
+akeneo_franklin_insights:
+  entity:
+    data_provider:
+      ask_franklin_down: "Sorry, something went wrong. Please try again later."
+      bad_request_error: "Sorry, a problem occurred in communicating with Franklin Insights. Please contact your administrator."
+    identifier_mapping:
+      plural_label: Identifier
+    attributes_mapping:
+      fields:
+        values_summary: "Values summary: {{ label }}"
+    product_subscription:
+      constraint:
+        product_subscription_with_same_identifier_already_exist: 'Another product with at least one identical identifier has already been subscribed.'
+    attribute_options_mapping:
+      module:
+        edit:
+          description: 'In order to help enrich your catalog, Franklin will need to know your catalog attribute options that match his. <a href="#" target="_blank" class="AknDescriptionHeader-link">Read more</a>'
+  settings:
+    module:
+      title:
+        description:
+          second_step: 'While mapping your identifiers, please keep in mind that the Brand and the MPN go together. <a href="https://help.akeneo.com/articles/franklin-insights-mappings.html" class="AknDescriptionHeader-link" target="_blank">Read more</a>'
+      inactive_connection:
+        title: 'Sorry, nothing to show here yet'

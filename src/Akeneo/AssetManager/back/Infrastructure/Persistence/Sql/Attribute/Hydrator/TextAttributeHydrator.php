@@ -29,7 +29,7 @@ class TextAttributeHydrator extends AbstractAttributeHydrator
 {
     public function supports(array $row): bool
     {
-        return isset($row['attribute_type']) && 'text' === $row['attribute_type'];
+        return isset($row['attribute_type']) && TextAttribute::ATTRIBUTE_TYPE === $row['attribute_type'];
     }
 
     public function convertAdditionalProperties(AbstractPlatform $platform, array $row): array

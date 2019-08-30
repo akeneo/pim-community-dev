@@ -2,9 +2,9 @@ import * as React from 'react';
 import {FilterView, FilterViewProps} from 'akeneoreferenceentity/application/configuration/value';
 import {ConcreteOptionAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/option';
 import {
-  Option,
-  NormalizedOption,
-  NormalizedOptionCode,
+    NormalizedOption,
+    NormalizedOptionCode,
+    Option,
 } from 'akeneoreferenceentity/domain/model/attribute/type/option/option';
 import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
 import {connect} from 'react-redux';
@@ -30,6 +30,7 @@ const OptionFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
   }
 
   const [isOpen, setIsOpen] = useState(false);
+  const [displayRight, setDisplayRight] = useState(false);
 
   const availableOptions = attribute.getOptions().reduce(
     (availableOptions: {[choiceValue: string]: string}, option: Option) => {
@@ -50,6 +51,14 @@ const OptionFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
       context: {},
     });
   };
+
+  const openPopup = (event: MouseEvent): void => {
+    setIsOpen(true);
+    if ((event.target as Element).parentElement!.getBoundingClientRect().left < 500) {
+      setDisplayRight(true);
+    }
+  };
+
   const value = undefined !== filter ? filter.value : [];
   const labels = value.map((optionCode: NormalizedOptionCode) =>
     undefined !== availableOptions[optionCode] ? availableOptions[optionCode] : `[${optionCode}]`
@@ -57,12 +66,12 @@ const OptionFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
 
   return (
     <React.Fragment>
-      <span className="AknFilterBox-filterLabel" onClick={() => setIsOpen(true)}>
+      <span className="AknFilterBox-filterLabel" onClick={(event: any) => {openPopup(event);}}>
         {attribute.getLabel(context.locale)}
       </span>
       <span
         className="AknFilterBox-filterCriteria AknFilterBox-filterCriteria--limited"
-        onClick={() => setIsOpen(true)}
+        onClick={(event: any) => {openPopup(event);}}
       >
         <span className="AknFilterBox-filterCriteriaHint">
           {0 === labels.length ? __('pim_reference_entity.record.grid.filter.option.all') : labels.join(', ')}
@@ -72,7 +81,7 @@ const OptionFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
       {isOpen ? (
         <div>
           <div className="AknDropdown-mask" onClick={() => setIsOpen(false)} />
-          <div className="AknFilterBox-filterDetails">
+          <div className={"AknFilterBox-filterDetails " + (displayRight ? "AknFilterBox-filterDetails--rightAlign" : "")} id={"filterDetails" + attribute.code.stringValue()}>
             <div className="AknFilterChoice">
               <div className="AknFilterChoice-header">
                 <div className="AknFilterChoice-title">{attribute.getLabel(context.locale)}</div>
@@ -88,6 +97,19 @@ const OptionFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
                   configuration={{
                     allowClear: true,
                     placeholder: __('pim_reference_entity.record.grid.filter.option.no_value'),
+                    formatSelection: (data: any, _container: any, escapeMarkup: any) => {
+                      const result = data ? escapeMarkup(data.text) : undefined;
+                      if (result !== undefined) {
+                        return '<div title="' + result + '">' + result + '</div>';
+                      }
+
+                      return result;
+                    },
+                    formatResult: (result: any, container: any, _query: any, _escapeMarkup: any) => {
+                      const formerResult = '<span class="select2-match"></span>' + result.text;
+                      container.attr('title', result.text);
+                      return formerResult;
+                    }
                   }}
                   onChange={(optionCodes: string[]) => {
                     onFilterUpdated({

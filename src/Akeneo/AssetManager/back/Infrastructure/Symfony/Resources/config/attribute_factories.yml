@@ -37,7 +37,7 @@ services:
         tags:
             - { name: akeneo_assetmanager.attribute_factory }
 
-    akeneo_assetmanager.application.factory.mediaLink_attribute_factory:
+    akeneo_assetmanager.application.factory.media_link_attribute_factory:
         class: Akeneo\AssetManager\Application\Attribute\CreateAttribute\AttributeFactory\MediaLinkAttributeFactory
         tags:
             - { name: akeneo_assetmanager.attribute_factory }

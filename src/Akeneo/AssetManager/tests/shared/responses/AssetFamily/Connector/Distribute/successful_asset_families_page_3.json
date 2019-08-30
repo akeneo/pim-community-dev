@@ -23,16 +23,13 @@
             "_links": {
               "self": {
                 "href": "http://localhost/api/rest/v1/asset-families/asset_family_7"
-              },
-              "image_download": {
-                "href": "http://localhost/api/rest/v1/asset-families-media-files/test/image_asset_family_7.jpg"
               }
             },
             "code": "asset_family_7",
             "labels": {
               "fr_FR": "Marque"
             },
-            "image": "test/image_asset_family_7.jpg"
+            "product_link_rules": []
           }
         ]
       }

@@ -110,3 +110,7 @@ services:
         arguments:
             - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer'
 
+    akeneo_assetmanager.application.asset.link_assets.link_assets_handler:
+        class: Akeneo\AssetManager\Application\Asset\LinkAssets\LinkAssetsHandler
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.job.product_link_rule_launcher'

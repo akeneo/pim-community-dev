@@ -62,7 +62,7 @@ class EditActionTest extends ControllerIntegrationTestCase
                 'filePath'         => '/path/image.jpg',
                 'originalFilename' => 'image.jpg'
             ],
-            'ruleTemplates' => []
+            'productLinkRules' => []
         ];
 
         $this->webClientHelper->callRoute(

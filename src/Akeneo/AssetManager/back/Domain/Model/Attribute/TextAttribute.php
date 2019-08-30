@@ -251,9 +251,9 @@ class TextAttribute extends AbstractAttribute
         return $this->validationRule->isEmail();
     }
 
-    public function isValidationRuleSetToMediaLink(): bool
+    public function isValidationRuleSetToUrl(): bool
     {
-        return $this->validationRule->isMediaLink();
+        return $this->validationRule->isUrl();
     }
 
     public function hasValidationRule(): bool

@@ -2,6 +2,8 @@
 
 namespace Context;
 
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
+use Behat\Behat\Hook\Scope\AfterStepScope;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
@@ -339,5 +341,23 @@ class EnterpriseFeatureContext extends FeatureContext
         }
 
         return $icon;
+    }
+
+    /**
+     * @param AfterStepScope $scope
+     * @AfterStep
+     */
+    public function clearConnectionStatusCache(AfterStepScope $scope): void
+    {
+        if ($scope->getStep()->getKeywordType() === 'Given') {
+            $this->getConnectionStatusHandler()->clearCache();
+        }
+    }
+
+    private function getConnectionStatusHandler(): GetConnectionStatusHandler
+    {
+        return $this
+            ->getContainer()
+            ->get('akeneo.pim.automation.franklin_insights.application.configuration.query.get_connection_status_handler');
     }
 }

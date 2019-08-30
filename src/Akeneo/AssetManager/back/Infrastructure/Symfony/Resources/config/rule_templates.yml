@@ -1,27 +1,13 @@
 services:
     akeneo_assetmanager.application.asset.execute_rule_templates.rule_template_executor:
-        class: Akeneo\AssetManager\Application\Asset\ExecuteRuleTemplates\RuleTemplateExecutor
+        class: Akeneo\AssetManager\Application\Asset\LinkAssets\RuleTemplateExecutor
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_property_accessible_asset'
-            - '@akeneo_assetmanager.application.asset.execute_rule_templates.rule_compiler'
             - '@akeneo_assetmanager.infrastructure.rule_template.rule_engine_runner'
-
-    akeneo_assetmanager.application.asset.execute_rule_templates.rule_compiler:
-        class: Akeneo\AssetManager\Application\Asset\ExecuteRuleTemplates\RuleCompiler
-        arguments:
-            - '@pimee_catalog_rule.denormalizer.product_rule.chained'
-            - '%akeneo_rule_engine.model.rule.class%'
 
     akeneo_assetmanager.infrastructure.rule_template.rule_engine_runner:
         class: Akeneo\AssetManager\Infrastructure\RuleTemplates\RuleEngineRunner
         arguments:
             - '@pimee_catalog_rule.denormalizer.product_rule.chained'
             - '@pimee_catalog_rule.runner.product'
-
-    akeneo_assetmanager.application.asset.subscriber.link_asset:
-        class: Akeneo\AssetManager\Application\Asset\Subscribers\LinkAssetSubscriber
-        arguments:
-            - '@akeneo_assetmanager.application.asset.execute_rule_templates.rule_template_executor'
-        tags:
-            - { name: kernel.event_subscriber }

@@ -65,6 +65,7 @@ security:
             form_login:
                 csrf_token_generator: security.csrf.token_manager
                 login_path: saml_login
+                failure_path: pim_user_security_login
                 check_path: pim_user_security_check
                 use_forward: true
             logout:

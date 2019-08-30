@@ -30,7 +30,7 @@ authentication:
         sign_on_url:
           label: URL Sign-on
         logout_url:
-          label: URL de déconnection
+          label: URL de déconnexion
         certificate:
           label: Certificat
           expiration_warning: Ce certificat expire le {{date}}.

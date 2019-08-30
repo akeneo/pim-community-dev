@@ -1,0 +1,46 @@
+{
+    "request": {
+        "method": "PATCH",
+        "route": "akeneo_asset_manager_asset_rest_connector_create_or_update",
+        "query": {
+            "assetFamilyIdentifier": "frontview",
+            "code": "house"
+        },
+        "body": {
+            "code": "house",
+            "values": {
+                "label": [
+                    {
+                        "locale": "en_US",
+                        "channel": null,
+                        "data": "House english label"
+                    },
+                    {
+                        "locale": "fr_FR",
+                        "channel": null,
+                        "data": "House french label"
+                    }
+                ],
+                "description": [
+                    {
+                        "locale": "en_US",
+                        "channel": "ecommerce",
+                        "data": "House english description."
+                    },
+                    {
+                        "locale": "fr_FR",
+                        "channel": "ecommerce",
+                        "data": "House french description."
+                    }
+                ]
+            }
+        }
+    },
+    "response": {
+        "status": 201,
+        "body": "",
+        "headers": {
+            "location": "http://localhost/api/rest/v1/asset-families/frontview/assets/house"
+        }
+    }
+}

@@ -1,9 +1,9 @@
 import {
-  notifyRecordWellDeleted,
-  notifyRecordDeleteFailed,
-  notifyRecordDeletionErrorOccured,
-  notifyAllRecordsWellDeleted,
-  notifyAllRecordsDeletionFailed,
+    notifyAllRecordsDeletionFailed,
+    notifyAllRecordsWellDeleted,
+    notifyRecordDeleteFailed,
+    notifyRecordDeletionErrorOccurred,
+    notifyRecordWellDeleted,
 } from 'akeneoreferenceentity/application/action/record/notify';
 import recordRemover from 'akeneoreferenceentity/infrastructure/remover/record';
 import ValidationError, {createValidationError} from 'akeneoreferenceentity/domain/model/validation-error';
@@ -24,7 +24,7 @@ export const deleteRecord = (
 
     if (errors) {
       const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-      dispatch(notifyRecordDeletionErrorOccured(validationErrors));
+      dispatch(notifyRecordDeletionErrorOccurred(validationErrors));
 
       return;
     }
@@ -50,7 +50,7 @@ export const deleteAllReferenceEntityRecords = (referenceEntity: ReferenceEntity
 
     if (errors) {
       const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-      dispatch(notifyRecordDeletionErrorOccured(validationErrors));
+      dispatch(notifyRecordDeletionErrorOccurred(validationErrors));
 
       return;
     }

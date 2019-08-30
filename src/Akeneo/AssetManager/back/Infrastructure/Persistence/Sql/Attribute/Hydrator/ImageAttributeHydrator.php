@@ -27,7 +27,7 @@ class ImageAttributeHydrator extends AbstractAttributeHydrator
 {
     public function supports(array $row): bool
     {
-        return isset($row['attribute_type']) && 'image' === $row['attribute_type'];
+        return isset($row['attribute_type']) && ImageAttribute::ATTRIBUTE_TYPE === $row['attribute_type'];
     }
 
     public function convertAdditionalProperties(AbstractPlatform $platform, array $row): array

@@ -1,7 +1,7 @@
 import Identifier, {NormalizedAttributeIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
 import MinimalAttribute, {
-  MinimalNormalizedAttribute,
-  MinimalConcreteAttribute,
+    MinimalConcreteAttribute,
+    MinimalNormalizedAttribute,
 } from 'akeneoassetmanager/domain/model/attribute/minimal';
 import AttributeCode from 'akeneoassetmanager/domain/model/attribute/code';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
@@ -31,6 +31,16 @@ export interface Attribute extends MinimalAttribute {
 export interface NormalizableAdditionalProperty {
   normalize(): any;
 }
+
+export const wrapNormalizableAdditionalProperty = <NormalizedAdditionalProperty>(
+  normalizedAdditionalProperty: NormalizedAdditionalProperty
+): NormalizableAdditionalProperty => {
+  return {
+    normalize: (): NormalizedAdditionalProperty => {
+      return normalizedAdditionalProperty;
+    },
+  };
+};
 
 /**
  * @api

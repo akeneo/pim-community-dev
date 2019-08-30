@@ -75,6 +75,13 @@ services:
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset_family.there_should_be_less_asset_family_than_limit' }
 
+    akeneo_assetmanager.validator.asset_family.there_should_be_less_rule_template_than_limit:
+        class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ThereShouldBeLessRuleTemplateThanLimitValidator
+        arguments:
+            - '%asset_manager_rule_template_by_asset_family_limit%'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset_family.there_should_be_less_rule_template_than_limit' }
+
     akeneo_assetmanager.validator.asset_family_permission.at_least_one_user_group_should_have_edit_permission:
         class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamilyPermission\AtLeastOneUserGroupShouldHaveEditPermissionValidator
         tags:
@@ -213,3 +220,32 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.attribute.attribute_option_should_exist' }
+
+    akeneo_assetmanager.validator.asset_family.product_link_rules_should_be_executable:
+        class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\ProductLinkRulesShouldBeExecutableValidator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.validation.asset_family.product_link_rule.rule_engine_validator_acl'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.attribute_exists'
+            - '@akeneo_assetmanager.validator.asset_family.product_link_rules.product_selections_validator'
+            - '@akeneo_assetmanager.validator.asset_family.product_link_rules.product_assignments_validator'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset_family.product_link_rules.rule_engine_validator_acl' }
+
+    akeneo_assetmanager.validator.asset_family.product_link_rules.product_selections_validator:
+        class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\ProductSelectionsValidator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.validation.asset_family.product_link_rule.rule_engine_validator_acl'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.attribute_exists'
+
+    akeneo_assetmanager.validator.asset_family.product_link_rules.product_assignments_validator:
+        class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\ProductAssignmentsValidator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.validation.asset_family.product_link_rule.rule_engine_validator_acl'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.attribute_exists'
+
+    akeneo_assetmanager.infrastructure.validation.asset_family.product_link_rule.rule_engine_validator_acl:
+        class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\RuleEngineValidatorACL
+        arguments:
+            - '@pimee_catalog_rule.denormalizer.product_rule.chained'
+            - '@validator'
+            - '@validator'

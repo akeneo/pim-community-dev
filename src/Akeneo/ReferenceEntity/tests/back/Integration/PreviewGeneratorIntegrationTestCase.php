@@ -26,7 +26,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 abstract class PreviewGeneratorIntegrationTestCase extends KernelTestCase
 {
-    protected const FILENAME = 'Akeneo-DSC_2109-2.jpg';
+    protected const FILENAME = '2016/04/Fred-site-web.jpg';
 
     /** @var KernelInterface|null */
     protected $testKernel;

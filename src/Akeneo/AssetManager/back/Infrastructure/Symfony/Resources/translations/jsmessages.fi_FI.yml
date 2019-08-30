@@ -212,7 +212,7 @@ pim_asset_manager:
             none: Ei yhtään
             email: Sähköposti
             regular_expression: Tavallinen virke
-            mediaLink: URL-osoite
+            url: URL-osoite
     delete:
       message: Oletko varma, että haluat poistaa attribuutin "{{ attributeLabel }}"?
       title: Attribuutti
@@ -248,7 +248,6 @@ pim_enrich:
       property:
         type:
           akeneo_asset_multiple_link: Viitetiedot monivalinta
-          akeneo_asset_single_link: Viitetiedot yksinkertainen valinta
         section:
           type_specific: Tyyppikohtaiset parametrit
         asset_family:

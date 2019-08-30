@@ -30,30 +30,44 @@ class AssetFamilyValidatorSpec extends ObjectBehavior
             'labels' => [
                 'en_US' => 'Philippe Starck'
             ],
-            'image' => 'images/starck.png',
-            'rule_templates' => [
+            /** /!\ /!\ /!\ /!\
+             * Crappy fix to remove the possibility of updating the image of the asset family on the API side.
+             * @todo : To remove if the functional decide to not have an image on the asset family
+             * @todo : Check the PR https://github.com/akeneo/pim-enterprise-dev/pull/6651 for real fix
+             */
+//            'image' => 'images/starck.png',
+            'product_link_rules' => [
                 [
-                    'conditions' => [
+                    'product_selections' => [
                         [
-                            'field' => 'sku',
+                            'field'    => 'sku',
                             'operator' => '=',
-                            'value' => '{{product_sku}}'
+                            'value'    => '{{product_sku}}'
                         ]
                     ],
-                    'actions' => [
+                    'assign_assets_to' => [
                         [
-                            'type' => 'add',
-                            'field' => '{{attribute}}',
-                            'value' => '{{code}}'
+                            'mode'      => 'add',
+                            'attribute' => '{{attribute}}'
                         ]
                     ]
                 ]
             ],
             '_links'  => [
                 'image_download' => [
-                    'href' => 'http://localhost/api/rest/v1/asset-families-media-files/images/starck.png'
+                    'href' => 'http://localhost/api/rest/v1/asset-media-files/images/starck.png'
                 ]
             ]
+        ];
+
+        $this->validate($assetFamily)->shouldReturn([]);
+    }
+
+    function it_does_not_return_any_error_when_no_labels()
+    {
+        $assetFamily = [
+            'code' => 'starck',
+            'labels' => (object) []
         ];
 
         $this->validate($assetFamily)->shouldReturn([]);
@@ -192,19 +206,19 @@ class AssetFamilyValidatorSpec extends ObjectBehavior
     {
         $assetFamily = [
             'code' => 'starck',
-            'rule_templates' => [
+            'product_link_rules' => [
                 [
-                    'conditions' => [
+                    'product_selections' => [
                         [
-                            'field' => 'sku',
+                            'field'    => 'sku',
                             'operator' => '=',
-                            'value' => null
+                            'value'    => null
                         ]
                     ],
-                    'actions' => [
+                    'assign_assets_to' => [
                         [
-                            'type' => 'add',
-                            'field' => '{{attribute}}'
+                            'mode'      => 'add',
+                            'attribute' => '{{attribute}}'
                         ]
                     ]
                 ]
@@ -214,28 +228,27 @@ class AssetFamilyValidatorSpec extends ObjectBehavior
         $errors = $this->validate($assetFamily);
 
         $errors->shouldBeArray();
-        $errors->shouldHaveCount(2);
+        $errors->shouldHaveCount(1);
     }
 
     public function it_returns_an_error_when_rule_templates_has_additional_properties()
     {
         $assetFamily = [
             'code' => 'starck',
-            'rule_templates' => [
+            'product_link_rules' => [
                 [
-                    'conditions' => [
+                    'product_selections' => [
                         [
-                            'field' => 'sku',
+                            'field'    => 'sku',
                             'operator' => '=',
-                            'value' => '{{product_code}}',
+                            'value'    => '{{product_code}}',
                             'unknown_property' => 'michel'
                         ]
                     ],
-                    'actions' => [
+                    'assign_assets_to' => [
                         [
-                            'type' => 'add',
-                            'field' => '{{attribute}}',
-                            'value' => '{{code}}',
+                            'mode'      => 'add',
+                            'attribute' => '{{attribute}}',
                             'unknown_property' => 'michel'
                         ]
                     ],

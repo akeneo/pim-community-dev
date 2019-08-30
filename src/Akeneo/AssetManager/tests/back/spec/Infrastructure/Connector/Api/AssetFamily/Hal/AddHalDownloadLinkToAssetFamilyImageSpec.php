@@ -47,7 +47,7 @@ class AddHalDownloadLinkToAssetFamilyImageSpec extends ObjectBehavior
             'akeneo_asset_manager_media_file_rest_connector_download',
             ['fileCode' => 'brand.jpg'],
             UrlGeneratorInterface::ABSOLUTE_URL
-        )->willReturn('http://localhost/api/rest/v1/asset-families-media-files/brand.jpg');
+        )->willReturn('http://localhost/api/rest/v1/asset-media-files/brand.jpg');
 
         $expectedNormalizedAssetFamily = [
             'code'       => 'brand',
@@ -57,7 +57,7 @@ class AddHalDownloadLinkToAssetFamilyImageSpec extends ObjectBehavior
             'image' => 'brand.jpg',
             '_links'     => [
                 'image_download' => [
-                    'href' => 'http://localhost/api/rest/v1/asset-families-media-files/brand.jpg'
+                    'href' => 'http://localhost/api/rest/v1/asset-media-files/brand.jpg'
                 ]
             ]
         ];

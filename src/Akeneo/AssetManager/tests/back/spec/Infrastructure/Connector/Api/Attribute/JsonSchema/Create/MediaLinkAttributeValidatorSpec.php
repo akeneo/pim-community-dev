@@ -29,16 +29,16 @@ class MediaLinkAttributeValidatorSpec extends ObjectBehavior
         $this->shouldImplement(AttributeValidatorInterface::class);
     }
 
-    function it_is_json_schema_of_mediaLink_attribute()
+    function it_is_json_schema_of_media_link_attribute()
     {
-        $this->forAttributeTypes()->shouldContain('mediaLink');
+        $this->forAttributeTypes()->shouldContain('media_link');
     }
 
     function it_does_not_return_any_error_when_the_attribute_is_valid()
     {
         $attribute = [
             'code' => 'preview',
-            'type' => 'mediaLink',
+            'type' => 'media_link',
             'value_per_channel' => true,
             'value_per_locale' => true,
             'labels' => [
@@ -53,40 +53,53 @@ class MediaLinkAttributeValidatorSpec extends ObjectBehavior
         $this->validate($attribute)->shouldReturn([]);
     }
 
+    function it_does_not_return_any_error_when_no_labels()
+    {
+        $attribute = [
+            'code' => 'preview',
+            'type' => 'media_link',
+            'value_per_channel' => true,
+            'value_per_locale' => true,
+            'labels' => [],
+            'is_required_for_completeness' => false,
+            'media_type' => 'image',
+            'prefix' => 'http://mydam.com/pic/',
+            'suffix' => null,
+        ];
+
+        $this->validate($attribute)->shouldReturn([]);
+    }
+
+    function it_can_be_created_without_channel()
+    {
+        $attribute = [
+            'code' => 'preview',
+            'type' => 'media_link',
+            'value_per_locale' => true,
+            'media_type' => 'image',
+        ];
+
+        $this->validate($attribute)->shouldReturn([]);
+    }
+
+    function it_can_be_created_without_locale()
+    {
+        $attribute = [
+            'code' => 'preview',
+            'type' => 'media_link',
+            'value_per_channel' => true,
+            'media_type' => 'image',
+        ];
+
+        $this->validate($attribute)->shouldReturn([]);
+    }
+
     function it_is_mandatory_to_provide_the_code_of_the_attribute()
     {
         $attribute = [
-            'type' => 'mediaLink',
+            'type' => 'media_link',
             'value_per_channel' => true,
             'value_per_locale' => true,
-            'media_type' => 'image',
-        ];
-
-        $errors = $this->validate($attribute);
-        $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
-    }
-
-    function it_is_mandatory_to_provide_the_channel_of_the_attribute()
-    {
-        $attribute = [
-            'code' => 'preview',
-            'type' => 'mediaLink',
-            'value_per_locale' => true,
-            'media_type' => 'image',
-        ];
-
-        $errors = $this->validate($attribute);
-        $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
-    }
-
-    function it_is_mandatory_to_provide_the_locale_of_the_attribute()
-    {
-        $attribute = [
-            'code' => 'preview',
-            'type' => 'mediaLink',
-            'value_per_channel' => true,
             'media_type' => 'image',
         ];
 
@@ -113,7 +126,7 @@ class MediaLinkAttributeValidatorSpec extends ObjectBehavior
     {
         $attribute = [
             'code' => 'preview',
-            'type' => 'mediaLink',
+            'type' => 'media_link',
             'value_per_channel' => true,
             'value_per_locale' => true,
         ];
@@ -128,7 +141,7 @@ class MediaLinkAttributeValidatorSpec extends ObjectBehavior
         $attribute = [
             'unknown_property' => 'michel',
             'code' => 'preview',
-            'type' => 'mediaLink',
+            'type' => 'media_link',
             'value_per_channel' => true,
             'value_per_locale' => true,
             'media_type' => 'image',
@@ -143,7 +156,7 @@ class MediaLinkAttributeValidatorSpec extends ObjectBehavior
     {
         $attribute = [
             'code' => 1,
-            'type' => 'mediaLink',
+            'type' => 'media_link',
             'value_per_channel' => true,
             'value_per_locale' => true,
             'media_type' => 'image',
@@ -173,7 +186,7 @@ class MediaLinkAttributeValidatorSpec extends ObjectBehavior
     {
         $attribute = [
             'code' => 'preview',
-            'type' => 'mediaLink',
+            'type' => 'media_link',
             'value_per_channel' => 'oui',
             'value_per_locale' => true,
             'media_type' => 'image',
@@ -188,7 +201,7 @@ class MediaLinkAttributeValidatorSpec extends ObjectBehavior
     {
         $attribute = [
             'code' => 'preview',
-            'type' => 'mediaLink',
+            'type' => 'media_link',
             'value_per_channel' => false,
             'value_per_locale' => 'mais tout à fait',
             'media_type' => 'image',
@@ -203,7 +216,7 @@ class MediaLinkAttributeValidatorSpec extends ObjectBehavior
     {
         $attribute = [
             'code' => 'preview',
-            'type' => 'mediaLink',
+            'type' => 'media_link',
             'value_per_channel' => false,
             'value_per_locale' => false,
             'media_type' => 'image',
@@ -221,7 +234,7 @@ class MediaLinkAttributeValidatorSpec extends ObjectBehavior
     {
         $attribute = [
             'code' => 'preview',
-            'type' => 'mediaLink',
+            'type' => 'media_link',
             'value_per_channel' => true,
             'value_per_locale' => true,
             'media_type' => 'image',
@@ -237,7 +250,7 @@ class MediaLinkAttributeValidatorSpec extends ObjectBehavior
     {
         $attribute = [
             'code' => 'preview',
-            'type' => 'mediaLink',
+            'type' => 'media_link',
             'value_per_channel' => true,
             'value_per_locale' => true,
             'media_type' => null,
@@ -252,7 +265,7 @@ class MediaLinkAttributeValidatorSpec extends ObjectBehavior
     {
         $attribute = [
             'code' => 'preview',
-            'type' => 'mediaLink',
+            'type' => 'media_link',
             'value_per_channel' => true,
             'value_per_locale' => true,
             'media_type' => 14,
@@ -267,7 +280,7 @@ class MediaLinkAttributeValidatorSpec extends ObjectBehavior
     {
         $attribute = [
             'code' => 'preview',
-            'type' => 'mediaLink',
+            'type' => 'media_link',
             'value_per_channel' => true,
             'value_per_locale' => true,
             'media_type' => 'image',
@@ -283,7 +296,7 @@ class MediaLinkAttributeValidatorSpec extends ObjectBehavior
     {
         $attribute = [
             'code' => 'preview',
-            'type' => 'mediaLink',
+            'type' => 'media_link',
             'value_per_channel' => true,
             'value_per_locale' => true,
             'media_type' => 'image',

@@ -296,7 +296,7 @@ services:
         tags:
             - { name: akeneo_assetmanager.attribute_hydrator }
 
-    akeneo_assetmanager.infrastructure.persistence.hydrator.attribute.mediaLink_attribute_hydrator:
+    akeneo_assetmanager.infrastructure.persistence.hydrator.attribute.media_link_attribute_hydrator:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator\MediaLinkAttributeHydrator
         arguments:
             - '@database_connection'
@@ -377,6 +377,10 @@ services:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\ConnectorAssetFamilyHydrator
         arguments:
             - '@database_connection'
+            - '@akeneo_assetmanager.infrastructure.persistence.asset_family.hydrator.connector_product_link_rules'
+
+    akeneo_assetmanager.infrastructure.persistence.asset_family.hydrator.connector_product_link_rules:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\ConnectorProductLinkRulesHydrator
 
     akeneo_assetmanager.infrastructure.persistence.asset.hydrator.value:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\ValueHydrator
@@ -389,7 +393,7 @@ services:
         tags:
             - { name: akeneo_assetmanager.data_hydrator }
 
-    akeneo_assetmanager.infrastructure.persistence.asset.hydrator.mediaLink_data:
+    akeneo_assetmanager.infrastructure.persistence.asset.hydrator.media_link_data:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\MediaLinkDataHydrator
         tags:
             - { name: akeneo_assetmanager.data_hydrator }

@@ -28,6 +28,13 @@ class InMemoryFranklinAttributeCreatedRepository implements FranklinAttributeCre
         $this->events[] = $franklinAttributeCreated;
     }
 
+    public function saveAll(array $franklinAttributeCreatedEvents): void
+    {
+        foreach ($franklinAttributeCreatedEvents as $franklinAttributeCreatedEvent) {
+            $this->events[] = $franklinAttributeCreatedEvent;
+        }
+    }
+
     public function count(): int
     {
         return count($this->events);

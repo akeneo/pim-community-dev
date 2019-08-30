@@ -1,19 +1,19 @@
 import attributeSaver from 'akeneoreferenceentity/infrastructure/saver/attribute';
 import {
-  attributeCreationSucceeded,
-  attributeCreationErrorOccured,
+    attributeCreationErrorOccurred,
+    attributeCreationSucceeded,
 } from 'akeneoreferenceentity/domain/event/attribute/create';
 import ValidationError, {createValidationError} from 'akeneoreferenceentity/domain/model/validation-error';
 import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
 import {
-  notifyAttributeWellCreated,
-  notifyAttributeCreateFailed,
-  notifyAttributeCreateValidationError,
+    notifyAttributeCreateFailed,
+    notifyAttributeCreateValidationError,
+    notifyAttributeWellCreated,
 } from 'akeneoreferenceentity/application/action/attribute/notify';
 import {updateAttributeList} from 'akeneoreferenceentity/application/action/attribute/list';
 import {
-  denormalizeMinimalAttribute,
-  MinimalNormalizedAttribute,
+    denormalizeMinimalAttribute,
+    MinimalNormalizedAttribute,
 } from 'akeneoreferenceentity/domain/model/attribute/minimal';
 import {attributeEditionStartByCode} from 'akeneoreferenceentity/application/action/attribute/edit';
 
@@ -31,7 +31,7 @@ export const createAttribute = () => async (dispatch: any, getState: () => EditS
 
     if (errors) {
       const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-      dispatch(attributeCreationErrorOccured(validationErrors));
+      dispatch(attributeCreationErrorOccurred(validationErrors));
       dispatch(notifyAttributeCreateValidationError());
 
       return;
