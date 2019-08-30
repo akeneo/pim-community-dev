@@ -91,63 +91,36 @@ class ProductSelectionsValidator
         array $productSelection,
         string $assetFamilyIdentifier
     ): ConstraintViolationListInterface {
-        $violations = $this->checkField($productSelection, $assetFamilyIdentifier);
-        $violations->addAll($this->checkValue($productSelection, $assetFamilyIdentifier));
-        $violations->addAll($this->checkChannel($productSelection, $assetFamilyIdentifier));
-
+        $violations = $this->checkAttributeExistsAndHasASupportedType(
+            $productSelection['field'],
+            $assetFamilyIdentifier,
+            [TextAttribute::ATTRIBUTE_TYPE]
+        );
+        $violations->addAll($this->checkAttributeExistsAndHasASupportedType(
+            $productSelection['value'],
+            $assetFamilyIdentifier,
+            [
+                TextAttribute::ATTRIBUTE_TYPE,
+                OptionAttribute::ATTRIBUTE_TYPE,
+                OptionCollectionAttribute::ATTRIBUTE_TYPE
+            ]
+        ));
+        $violations->addAll($this->checkAttributeExistsAndHasASupportedType(
+            $productSelection['channel'],
+            $assetFamilyIdentifier,
+            [TextAttribute::ATTRIBUTE_TYPE]
+        ));
         return $violations;
     }
 
-    private function checkField(array $productSelection, string $assetFamilyIdentifier): ConstraintViolationListInterface
+    private function checkAttributeExistsAndHasASupportedType(string $fieldValue, string $assetFamilyIdentifier, array $supportedTypes): ConstraintViolationListInterface
     {
         $violations = new ConstraintViolationList();
-        $fieldAttributeCodes = ReplacePattern::detectPatterns($productSelection['field']);
+        $fieldAttributeCodes = ReplacePattern::detectPatterns($fieldValue);
         foreach ($fieldAttributeCodes as $fieldAttributeCode) {
             $violations->addAll($this->checkAttributeExists($assetFamilyIdentifier, $fieldAttributeCode));
-            $violations->addAll($this->checkAttributeTypeIsSupported($assetFamilyIdentifier,
-                $fieldAttributeCode,
-                [TextAttribute::ATTRIBUTE_TYPE]
-            )
-            );
-        }
-
-        return $violations;
-    }
-
-    private function checkValue(array $productSelection, string $assetFamilyIdentifier): ConstraintViolationListInterface
-    {
-        $violations = new ConstraintViolationList();
-        ReplacePattern::detectPatterns($productSelection['value']);
-        $valueAttributeCodes = ReplacePattern::detectPatterns($productSelection['value']);
-        foreach ($valueAttributeCodes as $valueAttributeCode) {
-            $violations->addAll($this->checkAttributeExists($assetFamilyIdentifier, $valueAttributeCode));
-            $violations->addAll($this->checkAttributeTypeIsSupported(
-                $assetFamilyIdentifier,
-                $valueAttributeCode,
-                [
-                    TextAttribute::ATTRIBUTE_TYPE,
-                    OptionAttribute::ATTRIBUTE_TYPE,
-                    OptionCollectionAttribute::ATTRIBUTE_TYPE
-                ]
-            )
-            );
-        }
-
-        return $violations;
-    }
-
-    private function checkChannel(array $productSelection, string $assetFamilyIdentifier)
-    {
-        $violations = new ConstraintViolationList();
-        ReplacePattern::detectPatterns($productSelection['value']);
-        $channelAttributeCodes = ReplacePattern::detectPatterns($productSelection['channel']);
-        foreach ($channelAttributeCodes as $channelAttributeCode) {
-            $violations->addAll($this->checkAttributeExists($assetFamilyIdentifier, $channelAttributeCode));
-            $violations->addAll($this->checkAttributeTypeIsSupported(
-                $assetFamilyIdentifier,
-                $channelAttributeCode,
-                [TextAttribute::ATTRIBUTE_TYPE]
-            )
+            $violations->addAll(
+                $this->checkAttributeTypeIsSupported($assetFamilyIdentifier, $fieldAttributeCode, $supportedTypes)
             );
         }
 
