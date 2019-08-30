@@ -39,6 +39,7 @@ before_install:
 install:
     - composer install --prefer-dist --no-interaction
     - cp tests/travis/parameters_test.yml app/config/parameters_test.yml
+    - sed -i _bak.php 's#// new Akeneo\\Pim\\Enrichment\\AssetManager\\Bundle\\AkeneoPimEnrichmentAssetManagerBundle#new Akeneo\\Pim\\Enrichment\\AssetManager\\Bundle\\AkeneoPimEnrichmentAssetManagerBundle#' app/AppKernel.php
     - ./bin/console pim:install:assets --env=behat
     - ./bin/console pim:install:db --withoutIndexes --env=behat
     - yarn install
