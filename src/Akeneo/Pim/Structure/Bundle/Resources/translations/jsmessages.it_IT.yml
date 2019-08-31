@@ -60,6 +60,8 @@ pim_enrich.entity.family_variant:
       axis_level: "Asse variante livello {{ level }}"
     update_translations:
       title: Aggiorna traduzioni
+    delete:
+      confirm: Sei sicuro di voler eliminare questa variante di famiglia?
 pim_enrich.entity.attribute_option:
   short_uppercase_label: Opzioni
   flash:

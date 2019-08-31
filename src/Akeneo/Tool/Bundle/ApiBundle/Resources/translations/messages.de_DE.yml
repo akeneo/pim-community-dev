@@ -1,6 +1,6 @@
 pim_api:
   acl:
-    rights: Web-API Berechtigungen
+    rights: Berechtigungen Web-API
     attribute:
       edit: Erstellen und Aktualisieren von Attributen
       list: Attribute auflisten
@@ -16,6 +16,9 @@ pim_api:
     family:
       edit: Erstellen und Aktualisieren von Produktfamilien
       list: Produktfamilien auflisten
+    family_variant:
+      edit: Varianten der Produktfamilien anlegen und aktualisieren
+      list: Varianten der Produktfamilien auflisten
     channel:
       edit: Erstellen und aktualisieren von Kanälen
       list: Ausgabekanäle auflisten
@@ -31,6 +34,7 @@ pim_api:
     attribute_group: Attributgruppen
     category: Kategorien
     family: Produktfamilien
+    family_variant: Varianten der Produktfamilien
     channel: Ausgabekanäle
     locale: Gebietsschemata
     currency: Währungen
@@ -38,4 +42,4 @@ pim_api:
 pim_user:
   roles:
     tab:
-      api: Web-API Berechtigungen
+      api: Berechtigungen Web-API

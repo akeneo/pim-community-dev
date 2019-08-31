@@ -134,7 +134,6 @@ pim_measure:
     GALLON: Galão
     LITER: Litro
     MILLILITER: Mililitro
-    OUNCE: Onça
     PINT: Pinta
     DENIER: Denier
     GRAIN: Grão
@@ -144,6 +143,7 @@ pim_measure:
     MARC: Marc
     MILLIGRAM: Miligrama
     ONCE: Onça
+    OUNCE: Onça
     POUND: Libra
     TON: Tonelada
     BAR: Bar

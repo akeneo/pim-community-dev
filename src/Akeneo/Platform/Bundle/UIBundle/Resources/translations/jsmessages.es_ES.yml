@@ -137,6 +137,7 @@ pim_common:
   history: Historial
   label: Etiqueta
   label_translations: Traducciones de etiqueta
+  Label or identifier: etiqueta o identificador
   less_than: menor que
   loading: Cargando...
   media_upload: Arrastre y suelte aquí o haga clic aquí para subir el fichero
@@ -171,6 +172,7 @@ pim_common:
     ">": Mayor que
     "<=": Menor o igual que
     "<": Menor que
+    EMPTY: Está vacío
     NOT EMPTY: No está vacío
     CONTAINS: Contiene
     DOES NOT CONTAIN: No contiene
@@ -286,7 +288,9 @@ pim_menu:
     group: Grupos
     group_type: Tipos de grupo
     product_model: Modelos de Producto
+    export_history: Histórico de exportaciones
     export_profile: Perfiles de exportación
+    import_history: Histórico de importaciones
     import_profile: Perfiles de importación
     configuration: Configuración
     user_management: Gestión de Usuarios
