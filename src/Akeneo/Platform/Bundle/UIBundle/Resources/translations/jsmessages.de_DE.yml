@@ -2,7 +2,6 @@
 "Yes, do it": "Ja, ausführen"
 "Ok, got it.": "Ja, verstanden."
 "Edit": "Bearbeiten"
-"Unexpected error occurred. Please contact system administrator.": "Es ist ein unerwarteter Fehler aufgetreten. Bitte wenden Sie sich an den Systemadministrator."
 "Yes, revoke": "Ja, widerrufen"
 "Revoke Confirmation": "Bestätigung widerrufen"
 Prev: Zurück
@@ -179,17 +178,14 @@ pim_common:
     STARTS WITH: Beginnt mit
     ENDS WITH: Endet mit
 error:
-  exception: Oh nein! Ein {{ status_code }} Fehler ist aufgetreten...
   forbidden: Sie haben keine Berechtigung, diese Seite anzuzeigen
 alert:
   attribute_option:
-    error_occurred_during_submission: Während der Formularübertragung auf dem Server ist ein Fehler aufgetreten
     save_before_edit_other: Bitte speichern Sie die Änderungen in den anderen Zeilen bevor Sie diese bearbeiten
   session_storage:
     not_available: Ihr Webbrowser scheint nicht kompatibel mit sessionStorage zu sein. Bitte kontaktieren Sie Ihren Administrator
 pim_enrich.entity.fallback:
   flash:
-    generic_error: Es ist ein Fehler aufgetreten
     update:
       fail: Update fehlgeschlagen
       success: Update erfolgreich
