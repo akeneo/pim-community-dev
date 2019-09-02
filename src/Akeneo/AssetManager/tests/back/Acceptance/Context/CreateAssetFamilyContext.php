@@ -17,10 +17,12 @@ use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFam
 use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyHandler;
 use Akeneo\AssetManager\Common\Fake\Anticorruption\RuleEngineValidatorACLStub;
 use Akeneo\AssetManager\Common\Fake\InMemoryAssetFamilyRepository;
+use Akeneo\AssetManager\Common\Fake\InMemoryChannelExists;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
+use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer\FixturesLoader;
@@ -64,6 +66,9 @@ final class CreateAssetFamilyContext implements Context
     /** @var RuleEngineValidatorACLStub */
     private $ruleEngineValidatorACLStub;
 
+    /** @var InMemoryChannelExists */
+    private $inMemoryChannelExists;
+
     public function __construct(
         AssetFamilyRepositoryInterface $assetFamilyRepository,
         CreateAssetFamilyHandler $createAssetFamilyHandler,
@@ -72,6 +77,7 @@ final class CreateAssetFamilyContext implements Context
         ConstraintViolationsContext $violationsContext,
         InMemoryFindActivatedLocalesByIdentifiers $activatedLocales,
         RuleEngineValidatorACLInterface $ruleEngineValidatorACLStub,
+        InMemoryChannelExists $inMemoryChannelExists,
         int $ruleTemplateByAssetFamilyLimit
     ) {
         $this->assetFamilyRepository = $assetFamilyRepository;
@@ -82,7 +88,8 @@ final class CreateAssetFamilyContext implements Context
         $this->activatedLocales = $activatedLocales;
         $this->ruleEngineValidatorACLStub = $ruleEngineValidatorACLStub;
         $this->ruleTemplateByAssetFamilyLimit = $ruleTemplateByAssetFamilyLimit;
-        $this->activateDefaultLocales();
+        $this->inMemoryChannelExists = $inMemoryChannelExists;
+        $this->activateDefaultChannelAndLocales();
     }
 
     /**
@@ -368,10 +375,11 @@ final class CreateAssetFamilyContext implements Context
         ];
     }
 
-    private function activateDefaultLocales(): void
+    private function activateDefaultChannelAndLocales(): void
     {
         $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
         $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
+        $this->inMemoryChannelExists->save(ChannelIdentifier::fromCode('ecommerce'));
     }
 
     private function assertSameProductLinkRules(array $expectedNormalizedProductLinkRules, AssetFamily $actualAssetFamily): void

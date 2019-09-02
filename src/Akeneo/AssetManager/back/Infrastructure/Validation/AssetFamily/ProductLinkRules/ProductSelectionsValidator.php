@@ -4,12 +4,19 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules;
 
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\ReplacePattern;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
+use Akeneo\AssetManager\Domain\Query\Channel\ChannelExistsInterface;
+use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Validation;
 
 /**
@@ -24,12 +31,17 @@ class ProductSelectionsValidator
     /** @var ExtrapolatedAttributeValidator */
     private $extrapolatedAttributeValidator;
 
+    /** @var ChannelExistsInterface */
+    private $channelExists;
+
     public function __construct(
         RuleEngineValidatorACLInterface $ruleEngineValidatorACL,
-        ExtrapolatedAttributeValidator $extrapolatedAttributeValidator
+        ExtrapolatedAttributeValidator $extrapolatedAttributeValidator,
+        ChannelExistsInterface $channelExists
     ) {
         $this->ruleEngineValidatorACL = $ruleEngineValidatorACL;
         $this->extrapolatedAttributeValidator = $extrapolatedAttributeValidator;
+        $this->channelExists = $channelExists;
     }
 
     public function validate(array $productSelections, string $assetFamilyIdentifier): ConstraintViolationListInterface
@@ -59,8 +71,10 @@ class ProductSelectionsValidator
         if ($this->hasAnyExtrapolation($productSelection)) {
             return $this->checkExtrapolatedAttributes($productSelection, $assetFamilyIdentifier);
         }
+        $violations = $this->checkChannelExistsIfAny($productSelection);
+        $violations->addAll($this->ruleEngineValidatorACL->validateProductSelection($productSelection));
 
-        return $this->ruleEngineValidatorACL->validateProductSelection($productSelection);
+        return $violations;
     }
 
     private function hasAnyExtrapolation(array $productSelection): bool
@@ -109,5 +123,31 @@ class ProductSelectionsValidator
         }
 
         return $violations;
+    }
+
+    private function checkChannelExistsIfAny(array $productSelection): ConstraintViolationListInterface
+    {
+        if (!isset($productSelection['channel'])) {
+            return new ConstraintViolationList();
+        }
+        $channelCode = $productSelection['channel'];
+        $isChannelExisting = $this->channelExists->exists(ChannelIdentifier::fromCode($channelCode));
+
+        $validator = Validation::createValidator();
+        return $validator->validate(
+            $isChannelExisting,
+            new Callback(function ($attributeExists, ExecutionContextInterface $context) use (
+                $channelCode
+            ) {
+                if (!$attributeExists) {
+                    $context
+                        ->buildViolation(ProductLinkRulesShouldBeExecutable::CHANNEL_SHOULD_EXISTS,
+                            ['%channel_code%' => $channelCode]
+                        )
+                        ->addViolation();
+                }
+            }
+            )
+        );
     }
 }
