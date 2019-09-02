@@ -2,7 +2,7 @@
 set -e
 
 if [ "1" = "${XDEBUG_ENABLED}" ]; then
-    export PHP_INI_SCAN_DIR=:/etc/php/7.2/enable-xdebug
+    export PHP_INI_SCAN_DIR=:/etc/php/7.3/enable-xdebug
 fi
 
 exec "$@"
