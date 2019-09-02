@@ -1,4 +1,5 @@
 import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
+import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';
 import {createIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {createCode} from 'akeneoassetmanager/domain/model/code';
@@ -11,7 +12,7 @@ import {Asset, Completeness} from 'akeneopimenrichmentassetmanager/assets-collec
 import {isNumber, isString} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/utils';
 import {isLabels} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 
-export const fetchAssetCollection = (assetFetcher: any) => async (
+export const fetchAssetCollection = async (
   assetFamilyIdentifier: AssetFamilyIdentifier,
   codes: AssetCode[],
   context: {channel: ChannelCode; locale: LocaleCode}
