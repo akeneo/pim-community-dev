@@ -64,6 +64,12 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: limited_assets_in_value }
 
+    akeneo_assetmanager.validator.constraint_guesser.asset_multiple_link:
+        public: false
+        class : Akeneo\Pim\Enrichment\AssetManager\Component\Validator\ConstraintGuesser\AssetMultipleLinkGuesser
+        tags:
+            - { name: pim_catalog.constraint_guesser.attribute }
+
     akeneo_assetmanager.infrastructure.catalog.normalizer.asset_collection_value:
         class: Akeneo\Pim\Enrichment\AssetManager\Component\Normalizer\AssetCollectionValueNormalizer
         arguments:
