@@ -43,16 +43,21 @@ class PurgeJobExecutionCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $days = $input->getOption('days');
-        if (!(is_numeric($days) && $days > 0)) {
+        if (!(is_numeric($days) && $days >= 0)) {
             $output->writeln(
-                sprintf('<error>Option --days must be a number strictly superior to 0, "%s" given.</error>', $input->getOption('days'))
+                sprintf('<error>Option --days must be a number greater than or equal to 0, "%s" given.</error>', $input->getOption('days'))
             );
 
             return;
         }
 
-        $numberOfDeletedJobExecutions = $this->purgeJobExecution()->olderThanDays($days);
-        $output->write(sprintf("%s jobs execution deleted ...\n", $numberOfDeletedJobExecutions));
+        if (0 === (int) $days) {
+            $this->purgeJobExecution()->all();
+            $output->write("All jobs execution deleted ...\n");
+        } else {
+            $numberOfDeletedJobExecutions = $this->purgeJobExecution()->olderThanDays($days);
+            $output->write(sprintf("%s jobs execution deleted ...\n", $numberOfDeletedJobExecutions));
+        }
     }
 
     private function purgeJobExecution(): PurgeJobExecution

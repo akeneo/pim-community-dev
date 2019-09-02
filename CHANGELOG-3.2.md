@@ -3,6 +3,7 @@
 ## Bug fixes:
 
 - PIM-8719: Fix Mink Selenium dependency
+- PIM-8677: Purge all job executions
 
 # 3.2.7 (2019-08-27)
 
