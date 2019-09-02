@@ -1,10 +1,13 @@
 import promisify from 'akeneoassetmanager/tools/promisify';
-import {Family, FamilyCode, AttributeRequirements} from 'akeneopimenrichmentassetmanager/platform/model/structure/family';
-const fetcherRegistry = require('pim/fetcher-registry');
+import {
+  Family,
+  FamilyCode,
+  AttributeRequirements,
+} from 'akeneopimenrichmentassetmanager/platform/model/structure/family';
 import {isString, isObject} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/utils';
 
-export const fetchFamily = async (familyCode: FamilyCode): Promise<Family> => {
-  const family = await promisify(fetcherRegistry.getFetcher('family').fetch(familyCode));
+export const fetchFamily = (fetcherFamily: any) => async (familyCode: FamilyCode): Promise<Family> => {
+  const family = await promisify(fetcherFamily.fetch(familyCode));
 
   return denormalizeFamily(family);
 };
@@ -34,8 +37,7 @@ const isAttributeRequirements = (attributeRequirements: any): attributeRequireme
   return !Object.keys(attributeRequirements).some(
     (key: string): boolean => {
       return (
-        !isString(key) ||
-        attributeRequirements[key].some((attributeCode: any): boolean => !isString(attributeCode))
+        !isString(key) || attributeRequirements[key].some((attributeCode: any): boolean => !isString(attributeCode))
       );
     }
   );

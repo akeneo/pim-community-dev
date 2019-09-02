@@ -86,6 +86,6 @@ export const updateChannels = () => async (dispatch: any) => {
 };
 
 export const updateFamily = (familyCode: FamilyCode) => async (dispatch: any) => {
-  const family = await fetchFamily(familyCode);
+  const family = await fetchFamily(fetcherRegistry.getFetcher('family'))(familyCode);
   dispatch(familyUpdated(family));
 };

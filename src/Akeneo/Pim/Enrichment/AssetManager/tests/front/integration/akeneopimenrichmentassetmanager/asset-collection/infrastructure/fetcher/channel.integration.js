@@ -8,7 +8,6 @@ beforeEach(async () => {
 
 it('It fetches the channels', async () => {
   page.on('request', interceptedRequest => {
-    debugger;
     if (
       'http://pim.com/configuration/channel/rest' === interceptedRequest.url() &&
       'GET' === interceptedRequest.method()
