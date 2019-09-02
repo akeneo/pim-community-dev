@@ -8,15 +8,10 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\ReplacePattern;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
-use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
-use Akeneo\AssetManager\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\AssetManager\Domain\Query\Channel\ChannelExistsInterface;
 use Akeneo\AssetManager\Domain\Query\Locale\FindActivatedLocalesByIdentifiersInterface;
-use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Validation;
 
 /**
@@ -31,22 +26,17 @@ class ProductSelectionsValidator
     /** @var ExtrapolatedAttributeValidator */
     private $extrapolatedAttributeValidator;
 
-    /** @var ChannelExistsInterface */
-    private $channelExists;
-
-    /** @var FindActivatedLocalesByIdentifiersInterface */
-    private $findActivatedLocalesByIdentifiers;
+    /** @var ChannelAndLocaleValidator */
+    private $channelAndLocaleValidator;
 
     public function __construct(
         RuleEngineValidatorACLInterface $ruleEngineValidatorACL,
         ExtrapolatedAttributeValidator $extrapolatedAttributeValidator,
-        ChannelExistsInterface $channelExists,
-        FindActivatedLocalesByIdentifiersInterface $findActivatedLocalesByIdentifiers
+        ChannelAndLocaleValidator $channelAndLocaleValidator
     ) {
         $this->ruleEngineValidatorACL = $ruleEngineValidatorACL;
         $this->extrapolatedAttributeValidator = $extrapolatedAttributeValidator;
-        $this->channelExists = $channelExists;
-        $this->findActivatedLocalesByIdentifiers = $findActivatedLocalesByIdentifiers;
+        $this->channelAndLocaleValidator = $channelAndLocaleValidator;
     }
 
     public function validate(array $productSelections, string $assetFamilyIdentifier): ConstraintViolationListInterface
@@ -76,8 +66,8 @@ class ProductSelectionsValidator
         if ($this->hasAnyExtrapolation($productSelection)) {
             return $this->checkExtrapolatedAttributes($productSelection, $assetFamilyIdentifier);
         }
-        $violations = $this->checkChannelExistsIfAny($productSelection);
-        $violations->addAll($this->checkLocaleExistsIfAny($productSelection));
+        $violations = $this->channelAndLocaleValidator->checkChannelExistsIfAny($productSelection);
+        $violations->addAll($this->channelAndLocaleValidator->checkLocaleExistsIfAny($productSelection));
         $violations->addAll($this->ruleEngineValidatorACL->validateProductSelection($productSelection));
 
         return $violations;
@@ -129,59 +119,5 @@ class ProductSelectionsValidator
         }
 
         return $violations;
-    }
-
-    private function checkChannelExistsIfAny(array $productSelection): ConstraintViolationListInterface
-    {
-        if (!isset($productSelection['channel'])) {
-            return new ConstraintViolationList();
-        }
-        $channelCode = $productSelection['channel'];
-        $isChannelExisting = $this->channelExists->exists(ChannelIdentifier::fromCode($channelCode));
-
-        $validator = Validation::createValidator();
-        return $validator->validate(
-            $isChannelExisting,
-            new Callback(function ($attributeExists, ExecutionContextInterface $context) use (
-                $channelCode
-            ) {
-                if (!$attributeExists) {
-                    $context
-                        ->buildViolation(ProductLinkRulesShouldBeExecutable::CHANNEL_SHOULD_EXIST,
-                            ['%channel_code%' => $channelCode]
-                        )
-                        ->addViolation();
-                }
-            }
-            )
-        );
-    }
-
-    private function checkLocaleExistsIfAny(array $productSelection): ConstraintViolationListInterface
-    {
-        if (!isset($productSelection['locale'])) {
-            return new ConstraintViolationList();
-        }
-        $localeCode = $productSelection['locale'];
-        $activatedLocales = $this->findActivatedLocalesByIdentifiers->find(LocaleIdentifierCollection::fromNormalized([$localeCode]))
-                                                                    ->normalize();
-        $isLocaleExisting = in_array($localeCode, $activatedLocales);
-
-        $validator = Validation::createValidator();
-        return $validator->validate(
-            $isLocaleExisting,
-            new Callback(function ($attributeExists, ExecutionContextInterface $context) use (
-                $localeCode
-            ) {
-                if (!$attributeExists) {
-                    $context
-                        ->buildViolation(ProductLinkRulesShouldBeExecutable::LOCALE_SHOULD_EXIST,
-                            ['%locale_code%' => $localeCode]
-                        )
-                        ->addViolation();
-                }
-            }
-            )
-        );
     }
 }

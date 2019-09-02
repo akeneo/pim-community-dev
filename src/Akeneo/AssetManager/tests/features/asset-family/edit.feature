@@ -144,7 +144,7 @@ Feature: Edit an asset family
   @acceptance-back @nominal
   Scenario: Updating an asset family with a product link rule having no product selection locale
     Given an asset family with no product link rules
-    When the user updates this asset family with a product link rule having a no product selection locale
+    When the user updates this asset family with a product link rule having no product selection locale
     Then there is an asset family with a product link rule
 
   @acceptance-back @nominal

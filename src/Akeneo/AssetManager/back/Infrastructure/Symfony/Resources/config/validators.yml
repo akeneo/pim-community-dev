@@ -236,6 +236,11 @@ services:
         arguments:
             - '@akeneo_assetmanager.infrastructure.validation.asset_family.product_link_rule.rule_engine_validator_acl'
             - '@akeneo_assetmanager.validator.asset_family.product_link_rules.extrapolated_attribute_validator'
+            - '@akeneo_assetmanager.validator.asset_family.product_link_rules.channel_and_locale_validator'
+
+    akeneo_assetmanager.validator.asset_family.product_link_rules.channel_and_locale_validator:
+        class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\ChannelAndLocaleValidator
+        arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.cache.query.channel_exists'
             - '@akeneoassetmanager.infrastructure.persistence.cache.query.find_activated_locales_by_identifiers'
 

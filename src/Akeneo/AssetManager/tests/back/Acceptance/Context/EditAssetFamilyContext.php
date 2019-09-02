@@ -1241,6 +1241,42 @@ final class EditAssetFamilyContext implements Context
         $this->editAssetFamily($command);
     }
 
+    /**
+     * @When /^the user updates this asset family with a product link rule having a assignment channel that does not exist$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithAProductLinkRuleHavingAAssignmentChannelThatDoesNotExist()
+    {
+        $productLinkRule = [
+            'product_selections' => [
+                [
+                    'field'    => 'sku',
+                    'operator' => '=',
+                    'value'    => '11234567899',
+                ],
+            ],
+            'assign_assets_to'   => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => 'asset_collection',
+                    'channel'   => self::UNKNOWN_CHANNEL,
+                    'locale'    => 'en_US'
+                ],
+            ],
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$productLinkRule]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
+     * @Then /^there should be a validation error stating that the assignment channel does not exist$/
+     */
+    public function thereShouldBeAValidationErrorStatingThatTheAssignmentChannelDoesNotExist()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            sprintf('The channel "%s" of does not exist', self::UNKNOWN_CHANNEL)
+        );
+    }
+
     private function editAssetFamily(EditAssetFamilyCommand $editAssetFamilyCommand): void
     {
         $this->constraintViolationsContext->addViolations($this->validator->validate($editAssetFamilyCommand));
