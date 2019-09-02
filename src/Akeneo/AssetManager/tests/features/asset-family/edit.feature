@@ -206,8 +206,8 @@ Feature: Edit an asset family
   @acceptance-back @error
   Scenario: Cannot update an asset family with a product link rule having a static assignment channel that does not exist
     Given an asset family with no product link rules
-    When the user updates this asset family with a product link rule having a product selection channel that does not exist
-    Then there should be a validation error stating that the product selection channel does not exist
+    When the user updates this asset family with a product link rule having a assignment channel that does not exist
+    Then there should be a validation error stating that the assignment channel does not exist
 
   @acceptance-back @error
   Scenario: Cannot update an asset family with a product link rule having a dynamic assignment channel referencing an unsupported attribute type
@@ -217,10 +217,28 @@ Feature: Edit an asset family
 
   # Product assignment locale
   @acceptance-back @nominal
+  Scenario: Updating an asset family with a product link rule having no assignment locale
+    Given an asset family with no product link rules
+    When the user updates this asset family with a product link rule having no assignment locale
+    Then there is an asset family with a product link rule
+
+  @acceptance-back @nominal
+  Scenario: Updating an asset family with a product link rule having a static assignment locale
+    Given an asset family with no product link rules and a locale
+    When the user updates this asset family with a product link rule having an assignment locale referencing this locale
+    Then there is an asset family with a product link rule
+
+  @acceptance-back @nominal
   Scenario: Updating an asset family with a product link rule having a dynamic assignment locale
     Given an asset family with no product link rules and a text attribute
     When the user updates this asset family with a dynamic product link rule having a dynamic assignment locale which references this text attribute
     Then there is an asset family with a product link rule
+
+  @acceptance-back @error
+  Scenario: Cannot update an asset family with a product link rule having a static assignment locale that does not exist
+    Given an asset family with no product link rules
+    When the user updates this asset family with a product link rule having an assignment locale that does not exist
+    Then there should be a validation error stating that the assignment locale does not exist
 
   @acceptance-back @error
   Scenario: Cannot update an asset family with a product link rule having a dynamic assignment locale referencing an unsupported attribute type

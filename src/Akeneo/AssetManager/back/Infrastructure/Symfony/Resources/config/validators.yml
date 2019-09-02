@@ -238,6 +238,13 @@ services:
             - '@akeneo_assetmanager.validator.asset_family.product_link_rules.extrapolated_attribute_validator'
             - '@akeneo_assetmanager.validator.asset_family.product_link_rules.channel_and_locale_validator'
 
+    akeneo_assetmanager.validator.asset_family.product_link_rules.product_assignments_validator:
+        class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\ProductAssignmentsValidator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.validation.asset_family.product_link_rule.rule_engine_validator_acl'
+            - '@akeneo_assetmanager.validator.asset_family.product_link_rules.extrapolated_attribute_validator'
+            - '@akeneo_assetmanager.validator.asset_family.product_link_rules.channel_and_locale_validator'
+
     akeneo_assetmanager.validator.asset_family.product_link_rules.channel_and_locale_validator:
         class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\ChannelAndLocaleValidator
         arguments:
@@ -249,12 +256,6 @@ services:
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.query.attribute_exists'
             - '@akeneo_assetmanager.infrastructure.persistence.query.get_attribute_type'
-
-    akeneo_assetmanager.validator.asset_family.product_link_rules.product_assignments_validator:
-        class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\ProductAssignmentsValidator
-        arguments:
-            - '@akeneo_assetmanager.infrastructure.validation.asset_family.product_link_rule.rule_engine_validator_acl'
-            - '@akeneo_assetmanager.validator.asset_family.product_link_rules.extrapolated_attribute_validator'
 
     akeneo_assetmanager.infrastructure.validation.asset_family.product_link_rule.rule_engine_validator_acl:
         class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\RuleEngineValidatorACL

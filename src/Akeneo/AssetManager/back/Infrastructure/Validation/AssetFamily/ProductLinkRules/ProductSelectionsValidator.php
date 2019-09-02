@@ -8,8 +8,6 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\ReplacePattern;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
-use Akeneo\AssetManager\Domain\Query\Channel\ChannelExistsInterface;
-use Akeneo\AssetManager\Domain\Query\Locale\FindActivatedLocalesByIdentifiersInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validation;
@@ -20,6 +18,9 @@ use Symfony\Component\Validator\Validation;
  */
 class ProductSelectionsValidator
 {
+    private const CHANNEL_FIELD = 'channel';
+    private const LOCALE_FIELD = 'locale';
+
     /** @var RuleEngineValidatorACLInterface */
     private $ruleEngineValidatorACL;
 
@@ -66,8 +67,8 @@ class ProductSelectionsValidator
         if ($this->hasAnyExtrapolation($productSelection)) {
             return $this->checkExtrapolatedAttributes($productSelection, $assetFamilyIdentifier);
         }
-        $violations = $this->channelAndLocaleValidator->checkChannelExistsIfAny($productSelection);
-        $violations->addAll($this->channelAndLocaleValidator->checkLocaleExistsIfAny($productSelection));
+        $violations = $this->channelAndLocaleValidator->checkChannelExistsIfAny($productSelection[self::CHANNEL_FIELD] ?? null);
+        $violations->addAll($this->channelAndLocaleValidator->checkLocaleExistsIfAny($productSelection[self::LOCALE_FIELD] ?? null));
         $violations->addAll($this->ruleEngineValidatorACL->validateProductSelection($productSelection));
 
         return $violations;
@@ -77,10 +78,10 @@ class ProductSelectionsValidator
     {
         $isFieldExtrapolated = ReplacePattern::isExtrapolation($productSelection['field']);
         $isValueExtrapolated = ReplacePattern::isExtrapolation($productSelection['value']);
-        $isLocaleExtrapolated = isset($productSelection['locale'])
-            ? ReplacePattern::isExtrapolation($productSelection['locale']) : false;
-        $isChannelExtrapolated = isset($productSelection['channel'])
-            ? ReplacePattern::isExtrapolation($productSelection['channel']) : false;
+        $isLocaleExtrapolated = isset($productSelection[self::LOCALE_FIELD])
+            ? ReplacePattern::isExtrapolation($productSelection[self::LOCALE_FIELD]) : false;
+        $isChannelExtrapolated = isset($productSelection[self::CHANNEL_FIELD])
+            ? ReplacePattern::isExtrapolation($productSelection[self::CHANNEL_FIELD]) : false;
 
         return $isFieldExtrapolated || $isValueExtrapolated || $isLocaleExtrapolated || $isChannelExtrapolated;
     }
@@ -103,16 +104,16 @@ class ProductSelectionsValidator
                 OptionCollectionAttribute::ATTRIBUTE_TYPE
             ]
         ));
-        if (isset($productSelection['channel'])) {
+        if (isset($productSelection[self::CHANNEL_FIELD])) {
             $violations->addAll($this->extrapolatedAttributeValidator->checkAttributeExistsAndHasASupportedType(
-                $productSelection['channel'],
+                $productSelection[self::CHANNEL_FIELD],
                 $assetFamilyIdentifier,
                 [TextAttribute::ATTRIBUTE_TYPE]
             ));
         }
-        if (isset($productSelection['locale'])) {
+        if (isset($productSelection[self::LOCALE_FIELD])) {
             $violations->addAll($this->extrapolatedAttributeValidator->checkAttributeExistsAndHasASupportedType(
-                $productSelection['locale'],
+                $productSelection[self::LOCALE_FIELD],
                 $assetFamilyIdentifier,
                 [TextAttribute::ATTRIBUTE_TYPE]
             ));

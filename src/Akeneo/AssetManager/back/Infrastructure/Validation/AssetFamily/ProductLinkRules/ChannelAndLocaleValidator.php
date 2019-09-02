@@ -34,14 +34,27 @@ class ChannelAndLocaleValidator
         $this->findActivatedLocalesByIdentifiers = $findActivatedLocalesByIdentifiers;
     }
 
-    public function checkChannelExistsIfAny(array $productSelection): ConstraintViolationListInterface
+    public function checkChannelExistsIfAny(?string $channelCode): ConstraintViolationListInterface
     {
-        if (!isset($productSelection['channel'])) {
+        if (null === $channelCode) {
             return new ConstraintViolationList();
         }
-        $channelCode = $productSelection['channel'];
-        $isChannelExisting = $this->channelExists->exists(ChannelIdentifier::fromCode($channelCode));
 
+        return $this->checkChannelExists($channelCode);
+    }
+
+    public function checkLocaleExistsIfAny(?string $localeCode): ConstraintViolationListInterface
+    {
+        if (null === $localeCode) {
+            return new ConstraintViolationList();
+        }
+
+        return $this->checkLocaleExists($localeCode);
+    }
+
+    private function checkChannelExists(string $channelCode): ConstraintViolationListInterface
+    {
+        $isChannelExisting = $this->channelExists->exists(ChannelIdentifier::fromCode($channelCode));
         $validator = Validation::createValidator();
 
         return $validator->validate(
@@ -61,17 +74,13 @@ class ChannelAndLocaleValidator
         );
     }
 
-    public function checkLocaleExistsIfAny(array $productSelection): ConstraintViolationListInterface
+    private function checkLocaleExists(string $localeCode): ConstraintViolationListInterface
     {
-        if (!isset($productSelection['locale'])) {
-            return new ConstraintViolationList();
-        }
-        $localeCode = $productSelection['locale'];
         $activatedLocales = $this->findActivatedLocalesByIdentifiers->find(LocaleIdentifierCollection::fromNormalized([$localeCode]))
                                                                     ->normalize();
         $isLocaleExisting = in_array($localeCode, $activatedLocales);
-
         $validator = Validation::createValidator();
+
         return $validator->validate(
             $isLocaleExisting,
             new Callback(function ($attributeExists, ExecutionContextInterface $context) use (

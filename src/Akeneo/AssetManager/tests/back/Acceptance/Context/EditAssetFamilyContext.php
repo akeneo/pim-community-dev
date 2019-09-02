@@ -1098,7 +1098,7 @@ final class EditAssetFamilyContext implements Context
     }
 
     /**
-     * @When /^the user updates this asset family with a product link rule having a no product selection locale$/
+     * @When /^the user updates this asset family with a product link rule having no product selection locale$/
      */
     public function theUserUpdatesThisAssetFamilyWithAProductLinkRuleHavingANoProductSelectionLocale()
     {
@@ -1274,6 +1274,90 @@ final class EditAssetFamilyContext implements Context
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
             sprintf('The channel "%s" of does not exist', self::UNKNOWN_CHANNEL)
+        );
+    }
+
+    /**
+     * @When /^the user updates this asset family with a product link rule having no assignment locale$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithAProductLinkRuleHavingNoAssignmentLocale()
+    {
+        $productLinkRule = [
+            'product_selections' => [
+                [
+                    'field' => 'sku',
+                    'operator'  => '=',
+                    'value'     => '11234567899',
+                ]
+            ],
+            'assign_assets_to'    => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => 'asset_collection',
+                ]
+            ]
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$productLinkRule]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
+     * @When /^the user updates this asset family with a product link rule having an assignment locale referencing this locale$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithAProductLinkRuleHavingAnAssignmentLocaleReferencingThisLocale()
+    {
+        $productLinkRule = [
+            'product_selections' => [
+                [
+                    'field' => 'sku',
+                    'operator'  => '=',
+                    'value'     => '11234567899',
+                ]
+            ],
+            'assign_assets_to'    => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => 'asset_collection',
+                    'locale'    =>  'en_US'
+                ]
+            ]
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$productLinkRule]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
+     * @When /^the user updates this asset family with a product link rule having an assignment locale that does not exist$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithAProductLinkRuleHavingAnAssignmentLocaleThatDoesNotExist()
+    {
+        $productLinkRule = [
+            'product_selections' => [
+                [
+                    'field' => 'sku',
+                    'operator'  => '=',
+                    'value'     => '11234567899',
+                ]
+            ],
+            'assign_assets_to'    => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => 'asset_collection',
+                    'locale'    =>  self::UNKNOWN_LOCALE
+                ]
+            ]
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$productLinkRule]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
+     * @Then /^there should be a validation error stating that the assignment locale does not exist$/
+     */
+    public function thereShouldBeAValidationErrorStatingThatTheAssignmentLocaleDoesNotExist()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            sprintf('The locale "%s" is not activated or does not exist', self::UNKNOWN_LOCALE)
         );
     }
 
