@@ -105,7 +105,7 @@ class ProductModelIndexer implements ProductModelIndexerInterface
      */
     public function removeFromProductModelId(string $productModelId, array $options = []): void
     {
-        $this->removeManyFromProductModelIds([$productModelId], $options);
+        $this->removeFromProductModelIds([$productModelId], $options);
     }
 
     /**
@@ -113,7 +113,7 @@ class ProductModelIndexer implements ProductModelIndexerInterface
      *
      * {@inheritdoc}
      */
-    public function removeManyFromProductModelIds(array $productModelIds, array $options = []): void
+    public function removeFromProductModelIds(array $productModelIds, array $options = []): void
     {
         if (empty($productModelIds)) {
             return;

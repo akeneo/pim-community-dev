@@ -119,7 +119,7 @@ class ProductModelIndexerSpec extends ObjectBehavior
         $productAndProductModelClient->bulkDelete('pim_catalog_product', ['product_model_40', 'product_model_33'])
             ->shouldBeCalled();
 
-        $this->removeManyFromProductModelIds([40, 33])->shouldReturn(null);
+        $this->removeFromProductModelIds([40, 33])->shouldReturn(null);
     }
 
     function it_indexes_product_models_and_disable_index_refresh(

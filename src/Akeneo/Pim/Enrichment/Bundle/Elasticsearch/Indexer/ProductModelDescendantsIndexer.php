@@ -184,7 +184,7 @@ class ProductModelDescendantsIndexer implements
             return;
         }
 
-        $this->productModelIndexer->removeManyFromProductModelIds($this->getProductModelCodes($productModelChildren));
+        $this->productModelIndexer->removeFromProductModelIds($this->getProductModelCodes($productModelChildren));
 
         foreach ($productModelChildren as $productModelChild) {
             $this->removeProductModelChildren($productModelChild->getProductModels());
