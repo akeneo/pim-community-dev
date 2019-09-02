@@ -49,9 +49,9 @@ class FileFetcher implements FileFetcherInterface
         // TODO: it should be injected in the constructor
         $localPathname = $this->tmpFilesystem->getAdapter()->getPathPrefix() . $fileKey;
 
-        if (false === file_put_contents($localPathname, $stream)) {
+        if (false === $this->tmpFilesystem->putStream($localPathname, $stream)) {
             throw new FileTransferException(
-                sprintf('Unable to fetch the file "%s" from the filesystem.', $fileKey)
+                sprintf('Unable to put the file "%s" from the filesystem.', $fileKey)
             );
         }
 
