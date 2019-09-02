@@ -2,7 +2,13 @@ import {isString} from 'akeneopimenrichmentassetmanager/assets-collection/infras
 import promisify from 'akeneoassetmanager/tools/promisify';
 import {Attribute} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
 import {isLabels} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
+const fetcherRegistry = require('pim/fetcher-registry');
 
+/**
+ * Need to export this function in a variable to be able to mock it in our tests.
+ * We couldn't require the pim/fetcher-registry in our test stack. We need to mock the legacy fetcher used.
+ */
+export const attributeFetcher = () => fetcherRegistry.getFetcher('attribute');
 export const fetchAssetAttributes = (attributeFetcher: any) => async (): Promise<Attribute[]> => {
   const attributes = await promisify(attributeFetcher.fetchByTypes(['akeneo_asset_multiple_link']));
 

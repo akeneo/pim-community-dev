@@ -3,7 +3,13 @@ import {Channel} from 'akeneopimenrichmentassetmanager/platform/model/channel/ch
 import {Locale} from 'akeneopimenrichmentassetmanager/platform/model/channel/locale';
 import {isLabels} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {isString, isArray} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/utils';
+const fetcherRegistry = require('pim/fetcher-registry');
 
+/**
+ * Need to export this function in a variable to be able to mock it in our tests.
+ * We couldn't require the pim/fetcher-registry in our test stack. We need to mock the legacy fetcher used.
+ */
+export const channelFetcher = () => fetcherRegistry.getFetcher('channel');
 export const fetchChannels = (channelFetcher: any) => async (): Promise<Channel[]> => {
   const channels = await promisify(channelFetcher.fetchAll());
 

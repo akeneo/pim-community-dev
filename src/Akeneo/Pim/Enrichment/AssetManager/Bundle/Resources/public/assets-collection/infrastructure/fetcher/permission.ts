@@ -8,6 +8,7 @@ import {
   isString,
   isBoolean,
 } from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/utils';
+const fetcherRegistry = require('pim/fetcher-registry');
 
 export type AttributeGroupPermission = {
   code: AttributeGroupCode;
@@ -50,6 +51,11 @@ export type Permissions = {
   categories: CategoryPermissions;
 };
 
+/**
+ * Need to export this function in a variable to be able to mock it in our tests.
+ * We couldn't require the pim/fetcher-registry in our test stack. We need to mock the legacy fetcher used.
+ */
+export const permissionFetcher = () => fetcherRegistry.getFetcher('permission');
 export const fetchPermissions = (permissionFetcher: any) => async (): Promise<Permissions> => {
   const permissions = await promisify(permissionFetcher.fetchAll());
 

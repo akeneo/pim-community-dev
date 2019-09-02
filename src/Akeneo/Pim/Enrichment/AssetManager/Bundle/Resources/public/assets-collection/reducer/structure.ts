@@ -3,10 +3,9 @@ import {AssetCollectionState} from 'akeneopimenrichmentassetmanager/assets-colle
 import {Channel} from 'akeneopimenrichmentassetmanager/platform/model/channel/channel';
 import {Attribute} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
 import {Locale} from 'akeneopimenrichmentassetmanager/platform/model/channel/locale';
-import {fetchChannels} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/channel';
+import {channelFetcher, fetchChannels} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/channel';
 import {Family, FamilyCode} from 'akeneopimenrichmentassetmanager/platform/model/structure/family';
-import {fetchFamily} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/family';
-const fetcherRegistry = require('pim/fetcher-registry');
+import {familyFetcher, fetchFamily} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/family';
 
 export type StructureState = {
   attributes: Attribute[];
@@ -81,11 +80,11 @@ export const selectFamily = (state: AssetCollectionState) => {
 };
 
 export const updateChannels = () => async (dispatch: any) => {
-  const channels = await fetchChannels(fetcherRegistry.getFetcher('channel'))();
+  const channels = await fetchChannels(channelFetcher)();
   dispatch(channelListUpdated(channels));
 };
 
 export const updateFamily = (familyCode: FamilyCode) => async (dispatch: any) => {
-  const family = await fetchFamily(fetcherRegistry.getFetcher('family'))(familyCode);
+  const family = await fetchFamily(familyFetcher)(familyCode);
   dispatch(familyUpdated(family));
 };

@@ -9,6 +9,7 @@ import {
 } from 'akeneopimenrichmentassetmanager/enrich/domain/model/product';
 import {Attribute, AttributeCode} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
 import {
+  permissionFetcher,
   fetchPermissions,
   AttributeGroupPermission,
   LocalePermission,
@@ -17,8 +18,10 @@ import {
   isAttributeGroupEditable,
   Permissions,
 } from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/permission';
-import {fetchAssetAttributes} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/attribute';
-const fetcherRegistry = require('pim/fetcher-registry');
+import {
+  attributeFetcher,
+  fetchAssetAttributes,
+} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/attribute';
 
 const transformValues = (legacyValues: LegacyValueCollection, assetAttributes: Attribute[]): ValueCollection => {
   const attributeCodes = assetAttributes.map((attribute: Attribute) => attribute.code);
@@ -54,10 +57,10 @@ const transformValues = (legacyValues: LegacyValueCollection, assetAttributes: A
  *    - if the product category has the edit permission
  */
 const generate = async (product: Product): Promise<ValueCollection> => {
-  const assetAttributes: Attribute[] = await fetchAssetAttributes(fetcherRegistry.getFetcher('attribute'))();
+  const assetAttributes: Attribute[] = await fetchAssetAttributes(attributeFetcher)();
   let valueCollection: ValueCollection = transformValues(product.values, assetAttributes);
 
-  const permissions: Permissions = await fetchPermissions(fetcherRegistry.getFetcher('permission'))();
+  const permissions: Permissions = await fetchPermissions(permissionFetcher)();
   valueCollection = filterAttributeGroups(valueCollection, permissions.attributeGroups);
   valueCollection = filterLocales(valueCollection, permissions.locales);
   valueCollection = filterReadOnlyAttribute(valueCollection);

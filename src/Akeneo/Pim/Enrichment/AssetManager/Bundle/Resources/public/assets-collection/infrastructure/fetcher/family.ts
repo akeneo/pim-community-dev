@@ -5,7 +5,13 @@ import {
   AttributeRequirements,
 } from 'akeneopimenrichmentassetmanager/platform/model/structure/family';
 import {isString, isObject} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/utils';
+const fetcherRegistry = require('pim/fetcher-registry');
 
+/**
+ * Need to export this function in a variable to be able to mock it in our tests.
+ * We couldn't require the pim/fetcher-registry in our test stack. We need to mock the legacy fetcher used.
+ */
+export const familyFetcher = () => fetcherRegistry.getFetcher('family');
 export const fetchFamily = (familyFetcher: any) => async (familyCode: FamilyCode): Promise<Family> => {
   const family = await promisify(familyFetcher.fetch(familyCode));
 
