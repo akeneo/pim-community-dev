@@ -390,7 +390,7 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                 'a_metric-metric' => [
                     '<all_channels>' => [
                         '<all_locales>' => [
-                            'base_data' => '987654321987123.4000',
+                            'base_data' => '987654321987123.400000000000',
                             'base_unit' => 'WATT',
                             'data' => '987654321987.1234',
                             'unit' => 'KILOWATT',
@@ -410,7 +410,7 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                 'a_metric_without_decimal-metric' => [
                     '<all_channels>' => [
                         '<all_locales>' => [
-                            'base_data' => '0.98',
+                            'base_data' => '0.980000000000',
                             'data' => '98',
                             'base_unit' => 'METER',
                             'unit' => 'CENTIMETER',

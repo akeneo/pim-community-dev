@@ -355,7 +355,7 @@ class ProductSaverIntegration extends TestCase
                     '<all_locales>' => [
                         'amount'    => '987654321987.1234',
                         'unit'      => 'KILOWATT',
-                        'base_data' => '987654321987123.4000',
+                        'base_data' => '987654321987123.400000000000',
                         'base_unit' => 'WATT',
                         'family'    => 'Power',
                     ]
@@ -366,7 +366,7 @@ class ProductSaverIntegration extends TestCase
                     '<all_locales>' => [
                         'amount'    => 98,
                         'unit'      => 'CENTIMETER',
-                        'base_data' => '0.98',
+                        'base_data' => '0.980000000000',
                         'base_unit' => 'METER',
                         'family'    => 'Length',
                     ],

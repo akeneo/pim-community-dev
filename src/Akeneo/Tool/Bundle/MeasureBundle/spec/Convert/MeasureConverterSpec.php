@@ -53,7 +53,7 @@ class MeasureConverterSpec extends ObjectBehavior
         $this->convertBaseToStandard(
             WeightFamilyInterface::MILLIGRAM,
             1000
-        )->shouldReturn('1.000');
+        )->shouldReturn('1.000000000000');
     }
 
     public function it_converts_a_standard_value_to_a_final_unit()
