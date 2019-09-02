@@ -119,24 +119,63 @@
 
   &-mainSelectorLine,
   &-secondarySelectorLine {
-    display: flex;
-    justify-content: space-between;
     color: @AknGrey;
     overflow: hidden;
     width: 100%;
   }
 
+  &-secondarySelectorLine {
+    display: flex;
+    justify-content: space-between;
+  }
+
   &-mainSelectorLineTitle,
   &-secondarySelectorLineTitle {
     color: @AknDefaultFontColor;
+  }
+
+  &-secondarySelectorLineTitle {
     min-width: 33%;
     display: flex;
     flex-direction: column;
     justify-content: center;
   }
 
+  &-mainSelectorLine,
+  &-mainSelectorCurrent {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  &-mainSelectorLineTitle,
+  &-mainSelectorCurrentTitle {
+    flex: 3;
+    min-width: initial;
+  }
+
   &-mainSelectorLineTitle {
     margin-right: 10px;
+  }
+
+  &-mainSelectorLineProperties,
+  &-mainSelectorCurrentProperties {
+    flex: 6;
+    text-align: left;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  &-mainSelectorLineCompleteness,
+  &-mainSelectorCurrentCompleteness {
+    flex: 1;
+    margin-left: 10px;
+    text-align: right;
   }
 
   &-info {
@@ -160,5 +199,20 @@
     top: auto;
     z-index: auto;
     height: 50px;
+  }
+}
+
+.teamwork-assistant-widget-project-dropdown,
+.select2-drop--forProjectWidget {
+  max-width: 600px !important;
+
+  &:before {
+    left: 10px;
+    right: auto !important;
+  }
+
+  .select2-result-label, .select2-no-results {
+    display: flex;
+    padding-top: 0;
   }
 }
