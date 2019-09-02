@@ -13,6 +13,7 @@ use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterI
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyVariantRepositoryInterface;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
@@ -87,6 +88,9 @@ class ProductModelController
     /** @var AttributeFilterInterface */
     private $productModelAttributeFilter;
 
+    /** @var Client */
+    private $productAndProductModelClient;
+
     /**
      * @param ProductModelRepositoryInterface   $productModelRepository
      * @param NormalizerInterface               $normalizer
@@ -105,6 +109,8 @@ class ProductModelController
      * @param NormalizerInterface               $violationNormalizer
      * @param FamilyVariantRepositoryInterface  $familyVariantRepository
      * @param AttributeFilterInterface          $productModelAttributeFilter
+     * @param Client                            $productAndProductModelClient
+     *
      */
     public function __construct(
         ProductModelRepositoryInterface $productModelRepository,
@@ -123,7 +129,8 @@ class ProductModelController
         SimpleFactoryInterface $productModelFactory,
         NormalizerInterface $violationNormalizer,
         FamilyVariantRepositoryInterface $familyVariantRepository,
-        AttributeFilterInterface $productModelAttributeFilter
+        AttributeFilterInterface $productModelAttributeFilter,
+        Client $productAndProductModelClient
     ) {
         $this->productModelRepository = $productModelRepository;
         $this->normalizer = $normalizer;
@@ -142,6 +149,7 @@ class ProductModelController
         $this->violationNormalizer = $violationNormalizer;
         $this->familyVariantRepository = $familyVariantRepository;
         $this->productModelAttributeFilter = $productModelAttributeFilter;
+        $this->productAndProductModelClient = $productAndProductModelClient;
     }
 
     /**
@@ -381,6 +389,8 @@ class ProductModelController
 
         $productModel = $this->findProductModelOr404($id);
         $this->productModelRemover->remove($productModel);
+
+        $this->productAndProductModelClient->refreshIndex();
 
         return new JsonResponse();
     }

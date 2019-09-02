@@ -37,7 +37,8 @@ class FiltersConfigurator implements ConfiguratorInterface
         $attributes = ($attributes === null) ? [] : $attributes;
 
         $displayedFilters = [];
-        foreach ($attributes as $attributeCode => $attribute) {
+        foreach ($attributes as $attribute) {
+            $attributeCode = $attribute['code'];
             if (!$attribute['useableAsGridFilter']) {
                 continue;
             }

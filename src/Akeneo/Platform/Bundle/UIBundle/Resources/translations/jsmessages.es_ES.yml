@@ -2,7 +2,7 @@
 "Yes, do it": "Sí, hazlo"
 "Ok, got it.": "De acuerdo."
 "Edit": "Editar"
-"Unexpected error occured. Please contact system administrator.": "Ocurrió un error inesperado. Por favor, póngase en contacto con el administrador del sistema."
+"Unexpected error occurred. Please contact system administrator.": "Ocurrió un error inesperado. Por favor, póngase en contacto con el administrador del sistema."
 "Yes, revoke": "Si, revocar"
 "Revoke Confirmation": "Revocar confirmación"
 Prev: Ant
@@ -137,6 +137,7 @@ pim_common:
   history: Historial
   label: Etiqueta
   label_translations: Traducciones de etiqueta
+  Label or identifier: etiqueta o identificador
   less_than: menor que
   loading: Cargando...
   media_upload: Arrastre y suelte aquí o haga clic aquí para subir el fichero
@@ -171,6 +172,7 @@ pim_common:
     ">": Mayor que
     "<=": Menor o igual que
     "<": Menor que
+    EMPTY: Está vacío
     NOT EMPTY: No está vacío
     CONTAINS: Contiene
     DOES NOT CONTAIN: No contiene
@@ -181,7 +183,7 @@ error:
   forbidden: Prohibido. Usted no tiene permitido acceder a esta página
 alert:
   attribute_option:
-    error_occured_during_submission: Se produjo un error durante el envío del formulario al servidor
+    error_occurred_during_submission: Se produjo un error durante el envío del formulario al servidor
     save_before_edit_other: Por favor registre sus modificaciones en otras filas antes de editar este
   session_storage:
     not_available: Su navegador parece no ser compatible con sessionStorage. Por favor contacte a su administrador
@@ -286,7 +288,9 @@ pim_menu:
     group: Grupos
     group_type: Tipos de grupo
     product_model: Modelos de Producto
+    export_history: Histórico de exportaciones
     export_profile: Perfiles de exportación
+    import_history: Histórico de importaciones
     import_profile: Perfiles de importación
     configuration: Configuración
     user_management: Gestión de Usuarios

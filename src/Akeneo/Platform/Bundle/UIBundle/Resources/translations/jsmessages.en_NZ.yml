@@ -2,7 +2,7 @@
 "Yes, do it": "Yes, do it"
 "Ok, got it.": "Ok, got it."
 "Edit": "Edit"
-"Unexpected error occured. Please contact system administrator.": "Unexpected error occured. Please contact system administrator."
+"Unexpected error occurred. Please contact system administrator.": "Unexpected error occurred. Please contact system administrator."
 "Yes, revoke": "Yes, Revoke"
 "Revoke Confirmation": "Revoke Confirmation"
 Prev: Prev
@@ -138,6 +138,7 @@ pim_common:
   label_translations: Label translations
   less_than: Less than
   loading: Loading...
+  media_upload: Drag and drop to upload or click here
   more_than: More than
   next: Next
   "no": "No"
@@ -148,8 +149,10 @@ pim_common:
   permissions: Permissions
   previous: Previous
   properties: Properties
+  remove: Remove
   required_label: (required)
   save: Save
+  search: Search
   select2:
     search: Search...
     no_match: No matches found
@@ -174,17 +177,17 @@ pim_common:
     STARTS WITH: Starts with
     ENDS WITH: Ends with
 error:
-  exception: Oh snap! A {{ status_code }} error occured...
+  exception: Oh snap! A {{ status_code }} error occurred...
   forbidden: Forbidden. You are not allowed to access this page
 alert:
   attribute_option:
-    error_occured_during_submission: An error occured during the form submission on the server
+    error_occurred_during_submission: An error occurred during the form submission on the server
     save_before_edit_other: Please register your modifications on other rows before editing this one
   session_storage:
     not_available: Your web browser does not seems compatible with sessionStorage. Please contact your administrator
 pim_enrich.entity.fallback:
   flash:
-    generic_error: An error occured
+    generic_error: An error occurred
     update:
       fail: Update failed
       success: Successfully updated

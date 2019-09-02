@@ -48,6 +48,7 @@ define(
             onGetQuery: function (options) {
                 return FetcherRegistry.getFetcher('attribute').search({
                         identifiers: this.getParent().getOtherAttributes().join(','),
+                        rights: 0,
                         search: options.term
                     }).then(this.prepareChoices)
                     .then(function (choices) {

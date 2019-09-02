@@ -48,6 +48,8 @@ pim_enrich.entity.channel:
     delete:
       success: Ausgabekanal erfolgreich entfernt
       fail: Dieser Ausgabekanal kann nicht gelöscht werden
+  page_title:
+    index: "]-Inf, 1]{{ count }} Kanal|]1, Inf[{{ count }} Kanäle"
   property:
     category_tree: Kategorie-Strukturbaum
     do_not_convert: Werden nicht konvertiert
@@ -61,5 +63,9 @@ pim_enrich.entity.locale:
   label: Gebietsschema
   uppercase_label: Gebietsschema
   plural_label: Gebietsschemata
+  page_title:
+    index: "]-Inf, 1]{{ count }} Gebietsschema|]1, Inf[{{ count }} Gebietsschemata"
 pim_enrich.entity.currency:
   plural_label: Währungen
+  page_title:
+    index: "] -Inf, 1] {{ count }} Währung|] 1, Inf [{{ count }} Währungen"

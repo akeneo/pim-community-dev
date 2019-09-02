@@ -79,6 +79,7 @@ pim_enrich:
       associations_view: Ver las asociaciones de un producto
       associations_edit: Agregar asociaciones a un producto
       change_family: Cambiar Familia de productos
+      change_state: Cambiar el estado de un producto
       add_to_groups: Agregar productos a grupos
       mass_edit: Acciones de edición masiva de producto
       comment: Comentario de Productos
@@ -158,7 +159,7 @@ pim_enrich:
     association_type: Tipos de asociaciones
     attribute: Atributos
     attribute_group: Grupos de atributos
-    category: Ctegorías
+    category: Categorías
     channel: Canales
     currency: Monedas
     family: Familias
@@ -202,6 +203,7 @@ flash:
     removed: Categoría eliminada correctamente
   tree:
     removed: Árbol eliminado correctamente
+    not removable: No se pueden eliminar los árboles asociados a los canales.
   currency:
     updated: Moneda actualizada correctamente
     error.linked_to_channel: No puede desactivar una moneda ligada a un canal.
@@ -212,7 +214,7 @@ flash:
     created: Tipo de grupo creado correctamente
   user:
     removed: Usuario eliminado correctamente
-  error ocurred: Acción fallida. Por favor vuelva a intentarlo.
+  error occurred: Acción fallida. Por favor vuelva a intentarlo.
 info:
   updated: Hay cambios sin guardar.
   category:
@@ -257,7 +259,7 @@ Manage groups: Gestionar Grupos
 Code: Código
 Name: Nombre
 Type: Tipo
-Scope: canal
+Scope: Canal
 Required: Requerido
 Unique: Único
 Not required: No requerido
@@ -315,7 +317,7 @@ Completeness: Completitud
 Attribute used as label: Atributo utilizado como etiqueta
 Credentials: Credenciales
 Global: Global
-Channel: canal
+Channel: Canal
 Expand all channels: Expandir todos los canales
 Collapse all channels: Contraer todos los canales
 Always override: Siempre reemplace
@@ -341,6 +343,7 @@ Max file size: Tamaño máximo de archivo (MB)
 Allowed extensions: Extensiones permitidas
 None: Ninguna
 E-mail: E-mail
+URL: URL
 Regular expression: Expresión regular
 Minimum input length: Longitud mínima de entrada
 Default: Predefinido
@@ -430,6 +433,7 @@ oro.locale:
       state: "estado"
       island: "Isla"
       county: "municipio"
+      area: "área"
       prefecture: "prefectura"
       department: "departamento"
       district: "distrito"

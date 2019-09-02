@@ -16,3 +16,9 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '%akeneo_batch.entity.job_instance.class%'
+
+    akeneo.platform.import_export.filesystem.delete_orphans_job_execution_directories:
+        class: 'Akeneo\Platform\Bundle\ImportExportBundle\Persistence\Filesystem\DeleteOrphanJobExecutionDirectories'
+        arguments:
+            - '@oneup_flysystem.archivist_filesystem'
+            - '@database_connection'

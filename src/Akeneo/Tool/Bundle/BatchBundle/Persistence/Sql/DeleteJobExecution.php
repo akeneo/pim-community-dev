@@ -22,10 +22,15 @@ final class DeleteJobExecution
         $this->connection = $connection;
     }
 
+    /**
+     * The two subqueries seem useless but it's a trick.
+     * It is to avoid a limitation in Mysql that prevents the deletion in the same table as the subquery.
+     * The query cannot be executed without it.
+     */
     public function olderThanDays(int $days): int
     {
-        if ($days < 0) {
-            throw new \InvalidArgumentException(sprintf('Number of days should be positive or equals to 0, "%s% given', $days));
+        if ($days < 1) {
+            throw new \InvalidArgumentException(sprintf('Number of days should be strictly superior to 0, "%s% given', $days));
         }
 
         $endTime = new \DateTime();
@@ -36,7 +41,7 @@ final class DeleteJobExecution
                 SELECT id FROM (
                     SELECT id 
                     FROM akeneo_batch_job_execution
-                    WHERE akeneo_batch_job_execution.end_time < :end_time AND akeneo_batch_job_execution.id NOT IN (
+                    WHERE akeneo_batch_job_execution.create_time < :create_time AND akeneo_batch_job_execution.id NOT IN (
                         SELECT MAX(last_job_execution.id) 
                         FROM akeneo_batch_job_execution last_job_execution 
                         WHERE last_job_execution.status = :status 
@@ -48,8 +53,8 @@ SQL;
 
         $numberDeletedJobExecution = $this->connection->executeUpdate(
             $query,
-            ['end_time' => $endTime, 'status' => BatchStatus::COMPLETED],
-            ['end_time' => Type::DATETIME]
+            ['create_time' => $endTime, 'status' => BatchStatus::COMPLETED],
+            ['create_time' => Type::DATETIME]
         );
 
         return $numberDeletedJobExecution;

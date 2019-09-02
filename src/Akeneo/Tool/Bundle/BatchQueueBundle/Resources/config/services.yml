@@ -44,6 +44,20 @@ services:
             - '@akeneo_batch.logger.batch_log_handler'
             - '%kernel.environment%'
 
+    akeneo_batch_queue.queue.publish_job_to_queue:
+        class: Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueue
+        arguments:
+            - '%akeneo_batch.entity.job_instance.class%'
+            - '%kernel.environment%'
+            - '@akeneo_batch.job_repository'
+            - '@validator'
+            - '@akeneo_batch.job.job_registry'
+            - '@akeneo_batch.job_parameters_factory'
+            - '@doctrine.orm.default_entity_manager'
+            - '@akeneo_batch.job.job_parameters_validator'
+            - '@akeneo_batch_queue.queue.database_job_execution_queue'
+            - '@event_dispatcher'
+
     # override of the original Akeneo Batch simple job launcher
     akeneo_batch.launcher.simple_job_launcher:
         class: '%akeneo_batch_queue.launcher.queue_job_launcher.class%'

@@ -2,19 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Tool\Bundle\BatchQueueBundle\tests\integration\Command;
+namespace Akeneo\Tool\Bundle\BatchQueueBundle\tests\integration\Queue;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
-use Akeneo\Tool\Bundle\BatchQueueBundle\Command\PublishJobToQueueCommand;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
+use Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueue;
 use Doctrine\DBAL\Driver\Connection;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\BufferedOutput;
+use InvalidArgumentException;
+use RuntimeException;
 
-class PublishJobToQueueCommandIntegration extends TestCase
+class PublishToJobQueueIntegration extends TestCase
 {
     const EXPORT_DIRECTORY = 'pim-integration-tests-export';
 
@@ -36,7 +35,13 @@ class PublishJobToQueueCommandIntegration extends TestCase
 
     public function testPushJobExecutionIntoQueue()
     {
-        $output = $this->pushJob();
+        /** @var PublishJobToQueue $publishJobToQueue */
+        $publishJobToQueue = $this->get('akeneo_batch_queue.queue.publish_job_to_queue');
+        $publishJobToQueue->publish(
+            'csv_product_export',
+            []
+        );
+
         $jobExecution = $this->getJobExecution();
 
         $this->assertEquals(BatchStatus::STARTING, $jobExecution['status']);
@@ -56,8 +61,6 @@ class PublishJobToQueueCommandIntegration extends TestCase
         $this->assertNull($jobExecutionMessage['updated_time']);
         $this->assertNull($jobExecutionMessage['consumer']);
 
-        $this->assertEquals('Export csv_product_export has been successfully pushed into the queue.' . PHP_EOL, $output->fetch());
-
         $this->jobLauncher->launchConsumerOnce();
 
         $jobExecution = $this->getJobExecution();
@@ -66,7 +69,15 @@ class PublishJobToQueueCommandIntegration extends TestCase
 
     public function testPushJobExecutionIntoQueueWithUsername()
     {
-        $this->pushJob(['--username' => 'mary']);
+        /** @var PublishJobToQueue $publishJobToQueue */
+        $publishJobToQueue = $this->get('akeneo_batch_queue.queue.publish_job_to_queue');
+        $publishJobToQueue->publish(
+            'csv_product_export',
+            [],
+            false,
+            'mary'
+        );
+
         $jobExecution = $this->getJobExecution();
 
         $this->assertEquals('mary', $jobExecution['user']);
@@ -82,7 +93,12 @@ class PublishJobToQueueCommandIntegration extends TestCase
             unlink($filePath);
         }
 
-        $this->pushJob(['--config' => ['filePath' => $filePath]]);
+        /** @var PublishJobToQueue $publishJobToQueue */
+        $publishJobToQueue = $this->get('akeneo_batch_queue.queue.publish_job_to_queue');
+        $publishJobToQueue->publish(
+            'csv_product_export',
+            ['filePath' => $filePath]
+        );
 
         $jobExecution = $this->getJobExecution();
 
@@ -96,7 +112,14 @@ class PublishJobToQueueCommandIntegration extends TestCase
 
     public function testPushJobExecutionWithNoLog()
     {
-        $this->pushJob(['--no-log' => true]);
+        /** @var PublishJobToQueue $publishJobToQueue */
+        $publishJobToQueue = $this->get('akeneo_batch_queue.queue.publish_job_to_queue');
+        $publishJobToQueue->publish(
+            'csv_product_export',
+            [],
+            true
+        );
+
         $jobExecutionMessage = $this->getJobExecutionMessage();
 
         $this->assertJsonStringEqualsJsonString(
@@ -107,7 +130,16 @@ class PublishJobToQueueCommandIntegration extends TestCase
 
     public function testLaunchJobWithValidEmail()
     {
-        $this->pushJob(['--email' => 'ziggy@akeneo.com']);
+        /** @var PublishJobToQueue $publishJobToQueue */
+        $publishJobToQueue = $this->get('akeneo_batch_queue.queue.publish_job_to_queue');
+        $publishJobToQueue->publish(
+            'csv_product_export',
+            [],
+            false,
+            null,
+            'ziggy@akeneo.com'
+        );
+
         $jobExecutionMessage = $this->getJobExecutionMessage();
 
         $this->assertJsonStringEqualsJsonString(
@@ -118,80 +150,41 @@ class PublishJobToQueueCommandIntegration extends TestCase
 
     public function testLaunchJobWithInvalidJobInstance()
     {
-        $output = $this->pushJob(['code' => 'unknown_command']);
-        $this->assertStringContainsString('Could not find job instance "unknown_command".', $output->fetch());
+        $this->expectException(InvalidArgumentException::class);
+
+        /** @var PublishJobToQueue $publishJobToQueue */
+        $publishJobToQueue = $this->get('akeneo_batch_queue.queue.publish_job_to_queue');
+        $publishJobToQueue->publish(
+            'unknown_command',
+            []
+        );
     }
 
     public function testLaunchJobWithInvalidEmail()
     {
-        $output = $this->pushJob(['--email' => 'email']);
-        $this->assertStringContainsString('Email "email" is invalid', $output->fetch());
+        $this->expectException(RuntimeException::class);
+
+        /** @var PublishJobToQueue $publishJobToQueue */
+        $publishJobToQueue = $this->get('akeneo_batch_queue.queue.publish_job_to_queue');
+        $publishJobToQueue->publish(
+            'csv_product_export',
+            [],
+            false,
+            null,
+            'email'
+        );
     }
 
-    /**
-     * @return Connection
-     */
-    protected function getConnection(): Connection
-    {
-        return $this->get('doctrine.orm.entity_manager')->getConnection();
-    }
-
-    /**
-     * @return array
-     */
-    protected function getJobExecution(): array
+    private function getJobExecution(): array
     {
         $connection = $this->getConnection();
         $stmt = $connection->prepare('SELECT * from akeneo_batch_job_execution');
         $stmt->execute();
+
         return $stmt->fetch();
     }
 
-    /**
-     * @return array
-     */
-    protected function getJobExecutionMessage(): array
-    {
-        $connection = $this->getConnection();
-        $stmt = $connection->prepare('SELECT * from akeneo_batch_job_execution_queue');
-        $stmt->execute();
-        return $stmt->fetch();
-    }
-
-    /**
-     * @param array $arrayInput
-     *
-     * @return BufferedOutput
-     */
-    protected function pushJob(array $arrayInput = [])
-    {
-        $application = new Application(static::$kernel);
-        $application->setAutoExit(false);
-
-        $defaultArrayInput = [
-            'command' => PublishJobToQueueCommand::COMMAND_NAME,
-            'code' => 'csv_product_export',
-        ];
-
-        $arrayInput = array_merge($defaultArrayInput, $arrayInput);
-        if (isset($arrayInput['--config'])) {
-            $arrayInput['--config'] = json_encode($arrayInput['--config']);
-        }
-
-        $input = new ArrayInput($arrayInput);
-        $output = new BufferedOutput();
-        $application->run($input, $output);
-
-        return $output;
-    }
-
-    /**
-     * @param string $identifier
-     * @param array  $data
-     *
-     * @return ProductInterface
-     */
-    protected function createProduct(string $identifier, array $data = []): ProductInterface
+    private function createProduct(string $identifier, array $data = []): ProductInterface
     {
         $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
         $this->get('pim_catalog.updater.product')->update($product, $data);
@@ -202,11 +195,22 @@ class PublishJobToQueueCommandIntegration extends TestCase
         return $product;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getConfiguration()
     {
         return $this->catalog->useTechnicalCatalog();
+    }
+
+    protected function getConnection(): Connection
+    {
+        return $this->get('doctrine.orm.entity_manager')->getConnection();
+    }
+
+    protected function getJobExecutionMessage(): array
+    {
+        $connection = $this->getConnection();
+        $stmt = $connection->prepare('SELECT * from akeneo_batch_job_execution_queue');
+        $stmt->execute();
+
+        return $stmt->fetch();
     }
 }

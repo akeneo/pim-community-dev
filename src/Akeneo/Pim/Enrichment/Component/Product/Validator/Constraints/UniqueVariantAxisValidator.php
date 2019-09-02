@@ -6,7 +6,8 @@ use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFa
 use Akeneo\Pim\Enrichment\Component\Product\Exception\AlreadyExistingAxisValueCombinationException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\EntityWithFamilyVariantRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetValuesOfSiblings;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueAxesCombinationSet;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Symfony\Component\Validator\Constraint;
@@ -27,25 +28,20 @@ class UniqueVariantAxisValidator extends ConstraintValidator
     /** @var EntityWithFamilyVariantAttributesProvider */
     private $axesProvider;
 
-    /** @var EntityWithFamilyVariantRepositoryInterface */
-    private $entityWithFamilyVariantRepository;
-
     /** @var UniqueAxesCombinationSet */
     private $uniqueAxesCombinationSet;
 
-    /**
-     * @param EntityWithFamilyVariantAttributesProvider  $axesProvider
-     * @param EntityWithFamilyVariantRepositoryInterface $repository
-     * @param UniqueAxesCombinationSet                   $uniqueAxesCombinationSet
-     */
+    /** @var GetValuesOfSiblings */
+    private $getValuesOfSiblings;
+
     public function __construct(
         EntityWithFamilyVariantAttributesProvider $axesProvider,
-        EntityWithFamilyVariantRepositoryInterface $repository,
-        UniqueAxesCombinationSet $uniqueAxesCombinationSet
+        UniqueAxesCombinationSet $uniqueAxesCombinationSet,
+        GetValuesOfSiblings $getValuesOfSiblings
     ) {
         $this->axesProvider = $axesProvider;
-        $this->entityWithFamilyVariantRepository = $repository;
         $this->uniqueAxesCombinationSet = $uniqueAxesCombinationSet;
+        $this->getValuesOfSiblings = $getValuesOfSiblings;
     }
 
     /**
@@ -88,22 +84,21 @@ class UniqueVariantAxisValidator extends ConstraintValidator
      */
     private function validateValueIsNotAlreadyInDatabase(EntityWithFamilyVariantInterface $entity, array $axes): void
     {
-        $siblings = $this->entityWithFamilyVariantRepository->findSiblings($entity);
-
-        if (empty($siblings)) {
-            return;
-        }
-
-        $ownCombination = $this->getCombinationOfAxisValues($entity, $axes);
+        $ownCombination = $this->getCombinationOfAxisValues($entity->getValuesForVariation(), $axes);
 
         if ('' === str_replace(',', '', $ownCombination)) {
             return;
         }
 
+        $siblingValues = $this->getValuesOfSiblings->for($entity);
+
+        if (empty($siblingValues)) {
+            return;
+        }
+
         $siblingsCombinations = [];
-        foreach ($siblings as $sibling) {
-            $siblingIdentifier = $this->getEntityIdentifier($sibling);
-            $siblingsCombinations[$siblingIdentifier] = $this->getCombinationOfAxisValues($sibling, $axes);
+        foreach ($siblingValues as $siblingIdentifier => $values) {
+            $siblingsCombinations[$siblingIdentifier] = $this->getCombinationOfAxisValues($values, $axes);
         }
 
         if (in_array($ownCombination, $siblingsCombinations)) {
@@ -129,7 +124,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
      */
     private function validateValueWasNotAlreadyValidated(EntityWithFamilyVariantInterface $entity, array $axes): void
     {
-        $combination = $this->getCombinationOfAxisValues($entity, $axes);
+        $combination = $this->getCombinationOfAxisValues($entity->getValuesForVariation(), $axes);
 
         if ('' === str_replace(',', '', $combination)) {
             return;
@@ -164,17 +159,17 @@ class UniqueVariantAxisValidator extends ConstraintValidator
      *       This implies to remove "Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider"
      *       and merge its code in the product, published product and product model.
      *
-     * @param EntityWithFamilyVariantInterface                           $entity
+     * @param WriteValueCollection $values
      * @param AttributeInterface[] $axes
      *
      * @return string
      */
-    private function getCombinationOfAxisValues(EntityWithFamilyVariantInterface $entity, array $axes): string
+    private function getCombinationOfAxisValues(WriteValueCollection $values, array $axes): string
     {
         $combination = [];
 
         foreach ($axes as $axis) {
-            $value = $entity->getValue($axis->getCode());
+            $value = $values->getByCodes($axis->getCode());
 
             $combination[] = (string)$value;
         }

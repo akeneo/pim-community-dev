@@ -52,8 +52,11 @@ class ProductPdfRenderer implements RendererInterface
     /** @var string */
     protected $uploadDirectory;
 
-    /** @var string */
+    /** @var string|null */
     protected $customFont;
+
+    /** @var IdentifiableObjectRepositoryInterface|null */
+    private $attributeOptionRepository;
 
     public function __construct(
         EngineInterface $templating,
@@ -64,6 +67,7 @@ class ProductPdfRenderer implements RendererInterface
         IdentifiableObjectRepositoryInterface $attributeRepository,
         string $template,
         string $uploadDirectory,
+        IdentifiableObjectRepositoryInterface $attributeOptionRepository,
         ?string $customFont = null
     ) {
         $this->templating = $templating;
@@ -74,6 +78,7 @@ class ProductPdfRenderer implements RendererInterface
         $this->attributeRepository = $attributeRepository;
         $this->template = $template;
         $this->uploadDirectory = $uploadDirectory;
+        $this->attributeOptionRepository = $attributeOptionRepository;
         $this->customFont = $customFont;
     }
 
@@ -86,13 +91,15 @@ class ProductPdfRenderer implements RendererInterface
         $this->configureOptions($resolver);
 
         $imagePaths = $this->getImagePaths($object, $context['locale'], $context['scope']);
+        $optionLabels = $this->getOptionLabels($object, $context['locale'], $context['scope']);
         $params = array_merge(
             $context,
             [
                 'product'           => $object,
                 'groupedAttributes' => $this->getGroupedAttributes($object),
                 'imagePaths'        => $imagePaths,
-                'customFont'        => $this->customFont
+                'customFont'        => $this->customFont,
+                'optionLabels'      => $optionLabels,
             ]
         );
 
@@ -181,6 +188,42 @@ class ProductPdfRenderer implements RendererInterface
     }
 
     /**
+     * Get all option labels
+     */
+    protected function getOptionLabels(ProductInterface $product, ?string $localeCode = null, ?string $scopeCode = null): array
+    {
+        $options = [];
+
+        foreach ($this->getAttributeCodes($product) as $attributeCode) {
+            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+
+            $locale = $attribute->isLocalizable() ? $localeCode : null;
+            $scope = $attribute->isScopable() ? $scopeCode : null;
+
+            if (null !== $attribute && AttributeTypes::OPTION_SIMPLE_SELECT === $attribute->getType()) {
+                $optionCode = $product->getValue($attributeCode, $locale, $scope)->getData();
+                $option = $this->attributeOptionRepository->findOneByIdentifier($attributeCode.'.'.$optionCode);
+                $option->setLocale($localeCode);
+                $translation = $option->getTranslation();
+                $options[$attributeCode] = null !== $translation->getValue() ? $translation->getValue() : sprintf('[%s]', $option->getCode());
+            }
+            if (null !== $attribute && AttributeTypes::OPTION_MULTI_SELECT === $attribute->getType()) {
+                $optionCodes = $product->getValue($attributeCode, $locale, $scope)->getData();
+                $labels = [];
+                foreach ($optionCodes as $optionCode) {
+                    $option = $this->attributeOptionRepository->findOneByIdentifier($attributeCode.'.'.$optionCode);
+                    $option->setLocale($localeCode);
+                    $translation = $option->getTranslation();
+                    $labels[] = null !== $translation->getValue() ? $translation->getValue() : sprintf('[%s]', $option->getCode());
+                }
+                $options[$attributeCode] = implode(', ', $labels);
+            }
+        }
+
+        return $options;
+    }
+
+    /**
      * Generate media thumbnails cache used by the PDF document
      *
      * @param string[] $imagePaths
@@ -215,7 +258,7 @@ class ProductPdfRenderer implements RendererInterface
                     'filter'        => static::THUMBNAIL_FILTER,
                 ]
             )
-            ->setDefined(['groupedAttributes', 'imagePaths', 'customFont'])
+            ->setDefined(['groupedAttributes', 'imagePaths', 'customFont', 'optionLabels'])
         ;
     }
 }

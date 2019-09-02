@@ -2,15 +2,23 @@
 
 namespace Specification\Akeneo\Pim\Structure\Component\Model;
 
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\Family;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\Family;
+use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
+use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
+use Akeneo\Tool\Component\Versioning\Model\TimestampableInterface;
+use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
+use PhpSpec\ObjectBehavior;
 
 class FamilySpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
         $this->shouldHaveType(Family::class);
+        $this->shouldImplement(TimestampableInterface::class);
+        $this->shouldImplement(TranslatableInterface::class);
+        $this->shouldImplement(ReferableInterface::class);
+        $this->shouldImplement(VersionableInterface::class);
     }
 
     function it_contains_attributes(AttributeInterface $sku, AttributeInterface $name)

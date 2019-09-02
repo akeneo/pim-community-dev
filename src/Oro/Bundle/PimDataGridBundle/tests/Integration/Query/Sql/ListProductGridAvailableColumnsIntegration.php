@@ -85,7 +85,7 @@ class ListProductGridAvailableColumnsIntegration extends TestCase
     {
         $attributes = [];
         $attributes[] = $this->createAttribute([
-            'code' => "att_ok",
+            'code' => 1234,
             'type' => 'pim_catalog_text',
             'group' => 'other',
             'useable_as_grid_filter' => true,
@@ -121,8 +121,8 @@ class ListProductGridAvailableColumnsIntegration extends TestCase
                 'code' => 'att_ok_matches_without_label',
                 'label' => '[att_ok_matches_without_label]',
             ],
-            'att_ok' => [
-                'code' => 'att_ok',
+            1234 => [
+                'code' => '1234',
                 'label' => 'Attribute that matches the search label',
             ]
         ];

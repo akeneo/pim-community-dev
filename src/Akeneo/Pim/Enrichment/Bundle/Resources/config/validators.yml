@@ -84,18 +84,6 @@ services:
         tags:
             - { name: validator.constraint_validator }
 
-    pim_catalog.validator.constraint.family_variant_axes:
-        class: '%pim_catalog.validator.constraint.family_variant_axes.class%'
-        tags:
-            - { name: validator.constraint_validator, alias: pim_family_variant }
-
-    pim_catalog.validator.constraint.immutable_family_variant_axes:
-        class: '%pim_catalog.validator.constraint.immutable_family_variant_axes.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-        tags:
-            - { name: validator.constraint_validator, alias: pim_immutable_variant_axes_validator }
-
     pim_catalog.validator.constraint.only_expected_attributes:
         class: '%pim_catalog.validator.constraint.only_expected_attributes.class%'
         arguments:
@@ -107,8 +95,8 @@ services:
         class: '%pim_catalog.validator.constraint.unique_variant_axes.class%'
         arguments:
             - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
-            - '@pim_catalog.repository.entity_with_family_variant'
             - '@pim_catalog.validator.unique_axes_combination_set'
+            - '@akeneo.pim.enrichment.product_model.query.get_values_of_siblings'
         tags:
             - { name: validator.constraint_validator, alias: pim_unique_variant_axes_validator }
 

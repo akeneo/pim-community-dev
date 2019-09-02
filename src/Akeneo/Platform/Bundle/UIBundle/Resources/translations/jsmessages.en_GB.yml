@@ -1,0 +1,319 @@
+"Yes, I Agree": "Yes, I Agree"
+"Yes, do it": "Yes, do it"
+"Ok, got it.": "Ok, got it."
+"Edit": "Edit"
+"Unexpected error occurred. Please contact system administrator.": "An unexpected error has occurred. Please contact the system administrator."
+"Yes, revoke": "Yes, revoke"
+"Revoke Confirmation": "Revoke confirmation"
+Prev: Previous
+Today: Today
+Wk: Wk
+AM: AM
+A: A
+PM: PM
+P: P
+"Choose Time": "Choose Time"
+Time: Time
+Hour: Hour
+Minute: Minute
+Second: Second
+Millisecond: Millisecond
+Microsecond: Microsecond
+"Time Zone": "Time Zone"
+Localized value: Localized value
+Columns: Columns
+Datagrid Configuration: Datagrid Configuration
+Action: Action
+Unit: Unit
+Currency: Currency
+jstree:
+  all: All products
+  unclassified: Unclassified products
+  product:
+    all: All products
+    unclassified: Unclassified products
+  no_tree: No tree available
+  include_sub: Include sub-categories
+datetimepicker:
+  days:
+    Sunday: Sunday
+    Monday: Monday
+    Tuesday: Tuesday
+    Wednesday: Wednesday
+    Thursday: Thursday
+    Friday: Friday
+    Saturday: Saturday
+  daysShort:
+    Sun: Sun
+    Mon: Mon
+    Tue: Tue
+    Wed: Wed
+    Thu: Thu
+    Fri: Fri
+    Sat: Sat
+  daysMin:
+    Su: Su
+    Mo: Mo
+    Tu: Tu
+    We: We
+    Th: Th
+    Fr: Fr
+    Sa: Sa
+  months:
+    January: January
+    February: February
+    March: March
+    April: April
+    May: May
+    June: June
+    July: July
+    August: August
+    September: September
+    October: October
+    November: November
+    December: December
+  monthsShort:
+    Jan: Jan
+    Feb: Feb
+    Mar: Mar
+    Apr: Apr
+    May: May
+    Jun: Jun
+    Jul: Jul
+    Aug: Aug
+    Sep: Sep
+    Oct: Oct
+    Nov: Nov
+    Dec: Dec
+oro_config:
+  form:
+    config:
+      title: System configuration
+      tab:
+        system:
+          title: System
+      group:
+        localization:
+          title: Localisation
+          system_locale: Language
+        notification:
+          title: Notifications
+          system_notification: New version notifications
+        loading_message:
+          title: Loading messages
+          label: Enable loading messages
+        loading_messages:
+          label: Available loading messages
+pim_ui:
+  flash:
+    unsaved_changes: 'You have unsaved changes. Are you sure that you want to leave?'
+"Sorry, page was not loaded correctly": "Sorry, the page was not loaded correctly"
+"Your local changes will be lost. Are you sure you want to refresh the page?": "Your local changes will be lost. Are you sure you want to refresh the page?"
+"navigation.message.content.outdated": "Content of {{ title }} page is outdated, please <a href='#' data-action='page-refresh'>refresh the page</a>"
+"Content of pinned page is outdated": "Content of pinned page is outdated"
+pim_common:
+  actions: Actions
+  add: Add
+  add_attributes: Add attributes
+  after: After
+  all: All
+  and: and
+  apply: Apply
+  before: Before
+  by: by
+  cancel: Cancel
+  code: Code
+  confirm: Confirm
+  confirm_deletion: Confirm deletion
+  confirm_revocation: Confirm revocation
+  create: Create
+  created: Created
+  delete: Delete
+  done: Done
+  edit: Edit
+  entity_updated: There are unsaved changes.
+  from: From
+  general_properties: General properties
+  history: History
+  label: Label
+  label_translations: Label translations
+  Label or identifier: label or identifier
+  less_than: Less than
+  loading: Loading...
+  media_upload: Drag and drop to upload or click here
+  more_than: More than
+  next: Next
+  "no": "No"
+  none: None
+  not_available: N/A
+  now: Now
+  ok: OK
+  permissions: Permissions
+  previous: Previous
+  properties: Properties
+  remove: Remove
+  required_label: (required)
+  save: Save
+  search: Search
+  select2:
+    search: Search...
+    no_match: No matches found
+    load_more: Loading more results...
+  status: Status
+  to: to
+  type: Type
+  update: Update
+  "yes": "Yes"
+  operator: Operator
+  operators:
+    "=": Is equal to
+    "!=": Is not equal to
+    ">=": Equals to or greater than
+    ">": Greater than
+    "<=": Equals to or less than
+    "<": Lower than
+    EMPTY: Is empty
+    NOT EMPTY: Is not empty
+    CONTAINS: Contains
+    DOES NOT CONTAIN: Does not contain
+    STARTS WITH: Starts with
+    ENDS WITH: Ends with
+error:
+  exception: Oh snap! A {{ status_code }} error occurred...
+  forbidden: Forbidden. You are not allowed to access this page
+alert:
+  attribute_option:
+    error_occurred_during_submission: An error occurred during the form submission on the server
+    save_before_edit_other: Please register your modifications on other rows before editing this one
+  session_storage:
+    not_available: Your web browser does not seem compatible with sessionStorage. Please contact your administrator
+pim_enrich.entity.fallback:
+  flash:
+    generic_error: An error occurred
+    update:
+      fail: Update failed
+      success: Successfully updated
+    delete:
+      fail: Cannot delete this item
+      success: Item successfully removed
+  module:
+    delete:
+      title: Delete this {{ itemName }}
+      alternative_title: Confirm removal
+      item: Are you sure you want to delete this item?
+      item_placeholder: Are you sure you want to delete this {{ itemName }}? It is not possible to undo this action.
+    edit:
+      leave: Are you sure you want to leave this page?
+      discard_changes: You will lose changes to the {{ entity }} if you leave the page.
+      discard_changes_title: Are you sure?
+pim_enrich.entity.api_connection:
+  flash:
+    create:
+      success: API connection successfully created
+    delete:
+      success: API connection successfully revoked
+      fail: Cannot revoke this API connection
+  page_title:
+    index: "]-Inf, 1]{{ count }} API connection|]1, Inf[{{ count }} API connections"
+  module:
+    revoke:
+      confirm: Are you sure you want to revoke this API connection?
+pim_enrich.entity.job_execution:
+  page_title:
+    index: "]-Inf, 1]{{ count }} operation|]1, Inf[{{ count }} operations"
+  module:
+    create:
+      upload: Drop your {{ type }} file here, or click to browse disk
+    download:
+      archive: Download generated archive
+      output: Download generated files
+      input: Download read files
+      invalid_xlsx: Download invalid data
+      invalid_csv: Download invalid data
+pim_title:
+  oro_default: Dashboard
+  pim_enrich_attributegroup_index: Attribute groups
+  pim_enrich_attributegroup_create: Attribute groups | Create
+  pim_enrich_attributegroup_edit: Attribute group {{ group.label }} | Edit
+  pim_enrich_catalog_volume_index: Catalog volume monitoring
+  pim_enrich_categorytree_index: Category trees
+  pim_enrich_categorytree_create: Category trees | Create
+  pim_enrich_categorytree_edit: Category tree {{ category.label }} | Edit
+  pim_enrich_categorytree_create_tree: Category trees | Create
+  pim_enrich_attribute_index: Attributes
+  pim_enrich_attribute_create: Attributes | Create
+  pim_enrich_attribute_edit: Attribute {{ attribute.label }} | Edit
+  pim_enrich_product_index: Products
+  pim_enrich_product_edit: Product {{ product.label }} | Edit
+  pim_enrich_product_model_edit: Product model {{ product.label }} | Edit
+  pim_enrich_family_index: Families
+  pim_enrich_family_edit: Family {{ family.label }} | Edit
+  pim_enrich_channel_index: Channels
+  pim_enrich_channel_create: Channels | Create
+  pim_enrich_channel_edit: Channel {{ channel.label }} | Edit
+  pim_enrich_currency_index: Currencies
+  pim_enrich_locale_index: Locales
+  pim_enrich_group_index: Groups
+  pim_enrich_group_edit: Group {{ group.label }} | Edit
+  pim_enrich_associationtype_index: Association types
+  pim_enrich_associationtype_edit: Association type {{ association type.label }} | Edit
+  pim_enrich_grouptype_index: Group types
+  pim_enrich_grouptype_edit: Group type {{ group type.label }} | Edit
+  pim_enrich_mass_edit_action_choose: Mass Edit | Choose
+  pim_enrich_mass_edit_action_configure: Mass Edit | Configure
+  pim_enrich_mass_edit_action_perform: Mass Edit | Perform
+  pim_enrich_job_tracker_index: Process tracker
+  pim_enrich_job_tracker_show: Process tracker | Show job
+  pim_enrich_api_connection_index: API connections
+  pim_enrich_api_connection_create: API connections | Create
+  pim_enrich_mass_edit_action: Mass Edit
+  pim_analytics_system_info_index: System information
+pim_menu:
+  tab:
+    activity: Activity
+    imports: Imports
+    exports: Exports
+    settings: Settings
+    system: System
+    help:
+      title: Help
+      helper: Akeneo Help center
+  item:
+    association_type: Association types
+    attribute_group: Attribute groups
+    channel: Channels
+    currency: Currencies
+    dashboard: Dashboard
+    family: Families
+    group: Groups
+    group_type: Group types
+    product_model: Product Models
+    export_history: Export history
+    export_profile: Export profiles
+    import_history: Import history
+    import_profile: Import profiles
+    configuration: Configuration
+    user_management: Users Management
+    user: Users
+    user_group: User groups
+    user_role: Roles
+    info: System information
+    job_tracker: Process tracker
+    api_connection: API connections
+    catalog_volume: Catalog volume monitoring
+  navigation:
+    activity: Activity navigation
+    system: System navigation
+    user: Users management navigation
+    settings: Settings navigation
+    product: Product navigation
+    product_infos: Product info
+  user:
+    logout: Logout
+    user_account: My Account
+pim_notification:
+  types:
+    import: Import
+    export: Export
+    quick_export: Quick Export
+    mass_edit: Mass Edit

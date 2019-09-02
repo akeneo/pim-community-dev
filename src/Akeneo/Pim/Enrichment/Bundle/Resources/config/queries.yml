@@ -229,6 +229,12 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo.pim.enrichment.product_model.query.get_values_of_siblings:
+        class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\SqlGetValuesOfSiblings
+        arguments:
+            - '@database_connection'
+            - '@akeneo.pim.enrichment.factory.read.write_value_collection'
+
     akeneo.pim.enrichment.channel.query.get_labels:
         class: Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\SqlGetChannelLabels
         arguments:

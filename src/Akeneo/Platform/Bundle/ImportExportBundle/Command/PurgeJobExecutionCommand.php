@@ -1,9 +1,8 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\BatchBundle\Command;
+namespace Akeneo\Platform\Bundle\ImportExportBundle\Command;
 
-use Akeneo\Tool\Bundle\BatchBundle\Job\DoctrineJobRepository;
-use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\DeleteJobExecution;
+use Akeneo\Platform\Bundle\ImportExportBundle\Purge\PurgeJobExecution;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -27,7 +26,7 @@ class PurgeJobExecutionCommand extends ContainerAwareCommand
     {
         $this->setName('akeneo:batch:purge-job-execution');
         $this->setDescription(
-            'Purge jobs execution older than number of days you want except the last one, by default 90 days'
+            'Purge jobs execution older than number of days you want except the last one, by default 90 days, minimum is 1 day'
         );
         $this->addOption(
             'days',
@@ -44,32 +43,20 @@ class PurgeJobExecutionCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $days = $input->getOption('days');
-        if (!is_numeric($days)) {
+        if (!(is_numeric($days) && $days > 0)) {
             $output->writeln(
-                sprintf('<error>Option --days must be a number, "%s" given.</error>', $input->getOption('days'))
+                sprintf('<error>Option --days must be a number strictly superior to 0, "%s" given.</error>', $input->getOption('days'))
             );
 
             return;
         }
 
-        $deleteJobExecution = $this->getDeleteJobExecutionQuery();
-        $numberOfDeletedJobExecution = $deleteJobExecution->olderThanDays($days);
-
-        $output->write(sprintf("%s jobs execution deleted ...\n", $numberOfDeletedJobExecution));
-
-        $this->deleteJobExecutionMessageOrphans();
+        $numberOfDeletedJobExecutions = $this->purgeJobExecution()->olderThanDays($days);
+        $output->write(sprintf("%s jobs execution deleted ...\n", $numberOfDeletedJobExecutions));
     }
 
-    /**
-     * @return DoctrineJobRepository
-     */
-    protected function getDeleteJobExecutionQuery(): DeleteJobExecution
+    private function purgeJobExecution(): PurgeJobExecution
     {
-        return $this->getContainer()->get('akeneo_batch.delete_job_execution');
-    }
-
-    private function deleteJobExecutionMessageOrphans(): void
-    {
-        $this->getContainer()->get('akeneo_batch_queue.query.delete_job_execution_message_orphans')->execute();
+        return  $this->getContainer()->get('akeneo.platform.import_export.purge_job_execution');
     }
 }
