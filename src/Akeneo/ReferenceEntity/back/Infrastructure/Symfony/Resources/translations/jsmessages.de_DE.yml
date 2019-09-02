@@ -127,7 +127,7 @@ pim_reference_entity:
         title: Hier ist es ein bisschen voll. Wir zeigen dir {{ productCount }} / {{ totalCount }} Produkte.
         subtitle:
           usable_in_grid: Um alle Produkte anzuzeigen, klicken Sie hier!
-          not_usable_in_grid: Um alle Produkte anzuzeigen, klicken Sie hier!
+          not_usable_in_grid: Um alle verknüpften Produkte zu ermitteln, muss das Produktattribut als "verwendbar im Raster" eingestellt sein.
         button: Alle Produkte anzeigen
       no_product:
         title: Es gibt keine Produkte, die für das Produktattribut "{{ entityLabel }}" verlinkt sind
@@ -181,7 +181,6 @@ pim_reference_entity:
         title_complete: Alle {{{ erforderlichen }}} Attribute sind vollständig
     tab:
       enrich: Anreichern
-      product: Produkte
     notification:
       save:
         success: Datensatz erfolgreich aktualisiert
@@ -212,7 +211,6 @@ pim_reference_entity:
       record_collection: Referenz-Entität Mehrfachverknüpfungen
       option: Einzelfunktion
       option_collection: Mehrfachfunktion
-      number: Nummer
     is_required: zur Vollständigkeit erforderlich
     no_data:
       title: Es gibt keine benutzerdefinierten Attribute für {{ entityLabel }}}
@@ -255,8 +253,6 @@ pim_reference_entity:
         allowed_extensions: Zulässige Dateiendungen
         validation_rule: Validierungsregel
         regular_expression: Regulärer Ausdruck
-        min_value: Minimumwert
-        max_value: Maximalwert
         manage_options:
           confirmation:
             discard_changes: Sie verlieren alle Änderungen an der Optionsliste, wenn Sie die Seite verlassen.
@@ -267,11 +263,10 @@ pim_reference_entity:
               placeholder: Schreiben Sie sich hier eine neue Optionsbezeichnung.
         options:
           validation_rule:
-            none: keine
+            none: Keine
             email: E-Mail
             regular_expression: Regulärer Ausdruck
             url: URL
-        decimals_allowed: Dezimalwerte erlaubt
     delete:
       message: Sind Sie sicher, dass Sie das Attribut "{{ attributeLabel }}}" löschen wollen?
       title: Attribut
@@ -307,10 +302,10 @@ pim_enrich:
     attribute:
       property:
         type:
-          akeneo_reference_entity_collection: Referenzentität Mehrfachverknüpfungen
-          akeneo_reference_entity: Referenzentität Einzelverknüpfung
+          akeneo_reference_entity_collection: Referenz-Entität Mehrfachverknüpfungen
+          akeneo_reference_entity: Referenz-Entität Einzelverknüpfung
         section:
-          type_specific: Typspezifische Parameter
+          type_specific: Spezifische Parameter
         reference_entity:
           identifier: Zugehörige Referenzentität (erforderlich)
           default_label: Bitte wählen Sie eine Referenzentität aus

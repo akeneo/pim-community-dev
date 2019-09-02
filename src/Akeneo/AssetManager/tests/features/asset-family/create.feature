@@ -6,11 +6,11 @@ Feature: Create an asset family
   @acceptance-back
   Scenario: Creating an asset family
     When the user creates an asset family "designer" with:
-      | labels                                    |
-      | {"en_US": "Stylist", "fr_FR": "Styliste"} |
+      | labels                                    | product_link_rules                                                                                                                                                    |
+      | {"en_US": "Stylist", "fr_FR": "Styliste"} | [{"product_selections": [{"field": "family", "operator": "=", "value": "camcorders", "channel": "ecommerce", "locale": "fr_FR"}], "assign_assets_to": [{ "mode": "add", "attribute": "my_asset_collection" }]}] |
     Then there is an asset family "designer" with:
-      | identifier | labels                                    |
-      | designer   | {"en_US": "Stylist", "fr_FR": "Styliste"} |
+      | identifier | labels                                    | product_link_rules                                                                                                                                                                                                                      |
+      | designer   | {"en_US": "Stylist", "fr_FR": "Styliste"} | [{"product_selections": [{"field": "family", "operator": "=", "value": "camcorders", "channel": "ecommerce", "locale": "fr_FR" }], "assign_assets_to": [{ "mode": "add", "attribute": "my_asset_collection", "channel": null, "locale": null }]}] |
 
   @acceptance-back
   Scenario: Creating an asset family with no labels
@@ -26,7 +26,7 @@ Feature: Create an asset family
     When the user creates an asset family "invalid/identifier" with:
       | labels |
       | {}     |
-    Then an exception is thrown with message "Asset family identifier may contain only letters, numbers and underscores. "invalid/identifier" given"
+    Then there should be a validation error with message 'This field may only contain letters, numbers and underscores.'
     And there should be no asset family
 
   @acceptance-back
@@ -62,9 +62,44 @@ Feature: Create an asset family
       | designer   | {"en_US": "Designer", "fr_FR": "Designer"} | image              |
 
   @acceptance-back
-  Scenario: Creating an asset family with a collection of rule templates
-    When the user creates an asset family 'packshot' with a collection of rule templates
-    Then there is an asset family 'packshot' with a collection of rule templates
+  Scenario: Creating an asset family with a collection of static rule templates
+    When the user creates an asset family 'packshot' with a collection of static rule templates
+    Then there is an asset family 'packshot' with a collection of static rule templates
+
+  @acceptance-back
+  Scenario: Cannot create an asset family with a collection of rule templates that contains more than 2 items
+    When the user tries to create an asset family 'packshot' with a collection of rule templates having more items than the limit
+    Then there should be a validation error with message 'You cannot create the asset family "Packshot" because you have reached the limit of 2 product link rules'
+
+  @acceptance-back
+  Scenario: Cannot create an asset family if there is no product selections
+    When the user creates an asset family with an empty product selections
+    Then there should be a validation error with message 'You must specify at least one product selection in your product link rule'
+
+  @acceptance-back
+  Scenario: Cannot create an asset family if there is no product assignment
+    When the user creates an asset family with an empty product assignment
+    Then there should be a validation error with message 'You must specify at least one product assignment in your product link rule'
+
+  @acceptance-back
+  Scenario: Cannot create an asset family if one of the product link rule is not executable by the rule engine
+    When the user creates an asset family with a product link rule not executable by the rule engine
+    Then there should be a validation error stating why the rule engine cannot execute the product link rule
+
+  @acceptance-back
+  Scenario: Cannot create an asset family if one of the product link rule has an extrapolated product selection field which references an unexisting attribute
+    When the user creates an asset family with a product link rule having an extrapolated product selection field which references an attribute that does not exist
+    Then there should be a validation error stating that the product link rule cannot be created because the extrapolated product selection field references an attribute that does not exist
+
+  @acceptance-back
+  Scenario: Cannot create an asset family if one of the product link rule has an extrapolated product selection value which references an unexisting attribute
+    When the user creates an asset family with a product link rule having an extrapolated product selection value which references an attribute that does not exist
+    Then there should be a validation error stating that the product link rule cannot be created because the extrapolated product selection value references an attribute that does not exist
+
+  @acceptance-back
+  Scenario: Cannot create an asset family if one of the product link rule has an extrapolated product assignment attribute which references an unexisting attribute
+    When the user creates an asset family with a product link rule having an extrapolated product assignment attribute which references an attribute that does not exist
+    Then there should be a validation error stating that the product link rule cannot be created because the extrapolated product assignment attribute references an attribute that does not exist
 
   @acceptance-front
   Scenario: Creating an asset family

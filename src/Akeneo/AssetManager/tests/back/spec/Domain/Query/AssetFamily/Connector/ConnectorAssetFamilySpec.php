@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Domain\Query\AssetFamily\Connector;
 
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
 use PhpSpec\ObjectBehavior;
 
@@ -32,7 +32,25 @@ class ConnectorAssetFamilySpec extends ObjectBehavior
         $this->beConstructedWith(
             $assetFamilyIdentifier,
             $labelCollection,
-            Image::createEmpty()
+            Image::createEmpty(),
+            [
+                [
+                    'product_selections' => [
+                        [
+                            'field' => 'sku',
+                            'operator' => 'EQUALS',
+                            'value' => '{{product_ref}}',
+                        ],
+                    ],
+                    'assign_assets_to' => [
+                        [
+                            'attribute' => 'user_instructions',
+                            'locale' => '{{locale}}',
+                            'mode' => 'replace',
+                        ],
+                    ]
+                ]
+            ]
         );
     }
 
@@ -50,6 +68,24 @@ class ConnectorAssetFamilySpec extends ObjectBehavior
                 'fr_FR' => 'Stark',
             ],
             'image' => null,
+            'product_link_rules' => [
+                [
+                    'product_selections' => [
+                        [
+                            'field' => 'sku',
+                            'operator' => 'EQUALS',
+                            'value' => '{{product_ref}}',
+                        ],
+                    ],
+                    'assign_assets_to' => [
+                        [
+                            'attribute' => 'user_instructions',
+                            'locale' => '{{locale}}',
+                            'mode' => 'replace',
+                        ],
+                    ]
+                ]
+            ]
         ]);
     }
 }

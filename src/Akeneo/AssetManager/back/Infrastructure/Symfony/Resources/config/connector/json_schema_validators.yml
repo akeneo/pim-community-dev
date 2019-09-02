@@ -32,7 +32,7 @@ services:
         tags:
             - { name: akeneo_assetmanager.connector.api.asset_value_validator }
 
-    akeneo_assetmanager.infrastructure.connector.api.asset_value_mediaLink_type_validator:
+    akeneo_assetmanager.infrastructure.connector.api.asset_value_media_link_type_validator:
         class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\Value\MediaLinkTypeValidator
         tags:
             - { name: akeneo_assetmanager.connector.api.asset_value_validator }
@@ -95,7 +95,7 @@ services:
         tags:
             - { name: akeneo_assetmanager.connector.api.create.attribute_validator }
 
-    akeneo_assetmanager.infrastructure.connector.api.create.mediaLink_attribute_validator:
+    akeneo_assetmanager.infrastructure.connector.api.create.media_link_attribute_validator:
         class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\MediaLinkAttributeValidator
         tags:
             - { name: akeneo_assetmanager.connector.api.create.attribute_validator }
@@ -137,7 +137,7 @@ services:
         tags:
             - { name: akeneo_assetmanager.connector.api.edit.attribute_validator }
 
-    akeneo_assetmanager.infrastructure.connector.api.edit.mediaLink_attribute_validator:
+    akeneo_assetmanager.infrastructure.connector.api.edit.media_link_attribute_validator:
         class: Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\MediaLinkAttributeValidator
         tags:
             - { name: akeneo_assetmanager.connector.api.edit.attribute_validator }

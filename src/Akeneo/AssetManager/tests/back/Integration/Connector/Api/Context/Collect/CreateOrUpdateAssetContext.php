@@ -19,6 +19,7 @@ use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesPerChannels;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindFileDataByFileKey;
 use Akeneo\AssetManager\Common\Fake\InMemoryGetAttributeIdentifier;
+use Akeneo\AssetManager\Common\Fake\ProductLinkRuleLauncherSpy;
 use Akeneo\AssetManager\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
@@ -61,6 +62,10 @@ use Symfony\Component\HttpFoundation\Response;
 class CreateOrUpdateAssetContext implements Context
 {
     private const REQUEST_CONTRACT_DIR = 'Asset/Connector/Collect/';
+    private const ASSET_FAMILY_IDENTIFIER = 'frontview';
+    private const HOUSE_ASSET_CODE = 'house';
+    private const FLOWER_ASSET_CODE = 'flower';
+    private const PHONE_ASSET_CODE = 'phone';
 
     /** @var OauthAuthenticatedClientFactory */
     private $clientFactory;
@@ -104,6 +109,9 @@ class CreateOrUpdateAssetContext implements Context
     /** @var InMemoryGetAttributeIdentifier */
     private $getAttributeIdentifier;
 
+    /** @var ProductLinkRuleLauncherSpy */
+    private $productLinkRuleLauncherSpy;
+
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
@@ -115,7 +123,8 @@ class CreateOrUpdateAssetContext implements Context
         InMemoryFindActivatedLocalesPerChannels $activatedLocalesPerChannels,
         InMemoryFindFileDataByFileKey $findFileData,
         InMemoryFileExists $fileExists,
-        InMemoryGetAttributeIdentifier $getAttributeIdentifier
+        InMemoryGetAttributeIdentifier $getAttributeIdentifier,
+        ProductLinkRuleLauncherSpy $productLinkRuleLauncherSpy
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
@@ -128,14 +137,16 @@ class CreateOrUpdateAssetContext implements Context
         $this->findFileData = $findFileData;
         $this->fileExists = $fileExists;
         $this->getAttributeIdentifier = $getAttributeIdentifier;
+        $this->productLinkRuleLauncherSpy = $productLinkRuleLauncherSpy;
     }
 
     /**
-     * @Given a asset of the Brand asset family existing in the ERP but not in the PIM
+     * @Given an asset of the Frontview asset family existing in the ERP but not in the PIM
+     * @Given an asset of the Frontview asset family existing in the ERP but not in the PIM having a rule template
      */
     public function aAssetOfTheBrandAssetFamilyExistingInTheErpButNotInThePim()
     {
-        $this->requestContract = 'successful_kartell_asset_creation.json';
+        $this->requestContract = 'successful_house_asset_creation.json';
 
         $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
         $this->activatedLocalesPerChannels->save('ecommerce', ['en_US', 'fr_FR']);
@@ -143,7 +154,7 @@ class CreateOrUpdateAssetContext implements Context
         $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
 
         $this->loadDescriptionAttribute();
-        $this->loadBrandAssetFamily();
+        $this->loadFrontViewAssetFamily();
     }
 
     /**
@@ -167,79 +178,79 @@ class CreateOrUpdateAssetContext implements Context
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
-            self::REQUEST_CONTRACT_DIR . 'successful_kartell_asset_creation.json'
+            self::REQUEST_CONTRACT_DIR . 'successful_house_asset_creation.json'
         );
 
-        $kartellAsset = $this->assetRepository->getByAssetFamilyAndCode(
-            AssetFamilyIdentifier::fromString('brand'),
-            AssetCode::fromString('kartell')
+        $houseAsset = $this->assetRepository->getByAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
+            AssetCode::fromString(self::HOUSE_ASSET_CODE)
         );
 
-        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('brand');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER);
         $labelIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
             $assetFamilyIdentifier,
             AttributeCode::fromString('label')
         );
 
         $expectedAsset = Asset::create(
-            $kartellAsset->getIdentifier(),
+            $houseAsset->getIdentifier(),
             $assetFamilyIdentifier,
-            AssetCode::fromString('kartell'),
+            AssetCode::fromString(self::HOUSE_ASSET_CODE),
             ValueCollection::fromValues([
                 Value::create(
                     $labelIdentifier,
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
-                    TextData::fromString('Kartell english label')
+                    TextData::fromString('House english label')
                 ),
                 Value::create(
                     $labelIdentifier,
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
-                    TextData::fromString('Kartell french label')
+                    TextData::fromString('House french label')
                 ),
                 Value::create(
-                    AttributeIdentifier::fromString('description_brand_fingerprint'),
+                    AttributeIdentifier::fromString('description_frontview_fingerprint'),
                     ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
-                    TextData::fromString('Kartell french description.')
+                    TextData::fromString('House french description.')
                 ),
                 Value::create(
-                    AttributeIdentifier::fromString('description_brand_fingerprint'),
+                    AttributeIdentifier::fromString('description_frontview_fingerprint'),
                     ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
-                    TextData::fromString('Kartell english description.')
+                    TextData::fromString('House english description.')
                 ),
             ])
         );
 
-        Assert::assertEquals($expectedAsset, $kartellAsset);
+        Assert::assertEquals($expectedAsset, $houseAsset);
     }
 
     /**
-     * @Given a asset of the Brand asset family existing in the ERP and the PIM with different information
+     * @Given an asset of the Brand asset family existing in the ERP and the PIM with different information
      */
     public function aAssetOfTheBrandAssetFamilyExistingInTheErpAndThePimWithDifferentInformation()
     {
-        $this->requestContract = 'successful_kartell_asset_update.json';
+        $this->requestContract = 'successful_house_asset_update.json';
 
-        $this->loadBrandAssetFamily();
+        $this->loadFrontViewAssetFamily();
         $this->loadDescriptionAttribute();
         $this->loadNameAttribute();
         $this->loadCoverImageAttribute();
-        $this->loadBrandKartellAsset();
+        $this->loadFrontViewHouseAsset();
         $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
         $this->activatedLocalesPerChannels->save('ecommerce', ['en_US', 'fr_FR']);
         $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
         $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
         $this->findFileData->save([
-            'filePath'         => '2/4/3/7/24378761474c58aeee26016ee881b3b15069de52_kartell_cover.jpg',
-            'originalFilename' => 'kartell_cover.jpg',
+            'filePath'         => '2/4/3/7/24378761474c58aeee26016ee881b3b15069de52_house.jpg',
+            'originalFilename' => 'house.jpg',
             'size'             => 128,
             'mimeType'         => 'image/jpeg',
             'extension'        => 'jpg'
         ]);
-        $this->fileExists->save('2/4/3/7/24378761474c58aeee26016ee881b3b15069de52_kartell_cover.jpg');
+        $this->fileExists->save('2/4/3/7/24378761474c58aeee26016ee881b3b15069de52_house.jpg');
     }
 
     /**
@@ -249,13 +260,13 @@ class CreateOrUpdateAssetContext implements Context
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
-            self::REQUEST_CONTRACT_DIR . 'successful_kartell_asset_update.json'
+            self::REQUEST_CONTRACT_DIR . 'successful_house_asset_update.json'
         );
 
-        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('brand');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER);
         $kartellAsset = $this->assetRepository->getByAssetFamilyAndCode(
             $assetFamilyIdentifier,
-            AssetCode::fromString('kartell')
+            AssetCode::fromString(self::HOUSE_ASSET_CODE)
         );
 
         $labelIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
@@ -268,33 +279,33 @@ class CreateOrUpdateAssetContext implements Context
         );
 
         $coverImageInfo = (new FileInfo())
-            ->setKey('2/4/3/7/24378761474c58aeee26016ee881b3b15069de52_kartell_cover.jpg')
-            ->setOriginalFilename('kartell_cover.jpg')
+            ->setKey('2/4/3/7/24378761474c58aeee26016ee881b3b15069de52_house.jpg')
+            ->setOriginalFilename('house.jpg')
             ->setSize(128)
             ->setMimeType('image/jpeg')
             ->setExtension('jpg');
 
         $mainImageInfo = new FileInfo();
         $mainImageInfo
-            ->setOriginalFilename('kartell.jpg')
-            ->setKey('0/c/b/0/0cb0c0e115dedba676f8d1ad8343ec207ab54c7b_kartell.jpg');
+            ->setOriginalFilename('house.jpg')
+            ->setKey('0/c/b/0/0cb0c0e115dedba676f8d1ad8343ec207ab54c7b_house.jpg');
 
         $expectedKartellAsset = Asset::create(
-            AssetIdentifier::fromString('brand_kartell_fingerprint'),
+            AssetIdentifier::fromString('frontview_house_fingerprint'),
             $assetFamilyIdentifier,
-            AssetCode::fromString('kartell'),
+            AssetCode::fromString(self::HOUSE_ASSET_CODE),
             ValueCollection::fromValues([
                 Value::create(
                     $labelIdentifier,
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
-                    TextData::fromString('Kartell updated english label')
+                    TextData::fromString('House updated english label')
                 ),
                 Value::create(
                     $labelIdentifier,
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
-                    TextData::fromString('Kartell updated french label')
+                    TextData::fromString('House updated french label')
                 ),
                 Value::create(
                     $mainImageIdentifier,
@@ -303,19 +314,19 @@ class CreateOrUpdateAssetContext implements Context
                     FileData::createFromFileinfo($mainImageInfo)
                 ),
                 Value::create(
-                    AttributeIdentifier::fromString('name_brand_fingerprint'),
+                    AttributeIdentifier::fromString('name_frontview_fingerprint'),
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
                     TextData::fromString('Updated english name')
                 ),
                 Value::create(
-                    AttributeIdentifier::fromString('description_brand_fingerprint'),
+                    AttributeIdentifier::fromString('description_frontview_fingerprint'),
                     ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
-                    TextData::fromString('Kartell english description')
+                    TextData::fromString('House english description')
                 ),
                 Value::create(
-                    AttributeIdentifier::fromString('cover_image_brand_fingerprint'),
+                    AttributeIdentifier::fromString('cover_image_frontview_fingerprint'),
                     ChannelReference::noReference(),
                     LocaleReference::noReference(),
                     FileData::createFromFileinfo($coverImageInfo)
@@ -336,7 +347,7 @@ class CreateOrUpdateAssetContext implements Context
 
         $this->pimResponse = $this->webClientHelper->requestFromFile(
             $client,
-            self::REQUEST_CONTRACT_DIR . 'unprocessable_entity_kartell_asset_for_invalid_format.json'
+            self::REQUEST_CONTRACT_DIR . 'unprocessable_entity_house_asset_for_invalid_format.json'
         );
     }
 
@@ -347,7 +358,7 @@ class CreateOrUpdateAssetContext implements Context
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
-            self::REQUEST_CONTRACT_DIR . 'unprocessable_entity_kartell_asset_for_invalid_format.json'
+            self::REQUEST_CONTRACT_DIR . 'unprocessable_entity_house_asset_for_invalid_format.json'
         );
     }
 
@@ -365,7 +376,7 @@ class CreateOrUpdateAssetContext implements Context
 
         $this->pimResponse = $this->webClientHelper->requestFromFile(
             $client,
-            self::REQUEST_CONTRACT_DIR . 'unprocessable_entity_kartell_asset_for_invalid_data.json'
+            self::REQUEST_CONTRACT_DIR . 'unprocessable_entity_house_asset_for_invalid_data.json'
         );
     }
 
@@ -376,16 +387,16 @@ class CreateOrUpdateAssetContext implements Context
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
-            self::REQUEST_CONTRACT_DIR . 'unprocessable_entity_kartell_asset_for_invalid_data.json'
+            self::REQUEST_CONTRACT_DIR . 'unprocessable_entity_house_asset_for_invalid_data.json'
         );
     }
 
     /**
-     * @Given some assets of the Brand asset family existing in the ERP but not in the PIM
+     * @Given some assets of the Frontview asset family existing in the ERP but not in the PIM
      */
     public function someAssetsOfTheBrandAssetFamilyExistingInTheErpButNotInThePim()
     {
-        $this->loadBrandAssetFamily();
+        $this->loadFrontViewAssetFamily();
         $this->loadDescriptionAttribute();
         $this->loadNameAttribute();
         $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
@@ -395,12 +406,12 @@ class CreateOrUpdateAssetContext implements Context
     }
 
     /**
-     * @Given some assets of the Brand asset family existing in the ERP and in the PIM but with different information
+     * @Given some assets of the Frontview asset family existing in the ERP and in the PIM but with different information
      */
     public function someAssetsOfTheBrandAssetFamilyExistingInTheErpAndInThePimButWithDifferentInformation()
     {
-        $this->loadBrandKartellAsset();
-        $this->loadBrandLexonAsset();
+        $this->loadFrontViewHouseAsset();
+        $this->loadFrontViewFlowerAsset();
     }
 
     /**
@@ -411,7 +422,7 @@ class CreateOrUpdateAssetContext implements Context
         $client = $this->clientFactory->logIn('julia');
         $this->pimResponse = $this->webClientHelper->requestFromFile(
             $client,
-            self::REQUEST_CONTRACT_DIR . 'successful_brand_assets_synchronization.json'
+            self::REQUEST_CONTRACT_DIR . 'successful_frontview_assets_synchronization.json'
         );
     }
 
@@ -422,13 +433,13 @@ class CreateOrUpdateAssetContext implements Context
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
-            self::REQUEST_CONTRACT_DIR . 'successful_brand_assets_synchronization.json'
+            self::REQUEST_CONTRACT_DIR . 'successful_frontview_assets_synchronization.json'
         );
 
-        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('brand');
-        $fatboyAsset = $this->assetRepository->getByAssetFamilyAndCode(
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER);
+        $phoneAsset = $this->assetRepository->getByAssetFamilyAndCode(
             $assetFamilyIdentifier,
-            AssetCode::fromString('fatboy')
+            AssetCode::fromString(self::PHONE_ASSET_CODE)
         );
 
         $labelIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
@@ -436,27 +447,27 @@ class CreateOrUpdateAssetContext implements Context
             AttributeCode::fromString('label')
         );
 
-        $expectedFatboyAsset = Asset::create(
-            $fatboyAsset->getIdentifier(),
+        $expectedPhoneAsset = Asset::create(
+            $phoneAsset->getIdentifier(),
             $assetFamilyIdentifier,
-            AssetCode::fromString('fatboy'),
+            AssetCode::fromString(self::PHONE_ASSET_CODE),
             ValueCollection::fromValues([
                 Value::create(
                     $labelIdentifier,
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
-                    TextData::fromString('Fatboy label')
+                    TextData::fromString('Phone label')
                 ),
                 Value::create(
-                    AttributeIdentifier::fromString('name_brand_fingerprint'),
+                    AttributeIdentifier::fromString('name_frontview_fingerprint'),
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
-                    TextData::fromString('Fatboy name')
+                    TextData::fromString('Phone name')
                 )
             ])
         );
 
-        Assert::assertEquals($expectedFatboyAsset, $fatboyAsset);
+        Assert::assertEquals($expectedPhoneAsset, $phoneAsset);
     }
 
     /**
@@ -464,7 +475,7 @@ class CreateOrUpdateAssetContext implements Context
      */
     public function theAssetsExistingBothInTheErpAndThePimAreCorrectlySynchronizedInThePimWithTheInformationFromTheErp()
     {
-        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('brand');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER);
         $labelIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
             $assetFamilyIdentifier,
             AttributeCode::fromString('label')
@@ -476,25 +487,25 @@ class CreateOrUpdateAssetContext implements Context
 
         $mainImageInfo = new FileInfo();
         $mainImageInfo
-            ->setOriginalFilename('kartell.jpg')
-            ->setKey('0/c/b/0/0cb0c0e115dedba676f8d1ad8343ec207ab54c7b_kartell.jpg');
+            ->setOriginalFilename('house.jpg')
+            ->setKey('0/c/b/0/0cb0c0e115dedba676f8d1ad8343ec207ab54c7b_house.jpg');
 
-        $expectedKartellAsset = Asset::create(
-            AssetIdentifier::fromString('brand_kartell_fingerprint'),
+        $expectedHouseAsset = Asset::create(
+            AssetIdentifier::fromString('frontview_house_fingerprint'),
             $assetFamilyIdentifier,
-            AssetCode::fromString('kartell'),
+            AssetCode::fromString(self::HOUSE_ASSET_CODE),
             ValueCollection::fromValues([
                 Value::create(
                     $labelIdentifier,
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
-                    TextData::fromString('Kartell updated english label')
+                    TextData::fromString('House updated english label')
                 ),
                 Value::create(
                     $labelIdentifier,
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
-                    TextData::fromString('Kartell updated french label')
+                    TextData::fromString('House updated french label')
                 ),
                 Value::create(
                     $mainImageIdentifier,
@@ -503,53 +514,53 @@ class CreateOrUpdateAssetContext implements Context
                     FileData::createFromFileinfo($mainImageInfo)
                 ),
                 Value::create(
-                    AttributeIdentifier::fromString('name_brand_fingerprint'),
+                    AttributeIdentifier::fromString('name_frontview_fingerprint'),
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
-                    TextData::fromString('Kartell updated english name')
+                    TextData::fromString('House updated english name')
                 ),
                 Value::create(
-                    AttributeIdentifier::fromString('description_brand_fingerprint'),
+                    AttributeIdentifier::fromString('description_frontview_fingerprint'),
                     ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
-                    TextData::fromString('Kartell english description')
+                    TextData::fromString('House english description')
                 )
             ])
         );
 
-        $kartellAsset = $this->assetRepository->getByAssetFamilyAndCode(
-            AssetFamilyIdentifier::fromString('brand'),
-            AssetCode::fromString('kartell')
+        $houseAsset = $this->assetRepository->getByAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
+            AssetCode::fromString(self::HOUSE_ASSET_CODE)
         );
 
-        Assert::assertEquals($expectedKartellAsset, $kartellAsset);
+        Assert::assertEquals($expectedHouseAsset, $houseAsset);
 
-        $expectedLexonAsset = Asset::create(
-            AssetIdentifier::fromString('brand_lexon_fingerprint'),
-            AssetFamilyIdentifier::fromString('brand'),
-            AssetCode::fromString('lexon'),
+        $expectedFlowerAsset = Asset::create(
+            AssetIdentifier::fromString('frontview_flower_fingerprint'),
+            AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
+            AssetCode::fromString(self::FLOWER_ASSET_CODE),
             ValueCollection::fromValues([
                 Value::create(
                     $labelIdentifier,
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
-                    TextData::fromString('Lexon updated english label')
+                    TextData::fromString('Flower updated english label')
                 ),
                 Value::create(
-                    AttributeIdentifier::fromString('name_brand_fingerprint'),
+                    AttributeIdentifier::fromString('name_frontview_fingerprint'),
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
-                    TextData::fromString('Updated Lexon english name')
+                    TextData::fromString('Updated Flower english name')
                 )
             ])
         );
 
-        $lexonAsset = $this->assetRepository->getByAssetFamilyAndCode(
-            AssetFamilyIdentifier::fromString('brand'),
-            AssetCode::fromString('lexon')
+        $flowerAsset = $this->assetRepository->getByAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
+            AssetCode::fromString(self::FLOWER_ASSET_CODE)
         );
 
-        Assert::assertEquals($expectedLexonAsset, $lexonAsset);
+        Assert::assertEquals($expectedFlowerAsset, $flowerAsset);
     }
 
     /**
@@ -560,7 +571,7 @@ class CreateOrUpdateAssetContext implements Context
         $client = $this->clientFactory->logIn('julia');
         $this->pimResponse = $this->webClientHelper->requestFromFile(
             $client,
-            self::REQUEST_CONTRACT_DIR . 'collect_brand_assets_with_unprocessable_assets.json'
+            self::REQUEST_CONTRACT_DIR . 'collect_frontview_assets_with_unprocessable_assets.json'
         );
     }
 
@@ -571,7 +582,7 @@ class CreateOrUpdateAssetContext implements Context
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
-            self::REQUEST_CONTRACT_DIR . 'collect_brand_assets_with_unprocessable_assets.json'
+            self::REQUEST_CONTRACT_DIR . 'collect_frontview_assets_with_unprocessable_assets.json'
         );
     }
 
@@ -603,9 +614,9 @@ class CreateOrUpdateAssetContext implements Context
      */
     public function theKartellAssetOfTheBrandAssetFamilyWithoutAnyMediaFile()
     {
-        $this->loadBrandAssetFamily();
+        $this->loadFrontViewAssetFamily();
         $this->loadCoverImageAttribute();
-        $this->loadBrandKartellAsset();
+        $this->loadFrontViewHouseAsset();
     }
 
     /**
@@ -632,11 +643,11 @@ class CreateOrUpdateAssetContext implements Context
         );
     }
 
-    private function loadBrandAssetFamily(): void
+    private function loadFrontViewAssetFamily(): void
     {
         $assetFamily = AssetFamily::create(
-            AssetFamilyIdentifier::fromString('brand'),
-            ['en_US' => 'Brand'],
+            AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
+            ['en_US' => 'Front view'],
             Image::createEmpty(),
             RuleTemplateCollection::empty()
         );
@@ -647,8 +658,8 @@ class CreateOrUpdateAssetContext implements Context
     private function loadDescriptionAttribute(): void
     {
         $name = TextAttribute::createText(
-            AttributeIdentifier::create('brand', 'description', 'fingerprint'),
-            AssetFamilyIdentifier::fromString('brand'),
+            AttributeIdentifier::create(self::ASSET_FAMILY_IDENTIFIER, 'description', 'fingerprint'),
+            AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
             AttributeCode::fromString('description'),
             LabelCollection::fromArray(['en_US' => 'Description']),
             AttributeOrder::fromInteger(3),
@@ -666,8 +677,8 @@ class CreateOrUpdateAssetContext implements Context
     private function loadNameAttribute(): void
     {
         $name = TextAttribute::createText(
-            AttributeIdentifier::create('brand', 'name', 'fingerprint'),
-            AssetFamilyIdentifier::fromString('brand'),
+            AttributeIdentifier::create(self::ASSET_FAMILY_IDENTIFIER, 'name', 'fingerprint'),
+            AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name']),
             AttributeOrder::fromInteger(4),
@@ -685,8 +696,8 @@ class CreateOrUpdateAssetContext implements Context
     private function loadCoverImageAttribute(): void
     {
         $image = ImageAttribute::create(
-            AttributeIdentifier::create('brand', 'cover_image', 'fingerprint'),
-            AssetFamilyIdentifier::fromString('brand'),
+            AttributeIdentifier::create(self::ASSET_FAMILY_IDENTIFIER, 'cover_image', 'fingerprint'),
+            AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
             AttributeCode::fromString('cover_image'),
             LabelCollection::fromArray(['en_US' => 'Cover Image']),
             AttributeOrder::fromInteger(5),
@@ -700,14 +711,14 @@ class CreateOrUpdateAssetContext implements Context
         $this->attributeRepository->create($image);
     }
 
-    private function loadBrandKartellAsset(): void
+    private function loadFrontViewHouseAsset(): void
     {
         $mainImageInfo = new FileInfo();
         $mainImageInfo
-            ->setOriginalFilename('kartell.jpg')
-            ->setKey('0/c/b/0/0cb0c0e115dedba676f8d1ad8343ec207ab54c7b_kartell.jpg');
+            ->setOriginalFilename('house.jpg')
+            ->setKey('0/c/b/0/0cb0c0e115dedba676f8d1ad8343ec207ab54c7b_house.jpg');
 
-        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('brand');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER);
         $labelIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
             $assetFamilyIdentifier,
             AttributeCode::fromString('label')
@@ -718,15 +729,15 @@ class CreateOrUpdateAssetContext implements Context
         );
 
         $asset = Asset::create(
-            AssetIdentifier::fromString('brand_kartell_fingerprint'),
+            AssetIdentifier::fromString('frontview_house_fingerprint'),
             $assetFamilyIdentifier,
-            AssetCode::fromString('kartell'),
+            AssetCode::fromString(self::HOUSE_ASSET_CODE),
             ValueCollection::fromValues([
                 Value::create(
                     $labelIdentifier,
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
-                    TextData::fromString('Kartell English label')
+                    TextData::fromString('House English label')
                 ),
                 Value::create(
                     $mainImageIdentifier,
@@ -735,16 +746,16 @@ class CreateOrUpdateAssetContext implements Context
                     FileData::createFromFileinfo($mainImageInfo)
                 ),
                 Value::create(
-                    AttributeIdentifier::fromString('name_brand_fingerprint'),
+                    AttributeIdentifier::fromString('name_frontview_fingerprint'),
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
-                    TextData::fromString('Kartell english name')
+                    TextData::fromString('House english name')
                 ),
                 Value::create(
-                    AttributeIdentifier::fromString('name_brand_fingerprint'),
+                    AttributeIdentifier::fromString('name_frontview_fingerprint'),
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
-                    TextData::fromString('Kartell french name')
+                    TextData::fromString('House french name')
                 )
             ])
         );
@@ -752,40 +763,67 @@ class CreateOrUpdateAssetContext implements Context
         $this->assetRepository->create($asset);
     }
 
-    private function loadBrandLexonAsset(): void
+    private function loadFrontViewFlowerAsset(): void
     {
-        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('brand');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER);
         $labelIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
             $assetFamilyIdentifier,
             AttributeCode::fromString('label')
         );
 
         $asset = Asset::create(
-            AssetIdentifier::fromString('brand_lexon_fingerprint'),
+            AssetIdentifier::fromString('frontview_flower_fingerprint'),
             $assetFamilyIdentifier,
-            AssetCode::fromString('lexon'),
+            AssetCode::fromString(self::FLOWER_ASSET_CODE),
             ValueCollection::fromValues([
                 Value::create(
                     $labelIdentifier,
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
-                    TextData::fromString('Lexon')
+                    TextData::fromString('Flower')
                 ),
                 Value::create(
-                    AttributeIdentifier::fromString('name_brand_fingerprint'),
+                    AttributeIdentifier::fromString('name_frontview_fingerprint'),
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
-                    TextData::fromString('Lexon name')
+                    TextData::fromString('Flower name')
                 ),
                 Value::create(
-                    AttributeIdentifier::fromString('description_brand_fingerprint'),
+                    AttributeIdentifier::fromString('description_frontview_fingerprint'),
                     ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
-                    TextData::fromString('Lexon description')
+                    TextData::fromString('Flower description')
                 )
             ])
         );
 
         $this->assetRepository->create($asset);
+    }
+
+    /**
+     * @Given /^a job runs to automatically link to products the newly created asset according to the rule template$/
+     */
+    public function aJobRunsToAutomaticallyLinkToProductsTheNewlyCreatedAssetAccordingToTheRuleTemplate()
+    {
+        $this->productLinkRuleLauncherSpy->assertHasRunForAsset(self::ASSET_FAMILY_IDENTIFIER, self::PHONE_ASSET_CODE);
+    }
+
+    /**
+     * @Given /^a job runs to automatically link it to products according to the rule template$/
+     */
+    public function aJobRunsToAutomaticallyLinkItToProductsAccordingToTheRuleTemplate()
+    {
+        $this->productLinkRuleLauncherSpy->assertHasRunForAsset(self::ASSET_FAMILY_IDENTIFIER, self::HOUSE_ASSET_CODE);
+    }
+
+    /**
+     * @Given /^a single job runs to automatically link to products the newly created asset according to the rule template$/
+     */
+    public function aSingleJobRunsToAutomaticallyLinkToProductsTheNewlyCreatedAssetAccordingToTheRuleTemplate()
+    {
+        $this->productLinkRuleLauncherSpy->assertHasRunForAssetsInSameLaunch(
+            self::ASSET_FAMILY_IDENTIFIER,
+            [self::HOUSE_ASSET_CODE, self::PHONE_ASSET_CODE, self::FLOWER_ASSET_CODE]
+        );
     }
 }

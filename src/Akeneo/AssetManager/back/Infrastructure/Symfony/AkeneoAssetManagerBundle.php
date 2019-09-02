@@ -12,7 +12,6 @@ declare(strict_types=1);
  */
 namespace Akeneo\AssetManager\Infrastructure\Symfony;
 
-use Akeneo\AssetManager\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterAssetFamilyAxisLabelPass;
 use Akeneo\AssetManager\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterAssetItemValueHydratorPass;
 use Akeneo\AssetManager\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterAttributeFactoryPass;
 use Akeneo\AssetManager\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterAttributeHydratorPass;
@@ -50,6 +49,5 @@ class AkeneoAssetManagerBundle extends Bundle
         $container->addCompilerPass(new RegisterValueDataHydratorPass());
         $container->addCompilerPass(new RegisterAssetItemValueHydratorPass());
         $container->addCompilerPass(new RegisterValueUpdaterPass());
-        $container->addCompilerPass(new RegisterAssetFamilyAxisLabelPass());
     }
 }

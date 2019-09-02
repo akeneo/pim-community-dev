@@ -1,6 +1,7 @@
 import * as React from 'react';
 import AssetFamily from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {getImageShowUrl} from 'akeneoassetmanager/tools/media-url-generator';
+
 const router = require('pim/router');
 
 export default ({
@@ -43,7 +44,7 @@ export default ({
       <span
         className="AknGrid-fullImage"
         style={{
-          backgroundImage: `mediaLink("${getImageShowUrl(assetFamily.getImage(), 'thumbnail')}")`,
+          backgroundImage: `url("${getImageShowUrl(assetFamily.getImage(), 'thumbnail')}")`,
         }}
       />
       <span className="AknGrid-title">{assetFamily.getLabel(locale)}</span>

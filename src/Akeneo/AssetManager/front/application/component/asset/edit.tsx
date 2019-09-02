@@ -9,18 +9,18 @@ import Image from 'akeneoassetmanager/application/component/app/image';
 import __ from 'akeneoassetmanager/tools/translator';
 import PimView from 'akeneoassetmanager/infrastructure/component/pim-view';
 import Asset, {NormalizedAsset} from 'akeneoassetmanager/domain/model/asset/asset';
-import {saveAsset, assetImageUpdated, backToAssetFamily} from 'akeneoassetmanager/application/action/asset/edit';
+import {assetImageUpdated, backToAssetFamily, saveAsset} from 'akeneoassetmanager/application/action/asset/edit';
 import {deleteAsset} from 'akeneoassetmanager/application/action/asset/delete';
 import EditState from 'akeneoassetmanager/application/component/app/edit-state';
 import File from 'akeneoassetmanager/domain/model/file';
 import Locale from 'akeneoassetmanager/domain/model/locale';
-import {localeChanged, channelChanged} from 'akeneoassetmanager/application/action/asset/user';
+import {channelChanged, localeChanged} from 'akeneoassetmanager/application/action/asset/user';
 import LocaleSwitcher from 'akeneoassetmanager/application/component/app/locale-switcher';
 import ChannelSwitcher from 'akeneoassetmanager/application/component/app/channel-switcher';
 import denormalizeAsset from 'akeneoassetmanager/application/denormalizer/asset';
 import Channel from 'akeneoassetmanager/domain/model/channel';
 import DeleteModal from 'akeneoassetmanager/application/component/app/delete-modal';
-import {openDeleteModal, cancelDeleteModal} from 'akeneoassetmanager/application/event/confirmDelete';
+import {cancelDeleteModal, openDeleteModal} from 'akeneoassetmanager/application/event/confirmDelete';
 import Key from 'akeneoassetmanager/tools/key';
 import {createLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
 import {createChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
@@ -32,7 +32,7 @@ import {NormalizedCode as NormalizedAttributeCode} from 'akeneoassetmanager/doma
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/product/attribute';
 import {redirectToProductGrid} from 'akeneoassetmanager/application/event/router';
 
-const securityContext = require('pim/security-context');
+// const securityContext = require('pim/security-context');
 
 interface StateProps {
   sidebar: {
@@ -140,6 +140,24 @@ class AssetEditView extends React.Component<EditProps> {
             <div className="AknDefault-thirdColumn" />
           </div>
           <div className="AknDefault-contentWithBottom">
+            {/* @todo to remove when the feature is available */}
+            <div
+              style={{
+                display: 'flex',
+                fontSize: '15px',
+                color: 'rgb(255, 255, 255)',
+                minHeight: '50px',
+                alignItems: 'center',
+                lineHeight: '17px',
+                background: 'rgba(189, 10, 10, 0.62)',
+                justifyContent: 'center',
+              }}
+            >
+              <p>
+                The Asset Manager is still in progress. This page is under development. This is a temporary screen which
+                is not supported.
+              </p>
+            </div>
             <div className="AknDefault-mainContent" data-tab={this.props.sidebar.currentTab}>
               <header className="AknTitleContainer">
                 <div className="AknTitleContainer-line">
@@ -303,11 +321,11 @@ export default connect(
       rights: {
         asset: {
           edit:
-            securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
+            // securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
             canEditAssetFamily(state.right.assetFamily, state.form.data.asset_family_identifier),
           delete:
-            securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
-            securityContext.isGranted('akeneo_assetmanager_asset_delete') &&
+            // securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
+            // securityContext.isGranted('akeneo_assetmanager_asset_delete') &&
             canEditAssetFamily(state.right.assetFamily, state.form.data.asset_family_identifier),
         },
       },

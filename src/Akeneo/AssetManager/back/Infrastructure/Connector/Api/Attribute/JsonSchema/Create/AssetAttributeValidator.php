@@ -11,10 +11,6 @@
 
 namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create;
 
-use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\AttributeValidatorInterface;
 use JsonSchema\Validator;
 
 class AssetAttributeValidator implements AttributeValidatorInterface
@@ -24,6 +20,7 @@ class AssetAttributeValidator implements AttributeValidatorInterface
 
     public function validate(array $normalizedAttribute): array
     {
+        $normalizedAttribute['labels'] =  empty($normalizedAttribute['labels']) ? (object) [] : $normalizedAttribute['labels'] ;
         $asset = Validator::arrayToObjectRecursive($normalizedAttribute);
         $validator = new Validator();
         $validator->validate($asset, $this->getJsonSchema());
@@ -40,7 +37,7 @@ class AssetAttributeValidator implements AttributeValidatorInterface
     {
         return [
             'type' => 'object',
-            'required' => ['code', 'type', 'value_per_locale', 'value_per_channel', 'asset_family_code'],
+            'required' => ['code', 'type', 'asset_family_code'],
             'properties' => [
                 'code' => [
                     'type' => ['string'],

@@ -93,6 +93,11 @@ services:
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
 
+    akeneo_assetmanager.infrastructure.persistence.query.get_attribute_type:
+        class: Akeneo\AssetManager\Common\Fake\InMemoryGetAttributeType
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+
     akeneo_assetmanager.infrastructure.persistence.query.find_attribute_next_order:
         class: Akeneo\AssetManager\Common\Fake\InMemoryFindAttributeNextOrder
         arguments:
@@ -245,6 +250,9 @@ services:
     akeneo_assetmanager.infrastructure.rule_template.rule_engine_runner:
         class: Akeneo\AssetManager\Common\Fake\CompiledRuleRunnerSpy
 
+    akeneo_assetmanager.infrastructure.job.product_link_rule_launcher:
+        class: 'Akeneo\AssetManager\Common\Fake\ProductLinkRuleLauncherSpy'
+
     # Third party services
     oro_security.security_facade:
         class: Akeneo\AssetManager\Common\Fake\SecurityFacadeStub
@@ -287,3 +295,7 @@ services:
 
     akeneo_file_storage.file_storage.file.file_storer:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFileStorer
+
+    # Anti-corruption layer
+    akeneo_assetmanager.infrastructure.validation.asset_family.product_link_rule.rule_engine_validator_acl:
+        class: Akeneo\AssetManager\Common\Fake\Anticorruption\RuleEngineValidatorACLStub

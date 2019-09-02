@@ -1,17 +1,17 @@
 import {
-  recordEditionLabelUpdated,
-  recordEditionReceived,
-  recordEditionImageUpdated,
-  recordEditionErrorOccured,
-  recordEditionSucceeded,
-  recordEditionValueUpdated,
-  recordEditionUpdated,
-  recordEditionSubmission,
+    recordEditionErrorOccurred,
+    recordEditionImageUpdated,
+    recordEditionLabelUpdated,
+    recordEditionReceived,
+    recordEditionSubmission,
+    recordEditionSucceeded,
+    recordEditionUpdated,
+    recordEditionValueUpdated,
 } from 'akeneoreferenceentity/domain/event/record/edit';
 import {
-  notifyRecordWellSaved,
-  notifyRecordSaveFailed,
-  notifyRecordSaveValidationError,
+    notifyRecordSaveFailed,
+    notifyRecordSaveValidationError,
+    notifyRecordWellSaved,
 } from 'akeneoreferenceentity/application/action/record/notify';
 import recordSaver from 'akeneoreferenceentity/infrastructure/saver/record';
 import recordFetcher, {RecordResult} from 'akeneoreferenceentity/infrastructure/fetcher/record';
@@ -31,7 +31,7 @@ export const saveRecord = () => async (dispatch: any, getState: () => EditState)
 
     if (errors) {
       const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-      dispatch(recordEditionErrorOccured(validationErrors));
+      dispatch(recordEditionErrorOccurred(validationErrors));
       dispatch(notifyRecordSaveValidationError());
 
       return;

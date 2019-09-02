@@ -13,18 +13,18 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit;
 
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Prefix;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Prefix;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Suffix;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\AttributeValidatorInterface;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\MediaLinkAttributeValidator;
 use PhpSpec\ObjectBehavior;
@@ -63,12 +63,32 @@ class MediaLinkAttributeValidatorSpec extends ObjectBehavior
     {
         $attribute = [
             'code' => 'preview',
-            'type' => 'mediaLink',
+            'type' => 'media_link',
             'value_per_channel' => true,
             'value_per_locale' => true,
             'labels' => [
                 'en_US' => 'Preview'
             ],
+            'is_required_for_completeness' => false,
+            'media_type' => 'image',
+            '_links' => [
+                'self' => [
+                    'href' => 'http://localhost/api/rest/v1/asset-families/designer/attributes/photo'
+                ]
+            ],
+        ];
+
+        $this->validate($attribute)->shouldReturn([]);
+    }
+
+    function it_does_not_return_any_error_when_no_labels()
+    {
+        $attribute = [
+            'code' => 'preview',
+            'type' => 'media_link',
+            'value_per_channel' => true,
+            'value_per_locale' => true,
+            'labels' => [],
             'is_required_for_completeness' => false,
             'media_type' => 'image',
             '_links' => [
@@ -93,7 +113,7 @@ class MediaLinkAttributeValidatorSpec extends ObjectBehavior
     function it_is_mandatory_to_provide_the_code_of_the_attribute()
     {
         $attribute = [
-            'type' => 'mediaLink',
+            'type' => 'media_link',
             'value_per_channel' => true,
             'value_per_locale' => true,
         ];
@@ -108,7 +128,7 @@ class MediaLinkAttributeValidatorSpec extends ObjectBehavior
         $attribute = [
             'unknown_property' => 'michel',
             'code' => 'preview',
-            'type' => 'mediaLink',
+            'type' => 'media_link',
             'value_per_channel' => true,
             'value_per_locale' => true,
         ];

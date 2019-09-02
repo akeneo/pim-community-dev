@@ -38,7 +38,8 @@ class ProductPdfRendererSpec extends ObjectBehavior
         FilterProductValuesHelper $filterHelper,
         ChannelRepositoryInterface $channelRepository,
         LocaleRepositoryInterface $localeRepository,
-        AssetRepositoryInterface $assetRepository
+        AssetRepositoryInterface $assetRepository,
+        IdentifiableObjectRepositoryInterface $attributeOptionRepository
     ) {
         $uploadDirectory = realpath(__DIR__ . '/../../../../../features/Context/fixtures/');
         $this->beConstructedWith(
@@ -54,6 +55,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
             $assetRepository,
             self::TEMPLATE_NAME,
             $uploadDirectory,
+            $attributeOptionRepository,
             null
         );
     }
@@ -77,12 +79,14 @@ class ProductPdfRendererSpec extends ObjectBehavior
 
         $blue->getAttributeCode()->willReturn('color');
         $attributeRepository->findOneByIdentifier('color')->willReturn($color);
+
         $color->getCode()->willReturn('color');
-
         $color->getGroup()->willReturn($design);
-        $design->getLabel()->willReturn('Design');
-
         $color->getType()->willReturn('pim_catalog_text');
+        $color->isScopable()->willReturn(false);
+        $color->isLocalizable()->willReturn(false);
+
+        $design->getLabel()->willReturn('Design');
 
         $renderingDate = new \DateTime();
 
@@ -93,6 +97,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
             'groupedAttributes' => ['Design' => ['color' => $color]],
             'imagePaths' => [],
             'customFont' => null,
+            'optionLabels' => [],
             'filter' => 'pdf_thumbnail',
             'renderingDate' => $renderingDate,
         ])->shouldBeCalled();
@@ -152,6 +157,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
             'groupedAttributes' => ['Media' => ['main_image' => $mainImage]],
             'imagePaths' => ['fookey'],
             'customFont' => null,
+            'optionLabels' => [],
             'filter' => 'pdf_thumbnail',
             'renderingDate' => $renderingDate,
         ])->shouldBeCalled();
@@ -239,6 +245,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
             'groupedAttributes' => ['Media' => ['front_view' => $assetCollectionAttr]],
             'imagePaths' => ['fileA', 'fileB'],
             'customFont' => null,
+            'optionLabels' => [],
             'filter' => 'pdf_thumbnail',
             'renderingDate' => $renderingDate,
         ])->shouldBeCalled();
@@ -326,6 +333,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
             'groupedAttributes' => ['Media' => ['front_view' => $assetCollectionAttr]],
             'imagePaths' => ['image_file'],
             'customFont' => null,
+            'optionLabels' => [],
             'filter' => 'pdf_thumbnail',
             'renderingDate' => $renderingDate,
         ])->shouldBeCalled();

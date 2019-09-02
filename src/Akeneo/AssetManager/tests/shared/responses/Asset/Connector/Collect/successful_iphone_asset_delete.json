@@ -1,0 +1,15 @@
+{
+    "request": {
+        "method": "DELETE",
+        "route": "akeneo_asset_manager_asset_rest_connector_delete",
+        "query": {
+            "assetFamilyIdentifier": "packshot",
+            "code": "iphone"
+        },
+        "body": {}
+    },
+    "response": {
+        "status": 204,
+        "body": ""
+    }
+}

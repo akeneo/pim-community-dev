@@ -4,14 +4,9 @@ namespace spec\Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily;
 
 use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyCommand;
 use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyHandler;
-use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
-use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -39,18 +34,17 @@ class CreateAssetFamilyHandlerSpec extends ObjectBehavior
             ],
             [
                 [
-                    'conditions' => [
+                    'product_selections' => [
                         [
-                            'field' => 'sku',
+                            'field'    => 'sku',
                             'operator' => '=',
-                            'value' => '{{product_sku}}'
+                            'value'    => '{{product_sku}}'
                         ]
                     ],
-                    'actions'=> [
+                    'assign_assets_to' => [
                         [
-                            'type' => 'add',
-                            'field' => '{{attribute}}',
-                            'value' => '{{code}}'
+                            'mode'      => 'add',
+                            'attribute' => '{{attribute}}'
                         ]
                     ]
                 ]

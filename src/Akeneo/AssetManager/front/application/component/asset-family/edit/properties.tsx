@@ -3,9 +3,9 @@ import {connect} from 'react-redux';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import Form from 'akeneoassetmanager/application/component/asset-family/edit/form';
 import {
-  assetFamilyLabelUpdated,
-  saveAssetFamily,
-  assetFamilyImageUpdated,
+    assetFamilyImageUpdated,
+    assetFamilyLabelUpdated,
+    saveAssetFamily,
 } from 'akeneoassetmanager/application/action/asset-family/edit';
 import {deleteAssetFamily} from 'akeneoassetmanager/application/action/asset-family/delete';
 import __ from 'akeneoassetmanager/tools/translator';
@@ -14,10 +14,10 @@ import AssetFamily, {denormalizeAssetFamily} from 'akeneoassetmanager/domain/mod
 import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
 import {breadcrumbConfiguration} from 'akeneoassetmanager/application/component/asset-family/edit';
 import File from 'akeneoassetmanager/domain/model/file';
-const securityContext = require('pim/security-context');
+// const securityContext = require('pim/security-context');
 import DeleteModal from 'akeneoassetmanager/application/component/app/delete-modal';
-import {openDeleteModal, cancelDeleteModal} from 'akeneoassetmanager/application/event/confirmDelete';
-import {canEditLocale, canEditAssetFamily} from 'akeneoassetmanager/application/reducer/right';
+import {cancelDeleteModal, openDeleteModal} from 'akeneoassetmanager/application/event/confirmDelete';
+import {canEditAssetFamily, canEditLocale} from 'akeneoassetmanager/application/reducer/right';
 
 interface StateProps {
   form: EditionFormState;
@@ -150,11 +150,11 @@ export default connect(
         },
         assetFamily: {
           edit:
-            securityContext.isGranted('akeneo_assetmanager_asset_family_edit') &&
+            // securityContext.isGranted('akeneo_assetmanager_asset_family_edit') &&
             canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
           delete:
-            securityContext.isGranted('akeneo_assetmanager_asset_family_edit') &&
-            securityContext.isGranted('akeneo_assetmanager_asset_family_delete') &&
+            // securityContext.isGranted('akeneo_assetmanager_asset_family_edit') &&
+            // securityContext.isGranted('akeneo_assetmanager_asset_family_delete') &&
             canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
         },
       },

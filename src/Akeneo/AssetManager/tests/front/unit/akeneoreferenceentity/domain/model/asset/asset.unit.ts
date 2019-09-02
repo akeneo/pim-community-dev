@@ -5,13 +5,10 @@ import {createIdentifier as createAssetIdentifier} from 'akeneoassetmanager/doma
 import {createAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import {createEmptyFile} from 'akeneoassetmanager/domain/model/file';
 import {createValueCollection} from 'akeneoassetmanager/domain/model/asset/value-collection';
-import {createChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
-import {createLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
-import ValueData from 'akeneoassetmanager/domain/model/asset/data';
+import {createChannelReference, denormalizeChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
+import {createLocaleReference, denormalizeLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
 import {createValue} from 'akeneoassetmanager/domain/model/asset/value';
 import {denormalize as denormalizeTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
-import {denormalizeChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
-import {denormalizeLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
 import {denormalize as denormalizeTextData} from 'akeneoassetmanager/domain/model/asset/data/text';
 
 const michelIdentifier = createAssetIdentifier('michel');
@@ -55,7 +52,7 @@ const normalizedWebsite = {
   max_length: 0,
   is_textarea: false,
   is_rich_text_editor: false,
-  validation_rule: 'mediaLink',
+  validation_rule: 'url',
   regular_expression: null,
 };
 const website = denormalizeTextAttribute(normalizedWebsite);

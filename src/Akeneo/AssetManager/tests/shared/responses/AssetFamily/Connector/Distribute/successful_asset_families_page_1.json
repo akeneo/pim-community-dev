@@ -24,46 +24,55 @@
             "_links": {
               "self": {
                 "href": "http://localhost/api/rest/v1/asset-families/asset_family_1"
-              },
-              "image_download": {
-                "href": "http://localhost/api/rest/v1/asset-families-media-files/test/image_asset_family_1.jpg"
               }
             },
             "code": "asset_family_1",
             "labels": {
               "fr_FR": "Marque"
             },
-            "image": "test/image_asset_family_1.jpg"
+            "product_link_rules": [
+              {
+                "product_selections": [
+                  {
+                    "field": "sku",
+                    "operator": "EQUALS",
+                    "value": "{{product_ref}}",
+                    "locale": null
+                  }
+                ],
+                "assign_assets_to": [
+                  {
+                    "attribute": "user_instructions",
+                    "locale": "{{locale}}",
+                    "mode": "replace"
+                  }
+                ]
+              }
+            ]
           },
           {
             "_links": {
               "self": {
                 "href": "http://localhost/api/rest/v1/asset-families/asset_family_2"
-              },
-              "image_download": {
-                "href": "http://localhost/api/rest/v1/asset-families-media-files/test/image_asset_family_2.jpg"
               }
             },
             "code": "asset_family_2",
             "labels": {
               "fr_FR": "Marque"
             },
-            "image": "test/image_asset_family_2.jpg"
+            "product_link_rules": []
           },
           {
             "_links": {
               "self": {
                 "href": "http://localhost/api/rest/v1/asset-families/asset_family_3"
-              },
-              "image_download": {
-                "href": "http://localhost/api/rest/v1/asset-families-media-files/test/image_asset_family_3.jpg"
               }
             },
             "code": "asset_family_3",
             "labels": {
               "fr_FR": "Marque"
             },
-            "image": "test/image_asset_family_3.jpg"
+            "product_link_rules": []
           }
         ]
       }

@@ -3,6 +3,11 @@
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\Processor\Denormalization;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\MediaStorer;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Applier\DraftApplierInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Builder\EntityWithValuesDraftBuilderInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
@@ -12,11 +17,6 @@ use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Applier\DraftApplierInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Builder\EntityWithValuesDraftBuilderInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -70,6 +70,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         TokenInterface $token
     ) {
         $repository->findOneByIdentifier('my-sku')->willReturn($product);
+        $product->isVariant()->willReturn(false);
         $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW)->willReturn($productDraft);
 
         $values = $this->getValues();
@@ -146,6 +147,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         TokenInterface $token
     ) {
         $repository->findOneByIdentifier('my-sku')->willReturn($product);
+        $product->isVariant()->willReturn(false);
 
         $values = $this->getValues();
 
@@ -168,6 +170,44 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('proposal_skipped')->shouldBeCalled();
 
         $this->process($values)->shouldReturn(null);
+    }
+
+    public function it_ignores_the_parent_field_if_product_is_not_a_variant(
+        $repository,
+        $updater,
+        $validator,
+        $productDraftBuilder,
+        $stepExecution,
+        $tokenStorage,
+        $mediaStorer,
+        ProductInterface $product,
+        ConstraintViolationListInterface $violationList,
+        EntityWithValuesDraftInterface $productDraft,
+        JobExecution $jobExecution,
+        JobInstance $jobInstance,
+        TokenInterface $token
+    )
+    {
+        $repository->findOneByIdentifier('my-sku')->willReturn($product);
+        $product->isVariant()->willReturn(false);
+        $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW)->willReturn($productDraft);
+        $values = $this->getValues();
+
+        $mediaStorer->store($values['values'])->willReturn($values['values']);
+
+        $updater
+            ->update($product, $values)
+            ->shouldBeCalled();
+        $validator
+            ->validate($product)
+            ->willReturn($violationList);
+        $productDraftBuilder->build($product, 'mary')->willReturn($productDraft);
+        $tokenStorage->getToken()->willReturn($token);
+        $token->getUsername()->willReturn('mary');
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $values['parent'] = '';
+        $this->process($values)->shouldReturn($productDraft);
     }
 
     function getValues()

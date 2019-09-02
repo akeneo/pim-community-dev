@@ -46,6 +46,7 @@ yarn-error.log
 coverage/*
 /web/test_dist/*
 .phpunit.result.cache
+.idea/*
 .env.local
 .env.behat.local
 .env.test.local

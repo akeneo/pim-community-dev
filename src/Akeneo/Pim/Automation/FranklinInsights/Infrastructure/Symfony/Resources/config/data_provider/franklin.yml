@@ -3,7 +3,6 @@ services:
         abstract: true
         arguments:
             - '@akeneo.pim.automation.franklin_insights.repository.configuration'
-            - '@akeneo.pim.automation.franklin_insights.factory.invalid_token_exception'
 
     akeneo.pim.automation.franklin_insights.data_provider.product_subscription:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Adapter\SubscriptionProvider'

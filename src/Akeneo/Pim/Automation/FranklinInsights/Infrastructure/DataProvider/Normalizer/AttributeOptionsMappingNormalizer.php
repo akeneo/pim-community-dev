@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Normalizer;
 
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Write\AttributeOption;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Write\AttributeOptionsMapping;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Repository\AttributeOptionRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOptionMapping\Model\Write\AttributeOption;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOptionMapping\Model\Write\AttributeOptionsMapping;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOptionMapping\Repository\AttributeOptionRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\OptionMapping;
 
 /**

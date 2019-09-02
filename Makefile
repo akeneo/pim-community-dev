@@ -99,7 +99,7 @@ pim-prod: vendor node_modules
 	APP_ENV=prod $(MAKE) database
 
 .PHONY: all-pims
-all-pim: pim-prod pim-test
+all-pims: pim-prod pim-test
 
 ##
 ## Docker
@@ -114,7 +114,7 @@ php-image-prod:
 	DOCKER_BUILDKIT=1 docker build --progress=plain --pull --tag eu.gcr.io/akeneo-cloud:${IMAGE_TAG} --target prod .
 
 .PHONY: php-images
-php-image: php-image-dev php-image-prod
+php-images: php-image-dev php-image-prod
 
 .PHONY: up
 up:

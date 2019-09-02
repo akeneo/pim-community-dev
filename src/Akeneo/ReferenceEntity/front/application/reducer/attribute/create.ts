@@ -119,7 +119,7 @@ export default (
       };
       break;
 
-    case 'ATTRIBUTE_CREATION_ERROR_OCCURED':
+    case 'ATTRIBUTE_CREATION_ERROR_OCCURRED':
       state = {
         ...state,
         errors: action.errors,

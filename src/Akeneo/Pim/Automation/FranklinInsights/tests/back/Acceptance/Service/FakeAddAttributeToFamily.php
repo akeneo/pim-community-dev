@@ -42,4 +42,13 @@ class FakeAddAttributeToFamily implements AddAttributeToFamilyInterface
         $family = $this->familyRepository->findOneByIdentifier((string) $familyCode);
         $family->addAttribute($attribute);
     }
+
+    public function bulkAddAttributesToFamily(FamilyCode $familyCode, array $attributeCodes): void
+    {
+        $family = $this->familyRepository->findOneByIdentifier((string) $familyCode);
+        foreach ($attributeCodes as $attributeCode) {
+            $attribute = $this->attributeRepository->findOneByIdentifier((string) $attributeCode);
+            $family->addAttribute($attribute);
+        }
+    }
 }

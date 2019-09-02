@@ -50,6 +50,16 @@ class GetConnectorAssetFamilyAction
         }
 
         $normalizedAssetFamily = $assetFamily->normalize();
+
+        /** /!\ /!\ /!\ /!\
+         * Crappy tricks to only remove the image of the asset family on the API side....
+         * @todo : To remove if the functional decide to not have an image on the asset family
+         * @todo : Check the PR https://github.com/akeneo/pim-enterprise-dev/pull/6651 for real fix
+         */
+        if (array_key_exists('image', $normalizedAssetFamily)) {
+            unset($normalizedAssetFamily['image']);
+        }
+
         $normalizedAssetFamily = ($this->addHalLinksToAssetFamilyImage)($normalizedAssetFamily);
 
         return new JsonResponse($normalizedAssetFamily);

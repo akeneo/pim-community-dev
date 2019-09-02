@@ -100,7 +100,7 @@ pim_asset_manager:
             none: Ingen
             email: E-mail
             regular_expression: Regulære udtryk
-            mediaLink: URL
+            url: URL
     delete:
       title: Attribut
     notification:

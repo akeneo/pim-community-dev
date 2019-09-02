@@ -78,8 +78,8 @@ class CreateAttributeContext implements Context
         $attributeData['code'] = $attributeCode;
         $attributeData['order'] = (int) $attributeData['order'];
         $attributeData['is_required'] = json_decode($attributeData['is_required']);
-        $attributeData['value_per_channel'] = json_decode($attributeData['value_per_channel']);
-        $attributeData['value_per_locale'] = json_decode($attributeData['value_per_locale']);
+        $attributeData['value_per_channel'] = key_exists('value_per_channel', $attributeData) ? json_decode($attributeData['value_per_channel']) : null;
+        $attributeData['value_per_locale'] = key_exists('value_per_locale', $attributeData) ? json_decode($attributeData['value_per_locale']) : null;
         $attributeData['labels'] = json_decode($attributeData['labels'], true);
         $attributeData['max_length'] = (int) $attributeData['max_length'];
         $attributeData['is_textarea'] = key_exists('is_textarea', $attributeData) ? json_decode($attributeData['is_textarea']) : null;
@@ -590,13 +590,13 @@ class CreateAttributeContext implements Context
     }
 
     /**
-     * @When /^the user creates an mediaLink attribute "([^"]*)" to the asset family "([^"]*)" with:$/
+     * @When /^the user creates a media_link attribute "([^"]*)" to the asset family "([^"]*)" with:$/
      */
     public function theUserCreatesAnMediaLinkAttributeToTheAssetFamilyWith(string $attributeCode, string $assetFamilyIdentifier, TableNode $attributeData): void
     {
         $attributeData = current($attributeData->getHash());
 
-        $attributeData['type'] = 'mediaLink';
+        $attributeData['type'] = 'media_link';
         $attributeData['identifier']['identifier'] = $attributeCode;
         $attributeData['identifier']['asset_family_identifier'] = $assetFamilyIdentifier;
         $attributeData['asset_family_identifier'] = $assetFamilyIdentifier;
@@ -620,7 +620,7 @@ class CreateAttributeContext implements Context
     }
 
     /**
-     * @Then /^there is an mediaLink attribute "([^"]*)" in the asset family "([^"]*)" with:$/
+     * @Then /^there is an media_link attribute "([^"]*)" in the asset family "([^"]*)" with:$/
      */
     public function thereIsAnMediaLinkAttributeInTheAssetFamilyWith(string $attributeCode, string $assetFamilyIdentifier, TableNode $expected): void
     {

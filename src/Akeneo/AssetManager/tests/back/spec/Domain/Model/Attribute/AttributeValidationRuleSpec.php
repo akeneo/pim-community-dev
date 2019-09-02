@@ -54,9 +54,9 @@ class AttributeValidationRuleSpec extends ObjectBehavior
         $this::fromString(AttributeValidationRule::EMAIL)->isNone()->shouldReturn(false);
     }
 
-    function it_tells_if_it_is_mediaLink()
+    function it_tells_if_it_is_url()
     {
-        $this::fromString(AttributeValidationRule::URL)->isMediaLink()->shouldReturn(true);
+        $this::fromString(AttributeValidationRule::URL)->isUrl()->shouldReturn(true);
         $this::fromString(AttributeValidationRule::URL)->isNone()->shouldReturn(false);
     }
 

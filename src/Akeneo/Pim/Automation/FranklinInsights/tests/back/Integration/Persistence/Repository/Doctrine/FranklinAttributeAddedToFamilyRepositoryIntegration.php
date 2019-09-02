@@ -14,12 +14,9 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\tests\back\Integration\Persistence\Repository\Doctrine;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeType;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Event\FranklinAttributeAddedToFamily;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Event\FranklinAttributeCreated;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Doctrine\FranklinAttributeAddedToFamilyRepository;
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Doctrine\FranklinAttributeCreatedRepository;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
@@ -49,6 +46,40 @@ SQL;
         Assert::assertEquals('color', $retrievedEvents[0]['attribute_code']);
         Assert::assertEquals('camcorders', $retrievedEvents[0]['family_code']);
         Assert::assertNotNull($retrievedEvents[0]['created']);
+    }
+
+    public function test_it_saves_multiple_attribute_added_to_family_events()
+    {
+        $events = [
+            0 => new FranklinAttributeAddedToFamily(
+                new AttributeCode('color'),
+                new FamilyCode('camcorders')
+            ),
+            1 => new FranklinAttributeAddedToFamily(
+                new AttributeCode('width'),
+                new FamilyCode('camcorders')
+            ),
+            2 => new FranklinAttributeAddedToFamily(
+                new AttributeCode('frequency'),
+                new FamilyCode('camcorders')
+            ),
+        ];
+        $this->getRepository()->saveAll($events);
+
+        $sqlQuery = <<<'SQL'
+SELECT attribute_code, family_code, created
+FROM pimee_franklin_insights_attribute_added_to_family
+SQL;
+
+        $stmt = $this->getDbConnection()->query($sqlQuery);
+        $retrievedEvents = $stmt->fetchAll();
+        Assert::assertCount(3, $retrievedEvents);
+
+        foreach ($retrievedEvents as $index => $event) {
+            Assert::assertEquals((string) $events[$index]->getAttributeCode(), $retrievedEvents[$index]['attribute_code']);
+            Assert::assertEquals((string) $events[$index]->getFamilyCode(), $retrievedEvents[$index]['family_code']);
+            Assert::assertNotNull($retrievedEvents[$index]['created']);
+        }
     }
 
     public function test_it_counts_attributes_added_to_family_events(): void

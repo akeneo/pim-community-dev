@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Domain\Model\Attribute\MediaLink;
 
-use Webmozart\Assert\Assert;
-
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -33,9 +31,7 @@ class Prefix
 
     public static function fromString(?string $prefix): self
     {
-        Assert::nullOrStringNotEmpty($prefix, 'The prefix cannot be an empty string');
-
-        return new self($prefix);
+        return new self('' === $prefix ? self::EMPTY : $prefix);
     }
 
     public static function empty(): self
@@ -51,5 +47,10 @@ class Prefix
     public function normalize(): ?string
     {
         return $this->prefix;
+    }
+
+    public function stringValue(): string
+    {
+        return $this->prefix === self::EMPTY ? '' : $this->prefix;
     }
 }

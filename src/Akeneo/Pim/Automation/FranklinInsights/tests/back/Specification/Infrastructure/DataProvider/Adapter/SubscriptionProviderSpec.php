@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Adapter;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\InvalidTokenExceptionFactory;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Model\Read\Family;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Configuration;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
@@ -35,9 +37,6 @@ use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Except
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\SubscriptionCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\WarningCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\SubscriptionsCursor;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Model\Read\Family;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -48,7 +47,6 @@ class SubscriptionProviderSpec extends ObjectBehavior
 {
     public function let(
         ConfigurationRepositoryInterface $configurationRepo,
-        InvalidTokenExceptionFactory $invalidTokenExceptionFactory,
         SubscriptionWebService $subscriptionApi,
         FamilyRepositoryInterface $familyRepository
     ): void {
@@ -60,7 +58,6 @@ class SubscriptionProviderSpec extends ObjectBehavior
 
         $this->beConstructedWith(
             $configurationRepo,
-            $invalidTokenExceptionFactory,
             $subscriptionApi,
             $familyRepository
         );
@@ -163,14 +160,13 @@ class SubscriptionProviderSpec extends ObjectBehavior
         $this->shouldThrow(DataProviderException::serverIsDown($thrownException))->during('fetch', [$datetime]);
     }
 
-    public function it_throws_a_data_provider_exception_when_token_is_invalid_on_fetch($invalidTokenExceptionFactory, $subscriptionApi): void
+    public function it_throws_a_data_provider_exception_when_token_is_invalid_on_fetch($subscriptionApi): void
     {
         $datetime = new \DateTime('2012-01-01');
         $thrownException = new InvalidTokenException();
         $subscriptionApi->fetchProducts(null, $datetime)->willThrow($thrownException);
 
         $invalidTokenException = DataProviderException::authenticationError();
-        $invalidTokenExceptionFactory->create($thrownException)->willReturn($invalidTokenException);
 
         $this->shouldThrow($invalidTokenException)->during('fetch', [$datetime]);
     }
@@ -192,15 +188,12 @@ class SubscriptionProviderSpec extends ObjectBehavior
             ->during('unsubscribe', [new SubscriptionId('fake-subscription-id')]);
     }
 
-    public function it_throws_a_data_provider_exception_when_token_is_invalid_on_unsubscription(
-        $invalidTokenExceptionFactory,
-        $subscriptionApi
-    ): void {
+    public function it_throws_a_data_provider_exception_when_token_is_invalid_on_unsubscription($subscriptionApi): void
+    {
         $thrownException = new InvalidTokenException();
         $subscriptionApi->unsubscribeProduct('fake-subscription-id')->willThrow($thrownException);
 
         $invalidTokenException = DataProviderException::authenticationError();
-        $invalidTokenExceptionFactory->create($thrownException)->willReturn($invalidTokenException);
 
         $this
             ->shouldThrow($invalidTokenException)
@@ -252,10 +245,8 @@ class SubscriptionProviderSpec extends ObjectBehavior
             ->during('updateFamilyInfos', [new SubscriptionId($subscriptionId), $family]);
     }
 
-    public function it_throws_a_data_provider_exception_when_token_is_invalid_on_family_infos_update(
-        $invalidTokenExceptionFactory,
-        $subscriptionApi
-    ): void {
+    public function it_throws_a_data_provider_exception_when_token_is_invalid_on_family_infos_update($subscriptionApi): void
+    {
         $subscriptionId = '123456';
         $family = new Family(new FamilyCode('new_family_code'), []);
 
@@ -263,7 +254,6 @@ class SubscriptionProviderSpec extends ObjectBehavior
         $subscriptionApi->updateFamilyInfos($subscriptionId, Argument::any())->willThrow($thrownException);
 
         $invalidTokenException = DataProviderException::authenticationError();
-        $invalidTokenExceptionFactory->create($thrownException)->willReturn($invalidTokenException);
 
         $this
             ->shouldThrow($invalidTokenException)

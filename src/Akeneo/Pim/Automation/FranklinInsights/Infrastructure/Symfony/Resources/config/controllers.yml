@@ -53,6 +53,8 @@ services:
             - '@oro_security.security_facade'
             - '@akeneo.pim.automation.franklin_insights.handler.create_attribute_in_family'
             - '@akeneo.pim.automation.franklin_insights.handler.add_attribute_to_family'
+            - '@akeneo.pim.automation.franklin_insights.handler.bulk_create_attributes_in_family'
+            - '@akeneo.pim.automation.franklin_insights.handler.bulk_add_attributes_to_family'
 
     akeneo.pim.automation.franklin_insights.controller.key_figure:
         public: true

@@ -94,6 +94,7 @@ config:
         akeneo/franklin-insights/view/settings/attributes-mapping/family-selector: akeneofranklininsights/js/view/attributes-mapping/family-selector.ts
         akeneo/franklin-insights/view/settings/attributes-mapping/family-status: akeneofranklininsights/js/view/attributes-mapping/family-status.ts
         akeneo/franklin-insights/view/settings/attributes-mapping/table: akeneofranklininsights/js/view/attributes-mapping/table.ts
+        akeneo/franklin-insights/view/settings/attributes-mapping/toolbar: akeneofranklininsights/js/view/attributes-mapping/toolbar/toolbar-view.tsx
         akeneo/franklin-insights/view/settings/identifiers-mapping/state: akeneofranklininsights/js/view/identifiers-mapping/state.ts
         akeneo/franklin-insights/view/settings/identifiers-mapping/table: akeneofranklininsights/js/view/identifiers-mapping/table.ts
         akeneo/franklin-insights/view/settings/attributes-mapping/title: akeneofranklininsights/js/view/attributes-mapping/title.ts

@@ -24,6 +24,6 @@ export const recordCreationSucceeded = () => {
   return {type: 'RECORD_CREATION_SUCCEEDED'};
 };
 
-export const recordCreationErrorOccured = (errors: ValidationError[]) => {
-  return {type: 'RECORD_CREATION_ERROR_OCCURED', errors};
+export const recordCreationErrorOccurred = (errors: ValidationError[]) => {
+  return {type: 'RECORD_CREATION_ERROR_OCCURRED', errors};
 };

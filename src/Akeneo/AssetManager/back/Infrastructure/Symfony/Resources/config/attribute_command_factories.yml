@@ -38,7 +38,7 @@ services:
         tags:
             - { name: akeneo_assetmanager.create_attribute_command_factory }
 
-    akeneo_assetmanager.application.factory.create_mediaLink_attribute_command_factory:
+    akeneo_assetmanager.application.factory.create_media_link_attribute_command_factory:
         class: Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFactory\CreateMediaLinkAttributeCommandFactory
         tags:
             - { name: akeneo_assetmanager.create_attribute_command_factory }
@@ -112,17 +112,17 @@ services:
         tags:
             - { name: akeneo_assetmanager.edit_attribute_command_factory, priority: 120 }
 
-    akeneo_assetmanager.application.factory.edit_mediaLink_prefix_command_factory:
+    akeneo_assetmanager.application.factory.edit_media_link_prefix_command_factory:
         class: Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\MediaLink\EditPrefixCommandFactory
         tags:
             - { name: akeneo_assetmanager.edit_attribute_command_factory, priority: 120 }
 
-    akeneo_assetmanager.application.factory.edit_mediaLink_suffix_command_factory:
+    akeneo_assetmanager.application.factory.edit_media_link_suffix_command_factory:
         class: Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\MediaLink\EditSuffixCommandFactory
         tags:
             - { name: akeneo_assetmanager.edit_attribute_command_factory, priority: 120 }
 
-    akeneo_assetmanager.application.factory.edit_mediaLink_media_type_command_factory:
+    akeneo_assetmanager.application.factory.edit_media_link_media_type_command_factory:
         class: Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\MediaLink\EditMediaTypeCommandFactory
         tags:
             - { name: akeneo_assetmanager.edit_attribute_command_factory, priority: 120 }

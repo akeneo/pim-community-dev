@@ -1,6 +1,4 @@
-import {reducer} from 'akeneoreferenceentity/application/reducer/attribute/type/option';
-import {editOptionsReducer} from 'akeneoreferenceentity/application/reducer/attribute/type/option';
-import {NormalizedOption} from 'akeneoreferenceentity/domain/model/attribute/type/option/option';
+import {editOptionsReducer, reducer} from 'akeneoreferenceentity/application/reducer/attribute/type/option';
 
 const normalizedOptions = [
   {
@@ -460,7 +458,7 @@ describe('akeneo > reference entity > application > reducer > attribute > type >
         {
           messageTemplate: 'message_template',
           parameters: {},
-          message: 'An error occured for the option "red"',
+          message: 'An error occurred for the option "red"',
           propertyPath: 'option.red.code',
           invalidValue: 're-d',
         },
@@ -496,7 +494,7 @@ describe('akeneo > reference entity > application > reducer > attribute > type >
     });
   });
 
-  test('An error occured', () => {
+  test('An error occurred', () => {
     const errors = [
       {
         messageTemplate: 'an error',
@@ -516,13 +514,35 @@ describe('akeneo > reference entity > application > reducer > attribute > type >
       currentOptionId: 0,
     };
     const newState = editOptionsReducer(state, {
-      type: 'OPTIONS_EDITION_ERROR_OCCURED',
+      type: 'OPTIONS_EDITION_ERROR_OCCURRED',
       errors: errors,
     });
     expect(newState).toEqual({
       ...state,
       isSaving: false,
       errors: errors,
+    });
+  });
+
+  test('I start to update options after already having update some on another attribute', () => {
+    const state = editOptionsReducer(undefined, {});
+    const newState = editOptionsReducer(state, {
+      type: 'OPTIONS_EDITION_SELECTED',
+      id: 2
+    });
+    const stateUpdated = editOptionsReducer(newState, {
+      type: 'OPTIONS_EDITION_START',
+      options: normalizedOptions,
+    });
+    expect(stateUpdated).toEqual({
+      isActive: true,
+      isDirty: false,
+      isSaving: false,
+      errors: [],
+      originalData: stringifiedOptions,
+      options: normalizedOptions,
+      currentOptionId: 0,
+      numberOfLockedOptions: 2,
     });
   });
 });

@@ -14,6 +14,8 @@ pim_asset_manager:
       product_attributes:
         should_not_be_linked: 'Sie können diese Entität nicht löschen, da Produktattribute mit dieser Entität verknüpft sind'
       should_exist: 'Die Asset-Familie "%asset_family_code%" wurde nicht gefunden.'
+      rule_template:
+        limit_reached: 'Sie können die Asset-Familie "%asset_family_label%" nicht erstellen, da Sie die Grenze der Produktlink-Regeln von %limit% erreicht haben'
   asset:
     validation:
       code:

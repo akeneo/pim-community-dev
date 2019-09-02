@@ -1,6 +1,6 @@
 import * as React from 'react';
 import FileModel from 'akeneoassetmanager/domain/model/file';
-import {getImageShowUrl, getImageDownloadUrl} from 'akeneoassetmanager/tools/media-url-generator';
+import {getImageDownloadUrl, getImageShowUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import imageUploader from 'akeneoassetmanager/infrastructure/uploader/image';
 import loadImage from 'akeneoassetmanager/tools/image-loader';
 import Trash from 'akeneoassetmanager/application/component/app/icon/trash';
@@ -104,7 +104,7 @@ class Image extends React.Component<
 
   render() {
     const wide = this.props.wide;
-    const imageMediaLink = getImageShowUrl(this.props.image, true === this.props.wide ? 'preview' : 'thumbnail');
+    const url = getImageShowUrl(this.props.image, true === this.props.wide ? 'preview' : 'thumbnail');
 
     // If the image is in read only mode, we return a simple version of the component
     if (undefined === this.props.onImageChange) {
@@ -113,9 +113,9 @@ class Image extends React.Component<
       return (
         <div className={className}>
           {true === this.props.wide && !this.props.image.isEmpty() ? (
-            <div className="AknImage-drop" style={{backgroundImage: `mediaLink("${imageMediaLink}")`}} />
+            <div className="AknImage-drop" style={{backgroundImage: `url("${url}")`}} />
           ) : null}
-          <img className="AknImage-display" src={imageMediaLink} />
+          <img className="AknImage-display" src={url} />
         </div>
       );
     }
@@ -134,7 +134,7 @@ class Image extends React.Component<
     return (
       <div className={className}>
         {true === this.props.wide && !this.props.image.isEmpty() ? (
-          <div className="AknImage-drop" style={{backgroundImage: `mediaLink("${imageMediaLink}")`}} />
+          <div className="AknImage-drop" style={{backgroundImage: `url("${url}")`}} />
         ) : null}
         <input
           id={this.props.id}
@@ -173,15 +173,14 @@ class Image extends React.Component<
             <div
               className="AknImage-drop"
               style={{
-                backgroundImage:
-                  0 !== this.state.uploadingImage.length ? `mediaLink("${this.state.uploadingImage}")` : '',
+                backgroundImage: 0 !== this.state.uploadingImage.length ? `url("${this.state.uploadingImage}")` : '',
               }}
             />
           </div>
         ) : null}
         {!this.props.image.isEmpty() ? (
           <div className="AknImage-displayContainer">
-            <img className="AknImage-display" src={imageMediaLink} />
+            <img className="AknImage-display" src={url} />
           </div>
         ) : null}
         {this.props.image.isEmpty() && undefined !== this.props.onImageChange ? (

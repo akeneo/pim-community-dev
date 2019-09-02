@@ -1,0 +1,7 @@
+pim_asset_manager:
+  asset_family:
+    validation:
+      code:
+        pattern: 'Este campo sólo puede contener letras, números y guiones bajos.'
+      asset_family_permissions:
+        at_least_one_user_group_should_have_edit_permission: 'Al menos un grupo de usuarios debe tener permiso de edición sobre esta entidad'

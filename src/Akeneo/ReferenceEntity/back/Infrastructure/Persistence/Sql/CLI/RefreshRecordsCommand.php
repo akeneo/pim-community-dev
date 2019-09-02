@@ -3,9 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\CLI;
 
-use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\RefreshRecords\FindAllRecordIdentifiers;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\RefreshRecords\RefreshAllRecords;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\RefreshRecords\RefreshRecord;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
@@ -91,7 +89,7 @@ class RefreshRecordsCommand extends ContainerAwareCommand
         $stmt = $this->sqlConnection->executeQuery('SELECT COUNT(*) FROM akeneo_reference_entity_record;');
         $result = $stmt->fetch(\PDO::FETCH_COLUMN);
         if (false === $result) {
-            throw new \RuntimeException('An exception occured while connecting the database');
+            throw new \RuntimeException('An exception occurred while connecting the database');
         }
 
         return Type::getType('integer')->convertToPHPValue($result, $this->sqlConnection->getDatabasePlatform());

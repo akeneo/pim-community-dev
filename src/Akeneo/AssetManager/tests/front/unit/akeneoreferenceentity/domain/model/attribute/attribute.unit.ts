@@ -1,6 +1,9 @@
 import {denormalize as denormalizeTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
-import {denormalize as denormalizeImageAttribute} from 'akeneoassetmanager/domain/model/attribute/type/image';
-import {ConcreteImageAttribute} from 'akeneoassetmanager/domain/model/attribute/type/image';
+import {wrapNormalizableAdditionalProperty} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import {
+    ConcreteImageAttribute,
+    denormalize as denormalizeImageAttribute
+} from 'akeneoassetmanager/domain/model/attribute/type/image';
 import {createIdentifier as denormalizeAttributeIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
 import {createIdentifier as createAssetFamilyIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {createCode} from 'akeneoassetmanager/domain/model/attribute/code';
@@ -81,5 +84,9 @@ describe('akeneo > attribute > domain > model --- attribute', () => {
         0
       );
     }).toThrow('Attribute expects an AttributeIdentifier argument');
+  });
+
+  test('I can wrap a functionnal attribute in a normalizable object', () => {
+    expect(wrapNormalizableAdditionalProperty('nice').normalize()).toEqual('nice');
   });
 });

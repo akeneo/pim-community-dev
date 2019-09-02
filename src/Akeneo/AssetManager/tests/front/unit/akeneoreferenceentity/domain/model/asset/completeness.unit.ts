@@ -1,12 +1,10 @@
 import Completeness from 'akeneoassetmanager/domain/model/asset/completeness';
 import {denormalize as denormalizeTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
-import {denormalizeChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
-import {denormalizeLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
+import {createChannelReference, denormalizeChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
+import {createLocaleReference, denormalizeLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
 import {denormalize as denormalizeTextData} from 'akeneoassetmanager/domain/model/asset/data/text';
 import {createValue} from 'akeneoassetmanager/domain/model/asset/value';
 import {createValueCollection} from 'akeneoassetmanager/domain/model/asset/value-collection';
-import {createChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
-import {createLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
 
 const normalizedDescription = {
   identifier: 'description_1234',
@@ -38,7 +36,7 @@ const normalizedWebsite = {
   max_length: 0,
   is_textarea: false,
   is_rich_text_editor: false,
-  validation_rule: 'mediaLink',
+  validation_rule: 'url',
   regular_expression: null,
 };
 const website = denormalizeTextAttribute(normalizedWebsite);
@@ -56,7 +54,7 @@ const normalizedNickname = {
   max_length: 0,
   is_textarea: false,
   is_rich_text_editor: false,
-  validation_rule: 'mediaLink',
+  validation_rule: 'url',
   regular_expression: null,
 };
 const nickname = denormalizeTextAttribute(normalizedNickname);

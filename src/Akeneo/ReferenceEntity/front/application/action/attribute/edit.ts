@@ -1,26 +1,26 @@
 import attributeSaver from 'akeneoreferenceentity/infrastructure/saver/attribute';
 import {
-  attributeEditionSucceeded,
-  attributeEditionErrorOccured,
-  attributeEditionStart as attributeEditionStartEvent,
-  attributeEditionSubmission,
-  attributeEditionCancel,
+    attributeEditionCancel,
+    attributeEditionErrorOccurred,
+    attributeEditionStart as attributeEditionStartEvent,
+    attributeEditionSubmission,
+    attributeEditionSucceeded,
 } from 'akeneoreferenceentity/domain/event/attribute/edit';
 import AttributeIdentifier from 'akeneoreferenceentity/domain/model/attribute/identifier';
 import ValidationError, {createValidationError} from 'akeneoreferenceentity/domain/model/validation-error';
 import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
 import {
-  notifyAttributeSaveFailed,
-  notifyAttributeSaveValidationError,
+    notifyAttributeSaveFailed,
+    notifyAttributeSaveValidationError,
 } from 'akeneoreferenceentity/application/action/attribute/notify';
 import {updateAttributeList} from 'akeneoreferenceentity/application/action/attribute/list';
 import AttributeCode from 'akeneoreferenceentity/domain/model/code';
 import denormalizeAttribute from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
-import {NormalizedAttribute, Attribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import {Attribute, NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import {
-  optionEditionSubmission,
-  optionEditionErrorOccured,
-  optionEditionSucceeded,
+    optionEditionErrorOccurred,
+    optionEditionSubmission,
+    optionEditionSucceeded,
 } from 'akeneoreferenceentity/domain/event/attribute/option';
 import {NormalizedOption, Option} from 'akeneoreferenceentity/domain/model/attribute/type/option/option';
 import {AttributeWithOptions} from 'akeneoreferenceentity/domain/model/attribute/type/option';
@@ -43,13 +43,13 @@ export const saveAttribute = (dismiss: boolean = true) => async (
 
     if (errors) {
       const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-      dispatch(attributeEditionErrorOccured(validationErrors));
+      dispatch(attributeEditionErrorOccurred(validationErrors));
       dispatch(notifyAttributeSaveValidationError());
 
       return;
     }
   } catch (error) {
-    dispatch(attributeEditionErrorOccured([]));
+    dispatch(attributeEditionErrorOccurred([]));
     dispatch(notifyAttributeSaveFailed());
 
     return;
@@ -86,12 +86,12 @@ export const saveOptions = () => async (dispatch: any, getState: () => EditState
           return filteredErrors;
         }, {})
       ).map((error: ValidationError) => createValidationError(error));
-      dispatch(optionEditionErrorOccured(validationErrors));
+      dispatch(optionEditionErrorOccurred(validationErrors));
 
       return;
     }
   } catch (error) {
-    dispatch(optionEditionErrorOccured([]));
+    dispatch(optionEditionErrorOccurred([]));
 
     return;
   }

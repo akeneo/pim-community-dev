@@ -41,9 +41,7 @@ use Akeneo\AssetManager\Domain\Model\Asset\Value\OptionData;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\TextData;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AssetAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AssetCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
@@ -67,7 +65,6 @@ use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
-use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
@@ -243,7 +240,7 @@ final class EditAssetContext implements Context
     }
 
     /**
-     * @Given /^a asset belonging to this asset family with a value of "([^"]*)" for the text attribute$/
+     * @Given /^an asset belonging to this asset family with a value of "([^"]*)" for the text attribute$/
      */
     public function aAssetBelongingToThisAssetFamilyWithAValueOfFor(string $textData)
     {
@@ -333,7 +330,7 @@ final class EditAssetContext implements Context
     }
 
     /**
-     * @Given /^a asset belonging to this asset family with the file "([^"]*)" for the image attribute$/
+     * @Given /^an asset belonging to this asset family with the file "([^"]*)" for the image attribute$/
      */
     public function aAssetBelongingToThisAssetFamilyWithATheFileForTheImageAttribute(string $originalFilename)
     {
@@ -603,10 +600,10 @@ final class EditAssetContext implements Context
     }
 
     /**
-     * @Given /^an asset family with a text attribute with an mediaLink validation rule$/
+     * @Given /^an asset family with a text attribute with an url validation rule$/
      * @throws \Exception
      */
-    public function anAssetFamilyWithATextAttributeWithAnMediaLinkValidationRule()
+    public function anAssetFamilyWithATextAttributeWithAnUrlValidationRule()
     {
         $this->createAssetFamily(self::ASSET_FAMILY_IDENTIFIER);
         $this->attributeRepository->create(
@@ -705,7 +702,7 @@ final class EditAssetContext implements Context
     }
 
     /**
-     * @Given /^a asset belonging to this asset family with a value for the french locale$/
+     * @Given /^an asset belonging to this asset family with a value for the french locale$/
      */
     public function aAssetBelongingToThisAssetFamilyWithAValueForTheFrenchLocale()
     {
@@ -960,7 +957,7 @@ final class EditAssetContext implements Context
     }
 
     /**
-     * @Given /^a asset belonging to this asset family with a value for the ecommerce channel$/
+     * @Given /^an asset belonging to this asset family with a value for the ecommerce channel$/
      */
     public function aAssetBelongingToThisAssetFamilyWithAValueForTheEcommerceChannel()
     {
@@ -1028,7 +1025,7 @@ final class EditAssetContext implements Context
     }
 
     /**
-     * @Given /^a asset belonging to this asset family with a value for the not scopable attribute$/
+     * @Given /^an asset belonging to this asset family with a value for the not scopable attribute$/
      */
     public function aAssetBelongingToThisAssetFamilyWithAValueForTheNotScopableAttribute()
     {
@@ -1097,7 +1094,7 @@ final class EditAssetContext implements Context
     }
 
     /**
-     * @Given /^a asset belonging to this asset family with a value for the ecommerce channel and french locale$/
+     * @Given /^an asset belonging to this asset family with a value for the ecommerce channel and french locale$/
      */
     public function aAssetBelongingToThisAssetFamilyWithAValueForTheEcommerceChannelAndFrenchLocale()
     {
@@ -2002,7 +1999,7 @@ final class EditAssetContext implements Context
     }
 
     /**
-     * @Given /^a asset belonging to this asset family with a value of "([^"]*)" for the asset attribute$/
+     * @Given /^an asset belonging to this asset family with a value of "([^"]*)" for the asset attribute$/
      */
     public function aAssetBelongingToThisAssetFamilyWithAValueOfForTheAssetAttribute($assetCode)
     {
@@ -2128,7 +2125,7 @@ final class EditAssetContext implements Context
     }
 
     /**
-     * @Given /^a asset belonging to this asset family with values of "([^"]*)" for the asset collection attribute$/
+     * @Given /^an asset belonging to this asset family with values of "([^"]*)" for the asset collection attribute$/
      */
     public function aAssetBelongingToThisAssetFamilyWithValuesOfForTheAssetCollectionAttribute($assetCodeCollection)
     {
@@ -2322,7 +2319,7 @@ final class EditAssetContext implements Context
     }
 
     /**
-     * @Given /^a asset belonging to this asset family with values of "([^"]+)" for the option attribute$/
+     * @Given /^an asset belonging to this asset family with values of "([^"]+)" for the option attribute$/
      */
     public function aAssetBelongingToThisAssetFamilyWithValuesOfForTheOptionAttribute($optionCode)
     {
@@ -2431,7 +2428,7 @@ final class EditAssetContext implements Context
     }
 
     /**
-     * @Given /^a asset belonging to this asset family with values of "([^"]+)" for the option collection attribute$/
+     * @Given /^an asset belonging to this asset family with values of "([^"]+)" for the option collection attribute$/
      */
     public function aAssetBelongingToThisAssetFamilyWithValuesOfForTheOptionCollectionAttribute($optionCodes)
     {
@@ -2598,8 +2595,8 @@ final class EditAssetContext implements Context
     }
 
     /**
-     * @Given /^a asset belonging to this asset family with values of "([^"]*)" for the number attribute$/
-     * @Given /^a asset belonging to this asset family$/
+     * @Given /^an asset belonging to this asset family with values of "([^"]*)" for the number attribute$/
+     * @Given /^an asset belonging to this asset family$/
      */
     public function aAssetBelongingToThisAssetFamilyWithValuesOfForTheNumberAttribute($numberValue = '0')
     {

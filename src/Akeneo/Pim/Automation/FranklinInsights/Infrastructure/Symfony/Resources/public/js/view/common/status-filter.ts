@@ -11,6 +11,7 @@ import {EventsHash} from 'backbone';
 import BaseForm = require('pimui/js/view/base');
 import * as _ from 'underscore';
 import {Filter, FilterValue} from '../../common/filterable';
+import {AttributeMappingStatus} from '../../model/attribute-mapping-status';
 
 const __ = require('oro/translator');
 const template = require('akeneo/franklin-insights/template/common/status-filter');
@@ -35,9 +36,18 @@ class StatusFilter extends BaseForm {
   private static getFilters(): FilterLabel[] {
     return [
       {value: '', label: __('pim_common.all')},
-      {value: 0, label: __('akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.pending')},
-      {value: 1, label: __('akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.active')},
-      {value: 2, label: __('akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.inactive')}
+      {
+        value: AttributeMappingStatus.ATTRIBUTE_PENDING,
+        label: __('akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.pending')
+      },
+      {
+        value: AttributeMappingStatus.ATTRIBUTE_ACTIVE,
+        label: __('akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.active')
+      },
+      {
+        value: AttributeMappingStatus.ATTRIBUTE_INACTIVE,
+        label: __('akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.inactive')
+      }
     ];
   }
 

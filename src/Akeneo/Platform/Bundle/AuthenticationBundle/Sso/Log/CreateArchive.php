@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log;
 
-use Box\Spout\Writer\Common\Helper\ZipHelper;
 use League\Flysystem\FilesystemInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -59,7 +58,7 @@ Those older files are automatically [log rotated](https://symfony.com/doc/3.4/co
 Why this archive only contains only this README.txt file ?
 ==========================================================
 
-If archive only contains this README file, no error occured regarding the Service Provider.
+If archive only contains this README file, no error occurred regarding the Service Provider.
  
 If you encounter troubles regarding the SSO process you'll have to check the IDP server logs.
 

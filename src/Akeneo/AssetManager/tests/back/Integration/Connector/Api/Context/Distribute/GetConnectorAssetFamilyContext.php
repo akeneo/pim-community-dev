@@ -69,10 +69,31 @@ class GetConnectorAssetFamilyContext implements Context
             ->setOriginalFilename('brand.jpg')
             ->setKey('5/6/a/5/56a5955ca1fbdf74d8d18ca6e5f62bc74b867a5d_brand.jpg');
 
+        $productLinkRules = [
+            [
+                'product_selections' => [
+                    [
+                        'field' => 'sku',
+                        'operator' => 'EQUALS',
+                        'value' => '{{product_ref}}',
+                        'locale' => null,
+                    ],
+                ],
+                'assign_assets_to' => [
+                    [
+                        'attribute' => 'user_instructions',
+                        'locale' => '{{locale}}',
+                        'mode' => 'replace',
+                    ],
+                ]
+            ]
+        ];
+
         $assetFamily = new ConnectorAssetFamily(
             $assetFamilyIdentifier,
             LabelCollection::fromArray(['fr_FR' => 'Marque']),
-            Image::fromFileInfo($imageInfo)
+            Image::fromFileInfo($imageInfo),
+            $productLinkRules
         );
 
         $this->findConnectorAssetFamily->save(
@@ -82,9 +103,9 @@ class GetConnectorAssetFamilyContext implements Context
 
         $assetFamily = AssetFamily::create(
             $assetFamilyIdentifier,
-            [],
-            Image::createEmpty(),
-            RuleTemplateCollection::empty()
+            ['fr_FR' => 'Marque'],
+            Image::fromFileInfo($imageInfo),
+            RuleTemplateCollection::createFromProductLinkRules($productLinkRules)
         );
 
         $this->assetFamilyRepository->create($assetFamily);
@@ -103,7 +124,7 @@ class GetConnectorAssetFamilyContext implements Context
     }
 
     /**
-     * @Then /^the PIM returns the label and image properties Brand asset family$/
+     * @Then /^the PIM returns the label, image properties and rule templates of Brand asset family$/
      */
     public function thePIMReturnsTheBrandAssetFamily(): void
     {

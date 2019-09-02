@@ -11,7 +11,7 @@ import BaseView = require('pimui/js/view/base');
 import * as _ from 'underscore';
 import AttributeMappingStatus from '../../model/attribute-mapping-status';
 import AttributesMapping from '../../model/attributes-mapping';
-import AttributesMappingForFamily from '../../model/attributes-mapping-for-family';
+import FamilyMapping from '../../model/family-mapping';
 import FamilyMappingStatus from '../../model/family-mapping-status';
 
 const __ = require('oro/translator');
@@ -49,7 +49,7 @@ class FamilyStatus extends BaseView {
   }
 
   public render(): BaseView {
-    const familyMapping: AttributesMappingForFamily = this.getFormData();
+    const familyMapping: FamilyMapping = this.getFormData();
     const mapping = familyMapping.hasOwnProperty('mapping') ? familyMapping.mapping : {};
 
     const familyMappingStatus = this.getFamilyMappingStatus(mapping);

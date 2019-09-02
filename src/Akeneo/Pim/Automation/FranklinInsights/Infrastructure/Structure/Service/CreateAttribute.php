@@ -16,16 +16,15 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Structure\Servic
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\CreateAttributeInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Service\EnsureFranklinAttributeGroupExistsInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Query\SelectActiveLocaleCodesManagedByFranklinQueryInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeLabel;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeType;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeGroup;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Model\Write\Attribute;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\AttributeSaver;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Updater\AttributeUpdater;
-use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -39,6 +38,7 @@ class CreateAttribute implements CreateAttributeInterface
     private $validator;
     private $ensureFranklinAttributeGroupExists;
     private $selectActiveLocaleCodesManagedByFranklinQuery;
+    private $logger;
 
     public function __construct(
         AttributeFactory $factory,
@@ -46,7 +46,8 @@ class CreateAttribute implements CreateAttributeInterface
         AttributeSaver $saver,
         ValidatorInterface $validator,
         EnsureFranklinAttributeGroupExistsInterface $ensureFranklinAttributeGroupExists,
-        SelectActiveLocaleCodesManagedByFranklinQueryInterface $selectActiveLocaleCodesManagedByFranklinQuery
+        SelectActiveLocaleCodesManagedByFranklinQueryInterface $selectActiveLocaleCodesManagedByFranklinQuery,
+        LoggerInterface $logger
     ) {
         $this->factory = $factory;
         $this->updater = $updater;
@@ -54,38 +55,68 @@ class CreateAttribute implements CreateAttributeInterface
         $this->validator = $validator;
         $this->ensureFranklinAttributeGroupExists = $ensureFranklinAttributeGroupExists;
         $this->selectActiveLocaleCodesManagedByFranklinQuery = $selectActiveLocaleCodesManagedByFranklinQuery;
+        $this->logger = $logger;
     }
 
-    public function create(
-        AttributeCode $attributeCode,
-        AttributeLabel $attributeLabel,
-        AttributeType $attributeType
-    ): void {
+    public function create(Attribute $attribute): void
+    {
         $this->ensureFranklinAttributeGroupExists->ensureExistence();
 
+        $pimAttribute = $this->createPimAttribute($attribute);
+
+        $this->saver->save($pimAttribute);
+    }
+
+    public function bulkCreate(array $attributesToCreate): array
+    {
+        $this->ensureFranklinAttributeGroupExists->ensureExistence();
+
+        $pimAttributes = [];
+        $createdAttributes = [];
+
+        /** @var Attribute $attributeToCreate */
+        foreach ($attributesToCreate as $attributeToCreate) {
+            try {
+                $pimAttributes[] = $this->createPimAttribute($attributeToCreate);
+                $createdAttributes[] = $attributeToCreate;
+            } catch (\Exception $exception) {
+                $this->logger->warning(
+                    sprintf('Franklin-Insights: The attribute "%s" could not be created', (string) $attributeToCreate->getCode()),
+                    ['message' => $exception->getMessage()]
+                );
+            }
+        }
+
+        $this->saver->saveAll($pimAttributes);
+
+        return $createdAttributes;
+    }
+
+    private function createPimAttribute(Attribute $attribute): AttributeInterface
+    {
         $data = [
-            'code' => (string) $attributeCode,
+            'code' => (string) $attribute->getCode(),
             'group' => FranklinAttributeGroup::CODE,
-            'labels' => $this->prepareLabels($attributeLabel),
+            'labels' => $this->prepareLabels($attribute->getLabel()),
             'localizable' => false,
             'scopable' => false,
         ];
 
-        if (AttributeTypes::NUMBER === (string) $attributeType) {
+        if (AttributeTypes::NUMBER === (string) $attribute->getType()) {
             $data['decimals_allowed'] = true;
             $data['negative_allowed'] = true;
         }
 
-        /** @var AttributeInterface $attribute */
-        $attribute = $this->factory->createAttribute((string) $attributeType);
-        $this->updater->update($attribute, $data);
+        /** @var AttributeInterface $pimAttribute */
+        $pimAttribute = $this->factory->createAttribute((string) $attribute->getType());
+        $this->updater->update($pimAttribute, $data);
 
-        $violations = $this->validator->validate($attribute);
+        $violations = $this->validator->validate($pimAttribute);
         if (0 !== $violations->count()) {
             throw new \Exception($violations->get(0)->getMessage());
         }
 
-        $this->saver->save($attribute);
+        return $pimAttribute;
     }
 
     private function prepareLabels(AttributeLabel $attributeLabel): array

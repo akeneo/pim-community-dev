@@ -11,36 +11,33 @@ import {assetCreationStart} from 'akeneoassetmanager/domain/event/asset/create';
 import {deleteAllAssetFamilyAssets, deleteAsset} from 'akeneoassetmanager/application/action/asset/delete';
 import {breadcrumbConfiguration} from 'akeneoassetmanager/application/component/asset-family/edit';
 import {
-  needMoreResults,
-  searchUpdated,
-  updateAssetResults,
-  completenessFilterUpdated,
-  filterUpdated,
+    completenessFilterUpdated,
+    filterUpdated,
+    needMoreResults,
+    searchUpdated,
+    updateAssetResults,
 } from 'akeneoassetmanager/application/action/asset/search';
-import {Column} from 'akeneoassetmanager/application/reducer/grid';
-import AssetFamilyIdentifier, {
-  createIdentifier as createReferenceIdentifier,
-} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import {Column, Filter} from 'akeneoassetmanager/application/reducer/grid';
+import AssetFamilyIdentifier, {createIdentifier as createReferenceIdentifier,} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import AssetCode, {createCode as createAssetCode} from 'akeneoassetmanager/domain/model/asset/code';
 import DeleteModal from 'akeneoassetmanager/application/component/app/delete-modal';
-import {openDeleteModal, cancelDeleteModal} from 'akeneoassetmanager/application/event/confirmDelete';
+import {cancelDeleteModal, openDeleteModal} from 'akeneoassetmanager/application/event/confirmDelete';
 import {
-  getDataCellView,
-  CellView,
-  getDataFilterView,
-  FilterView,
-  hasDataFilterView,
+    CellView,
+    FilterView,
+    getDataCellView,
+    getDataFilterView,
+    hasDataFilterView,
 } from 'akeneoassetmanager/application/configuration/value';
-import {Filter} from 'akeneoassetmanager/application/reducer/grid';
 import Locale from 'akeneoassetmanager/domain/model/locale';
 import Channel from 'akeneoassetmanager/domain/model/channel';
-import {catalogLocaleChanged, catalogChannelChanged} from 'akeneoassetmanager/domain/event/user';
+import {catalogChannelChanged, catalogLocaleChanged} from 'akeneoassetmanager/domain/event/user';
 import {CompletenessValue} from 'akeneoassetmanager/application/component/asset/index/completeness-filter';
 import {canEditAssetFamily} from 'akeneoassetmanager/application/reducer/right';
-import {NormalizedAttribute, Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import {Attribute, NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import denormalizeAttribute from 'akeneoassetmanager/application/denormalizer/attribute/attribute';
 
-const securityContext = require('pim/security-context');
+// const securityContext = require('pim/security-context');
 
 interface StateProps {
   context: {
@@ -293,20 +290,20 @@ export default connect(
       rights: {
         asset: {
           create:
-            securityContext.isGranted('akeneo_assetmanager_asset_create') &&
+            // securityContext.isGranted('akeneo_assetmanager_asset_create') &&
             canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
           edit:
-            securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
+            // securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
             canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
           deleteAll:
-            securityContext.isGranted('akeneo_assetmanager_asset_create') &&
-            securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
-            securityContext.isGranted('akeneo_assetmanager_assets_delete_all') &&
+            // securityContext.isGranted('akeneo_assetmanager_asset_create') &&
+            // securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
+            // securityContext.isGranted('akeneo_assetmanager_assets_delete_all') &&
             canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
           delete:
-            securityContext.isGranted('akeneo_assetmanager_asset_create') &&
-            securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
-            securityContext.isGranted('akeneo_assetmanager_asset_delete') &&
+            // securityContext.isGranted('akeneo_assetmanager_asset_create') &&
+            // securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
+            // securityContext.isGranted('akeneo_assetmanager_asset_delete') &&
             canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
         },
       },

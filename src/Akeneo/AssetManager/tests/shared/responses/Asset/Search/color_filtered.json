@@ -40,7 +40,7 @@
                         "en_US": "Dyson",
                         "fr_FR": "Dyson"
                     },
-                    "image": null,
+                    "image": "/rest/asset_manager/image_preview/image_designer_ca1857d521a3e5dbc487791da82b7428/thumbnail?data=",
                     "values": {
                         "label_designer_d00de54460082b239164135175588647_en_US": {
                             "attribute": "label_designer_d00de54460082b239164135175588647",
@@ -89,7 +89,7 @@
                     "labels": {
                         "en_US": "Starck"
                     },
-                    "image": null,
+                    "image": "/rest/asset_manager/image_preview/image_designer_ca1857d521a3e5dbc487791da82b7428/thumbnail?data=",
                     "values": {
                         "label_designer_d00de54460082b239164135175588647_en_US": {
                             "attribute": "label_designer_d00de54460082b239164135175588647",

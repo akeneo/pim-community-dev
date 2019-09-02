@@ -59,7 +59,7 @@
                                     "data": "test/brand_1_image.jpg",
                                     "_links": {
                                         "download": {
-                                            "href": "http://localhost/api/rest/v1/asset-families-media-files/test/brand_1_image.jpg"
+                                            "href": "http://localhost/api/rest/v1/asset-media-files/test/brand_1_image.jpg"
                                         }
                                     }
                                 }
@@ -102,7 +102,7 @@
                                     "data": "test/brand_2_image.jpg",
                                     "_links": {
                                         "download": {
-                                            "href": "http://localhost/api/rest/v1/asset-families-media-files/test/brand_2_image.jpg"
+                                            "href": "http://localhost/api/rest/v1/asset-media-files/test/brand_2_image.jpg"
                                         }
                                     }
                                 }
@@ -145,7 +145,7 @@
                                     "data": "test/brand_3_image.jpg",
                                     "_links": {
                                         "download": {
-                                            "href": "http://localhost/api/rest/v1/asset-families-media-files/test/brand_3_image.jpg"
+                                            "href": "http://localhost/api/rest/v1/asset-media-files/test/brand_3_image.jpg"
                                         }
                                     }
                                 }

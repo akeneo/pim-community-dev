@@ -71,6 +71,9 @@ class CreateOrUpdateAssetsAction
     /** @var AssetListValidator */
     private $assetListValidator;
 
+    /** @var BatchAssetsToLink */
+    private $batchAssetsToLink;
+
     /** @var int */
     private $maximumAssetsPerRequest;
 
@@ -85,6 +88,7 @@ class CreateOrUpdateAssetsAction
         ViolationNormalizer $violationNormalizer,
         AssetValidator $assetStructureValidator,
         AssetListValidator $assetListValidator,
+        BatchAssetsToLink $batchAssetsToLink,
         int $maximumAssetsPerRequest
     ) {
         $this->assetFamilyExists = $assetFamilyExists;
@@ -97,6 +101,7 @@ class CreateOrUpdateAssetsAction
         $this->violationNormalizer = $violationNormalizer;
         $this->assetStructureValidator = $assetStructureValidator;
         $this->assetListValidator = $assetListValidator;
+        $this->batchAssetsToLink = $batchAssetsToLink;
         $this->maximumAssetsPerRequest = $maximumAssetsPerRequest;
     }
 
@@ -204,6 +209,7 @@ class CreateOrUpdateAssetsAction
 
         if (true === $shouldBeCreated) {
             ($this->createAssetHandler)($createAssetCommand);
+            $this->batchAssetsToLink->add($createAssetCommand->assetFamilyIdentifier, $createAssetCommand->code);
         }
 
         ($this->editAssetHandler)($editAssetCommand);

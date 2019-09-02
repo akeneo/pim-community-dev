@@ -18,8 +18,8 @@
         "status": 201,
         "body": "",
         "headers": {
-            "Location": "http://localhost/api/rest/v1/asset-families-media-files/in/memory/files/Kartell.jpg",
-            "Reference-entities-media-file-code": "in/memory/files/Kartell.jpg"
+            "Location": "http://localhost/api/rest/v1/asset-media-files/in/memory/files/Kartell.jpg",
+            "Asset-media-file-code": "in/memory/files/Kartell.jpg"
         }
     }
 }

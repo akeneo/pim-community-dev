@@ -2,48 +2,22 @@ import * as React from 'react';
 import * as $ from 'jquery';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
-const routing = require('routing');
 import {NormalizedAsset, NormalizedItemAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
 import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
 import {getLabel} from 'pimui/js/i18n';
-import __ from 'akeneoassetmanager/tools/translator';
-import {
-  getTranslationKey,
-  getCompletenessClass,
-  getLabel as getCompletenessLabel,
-} from 'akeneoassetmanager/application/component/app/completeness';
-import Completeness from 'akeneoassetmanager/domain/model/asset/completeness';
+
+const routing = require('routing');
 
 const renderRow = (label: string, normalizedAsset: NormalizedItemAsset, withLink: boolean, compact: boolean) => {
-  const normalizedCompleteness = normalizedAsset.completeness;
-  const completeness =
-    undefined !== normalizedCompleteness ? Completeness.createFromNormalized(normalizedCompleteness) : undefined;
-  const completenessHTML =
-    undefined !== completeness && completeness.hasRequiredAttribute()
-      ? `
-  <span
-    title="${__(getTranslationKey(completeness), {
-      complete: completeness.getCompleteAttributeCount(),
-      required: completeness.getRequiredAttributeCount(),
-    })}"
-    class="${getCompletenessClass(completeness, false)}"
-  >
-    ${getCompletenessLabel(completeness.getRatio(), false)}
-  </span>`
-      : '';
-
   return `
-  <img width="34" height="34" src="${normalizedAsset.image}"/>
+  <img width="34" height="34" src="${normalizedAsset.image}" style="object-fit: cover;"/>
   <span class="select2-result-label-main">
     <span class="select2-result-label-top">
       ${normalizedAsset.code}
     </span>
     <span class="select2-result-label-bottom">${label}</span>
-  </span>
-  <span class="select2-result-label-hint">
-    ${completenessHTML}
   </span>
   ${
     withLink && !compact
@@ -211,7 +185,7 @@ export default class AssetSelector extends React.Component<AssetSelectorProps & 
         formatResult: (asset: Select2Item, container: any) => {
           container
             .addClass('select2-search-choice-value')
-            .append($(renderRow(asset.text, asset.original, true, this.props.compact)));
+            .append($(renderRow(asset.text, asset.original, false, this.props.compact)));
         },
       });
 
@@ -265,12 +239,6 @@ export default class AssetSelector extends React.Component<AssetSelectorProps & 
       compact ? 'asset-selector--compact' : ''
     }`;
 
-    const valueList = props.multiple
-      ? (this.props.value as AssetCode[])
-      : null !== this.props.value
-      ? [this.props.value]
-      : [];
-
     return (
       <div className="asset-selector-container">
         <input
@@ -289,23 +257,6 @@ export default class AssetSelector extends React.Component<AssetSelectorProps & 
             this.props.onChange(newValue);
           }}
         />
-        {!compact ? (
-          <div className="asset-selector-link-container">
-            {valueList.map((assetCode: AssetCode) => (
-              <a
-                key={assetCode.stringValue()}
-                className="AknFieldContainer-inputLink AknIconButton AknIconButton--compact AknIconButton--link"
-                href={`#${routing.generate('akeneo_asset_manager_asset_edit', {
-                  assetFamilyIdentifier: assetFamilyIdentifier.stringValue(),
-                  assetCode: assetCode.stringValue(),
-                  tab: 'enrich',
-                })}`}
-                target="_blank"
-              />
-            ))}
-            {this.props.multiple ? <span className="AknFieldContainer-inputLink" /> : null}
-          </div>
-        ) : null}
       </div>
     );
   }

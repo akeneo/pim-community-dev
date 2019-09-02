@@ -22,5 +22,10 @@ interface FranklinAttributeAddedToFamilyRepositoryInterface
 {
     public function save(FranklinAttributeAddedToFamily $franklinAttributeAddedToFamily): void;
 
+    /**
+     * @param FranklinAttributeAddedToFamily[] $franklinAttributeAddedToFamilyEvents
+     */
+    public function saveAll(array $franklinAttributeAddedToFamilyEvents): void;
+
     public function count(): int;
 }

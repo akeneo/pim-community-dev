@@ -21,7 +21,6 @@ use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\FamilyRepository;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\FamilySaver;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Updater\FamilyUpdater;
-use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -94,6 +93,32 @@ class AddAttributeToFamilySpec extends ObjectBehavior
         $this->addAttributeToFamily(
             AttributeCode::fromLabel('Foo'),
             new FamilyCode('bar')
+        )->shouldReturn(null);
+    }
+
+    public function it_adds_multiple_attributes_to_a_family(
+        $updater,
+        $saver,
+        $repository,
+        $validator,
+        FamilyInterface $family,
+        ConstraintViolationListInterface $violations
+    ): void {
+        $repository->findOneByIdentifier('bar')->willReturn($family);
+        $family->getAttributeCodes()->willReturn(['baz']);
+
+        $updater->update($family, ['attributes' => ['baz', 'Foo', 'Test']])->shouldBeCalled();
+        $validator->validate($family)->willReturn($violations->getWrappedObject());
+        $violations->count()->willReturn(0);
+
+        $saver->save($family)->shouldBeCalled();
+
+        $this->bulkAddAttributesToFamily(
+            new FamilyCode('bar'),
+            [
+                AttributeCode::fromLabel('Foo'),
+                AttributeCode::fromLabel('Test'),
+            ]
         )->shouldReturn(null);
     }
 

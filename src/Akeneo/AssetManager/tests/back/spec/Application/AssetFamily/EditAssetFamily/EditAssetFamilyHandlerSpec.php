@@ -40,20 +40,19 @@ class EditAssetFamilyHandlerSpec extends ObjectBehavior
         $editAssetFamilyCommand->identifier = 'designer';
         $editAssetFamilyCommand->labels = ['fr_FR' => 'Concepteur', 'en_US' => 'Designer'];
         $editAssetFamilyCommand->image = null;
-        $editAssetFamilyCommand->ruleTemplates = [
+        $editAssetFamilyCommand->productLinkRules = [
             [
-                'conditions' => [
+                'product_selections' => [
                     [
-                        'field' => 'sku',
+                        'field'    => 'sku',
                         'operator' => '=',
-                        'value' => '{{product_sku}}'
+                        'value'    => '{{product_sku}}'
                     ]
                 ],
-                'actions'=> [
+                'assign_assets_to' => [
                     [
-                        'type' => 'set',
-                        'field' => '{{attribute}}',
-                        'value' => '{{code}}'
+                        'mode'      => 'add',
+                        'attribute' => '{{attribute}}'
                     ]
                 ]
             ]
@@ -93,20 +92,19 @@ class EditAssetFamilyHandlerSpec extends ObjectBehavior
         $editAssetFamilyCommand->identifier = 'designer';
         $editAssetFamilyCommand->labels = ['fr_FR' => 'Concepteur', 'en_US' => 'Designer'];
         $editAssetFamilyCommand->image = ['originalFilename' => 'image.jpg', 'filePath' => '/path/image.jpg'];
-        $editAssetFamilyCommand->ruleTemplates = [
+        $editAssetFamilyCommand->productLinkRules = [
             [
-                'conditions' => [
+                'product_selections' => [
                     [
-                        'field' => 'sku',
+                        'field'    => 'sku',
                         'operator' => '=',
-                        'value' => '{{product_sku}}'
+                        'value'    => '{{product_sku}}'
                     ]
                 ],
-                'actions'=> [
+                'assign_assets_to' => [
                     [
-                        'type' => 'set',
-                        'field' => '{{attribute}}',
-                        'value' => '{{code}}'
+                        'mode'      => 'add',
+                        'attribute' => '{{attribute}}'
                     ]
                 ]
             ]
@@ -155,20 +153,19 @@ class EditAssetFamilyHandlerSpec extends ObjectBehavior
         $editAssetFamilyCommand->identifier = 'designer';
         $editAssetFamilyCommand->labels = ['fr_FR' => 'Concepteur', 'en_US' => 'Designer'];
         $editAssetFamilyCommand->image = ['originalFilename' => 'image.jpg', 'filePath' => '/path/image.jpg'];
-        $editAssetFamilyCommand->ruleTemplates = [
+        $editAssetFamilyCommand->productLinkRules = [
             [
-                'conditions' => [
+                'product_selections' => [
                     [
-                        'field' => 'sku',
+                        'field'    => 'sku',
                         'operator' => '=',
-                        'value' => '{{product_sku}}'
+                        'value'    => '{{product_sku}}'
                     ]
                 ],
-                'actions'=> [
+                'assign_assets_to' => [
                     [
-                        'type' => 'set',
-                        'field' => '{{attribute}}',
-                        'value' => '{{code}}'
+                        'mode'      => 'add',
+                        'attribute' => '{{attribute}}'
                     ]
                 ]
             ]

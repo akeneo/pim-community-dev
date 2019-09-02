@@ -8,7 +8,6 @@ use Akeneo\AssetManager\Acceptance\Context\ConstraintViolationsContext;
 use Akeneo\AssetManager\Acceptance\Context\ExceptionContext;
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommandFactory;
 use Akeneo\AssetManager\Application\Asset\EditAsset\EditAssetHandler;
-use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyHandler;
 use Akeneo\AssetManager\Common\Fake\InMemoryAssetRepository;
 use Akeneo\AssetManager\Common\Fake\InMemoryAttributeRepository;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
@@ -101,7 +100,7 @@ class EditMediaLinkContext implements Context
     }
 
     /**
-     * @Given /^an asset family with an mediaLink attribute and a asset belonging to this asset family$/
+     * @Given /^an asset family with an media_link attribute and an asset belonging to this asset family$/
      */
     public function aAssetFamilyWithAnMediaLinkAttributeAndAAssetBelongingToThisAssetFamily(): void
     {

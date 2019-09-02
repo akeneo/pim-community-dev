@@ -27,7 +27,7 @@ class ImagePreviewUrlGenerator
         return $this->router->generate(
             self::URL_ATTRIBUTE_PREVIEW_ENDPOINT,
             [
-                'data'                => urlencode($data),
+                'data'                => $data,
                 'attributeIdentifier' => $attributeIdentifier,
                 'type'                => $type
             ]

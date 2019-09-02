@@ -50,18 +50,16 @@ class InMemoryAttributeExists implements AttributeExistsInterface
     public function withAssetFamilyAndCode(AssetFamilyIdentifier $assetFamilyIdentifier, AttributeCode $attributeCode): bool
     {
         $attributes = $this->attributeRepository->getAttributes();
-        $found = false;
-
         foreach ($attributes as $attribute) {
             $sameAssetFamily = $attribute->getAssetFamilyIdentifier()->equals($assetFamilyIdentifier);
             $sameCode = $attribute->getCode()->equals($attributeCode);
 
             if ($sameAssetFamily && $sameCode) {
-                $found = true;
+                return true;
             }
         }
 
-        return $found;
+        return false;
     }
 
     public function withAssetFamilyIdentifierAndOrder(

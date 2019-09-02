@@ -60,7 +60,9 @@ class ProductPdfRenderer extends PimProductPdfRenderer
         AssetRepositoryInterface $assetRepository,
         string $template,
         string $uploadDirectory,
+        IdentifiableObjectRepositoryInterface $attributeOptionRepository,
         ?string $customFont = null
+
     ) {
         parent::__construct(
             $templating,
@@ -71,6 +73,7 @@ class ProductPdfRenderer extends PimProductPdfRenderer
             $attributeRepository,
             $template,
             $uploadDirectory,
+            $attributeOptionRepository,
             $customFont
         );
 

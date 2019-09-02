@@ -1,7 +1,7 @@
 import {
-  notifyReferenceEntityWellDeleted,
-  notifyReferenceEntityDeleteFailed,
-  notifyReferenceEntityDeletionErrorOccured,
+    notifyReferenceEntityDeleteFailed,
+    notifyReferenceEntityDeletionErrorOccurred,
+    notifyReferenceEntityWellDeleted,
 } from 'akeneoreferenceentity/application/action/reference-entity/notify';
 import ReferenceEntity from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 import referenceEntityRemover from 'akeneoreferenceentity/infrastructure/remover/reference-entity';
@@ -15,7 +15,7 @@ export const deleteReferenceEntity = (referenceEntity: ReferenceEntity) => async
 
     if (errors) {
       const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-      dispatch(notifyReferenceEntityDeletionErrorOccured(validationErrors));
+      dispatch(notifyReferenceEntityDeletionErrorOccurred(validationErrors));
 
       return;
     }

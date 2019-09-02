@@ -15,12 +15,18 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Cont
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\AddAttributeToFamilyCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\AddAttributeToFamilyHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\BulkAddAttributesToFamilyCommand;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\BulkAddAttributesToFamilyHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\BulkCreateAttributesInFamilyCommand;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\BulkCreateAttributesInFamilyHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\CreateAttributeInFamilyCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Structure\Command\CreateAttributeInFamilyHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeLabel;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeType;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\ValueObject\AttributesToAddToFamily;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\ValueObject\AttributesToCreate;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -39,14 +45,24 @@ class StructureController
     /** @var AddAttributeToFamilyHandler */
     private $addAttributeToFamilyHandler;
 
+    /** @var BulkCreateAttributesInFamilyHandler */
+    private $bulkCreateAttributesInFamilyHandler;
+
+    /** @var BulkAddAttributesToFamilyHandler */
+    private $bulkAddAttributesToFamilyHandler;
+
     public function __construct(
         SecurityFacade $securityFacade,
         CreateAttributeInFamilyHandler $createAttributeInFamilyHandler,
-        AddAttributeToFamilyHandler $addAttributeToFamilyHandler
+        AddAttributeToFamilyHandler $addAttributeToFamilyHandler,
+        BulkCreateAttributesInFamilyHandler $bulkCreateAttributesInFamilyHandler,
+        BulkAddAttributesToFamilyHandler $bulkAddAttributesToFamilyHandler
     ) {
         $this->securityFacade = $securityFacade;
         $this->createAttributeInFamilyHandler = $createAttributeInFamilyHandler;
         $this->addAttributeToFamilyHandler = $addAttributeToFamilyHandler;
+        $this->bulkCreateAttributesInFamilyHandler = $bulkCreateAttributesInFamilyHandler;
+        $this->bulkAddAttributesToFamilyHandler = $bulkAddAttributesToFamilyHandler;
     }
 
     public function createAttributeAction(Request $request): Response
@@ -90,6 +106,37 @@ class StructureController
         return new JsonResponse([
             'code' => (string) $pimAttributeCode
         ]);
+    }
+
+    public function bulkCreateAttributesAction(string $familyCode, Request $request): JsonResponse
+    {
+        if (false === $this->isUserAllowedToCreate()) {
+            throw new AccessDeniedException();
+        }
+
+        $attributes = json_decode($request->getContent(), true);
+
+        $command = new BulkCreateAttributesInFamilyCommand(new FamilyCode($familyCode), new AttributesToCreate($attributes));
+        $attributesCreatedCount = $this->bulkCreateAttributesInFamilyHandler->handle($command);
+
+        return new JsonResponse(['attributesCreatedCount' => $attributesCreatedCount], Response::HTTP_CREATED);
+    }
+
+    public function bulkAddAttributesToFamilyAction(string $familyCode, Request $request): JsonResponse
+    {
+        if (false === $this->isUserAllowedToCreate()) {
+            throw new AccessDeniedException();
+        }
+
+        $attributeCodes = json_decode($request->getContent(), true);
+        $attributeCodes = array_map(function (string $attributeCode) {
+            return new AttributeCode($attributeCode);
+        }, $attributeCodes);
+
+        $command = new BulkAddAttributesToFamilyCommand(new FamilyCode($familyCode), $attributeCodes);
+        $this->bulkAddAttributesToFamilyHandler->handle($command);
+
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
     private function isUserAllowedToCreate(): bool

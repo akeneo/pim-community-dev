@@ -1,5 +1,4 @@
 import reducer from 'akeneoreferenceentity/application/reducer/attribute/create';
-import {AttributeType} from 'akeneoreferenceentity/domain/model/attribute/minimal';
 
 describe('akeneo > reference entity > application > reducer > attribute --- create', () => {
   test('I ignore other commands', () => {
@@ -428,7 +427,7 @@ describe('akeneo > reference entity > application > reducer > attribute --- crea
     ];
 
     const newState = reducer(state, {
-      type: 'ATTRIBUTE_CREATION_ERROR_OCCURED',
+      type: 'ATTRIBUTE_CREATION_ERROR_OCCURRED',
       errors,
     });
 

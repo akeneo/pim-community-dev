@@ -9,13 +9,4 @@ services:
             - '@pim_datagrid.datagrid.request.parameters_extractor'
             - '@pim_user.context.user'
         tags:
-            - { name: oro_datagrid.extension.formatter.property, type:.asset_multiple_link }
-
-    pimee_product_asset.datagrid.extension.formatter.property.product_value.asset_family_property:
-        class: '%pimee_product_asset.datagrid.extension.formatter.property.product_value.asset_family_property.class%'
-        arguments:
-            - '@twig'
-            - '@pim_datagrid.datagrid.request.parameters_extractor'
-            - '@pim_user.context.user'
-        tags:
-            - { name: oro_datagrid.extension.formatter.property, type: asset_single_link }
+            - { name: oro_datagrid.extension.formatter.property, type: asset_multiple_link }

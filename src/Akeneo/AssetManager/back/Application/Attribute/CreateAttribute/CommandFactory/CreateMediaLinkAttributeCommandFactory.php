@@ -15,6 +15,8 @@ namespace Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFacto
 
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateMediaLinkAttributeCommand;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -24,12 +26,13 @@ class CreateMediaLinkAttributeCommandFactory extends AbstractCreateAttributeComm
 {
     public function supports(array $normalizedCommand): bool
     {
-        return isset($normalizedCommand['type']) && 'mediaLink' === $normalizedCommand['type'];
+        return isset($normalizedCommand['type']) && MediaLinkAttribute::ATTRIBUTE_TYPE === $normalizedCommand['type'];
     }
 
     public function create(array $normalizedCommand): AbstractCreateAttributeCommand
     {
         $this->checkCommonProperties($normalizedCommand);
+        $normalizedCommand['media_type'] = isset($normalizedCommand['media_type']) ? $normalizedCommand['media_type'] : MediaType::OTHER;
         $this->checkAdditionalProperties($normalizedCommand);
 
         $command = new CreateMediaLinkAttributeCommand(
@@ -37,8 +40,8 @@ class CreateMediaLinkAttributeCommandFactory extends AbstractCreateAttributeComm
             $normalizedCommand['code'],
             $normalizedCommand['labels'] ?? [],
             $normalizedCommand['is_required'] ?? false,
-            $normalizedCommand['value_per_channel'],
-            $normalizedCommand['value_per_locale'],
+            $normalizedCommand['value_per_channel'] ?? false,
+            $normalizedCommand['value_per_locale'] ?? false,
             $normalizedCommand['media_type'],
             $this->stringOrNull($normalizedCommand, 'prefix'),
             $this->stringOrNull($normalizedCommand, 'suffix')
@@ -68,6 +71,6 @@ class CreateMediaLinkAttributeCommandFactory extends AbstractCreateAttributeComm
     private function stringOrNull(array $normalizedCommand, string $key): ?string
     {
         return isset($normalizedCommand[$key]) && '' !== $normalizedCommand[$key]
-            ? (string)$normalizedCommand[$key] : null;
+            ? (string) $normalizedCommand[$key] : null;
     }
 }

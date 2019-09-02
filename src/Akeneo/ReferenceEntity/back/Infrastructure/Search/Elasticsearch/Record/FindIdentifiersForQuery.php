@@ -158,6 +158,8 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
                     'code' => $codeFilter['value'],
                 ],
             ];
+            // IN filter codes are alphabetically sorted and we must return the same order
+            $query['sort'] = ['code' => 'asc'];
         }
 
         if (null !== $updatedFilter && !empty($updatedFilter['value'] && '>' === $updatedFilter['operator'])) {

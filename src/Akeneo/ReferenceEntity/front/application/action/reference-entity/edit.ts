@@ -1,21 +1,19 @@
 import {
-  referenceEntityEditionLabelUpdated,
-  referenceEntityEditionReceived,
-  referenceEntityEditionUpdated,
-  referenceEntityEditionImageUpdated,
-  referenceEntityEditionErrorOccured,
-  referenceEntityEditionSucceeded,
-  referenceEntityRecordCountUpdated,
+    referenceEntityEditionErrorOccurred,
+    referenceEntityEditionImageUpdated,
+    referenceEntityEditionLabelUpdated,
+    referenceEntityEditionReceived,
+    referenceEntityEditionSucceeded,
+    referenceEntityEditionUpdated,
+    referenceEntityRecordCountUpdated,
 } from 'akeneoreferenceentity/domain/event/reference-entity/edit';
 import {
-  notifyReferenceEntityWellSaved,
-  notifyReferenceEntitySaveFailed,
+    notifyReferenceEntitySaveFailed,
+    notifyReferenceEntityWellSaved,
 } from 'akeneoreferenceentity/application/action/reference-entity/notify';
 import {denormalizeReferenceEntity} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 import referenceEntitySaver from 'akeneoreferenceentity/infrastructure/saver/reference-entity';
-import referenceEntityFetcher, {
-  ReferenceEntityResult,
-} from 'akeneoreferenceentity/infrastructure/fetcher/reference-entity';
+import referenceEntityFetcher, {ReferenceEntityResult,} from 'akeneoreferenceentity/infrastructure/fetcher/reference-entity';
 import ValidationError, {createValidationError} from 'akeneoreferenceentity/domain/model/validation-error';
 import File from 'akeneoreferenceentity/domain/model/file';
 import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
@@ -30,7 +28,7 @@ export const saveReferenceEntity = () => async (dispatch: any, getState: () => E
 
     if (errors) {
       const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-      dispatch(referenceEntityEditionErrorOccured(validationErrors));
+      dispatch(referenceEntityEditionErrorOccurred(validationErrors));
       dispatch(notifyReferenceEntitySaveFailed());
 
       return;
