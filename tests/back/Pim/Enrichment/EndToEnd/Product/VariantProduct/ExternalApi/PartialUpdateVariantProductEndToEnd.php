@@ -1288,11 +1288,7 @@ JSON;
                 [
                     'property' => 'attribute',
                     'message'  => 'Attribute "a_yes_no" cannot be empty, as it is defined as an axis for this entity',
-                ],
-                [
-                    'property' => 'attribute',
-                    'message'  => 'Variant axis "a_yes_no" cannot be modified, "" given',
-                ],
+                ]
             ],
         ];
 

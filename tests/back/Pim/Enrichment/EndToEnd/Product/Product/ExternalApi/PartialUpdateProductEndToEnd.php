@@ -1024,9 +1024,6 @@ JSON;
                 'sku'                                => [
                     ['locale' => null, 'scope' => null, 'data' => 'complete'],
                 ],
-                'a_metric' => [
-                    ['locale' => null, 'scope' => null, 'data' => ['amount' => null, 'unit' => null]],
-                ],
                 'a_date'   => [
                     ['locale' => null, 'scope' => null, 'data' => '2016-06-13T00:00:00+02:00'],
                 ],
