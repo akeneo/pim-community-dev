@@ -63,7 +63,7 @@ it('It fetches the channels', async () => {
     const fetchAssetAttributes = require('akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/channel').fetchChannels;
     const fetcherRegistry = require('pim/fetcher-registry');
     fetcherRegistry.initialize();
-    const channels = await fetchAssetAttributes(fetcherRegistry.getFetcher('channel'));
+    const channels = await fetchAssetAttributes(fetcherRegistry.getFetcher('channel'))();
 
     return channels;
   });

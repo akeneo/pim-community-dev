@@ -4,7 +4,7 @@ import {Locale} from 'akeneopimenrichmentassetmanager/platform/model/channel/loc
 import {isLabels} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {isString, isArray} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/utils';
 
-export const fetchChannels = async (channelFetcher: any): Promise<Channel[]> => {
+export const fetchChannels = (channelFetcher: any) => async (): Promise<Channel[]> => {
   const channels = await promisify(channelFetcher.fetchAll());
 
   return denormalizeChannelCollection(channels);

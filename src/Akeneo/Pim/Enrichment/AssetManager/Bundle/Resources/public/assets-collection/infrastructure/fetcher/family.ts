@@ -6,8 +6,8 @@ import {
 } from 'akeneopimenrichmentassetmanager/platform/model/structure/family';
 import {isString, isObject} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/utils';
 
-export const fetchFamily = (fetcherFamily: any) => async (familyCode: FamilyCode): Promise<Family> => {
-  const family = await promisify(fetcherFamily.fetch(familyCode));
+export const fetchFamily = (familyFetcher: any) => async (familyCode: FamilyCode): Promise<Family> => {
+  const family = await promisify(familyFetcher.fetch(familyCode));
 
   return denormalizeFamily(family);
 };

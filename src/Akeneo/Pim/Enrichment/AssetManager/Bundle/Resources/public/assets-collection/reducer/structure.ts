@@ -81,7 +81,7 @@ export const selectFamily = (state: AssetCollectionState) => {
 };
 
 export const updateChannels = () => async (dispatch: any) => {
-  const channels = await fetchChannels(fetcherRegistry.getFetcher('channel'));
+  const channels = await fetchChannels(fetcherRegistry.getFetcher('channel'))();
   dispatch(channelListUpdated(channels));
 };
 

@@ -45,19 +45,19 @@ const transformValues = (legacyValues: LegacyValueCollection, assetAttributes: A
 };
 
 /**
-* We are generating a value collection from the product values to be able to use them in the asset collection.
-* We are also applying filters on them to know if the value is editable or not regarding different criteria :
-*    - if the attribute group has the edit permissions
-*    - if the locale has the edit permission
-*    - if it's a value of a read only attribute
-*    - if it's a value of a parent attribute
-*    - if the product category has the edit permission
-*/
+ * We are generating a value collection from the product values to be able to use them in the asset collection.
+ * We are also applying filters on them to know if the value is editable or not regarding different criteria :
+ *    - if the attribute group has the edit permissions
+ *    - if the locale has the edit permission
+ *    - if it's a value of a read only attribute
+ *    - if it's a value of a parent attribute
+ *    - if the product category has the edit permission
+ */
 const generate = async (product: Product): Promise<ValueCollection> => {
-  const assetAttributes: Attribute[] = await fetchAssetAttributes(fetcherRegistry.getFetcher('attribute'));
+  const assetAttributes: Attribute[] = await fetchAssetAttributes(fetcherRegistry.getFetcher('attribute'))();
   let valueCollection: ValueCollection = transformValues(product.values, assetAttributes);
 
-  const permissions: Permissions = await fetchPermissions();
+  const permissions: Permissions = await fetchPermissions(fetcherRegistry.getFetcher('permission'))();
   valueCollection = filterAttributeGroups(valueCollection, permissions.attributeGroups);
   valueCollection = filterLocales(valueCollection, permissions.locales);
   valueCollection = filterReadOnlyAttribute(valueCollection);

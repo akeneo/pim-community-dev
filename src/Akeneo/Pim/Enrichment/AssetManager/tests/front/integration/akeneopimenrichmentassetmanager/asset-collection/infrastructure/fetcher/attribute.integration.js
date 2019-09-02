@@ -55,7 +55,7 @@ it('It fetches all product attributes of asset', async () => {
     const fetchAssetAttributes = require('akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/attribute').fetchAssetAttributes;
     const fetcherRegistry = require('pim/fetcher-registry');
     fetcherRegistry.initialize();
-    const assetAttributes = await fetchAssetAttributes(fetcherRegistry.getFetcher('attribute'));
+    const assetAttributes = await fetchAssetAttributes(fetcherRegistry.getFetcher('attribute'))();
 
     return assetAttributes;
   });

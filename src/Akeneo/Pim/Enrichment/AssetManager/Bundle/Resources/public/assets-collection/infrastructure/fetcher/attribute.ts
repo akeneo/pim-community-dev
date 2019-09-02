@@ -3,7 +3,7 @@ import promisify from 'akeneoassetmanager/tools/promisify';
 import {Attribute} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
 import {isLabels} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 
-export const fetchAssetAttributes = async (attributeFetcher: any): Promise<Attribute[]> => {
+export const fetchAssetAttributes = (attributeFetcher: any) => async (): Promise<Attribute[]> => {
   const attributes = await promisify(attributeFetcher.fetchByTypes(['akeneo_asset_multiple_link']));
 
   return denormalizeAssetAttributeCollection(attributes);
