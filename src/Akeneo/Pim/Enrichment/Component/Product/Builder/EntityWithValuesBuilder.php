@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Builder;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolverInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
@@ -57,38 +58,65 @@ class EntityWithValuesBuilder implements EntityWithValuesBuilderInterface
         ?string $scopeCode,
         $data
     ): ?ValueInterface {
-        $formerValue = $entityWithValues->getValue($attribute->getCode(), $localeCode, $scopeCode);
+        $isFormerValueFilled = null !== $entityWithValues->getValue($attribute->getCode(), $localeCode, $scopeCode);
         $isNewValueFilled = '' !== $data && null !== $data && [] !== $data;
 
-        if (null === $formerValue) {
-            if ($isNewValueFilled) {
-                // Value created
-                $newValue = $this->productValueFactory->create($attribute, $scopeCode, $localeCode, $data);
-                $entityWithValues->addValue($newValue);
-                $this->updateProductIdentiferIfNeeded($attribute, $entityWithValues, $data);
-
-                return $newValue;
-            } else {
-                // Nothing changed, empty to empty.
-                return null;
-            }
-        } else {
-            if ($isNewValueFilled) {
-                // Value changed
-                $updatedValue = $this->productValueFactory->create($attribute, $scopeCode, $localeCode, $data);
-                $entityWithValues->removeValue($formerValue)->addValue($updatedValue);
-                $this->updateProductIdentiferIfNeeded($attribute, $entityWithValues, $data);
-
-
-                return $updatedValue;
-            } else {
-                // Value removed
-                $entityWithValues->removeValue($formerValue);
-                $this->updateProductIdentiferIfNeeded($attribute, $entityWithValues, $data);
-
-                return null;
-            }
+        if (!$isFormerValueFilled && $isNewValueFilled) {
+            return $this->createValue($entityWithValues, $attribute, $localeCode, $scopeCode, $data);
         }
+
+        if ($isFormerValueFilled && $isNewValueFilled) {
+            return $this->updateValue($entityWithValues, $attribute, $localeCode, $scopeCode, $data);
+        }
+
+        if ($isFormerValueFilled && !$isNewValueFilled) {
+            return $this->removeValue($entityWithValues, $attribute, $localeCode, $scopeCode, $data);
+        }
+
+        return null;
+    }
+
+    private function createValue(
+        EntityWithValuesInterface $entityWithValues,
+        AttributeInterface $attribute,
+        ?string $localeCode,
+        ?string $scopeCode,
+        $data
+    ): ValueInterface {
+        $newValue = $this->productValueFactory->create($attribute, $scopeCode, $localeCode, $data);
+        $entityWithValues->addValue($newValue);
+        $this->updateProductIdentiferIfNeeded($attribute, $entityWithValues, $data);
+
+        return $newValue;
+    }
+
+    private function updateValue(
+        EntityWithValuesInterface $entityWithValues,
+        AttributeInterface $attribute,
+        ?string $localeCode,
+        ?string $scopeCode,
+        $data
+    ): ValueInterface {
+        $formerValue = $entityWithValues->getValue($attribute->getCode(), $localeCode, $scopeCode);
+        $updatedValue = $this->productValueFactory->create($attribute, $scopeCode, $localeCode, $data);
+        $entityWithValues->removeValue($formerValue)->addValue($updatedValue);
+        $this->updateProductIdentiferIfNeeded($attribute, $entityWithValues, $data);
+
+        return $updatedValue;
+    }
+
+    private function removeValue(
+        EntityWithValuesInterface $entityWithValues,
+        AttributeInterface $attribute,
+        ?string $localeCode,
+        ?string $scopeCode,
+        $data
+    ): ?ValueInterface {
+        $formerValue = $entityWithValues->getValue($attribute->getCode(), $localeCode, $scopeCode);
+        $entityWithValues->removeValue($formerValue);
+        $this->updateProductIdentiferIfNeeded($attribute, $entityWithValues, $data);
+
+        return null;
     }
 
     private function updateProductIdentiferIfNeeded(

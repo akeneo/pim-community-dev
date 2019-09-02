@@ -57,7 +57,7 @@ interface ProductInterface extends
      *
      * @return ProductInterface
      *
-     * @deprecated
+     * @deprecated This method will be removed with TIP-722
      */
     public function setIdentifier(ValueInterface $identifier);
 
