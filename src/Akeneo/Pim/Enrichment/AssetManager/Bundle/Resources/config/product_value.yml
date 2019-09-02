@@ -59,6 +59,11 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: pim_is_asset_family_configured_validator }
 
+    akeneo_assetmanager.validator.constraint.limited_assets_in_value:
+        class: Akeneo\Pim\Enrichment\AssetManager\Component\Validator\Constraints\ThereShouldBeLessAssetsInValueThanLimitValidator
+        tags:
+            - { name: validator.constraint_validator, alias: limited_assets_in_value }
+
     akeneo_assetmanager.infrastructure.catalog.normalizer.asset_collection_value:
         class: Akeneo\Pim\Enrichment\AssetManager\Component\Normalizer\AssetCollectionValueNormalizer
         arguments:
