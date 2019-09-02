@@ -4,15 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules;
 
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\ReplacePattern;
-use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
-use Akeneo\AssetManager\Domain\Query\Attribute\AttributeExistsInterface;
-use Symfony\Component\Validator\Constraints\Callback;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Validation;
 
 /**
@@ -24,13 +19,13 @@ class ProductAssignmentsValidator
     /** @var RuleEngineValidatorACLInterface */
     private $ruleEngineValidatorACL;
 
-    /** @var AttributeExistsInterface */
-    private $attributeExists;
+    /** @var ExtrapolatedAttributeValidator */
+    private $extrapolatedAttributeValidator;
 
-    public function __construct(RuleEngineValidatorACLInterface $ruleEngineValidatorACL, AttributeExistsInterface $attributeExists)
+    public function __construct(RuleEngineValidatorACLInterface $ruleEngineValidatorACL, ExtrapolatedAttributeValidator $extrapolatedAttributeValidator)
     {
-        $this->attributeExists = $attributeExists;
         $this->ruleEngineValidatorACL = $ruleEngineValidatorACL;
+        $this->extrapolatedAttributeValidator = $extrapolatedAttributeValidator;
     }
 
     public function validate(array $productAssignments, string $assetFamilyIdentifier): ConstraintViolationListInterface
@@ -63,24 +58,25 @@ class ProductAssignmentsValidator
 
     private function checkExtrapolatedAttributes(array $productAssignment, string $assetFamilyIdentifier): ConstraintViolationListInterface
     {
-        $extrapolatedAttributeCodes = ReplacePattern::detectPatterns($productAssignment['attribute']);
-        $validator = Validation::createValidator();
-        $violations = new ConstraintViolationList();
-        foreach ($extrapolatedAttributeCodes as $extrapolatedAttributeCode) {
-            $isAttributeExisting = $this->attributeExists->withAssetFamilyAndCode(
-                AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
-                AttributeCode::fromString($extrapolatedAttributeCode)
-            );
-            $violations = $validator->validate(
-                $isAttributeExisting,
-                new Callback(function ($attributeExists, ExecutionContextInterface $context) use ($extrapolatedAttributeCode) {
-                    if (!$attributeExists) {
-                        $context
-                            ->buildViolation(ProductLinkRulesShouldBeExecutable::EXTRAPOLATED_ATTRIBUTE_SHOULD_EXIST, ['%attribute_code%' => $extrapolatedAttributeCode])
-                            ->addViolation();
-                    }
-                })
-            );
+        $violations = $this->extrapolatedAttributeValidator->checkAttributeExistsAndHasASupportedType(
+            $productAssignment['attribute'],
+            $assetFamilyIdentifier,
+            [TextAttribute::ATTRIBUTE_TYPE]
+        );
+
+        if (isset($productAssignment['channel'])) {
+            $violations->addAll($this->extrapolatedAttributeValidator->checkAttributeExistsAndHasASupportedType(
+                $productAssignment['channel'],
+                $assetFamilyIdentifier,
+                [TextAttribute::ATTRIBUTE_TYPE]
+            ));
+        }
+        if (isset($productAssignment['locale'])) {
+            $violations->addAll($this->extrapolatedAttributeValidator->checkAttributeExistsAndHasASupportedType(
+                $productAssignment['locale'],
+                $assetFamilyIdentifier,
+                [TextAttribute::ATTRIBUTE_TYPE]
+            ));
         }
 
         return $violations;

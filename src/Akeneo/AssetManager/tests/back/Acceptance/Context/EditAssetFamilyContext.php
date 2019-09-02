@@ -876,13 +876,107 @@ final class EditAssetFamilyContext implements Context
     }
 
     /**
+     * @When /^the user updates this asset family with a dynamic product link rule having an assignment attribute which references this attribute$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithADynamicProductLinkRuleHavingAnAssignmentAttributeWhichReferencesAnAttributeHavingAnUnsupportedAttributeType()
+    {
+        $dynamicRuleTemplate = [
+            'product_selections' => [
+                [
+                    'field' => 'sku',
+                    'operator'  => '=',
+                    'value'     => '123444456789',
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
+                ]
+            ],
+            'assign_assets_to'    => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => $this->toExtrapolation(self::ATTRIBUTE_CODE),
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
+                ]
+            ]
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
      * @Then /^there should be a validation error stating that the product selection locale does not support this attribute for extrapolation$/
      */
-    public function thereShouldBeAValidationErrorStatingThatTheProductSelectionLocaleDoesNotSupportExtrapolatedImageAttribute()
+    public function thereShouldBeAValidationErrorStatingThatTheAssignmentAttributeDoesNotSupportThisExtrapolatedAttributeType()
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
             sprintf('The attribute "%s" of type "image" is not supported, only the following attribute types are supported for this field: text', self::ATTRIBUTE_CODE)
         );
+    }
+
+    /**
+     * @When /^the user updates this asset family with a dynamic product link rule having an assignment channel which references this attribute$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithADynamicProductLinkRuleHavingAnAssignmentChannelWhichReferencesThisAttribute()
+    {
+        $dynamicRuleTemplate = [
+            'product_selections' => [
+                [
+                    'field' => 'sku',
+                    'operator'  => '=',
+                    'value'     => '123444456789',
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
+                ]
+            ],
+            'assign_assets_to'    => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => 'my_asset_collection',
+                    'channel' => $this->toExtrapolation(self::ATTRIBUTE_CODE),
+                    'locale' => 'en_US',
+                ]
+            ]
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
+     * @Then /^there should be a validation error stating that the product assignment channel does not support this attribute for extrapolation$/
+     */
+    public function thereShouldBeAValidationErrorStatingThatTheProductAssignmentChannelDoesNotSupportThisAttributeForExtrapolation()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            sprintf('The attribute "%s" of type "image" is not supported, only the following attribute types are supported for this field: text', self::ATTRIBUTE_CODE)
+        );
+    }
+
+    /**
+     * @When /^the user updates this asset family with a dynamic product link rule having an assignment locale which references this attribute$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithADynamicProductLinkRuleHavingAnAssignmentLocaleWhichReferencesThisAttribute()
+    {
+        $dynamicRuleTemplate = [
+            'product_selections' => [
+                [
+                    'field' => 'sku',
+                    'operator'  => '=',
+                    'value'     => '123444456789',
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
+                ]
+            ],
+            'assign_assets_to'    => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => 'my_asset_collection',
+                    'channel' => 'ecommerce',
+                    'locale' => $this->toExtrapolation(self::ATTRIBUTE_CODE),
+                ]
+            ]
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $this->editAssetFamily($command);
     }
 
     private function editAssetFamily(EditAssetFamilyCommand $editAssetFamilyCommand): void
@@ -897,5 +991,15 @@ final class EditAssetFamilyContext implements Context
     private function toExtrapolation(string $attributeCode): string
     {
         return sprintf('{{%s}}', $attributeCode);
+    }
+
+    /**
+     * @Then /^there should be a validation error stating that the product assignment locale does not support this attribute for extrapolation$/
+     */
+    public function thereShouldBeAValidationErrorStatingThatTheProductAssignmentLocaleDoesNotSupportThisAttributeForExtrapolation()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            sprintf('The attribute "%s" of type "image" is not supported, only the following attribute types are supported for this field: text', self::ATTRIBUTE_CODE)
+        );
     }
 }
