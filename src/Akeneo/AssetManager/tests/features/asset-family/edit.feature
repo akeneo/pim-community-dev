@@ -142,10 +142,28 @@ Feature: Edit an asset family
 
   # Product selection locale
   @acceptance-back @nominal
+  Scenario: Updating an asset family with a product link rule having no product selection locale
+    Given an asset family with no product link rules
+    When the user updates this asset family with a product link rule having a no product selection locale
+    Then there is an asset family with a product link rule
+
+  @acceptance-back @nominal
+  Scenario: Updating an asset family with a product link rule having a static product selection locale
+    Given an asset family with no product link rules and a locale
+    When the user updates this asset family with a product link rule having a product selection locale referencing this locale
+    Then there is an asset family with a product link rule
+
+  @acceptance-back @nominal
   Scenario: Updating an asset family with a product link rule having a dynamic product selection locale
     Given an asset family with no product link rules and a text attribute
     When the user updates this asset family with a dynamic product link rule having a product selection locale which references this text attribute
     Then there is an asset family with a product link rule
+
+  @acceptance-back @error
+  Scenario: Cannot update an asset family with a product link rule having a static product selection locale that does not exist
+    Given an asset family with no product link rules
+    When the user updates this asset family with a product link rule having a product selection locale that does not exist
+    Then there should be a validation error stating that the product selection locale does not exist
 
   @acceptance-back @error
   Scenario: Updating an asset family with a product link rule having a dynamic product selection locale referencing an unsupported attribute type

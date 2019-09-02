@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules;
 
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\ReplacePattern;
-use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\AssetManager\Domain\Query\Channel\ChannelExistsInterface;
+use Akeneo\AssetManager\Domain\Query\Locale\FindActivatedLocalesByIdentifiersInterface;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -34,14 +34,19 @@ class ProductSelectionsValidator
     /** @var ChannelExistsInterface */
     private $channelExists;
 
+    /** @var FindActivatedLocalesByIdentifiersInterface */
+    private $findActivatedLocalesByIdentifiers;
+
     public function __construct(
         RuleEngineValidatorACLInterface $ruleEngineValidatorACL,
         ExtrapolatedAttributeValidator $extrapolatedAttributeValidator,
-        ChannelExistsInterface $channelExists
+        ChannelExistsInterface $channelExists,
+        FindActivatedLocalesByIdentifiersInterface $findActivatedLocalesByIdentifiers
     ) {
         $this->ruleEngineValidatorACL = $ruleEngineValidatorACL;
         $this->extrapolatedAttributeValidator = $extrapolatedAttributeValidator;
         $this->channelExists = $channelExists;
+        $this->findActivatedLocalesByIdentifiers = $findActivatedLocalesByIdentifiers;
     }
 
     public function validate(array $productSelections, string $assetFamilyIdentifier): ConstraintViolationListInterface
@@ -72,6 +77,7 @@ class ProductSelectionsValidator
             return $this->checkExtrapolatedAttributes($productSelection, $assetFamilyIdentifier);
         }
         $violations = $this->checkChannelExistsIfAny($productSelection);
+        $violations->addAll($this->checkLocaleExistsIfAny($productSelection));
         $violations->addAll($this->ruleEngineValidatorACL->validateProductSelection($productSelection));
 
         return $violations;
@@ -141,8 +147,36 @@ class ProductSelectionsValidator
             ) {
                 if (!$attributeExists) {
                     $context
-                        ->buildViolation(ProductLinkRulesShouldBeExecutable::CHANNEL_SHOULD_EXISTS,
+                        ->buildViolation(ProductLinkRulesShouldBeExecutable::CHANNEL_SHOULD_EXIST,
                             ['%channel_code%' => $channelCode]
+                        )
+                        ->addViolation();
+                }
+            }
+            )
+        );
+    }
+
+    private function checkLocaleExistsIfAny(array $productSelection): ConstraintViolationListInterface
+    {
+        if (!isset($productSelection['locale'])) {
+            return new ConstraintViolationList();
+        }
+        $localeCode = $productSelection['locale'];
+        $activatedLocales = $this->findActivatedLocalesByIdentifiers->find(LocaleIdentifierCollection::fromNormalized([$localeCode]))
+                                                                    ->normalize();
+        $isLocaleExisting = in_array($localeCode, $activatedLocales);
+
+        $validator = Validation::createValidator();
+        return $validator->validate(
+            $isLocaleExisting,
+            new Callback(function ($attributeExists, ExecutionContextInterface $context) use (
+                $localeCode
+            ) {
+                if (!$attributeExists) {
+                    $context
+                        ->buildViolation(ProductLinkRulesShouldBeExecutable::LOCALE_SHOULD_EXIST,
+                            ['%locale_code%' => $localeCode]
                         )
                         ->addViolation();
                 }

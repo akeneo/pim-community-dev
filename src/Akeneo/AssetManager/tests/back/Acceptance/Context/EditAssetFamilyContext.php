@@ -46,6 +46,7 @@ final class EditAssetFamilyContext implements Context
     private const ASSET_FAMILY_IDENTIFIER = 'packshot';
     private const ATTRIBUTE_CODE = 'attribute_code';
     private const UNKNOWN_CHANNEL = 'unknown_channel';
+    private const UNKNOWN_LOCALE = 'UNKNOWN_LOCALE';
 
     /** @var AssetFamilyRepositoryInterface */
     private $assetFamilyRepository;
@@ -440,10 +441,12 @@ final class EditAssetFamilyContext implements Context
      * @Given /^an asset family with no product link rules and a text attribute$/
      * @Given /^an asset family with no product link rules$/
      * @Given /^an asset family with no product link rules and a channel$/
+     * @Given /^an asset family with no product link rules and a locale$/
      */
     public function anAssetFamilyWithSomeAttributes()
     {
         $this->createEcommerceChannel();
+        $this->createEnUsLocale();
         $this->fixturesLoader
             ->assetFamily(self::ASSET_FAMILY_IDENTIFIER)
             ->withAttributeOfTypeText(self::ASSET_FAMILY_IDENTIFIER, self::ATTRIBUTE_CODE)
@@ -1057,14 +1060,6 @@ final class EditAssetFamilyContext implements Context
     }
 
     /**
-     * @Given /^a channel$/
-     */
-    public function aChannel()
-    {
-        $this->createEcommerceChannel();
-    }
-
-    /**
      * @Then /^there should be a validation error stating that the product selection channel does not exist$/
      */
     public function thereShouldBeAValidationErrorStatingThatTheProductSelectionChannelDoesNotExist()
@@ -1102,6 +1097,99 @@ final class EditAssetFamilyContext implements Context
         $this->editAssetFamily($command);
     }
 
+    /**
+     * @When /^the user updates this asset family with a product link rule having a no product selection locale$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithAProductLinkRuleHavingANoProductSelectionLocale()
+    {
+        $dynamicRuleTemplate = [
+            'product_selections' => [
+                [
+                    'field'    => 'sku',
+                    'operator' => '=',
+                    'value'    => '11234567899',
+                    'channel'  => 'ecommerce',
+                ],
+            ],
+            'assign_assets_to'   => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => 'asset_collection',
+                    'channel'   => 'ecommerce',
+                    'locale'    => 'en_US',
+                ],
+            ],
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
+     * @When /^the user updates this asset family with a product link rule having a product selection locale referencing this locale$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithAProductLinkRuleHavingAProductSelectionLocaleReferencingThisLocale()
+    {
+        $dynamicRuleTemplate = [
+            'product_selections' => [
+                [
+                    'field'    => 'sku',
+                    'operator' => '=',
+                    'value'    => '11234567899',
+                    'channel'  => 'ecommerce',
+                    'locale'   => 'en_US',
+                ],
+            ],
+            'assign_assets_to'   => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => 'asset_collection',
+                    'channel'   => 'ecommerce',
+                    'locale'    => 'en_US',
+                ],
+            ],
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
+     * @When /^the user updates this asset family with a product link rule having a product selection locale that does not exist$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithAProductLinkRuleHavingAProductSelectionLocaleThatDoesNotExist()
+    {
+        $dynamicRuleTemplate = [
+            'product_selections' => [
+                [
+                    'field'    => 'sku',
+                    'operator' => '=',
+                    'value'    => '11234567899',
+                    'channel'  => 'ecommerce',
+                    'locale'   => self::UNKNOWN_LOCALE,
+                ],
+            ],
+            'assign_assets_to'   => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => 'asset_collection',
+                    'channel'   => 'ecommerce',
+                    'locale'    => 'en_US',
+                ],
+            ],
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
+     * @Then /^there should be a validation error stating that the product selection locale does not exist$/
+     */
+    public function thereShouldBeAValidationErrorStatingThatTheProductSelectionLocaleDoesNotExist()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            sprintf('The locale "%s" is not activated or does not exist', self::UNKNOWN_LOCALE)
+        );
+    }
+
     private function editAssetFamily(EditAssetFamilyCommand $editAssetFamilyCommand): void
     {
         $this->constraintViolationsContext->addViolations($this->validator->validate($editAssetFamilyCommand));
@@ -1119,5 +1207,10 @@ final class EditAssetFamilyContext implements Context
     private function createEcommerceChannel(): void
     {
         $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
+    }
+
+    private function createEnUsLocale(): void
+    {
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
     }
 }
