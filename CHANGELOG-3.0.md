@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.40 (2019-09-02)
+
 ## Bug fixes
 
 - PIM-8588: Fix proposal diff for reference entity
