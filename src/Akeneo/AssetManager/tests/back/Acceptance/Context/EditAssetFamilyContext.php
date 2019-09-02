@@ -1157,7 +1157,7 @@ final class EditAssetFamilyContext implements Context
      */
     public function theUserUpdatesThisAssetFamilyWithAProductLinkRuleHavingAProductSelectionLocaleThatDoesNotExist()
     {
-        $dynamicRuleTemplate = [
+        $productLinkRule = [
             'product_selections' => [
                 [
                     'field'    => 'sku',
@@ -1176,7 +1176,7 @@ final class EditAssetFamilyContext implements Context
                 ],
             ],
         ];
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$productLinkRule]);
         $this->editAssetFamily($command);
     }
 
@@ -1188,6 +1188,57 @@ final class EditAssetFamilyContext implements Context
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
             sprintf('The locale "%s" is not activated or does not exist', self::UNKNOWN_LOCALE)
         );
+    }
+
+    /**
+     * @When /^the user updates this asset family with a product link rule having no assignment channel$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithAProductLinkRuleHavingNoAssignmentChannel()
+    {
+        $productLinkRule = [
+            'product_selections' => [
+                [
+                    'field'    => 'sku',
+                    'operator' => '=',
+                    'value'    => '11234567899',
+                ],
+            ],
+            'assign_assets_to'   => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => 'asset_collection',
+                    'channel'   => 'ecommerce',
+                ],
+            ],
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$productLinkRule]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
+     * @When /^the user updates this asset family with a product link rule having an assignment channel referencing this channel$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithAProductLinkRuleHavingAnAssignmentChannelReferencingThisChannel()
+    {
+        $productLinkRule = [
+            'product_selections' => [
+                [
+                    'field'    => 'sku',
+                    'operator' => '=',
+                    'value'    => '11234567899',
+                ],
+            ],
+            'assign_assets_to'   => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => 'asset_collection',
+                    'channel'   => 'ecommerce',
+                    'locale'    => 'en_US'
+                ],
+            ],
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$productLinkRule]);
+        $this->editAssetFamily($command);
     }
 
     private function editAssetFamily(EditAssetFamilyCommand $editAssetFamilyCommand): void
