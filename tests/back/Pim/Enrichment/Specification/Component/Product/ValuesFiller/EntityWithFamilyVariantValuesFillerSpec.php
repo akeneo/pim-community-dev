@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\ValuesFiller;
 
-use PhpSpec\ObjectBehavior;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolverInterface;
@@ -12,6 +12,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class EntityWithFamilyVariantValuesFillerSpec extends ObjectBehavior
@@ -21,9 +22,17 @@ class EntityWithFamilyVariantValuesFillerSpec extends ObjectBehavior
         AttributeValuesResolverInterface $valuesResolver,
         CurrencyRepositoryInterface $currencyRepository,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
-        IdentifiableObjectRepositoryInterface $attributeRepository
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        ValueFactory $valueFactory
     ) {
-        $this->beConstructedWith($entityWithValuesBuilder, $valuesResolver, $currencyRepository, $attributesProvider, $attributeRepository);
+        $this->beConstructedWith(
+            $entityWithValuesBuilder,
+            $valuesResolver,
+            $currencyRepository,
+            $attributesProvider,
+            $attributeRepository,
+            $valueFactory
+        );
     }
 
     function it_throws_an_exception_if_this_is_not_an_entity_with_a_family_variant(
@@ -33,9 +42,9 @@ class EntityWithFamilyVariantValuesFillerSpec extends ObjectBehavior
     }
 
     function it_fills_missing_product_values_from_attribute_set_on_new_entity_with_family_variant(
-        $attributesProvider,
-        $valuesResolver,
-        $entityWithValuesBuilder,
+        EntityWithFamilyVariantAttributesProvider $attributesProvider,
+        AttributeValuesResolverInterface $valuesResolver,
+        ValueFactory $valueFactory,
         ProductModelInterface $entity,
         ProductModelInterface $parentEntity,
         AttributeInterface $name,
@@ -43,7 +52,9 @@ class EntityWithFamilyVariantValuesFillerSpec extends ObjectBehavior
         AttributeInterface $sku,
         ValueInterface $skuValue,
         ValueInterface $colorValue,
-        $attributeRepository
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        ValueInterface $nullValueFr,
+        ValueInterface $nullValueEn
     ) {
         $sku->getCode()->willReturn('sku');
         $sku->getType()->willReturn('pim_catalog_identifier');
@@ -114,17 +125,22 @@ class EntityWithFamilyVariantValuesFillerSpec extends ObjectBehavior
 
         $entity->getValues()->willReturn([$skuValue, $colorValue]);
 
-        $entityWithValuesBuilder->addOrReplaceValue(Argument::cetera())->shouldBeCalledTimes(2);
+        $valueFactory->createNull($name, null, 'fr_FR')->shouldBeCalled()->willReturn($nullValueFr);
+        $valueFactory->createNull($name, null, 'en_US')->shouldBeCalled()->willReturn($nullValueEn);
+        $entity->addValue($nullValueFr)->shouldBeCalled();
+        $entity->addValue($nullValueEn)->shouldBeCalled();
 
         $this->fillMissingValues($entity);
     }
 
     function it_fills_missing_product_values_from_attribute_set_on_new_entity_with_family_variant_without_parent(
-        $attributesProvider,
-        $valuesResolver,
-        $entityWithValuesBuilder,
+        EntityWithFamilyVariantAttributesProvider $attributesProvider,
+        AttributeValuesResolverInterface $valuesResolver,
         ProductModelInterface $entity,
-        AttributeInterface $name
+        AttributeInterface $name,
+        ValueFactory $valueFactory,
+        ValueInterface $nullValueFr,
+        ValueInterface $nullValueEn
     ) {
         $name->getCode()->willReturn('name');
         $name->getType()->willReturn('pim_catalog_text');
@@ -153,15 +169,19 @@ class EntityWithFamilyVariantValuesFillerSpec extends ObjectBehavior
             ]);
 
         $entity->getValues()->willReturn([]);
-        $entityWithValuesBuilder->addOrReplaceValue(Argument::cetera())->shouldBeCalledTimes(2);
+
+        $valueFactory->createNull($name, null, 'fr_FR')->shouldBeCalled()->willReturn($nullValueFr);
+        $valueFactory->createNull($name, null, 'en_US')->shouldBeCalled()->willReturn($nullValueEn);
+        $entity->addValue($nullValueFr)->shouldBeCalled();
+        $entity->addValue($nullValueEn)->shouldBeCalled();
 
         $this->fillMissingValues($entity);
     }
 
     function it_fills_nothing_if_the_entity_with_family_variant_already_has_all_its_values(
-        $attributesProvider,
-        $valuesResolver,
-        $entityWithValuesBuilder,
+        EntityWithFamilyVariantAttributesProvider $attributesProvider,
+        AttributeValuesResolverInterface $valuesResolver,
+        ValueFactory $valueFactory,
         ProductModelInterface $entity,
         ProductModelInterface $parentEntity,
         AttributeInterface $name,
@@ -270,7 +290,7 @@ class EntityWithFamilyVariantValuesFillerSpec extends ObjectBehavior
 
         $entity->getValues()->willReturn([$skuValue, $nameFRValue, $nameENValue, $colorValue, $intCodeValue]);
 
-        $entityWithValuesBuilder->addOrReplaceValue(Argument::cetera())->shouldNotBeCalled();
+        $valueFactory->createNull(Argument::cetera())->shouldNotBeCalled();
 
         $this->fillMissingValues($entity);
     }

@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\ValuesFiller;
 
 use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolverInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
@@ -37,16 +38,21 @@ abstract class AbstractEntityWithFamilyValuesFiller implements EntityWithFamilyV
     /** @var IdentifiableObjectRepositoryInterface */
     protected $attributeRepository;
 
+    /** @var ValueFactory */
+    private $valueFactory;
+
     public function __construct(
         EntityWithValuesBuilderInterface $entityWithValuesBuilder,
         AttributeValuesResolverInterface $valuesResolver,
         CurrencyRepositoryInterface $currencyRepository,
-        IdentifiableObjectRepositoryInterface $attributeRepository
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        ValueFactory $valueFactory
     ) {
         $this->entityWithValuesBuilder = $entityWithValuesBuilder;
         $this->valuesResolver = $valuesResolver;
         $this->currencyRepository = $currencyRepository;
         $this->attributeRepository = $attributeRepository;
+        $this->valueFactory = $valueFactory;
     }
 
     /**
@@ -68,13 +74,12 @@ abstract class AbstractEntityWithFamilyValuesFiller implements EntityWithFamilyV
         );
 
         foreach ($missingValues as $value) {
-            $this->entityWithValuesBuilder->addOrReplaceValue(
-                $entity,
+            $newValue = $this->valueFactory->createNull(
                 $attributes[$value['attribute']],
-                $value['locale'],
                 $value['scope'],
-                null
+                $value['locale']
             );
+            $entity->addValue($newValue);
         }
 
         $this->addMissingPricesToProduct($entity);

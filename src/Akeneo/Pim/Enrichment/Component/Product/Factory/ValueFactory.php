@@ -52,12 +52,32 @@ class ValueFactory
      *
      * @return ValueInterface
      */
-    public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data, $ignoreUnknownData = false)
-    {
+    public function create(
+        AttributeInterface $attribute,
+        ?string $channelCode,
+        ?string $localeCode,
+        $data,
+        bool $ignoreUnknownData = false
+    ) {
         if (null === $data || [] === $data || [''] === $data || [null] === $data) {
             throw new \Exception(sprintf('Data should not be empty, %s found', json_encode($data)));
         }
 
+        return $this->createValue($attribute, $channelCode, $localeCode, $data, $ignoreUnknownData);
+    }
+
+    public function createNull(AttributeInterface $attribute, ?string $channelCode, ?string $localeCode)
+    {
+        return $this->createValue($attribute, $channelCode, $localeCode, null, false);
+    }
+
+    private function createValue(
+        AttributeInterface $attribute,
+        ?string $channelCode,
+        ?string $localeCode,
+        $data,
+        $ignoreUnknownData
+    ) {
         try {
             $this->attributeValidatorHelper->validateScope($attribute, $channelCode);
             $this->attributeValidatorHelper->validateLocale($attribute, $localeCode);
@@ -83,7 +103,6 @@ class ValueFactory
      * @param string $attributeType
      *
      * @return ValueFactoryInterface
-     *
      */
     protected function getFactory($attributeType)
     {

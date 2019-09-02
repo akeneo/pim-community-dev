@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\ValuesFiller;
 
+use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolverInterface;
@@ -19,21 +20,29 @@ class ProductValuesFillerSpec extends ObjectBehavior
         EntityWithValuesBuilderInterface $entityWithValuesBuilder,
         AttributeValuesResolverInterface $valuesResolver,
         CurrencyRepositoryInterface $currencyRepository,
-        IdentifiableObjectRepositoryInterface $attributeRepository
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        ValueFactory $valueFactory
     ) {
-        $this->beConstructedWith($entityWithValuesBuilder, $valuesResolver, $currencyRepository, $attributeRepository);
+        $this->beConstructedWith(
+            $entityWithValuesBuilder,
+            $valuesResolver,
+            $currencyRepository,
+            $attributeRepository,
+            $valueFactory
+        );
     }
 
     function it_fills_missing_product_values_from_family_on_new_product(
-        $valuesResolver,
-        $entityWithValuesBuilder,
+        AttributeValuesResolverInterface $valuesResolver,
         FamilyInterface $family,
         ProductInterface $product,
         AttributeInterface $sku,
         AttributeInterface $name,
         AttributeInterface $desc,
         ValueInterface $skuValue,
-        $attributeRepository
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        ValueFactory $valueFactory,
+        ValueInterface $emptyValue
     ) {
         $sku->getCode()->willReturn('sku');
         $sku->getType()->willReturn('pim_catalog_identifier');
@@ -110,7 +119,8 @@ class ProductValuesFillerSpec extends ObjectBehavior
         $skuValue->getScopeCode()->willReturn(null);
         $product->getValues()->willReturn([$skuValue]);
 
-        $entityWithValuesBuilder->addOrReplaceValue(Argument::cetera())->shouldBeCalledTimes(6);
+        $valueFactory->createNull(Argument::cetera())->shouldBeCalledTimes(6)->willReturn($emptyValue);
+        $product->addValue(Argument::cetera())->shouldBeCalledTimes(6);
 
         $this->fillMissingValues($product);
     }
