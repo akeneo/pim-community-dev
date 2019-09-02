@@ -18,7 +18,7 @@ use Doctrine\DBAL\Exception\ConnectionException;
 class InstallStatusManager
 {
     public const INSTALL_TABLE_NAME ='oro_user';
-    public const MYSQL_META_COLUMN_CREATE_TIME ='create_time';
+    public const MYSQL_META_COLUMN_CREATE_TIME ='CREATE_TIME';
 
     /**
      * @var Registry $doctrine
@@ -66,7 +66,7 @@ class InstallStatusManager
         if (!isset($result[self::MYSQL_META_COLUMN_CREATE_TIME])) {
             throw new UnavailableCreationTimeException(
                 sprintf(
-                    '"%" not available for table "%s"',
+                    '"%s" not available for table "%s"',
                     self::MYSQL_META_COLUMN_CREATE_TIME,
                     self::INSTALL_TABLE_NAME
                 )
