@@ -100,6 +100,7 @@ class AppKernel extends Kernel
             new Akeneo\Platform\Bundle\UIBundle\PimEnterpriseUIBundle(),
             new Hslavich\OneloginSamlBundle\HslavichOneloginSamlBundle(),
             new Akeneo\Platform\Bundle\AuthenticationBundle\AkeneoAuthenticationBundle(),
+            new Akeneo\Pim\Enrichment\AssetManager\Bundle\AkeneoPimEnrichmentAssetManagerBundle(),
         ];
     }
 
