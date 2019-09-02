@@ -18,6 +18,7 @@ import {
   Permissions,
 } from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/permission';
 import {fetchAssetAttributes} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/attribute';
+const fetcherRegistry = require('pim/fetcher-registry');
 
 const transformValues = (legacyValues: LegacyValueCollection, assetAttributes: Attribute[]): ValueCollection => {
   const attributeCodes = assetAttributes.map((attribute: Attribute) => attribute.code);
@@ -53,7 +54,7 @@ const transformValues = (legacyValues: LegacyValueCollection, assetAttributes: A
 *    - if the product category has the edit permission
 */
 const generate = async (product: Product): Promise<ValueCollection> => {
-  const assetAttributes: Attribute[] = await fetchAssetAttributes();
+  const assetAttributes: Attribute[] = await fetchAssetAttributes(fetcherRegistry.getFetcher('attribute'));
   let valueCollection: ValueCollection = transformValues(product.values, assetAttributes);
 
   const permissions: Permissions = await fetchPermissions();
