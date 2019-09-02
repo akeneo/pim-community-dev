@@ -6,6 +6,7 @@ import {Locale} from 'akeneopimenrichmentassetmanager/platform/model/channel/loc
 import {fetchChannels} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/channel';
 import {Family, FamilyCode} from 'akeneopimenrichmentassetmanager/platform/model/structure/family';
 import {fetchFamily} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/family';
+const fetcherRegistry = require('pim/fetcher-registry');
 
 export type StructureState = {
   attributes: Attribute[];
@@ -80,7 +81,7 @@ export const selectFamily = (state: AssetCollectionState) => {
 };
 
 export const updateChannels = () => async (dispatch: any) => {
-  const channels = await fetchChannels();
+  const channels = await fetchChannels(fetcherRegistry.getFetcher('channel'));
   dispatch(channelListUpdated(channels));
 };
 
