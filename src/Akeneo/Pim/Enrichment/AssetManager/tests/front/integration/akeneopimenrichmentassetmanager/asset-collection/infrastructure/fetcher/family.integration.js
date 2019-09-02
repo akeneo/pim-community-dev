@@ -35,7 +35,9 @@ it('It fetches the family', async () => {
   });
 
   const response = await page.evaluate(async () => {
-    const fetchFamily = require('akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/family').fetchFamily;
+    const fetchFamily =
+      require('akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/family')
+      .fetchFamily;
     const fetcherRegistry = require('pim/fetcher-registry');
     fetcherRegistry.initialize();
     const family = await fetchFamily(fetcherRegistry.getFetcher('family'))('scanners');

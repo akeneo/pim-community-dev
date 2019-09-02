@@ -29,10 +29,10 @@ class AssetTabForm extends (Form as {new (config: any): any}) {
   }
 
   configure() {
-    // this.trigger('tab:register', {
-    //   code: this.code,
-    //   label: __('pim_enrich.entity.product.module.asset.title')
-    // });
+    this.trigger('tab:register', {
+      code: this.code,
+      label: __('pim_enrich.entity.product.module.asset.title')
+    });
 
     UserContext.off('change:catalogLocale change:catalogScope', this.updateContext);
     this.listenTo(UserContext, 'change:catalogLocale', this.updateLocale);

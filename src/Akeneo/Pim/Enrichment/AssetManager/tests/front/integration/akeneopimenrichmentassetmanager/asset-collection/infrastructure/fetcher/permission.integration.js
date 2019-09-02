@@ -50,7 +50,9 @@ it('It fetches all permissions', async () => {
   });
 
   const response = await page.evaluate(async () => {
-    const fetchPermissions = require('akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/permission').fetchPermissions;
+    const fetchPermissions =
+      require('akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/permission')
+      .fetchPermissions;
     const fetcherRegistry = require('pim/fetcher-registry');
     fetcherRegistry.initialize();
     const permissions = await fetchPermissions(fetcherRegistry.getFetcher('permission'))();

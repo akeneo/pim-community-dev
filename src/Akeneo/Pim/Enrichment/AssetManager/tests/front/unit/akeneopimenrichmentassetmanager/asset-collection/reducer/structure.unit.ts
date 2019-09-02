@@ -10,14 +10,20 @@ import {
   updateChannels,
   updateFamily,
 } from 'akeneopimenrichmentassetmanager/assets-collection/reducer/structure';
-import {fetchChannels} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/channel';
-import {fetchFamily} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/family';
+import {
+  channelFetcher,
+  fetchChannels,
+} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/channel';
+import {
+  familyFetcher,
+  fetchFamily,
+} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/family';
 
 jest.mock('pim/fetcher-registry', () => {});
 fetchChannels = jest.fn();
 fetchFamily = jest.fn();
-const channelFetcher = jest.fn();
-const familyFetcher = jest.fn();
+channelFetcher = jest.fn();
+familyFetcher = jest.fn();
 
 test('It ignores other commands', () => {
   const state = {};
@@ -283,6 +289,8 @@ test('It should be able to dispatch an action to update the channels', async () 
   fetchChannels.mockImplementation(channelFetcher => () => channels);
 
   await updateChannels()(dispatch);
+  expect(fetchChannels).toBeCalled();
+  expect(channelFetcher).toBeCalled();
   expect(dispatch).toBeCalledWith({type: 'CHANNEL_LIST_UPDATED', channels});
 });
 
@@ -298,5 +306,7 @@ test('It should be able to dispatch an action tu update the family', async () =>
   fetchFamily.mockImplementation(familyFetcher => familyCode => family);
 
   await updateFamily(familyCode)(dispatch);
+  expect(fetchFamily).toBeCalled();
+  expect(familyFetcher).toBeCalled();
   expect(dispatch).toBeCalledWith({type: 'FAMILY_UPDATED', family});
 });

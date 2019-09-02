@@ -57,10 +57,11 @@ const transformValues = (legacyValues: LegacyValueCollection, assetAttributes: A
  *    - if the product category has the edit permission
  */
 const generate = async (product: Product): Promise<ValueCollection> => {
-  const assetAttributes: Attribute[] = await fetchAssetAttributes(attributeFetcher)();
+  const assetAttributes: Attribute[] = await fetchAssetAttributes(attributeFetcher())();
+
   let valueCollection: ValueCollection = transformValues(product.values, assetAttributes);
 
-  const permissions: Permissions = await fetchPermissions(permissionFetcher)();
+  const permissions: Permissions = await fetchPermissions(permissionFetcher())();
   valueCollection = filterAttributeGroups(valueCollection, permissions.attributeGroups);
   valueCollection = filterLocales(valueCollection, permissions.locales);
   valueCollection = filterReadOnlyAttribute(valueCollection);

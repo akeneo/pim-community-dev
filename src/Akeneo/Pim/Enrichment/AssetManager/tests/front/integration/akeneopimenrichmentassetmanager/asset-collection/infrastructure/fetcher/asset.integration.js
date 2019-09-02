@@ -1,6 +1,7 @@
 const timeout = 5000;
 
-const AssetFamilyBuilder = require('../../../../../../../../../../AssetManager/tests/front/common/builder/asset-family.js');
+const AssetFamilyBuilder = require(
+  '../../../../../../../../../../AssetManager/tests/front/common/builder/asset-family.js');
 const AssetBuilder = require('../../../../../../../../../../AssetManager/tests/front/common/builder/asset.js');
 
 let page = global.__PAGE__;
@@ -54,7 +55,9 @@ it('It fetches the asset collection', async () => {
   });
 
   const response = await page.evaluate(async () => {
-    const fetchAssetCollection = require('akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/asset').fetchAssetCollection;
+    const fetchAssetCollection =
+      require('akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/asset')
+      .fetchAssetCollection;
     const assetCollection = await fetchAssetCollection('packshot', ['iphone'], {
       channel: 'ecommerce',
       locale: 'en_US'

@@ -1,6 +1,12 @@
 import generate from 'akeneopimenrichmentassetmanager/assets-collection/application/value-generator';
-import {fetchAssetAttributes} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/attribute';
-import {fetchPermissions} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/permission';
+import {
+  attributeFetcher,
+  fetchAssetAttributes,
+} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/attribute';
+import {
+  permissionFetcher,
+  fetchPermissions,
+} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/permission';
 import {
   AttributeGroupPermission,
   LocalePermission,
@@ -11,8 +17,8 @@ import {CategoryCode} from 'akeneopimenrichmentassetmanager/enrich/domain/model/
 jest.mock('pim/fetcher-registry', () => {});
 fetchAssetAttributes = jest.fn();
 fetchPermissions = jest.fn();
-const attributeFetcher = jest.fn();
-const permissionFetcher = jest.fn();
+attributeFetcher = jest.fn();
+permissionFetcher = jest.fn();
 
 test('It should generate a value collection from the product with all attributes editable', async () => {
   // The values returns are editable
@@ -127,6 +133,10 @@ test('It should generate a value collection from the product with an attribute g
   ];
 
   const valueCollection = await generate(product);
+  expect(fetchAssetAttributes).toBeCalled();
+  expect(attributeFetcher).toBeCalled();
+  expect(fetchPermissions).toBeCalled();
+  expect(permissionFetcher).toBeCalled();
   expect(valueCollection).toEqual(expectedValueCollection);
 });
 
