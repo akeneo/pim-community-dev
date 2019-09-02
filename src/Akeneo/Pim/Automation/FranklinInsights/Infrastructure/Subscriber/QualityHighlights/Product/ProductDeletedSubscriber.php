@@ -21,7 +21,7 @@ use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-class ProductDeletedSubscriber implements EventSubscriberInterface
+final class ProductDeletedSubscriber implements EventSubscriberInterface
 {
     /** @var GetConnectionStatusHandler */
     private $connectionStatusHandler;

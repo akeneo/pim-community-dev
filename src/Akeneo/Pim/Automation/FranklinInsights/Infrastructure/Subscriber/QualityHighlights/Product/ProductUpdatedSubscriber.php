@@ -21,7 +21,7 @@ use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-class ProductUpdatedSubscriber implements EventSubscriberInterface
+final class ProductUpdatedSubscriber implements EventSubscriberInterface
 {
     /** @var GetConnectionStatusHandler */
     private $connectionStatusHandler;
@@ -57,7 +57,7 @@ class ProductUpdatedSubscriber implements EventSubscriberInterface
         $this->pendingItemsRepository->addUpdatedProductIdentifier($product->getId());
     }
 
-    public function onSaveAll(GenericEvent $event)
+    public function onSaveAll(GenericEvent $event): void
     {
         $products = $event->getSubject();
         $productCodes = [];
