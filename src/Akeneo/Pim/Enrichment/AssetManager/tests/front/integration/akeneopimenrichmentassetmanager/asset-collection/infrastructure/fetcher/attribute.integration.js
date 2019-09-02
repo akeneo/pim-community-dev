@@ -1,8 +1,5 @@
 const timeout = 5000;
 
-const AssetFamilyBuilder = require('../../../../../../../../../../AssetManager/tests/front/common/builder/asset-family.js');
-const AssetBuilder = require('../../../../../../../../../../AssetManager/tests/front/common/builder/asset.js');
-
 let page = global.__PAGE__;
 
 beforeEach(async () => {
@@ -16,34 +13,34 @@ it('It fetches all product attributes of asset', async () => {
       'POST' === interceptedRequest.method()
     ) {
       const attributes = [{
-          "code": "packshot",
-          "type": "akeneo_asset_multiple_link",
-          "group": "marketing",
-          "reference_data_name": "packshot",
-          "labels": {
-            "en_US": "Packshot"
+          code: 'packshot',
+          type: 'akeneo_asset_multiple_link',
+          group: 'marketing',
+          reference_data_name: 'packshot',
+          labels: {
+            en_US: 'Packshot'
           },
-          "is_read_only": null
+          is_read_only: null
         },
         {
-          "code": "notices",
-          "type": "akeneo_asset_multiple_link",
-          "group": "technical",
-          "reference_data_name": "notice",
-          "labels": {
-            "en_US": "Notice"
+          code: 'notices',
+          type: 'akeneo_asset_multiple_link',
+          group: 'technical',
+          reference_data_name: 'notice',
+          labels: {
+            en_US: 'Notice'
           },
-          "is_read_only": null
+          is_read_only: null
         },
         {
-          "code": "videos",
-          "type": "akeneo_asset_multiple_link",
-          "group": "technical",
-          "reference_data_name": "video_presentation",
-          "labels": {
-            "en_US": "Videos"
+          code: 'videos',
+          type: 'akeneo_asset_multiple_link',
+          group: 'technical',
+          reference_data_name: 'video_presentation',
+          labels: {
+            en_US: 'Videos'
           },
-          "is_read_only": null
+          is_read_only: null
         }
       ];
 
@@ -64,34 +61,34 @@ it('It fetches all product attributes of asset', async () => {
   });
 
   expect(response).toEqual([{
-      "code": "packshot",
-      "type": "akeneo_asset_multiple_link",
-      "group": "marketing",
-      "referenceDataName": "packshot",
-      "labels": {
-        "en_US": "Packshot"
+      code: 'packshot',
+      type: 'akeneo_asset_multiple_link',
+      group: 'marketing',
+      referenceDataName: 'packshot',
+      labels: {
+        en_US: 'Packshot'
       },
-      "isReadOnly": null
+      isReadOnly: null
     },
     {
-      "code": "notices",
-      "type": "akeneo_asset_multiple_link",
-      "group": "technical",
-      "referenceDataName": "notice",
-      "labels": {
-        "en_US": "Notice"
+      code: 'notices',
+      type: 'akeneo_asset_multiple_link',
+      group: 'technical',
+      referenceDataName: 'notice',
+      labels: {
+        en_US: 'Notice'
       },
-      "isReadOnly": null
+      isReadOnly: null
     },
     {
-      "code": "videos",
-      "type": "akeneo_asset_multiple_link",
-      "group": "technical",
-      "referenceDataName": "video_presentation",
-      "labels": {
-        "en_US": "Videos"
+      code: 'videos',
+      type: 'akeneo_asset_multiple_link',
+      group: 'technical',
+      referenceDataName: 'video_presentation',
+      labels: {
+        en_US: 'Videos'
       },
-      "isReadOnly": null
+      isReadOnly: null
     }
   ]);
 });
