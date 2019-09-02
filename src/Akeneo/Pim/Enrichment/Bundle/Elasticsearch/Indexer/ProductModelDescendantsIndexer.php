@@ -181,7 +181,7 @@ class ProductModelDescendantsIndexer implements
                 $productIds[] = (string) $productModelChild->getId();
             }
 
-            $this->productIndexer->removeManyFromProductIds($productIds);
+            $this->productIndexer->removeFromProductIds($productIds);
 
             return;
         }

@@ -122,7 +122,7 @@
 - Remove class `Akeneo\Pim\Enrichment\Bundle\Command\PurgeProductsCompletenessCommand`
 - Remove class `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\CompletenessRemover`
 - Remove class `Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessRemoverInterface`
-- Change constructor or `Akeneo\Pim\Enrichment\Bundle\Command\CalculateCompletenessCommand` to remove
+- Change constructor of `Akeneo\Pim\Enrichment\Bundle\Command\CalculateCompletenessCommand` to remove
     `Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface` and add
     `Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses` and
     `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexerInterface` and

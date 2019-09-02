@@ -19,7 +19,7 @@ class ProductIndexerSpec extends ObjectBehavior
         NormalizerInterface $normalizer,
         Client $productAndProductModelIndexClient,
         ProductRepositoryInterface $productRepository
-    )     {
+    ) {
         $this->beConstructedWith(
             $normalizer,
             $productAndProductModelIndexClient,
@@ -48,9 +48,12 @@ class ProductIndexerSpec extends ObjectBehavior
         $normalizer
             ->normalize($product, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->willReturn(['id' => $identifier, 'a key' => 'a value']);
-        $productAndProductModelIndexClient
-            ->index(ProductIndexer::INDEX_TYPE, $identifier, ['id' => $identifier, 'a key' => 'a value'])
-            ->shouldBeCalled();
+        $productAndProductModelIndexClient->bulkIndexes(
+            ProductIndexer::INDEX_TYPE,
+            [['id' => $identifier, 'a key' => 'a value']],
+            'id',
+            Refresh::disable()
+        )->shouldBeCalled();
 
         $this->indexFromProductIdentifier($identifier);
     }
@@ -125,7 +128,7 @@ class ProductIndexerSpec extends ObjectBehavior
         $productAndProductModelIndexClient->bulkDelete(ProductIndexer::INDEX_TYPE, ['product_40', 'product_33'])
             ->shouldBeCalled();
 
-        $this->removeManyFromProductIds([40, 33])->shouldReturn(null);
+        $this->removeFromProductIds([40, 33])->shouldReturn(null);
     }
 
     function it_indexes_products_from_identifiers_and_waits_for_index_refresh(

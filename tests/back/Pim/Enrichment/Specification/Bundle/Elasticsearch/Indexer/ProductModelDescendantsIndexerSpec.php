@@ -296,7 +296,7 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $childProduct1->getId()->willReturn(30);
         $childProduct2->getId()->willReturn(40);
 
-        $productIndexer->removeManyFromProductIds(['30', '40'])->shouldBeCalled();
+        $productIndexer->removeFromProductIds(['30', '40'])->shouldBeCalled();
 
         $productModel->getProductModels()->willReturn($productModelChildren);
         $productModelChildren->isEmpty()->willReturn(true);
@@ -364,7 +364,7 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $childVariantProduct1->getId()->willReturn(30);
         $childVariantProduct2->getId()->willReturn(40);
 
-        $productIndexer->removeManyFromProductIds(['30', '40'])->shouldBeCalled();
+        $productIndexer->removeFromProductIds(['30', '40'])->shouldBeCalled();
 
         $this->remove($rootProductModel);
     }
@@ -395,7 +395,7 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $productChildrenIterator1->next()->shouldBeCalled();
         $childProduct1->getId()->willReturn(10);
         $childProduct2->getId()->willReturn(20);
-        $productIndexer->removeManyFromProductIds(['10', '20'])->shouldBeCalled();
+        $productIndexer->removeFromProductIds(['10', '20'])->shouldBeCalled();
 
         $productModel1->getProductModels()->willReturn($productModelChildren1);
         $productModelChildren1->isEmpty()->willReturn(true);
@@ -411,7 +411,7 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $productChildrenIterator2->next()->shouldBeCalled();
         $childProduct3->getId()->willReturn(30);
         $childProduct4->getId()->willReturn(40);
-        $productIndexer->removeManyFromProductIds(['30', '40'])->shouldBeCalled();
+        $productIndexer->removeFromProductIds(['30', '40'])->shouldBeCalled();
 
         $productModel2->getProductModels()->willReturn($productModelChildren2);
         $productModelChildren2->isEmpty()->willReturn(true);
@@ -426,7 +426,7 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         \stdClass $aWrongObject1,
         \stdClass $aWrongObject2
     ) {
-        $productIndexer->removeManyFromProductIds(Argument::cetera())->shouldNotBeCalled();
+        $productIndexer->removeFromProductIds(Argument::cetera())->shouldNotBeCalled();
         $productModelRemover->removeAll(Argument::cetera())->shouldNotBeCalled();
 
         $this->shouldThrow(\InvalidArgumentException::class)
@@ -437,7 +437,7 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $productIndexer,
         $productModelRemover
     ) {
-        $productIndexer->removeManyFromProductIds(Argument::cetera())->shouldNotBeCalled();
+        $productIndexer->removeFromProductIds(Argument::cetera())->shouldNotBeCalled();
         $productModelRemover->removeAll(Argument::cetera())->shouldNotBeCalled();
 
         $this->removeAll([]);

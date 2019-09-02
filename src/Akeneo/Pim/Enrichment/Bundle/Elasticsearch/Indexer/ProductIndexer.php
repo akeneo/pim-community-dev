@@ -90,13 +90,7 @@ class ProductIndexer implements ProductIndexerInterface
             $normalizedProducts[] = $normalizedProduct;
         }
 
-        if (count($normalizedProducts) === 1) {
-            $this->productAndProductModelClient->index(
-                self::INDEX_TYPE,
-                $normalizedProducts[0]['id'],
-                $normalizedProducts[0]
-            );
-        } elseif (count($normalizedProducts) > 1) {
+        if (!empty($normalizedProducts)) {
             $this->productAndProductModelClient->bulkIndexes(
                 self::INDEX_TYPE,
                 $normalizedProducts,
@@ -121,7 +115,7 @@ class ProductIndexer implements ProductIndexerInterface
      *
      * {@inheritdoc}
      */
-    public function removeManyFromProductIds(array $productIds, array $options = []): void
+    public function removeFromProductIds(array $productIds, array $options = []): void
     {
         $this->productAndProductModelClient->bulkDelete(self::INDEX_TYPE, array_map(
             function ($productId) {
