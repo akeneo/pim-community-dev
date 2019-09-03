@@ -1386,6 +1386,52 @@ final class EditAssetFamilyContext implements Context
         );
     }
 
+    /**
+     * @Given /^an asset family with no product link rules and a scopable text attribute$/
+     */
+    public function anAssetFamilyWithNoProductLinkRulesAndAScopableTextAttribute()
+    {
+        $this->createEcommerceChannel();
+        $this->createEnUsLocale();
+        $this->fixturesLoader
+            ->assetFamily(self::ASSET_FAMILY_IDENTIFIER)
+            ->withAttributeOfTypeText(self::ASSET_FAMILY_IDENTIFIER, self::ATTRIBUTE_CODE, true)
+            ->load();
+    }
+
+    /**
+     * @Then /^there should be a validation error stating that this attribute is not supported for extrapolation because it is scopable$/
+     */
+    public function thereShouldBeAValidationErrorStatingThatThisAttributeIsNotSupportedForExtrapolationBecauseItIsScopable()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            sprintf('The attribute "%s" cannot be used for extrapolation because it is scopable', self::ATTRIBUTE_CODE)
+        );
+    }
+
+    /**
+     * @Given /^an asset family with no product link rules and a localizable text attribute$/
+     */
+    public function anAssetFamilyWithNoProductLinkRulesAndALocalizableTextAttribute()
+    {
+        $this->createEcommerceChannel();
+        $this->createEnUsLocale();
+        $this->fixturesLoader
+            ->assetFamily(self::ASSET_FAMILY_IDENTIFIER)
+            ->withAttributeOfTypeText(self::ASSET_FAMILY_IDENTIFIER, self::ATTRIBUTE_CODE, false, true)
+            ->load();
+    }
+
+    /**
+     * @Then /^there should be a validation error stating that this attribute is not supported for extrapolation because it is localizable$/
+     */
+    public function thereShouldBeAValidationErrorStatingThatThisAttributeIsNotSupportedForExtrapolationBecauseItIsLocalizable()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            sprintf('The attribute "%s" cannot be used for extrapolation because it is localizable', self::ATTRIBUTE_CODE)
+        );
+    }
+
     private function editAssetFamily(EditAssetFamilyCommand $editAssetFamilyCommand): void
     {
         $this->constraintViolationsContext->addViolations($this->validator->validate($editAssetFamilyCommand));

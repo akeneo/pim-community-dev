@@ -9,6 +9,8 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\ReplacePattern;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeExistsInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\GetAttributeTypeInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\IsAttributeLocalizableInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\IsAttributeScopableInterface;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -27,13 +29,37 @@ class ExtrapolatedAttributeValidator
     /** @var GetAttributeTypeInterface */
     private $getAttributeType;
 
-    public function __construct(AttributeExistsInterface $attributeExists, GetAttributeTypeInterface $getAttributeType)
-    {
+    /** @var IsAttributeScopableInterface */
+    private $isAttributeScopable;
+
+    /** @var IsAttributeLocalizableInterface */
+    private $isAttributeLocalizable;
+
+    public function __construct(
+        AttributeExistsInterface $attributeExists,
+        GetAttributeTypeInterface $getAttributeType,
+        IsAttributeScopableInterface $isAttributeScopable,
+        IsAttributeLocalizableInterface $isAttributeLocalizable
+    ) {
         $this->attributeExists = $attributeExists;
         $this->getAttributeType = $getAttributeType;
+        $this->isAttributeScopable = $isAttributeScopable;
+        $this->isAttributeLocalizable = $isAttributeLocalizable;
     }
 
-    public function checkAttributeExistsAndHasASupportedType(
+    /**
+     * Check:
+     * - the attribute exists
+     * - has one of supported type ($supportedTypes)
+     * - is not scopable nor localizable
+     *
+     * @param mixed  $fieldValue
+     * @param string $assetFamilyIdentifier
+     * @param array  $supportedTypes
+     *
+     * @return ConstraintViolationListInterface
+     */
+    public function checkAttribute(
         $fieldValue,
         string $assetFamilyIdentifier,
         array $supportedTypes
@@ -45,6 +71,12 @@ class ExtrapolatedAttributeValidator
             if (0 === $violations->count()) {
                 $allViolations->addAll(
                     $this->checkAttributeTypeIsSupported($assetFamilyIdentifier, $fieldAttributeCode, $supportedTypes)
+                );
+                $allViolations->addAll(
+                    $this->checkIsNotScopable($assetFamilyIdentifier, $fieldAttributeCode)
+                );
+                $allViolations->addAll(
+                    $this->checkIsNotLocalizable($assetFamilyIdentifier, $fieldAttributeCode)
                 );
             }
             $allViolations->addAll($violations);
@@ -113,5 +145,57 @@ class ExtrapolatedAttributeValidator
                 }
             })
         );
+    }
+
+    private function checkIsNotScopable(
+        string $assetFamilyIdentifier,
+        string $attributeCode
+    ): ConstraintViolationListInterface {
+        $isAttributeScopable = $this->isAttributeScopable->withAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+            AttributeCode::fromString($attributeCode)
+        );
+        $validator = Validation::createValidator();
+        $result = $validator->validate(
+            $isAttributeScopable,
+            new Callback(function ($isAttributeScopable, ExecutionContextInterface $context) use ($attributeCode) {
+                if ($isAttributeScopable) {
+                    $context
+                        ->buildViolation(
+                            ProductLinkRulesShouldBeExecutable::EXTRAPOLATED_ATTRIBUTE_TYPE_SHOULD_BE_NON_SCOPABLE,
+                            ['%attribute_code%' => $attributeCode]
+                        )
+                        ->addViolation();
+                }
+            })
+        );
+
+        return $result;
+    }
+
+    private function checkIsNotLocalizable(
+        string $assetFamilyIdentifier,
+        string $attributeCode
+    ): ConstraintViolationListInterface {
+        $isAttributeLocalizable = $this->isAttributeLocalizable->withAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+            AttributeCode::fromString($attributeCode)
+        );
+        $validator = Validation::createValidator();
+        $result = $validator->validate(
+            $isAttributeLocalizable,
+            new Callback(function ($isAttributeLocalizable, ExecutionContextInterface $context) use ($attributeCode) {
+                if ($isAttributeLocalizable) {
+                    $context
+                        ->buildViolation(
+                            ProductLinkRulesShouldBeExecutable::EXTRAPOLATED_ATTRIBUTE_TYPE_SHOULD_BE_NON_LOCALIZABLE,
+                            ['%attribute_code%' => $attributeCode]
+                        )
+                        ->addViolation();
+                }
+            })
+        );
+
+        return $result;
     }
 }

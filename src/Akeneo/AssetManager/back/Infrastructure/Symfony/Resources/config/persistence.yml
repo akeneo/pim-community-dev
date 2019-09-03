@@ -195,6 +195,16 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo_assetmanager.infrastructure.persistence.query.is_attribute_scopable:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlIsAttributeScopable
+        arguments:
+            - '@database_connection'
+
+    akeneo_assetmanager.infrastructure.persistence.query.is_attribute_localizable:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlIsAttributeLocalizable
+        arguments:
+            - '@database_connection'
+
     akeneo_assetmanager.infrastructure.persistence.query.find_attribute_next_order:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlFindAttributeNextOrder
         arguments:

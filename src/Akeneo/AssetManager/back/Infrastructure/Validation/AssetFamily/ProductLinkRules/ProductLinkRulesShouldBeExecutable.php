@@ -18,6 +18,8 @@ class ProductLinkRulesShouldBeExecutable extends Constraint
     public const EXTRAPOLATED_ATTRIBUTE_TYPE_SHOULD_BE_SUPPORTED = 'pim_asset_manager.asset_family.validation.rule_template.extrapolated_attribute_type_should_be_supported';
     public const CHANNEL_SHOULD_EXIST = 'pim_asset_manager.asset_family.validation.rule_template.channel_should_exist';
     public const LOCALE_SHOULD_EXIST = 'pim_asset_manager.asset_family.validation.rule_template.locale_should_exist';
+    public const EXTRAPOLATED_ATTRIBUTE_TYPE_SHOULD_BE_NON_SCOPABLE = 'pim_asset_manager.asset_family.validation.rule_template.extrapolated_attribute_type_should_be_non_scopable';
+    public const EXTRAPOLATED_ATTRIBUTE_TYPE_SHOULD_BE_NON_LOCALIZABLE = 'pim_asset_manager.asset_family.validation.rule_template.extrapolated_attribute_type_should_be_non_localizable';
 
     public function validatedBy()
     {

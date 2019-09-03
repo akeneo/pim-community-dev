@@ -93,6 +93,16 @@ services:
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
 
+    akeneo_assetmanager.infrastructure.persistence.query.is_attribute_scopable:
+        class: Akeneo\AssetManager\Common\Fake\InMemoryIsAttributeScopable
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+
+    akeneo_assetmanager.infrastructure.persistence.query.is_attribute_localizable:
+        class: Akeneo\AssetManager\Common\Fake\InMemoryIsAttributeLocalizable
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+
     akeneo_assetmanager.infrastructure.persistence.query.get_attribute_type:
         class: Akeneo\AssetManager\Common\Fake\InMemoryGetAttributeType
         arguments:

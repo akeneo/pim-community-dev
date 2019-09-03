@@ -256,6 +256,8 @@ services:
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.query.attribute_exists'
             - '@akeneo_assetmanager.infrastructure.persistence.query.get_attribute_type'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.is_attribute_scopable'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.is_attribute_localizable'
 
     akeneo_assetmanager.infrastructure.validation.asset_family.product_link_rule.rule_engine_validator_acl:
         class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\RuleEngineValidatorACL
