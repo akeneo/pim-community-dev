@@ -182,7 +182,7 @@ class IndexProductModelCommand extends ContainerAwareCommand
         $i = 0;
         $productModelBulk = [];
         $totalProductModelsIndexed = 0;
-        $progressBar = new ProgressBar($output, $totalProductModelsIndexed);
+        $progressBar = new ProgressBar($output, $productModelsCount);
 
         $progressBar->start();
         foreach ($productModels as $productModel) {
