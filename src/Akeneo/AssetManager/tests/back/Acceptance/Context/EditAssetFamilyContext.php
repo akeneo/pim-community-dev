@@ -1404,6 +1404,34 @@ final class EditAssetFamilyContext implements Context
         );
     }
 
+    /**
+     * @When /^the user updates this asset family with a product link rule having "([^"]*)" assignment mode$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithAProductLinkRuleHavingAssignmentMode(string $mode)
+    {
+        $dynamicRuleTemplate = [
+            'product_selections' => [
+                [
+                    'field' => self::ATTRIBUTE_CODE,
+                    'operator'  => '=',
+                    'value'     => '123456789',
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
+                ]
+            ],
+            'assign_assets_to'    => [
+                [
+                    'mode'      => $mode,
+                    'attribute' => 'asset_collection',
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
+                ]
+            ]
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $this->editAssetFamily($command);
+    }
+
     private function editAssetFamily(EditAssetFamilyCommand $editAssetFamilyCommand): void
     {
         $this->constraintViolationsContext->addViolations($this->validator->validate($editAssetFamilyCommand));
