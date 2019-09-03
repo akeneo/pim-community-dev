@@ -204,7 +204,8 @@ class PermissionFixturesLoader
                 'root_product_model_no_view_attribute' => [
                     ['locale' => 'en_US', 'scope' => null, 'data' => true],
                     ['locale' => 'fr_FR', 'scope' => null, 'data' => true],
-                    ['locale' => 'de_DE', 'scope' => null, 'data' => true],                ],
+                    ['locale' => 'de_DE', 'scope' => null, 'data' => true],
+                ],
                 'root_product_model_view_attribute' => [
                     ['locale' => 'en_US', 'scope' => null, 'data' => true],
                     ['locale' => 'fr_FR', 'scope' => null, 'data' => true],
