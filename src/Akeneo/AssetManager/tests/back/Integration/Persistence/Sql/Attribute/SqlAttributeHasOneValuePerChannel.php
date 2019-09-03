@@ -31,50 +31,50 @@ class SqlAttributeHasOneValuePerChannel extends SqlIntegrationTestCase
     private const UNKNOWN_ATTRIBUTE_CODE = 'UNKNOWN_ATTRIBUTE';
 
     /** @var AttributeHasOneValuePerChannelInterface */
-    private $isAttributeScopable;
+    private $attributeHasOneValuePerChannel;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->isAttributeScopable = $this->get('akeneo_assetmanager.infrastructure.persistence.query.attribute_has_one_value_per_channel');
+        $this->attributeHasOneValuePerChannel = $this->get('akeneo_assetmanager.infrastructure.persistence.query.attribute_has_one_value_per_channel');
         $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
     /**
      * @test
      */
-    public function it_returns_true_if_the_attribute_is_scopable()
+    public function it_returns_true_if_the_attribute_has_one_value_per_channel()
     {
         $this->fixturesLoader
             ->assetFamily(self::ASSET_FAMILY_IDENTIFIER)
             ->withAttributeOfTypeText(self::ASSET_FAMILY_IDENTIFIER, self::ATTRIBUTE_CODE, true)
             ->load();
 
-        $isScopable = $this->isAttributeScopable->withAssetFamilyAndCode(
+        $hasOneValuePerChannel = $this->attributeHasOneValuePerChannel->withAssetFamilyAndCode(
             AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
             AttributeCode::fromString(self::ATTRIBUTE_CODE)
         );
 
-        Assert::assertTrue($isScopable);
+        Assert::assertTrue($hasOneValuePerChannel);
     }
 
     /**
      * @test
      */
-    public function it_returns_false_if_the_attribute_is_scopable()
+    public function it_returns_false_if_the_attribute_does_not_have_one_value_per_channel()
     {
         $this->fixturesLoader
             ->assetFamily(self::ASSET_FAMILY_IDENTIFIER)
             ->withAttributeOfTypeText(self::ASSET_FAMILY_IDENTIFIER, self::ATTRIBUTE_CODE, false)
             ->load();
 
-        $isScopable = $this->isAttributeScopable->withAssetFamilyAndCode(
+        $hasOneValuePerChannel = $this->attributeHasOneValuePerChannel->withAssetFamilyAndCode(
             AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
             AttributeCode::fromString(self::ATTRIBUTE_CODE)
         );
 
-        Assert::assertFalse($isScopable);
+        Assert::assertFalse($hasOneValuePerChannel);
     }
 
 
@@ -85,7 +85,7 @@ class SqlAttributeHasOneValuePerChannel extends SqlIntegrationTestCase
     {
         $this->expectException(AttributeNotFoundException::class);
 
-        $this->isAttributeScopable->withAssetFamilyAndCode(
+        $this->attributeHasOneValuePerChannel->withAssetFamilyAndCode(
             AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
             AttributeCode::fromString(self::UNKNOWN_ATTRIBUTE_CODE)
         );

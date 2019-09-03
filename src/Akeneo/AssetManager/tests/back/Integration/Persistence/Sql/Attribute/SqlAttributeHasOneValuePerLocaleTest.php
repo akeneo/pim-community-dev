@@ -18,8 +18,8 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeExistsInterface;
-use Akeneo\AssetManager\Domain\Query\Attribute\AttributeHasOneValuePerLocaleInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeHasOneValuePerChannelInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\AttributeHasOneValuePerLocaleInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
 use Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer\FixturesLoader;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
@@ -32,50 +32,50 @@ class SqlAttributeHasOneValuePerLocaleTest extends SqlIntegrationTestCase
     private const UNKNOWN_ATTRIBUTE_CODE = 'UNKNOWN_ATTRIBUTE';
 
     /** @var AttributeHasOneValuePerLocaleInterface */
-    private $isAttributeLocalizable;
+    private $attributeHasOneValuePerLocale;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->isAttributeLocalizable = $this->get('akeneo_assetmanager.infrastructure.persistence.query.attribute_has_one_value_per_locale');
+        $this->attributeHasOneValuePerLocale = $this->get('akeneo_assetmanager.infrastructure.persistence.query.attribute_has_one_value_per_locale');
         $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
     /**
      * @test
      */
-    public function it_returns_true_if_the_attribute_is_localizable()
+    public function it_returns_true_if_the_attribute_has_one_value_per_locale()
     {
         $this->fixturesLoader
             ->assetFamily(self::ASSET_FAMILY_IDENTIFIER)
             ->withAttributeOfTypeText(self::ASSET_FAMILY_IDENTIFIER, self::ATTRIBUTE_CODE, false, true)
             ->load();
 
-        $isLocalizable = $this->isAttributeLocalizable->withAssetFamilyAndCode(
+        $hasOneValuePerLocale = $this->attributeHasOneValuePerLocale->withAssetFamilyAndCode(
             AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
             AttributeCode::fromString(self::ATTRIBUTE_CODE)
         );
 
-        Assert::assertTrue($isLocalizable);
+        Assert::assertTrue($hasOneValuePerLocale);
     }
 
     /**
      * @test
      */
-    public function it_returns_false_if_the_attribute_is_not_localizable()
+    public function it_returns_false_if_the_attribute_does_not_have_one_value_per_locale()
     {
         $this->fixturesLoader
             ->assetFamily(self::ASSET_FAMILY_IDENTIFIER)
             ->withAttributeOfTypeText(self::ASSET_FAMILY_IDENTIFIER, self::ATTRIBUTE_CODE, false, false)
             ->load();
 
-        $isLocalizable = $this->isAttributeLocalizable->withAssetFamilyAndCode(
+        $hasOneValuePerLocale = $this->attributeHasOneValuePerLocale->withAssetFamilyAndCode(
             AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
             AttributeCode::fromString(self::ATTRIBUTE_CODE)
         );
 
-        Assert::assertFalse($isLocalizable);
+        Assert::assertFalse($hasOneValuePerLocale);
     }
 
     /**
@@ -84,7 +84,7 @@ class SqlAttributeHasOneValuePerLocaleTest extends SqlIntegrationTestCase
     public function it_throws_if_the_attribute_does_not_exist()
     {
         $this->expectException(AttributeNotFoundException::class);
-        $this->isAttributeLocalizable->withAssetFamilyAndCode(
+        $this->attributeHasOneValuePerLocale->withAssetFamilyAndCode(
             AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
             AttributeCode::fromString(self::UNKNOWN_ATTRIBUTE_CODE)
         );

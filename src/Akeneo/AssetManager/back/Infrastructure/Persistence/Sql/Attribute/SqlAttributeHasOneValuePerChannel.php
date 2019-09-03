@@ -59,8 +59,8 @@ SQL;
             throw AttributeNotFoundException::withAssetFamilyAndAttributeCode($assetFamilyIdentifier, $attributeCode);
         }
 
-        $isScopable = Type::getType(Type::BOOLEAN)->convertToPhpValue($result['value_per_channel'], $platform);
+        $hasOneValuePerChannel = Type::getType(Type::BOOLEAN)->convertToPhpValue($result['value_per_channel'], $platform);
 
-        return $isScopable;
+        return $hasOneValuePerChannel;
     }
 }

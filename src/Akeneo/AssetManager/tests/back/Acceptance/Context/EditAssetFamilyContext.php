@@ -1377,7 +1377,7 @@ final class EditAssetFamilyContext implements Context
     public function thereShouldBeAValidationErrorStatingThatThisAttributeIsNotSupportedForExtrapolationBecauseItIsScopable()
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
-            sprintf('The attribute "%s" cannot be used for extrapolation because it is scopable', self::ATTRIBUTE_CODE)
+            sprintf('The attribute "%s" cannot be used for extrapolation because it has one value per channel', self::ATTRIBUTE_CODE)
         );
     }
 
@@ -1400,7 +1400,7 @@ final class EditAssetFamilyContext implements Context
     public function thereShouldBeAValidationErrorStatingThatThisAttributeIsNotSupportedForExtrapolationBecauseItIsLocalizable()
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
-            sprintf('The attribute "%s" cannot be used for extrapolation because it is localizable', self::ATTRIBUTE_CODE)
+            sprintf('The attribute "%s" cannot be used for extrapolation because it has one value per locale', self::ATTRIBUTE_CODE)
         );
     }
 

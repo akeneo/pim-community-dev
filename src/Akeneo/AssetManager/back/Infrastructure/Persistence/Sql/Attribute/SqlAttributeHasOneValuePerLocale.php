@@ -18,8 +18,8 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeExistsInterface;
-use Akeneo\AssetManager\Domain\Query\Attribute\AttributeHasOneValuePerLocaleInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeHasOneValuePerChannelInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\AttributeHasOneValuePerLocaleInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
@@ -62,8 +62,8 @@ SQL;
             throw AttributeNotFoundException::withAssetFamilyAndAttributeCode($assetFamilyIdentifier, $attributeCode);
         }
 
-        $isLocalizable = Type::getType(Type::BOOLEAN)->convertToPhpValue($result['value_per_locale'], $platform);
+        $hasOneValuePerLocale = Type::getType(Type::BOOLEAN)->convertToPhpValue($result['value_per_locale'], $platform);
 
-        return $isLocalizable;
+        return $hasOneValuePerLocale;
     }
 }

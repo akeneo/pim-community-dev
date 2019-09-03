@@ -8,9 +8,9 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\ReplacePattern;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeExistsInterface;
-use Akeneo\AssetManager\Domain\Query\Attribute\GetAttributeTypeInterface;
-use Akeneo\AssetManager\Domain\Query\Attribute\AttributeHasOneValuePerLocaleInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeHasOneValuePerChannelInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\AttributeHasOneValuePerLocaleInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\GetAttributeTypeInterface;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -30,28 +30,29 @@ class ExtrapolatedAttributeValidator
     private $getAttributeType;
 
     /** @var AttributeHasOneValuePerChannelInterface */
-    private $isAttributeScopable;
+    private $attributeHasOneValuePerChannel;
 
     /** @var AttributeHasOneValuePerLocaleInterface */
-    private $isAttributeLocalizable;
+    private $attributeHasOneValuePerLocale;
 
     public function __construct(
         AttributeExistsInterface $attributeExists,
         GetAttributeTypeInterface $getAttributeType,
-        AttributeHasOneValuePerChannelInterface $isAttributeScopable,
-        AttributeHasOneValuePerLocaleInterface $isAttributeLocalizable
+        AttributeHasOneValuePerChannelInterface $attributeHasOneValuePerChannel,
+        AttributeHasOneValuePerLocaleInterface $attributeHasOneValuePerLocale
     ) {
         $this->attributeExists = $attributeExists;
         $this->getAttributeType = $getAttributeType;
-        $this->isAttributeScopable = $isAttributeScopable;
-        $this->isAttributeLocalizable = $isAttributeLocalizable;
+        $this->attributeHasOneValuePerChannel = $attributeHasOneValuePerChannel;
+        $this->attributeHasOneValuePerLocale = $attributeHasOneValuePerLocale;
     }
 
     /**
      * Check:
      * - the attribute exists
      * - has one of supported type ($supportedTypes)
-     * - is not scopable nor localizable
+     * - has not one value per channel
+     * - has not one value per locale
      *
      * @param mixed  $fieldValue
      * @param string $assetFamilyIdentifier
@@ -73,10 +74,10 @@ class ExtrapolatedAttributeValidator
                     $this->checkAttributeTypeIsSupported($assetFamilyIdentifier, $fieldAttributeCode, $supportedTypes)
                 );
                 $allViolations->addAll(
-                    $this->checkIsNotScopable($assetFamilyIdentifier, $fieldAttributeCode)
+                    $this->checkHasNotOneValuePerChannel($assetFamilyIdentifier, $fieldAttributeCode)
                 );
                 $allViolations->addAll(
-                    $this->checkIsNotLocalizable($assetFamilyIdentifier, $fieldAttributeCode)
+                    $this->checkHasNotOneValuePerLocale($assetFamilyIdentifier, $fieldAttributeCode)
                 );
             }
             $allViolations->addAll($violations);
@@ -147,22 +148,22 @@ class ExtrapolatedAttributeValidator
         );
     }
 
-    private function checkIsNotScopable(
+    private function checkHasNotOneValuePerChannel(
         string $assetFamilyIdentifier,
         string $attributeCode
     ): ConstraintViolationListInterface {
-        $isAttributeScopable = $this->isAttributeScopable->withAssetFamilyAndCode(
+        $hasOneValuePerChannel = $this->attributeHasOneValuePerChannel->withAssetFamilyAndCode(
             AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             AttributeCode::fromString($attributeCode)
         );
         $validator = Validation::createValidator();
         $result = $validator->validate(
-            $isAttributeScopable,
-            new Callback(function ($isAttributeScopable, ExecutionContextInterface $context) use ($attributeCode) {
-                if ($isAttributeScopable) {
+            $hasOneValuePerChannel,
+            new Callback(function ($hasOneValuePerChannel, ExecutionContextInterface $context) use ($attributeCode) {
+                if ($hasOneValuePerChannel) {
                     $context
                         ->buildViolation(
-                            ProductLinkRulesShouldBeExecutable::EXTRAPOLATED_ATTRIBUTE_TYPE_SHOULD_BE_NON_SCOPABLE,
+                            ProductLinkRulesShouldBeExecutable::EXTRAPOLATED_ATTRIBUTE_SHOULD_NOT_HAVE_ONE_VALUE_PER_CHANNEL,
                             ['%attribute_code%' => $attributeCode]
                         )
                         ->addViolation();
@@ -173,22 +174,22 @@ class ExtrapolatedAttributeValidator
         return $result;
     }
 
-    private function checkIsNotLocalizable(
+    private function checkHasNotOneValuePerLocale(
         string $assetFamilyIdentifier,
         string $attributeCode
     ): ConstraintViolationListInterface {
-        $isAttributeLocalizable = $this->isAttributeLocalizable->withAssetFamilyAndCode(
+        $hasOneValuePerLocale = $this->attributeHasOneValuePerLocale->withAssetFamilyAndCode(
             AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             AttributeCode::fromString($attributeCode)
         );
         $validator = Validation::createValidator();
         $result = $validator->validate(
-            $isAttributeLocalizable,
-            new Callback(function ($isAttributeLocalizable, ExecutionContextInterface $context) use ($attributeCode) {
-                if ($isAttributeLocalizable) {
+            $hasOneValuePerLocale,
+            new Callback(function ($hasOneValuePerLocale, ExecutionContextInterface $context) use ($attributeCode) {
+                if ($hasOneValuePerLocale) {
                     $context
                         ->buildViolation(
-                            ProductLinkRulesShouldBeExecutable::EXTRAPOLATED_ATTRIBUTE_TYPE_SHOULD_BE_NON_LOCALIZABLE,
+                            ProductLinkRulesShouldBeExecutable::EXTRAPOLATED_ATTRIBUTE_SHOULD_NOT_HAVE_ONE_VALUE_PER_LOCALE,
                             ['%attribute_code%' => $attributeCode]
                         )
                         ->addViolation();
