@@ -65,7 +65,7 @@ class ProductDeletedSubscriberSpec extends ObjectBehavior
 
         $connectionStatus = new ConnectionStatus(false, false, false, 0);
         $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
-        $pendingItemsRepository->addDeletedProductIdentifier(Argument::any())->shouldNotBeCalled();
+        $pendingItemsRepository->addDeletedProductId(Argument::any())->shouldNotBeCalled();
 
         $this->onPostRemove($event);
     }
@@ -82,7 +82,7 @@ class ProductDeletedSubscriberSpec extends ObjectBehavior
 
         $connectionStatus = new ConnectionStatus(true, false, false, 0);
         $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
-        $pendingItemsRepository->addDeletedProductIdentifier(42)->shouldBeCalled();
+        $pendingItemsRepository->addDeletedProductId(42)->shouldBeCalled();
 
         $this->onPreRemove($event);
         $this->onPostRemove($event);

@@ -51,9 +51,9 @@ class SynchronizeFamiliesWithFranklin
             $familyCodes = $this->pendingItemIdentifiersQuery->getUpdatedFamilyCodes($lock, $batchSize);
             if (! empty($familyCodes)) {
                 $this->qualityHighlightsProvider->applyFamilies(array_values($familyCodes));
-            }
 
-            $this->pendingItemsRepository->removeUpdatedFamilies($familyCodes, $lock);
+                $this->pendingItemsRepository->removeUpdatedFamilies($familyCodes, $lock);
+            }
         } while (count($familyCodes) >= $batchSize);
     }
 
@@ -65,9 +65,8 @@ class SynchronizeFamiliesWithFranklin
                 foreach ($familyCodes as $familyCode) {
                     $this->qualityHighlightsProvider->deleteFamily($familyCode);
                 }
+                $this->pendingItemsRepository->removeDeletedFamilies($familyCodes, $lock);
             }
-
-            $this->pendingItemsRepository->removeDeletedFamilies($familyCodes, $lock);
         } while (count($familyCodes) >= $batchSize);
     }
 }

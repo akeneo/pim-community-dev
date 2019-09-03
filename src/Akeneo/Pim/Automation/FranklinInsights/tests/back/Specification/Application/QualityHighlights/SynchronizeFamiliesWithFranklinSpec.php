@@ -15,28 +15,31 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Application\Quali
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\QualityHighlightsProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectPendingItemIdentifiersQueryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\Lock;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Doctrine\QualityHighlights\PendingItemsRepository;
 use PhpSpec\ObjectBehavior;
 
 class SynchronizeFamiliesWithFranklinSpec extends ObjectBehavior
 {
-    public function it_synchronizes_attributes(
+    public function it_synchronizes_families(
         SelectPendingItemIdentifiersQueryInterface $pendingItemIdentifiersQuery,
-        QualityHighlightsProviderInterface $qualityHighlightsProvider
+        QualityHighlightsProviderInterface $qualityHighlightsProvider,
+        PendingItemsRepositoryInterface $pendingItemsRepository
     ) {
-        $this->beConstructedWith($pendingItemIdentifiersQuery, $qualityHighlightsProvider);
+        $this->beConstructedWith($pendingItemIdentifiersQuery, $qualityHighlightsProvider, $pendingItemsRepository);
 
-        $pendingItemIdentifiersQuery->getUpdatedFamilyCodes(0, 1)->willReturn([1 => 'headphones']);
-        $pendingItemIdentifiersQuery->getUpdatedFamilyCodes(1, 1)->willReturn([42 => 'router']);
-        $pendingItemIdentifiersQuery->getUpdatedFamilyCodes(42, 1)->willReturn([]);
-        $qualityHighlightsProvider->applyFamilies(['headphones'])->shouldBeCalled();
-        $qualityHighlightsProvider->applyFamilies(['router'])->shouldBeCalled();
+        $lock = new Lock('42922021-cec9-4810-ac7a-ace3584f8671');
 
-        $pendingItemIdentifiersQuery->getDeletedFamilyCodes(0, 1)->willReturn([3 => 'accessories']);
-        $pendingItemIdentifiersQuery->getDeletedFamilyCodes(3, 1)->willReturn([14 => 'camcorders']);
-        $pendingItemIdentifiersQuery->getDeletedFamilyCodes(14, 1)->willReturn([]);
+        $pendingItemIdentifiersQuery->getUpdatedFamilyCodes($lock, 100)->willReturn(['headphones', 'router']);
+        $qualityHighlightsProvider->applyFamilies(['headphones', 'router'])->shouldBeCalled();
+        $pendingItemsRepository->removeUpdatedFamilies(['headphones', 'router'], $lock)->shouldBeCalled();
+
+        $pendingItemIdentifiersQuery->getDeletedFamilyCodes($lock, 100)->willReturn(['accessories', 'camcorders']);
         $qualityHighlightsProvider->deleteFamily('accessories')->shouldBeCalled();
         $qualityHighlightsProvider->deleteFamily('camcorders')->shouldBeCalled();
+        $pendingItemsRepository->removeDeletedFamilies(['accessories', 'camcorders'], $lock)->shouldBeCalled();
 
-        $this->synchronize(1);
+        $this->synchronize($lock, 100);
     }
 }

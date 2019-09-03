@@ -16,6 +16,8 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Application\Quali
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\QualityHighlightsProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Application\QualityHighlights\ApplyAttributeStructure;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectPendingItemIdentifiersQueryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\Lock;
 use PhpSpec\ObjectBehavior;
 
 class SynchronizeAttributesWithFranklinSpec extends ObjectBehavior
@@ -23,22 +25,22 @@ class SynchronizeAttributesWithFranklinSpec extends ObjectBehavior
     public function it_synchronizes_attributes(
         SelectPendingItemIdentifiersQueryInterface $pendingItemIdentifiersQuery,
         ApplyAttributeStructure $applyAttributeStructure,
-        QualityHighlightsProviderInterface $qualityHighlightsProvider
+        QualityHighlightsProviderInterface $qualityHighlightsProvider,
+        PendingItemsRepositoryInterface $pendingItemsRepository
     ) {
-        $this->beConstructedWith($pendingItemIdentifiersQuery, $applyAttributeStructure, $qualityHighlightsProvider);
+        $this->beConstructedWith($pendingItemIdentifiersQuery, $applyAttributeStructure, $qualityHighlightsProvider, $pendingItemsRepository);
 
-        $pendingItemIdentifiersQuery->getUpdatedAttributeCodes(0, 1)->willReturn([1 => 'size']);
-        $pendingItemIdentifiersQuery->getUpdatedAttributeCodes(1, 1)->willReturn([42 => 'height']);
-        $pendingItemIdentifiersQuery->getUpdatedAttributeCodes(42, 1)->willReturn([]);
-        $applyAttributeStructure->apply(['size'])->shouldBeCalled();
-        $applyAttributeStructure->apply(['height'])->shouldBeCalled();
+        $lock = new Lock('42922021-cec9-4810-ac7a-ace3584f8671');
 
-        $pendingItemIdentifiersQuery->getDeletedAttributeCodes(0, 1)->willReturn([3 => 'color']);
-        $pendingItemIdentifiersQuery->getDeletedAttributeCodes(3, 1)->willReturn([14 => 'weight']);
-        $pendingItemIdentifiersQuery->getDeletedAttributeCodes(14, 1)->willReturn([]);
+        $pendingItemIdentifiersQuery->getUpdatedAttributeCodes($lock, 100)->willReturn(['size', 'height']);
+        $applyAttributeStructure->apply(['size', 'height'])->shouldBeCalled();
+        $pendingItemsRepository->removeUpdatedAttributes(['size', 'height'], $lock)->shouldBeCalled();
+
+        $pendingItemIdentifiersQuery->getDeletedAttributeCodes($lock, 100)->willReturn(['color', 'weight']);
         $qualityHighlightsProvider->deleteAttribute('color')->shouldBeCalled();
         $qualityHighlightsProvider->deleteAttribute('weight')->shouldBeCalled();
+        $pendingItemsRepository->removeDeletedAttributes(['color', 'weight'], $lock)->shouldBeCalled();
 
-        $this->synchronize(1);
+        $this->synchronize($lock, 100);
     }
 }

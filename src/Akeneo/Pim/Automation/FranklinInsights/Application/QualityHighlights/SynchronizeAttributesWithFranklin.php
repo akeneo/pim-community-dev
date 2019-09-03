@@ -56,9 +56,9 @@ class SynchronizeAttributesWithFranklin
             $attributeCodes = $this->pendingItemIdentifiersQuery->getUpdatedAttributeCodes($lock, $batchSize);
             if (! empty($attributeCodes)) {
                 $this->applyAttributeStructure->apply(array_values($attributeCodes));
-            }
 
-            $this->pendingItemsRepository->removeUpdatedAttributes($attributeCodes, $lock);
+                $this->pendingItemsRepository->removeUpdatedAttributes($attributeCodes, $lock);
+            }
         } while (count($attributeCodes) >= $batchSize);
     }
 
@@ -70,9 +70,9 @@ class SynchronizeAttributesWithFranklin
                 foreach ($attributeCodes as $attributeCode) {
                     $this->qualityHighlightsProvider->deleteAttribute($attributeCode);
                 }
-            }
 
-            $this->pendingItemsRepository->removeDeletedAttributes($attributeCodes, $lock);
+                $this->pendingItemsRepository->removeDeletedAttributes($attributeCodes, $lock);
+            }
         } while (count($attributeCodes) >= $batchSize);
     }
 }

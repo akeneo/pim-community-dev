@@ -20,17 +20,13 @@ class PushStructureAndProductsToFranklinCommand extends Command
 
     private const DEFAULT_BATCH_SIZE = 100;
 
-    /**
-     * @var PendingItemsRepositoryInterface
-     */
+    /** @var PendingItemsRepositoryInterface */
     private $pendingItemsRepository;
-    /**
-     * @var SynchronizeFamiliesWithFranklin
-     */
+
+    /** @var SynchronizeFamiliesWithFranklin */
     private $synchronizeFamilies;
-    /**
-     * @var SynchronizeAttributesWithFranklin
-     */
+
+    /** @var SynchronizeAttributesWithFranklin */
     private $synchronizeAttributes;
 
     public function __construct(
@@ -67,12 +63,11 @@ class PushStructureAndProductsToFranklinCommand extends Command
         $lock = new Lock((Uuid::uuid4())->toString());
         $this->pendingItemsRepository->acquireLock($lock);
 
+        //The following order is important and must not be changed Attributes, then Families, then products.
         $io->section('Synchronize Attributes');
         $this->synchronizeAttributes->synchronize($lock, (int) $batchSize);
-
         $io->section('Synchronize Families');
         $this->synchronizeFamilies->synchronize($lock, (int) $batchSize);
-
 
         $io->section('Synchronize Products (TODO)');
         //TODO synchronize products
