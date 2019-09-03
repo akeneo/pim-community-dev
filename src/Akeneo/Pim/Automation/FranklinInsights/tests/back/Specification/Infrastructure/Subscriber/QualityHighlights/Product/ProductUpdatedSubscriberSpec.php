@@ -54,7 +54,7 @@ class ProductUpdatedSubscriberSpec extends ObjectBehavior
 
         $connectionStatus = new ConnectionStatus(false, false, false, 0);
         $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
-        $pendingItemsRepository->addUpdatedProductIdentifier(Argument::any())->shouldNotBeCalled();
+        $pendingItemsRepository->addUpdatedProductId(Argument::any())->shouldNotBeCalled();
 
         $this->onSave($event);
     }
@@ -71,7 +71,7 @@ class ProductUpdatedSubscriberSpec extends ObjectBehavior
 
         $connectionStatus = new ConnectionStatus(true, false, false, 0);
         $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
-        $pendingItemsRepository->addUpdatedProductIdentifier(42)->shouldBeCalled();
+        $pendingItemsRepository->addUpdatedProductId(42)->shouldBeCalled();
 
         $this->onSave($event);
     }
@@ -91,8 +91,8 @@ class ProductUpdatedSubscriberSpec extends ObjectBehavior
 
         $connectionStatus = new ConnectionStatus(true, false, false, 0);
         $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
-        $pendingItemsRepository->addUpdatedProductIdentifier(42)->shouldBeCalled();
-        $pendingItemsRepository->addUpdatedProductIdentifier(39)->shouldBeCalled();
+        $pendingItemsRepository->addUpdatedProductId(42)->shouldBeCalled();
+        $pendingItemsRepository->addUpdatedProductId(39)->shouldBeCalled();
 
         $this->onSaveAll($event);
     }

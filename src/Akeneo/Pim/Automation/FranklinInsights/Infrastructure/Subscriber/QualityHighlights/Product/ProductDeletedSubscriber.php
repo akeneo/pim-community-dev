@@ -71,7 +71,7 @@ final class ProductDeletedSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->pendingItemsRepository->addDeletedProductIdentifier($this->removedProductId);
+        $this->pendingItemsRepository->addDeletedProductId($this->removedProductId);
     }
 
     private function isFranklinInsightsActivated(): bool

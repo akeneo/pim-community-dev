@@ -84,7 +84,7 @@ class PendingItemsRepository implements PendingItemsRepositoryInterface
         $this->connection->executeQuery($this->getInsertQuery(), $bindParams);
     }
 
-    public function addUpdatedProductIdentifier(int $identifier): void
+    public function addUpdatedProductId(int $identifier): void
     {
         $bindParams = [
             'entity_type' => self::ENTITY_TYPE_PRODUCT,
@@ -96,7 +96,7 @@ class PendingItemsRepository implements PendingItemsRepositoryInterface
         $this->connection->executeQuery($this->getInsertQuery(), $bindParams);
     }
 
-    public function addDeletedProductIdentifier(int $identifier): void
+    public function addDeletedProductId(int $identifier): void
     {
         $bindParams = [
             'entity_type' => self::ENTITY_TYPE_PRODUCT,

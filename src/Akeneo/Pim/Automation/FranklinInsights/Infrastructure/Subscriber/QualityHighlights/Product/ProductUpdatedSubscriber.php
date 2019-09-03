@@ -54,7 +54,7 @@ final class ProductUpdatedSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->pendingItemsRepository->addUpdatedProductIdentifier($product->getId());
+        $this->pendingItemsRepository->addUpdatedProductId($product->getId());
     }
 
     public function onSaveAll(GenericEvent $event): void
@@ -76,7 +76,7 @@ final class ProductUpdatedSubscriber implements EventSubscriberInterface
         }
 
         foreach ($productCodes as $productCode) {
-            $this->pendingItemsRepository->addUpdatedProductIdentifier($productCode);
+            $this->pendingItemsRepository->addUpdatedProductId($productCode);
         }
     }
 

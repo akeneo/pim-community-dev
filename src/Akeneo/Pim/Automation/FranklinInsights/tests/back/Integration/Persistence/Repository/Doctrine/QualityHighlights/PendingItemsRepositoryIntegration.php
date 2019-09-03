@@ -76,7 +76,7 @@ SQL;
         $updatedProducts = $this->getDbConnection()->query($sqlQuery)->fetchAll();
         $this->assertCount(0, $updatedProducts);
 
-        $this->getRepository()->addUpdatedProductIdentifier(42);
+        $this->getRepository()->addUpdatedProductId(42);
         $sqlQuery = 'SELECT entity_type, entity_id, action, locked FROM pimee_franklin_insights_quality_highlights_pending_items';
         $updatedProducts = $this->getDbConnection()->query($sqlQuery)->fetchAll();
         $this->assertCount(1, $updatedProducts);
