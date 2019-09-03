@@ -163,29 +163,36 @@ class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterf
     }
 
     /**
-     * TODO Put a comment
-     * 
+     * This method will add to the new values set the values deleted during the product update.
+     * For example, with this configuration (without scope and locale options, for readability):
+     * - original values = ['attr1' => null, 'attr2' => 'value2']
+     * - new values = ['attr2' => 'value2', 'attr3' => 'attr3']
+     * This method will add ['attr1' => null] to the new values, to be able to generate the diff.
+     *
+     * @warning These values will not be stored in the database, it's just to compute the diff.
+     *
      * @param array $originalValues
      * @param array $newValues
+     *
      * @return array
      */
     private function fillNewValuesWithNullData(array $originalValues, array $newValues)
     {
-        foreach ($originalValues as $code => $originalValue) {
-            foreach ($originalValue as $index => $changes) {
-                $found = false;
-                if (isset($newValues[$code])) {
-                    foreach ($newValues[$code] as $index2 => $changes2) {
-                        if ($changes2['locale'] === $changes['locale'] &&
-                            $changes2['scope'] === $changes['scope']) {
-                            $found = true;
-                        }
+        foreach ($originalValues as $originalAttributeCode => $originalValueSet) {
+            foreach ($originalValueSet as $originalIndex => $originalValue) {
+                $foundValueDeleted = false;
+                if (isset($newValues[$originalAttributeCode])) {
+                    foreach ($newValues[$originalAttributeCode] as $newIndex => $newValue) {
+                        $foundValueDeleted = $foundValueDeleted || (
+                            $newValue['locale'] === $originalValue['locale'] &&
+                            $newValue['scope'] === $originalValue['scope']
+                        );
                     }
                 }
-                if (!$found) {
-                    $newValues[$code][$index]['locale'] = $changes['locale'];
-                    $newValues[$code][$index]['scope'] = $changes['locale'];
-                    $newValues[$code][$index]['data'] = null;
+                if (!$foundValueDeleted) {
+                    $newValues[$originalAttributeCode][$originalIndex]['locale'] = $originalValue['locale'];
+                    $newValues[$originalAttributeCode][$originalIndex]['scope'] = $originalValue['locale'];
+                    $newValues[$originalAttributeCode][$originalIndex]['data'] = null;
                 }
             }
         }
