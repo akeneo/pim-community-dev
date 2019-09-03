@@ -2,7 +2,7 @@ import promisify from 'akeneoassetmanager/tools/promisify';
 import {Channel} from 'akeneopimenrichmentassetmanager/platform/model/channel/channel';
 import {Locale} from 'akeneopimenrichmentassetmanager/platform/model/channel/locale';
 import {isLabels} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
-import {isString, isArray} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/utils';
+import {isString, isArray} from 'util';
 const fetcherRegistry = require('pim/fetcher-registry');
 
 /**

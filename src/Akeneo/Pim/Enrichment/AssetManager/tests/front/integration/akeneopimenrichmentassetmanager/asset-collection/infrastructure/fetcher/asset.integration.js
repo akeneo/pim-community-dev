@@ -6,12 +6,10 @@ const AssetBuilder = require('../../../../../../../../../../AssetManager/tests/f
 
 let page = global.__PAGE__;
 
+// Setup to intercept the calls and return a fake response
 beforeEach(async () => {
-  await page.reload();
-}, timeout);
-
-it('It fetches the asset collection', async () => {
   page.on('request', interceptedRequest => {
+    // Intercept the call to get the packshot asset family
     if (
       'http://pim.com/rest/asset_manager/packshot' === interceptedRequest.url() &&
       'GET' === interceptedRequest.method()
@@ -31,6 +29,7 @@ it('It fetches the asset collection', async () => {
         body: JSON.stringify(assetFamily),
       });
     }
+    // Intercept the call to get the assets of packshot
     if (
       'http://pim.com/rest/asset_manager/packshot/asset' === interceptedRequest.url() &&
       'PUT' === interceptedRequest.method()
@@ -54,18 +53,23 @@ it('It fetches the asset collection', async () => {
     }
   });
 
+  await page.reload();
+}, timeout);
+
+it('It fetches the asset collection', async () => {
+  // It fetches an asset collection of packshot
   const response = await page.evaluate(async () => {
     const fetchAssetCollection =
       require('akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/asset')
       .fetchAssetCollection;
-    const assetCollection = await fetchAssetCollection('packshot', ['iphone'], {
+
+return await fetchAssetCollection('packshot', ['iphone'], {
       channel: 'ecommerce',
       locale: 'en_US'
     });
-
-    return assetCollection;
   });
 
+  // Check the asset collection returned by the fetcher is the one expected
   expect(response).toEqual([{
     assetFamily: {
       attributeAsImage: '',

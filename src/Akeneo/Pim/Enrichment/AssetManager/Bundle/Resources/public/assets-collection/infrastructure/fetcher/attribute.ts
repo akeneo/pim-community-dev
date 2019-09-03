@@ -1,4 +1,4 @@
-import {isString} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/utils';
+import {isString} from 'util';
 import promisify from 'akeneoassetmanager/tools/promisify';
 import {Attribute} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
 import {isLabels} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';

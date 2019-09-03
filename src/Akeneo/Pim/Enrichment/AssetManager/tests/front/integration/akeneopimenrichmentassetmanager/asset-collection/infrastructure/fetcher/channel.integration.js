@@ -2,12 +2,10 @@ const timeout = 5000;
 
 let page = global.__PAGE__;
 
+// Setup to intercept the calls and return a fake response
 beforeEach(async () => {
-  await page.reload();
-}, timeout);
-
-it('It fetches the channels', async () => {
   page.on('request', interceptedRequest => {
+    // Intercept the call to get the channels
     if (
       'http://pim.com/configuration/channel/rest' === interceptedRequest.url() &&
       'GET' === interceptedRequest.method()
@@ -59,17 +57,22 @@ it('It fetches the channels', async () => {
     }
   });
 
+  await page.reload();
+}, timeout);
+
+it('It fetches the channels', async () => {
+  // It fetches the channels
   const response = await page.evaluate(async () => {
     const fetchAssetAttributes =
       require('akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/channel')
       .fetchChannels;
     const fetcherRegistry = require('pim/fetcher-registry');
     fetcherRegistry.initialize();
-    const channels = await fetchAssetAttributes(fetcherRegistry.getFetcher('channel'))();
 
-    return channels;
+    return await fetchAssetAttributes(fetcherRegistry.getFetcher('channel'))();
   });
 
+  // Check the channels returned by the fetcher are the one expected
   expect(response).toEqual([{
       code: 'ecommerce',
       locales: [{

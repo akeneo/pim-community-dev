@@ -4,7 +4,7 @@ import {
   FamilyCode,
   AttributeRequirements,
 } from 'akeneopimenrichmentassetmanager/platform/model/structure/family';
-import {isString, isObject} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/utils';
+import {isString, isObject} from 'util';
 const fetcherRegistry = require('pim/fetcher-registry');
 
 /**

@@ -2,12 +2,10 @@ const timeout = 5000;
 
 let page = global.__PAGE__;
 
+// Setup to intercept the calls and return a fake response
 beforeEach(async () => {
-  await page.reload();
-}, timeout);
-
-it('It fetches all product attributes of the asset', async () => {
   page.on('request', interceptedRequest => {
+    // Intercept the call to get the product attributes
     if (
       'http://pim.com/rest/attribute/' === interceptedRequest.url() &&
       'POST' === interceptedRequest.method()
@@ -51,17 +49,22 @@ it('It fetches all product attributes of the asset', async () => {
     }
   });
 
+  await page.reload();
+}, timeout);
+
+it('It fetches all product attributes of asset', async () => {
+  // It fetches the product attributes
   const response = await page.evaluate(async () => {
     const fetchAssetAttributes =
       require('akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/attribute')
       .fetchAssetAttributes;
     const fetcherRegistry = require('pim/fetcher-registry');
     fetcherRegistry.initialize();
-    const assetAttributes = await fetchAssetAttributes(fetcherRegistry.getFetcher('attribute'))();
 
-    return assetAttributes;
+    return await fetchAssetAttributes(fetcherRegistry.getFetcher('attribute'))();
   });
 
+  // Check the attributes returned by the fetcher are the one expected
   expect(response).toEqual([{
       code: 'packshot',
       type: 'akeneo_asset_multiple_link',

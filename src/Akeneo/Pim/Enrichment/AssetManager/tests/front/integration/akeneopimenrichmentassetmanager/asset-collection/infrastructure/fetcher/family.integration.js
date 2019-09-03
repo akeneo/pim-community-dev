@@ -2,12 +2,10 @@ const timeout = 5000;
 
 let page = global.__PAGE__;
 
+// Setup to intercept the calls and return a fake response
 beforeEach(async () => {
-  await page.reload();
-}, timeout);
-
-it('It fetches the family', async () => {
   page.on('request', interceptedRequest => {
+    // Intercept the call to get the family
     if (
       'http://pim.com/configuration/family/rest/scanners' === interceptedRequest.url() &&
       'GET' === interceptedRequest.method()
@@ -34,17 +32,22 @@ it('It fetches the family', async () => {
     }
   });
 
+  await page.reload();
+}, timeout);
+
+it('It fetches the family', async () => {
+  // It fetches a family
   const response = await page.evaluate(async () => {
     const fetchFamily =
       require('akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/family')
       .fetchFamily;
     const fetcherRegistry = require('pim/fetcher-registry');
     fetcherRegistry.initialize();
-    const family = await fetchFamily(fetcherRegistry.getFetcher('family'))('scanners');
 
-    return family;
+    return await fetchFamily(fetcherRegistry.getFetcher('family'))('scanners');
   });
 
+  // Check the family returned by the fetcher is the one expected
   expect(response).toEqual({
     code: 'scanners',
     attributeRequirements: {

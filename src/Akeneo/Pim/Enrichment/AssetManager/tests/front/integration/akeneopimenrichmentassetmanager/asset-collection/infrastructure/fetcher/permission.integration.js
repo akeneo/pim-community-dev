@@ -2,12 +2,10 @@ const timeout = 5000;
 
 let page = global.__PAGE__;
 
+// Setup to intercept the calls and return a fake response
 beforeEach(async () => {
-  await page.reload();
-}, timeout);
-
-it('It fetches all permissions', async () => {
   page.on('request', interceptedRequest => {
+    // Intercept the call to get all the permissions
     if (
       'http://pim.com/permissions/rest' === interceptedRequest.url() &&
       'GET' === interceptedRequest.method()
@@ -49,17 +47,22 @@ it('It fetches all permissions', async () => {
     }
   });
 
+  await page.reload();
+}, timeout);
+
+it('It fetches all permissions', async () => {
+  // It fetches all permissions
   const response = await page.evaluate(async () => {
     const fetchPermissions =
       require('akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/permission')
       .fetchPermissions;
     const fetcherRegistry = require('pim/fetcher-registry');
     fetcherRegistry.initialize();
-    const permissions = await fetchPermissions(fetcherRegistry.getFetcher('permission'))();
 
-    return permissions;
+    return await fetchPermissions(fetcherRegistry.getFetcher('permission'))();
   });
 
+  // Check the family returned by the fetcher is the one expected
   expect(response).toEqual({
     locales: [{
         code: 'en_US',
