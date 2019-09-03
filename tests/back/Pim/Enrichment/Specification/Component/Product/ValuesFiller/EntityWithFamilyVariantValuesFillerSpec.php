@@ -125,8 +125,8 @@ class EntityWithFamilyVariantValuesFillerSpec extends ObjectBehavior
 
         $entity->getValues()->willReturn([$skuValue, $colorValue]);
 
-        $valueFactory->createNull($name, null, 'fr_FR')->shouldBeCalled()->willReturn($nullValueFr);
-        $valueFactory->createNull($name, null, 'en_US')->shouldBeCalled()->willReturn($nullValueEn);
+        $valueFactory->createTemporaryNull($name, null, 'fr_FR')->shouldBeCalled()->willReturn($nullValueFr);
+        $valueFactory->createTemporaryNull($name, null, 'en_US')->shouldBeCalled()->willReturn($nullValueEn);
         $entity->addValue($nullValueFr)->shouldBeCalled();
         $entity->addValue($nullValueEn)->shouldBeCalled();
 
@@ -170,8 +170,8 @@ class EntityWithFamilyVariantValuesFillerSpec extends ObjectBehavior
 
         $entity->getValues()->willReturn([]);
 
-        $valueFactory->createNull($name, null, 'fr_FR')->shouldBeCalled()->willReturn($nullValueFr);
-        $valueFactory->createNull($name, null, 'en_US')->shouldBeCalled()->willReturn($nullValueEn);
+        $valueFactory->createTemporaryNull($name, null, 'fr_FR')->shouldBeCalled()->willReturn($nullValueFr);
+        $valueFactory->createTemporaryNull($name, null, 'en_US')->shouldBeCalled()->willReturn($nullValueEn);
         $entity->addValue($nullValueFr)->shouldBeCalled();
         $entity->addValue($nullValueEn)->shouldBeCalled();
 
@@ -290,7 +290,7 @@ class EntityWithFamilyVariantValuesFillerSpec extends ObjectBehavior
 
         $entity->getValues()->willReturn([$skuValue, $nameFRValue, $nameENValue, $colorValue, $intCodeValue]);
 
-        $valueFactory->createNull(Argument::cetera())->shouldNotBeCalled();
+        $valueFactory->createTemporaryNull(Argument::cetera())->shouldNotBeCalled();
 
         $this->fillMissingValues($entity);
     }

@@ -74,7 +74,7 @@ abstract class AbstractEntityWithFamilyValuesFiller implements EntityWithFamilyV
         );
 
         foreach ($missingValues as $value) {
-            $newValue = $this->valueFactory->createNull(
+            $newValue = $this->valueFactory->createTemporaryNull(
                 $attributes[$value['attribute']],
                 $value['scope'],
                 $value['locale']

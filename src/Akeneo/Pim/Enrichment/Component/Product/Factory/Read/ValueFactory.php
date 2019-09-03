@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Factory\Read;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidArgumentException;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\ValueFactory as SingleValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
@@ -36,7 +37,7 @@ class ValueFactory
     public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
         if (null === $data || [] === $data || '' === $data || [''] === $data || [null] === $data) {
-            throw new \Exception(sprintf('Data should not be empty, %s found', json_encode($data)));
+            throw new InvalidArgumentException(sprintf('Data should not be empty, %s found', json_encode($data)));
         }
         
         return $this->getFactory($attribute)->createByCheckingData($attribute, $channelCode, $localeCode, $data);

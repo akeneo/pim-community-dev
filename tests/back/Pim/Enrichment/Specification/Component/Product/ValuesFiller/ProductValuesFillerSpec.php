@@ -119,7 +119,7 @@ class ProductValuesFillerSpec extends ObjectBehavior
         $skuValue->getScopeCode()->willReturn(null);
         $product->getValues()->willReturn([$skuValue]);
 
-        $valueFactory->createNull(Argument::cetera())->shouldBeCalledTimes(6)->willReturn($emptyValue);
+        $valueFactory->createTemporaryNull(Argument::cetera())->shouldBeCalledTimes(6)->willReturn($emptyValue);
         $product->addValue(Argument::cetera())->shouldBeCalledTimes(6);
 
         $this->fillMissingValues($product);
