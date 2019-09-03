@@ -48,6 +48,8 @@
 - Remove interface `Akeneo\Pim\Enrichment\Asset\Component\Completeness\CompletenessRemoverInterface` 
 - Remove methods `getCompletenesses` and `setCompletenesses` from `Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct`
 - Remove class `Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\Product\CompletenessPublisher`
+- Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\IndexProductsSubscriber` to replace
+    `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer` by `Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface`
 
 ### CLI commands
 

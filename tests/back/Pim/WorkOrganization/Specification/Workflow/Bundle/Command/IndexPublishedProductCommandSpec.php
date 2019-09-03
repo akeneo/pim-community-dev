@@ -2,9 +2,9 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command;
 
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Indexer\PublishedProductIndexer;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command\IndexPublishedProductCommand;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Repository\PublishedProductRepository;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct;
@@ -35,10 +35,10 @@ class IndexPublishedProductCommandSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(ContainerAwareCommand::class);
     }
 
-    function it_indexes_all_published_roducts(
+    function it_indexes_all_published_products(
         ContainerInterface $container,
         PublishedProductRepository $publishedProductRepository,
-        ProductIndexer $productIndexer,
+        PublishedProductIndexer $publishedProductIndexer,
         InputInterface $input,
         OutputInterface $output,
         Application $application,
@@ -51,7 +51,7 @@ class IndexPublishedProductCommandSpec extends ObjectBehavior
         EntityManagerClearerInterface $cacheClearer
     ) {
         $container->get('pimee_workflow.repository.published_product')->willReturn($publishedProductRepository);
-        $container->get('pim_catalog.elasticsearch.published_product_indexer')->willReturn($productIndexer);
+        $container->get('pim_catalog.elasticsearch.published_product_indexer')->willReturn($publishedProductIndexer);
         $container->get('pim_connector.doctrine.cache_clearer')->willReturn($cacheClearer);
 
         $publishedProductRepository->countAll()->willReturn(4);
