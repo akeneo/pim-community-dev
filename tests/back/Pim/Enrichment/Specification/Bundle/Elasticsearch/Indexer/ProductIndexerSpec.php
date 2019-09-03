@@ -19,12 +19,8 @@ class ProductIndexerSpec extends ObjectBehavior
         NormalizerInterface $normalizer,
         Client $productAndProductModelIndexClient,
         ProductRepositoryInterface $productRepository
-    )     {
-        $this->beConstructedWith(
-            $normalizer,
-            $productAndProductModelIndexClient,
-            $productRepository
-        );
+    ) {
+        $this->beConstructedWith($normalizer, $productAndProductModelIndexClient, $productRepository);
     }
 
     function it_is_initializable()
