@@ -34,11 +34,11 @@ final class SelectFamiliesToApplyQueryIntegration extends TestCase
         $this->validator = $this->getFromTestContainer('validator');
     }
 
-    public function test_it_returns_pim_attribute_code_exact_match_on_code()
+    public function test_it_returns_families_to_apply()
     {
-        $attributeCode1 = $this->createAttribute('weight', ['en_US' => 'Weight']);
-        $attributeCode2 = $this->createAttribute('color', ['en_US' => 'Color', 'en_CA' => 'Couleur']);
-        $attributeCode3 = $this->createAttribute('size', ['en_US' => 'size']);
+        $attributeCode1 = $this->createAttributeText('weight', ['en_US' => 'Weight']);
+        $attributeCode2 = $this->createAttributeText('color', ['en_US' => 'Color', 'en_CA' => 'Couleur']);
+        $attributeCode3 = $this->createAttributeText('size', ['en_US' => 'size']);
         $family1Code = $this->createFamily('headphones', [$attributeCode1, $attributeCode2], ['en_US' => 'Headphones', 'en_CA' => 'Casques audio']);
         $family2Code = $this->createFamily('router', [$attributeCode3], []);
 
@@ -49,7 +49,7 @@ final class SelectFamiliesToApplyQueryIntegration extends TestCase
         $expectedFamilies = [
             [
                 'code' => 'headphones',
-                'attributes' => ['sku', 'weight', 'color'],
+                'attributes' => ['weight', 'color'],
                 'labels' => [
                     [
                         'locale' => 'en_US',
@@ -63,7 +63,7 @@ final class SelectFamiliesToApplyQueryIntegration extends TestCase
             ],
             [
                 'code' => 'router',
-                'attributes' => ['sku', 'size'],
+                'attributes' => ['size'],
                 'labels' => [],
             ],
         ];
@@ -71,7 +71,7 @@ final class SelectFamiliesToApplyQueryIntegration extends TestCase
         $this->assertEqualsCanonicalizing($expectedFamilies, $families);
     }
 
-    private function createAttribute(string $attributeCode, $labels): string
+    private function createAttributeText(string $attributeCode, $labels): string
     {
         $attribute = $this->getFromTestContainer('akeneo_ee_integration_tests.builder.attribute')->build(
             [

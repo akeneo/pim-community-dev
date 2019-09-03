@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\QualityHighlights;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectFamiliesToApplyQueryInterface;
 use Doctrine\DBAL\Connection;
 
@@ -47,15 +48,21 @@ class SelectFamiliesToApplyQuery implements SelectFamiliesToApplyQueryInterface
               (SELECT JSON_OBJECTAGG(IFNULL(locale, 0), label) FROM pim_catalog_family_translation ft WHERE foreign_key = family.id AND ft.locale LIKE "en_%") AS labels
             FROM pim_catalog_family AS family
             INNER JOIN pim_catalog_family_attribute as family_attribute ON family.id = family_attribute.family_id
-            INNER JOIN pim_catalog_attribute attribute on family_attribute.attribute_id = attribute.id
+            INNER JOIN pim_catalog_attribute attribute on family_attribute.attribute_id = attribute.id and attribute.attribute_type in (:authorizedAttributesTypes)
             WHERE family.code IN(:familyCodes)
             GROUP BY family.code
 SQL;
 
         $statement = $this->connection->executeQuery(
             $sql,
-            ['familyCodes' => $familyCodes],
-            ['familyCodes' => Connection::PARAM_STR_ARRAY]
+            [
+                'familyCodes' => $familyCodes,
+                'authorizedAttributesTypes' => array_keys(AttributeMapping::AUTHORIZED_ATTRIBUTE_TYPE_MAPPINGS),
+            ],
+            [
+                'familyCodes' => Connection::PARAM_STR_ARRAY,
+                'authorizedAttributesTypes' => Connection::PARAM_STR_ARRAY,
+            ]
         );
 
         $searchResults = $statement->fetchAll();
