@@ -198,12 +198,8 @@ class ProductModelDescendantsIndexer implements
      */
     private function getProductModelCodes(Collection $productModels): array
     {
-        $codes = [];
-        /** @var ProductModelInterface $productModel */
-        foreach ($productModels as $productModel) {
-            $codes[] = $productModel->getCode();
-        }
-
-        return $codes;
+        return array_map(function (ProductModelInterface $productModel): string {
+            return $productModel->getCode();
+        }, $productModels->toArray());
     }
 }

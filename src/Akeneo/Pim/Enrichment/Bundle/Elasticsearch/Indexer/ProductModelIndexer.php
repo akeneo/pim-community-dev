@@ -53,8 +53,9 @@ class ProductModelIndexer implements ProductModelIndexerInterface
     }
 
     /**
-     * @param string $productModelCode
-     * @param array  $options
+     * Indexes a product in the product and product model index from it code.
+     *
+     * {@inheritdoc}
      */
     public function indexFromProductModelCode(string $productModelCode, array $options = []): void
     {
@@ -62,8 +63,9 @@ class ProductModelIndexer implements ProductModelIndexerInterface
     }
 
     /**
-     * @param array $productModelCodes
-     * @param array $options
+     * Indexes a list of products in the product and product model index from their codes.
+     *
+     * {@inheritdoc}
      */
     public function indexFromProductModelCodes(array $productModelCodes, array $options = []): void
     {
@@ -93,7 +95,7 @@ class ProductModelIndexer implements ProductModelIndexerInterface
     }
 
     /**
-     * Removes the products from both the product index and the product model index.
+     * Removes the product from the product and product model index.
      *
      * {@inheritdoc}
      */
@@ -103,7 +105,7 @@ class ProductModelIndexer implements ProductModelIndexerInterface
     }
 
     /**
-     * Removes the products from both the product index and the product and product model index.
+     * Removes the products from the product and product model index.
      *
      * {@inheritdoc}
      */
