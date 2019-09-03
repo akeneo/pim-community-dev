@@ -82,13 +82,7 @@ class ProductModelIndexer implements ProductModelIndexerInterface
             $normalizedProductModels[] = $normalizedProductModel;
         }
 
-        if (count($normalizedProductModels) === 1) {
-            $this->productAndProductModelClient->index(
-                self::INDEX_TYPE,
-                $normalizedProductModels[0]['id'],
-                $normalizedProductModels[0]
-            );
-        } elseif (count($normalizedProductModels) > 1) {
+        if (!empty($normalizedProductModels)) {
             $this->productAndProductModelClient->bulkIndexes(
                 self::INDEX_TYPE,
                 $normalizedProductModels,
