@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8596: add translation for the Attribute type filter `akeneo_asset_multiple_link`q
+- PIM-8719: Update Mink Selenium driver
 
 # 3.2.7 (2019-08-27)
 
