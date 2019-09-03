@@ -244,6 +244,25 @@ Feature: Edit an asset family
     When the user updates this asset family with a dynamic product link rule having an assignment attribute which references this attribute
     Then there should be a validation error stating that this attribute is not supported for extrapolation because it has one value per locale
 
+  # Product assignment mode
+  @acceptance-back @error
+  Scenario: Cannot update an asset family with a product link having an unsupported assignment mode
+    Given an asset family with no product link rules
+    When the user updates this asset family with a product link rule having "INVALID_MODE" assignment mode
+    Then there should be a validation error with message 'Invalid assignment mode "INVALID_MODE" found in a product link rule, expected to be "replace" or "add"'
+
+  @acceptance-back @nominal
+  Scenario Outline: Updating an asset family with a product link rule having a replace assignment mode
+    Given an asset family with no product link rules
+    When the user updates this asset family with a product link rule having "<mode>" assignment mode
+    Then there is an asset family with a product link rule
+
+    Examples:
+      | mode    |
+      | replace |
+      | add     |
+
+
   # Product assignment channel
   @acceptance-back @nominal
   Scenario: Updating an asset family with a product link rule having no assignment channel

@@ -20,6 +20,7 @@ class ProductLinkRulesShouldBeExecutable extends Constraint
     public const LOCALE_SHOULD_EXIST = 'pim_asset_manager.asset_family.validation.rule_template.locale_should_exist';
     public const EXTRAPOLATED_ATTRIBUTE_SHOULD_NOT_HAVE_ONE_VALUE_PER_CHANNEL = 'pim_asset_manager.asset_family.validation.rule_template.extrapolated_attribute_type_should_not_have_one_value_per_channel';
     public const EXTRAPOLATED_ATTRIBUTE_SHOULD_NOT_HAVE_ONE_VALUE_PER_LOCALE = 'pim_asset_manager.asset_family.validation.rule_template.extrapolated_attribute_type_should_not_have_one_value_per_locale';
+    public const ASSIGNMENT_MODE_NOT_SUPPORTED = 'pim_asset_manager.asset_family.validation.rule_template.assignment_mode_not_supported';
 
     public function validatedBy()
     {

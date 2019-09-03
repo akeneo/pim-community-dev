@@ -4,11 +4,16 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules;
 
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\Action;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\ReplacePattern;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Validation;
 
 /**
@@ -58,6 +63,7 @@ class ProductAssignmentsValidator
         $violations = $this->channelAndLocaleValidator->checkChannelExistsIfAny($productAssignment[self::CHANNEL_CODE] ?? null);
         $violations->addAll($this->channelAndLocaleValidator->checkLocaleExistsIfAny($productAssignment[self::LOCALE_FIELD] ?? null));
         $violations->addAll($this->ruleEngineValidatorACL->validateProductAssignment($productAssignment));
+        $violations->addAll($this->checkMode($productAssignment));
 
         return $violations;
     }
@@ -105,5 +111,27 @@ class ProductAssignmentsValidator
         );
 
         return $ruleEngineViolations;
+    }
+
+    private function checkMode(array $productAssignment): ConstraintViolationListInterface
+    {
+        $allowedModes = Action::ALLOWED_MODES;
+        $validator = Validation::createValidator();
+        $result = $validator->validate(
+            $productAssignment['mode'],
+            new Callback(function ($actualMode, ExecutionContextInterface $context) use ($allowedModes) {
+                if (!in_array($actualMode, $allowedModes)) {
+                    $context
+                        ->buildViolation(
+                            ProductLinkRulesShouldBeExecutable::ASSIGNMENT_MODE_NOT_SUPPORTED,
+                            ['%assignment_mode%' => $actualMode]
+                        )
+                        ->addViolation();
+                }
+            }
+            )
+        );
+
+        return $result;
     }
 }
