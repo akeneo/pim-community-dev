@@ -544,7 +544,7 @@ final class EditAssetFamilyContext implements Context
     }
 
     /**
-     * @When /^the user updates this asset family with a dynamic product link rule having a dynamic assignment value which references this text attribute$/
+     * @When /^the user updates this asset family with a dynamic product link rule having a dynamic assignment attribute which references this text attribute$/
      */
     public function theUserUpdatesThisAssetFamilyWithADynamicProductLinkRuleHavingADynamicAssignmentAttributeValueWhichReferencesThisAttribute(
     ) {
@@ -1411,6 +1411,7 @@ final class EditAssetFamilyContext implements Context
 
     /**
      * @Given /^an asset family with no product link rules and a localizable text attribute$/
+     * @Given /^an asset family with no product link rules and a localizable attribute$/
      */
     public function anAssetFamilyWithNoProductLinkRulesAndALocalizableTextAttribute()
     {

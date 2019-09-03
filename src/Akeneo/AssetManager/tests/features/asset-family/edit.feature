@@ -121,6 +121,18 @@ Feature: Edit an asset family
     When the user updates this asset family with a dynamic product link rule having a product selection value which references this attribute
     Then there should be a validation error stating that the product selection value does not support this attribute for extrapolation
 
+  @acceptance-back @error
+  Scenario: Cannot update an asset family with a product link rule having a dynamic product selection value referencing a scopable attribute
+    Given an asset family with no product link rules and a scopable text attribute
+    When the user updates this asset family with a dynamic product link rule having a product selection field which references this text attribute
+    Then there should be a validation error stating that this attribute is not supported for extrapolation because it is scopable
+
+  @acceptance-back @error
+  Scenario: Cannot update an asset family with a product link rule having a dynamic product selection value referencing a localizable attribute
+    Given an asset family with no product link rules and a localizable text attribute
+    When the user updates this asset family with a dynamic product link rule having a product selection value which references this text attribute
+    Then there should be a validation error stating that this attribute is not supported for extrapolation because it is localizable
+
   # Product selection channel
   @acceptance-back @nominal
   Scenario: Updating an asset family with a product link rule having no product selection channel
@@ -151,6 +163,18 @@ Feature: Edit an asset family
     Given an asset family with no product link rules and an attribute with a type unsupported for extrapolation
     When the user updates this asset family with a dynamic product link rule having a product selection channel which references this attribute
     Then there should be a validation error stating that the product selection channel does not support this attribute for extrapolation
+
+  @acceptance-back @error
+  Scenario: Cannot update an asset family with a product link rule having a dynamic product selection channel referencing a scopable attribute
+    Given an asset family with no product link rules and a scopable text attribute
+    When the user updates this asset family with a dynamic product link rule having a product selection field which references this attribute
+    Then there should be a validation error stating that this attribute is not supported for extrapolation because it is scopable
+
+  @acceptance-back @error
+  Scenario: Cannot update an asset family with a product link rule having a dynamic product selection channel referencing a localizable attribute
+    Given an asset family with no product link rules and a localizable text attribute
+    When the user updates this asset family with a dynamic product link rule having a product selection channel which references this attribute
+    Then there should be a validation error stating that this attribute is not supported for extrapolation because it is localizable
 
   # Product selection locale
   @acceptance-back @nominal
@@ -183,11 +207,23 @@ Feature: Edit an asset family
     When the user updates this asset family with a dynamic product link rule having a product selection locale which references this attribute
     Then there should be a validation error stating that the product selection locale does not support this attribute for extrapolation
 
+  @acceptance-back @error
+  Scenario: Cannot update an asset family with a product link rule having a dynamic product selection locale referencing a scopable attribute
+    Given an asset family with no product link rules and a scopable text attribute
+    When the user updates this asset family with a dynamic product link rule having a product selection locale which references this attribute
+    Then there should be a validation error stating that this attribute is not supported for extrapolation because it is scopable
+
+  @acceptance-back @error
+  Scenario: Cannot update an asset family with a product link rule having a dynamic product selection locale referencing a localizable attribute
+    Given an asset family with no product link rules and a localizable text attribute
+    When the user updates this asset family with a dynamic product link rule having a product selection locale which references this attribute
+    Then there should be a validation error stating that this attribute is not supported for extrapolation because it is localizable
+
   # Product assignment attribute
   @acceptance-back @nominal
   Scenario: Updating an asset family with a product link rule having a dynamic assignment attribute
     Given an asset family with no product link rules and a text attribute
-    When the user updates this asset family with a dynamic product link rule having a dynamic assignment value which references this text attribute
+    When the user updates this asset family with a dynamic product link rule having a dynamic assignment attribute which references this text attribute
     Then there is an asset family with a product link rule
 
   @acceptance-back @error
@@ -195,6 +231,18 @@ Feature: Edit an asset family
     Given an asset family with no product link rules and an attribute with a type unsupported for extrapolation
     When the user updates this asset family with a dynamic product link rule having an assignment attribute which references this attribute
     Then there should be a validation error stating that the product selection locale does not support this attribute for extrapolation
+
+  @acceptance-back @error
+  Scenario: Cannot update an asset family with a product link rule having a dynamic assignment attribute referencing a scopable attribute
+    Given an asset family with no product link rules and a scopable text attribute
+    When the user updates this asset family with a dynamic product link rule having an assignment attribute which references this attribute
+    Then there should be a validation error stating that this attribute is not supported for extrapolation because it is scopable
+
+  @acceptance-back @error
+  Scenario: Cannot update an asset family with a product link rule having a dynamic assignment attribute referencing a localizable attribute
+    Given an asset family with no product link rules and a localizable text attribute
+    When the user updates this asset family with a dynamic product link rule having an assignment attribute which references this attribute
+    Then there should be a validation error stating that this attribute is not supported for extrapolation because it is localizable
 
   # Product assignment channel
   @acceptance-back @nominal
@@ -227,6 +275,18 @@ Feature: Edit an asset family
     When the user updates this asset family with a dynamic product link rule having an assignment channel which references this attribute
     Then there should be a validation error stating that the product assignment channel does not support this attribute for extrapolation
 
+  @acceptance-back @error
+  Scenario: Cannot update an asset family with a product link rule having a dynamic assignment channel referencing a scopable attribute
+    Given an asset family with no product link rules and a scopable text attribute
+    When the user updates this asset family with a dynamic product link rule having an assignment channel which references this attribute
+    Then there should be a validation error stating that this attribute is not supported for extrapolation because it is scopable
+
+  @acceptance-back @error
+  Scenario: Cannot update an asset family with a product link rule having a dynamic assignment channel referencing a localizable attribute
+    Given an asset family with no product link rules and a localizable text attribute
+    When the user updates this asset family with a dynamic product link rule having an assignment channel which references this attribute
+    Then there should be a validation error stating that this attribute is not supported for extrapolation because it is localizable
+
   # Product assignment locale
   @acceptance-back @nominal
   Scenario: Updating an asset family with a product link rule having no assignment locale
@@ -257,6 +317,18 @@ Feature: Edit an asset family
     Given an asset family with no product link rules and an attribute with a type unsupported for extrapolation
     When the user updates this asset family with a dynamic product link rule having an assignment locale which references this attribute
     Then there should be a validation error stating that the product assignment locale does not support this attribute for extrapolation
+
+  @acceptance-back @error
+  Scenario: Cannot update an asset family with a product link rule having a dynamic assignment locale referencing a scopable attribute
+    Given an asset family with no product link rules and a scopable text attribute
+    When the user updates this asset family with a dynamic product link rule having an assignment locale which references this attribute
+    Then there should be a validation error stating that this attribute is not supported for extrapolation because it is scopable
+
+  @acceptance-back @error
+  Scenario: Cannot update an asset family with a product link rule having a dynamic assignment locale referencing a localizable attribute
+    Given an asset family with no product link rules and a localizable text attribute
+    When the user updates this asset family with a dynamic product link rule having an assignment locale which references this attribute
+    Then there should be a validation error stating that this attribute is not supported for extrapolation because it is localizable
 
   @acceptance-front
   Scenario: Updating an asset family labels
