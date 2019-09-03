@@ -30,7 +30,7 @@ class IndexProductModelsSubscriberSpec extends ObjectBehavior
         $this->getSubscribedEvents()->shouldReturn([
             StorageEvents::POST_SAVE => 'indexProductModel',
             StorageEvents::POST_SAVE_ALL => 'bulkIndexProductModels',
-            StorageEvents::PRE_REMOVE => 'deleteProductModel',
+            StorageEvents::POST_REMOVE => 'deleteProductModel',
         ]);
     }
 

@@ -7,6 +7,7 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface;
+use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductModelDescendantsSaver;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
@@ -22,7 +23,7 @@ class ProductModelDescendantsSaverSpec extends ObjectBehavior
     function let(
         ProductModelRepositoryInterface $productModelRepository,
         ProductQueryBuilderFactoryInterface $pqbFactory,
-        BulkIndexerInterface $bulkProductIndexer,
+        ProductIndexerInterface $productIndexer,
         BulkIndexerInterface $bulkProductModelIndexer,
         IndexerInterface $productModelIndexer,
         ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses
@@ -30,7 +31,7 @@ class ProductModelDescendantsSaverSpec extends ObjectBehavior
         $this->beConstructedWith(
             $productModelRepository,
             $pqbFactory,
-            $bulkProductIndexer,
+            $productIndexer,
             $bulkProductModelIndexer,
             $productModelIndexer,
             $computeAndPersistProductCompletenesses,
@@ -46,7 +47,7 @@ class ProductModelDescendantsSaverSpec extends ObjectBehavior
     function it_computes_completeness_and_indexes_a_product_model_descendants_which_are_products_and_sub_product_models(
         $productModelRepository,
         $pqbFactory,
-        $bulkProductIndexer,
+        $productIndexer,
         $bulkProductModelIndexer,
         $productModelIndexer,
         ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses,
@@ -75,7 +76,7 @@ class ProductModelDescendantsSaverSpec extends ObjectBehavior
         $variantProduct2->getIdentifier()->willReturn('product_2');
         $computeAndPersistProductCompletenesses->fromProductIdentifiers(['product_1', 'product_2'])->shouldBeCalled();
 
-        $bulkProductIndexer->indexAll([$variantProduct1, $variantProduct2], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
+        $productIndexer->indexFromProductIdentifiers(['product_1', 'product_2'], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
 
         $productModelRepository->findChildrenProductModels($productModel)->willReturn([$productModelsChildren]);
         $bulkProductModelIndexer->indexAll([$productModelsChildren]);
@@ -88,7 +89,7 @@ class ProductModelDescendantsSaverSpec extends ObjectBehavior
     function it_does_not_fail_when_product_model_has_no_child(
         $productModelRepository,
         $pqbFactory,
-        $bulkProductIndexer,
+        $productIndexer,
         $bulkProductModelIndexer,
         $productModelIndexer,
         ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses,
@@ -106,7 +107,7 @@ class ProductModelDescendantsSaverSpec extends ObjectBehavior
 
         $computeAndPersistProductCompletenesses->fromProductIdentifiers(Argument::any())->shouldNotBeCalled();
 
-        $bulkProductIndexer->indexAll(Argument::cetera())->shouldNotBeCalled();
+        $productIndexer->indexFromProductIdentifiers(Argument::cetera())->shouldNotBeCalled();
 
         $productModelRepository->findChildrenProductModels($productModel)->willReturn([]);
         $bulkProductModelIndexer->indexAll(Argument::cetera())->shouldNotBeCalled();

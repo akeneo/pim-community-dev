@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface;
+use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Doctrine\Common\Collections\Collection;
@@ -27,11 +28,8 @@ class ProductModelDescendantsIndexer implements
     RemoverInterface,
     BulkRemoverInterface
 {
-    /** @var BulkIndexerInterface */
+    /** @var ProductIndexerInterface */
     private $productIndexer;
-
-    /** @var BulkRemoverInterface */
-    private $productRemover;
 
     /** @var BulkIndexerInterface */
     private $productModelIndexer;
@@ -40,19 +38,16 @@ class ProductModelDescendantsIndexer implements
     private $productModelRemover;
 
     /**
-     * @param BulkIndexerInterface $productIndexer
-     * @param BulkRemoverInterface $productRemover
-     * @param BulkIndexerInterface $productModelIndexer
-     * @param BulkRemoverInterface $productModelRemover
+     * @param ProductIndexerInterface $productIndexer
+     * @param BulkIndexerInterface    $productModelIndexer
+     * @param BulkRemoverInterface    $productModelRemover
      */
     public function __construct(
-        BulkIndexerInterface $productIndexer,
-        BulkRemoverInterface $productRemover,
+        ProductIndexerInterface $productIndexer,
         BulkIndexerInterface $productModelIndexer,
         BulkRemoverInterface $productModelRemover
     ) {
         $this->productIndexer = $productIndexer;
-        $this->productRemover = $productRemover;
         $this->productModelIndexer = $productModelIndexer;
         $this->productModelRemover = $productModelRemover;
     }
@@ -138,7 +133,7 @@ class ProductModelDescendantsIndexer implements
     }
 
     /**
-     * Recursive method that indexes the a list of product model children and their children
+     * Recursive method that indexes a list of product model children and their children
      * (products or product models).
      *
      * @param Collection $productModelChildren
@@ -151,7 +146,12 @@ class ProductModelDescendantsIndexer implements
         }
 
         if ($productModelChildren->first() instanceof ProductInterface) {
-            $this->productIndexer->indexAll($productModelChildren->toArray(), $options);
+            $identifiers = [];
+            foreach ($productModelChildren as $productModelChild) {
+                $identifiers[] = $productModelChild->getIdentifier();
+            }
+
+            $this->productIndexer->indexFromProductIdentifiers($identifiers, $options);
 
             return;
         }
@@ -176,7 +176,12 @@ class ProductModelDescendantsIndexer implements
         }
 
         if ($productModelChildren->first() instanceof ProductInterface) {
-            $this->productRemover->removeAll($productModelChildren->toArray());
+            $productIds = [];
+            foreach ($productModelChildren as $productModelChild) {
+                $productIds[] = (string) $productModelChild->getId();
+            }
+
+            $this->productIndexer->removeFromProductIds($productIds);
 
             return;
         }

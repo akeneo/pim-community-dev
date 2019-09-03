@@ -54,7 +54,7 @@ class IndexProductModelsSubscriber implements EventSubscriberInterface
         return [
             StorageEvents::POST_SAVE     => 'indexProductModel',
             StorageEvents::POST_SAVE_ALL => 'bulkIndexProductModels',
-            StorageEvents::PRE_REMOVE    => 'deleteProductModel',
+            StorageEvents::POST_REMOVE   => 'deleteProductModel',
         ];
     }
 
@@ -108,6 +108,6 @@ class IndexProductModelsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->productModelIndexRemover->remove($event->getSubjectId());
+        $this->productModelIndexRemover->remove((string) $event->getSubjectId());
     }
 }

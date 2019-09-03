@@ -2,15 +2,14 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Command;
 
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer;
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelIndexer;
 use Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Command\LockableTrait;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -22,7 +21,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CalculateCompletenessCommand extends ContainerAwareCommand
+class CalculateCompletenessCommand extends Command
 {
     use LockableTrait;
 
@@ -37,7 +36,7 @@ class CalculateCompletenessCommand extends ContainerAwareCommand
     /** @var ComputeAndPersistProductCompletenesses */
     private $computeAndPersistProductCompletenesses;
 
-    /** @var ProductIndexer */
+    /** @var ProductIndexerInterface */
     private $productIndexer;
 
     /** @var EntityManagerClearerInterface */
@@ -50,7 +49,7 @@ class CalculateCompletenessCommand extends ContainerAwareCommand
         Client $productAndProductModelClient,
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses,
-        ProductIndexer $productIndexer,
+        ProductIndexerInterface $productIndexer,
         EntityManagerClearerInterface $cacheClearer,
         int $batchSize
     ) {
@@ -101,24 +100,24 @@ class CalculateCompletenessCommand extends ContainerAwareCommand
             $productsToSave[] = $product;
 
             if (count($productsToSave) === $this->batchSize) {
-                $this->computeAndPersistProductCompletenesses->fromProductIdentifiers(
-                    array_map(function (ProductInterface $product) {
-                        return $product->getIdentifier();
-                    }, $productsToSave)
-                );
-                $this->productIndexer->indexAll($productsToSave);
+                $identifiers = array_map(function (ProductInterface $product) {
+                    return $product->getIdentifier();
+                }, $productsToSave);
+
+                $this->computeAndPersistProductCompletenesses->fromProductIdentifiers($identifiers);
+                $this->productIndexer->indexFromProductIdentifiers($identifiers);
                 $this->cacheClearer->clear();
                 $productsToSave = [];
             }
         }
 
         if (!empty($productsToSave)) {
-            $this->computeAndPersistProductCompletenesses->fromProductIdentifiers(
-                array_map(function (ProductInterface $product) {
-                    return $product->getIdentifier();
-                }, $productsToSave)
-            );
-            $this->productIndexer->indexAll($productsToSave);
+            $identifiers = array_map(function (ProductInterface $product) {
+                return $product->getIdentifier();
+            }, $productsToSave);
+
+            $this->computeAndPersistProductCompletenesses->fromProductIdentifiers($identifiers);
+            $this->productIndexer->indexFromProductIdentifiers($identifiers);
         }
 
         $output->writeln("<info>Missing completenesses generated.</info>");

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\IntegrationTestsBundle\Loader;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
-use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Plugin\ListPaths;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -374,8 +374,14 @@ class FixturesLoader implements FixturesLoaderInterface
      */
     protected function indexProducts(): void
     {
-        $products = $this->container->get('pim_catalog.repository.product')->findAll();
-        $this->container->get('pim_catalog.elasticsearch.indexer.product')->indexAll($products);
+        $this->container->get('pim_catalog.elasticsearch.indexer.product')->indexFromProductIdentifiers(
+            array_column(
+                $this->container->get('database_connection')->fetchAll(
+                    'SELECT p.identifier as identifier from pim_catalog_product p;'
+                ),
+                'identifier'
+            )
+        );
     }
 
     /**

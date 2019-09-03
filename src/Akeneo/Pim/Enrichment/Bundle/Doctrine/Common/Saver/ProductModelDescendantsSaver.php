@@ -13,6 +13,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInt
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface;
+use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 
 /**
@@ -35,8 +36,8 @@ class ProductModelDescendantsSaver implements SaverInterface
     /** @var ProductQueryBuilderFactoryInterface */
     private $pqbFactory;
 
-    /** @var BulkIndexerInterface */
-    private $bulkProductIndexer;
+    /** @var ProductIndexerInterface */
+    private $productIndexer;
 
     /** @var ProductModelRepositoryInterface */
     private $productModelRepository;
@@ -53,7 +54,7 @@ class ProductModelDescendantsSaver implements SaverInterface
     public function __construct(
         ProductModelRepositoryInterface $productModelRepository,
         ProductQueryBuilderFactoryInterface $pqbFactory,
-        BulkIndexerInterface $bulkProductIndexer,
+        ProductIndexerInterface $productIndexer,
         BulkIndexerInterface $bulkProductModelIndexer,
         IndexerInterface $productModelIndexer,
         ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses,
@@ -61,7 +62,7 @@ class ProductModelDescendantsSaver implements SaverInterface
     ) {
         $this->productModelRepository = $productModelRepository;
         $this->pqbFactory = $pqbFactory;
-        $this->bulkProductIndexer = $bulkProductIndexer;
+        $this->productIndexer = $productIndexer;
         $this->bulkProductModelIndexer = $bulkProductModelIndexer;
         $this->productModelIndexer = $productModelIndexer;
         $this->computeAndPersistProductCompletenesses = $computeAndPersistProductCompletenesses;
@@ -96,23 +97,23 @@ class ProductModelDescendantsSaver implements SaverInterface
             $productsBatch[] = $product;
 
             if (++$count % $this->batchSize === 0) {
-                $this->computeAndPersistProductCompletenesses->fromProductIdentifiers(
-                    array_map(function (ProductInterface $product) {
-                        return $product->getIdentifier();
-                    }, $productsBatch)
-                );
-                $this->indexProducts($productsBatch);
+                $identifiers = array_map(function (ProductInterface $product) {
+                    return $product->getIdentifier();
+                }, $productsBatch);
+
+                $this->computeAndPersistProductCompletenesses->fromProductIdentifiers($identifiers);
+                $this->indexProducts($identifiers);
                 $productsBatch = [];
             }
         }
 
         if (!empty($productsBatch)) {
-            $this->computeAndPersistProductCompletenesses->fromProductIdentifiers(
-                array_map(function (ProductInterface $product) {
-                    return $product->getIdentifier();
-                }, $productsBatch)
-            );
-            $this->indexProducts($productsBatch);
+            $identifiers = array_map(function (ProductInterface $product) {
+                return $product->getIdentifier();
+            }, $productsBatch);
+
+            $this->computeAndPersistProductCompletenesses->fromProductIdentifiers($identifiers);
+            $this->indexProducts($identifiers);
         }
     }
 
@@ -157,19 +158,27 @@ class ProductModelDescendantsSaver implements SaverInterface
     /**
      * Indexes a list of products by bulk of 100.
      *
-     * @param ProductInterface[] $products
+     * @param string[] $identifiers
      */
-    private function indexProducts(array $products): void
+    private function indexProducts(array $identifiers): void
     {
-        $productsToIndex = [];
-        foreach ($products as $product) {
-            $productsToIndex[] = $product;
-
-            if (0 === count($productsToIndex) % self::INDEX_BULK_SIZE) {
-                $this->bulkProductIndexer->indexAll($productsToIndex, ['index_refresh' => Refresh::disable()]);
-                $productsToIndex = [];
+        $identifiersToIndex = [];
+        foreach ($identifiers as $identifier) {
+            $identifiersToIndex[] = $identifier;
+            if (0 === count($identifiersToIndex) % self::INDEX_BULK_SIZE) {
+                $this->productIndexer->indexFromProductIdentifiers(
+                    $identifiersToIndex,
+                    ['index_refresh' => Refresh::disable()]
+                );
+                $identifiersToIndex = [];
             }
         }
-        $this->bulkProductIndexer->indexAll($productsToIndex, ['index_refresh' => Refresh::disable()]);
+
+        if (!empty($identifiersToIndex)) {
+            $this->productIndexer->indexFromProductIdentifiers(
+                $identifiersToIndex,
+                ['index_refresh' => Refresh::disable()]
+            );
+        }
     }
 }

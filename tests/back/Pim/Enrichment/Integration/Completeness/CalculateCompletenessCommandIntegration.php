@@ -64,6 +64,6 @@ class CalculateCompletenessCommandIntegration extends AbstractCompletenessTestCa
     {
         $this->get('database_connection')->executeQuery('DELETE FROM pim_catalog_completeness');
 
-        $this->get('pim_catalog.elasticsearch.indexer.product')->index($product);
+        $this->get('pim_catalog.elasticsearch.indexer.product')->indexFromProductIdentifier($product->getIdentifier());
     }
 }
