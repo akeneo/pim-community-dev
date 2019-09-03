@@ -55,7 +55,7 @@ class FileFetcher implements FileFetcherInterface
             mkdir(dirname($localPathname), 0777, true);
         }
 
-        // Use putStream of tmpFileSystem? 
+        // Use putStream of tmpFileSystem?
         if (false === file_put_contents($localPathname, $stream)) {
             throw new FileTransferException(
                 sprintf('Unable to put the file "%s" from the filesystem.', $localPathname)
