@@ -16,6 +16,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Quer
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectPendingItemIdentifiersQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Doctrine\QualityHighlights\PendingItemsRepository;
 use Doctrine\DBAL\Connection;
+use Ramsey\Uuid\Uuid;
 
 class SelectPendingItemsQuery implements SelectPendingItemIdentifiersQueryInterface
 {
@@ -27,36 +28,34 @@ class SelectPendingItemsQuery implements SelectPendingItemIdentifiersQueryInterf
         $this->connection = $connection;
     }
 
-    public function getUpdatedAttributeCodes(int $offsetId, int $batchSize): array
+    public function getUpdatedAttributeCodes(Uuid $lockUUID, int $batchSize): array
     {
-        return $this->executeQuery($offsetId, $batchSize, PendingItemsRepository::ENTITY_TYPE_ATTRIBUTE, PendingItemsRepository::ACTION_ENTITY_UPDATED);
+        return $this->executeQuery($lockUUID, $batchSize, PendingItemsRepository::ENTITY_TYPE_ATTRIBUTE, PendingItemsRepository::ACTION_ENTITY_UPDATED);
     }
 
-    public function getDeletedAttributeCodes(int $offsetId, int $batchSize): array
+    public function getDeletedAttributeCodes(Uuid $lockUUID, int $batchSize): array
     {
-        return $this->executeQuery($offsetId, $batchSize, PendingItemsRepository::ENTITY_TYPE_ATTRIBUTE, PendingItemsRepository::ACTION_ENTITY_DELETED);
+        return $this->executeQuery($lockUUID, $batchSize, PendingItemsRepository::ENTITY_TYPE_ATTRIBUTE, PendingItemsRepository::ACTION_ENTITY_DELETED);
     }
 
-    public function getUpdatedFamilyCodes(int $offsetId, int $batchSize): array
+    public function getUpdatedFamilyCodes(Uuid $lockUUID, int $batchSize): array
     {
-        return $this->executeQuery($offsetId, $batchSize, PendingItemsRepository::ENTITY_TYPE_FAMILY, PendingItemsRepository::ACTION_ENTITY_UPDATED);
+        return $this->executeQuery($lockUUID, $batchSize, PendingItemsRepository::ENTITY_TYPE_FAMILY, PendingItemsRepository::ACTION_ENTITY_UPDATED);
     }
 
-    public function getDeletedFamilyCodes(int $offsetId, int $batchSize): array
+    public function getDeletedFamilyCodes(Uuid $lockUUID, int $batchSize): array
     {
-        return $this->executeQuery($offsetId, $batchSize, PendingItemsRepository::ENTITY_TYPE_FAMILY, PendingItemsRepository::ACTION_ENTITY_DELETED);
+        return $this->executeQuery($lockUUID, $batchSize, PendingItemsRepository::ENTITY_TYPE_FAMILY, PendingItemsRepository::ACTION_ENTITY_DELETED);
     }
 
-    private function executeQuery(int $offsetId, int $limit, string $entityType, string $action): array
+    private function executeQuery(Uuid $lockUUID, int $limit, string $entityType, string $action): array
     {
         $query = <<<'SQL'
-            SELECT id, entity_id
+            SELECT entity_id
             FROM pimee_franklin_insights_quality_highlights_pending_items AS pending_items
             WHERE `action` = :action
             AND entity_type = :entity_type
-            AND locked = :locked
-            AND id > :offsetId
-            ORDER BY id ASC
+            AND lock_uuid = :lock_uuid
             LIMIT :limit
 SQL;
 
@@ -65,22 +64,20 @@ SQL;
             [
                 'action' => $action,
                 'entity_type' => $entityType,
-                'locked' => PendingItemsRepository::STATUS_UNLOCKED,
-                'offsetId' => $offsetId,
+                'lock_uuid' => $lockUUID,
                 'limit' => $limit,
             ],
             [
                 'action' => \PDO::PARAM_STR,
                 'entity_type' => \PDO::PARAM_STR,
-                'locked' => \PDO::PARAM_INT,
-                'offsetId' => \PDO::PARAM_INT,
+                'lock_uuid' => \PDO::PARAM_STR,
                 'limit' => \PDO::PARAM_INT,
             ]
         );
 
         $attributeCodes = [];
         foreach ($statement->fetchAll() as $result) {
-            $attributeCodes[$result['id']] = $result['entity_id'];
+            $attributeCodes[] = $result['entity_id'];
         }
 
         return $attributeCodes;

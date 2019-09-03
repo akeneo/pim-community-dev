@@ -108,9 +108,11 @@ services:
             - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_pending_items'
             - '@akeneo.pim.automation.franklin_insights.application.quality_highlights.apply_attribute_structure'
             - '@akeneo.pim.automation.franklin_insights.data_provider.quality_highlights'
+            - '@akeneo.pim.automation.franklin_insights.repository.quality_highlights_pending_items'
 
     akeneo.pim.automation.franklin_insights.application.quality_highlights.synchronize_families_with_franklin:
         class: Akeneo\Pim\Automation\FranklinInsights\Application\QualityHighlights\SynchronizeFamiliesWithFranklin
         arguments:
             - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_pending_items'
             - '@akeneo.pim.automation.franklin_insights.data_provider.quality_highlights'
+            - '@akeneo.pim.automation.franklin_insights.repository.quality_highlights_pending_items'

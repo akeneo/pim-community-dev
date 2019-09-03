@@ -18,14 +18,13 @@ final class CreateTablePendingItemsQuery
     const QUERY = <<<'SQL'
 CREATE TABLE IF NOT EXISTS pimee_franklin_insights_quality_highlights_pending_items
 (
-    id int unsigned AUTO_INCREMENT PRIMARY KEY,
 	entity_type varchar(20) not null,
 	entity_id varchar(100) not null,
 	action varchar(20) null,
-	locked tinyint default 0 null,
+	lock_uuid varchar(60) default '' not null,
 	INDEX pending_items_action_index (action),
 	INDEX pending_items_entity_type_index (entity_type),
-	UNIQUE KEY(entity_type, entity_id, locked)
+	UNIQUE KEY(entity_type, entity_id, lock_uuid)
 	
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB ROW_FORMAT = DYNAMIC;
 

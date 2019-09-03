@@ -15,6 +15,8 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Application\QualityHighlights;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\QualityHighlightsProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectPendingItemIdentifiersQueryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
+use Ramsey\Uuid\Uuid;
 
 class SynchronizeFamiliesWithFranklin
 {
@@ -24,56 +26,48 @@ class SynchronizeFamiliesWithFranklin
     /** @var QualityHighlightsProviderInterface */
     private $qualityHighlightsProvider;
 
+    /** @var PendingItemsRepositoryInterface */
+    private $pendingItemsRepository;
+
     public function __construct(
         SelectPendingItemIdentifiersQueryInterface $pendingItemIdentifiersQuery,
-        QualityHighlightsProviderInterface $qualityHighlightsProvider
+        QualityHighlightsProviderInterface $qualityHighlightsProvider,
+        PendingItemsRepositoryInterface $pendingItemsRepository
     ) {
         $this->pendingItemIdentifiersQuery = $pendingItemIdentifiersQuery;
         $this->qualityHighlightsProvider = $qualityHighlightsProvider;
+        $this->pendingItemsRepository = $pendingItemsRepository;
     }
 
-    public function synchronize(int $batchSize): void
+    public function synchronize(Uuid $lockUUID, int $batchSize): void
     {
-        $this->synchronizeUpdatedFamilies($batchSize);
-        $this->synchronizeDeletedFamilies($batchSize);
+        $this->synchronizeUpdatedFamilies($lockUUID, $batchSize);
+        $this->synchronizeDeletedFamilies($lockUUID, $batchSize);
     }
 
-    private function synchronizeUpdatedFamilies(int $batchSize): void
+    private function synchronizeUpdatedFamilies(Uuid $lockUUID, int $batchSize): void
     {
-        $lastId = 0;
-        while (true) {
-            $familyCodes = $this->pendingItemIdentifiersQuery->getUpdatedFamilyCodes($lastId, $batchSize);
+        do {
+            $familyCodes = $this->pendingItemIdentifiersQuery->getUpdatedFamilyCodes($lockUUID, $batchSize);
             if (! empty($familyCodes)) {
                 $this->qualityHighlightsProvider->applyFamilies(array_values($familyCodes));
             }
 
-            if (count($familyCodes) < $batchSize) {
-                break;
-            }
-
-            //Cannot be done in 1 line because of a PHP warning
-            $pendingItemIds = array_keys($familyCodes);
-            $lastId = end($pendingItemIds);
-        }
+            $this->pendingItemsRepository->removeUpdatedFamilies($familyCodes, $lockUUID);
+        } while (count($familyCodes) >= $batchSize);
     }
 
-    private function synchronizeDeletedFamilies(int $batchSize)
+    private function synchronizeDeletedFamilies(Uuid $lockUUID, int $batchSize)
     {
-        $lastId = 0;
-        while (true) {
-            $familyCodes = $this->pendingItemIdentifiersQuery->getDeletedFamilyCodes($lastId, $batchSize);
+        do {
+            $familyCodes = $this->pendingItemIdentifiersQuery->getDeletedFamilyCodes($lockUUID, $batchSize);
             if (! empty($familyCodes)) {
                 foreach ($familyCodes as $familyCode) {
                     $this->qualityHighlightsProvider->deleteFamily($familyCode);
                 }
             }
 
-            if (count($familyCodes) < $batchSize) {
-                break;
-            }
-
-            $pendingItemIds = array_keys($familyCodes);
-            $lastId = end($pendingItemIds);
-        }
+            $this->pendingItemsRepository->removeDeletedFamilies($familyCodes, $lockUUID);
+        } while (count($familyCodes) >= $batchSize);
     }
 }

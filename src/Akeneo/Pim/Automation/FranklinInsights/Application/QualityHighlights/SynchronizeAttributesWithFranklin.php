@@ -15,6 +15,8 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Application\QualityHighlights;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\QualityHighlightsProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectPendingItemIdentifiersQueryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
+use Ramsey\Uuid\Uuid;
 
 class SynchronizeAttributesWithFranklin
 {
@@ -27,58 +29,52 @@ class SynchronizeAttributesWithFranklin
     /** @var QualityHighlightsProviderInterface */
     private $qualityHighlightsProvider;
 
+    /** @var PendingItemsRepositoryInterface */
+    private $pendingItemsRepository;
+
     public function __construct(
         SelectPendingItemIdentifiersQueryInterface $pendingItemIdentifiersQuery,
         ApplyAttributeStructure $applyAttributeStructure,
-        QualityHighlightsProviderInterface $qualityHighlightsProvider
+        QualityHighlightsProviderInterface $qualityHighlightsProvider,
+        PendingItemsRepositoryInterface $pendingItemsRepository
     ) {
         $this->pendingItemIdentifiersQuery = $pendingItemIdentifiersQuery;
         $this->applyAttributeStructure = $applyAttributeStructure;
         $this->qualityHighlightsProvider = $qualityHighlightsProvider;
+        $this->pendingItemsRepository = $pendingItemsRepository;
     }
 
-    public function synchronize(int $batchSize): void
+    public function synchronize(Uuid $lockUUID, int $batchSize): void
     {
-        $this->synchronizeUpdatedAttributes($batchSize);
-        $this->synchronizeDeletedAttributes($batchSize);
+        $this->synchronizeUpdatedAttributes($lockUUID, $batchSize);
+        $this->synchronizeDeletedAttributes($lockUUID, $batchSize);
     }
 
-    private function synchronizeUpdatedAttributes(int $batchSize): void
+    private function synchronizeUpdatedAttributes(Uuid $lockUUID, int $batchSize): void
     {
-        $lastId = 0;
-        while (true) {
-            $attributeCodes = $this->pendingItemIdentifiersQuery->getUpdatedAttributeCodes($lastId, $batchSize);
+        do{
+            $attributeCodes = $this->pendingItemIdentifiersQuery->getUpdatedAttributeCodes($lockUUID, $batchSize);
             if (! empty($attributeCodes)) {
                 $this->applyAttributeStructure->apply(array_values($attributeCodes));
             }
 
-            if (count($attributeCodes) < $batchSize) {
-                break;
-            }
+            $this->pendingItemsRepository->removeUpdatedAttributes($attributeCodes, $lockUUID);
 
-            //Cannot be done in 1 line because of a PHP warning
-            $pendingItemIds = array_keys($attributeCodes);
-            $lastId = end($pendingItemIds);
-        }
+        }while(count($attributeCodes) >= $batchSize);
     }
 
-    private function synchronizeDeletedAttributes(int $batchSize): void
+    private function synchronizeDeletedAttributes(Uuid $lockUUID, int $batchSize): void
     {
-        $lastId = 0;
-        while (true) {
-            $attributeCodes = $this->pendingItemIdentifiersQuery->getDeletedAttributeCodes($lastId, $batchSize);
+        do{
+            $attributeCodes = $this->pendingItemIdentifiersQuery->getDeletedAttributeCodes($lockUUID, $batchSize);
             if (! empty($attributeCodes)) {
                 foreach ($attributeCodes as $attributeCode) {
                     $this->qualityHighlightsProvider->deleteAttribute($attributeCode);
                 }
             }
 
-            if (count($attributeCodes) < $batchSize) {
-                break;
-            }
+            $this->pendingItemsRepository->removeDeletedAttributes($attributeCodes, $lockUUID);
 
-            $pendingItemIds = array_keys($attributeCodes);
-            $lastId = end($pendingItemIds);
-        }
+        }while(count($attributeCodes) >= $batchSize);
     }
 }

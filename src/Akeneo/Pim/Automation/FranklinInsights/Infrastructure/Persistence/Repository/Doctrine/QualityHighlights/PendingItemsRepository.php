@@ -16,6 +16,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repo
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
 use Doctrine\DBAL\Connection;
+use Ramsey\Uuid\Uuid;
 
 class PendingItemsRepository implements PendingItemsRepositoryInterface
 {
@@ -43,7 +44,6 @@ class PendingItemsRepository implements PendingItemsRepositoryInterface
             'entity_type' => self::ENTITY_TYPE_ATTRIBUTE,
             'entity_id' => $code,
             'action' => self::ACTION_ENTITY_UPDATED,
-            'locked' => self::STATUS_UNLOCKED,
         ];
 
         $this->connection->executeQuery($this->getInsertQuery(), $bindParams);
@@ -55,7 +55,6 @@ class PendingItemsRepository implements PendingItemsRepositoryInterface
             'entity_type' => self::ENTITY_TYPE_ATTRIBUTE,
             'entity_id' => $code,
             'action' => self::ACTION_ENTITY_DELETED,
-            'locked' => self::STATUS_UNLOCKED,
         ];
 
         $this->connection->executeQuery($this->getInsertQuery(), $bindParams);
@@ -67,7 +66,6 @@ class PendingItemsRepository implements PendingItemsRepositoryInterface
             'entity_type' => self::ENTITY_TYPE_FAMILY,
             'entity_id' => $code,
             'action' => self::ACTION_ENTITY_UPDATED,
-            'locked' => self::STATUS_UNLOCKED,
         ];
 
         $this->connection->executeQuery($this->getInsertQuery(), $bindParams);
@@ -79,7 +77,6 @@ class PendingItemsRepository implements PendingItemsRepositoryInterface
             'entity_type' => self::ENTITY_TYPE_FAMILY,
             'entity_id' => $code,
             'action' => self::ACTION_ENTITY_DELETED,
-            'locked' => self::STATUS_UNLOCKED,
         ];
 
         $this->connection->executeQuery($this->getInsertQuery(), $bindParams);
@@ -91,7 +88,6 @@ class PendingItemsRepository implements PendingItemsRepositoryInterface
             'entity_type' => self::ENTITY_TYPE_PRODUCT,
             'entity_id' => (string) $identifier,
             'action' => self::ACTION_ENTITY_UPDATED,
-            'locked' => self::STATUS_UNLOCKED,
         ];
 
         $this->connection->executeQuery($this->getInsertQuery(), $bindParams);
@@ -103,19 +99,117 @@ class PendingItemsRepository implements PendingItemsRepositoryInterface
             'entity_type' => self::ENTITY_TYPE_PRODUCT,
             'entity_id' => (string) $identifier,
             'action' => self::ACTION_ENTITY_DELETED,
-            'locked' => self::STATUS_UNLOCKED,
         ];
 
         $this->connection->executeQuery($this->getInsertQuery(), $bindParams);
+    }
+
+    public function acquireLock(Uuid $lockUUID): void
+    {
+        $lockQuery = <<<'SQL'
+UPDATE pimee_franklin_insights_quality_highlights_pending_items
+SET lock_uuid=:lock_uuid
+WHERE lock_uuid = ''
+SQL;
+
+        $bindParams = [
+            'lock_uuid' => $lockUUID->toString(),
+        ];
+
+        $this->connection->executeQuery($lockQuery, $bindParams);
+    }
+
+    public function removeUpdatedAttributes(array $attributeCodes, Uuid $lockUUID): void
+    {
+        $bindParams = [
+            'entity_type' => self::ENTITY_TYPE_ATTRIBUTE,
+            'entity_ids' => $attributeCodes,
+            'action' => self::ACTION_ENTITY_UPDATED,
+            'lock_uuid' => $lockUUID->toString(),
+        ];
+
+        $bindTypes = [
+            'entity_type' => \PDO::PARAM_STR,
+            'entity_ids' => Connection::PARAM_STR_ARRAY,
+            'action' => \PDO::PARAM_STR,
+            'lock_uuid' => \PDO::PARAM_STR,
+        ];
+
+        $this->connection->executeQuery($this->getDeleteQuery(), $bindParams, $bindTypes);
+    }
+
+    public function removeDeletedAttributes(array $attributeCodes, Uuid $lockUUID): void
+    {
+        $bindParams = [
+            'entity_type' => self::ENTITY_TYPE_ATTRIBUTE,
+            'entity_ids' => $attributeCodes,
+            'action' => self::ACTION_ENTITY_DELETED,
+            'lock_uuid' => $lockUUID->toString(),
+        ];
+
+        $bindTypes = [
+            'entity_type' => \PDO::PARAM_STR,
+            'entity_ids' => Connection::PARAM_STR_ARRAY,
+            'action' => \PDO::PARAM_STR,
+            'lock_uuid' => \PDO::PARAM_STR,
+        ];
+
+        $this->connection->executeQuery($this->getDeleteQuery(), $bindParams, $bindTypes);
+    }
+
+    public function removeUpdatedFamilies(array $familyCodes, Uuid $lockUUID): void
+    {
+        $bindParams = [
+            'entity_type' => self::ENTITY_TYPE_FAMILY,
+            'entity_ids' => $familyCodes,
+            'action' => self::ACTION_ENTITY_UPDATED,
+            'lock_uuid' => $lockUUID->toString(),
+        ];
+
+        $bindTypes = [
+            'entity_type' => \PDO::PARAM_STR,
+            'entity_ids' => Connection::PARAM_STR_ARRAY,
+            'action' => \PDO::PARAM_STR,
+            'lock_uuid' => \PDO::PARAM_STR,
+        ];
+
+        $this->connection->executeQuery($this->getDeleteQuery(), $bindParams, $bindTypes);
+    }
+
+    public function removeDeletedFamilies(array $familyCodes, Uuid $lockUUID): void
+    {
+        $bindParams = [
+            'entity_type' => self::ENTITY_TYPE_FAMILY,
+            'entity_ids' => $familyCodes,
+            'action' => self::ACTION_ENTITY_DELETED,
+            'lock_uuid' => $lockUUID->toString(),
+        ];
+
+        $bindTypes = [
+            'entity_type' => \PDO::PARAM_STR,
+            'entity_ids' => Connection::PARAM_STR_ARRAY,
+            'action' => \PDO::PARAM_STR,
+            'lock_uuid' => \PDO::PARAM_STR,
+        ];
+
+        $this->connection->executeQuery($this->getDeleteQuery(), $bindParams, $bindTypes);
     }
 
     private function getInsertQuery(): string
     {
         return <<<'SQL'
 INSERT INTO pimee_franklin_insights_quality_highlights_pending_items
-(entity_type, entity_id, action, locked)
-VALUES (:entity_type, :entity_id, :action, :locked)
+(entity_type, entity_id, action)
+VALUES (:entity_type, :entity_id, :action)
 ON DUPLICATE KEY UPDATE action = :action;
+SQL;
+    }
+
+    private function getDeleteQuery(): string
+    {
+        return <<<'SQL'
+DELETE FROM pimee_franklin_insights_quality_highlights_pending_items
+WHERE lock_uuid=:lock_uuid AND entity_id IN (:entity_ids) AND entity_type=:entity_type AND action=:action
 SQL;
     }
 

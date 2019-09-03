@@ -11,6 +11,14 @@ services:
         tags:
             - { name: 'console.command' }
 
+    Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Symfony\Command\QualityHighlights\PushStructureAndProductsToFranklinCommand:
+        arguments:
+            - '@akeneo.pim.automation.franklin_insights.repository.quality_highlights_pending_items'
+            - '@akeneo.pim.automation.franklin_insights.application.quality_highlights.synchronize_families_with_franklin'
+            - '@akeneo.pim.automation.franklin_insights.application.quality_highlights.synchronize_attributes_with_franklin'
+        tags:
+            - { name: 'console.command' }
+
     Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Symfony\Command\QualityHighlights\PurgePendingItemsTableCommand:
         arguments:
             - '@database_connection'
