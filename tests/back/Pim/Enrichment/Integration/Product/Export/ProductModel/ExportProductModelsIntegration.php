@@ -145,21 +145,6 @@ apollon_blue;clothing_color_size;apollon;summer,tshirt,v-neck;blue;;;"my blue ts
 apollon_pink;clothing_color_size;apollon;round-neck,tshirt;pink;;;"my pink tshirt"
 
 CSV;
-
-        /**
-         * Commented test
-
-        -'code;family_variant;parent;categories;color;name-en_US;variation_image;variation_name
-        -apollon;clothing_color_size;;tshirt;;;;
-        -apollon_blue;clothing_color_size;apollon;summer,tshirt,v-neck;blue;;;"my blue tshirt"
-        -apollon_pink;clothing_color_size;apollon;round-neck,tshirt;pink;;;"my pink tshirt"
-        +'code;family_variant;parent;categories;color;variation_name
-        +apollon;clothing_color_size;;tshirt;;
-        +apollon_blue;clothing_color_size;apollon;summer,tshirt,v-neck;blue;"my blue tshirt"
-        +apollon_pink;clothing_color_size;apollon;round-neck,tshirt;pink;"my pink tshirt"
-
-         */
-
-        //$this->assertProductModelExport($expectedCsv, []);
+        $this->assertProductModelExport($expectedCsv, []);
     }
 }
