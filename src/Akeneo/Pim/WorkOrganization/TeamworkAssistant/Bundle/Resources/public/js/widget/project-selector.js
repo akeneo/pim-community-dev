@@ -15,10 +15,25 @@ define(
         'pim/i18n',
         'pim/fetcher-registry',
         'pim/user-context',
+        'pim/date-context',
+        'pim/formatter/date',
         'teamwork-assistant/templates/widget/project-selector',
         'teamwork-assistant/templates/widget/project-selector-line'
     ],
-    function ($, _, __, BaseForm, Backbone, i18n, FetcherRegistry, UserContext, template, lineTemplate) {
+    function (
+        $,
+        _,
+        __,
+        BaseForm,
+        Backbone,
+        i18n,
+        FetcherRegistry,
+        UserContext,
+        DateContext,
+        DateFormatter,
+        template,
+        lineTemplate
+    ) {
         return BaseForm.extend({
             template: _.template(template),
             lineTemplate: _.template(lineTemplate),
@@ -53,17 +68,20 @@ define(
                             }
                             var searchParameters = this.getSelectSearchParameters(options.term, page);
 
-                            FetcherRegistry.getFetcher('project').search(searchParameters).then(function (projects) {
-                                var choices = this.arrayToSelect2Format(projects);
+                            FetcherRegistry.getFetcher('project').search(searchParameters)
+                                .then(function (projects) {
+                                    var choices = this.arrayToSelect2Format(projects);
 
-                                options.callback({
-                                    results: choices,
-                                    more: choices.length === this.resultsPerPage,
-                                    context: {
-                                        page: page + 1
-                                    }
-                                });
-                            }.bind(this));
+                                    this.refreshSelection(choices, $select);
+
+                                    options.callback({
+                                        results: choices,
+                                        more: choices.length === this.resultsPerPage,
+                                        context: {
+                                            page: page + 1
+                                        }
+                                    });
+                                }.bind(this));
                         }.bind(this), 400);
                     }.bind(this),
 
@@ -95,7 +113,8 @@ define(
                         .attr('placeholder', __('teamwork_assistant.widget.placeholder.project_selector'));
                 });
                 $select.on('select2-close', function () {
-                    $('.teamwork-assistant-widget-project-dropdown .select2-input').attr('placeholder', null);
+                    $('.teamwork-assistant-widget-project-dropdown .select2-input')
+                        .attr('placeholder', null);
                 });
             },
 
@@ -113,7 +132,7 @@ define(
                     options: {
                         limit: this.resultsPerPage,
                         page: page,
-                        completeness: 0
+                        completeness: 1
                     }
                 });
             },
@@ -156,13 +175,36 @@ define(
             formatLine: function (project, type) {
                 var uiLocale = UserContext.get('uiLocale');
                 var channelLabel = i18n.getLabel(project.channel.labels, uiLocale, project.channel.code);
+                var dateFormat = DateContext.get('date').format;
+                var badgeClass = 'AknBadge--warning';
+
+                if (project.completeness.ratio_done === 0) {
+                    badgeClass = 'AknBadge--invalid';
+                } else if (project.completeness.ratio_done === 100) {
+                    badgeClass = 'AknBadge--success';
+                }
 
                 return this.lineTemplate({
                     type: type,
                     projectLabel: project.label,
                     projectChannel: channelLabel,
-                    projectLocale: project.locale.label
+                    projectLocale: project.locale.label,
+
+                    dueDateLabel: __('teamwork_assistant.project.due_date'),
+                    dueDate: DateFormatter.format(project.due_date, 'yyyy-MM-dd', dateFormat),
+                    completionRatio: Math.round(project.completeness.ratio_done),
+                    badgeClass: badgeClass
                 });
+            },
+
+            refreshSelection: function (projects, baseSelector) {
+                let selectedProject = projects.find((project) => {
+                    return project.code === this.getFormData().currentProjectCode;
+                });
+
+                if (selectedProject) {
+                    baseSelector.select2('data', selectedProject);
+                }
             }
         });
     }

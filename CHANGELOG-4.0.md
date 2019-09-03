@@ -1,5 +1,17 @@
 # 4.0.x
 
+## Improvements
+
+
+- DAPI-26: adds the enrichment progress in the widget's project drop down
+
+
+
+
+
+
+
+
 # Technical Improvements
 
 ## Classes
