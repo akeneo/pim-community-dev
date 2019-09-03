@@ -439,11 +439,8 @@ final class EditAssetFamilyContext implements Context
 
     /**
      * @Given /^an asset family with no product link rules and a text attribute$/
-     * @Given /^an asset family with no product link rules$/
-     * @Given /^an asset family with no product link rules and a channel$/
-     * @Given /^an asset family with no product link rules and a locale$/
      */
-    public function anAssetFamilyWithSomeAttributes()
+    public function anAssetFamilyWithNoProductLinkRulesAndATextAttribute()
     {
         $this->createEcommerceChannel();
         $this->createEnUsLocale();
@@ -451,6 +448,34 @@ final class EditAssetFamilyContext implements Context
             ->assetFamily(self::ASSET_FAMILY_IDENTIFIER)
             ->withAttributeOfTypeText(self::ASSET_FAMILY_IDENTIFIER, self::ATTRIBUTE_CODE)
             ->load();
+    }
+
+    /**
+     * @Given /^an asset family with no product link rules$/
+     */
+    public function anAssetFamilyWithNoProductLinkRules()
+    {
+        $this->createEcommerceChannel();
+        $this->createEnUsLocale();
+        $this->fixturesLoader->assetFamily(self::ASSET_FAMILY_IDENTIFIER)->load();
+    }
+
+    /**
+     * @Given /^an asset family with no product link rules and a channel$/
+     */
+    public function anAssetFamilyWithNoProductLinkRulesAndAChannel()
+    {
+        $this->createEcommerceChannel();
+        $this->fixturesLoader->assetFamily(self::ASSET_FAMILY_IDENTIFIER)->load();
+    }
+
+    /**
+     * @Given /^an asset family with no product link rules and a locale$/
+     */
+    public function anAssetFamilyWithNoProductLinkRulesAndALocale()
+    {
+        $this->createEnUsLocale();
+        $this->fixturesLoader->assetFamily(self::ASSET_FAMILY_IDENTIFIER)->load();
     }
 
     /**
@@ -1004,7 +1029,7 @@ final class EditAssetFamilyContext implements Context
     }
 
     /**
-     * @When /^the user updates this asset family with a product link rule having a no product selection channel$/
+     * @When /^the user updates this asset family with a product link rule having no product selection channel$/
      */
     public function theUserUpdatesThisAssetFamilyWithAProductLinkRuleHavingANoProductSelectionChannel()
     {
@@ -1065,7 +1090,7 @@ final class EditAssetFamilyContext implements Context
     public function thereShouldBeAValidationErrorStatingThatTheProductSelectionChannelDoesNotExist()
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
-            sprintf('The channel "%s" of does not exist', self::UNKNOWN_CHANNEL)
+            sprintf('The channel "%s" does not exist', self::UNKNOWN_CHANNEL)
         );
     }
 
@@ -1273,7 +1298,7 @@ final class EditAssetFamilyContext implements Context
     public function thereShouldBeAValidationErrorStatingThatTheAssignmentChannelDoesNotExist()
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
-            sprintf('The channel "%s" of does not exist', self::UNKNOWN_CHANNEL)
+            sprintf('The channel "%s" does not exist', self::UNKNOWN_CHANNEL)
         );
     }
 
