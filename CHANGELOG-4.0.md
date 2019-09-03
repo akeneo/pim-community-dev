@@ -2,15 +2,8 @@
 
 ## Improvements
 
-
 - DAPI-26: adds the enrichment progress in the widget's project drop down
-
-
-
-
-
-
-
+- DAPI-46: As a contributor, I would like to see my teammate progress on a project dashboard
 
 # Technical Improvements
 
@@ -101,3 +94,4 @@ The following CLI commands have been deleted:
 - Update `pimee_workflow.doctrine.query.published_product_query_builder_search_after_size_factory` to use `Akeneo\Pim\WorkOrganization\Workflow\Component\Query\PublishedProductQueryBuilder` and `pimee_workflow.query.filter.published_product_registry`
 - Remove `pimee_workflow.query.product_proposal_query_builder_factory`
 - Update `pimee_workflow.doctrine.query.proposal_product_and_product_model_query_builder_from_size_factory` to use `Akeneo\Pim\WorkOrganization\Workflow\Component\Query\ProductProposalAndProductModelProposalQueryBuilder`
+- Update `pimee_teamwork_assistant.controller.project_completeness_controller` to remove `@security.token_storage` as dependency

@@ -178,7 +178,6 @@ services:
         arguments:
             - '@pimee_teamwork_assistant.repository.project'
             - '@pimee_teamwork_assistant.repository.project_completeness'
-            - '@security.token_storage'
             - '@security.authorization_checker'
             - '@pim_internal_api_serializer'
 

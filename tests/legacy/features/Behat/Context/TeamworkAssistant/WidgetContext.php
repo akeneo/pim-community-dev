@@ -36,6 +36,16 @@ class WidgetContext extends PimContext
             return true;
         }
     }
+    /**
+     * @Then /^I should see the (project) selector$/
+     * @Then /^I should see the (contributor) selector$/
+     */
+    public function iShouldSeeTheSelector($selector)
+    {
+        $getSelectorMethod = sprintf('get%sSelector', ucfirst($selector));
+
+        $this->getTeamworkAssistantWidget()->$getSelectorMethod();
+    }
 
     /**
      * @Then /^I should see the teamwork assistant widget$/

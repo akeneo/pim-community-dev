@@ -32,9 +32,6 @@ class ProjectCompletenessController
     /** @var ProjectCompletenessRepositoryInterface */
     protected $projectCompletenessRepository;
 
-    /** @var TokenStorageInterface */
-    protected $tokenStorage;
-
     /** @var AuthorizationCheckerInterface */
     protected $authorizationChecker;
 
@@ -44,20 +41,17 @@ class ProjectCompletenessController
     /**
      * @param IdentifiableObjectRepositoryInterface  $projectRepository
      * @param ProjectCompletenessRepositoryInterface $projectCompletenessRepository
-     * @param TokenStorageInterface                  $tokenStorage
      * @param AuthorizationCheckerInterface          $authorizationChecker
      * @param NormalizerInterface                    $projectCompletenessNormalizer
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $projectRepository,
         ProjectCompletenessRepositoryInterface $projectCompletenessRepository,
-        TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
         NormalizerInterface $projectCompletenessNormalizer
     ) {
         $this->projectRepository = $projectRepository;
         $this->projectCompletenessRepository = $projectCompletenessRepository;
-        $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
         $this->projectCompletenessNormalizer = $projectCompletenessNormalizer;
     }
@@ -80,14 +74,7 @@ class ProjectCompletenessController
             throw new AccessDeniedException();
         }
 
-        $contributor = null;
-        if ($this->authorizationChecker->isGranted(ProjectVoter::CONTRIBUTE, $project)) {
-            $contributor = $this->tokenStorage->getToken()->getUser()->getUsername();
-        }
-
-        if ($this->authorizationChecker->isGranted(ProjectVoter::OWN, $project)) {
-            $contributor = $request->get('contributor');
-        }
+        $contributor = $request->get('contributor');
 
         $projectCompleteness = $this->projectCompletenessRepository->getProjectCompleteness($project, $contributor);
         $projectCompleteness = $this->projectCompletenessNormalizer->normalize($projectCompleteness, 'internal_api');
