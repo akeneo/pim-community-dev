@@ -6,7 +6,7 @@ beforeEach(async () => {
   await page.reload();
 }, timeout);
 
-it('It fetches all product attributes of asset', async () => {
+it('It fetches all product attributes of the asset', async () => {
   page.on('request', interceptedRequest => {
     if (
       'http://pim.com/rest/attribute/' === interceptedRequest.url() &&
