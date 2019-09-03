@@ -45,7 +45,7 @@ class SelectAttributesToApplyQuery implements SelectAttributesToApplyQueryInterf
             SELECT 
                 DISTINCT attribute.code, attribute.attribute_type as `type`, attribute.metric_family, 
                 attribute.default_metric_unit AS unit,
-            (SELECT JSON_OBJECTAGG(IFNULL(locale, 0), label) FROM pim_catalog_attribute_translation WHERE foreign_key = attribute.id) AS labels
+            (SELECT JSON_OBJECTAGG(IFNULL(locale, 0), label) FROM pim_catalog_attribute_translation at WHERE foreign_key = attribute.id AND at.locale LIKE "en_%") AS labels
             FROM pim_catalog_attribute AS attribute
             WHERE attribute.code IN(:attributeCodes)
 SQL;

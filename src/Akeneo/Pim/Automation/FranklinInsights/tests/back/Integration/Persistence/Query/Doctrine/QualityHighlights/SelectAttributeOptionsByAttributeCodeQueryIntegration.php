@@ -62,12 +62,12 @@ class SelectAttributeOptionsByAttributeCodeQueryIntegration extends TestCase
                 'code' => 'blue',
                 'labels' => [
                     [
-                        'locale' => 'en_US',
-                        'label' => 'Blue',
+                        'locale' => 'en_CA',
+                        'label' => 'Bleu',
                     ],
                     [
-                        'locale' => 'fr_FR',
-                        'label' => 'Bleu',
+                        'locale' => 'en_US',
+                        'label' => 'Blue',
                     ],
                 ],
             ],
@@ -75,12 +75,12 @@ class SelectAttributeOptionsByAttributeCodeQueryIntegration extends TestCase
                 'code' => 'red',
                 'labels' => [
                     [
-                        'locale' => 'en_US',
-                        'label' => 'Red',
+                        'locale' => 'en_CA',
+                        'label' => 'Rouge',
                     ],
                     [
-                        'locale' => 'fr_FR',
-                        'label' => 'Rouge',
+                        'locale' => 'en_US',
+                        'label' => 'Red',
                     ],
                 ],
             ],
@@ -99,7 +99,7 @@ class SelectAttributeOptionsByAttributeCodeQueryIntegration extends TestCase
         $optionValueEn->setLocale('en_US');
         $optionValueEn->setLabel('Blue');
         $optionValueFr = new AttributeOptionValue();
-        $optionValueFr->setLocale('fr_FR');
+        $optionValueFr->setLocale('en_CA');
         $optionValueFr->setLabel('Bleu');
 
         $attributeOption = new AttributeOption();
@@ -119,7 +119,7 @@ class SelectAttributeOptionsByAttributeCodeQueryIntegration extends TestCase
         $optionValueEn->setLocale('en_US');
         $optionValueEn->setLabel('Red');
         $optionValueFr = new AttributeOptionValue();
-        $optionValueFr->setLocale('fr_FR');
+        $optionValueFr->setLocale('en_CA');
         $optionValueFr->setLabel('Rouge');
 
         $attributeOption = new AttributeOption();

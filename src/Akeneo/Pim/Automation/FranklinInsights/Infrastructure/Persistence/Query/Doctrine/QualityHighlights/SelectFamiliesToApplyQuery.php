@@ -44,7 +44,7 @@ class SelectFamiliesToApplyQuery implements SelectFamiliesToApplyQueryInterface
         $sql = <<<'SQL'
             SELECT 
               family.code, JSON_ARRAYAGG(attribute.code) AS attributes,
-              (SELECT JSON_OBJECTAGG(IFNULL(locale, 0), label) FROM pim_catalog_family_translation WHERE foreign_key = family.id) AS labels
+              (SELECT JSON_OBJECTAGG(IFNULL(locale, 0), label) FROM pim_catalog_family_translation ft WHERE foreign_key = family.id AND ft.locale LIKE "en_%") AS labels
             FROM pim_catalog_family AS family
             INNER JOIN pim_catalog_family_attribute as family_attribute ON family.id = family_attribute.family_id
             INNER JOIN pim_catalog_attribute attribute on family_attribute.attribute_id = attribute.id

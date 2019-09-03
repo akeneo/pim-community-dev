@@ -31,7 +31,7 @@ class SelectAttributeOptionsByAttributeCodeQuery implements SelectAttributeOptio
         $sql = <<<'SQL'
             SELECT 
                 `option`.code,
-                (SELECT JSON_OBJECTAGG(IFNULL(locale_code, 0), value) FROM pim_catalog_attribute_option_value WHERE option_id = option.id) AS labels
+                (SELECT JSON_OBJECTAGG(IFNULL(locale_code, 0), value) FROM pim_catalog_attribute_option_value WHERE option_id = option.id AND locale_code LIKE "en_%") AS labels
             FROM pim_catalog_attribute_option `option`
             INNER JOIN pim_catalog_attribute attribute ON attribute.id = `option`.attribute_id
             WHERE attribute.code = :attribute_code;

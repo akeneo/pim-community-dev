@@ -53,7 +53,11 @@ final class SelectAttributesToApplyQueryIntegration extends TestCase
 
     public function test_it_returns_pim_attribute_code_exact_match_on_code()
     {
-        $attributeCode1 = $this->createTextAttribute('weight', ['en_US' => 'Weight', 'fr_FR' => 'Poids'])->getCode();
+        $attributeCode1 = $this->createTextAttribute('weight', [
+            'en_US' => 'Weight',
+            'en_CA' => 'Weight!',
+            'fr_FR' => 'Poids',
+        ])->getCode();
         $attributeCode2 = $this->createSimpleSelectAttribute('color')->getCode();
         $attributeCode3 = $this->createMetricAttribute('size')->getCode();
         $attributeCode4 = $this->createTextAttribute('attr_without_label', [])->getCode();
@@ -70,8 +74,8 @@ final class SelectAttributesToApplyQueryIntegration extends TestCase
                         'label' => 'Weight',
                     ],
                     [
-                        'locale' => 'fr_FR',
-                        'label' => 'Poids',
+                        'locale' => 'en_CA',
+                        'label' => 'Weight!',
                     ],
                 ],
             ],
@@ -84,8 +88,8 @@ final class SelectAttributesToApplyQueryIntegration extends TestCase
                         'label' => 'Color',
                     ],
                     [
-                        'locale' => 'fr_FR',
-                        'label' => 'Couleur',
+                        'locale' => 'en_CA',
+                        'label' => 'Color!',
                     ],
                 ],
             ],
@@ -134,7 +138,7 @@ final class SelectAttributesToApplyQueryIntegration extends TestCase
                 'code' => $attributeCode,
                 'type' => AttributeTypes::OPTION_SIMPLE_SELECT,
                 'group' => AttributeGroup::DEFAULT_GROUP_CODE,
-                'labels' => ['en_US' => 'Color', 'fr_FR' => 'Couleur'],
+                'labels' => ['en_US' => 'Color', 'en_CA' => 'Color!', 'fr_FR' => 'Couleur'],
             ]
         );
         $this->validator->validate($attribute);

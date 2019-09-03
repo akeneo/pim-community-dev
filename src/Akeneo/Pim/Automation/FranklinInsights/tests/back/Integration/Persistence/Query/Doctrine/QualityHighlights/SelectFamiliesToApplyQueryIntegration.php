@@ -37,9 +37,9 @@ final class SelectFamiliesToApplyQueryIntegration extends TestCase
     public function test_it_returns_pim_attribute_code_exact_match_on_code()
     {
         $attributeCode1 = $this->createAttribute('weight', ['en_US' => 'Weight']);
-        $attributeCode2 = $this->createAttribute('color', ['en_US' => 'Color', 'fr_FR' => 'Couleur']);
+        $attributeCode2 = $this->createAttribute('color', ['en_US' => 'Color', 'en_CA' => 'Couleur']);
         $attributeCode3 = $this->createAttribute('size', ['en_US' => 'size']);
-        $family1Code = $this->createFamily('headphones', [$attributeCode1, $attributeCode2], ['en_US' => 'Headphones', 'fr_FR' => 'Casques audio']);
+        $family1Code = $this->createFamily('headphones', [$attributeCode1, $attributeCode2], ['en_US' => 'Headphones', 'en_CA' => 'Casques audio']);
         $family2Code = $this->createFamily('router', [$attributeCode3], []);
 
         $families = $this
@@ -56,7 +56,7 @@ final class SelectFamiliesToApplyQueryIntegration extends TestCase
                         'label' => 'Headphones',
                     ],
                     [
-                        'locale' => 'fr_FR',
+                        'locale' => 'en_CA',
                         'label' => 'Casques audio',
                     ],
                 ],
