@@ -62,7 +62,7 @@ class AttributeOptionUpdatedSubscriber implements EventSubscriberInterface
         $this->pendingItemsRepository->addUpdatedAttributeCode($attributeOption->getAttribute()->getCode());
     }
 
-    public function onSaveAll(GenericEvent $event)
+    public function onSaveAll(GenericEvent $event): void
     {
         if ($event->hasArgument('unitary') && true === $event->getArgument('unitary')) {
             return;

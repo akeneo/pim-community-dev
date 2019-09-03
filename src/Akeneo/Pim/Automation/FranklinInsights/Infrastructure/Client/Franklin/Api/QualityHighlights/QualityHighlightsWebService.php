@@ -54,7 +54,7 @@ class QualityHighlightsWebService extends AbstractApi implements AuthenticatedAp
         }
     }
 
-    public function deleteAttribute(string $attributeCode)
+    public function deleteAttribute(string $attributeCode): void
     {
         $route = $this->uriGenerator->generate(sprintf('/api/quality-highlights/structure/attributes/%s', $attributeCode));
 
@@ -106,7 +106,7 @@ class QualityHighlightsWebService extends AbstractApi implements AuthenticatedAp
         }
     }
 
-    public function deleteFamily(string $familyCode)
+    public function deleteFamily(string $familyCode): void
     {
         $route = $this->uriGenerator->generate(sprintf('/api/quality-highlights/structure/families/%s', $familyCode));
 

@@ -47,7 +47,7 @@ class SelectPendingItemsQuery implements SelectPendingItemIdentifiersQueryInterf
         return $this->executeQuery($offsetId, $batchSize, PendingItemsRepository::ENTITY_TYPE_FAMILY, PendingItemsRepository::ACTION_ENTITY_DELETED);
     }
 
-    private function executeQuery(int $offsetId, int $limit, string $entityType, string $action)
+    private function executeQuery(int $offsetId, int $limit, string $entityType, string $action): array
     {
         $query = <<<'SQL'
             SELECT id, entity_id

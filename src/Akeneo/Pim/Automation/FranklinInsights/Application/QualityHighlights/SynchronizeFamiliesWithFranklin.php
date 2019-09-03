@@ -32,13 +32,13 @@ class SynchronizeFamiliesWithFranklin
         $this->qualityHighlightsProvider = $qualityHighlightsProvider;
     }
 
-    public function synchronize(int $batchSize)
+    public function synchronize(int $batchSize): void
     {
         $this->synchronizeUpdatedFamilies($batchSize);
         $this->synchronizeDeletedFamilies($batchSize);
     }
 
-    private function synchronizeUpdatedFamilies(int $batchSize)
+    private function synchronizeUpdatedFamilies(int $batchSize): void
     {
         $lastId = 0;
         while (true) {

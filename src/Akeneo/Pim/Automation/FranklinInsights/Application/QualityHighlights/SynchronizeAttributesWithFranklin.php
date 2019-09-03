@@ -37,13 +37,13 @@ class SynchronizeAttributesWithFranklin
         $this->qualityHighlightsProvider = $qualityHighlightsProvider;
     }
 
-    public function synchronize(int $batchSize)
+    public function synchronize(int $batchSize): void
     {
         $this->synchronizeUpdatedAttributes($batchSize);
         $this->synchronizeDeletedAttributes($batchSize);
     }
 
-    private function synchronizeUpdatedAttributes(int $batchSize)
+    private function synchronizeUpdatedAttributes(int $batchSize): void
     {
         $lastId = 0;
         while (true) {
@@ -62,7 +62,7 @@ class SynchronizeAttributesWithFranklin
         }
     }
 
-    private function synchronizeDeletedAttributes(int $batchSize)
+    private function synchronizeDeletedAttributes(int $batchSize): void
     {
         $lastId = 0;
         while (true) {
