@@ -27,9 +27,6 @@ class PendingItemsRepository implements PendingItemsRepositoryInterface
     public const ENTITY_TYPE_FAMILY = 'family';
     public const ENTITY_TYPE_PRODUCT = 'product';
 
-    public const STATUS_LOCKED = 1;
-    public const STATUS_UNLOCKED = 0;
-
     /** @var Connection */
     private $connection;
 

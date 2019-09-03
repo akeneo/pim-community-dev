@@ -67,7 +67,7 @@ class PendingItemsRepositoryIntegration extends TestCase
         $this->assertCount(0, $updatedAttributes);
 
         $this->getRepository()->addUpdatedAttributeCode('weight');
-        $sqlQuery = 'SELECT entity_type, entity_id, action, locked FROM pimee_franklin_insights_quality_highlights_pending_items';
+        $sqlQuery = 'SELECT entity_type, entity_id, action, lock_id FROM pimee_franklin_insights_quality_highlights_pending_items';
         $updatedAttributes = $this->getDbConnection()->query($sqlQuery)->fetchAll();
         $this->assertCount(1, $updatedAttributes);
         $this->assertSame(
@@ -75,7 +75,7 @@ class PendingItemsRepositoryIntegration extends TestCase
                 'entity_type' => PendingItemsRepository::ENTITY_TYPE_ATTRIBUTE,
                 'entity_id' => 'weight',
                 'action' => PendingItemsRepository::ACTION_ENTITY_UPDATED,
-                'locked' => (string) PendingItemsRepository::STATUS_UNLOCKED,
+                'lock_id' => '',
             ],
             $updatedAttributes[0]
         );
@@ -91,12 +91,12 @@ SQL;
             'entity_type' => PendingItemsRepository::ENTITY_TYPE_ATTRIBUTE,
             'entity_id' => 'size',
             'action' => PendingItemsRepository::ACTION_ENTITY_DELETED,
-            'locked' => PendingItemsRepository::STATUS_UNLOCKED,
+            'lock_id' => '',
         ];
         $this->getDbConnection()->executeQuery($sqlQuery, $bindParams);
 
         $this->getRepository()->addUpdatedAttributeCode('size');
-        $sqlQuery = 'SELECT entity_type, entity_id, action, locked FROM pimee_franklin_insights_quality_highlights_pending_items';
+        $sqlQuery = 'SELECT entity_type, entity_id, action, lock_id FROM pimee_franklin_insights_quality_highlights_pending_items';
         $updatedAttributes = $this->getDbConnection()->query($sqlQuery)->fetchAll();
         $this->assertCount(1, $updatedAttributes);
         $this->assertSame(
@@ -104,7 +104,7 @@ SQL;
                 'entity_type' => PendingItemsRepository::ENTITY_TYPE_ATTRIBUTE,
                 'entity_id' => 'size',
                 'action' => PendingItemsRepository::ACTION_ENTITY_UPDATED,
-                'locked' => (string) PendingItemsRepository::STATUS_UNLOCKED,
+                'lock_id' => '',
             ],
             $updatedAttributes[0]
         );
@@ -117,7 +117,7 @@ SQL;
         $this->assertCount(0, $updatedProducts);
 
         $this->getRepository()->addUpdatedProductId(42);
-        $sqlQuery = 'SELECT entity_type, entity_id, action, locked FROM pimee_franklin_insights_quality_highlights_pending_items';
+        $sqlQuery = 'SELECT entity_type, entity_id, action, lock_id FROM pimee_franklin_insights_quality_highlights_pending_items';
         $updatedProducts = $this->getDbConnection()->query($sqlQuery)->fetchAll();
         $this->assertCount(1, $updatedProducts);
         $this->assertSame(
@@ -125,7 +125,7 @@ SQL;
                 'entity_type' => PendingItemsRepository::ENTITY_TYPE_PRODUCT,
                 'entity_id' => '42',
                 'action' => PendingItemsRepository::ACTION_ENTITY_UPDATED,
-                'locked' => (string) PendingItemsRepository::STATUS_UNLOCKED,
+                'lock_id' => '',
             ],
             $updatedProducts[0]
         );
