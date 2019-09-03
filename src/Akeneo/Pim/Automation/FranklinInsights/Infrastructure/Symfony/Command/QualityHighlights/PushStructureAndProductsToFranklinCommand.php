@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Symfony\Command\
 use Akeneo\Pim\Automation\FranklinInsights\Application\QualityHighlights\SynchronizeAttributesWithFranklin;
 use Akeneo\Pim\Automation\FranklinInsights\Application\QualityHighlights\SynchronizeFamiliesWithFranklin;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Doctrine\QualityHighlights\PendingItemsRepository;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\Lock;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -64,16 +64,14 @@ class PushStructureAndProductsToFranklinCommand extends Command
 
         $io->title('Push catalog structure and products to Franklin API');
 
-        //TODO generate an UUID, update the pending table lock field with this UUID and pass it to the synchronize services
-        $lockUUID = Uuid::uuid4();
-
-        $this->pendingItemsRepository->acquireLock($lockUUID);
+        $lock = new Lock((Uuid::uuid4())->toString());
+        $this->pendingItemsRepository->acquireLock($lock);
 
         $io->section('Synchronize Attributes');
-        $this->synchronizeAttributes->synchronize($lockUUID, (int) $batchSize);
+        $this->synchronizeAttributes->synchronize($lock, (int) $batchSize);
 
         $io->section('Synchronize Families');
-        $this->synchronizeFamilies->synchronize($lockUUID, (int) $batchSize);
+        $this->synchronizeFamilies->synchronize($lock, (int) $batchSize);
 
 
         $io->section('Synchronize Products (TODO)');

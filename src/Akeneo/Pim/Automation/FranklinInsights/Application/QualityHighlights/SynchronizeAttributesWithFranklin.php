@@ -16,7 +16,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Application\QualityHighlights;
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\QualityHighlightsProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectPendingItemIdentifiersQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
-use Ramsey\Uuid\Uuid;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\Lock;
 
 class SynchronizeAttributesWithFranklin
 {
@@ -44,37 +44,35 @@ class SynchronizeAttributesWithFranklin
         $this->pendingItemsRepository = $pendingItemsRepository;
     }
 
-    public function synchronize(Uuid $lockUUID, int $batchSize): void
+    public function synchronize(Lock $lock, int $batchSize): void
     {
-        $this->synchronizeUpdatedAttributes($lockUUID, $batchSize);
-        $this->synchronizeDeletedAttributes($lockUUID, $batchSize);
+        $this->synchronizeUpdatedAttributes($lock, $batchSize);
+        $this->synchronizeDeletedAttributes($lock, $batchSize);
     }
 
-    private function synchronizeUpdatedAttributes(Uuid $lockUUID, int $batchSize): void
+    private function synchronizeUpdatedAttributes(Lock $lock, int $batchSize): void
     {
-        do{
-            $attributeCodes = $this->pendingItemIdentifiersQuery->getUpdatedAttributeCodes($lockUUID, $batchSize);
+        do {
+            $attributeCodes = $this->pendingItemIdentifiersQuery->getUpdatedAttributeCodes($lock, $batchSize);
             if (! empty($attributeCodes)) {
                 $this->applyAttributeStructure->apply(array_values($attributeCodes));
             }
 
-            $this->pendingItemsRepository->removeUpdatedAttributes($attributeCodes, $lockUUID);
-
-        }while(count($attributeCodes) >= $batchSize);
+            $this->pendingItemsRepository->removeUpdatedAttributes($attributeCodes, $lock);
+        } while (count($attributeCodes) >= $batchSize);
     }
 
-    private function synchronizeDeletedAttributes(Uuid $lockUUID, int $batchSize): void
+    private function synchronizeDeletedAttributes(Lock $lock, int $batchSize): void
     {
-        do{
-            $attributeCodes = $this->pendingItemIdentifiersQuery->getDeletedAttributeCodes($lockUUID, $batchSize);
+        do {
+            $attributeCodes = $this->pendingItemIdentifiersQuery->getDeletedAttributeCodes($lock, $batchSize);
             if (! empty($attributeCodes)) {
                 foreach ($attributeCodes as $attributeCode) {
                     $this->qualityHighlightsProvider->deleteAttribute($attributeCode);
                 }
             }
 
-            $this->pendingItemsRepository->removeDeletedAttributes($attributeCodes, $lockUUID);
-
-        }while(count($attributeCodes) >= $batchSize);
+            $this->pendingItemsRepository->removeDeletedAttributes($attributeCodes, $lock);
+        } while (count($attributeCodes) >= $batchSize);
     }
 }

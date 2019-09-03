@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository;
 
-use Ramsey\Uuid\Uuid;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\Lock;
 
 interface PendingItemsRepositoryInterface
 {
@@ -29,15 +29,15 @@ interface PendingItemsRepositoryInterface
 
     public function addDeletedProductId(int $identifier): void;
 
-    public function acquireLock(Uuid $lock): void;
+    public function acquireLock(Lock $lock): void;
 
-    public function removeUpdatedAttributes(array $attributeCodes, Uuid $lockUUID): void;
+    public function removeUpdatedAttributes(array $attributeCodes, Lock $lock): void;
 
-    public function removeDeletedAttributes(array $attributeCodes, Uuid $lockUUID): void;
+    public function removeDeletedAttributes(array $attributeCodes, Lock $lock): void;
 
-    public function removeUpdatedFamilies(array $familyCodes, Uuid $lockUUID): void;
+    public function removeUpdatedFamilies(array $familyCodes, Lock $lock): void;
 
-    public function removeDeletedFamilies(array $familyCodes, Uuid $lockUUID): void;
+    public function removeDeletedFamilies(array $familyCodes, Lock $lock): void;
 
     public function fillWithAllAttributes(): void;
 

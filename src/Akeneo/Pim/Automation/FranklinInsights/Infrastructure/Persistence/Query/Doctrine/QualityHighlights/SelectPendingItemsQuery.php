@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\QualityHighlights;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectPendingItemIdentifiersQueryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\Lock;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Doctrine\QualityHighlights\PendingItemsRepository;
 use Doctrine\DBAL\Connection;
-use Ramsey\Uuid\Uuid;
 
 class SelectPendingItemsQuery implements SelectPendingItemIdentifiersQueryInterface
 {
@@ -28,34 +28,34 @@ class SelectPendingItemsQuery implements SelectPendingItemIdentifiersQueryInterf
         $this->connection = $connection;
     }
 
-    public function getUpdatedAttributeCodes(Uuid $lockUUID, int $batchSize): array
+    public function getUpdatedAttributeCodes(Lock $lock, int $batchSize): array
     {
-        return $this->executeQuery($lockUUID, $batchSize, PendingItemsRepository::ENTITY_TYPE_ATTRIBUTE, PendingItemsRepository::ACTION_ENTITY_UPDATED);
+        return $this->executeQuery($lock, $batchSize, PendingItemsRepository::ENTITY_TYPE_ATTRIBUTE, PendingItemsRepository::ACTION_ENTITY_UPDATED);
     }
 
-    public function getDeletedAttributeCodes(Uuid $lockUUID, int $batchSize): array
+    public function getDeletedAttributeCodes(Lock $lock, int $batchSize): array
     {
-        return $this->executeQuery($lockUUID, $batchSize, PendingItemsRepository::ENTITY_TYPE_ATTRIBUTE, PendingItemsRepository::ACTION_ENTITY_DELETED);
+        return $this->executeQuery($lock, $batchSize, PendingItemsRepository::ENTITY_TYPE_ATTRIBUTE, PendingItemsRepository::ACTION_ENTITY_DELETED);
     }
 
-    public function getUpdatedFamilyCodes(Uuid $lockUUID, int $batchSize): array
+    public function getUpdatedFamilyCodes(Lock $lock, int $batchSize): array
     {
-        return $this->executeQuery($lockUUID, $batchSize, PendingItemsRepository::ENTITY_TYPE_FAMILY, PendingItemsRepository::ACTION_ENTITY_UPDATED);
+        return $this->executeQuery($lock, $batchSize, PendingItemsRepository::ENTITY_TYPE_FAMILY, PendingItemsRepository::ACTION_ENTITY_UPDATED);
     }
 
-    public function getDeletedFamilyCodes(Uuid $lockUUID, int $batchSize): array
+    public function getDeletedFamilyCodes(Lock $lock, int $batchSize): array
     {
-        return $this->executeQuery($lockUUID, $batchSize, PendingItemsRepository::ENTITY_TYPE_FAMILY, PendingItemsRepository::ACTION_ENTITY_DELETED);
+        return $this->executeQuery($lock, $batchSize, PendingItemsRepository::ENTITY_TYPE_FAMILY, PendingItemsRepository::ACTION_ENTITY_DELETED);
     }
 
-    private function executeQuery(Uuid $lockUUID, int $limit, string $entityType, string $action): array
+    private function executeQuery(Lock $lock, int $limit, string $entityType, string $action): array
     {
         $query = <<<'SQL'
             SELECT entity_id
             FROM pimee_franklin_insights_quality_highlights_pending_items AS pending_items
             WHERE `action` = :action
             AND entity_type = :entity_type
-            AND lock_uuid = :lock_uuid
+            AND lock_id = :lock
             LIMIT :limit
 SQL;
 
@@ -64,13 +64,13 @@ SQL;
             [
                 'action' => $action,
                 'entity_type' => $entityType,
-                'lock_uuid' => $lockUUID,
+                'lock' => $lock->__toString(),
                 'limit' => $limit,
             ],
             [
                 'action' => \PDO::PARAM_STR,
                 'entity_type' => \PDO::PARAM_STR,
-                'lock_uuid' => \PDO::PARAM_STR,
+                'lock' => \PDO::PARAM_STR,
                 'limit' => \PDO::PARAM_INT,
             ]
         );
