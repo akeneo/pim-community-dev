@@ -479,7 +479,7 @@ final class EditAssetFamilyContext implements Context
     }
 
     /**
-     * @When /^the user updates this asset family with a dynamic product link rule having a product selection field which references this text attribute$/
+     * @When /^the user updates this asset family with a dynamic product link rule having a product selection field which references this attribute$/
      */
     public function theUserCreatesAnAssetFamilyWithADynamicProductLinkRuleWhichReferencesThoseAttributes()
     {
@@ -770,34 +770,6 @@ final class EditAssetFamilyContext implements Context
             ->assetFamily(self::ASSET_FAMILY_IDENTIFIER)
             ->withAttributeOfTypeImage(self::ASSET_FAMILY_IDENTIFIER, self::ATTRIBUTE_CODE)
             ->load();
-    }
-
-    /**
-     * @When /^the user updates this asset family with a dynamic product link rule having a product selection field which references this attribute$/
-     */
-    public function theUserUpdatesThisAssetFamilyWithADynamicProductLinkRuleHavingAProductSelectionFieldWhichReferencesAnAttributeHavingAnUnsupportedAttributeType()
-    {
-        $dynamicRuleTemplate = [
-            'product_selections' => [
-                [
-                    'field' => $this->toExtrapolation(self::ATTRIBUTE_CODE),
-                    'operator'  => '=',
-                    'value'     => '123456789',
-                    'channel' => 'ecommerce',
-                    'locale' => 'en_US',
-                ]
-            ],
-            'assign_assets_to'    => [
-                [
-                    'mode'      => 'replace',
-                    'attribute' => 'asset_collection',
-                    'channel' => 'ecommerce',
-                    'locale' => 'en_US',
-                ]
-            ]
-        ];
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
-        $this->editAssetFamily($command);
     }
 
     /**
@@ -1387,7 +1359,7 @@ final class EditAssetFamilyContext implements Context
     }
 
     /**
-     * @Given /^an asset family with no product link rules and a scopable text attribute$/
+     * @Given /^an asset family with no product link rules and an attribute with one value per channel$/
      */
     public function anAssetFamilyWithNoProductLinkRulesAndAScopableTextAttribute()
     {
@@ -1400,7 +1372,7 @@ final class EditAssetFamilyContext implements Context
     }
 
     /**
-     * @Then /^there should be a validation error stating that this attribute is not supported for extrapolation because it is scopable$/
+     * @Then /^there should be a validation error stating that this attribute is not supported for extrapolation because it has one value per channel$/
      */
     public function thereShouldBeAValidationErrorStatingThatThisAttributeIsNotSupportedForExtrapolationBecauseItIsScopable()
     {
@@ -1410,8 +1382,7 @@ final class EditAssetFamilyContext implements Context
     }
 
     /**
-     * @Given /^an asset family with no product link rules and a localizable text attribute$/
-     * @Given /^an asset family with no product link rules and a localizable attribute$/
+     * @Given /^an asset family with no product link rules and an attribute with one value per locale$/
      */
     public function anAssetFamilyWithNoProductLinkRulesAndALocalizableTextAttribute()
     {
@@ -1424,7 +1395,7 @@ final class EditAssetFamilyContext implements Context
     }
 
     /**
-     * @Then /^there should be a validation error stating that this attribute is not supported for extrapolation because it is localizable$/
+     * @Then /^there should be a validation error stating that this attribute is not supported for extrapolation because it has one value per locale$/
      */
     public function thereShouldBeAValidationErrorStatingThatThisAttributeIsNotSupportedForExtrapolationBecauseItIsLocalizable()
     {
