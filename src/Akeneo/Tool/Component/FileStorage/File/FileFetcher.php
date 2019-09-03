@@ -41,7 +41,8 @@ class FileFetcher implements FileFetcherInterface
             );
         }
 
-        $prefix = $options['prefix'] ?? '/tmp/pim';
+        // Use the env variable 'tmp_storage_dir' instead
+        $prefix = $options['prefix'] ?? '/tmp/pim/file_storage';
         $localPathname = $prefix . $fileKey;
 
         if (!is_dir(dirname($localPathname))) {
