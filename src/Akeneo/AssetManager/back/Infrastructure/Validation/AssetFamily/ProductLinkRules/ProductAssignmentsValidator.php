@@ -7,6 +7,7 @@ namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkR
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\ReplacePattern;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validation;
 
@@ -16,16 +17,26 @@ use Symfony\Component\Validator\Validation;
  */
 class ProductAssignmentsValidator
 {
+    private const CHANNEL_CODE = 'channel';
+    private const LOCALE_FIELD = 'locale';
+
     /** @var RuleEngineValidatorACLInterface */
     private $ruleEngineValidatorACL;
 
     /** @var ExtrapolatedAttributeValidator */
     private $extrapolatedAttributeValidator;
 
-    public function __construct(RuleEngineValidatorACLInterface $ruleEngineValidatorACL, ExtrapolatedAttributeValidator $extrapolatedAttributeValidator)
-    {
+    /** @var ChannelAndLocaleValidator */
+    private $channelAndLocaleValidator;
+
+    public function __construct(
+        RuleEngineValidatorACLInterface $ruleEngineValidatorACL,
+        ExtrapolatedAttributeValidator $extrapolatedAttributeValidator,
+        ChannelAndLocaleValidator $channelAndLocaleValidator
+    ) {
         $this->ruleEngineValidatorACL = $ruleEngineValidatorACL;
         $this->extrapolatedAttributeValidator = $extrapolatedAttributeValidator;
+        $this->channelAndLocaleValidator = $channelAndLocaleValidator;
     }
 
     public function validate(array $productAssignments, string $assetFamilyIdentifier): ConstraintViolationListInterface
@@ -44,14 +55,18 @@ class ProductAssignmentsValidator
             return $this->checkExtrapolatedAttributes($productAssignment, $assetFamilyIdentifier);
         }
 
-        return $this->ruleEngineValidatorACL->validateProductSelection($productAssignment);
+        $violations = $this->channelAndLocaleValidator->checkChannelExistsIfAny($productAssignment[self::CHANNEL_CODE] ?? null);
+        $violations->addAll($this->channelAndLocaleValidator->checkLocaleExistsIfAny($productAssignment[self::LOCALE_FIELD] ?? null));
+        $violations->addAll($this->ruleEngineValidatorACL->validateProductAssignment($productAssignment));
+
+        return $violations;
     }
 
     private function hasAnyExtrapolation(array $productAssignment): bool
     {
         $isFieldExtrapolated = ReplacePattern::isExtrapolation($productAssignment['attribute']);
-        $isLocaleExtrapolated = isset($productAssignment['locale']) ? ReplacePattern::isExtrapolation($productAssignment['locale']) : false;
-        $isChannelExtrapolated = isset($productAssignment['channel']) ? ReplacePattern::isExtrapolation($productAssignment['channel']) : false;
+        $isLocaleExtrapolated = isset($productAssignment[self::LOCALE_FIELD]) ? ReplacePattern::isExtrapolation($productAssignment[self::LOCALE_FIELD]) : false;
+        $isChannelExtrapolated = isset($productAssignment[self::CHANNEL_CODE]) ? ReplacePattern::isExtrapolation($productAssignment[self::CHANNEL_CODE]) : false;
 
         return $isFieldExtrapolated || $isLocaleExtrapolated || $isChannelExtrapolated;
     }
@@ -64,16 +79,16 @@ class ProductAssignmentsValidator
             [TextAttribute::ATTRIBUTE_TYPE]
         );
 
-        if (isset($productAssignment['channel'])) {
+        if (isset($productAssignment[self::CHANNEL_CODE])) {
             $violations->addAll($this->extrapolatedAttributeValidator->checkAttributeExistsAndHasASupportedType(
-                $productAssignment['channel'],
+                $productAssignment[self::CHANNEL_CODE],
                 $assetFamilyIdentifier,
                 [TextAttribute::ATTRIBUTE_TYPE]
             ));
         }
-        if (isset($productAssignment['locale'])) {
+        if (isset($productAssignment[self::LOCALE_FIELD])) {
             $violations->addAll($this->extrapolatedAttributeValidator->checkAttributeExistsAndHasASupportedType(
-                $productAssignment['locale'],
+                $productAssignment[self::LOCALE_FIELD],
                 $assetFamilyIdentifier,
                 [TextAttribute::ATTRIBUTE_TYPE]
             ));
