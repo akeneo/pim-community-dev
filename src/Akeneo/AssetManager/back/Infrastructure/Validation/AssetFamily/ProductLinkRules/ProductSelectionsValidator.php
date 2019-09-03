@@ -90,12 +90,12 @@ class ProductSelectionsValidator
         array $productSelection,
         string $assetFamilyIdentifier
     ): ConstraintViolationListInterface {
-        $violations = $this->extrapolatedAttributeValidator->checkAttributeExistsAndHasASupportedType(
+        $violations = $this->extrapolatedAttributeValidator->checkAttribute(
             $productSelection['field'],
             $assetFamilyIdentifier,
             [TextAttribute::ATTRIBUTE_TYPE]
         );
-        $violations->addAll($this->extrapolatedAttributeValidator->checkAttributeExistsAndHasASupportedType(
+        $violations->addAll($this->extrapolatedAttributeValidator->checkAttribute(
             $productSelection['value'],
             $assetFamilyIdentifier,
             [
@@ -105,14 +105,14 @@ class ProductSelectionsValidator
             ]
         ));
         if (isset($productSelection[self::CHANNEL_FIELD])) {
-            $violations->addAll($this->extrapolatedAttributeValidator->checkAttributeExistsAndHasASupportedType(
+            $violations->addAll($this->extrapolatedAttributeValidator->checkAttribute(
                 $productSelection[self::CHANNEL_FIELD],
                 $assetFamilyIdentifier,
                 [TextAttribute::ATTRIBUTE_TYPE]
             ));
         }
         if (isset($productSelection[self::LOCALE_FIELD])) {
-            $violations->addAll($this->extrapolatedAttributeValidator->checkAttributeExistsAndHasASupportedType(
+            $violations->addAll($this->extrapolatedAttributeValidator->checkAttribute(
                 $productSelection[self::LOCALE_FIELD],
                 $assetFamilyIdentifier,
                 [TextAttribute::ATTRIBUTE_TYPE]

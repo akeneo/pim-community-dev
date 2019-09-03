@@ -8,6 +8,8 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\ReplacePattern;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeExistsInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\AttributeHasOneValuePerChannelInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\AttributeHasOneValuePerLocaleInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\GetAttributeTypeInterface;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -27,13 +29,38 @@ class ExtrapolatedAttributeValidator
     /** @var GetAttributeTypeInterface */
     private $getAttributeType;
 
-    public function __construct(AttributeExistsInterface $attributeExists, GetAttributeTypeInterface $getAttributeType)
-    {
+    /** @var AttributeHasOneValuePerChannelInterface */
+    private $attributeHasOneValuePerChannel;
+
+    /** @var AttributeHasOneValuePerLocaleInterface */
+    private $attributeHasOneValuePerLocale;
+
+    public function __construct(
+        AttributeExistsInterface $attributeExists,
+        GetAttributeTypeInterface $getAttributeType,
+        AttributeHasOneValuePerChannelInterface $attributeHasOneValuePerChannel,
+        AttributeHasOneValuePerLocaleInterface $attributeHasOneValuePerLocale
+    ) {
         $this->attributeExists = $attributeExists;
         $this->getAttributeType = $getAttributeType;
+        $this->attributeHasOneValuePerChannel = $attributeHasOneValuePerChannel;
+        $this->attributeHasOneValuePerLocale = $attributeHasOneValuePerLocale;
     }
 
-    public function checkAttributeExistsAndHasASupportedType(
+    /**
+     * Check:
+     * - the attribute exists
+     * - has one of supported type ($supportedTypes)
+     * - has not one value per channel
+     * - has not one value per locale
+     *
+     * @param mixed  $fieldValue
+     * @param string $assetFamilyIdentifier
+     * @param array  $supportedTypes
+     *
+     * @return ConstraintViolationListInterface
+     */
+    public function checkAttribute(
         $fieldValue,
         string $assetFamilyIdentifier,
         array $supportedTypes
@@ -45,6 +72,12 @@ class ExtrapolatedAttributeValidator
             if (0 === $violations->count()) {
                 $allViolations->addAll(
                     $this->checkAttributeTypeIsSupported($assetFamilyIdentifier, $fieldAttributeCode, $supportedTypes)
+                );
+                $allViolations->addAll(
+                    $this->checkHasNotOneValuePerChannel($assetFamilyIdentifier, $fieldAttributeCode)
+                );
+                $allViolations->addAll(
+                    $this->checkHasNotOneValuePerLocale($assetFamilyIdentifier, $fieldAttributeCode)
                 );
             }
             $allViolations->addAll($violations);
@@ -113,5 +146,57 @@ class ExtrapolatedAttributeValidator
                 }
             })
         );
+    }
+
+    private function checkHasNotOneValuePerChannel(
+        string $assetFamilyIdentifier,
+        string $attributeCode
+    ): ConstraintViolationListInterface {
+        $hasOneValuePerChannel = $this->attributeHasOneValuePerChannel->withAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+            AttributeCode::fromString($attributeCode)
+        );
+        $validator = Validation::createValidator();
+        $result = $validator->validate(
+            $hasOneValuePerChannel,
+            new Callback(function ($hasOneValuePerChannel, ExecutionContextInterface $context) use ($attributeCode) {
+                if ($hasOneValuePerChannel) {
+                    $context
+                        ->buildViolation(
+                            ProductLinkRulesShouldBeExecutable::EXTRAPOLATED_ATTRIBUTE_SHOULD_NOT_HAVE_ONE_VALUE_PER_CHANNEL,
+                            ['%attribute_code%' => $attributeCode]
+                        )
+                        ->addViolation();
+                }
+            })
+        );
+
+        return $result;
+    }
+
+    private function checkHasNotOneValuePerLocale(
+        string $assetFamilyIdentifier,
+        string $attributeCode
+    ): ConstraintViolationListInterface {
+        $hasOneValuePerLocale = $this->attributeHasOneValuePerLocale->withAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+            AttributeCode::fromString($attributeCode)
+        );
+        $validator = Validation::createValidator();
+        $result = $validator->validate(
+            $hasOneValuePerLocale,
+            new Callback(function ($hasOneValuePerLocale, ExecutionContextInterface $context) use ($attributeCode) {
+                if ($hasOneValuePerLocale) {
+                    $context
+                        ->buildViolation(
+                            ProductLinkRulesShouldBeExecutable::EXTRAPOLATED_ATTRIBUTE_SHOULD_NOT_HAVE_ONE_VALUE_PER_LOCALE,
+                            ['%attribute_code%' => $attributeCode]
+                        )
+                        ->addViolation();
+                }
+            })
+        );
+
+        return $result;
     }
 }

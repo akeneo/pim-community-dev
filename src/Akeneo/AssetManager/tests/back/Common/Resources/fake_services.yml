@@ -93,6 +93,16 @@ services:
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
 
+    akeneo_assetmanager.infrastructure.persistence.query.attribute_has_one_value_per_channel:
+        class: Akeneo\AssetManager\Common\Fake\InMemoryAttributeHasOneValuePerChannel
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+
+    akeneo_assetmanager.infrastructure.persistence.query.attribute_has_one_value_per_locale:
+        class: Akeneo\AssetManager\Common\Fake\InMemoryAttributeHasOneValuePerLocale
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+
     akeneo_assetmanager.infrastructure.persistence.query.get_attribute_type:
         class: Akeneo\AssetManager\Common\Fake\InMemoryGetAttributeType
         arguments:

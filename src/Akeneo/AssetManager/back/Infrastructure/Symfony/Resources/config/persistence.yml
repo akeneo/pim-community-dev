@@ -195,6 +195,16 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo_assetmanager.infrastructure.persistence.query.attribute_has_one_value_per_channel:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlAttributeHasOneValuePerChannel
+        arguments:
+            - '@database_connection'
+
+    akeneo_assetmanager.infrastructure.persistence.query.attribute_has_one_value_per_locale:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlAttributeHasOneValuePerLocale
+        arguments:
+            - '@database_connection'
+
     akeneo_assetmanager.infrastructure.persistence.query.find_attribute_next_order:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlFindAttributeNextOrder
         arguments:

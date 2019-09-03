@@ -73,21 +73,21 @@ class ProductAssignmentsValidator
 
     private function checkExtrapolatedAttributes(array $productAssignment, string $assetFamilyIdentifier): ConstraintViolationListInterface
     {
-        $violations = $this->extrapolatedAttributeValidator->checkAttributeExistsAndHasASupportedType(
+        $violations = $this->extrapolatedAttributeValidator->checkAttribute(
             $productAssignment['attribute'],
             $assetFamilyIdentifier,
             [TextAttribute::ATTRIBUTE_TYPE]
         );
 
         if (isset($productAssignment[self::CHANNEL_CODE])) {
-            $violations->addAll($this->extrapolatedAttributeValidator->checkAttributeExistsAndHasASupportedType(
+            $violations->addAll($this->extrapolatedAttributeValidator->checkAttribute(
                 $productAssignment[self::CHANNEL_CODE],
                 $assetFamilyIdentifier,
                 [TextAttribute::ATTRIBUTE_TYPE]
             ));
         }
         if (isset($productAssignment[self::LOCALE_FIELD])) {
-            $violations->addAll($this->extrapolatedAttributeValidator->checkAttributeExistsAndHasASupportedType(
+            $violations->addAll($this->extrapolatedAttributeValidator->checkAttribute(
                 $productAssignment[self::LOCALE_FIELD],
                 $assetFamilyIdentifier,
                 [TextAttribute::ATTRIBUTE_TYPE]
