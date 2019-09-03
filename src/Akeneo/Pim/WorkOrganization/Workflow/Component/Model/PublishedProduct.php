@@ -302,6 +302,8 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated This method will be removed with TIP-722
      */
     public function setIdentifier(ValueInterface $identifier)
     {
@@ -309,6 +311,16 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
 
         $this->values->removeByAttributeCode($identifier->getAttributeCode());
         $this->values->add($identifier);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setIdentifierValue(?string $identifierValue): ProductInterface
+    {
+        $this->identifier = $identifierValue;
 
         return $this;
     }
