@@ -24,14 +24,14 @@ interface ProductModelIndexerInterface
     public function indexFromProductModelCodes(array $productModelCodes, array $options = []): void;
 
     /**
-     * @param string $productModelId
-     * @param array  $options
+     * @param int   $productModelId
+     * @param array $options
      */
-    public function removeFromProductModelId(string $productModelId, array $options = []): void;
+    public function removeFromProductModelId(int $productModelId, array $options = []): void;
 
     /**
-     * @param string[] $productModelIds
-     * @param array    $options
+     * @param int[] $productModelIds
+     * @param array $options
      */
     public function removeFromProductModelIds(array $productModelIds, array $options = []): void;
 }

@@ -251,6 +251,8 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $childrenIterator->rewind()->shouldBeCalled();
         $childrenIterator->next()->shouldBeCalled();
         $productModelChild->getCode()->willReturn('code');
+        $productModelChild->getProducts()->willReturn(new ArrayCollection([]));
+        $productModelChild->getProductModels()->willReturn(new ArrayCollection([]));
         $productModelIndexer->indexFromProductModelCodes(['code'], ['my_option_key' => 'my_option_value', 'my_option_key2' => 'my_option_value2'])
             ->shouldBeCalled();
 
@@ -301,7 +303,7 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $childProduct1->getId()->willReturn(30);
         $childProduct2->getId()->willReturn(40);
 
-        $productIndexer->removeFromProductIds(['30', '40'])->shouldBeCalled();
+        $productIndexer->removeFromProductIds([30, 40])->shouldBeCalled();
 
         $productModel->getProductModels()->willReturn($productModelChildren);
         $productModelChildren->isEmpty()->willReturn(true);
@@ -336,11 +338,12 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         // Second recursion - first round
         $rootProductModelChildren->isEmpty()->willReturn(false);
         $rootProductModelChildren->first()->willReturn($childProductModel);
-        $childProductModel->getCode()->willReturn('code');
+        $childProductModel->getId()->willReturn(30);
 
-        $productModelIndexer->removeFromProductModelIds(['code']);
+        $productModelIndexer->removeFromProductModelIds([30]);
 
         $rootProductModelChildren->getIterator()->willReturn($rootProductModelChildrenIterator);
+        $rootProductModelChildren->toArray()->willReturn([$childProductModel]);
         $rootProductModelChildrenIterator->rewind()->shouldBeCalled();
         $rootProductModelChildrenIterator->valid()->willReturn(true, false, true, false);
         $rootProductModelChildrenIterator->current()->willReturn($childProductModel, $childProductModel);
@@ -362,6 +365,7 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $productVariantsChildren->toArray()->willReturn([$childVariantProduct1, $childVariantProduct2]);
 
         $productVariantsChildren->getIterator()->willReturn($productVariantsChildrenIterator);
+        $productVariantsChildren->toArray()->willReturn([$childVariantProduct1, $childVariantProduct2]);
         $productVariantsChildrenIterator->valid()->willReturn(true, true, false);
         $productVariantsChildrenIterator->current()->willReturn($childVariantProduct1, $childVariantProduct2);
         $productVariantsChildrenIterator->rewind()->shouldBeCalled();
@@ -369,7 +373,7 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $childVariantProduct1->getId()->willReturn(30);
         $childVariantProduct2->getId()->willReturn(40);
 
-        $productIndexer->removeFromProductIds(['30', '40'])->shouldBeCalled();
+        $productIndexer->removeFromProductIds([30, 40])->shouldBeCalled();
 
         $this->remove($rootProductModel);
     }
@@ -400,7 +404,7 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $productChildrenIterator1->next()->shouldBeCalled();
         $childProduct1->getId()->willReturn(10);
         $childProduct2->getId()->willReturn(20);
-        $productIndexer->removeFromProductIds(['10', '20'])->shouldBeCalled();
+        $productIndexer->removeFromProductIds([10, 20])->shouldBeCalled();
 
         $productModel1->getProductModels()->willReturn($productModelChildren1);
         $productModelChildren1->isEmpty()->willReturn(true);
@@ -416,7 +420,7 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $productChildrenIterator2->next()->shouldBeCalled();
         $childProduct3->getId()->willReturn(30);
         $childProduct4->getId()->willReturn(40);
-        $productIndexer->removeFromProductIds(['30', '40'])->shouldBeCalled();
+        $productIndexer->removeFromProductIds([30, 40])->shouldBeCalled();
 
         $productModel2->getProductModels()->willReturn($productModelChildren2);
         $productModelChildren2->isEmpty()->willReturn(true);

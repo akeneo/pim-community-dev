@@ -152,7 +152,9 @@ class ProductModelDescendantsIndexer implements
         }
 
         $this->productModelIndexer->indexFromProductModelCodes(
-            $this->getProductModelCodes($productModelChildren),
+            array_map(function (ProductModelInterface $productModel): string {
+                return $productModel->getCode();
+            }, $productModelChildren->toArray()),
             $options
         );
 
@@ -184,22 +186,16 @@ class ProductModelDescendantsIndexer implements
             return;
         }
 
-        $this->productModelIndexer->removeFromProductModelIds($this->getProductModelCodes($productModelChildren));
+        $this->productModelIndexer->removeFromProductModelIds(array_map(
+            function (ProductModelInterface $productModel): int {
+                return $productModel->getId();
+            },
+            $productModelChildren->toArray()
+        ));
 
         foreach ($productModelChildren as $productModelChild) {
             $this->removeProductModelChildren($productModelChild->getProductModels());
             $this->removeProductModelChildren($productModelChild->getProducts());
         }
-    }
-
-    /**
-     * @param Collection $productModels
-     * @return array
-     */
-    private function getProductModelCodes(Collection $productModels): array
-    {
-        return array_map(function (ProductModelInterface $productModel): string {
-            return $productModel->getCode();
-        }, $productModels->toArray());
     }
 }

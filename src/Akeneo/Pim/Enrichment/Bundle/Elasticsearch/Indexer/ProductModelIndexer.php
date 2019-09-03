@@ -99,7 +99,7 @@ class ProductModelIndexer implements ProductModelIndexerInterface
      *
      * {@inheritdoc}
      */
-    public function removeFromProductModelId(string $productModelId, array $options = []): void
+    public function removeFromProductModelId(int $productModelId, array $options = []): void
     {
         $this->removeFromProductModelIds([$productModelId], $options);
     }
@@ -118,7 +118,7 @@ class ProductModelIndexer implements ProductModelIndexerInterface
         if (count($productModelIds) === 1) {
             $this->productAndProductModelClient->delete(
                 self::INDEX_TYPE,
-                self::PRODUCT_MODEL_IDENTIFIER_PREFIX . $productModelIds[0]
+                self::PRODUCT_MODEL_IDENTIFIER_PREFIX . (string) $productModelIds[0]
             );
             $this->removeDescendantsOf($productModelIds[0]);
 
@@ -127,7 +127,7 @@ class ProductModelIndexer implements ProductModelIndexerInterface
 
         $this->productAndProductModelClient->bulkDelete(self::INDEX_TYPE, array_map(
             function ($productModelId) {
-                return self::PRODUCT_MODEL_IDENTIFIER_PREFIX . $productModelId;
+                return self::PRODUCT_MODEL_IDENTIFIER_PREFIX . (string) $productModelId;
             },
             $productModelIds
         ));
@@ -136,14 +136,14 @@ class ProductModelIndexer implements ProductModelIndexerInterface
     /**
      * Queries all the different ES indexes to remove any document having a reference to this objectId in its ancestors
      *
-     * @param string $objectId
+     * @param int $productModelId
      */
-    private function removeDescendantsOf(string $objectId): void
+    private function removeDescendantsOf(int $productModelId): void
     {
         $this->productAndProductModelClient->deleteByQuery([
             'query' => [
                 'term' => [
-                    'ancestors.ids' => self::PRODUCT_MODEL_IDENTIFIER_PREFIX.$objectId,
+                    'ancestors.ids' => self::PRODUCT_MODEL_IDENTIFIER_PREFIX . (string) $productModelId,
                 ],
             ],
         ]);
