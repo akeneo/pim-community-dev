@@ -5,10 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver;
 
 use Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
-use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
@@ -29,9 +26,6 @@ class ProductModelDescendantsSaver implements SaverInterface
 {
     private const INDEX_BULK_SIZE = 100;
 
-    /** @var ProductQueryBuilderFactoryInterface */
-    private $pqbFactory;
-
     /** @var ProductIndexerInterface */
     private $productIndexer;
 
@@ -49,14 +43,12 @@ class ProductModelDescendantsSaver implements SaverInterface
 
     public function __construct(
         ProductModelRepositoryInterface $productModelRepository,
-        ProductQueryBuilderFactoryInterface $pqbFactory,
         ProductIndexerInterface $productIndexer,
         ProductModelIndexerInterface $productModelIndexer,
         ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses,
         int $batchSize
     ) {
         $this->productModelRepository = $productModelRepository;
-        $this->pqbFactory = $pqbFactory;
         $this->productIndexer = $productIndexer;
         $this->productModelIndexer = $productModelIndexer;
         $this->computeAndPersistProductCompletenesses = $computeAndPersistProductCompletenesses;
@@ -81,31 +73,20 @@ class ProductModelDescendantsSaver implements SaverInterface
     private function computeCompletenessAndIndexDescendantProducts(ProductModelInterface $productModel): void
     {
         $identifiers = $this->productModelRepository->findDescendantProductIdentifiers($productModel);
-        $pqb = $this->pqbFactory->create();
-        $pqb->addFilter('identifier', Operators::IN_LIST, $identifiers);
-        $productsDescendants = $pqb->execute();
 
         $count = 0;
-        $productsBatch = [];
-        foreach ($productsDescendants as $product) {
-            $productsBatch[] = $product;
+        $identifiersBatch = [];
+        foreach ($identifiers as $identifier) {
+            $identifiersBatch[] = $identifier;
 
             if (++$count % $this->batchSize === 0) {
-                $identifiers = array_map(function (ProductInterface $product) {
-                    return $product->getIdentifier();
-                }, $productsBatch);
-
-                $this->computeAndPersistProductCompletenesses->fromProductIdentifiers($identifiers);
-                $this->indexProducts($identifiers);
-                $productsBatch = [];
+                $this->computeAndPersistProductCompletenesses->fromProductIdentifiers($identifiersBatch);
+                $this->indexProducts($identifiersBatch);
+                $identifiersBatch = [];
             }
         }
 
-        if (!empty($productsBatch)) {
-            $identifiers = array_map(function (ProductInterface $product) {
-                return $product->getIdentifier();
-            }, $productsBatch);
-
+        if (!empty($identifiersBatch)) {
             $this->computeAndPersistProductCompletenesses->fromProductIdentifiers($identifiers);
             $this->indexProducts($identifiers);
         }
