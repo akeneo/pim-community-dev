@@ -83,8 +83,10 @@ class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterf
         $newValues = $this->normalizer->normalize($values, 'standard');
         $originalValues = $this->getOriginalValues($entityWithValues);
 
+        $newValuesWithNullData = $this->fillNewValuesWithNullData($originalValues, $newValues);
+
         $values = [];
-        foreach ($newValues as $code => $newValue) {
+        foreach ($newValuesWithNullData as $code => $newValue) {
             $attribute = $this->getAttributes->forCode($code);
 
             if (null === $attribute) {
@@ -101,12 +103,14 @@ class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterf
                 if (null !== $diffAttribute) {
                     $diff['values'][$code][] = $diffAttribute;
 
-                    $values[] = $this->valueFactory->createByCheckingData(
-                        $attribute,
-                        $changes['scope'],
-                        $changes['locale'],
-                        $changes['data']
-                    );
+                    if (null !== $changes['data']) {
+                        $values[] = $this->valueFactory->createByCheckingData(
+                            $attribute,
+                            $changes['scope'],
+                            $changes['locale'],
+                            $changes['data']
+                        );
+                    }
                 }
             }
         }
@@ -156,5 +160,36 @@ class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterf
         }
 
         return [];
+    }
+
+    /**
+     * TODO Put a comment
+     * 
+     * @param array $originalValues
+     * @param array $newValues
+     * @return array
+     */
+    private function fillNewValuesWithNullData(array $originalValues, array $newValues)
+    {
+        foreach ($originalValues as $code => $originalValue) {
+            foreach ($originalValue as $index => $changes) {
+                $found = false;
+                if (isset($newValues[$code])) {
+                    foreach ($newValues[$code] as $index2 => $changes2) {
+                        if ($changes2['locale'] === $changes['locale'] &&
+                            $changes2['scope'] === $changes['scope']) {
+                            $found = true;
+                        }
+                    }
+                }
+                if (!$found) {
+                    $newValues[$code][$index]['locale'] = $changes['locale'];
+                    $newValues[$code][$index]['scope'] = $changes['locale'];
+                    $newValues[$code][$index]['data'] = null;
+                }
+            }
+        }
+
+        return $newValues;
     }
 }

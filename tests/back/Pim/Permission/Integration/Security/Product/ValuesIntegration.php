@@ -78,7 +78,6 @@ class ValuesIntegration extends AbstractSecurityTestCase
         $this->get('pim_catalog.saver.product')->save($product);
 
         $expectedValues = '{"sku": {"<all_channels>": {"<all_locales>": "product_a"}}, ';
-        $expectedValues.= '"a_text": {"<all_channels>": {"<all_locales>": null}}, ';
         $expectedValues.= '"a_number_float": {"<all_channels>": {"<all_locales>": "15.0000"}}, ';
         $expectedValues.= '"a_localized_and_scopable_text_area": {"ecommerce": {"de_DE": "mein text", "fr_FR": "mon text"}}}';
 
