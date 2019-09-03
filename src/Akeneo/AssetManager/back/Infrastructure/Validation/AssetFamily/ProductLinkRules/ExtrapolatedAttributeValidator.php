@@ -9,8 +9,8 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\ReplacePattern;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeExistsInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\GetAttributeTypeInterface;
-use Akeneo\AssetManager\Domain\Query\Attribute\IsAttributeLocalizableInterface;
-use Akeneo\AssetManager\Domain\Query\Attribute\IsAttributeScopableInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\AttributeHasOneValuePerLocaleInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\AttributeHasOneValuePerChannelInterface;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -29,17 +29,17 @@ class ExtrapolatedAttributeValidator
     /** @var GetAttributeTypeInterface */
     private $getAttributeType;
 
-    /** @var IsAttributeScopableInterface */
+    /** @var AttributeHasOneValuePerChannelInterface */
     private $isAttributeScopable;
 
-    /** @var IsAttributeLocalizableInterface */
+    /** @var AttributeHasOneValuePerLocaleInterface */
     private $isAttributeLocalizable;
 
     public function __construct(
         AttributeExistsInterface $attributeExists,
         GetAttributeTypeInterface $getAttributeType,
-        IsAttributeScopableInterface $isAttributeScopable,
-        IsAttributeLocalizableInterface $isAttributeLocalizable
+        AttributeHasOneValuePerChannelInterface $isAttributeScopable,
+        AttributeHasOneValuePerLocaleInterface $isAttributeLocalizable
     ) {
         $this->attributeExists = $attributeExists;
         $this->getAttributeType = $getAttributeType;

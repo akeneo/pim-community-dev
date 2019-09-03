@@ -18,7 +18,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeExistsInterface;
-use Akeneo\AssetManager\Domain\Query\Attribute\IsAttributeScopableInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\AttributeHasOneValuePerChannelInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
@@ -28,7 +28,7 @@ use Doctrine\DBAL\Types\Type;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SqlIsAttributeScopable implements IsAttributeScopableInterface
+class SqlAttributeHasOneValuePerChannel implements AttributeHasOneValuePerChannelInterface
 {
     /** @var Connection */
     private $sqlConnection;

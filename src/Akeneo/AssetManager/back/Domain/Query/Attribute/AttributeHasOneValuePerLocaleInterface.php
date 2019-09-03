@@ -19,12 +19,12 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 
 /**
- * Query to determine if an Asset Family Attribute is scopable
+ * Query to determine if an Asset Family Attribute has one value per locale
  *
- * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
- * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
+ * @author    Samir Boulil <samir.boulil@akeneo.com>
+ * @copyright 2019 Akeneo SAS (https://www.akeneo.com)
  */
-interface IsAttributeScopableInterface
+interface AttributeHasOneValuePerLocaleInterface
 {
     public function withAssetFamilyAndCode(AssetFamilyIdentifier $identifier, AttributeCode $attributeCode): bool;
 }

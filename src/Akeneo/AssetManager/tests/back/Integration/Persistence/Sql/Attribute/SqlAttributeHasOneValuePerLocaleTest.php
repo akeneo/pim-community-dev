@@ -18,27 +18,27 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeExistsInterface;
-use Akeneo\AssetManager\Domain\Query\Attribute\IsAttributeLocalizableInterface;
-use Akeneo\AssetManager\Domain\Query\Attribute\IsAttributeScopableInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\AttributeHasOneValuePerLocaleInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\AttributeHasOneValuePerChannelInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
 use Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer\FixturesLoader;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 
-class SqlIsAttributeLocalizableTest extends SqlIntegrationTestCase
+class SqlAttributeHasOneValuePerLocaleTest extends SqlIntegrationTestCase
 {
     private const ASSET_FAMILY_IDENTIFIER = 'designer';
     private const ATTRIBUTE_CODE = 'name';
     private const UNKNOWN_ATTRIBUTE_CODE = 'UNKNOWN_ATTRIBUTE';
 
-    /** @var IsAttributeLocalizableInterface */
+    /** @var AttributeHasOneValuePerLocaleInterface */
     private $isAttributeLocalizable;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->isAttributeLocalizable = $this->get('akeneo_assetmanager.infrastructure.persistence.query.is_attribute_localizable');
+        $this->isAttributeLocalizable = $this->get('akeneo_assetmanager.infrastructure.persistence.query.attribute_has_one_value_per_locale');
         $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 

@@ -15,14 +15,14 @@ namespace Akeneo\AssetManager\Common\Fake;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
-use Akeneo\AssetManager\Domain\Query\Attribute\IsAttributeLocalizableInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\AttributeHasOneValuePerChannelInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class InMemoryIsAttributeLocalizable implements IsAttributeLocalizableInterface
+class InMemoryAttributeHasOneValuePerChannel implements AttributeHasOneValuePerChannelInterface
 {
     /** @var InMemoryAttributeRepository */
     private $attributeRepository;
@@ -40,7 +40,7 @@ class InMemoryIsAttributeLocalizable implements IsAttributeLocalizableInterface
             $sameCode = $attribute->getCode()->equals($attributeCode);
 
             if ($sameAssetFamily && $sameCode) {
-                return $attribute->hasValuePerLocale();
+                return $attribute->hasValuePerChannel();
             }
         }
 

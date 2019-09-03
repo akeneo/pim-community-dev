@@ -195,13 +195,13 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo_assetmanager.infrastructure.persistence.query.is_attribute_scopable:
-        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlIsAttributeScopable
+    akeneo_assetmanager.infrastructure.persistence.query.attribute_has_one_value_per_channel:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlAttributeHasOneValuePerChannel
         arguments:
             - '@database_connection'
 
-    akeneo_assetmanager.infrastructure.persistence.query.is_attribute_localizable:
-        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlIsAttributeLocalizable
+    akeneo_assetmanager.infrastructure.persistence.query.attribute_has_one_value_per_locale:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlAttributeHasOneValuePerLocale
         arguments:
             - '@database_connection'
 

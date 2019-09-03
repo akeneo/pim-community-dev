@@ -24,7 +24,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-interface IsAttributeLocalizableInterface
+interface AttributeHasOneValuePerChannelInterface
 {
     public function withAssetFamilyAndCode(AssetFamilyIdentifier $identifier, AttributeCode $attributeCode): bool;
 }

@@ -18,8 +18,8 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeExistsInterface;
-use Akeneo\AssetManager\Domain\Query\Attribute\IsAttributeLocalizableInterface;
-use Akeneo\AssetManager\Domain\Query\Attribute\IsAttributeScopableInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\AttributeHasOneValuePerLocaleInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\AttributeHasOneValuePerChannelInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
@@ -27,9 +27,8 @@ use Doctrine\DBAL\Types\Type;
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SqlIsAttributeLocalizable implements IsAttributeLocalizableInterface
+class SqlAttributeHasOneValuePerLocale implements AttributeHasOneValuePerLocaleInterface
 {
     /** @var Connection */
     private $sqlConnection;

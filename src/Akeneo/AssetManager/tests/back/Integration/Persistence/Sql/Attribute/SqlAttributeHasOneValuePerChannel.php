@@ -18,26 +18,26 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeExistsInterface;
-use Akeneo\AssetManager\Domain\Query\Attribute\IsAttributeScopableInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\AttributeHasOneValuePerChannelInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
 use Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer\FixturesLoader;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 
-class SqlIsAttributeScopableTest extends SqlIntegrationTestCase
+class SqlAttributeHasOneValuePerChannel extends SqlIntegrationTestCase
 {
     private const ASSET_FAMILY_IDENTIFIER = 'designer';
     private const ATTRIBUTE_CODE = 'name';
     private const UNKNOWN_ATTRIBUTE_CODE = 'UNKNOWN_ATTRIBUTE';
 
-    /** @var IsAttributeScopableInterface */
+    /** @var AttributeHasOneValuePerChannelInterface */
     private $isAttributeScopable;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->isAttributeScopable = $this->get('akeneo_assetmanager.infrastructure.persistence.query.is_attribute_scopable');
+        $this->isAttributeScopable = $this->get('akeneo_assetmanager.infrastructure.persistence.query.attribute_has_one_value_per_channel');
         $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 

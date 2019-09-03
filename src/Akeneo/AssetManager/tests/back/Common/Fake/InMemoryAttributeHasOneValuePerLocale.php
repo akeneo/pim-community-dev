@@ -15,14 +15,14 @@ namespace Akeneo\AssetManager\Common\Fake;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
-use Akeneo\AssetManager\Domain\Query\Attribute\IsAttributeScopableInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\AttributeHasOneValuePerLocaleInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class InMemoryIsAttributeScopable implements IsAttributeScopableInterface
+class InMemoryAttributeHasOneValuePerLocale implements AttributeHasOneValuePerLocaleInterface
 {
     /** @var InMemoryAttributeRepository */
     private $attributeRepository;
@@ -40,7 +40,7 @@ class InMemoryIsAttributeScopable implements IsAttributeScopableInterface
             $sameCode = $attribute->getCode()->equals($attributeCode);
 
             if ($sameAssetFamily && $sameCode) {
-                return $attribute->hasValuePerChannel();
+                return $attribute->hasValuePerLocale();
             }
         }
 
