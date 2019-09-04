@@ -80,7 +80,7 @@ class FetchProductRowsFromIdentifiersIntegration extends TestCase
             ),
         ];
 
-        AssertRows::same($expectedRows, $rows);
+        AssertRows::sameButOrderNotGuaranteed($expectedRows, $rows);
     }
 
     public function test_it_works_with_empty_product_model()

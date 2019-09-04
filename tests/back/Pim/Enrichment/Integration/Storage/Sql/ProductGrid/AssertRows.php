@@ -17,6 +17,25 @@ final class AssertRows
         }
     }
 
+    public static function sameButOrderNotGuaranteed(array $expectedRows, array $rows): void
+    {
+        Assert::assertCount(count($expectedRows), $rows);
+        foreach ($expectedRows as $expectedRow) {
+            $identifier = $expectedRow->identifier();
+            $actualRow = null;
+
+            foreach ($rows as $row) {
+                if ($row->identifier() === $identifier) {
+                    $actualRow = $row;
+                    break;
+                }
+            }
+
+            Assert::assertNotNull($actualRow);
+            self::assertSameRow($expectedRow, $actualRow);
+        }
+    }
+
     private static function assertSameRow(Row $expectedRow, Row $row): void
     {
         $expectedGroups = $expectedRow->groupCodes();
