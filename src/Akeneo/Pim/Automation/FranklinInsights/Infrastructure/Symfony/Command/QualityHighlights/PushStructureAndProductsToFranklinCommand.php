@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Symfony\Command\QualityHighlights;
 
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\QualityHighlights\SynchronizeAttributesWithFranklin;
 use Akeneo\Pim\Automation\FranklinInsights\Application\QualityHighlights\SynchronizeFamiliesWithFranklin;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
@@ -29,16 +31,21 @@ class PushStructureAndProductsToFranklinCommand extends Command
     /** @var SynchronizeAttributesWithFranklin */
     private $synchronizeAttributes;
 
+    /** @var GetConnectionStatusHandler */
+    private $connectionStatusHandler;
+
     public function __construct(
         PendingItemsRepositoryInterface $pendingItemsRepository,
         SynchronizeFamiliesWithFranklin $synchronizeFamilies,
-        SynchronizeAttributesWithFranklin $synchronizeAttributes
+        SynchronizeAttributesWithFranklin $synchronizeAttributes,
+        GetConnectionStatusHandler $connectionStatusHandler
     ) {
         parent::__construct(self::NAME);
 
         $this->pendingItemsRepository = $pendingItemsRepository;
         $this->synchronizeFamilies = $synchronizeFamilies;
         $this->synchronizeAttributes = $synchronizeAttributes;
+        $this->connectionStatusHandler = $connectionStatusHandler;
     }
 
     protected function configure()
@@ -58,6 +65,11 @@ class PushStructureAndProductsToFranklinCommand extends Command
 
         $io = new SymfonyStyle($input, $output);
 
+        if ($this->isFranklinInsightsActivated() === false) {
+            $io->error('Unable to find an active Franklin configuration. Did you correctly set you Franklin Token in the PIM system tab ?');
+            exit(1);
+        }
+
         $io->title('Push catalog structure and products to Franklin API');
 
         $lock = new Lock((Uuid::uuid4())->toString());
@@ -71,5 +83,11 @@ class PushStructureAndProductsToFranklinCommand extends Command
 
         $io->section('Synchronize Products (TODO)');
         //TODO synchronize products
+    }
+
+    private function isFranklinInsightsActivated(): bool
+    {
+        $connectionStatus = $this->connectionStatusHandler->handle(new GetConnectionStatusQuery(false));
+        return $connectionStatus->isActive();
     }
 }
