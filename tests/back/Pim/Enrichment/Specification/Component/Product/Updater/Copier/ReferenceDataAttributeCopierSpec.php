@@ -53,8 +53,7 @@ class ReferenceDataAttributeCopierSpec extends ObjectBehavior
         AttributeInterface $toAttribute,
         ProductInterface $product1,
         ProductInterface $product2,
-        ReferenceDataValueInterface $fromValue,
-        ReferenceDataValueInterface $toValue
+        ReferenceDataValueInterface $fromValue
     ) {
         $fromLocale = 'fr_FR';
         $toLocale = 'fr_FR';
@@ -74,11 +73,10 @@ class ReferenceDataAttributeCopierSpec extends ObjectBehavior
         $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromValue);
         $builder
             ->addOrReplaceValue($product1, $toAttribute, $toLocale, $toScope, 'black')
-            ->shouldBeCalled()
-            ->willReturn($toValue);
+            ->shouldBeCalled();
 
         $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
-        $builder->addOrReplaceValue($product2, Argument::cetera())->shouldNotBeCalled();
+        $builder->addOrReplaceValue($product2, $toAttribute, $toLocale, $toScope, null)->shouldBeCalled();
 
         $products = [$product1, $product2];
         foreach ($products as $product) {

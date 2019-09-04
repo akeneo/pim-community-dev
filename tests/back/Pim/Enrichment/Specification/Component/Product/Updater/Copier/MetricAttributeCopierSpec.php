@@ -60,8 +60,7 @@ class MetricAttributeCopierSpec extends ObjectBehavior
         AttributeInterface $toAttribute,
         ProductInterface $product1,
         ProductInterface $product2,
-        ScalarValue $fromValue,
-        ScalarValue $toValue
+        ScalarValue $fromValue
     ) {
         $fromLocale = 'fr_FR';
         $toLocale = 'fr_FR';
@@ -76,22 +75,24 @@ class MetricAttributeCopierSpec extends ObjectBehavior
         $attrValidatorHelper->validateUnitFamilies(Argument::cetera())->shouldBeCalled();
 
         $normalizer
-            ->normalize($fromValue, 'standard')
+            ->normalize($fromValue, 'standard')->shouldBeCalled()
             ->willReturn([
                 'locale' => 'fr_FR',
                 'scope'  => 'mobile',
                 'data'   => ['amount' => 123, 'unit' => 'GRAM'],
             ]);
 
+        $normalizer->normalize(null, 'standard')->shouldBeCalled()->willReturn(null);
+
         $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromValue);
         $builder
             ->addOrReplaceValue($product1, $toAttribute, $toLocale, $toScope, ['amount' => 123, 'unit' => 'GRAM'])
-            ->willReturn($toValue);
+            ->shouldBeCalled();
 
         $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
         $builder
             ->addOrReplaceValue($product2, $toAttribute, $toLocale, $toScope, null)
-            ->shouldNotBeCalled();
+            ->shouldBeCalled();
 
         $products = [$product1, $product2];
         foreach ($products as $product) {
