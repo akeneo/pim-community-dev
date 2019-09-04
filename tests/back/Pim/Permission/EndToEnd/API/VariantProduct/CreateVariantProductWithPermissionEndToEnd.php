@@ -64,16 +64,6 @@ JSON;
                 'variant_product_axis_attribute'    => [
                     ['locale' => null, 'scope' => null, 'data' => false],
                 ],
-                'variant_product_edit_attribute'    => [
-                    ['locale' => 'en_US', 'scope' => null, 'data' => false],
-                    ['locale' => 'fr_FR', 'scope' => null, 'data' => false],
-                    ['locale' => 'zh_CN', 'scope' => null, 'data' => false],
-                ],
-                'variant_product_view_attribute'    => [
-                    ['locale' => 'en_US', 'scope' => null, 'data' => false],
-                    ['locale' => 'fr_FR', 'scope' => null, 'data' => false],
-                    ['locale' => 'zh_CN', 'scope' => null, 'data' => false],
-                ],
             ],
             'created'      => '2016-06-14T13:12:50+02:00',
             'updated'      => '2016-06-14T13:12:50+02:00',
