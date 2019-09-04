@@ -114,7 +114,7 @@ export const AssetCollection = ({assetFamilyIdentifier, assetCodes, readonly, co
       {0 === assetCodes.length ? (
         <EmptyAssetCollection>
           <AssetIllustration size={80}/>
-          <Label>{__('pim_asset_manager.asset_collection.no_asset')}</Label>
+          <Label>{__('pim_asset_manager.asset_collection.no_asset_in_collection')}</Label>
         </EmptyAssetCollection>
       ): null}
     </Container>

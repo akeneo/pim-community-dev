@@ -7,7 +7,14 @@ pim_asset_manager:
     asset_count:
       '{{ count }} asset|{{ count }} assets'
     add_asset: 'Add asset'
-    no_asset: 'Sorry, there is no asset in this collection.'
+    no_asset_in_collection: 'Sorry, there is no asset in this collection.'
+    helper:
+      title: Welcome to your new product asset management area!
+      text: There are no asset collection for the {{ family }} family! How to add an asset collection?
+      link: How to add an asset collection?
+    no_asset:
+      title: Sorry, there are no asset for this product
+      text: There are no asset collection for the {{ family }} family!
 #  app:
 #    image:
 #      wide:
