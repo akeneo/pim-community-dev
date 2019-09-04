@@ -95,11 +95,11 @@ final class CreateAssetFamilyContext implements Context
     /**
      * @When /^the user creates an asset family "([^"]+)" with:$/
      */
-    public function theUserCreatesAnAssetFamilyWith($code, TableNode $updateTable)
+    public function theUserCreatesAnAssetFamilyWith($identifier, TableNode $updateTable)
     {
         $updates = current($updateTable->getHash());
         $command = new CreateAssetFamilyCommand(
-            $code,
+            $identifier,
             json_decode($updates['labels'] ?? '[]', true),
             json_decode($updates['product_link_rules'] ?? '[]', true)
         );
@@ -164,7 +164,7 @@ final class CreateAssetFamilyContext implements Context
         for ($i = 0; $i < $number; $i++) {
             $command = new CreateAssetFamilyCommand(
                 uniqid(),
-                ['en_US' => uniqid('label_')],
+                [],
                 []
             );
             $this->createAssetFamily($command);
