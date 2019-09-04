@@ -11,6 +11,12 @@ services:
         tags:
             - { name: 'console.command' }
 
+    Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Symfony\Command\QualityHighlights\PurgePendingItemsTableCommand:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: 'console.command' }
+
     Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Symfony\Command\QualityHighlights\InitializeStructureAndProductToPushToFranklinCommand:
         arguments:
             - '@akeneo.pim.automation.franklin_insights.application.configuration.query.get_connection_status_handler'
