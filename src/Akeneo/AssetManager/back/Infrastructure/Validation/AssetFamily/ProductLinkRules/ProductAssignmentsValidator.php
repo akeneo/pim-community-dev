@@ -62,8 +62,11 @@ class ProductAssignmentsValidator
 
         $violations = $this->channelAndLocaleValidator->checkChannelExistsIfAny($productAssignment[self::CHANNEL_CODE] ?? null);
         $violations->addAll($this->channelAndLocaleValidator->checkLocaleExistsIfAny($productAssignment[self::LOCALE_FIELD] ?? null));
-        $violations->addAll($this->ruleEngineValidatorACL->validateProductAssignment($productAssignment));
-        $violations->addAll($this->checkMode($productAssignment));
+        $modeViolations = $this->checkMode($productAssignment);
+        $violations->addAll($modeViolations);
+        if ($modeViolations->count() === 0) {
+            $violations->addAll($this->ruleEngineValidatorACL->validateProductAssignment($productAssignment));
+        }
 
         return $violations;
     }
