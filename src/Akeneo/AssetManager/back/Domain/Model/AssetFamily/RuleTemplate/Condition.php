@@ -73,7 +73,7 @@ class Condition
     public function compile(PropertyAccessibleAsset $propertyAccessibleAsset): self
     {
         $field = ReplacePattern::replace($this->field->stringValue(), $propertyAccessibleAsset);
-        $value = ReplacePattern::replace($this->value->stringValue(), $propertyAccessibleAsset);
+        $value = ReplacePattern::replace($this->value->value(), $propertyAccessibleAsset);
 
         return new self(
             Field::createFromNormalized($field),
@@ -87,11 +87,11 @@ class Condition
     public function normalize(): array
     {
         return [
-          'field'    => $this->field->stringValue(),
-          'operator' => $this->operator->stringValue(),
-          'value'    => $this->value->stringValue(),
-          'channel'  => $this->channel->normalize(),
-          'locale'   => $this->locale->normalize(),
+            'field'    => $this->field->stringValue(),
+            'operator' => $this->operator->stringValue(),
+            'value'    => $this->value->value(),
+            'channel'  => $this->channel->normalize(),
+            'locale'   => $this->locale->normalize(),
         ];
     }
 }
