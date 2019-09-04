@@ -122,8 +122,8 @@ SQL;
     public function fillWithAllAttributes(): void
     {
         $query = <<<'SQL'
-INSERT INTO pimee_franklin_insights_quality_highlights_pending_items (entity_type, entity_id, action)
-SELECT :entity_type, code, :action FROM akeneo_pim.pim_catalog_attribute WHERE attribute_type IN (:authorized_attribute_types)
+INSERT INTO pimee_franklin_insights_quality_highlights_pending_items (entity_id, entity_type, action)
+SELECT code, :entity_type, :action FROM akeneo_pim.pim_catalog_attribute WHERE attribute_type IN (:authorized_attribute_types)
 ON DUPLICATE KEY UPDATE action=action;
 SQL;
 
@@ -145,10 +145,9 @@ SQL;
     public function fillWithAllFamilies(): void
     {
         $query = <<<'SQL'
-INSERT INTO pimee_franklin_insights_quality_highlights_pending_items (entity_type, entity_id, action)
-SELECT :entity_type, code, :action FROM akeneo_pim.pim_catalog_family
+INSERT INTO pimee_franklin_insights_quality_highlights_pending_items (entity_id, entity_type, action)
+SELECT code, :entity_type, :action FROM akeneo_pim.pim_catalog_family
 ON DUPLICATE KEY UPDATE action=action;
-
 SQL;
 
         $bindParams = [
@@ -161,6 +160,17 @@ SQL;
 
     public function fillWithAllProducts(): void
     {
-        // TODO: Implement fillWithAllProducts() method.
+        $query = <<<'SQL'
+INSERT INTO pimee_franklin_insights_quality_highlights_pending_items (entity_id, entity_type, action)
+SELECT id, :entity_type, :action FROM akeneo_pim.pim_catalog_product WHERE is_enabled=1 AND product_model_id IS NULL
+ON DUPLICATE KEY UPDATE action=action;
+SQL;
+
+        $bindParams = [
+            'entity_type' => self::ENTITY_TYPE_PRODUCT,
+            'action' => self::ACTION_ENTITY_UPDATED,
+        ];
+
+        $this->connection->executeQuery($query, $bindParams);
     }
 }

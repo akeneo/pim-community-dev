@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Symfony\Command\QualityHighlights;
 
-
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
@@ -25,8 +24,7 @@ final class InitializeStructureAndProductToPushToFranklinCommand extends Command
     public function __construct(
         GetConnectionStatusHandler $connectionStatusHandler,
         PendingItemsRepositoryInterface $pendingItemsRepository
-    )
-    {
+    ) {
         parent::__construct(self::NAME);
         $this->connectionStatusHandler = $connectionStatusHandler;
         $this->pendingItemsRepository = $pendingItemsRepository;
@@ -44,8 +42,7 @@ final class InitializeStructureAndProductToPushToFranklinCommand extends Command
 
         $io->title('Initialize the Quality Highlights entities to push to Franklin');
 
-        if($this->isFranklinInsightsActivated() === false)
-        {
+        if ($this->isFranklinInsightsActivated() === false) {
             $io->error('Unable to find an active Franklin configuration. Did you correctly set you Franklin Token in the PIM system tab ?');
             exit(1);
         }
@@ -56,12 +53,12 @@ final class InitializeStructureAndProductToPushToFranklinCommand extends Command
         $io->section('Initialize the Families');
         $this->pendingItemsRepository->fillWithAllFamilies();
 
-        $io->section('Initialize the products');
+        $io->section('Initialize the Products');
+        $this->pendingItemsRepository->fillWithAllProducts();
 
         $io->writeln('<info>Everything went fine, the entities needed by the Quality Highlights have been initialized.</info>');
 
         $io->note('You still have to setup the CRON in order to push those data to Franklin: bin/console pimee:franklin-insights:quality-highlights:push-structure-and-products');
-
     }
 
     private function isFranklinInsightsActivated(): bool

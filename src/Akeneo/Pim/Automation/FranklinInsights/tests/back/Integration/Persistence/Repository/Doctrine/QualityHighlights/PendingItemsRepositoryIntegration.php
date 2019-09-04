@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\tests\back\Integration\Persiste
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Doctrine\QualityHighlights\PendingItemsRepository;
+use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
 use Akeneo\Test\Common\EntityBuilder;
@@ -40,6 +41,12 @@ class PendingItemsRepositoryIntegration extends TestCase
     /** @var SaverInterface */
     private $familySaver;
 
+    /** @var EntityWithValuesBuilderInterface */
+    private $productBuilder;
+
+    /**@var SaverInterface */
+    private $productSaver;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -48,6 +55,8 @@ class PendingItemsRepositoryIntegration extends TestCase
         $this->attributeSaver = $this->getFromTestContainer('pim_catalog.saver.attribute');
         $this->familyBuilder = $this->getFromTestContainer('akeneo_ee_integration_tests.builder.family');
         $this->familySaver = $this->getFromTestContainer('pim_catalog.saver.family');
+        $this->productBuilder = $this->getFromTestContainer('akeneo_integration_tests.catalog.product.builder');
+        $this->productSaver = $this->getFromTestContainer('pim_catalog.saver.product');
         $this->validator = $this->getFromTestContainer('validator');
     }
 
@@ -122,24 +131,27 @@ SQL;
         );
     }
 
-    public function test_it_initializes_with_all_attribute_code(): void
+    public function test_it_initializes_with_all_attributes_code(): void
     {
         $sqlQuery = 'SELECT entity_id FROM pimee_franklin_insights_quality_highlights_pending_items';
         $updatedAttributes = $this->getDbConnection()->query($sqlQuery)->fetchAll();
         $this->assertCount(0, $updatedAttributes);
 
-        $this->createTextAttribute('weight');
         $this->createTextAttribute('size');
+        $this->createTextAttribute('weight');
         $this->createIdentifierAttribute('unauthorized-type');
 
         $this->getRepository()->fillWithAllAttributes();
 
         $sqlQuery = 'SELECT entity_id FROM pimee_franklin_insights_quality_highlights_pending_items WHERE entity_type=:entity_type';
         $updatedAttributes = $this->getDbConnection()->executeQuery($sqlQuery, ['entity_type' => PendingItemsRepository::ENTITY_TYPE_ATTRIBUTE])->fetchAll();
+
+        //Only authorized attributes
         $this->assertCount(2, $updatedAttributes);
+        $this->assertSame(['size', 'weight'], array_column($updatedAttributes, 'entity_id'));
     }
 
-    public function test_it_initializes_with_all_family_code(): void
+    public function test_it_initializes_with_all_families_code(): void
     {
         $sqlQuery = 'SELECT entity_id FROM pimee_franklin_insights_quality_highlights_pending_items';
         $updatedFamilies = $this->getDbConnection()->query($sqlQuery)->fetchAll();
@@ -153,6 +165,27 @@ SQL;
         $sqlQuery = 'SELECT entity_id FROM pimee_franklin_insights_quality_highlights_pending_items WHERE entity_type=:entity_type';
         $updatedFamilies = $this->getDbConnection()->executeQuery($sqlQuery, ['entity_type' => PendingItemsRepository::ENTITY_TYPE_FAMILY])->fetchAll();
         $this->assertCount(2, $updatedFamilies);
+        $this->assertSame(['laptop', 'tv'], array_column($updatedFamilies, 'entity_id'));
+    }
+
+    public function test_it_initializes_with_all_products_code(): void
+    {
+        $sqlQuery = 'SELECT entity_id FROM pimee_franklin_insights_quality_highlights_pending_items';
+        $updatedFamilies = $this->getDbConnection()->query($sqlQuery)->fetchAll();
+        $this->assertCount(0, $updatedFamilies);
+
+        $this->createProduct('productA');
+        $this->createProduct('productB');
+        $this->createProduct('disableProduct', false);
+
+        $this->getRepository()->fillWithAllProducts();
+
+        $sqlQuery = 'SELECT entity_id FROM pimee_franklin_insights_quality_highlights_pending_items WHERE entity_type=:entity_type';
+        $updatedFamilies = $this->getDbConnection()->executeQuery($sqlQuery, ['entity_type' => PendingItemsRepository::ENTITY_TYPE_PRODUCT])->fetchAll();
+
+        //Only enabled and non variant ones
+        $this->assertCount(2, $updatedFamilies);
+        $this->assertSame(['1', '2'], array_column($updatedFamilies, 'entity_id'));
     }
 
     private function createTextAttribute(string $attributeCode): void
@@ -190,6 +223,16 @@ SQL;
 
         $this->validator->validate($family);
         $this->familySaver->save($family);
+    }
+
+    private function createProduct(string $productIdentifier, bool $enabled = true): void
+    {
+        $product = $this->productBuilder
+            ->withIdentifier($productIdentifier)
+            ->withStatus($enabled)
+            ->build();
+
+        $this->productSaver->save($product);
     }
 
     private function getRepository(): PendingItemsRepositoryInterface
