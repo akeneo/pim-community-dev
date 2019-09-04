@@ -77,7 +77,7 @@ class ProductModelDescendantsSaver implements SaverInterface
         $count = 0;
         $identifiersBatch = [];
         foreach ($identifiers as $identifier) {
-            $identifiersBatch[] = $identifier;
+            $identifiersBatch[] = $identifier['identifier'];
 
             if (++$count % $this->batchSize === 0) {
                 $this->computeAndPersistProductCompletenesses->fromProductIdentifiers($identifiersBatch);
@@ -87,8 +87,8 @@ class ProductModelDescendantsSaver implements SaverInterface
         }
 
         if (!empty($identifiersBatch)) {
-            $this->computeAndPersistProductCompletenesses->fromProductIdentifiers($identifiers);
-            $this->indexProducts($identifiers);
+            $this->computeAndPersistProductCompletenesses->fromProductIdentifiers($identifiersBatch);
+            $this->indexProducts($identifiersBatch);
         }
     }
 
