@@ -15,11 +15,42 @@ namespace Akeneo\Pim\Automation\FranklinInsights\tests\back\Integration\Persiste
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Doctrine\QualityHighlights\PendingItemsRepository;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
+use Akeneo\Test\Common\EntityBuilder;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\DBAL\Connection;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PendingItemsRepositoryIntegration extends TestCase
 {
+    /** @var EntityBuilder */
+    private $attributeBuilder;
+
+    /** @var SaverInterface */
+    private $attributeSaver;
+
+    /** @var ValidatorInterface */
+    private $validator;
+
+    /** @var EntityBuilder */
+    private $familyBuilder;
+
+    /** @var SaverInterface */
+    private $familySaver;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->attributeBuilder = $this->getFromTestContainer('akeneo_ee_integration_tests.builder.attribute');
+        $this->attributeSaver = $this->getFromTestContainer('pim_catalog.saver.attribute');
+        $this->familyBuilder = $this->getFromTestContainer('akeneo_ee_integration_tests.builder.family');
+        $this->familySaver = $this->getFromTestContainer('pim_catalog.saver.family');
+        $this->validator = $this->getFromTestContainer('validator');
+    }
+
     public function test_it_saves_an_updated_attribute_code(): void
     {
         $sqlQuery = 'SELECT * FROM pimee_franklin_insights_quality_highlights_pending_items';
@@ -91,6 +122,76 @@ SQL;
         );
     }
 
+    public function test_it_initializes_with_all_attribute_code(): void
+    {
+        $sqlQuery = 'SELECT entity_id FROM pimee_franklin_insights_quality_highlights_pending_items';
+        $updatedAttributes = $this->getDbConnection()->query($sqlQuery)->fetchAll();
+        $this->assertCount(0, $updatedAttributes);
+
+        $this->createTextAttribute('weight');
+        $this->createTextAttribute('size');
+        $this->createIdentifierAttribute('unauthorized-type');
+
+        $this->getRepository()->fillWithAllAttributes();
+
+        $sqlQuery = 'SELECT entity_id FROM pimee_franklin_insights_quality_highlights_pending_items WHERE entity_type=:entity_type';
+        $updatedAttributes = $this->getDbConnection()->executeQuery($sqlQuery, ['entity_type' => PendingItemsRepository::ENTITY_TYPE_ATTRIBUTE])->fetchAll();
+        $this->assertCount(2, $updatedAttributes);
+    }
+
+    public function test_it_initializes_with_all_family_code(): void
+    {
+        $sqlQuery = 'SELECT entity_id FROM pimee_franklin_insights_quality_highlights_pending_items';
+        $updatedFamilies = $this->getDbConnection()->query($sqlQuery)->fetchAll();
+        $this->assertCount(0, $updatedFamilies);
+
+        $this->createFamily('laptop');
+        $this->createFamily('tv');
+
+        $this->getRepository()->fillWithAllFamilies();
+
+        $sqlQuery = 'SELECT entity_id FROM pimee_franklin_insights_quality_highlights_pending_items WHERE entity_type=:entity_type';
+        $updatedFamilies = $this->getDbConnection()->executeQuery($sqlQuery, ['entity_type' => PendingItemsRepository::ENTITY_TYPE_FAMILY])->fetchAll();
+        $this->assertCount(2, $updatedFamilies);
+    }
+
+    private function createTextAttribute(string $attributeCode): void
+    {
+        $attribute = $this->attributeBuilder->build(
+            [
+                'code' => $attributeCode,
+                'type' => AttributeTypes::TEXT,
+                'group' => AttributeGroup::DEFAULT_GROUP_CODE,
+            ]
+        );
+        $this->validator->validate($attribute);
+        $this->attributeSaver->save($attribute);
+    }
+
+    private function createIdentifierAttribute(string $attributeCode): void
+    {
+        $attribute = $this->attributeBuilder->build(
+            [
+                'code' => $attributeCode,
+                'type' => AttributeTypes::IDENTIFIER,
+                'group' => AttributeGroup::DEFAULT_GROUP_CODE
+            ]
+        );
+        $this->validator->validate($attribute);
+        $this->attributeSaver->save($attribute);
+    }
+
+
+    private function createFamily(string $familyCode): void
+    {
+        $family = $this->familyBuilder->build([
+            'code' => $familyCode,
+        ]);
+
+        $this->validator->validate($family);
+        $this->familySaver->save($family);
+    }
+
     private function getRepository(): PendingItemsRepositoryInterface
     {
         return $this->get('akeneo.pim.automation.franklin_insights.repository.quality_highlights_pending_items');
@@ -105,4 +206,5 @@ SQL;
     {
         return $this->catalog->useMinimalCatalog();
     }
+
 }

@@ -26,4 +26,10 @@ interface PendingItemsRepositoryInterface
     public function addUpdatedProductId(int $identifier): void;
 
     public function addDeletedProductId(int $identifier): void;
+
+    public function fillWithAllAttributes(): void;
+
+    public function fillWithAllFamilies(): void;
+
+    public function fillWithAllProducts(): void;
 }

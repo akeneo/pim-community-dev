@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Doctrine\QualityHighlights;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
 use Doctrine\DBAL\Connection;
 
@@ -116,5 +117,50 @@ INSERT INTO pimee_franklin_insights_quality_highlights_pending_items
 VALUES (:entity_type, :entity_id, :action, :locked)
 ON DUPLICATE KEY UPDATE action = :action;
 SQL;
+    }
+
+    public function fillWithAllAttributes(): void
+    {
+        $query = <<<'SQL'
+INSERT INTO pimee_franklin_insights_quality_highlights_pending_items (entity_type, entity_id, action)
+SELECT :entity_type, code, :action FROM akeneo_pim.pim_catalog_attribute WHERE attribute_type IN (:authorized_attribute_types)
+ON DUPLICATE KEY UPDATE action=action;
+SQL;
+
+        $bindParams = [
+            'entity_type' => self::ENTITY_TYPE_ATTRIBUTE,
+            'action' => self::ACTION_ENTITY_UPDATED,
+            'authorized_attribute_types' => array_keys(AttributeMapping::AUTHORIZED_ATTRIBUTE_TYPE_MAPPINGS),
+        ];
+
+        $bindTypes = [
+            'entity_type' => \PDO::PARAM_STR,
+            'action' => \PDO::PARAM_STR,
+            'authorized_attribute_types' => Connection::PARAM_STR_ARRAY,
+        ];
+
+        $this->connection->executeQuery($query, $bindParams, $bindTypes);
+    }
+
+    public function fillWithAllFamilies(): void
+    {
+        $query = <<<'SQL'
+INSERT INTO pimee_franklin_insights_quality_highlights_pending_items (entity_type, entity_id, action)
+SELECT :entity_type, code, :action FROM akeneo_pim.pim_catalog_family
+ON DUPLICATE KEY UPDATE action=action;
+
+SQL;
+
+        $bindParams = [
+            'entity_type' => self::ENTITY_TYPE_FAMILY,
+            'action' => self::ACTION_ENTITY_UPDATED,
+        ];
+
+        $this->connection->executeQuery($query, $bindParams);
+    }
+
+    public function fillWithAllProducts(): void
+    {
+        // TODO: Implement fillWithAllProducts() method.
     }
 }
