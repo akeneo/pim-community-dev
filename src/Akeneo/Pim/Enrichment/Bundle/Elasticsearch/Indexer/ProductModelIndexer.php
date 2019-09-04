@@ -53,7 +53,7 @@ class ProductModelIndexer implements ProductModelIndexerInterface
     }
 
     /**
-     * Indexes a product in the product and product model index from its code.
+     * Indexes a product model in the product and product model index from its code.
      *
      * {@inheritdoc}
      */
@@ -63,7 +63,7 @@ class ProductModelIndexer implements ProductModelIndexerInterface
     }
 
     /**
-     * Indexes a list of products in the product and product model index from their codes.
+     * Indexes a list of product models in the product and product model index from their codes.
      *
      * {@inheritdoc}
      */
@@ -95,7 +95,7 @@ class ProductModelIndexer implements ProductModelIndexerInterface
     }
 
     /**
-     * Removes the product from the product and product model index.
+     * Removes the product model from the product and product model index.
      *
      * {@inheritdoc}
      */
@@ -105,7 +105,7 @@ class ProductModelIndexer implements ProductModelIndexerInterface
     }
 
     /**
-     * Removes the products from the product and product model index.
+     * Removes the product models from the product and product model index.
      *
      * {@inheritdoc}
      */

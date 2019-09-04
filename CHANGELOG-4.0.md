@@ -91,6 +91,7 @@
     `Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager` and
     `Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface` and
     `Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface` and
+    `Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface` and
     `Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface`, and add
     `Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses` and
     `Akeneo\Tool\Component\StorageUtils\Indexer\ProductModelIndexerInterface`

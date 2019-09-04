@@ -28,7 +28,7 @@ class ProductModelIndexerSpec extends ObjectBehavior
         $this->shouldHaveType(ProductModelIndexer::class);
     }
 
-    function it_is_an_indexer()
+    function it_is_a_product_model_indexer()
     {
         $this->shouldImplement(ProductModelIndexerInterface::class);
     }
@@ -42,10 +42,10 @@ class ProductModelIndexerSpec extends ObjectBehavior
         $code = 'foobar';
         $productModelRepository->findOneByIdentifier($code)->willReturn($productModel);
         $normalizer->normalize($productModel, ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->willReturn(['id' => $code, 'a key' => 'a value']);
+            ->willReturn(['id' => 1, 'code' => $code, 'a key' => 'a value']);
         $productAndProductModelClient->bulkIndexes(
             ProductModelIndexer::INDEX_TYPE,
-            [['id' => $code, 'a key' => 'a value']],
+            [['id' => 1, 'code' => $code, 'a key' => 'a value']],
             'id',
             Refresh::disable()
         )->shouldBeCalled();
@@ -63,11 +63,11 @@ class ProductModelIndexerSpec extends ObjectBehavior
         $productModelRepository->findOneByIdentifier($code)->willReturn(null);
         $normalizer->normalize(null, ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldNotBeCalled();
-        $productAndProductModelClient->index(ProductModelIndexer::INDEX_TYPE, $code, ['id' => $code, 'a key' => 'a value'])
+        $productAndProductModelClient->index(ProductModelIndexer::INDEX_TYPE, $code, ['id' => 1, 'code' => $code, 'a key' => 'a value'])
             ->shouldNotBeCalled();
         $productAndProductModelClient->bulkIndexes(
             ProductModelIndexer::INDEX_TYPE,
-            [['id' => $code, 'a key' => 'a value']],
+            [['id' => 1, 'code' => $code, 'a key' => 'a value']],
             'id',
             Refresh::disable()
         )->shouldNotBeCalled();
@@ -89,13 +89,13 @@ class ProductModelIndexerSpec extends ObjectBehavior
         $productModelRepository->findOneByIdentifier($code2)->willReturn($productModel2);
         $productModelRepository->findOneByIdentifier($code3)->willReturn(null);
         $normalizer->normalize($productModel1, ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->willReturn(['id' => $code1, 'a key' => 'a value']);
+            ->willReturn(['id' => 1, 'code' => $code1, 'a key' => 'a value']);
         $normalizer->normalize($productModel2, ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->willReturn(['id' => $code2, 'a key' => 'another value']);
+            ->willReturn(['id' => 2, 'code' => $code2, 'a key' => 'another value']);
 
         $productAndProductModelClient->bulkIndexes(ProductModelIndexer::INDEX_TYPE, [
-            ['id' => $code1, 'a key' => 'a value'],
-            ['id' => $code2, 'a key' => 'another value'],
+            ['id' => 1, 'code' => $code1, 'a key' => 'a value'],
+            ['id' => 2, 'code' => $code2, 'a key' => 'another value'],
         ], 'id', Refresh::disable())->shouldBeCalled();
 
         $this->indexFromProductModelCodes([$code1, $code2, $code3]);
@@ -146,13 +146,13 @@ class ProductModelIndexerSpec extends ObjectBehavior
         $productModelRepository->findOneByIdentifier($code2)->willReturn($productModel2);
         $productModelRepository->findOneByIdentifier($code3)->willReturn(null);
         $normalizer->normalize($productModel1, ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->willReturn(['id' => $code1, 'a key' => 'a value']);
+            ->willReturn(['id' => 1, 'code' => $code1, 'a key' => 'a value']);
         $normalizer->normalize($productModel2, ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->willReturn(['id' => $code2, 'a key' => 'another value']);
+            ->willReturn(['id' => 2, 'code' => $code2, 'a key' => 'another value']);
 
         $productAndProductModelClient->bulkIndexes(ProductModelIndexer::INDEX_TYPE, [
-            ['id' => $code1, 'a key' => 'a value'],
-            ['id' => $code2, 'a key' => 'another value'],
+            ['id' => 1, 'code' => $code1, 'a key' => 'a value'],
+            ['id' => 2, 'code' => $code2, 'a key' => 'another value'],
         ], 'id', Refresh::disable())->shouldBeCalled();
 
         $this->indexFromProductModelCodes([$code1, $code2, $code3], ['index_refresh' => Refresh::disable()]);
@@ -172,13 +172,13 @@ class ProductModelIndexerSpec extends ObjectBehavior
         $productModelRepository->findOneByIdentifier($code2)->willReturn($productModel2);
         $productModelRepository->findOneByIdentifier($code3)->willReturn(null);
         $normalizer->normalize($productModel1, ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->willReturn(['id' => $code1, 'a key' => 'a value']);
+            ->willReturn(['id' => 1, 'code' => $code1, 'a key' => 'a value']);
         $normalizer->normalize($productModel2, ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->willReturn(['id' => $code2, 'a key' => 'another value']);
+            ->willReturn(['id' => 2, 'code' => $code2, 'a key' => 'another value']);
 
         $productAndProductModelClient->bulkIndexes(ProductModelIndexer::INDEX_TYPE, [
-            ['id' => $code1, 'a key' => 'a value'],
-            ['id' => $code2, 'a key' => 'another value'],
+            ['id' => 1, 'code' => $code1, 'a key' => 'a value'],
+            ['id' => 2, 'code' => $code2, 'a key' => 'another value'],
         ], 'id', Refresh::waitFor())->shouldBeCalled();
 
         $this->indexFromProductModelCodes([$code1, $code2, $code3], ['index_refresh' => Refresh::waitFor()]);
