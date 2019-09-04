@@ -8,7 +8,7 @@ export const NoDataSection = styled.div`
 
 export const NoDataTitle = styled.div`
   color: ${(props: ThemedProps<void>) => props.theme.color.grey140};
-  font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.noDataTitle};
+  font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.title};
   text-align: center;
   margin: 30px 0 20px 0;
 `;

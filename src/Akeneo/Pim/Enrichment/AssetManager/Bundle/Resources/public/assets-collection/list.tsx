@@ -23,9 +23,15 @@ import {NoDataSection, NoDataTitle, NoDataText} from 'akeneopimenrichmentassetma
 type ListProps = {
   attributes: Attribute[],
   values: ValueCollection,
-  family: Family|null
+  family: Family|null,
   context: ContextState
 }
+
+type DisplayValuesProps = {
+  values: ValueCollection,
+  family: Family|null,
+  context: ContextState
+};
 
 const SectionTitle = styled.div`
   display: flex;
@@ -64,49 +70,55 @@ const AssetCollectionList = styled.div`
   align-items: stretch;
 `;
 
+const DisplayValues = ({values, family, context}: DisplayValuesProps) => {
+  return (
+    <React.Fragment>
+      {values.map((value: Value) => (
+        <AssetCollectionContainer key={value.attribute.code}>
+          <SectionTitle>
+            <AttributeBreadCrumb>
+              {value.attribute.group} / {getAttributeLabel(value.attribute, context.locale)}
+            </AttributeBreadCrumb>
+            {!isValueComplete(value, family, context.channel) ? (
+              <IncompleteIndicator>
+                <Pill />
+                <Label small grey>{__('pim_asset_manager.attribute.is_required')}</Label>
+              </IncompleteIndicator>
+            ) : null}
+            <Spacer />
+            <AssetCounter>
+              {__('pim_asset_manager.asset_collection.asset_count', {count: value.data.length}, value.data.length)}
+            </AssetCounter>
+            <Separator />
+            {value.channel !== null || value.locale !== null ? (
+              <React.Fragment>
+                <ContextLabel>
+                  {value.channel !== null ? <ChannelLabel channelCode={value.channel}/> : null}
+                  {value.locale !== null ? <LocaleLabel localeCode={value.locale}/> : null}
+                </ContextLabel>
+                <Separator />
+              </React.Fragment>
+            ): null}
+            {value.editable ? (
+              <Button buttonSize='medium' color='outline'>{__('pim_asset_manager.asset_collection.add_asset')}</Button>
+            ) : null}
+          </SectionTitle>
+          {/* Smart attribute indication isSmartAttribute(value.attribute.code, ruleRelations)*/}
+          {/* Validation error indication hasValidationError(value.attribute.code, errors)*/}
+          <AssetCollection assetFamilyIdentifier={value.attribute.referenceDataName} assetCodes={value.data} context={context} readonly={!value.editable}/>
+        </AssetCollectionContainer>
+      ))}
+    </React.Fragment>
+  );
+};
+
 const List = ({values, family, context}: ListProps) => {
   const familyLabel = (null !== family) ? family.labels[context.locale] : '';
 
   return (
     <AssetCollectionList>
       {hasValues(values) ? (
-        <React.Fragment>
-          {values.map((value: Value) => (
-            <AssetCollectionContainer key={value.attribute.code}>
-              <SectionTitle>
-                <AttributeBreadCrumb>
-                  {value.attribute.group} / {getAttributeLabel(value.attribute, context.locale)}
-                </AttributeBreadCrumb>
-                {!isValueComplete(value, family, context.channel) ? (
-                  <IncompleteIndicator>
-                    <Pill />
-                    <Label small grey>{__('pim_asset_manager.attribute.is_required')}</Label>
-                  </IncompleteIndicator>
-                ) : null}
-                <Spacer />
-                <AssetCounter>
-                  {__('pim_asset_manager.asset_collection.asset_count', {count: value.data.length}, value.data.length)}
-                </AssetCounter>
-                <Separator />
-                {value.channel !== null || value.locale !== null ? (
-                  <React.Fragment>
-                    <ContextLabel>
-                      {value.channel !== null ? <ChannelLabel channelCode={value.channel}/> : null}
-                      {value.locale !== null ? <LocaleLabel localeCode={value.locale}/> : null}
-                    </ContextLabel>
-                    <Separator />
-                  </React.Fragment>
-                ): null}
-                {value.editable ? (
-                  <Button buttonSize='medium' color='outline'>{__('pim_asset_manager.asset_collection.add_asset')}</Button>
-                ) : null}
-              </SectionTitle>
-              {/* Smart attribute indication isSmartAttribute(value.attribute.code, ruleRelations)*/}
-              {/* Validation error indication hasValidationError(value.attribute.code, errors)*/}
-              <AssetCollection assetFamilyIdentifier={value.attribute.referenceDataName} assetCodes={value.data} context={context} readonly={!value.editable}/>
-            </AssetCollectionContainer>
-          ))}
-        </React.Fragment>
+        <DisplayValues values={values} family={family} context={context} />
       ) : (
         <React.Fragment>
           <HelperSection>
@@ -117,7 +129,6 @@ const List = ({values, family, context}: ListProps) => {
               <HelperText>
                 {__('pim_asset_manager.asset_collection.helper.text', {family: familyLabel})}
                 <br />
-                {/* @todo Add the link */}
                 <a href="#">{__('pim_asset_manager.asset_collection.helper.link')}</a>
               </HelperText>
             </HelperTitle>
@@ -130,7 +141,6 @@ const List = ({values, family, context}: ListProps) => {
             <NoDataText>
               {__('pim_asset_manager.asset_collection.no_asset.text', {family: familyLabel})}
               <Spacer />
-              {/* @todo Add the link */}
               <a href="#">{__('pim_asset_manager.asset_collection.helper.link')}</a>
             </NoDataText>
           </NoDataSection>
