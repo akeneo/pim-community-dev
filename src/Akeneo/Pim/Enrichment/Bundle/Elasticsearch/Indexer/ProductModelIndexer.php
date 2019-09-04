@@ -53,7 +53,7 @@ class ProductModelIndexer implements ProductModelIndexerInterface
     }
 
     /**
-     * Indexes a product in the product and product model index from it code.
+     * Indexes a product in the product and product model index from its code.
      *
      * {@inheritdoc}
      */

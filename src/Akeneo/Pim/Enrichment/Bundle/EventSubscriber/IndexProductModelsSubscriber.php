@@ -23,9 +23,6 @@ class IndexProductModelsSubscriber implements EventSubscriberInterface
     /** @var ProductModelIndexerInterface */
     private $productModelIndexer;
 
-    /**
-     * @param ProductModelIndexerInterface $productModelIndexer
-     */
     public function __construct(ProductModelIndexerInterface $productModelIndexer)
     {
         $this->productModelIndexer = $productModelIndexer;

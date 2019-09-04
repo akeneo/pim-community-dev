@@ -89,8 +89,11 @@
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductModelDescendantsSaver`, to remove
     `Doctrine\Common\Persistence\ObjectManager`,
     `Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager` and
+    `Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface` and
+    `Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface` and
     `Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface`, and add
-    `Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses`
+    `Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses` and
+    `Akeneo\Tool\Component\StorageUtils\Indexer\ProductModelIndexerInterface`
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver`, to remove `Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager`
 - Delete `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\CompletenessNormalizer` (use `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductCompletenessNormalizer` instead)
 - Delete `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\CompletenessCollectionNormalizer` (use `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductCompletenessCollectionNormalizer` instead)

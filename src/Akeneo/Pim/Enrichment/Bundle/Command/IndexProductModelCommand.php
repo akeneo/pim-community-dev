@@ -162,9 +162,9 @@ class IndexProductModelCommand extends ContainerAwareCommand
     private function index(OutputInterface $output, array $codes): int
     {
         $productModels = $this->productModelRepository->findBy(['code' => $codes]);
-        $productModelsCount = count($productModels);
+        $productModelCount = count($productModels);
 
-        if ($productModelsCount !== count($codes)) {
+        if ($productModelCount !== count($codes)) {
             $codesFound = [];
             foreach ($productModels as $productModel) {
                 $codesFound[] = $productModel->getCode();
@@ -177,12 +177,12 @@ class IndexProductModelCommand extends ContainerAwareCommand
             ));
         }
 
-        $output->writeln(sprintf('<info>%d product models found for indexing</info>', $productModelsCount));
+        $output->writeln(sprintf('<info>%d product models found for indexing</info>', $productModelCount));
 
         $i = 0;
         $productModelBulk = [];
         $totalProductModelsIndexed = 0;
-        $progressBar = new ProgressBar($output, $productModelsCount);
+        $progressBar = new ProgressBar($output, $productModelCount);
 
         $progressBar->start();
         foreach ($productModels as $productModel) {
