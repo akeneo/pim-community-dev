@@ -48,7 +48,7 @@ class ProductModelDescendantsSaverSpec extends ObjectBehavior
     ) {
         $productModel->getCode()->willReturn('product_model_code');
         $productModelRepository->findDescendantProductIdentifiers($productModel)
-            ->willReturn(['product_1', 'product_2']);
+            ->willReturn([['identifier' => 'product_1'], ['identifier' => 'product_2']]);
 
         $variantProduct1->getIdentifier()->willReturn('product_1');
         $variantProduct2->getIdentifier()->willReturn('product_2');
