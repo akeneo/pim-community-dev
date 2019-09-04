@@ -20,7 +20,7 @@ franklin-insights-acceptance:
 
 .PHONY: franklin-insights-integration
 franklin-insights-integration:
-	$(PHP_EXEC) vendor/bin/phpunit -c app --testsuite=Franklin_Insights
+	$(PHP_EXEC) vendor/bin/phpunit -c app --testsuite=Franklin_Insights --testdox
 
 .PHONY: franklin-insights-end-to-end
 franklin-insights-end-to-end:

@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Symfony\Command\QualityHighlights;
 
-
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -32,7 +31,7 @@ class PurgePendingItemsTableCommand extends Command
 
         $answer = $io->confirm('Are you sure you want to delete all the data that have to be send to Franklin');
 
-        if($answer === false) {
+        if ($answer === false) {
             $io->note('Purge aborted, all the data have been kept.');
 
             exit(0);

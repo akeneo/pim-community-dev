@@ -199,6 +199,7 @@ $rules = [
             // external dependencies
             'Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass',
             'Ramsey\Uuid\Uuid',
+            'Doctrine\DBAL\Connection',
             // TODO: the next line could be removed with lazy-loaded commands
             'Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand',
             'Symfony\Component',
