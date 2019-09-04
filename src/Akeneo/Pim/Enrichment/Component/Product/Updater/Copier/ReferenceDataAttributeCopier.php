@@ -99,14 +99,13 @@ class ReferenceDataAttributeCopier extends AbstractAttributeCopier
         $toScope
     ) {
         $fromValue = $fromEntityWithValues->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
-        if (null !== $fromValue && null !== $fromValue->getData()) {
-            $this->entityWithValuesBuilder->addOrReplaceValue(
-                $toEntityWithValues,
-                $toAttribute,
-                $toLocale,
-                $toScope,
-                $fromValue->getData()
-            );
-        }
+        $value = (null !== $fromValue && null !== $fromValue->getData()) ? $fromValue->getData() : null;
+        $this->entityWithValuesBuilder->addOrReplaceValue(
+            $toEntityWithValues,
+            $toAttribute,
+            $toLocale,
+            $toScope,
+            $value
+        );
     }
 }

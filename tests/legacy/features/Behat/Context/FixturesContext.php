@@ -225,12 +225,20 @@ class FixturesContext extends PimContext
         $priceCurrency = $infos['price_currency'] ?? null;
 
         if ('' === $value) {
-            Assert::assertEmpty((string) $productValue);
+            Assert::assertEmpty((string) $productValue, sprintf(
+                'Expected value of attribute "%s" to be empty, "%s" found.',
+                $attributeCode,
+                (string) $productValue
+            ));
         } elseif ('media' === $backendType) {
             // media filename is auto generated during media handling and cannot be guessed
             // (it contains a timestamp)
             if ('**empty**' === $value) {
-                Assert::assertEmpty((string) $productValue);
+                Assert::assertEmpty((string) $productValue, sprintf(
+                    'Expected value of media attribute "%s" to be empty, "%s" found.',
+                    $attributeCode,
+                    (string) $productValue
+                ));
             } else {
                 Assert::assertTrue(
                     null !== $productValue->getData() &&

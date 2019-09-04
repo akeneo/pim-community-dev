@@ -110,23 +110,21 @@ class MediaAttributeCopier extends AbstractAttributeCopier
         $toScope
     ) {
         $fromValue = $fromEntityWithValues->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
-        if (null !== $fromValue) {
-            $file = null;
-            if (null !== $fromValue->getData()) {
-                $filesystem = $this->filesystemProvider->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS);
-                $rawFile = $this->fileFetcher->fetch($filesystem, $fromValue->getData()->getKey());
-                $file = $this->fileStorer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS, false);
+        $file = null;
+        if (null !== $fromValue && null !== $fromValue->getData()) {
+            $filesystem = $this->filesystemProvider->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS);
+            $rawFile = $this->fileFetcher->fetch($filesystem, $fromValue->getData()->getKey());
+            $file = $this->fileStorer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS, false);
 
-                $file->setOriginalFilename($fromValue->getData()->getOriginalFilename());
-            }
-
-            $this->entityWithValuesBuilder->addOrReplaceValue(
-                $toEntityWithValues,
-                $toAttribute,
-                $toLocale,
-                $toScope,
-                null !== $file ? $file->getKey() : null
-            );
+            $file->setOriginalFilename($fromValue->getData()->getOriginalFilename());
         }
+
+        $this->entityWithValuesBuilder->addOrReplaceValue(
+            $toEntityWithValues,
+            $toAttribute,
+            $toLocale,
+            $toScope,
+            null !== $file ? $file->getKey() : null
+        );
     }
 }

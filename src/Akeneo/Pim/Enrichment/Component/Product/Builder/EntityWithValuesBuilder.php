@@ -57,8 +57,9 @@ class EntityWithValuesBuilder implements EntityWithValuesBuilderInterface
         ?string $scopeCode,
         $data
     ): ?ValueInterface {
-        $isFormerValueFilled = null !== $entityWithValues->getValue($attribute->getCode(), $localeCode, $scopeCode);
-        $isNewValueFilled = '' !== $data && null !== $data && [] !== $data;
+        $formerValue = $entityWithValues->getValue($attribute->getCode(), $localeCode, $scopeCode);
+        $isFormerValueFilled = null !== $formerValue && '' !== $formerValue && [] !== $formerValue;
+        $isNewValueFilled = null !== $data && '' !== $data && [] !== $data;
 
         if (!$isFormerValueFilled && $isNewValueFilled) {
             return $this->createValue($entityWithValues, $attribute, $localeCode, $scopeCode, $data);
