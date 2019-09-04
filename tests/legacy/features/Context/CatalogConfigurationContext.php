@@ -59,9 +59,17 @@ class CatalogConfigurationContext extends PimContext
     {
         $this->initializeReferenceRepository();
 
+        $is_catalog_loaded = false;
         if ($this->dbTemplateExistsForCatalog($catalog)) {
-            $this->loadDbTemplateForCatalog($catalog);
-        } else {
+            try {
+                $this->loadDbTemplateForCatalog($catalog);
+                $is_catalog_loaded = true;
+            } catch (\RuntimeException $e) {
+                print_r(sprintf("Warning: Catalog can not be loaded from template: '%s'.", $e->getMessage()));
+            }
+        }
+
+        if (!$is_catalog_loaded) {
             $this->loadCatalog($this->getConfigurationFiles($catalog));
             $this->saveDbTemplateForCatalog($catalog);
         }
