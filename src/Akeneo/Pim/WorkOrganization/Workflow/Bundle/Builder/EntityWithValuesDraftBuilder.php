@@ -191,7 +191,7 @@ class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterf
                 }
                 if (!$foundValueDeleted) {
                     $newValues[$originalAttributeCode][$originalIndex]['locale'] = $originalValue['locale'];
-                    $newValues[$originalAttributeCode][$originalIndex]['scope'] = $originalValue['locale'];
+                    $newValues[$originalAttributeCode][$originalIndex]['scope'] = $originalValue['scope'];
                     $newValues[$originalAttributeCode][$originalIndex]['data'] = null;
                 }
             }

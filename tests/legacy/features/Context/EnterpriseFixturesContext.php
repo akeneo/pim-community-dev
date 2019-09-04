@@ -81,6 +81,8 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      */
     public function theFollowingProductDrafts(TableNode $table)
     {
+        $valueFactory = $this->getContainer()->get('pim_catalog.factory.value');
+
         foreach ($table->getHash() as $data) {
             $data = array_merge(
                 [
@@ -117,12 +119,16 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 foreach ($changes['values'] as $code => $rawValue) {
                     $attribute = $this->getContainer()->get('pim_catalog.repository.attribute')->findOneByIdentifier($code);
                     foreach ($rawValue as $value) {
-                        $values[] = $this->getContainer()->get('pim_catalog.factory.value')->create(
-                            $attribute,
-                            $value['scope'],
-                            $value['locale'],
-                            $value['data']
-                        );
+                        if (empty($value['data'])) {
+                            $values[] = $valueFactory->createTemporaryNull($attribute, $value['scope'], $value['locale']);
+                        } else {
+                            $values[] = $valueFactory->create(
+                                $attribute,
+                                $value['scope'],
+                                $value['locale'],
+                                $value['data']
+                            );
+                        }
                     }
                 }
             }

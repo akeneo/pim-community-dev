@@ -104,12 +104,20 @@ class ProductProposalNormalizer implements NormalizerInterface
         foreach ($changes['values'] as $code => $changeset) {
             $attribute = $this->attributeRepository->findOneByIdentifier($code);
             foreach ($changeset as $index => $change) {
-                $value = $this->valueFactory->create(
-                    $attribute,
-                    $change['scope'],
-                    $change['locale'],
-                    $change['data']
-                );
+                if (empty($change['data'])) {
+                    $value = $this->valueFactory->createTemporaryNull(
+                        $attribute,
+                        $change['scope'],
+                        $change['locale']
+                    );
+                } else {
+                    $value = $this->valueFactory->create(
+                        $attribute,
+                        $change['scope'],
+                        $change['locale'],
+                        $change['data']
+                    );
+                }
                 $valueCollection->add($value);
             }
         }
