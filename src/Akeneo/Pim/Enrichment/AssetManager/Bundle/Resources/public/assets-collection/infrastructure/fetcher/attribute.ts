@@ -1,13 +1,16 @@
-import {isString} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/utils';
+import {isString} from 'util';
 import promisify from 'akeneoassetmanager/tools/promisify';
 import {Attribute} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
 import {isLabels} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 const fetcherRegistry = require('pim/fetcher-registry');
 
-export const fetchAssetAttributes = async (): Promise<Attribute[]> => {
-  const attributes = await promisify(
-    fetcherRegistry.getFetcher('attribute').fetchByTypes(['akeneo_asset_multiple_link'])
-  );
+/**
+ * Need to export this function in a variable to be able to mock it in our tests.
+ * We couldn't require the pim/fetcher-registry in our test stack. We need to mock the legacy fetcher used.
+ */
+export const attributeFetcher = () => fetcherRegistry.getFetcher('attribute');
+export const fetchAssetAttributes = (attributeFetcher: any) => async (): Promise<Attribute[]> => {
+  const attributes = await promisify(attributeFetcher.fetchByTypes(['akeneo_asset_multiple_link']));
 
   return denormalizeAssetAttributeCollection(attributes);
 };
@@ -33,11 +36,9 @@ const denormalizeAssetAttribute = (normalizedAttribute: any): Attribute => {
     throw Error('The group is not well formated');
   }
 
-  if (null !== normalizedAttribute.is_read_only && 
-    (
-      undefined === normalizedAttribute.is_read_only ||
-      typeof normalizedAttribute.is_read_only !== 'boolean'
-    )
+  if (
+    null !== normalizedAttribute.is_read_only &&
+    (undefined === normalizedAttribute.is_read_only || typeof normalizedAttribute.is_read_only !== 'boolean')
   ) {
     throw Error('The is_read_only is not well formated');
   }

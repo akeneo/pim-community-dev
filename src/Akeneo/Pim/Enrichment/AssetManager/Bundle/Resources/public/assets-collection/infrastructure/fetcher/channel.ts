@@ -2,11 +2,16 @@ import promisify from 'akeneoassetmanager/tools/promisify';
 import {Channel} from 'akeneopimenrichmentassetmanager/platform/model/channel/channel';
 import {Locale} from 'akeneopimenrichmentassetmanager/platform/model/channel/locale';
 import {isLabels} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
-import {isString, isArray} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/utils';
+import {isString, isArray} from 'util';
 const fetcherRegistry = require('pim/fetcher-registry');
 
-export const fetchChannels = async (): Promise<Channel[]> => {
-  const channels = await promisify(fetcherRegistry.getFetcher('channel').fetchAll());
+/**
+ * Need to export this function in a variable to be able to mock it in our tests.
+ * We couldn't require the pim/fetcher-registry in our test stack. We need to mock the legacy fetcher used.
+ */
+export const channelFetcher = () => fetcherRegistry.getFetcher('channel');
+export const fetchChannels = (channelFetcher: any) => async (): Promise<Channel[]> => {
+  const channels = await promisify(channelFetcher.fetchAll());
 
   return denormalizeChannelCollection(channels);
 };
@@ -41,9 +46,6 @@ const isLocales = (locales: any): locales is Locale[] => {
   }
 
   return !locales.some((locale: any) => {
-    return !isString(locale.code) ||
-      !isString(locale.label) ||
-      !isString(locale.region) ||
-      !isString(locale.language)
+    return !isString(locale.code) || !isString(locale.label) || !isString(locale.region) || !isString(locale.language);
   });
 };

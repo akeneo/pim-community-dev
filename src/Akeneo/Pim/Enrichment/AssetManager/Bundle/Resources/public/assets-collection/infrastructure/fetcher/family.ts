@@ -1,10 +1,19 @@
 import promisify from 'akeneoassetmanager/tools/promisify';
-import {Family, FamilyCode, AttributeRequirements} from 'akeneopimenrichmentassetmanager/platform/model/structure/family';
+import {
+  Family,
+  FamilyCode,
+  AttributeRequirements,
+} from 'akeneopimenrichmentassetmanager/platform/model/structure/family';
+import {isString, isObject} from 'util';
 const fetcherRegistry = require('pim/fetcher-registry');
-import {isString, isObject} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/utils';
 
-export const fetchFamily = async (familyCode: FamilyCode): Promise<Family> => {
-  const family = await promisify(fetcherRegistry.getFetcher('family').fetch(familyCode));
+/**
+ * Need to export this function in a variable to be able to mock it in our tests.
+ * We couldn't require the pim/fetcher-registry in our test stack. We need to mock the legacy fetcher used.
+ */
+export const familyFetcher = () => fetcherRegistry.getFetcher('family');
+export const fetchFamily = (familyFetcher: any) => async (familyCode: FamilyCode): Promise<Family> => {
+  const family = await promisify(familyFetcher.fetch(familyCode));
 
   return denormalizeFamily(family);
 };
@@ -34,8 +43,7 @@ const isAttributeRequirements = (attributeRequirements: any): attributeRequireme
   return !Object.keys(attributeRequirements).some(
     (key: string): boolean => {
       return (
-        !isString(key) ||
-        attributeRequirements[key].some((attributeCode: any): boolean => !isString(attributeCode))
+        !isString(key) || attributeRequirements[key].some((attributeCode: any): boolean => !isString(attributeCode))
       );
     }
   );

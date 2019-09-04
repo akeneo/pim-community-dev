@@ -29,6 +29,7 @@ class AssetTabForm extends (Form as {new (config: any): any}) {
   }
 
   configure() {
+    // Register the asset tab in the sidebar
     // this.trigger('tab:register', {
     //   code: this.code,
     //   label: __('pim_enrich.entity.product.module.asset.title')

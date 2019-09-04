@@ -12,7 +12,6 @@ import {Label} from 'akeneopimenrichmentassetmanager/platform/component/common/l
 import AssetIllustration from 'akeneopimenrichmentassetmanager/platform/component/visual/illustration/asset';
 import __ from 'akeneoreferenceentity/tools/translator';
 import {fetchAssetCollection} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/asset';
-import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 
 const AssetCard = styled.div<{readonly: boolean}>`
   display: flex;
@@ -76,7 +75,7 @@ export const AssetCollection = ({assetFamilyIdentifier, assetCodes, readonly, co
 
   React.useEffect(() => {
     if (assetCodes.length !== 0 && (noChangeInCollection(assetCodes, assets))) {
-      fetchAssetCollection(assetFetcher)(assetFamilyIdentifier, assetCodes, context).then((receivedAssets: Asset[]) => {
+      fetchAssetCollection(assetFamilyIdentifier, assetCodes, context).then((receivedAssets: Asset[]) => {
         assetsReceived(receivedAssets);
       })
     }

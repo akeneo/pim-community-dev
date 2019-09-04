@@ -1,9 +1,9 @@
-const fetcherRegistry = require('pim/fetcher-registry');
 import promisify from 'akeneoassetmanager/tools/promisify';
 import {AttributeGroupCode} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
 import {LocaleCode, LocaleReference} from 'akeneopimenrichmentassetmanager/platform/model/channel/locale';
 import {CategoryCode} from 'akeneopimenrichmentassetmanager/enrich/domain/model/product';
-import {isObject, isArray, isString, isBoolean} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/utils';
+import {isObject, isArray, isString, isBoolean} from 'util';
+const fetcherRegistry = require('pim/fetcher-registry');
 
 export type AttributeGroupPermission = {
   code: AttributeGroupCode;
@@ -46,8 +46,13 @@ export type Permissions = {
   categories: CategoryPermissions;
 };
 
-export const fetchPermissions = async (): Promise<Permissions> => {
-  const permissions = await promisify(fetcherRegistry.getFetcher('permission').fetchAll());
+/**
+ * Need to export this function in a variable to be able to mock it in our tests.
+ * We couldn't require the pim/fetcher-registry in our test stack. We need to mock the legacy fetcher used.
+ */
+export const permissionFetcher = () => fetcherRegistry.getFetcher('permission');
+export const fetchPermissions = (permissionFetcher: any) => async (): Promise<Permissions> => {
+  const permissions = await promisify(permissionFetcher.fetchAll());
 
   return denormalizePermissionCollection(permissions);
 };
@@ -70,25 +75,27 @@ const denormalizePermissionCollection = (permissions: any): Permissions => {
   };
 };
 
-const isAttributeGroupPermissions = (attributeGroupPermissions: any): attributeGroupPermissions is AttributeGroupPermission[] => {
-  return isArray(attributeGroupPermissions) && !attributeGroupPermissions.some(({code, edit, view}: any) => 
-    !isString(code) || 
-    !isBoolean(edit) || 
-    !isBoolean(view)
-  )
+const isAttributeGroupPermissions = (
+  attributeGroupPermissions: any
+): attributeGroupPermissions is AttributeGroupPermission[] => {
+  return (
+    isArray(attributeGroupPermissions) &&
+    !attributeGroupPermissions.some(
+      ({code, edit, view}: any) => !isString(code) || !isBoolean(edit) || !isBoolean(view)
+    )
+  );
 };
 
 const isLocalePermissions = (localePermissions: any): localePermissions is LocalePermission[] => {
-  return isArray(localePermissions) && !localePermissions.some(({code, edit, view}: any) => 
-    !isString(code) || 
-    !isBoolean(edit) || 
-    !isBoolean(view)
-  )
+  return (
+    isArray(localePermissions) &&
+    !localePermissions.some(({code, edit, view}: any) => !isString(code) || !isBoolean(edit) || !isBoolean(view))
+  );
 };
 const isCategoryPermissions = (categoryPermissions: any): categoryPermissions is CategoryPermissions => {
-  return isObject(categoryPermissions) && 
-    (
-      !isArray(categoryPermissions.EDIT_ITEMS) || 
-      !categoryPermissions.EDIT_ITEMS.some((categoryCode: any) => !isString(categoryCode))
-    )
+  return (
+    isObject(categoryPermissions) &&
+    (!isArray(categoryPermissions.EDIT_ITEMS) ||
+      !categoryPermissions.EDIT_ITEMS.some((categoryCode: any) => !isString(categoryCode)))
+  );
 };

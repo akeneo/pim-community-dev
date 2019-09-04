@@ -1,6 +1,12 @@
 import generate from 'akeneopimenrichmentassetmanager/assets-collection/application/value-generator';
-import {fetchAssetAttributes} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/attribute';
-import {fetchPermissions} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/permission';
+import {
+  attributeFetcher,
+  fetchAssetAttributes,
+} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/attribute';
+import {
+  permissionFetcher,
+  fetchPermissions,
+} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/permission';
 import {
   AttributeGroupPermission,
   LocalePermission,
@@ -11,6 +17,8 @@ import {CategoryCode} from 'akeneopimenrichmentassetmanager/enrich/domain/model/
 jest.mock('pim/fetcher-registry', () => {});
 fetchAssetAttributes = jest.fn();
 fetchPermissions = jest.fn();
+attributeFetcher = jest.fn();
+permissionFetcher = jest.fn();
 
 test('It should generate a value collection from the product with all attributes editable', async () => {
   // The values returns are editable
@@ -28,8 +36,8 @@ test('It should generate a value collection from the product with all attributes
   const attributesForThisLevel = ['packshot', 'notices'];
   const categoriesEditPermission = ['scanners'];
 
-  fetchAssetAttributes.mockImplementation(() => getMockAssetAttributes(isReadOnly));
-  fetchPermissions.mockImplementation(() =>
+  fetchAssetAttributes.mockImplementation(attributeFetcher => () => getMockAssetAttributes(isReadOnly));
+  fetchPermissions.mockImplementation(permissionFetcher => () =>
     getMockPermissions(attributeGroupPermission, localePermission, categoriesEditPermission)
   );
   const product = getMockProduct(attributesForThisLevel);
@@ -86,8 +94,8 @@ test('It should generate a value collection from the product with an attribute g
   const attributesForThisLevel = ['packshot', 'notices'];
   const categoriesEditPermission = ['scanners'];
 
-  fetchAssetAttributes.mockImplementation(() => getMockAssetAttributes(isReadOnly));
-  fetchPermissions.mockImplementation(() =>
+  fetchAssetAttributes.mockImplementation(attributeFetcher => () => getMockAssetAttributes(isReadOnly));
+  fetchPermissions.mockImplementation(permissionFetcher => () =>
     getMockPermissions(attributeGroupPermission, localePermission, categoriesEditPermission)
   );
   const product = getMockProduct(attributesForThisLevel);
@@ -125,6 +133,10 @@ test('It should generate a value collection from the product with an attribute g
   ];
 
   const valueCollection = await generate(product);
+  expect(fetchAssetAttributes).toBeCalled();
+  expect(attributeFetcher).toBeCalled();
+  expect(fetchPermissions).toBeCalled();
+  expect(permissionFetcher).toBeCalled();
   expect(valueCollection).toEqual(expectedValueCollection);
 });
 
@@ -134,7 +146,7 @@ test('It should generate a value collection from the product with a locale non e
     view: true,
     edit: true,
   };
-  // The locale for the packshot doesn't have the edit permission 
+  // The locale for the packshot doesn't have the edit permission
   const localePermission = {
     code: 'en_US',
     view: true,
@@ -144,8 +156,8 @@ test('It should generate a value collection from the product with a locale non e
   const attributesForThisLevel = ['packshot', 'notices'];
   const categoriesEditPermission = ['scanners'];
 
-  fetchAssetAttributes.mockImplementation(() => getMockAssetAttributes(isReadOnly));
-  fetchPermissions.mockImplementation(() =>
+  fetchAssetAttributes.mockImplementation(attributeFetcher => () => getMockAssetAttributes(isReadOnly));
+  fetchPermissions.mockImplementation(permissionFetcher => () =>
     getMockPermissions(attributeGroupPermission, localePermission, categoriesEditPermission)
   );
   const product = getMockProduct(attributesForThisLevel);
@@ -197,13 +209,13 @@ test('It should generate a value collection from the product with a read only at
     view: true,
     edit: true,
   };
-  // The attributes are read only 
+  // The attributes are read only
   const isReadOnly = true;
   const attributesForThisLevel = ['packshot', 'notices'];
   const categoriesEditPermission = ['scanners'];
 
-  fetchAssetAttributes.mockImplementation(() => getMockAssetAttributes(isReadOnly));
-  fetchPermissions.mockImplementation(() =>
+  fetchAssetAttributes.mockImplementation(attributeFetcher => () => getMockAssetAttributes(isReadOnly));
+  fetchPermissions.mockImplementation(permissionsFetcher => () =>
     getMockPermissions(attributeGroupPermission, localePermission, categoriesEditPermission)
   );
   const product = getMockProduct(attributesForThisLevel);
@@ -260,8 +272,8 @@ test('It should generate a value collection from the product with a non editable
   const attributesForThisLevel = ['notices'];
   const categoriesEditPermission = ['scanners'];
 
-  fetchAssetAttributes.mockImplementation(() => getMockAssetAttributes(isReadOnly));
-  fetchPermissions.mockImplementation(() =>
+  fetchAssetAttributes.mockImplementation(attributeFetcher => () => getMockAssetAttributes(isReadOnly));
+  fetchPermissions.mockImplementation(permissionFetcher => () =>
     getMockPermissions(attributeGroupPermission, localePermission, categoriesEditPermission)
   );
   const product = getMockProduct(attributesForThisLevel);
@@ -318,8 +330,8 @@ test('It should generate a value collection from the product with a non editable
   // The category scanner doesn't have the edit permission
   const categoriesEditPermission = [];
 
-  fetchAssetAttributes.mockImplementation(() => getMockAssetAttributes(isReadOnly));
-  fetchPermissions.mockImplementation(() =>
+  fetchAssetAttributes.mockImplementation(attributeFetcher => () => getMockAssetAttributes(isReadOnly));
+  fetchPermissions.mockImplementation(permissionFetcher => () =>
     getMockPermissions(attributeGroupPermission, localePermission, categoriesEditPermission)
   );
   const product = getMockProduct(attributesForThisLevel);
