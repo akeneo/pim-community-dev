@@ -209,15 +209,15 @@ jobs:
                 sleep 25 # wait mysql to be up
                 docker-compose exec fpm bin/console --env=behat pim:install:db
       - run:
-            name: Non critical Behat
-            command: |
-                TESTFILES=$(docker-compose exec -T fpm vendor/bin/behat --list-scenarios -p legacy -s $TESTSUITE | circleci tests split --split-by=timings)
-                .circleci/run_behat.sh $TESTSUITE $TESTFILES
-      - run:
             name: Critical Behat
             command: |
                 TESTFILES=$(docker-compose exec -T fpm vendor/bin/behat --list-scenarios -p legacy -s critical | circleci tests split --split-by=timings)
                 .circleci/run_behat.sh critical $TESTFILES
+      - run:
+          name: Non critical Behat
+          command: |
+              TESTFILES=$(docker-compose exec -T fpm vendor/bin/behat --list-scenarios -p legacy -s $TESTSUITE | circleci tests split --split-by=timings)
+              .circleci/run_behat.sh $TESTSUITE $TESTFILES
       - run:
           name: Gather Junit test result files in the same directory to improve the render of failing tests
           command: |
