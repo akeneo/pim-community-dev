@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8719: Update Mink Selenium driver
+- PIM-8715: Use the same page size than the underlying cursor when applying product rules
 
 # 3.0.40 (2019-09-02)
 
