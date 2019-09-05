@@ -53,20 +53,11 @@ interface ProductInterface extends
     public function getIdentifier();
 
     /**
-     * @param ValueInterface $identifier
-     *
-     * @return ProductInterface
-     *
-     * @deprecated This method will be removed with TIP-722
-     */
-    public function setIdentifier(ValueInterface $identifier);
-
-    /**
      * @param string|null $identifierValue
      *
      * @return ProductInterface
      */
-    public function setIdentifierValue(?string $identifierValue): ProductInterface;
+    public function setIdentifier(?string $identifierValue): ProductInterface;
 
     /**
      * Get the product groups

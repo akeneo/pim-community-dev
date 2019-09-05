@@ -43,7 +43,7 @@ class UniqueAxesCombinationSetSpec extends ObjectBehavior
 
         $variantProductA = new Product();
         $variantProductA->addValue($identifierA);
-        $variantProductA->setIdentifierValue('product_a');
+        $variantProductA->setIdentifier('product_a');
         $variantProductA->setFamilyVariant($familyVariant);
         $variantProductA->setParent($productModel);
 
@@ -51,7 +51,7 @@ class UniqueAxesCombinationSetSpec extends ObjectBehavior
 
         $variantProductB = new Product();
         $variantProductB->addValue($identifierB);
-        $variantProductB->setIdentifierValue('product_b');
+        $variantProductB->setIdentifier('product_b');
         $variantProductB->setFamilyVariant($familyVariant);
         $variantProductB->setParent($productModel);
 
@@ -106,7 +106,7 @@ class UniqueAxesCombinationSetSpec extends ObjectBehavior
 
         $variantProduct = new Product();
         $variantProduct->addValue($identifier);
-        $variantProduct->setIdentifierValue('valid_variant_product');
+        $variantProduct->setIdentifier('valid_variant_product');
         $variantProduct->setFamilyVariant($familyVariant);
         $variantProduct->setParent($productModel);
 
@@ -114,7 +114,7 @@ class UniqueAxesCombinationSetSpec extends ObjectBehavior
 
         $invalidVariantProduct = new Product();
         $invalidVariantProduct->addValue($invalidIdentifier);
-        $invalidVariantProduct->setIdentifierValue('invalid_product');
+        $invalidVariantProduct->setIdentifier('invalid_product');
         $invalidVariantProduct->setFamilyVariant($familyVariant);
         $invalidVariantProduct->setParent($productModel);
 

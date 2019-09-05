@@ -47,7 +47,7 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
         $attribute = new Attribute();
         $attribute->setCode('my_attribute');
         $product->addValue(ScalarValue::value($attribute, 'a-product'));
-        $product->setIdentifierValue('a-product');
+        $product->setIdentifier('a-product');
         $this->beConstructedWith([$product->getIdentifier() => $product]);
 
         $this->findOneByIdentifier('a-product')->shouldReturn($product);
@@ -64,7 +64,7 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
         $attribute = new Attribute();
         $attribute->setCode('my_attribute');
         $product->addValue(ScalarValue::value($attribute, 'a-product'));
-        $product->setIdentifierValue('a-product');
+        $product->setIdentifier('a-product');
 
         $this->save($product)->shouldReturn(null);
 
