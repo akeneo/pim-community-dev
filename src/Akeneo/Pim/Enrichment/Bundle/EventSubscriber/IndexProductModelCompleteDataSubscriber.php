@@ -5,7 +5,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface;
+use Akeneo\Tool\Component\StorageUtils\Indexer\ProductModelIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -19,13 +19,13 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class IndexProductModelCompleteDataSubscriber implements EventSubscriberInterface
 {
-    /** @var IndexerInterface */
+    /** @var ProductModelIndexerInterface */
     private $productModelIndexer;
 
     /**
-     * @param IndexerInterface $productModelIndexer
+     * @param ProductModelIndexerInterface $productModelIndexer
      */
-    public function __construct(IndexerInterface $productModelIndexer)
+    public function __construct(ProductModelIndexerInterface $productModelIndexer)
     {
         $this->productModelIndexer = $productModelIndexer;
     }
@@ -81,6 +81,6 @@ class IndexProductModelCompleteDataSubscriber implements EventSubscriberInterfac
             $this->indexProductModel($parent);
         }
 
-        $this->productModelIndexer->index($productModel);
+        $this->productModelIndexer->indexFromProductModelCode($productModel->getCode());
     }
 }

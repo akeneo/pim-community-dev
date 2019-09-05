@@ -16,11 +16,10 @@ services:
         arguments:
             - '@pim_indexing_serializer'
             - '@akeneo_elasticsearch.client.product_and_product_model'
-            - 'pim_catalog_product'
+            - '@pim_catalog.repository.product_model'
 
     pim_catalog.elasticsearch.indexer.product_model_descendance:
         class: '%pim_catalog.elasticsearch.indexer.product_model_descendants_indexer.class%'
         arguments:
             - '@pim_catalog.elasticsearch.indexer.product'
-            - '@pim_catalog.elasticsearch.indexer.product_model'
             - '@pim_catalog.elasticsearch.indexer.product_model'

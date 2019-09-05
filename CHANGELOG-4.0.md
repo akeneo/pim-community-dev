@@ -89,8 +89,12 @@
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductModelDescendantsSaver`, to remove
     `Doctrine\Common\Persistence\ObjectManager`,
     `Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager` and
+    `Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface` and
+    `Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface` and
+    `Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface` and
     `Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface`, and add
-    `Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses`
+    `Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses` and
+    `Akeneo\Tool\Component\StorageUtils\Indexer\ProductModelIndexerInterface`
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver`, to remove `Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager`
 - Delete `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\CompletenessNormalizer` (use `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductCompletenessNormalizer` instead)
 - Delete `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\CompletenessCollectionNormalizer` (use `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductCompletenessCollectionNormalizer` instead)
@@ -144,6 +148,9 @@
     - `Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface`
 - Class `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer` now implements the single interface `Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface` instead of
     `Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface`, `Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface`, `Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface` and `Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface`
+- Class `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelIndexer` now implements the single interface `Akeneo\Tool\Component\StorageUtils\Indexer\ProductModelIndexerInterface` instead of
+    `Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface`, `Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface`, `Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface` and `Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface`
+- Change constructor of `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelIndexer` to remove `$indexType`.
 - Update constructor of `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\IndexProductsSubscriber` to remove
     `Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface`, `Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface` and `Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface`
     and add `Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface`

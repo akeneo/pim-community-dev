@@ -103,6 +103,6 @@ class IndexProductsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->productIndexer->removeFromProductId((string) $event->getSubjectId());
+        $this->productIndexer->removeFromProductId($event->getSubjectId());
     }
 }

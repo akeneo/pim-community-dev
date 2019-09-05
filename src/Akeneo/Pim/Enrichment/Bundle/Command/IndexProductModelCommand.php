@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Command;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
+use Akeneo\Tool\Component\StorageUtils\Indexer\ProductModelIndexerInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -32,8 +34,8 @@ class IndexProductModelCommand extends ContainerAwareCommand
     /** @var ProductModelRepositoryInterface */
     private $productModelRepository;
 
-    /** @var BulkIndexerInterface */
-    private $bulkProductModelIndexer;
+    /** @var ProductModelIndexerInterface */
+    private $productModelIndexer;
 
     /** @var BulkIndexerInterface */
     private $bulkProductModelDescendantsIndexer;
@@ -49,7 +51,7 @@ class IndexProductModelCommand extends ContainerAwareCommand
 
     public function __construct(
         ProductModelRepositoryInterface $productModelRepository,
-        BulkIndexerInterface $bulkProductModelIndexer,
+        ProductModelIndexerInterface $productModelIndexer,
         BulkIndexerInterface $bulkProductModelDescendantsIndexer,
         ObjectManager $objectManager,
         Client $productAndProductModelClient,
@@ -57,7 +59,7 @@ class IndexProductModelCommand extends ContainerAwareCommand
     ) {
         parent::__construct();
         $this->productModelRepository = $productModelRepository;
-        $this->bulkProductModelIndexer = $bulkProductModelIndexer;
+        $this->productModelIndexer = $productModelIndexer;
         $this->bulkProductModelDescendantsIndexer = $bulkProductModelDescendantsIndexer;
         $this->objectManager = $objectManager;
         $this->productAndProductModelClient = $productAndProductModelClient;
@@ -131,7 +133,12 @@ class IndexProductModelCommand extends ContainerAwareCommand
         $progressBar->start();
         while (!empty($rootProductModels =
             $this->productModelRepository->searchRootProductModelsAfter($lastRootProductModel, self::BULK_SIZE))) {
-            $this->bulkProductModelIndexer->indexAll($rootProductModels, ['index_refresh' => Refresh::disable()]);
+            $this->productModelIndexer->indexFromProductModelCodes(
+                array_map(function (ProductModelInterface $productModel) {
+                    return $productModel->getCode();
+                }, $rootProductModels),
+                ['index_refresh' => Refresh::disable()]
+            );
             $this->bulkProductModelDescendantsIndexer->indexAll($rootProductModels, ['index_refresh' => Refresh::disable()]);
             $this->objectManager->clear();
 
@@ -155,9 +162,9 @@ class IndexProductModelCommand extends ContainerAwareCommand
     private function index(OutputInterface $output, array $codes): int
     {
         $productModels = $this->productModelRepository->findBy(['code' => $codes]);
-        $productModelsCount = count($productModels);
+        $productModelCount = count($productModels);
 
-        if ($productModelsCount !== count($codes)) {
+        if ($productModelCount !== count($codes)) {
             $codesFound = [];
             foreach ($productModels as $productModel) {
                 $codesFound[] = $productModel->getCode();
@@ -170,12 +177,12 @@ class IndexProductModelCommand extends ContainerAwareCommand
             ));
         }
 
-        $output->writeln(sprintf('<info>%d product models found for indexing</info>', $productModelsCount));
+        $output->writeln(sprintf('<info>%d product models found for indexing</info>', $productModelCount));
 
         $i = 0;
         $productModelBulk = [];
         $totalProductModelsIndexed = 0;
-        $progressBar = new ProgressBar($output, $totalProductModelsIndexed);
+        $progressBar = new ProgressBar($output, $productModelCount);
 
         $progressBar->start();
         foreach ($productModels as $productModel) {
@@ -184,7 +191,12 @@ class IndexProductModelCommand extends ContainerAwareCommand
             $i++;
 
             if (0 === $i % self::BULK_SIZE) {
-                $this->bulkProductModelIndexer->indexAll($productModelBulk, ['index_refresh' => Refresh::disable()]);
+                $this->productModelIndexer->indexFromProductModelCodes(
+                    array_map(function (ProductModelInterface $productModel) {
+                        return $productModel->getCode();
+                    }, $productModelBulk),
+                    ['index_refresh' => Refresh::disable()]
+                );
                 $this->bulkProductModelDescendantsIndexer->indexAll($productModelBulk, ['index_refresh' => Refresh::disable()]);
                 $this->objectManager->clear();
 
@@ -197,7 +209,12 @@ class IndexProductModelCommand extends ContainerAwareCommand
         }
 
         if (!empty($productModelBulk)) {
-            $this->bulkProductModelIndexer->indexAll($productModelBulk, ['index_refresh' => Refresh::disable()]);
+            $this->productModelIndexer->indexFromProductModelCodes(
+                array_map(function (ProductModelInterface $productModel) {
+                    return $productModel->getCode();
+                }, $productModelBulk),
+                ['index_refresh' => Refresh::disable()]
+            );
             $this->bulkProductModelDescendantsIndexer->indexAll($productModelBulk, ['index_refresh' => Refresh::disable()]);
             $this->objectManager->clear();
 

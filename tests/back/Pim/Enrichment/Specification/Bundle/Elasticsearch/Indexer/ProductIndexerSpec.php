@@ -20,11 +20,7 @@ class ProductIndexerSpec extends ObjectBehavior
         Client $productAndProductModelIndexClient,
         ProductRepositoryInterface $productRepository
     ) {
-        $this->beConstructedWith(
-            $normalizer,
-            $productAndProductModelIndexClient,
-            $productRepository
-        );
+        $this->beConstructedWith($normalizer, $productAndProductModelIndexClient, $productRepository);
     }
 
     function it_is_initializable()
@@ -48,12 +44,9 @@ class ProductIndexerSpec extends ObjectBehavior
         $normalizer
             ->normalize($product, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->willReturn(['id' => $identifier, 'a key' => 'a value']);
-        $productAndProductModelIndexClient->bulkIndexes(
-            ProductIndexer::INDEX_TYPE,
-            [['id' => $identifier, 'a key' => 'a value']],
-            'id',
-            Refresh::disable()
-        )->shouldBeCalled();
+        $productAndProductModelIndexClient
+            ->bulkIndexes(ProductIndexer::INDEX_TYPE, [['id' => $identifier, 'a key' => 'a value']], 'id', Refresh::disable())
+            ->shouldBeCalled();
 
         $this->indexFromProductIdentifier($identifier);
     }

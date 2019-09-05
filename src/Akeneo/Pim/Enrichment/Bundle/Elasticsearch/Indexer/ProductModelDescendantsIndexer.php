@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
+use Akeneo\Tool\Component\StorageUtils\Indexer\ProductModelIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Doctrine\Common\Collections\Collection;
@@ -31,25 +32,19 @@ class ProductModelDescendantsIndexer implements
     /** @var ProductIndexerInterface */
     private $productIndexer;
 
-    /** @var BulkIndexerInterface */
+    /** @var ProductModelIndexerInterface */
     private $productModelIndexer;
-
-    /** @var BulkRemoverInterface */
-    private $productModelRemover;
 
     /**
      * @param ProductIndexerInterface $productIndexer
-     * @param BulkIndexerInterface    $productModelIndexer
-     * @param BulkRemoverInterface    $productModelRemover
+     * @param ProductModelIndexerInterface $productModelIndexer
      */
     public function __construct(
         ProductIndexerInterface $productIndexer,
-        BulkIndexerInterface $productModelIndexer,
-        BulkRemoverInterface $productModelRemover
+        ProductModelIndexerInterface $productModelIndexer
     ) {
         $this->productIndexer = $productIndexer;
         $this->productModelIndexer = $productModelIndexer;
-        $this->productModelRemover = $productModelRemover;
     }
 
     /**
@@ -156,7 +151,12 @@ class ProductModelDescendantsIndexer implements
             return;
         }
 
-        $this->productModelIndexer->indexAll($productModelChildren->toArray(), $options);
+        $this->productModelIndexer->indexFromProductModelCodes(
+            array_map(function (ProductModelInterface $productModel): string {
+                return $productModel->getCode();
+            }, $productModelChildren->toArray()),
+            $options
+        );
 
         foreach ($productModelChildren as $productModelChild) {
             $this->indexProductModelChildren($productModelChild->getProductModels(), $options);
@@ -186,7 +186,12 @@ class ProductModelDescendantsIndexer implements
             return;
         }
 
-        $this->productModelRemover->removeAll($productModelChildren->toArray());
+        $this->productModelIndexer->removeFromProductModelIds(array_map(
+            function (ProductModelInterface $productModel): int {
+                return $productModel->getId();
+            },
+            $productModelChildren->toArray()
+        ));
 
         foreach ($productModelChildren as $productModelChild) {
             $this->removeProductModelChildren($productModelChild->getProductModels());
