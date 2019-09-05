@@ -62,7 +62,6 @@ services:
         class: '%pim_catalog.saver.product_model_descendants.class%'
         arguments:
             - '@pim_catalog.repository.product_model_without_permission'
-            - '@pim_catalog.query.product_query_builder_factory_without_permission'
             - '@pim_catalog.elasticsearch.indexer.product'
             - '@pim_catalog.elasticsearch.indexer.product_model'
             - '@pim_catalog.completeness.product.compute_and_persist'
