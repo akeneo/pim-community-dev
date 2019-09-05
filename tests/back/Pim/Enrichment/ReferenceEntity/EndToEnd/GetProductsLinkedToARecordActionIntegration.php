@@ -221,7 +221,7 @@ final class GetProductsLinkedToARecordActionIntegration extends TestCase
 
         $product = new Product();
         $product->setValues($valueCollection);
-        $product->setIdentifier($product->getValue($this->sku->getCode()));
+        $product->setIdentifierValue($product->getValue($this->sku->getCode())->getData());
 
         $constraints = $this->get('validator')->validate($product);
         self::assertCount(0, $constraints);
