@@ -44,7 +44,7 @@ class ValueFactory
      * channelCode exists.
      * Warning! As we never store any empty value in the database, you can not create empty values with this method.
      * In some specific cases, you will need temporary empty values (e.g. PEF, CSV Export...). For these specific
-     * cases, use ValueFactor::createNull.
+     * cases, use ValueFactory::createTemporaryNull.
      *
      * @param AttributeInterface $attribute
      * @param string             $channelCode
