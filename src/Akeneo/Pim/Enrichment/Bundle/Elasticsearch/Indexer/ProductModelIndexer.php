@@ -106,6 +106,7 @@ class ProductModelIndexer implements ProductModelIndexerInterface
 
     /**
      * Removes the product models from the product and product model index.
+     * Removes also the descendants of the product models (and the descendants of the descendants, etc...).
      *
      * {@inheritdoc}
      */
@@ -115,35 +116,20 @@ class ProductModelIndexer implements ProductModelIndexerInterface
             return;
         }
 
-        if (count($productModelIds) === 1) {
-            $this->productAndProductModelClient->delete(
-                self::INDEX_TYPE,
-                self::PRODUCT_MODEL_IDENTIFIER_PREFIX . (string) $productModelIds[0]
-            );
-            $this->removeDescendantsOf($productModelIds[0]);
-
-            return;
-        }
-
-        $this->productAndProductModelClient->bulkDelete(self::INDEX_TYPE, array_map(
+        $indexIdentifiers = array_map(
             function ($productModelId) {
                 return self::PRODUCT_MODEL_IDENTIFIER_PREFIX . (string) $productModelId;
             },
             $productModelIds
-        ));
-    }
+        );
 
-    /**
-     * Queries all the different ES indexes to remove any document having a reference to this objectId in its ancestors
-     *
-     * @param int $productModelId
-     */
-    private function removeDescendantsOf(int $productModelId): void
-    {
         $this->productAndProductModelClient->deleteByQuery([
             'query' => [
-                'term' => [
-                    'ancestors.ids' => self::PRODUCT_MODEL_IDENTIFIER_PREFIX . (string) $productModelId,
+                'bool' => [
+                    'should' => [
+                        ['terms' => ['id' => $indexIdentifiers]],
+                        ['terms' => ['ancestors.ids' => $indexIdentifiers]],
+                    ],
                 ],
             ],
         ]);

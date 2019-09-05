@@ -111,12 +111,13 @@ class ProductModelIndexerSpec extends ObjectBehavior
 
     function it_deletes_product_models_from_elasticsearch_index($productAndProductModelClient)
     {
-        $productAndProductModelClient->delete('pim_catalog_product', 'product_model_40')->shouldBeCalled();
-
         $productAndProductModelClient->deleteByQuery([
             'query' => [
-                'term' => [
-                    'ancestors.ids' => 'product_model_40',
+                'bool' => [
+                    'should' => [
+                        ['terms' => ['id' => ['product_model_40']]],
+                        ['terms' => ['ancestors.ids' => ['product_model_40']]],
+                    ],
                 ],
             ],
         ])->shouldBeCalled();
@@ -126,8 +127,16 @@ class ProductModelIndexerSpec extends ObjectBehavior
 
     function it_bulk_deletes_product_models_from_elasticsearch_index($productAndProductModelClient)
     {
-        $productAndProductModelClient->bulkDelete('pim_catalog_product', ['product_model_40', 'product_model_33'])
-            ->shouldBeCalled();
+        $productAndProductModelClient->deleteByQuery([
+            'query' => [
+                'bool' => [
+                    'should' => [
+                        ['terms' => ['id' => ['product_model_40', 'product_model_33']]],
+                        ['terms' => ['ancestors.ids' => ['product_model_40', 'product_model_33']]],
+                    ],
+                ],
+            ],
+        ])->shouldBeCalled();
 
         $this->removeFromProductModelIds([40, 33])->shouldReturn(null);
     }
