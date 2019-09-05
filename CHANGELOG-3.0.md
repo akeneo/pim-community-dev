@@ -1,5 +1,18 @@
 # 3.0.x
 
+# 3.0.41 (2019-09-05)
+
+## Bug fixes
+
+- PIM-8719: Update Mink Selenium driver
+- PIM-8715: Use the same page size than the underlying cursor when applying product rules
+
+# 3.0.40 (2019-09-02)
+
+## Bug fixes
+
+- PIM-8588: Fix proposal diff for reference entity
+
 # 3.0.39 (2019-08-28)
 
 ## Bug fixes
