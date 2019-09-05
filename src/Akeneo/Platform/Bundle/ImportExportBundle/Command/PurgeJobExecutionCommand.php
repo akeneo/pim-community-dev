@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 /**
  * Purge Jobs Execution history
@@ -45,13 +46,22 @@ class PurgeJobExecutionCommand extends ContainerAwareCommand
         $days = $input->getOption('days');
         if (!(is_numeric($days) && $days >= 0)) {
             $output->writeln(
-                sprintf('<error>Option --days must be a number greater than or equal to 0, "%s" given.</error>', $input->getOption('days'))
+                sprintf(
+                    '<error>Option --days must be a number greater than or equal to 0, "%s" given.</error>',
+                    $input->getOption('days')
+                )
             );
 
             return;
         }
 
         if (0 === (int) $days) {
+            $helper = $this->getHelper('question');
+            $confirmation = new ConfirmationQuestion('This will delete ALL job executions. Do you confirm? ', false);
+            if (!$helper->ask($input, $output, $confirmation)) {
+                $output->write("Operation aborted\n");
+                return;
+            }
             $this->purgeJobExecution()->all();
             $output->write("All jobs execution deleted ...\n");
         } else {
@@ -62,6 +72,6 @@ class PurgeJobExecutionCommand extends ContainerAwareCommand
 
     private function purgeJobExecution(): PurgeJobExecution
     {
-        return  $this->getContainer()->get('akeneo.platform.import_export.purge_job_execution');
+        return $this->getContainer()->get('akeneo.platform.import_export.purge_job_execution');
     }
 }
