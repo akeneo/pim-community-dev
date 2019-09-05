@@ -495,6 +495,11 @@ services:
         tags:
             - { name: akeneo_assetmanager.connector_value_transformer }
 
+    akeneo_assetmanager.infrastructure.persistence.asset.transformer.media_link_value:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer\MediaLinkConnectorValueTransformer
+        tags:
+            - { name: akeneo_assetmanager.connector_value_transformer }
+
     # Structure query functions
     akeneo_assetmanager.infrastructure.persistence.query.channel_exists:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Channel\SqlChannelExists
