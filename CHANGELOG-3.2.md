@@ -4,6 +4,7 @@
 
 - PIM-8719: Fix Mink Selenium dependency
 - PIM-8677: Purge all job executions
+- PIM-8734: Change label to "Ecommerce" for default channel in minimal catalog
 
 # 3.2.7 (2019-08-27)
 
