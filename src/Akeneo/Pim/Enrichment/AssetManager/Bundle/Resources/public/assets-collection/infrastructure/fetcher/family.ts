@@ -5,6 +5,7 @@ import {
   AttributeRequirements,
 } from 'akeneopimenrichmentassetmanager/platform/model/structure/family';
 import {isString, isObject} from 'util';
+import {isLabels} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 const fetcherRegistry = require('pim/fetcher-registry');
 
 /**
@@ -21,6 +22,10 @@ export const fetchFamily = (familyFetcher: any) => async (familyCode: FamilyCode
 const denormalizeFamily = (normalizedFamily: any): Family => {
   if (!isString(normalizedFamily.code)) {
     throw Error('The code is not well formated');
+  }
+
+  if (!isLabels(normalizedFamily.labels)) {
+    throw Error('The label collection is not well formated');
   }
 
   if (!isAttributeRequirements(normalizedFamily.attribute_requirements)) {

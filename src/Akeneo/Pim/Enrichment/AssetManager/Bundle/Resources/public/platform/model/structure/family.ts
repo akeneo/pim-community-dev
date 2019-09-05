@@ -1,4 +1,5 @@
 import {AttributeCode} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
+import {Labels} from 'akeneopimenrichmentassetmanager/platform/model/label';
 
 export type FamilyCode = string;
 export type AttributeRequirements = {
@@ -7,5 +8,6 @@ export type AttributeRequirements = {
 
 export type Family = {
   code: FamilyCode;
+  labels: Labels;
   attributeRequirements: AttributeRequirements;
 };

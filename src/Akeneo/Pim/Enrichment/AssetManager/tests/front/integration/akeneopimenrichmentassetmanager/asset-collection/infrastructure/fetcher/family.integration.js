@@ -12,6 +12,7 @@ beforeEach(async () => {
     ) {
       const family = {
         code: 'scanners',
+        labels: {en_US: 'Scanners'},
         attribute_requirements: {
           ecommerce: [
             'color_scanning',
@@ -50,6 +51,7 @@ it('It fetches the family', async () => {
   // Check the family returned by the fetcher is the one expected
   expect(response).toEqual({
     code: 'scanners',
+    labels: {en_US: 'Scanners'},
     attributeRequirements: {
       ecommerce: [
         'color_scanning',

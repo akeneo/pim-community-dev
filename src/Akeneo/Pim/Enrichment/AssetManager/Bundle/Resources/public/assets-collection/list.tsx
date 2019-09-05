@@ -5,7 +5,7 @@ import {selectAttributeList, selectFamily} from 'akeneopimenrichmentassetmanager
 import {selectContext, ContextState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
 import {selectCurrentValues, ValueCollection, Value} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';
 import styled from 'styled-components';
-import __ from 'akeneoreferenceentity/tools/translator';
+import __ from 'akeneoassetmanager/tools/translator';
 import {Label} from 'akeneopimenrichmentassetmanager/platform/component/common/label';
 import {getAttributeLabel, Attribute} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
 import {LocaleLabel, ChannelLabel} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/context';
@@ -13,16 +13,25 @@ import {ContextLabel} from 'akeneopimenrichmentassetmanager/assets-collection/in
 import {ThemedProps} from 'akeneopimenrichmentassetmanager/platform/component/theme';
 import {Pill, Spacer, Separator} from 'akeneopimenrichmentassetmanager/platform/component/common';
 import {AssetCollection} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-collection';
-import {isValueComplete} from 'akeneopimenrichmentassetmanager/enrich/domain/model/product';
+import {isValueComplete, hasValues} from 'akeneopimenrichmentassetmanager/enrich/domain/model/product';
 import {Button} from 'akeneopimenrichmentassetmanager/platform/component/common/button';
 import {Family} from 'akeneopimenrichmentassetmanager/platform/model/structure/family';
+import AssetIllustration from 'akeneopimenrichmentassetmanager/platform/component/visual/illustration/asset';
+import {HelperSection, HelperIcon, HelperSeparator, HelperTitle, HelperText} from 'akeneopimenrichmentassetmanager/platform/component/common/helper';
+import {NoDataSection, NoDataTitle, NoDataText} from 'akeneopimenrichmentassetmanager/platform/component/common/no-data';
 
 type ListProps = {
   attributes: Attribute[],
   values: ValueCollection,
-  family: Family|null
+  family: Family|null,
   context: ContextState
 }
+
+type DisplayValuesProps = {
+  values: ValueCollection,
+  family: Family|null,
+  context: ContextState
+};
 
 const SectionTitle = styled.div`
   display: flex;
@@ -61,9 +70,9 @@ const AssetCollectionList = styled.div`
   align-items: stretch;
 `;
 
-const List = ({values, family, context}: ListProps) => {
+const DisplayValues = ({values, family, context}: DisplayValuesProps) => {
   return (
-    <AssetCollectionList>
+    <React.Fragment>
       {values.map((value: Value) => (
         <AssetCollectionContainer key={value.attribute.code}>
           <SectionTitle>
@@ -99,6 +108,44 @@ const List = ({values, family, context}: ListProps) => {
           <AssetCollection assetFamilyIdentifier={value.attribute.referenceDataName} assetCodes={value.data} context={context} readonly={!value.editable}/>
         </AssetCollectionContainer>
       ))}
+    </React.Fragment>
+  );
+};
+
+const List = ({values, family, context}: ListProps) => {
+  const familyLabel = (null !== family) ? family.labels[context.locale] : '';
+
+  return (
+    <AssetCollectionList>
+      {hasValues(values) ? (
+        <DisplayValues values={values} family={family} context={context} />
+      ) : (
+        <React.Fragment>
+          <HelperSection>
+            <HelperIcon src='/bundles/pimui/images/illustrations/Asset.svg' />
+            <HelperSeparator />
+            <HelperTitle>
+              👋 {__('pim_asset_manager.asset_collection.helper.title')}
+              <HelperText>
+                {__('pim_asset_manager.asset_collection.helper.text', {family: familyLabel})}
+                <br />
+                <a href="#">{__('pim_asset_manager.asset_collection.helper.link')}</a>
+              </HelperText>
+            </HelperTitle>
+          </HelperSection>
+          <NoDataSection>
+            <AssetIllustration size={256}/>
+            <NoDataTitle>
+              {__('pim_asset_manager.asset_collection.no_asset.title')}
+            </NoDataTitle>
+            <NoDataText>
+              {__('pim_asset_manager.asset_collection.no_asset.text', {family: familyLabel})}
+              <Spacer />
+              <a href="#">{__('pim_asset_manager.asset_collection.helper.link')}</a>
+            </NoDataText>
+          </NoDataSection>
+        </React.Fragment>
+      )}
     </AssetCollectionList>
   )
 };
@@ -109,5 +156,3 @@ export default connect((state: AssetCollectionState): ListProps => ({
   values: selectCurrentValues(state),
   family: selectFamily(state)
 }))(List);
-
-

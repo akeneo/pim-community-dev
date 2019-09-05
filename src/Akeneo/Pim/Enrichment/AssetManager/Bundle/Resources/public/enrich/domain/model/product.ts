@@ -58,3 +58,7 @@ export const isValueComplete = (value: Value, family: Family | null, channel: Ch
 
   return !family.attributeRequirements[channel].includes(value.attribute.code) || value.data.length > 0;
 };
+
+export const hasValues = (values: Value[]): boolean => {
+  return 0 !== values.length;
+};

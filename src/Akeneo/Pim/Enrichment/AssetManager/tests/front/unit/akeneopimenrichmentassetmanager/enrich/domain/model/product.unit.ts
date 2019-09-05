@@ -1,4 +1,4 @@
-import {isValueComplete} from 'akeneopimenrichmentassetmanager/enrich/domain/model/product';
+import {isValueComplete, hasValues} from 'akeneopimenrichmentassetmanager/enrich/domain/model/product';
 
 test('The value is complete when the family is null', () => {
   const value = {
@@ -119,4 +119,26 @@ test('The value is not complete when the attribute code of the value is a requir
   const channel = 'ecommerce';
 
   expect(isValueComplete(value, family, channel)).toEqual(false);
+});
+
+test('It should check if the value collection is empty', () => {
+  const values = [
+    {
+      attribute: {
+        code: 'packshot',
+        labels: {
+          en_US: 'Packshot',
+        },
+        group: 'marketing',
+        isReadOnly: false,
+        referenceDataName: 'packshot',
+      },
+      locale: 'en_US',
+      channel: 'ecommerce',
+      data: [],
+      editable: true,
+    },
+  ];
+  expect(hasValues(values)).toEqual(true);
+  expect(hasValues([])).toEqual(false);
 });
