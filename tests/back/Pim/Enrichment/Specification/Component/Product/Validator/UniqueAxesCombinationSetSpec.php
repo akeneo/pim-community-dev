@@ -42,14 +42,16 @@ class UniqueAxesCombinationSetSpec extends ObjectBehavior
         $identifierA = ScalarValue::value('sku', 'product_a');
 
         $variantProductA = new Product();
-        $variantProductA->setIdentifier($identifierA);
+        $variantProductA->addValue($identifierA);
+        $variantProductA->setIdentifierValue('product_a');
         $variantProductA->setFamilyVariant($familyVariant);
         $variantProductA->setParent($productModel);
 
         $identifierB = ScalarValue::value('sku', 'product_b');
 
         $variantProductB = new Product();
-        $variantProductB->setIdentifier($identifierB);
+        $variantProductB->addValue($identifierB);
+        $variantProductB->setIdentifierValue('product_b');
         $variantProductB->setFamilyVariant($familyVariant);
         $variantProductB->setParent($productModel);
 
@@ -103,14 +105,16 @@ class UniqueAxesCombinationSetSpec extends ObjectBehavior
         $identifier = ScalarValue::value('sku', 'valid_variant_product');
 
         $variantProduct = new Product();
-        $variantProduct->setIdentifier($identifier);
+        $variantProduct->addValue($identifier);
+        $variantProduct->setIdentifierValue('valid_variant_product');
         $variantProduct->setFamilyVariant($familyVariant);
         $variantProduct->setParent($productModel);
 
         $invalidIdentifier = ScalarValue::value('sku', 'invalid_product');
 
         $invalidVariantProduct = new Product();
-        $invalidVariantProduct->setIdentifier($invalidIdentifier);
+        $invalidVariantProduct->addValue($invalidIdentifier);
+        $invalidVariantProduct->setIdentifierValue('invalid_product');
         $invalidVariantProduct->setFamilyVariant($familyVariant);
         $invalidVariantProduct->setParent($productModel);
 
