@@ -56,19 +56,36 @@ class ProductAssignmentsValidator
 
     private function validateProductAssignment(array $productAssignment, string $assetFamilyIdentifier): ConstraintViolationListInterface
     {
-        if ($this->hasAnyExtrapolation($productAssignment)) {
-            return $this->checkExtrapolatedAttributes($productAssignment, $assetFamilyIdentifier);
-        }
-
-        $violations = $this->channelAndLocaleValidator->checkChannelExistsIfAny($productAssignment[self::CHANNEL_CODE] ?? null);
-        $violations->addAll($this->channelAndLocaleValidator->checkLocaleExistsIfAny($productAssignment[self::LOCALE_FIELD] ?? null));
+        $violations = $this->checkChannel($productAssignment);
+        $violations->addAll($this->checkLocale($productAssignment));
         $modeViolations = $this->checkMode($productAssignment);
         $violations->addAll($modeViolations);
+
+        if ($this->hasAnyExtrapolation($productAssignment)) {
+            $violations->addAll($this->checkExtrapolatedAttributes($productAssignment, $assetFamilyIdentifier));
+
+            return $violations;
+        }
+
         if ($modeViolations->count() === 0) {
             $violations->addAll($this->ruleEngineValidatorACL->validateProductAssignment($productAssignment));
         }
 
         return $violations;
+    }
+
+    private function checkChannel(array $productAssignment): ConstraintViolationListInterface
+    {
+        $channelCode = $productAssignment[self::CHANNEL_CODE] ?? null;
+
+        return $this->channelAndLocaleValidator->checkChannelExistsIfAny($channelCode);
+    }
+
+    private function checkLocale(array $productAssignment): ConstraintViolationListInterface
+    {
+        $localeCode = $productAssignment[self::LOCALE_FIELD] ?? null;
+
+        return $this->channelAndLocaleValidator->checkLocaleExistsIfAny($localeCode);
     }
 
     private function hasAnyExtrapolation(array $productAssignment): bool
