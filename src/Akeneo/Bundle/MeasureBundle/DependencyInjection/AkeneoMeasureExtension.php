@@ -29,9 +29,9 @@ class AkeneoMeasureExtension extends Extension
             if (is_file($file = dirname($reflection->getFilename()).'/Resources/config/measure.yml')) {
                 // merge measures configs
                 if (empty($measuresConfig)) {
-                    $measuresConfig = Yaml::parse(file_get_contents(realpath($file)));
+                    $measuresConfig = Yaml::parse(file_get_contents(realpath($file)), Yaml::PARSE_CONSTANT);
                 } else {
-                    $entities = Yaml::parse(file_get_contents(realpath($file)));
+                    $entities = Yaml::parse(file_get_contents(realpath($file)), Yaml::PARSE_CONSTANT);
                     foreach ($entities['measures_config'] as $family => $familyConfig) {
                         // merge result with already existing family config to add custom units
                         if (isset($measuresConfig['measures_config'][$family])) {
