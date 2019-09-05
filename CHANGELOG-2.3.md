@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.60 (2019-09-05)
+
 ## Improvement
 
 - PIM-7127: Hide version from CSS call
