@@ -80,7 +80,7 @@ pim_asset_manager:
                 should_be_a_number: 'This value should be a number with the right decimal separator.'
                 cannot_be_lower_than_min: 'The max cannot be lower than the min'
             code:
-                pattern: 'This field may only contain letters, numbers and underscores.'
+                pattern: 'This field may only contain letters, numbers and underscores. "{{ value }}" given.'
                 reserved_codes: 'The code cannot be any of those values: "{{ comma_separated_reserved_keywords }}"'
                 should_not_exist: 'The attribute already exists for the asset family "{{ asset_family_identifier }}" and the attribute code "{{ code }}"'
                 should_exist: 'The attribute was not found'
