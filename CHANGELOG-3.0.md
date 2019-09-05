@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.41 (2019-09-05)
+
 ## Bug fixes
 
 - PIM-8719: Update Mink Selenium driver
