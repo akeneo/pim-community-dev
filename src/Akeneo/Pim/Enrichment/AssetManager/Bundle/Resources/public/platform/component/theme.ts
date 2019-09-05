@@ -21,6 +21,7 @@ type AkeneoTheme = {
     green100: string;
     green120: string;
     green140: string;
+    blue10: string;
     blue20: string;
     blue40: string;
     blue60: string;
@@ -75,6 +76,7 @@ export const akeneoTheme: AkeneoTheme = {
     green100: '#67b373',
     green120: '#528f5c',
     green140: '#3d6b45',
+    blue10: '#f5f9fc',
     blue20: '#dee9f4',
     blue40: '#bdd3e9',
     blue60: '#9bbddd',
@@ -98,7 +100,7 @@ export const akeneoTheme: AkeneoTheme = {
     yellow140: '#956c25',
   },
   fontSize: {
-    title: '30px',
+    title: '28px',
     bigger: '17px',
     big: '15px',
     default: '13px',

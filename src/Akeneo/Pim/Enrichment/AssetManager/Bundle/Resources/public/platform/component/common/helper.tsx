@@ -6,7 +6,7 @@ type HelperIconProps = {
 };
 
 export const HelperSection = styled.div`
-  background-color: #f5f9fc;
+  background-color: ${(props: ThemedProps<void>) => props.theme.color.blue10};
   display: flex;
   padding: 20px;
   min-height: 80px;
