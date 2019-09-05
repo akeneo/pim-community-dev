@@ -83,7 +83,7 @@ class MergeDataOnProductSpec extends ObjectBehavior
         $fullProduct->getValues()->willReturn($productValues);
         $productValues->removeByAttributeCode('sku')->shouldBeCalled();
         $fullProduct->addValue(Argument::type(ScalarValue::class))->shouldBeCalled();
-        $fullProduct->setIdentifierValue('my_sku')->shouldBeCalled();
+        $fullProduct->setIdentifier('my_sku')->shouldBeCalled();
         $fullProduct->setGroups($groups)->shouldBeCalled();
         $fullProduct->setUniqueData($uniqueData)->shouldBeCalled();
 
@@ -149,7 +149,7 @@ class MergeDataOnProductSpec extends ObjectBehavior
         $fullProduct->getValues()->willReturn($productValues);
         $productValues->removeByAttributeCode('sku')->shouldBeCalled();
         $fullProduct->addValue(Argument::type(ScalarValue::class))->shouldBeCalled();
-        $fullProduct->setIdentifierValue('my_sku')->shouldBeCalled();
+        $fullProduct->setIdentifier('my_sku')->shouldBeCalled();
         $fullProduct->setGroups($groups)->shouldBeCalled();
         $fullProduct->setUniqueData($uniqueData)->shouldBeCalled();
         $fullProduct->isVariant()->willReturn(false);
@@ -203,7 +203,7 @@ class MergeDataOnProductSpec extends ObjectBehavior
         $fullProduct->getValues()->willReturn($productValues);
         $productValues->removeByAttributeCode('sku')->shouldBeCalled();
         $fullProduct->addValue(Argument::type(ScalarValue::class))->shouldBeCalled();
-        $fullProduct->setIdentifierValue('my_sku')->shouldBeCalled();
+        $fullProduct->setIdentifier('my_sku')->shouldBeCalled();
         $fullProduct->setGroups($groups)->shouldBeCalled();
         $fullProduct->setUniqueData($uniqueData)->shouldBeCalled();
 
@@ -253,7 +253,7 @@ class MergeDataOnProductSpec extends ObjectBehavior
         $fullVariantProduct->getValues()->willReturn($variantProductValues);
         $variantProductValues->removeByAttributeCode('sku')->shouldBeCalled();
         $fullVariantProduct->addValue(Argument::type(ScalarValue::class))->shouldBeCalled();
-        $fullVariantProduct->setIdentifierValue('my_sku')->shouldBeCalled();
+        $fullVariantProduct->setIdentifier('my_sku')->shouldBeCalled();
         $fullVariantProduct->setGroups($groups)->shouldBeCalled();
         $fullVariantProduct->setUniqueData($uniqueData)->shouldBeCalled();
         $fullVariantProduct->setFamilyVariant($familyVariant)->shouldBeCalled();

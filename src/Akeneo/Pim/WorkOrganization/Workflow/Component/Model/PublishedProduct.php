@@ -302,23 +302,8 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
 
     /**
      * {@inheritdoc}
-     *
-     * @deprecated This method will be removed with TIP-722
      */
-    public function setIdentifier(ValueInterface $identifier)
-    {
-        $this->identifier = $identifier->getData();
-
-        $this->values->removeByAttributeCode($identifier->getAttributeCode());
-        $this->values->add($identifier);
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setIdentifierValue(?string $identifierValue): ProductInterface
+    public function setIdentifier(?string $identifierValue): ProductInterface
     {
         $this->identifier = $identifierValue;
 

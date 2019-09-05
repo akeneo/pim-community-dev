@@ -119,7 +119,7 @@ final class PublishedProductNormalizerSpec extends ObjectBehavior
         $publishedProduct->setOriginalProduct($product);
         $publishedProduct->setFamily(null);
         $publishedProduct->addValue(ScalarValue::value('identifier', 'an_identifier'));
-        $publishedProduct->setIdentifierValue('an_identifier');
+        $publishedProduct->setIdentifier('an_identifier');
         $publishedProduct->setAssociations(new ArrayCollection());
 
         $missingAssociationAdder->addMissingAssociations($publishedProduct)->shouldBeCalled();
