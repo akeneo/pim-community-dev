@@ -10,8 +10,6 @@ use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\ProductModelIndexerInterface;
-use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
-use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Util\ClassUtils;
 
@@ -25,9 +23,7 @@ use Doctrine\Common\Util\ClassUtils;
  */
 class ProductModelDescendantsIndexer implements
     IndexerInterface,
-    BulkIndexerInterface,
-    RemoverInterface,
-    BulkRemoverInterface
+    BulkIndexerInterface
 {
     /** @var ProductIndexerInterface */
     private $productIndexer;
@@ -88,46 +84,6 @@ class ProductModelDescendantsIndexer implements
     }
 
     /**
-     * Recursively triggers the removing of all the given product model children from the indexes.
-     *
-     * Removes all product variants from the dedicated index.
-     *
-     * {@inheritdoc}
-     */
-    public function remove($object, array $options = []) : void
-    {
-        if (!$object instanceof ProductModelInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Only product models "%s" can be indexed in the search engine, "%s" provided.',
-                    ProductModelInterface::class,
-                    ClassUtils::getClass($object)
-                )
-            );
-        }
-
-        $this->removeProductModelChildren($object->getProductModels());
-        $this->removeProductModelChildren($object->getProducts());
-    }
-
-    /**
-     * Recursively triggers the removing of all the given product models children (subtree made of product variants and
-     * product models).
-     *
-     * {@inheritdoc}
-     */
-    public function removeAll(array $objects, array $options = []) : void
-    {
-        if (empty($objects)) {
-            return;
-        }
-
-        foreach ($objects as $object) {
-            $this->remove($object);
-        }
-    }
-
-    /**
      * Recursive method that indexes a list of product model children and their children
      * (products or product models).
      *
@@ -161,41 +117,6 @@ class ProductModelDescendantsIndexer implements
         foreach ($productModelChildren as $productModelChild) {
             $this->indexProductModelChildren($productModelChild->getProductModels(), $options);
             $this->indexProductModelChildren($productModelChild->getProducts(), $options);
-        }
-    }
-
-    /**
-     * Removes from the indexes the given list of product model children (product variants or product models).
-     *
-     * @param Collection $productModelChildren
-     */
-    private function removeProductModelChildren(Collection $productModelChildren) : void
-    {
-        if ($productModelChildren->isEmpty()) {
-            return;
-        }
-
-        if ($productModelChildren->first() instanceof ProductInterface) {
-            $productIds = [];
-            foreach ($productModelChildren as $productModelChild) {
-                $productIds[] = (string) $productModelChild->getId();
-            }
-
-            $this->productIndexer->removeFromProductIds($productIds);
-
-            return;
-        }
-
-        $this->productModelIndexer->removeFromProductModelIds(array_map(
-            function (ProductModelInterface $productModel): int {
-                return $productModel->getId();
-            },
-            $productModelChildren->toArray()
-        ));
-
-        foreach ($productModelChildren as $productModelChild) {
-            $this->removeProductModelChildren($productModelChild->getProductModels());
-            $this->removeProductModelChildren($productModelChild->getProducts());
         }
     }
 }
