@@ -165,7 +165,7 @@ class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterf
     /**
      * This method will add to the new values set the values deleted during the product update.
      * For example, with this configuration (without scope and locale options, for readability):
-     * - original values = ['attr1' => null, 'attr2' => 'value2']
+     * - original values = ['attr1' => 'attr1', 'attr2' => 'value2']
      * - new values = ['attr2' => 'value2', 'attr3' => 'attr3']
      * This method will add ['attr1' => null] to the new values, to be able to generate the diff.
      *

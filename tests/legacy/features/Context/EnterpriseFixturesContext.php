@@ -119,7 +119,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 foreach ($changes['values'] as $code => $rawValue) {
                     $attribute = $this->getContainer()->get('pim_catalog.repository.attribute')->findOneByIdentifier($code);
                     foreach ($rawValue as $value) {
-                        if (empty($value['data'])) {
+                        if (null === $value['data'] || '' === $value['data'] || [] === $value['data']) {
                             $values[] = $valueFactory->createTemporaryNull($attribute, $value['scope'], $value['locale']);
                         } else {
                             $values[] = $valueFactory->create(
