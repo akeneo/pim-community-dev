@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.60 (2019-09-05)
+
 ## Bug fixes
 
 - PIM-7643: Fix closing asset collection preview when last item is removed
