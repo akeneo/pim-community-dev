@@ -145,7 +145,6 @@ apollon_blue;clothing_color_size;apollon;summer,tshirt,v-neck;blue;;;"my blue ts
 apollon_pink;clothing_color_size;apollon;round-neck,tshirt;pink;;;"my pink tshirt"
 
 CSV;
-
         $this->assertProductModelExport($expectedCsv, []);
     }
 }

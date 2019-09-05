@@ -60,13 +60,8 @@ class EntityWithValuesUpdater implements ObjectUpdaterInterface
     {
         foreach ($values as $code => $value) {
             foreach ($value as $data) {
-                $hasValue = $entityWithValues->getValue($code, $data['locale'], $data['scope']);
-                $providedData = !('' === $data['data'] || [] === $data['data'] || null === $data['data']);
-
-                if ($providedData || $hasValue) {
-                    $options = ['locale' => $data['locale'], 'scope' => $data['scope']];
-                    $this->propertySetter->setData($entityWithValues, $code, $data['data'], $options);
-                }
+                $options = ['locale' => $data['locale'], 'scope' => $data['scope']];
+                $this->propertySetter->setData($entityWithValues, $code, $data['data'], $options);
             }
         }
     }

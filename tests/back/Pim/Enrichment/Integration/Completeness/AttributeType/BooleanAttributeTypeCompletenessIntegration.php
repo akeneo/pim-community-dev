@@ -85,22 +85,6 @@ class BooleanAttributeTypeCompletenessIntegration extends AbstractCompletenessPe
         $this->assertNotComplete($productDataNull);
 
         $productWithoutValues = $this->createProductWithStandardValues($family, 'product_without_values');
-        $this->assertComplete($productWithoutValues);
-        $this->assertBooleanValueIsFalse($productWithoutValues, 'a_boolean');
-    }
-
-    /**
-     * For now, when creating an empty boolean product value, it is automatically
-     * set to false by the product builder.
-     *
-     * @todo To remove once PIM-6056 is fixed.
-     *
-     * @param ProductInterface $product
-     * @param string           $attributeCode
-     */
-    private function assertBooleanValueIsFalse(ProductInterface $product, $attributeCode)
-    {
-        $booleanValue = $product->getValue($attributeCode, null, null);
-        $this->assertFalse($booleanValue->getData());
+        $this->assertNotComplete($productWithoutValues);
     }
 }

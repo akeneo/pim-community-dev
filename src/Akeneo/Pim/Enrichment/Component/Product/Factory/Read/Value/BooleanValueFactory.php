@@ -17,7 +17,7 @@ final class BooleanValueFactory extends ScalarValueFactory implements ValueFacto
 {
     public function createWithoutCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
-        return parent::createWithoutCheckingData($attribute, $channelCode, $localeCode, (bool) $data);
+        return parent::createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
     }
 
     public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface

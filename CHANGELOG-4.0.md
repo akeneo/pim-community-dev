@@ -155,6 +155,9 @@
     `Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface`, `Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface` and `Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface`
     and add `Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface`
 - Command `Akeneo\Pim\Enrichment\Bundle\Command\IndexProductCommand` does not extend `Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand` anymore
+- Remove class `Akeneo\Pim\Enrichment\Bundle\EventSubscriberAddBooleanValuesToNewProductSubscriber`
+- Change constructor of `Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\AbstractEntityWithFamilyValuesFiller` to add `Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory`
+- Change constructor of `Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyVariantValuesFiller` to add `Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory`
 
 ### CLI Commands
 
@@ -210,3 +213,4 @@ If you want to purge the completeness in order to recalculate it, please use the
 - Update service `pim_pdf_generator.renderer.product_pdf` to use `pim_catalog.repository.cached_attribute_option` as the 9th argument and `pim_pdf_generator_font` as the 10th
 - Update service `pim_catalog.validator.constraint.unique_variant_axes` to remove `pim_catalog.repository.entity_with_family_variant`
 - Remove duplicated service definitions for `pim_catalog.validator.constraint.family_variant_axes` and `pim_catalog.validator.constraint.immutable_family_variant_axes` in `src/Akeneo/Pim/Enrichment/Bundle/Resources/cofig/validators.yml`
+- Remove `pim_catalog.event_subscriber.add_boolean_values_to_new_product`

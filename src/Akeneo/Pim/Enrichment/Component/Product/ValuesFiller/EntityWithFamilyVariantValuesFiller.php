@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\ValuesFiller;
 use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolverInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
@@ -31,9 +32,16 @@ class EntityWithFamilyVariantValuesFiller extends AbstractEntityWithFamilyValues
         AttributeValuesResolverInterface $valuesResolver,
         CurrencyRepositoryInterface $currencyRepository,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
-        IdentifiableObjectRepositoryInterface $attributeRepository
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        ValueFactory $valueFactory
     ) {
-        parent::__construct($entityWithValuesBuilder, $valuesResolver, $currencyRepository, $attributeRepository);
+        parent::__construct(
+            $entityWithValuesBuilder,
+            $valuesResolver,
+            $currencyRepository,
+            $attributeRepository,
+            $valueFactory
+        );
 
         $this->attributesProvider = $attributesProvider;
     }

@@ -50,14 +50,6 @@ services:
         tags:
            - { name: kernel.event_listener, event: akeneo_batch.item_step_after_batch }
 
-    pim_catalog.event_subscriber.add_boolean_values_to_new_product:
-        class: '%pim_catalog.event_subscriber.add_boolean_values_to_new_product.class%'
-        arguments:
-            - '@pim_catalog.resolver.attribute_values'
-            - '@pim_catalog.factory.value'
-        tags:
-            - { name: kernel.event_subscriber}
-
     pim_catalog.event_subscriber.compute_product_raw_values:
         class: '%pim_catalog.event_subscriber.compute_product_raw_values.class%'
         arguments:

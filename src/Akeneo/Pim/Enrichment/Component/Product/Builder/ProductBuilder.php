@@ -96,7 +96,7 @@ class ProductBuilder implements ProductBuilderInterface
         ?string $localeCode,
         ?string $scopeCode,
         $data
-    ) :ValueInterface {
+    ): ?ValueInterface {
         return $this->entityWithValuesBuilder->addOrReplaceValue($values, $attribute, $localeCode, $scopeCode, $data);
     }
 }

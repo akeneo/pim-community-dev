@@ -177,7 +177,6 @@ class ProductUpdater implements ObjectUpdaterInterface
                 break;
             case 'values':
                 $this->valuesUpdater->update($product, $data, $options);
-                $this->addEmptyValues($product, $data);
                 break;
             default:
                 if (!in_array($field, $this->ignoredFields)) {
@@ -255,32 +254,5 @@ class ProductUpdater implements ObjectUpdaterInterface
     protected function updateProductFields(ProductInterface $product, string $field, $value): void
     {
         $this->propertySetter->setData($product, $field, $value);
-    }
-
-    /**
-     * Add empty values coming from the family of the $product
-     *
-     * TODO: TEMPORARY FIX, AS API-108 WILL HANDLE EMPTY VALUES
-     *
-     * @param ProductInterface $product
-     * @param array            $values
-     */
-    private function addEmptyValues(ProductInterface $product, array $values): void
-    {
-        $family = $product->getFamily();
-        $authorizedCodes = (null !== $family) ? $family->getAttributeCodes() : [];
-
-        foreach ($values as $code => $value) {
-            $isFamilyAttribute = in_array($code, $authorizedCodes);
-
-            foreach ($value as $data) {
-                $emptyData = ('' === $data['data'] || [] === $data['data'] || null === $data['data']);
-
-                if ($isFamilyAttribute && $emptyData) {
-                    $options = ['locale' => $data['locale'], 'scope' => $data['scope']];
-                    $this->propertySetter->setData($product, $code, $data['data'], $options);
-                }
-            }
-        }
     }
 }
