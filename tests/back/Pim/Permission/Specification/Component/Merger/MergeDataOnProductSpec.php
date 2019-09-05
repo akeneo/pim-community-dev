@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Permission\Component\Merger;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\ClassUtils;
@@ -54,9 +55,9 @@ class MergeDataOnProductSpec extends ObjectBehavior
         ProductInterface $fullProduct,
         FamilyInterface $family,
         ValueInterface $identifierValue,
-        AttributeInterface $identifierAttribute,
         ArrayCollection $groups,
-        ArrayCollection $uniqueData
+        ArrayCollection $uniqueData,
+        WriteValueCollection $productValues
     ) {
         $filteredProduct->getId()->willReturn(1);
         $filteredProduct->isEnabled()->willReturn(true);
@@ -79,7 +80,10 @@ class MergeDataOnProductSpec extends ObjectBehavior
         $fullProduct->setEnabled(true)->shouldBeCalled();
         $fullProduct->setFamily($family)->shouldBeCalled();
         $fullProduct->setFamilyId(2)->shouldBeCalled();
-        $fullProduct->setIdentifier(Argument::type(ScalarValue::class))->shouldBeCalled();
+        $fullProduct->getValues()->willReturn($productValues);
+        $productValues->removeByAttributeCode('sku')->shouldBeCalled();
+        $fullProduct->addValue(Argument::type(ScalarValue::class))->shouldBeCalled();
+        $fullProduct->setIdentifierValue('my_sku')->shouldBeCalled();
         $fullProduct->setGroups($groups)->shouldBeCalled();
         $fullProduct->setUniqueData($uniqueData)->shouldBeCalled();
 
@@ -115,9 +119,9 @@ class MergeDataOnProductSpec extends ObjectBehavior
         ProductModelInterface $parentInUoW,
         FamilyInterface $family,
         ValueInterface $identifierValue,
-        AttributeInterface $identifierAttribute,
         ArrayCollection $groups,
-        ArrayCollection $uniqueData
+        ArrayCollection $uniqueData,
+        WriteValueCollection $productValues
     ) {
         $parent->getId()->willReturn(1);
         $parent->getCode()->willReturn('parent_code');
@@ -142,7 +146,10 @@ class MergeDataOnProductSpec extends ObjectBehavior
         $fullProduct->setEnabled(true)->shouldBeCalled();
         $fullProduct->setFamily($family)->shouldBeCalled();
         $fullProduct->setFamilyId(2)->shouldBeCalled();
-        $fullProduct->setIdentifier(Argument::type(ScalarValue::class))->shouldBeCalled();
+        $fullProduct->getValues()->willReturn($productValues);
+        $productValues->removeByAttributeCode('sku')->shouldBeCalled();
+        $fullProduct->addValue(Argument::type(ScalarValue::class))->shouldBeCalled();
+        $fullProduct->setIdentifierValue('my_sku')->shouldBeCalled();
         $fullProduct->setGroups($groups)->shouldBeCalled();
         $fullProduct->setUniqueData($uniqueData)->shouldBeCalled();
         $fullProduct->isVariant()->willReturn(false);
@@ -165,9 +172,9 @@ class MergeDataOnProductSpec extends ObjectBehavior
         ProductInterface $fullProduct,
         FamilyInterface $family,
         ValueInterface $identifierValue,
-        AttributeInterface $identifierAttribute,
         ArrayCollection $groups,
-        ArrayCollection $uniqueData
+        ArrayCollection $uniqueData,
+        WriteValueCollection $productValues
     ) {
         $filteredProduct->getId()->willReturn(1);
         $filteredProduct->isEnabled()->willReturn(true);
@@ -193,7 +200,10 @@ class MergeDataOnProductSpec extends ObjectBehavior
         $fullProduct->setEnabled(true)->shouldBeCalled();
         $fullProduct->setFamily($family)->shouldBeCalled();
         $fullProduct->setFamilyId(2)->shouldBeCalled();
-        $fullProduct->setIdentifier(Argument::type(ScalarValue::class))->shouldBeCalled();
+        $fullProduct->getValues()->willReturn($productValues);
+        $productValues->removeByAttributeCode('sku')->shouldBeCalled();
+        $fullProduct->addValue(Argument::type(ScalarValue::class))->shouldBeCalled();
+        $fullProduct->setIdentifierValue('my_sku')->shouldBeCalled();
         $fullProduct->setGroups($groups)->shouldBeCalled();
         $fullProduct->setUniqueData($uniqueData)->shouldBeCalled();
 
@@ -212,10 +222,10 @@ class MergeDataOnProductSpec extends ObjectBehavior
         ProductModelInterface $parentInUoW,
         FamilyInterface $family,
         ValueInterface $identifierValue,
-        AttributeInterface $identifierAttribute,
         ArrayCollection $groups,
         ArrayCollection $uniqueData,
-        FamilyVariantInterface $familyVariant
+        FamilyVariantInterface $familyVariant,
+        WriteValueCollection $variantProductValues
     ) {
         $filteredVariantProduct->getParent()->willReturn($parent);
         $parent->getId()->willReturn(1);
@@ -240,7 +250,10 @@ class MergeDataOnProductSpec extends ObjectBehavior
         $fullVariantProduct->setEnabled(true)->shouldBeCalled();
         $fullVariantProduct->setFamily($family)->shouldBeCalled();
         $fullVariantProduct->setFamilyId(2)->shouldBeCalled();
-        $fullVariantProduct->setIdentifier(Argument::type(ScalarValue::class))->shouldBeCalled();
+        $fullVariantProduct->getValues()->willReturn($variantProductValues);
+        $variantProductValues->removeByAttributeCode('sku')->shouldBeCalled();
+        $fullVariantProduct->addValue(Argument::type(ScalarValue::class))->shouldBeCalled();
+        $fullVariantProduct->setIdentifierValue('my_sku')->shouldBeCalled();
         $fullVariantProduct->setGroups($groups)->shouldBeCalled();
         $fullVariantProduct->setUniqueData($uniqueData)->shouldBeCalled();
         $fullVariantProduct->setFamilyVariant($familyVariant)->shouldBeCalled();

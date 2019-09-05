@@ -89,10 +89,9 @@ class MergeDataOnProduct implements NotGrantedDataMergerInterface
         $fullProduct->setUniqueData($filteredProduct->getUniqueData());
 
         $identifierCode = $this->attributeRepository->getIdentifierCode();
-        $fullProduct->setIdentifier(ScalarValue::value(
-            $fullProduct->getValue($identifierCode)->getAttributeCode(),
-            $filteredProduct->getIdentifier()
-        ));
+        $fullProduct->getValues()->removeByAttributeCode($identifierCode);
+        $fullProduct->addValue(ScalarValue::value($identifierCode, $filteredProduct->getIdentifier()));
+        $fullProduct->setIdentifierValue($filteredProduct->getIdentifier());
 
         if ($filteredProduct->isVariant()) {
             if ($fullProduct->isVariant()) {
