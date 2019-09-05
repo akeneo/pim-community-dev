@@ -502,11 +502,16 @@ class ProductRepository extends DocumentRepository implements
         $qb->addAnd($qb->expr()->field('groupIds')->notIn($groupsToRemove));
 
         foreach ($attributes as $attribute) {
-            $andExpr = $qb
-                ->expr()
-                ->field(sprintf('normalizedData.%s', $attribute['code']))
-                ->exists(true);
-
+            $andExpr = $qb->expr()->where(sprintf('
+            function(){
+              var res = false;
+              this.values.forEach(function(val){
+                if(val.attribute == %s){
+                  res = true;
+                }
+              });
+              return res;
+            }', $attribute['attribute_id']));
             $qb->addAnd($andExpr);
         }
 
