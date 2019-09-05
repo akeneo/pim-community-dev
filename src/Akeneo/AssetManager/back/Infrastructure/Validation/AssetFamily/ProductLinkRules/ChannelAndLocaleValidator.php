@@ -37,7 +37,7 @@ class ChannelAndLocaleValidator
 
     public function checkChannelExistsIfAny(?string $channelCode): ConstraintViolationListInterface
     {
-        if (null === $channelCode || $this->isExtrapolated($channelCode)) {
+        if (empty($channelCode) || $this->isExtrapolated($channelCode)) {
             return new ConstraintViolationList();
         }
 
@@ -46,7 +46,7 @@ class ChannelAndLocaleValidator
 
     public function checkLocaleExistsIfAny(?string $localeCode): ConstraintViolationListInterface
     {
-        if (null === $localeCode || $this->isExtrapolated($localeCode)) {
+        if (empty($localeCode) || $this->isExtrapolated($localeCode)) {
             return new ConstraintViolationList();
         }
 
