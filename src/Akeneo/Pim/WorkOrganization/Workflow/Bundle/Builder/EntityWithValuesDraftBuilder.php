@@ -83,8 +83,10 @@ class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterf
         $newValues = $this->normalizer->normalize($values, 'standard');
         $originalValues = $this->getOriginalValues($entityWithValues);
 
+        $newValuesWithNullData = $this->fillNewValuesWithNullData($originalValues, $newValues);
+
         $values = [];
-        foreach ($newValues as $code => $newValue) {
+        foreach ($newValuesWithNullData as $code => $newValue) {
             $attribute = $this->getAttributes->forCode($code);
 
             if (null === $attribute) {
@@ -101,12 +103,14 @@ class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterf
                 if (null !== $diffAttribute) {
                     $diff['values'][$code][] = $diffAttribute;
 
-                    $values[] = $this->valueFactory->createByCheckingData(
-                        $attribute,
-                        $changes['scope'],
-                        $changes['locale'],
-                        $changes['data']
-                    );
+                    if (null !== $changes['data']) {
+                        $values[] = $this->valueFactory->createByCheckingData(
+                            $attribute,
+                            $changes['scope'],
+                            $changes['locale'],
+                            $changes['data']
+                        );
+                    }
                 }
             }
         }
@@ -156,5 +160,43 @@ class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterf
         }
 
         return [];
+    }
+
+    /**
+     * This method will add to the new values set the values deleted during the product update.
+     * For example, with this configuration (without scope and locale options, for readability):
+     * - original values = ['attr1' => 'attr1', 'attr2' => 'value2']
+     * - new values = ['attr2' => 'value2', 'attr3' => 'attr3']
+     * This method will add ['attr1' => null] to the new values, to be able to generate the diff.
+     *
+     * @warning These values will not be stored in the database, it's just to compute the diff.
+     *
+     * @param array $originalValues
+     * @param array $newValues
+     *
+     * @return array
+     */
+    private function fillNewValuesWithNullData(array $originalValues, array $newValues)
+    {
+        foreach ($originalValues as $originalAttributeCode => $originalValueSet) {
+            foreach ($originalValueSet as $originalIndex => $originalValue) {
+                $foundValueDeleted = false;
+                if (isset($newValues[$originalAttributeCode])) {
+                    foreach ($newValues[$originalAttributeCode] as $newIndex => $newValue) {
+                        $foundValueDeleted = $foundValueDeleted || (
+                            $newValue['locale'] === $originalValue['locale'] &&
+                            $newValue['scope'] === $originalValue['scope']
+                        );
+                    }
+                }
+                if (!$foundValueDeleted) {
+                    $newValues[$originalAttributeCode][$originalIndex]['locale'] = $originalValue['locale'];
+                    $newValues[$originalAttributeCode][$originalIndex]['scope'] = $originalValue['scope'];
+                    $newValues[$originalAttributeCode][$originalIndex]['data'] = null;
+                }
+            }
+        }
+
+        return $newValues;
     }
 }

@@ -320,6 +320,7 @@ class ValuesIntegration extends AbstractSecurityTestCase
         ]);
 
         $draft = $this->get('pimee_workflow.repository.product_draft')->findUserEntityWithValuesDraft($product, 'mary');
+        $this->assertNotNull($draft);
         $this->assertSame($draftValues, $draft->getChanges()['values']);
     }
 }

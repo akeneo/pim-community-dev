@@ -185,7 +185,7 @@ class ProductDraftChangesExtension extends \Twig_Extension
             $newAttribute->setReferenceDataName($attribute->getReferenceDataName());
         }
 
-        $value = $this->valueFactory->create($newAttribute, null, null, null);
+        $value = $this->valueFactory->createTemporaryNull($newAttribute, null, null);
 
         return $value;
     }

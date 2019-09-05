@@ -175,7 +175,8 @@ class EntityWithGrantedValuesPropertySetter implements PropertySetterInterface
             ));
         }
 
-        if (null !== $newValue->getLocaleCode() &&
+        if (null !== $newValue &&
+            null !== $newValue->getLocaleCode() &&
             true === $permissions['view_locale'] &&
             false === $permissions['edit_locale']
         ) {
