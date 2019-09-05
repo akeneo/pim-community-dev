@@ -59,4 +59,10 @@ SQL;
 
         return $numberDeletedJobExecution;
     }
+
+    public function all(): void
+    {
+        $query = 'DELETE FROM akeneo_batch_job_execution';
+        $this->connection->executeUpdate($query);
+    }
 }
