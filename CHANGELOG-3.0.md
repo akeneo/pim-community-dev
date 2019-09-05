@@ -1,5 +1,20 @@
 # 3.0.x
 
+# 3.0.41 (2019-09-05)
+
+## Bug fixes
+
+- PIM-8719: Update Mink Selenium driver
+- PIM-8720: Revert product grid loading twice (PIM-6978)
+
+# 3.0.40 (2019-09-02)
+
+## Bug fixes
+
+- PIM-8978: Fix the double loading of the product grid after login
+- PIM-8710: New converter to flatten invalid import values
+- PIM-8713: Fix category tree selector
+
 # 3.0.39 (2019-08-28)
 
 ## Bug fixes
