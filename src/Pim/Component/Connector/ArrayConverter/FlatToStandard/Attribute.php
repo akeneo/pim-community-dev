@@ -132,7 +132,7 @@ class Attribute implements ArrayConverterInterface
         $datetime = \DateTime::createFromFormat('Y-m-d', $date);
         $errors = \DateTime::getLastErrors();
 
-        if (0 === $errors['warning_count'] && 0 === $errors['error_count']) {
+        if (0 === $errors['warning_count'] && 0 === $errors['error_count'] && $datetime !== false) {
             $datetime->setTime(0, 0, 0);
 
             return $datetime->format('c');
