@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace  Akeneo\Pim\Enrichment\AssetManager\Bundle\DependencyInjection;
+namespace Akeneo\Pim\Enrichment\AssetManager\Bundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -36,5 +36,6 @@ class AkeneoPimEnrichmentAssetManagerExtension extends Extension
         $loader->load('datagrid/query.yml');
         $loader->load('datagrid/normalizer.yml');
         $loader->load('product_value.yml');
+        $loader->load('services.yml');
     }
 }
