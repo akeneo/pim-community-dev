@@ -22,6 +22,8 @@ use Webmozart\Assert\Assert;
 class AttributeCode
 {
     public const RESERVED_CODES = ['code', 'label', 'image'];
+    public const REGEX = '/^[a-zA-Z0-9_]+$/';
+    public const MAX_LENGTH = 255;
 
     /** @var string */
     private $code;
@@ -31,12 +33,12 @@ class AttributeCode
         Assert::stringNotEmpty($code, 'Attribute code cannot be empty');
         Assert::maxLength(
             $code,
-            255,
+            self::MAX_LENGTH,
             sprintf('Attribute code cannot be longer than 255 characters, %d string long given', strlen($code))
         );
         Assert::regex(
             $code,
-            '/^[a-zA-Z0-9_]+$/',
+            self::REGEX,
             sprintf('Attribute code may contain only letters, numbers and underscores. "%s" given', $code)
         );
 

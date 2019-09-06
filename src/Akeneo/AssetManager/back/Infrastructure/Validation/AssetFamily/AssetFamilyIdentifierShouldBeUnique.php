@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraint;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class AssetFamilyCodeShouldBeUnique extends Constraint
+class AssetFamilyIdentifierShouldBeUnique extends Constraint
 {
     public const ERROR_MESSAGE = 'pim_asset_manager.asset_family.validation.code.should_be_unique';
 
@@ -32,6 +32,6 @@ class AssetFamilyCodeShouldBeUnique extends Constraint
 
     public function validatedBy()
     {
-        return 'akeneo_assetmanager.validator.asset_family.code_is_unique';
+        return 'akeneo_assetmanager.validator.asset_family.identifier_is_unique';
     }
 }

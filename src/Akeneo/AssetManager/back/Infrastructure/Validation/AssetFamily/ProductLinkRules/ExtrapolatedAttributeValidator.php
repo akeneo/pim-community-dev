@@ -11,6 +11,8 @@ use Akeneo\AssetManager\Domain\Query\Attribute\AttributeExistsInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeHasOneValuePerChannelInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeHasOneValuePerLocaleInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\GetAttributeTypeInterface;
+use Akeneo\AssetManager\Infrastructure\Validation\Attribute\Code;
+use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -68,17 +70,20 @@ class ExtrapolatedAttributeValidator
         $allViolations = new ConstraintViolationList();
         $fieldAttributeCodes = ReplacePattern::detectPatterns($fieldValue);
         foreach ($fieldAttributeCodes as $fieldAttributeCode) {
-            $violations = $this->checkAttributeExists($assetFamilyIdentifier, $fieldAttributeCode);
-            if (0 === $violations->count()) {
-                $allViolations->addAll(
-                    $this->checkAttributeTypeIsSupported($assetFamilyIdentifier, $fieldAttributeCode, $supportedTypes)
-                );
-                $allViolations->addAll(
-                    $this->checkHasNotOneValuePerChannel($assetFamilyIdentifier, $fieldAttributeCode)
-                );
-                $allViolations->addAll(
-                    $this->checkHasNotOneValuePerLocale($assetFamilyIdentifier, $fieldAttributeCode)
-                );
+            $violations = $this->validateAttributeCode($fieldAttributeCode);
+            if ($violations->count() === 0) {
+                $violations->addAll($this->checkAttributeExists($assetFamilyIdentifier, $fieldAttributeCode));
+                if (0 === $violations->count()) {
+                    $allViolations->addAll(
+                        $this->checkAttributeTypeIsSupported($assetFamilyIdentifier, $fieldAttributeCode, $supportedTypes)
+                    );
+                    $allViolations->addAll(
+                        $this->checkHasNotOneValuePerChannel($assetFamilyIdentifier, $fieldAttributeCode)
+                    );
+                    $allViolations->addAll(
+                        $this->checkHasNotOneValuePerLocale($assetFamilyIdentifier, $fieldAttributeCode)
+                    );
+                }
             }
             $allViolations->addAll($violations);
         }
@@ -198,5 +203,25 @@ class ExtrapolatedAttributeValidator
         );
 
         return $result;
+    }
+
+    private function validateAttributeCode(string $attributeCode): ConstraintViolationListInterface
+    {
+        $validator = Validation::createValidator();
+        $attributeCodeViolations = $validator->validate(
+            $attributeCode,
+            [
+                new Constraints\NotBlank(),
+                new Constraints\Type(['type' => 'string']),
+                new Constraints\Length(['max' => AttributeCode::MAX_LENGTH, 'min' => 1]),
+                new Constraints\Regex([
+                        'pattern' => '/^[a-zA-Z0-9_]+$/',
+                        'message' => Code::MESSAGE_WRONG_PATTERN,
+                    ]
+                ),
+            ]
+        );
+
+        return $attributeCodeViolations;
     }
 }

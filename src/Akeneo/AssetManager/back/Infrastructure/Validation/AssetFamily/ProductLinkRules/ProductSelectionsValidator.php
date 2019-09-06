@@ -64,11 +64,12 @@ class ProductSelectionsValidator
         array $productSelection,
         string $assetFamilyIdentifier
     ): ConstraintViolationListInterface {
+        $violations = $this->checkChannel($productSelection);
+        $violations->addAll($this->checkLocale($productSelection));
+
         if ($this->hasAnyExtrapolation($productSelection)) {
             return $this->checkExtrapolatedAttributes($productSelection, $assetFamilyIdentifier);
         }
-        $violations = $this->channelAndLocaleValidator->checkChannelExistsIfAny($productSelection[self::CHANNEL_FIELD] ?? null);
-        $violations->addAll($this->channelAndLocaleValidator->checkLocaleExistsIfAny($productSelection[self::LOCALE_FIELD] ?? null));
         $violations->addAll($this->ruleEngineValidatorACL->validateProductSelection($productSelection));
 
         return $violations;
@@ -120,5 +121,19 @@ class ProductSelectionsValidator
         }
 
         return $violations;
+    }
+
+    private function checkChannel(array $productSelection): ConstraintViolationListInterface
+    {
+        $channelCode = $productSelection[self::CHANNEL_FIELD] ?? null;
+
+        return $this->channelAndLocaleValidator->checkChannelExistsIfAny($channelCode);
+    }
+
+    private function checkLocale(array $productSelection): ConstraintViolationListInterface
+    {
+        $localeCode = $productSelection[self::LOCALE_FIELD] ?? null;
+
+        return $this->channelAndLocaleValidator->checkLocaleExistsIfAny($localeCode);
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules;
 
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\ReplacePattern;
 use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\AssetManager\Domain\Query\Channel\ChannelExistsInterface;
@@ -36,7 +37,7 @@ class ChannelAndLocaleValidator
 
     public function checkChannelExistsIfAny(?string $channelCode): ConstraintViolationListInterface
     {
-        if (null === $channelCode) {
+        if (empty($channelCode) || $this->isExtrapolated($channelCode)) {
             return new ConstraintViolationList();
         }
 
@@ -45,7 +46,7 @@ class ChannelAndLocaleValidator
 
     public function checkLocaleExistsIfAny(?string $localeCode): ConstraintViolationListInterface
     {
-        if (null === $localeCode) {
+        if (empty($localeCode) || $this->isExtrapolated($localeCode)) {
             return new ConstraintViolationList();
         }
 
@@ -96,5 +97,10 @@ class ChannelAndLocaleValidator
             }
             )
         );
+    }
+
+    private function isExtrapolated(?string $channelCode): bool
+    {
+        return ReplacePattern::isExtrapolation($channelCode);
     }
 }

@@ -6,12 +6,12 @@ services:
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset.asset_is_unique' }
 
-    akeneo_assetmanager.infrastructure.validation.asset_family.asset_family_code_should_be_unique:
-        class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\AssetFamilyCodeShouldBeUniqueValidator
+    akeneo_assetmanager.infrastructure.validation.asset_family.asset_family_identifier_should_be_unique:
+        class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\AssetFamilyIdentifierShouldBeUniqueValidator
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.query.asset_family_exists'
         tags:
-            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset_family.code_is_unique' }
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset_family.identifier_is_unique' }
 
     akeneo_assetmanager.infrastructure.validation.asset_family.asset_family_should_exist:
         class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\AssetFamilyShouldExistValidator

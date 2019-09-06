@@ -17,13 +17,13 @@ Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyC
         - CreateAssetFamilyCommand
         - other_constraints
     properties:
-        code:
-            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Code: ~
+        identifier:
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Identifier: ~
         labels:
             - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\LabelCollection: ~
     constraints:
         - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\ProductLinkRulesShouldBeExecutable: { groups: [other_constraints] }
-        - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\AssetFamilyCodeShouldBeUnique: { groups: [other_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\AssetFamilyIdentifierShouldBeUnique: { groups: [other_constraints] }
         - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ThereShouldBeLessAssetFamilyThanLimit: { groups: [other_constraints] }
         - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ThereShouldBeLessRuleTemplateThanLimit: { groups: [other_constraints] }
 
@@ -51,7 +51,7 @@ Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetCommand:
         - other_constraints
     properties:
         assetFamilyIdentifier:
-            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Code: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Identifier: ~
         code:
             - Akeneo\AssetManager\Infrastructure\Validation\Asset\Code: ~
         labels:
@@ -65,7 +65,7 @@ Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommand:
         code:
             - Akeneo\AssetManager\Infrastructure\Validation\Asset\Code: ~
         assetFamilyIdentifier:
-            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Code: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Identifier: ~
         labels:
             - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\LabelCollection: ~
         image:
@@ -111,7 +111,7 @@ Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateTextAttributeCom
         - other_constraints
     properties:
         assetFamilyIdentifier:
-            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Code: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Identifier: ~
         code:
             - Akeneo\AssetManager\Infrastructure\Validation\Attribute\Code: ~
         labels:
@@ -139,7 +139,7 @@ Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateTextAttributeCom
 Akeneo\AssetManager\Application\Asset\IndexAssets\IndexAssetsByAssetFamilyCommand:
     properties:
         assetFamilyIdentifier:
-            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Code: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Identifier: ~
     constraints:
         - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\AssetFamilyShouldExist: ~
 
@@ -163,7 +163,7 @@ Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateImageAttributeCo
         - other_constraints
     properties:
         assetFamilyIdentifier:
-            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Code: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Identifier: ~
         code:
             - Akeneo\AssetManager\Infrastructure\Validation\Attribute\Code: ~
         labels:
@@ -188,7 +188,7 @@ Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateAssetAttributeCo
         - other_constraints
     properties:
         assetFamilyIdentifier:
-            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Code: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Identifier: ~
         code:
             - Akeneo\AssetManager\Infrastructure\Validation\Attribute\Code: ~
         labels:
@@ -200,7 +200,7 @@ Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateAssetAttributeCo
         valuePerLocale:
             - Akeneo\AssetManager\Infrastructure\Validation\Attribute\ValuePerLocale: ~
         assetType:
-            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Code: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Identifier: ~
     constraints:
         - Akeneo\AssetManager\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
         - Akeneo\AssetManager\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributesThanLimit: { groups: [other_constraints] }
@@ -213,7 +213,7 @@ Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateAssetCollectionA
         - other_constraints
     properties:
         assetFamilyIdentifier:
-            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Code: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Identifier: ~
         code:
             - Akeneo\AssetManager\Infrastructure\Validation\Attribute\Code: ~
         labels:
@@ -225,7 +225,7 @@ Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateAssetCollectionA
         valuePerLocale:
             - Akeneo\AssetManager\Infrastructure\Validation\Attribute\ValuePerLocale: ~
         assetType:
-            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Code: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Identifier: ~
     constraints:
         - Akeneo\AssetManager\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
         - Akeneo\AssetManager\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributesThanLimit: { groups: [other_constraints] }
@@ -238,7 +238,7 @@ Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateOptionAttributeC
         - other_constraints
     properties:
         assetFamilyIdentifier:
-            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Code: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Identifier: ~
         code:
             - Akeneo\AssetManager\Infrastructure\Validation\Attribute\Code: ~
         labels:
@@ -259,7 +259,7 @@ Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateOptionCollection
         - other_constraints
     properties:
         assetFamilyIdentifier:
-            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Code: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Identifier: ~
         code:
             - Akeneo\AssetManager\Infrastructure\Validation\Attribute\Code: ~
         labels:
@@ -280,7 +280,7 @@ Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateNumberAttributeC
         - other_constraints
     properties:
         assetFamilyIdentifier:
-            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Code: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Identifier: ~
         code:
             - Akeneo\AssetManager\Infrastructure\Validation\Attribute\Code: ~
         labels:
@@ -304,7 +304,7 @@ Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateMediaLinkAttribu
         - other_constraints
     properties:
         assetFamilyIdentifier:
-            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Code: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Identifier: ~
         code:
             - Akeneo\AssetManager\Infrastructure\Validation\Attribute\Code: ~
         labels:
@@ -430,7 +430,7 @@ Akeneo\AssetManager\Application\Attribute\AppendAttributeOption\AppendAttributeO
         - secondary_constraints
     properties:
         assetFamilyIdentifier:
-            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Code: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Identifier: ~
         attributeCode:
             - Akeneo\AssetManager\Infrastructure\Validation\Attribute\Code: ~
         optionCode:
@@ -447,7 +447,7 @@ Akeneo\AssetManager\Application\Attribute\EditAttributeOption\EditAttributeOptio
         - other_constraints
     properties:
         assetFamilyIdentifier:
-            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Code: ~
+            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Identifier: ~
         attributeCode:
             - Akeneo\AssetManager\Infrastructure\Validation\Attribute\Code: ~
         optionCode:

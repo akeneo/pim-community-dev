@@ -26,7 +26,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class AssetFamilyCodeShouldBeUniqueValidator extends ConstraintValidator
+class AssetFamilyIdentifierShouldBeUniqueValidator extends ConstraintValidator
 {
     /** @var AssetFamilyExistsInterface */
     private $assetFamilyExists;
@@ -59,21 +59,21 @@ class AssetFamilyCodeShouldBeUniqueValidator extends ConstraintValidator
      */
     private function checkConstraintType(Constraint $constraint): void
     {
-        if (!$constraint instanceof AssetFamilyCodeShouldBeUnique) {
+        if (!$constraint instanceof AssetFamilyIdentifierShouldBeUnique) {
             throw new UnexpectedTypeException($constraint, self::class);
         }
     }
 
     private function validateCommand(CreateAssetFamilyCommand $command): void
     {
-        $assetFamilyIdentifier = $command->code;
+        $assetFamilyIdentifier = $command->identifier;
         $alreadyExists = $this->assetFamilyExists->withIdentifier(
             AssetFamilyIdentifier::fromString($assetFamilyIdentifier)
         );
         if ($alreadyExists) {
-            $this->context->buildViolation(AssetFamilyCodeShouldBeUnique::ERROR_MESSAGE)
+            $this->context->buildViolation(AssetFamilyIdentifierShouldBeUnique::ERROR_MESSAGE)
                 ->setParameter('%asset_family_identifier%', $assetFamilyIdentifier)
-                ->atPath('code')
+                ->atPath('identifier')
                 ->addViolation();
         }
     }

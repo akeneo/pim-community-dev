@@ -23,18 +23,14 @@ use Symfony\Component\Validator\Validation;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class CodeValidator extends ConstraintValidator
+class IdentifierValidator extends ConstraintValidator
 {
     private const MAX_CODE_LENGTH = 255;
 
-    public function validate($code, Constraint $constraint)
+    public function validate($identifier, Constraint $constraint)
     {
-        if (!$constraint instanceof Code) {
-            throw new UnexpectedTypeException($constraint, self::class);
-        }
-
         $validator = Validation::createValidator();
-        $violations = $validator->validate($code, [
+        $violations = $validator->validate($identifier, [
                 new Constraints\NotBlank(),
                 new Constraints\Type(['type' => 'string']),
                 new Constraints\Length(['max' => self::MAX_CODE_LENGTH, 'min' => 1]),
