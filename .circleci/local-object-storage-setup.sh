@@ -34,6 +34,10 @@ oneup_flysystem:
             awss3v3:
                 client: acme.s3_client
                 bucket: archive
+        tmp_storage_adapter:
+            awss3v3:
+                client: acme.s3_client
+                bucket: tmpstorage
 
 OBJECT_STORAGE_CONF
 
