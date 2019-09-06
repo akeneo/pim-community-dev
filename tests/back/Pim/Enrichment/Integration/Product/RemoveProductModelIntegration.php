@@ -6,6 +6,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Product;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Elasticsearch\Common\Exceptions\Missing404Exception;
 
 /**
  * @author    Florian Klein (florian.klein@akeneo.com)
@@ -14,6 +15,8 @@ use Akeneo\Test\Integration\TestCase;
  */
 class RemoveProductModelIntegration extends TestCase
 {
+    private const DOCUMENT_TYPE = 'pim_catalog_product';
+
     /**
      * @test
      */
@@ -27,13 +30,23 @@ class RemoveProductModelIntegration extends TestCase
         $productModelRepository = $this->get('pim_catalog.repository.product_model');
         $productRepository = $this->get('pim_catalog.repository.product');
 
+        $this->assertTrue($this->productIdentifierIsInIndex('root_product_model_two_level'));
+        $this->assertTrue($this->productIdentifierIsInIndex('sub_product_model'));
+        $this->assertTrue($this->productIdentifierIsInIndex('variant_product_1'));
+
         $rootProductModel = $productModelRepository->findOneByIdentifier('root_product_model_two_level');
         $productModelRemover->remove($rootProductModel);
 
         $this->assertNull($productModelRepository->findOneByIdentifier('root_product_model_two_level'));
         $this->assertNull($productModelRepository->findOneByIdentifier('sub_product_model'));
         $this->assertNull($productRepository->findOneByIdentifier('variant_product_1'));
+
+        sleep(2);
+        $this->assertFalse($this->productIdentifierIsInIndex('root_product_model_two_level'));
+        $this->assertFalse($this->productIdentifierIsInIndex('sub_product_model'));
+        $this->assertFalse($this->productIdentifierIsInIndex('variant_product_1'));
     }
+
     /**
      * Inserts and returns a product model hierarchy of 1 root, 1 sub-model and 1 variant
      */
@@ -82,6 +95,16 @@ class RemoveProductModelIntegration extends TestCase
         );
 
         return [$rootProductModel, $subProductModel, $variant];
+    }
+
+    private function productIdentifierIsInIndex(string $identifier): bool
+    {
+        $res = $this->get('akeneo_elasticsearch.client.product_and_product_model')->search(
+            self::DOCUMENT_TYPE,
+            ['query' => ['term' => ['identifier' => $identifier]]]
+        );
+
+        return $res['hits']['total'] > 0;
     }
 
     /**
