@@ -14,7 +14,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2019 Akeneo SAS (https://www.akeneo.com)
  */
-class PermissiveAuthorizationChecker implements AuthorizationCheckerInterface
+class DummyPermissiveAuthorizationChecker implements AuthorizationCheckerInterface
 {
     public function isGranted($attributes, $subject = null)
     {

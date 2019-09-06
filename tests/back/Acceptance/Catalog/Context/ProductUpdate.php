@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace AkeneoEnterprise\Test\Acceptance\Catalog\Context;
 
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ProductRepository;
-use Akeneo\Pim\Enrichment\Component\Product\Updater\ProductUpdater;
 use Akeneo\Pim\Permission\Component\Updater\GrantedProductUpdater;
 use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
 use Behat\Behat\Context\Context;
@@ -33,9 +32,9 @@ class ProductUpdate implements Context
     }
 
     /**
-     * @Given /^this product has more than 50 assets in its asset collection$/
+     * @When /^the user adds more than (\d+) assets to the asset collection$/
      */
-    public function thisProductHasMoreThanAssetsInItsAssetCollection()
+    public function theUserAddsMoreThanAssetsToTheAssetCollection($arg1)
     {
         $product = $this->productRepository->findOneByIdentifier('my_product');
         $assetCodes = [];
