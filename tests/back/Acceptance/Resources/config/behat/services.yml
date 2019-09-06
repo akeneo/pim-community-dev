@@ -11,6 +11,6 @@ services:
             - '@pim_catalog.updater.product'
 
     test.permissive_authorization_checker:
-        class: 'AkeneoEnterprise\Test\Acceptance\Authorization\PermissiveAuthorizationChecker'
+        class: AkeneoEnterprise\Test\Acceptance\Authorization\PermissiveAuthorizationChecker
         decorates: pimee_security.cached_authorization_checker
         decoration_inner_name: security.base_authorization_checker
