@@ -80,10 +80,12 @@ final class ProductValidation implements Context
     }
 
     /**
-     * @When /^this product is validated$/
+     * @Then the error :errorMessage is raised on validation
      */
-    public function thisProductIsValidated()
+    public function theErrorIsRaisedOnValidation(string $errorMessage): void
     {
         $this->updatedProduct = $this->productRepository->findOneByIdentifier('my_product');
+
+        $this->theErrorIsRaised($errorMessage);
     }
 }
