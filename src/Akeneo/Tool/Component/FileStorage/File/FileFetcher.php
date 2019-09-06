@@ -43,8 +43,8 @@ class FileFetcher implements FileFetcherInterface
         $prefix = $options['prefix'] ?? $this->tmpFilesystem->getAdapter()->getPathPrefix();
         $localPathname = rtrim($prefix, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $fileKey;
 
-        if (!$this->tmpFilesystem->has(dirname($localPathname))) {
-            $this->tmpFilesystem->createDir(dirname($localPathname));
+        if (!is_dir(dirname($localPathname))) {
+            mkdir(dirname($localPathname), 0777, true);
         }
 
         if (false === file_put_contents($localPathname, $stream)) {

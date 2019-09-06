@@ -28,9 +28,6 @@ class FileFetcherSpec extends ObjectBehavior
         $tmpFilesystem->getAdapter()->willReturn($adapter);
         $adapter->getPathPrefix()->willReturn($prefix);
 
-        $tmpFilesystem->has($prefix . 'path/to')->willReturn(false);
-        $tmpFilesystem->createDir($prefix . 'path/to')->shouldBeCalled();
-
         $rawFile = $this->fetch($filesystem, 'path/to/file.txt');
         $rawFile->shouldBeAnInstanceOf('\SplFileInfo');
         $rawPathname = $rawFile->getWrappedObject()->getPathname();
