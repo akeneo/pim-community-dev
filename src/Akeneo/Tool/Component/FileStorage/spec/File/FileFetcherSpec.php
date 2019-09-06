@@ -10,12 +10,16 @@ use PhpSpec\ObjectBehavior;
 
 class FileFetcherSpec extends ObjectBehavior
 {
-    function let(Filesystem $tmpFilesystem)
+    function let(Filesystem $tmpFilesystem, Local $adapter)
     {
+        $tmpFilesystem->getAdapter()->willReturn($adapter);
+        $prefix = sys_get_temp_dir() . '/spec/';
+        $adapter->getPathPrefix()->willReturn($prefix);
+
         $this->beConstructedWith($tmpFilesystem);
     }
 
-    function it_fetches_a_file($tmpFilesystem, Local $adapter, FilesystemInterface $filesystem)
+    function it_fetches_a_file($tmpFilesystem, FilesystemInterface $filesystem)
     {
         if (!is_dir(sys_get_temp_dir() . '/spec/path/to')) {
             mkdir(sys_get_temp_dir() . '/spec/path/to', 0777, true);
@@ -23,10 +27,6 @@ class FileFetcherSpec extends ObjectBehavior
 
         $filesystem->has('path/to/file.txt')->willReturn(true);
         $filesystem->readStream('path/to/file.txt')->shouldBeCalled();
-
-        $prefix = sys_get_temp_dir() . '/spec/';
-        $tmpFilesystem->getAdapter()->willReturn($adapter);
-        $adapter->getPathPrefix()->willReturn($prefix);
 
         $rawFile = $this->fetch($filesystem, 'path/to/file.txt');
         $rawFile->shouldBeAnInstanceOf('\SplFileInfo');
