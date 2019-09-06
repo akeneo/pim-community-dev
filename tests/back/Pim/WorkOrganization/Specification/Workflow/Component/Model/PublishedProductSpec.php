@@ -29,14 +29,12 @@ class PublishedProductSpec extends ObjectBehavior
         $attributeAsLabel->isScopable()->willReturn(true);
 
         $values->getByCodes('name', null, 'fr_FR')->willReturn($nameValue);
-        $values->removeByAttributeCode('name')->shouldBeCalled();
-        $values->add($identifier)->shouldBeCalled();
 
         $nameValue->getData()->willReturn('Petit outil agricole authentique');
 
         $this->setFamily($family);
         $this->setValues($values);
-        $this->setIdentifier($identifier);
+        $this->setIdentifier('shovel');
 
         $this->getLabel('fr_FR')->shouldReturn('Petit outil agricole authentique');
     }
@@ -58,14 +56,12 @@ class PublishedProductSpec extends ObjectBehavior
         $attributeAsLabel->isScopable()->willReturn(false);
 
         $values->getByCodes('name', null, 'fr_FR')->willReturn($nameValue);
-        $values->removeByAttributeCode('name')->shouldBeCalled();
-        $values->add($identifier)->shouldBeCalled();
 
         $nameValue->getData()->willReturn('Petit outil agricole authentique');
 
         $this->setFamily($family);
         $this->setValues($values);
-        $this->setIdentifier($identifier);
+        $this->setIdentifier('shovel');
 
         $this->getLabel('fr_FR', 'mobile')->shouldReturn('Petit outil agricole authentique');
     }
@@ -87,32 +83,26 @@ class PublishedProductSpec extends ObjectBehavior
         $attributeAsLabel->isScopable()->willReturn(true);
 
         $values->getByCodes('name', 'mobile', 'fr_FR')->willReturn($nameValue);
-        $values->removeByAttributeCode('name')->shouldBeCalled();
-        $values->add($identifier)->shouldBeCalled();
 
         $nameValue->getData()->willReturn('Petite pelle');
 
         $this->setFamily($family);
         $this->setValues($values);
-        $this->setIdentifier($identifier);
+        $this->setIdentifier('shovel');
 
         $this->getLabel('fr_FR', 'mobile')->shouldReturn('Petite pelle');
     }
 
     function it_gets_the_identifier_as_label_if_there_is_no_family(
-        AttributeInterface $attributeAsLabel,
         WriteValueCollection $values,
         ValueInterface $identifier
     ) {
         $identifier->getData()->willReturn('shovel');
         $identifier->getAttributeCode()->willReturn('name');
 
-        $values->removeByAttributeCode('name')->shouldBeCalled();
-        $values->add($identifier)->shouldBeCalled();
-
         $this->setFamily(null);
         $this->setValues($values);
-        $this->setIdentifier($identifier);
+        $this->setIdentifier('shovel');
 
         $this->getLabel('fr_FR')->shouldReturn('shovel');
     }
@@ -129,12 +119,9 @@ class PublishedProductSpec extends ObjectBehavior
         $identifier->getData()->willReturn('shovel');
         $identifier->getAttributeCode()->willReturn('name');
 
-        $values->removeByAttributeCode('name')->shouldBeCalled();
-        $values->add($identifier)->shouldBeCalled();
-
         $this->setFamily($family);
         $this->setValues($values);
-        $this->setIdentifier($identifier);
+        $this->setIdentifier('shovel');
 
         $this->getLabel('fr_FR')->shouldReturn('shovel');
     }
@@ -154,13 +141,11 @@ class PublishedProductSpec extends ObjectBehavior
         $attributeAsLabel->isLocalizable()->willReturn(true);
         $attributeAsLabel->isScopable()->willReturn(false);
 
-        $values->removeByAttributeCode('name')->shouldBeCalled();
-        $values->add($identifier)->shouldBeCalled();
         $values->getByCodes('name', null, 'fr_FR')->willReturn(null);
 
         $this->setFamily($family);
         $this->setValues($values);
-        $this->setIdentifier($identifier);
+        $this->setIdentifier('shovel');
 
         $this->getLabel('fr_FR')->shouldReturn('shovel');
     }
@@ -182,14 +167,12 @@ class PublishedProductSpec extends ObjectBehavior
         $attributeAsLabel->isScopable()->willReturn(false);
 
         $values->getByCodes('name', null, 'fr_FR')->willReturn($nameValue);
-        $values->removeByAttributeCode('name')->shouldBeCalled();
-        $values->add($identifier)->shouldBeCalled();
 
         $nameValue->getData()->willReturn(null);
 
         $this->setFamily($family);
         $this->setValues($values);
-        $this->setIdentifier($identifier);
+        $this->setIdentifier('shovel');
 
         $this->getLabel('fr_FR')->shouldReturn('shovel');
     }
