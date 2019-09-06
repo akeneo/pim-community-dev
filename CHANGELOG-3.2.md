@@ -4,6 +4,7 @@
 
 - PIM-8596: add translation for the Attribute type filter `akeneo_asset_multiple_link`q
 - PIM-8719: Update Mink Selenium driver
+- PIM-8734: Change label to "Ecommerce" for default channel in minimal catalog
 
 # 3.2.7 (2019-08-27)
 
