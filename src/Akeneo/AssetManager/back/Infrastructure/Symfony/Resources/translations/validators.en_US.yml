@@ -104,8 +104,3 @@ pim_asset_manager:
                 should_not_be_empty: 'The suffix cannot be an empty string.'
             media_type:
                 not_expected: 'The media type given is not corresponding to the expected ones (%supported_media_types%).'
-
-    product_value:
-        validation:
-            asset_multiple_link:
-                limit_reached: 'You have reached the limit of %limit% assets per collection, you can no longer add assets to your collection.'
