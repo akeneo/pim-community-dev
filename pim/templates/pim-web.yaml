@@ -127,20 +127,16 @@ spec:
               readOnly: true
           readinessProbe:
             failureThreshold: 3
-            httpGet:
-              path: /user/login
+            tcpSocket:
               port: httpd
-              scheme: HTTP
             initialDelaySeconds: 2
             periodSeconds: 1
             successThreshold: 3
             timeoutSeconds: 1
           livenessProbe:
             failureThreshold: 3
-            httpGet:
-              path: /user/login
+            tcpSocket:
               port: httpd
-              scheme: HTTP
             initialDelaySeconds: 10
             periodSeconds: 10
             successThreshold: 1
