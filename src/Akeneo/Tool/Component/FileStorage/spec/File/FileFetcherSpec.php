@@ -24,11 +24,12 @@ class FileFetcherSpec extends ObjectBehavior
         $filesystem->has('path/to/file.txt')->willReturn(true);
         $filesystem->readStream('path/to/file.txt')->shouldBeCalled();
 
+        $prefix = sys_get_temp_dir() . '/spec/';
         $tmpFilesystem->getAdapter()->willReturn($adapter);
-        $adapter->getPathPrefix()->willReturn(sys_get_temp_dir() . '/spec/');
+        $adapter->getPathPrefix()->willReturn($prefix);
 
-        $tmpFilesystem->has('path/to')->willReturn(false);
-        $tmpFilesystem->createDir('path/to')->shouldBeCalled();
+        $tmpFilesystem->has($prefix . 'path/to')->willReturn(false);
+        $tmpFilesystem->createDir($prefix . 'path/to')->shouldBeCalled();
 
         $rawFile = $this->fetch($filesystem, 'path/to/file.txt');
         $rawFile->shouldBeAnInstanceOf('\SplFileInfo');

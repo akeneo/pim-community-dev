@@ -3,6 +3,7 @@
 namespace Akeneo\Tool\Component\FileStorage\File;
 
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
+use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
 
 /**
@@ -15,13 +16,10 @@ use League\Flysystem\FilesystemInterface;
  */
 class FileFetcher implements FileFetcherInterface
 {
-    /** @var FilesystemInterface */
+    /** @var Filesystem */
     protected $tmpFilesystem;
 
-    /**
-     * @param FilesystemInterface $tmpFilesystem
-     */
-    public function __construct(FilesystemInterface $tmpFilesystem)
+    public function __construct(Filesystem $tmpFilesystem)
     {
         $this->tmpFilesystem = $tmpFilesystem;
     }
@@ -42,11 +40,11 @@ class FileFetcher implements FileFetcherInterface
         }
 
         // Use the env variable 'tmp_storage_dir' instead
-        $prefix = $options['prefix'] ?? '/tmp/pim/file_storage';
-        $localPathname = $prefix . $fileKey;
+        $prefix = $options['prefix'] ?? $this->tmpFilesystem->getAdapter()->getPathPrefix();
+        $localPathname = rtrim($prefix, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $fileKey;
 
-        if (!is_dir(dirname($localPathname))) {
-            mkdir(dirname($localPathname), 0777, true);
+        if (!$this->tmpFilesystem->has(dirname($localPathname))) {
+            $this->tmpFilesystem->createDir(dirname($localPathname));
         }
 
         if (false === file_put_contents($localPathname, $stream)) {
