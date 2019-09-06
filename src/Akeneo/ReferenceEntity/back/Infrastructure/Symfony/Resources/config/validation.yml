@@ -65,29 +65,28 @@ Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordCo
     constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditRecordValueCommands: ~
 
-Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditTextValueCommand:
+Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\AbstractEditValueCommand:
     constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommand: ~
+
+Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditTextValueCommand:
+    constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditTextValueCommand: ~
 
 Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditUploadedFileValueCommand:
     constraints:
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommand: ~
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditUploadedFileValueCommand: ~
 
 Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditStoredFileValueCommand:
     constraints:
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommand: ~
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditStoredFileValueCommand: ~
 
 Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordValueCommand:
     constraints:
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommand: ~
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditRecordValueCommand: ~
 
 Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordCollectionValueCommand:
     constraints:
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommand: ~
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditRecordCollectionValueCommand: ~
 
 Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditOptionValueCommand:
@@ -97,10 +96,6 @@ Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditOptionVa
 Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditOptionCollectionValueCommand:
     constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditOptionCollectionValueCommand: ~
-
-Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EmptyValueCommand:
-    constraints:
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommand: ~
 
 Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand:
     group_sequence:
