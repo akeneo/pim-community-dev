@@ -50,7 +50,7 @@ class FileStorer implements FileStorerInterface
     /**
      * {@inheritdoc}
      */
-    public function store(\SplFileInfo $localFile, $destFsAlias, $deleteRawFile = false)
+    public function store(\SplFileInfo $localFile, $destFsAlias, $deleteRawFile = false, string $prefix = '')
     {
         if (!is_file($localFile->getPathname())) {
             throw new InvalidFile(sprintf('The file "%s" does not exist.', $localFile->getPathname()));
@@ -80,7 +80,7 @@ class FileStorer implements FileStorerInterface
                 $options['ContentType'] = $mimeType; // AWS S3
                 $options['metadata']['contentType'] = $mimeType; // Google Cloud Storage
             }
-            $isFileWritten = $filesystem->writeStream($file->getKey(), $resource, $options);
+            $isFileWritten = $filesystem->writeStream(rtrim($prefix, '/').'/'.$file->getKey(), $resource, $options);
         } catch (FileExistsException $e) {
             throw new FileTransferException($error, $e->getCode(), $e);
         }
