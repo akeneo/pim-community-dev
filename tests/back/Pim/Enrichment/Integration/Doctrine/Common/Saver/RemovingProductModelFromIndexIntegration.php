@@ -67,6 +67,7 @@ class RemovingProductModelFromIndexIntegration extends TestCase
 
         $this->get('pim_catalog.elasticsearch.indexer.product_model')->removeFromProductModelId($productModelId);
 
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
         $this->assertFalse($this->productModelIdIsInIndex($productModelId));
         $this->assertFalse($this->productModelIdIsInIndex($subProductModelId));
         $this->assertFalse($this->productIdIsInIndex($variantProductId));
@@ -94,6 +95,7 @@ class RemovingProductModelFromIndexIntegration extends TestCase
             [$productModelId, $productModelId2]
         );
 
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
         $this->assertFalse($this->productModelIdIsInIndex($productModelId));
         $this->assertFalse($this->productModelIdIsInIndex($subProductModelId));
         $this->assertFalse($this->productIdIsInIndex($variantProductId));
@@ -145,6 +147,8 @@ class RemovingProductModelFromIndexIntegration extends TestCase
             $subProductModel,
             []
         );
+
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         return [$rootProductModel, $subProductModel, $variant];
     }

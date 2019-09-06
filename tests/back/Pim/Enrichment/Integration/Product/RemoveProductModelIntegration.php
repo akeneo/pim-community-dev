@@ -41,7 +41,7 @@ class RemoveProductModelIntegration extends TestCase
         $this->assertNull($productModelRepository->findOneByIdentifier('sub_product_model'));
         $this->assertNull($productRepository->findOneByIdentifier('variant_product_1'));
 
-        sleep(2);
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
         $this->assertFalse($this->productIdentifierIsInIndex('root_product_model_two_level'));
         $this->assertFalse($this->productIdentifierIsInIndex('sub_product_model'));
         $this->assertFalse($this->productIdentifierIsInIndex('variant_product_1'));
