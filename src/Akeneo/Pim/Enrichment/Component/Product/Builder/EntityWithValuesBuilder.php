@@ -126,7 +126,7 @@ class EntityWithValuesBuilder implements EntityWithValuesBuilderInterface
     ): void {
         // TODO: TIP-722: This is a temporary fix, Product identifier should be used only as a field
         if (AttributeTypes::IDENTIFIER === $attribute->getType() && $entityWithValues instanceof ProductInterface) {
-            $entityWithValues->setIdentifierValue($data);
+            $entityWithValues->setIdentifier($data);
         }
     }
 }

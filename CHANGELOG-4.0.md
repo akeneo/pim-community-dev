@@ -158,6 +158,7 @@
 - Remove class `Akeneo\Pim\Enrichment\Bundle\EventSubscriberAddBooleanValuesToNewProductSubscriber`
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\AbstractEntityWithFamilyValuesFiller` to add `Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory`
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyVariantValuesFiller` to add `Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory`
+- Update interface `Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface` and class `Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct`: `setIdentifier` method now takes a `string` as argument.
 
 ### CLI Commands
 
