@@ -55,7 +55,8 @@ class ComputeAndPersistPublishedProductCompletenessSubscriberSpec extends Object
         $picture = new Attribute();
         $picture->setCode('picture');
         $product = new Product();
-        $product->setIdentifier(ScalarValue::value('identifier', 'my_published_product'));
+        $product->addValue(ScalarValue::value('identifier', 'my_published_product'));
+        $product->setIdentifier('my_published_product');
         $publishedProduct->setOriginalProduct($product);
 
         $completenessCalculator->fromProductIdentifier('my_published_product')->willReturn(
