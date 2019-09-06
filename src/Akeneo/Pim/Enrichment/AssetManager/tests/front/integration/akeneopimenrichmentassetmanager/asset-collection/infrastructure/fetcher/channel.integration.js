@@ -63,16 +63,16 @@ beforeEach(async () => {
 it('It fetches the channels', async () => {
   // It fetches the channels
   const response = await page.evaluate(async () => {
-    const fetchAssetAttributes =
+    const fetchChannels =
       require('akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/channel')
       .fetchChannels;
     const fetcherRegistry = require('pim/fetcher-registry');
     fetcherRegistry.initialize();
 
-    return await fetchAssetAttributes(fetcherRegistry.getFetcher('channel'))();
+    return await fetchChannels(fetcherRegistry.getFetcher('channel'))();
   });
 
-  // Check the channels returned by the fetcher are the one expected
+  // Check the channels returned by the fetcher are the expected ones
   expect(response).toEqual([{
       code: 'ecommerce',
       locales: [{
