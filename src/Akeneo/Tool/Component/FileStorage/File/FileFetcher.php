@@ -19,9 +19,19 @@ class FileFetcher implements FileFetcherInterface
     /** @var Filesystem */
     protected $tmpFilesystem;
 
-    public function __construct(Filesystem $tmpFilesystem)
+    /** @var string */
+    private $tmpStorageDir;
+
+    /*
+     * TODO: remove null for $tmpStorageDir
+     */
+    public function __construct(Filesystem $tmpFilesystem, string $tmpStorageDir = null)
     {
         $this->tmpFilesystem = $tmpFilesystem;
+        $this->tmpStorageDir = $tmpStorageDir;
+        if (null === $tmpStorageDir) {
+            $this->tmpStorageDir = $this->tmpFilesystem->getAdapter()->getPathPrefix();
+        }
     }
 
     /**
@@ -39,8 +49,7 @@ class FileFetcher implements FileFetcherInterface
             );
         }
 
-        // Use the env variable 'tmp_storage_dir' instead
-        $prefix = $options['prefix'] ?? $this->tmpFilesystem->getAdapter()->getPathPrefix();
+        $prefix = $options['prefix'] ?? $this->tmpStorageDir;
         $localPathname = rtrim($prefix, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $fileKey;
 
         if (!is_dir(dirname($localPathname))) {

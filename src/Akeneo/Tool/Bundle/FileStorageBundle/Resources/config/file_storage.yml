@@ -19,6 +19,7 @@ services:
         class: '%akeneo_file_storage.file_storage.file.file_fetcher.class%'
         arguments:
             - '@oneup_flysystem.tmp_storage_filesystem'
+            - '%tmp_storage_dir%'
 
     akeneo_file_storage.file_storage.file.output_file_fetcher:
         class: '%akeneo_file_storage.file_storage.file.output_file_fetcher.class%'
