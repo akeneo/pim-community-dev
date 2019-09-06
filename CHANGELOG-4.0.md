@@ -159,7 +159,7 @@
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\AbstractEntityWithFamilyValuesFiller` to add `Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory`
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyVariantValuesFiller` to add `Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory`
 - Update interface `Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface` and class `Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct`: `setIdentifier` method now takes a `string` as argument.
-- Class `ProductModelDescendantsIndexer` does not implements these interfaces anymore:
+- Class `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelDescendantsIndexer` does not implements these interfaces anymore:
     `Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface` and
     `Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface` and
     `remove` and `removeAll` methods are removed from this class
