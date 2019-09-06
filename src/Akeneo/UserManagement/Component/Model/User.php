@@ -6,13 +6,14 @@ use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\UserManagement\Component\Model\User\Id;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Inflector\Inflector;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
- * @author    Nicolas Dupont <nicalas@akeneo.com>
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -23,7 +24,7 @@ class User implements UserInterface
     const ROLE_ANONYMOUS = 'IS_AUTHENTICATED_ANONYMOUSLY';
     const DEFAULT_TIMEZONE = 'UTC';
 
-    /** @var int|string */
+    /** @var Id */
     protected $id;
 
     /** @var string */
@@ -151,6 +152,7 @@ class User implements UserInterface
 
     public function __construct()
     {
+        $this->id = new Id();
         $this->salt = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
         $this->roles = new ArrayCollection();
         $this->groups = new ArrayCollection();
@@ -170,7 +172,7 @@ class User implements UserInterface
                 $this->username,
                 $this->enabled,
                 $this->confirmationToken,
-                $this->id,
+                $this->id->getId(),
             ]
         );
     }
@@ -180,14 +182,17 @@ class User implements UserInterface
      */
     public function unserialize($serialized)
     {
+        $unserialized = unserialize($serialized);
+
         list(
             $this->password,
             $this->salt,
             $this->username,
             $this->enabled,
             $this->confirmationToken,
-            $this->id
-        ) = unserialize($serialized);
+        ) = $unserialized;
+
+        $this->id = new Id($unserialized[5]);
     }
 
     /**
@@ -211,7 +216,7 @@ class User implements UserInterface
      */
     public function getId()
     {
-        return $this->id;
+        return $this->id->getId();
     }
 
     /**
@@ -426,7 +431,7 @@ class User implements UserInterface
      */
     public function setId($id)
     {
-        $this->id = $id;
+        $this->id = new Id($id);
 
         return $this;
     }

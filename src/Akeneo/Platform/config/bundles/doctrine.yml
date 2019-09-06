@@ -37,6 +37,8 @@ doctrine:
             native_json:
                 class: Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\DBAL\Types\JsonType
                 commented: true
+            user_id: Akeneo\UserManagement\Bundle\Doctrine\ORM\Type\UserId
+
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true

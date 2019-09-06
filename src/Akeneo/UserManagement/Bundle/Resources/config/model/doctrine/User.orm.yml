@@ -3,12 +3,12 @@ Akeneo\UserManagement\Component\Model\User:
     table: oro_user
     changeTrackingPolicy: DEFERRED_EXPLICIT
     repositoryClass: Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\UserRepository
-    fields:
+    id:
         id:
-            type: integer
-            id: true
+            type: user_id
             generator:
                 strategy: AUTO
+    fields:
         username:
             type: string
             length: 255
