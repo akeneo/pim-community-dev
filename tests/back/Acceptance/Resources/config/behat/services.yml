@@ -98,4 +98,5 @@ services:
         arguments:
             - '@test.catalog.product.builder'
             - '@validator'
+            - '@pim_catalog.repository.product'
 
