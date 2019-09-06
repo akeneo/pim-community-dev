@@ -34,7 +34,7 @@ class Value
         return new self($value);
     }
 
-    public function value()
+    public function normalize()
     {
         return $this->value;
     }

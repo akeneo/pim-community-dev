@@ -26,6 +26,6 @@ class ValueSpec extends ObjectBehavior
 
     public function it_can_get_the_string_value()
     {
-        $this->value()->shouldReturn('{{product_code}}');
+        $this->normalize()->shouldReturn('{{product_code}}');
     }
 }
