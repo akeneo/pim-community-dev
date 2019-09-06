@@ -22,7 +22,7 @@ use Oro\Bundle\PimDataGridBundle\Extension\Formatter\Property\ProductValue\TwigP
  *
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */
-class AssetMultipleLinkProperty extends TwigProperty
+class AssetCollectionProperty extends TwigProperty
 {
     /** @var RequestParametersExtractorInterface */
     protected $paramsExtractor;

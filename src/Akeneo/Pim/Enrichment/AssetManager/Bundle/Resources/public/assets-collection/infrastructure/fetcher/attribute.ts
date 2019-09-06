@@ -10,7 +10,7 @@ const fetcherRegistry = require('pim/fetcher-registry');
  */
 export const attributeFetcher = () => fetcherRegistry.getFetcher('attribute');
 export const fetchAssetAttributes = (attributeFetcher: any) => async (): Promise<Attribute[]> => {
-  const attributes = await promisify(attributeFetcher.fetchByTypes(['akeneo_asset_multiple_link']));
+  const attributes = await promisify(attributeFetcher.fetchByTypes(['pim_catalog_asset_collection']));
 
   return denormalizeAssetAttributeCollection(attributes);
 };

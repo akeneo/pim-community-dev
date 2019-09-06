@@ -44,11 +44,11 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    akeneo_assetmanager.updater.adder.asset_multiple_link:
-        class: Akeneo\Pim\Enrichment\AssetManager\Component\Updater\Adder\AssetMultipleLinkAdder
+    akeneo_assetmanager.updater.adder.asset_collection:
+        class: Akeneo\Pim\Enrichment\AssetManager\Component\Updater\Adder\AssetCollectionAdder
         arguments:
         - '@pim_catalog.builder.entity_with_values'
-        - ['akeneo_asset_multiple_link']
+        - ['pim_catalog_asset_collection']
         tags:
         - { name: 'pim_catalog.updater.adder' }
 

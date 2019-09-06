@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\AssetManager\Component\Provider;
 
-use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetMultipleLinkType;
+use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetCollectionType;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\EmptyValue\EmptyValueProviderInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\Field\FieldProviderInterface;
@@ -22,7 +22,7 @@ use Akeneo\Platform\Bundle\UIBundle\Provider\Field\FieldProviderInterface;
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class AssetMultipleLinkProvider implements FieldProviderInterface, EmptyValueProviderInterface
+class AssetCollectionProvider implements FieldProviderInterface, EmptyValueProviderInterface
 {
     /**
      * {@inheritdoc}
@@ -37,7 +37,7 @@ class AssetMultipleLinkProvider implements FieldProviderInterface, EmptyValuePro
      */
     public function getField($attribute): string
     {
-        return 'akeneo-asset-multiple-link-field';
+        return 'pim-asset-collection-field';
     }
 
     /**
@@ -46,6 +46,6 @@ class AssetMultipleLinkProvider implements FieldProviderInterface, EmptyValuePro
     public function supports($element): bool
     {
         return $element instanceof AttributeInterface &&
-            AssetMultipleLinkType::ASSET_MULTIPLE_LINK === $element->getType();
+            AssetCollectionType::ASSET_COLLECTION === $element->getType();
     }
 }

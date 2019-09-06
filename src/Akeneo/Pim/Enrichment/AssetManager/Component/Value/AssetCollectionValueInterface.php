@@ -15,12 +15,15 @@ use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 /**
- * Product value interface for an asset family
+ * Product value interface for a collection of asset family
  *
- * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
- * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
+ * @author    Julien Sanchez <julien@akeneo.com>
+ * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-interface AssetSingleLinkValueInterface extends ValueInterface
+interface AssetCollectionValueInterface extends ValueInterface
 {
-    public function getData(): ?AssetCode;
+    /**
+     * @return AssetCode[]
+     */
+    public function getData(): ?array;
 }

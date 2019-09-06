@@ -1,5 +1,5 @@
 parameters:
-    pim_datagrid.product.attribute_type.akeneo_asset_multiple_link:
+    pim_datagrid.product.attribute_type.pim_catalog_asset_collection:
         column:
             type:         .asset_multiple_link
         filter:

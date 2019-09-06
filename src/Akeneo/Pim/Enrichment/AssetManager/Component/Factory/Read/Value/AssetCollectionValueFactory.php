@@ -13,8 +13,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\AssetManager\Component\Factory\Read\Value;
 
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
-use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetMultipleLinkType;
-use Akeneo\Pim\Enrichment\AssetManager\Component\Value\AssetMultipleLinkValue;
+use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetCollectionType;
+use Akeneo\Pim\Enrichment\AssetManager\Component\Value\AssetCollectionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\ReadValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
@@ -23,7 +23,7 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
  * @author    Anael Chardan <anael.chardan@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-final class AssetMultipleLinkValueFactory implements ReadValueFactory
+final class AssetCollectionValueFactory implements ReadValueFactory
 {
     public function create(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
@@ -33,22 +33,22 @@ final class AssetMultipleLinkValueFactory implements ReadValueFactory
         }, $data);
 
         if ($attribute->isLocalizableAndScopable()) {
-            return AssetMultipleLinkValue::scopableLocalizableValue($attributeCode, $assetCodes, $channelCode, $localeCode);
+            return AssetCollectionValue::scopableLocalizableValue($attributeCode, $assetCodes, $channelCode, $localeCode);
         }
 
         if ($attribute->isLocalizable()) {
-            return AssetMultipleLinkValue::localizableValue($attributeCode, $assetCodes, $localeCode);
+            return AssetCollectionValue::localizableValue($attributeCode, $assetCodes, $localeCode);
         }
 
         if ($attribute->isScopable()) {
-            return AssetMultipleLinkValue::scopableValue($attributeCode, $assetCodes, $channelCode);
+            return AssetCollectionValue::scopableValue($attributeCode, $assetCodes, $channelCode);
         }
 
-        return AssetMultipleLinkValue::value($attributeCode, $assetCodes);
+        return AssetCollectionValue::value($attributeCode, $assetCodes);
     }
 
     public function supportedAttributeType(): string
     {
-        return AssetMultipleLinkType::ASSET_MULTIPLE_LINK;
+        return AssetCollectionType::ASSET_COLLECTION;
     }
 }

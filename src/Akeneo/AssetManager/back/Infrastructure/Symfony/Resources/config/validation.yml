@@ -41,7 +41,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
     constraints:
         - Akeneo\Pim\Enrichment\AssetManager\Component\Validator\Constraints\IsAssetFamilyConfigured:
             groups:
-                - akeneo_asset_multiple_link
+                - pim_catalog_asset_collection
                 - akeneo_asset
 
 # Assets

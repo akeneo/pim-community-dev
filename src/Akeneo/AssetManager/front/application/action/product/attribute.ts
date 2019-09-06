@@ -21,7 +21,7 @@ export const updateAttributeList = (assetFamilyIdentifier: AssetFamilyIdentifier
   dispatch: any
 ): Promise<void> => {
   const attributes = await promisify(
-    fetcherRegistry.getFetcher('attribute').fetchByTypes(['akeneo_asset_multiple_link', 'akeneo_asset'], false)
+    fetcherRegistry.getFetcher('attribute').fetchByTypes(['pim_catalog_asset_collection', 'akeneo_asset'], false)
   );
 
   const linkedAttributes = attributes

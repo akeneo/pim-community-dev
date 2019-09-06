@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\AssetManager\Component\Normalizer;
 
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
-use Akeneo\Pim\Enrichment\AssetManager\Component\Value\AssetMultipleLinkValue;
+use Akeneo\Pim\Enrichment\AssetManager\Component\Value\AssetCollectionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\AbstractProductValueNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -24,7 +24,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class AssetMultipleLinkValueNormalizer extends AbstractProductValueNormalizer implements NormalizerInterface
+class AssetCollectionValueNormalizer extends AbstractProductValueNormalizer implements NormalizerInterface
 {
     private $supportedFormats = ['indexing_product', 'indexing_product_and_product_model'];
 
@@ -46,6 +46,6 @@ class AssetMultipleLinkValueNormalizer extends AbstractProductValueNormalizer im
      */
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data instanceof AssetMultipleLinkValue && in_array($format, $this->supportedFormats);
+        return $data instanceof AssetCollectionValue && in_array($format, $this->supportedFormats);
     }
 }

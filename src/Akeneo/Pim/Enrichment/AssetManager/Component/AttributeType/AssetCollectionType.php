@@ -19,15 +19,15 @@ use Akeneo\Pim\Structure\Component\AttributeType\AbstractAttributeType;
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class AssetMultipleLinkType extends AbstractAttributeType
+class AssetCollectionType extends AbstractAttributeType
 {
-    const ASSET_MULTIPLE_LINK = 'akeneo_asset_multiple_link';
+    public const ASSET_COLLECTION = 'pim_catalog_asset_collection';
 
     /**
      * {@inheritdoc}
      */
     public function getName(): string
     {
-        return static::ASSET_MULTIPLE_LINK;
+        return static::ASSET_COLLECTION;
     }
 }

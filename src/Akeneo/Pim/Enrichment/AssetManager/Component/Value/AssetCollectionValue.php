@@ -21,7 +21,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class AssetMultipleLinkValue extends AbstractValue implements AssetMultipleLinkValueInterface
+class AssetCollectionValue extends AbstractValue implements AssetCollectionValueInterface
 {
     /**
      * {@inheritdoc}
