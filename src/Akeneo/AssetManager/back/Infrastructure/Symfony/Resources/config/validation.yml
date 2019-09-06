@@ -73,24 +73,24 @@ Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommand:
     constraints:
         - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditAssetValueCommands: ~
 
-Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditTextValueCommand:
+Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\AbstractEditValueCommand:
     constraints:
         - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditValueCommand: ~
+
+Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditTextValueCommand:
+    constraints:
         - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditTextValueCommand: ~
 
 Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditStoredFileValueCommand:
     constraints:
-        - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditValueCommand: ~
         - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditStoredFileValueCommand: ~
 
 Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetValueCommand:
     constraints:
-        - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditValueCommand: ~
         - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditAssetValueCommand: ~
 
 Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCollectionValueCommand:
     constraints:
-        - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditValueCommand: ~
         - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditAssetCollectionValueCommand: ~
 
 Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditOptionValueCommand:
@@ -103,12 +103,7 @@ Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditOptionCollect
 
 Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditNumberValueCommand:
     constraints:
-        - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditValueCommand: ~
         - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditNumberValueCommand: ~
-
-Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EmptyValueCommand:
-    constraints:
-        - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditValueCommand: ~
 
 Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateTextAttributeCommand:
     group_sequence:
