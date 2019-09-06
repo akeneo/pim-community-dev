@@ -3,12 +3,15 @@ import {
   attributeListUpdated,
   channelListUpdated,
   familyUpdated,
+  ruleRelationListUpdated,
   selectAttributeList,
   selectChannels,
   selectLocales,
   selectFamily,
+  selectRuleRelations,
   updateChannels,
   updateFamily,
+  updateRuleRelations,
 } from 'akeneopimenrichmentassetmanager/assets-collection/reducer/structure';
 import {
   channelFetcher,
@@ -18,12 +21,19 @@ import {
   familyFetcher,
   fetchFamily,
 } from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/family';
+import {fetchRuleRelations} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/rule-relation';
 
 jest.mock('pim/fetcher-registry', () => {});
+jest.mock('pimee/rule-manager', () => {});
 fetchChannels = jest.fn();
 fetchFamily = jest.fn();
+fetchRuleRelations = jest.fn();
 channelFetcher = jest.fn();
 familyFetcher = jest.fn();
+
+/**
+ *  TEST REDUCER
+ */
 
 test('It ignores other commands', () => {
   const state = {};
@@ -39,11 +49,11 @@ test('It should generate a default state', () => {
     type: 'ANOTHER_ACTION',
   });
 
-  expect(newState).toMatchObject({attributes: [], channels: [], family: null});
+  expect(newState).toMatchObject({attributes: [], channels: [], family: null, ruleRelations: []});
 });
 
 test('It should update the attribute list', () => {
-  const state = {attributes: [], channels: [], family: null};
+  const state = {attributes: [], channels: [], family: null, ruleRelations: []};
   const attribute = {
     code: 'packshot',
     labels: {
@@ -58,11 +68,11 @@ test('It should update the attribute list', () => {
     attributes: [attribute],
   });
 
-  expect(newState).toMatchObject({attributes: [attribute], channels: [], family: null});
+  expect(newState).toMatchObject({attributes: [attribute], channels: [], family: null, ruleRelations: []});
 });
 
 test('It should update the channel list', () => {
-  const state = {attributes: [], channels: [], family: null};
+  const state = {attributes: [], channels: [], family: null, ruleRelations: []};
   const channel = {
     code: 'ecommerce',
     labels: {
@@ -83,11 +93,11 @@ test('It should update the channel list', () => {
     channels: [channel],
   });
 
-  expect(newState).toMatchObject({attributes: [], channels: [channel], family: null});
+  expect(newState).toMatchObject({attributes: [], channels: [channel], family: null, ruleRelations: []});
 });
 
 test('It should update the family', () => {
-  const state = {attributes: [], channels: [], family: null};
+  const state = {attributes: [], channels: [], family: null, ruleRelations: []};
   const family = {
     code: 'marketing',
     attributeRequirements: {
@@ -100,8 +110,24 @@ test('It should update the family', () => {
     family,
   });
 
-  expect(newState).toMatchObject({attributes: [], channels: [], family});
+  expect(newState).toMatchObject({attributes: [], channels: [], family, ruleRelations: []});
 });
+
+test('It should update the rule relation list', () => {
+  const state = {attributes: [], channels: [], family: null, ruleRelations: []};
+  const ruleRelation = {attribute: 'packshot', rule: 'set_packshot_en_US'};
+
+  const newState = structureReducer(state, {
+    type: 'RULE_RELATION_LIST_UPDATED',
+    ruleRelations: [ruleRelation],
+  });
+
+  expect(newState).toMatchObject({attributes: [], channels: [], family: null, ruleRelations: [ruleRelation]});
+});
+
+/**
+ *  TEST ACTION CREATORS
+ */
 
 test('It should have an action to update the attribute list', () => {
   const attributes = [
@@ -163,6 +189,25 @@ test('It should have an action to update the family', () => {
   expect(familyUpdated(family)).toMatchObject(expectedAction);
 });
 
+test('It should have an action to update the rule relation list', () => {
+  const ruleRelations = [
+    {
+      attribute: 'packshot',
+      rule: 'set_packshot_en_US',
+    },
+  ];
+  const expectedAction = {
+    type: 'RULE_RELATION_LIST_UPDATED',
+    ruleRelations,
+  };
+
+  expect(ruleRelationListUpdated(ruleRelations)).toMatchObject(expectedAction);
+});
+
+/**
+ *  TEST SELECTORS
+ */
+
 test('It should be able to select the attribute list from the state', () => {
   const attribute = {
     code: 'packshot',
@@ -175,7 +220,7 @@ test('It should be able to select the attribute list from the state', () => {
   };
   const state = {
     context: {channel: 'ecommerce', locale: 'en_US'},
-    structure: {attributes: [attribute], channels: [], family: null},
+    structure: {attributes: [attribute], channels: [], family: null, ruleRelations: []},
     values: [],
   };
 
@@ -199,7 +244,7 @@ test('It should be able to select the channels from the state', () => {
   };
   const state = {
     context: {channel: 'ecommerce', locale: 'en_US'},
-    structure: {attributes: [], channels: [channel], family: null},
+    structure: {attributes: [], channels: [channel], family: null, ruleRelations: []},
     values: [],
   };
 
@@ -222,7 +267,7 @@ test('It should be able to select locales from the state', () => {
   };
   const state = {
     context: {channel: 'ecommerce', locale: 'en_US'},
-    structure: {attributes: [], channels: [channel], family: null},
+    structure: {attributes: [], channels: [channel], family: null, ruleRelations: []},
     values: [],
   };
 
@@ -245,7 +290,7 @@ test('It should be able to select distinct locales from the state', () => {
   };
   const state = {
     context: {channel: 'ecommerce', locale: 'en_US'},
-    structure: {attributes: [], channels: [channel], family: null},
+    structure: {attributes: [], channels: [channel], family: null, ruleRelations: []},
     values: [],
   };
 
@@ -261,12 +306,32 @@ test('It should be able to select a family from the state', () => {
   };
   const state = {
     context: {channel: 'ecommerce', locale: 'en_US'},
-    structure: {attributes: [], channels: [], family},
+    structure: {attributes: [], channels: [], family, ruleRelations: []},
     values: [],
   };
 
   expect(selectFamily(state)).toEqual(family);
 });
+
+test('It should be able to select ruleRelations from the state', () => {
+  const ruleRelations = [
+    {
+      attribute: 'packshot',
+      rule: 'set_packshot_en_US',
+    },
+  ];
+  const state = {
+    context: {channel: 'ecommerce', locale: 'en_US'},
+    structure: {attributes: [], channels: [], family: null, ruleRelations},
+    values: [],
+  };
+
+  expect(selectRuleRelations(state)).toEqual(ruleRelations);
+});
+
+/**
+ *  TEST THUNK FUNCTIONS
+ */
 
 test('It should be able to dispatch an action to update the channels', async () => {
   const channels = [
@@ -294,7 +359,7 @@ test('It should be able to dispatch an action to update the channels', async () 
   expect(dispatch).toBeCalledWith({type: 'CHANNEL_LIST_UPDATED', channels});
 });
 
-test('It should be able to dispatch an action tu update the family', async () => {
+test('It should be able to dispatch an action to update the family', async () => {
   const familyCode = 'scanner';
   const family = {
     code: 'scanner',
@@ -309,4 +374,19 @@ test('It should be able to dispatch an action tu update the family', async () =>
   expect(fetchFamily).toBeCalled();
   expect(familyFetcher).toBeCalled();
   expect(dispatch).toBeCalledWith({type: 'FAMILY_UPDATED', family});
+});
+
+test('It should be able to dispatch an action to update the rule relation list', async () => {
+  const ruleRelations = [
+    {
+      attribute: 'packshot',
+      rule: 'set_packshot_en_US',
+    },
+  ];
+  const dispatch = jest.fn();
+  fetchRuleRelations.mockImplementation(() => ruleRelations);
+
+  await updateRuleRelations()(dispatch);
+  expect(fetchRuleRelations).toBeCalled();
+  expect(dispatch).toBeCalledWith({type: 'RULE_RELATION_LIST_UPDATED', ruleRelations});
 });
