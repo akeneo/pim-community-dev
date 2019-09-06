@@ -108,4 +108,4 @@ pim_asset_manager:
     product_value:
         validation:
             asset_multiple_link:
-                should_contain_less_than_limit: 'This field cannot contain more than %limit% assets, %given% given.'
+                limit_reached: 'You have reached the limit of %limit% assets per collection, you can no longer add assets to your collection.'

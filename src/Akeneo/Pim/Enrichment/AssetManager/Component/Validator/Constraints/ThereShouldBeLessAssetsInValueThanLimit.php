@@ -23,7 +23,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class ThereShouldBeLessAssetsInValueThanLimit extends Constraint
 {
-    public $message = 'pim_asset_manager.product_value.validation.asset_multiple_link.should_contain_less_than_limit';
+    public $message = 'pim_asset_manager.product_value.validation.asset_multiple_link.limit_reached';
 
     public function validatedBy(): string
     {

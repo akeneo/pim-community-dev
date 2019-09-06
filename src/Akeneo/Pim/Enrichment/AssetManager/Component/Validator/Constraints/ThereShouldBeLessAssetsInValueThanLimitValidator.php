@@ -35,7 +35,6 @@ class ThereShouldBeLessAssetsInValueThanLimitValidator extends ConstraintValidat
                 $constraint->message,
                 [
                     '%limit%' => self::MAX_ASSETS,
-                    '%given%' => count($data),
                 ]
             )->addViolation();
         }
