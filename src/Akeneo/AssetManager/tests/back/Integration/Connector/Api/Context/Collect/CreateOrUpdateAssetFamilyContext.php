@@ -298,6 +298,16 @@ class CreateOrUpdateAssetFamilyContext implements Context
                     'field'    => 'sku',
                     'operator' => 'equals',
                     'value'    => '123134124123'
+                ],
+                [
+                    'field'    => 'enabled',
+                    'operator' => '=',
+                    'value'    => true
+                ],
+                [
+                    'field'    => 'categories',
+                    'operator' => 'IN CHILDREN',
+                    'value'    => ['shoes', 'tshirts']
                 ]
             ],
             'assign_assets_to'    => [

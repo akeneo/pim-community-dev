@@ -66,7 +66,7 @@ class AssetFamilyValidator
                                             'type' => 'string',
                                         ],
                                         'value' => [
-                                            'type' => ['string', 'array'],
+                                            'type' => ['string', 'array', 'boolean'],
                                         ],
                                         'channel' => [
                                             'type' => 'string',
