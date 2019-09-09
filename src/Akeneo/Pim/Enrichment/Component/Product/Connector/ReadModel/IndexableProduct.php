@@ -130,22 +130,26 @@ class IndexableProduct
             }
         }
 
+        $family = null;
+        if (null !== $this->familyCode) {
+            $family = [
+                'code'   => $this->familyCode,
+                'labels' => $this->familyLabels,
+            ];
+        }
+
         $data = [
             'id' => sprintf('%s%s', self::INDEX_PREFIX_ID, $this->id),
             'identifier' => $this->identifier,
             'created' => $this->createdDate->format(self::INDEX_DATE_FORMAT),
             'updated' => $this->updatedDate->format(self::INDEX_DATE_FORMAT),
-            'family' => [
-                'code' => $this->familyCode,
-                'labels' => $this->familyLabels,
-            ],
-            'family_variant' => $this->familyVariantCode,
+            'family' => $family,
             'enabled' => $this->isEnabled,
             'categories' => $this->categoryCodes,
             'categories_of_ancestors' => $this->categoryCodesOfAncestors,
             'groups' => $this->groupCodes,
-            'in_group' => $in_group,
             'completeness' => $this->completeness,
+            'family_variant' => $this->familyVariantCode,
             'parent' => $this->parentProductModelCode,
             'values' => $this->values,
             'ancestors' => $this->ancestors,
@@ -155,9 +159,11 @@ class IndexableProduct
             'attributes_for_this_level' => $this->attributesForThisLevel,
         ];
 
-        return array_filter($data, function ($value) {
-            return null !== $value;
-        });
+        if ($in_group !== null) {
+            $data['in_group'] = $in_group;
+        }
+
+        return $data;
     }
 
     /**
@@ -206,22 +212,41 @@ class IndexableProduct
             (string) $product->getId(),
             $product->getIdentifier(),
             \DateTimeImmutable::createFromMutable($product->getCreated()),
-            \DateTimeImmutable::createFromMutable($product->getUpdated()),
+            \DateTimeImmutable::createFromMutable(self::getUpdatedAt($product)),
             $product->isEnabled(),
             $product->getFamily() ? $product->getFamily()->getCode() : null,
             $familyLabels,
-            $product->isVariant() ? $product->getFamilyVariant()->getCode() : null,
+            $product->isVariant() && null !== $product->getFamilyVariant()
+                ? $product->getFamilyVariant()->getCode()
+                : null,
             $product->getCategoryCodes(),
             $ancestorsCategories,
             $product->getGroupCodes(),
             $normalizedCompleteness,
-            $product->getParent() ? $product->getParent()->getCode() : null,
+            $product->isVariant() && $product->getParent() ? $product->getParent()->getCode() : null,
             $normalizedValues,
             static::getAncestors($product, $activatedLocaleCodes, $channelCodes),
             $label,
             self::getAttributeCodesOfAncestors($product, $attributesProvider),
             self::getAttributeCodesForOwnLevel($product, $attributesProvider)
         );
+    }
+
+    private static function getUpdatedAt(ProductInterface $product): \DateTime
+    {
+        $date = $product->getUpdated();
+        if ($product->isVariant()) {
+            $dates = [$date];
+            $parent = $product->getParent();
+            while (null !== $parent) {
+                $dates[] = $parent->getUpdated();
+                $parent = $parent->getParent();
+            }
+
+            $date = max($dates);
+        }
+
+        return $date;
     }
 
     private static function getFamilyLabels(FamilyInterface $family, array $activatedLocaleCodes): array
