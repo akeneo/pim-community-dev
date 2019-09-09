@@ -3,7 +3,8 @@
 namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 
 use Akeneo\Platform\Bundle\InstallerBundle\PimDirectoriesRegistry;
-use Akeneo\Platform\Bundle\InstallerBundle\PimRequirements;
+use Akeneo\Platform\CommunityVersion;
+use Akeneo\Platform\Requirements;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
@@ -38,16 +39,13 @@ class CheckRequirementsCommand extends ContainerAwareCommand
         $this->renderRequirements($input, $output, $this->getRequirements());
     }
 
-    /**
-     * Get Akeneo PIM requirements
-     *
-     * @return \PimRequirements
-     */
-    protected function getRequirements()
+    protected function getRequirements(): Requirements
     {
-        if (!class_exists('PimRequirements')) {
-            $path = $this->getContainer()->getParameter('kernel.project_dir').'/var/PimRequirements.php';
-            require_once $path;
+        $version = $this->getContainer()->getParameter('pim_catalog.version.class');
+        $baseDirectory = __DIR__.'/../../../';
+
+        if (CommunityVersion::class !== $version) {
+            $baseDirectory = $baseDirectory.'../../../';
         }
 
         $directories = [];
@@ -55,23 +53,17 @@ class CheckRequirementsCommand extends ContainerAwareCommand
             $directories = $this->getDirectoriesContainer()->getDirectories();
         }
 
-        return new \PimRequirements($directories);
+        return new Requirements($baseDirectory, $directories);
     }
 
     /**
-     * Render Akeneo PIM requirements
-     *
-     * @param InputInterface         $input
-     * @param OutputInterface        $output
-     * @param \RequirementCollection $collection
-     *
      * @throws \RuntimeException
      */
     protected function renderRequirements(
         InputInterface $input,
         OutputInterface $output,
-        \RequirementCollection $collection
-    ) {
+        Requirements $collection
+    ): void {
         $this->renderTable($collection->getMandatoryRequirements(), 'Mandatory requirements', $output);
         $this->renderTable($collection->getPhpIniRequirements(), 'PHP requirements', $output);
         $this->renderTable($collection->getPimRequirements(), 'Pim requirements', $output);
