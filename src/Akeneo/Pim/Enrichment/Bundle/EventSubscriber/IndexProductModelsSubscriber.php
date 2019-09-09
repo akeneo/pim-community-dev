@@ -34,9 +34,10 @@ class IndexProductModelsSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents() : array
     {
         return [
-            StorageEvents::POST_SAVE     => 'indexProductModel',
-            StorageEvents::POST_SAVE_ALL => 'bulkIndexProductModels',
-            StorageEvents::POST_REMOVE   => 'deleteProductModel',
+            StorageEvents::POST_SAVE       => 'indexProductModel',
+            StorageEvents::POST_SAVE_ALL   => 'bulkIndexProductModels',
+            StorageEvents::POST_REMOVE     => 'deleteProductModel',
+            StorageEvents::POST_REMOVE_ALL => 'bulkDeleteProductModels',
         ];
     }
 
@@ -94,6 +95,29 @@ class IndexProductModelsSubscriber implements EventSubscriberInterface
             return;
         }
 
+        if (!$event->hasArgument('unitary') || false === $event->getArgument('unitary')) {
+            return;
+        }
+
         $this->productModelIndexer->removeFromProductModelId($event->getSubjectId());
+    }
+
+    /**
+     * Delete several product models from ES index
+     *
+     * @param RemoveEvent $event
+     */
+    public function bulkDeleteProductModels(RemoveEvent $event): void
+    {
+        $productModels = $event->getSubject();
+        if (!is_array($productModels) || !current($productModels) instanceof ProductModelInterface) {
+            return;
+        }
+
+        $this->productModelIndexer->removeFromProductModelIds(
+            array_map(function (ProductModelInterface $product) {
+                return $product->getId();
+            }, $productModels)
+        );
     }
 }
