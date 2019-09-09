@@ -95,3 +95,14 @@ services:
         class: Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\QualityHighlights\SelectFamiliesToApplyQuery
         arguments:
             - '@database_connection'
+
+    akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.quality_highlights.select_products_to_apply:
+        class: Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\QualityHighlights\SelectProductsToApplyQuery
+        arguments:
+            - '@database_connection'
+            - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_family_attribute_codes'
+
+    akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.quality_highlights.select_supported_attributes_by_family:
+        class: Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\QualityHighlights\SelectSupportedAttributesByFamilyQuery
+        arguments:
+            - '@database_connection'

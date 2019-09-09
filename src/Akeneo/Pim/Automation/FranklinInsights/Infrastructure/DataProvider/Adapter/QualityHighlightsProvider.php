@@ -66,4 +66,18 @@ class QualityHighlightsProvider extends AbstractProvider implements QualityHighl
 
         $this->api->deleteFamily($familyCode);
     }
+
+    public function applyProducts(array $products): void
+    {
+        $this->api->setToken($this->getToken());
+
+        $this->api->applyProducts(['products' => $products]);
+    }
+
+    public function deleteProduct(int $productId): void
+    {
+        $this->api->setToken($this->getToken());
+
+        $this->api->deleteProduct($productId);
+    }
 }

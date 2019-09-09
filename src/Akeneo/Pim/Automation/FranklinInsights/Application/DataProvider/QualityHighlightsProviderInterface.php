@@ -22,4 +22,8 @@ interface QualityHighlightsProviderInterface
     public function applyFamilies(array $familyCodes): void;
 
     public function deleteFamily(string $familyCode): void;
+
+    public function applyProducts(array $products): void;
+
+    public function deleteProduct(int $productId): void;
 }

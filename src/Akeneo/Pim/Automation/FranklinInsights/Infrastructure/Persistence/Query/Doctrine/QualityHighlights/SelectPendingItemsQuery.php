@@ -48,6 +48,20 @@ class SelectPendingItemsQuery implements SelectPendingItemIdentifiersQueryInterf
         return $this->executeQuery($lock, $batchSize, PendingItemsRepository::ENTITY_TYPE_FAMILY, PendingItemsRepository::ACTION_ENTITY_DELETED);
     }
 
+    public function getUpdatedProductIds(Lock $lock, int $batchSize): array
+    {
+        $updatedProductIds = $this->executeQuery($lock, $batchSize, PendingItemsRepository::ENTITY_TYPE_PRODUCT, PendingItemsRepository::ACTION_ENTITY_UPDATED);
+
+        return array_map('intval', $updatedProductIds);
+    }
+
+    public function getDeletedProductIds(Lock $lock, int $batchSize): array
+    {
+        $deletedProductIds = $this->executeQuery($lock, $batchSize, PendingItemsRepository::ENTITY_TYPE_PRODUCT, PendingItemsRepository::ACTION_ENTITY_DELETED);
+
+        return array_map('intval', $deletedProductIds);
+    }
+
     private function executeQuery(Lock $lock, int $limit, string $entityType, string $action): array
     {
         $query = <<<'SQL'

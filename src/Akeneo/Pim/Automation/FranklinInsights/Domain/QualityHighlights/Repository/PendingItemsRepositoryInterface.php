@@ -39,6 +39,10 @@ interface PendingItemsRepositoryInterface
 
     public function removeDeletedFamilies(array $familyCodes, Lock $lock): void;
 
+    public function removeUpdatedProducts(array $productIds, Lock $lock): void;
+
+    public function removeDeletedProducts(array $productIds, Lock $lock): void;
+
     public function fillWithAllAttributes(): void;
 
     public function fillWithAllFamilies(): void;

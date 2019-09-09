@@ -130,4 +130,56 @@ class QualityHighlightsWebService extends AbstractApi implements AuthenticatedAp
             ));
         }
     }
+
+    public function applyProducts(array $products): void
+    {
+        $route = $this->uriGenerator->generate('/api/quality-highlights/data/products');
+
+        try {
+            $this->httpClient->request('POST', $route, [
+                'json' => $products,
+            ]);
+        } catch (ServerException $e) {
+            throw new FranklinServerException(
+                sprintf(
+                    'Something went wrong on Ask Franklin side when sending products : %s',
+                    $e->getMessage()
+                )
+            );
+        } catch (ClientException $e) {
+            if (Response::HTTP_UNAUTHORIZED === $e->getCode()) {
+                throw new InvalidTokenException();
+            }
+
+            throw new BadRequestException(sprintf(
+                'Something went wrong when sending products (bad request) : %s',
+                $e->getMessage()
+            ));
+        }
+    }
+
+    public function deleteProduct(int $productId): void
+    {
+        $route = $this->uriGenerator->generate(sprintf('/api/quality-highlights/data/products/%s', $productId));
+
+        try {
+            $this->httpClient->request('DELETE', $route);
+        } catch (ServerException $e) {
+            throw new FranklinServerException(
+                sprintf(
+                    'Something went wrong on Ask Franklin side when deleting a product : %s',
+                    $e->getMessage()
+                )
+            );
+        } catch (ClientException $e) {
+            if (Response::HTTP_UNAUTHORIZED === $e->getCode()) {
+                throw new InvalidTokenException();
+            }
+
+            throw new BadRequestException(sprintf(
+                'Something went wrong when deleting a product (bad request) : %s',
+                $e->getMessage()
+            ));
+        }
+    }
 }

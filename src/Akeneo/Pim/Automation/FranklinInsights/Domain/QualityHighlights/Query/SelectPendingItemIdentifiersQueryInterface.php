@@ -24,4 +24,8 @@ interface SelectPendingItemIdentifiersQueryInterface
     public function getUpdatedFamilyCodes(Lock $lock, int $batchSize): array;
 
     public function getDeletedFamilyCodes(Lock $lock, int $batchSize): array;
+
+    public function getUpdatedProductIds(Lock $lock, int $batchSize): array;
+
+    public function getDeletedProductIds(Lock $lock, int $batchSize): array;
 }

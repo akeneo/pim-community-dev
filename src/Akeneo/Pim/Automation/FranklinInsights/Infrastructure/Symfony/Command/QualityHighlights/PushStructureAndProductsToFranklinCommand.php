@@ -7,6 +7,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetCo
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\QualityHighlights\SynchronizeAttributesWithFranklin;
 use Akeneo\Pim\Automation\FranklinInsights\Application\QualityHighlights\SynchronizeFamiliesWithFranklin;
+use Akeneo\Pim\Automation\FranklinInsights\Application\QualityHighlights\SynchronizeProductsWithFranklin;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\Lock;
 use Ramsey\Uuid\Uuid;
@@ -31,6 +32,9 @@ class PushStructureAndProductsToFranklinCommand extends Command
     /** @var SynchronizeAttributesWithFranklin */
     private $synchronizeAttributes;
 
+    /** @var SynchronizeProductsWithFranklin */
+    private $synchronizeProductsWithFranklin;
+
     /** @var GetConnectionStatusHandler */
     private $connectionStatusHandler;
 
@@ -38,6 +42,7 @@ class PushStructureAndProductsToFranklinCommand extends Command
         PendingItemsRepositoryInterface $pendingItemsRepository,
         SynchronizeFamiliesWithFranklin $synchronizeFamilies,
         SynchronizeAttributesWithFranklin $synchronizeAttributes,
+        SynchronizeProductsWithFranklin $synchronizeProductsWithFranklin,
         GetConnectionStatusHandler $connectionStatusHandler
     ) {
         parent::__construct(self::NAME);
@@ -45,6 +50,7 @@ class PushStructureAndProductsToFranklinCommand extends Command
         $this->pendingItemsRepository = $pendingItemsRepository;
         $this->synchronizeFamilies = $synchronizeFamilies;
         $this->synchronizeAttributes = $synchronizeAttributes;
+        $this->synchronizeProductsWithFranklin = $synchronizeProductsWithFranklin;
         $this->connectionStatusHandler = $connectionStatusHandler;
     }
 
@@ -58,10 +64,7 @@ class PushStructureAndProductsToFranklinCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $batchSize = filter_var($input->getOption('batch'), FILTER_VALIDATE_INT);
-
-        if ($batchSize === false) {
-            $batchSize = self::DEFAULT_BATCH_SIZE;
-        }
+        $batchSize = false === $batchSize ? self::DEFAULT_BATCH_SIZE : intval($batchSize);
 
         $io = new SymfonyStyle($input, $output);
 
@@ -77,12 +80,11 @@ class PushStructureAndProductsToFranklinCommand extends Command
 
         //The following order is important and must not be changed Attributes, then Families, then products.
         $io->section('Synchronize Attributes');
-        $this->synchronizeAttributes->synchronize($lock, (int) $batchSize);
+        $this->synchronizeAttributes->synchronize($lock, $batchSize);
         $io->section('Synchronize Families');
-        $this->synchronizeFamilies->synchronize($lock, (int) $batchSize);
-
-        $io->section('Synchronize Products (TODO)');
-        //TODO synchronize products
+        $this->synchronizeFamilies->synchronize($lock, $batchSize);
+        $io->section('Synchronize Products');
+        $this->synchronizeProductsWithFranklin->synchronize($lock, $batchSize);
     }
 
     private function isFranklinInsightsActivated(): bool

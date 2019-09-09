@@ -28,3 +28,8 @@ services:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Normalizer\IdentifiersMappingNormalizer'
         arguments:
             - '@akeneo.pim.automation.franklin_insights.repository.attribute'
+
+    akeneo.pim.automation.franklin_insights.normalizer.quality_highlights.product:
+        class: Akeneo\Pim\Automation\FranklinInsights\Infrastructure\QualityHighlights\Normalizer\DatabaseToFranklinProductNormalizer
+        arguments:
+            - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.quality_highlights.select_supported_attributes_by_family'

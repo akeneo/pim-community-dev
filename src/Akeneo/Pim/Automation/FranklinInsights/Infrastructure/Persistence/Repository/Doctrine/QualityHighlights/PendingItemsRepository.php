@@ -192,6 +192,44 @@ SQL;
         $this->connection->executeQuery($this->getDeleteQuery(), $bindParams, $bindTypes);
     }
 
+    public function removeUpdatedProducts(array $productIds, Lock $lock): void
+    {
+        $bindParams = [
+            'entity_type' => self::ENTITY_TYPE_PRODUCT,
+            'entity_ids' => $productIds,
+            'action' => self::ACTION_ENTITY_UPDATED,
+            'lock' => $lock->__toString(),
+        ];
+
+        $bindTypes = [
+            'entity_type' => \PDO::PARAM_STR,
+            'entity_ids' => Connection::PARAM_STR_ARRAY,
+            'action' => \PDO::PARAM_STR,
+            'lock' => \PDO::PARAM_STR,
+        ];
+
+        $this->connection->executeQuery($this->getDeleteQuery(), $bindParams, $bindTypes);
+    }
+
+    public function removeDeletedProducts(array $productIds, Lock $lock): void
+    {
+        $bindParams = [
+            'entity_type' => self::ENTITY_TYPE_PRODUCT,
+            'entity_ids' => $productIds,
+            'action' => self::ACTION_ENTITY_DELETED,
+            'lock' => $lock->__toString(),
+        ];
+
+        $bindTypes = [
+            'entity_type' => \PDO::PARAM_STR,
+            'entity_ids' => Connection::PARAM_STR_ARRAY,
+            'action' => \PDO::PARAM_STR,
+            'lock' => \PDO::PARAM_STR,
+        ];
+
+        $this->connection->executeQuery($this->getDeleteQuery(), $bindParams, $bindTypes);
+    }
+
     private function getInsertQuery(): string
     {
         return <<<'SQL'

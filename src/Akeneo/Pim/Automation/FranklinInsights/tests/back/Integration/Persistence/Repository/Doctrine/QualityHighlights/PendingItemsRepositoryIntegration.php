@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\tests\back\Integration\Persistence\Repository\Doctrine\QualityHighlights;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\Lock;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Doctrine\QualityHighlights\PendingItemsRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
@@ -186,6 +187,29 @@ SQL;
         //Only enabled and non variant ones
         $this->assertCount(2, $updatedFamilies);
         $this->assertSame(['1', '2'], array_column($updatedFamilies, 'entity_id'));
+    }
+
+    public function test_it_removes_some_updated_products(): void
+    {
+        $this->getRepository()->addUpdatedProductId(42);
+        $this->getRepository()->addUpdatedProductId(123);
+        $this->getRepository()->addUpdatedProductId(321);
+        $this->getRepository()->addDeletedProductId(456);
+        $this->getRepository()->addUpdatedAttributeCode('weight');
+
+        $lock = new Lock('42922021-cec9-4810-ac7a-ace3584f8671');
+        $this->getRepository()->acquireLock($lock);
+
+        $this->getRepository()->removeUpdatedProducts([42, 321], $lock);
+
+        $sqlQuery = <<<SQL
+        SELECT entity_id FROM pimee_franklin_insights_quality_highlights_pending_items
+        WHERE `action` = 'update' AND entity_type = 'product'
+SQL;
+        $remainingUpdatedProducts = $this->getDbConnection()->query($sqlQuery)->fetchAll();
+
+        $this->assertCount(1, $remainingUpdatedProducts);
+        $this->assertEquals('123', $remainingUpdatedProducts[0]['entity_id']);
     }
 
     private function createTextAttribute(string $attributeCode): void
