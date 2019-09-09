@@ -7,11 +7,11 @@ export type RuleRelation = {
 };
 
 export const isSmartAttribute = (attributeCode: AttributeCode, ruleRelations: RuleRelation[]): boolean => {
-  const isExistInRelationRule = ruleRelations.some(
+  const attributeIsInARuleRelation = ruleRelations.some(
     (ruleRelation: RuleRelation) => attributeCode === ruleRelation.attribute
   );
 
-  return isExistInRelationRule;
+  return attributeIsInARuleRelation;
 };
 
 export const getRulesForAttribute = (attributeCode: AttributeCode, ruleRelations: RuleRelation[]): RuleCode[] => {

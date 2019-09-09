@@ -5,7 +5,7 @@ import __ from 'akeneoassetmanager/tools/translator';
 import {AttributeCode} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
 import {RuleRelation} from 'akeneopimenrichmentassetmanager/platform/model/structure/rule-relation';
 import {getRulesForAttribute} from 'akeneopimenrichmentassetmanager/platform/model/structure/rule-relation';
-import IconInfoIllustration from 'akeneopimenrichmentassetmanager/platform/component/visual/illustration/icon-info';
+import IconInfoIllustration from 'akeneopimenrichmentassetmanager/platform/component/visual/icon/icon-info';
 import {NotificationSection, NotificationText} from 'akeneopimenrichmentassetmanager/platform/component/common/notification';
 import {Separator} from 'akeneopimenrichmentassetmanager/platform/component/common';
 
