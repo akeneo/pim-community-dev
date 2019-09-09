@@ -64,7 +64,7 @@ it('It fetches all product attributes of asset', async () => {
     return await fetchAssetAttributes(fetcherRegistry.getFetcher('attribute'))();
   });
 
-  // Check the attributes returned by the fetcher are the one expected
+  // Check the attributes returned by the fetcher are the expected ones
   expect(response).toEqual([{
       code: 'packshot',
       type: 'akeneo_asset_multiple_link',

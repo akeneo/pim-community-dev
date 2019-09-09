@@ -12,7 +12,9 @@ beforeEach(async () => {
     ) {
       const family = {
         code: 'scanners',
-        labels: {en_US: 'Scanners'},
+        labels: {
+          en_US: 'Scanners'
+        },
         attribute_requirements: {
           ecommerce: [
             'color_scanning',
@@ -48,10 +50,12 @@ it('It fetches the family', async () => {
     return await fetchFamily(fetcherRegistry.getFetcher('family'))('scanners');
   });
 
-  // Check the family returned by the fetcher is the one expected
+  // Check the family returned by the fetcher is the expected one
   expect(response).toEqual({
     code: 'scanners',
-    labels: {en_US: 'Scanners'},
+    labels: {
+      en_US: 'Scanners'
+    },
     attributeRequirements: {
       ecommerce: [
         'color_scanning',

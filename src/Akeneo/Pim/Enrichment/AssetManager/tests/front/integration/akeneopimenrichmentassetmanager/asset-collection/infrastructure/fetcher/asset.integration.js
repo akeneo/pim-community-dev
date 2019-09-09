@@ -63,13 +63,13 @@ it('It fetches the asset collection', async () => {
       require('akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/asset')
       .fetchAssetCollection;
 
-return await fetchAssetCollection('packshot', ['iphone'], {
+    return await fetchAssetCollection('packshot', ['iphone'], {
       channel: 'ecommerce',
       locale: 'en_US'
     });
   });
 
-  // Check the asset collection returned by the fetcher is the one expected
+  // Check the asset collection returned by the fetcher is the expected one
   expect(response).toEqual([{
     assetFamily: {
       attributeAsImage: '',

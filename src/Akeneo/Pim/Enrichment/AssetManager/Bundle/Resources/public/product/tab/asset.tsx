@@ -12,6 +12,7 @@ import {ThemeProvider} from 'styled-components';
 import {updateChannels, updateFamily} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/structure';
 import thunkMiddleware from 'redux-thunk';
 import {akeneoTheme} from 'akeneopimenrichmentassetmanager/platform/component/theme';
+import {updateRuleRelations} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/structure';
 
 const Form = require('pim/form');
 const UserContext = require('pim/user-context');
@@ -47,6 +48,7 @@ class AssetTabForm extends (Form as {new (config: any): any}) {
     this.store.dispatch(localeUpdated(UserContext.get('catalogLocale')));
     this.store.dispatch(channelUpdated(UserContext.get('catalogScope')));
     this.store.dispatch(updateChannels() as any);
+    this.store.dispatch(updateRuleRelations() as any);
 
     return Form.prototype.configure.apply(this, arguments)
   }

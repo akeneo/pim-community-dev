@@ -62,7 +62,7 @@ it('It fetches all permissions', async () => {
     return await fetchPermissions(fetcherRegistry.getFetcher('permission'))();
   });
 
-  // Check the family returned by the fetcher is the one expected
+  // Check the family returned by the fetcher is the expected one
   expect(response).toEqual({
     locales: [{
         code: 'en_US',
