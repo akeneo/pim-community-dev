@@ -101,7 +101,7 @@ define(
                     .fetchAll()
                     .then(function (attributeTypes) {
                         // TODO: Remove the "delete" lines when we fully support the asset attribute types
-                        delete attributeTypes.akeneo_asset_multiple_link;
+                        delete attributeTypes.pim_catalog_asset_collection;
                         this.$el.html(this.template({
                             buttonTitle: __(this.config.buttonTitle)
                         }));
