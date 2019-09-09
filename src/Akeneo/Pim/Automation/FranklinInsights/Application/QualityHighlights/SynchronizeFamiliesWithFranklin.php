@@ -18,8 +18,6 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\Select
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\Lock;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\BadRequestException;
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\FranklinServerException;
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\InvalidTokenException;
 
 class SynchronizeFamiliesWithFranklin
 {
@@ -55,12 +53,12 @@ class SynchronizeFamiliesWithFranklin
             if (! empty($familyCodes)) {
                 try {
                     $this->qualityHighlightsProvider->applyFamilies(array_values($familyCodes));
-                } catch (FranklinServerException | InvalidTokenException $exception) {
+                } catch (BadRequestException $exception) {
+                    //The error is logged by the api client
+                } catch (\Exception $exception) {
                     //Remove the lock, we will process those entities next time
                     $this->pendingItemsRepository->releaseUpdatedFamiliesLock($familyCodes, $lock);
                     continue;
-                } catch (BadRequestException $exception) {
-                    //The error is logged by the api client
                 }
 
                 $this->pendingItemsRepository->removeUpdatedFamilies($familyCodes, $lock);
@@ -77,12 +75,12 @@ class SynchronizeFamiliesWithFranklin
                     foreach ($familyCodes as $familyCode) {
                         $this->qualityHighlightsProvider->deleteFamily($familyCode);
                     }
-                } catch (FranklinServerException | InvalidTokenException $exception) {
+                } catch (BadRequestException $exception) {
+                    //The error is logged by the api client
+                } catch (\Exception $exception) {
                     //Remove the lock, we will process those entities next time
                     $this->pendingItemsRepository->releaseDeletedFamiliesLock($familyCodes, $lock);
                     continue;
-                } catch (BadRequestException $exception) {
-                    //The error is logged by the api client
                 }
 
                 $this->pendingItemsRepository->removeDeletedFamilies($familyCodes, $lock);

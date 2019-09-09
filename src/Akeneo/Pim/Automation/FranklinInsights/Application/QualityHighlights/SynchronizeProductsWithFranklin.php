@@ -20,8 +20,6 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\Select
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\Lock;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\BadRequestException;
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\FranklinServerException;
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\InvalidTokenException;
 
 class SynchronizeProductsWithFranklin
 {
@@ -71,12 +69,12 @@ class SynchronizeProductsWithFranklin
 
                 try {
                     $this->qualityHighlightsProvider->applyProducts($products);
-                } catch (FranklinServerException | InvalidTokenException $exception) {
+                } catch (BadRequestException $exception) {
+                    //The error is logged by the api client
+                } catch (\Exception $exception) {
                     //Remove the lock, we will process those entities next time
                     $this->pendingItemsRepository->releaseUpdatedProductsLock($productIds, $lock);
                     continue;
-                } catch (BadRequestException $exception) {
-                    //The error is logged by the api client
                 }
 
                 $this->pendingItemsRepository->removeUpdatedProducts($productIds, $lock);
@@ -93,13 +91,14 @@ class SynchronizeProductsWithFranklin
                     foreach ($productIds as $productId) {
                         $this->qualityHighlightsProvider->deleteProduct($productId);
                     }
-                } catch (FranklinServerException | InvalidTokenException $exception) {
+                } catch (BadRequestException $exception) {
+                    //The error is logged by the api client
+                } catch (\Exception $exception) {
                     //Remove the lock, we will process those entities next time
                     $this->pendingItemsRepository->releaseDeletedProductsLock($productIds, $lock);
                     continue;
-                } catch (BadRequestException $exception) {
-                    //The error is logged by the api client
                 }
+
                 $this->pendingItemsRepository->removeDeletedProducts($productIds, $lock);
             }
         } while (count($productIds) >= $batchSize);

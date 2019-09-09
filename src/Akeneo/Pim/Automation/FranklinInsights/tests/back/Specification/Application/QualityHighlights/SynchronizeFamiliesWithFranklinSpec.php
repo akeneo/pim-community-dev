@@ -18,8 +18,6 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\Select
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\Lock;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\BadRequestException;
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\FranklinServerException;
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Doctrine\QualityHighlights\PendingItemsRepository;
 use PhpSpec\ObjectBehavior;
 
 class SynchronizeFamiliesWithFranklinSpec extends ObjectBehavior
@@ -55,13 +53,13 @@ class SynchronizeFamiliesWithFranklinSpec extends ObjectBehavior
         $lock = new Lock('42922021-cec9-4810-ac7a-ace3584f8671');
 
         $pendingItemIdentifiersQuery->getUpdatedFamilyCodes($lock, 100)->willReturn(['headphones', 'router']);
-        $qualityHighlightsProvider->applyFamilies(['headphones', 'router'])->willThrow(new FranklinServerException());
+        $qualityHighlightsProvider->applyFamilies(['headphones', 'router'])->willThrow(new \Exception());
         $pendingItemsRepository->releaseUpdatedFamiliesLock(['headphones', 'router'], $lock)->shouldBeCalled();
         $pendingItemsRepository->removeUpdatedFamilies(['headphones', 'router'], $lock)->shouldNotBeCalled();
 
         $pendingItemIdentifiersQuery->getDeletedFamilyCodes($lock, 100)->willReturn(['accessories', 'camcorders']);
         $qualityHighlightsProvider->deleteFamily('accessories')->shouldBeCalled();
-        $qualityHighlightsProvider->deleteFamily('camcorders')->willThrow(new FranklinServerException());
+        $qualityHighlightsProvider->deleteFamily('camcorders')->willThrow(new \Exception());
         $pendingItemsRepository->releaseDeletedFamiliesLock(['accessories', 'camcorders'], $lock)->shouldBeCalled();
         $pendingItemsRepository->removeDeletedFamilies(['accessories', 'camcorders'], $lock)->shouldNotBeCalled();
 

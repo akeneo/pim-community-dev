@@ -57,13 +57,13 @@ class SynchronizeAttributesWithFranklinSpec extends ObjectBehavior
         $lock = new Lock('42922021-cec9-4810-ac7a-ace3584f8671');
 
         $pendingItemIdentifiersQuery->getUpdatedAttributeCodes($lock, 100)->willReturn(['size', 'height']);
-        $applyAttributeStructure->apply(['size', 'height'])->willThrow(new FranklinServerException());
+        $applyAttributeStructure->apply(['size', 'height'])->willThrow(new \Exception());
         $pendingItemsRepository->releaseUpdatedAttributesLock(['size', 'height'], $lock)->shouldBeCalled();
         $pendingItemsRepository->removeUpdatedAttributes(['size', 'height'], $lock)->shouldNotBeCalled();
 
         $pendingItemIdentifiersQuery->getDeletedAttributeCodes($lock, 100)->willReturn(['color', 'weight']);
         $qualityHighlightsProvider->deleteAttribute('color')->shouldBeCalled();
-        $qualityHighlightsProvider->deleteAttribute('weight')->willThrow(new FranklinServerException());
+        $qualityHighlightsProvider->deleteAttribute('weight')->willThrow(new \Exception());
         $pendingItemsRepository->releaseDeletedAttributesLock(['color', 'weight'], $lock)->shouldBeCalled();
         $pendingItemsRepository->removeDeletedAttributes(['color', 'weight'], $lock)->shouldNotBeCalled();
 

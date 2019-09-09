@@ -18,8 +18,6 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\Select
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\Lock;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\BadRequestException;
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\FranklinServerException;
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\InvalidTokenException;
 
 class SynchronizeAttributesWithFranklin
 {
@@ -60,12 +58,12 @@ class SynchronizeAttributesWithFranklin
             if (! empty($attributeCodes)) {
                 try {
                     $this->applyAttributeStructure->apply(array_values($attributeCodes));
-                } catch (FranklinServerException | InvalidTokenException $exception) {
+                } catch (BadRequestException $exception) {
+                    //The error is logged by the api client
+                } catch (\Exception $exception) {
                     //Remove the lock, we will process those entities next time
                     $this->pendingItemsRepository->releaseUpdatedAttributesLock($attributeCodes, $lock);
                     continue;
-                } catch (BadRequestException $exception) {
-                    //The error is logged by the api client
                 }
 
                 $this->pendingItemsRepository->removeUpdatedAttributes($attributeCodes, $lock);
@@ -82,12 +80,12 @@ class SynchronizeAttributesWithFranklin
                     foreach ($attributeCodes as $attributeCode) {
                         $this->qualityHighlightsProvider->deleteAttribute($attributeCode);
                     }
-                } catch (FranklinServerException | InvalidTokenException $exception) {
+                } catch (BadRequestException $exception) {
+                    //The error is logged by the api client
+                } catch (\Exception $exception) {
                     //Remove the lock, we will process those entities next time
                     $this->pendingItemsRepository->releaseDeletedAttributesLock($attributeCodes, $lock);
                     continue;
-                } catch (BadRequestException $exception) {
-                    //The error is logged by the api client
                 }
 
                 $this->pendingItemsRepository->removeDeletedAttributes($attributeCodes, $lock);
