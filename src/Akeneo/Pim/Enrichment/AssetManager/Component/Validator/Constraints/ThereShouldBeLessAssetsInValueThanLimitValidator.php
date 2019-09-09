@@ -24,17 +24,23 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class ThereShouldBeLessAssetsInValueThanLimitValidator extends ConstraintValidator
 {
-    private const MAX_ASSETS = 50;
+    /** @var int */
+    private $maxAssets;
+
+    public function __construct(string $maxAssets)
+    {
+        $this->maxAssets = (int) $maxAssets;
+    }
 
     public function validate($value, Constraint $constraint)
     {
         $data = $value->getData();
 
-        if (is_array($data) && count($data) > self::MAX_ASSETS) {
+        if (is_array($data) && count($data) > $this->maxAssets) {
             $this->context->buildViolation(
                 $constraint->message,
                 [
-                    '%limit%' => self::MAX_ASSETS,
+                    '%limit%' => $this->maxAssets,
                 ]
             )->addViolation();
         }

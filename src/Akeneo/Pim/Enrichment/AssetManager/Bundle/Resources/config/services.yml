@@ -1,6 +1,8 @@
 services:
     akeneo_assetmanager.validator.constraint.limited_assets_in_value:
         class: Akeneo\Pim\Enrichment\AssetManager\Component\Validator\Constraints\ThereShouldBeLessAssetsInValueThanLimitValidator
+        arguments:
+            - '%enrich_max_asset_in_asset_collection%'
         tags:
             - { name: validator.constraint_validator, alias: limited_assets_in_value }
 

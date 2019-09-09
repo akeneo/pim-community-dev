@@ -35,6 +35,7 @@ class AkeneoPimEnrichmentAssetManagerExtension extends Extension
         $loader->load('datagrid/filters.yml');
         $loader->load('datagrid/query.yml');
         $loader->load('datagrid/normalizer.yml');
+        $loader->load('parameters.yml');
         $loader->load('product_value.yml');
         $loader->load('services.yml');
     }
