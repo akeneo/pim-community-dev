@@ -24,7 +24,7 @@ class ProductSelectionsValidator
     private const CHANNEL_FIELD = 'channel';
     private const LOCALE_FIELD = 'locale';
     private const FIELD_FIELD = 'field';
-    private const ALLOWED_PRODUCT_FIELDS = ['enable', 'family', 'categories'];
+    private const FIELDS_WITH_NO_CHANNEL_NOR_LOCALES = ['enable', 'family', 'categories'];
 
     /** @var RuleEngineValidatorACLInterface */
     private $ruleEngineValidatorACL;
@@ -151,7 +151,7 @@ class ProductSelectionsValidator
             $productSelection,
             new Callback(function ($productSelection, ExecutionContextInterface $context) {
                 $productField = $productSelection[self::FIELD_FIELD];
-                if (!in_array($productField, self::ALLOWED_PRODUCT_FIELDS)) {
+                if (!in_array($productField, self::FIELDS_WITH_NO_CHANNEL_NOR_LOCALES)) {
                     return;
                 }
 

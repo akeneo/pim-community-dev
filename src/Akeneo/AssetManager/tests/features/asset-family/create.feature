@@ -7,10 +7,10 @@ Feature: Create an asset family
   Scenario: Creating an asset family
     When the user creates an asset family "designer" with:
       | labels                                    | product_link_rules                                                                                                                                                    |
-      | {"en_US": "Stylist", "fr_FR": "Styliste"} | [{"product_selections": [{"field": "family", "operator": "=", "value": "camcorders", "channel": "ecommerce", "locale": "fr_FR"}], "assign_assets_to": [{ "mode": "add", "attribute": "my_asset_collection" }]}] |
+      | {"en_US": "Stylist", "fr_FR": "Styliste"} | [{"product_selections": [{"field": "color", "operator": "=", "value": "red", "channel": "ecommerce", "locale": "fr_FR"}], "assign_assets_to": [{ "mode": "add", "attribute": "my_asset_collection" }]}] |
     Then there is an asset family "designer" with:
       | identifier | labels                                    | product_link_rules                                                                                                                                                                                                                      |
-      | designer   | {"en_US": "Stylist", "fr_FR": "Styliste"} | [{"product_selections": [{"field": "family", "operator": "=", "value": "camcorders", "channel": "ecommerce", "locale": "fr_FR" }], "assign_assets_to": [{ "mode": "add", "attribute": "my_asset_collection", "channel": null, "locale": null }]}] |
+      | designer   | {"en_US": "Stylist", "fr_FR": "Styliste"} | [{"product_selections": [{"field": "color", "operator": "=", "value": "red", "channel": "ecommerce", "locale": "fr_FR" }], "assign_assets_to": [{ "mode": "add", "attribute": "my_asset_collection", "channel": null, "locale": null }]}] |
 
   @acceptance-back
   Scenario: Creating an asset family with no labels
