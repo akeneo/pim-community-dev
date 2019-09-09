@@ -19,7 +19,7 @@ backup:
       monthlyBackups: 12
       yearlyBackups: 10
     export:
-      enabled: true
+      enabled: false
       snapshotAge: 24h
   storage:
     schedule: "0 0 */24 * * *"
