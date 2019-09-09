@@ -1457,6 +1457,31 @@ final class EditAssetFamilyContext implements Context
         $this->editAssetFamily($command);
     }
 
+    /**
+     * @When /^the user updates an asset family "([^"]*)" with a product selection field "([^"]*)" and locale$/
+     */
+    public function theUserUpdatesAnAssetFamilyWithAProductSelectionFieldAndLocale(string $assetFamilyIdentifier, string $productField)
+    {
+        $productLinkRule = [
+            'product_selections' => [
+                [
+                    'field' => $productField,
+                    'operator'  => '=',
+                    'value'     => '123456789',
+                    'locale' => 'fr_FR',
+                ]
+            ],
+            'assign_assets_to'    => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => 'asset_collection'
+                ]
+            ]
+        ];
+        $command = new EditAssetFamilyCommand($assetFamilyIdentifier, [], null, [$productLinkRule]);
+        $this->editAssetFamily($command);
+    }
+
     private function editAssetFamily(EditAssetFamilyCommand $editAssetFamilyCommand): void
     {
         $this->constraintViolationsContext->addViolations($this->validator->validate($editAssetFamilyCommand));

@@ -156,11 +156,16 @@ class ProductSelectionsValidator
                 }
 
                 if (!empty($productSelection[self::CHANNEL_FIELD])) {
-                    $context
-                        ->buildViolation(
-                            ProductLinkRulesShouldBeExecutable::CHANNEL_NOT_SUPPORTED_FOR_FIELD,
-                            ['%product_field%' => $productField]
-                        )->addViolation();
+                    $context->buildViolation(
+                        ProductLinkRulesShouldBeExecutable::CHANNEL_NOT_SUPPORTED_FOR_FIELD,
+                        ['%product_field%' => $productField]
+                    )->addViolation();
+                }
+                if (!empty($productSelection[self::LOCALE_FIELD])) {
+                    $context->buildViolation(
+                        ProductLinkRulesShouldBeExecutable::LOCALE_NOT_SUPPORTED_FOR_FIELD,
+                        ['%product_field%' => $productField]
+                    )->addViolation();
                 }
             }
             )

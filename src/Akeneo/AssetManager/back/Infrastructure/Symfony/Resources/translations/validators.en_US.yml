@@ -26,6 +26,7 @@ pim_asset_manager:
                 extrapolated_attribute_type_should_not_have_one_value_per_locale: 'The attribute "%attribute_code%" cannot be used for extrapolation because it has one value per locale'
                 assignment_mode_not_supported: 'Invalid assignment mode "%assignment_mode%" found in a product link rule, expected to be "replace" or "add"'
                 channel_not_supported_for_field: 'You cannot specify a channel for the field "%product_field%"'
+                locale_not_supported_for_field: 'You cannot specify a locale for the field "%product_field%"'
     asset:
         validation:
             code:
