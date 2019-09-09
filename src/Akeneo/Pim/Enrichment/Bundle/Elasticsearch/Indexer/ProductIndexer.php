@@ -4,8 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\IndexableProduct;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
@@ -38,23 +43,47 @@ class ProductIndexer implements ProductIndexerInterface
     /** @var ProductRepositoryInterface */
     private $productRepository;
 
+    /** @var LocaleRepositoryInterface */
+    private $localeRepository;
+
+    /** @var ChannelRepositoryInterface */
+    private $channelRepository;
+
+    /** @var GetProductCompletenesses */
+    private $getProductCompletenesses;
+
+    /**  @var EntityWithFamilyVariantAttributesProvider */
+    private $attributesProvider;
+
     /**
-     * @param NormalizerInterface        $normalizer
-     * @param Client                     $productAndProductModelClient
-     * @param ProductRepositoryInterface $productRepository
+     * @param NormalizerInterface                       $normalizer
+     * @param Client                                    $productAndProductModelClient
+     * @param ProductRepositoryInterface                $productRepository
+     * @param LocaleRepositoryInterface                 $localeRepository
+     * @param ChannelRepositoryInterface                $channelRepository
+     * @param GetProductCompletenesses                  $getProductCompletenesses
+     * @param EntityWithFamilyVariantAttributesProvider $attributesProvider
      */
     public function __construct(
         NormalizerInterface $normalizer,
         Client $productAndProductModelClient,
-        ProductRepositoryInterface $productRepository
+        ProductRepositoryInterface $productRepository,
+        LocaleRepositoryInterface $localeRepository,
+        ChannelRepositoryInterface $channelRepository,
+        GetProductCompletenesses $getProductCompletenesses,
+        EntityWithFamilyVariantAttributesProvider $attributesProvider
     ) {
         $this->normalizer = $normalizer;
         $this->productAndProductModelClient = $productAndProductModelClient;
         $this->productRepository = $productRepository;
+        $this->localeRepository = $localeRepository;
+        $this->channelRepository = $channelRepository;
+        $this->getProductCompletenesses = $getProductCompletenesses;
+        $this->attributesProvider = $attributesProvider;
     }
 
     /**
-     * Indexes a product in the product and product model index from their identifiers.
+     * Indexes a product in the product and product model index from its identifier.
      *
      * {@inheritdoc}
      */
@@ -77,15 +106,12 @@ class ProductIndexer implements ProductIndexerInterface
 
         $normalizedProducts = [];
         foreach ($productIdentifiers as $productIdentifier) {
-            $object = $this->productRepository->findOneByIdentifier($productIdentifier);
-            if (!$object instanceof ProductInterface) {
+            $product = $this->productRepository->findOneByIdentifier($productIdentifier);
+            if (!$product instanceof ProductInterface) {
                 continue;
             }
 
-            $normalizedProduct = $this->normalizer->normalize(
-                $object,
-                ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
-            );
+            $normalizedProduct = $this->getIndexableProduct($product)->toArray();
             $this->validateObjectNormalization($normalizedProduct);
             $normalizedProducts[] = $normalizedProduct;
         }
@@ -98,6 +124,21 @@ class ProductIndexer implements ProductIndexerInterface
                 $indexRefresh
             );
         }
+    }
+
+    protected function getIndexableProduct(ProductInterface $product): IndexableProduct
+    {
+        return IndexableProduct::fromProductReadModel(
+            $product,
+            $this->localeRepository->getActivatedLocaleCodes(),
+            $this->channelRepository->getChannelCodes(),
+            $this->normalizer->normalize(
+                $product->getValues(),
+                ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
+            ),
+            $this->getProductCompletenesses->fromProductId($product->getId()),
+            $this->attributesProvider
+        );
     }
 
     /**

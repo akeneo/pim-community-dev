@@ -10,6 +10,10 @@ services:
             - '@pim_indexing_serializer'
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.repository.channel'
+            - '@akeneo.pim.enrichment.product.query.get_product_completenesses'
+            - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
 
     pim_catalog.elasticsearch.indexer.product_model:
         class: '%pim_catalog.elasticsearch.indexer.product_model_indexer.class%'
