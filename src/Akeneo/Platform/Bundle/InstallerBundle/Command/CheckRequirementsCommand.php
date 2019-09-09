@@ -4,7 +4,7 @@ namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 
 use Akeneo\Platform\Bundle\InstallerBundle\PimDirectoriesRegistry;
 use Akeneo\Platform\CommunityVersion;
-use Akeneo\Platform\PimRequirements;
+use Akeneo\Platform\Requirements;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
@@ -39,7 +39,7 @@ class CheckRequirementsCommand extends ContainerAwareCommand
         $this->renderRequirements($input, $output, $this->getRequirements());
     }
 
-    protected function getRequirements(): PimRequirements
+    protected function getRequirements(): Requirements
     {
         $version = $this->getContainer()->getParameter('pim_catalog.version.class');
         $baseDirectory = __DIR__.'/../../../';
@@ -53,7 +53,7 @@ class CheckRequirementsCommand extends ContainerAwareCommand
             $directories = $this->getDirectoriesContainer()->getDirectories();
         }
 
-        return new PimRequirements($baseDirectory, $directories);
+        return new Requirements($baseDirectory, $directories);
     }
 
     /**
@@ -62,7 +62,7 @@ class CheckRequirementsCommand extends ContainerAwareCommand
     protected function renderRequirements(
         InputInterface $input,
         OutputInterface $output,
-        PimRequirements $collection
+        Requirements $collection
     ): void {
         $this->renderTable($collection->getMandatoryRequirements(), 'Mandatory requirements', $output);
         $this->renderTable($collection->getPhpIniRequirements(), 'PHP requirements', $output);
