@@ -17,6 +17,9 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\QualityHighl
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectPendingItemIdentifiersQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\Lock;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\BadRequestException;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\FranklinServerException;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\InvalidTokenException;
 
 class SynchronizeAttributesWithFranklin
 {
@@ -55,7 +58,15 @@ class SynchronizeAttributesWithFranklin
         do {
             $attributeCodes = $this->pendingItemIdentifiersQuery->getUpdatedAttributeCodes($lock, $batchSize);
             if (! empty($attributeCodes)) {
-                $this->applyAttributeStructure->apply(array_values($attributeCodes));
+                try {
+                    $this->applyAttributeStructure->apply(array_values($attributeCodes));
+                } catch (FranklinServerException | InvalidTokenException $exception) {
+                    //Remove the lock, we will process those entities next time
+                    $this->pendingItemsRepository->releaseUpdatedAttributesLock($attributeCodes, $lock);
+                    continue;
+                } catch (BadRequestException $exception) {
+                    //The error is logged by the api client
+                }
 
                 $this->pendingItemsRepository->removeUpdatedAttributes($attributeCodes, $lock);
             }
@@ -67,8 +78,16 @@ class SynchronizeAttributesWithFranklin
         do {
             $attributeCodes = $this->pendingItemIdentifiersQuery->getDeletedAttributeCodes($lock, $batchSize);
             if (! empty($attributeCodes)) {
-                foreach ($attributeCodes as $attributeCode) {
-                    $this->qualityHighlightsProvider->deleteAttribute($attributeCode);
+                try {
+                    foreach ($attributeCodes as $attributeCode) {
+                        $this->qualityHighlightsProvider->deleteAttribute($attributeCode);
+                    }
+                } catch (FranklinServerException | InvalidTokenException $exception) {
+                    //Remove the lock, we will process those entities next time
+                    $this->pendingItemsRepository->releaseDeletedAttributesLock($attributeCodes, $lock);
+                    continue;
+                } catch (BadRequestException $exception) {
+                    //The error is logged by the api client
                 }
 
                 $this->pendingItemsRepository->removeDeletedAttributes($attributeCodes, $lock);

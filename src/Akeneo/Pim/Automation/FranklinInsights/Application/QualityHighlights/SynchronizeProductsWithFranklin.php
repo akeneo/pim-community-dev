@@ -19,6 +19,9 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\Select
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectProductsToApplyQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\Lock;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\BadRequestException;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\FranklinServerException;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\InvalidTokenException;
 
 class SynchronizeProductsWithFranklin
 {
@@ -60,17 +63,25 @@ class SynchronizeProductsWithFranklin
     private function synchronizeUpdatedProducts(Lock $lock, int $batchSize): void
     {
         do {
-            $productsIds = $this->pendingItemIdentifiersQuery->getUpdatedProductIds($lock, $batchSize);
-            if (! empty($productsIds)) {
+            $productIds = $this->pendingItemIdentifiersQuery->getUpdatedProductIds($lock, $batchSize);
+            if (! empty($productIds)) {
                 $products = array_map(function ($product) {
                     return $this->productNormalizer->normalize($product);
-                }, $this->selectProductsToApplyQuery->execute($productsIds));
+                }, $this->selectProductsToApplyQuery->execute($productIds));
 
-                $this->qualityHighlightsProvider->applyProducts($products);
+                try {
+                    $this->qualityHighlightsProvider->applyProducts($products);
+                } catch (FranklinServerException | InvalidTokenException $exception) {
+                    //Remove the lock, we will process those entities next time
+                    $this->pendingItemsRepository->releaseUpdatedProductsLock($productIds, $lock);
+                    continue;
+                } catch (BadRequestException $exception) {
+                    //The error is logged by the api client
+                }
 
-                $this->pendingItemsRepository->removeUpdatedProducts($productsIds, $lock);
+                $this->pendingItemsRepository->removeUpdatedProducts($productIds, $lock);
             }
-        } while (count($productsIds) >= $batchSize);
+        } while (count($productIds) >= $batchSize);
     }
 
     private function synchronizeDeletedProducts(Lock $lock, int $batchSize): void
@@ -78,8 +89,16 @@ class SynchronizeProductsWithFranklin
         do {
             $productIds = $this->pendingItemIdentifiersQuery->getDeletedProductIds($lock, $batchSize);
             if (! empty($productIds)) {
-                foreach ($productIds as $productId) {
-                    $this->qualityHighlightsProvider->deleteProduct($productId);
+                try {
+                    foreach ($productIds as $productId) {
+                        $this->qualityHighlightsProvider->deleteProduct($productId);
+                    }
+                } catch (FranklinServerException | InvalidTokenException $exception) {
+                    //Remove the lock, we will process those entities next time
+                    $this->pendingItemsRepository->releaseDeletedProductsLock($productIds, $lock);
+                    continue;
+                } catch (BadRequestException $exception) {
+                    //The error is logged by the api client
                 }
                 $this->pendingItemsRepository->removeDeletedProducts($productIds, $lock);
             }

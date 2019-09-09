@@ -212,6 +212,42 @@ SQL;
         $this->assertEquals('123', $remainingUpdatedProducts[0]['entity_id']);
     }
 
+    public function test_it_releases_the_lock_on_entities(): void
+    {
+        $this->getRepository()->addUpdatedAttributeCode('weight');
+        $this->getRepository()->addDeletedAttributeCode('size');
+        $this->getRepository()->addUpdatedFamilyCode('tv');
+        $this->getRepository()->addDeletedFamilyCode('speaker');
+        $this->getRepository()->addUpdatedProductId(42);
+        $this->getRepository()->addDeletedProductId(456);
+
+        $lock = new Lock('42922021-cec9-4810-ac7a-ace3584f8671');
+        $this->getRepository()->acquireLock($lock);
+
+        $sqlQuery = <<<SQL
+        SELECT lock_id FROM pimee_franklin_insights_quality_highlights_pending_items
+        WHERE lock_id = '42922021-cec9-4810-ac7a-ace3584f8671'
+SQL;
+        $pendingItems = $this->getDbConnection()->query($sqlQuery)->fetchAll();
+
+        $this->assertCount(6, $pendingItems);
+
+        $this->getRepository()->releaseUpdatedAttributesLock(['weight'], $lock);
+        $this->getRepository()->releaseDeletedAttributesLock(['size'], $lock);
+        $this->getRepository()->releaseUpdatedFamiliesLock(['tv'], $lock);
+        $this->getRepository()->releaseDeletedFamiliesLock(['speaker'], $lock);
+        $this->getRepository()->releaseUpdatedProductsLock([42], $lock);
+        $this->getRepository()->releaseDeletedProductsLock([456], $lock);
+
+        $sqlQuery = <<<SQL
+        SELECT lock_id FROM pimee_franklin_insights_quality_highlights_pending_items
+        WHERE lock_id = ''
+SQL;
+        $pendingItems = $this->getDbConnection()->query($sqlQuery)->fetchAll();
+
+        $this->assertCount(6, $pendingItems);
+    }
+
     private function createTextAttribute(string $attributeCode): void
     {
         $attribute = $this->attributeBuilder->build(

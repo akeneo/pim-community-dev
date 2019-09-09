@@ -17,6 +17,9 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\QualityHighl
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectPendingItemIdentifiersQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\Lock;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\BadRequestException;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\FranklinServerException;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\InvalidTokenException;
 
 class SynchronizeFamiliesWithFranklin
 {
@@ -50,7 +53,15 @@ class SynchronizeFamiliesWithFranklin
         do {
             $familyCodes = $this->pendingItemIdentifiersQuery->getUpdatedFamilyCodes($lock, $batchSize);
             if (! empty($familyCodes)) {
-                $this->qualityHighlightsProvider->applyFamilies(array_values($familyCodes));
+                try {
+                    $this->qualityHighlightsProvider->applyFamilies(array_values($familyCodes));
+                } catch (FranklinServerException | InvalidTokenException $exception) {
+                    //Remove the lock, we will process those entities next time
+                    $this->pendingItemsRepository->releaseUpdatedFamiliesLock($familyCodes, $lock);
+                    continue;
+                } catch (BadRequestException $exception) {
+                    //The error is logged by the api client
+                }
 
                 $this->pendingItemsRepository->removeUpdatedFamilies($familyCodes, $lock);
             }
@@ -62,9 +73,18 @@ class SynchronizeFamiliesWithFranklin
         do {
             $familyCodes = $this->pendingItemIdentifiersQuery->getDeletedFamilyCodes($lock, $batchSize);
             if (! empty($familyCodes)) {
-                foreach ($familyCodes as $familyCode) {
-                    $this->qualityHighlightsProvider->deleteFamily($familyCode);
+                try {
+                    foreach ($familyCodes as $familyCode) {
+                        $this->qualityHighlightsProvider->deleteFamily($familyCode);
+                    }
+                } catch (FranklinServerException | InvalidTokenException $exception) {
+                    //Remove the lock, we will process those entities next time
+                    $this->pendingItemsRepository->releaseDeletedFamiliesLock($familyCodes, $lock);
+                    continue;
+                } catch (BadRequestException $exception) {
+                    //The error is logged by the api client
                 }
+
                 $this->pendingItemsRepository->removeDeletedFamilies($familyCodes, $lock);
             }
         } while (count($familyCodes) >= $batchSize);

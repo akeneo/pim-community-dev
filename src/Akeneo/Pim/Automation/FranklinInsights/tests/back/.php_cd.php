@@ -24,6 +24,7 @@ $rules = [
     $builder->only(
         [
             'Akeneo\Pim\Automation\FranklinInsights\Domain',
+            'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception',
 
             // TIP-1017: Do not use public constants of AttributeTypes
             'Akeneo\Pim\Structure\Component\AttributeTypes',

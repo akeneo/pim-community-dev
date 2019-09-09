@@ -17,6 +17,8 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\QualityHighl
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectPendingItemIdentifiersQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\Lock;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\BadRequestException;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\FranklinServerException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Doctrine\QualityHighlights\PendingItemsRepository;
 use PhpSpec\ObjectBehavior;
 
@@ -38,6 +40,52 @@ class SynchronizeFamiliesWithFranklinSpec extends ObjectBehavior
         $pendingItemIdentifiersQuery->getDeletedFamilyCodes($lock, 100)->willReturn(['accessories', 'camcorders']);
         $qualityHighlightsProvider->deleteFamily('accessories')->shouldBeCalled();
         $qualityHighlightsProvider->deleteFamily('camcorders')->shouldBeCalled();
+        $pendingItemsRepository->removeDeletedFamilies(['accessories', 'camcorders'], $lock)->shouldBeCalled();
+
+        $this->synchronize($lock, 100);
+    }
+
+    public function it_releases_the_lock_on_exception(
+        SelectPendingItemIdentifiersQueryInterface $pendingItemIdentifiersQuery,
+        QualityHighlightsProviderInterface $qualityHighlightsProvider,
+        PendingItemsRepositoryInterface $pendingItemsRepository
+    ) {
+        $this->beConstructedWith($pendingItemIdentifiersQuery, $qualityHighlightsProvider, $pendingItemsRepository);
+
+        $lock = new Lock('42922021-cec9-4810-ac7a-ace3584f8671');
+
+        $pendingItemIdentifiersQuery->getUpdatedFamilyCodes($lock, 100)->willReturn(['headphones', 'router']);
+        $qualityHighlightsProvider->applyFamilies(['headphones', 'router'])->willThrow(new FranklinServerException());
+        $pendingItemsRepository->releaseUpdatedFamiliesLock(['headphones', 'router'], $lock)->shouldBeCalled();
+        $pendingItemsRepository->removeUpdatedFamilies(['headphones', 'router'], $lock)->shouldNotBeCalled();
+
+        $pendingItemIdentifiersQuery->getDeletedFamilyCodes($lock, 100)->willReturn(['accessories', 'camcorders']);
+        $qualityHighlightsProvider->deleteFamily('accessories')->shouldBeCalled();
+        $qualityHighlightsProvider->deleteFamily('camcorders')->willThrow(new FranklinServerException());
+        $pendingItemsRepository->releaseDeletedFamiliesLock(['accessories', 'camcorders'], $lock)->shouldBeCalled();
+        $pendingItemsRepository->removeDeletedFamilies(['accessories', 'camcorders'], $lock)->shouldNotBeCalled();
+
+        $this->synchronize($lock, 100);
+    }
+
+    public function it_ignores_bad_request_exception(
+        SelectPendingItemIdentifiersQueryInterface $pendingItemIdentifiersQuery,
+        QualityHighlightsProviderInterface $qualityHighlightsProvider,
+        PendingItemsRepositoryInterface $pendingItemsRepository
+    ) {
+        $this->beConstructedWith($pendingItemIdentifiersQuery, $qualityHighlightsProvider, $pendingItemsRepository);
+
+        $lock = new Lock('42922021-cec9-4810-ac7a-ace3584f8671');
+
+        $pendingItemIdentifiersQuery->getUpdatedFamilyCodes($lock, 100)->willReturn(['headphones', 'router']);
+        $qualityHighlightsProvider->applyFamilies(['headphones', 'router'])->willThrow(new BadRequestException());
+        $pendingItemsRepository->releaseUpdatedFamiliesLock(['headphones', 'router'], $lock)->shouldNotBeCalled();
+        $pendingItemsRepository->removeUpdatedFamilies(['headphones', 'router'], $lock)->shouldBeCalled();
+
+        $pendingItemIdentifiersQuery->getDeletedFamilyCodes($lock, 100)->willReturn(['accessories', 'camcorders']);
+        $qualityHighlightsProvider->deleteFamily('accessories')->shouldBeCalled();
+        $qualityHighlightsProvider->deleteFamily('camcorders')->willThrow(new BadRequestException());
+        $pendingItemsRepository->releaseDeletedFamiliesLock(['accessories', 'camcorders'], $lock)->shouldNotBeCalled();
         $pendingItemsRepository->removeDeletedFamilies(['accessories', 'camcorders'], $lock)->shouldBeCalled();
 
         $this->synchronize($lock, 100);

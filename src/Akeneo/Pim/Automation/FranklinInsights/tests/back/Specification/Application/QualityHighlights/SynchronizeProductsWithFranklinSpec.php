@@ -22,6 +22,8 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\Select
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Query\SelectProductsToApplyQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\ValueObject\Lock;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\BadRequestException;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\FranklinServerException;
 use PhpSpec\ObjectBehavior;
 
 class SynchronizeProductsWithFranklinSpec extends ObjectBehavior
@@ -99,6 +101,94 @@ class SynchronizeProductsWithFranklinSpec extends ObjectBehavior
         $qualityHighlightsProvider->deleteProduct(43)->shouldBeCalled();
         $qualityHighlightsProvider->deleteProduct(321)->shouldBeCalled();
         $pendingItemsRepository->removeDeletedProducts([43, 321], $lock)->shouldBeCalled();
+
+        $this->synchronize($lock, 100);
+    }
+
+    function it_releases_the_lock_on_exception(
+        SelectPendingItemIdentifiersQueryInterface $pendingItemIdentifiersQuery,
+        QualityHighlightsProviderInterface $qualityHighlightsProvider,
+        PendingItemsRepositoryInterface $pendingItemsRepository,
+        SelectProductsToApplyQueryInterface $selectProductsToApplyQuery,
+        ProductNormalizerInterface $productNormalizer
+    ) {
+        $this->beConstructedWith($pendingItemIdentifiersQuery, $qualityHighlightsProvider, $pendingItemsRepository, $selectProductsToApplyQuery, $productNormalizer);
+
+        $lock = new Lock('42922021-cec9-4810-ac7a-ace3584f8671');
+
+        $product1 = new Product(
+            new ProductId(42),
+            new FamilyCode('mugs'),
+            [
+                'name' => [
+                    'ecommerce' => [
+                        'en_US' => 'Ziggy'
+                    ]
+                ]
+            ]
+        );
+        $normalizedProduct1 = [
+            'catalog_product_id' => 42,
+            'family' => 'mugs',
+            'attributes' => []
+        ];
+
+        $productsIds = [42];
+        $pendingItemIdentifiersQuery->getUpdatedProductIds($lock, 100)->willReturn($productsIds);
+        $selectProductsToApplyQuery->execute($productsIds)->willReturn([$product1]);
+        $productNormalizer->normalize($product1)->willReturn($normalizedProduct1);
+        $qualityHighlightsProvider->applyProducts([$normalizedProduct1])->willThrow(new FranklinServerException());
+        $pendingItemsRepository->releaseUpdatedProductsLock($productsIds, $lock)->shouldBeCalled();
+        $pendingItemsRepository->removeUpdatedProducts($productsIds, $lock)->shouldNotBeCalled();
+
+        $pendingItemIdentifiersQuery->getDeletedProductIds($lock, 100)->willReturn([43]);
+        $qualityHighlightsProvider->deleteProduct(43)->willThrow(new FranklinServerException());
+        $pendingItemsRepository->releaseDeletedProductsLock([43], $lock)->shouldBeCalled();
+        $pendingItemsRepository->removeDeletedProducts([43], $lock)->shouldNotBeCalled();
+
+        $this->synchronize($lock, 100);
+    }
+
+    function it_ignores_bad_request_exception(
+        SelectPendingItemIdentifiersQueryInterface $pendingItemIdentifiersQuery,
+        QualityHighlightsProviderInterface $qualityHighlightsProvider,
+        PendingItemsRepositoryInterface $pendingItemsRepository,
+        SelectProductsToApplyQueryInterface $selectProductsToApplyQuery,
+        ProductNormalizerInterface $productNormalizer
+    ) {
+        $this->beConstructedWith($pendingItemIdentifiersQuery, $qualityHighlightsProvider, $pendingItemsRepository, $selectProductsToApplyQuery, $productNormalizer);
+
+        $lock = new Lock('42922021-cec9-4810-ac7a-ace3584f8671');
+
+        $product1 = new Product(
+            new ProductId(42),
+            new FamilyCode('mugs'),
+            [
+                'name' => [
+                    'ecommerce' => [
+                        'en_US' => 'Ziggy'
+                    ]
+                ]
+            ]
+        );
+        $normalizedProduct1 = [
+            'catalog_product_id' => 42,
+            'family' => 'mugs',
+            'attributes' => []
+        ];
+
+        $productsIds = [42];
+        $pendingItemIdentifiersQuery->getUpdatedProductIds($lock, 100)->willReturn($productsIds);
+        $selectProductsToApplyQuery->execute($productsIds)->willReturn([$product1]);
+        $productNormalizer->normalize($product1)->willReturn($normalizedProduct1);
+        $qualityHighlightsProvider->applyProducts([$normalizedProduct1])->willThrow(new BadRequestException());
+        $pendingItemsRepository->releaseUpdatedProductsLock($productsIds, $lock)->shouldNotBeCalled();
+        $pendingItemsRepository->removeUpdatedProducts($productsIds, $lock)->shouldBeCalled();
+
+        $pendingItemIdentifiersQuery->getDeletedProductIds($lock, 100)->willReturn([43]);
+        $qualityHighlightsProvider->deleteProduct(43)->willThrow(new BadRequestException());
+        $pendingItemsRepository->releaseDeletedProductsLock([43], $lock)->shouldNotBeCalled();
+        $pendingItemsRepository->removeDeletedProducts([43], $lock)->shouldBeCalled();
 
         $this->synchronize($lock, 100);
     }

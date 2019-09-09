@@ -302,4 +302,127 @@ SQL;
 
         $this->connection->executeQuery($query, $bindParams);
     }
+
+    public function releaseUpdatedAttributesLock(array $attributeCodes, Lock $lock): void
+    {
+        $bindParams = [
+            'entity_type' => self::ENTITY_TYPE_ATTRIBUTE,
+            'entity_ids' => $attributeCodes,
+            'action' => self::ACTION_ENTITY_UPDATED,
+            'lock' => $lock->__toString(),
+        ];
+
+        $bindTypes = [
+            'entity_type' => \PDO::PARAM_STR,
+            'entity_ids' => Connection::PARAM_STR_ARRAY,
+            'action' => \PDO::PARAM_STR,
+            'lock' => \PDO::PARAM_STR,
+        ];
+
+        $this->connection->executeQuery($this->getReleaseLockQuery(), $bindParams, $bindTypes);
+    }
+
+    public function releaseDeletedAttributesLock(array $attributeCodes, Lock $lock): void
+    {
+        $bindParams = [
+            'entity_type' => self::ENTITY_TYPE_ATTRIBUTE,
+            'entity_ids' => $attributeCodes,
+            'action' => self::ACTION_ENTITY_DELETED,
+            'lock' => $lock->__toString(),
+        ];
+
+        $bindTypes = [
+            'entity_type' => \PDO::PARAM_STR,
+            'entity_ids' => Connection::PARAM_STR_ARRAY,
+            'action' => \PDO::PARAM_STR,
+            'lock' => \PDO::PARAM_STR,
+        ];
+
+        $this->connection->executeQuery($this->getReleaseLockQuery(), $bindParams, $bindTypes);
+    }
+
+    public function releaseUpdatedFamiliesLock(array $familyCodes, Lock $lock): void
+    {
+        $bindParams = [
+            'entity_type' => self::ENTITY_TYPE_FAMILY,
+            'entity_ids' => $familyCodes,
+            'action' => self::ACTION_ENTITY_UPDATED,
+            'lock' => $lock->__toString(),
+        ];
+
+        $bindTypes = [
+            'entity_type' => \PDO::PARAM_STR,
+            'entity_ids' => Connection::PARAM_STR_ARRAY,
+            'action' => \PDO::PARAM_STR,
+            'lock' => \PDO::PARAM_STR,
+        ];
+
+        $this->connection->executeQuery($this->getReleaseLockQuery(), $bindParams, $bindTypes);
+    }
+
+    public function releaseDeletedFamiliesLock(array $familyCodes, Lock $lock): void
+    {
+        $bindParams = [
+            'entity_type' => self::ENTITY_TYPE_FAMILY,
+            'entity_ids' => $familyCodes,
+            'action' => self::ACTION_ENTITY_DELETED,
+            'lock' => $lock->__toString(),
+        ];
+
+        $bindTypes = [
+            'entity_type' => \PDO::PARAM_STR,
+            'entity_ids' => Connection::PARAM_STR_ARRAY,
+            'action' => \PDO::PARAM_STR,
+            'lock' => \PDO::PARAM_STR,
+        ];
+
+        $this->connection->executeQuery($this->getReleaseLockQuery(), $bindParams, $bindTypes);
+    }
+
+    public function releaseUpdatedProductsLock(array $productIds, Lock $lock): void
+    {
+        $bindParams = [
+            'entity_type' => self::ENTITY_TYPE_PRODUCT,
+            'entity_ids' => $productIds,
+            'action' => self::ACTION_ENTITY_UPDATED,
+            'lock' => $lock->__toString(),
+        ];
+
+        $bindTypes = [
+            'entity_type' => \PDO::PARAM_STR,
+            'entity_ids' => Connection::PARAM_STR_ARRAY,
+            'action' => \PDO::PARAM_STR,
+            'lock' => \PDO::PARAM_STR,
+        ];
+
+        $this->connection->executeQuery($this->getReleaseLockQuery(), $bindParams, $bindTypes);
+    }
+
+    public function releaseDeletedProductsLock(array $productIds, Lock $lock): void
+    {
+        $bindParams = [
+            'entity_type' => self::ENTITY_TYPE_PRODUCT,
+            'entity_ids' => $productIds,
+            'action' => self::ACTION_ENTITY_DELETED,
+            'lock' => $lock->__toString(),
+        ];
+
+        $bindTypes = [
+            'entity_type' => \PDO::PARAM_STR,
+            'entity_ids' => Connection::PARAM_STR_ARRAY,
+            'action' => \PDO::PARAM_STR,
+            'lock' => \PDO::PARAM_STR,
+        ];
+
+        $this->connection->executeQuery($this->getReleaseLockQuery(), $bindParams, $bindTypes);
+    }
+
+    private function getReleaseLockQuery(): string
+    {
+        return <<<'SQL'
+UPDATE pimee_franklin_insights_quality_highlights_pending_items
+SET lock_id = ''
+WHERE entity_id IN (:entity_ids) AND entity_type=:entity_type AND action=:action
+SQL;
+    }
 }
