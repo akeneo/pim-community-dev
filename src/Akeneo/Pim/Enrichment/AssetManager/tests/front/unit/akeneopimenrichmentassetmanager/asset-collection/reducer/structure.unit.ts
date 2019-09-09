@@ -32,7 +32,7 @@ channelFetcher = jest.fn();
 familyFetcher = jest.fn();
 
 /**
- *  TEST REDUCER
+ *  REDUCER TESTS
  */
 
 test('It ignores other commands', () => {
@@ -126,7 +126,7 @@ test('It should update the rule relation list', () => {
 });
 
 /**
- *  TEST ACTION CREATORS
+ *  ACTION CREATORS TESTS
  */
 
 test('It should have an action to update the attribute list', () => {
@@ -205,7 +205,7 @@ test('It should have an action to update the rule relation list', () => {
 });
 
 /**
- *  TEST SELECTORS
+ *  SELECTORS TESTS
  */
 
 test('It should be able to select the attribute list from the state', () => {
@@ -330,7 +330,7 @@ test('It should be able to select ruleRelations from the state', () => {
 });
 
 /**
- *  TEST THUNK FUNCTIONS
+ *  THUNK FUNCTIONS TESTS
  */
 
 test('It should be able to dispatch an action to update the channels', async () => {
