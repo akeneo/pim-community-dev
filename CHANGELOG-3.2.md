@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes:
+
+- PIM-8712: Fix folder prefix for temporary files
+
 # 3.2.7 (2019-08-27)
 
 ## Bug fixes:
