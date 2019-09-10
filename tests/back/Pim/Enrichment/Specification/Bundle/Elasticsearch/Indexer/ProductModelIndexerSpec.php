@@ -44,7 +44,6 @@ class ProductModelIndexerSpec extends ObjectBehavior
         $normalizer->normalize($productModel, ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->willReturn(['id' => 1, 'code' => $code, 'a key' => 'a value']);
         $productAndProductModelClient->bulkIndexes(
-            ProductModelIndexer::INDEX_TYPE,
             [['id' => 1, 'code' => $code, 'a key' => 'a value']],
             'id',
             Refresh::disable()
@@ -63,10 +62,9 @@ class ProductModelIndexerSpec extends ObjectBehavior
         $productModelRepository->findOneByIdentifier($code)->willReturn(null);
         $normalizer->normalize(null, ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldNotBeCalled();
-        $productAndProductModelClient->index(ProductModelIndexer::INDEX_TYPE, $code, ['id' => 1, 'code' => $code, 'a key' => 'a value'])
+        $productAndProductModelClient->index( $code, ['id' => 1, 'code' => $code, 'a key' => 'a value'])
             ->shouldNotBeCalled();
         $productAndProductModelClient->bulkIndexes(
-            ProductModelIndexer::INDEX_TYPE,
             [['id' => 1, 'code' => $code, 'a key' => 'a value']],
             'id',
             Refresh::disable()
@@ -93,7 +91,7 @@ class ProductModelIndexerSpec extends ObjectBehavior
         $normalizer->normalize($productModel2, ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->willReturn(['id' => 2, 'code' => $code2, 'a key' => 'another value']);
 
-        $productAndProductModelClient->bulkIndexes(ProductModelIndexer::INDEX_TYPE, [
+        $productAndProductModelClient->bulkIndexes([
             ['id' => 1, 'code' => $code1, 'a key' => 'a value'],
             ['id' => 2, 'code' => $code2, 'a key' => 'another value'],
         ], 'id', Refresh::disable())->shouldBeCalled();
@@ -159,7 +157,7 @@ class ProductModelIndexerSpec extends ObjectBehavior
         $normalizer->normalize($productModel2, ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->willReturn(['id' => 2, 'code' => $code2, 'a key' => 'another value']);
 
-        $productAndProductModelClient->bulkIndexes(ProductModelIndexer::INDEX_TYPE, [
+        $productAndProductModelClient->bulkIndexes([
             ['id' => 1, 'code' => $code1, 'a key' => 'a value'],
             ['id' => 2, 'code' => $code2, 'a key' => 'another value'],
         ], 'id', Refresh::disable())->shouldBeCalled();
@@ -185,7 +183,7 @@ class ProductModelIndexerSpec extends ObjectBehavior
         $normalizer->normalize($productModel2, ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->willReturn(['id' => 2, 'code' => $code2, 'a key' => 'another value']);
 
-        $productAndProductModelClient->bulkIndexes(ProductModelIndexer::INDEX_TYPE, [
+        $productAndProductModelClient->bulkIndexes([
             ['id' => 1, 'code' => $code1, 'a key' => 'a value'],
             ['id' => 2, 'code' => $code2, 'a key' => 'another value'],
         ], 'id', Refresh::waitFor())->shouldBeCalled();

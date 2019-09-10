@@ -23,11 +23,6 @@ class ProductModelIndexer implements ProductModelIndexerInterface
 {
     private const PRODUCT_MODEL_IDENTIFIER_PREFIX = 'product_model_';
 
-    /**
-     * Index type is not used anymore in elasticsearch 6, but is still needed by Client
-     */
-    const INDEX_TYPE = 'pim_catalog_product';
-
     /** @var NormalizerInterface */
     private $normalizer;
 
@@ -86,7 +81,6 @@ class ProductModelIndexer implements ProductModelIndexerInterface
 
         if (!empty($normalizedProductModels)) {
             $this->productAndProductModelClient->bulkIndexes(
-                self::INDEX_TYPE,
                 $normalizedProductModels,
                 'id',
                 $options['index_refresh'] ?? Refresh::disable()

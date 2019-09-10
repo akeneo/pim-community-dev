@@ -16,8 +16,6 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
  */
 abstract class AbstractPimCatalogTestCase extends TestCase
 {
-    const DOCUMENT_TYPE = 'pim_catalog_product';
-
     private const PAGE_SIZE = 100;
 
     /** @var Client */
@@ -55,7 +53,7 @@ abstract class AbstractPimCatalogTestCase extends TestCase
     protected function indexDocuments(array $products)
     {
         foreach ($products as $product) {
-            $this->esProductClient->index(self::DOCUMENT_TYPE, $product['identifier'], $product);
+            $this->esProductClient->index($product['identifier'], $product);
         }
 
         $this->esProductClient->refreshIndex();
@@ -73,7 +71,7 @@ abstract class AbstractPimCatalogTestCase extends TestCase
         $identifiers = [];
 
         $query['size'] = self::PAGE_SIZE;
-        $response = $this->esProductClient->search(self::DOCUMENT_TYPE, $query);
+        $response = $this->esProductClient->search($query);
 
         foreach ($response['hits']['hits'] as $hit) {
             $identifiers[] = $hit['_source']['identifier'];
