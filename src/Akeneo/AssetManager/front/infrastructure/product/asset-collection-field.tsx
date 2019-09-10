@@ -17,11 +17,11 @@ const UserContext = require('pim/user-context');
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class AssetMultipleLinkField extends (Field as {new (config: any): any}) {
+class AssetCollectionField extends (Field as {new (config: any): any}) {
   constructor(config: any) {
     super(config);
 
-    this.fieldType = 'akeneo-asset-multiple-link-field';
+    this.fieldType = 'pim-asset-collection-field';
   }
 
   renderInput(templateContext: any) {
@@ -53,4 +53,4 @@ class AssetMultipleLinkField extends (Field as {new (config: any): any}) {
   }
 }
 
-module.exports = AssetMultipleLinkField;
+module.exports = AssetCollectionField;

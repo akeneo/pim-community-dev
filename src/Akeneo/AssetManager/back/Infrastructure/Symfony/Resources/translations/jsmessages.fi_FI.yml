@@ -247,7 +247,7 @@ pim_enrich:
     attribute:
       property:
         type:
-          akeneo_asset_multiple_link: Viitetiedot monivalinta
+          pim_catalog_asset_collection: Viitetiedot monivalinta
         section:
           type_specific: Tyyppikohtaiset parametrit
         asset_family:

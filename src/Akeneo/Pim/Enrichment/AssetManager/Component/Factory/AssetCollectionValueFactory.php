@@ -16,8 +16,8 @@ use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
-use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetMultipleLinkType;
-use Akeneo\Pim\Enrichment\AssetManager\Component\Value\AssetMultipleLinkValue;
+use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetCollectionType;
+use Akeneo\Pim\Enrichment\AssetManager\Component\Value\AssetCollectionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\AbstractValueFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -30,7 +30,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
  * @author    Julien Sanchez (julien@akeneo.com)
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  */
-class AssetMultipleLinkValueFactory extends AbstractValueFactory
+class AssetCollectionValueFactory extends AbstractValueFactory
 {
     /** @var AssetRepositoryInterface */
     private $assetRepository;
@@ -41,8 +41,8 @@ class AssetMultipleLinkValueFactory extends AbstractValueFactory
     public function __construct(AssetRepositoryInterface $assetRepository)
     {
         parent::__construct(
-            AssetMultipleLinkValue::class,
-            AssetMultipleLinkType::ASSET_MULTIPLE_LINK
+            AssetCollectionValue::class,
+            AssetCollectionType::ASSET_COLLECTION
         );
 
         $this->assetRepository = $assetRepository;

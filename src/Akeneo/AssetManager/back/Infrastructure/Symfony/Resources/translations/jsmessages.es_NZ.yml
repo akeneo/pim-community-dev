@@ -224,7 +224,7 @@ pim_enrich:
     attribute:
       property:
         type:
-          akeneo_asset_multiple_link: Asset family multiple link
+          pim_catalog_asset_collection: Asset family multiple link
         section:
           type_specific: Type specific parameters
         asset_family:

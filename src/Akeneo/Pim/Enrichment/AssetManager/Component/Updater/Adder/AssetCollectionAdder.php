@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\AssetManager\Component\Updater\Adder;
 
-use Akeneo\Pim\Enrichment\AssetManager\Component\Value\AssetMultipleLinkValue;
+use Akeneo\Pim\Enrichment\AssetManager\Component\Value\AssetCollectionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AbstractAttributeAdder;
@@ -26,7 +26,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class AssetMultipleLinkAdder extends AbstractAttributeAdder
+class AssetCollectionAdder extends AbstractAttributeAdder
 {
     /**
      * @param EntityWithValuesBuilderInterface $entityWithValuesBuilder
@@ -70,11 +70,11 @@ class AssetMultipleLinkAdder extends AbstractAttributeAdder
         ?string $locale,
         ?string $scope
     ) {
-        /** @var AssetMultipleLinkValue $assetMultipleLinkValue */
-        $assetMultipleLinkValue = $entityWithValues->getValue($attribute->getCode(), $locale, $scope);
+        /** @var AssetCollectionValue $assetCollectionValue */
+        $assetCollectionValue = $entityWithValues->getValue($attribute->getCode(), $locale, $scope);
 
-        if (null !== $assetMultipleLinkValue) {
-            foreach ($assetMultipleLinkValue->getData() as $assetCode) {
+        if (null !== $assetCollectionValue) {
+            foreach ($assetCollectionValue->getData() as $assetCode) {
                 if (!in_array((string) $assetCode, $assetCodes)) {
                     $assetCodes[] = (string) $assetCode;
                 }

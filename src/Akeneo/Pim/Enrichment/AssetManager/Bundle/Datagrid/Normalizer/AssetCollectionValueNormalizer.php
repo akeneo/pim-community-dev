@@ -7,7 +7,7 @@ namespace Akeneo\Pim\Enrichment\AssetManager\Bundle\Datagrid\Normalizer;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\Pim\Enrichment\AssetManager\Component\Query\AssetInformation;
 use Akeneo\Pim\Enrichment\AssetManager\Component\Query\GetAssetInformationQueryInterface;
-use Akeneo\Pim\Enrichment\AssetManager\Component\Value\AssetMultipleLinkValueInterface;
+use Akeneo\Pim\Enrichment\AssetManager\Component\Value\AssetCollectionValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -19,7 +19,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AssetMultipleLinkValueNormalizer implements NormalizerInterface
+class AssetCollectionValueNormalizer implements NormalizerInterface
 {
     /** @var IdentifiableObjectRepositoryInterface */
     private $attributeRepository;
@@ -47,7 +47,7 @@ class AssetMultipleLinkValueNormalizer implements NormalizerInterface
         $arr = [
             'locale' => $assetFamilyValue->getLocaleCode(),
             'scope'  => $assetFamilyValue->getScopeCode(),
-            'data'   => $this->formatMultipleLinks($assetFamilyValue, $context['data_locale']),
+            'data'   => $this->formatAssetCollection($assetFamilyValue, $context['data_locale']),
         ];
 
         return $arr;
@@ -58,21 +58,21 @@ class AssetMultipleLinkValueNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null): bool
     {
-        return 'datagrid' === $format && $data instanceof AssetMultipleLinkValueInterface;
+        return 'datagrid' === $format && $data instanceof AssetCollectionValueInterface;
     }
 
-    private function valueIsEmpty(AssetMultipleLinkValueInterface $value): bool
+    private function valueIsEmpty(AssetCollectionValueInterface $value): bool
     {
         return empty($value->getData());
     }
 
-    private function formatMultipleLinks(AssetMultipleLinkValueInterface $value, string $catalogLocaleCode)
+    private function formatAssetCollection(AssetCollectionValueInterface $value, string $catalogLocaleCode)
     {
         $attribute = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
 
         $labels = array_map(
             function (AssetCode $assetCode) use ($attribute, $catalogLocaleCode) {
-                return $this->formatLink($assetCode, $attribute, $catalogLocaleCode);
+                return $this->formatAsset($assetCode, $attribute, $catalogLocaleCode);
             },
             $value->getData()
         );
@@ -80,7 +80,7 @@ class AssetMultipleLinkValueNormalizer implements NormalizerInterface
         return implode(', ', $labels);
     }
 
-    private function formatLink(AssetCode $assetCode, AttributeInterface $attribute, string $catalogLocaleCode): string
+    private function formatAsset(AssetCode $assetCode, AttributeInterface $attribute, string $catalogLocaleCode): string
     {
         $assetInformation = $this->getAssetInformation($attribute, $assetCode);
 

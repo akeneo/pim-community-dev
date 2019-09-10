@@ -89,5 +89,5 @@ extensions:
             axes: [count_asset_family, average_max_assets_per_asset_family, average_max_attributes_per_asset_family]
 
 attribute_fields:
-    akeneo-asset-multiple-link-field: pim/asset-multiple-link-field
+    pim-asset-collection-field: pim/asset-collection-field
     akeneo-asset-single-link-field: pim/asset-single-link-field

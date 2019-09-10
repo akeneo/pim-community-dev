@@ -1,8 +1,8 @@
 parameters:
-    pimee_product_asset.datagrid.extension.formatter.property.product_value.asset_family_property.class: Akeneo\Pim\Enrichment\AssetManager\Bundle\Datagrid\Extension\Formatter\Property\ProductValue\AssetMultipleLinkProperty
+    pimee_product_asset.datagrid.extension.formatter.property.product_value.asset_family_property.class: Akeneo\Pim\Enrichment\AssetManager\Bundle\Datagrid\Extension\Formatter\Property\ProductValue\AssetCollectionProperty
 
 services:
-    pimee_product_asset.datagrid.extension.formatter.property.product_value.asset_multiple_link_property:
+    pimee_product_asset.datagrid.extension.formatter.property.product_value.asset_collection_property:
         class: '%pimee_product_asset.datagrid.extension.formatter.property.product_value.asset_family_property.class%'
         arguments:
             - '@twig'

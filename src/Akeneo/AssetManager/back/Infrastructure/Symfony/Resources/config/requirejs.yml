@@ -116,12 +116,12 @@ config:
 
         pim/attribute-edit-form/type-specific-form-registry:
             formNames:
-                akeneo_asset_multiple_link:
+                pim_catalog_asset_collection:
                     create: pim-attribute-form-asset
                     edit:   pim-attribute-form-asset
         pim/form/common/attributes/create-button:
             attribute_icons:
-                akeneo_asset_multiple_link: asset-multiple-link
+                pim_catalog_asset_collection: asset-collection
 
     paths:
         pim/controller/asset-family/list: akeneoassetmanager/infrastructure/controller/asset-family/list.tsx
@@ -129,10 +129,10 @@ config:
         pim/controller/asset/edit: akeneoassetmanager/infrastructure/controller/asset/edit.tsx
 
         pim/attribute-edit-form/properties/asset-family: akeneoassetmanager/infrastructure/attribute/asset-single-link-field.ts
-        pim/asset-multiple-link-field: akeneoassetmanager/infrastructure/product/asset-multiple-link-field.tsx
+        pim/asset-collection-field: akeneoassetmanager/infrastructure/product/asset-collection-field.tsx
         pim/asset-single-link-field: akeneoassetmanager/infrastructure/product/asset-single-link-field.tsx
 
-        oro/datafilter/asset-multiple-link-filter: akeneoassetmanager/infrastructure/product-grid/filter/attribute/asset-family-collection
+        oro/datafilter/asset-collection-filter: akeneoassetmanager/infrastructure/product-grid/filter/attribute/asset-family-collection
 
         pim/form/common/fields/values/asset: akeneoassetmanager/infrastructure/product/axis/asset.js
 

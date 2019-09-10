@@ -322,7 +322,7 @@ pim_asset_manager:
 #    attribute:
 #      property:
 #        type:
-#          akeneo_asset_multiple_link: Asset multiple links
+#          pim_catalog_asset_collection: Asset multiple links
 #        section:
 #          type_specific: Type specific parameters
 #        asset_family:
