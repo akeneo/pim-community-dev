@@ -91,10 +91,10 @@ class AssetFamilyValidator
                                             'type' => 'string',
                                         ],
                                         'channel' => [
-                                            'type' => 'string',
+                                            'type' => ['string', 'null'],
                                         ],
                                         'locale' => [
-                                            'type' => 'string',
+                                            'type' => ['string', 'null'],
                                         ],
                                     ],
                                     'required' => ['attribute', 'mode'],

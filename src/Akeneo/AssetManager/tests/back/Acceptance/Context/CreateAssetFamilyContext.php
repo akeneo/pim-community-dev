@@ -19,6 +19,7 @@ use Akeneo\AssetManager\Common\Fake\Anticorruption\RuleEngineValidatorACLStub;
 use Akeneo\AssetManager\Common\Fake\InMemoryAssetFamilyRepository;
 use Akeneo\AssetManager\Common\Fake\InMemoryChannelExists;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
+use Akeneo\AssetManager\Common\Fake\InMemoryFindAssetCollectionTypeACL;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
@@ -69,6 +70,9 @@ final class CreateAssetFamilyContext implements Context
     /** @var InMemoryChannelExists */
     private $inMemoryChannelExists;
 
+    /** @var InMemoryFindAssetCollectionTypeACL */
+    private $inMemoryFindAssetCollectionTypeACL;
+
     public function __construct(
         AssetFamilyRepositoryInterface $assetFamilyRepository,
         CreateAssetFamilyHandler $createAssetFamilyHandler,
@@ -78,6 +82,7 @@ final class CreateAssetFamilyContext implements Context
         InMemoryFindActivatedLocalesByIdentifiers $activatedLocales,
         RuleEngineValidatorACLInterface $ruleEngineValidatorACLStub,
         InMemoryChannelExists $inMemoryChannelExists,
+        InMemoryFindAssetCollectionTypeACL $inMemoryFindAssetCollectionTypeACL,
         int $ruleTemplateByAssetFamilyLimit
     ) {
         $this->assetFamilyRepository = $assetFamilyRepository;
@@ -89,7 +94,9 @@ final class CreateAssetFamilyContext implements Context
         $this->ruleEngineValidatorACLStub = $ruleEngineValidatorACLStub;
         $this->ruleTemplateByAssetFamilyLimit = $ruleTemplateByAssetFamilyLimit;
         $this->inMemoryChannelExists = $inMemoryChannelExists;
+        $this->inMemoryFindAssetCollectionTypeACL = $inMemoryFindAssetCollectionTypeACL;
         $this->activateDefaultChannelAndLocales();
+        $this->inMemoryFindAssetCollectionTypeACL->stubWith(self::ASSET_FAMILY_IDENTIFIER);
     }
 
     /**
@@ -396,16 +403,16 @@ final class CreateAssetFamilyContext implements Context
                         'field'    => $expectedNormalizedProductLinkRules[0]['product_selections'][0]['field'],
                         'operator' => $expectedNormalizedProductLinkRules[0]['product_selections'][0]['operator'],
                         'value'    => $expectedNormalizedProductLinkRules[0]['product_selections'][0]['value'],
-                        'channel'  => $expectedNormalizedProductLinkRules[0]['product_selections'][0]['channel'],
-                        'locale'   => $expectedNormalizedProductLinkRules[0]['product_selections'][0]['locale'],
+                        'channel'  => $expectedNormalizedProductLinkRules[0]['product_selections'][0]['channel'] ?? null,
+                        'locale'   => $expectedNormalizedProductLinkRules[0]['product_selections'][0]['locale'] ?? null,
                     ],
                 ],
                 'actions'    => [
                     [
                         'type'    => $expectedNormalizedProductLinkRules[0]['assign_assets_to'][0]['mode'],
                         'field'   => $expectedNormalizedProductLinkRules[0]['assign_assets_to'][0]['attribute'],
-                        'channel' => null,
-                        'locale'  => null,
+                        'channel' => $expectedNormalizedProductLinkRules[0]['assign_assets_to'][0]['channel'] ?? null,
+                        'locale'  => $expectedNormalizedProductLinkRules[0]['assign_assets_to'][0]['locale'] ?? null,
                         'items'   => ['{{code}}'],
                     ],
                 ],

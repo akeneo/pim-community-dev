@@ -169,8 +169,7 @@ class ProductAssignmentsValidator
         $validator = Validation::createValidator();
         $result = $validator->validate(
             $productAssignment['attribute'],
-            new Callback(function ($productAttributeCode, ExecutionContextInterface $context)
-            use ($assetFamilyIdentifier) {
+            new Callback(function ($productAttributeCode, ExecutionContextInterface $context) use ($assetFamilyIdentifier) {
                 if ($assetFamilyIdentifier !== $this->findAssetCollectionTypeACL->fetch($productAttributeCode)) {
                     $context
                         ->buildViolation(
