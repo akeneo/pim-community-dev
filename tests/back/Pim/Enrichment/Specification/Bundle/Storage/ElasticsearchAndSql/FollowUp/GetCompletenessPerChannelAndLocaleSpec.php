@@ -17,7 +17,7 @@ class GetCompletenessPerChannelAndLocaleSpec extends ObjectBehavior
 {
     function let(Connection $connection, Client $client)
     {
-        $this->beConstructedWith($connection, $client, 'index');
+        $this->beConstructedWith($connection, $client);
     }
 
     function it_impletement()

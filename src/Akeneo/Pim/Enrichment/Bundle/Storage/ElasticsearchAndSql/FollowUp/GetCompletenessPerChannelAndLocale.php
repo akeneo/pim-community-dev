@@ -24,19 +24,14 @@ class GetCompletenessPerChannelAndLocale implements GetCompletenessPerChannelAnd
     /** @var Client */
     private $client;
 
-    /** @var string */
-    private $indexType;
-
     /**
      * @param Connection $connection
      * @param Client     $client
-     * @param string     $indexType
      */
-    public function __construct(Connection $connection, Client $client, string $indexType)
+    public function __construct(Connection $connection, Client $client)
     {
         $this->connection = $connection;
         $this->client = $client;
-        $this->indexType = $indexType;
     }
 
     /**
@@ -178,7 +173,7 @@ SQL;
             ];
         }
 
-        $rows = $this->client->msearch($this->indexType, $body);
+        $rows = $this->client->msearch($body);
 
         $index = 0;
         $totalProductsByChannel = [];
