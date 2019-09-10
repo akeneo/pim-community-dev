@@ -58,7 +58,6 @@ class Client
     }
 
     /**
-     * @param string       $indexType
      * @param string       $id
      * @param array        $body
      * @param Refresh|null $refresh
@@ -67,11 +66,10 @@ class Client
      *
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_quickstart.html#_index_a_document}
      */
-    public function index($indexType, $id, array $body, Refresh $refresh = null)
+    public function index($id, array $body, Refresh $refresh = null)
     {
         $params = [
             'index' => $this->indexName,
-            'type' => $indexType,
             'id' => $id,
             'body' => $body,
         ];
@@ -94,7 +92,6 @@ class Client
     }
 
     /**
-     * @param string       $indexType
      * @param array        $documents
      * @param string       $keyAsId
      * @param Refresh|null $refresh
@@ -104,7 +101,7 @@ class Client
      *
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_indexing_documents.html#_bulk_indexing}
      */
-    public function bulkIndexes($indexType, $documents, $keyAsId, Refresh $refresh = null)
+    public function bulkIndexes($documents, $keyAsId, Refresh $refresh = null)
     {
         $params = [];
 
@@ -116,7 +113,6 @@ class Client
             $params['body'][] = [
                 'index' => [
                     '_index' => $this->indexName,
-                    '_type' => $indexType,
                     '_id' => $document[$keyAsId],
                 ],
             ];
@@ -142,16 +138,14 @@ class Client
     }
 
     /**
-     * @param string $indexType
      * @param string $id
      *
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_quickstart.html#_get_a_document}
      */
-    public function get($indexType, $id)
+    public function get($id)
     {
         $params = [
             'index' => $this->indexName,
-            'type' => $indexType,
             'id' => $id,
         ];
 
@@ -159,16 +153,14 @@ class Client
     }
 
     /**
-     * @param string $indexType
      * @param array  $body
      *
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_quickstart.html#_search_for_a_document}
      */
-    public function search($indexType, array $body)
+    public function search(array $body)
     {
         $params = [
             'index' => $this->indexName,
-            'type' => $indexType,
             'body' => $body,
         ];
 
@@ -176,16 +168,14 @@ class Client
     }
 
     /**
-     * @param string $indexType
      * @param array  $body
      *
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-multi-search.html}
      */
-    public function msearch(string $indexType, array $body): array
+    public function msearch(array $body): array
     {
         $params = [
             'index' => $this->indexName,
-            'type' => $indexType,
             'body' => $body,
         ];
 
@@ -193,16 +183,14 @@ class Client
     }
 
     /**
-     * @param string $indexType
      * @param string $id
      *
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_quickstart.html#_delete_a_document}
      */
-    public function delete($indexType, $id)
+    public function delete($id)
     {
         $params = [
             'index' => $this->indexName,
-            'type' => $indexType,
             'id' => $id,
         ];
 
@@ -210,12 +198,11 @@ class Client
     }
 
     /**
-     * @param $indexType
      * @param $documentIds
      *
      * @return array
      */
-    public function bulkDelete($indexType, $documentIds)
+    public function bulkDelete($documentIds)
     {
         $params = [];
 
@@ -223,7 +210,6 @@ class Client
             $params['body'][] = [
                 'delete' => [
                     '_index' => $this->indexName,
-                    '_type' => $indexType,
                     '_id' => $identifier,
                 ],
             ];
