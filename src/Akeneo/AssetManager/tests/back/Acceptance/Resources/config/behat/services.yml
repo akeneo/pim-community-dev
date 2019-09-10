@@ -19,6 +19,7 @@ services:
             - '@akeneo_assetmanager.infrastructure.validation.asset_family.product_link_rule.rule_engine_validator_acl'
             - '@akeneo_assetmanager.common.helper.fixtures_loader'
             - '@akeneo_assetmanager.infrastructure.persistence.query.channel_exists'
+            - '@akeneo_assetmanager.infrastructure.validation.asset_family.product_link_rule.find_asset_collection_type_acl'
             - '%asset_manager_rule_template_by_asset_family_limit%'
 
     akeneo_assetmanager.tests.back.acceptance.context.delete_asset_family_context:

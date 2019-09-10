@@ -24,6 +24,7 @@ class ProductAssignmentsValidator
 {
     private const CHANNEL_CODE = 'channel';
     private const LOCALE_FIELD = 'locale';
+    private const MODE_FIELD = 'mode';
 
     /** @var RuleEngineValidatorACLInterface */
     private $ruleEngineValidatorACL;
@@ -34,14 +35,19 @@ class ProductAssignmentsValidator
     /** @var ChannelAndLocaleValidator */
     private $channelAndLocaleValidator;
 
+    /** @var FindAssetCollectionTypeACLInterface */
+    private $findAssetCollectionTypeACL;
+
     public function __construct(
         RuleEngineValidatorACLInterface $ruleEngineValidatorACL,
         ExtrapolatedAttributeValidator $extrapolatedAttributeValidator,
-        ChannelAndLocaleValidator $channelAndLocaleValidator
+        ChannelAndLocaleValidator $channelAndLocaleValidator,
+        FindAssetCollectionTypeACLInterface $findAssetCollectionTypeACL
     ) {
         $this->ruleEngineValidatorACL = $ruleEngineValidatorACL;
         $this->extrapolatedAttributeValidator = $extrapolatedAttributeValidator;
         $this->channelAndLocaleValidator = $channelAndLocaleValidator;
+        $this->findAssetCollectionTypeACL = $findAssetCollectionTypeACL;
     }
 
     public function validate(array $productAssignments, string $assetFamilyIdentifier): ConstraintViolationListInterface
@@ -70,6 +76,7 @@ class ProductAssignmentsValidator
         if ($modeViolations->count() === 0) {
             $violations->addAll($this->ruleEngineValidatorACL->validateProductAssignment($productAssignment));
         }
+        $violations->addAll($this->checkProductAttributeReferencesThisAssetFamily($productAssignment, $assetFamilyIdentifier));
 
         return $violations;
     }
@@ -138,13 +145,40 @@ class ProductAssignmentsValidator
         $allowedModes = Action::ALLOWED_MODES;
         $validator = Validation::createValidator();
         $result = $validator->validate(
-            $productAssignment['mode'],
+            $productAssignment[self::MODE_FIELD],
             new Callback(function ($actualMode, ExecutionContextInterface $context) use ($allowedModes) {
                 if (!in_array($actualMode, $allowedModes)) {
                     $context
                         ->buildViolation(
                             ProductLinkRulesShouldBeExecutable::ASSIGNMENT_MODE_NOT_SUPPORTED,
                             ['%assignment_mode%' => $actualMode]
+                        )
+                        ->addViolation();
+                }
+            }
+            )
+        );
+
+        return $result;
+    }
+
+    private function checkProductAttributeReferencesThisAssetFamily(
+        array $productAssignment,
+        string $assetFamilyIdentifier
+    ): ConstraintViolationListInterface {
+        $validator = Validation::createValidator();
+        $result = $validator->validate(
+            $productAssignment['attribute'],
+            new Callback(function ($productAttributeCode, ExecutionContextInterface $context)
+            use ($assetFamilyIdentifier) {
+                if ($assetFamilyIdentifier !== $this->findAssetCollectionTypeACL->fetch($productAttributeCode)) {
+                    $context
+                        ->buildViolation(
+                            ProductLinkRulesShouldBeExecutable::ASSIGNMENT_ATTRIBUTE_DOES_NOT_SUPPORT_THIS_ASSET_FAMILY,
+                            [
+                                '%product_attribute_code%'  => $productAttributeCode,
+                                '%asset_family_identifier%' => $assetFamilyIdentifier,
+                            ]
                         )
                         ->addViolation();
                 }

@@ -292,7 +292,6 @@ Feature: Edit an asset family
       | replace |
       | add     |
 
-
   # Product assignment channel
   @acceptance-back @nominal
   Scenario: Updating an asset family with a product link rule having no assignment channel
