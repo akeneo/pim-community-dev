@@ -30,14 +30,14 @@ class RequiredValueSpec extends ObjectBehavior
         $this->forChannel()->shouldReturn($channel);
     }
 
-    function it_returns_the_locale($locale)
+    function it_returns_the_locale(LocaleInterface $locale)
     {
         $this->forLocale()->shouldReturn($locale);
     }
 
     function it_helps_to_retrieve_the_value_when_the_attribute_is_non_scopable_non_localizable_non_locale_specific(
-        $attribute,
-        $locale
+        AttributeInterface $attribute,
+        LocaleInterface $locale
     ) {
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
@@ -48,9 +48,9 @@ class RequiredValueSpec extends ObjectBehavior
         $this->locale($locale)->shouldReturn(null);
     }
 
-    function it_helps_to_retrive_the_when_the_attribute_is_scopable_non_localizable_non_locale_specific(
-        $attribute,
-        $locale
+    function it_helps_to_retrive_the_value_when_the_attribute_is_scopable_non_localizable_non_locale_specific(
+        AttributeInterface $attribute,
+        LocaleInterface $locale
     ) {
         $attribute->getCode()->willReturn('attribute_code');
         $attribute->isScopable()->willReturn(true);
@@ -62,9 +62,9 @@ class RequiredValueSpec extends ObjectBehavior
         $this->locale($locale)->shouldReturn(null);
     }
 
-    function it_helps_to_retrive_the_when_the_attribute_is_localizable_non_scopable_non_locale_specific(
-        $attribute,
-        $locale
+    function it_helps_to_retrive_the_value_when_the_attribute_is_localizable_non_scopable_non_locale_specific(
+        AttributeInterface $attribute,
+        LocaleInterface $locale
     ) {
         $attribute->getCode()->willReturn('attribute_code');
         $attribute->isScopable()->willReturn(false);
@@ -76,9 +76,9 @@ class RequiredValueSpec extends ObjectBehavior
         $this->locale($locale)->shouldReturn('locale');
     }
 
-    function it_helps_to_retrive_the_when_the_locale_specific_non_scopable_non_localizable(
-        $attribute,
-        $locale,
+    function it_helps_to_retrive_the_value_when_the_locale_specific_non_scopable_non_localizable(
+        AttributeInterface $attribute,
+        LocaleInterface $locale,
         LocaleInterface $anotherLocale
     ) {
         $attribute->getCode()->willReturn('attribute_code');
