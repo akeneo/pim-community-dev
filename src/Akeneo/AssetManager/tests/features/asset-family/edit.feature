@@ -71,6 +71,30 @@ Feature: Edit an asset family
     When the user updates the asset family 'packshot' with a product link rule not executable by the rule engine
     Then there should be a validation error stating why the rule engine cannot execute the product link rule
 
+  @acceptance-back @error
+  Scenario Outline: Cannot update an asset family if a product selection has a filter on a product property with a channel
+    Given an empty rule template collection on the asset family 'packshot'
+    When the user updates an asset family "packshot" with a product selection field "<product_field>" and channel
+    Then there should be a validation error with message '<error_message>'
+
+    Examples:
+      | product_field | error_message                                           |
+      | categories    | You cannot specify a channel for the field "categories" |
+      | family        | You cannot specify a channel for the field "family"     |
+      | enable        | You cannot specify a channel for the field "enable"     |
+
+  @acceptance-back @error
+  Scenario Outline: Cannot update an asset family if a product selection has a filter on a product property with a locale
+    Given an empty rule template collection on the asset family 'packshot'
+    When the user updates an asset family "packshot" with a product selection field "<product_field>" and locale
+    Then there should be a validation error with message '<error_message>'
+
+    Examples:
+      | product_field | error_message                                           |
+      | categories    | You cannot specify a locale for the field "categories" |
+      | family        | You cannot specify a locale for the field "family"     |
+      | enable        | You cannot specify a locale for the field "enable"     |
+
   # Product selection field
   @acceptance-back @nominal
   Scenario: Updating an asset family with a product link rule having a dynamic product selection field

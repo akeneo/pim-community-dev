@@ -8,8 +8,11 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\ReplacePattern;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
+use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Validation;
 
 /**
@@ -20,6 +23,8 @@ class ProductSelectionsValidator
 {
     private const CHANNEL_FIELD = 'channel';
     private const LOCALE_FIELD = 'locale';
+    private const FIELD_FIELD = 'field';
+    private const FIELDS_WITH_NO_CHANNEL_NOR_LOCALES = ['enable', 'family', 'categories'];
 
     /** @var RuleEngineValidatorACLInterface */
     private $ruleEngineValidatorACL;
@@ -64,7 +69,8 @@ class ProductSelectionsValidator
         array $productSelection,
         string $assetFamilyIdentifier
     ): ConstraintViolationListInterface {
-        $violations = $this->checkChannel($productSelection);
+        $violations = $this->checkProductField($productSelection);
+        $violations->addAll($this->checkChannel($productSelection));
         $violations->addAll($this->checkLocale($productSelection));
 
         if ($this->hasAnyExtrapolation($productSelection)) {
@@ -77,7 +83,7 @@ class ProductSelectionsValidator
 
     private function hasAnyExtrapolation(array $productSelection): bool
     {
-        $isFieldExtrapolated = ReplacePattern::isExtrapolation($productSelection['field']);
+        $isFieldExtrapolated = ReplacePattern::isExtrapolation($productSelection[self::FIELD_FIELD]);
         $isValueExtrapolated = ReplacePattern::isExtrapolation($productSelection['value']);
         $isLocaleExtrapolated = isset($productSelection[self::LOCALE_FIELD])
             ? ReplacePattern::isExtrapolation($productSelection[self::LOCALE_FIELD]) : false;
@@ -92,7 +98,7 @@ class ProductSelectionsValidator
         string $assetFamilyIdentifier
     ): ConstraintViolationListInterface {
         $violations = $this->extrapolatedAttributeValidator->checkAttribute(
-            $productSelection['field'],
+            $productSelection[self::FIELD_FIELD],
             $assetFamilyIdentifier,
             [TextAttribute::ATTRIBUTE_TYPE]
         );
@@ -135,5 +141,34 @@ class ProductSelectionsValidator
         $localeCode = $productSelection[self::LOCALE_FIELD] ?? null;
 
         return $this->channelAndLocaleValidator->checkLocaleExistsIfAny($localeCode);
+    }
+
+    private function checkProductField(array $productSelection): ConstraintViolationListInterface
+    {
+        $validator = Validation::createValidator();
+
+        return $validator->validate(
+            $productSelection,
+            new Callback(function ($productSelection, ExecutionContextInterface $context) {
+                $productField = $productSelection[self::FIELD_FIELD];
+                if (!in_array($productField, self::FIELDS_WITH_NO_CHANNEL_NOR_LOCALES)) {
+                    return;
+                }
+
+                if (!empty($productSelection[self::CHANNEL_FIELD])) {
+                    $context->buildViolation(
+                        ProductLinkRulesShouldBeExecutable::CHANNEL_NOT_SUPPORTED_FOR_FIELD,
+                        ['%product_field%' => $productField]
+                    )->addViolation();
+                }
+                if (!empty($productSelection[self::LOCALE_FIELD])) {
+                    $context->buildViolation(
+                        ProductLinkRulesShouldBeExecutable::LOCALE_NOT_SUPPORTED_FOR_FIELD,
+                        ['%product_field%' => $productField]
+                    )->addViolation();
+                }
+            }
+            )
+        );
     }
 }
