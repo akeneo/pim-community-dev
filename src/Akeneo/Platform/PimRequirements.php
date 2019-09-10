@@ -24,8 +24,8 @@ class PimRequirements
     const REQUIRED_GD_VERSION = '2.0';
     const REQUIRED_CURL_VERSION = '7.0';
     const REQUIRED_ICU_VERSION = '4.2';
-    const LOWEST_REQUIRED_MYSQL_VERSION = '5.7.22';
-    const GREATEST_REQUIRED_MYSQL_VERSION = '5.8.0';
+    const LOWEST_REQUIRED_MYSQL_VERSION = '8.0.17';
+    const GREATEST_REQUIRED_MYSQL_VERSION = '8.1.0';
 
     const REQUIRED_EXTENSIONS = [
         'apcu',

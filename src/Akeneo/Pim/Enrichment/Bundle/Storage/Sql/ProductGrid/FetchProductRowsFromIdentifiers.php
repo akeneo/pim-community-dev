@@ -324,7 +324,7 @@ SQL;
         $sql = <<<SQL
             SELECT 
                 p.identifier,
-                JSON_ARRAYAGG(COALESCE(ft.label, CONCAT("[", g.code, "]"))) as groups 
+                JSON_ARRAYAGG(COALESCE(ft.label, CONCAT("[", g.code, "]"))) AS product_groups 
             FROM
                 pim_catalog_product p
                 JOIN pim_catalog_group_product gp ON gp.product_id = p.id
@@ -343,7 +343,7 @@ SQL;
         )->fetchAll();
 
         foreach ($rows as $row) {
-            $result[$row['identifier']]['groups'] = json_decode($row['groups']);
+            $result[$row['identifier']]['groups'] = json_decode($row['product_groups']);
         }
 
         return $result;

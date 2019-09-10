@@ -15,7 +15,7 @@ doctrine:
                         charset: utf8mb4
                         collate: utf8mb4_unicode_ci
                         row_format: DYNAMIC
-                server_version: 5.7
+                server_version: '8.0'
                 mapping_types:
                     json: string
             session:
