@@ -320,6 +320,7 @@ SQL;
         ];
 
         $this->connection->executeQuery($this->getReleaseLockQuery(), $bindParams, $bindTypes);
+        $this->connection->executeQuery($this->getDeleteQuery(), $bindParams, $bindTypes);
     }
 
     public function releaseDeletedAttributesLock(array $attributeCodes, Lock $lock): void
@@ -339,6 +340,7 @@ SQL;
         ];
 
         $this->connection->executeQuery($this->getReleaseLockQuery(), $bindParams, $bindTypes);
+        $this->connection->executeQuery($this->getDeleteQuery(), $bindParams, $bindTypes);
     }
 
     public function releaseUpdatedFamiliesLock(array $familyCodes, Lock $lock): void
@@ -358,6 +360,7 @@ SQL;
         ];
 
         $this->connection->executeQuery($this->getReleaseLockQuery(), $bindParams, $bindTypes);
+        $this->connection->executeQuery($this->getDeleteQuery(), $bindParams, $bindTypes);
     }
 
     public function releaseDeletedFamiliesLock(array $familyCodes, Lock $lock): void
@@ -377,6 +380,7 @@ SQL;
         ];
 
         $this->connection->executeQuery($this->getReleaseLockQuery(), $bindParams, $bindTypes);
+        $this->connection->executeQuery($this->getDeleteQuery(), $bindParams, $bindTypes);
     }
 
     public function releaseUpdatedProductsLock(array $productIds, Lock $lock): void
@@ -396,6 +400,7 @@ SQL;
         ];
 
         $this->connection->executeQuery($this->getReleaseLockQuery(), $bindParams, $bindTypes);
+        $this->connection->executeQuery($this->getDeleteQuery(), $bindParams, $bindTypes);
     }
 
     public function releaseDeletedProductsLock(array $productIds, Lock $lock): void
@@ -415,12 +420,13 @@ SQL;
         ];
 
         $this->connection->executeQuery($this->getReleaseLockQuery(), $bindParams, $bindTypes);
+        $this->connection->executeQuery($this->getDeleteQuery(), $bindParams, $bindTypes);
     }
 
     private function getReleaseLockQuery(): string
     {
         return <<<'SQL'
-UPDATE pimee_franklin_insights_quality_highlights_pending_items
+UPDATE IGNORE pimee_franklin_insights_quality_highlights_pending_items
 SET lock_id = ''
 WHERE entity_id IN (:entity_ids) AND entity_type=:entity_type AND action=:action
 SQL;
