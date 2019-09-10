@@ -1482,6 +1482,27 @@ final class EditAssetFamilyContext implements Context
         $this->editAssetFamily($command);
     }
 
+    /**
+     * @When /^the user updates this asset family with a product link rule having an assignment attribute which references a product attribute which type does not point to the asset we are trying to update$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithAProductLinkRuleHavingAnAssignmentAttributeWhichReferencesAProductAttributeWhichTypeDoesNotPointToTheAssetWeAreTryingToUpdate()
+    {
+    }
+
+    /**
+     * @Then /^there should be a validation error stating that this attribute has not the same of the reference entity we are trying to update$/
+     */
+    public function thereShouldBeAValidationErrorStatingThatThisAttributeHasNotTheSameOfTheReferenceEntityWeAreTryingToUpdate()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            sprintf(
+                'The product attribute "%s" cannot contain assets of asset family "%s"',
+                self::ATTRIBUTE_CODE,
+                self::ASSET_FAMILY_IDENTIFIER
+            )
+        );
+    }
+
     private function editAssetFamily(EditAssetFamilyCommand $editAssetFamilyCommand): void
     {
         $this->constraintViolationsContext->addViolations($this->validator->validate($editAssetFamilyCommand));
