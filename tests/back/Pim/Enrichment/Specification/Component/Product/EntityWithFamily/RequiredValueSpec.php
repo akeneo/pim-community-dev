@@ -48,7 +48,7 @@ class RequiredValueSpec extends ObjectBehavior
         $this->locale($locale)->shouldReturn(null);
     }
 
-    function it_helps_to_retrive_the_value_when_the_attribute_is_scopable_non_localizable_non_locale_specific(
+    function it_helps_to_retrieve_the_value_when_the_attribute_is_scopable_non_localizable_non_locale_specific(
         AttributeInterface $attribute,
         LocaleInterface $locale
     ) {
@@ -62,7 +62,7 @@ class RequiredValueSpec extends ObjectBehavior
         $this->locale($locale)->shouldReturn(null);
     }
 
-    function it_helps_to_retrive_the_value_when_the_attribute_is_localizable_non_scopable_non_locale_specific(
+    function it_helps_to_retrieve_the_value_when_the_attribute_is_localizable_non_scopable_non_locale_specific(
         AttributeInterface $attribute,
         LocaleInterface $locale
     ) {
@@ -76,7 +76,7 @@ class RequiredValueSpec extends ObjectBehavior
         $this->locale($locale)->shouldReturn('locale');
     }
 
-    function it_helps_to_retrive_the_value_when_the_locale_specific_non_scopable_non_localizable(
+    function it_helps_to_retrieve_the_value_when_the_locale_specific_non_scopable_non_localizable(
         AttributeInterface $attribute,
         LocaleInterface $locale,
         LocaleInterface $anotherLocale
@@ -90,7 +90,6 @@ class RequiredValueSpec extends ObjectBehavior
 
         $this->attribute()->shouldReturn('attribute_code');
         $this->channel()->shouldReturn(null);
-        $this->locale($locale)->shouldReturn(null);
-        $this->locale($anotherLocale)->shouldReturn(null);
+        $this->locale($locale)->shouldReturn('locale');
     }
 }
