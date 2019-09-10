@@ -289,10 +289,12 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                     - pim_reference_data_simpleselect
         validationRule:
             - Choice:
+                strict: true
                 choices: [null, url, email, regexp]
                 groups:
                     - pim_catalog_text
             - Choice:
+                strict: true
                 choices: [null, regexp]
                 groups:
                     - pim_catalog_identifier
