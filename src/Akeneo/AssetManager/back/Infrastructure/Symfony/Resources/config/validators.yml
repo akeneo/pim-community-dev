@@ -265,3 +265,8 @@ services:
             - '@pimee_catalog_rule.denormalizer.product_rule.chained'
             - '@validator'
             - '@validator'
+
+    akeneo_assetmanager.infrastructure.validation.asset_family.product_link_rule.find_asset_collection_type_acl:
+        class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\FindAssetCollectionTypeACL
+        arguments:
+            - '@pim_catalog.repository.attribute'
