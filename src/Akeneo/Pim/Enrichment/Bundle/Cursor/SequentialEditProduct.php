@@ -57,7 +57,7 @@ class SequentialEditProduct extends Cursor implements CursorInterface
             $esQuery['search_after'] = $this->searchAfter;
         }
 
-        $response = $this->esClient->search($this->indexType, $esQuery);
+        $response = $this->esClient->search($esQuery);
         $this->count = $response['hits']['total'];
 
         $identifiers = [];

@@ -24,28 +24,28 @@ class CursorSpec extends ObjectBehavior
         $data = [$productFoo, $productBar, $productBaz];
         $repository->getItemsFromIdentifiers(['foo', 'bar', 'baz'])->willReturn($data);
 
-        $esClient->search('pim_catalog_product', ['size' => 3, 'sort' => ['updated' => 'desc', '_uid' => 'asc']])
+        $esClient->search(['size' => 3, 'sort' => ['updated' => 'desc', '_uid' => 'asc']])
             ->willReturn([
                 'hits' => [
                     'total' => 4,
                     'hits' => [
                         [
                             '_source' => ['identifier' => 'foo'],
-                            'sort' => [1490810553000, 'pim_catalog_product#foo']
+                            'sort' => [1490810553000, '#foo']
                         ],
                         [
                             '_source' => ['identifier' => 'bar'],
-                            'sort' => [1490810554000, 'pim_catalog_product#bar']
+                            'sort' => [1490810554000, '#bar']
                         ],
                         [
                             '_source' => ['identifier' => 'baz'],
-                            'sort' => [1490810555000, 'pim_catalog_product#baz']
+                            'sort' => [1490810555000, '#baz']
                         ]
                     ]
                 ]
             ]);
 
-        $this->beConstructedWith($esClient, $repository, ['sort' => ['updated' => 'desc']], 'pim_catalog_product', 3);
+        $this->beConstructedWith($esClient, $repository, ['sort' => ['updated' => 'desc']], 3);
     }
 
     function it_is_initializable()
@@ -69,11 +69,10 @@ class CursorSpec extends ObjectBehavior
         ProductInterface $productFum
     ) {
         $esClient->search(
-            'pim_catalog_product',
             [
                 'size' => 3,
                 'sort' => ['updated' => 'desc', '_uid' => 'asc'],
-                'search_after' => [1490810555000, 'pim_catalog_product#baz']
+                'search_after' => [1490810555000, '#baz']
             ])
             ->willReturn([
                 'hits' => [
@@ -81,17 +80,16 @@ class CursorSpec extends ObjectBehavior
                     'hits' => [
                         [
                             '_source' => ['identifier' => 'fum'],
-                            'sort' => [1490810565000, 'pim_catalog_product#fum']
+                            'sort' => [1490810565000, '#fum']
                         ]
                     ]
                 ]
             ]);
         $esClient->search(
-            'pim_catalog_product',
             [
                 'size' => 3,
                 'sort' => ['updated' => 'desc', '_uid' => 'asc'],
-                'search_after' => [1490810565000, 'pim_catalog_product#fum']
+                'search_after' => [1490810565000, '#fum']
             ])->willReturn([
                 'hits' => [
                     'total' => 4,

@@ -20,17 +20,13 @@ class SearchAfterSizeIdentifierResultCursorFactory implements CursorFactoryInter
     /** @var Client */
     private $esClient;
 
-    /** @var string */
-    private $indexType;
-
     /**
      * @param Client $esClient
      * @param string $indexType
      */
-    public function __construct(Client $esClient, string $indexType)
+    public function __construct(Client $esClient)
     {
         $this->esClient = $esClient;
-        $this->indexType = $indexType;
     }
 
     /**
@@ -46,13 +42,13 @@ class SearchAfterSizeIdentifierResultCursorFactory implements CursorFactoryInter
         $esQuery['size'] = $options['limit'];
 
         if (null !== $options['search_after_unique_key']) {
-            array_push($options['search_after'], $this->indexType . '#' . $options['search_after_unique_key']);
+            array_push($options['search_after'], '#' . $options['search_after_unique_key']);
         }
         if (!empty($options['search_after'])) {
             $esQuery['search_after'] = $options['search_after'];
         }
 
-        $response = $this->esClient->search($this->indexType, $esQuery);
+        $response = $this->esClient->search($esQuery);
         $totalCount = (int) $response['hits']['total'];
 
         $identifiers = [];

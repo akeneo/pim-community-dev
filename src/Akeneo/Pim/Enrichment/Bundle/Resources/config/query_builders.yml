@@ -779,7 +779,6 @@ services:
             - '@pim_catalog.repository.product'
             - 'Akeneo\Pim\Enrichment\Bundle\Cursor\SequentialEditProduct'
             - 1000
-            - 'pim_catalog_product'
 
     pim_enrich.query.product_and_product_model_search_aggregator:
         public: false

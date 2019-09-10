@@ -20,8 +20,7 @@ class CursorFactorySpec extends ObjectBehavior
             $searchEngine,
             $productRepository,
             $productModelRepository,
-            100,
-            'pim_catalog_product'
+            100
         );
     }
 
@@ -34,7 +33,6 @@ class CursorFactorySpec extends ObjectBehavior
     function it_creates_a_cursor($searchEngine)
     {
         $searchEngine->search(
-            'pim_catalog_product',
             ['size' => 100, 'sort' => ['_uid' => 'asc']]
         )->willReturn(
             [

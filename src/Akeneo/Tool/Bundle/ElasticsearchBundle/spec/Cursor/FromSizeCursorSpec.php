@@ -22,7 +22,7 @@ class FromSizeCursorSpec extends ObjectBehavior
         $data = [$productBaz, $productFoo];
         $repository->getItemsFromIdentifiers(['baz', 'foo'])->willReturn($data);
 
-        $esClient->search('pim_catalog_product', [
+        $esClient->search([
             'from' => 0,
             'size' => 2,
             'sort' => ['_uid' => 'asc']
@@ -33,11 +33,11 @@ class FromSizeCursorSpec extends ObjectBehavior
                     'hits' => [
                         [
                             '_source' => ['identifier' => 'baz'],
-                            'sort' => ['pim_catalog_product#baz']
+                            'sort' => ['#baz']
                         ],
                         [
                             '_source' => ['identifier' => 'foo'],
-                            'sort' => ['pim_catalog_product#foo']
+                            'sort' => ['#foo']
                         ],
                     ]
                 ]
@@ -47,7 +47,6 @@ class FromSizeCursorSpec extends ObjectBehavior
             $esClient,
             $repository,
             [],
-            'pim_catalog_product',
             3,
             2,
             0
@@ -74,7 +73,6 @@ class FromSizeCursorSpec extends ObjectBehavior
         ProductInterface $productFum
     ) {
         $esClient->search(
-            'pim_catalog_product',
             [
                 'size' => 2,
                 'sort' => ['_uid' => 'asc'],
@@ -86,13 +84,12 @@ class FromSizeCursorSpec extends ObjectBehavior
                     'hits' => [
                         [
                             '_source' => ['identifier' => 'fum'],
-                            'sort' => ['pim_catalog_product#fum']
+                            'sort' => ['#fum']
                         ]
                     ]
                 ]
             ]);
         $esClient->search(
-            'pim_catalog_product',
             [
                 'size' => 2,
                 'sort' => ['_uid' => 'asc'],

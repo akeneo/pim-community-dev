@@ -24,9 +24,6 @@ class Cursor extends AbstractCursor implements CursorInterface
     /** @var array */
     private $esQuery;
 
-    /** @var string */
-    private $indexType;
-
     /** @var int */
     private $pageSize;
 
@@ -38,7 +35,6 @@ class Cursor extends AbstractCursor implements CursorInterface
      * @param CursorableRepositoryInterface $productRepository
      * @param CursorableRepositoryInterface $productModelRepository
      * @param array                         $esQuery
-     * @param string                        $indexType
      * @param int                           $pageSize
      */
     public function __construct(
@@ -46,14 +42,12 @@ class Cursor extends AbstractCursor implements CursorInterface
         CursorableRepositoryInterface $productRepository,
         CursorableRepositoryInterface $productModelRepository,
         array $esQuery,
-        string $indexType,
         int $pageSize
     ) {
         $this->esClient = $esClient;
         $this->productRepository = $productRepository;
         $this->productModelRepository = $productModelRepository;
         $this->esQuery = $esQuery;
-        $this->indexType = $indexType;
         $this->pageSize = $pageSize;
         $this->searchAfter = [];
     }
@@ -105,7 +99,7 @@ class Cursor extends AbstractCursor implements CursorInterface
             $esQuery['search_after'] = $this->searchAfter;
         }
 
-        $response = $this->esClient->search($this->indexType, $esQuery);
+        $response = $this->esClient->search($esQuery);
         $this->count = $response['hits']['total'];
 
         foreach ($response['hits']['hits'] as $hit) {

@@ -22,8 +22,8 @@ class SearchAfterSizeCursorSpec extends ObjectBehavior
         $data = [$productBaz, $productFoo];
         $repository->getItemsFromIdentifiers(['baz', 'foo'])->willReturn($data);
 
-        $esClient->search('pim_catalog_product', [
-            'search_after' => ['pim_catalog_product#bar'],
+        $esClient->search([
+            'search_after' => ['#bar'],
             'size' => 2,
             'sort' => ['_uid' => 'asc']
         ])
@@ -33,11 +33,11 @@ class SearchAfterSizeCursorSpec extends ObjectBehavior
                     'hits' => [
                         [
                             '_source' => ['identifier' => 'baz'],
-                            'sort' => ['pim_catalog_product#baz']
+                            'sort' => ['#baz']
                         ],
                         [
                             '_source' => ['identifier' => 'foo'],
-                            'sort' => ['pim_catalog_product#foo']
+                            'sort' => ['#foo']
                         ],
                     ]
                 ]
@@ -48,7 +48,6 @@ class SearchAfterSizeCursorSpec extends ObjectBehavior
             $repository,
             [],
             [],
-            'pim_catalog_product',
             3,
             2,
             'bar'
@@ -75,11 +74,10 @@ class SearchAfterSizeCursorSpec extends ObjectBehavior
         ProductInterface $productFum
     ) {
         $esClient->search(
-            'pim_catalog_product',
             [
                 'size' => 2,
                 'sort' => ['_uid' => 'asc'],
-                'search_after' => ['pim_catalog_product#foo']
+                'search_after' => ['#foo']
             ])
             ->willReturn([
                 'hits' => [
@@ -87,17 +85,16 @@ class SearchAfterSizeCursorSpec extends ObjectBehavior
                     'hits' => [
                         [
                             '_source' => ['identifier' => 'fum'],
-                            'sort' => ['pim_catalog_product#fum']
+                            'sort' => ['#fum']
                         ]
                     ]
                 ]
             ]);
         $esClient->search(
-            'pim_catalog_product',
             [
                 'size' => 2,
                 'sort' => ['_uid' => 'asc'],
-                'search_after' => ['pim_catalog_product#fum']
+                'search_after' => ['#fum']
             ])->willReturn([
                 'hits' => [
                     'total' => 4,

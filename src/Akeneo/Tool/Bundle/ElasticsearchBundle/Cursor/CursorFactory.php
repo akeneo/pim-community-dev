@@ -24,9 +24,6 @@ class CursorFactory implements CursorFactoryInterface
     /** @var int */
     protected $pageSize;
 
-    /** @var string */
-    protected $indexType;
-
     /** @var CursorableRepositoryInterface */
     protected $cursorableRepository;
 
@@ -35,20 +32,17 @@ class CursorFactory implements CursorFactoryInterface
      * @param CursorableRepositoryInterface $repository
      * @param string                        $cursorClassName
      * @param int                           $pageSize
-     * @param string                        $indexType
      */
     public function __construct(
         Client $searchEngine,
         CursorableRepositoryInterface $repository,
         $cursorClassName,
-        $pageSize,
-        $indexType
+        $pageSize
     ) {
         $this->searchEngine = $searchEngine;
         $this->cursorableRepository = $repository;
         $this->cursorClassName = $cursorClassName;
         $this->pageSize = $pageSize;
-        $this->indexType = $indexType;
     }
 
     /**
@@ -62,7 +56,6 @@ class CursorFactory implements CursorFactoryInterface
             $this->searchEngine,
             $this->cursorableRepository,
             $queryBuilder,
-            $this->indexType,
             $pageSize
         );
     }

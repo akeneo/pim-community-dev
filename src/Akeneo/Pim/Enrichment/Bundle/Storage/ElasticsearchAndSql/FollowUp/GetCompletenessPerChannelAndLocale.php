@@ -250,7 +250,7 @@ SQL;
             }
         }
 
-        $rows = $this->client->msearch($this->indexType, $body);
+        $rows = $this->client->msearch($body);
 
         $index = 0;
         $localesWithNbCompleteByChannel = [];

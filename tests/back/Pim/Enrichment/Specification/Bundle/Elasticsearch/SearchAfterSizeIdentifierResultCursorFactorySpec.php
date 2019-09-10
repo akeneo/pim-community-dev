@@ -14,7 +14,7 @@ class SearchAfterSizeIdentifierResultCursorFactorySpec extends ObjectBehavior
 {
     function let(Client $esClient)
     {
-        $this->beConstructedWith($esClient, 'pim_catalog_product');
+        $this->beConstructedWith($esClient);
     }
 
     function it_is_a_cursor_factory()
@@ -37,13 +37,12 @@ class SearchAfterSizeIdentifierResultCursorFactorySpec extends ObjectBehavior
         ];
 
         $esClient->search(
-            'pim_catalog_product',
             [
                 'sort'    => ['_uid' => 'asc'],
                 'query'   => [],
                 '_source' => ['identifier', 'document_type'],
                 'size'    => 25,
-                'search_after'    => ['123', 'pim_catalog_product#123']
+                'search_after'    => ['123', '#123']
             ]
         )->willReturn(['hits' => [
             'total' => 42,
@@ -53,7 +52,7 @@ class SearchAfterSizeIdentifierResultCursorFactorySpec extends ObjectBehavior
             ]
         ]]);
 
-        $this->createCursor($esQuery, $options)->shouldBeLike(new \Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResultCursor(
+        $this->createCursor($esQuery, $options)->shouldBeLike(new IdentifierResultCursor(
             [
                 new IdentifierResult('product_1', ProductInterface::class),
                 new IdentifierResult('product_model_2', ProductModelInterface::class),

@@ -24,8 +24,7 @@ class SearchAfterSizeCursorFactorySpec extends ObjectBehavior
             $searchEngine,
             $cursorableRepository,
             SearchAfterSizeCursor::class,
-            self::DEFAULT_BATCH_SIZE,
-            'pim_catalog_product'
+            self::DEFAULT_BATCH_SIZE
         );
     }
 
