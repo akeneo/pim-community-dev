@@ -118,7 +118,7 @@ SQL;
                 (int) $category['root_id'],
                 $category['root_code'],
                 $category['label'],
-                $rows['responses'][$index]['hits']['total'] ?? -1,
+                $rows['responses'][$index]['hits']['total']['value'] ?? -1,
                 (int) $category['root_id'] === $rootCategoryIdToExpand
             );
 

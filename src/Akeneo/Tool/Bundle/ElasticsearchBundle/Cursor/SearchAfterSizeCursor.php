@@ -104,7 +104,7 @@ class SearchAfterSizeCursor extends AbstractCursor implements CursorInterface
         }
 
         $response = $this->esClient->search($esQuery);
-        $this->count = $response['hits']['total'];
+        $this->count = $response['hits']['total']['value'];
 
         $identifiers = [];
         foreach ($response['hits']['hits'] as $hit) {

@@ -179,7 +179,7 @@ SQL;
         $totalProductsByChannel = [];
 
         foreach ($categoriesCodeAndLocalesByChannels as $categoriesCodeAndLocalesByChannel) {
-            $nbTotalProducts = $rows['responses'][$index]['hits']['total'] ?? -1;
+            $nbTotalProducts = $rows['responses'][$index]['hits']['total']['value'] ?? -1;
             $totalProductsByChannel[$categoriesCodeAndLocalesByChannel['channel_code']] = $nbTotalProducts;
             $index++;
         }
@@ -255,7 +255,7 @@ SQL;
             $localesWithNbCompleteByChannel[$categoriesCodeAndLocalesByChannel['channel_code']]['total'] = 0;
             $localesWithNbCompleteByChannel[$categoriesCodeAndLocalesByChannel['channel_code']]['locales'] = [];
             foreach ($categoriesCodeAndLocalesByChannel['locales'] as $locale) {
-                $total = $rows['responses'][$index]['hits']['total'] ?? -1;
+                $total = $rows['responses'][$index]['hits']['total']['value'] ?? -1;
                 $localesWithNbCompleteByChannel[$categoriesCodeAndLocalesByChannel['channel_code']]['locales'][$locale] = $total;
                 $localesWithNbCompleteByChannel[$categoriesCodeAndLocalesByChannel['channel_code']]['total'] += $total;
                 $index++;

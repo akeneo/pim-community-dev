@@ -42,7 +42,7 @@ class FromSizeIdentifierResultCursorFactory implements CursorFactoryInterface
         $esQuery['from'] = $options['from'];
 
         $response = $this->esClient->search($esQuery);
-        $totalCount = (int) $response['hits']['total'];
+        $totalCount = (int) $response['hits']['total']['value'];
 
         $identifiers = [];
         foreach ($response['hits']['hits'] as $hit) {

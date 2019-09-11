@@ -44,7 +44,7 @@ class FromSizeIdentifierResultCursorFactorySpec extends ObjectBehavior
                 'from'    => 0
             ]
         )->willReturn(['hits' => [
-            'total' => 42,
+            'total' => ['value' => 42, 'relation' => 'eq'],
             'hits'  => [
                 ['_source' => ['identifier' => 'product_1', 'document_type' => ProductInterface::class]],
                 ['_source' => ['identifier' => 'product_model_2', 'document_type' => ProductModelInterface::class]]

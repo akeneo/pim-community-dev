@@ -27,7 +27,7 @@ class CursorSpec extends ObjectBehavior
         $esClient->search(['size' => 3, 'sort' => ['updated' => 'desc', '_id' => 'asc']])
             ->willReturn([
                 'hits' => [
-                    'total' => 4,
+                    'total' => ['value' => 4, 'relation' => 'eq'],
                     'hits' => [
                         [
                             '_source' => ['identifier' => 'foo'],

@@ -104,7 +104,7 @@ class RemoveProductModelIntegration extends TestCase
             ['query' => ['term' => ['identifier' => $identifier]]]
         );
 
-        return $res['hits']['total'] > 0;
+        return $res['hits']['total']['value'] > 0;
     }
 
     /**

@@ -29,7 +29,7 @@ class SearchAfterSizeCursorSpec extends ObjectBehavior
         ])
             ->willReturn([
                 'hits' => [
-                    'total' => 4,
+                    'total' => ['value' => 4, 'relation' => 'eq'],
                     'hits' => [
                         [
                             '_source' => ['identifier' => 'baz'],

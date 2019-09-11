@@ -220,7 +220,7 @@ SQL;
         $categoriesWithCount = [];
         $index = 0;
         foreach ($categoriesWithoutCount as $category) {
-            $category['count'] = $rows['responses'][$index]['hits']['total'] ?? -1;
+            $category['count'] = $rows['responses'][$index]['hits']['total']['value'] ?? -1;
             $categoriesWithCount[] = $category;
             $index++;
         }

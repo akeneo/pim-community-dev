@@ -31,7 +31,7 @@ class CursorSpec extends ObjectBehavior
         ])
             ->willReturn([
                 'hits' => [
-                    'total' => 4,
+                    'total' => ['value' => 4, 'relation' => 'eq'],
                     'hits' => [
                         [
                             '_source' => ['identifier' => 'a-variant-product', 'document_type' => ProductInterface::class],
