@@ -10,7 +10,8 @@ provider "google" {
 }
 
 locals {
-  pfid = "srnt-${var.instance_name}"
+  pfid                = "srnt-${var.instance_name}"
+  mailgun_login_email = "${data.template_file.mailgun_login.rendered}@${var.mailgun_domain}"
 }
 
 data "template_file" "mailgun_login" {
@@ -20,10 +21,6 @@ data "template_file" "mailgun_login" {
 resource "random_string" "mailgun_password" {
   length  = 12
   special = false
-}
-
-locals {
-  mailgun_login_email = "${data.template_file.mailgun_login.rendered}@${var.mailgun_domain}"
 }
 
 resource "null_resource" "mailgun_credential" {
