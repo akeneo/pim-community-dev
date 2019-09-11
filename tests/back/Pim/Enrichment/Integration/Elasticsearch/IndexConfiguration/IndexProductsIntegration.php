@@ -14,8 +14,6 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
  */
 class IndexProductsIntegration extends TestCase
 {
-    const DOCUMENT_TYPE = 'pim_catalog_product';
-
     /** @var Client */
     protected $esProductClient;
 
@@ -50,7 +48,7 @@ class IndexProductsIntegration extends TestCase
             ]
         ];
 
-        $this->esProductClient->index(self::DOCUMENT_TYPE, $productWithDateInText['identifier'], $productWithDateInText);
+        $this->esProductClient->index($productWithDateInText['identifier'], $productWithDateInText);
 
 
         $productWithPureText = [
@@ -64,6 +62,6 @@ class IndexProductsIntegration extends TestCase
             ]
         ];
 
-        $this->esProductClient->index(self::DOCUMENT_TYPE, $productWithPureText['identifier'], $productWithPureText);
+        $this->esProductClient->index($productWithPureText['identifier'], $productWithPureText);
     }
 }

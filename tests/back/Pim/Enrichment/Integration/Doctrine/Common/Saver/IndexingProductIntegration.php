@@ -13,8 +13,6 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
  */
 class IndexingProductIntegration extends TestCase
 {
-    private const DOCUMENT_TYPE = 'pim_catalog_product';
-
     /** @var Client */
     private $esProductAndProductModelClient;
 
@@ -41,22 +39,13 @@ class IndexingProductIntegration extends TestCase
         $productBarId = $this->get('pim_catalog.repository.product')->findOneByIdentifier('bar')->getId();
         $productBazId = $this->get('pim_catalog.repository.product')->findOneByIdentifier('baz')->getId();
 
-        $indexedProductModelFoo = $this->esProductAndProductModelClient->get(
-            self::DOCUMENT_TYPE,
-            'product_' . $productFooId
-        );
+        $indexedProductModelFoo = $this->esProductAndProductModelClient->get('product_' . $productFooId);
         $this->assertTrue($indexedProductModelFoo['found']);
 
-        $indexedProductModelBar = $this->esProductAndProductModelClient->get(
-            self::DOCUMENT_TYPE,
-            'product_' . $productBarId
-        );
+        $indexedProductModelBar = $this->esProductAndProductModelClient->get('product_' . $productBarId);
         $this->assertTrue($indexedProductModelBar['found']);
 
-        $indexedProductModelBaz = $this->esProductAndProductModelClient->get(
-            self::DOCUMENT_TYPE,
-            'product_' . $productBazId
-        );
+        $indexedProductModelBaz = $this->esProductAndProductModelClient->get('product_' . $productBazId);
         $this->assertTrue($indexedProductModelBaz['found']);
     }
 
@@ -68,7 +57,6 @@ class IndexingProductIntegration extends TestCase
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('bat');
 
         $productInProductAndProductModelIndex = $this->esProductAndProductModelClient->get(
-            self::DOCUMENT_TYPE,
             'product_' . $product->getId()
         );
         $this->assertTrue($productInProductAndProductModelIndex['found']);

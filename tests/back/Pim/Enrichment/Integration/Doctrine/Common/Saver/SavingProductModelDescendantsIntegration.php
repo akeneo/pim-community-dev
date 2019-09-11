@@ -14,8 +14,6 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
  */
 class SavingProductModelDescendantsIntegration extends TestCase
 {
-    private const DOCUMENT_TYPE = 'pim_catalog_product';
-
     /** @var Client */
     private $esProductAndProductModelClient;
 
@@ -138,7 +136,7 @@ class SavingProductModelDescendantsIntegration extends TestCase
      */
     private function assertDocumentIdsForSearch(array $expectedIdentifiers, array $search): bool
     {
-        $documents = $this->esProductAndProductModelClient->search(self::DOCUMENT_TYPE, $search);
+        $documents = $this->esProductAndProductModelClient->search($search);
         $actualDocumentIdentifiers = array_map(function ($document) {
             return $document['_source']['identifier'];
         }, $documents['hits']['hits']);

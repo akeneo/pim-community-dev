@@ -15,8 +15,6 @@ use Elasticsearch\Common\Exceptions\Missing404Exception;
  */
 class RemoveProductModelIntegration extends TestCase
 {
-    private const DOCUMENT_TYPE = 'pim_catalog_product';
-
     /**
      * @test
      */
@@ -100,7 +98,6 @@ class RemoveProductModelIntegration extends TestCase
     private function productIdentifierIsInIndex(string $identifier): bool
     {
         $res = $this->get('akeneo_elasticsearch.client.product_and_product_model')->search(
-            self::DOCUMENT_TYPE,
             ['query' => ['term' => ['identifier' => $identifier]]]
         );
 

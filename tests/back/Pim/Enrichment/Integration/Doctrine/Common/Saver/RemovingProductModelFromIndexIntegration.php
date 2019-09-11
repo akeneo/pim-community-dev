@@ -16,8 +16,6 @@ use Elasticsearch\Common\Exceptions\Missing404Exception;
  */
 class RemovingProductModelFromIndexIntegration extends TestCase
 {
-    private const DOCUMENT_TYPE = 'pim_catalog_product';
-
     /** @var EntityBuilder */
     private $entityBuilder;
 
@@ -107,7 +105,7 @@ class RemovingProductModelFromIndexIntegration extends TestCase
     private function productIdIsInIndex(int $productId): bool
     {
         try {
-            $this->esProductAndProductModelClient->get(self::DOCUMENT_TYPE, 'product_' . $productId);
+            $this->esProductAndProductModelClient->get('product_' . $productId);
         } catch (Missing404Exception $e) {
             return false;
         }
@@ -118,7 +116,7 @@ class RemovingProductModelFromIndexIntegration extends TestCase
     private function productModelIdIsInIndex(int $productModelId): bool
     {
         try {
-            $this->esProductAndProductModelClient->get(self::DOCUMENT_TYPE, 'product_model_' . $productModelId);
+            $this->esProductAndProductModelClient->get('product_model_' . $productModelId);
         } catch (Missing404Exception $e) {
             return false;
         }
