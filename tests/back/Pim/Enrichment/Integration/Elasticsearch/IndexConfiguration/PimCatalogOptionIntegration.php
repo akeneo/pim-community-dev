@@ -100,6 +100,7 @@ class PimCatalogOptionIntegration extends AbstractPimCatalogTestCase
                         'order'   => 'asc',
                         'missing' => '_last',
                     ],
+                    'identifier' => ['order' => 'asc'],
                 ],
             ],
         ];
@@ -107,8 +108,8 @@ class PimCatalogOptionIntegration extends AbstractPimCatalogTestCase
         $productsFound = $this->getSearchQueryResults($query);
 
         $this->assertSame(
-            $productsFound,
-            ['product_3', 'product_1', 'product_4', 'product_5', 'product_2', 'product_6', 'product_7', 'product_8']
+            ['product_1', 'product_3', 'product_4', 'product_5', 'product_2', 'product_6', 'product_7', 'product_8'],
+            $productsFound
         );
     }
 
@@ -124,6 +125,7 @@ class PimCatalogOptionIntegration extends AbstractPimCatalogTestCase
                         'order'   => 'desc',
                         'missing' => '_last',
                     ],
+                    'identifier' => ['order' => 'asc'],
                 ],
             ],
         ];
@@ -131,8 +133,8 @@ class PimCatalogOptionIntegration extends AbstractPimCatalogTestCase
         $productsFound = $this->getSearchQueryResults($query);
 
         $this->assertSame(
-            $productsFound,
-            ['product_2', 'product_6', 'product_4', 'product_5', 'product_3', 'product_1', 'product_7', 'product_8']
+            ['product_2', 'product_6', 'product_4', 'product_5', 'product_1', 'product_3', 'product_7', 'product_8'],
+            $productsFound
         );
     }
 

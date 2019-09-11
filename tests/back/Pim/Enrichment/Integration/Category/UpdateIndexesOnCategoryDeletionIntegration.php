@@ -48,6 +48,9 @@ class UpdateIndexesOnCategoryDeletionIntegration extends AbstractPimCatalogTestC
                     ],
                 ],
             ],
+            'sort' => [
+                ['identifier' => ['order' => 'desc'],],
+            ],
         ]);
         $this->assertSame(
             ['product-3', 'product-1'],
