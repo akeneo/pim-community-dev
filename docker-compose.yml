@@ -36,8 +36,11 @@ services:
   node:
     image: 'akeneo/node:10'
     user: 'node'
+    environment:
+      YARN_CACHE_FOLDER: '/home/node/.cache/yarn'
     volumes:
       - './:/srv/pim'
+      - '${HOST_YARN_CACHE_FOLDER:-~/.cache/yarn}:/home/node/.cache/yarn'
     working_dir: '/srv/pim'
     networks:
       - 'pim'
