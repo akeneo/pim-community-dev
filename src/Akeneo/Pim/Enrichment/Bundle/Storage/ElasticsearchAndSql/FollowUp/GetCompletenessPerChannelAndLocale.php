@@ -138,9 +138,10 @@ SQL;
         $body = [];
 
         foreach ($categoriesCodeAndLocalesByChannels as $categoriesCodeAndLocalesByChannel) {
-            $body[] = [];
+            $body[] = []; // header
             $body[] = [
                 'size' => 0,
+                'track_total_hits' => true,
                 'query' => [
                     'constant_score' => [
                         'filter' => [
@@ -152,18 +153,10 @@ SQL;
                                         ],
                                     ],
                                     [
-                                        'bool' => [
-                                            'must' => [
-                                                [
-                                                    'term' => ["enabled" => true]
-                                                ],
-                                                [
-                                                    'term' => [
-                                                        'document_type' => ProductInterface::class,
-                                                    ]
-                                                ]
-                                            ]
-                                        ]
+                                        'term' => ["enabled" => true]
+                                    ],
+                                    [
+                                        'term' => ['document_type' => ProductInterface::class]
                                     ],
                                 ]
                             ]
@@ -206,9 +199,10 @@ SQL;
         $body = [];
         foreach ($categoriesCodeAndLocalesByChannels as $categoriesCodeAndLocalesByChannel) {
             foreach ($categoriesCodeAndLocalesByChannel['locales'] as $locale) {
-                $body[] = [];
+                $body[] = []; // header
                 $body[] = [
                     'size' => 0,
+                    'track_total_hits' => true,
                     'query' => [
                         'constant_score' => [
                             'filter' => [
@@ -220,21 +214,12 @@ SQL;
                                             ]
                                         ],
                                         [
-                                            'bool' => [
-                                                'should' => [
-                                                    ['term' => ["completeness." . $categoriesCodeAndLocalesByChannel['channel_code'] . "." . $locale => 100]],
-                                                ],
-                                                'must' => [
-                                                    [
-                                                        'term' => ["enabled" => true]
-                                                    ],
-                                                    [
-                                                        'term' => [
-                                                            'document_type' => ProductInterface::class,
-                                                        ]
-                                                    ]
-                                                ]
-                                            ]
+                                            'term' => ["completeness." . $categoriesCodeAndLocalesByChannel['channel_code'] . "." . $locale => 100]],
+                                        [
+                                            'term' => ["enabled" => true]
+                                        ],
+                                        [
+                                            'term' => ['document_type' => ProductInterface::class]
                                         ]
                                     ]
                                 ]
