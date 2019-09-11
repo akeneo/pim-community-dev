@@ -16,7 +16,7 @@ jobs:
                 docker save -o php-pim-image.tar akeneo/pim-dev/php:7.3
       - run:
           name: Setup tests results folder and log folder
-          command: mkdir -p var/tests/phpunit var/tests/behat var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.composer
+          command: mkdir -p var/tests/phpunit var/tests/behat var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.composer
       - run:
           name: Setup behat
           command: make behat.yml
@@ -42,6 +42,7 @@ jobs:
           command: |
               sudo chown -R 1000:1000 ../project
               sudo chown -R 1000:1000 ~/.composer
+              sudo chown -R 1000:1000 ~/.cache/yarn
       - run:
             name: Install back dependencies
             command: make vendor
