@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules;
 
-use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetMultipleLinkType;
+use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetCollectionType;
 use Akeneo\Pim\Structure\Component\Model\AbstractAttribute;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 
@@ -33,12 +33,12 @@ class FindAssetCollectionTypeACL implements FindAssetCollectionTypeACLInterface
 
     private function checkAttributeType(AbstractAttribute $attribute): void
     {
-        if ($attribute->getType() !== AssetMultipleLinkType::ASSET_MULTIPLE_LINK) {
+        if ($attribute->getType() !== AssetCollectionType::ASSET_COLLECTION) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'Expected attribute "%s" to be of type "%s", "%s" given',
                     $attribute->getCode(),
-                    AssetMultipleLinkType::ASSET_MULTIPLE_LINK,
+                    AssetCollectionType::ASSET_COLLECTION,
                     $attribute->getType()
                 )
             );

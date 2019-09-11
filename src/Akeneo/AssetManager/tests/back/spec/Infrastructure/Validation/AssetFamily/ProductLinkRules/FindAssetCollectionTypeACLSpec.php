@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules;
 
 use Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\FindAssetCollectionTypeACLInterface;
-use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetMultipleLinkType;
+use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetCollectionType;
 use Akeneo\Pim\Structure\Component\Model\AbstractAttribute;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use PhpSpec\ObjectBehavior;
@@ -32,7 +32,7 @@ class FindAssetCollectionTypeACLSpec extends ObjectBehavior
     ){
         $productAttributeCode = 'my_asset_collection';
         $expectedAssetFamilyIdentifier = 'my_asset_family_identifier';
-        $assetCollectionAttribute->getType()->willReturn(AssetMultipleLinkType::ASSET_MULTIPLE_LINK);
+        $assetCollectionAttribute->getType()->willReturn(AssetCollectionType::ASSET_COLLECTION);
         $assetCollectionAttribute->getReferenceDataName()->willReturn($expectedAssetFamilyIdentifier);
         $attributeRepository->findOneByIdentifier($productAttributeCode)->willReturn($assetCollectionAttribute);
 
@@ -44,7 +44,7 @@ class FindAssetCollectionTypeACLSpec extends ObjectBehavior
         AbstractAttribute $assetCollectionAttribute
     ){
         $productAttributeCode = 'my_asset_collection';
-        $expectedAssetFamilyIdentifier = AssetMultipleLinkType::ASSET_MULTIPLE_LINK;
+        $expectedAssetFamilyIdentifier = AssetCollectionType::ASSET_COLLECTION;
         $wrongAttributeType = 'NOT_AN_ASSET_COLLECTION_ATTRIBUTE';
         $assetCollectionAttribute->getCode()->willReturn($productAttributeCode);
         $assetCollectionAttribute->getType()->willReturn($wrongAttributeType);
