@@ -25,7 +25,7 @@ class SearchAfterSizeCursorSpec extends ObjectBehavior
         $esClient->search([
             'search_after' => ['#bar'],
             'size' => 2,
-            'sort' => ['_uid' => 'asc']
+            'sort' => ['_id' => 'asc']
         ])
             ->willReturn([
                 'hits' => [
@@ -76,7 +76,7 @@ class SearchAfterSizeCursorSpec extends ObjectBehavior
         $esClient->search(
             [
                 'size' => 2,
-                'sort' => ['_uid' => 'asc'],
+                'sort' => ['_id' => 'asc'],
                 'search_after' => ['#foo']
             ])
             ->willReturn([
@@ -93,7 +93,7 @@ class SearchAfterSizeCursorSpec extends ObjectBehavior
         $esClient->search(
             [
                 'size' => 2,
-                'sort' => ['_uid' => 'asc'],
+                'sort' => ['_id' => 'asc'],
                 'search_after' => ['#fum']
             ])->willReturn([
                 'hits' => [

@@ -108,7 +108,7 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
             return $identifiers;
         }
 
-        $sort = ['_uid' => 'asc'];
+        $sort = ['_id' => 'asc'];
 
         if (isset($esQuery['sort'])) {
             $sort = array_merge($esQuery['sort'], $sort);

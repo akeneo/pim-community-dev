@@ -33,7 +33,7 @@ class CursorFactorySpec extends ObjectBehavior
     function it_creates_a_cursor($searchEngine)
     {
         $searchEngine->search(
-            ['size' => 100, 'sort' => ['_uid' => 'asc']]
+            ['size' => 100, 'sort' => ['_id' => 'asc']]
         )->willReturn(
             [
                 'hits' => [

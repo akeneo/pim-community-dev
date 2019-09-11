@@ -37,7 +37,7 @@ class FromSizeIdentifierResultCursorFactorySpec extends ObjectBehavior
 
         $esClient->search(
             [
-                'sort'    => ['_uid' => 'asc'],
+                'sort'    => ['_id' => 'asc'],
                 'query'   => [],
                 '_source' => ['identifier', 'document_type'],
                 'size'    => 25,

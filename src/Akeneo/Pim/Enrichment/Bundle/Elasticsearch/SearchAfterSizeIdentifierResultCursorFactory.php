@@ -35,7 +35,7 @@ class SearchAfterSizeIdentifierResultCursorFactory implements CursorFactoryInter
     public function createCursor($esQuery, array $options = [])
     {
         $options = $this->resolveOptions($options);
-        $sort = ['_uid' => 'asc'];
+        $sort = ['_id' => 'asc'];
 
         $esQuery['_source'] = array_merge($esQuery['_source'], ['document_type']);
         $esQuery['sort'] = isset($esQuery['sort']) ? array_merge($esQuery['sort'], $sort) : $sort;

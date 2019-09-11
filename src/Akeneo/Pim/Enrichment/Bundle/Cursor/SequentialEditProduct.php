@@ -44,7 +44,7 @@ class SequentialEditProduct extends Cursor implements CursorInterface
             return [];
         }
 
-        $sort = ['_uid' => 'asc'];
+        $sort = ['_id' => 'asc'];
         $esQuery['_source'] = ['id'];
 
         if (isset($esQuery['sort'])) {

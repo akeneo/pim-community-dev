@@ -24,7 +24,7 @@ class CursorSpec extends ObjectBehavior
         $data = [$productFoo, $productBar, $productBaz];
         $repository->getItemsFromIdentifiers(['foo', 'bar', 'baz'])->willReturn($data);
 
-        $esClient->search(['size' => 3, 'sort' => ['updated' => 'desc', '_uid' => 'asc']])
+        $esClient->search(['size' => 3, 'sort' => ['updated' => 'desc', '_id' => 'asc']])
             ->willReturn([
                 'hits' => [
                     'total' => 4,
@@ -71,7 +71,7 @@ class CursorSpec extends ObjectBehavior
         $esClient->search(
             [
                 'size' => 3,
-                'sort' => ['updated' => 'desc', '_uid' => 'asc'],
+                'sort' => ['updated' => 'desc', '_id' => 'asc'],
                 'search_after' => [1490810555000, '#baz']
             ])
             ->willReturn([
@@ -88,7 +88,7 @@ class CursorSpec extends ObjectBehavior
         $esClient->search(
             [
                 'size' => 3,
-                'sort' => ['updated' => 'desc', '_uid' => 'asc'],
+                'sort' => ['updated' => 'desc', '_id' => 'asc'],
                 'search_after' => [1490810565000, '#fum']
             ])->willReturn([
                 'hits' => [
