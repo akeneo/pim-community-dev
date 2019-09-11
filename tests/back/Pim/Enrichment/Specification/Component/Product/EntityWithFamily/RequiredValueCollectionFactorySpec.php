@@ -94,7 +94,7 @@ class RequiredValueCollectionFactorySpec extends ObjectBehavior
         $expectedRequiredValue5->forLocale()->willReturn($fr_FR);
         $expectedRequiredValue5->attribute()->willReturn('image');
         $expectedRequiredValue5->channel()->willReturn(null);
-        $expectedRequiredValue5->locale()->willReturn(null);
+        $expectedRequiredValue5->locale()->willReturn('fr_FR');
 
         $family->getAttributeRequirements()->willReturn([$requirement1, $requirement2, $requirement3, $requirement4, $requirement5, $requirement6]);
 
@@ -104,12 +104,15 @@ class RequiredValueCollectionFactorySpec extends ObjectBehavior
         $sku->isScopable()->willReturn(false);
         $sku->isLocalizable()->willReturn(false);
         $sku->isLocaleSpecific()->willReturn(false);
+
         $description->isScopable()->willReturn(true);
         $description->isLocalizable()->willReturn(true);
         $description->isLocaleSpecific()->willReturn(false);
+
         $price->isScopable()->willReturn(false);
         $price->isLocalizable()->willReturn(false);
         $price->isLocaleSpecific()->willReturn(false);
+
         $image->isScopable()->willReturn(false);
         $image->isLocalizable()->willReturn(false);
         $image->isLocaleSpecific()->willReturn(true);
