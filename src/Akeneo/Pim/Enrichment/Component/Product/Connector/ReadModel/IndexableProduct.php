@@ -77,6 +77,9 @@ class IndexableProduct
     /** @var array */
     private $attributesForThisLevel;
 
+    /** @var array */
+    private $additionalData = [];
+
     public function __construct(
         string $id,
         string $identifier,
@@ -95,7 +98,8 @@ class IndexableProduct
         array $ancestors,
         ?array $label,
         array $attributesForAncestor,
-        array $attributesForThisLevel
+        array $attributesForThisLevel,
+        array $additionalData = []
     ) {
         $this->id = $id;
         $this->identifier = $identifier;
@@ -115,6 +119,19 @@ class IndexableProduct
         $this->label = $label;
         $this->attributesForAncestor = $attributesForAncestor;
         $this->attributesForThisLevel = $attributesForThisLevel;
+        $this->additionalData = $additionalData;
+    }
+
+    /**
+     * @param string $key
+     * @param mixed  $value
+     * @return IndexableProduct
+     */
+    public function addAdditionalData(string $key, $value): IndexableProduct
+    {
+        $this->additionalData[$key] = $value;
+
+        return $this;
     }
 
     /**
@@ -163,7 +180,7 @@ class IndexableProduct
             $data['in_group'] = $in_group;
         }
 
-        return $data;
+        return array_merge($data, $this->additionalData);
     }
 
     /**
