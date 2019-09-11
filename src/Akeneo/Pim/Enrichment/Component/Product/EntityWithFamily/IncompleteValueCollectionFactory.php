@@ -74,11 +74,19 @@ class IncompleteValueCollectionFactory
         LocaleInterface $locale,
         EntityWithValuesInterface $entityWithValues
     ) {
-        $actualValue = $entityWithValues->getValues()->getByCodes(
-            $requiredValue->attribute(),
-            $requiredValue->channel(),
-            $requiredValue->locale()
-        );
+        if (!$requiredValue->forAttribute()->isLocalizable() && $requiredValue->forAttribute()->isLocaleSpecific()) {
+            $actualValue = $entityWithValues->getValues()->getByCodes(
+                $requiredValue->attribute(),
+                $requiredValue->channel(),
+                null
+            );
+        } else {
+            $actualValue = $entityWithValues->getValues()->getByCodes(
+                $requiredValue->attribute(),
+                $requiredValue->channel(),
+                $requiredValue->locale()
+            );
+        }
 
         if (null === $actualValue) {
             return true;
