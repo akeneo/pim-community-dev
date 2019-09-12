@@ -41,7 +41,7 @@ class AssetSpec extends ObjectBehavior
         $this->getReference($locale3)->shouldReturn(null);
     }
 
-    function it_throws_when_getting_reference_without_specifying_locale(
+    function it_throws_an_exception_when_getting_reference_without_specifying_locale(
         ReferenceInterface $reference1,
         ReferenceInterface $reference2,
         LocaleInterface $locale1,
@@ -52,45 +52,50 @@ class AssetSpec extends ObjectBehavior
         $this->addReference($reference1);
         $this->addReference($reference2);
 
-        $this->shouldThrow(\LogicException::class)->during('getReference');;
+        $this->shouldThrow(\LogicException::class)->during('getReference');
     }
 
     function it_gets_file_for_context(
-        ReferenceInterface $reference1,
-        ReferenceInterface $reference2,
-        VariationInterface $variation1,
-        VariationInterface $variation2,
-        FileInfo $variationFileInfo,
-        FileInfo $reference1FileInfo,
-        FileInfo $reference2FileInfo,
-        LocaleInterface $localeEnUs,
-        LocaleInterface $localeFrFr,
+        ReferenceInterface $reference,
+        VariationInterface $variationEcommerce,
+        VariationInterface $variationMobile,
+        FileInfo $variationEcommerceFileInfo,
+        FileInfo $variationMobileFileInfo,
         ChannelInterface $channelEcommerce,
         ChannelInterface $channelMobile
     ) {
         $this->getFileForContext($channelEcommerce)->shouldReturn(null);
-        $this->getFileForContext($channelEcommerce, $localeEnUs)->shouldReturn(null);
 
-        $reference1->getLocale()->willReturn($localeEnUs);
-        $reference2->getLocale()->willReturn($localeFrFr);
+        $reference->getLocale()->willReturn(null);
 
-        $reference1->getFileInfo()->willReturn($reference1FileInfo);
-        $reference2->getFileInfo()->willReturn($reference2FileInfo);
+        $reference->getVariation($channelEcommerce)->willReturn($variationEcommerce);
+        $variationEcommerce->getFileInfo()->willReturn($variationEcommerceFileInfo);
+        $reference->getVariation($channelMobile)->willReturn($variationMobile);
+        $variationMobile->getFileInfo()->willReturn($variationMobileFileInfo);
 
-        $reference1->getVariation($channelEcommerce)->willReturn($variation1);
-        $variation1->getFileInfo()->willReturn($variationFileInfo);
-        $reference1->getVariation($channelMobile)->willReturn($variation2);
-        $variation2->getFileInfo()->willReturn(null);
+        $this->addReference($reference);
 
-        $reference2->getVariation($channelEcommerce)->willReturn(null);
+        $this->getFileForContext($channelEcommerce)->shouldReturn($variationEcommerceFileInfo);
+        $this->getFileForContext($channelMobile)->shouldReturn($variationMobileFileInfo);
+    }
 
-        $this->addReference($reference1);
-        $this->addReference($reference2);
+    function it_returns_null_if_no_variation_exists_for_a_given_context(
+        ReferenceInterface $reference
+    ) {
+        $ecommerce = new Channel();
+        $reference->getVariation($ecommerce)->willReturn(null);
 
-        $this->shouldThrow(\LogicException::class)->during('getReference');;
+        $this->getFileForContext($ecommerce)->shouldReturn(null);
+    }
 
-        $this->getFileForContext($channelEcommerce, $localeEnUs)->shouldReturn($variationFileInfo);
-        $this->getFileForContext($channelMobile, $localeEnUs)->shouldReturn($reference1FileInfo);
-        $this->getFileForContext($channelEcommerce, $localeFrFr)->shouldReturn($reference2FileInfo);
+    function it_returns_null_if_variation_has_no_file_info_for_a_given_context(
+        ReferenceInterface $reference,
+        VariationInterface $variation
+    ) {
+        $ecommerce = new Channel();
+        $variation->getFileInfo()->willReturn(null);
+        $reference->getVariation($ecommerce)->willReturn($variation);
+
+        $this->getFileForContext($ecommerce)->shouldReturn(null);
     }
 }
