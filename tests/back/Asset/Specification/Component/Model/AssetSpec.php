@@ -5,6 +5,7 @@ namespace Specification\Akeneo\Asset\Component\Model;
 use Akeneo\Asset\Component\Model\AssetInterface;
 use Akeneo\Asset\Component\Model\ReferenceInterface;
 use Akeneo\Asset\Component\Model\VariationInterface;
+use Akeneo\Channel\Component\Model\Channel;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
