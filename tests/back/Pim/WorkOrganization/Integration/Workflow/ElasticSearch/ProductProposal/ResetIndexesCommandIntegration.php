@@ -21,7 +21,7 @@ class ResetIndexesCommandIntegration extends AbstractProductProposalTestCase
     {
         $esClient = $this->get('akeneo_elasticsearch.client.product_proposal');
 
-        $allDocuments = $esClient->search('pimee_workflow_product_proposal', [
+        $allDocuments = $esClient->search([
             '_source' => 'identifier',
             'query' => [
                 'match_all' => new \StdClass(),

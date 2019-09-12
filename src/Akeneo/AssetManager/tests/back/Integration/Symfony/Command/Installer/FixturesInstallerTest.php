@@ -26,8 +26,6 @@ class FixturesInstallerTest extends SqlIntegrationTestCase
     /** @var Client */
     private $assetClient;
 
-    private const ASSET_INDEX = 'pimee_asset_family_asset';
-
     private const TOTAL_ASSETS = 6;
 
     public function setUp(): void
@@ -120,7 +118,7 @@ SQL;
     private function numbersOfAssetsIndexed(): int
     {
         $this->assetClient->refreshIndex();
-        $matches = $this->assetClient->search(self::ASSET_INDEX, ['_source' => '_id' ]);
+        $matches = $this->assetClient->search(['_source' => '_id' ]);
 
         return $matches['hits']['total'];
     }

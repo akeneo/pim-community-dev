@@ -36,7 +36,7 @@ class SaveSubProductModelDraftIntegration extends AbstractDraft
         $esClient = $this->get('akeneo_elasticsearch.client.product_proposal');
         $esClient->refreshIndex();
 
-        $allDocuments = $esClient->search('pimee_workflow_product_proposal', [
+        $allDocuments = $esClient->search([
             'query' => [
                 'match_all' => new \StdClass(),
             ],
