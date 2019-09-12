@@ -254,3 +254,4 @@ services:
             - '@pim_indexing_serializer'
             - '@akeneo.pim.enrichment.product.query.get_product_completenesses'
             - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
+            - !tagged akeneo.pim.enrichment.product.query.indexing_additional_properties

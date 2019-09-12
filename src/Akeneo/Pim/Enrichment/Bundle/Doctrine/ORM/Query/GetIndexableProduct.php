@@ -103,5 +103,7 @@ class GetIndexableProduct implements GetIndexableProductInterface
         foreach ($this->additionalDataProviders as $additionalDataProvider) {
             $indexableProduct->addAdditionalData($additionalDataProvider->fromProductIdentifier($productIdentifier));
         }
+
+        return $indexableProduct;
     }
 }
