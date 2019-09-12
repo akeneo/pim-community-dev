@@ -2,11 +2,9 @@ import {Action} from 'redux';
 import {AssetCollectionState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/asset-collection';
 import {ChannelCode} from 'akeneopimenrichmentassetmanager/platform/model/channel/channel';
 import {LocaleCode} from 'akeneopimenrichmentassetmanager/platform/model/channel/locale';
+import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
 
-export type ContextState = {
-  locale: LocaleCode;
-  channel: ChannelCode;
-};
+export type ContextState = Context;
 
 export const contextReducer = (
   state: ContextState = {locale: '', channel: ''},

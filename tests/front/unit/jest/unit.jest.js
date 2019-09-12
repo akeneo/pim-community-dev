@@ -17,6 +17,7 @@ const eeConfig = {
     '/src/Akeneo/AssetManager/front/tools/',
     'vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/public/lib',
     'src/Akeneo/Pim/Enrichment/AssetManager/Bundle/Resources/public/assets-collection/infrastructure/fetcher',
+    'src/Akeneo/Pim/Enrichment/AssetManager/Bundle/Resources/public/platform/component/common/index',
   ],
 };
 

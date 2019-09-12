@@ -5,7 +5,7 @@ export const NotificationSection = styled.div`
   background-color: ${(props: ThemedProps<void>) => props.theme.color.blue10};
   margin-top: 2px;
   height: 44px;
-  witdht: 100%;
+  width: 100%;
   display: flex;
   padding: 10px;
 `;

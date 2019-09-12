@@ -6,14 +6,6 @@ export type RuleRelation = {
   rule: RuleCode;
 };
 
-export const isSmartAttribute = (attributeCode: AttributeCode, ruleRelations: RuleRelation[]): boolean => {
-  const attributeIsInARuleRelation = ruleRelations.some(
-    (ruleRelation: RuleRelation) => attributeCode === ruleRelation.attribute
-  );
-
-  return attributeIsInARuleRelation;
-};
-
 export const getRulesForAttribute = (attributeCode: AttributeCode, ruleRelations: RuleRelation[]): RuleCode[] => {
   const rulesForAttribute = ruleRelations.filter(
     (ruleRelation: RuleRelation) => attributeCode === ruleRelation.attribute

@@ -10,10 +10,12 @@ import {valuesUpdated} from 'akeneopimenrichmentassetmanager/assets-collection/r
 import {assetCollectionReducer, AssetCollectionState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/asset-collection';
 import {ThemeProvider} from 'styled-components';
 import {updateChannels, updateFamily} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/structure';
+import {errorsReceived, errorsRemovedAll} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/errors';
 import thunkMiddleware from 'redux-thunk';
 import {akeneoTheme} from 'akeneopimenrichmentassetmanager/platform/component/theme';
 import {updateRuleRelations} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/structure';
 import {LegacyValue} from 'web/bundles/akeneopimenrichmentassetmanager/enrich/domain/model/product';
+import {isValidErrorCollection, denormalizeErrorCollection} from 'akeneopimenrichmentassetmanager/platform/model/validation-error';
 
 const Form = require('pim/form');
 const UserContext = require('pim/user-context');
@@ -66,6 +68,10 @@ class AssetTabForm extends (Form as {new (config: any): any}) {
       this.store.dispatch(valuesUpdated(values));
     });
 
+    //Validation errors
+    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.addErrors);
+    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_save', this.removeErrors);
+
     this.store.dispatch(localeUpdated(UserContext.get('catalogLocale')));
     this.store.dispatch(channelUpdated(UserContext.get('catalogScope')));
     this.store.dispatch(updateChannels() as any);
@@ -95,6 +101,17 @@ class AssetTabForm extends (Form as {new (config: any): any}) {
 
   updateChannel() {
     this.store.dispatch(channelUpdated(UserContext.get('catalogScope')));
+  }
+
+  addErrors(event: any) {
+    if (isValidErrorCollection(event.response)) {
+      const errorCollection = denormalizeErrorCollection(event.response);
+      this.store.dispatch(errorsReceived(errorCollection));
+    }
+  }
+
+  removeErrors() {
+    this.store.dispatch(errorsRemovedAll());
   }
 }
 

@@ -2,8 +2,8 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import {AssetCollectionState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/asset-collection';
 import {selectAttributeList, selectFamily, selectRuleRelations} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/structure';
-import {selectContext, ContextState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
 import {selectCurrentValues, ValueCollection, Value, AssetCode, updateValueData, valueChanged} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';
+import {selectContext} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
 import styled from 'styled-components';
 import __ from 'akeneoassetmanager/tools/translator';
 import {Label} from 'akeneopimenrichmentassetmanager/platform/component/common/label';
@@ -20,15 +20,20 @@ import AssetIllustration from 'akeneopimenrichmentassetmanager/platform/componen
 import {HelperSection, HelperIcon, HelperSeparator, HelperTitle, HelperText} from 'akeneopimenrichmentassetmanager/platform/component/common/helper';
 import {NoDataSection, NoDataTitle, NoDataText} from 'akeneopimenrichmentassetmanager/platform/component/common/no-data';
 import {RuleRelation} from 'akeneopimenrichmentassetmanager/platform/model/structure/rule-relation';
-import {isSmartAttribute} from 'akeneopimenrichmentassetmanager/platform/model/structure/rule-relation';
 import {RuleNotification} from 'akeneopimenrichmentassetmanager/platform/component/rule-notification';
+import {selectErrors} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/errors';
+import {ValidationError} from 'akeneopimenrichmentassetmanager/platform/model/validation-error';
+import {ValidationErrorCollection} from 'akeneopimenrichmentassetmanager/platform/component/common/validation-error-collection';
+import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
+
 
 type ListStateProps = {
   attributes: Attribute[],
   values: ValueCollection,
   family: Family|null,
-  context: ContextState,
-  ruleRelations: RuleRelation[]
+  context: Context,
+  ruleRelations: RuleRelation[],
+  errors: ValidationError[]
 }
 type ListDispatchProps = {
   onChange: (value: Value) => void
@@ -37,8 +42,9 @@ type ListDispatchProps = {
 type DisplayValuesProps = {
   values: ValueCollection,
   family: Family|null,
-  context: ContextState
+  context: Context
   ruleRelations: RuleRelation[]
+  errors: ValidationError[]
   onChange: (value: Value) => void
 };
 
@@ -79,7 +85,8 @@ const AssetCollectionList = styled.div`
   align-items: stretch;
 `;
 
-const DisplayValues = ({values, family, context, ruleRelations, onChange}: DisplayValuesProps) => {
+
+const DisplayValues = ({values, family, context, ruleRelations, onChange, errors}: DisplayValuesProps) => {
   return (
     <React.Fragment>
       {values.map((value: Value) => (
@@ -112,10 +119,8 @@ const DisplayValues = ({values, family, context, ruleRelations, onChange}: Displ
               <Button buttonSize='medium' color='outline'>{__('pim_asset_manager.asset_collection.add_asset')}</Button>
             ) : null}
           </SectionTitle>
-          {isSmartAttribute(value.attribute.code, ruleRelations) ? (
-            <RuleNotification attributeCode={value.attribute.code} ruleRelations={ruleRelations} />
-          ) : null}
-          {/* Validation error indication hasValidationError(value.attribute.code, errors)*/}
+          <RuleNotification attributeCode={value.attribute.code} ruleRelations={ruleRelations} />
+          <ValidationErrorCollection attributeCode={value.attribute.code} context={context} errors={errors} />
           <AssetCollection assetFamilyIdentifier={value.attribute.referenceDataName} assetCodes={value.data} context={context} readonly={!value.editable} onChange={(assetCodes: AssetCode[]) => {
             onChange(updateValueData(value, assetCodes))
           }}/>
@@ -125,13 +130,13 @@ const DisplayValues = ({values, family, context, ruleRelations, onChange}: Displ
   );
 };
 
-const List = ({values, family, context, ruleRelations, onChange}: ListStateProps & ListDispatchProps) => {
+const List = ({values, family, context, ruleRelations, errors, onChange}: ListStateProps & ListDispatchProps) => {
   const familyLabel = (null !== family) ? family.labels[context.locale] : '';
 
   return (
     <AssetCollectionList>
       {hasValues(values) ? (
-        <DisplayValues values={values} family={family} context={context} ruleRelations={ruleRelations} onChange={onChange}/>
+        <DisplayValues values={values} family={family} context={context} ruleRelations={ruleRelations} onChange={onChange} errors={errors}/>
       ) : (
         <React.Fragment>
           <HelperSection>
@@ -168,7 +173,8 @@ export default connect((state: AssetCollectionState): ListStateProps => ({
   context: selectContext(state),
   values: selectCurrentValues(state),
   family: selectFamily(state),
-  ruleRelations: selectRuleRelations(state)
+  ruleRelations: selectRuleRelations(state),
+  errors: selectErrors(state)
 }), (dispatch: any): ListDispatchProps => ({
   onChange: (value: Value) => {
     dispatch(valueChanged(value))
