@@ -82,12 +82,56 @@ class GetIndexableProduct implements GetIndexableProductInterface
      */
     public function fromProductIdentifier(string $productIdentifier): ?IndexableProduct
     {
+        $indexableProduct = $this->getIndexableProductWithoutAdditionalData($productIdentifier);
+        if (!$indexableProduct instanceof IndexableProduct) {
+            return null;
+        }
+
+        /**  @var GetProductDataForIndexationInterface $additionalDataProvider */
+        foreach ($this->additionalDataProviders as $additionalDataProvider) {
+            $indexableProduct->addAdditionalData($additionalDataProvider->fromProductIdentifier($productIdentifier));
+        }
+
+        return $indexableProduct;
+    }
+
+    /**
+     * @param array $productIdentifiers
+     * @return array
+     */
+    public function fromProductIdentifiers(array $productIdentifiers): array
+    {
+        $indexableProducts = [];
+        foreach ($productIdentifiers as $productIdentifier) {
+            $indexableProduct = $this->getIndexableProductWithoutAdditionalData($productIdentifier);
+
+            if ($indexableProduct instanceof IndexableProduct) {
+                $indexableProducts[$productIdentifier] = $indexableProduct;
+            }
+        }
+
+        $productIdentifiers = array_keys($indexableProducts);
+
+        /**  @var GetProductDataForIndexationInterface $additionalDataProvider */
+        foreach ($this->additionalDataProviders as $additionalDataProvider) {
+            $additionalDataPerProduct = $additionalDataProvider->fromProductIdentifiers($productIdentifiers);
+
+            foreach ($indexableProducts as $productIdentifier => $indexableProduct) {
+                $indexableProduct->addAdditionalData($additionalDataPerProduct[$productIdentifier] ?? []);
+            }
+        }
+
+        return $indexableProducts;
+    }
+
+    private function getIndexableProductWithoutAdditionalData(string $productIdentifier): ?IndexableProduct
+    {
         $product = $this->productRepository->findOneByIdentifier($productIdentifier);
         if (null === $product) {
             return null;
         }
 
-        $indexableProduct = IndexableProduct::fromProductReadModel(
+        return IndexableProduct::fromProductReadModel(
             $product,
             $this->localeRepository->getActivatedLocaleCodes(),
             $this->channelRepository->getChannelCodes(),
@@ -98,12 +142,5 @@ class GetIndexableProduct implements GetIndexableProductInterface
             $this->getProductCompletenesses->fromProductId($product->getId()),
             $this->attributesProvider
         );
-
-        /**  @var GetProductDataForIndexationInterface $additionalDataProvider */
-        foreach ($this->additionalDataProviders as $additionalDataProvider) {
-            $indexableProduct->addAdditionalData($additionalDataProvider->fromProductId($product->getId()));
-        }
-
-        return $indexableProduct;
     }
 }

@@ -36,7 +36,7 @@ class ProductIndexerSpec extends ObjectBehavior
         IndexableProduct $indexableProduct
     ) {
         $identifier = 'foobar';
-        $getIndexableProduct->fromProductIdentifier($identifier)->willReturn($indexableProduct);
+        $getIndexableProduct->fromProductIdentifiers([$identifier])->willReturn([$indexableProduct]);
         $indexableProduct->toArray()->willReturn(['id' => $identifier, 'a key' => 'a value']);
         $productAndProductModelIndexClient
             ->bulkIndexes([['id' => $identifier, 'a key' => 'a value']], 'id', Refresh::disable())
@@ -50,8 +50,8 @@ class ProductIndexerSpec extends ObjectBehavior
         $getIndexableProduct
     ) {
         $identifier = 'foobar';
-        $getIndexableProduct->fromProductIdentifier($identifier)->willReturn(null);
-        $productAndProductModelIndexClient->index(Argument::cetera())
+        $getIndexableProduct->fromProductIdentifiers([$identifier])->willReturn([]);
+        $productAndProductModelIndexClient->bulkIndexes(Argument::cetera())
             ->shouldNotBeCalled();
 
         $this->indexFromProductIdentifier($identifier);
@@ -65,9 +65,8 @@ class ProductIndexerSpec extends ObjectBehavior
     ) {
         $identifiers = ['foo', 'bar', 'unknown'];
 
-        $getIndexableProduct->fromProductIdentifier($identifiers[0])->willReturn($indexableProduct1);
-        $getIndexableProduct->fromProductIdentifier($identifiers[1])->willReturn($indexableProduct2);
-        $getIndexableProduct->fromProductIdentifier($identifiers[2])->willReturn(null);
+        $getIndexableProduct->fromProductIdentifiers($identifiers)
+            ->willReturn([$indexableProduct1, $indexableProduct2]);
 
         $indexableProduct1->toArray()->willReturn(['id' => $identifiers[0], 'a key' => 'a value']);
         $indexableProduct2->toArray()->willReturn(['id' => $identifiers[1], 'a key' => 'another value']);
@@ -84,7 +83,7 @@ class ProductIndexerSpec extends ObjectBehavior
         $productAndProductModelIndexClient,
         $getIndexableProduct
     ) {
-        $getIndexableProduct->fromProductIdentifier(Argument::cetera())->shouldNotBeCalled();
+        $getIndexableProduct->fromProductIdentifiers(Argument::cetera())->shouldNotBeCalled();
         $productAndProductModelIndexClient->bulkIndexes(Argument::cetera())->shouldNotBeCalled();
 
         $this->indexFromProductIdentifiers([]);
@@ -113,9 +112,8 @@ class ProductIndexerSpec extends ObjectBehavior
     ) {
         $identifiers = ['foo', 'bar', 'unknown'];
 
-        $getIndexableProduct->fromProductIdentifier($identifiers[0])->willReturn($indexableProduct1);
-        $getIndexableProduct->fromProductIdentifier($identifiers[1])->willReturn($indexableProduct2);
-        $getIndexableProduct->fromProductIdentifier($identifiers[2])->willReturn(null);
+        $getIndexableProduct->fromProductIdentifiers($identifiers)
+            ->willReturn([$indexableProduct1, $indexableProduct2]);
 
         $indexableProduct1->toArray()->willReturn(['id' => $identifiers[0], 'a key' => 'a value']);
         $indexableProduct2->toArray()->willReturn(['id' => $identifiers[1], 'a key' => 'another value']);
@@ -136,9 +134,8 @@ class ProductIndexerSpec extends ObjectBehavior
     ) {
         $identifiers = ['foo', 'bar', 'unknown'];
 
-        $getIndexableProduct->fromProductIdentifier($identifiers[0])->willReturn($indexableProduct1);
-        $getIndexableProduct->fromProductIdentifier($identifiers[1])->willReturn($indexableProduct2);
-        $getIndexableProduct->fromProductIdentifier($identifiers[2])->willReturn(null);
+        $getIndexableProduct->fromProductIdentifiers($identifiers)
+            ->willReturn([$indexableProduct1, $indexableProduct2]);
 
         $indexableProduct1->toArray()->willReturn(['id' => $identifiers[0], 'a key' => 'a value']);
         $indexableProduct2->toArray()->willReturn(['id' => $identifiers[1], 'a key' => 'another value']);
@@ -159,9 +156,8 @@ class ProductIndexerSpec extends ObjectBehavior
     ) {
         $identifiers = ['foo', 'bar', 'unknown'];
 
-        $getIndexableProduct->fromProductIdentifier($identifiers[0])->willReturn($indexableProduct1);
-        $getIndexableProduct->fromProductIdentifier($identifiers[1])->willReturn($indexableProduct2);
-        $getIndexableProduct->fromProductIdentifier($identifiers[2])->willReturn(null);
+        $getIndexableProduct->fromProductIdentifiers($identifiers)
+            ->willReturn([$indexableProduct1, $indexableProduct2]);
 
         $indexableProduct1->toArray()->willReturn(['id' => $identifiers[0], 'a key' => 'a value']);
         $indexableProduct2->toArray()->willReturn(['id' => $identifiers[1], 'a key' => 'another value']);

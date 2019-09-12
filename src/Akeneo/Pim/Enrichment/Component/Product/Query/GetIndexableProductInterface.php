@@ -18,4 +18,10 @@ interface GetIndexableProductInterface
      * @return IndexableProduct|null
      */
     public function fromProductIdentifier(string $productIdentifier): ?IndexableProduct;
+
+    /**
+     * @param array $productIdentifiers
+     * @return array $productIdentifiers
+     */
+    public function fromProductIdentifiers(array $productIdentifiers): array;
 }

@@ -12,10 +12,18 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Query;
 interface GetProductDataForIndexationInterface
 {
     /**
-     * Returns an associative array for product indexing
+     * Returns an associative array for product indexing.
      *
-     * @param int $productId
+     * @param string $productIdentifier
      * @return array
      */
-    public function fromProductId(int $productId): array;
+    public function fromProductIdentifier(string $productIdentifier): array;
+
+    /**
+     * Returns list of associative arrays for product indexing.
+     *
+     * @param array $productIdentifiers
+     * @return array
+     */
+    public function fromProductIdentifiers(array $productIdentifiers): array;
 }

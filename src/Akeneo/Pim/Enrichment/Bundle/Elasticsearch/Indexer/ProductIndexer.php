@@ -57,19 +57,21 @@ class ProductIndexer implements ProductIndexerInterface
      */
     public function indexFromProductIdentifiers(array $productIdentifiers, array $options = []): void
     {
+        if (empty($productIdentifiers)) {
+            return;
+        }
+
         $indexRefresh = $options['index_refresh'] ?? Refresh::disable();
 
-        $normalizedProducts = [];
-        foreach ($productIdentifiers as $productIdentifier) {
-            $object = $this->getIndexableProduct->fromProductIdentifier($productIdentifier);
-            if (!$object instanceof IndexableProduct) {
-                continue;
-            }
+        $normalizedProducts = array_map(
+            function (IndexableProduct $indexableProduct) {
+                $normalizedProduct = $indexableProduct->toArray();
+                $this->validateObjectNormalization($normalizedProduct);
 
-            $normalizedProduct = $object->toArray();
-            $this->validateObjectNormalization($normalizedProduct);
-            $normalizedProducts[] = $normalizedProduct;
-        }
+                return $normalizedProduct;
+            },
+            $this->getIndexableProduct->fromProductIdentifiers($productIdentifiers)
+        );
 
         if (!empty($normalizedProducts)) {
             $this->productAndProductModelClient->bulkIndexes(
