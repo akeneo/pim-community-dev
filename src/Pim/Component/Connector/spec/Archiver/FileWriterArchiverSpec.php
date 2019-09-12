@@ -29,7 +29,7 @@ class FileWriterArchiverSpec extends ObjectBehavior
     }
 
     function it_creates_a_file_when_writer_is_valid(
-        $filesystem,
+        Filesystem $filesystem,
         $jobRegistry,
         Writer $writer,
         JobExecution $jobExecution,
@@ -54,13 +54,13 @@ class FileWriterArchiverSpec extends ObjectBehavior
         $writer->getWrittenFiles()->willReturn([$pathname => $filename]);
         $writer->getPath()->willReturn($pathname);
 
-        $filesystem->put(
+        $filesystem->putStream(
             'type' . DIRECTORY_SEPARATOR .
             'my_job_name' . DIRECTORY_SEPARATOR .
             '12' . DIRECTORY_SEPARATOR .
             'output' . DIRECTORY_SEPARATOR .
             $filename,
-            ''
+            Argument::type('resource')
         )->shouldBeCalled();
 
         $this->archive($jobExecution);

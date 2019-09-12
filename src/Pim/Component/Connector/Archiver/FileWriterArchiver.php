@@ -121,7 +121,6 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
                     '%filename%' => $fileName,
                 ]
             );
-            $this->filesystem->put($archivedFilePath, file_get_contents($filePath));
-        }
+            $this->filesystem->putStream($archivedFilePath, fopen($filePath, 'r'));        }
     }
 }

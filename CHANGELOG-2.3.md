@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-8757: Use a stream to create export archive
+
 # 2.3.61 (2019-09-10)
 
 # 2.3.60 (2019-09-05)
