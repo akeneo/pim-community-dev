@@ -25,7 +25,8 @@ import {selectErrors} from 'akeneopimenrichmentassetmanager/assets-collection/re
 import {ValidationError} from 'akeneopimenrichmentassetmanager/platform/model/validation-error';
 import {ValidationErrorCollection} from 'akeneopimenrichmentassetmanager/platform/component/common/validation-error-collection';
 import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
-
+import {MoreButton} from 'akeneoassetmanager/application/component/app/more-button';
+import {emptyCollection} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 
 type ListStateProps = {
   attributes: Attribute[],
@@ -116,7 +117,15 @@ const DisplayValues = ({values, family, context, ruleRelations, onChange, errors
               </React.Fragment>
             ): null}
             {value.editable ? (
-              <Button buttonSize='medium' color='outline'>{__('pim_asset_manager.asset_collection.add_asset')}</Button>
+              <React.Fragment>
+                <Button buttonSize='medium' color='outline'>{__('pim_asset_manager.asset_collection.add_asset')}</Button>
+                <MoreButton elements={[{
+                  label: __('pim_asset_manager.asset_collection.remove_all_assets'),
+                  action: () => {
+                    onChange(updateValueData(value, emptyCollection(value.data)))
+                  }
+                }]}/>
+              </React.Fragment>
             ) : null}
           </SectionTitle>
           <RuleNotification attributeCode={value.attribute.code} ruleRelations={ruleRelations} />

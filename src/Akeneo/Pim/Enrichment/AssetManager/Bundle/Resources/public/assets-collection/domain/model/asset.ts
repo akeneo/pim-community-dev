@@ -52,3 +52,10 @@ export const isLabels = (labels: any): boolean => {
 export const getAssetLabel = (asset: Asset, locale: LocaleCode) => {
   return getLabel(asset.labels, locale, asset.code);
 };
+
+export const removeAssetFromCollection = (assetCodes: AssetCode[], asset: Asset): AssetCode[] => {
+  return assetCodes.filter((assetCode: AssetCode) => asset.code !== assetCode);
+};
+export const emptyCollection = (_assetCodes: AssetCode): AssetCode[] => {
+  return [];
+};

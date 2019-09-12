@@ -4,6 +4,8 @@ import {
   emptyAsset,
   isLabels,
   getAssetLabel,
+  removeAssetFromCollection,
+  emptyCollection,
 } from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 
 test('It should get the image from the asset', () => {
@@ -119,4 +121,23 @@ test('I should get a label from my asset', () => {
 
   expect(getAssetLabel(asset, 'en_US')).toEqual('Iphone');
   expect(getAssetLabel(asset, 'fr_FR')).toEqual('[iphone]');
+});
+
+test('I should be able to remove an asset from the collection', () => {
+  const asset = {
+    identifier: 'packshot_iphone_fingerprint',
+    code: 'iphone',
+    labels: {en_US: 'Iphone'},
+  };
+
+  expect(removeAssetFromCollection(['samsung', 'oneplus', 'iphone'], asset)).toEqual(['samsung', 'oneplus']);
+});
+test('I should be able to empty the collection', () => {
+  const asset = {
+    identifier: 'packshot_iphone_fingerprint',
+    code: 'iphone',
+    labels: {en_US: 'Iphone'},
+  };
+
+  expect(emptyCollection(['samsung', 'oneplus', 'iphone'])).toEqual([]);
 });

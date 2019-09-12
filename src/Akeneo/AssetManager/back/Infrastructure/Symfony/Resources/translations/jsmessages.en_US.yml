@@ -18,6 +18,10 @@ pim_asset_manager:
     notification:
       product_rule: 'This collection can be updated by a product rule:'
     remove_one_asset: Remove asset {{ assetName }} from asset collection
+    remove_all_assets: Remove all assets
+    other_actions: Other actions
+    open_other_actions: Open other actions
+    dismiss_other_actions: Dismiss other actions
 #  app:
 #    image:
 #      wide:

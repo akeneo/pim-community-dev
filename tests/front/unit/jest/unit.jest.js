@@ -1,4 +1,3 @@
-var fs = require('fs');
 const baseConfig = require(`${__dirname}/../../../../vendor/akeneo/pim-community-dev/tests/front/unit/jest/unit.jest.js`);
 
 const eeModuleNameMapperConfig = {
@@ -14,7 +13,12 @@ const eeConfig = {
   ...baseConfig,
   moduleNameMapper: moduleNameMapperConfig,
   coveragePathIgnorePatterns: [
-    '/src/Akeneo/AssetManager/front/tools/',
+    ...baseConfig.coveragePathIgnorePatterns,
+    'akeneoassetmanager/tools',
+    'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher',
+    'akeneopimenrichmentassetmanager/platform/component/common',
+    'pimui/lib',
+    'src/Akeneo/AssetManager/front/tools',
     'vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/public/lib',
     'src/Akeneo/Pim/Enrichment/AssetManager/Bundle/Resources/public/assets-collection/infrastructure/fetcher',
     'src/Akeneo/Pim/Enrichment/AssetManager/Bundle/Resources/public/platform/component/common/index',

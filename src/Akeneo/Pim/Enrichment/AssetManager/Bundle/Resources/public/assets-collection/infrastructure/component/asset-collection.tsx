@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {AssetFamilyIdentifier} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset-family';
-import {Asset, isComplete, emptyAsset, getAssetLabel} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
+import {Asset, isComplete, emptyAsset, getAssetLabel, removeAssetFromCollection} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';
 import styled from 'styled-components';
 import {Pill} from 'akeneopimenrichmentassetmanager/platform/component/common';
@@ -64,7 +64,7 @@ const useLoadAssets = (assetCodes: AssetCode[], assetFamilyIdentifier: AssetFami
   }
 
   React.useEffect(() => {
-    if (assetCodes.length !== 0 && (hasChangeInCollection(assetCodes, assets))) {
+    if (assetCodes.length !== 0 && !hasChangeInCollection(assetCodes, assets)) {
       fetchAssetCollection(assetFamilyIdentifier, assetCodes, context).then((receivedAssets: Asset[]) => {
         assetsReceived(receivedAssets);
       })
@@ -97,7 +97,7 @@ export const AssetCollection = ({assetFamilyIdentifier, assetCodes, readonly, co
             return (
               <AssetCard key={asset.code} readonly={readonly}>
                 <Thumbnail asset={asset} context={context} readonly={readonly} onRemove={() => {
-                  onChange(assetCodes.filter((assetCode: AssetCode) => asset.code !== assetCode))
+                  onChange(removeAssetFromCollection(assetCodes, asset))
                 }}/>
                 <AssetTitle>
                   <Label>
