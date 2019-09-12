@@ -17,6 +17,7 @@ pim_asset_manager:
       text: 'There are no asset collection for the {{ family }} family!'
     notification:
       product_rule: 'This collection can be updated by a product rule:'
+    remove_one_asset: Remove asset {{ assetName }} from asset collection
 #  app:
 #    image:
 #      wide:

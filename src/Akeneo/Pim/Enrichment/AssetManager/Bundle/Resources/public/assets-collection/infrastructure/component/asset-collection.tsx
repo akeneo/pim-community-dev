@@ -1,17 +1,16 @@
 import * as React from 'react'
 import {AssetFamilyIdentifier} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset-family';
-import {Asset, getImage, isComplete, emptyAsset} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
+import {Asset, isComplete, emptyAsset, getAssetLabel} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';
-import {ChannelCode} from 'akeneopimenrichmentassetmanager/platform/model/channel/channel';
-import {LocaleCode} from 'akeneopimenrichmentassetmanager/platform/model/channel/locale';
 import styled from 'styled-components';
 import {Pill} from 'akeneopimenrichmentassetmanager/platform/component/common';
 import {ThemedProps} from 'akeneopimenrichmentassetmanager/platform/component/theme';
-import {getLabel} from 'pimui/js/i18n';
 import {Label} from 'akeneopimenrichmentassetmanager/platform/component/common/label';
 import AssetIllustration from 'akeneopimenrichmentassetmanager/platform/component/visual/illustration/asset';
 import __ from 'akeneoreferenceentity/tools/translator';
 import {fetchAssetCollection} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/asset';
+import {ContextState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
+import {Thumbnail} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-collection/thumbnail';
 
 const AssetCard = styled.div<{readonly: boolean}>`
   display: flex;
@@ -21,10 +20,6 @@ const AssetCard = styled.div<{readonly: boolean}>`
   justify-content: space-between;
   margin-right: 20px;
   opacity: ${(props: ThemedProps<{readonly: boolean}>) => props.readonly ? .8 : 1}
-`;
-const Container = styled.div`
-  display: flex;
-  flex-wrap: wrap;
 `;
 
 const AssetTitle = styled.div`
@@ -38,17 +33,6 @@ const BaselinePill = styled(Pill)`
   align-self: unset;
 `;
 
-
-const Thumbnail = ({asset}: {asset: Asset}) => {
-  const Img = styled.img`
-    width: 140px;
-    height: 140px;
-    border: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey100}
-  `;
-
-  return (<Img src={getImage(asset)}/>)
-}
-
 const EmptyAssetCollection = styled.div`
   height: 140px;
   display: flex;
@@ -60,63 +44,77 @@ const EmptyAssetCollection = styled.div`
   margin: 10px 0;
 `
 
+const Container = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;
+
 type AssetCollectionProps = {
   assetFamilyIdentifier: AssetFamilyIdentifier
   assetCodes: AssetCode[],
   readonly: boolean
-  context: {channel: ChannelCode, locale: LocaleCode}
+  context: ContextState
+  onChange: (value: AssetCode[]) => void
 }
 
-export const AssetCollection = ({assetFamilyIdentifier, assetCodes, readonly, context}: AssetCollectionProps) => {
+const useLoadAssets = (assetCodes: AssetCode[], assetFamilyIdentifier: AssetFamilyIdentifier, context: ContextState) => {
   const [assets, assetsReceived] = React.useState<Asset[]>([]);
-  const noChangeInCollection = (assetCodes: AssetCode[], assets: Asset[]) => {
-    return assets.length !== assetCodes.length || !assets.sort().every((asset: Asset, index: number) => assetCodes.sort().indexOf(asset.code) === index )
+  const hasChangeInCollection = (assetCodes: AssetCode[], assets: Asset[]) => {
+    return !(assets.length !== assetCodes.length || !assets.sort().every((asset: Asset, index: number) => assetCodes.sort().indexOf(asset.code) === index))
   }
 
   React.useEffect(() => {
-    if (assetCodes.length !== 0 && (noChangeInCollection(assetCodes, assets))) {
+    if (assetCodes.length !== 0 && (hasChangeInCollection(assetCodes, assets))) {
       fetchAssetCollection(assetFamilyIdentifier, assetCodes, context).then((receivedAssets: Asset[]) => {
         assetsReceived(receivedAssets);
       })
     }
   });
 
+  return assets;
+}
+
+export const AssetCollection = ({assetFamilyIdentifier, assetCodes, readonly, context, onChange}: AssetCollectionProps) => {
+  const assets = useLoadAssets(assetCodes, assetFamilyIdentifier, context);
+
   return (
     <Container>
-      {/* Collection is not empty and is loaded */}
-      {0 !== assets.length ? (
+      {/* Collection is not empty and is loaded (we also need to check assetCodes because in this case we don't update the fetched assets */}
+      {0 !== assetCodes.length ? (
         <React.Fragment>
-          {assets.map((asset: Asset) => (
-            <AssetCard key={asset.code} readonly={readonly}>
-              <Thumbnail asset={asset} />
-              <AssetTitle>
-                <Label>
-                  {getLabel(asset.labels, context.locale, asset.code)}
-                </Label>
-                {!isComplete(asset) ? <BaselinePill /> : null}
-              </AssetTitle>
-            </AssetCard>
-          ))}
+          {assetCodes.map((assetCode: AssetCode) => {
+            const asset = assets.find((asset: Asset) => asset.code === assetCode);
+
+            if (undefined === asset) {
+              return (
+                <AssetCard key={assetCode} className='AknLoadingPlaceHolderContainer' readonly={false}>
+                  <Thumbnail asset={emptyAsset()} context={context} readonly={true} onRemove={() => {}}/>
+                  <AssetTitle />
+                </AssetCard>
+              )
+            }
+
+            return (
+              <AssetCard key={asset.code} readonly={readonly}>
+                <Thumbnail asset={asset} context={context} readonly={readonly} onRemove={() => {
+                  onChange(assetCodes.filter((assetCode: AssetCode) => asset.code !== assetCode))
+                }}/>
+                <AssetTitle>
+                  <Label>
+                    {getAssetLabel(asset, context.locale)}
+                  </Label>
+                  {!isComplete(asset) ? <BaselinePill /> : null}
+                </AssetTitle>
+              </AssetCard>
+            )
+        })}
         </React.Fragment>
-      ) : null}
-      {/* Collection is not empty and is not loaded */}
-      {0 === assets.length && 0 !== assetCodes.length ? (
-        <React.Fragment>
-          {assetCodes.map((assetCode: AssetCode) => (
-            <AssetCard key={assetCode} className='AknLoadingPlaceHolderContainer' readonly={false}>
-              <Thumbnail asset={emptyAsset()}/>
-              <AssetTitle />
-            </AssetCard>
-          ))}
-        </React.Fragment>
-      ) : null}
-      {/* Collection is empty */}
-      {0 === assetCodes.length ? (
+      ) : (
         <EmptyAssetCollection>
           <AssetIllustration size={80}/>
           <Label>{__('pim_asset_manager.asset_collection.no_asset_in_collection')}</Label>
         </EmptyAssetCollection>
-      ): null}
+      )}
     </Container>
   )
 }

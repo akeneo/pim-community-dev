@@ -314,6 +314,65 @@ test('It should generate a value collection from the product with a non editable
   expect(valueCollection).toEqual(expectedValueCollection);
 });
 
+test('It should generate a value collection from the product with all values if the level is null', async () => {
+  const attributeGroupPermission = {
+    code: 'marketing',
+    view: true,
+    edit: true,
+  };
+  const localePermission = {
+    code: 'en_US',
+    view: true,
+    edit: true,
+  };
+  const isReadOnly = false;
+  const attributesForThisLevel = ['notices'];
+  const categoriesEditPermission = ['scanners'];
+
+  fetchAssetAttributes.mockImplementation(attributeFetcher => () => getMockAssetAttributes(isReadOnly));
+  fetchPermissions.mockImplementation(permissionFetcher => () =>
+    getMockPermissions(attributeGroupPermission, localePermission, categoriesEditPermission)
+  );
+  const mockProduct = getMockProduct(attributesForThisLevel);
+  //Here we want the level to be null to check that the value collection is not modified
+  const product = {...mockProduct, meta: {...mockProduct.meta, level: null}};
+  const expectedValueCollection = [
+    {
+      attribute: {
+        code: 'packshot',
+        labels: {
+          en_US: 'Packshot',
+        },
+        group: 'marketing',
+        isReadOnly: false,
+        referenceDataName: 'packshot',
+      },
+      locale: 'en_US',
+      channel: 'ecommerce',
+      data: ['iphone'],
+      editable: true,
+    },
+    {
+      attribute: {
+        code: 'notices',
+        labels: {
+          en_US: 'Notices',
+        },
+        group: 'marketing',
+        isReadOnly: false,
+        referenceDataName: 'notices',
+      },
+      locale: null,
+      channel: 'ecommerce',
+      data: [],
+      editable: true,
+    },
+  ];
+
+  const valueCollection = await generate(product);
+  expect(valueCollection).toEqual(expectedValueCollection);
+});
+
 test('It should generate a value collection from the product with a non editable category', async () => {
   const attributeGroupPermission = {
     code: 'marketing',
@@ -365,6 +424,67 @@ test('It should generate a value collection from the product with a non editable
       channel: 'ecommerce',
       data: [],
       editable: false, // so the values aren't editable
+    },
+  ];
+
+  const valueCollection = await generate(product);
+  expect(valueCollection).toEqual(expectedValueCollection);
+});
+
+test('It should generate a value collection from the product with editable categories if the product is not in a category', async () => {
+  const attributeGroupPermission = {
+    code: 'marketing',
+    view: true,
+    edit: true,
+  };
+  const localePermission = {
+    code: 'en_US',
+    view: true,
+    edit: true,
+  };
+  const isReadOnly = false;
+  const attributesForThisLevel = ['packshot', 'notices'];
+  // The category scanner doesn't have the edit permission
+  const categoriesEditPermission = [];
+
+  fetchAssetAttributes.mockImplementation(attributeFetcher => () => getMockAssetAttributes(isReadOnly));
+  fetchPermissions.mockImplementation(permissionFetcher => () =>
+    getMockPermissions(attributeGroupPermission, localePermission, categoriesEditPermission)
+  );
+  const mockProduct = getMockProduct(attributesForThisLevel);
+  // We want to test thtat the rights are not midified if the product is not ine a category
+  const product = {...mockProduct, categories: []};
+
+  const expectedValueCollection = [
+    {
+      attribute: {
+        code: 'packshot',
+        labels: {
+          en_US: 'Packshot',
+        },
+        group: 'marketing',
+        isReadOnly: false,
+        referenceDataName: 'packshot',
+      },
+      locale: 'en_US',
+      channel: 'ecommerce',
+      data: ['iphone'],
+      editable: true,
+    },
+    {
+      attribute: {
+        code: 'notices',
+        labels: {
+          en_US: 'Notices',
+        },
+        group: 'marketing',
+        isReadOnly: false,
+        referenceDataName: 'notices',
+      },
+      locale: null,
+      channel: 'ecommerce',
+      data: [],
+      editable: true,
     },
   ];
 

@@ -13,9 +13,29 @@ import {updateChannels, updateFamily} from 'akeneopimenrichmentassetmanager/asse
 import thunkMiddleware from 'redux-thunk';
 import {akeneoTheme} from 'akeneopimenrichmentassetmanager/platform/component/theme';
 import {updateRuleRelations} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/structure';
+import {LegacyValue} from 'web/bundles/akeneopimenrichmentassetmanager/enrich/domain/model/product';
 
 const Form = require('pim/form');
 const UserContext = require('pim/user-context');
+
+const updateValueMiddleware = (formView: AssetTabForm) => {
+  return () => (next: any) => (action: any) => {
+    if ('VALUE_CHANGED' === action.type) {
+      const formData = (formView).getFormData();
+      formData.values[action.value.attribute.code].map((value: LegacyValue) => {
+        if (value.scope === action.value.channel && value.locale === action.value.locale) {
+          value.data = action.value.data;
+        }
+
+        return value;
+      })
+
+      (formView).setData(formData)
+    }
+
+    return next(action);
+  }
+}
 
 class AssetTabForm extends (Form as {new (config: any): any}) {
   attributes = [];
@@ -25,7 +45,8 @@ class AssetTabForm extends (Form as {new (config: any): any}) {
     super(config);
 
     this.store = createStore(assetCollectionReducer, applyMiddleware(
-      thunkMiddleware
+      thunkMiddleware,
+      updateValueMiddleware(this)
     ));
   }
 

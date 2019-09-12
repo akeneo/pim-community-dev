@@ -2,6 +2,8 @@ import {
   valuesReducer,
   valuesUpdated,
   selectCurrentValues,
+  valueChanged,
+  updateValueData,
 } from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';
 
 test('It ignores other commands', () => {
@@ -134,3 +136,9 @@ test('It should be able to select the current values', () => {
   expect(selectCurrentValues(state)).toEqual(values);
 });
 
+test('It should be able to generate valueChanged action', () => {
+  expect(valueChanged('my_value')).toEqual({type: 'VALUE_CHANGED', value: 'my_value'});
+});
+test('It should be able to update the data of a value', () => {
+  expect(updateValueData({data: [], locale: 'en_US'}, ['nice_asset'])).toEqual({locale: 'en_US', data: ['nice_asset']});
+});

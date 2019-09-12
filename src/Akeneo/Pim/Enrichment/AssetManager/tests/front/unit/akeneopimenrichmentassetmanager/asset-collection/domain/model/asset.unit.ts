@@ -3,6 +3,7 @@ import {
   isComplete,
   emptyAsset,
   isLabels,
+  getAssetLabel,
 } from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 
 test('It should get the image from the asset', () => {
@@ -107,4 +108,15 @@ test('It could validate if the label object is well formated', () => {
 
   const labels = {en_US: 'Packshot'};
   expect(isLabels(labels)).toEqual(true);
+});
+
+test('I should get a label from my asset', () => {
+  const asset = {
+    identifier: 'packshot_iphone_fingerprint',
+    code: 'iphone',
+    labels: {en_US: 'Iphone'},
+  };
+
+  expect(getAssetLabel(asset, 'en_US')).toEqual('Iphone');
+  expect(getAssetLabel(asset, 'fr_FR')).toEqual('[iphone]');
 });

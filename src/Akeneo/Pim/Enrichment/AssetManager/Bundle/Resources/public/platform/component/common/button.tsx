@@ -14,7 +14,7 @@ export const Button = styled.div<ButtonProps>`
           padding: 0 10px;
           height: 20px;
           line-height: 19px;
-          border-raidus: 10px;
+          border-radius: 10px;
           font-size: ${props.theme.fontSize.small};
           min-width: 60px;
         `;
@@ -23,7 +23,7 @@ export const Button = styled.div<ButtonProps>`
           padding: 0 15px;
           height: 24px;
           line-height: 23px;
-          border-raidus: 16px;
+          border-radius: 16px;
           font-size: ${props.theme.fontSize.default};
           min-width: 100px;
         `;
@@ -32,7 +32,7 @@ export const Button = styled.div<ButtonProps>`
           padding: 0 15px;
           height: 32px;
           line-height: 23px;
-          border-raidus: 16px;
+          border-radius: 16px;
           font-size: ${props.theme.fontSize.default};
           min-width: 100px;
         `;

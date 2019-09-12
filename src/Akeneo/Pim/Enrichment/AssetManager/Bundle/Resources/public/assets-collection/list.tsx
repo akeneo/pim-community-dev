@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {AssetCollectionState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/asset-collection';
 import {selectAttributeList, selectFamily, selectRuleRelations} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/structure';
 import {selectContext, ContextState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
-import {selectCurrentValues, ValueCollection, Value} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';
+import {selectCurrentValues, ValueCollection, Value, AssetCode, updateValueData, valueChanged} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';
 import styled from 'styled-components';
 import __ from 'akeneoassetmanager/tools/translator';
 import {Label} from 'akeneopimenrichmentassetmanager/platform/component/common/label';
@@ -23,13 +23,24 @@ import {RuleRelation} from 'akeneopimenrichmentassetmanager/platform/model/struc
 import {isSmartAttribute} from 'akeneopimenrichmentassetmanager/platform/model/structure/rule-relation';
 import {RuleNotification} from 'akeneopimenrichmentassetmanager/platform/component/rule-notification';
 
-type ListProps = {
+type ListStateProps = {
   attributes: Attribute[],
   values: ValueCollection,
   family: Family|null,
   context: ContextState,
   ruleRelations: RuleRelation[]
 }
+type ListDispatchProps = {
+  onChange: (value: Value) => void
+}
+
+type DisplayValuesProps = {
+  values: ValueCollection,
+  family: Family|null,
+  context: ContextState
+  ruleRelations: RuleRelation[]
+  onChange: (value: Value) => void
+};
 
 const SectionTitle = styled.div`
   display: flex;
@@ -68,7 +79,7 @@ const AssetCollectionList = styled.div`
   align-items: stretch;
 `;
 
-const DisplayValues = ({values, family, context, ruleRelations}: ListProps) => {
+const DisplayValues = ({values, family, context, ruleRelations, onChange}: DisplayValuesProps) => {
   return (
     <React.Fragment>
       {values.map((value: Value) => (
@@ -105,20 +116,22 @@ const DisplayValues = ({values, family, context, ruleRelations}: ListProps) => {
             <RuleNotification attributeCode={value.attribute.code} ruleRelations={ruleRelations} />
           ) : null}
           {/* Validation error indication hasValidationError(value.attribute.code, errors)*/}
-          <AssetCollection assetFamilyIdentifier={value.attribute.referenceDataName} assetCodes={value.data} context={context} readonly={!value.editable}/>
+          <AssetCollection assetFamilyIdentifier={value.attribute.referenceDataName} assetCodes={value.data} context={context} readonly={!value.editable} onChange={(assetCodes: AssetCode[]) => {
+            onChange(updateValueData(value, assetCodes))
+          }}/>
         </AssetCollectionContainer>
       ))}
     </React.Fragment>
   );
 };
 
-const List = ({attributes, values, family, context, ruleRelations}: ListProps) => {
+const List = ({values, family, context, ruleRelations, onChange}: ListStateProps & ListDispatchProps) => {
   const familyLabel = (null !== family) ? family.labels[context.locale] : '';
 
   return (
     <AssetCollectionList>
       {hasValues(values) ? (
-        <DisplayValues attributes={attributes} values={values} family={family} context={context} ruleRelations={ruleRelations} />
+        <DisplayValues values={values} family={family} context={context} ruleRelations={ruleRelations} onChange={onChange}/>
       ) : (
         <React.Fragment>
           <HelperSection>
@@ -150,10 +163,14 @@ const List = ({attributes, values, family, context, ruleRelations}: ListProps) =
   )
 };
 
-export default connect((state: AssetCollectionState): ListProps => ({
+export default connect((state: AssetCollectionState): ListStateProps => ({
   attributes: selectAttributeList(state),
   context: selectContext(state),
   values: selectCurrentValues(state),
   family: selectFamily(state),
   ruleRelations: selectRuleRelations(state)
+}), (dispatch: any): ListDispatchProps => ({
+  onChange: (value: Value) => {
+    dispatch(valueChanged(value))
+  }
 }))(List);

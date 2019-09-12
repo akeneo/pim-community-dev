@@ -1,7 +1,12 @@
 import {Labels} from 'akeneopimenrichmentassetmanager/platform/model/label';
 import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';
 import {NormalizedCompleteness} from 'akeneoassetmanager/domain/model/asset/completeness';
-import {AssetFamily, emptyAssetFamily} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset-family';
+import {
+  AssetFamily,
+  emptyAssetFamily,
+} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset-family';
+import {LocaleCode} from 'akeneopimenrichmentassetmanager/platform/model/channel/locale';
+import {getLabel} from 'pimui/js/i18n';
 
 export type AssetIdentifier = string;
 
@@ -43,4 +48,7 @@ export const isLabels = (labels: any): boolean => {
   }
 
   return true;
+};
+export const getAssetLabel = (asset: Asset, locale: LocaleCode) => {
+  return getLabel(asset.labels, locale, asset.code);
 };

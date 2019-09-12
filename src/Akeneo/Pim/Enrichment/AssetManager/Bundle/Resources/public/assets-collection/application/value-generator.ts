@@ -30,8 +30,7 @@ const transformValues = (legacyValues: LegacyValueCollection, assetAttributes: A
   );
 
   return assetValueAttributeCodes.reduce((result: ValueCollection, attributeCode: AttributeCode) => {
-    const attribute = assetAttributes.find(attribute => attribute.code === attributeCode);
-    if (undefined === attribute) return result;
+    const attribute = assetAttributes.find(attribute => attribute.code === attributeCode) as Attribute;
 
     const values = legacyValues[attributeCode].map(
       (legacyValue: LegacyValue): Value => ({

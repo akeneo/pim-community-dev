@@ -29,6 +29,10 @@ export const valuesUpdated = (values: Value[]) => {
   return {type: 'VALUE_COLLECTION_UPDATED', values};
 };
 
+export const valueChanged = (value: Value) => {
+  return {type: 'VALUE_CHANGED', value};
+};
+
 export const selectCurrentValues = (state: AssetCollectionState) => {
   const currentLocale = state.context.locale;
   const currentChannel = state.context.channel;
@@ -37,4 +41,11 @@ export const selectCurrentValues = (state: AssetCollectionState) => {
     ({locale, channel}: Value) =>
       (locale === null || locale === currentLocale) && (channel === null || currentChannel === channel)
   );
+};
+
+export const updateValueData = (value: Value, data: AssetCode[]): Value => {
+  return {
+    ...value,
+    data,
+  };
 };
