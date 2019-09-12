@@ -28,7 +28,6 @@ class TextAttributeIntegration extends AbstractProductProposalTestCase
             'query_string' => [
                 'default_field'       => 'values.name-text.<all_channels>.<all_locales>',
                 'query'               => 'My\ product*',
-                'split_on_whitespace' => true,
             ],
         ]);
 
@@ -43,7 +42,6 @@ class TextAttributeIntegration extends AbstractProductProposalTestCase
             'query_string' => [
                 'default_field'       => 'values.name-text.<all_channels>.fr_FR',
                 'query'               => 'My\ product*',
-                'split_on_whitespace' => true,
             ],
         ]);
 
@@ -55,7 +53,6 @@ class TextAttributeIntegration extends AbstractProductProposalTestCase
             'query_string' => [
                 'default_field'       => 'values.name-text.<all_channels>.en_US',
                 'query'               => 'My\ product*',
-                'split_on_whitespace' => true,
             ],
         ]);
 
