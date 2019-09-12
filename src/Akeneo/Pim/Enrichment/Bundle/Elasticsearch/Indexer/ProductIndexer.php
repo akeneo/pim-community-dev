@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\IndexableProduct;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetIndexableProductInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Indexer responsible for the indexing of products entities. Each product should be normalized in the right format
@@ -30,26 +28,17 @@ class ProductIndexer implements ProductIndexerInterface
     /** @var Client */
     private $productAndProductModelClient;
 
-    /** @var ProductRepositoryInterface */
-    private $productRepository;
+    /** @var GetIndexableProductInterface */
+    private $getIndexableProduct;
 
-    /**
-     * @param NormalizerInterface        $normalizer
-     * @param Client                     $productAndProductModelClient
-     * @param ProductRepositoryInterface $productRepository
-     */
-    public function __construct(
-        NormalizerInterface $normalizer,
-        Client $productAndProductModelClient,
-        ProductRepositoryInterface $productRepository
-    ) {
-        $this->normalizer = $normalizer;
+    public function __construct(Client $productAndProductModelClient, GetIndexableProductInterface $getIndexableProduct)
+    {
         $this->productAndProductModelClient = $productAndProductModelClient;
-        $this->productRepository = $productRepository;
+        $this->getIndexableProduct = $getIndexableProduct;
     }
 
     /**
-     * Indexes a product in the product and product model index from their identifiers.
+     * Indexes a product in the product and product model index from its identifier.
      *
      * {@inheritdoc}
      */
@@ -72,15 +61,12 @@ class ProductIndexer implements ProductIndexerInterface
 
         $normalizedProducts = [];
         foreach ($productIdentifiers as $productIdentifier) {
-            $object = $this->productRepository->findOneByIdentifier($productIdentifier);
-            if (!$object instanceof ProductInterface) {
+            $object = $this->getIndexableProduct->fromProductIdentifier($productIdentifier);
+            if (!$object instanceof IndexableProduct) {
                 continue;
             }
 
-            $normalizedProduct = $this->normalizer->normalize(
-                $object,
-                ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
-            );
+            $normalizedProduct = $object->toArray();
             $this->validateObjectNormalization($normalizedProduct);
             $normalizedProducts[] = $normalizedProduct;
         }

@@ -2,25 +2,22 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\IndexableProduct;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetIndexableProductInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Prophecy\Argument;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductIndexerSpec extends ObjectBehavior
 {
     function let(
-        NormalizerInterface $normalizer,
         Client $productAndProductModelIndexClient,
-        ProductRepositoryInterface $productRepository
+        GetIndexableProductInterface $getIndexableProduct
     ) {
-        $this->beConstructedWith($normalizer, $productAndProductModelIndexClient, $productRepository);
+        $this->beConstructedWith($productAndProductModelIndexClient, $getIndexableProduct);
     }
 
     function it_is_initializable()
@@ -34,16 +31,13 @@ class ProductIndexerSpec extends ObjectBehavior
     }
 
     function it_indexes_a_single_product_from_identifier(
-        $normalizer,
         $productAndProductModelIndexClient,
-        $productRepository,
-        ProductInterface $product
+        $getIndexableProduct,
+        IndexableProduct $indexableProduct
     ) {
         $identifier = 'foobar';
-        $productRepository->findOneByIdentifier($identifier)->willReturn($product);
-        $normalizer
-            ->normalize($product, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->willReturn(['id' => $identifier, 'a key' => 'a value']);
+        $getIndexableProduct->fromProductIdentifier($identifier)->willReturn($indexableProduct);
+        $indexableProduct->toArray()->willReturn(['id' => $identifier, 'a key' => 'a value']);
         $productAndProductModelIndexClient
             ->bulkIndexes([['id' => $identifier, 'a key' => 'a value']], 'id', Refresh::disable())
             ->shouldBeCalled();
@@ -52,42 +46,31 @@ class ProductIndexerSpec extends ObjectBehavior
     }
 
     function it_does_not_index_anything_if_identifier_is_unknown(
-        $normalizer,
         $productAndProductModelIndexClient,
-        $productRepository,
-        ProductInterface $product
+        $getIndexableProduct
     ) {
         $identifier = 'foobar';
-        $productRepository->findOneByIdentifier($identifier)->willReturn(null);
-        $normalizer
-            ->normalize(null, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->shouldNotBeCalled();
-        $productAndProductModelIndexClient
-            ->index($identifier, ['id' => $identifier, 'a key' => 'a value'])
+        $getIndexableProduct->fromProductIdentifier($identifier)->willReturn(null);
+        $productAndProductModelIndexClient->index(Argument::cetera())
             ->shouldNotBeCalled();
 
         $this->indexFromProductIdentifier($identifier);
     }
 
     function it_bulk_indexes_products_from_identifiers(
-        $normalizer,
         $productAndProductModelIndexClient,
-        $productRepository,
-        ProductInterface $product1,
-        ProductInterface $product2
+        $getIndexableProduct,
+        IndexableProduct $indexableProduct1,
+        IndexableProduct $indexableProduct2
     ) {
         $identifiers = ['foo', 'bar', 'unknown'];
 
-        $productRepository->findOneByIdentifier($identifiers[0])->willReturn($product1);
-        $productRepository->findOneByIdentifier($identifiers[1])->willReturn($product2);
-        $productRepository->findOneByIdentifier($identifiers[2])->willReturn(null);
+        $getIndexableProduct->fromProductIdentifier($identifiers[0])->willReturn($indexableProduct1);
+        $getIndexableProduct->fromProductIdentifier($identifiers[1])->willReturn($indexableProduct2);
+        $getIndexableProduct->fromProductIdentifier($identifiers[2])->willReturn(null);
 
-        $normalizer->normalize($product1, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->willReturn(['id' => $identifiers[0], 'a key' => 'a value']);
-        $normalizer->normalize($product2, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->willReturn(['id' => $identifiers[1], 'a key' => 'another value']);
-        $normalizer->normalize(null, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->shouldNotBeCalled();
+        $indexableProduct1->toArray()->willReturn(['id' => $identifiers[0], 'a key' => 'a value']);
+        $indexableProduct2->toArray()->willReturn(['id' => $identifiers[1], 'a key' => 'another value']);
 
         $productAndProductModelIndexClient->bulkIndexes([
             ['id' => $identifiers[0], 'a key' => 'a value'],
@@ -98,12 +81,10 @@ class ProductIndexerSpec extends ObjectBehavior
     }
 
     function it_does_not_bulk_index_empty_arrays_of_identifiers(
-        $normalizer,
         $productAndProductModelIndexClient,
-        $productRepository
+        $getIndexableProduct
     ) {
-        $productRepository->findOneByIdentifier(Argument::cetera())->shouldNotBeCalled();
-        $normalizer->normalize(Argument::cetera())->shouldNotBeCalled();
+        $getIndexableProduct->fromProductIdentifier(Argument::cetera())->shouldNotBeCalled();
         $productAndProductModelIndexClient->bulkIndexes(Argument::cetera())->shouldNotBeCalled();
 
         $this->indexFromProductIdentifiers([]);
@@ -125,24 +106,19 @@ class ProductIndexerSpec extends ObjectBehavior
     }
 
     function it_indexes_products_from_identifiers_and_waits_for_index_refresh(
-        $normalizer,
         $productAndProductModelIndexClient,
-        $productRepository,
-        ProductInterface $product1,
-        ProductInterface $product2
+        $getIndexableProduct,
+        IndexableProduct $indexableProduct1,
+        IndexableProduct $indexableProduct2
     ) {
         $identifiers = ['foo', 'bar', 'unknown'];
 
-        $productRepository->findOneByIdentifier($identifiers[0])->willReturn($product1);
-        $productRepository->findOneByIdentifier($identifiers[1])->willReturn($product2);
-        $productRepository->findOneByIdentifier($identifiers[2])->willReturn(null);
+        $getIndexableProduct->fromProductIdentifier($identifiers[0])->willReturn($indexableProduct1);
+        $getIndexableProduct->fromProductIdentifier($identifiers[1])->willReturn($indexableProduct2);
+        $getIndexableProduct->fromProductIdentifier($identifiers[2])->willReturn(null);
 
-        $normalizer->normalize($product1, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->willReturn(['id' => $identifiers[0], 'a key' => 'a value']);
-        $normalizer->normalize($product2, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->willReturn(['id' => $identifiers[1], 'a key' => 'another value']);
-        $normalizer->normalize(null, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->shouldNotBeCalled();
+        $indexableProduct1->toArray()->willReturn(['id' => $identifiers[0], 'a key' => 'a value']);
+        $indexableProduct2->toArray()->willReturn(['id' => $identifiers[1], 'a key' => 'another value']);
 
         $productAndProductModelIndexClient->bulkIndexes([
             ['id' => $identifiers[0], 'a key' => 'a value'],
@@ -153,24 +129,19 @@ class ProductIndexerSpec extends ObjectBehavior
     }
 
     function it_indexes_products_from_identifiers_and_disables_index_refresh_by_default(
-        $normalizer,
         $productAndProductModelIndexClient,
-        $productRepository,
-        ProductInterface $product1,
-        ProductInterface $product2
+        $getIndexableProduct,
+        IndexableProduct $indexableProduct1,
+        IndexableProduct $indexableProduct2
     ) {
         $identifiers = ['foo', 'bar', 'unknown'];
 
-        $productRepository->findOneByIdentifier($identifiers[0])->willReturn($product1);
-        $productRepository->findOneByIdentifier($identifiers[1])->willReturn($product2);
-        $productRepository->findOneByIdentifier($identifiers[2])->willReturn(null);
+        $getIndexableProduct->fromProductIdentifier($identifiers[0])->willReturn($indexableProduct1);
+        $getIndexableProduct->fromProductIdentifier($identifiers[1])->willReturn($indexableProduct2);
+        $getIndexableProduct->fromProductIdentifier($identifiers[2])->willReturn(null);
 
-        $normalizer->normalize($product1, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->willReturn(['id' => $identifiers[0], 'a key' => 'a value']);
-        $normalizer->normalize($product2, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->willReturn(['id' => $identifiers[1], 'a key' => 'another value']);
-        $normalizer->normalize(null, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->shouldNotBeCalled();
+        $indexableProduct1->toArray()->willReturn(['id' => $identifiers[0], 'a key' => 'a value']);
+        $indexableProduct2->toArray()->willReturn(['id' => $identifiers[1], 'a key' => 'another value']);
 
         $productAndProductModelIndexClient->bulkIndexes([
             ['id' => $identifiers[0], 'a key' => 'a value'],
@@ -181,24 +152,19 @@ class ProductIndexerSpec extends ObjectBehavior
     }
 
     function it_indexes_products_from_identifiers_and_enable_index_refresh_without_waiting_for_it(
-        $normalizer,
         $productAndProductModelIndexClient,
-        $productRepository,
-        ProductInterface $product1,
-        ProductInterface $product2
+        $getIndexableProduct,
+        IndexableProduct $indexableProduct1,
+        IndexableProduct $indexableProduct2
     ) {
         $identifiers = ['foo', 'bar', 'unknown'];
 
-        $productRepository->findOneByIdentifier($identifiers[0])->willReturn($product1);
-        $productRepository->findOneByIdentifier($identifiers[1])->willReturn($product2);
-        $productRepository->findOneByIdentifier($identifiers[2])->willReturn(null);
+        $getIndexableProduct->fromProductIdentifier($identifiers[0])->willReturn($indexableProduct1);
+        $getIndexableProduct->fromProductIdentifier($identifiers[1])->willReturn($indexableProduct2);
+        $getIndexableProduct->fromProductIdentifier($identifiers[2])->willReturn(null);
 
-        $normalizer->normalize($product1, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->willReturn(['id' => $identifiers[0], 'a key' => 'a value']);
-        $normalizer->normalize($product2, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->willReturn(['id' => $identifiers[1], 'a key' => 'another value']);
-        $normalizer->normalize(null, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->shouldNotBeCalled();
+        $indexableProduct1->toArray()->willReturn(['id' => $identifiers[0], 'a key' => 'a value']);
+        $indexableProduct2->toArray()->willReturn(['id' => $identifiers[1], 'a key' => 'another value']);
 
         $productAndProductModelIndexClient->bulkIndexes([
             ['id' => $identifiers[0], 'a key' => 'a value'],
