@@ -14,8 +14,8 @@ interface GetProductDataForIndexationInterface
     /**
      * Returns an associative array for product indexing
      *
-     * @param string $identifier
+     * @param int $productId
      * @return array
      */
-    public function fromProductIdentifier(string $identifier): array;
+    public function fromProductId(int $productId): array;
 }
