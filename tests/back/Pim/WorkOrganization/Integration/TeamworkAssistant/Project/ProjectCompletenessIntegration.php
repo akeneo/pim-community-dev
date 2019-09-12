@@ -183,7 +183,7 @@ class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
      *
      * @group critical
      */
-    public function testCreateAProjectOnTheTshirtFamilyButWithAnotherChannel()
+    public function testCreateAnotherProjectOnTheTshirtFamilyButWithAnotherChannel()
     {
         $project = $this->createProject('Tshirt - print', 'Julia', 'fr_FR', 'tablet', [
             [
