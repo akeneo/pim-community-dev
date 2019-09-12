@@ -55,7 +55,7 @@ JSON;
         );
     }
 
-    public function testStandardFormatWhenAnAttributeOptionIsCreatedButIncompleted()
+    public function testStandardFormatWhenAnAttributeOptionIsCreatedButIncomplete()
     {
         $client = $this->createAuthenticatedClient();
 
@@ -74,7 +74,7 @@ JSON;
         $attributeOptionStandard = [
             'code'       => 'newOption',
             'attribute'  => 'a_multi_select',
-            'sort_order' => 1,
+            'sort_order' => 21,
             'labels'     => [],
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.attribute_option');
@@ -99,7 +99,7 @@ JSON;
         $attributeOptionStandard = [
             'code'       => 'newOption',
             'attribute'  => 'a_multi_select',
-            'sort_order' => 1,
+            'sort_order' => 21,
             'labels'     => [],
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.attribute_option');
@@ -129,7 +129,7 @@ JSON;
         $attributeOptionStandard = [
             'code'       => 'newOption',
             'attribute'  => 'a_multi_select',
-            'sort_order' => 1,
+            'sort_order' => 21,
             'labels'     => [],
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.attribute_option');
@@ -159,7 +159,7 @@ JSON;
         $attributeOptionStandard = [
             'code'       => 'newOption',
             'attribute'  => 'a_multi_select',
-            'sort_order' => 1,
+            'sort_order' => 21,
             'labels'     => [],
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.attribute_option');

@@ -189,3 +189,10 @@ services:
             - '@akeneo_elasticsearch.client.product_and_product_model'
         tags:
             - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.attribute_option_set_sort_order:
+        class: 'Pim\Bundle\CatalogBundle\EventSubscriber\AttributeOption\SetAttributeOptionSortOrderSubscriber'
+        arguments:
+            - '@pim_catalog.query.get_attribute_options_max_sort_order'
+        tags:
+            - { name: kernel.event_subscriber }
