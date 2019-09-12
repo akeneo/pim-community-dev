@@ -107,7 +107,7 @@ class ProductProposalIndexer implements IndexerInterface, BulkIndexerInterface, 
             $this->indexType,
             ['query' => ['term' => ['id' => self::PRODUCT_IDENTIFIER_PREFIX . (string) $objectId]]]
         );
-        if (0 !== $documents['hits']['total']) {
+        if (0 !== $documents['hits']['total']['value']) {
             $this->productProposalClient->delete(
                 $this->indexType,
                 self::PRODUCT_IDENTIFIER_PREFIX . (string) $objectId

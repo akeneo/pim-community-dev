@@ -27,7 +27,7 @@ class CountRecords implements CountRecordsInterface
         $elasticSearchQuery = $this->getElasticSearchQuery($referenceEntityIdentifier);
         $matches = $this->recordClient->search($elasticSearchQuery);
 
-        return $matches['hits']['total'];
+        return $matches['hits']['total']['value'];
     }
 
     private function getElasticSearchQuery(ReferenceEntityIdentifier $referenceEntityIdentifier): array

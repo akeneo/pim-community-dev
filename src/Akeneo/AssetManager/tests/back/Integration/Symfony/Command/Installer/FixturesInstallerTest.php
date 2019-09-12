@@ -120,6 +120,6 @@ SQL;
         $this->assetClient->refreshIndex();
         $matches = $this->assetClient->search(['_source' => '_id' ]);
 
-        return $matches['hits']['total'];
+        return $matches['hits']['total']['value'];
     }
 }

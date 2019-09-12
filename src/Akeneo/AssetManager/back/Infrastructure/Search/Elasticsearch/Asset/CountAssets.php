@@ -27,7 +27,7 @@ class CountAssets implements CountAssetsInterface
         $elasticSearchQuery = $this->getElasticSearchQuery($assetFamilyIdentifier);
         $matches = $this->assetClient->search($elasticSearchQuery);
 
-        return $matches['hits']['total'];
+        return $matches['hits']['total']['value'];
     }
 
     private function getElasticSearchQuery(AssetFamilyIdentifier $assetFamilyIdentifier): array

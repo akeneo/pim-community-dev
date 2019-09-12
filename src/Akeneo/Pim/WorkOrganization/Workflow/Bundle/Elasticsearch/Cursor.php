@@ -90,7 +90,7 @@ class Cursor extends AbstractCursor implements CursorInterface
         }
 
         $response = $this->esClient->search($esQuery);
-        $this->count = $response['hits']['total'];
+        $this->count = $response['hits']['total']['value'];
 
         foreach ($response['hits']['hits'] as $hit) {
             $identifiers->add($hit['_source']['identifier'], $hit['_source']['document_type']);

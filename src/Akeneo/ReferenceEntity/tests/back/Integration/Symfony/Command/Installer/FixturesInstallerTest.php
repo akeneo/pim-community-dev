@@ -120,6 +120,6 @@ SQL;
         $this->recordClient->refreshIndex();
         $matches = $this->recordClient->search(['_source' => '_id' ]);
 
-        return $matches['hits']['total'];
+        return $matches['hits']['total']['value'];
     }
 }

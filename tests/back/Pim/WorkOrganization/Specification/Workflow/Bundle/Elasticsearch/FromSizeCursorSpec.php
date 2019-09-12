@@ -32,7 +32,7 @@ class FromSizeCursorSpec extends ObjectBehavior
         ])
             ->willReturn([
                 'hits' => [
-                    'total' => 4,
+                    'total' => ['value' => 4],
                     'hits' => [
                         [
                             '_source' => ['identifier' => 'a-variant-product', 'document_type' => ProductDraft::class],

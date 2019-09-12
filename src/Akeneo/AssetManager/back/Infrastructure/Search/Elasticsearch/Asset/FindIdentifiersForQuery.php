@@ -75,7 +75,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
         $elasticSearchQuery = $this->getElasticSearchQuery($assetQuery);
         $matches = $this->assetClient->search($elasticSearchQuery);
         $identifiers = $this->getIdentifiers($matches);
-        $queryResult = new IdentifiersForQueryResult($identifiers, $matches['hits']['total']);
+        $queryResult = new IdentifiersForQueryResult($identifiers, $matches['hits']['total']['value']);
 
         return $queryResult;
     }
