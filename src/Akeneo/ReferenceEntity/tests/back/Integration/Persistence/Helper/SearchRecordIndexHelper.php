@@ -27,8 +27,6 @@ class SearchRecordIndexHelper
     /** @var Client */
     private $recordClient;
 
-    private const INDEX_TYPE = 'pimee_reference_entity_record';
-
     public function __construct(Client $recordClient)
     {
         $this->recordClient = $recordClient;
@@ -46,7 +44,7 @@ class SearchRecordIndexHelper
                 throw new \InvalidArgumentException('Expect to index record with a "identifier" property. None found.');
             }
 
-            $this->recordClient->index(self::INDEX_TYPE, $record['identifier'], $record);
+            $this->recordClient->index($record['identifier'], $record);
         }
 
         $this->recordClient->refreshIndex();
@@ -112,7 +110,7 @@ class SearchRecordIndexHelper
 
     public function executeQuery(array $query): array
     {
-        $matches = $this->recordClient->search(self::INDEX_TYPE, $query);
+        $matches = $this->recordClient->search($query);
         $documents = $matches['hits']['hits'] ?? [];
 
         $matchingIdentifiers = [];

@@ -36,7 +36,6 @@ use Akeneo\Tool\Component\Elasticsearch\QueryString;
  */
 class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
 {
-    private const INDEX_TYPE = 'pimee_reference_entity_record';
     private const ATTRIBUTE_FILTER_FIELD = 'values.';
 
     /** @var Client */
@@ -74,7 +73,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
     public function find(RecordQuery $recordQuery): IdentifiersForQueryResult
     {
         $elasticSearchQuery = $this->getElasticSearchQuery($recordQuery);
-        $matches = $this->recordClient->search(self::INDEX_TYPE, $elasticSearchQuery);
+        $matches = $this->recordClient->search($elasticSearchQuery);
         $identifiers = $this->getIdentifiers($matches);
         $queryResult = new IdentifiersForQueryResult($identifiers, $matches['hits']['total']);
 

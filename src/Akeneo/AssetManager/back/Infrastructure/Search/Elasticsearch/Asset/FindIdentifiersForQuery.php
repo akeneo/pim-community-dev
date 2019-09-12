@@ -36,7 +36,6 @@ use Akeneo\Tool\Component\Elasticsearch\QueryString;
  */
 class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
 {
-    private const INDEX_TYPE = 'pimee_asset_family_asset';
     private const ATTRIBUTE_FILTER_FIELD = 'values.';
 
     /** @var Client */
@@ -74,7 +73,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
     public function find(AssetQuery $assetQuery): IdentifiersForQueryResult
     {
         $elasticSearchQuery = $this->getElasticSearchQuery($assetQuery);
-        $matches = $this->assetClient->search(self::INDEX_TYPE, $elasticSearchQuery);
+        $matches = $this->assetClient->search($elasticSearchQuery);
         $identifiers = $this->getIdentifiers($matches);
         $queryResult = new IdentifiersForQueryResult($identifiers, $matches['hits']['total']);
 
