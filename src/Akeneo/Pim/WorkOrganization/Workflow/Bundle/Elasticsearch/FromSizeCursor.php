@@ -30,9 +30,6 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
     /** @var array */
     protected $esQuery;
 
-    /** @var string */
-    protected $indexType;
-
     /** @var int */
     protected $pageSize;
 
@@ -56,7 +53,6 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
         CursorableRepositoryInterface $productDraftRepository,
         CursorableRepositoryInterface $productModelDraftRepository,
         array $esQuery,
-        string $indexType,
         int $pageSize,
         int $limit,
         int $from = 0
@@ -65,7 +61,6 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
         $this->productDraftRepository = $productDraftRepository;
         $this->productModelDraftRepository = $productModelDraftRepository;
         $this->esQuery = $esQuery;
-        $this->indexType = $indexType;
         $this->pageSize = $pageSize;
         $this->limit = $limit;
         $this->from = $from;
@@ -120,7 +115,7 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
         $esQuery['sort'] = $sort;
         $esQuery['from'] = $this->from;
 
-        $response = $this->esClient->search($this->indexType, $esQuery);
+        $response = $this->esClient->search($esQuery);
         $this->count = $response['hits']['total'];
 
         foreach ($response['hits']['hits'] as $hit) {

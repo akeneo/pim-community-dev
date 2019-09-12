@@ -10,7 +10,6 @@ services:
             - '@pimee_workflow.repository.published_product'
             - '%akeneo_elasticsearch.cursor.cursor.class%'
             - '%pim_job_product_batch_size%'
-            - 'pimee_workflow_published_product'
 
     pimee_workflow.factory.published_product_from_size_cursor:
         class: '%akeneo_elasticsearch.cursor.from_size_cursor_factory.class%'
@@ -19,7 +18,6 @@ services:
             - '@pimee_workflow.repository.published_product'
             - '%akeneo_elasticsearch.cursor.from_size_cursor.class%'
             - '%pim_job_product_batch_size%'
-            - 'pimee_workflow_published_product'
 
     pimee_workflow.factory.published_product_search_after_size_cursor:
         class: '%akeneo_elasticsearch.cursor.search_after_size_cursor_factory.class%'
@@ -28,7 +26,6 @@ services:
             - '@pimee_workflow.repository.published_product'
             - '%akeneo_elasticsearch.cursor.search_after_size_cursor.class%'
             - '%pim_job_product_batch_size%'
-            - 'pimee_workflow_published_product'
 
     pimee_workflow.factory.product_and_product_model_proposal_from_size_cursor:
         public: false
@@ -38,7 +35,6 @@ services:
             - '@pimee_workflow.repository.product_draft'
             - '@pimee_workflow.repository.product_model_draft'
             - '%pim_job_product_batch_size%'
-            - 'pimee_workflow_product_proposal'
 
     pimee_workflow.factory.product_and_product_model_proposal_cursor:
         public: false
@@ -48,4 +44,3 @@ services:
             - '@pimee_workflow.repository.product_draft'
             - '@pimee_workflow.repository.product_model_draft'
             - '%pim_job_product_batch_size%'
-            - 'pimee_workflow_product_proposal'

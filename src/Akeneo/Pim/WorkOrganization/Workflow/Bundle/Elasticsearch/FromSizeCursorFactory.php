@@ -27,9 +27,6 @@ class FromSizeCursorFactory implements CursorFactoryInterface
     /** @var int */
     private $pageSize;
 
-    /** @var string */
-    private $indexType;
-
     /** @var CursorableRepositoryInterface */
     private $productDraftRepository;
 
@@ -41,20 +38,17 @@ class FromSizeCursorFactory implements CursorFactoryInterface
      * @param CursorableRepositoryInterface $productDraftRepository
      * @param CursorableRepositoryInterface $productModelDraftRepository
      * @param int                           $pageSize
-     * @param string                        $indexType
      */
     public function __construct(
         Client $searchEngine,
         CursorableRepositoryInterface $productDraftRepository,
         CursorableRepositoryInterface $productModelDraftRepository,
-        $pageSize,
-        $indexType
+        $pageSize
     ) {
         $this->searchEngine = $searchEngine;
         $this->productDraftRepository = $productDraftRepository;
         $this->productModelDraftRepository = $productModelDraftRepository;
         $this->pageSize = $pageSize;
-        $this->indexType = $indexType;
     }
 
     /**
@@ -71,7 +65,6 @@ class FromSizeCursorFactory implements CursorFactoryInterface
             $this->productDraftRepository,
             $this->productModelDraftRepository,
             $queryBuilder,
-            $this->indexType,
             $options['page_size'],
             $options['limit'],
             $options['from']
