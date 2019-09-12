@@ -84,8 +84,8 @@ database:
 .PHONY: clean
 clean: clean-back clean-front
 
-.PHONY: pim-test
-pim-test: vendor node_modules
+.PHONY: pim-behat
+pim-behat:
 	APP_ENV=behat $(MAKE) clean
 	$(MAKE) assets
 	$(MAKE) css
@@ -94,16 +94,26 @@ pim-test: vendor node_modules
 	APP_ENV=behat $(MAKE) database
 	APP_ENV=behat $(PHP_RUN) bin/console pim:user:create --admin -n -- admin admin test@example.com John Doe en_US
 
+.PHONY: pim-test
+pim-test:
+	APP_ENV=test $(MAKE) clean
+	APP_ENV=test $(MAKE) database
+
+.PHONY: pim-dev
+pim-dev:
+	APP_ENV=dev $(MAKE) clean
+	$(MAKE) assets
+	$(MAKE) css
+	$(MAKE) javascript-dev
+	APP_ENV=dev $(MAKE) database
+
 .PHONY: pim-prod
-pim-prod: vendor node_modules
+pim-prod:
 	APP_ENV=prod $(MAKE) clean
 	$(MAKE) assets
 	$(MAKE) css
 	$(MAKE) javascript-prod
 	APP_ENV=prod $(MAKE) database
-
-.PHONY: all-pims
-all-pims: pim-prod pim-test
 
 ##
 ## Docker

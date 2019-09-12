@@ -50,4 +50,5 @@ coverage/*
 .env.local
 .env.behat.local
 .env.test.local
+.env.dev.local
 config/credentials_gcp.json
