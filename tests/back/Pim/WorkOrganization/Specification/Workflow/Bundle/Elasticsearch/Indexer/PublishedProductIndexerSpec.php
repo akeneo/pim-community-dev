@@ -31,7 +31,7 @@ class PublishedProductIndexerSpec extends ObjectBehavior
         NormalizerInterface $normalizer,
         Client $publishedProductClient
     ) {
-        $this->beConstructedWith($normalizer, $publishedProductClient, 'published_product');
+        $this->beConstructedWith($normalizer, $publishedProductClient);
     }
 
     function it_is_an_indexer()
@@ -80,7 +80,7 @@ class PublishedProductIndexerSpec extends ObjectBehavior
     ) {
         $normalizer->normalize($publishedProduct, PublishedProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
             ->willReturn(['id' => 'foobar', 'a key' => 'a value']);
-        $publishedProductClient->index('published_product', 'foobar', ['id' => 'foobar', 'a key' => 'a value'])
+        $publishedProductClient->index('foobar', ['id' => 'foobar', 'a key' => 'a value'])
             ->shouldBeCalled();
 
         $this->index($publishedProduct);
@@ -97,7 +97,7 @@ class PublishedProductIndexerSpec extends ObjectBehavior
         $normalizer->normalize($publishedProduct2, PublishedProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
             ->willReturn(['id' => 'bar', 'a key' => 'another value']);
 
-        $publishedProductClient->bulkIndexes('published_product', [
+        $publishedProductClient->bulkIndexes([
             ['id' => 'foo', 'a key' => 'a value'],
             ['id' => 'bar', 'a key' => 'another value'],
         ], 'id', Refresh::disable())->shouldBeCalled();
@@ -115,14 +115,14 @@ class PublishedProductIndexerSpec extends ObjectBehavior
 
     function it_deletes_products_from_elasticsearch_index($publishedProductClient)
     {
-        $publishedProductClient->delete('published_product', '40')->shouldBeCalled();
+        $publishedProductClient->delete('40')->shouldBeCalled();
 
         $this->remove(40)->shouldReturn(null);
     }
 
     function it_bulk_deletes_products_from_elasticsearch_index($publishedProductClient)
     {
-        $publishedProductClient->bulkDelete('published_product', ['40', '33'])->shouldBeCalled();
+        $publishedProductClient->bulkDelete(['40', '33'])->shouldBeCalled();
 
         $this->removeAll([40, 33])->shouldReturn(null);
     }
@@ -138,7 +138,7 @@ class PublishedProductIndexerSpec extends ObjectBehavior
         $normalizer->normalize($publishedProduct2, PublishedProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
             ->willReturn(['id' => 'bar', 'a key' => 'another value']);
 
-        $publishedProductClient->bulkIndexes('published_product', [
+        $publishedProductClient->bulkIndexes([
             ['id' => 'foo', 'a key' => 'a value'],
             ['id' => 'bar', 'a key' => 'another value'],
         ], 'id', Refresh::waitFor())->shouldBeCalled();
@@ -157,7 +157,7 @@ class PublishedProductIndexerSpec extends ObjectBehavior
         $normalizer->normalize($publishedProduct2, PublishedProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
             ->willReturn(['id' => 'bar', 'a key' => 'another value']);
 
-        $publishedProductClient->bulkIndexes('published_product', [
+        $publishedProductClient->bulkIndexes([
             ['id' => 'foo', 'a key' => 'a value'],
             ['id' => 'bar', 'a key' => 'another value'],
         ], 'id', Refresh::enable())->shouldBeCalled();

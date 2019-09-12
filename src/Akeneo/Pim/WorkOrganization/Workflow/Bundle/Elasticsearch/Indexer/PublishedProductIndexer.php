@@ -30,17 +30,12 @@ class PublishedProductIndexer implements IndexerInterface, BulkIndexerInterface,
     /** @var Client */
     private $publishedProductClient;
 
-    /** @var string */
-    private $indexType;
-
     public function __construct(
         NormalizerInterface $normalizer,
-        Client $publishedProductClient,
-        string $indexType
+        Client $publishedProductClient
     ) {
         $this->normalizer = $normalizer;
         $this->publishedProductClient = $publishedProductClient;
-        $this->indexType = $indexType;
     }
 
     /**
@@ -50,7 +45,7 @@ class PublishedProductIndexer implements IndexerInterface, BulkIndexerInterface,
     {
         $normalizedObject = $this->normalizer->normalize($object, PublishedProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX);
         $this->validateObjectNormalization($normalizedObject);
-        $this->publishedProductClient->index($this->indexType, $normalizedObject['id'], $normalizedObject);
+        $this->publishedProductClient->index($normalizedObject['id'], $normalizedObject);
     }
 
     /**
@@ -77,7 +72,7 @@ class PublishedProductIndexer implements IndexerInterface, BulkIndexerInterface,
             $normalizedPublishedProducts[] = $normalizedProduct;
         }
 
-        $this->publishedProductClient->bulkIndexes($this->indexType, $normalizedPublishedProducts, 'id', $indexRefresh);
+        $this->publishedProductClient->bulkIndexes($normalizedPublishedProducts, 'id', $indexRefresh);
     }
 
     /**
@@ -87,7 +82,7 @@ class PublishedProductIndexer implements IndexerInterface, BulkIndexerInterface,
      */
     public function remove($objectId, array $options = []) : void
     {
-        $this->publishedProductClient->delete($this->indexType, $objectId);
+        $this->publishedProductClient->delete($objectId);
     }
 
     /**
@@ -97,7 +92,7 @@ class PublishedProductIndexer implements IndexerInterface, BulkIndexerInterface,
      */
     public function removeAll(array $objects, array $options = []) : void
     {
-        $this->publishedProductClient->bulkDelete($this->indexType, $objects);
+        $this->publishedProductClient->bulkDelete($objects);
     }
 
     /**

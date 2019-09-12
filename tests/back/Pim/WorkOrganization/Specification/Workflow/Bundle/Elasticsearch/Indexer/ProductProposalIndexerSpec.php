@@ -27,7 +27,7 @@ class ProductProposalIndexerSpec extends ObjectBehavior
         NormalizerInterface $normalizer,
         Client $esClient
     ) {
-        $this->beConstructedWith($normalizer, $esClient, 'product_proposal');
+        $this->beConstructedWith($normalizer, $esClient);
     }
 
     function it_is_a_bulk_remover()
@@ -37,7 +37,7 @@ class ProductProposalIndexerSpec extends ObjectBehavior
 
     function it_bulk_removes_product_proposals($esClient)
     {
-        $esClient->bulkDelete('product_proposal', [
+        $esClient->bulkDelete([
             'product_draft_1',
             'product_draft_12',
             'product_draft_4'
