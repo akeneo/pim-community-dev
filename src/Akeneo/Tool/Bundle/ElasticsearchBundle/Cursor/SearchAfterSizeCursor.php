@@ -85,6 +85,7 @@ class SearchAfterSizeCursor extends AbstractCursor implements CursorInterface
         if ($this->fetchedItemsCount + $size > $this->limit) {
             $size = $this->limit - $this->fetchedItemsCount;
         }
+        $esQuery['track_total_hits'] = true;
         $esQuery['size'] = $size;
 
         if (0 === $esQuery['size']) {

@@ -27,7 +27,8 @@ class CursorSpec extends ObjectBehavior
 
         $esClient->search([
             'size' => 2,
-            'sort' => ['_id' => 'asc']
+            'sort' => ['_id' => 'asc'],
+            'track_total_hits' => true,
         ])
             ->willReturn([
                 'hits' => [
@@ -86,6 +87,7 @@ class CursorSpec extends ObjectBehavior
                 'size' => 2,
                 'sort' => ['_id' => 'asc'],
                 'search_after' => ['#a-sub-product-model'],
+                'track_total_hits' => true,
             ])
             ->willReturn([
                 'hits' => [
@@ -107,6 +109,7 @@ class CursorSpec extends ObjectBehavior
                 'size' => 2,
                 'sort' => ['_id' => 'asc'],
                 'search_after' => ['#a-product'],
+                'track_total_hits' => true,
             ])->willReturn([
             'hits' => [
                 'total' => 4,
@@ -159,6 +162,7 @@ class CursorSpec extends ObjectBehavior
                 'size' => 2,
                 'sort' => ['_id' => 'asc'],
                 'search_after' => ['#a-sub-product-model'],
+                'track_total_hits' => true,
             ])
             ->willReturn([
                 'hits' => [
@@ -180,6 +184,7 @@ class CursorSpec extends ObjectBehavior
                 'size' => 2,
                 'sort' => ['_id' => 'asc'],
                 'search_after' => ['#foo'],
+                'track_total_hits' => true,
             ])->willReturn([
             'hits' => [
                 'total' => 4,

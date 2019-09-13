@@ -116,6 +116,7 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
 
         $esQuery['sort'] = $sort;
         $esQuery['from'] = $this->from;
+        $esQuery['track_total_hits'] = true;
 
         $response = $this->esClient->search($esQuery);
         $this->count = $response['hits']['total']['value'];

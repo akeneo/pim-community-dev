@@ -52,6 +52,7 @@ class SequentialEditProduct extends Cursor implements CursorInterface
         }
 
         $esQuery['sort'] = $sort;
+        $esQuery['track_total_hits'] = true;
 
         if (!empty($this->searchAfter)) {
             $esQuery['search_after'] = $this->searchAfter;

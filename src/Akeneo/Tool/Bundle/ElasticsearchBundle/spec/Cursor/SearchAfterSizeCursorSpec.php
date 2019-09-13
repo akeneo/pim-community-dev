@@ -25,7 +25,8 @@ class SearchAfterSizeCursorSpec extends ObjectBehavior
         $esClient->search([
             'search_after' => ['bar'],
             'size' => 2,
-            'sort' => ['_id' => 'asc']
+            'sort' => ['_id' => 'asc'],
+            'track_total_hits' => true,
         ])
             ->willReturn([
                 'hits' => [
