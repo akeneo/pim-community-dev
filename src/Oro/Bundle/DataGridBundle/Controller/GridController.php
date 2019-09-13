@@ -2,52 +2,31 @@
 
 namespace Oro\Bundle\DataGridBundle\Controller;
 
-use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
-use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
+use Oro\Bundle\DataGridBundle\Datagrid\ManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class GridController extends Controller
 {
-    /**
-     * @param string $gridName
-     *
-     * @return Response
-     */
-    public function getAction($gridName)
-    {
-        $grid = $this->get('oro_datagrid.datagrid.manager')->getDatagrid($gridName);
-        $result = $grid->getData();
+    /** @var ManagerInterface */
+    private $manager;
 
-        return new JsonResponse($result->toArray());
+    public function __construct(ManagerInterface $manager)
+    {
+        $this->manager = $manager;
     }
 
     /**
      * @param string $gridName
-     * @param string $actionName
      *
-     * @throws \LogicException
-     * @return Response
+     * @return JsonResponse
      */
-    public function massActionAction(Request $request, $gridName, $actionName)
+    public function get($gridName)
     {
-        /** @var MassActionParametersParser $massActionParametersParser */
-        $parametersParser = $this->get('oro_datagrid.mass_action.parameters_parser');
-        $parameters = $parametersParser->parse($request);
+        $grid = $this->manager->getDatagrid($gridName);
+        $result = $grid->getData();
 
-        $requestData = array_merge($request->query->all(), $request->request->all());
-
-        /** @var MassActionDispatcher $massActionDispatcher */
-        $massActionDispatcher = $this->get('oro_datagrid.mass_action.dispatcher');
-        $response = $massActionDispatcher->dispatch($gridName, $actionName, $parameters, $requestData);
-
-        $data = [
-            'successful' => $response->isSuccessful(),
-            'message'    => $response->getMessage(),
-        ];
-
-        return new JsonResponse(array_merge($data, $response->getOptions()));
+        return new JsonResponse($result->toArray());
     }
 }

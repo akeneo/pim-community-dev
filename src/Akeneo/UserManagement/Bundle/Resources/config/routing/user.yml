@@ -9,4 +9,4 @@ pim_user_edit:
 
 pim_user_logout_redirect:
     path: /logout/redirect
-    defaults: { _controller: PimUserBundle:Security:logoutRedirect }
+    defaults: { _controller: pim_user.controller.security:logoutRedirect }

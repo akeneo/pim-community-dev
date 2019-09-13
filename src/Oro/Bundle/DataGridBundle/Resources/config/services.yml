@@ -65,3 +65,9 @@ services:
             - '@oro_datagrid.datagrid.metadata_parser'
         tags:
             - { name: twig.extension }
+
+    oro_datagrid.controller.grid:
+        class: 'Oro\Bundle\DataGridBundle\Controller\GridController'
+        public: true
+        arguments:
+            - '@oro_datagrid.datagrid.manager'

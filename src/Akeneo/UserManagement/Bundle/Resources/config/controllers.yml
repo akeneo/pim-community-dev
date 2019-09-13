@@ -51,3 +51,47 @@ services:
             - '@pim_user.repository.role'
             - '@serializer'
             - '@pim_user.context.user'
+
+    pim_user.controller.user_group:
+        public: true
+        class: 'Akeneo\UserManagement\Bundle\Controller\GroupController'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_user.remover.user_group'
+            - '@pim_user.form.handler.group'
+            - '@translator'
+            - '@pim_user.form.group'
+            - '@event_dispatcher'
+            - '@session'
+
+    pim_user.controller.reset:
+        public: true
+        class: 'Akeneo\UserManagement\Bundle\Controller\ResetController'
+        arguments:
+            - '@pim_user.manager'
+            - '@mailer'
+            - '@session'
+            - '@pim_user.form.handler.reset'
+            - '@security.token_storage'
+            - '@pim_user.form.reset'
+
+    pim_user.controller.role:
+        public: true
+        class: 'Akeneo\UserManagement\Bundle\Controller\RoleController'
+        arguments:
+            - '@pim_user.repository.role'
+            - '@pim_user.remover.role'
+            - '@oro_security.acl.sid_manager'
+            - '@pim_user.form.handler.acl_role'
+            - '@translator'
+
+    pim_user.controller.security:
+        public: true
+        class: 'Akeneo\UserManagement\Bundle\Controller\SecurityController'
+        arguments:
+            - '@security.authentication_utils'
+            - '@security.csrf.token_manager'
+            - '@security.logout_url_generator'
+            - '%pim_user.login_form.action_route%'
+            - '%pim_user.login_form.additional_hidden_fields%'
+

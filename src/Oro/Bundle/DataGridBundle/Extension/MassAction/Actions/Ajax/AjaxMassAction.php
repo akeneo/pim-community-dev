@@ -19,7 +19,7 @@ class AjaxMassAction extends AbstractAction implements MassActionInterface
         $options['frontend_type'] = 'ajax';
 
         if (empty($options['route'])) {
-            $options['route'] = 'oro_datagrid_mass_action';
+            $options['route'] = 'pim_datagrid_mass_action';
         }
 
         if (empty($options['route_parameters'])) {

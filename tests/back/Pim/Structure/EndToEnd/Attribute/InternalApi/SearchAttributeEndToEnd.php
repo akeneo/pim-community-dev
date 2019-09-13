@@ -137,7 +137,9 @@ JSON;
     {
         $standardizedAttributes = [];
 
-        $standardizedAttributes['sku'] = <<<'JSON'
+        $attribute = $this->getFromTestContainer('pim_api.repository.attribute')->findOneByIdentifier('sku');
+
+        $standardizedAttributes['sku'] = <<<JSON
         {
             "code": "sku",
             "type": "pim_catalog_identifier",
@@ -173,12 +175,14 @@ JSON;
             },
             "is_locale_specific": false,
             "meta": {
-                "id": 2
+                "id": {$attribute->getId()}
             }
         }
 JSON;
 
-        $standardizedAttributes['a_metric'] = <<<'JSON'
+        $attribute = $this->getFromTestContainer('pim_api.repository.attribute')->findOneByIdentifier('a_metric');
+
+        $standardizedAttributes['a_metric'] = <<<JSON
         {
             "code": "a_metric",
             "type": "pim_catalog_metric",
@@ -217,7 +221,7 @@ JSON;
             },
             "is_locale_specific": false,
             "meta": {
-                "id": 6
+                "id": {$attribute->getId()}
             }
         }
 JSON;
