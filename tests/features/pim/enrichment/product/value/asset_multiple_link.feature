@@ -8,9 +8,9 @@ Feature: Validate asset multiple link attribute of a product
     Given an asset family
     And there are more than 50 assets in this asset family
     And the following attribute:
-      | code      | type                       | reference_data_name |
-      | sku       | pim_catalog_identifier     |                     |
-      | my_assets | akeneo_asset_multiple_link | designer            |
+      | code      | type                         | reference_data_name |
+      | sku       | pim_catalog_identifier       |                     |
+      | my_assets | pim_catalog_asset_collection | designer            |
     And the following family:
       | code      |
       | my_family |
