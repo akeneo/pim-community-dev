@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Query;
+namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query;
 
 use Doctrine\DBAL\Connection;
 

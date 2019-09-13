@@ -1,14 +1,13 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber\AttributeOption;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber\AttributeOption;
 
-use Akeneo\Component\StorageUtils\StorageEvents;
+use Akeneo\Pim\Structure\Component\Model\Attribute;
+use Akeneo\Pim\Structure\Component\Model\AttributeOption;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\GetAttributeOptionsMaxSortOrder;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\EventSubscriber\AttributeOption\SetAttributeOptionSortOrderSubscriber;
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;

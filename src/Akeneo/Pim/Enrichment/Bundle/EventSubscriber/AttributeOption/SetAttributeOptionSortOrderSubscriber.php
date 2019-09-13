@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\CatalogBundle\EventSubscriber\AttributeOption;
+namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\AttributeOption;
 
-use Akeneo\Component\StorageUtils\StorageEvents;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\GetAttributeOptionsMaxSortOrder;
-use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\GetAttributeOptionsMaxSortOrder;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
+use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

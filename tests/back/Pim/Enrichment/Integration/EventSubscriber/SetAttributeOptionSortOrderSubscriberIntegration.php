@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\CatalogBundle\tests\integration\EventSubscriber;
+namespace AkeneoTest\Pim\Enrichment\Integration\EventSubscriber;
 
+use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * @author    Mathias METAYER <mathias.metayer@akeneo.com>
