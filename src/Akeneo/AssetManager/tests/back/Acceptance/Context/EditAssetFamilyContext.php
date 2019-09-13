@@ -20,6 +20,7 @@ use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyH
 use Akeneo\AssetManager\Common\Fake\Anticorruption\RuleEngineValidatorACLStub;
 use Akeneo\AssetManager\Common\Fake\InMemoryChannelExists;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
+use Akeneo\AssetManager\Common\Fake\InMemoryFindAssetCollectionTypeACL;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
@@ -29,6 +30,7 @@ use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer\FixturesLoader;
+use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetMultipleLinkType;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -78,6 +80,9 @@ final class EditAssetFamilyContext implements Context
     /** @var InMemoryChannelExists */
     private $channelExists;
 
+    /** @var InMemoryFindAssetCollectionTypeACL */
+    private $inMemoryFindAssetCollectionTypeACL;
+
     public function __construct(
         AssetFamilyRepositoryInterface $assetFamilyRepository,
         EditAssetFamilyHandler $editAssetFamilyHandler,
@@ -88,6 +93,7 @@ final class EditAssetFamilyContext implements Context
         RuleEngineValidatorACLStub $ruleEngineValidatorACLStub,
         FixturesLoader $fixturesLoader,
         InMemoryChannelExists $channelExists,
+        InMemoryFindAssetCollectionTypeACL $inMemoryFindAssetCollectionTypeACL,
         int $ruleTemplateByAssetFamilyLimit
     ) {
         $this->assetFamilyRepository = $assetFamilyRepository;
@@ -99,7 +105,10 @@ final class EditAssetFamilyContext implements Context
         $this->ruleEngineValidatorACLStub = $ruleEngineValidatorACLStub;
         $this->fixturesLoader = $fixturesLoader;
         $this->channelExists = $channelExists;
+        $this->inMemoryFindAssetCollectionTypeACL = $inMemoryFindAssetCollectionTypeACL;
         $this->ruleTemplateByAssetFamilyLimit = $ruleTemplateByAssetFamilyLimit;
+
+        $this->inMemoryFindAssetCollectionTypeACL->stubWith(self::ASSET_FAMILY_IDENTIFIER);
     }
 
     /**
@@ -1480,6 +1489,45 @@ final class EditAssetFamilyContext implements Context
         ];
         $command = new EditAssetFamilyCommand($assetFamilyIdentifier, [], null, [$productLinkRule]);
         $this->editAssetFamily($command);
+    }
+
+    /**
+     * @When /^the user updates this asset family with a product link rule having an assignment attribute which references a product attribute which type does not point to the asset we are trying to update$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithAProductLinkRuleHavingAnAssignmentAttributeWhichReferencesAProductAttributeWhichTypeDoesNotPointToTheAssetWeAreTryingToUpdate()
+    {
+        $this->inMemoryFindAssetCollectionTypeACL->stubWith('WRONG_ATTRIBUTE_TYPE');
+        $productLinkRule = [
+            'product_selections' => [
+                [
+                    'field' => 'sku',
+                    'operator'  => '=',
+                    'value'     => '123456789',
+                ]
+            ],
+            'assign_assets_to'    => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => self::ATTRIBUTE_CODE,
+                ]
+            ]
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$productLinkRule]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
+     * @Then /^there should be a validation error stating that this attribute has not the same of the reference entity we are trying to update$/
+     */
+    public function thereShouldBeAValidationErrorStatingThatThisAttributeHasNotTheSameOfTheReferenceEntityWeAreTryingToUpdate()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            sprintf(
+                'The product attribute "%s" cannot contain assets of asset family "%s"',
+                self::ATTRIBUTE_CODE,
+                self::ASSET_FAMILY_IDENTIFIER
+            )
+        );
     }
 
     private function editAssetFamily(EditAssetFamilyCommand $editAssetFamilyCommand): void

@@ -126,7 +126,7 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers'
             - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_activated_locales_per_channels'
             - '@akeneoassetmanager.infrastructure.persistence.query.get_attribute_identifier'
-
+            - '@akeneo_assetmanager.infrastructure.validation.asset_family.product_link_rule.find_asset_collection_type_acl'
 
     akeneo_assetmanager.tests.back.integration.connector.distribute.get_connector_attribute_options_context:
         class: Akeneo\AssetManager\Integration\Connector\Api\Context\Distribute\GetConnectorAttributeOptionsContext
