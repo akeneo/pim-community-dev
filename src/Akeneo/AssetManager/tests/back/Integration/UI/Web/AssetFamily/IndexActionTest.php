@@ -103,9 +103,5 @@ class IndexActionTest extends ControllerIntegrationTestCase
         ]);
         $entityItem->image = Image::fromFileInfo($file);
         $queryHandler->save($entityItem);
-
-        $user = new User();
-        $user->setUsername('julia');
-        $this->get('pim_user.repository.user')->save($user);
     }
 }

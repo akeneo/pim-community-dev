@@ -90,43 +90,51 @@ jobs:
                 command: APP_ENV=dev make clean-back
           - run:
                 name: PhpSpec
-                command: docker-compose run --rm -T php vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
+                command: docker-compose run -u www-data --rm -T php vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
           - run:
                 name: Find non executed PhpSpec files
                 command: vendor/akeneo/pim-community-dev/.circleci/find_non_executed_phpspec.sh
           - run:
                 name: PhpSpec (Reference Entities)
-                command: docker-compose run --rm php vendor/bin/phpspec run -c src/Akeneo/ReferenceEntity/tests/back/phpspec.yml.dist --no-interaction -vvv
+                command: docker-compose run -u www-data --rm php vendor/bin/phpspec run -c src/Akeneo/ReferenceEntity/tests/back/phpspec.yml.dist --no-interaction -vvv
           - run:
                 name: PhpSpec (Asset Manager)
-                command: docker-compose run --rm php vendor/bin/phpspec run -c src/Akeneo/AssetManager/tests/back/phpspec.yml.dist --no-interaction -vvv
+                command: docker-compose run -u www-data --rm php vendor/bin/phpspec run -c src/Akeneo/AssetManager/tests/back/phpspec.yml.dist --no-interaction -vvv
           - run:
                 name: PhpCsFixer
-                command: docker-compose run --rm -T php vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
+                command: docker-compose run -u www-data --rm -T php vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
                 when: always
           - run:
                 name: PhpCoupling Detector
                 command: make coupling
                 when: always
           - run:
-                name: PHPStan on Reference Entities
-                command: docker-compose run --rm -T php vendor/bin/phpstan analyse --configuration src/Akeneo/ReferenceEntity/tests/back/phpstan.neon.dist
+                name: PHPStan (Reference Entities)
+                command: docker-compose run -u www-data --rm -T php vendor/bin/phpstan analyse --configuration src/Akeneo/ReferenceEntity/tests/back/phpstan.neon.dist
+                when: always
+          - run:
+                name: PHPStan (Asset Manager)
+                command: docker-compose run -u www-data --rm -T php vendor/bin/phpstan analyse --configuration src/Akeneo/AssetManager/tests/back/phpstan.neon.dist
                 when: always
           - run:
                 name: PHPStan
-                command: docker-compose run --rm -T php vendor/bin/phpstan analyse src/Akeneo/Pim -l 1
+                command: docker-compose run -u www-data --rm -T php vendor/bin/phpstan analyse src/Akeneo/Pim -l 1
                 when: always
           - run:
                 name: Check Pullup
-                command: docker-compose run --rm -T php vendor/akeneo/pim-community-dev/bin/check-pullup
+                command: docker-compose run -u www-data --rm -T php vendor/akeneo/pim-community-dev/bin/check-pullup
                 when: always
           - run:
                 name: Acceptance back
-                command: docker-compose run --rm php vendor/bin/behat --strict -p acceptance -vv
+                command: docker-compose run -u www-data --rm php vendor/bin/behat --strict -p acceptance -vv
                 when: always
           - run:
                 name: Acceptance back (Reference Entities)
-                command: docker-compose run --rm php vendor/bin/behat --config src/Akeneo/ReferenceEntity/tests/back/behat.yml.dist --no-interaction --format=progress
+                command: docker-compose run -u www-data --rm php vendor/bin/behat --config src/Akeneo/ReferenceEntity/tests/back/behat.yml.dist --no-interaction --format=progress
+                when: always
+          - run:
+                name: Acceptance back (Asset Manager)
+                command: docker-compose run -u www-data --rm php vendor/bin/behat --config src/Akeneo/AssetManager/tests/back/behat.yml.dist --no-interaction --format=progress
                 when: always
           - store_test_results:
                 path: var/tests
@@ -135,7 +143,7 @@ jobs:
           - store_artifacts:
                 path: var/logs
 
-  back_phpunit_integration:
+  back_phpunit:
       machine:
           image: ubuntu-1604:201903-01
           docker_layer_caching: true
@@ -158,44 +166,25 @@ jobs:
           - run:
                 name: PHPunit Integration
                 command: |
-                    TESTFILES=$(docker-compose run --rm -T php vendor/akeneo/pim-community-dev/.circleci/find_phpunit.sh PIM_Integration_Test | circleci tests split)
+                    TESTFILES=$(docker-compose run -u www-data --rm -T php php vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php -c . --testsuite PIM_Integration_Test | circleci tests split --split-by=timings)
                     vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh . $TESTFILES
           - run:
                 name: PHPunit Integration (Reference Entities)
                 command: |
-                    TESTFILES=$(circleci tests glob "src/Akeneo/ReferenceEntity/tests/back/Integration/**/*Test.php" | circleci tests split)
+                    TESTFILES=$(docker-compose run -u www-data --rm -T php php vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php -c src/Akeneo/ReferenceEntity/tests/back | circleci tests split --split-by=timings)
                     vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh src/Akeneo/ReferenceEntity/tests/back $TESTFILES
-          - store_test_results:
-                path: var/tests/phpunit
-          - store_artifacts:
-                path: var/tests/phpunit
-          - store_artifacts:
-                path: var/logs
-
-  back_phpunit_end_to_end:
-      machine:
-          image: ubuntu-1604:201903-01
-          docker_layer_caching: true
-      parallelism: 10
-      steps:
-          - attach_workspace:
-                at: ~/
           - run:
-                name: Change owner on project dir in order to archive the project into the workspace
-                command: sudo chown -R 1000:1000 ../project
-          - run:
-                name: Start containers
+                name: PHPunit Integration (Asset Manager)
                 command: |
-                    docker load -i php-pim-image.tar
-                    APP_ENV=test C='fpm mysql elasticsearch object-storage' make up
-                    vendor/akeneo/pim-community-dev/.circleci/wait_docker_up.sh
+                    TESTFILES=$(docker-compose run -u www-data --rm -T php php vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php -c src/Akeneo/AssetManager/tests/back | circleci tests split --split-by=timings)
+                    vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh src/Akeneo/AssetManager/tests/back $TESTFILES
           - run:
                 name: Install database
                 command: APP_ENV=test make database
           - run:
                 name: PHPunit End to end
                 command: |
-                    TESTFILES=$(docker-compose run --rm -T php vendor/akeneo/pim-community-dev/.circleci/find_phpunit.sh End_to_End  | circleci tests split)
+                    TESTFILES=$(docker-compose run -u www-data --rm -T php php vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php --testsuite End_to_End | circleci tests split --split-by=timings)
                     vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh . $TESTFILES
           - store_test_results:
                 path: var/tests/phpunit
@@ -236,12 +225,12 @@ jobs:
       - run:
           name: Non critical Behat
           command: |
-            TESTFILES=$(docker-compose run --rm -T php vendor/bin/behat --list-scenarios -p legacy -s $TESTSUITE | circleci tests split --split-by=timings)
+            TESTFILES=$(docker-compose run -u www-data --rm -T php vendor/bin/behat --list-scenarios -p legacy -s $TESTSUITE | circleci tests split --split-by=timings)
             vendor/akeneo/pim-community-dev/.circleci/run_behat.sh $TESTSUITE $TESTFILES
       - run:
           name: Critical Behat
           command: |
-            TESTFILES=$(docker-compose run --rm -T php vendor/bin/behat --list-scenarios -p legacy -s critical | circleci tests split --split-by=timings)
+            TESTFILES=$(docker-compose run -u www-data --rm -T php vendor/bin/behat --list-scenarios -p legacy -s critical | circleci tests split --split-by=timings)
             vendor/akeneo/pim-community-dev/.circleci/run_behat.sh critical $TESTFILES
       - run:
           name: Gather Junit test result files in the same directory to improve the render of failing tests
@@ -329,18 +318,13 @@ workflows:
           - front_static_acceptance_and_integration:
                 requires:
                     - setup
-          - back_phpunit_integration:
+          - back_phpunit:
                 requires:
                     - back_static_and_acceptance
                     - front_static_acceptance_and_integration
-          - back_phpunit_end_to_end:
-                requires:
-                    - back_phpunit_integration
           - back_behat_legacy:
-#                requires:
-#                    - setup
                 requires:
-                    - back_phpunit_end_to_end
+                    - back_phpunit
 
   nightly:
       triggers:
@@ -359,16 +343,13 @@ workflows:
           - front_static_acceptance_and_integration:
                 requires:
                     - setup
-          - back_phpunit_integration:
+          - back_phpunit:
                 requires:
                     - back_static_and_acceptance
                     - front_static_acceptance_and_integration
-          - back_phpunit_end_to_end:
-                requires:
-                    - back_phpunit_integration
           - back_behat_legacy:
                 requires:
-                    - back_phpunit_end_to_end
+                    - back_phpunit
           - back_performance:
                 requires:
                     - back_behat_legacy

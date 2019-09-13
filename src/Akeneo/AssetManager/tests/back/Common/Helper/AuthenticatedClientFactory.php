@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Common\Helper;
 
 use Akeneo\Test\Acceptance\User\InMemoryUserRepository;
+use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Client;
@@ -56,6 +57,7 @@ class AuthenticatedClientFactory
     private function createUser(string $username): User
     {
         $user = new User();
+        $user->addRole(new Role(User::ROLE_DEFAULT));
         $user->setUsername($username);
         $this->userRepository->save($user);
 
