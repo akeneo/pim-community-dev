@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import More from 'akeneoassetmanager/application/component/app/icon/more';
-import {ThemedProps} from 'akeneopimenrichmentassetmanager/platform/component/theme';
+import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import __ from 'akeneoassetmanager/tools/translator';
 
 const Mask = styled.button`
@@ -12,7 +12,7 @@ const Mask = styled.button`
   height: 100%;
   z-index: 803;
   opacity: 0;
-`
+`;
 
 const Panel = styled.ul`
   padding: 10px 20px;
@@ -27,7 +27,7 @@ const Panel = styled.ul`
   overflow: auto;
   font-style: normal;
   z-index: 804;
-`
+`;
 const Action = styled.li`
   white-space: nowrap;
   text-align: left;
@@ -40,7 +40,7 @@ const Action = styled.li`
   &:hover {
     cursor: pointer;
   }
-`
+`;
 
 const Button = styled(More)`
   margin: 0 10px;
@@ -48,7 +48,7 @@ const Button = styled(More)`
   &:hover {
     cursor: pointer;
   }
-`
+`;
 
 const Title = styled.div`
   line-height: 44px;
@@ -57,36 +57,40 @@ const Title = styled.div`
   text-transform: uppercase;
   border-bottom: 1px solid ${(props: ThemedProps<void>) => props.theme.color.purple100};
   margin-bottom: 10px;
-`
-const ActionList = styled.div`
-`
+`;
+const ActionList = styled.div``;
 
 const Container = styled.div`
   position: relative;
   display: flex;
-`
+`;
 
 type Element = {
   label: string;
-  action: () => void
-}
+  action: () => void;
+};
 export const MoreButton = ({elements}: {elements: Element[]}) => {
   const [isOpen, setOpen] = React.useState(false);
 
   return (
     <Container>
-      {isOpen ? (<Mask onClick={() => setOpen(false)}>{__('pim_asset_manager.asset_collection.dismiss_other_actions')}</Mask>) : null}
-      <Button title={__('pim_asset_manager.asset_collection.open_other_actions')} onClick={() => setOpen(true)}/>
+      {isOpen ? (
+        <Mask onClick={() => setOpen(false)}>{__('pim_asset_manager.asset_collection.dismiss_other_actions')}</Mask>
+      ) : null}
+      <Button title={__('pim_asset_manager.asset_collection.open_other_actions')} onClick={() => setOpen(true)} />
       {isOpen ? (
         <Panel>
           <Title>{__('pim_asset_manager.asset_collection.other_actions')}</Title>
           <ActionList>
             {elements.map((element: Element, index: number) => (
               // Not ideal to use the index here but the label is not unique
-              <Action key={index} onClick={() => {
-                element.action();
-                setOpen(false)
-              }}>
+              <Action
+                key={index}
+                onClick={() => {
+                  element.action();
+                  setOpen(false);
+                }}
+              >
                 {element.label}
               </Action>
             ))}
@@ -94,5 +98,5 @@ export const MoreButton = ({elements}: {elements: Element[]}) => {
         </Panel>
       ) : null}
     </Container>
-  )
-}
+  );
+};

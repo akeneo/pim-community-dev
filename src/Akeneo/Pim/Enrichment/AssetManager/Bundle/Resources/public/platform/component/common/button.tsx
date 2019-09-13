@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {ThemedProps} from 'akeneopimenrichmentassetmanager/platform/component/theme';
+import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 
 type ButtonProps = {
   buttonSize: 'micro' | 'medium' | 'default',

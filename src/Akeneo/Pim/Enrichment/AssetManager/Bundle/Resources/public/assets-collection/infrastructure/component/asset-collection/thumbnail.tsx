@@ -1,7 +1,7 @@
 import * as React from 'react'
 import styled from 'styled-components';
 import {Asset, getImage, getAssetLabel} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
-import {ThemedProps, opacity, akeneoTheme} from 'akeneopimenrichmentassetmanager/platform/component/theme';
+import {ThemedProps, opacity, akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import Close from 'akeneoassetmanager/application/component/app/icon/close';
 import __ from 'akeneoreferenceentity/tools/translator';
 import {ContextState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';

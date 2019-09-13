@@ -4,7 +4,7 @@ import {Asset, isComplete, emptyAsset, getAssetLabel, removeAssetFromCollection}
 import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';
 import styled from 'styled-components';
 import {Pill} from 'akeneopimenrichmentassetmanager/platform/component/common';
-import {ThemedProps} from 'akeneopimenrichmentassetmanager/platform/component/theme';
+import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import {Label} from 'akeneopimenrichmentassetmanager/platform/component/common/label';
 import AssetIllustration from 'akeneopimenrichmentassetmanager/platform/component/visual/illustration/asset';
 import __ from 'akeneoreferenceentity/tools/translator';

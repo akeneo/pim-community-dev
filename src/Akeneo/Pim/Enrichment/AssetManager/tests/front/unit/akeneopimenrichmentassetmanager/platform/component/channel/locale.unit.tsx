@@ -2,7 +2,7 @@ import * as React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import {render} from '@testing-library/react';
 import {ThemeProvider} from 'styled-components';
-import {akeneoTheme} from 'akeneopimenrichmentassetmanager/platform/component/theme';
+import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import {LocaleLabel} from 'akeneopimenrichmentassetmanager/platform/component/channel/locale';
 import console = require('console');
 import {debug} from 'util';

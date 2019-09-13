@@ -12,7 +12,7 @@ import {ThemeProvider} from 'styled-components';
 import {updateChannels, updateFamily} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/structure';
 import {errorsReceived, errorsRemovedAll} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/errors';
 import thunkMiddleware from 'redux-thunk';
-import {akeneoTheme} from 'akeneopimenrichmentassetmanager/platform/component/theme';
+import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import {updateRuleRelations} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/structure';
 import {LegacyValue} from 'web/bundles/akeneopimenrichmentassetmanager/enrich/domain/model/product';
 import {isValidErrorCollection, denormalizeErrorCollection} from 'akeneopimenrichmentassetmanager/platform/model/validation-error';

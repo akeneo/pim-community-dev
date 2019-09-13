@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {ThemedProps} from 'akeneopimenrichmentassetmanager/platform/component/theme';
+import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import styled from 'styled-components';
-import {akeneoTheme} from 'akeneopimenrichmentassetmanager/platform/component/theme';
+import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import {AttributeCode} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
 import {ValidationError, getValidationErrorsForAttribute} from 'akeneopimenrichmentassetmanager/platform/model/validation-error';
 import ErrorIcon from 'akeneopimenrichmentassetmanager/platform/component/visual/icon/error';

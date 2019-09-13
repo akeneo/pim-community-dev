@@ -10,7 +10,7 @@ import {Label} from 'akeneopimenrichmentassetmanager/platform/component/common/l
 import {getAttributeLabel, Attribute} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
 import {LocaleLabel, ChannelLabel} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/context';
 import {ContextLabel} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/context';
-import {ThemedProps} from 'akeneopimenrichmentassetmanager/platform/component/theme';
+import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import {Pill, Spacer, Separator} from 'akeneopimenrichmentassetmanager/platform/component/common';
 import {AssetCollection} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-collection';
 import {isValueComplete, hasValues} from 'akeneopimenrichmentassetmanager/enrich/domain/model/product';

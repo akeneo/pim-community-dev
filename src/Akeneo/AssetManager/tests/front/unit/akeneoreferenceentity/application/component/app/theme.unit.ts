@@ -1,4 +1,4 @@
-import {opacity} from 'akeneopimenrichmentassetmanager/platform/component/theme';
+import {opacity} from 'akeneoassetmanager/application/component/app/theme';
 
 test('It can compute a transparency color from hex code', () => {
   expect(opacity('#ffffff', 0.5)).toEqual('#ffffff80');

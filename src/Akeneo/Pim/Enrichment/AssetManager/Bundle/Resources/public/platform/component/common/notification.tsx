@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {ThemedProps} from 'akeneopimenrichmentassetmanager/platform/component/theme';
+import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 
 export const NotificationSection = styled.div`
   background-color: ${(props: ThemedProps<void>) => props.theme.color.blue10};
