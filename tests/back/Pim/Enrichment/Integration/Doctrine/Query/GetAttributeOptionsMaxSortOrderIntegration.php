@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\Doctrine\ORM\Query;
 
+use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Pim\Component\Catalog\AttributeTypes;
 
 /**
  * @author    Mathias METAYER <mathias.metayer@akeneo.com>
