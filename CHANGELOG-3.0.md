@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.42 (2019-09-13)
+
 ## Bug fixes
 
 - PIM-8741: Fix asset update via API for attribute having one value per channel or one value per locale
