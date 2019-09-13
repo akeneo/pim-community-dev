@@ -44,7 +44,6 @@ class AkeneoAssetManagerExtension extends Extension
         $loader->load('onboarder.yml');
         $loader->load('parameters.yml');
         $loader->load('persistence.yml');
-        $loader->load('product_value.yml');
         $loader->load('preview_generators.yml');
         $loader->load('rule_templates.yml');
         $loader->load('serializer.yml');
@@ -52,11 +51,6 @@ class AkeneoAssetManagerExtension extends Extension
         $loader->load('updaters.yml');
         $loader->load('validators.yml');
         $loader->load('search/services.yml');
-
-        $loader->load('datagrid/attribute_types.yml');
-        $loader->load('datagrid/formatters.yml');
-        $loader->load('datagrid/filters.yml');
-        $loader->load('datagrid/query.yml');
 
         $loader->load('connector/json_schema_validators.yml');
     }

@@ -84,7 +84,7 @@ class AppKernel extends Kernel
      */
     protected function getPimEnterpriseBundles()
     {
-        return [
+        $bundles = [
             new Akeneo\Tool\Bundle\FileMetadataBundle\AkeneoFileMetadataBundle(),
             new Akeneo\Tool\Bundle\FileTransformerBundle\AkeneoFileTransformerBundle(),
             new Akeneo\ReferenceEntity\Infrastructure\Symfony\AkeneoReferenceEntityBundle(),
@@ -100,8 +100,13 @@ class AppKernel extends Kernel
             new Akeneo\Platform\Bundle\UIBundle\PimEnterpriseUIBundle(),
             new Hslavich\OneloginSamlBundle\HslavichOneloginSamlBundle(),
             new Akeneo\Platform\Bundle\AuthenticationBundle\AkeneoAuthenticationBundle(),
-            new Akeneo\Pim\Enrichment\AssetManager\Bundle\AkeneoPimEnrichmentAssetManagerBundle(),
         ];
+
+         if ('prod' !== $this->getEnvironment() || 'true' === getenv('APP_FEATURE_FLAG_ASSET_MANAGER')) {
+             $bundles[] = new Akeneo\Pim\Enrichment\AssetManager\Bundle\AkeneoPimEnrichmentAssetManagerBundle();
+         }
+
+        return $bundles;
     }
 
     /**

@@ -114,15 +114,6 @@ config:
                         view: '@akeneoassetmanager/application/component/asset/edit/product'
                         acl: akeneo_assetmanager_asset_list_product
 
-        pim/attribute-edit-form/type-specific-form-registry:
-            formNames:
-                pim_catalog_asset_collection:
-                    create: pim-attribute-form-asset
-                    edit:   pim-attribute-form-asset
-        pim/form/common/attributes/create-button:
-            attribute_icons:
-                pim_catalog_asset_collection: asset-collection
-
     paths:
         pim/controller/asset-family/list: akeneoassetmanager/infrastructure/controller/asset-family/list.tsx
         pim/controller/asset-family/edit: akeneoassetmanager/infrastructure/controller/asset-family/edit.tsx

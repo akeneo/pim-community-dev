@@ -10,4 +10,4 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_existing_asset_codes'
         tags:
-            - { name: oro_filter.extension.orm_filter.filter, type:.asset_multiple_link }
+            - { name: oro_filter.extension.orm_filter.filter, type: .asset_multiple_link }
