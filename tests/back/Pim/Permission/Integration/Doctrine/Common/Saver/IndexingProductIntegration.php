@@ -18,8 +18,6 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
  */
 class IndexingProductIntegration extends TestCase
 {
-    private const DOCUMENT_TYPE = 'pim_catalog_product';
-
     /** @var Client */
     private $esProductAndProductModelClient;
 
@@ -71,7 +69,7 @@ class IndexingProductIntegration extends TestCase
 
         $foo = $this->get('pim_catalog.repository.product')->findOneByIdentifier('foo');
 
-        $indexedProductFoo = $this->esProductAndProductModelClient->get(self::DOCUMENT_TYPE, 'product_'.$foo->getId());
+        $indexedProductFoo = $this->esProductAndProductModelClient->get('product_'.$foo->getId());
         $this->assertTrue($indexedProductFoo['found']);
 
         $this->productUpdater->update($foo, [
@@ -80,7 +78,7 @@ class IndexingProductIntegration extends TestCase
             ],
         ]);
         $this->get('pim_catalog.saver.product')->saveAll([$foo]);
-        $indexedProductFoo = $this->esProductAndProductModelClient->get(self::DOCUMENT_TYPE, 'product_'.$foo->getId());
+        $indexedProductFoo = $this->esProductAndProductModelClient->get('product_'.$foo->getId());
         $this->assertSame(['categoryA', 'categoryA1', 'categoryB', 'master'], $indexedProductFoo['_source']['categories']);
         $this->assertSame(['<all_channels>' => ['<all_locales>' => 'my data updated']], $indexedProductFoo['_source']['values']['a_text-text']);
         $this->assertSame(['<all_channels>' => ['<all_locales>' => '15.6']], $indexedProductFoo['_source']['values']['a_number_float-decimal']);
@@ -95,7 +93,7 @@ class IndexingProductIntegration extends TestCase
 
         $foo = $this->get('pim_catalog.repository.product')->findOneByIdentifier('foo');
 
-        $indexedProductFoo = $this->esProductAndProductModelClient->get(self::DOCUMENT_TYPE, 'product_'.$foo->getId());
+        $indexedProductFoo = $this->esProductAndProductModelClient->get('product_'.$foo->getId());
         $this->assertTrue($indexedProductFoo['found']);
 
         $this->productUpdater->update($foo, [
@@ -104,7 +102,7 @@ class IndexingProductIntegration extends TestCase
             ],
         ]);
         $this->get('pim_catalog.saver.product')->save($foo);
-        $indexedProductFoo = $this->esProductAndProductModelClient->get(self::DOCUMENT_TYPE, 'product_'.$foo->getId());
+        $indexedProductFoo = $this->esProductAndProductModelClient->get('product_'.$foo->getId());
         $this->assertSame(['categoryA', 'categoryA1', 'categoryB', 'master'], $indexedProductFoo['_source']['categories']);
         $this->assertSame(['<all_channels>' => ['<all_locales>' => 'my data updated']], $indexedProductFoo['_source']['values']['a_text-text']);
         $this->assertSame(['<all_channels>' => ['<all_locales>' => '15.6']], $indexedProductFoo['_source']['values']['a_number_float-decimal']);

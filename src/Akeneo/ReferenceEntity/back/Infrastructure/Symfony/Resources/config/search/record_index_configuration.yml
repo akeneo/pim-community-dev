@@ -4,36 +4,35 @@ settings:
             text_normalizer:
                 filter: ['lowercase']
 mappings:
-    pimee_reference_entity_record:
-        properties:
-            identifier:
-                type: 'keyword'
-            reference_entity_code:
-                type: 'keyword'
-            code:
-                type: 'keyword'
-            updated_at:
-                type: 'date'
-        dynamic_templates:
-            -
-                record_full_text_search:
-                    path_match: 'record_full_text_search.*.*'
-                    mapping:
-                        type: 'keyword'
-                        normalizer: 'text_normalizer'
-            -
-                record_code_label_search:
-                    path_match: 'record_code_label_search.*'
-                    mapping:
-                        type: 'keyword'
-                        normalizer: 'text_normalizer'
-            -
-                complete_value_keys:
-                    path_match: 'complete_value_keys.*'
-                    mapping:
-                        type: 'boolean'
-            -
-                values:
-                    path_match: 'values.*'
-                    mapping:
-                        type: 'keyword'
+    properties:
+        identifier:
+            type: 'keyword'
+        reference_entity_code:
+            type: 'keyword'
+        code:
+            type: 'keyword'
+        updated_at:
+            type: 'date'
+    dynamic_templates:
+        -
+            record_full_text_search:
+                path_match: 'record_full_text_search.*.*'
+                mapping:
+                    type: 'keyword'
+                    normalizer: 'text_normalizer'
+        -
+            record_code_label_search:
+                path_match: 'record_code_label_search.*'
+                mapping:
+                    type: 'keyword'
+                    normalizer: 'text_normalizer'
+        -
+            complete_value_keys:
+                path_match: 'complete_value_keys.*'
+                mapping:
+                    type: 'boolean'
+        -
+            values:
+                path_match: 'values.*'
+                mapping:
+                    type: 'keyword'
