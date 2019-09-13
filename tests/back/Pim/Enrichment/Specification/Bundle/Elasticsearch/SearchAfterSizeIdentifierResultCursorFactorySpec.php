@@ -42,7 +42,7 @@ class SearchAfterSizeIdentifierResultCursorFactorySpec extends ObjectBehavior
                 'query'   => [],
                 '_source' => ['identifier', 'document_type'],
                 'size'    => 25,
-                'search_after'    => ['123', '#123']
+                'search_after'    => ['123', '123']
             ]
         )->willReturn(['hits' => [
             'total' => ['value' => 42, 'relation' => 'eq'],

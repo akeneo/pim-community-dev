@@ -23,7 +23,7 @@ class SearchAfterSizeCursorSpec extends ObjectBehavior
         $repository->getItemsFromIdentifiers(['baz', 'foo'])->willReturn($data);
 
         $esClient->search([
-            'search_after' => ['#bar'],
+            'search_after' => ['bar'],
             'size' => 2,
             'sort' => ['_id' => 'asc']
         ])
@@ -33,11 +33,11 @@ class SearchAfterSizeCursorSpec extends ObjectBehavior
                     'hits' => [
                         [
                             '_source' => ['identifier' => 'baz'],
-                            'sort' => ['#baz']
+                            'sort' => ['baz']
                         ],
                         [
                             '_source' => ['identifier' => 'foo'],
-                            'sort' => ['#foo']
+                            'sort' => ['foo']
                         ],
                     ]
                 ]
@@ -77,7 +77,7 @@ class SearchAfterSizeCursorSpec extends ObjectBehavior
             [
                 'size' => 2,
                 'sort' => ['_id' => 'asc'],
-                'search_after' => ['#foo']
+                'search_after' => ['foo']
             ])
             ->willReturn([
                 'hits' => [
@@ -85,7 +85,7 @@ class SearchAfterSizeCursorSpec extends ObjectBehavior
                     'hits' => [
                         [
                             '_source' => ['identifier' => 'fum'],
-                            'sort' => ['#fum']
+                            'sort' => ['fum']
                         ]
                     ]
                 ]
@@ -94,7 +94,7 @@ class SearchAfterSizeCursorSpec extends ObjectBehavior
             [
                 'size' => 2,
                 'sort' => ['_id' => 'asc'],
-                'search_after' => ['#fum']
+                'search_after' => ['fum']
             ])->willReturn([
                 'hits' => [
                     'total' => 4,

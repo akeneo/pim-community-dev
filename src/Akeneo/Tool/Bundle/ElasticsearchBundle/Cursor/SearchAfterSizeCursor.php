@@ -127,7 +127,7 @@ class SearchAfterSizeCursor extends AbstractCursor implements CursorInterface
     {
         $this->searchAfter = $this->initialSearchAfter;
         if (null !== $this->searchAfterUniqueKey) {
-            array_push($this->searchAfter, '#' . $this->searchAfterUniqueKey);
+            array_push($this->searchAfter, $this->searchAfterUniqueKey);
         }
 
         $this->fetchedItemsCount = 0;
