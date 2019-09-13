@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.42 (2019-09-13)
+
 ## Bug fixes
 
 - PIM-8754: Fix completeness for locale specific attribute
