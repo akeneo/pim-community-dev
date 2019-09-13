@@ -100,8 +100,6 @@ define(
                 FetcherRegistry.getFetcher('attribute-type')
                     .fetchAll()
                     .then(function (attributeTypes) {
-                        // TODO: Remove the "delete" lines when we fully support the asset attribute types
-                        delete attributeTypes.pim_catalog_asset_collection;
                         this.$el.html(this.template({
                             buttonTitle: __(this.config.buttonTitle)
                         }));
