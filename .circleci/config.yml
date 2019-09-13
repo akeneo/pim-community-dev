@@ -122,7 +122,7 @@ jobs:
           - store_artifacts:
                 path: var/logs
 
-  back_phpunit_integration:
+  back_phpunit:
       machine:
           image: ubuntu-1604:201903-01
           docker_layer_caching: true
@@ -145,39 +145,12 @@ jobs:
           - run:
                 name: PHPunit Integration
                 command: |
-                    TESTFILES=$(docker-compose run --rm -T php .circleci/find_phpunit.sh PIM_Integration_Test | circleci tests split)
+                    TESTFILES=$(docker-compose run --rm -T php php .circleci/find_phpunit.php --testsuite PIM_Integration_Test | circleci tests split --split-by=timings)
                     .circleci/run_phpunit.sh . $TESTFILES
-          - store_test_results:
-                path: var/tests/phpunit
-          - store_artifacts:
-                path: var/tests/phpunit
-          - store_artifacts:
-                path: var/logs
-
-  back_phpunit_end_to_end:
-      machine:
-          image: ubuntu-1604:201903-01
-          docker_layer_caching: true
-      parallelism: 10
-      steps:
-          - attach_workspace:
-                at: ~/
-          - run:
-                name: Change owner on project dir in order to archive the project into the workspace
-                command: sudo chown -R 1000:1000 ../project
-          - run:
-                name: Start containers
-                command: |
-                    docker load -i php-pim-image.tar
-                    APP_ENV=test C='fpm mysql elasticsearch object-storage' make up
-                    .circleci/wait_docker_up.sh
-          - run:
-                name: Install database
-                command: APP_ENV=test make database
           - run:
                 name: PHPunit End to end
                 command: |
-                    TESTFILES=$(docker-compose run --rm -T php .circleci/find_phpunit.sh End_to_End | circleci tests split)
+                    TESTFILES=$(docker-compose run --rm -T php php .circleci/find_phpunit.php --testsuite End_to_End | circleci tests split --split-by=timings)
                     .circleci/run_phpunit.sh . $TESTFILES
           - store_test_results:
                 path: var/tests/phpunit
@@ -287,16 +260,13 @@ workflows:
           - front_static_acceptance_and_integration:
                 requires:
                     - setup
-          - back_phpunit_integration:
+          - back_phpunit:
                 requires:
                     - back_static_and_acceptance
                     - front_static_acceptance_and_integration
-          - back_phpunit_end_to_end:
-                requires:
-                    - back_phpunit_integration
           - back_behat_legacy:
                 requires:
-                    - back_phpunit_end_to_end
+                    - back_phpunit
 
   nightly:
       triggers:
@@ -314,13 +284,10 @@ workflows:
           - front_static_acceptance_and_integration:
                 requires:
                     - setup
-          - back_phpunit_integration:
+          - back_phpunit:
                 requires:
                     - back_static_and_acceptance
                     - front_static_acceptance_and_integration
-          - back_phpunit_end_to_end:
-                requires:
-                    - back_phpunit_integration
           - back_behat_legacy:
                 requires:
-                    - back_phpunit_end_to_end
+                    - back_phpunit
