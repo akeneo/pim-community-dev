@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8757: Use a stream to create export archive
+- PIM-8751: Fix simple and multi select attributes history when creating a new option
 
 # 2.3.61 (2019-09-10)
 
