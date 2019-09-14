@@ -36,7 +36,7 @@ teamwork_assistant:
     cancel: Abbrechen
   widget:
     no_project: Sie haben aktuell kein Projekt
-    no_project_create: ein neues Projekt erstellen
+    no_project_create: erstellen Sie ein neues Projekt
     description: Beschreibung
     due_date: Fälligkeitsdatum
     todo: Zu erledigen

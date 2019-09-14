@@ -31,6 +31,9 @@ teamwork_assistant:
     owner_todo: À faire (ensemble du projet)
     owner_in_progress: En cours (ensemble du projet)
     owner_done: Terminé (ensemble du projet)
+  user:
+    deletion:
+      user_linked_to_project: Cet utilisateur est toujours lié à un ou plusieurs projets. Veuillez supprimer les groupes auxquels il est lié dans son compte utilisateur
 batch_jobs:
   project_calculation:
     project_calculation:

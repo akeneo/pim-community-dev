@@ -267,8 +267,8 @@ batch_jobs:
 catalog_volume:
   section:
     assets:
-      title: Achsen auf Assets
-      hint: Sie können den Umfang bezüglich der Assets genau hier verfolgen
+      title: Kennzahlen zu Assets
+      hint: Hier können Sie den Umfang bezüglich der Assets verfolgen
   axis:
     count_assets: Assets
     count_asset_categories: Assetkategorien
