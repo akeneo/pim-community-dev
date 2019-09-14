@@ -2,7 +2,6 @@
 "Yes, do it": "Yes, do it"
 "Ok, got it.": "Ok, got it."
 "Edit": "Edit"
-"Unexpected error occurred. Please contact system administrator.": "An unexpected error has occurred. Please contact the system administrator."
 "Yes, revoke": "Yes, revoke"
 "Revoke Confirmation": "Revoke confirmation"
 Prev: Previous
@@ -179,17 +178,14 @@ pim_common:
     STARTS WITH: Starts with
     ENDS WITH: Ends with
 error:
-  exception: Oh snap! A {{ status_code }} error occurred...
   forbidden: Forbidden. You are not allowed to access this page
 alert:
   attribute_option:
-    error_occurred_during_submission: An error occurred during the form submission on the server
     save_before_edit_other: Please register your modifications on other rows before editing this one
   session_storage:
     not_available: Your web browser does not seem compatible with sessionStorage. Please contact your administrator
 pim_enrich.entity.fallback:
   flash:
-    generic_error: An error occurred
     update:
       fail: Update failed
       success: Successfully updated

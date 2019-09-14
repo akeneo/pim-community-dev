@@ -173,6 +173,13 @@ pim_enrich.entity.group:
       button: Créer un groupe
     delete:
       confirm: Êtes-vous sûr(e) de vouloir supprimer ce groupe ?
+pim_enrich.entity.role:
+  module:
+    delete:
+      confirm: Êtes-vous sûr(e) de vouloir supprimer ce rôle ?
+  flash:
+    delete:
+      success: Le rôle a bien été supprimé
 pim_enrich.entity.category:
   label: catégorie
   uppercase_label: Catégorie
@@ -266,7 +273,7 @@ pim_enrich.mass_edit.product:
     confirm:
       label: Confirmation
     launch_error:
-      label: Une erreur s’est produite lors du lancement de l'édition de masse
+      label: Une erreur s'est produite lors du lancement de l'opération d'édition de masse.
     launched:
       label: L'action de masse "{{ operation }}" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
   operation:

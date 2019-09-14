@@ -2,7 +2,6 @@
 "Yes, do it": "Ja, gør det"
 "Ok, got it.": "OK, fik det."
 "Edit": "Redigér"
-"Unexpected error occurred. Please contact system administrator.": "Der opstod en uventet fejl. Kontakt systemadministratoren."
 "Yes, revoke": "Ja, tilbagekald"
 "Revoke Confirmation": "Tilbagekald bekræftelse"
 Prev: Forrige
@@ -172,17 +171,14 @@ pim_common:
     STARTS WITH: Starter med
     ENDS WITH: Ender med
 error:
-  exception: Beklager! Der opstod en {{ status_code }} fejl...
   forbidden: Du har ikke adgang til denne side
 alert:
   attribute_option:
-    error_occurred_during_submission: Der opstod en fejl under formular modtagelsen på serveren
     save_before_edit_other: Registrer dine ændringer på andre rækker før du redigerer denne ene
   session_storage:
     not_available: Din webbrowser er ikke kompatibel med sessionStorage. Kontakt din administrator
 pim_enrich.entity.fallback:
   flash:
-    generic_error: Der er opstået en fejl
     update:
       fail: Opdateringen fejlede
       success: Opdatering lykkedes
