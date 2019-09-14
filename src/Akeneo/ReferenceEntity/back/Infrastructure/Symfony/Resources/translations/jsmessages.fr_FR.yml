@@ -43,7 +43,7 @@ pim_reference_entity:
       attribute:
         error:
           render_list: 'Une erreur s’est produite pendant l''affichage de l’attribut « {{ %attribute_code% }} »'
-          render_edit: 'Une erreur s’est produite pendant l''affichage de l’attribut « {{ %attribute_code% }} »'
+          render_edit: 'Une erreur s’est produite pendant l''affichage des champs de propriétés additionnelles de l’attribut « {{ %attribute_code% }} »'
     module:
       delete:
         button: Supprimer une entité
@@ -247,7 +247,7 @@ pim_reference_entity:
       title: Attribut
     notification:
       list:
-        fail: Une erreur s'est produite pendant la mise à jour de l'attribut liste
+        fail: Une erreur s'est produite pendant la mise à jour de la liste d'attributs
       save:
         success: Attribut mis à jour avec succès.
         fail: Une erreur s'est produite pendant la sauvegarde de l'attribut
