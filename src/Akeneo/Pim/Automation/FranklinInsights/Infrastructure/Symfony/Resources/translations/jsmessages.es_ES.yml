@@ -14,7 +14,6 @@ akeneo_franklin_insights:
     data_provider:
       ask_franklin_down: "¡Vaya, algo ha fallado! Inténtalo de nuevo más tarde."
       authentication_error: "Lo sentimos, no se pudo autenticar en Franklin Insights, tu token no es válido. Por favor, introduce un token válido o contacta con nosotros para ayuda."
-      bad_request_error: "Lo sentimos, ha ocurrido un problema al comunicarse con Franklin Insights. Por favor, póngase en contacto con su administrador."
     identifier_mapping:
       plural_label: Identificadores
       flash:
@@ -86,6 +85,7 @@ akeneo_franklin_insights:
         already_subscribed_product: 'El producto ya está suscrito.'
         variant_product: 'Lo sentimos, los productos variantes no pueden ser suscritos a Franklin Insights.'
         inactive_connection: 'Lo sentimos, no se pudo suscribir el producto a Franklin Insights. Por favor, configure su conexión a Franklin Insights.'
+        product_subscription_with_same_identifier_already_exist: 'Otro producto con al menos un mismo identificador ya ha sido suscrito.'
       module:
         product_edit_form:
           family_required: 'Familia de producto requerida.'
@@ -108,7 +108,6 @@ akeneo_franklin_insights:
     flash:
       success: Código de activación de Franklin Insights guardado con éxito.
       invalid: Código de activación no válido, lo siento. Por favor, pruebe con uno válido.
-      error: Lo sentimos, se ha producido un error.
     module:
       title:
         sub_title: '¡Bienvenido a <span class="AknDescriptionHeader-title--highlight">Asistente IA de Información de Producto</span>!'

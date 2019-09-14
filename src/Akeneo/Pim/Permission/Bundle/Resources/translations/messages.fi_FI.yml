@@ -1,12 +1,17 @@
-pimee_enrich.acl.locale.edit_permissions: Halinnoi lokaaleja käyttöoikeuksia
+pimee_enrich.acl.locale.edit_permissions: Hallinnoi lokaatioiden käyttöoikeuksia
 pimee_enrich.acl.category.edit_permissions: Hallinnoi kategorioiden käyttöoikeuksia
 pimee_enrich.acl.attribute_group.edit_permissions: Hallinnoi attribuuttiryhmien käyttöoikeuksia
-pimee_importexport.acl.export_profile.edit_permissions: Hallinnoi profiilin järjestelmästäviennin käyttöoikeuksia
-pimee_importexport.acl.import_profile.edit_permissions: Hallinnoi profiilin järjestelmääntuonnin käyttöoikeuksia
+pimee_importexport.acl.export_profile.edit_permissions: Hallinnoi vientiprofiilin käyttöoikeuksia
+pimee_importexport.acl.import_profile.edit_permissions: Hallinnoi tuontiprofiilin käyttöoikeuksia
 pimee_enrich.groups.label: Omistajaryhmät
 edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Muokkaa attribuutteja
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Lisää käyttöoikeudellinen tuotearvo
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Päivitä käyttöoikeudellinen tuotearvo
+pim_analytics:
+  info_type:
+    nb_custom_locale_accesses: Käyttöoikeudeltaan mukautettujen lokaalien määrä
+    nb_custom_category_accesses: Käyttöoikeudeltaan mukautettujen kategorioiden määrä
+    nb_custom_attribute_group_accesses: Käyttöoikeudeltaan mukautettujen attribuuttiryhmien määrä
 job_profile.permissions:
   execute.label: Työprofiilin suorittaminen sallittu
   edit.label: Työprofiilin muokkaaminen sallittu
@@ -38,7 +43,7 @@ flash.locale.updated: Alueen asetukset ja käyttöoikeudet on päivitetty
 pim_enrich:
   mass_edit_action:
     product:
-      not_editable: Sinulla ei ole käyttöoikeuksia muokata tuotteita "%identifiers%".
+      not_editable: Sinulla ei ole käyttöoikeuksia muokata tuotteita %identifiers%.
       page_title: Tuotteet
       page_subtitle: Massamuokkaa (1 tuote) | Massamuokkaa (%count% tuotetta)
       title: Valitse toiminto
@@ -47,19 +52,19 @@ pim_enrich:
       steps:
         first: Valitse tuotteet
         second: Valitse toiminto
-        third: Konfiguroi
+        third: Muuta asetuksia
         fourth: Vahvista
     publish:
       message:
         error: Sinä et omista tätä tuotetta, joten et voi julkaista sitä.
         warning: Sinä et ole kaikkien valittujen tuotteiden omistaja. Et voi julkaista tuotteita "%notGranted%".
-      not_editable: Sinulla ei ole käyttöoikeuksia muokata tuotteita "%identifiers%".
+      not_editable: Sinulla ei ole käyttöoikeuksia muokata tuotteita %identifiers%.
     unpublish:
       message:
         error: Sinä et omista tätä tuotetta, joten et voi peruuttaa sen julkaisua.
         warning: Sinä et ole kaikkien valittujen tuotteiden omistaja. Et voi peruuttaa tuotteiden "%notGranted%" julkaisua.
         info: '%nbProducts% valittujen tuotteiden julkaisu peruutetaan.'
-      not_editable: Sinulla ei ole käyttöoikeuksia muokata tuotteita "%identifiers%".
+      not_editable: Sinulla ei ole käyttöoikeuksia muokata tuotteita %identifiers%.
     classify:
       message:
         error: Et ole tuotteen omistaja, et voi luokitella sitä.
@@ -70,7 +75,7 @@ pim_enrich:
 pimee_enrich:
   attribute_group:
     tab:
-      permission.title: Käyttöoikeudet
+      permission.title: Käyttöoikeudert
   acl.product_ownership.title: Omistajuus
   attributes:
     empty: ei mitään

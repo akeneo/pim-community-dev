@@ -47,8 +47,10 @@ akeneo_franklin_insights:
       label: Mapping des attributs
       flash:
         do_not_map_attribute_success: 'Attribut mis à jour avec succès.'
+        create_attribute_success: '{0} Désolé, aucun des attributs {{ requestCount }} n''a été créé. |{1} L''attribut créé et attaché avec succès à la famille "{{ family }}". |[2,Inf[ {{ successCount }} attributs sur {{ requestCount }} ont été créés et attachés à la famille "{{ family }}".'
         create_attribute_error: 'Désolé, une erreur s''est produite lors de la création ou de l''ajout de l''attribut à la famille.'
         suggest_attribute_mapping_error: 'L''attribut du catalogue "[{{ catalogAttributeCode }}]" est déjà mappé à l''attribut "{{ franklinAttributeLabel }}" de Franklin.'
+        add_attribute_to_family_success: '{1} L''attribut "{{ attribute }}" a été attaché avec succès à la famille "{{ family }}". |[2,Inf[ Les attributs ont été attachés avec succès à la famille "{{ family }}".'
         add_attribute_to_family_error: 'Désolé, une erreur s''est produite lors de l''ajout de l''attribut à la famille.'
       fields:
         franklin_attribute: 'Attribut Franklin'
@@ -81,11 +83,27 @@ akeneo_franklin_insights:
             title: 'Nombre d’attributs mappés'
             description: "Suivez d'un seul coup d'oeil où vous en êtes dans votre travail grâce à cette barre de progression."
             mapped_attribute_count: '{{ count }} attributs mappés'
+        toolbar:
+          bulk_create_attribute: Créer un attribut
+          bulk_add_to_family: Ajouter à la famille
+          selection_count: '{{ count }} élément sélectionné | {{ count }} éléments sélectionnés'
       modal:
         deactivate_franklin_attribute:
           title: "Êtes-vous sûr de ne pas vouloir mapper cet attribut ?"
           subtitle: 'Franklin Insights'
           ok: "Ne pas mapper"
+        bulk_create_attribute:
+          title: '{1} Créer 1 attribut |[2,Inf[ Créer {{ count }} attributs'
+          subtitle: 'Franklin Insights'
+          description: '{1} L''attribut sélectionné sera créé et ajouté à la famille |[2,Inf[ Les attributs sélectionnés seront créés et ajoutés à la famille'
+          warning: '{1} Veuillez confirmer la création d''un nouvel attribut. |[2,Inf[ Veuillez confirmer la création de {{ count }} nouveaux attributs.'
+          ok: Valider
+        bulk_add_to_family:
+          title: '{1} Ajouter 1 attribut à la famille |[2,Inf[ Ajouter {{ count }} attributs à la famille'
+          subtitle: 'Franklin Insights'
+          description: '{1} L''attribut sélectionné sera ajouté à la famille |[2,Inf[ Les attributs sélectionnés seront ajoutés à la famille'
+          warning: '{1} Veuillez confirmer l''ajout d''un nouvel attribut à la famille. |[2,Inf[ Veuillez confirmer l''ajout de {{ count }} nouveaux attributs à la famille.'
+          ok: Valider
       constraint:
         missing_target_key: 'Clé cible manquante pour le mapping'
         missing_attribute_key: 'Clé {{ expectedKey }} manquante dans le mapping pour la cible "{{ targetKey }}"'

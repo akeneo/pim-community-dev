@@ -44,9 +44,7 @@ pimee_product_asset:
       need_refresh: <b>Asset Import wurde gestartet</b><br> Um die importierten Assets im Produktformular sehen zu können, aktualisieren Sie bitte die Produktseite sobald Sie die Import-Benachrichtigung erhalten haben.
     error:
       list: Bereits hochgeladene Dateien können nicht gelesen werden
-      upload: Während des Hochladens ist ein Fehler aufgetreten
       delete: Datei kann nicht vom Server gelöscht werden
-      import: Beim Import ist ein Fehler aufgetreten
       filename: Ungültiger Dateiname für Asset
       code: Ungültiges Code-Format für Asset
       locale: Es existiert ein Asset, ist aber nicht lokalisierbar
@@ -66,7 +64,6 @@ pimee_product_asset:
       delete:
         confirm_content: Sind Sie sicher, dass Sie die ausgewählten Assets löschen möchten?
         success: Ausgewählte Assets erfolgreich gelöscht.
-        error: Es ist ein Fehler beim Löschen der ausgewählten Assets aufgetreten, bitte versuchen Sie es erneut.
         empty_selection: Keine Assets ausgewählt
 pim_enrich:
   entity:
@@ -220,8 +217,8 @@ pimee_enrich.mass_edit.asset:
 pim_catalog_volume:
   section:
     assets:
-      title: Achsen auf Assets
-      hint: Sie können das Volumen der Assets hier verfolgen.
+      title: Kennzahlen zu Assets
+      hint: Hier können Sie den Umfang bezüglich der Assets verfolgen.
   axis:
     count_assets: Assets
     count_asset_categories: Assetkategorien

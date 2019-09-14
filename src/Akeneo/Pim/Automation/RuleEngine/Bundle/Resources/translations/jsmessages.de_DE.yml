@@ -40,13 +40,11 @@ pimee_catalog_rule:
           confirm_title: Ausführung bestätigen
           confirm_content: Sind Sie sicher, dass Sie die ausgewählten Regeln anwenden möchten?
           success: Die Ausführung der ausgewählten Regeln wurde gestartet. Sie werden benachrichtigt, sobald der Vorgang abgeschlossen ist.
-          error: Beim Anwenden der Regeln ist ein Fehler aufgetreten.
           empty_selection: Keine Regeln ausgewählt.
         delete:
           confirm_title: Ausführung bestätigen
           confirm_content: Sind Sie sicher, dass Sie die ausgewählten Regeln löschen möchten?
           success: Die Regeln wurden erfolgreich gelöscht.
-          error: Beim Löschen der Regeln ist ein Fehler aufgetreten.
           empty_selection: Keine Regeln ausgewählt.
   form:
     attribute:

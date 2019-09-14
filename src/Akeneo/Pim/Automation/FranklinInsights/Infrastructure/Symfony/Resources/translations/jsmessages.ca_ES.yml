@@ -14,7 +14,6 @@ akeneo_franklin_insights:
     data_provider:
       ask_franklin_down: "Ho sentim, alguna cosa ha anat malament. Torna-ho a provar més tard."
       authentication_error: "Ho sentim, no s'ha pogut autenticar a Franklin Insights, el token no és vàlid. Introduïu un token vàlid o contacteu amb nosaltres per obtenir ajuda, si us plau."
-      bad_request_error: "Ho sentim. S'ha produït un problema durant la comunicació amb Franklin Insights. Contacteu amb l'administrador, si us plau."
     identifier_mapping:
       plural_label: Identificadors
       flash:
@@ -112,7 +111,6 @@ akeneo_franklin_insights:
     flash:
       success: Codi d'activació de les estadístiques de Franklin guardat satisfactòriament.
       invalid: El codi d'activació no és vàlid, ho sento. Intenteu-ho de nou amb un vàlid, si us plau.
-      error: Ho sentim, ha sorgit un error.
     module:
       title:
         sub_title: 'Benvingut a <span class="AknDescriptionHeader-title--highlight">L''assistent IA d''informació de producte</span>!'

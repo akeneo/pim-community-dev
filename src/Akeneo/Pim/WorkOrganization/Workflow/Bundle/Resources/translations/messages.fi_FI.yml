@@ -11,29 +11,49 @@ pimee_workflow:
     status:
       label: Status
       working_copy: Työkopio
-      in_progress: Toiminto käynnissä
+      in_progress: Työn alla
       ready: Odottaa hyväksyntää
-      can_not_be_approved: Ei voi tarkastella
+      can_be_partially_reviewed: Voidaan tarkistaa osittain
+      can_not_be_approved: Ei voi tarkistaa
       can_not_be_deleted: Ei voi poistaa
+    status_message:
+      can_be_partially_reviewed: Voit tarkistaa ehdotuksen vain osittain, koska osa muutoksista koskee arvoja, joita et voi muokata. Ole hyvä ja ota yhteyttä pääkäyttäjään muuttaaksesi käyttöoikeuksia.
+      can_not_be_approved: Et voi tarkistaa ehdotusta, koska kaikki muutokset koskevat arvoja, joita et voi muokata. Ole hyvä ja ota yhteyttä pääkäyttäjään muuttaaksesi käyttöoikeuksia.
+      can_not_be_deleted: Et voi poistaa ehdotusta, koska kaikki muutokset koskevat arvoja, joita et voi muokata. Ole hyvä ja ota yhteyttä pääkäyttäjään muuttaaksesi käyttöoikeuksia.
+      in_progress: Ehdotus on juuri nyt työnalla, eikä sitä ole vielä lähetetty.
     action:
       approve: Hyväksy kaikki
       refuse: Hylkää kaikki
       remove: Poista
-      partial_approve: Hyväksy muutokset tuote-%product% %attribute% attribuuttiin
+      partial_approve: Hyväksy attribuutin %attribute% muutokset tuotteelle %product%
+      partial_reject: Hylkää attribuutin "%attribute%" muutokset tuotteella "%product%"
     notification:
+      partial_approve: '%owner% on hyväksynyt arvot attribuuteille "%attributes%" tuotteella "%product%"'
+      partial_approve_number: '%owner% on hyväksynyt arvot %attributes_count% attribuutille tuotteella "%product%"'
+      partial_reject: '%owner% on hylännyt arvot attribuuteille "%attributes%" tuotteella "%product%"'
+      partial_reject_number: '%owner% on hylännyt arvot %attributes_count% attribuutille tuotteella "%product%"'
+      partial_remove: '%owner% on poistanut arvot attribuuteilta "%attributes%" tuotteella "%product%"'
+      partial_remove_number: '%owner% on poistanut arvot %attributes_count% attribuutilta tuotteella "%product%"'
       approve: '%owner% hyväksyi ehdotuksenne tuotteeseen %product%'
       refuse: '%owner% on hylännyt ehdotuksen koskien tuotetta %product%'
       remove: '%owner% on poistanut ehdotuksen koskien tuotetta %product%'
+      mass_edit_sent_for_approval: 'Massamuokkaus <strong>%jobLabel%</strong> päättynyt: %sentForApprovalCount% ehdotusta luotu %readProductsCount% tuotteelle'
     mass_review_action:
+      approve: Hyväksy kaikki valitut
+      refuse: Hylkää kaikki valitut
       error:
         draft_not_ready: Tämä ehdotus ei ole valmis hyväksyttäväksi
         not_product_owner: Et omista tuotetta, joka liittyy tähän ehdotukseen
-        cannot_edit_attributes: Et voi muokata määritteitä, joita tämä ehdotus muokkaa
+        cannot_edit_attributes: Et voi muokata attribuutteja, joita tämä ehdotus muokkaa
         invalid_draft: Tätä ehdotusta ei voi käyttää seuraavan virheen vuoksi. %error%
   proposal:
     to_review: '%author.firstname% %author.lastname% on lähettänyt ehdotuksen tarkistaa tuotteen %product.label%'
+    individual_import: '%author.firstname% %author.lastname% on lähettänyt ehdotukset tarkistettavaksi'
+    generic_import: Sinulle on ehdotuksia tarkistettavaksi
     original_value: Alkuperäinen
     new_value: Uusi
+    no_diff: Arvo "%value%" on sama ehdotuksessa, kuin työkopiossa.
+    draft_in_progress: Tämän tuotteen luonnos on työnalla käyttäjällä %author%.
   published_product:
     index: Julkaistut tuotteet
     title: Julkaistu tuote
@@ -47,29 +67,31 @@ pimee_workflow:
   steps:
     product_draft_processor.title: Ehdotuksen prosessori
     approve.title: Hyväksy ehdotus
+    refuse.title: Hylkää ehdotus
   mass_edit_action:
     published:
-      page_title: Julkaistut tuotteet
+      page_title: Julkaistu tuote
+      page_subtitle: Massamuokkaa (1 julkaistu tuote)|Massamuokkaa (%count% julkaistua tuotetta)
       title: Valitse toiminto
+      subtitle: Valitse toiminto, jonka haluat suorittaa valitulle julkaistulle tuotteelle|Valitse toiminto, jonka haluat suorittaa %count% julkaistulle tuotteelle
+      confirm: Olet päivittämässä julkaistua tuotetta seuraavilla tiedoila, ole hyvä ja vahvista. | Olet päivittämässä %count% julkaistua tuotetta seuraavilla tiedoilla, ole hyvä ja vahvista.
       steps:
+        first: Valitse julkaistut tuotteet
         second: Valitse toiminto
-        third: Konfiguroi
+        third: Muuta asetuksia
         fourth: Vahvista
 btn:
   publish: Julkaise
   unpublish: Peruuta julkaisu
   save working copy: Tallenna työn alla oleva kopio
-  save draft: Tallenna luonnos
   save working copy and next: Tallenna työn alla oleva kopio ja jatka
-  save draft and next: Tallenna luonnos ja jatka
   save working copy and finish: Tallenna työn alla oleva kopio ja lopeta
-  save draft and finish: Tallenna luonnos ja lopeta
   send for approval: Lähetä hyväksyttäväksi
   sent for approval: Lähetetty hyväksyttäväksi
   editworkingcopy: Muokkaa työn alla olevaa kopiota
 flash:
   product:
-    updated: Tuotteen työn alla oleva kopio on päivitetty
+    updated: Tuotteen työkopio on päivitetty
     published: Tuote on julkaistu onnistuneesti.
     unpublished: Tuotteen tila on muutettu onnistuneesti tilaan "Julkaisematon".
   product_draft:
@@ -83,7 +105,7 @@ flash:
       success: Ehdotus on poistettu.
 pim_menu:
   item:
-    published_product: Julkaistut tuotteet
+    published_product: Julkaistu tuote
     proposal: Ehdotukset
 confirmation:
   product:
@@ -99,13 +121,17 @@ job_execution.summary:
   approved: hyväksytty
   refused: hylätty
   mass_published: Tuote julkaistu
-  mass_unpublished: Tuote julkaisematon
+  mass_unpublished: Tuote ei julkaistu
   proposal: Ehdotus luotu
   proposal_deleted: ehdotus poistettu
   proposal_updated: ehdotus päivitetty
   proposal_created: ehdotus luotu
   proposal_skipped: ehdotus ohitettu (ei eroja)
-published products: Julkaistut tuotteet
+published products: Julkaistu tuote
+pim_analytics:
+  info_type:
+    nb_published_products: Julkaistujen tuotteiden määrä
+    nb_product_drafts: Tuoteluonnosten lukumäärä
 pimee_dashboard:
   widget:
     product_drafts:

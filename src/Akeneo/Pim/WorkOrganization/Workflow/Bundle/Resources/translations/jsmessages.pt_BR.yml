@@ -32,19 +32,16 @@ pimee_workflow:
     partial_accept:
       modal.title: Aprovar parte da informação
       modal.label: Deixe um comentário (opcional)
-      modal.error: Um erro ocorreu, a proposta não foi parcialmente aprovada
       modal.success: A proposta foi parcialmente validada com sucesso
     partial_approve:
       modal:
         title: Aprovar parcialmente as mudanças
         label: Deixe um comentário (opcional)
-        error: Um erro ocorreu, a proposta não foi parcialmente aprovada
         success: As mudanças foram aprovadas com sucesso
     partial_reject:
       modal:
         title: Rejeitar parcialmente as mudanças
         label: Deixe um comentário (opcional)
-        error: Um erro ocorreu, a proposta não foi parcialmente rejeitada
         success: As mudanças foram rejeitadas com sucesso
 batch_jobs:
   csv_published_product_export:

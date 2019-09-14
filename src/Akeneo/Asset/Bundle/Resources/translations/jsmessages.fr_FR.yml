@@ -44,7 +44,7 @@ pimee_product_asset:
       need_refresh: <b>L'import des ressources a bien été lancé</b><br>Pour voir les ressources importées dans le formulaire produit, n'oubliez pas de rafraîchir votre page dès que vous recevez la notification.
     error:
       list: Impossible de lire les fichiers déjà téléchargés
-      upload: Une erreur s'est produite lors du téléchargement
+      upload: Une erreur s'est produite lors du chargement
       delete: Impossible de supprimer le fichier du serveur
       import: Une erreur s'est produite lors de l'import
       filename: Nom de fichier incorrect pour la ressource

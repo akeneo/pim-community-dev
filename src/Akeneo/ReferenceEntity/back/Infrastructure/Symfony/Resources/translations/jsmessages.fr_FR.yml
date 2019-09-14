@@ -45,7 +45,7 @@ pim_reference_entity:
       attribute:
         error:
           render_list: 'Une erreur s’est produite pendant l''affichage de l’attribut « {{ %attribute_code% }} »'
-          render_edit: 'Une erreur s’est produite pendant l''affichage de l’attribut « {{ %attribute_code% }} »'
+          render_edit: 'Une erreur s’est produite pendant l''affichage des champs de propriétés additionnelles de l’attribut « {{ %attribute_code% }} »'
     module:
       delete:
         button: Supprimer une entité
@@ -127,6 +127,7 @@ pim_reference_entity:
         title: Il y a un peu trop de monde ici, nous ne vous montrons que {{ productCount }}/{{ totalCount }} produits.
         subtitle:
           usable_in_grid: Pour découvrir tous les produits liés, cliquez ci-dessous !
+          not_usable_in_grid: Pour découvrir tous les produits liés, l'attribut produit doit être défini comme "utilisable sur la grille".
         button: Voir tous les produits
       no_product:
         title: Aucun produit n'est lié pour l'attribut produit "{{ entityLabel }}"
@@ -276,7 +277,7 @@ pim_reference_entity:
       title: Attribut
     notification:
       list:
-        fail: Une erreur s'est produite pendant la mise à jour de l'attribut liste
+        fail: Une erreur s'est produite pendant la mise à jour de la liste d'attributs
       save:
         success: Attribut mis à jour avec succès.
         fail: Une erreur s'est produite pendant la sauvegarde de l'attribut

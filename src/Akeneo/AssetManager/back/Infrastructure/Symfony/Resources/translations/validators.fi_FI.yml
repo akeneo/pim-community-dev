@@ -1,0 +1,48 @@
+pim_asset_manager:
+  asset_family:
+    validation:
+      code:
+        pattern: 'Tämä kenttä voi sisältää vain kirjaimia, numeroita ja alaviivoja.'
+        should_be_unique: 'Asetti perhe "%asset_family_identifier%" on jo olemassa'
+  asset:
+    validation:
+      code:
+        should_be_unique: 'Assetti koodilla "%code%" on jo olemassa'
+        should_exist: 'Assettia ei löydy'
+      text:
+        incompatible_with_regular_expression: 'Teksti ei ole yhtenevä säännöllisen lausekkeen "%regular_expression%" kanssa'
+      file:
+        extension_not_allowed: '"%file_extension%" tiedostot eivät ole sallittuja tälle attribuutille. Sallitut tiedostot ovat: %allowed_file_extensions%'
+        file_size_exceeded: 'Tiedosto ylittää suurimman sallitun kokorajoituksen tälle attribuutille.'
+        should_exist: 'Tiedostoa "%file_path%" ei löydy.'
+      asset:
+        should_exist: 'Assettia "%asset_code%" ei löydy.'
+      asset_collection:
+        should_exist: 'Assetteja "%asset_codes%" ei löydy.'
+      number:
+        should_be_string: 'Arvon on oltava merkkijono'
+        should_be_integer: 'Arvon on oltava kokonaisluku'
+        integer_too_long: 'Kokonaisluku on liian suuri'
+        should_be_numeric: 'Arvon on oltava numero, jossa on oikea desimaalierotin'
+  attribute:
+    validation:
+      options:
+        should_exist: 'Valintaa ei löydy.'
+        duplicated: 'Valinta "%option_code%" on jo olemassa'
+      max_length:
+        should_be_an_integer: 'Arvon on oltava kokonaisluku.'
+      max_file_size:
+        should_be_a_number: 'Arvon on oltava numero.'
+      min_value:
+        should_be_a_number: 'Arvon on oltava numero, jossa on oikea desimaalierotin.'
+        cannot_be_greater_than_max: 'Minimiarvo ei voi olla suurempi kuin maksimiarvo'
+      max_value:
+        should_be_a_number: 'Arvon on oltava numero, jossa on oikea desimaalierotin.'
+        cannot_be_lower_than_min: 'Maksimiarvo ei voi olla pienempi kuin minimiarvo'
+      code:
+        pattern: 'Tämä kenttä voi sisältää vain kirjaimia, numeroita ja alaviivoja. "{{ value }}" annettu.'
+        should_exist: 'Attribuuttia ei löydy'
+      prefix:
+        should_not_be_empty: 'Etuliite ei voi olla tyhjä merkkijono.'
+      suffix:
+        should_not_be_empty: 'Jälkiliite ei voi olla tyhjä merkkijono.'
