@@ -65,6 +65,7 @@ pim_import_export:
     job_instance:
       fail:
         launch: Impossible de lancer le profil. Assurez-vous qu'il est valide et que vous disposez des droits pour le lancer.
+        save: Impossible d'enregistrer le profil. Assurez-vous que vous disposez des droits pour le modifier.
       button:
         export.title: Exporter maintenant
         import.launch: Importer maintenant
