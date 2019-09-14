@@ -1,0 +1,4 @@
+pim_asset_manager:
+  asset:
+    selector:
+      no_value: Cliquer ici pour sélectionner une ressource.

@@ -51,17 +51,14 @@ pimee_product_asset:
     flash:
       update:
         success: Asset wurde aktualisiert.
-        error: Asset wurde nicht aktualisiert. Es ist ein Fehler aufgetreten.
       create:
         success: Asset wurde erstellt.
-        error: Asset wurde nicht erstellt. Es ist ein Fehler aufgetreten.
       remove:
         success: Asset wurde entfernt.
   enrich_reference:
     flash:
       delete:
         success: Referenzdatei wurde gelöscht.
-        error: Referenzdatei wurde nicht gelöscht. Es ist ein Fehler aufgetreten.
   enrich_variation:
     flash:
       transformation:
@@ -75,10 +72,8 @@ pimee_product_asset:
         success: Variationsdateien wurden erfolgreich generiert.
       update:
         success: Variationsdatei wurde aktualisiert.
-        error: Variationsdatei wurde nicht aktualisiert. Es ist ein Fehler aufgetreten.
       delete:
         success: Variationsdatei wurde gelöscht.
-        error: Variationsdatei wurde nicht gelöscht. Es ist ein Fehler aufgetreten.
   popin.create:
     title: Neues Asset erstellen
     is_localized: Lokalisierbar
@@ -126,7 +121,6 @@ pimee_product_asset:
     import: Import
     executed: Massenupload ausgeführt
     error:
-      upload: Während des Hochladens ist ein Fehler aufgetreten
       code: Ungültiges Code-Format für Asset
       localizable: Es existiert ein Asset, ist aber nicht lokalisierbar
       invalid_locale: Das Gebietsschema ist deaktiviert oder ungültig
