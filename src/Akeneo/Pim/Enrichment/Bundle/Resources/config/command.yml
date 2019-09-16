@@ -4,3 +4,12 @@ services:
         arguments:
             - 'Akeneo\Tool\Component\StorageUtils\Cursor\Paginator'
             - '%pim_job_product_batch_size%'
+
+    Akeneo\Pim\Enrichment\Bundle\Command\CleanRemovedAttributesFromProductAndProductModelCommand:
+        arguments:
+            - '@pim_connector.doctrine.cache_clearer'
+            - '@pim_catalog.query.product_and_product_model_query_builder_factory'
+            - '%kernel.root_dir%'
+            - '%pim_job_product_batch_size%'
+        tags:
+            - { name: console.command }
