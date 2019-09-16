@@ -3,16 +3,16 @@ pim_title:
   pim_user_role_index: Roolit
   pim_user_group_index: Käyttäjäryhmät
   oro_config_configuration_system: Kokoonpano
-  pim_user_edit: 'Käyttäjä {{ username }} | muokkaus'
+  pim_user_edit: 'Käyttäjä {{ username }} | Muokkaa'
   pim_user_create: 'Käyttäjät | luo'
-  pim_user_role_update: 'Rooli {{ role }} | muokkaus'
+  pim_user_role_update: 'Rooli {{ role }} | Muokkaa'
   pim_user_role_create: 'Rooli | luo'
   pim_user_security_login: Kirjaudu sisään
   pim_user_reset_reset: Salasanan nollaus
   pim_user_reset_request: Unohdin salasanani
   pim_user_reset_check_email: Salasanan nollaus | tarkista sähköposti
   pim_user_group_create: 'Käyttäjäryhmät | luo'
-  pim_user_group_update: 'Ryhmä {{ group }} | muokkaus'
+  pim_user_group_update: 'Ryhmä {{ group }} | Muokkaa'
 confirmation:
   remove:
     user: Haluatko varmasti poistaa tämän käyttäjän?
@@ -50,10 +50,10 @@ pim_user_management:
         phone: Puhelin
         avatar: Avatar
         email: Sähköpostiosoite
-        catalog_locale: Katalogin lokaatio
-        catalog_scope: Katalogin laajuus
-        default_tree: Oletusarvoinen puu
-        default_asset_tree: Omaisuuden oletuspuu
+        catalog_locale: Tuotekatalogin lokaatio
+        catalog_scope: Tuotekatalogin kanava
+        default_tree: Oletuskategoria
+        default_asset_tree: Assettien oletuspuu
         product_grid_filters: Tuoteruudukon suodattimet
         current_password: Nykyinen salasana
         new_password: Uusi salasana
@@ -64,8 +64,8 @@ pim_user_management:
         timezone: Aikavyöhyke
         default_product_grid_view: Tuoteruudukon oletusnäkymä
         default_published_product_grid_view: Oletusarvoinen julkaistujen tuotteiden ruudukkonäkymä
-        proposals_to_review_notification: Milloin uusi ehdotus on käytävissä läpi
-        proposals_state_notifications: Kun uusi ehdotus on hyväksytty tai hylätty
+        proposals_to_review_notification: Kun uusi muutosehdotus on hyväksyttävissä
+        proposals_state_notifications: Kun uusi muutosehdotus on hyväksytty tai hylätty
       module:
         create:
           button: Luo käyttäjä

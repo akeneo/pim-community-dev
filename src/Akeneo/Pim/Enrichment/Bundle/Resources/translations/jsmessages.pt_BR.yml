@@ -5,13 +5,10 @@ flash:
   comment:
     create:
       success: Seu comentário foi criado com sucesso.
-      error: Ocorreu um erro ao criar seu comentário.
     delete:
       success: Seu comentário foi deletado com sucesso.
-      error: Ocorreu um erro ao deletar seu comentário.
     reply:
       success: Sua resposta foi criada com sucesso.
-      error: Ocorreu um erro ao tentar criar sua resposta.
 pim_enrich.entity.product:
   label: produto
   uppercase_label: Produto
@@ -22,7 +19,6 @@ pim_enrich.entity.product:
       fail: O produto não pode ser atualizado.
       fields_not_ready: "O produto não pode ser salvo agora. Os seguintes campos não estão prontos: {{ fields }}"
       already_in_upload: Um arquivo ja está sendo enviado para esse atributo no local "{{ locale }}" e no escopo "{{ scope }}"
-      file_upload: Ocorreu um erro ao fazer o envio do arquivo
     delete:
       success: Produto deletado com sucesso.
       fail: O produto não pode ser deletado.
@@ -265,8 +261,6 @@ pim_enrich.mass_edit.product:
       label: Configurar
     confirm:
       label: Confirmar
-    launch_error:
-      label: Ocorreu um erro durante o lançamento da operação de edição em massa
     launched:
       label: A ação em massa "{{ operation }}" foi lançada. Você será notificado quando estiver pronto.
   operation:
@@ -332,7 +326,6 @@ pim_datagrid:
     delete:
       confirm_content: Você tem certeza que deseja remover os produtos selecionados?
       success: Produtos selecionados deletados com sucesso.
-      error: Ocorreu um erro ao tentar deletar os produtos selecionados, por favor, tente novamente.
     quick_export:
       csv_all: CSV (Todos atributos)
       csv_grid_context: CSV (Contexto de grelha)

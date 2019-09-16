@@ -5,13 +5,10 @@ flash:
   comment:
     create:
       success: Ihr Kommentar wurde erfolgreich erstellt.
-      error: Bei der Anlage Ihres Kommentars ist ein Fehler aufgetreten.
     delete:
       success: Ihr Kommentar wurde erfolgreich gelöscht.
-      error: Beim Löschen Ihres Kommentars ist ein Fehler aufgetreten.
     reply:
       success: Ihre Antwort wurde erfolgreich angelegt.
-      error: Bei der Erstellung Ihrer Antwort ist ein Fehler aufgetreten.
 pim_enrich.entity.product:
   label: Produkt
   uppercase_label: Produkt
@@ -22,7 +19,6 @@ pim_enrich.entity.product:
       fail: Das Produkt konnte nicht aktualisiert werden.
       fields_not_ready: "Das Produkt kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}"
       already_in_upload: Es wird bereits eine Datei für dieses Attribut im Gebietsschema "{{ locale }}" und Gültigkeitsbereich "{{ scope }}" hochgeladen
-      file_upload: Während des Hochladens der Datei ist ein Fehler aufgetreten
     delete:
       success: Produkt erfolgreich gelöscht.
       fail: Das Produkt konnte nicht gelöscht werden.
@@ -265,8 +261,6 @@ pim_enrich.mass_edit.product:
       label: Konfigurieren
     confirm:
       label: Bestätigen
-    launch_error:
-      label: Bei der Massenbearbeitung ist ein Fehler aufgetreten
     launched:
       label: Die Massenbearbeitung "{{ operation }}" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
   operation:
@@ -333,7 +327,6 @@ pim_datagrid:
     delete:
       confirm_content: Sind Sie sicher, dass Sie die ausgewählten Produkte löschen möchten?
       success: Ausgewählte Produkte erfolgreich gelöscht.
-      error: Es ist ein Fehler beim Löschen der ausgewählten Produkte aufgetreten, bitte versuchen Sie es erneut.
     quick_export:
       csv_all: CSV (alle Attribute)
       csv_grid_context: CSV (Kontextabhängig)
