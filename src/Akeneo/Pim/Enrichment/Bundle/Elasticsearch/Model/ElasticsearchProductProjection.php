@@ -12,13 +12,11 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 
 /**
- * This model represents the projection to persist in Elasticsearch to search on products.
- *
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class IndexableProduct
+final class ElasticsearchProductProjection
 {
     private const INDEX_PREFIX_ID   = 'product_';
     private const INDEX_DATE_FORMAT = 'c';
@@ -122,7 +120,7 @@ final class IndexableProduct
         $this->additionalData = $additionalData;
     }
 
-    public function addAdditionalData(string $key, $value): IndexableProduct
+    public function addAdditionalData(string $key, $value): ElasticsearchProductProjection
     {
         $additionalData = $this->additionalData;
         $additionalData[$key] = $value;
@@ -205,7 +203,8 @@ final class IndexableProduct
      * @param array                                     $normalizedValues
      * @param ProductCompletenessCollection             $completenessCollection
      * @param EntityWithFamilyVariantAttributesProvider $attributesProvider
-     * @return IndexableProduct
+     *
+     * @return ElasticsearchProductProjection
      */
     public static function fromProductReadModel(
         ProductInterface $product,
@@ -214,7 +213,7 @@ final class IndexableProduct
         array $normalizedValues,
         ProductCompletenessCollection $completenessCollection,
         EntityWithFamilyVariantAttributesProvider $attributesProvider
-    ): IndexableProduct {
+    ): ElasticsearchProductProjection {
         $familyLabels = null;
         $family = $product->getFamily();
         if (null !== $family && !empty($activatedLocaleCodes)) {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model;
 
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\IndexableProduct;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductProjection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use PhpSpec\ObjectBehavior;
 
@@ -13,7 +13,7 @@ use PhpSpec\ObjectBehavior;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class IndexableProductSpec extends ObjectBehavior
+class ElasticsearchProductProjectionSpec extends ObjectBehavior
 {
     function let()
     {
@@ -45,7 +45,7 @@ class IndexableProductSpec extends ObjectBehavior
 
     function it_is_an_indexable_product()
     {
-        $this->shouldBeAnInstanceOf(IndexableProduct::class);
+        $this->shouldBeAnInstanceOf(ElasticsearchProductProjection::class);
     }
 
     function it_can_be_converted_in_array()
@@ -88,7 +88,7 @@ class IndexableProductSpec extends ObjectBehavior
     {
         $this->addAdditionalData('key1', 'values1')
             ->addAdditionalData('key2', ['array'])->shouldBeLike(
-            new IndexableProduct(
+            new ElasticsearchProductProjection(
                 '1',
                 'identifier',
                 new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
