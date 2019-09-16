@@ -30,3 +30,11 @@ services:
             - '@pim_catalog.query.filter.product_model.attribute_dumper'
         tags:
             - { name: console.command }
+
+    Akeneo\Pim\Enrichment\Bundle\Command\RefreshProductCommand:
+        arguments:
+            - '@pim_catalog.saver.product'
+            - '@pim_catalog.saver.product_model'
+            - '@pim_catalog.query.product_and_product_model_query_builder_factory'
+        tags:
+            - { name: console.command }
