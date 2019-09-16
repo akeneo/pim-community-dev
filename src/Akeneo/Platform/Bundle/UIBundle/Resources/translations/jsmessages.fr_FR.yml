@@ -183,7 +183,7 @@ error:
   forbidden: Désolé, vous n'êtes pas autorisé(e) à accéder à cette page
 alert:
   attribute_option:
-    error_occurred_during_submission: Une erreur s'est produite lors de l'envoi d'un formulaire sur le serveur
+    error_occurred_during_submission: Une erreur s'est produite lors de l'envoi du formulaire sur le serveur
     save_before_edit_other: Veuillez enregistrer vos modifications sur les autres lignes avant de modifier celle-ci
   session_storage:
     not_available: Votre navigateur Internet ne semble pas être compatible avec sessionStorage. Contactez votre administrateur
