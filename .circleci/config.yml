@@ -3,7 +3,6 @@ jobs:
   setup:
     machine:
       enabled: true
-      docker_layer_caching: true
     steps:
       - checkout
       - run:
@@ -64,7 +63,6 @@ jobs:
   back_static_and_acceptance:
       machine:
           enabled: true
-          docker_layer_caching: true
       steps:
           - attach_workspace:
                 at: ~/
@@ -99,7 +97,6 @@ jobs:
   back_phpunit_integration:
       machine:
           enabled: true
-          docker_layer_caching: true
       parallelism: 10
       steps:
           - attach_workspace:
@@ -130,7 +127,6 @@ jobs:
   back_behat_legacy:
     machine:
       enabled: true
-      docker_layer_caching: true
     parallelism: 20
     steps:
       - attach_workspace:
@@ -174,7 +170,6 @@ jobs:
   front_static_acceptance_and_integration:
       machine:
           enabled: true
-          docker_layer_caching: true
       steps:
         - attach_workspace:
             at: ~/
