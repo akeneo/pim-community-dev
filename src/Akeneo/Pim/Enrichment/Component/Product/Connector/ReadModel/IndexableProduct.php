@@ -12,13 +12,13 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 
 /**
- * Class IndexableProduct
+ * This model represents the projection to persist in Elasticsearch to search on products.
  *
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class IndexableProduct
+final class IndexableProduct
 {
     private const INDEX_PREFIX_ID   = 'product_';
     private const INDEX_DATE_FORMAT = 'c';
@@ -122,21 +122,34 @@ class IndexableProduct
         $this->additionalData = $additionalData;
     }
 
-    /**
-     * @param string $key
-     * @param mixed  $value
-     * @return IndexableProduct
-     */
     public function addAdditionalData(string $key, $value): IndexableProduct
     {
-        $this->additionalData[$key] = $value;
+        $additionalData = $this->additionalData;
+        $additionalData[$key] = $value;
 
-        return $this;
+        return new self(
+            $this->id,
+            $this->identifier,
+            $this->createdDate,
+            $this->updatedDate,
+            $this->isEnabled,
+            $this->familyCode,
+            $this->familyLabels,
+            $this->familyVariantCode,
+            $this->categoryCodes,
+            $this->categoryCodesOfAncestors,
+            $this->groupCodes,
+            $this->completeness,
+            $this->parentProductModelCode,
+            $this->values,
+            $this->ancestors,
+            $this->label,
+            $this->attributesForAncestor,
+            $this->attributesForThisLevel,
+            $additionalData
+        );
     }
 
-    /**
-     * @return array
-     */
     public function toArray(): array
     {
         $in_group = null;
