@@ -108,6 +108,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
                     ],
                 ],
             ],
+            'track_total_hits' => true,
         ];
 
         if ($assetQuery->isPaginatedUsingOffset()) {

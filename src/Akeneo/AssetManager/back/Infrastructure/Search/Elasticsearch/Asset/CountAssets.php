@@ -49,6 +49,7 @@ class CountAssets implements CountAssetsInterface
                     ],
                 ],
             ],
+            'track_total_hits' => true,
         ];
     }
 }

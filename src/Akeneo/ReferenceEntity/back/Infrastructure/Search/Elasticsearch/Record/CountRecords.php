@@ -49,6 +49,7 @@ class CountRecords implements CountRecordsInterface
                     ],
                 ],
             ],
+            'track_total_hits' => true,
         ];
     }
 }

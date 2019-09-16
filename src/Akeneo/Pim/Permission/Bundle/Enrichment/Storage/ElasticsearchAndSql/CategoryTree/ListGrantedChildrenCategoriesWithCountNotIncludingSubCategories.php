@@ -236,7 +236,8 @@ SQL;
                             ]
                         ]
                     ]
-                ]
+                ],
+                'track_total_hits' => true,
             ];
         }
 
