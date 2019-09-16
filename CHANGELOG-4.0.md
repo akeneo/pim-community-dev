@@ -4,6 +4,7 @@
 
 - DAPI-26: adds the enrichment progress in the widget's project drop down
 - DAPI-46: As a contributor, I would like to see my teammate progress on a project dashboard
+- PIM-8665: The SAML diagnostic logs are now stored in a dedicated table instead of a local file. This removes the burden of sharing the log directory in a multi-front setup.
 
 # Technical Improvements
 
@@ -55,6 +56,9 @@
 - Remove class `Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\Product\CompletenessPublisher`
 - Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\IndexProductsSubscriber` to replace
     `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer` by `Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface`
+- As SSO Log are now in a dedicated table, the following classes are unused and have been removed:
+    - Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\CreateArchive
+    - Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\FlySystemLogHandler
 
 ### CLI commands
 

@@ -5,4 +5,8 @@ monolog:
             type: stream
             path: '%kernel.logs_dir%/ask-franklin.log'
             channels: ['franklin']
+        authentication:
+            type: service
+            id: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\DbTableLogHandler'
+            channels: ['security']
     channels: ['franklin']

@@ -96,6 +96,8 @@ pim-behat:
 	$(MAKE) javascript-test
 	$(MAKE) javascript-dev
 	APP_ENV=behat $(MAKE) database
+	APP_ENV=behat $(PHP_RUN) bin/console pim:installer:prepare-required-directories
+	APP_ENV=test $(PHP_RUN) bin/console pim:installer:prepare-required-directories
 	APP_ENV=behat $(PHP_RUN) bin/console pim:user:create --admin -n -- admin admin test@example.com John Doe en_US
 
 .PHONY: pim-test
@@ -120,6 +122,7 @@ pim-prod:
 	$(MAKE) assets
 	$(MAKE) css
 	$(MAKE) javascript-cloud
+	APP_ENV=prod $(PHP_RUN) bin/console pim:installer:prepare-required-directories
 	APP_ENV=prod $(MAKE) database
 
 ##

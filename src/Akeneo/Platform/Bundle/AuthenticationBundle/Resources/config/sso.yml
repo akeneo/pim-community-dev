@@ -17,7 +17,7 @@ services:
             - '@akeneo_authentication.sso.configuration.create_or_update_handler'
             - '@akeneo_authentication.sso.configuration.repository'
             - '@akeneo_authentication.sso.configuration.service_provider_default_configuration'
-            - '@akeneo_authentication.sso.log.create_archive'
+            - '@akeneo_authentication.sso.log.create_archive_from_db_table'
             - '@pim_catalog.localization.presenter.date'
             - '@pim_user.context.user'
             - '%env(AKENEO_PIM_URL)%'
@@ -37,11 +37,10 @@ services:
             - '@akeneo_authentication.sso.configuration.repository'
             - '%hslavich_onelogin_saml.settings%'
 
-    akeneo_authentication.sso.log.create_archive:
-        class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\CreateArchive'
+    akeneo_authentication.sso.log.create_archive_from_db_table:
+        class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\CreateArchiveFromDbTable'
         arguments:
-            - '@oneup_flysystem.logs_storage_filesystem'
-            - '%kernel.logs_dir%'
+            - '@database_connection'
             - '%tmp_storage_dir%'
 
     hslavich_onelogin_saml.saml_token_factory:
@@ -71,9 +70,8 @@ services:
             - '@pim_user.repository.user'
             - '@akeneo_authentication.sso.configuration.repository'
 
-    Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\FlySystemLogHandler:
+    Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\DbTableLogHandler:
         arguments:
-            - '@oneup_flysystem.logs_storage_filesystem'
-            - 'authentication.log'
+            - '@database_connection'
             - 10
             - 'error'
