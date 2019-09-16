@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product;
 
-use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\IndexableProduct;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\IndexableProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Akeneo\Test\Integration\Configuration;

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model;
 
-use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\IndexableProduct;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\IndexableProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use PhpSpec\ObjectBehavior;
 
