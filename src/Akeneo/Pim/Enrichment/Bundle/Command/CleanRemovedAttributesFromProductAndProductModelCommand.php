@@ -26,6 +26,8 @@ use Symfony\Component\Process\Process;
  */
 class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
 {
+    protected static $defaultName = 'pim:product:clean-removed-attributes';
+
     /** @var EntityManagerClearerInterface */
     private $entityManagerClearer;
 
@@ -58,7 +60,6 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('pim:product:clean-removed-attributes')
             ->setDescription('Removes all values of deleted attributes on all products and product models');
     }
 

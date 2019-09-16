@@ -15,6 +15,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class QueryHelpProductModelCommand extends ContainerAwareCommand
 {
+    protected static $defaultName = 'pim:product-model:query-help';
+
     /** @var DumperInterface */
     private $fieldDumper;
 
@@ -37,7 +39,6 @@ class QueryHelpProductModelCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('pim:product-model:query-help')
             ->setDescription('Display useable product model query filters');
     }
 

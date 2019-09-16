@@ -25,6 +25,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class RefreshProductCommand extends Command
 {
+    protected static $defaultName = 'pim:product:refresh';
+
     /** @var SaverInterface */
     private $productSaver;
 
@@ -52,7 +54,6 @@ class RefreshProductCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('pim:product:refresh')
             ->addArgument(
                 'identifiers',
                 InputArgument::REQUIRED,
