@@ -12,6 +12,7 @@ akeneo_referenceentity:
       edit: Muokkaa tietueita
       delete: Poista tietue
       delete_all: Poista kaikki tietueet
+      list_product: Listaa tietueeseen linkitetyt tuotteet
     attribute:
       create: Lisää attribuutti viitetiedolle
       edit: Muokkaa viitetiedon attribuuttia
@@ -19,3 +20,14 @@ akeneo_referenceentity:
     option:
       edit: Muokkaa valintoja
       delete: Poista valinta
+pim_analytics:
+  info_type:
+    nb_reference_entities: Viittaustietojen lukumäärä
+    max_number_of_records_per_reference_entity: Tietueiden enimmäismäärä viittaustietoa kohden
+    average_number_of_values_per_records: Keskimääräinen arvojen lukumäärä tietueella kaikki viittaustiedot mukaan lukien
+    average_number_of_records_per_reference_entity: Keskimääräinen tietueiden määrä viittaustietoa kohden
+    max_number_of_attributes_per_reference_entity: Attribuuttien enimmäismäärä viittaustietoa kohden
+    average_number_of_attributes_per_reference_entity: Keskimääräinen attribuuttien määrä viittaustietoa kohden
+    average_percentage_localizable_only_attributes: Lokalistoitavia attribuutteja viittaustietoa kohden keskimäärin (%)
+    average_percentage_scopable_only_attributes: Kanavakohtaisia attribuutteja viittaustietoa kohden keskimäärin (%)
+    average_percentage_scopable_and_localizable_attributes: Lokalistoitavia ja kanavakohtaisia attribuutteja viittaustietoa kohden keskimäärin (%)

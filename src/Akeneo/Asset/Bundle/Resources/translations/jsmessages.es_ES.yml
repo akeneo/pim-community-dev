@@ -44,9 +44,7 @@ pimee_product_asset:
       need_refresh: <b>Se ha lanzado el importe de recursos</b><br> Para ver los recursos importados en la forma del producto, por favor, actualice la página del producto cuando reciba la notificación del importe.
     error:
       list: Imposible de leer los ficheros ya cargados
-      upload: Un error ha ocurrido al intentar cargar
       delete: Imposible eliminar el fichero del servidor
-      import: Se ha producido un error durante la importación
       filename: Nombre de fichero inválido para el recurso
       code: Formato de código no válido para los recursos
       locale: Existe un recurso pero no es localizable
@@ -66,7 +64,6 @@ pimee_product_asset:
       delete:
         confirm_content: '¿Esta seguro que desea eliminar los recursos seleccionados?'
         success: Recursos seleccionados eliminados exitosamente.
-        error: Se ha producido un error al intentar eliminar los recursos seleccionados, por favor inténtelo de nuevo.
         empty_selection: Ningún recurso seleccionado
 pim_enrich:
   entity:

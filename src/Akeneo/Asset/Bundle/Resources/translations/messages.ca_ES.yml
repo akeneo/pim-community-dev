@@ -51,17 +51,14 @@ pimee_product_asset:
     flash:
       update:
         success: El recurs ha estat actualitzat.
-        error: No s'ha actualitzat el recurs. S'ha produït un error.
       create:
         success: S'ha creat el recurs.
-        error: No s'ha creat el recurs. S'ha produït un error.
       remove:
         success: S'ha eliminat el recurs.
   enrich_reference:
     flash:
       delete:
         success: S'ha esborrat l'arxiu de referència.
-        error: No s'ha esborrat l'arxiu de referència.. S'ha produït un error.
   enrich_variation:
     flash:
       transformation:
@@ -74,10 +71,8 @@ pimee_product_asset:
         success: Els arxius de variació s'han generat correctament.
       update:
         success: S'ha actualitzat l'arxiu de variació.
-        error: No s'ha actualitzat l'arxiu de variació. S'ha produït un error.
       delete:
         success: L'arxiu de variació ha estat esborrat.
-        error: No s'ha esborrat l'arxiu de variació. S'ha produït un error.
   popin.create:
     title: Crear un nou recurs
     is_localized: Configurable regionalment
@@ -125,7 +120,6 @@ pimee_product_asset:
     import: Importació
     executed: Càrrega en massa executada
     error:
-      upload: S'ha produït un error en la càrrega
       code: Format de codi invàlid pel recurs
       localizable: Ja existeix un recurs però no se li pot aplicar cap configuració regional
       invalid_locale: La configuració regional està desactivada o no és vàlida

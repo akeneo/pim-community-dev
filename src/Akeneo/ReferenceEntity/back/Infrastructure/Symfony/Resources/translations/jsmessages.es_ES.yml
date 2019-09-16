@@ -42,10 +42,6 @@ pim_reference_entity:
       image: Imagen
     attribute:
       title: Atributos del registro
-      attribute:
-        error:
-          render_list: 'Ocurrió un error durante el procesamiento del atributo "{{ %attribute_code%}}"'
-          render_edit: 'Ocurrió un error durante el procesamiento de los campos de propiedad adicionales de atributo "{{ %attribute_code% }}"'
     module:
       delete:
         button: Eliminar entidad
@@ -75,13 +71,10 @@ pim_reference_entity:
     notification:
       save:
         success: Entidad de referencia actualizada correctamente.
-        fail: Un error ha ocurrido durante el guardado de la entidad de referencia
       create:
         success: Entidad de referencia creada correctamente.
-        fail: Un error ha ocurrido durante la creación de la entidad de referencia
       delete:
         success: Entidad de referencia eliminada correctamente.
-        fail: Un error ha ocurrido durante la eliminación de la entidad de referencia
   permission:
     notification:
       save:
@@ -180,17 +173,13 @@ pim_reference_entity:
     notification:
       save:
         success: Registro actualizado correctamente.
-        fail: Un error ha ocurrido durante el guardado del registro
         validation_error: El registro no puede ser actualizado
       create:
         success: Registro creado correctamente.
-        fail: Un error ha ocurrido durante la creación del registro
       delete:
         success: Registro "{{ code }}" eliminado con éxito.
-        fail: Un error ha ocurrido durante la eliminación del registro
       delete_all:
         success: Todos los registros "{{ entityIdentifier }}" se han eliminado correctamente.
-        fail: Un error ha ocurrido durante la eliminación de todos los registros de la entidad de referencia
     completeness:
       label: Completo
   attribute:
@@ -271,19 +260,14 @@ pim_reference_entity:
       message: '¿Está seguro que desea eliminar el atributo "{{ attributeLabel }}"?'
       title: Atributo
     notification:
-      list:
-        fail: Ha ocurrido un error durante la actualización de la lista de atributos
       save:
         success: Atributo exitosamente actualizado.
-        fail: Ha ocurrido un error durante el guardado del atributo
         validation_error: El atributo no pudo ser actualizado
       create:
         success: Atributo creado exitosamente.
-        fail: Ha ocurrido un error durante la creación del atributo
         validation_error: El atributo no pudo ser creado
       delete:
         success: Atributo exitosamente borrado.
-        fail: Ha ocurrido un error durante la eliminación del atributo
     options:
       no_value: Haz clic aquí para seleccionar una opción.
       sub_title: Información de referencia

@@ -44,9 +44,7 @@ pimee_product_asset:
       need_refresh: <b>L'importazione degli asset è stata avviata</b><br> Per vedere gli asset importati nel modulo prodotto, aggiorna la pagina prodotto appena ricevi la notifica dell'importazione.
     error:
       list: Non è possibile leggere file già caricati
-      upload: Si è verificato un errore durante il caricamento
       delete: Impossibile eliminare il file dal server
-      import: Si è verificato un errore durante l'importazione
       filename: Nome file non valido per l'asset
       code: Formato codice non valido per l'asset
       locale: Un asset esiste ma non è traducibile
@@ -66,7 +64,6 @@ pimee_product_asset:
       delete:
         confirm_content: Sei sicuro di voler cancellare gli asset selezionati?
         success: Gli asset selezionati sono stati eliminati con successo.
-        error: Si è verificato un errore cancellando gli asset selezionati, per favore riprova.
         empty_selection: Nessun asset selezionato
 pim_enrich:
   entity:
@@ -78,6 +75,7 @@ pim_import_export:
   widget:
     last_operations:
       job_type:
+        mass_upload: Caricamento di massa
         compute_completeness_of_products_linked_to_assets: Calcolo della completezza dei prodotti legati alle risorse
 pim_title:
   pimee_product_asset_mass_upload: Carica asset
@@ -220,6 +218,7 @@ pim_catalog_volume:
   section:
     assets:
       title: Assi su asset
+      hint: Puoi monitorare il volume degli asset qui.
   axis:
     count_assets: Asset
     count_asset_categories: Categorie degli asset
