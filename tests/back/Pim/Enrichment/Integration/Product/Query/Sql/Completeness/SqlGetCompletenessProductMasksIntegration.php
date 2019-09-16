@@ -6,6 +6,11 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Product\Query\Sql\Completeness;
 
 use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\Completeness\SqlGetCompletenessProductMasks;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessProductMask;
+use Akeneo\Pim\Enrichment\Component\Product\Model\PriceCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPrice;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValue;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Test\Integration\TestCase;
 
 class SqlGetCompletenessProductMasksIntegration extends TestCase
@@ -196,6 +201,37 @@ class SqlGetCompletenessProductMasksIntegration extends TestCase
         ];
         $result = $this->getCompletenessProductMasks()->fromProductIdentifiers(['productA']);
         $this->assertSameCompletenessProductMasks($expected, $result);
+    }
+
+    public function test_that_it_returns_a_mask_from_a_value_collection()
+    {
+        $values = new WriteValueCollection(
+            [
+                ScalarValue::value('sku', 'productA'),
+                ScalarValue::scopableLocalizableValue(
+                    'a_localized_and_scopable_text_area',
+                    'Lorem ipsum',
+                    'ecommerce',
+                    'en_US'
+                ),
+                PriceCollectionValue::scopableValue(
+                    'a_scopable_price',
+                    new PriceCollection([new ProductPrice(200.00, 'USD')]),
+                    'ecommerce'
+                ),
+            ]
+        );
+        $expected = [
+            new CompletenessProductMask(
+                -1, 'productA', 'familyA', [
+                    'sku-<all_channels>-<all_locales>',
+                    'a_localized_and_scopable_text_area-ecommerce-en_US',
+                    'a_scopable_price-USD-ecommerce-<all_locales>',
+                ]
+            ),
+        ];
+        $result = $this->getCompletenessProductMasks()->fromValueCollection(-1, 'productA', 'familyA', $values);
+        $this->assertSameCompletenessProductMasks($expected, [$result]);
     }
 
     protected function getConfiguration()
