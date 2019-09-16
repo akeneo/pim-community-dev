@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 
-use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\IndexableProduct;
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetIndexableProductInterface;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductProjection;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductProjectionInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
@@ -28,10 +28,10 @@ class ProductIndexer implements ProductIndexerInterface
     /** @var Client */
     private $productAndProductModelClient;
 
-    /** @var \Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetIndexableProductInterface */
+    /** @var \Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductProjectionInterface */
     private $getIndexableProduct;
 
-    public function __construct(Client $productAndProductModelClient, GetIndexableProductInterface $getIndexableProduct)
+    public function __construct(Client $productAndProductModelClient, GetElasticsearchProductProjectionInterface $getIndexableProduct)
     {
         $this->productAndProductModelClient = $productAndProductModelClient;
         $this->getIndexableProduct = $getIndexableProduct;
@@ -63,23 +63,20 @@ class ProductIndexer implements ProductIndexerInterface
 
         $indexRefresh = $options['index_refresh'] ?? Refresh::disable();
 
-        $normalizedProducts = array_map(
-            function (IndexableProduct $indexableProduct) {
-                $normalizedProduct = $indexableProduct->toArray();
-                $this->validateObjectNormalization($normalizedProduct);
-
-                return $normalizedProduct;
+        $elasticsearchProductProjections = $this->getIndexableProduct->fromProductIdentifiers($productIdentifiers);
+        $normalizedProductProjections = array_map(
+            function (ElasticsearchProductProjection $indexableProduct) {
+                return $indexableProduct->toArray();
             },
-            $this->getIndexableProduct->fromProductIdentifiers($productIdentifiers)
+            $elasticsearchProductProjections
         );
 
-        if (!empty($normalizedProducts)) {
-            $this->productAndProductModelClient->bulkIndexes(
-                $normalizedProducts,
-                'id',
-                $indexRefresh
-            );
-        }
+        $this->productAndProductModelClient->bulkIndexes(
+            
+            $normalizedProductProjections,
+            'id',
+            $indexRefresh
+        );
     }
 
     /**
@@ -105,17 +102,5 @@ class ProductIndexer implements ProductIndexerInterface
             },
             $productIds
         ));
-    }
-
-    /**
-     * Checks the normalized object has the minimum property needed for the indexation to work.
-     *
-     * @param array $normalization
-     */
-    protected function validateObjectNormalization(array $normalization) : void
-    {
-        if (!isset($normalization['id'])) {
-            throw new \InvalidArgumentException('Only products with an "id" property can be indexed in the search engine.');
-        }
     }
 }

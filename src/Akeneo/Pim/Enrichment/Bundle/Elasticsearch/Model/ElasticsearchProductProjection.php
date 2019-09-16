@@ -120,9 +120,8 @@ final class ElasticsearchProductProjection
         $this->additionalData = $additionalData;
     }
 
-    public function addAdditionalData(string $key, $value): ElasticsearchProductProjection
+    public function addAdditionalData(array $additionalData): ElasticsearchProductProjection
     {
-        $additionalData = $this->additionalData;
         $additionalData = array_merge($this->additionalData, $additionalData);
 
         return new self(

@@ -24,6 +24,10 @@ interface GetProductDataForIndexationInterface
      *
      * @param array $productIdentifiers
      * @return array
+     *      [
+     *          'product_1' => ['key_1_to_index' => 'value_1_to_index'],
+     *          'product_2' => ['key_1_to_index' => 'value_1_to_index']
+     *      ]
      */
     public function fromProductIdentifiers(array $productIdentifiers): array;
 }

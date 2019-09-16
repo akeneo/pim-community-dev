@@ -39,7 +39,7 @@
     - `string $productClient`
     - `Symfony\Component\Serializer\Normalizer\NormalizerInterface`
     - `Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface` and add
-    - `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetIndexableProductInterface`
+    - `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductProjectionInterface`
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelIndexer` to remove `$productClient` and `$productModelClient`.
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductAndProductModelQueryBuilderFactory` to add:
     - `Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface`
