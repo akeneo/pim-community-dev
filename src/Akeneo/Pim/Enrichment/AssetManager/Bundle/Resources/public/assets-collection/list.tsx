@@ -27,6 +27,7 @@ import {ValidationErrorCollection} from 'akeneopimenrichmentassetmanager/platfor
 import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
 import {MoreButton} from 'akeneoassetmanager/application/component/app/more-button';
 import {emptyCollection} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
+import {AssetPicker} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker';
 
 type ListStateProps = {
   attributes: Attribute[],
@@ -88,6 +89,7 @@ const AssetCollectionList = styled.div`
 
 
 const DisplayValues = ({values, family, context, ruleRelations, onChange, errors}: DisplayValuesProps) => {
+  const [assetPicker, toggleAssetPicker] = React.useState(false);
   return (
     <React.Fragment>
       {values.map((value: Value) => (
@@ -118,7 +120,8 @@ const DisplayValues = ({values, family, context, ruleRelations, onChange, errors
             ): null}
             {value.editable ? (
               <React.Fragment>
-                <Button buttonSize='medium' color='outline'>{__('pim_asset_manager.asset_collection.add_asset')}</Button>
+                <Button buttonSize='medium' color='outline' onClick={() => toggleAssetPicker(true)}>{__('pim_asset_manager.asset_collection.add_asset')}</Button>
+                <AssetPicker show={assetPicker} onClose={() => toggleAssetPicker(false)} />
                 <MoreButton elements={[{
                   label: __('pim_asset_manager.asset_collection.remove_all_assets'),
                   action: () => {
