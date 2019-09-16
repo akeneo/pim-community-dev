@@ -31,10 +31,10 @@ class ProductIndexer implements ProductIndexerInterface
     /** @var \Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductProjectionInterface */
     private $getIndexableProduct;
 
-    public function __construct(Client $productAndProductModelClient, GetElasticsearchProductProjectionInterface $getIndexableProduct)
+    public function __construct(Client $productAndProductModelClient, GetElasticsearchProductProjectionInterface $getElasticsearchProductProjectionQuery)
     {
         $this->productAndProductModelClient = $productAndProductModelClient;
-        $this->getIndexableProduct = $getIndexableProduct;
+        $this->getIndexableProduct = $getElasticsearchProductProjectionQuery;
     }
 
     /**
