@@ -51,10 +51,10 @@ pimee_product_asset:
     flash:
       update:
         success: Ressource a été mise à jour.
-        error: Ressource n'a pas été mise à jour. Une erreur s'est produite.
+        error: La ressource n'a pas été mise à jour. Une erreur s'est produite.
       create:
         success: Ressource a été créée.
-        error: Ressource n'a pas été mise à jour. Une erreur s'est produite.
+        error: La ressource n'a pas été créée. Une erreur s'est produite.
       remove:
         success: Ressource a été supprimée.
   enrich_reference:
@@ -75,7 +75,7 @@ pimee_product_asset:
         success: Les fichiers de variation ont été générés avec succès.
       update:
         success: Le fichier de variation a été mis à jour.
-        error: Fichier de variation n'a pas été mis à jour. Une erreur s'est produite.
+        error: Le fichier de variation n'a pas été mis à jour. Une erreur s'est produite.
       delete:
         success: Le fichier de variation a été supprimé.
         error: Le fichier de variation n'a pas été supprimé. Une erreur s'est produite.
@@ -126,7 +126,7 @@ pimee_product_asset:
     import: Import
     executed: Téléchargement massif exécuté
     error:
-      upload: Une erreur s'est produite lors du téléchargement
+      upload: Une erreur s'est produite lors du chargement
       code: Format de code non valide pour la ressource
       localizable: Une ressource existe mais n'est pas traduisible
       invalid_locale: Les paramètres régionaux sont désactivés ou non valides
