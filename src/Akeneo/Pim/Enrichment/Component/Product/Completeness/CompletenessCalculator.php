@@ -7,6 +7,8 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Completeness;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessProductMask;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetCompletenessProductMasks;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetRequiredAttributesMasks;
 
 /**
@@ -52,5 +54,32 @@ class CompletenessCalculator
     public function fromProductIdentifier($productIdentifier): ?ProductCompletenessWithMissingAttributeCodesCollection
     {
         return $this->fromProductIdentifiers([$productIdentifier])[$productIdentifier] ?? null;
+    }
+
+    /**
+     * Calculates the completeness of an entity with family. It is only useful to calculate missing required attributes
+     * for the PEF, and should not be used for any other purpose.
+     */
+    public function fromEntityWithFamily(
+        EntityWithFamilyInterface $entityWithFamily
+    ): ProductCompletenessWithMissingAttributeCodesCollection {
+        if (null === $entityWithFamily->getFamily()) {
+            return new ProductCompletenessWithMissingAttributeCodesCollection($entityWithFamily->getId(), []);
+        }
+        $familyCode = $entityWithFamily->getFamily()->getCode();
+        $requiredAttributesMasks = $this->getRequiredAttributesMasks->fromFamilyCodes([$familyCode]);
+
+        $identifier = $entityWithFamily instanceof ProductModelInterface
+            ? $entityWithFamily->getCode()
+            : $entityWithFamily->getIdentifier();
+
+        $productMask = $this->getCompletenessProductMasks->fromValueCollection(
+            $entityWithFamily->getId(),
+            $identifier,
+            $familyCode,
+            $entityWithFamily->getValues()
+        );
+
+        return $productMask->completenessCollectionForProduct($requiredAttributesMasks[$familyCode]);
     }
 }
