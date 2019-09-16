@@ -16,3 +16,10 @@ services:
             - '%kernel.default_locale%'
         tags:
             - { name: console.command }
+
+    Akeneo\Pim\Enrichment\Bundle\Command\QueryHelpProductCommand:
+        arguments:
+            - '@pim_catalog.query.filter.product.field_dumper'
+            - '@pim_catalog.query.filter.product.attribute_dumper'
+        tags:
+            - { name: console.command }
