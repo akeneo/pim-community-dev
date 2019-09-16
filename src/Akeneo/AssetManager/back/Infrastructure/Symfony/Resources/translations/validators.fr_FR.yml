@@ -1,0 +1,94 @@
+pim_asset_manager:
+  asset_family:
+    validation:
+      code:
+        pattern: 'Ce champ ne peut être composé que de lettres, chiffres et underscores.'
+        should_be_unique: 'Une famille de ressources numériques existe déjà avec le code "%asset_family_identifier%".'
+        limit_reached: 'Echec de la création de la famille "%asset_family_label%". Vous avez atteint le nombre maximum de familles de ressources numériques, fixé à %limit%.'
+      assets:
+        should_have_no_asset: 'Vous ne pouvez pas supprimer cette famille car elle comporte des ressources numériques'
+      asset_family_attributes:
+        should_not_be_linked: 'Vous ne pouvez pas supprimer cette entité car des attributs de la famille de ressources sont liés à cette entité'
+      asset_family_permissions:
+        at_least_one_user_group_should_have_edit_permission: 'Au moins un groupe utilisateurs doit avoir les droits d''édition sur cette entité'
+      product_attributes:
+        should_not_be_linked: 'Vous ne pouvez pas supprimer cette entité car des attributs de produit sont liés à cette entité'
+      should_exist: 'La famille de ressources numériques "%asset_family_code%" n''existe pas.'
+      rule_template:
+        limit_reached: 'Vous ne pouvez pas créer la famille de ressources "%asset_family_label%" car vous avez atteint le nombre maximum de %limit% de produits liés'
+  asset:
+    validation:
+      code:
+        pattern: 'Ce champ ne peut être composé que de lettres, de chiffres et d''underscores.'
+        should_be_unique: 'Une ressource numérique existe déjà avec le code "%code%".'
+        should_exist: 'La ressource numérique n''existe pas.'
+      text:
+        incompatible_with_regular_expression: 'Le texte est incompatible avec l''expression régulière "%regular_expression%"'
+      file:
+        extension_not_allowed: 'Les fichiers "%file_extension%" ne sont pas autorisés pour cet attribut. Les extensions autorisées sont : %allowed_file_extensions%'
+        file_size_exceeded: 'Le fichier dépasse la taille maximale définie pour l''attribut.'
+        should_exist: 'Le fichier "%file_path%" n''a pas été trouvé.'
+      option:
+        code_does_not_exist: 'Le code d''option "%option_code%" n''existe pas pour cet attribut'
+      option_collection:
+        codes_dont_exist: "Les codes d'options suivants n'existent pas pour cet attribut : \"%option_codes%\""
+      asset:
+        should_exist: 'La ressource numérique "%asset_code%" n''existe pas.'
+      asset_collection:
+        should_exist: 'Les ressources numériques "%asset_codes%" n''existent pas.'
+      limit_reached: 'Echec de la création de la ressource numérique "%asset_label%". Vous avez atteint le nombre maximum de familles de ressources numériques, fixé à %limit%.'
+      channel:
+        is_expected: 'Un canal est nécessaire pour l''attribut "%attribute_code%" car il a une valeur par canal.'
+        is_not_expected: 'Un canal n''est pas nécessaire pour l''attribut "%attribute_code%" car il n''a pas de valeur par canal.'
+        should_exist: 'Le canal "%channel_identifier%" n''existe pas.'
+      locale:
+        is_expected: 'Une locale est nécessaire pour l''attribut "%attribute_code%" car il a une valeur par locale.'
+        is_not_expected: 'Une locale n''est pas nécessaire pour l''attribut "%attribute_code%" car il n''a pas de valeur par locale.'
+        is_not_activated: 'La locale "%locale_identifier%" n''est pas activée.'
+        is_not_activated_for_channel: 'La locale "%locale_identifier%" n''est pas activée pour le canal "%channel_identifier%".'
+      number:
+        should_be_string: 'Ce champ devrait contenir une chaîne de caractères'
+        should_be_integer: 'Ce champ devrait contenir un entier'
+        integer_too_long: 'Cet entier est trop grand'
+        should_be_numeric: 'Ce champ doit être une valeur numérique avec le bon séparateur de décimales'
+  attribute:
+    validation:
+      options:
+        should_exist: 'L''option n''a pas été trouvée.'
+        duplicated: 'L''option "%option_code%" existe déjà'
+        too_many: 'Vous avez atteint la limite de {{ limit }} sur les options par attribut.'
+        code:
+          pattern: 'Ce champ ne peut être composé que de lettres, de chiffres et d''underscores.'
+          should_not_be_blank: 'Le code de l''option ne doit pas être vide'
+      max_length:
+        should_be_an_integer: 'Cette valeur doit être un entier.'
+      max_file_size:
+        should_be_a_number: 'Cette valeur doit être un nombre.'
+      min_value:
+        should_be_a_number: 'Cette valeur doit être une valeur numérique avec le bon séparateur de décimales.'
+        cannot_be_greater_than_max: 'Le min ne peut pas être supérieur au max'
+      max_value:
+        should_be_a_number: 'Cette valeur doit être une valeur numérique avec le bon séparateur de décimales.'
+        cannot_be_lower_than_min: 'Le max ne peut pas être inférieur au min'
+      code:
+        pattern: 'Ce champ ne peut être composé que de lettres, chiffres et underscores.'
+        reserved_codes: 'Le code ne peut pas appartenir à ces valeurs : "{{ comma_separated_reserved_keywords }}"'
+        should_not_exist: 'L''attribut existe déjà pour la famille de ressources numériques "{{ asset_family_identifier }}" et le code d''attribut "{{ code }}".'
+        should_exist: 'L''attribut n''a pas été trouvé'
+      regular_expression:
+        invalid_regular_expression: 'Cette expression régulière n''est pas valide. Voici un exemple d''expression régulière valide : "/[a-z]+[0-9]*/"'
+        should_not_be_empty: 'L''expression régulière ne peut pas être vide.'
+      should_be_a_textarea_to_update_is_rich_text_editor: 'Un attribut texte simple ne peut pas avoir un éditeur de texte riche'
+      should_be_a_simple_text_to_set_validation_rule_to_something_else_than_none: 'Un attribut de zone de texte ne peut pas avoir de règle de validation'
+      cannot_set_a_non_empty_regular_expression: 'L''attribut ne doit pas avoir d''expression régulière'
+      cannot_update_the_regular_expression: 'Impossible de définir une expression régulière sur l''attribut texte'
+      limit_reached: 'Echec de la création de l''attribut "%asset_label%". Vous avez atteint le nombre maximum d''attributs par famille de ressources numériques, fixé à %limit%.'
+      asset_type:
+        is_required: 'Vous devez spécifier le type de famille de ressources pour créer un attribut de lien de famille de ressources'
+        asset_family_should_exist: 'La famille de ressources numériques "%asset_family_code%" n''existe pas.'
+      prefix:
+        should_not_be_empty: 'Le préfixe ne peut pas être une chaîne vide.'
+      suffix:
+        should_not_be_empty: 'Le suffixe ne peut pas être une chaîne vide.'
+      media_type:
+        not_expected: 'Le type de média donné ne correspond pas aux types attendus (%supported_media_types%).'

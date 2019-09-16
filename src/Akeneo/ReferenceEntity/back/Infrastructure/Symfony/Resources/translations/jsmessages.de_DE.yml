@@ -28,10 +28,10 @@ pim_reference_entity:
     permission:
       title: Berechtigungen für Entitäten
     title: Entitäten
-    breadcrumb: Referenzentitäten
+    breadcrumb: Referenz Entitäten
     img: Das Hauptbild der Referenz-Entität mit dem Namen "{{ label }}"
     tab:
-      records: Aufzeichnungen
+      records: Datensätze
       attribute: Attribute
       properties: Eigenschaften
       permission: Berechtigungen
@@ -42,10 +42,6 @@ pim_reference_entity:
       image: Bild
     attribute:
       title: Attribute erfassen
-      attribute:
-        error:
-          render_list: 'Bei der Darstellung des Attributs "{{ %attribute_code% }}}" ist ein Fehler aufgetreten.'
-          render_edit: 'Beim Rendern des Attributs "{{ %attribute_code% }}" ist ein Fehler aufgetreten'
     module:
       delete:
         button: Entität löschen
@@ -54,7 +50,7 @@ pim_reference_entity:
       grid:
         count: '{0} Keine Refrenzentität|{1} {{ count }} Refrenzentität|]1,Inf] {{ count }} Refrenzentitäten'
         help:
-          title: 'Willkommen bei den Referenzentitäten!'
+          title: 'Willkommen bei den Referenz Entitäten!'
           description_part_one: Anreicherung relevanter Informationen zu Produkten (z.B. Marken, Hersteller, Farben, Materialien, Inhaltsstoffe....).
           description_part_two: Es ermöglicht Ihnen, Ihren Kunden ein besseres Produkterlebnis zu bieten.
           description_part_three: Klicken Sie auf die Schaltfläche "Erstellen", um Ihre erste Referenzentität zu erstellen sowie deren Attribute und Datensätze festzulegen.
@@ -63,7 +59,7 @@ pim_reference_entity:
     create:
       header:
         title: Anlegen
-      subtitle: Referenzentitäten
+      subtitle: Referenz Entitäten
       title: Erstellen einer neuen Entität
       input:
         label: Bezeichnung
@@ -75,13 +71,10 @@ pim_reference_entity:
     notification:
       save:
         success: Referenzentität erfolgreich aktualisiert.
-        fail: Beim Speichern der Referenzentität ist ein Fehler aufgetreten.
       create:
         success: Referenzobjekt erfolgreich angelegt.
-        fail: Beim Speichern der Referenzentität ist ein Fehler aufgetreten.
       delete:
         success: Referenzobjekt erfolgreich gelöscht.
-        fail: Beim Löschen der Referenzentität ist ein Fehler aufgetreten.
   permission:
     notification:
       save:
@@ -136,11 +129,11 @@ pim_reference_entity:
       title: Attribute erfassen
       code: Code
       label: Bezeichnung
-    title: Aufzeichnungen
+    title: Datensätze
     create:
       header:
         title: Anlegen
-      subtitle: Referenzentitäten
+      subtitle: Referenz Entitäten
       title: Neu hinzufügen {{ entityLabel }}}} 
       input:
         label: Bezeichnung
@@ -181,20 +174,17 @@ pim_reference_entity:
         title_complete: Alle {{{ erforderlichen }}} Attribute sind vollständig
     tab:
       enrich: Anreichern
+      product: Produkte
     notification:
       save:
         success: Datensatz erfolgreich aktualisiert
-        fail: Beim Speichern des Datensatzes ist ein Fehler aufgetreten.
         validation_error: Der Datensatz konnte nicht aktualisiert werden.
       create:
         success: Datensatz erfolgreich erstellt.
-        fail: Bei der Erstellung des Datensatzes ist ein Fehler aufgetreten.
       delete:
         success: Datensatz "{{ code }}}" wurde erfolgreich gelöscht.
-        fail: Beim Löschen des Datensatzes ist ein Fehler aufgetreten.
       delete_all:
         success: Alle "{{ entityIdentifier }}}" Datensätze wurden erfolgreich gelöscht.
-        fail: Beim Löschen aller Datensätze dieser Referenz-Entität ist ein Fehler aufgetreten.
     completeness:
       label: Vollständig
   attribute:
@@ -211,6 +201,7 @@ pim_reference_entity:
       record_collection: Referenz-Entität Mehrfachverknüpfungen
       option: Einzelfunktion
       option_collection: Mehrfachfunktion
+      number: Nummer
     is_required: zur Vollständigkeit erforderlich
     no_data:
       title: Es gibt keine benutzerdefinierten Attribute für {{ entityLabel }}}
@@ -220,7 +211,7 @@ pim_reference_entity:
     create:
       header:
         title: Anlegen
-      subtitle: Referenzentitäten
+      subtitle: Referenz Entitäten
       title: Neues Datensatzattribut hinzufügen
       description: Die folgenden Parameter, mit Ausnahme des Labels, können nach der Attributerstellung nicht mehr aktualisiert werden.
       input:
@@ -253,6 +244,8 @@ pim_reference_entity:
         allowed_extensions: Zulässige Dateiendungen
         validation_rule: Validierungsregel
         regular_expression: Regulärer Ausdruck
+        min_value: Minimumwert
+        max_value: Maximalwert
         manage_options:
           confirmation:
             discard_changes: Sie verlieren alle Änderungen an der Optionsliste, wenn Sie die Seite verlassen.
@@ -263,30 +256,26 @@ pim_reference_entity:
               placeholder: Schreiben Sie sich hier eine neue Optionsbezeichnung.
         options:
           validation_rule:
-            none: Keine
+            none: keine
             email: E-Mail
             regular_expression: Regulärer Ausdruck
             url: URL
+        decimals_allowed: Dezimalwerte erlaubt
     delete:
       message: Sind Sie sicher, dass Sie das Attribut "{{ attributeLabel }}}" löschen wollen?
       title: Attribut
     notification:
-      list:
-        fail: Bei der Aktualisierung der Attributliste ist ein Fehler aufgetreten.
       save:
         success: Attribut erfolgreich aktualisiert.
-        fail: Beim Speichern des Attributs ist ein Fehler aufgetreten.
         validation_error: Das Attribut konnte nicht aktualisiert werden.
       create:
         success: Attribut erfolgreich erstellt.
-        fail: Bei der Erstellung des Attributs ist ein Fehler aufgetreten.
         validation_error: Das Attribut konnte nicht erstellt werden
       delete:
         success: Attribut erfolgreich gelöscht.
-        fail: Beim Löschen des Attributs ist ein Fehler aufgetreten
     options:
       no_value: Klicken Sie hier, um eine Option auszuwählen.
-      sub_title: Referenzentitäten
+      sub_title: Referenz Entitäten
       helper:
         title: Feldbezeichner-Übersetzungen
   modal:
@@ -302,10 +291,10 @@ pim_enrich:
     attribute:
       property:
         type:
-          akeneo_reference_entity_collection: Referenz-Entität Mehrfachverknüpfungen
-          akeneo_reference_entity: Referenz-Entität Einzelverknüpfung
+          akeneo_reference_entity_collection: Referenzentität Mehrfachverknüpfungen
+          akeneo_reference_entity: Referenzentität Einzelverknüpfung
         section:
-          type_specific: Spezifische Parameter
+          type_specific: Typspezifische Parameter
         reference_entity:
           identifier: Zugehörige Referenzentität (erforderlich)
           default_label: Bitte wählen Sie eine Referenzentität aus
@@ -314,9 +303,9 @@ permission:
 pim_catalog_volume:
   section:
     reference_entity:
-      title: Achsen an Referenzobjekten
-      hint: Wenn Sie die Referenzobjekte verwenden, finden Sie hier die Achsen, die Ihnen helfen, Ihr Volumen zu überwachen.
+      title: Kennzahlen zu Referenz Entitäten
+      hint: Wenn Sie die Referenz Entitäten verwenden, finden Sie hier die passenden Kennzahlen.
   axis:
-    count_reference_entity: Referenzentitäten
-    average_max_records_per_reference_entity: Datensätze pro Referenzobjekt
-    average_max_attributes_per_reference_entity: Attribute pro Referenzobjekt
+    count_reference_entity: Referenz Entitäten
+    average_max_records_per_reference_entity: Datensätze pro Referenz Entität
+    average_max_attributes_per_reference_entity: Attribute pro Referenz Entität

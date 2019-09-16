@@ -14,7 +14,6 @@ akeneo_franklin_insights:
     data_provider:
       ask_franklin_down: "Tut uns leid, etwas ging schief. Bitte später erneut versuchen."
       authentication_error: "Entschuldigung, Franklin Insights konnte nicht authentifiziert werden, dein Token ist ungültig. Bitte einen gültigen Token eingeben oder uns kontaktieren für Hilfe. "
-      bad_request_error: "Entschuldigung, ein Problem ist aufgetreten bei Kommunikation mit Franklin Insights. Bitte kontaktieren Sie Ihren Administrator."
     identifier_mapping:
       plural_label: Identifikatoren
       flash:
@@ -161,7 +160,6 @@ akeneo_franklin_insights:
     flash:
       success: Franklin Insights Aktivierungscode erfolgreich gespeichert.
       invalid: Entschuldigung, ungültiger Aktivierungscode. Bitte versuch es erneut mit einem gültigen.
-      error: Es tut uns Leid, aber ein Fehler ist aufgetreten.
     module:
       title:
         sub_title: 'Willkommen zum <span class="AknDescriptionHeader-title--highlight">Product Information AI Assistenten</span>!'
