@@ -276,6 +276,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
                     ],
                 ];
             }, $requiredValueKeys->normalize());
+            $query['query']['constant_score']['filter']['bool']['minimum_should_match'] = 1;
             $query['query']['constant_score']['filter']['bool']['should'] = array_merge($query['query']['constant_score']['filter']['bool']['should'] ?? [],
                 $clauses);
         }
