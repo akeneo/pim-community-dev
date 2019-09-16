@@ -23,3 +23,10 @@ services:
             - '@pim_catalog.query.filter.product.attribute_dumper'
         tags:
             - { name: console.command }
+
+    Akeneo\Pim\Enrichment\Bundle\Command\QueryHelpProductModelCommand:
+        arguments:
+            - '@pim_catalog.query.filter.product_model.field_dumper'
+            - '@pim_catalog.query.filter.product_model.attribute_dumper'
+        tags:
+            - { name: console.command }
