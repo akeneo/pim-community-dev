@@ -9,7 +9,7 @@ use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\IndexableProduct;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
-use Akeneo\Pim\Enrichment\Component\Product\Query\GetIndexableProductInterface;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetIndexableProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductDataForIndexationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
@@ -20,7 +20,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetIndexableProduct implements GetIndexableProductInterface
+class GetIndexableProduct implements \Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetIndexableProductInterface
 {
     /** @var ProductRepositoryInterface */
     private $productRepository;

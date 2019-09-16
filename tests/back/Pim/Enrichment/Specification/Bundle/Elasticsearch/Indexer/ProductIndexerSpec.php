@@ -3,7 +3,7 @@
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\IndexableProduct;
-use Akeneo\Pim\Enrichment\Component\Product\Query\GetIndexableProductInterface;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetIndexableProductInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
