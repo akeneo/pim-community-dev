@@ -78,9 +78,6 @@ class ProductNormalizer implements NormalizerInterface
     protected $ascendantCategoriesQuery;
 
     /** @var NormalizerInterface */
-    protected $incompleteValuesNormalizer;
-
-    /** @var NormalizerInterface */
     private $parentAssociationsNormalizer;
 
     /** @var MissingAssociationAdder */
@@ -108,7 +105,6 @@ class ProductNormalizer implements NormalizerInterface
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         VariantNavigationNormalizer $navigationNormalizer,
         AscendantCategoriesInterface $ascendantCategoriesQuery,
-        NormalizerInterface $incompleteValuesNormalizer,
         MissingAssociationAdder $missingAssociationAdder,
         NormalizerInterface $parentAssociationsNormalizer,
         CatalogContext $catalogContext,
@@ -129,7 +125,6 @@ class ProductNormalizer implements NormalizerInterface
         $this->attributesProvider               = $attributesProvider;
         $this->navigationNormalizer             = $navigationNormalizer;
         $this->ascendantCategoriesQuery         = $ascendantCategoriesQuery;
-        $this->incompleteValuesNormalizer       = $incompleteValuesNormalizer;
         $this->parentAssociationsNormalizer     = $parentAssociationsNormalizer;
         $this->missingAssociationAdder          = $missingAssociationAdder;
         $this->catalogContext                   = $catalogContext;
@@ -170,10 +165,8 @@ class ProductNormalizer implements NormalizerInterface
             ) : null;
 
         $scopeCode = $context['channel'] ?? null;
-
-        $incompleteValues = $this->incompleteValuesNormalizer->normalize($product);
-
         $normalizedProduct['parent_associations'] = $this->parentAssociationsNormalizer->normalize($product, $format, $context);
+        $completenesses = $this->getNormalizedCompletenesses($product);
 
         $normalizedProduct['meta'] = [
             'form'              => $this->formProvider->getForm($product),
@@ -182,8 +175,8 @@ class ProductNormalizer implements NormalizerInterface
             'updated'           => $updated,
             'model_type'        => 'product',
             'structure_version' => $this->structureVersionProvider->getStructureVersion(),
-            'completenesses'    => $this->getNormalizedCompletenesses($product),
-            'required_missing_attributes' => $incompleteValues,
+            'completenesses'    => $completenesses,
+            'required_missing_attributes' => $completenesses,
             'image'             => $this->normalizeImage($product->getImage(), $this->catalogContext->getLocaleCode()),
         ] + $this->getLabels($product, $scopeCode) + $this->getAssociationMeta($product);
 

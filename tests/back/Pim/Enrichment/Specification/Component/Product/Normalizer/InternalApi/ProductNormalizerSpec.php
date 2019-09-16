@@ -2,13 +2,12 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
-use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Query\AscendantCategoriesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
@@ -16,7 +15,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductCompletenessWithMissingAttributeCodesCollectionNormalizer;
@@ -30,7 +28,6 @@ use Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionPr
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -53,7 +50,6 @@ class ProductNormalizerSpec extends ObjectBehavior
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         VariantNavigationNormalizer $navigationNormalizer,
         AscendantCategoriesInterface $ascendantCategories,
-        NormalizerInterface $incompleteValuesNormalizer,
         MissingAssociationAdder $missingAssociationAdder,
         NormalizerInterface $parentAssociationsNormalizer,
         CatalogContext $catalogContext,
@@ -75,7 +71,6 @@ class ProductNormalizerSpec extends ObjectBehavior
             $attributesProvider,
             $navigationNormalizer,
             $ascendantCategories,
-            $incompleteValuesNormalizer,
             $missingAssociationAdder,
             $parentAssociationsNormalizer,
             $catalogContext,
@@ -89,21 +84,20 @@ class ProductNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_products(
-        $normalizer,
-        $versionNormalizer,
-        $versionManager,
-        $imageNormalizer,
-        $localeRepository,
-        $structureVersionProvider,
-        $formProvider,
-        $localizedConverter,
-        $productValueConverter,
-        $userContext,
-        $productValuesFiller,
-        $incompleteValuesNormalizer,
-        $missingAssociationAdder,
-        $completenessCalculator,
-        $completenessCollectionNormalizer,
+        NormalizerInterface $normalizer,
+        NormalizerInterface $versionNormalizer,
+        VersionManager $versionManager,
+        ImageNormalizer $imageNormalizer,
+        LocaleRepositoryInterface $localeRepository,
+        StructureVersionProviderInterface $structureVersionProvider,
+        FormProviderInterface $formProvider,
+        AttributeConverterInterface $localizedConverter,
+        ConverterInterface $productValueConverter,
+        ProductCompletenessWithMissingAttributeCodesCollectionNormalizer $completenessCollectionNormalizer,
+        UserContext $userContext,
+        EntityWithFamilyValuesFillerInterface $productValuesFiller,
+        MissingAssociationAdder $missingAssociationAdder,
+        CompletenessCalculator $completenessCalculator,
         ProductInterface $mug,
         AssociationInterface $upsell,
         AssociationTypeInterface $groupType,
@@ -186,17 +180,16 @@ class ProductNormalizerSpec extends ObjectBehavior
         $groups->toArray()->willReturn([$group]);
         $group->getId()->willReturn(12);
 
-        $ProductCompletenessWithMissingAttributeCodesCollection = new ProductCompletenessWithMissingAttributeCodesCollection(12, []);
-        $completenessCalculator->fromProductIdentifier('mug')->willReturn($ProductCompletenessWithMissingAttributeCodesCollection);
-        $completenessCollectionNormalizer->normalize($ProductCompletenessWithMissingAttributeCodesCollection)->willReturn(['normalizedCompleteness']);
+        $productCompletenessWithMissingAttributeCodesCollection = new ProductCompletenessWithMissingAttributeCodesCollection(12, []);
+        $completenessCalculator->fromProductIdentifier('mug')->willReturn($productCompletenessWithMissingAttributeCodesCollection);
+        $completenessCollectionNormalizer->normalize($productCompletenessWithMissingAttributeCodesCollection)
+                                         ->willReturn(['normalized_completenesses']);
 
         $structureVersionProvider->getStructureVersion()->willReturn(12);
         $formProvider->getForm($mug)->willReturn('product-edit-form');
 
         $missingAssociationAdder->addMissingAssociations($mug)->shouldBeCalled();
         $productValuesFiller->fillMissingValues($mug)->shouldBeCalled();
-
-        $incompleteValuesNormalizer->normalize($mug)->willReturn('INCOMPLETE VALUES');
 
         $this->normalize($mug, 'internal_api', $options)->shouldReturn(
             [
@@ -212,8 +205,8 @@ class ProductNormalizerSpec extends ObjectBehavior
                     'updated'           => 'normalized_update_version',
                     'model_type'        => 'product',
                     'structure_version' => 12,
-                    'completenesses'    => ['normalizedCompleteness'],
-                    'required_missing_attributes' => 'INCOMPLETE VALUES',
+                    'completenesses'    => ['normalized_completenesses'],
+                    'required_missing_attributes' => ['normalized_completenesses'],
                     'image'             => [
                         'filePath'         => '/p/i/m/4/all.png',
                         'originalFileName' => 'all.png',
@@ -240,24 +233,23 @@ class ProductNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_variant_products(
-        $normalizer,
-        $versionNormalizer,
-        $versionManager,
-        $imageNormalizer,
-        $localeRepository,
-        $structureVersionProvider,
-        $formProvider,
-        $localizedConverter,
-        $productValueConverter,
-        $userContext,
-        $productValuesFiller,
-        $navigationNormalizer,
-        $attributesProvider,
-        $ascendantCategories,
-        $incompleteValuesNormalizer,
-        $missingAssociationAdder,
-        $completenessCalculator,
-        $completenessCollectionNormalizer,
+        NormalizerInterface $normalizer,
+        NormalizerInterface $versionNormalizer,
+        VersionManager $versionManager,
+        ImageNormalizer $imageNormalizer,
+        LocaleRepositoryInterface $localeRepository,
+        StructureVersionProviderInterface $structureVersionProvider,
+        FormProviderInterface $formProvider,
+        AttributeConverterInterface $localizedConverter,
+        ConverterInterface $productValueConverter,
+        ProductCompletenessWithMissingAttributeCodesCollectionNormalizer $completenessCollectionNormalizer,
+        UserContext $userContext,
+        EntityWithFamilyValuesFillerInterface $productValuesFiller,
+        EntityWithFamilyVariantAttributesProvider $attributesProvider,
+        VariantNavigationNormalizer $navigationNormalizer,
+        AscendantCategoriesInterface $ascendantCategories,
+        MissingAssociationAdder $missingAssociationAdder,
+        CompletenessCalculator $completenessCalculator,
         ProductInterface $mug,
         AssociationInterface $upsell,
         AssociationTypeInterface $groupType,
@@ -345,9 +337,9 @@ class ProductNormalizerSpec extends ObjectBehavior
         $groups->toArray()->willReturn([$group]);
         $group->getId()->willReturn(12);
 
-        $ProductCompletenessWithMissingAttributeCodesCollection = new ProductCompletenessWithMissingAttributeCodesCollection(12, []);
-        $completenessCalculator->fromProductIdentifier('mug')->willReturn($ProductCompletenessWithMissingAttributeCodesCollection);
-        $completenessCollectionNormalizer->normalize($ProductCompletenessWithMissingAttributeCodesCollection)->willReturn(['normalizedCompletenesses']);
+        $productCompletenessWithMissingAttributeCodesCollection = new ProductCompletenessWithMissingAttributeCodesCollection(12, []);
+        $completenessCalculator->fromProductIdentifier('mug')->willReturn($productCompletenessWithMissingAttributeCodesCollection);
+        $completenessCollectionNormalizer->normalize($productCompletenessWithMissingAttributeCodesCollection)->willReturn([]);
 
         $structureVersionProvider->getStructureVersion()->willReturn(12);
         $formProvider->getForm($mug)->willReturn('product-edit-form');
@@ -377,7 +369,6 @@ class ProductNormalizerSpec extends ObjectBehavior
         $description->getCode()->willReturn('description');
 
         $ascendantCategories->getCategoryIds($mug)->willReturn([42]);
-        $incompleteValuesNormalizer->normalize($mug)->willReturn('INCOMPLETE VALUES');
 
         $this->normalize($mug, 'internal_api', $options)->shouldReturn(
             [
@@ -393,8 +384,8 @@ class ProductNormalizerSpec extends ObjectBehavior
                     'updated'           => 'normalized_update_version',
                     'model_type'        => 'product',
                     'structure_version' => 12,
-                    'completenesses'    => ['normalizedCompletenesses'],
-                    'required_missing_attributes' => 'INCOMPLETE VALUES',
+                    'completenesses'    => [],
+                    'required_missing_attributes' => [],
                     'image'             => [
                         'filePath'         => '/p/i/m/4/all.png',
                         'originalFileName' => 'all.png',
