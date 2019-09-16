@@ -131,6 +131,10 @@ pim:
     password: nil # Generate me with `pwgen -sB 22`
     uiLocale: en_US # Change me if needs be
   jobs:
+    versioning-purge:
+      enabled: true
+      pimCommand: "pim:versioning:purge --more-than-days 90 --no-interaction --force"
+      schedule: "0 1 * * 0"
     batch-purge:
       enabled: true
       pimCommand: "akeneo:batch:purge-job-execution"
