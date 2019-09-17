@@ -12,9 +12,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * This migration will delete the empty values from raw values of products.
- * For example, the value {attr: {<all_channels>: {<all_locales: []}}} will be removed from the raw_values field.
+ * For example, the value {attr: {<all_channels>: {<all_locales>: []}}} will be removed from the raw_values field.
  */
-final class Version_4_0_20190916122239_remove_product_empty_raw_values extends AbstractMigration implements ContainerAwareInterface
+final class Version_4_0_20190916122239_remove_product_empty_raw_values
+    extends AbstractMigration
+    implements ContainerAwareInterface
 {
     /** @var ContainerInterface */
     private $container;
@@ -38,12 +40,12 @@ final class Version_4_0_20190916122239_remove_product_empty_raw_values extends A
     {
         $productsToProcess = true;
         $productIdentifiersToIndex = [];
-        $page = 0;
+        $lastProductIdentifier = null;
         while ($productsToProcess) {
             $productsToProcess = false;
             $sql = sprintf(
-                "SELECT identifier, raw_values FROM pim_catalog_product LIMIT %d, %s",
-                $page * self::BATCH_SIZE,
+                "SELECT identifier, raw_values FROM pim_catalog_product %s ORDER BY identifier LIMIT %d",
+                $lastProductIdentifier !== null ? sprintf('WHERE identifier > "%s"', $lastProductIdentifier) : '',
                 self::BATCH_SIZE
             );
             $rows = $this->connection->executeQuery($sql)->fetchAll();
@@ -69,9 +71,8 @@ final class Version_4_0_20190916122239_remove_product_empty_raw_values extends A
                         $productIdentifiersToIndex = [];
                     }
                 }
+                $lastProductIdentifier = $row['identifier'];
             }
-
-            $page++;
         }
 
         $this->getProductIndexer()->indexFromProductIdentifiers($productIdentifiersToIndex);

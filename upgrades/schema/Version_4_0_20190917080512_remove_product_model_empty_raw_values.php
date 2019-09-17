@@ -6,13 +6,16 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelIndexer;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\EmptyValuesCleaner;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * This migration will delete the empty values from raw values of product models.
- * For example, the value {attr: {<all_channels>: {<all_locales: []}}} will be removed from the raw_values field.
+ * For example, the value {attr: {<all_channels>: {<all_locales>: []}}} will be removed from the raw_values field.
  */
-final class Version_4_0_20190917080512_remove_product_model_empty_raw_values extends AbstractMigration
+final class Version_4_0_20190917080512_remove_product_model_empty_raw_values
+    extends AbstractMigration
+    implements ContainerAwareInterface
 {
     /** @var ContainerInterface */
     private $container;
@@ -31,12 +34,12 @@ final class Version_4_0_20190917080512_remove_product_model_empty_raw_values ext
     {
         $productModelsToProcess = true;
         $productModelCodesToIndex = [];
-        $page = 0;
+        $lastProductModelCode = null;
         while ($productModelsToProcess) {
             $productModelsToProcess = false;
             $sql = sprintf(
-                "SELECT code, raw_values FROM pim_catalog_product_model LIMIT %d, %s",
-                $page * self::BATCH_SIZE,
+                "SELECT code, raw_values FROM pim_catalog_product_model %s ORDER BY code LIMIT %d",
+                $lastProductModelCode !== null ? sprintf('WHERE code > "%s"', $lastProductModelCode) : '',
                 self::BATCH_SIZE
             );
             $rows = $this->connection->executeQuery($sql)->fetchAll();
@@ -62,9 +65,8 @@ final class Version_4_0_20190917080512_remove_product_model_empty_raw_values ext
                         $productModelCodesToIndex = [];
                     }
                 }
+                $lastProductModelCode = $row['code'];
             }
-
-            $page++;
         }
 
         $this->getProductModelIndexer()->indexFromProductModelCodes($productModelCodesToIndex);
