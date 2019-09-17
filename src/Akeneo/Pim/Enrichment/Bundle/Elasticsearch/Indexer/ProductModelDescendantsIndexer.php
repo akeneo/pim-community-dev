@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidArgumentException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
@@ -41,12 +42,21 @@ class ProductModelDescendantsIndexer {
 
     /**
      * Recursively indexes the given product model children (a subtree made of products and product models).
-     *
      * Indexes all product variants in the dedicated index.
+     *
+     * @argument string $productModelCode
+     * @argument array  $options
      */
     public function fromProductModelCode(string $productModelCode, array $options = []): void
     {
         $productModel = $this->productModelRepository->findOneByIdentifier($productModelCode);
+
+        if (null === $productModel) {
+            throw new InvalidArgumentException(
+                ProductModelDescendantsIndexer::class,
+                sprintf('ProductModel with code "%s" not found', $productModelCode)
+            );
+        }
 
         $this->indexProductModelChildren($productModel->getProductModels(), $options);
         $this->indexProductModelChildren($productModel->getProducts(), $options);
@@ -55,13 +65,12 @@ class ProductModelDescendantsIndexer {
     /**
      * Recursively triggers the indexing of all the given product models children (subtree made of product variants and
      * product models).
+     *
+     * @argument string[] $productModelCodes
+     * @argument array    $options
      */
     public function fromProductModelCodes(array $productModelCodes, array $options = []): void
     {
-        if (empty($productModelCodes)) {
-            return;
-        }
-
         foreach ($productModelCodes as $productModelCode) {
             $this->fromProductModelCode($productModelCode, $options);
         }

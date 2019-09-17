@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidArgumentException;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\ProductModelIndexerInterface;
@@ -263,5 +264,13 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $productModelIndexer->indexFromProductModelCodes(Argument::cetera())->shouldNotBeCalled();
 
         $this->fromProductModelCodes([]);
+    }
+
+    function it_raises_exception_with_non_existing_product_model(
+        ProductModelRepositoryInterface $productModelRepository
+    ) {
+        $productModelRepository->findOneByIdentifier('foo')->willReturn(null);
+
+        $this->shouldThrow(InvalidArgumentException::class)->during('fromProductModelCode', ['foo']);
     }
 }

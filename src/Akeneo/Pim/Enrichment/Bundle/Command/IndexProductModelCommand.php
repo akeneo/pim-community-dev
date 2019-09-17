@@ -161,52 +161,32 @@ class IndexProductModelCommand extends ContainerAwareCommand
      * Indexes the given list of product model codes in Elasticsearch.
      *
      * @param OutputInterface $output
-     * @param array           $codes
+     * @param string[]        $productModelCodes
      *
      * @return int
      */
-    private function index(OutputInterface $output, array $codes): int
+    private function index(OutputInterface $output, array $productModelCodes): int
     {
-        $productModels = $this->productModelRepository->findBy(['code' => $codes]);
-        $productModelCount = count($productModels);
-
-        if ($productModelCount !== count($codes)) {
-            $codesFound = [];
-            foreach ($productModels as $productModel) {
-                $codesFound[] = $productModel->getCode();
-            }
-
-            $notFoundCodes = array_diff($codes, $codesFound);
-            $output->writeln(sprintf(
-                '<error>Some product models were not found for the given codes: %s</error>',
-                implode(', ', $notFoundCodes)
-            ));
-        }
-
-        $output->writeln(sprintf('<info>%d product models found for indexing</info>', $productModelCount));
+        $output->writeln(sprintf('<info>%d product models found for indexing</info>', count($productModelCodes)));
 
         $i = 0;
         $productModelBulk = [];
         $totalProductModelsIndexed = 0;
-        $progressBar = new ProgressBar($output, $productModelCount);
+        $progressBar = new ProgressBar($output, count($productModelCodes));
 
         $progressBar->start();
-        foreach ($productModels as $productModel) {
-            $productModelBulk[] = $productModel;
+        foreach ($productModelCodes as $productModelCode) {
+            $productModelBulk[] = $productModelCode;
 
             $i++;
 
             if (0 === $i % self::BULK_SIZE) {
-                $productModelCodes = array_map(function (ProductModelInterface $productModel) {
-                    return $productModel->getCode();
-                }, $productModelBulk);
-
                 $this->productModelIndexer->indexFromProductModelCodes(
-                    $productModelCodes,
+                    $productModelBulk,
                     ['index_refresh' => Refresh::disable()]
                 );
                 $this->bulkProductModelDescendantsIndexer->fromProductModelCodes(
-                    $productModelCodes,
+                    $productModelBulk,
                     ['index_refresh' => Refresh::disable()]
                 );
                 $this->objectManager->clear();
@@ -220,16 +200,12 @@ class IndexProductModelCommand extends ContainerAwareCommand
         }
 
         if (!empty($productModelBulk)) {
-            $productModelCodes = array_map(function (ProductModelInterface $productModel) {
-                return $productModel->getCode();
-            }, $productModelBulk);
-
             $this->productModelIndexer->indexFromProductModelCodes(
-                $productModelCodes,
+                $productModelBulk,
                 ['index_refresh' => Refresh::disable()]
             );
             $this->bulkProductModelDescendantsIndexer->fromProductModelCodes(
-                $productModelCodes,
+                $productModelBulk,
                 ['index_refresh' => Refresh::disable()]
             );
             $this->objectManager->clear();
