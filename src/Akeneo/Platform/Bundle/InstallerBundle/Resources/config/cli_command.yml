@@ -5,3 +5,12 @@ services:
             - '@pim_installer.install_status_manager'
         tags:
             - { name: 'console.command' }
+
+    Akeneo\Platform\Bundle\InstallerBundle\Command\AssetsCommand:
+        arguments:
+            - '@filesystem'
+            - '@event_dispatcher'
+            - '%pim_localization.provider.ui_locale.locale_codes%'
+            - '%kernel.root_dir%'
+        tags:
+            - { name: 'console.command' }
