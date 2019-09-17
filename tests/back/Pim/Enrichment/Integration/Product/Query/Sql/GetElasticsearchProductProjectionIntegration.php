@@ -289,11 +289,6 @@ class GetElasticsearchProductProjectionIntegration extends TestCase
         $this->assertEquals($expected, $normalizedProductProjection);
     }
 
-    /**
-     * @param array $data
-     *
-     * @return array
-     */
     private static function sanitizeMediaAttributeData(array &$projection): void
     {
         foreach ($projection['values'] as $attributeCode => $dataPerChannel) {
