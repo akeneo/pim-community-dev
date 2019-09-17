@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Akeneo\Platform\Bundle\InstallerBundle\PimDirectoriesRegistry;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -16,15 +17,27 @@ use Symfony\Component\Filesystem\Filesystem;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PrepareRequiredDirectoriesCommand extends ContainerAwareCommand
+class PrepareRequiredDirectoriesCommand extends Command
 {
+    protected static $defaultName = 'pim:installer:prepare-required-directories';
+
+    /** @var PimDirectoriesRegistry */
+    private $directoriesContainer;
+
+    public function __construct(
+        PimDirectoriesRegistry $directoriesContainer
+    ) {
+        parent::__construct();
+
+        $this->directoriesContainer = $directoriesContainer;
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function configure(): void
     {
         $this
-            ->setName('pim:installer:prepare-required-directories')
             ->setDescription('Prepare required directories for Akeneo PIM');
     }
 
@@ -35,10 +48,9 @@ class PrepareRequiredDirectoriesCommand extends ContainerAwareCommand
     {
         $output->writeln('<info>Akeneo PIM required directories creation:</info>');
 
-        $directoriesContainer = $this->getContainer()->get('pim_installer.directories_registry');
         $filesystem = new Filesystem();
 
-        foreach ($directoriesContainer->getDirectories() as $directory) {
+        foreach ($this->directoriesContainer->getDirectories() as $directory) {
             if ($filesystem->exists($directory)) {
                 $filesystem->remove($directory);
                 $output->writeln($directory . ' directory, removed.');

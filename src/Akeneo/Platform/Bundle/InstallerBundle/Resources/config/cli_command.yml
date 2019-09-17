@@ -41,3 +41,8 @@ services:
             - '%kernel.bundles%'
         tags:
             - { name: console.command }
+    Akeneo\Platform\Bundle\InstallerBundle\Command\PrepareRequiredDirectoriesCommand:
+        arguments:
+            - '@pim_installer.directories_registry'
+        tags:
+            - { name: console.command }
