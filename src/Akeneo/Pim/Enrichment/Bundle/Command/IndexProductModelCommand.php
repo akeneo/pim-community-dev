@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Command;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelDescendantsIndexer;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
@@ -37,7 +38,7 @@ class IndexProductModelCommand extends ContainerAwareCommand
     /** @var ProductModelIndexerInterface */
     private $productModelIndexer;
 
-    /** @var BulkIndexerInterface */
+    /** @var ProductModelDescendantsIndexer */
     private $bulkProductModelDescendantsIndexer;
 
     /** @var ObjectManager */
@@ -52,7 +53,7 @@ class IndexProductModelCommand extends ContainerAwareCommand
     public function __construct(
         ProductModelRepositoryInterface $productModelRepository,
         ProductModelIndexerInterface $productModelIndexer,
-        BulkIndexerInterface $bulkProductModelDescendantsIndexer,
+        ProductModelDescendantsIndexer $bulkProductModelDescendantsIndexer,
         ObjectManager $objectManager,
         Client $productAndProductModelClient,
         string $productAndProductModelIndexName
@@ -133,13 +134,18 @@ class IndexProductModelCommand extends ContainerAwareCommand
         $progressBar->start();
         while (!empty($rootProductModels =
             $this->productModelRepository->searchRootProductModelsAfter($lastRootProductModel, self::BULK_SIZE))) {
+            $productModelCodes = array_map(function (ProductModelInterface $productModel) {
+                return $productModel->getCode();
+            }, $rootProductModels);
+
             $this->productModelIndexer->indexFromProductModelCodes(
-                array_map(function (ProductModelInterface $productModel) {
-                    return $productModel->getCode();
-                }, $rootProductModels),
+                $productModelCodes,
                 ['index_refresh' => Refresh::disable()]
             );
-            $this->bulkProductModelDescendantsIndexer->indexAll($rootProductModels, ['index_refresh' => Refresh::disable()]);
+            $this->bulkProductModelDescendantsIndexer->fromProductModelCodes(
+                $productModelCodes,
+                ['index_refresh' => Refresh::disable()]
+            );
             $this->objectManager->clear();
 
             $lastRootProductModel = end($rootProductModels);
@@ -191,13 +197,18 @@ class IndexProductModelCommand extends ContainerAwareCommand
             $i++;
 
             if (0 === $i % self::BULK_SIZE) {
+                $productModelCodes = array_map(function (ProductModelInterface $productModel) {
+                    return $productModel->getCode();
+                }, $productModelBulk);
+
                 $this->productModelIndexer->indexFromProductModelCodes(
-                    array_map(function (ProductModelInterface $productModel) {
-                        return $productModel->getCode();
-                    }, $productModelBulk),
+                    $productModelCodes,
                     ['index_refresh' => Refresh::disable()]
                 );
-                $this->bulkProductModelDescendantsIndexer->indexAll($productModelBulk, ['index_refresh' => Refresh::disable()]);
+                $this->bulkProductModelDescendantsIndexer->fromProductModelCodes(
+                    $productModelCodes,
+                    ['index_refresh' => Refresh::disable()]
+                );
                 $this->objectManager->clear();
 
                 $progressBar->advance(count($productModelBulk));
@@ -209,13 +220,18 @@ class IndexProductModelCommand extends ContainerAwareCommand
         }
 
         if (!empty($productModelBulk)) {
+            $productModelCodes = array_map(function (ProductModelInterface $productModel) {
+                return $productModel->getCode();
+            }, $productModelBulk);
+
             $this->productModelIndexer->indexFromProductModelCodes(
-                array_map(function (ProductModelInterface $productModel) {
-                    return $productModel->getCode();
-                }, $productModelBulk),
+                $productModelCodes,
                 ['index_refresh' => Refresh::disable()]
             );
-            $this->bulkProductModelDescendantsIndexer->indexAll($productModelBulk, ['index_refresh' => Refresh::disable()]);
+            $this->bulkProductModelDescendantsIndexer->fromProductModelCodes(
+                $productModelCodes,
+                ['index_refresh' => Refresh::disable()]
+            );
             $this->objectManager->clear();
 
             $progressBar->advance(count($productModelBulk));

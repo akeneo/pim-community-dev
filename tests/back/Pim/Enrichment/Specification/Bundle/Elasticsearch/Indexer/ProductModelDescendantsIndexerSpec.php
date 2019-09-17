@@ -3,8 +3,6 @@
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
-use Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\ProductModelIndexerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -27,12 +25,6 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType(ProductModelDescendantsIndexer::class);
-    }
-
-    function it_is_an_indexer()
-    {
-        $this->shouldImplement(IndexerInterface::class);
-        $this->shouldImplement(BulkIndexerInterface::class);
     }
 
     function it_indexes_a_product_model_descendants_that_are_variant_products(
@@ -136,18 +128,6 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $productModelRepository->findOneByIdentifier('root')->willReturn($rootProductModel);
 
         $this->fromProductModelCode('root');
-    }
-
-    function it_does_not_index_non_product_model_objects(
-        ProductIndexerInterface $productIndexer,
-        ProductModelIndexerInterface $productModelIndexer,
-        ProductModelRepositoryInterface $productModelRepository,
-        \stdClass $aWrongObject
-    ) {
-        $productIndexer->indexFromProductIdentifiers(Argument::cetera())->shouldNotBeCalled();
-        $productModelIndexer->indexFromProductModelCodes(Argument::cetera())->shouldNotBeCalled();
-
-        $this->shouldThrow(\InvalidArgumentException::class)->during('index', [$aWrongObject]);
     }
 
     function it_bulk_indexes_the_descendants_of_a_list_of_product_models(
@@ -282,6 +262,6 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $productIndexer->indexFromProductIdentifiers(Argument::cetera())->shouldNotBeCalled();
         $productModelIndexer->indexFromProductModelCodes(Argument::cetera())->shouldNotBeCalled();
 
-        $this->indexAll([]);
+        $this->fromProductModelCodes([]);
     }
 }
