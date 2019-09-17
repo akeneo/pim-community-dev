@@ -65,9 +65,9 @@ SQL;
     private function reExecuteMigration(string $migrationLabel)
     {
         $resultDown = $this->getCommandLauncher()->executeForeground(sprintf('doctrine:migrations:execute %s --down -n', $migrationLabel));
-        $this->assertEquals(0, $resultDown->getCommandStatus());
+        $this->assertEquals(0, $resultDown->getCommandStatus(), json_encode($resultDown->getCommandOutput()));
 
         $resultUp = $this->getCommandLauncher()->executeForeground(sprintf('doctrine:migrations:execute %s --up -n', $migrationLabel));
-        $this->assertEquals(0, $resultUp->getCommandStatus());
+        $this->assertEquals(0, $resultUp->getCommandStatus(), json_encode($resultUp->getCommandOutput()));
     }
 }
