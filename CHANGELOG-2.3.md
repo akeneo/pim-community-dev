@@ -1,5 +1,7 @@
 # 2.3.x
 
+- PIM-8738: Fix memory leak executing "akeneo:batch:purge-job-execution" command
+
 # 2.3.62 (2019-09-13)
 
 ## Bug fixes
