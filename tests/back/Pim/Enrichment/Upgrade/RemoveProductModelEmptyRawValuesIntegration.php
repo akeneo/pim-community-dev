@@ -11,24 +11,26 @@ class RemoveProductModelEmptyRawValuesIntegration extends TestCase
 {
     protected function getConfiguration()
     {
-        $this->catalog->useTechnicalSqlCatalog();
+        $this->catalog->useTechnicalCatalog();
     }
 
     public function testItRemovesAllEmptyValues()
     {
         $this->getConnection()->executeQuery('DELETE FROM pim_catalog_product_model');
+        $familySearch = $this->getConnection()->fetchArray('SELECT id FROM pim_catalog_family_variant LIMIT 1');
+        $familyId = $familySearch[0];
         $sql = <<<SQL
 INSERT INTO pim_catalog_product_model VALUES
-    (NULL, NULL, 10, 'pm1', '{"name": {"<all_channels>": {"<all_locales>": ""}}}', NOW(), NOW(), 0, 0, 0, 0),
-    (NULL, NULL, 10, 'pm2', '{"name": {"<all_channels>": {"<all_locales>": []}}}', NOW(), NOW(), 0, 0, 0, 0),
-    (NULL, NULL, 10, 'pm3', '{"name": {"<all_channels>": {"<all_locales>": [""]}}}', NOW(), NOW(), 0, 0, 0, 0),
-    (NULL, NULL, 10, 'pm4', '{"name": {"<all_channels>": {"<all_locales>": null}}}', NOW(), NOW(), 0, 0, 0, 0),
-    (NULL, NULL, 10, 'pm5', '{"name": {"<all_channels>": {"<all_locales>": ""}}, "foo": {"<all_channels>": {"<all_locales>": "bar"}}}', NOW(), NOW(), 0, 0, 0, 0),
-    (NULL, NULL, 10, 'pm6', '{"name": {"<all_channels>": {"fr_FR": "", "en_US": "bar"}}}', NOW(), NOW(), 0, 0, 0, 0),
-    (NULL, NULL, 10, 'pm7', '{"name": {"ecommerce": {"<all_locales>": ""}, "mobile": {"<all_locales>": "bar"}}}', NOW(), NOW(), 0, 0, 0, 0)
+    (NULL, NULL, :familyId, 'pm1', '{"name": {"<all_channels>": {"<all_locales>": ""}}}', NOW(), NOW(), 0, 0, 0, 0),
+    (NULL, NULL, :familyId, 'pm2', '{"name": {"<all_channels>": {"<all_locales>": []}}}', NOW(), NOW(), 0, 0, 0, 0),
+    (NULL, NULL, :familyId, 'pm3', '{"name": {"<all_channels>": {"<all_locales>": [""]}}}', NOW(), NOW(), 0, 0, 0, 0),
+    (NULL, NULL, :familyId, 'pm4', '{"name": {"<all_channels>": {"<all_locales>": null}}}', NOW(), NOW(), 0, 0, 0, 0),
+    (NULL, NULL, :familyId, 'pm5', '{"name": {"<all_channels>": {"<all_locales>": ""}}, "foo": {"<all_channels>": {"<all_locales>": "bar"}}}', NOW(), NOW(), 0, 0, 0, 0),
+    (NULL, NULL, :familyId, 'pm6', '{"name": {"<all_channels>": {"fr_FR": "", "en_US": "bar"}}}', NOW(), NOW(), 0, 0, 0, 0),
+    (NULL, NULL, :familyId, 'pm7', '{"name": {"ecommerce": {"<all_locales>": ""}, "mobile": {"<all_locales>": "bar"}}}', NOW(), NOW(), 0, 0, 0, 0)
 SQL;
 
-        $this->getConnection()->executeQuery($sql);
+        $this->getConnection()->executeQuery($sql, ['familyId' => $familyId]);
 
         $this->reExecuteMigration('_4_0_20190917080512_remove_product_model_empty_raw_values');
 
