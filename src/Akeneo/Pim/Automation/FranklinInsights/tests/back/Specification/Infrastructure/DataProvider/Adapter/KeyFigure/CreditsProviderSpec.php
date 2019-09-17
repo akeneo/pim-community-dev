@@ -11,21 +11,24 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Adapter;
+namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Adapter\KeyFigure;
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\StatisticsProviderInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Application\KeyFigure\DataProvider\CreditsProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Configuration;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\ValueObject\Token;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\KeyFigure\Model\Read\KeyFigure;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\KeyFigure\Model\Read\KeyFigureCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\Statistics\StatisticsWebService;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\BadRequestException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\FranklinServerException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\InvalidTokenException;
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Adapter\StatisticsProvider;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\CreditsUsageStatistics;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Adapter\KeyFigure\CreditsProvider;
 use PhpSpec\ObjectBehavior;
 
-class StatisticsProviderSpec extends ObjectBehavior
+class CreditsProviderSpec extends ObjectBehavior
 {
     public function let(
         ConfigurationRepositoryInterface $configurationRepo,
@@ -38,15 +41,15 @@ class StatisticsProviderSpec extends ObjectBehavior
         $this->beConstructedWith($configurationRepo, $api);
     }
 
-    public function it_is_a_statistics_provider(): void
+    public function it_is_a_key_figures_credits_provider(): void
     {
-        $this->shouldHaveType(StatisticsProvider::class);
-        $this->shouldImplement(StatisticsProviderInterface::class);
+        $this->shouldHaveType(CreditsProvider::class);
+        $this->shouldImplement(CreditsProviderInterface::class);
     }
 
     public function it_gets_credits_usage_statistics($api): void
     {
-        $statistics = new \Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\CreditsUsageStatistics(
+        $statistics = new CreditsUsageStatistics(
             [
                 'consumed' => 2,
                 'left' => 1,
@@ -54,12 +57,14 @@ class StatisticsProviderSpec extends ObjectBehavior
             ]
         );
         $api->getCreditsUsageStatistics()->willReturn($statistics);
-
         $api->setToken('valid-token')->shouldBeCalled();
+
         $this->getCreditsUsageStatistics()->shouldBeLike(
-            new \Akeneo\Pim\Automation\FranklinInsights\Domain\KeyFigure\Model\Read\CreditsUsageStatistics(
-                2, 1, 3
-            )
+            new KeyFigureCollection([
+                new KeyFigure('credits_consumed', 2),
+                new KeyFigure('credits_left', 1),
+                new KeyFigure('credits_total', 3),
+            ])
         );
     }
 

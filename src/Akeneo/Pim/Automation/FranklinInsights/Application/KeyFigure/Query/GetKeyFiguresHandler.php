@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\KeyFigure\Query;
 
+use Akeneo\Pim\Automation\FranklinInsights\Application\KeyFigure\DataProvider\CreditsProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\KeyFigure\Model\Read\KeyFigure;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\KeyFigure\Model\Read\KeyFigureCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Structure\Repository\FranklinAttributeAddedToFamilyRepositoryInterface;
@@ -22,16 +23,27 @@ final class GetKeyFiguresHandler
 {
     private $attributeCreatedRepository;
     private $attributeAddedToFamilyRepository;
+    private $creditsProvider;
 
     public function __construct(
         FranklinAttributeCreatedRepositoryInterface $attributeCreatedRepository,
-        FranklinAttributeAddedToFamilyRepositoryInterface $attributeAddedToFamilyRepository
+        FranklinAttributeAddedToFamilyRepositoryInterface $attributeAddedToFamilyRepository,
+        CreditsProviderInterface $creditsProvider
     ) {
         $this->attributeCreatedRepository = $attributeCreatedRepository;
         $this->attributeAddedToFamilyRepository = $attributeAddedToFamilyRepository;
+        $this->creditsProvider = $creditsProvider;
     }
 
     public function handle(GetKeyFiguresQuery $query): KeyFigureCollection
+    {
+        $creditsKeyFigures = $this->creditsProvider->getCreditsUsageStatistics();
+        $structureKeyFigures = $this->getStructureKeyFigures();
+
+        return $structureKeyFigures->merge($creditsKeyFigures);
+    }
+
+    private function getStructureKeyFigures(): KeyFigureCollection
     {
         $attributeCreatedCount = $this->attributeCreatedRepository->count();
         $attributeAddedToFamilyCount = $this->attributeAddedToFamilyRepository->count();

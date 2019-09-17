@@ -11,18 +11,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Adapter;
+namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Adapter\KeyFigure;
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\StatisticsProviderInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Application\KeyFigure\DataProvider\CreditsProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\KeyFigure\Model\Read\CreditsUsageStatistics;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\KeyFigure\Model\Read\KeyFigure;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\KeyFigure\Model\Read\KeyFigureCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\Statistics\StatisticsWebService;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\BadRequestException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\FranklinServerException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\InvalidTokenException;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Adapter\AbstractProvider;
 
-final class StatisticsProvider extends AbstractProvider implements StatisticsProviderInterface
+final class CreditsProvider extends AbstractProvider implements CreditsProviderInterface
 {
     /** @var StatisticsWebService */
     private $api;
@@ -36,7 +38,7 @@ final class StatisticsProvider extends AbstractProvider implements StatisticsPro
         $this->api = $api;
     }
 
-    public function getCreditsUsageStatistics(): CreditsUsageStatistics
+    public function getCreditsUsageStatistics(): KeyFigureCollection
     {
         $this->api->setToken($this->getToken());
 
@@ -50,10 +52,10 @@ final class StatisticsProvider extends AbstractProvider implements StatisticsPro
             throw DataProviderException::badRequestError($e);
         }
 
-        return new CreditsUsageStatistics(
-            $statistics->getConsumed(),
-            $statistics->getLeft(),
-            $statistics->getTotal()
-        );
+        return new KeyFigureCollection([
+            new KeyFigure('credits_consumed', $statistics->getConsumed()),
+            new KeyFigure('credits_left', $statistics->getLeft()),
+            new KeyFigure('credits_total', $statistics->getTotal()),
+        ]);
     }
 }

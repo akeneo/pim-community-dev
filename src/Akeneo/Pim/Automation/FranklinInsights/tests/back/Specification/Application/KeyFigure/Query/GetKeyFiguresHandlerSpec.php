@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Application\KeyFigure\Query;
 
+use Akeneo\Pim\Automation\FranklinInsights\Application\KeyFigure\DataProvider\CreditsProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Application\KeyFigure\Query\GetKeyFiguresHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\KeyFigure\Query\GetKeyFiguresQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\KeyFigure\Model\Read\KeyFigure;
@@ -25,22 +26,29 @@ class GetKeyFiguresHandlerSpec extends ObjectBehavior
 {
     public function let(
         FranklinAttributeCreatedRepositoryInterface $attributeCreatedRepository,
-        FranklinAttributeAddedToFamilyRepositoryInterface $attributeAddedToFamilyRepository
+        FranklinAttributeAddedToFamilyRepositoryInterface $attributeAddedToFamilyRepository,
+        CreditsProviderInterface $creditsProvider
     ): void {
-        $this->beConstructedWith($attributeCreatedRepository, $attributeAddedToFamilyRepository);
+        $this->beConstructedWith($attributeCreatedRepository, $attributeAddedToFamilyRepository, $creditsProvider);
     }
 
-    public function it_is_a_get_key_measurements_handler(): void
+    public function it_is_a_get_key_figures_handler(): void
     {
         $this->shouldHaveType(GetKeyFiguresHandler::class);
     }
 
-    public function it_handles_a_get_key_measurements_query(
-        $attributeCreatedRepository,
-        $attributeAddedToFamilyRepository
+    public function it_handles_a_get_key_figures_query(
+        FranklinAttributeCreatedRepositoryInterface $attributeCreatedRepository,
+        FranklinAttributeAddedToFamilyRepositoryInterface $attributeAddedToFamilyRepository,
+        CreditsProviderInterface $creditsProvider
     ): void {
         $attributeCreatedRepository->count()->willReturn(3);
         $attributeAddedToFamilyRepository->count()->willReturn(2);
+        $creditsProvider->getCreditsUsageStatistics()->willReturn(new KeyFigureCollection([
+            new KeyFigure('credits_consumed', 42),
+            new KeyFigure('credits_left', 58),
+            new KeyFigure('credits_total', 100),
+        ]));
 
         $query = new GetKeyFiguresQuery();
         $result = $this->handle($query);
@@ -51,6 +59,9 @@ class GetKeyFiguresHandlerSpec extends ObjectBehavior
                 [
                     new KeyFigure('franklin_attribute_created', 3),
                     new KeyFigure('franklin_attributed_added_to_family', 2),
+                    new KeyFigure('credits_consumed', 42),
+                    new KeyFigure('credits_left', 58),
+                    new KeyFigure('credits_total', 100),
                 ]
             )
         );

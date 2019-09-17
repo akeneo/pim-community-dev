@@ -11,8 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\FranklinInsights\Application\KeyFigure\Query;
+namespace Akeneo\Pim\Automation\FranklinInsights\Application\KeyFigure\DataProvider;
 
-final class GetCreditsQuery
+use Akeneo\Pim\Automation\FranklinInsights\Domain\KeyFigure\Model\Read\KeyFigureCollection;
+
+interface CreditsProviderInterface
 {
+    public function getCreditsUsageStatistics(): KeyFigureCollection;
 }

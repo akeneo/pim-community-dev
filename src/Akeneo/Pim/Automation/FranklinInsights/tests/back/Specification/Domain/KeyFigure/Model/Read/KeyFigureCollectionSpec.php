@@ -62,4 +62,17 @@ class KeyFigureCollectionSpec extends ObjectBehavior
             ]
         );
     }
+
+    public function it_merges_key_figures(): void
+    {
+        $keyFigures = new KeyFigureCollection([
+            new KeyFigure('credits_consumed', 42),
+        ]);
+
+        $this->merge($keyFigures)->shouldBeLike(new KeyFigureCollection([
+            new KeyFigure('franklin_attribute_created', 3),
+            new KeyFigure('franklin_attributed_added_to_family', 2),
+            new KeyFigure('credits_consumed', 42),
+        ]));
+    }
 }
