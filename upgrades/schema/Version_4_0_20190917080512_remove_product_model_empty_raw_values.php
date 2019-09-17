@@ -5,6 +5,7 @@ namespace Pim\Upgrade\Schema;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelIndexer;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\EmptyValuesCleaner;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Types\Type;
 use Doctrine\Migrations\AbstractMigration;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -47,7 +48,8 @@ final class Version_4_0_20190917080512_remove_product_model_empty_raw_values
             foreach ($rows as $row) {
                 $productModelsToProcess = true;
                 $rawValues = json_decode($row['raw_values'], true);
-                $cleanRawValues = $this->getValueCleaner()->cleanAllValues(['ID' => $rawValues])['ID'];
+                $cleanRawValues = $this->getValueCleaner()->cleanAllValues(['ID' => $rawValues]);
+                $cleanRawValues = isset($cleanRawValues['ID']) ? $cleanRawValues['ID'] : (object) [];
                 if ($rawValues !== $cleanRawValues) {
                     $this->connection->executeQuery(
                         'UPDATE pim_catalog_product_model SET raw_values = :rawValues WHERE code = :code',

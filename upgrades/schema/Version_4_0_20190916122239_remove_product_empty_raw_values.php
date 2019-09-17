@@ -53,7 +53,8 @@ final class Version_4_0_20190916122239_remove_product_empty_raw_values
             foreach ($rows as $row) {
                 $productsToProcess = true;
                 $rawValues = json_decode($row['raw_values'], true);
-                $cleanRawValues = $this->getValueCleaner()->cleanAllValues(['ID' => $rawValues])['ID'];
+                $cleanRawValues = $this->getValueCleaner()->cleanAllValues(['ID' => $rawValues]);
+                $cleanRawValues = isset($cleanRawValues['ID']) ? $cleanRawValues['ID'] : (object) [];
                 if ($rawValues !== $cleanRawValues) {
                     $this->connection->executeQuery(
                         'UPDATE pim_catalog_product SET raw_values = :rawValues WHERE identifier = :identifier',
