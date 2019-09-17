@@ -6,7 +6,7 @@ use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
 use Akeneo\Pim\Enrichment\Component\Category\Query\AscendantCategoriesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\MissingRequiredAttributesCalculator;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
@@ -55,7 +55,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         MissingAssociationAdder $missingAssociationAdder,
         NormalizerInterface $parentAssociationsNormalizer,
         CatalogContext $catalogContext,
-        CompletenessCalculator $completenessCalculator,
+        MissingRequiredAttributesCalculator $missingRequiredAttributesCalculator,
         ProductCompletenessWithMissingAttributeCodesCollectionNormalizer $completenessNormalizer
     ) {
         $this->beConstructedWith(
@@ -77,7 +77,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             $missingAssociationAdder,
             $parentAssociationsNormalizer,
             $catalogContext,
-            $completenessCalculator,
+            $missingRequiredAttributesCalculator,
             $completenessNormalizer
         );
     }
@@ -102,7 +102,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         ImageAsLabel $imageAsLabel,
         AscendantCategoriesInterface $ascendantCategoriesQuery,
         UserContext $userContext,
-        CompletenessCalculator $completenessCalculator,
+        MissingRequiredAttributesCalculator $missingRequiredAttributesCalculator,
         ProductCompletenessWithMissingAttributeCodesCollectionNormalizer $completenessNormalizer,
         AttributeInterface $pictureAttribute,
         ProductModelInterface $productModel,
@@ -215,7 +215,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $productCompletenessWithMissingAttributeCodesCollection = new ProductCompletenessWithMissingAttributeCodesCollection(
             12, []
         );
-        $completenessCalculator->fromEntityWithFamily($productModel)->willReturn(
+        $missingRequiredAttributesCalculator->fromEntityWithFamily($productModel)->willReturn(
             $productCompletenessWithMissingAttributeCodesCollection
         );
         $completenessNormalizer->normalize($productCompletenessWithMissingAttributeCodesCollection)
@@ -286,7 +286,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         ImageAsLabel $imageAsLabel,
         AscendantCategoriesInterface $ascendantCategoriesQuery,
         UserContext $userContext,
-        CompletenessCalculator $completenessCalculator,
+        MissingRequiredAttributesCalculator $missingRequiredAttributesCalculator,
         ProductCompletenessWithMissingAttributeCodesCollectionNormalizer $completenessNormalizer,
         AttributeInterface $pictureAttribute,
         ProductModelInterface $productModel,
@@ -381,7 +381,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $productCompletenessWithMissingAttributeCodesCollection = new ProductCompletenessWithMissingAttributeCodesCollection(
             12, []
         );
-        $completenessCalculator->fromEntityWithFamily($productModel)->willReturn(
+        $missingRequiredAttributesCalculator->fromEntityWithFamily($productModel)->willReturn(
             $productCompletenessWithMissingAttributeCodesCollection
         );
         $completenessNormalizer->normalize($productCompletenessWithMissingAttributeCodesCollection)
@@ -441,7 +441,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         ImageAsLabel $imageAsLabel,
         AscendantCategoriesInterface $ascendantCategoriesQuery,
         UserContext $userContext,
-        CompletenessCalculator $completenessCalculator,
+        MissingRequiredAttributesCalculator $missingRequiredAttributesCalculator,
         ProductCompletenessWithMissingAttributeCodesCollectionNormalizer $completenessNormalizer,
         AttributeInterface $pictureAttribute,
         ProductModelInterface $productModel,
@@ -548,7 +548,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $productCompletenessWithMissingAttributeCodesCollection = new ProductCompletenessWithMissingAttributeCodesCollection(
             12, []
         );
-        $completenessCalculator->fromEntityWithFamily($productModel)->willReturn(
+        $missingRequiredAttributesCalculator->fromEntityWithFamily($productModel)->willReturn(
             $productCompletenessWithMissingAttributeCodesCollection
         );
         $completenessNormalizer->normalize($productCompletenessWithMissingAttributeCodesCollection)

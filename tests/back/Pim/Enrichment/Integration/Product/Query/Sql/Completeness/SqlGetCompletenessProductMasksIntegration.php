@@ -234,6 +234,17 @@ class SqlGetCompletenessProductMasksIntegration extends TestCase
         $this->assertSameCompletenessProductMasks($expected, [$result]);
     }
 
+    function test_that_it_returns_an_empty_mask_for_an_empty_value_collection()
+    {
+        $values = new WriteValueCollection();
+        $expected = [
+            new CompletenessProductMask(-1, 'productA', 'familyA', []),
+        ];
+
+        $result = $this->getCompletenessProductMasks()->fromValueCollection(-1, 'productA', 'familyA', $values);
+        $this->assertSameCompletenessProductMasks($expected, [$result]);
+    }
+
     protected function getConfiguration()
     {
         return $this->catalog->useTechnicalSqlCatalog();

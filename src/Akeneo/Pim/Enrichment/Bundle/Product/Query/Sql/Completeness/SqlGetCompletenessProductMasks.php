@@ -116,7 +116,7 @@ SQL;
     {
         $attributeCodes = [];
         foreach ($rows as $row) {
-            $attributeCodes += array_merge($attributeCodes, array_keys($row['cleanedRawValues']));
+            $attributeCodes = array_merge($attributeCodes, array_keys($row['cleanedRawValues']));
         }
         $attributes = $this->getAttributes->forCodes(array_unique($attributeCodes));
 
@@ -160,11 +160,15 @@ SQL;
             }
         }
 
+        if (empty($masks)) {
+            return [];
+        }
+
         return array_merge(...$masks);
     }
 
     private function cleanEmptyValues(array $rawValues): array
     {
-        return $this->emptyValuesCleaner->cleanAllValues(['ID' => $rawValues])['ID'];
+        return $this->emptyValuesCleaner->cleanAllValues(['ID' => $rawValues])['ID'] ?? [];
     }
 }

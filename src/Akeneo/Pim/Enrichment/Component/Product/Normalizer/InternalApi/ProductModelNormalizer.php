@@ -8,7 +8,7 @@ use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
 use Akeneo\Pim\Enrichment\Component\Category\Query\AscendantCategoriesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\MissingRequiredAttributesCalculator;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
@@ -86,8 +86,8 @@ class ProductModelNormalizer implements NormalizerInterface
     /** @var CatalogContext */
     private $catalogContext;
 
-    /** @var CompletenessCalculator */
-    private $completenessCalculator;
+    /** @var MissingRequiredAttributesCalculator */
+    private $missingRequiredAttributesCalculator;
 
     /** @var ProductCompletenessWithMissingAttributeCodesCollectionNormalizer */
     private $completenessNormalizer;
@@ -111,7 +111,7 @@ class ProductModelNormalizer implements NormalizerInterface
         MissingAssociationAdder $missingAssociationAdder,
         NormalizerInterface $parentAssociationsNormalizer,
         CatalogContext $catalogContext,
-        CompletenessCalculator $completenessCalculator,
+        MissingRequiredAttributesCalculator $missingRequiredAttributesCalculator,
         ProductCompletenessWithMissingAttributeCodesCollectionNormalizer $completenessNormalizer
     ) {
         $this->normalizer = $normalizer;
@@ -132,7 +132,7 @@ class ProductModelNormalizer implements NormalizerInterface
         $this->missingAssociationAdder = $missingAssociationAdder;
         $this->parentAssociationsNormalizer = $parentAssociationsNormalizer;
         $this->catalogContext = $catalogContext;
-        $this->completenessCalculator = $completenessCalculator;
+        $this->missingRequiredAttributesCalculator = $missingRequiredAttributesCalculator;
         $this->completenessNormalizer = $completenessNormalizer;
     }
 
@@ -192,7 +192,7 @@ class ProductModelNormalizer implements NormalizerInterface
 
         $scopeCode = $context['channel'] ?? null;
         $requiredMissingAttributes = $this->completenessNormalizer->normalize(
-            $this->completenessCalculator->fromEntityWithFamily($productModel)
+            $this->missingRequiredAttributesCalculator->fromEntityWithFamily($productModel)
         );
 
         $normalizedProductModel['meta'] = [
