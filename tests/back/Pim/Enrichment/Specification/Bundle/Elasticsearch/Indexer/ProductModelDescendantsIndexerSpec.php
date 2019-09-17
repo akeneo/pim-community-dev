@@ -2,12 +2,11 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\ProductModelIndexerInterface;
-use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
-use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelDescendantsIndexer;
 use PhpSpec\ObjectBehavior;
@@ -17,9 +16,12 @@ use Prophecy\Argument;
 
 class ProductModelDescendantsIndexerSpec extends ObjectBehavior
 {
-    function let(ProductIndexerInterface $productIndexer, ProductModelIndexerInterface $productModelIndexer)
-    {
-        $this->beConstructedWith($productIndexer, $productModelIndexer);
+    function let(
+        ProductIndexerInterface $productIndexer,
+        ProductModelIndexerInterface $productModelIndexer,
+        ProductModelRepositoryInterface $productModelRepository
+    ) {
+        $this->beConstructedWith($productIndexer, $productModelIndexer, $productModelRepository);
     }
 
     function it_is_initializable()
@@ -34,8 +36,9 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
     }
 
     function it_indexes_a_product_model_descendants_that_are_variant_products(
-        $productIndexer,
-        $productModelIndexer,
+        ProductIndexerInterface $productIndexer,
+        ProductModelIndexerInterface $productModelIndexer,
+        ProductModelRepositoryInterface $productModelRepository,
         ProductModelInterface $productModel,
         ArrayCollection $productChildren,
         \ArrayIterator $productChildrenIterator,
@@ -62,12 +65,15 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $productModelChildren->isEmpty()->willReturn(true);
         $productModelIndexer->indexFromProductModelCode(Argument::cetera())->shouldNotBeCalled();
 
-        $this->index($productModel);
+        $productModelRepository->findOneByIdentifier('pm')->willReturn($productModel);
+
+        $this->fromProductModelCode('pm');
     }
 
     function it_indexes_a_product_model_descendants_that_are_product_models_and_variant_products(
-        $productIndexer,
-        $productModelIndexer,
+        ProductIndexerInterface $productIndexer,
+        ProductModelIndexerInterface $productModelIndexer,
+        ProductModelRepositoryInterface $productModelRepository,
         ProductModelInterface $rootProductModel,
         ProductModelInterface $childProductModel,
         ProductInterface $childVariantProduct1,
@@ -127,12 +133,15 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $childVariantProduct2->getIdentifier()->willReturn('bar');
         $productIndexer->indexFromProductIdentifiers(['foo', 'bar'], [])->shouldBeCalled();
 
-        $this->index($rootProductModel);
+        $productModelRepository->findOneByIdentifier('root')->willReturn($rootProductModel);
+
+        $this->fromProductModelCode('root');
     }
 
     function it_does_not_index_non_product_model_objects(
-        $productIndexer,
-        $productModelIndexer,
+        ProductIndexerInterface $productIndexer,
+        ProductModelIndexerInterface $productModelIndexer,
+        ProductModelRepositoryInterface $productModelRepository,
         \stdClass $aWrongObject
     ) {
         $productIndexer->indexFromProductIdentifiers(Argument::cetera())->shouldNotBeCalled();
@@ -142,8 +151,9 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
     }
 
     function it_bulk_indexes_the_descendants_of_a_list_of_product_models(
-        $productIndexer,
-        $productModelIndexer,
+        ProductIndexerInterface $productIndexer,
+        ProductModelIndexerInterface $productModelIndexer,
+        ProductModelRepositoryInterface $productModelRepository,
         ProductModelInterface $productModel1,
         ProductModelInterface $productModel2,
         ProductInterface $childProduct1,
@@ -192,11 +202,16 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $productModelChildren2->isEmpty()->willReturn(true);
         $productModelIndexer->indexFromProductModelCodes(Argument::cetera())->shouldNotBeCalled();
 
-        $this->indexAll([$productModel1, $productModel2]);
+        $productModelRepository->findOneByIdentifier('pm1')->willReturn($productModel1);
+        $productModelRepository->findOneByIdentifier('pm2')->willReturn($productModel2);
+
+        $this->fromProductModelCodes(['pm1', 'pm2']);
     }
 
     function it_indexes_a_product_model_and_its_descendants_products_with_options(
-        $productIndexer,
+        ProductIndexerInterface $productIndexer,
+        ProductModelIndexerInterface $productModelIndexer,
+        ProductModelRepositoryInterface $productModelRepository,
         ProductModelInterface $productModel,
         ProductInterface $productChild,
         ArrayCollection $children,
@@ -222,11 +237,15 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
             )
             ->shouldBeCalled();
 
-        $this->index($productModel, ['my_option_key' => 'my_option_value', 'my_option_key2' => 'my_option_value2']);
+        $productModelRepository->findOneByIdentifier('pm')->willReturn($productModel);
+
+        $this->fromProductModelCode('pm', ['my_option_key' => 'my_option_value', 'my_option_key2' => 'my_option_value2']);
     }
 
     function it_indexes_a_product_model_and_its_descendants_product_models_with_options(
-        $productModelIndexer,
+        ProductIndexerInterface $productIndexer,
+        ProductModelIndexerInterface $productModelIndexer,
+        ProductModelRepositoryInterface $productModelRepository,
         ProductModelInterface $productModel,
         ProductModelInterface $productModelChild,
         ArrayCollection $children,
@@ -250,25 +269,15 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $productModelIndexer->indexFromProductModelCodes(['code'], ['my_option_key' => 'my_option_value', 'my_option_key2' => 'my_option_value2'])
             ->shouldBeCalled();
 
-        $this->index($productModel, ['my_option_key' => 'my_option_value', 'my_option_key2' => 'my_option_value2']);
-    }
+        $productModelRepository->findOneByIdentifier('pm')->willReturn($productModel);
 
-    function it_does_not_bulk_index_non_product_model_objects(
-        $productIndexer,
-        $productModelIndexer,
-        \stdClass $aWrongObject1,
-        \stdClass $aWrongObject2
-    ) {
-        $productIndexer->indexFromProductIdentifiers(Argument::cetera())->shouldNotBeCalled();
-        $productModelIndexer->indexFromProductModelCodes(Argument::cetera())->shouldNotBeCalled();
-
-        $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('indexAll', [[$aWrongObject1, $aWrongObject2]]);
+        $this->fromProductModelCode('pm', ['my_option_key' => 'my_option_value', 'my_option_key2' => 'my_option_value2']);
     }
 
     function it_does_not_bulk_index_empty_arrays_of_product_models(
-        $productIndexer,
-        $productModelIndexer
+        ProductIndexerInterface $productIndexer,
+        ProductModelIndexerInterface $productModelIndexer,
+        ProductModelRepositoryInterface $productModelRepository
     ) {
         $productIndexer->indexFromProductIdentifiers(Argument::cetera())->shouldNotBeCalled();
         $productModelIndexer->indexFromProductModelCodes(Argument::cetera())->shouldNotBeCalled();

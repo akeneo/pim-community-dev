@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
@@ -31,16 +32,35 @@ class ProductModelDescendantsIndexer implements
     /** @var ProductModelIndexerInterface */
     private $productModelIndexer;
 
-    /**
-     * @param ProductIndexerInterface $productIndexer
-     * @param ProductModelIndexerInterface $productModelIndexer
-     */
+    /** @var ProductModelRepositoryInterface */
+    private $productModelRepository;
+
     public function __construct(
         ProductIndexerInterface $productIndexer,
-        ProductModelIndexerInterface $productModelIndexer
+        ProductModelIndexerInterface $productModelIndexer,
+        ProductModelRepositoryInterface $productModelRepository
     ) {
         $this->productIndexer = $productIndexer;
         $this->productModelIndexer = $productModelIndexer;
+        $this->productModelRepository = $productModelRepository;
+    }
+
+    public function fromProductModelCode(string $productModelCode, array $options = []): void
+    {
+        $productModel = $this->productModelRepository->findOneByIdentifier($productModelCode);
+
+        $this->index($productModel, $options);
+    }
+
+    public function fromProductModelCodes(array $productModelCodes, array $options = []): void
+    {
+        if (empty($productModelCodes)) {
+            return;
+        }
+
+        foreach ($productModelCodes as $productModelCode) {
+            $this->fromProductModelCode($productModelCode, $options);
+        }
     }
 
     /**
@@ -49,6 +69,7 @@ class ProductModelDescendantsIndexer implements
      * Indexes all product variants in the dedicated index.
      *
      * {@inheritdoc}
+     * @deprecated
      */
     public function index($object, array $options = []) : void
     {
@@ -71,6 +92,7 @@ class ProductModelDescendantsIndexer implements
      * product models).
      *
      * {@inheritdoc}
+     * @deprecated
      */
     public function indexAll(array $objects, array $options = []) : void
     {
