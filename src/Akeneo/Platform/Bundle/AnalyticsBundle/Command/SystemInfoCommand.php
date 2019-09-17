@@ -3,7 +3,8 @@
 namespace Akeneo\Platform\Bundle\AnalyticsBundle\Command;
 
 use Akeneo\Platform\Bundle\AnalyticsBundle\Command\Style\SystemInfoStyle;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Akeneo\Tool\Component\Analytics\ChainedDataCollector;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\TableSeparator;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -16,15 +17,32 @@ use Symfony\Component\Translation\TranslatorInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SystemInfoCommand extends ContainerAwareCommand
+class SystemInfoCommand extends Command
 {
+    protected static $defaultName = 'pim:system:information';
+
+    /** @var TranslatorInterface */
+    private $translator;
+
+    /** @var ChainedDataCollector */
+    private $chainedDataCollector;
+
+    public function __construct(
+        TranslatorInterface $translator,
+        ChainedDataCollector $chainedDataCollector
+    ) {
+        parent::__construct();
+
+        $this->translator = $translator;
+        $this->chainedDataCollector = $chainedDataCollector;
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
         $this
-            ->setName('pim:system:information')
             ->setDescription('Displays Akeneo PIM system information');
     }
 
@@ -33,11 +51,10 @@ class SystemInfoCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $translator = $this->getContainer()->get('translator');
         $systemInfoStyle = new SystemInfoStyle($input, $output);
 
-        $systemInfoStyle->title($translator->trans('pim_analytics.system_info.title'));
-        $systemInfoStyle->table([], $this->formatCollectedData($translator, $this->getCollectedData()));
+        $systemInfoStyle->title($this->translator->trans('pim_analytics.system_info.title'));
+        $systemInfoStyle->table([], $this->formatCollectedData($this->translator, $this->getCollectedData()));
     }
 
     /**
@@ -47,9 +64,7 @@ class SystemInfoCommand extends ContainerAwareCommand
      */
     protected function getCollectedData()
     {
-        return $this->getContainer()
-            ->get('pim_analytics.data_collector.chained')
-            ->collect('system_info_report');
+        return $this->chainedDataCollector->collect('system_info_report');
     }
 
     /**

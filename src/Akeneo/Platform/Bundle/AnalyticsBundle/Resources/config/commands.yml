@@ -1,0 +1,7 @@
+services:
+    Akeneo\Platform\Bundle\AnalyticsBundle\Command\SystemInfoCommand:
+        arguments:
+            - '@translator'
+            - '@pim_analytics.data_collector.chained'
+        tags:
+            - { name: console.command }
