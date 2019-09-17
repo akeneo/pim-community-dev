@@ -56,6 +56,7 @@ services:
             - '@akeneo_batch_queue.launcher.queue_job_launcher'
             - '@akeneo_batch.job.job_instance_repository'
             - '%tmp_storage_dir%'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
 
     pimee_product_asset.controller.category_tree:
         class: 'Akeneo\Asset\Bundle\Controller\UI\AssetCategoryTreeController'

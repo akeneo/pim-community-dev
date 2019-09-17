@@ -99,6 +99,11 @@ class MassUploadIntoAssetCollectionProcessor
     ): ProcessedItemList {
         $processedItems = new ProcessedItemList();
 
+        if (empty($importedFileNames)) {
+            return $processedItems;
+        }
+
+        $this->importer->import($uploadContext, $importedFileNames);
         $importedFiles = $this->importer->getImportedFilesFromNames($uploadContext, $importedFileNames);
 
         $importedAssetCodes = [];

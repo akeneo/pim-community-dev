@@ -17,11 +17,10 @@ use Akeneo\Asset\Component\Upload\ImporterInterface;
 use Akeneo\Asset\Component\Upload\UploadCheckerInterface;
 use Akeneo\Asset\Component\Upload\UploadContext;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
+use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Symfony\Component\Filesystem\Exception\IOException;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -56,6 +55,9 @@ class MassUploadController
     /** @var string */
     protected $tmpStorageDir;
 
+    /** @var FilesystemProvider */
+    private $filesystemProvider;
+
     /**
      * @param AssetRepositoryInterface              $assetRepository
      * @param UploadCheckerInterface                $uploadChecker
@@ -72,7 +74,8 @@ class MassUploadController
         TokenStorageInterface $tokenStorage,
         JobLauncherInterface $jobLauncher,
         IdentifiableObjectRepositoryInterface $jobInstanceRepository,
-        $tmpStorageDir
+        $tmpStorageDir,
+        FilesystemProvider $filesystemProvider
     ) {
         $this->assetRepository = $assetRepository;
         $this->uploadChecker = $uploadChecker;
@@ -81,6 +84,7 @@ class MassUploadController
         $this->jobLauncher = $jobLauncher;
         $this->jobInstanceRepo = $jobInstanceRepository;
         $this->tmpStorageDir = $tmpStorageDir;
+        $this->filesystemProvider = $filesystemProvider;
     }
 
     /**
@@ -102,7 +106,7 @@ class MassUploadController
             $this->uploadChecker
                 ->validateUpload(
                     $parsedFilename,
-                    $uploadContext->getTemporaryUploadDirectory(),
+                    $uploadContext->getTemporaryUploadDirectoryRelativePath(),
                     $uploadContext->getTemporaryImportDirectory()
                 );
         } catch (UploadException $e) {
@@ -128,22 +132,17 @@ class MassUploadController
     {
         $response = new JsonResponse();
         $files = $request->files;
-        $uploaded = null;
 
         if ($files->count() > 0) {
             $file = $files->getIterator()->current();
-            $originalFilename = $file->getClientOriginalName();
-            $originalFilename = basename(trim($originalFilename));
-            $parsedFilename = $this->uploadChecker->getParsedFilename($originalFilename);
-            $targetDir = $this->getUploadContext()->getTemporaryUploadDirectory();
-            $uploaded = $file->move($targetDir, $parsedFilename->getRawFilename());
-        }
-
-        if (null === $uploaded) {
-            $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
-            $response->setData([
-                'error' => 'pimee_product_asset.mass_upload.error.upload'
-            ]);
+            try {
+                $this->uploadFile($file);
+            } catch (UploadException $exception) {
+                $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+                $response->setData([
+                    'error' => 'pimee_product_asset.mass_upload.error.upload'
+                ]);
+            }
         }
 
         return $response;
@@ -163,15 +162,15 @@ class MassUploadController
             return new RedirectResponse('/');
         }
 
-        $filePath = $this->getUploadContext()->getTemporaryUploadDirectory()
+        $filePath = $this->getUploadContext()->getTemporaryUploadDirectoryRelativePath()
             . DIRECTORY_SEPARATOR . $this->cleanFilename($filename);
 
         $response = new JsonResponse();
 
         try {
-            $fs = new Filesystem();
-            $fs->remove($filePath);
-        } catch (IOException $e) {
+            $uploadFileSystem = $this->filesystemProvider->getFilesystem('tmpAssetUpload');
+            $uploadFileSystem->delete($filePath);
+        } catch (\Exception $e) {
             $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
         }
 
@@ -187,24 +186,15 @@ class MassUploadController
      */
     public function listAction()
     {
-        $uploadContext = $this->getUploadContext();
-        $tmpUploadDirectory = $uploadContext->getTemporaryUploadDirectory();
+        $uploadedFiles = $this->getUploadedFiles($this->getUploadContext());
         $files = [];
 
-        if (is_dir($tmpUploadDirectory)) {
-            $storedFiles = array_diff(scandir($tmpUploadDirectory), ['.', '..']);
-
-            $mimeTypeGuesser = MimeTypeGuesser::getInstance();
-
-            foreach ($storedFiles as $file) {
-                $filePath = $uploadContext->getTemporaryUploadDirectory() . DIRECTORY_SEPARATOR . $file;
-                $mimeType = $mimeTypeGuesser->guess($filePath);
-                $files[] = [
-                    'name' => $file,
-                    'type' => $mimeType,
-                    'size' => filesize($filePath),
-                ];
-            }
+        foreach ($uploadedFiles as $file) {
+            $files[] = [
+                'name' => $file['basename'],
+                'type' => $file['extension'],
+                'size' => $file['size'],
+            ];
         }
 
         return new JsonResponse(['files' => $files]);
@@ -226,7 +216,13 @@ class MassUploadController
         $jobInstance = $this->jobInstanceRepo->findOneByIdentifier('apply_assets_mass_upload');
         $user =  $this->tokenStorage->getToken()->getUser();
 
-        $configuration = ['user_to_notify' => $user->getUsername()];
+        $uploadContext = $this->getUploadContext();
+        $uploadedFiles = $this->getUploadedFiles($uploadContext);
+        $this->prepareFilesToImport($uploadContext, $uploadedFiles);
+
+        $configuration = [
+            'user_to_notify' => $user->getUsername(),
+        ];
 
         $jobExecution = $this->jobLauncher->launch($jobInstance, $user, $configuration);
 
@@ -255,20 +251,19 @@ class MassUploadController
             return new RedirectResponse('/');
         }
 
-        $result = $this->importer->import($this->getUploadContext());
         $jobInstance = $this->jobInstanceRepo->findOneByIdentifier('apply_assets_mass_upload_into_asset_collection');
         $user = $this->tokenStorage->getToken()->getUser();
 
-        $importedFileNames = [];
-        foreach ($result as $import) {
-            if (isset($import['error']) && !empty($import['error'])) {
-                continue;
-            }
-            $importedFileNames[] = $import['file'];
-        }
+        $uploadContext = $this->getUploadContext();
+        $uploadedFiles = $this->getUploadedFiles($uploadContext);
+        $this->prepareFilesToImport($uploadContext, $uploadedFiles);
+
+        $importedFileNames = array_map(function ($uploadedFile) {
+            return $uploadedFile['basename'];
+        }, $uploadedFiles);
 
         if (empty($importedFileNames)) {
-            return new JsonResponse(['result' => $result], 500);
+            return new JsonResponse(['result' => []], 500);
         }
 
         $configuration = [
@@ -283,7 +278,7 @@ class MassUploadController
         $jobExecution = $this->jobLauncher->launch($jobInstance, $user, $configuration);
 
         return new JsonResponse([
-            'result' => $result,
+            'result' => [],
             'jobId'  => $jobExecution->getId(),
         ]);
     }
@@ -314,5 +309,61 @@ class MassUploadController
         $filename = urldecode($filename);
 
         return basename(trim($filename));
+    }
+
+    private function uploadFile(UploadedFile $file)
+    {
+        $originalFilename = $file->getClientOriginalName();
+        $originalFilename = basename(trim($originalFilename));
+        $parsedFilename = $this->uploadChecker->getParsedFilename($originalFilename);
+        $targetDir = $this->getUploadContext()->getTemporaryUploadDirectoryRelativePath();
+        $uploadFileSystem = $this->filesystemProvider->getFilesystem('tmpAssetUpload');
+
+        if (false === $resource = fopen($file->getPathname(), 'r')) {
+            throw new UploadException(sprintf('Unable to open file "%s"', $file->getPathname()));
+        }
+
+        $options = [];
+        $mimeType = $file->getMimeType();
+        if (null !== $mimeType) {
+            /*
+             * AWS S3 (see PIM-5405) and Google Cloud Storage (see PIM-8673) require a Content-Type metadata to properly handle a file type.
+             * But each Flysystem adapter use is own Config format.
+             */
+            $options['ContentType'] = $mimeType; // AWS S3
+            $options['metadata']['contentType'] = $mimeType; // Google Cloud Storage
+        }
+        $targetPath = rtrim($targetDir, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $parsedFilename->getRawFilename();
+
+        if (false === $uploadFileSystem->writeStream($targetPath, $resource, $options)) {
+            throw new UploadException(sprintf('Unable to upload file "%s"', $file->getPathname()));
+        }
+    }
+
+    /**
+     * (see PIM-8712) To avoid duplication, the uploaded files are temporarily moved until the job is processed.
+     *  This behavior should be handled by the Importer, but it would need some refactoring with BC-breaks.
+     */
+    private function prepareFilesToImport(UploadContext $uploadContext, array $files): void
+    {
+        $uploadFileSystem = $this->filesystemProvider->getFilesystem('tmpAssetUpload');
+        $importDirectory = $uploadContext->getTemporaryImportDirectoryRelativePath();
+
+        foreach ($files as $file) {
+            $importPath = $importDirectory . DIRECTORY_SEPARATOR . $file['basename'];
+            $uploadFileSystem->rename($file['path'], $importPath);
+        }
+    }
+
+    private function getUploadedFiles(UploadContext $uploadContext): array
+    {
+        $tmpUploadDirectory = $uploadContext->getTemporaryUploadDirectoryRelativePath();
+        $uploadFileSystem = $this->filesystemProvider->getFilesystem('tmpAssetUpload');
+
+        $uploadedFiles = array_filter($uploadFileSystem->listContents($tmpUploadDirectory, true), function ($file) {
+            return $file['type'] === 'file';
+        });
+
+        return $uploadedFiles;
     }
 }

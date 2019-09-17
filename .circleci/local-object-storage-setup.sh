@@ -38,6 +38,10 @@ oneup_flysystem:
             awss3v3:
                 client: acme.s3_client
                 bucket: archive
+        tmp_asset_upload_adapter:
+            awss3v3:
+                client: acme.s3_client
+                bucket: asset
 
 OBJECT_STORAGE_CONF
 

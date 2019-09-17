@@ -3,6 +3,9 @@ oneup_flysystem:
         asset_storage_adapter:
             local:
                 directory: '%asset_storage_dir%'
+        tmp_asset_upload_adapter:
+            local:
+                directory: '%upload_tmp_dir%'
         logs_adapter:
             local:
                 directory: '%kernel.logs_dir%'
@@ -10,6 +13,9 @@ oneup_flysystem:
         asset_storage:
             adapter: asset_storage_adapter
             mount: assetStorage
+        tmp_asset_upload_adapter:
+            adapter: tmp_asset_upload_adapter
+            mount: tmpAssetUpload
         logs_storage:
             adapter: logs_adapter
             mount: logsStorage
