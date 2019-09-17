@@ -7,7 +7,6 @@ jobs:
             default: true
     machine:
       image: ubuntu-1604:201903-01
-      docker_layer_caching: true
     steps:
       - checkout
       - run:
@@ -75,7 +74,6 @@ jobs:
   back_static_and_acceptance:
       machine:
           image: ubuntu-1604:201903-01
-          docker_layer_caching: true
       steps:
           - attach_workspace:
                 at: ~/
@@ -146,7 +144,6 @@ jobs:
   back_phpunit:
       machine:
           image: ubuntu-1604:201903-01
-          docker_layer_caching: true
       parallelism: 10
       steps:
           - attach_workspace:
@@ -196,7 +193,6 @@ jobs:
   back_behat_legacy:
     machine:
         image: ubuntu-1604:201903-01
-        docker_layer_caching: true
     parallelism: 20
     steps:
       - attach_workspace:
@@ -252,7 +248,6 @@ jobs:
   front_static_acceptance_and_integration:
       machine:
           image: ubuntu-1604:201903-01
-          docker_layer_caching: true
       steps:
         - attach_workspace:
             at: ~/
@@ -277,7 +272,6 @@ jobs:
   back_performance:
     machine:
         image: ubuntu-1604:201903-01
-        docker_layer_caching: true
     steps:
       - attach_workspace:
           at: ~/
