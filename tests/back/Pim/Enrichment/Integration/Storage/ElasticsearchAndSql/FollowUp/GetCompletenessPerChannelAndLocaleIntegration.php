@@ -30,6 +30,7 @@ class GetCompletenessPerChannelAndLocaleIntegration extends AbstractProductQuery
             'currencies'    => ['USD'],
             'locales'       => ['fr_FR', 'en_US'],
             'labels' => [
+                'de_DE' => 'Ecommerce DE',
                 'fr_FR' => 'Ecommerce FR',
                 'en_US' => 'Ecommerce US',
             ]
@@ -104,8 +105,15 @@ class GetCompletenessPerChannelAndLocaleIntegration extends AbstractProductQuery
             new LocaleCompleteness('English (United States)', 5)
         ];
         $channelCompletenesses = [
-            new ChannelCompleteness('Ecommerce US', 10, 10, $localeCompletenessesEcommerce),
-            new ChannelCompleteness('Mobile US', 5, 10, $localeCompletenessesMobile)
+            new ChannelCompleteness('ecommerce', 10, 10, $localeCompletenessesEcommerce, [
+                'de_DE' => 'Ecommerce DE',
+                'en_US' => 'Ecommerce US',
+                'fr_FR' => 'Ecommerce FR'
+            ]),
+            new ChannelCompleteness('mobile', 5, 10, $localeCompletenessesMobile, [
+                'en_US' => 'Mobile US',
+                'fr_FR' => 'Mobile FR'
+            ])
         ];
         $completenessWidget = new CompletenessWidget($channelCompletenesses);
 
