@@ -222,6 +222,10 @@ akeneo_franklin_insights:
             credits_total: Credits total
             credits_consumed: Credits consummed
             credits_left: Credits left
+            value_validated: Attribute value validated
+            value_in_error: Attribute value in error
+            value_suggested: Attribute value suggested
+            name_and_value_suggested: Attribute name and value suggested
 
 batch_jobs:
     default_steps:

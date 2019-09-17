@@ -18,6 +18,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\Au
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\BadRequestException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\FranklinServerException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\InvalidTokenException;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\QualityHighlightsMetrics;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use Symfony\Component\HttpFoundation\Response;
@@ -181,5 +182,31 @@ class QualityHighlightsWebService extends AbstractApi implements AuthenticatedAp
                 $e->getMessage()
             ));
         }
+    }
+
+    public function getMetrics(): QualityHighlightsMetrics
+    {
+        // TODO: change this end-point. Channel and local are irrelevant.
+        $route = $this->uriGenerator->generate('/api/quality-highlights/ecommerce/en_US');
+
+        try {
+            $response = $this->httpClient->request('GET', $route);
+        } catch (ServerException $e) {
+            throw new FranklinServerException('Something went wrong while fetching quality highlight metrics');
+        } catch (ClientException $e) {
+            if (Response::HTTP_UNAUTHORIZED === $e->getCode()) {
+                throw new InvalidTokenException();
+            }
+
+            throw new BadRequestException('Something went wrong while fetching quality highlight metrics');
+        }
+
+        $metrics = json_decode($response->getBody()->getContents(), true);
+
+        if (!is_array($metrics)) {
+            throw new FranklinServerException('Response data incorrect when fetching quality highlight metrics');
+        }
+
+        return new QualityHighlightsMetrics($metrics);
     }
 }

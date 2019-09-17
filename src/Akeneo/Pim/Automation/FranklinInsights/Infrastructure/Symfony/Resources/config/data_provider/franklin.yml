@@ -48,3 +48,9 @@ services:
         arguments:
             - '@akeneo.pim.automation.franklin_insights.franklin_client.quality_highlights'
             - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_families_to_apply'
+
+    akeneo.pim.automation.franklin_insights.data_provider.key_figure.quality_highlights:
+        class: Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Adapter\KeyFigure\QualityHighlightsProvider
+        parent: akeneo.pim.automation.franklin_insights.data_provider
+        arguments:
+            - '@akeneo.pim.automation.franklin_insights.franklin_client.quality_highlights'
