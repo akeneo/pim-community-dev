@@ -14,8 +14,6 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
  */
 class CountRecords implements CountRecordsInterface
 {
-    private const INDEX_TYPE = 'pimee_reference_entity_record';
-
     /** @var Client */
     private $recordClient;
 
@@ -27,9 +25,9 @@ class CountRecords implements CountRecordsInterface
     public function forReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): int
     {
         $elasticSearchQuery = $this->getElasticSearchQuery($referenceEntityIdentifier);
-        $matches = $this->recordClient->search(self::INDEX_TYPE, $elasticSearchQuery);
+        $matches = $this->recordClient->search($elasticSearchQuery);
 
-        return $matches['hits']['total'];
+        return $matches['hits']['total']['value'];
     }
 
     private function getElasticSearchQuery(ReferenceEntityIdentifier $referenceEntityIdentifier): array
@@ -51,6 +49,7 @@ class CountRecords implements CountRecordsInterface
                     ],
                 ],
             ],
+            'track_total_hits' => true,
         ];
     }
 }

@@ -16,7 +16,6 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
  */
 class RecordIndexer implements RecordIndexerInterface
 {
-    private const INDEX_TYPE = 'pimee_reference_entity_record';
     private const KEY_AS_ID = 'identifier';
 
     /** @var Client */
@@ -44,7 +43,7 @@ class RecordIndexer implements RecordIndexerInterface
     public function index(RecordIdentifier $recordIdentifier): void
     {
         $normalizedRecord = $this->normalizer->normalizeRecord($recordIdentifier);
-        $this->recordClient->index(self::INDEX_TYPE, $normalizedRecord['identifier'], $normalizedRecord, refresh::disable());
+        $this->recordClient->index($normalizedRecord['identifier'], $normalizedRecord, refresh::disable());
     }
 
     public function indexByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): void
@@ -55,13 +54,13 @@ class RecordIndexer implements RecordIndexerInterface
             $toIndex[] = $normalizedSearchableRecord;
 
             if (\count($toIndex) % $this->batchSize === 0) {
-                $this->recordClient->bulkindexes(self::INDEX_TYPE, $toIndex, self::KEY_AS_ID, refresh::disable());
+                $this->recordClient->bulkindexes($toIndex, self::KEY_AS_ID, refresh::disable());
                 $toIndex = [];
             }
         }
 
         if (!empty($toIndex)) {
-            $this->recordClient->bulkindexes(self::INDEX_TYPE, $toIndex, self::KEY_AS_ID, refresh::disable());
+            $this->recordClient->bulkindexes($toIndex, self::KEY_AS_ID, refresh::disable());
         }
     }
 

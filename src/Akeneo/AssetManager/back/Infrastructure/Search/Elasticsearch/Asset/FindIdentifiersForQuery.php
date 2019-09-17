@@ -36,7 +36,6 @@ use Akeneo\Tool\Component\Elasticsearch\QueryString;
  */
 class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
 {
-    private const INDEX_TYPE = 'pimee_asset_family_asset';
     private const ATTRIBUTE_FILTER_FIELD = 'values.';
 
     /** @var Client */
@@ -74,9 +73,9 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
     public function find(AssetQuery $assetQuery): IdentifiersForQueryResult
     {
         $elasticSearchQuery = $this->getElasticSearchQuery($assetQuery);
-        $matches = $this->assetClient->search(self::INDEX_TYPE, $elasticSearchQuery);
+        $matches = $this->assetClient->search($elasticSearchQuery);
         $identifiers = $this->getIdentifiers($matches);
-        $queryResult = new IdentifiersForQueryResult($identifiers, $matches['hits']['total']);
+        $queryResult = new IdentifiersForQueryResult($identifiers, $matches['hits']['total']['value']);
 
         return $queryResult;
     }
@@ -109,6 +108,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
                     ],
                 ],
             ],
+            'track_total_hits' => true,
         ];
 
         if ($assetQuery->isPaginatedUsingOffset()) {
@@ -276,6 +276,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
                     ],
                 ];
             }, $requiredValueKeys->normalize());
+            $query['query']['constant_score']['filter']['bool']['minimum_should_match'] = 1;
             $query['query']['constant_score']['filter']['bool']['should'] = array_merge($query['query']['constant_score']['filter']['bool']['should'] ?? [],
                 $clauses);
         }

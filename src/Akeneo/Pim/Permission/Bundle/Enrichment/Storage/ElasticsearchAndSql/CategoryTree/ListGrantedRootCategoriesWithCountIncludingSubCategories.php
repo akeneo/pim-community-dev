@@ -22,19 +22,14 @@ class ListGrantedRootCategoriesWithCountIncludingSubCategories implements Query\
     /** @var Client */
     private $client;
 
-    /** @var string */
-    private $indexType;
-
     /**
      * @param Connection $connection
      * @param Client     $client
-     * @param string     $indexType
      */
-    public function __construct(Connection $connection, Client $client, string $indexType)
+    public function __construct(Connection $connection, Client $client)
     {
         $this->connection = $connection;
         $this->client = $client;
-        $this->indexType = $indexType;
     }
 
     /**
@@ -160,11 +155,12 @@ SQL;
                             ]
                         ]
                     ]
-                ]
+                ],
+                'track_total_hits' => true,
             ];
         }
 
-        $rows = $this->client->msearch($this->indexType, $body);
+        $rows = $this->client->msearch($body);
 
         $rootCategories = [];
         $index = 0;
@@ -173,7 +169,7 @@ SQL;
                 (int) $category['root_id'],
                 $category['root_code'],
                 $category['label'],
-                $rows['responses'][$index]['hits']['total'] ?? -1,
+                $rows['responses'][$index]['hits']['total']['value'] ?? -1,
                 (int) $category['root_id'] === $rootCategoryIdToExpand
             );
 

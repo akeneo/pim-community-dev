@@ -34,7 +34,7 @@ class AssetIndexerSpec extends ObjectBehavior
     {
         $assetIdentifier = AssetIdentifier::create('designer', 'coco', 'finger');
         $assetNormalizer->normalizeAsset($assetIdentifier)->willReturn(['identifier' => 'stark']);
-        $assetEsCLient->index('pimee_asset_family_asset', 'stark', ['identifier' => 'stark'],
+        $assetEsCLient->index('stark', ['identifier' => 'stark'],
             Argument::type(Refresh::class))
             ->shouldBeCalled();
 
@@ -53,9 +53,9 @@ class AssetIndexerSpec extends ObjectBehavior
         $assetIterator->next()->shouldBeCalled();
         $assetIterator->rewind()->shouldBeCalled();
 
-        $assetEsCLient->bulkIndexes('pimee_asset_family_asset', [['identifier' => 'stark'], ['identifier' => 'coco']],'identifier', Argument::type(Refresh::class))
+        $assetEsCLient->bulkIndexes([['identifier' => 'stark'], ['identifier' => 'coco']],'identifier', Argument::type(Refresh::class))
             ->shouldBeCalled();
-        $assetEsCLient->bulkIndexes('pimee_asset_family_asset', [['identifier' => 'another_asset']],'identifier', Argument::type(Refresh::class))
+        $assetEsCLient->bulkIndexes([['identifier' => 'another_asset']],'identifier', Argument::type(Refresh::class))
             ->shouldBeCalled();
 
         $this->indexByAssetFamily($assetFamilyIdentifier);

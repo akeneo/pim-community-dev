@@ -59,7 +59,6 @@ class ProductSubscriptionUpdater
         $this->esClient->updateByQuery(
             [
                 'index' => $this->indexName,
-                'type' => 'pim_catalog_product',
                 'body' => [
                     'script' => [
                         'inline' => sprintf('ctx._source.franklin_subscription = %s', $isSubscribed ? 'true' : 'false'),

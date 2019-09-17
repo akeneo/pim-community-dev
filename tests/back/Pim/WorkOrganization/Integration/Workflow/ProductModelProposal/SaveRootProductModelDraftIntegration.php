@@ -36,7 +36,7 @@ class SaveRootProductModelDraftIntegration extends AbstractDraft
         $esClient = $this->get('akeneo_elasticsearch.client.product_proposal');
         $esClient->refreshIndex();
 
-        $allDocuments = $esClient->search('pimee_workflow_product_proposal', [
+        $allDocuments = $esClient->search([
             'query' => [
                 'match_all' => new \StdClass(),
             ],
@@ -44,7 +44,7 @@ class SaveRootProductModelDraftIntegration extends AbstractDraft
 
         $draft = $allDocuments['hits']['hits'][0]['_source'];
 
-        Assert::assertSame(1, $allDocuments['hits']['total']);
+        Assert::assertSame(1, $allDocuments['hits']['total']['value']);
         Assert::assertSame(['collection-options' => ['<all_channels>' => ['<all_locales>' => ['summer_2016', 'summer_2017']]]], $draft['values']);
         Assert::assertSame(['tshirts'], $draft['categories']);
         Assert::assertSame('Mary', $draft['author']);

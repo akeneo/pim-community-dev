@@ -25,14 +25,14 @@ class FromSizeCursorSpec extends ObjectBehavior
         $subProductModelDraft->getIdentifier()->willReturn('a-sub-product-model');
         $productModelDraftRepository->getItemsFromIdentifiers(['a-sub-product-model'])->willReturn([$subProductModelDraft]);
 
-        $esClient->search('pim_catalog_product', [
+        $esClient->search([
             'from' => 0,
             'size' => 2,
-            'sort' => ['_uid' => 'asc']
+            'sort' => ['_id' => 'asc']
         ])
             ->willReturn([
                 'hits' => [
-                    'total' => 4,
+                    'total' => ['value' => 4],
                     'hits' => [
                         [
                             '_source' => ['identifier' => 'a-variant-product', 'document_type' => ProductDraft::class],
@@ -51,7 +51,6 @@ class FromSizeCursorSpec extends ObjectBehavior
             $productDraftRepository,
             $productModelDraftRepository,
             [],
-            'pim_catalog_product',
             3,
             2,
             0
@@ -86,10 +85,9 @@ class FromSizeCursorSpec extends ObjectBehavior
         $productModelDraftRepository->getItemsFromIdentifiers(['a-root-product-model'])->willReturn([$rootProductModelDraft]);
 
         $esClient->search(
-            'pim_catalog_product',
             [
                 'size' => 2,
-                'sort' => ['_uid' => 'asc'],
+                'sort' => ['_id' => 'asc'],
                 'from' => 2
             ])
             ->willReturn([
@@ -108,10 +106,9 @@ class FromSizeCursorSpec extends ObjectBehavior
                 ]
             ]);
         $esClient->search(
-            'pim_catalog_product',
             [
                 'size' => 2,
-                'sort' => ['_uid' => 'asc'],
+                'sort' => ['_id' => 'asc'],
                 'from' => 3
             ])->willReturn([
             'hits' => [
@@ -161,10 +158,9 @@ class FromSizeCursorSpec extends ObjectBehavior
         $productModelDraftRepository->getItemsFromIdentifiers(['foo'])->willReturn([$rootProductModelDraft]);
 
         $esClient->search(
-            'pim_catalog_product',
             [
                 'size' => 2,
-                'sort' => ['_uid' => 'asc'],
+                'sort' => ['_id' => 'asc'],
                 'from' => 2
             ])
             ->willReturn([
@@ -183,10 +179,9 @@ class FromSizeCursorSpec extends ObjectBehavior
                 ]
             ]);
         $esClient->search(
-            'pim_catalog_product',
             [
                 'size' => 2,
-                'sort' => ['_uid' => 'asc'],
+                'sort' => ['_id' => 'asc'],
                 'from' => 3
             ])->willReturn([
             'hits' => [

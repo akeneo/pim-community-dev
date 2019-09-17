@@ -9,18 +9,15 @@ services:
         arguments:
             - '@pim_indexing_serializer'
             - '@akeneo_elasticsearch.client.published_product'
-            - 'pimee_workflow_published_product'
 
     pim_catalog.elasticsearch.product_proposal_indexer:
         class: '%pimee_workflow.elasticsearch.indexer.product_proposal.class%'
         arguments:
             - '@pim_indexing_serializer'
             - '@akeneo_elasticsearch.client.product_proposal'
-            - 'pimee_workflow_product_proposal'
 
     pim_catalog.elasticsearch.product_model_proposal_indexer:
         class: '%pimee_workflow.elasticsearch.indexer.product_model_proposal.class%'
         arguments:
             - '@pim_indexing_serializer'
             - '@akeneo_elasticsearch.client.product_proposal'
-            - 'pimee_workflow_product_proposal'

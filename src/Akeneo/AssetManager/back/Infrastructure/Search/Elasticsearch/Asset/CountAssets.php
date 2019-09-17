@@ -14,8 +14,6 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
  */
 class CountAssets implements CountAssetsInterface
 {
-    private const INDEX_TYPE = 'pimee_asset_family_asset';
-
     /** @var Client */
     private $assetClient;
 
@@ -27,9 +25,9 @@ class CountAssets implements CountAssetsInterface
     public function forAssetFamily(AssetFamilyIdentifier $assetFamilyIdentifier): int
     {
         $elasticSearchQuery = $this->getElasticSearchQuery($assetFamilyIdentifier);
-        $matches = $this->assetClient->search(self::INDEX_TYPE, $elasticSearchQuery);
+        $matches = $this->assetClient->search($elasticSearchQuery);
 
-        return $matches['hits']['total'];
+        return $matches['hits']['total']['value'];
     }
 
     private function getElasticSearchQuery(AssetFamilyIdentifier $assetFamilyIdentifier): array
@@ -51,6 +49,7 @@ class CountAssets implements CountAssetsInterface
                     ],
                 ],
             ],
+            'track_total_hits' => true,
         ];
     }
 }

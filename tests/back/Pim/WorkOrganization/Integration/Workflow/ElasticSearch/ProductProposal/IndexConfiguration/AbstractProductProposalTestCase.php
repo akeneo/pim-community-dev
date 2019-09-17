@@ -12,8 +12,6 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
  */
 abstract class AbstractProductProposalTestCase extends TestCase
 {
-    const DOCUMENT_TYPE = 'pimee_workflow_product_proposal';
-
     private const PAGE_SIZE = 100;
 
     /** @var Client */
@@ -53,7 +51,7 @@ abstract class AbstractProductProposalTestCase extends TestCase
     protected function indexDocuments(array $productProposals)
     {
         foreach ($productProposals as $productProposal) {
-            $this->esProposalProductClient->index(self::DOCUMENT_TYPE, $productProposal['identifier'], $productProposal);
+            $this->esProposalProductClient->index($productProposal['identifier'], $productProposal);
         }
 
         $this->esProposalProductClient->refreshIndex();
@@ -71,7 +69,7 @@ abstract class AbstractProductProposalTestCase extends TestCase
         $identifiers = [];
 
         $query['size'] = self::PAGE_SIZE;
-        $response = $this->esProposalProductClient->search(self::DOCUMENT_TYPE, $query);
+        $response = $this->esProposalProductClient->search($query);
 
         foreach ($response['hits']['hits'] as $hit) {
             $identifiers[] = $hit['_source']['identifier'];

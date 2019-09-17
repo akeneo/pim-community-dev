@@ -98,7 +98,7 @@ SQL;
         $esClient = $this->get('akeneo_elasticsearch.client.product_and_product_model');
         $esClient->refreshIndex();
 
-        $searchResult = $esClient->search('pim_catalog_product', [
+        $searchResult = $esClient->search([
             'query' => [
                 'term' => [
                     'id' => sprintf('product_%d', $product->getId()),

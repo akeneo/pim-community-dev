@@ -16,7 +16,7 @@ class ProductModelProposalIndexerSpec extends ObjectBehavior
         NormalizerInterface $normalizer,
         Client $productModelProposalClient
     ) {
-        $this->beConstructedWith($normalizer, $productModelProposalClient, 'pimee_workflow_product_proposal');
+        $this->beConstructedWith($normalizer, $productModelProposalClient);
     }
 
     function it_indexes_product_model_proposal(
@@ -31,7 +31,7 @@ class ProductModelProposalIndexerSpec extends ObjectBehavior
         $normalizer->normalize($productModelDraft, ProductModelProposalNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_PROPOSAL_INDEX)
             ->willReturn($productModelDraftNormalized);
 
-        $productModelProposalClient->index('pimee_workflow_product_proposal', 1, $productModelDraftNormalized)->shouldBeCalled();
+        $productModelProposalClient->index(1, $productModelDraftNormalized)->shouldBeCalled();
 
         $this->index($productModelDraft, [])->shouldReturn(null);
     }
@@ -52,7 +52,6 @@ class ProductModelProposalIndexerSpec extends ObjectBehavior
             ->willReturn($productModelDraftNormalized2);
 
         $productModelProposalClient->bulkIndexes(
-            'pimee_workflow_product_proposal',
             [$productModelDraftNormalized1, $productModelDraftNormalized2],
             'id',
             Refresh::waitFor()
@@ -77,7 +76,6 @@ class ProductModelProposalIndexerSpec extends ObjectBehavior
             ->willReturn($productModelDraftNormalized2);
 
         $productModelProposalClient->bulkIndexes(
-            'pimee_workflow_product_proposal',
             [$productModelDraftNormalized1, $productModelDraftNormalized2],
             'id',
             Refresh::disable()
@@ -109,11 +107,10 @@ class ProductModelProposalIndexerSpec extends ObjectBehavior
     function it_removes_product_model_proposal($productModelProposalClient)
     {
         $productModelProposalClient->search(
-            'pimee_workflow_product_proposal',
             ['query' => ['term' => ['id' => 'product_model_draft_1']]]
         )->willReturn(['hits' => ['total' => 1]]);
 
-        $productModelProposalClient->delete('pimee_workflow_product_proposal', 'product_model_draft_1')->shouldBeCalled();
+        $productModelProposalClient->delete('product_model_draft_1')->shouldBeCalled();
 
         $this->remove(1, [])->shouldReturn(null);
     }
@@ -121,18 +118,17 @@ class ProductModelProposalIndexerSpec extends ObjectBehavior
     function it_does_not_remove_product_model_proposal_if_it_does_not_exist($productModelProposalClient)
     {
         $productModelProposalClient->search(
-            'pimee_workflow_product_proposal',
             ['query' => ['term' => ['id' => 'product_model_draft_1']]]
-        )->willReturn(['hits' => ['total' => 0]]);
+        )->willReturn(['hits' => ['total' => ['value' => 0]]]);
 
-        $productModelProposalClient->delete('pimee_workflow_product_proposal', 'product_model_draft_1')->shouldNotBeCalled();
+        $productModelProposalClient->delete('product_model_draft_1')->shouldNotBeCalled();
 
         $this->remove(1, [])->shouldReturn(null);
     }
 
     function it_removes_all_product_model_proposals($productModelProposalClient)
     {
-        $productModelProposalClient->bulkDelete('pimee_workflow_product_proposal', [
+        $productModelProposalClient->bulkDelete([
             'product_model_draft_1',
             'product_model_draft_100',
             'product_model_draft_2'

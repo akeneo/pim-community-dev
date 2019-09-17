@@ -16,7 +16,6 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
  */
 class AssetIndexer implements AssetIndexerInterface
 {
-    private const INDEX_TYPE = 'pimee_asset_family_asset';
     private const KEY_AS_ID = 'identifier';
 
     /** @var Client */
@@ -44,7 +43,7 @@ class AssetIndexer implements AssetIndexerInterface
     public function index(AssetIdentifier $assetIdentifier): void
     {
         $normalizedAsset = $this->normalizer->normalizeAsset($assetIdentifier);
-        $this->assetClient->index(self::INDEX_TYPE, $normalizedAsset['identifier'], $normalizedAsset, refresh::disable());
+        $this->assetClient->index($normalizedAsset['identifier'], $normalizedAsset, refresh::disable());
     }
 
     public function indexByAssetFamily(AssetFamilyIdentifier $assetFamilyIdentifier): void
@@ -55,13 +54,13 @@ class AssetIndexer implements AssetIndexerInterface
             $toIndex[] = $normalizedSearchableAsset;
 
             if (\count($toIndex) % $this->batchSize === 0) {
-                $this->assetClient->bulkindexes(self::INDEX_TYPE, $toIndex, self::KEY_AS_ID, refresh::disable());
+                $this->assetClient->bulkindexes($toIndex, self::KEY_AS_ID, refresh::disable());
                 $toIndex = [];
             }
         }
 
         if (!empty($toIndex)) {
-            $this->assetClient->bulkindexes(self::INDEX_TYPE, $toIndex, self::KEY_AS_ID, refresh::disable());
+            $this->assetClient->bulkindexes($toIndex, self::KEY_AS_ID, refresh::disable());
         }
     }
 

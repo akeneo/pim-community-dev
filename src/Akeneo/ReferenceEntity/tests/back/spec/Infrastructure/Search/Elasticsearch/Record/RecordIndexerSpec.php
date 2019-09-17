@@ -34,7 +34,7 @@ class RecordIndexerSpec extends ObjectBehavior
     {
         $recordIdentifier = RecordIdentifier::create('designer', 'coco', 'finger');
         $recordNormalizer->normalizeRecord($recordIdentifier)->willReturn(['identifier' => 'stark']);
-        $recordEsCLient->index('pimee_reference_entity_record', 'stark', ['identifier' => 'stark'],
+        $recordEsCLient->index('stark', ['identifier' => 'stark'],
             Argument::type(Refresh::class))
             ->shouldBeCalled();
 
@@ -53,9 +53,9 @@ class RecordIndexerSpec extends ObjectBehavior
         $recordIterator->next()->shouldBeCalled();
         $recordIterator->rewind()->shouldBeCalled();
 
-        $recordEsCLient->bulkIndexes('pimee_reference_entity_record', [['identifier' => 'stark'], ['identifier' => 'coco']],'identifier', Argument::type(Refresh::class))
+        $recordEsCLient->bulkIndexes([['identifier' => 'stark'], ['identifier' => 'coco']],'identifier', Argument::type(Refresh::class))
             ->shouldBeCalled();
-        $recordEsCLient->bulkIndexes('pimee_reference_entity_record', [['identifier' => 'another_record']],'identifier', Argument::type(Refresh::class))
+        $recordEsCLient->bulkIndexes([['identifier' => 'another_record']],'identifier', Argument::type(Refresh::class))
             ->shouldBeCalled();
 
         $this->indexByReferenceEntity($referenceEntityIdentifier);

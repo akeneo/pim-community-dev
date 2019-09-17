@@ -30,7 +30,6 @@ class ProductSubscriptionUpdaterSpec extends ObjectBehavior
     {
         $client->updateByQuery([
             'index' => 'akeneo_pim_product_and_product_model',
-            'type' => 'pim_catalog_product',
             'body' => [
                 'script' => [
                     'inline' => 'ctx._source.franklin_subscription = true',
@@ -50,7 +49,6 @@ class ProductSubscriptionUpdaterSpec extends ObjectBehavior
     {
         $client->updateByQuery([
             'index' => 'akeneo_pim_product_and_product_model',
-            'type' => 'pim_catalog_product',
             'body' => [
                 'script' => [
                     'inline' => 'ctx._source.franklin_subscription = false',
