@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.8 (2019-09-17)
+
 ## Bug fixes:
 
 - PIM-8719: Fix Mink Selenium dependency
