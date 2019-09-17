@@ -6,8 +6,12 @@ use Akeneo\Platform\Bundle\InstallerBundle\CommandExecutor;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry;
+use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\DBAL\Driver\Connection;
 use Doctrine\DBAL\Exception\ConnectionException;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -25,16 +29,55 @@ use Symfony\Component\Process\Process;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DatabaseCommand extends ContainerAwareCommand
+class DatabaseCommand extends Command
 {
-    /**
-     * @staticvar string
-     */
+    protected static $defaultName = 'pim:installer:db';
+
     const LOAD_ALL = 'all';
     const LOAD_BASE = 'base';
 
     /** @var CommandExecutor */
     protected $commandExecutor;
+
+    /** @var EntityManagerInterface */
+    private $entityManager;
+
+    /** @var ClientRegistry */
+    private $clientRegistry;
+
+    /** @var Connection */
+    private $connection;
+
+    /** @var FixtureJobLoader */
+    private $fixtureJobLoader;
+
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
+
+    /** @var string */
+    private $installerData;
+    /** @var string */
+    private $env;
+
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        ClientRegistry $clientRegistry,
+        Connection $connection,
+        FixtureJobLoader $fixtureJobLoader,
+        EventDispatcherInterface $eventDispatcher,
+        string $installerData,
+        string $env
+    ) {
+        parent::__construct();
+
+        $this->entityManager = $entityManager;
+        $this->clientRegistry = $clientRegistry;
+        $this->connection = $connection;
+        $this->fixtureJobLoader = $fixtureJobLoader;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->installerData = $installerData;
+        $this->env = $env;
+    }
 
     /**
      * {@inheritdoc}
@@ -87,10 +130,9 @@ class DatabaseCommand extends ContainerAwareCommand
         $output->writeln('<info>Prepare database schema</info>');
 
         // Needs to try if database already exists or not
-        $connection = $this->getContainer()->get('doctrine')->getConnection();
         try {
-            if (!$connection->isConnected()) {
-                $connection->connect();
+            if (!$this->connection->isConnected()) {
+                $this->connection->connect();
             }
             $this->commandExecutor->runCommand('doctrine:database:drop', ['--force' => true]);
         } catch (ConnectionException $e) {
@@ -100,8 +142,8 @@ class DatabaseCommand extends ContainerAwareCommand
         $this->commandExecutor->runCommand('doctrine:database:create');
 
         // Needs to close connection if always open
-        if ($connection->isConnected()) {
-            $connection->close();
+        if ($this->connection->isConnected()) {
+            $this->connection->close();
         }
 
         $this->commandExecutor
@@ -115,10 +157,10 @@ class DatabaseCommand extends ContainerAwareCommand
             $this->resetElasticsearchIndex($output);
         }
 
-        $entityManager = $this->getContainer()->get('doctrine.orm.default_entity_manager');
+        $entityManager = $this->entityManager;
         $entityManager->clear();
 
-        $this->getEventDispatcher()->dispatch(
+        $this->eventDispatcher->dispatch(
             InstallerEvents::POST_DB_CREATE,
             new InstallerEvent($this->commandExecutor)
         );
@@ -127,14 +169,14 @@ class DatabaseCommand extends ContainerAwareCommand
         $this->createNotMappedTables($output);
 
         if (false === $input->getOption('withoutFixtures')) {
-            $this->getEventDispatcher()->dispatch(
+            $this->eventDispatcher->dispatch(
                 InstallerEvents::PRE_LOAD_FIXTURES,
                 new InstallerEvent($this->commandExecutor)
             );
 
             $this->loadFixturesStep($input, $output);
 
-            $this->getEventDispatcher()->dispatch(
+            $this->eventDispatcher->dispatch(
                 InstallerEvents::POST_LOAD_FIXTURES,
                 new InstallerEvent($this->commandExecutor)
             );
@@ -158,8 +200,7 @@ class DatabaseCommand extends ContainerAwareCommand
     {
         $output->writeln('<info>Reset elasticsearch indexes</info>');
 
-        $clientRegistry = $this->getContainer()->get('akeneo_elasticsearch.registry.clients');
-        $clients = $clientRegistry->getClients();
+        $clients = $this->clientRegistry->getClients();
 
         foreach ($clients as $client) {
             $client->resetIndex();
@@ -175,8 +216,6 @@ class DatabaseCommand extends ContainerAwareCommand
      */
     protected function createNotMappedTables(OutputInterface $output)
     {
-        $connection = $this->getContainer()->get('database_connection');
-
         $output->writeln('<info>Create session table</info>');
         $sessionTableSql = "CREATE TABLE pim_session (
                 `sess_id` VARBINARY(128) NOT NULL PRIMARY KEY,
@@ -184,14 +223,14 @@ class DatabaseCommand extends ContainerAwareCommand
                 `sess_time` INTEGER UNSIGNED NOT NULL,
                 `sess_lifetime` MEDIUMINT NOT NULL DEFAULT  '0'
             ) COLLATE utf8mb4_bin, ENGINE = InnoDB;";
-        $connection->exec($sessionTableSql);
+        $this->connection->exec($sessionTableSql);
 
         $output->writeln('<info>Create configuration table</info>');
         $configTableSql = "CREATE TABLE pim_configuration (
                 `code` VARCHAR(128) NOT NULL PRIMARY KEY,
                 `values` JSON NOT NULL
             ) COLLATE utf8mb4_unicode_ci, ENGINE = InnoDB;";
-        $connection->exec($configTableSql);
+        $this->connection->exec($configTableSql);
     }
 
     /**
@@ -211,12 +250,12 @@ class DatabaseCommand extends ContainerAwareCommand
         $output->writeln(
             sprintf(
                 '<info>Load jobs for fixtures. (data set: %s)</info>',
-                $this->getContainer()->getParameter('installer_data')
+                $this->installerData
             )
         );
-        $this->getFixtureJobLoader()->loadJobInstances();
+        $this->fixtureJobLoader->loadJobInstances();
 
-        $jobInstances = $this->getFixtureJobLoader()->getLoadedJobInstances();
+        $jobInstances = $this->fixtureJobLoader->getLoadedJobInstances();
         foreach ($jobInstances as $jobInstance) {
             $params = [
                 'code'       => $jobInstance->getCode(),
@@ -225,7 +264,7 @@ class DatabaseCommand extends ContainerAwareCommand
                 '-v'         => true,
             ];
 
-            $this->getEventDispatcher()->dispatch(
+            $this->eventDispatcher->dispatch(
                 InstallerEvents::PRE_LOAD_FIXTURE,
                 new InstallerEvent($this->commandExecutor, $jobInstance->getCode())
             );
@@ -238,7 +277,7 @@ class DatabaseCommand extends ContainerAwareCommand
                 );
             }
             $this->commandExecutor->runCommand('akeneo:batch:job', $params);
-            $this->getEventDispatcher()->dispatch(
+            $this->eventDispatcher->dispatch(
                 InstallerEvents::POST_LOAD_FIXTURE,
                 new InstallerEvent($this->commandExecutor, $jobInstance->getCode())
             );
@@ -247,7 +286,7 @@ class DatabaseCommand extends ContainerAwareCommand
 
 
         $output->writeln('<info>Delete jobs for fixtures.</info>');
-        $this->getFixtureJobLoader()->deleteJobInstances();
+        $this->fixtureJobLoader->deleteJobInstances();
 
         return $this;
     }
@@ -289,29 +328,11 @@ class DatabaseCommand extends ContainerAwareCommand
 
     /**
      * Launches all commands needed after fixtures loading
-     *
-     * @return EnterpriseDatabaseCommand
      */
-    protected function launchCommands()
+    protected function launchCommands(): self
     {
         $this->commandExecutor->runCommand('pim:versioning:refresh');
 
         return $this;
-    }
-
-    /**
-     * @return FixtureJobLoader
-     */
-    protected function getFixtureJobLoader()
-    {
-        return $this->getContainer()->get('pim_installer.fixture_loader.job_loader');
-    }
-
-    /**
-     * @return EventDispatcherInterface
-     */
-    protected function getEventDispatcher()
-    {
-        return $this->getContainer()->get('event_dispatcher');
     }
 }

@@ -22,3 +22,15 @@ services:
             - '%kernel.environment%'
         tags:
             - { name: console.command }
+
+    Akeneo\Platform\Bundle\InstallerBundle\Command\DatabaseCommand:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '@akeneo_elasticsearch.registry.clients'
+            - '@database_connection'
+            - '@pim_installer.fixture_loader.job_loader'
+            - '@event_dispatcher'
+            - '%installer_data%'
+            - '%kernel.environment%'
+        tags:
+            - { name: console.command }
