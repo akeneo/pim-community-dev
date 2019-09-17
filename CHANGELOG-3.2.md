@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.8 (2019-09-17)
+
 ## Bug fixes
 
 - PIM-8596: add translation for the Attribute type filter `pim_catalog_asset_collection`
