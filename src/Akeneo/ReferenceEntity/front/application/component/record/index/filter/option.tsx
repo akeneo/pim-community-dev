@@ -24,6 +24,8 @@ type OptionFilterViewProps = FilterViewProps & {
 
 const DEFAULT_OPERATOR = 'IN';
 
+const RIGHT_POSITIONNING_THRESHOLD = 600;
+
 const OptionFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, context}: OptionFilterViewProps) => {
   if (!(attribute instanceof ConcreteOptionAttribute || attribute instanceof ConcreteOptionCollectionAttribute)) {
     return null;
@@ -54,7 +56,8 @@ const OptionFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
 
   const openPopup = (event: MouseEvent): void => {
     setIsOpen(true);
-    if ((event.target as Element).parentElement!.getBoundingClientRect().left < 500) {
+
+    if ((event.target as Element).parentElement!.getBoundingClientRect().left < RIGHT_POSITIONNING_THRESHOLD) {
       setDisplayRight(true);
     }
   };
@@ -90,7 +93,6 @@ const OptionFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
           <div className="AknDropdown-mask" onClick={() => setIsOpen(false)} />
           <div
             className={'AknFilterBox-filterDetails ' + (displayRight ? 'AknFilterBox-filterDetails--rightAlign' : '')}
-            id={'filterDetails' + attribute.code.stringValue()}
           >
             <div className="AknFilterChoice">
               <div className="AknFilterChoice-header">

@@ -6,6 +6,7 @@
 - PIM-8719: Update Mink Selenium driver
 - PIM-8734: Change label to "Ecommerce" for default channel in minimal catalog
 - PIM-8712: Add and use a dedicated filesystem to upload assets
+- PIM-8752: Fix reference entities filter box popup display
 
 # 3.2.7 (2019-08-27)
 
