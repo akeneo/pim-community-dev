@@ -106,9 +106,11 @@ $rules = [
 
         // TIP-1013: Rework Notification system
         'Akeneo\Platform\Bundle\DashboardBundle\Widget\WidgetInterface',
+        'Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface',
 
         // TIP-1022: Drop LocaleResolver
         'Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver',
+
     ])->in('Akeneo\Pim\Enrichment\Bundle'),
     $builder->only([
         'Symfony\Component',
