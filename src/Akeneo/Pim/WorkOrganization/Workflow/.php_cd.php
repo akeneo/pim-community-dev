@@ -125,6 +125,8 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory',
         'Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodes',
         'Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator',
+        'Akeneo\Pim\Enrichment\Component\Product\Completeness\MissingRequiredAttributesCalculator',
+        'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\MissingRequiredAttributesNormalizerInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses',
         'Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface',

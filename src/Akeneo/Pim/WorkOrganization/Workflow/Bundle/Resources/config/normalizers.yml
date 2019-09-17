@@ -120,8 +120,10 @@ services:
             - '@pimee_workflow.applier.draft'
             - '@pimee_security.repository.category_access'
             - '@security.token_storage'
-            - '@security.authorization_checker'
+            - '@pimee_security.cached_authorization_checker'
             - '@pim_catalog.repository.product'
+            - '@pim_catalog.completeness.missing_required_attributes_calculator'
+            - '@pim_enrich.normalizer.missing_required_attributes'
         tags:
             - { name: pim_internal_api_serializer.normalizer, priority: 120 }
 
@@ -144,3 +146,11 @@ services:
             $categoryAccessRepository: '@pimee_security.repository.category_access'
             $getAllEditableCategoryCodes: '@akeneo.pim.enrichment.category.get_editable_category_codes'
             $getAllOwnableCategoryCodes: '@akeneo.pim.enrichment.category.get_ownable_category_codes'
+
+    pimee_workflow.normalizer.missing_required_attributes:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer\MissingRequiredAttributesNormalizer'
+        decorates: 'pim_enrich.normalizer.missing_required_attributes'
+        arguments:
+            - '@pimee_security.cached_authorization_checker'
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.cached_locale'

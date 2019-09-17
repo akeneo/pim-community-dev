@@ -94,14 +94,16 @@ class ProductModelNormalizer implements NormalizerInterface, SerializerAwareInte
 
         $normalizedProductModel = $this->normalizer->normalize($productModel, 'internal_api', $context);
 
-        $normalizedProductModel['meta'] = array_merge(
-            $normalizedProductModel['meta'],
-            [
-                'is_owner'     => $this->authorizationChecker->isGranted(Attributes::OWN, $productModel),
-                'working_copy' => $normalizedWorkingCopy,
-                'draft_status' => $draftStatus
-            ]
-        );
+        $meta = [
+            'is_owner' => $isOwner,
+            'working_copy' => $normalizedWorkingCopy,
+            'draft_status' => $draftStatus,
+        ];
+        if (!$isOwner && !$canEdit) {
+            $meta['required_missing_attributes'] = [];
+        }
+
+        $normalizedProductModel['meta'] = array_merge($normalizedProductModel['meta'], $meta);
 
         return $normalizedProductModel;
     }
