@@ -34,3 +34,10 @@ services:
             - '%kernel.environment%'
         tags:
             - { name: console.command }
+
+    Akeneo\Platform\Bundle\InstallerBundle\Command\DumpRequirePathsCommand:
+        arguments:
+            - '%kernel.root_dir%'
+            - '%kernel.bundles%'
+        tags:
+            - { name: console.command }
