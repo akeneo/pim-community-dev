@@ -20,17 +20,12 @@ class FromSizeIdentifierResultCursorFactory implements CursorFactoryInterface
     /** @var Client */
     private $esClient;
 
-    /** @var string */
-    private $indexType;
-
     /**
      * @param Client $esClient
-     * @param string $indexType
      */
-    public function __construct(Client $esClient, string $indexType)
+    public function __construct(Client $esClient)
     {
         $this->esClient = $esClient;
-        $this->indexType = $indexType;
     }
 
     /**
@@ -39,15 +34,15 @@ class FromSizeIdentifierResultCursorFactory implements CursorFactoryInterface
     public function createCursor($esQuery, array $options = [])
     {
         $options = $this->resolveOptions($options);
-        $sort = ['_uid' => 'asc'];
+        $sort = ['_id' => 'asc'];
 
         $esQuery['_source'] = array_merge($esQuery['_source'], ['document_type']);
         $esQuery['sort'] = isset($esQuery['sort']) ? array_merge($esQuery['sort'], $sort) : $sort;
         $esQuery['size'] = $options['limit'];
         $esQuery['from'] = $options['from'];
 
-        $response = $this->esClient->search($this->indexType, $esQuery);
-        $totalCount = (int) $response['hits']['total'];
+        $response = $this->esClient->search($esQuery);
+        $totalCount = (int) $response['hits']['total']['value'];
 
         $identifiers = [];
         foreach ($response['hits']['hits'] as $hit) {

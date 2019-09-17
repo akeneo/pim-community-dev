@@ -13,8 +13,6 @@ use Akeneo\Test\Integration\TestCase;
  */
 class BulkIndexationIntegration extends TestCase
 {
-    const DOCUMENT_TYPE = 'pim_catalog_product';
-
     /** @var Client */
     private $esProductClient;
 
@@ -26,7 +24,7 @@ class BulkIndexationIntegration extends TestCase
             $products[] = ['identifier' => 'product_' . $i];
         }
 
-        $indexedProducts = $this->esProductClient->bulkIndexes(self::DOCUMENT_TYPE, $products, 'identifier');
+        $indexedProducts = $this->esProductClient->bulkIndexes($products, 'identifier');
         $this->assertFalse($indexedProducts['errors']);
         $this->assertCount($count, $indexedProducts['items']);
 
@@ -74,7 +72,7 @@ class BulkIndexationIntegration extends TestCase
     private function indexProductDocuments(array $products)
     {
         foreach ($products as $product) {
-            $this->esProductClient->index(self::DOCUMENT_TYPE, $product['identifier'], $product);
+            $this->esProductClient->index($product['identifier'], $product);
         }
 
         $this->esProductClient->refreshIndex();

@@ -44,7 +44,7 @@ class SequentialEditProduct extends Cursor implements CursorInterface
             return [];
         }
 
-        $sort = ['_uid' => 'asc'];
+        $sort = ['_id' => 'asc'];
         $esQuery['_source'] = ['id'];
 
         if (isset($esQuery['sort'])) {
@@ -52,13 +52,14 @@ class SequentialEditProduct extends Cursor implements CursorInterface
         }
 
         $esQuery['sort'] = $sort;
+        $esQuery['track_total_hits'] = true;
 
         if (!empty($this->searchAfter)) {
             $esQuery['search_after'] = $this->searchAfter;
         }
 
-        $response = $this->esClient->search($this->indexType, $esQuery);
-        $this->count = $response['hits']['total'];
+        $response = $this->esClient->search($esQuery);
+        $this->count = $response['hits']['total']['value'];
 
         $identifiers = [];
         foreach ($response['hits']['hits'] as $hit) {

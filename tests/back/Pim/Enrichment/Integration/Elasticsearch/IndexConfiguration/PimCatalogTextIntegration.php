@@ -41,7 +41,6 @@ class PimCatalogTextIntegration extends AbstractPimCatalogTestCase
                         'query_string' => [
                             'default_field'       => 'values.name-text.<all_channels>.<all_locales>',
                             'query'               => 'My\ product*',
-                            'split_on_whitespace' => true,
                         ],
                     ],
                 ],

@@ -25,9 +25,6 @@ class SearchAfterSizeCursorFactory implements CursorFactoryInterface
     /** @var int */
     protected $pageSize;
 
-    /** @var string */
-    protected $indexType;
-
     /** @var CursorableRepositoryInterface */
     protected $cursorableRepository;
 
@@ -36,19 +33,16 @@ class SearchAfterSizeCursorFactory implements CursorFactoryInterface
      * @param CursorableRepositoryInterface $cursorableRepository
      * @param string                        $cursorClassName
      * @param int                           $pageSize
-     * @param string                        $indexType
      */
     public function __construct(
         Client $searchEngine,
         CursorableRepositoryInterface $cursorableRepository,
         $cursorClassName,
-        $pageSize,
-        $indexType
+        $pageSize
     ) {
         $this->searchEngine = $searchEngine;
         $this->cursorClassName = $cursorClassName;
         $this->pageSize = $pageSize;
-        $this->indexType = $indexType;
         $this->cursorableRepository = $cursorableRepository;
     }
 
@@ -64,7 +58,6 @@ class SearchAfterSizeCursorFactory implements CursorFactoryInterface
             $this->cursorableRepository,
             $queryBuilder,
             $options['search_after'],
-            $this->indexType,
             $options['page_size'],
             $options['limit'],
             $options['search_after_unique_key']

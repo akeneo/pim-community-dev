@@ -37,7 +37,6 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
      * @param Client                        $esClient
      * @param CursorableRepositoryInterface $repository
      * @param array                         $esQuery
-     * @param string                        $indexType
      * @param int                           $pageSize
      * @param int                           $limit
      * @param int                           $from
@@ -46,7 +45,6 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
         Client $esClient,
         CursorableRepositoryInterface $repository,
         array $esQuery,
-        $indexType,
         $pageSize,
         $limit,
         $from = 0
@@ -54,7 +52,6 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
         $this->esClient = $esClient;
         $this->repository = $repository;
         $this->esQuery = $esQuery;
-        $this->indexType = $indexType;
         $this->pageSize = $pageSize;
         $this->limit = $limit;
         $this->from = $from;
@@ -88,7 +85,7 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
             return [];
         }
 
-        $sort = ['_uid' => 'asc'];
+        $sort = ['_id' => 'asc'];
 
         if (isset($esQuery['sort'])) {
             $sort = array_merge($esQuery['sort'], $sort);
@@ -96,9 +93,10 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
 
         $esQuery['sort'] = $sort;
         $esQuery['from'] = $this->from;
+        $esQuery['track_total_hits'] = true;
 
-        $response = $this->esClient->search($this->indexType, $esQuery);
-        $this->count = $response['hits']['total'];
+        $response = $this->esClient->search($esQuery);
+        $this->count = $response['hits']['total']['value'];
 
         $identifiers = [];
         foreach ($response['hits']['hits'] as $hit) {

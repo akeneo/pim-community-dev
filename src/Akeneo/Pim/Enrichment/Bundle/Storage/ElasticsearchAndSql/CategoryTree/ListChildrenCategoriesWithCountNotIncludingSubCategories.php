@@ -22,19 +22,14 @@ class ListChildrenCategoriesWithCountNotIncludingSubCategories implements Query\
     /** @var Client */
     private $client;
 
-    /** @var string */
-    private $indexType;
-
     /**
      * @param Connection $connection
      * @param Client     $client
-     * @param string     $indexType
      */
-    public function __construct(Connection $connection, Client $client, string $indexType)
+    public function __construct(Connection $connection, Client $client)
     {
         $this->connection = $connection;
         $this->client = $client;
-        $this->indexType = $indexType;
     }
 
     /**
@@ -216,16 +211,17 @@ SQL;
                             ]
                         ]
                     ]
-                ]
+                ],
+                'track_total_hits' => true,
             ];
         }
 
-        $rows = $this->client->msearch($this->indexType, $body);
+        $rows = $this->client->msearch($body);
 
         $categoriesWithCount = [];
         $index = 0;
         foreach ($categoriesWithoutCount as $category) {
-            $category['count'] = $rows['responses'][$index]['hits']['total'] ?? -1;
+            $category['count'] = $rows['responses'][$index]['hits']['total']['value'] ?? -1;
             $categoriesWithCount[] = $category;
             $index++;
         }

@@ -24,11 +24,6 @@ class ProductIndexer implements ProductIndexerInterface
 {
     private const PRODUCT_IDENTIFIER_PREFIX = 'product_';
 
-    /**
-     * Index type is not used anymore in elasticsearch 6, but is still needed by Client
-     */
-    const INDEX_TYPE = 'pim_catalog_product';
-
     /** @var NormalizerInterface */
     private $normalizer;
 
@@ -92,7 +87,6 @@ class ProductIndexer implements ProductIndexerInterface
 
         if (!empty($normalizedProducts)) {
             $this->productAndProductModelClient->bulkIndexes(
-                self::INDEX_TYPE,
                 $normalizedProducts,
                 'id',
                 $indexRefresh
@@ -107,7 +101,7 @@ class ProductIndexer implements ProductIndexerInterface
      */
     public function removeFromProductId(int $productId, array $options = []): void
     {
-        $this->productAndProductModelClient->delete(self::INDEX_TYPE, self::PRODUCT_IDENTIFIER_PREFIX . $productId);
+        $this->productAndProductModelClient->delete(self::PRODUCT_IDENTIFIER_PREFIX . $productId);
     }
 
     /**
@@ -117,7 +111,7 @@ class ProductIndexer implements ProductIndexerInterface
      */
     public function removeFromProductIds(array $productIds, array $options = []): void
     {
-        $this->productAndProductModelClient->bulkDelete(self::INDEX_TYPE, array_map(
+        $this->productAndProductModelClient->bulkDelete(array_map(
             function ($productId) {
                 return self::PRODUCT_IDENTIFIER_PREFIX . (string) $productId;
             },

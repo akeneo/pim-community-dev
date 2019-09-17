@@ -25,22 +25,23 @@ class FromSizeCursorSpec extends ObjectBehavior
         $subProductModel->getCode()->willReturn('a-sub-product-model');
         $productModelRepository->getItemsFromIdentifiers(['a-sub-product-model'])->willReturn([$subProductModel]);
 
-        $esClient->search('pim_catalog_product', [
+        $esClient->search([
             'from' => 0,
             'size' => 2,
-            'sort' => ['_uid' => 'asc']
+            'sort' => ['_id' => 'asc'],
+            'track_total_hits' => true,
         ])
             ->willReturn([
                 'hits' => [
-                    'total' => 4,
+                    'total' => ['value' => 4, 'relation' => 'eq'],
                     'hits' => [
                         [
                             '_source' => ['identifier' => 'a-variant-product', 'document_type' => ProductInterface::class],
-                            'sort' => ['pim_catalog_product#a-variant-product']
+                            'sort' => ['#a-variant-product']
                         ],
                         [
                             '_source' => ['identifier' => 'a-sub-product-model', 'document_type' => ProductModelInterface::class],
-                            'sort' => ['pim_catalog_product#a-sub-product-model']
+                            'sort' => ['#a-sub-product-model']
                         ],
                     ]
                 ]
@@ -51,7 +52,6 @@ class FromSizeCursorSpec extends ObjectBehavior
             $productRepository,
             $productModelRepository,
             [],
-            'pim_catalog_product',
             3,
             2,
             0
@@ -86,10 +86,9 @@ class FromSizeCursorSpec extends ObjectBehavior
         $productModelRepository->getItemsFromIdentifiers(['a-root-product-model'])->willReturn([$rootProductModel]);
 
         $esClient->search(
-            'pim_catalog_product',
             [
                 'size' => 2,
-                'sort' => ['_uid' => 'asc'],
+                'sort' => ['_id' => 'asc'],
                 'from' => 2
             ])
             ->willReturn([
@@ -98,20 +97,19 @@ class FromSizeCursorSpec extends ObjectBehavior
                     'hits' => [
                         [
                             '_source' => ['identifier' => 'a-root-product-model', 'document_type' => ProductModelInterface::class],
-                            'sort' => ['pim_catalog_product#a-root-product-model']
+                            'sort' => ['#a-root-product-model']
                         ],
                         [
                             '_source' => ['identifier' => 'a-product', 'document_type' => ProductInterface::class],
-                            'sort' => ['pim_catalog_product#a-product']
+                            'sort' => ['#a-product']
                         ],
                     ]
                 ]
             ]);
         $esClient->search(
-            'pim_catalog_product',
             [
                 'size' => 2,
-                'sort' => ['_uid' => 'asc'],
+                'sort' => ['_id' => 'asc'],
                 'from' => 3
             ])->willReturn([
             'hits' => [
@@ -161,10 +159,9 @@ class FromSizeCursorSpec extends ObjectBehavior
         $productModelRepository->getItemsFromIdentifiers(['foo'])->willReturn([$rootProductModel]);
 
         $esClient->search(
-            'pim_catalog_product',
             [
                 'size' => 2,
-                'sort' => ['_uid' => 'asc'],
+                'sort' => ['_id' => 'asc'],
                 'from' => 2
             ])
             ->willReturn([
@@ -173,20 +170,19 @@ class FromSizeCursorSpec extends ObjectBehavior
                     'hits' => [
                         [
                             '_source' => ['identifier' => 'foo', 'document_type' => ProductModelInterface::class],
-                            'sort' => ['pim_catalog_product#foo']
+                            'sort' => ['#foo']
                         ],
                         [
                             '_source' => ['identifier' => 'foo', 'document_type' => ProductInterface::class],
-                            'sort' => ['pim_catalog_product#foo']
+                            'sort' => ['#foo']
                         ],
                     ]
                 ]
             ]);
         $esClient->search(
-            'pim_catalog_product',
             [
                 'size' => 2,
-                'sort' => ['_uid' => 'asc'],
+                'sort' => ['_id' => 'asc'],
                 'from' => 3
             ])->willReturn([
             'hits' => [

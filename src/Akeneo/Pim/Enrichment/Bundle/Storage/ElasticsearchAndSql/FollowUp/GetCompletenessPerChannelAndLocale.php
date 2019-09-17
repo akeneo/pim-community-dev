@@ -24,19 +24,14 @@ class GetCompletenessPerChannelAndLocale implements GetCompletenessPerChannelAnd
     /** @var Client */
     private $client;
 
-    /** @var string */
-    private $indexType;
-
     /**
      * @param Connection $connection
      * @param Client     $client
-     * @param string     $indexType
      */
-    public function __construct(Connection $connection, Client $client, string $indexType)
+    public function __construct(Connection $connection, Client $client)
     {
         $this->connection = $connection;
         $this->client = $client;
-        $this->indexType = $indexType;
     }
 
     /**
@@ -143,9 +138,10 @@ SQL;
         $body = [];
 
         foreach ($categoriesCodeAndLocalesByChannels as $categoriesCodeAndLocalesByChannel) {
-            $body[] = [];
+            $body[] = []; // header
             $body[] = [
                 'size' => 0,
+                'track_total_hits' => true,
                 'query' => [
                     'constant_score' => [
                         'filter' => [
@@ -157,18 +153,10 @@ SQL;
                                         ],
                                     ],
                                     [
-                                        'bool' => [
-                                            'must' => [
-                                                [
-                                                    'term' => ["enabled" => true]
-                                                ],
-                                                [
-                                                    'term' => [
-                                                        'document_type' => ProductInterface::class,
-                                                    ]
-                                                ]
-                                            ]
-                                        ]
+                                        'term' => ["enabled" => true]
+                                    ],
+                                    [
+                                        'term' => ['document_type' => ProductInterface::class]
                                     ],
                                 ]
                             ]
@@ -178,13 +166,13 @@ SQL;
             ];
         }
 
-        $rows = $this->client->msearch($this->indexType, $body);
+        $rows = $this->client->msearch($body);
 
         $index = 0;
         $totalProductsByChannel = [];
 
         foreach ($categoriesCodeAndLocalesByChannels as $categoriesCodeAndLocalesByChannel) {
-            $nbTotalProducts = $rows['responses'][$index]['hits']['total'] ?? -1;
+            $nbTotalProducts = $rows['responses'][$index]['hits']['total']['value'] ?? -1;
             $totalProductsByChannel[$categoriesCodeAndLocalesByChannel['channel_code']] = $nbTotalProducts;
             $index++;
         }
@@ -211,9 +199,10 @@ SQL;
         $body = [];
         foreach ($categoriesCodeAndLocalesByChannels as $categoriesCodeAndLocalesByChannel) {
             foreach ($categoriesCodeAndLocalesByChannel['locales'] as $locale) {
-                $body[] = [];
+                $body[] = []; // header
                 $body[] = [
                     'size' => 0,
+                    'track_total_hits' => true,
                     'query' => [
                         'constant_score' => [
                             'filter' => [
@@ -225,21 +214,12 @@ SQL;
                                             ]
                                         ],
                                         [
-                                            'bool' => [
-                                                'should' => [
-                                                    ['term' => ["completeness." . $categoriesCodeAndLocalesByChannel['channel_code'] . "." . $locale => 100]],
-                                                ],
-                                                'must' => [
-                                                    [
-                                                        'term' => ["enabled" => true]
-                                                    ],
-                                                    [
-                                                        'term' => [
-                                                            'document_type' => ProductInterface::class,
-                                                        ]
-                                                    ]
-                                                ]
-                                            ]
+                                            'term' => ["completeness." . $categoriesCodeAndLocalesByChannel['channel_code'] . "." . $locale => 100]],
+                                        [
+                                            'term' => ["enabled" => true]
+                                        ],
+                                        [
+                                            'term' => ['document_type' => ProductInterface::class]
                                         ]
                                     ]
                                 ]
@@ -250,7 +230,7 @@ SQL;
             }
         }
 
-        $rows = $this->client->msearch($this->indexType, $body);
+        $rows = $this->client->msearch($body);
 
         $index = 0;
         $localesWithNbCompleteByChannel = [];
@@ -260,7 +240,7 @@ SQL;
             $localesWithNbCompleteByChannel[$categoriesCodeAndLocalesByChannel['channel_code']]['total'] = 0;
             $localesWithNbCompleteByChannel[$categoriesCodeAndLocalesByChannel['channel_code']]['locales'] = [];
             foreach ($categoriesCodeAndLocalesByChannel['locales'] as $locale) {
-                $total = $rows['responses'][$index]['hits']['total'] ?? -1;
+                $total = $rows['responses'][$index]['hits']['total']['value'] ?? -1;
                 $localesWithNbCompleteByChannel[$categoriesCodeAndLocalesByChannel['channel_code']]['locales'][$locale] = $total;
                 $localesWithNbCompleteByChannel[$categoriesCodeAndLocalesByChannel['channel_code']]['total'] += $total;
                 $index++;

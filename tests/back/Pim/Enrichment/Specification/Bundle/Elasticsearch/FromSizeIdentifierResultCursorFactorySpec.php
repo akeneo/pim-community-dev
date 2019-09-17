@@ -14,7 +14,7 @@ class FromSizeIdentifierResultCursorFactorySpec extends ObjectBehavior
 {
     function let(Client $esClient)
     {
-        $this->beConstructedWith($esClient, 'pim_catalog_product');
+        $this->beConstructedWith($esClient);
     }
 
     function it_is_a_cursor_factory()
@@ -36,16 +36,15 @@ class FromSizeIdentifierResultCursorFactorySpec extends ObjectBehavior
         ];
 
         $esClient->search(
-            'pim_catalog_product',
             [
-                'sort'    => ['_uid' => 'asc'],
+                'sort'    => ['_id' => 'asc'],
                 'query'   => [],
                 '_source' => ['identifier', 'document_type'],
                 'size'    => 25,
                 'from'    => 0
             ]
         )->willReturn(['hits' => [
-            'total' => 42,
+            'total' => ['value' => 42, 'relation' => 'eq'],
             'hits'  => [
                 ['_source' => ['identifier' => 'product_1', 'document_type' => ProductInterface::class]],
                 ['_source' => ['identifier' => 'product_model_2', 'document_type' => ProductModelInterface::class]]

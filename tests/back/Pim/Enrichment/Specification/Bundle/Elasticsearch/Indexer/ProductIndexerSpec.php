@@ -45,7 +45,7 @@ class ProductIndexerSpec extends ObjectBehavior
             ->normalize($product, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->willReturn(['id' => $identifier, 'a key' => 'a value']);
         $productAndProductModelIndexClient
-            ->bulkIndexes(ProductIndexer::INDEX_TYPE, [['id' => $identifier, 'a key' => 'a value']], 'id', Refresh::disable())
+            ->bulkIndexes([['id' => $identifier, 'a key' => 'a value']], 'id', Refresh::disable())
             ->shouldBeCalled();
 
         $this->indexFromProductIdentifier($identifier);
@@ -63,7 +63,7 @@ class ProductIndexerSpec extends ObjectBehavior
             ->normalize(null, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldNotBeCalled();
         $productAndProductModelIndexClient
-            ->index(ProductIndexer::INDEX_TYPE, $identifier, ['id' => $identifier, 'a key' => 'a value'])
+            ->index($identifier, ['id' => $identifier, 'a key' => 'a value'])
             ->shouldNotBeCalled();
 
         $this->indexFromProductIdentifier($identifier);
@@ -89,7 +89,7 @@ class ProductIndexerSpec extends ObjectBehavior
         $normalizer->normalize(null, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldNotBeCalled();
 
-        $productAndProductModelIndexClient->bulkIndexes(ProductIndexer::INDEX_TYPE, [
+        $productAndProductModelIndexClient->bulkIndexes([
             ['id' => $identifiers[0], 'a key' => 'a value'],
             ['id' => $identifiers[1], 'a key' => 'another value'],
         ], 'id', Refresh::disable())->shouldBeCalled();
@@ -111,14 +111,14 @@ class ProductIndexerSpec extends ObjectBehavior
 
     function it_deletes_products_from_elasticsearch_index($productAndProductModelIndexClient)
     {
-        $productAndProductModelIndexClient->delete(ProductIndexer::INDEX_TYPE, 'product_40')->shouldBeCalled();
+        $productAndProductModelIndexClient->delete('product_40')->shouldBeCalled();
 
         $this->removeFromProductId(40)->shouldReturn(null);
     }
 
     function it_bulk_deletes_products_from_elasticsearch_index($productAndProductModelIndexClient)
     {
-        $productAndProductModelIndexClient->bulkDelete(ProductIndexer::INDEX_TYPE, ['product_40', 'product_33'])
+        $productAndProductModelIndexClient->bulkDelete(['product_40', 'product_33'])
             ->shouldBeCalled();
 
         $this->removeFromProductIds([40, 33])->shouldReturn(null);
@@ -144,7 +144,7 @@ class ProductIndexerSpec extends ObjectBehavior
         $normalizer->normalize(null, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldNotBeCalled();
 
-        $productAndProductModelIndexClient->bulkIndexes(ProductIndexer::INDEX_TYPE, [
+        $productAndProductModelIndexClient->bulkIndexes([
             ['id' => $identifiers[0], 'a key' => 'a value'],
             ['id' => $identifiers[1], 'a key' => 'another value'],
         ], 'id', Refresh::waitFor())->shouldBeCalled();
@@ -172,7 +172,7 @@ class ProductIndexerSpec extends ObjectBehavior
         $normalizer->normalize(null, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldNotBeCalled();
 
-        $productAndProductModelIndexClient->bulkIndexes(ProductIndexer::INDEX_TYPE, [
+        $productAndProductModelIndexClient->bulkIndexes([
             ['id' => $identifiers[0], 'a key' => 'a value'],
             ['id' => $identifiers[1], 'a key' => 'another value'],
         ], 'id', Refresh::disable())->shouldBeCalled();
@@ -200,7 +200,7 @@ class ProductIndexerSpec extends ObjectBehavior
         $normalizer->normalize(null, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldNotBeCalled();
 
-        $productAndProductModelIndexClient->bulkIndexes(ProductIndexer::INDEX_TYPE, [
+        $productAndProductModelIndexClient->bulkIndexes([
             ['id' => $identifiers[0], 'a key' => 'a value'],
             ['id' => $identifiers[1], 'a key' => 'another value'],
         ], 'id', Refresh::enable())->shouldBeCalled();

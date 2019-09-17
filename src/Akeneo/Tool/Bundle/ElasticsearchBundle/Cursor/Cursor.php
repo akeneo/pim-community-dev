@@ -25,20 +25,17 @@ class Cursor extends AbstractCursor implements CursorInterface
      * @param Client                        $esClient
      * @param CursorableRepositoryInterface $repository
      * @param array                         $esQuery
-     * @param string                        $indexType
      * @param int                           $pageSize
      */
     public function __construct(
         Client $esClient,
         CursorableRepositoryInterface $repository,
         array $esQuery,
-        $indexType,
         $pageSize
     ) {
         $this->esClient = $esClient;
         $this->repository = $repository;
         $this->esQuery = $esQuery;
-        $this->indexType = $indexType;
         $this->pageSize = $pageSize;
         $this->searchAfter = [];
     }
@@ -89,20 +86,21 @@ class Cursor extends AbstractCursor implements CursorInterface
             return [];
         }
 
-        $sort = ['_uid' => 'asc'];
+        $sort = ['_id' => 'asc'];
 
         if (isset($esQuery['sort'])) {
             $sort = array_merge($esQuery['sort'], $sort);
         }
 
         $esQuery['sort'] = $sort;
+        $esQuery['track_total_hits'] = true;
 
         if (!empty($this->searchAfter)) {
             $esQuery['search_after'] = $this->searchAfter;
         }
 
-        $response = $this->esClient->search($this->indexType, $esQuery);
-        $this->count = $response['hits']['total'];
+        $response = $this->esClient->search($esQuery);
+        $this->count = $response['hits']['total']['value'];
 
         $identifiers = [];
         foreach ($response['hits']['hits'] as $hit) {

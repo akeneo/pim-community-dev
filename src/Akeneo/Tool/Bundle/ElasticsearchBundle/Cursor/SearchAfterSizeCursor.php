@@ -38,7 +38,6 @@ class SearchAfterSizeCursor extends AbstractCursor implements CursorInterface
      * @param CursorableRepositoryInterface $repository
      * @param array                         $esQuery
      * @param array                         $searchAfter
-     * @param string                        $indexType
      * @param int                           $pageSize
      * @param int                           $limit
      * @param string|null                   $searchAfterUniqueKey
@@ -48,7 +47,6 @@ class SearchAfterSizeCursor extends AbstractCursor implements CursorInterface
         CursorableRepositoryInterface $repository,
         array $esQuery,
         array $searchAfter = [],
-        $indexType,
         $pageSize,
         $limit,
         $searchAfterUniqueKey = null
@@ -56,7 +54,6 @@ class SearchAfterSizeCursor extends AbstractCursor implements CursorInterface
         $this->repository = $repository;
         $this->esClient = $esClient;
         $this->esQuery = $esQuery;
-        $this->indexType = $indexType;
         $this->pageSize = $pageSize;
         $this->limit = $limit;
         $this->searchAfter = $searchAfter;
@@ -88,13 +85,14 @@ class SearchAfterSizeCursor extends AbstractCursor implements CursorInterface
         if ($this->fetchedItemsCount + $size > $this->limit) {
             $size = $this->limit - $this->fetchedItemsCount;
         }
+        $esQuery['track_total_hits'] = true;
         $esQuery['size'] = $size;
 
         if (0 === $esQuery['size']) {
             return [];
         }
 
-        $sort = ['_uid' => 'asc'];
+        $sort = ['_id' => 'asc'];
 
         if (isset($esQuery['sort'])) {
             $sort = array_merge($esQuery['sort'], $sort);
@@ -106,8 +104,8 @@ class SearchAfterSizeCursor extends AbstractCursor implements CursorInterface
             $esQuery['search_after'] = $this->searchAfter;
         }
 
-        $response = $this->esClient->search($this->indexType, $esQuery);
-        $this->count = $response['hits']['total'];
+        $response = $this->esClient->search($esQuery);
+        $this->count = $response['hits']['total']['value'];
 
         $identifiers = [];
         foreach ($response['hits']['hits'] as $hit) {
@@ -130,7 +128,7 @@ class SearchAfterSizeCursor extends AbstractCursor implements CursorInterface
     {
         $this->searchAfter = $this->initialSearchAfter;
         if (null !== $this->searchAfterUniqueKey) {
-            array_push($this->searchAfter, $this->indexType . '#' . $this->searchAfterUniqueKey);
+            array_push($this->searchAfter, $this->searchAfterUniqueKey);
         }
 
         $this->fetchedItemsCount = 0;

@@ -33,14 +33,13 @@ class ClientSpec extends ObjectBehavior
         $client->index(
             [
                 'index' => 'an_index_name',
-                'type' => 'an_index_type',
                 'id' => 'identifier',
                 'body' => ['a key' => 'a value'],
                 'refresh' => 'wait_for',
             ]
         )->willReturn(['errors' => false]);
 
-        $this->index('an_index_type', 'identifier', ['a key' => 'a value'], Refresh::waitFor());
+        $this->index('identifier', ['a key' => 'a value'], Refresh::waitFor());
     }
 
     public function it_triggers_an_exception_during_the_indexation_of_a_document($client)
@@ -49,7 +48,7 @@ class ClientSpec extends ObjectBehavior
 
         $this->shouldThrow(IndexationException::class)->during(
             'index',
-            ['an_index_type', 'identifier', ['a key' => 'a value'], Refresh::waitFor()]
+            ['identifier', ['a key' => 'a value'], Refresh::waitFor()]
         );
     }
 
@@ -66,7 +65,7 @@ class ClientSpec extends ObjectBehavior
 
         $this->shouldThrow(IndexationException::class)->during(
             'index',
-            ['an_index_type', 'identifier', ['a document'], Refresh::waitFor()]
+            ['identifier', ['a document'], Refresh::waitFor()]
         );
     }
 
@@ -75,12 +74,11 @@ class ClientSpec extends ObjectBehavior
         $client->get(
             [
                 'index' => 'an_index_name',
-                'type' => 'an_index_type',
                 'id' => 'identifier',
             ]
         )->shouldBeCalled();
 
-        $this->get('an_index_type', 'identifier');
+        $this->get('identifier');
     }
 
     public function it_searches_documents($client)
@@ -88,12 +86,11 @@ class ClientSpec extends ObjectBehavior
         $client->search(
             [
                 'index' => 'an_index_name',
-                'type' => 'an_index_type',
                 'body' => ['a key' => 'a value'],
             ]
         )->shouldBeCalled();
 
-        $this->search('an_index_type', ['a key' => 'a value']);
+        $this->search(['a key' => 'a value']);
     }
 
     public function it_multi_searches_documents($client)
@@ -101,9 +98,8 @@ class ClientSpec extends ObjectBehavior
         $client->msearch(
             [
                 'index' => 'an_index_name',
-                'type' => 'an_index_type',
                 'body' => [
-                    ['index' => 'another_index_name', 'type' => 'another_index_type'],
+                    ['index' => 'another_index_name'],
                     ['size' => 0, 'query' => ['match_all' => (object) []]],
                     [],
                     ['size' => 0, 'query' => ['match_all' => (object) []]],
@@ -130,8 +126,8 @@ class ClientSpec extends ObjectBehavior
             ],
         ]);
 
-        $this->msearch('an_index_type', [
-            ['index' => 'another_index_name', 'type' => 'another_index_type'],
+        $this->msearch([
+            ['index' => 'another_index_name'],
             ['size' => 0, 'query' => ['match_all' => (object) []]],
             [],
             ['size' => 0, 'query' => ['match_all' => (object) []]],
@@ -162,12 +158,11 @@ class ClientSpec extends ObjectBehavior
         $client->delete(
             [
                 'index' => 'an_index_name',
-                'type' => 'an_index_type',
                 'id' => 'identifier',
             ]
         )->shouldBeCalled();
 
-        $this->delete('an_index_type', 'identifier');
+        $this->delete('identifier');
     }
 
     public function it_bulk_deletes_documents($client)
@@ -178,14 +173,12 @@ class ClientSpec extends ObjectBehavior
                     [
                         'delete' => [
                             '_index' => 'an_index_name',
-                            '_type' => 'an_index_type',
                             '_id' => 40,
                         ],
                     ],
                     [
                         'delete' => [
                             '_index' => 'an_index_name',
-                            '_type' => 'an_index_type',
                             '_id' => 33,
                         ],
                     ],
@@ -193,7 +186,7 @@ class ClientSpec extends ObjectBehavior
             ]
         )->shouldBeCalled();
 
-        $this->bulkDelete('an_index_type', [40, 33]);
+        $this->bulkDelete([40, 33]);
     }
 
     public function it_deletes_an_index_without_alias($client, IndicesNamespace $indices)
@@ -251,13 +244,11 @@ class ClientSpec extends ObjectBehavior
                 'body' => [
                     ['index' => [
                         '_index' => 'an_index_name',
-                        '_type' => 'an_index_type',
                         '_id' => 'foo',
                     ]],
                     ['identifier' => 'foo', 'name' => 'a name'],
                     ['index' => [
                         '_index' => 'an_index_name',
-                        '_type' => 'an_index_type',
                         '_id' => 'bar',
                     ]],
                     ['identifier' => 'bar', 'name' => 'a name'],
@@ -271,7 +262,7 @@ class ClientSpec extends ObjectBehavior
             ['identifier' => 'bar', 'name' => 'a name'],
         ];
 
-        $this->bulkIndexes('an_index_type', $documents, 'identifier', Refresh::waitFor());
+        $this->bulkIndexes($documents, 'identifier', Refresh::waitFor());
     }
 
     public function it_throws_an_exception_during_the_indexation_of_several_documents($client)
@@ -285,7 +276,7 @@ class ClientSpec extends ObjectBehavior
 
         $this->shouldThrow(IndexationException::class)->during(
             'bulkIndexes',
-            ['an_index_type', $documents, 'identifier', Refresh::waitFor()]
+            [$documents, 'identifier', Refresh::waitFor()]
         );
     }
 
@@ -307,7 +298,7 @@ class ClientSpec extends ObjectBehavior
 
         $this->shouldThrow(IndexationException::class)->during(
             'bulkIndexes',
-            ['an_index_type', $documents, 'identifier', Refresh::waitFor()]
+            [$documents, 'identifier', Refresh::waitFor()]
         );
     }
 
@@ -321,6 +312,6 @@ class ClientSpec extends ObjectBehavior
         ];
 
         $this->shouldThrow(new MissingIdentifierException('Missing "identifier" key in document'))
-            ->during('bulkIndexes', ['an_index_type', $documents, 'identifier', Refresh::waitFor()]);
+            ->during('bulkIndexes', [$documents, 'identifier', Refresh::waitFor()]);
     }
 }

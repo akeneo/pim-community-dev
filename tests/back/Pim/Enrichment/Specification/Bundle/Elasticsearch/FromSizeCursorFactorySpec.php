@@ -22,8 +22,7 @@ class FromSizeCursorFactorySpec extends ObjectBehavior
             $searchEngine,
             $productRepository,
             $productModelRepository,
-            self::DEFAULT_BATCH_SIZE,
-            'pim_catalog_product'
+            self::DEFAULT_BATCH_SIZE
         );
     }
 
@@ -36,8 +35,7 @@ class FromSizeCursorFactorySpec extends ObjectBehavior
     function it_creates_a_cursor($searchEngine)
     {
         $searchEngine->search(
-            'pim_catalog_product',
-            ['size' => 100, 'sort' => ['_uid' => 'asc'], 'from' => 10]
+            ['size' => 100, 'sort' => ['_id' => 'asc'], 'from' => 10]
         )->willReturn(
             [
                 'hits' => [

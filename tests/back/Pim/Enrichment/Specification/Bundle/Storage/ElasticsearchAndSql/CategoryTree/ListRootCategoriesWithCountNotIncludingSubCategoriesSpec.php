@@ -12,7 +12,7 @@ class ListRootCategoriesWithCountNotIncludingSubCategoriesSpec extends ObjectBeh
 {
     function let(Connection $connection, Client $client)
     {
-        $this->beConstructedWith($connection, $client, 'index');
+        $this->beConstructedWith($connection, $client);
     }
 
     function it_lists_children_categories_with_count()

@@ -24,9 +24,6 @@ abstract class AbstractCursor implements CursorInterface
     /** @var array */
     protected $esQuery;
 
-    /** @var string */
-    protected $indexType;
-
     /** @var array */
     protected $items;
 

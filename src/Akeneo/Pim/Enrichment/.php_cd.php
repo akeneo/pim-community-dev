@@ -92,6 +92,7 @@ $rules = [
         'Akeneo\Pim\Structure\Component\AttributeTypes',
 
         // TODO: : EASY PICK! API PaginatorInterface should catch ServerErrorResponseException and throw its own exception,
+        'Elasticsearch\Common\Exceptions\BadRequest400Exception',
         'Elasticsearch\Common\Exceptions\ServerErrorResponseException',
 
         // TIP-1024: Drop UserContext

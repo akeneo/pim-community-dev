@@ -37,7 +37,7 @@ class ResetIndexesCommandIntegration extends TestCase
         $esClients = $this->getEsClients();
 
         foreach ($esClients as $esClient) {
-            $allDocuments = $esClient->search('pim_catalog_product', [
+            $allDocuments = $esClient->search([
                 '_source' => 'identifier',
                 'query' => [
                     'match_all' => new \StdClass(),
@@ -59,7 +59,7 @@ class ResetIndexesCommandIntegration extends TestCase
         $esClients = $this->getEsClients();
 
         foreach ($esClients as $esClient) {
-            $allDocuments = $esClient->search('pim_catalog_product', [
+            $allDocuments = $esClient->search([
                 'query' => [
                     'match_all' => new \StdClass(),
                 ],
