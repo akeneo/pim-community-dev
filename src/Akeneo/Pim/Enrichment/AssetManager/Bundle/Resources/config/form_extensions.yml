@@ -3,4 +3,4 @@ extensions:
         module: pim/product-edit-form/assets
         parent: pim-product-edit-form-column-tabs
         targetZone: container
-        position: 80
+        position: 95

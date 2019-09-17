@@ -60,7 +60,6 @@ class AssetTabForm extends (Form as {new (config: any): any}) {
       label: __('pim_enrich.entity.product.module.asset.title')
     });
 
-    UserContext.off('change:catalogLocale change:catalogScope', this.updateContext);
     this.listenTo(UserContext, 'change:catalogLocale', this.updateLocale);
     this.listenTo(UserContext, 'change:catalogScope', this.updateChannel);
     this.listenTo(this.getRoot(), this.getRoot().postUpdateEventName, async () => {
