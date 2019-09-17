@@ -2,6 +2,7 @@
 
 namespace Pim\Upgrade\Schema;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelDescendantsIndexer;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelIndexer;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\EmptyValuesCleaner;
 use Doctrine\DBAL\Schema\Schema;
@@ -64,6 +65,7 @@ final class Version_4_0_20190917080512_remove_product_model_empty_raw_values
                     $productModelCodesToIndex[] = $row['code'];
                     if (count($productModelCodesToIndex) % self::BATCH_SIZE === 0) {
                         $this->getProductModelIndexer()->indexFromProductModelCodes($productModelCodesToIndex);
+                        // @TODO Need to reindex children TIP-1257
                         $productModelCodesToIndex = [];
                     }
                 }
@@ -72,6 +74,7 @@ final class Version_4_0_20190917080512_remove_product_model_empty_raw_values
         }
 
         $this->getProductModelIndexer()->indexFromProductModelCodes($productModelCodesToIndex);
+        // @TODO Need to reindex children TIP-1257
     }
 
     public function down(Schema $schema) : void
@@ -86,5 +89,10 @@ final class Version_4_0_20190917080512_remove_product_model_empty_raw_values
     private function getProductModelIndexer(): ProductModelIndexer
     {
         return $this->container->get('pim_catalog.elasticsearch.indexer.product_model');
+    }
+
+    private function getProductModelDescendantsIndexer(): ProductModelDescendantsIndexer
+    {
+        return $this->container->get('pim_catalog.elasticsearch.indexer.product_model_descendance');
     }
 }
