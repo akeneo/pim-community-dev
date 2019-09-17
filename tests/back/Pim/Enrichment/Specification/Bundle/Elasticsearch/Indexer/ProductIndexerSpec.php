@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 
-use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\IndexableProduct;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductProjection;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductProjectionInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
@@ -15,9 +15,9 @@ class ProductIndexerSpec extends ObjectBehavior
 {
     function let(
         Client $productAndProductModelIndexClient,
-        GetElasticsearchProductProjectionInterface $getIndexableProduct
+        GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection
     ) {
-        $this->beConstructedWith($productAndProductModelIndexClient, $getIndexableProduct);
+        $this->beConstructedWith($productAndProductModelIndexClient, $getElasticsearchProductProjection);
     }
 
     function it_is_initializable()
@@ -32,11 +32,11 @@ class ProductIndexerSpec extends ObjectBehavior
 
     function it_indexes_a_single_product_from_identifier(
         $productAndProductModelIndexClient,
-        $getIndexableProduct,
-        IndexableProduct $indexableProduct
+        $getElasticsearchProductProjection,
+        ElasticsearchProductProjection $indexableProduct
     ) {
         $identifier = 'foobar';
-        $getIndexableProduct->fromProductIdentifiers([$identifier])->willReturn([$indexableProduct]);
+        $getElasticsearchProductProjection->fromProductIdentifiers([$identifier])->willReturn([$indexableProduct]);
         $indexableProduct->toArray()->willReturn(['id' => $identifier, 'a key' => 'a value']);
         $productAndProductModelIndexClient
             ->bulkIndexes([['id' => $identifier, 'a key' => 'a value']], 'id', Refresh::disable())
@@ -47,10 +47,10 @@ class ProductIndexerSpec extends ObjectBehavior
 
     function it_does_not_index_anything_if_identifier_is_unknown(
         $productAndProductModelIndexClient,
-        $getIndexableProduct
+        $getElasticsearchProductProjection
     ) {
         $identifier = 'foobar';
-        $getIndexableProduct->fromProductIdentifiers([$identifier])->willReturn([]);
+        $getElasticsearchProductProjection->fromProductIdentifiers([$identifier])->willReturn([]);
         $productAndProductModelIndexClient->bulkIndexes(Argument::cetera())
             ->shouldNotBeCalled();
 
@@ -59,13 +59,13 @@ class ProductIndexerSpec extends ObjectBehavior
 
     function it_bulk_indexes_products_from_identifiers(
         $productAndProductModelIndexClient,
-        $getIndexableProduct,
-        IndexableProduct $indexableProduct1,
-        IndexableProduct $indexableProduct2
+        $getElasticsearchProductProjection,
+        ElasticsearchProductProjection $indexableProduct1,
+        ElasticsearchProductProjection $indexableProduct2
     ) {
         $identifiers = ['foo', 'bar', 'unknown'];
 
-        $getIndexableProduct->fromProductIdentifiers($identifiers)
+        $getElasticsearchProductProjection->fromProductIdentifiers($identifiers)
             ->willReturn([$indexableProduct1, $indexableProduct2]);
 
         $indexableProduct1->toArray()->willReturn(['id' => $identifiers[0], 'a key' => 'a value']);
@@ -81,9 +81,9 @@ class ProductIndexerSpec extends ObjectBehavior
 
     function it_does_not_bulk_index_empty_arrays_of_identifiers(
         $productAndProductModelIndexClient,
-        $getIndexableProduct
+        $getElasticsearchProductProjection
     ) {
-        $getIndexableProduct->fromProductIdentifiers(Argument::cetera())->shouldNotBeCalled();
+        $getElasticsearchProductProjection->fromProductIdentifiers(Argument::cetera())->shouldNotBeCalled();
         $productAndProductModelIndexClient->bulkIndexes(Argument::cetera())->shouldNotBeCalled();
 
         $this->indexFromProductIdentifiers([]);
@@ -106,13 +106,13 @@ class ProductIndexerSpec extends ObjectBehavior
 
     function it_indexes_products_from_identifiers_and_waits_for_index_refresh(
         $productAndProductModelIndexClient,
-        $getIndexableProduct,
-        IndexableProduct $indexableProduct1,
-        IndexableProduct $indexableProduct2
+        $getElasticsearchProductProjection,
+        ElasticsearchProductProjection $indexableProduct1,
+        ElasticsearchProductProjection $indexableProduct2
     ) {
         $identifiers = ['foo', 'bar', 'unknown'];
 
-        $getIndexableProduct->fromProductIdentifiers($identifiers)
+        $getElasticsearchProductProjection->fromProductIdentifiers($identifiers)
             ->willReturn([$indexableProduct1, $indexableProduct2]);
 
         $indexableProduct1->toArray()->willReturn(['id' => $identifiers[0], 'a key' => 'a value']);
@@ -128,13 +128,13 @@ class ProductIndexerSpec extends ObjectBehavior
 
     function it_indexes_products_from_identifiers_and_disables_index_refresh_by_default(
         $productAndProductModelIndexClient,
-        $getIndexableProduct,
-        IndexableProduct $indexableProduct1,
-        IndexableProduct $indexableProduct2
+        $getElasticsearchProductProjection,
+        ElasticsearchProductProjection $indexableProduct1,
+        ElasticsearchProductProjection $indexableProduct2
     ) {
         $identifiers = ['foo', 'bar', 'unknown'];
 
-        $getIndexableProduct->fromProductIdentifiers($identifiers)
+        $getElasticsearchProductProjection->fromProductIdentifiers($identifiers)
             ->willReturn([$indexableProduct1, $indexableProduct2]);
 
         $indexableProduct1->toArray()->willReturn(['id' => $identifiers[0], 'a key' => 'a value']);
@@ -150,13 +150,13 @@ class ProductIndexerSpec extends ObjectBehavior
 
     function it_indexes_products_from_identifiers_and_enable_index_refresh_without_waiting_for_it(
         $productAndProductModelIndexClient,
-        $getIndexableProduct,
-        IndexableProduct $indexableProduct1,
-        IndexableProduct $indexableProduct2
+        $getElasticsearchProductProjection,
+        ElasticsearchProductProjection $indexableProduct1,
+        ElasticsearchProductProjection $indexableProduct2
     ) {
         $identifiers = ['foo', 'bar', 'unknown'];
 
-        $getIndexableProduct->fromProductIdentifiers($identifiers)
+        $getElasticsearchProductProjection->fromProductIdentifiers($identifiers)
             ->willReturn([$indexableProduct1, $indexableProduct2]);
 
         $indexableProduct1->toArray()->willReturn(['id' => $identifiers[0], 'a key' => 'a value']);
