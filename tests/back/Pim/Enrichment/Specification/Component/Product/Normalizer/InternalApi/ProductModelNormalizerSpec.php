@@ -16,7 +16,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductCompletenessWithMissingAttributeCodesCollectionNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\MissingRequiredAttributesNormalizerInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\VariantNavigationNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\ImageAsLabel;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\CompleteVariantProducts;
@@ -56,7 +56,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         NormalizerInterface $parentAssociationsNormalizer,
         CatalogContext $catalogContext,
         MissingRequiredAttributesCalculator $missingRequiredAttributesCalculator,
-        ProductCompletenessWithMissingAttributeCodesCollectionNormalizer $completenessNormalizer
+        MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer
     ) {
         $this->beConstructedWith(
             $normalizer,
@@ -78,7 +78,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             $parentAssociationsNormalizer,
             $catalogContext,
             $missingRequiredAttributesCalculator,
-            $completenessNormalizer
+            $missingRequiredAttributesNormalizer
         );
     }
 
@@ -103,7 +103,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         AscendantCategoriesInterface $ascendantCategoriesQuery,
         UserContext $userContext,
         MissingRequiredAttributesCalculator $missingRequiredAttributesCalculator,
-        ProductCompletenessWithMissingAttributeCodesCollectionNormalizer $completenessNormalizer,
+        MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer,
         AttributeInterface $pictureAttribute,
         ProductModelInterface $productModel,
         FamilyVariantInterface $familyVariant,
@@ -218,7 +218,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $missingRequiredAttributesCalculator->fromEntityWithFamily($productModel)->willReturn(
             $productCompletenessWithMissingAttributeCodesCollection
         );
-        $completenessNormalizer->normalize($productCompletenessWithMissingAttributeCodesCollection)
+        $missingRequiredAttributesNormalizer->normalize($productCompletenessWithMissingAttributeCodesCollection)
             ->willReturn(['kind of completenesses data normalized here']);
 
         $productModel->getVariationLevel()->willReturn(0);
@@ -287,7 +287,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         AscendantCategoriesInterface $ascendantCategoriesQuery,
         UserContext $userContext,
         MissingRequiredAttributesCalculator $missingRequiredAttributesCalculator,
-        ProductCompletenessWithMissingAttributeCodesCollectionNormalizer $completenessNormalizer,
+        MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer,
         AttributeInterface $pictureAttribute,
         ProductModelInterface $productModel,
         FamilyVariantInterface $familyVariant,
@@ -384,7 +384,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $missingRequiredAttributesCalculator->fromEntityWithFamily($productModel)->willReturn(
             $productCompletenessWithMissingAttributeCodesCollection
         );
-        $completenessNormalizer->normalize($productCompletenessWithMissingAttributeCodesCollection)
+        $missingRequiredAttributesNormalizer->normalize($productCompletenessWithMissingAttributeCodesCollection)
             ->willReturn(['kind of completenesses data normalized here']);
 
         $productModel->getVariationLevel()->willReturn(0);
@@ -442,7 +442,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         AscendantCategoriesInterface $ascendantCategoriesQuery,
         UserContext $userContext,
         MissingRequiredAttributesCalculator $missingRequiredAttributesCalculator,
-        ProductCompletenessWithMissingAttributeCodesCollectionNormalizer $completenessNormalizer,
+        MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer,
         AttributeInterface $pictureAttribute,
         ProductModelInterface $productModel,
         FamilyVariantInterface $familyVariant,
@@ -551,7 +551,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $missingRequiredAttributesCalculator->fromEntityWithFamily($productModel)->willReturn(
             $productCompletenessWithMissingAttributeCodesCollection
         );
-        $completenessNormalizer->normalize($productCompletenessWithMissingAttributeCodesCollection)
+        $missingRequiredAttributesNormalizer->normalize($productCompletenessWithMissingAttributeCodesCollection)
                                ->willReturn(['kind of completenesses data normalized here']);
 
         $productModel->getVariationLevel()->willReturn(0);

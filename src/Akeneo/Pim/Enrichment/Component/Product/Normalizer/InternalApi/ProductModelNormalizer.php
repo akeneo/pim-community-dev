@@ -89,8 +89,8 @@ class ProductModelNormalizer implements NormalizerInterface
     /** @var MissingRequiredAttributesCalculator */
     private $missingRequiredAttributesCalculator;
 
-    /** @var ProductCompletenessWithMissingAttributeCodesCollectionNormalizer */
-    private $completenessNormalizer;
+    /** @var MissingRequiredAttributesNormalizerInterface */
+    private $missingRequiredAttributesNormalizer;
 
     public function __construct(
         NormalizerInterface $normalizer,
@@ -112,7 +112,7 @@ class ProductModelNormalizer implements NormalizerInterface
         NormalizerInterface $parentAssociationsNormalizer,
         CatalogContext $catalogContext,
         MissingRequiredAttributesCalculator $missingRequiredAttributesCalculator,
-        ProductCompletenessWithMissingAttributeCodesCollectionNormalizer $completenessNormalizer
+        MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer
     ) {
         $this->normalizer = $normalizer;
         $this->versionNormalizer = $versionNormalizer;
@@ -133,7 +133,7 @@ class ProductModelNormalizer implements NormalizerInterface
         $this->parentAssociationsNormalizer = $parentAssociationsNormalizer;
         $this->catalogContext = $catalogContext;
         $this->missingRequiredAttributesCalculator = $missingRequiredAttributesCalculator;
-        $this->completenessNormalizer = $completenessNormalizer;
+        $this->missingRequiredAttributesNormalizer = $missingRequiredAttributesNormalizer;
     }
 
     /**
@@ -191,7 +191,7 @@ class ProductModelNormalizer implements NormalizerInterface
         $closestImage = $this->imageAsLabel->value($productModel);
 
         $scopeCode = $context['channel'] ?? null;
-        $requiredMissingAttributes = $this->completenessNormalizer->normalize(
+        $requiredMissingAttributes = $this->missingRequiredAttributesNormalizer->normalize(
             $this->missingRequiredAttributesCalculator->fromEntityWithFamily($productModel)
         );
 

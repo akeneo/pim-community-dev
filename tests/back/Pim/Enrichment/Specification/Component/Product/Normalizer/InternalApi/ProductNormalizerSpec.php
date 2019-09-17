@@ -17,6 +17,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\MissingRequiredAttributesNormalizerInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductCompletenessWithMissingAttributeCodesCollectionNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\VariantNavigationNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
@@ -53,7 +54,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         MissingAssociationAdder $missingAssociationAdder,
         NormalizerInterface $parentAssociationsNormalizer,
         CatalogContext $catalogContext,
-        CompletenessCalculator $completenessCalculator
+        CompletenessCalculator $completenessCalculator,
+        MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer
     ) {
         $this->beConstructedWith(
             $normalizer,
@@ -74,7 +76,8 @@ class ProductNormalizerSpec extends ObjectBehavior
             $missingAssociationAdder,
             $parentAssociationsNormalizer,
             $catalogContext,
-            $completenessCalculator
+            $completenessCalculator,
+            $missingRequiredAttributesNormalizer
         );
     }
 
@@ -98,6 +101,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         EntityWithFamilyValuesFillerInterface $productValuesFiller,
         MissingAssociationAdder $missingAssociationAdder,
         CompletenessCalculator $completenessCalculator,
+        MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer,
         ProductInterface $mug,
         AssociationInterface $upsell,
         AssociationTypeInterface $groupType,
@@ -184,6 +188,9 @@ class ProductNormalizerSpec extends ObjectBehavior
         $completenessCalculator->fromProductIdentifier('mug')->willReturn($productCompletenessWithMissingAttributeCodesCollection);
         $completenessCollectionNormalizer->normalize($productCompletenessWithMissingAttributeCodesCollection)
                                          ->willReturn(['normalized_completenesses']);
+        $missingRequiredAttributesNormalizer->normalize($productCompletenessWithMissingAttributeCodesCollection)
+                                            ->willReturn(['normalized_missing_attributes']);
+
 
         $structureVersionProvider->getStructureVersion()->willReturn(12);
         $formProvider->getForm($mug)->willReturn('product-edit-form');
@@ -206,7 +213,7 @@ class ProductNormalizerSpec extends ObjectBehavior
                     'model_type'        => 'product',
                     'structure_version' => 12,
                     'completenesses'    => ['normalized_completenesses'],
-                    'required_missing_attributes' => ['normalized_completenesses'],
+                    'required_missing_attributes' => ['normalized_missing_attributes'],
                     'image'             => [
                         'filePath'         => '/p/i/m/4/all.png',
                         'originalFileName' => 'all.png',
@@ -250,6 +257,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         AscendantCategoriesInterface $ascendantCategories,
         MissingAssociationAdder $missingAssociationAdder,
         CompletenessCalculator $completenessCalculator,
+        MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer,
         ProductInterface $mug,
         AssociationInterface $upsell,
         AssociationTypeInterface $groupType,
@@ -340,6 +348,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $productCompletenessWithMissingAttributeCodesCollection = new ProductCompletenessWithMissingAttributeCodesCollection(12, []);
         $completenessCalculator->fromProductIdentifier('mug')->willReturn($productCompletenessWithMissingAttributeCodesCollection);
         $completenessCollectionNormalizer->normalize($productCompletenessWithMissingAttributeCodesCollection)->willReturn([]);
+        $missingRequiredAttributesNormalizer->normalize($productCompletenessWithMissingAttributeCodesCollection)->willReturn([]);
 
         $structureVersionProvider->getStructureVersion()->willReturn(12);
         $formProvider->getForm($mug)->willReturn('product-edit-form');

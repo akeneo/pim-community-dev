@@ -89,6 +89,9 @@ class ProductNormalizer implements NormalizerInterface
     /** @var CompletenessCalculator */
     private $completenessCalculator;
 
+    /** @var MissingRequiredAttributesNormalizerInterface */
+    private $missingRequiredAttributesNormalizer;
+
     public function __construct(
         NormalizerInterface $normalizer,
         NormalizerInterface $versionNormalizer,
@@ -108,7 +111,8 @@ class ProductNormalizer implements NormalizerInterface
         MissingAssociationAdder $missingAssociationAdder,
         NormalizerInterface $parentAssociationsNormalizer,
         CatalogContext $catalogContext,
-        CompletenessCalculator $completenessCalculator
+        CompletenessCalculator $completenessCalculator,
+        MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer
     ) {
         $this->normalizer                       = $normalizer;
         $this->versionNormalizer                = $versionNormalizer;
@@ -129,6 +133,7 @@ class ProductNormalizer implements NormalizerInterface
         $this->missingAssociationAdder          = $missingAssociationAdder;
         $this->catalogContext                   = $catalogContext;
         $this->completenessCalculator           = $completenessCalculator;
+        $this->missingRequiredAttributesNormalizer = $missingRequiredAttributesNormalizer;
     }
 
     /**
@@ -166,7 +171,7 @@ class ProductNormalizer implements NormalizerInterface
 
         $scopeCode = $context['channel'] ?? null;
         $normalizedProduct['parent_associations'] = $this->parentAssociationsNormalizer->normalize($product, $format, $context);
-        $completenesses = $this->getNormalizedCompletenesses($product);
+        $completenesses = $this->getCompletenesses($product);
 
         $normalizedProduct['meta'] = [
             'form'              => $this->formProvider->getForm($product),
@@ -175,8 +180,8 @@ class ProductNormalizer implements NormalizerInterface
             'updated'           => $updated,
             'model_type'        => 'product',
             'structure_version' => $this->structureVersionProvider->getStructureVersion(),
-            'completenesses'    => $completenesses,
-            'required_missing_attributes' => $completenesses,
+            'completenesses'    => $this->completenessCollectionNormalizer->normalize($completenesses),
+            'required_missing_attributes' => $this->missingRequiredAttributesNormalizer->normalize($completenesses),
             'image'             => $this->normalizeImage($product->getImage(), $this->catalogContext->getLocaleCode()),
         ] + $this->getLabels($product, $scopeCode) + $this->getAssociationMeta($product);
 
@@ -246,16 +251,16 @@ class ProductNormalizer implements NormalizerInterface
      *
      * @param ProductInterface $product
      *
-     * @return array
+     * @return ProductCompletenessWithMissingAttributeCodesCollection
      */
-    protected function getNormalizedCompletenesses(ProductInterface $product)
+    protected function getCompletenesses(ProductInterface $product): ProductCompletenessWithMissingAttributeCodesCollection
     {
         $completenessCollection = $this->completenessCalculator->fromProductIdentifier($product->getIdentifier());
         if (null === $completenessCollection) {
             $completenessCollection = new ProductCompletenessWithMissingAttributeCodesCollection($product->getId(), []);
         }
 
-        return $this->completenessCollectionNormalizer->normalize($completenessCollection);
+        return $completenessCollection;
     }
 
     /**

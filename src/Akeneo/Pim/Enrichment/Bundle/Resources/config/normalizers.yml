@@ -123,8 +123,8 @@ services:
             - '@pim_catalog.association.missing_association_adder'
             - '@pim_catalog.normalizer.standard.product.parent_associations'
             - '@pim_catalog.context.catalog'
-            - '@pim_catalog.completeness.calculator'
-            - '@pim_enrich.normalizer.product_completeness_collection'
+            - '@pim_catalog.completeness.missing_required_attributes_calculator'
+            - '@pim_enrich.normalizer.missing_required_attributes'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
@@ -144,6 +144,9 @@ services:
             - '@pim_enrich.normalizer.product_completeness'
             - '@akeneo.pim.enrichment.channel.query.get_labels'
             - '@akeneo.pim.enrichment.attribute.query.get_labels'
+
+    pim_enrich.normalizer.missing_required_attributes:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\MissingRequiredAttributesNormalizer'
 
     pim_enrich.normalizer.collection:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\CollectionNormalizer'
@@ -183,6 +186,7 @@ services:
             - '@pim_catalog.normalizer.standard.product.parent_associations'
             - '@pim_catalog.context.catalog'
             - '@pim_catalog.completeness.calculator'
+            - '@pim_enrich.normalizer.missing_required_attributes'
         tags:
             - { name: pim_internal_api_serializer.normalizer, priority: 110 }
 
