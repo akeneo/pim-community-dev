@@ -14,3 +14,11 @@ services:
             - '%kernel.root_dir%'
         tags:
             - { name: 'console.command' }
+
+    Akeneo\Platform\Bundle\InstallerBundle\Command\CheckRequirementsCommand:
+        arguments:
+            - '@pim_installer.directories_registry'
+            - '%pim_catalog.version.class%'
+            - '%kernel.environment%'
+        tags:
+            - { name: console.command }
