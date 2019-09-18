@@ -43,7 +43,7 @@ const Title = styled.div`
 `;
 
 export const AssetPicker = ({selectedAssets}: AssetPickerProps) => {
-  const [assetPicker, toggleAssetPicker] = React.useState(false);
+  const [isOpen, setOpen] = React.useState(false);
 
   return (
     <React.Fragment>
