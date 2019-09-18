@@ -56,6 +56,8 @@
 - Remove class `Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\Product\CompletenessPublisher`
 - Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\IndexProductsSubscriber` to replace
     `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer` by `Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface`
+- Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer\ProductNormalizer` to add 
+    `Akeneo\Pim\Enrichment\Component\Product\Completeness\MissingRequiredAttributesCalculator` and `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\MissingRequiredAttributesNormalizerInterface`
 - As SSO Log are now in a dedicated table, the following classes are unused and have been removed:
     - Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\CreateArchive
     - Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\FlySystemLogHandler

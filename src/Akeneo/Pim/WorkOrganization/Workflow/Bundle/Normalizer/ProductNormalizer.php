@@ -11,7 +11,9 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer;
 
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\MissingRequiredAttributesCalculator;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\MissingRequiredAttributesNormalizerInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;
@@ -60,16 +62,12 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     /** @var ProductRepositoryInterface */
     protected $productRepository;
 
-    /**
-     * @param NormalizerInterface                      $normalizer
-     * @param PublishedProductManager                  $publishedManager
-     * @param EntityWithValuesDraftRepositoryInterface $draftRepository
-     * @param DraftApplierInterface                    $draftApplier
-     * @param CategoryAccessRepository                 $categoryAccessRepo
-     * @param TokenStorageInterface                    $tokenStorage
-     * @param AuthorizationCheckerInterface            $authorizationChecker
-     * @param ProductRepositoryInterface               $productRepository
-     */
+    /** @var MissingRequiredAttributesCalculator */
+    protected $missingRequiredAttributesCalculator;
+
+    /** @var MissingRequiredAttributesNormalizerInterface */
+    protected $missingRequiredAttributesNormalizer;
+
     public function __construct(
         NormalizerInterface $normalizer,
         PublishedProductManager $publishedManager,
@@ -78,7 +76,9 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
         CategoryAccessRepository $categoryAccessRepo,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
-        ProductRepositoryInterface $productRepository
+        ProductRepositoryInterface $productRepository,
+        MissingRequiredAttributesCalculator $missingRequiredAttributesCalculator,
+        MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer
     ) {
         $this->normalizer = $normalizer;
         $this->publishedManager = $publishedManager;
@@ -88,6 +88,8 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
         $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
         $this->productRepository = $productRepository;
+        $this->missingRequiredAttributesCalculator = $missingRequiredAttributesCalculator;
+        $this->missingRequiredAttributesNormalizer = $missingRequiredAttributesNormalizer;
     }
 
     /**
@@ -116,18 +118,25 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
             Attributes::OWN_PRODUCTS
         );
 
-        $normalizedProduct['meta'] = array_merge(
-            $normalizedProduct['meta'],
-            [
-                'published'    => $published ?
-                    $this->serializer->normalize($published->getVersion(), 'internal_api', $context) :
-                    null,
-                'owner_groups' => $this->serializer->normalize($ownerGroups, 'internal_api', $context),
-                'is_owner'     => $this->authorizationChecker->isGranted(Attributes::OWN, $product),
-                'working_copy' => $normalizedWorkingCopy,
-                'draft_status' => $draftStatus
-            ]
-        );
+        $meta = [
+            'published' => $published ?
+                $this->serializer->normalize($published->getVersion(), 'internal_api', $context) :
+                null,
+            'owner_groups' => $this->serializer->normalize($ownerGroups, 'internal_api', $context),
+            'is_owner' => $isOwner,
+            'working_copy' => $normalizedWorkingCopy,
+            'draft_status' => $draftStatus
+        ];
+
+        // if a draft is ongoing, we have to recompute the missing required attributes based on the draft values
+        if (null !== $draftStatus) {
+            $completenesses = $this->missingRequiredAttributesCalculator->fromEntityWithFamily($product);
+            $meta['required_missing_attributes'] = $this->missingRequiredAttributesNormalizer->normalize($completenesses);
+        } elseif (!$isOwner && !$canEdit) {
+            $meta['required_missing_attributes'] = [];
+        }
+
+        $normalizedProduct['meta'] = array_merge($normalizedProduct['meta'], $meta);
 
         return $normalizedProduct;
     }
@@ -168,5 +177,27 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     protected function getUsername()
     {
         return $this->tokenStorage->getToken()->getUsername();
+    }
+
+    /**
+     * Filters the 'missing required attributes' based on the user's permissions
+     */
+    private function filterMissingRequiredAttributes(array $requiredMissingAttributes): array
+    {
+        $filteredRequiredMissingAttributes = [];
+
+        foreach ($requiredMissingAttributes as $index => $missingForChannel) {
+            $filteredRequiredMissingAttributes[$index] = [
+                'channel' => $missingForChannel['channel'],
+            ];
+
+            foreach ($missingForChannel['locales'] as $localeCode => $missingForLocale) {
+                $filteredRequiredMissingAttributes[$index]['locales'][$localeCode] = [
+                    'missing' => $missingForLocale['missing'],
+                ];
+            }
+        }
+
+        return $filteredRequiredMissingAttributes;
     }
 }
