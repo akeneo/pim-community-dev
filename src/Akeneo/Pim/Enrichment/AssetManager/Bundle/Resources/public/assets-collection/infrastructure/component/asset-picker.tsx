@@ -48,7 +48,7 @@ export const AssetPicker = ({selectedAssets}: AssetPickerProps) => {
   return (
     <React.Fragment>
       <Button buttonSize='medium' color='outline' onClick={() => toggleAssetPicker(true)}>{__('pim_asset_manager.asset_collection.add_asset')}</Button>
-      { (false !== assetPicker) ? (
+      { isOpen ? (
         <Modal>
           <Title>{__('pim_asset_manager.asset_picker.title')}</Title>
           <ConfirmButton
