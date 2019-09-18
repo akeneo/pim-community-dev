@@ -70,10 +70,10 @@ final class ElasticsearchProductProjection
     private $label;
 
     /** @var array */
-    private $attributesForAncestor;
+    private $attributeCodesForAncestor;
 
     /** @var array */
-    private $attributesForThisLevel;
+    private $attributeCodesForThisLevel;
 
     /** @var array */
     private $additionalData = [];
@@ -95,8 +95,8 @@ final class ElasticsearchProductProjection
         array $values,
         array $ancestors,
         ?array $label,
-        array $attributesForAncestor,
-        array $attributesForThisLevel,
+        array $attributeCodesForAncestor,
+        array $attributeCodesForThisLevel,
         array $additionalData = []
     ) {
         $this->id = $id;
@@ -115,8 +115,8 @@ final class ElasticsearchProductProjection
         $this->values = $values;
         $this->ancestors = $ancestors;
         $this->label = $label;
-        $this->attributesForAncestor = $attributesForAncestor;
-        $this->attributesForThisLevel = $attributesForThisLevel;
+        $this->attributeCodesForAncestor = $attributeCodesForAncestor;
+        $this->attributeCodesForThisLevel = $attributeCodesForThisLevel;
         $this->additionalData = $additionalData;
     }
 
@@ -141,8 +141,8 @@ final class ElasticsearchProductProjection
             $this->values,
             $this->ancestors,
             $this->label,
-            $this->attributesForAncestor,
-            $this->attributesForThisLevel,
+            $this->attributeCodesForAncestor,
+            $this->attributeCodesForThisLevel,
             $additionalData
         );
     }
@@ -157,9 +157,9 @@ final class ElasticsearchProductProjection
             }
         }
 
-        $family = null;
+        $familyCode = null;
         if (null !== $this->familyCode) {
-            $family = [
+            $familyCode = [
                 'code'   => $this->familyCode,
                 'labels' => $this->familyLabels,
             ];
@@ -170,7 +170,7 @@ final class ElasticsearchProductProjection
             'identifier' => $this->identifier,
             'created' => $this->createdDate->format(self::INDEX_DATE_FORMAT),
             'updated' => $this->updatedDate->format(self::INDEX_DATE_FORMAT),
-            'family' => $family,
+            'family' => $familyCode,
             'enabled' => $this->isEnabled,
             'categories' => $this->categoryCodes,
             'categories_of_ancestors' => $this->categoryCodesOfAncestors,
@@ -182,8 +182,8 @@ final class ElasticsearchProductProjection
             'ancestors' => $this->ancestors,
             'label' => $this->label,
             'document_type' => ProductInterface::class,
-            'attributes_of_ancestors' => $this->attributesForAncestor,
-            'attributes_for_this_level' => $this->attributesForThisLevel,
+            'attributes_of_ancestors' => $this->attributeCodesForAncestor,
+            'attributes_for_this_level' => $this->attributeCodesForThisLevel,
         ];
 
         if ($inGroup !== null) {
