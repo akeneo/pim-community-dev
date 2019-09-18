@@ -59,7 +59,7 @@ class RemoveCompletenessForChannelAndLocaleCommand extends Command
     private $localeRepository;
 
     /** @var SaverInterface */
-    private $localeSaver;
+    private $channelSaver;
 
     public function __construct(
         EntityManagerClearerInterface $cacheClearer,
@@ -68,7 +68,7 @@ class RemoveCompletenessForChannelAndLocaleCommand extends Command
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         ChannelRepositoryInterface $channelRepository,
         LocaleRepositoryInterface $localeRepository,
-        SaverInterface $localeSaver,
+        SaverInterface $channelSaver,
         string $rootDir,
         string $env,
         int $productBatchSize
@@ -84,7 +84,7 @@ class RemoveCompletenessForChannelAndLocaleCommand extends Command
         $this->productBatchSize = $productBatchSize;
         $this->channelRepository = $channelRepository;
         $this->localeRepository = $localeRepository;
-        $this->localeSaver = $localeSaver;
+        $this->channelSaver = $channelSaver;
     }
 
     /**
@@ -182,7 +182,7 @@ class RemoveCompletenessForChannelAndLocaleCommand extends Command
         }
 
         if (!empty($locales)) {
-            $this->channelRepository->saveAll($locales);
+            $this->channelSaver->saveAll($locales);
         }
         $output->writeln(
             sprintf('<info>[%s] Related products completenesses removal done.</info>', $this->getCurrentDateTime())
