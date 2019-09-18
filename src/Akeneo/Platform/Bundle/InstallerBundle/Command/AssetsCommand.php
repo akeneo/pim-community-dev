@@ -5,11 +5,13 @@ namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 use Akeneo\Platform\Bundle\InstallerBundle\CommandExecutor;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Assets dump command
@@ -18,10 +20,38 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AssetsCommand extends ContainerAwareCommand
+class AssetsCommand extends Command
 {
+    protected static $defaultName = 'pim:installer:assets';
+
     /** @var CommandExecutor */
     protected $commandExecutor;
+
+    /** @var Filesystem */
+    private $filesystem;
+
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
+
+    /** @var array */
+    private $defaultLocales;
+
+    /** @var string */
+    private $rootDir;
+
+    public function __construct(
+        Filesystem $filesystem,
+        EventDispatcherInterface $eventDispatcher,
+        array $localeCodes,
+        string $rootDir
+    ) {
+        parent::__construct();
+
+        $this->filesystem = $filesystem;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->defaultLocales = $localeCodes;
+        $this->rootDir = $rootDir;
+    }
 
     /**
      * {@inheritdoc}
@@ -29,7 +59,6 @@ class AssetsCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('pim:installer:assets')
             ->setDescription('Install assets for Akeneo PIM')
             ->addOption('symlink', null, InputOption::VALUE_NONE, 'Install assets as symlinks')
             ->addOption('clean', null, InputOption::VALUE_NONE, 'Clean previous assets');
@@ -60,7 +89,7 @@ class AssetsCommand extends ContainerAwareCommand
             'symlink' => $input->getOption('symlink')
         ]);
 
-        $this->getEventDispatcher()->dispatch(InstallerEvents::PRE_ASSETS_DUMP, $event);
+        $this->eventDispatcher->dispatch(InstallerEvents::PRE_ASSETS_DUMP, $event);
 
         $webDir = $this->getWebDir();
 
@@ -79,17 +108,16 @@ class AssetsCommand extends ContainerAwareCommand
             ->runCommand('fos:js-routing:dump', ['--target' => $webDir.'js/routes.js'])
             ->runCommand('assets:install');
 
-        $this->getEventDispatcher()->dispatch(InstallerEvents::POST_SYMFONY_ASSETS_DUMP, $event);
+        $this->eventDispatcher->dispatch(InstallerEvents::POST_SYMFONY_ASSETS_DUMP, $event);
         $this->commandExecutor
             ->runCommand('pim:installer:dump-require-paths');
-        $defaultLocales = $this->getContainer()->getParameter('pim_localization.provider.ui_locale.locale_codes');
-        $this->commandExecutor->runCommand('oro:translation:dump', ['locale' => implode(', ', $defaultLocales)]);
+        $this->commandExecutor->runCommand('oro:translation:dump', ['locale' => implode(', ', $this->defaultLocales)]);
 
         if (true === $input->getOption('symlink')) {
             $this->commandExecutor->runCommand('assets:install', ['--relative' => true, '--symlink' => true]);
         }
 
-        $this->getEventDispatcher()->dispatch(InstallerEvents::POST_ASSETS_DUMP, $event);
+        $this->eventDispatcher->dispatch(InstallerEvents::POST_ASSETS_DUMP, $event);
 
         return $this;
     }
@@ -99,7 +127,7 @@ class AssetsCommand extends ContainerAwareCommand
      */
     protected function getWebDir()
     {
-        return $this->getContainer()->getParameter('kernel.root_dir').'/../web/';
+        return $this->rootDir.'/../web/';
     }
 
     /**
@@ -109,21 +137,11 @@ class AssetsCommand extends ContainerAwareCommand
      */
     protected function cleanDirectories($directories)
     {
-        $filesystem = $this->getContainer()->get('filesystem');
-
         foreach ($directories as $directory) {
-            if ($filesystem->exists($directory)) {
-                $filesystem->remove($directory);
+            if ($this->filesystem->exists($directory)) {
+                $this->filesystem->remove($directory);
             }
-            $filesystem->mkdir($directory);
+            $this->filesystem->mkdir($directory);
         }
-    }
-
-    /**
-     * @return EventDispatcherInterface
-     */
-    protected function getEventDispatcher()
-    {
-        return $this->getContainer()->get('event_dispatcher');
     }
 }

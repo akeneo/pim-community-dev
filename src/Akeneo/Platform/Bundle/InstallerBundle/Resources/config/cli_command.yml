@@ -5,3 +5,44 @@ services:
             - '@pim_installer.install_status_manager'
         tags:
             - { name: 'console.command' }
+
+    Akeneo\Platform\Bundle\InstallerBundle\Command\AssetsCommand:
+        arguments:
+            - '@filesystem'
+            - '@event_dispatcher'
+            - '%pim_localization.provider.ui_locale.locale_codes%'
+            - '%kernel.root_dir%'
+        tags:
+            - { name: 'console.command' }
+
+    Akeneo\Platform\Bundle\InstallerBundle\Command\CheckRequirementsCommand:
+        arguments:
+            - '@pim_installer.directories_registry'
+            - '%pim_catalog.version.class%'
+            - '%kernel.environment%'
+        tags:
+            - { name: console.command }
+
+    Akeneo\Platform\Bundle\InstallerBundle\Command\DatabaseCommand:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '@akeneo_elasticsearch.registry.clients'
+            - '@database_connection'
+            - '@pim_installer.fixture_loader.job_loader'
+            - '@event_dispatcher'
+            - '%installer_data%'
+            - '%kernel.environment%'
+        tags:
+            - { name: console.command }
+
+    Akeneo\Platform\Bundle\InstallerBundle\Command\DumpRequirePathsCommand:
+        arguments:
+            - '%kernel.root_dir%'
+            - '%kernel.bundles%'
+        tags:
+            - { name: console.command }
+    Akeneo\Platform\Bundle\InstallerBundle\Command\PrepareRequiredDirectoriesCommand:
+        arguments:
+            - '@pim_installer.directories_registry'
+        tags:
+            - { name: console.command }

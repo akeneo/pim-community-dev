@@ -13,3 +13,9 @@ services:
             - '@akeneo_batch.delete_job_execution'
             - '@akeneo_batch_queue.query.delete_job_execution_message_orphans'
             - '@akeneo.platform.import_export.filesystem.delete_orphans_job_execution_directories'
+
+    Akeneo\Platform\Bundle\ImportExportBundle\Command\PurgeJobExecutionCommand:
+        arguments:
+            - '@akeneo.platform.import_export.purge_job_execution'
+        tags:
+            - { name: console.command }

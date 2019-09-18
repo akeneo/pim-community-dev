@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Purge;
 
-use Akeneo\Component\BatchQueue\Query\DeleteJobExecutionMessageOrphansQueryInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Persistence\Filesystem\DeleteOrphanJobExecutionDirectories;
 use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\DeleteJobExecution;
+use Akeneo\Tool\Component\BatchQueue\Query\DeleteJobExecutionMessageOrphansQueryInterface;
 
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)

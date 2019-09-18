@@ -5,7 +5,7 @@ namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 use Akeneo\Platform\Bundle\InstallerBundle\PimDirectoriesRegistry;
 use Akeneo\Platform\CommunityVersion;
 use Akeneo\Platform\Requirements;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -17,16 +17,37 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CheckRequirementsCommand extends ContainerAwareCommand
+class CheckRequirementsCommand extends Command
 {
+    protected static $defaultName = 'pim:installer:check-requirements';
+
+    /** @var PimDirectoriesRegistry */
+    private $pimDirectoriesRegistry;
+
+    /** @var string */
+    private $pimVersion;
+
+    /** @var string */
+    private $env;
+
+    public function __construct(
+        PimDirectoriesRegistry $pimDirectoriesRegistry,
+        string $pimVersion,
+        string $env
+    ) {
+        parent::__construct();
+
+        $this->pimDirectoriesRegistry = $pimDirectoriesRegistry;
+        $this->pimVersion = $pimVersion;
+        $this->env = $env;
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
-        $this
-            ->setName('pim:installer:check-requirements')
-            ->setDescription('Check requirements for Akeneo PIM');
+        $this->setDescription('Check requirements for Akeneo PIM');
     }
 
     /**
@@ -41,16 +62,15 @@ class CheckRequirementsCommand extends ContainerAwareCommand
 
     protected function getRequirements(): Requirements
     {
-        $version = $this->getContainer()->getParameter('pim_catalog.version.class');
         $baseDirectory = __DIR__.'/../../../';
 
-        if (CommunityVersion::class !== $version) {
+        if (CommunityVersion::class !== $this->pimVersion) {
             $baseDirectory = $baseDirectory.'../../../';
         }
 
         $directories = [];
-        if ($this->getContainer()->getParameter('kernel.environment') !== 'behat') {
-            $directories = $this->getDirectoriesContainer()->getDirectories();
+        if ($this->env !== 'behat') {
+            $directories = $this->pimDirectoriesRegistry->getDirectories();
         }
 
         return new Requirements($baseDirectory, $directories);
@@ -107,13 +127,5 @@ class CheckRequirementsCommand extends ContainerAwareCommand
         }
 
         $table->render();
-    }
-
-    /**
-     * @return PimDirectoriesRegistry
-     */
-    protected function getDirectoriesContainer()
-    {
-        return $this->getContainer()->get('pim_installer.directories_registry');
     }
 }
