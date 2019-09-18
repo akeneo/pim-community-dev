@@ -54,3 +54,11 @@ services:
         class: '%pim_enrich.event_listener.add_locale.class%'
         tags:
             - { name: doctrine.event_subscriber }
+
+    pim_enrich.event_listener.remove_category_filter_in_job_instance:
+        class: Pim\Bundle\EnrichBundle\EventListener\Storage\RemoveCategoryFilterInJobInstanceSubscriber
+        arguments:
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@akeneo_batch.saver.job_instance'
+        tags:
+            - { name: kernel.event_subscriber }
