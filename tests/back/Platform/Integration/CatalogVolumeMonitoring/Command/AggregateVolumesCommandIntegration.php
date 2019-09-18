@@ -14,7 +14,6 @@ class AggregateVolumesCommandIntegration extends KernelTestCase
         $kernel = self::bootKernel();
 
         $application = new Application($kernel);
-        $application->add(new AggregateVolumesCommand());
 
         $command = $application->find('pim:volume:aggregate');
 

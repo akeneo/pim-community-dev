@@ -19,7 +19,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class AggregateVolumesCommand extends Command
 {
-    protected static $defaultName = 'pim:product:clean-removed-attributes';
+    protected static $defaultName = 'pim:volume:aggregate';
 
     /** @var VolumeAggregation */
     private $volumeAggregation;
