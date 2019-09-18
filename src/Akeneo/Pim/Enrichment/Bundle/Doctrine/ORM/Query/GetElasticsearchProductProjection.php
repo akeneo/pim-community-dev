@@ -6,10 +6,9 @@ namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query;
 
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductProjectionInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductProjectionInterface;
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetProductDataForIndexationInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductProjection;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\IndexableProduct;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
@@ -43,7 +42,7 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
     /** @var EntityWithFamilyVariantAttributesProvider */
     private $attributesProvider;
 
-    /** @var \Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetProductDataForIndexationInterface[] */
+    /** @var GetAdditionalPropertiesForProductProjectionInterface[] */
     private $additionalDataProviders = [];
 
     public function __construct(

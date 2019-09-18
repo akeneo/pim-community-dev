@@ -12,14 +12,6 @@ namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 interface GetAdditionalPropertiesForProductProjectionInterface
 {
     /**
-     * Returns an associative array of additional properties for the indexation of a product.
-     *
-     * @param string $productIdentifier
-     * @return array ['key_1_to_index' => 'value_1_to_index', 'key_2_to_index' => 'value_2_to_index']
-     */
-    public function fromProductIdentifier(string $productIdentifier): array;
-
-    /**
      * Returns an associative array of additional properties for the indexation of several products.
      *
      * @param array $productIdentifiers
