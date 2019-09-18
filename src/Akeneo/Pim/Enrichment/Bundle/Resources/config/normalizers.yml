@@ -189,11 +189,3 @@ services:
             - '@pim_enrich.normalizer.missing_required_attributes'
         tags:
             - { name: pim_internal_api_serializer.normalizer, priority: 110 }
-
-    pim_enrich.normalizer.incomplete_values:
-        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\IncompleteValuesNormalizer'
-        arguments:
-            - '@pim_catalog.entity_with_family.required_value_collection_factory'
-            - '@pim_catalog.entity_with_family.incomplete_value_collection_factory'
-        tags:
-            - { name: pim_internal_api_serializer.normalizer }
