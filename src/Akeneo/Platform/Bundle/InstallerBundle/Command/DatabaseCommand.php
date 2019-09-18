@@ -329,7 +329,7 @@ class DatabaseCommand extends Command
     /**
      * Launches all commands needed after fixtures loading
      */
-    protected function launchCommands(): self
+    protected function launchCommands()
     {
         $this->commandExecutor->runCommand('pim:versioning:refresh');
 
