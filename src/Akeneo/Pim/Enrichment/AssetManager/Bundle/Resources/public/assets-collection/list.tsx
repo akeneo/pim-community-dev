@@ -118,7 +118,7 @@ const DisplayValues = ({values, family, context, ruleRelations, onChange, errors
             ): null}
             {value.editable ? (
               <React.Fragment>
-                <AssetPicker assetsToExclude={value.data} selectedAssets={(assetCodes: AssetCode[]) => {onChange(updateValueData(value, assetCodes))}} />
+                <AssetPicker assetsToExclude={value.data} selectedAssets={(assetCodes: AssetCode[]) => {onChange(updateValueData(value, addAssetToCollection(value.data, assetCodes)))}} />
                 <MoreButton elements={[{
                   label: __('pim_asset_manager.asset_collection.remove_all_assets'),
                   action: () => {
