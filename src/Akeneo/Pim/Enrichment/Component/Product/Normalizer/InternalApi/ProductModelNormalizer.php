@@ -8,6 +8,7 @@ use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
 use Akeneo\Pim\Enrichment\Component\Category\Query\AscendantCategoriesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\MissingRequiredAttributesCalculator;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
@@ -73,9 +74,6 @@ class ProductModelNormalizer implements NormalizerInterface
     /** @var AscendantCategoriesInterface */
     private $ascendantCategoriesQuery;
 
-    /** @var NormalizerInterface */
-    private $incompleteValuesNormalizer;
-
     /** @var UserContext */
     private $userContext;
 
@@ -88,27 +86,12 @@ class ProductModelNormalizer implements NormalizerInterface
     /** @var CatalogContext */
     private $catalogContext;
 
-    /**
-     * @param NormalizerInterface                       $normalizer
-     * @param NormalizerInterface                       $versionNormalizer
-     * @param VersionManager                            $versionManager
-     * @param ImageNormalizer                           $imageNormalizer
-     * @param AttributeConverterInterface               $localizedConverter
-     * @param ConverterInterface                        $productValueConverter
-     * @param FormProviderInterface                     $formProvider
-     * @param LocaleRepositoryInterface                 $localeRepository
-     * @param EntityWithFamilyValuesFillerInterface     $entityValuesFiller
-     * @param EntityWithFamilyVariantAttributesProvider $attributesProvider
-     * @param VariantNavigationNormalizer               $navigationNormalizer
-     * @param VariantProductRatioInterface              $variantProductRatioQuery
-     * @param ImageAsLabel                              $imageAsLabel
-     * @param AscendantCategoriesInterface              $ascendantCategoriesQuery
-     * @param NormalizerInterface                       $incompleteValuesNormalizer
-     * @param UserContext                               $userContext
-     * @param MissingAssociationAdder                   $missingAssociationAdder
-     * @param NormalizerInterface                       $parentAssociationsNormalizer
-     * @param CatalogContext                            $catalogContext
-     */
+    /** @var MissingRequiredAttributesCalculator */
+    private $missingRequiredAttributesCalculator;
+
+    /** @var MissingRequiredAttributesNormalizerInterface */
+    private $missingRequiredAttributesNormalizer;
+
     public function __construct(
         NormalizerInterface $normalizer,
         NormalizerInterface $versionNormalizer,
@@ -124,11 +107,12 @@ class ProductModelNormalizer implements NormalizerInterface
         VariantProductRatioInterface $variantProductRatioQuery,
         ImageAsLabel $imageAsLabel,
         AscendantCategoriesInterface $ascendantCategoriesQuery,
-        NormalizerInterface $incompleteValuesNormalizer,
         UserContext $userContext,
         MissingAssociationAdder $missingAssociationAdder,
         NormalizerInterface $parentAssociationsNormalizer,
-        CatalogContext $catalogContext
+        CatalogContext $catalogContext,
+        MissingRequiredAttributesCalculator $missingRequiredAttributesCalculator,
+        MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer
     ) {
         $this->normalizer = $normalizer;
         $this->versionNormalizer = $versionNormalizer;
@@ -144,11 +128,12 @@ class ProductModelNormalizer implements NormalizerInterface
         $this->variantProductRatioQuery = $variantProductRatioQuery;
         $this->imageAsLabel = $imageAsLabel;
         $this->ascendantCategoriesQuery = $ascendantCategoriesQuery;
-        $this->incompleteValuesNormalizer = $incompleteValuesNormalizer;
         $this->userContext = $userContext;
-        $this->parentAssociationsNormalizer = $parentAssociationsNormalizer;
         $this->missingAssociationAdder = $missingAssociationAdder;
+        $this->parentAssociationsNormalizer = $parentAssociationsNormalizer;
         $this->catalogContext = $catalogContext;
+        $this->missingRequiredAttributesCalculator = $missingRequiredAttributesCalculator;
+        $this->missingRequiredAttributesNormalizer = $missingRequiredAttributesNormalizer;
     }
 
     /**
@@ -206,6 +191,9 @@ class ProductModelNormalizer implements NormalizerInterface
         $closestImage = $this->imageAsLabel->value($productModel);
 
         $scopeCode = $context['channel'] ?? null;
+        $requiredMissingAttributes = $this->missingRequiredAttributesNormalizer->normalize(
+            $this->missingRequiredAttributesCalculator->fromEntityWithFamily($productModel)
+        );
 
         $normalizedProductModel['meta'] = [
                 'variant_product_completenesses' => $variantProductCompletenesses->values(),
@@ -220,7 +208,7 @@ class ProductModelNormalizer implements NormalizerInterface
                 'image'                     => $this->normalizeImage($closestImage, $this->catalogContext->getLocaleCode()),
                 'variant_navigation'        => $this->navigationNormalizer->normalize($productModel, $format, $context),
                 'ascendant_category_ids'    => $this->ascendantCategoriesQuery->getCategoryIds($productModel),
-                'required_missing_attributes' => $this->incompleteValuesNormalizer->normalize($productModel, $format, $context),
+                'required_missing_attributes' => $requiredMissingAttributes,
                 'level'                     => $productModel->getVariationLevel(),
             ] + $this->getLabels($productModel, $scopeCode) + $this->getAssociationMeta($productModel);
 

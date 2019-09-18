@@ -8,9 +8,11 @@ use Akeneo\Pim\Enrichment\Component\Product\Completeness\MaskItemGenerator\MaskI
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessProductMask;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetCompletenessProductMasks;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\EmptyValuesCleaner;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Doctrine\DBAL\Connection;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @author    Pierre Allard <pierre.allard@akeneo.com>
@@ -31,22 +33,25 @@ final class SqlGetCompletenessProductMasks implements GetCompletenessProductMask
     /** @var EmptyValuesCleaner */
     private $emptyValuesCleaner;
 
+    /** @var NormalizerInterface */
+    private $valuesNormalizer;
+
     public function __construct(
         Connection $connection,
         MaskItemGenerator $maskItemGenerator,
         GetAttributes $getAttributes,
-        EmptyValuesCleaner $emptyValuesCleaner
+        EmptyValuesCleaner $emptyValuesCleaner,
+        NormalizerInterface $valuesNormalizer
     ) {
         $this->connection = $connection;
         $this->maskItemGenerator = $maskItemGenerator;
         $this->getAttributes = $getAttributes;
         $this->emptyValuesCleaner = $emptyValuesCleaner;
+        $this->valuesNormalizer = $valuesNormalizer;
     }
 
     /**
-     * @param string[] $productIdentifiers
-     *
-     * @return CompletenessProductMask[]
+     * {@inheritdoc}
      */
     public function fromProductIdentifiers(array $productIdentifiers): array
     {
@@ -69,28 +74,54 @@ WHERE product.identifier IN (:productIdentifiers)
 GROUP BY product.identifier
 SQL;
 
-        $rows = $this->connection->executeQuery(
-            $sql,
-            ['productIdentifiers' => $productIdentifiers],
-            ['productIdentifiers' => Connection::PARAM_STR_ARRAY]
-        )->fetchAll();
+        $rows = array_map(
+            function (array $row): array {
+                return [
+                    'id' => $row['id'],
+                    'identifier' => $row['identifier'],
+                    'familyCode' => $row['familyCode'],
+                    'cleanedRawValues' => $this->cleanEmptyValues(json_decode($row['rawValues'], true)),
+                ];
+            },
+            $this->connection->executeQuery(
+                $sql,
+                ['productIdentifiers' => $productIdentifiers],
+                ['productIdentifiers' => Connection::PARAM_STR_ARRAY]
+            )->fetchAll()
+        );
 
+        return $this->buildProductMasks($rows);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function fromValueCollection(
+        int $id,
+        string $identifier,
+        string $familyCode,
+        WriteValueCollection $values
+    ): CompletenessProductMask {
+        $row = [
+            'id' => $id,
+            'identifier' => $identifier,
+            'familyCode' => $familyCode,
+            'cleanedRawValues' => $this->cleanEmptyValues($this->valuesNormalizer->normalize($values, 'storage')),
+        ];
+
+        return $this->buildProductMasks([$row])[0];
+    }
+
+    private function buildProductMasks(array $rows): array
+    {
         $attributeCodes = [];
-        $rowsWithCleanedRawValues = [];
-
         foreach ($rows as $row) {
-            $rowsWithCleanedRawValue = $row;
-            $rowsWithCleanedRawValue['cleanedRawValues'] = $this->cleanEmptyValues(json_decode($rowsWithCleanedRawValue['rawValues'], true));
-            foreach (array_keys($rowsWithCleanedRawValue['cleanedRawValues']) as $attributeCode) {
-                $attributeCodes[] = $attributeCode;
-            }
-            $rowsWithCleanedRawValues[] = $rowsWithCleanedRawValue;
+            $attributeCodes = array_merge($attributeCodes, array_keys($row['cleanedRawValues']));
         }
-
         $attributes = $this->getAttributes->forCodes(array_unique($attributeCodes));
 
         $result = [];
-        foreach ($rowsWithCleanedRawValues as $row) {
+        foreach ($rows as $row) {
             $result[] = new CompletenessProductMask(
                 intval($row['id']),
                 $row['identifier'],
@@ -103,7 +134,7 @@ SQL;
     }
 
     /**
-     * @param array       $rawValues
+     * @param array $rawValues
      * @param Attribute[] $attributes
      *
      * @return string[]
@@ -129,11 +160,15 @@ SQL;
             }
         }
 
+        if (empty($masks)) {
+            return [];
+        }
+
         return array_merge(...$masks);
     }
 
     private function cleanEmptyValues(array $rawValues): array
     {
-        return $this->emptyValuesCleaner->cleanAllValues(['ID' => $rawValues])['ID'];
+        return $this->emptyValuesCleaner->cleanAllValues(['ID' => $rawValues])['ID'] ?? [];
     }
 }

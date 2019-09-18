@@ -107,8 +107,12 @@
      `Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface` and `Symfony\Component\Serializer\Normalizer\NormalizerInterface` 
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductNormalizer` to remove
     `Doctrine\Common\Persistence\ObjectManager`, `Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager`, `Akeneo\Channel\Component\Repository\ChannelRepositoryInterface`,
-    `Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface`and `Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface` and `Symfony\Component\Serializer\Normalizer\NormalizerInterface, and to add
-    `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductCompletenessCollectionWithMissingAttributeCodesNormalizer` and `Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator`
+    `Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface`, `Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface` and `Symfony\Component\Serializer\Normalizer\NormalizerInterface, and to add
+    `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductCompletenessCollectionWithMissingAttributeCodesNormalizer`, `Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator` and
+    `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\MissingRequiredAttributesNormalizerInterface`
+- Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductModelNormalizer` to remove
+    `Symfony\Component\Serializer\Normalizer\NormalizerInterface` ($incompleteValuesNormalizer), and to add
+    `Akeneo\Pim\Enrichment\Component\Product\Completeness\MissingRequiredAttributesCalculator` and `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\MissingRequiredAttributesNormalizerInterface`
 - Change constructor of `Oro\Bundle\PimDataGridBundle\Normalizer\ProductAssociationNormalizer` to add `Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses`
 - Change constructor of `Oro\Bundle\PimDataGridBundle\Normalizer\ProductNormalizer` to add `Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses`
 - Removed the following class and the corresponding command:

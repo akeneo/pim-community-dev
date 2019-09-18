@@ -6,6 +6,8 @@ use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
 use Akeneo\Pim\Enrichment\Component\Category\Query\AscendantCategoriesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\MissingRequiredAttributesCalculator;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
@@ -14,6 +16,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\MissingRequiredAttributesNormalizerInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\VariantNavigationNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\ImageAsLabel;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\CompleteVariantProducts;
@@ -36,8 +39,8 @@ class ProductModelNormalizerSpec extends ObjectBehavior
     function let(
         NormalizerInterface $normalizer,
         NormalizerInterface $versionNormalizer,
-        ImageNormalizer $imageNormalizer,
         VersionManager $versionManager,
+        ImageNormalizer $imageNormalizer,
         AttributeConverterInterface $localizedConverter,
         ConverterInterface $productValueConverter,
         FormProviderInterface $formProvider,
@@ -45,14 +48,15 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         EntityWithFamilyValuesFillerInterface $entityValuesFiller,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         VariantNavigationNormalizer $navigationNormalizer,
-        VariantProductRatioInterface $findVariantProductCompleteness,
+        VariantProductRatioInterface $variantProductRatioQuery,
         ImageAsLabel $imageAsLabel,
-        AscendantCategoriesInterface $ascendantCategories,
-        NormalizerInterface $incompleteValuesNormalizer,
+        AscendantCategoriesInterface $ascendantCategoriesQuery,
         UserContext $userContext,
         MissingAssociationAdder $missingAssociationAdder,
         NormalizerInterface $parentAssociationsNormalizer,
-        CatalogContext $catalogContext
+        CatalogContext $catalogContext,
+        MissingRequiredAttributesCalculator $missingRequiredAttributesCalculator,
+        MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer
     ) {
         $this->beConstructedWith(
             $normalizer,
@@ -66,14 +70,15 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             $entityValuesFiller,
             $attributesProvider,
             $navigationNormalizer,
-            $findVariantProductCompleteness,
+            $variantProductRatioQuery,
             $imageAsLabel,
-            $ascendantCategories,
-            $incompleteValuesNormalizer,
+            $ascendantCategoriesQuery,
             $userContext,
             $missingAssociationAdder,
             $parentAssociationsNormalizer,
-            $catalogContext
+            $catalogContext,
+            $missingRequiredAttributesCalculator,
+            $missingRequiredAttributesNormalizer
         );
     }
 
@@ -83,21 +88,22 @@ class ProductModelNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_product_models(
-        $normalizer,
-        $versionNormalizer,
-        $imageNormalizer,
-        $versionManager,
-        $localizedConverter,
-        $productValueConverter,
-        $formProvider,
-        $localeRepository,
-        $attributesProvider,
-        $navigationNormalizer,
-        $findVariantProductCompleteness,
-        $imageAsLabel,
-        $ascendantCategories,
-        $incompleteValuesNormalizer,
-        $userContext,
+        NormalizerInterface $normalizer,
+        NormalizerInterface $versionNormalizer,
+        VersionManager $versionManager,
+        ImageNormalizer $imageNormalizer,
+        AttributeConverterInterface $localizedConverter,
+        ConverterInterface $productValueConverter,
+        FormProviderInterface $formProvider,
+        LocaleRepositoryInterface $localeRepository,
+        EntityWithFamilyVariantAttributesProvider $attributesProvider,
+        VariantNavigationNormalizer $navigationNormalizer,
+        VariantProductRatioInterface $variantProductRatioQuery,
+        ImageAsLabel $imageAsLabel,
+        AscendantCategoriesInterface $ascendantCategoriesQuery,
+        UserContext $userContext,
+        MissingRequiredAttributesCalculator $missingRequiredAttributesCalculator,
+        MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer,
         AttributeInterface $pictureAttribute,
         ProductModelInterface $productModel,
         FamilyVariantInterface $familyVariant,
@@ -198,15 +204,21 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $navigationNormalizer->normalize($productModel, 'internal_api', $options)
             ->willReturn(['NAVIGATION NORMALIZED']);
 
-        $findVariantProductCompleteness->findComplete($productModel)->willReturn($completeVariantProducts);
+        $variantProductRatioQuery->findComplete($productModel)->willReturn($completeVariantProducts);
         $completeVariantProducts->values()->willReturn([
             'completenesses' => [],
             'total' => 10,
         ]);
 
-        $ascendantCategories->getCategoryIds($productModel)->willReturn([42]);
+        $ascendantCategoriesQuery->getCategoryIds($productModel)->willReturn([42]);
 
-        $incompleteValuesNormalizer->normalize($productModel, Argument::cetera())
+        $productCompletenessWithMissingAttributeCodesCollection = new ProductCompletenessWithMissingAttributeCodesCollection(
+            12, []
+        );
+        $missingRequiredAttributesCalculator->fromEntityWithFamily($productModel)->willReturn(
+            $productCompletenessWithMissingAttributeCodesCollection
+        );
+        $missingRequiredAttributesNormalizer->normalize($productCompletenessWithMissingAttributeCodesCollection)
             ->willReturn(['kind of completenesses data normalized here']);
 
         $productModel->getVariationLevel()->willReturn(0);
@@ -260,21 +272,22 @@ class ProductModelNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_product_models_without_image(
-        $normalizer,
-        $versionNormalizer,
-        $imageNormalizer,
-        $versionManager,
-        $localizedConverter,
-        $productValueConverter,
-        $formProvider,
-        $localeRepository,
-        $attributesProvider,
-        $navigationNormalizer,
-        $findVariantProductCompleteness,
-        $imageAsLabel,
-        $ascendantCategories,
-        $incompleteValuesNormalizer,
-        $userContext,
+        NormalizerInterface $normalizer,
+        NormalizerInterface $versionNormalizer,
+        VersionManager $versionManager,
+        ImageNormalizer $imageNormalizer,
+        AttributeConverterInterface $localizedConverter,
+        ConverterInterface $productValueConverter,
+        FormProviderInterface $formProvider,
+        LocaleRepositoryInterface $localeRepository,
+        EntityWithFamilyVariantAttributesProvider $attributesProvider,
+        VariantNavigationNormalizer $navigationNormalizer,
+        VariantProductRatioInterface $variantProductRatioQuery,
+        ImageAsLabel $imageAsLabel,
+        AscendantCategoriesInterface $ascendantCategoriesQuery,
+        UserContext $userContext,
+        MissingRequiredAttributesCalculator $missingRequiredAttributesCalculator,
+        MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer,
         AttributeInterface $pictureAttribute,
         ProductModelInterface $productModel,
         FamilyVariantInterface $familyVariant,
@@ -357,15 +370,21 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $navigationNormalizer->normalize($productModel, 'internal_api', $options)
             ->willReturn(['NAVIGATION NORMALIZED']);
 
-        $findVariantProductCompleteness->findComplete($productModel)->willReturn($completeVariantProducts);
+        $variantProductRatioQuery->findComplete($productModel)->willReturn($completeVariantProducts);
         $completeVariantProducts->values()->willReturn([
             'completenesses' => [],
             'total' => 10,
         ]);
 
-        $ascendantCategories->getCategoryIds($productModel)->willReturn([42]);
+        $ascendantCategoriesQuery->getCategoryIds($productModel)->willReturn([42]);
 
-        $incompleteValuesNormalizer->normalize($productModel, Argument::cetera())
+        $productCompletenessWithMissingAttributeCodesCollection = new ProductCompletenessWithMissingAttributeCodesCollection(
+            12, []
+        );
+        $missingRequiredAttributesCalculator->fromEntityWithFamily($productModel)->willReturn(
+            $productCompletenessWithMissingAttributeCodesCollection
+        );
+        $missingRequiredAttributesNormalizer->normalize($productCompletenessWithMissingAttributeCodesCollection)
             ->willReturn(['kind of completenesses data normalized here']);
 
         $productModel->getVariationLevel()->willReturn(0);
@@ -408,21 +427,22 @@ class ProductModelNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_product_models_without_multiple_levels(
-        $normalizer,
-        $versionNormalizer,
-        $imageNormalizer,
-        $versionManager,
-        $localizedConverter,
-        $productValueConverter,
-        $formProvider,
-        $localeRepository,
-        $attributesProvider,
-        $navigationNormalizer,
-        $findVariantProductCompleteness,
-        $imageAsLabel,
-        $ascendantCategories,
-        $incompleteValuesNormalizer,
-        $userContext,
+        NormalizerInterface $normalizer,
+        NormalizerInterface $versionNormalizer,
+        VersionManager $versionManager,
+        ImageNormalizer $imageNormalizer,
+        AttributeConverterInterface $localizedConverter,
+        ConverterInterface $productValueConverter,
+        FormProviderInterface $formProvider,
+        LocaleRepositoryInterface $localeRepository,
+        EntityWithFamilyVariantAttributesProvider $attributesProvider,
+        VariantNavigationNormalizer $navigationNormalizer,
+        VariantProductRatioInterface $variantProductRatioQuery,
+        ImageAsLabel $imageAsLabel,
+        AscendantCategoriesInterface $ascendantCategoriesQuery,
+        UserContext $userContext,
+        MissingRequiredAttributesCalculator $missingRequiredAttributesCalculator,
+        MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer,
         AttributeInterface $pictureAttribute,
         ProductModelInterface $productModel,
         FamilyVariantInterface $familyVariant,
@@ -518,16 +538,21 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $navigationNormalizer->normalize($productModel, 'internal_api', $options)
             ->willReturn(['NAVIGATION NORMALIZED']);
 
-        $findVariantProductCompleteness->findComplete($productModel)->willReturn($completeVariantProducts);
+        $variantProductRatioQuery->findComplete($productModel)->willReturn($completeVariantProducts);
         $completeVariantProducts->values()->willReturn([
             'completenesses' => [],
             'total' => 10,
         ]);
+        $ascendantCategoriesQuery->getCategoryIds($productModel)->willReturn([42]);
 
-        $ascendantCategories->getCategoryIds($productModel)->willReturn([42]);
-
-        $incompleteValuesNormalizer->normalize($productModel, Argument::cetera())
-            ->willReturn(['kind of completenesses data normalized here']);
+        $productCompletenessWithMissingAttributeCodesCollection = new ProductCompletenessWithMissingAttributeCodesCollection(
+            12, []
+        );
+        $missingRequiredAttributesCalculator->fromEntityWithFamily($productModel)->willReturn(
+            $productCompletenessWithMissingAttributeCodesCollection
+        );
+        $missingRequiredAttributesNormalizer->normalize($productCompletenessWithMissingAttributeCodesCollection)
+                               ->willReturn(['kind of completenesses data normalized here']);
 
         $productModel->getVariationLevel()->willReturn(0);
         $productModel->getAssociations()->willReturn([]);

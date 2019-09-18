@@ -2,13 +2,16 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Completeness;
 
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMask;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMaskForChannelAndLocale;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessProductMask;
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetCompletenessProductMasks;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetCompletenessProductMasks;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Structure\Component\Model\Family;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetRequiredAttributesMasks;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMask;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMaskForChannelAndLocale;
 use PhpSpec\ObjectBehavior;
 
 class CompletenessCalculatorSpec extends ObjectBehavior

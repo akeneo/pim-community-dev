@@ -10,3 +10,9 @@ services:
         arguments:
             - '@pim_catalog.completeness.calculator'
             - '@akeneo.pim.enrichment.product.query.save_product_completenesses'
+
+    pim_catalog.completeness.missing_required_attributes_calculator:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Completeness\MissingRequiredAttributesCalculator'
+        arguments:
+            - '@akeneo.pim.enrichment.completeness.query.get_product_masks'
+            - '@akeneo.pim.structure.query.sql_get_required_attributes_masks'

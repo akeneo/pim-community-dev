@@ -119,11 +119,12 @@ services:
             - '@pim_catalog.doctrine.query.find_variant_product_completeness'
             - '@pim_catalog.product_models.image_as_label'
             - '@pim_enrich.doctrine.query.ascendant_categories'
-            - '@pim_enrich.normalizer.incomplete_values'
             - '@pim_user.context.user'
             - '@pim_catalog.association.missing_association_adder'
             - '@pim_catalog.normalizer.standard.product.parent_associations'
             - '@pim_catalog.context.catalog'
+            - '@pim_catalog.completeness.missing_required_attributes_calculator'
+            - '@pim_enrich.normalizer.missing_required_attributes'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
@@ -143,6 +144,9 @@ services:
             - '@pim_enrich.normalizer.product_completeness'
             - '@akeneo.pim.enrichment.channel.query.get_labels'
             - '@akeneo.pim.enrichment.attribute.query.get_labels'
+
+    pim_enrich.normalizer.missing_required_attributes:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\MissingRequiredAttributesNormalizer'
 
     pim_enrich.normalizer.collection:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\CollectionNormalizer'
@@ -178,11 +182,11 @@ services:
             - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
             - '@pim_enrich.normalizer.variant_navigation'
             - '@pim_enrich.doctrine.query.ascendant_categories'
-            - '@pim_enrich.normalizer.incomplete_values'
             - '@pim_catalog.association.missing_association_adder'
             - '@pim_catalog.normalizer.standard.product.parent_associations'
             - '@pim_catalog.context.catalog'
             - '@pim_catalog.completeness.calculator'
+            - '@pim_enrich.normalizer.missing_required_attributes'
         tags:
             - { name: pim_internal_api_serializer.normalizer, priority: 110 }
 
