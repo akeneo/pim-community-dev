@@ -28,7 +28,7 @@ class AttributeMapping
         AttributeTypes::OPTION_MULTI_SELECT => 'multiselect',
         AttributeTypes::NUMBER => 'number',
         AttributeTypes::TEXT => 'text',
-        AttributeTypes::TEXTAREA => 'text',
+        AttributeTypes::TEXTAREA => 'textarea',
         AttributeTypes::BOOLEAN => 'boolean',
     ];
 
