@@ -215,7 +215,6 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Model\AbstractCompleteness',
         'Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProductUniqueData',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnInfoExtractor',
         'Akeneo\Pim\Enrichment\Component\Product\Query\AbstractEntityWithValuesQueryBuilder',
