@@ -27,6 +27,7 @@ class RemoveCategoryFilterInJobInstanceSubscriber implements EventSubscriberInte
     /** @var BulkSaverInterface */
     private $bulkSaver;
 
+    /** @var array */
     private $computedCodes = [];
 
     public function __construct(EntityRepository $repository, BulkSaverInterface $bulkSaver)
@@ -120,7 +121,7 @@ class RemoveCategoryFilterInJobInstanceSubscriber implements EventSubscriberInte
     {
         $jobsToUpdate = [];
         foreach ($this->repository->findAll() as $jobInstance) {
-            if ($this->removeCategoryCodesFilterInJobInstance($jobInstance, $categoryCodes)) {
+            if ($this->updateCategoryCodesFilterInJobInstance($jobInstance, $categoryCodes)) {
                 $jobsToUpdate[] = $jobInstance;
             }
         }
@@ -132,7 +133,14 @@ class RemoveCategoryFilterInJobInstanceSubscriber implements EventSubscriberInte
         return count($jobsToUpdate);
     }
 
-    private function removeCategoryCodesFilterInJobInstance(JobInstance $jobInstance, array $categoryCodes): bool
+    /**
+     * Returns true if $jobInstance object is updated, false otherwise.
+     *
+     * @param JobInstance $jobInstance
+     * @param array       $categoryCodes
+     * @return bool
+     */
+    private function updateCategoryCodesFilterInJobInstance(JobInstance $jobInstance, array $categoryCodes): bool
     {
         $rawParameters = $jobInstance->getRawParameters();
 
@@ -149,15 +157,11 @@ class RemoveCategoryFilterInJobInstanceSubscriber implements EventSubscriberInte
                     }
                 }
 
-                if (count($newValues) === 0) {
-                    $rawParameters['filters']['data'][$filterKey]['value'] = self::DEFAULT_CATEGORY_TREE_FILTER;
-                    $jobInstance->setRawParameters($rawParameters);
-
-                    return true;
-                }
-
                 if (count($newValues) !== count(($filter['value']))) {
-                    $rawParameters['filters']['data'][$filterKey]['value'] = $newValues;
+                    $rawParameters['filters']['data'][$filterKey]['value'] = empty($newValues)
+                        ? self::DEFAULT_CATEGORY_TREE_FILTER
+                        : $newValues
+                        ;
                     $jobInstance->setRawParameters($rawParameters);
 
                     return true;
