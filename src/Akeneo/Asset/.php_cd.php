@@ -85,7 +85,6 @@ $rules = [
         'Akeneo\Pim\Permission\Bundle\User\UserContext',
 
         // TIP-963: Define the Products public API
-        'Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessGeneratorInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators', // Should we move them in Akeneo\Tool?
         'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface',
 
