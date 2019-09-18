@@ -69,9 +69,6 @@ class ElasticsearchProductModelProjection
     /** @var string[] */
     private $attributesForThisLevel;
 
-    /** @var array */
-    private $additionalData;
-
     public function __construct(
         int $id,
         string $code,
@@ -90,8 +87,7 @@ class ElasticsearchProductModelProjection
         array $ancestorLabels,
         string $label,
         array $ancestorAttributeCodes,
-        array $attributesForThisLevel,
-        array $additionalData = []
+        array $attributesForThisLevel
     ) {
         $this->id = $id;
         $this->code = $code;
@@ -111,38 +107,11 @@ class ElasticsearchProductModelProjection
         $this->label = $label;
         $this->ancestorAttributeCodes = $ancestorAttributeCodes;
         $this->attributesForThisLevel = $attributesForThisLevel;
-        $this->additionalData = $additionalData;
-    }
-
-    public function addAdditionalData(string $key, $value): ElasticsearchProductModelProjection
-    {
-        $additionalData = $this->additionalData;
-        $additionalData[$key] = $value;
-
-        return new self(
-            $this->id,
-            $this->code,
-            $this->createdDate,
-            $this->updatedDate,
-            $this->familyCode,
-            $this->familyVariantCode,
-            $this->categoryCodes,
-            $this->parentCode,
-            $this->values,
-            $this->allComplete,
-            $this->allIncomplete,
-            $this->ancestorIds,
-            $this->ancestorLabels,
-            $this->label,
-            $this->ancestorAttributeCodes,
-            $this->attributesForThisLevel,
-            $additionalData
-        );
     }
 
     public function toArray(): array
     {
-        return array_merge([
+        return [
             'id' => 'product_model_' . (string) $this->id,
             'identifier' => $this->code,
             'created' => $this->createdDate->format(self::INDEX_DATE_FORMAT),
@@ -164,6 +133,6 @@ class ElasticsearchProductModelProjection
             'document_type' => ProductModelInterface::class,
             'attributes_of_ancestors' => $this->ancestorAttributeCodes,
             'attributes_for_this_level' => $this->attributesForThisLevel,
-        ], $this->additionalData);
+        ];
     }
 }
