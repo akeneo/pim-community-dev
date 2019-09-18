@@ -11,7 +11,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ElasticsearchProductModelProjection
+final class ElasticsearchProductModelProjection
 {
     private const INDEX_DATE_FORMAT = 'c';
 
@@ -29,6 +29,9 @@ class ElasticsearchProductModelProjection
 
     /** @var string */
     private $familyCode;
+
+    /** @var string[] */
+    private $familyLabels;
 
     /** @var string */
     private $familyVariantCode;
@@ -60,8 +63,8 @@ class ElasticsearchProductModelProjection
     /** @var string[] */
     private $ancestorLabels;
 
-    /** @var string */
-    private $label;
+    /** @var array */
+    private $labels;
 
     /** @var string[] */
     private $ancestorAttributeCodes;
@@ -75,6 +78,7 @@ class ElasticsearchProductModelProjection
         \DateTimeImmutable $createdDate,
         \DateTimeImmutable $updatedDate,
         string $familyCode,
+        array $familyLabels,
         string $familyVariantCode,
         array $categoryCodes,
         array $ancestorCategoryCodes,
@@ -85,7 +89,7 @@ class ElasticsearchProductModelProjection
         array $ancestorIds,
         array $ancestorCodes,
         array $ancestorLabels,
-        string $label,
+        array $labels,
         array $ancestorAttributeCodes,
         array $attributesForThisLevel
     ) {
@@ -94,6 +98,7 @@ class ElasticsearchProductModelProjection
         $this->createdDate = $createdDate;
         $this->updatedDate = $updatedDate;
         $this->familyCode = $familyCode;
+        $this->familyLabels = $familyLabels;
         $this->familyVariantCode = $familyVariantCode;
         $this->categoryCodes = $categoryCodes;
         $this->ancestorCategoryCodes = $ancestorCategoryCodes;
@@ -104,7 +109,7 @@ class ElasticsearchProductModelProjection
         $this->ancestorIds = $ancestorIds;
         $this->ancestorCodes = $ancestorCodes;
         $this->ancestorLabels = $ancestorLabels;
-        $this->label = $label;
+        $this->labels = $labels;
         $this->ancestorAttributeCodes = $ancestorAttributeCodes;
         $this->attributesForThisLevel = $attributesForThisLevel;
     }
@@ -116,7 +121,10 @@ class ElasticsearchProductModelProjection
             'identifier' => $this->code,
             'created' => $this->createdDate->format(self::INDEX_DATE_FORMAT),
             'updated' => $this->updatedDate->format(self::INDEX_DATE_FORMAT),
-            'family' => $this->familyCode,
+            'family' => [
+                'code' => $this->familyCode,
+                'labels' => $this->familyLabels,
+            ],
             'family_variant' => $this->familyVariantCode,
             'categories' => $this->categoryCodes,
             'categories_of_ancestors' => $this->ancestorCategoryCodes,
@@ -129,7 +137,7 @@ class ElasticsearchProductModelProjection
                 'codes' => $this->ancestorCodes,
                 'labels' => $this->ancestorLabels,
             ],
-            'label' => $this->label,
+            'label' => $this->labels,
             'document_type' => ProductModelInterface::class,
             'attributes_of_ancestors' => $this->ancestorAttributeCodes,
             'attributes_for_this_level' => $this->attributesForThisLevel,
