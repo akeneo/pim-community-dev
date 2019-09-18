@@ -2,9 +2,10 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Command;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelDescendantsIndexer;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidArgumentException;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\ProductModelIndexerInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
@@ -27,7 +28,7 @@ class IndexProductModelCommandSpec extends ObjectBehavior
         ContainerInterface $container,
         ProductModelRepositoryInterface $productModelRepository,
         ProductModelIndexerInterface $productModelIndexer,
-        BulkIndexerInterface $bulkProductModelDescendantsIndexer,
+        ProductModelDescendantsIndexer $bulkProductModelDescendantsIndexer,
         ObjectManager $objectManager,
         Client $productAndProductModelClient
     ) {
@@ -137,10 +138,7 @@ class IndexProductModelCommandSpec extends ObjectBehavior
         $output->getVerbosity()->willReturn(OutputInterface::VERBOSITY_NORMAL);
         $output->getFormatter()->willReturn($formatter);
 
-        $productModelRepository->findBy(['code' => ['product_model_code_to_index']])->willReturn([$productModelToIndex]);
-
-        $productModelToIndex->getCode()->willReturn('code');
-        $productModelIndexer->indexFromProductModelCodes(['code'], ['index_refresh' => Refresh::disable()])
+        $productModelIndexer->indexFromProductModelCodes(['product_model_code_to_index'], ['index_refresh' => Refresh::disable()])
             ->shouldBeCalled();
         $objectManager->clear()->shouldBeCalled();
 
@@ -223,62 +221,6 @@ class IndexProductModelCommandSpec extends ObjectBehavior
         $input->hasArgument(Argument::any())->shouldBeCalled();
         $input->validate()->shouldBeCalled();
         $input->getArgument('codes')->willReturn(['product_model_1', 'product_model_2']);
-        $input->getOption('all')->willReturn(false);
-        $this->run($input, $output);
-    }
-
-    function it_does_not_index_non_existing_product_models(
-        ProductModelRepositoryInterface $productModelRepository,
-        ProductModelIndexerInterface $productModelIndexer,
-        ObjectManager $objectManager,
-        InputInterface $input,
-        OutputInterface $output,
-        Application $application,
-        HelperSet $helperSet,
-        InputDefinition $definition,
-        ProductModelInterface $productModel1,
-        ProductModelInterface $productModel2,
-        OutputFormatter $formatter
-    ) {
-        $output->isDecorated()->willReturn(true);
-        $output->getVerbosity()->willReturn(OutputInterface::VERBOSITY_NORMAL);
-        $output->getFormatter()->willReturn($formatter);
-
-        $productModelRepository->findBy(['code' => ['product_model_1', 'product_model_2', 'wrong_product_model']])
-            ->willReturn([$productModel1, $productModel2]);
-
-        $productModel1->getCode()->willReturn('product_model_1');
-        $productModel2->getCode()->willReturn('product_model_2');
-
-        $productModelIndexer->indexFromProductModelCodes(['product_model_1', 'product_model_2'], ['index_refresh' => Refresh::disable()])
-            ->shouldBeCalled();
-        $objectManager->clear()->shouldBeCalled();
-
-        $output->writeln('<error>Some product models were not found for the given codes: wrong_product_model</error>')->shouldBeCalled();
-        $output->writeln('<info>2 product models found for indexing</info>')->shouldBeCalled();
-        $output->write(Argument::any())->shouldBeCalled();
-        $output->writeln('<info>2 product models indexed</info>')->shouldBeCalled();
-
-        $commandInput = new ArrayInput([
-            'command'    => 'pim:product-model:index',
-            '--codes'    => ['product_model_1', 'product_model_2', 'wrong_product_model'],
-            '--all'      => false,
-            '--no-debug' => true,
-        ]);
-        $application->run($commandInput, $output)->willReturn(0);
-
-        $definition->getOptions()->willReturn([]);
-        $definition->getArguments()->willReturn([]);
-
-        $application->getHelperSet()->willReturn($helperSet);
-        $application->getDefinition()->willReturn($definition);
-
-        $this->setApplication($application);
-        $input->bind(Argument::any())->shouldBeCalled();
-        $input->isInteractive()->shouldBeCalled();
-        $input->hasArgument(Argument::any())->shouldBeCalled();
-        $input->validate()->shouldBeCalled();
-        $input->getArgument('codes')->willReturn(['product_model_1', 'product_model_2', 'wrong_product_model']);
         $input->getOption('all')->willReturn(false);
         $this->run($input, $output);
     }
