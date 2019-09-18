@@ -6,6 +6,7 @@ import {
   getAssetLabel,
   removeAssetFromCollection,
   emptyCollection,
+  addAssetToCollection,
 } from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 
 test('It should get the image from the asset', () => {
@@ -132,6 +133,7 @@ test('I should be able to remove an asset from the collection', () => {
 
   expect(removeAssetFromCollection(['samsung', 'oneplus', 'iphone'], asset)).toEqual(['samsung', 'oneplus']);
 });
+
 test('I should be able to empty the collection', () => {
   const asset = {
     identifier: 'packshot_iphone_fingerprint',
@@ -140,4 +142,11 @@ test('I should be able to empty the collection', () => {
   };
 
   expect(emptyCollection(['samsung', 'oneplus', 'iphone'])).toEqual([]);
+});
+
+test('It should add assets in the collection', () => {
+  const assetCollection = ['samsung', 'oneplus'];
+  const assetCodes = ['honor', 'iphone'];
+
+  expect(addAssetToCollection(assetCollection, assetCodes)).toEqual(['samsung', 'oneplus', 'honor', 'iphone']);
 });

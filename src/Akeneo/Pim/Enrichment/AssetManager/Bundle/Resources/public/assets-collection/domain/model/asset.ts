@@ -59,3 +59,6 @@ export const removeAssetFromCollection = (assetCodes: AssetCode[], asset: Asset)
 export const emptyCollection = (_assetCodes: AssetCode): AssetCode[] => {
   return [];
 };
+export const addAssetToCollection = (assetCollection: AssetCode[], assetCodes: AssetCode[]): AssetCode[] => {
+  return [...assetCollection, ...assetCodes];
+};

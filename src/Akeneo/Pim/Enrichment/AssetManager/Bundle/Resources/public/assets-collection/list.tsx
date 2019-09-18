@@ -25,7 +25,7 @@ import {ValidationError} from 'akeneopimenrichmentassetmanager/platform/model/va
 import {ValidationErrorCollection} from 'akeneopimenrichmentassetmanager/platform/component/common/validation-error-collection';
 import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
 import {MoreButton} from 'akeneoassetmanager/application/component/app/more-button';
-import {emptyCollection} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
+import {addAssetToCollection, emptyCollection} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {AssetPicker} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker';
 
 type ListStateProps = {
