@@ -1,5 +1,6 @@
 <?php
 
+use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Component\Console\CommandLauncher;
 use Doctrine\DBAL\Connection;
@@ -9,9 +10,9 @@ use Doctrine\DBAL\Connection;
  */
 class RemoveProductModelEmptyRawValuesIntegration extends TestCase
 {
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
-        $this->catalog->useTechnicalCatalog();
+        return $this->catalog->useTechnicalCatalog();
     }
 
     public function testItRemovesAllEmptyValues()
@@ -29,7 +30,6 @@ INSERT INTO pim_catalog_product_model VALUES
     (NULL, NULL, :familyId, 'pm6', '{"name": {"<all_channels>": {"fr_FR": "", "en_US": "bar"}}}', NOW(), NOW(), 0, 0, 0, 0),
     (NULL, NULL, :familyId, 'pm7', '{"name": {"ecommerce": {"<all_locales>": ""}, "mobile": {"<all_locales>": "bar"}}}', NOW(), NOW(), 0, 0, 0, 0)
 SQL;
-
         $this->getConnection()->executeQuery($sql, ['familyId' => $familyId]);
 
         $this->reExecuteMigration('_4_0_20190917080512_remove_product_model_empty_raw_values');
