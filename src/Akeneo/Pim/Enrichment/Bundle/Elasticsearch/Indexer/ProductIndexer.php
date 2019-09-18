@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductProject
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Indexer responsible for the indexing of products entities. Each product should be normalized in the right format
@@ -21,20 +22,17 @@ use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
 class ProductIndexer implements ProductIndexerInterface
 {
     private const PRODUCT_IDENTIFIER_PREFIX = 'product_';
-
-    /** @var NormalizerInterface */
-    private $normalizer;
-
+    
     /** @var Client */
     private $productAndProductModelClient;
 
     /** @var \Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductProjectionInterface */
-    private $getIndexableProduct;
+    private $getElasticsearchProductProjection;
 
     public function __construct(Client $productAndProductModelClient, GetElasticsearchProductProjectionInterface $getElasticsearchProductProjectionQuery)
     {
         $this->productAndProductModelClient = $productAndProductModelClient;
-        $this->getIndexableProduct = $getElasticsearchProductProjectionQuery;
+        $this->getElasticsearchProductProjection = $getElasticsearchProductProjectionQuery;
     }
 
     /**
@@ -63,7 +61,7 @@ class ProductIndexer implements ProductIndexerInterface
 
         $indexRefresh = $options['index_refresh'] ?? Refresh::disable();
 
-        $elasticsearchProductProjections = $this->getIndexableProduct->fromProductIdentifiers($productIdentifiers);
+        $elasticsearchProductProjections = $this->getElasticsearchProductProjection->fromProductIdentifiers($productIdentifiers);
         $normalizedProductProjections = array_map(
             function (ElasticsearchProductProjection $indexableProduct) {
                 return $indexableProduct->toArray();
