@@ -93,7 +93,9 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
 
         foreach ($this->additionalDataProviders as $additionalDataProvider) {
             $additionalDataPerProduct = $additionalDataProvider->fromProductIdentifiers($productIdentifiers);
-            $productProjections[$productIdentifier] = $productProjections[$productIdentifier]->addAdditionalData($additionalDataPerProduct);
+            foreach ($additionalDataPerProduct as $productIdentifier => $additionalData) {
+                $productProjections[$productIdentifier] = $productProjections[$productIdentifier]->addAdditionalData($additionalDataPerProduct);
+            }
         }
 
         return $productProjections;
