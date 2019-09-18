@@ -55,7 +55,6 @@ final class PublishedProductNormalizerSpec extends ObjectBehavior
         VersionNormalizer $versionNormalizer,
         StructureVersionProviderInterface $structureVersionProvider,
         GetPublishedProductCompletenesses $getPublishedProductCompletenesses,
-        NormalizerInterface $incompleteValuesNormalizer,
         ImageNormalizer $imageNormalizer,
         LocaleRepositoryInterface $localeRepository,
         ProductNormalizer $internalApiProductNormalizer,
@@ -74,7 +73,6 @@ final class PublishedProductNormalizerSpec extends ObjectBehavior
             $formProvider,
             $structureVersionProvider,
             $getPublishedProductCompletenesses,
-            $incompleteValuesNormalizer,
             $imageNormalizer,
             $localeRepository,
             $internalApiProductNormalizer,
@@ -194,7 +192,6 @@ final class PublishedProductNormalizerSpec extends ObjectBehavior
         );
 
         $getPublishedProductCompletenesses->fromPublishedProductId(42)->willReturn($completenessCollection);
-        $incompleteValuesNormalizer->normalize($publishedProduct)->willReturn([]);
         $imageNormalizer->normalize(null)->willReturn(null);
         $localeRepository->getActivatedLocaleCodes()->willReturn(['en_US']);
         $internalApiProductNormalizer->normalize($product, 'standard', [])->willReturn([]);
@@ -227,7 +224,6 @@ final class PublishedProductNormalizerSpec extends ObjectBehavior
                     'model_type' => 'product',
                     'structure_version' => 12456,
                     'completenesses' => $normalizedCompletenesses,
-                    'required_missing_attributes' => [],
                     'image' => null,
                     'ascendant_category_ids' => [],
                     'variant_navigation' => [],

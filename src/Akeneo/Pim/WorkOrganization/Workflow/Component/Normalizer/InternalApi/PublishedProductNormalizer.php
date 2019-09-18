@@ -11,12 +11,11 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\InternalApi;
 
-use Akeneo\Asset\Component\Normalizer\InternalApi\ImageNormalizer;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\FileNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
@@ -72,10 +71,7 @@ class PublishedProductNormalizer implements NormalizerInterface
     /** @var GetPublishedProductCompletenesses */
     private $getPublishedProductCompletenesses;
 
-    /** @var NormalizerInterface */
-    private $incompleteValuesNormalizer;
-
-    /** @var FileNormalizer */
+    /** @var ImageNormalizer */
     private $imageNormalizer;
 
     /** @var LocaleRepositoryInterface */
@@ -105,7 +101,6 @@ class PublishedProductNormalizer implements NormalizerInterface
         FormProviderInterface $formProvider,
         StructureVersionProviderInterface $structureVersionProvider,
         GetPublishedProductCompletenesses $getPublishedProductCompletenesses,
-        NormalizerInterface $incompleteValuesNormalizer,
         ImageNormalizer $imageNormalizer,
         LocaleRepositoryInterface $localeRepository,
         ProductNormalizer $internalApiProductNormalizer,
@@ -124,7 +119,6 @@ class PublishedProductNormalizer implements NormalizerInterface
         $this->formProvider = $formProvider;
         $this->structureVersionProvider = $structureVersionProvider;
         $this->getPublishedProductCompletenesses = $getPublishedProductCompletenesses;
-        $this->incompleteValuesNormalizer = $incompleteValuesNormalizer;
         $this->imageNormalizer = $imageNormalizer;
         $this->localeRepository = $localeRepository;
         $this->internalApiProductNormalizer = $internalApiProductNormalizer;
@@ -161,7 +155,6 @@ class PublishedProductNormalizer implements NormalizerInterface
             'model_type' => 'product',
             'structure_version' => $this->structureVersionProvider->getStructureVersion(),
             'completenesses' => $this->getNormalizedCompletenesses($publishedProduct),
-            'required_missing_attributes' => $this->incompleteValuesNormalizer->normalize($publishedProduct),
             'image' => $this->imageNormalizer->normalize($publishedProduct->getImage()),
             'ascendant_category_ids' => [],
             'variant_navigation' => [],

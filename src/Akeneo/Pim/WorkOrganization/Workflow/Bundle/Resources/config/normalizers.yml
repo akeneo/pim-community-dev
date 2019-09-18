@@ -65,7 +65,6 @@ services:
             - '@pim_enrich.provider.form.chained'
             - '@pim_structure_version.provider.structure_version.product'
             - '@pimee_workflow.query.get_published_product_completenesses'
-            - '@pim_enrich.normalizer.incomplete_values'
             - '@pim_enrich.normalizer.image'
             - '@pim_catalog.repository.locale'
             - '@pim_enrich.normalizer.product'
