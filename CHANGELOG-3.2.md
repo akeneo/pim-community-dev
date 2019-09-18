@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes:
+
+- PIM-8767: Fix user security token check
+
 # 3.2.8 (2019-09-17)
 
 ## Bug fixes:
