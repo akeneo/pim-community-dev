@@ -3,10 +3,11 @@ import styled from 'styled-components';
 import {Button} from 'akeneopimenrichmentassetmanager/platform/component/common/button';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import __ from 'akeneoreferenceentity/tools/translator';
+import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';
 
 type AssetPickerProps = {
-  show: boolean;
-  onClose: () => void;
+  assetsToExclude: AssetCode[];
+  selectedAssets: (assetCodes: AssetCode[]) => void;
 };
 
 const Modal = styled.div`
@@ -41,17 +42,27 @@ const Title = styled.div`
   margin: 40px auto;
 `;
 
-export const AssetPicker = ({show, onClose}: AssetPickerProps) => {
-  if (false === show) {
-    return null;
-  }
+export const AssetPicker = ({selectedAssets}: AssetPickerProps) => {
+  const [assetPicker, toggleAssetPicker] = React.useState(false);
 
   return (
     <React.Fragment>
-      <Modal>
-        <Title>{__('pim_asset_manager.asset_picker.title')}</Title>
-        <ConfirmButton buttonSize='medium' color='green' onClick={onClose}>{__('pim_asset_manager.asset_picker.confirm')}</ConfirmButton>
-      </Modal>
+      <Button buttonSize='medium' color='outline' onClick={() => toggleAssetPicker(true)}>{__('pim_asset_manager.asset_collection.add_asset')}</Button>
+      { (false !== assetPicker) ? (
+        <Modal>
+          <Title>{__('pim_asset_manager.asset_picker.title')}</Title>
+          <ConfirmButton
+            buttonSize='medium'
+            color='green'
+            onClick={() => {
+              selectedAssets([]);
+              toggleAssetPicker(false);
+            }}
+          >
+            {__('pim_asset_manager.asset_picker.confirm')}
+          </ConfirmButton>
+        </Modal>
+      ) : null }
     </React.Fragment>
   );
 };

@@ -14,7 +14,6 @@ import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import {Pill, Spacer, Separator} from 'akeneopimenrichmentassetmanager/platform/component/common';
 import {AssetCollection} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-collection';
 import {isValueComplete, hasValues} from 'akeneopimenrichmentassetmanager/enrich/domain/model/product';
-import {Button} from 'akeneopimenrichmentassetmanager/platform/component/common/button';
 import {Family} from 'akeneopimenrichmentassetmanager/platform/model/structure/family';
 import AssetIllustration from 'akeneopimenrichmentassetmanager/platform/component/visual/illustration/asset';
 import {HelperSection, HelperIcon, HelperSeparator, HelperTitle, HelperText} from 'akeneopimenrichmentassetmanager/platform/component/common/helper';
@@ -89,7 +88,6 @@ const AssetCollectionList = styled.div`
 
 
 const DisplayValues = ({values, family, context, ruleRelations, onChange, errors}: DisplayValuesProps) => {
-  const [assetPicker, toggleAssetPicker] = React.useState(false);
   return (
     <React.Fragment>
       {values.map((value: Value) => (
@@ -120,8 +118,7 @@ const DisplayValues = ({values, family, context, ruleRelations, onChange, errors
             ): null}
             {value.editable ? (
               <React.Fragment>
-                <Button buttonSize='medium' color='outline' onClick={() => toggleAssetPicker(true)}>{__('pim_asset_manager.asset_collection.add_asset')}</Button>
-                <AssetPicker show={assetPicker} onClose={() => toggleAssetPicker(false)} />
+                <AssetPicker assetsToExclude={value.data} selectedAssets={(assetCodes: AssetCode[]) => {onChange(updateValueData(value, assetCodes))}} />
                 <MoreButton elements={[{
                   label: __('pim_asset_manager.asset_collection.remove_all_assets'),
                   action: () => {
