@@ -163,6 +163,10 @@
     `Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface` and
     `Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface` and
     `remove` and `removeAll` methods are removed from this class
+- Update class `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelDescendantsIndexer`:
+    - Remove implementation of `Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface`
+    - Remove implementation of `Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface`
+    - Adds parameter `Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface` 
 
 ### CLI Commands
 

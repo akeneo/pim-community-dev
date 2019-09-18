@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidArgumentException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
-use Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\ProductModelIndexerInterface;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Util\ClassUtils;
 
 /**
  * Indexer responsible for the indexing of all product model children (the subtree made of variant products and product
@@ -21,9 +20,7 @@ use Doctrine\Common\Util\ClassUtils;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductModelDescendantsIndexer implements
-    IndexerInterface,
-    BulkIndexerInterface
+final class ProductModelDescendantsIndexer
 {
     /** @var ProductIndexerInterface */
     private $productIndexer;
@@ -31,55 +28,52 @@ class ProductModelDescendantsIndexer implements
     /** @var ProductModelIndexerInterface */
     private $productModelIndexer;
 
-    /**
-     * @param ProductIndexerInterface $productIndexer
-     * @param ProductModelIndexerInterface $productModelIndexer
-     */
+    /** @var ProductModelRepositoryInterface */
+    private $productModelRepository;
+
     public function __construct(
         ProductIndexerInterface $productIndexer,
-        ProductModelIndexerInterface $productModelIndexer
+        ProductModelIndexerInterface $productModelIndexer,
+        ProductModelRepositoryInterface $productModelRepository
     ) {
         $this->productIndexer = $productIndexer;
         $this->productModelIndexer = $productModelIndexer;
+        $this->productModelRepository = $productModelRepository;
     }
 
     /**
      * Recursively indexes the given product model children (a subtree made of products and product models).
-     *
      * Indexes all product variants in the dedicated index.
      *
-     * {@inheritdoc}
+     * @argument string $productModelCode
+     * @argument array  $options
      */
-    public function index($object, array $options = []) : void
+    public function indexfromProductModelCode(string $productModelCode, array $options = []): void
     {
-        if (!$object instanceof ProductModelInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Only product models "%s" can be indexed in the search engine, "%s" provided.',
-                    ProductModelInterface::class,
-                    ClassUtils::getClass($object)
-                )
+        $productModel = $this->productModelRepository->findOneByIdentifier($productModelCode);
+
+        if (null === $productModel) {
+            throw new InvalidArgumentException(
+                ProductModelDescendantsIndexer::class,
+                sprintf('ProductModel with code "%s" not found', $productModelCode)
             );
         }
 
-        $this->indexProductModelChildren($object->getProductModels(), $options);
-        $this->indexProductModelChildren($object->getProducts(), $options);
+        $this->indexProductModelChildren($productModel->getProductModels(), $options);
+        $this->indexProductModelChildren($productModel->getProducts(), $options);
     }
 
     /**
      * Recursively triggers the indexing of all the given product models children (subtree made of product variants and
      * product models).
      *
-     * {@inheritdoc}
+     * @argument string[] $productModelCodes
+     * @argument array    $options
      */
-    public function indexAll(array $objects, array $options = []) : void
+    public function indexfromProductModelCodes(array $productModelCodes, array $options = []): void
     {
-        if (empty($objects)) {
-            return;
-        }
-
-        foreach ($objects as $object) {
-            $this->index($object, $options);
+        foreach ($productModelCodes as $productModelCode) {
+            $this->indexfromProductModelCode($productModelCode, $options);
         }
     }
 

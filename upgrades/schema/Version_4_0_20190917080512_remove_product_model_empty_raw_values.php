@@ -65,7 +65,7 @@ final class Version_4_0_20190917080512_remove_product_model_empty_raw_values
                     $productModelCodesToIndex[] = $row['code'];
                     if (count($productModelCodesToIndex) % self::BATCH_SIZE === 0) {
                         $this->getProductModelIndexer()->indexFromProductModelCodes($productModelCodesToIndex);
-                        // @TODO Need to reindex children TIP-1257
+                        $this->getProductModelDescendantsIndexer()->indexfromProductModelCodes($productModelCodesToIndex);
                         $productModelCodesToIndex = [];
                     }
                 }
@@ -74,7 +74,7 @@ final class Version_4_0_20190917080512_remove_product_model_empty_raw_values
         }
 
         $this->getProductModelIndexer()->indexFromProductModelCodes($productModelCodesToIndex);
-        // @TODO Need to reindex children TIP-1257
+        $this->getProductModelDescendantsIndexer()->indexfromProductModelCodes($productModelCodesToIndex);
     }
 
     public function down(Schema $schema) : void
