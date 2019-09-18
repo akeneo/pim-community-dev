@@ -72,7 +72,6 @@ class ProductIndexer implements ProductIndexerInterface
         );
 
         $this->productAndProductModelClient->bulkIndexes(
-            
             $normalizedProductProjections,
             'id',
             $indexRefresh
