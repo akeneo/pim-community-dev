@@ -158,6 +158,9 @@ $rules = [
 
         // TIP-1199: Workflow OroToPimGridFilterAdapter should not be linked to TeamworkAssistant ProjectCompletenessFilter
         'Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Datagrid\Filter\ProjectCompletenessFilter',
+
+        'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent',
+        'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
     ])->in('Akeneo\Pim\WorkOrganization\Workflow\Bundle'),
     $builder->only([
         'Doctrine\Common',

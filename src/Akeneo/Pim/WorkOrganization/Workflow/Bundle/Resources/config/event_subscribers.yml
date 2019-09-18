@@ -1,5 +1,4 @@
 parameters:
-    pim_versioning.event_subscriber.addversion.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\SkipVersionSubscriber
     pimee_workflow.event_subscriber.published_product.check_removal.class:              Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\CheckPublishedProductOnRemovalSubscriber
     pimee_workflow.event_subscriber.published_product.detach_product.class:             Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\DetachProductPostPublishSubscriber
     pimee_workflow.event_subscriber.product_draft.send_for_approval.class:              Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductDraft\SendForApprovalSubscriber
@@ -182,5 +181,12 @@ services:
         arguments:
             - '@pimee_workflow.query.save_published_product_completenesses'
             - '@pim_catalog.completeness.calculator'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_workflow.evnt_subscriber.create_published_product_completeness_tables:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\CreatePublishedProductCompletenessTablesSubscriber'
+        arguments:
+            - '@database_connection'
         tags:
             - { name: kernel.event_subscriber }
