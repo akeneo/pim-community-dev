@@ -141,7 +141,7 @@ class IndexProductModelCommand extends ContainerAwareCommand
                 $productModelCodes,
                 ['index_refresh' => Refresh::disable()]
             );
-            $this->bulkProductModelDescendantsIndexer->fromProductModelCodes(
+            $this->bulkProductModelDescendantsIndexer->indexfromProductModelCodes(
                 $productModelCodes,
                 ['index_refresh' => Refresh::disable()]
             );
@@ -184,7 +184,7 @@ class IndexProductModelCommand extends ContainerAwareCommand
                     $productModelBulk,
                     ['index_refresh' => Refresh::disable()]
                 );
-                $this->bulkProductModelDescendantsIndexer->fromProductModelCodes(
+                $this->bulkProductModelDescendantsIndexer->indexfromProductModelCodes(
                     $productModelBulk,
                     ['index_refresh' => Refresh::disable()]
                 );
@@ -203,7 +203,7 @@ class IndexProductModelCommand extends ContainerAwareCommand
                 $productModelBulk,
                 ['index_refresh' => Refresh::disable()]
             );
-            $this->bulkProductModelDescendantsIndexer->fromProductModelCodes(
+            $this->bulkProductModelDescendantsIndexer->indexfromProductModelCodes(
                 $productModelBulk,
                 ['index_refresh' => Refresh::disable()]
             );

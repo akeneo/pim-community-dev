@@ -60,7 +60,7 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
 
         $productModelRepository->findOneByIdentifier('pm')->willReturn($productModel);
 
-        $this->fromProductModelCode('pm');
+        $this->indexFromProductModelCode('pm');
     }
 
     function it_indexes_a_product_model_descendants_that_are_product_models_and_variant_products(
@@ -128,7 +128,7 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
 
         $productModelRepository->findOneByIdentifier('root')->willReturn($rootProductModel);
 
-        $this->fromProductModelCode('root');
+        $this->indexFromProductModelCode('root');
     }
 
     function it_bulk_indexes_the_descendants_of_a_list_of_product_models(
@@ -186,7 +186,7 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $productModelRepository->findOneByIdentifier('pm1')->willReturn($productModel1);
         $productModelRepository->findOneByIdentifier('pm2')->willReturn($productModel2);
 
-        $this->fromProductModelCodes(['pm1', 'pm2']);
+        $this->indexFromProductModelCodes(['pm1', 'pm2']);
     }
 
     function it_indexes_a_product_model_and_its_descendants_products_with_options(
@@ -220,7 +220,7 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
 
         $productModelRepository->findOneByIdentifier('pm')->willReturn($productModel);
 
-        $this->fromProductModelCode('pm', ['my_option_key' => 'my_option_value', 'my_option_key2' => 'my_option_value2']);
+        $this->indexFromProductModelCode('pm', ['my_option_key' => 'my_option_value', 'my_option_key2' => 'my_option_value2']);
     }
 
     function it_indexes_a_product_model_and_its_descendants_product_models_with_options(
@@ -252,7 +252,7 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
 
         $productModelRepository->findOneByIdentifier('pm')->willReturn($productModel);
 
-        $this->fromProductModelCode('pm', ['my_option_key' => 'my_option_value', 'my_option_key2' => 'my_option_value2']);
+        $this->indexFromProductModelCode('pm', ['my_option_key' => 'my_option_value', 'my_option_key2' => 'my_option_value2']);
     }
 
     function it_does_not_bulk_index_empty_arrays_of_product_models(
@@ -263,7 +263,7 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $productIndexer->indexFromProductIdentifiers(Argument::cetera())->shouldNotBeCalled();
         $productModelIndexer->indexFromProductModelCodes(Argument::cetera())->shouldNotBeCalled();
 
-        $this->fromProductModelCodes([]);
+        $this->indexFromProductModelCodes([]);
     }
 
     function it_raises_exception_with_non_existing_product_model(
@@ -271,6 +271,6 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
     ) {
         $productModelRepository->findOneByIdentifier('foo')->willReturn(null);
 
-        $this->shouldThrow(InvalidArgumentException::class)->during('fromProductModelCode', ['foo']);
+        $this->shouldThrow(InvalidArgumentException::class)->during('indexFromProductModelCode', ['foo']);
     }
 }

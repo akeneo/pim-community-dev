@@ -20,7 +20,8 @@ use Doctrine\Common\Collections\Collection;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class ProductModelDescendantsIndexer {
+final class ProductModelDescendantsIndexer
+{
     /** @var ProductIndexerInterface */
     private $productIndexer;
 
@@ -47,7 +48,7 @@ final class ProductModelDescendantsIndexer {
      * @argument string $productModelCode
      * @argument array  $options
      */
-    public function fromProductModelCode(string $productModelCode, array $options = []): void
+    public function indexfromProductModelCode(string $productModelCode, array $options = []): void
     {
         $productModel = $this->productModelRepository->findOneByIdentifier($productModelCode);
 
@@ -69,10 +70,10 @@ final class ProductModelDescendantsIndexer {
      * @argument string[] $productModelCodes
      * @argument array    $options
      */
-    public function fromProductModelCodes(array $productModelCodes, array $options = []): void
+    public function indexfromProductModelCodes(array $productModelCodes, array $options = []): void
     {
         foreach ($productModelCodes as $productModelCode) {
-            $this->fromProductModelCode($productModelCode, $options);
+            $this->indexfromProductModelCode($productModelCode, $options);
         }
     }
 
