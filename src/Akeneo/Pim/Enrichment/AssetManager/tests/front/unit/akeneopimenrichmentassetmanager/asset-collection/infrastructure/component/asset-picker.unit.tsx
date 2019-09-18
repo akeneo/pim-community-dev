@@ -22,7 +22,7 @@ test('It should be able to open and close the asset picket modal', () => {
   expect(getByText('pim_asset_manager.asset_picker.title')).toBeInTheDocument();
 
   // Click on the Confirm Button
-  fireEvent.click(getByText('pim_asset_manager.asset_picker.confirm'));
+  fireEvent.click(getByText('pim_common.confirm'));
 
   // Asset Picker Mssaodal closed
   expect(queryByText('pim_asset_manager.asset_picker.title')).toBeNull();

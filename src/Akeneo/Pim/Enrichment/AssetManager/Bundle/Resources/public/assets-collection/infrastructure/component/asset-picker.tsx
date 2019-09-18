@@ -59,7 +59,7 @@ export const AssetPicker = ({selectedAssets}: AssetPickerProps) => {
               toggleAssetPicker(false);
             }}
           >
-            {__('pim_asset_manager.asset_picker.confirm')}
+            {__('pim_common.confirm')}
           </ConfirmButton>
         </Modal>
       ) : null }

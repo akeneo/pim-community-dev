@@ -24,7 +24,6 @@ pim_asset_manager:
     dismiss_other_actions: Dismiss other actions
   asset_picker:
     title: Add assets to your product
-    confirm: Confirm
 #  app:
 #    image:
 #      wide:
