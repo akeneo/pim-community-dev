@@ -56,7 +56,7 @@ export const AssetPicker = ({selectedAssets}: AssetPickerProps) => {
             color='green'
             onClick={() => {
               selectedAssets([]);
-              toggleAssetPicker(false);
+              setOpen(false);
             }}
           >
             {__('pim_common.confirm')}
