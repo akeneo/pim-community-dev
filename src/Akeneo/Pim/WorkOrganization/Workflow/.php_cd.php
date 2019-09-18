@@ -248,7 +248,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder',
         'Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\FileNormalizer',
+        'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer',
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductNormalizer',
         'Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Query\GetAttributeLabelsInterface',

@@ -4,7 +4,6 @@ parameters:
     pimee_versioning.normalizer.locale.class:          Akeneo\Pim\Permission\Bundle\Normalizer\Flat\LocaleNormalizer
     pimee_security.normalizer.job_instance.class:      Akeneo\Pim\Permission\Component\Normalizer\Standard\JobInstanceNormalizer
     pimee_security.normalizer.attribute_group.class:   Akeneo\Pim\Permission\Component\Normalizer\Standard\AttributeGroupNormalizer
-    pimee_security.normalizer.incomplete_values.class: Akeneo\Pim\Permission\Bundle\Normalizer\InternalApi\IncompleteValuesNormalizer
     pimee_security.normalizer.authorization.product.class: Akeneo\Pim\Permission\Component\Normalizer\Authorization\ProductNormalizer
     pimee_security.normalizer.authorization.product_model.class: Akeneo\Pim\Permission\Component\Normalizer\Authorization\ProductModelNormalizer
 
@@ -56,15 +55,6 @@ services:
             - '@pimee_security.manager.attribute_group_access'
         tags:
             - { name: pim_standard_format_serializer.normalizer, priority: 110 }
-
-    pim_enrich.normalizer.incomplete_values:
-        class: '%pimee_security.normalizer.incomplete_values.class%'
-        arguments:
-            - '@pim_catalog.entity_with_family.required_value_collection_factory'
-            - '@pim_catalog.entity_with_family.incomplete_value_collection_factory'
-            - '@security.authorization_checker'
-        tags:
-            - { name: pim_internal_api_serializer.normalizer }
 
     # authorization
     pimee_authorization_serializer:
