@@ -261,7 +261,7 @@ services:
         arguments:
             - '@pim_catalog.repository.product_model'
             - '@pim_catalog.repository.locale'
-            - '@serializer'
+            - '@pim_indexing_serializer'
             - '@pim_catalog.doctrine.query.complete_filter'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'

@@ -67,19 +67,19 @@ class IndexProductModelsSubscriber implements EventSubscriberInterface
      */
     public function bulkIndexProductModels(GenericEvent $event) : void
     {
-        $products = $event->getSubject();
-        if (!is_array($products)) {
+        $productModels = $event->getSubject();
+        if (!is_array($productModels)) {
             return;
         }
 
-        if (!current($products) instanceof ProductModelInterface) {
+        if (!current($productModels) instanceof ProductModelInterface) {
             return;
         }
 
         $this->productModelIndexer->indexFromProductModelCodes(
-            array_map(function (ProductModelInterface $product) {
-                return $product->getCode();
-            }, $products)
+            array_map(function (ProductModelInterface $productModel) {
+                return $productModel->getCode();
+            }, $productModels)
         );
     }
 
