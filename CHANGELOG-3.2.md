@@ -6,7 +6,7 @@
 - PIM-8677: Purge all job executions
 - PIM-8734: Change label to "Ecommerce" for default channel in minimal catalog
 - PIM-8753: Fix pim:versioning:purge command without parameter
-- PIM-8766: Change Dashboard Channel labels to use Catalog locale
+- PIM-8766: Use Catalog locale for channel labels in the completeness widget
 
 # 3.2.7 (2019-08-27)
 
