@@ -76,7 +76,7 @@ class ElasticsearchProductProjectionSpec extends ObjectBehavior
                 'labels' => [],
             ],
             'label' => ['key-text' => 'product_label'],
-            'document_type' => ProductInterface::class,
+            'document_type' => 'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
             'attributes_of_ancestors' => ['attribute_for_ancestor1'],
             'attributes_for_this_level' => ['attribute_for_this_level1', 'attribute_for_this_level2'],
             'in_group' => ['group_code_1' => true, 'group_code_2' => true],
