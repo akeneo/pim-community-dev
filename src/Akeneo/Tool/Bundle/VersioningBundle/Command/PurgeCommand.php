@@ -2,11 +2,11 @@
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\Command;
 
-use Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber\PurgeProgressBarAdvancerSubscriber;
 use Akeneo\Tool\Bundle\VersioningBundle\Purger\VersionPurgerInterface;
 use InvalidArgumentException;
 use Monolog\Handler\StreamHandler;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -14,6 +14,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Purge version of entities
@@ -22,9 +23,32 @@ use Symfony\Component\Console\Question\Question;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PurgeCommand extends ContainerAwareCommand
+class PurgeCommand extends Command
 {
+    protected static $defaultName = 'pim:versioning:purge';
+
     const DEFAULT_MORE_THAN_DAYS = 90;
+
+    /** @var LoggerInterface */
+    private $logger;
+
+    /** @var VersionPurgerInterface */
+    private $versionPurger;
+
+    /** @var EventSubscriberInterface */
+    private $eventSubscriber;
+
+    public function __construct(
+        LoggerInterface $logger,
+        VersionPurgerInterface $versionPurger,
+        EventSubscriberInterface $eventSubscriber
+    ) {
+        parent::__construct();
+
+        $this->logger = $logger;
+        $this->versionPurger = $versionPurger;
+        $this->eventSubscriber = $eventSubscriber;
+    }
 
     /**
      * {@inheritdoc}
@@ -32,7 +56,6 @@ class PurgeCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('pim:versioning:purge')
             ->setDescription('List versions of any updated entities')
             ->addArgument(
                 'entity',
@@ -123,8 +146,7 @@ class PurgeCommand extends ContainerAwareCommand
     {
         $noDebug = $input->getOption('no-debug');
         if (!$noDebug) {
-            $logger = $this->getContainer()->get('logger');
-            $logger->pushHandler(new StreamHandler('php://stdout'));
+            $this->logger->pushHandler(new StreamHandler('php://stdout'));
         }
 
         $isForced = $input->getOption('force');
@@ -142,9 +164,7 @@ class PurgeCommand extends ContainerAwareCommand
         $purgeOptions['date_operator'] = null !== $lessThanDays ? '>' : '<';
         $operatorLabel = null !== $lessThanDays ? 'younger' : 'older';
 
-        $purger = $this->getVersionPurger();
-
-        $totalVersions = $purger->getVersionsToPurgeCount($purgeOptions);
+        $totalVersions = $this->versionPurger->getVersionsToPurgeCount($purgeOptions);
 
         $output->writeln(
             sprintf(
@@ -172,9 +192,9 @@ class PurgeCommand extends ContainerAwareCommand
         }
 
         $progressBar = new ProgressBar($output, $totalVersions);
-        $this->getPurgeProgressBarAdvancer()->setProgressBar($progressBar);
+        $this->eventSubscriber->setProgressBar($progressBar);
 
-        $purgeVersionsCount = $purger->purge($purgeOptions);
+        $purgeVersionsCount = $this->versionPurger->purge($purgeOptions);
 
         $progressBar->finish();
 
@@ -185,21 +205,5 @@ class PurgeCommand extends ContainerAwareCommand
                 $purgeVersionsCount
             )
         );
-    }
-
-    /**
-     * @return VersionPurgerInterface
-     */
-    protected function getVersionPurger()
-    {
-        return $this->getContainer()->get('pim_versioning.purger.version');
-    }
-
-    /**
-     * @return PurgeProgressBarAdvancerSubscriber
-     */
-    protected function getPurgeProgressBarAdvancer()
-    {
-        return $this->getContainer()->get('pim_versioning.event_subscriber.purge_progress_bar_advancer');
     }
 }
