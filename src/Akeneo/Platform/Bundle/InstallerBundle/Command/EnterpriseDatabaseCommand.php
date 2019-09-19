@@ -80,9 +80,6 @@ CREATE TABLE `pimee_teamwork_assistant_project_product` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 SQL;
 
-        $this->getContainer()
-            ->get('doctrine')
-            ->getConnection()
-            ->exec($sql);
+        $this->connection->exec($sql);
     }
 }
