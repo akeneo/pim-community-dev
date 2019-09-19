@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Validator\ConstraintViolation;
 
 /**
  * Interactive command to create a PIM user.
@@ -90,6 +91,9 @@ class CreateUserCommand extends ContainerAwareCommand
         $question->setValidator(function ($answer) {
             if (empty($answer)) {
                 throw new \InvalidArgumentException("The username is mandatory.");
+            }
+            if (strstr($answer, ' ') !== false) {
+                throw new \InvalidArgumentException("The username should not contain space character.");
             }
 
             return $answer;

@@ -79,6 +79,7 @@ class UserController
 
     /** @var TranslatorInterface */
     private $translator;
+
     /**
      * @todo merge 3.2:
      *       - remove the $objectManager argument
@@ -160,7 +161,6 @@ class UserController
         $user = $this->getUserOr404($identifier);
         $data = json_decode($request->getContent(), true);
 
-
         //code is useful to reach the route, cannot forget it in the query
         unset($data['code']);
 
@@ -201,10 +201,14 @@ class UserController
     {
         $this->eventDispatcher->dispatch(
             UserEvent::POST_UPDATE,
-            new GenericEvent($user, ['current_user' => $this->tokenStorage->getToken()->getUser(), 'previous_username' => $previousUsername])
+            new GenericEvent($user, [
+                'current_user' => $this->tokenStorage->getToken()->getUser(),
+                'previous_username' => $previousUsername,
+            ])
         );
 
         $this->session->remove('dataLocale');
+
         return $user;
     }
 
@@ -222,6 +226,7 @@ class UserController
         $user = $this->factory->create();
         $content = json_decode($request->getContent(), true);
 
+        $usernameViolations = $this->validateUsernameCreate($content);
         $passwordViolations = $this->validatePasswordCreate($content);
         unset($content['password_repeat']);
 
@@ -229,8 +234,15 @@ class UserController
 
         $violations = $this->validator->validate($user);
 
-        if ($violations->count() > 0 || $passwordViolations->count() > 0) {
+        if ($usernameViolations->count() > 0 || $violations->count() > 0 || $passwordViolations->count() > 0) {
             $normalizedViolations = [];
+            foreach ($usernameViolations as $violation) {
+                $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                    $violation,
+                    'internal_api',
+                    ['user' => $user]
+                );
+            }
             foreach ($violations as $violation) {
                 $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
                     $violation,
@@ -256,7 +268,7 @@ class UserController
 
     /**
      * @param Request $request
-     * @param int  $identifier
+     * @param int     $identifier
      *
      * @return Response
      */
@@ -336,12 +348,37 @@ class UserController
                     );
                 }
             }
+
             return new JsonResponse($normalizedViolations, Response::HTTP_BAD_REQUEST);
         }
 
         $this->saver->save($user);
 
         return new JsonResponse($this->normalizer->normalize($this->update($user, $previousUserName), 'internal_api'));
+    }
+
+    /**
+     * Validate username only at creation.
+     *
+     * @param array $data
+     *
+     * @return ConstraintViolationListInterface
+     *
+     * @see https://akeneo.atlassian.net/browse/PIM-8777
+     */
+    private function validateUsernameCreate(array $data): ConstraintViolationListInterface
+    {
+        $violations = [];
+
+        if (!isset($data['username'])) {
+            return new ConstraintViolationList([]);
+        }
+
+        if (strstr($data['username'], ' ') !== false) {
+            $violations[] = new ConstraintViolation('Username should not contain space character', '', [], '', 'username', '');
+        }
+
+        return new ConstraintViolationList($violations);
     }
 
     /**
@@ -405,7 +442,7 @@ class UserController
             );
         }
         if (
-            isset($data['new_password']) &&  strlen($data['new_password']) < 2
+            isset($data['new_password']) && strlen($data['new_password']) < 2
         ) {
             $violations[] = new ConstraintViolation(
                 $this->translator ?
@@ -414,6 +451,7 @@ class UserController
                     ) : 'Password must contains at least 2 characters', '', [], '', 'new_password', ''
             );
         }
+
         return new ConstraintViolationList($violations);
     }
 
