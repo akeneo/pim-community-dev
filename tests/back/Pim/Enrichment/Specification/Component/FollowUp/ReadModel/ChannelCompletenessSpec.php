@@ -53,13 +53,13 @@ class ChannelCompletenessSpec extends ObjectBehavior
     function it_transforms_into_an_array()
     {
         $this->toArray()->shouldReturn([
-            "total" => 20,
-            "complete" => 10,
-            "locales" => ['French' => 2, 'English' => 8],
             'labels' => [
                 'en_US' => 'Ecommerce US',
                 'fr_FR' => 'Ecommerce FR'
-            ]
+            ],
+            "total" => 20,
+            "complete" => 10,
+            "locales" => ['French' => 2, 'English' => 8],
         ]);
     }
 }
