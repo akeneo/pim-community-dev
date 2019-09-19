@@ -2,6 +2,9 @@ global:
   extraLabels:
     instanceName: ${instanceName}
     pfid: ${pfid}
+    instance_dns_record: ${instanceName}
+    instance_dns_zone: ${dnsZone}
+    papo_project_code: ${papoProjectCode}   
 
 common:
   gcpProjectID: ${projectId}

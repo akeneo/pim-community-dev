@@ -54,6 +54,11 @@ EOF
   }
 }
 
+data "google_dns_managed_zone" "main" {
+  name    = "${var.dns_zone}"
+  project = "${var.dns_project}"
+}
+
 resource "google_dns_record_set" "main" {
   name         = "${var.dns_external}"
   type         = "CNAME"

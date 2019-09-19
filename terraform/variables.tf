@@ -7,6 +7,10 @@ variable "google_project_zone" {
   description = "Google zone where the project is deployed (Used for backup)."
 }
 
+variable "papo_project_code" {
+  description = "Code of the project under the akeneo console"
+}
+
 variable "pager_duty_service_key" {
   type        = "string"
   description = "PagerDuty Service key, get it on the pagerduty page of the service"
