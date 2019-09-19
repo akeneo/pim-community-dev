@@ -175,22 +175,26 @@
     - Remove implementation of `Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface`
     - Remove implementation of `Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface`
     - Adds parameter `Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface` 
+- Remove interface `Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface`, and its implementations `Akeneo\Pim\Enrichment\Component\Product\Model\AbstractCompleteness` and `Akeneo\Pim\Enrichment\Component\Product\Model\Completeness`
+- Remove class `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\IncompleteValuesNormalizer`
+- Remove classes `Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\RequiredValue`, `Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\RequiredValueCollection`, `Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\RequiredValueCollectionFactory`,
+    `Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\IncompleteValueCollection` and `Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\IncompleteValueCollectionFactory` 
 
 ### CLI Commands
 
-The following CLI commands have been deleted:
-- pim:product:create
-- pim:product:get
-- pim:product:query
-- pim:product:remove
-- pim:product:validate
-- pim:product:update
-- pim:catalog:remove-wrong-boolean-values-on-variant-products-batch
-- pim:catalog:remove-wrong-boolean-values-on-variant-products
-- pim:objects:validate
-- pim:connector:analyzer:csv-products
-- pim:completeness:purge
-- pim:completeness:purge-products
+The following CLI commands were deleted:
+- `pim:product:create`
+- `pim:product:get`
+- `pim:product:query`
+- `pim:product:remove`
+- `pim:product:validate`
+- `pim:product:update`
+- `pim:catalog:remove-wrong-boolean-values-on-variant-products-batch`
+- `pim:catalog:remove-wrong-boolean-values-on-variant-products`
+- `pim:objects:validate`
+- `pim:connector:analyzer:csv-products`
+- `pim:completeness:purge`
+- `pim:completeness:purge-products`
 
 If you want to purge the completeness in order to recalculate it, please use the dedicated command `pim:completeness:calculate`
 
@@ -231,3 +235,5 @@ If you want to purge the completeness in order to recalculate it, please use the
 - Update service `pim_catalog.validator.constraint.unique_variant_axes` to remove `pim_catalog.repository.entity_with_family_variant`
 - Remove duplicated service definitions for `pim_catalog.validator.constraint.family_variant_axes` and `pim_catalog.validator.constraint.immutable_family_variant_axes` in `src/Akeneo/Pim/Enrichment/Bundle/Resources/cofig/validators.yml`
 - Remove `pim_catalog.event_subscriber.add_boolean_values_to_new_product`
+- Remove `pim_enrich.normalizer.incomplete_values`
+- Remove `pim_catalog.entity_with_family.required_value_collection_factory` and `pim_catalog.entity_with_family.incomplete_value_collection_factory`
