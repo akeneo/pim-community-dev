@@ -7,6 +7,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Normalizer\Indexing;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductProjection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Test\IntegrationTestsBundle\Sanitizer\DateSanitizer;
 use Akeneo\Test\IntegrationTestsBundle\Sanitizer\MediaSanitizer;
 use AkeneoTest\Pim\Enrichment\Integration\Fixture\EntityBuilder;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
@@ -134,8 +135,7 @@ class GetElasticsearchProductProjectionIntegration extends TestCase
                 'a_text',
                 'an_image',
             ],
-            'attributes_for_this_level' => ['a_text_area', 'a_yes_no', 'sku'],
-            'associations' => null,
+            'attributes_for_this_level' => ['a_text_area', 'a_yes_no', 'sku']
         ];
 
         $this->assertProductIndexingFormat('bar', $expected);
@@ -143,7 +143,7 @@ class GetElasticsearchProductProjectionIntegration extends TestCase
 
     public function test_it_gets_product_projection_of_a_product_without_family_and_without_group_and_without_values()
     {
-        $this->createEmptyProduct();
+        $this->createEmptyProductWithoutFamily();
 
         $date = \DateTime::createFromFormat(
             'Y-m-d H:i:s',
@@ -185,14 +185,60 @@ class GetElasticsearchProductProjectionIntegration extends TestCase
         $this->assertProductIndexingFormat('bar', $expected);
     }
 
+    public function test_it_gets_own_level_attributes_of_non_variant_product_in_a_family()
+    {
+        $this->createProductWithFamily();
+
+        $query = $this->get('akeneo.pim.enrichment.product.query.get_elasticsearch_product_projection');
+        $productProjection = $query->fromProductIdentifier('bar');
+        $normalizedProductProjection = $productProjection->toArray();
+
+        $expectedAttributeCodesForThisLevel = [
+            'a_date',
+            'a_file',
+            'a_localizable_image',
+            'a_localized_and_scopable_text_area',
+            'a_metric',
+            'a_multi_select',
+            'a_number_float',
+            'a_number_float_negative',
+            'a_number_integer',
+            'a_price',
+            'a_ref_data_multi_select',
+            'a_ref_data_simple_select',
+            'a_scopable_price',
+            'a_simple_select',
+            'a_text',
+            'an_image',
+            'a_text_area',
+            'a_yes_no',
+            'sku'
+        ];
+
+        sort($normalizedProductProjection['attributes_for_this_level']);
+        sort($expectedAttributeCodesForThisLevel);
+
+        Assert::assertCount(0, $normalizedProductProjection['attributes_of_ancestors']);
+        Assert::assertSame($expectedAttributeCodesForThisLevel, $normalizedProductProjection['attributes_for_this_level']);
+    }
+
     protected function getConfiguration()
     {
         return $this->catalog->useTechnicalCatalog();
     }
 
-    private function createEmptyProduct()
+    private function createEmptyProductWithoutFamily()
     {
         $product = $this->get('pim_catalog.builder.product')->createProduct('bar', null);
+        Assert::assertCount(0, $this->get('validator')->validate($product));
+        $this->get('pim_catalog.saver.product')->save($product);
+
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+    }
+
+    private function createProductWithFamily()
+    {
+        $product = $this->get('pim_catalog.builder.product')->createProduct('bar', 'familyA');
         Assert::assertCount(0, $this->get('validator')->validate($product));
         $this->get('pim_catalog.saver.product')->save($product);
 
@@ -275,18 +321,28 @@ class GetElasticsearchProductProjectionIntegration extends TestCase
         // allows to execute test from EE by removing additional properties
         $normalizedProductProjection = array_intersect_key($normalizedProductProjection, $expected);
 
-        NormalizedProductCleaner::clean($normalizedProductProjection);
-        NormalizedProductCleaner::clean($expected);
-        self::sanitizeMediaAttributeData($expected);
-        self::sanitizeMediaAttributeData($normalizedProductProjection);
+        self::sanitizeData($normalizedProductProjection);
+        self::sanitizeData($expected);
 
         Assert::assertStringContainsString('product', $expected['id']);
         Assert::assertStringContainsString('product', $normalizedProductProjection['id']);
-
         Assert::assertSame(count($normalizedProductProjection['ancestors']['ids']), count($normalizedProductProjection['ancestors']['codes']));
         unset($expected['id'], $normalizedProductProjection['id'], $normalizedProductProjection['ancestors']['ids'], $expected['ancestors']['ids']);
 
         $this->assertEquals($expected, $normalizedProductProjection);
+    }
+
+    private static function sanitizeData(array &$productProjection): void
+    {
+        $productProjection['created']= DateSanitizer::sanitize($productProjection['created']);
+        $productProjection['updated']= DateSanitizer::sanitize($productProjection['updated']);
+
+        self::sanitizeMediaAttributeData($productProjection);
+        sort($productProjection['categories']);
+        sort($productProjection['groups']);
+        ksort($productProjection['values']);
+        sort($productProjection['attributes_of_ancestors']);
+        sort($productProjection['attributes_for_this_level']);
     }
 
     private static function sanitizeMediaAttributeData(array &$projection): void
