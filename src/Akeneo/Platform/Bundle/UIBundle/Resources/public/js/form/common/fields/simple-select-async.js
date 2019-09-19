@@ -28,13 +28,6 @@ function (
   Routing
 ) {
   return BaseField.extend({
-    events: {
-        'change input': function (event) {
-            this.errors = [];
-            this.updateModel(this.getFieldValue(event.target));
-            this.getRoot().render();
-        }
-    },
     template: _.template(template),
     choiceUrl: null,
     resultsPerPage: 20,
@@ -81,7 +74,17 @@ function (
      * {@inheritdoc}
      */
     postRender(templateContext) {
-      initSelect2.init(this.$('.select2'), this.getSelect2Options(templateContext));
+      const $select2 = this.$('.select2');
+
+      initSelect2.init($select2, this.getSelect2Options(templateContext));
+
+      const onChange = () => {
+        this.errors = [];
+        this.updateModel(this.getFieldValue($select2));
+        this.getRoot().render();
+      }
+
+      $select2.on('change', onChange);
     },
 
     /**
