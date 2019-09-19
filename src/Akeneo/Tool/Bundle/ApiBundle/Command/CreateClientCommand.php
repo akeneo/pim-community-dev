@@ -2,8 +2,10 @@
 
 namespace Akeneo\Tool\Bundle\ApiBundle\Command;
 
+use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use OAuth2\OAuth2;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -18,15 +20,26 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class CreateClientCommand extends ContainerAwareCommand
+class CreateClientCommand extends Command
 {
+    protected static $defaultName = 'pim:oauth-server:create-client';
+
+    /** @var ClientManagerInterface */
+    private $clientManager;
+
+    public function __construct(ClientManagerInterface $clientManager)
+    {
+        parent::__construct();
+
+        $this->clientManager = $clientManager;
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
         $this
-            ->setName('pim:oauth-server:create-client')
             ->setDescription('Creates a new pair of client id / secret for the web API')
             ->addOption(
                 'redirect_uri',
@@ -54,14 +67,13 @@ class CreateClientCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $clientManager = $this->getContainer()->get('fos_oauth_server.client_manager.default');
-        $client = $clientManager->createClient();
+        $client = $this->clientManager->createClient();
 
         $client->setRedirectUris($input->getOption('redirect_uri'));
         $client->setAllowedGrantTypes($input->getOption('grant_type'));
         $client->setLabel($input->getArgument('label'));
 
-        $clientManager->updateClient($client);
+        $this->clientManager->updateClient($client);
 
         $output->writeln([
             'A new client has been added.',
