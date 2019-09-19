@@ -16,6 +16,7 @@ services:
             - '@pim_indexing_serializer'
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@pim_catalog.repository.product_model'
+            - '@akeneo.pim.enrichment.product.query.get_elasticsearch_product_model_projection'
 
     pim_catalog.elasticsearch.indexer.product_model_descendance:
         class: '%pim_catalog.elasticsearch.indexer.product_model_descendants_indexer.class%'
