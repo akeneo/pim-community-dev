@@ -3,11 +3,15 @@
 namespace Akeneo\Tool\Bundle\VersioningBundle\Command;
 
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
+use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Tool\Component\Versioning\Model\Version;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Handler\StreamHandler;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -20,15 +24,42 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class RefreshCommand extends ContainerAwareCommand
+class RefreshCommand extends Command
 {
+    protected static $defaultName = 'pim:versioning:refresh';
+
+    /** @var LoggerInterface */
+    private $logger;
+
+    /** @var VersionManager */
+    private $versionManager;
+
+    /** @var BulkObjectDetacherInterface */
+    private $bulkObjectDetacher;
+
+    /** @var EntityManagerInterface */
+    private $entityManager;
+
+    public function __construct(
+        LoggerInterface $logger,
+        VersionManager $versionManager,
+        BulkObjectDetacherInterface $bulkObjectDetacher,
+        EntityManagerInterface $entityManager
+    ) {
+        parent::__construct();
+
+        $this->logger = $logger;
+        $this->versionManager = $versionManager;
+        $this->bulkObjectDetacher = $bulkObjectDetacher;
+        $this->entityManager = $entityManager;
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
         $this
-            ->setName('pim:versioning:refresh')
             ->setDescription('Version any updated entities')
             ->addOption(
                 'show-log',
@@ -52,10 +83,9 @@ class RefreshCommand extends ContainerAwareCommand
     {
         $noDebug = $input->getOption('no-debug');
         if (!$noDebug) {
-            $logger = $this->getContainer()->get('logger');
-            $logger->pushHandler(new StreamHandler('php://stdout'));
+            $this->logger->pushHandler(new StreamHandler('php://stdout'));
         }
-        $totalPendings = (int) $this->getVersionManager()
+        $totalPendings = (int) $this->versionManager
             ->getVersionRepository()
             ->getPendingVersionsCount();
 
@@ -70,10 +100,9 @@ class RefreshCommand extends ContainerAwareCommand
 
         $batchSize = $input->getOption('batch-size');
 
-        $objectDetacher = $this->getObjectDetacher();
         $om = $this->getObjectManager();
 
-        $pendingVersions = $this->getVersionManager()
+        $pendingVersions = $this->versionManager
             ->getVersionRepository()
             ->getPendingVersions($batchSize);
 
@@ -94,9 +123,9 @@ class RefreshCommand extends ContainerAwareCommand
                 $progress->advance();
             }
             $om->flush();
-            $objectDetacher->detachAll($pendingVersions);
+            $this->bulkObjectDetacher->detachAll($pendingVersions);
 
-            $pendingVersions = $this->getVersionManager()
+            $pendingVersions = $this->versionManager
                 ->getVersionRepository()
                 ->getPendingVersions($batchSize);
             $nbPendings = count($pendingVersions);
@@ -113,48 +142,16 @@ class RefreshCommand extends ContainerAwareCommand
      */
     protected function createVersion(Version $version, Version $previousVersion = null)
     {
-        $version = $this->getVersionManager()->buildPendingVersion($version, $previousVersion);
+        $version = $this->versionManager->buildPendingVersion($version, $previousVersion);
 
         if ($version->getChangeset()) {
-            $this->getObjectManager()->persist($version);
-            $this->getObjectManager()->flush($version);
+            $this->entityManager->persist($version);
+            $this->entityManager->flush($version);
 
             return $version;
         } else {
-            $this->getObjectManager()->remove($version);
-            $this->getObjectManager()->flush($version);
+            $this->entityManager->remove($version);
+            $this->entityManager->flush($version);
         }
-    }
-
-    /**
-     * @return VersionManager
-     */
-    protected function getVersionManager()
-    {
-        return $this->getContainer()->get('pim_versioning.manager.version');
-    }
-
-    /**
-     * @return ObjectManager
-     */
-    protected function getObjectManager()
-    {
-        return $this->getContainer()->get('doctrine.orm.default_entity_manager');
-    }
-
-    /**
-     * @return ObjectDetacherInterface
-     */
-    protected function getObjectDetacher()
-    {
-        return $this->getContainer()->get('akeneo_storage_utils.doctrine.object_detacher');
-    }
-
-    /**
-     * @return string
-     */
-    protected function getVersionClass()
-    {
-        return $this->getContainer()->getParameter('pim_versioning.entity.version.class');
     }
 }

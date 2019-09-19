@@ -6,3 +6,12 @@ services:
             - '@pim_versioning.event_subscriber.purge_progress_bar_advancer'
         tags:
             - { name: console.command }
+
+    Akeneo\Tool\Bundle\VersioningBundle\Command\RefreshCommand:
+        arguments:
+            - '@logger'
+            - '@pim_versioning.manager.version'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+            - '@doctrine.orm.default_entity_manager'
+        tags:
+            - { name: console.command }
