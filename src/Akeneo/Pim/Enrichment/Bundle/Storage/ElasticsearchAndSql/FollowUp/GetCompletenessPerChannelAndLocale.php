@@ -43,7 +43,7 @@ class GetCompletenessPerChannelAndLocale implements GetCompletenessPerChannelAnd
      */
     public function fetch(string $translationLocaleCode): CompletenessWidget
     {
-        $categoriesCodeAndLocalesByChannel = $this->getCategoriesCodesAndLocalesByChannel($translationLocaleCode);
+        $categoriesCodeAndLocalesByChannel = $this->getCategoriesCodesAndLocalesByChannel();
 
         $totalProductsByChannel = $this->countTotalProductsInCategoriesByChannel($categoriesCodeAndLocalesByChannel);
         $localesWithNbCompleteByChannel = $this->countTotalProductInCategoriesByChannelAndLocale($categoriesCodeAndLocalesByChannel);
@@ -59,21 +59,20 @@ class GetCompletenessPerChannelAndLocale implements GetCompletenessPerChannelAnd
     /**
      * Search, by channel, all categories children code and active locales
      *
-     * @param string $translationLocaleCode
      * @return array
      *
-     *          [channel_code, channel_label, [categoryCodes], [locales]]
+     *          [channel_code, channel_labels, [categoryCodes], [locales]]
      *
-     *      ex : ['ecommerce', 'Ecommerce', ['print','cameras'...], ['de_DE','fr_FR'...]]
+     *      ex : ['ecommerce', ['en_US' => 'Ecommerce'...], ['print','cameras'...], ['de_DE','fr_FR'...]]
      *
      * @throws \Doctrine\DBAL\DBALException
      */
-    private function getCategoriesCodesAndLocalesByChannel(string $translationLocaleCode): array
+    private function getCategoriesCodesAndLocalesByChannel(): array
     {
         $sql = <<<SQL
             SELECT
                 channel.code as channel_code,
-                COALESCE(channel_translation.label, CONCAT('[', channel.code, ']') ) as channel_label,
+                channel_translation.json_labels as channel_labels,
                 JSON_ARRAY_APPEND(COALESCE(child.children_codes, "[]"), '$', root.code) as category_codes_in_channel,
                 pim_locales.json_locales as locales
             FROM
@@ -91,7 +90,16 @@ class GetCompletenessPerChannelAndLocale implements GetCompletenessPerChannelAnd
                         child.root
                 ) AS child ON root.id = child.root_id
                 JOIN pim_catalog_channel as channel ON root.id = channel.category_id
-                LEFT JOIN pim_catalog_channel_translation as channel_translation ON channel.id = channel_translation.foreign_key AND channel_translation.locale = :locale
+                LEFT JOIN
+                (
+                    SELECT
+                        channel.code as channel_code,
+                        JSON_OBJECTAGG(channel_translation.locale, channel_translation.label) as json_labels
+                    FROM pim_catalog_channel as channel
+                    LEFT JOIN pim_catalog_channel_translation as channel_translation ON channel.id = channel_translation.foreign_key
+                    GROUP BY
+                        channel.code
+                ) AS channel_translation on channel_translation.channel_code = channel.code
                 LEFT JOIN
                 (
                     SELECT
@@ -110,16 +118,12 @@ class GetCompletenessPerChannelAndLocale implements GetCompletenessPerChannelAnd
                 channel.code, root.code
 SQL;
 
-        $rows = $this->connection->executeQuery(
-            $sql,
-            [
-                'locale' => $translationLocaleCode
-            ]
-        )->fetchAll();
+        $rows = $this->connection->executeQuery($sql)->fetchAll();
 
         foreach ($rows as $i => $categoriesCodeAndLocalesByChannel) {
             $rows[$i]['locales'] = \json_decode($categoriesCodeAndLocalesByChannel['locales']);
             $rows[$i]['category_codes_in_channel'] = \json_decode($categoriesCodeAndLocalesByChannel['category_codes_in_channel']);
+            $rows[$i]['channel_labels'] = \json_decode($categoriesCodeAndLocalesByChannel['channel_labels'], true);
         }
 
         return $rows;
@@ -273,7 +277,7 @@ SQL;
         $channelCompletenesses = [];
         foreach ($categoriesCodeAndLocalesByChannels as $categoriesCodeAndLocalesByChannel) {
             $channelCode = $categoriesCodeAndLocalesByChannel['channel_code'];
-            $channelLabel = $categoriesCodeAndLocalesByChannel['channel_label'];
+            $channelLabels = $categoriesCodeAndLocalesByChannel['channel_labels'];
 
             $localeCompletenesses = [];
             foreach ($categoriesCodeAndLocalesByChannel['locales'] as $localeCode) {
@@ -286,10 +290,11 @@ SQL;
             }
 
             $channelCompleteness = new ChannelCompleteness(
-                $channelLabel,
+                $channelCode,
                 $localesWithNbCompleteByChannel[$channelCode]['total'],
                 $totalProductsByChannel[$channelCode],
-                $localeCompletenesses
+                $localeCompletenesses,
+                $channelLabels
             );
 
             if (!in_array($channelCompleteness, $channelCompletenesses, true)) {

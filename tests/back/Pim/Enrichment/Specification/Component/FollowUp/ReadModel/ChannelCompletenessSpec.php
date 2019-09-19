@@ -17,8 +17,12 @@ class ChannelCompletenessSpec extends ObjectBehavior
         $localeCompletenessFr = new LocaleCompleteness('French', 2);
         $localeCompletenessEn = new LocaleCompleteness('English', 8);
         $this->localeCompletenesses = [$localeCompletenessFr, $localeCompletenessEn];
+        $labels = [
+            'en_US' => 'Ecommerce US',
+            'fr_FR' => 'Ecommerce FR'
+        ];
 
-        $this->beConstructedWith('Ecommerce', 10, 20, $this->localeCompletenesses);
+        $this->beConstructedWith('ecommerce', 10, 20, $this->localeCompletenesses, $labels);
     }
 
     function it_is_initializable()
@@ -28,7 +32,7 @@ class ChannelCompletenessSpec extends ObjectBehavior
 
     function it_can_returns_channel()
     {
-        $this->channel()->shouldReturn('Ecommerce');
+        $this->channel()->shouldReturn('ecommerce');
     }
 
     function it_can_returns_number_of_complete_products()
@@ -49,9 +53,13 @@ class ChannelCompletenessSpec extends ObjectBehavior
     function it_transforms_into_an_array()
     {
         $this->toArray()->shouldReturn([
+            'labels' => [
+                'en_US' => 'Ecommerce US',
+                'fr_FR' => 'Ecommerce FR'
+            ],
             "total" => 20,
             "complete" => 10,
-            "locales" => ['French' => 2, 'English' => 8]
+            "locales" => ['French' => 2, 'English' => 8],
         ]);
     }
 }

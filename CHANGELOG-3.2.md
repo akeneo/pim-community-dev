@@ -13,6 +13,7 @@
 - PIM-8734: Change label to "Ecommerce" for default channel in minimal catalog
 - PIM-8753: Fix pim:versioning:purge command without parameter
 - PIM-8750: Fix keyboard navigation with the family selector on the create product form
+- PIM-8766: Use Catalog locale for channel labels in the completeness widget
 
 # 3.2.7 (2019-08-27)
 
