@@ -85,6 +85,15 @@ services:
             - '@test.attribute_group.builder'
 
 
+    test.family.context:
+        class: 'Akeneo\Test\Acceptance\Family\FamilyContext'
+        arguments:
+            - '@pim_catalog.repository.family'
+            - '@pim_catalog.factory.family'
+            - '@pim_catalog.updater.family'
+            - '@pim_catalog.repository.attribute'
+
+
     test.catalog.product_creation.context:
         class: 'Akeneo\Test\Acceptance\Catalog\Context\ProductCreation'
         arguments:
@@ -97,5 +106,6 @@ services:
         class: 'Akeneo\Test\Acceptance\Catalog\Context\ProductValidation'
         arguments:
             - '@test.catalog.product.builder'
-            - '@validator'
+            - '@pim_catalog.validator.product'
+            - '@pim_catalog.repository.product'
 
