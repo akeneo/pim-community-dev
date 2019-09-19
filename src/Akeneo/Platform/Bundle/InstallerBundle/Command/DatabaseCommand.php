@@ -46,7 +46,7 @@ class DatabaseCommand extends Command
     private $clientRegistry;
 
     /** @var Connection */
-    private $connection;
+    protected $connection;
 
     /** @var FixtureJobLoader */
     private $fixtureJobLoader;
