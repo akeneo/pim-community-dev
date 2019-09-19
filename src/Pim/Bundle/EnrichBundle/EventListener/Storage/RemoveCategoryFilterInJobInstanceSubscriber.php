@@ -19,7 +19,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class RemoveCategoryFilterInJobInstanceSubscriber implements EventSubscriberInterface
 {
-    private const DEFAULT_CATEGORY_TREE_FILTER = ['master'];
+    private const DEFAULT_CATEGORY_FILTER_VALUE    = ['master'];
+    private const DEFAULT_CATEGORY_FILTER_OPERATOR = 'IN CHILDREN';
 
     /** @var EntityRepository */
     private $repository;
@@ -29,6 +30,9 @@ class RemoveCategoryFilterInJobInstanceSubscriber implements EventSubscriberInte
 
     /** @var array */
     private $computedCodes = [];
+
+    /** @var array */
+    private $computedRootCodes = [];
 
     public function __construct(EntityRepository $repository, BulkSaverInterface $bulkSaver)
     {
@@ -51,24 +55,35 @@ class RemoveCategoryFilterInJobInstanceSubscriber implements EventSubscriberInte
      * we get all the child's codes linked to it and keep them in $computedCodes property.
      *
      * @param GenericEvent $event
-     * @return RemoveCategoryFilterInJobInstanceSubscriber
      */
-    public function computeAndHoldCategoryTreeCodes(GenericEvent $event): RemoveCategoryFilterInJobInstanceSubscriber
+    public function computeAndHoldCategoryTreeCodes(GenericEvent $event): void
     {
         $subject = $event->getSubject();
         if ($subject instanceof CategoryInterface) {
+            if (!$event->hasArgument('unitary') || false === $event->getArgument('unitary')) {
+                return;
+            }
+
             $this->computedCodes[$subject->getCode()] = $this->getCodeAndChildrenCodes($subject);
+            $this->computedRootCodes[] = $this->getRootCategoryCode($subject);
+
+            return;
         }
 
         if (is_array($subject) && current($subject) instanceof CategoryInterface) {
             foreach ($subject as $category) {
                 $this->computedCodes[$category->getCode()] = $this->getCodeAndChildrenCodes($category);
+                $this->computedRootCodes[] = $this->getRootCategoryCode($category);
             }
         }
-
-        return $this;
     }
 
+    /**
+     * Returns the number of updated jobs.
+     *
+     * @param GenericEvent $event
+     * @return int
+     */
     public function removeCategoryFilter(GenericEvent $event): int
     {
         $subject = $event->getSubject();
@@ -85,6 +100,12 @@ class RemoveCategoryFilterInJobInstanceSubscriber implements EventSubscriberInte
         return $this->removeCategoryCodesFilterInAllJobInstances($this->computedCodes[$code] ?? [$code]);
     }
 
+    /**
+     * Returns the number of updated jobs.
+     *
+     * @param GenericEvent $event
+     * @return int
+     */
     public function removeCategoryFilters(GenericEvent $event): int
     {
         $subject = $event->getSubject();
@@ -115,6 +136,16 @@ class RemoveCategoryFilterInJobInstanceSubscriber implements EventSubscriberInte
         }
 
         return $codes;
+    }
+
+    private function getRootCategoryCode(CategoryInterface $category): string
+    {
+        $parentCategory = $category->getParent();
+        if (null === $parentCategory) {
+            return $category->getCode();
+        }
+
+        return $this->getRootCategoryCode($parentCategory);
     }
 
     private function removeCategoryCodesFilterInAllJobInstances(array $categoryCodes): int
@@ -157,11 +188,19 @@ class RemoveCategoryFilterInJobInstanceSubscriber implements EventSubscriberInte
                     }
                 }
 
+                if (empty($newValues)) {
+                    $rawParameters['filters']['data'][$filterKey]['value'] = empty($this->computedRootCodes)
+                        ? self::DEFAULT_CATEGORY_FILTER_VALUE
+                        : array_unique($this->computedRootCodes)
+                    ;
+                    $rawParameters['filters']['data'][$filterKey]['operator'] = self::DEFAULT_CATEGORY_FILTER_OPERATOR;
+                    $jobInstance->setRawParameters($rawParameters);
+
+                    return true;
+                }
+
                 if (count($newValues) !== count(($filter['value']))) {
-                    $rawParameters['filters']['data'][$filterKey]['value'] = empty($newValues)
-                        ? self::DEFAULT_CATEGORY_TREE_FILTER
-                        : $newValues
-                        ;
+                    $rawParameters['filters']['data'][$filterKey]['value'] = $newValues;
                     $jobInstance->setRawParameters($rawParameters);
 
                     return true;

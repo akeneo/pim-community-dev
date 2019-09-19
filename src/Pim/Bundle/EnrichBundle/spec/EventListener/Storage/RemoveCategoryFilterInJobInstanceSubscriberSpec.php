@@ -238,7 +238,7 @@ class RemoveCategoryFilterInJobInstanceSubscriberSpec extends ObjectBehavior
                 'data' => [
                     [
                         'field' => 'categories',
-                        'operator' => 'IN',
+                        'operator' => 'IN CHILDREN',
                         'value' => ['master'],
                     ],
                 ],
@@ -304,8 +304,8 @@ class RemoveCategoryFilterInJobInstanceSubscriberSpec extends ObjectBehavior
                 'data' => [
                     [
                         'field' => 'categories',
-                        'operator' => 'IN',
-                        'value' => ['master'],
+                        'operator' => 'IN CHILDREN',
+                        'value' => ['parent_code1', 'parent_code2'],
                     ],
                 ],
             ],

@@ -62,7 +62,7 @@ class RemoveCategoryFilterInJobInstanceSubscriberIntegration extends TestCase
         });
         $this->assertCount(1, $filters);
         $categoryFilter = current($filters);
-        $this->assertEquals(['master'], $categoryFilter['value']);
+        $this->assertEquals(['bar'], $categoryFilter['value']);
     }
 
     public function testValueFilterIsDeletedInJobInstanceWhenParentIsDeleted()
@@ -88,7 +88,7 @@ class RemoveCategoryFilterInJobInstanceSubscriberIntegration extends TestCase
         });
         $this->assertCount(1, $filters);
         $categoryFilter = current($filters);
-        $this->assertEquals(['master'], $categoryFilter['value']);
+        $this->assertEquals(['parent'], $categoryFilter['value']);
     }
 
     public function testValuesFilterAreDeletedInJobInstance()
