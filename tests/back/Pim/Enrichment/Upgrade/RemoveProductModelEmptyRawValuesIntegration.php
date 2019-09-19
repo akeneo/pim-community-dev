@@ -7,6 +7,8 @@ use Doctrine\DBAL\Connection;
 
 /**
  * This class will be removed after 4.0 version
+ *
+ * @group ce
  */
 class RemoveProductModelEmptyRawValuesIntegration extends TestCase
 {

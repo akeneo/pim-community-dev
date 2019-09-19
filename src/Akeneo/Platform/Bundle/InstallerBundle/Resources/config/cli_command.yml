@@ -1,3 +1,6 @@
+parameters:
+    installer_bundle.command.database_command.class: 'Akeneo\Platform\Bundle\InstallerBundle\Command\DatabaseCommand'
+
 services:
     akeneo.platform.command.install:
         class: 'Akeneo\Platform\Bundle\InstallerBundle\Command\InstallCommand'
@@ -24,6 +27,7 @@ services:
             - { name: console.command }
 
     Akeneo\Platform\Bundle\InstallerBundle\Command\DatabaseCommand:
+        class: '%installer_bundle.command.database_command.class%'
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - '@akeneo_elasticsearch.registry.clients'
