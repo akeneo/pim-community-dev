@@ -52,6 +52,10 @@ class ProductModelIndexer implements ProductModelIndexerInterface
      */
     public function indexFromProductModelCodes(array $productModelCodes, array $options = []): void
     {
+        if (empty($productModelCodes)) {
+            return;
+        }
+
         $indexRefresh = $options['index_refresh'] ?? Refresh::disable();
 
         $elasticsearchProductModelProjections =

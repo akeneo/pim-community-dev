@@ -9,7 +9,6 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductProject
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Indexer responsible for the indexing of products entities. Each product should be normalized in the right format
