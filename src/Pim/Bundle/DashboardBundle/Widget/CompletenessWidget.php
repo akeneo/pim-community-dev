@@ -2,10 +2,8 @@
 
 namespace Pim\Bundle\DashboardBundle\Widget;
 
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Component\Catalog\Repository\CompletenessRepositoryInterface;
+use Pim\Component\Enrich\FollowUp\Query\GetCompletenessPerChannelAndLocaleInterface;
 
 /**
  * Widget to display completeness of products over channels and locales
@@ -16,40 +14,24 @@ use Pim\Component\Catalog\Repository\CompletenessRepositoryInterface;
  */
 class CompletenessWidget implements WidgetInterface
 {
-    /** @var CompletenessRepositoryInterface */
-    protected $completenessRepo;
-
     /** @var UserContext */
     protected $userContext;
 
-    /** @var ObjectFilterInterface */
-    protected $objectFilter;
+    /** @var GetCompletenessPerChannelAndLocaleInterface $completenessWidgetQuery */
+    protected $completenessWidgetQuery;
 
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $localeRepository;
-
-    /**
-     * @param CompletenessRepositoryInterface       $completenessRepo
-     * @param UserContext                           $userContext
-     * @param ObjectFilterInterface                 $objectFilter
-     * @param IdentifiableObjectRepositoryInterface $localeRepository
-     */
     public function __construct(
-        CompletenessRepositoryInterface $completenessRepo,
         UserContext $userContext,
-        ObjectFilterInterface $objectFilter,
-        IdentifiableObjectRepositoryInterface $localeRepository
+        GetCompletenessPerChannelAndLocaleInterface $completenessWidgetQuery
     ) {
-        $this->completenessRepo = $completenessRepo;
-        $this->userContext      = $userContext;
-        $this->objectFilter     = $objectFilter;
-        $this->localeRepository = $localeRepository;
+        $this->userContext = $userContext;
+        $this->completenessWidgetQuery = $completenessWidgetQuery;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAlias()
+    public function getAlias(): string
     {
         return 'completeness';
     }
@@ -57,7 +39,7 @@ class CompletenessWidget implements WidgetInterface
     /**
      * {@inheritdoc}
      */
-    public function getTemplate()
+    public function getTemplate(): string
     {
         return 'PimDashboardBundle:Widget:completeness.html.twig';
     }
@@ -65,55 +47,16 @@ class CompletenessWidget implements WidgetInterface
     /**
      * {@inheritdoc}
      */
-    public function getParameters()
+    public function getParameters(): array
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getData()
+    public function getData(): array
     {
-        $userLocale = $this->userContext->getCurrentLocaleCode();
-        $channels = $this->completenessRepo->getProductsCountPerChannels($userLocale);
-        $completeProducts = $this->completenessRepo->getCompleteProductsCountPerChannels($userLocale);
+        $translationLocaleCode = $this->userContext->getCurrentLocaleCode();
+        $result = $this->completenessWidgetQuery->fetch($translationLocaleCode);
 
-        $data = [];
-        foreach ($channels as $channel) {
-            $data[$channel['label']] = [
-                'total'    => (int) $channel['total'],
-                'complete' => 0,
-            ];
-        }
-        foreach ($completeProducts as $completeProduct) {
-            $locale = $this->localeRepository->findOneByIdentifier($completeProduct['locale']);
-            if (!$this->objectFilter->filterObject($locale, 'pim.internal_api.locale.view')) {
-                $localeLabel = $this->getCurrentLocaleLabel($completeProduct['locale']);
-                $data[$completeProduct['label']]['locales'][$localeLabel] = (int) $completeProduct['total'];
-                $data[$completeProduct['label']]['complete'] += $completeProduct['total'];
-            }
-        }
-
-        $data = array_filter($data, function ($channel) {
-            return isset($channel['locales']);
-        });
-
-        return $data;
-    }
-
-    /**
-     * Returns the label of a locale in the specified language
-     *
-     * @param string $code        the code of the locale to translate
-     * @param string $translateIn the locale in which the label should be translated (if null, user locale will be used)
-     *
-     * @return string
-     */
-    private function getCurrentLocaleLabel($code, $translateIn = null)
-    {
-        $translateIn = $translateIn ?: $this->userContext->getCurrentLocaleCode();
-
-        return \Locale::getDisplayName($code, $translateIn);
+        return $result->toArray();
     }
 }

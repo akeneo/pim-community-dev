@@ -149,6 +149,7 @@ acceptance:
             contexts_services:
                 - test.locale.context
                 - test.channel.context
+                - test.enrichment.enrichment_follow_up_context
             filters:
                 tags: '@acceptance-back'
         volume-monitoring:
@@ -190,6 +191,7 @@ acceptance:
            imports:
                - 'tests/back/Acceptance/Resources/config/behat/services.yml'
                - 'src/Pim/Bundle/CatalogVolumeMonitoringBundle/tests/Acceptance/Resources/config/behat/services.yml'
+               - 'src/Pim/Bundle/EnrichBundle/tests/Acceptance/Resources/config/behat/services.yml'
         FriendsOfBehat\CrossContainerExtension: ~
         FriendsOfBehat\SymfonyExtension:
             kernel:

@@ -2,18 +2,18 @@
 
 namespace spec\Pim\Bundle\DashboardBundle\Widget;
 
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
+use Pim\Bundle\EnrichBundle\Storage\ElasticsearchAndSql\FollowUp\GetCompletenessPerChannelAndLocale;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Component\Catalog\Repository\CompletenessRepositoryInterface;
-use Prophecy\Argument;
+use Pim\Component\Enrich\FollowUp\ReadModel\ChannelCompleteness;
+use Pim\Component\Enrich\FollowUp\ReadModel\CompletenessWidget;
+use Pim\Component\Enrich\FollowUp\ReadModel\LocaleCompleteness;
 
 class CompletenessWidgetSpec extends ObjectBehavior
 {
-    function let(CompletenessRepositoryInterface $completenessRepo, UserContext $userContext, ObjectFilterInterface $objectFilter, IdentifiableObjectRepositoryInterface $localeRepository)
+    function let(UserContext $userContext, GetCompletenessPerChannelAndLocale $getCompletenessPerChannelAndLocale)
     {
-        $this->beConstructedWith($completenessRepo, $userContext, $objectFilter, $localeRepository);
+        $this->beConstructedWith($userContext, $getCompletenessPerChannelAndLocale);
     }
 
     function it_is_a_widget()
@@ -36,45 +36,21 @@ class CompletenessWidgetSpec extends ObjectBehavior
         $this->getParameters()->shouldReturn([]);
     }
 
-    function it_exposes_the_completeness_data($completenessRepo, $userContext)
-    {
-        $completenessRepo->getProductsCountPerChannels(Argument::any())->willReturn(
-            [
-                [
-                    'label' => 'Mobile',
-                    'total' => 40,
-                ],
-                [
-                    'label' => 'E-Commerce',
-                    'total' => 25,
-                ],
-            ]
-        );
-        $completenessRepo->getCompleteProductsCountPerChannels(Argument::any())->willReturn(
-            [
-                [
-                    'label'  => 'Mobile',
-                    'locale' => 'en_US',
-                    'total'  => 10,
-                ],
-                [
-                    'label'  => 'Mobile',
-                    'locale' => 'fr_FR',
-                    'total'  => 0,
-                ],
-                [
-                    'label'  => 'E-Commerce',
-                    'locale' => 'en_US',
-                    'total'  => 25,
-                ],
-                [
-                    'label'  => 'E-Commerce',
-                    'locale' => 'fr_FR',
-                    'total'  => 5,
-                ],
-            ]
-        );
+    function it_exposes_the_completeness_data(
+        UserContext $userContext,
+        GetCompletenessPerChannelAndLocale $getCompletenessPerChannelAndLocale
+    ) {
         $userContext->getCurrentLocaleCode()->willReturn('en_US');
+        $mobileCompleteness = new ChannelCompleteness('Mobile', 10, 40, [
+            'English (United States)' => new LocaleCompleteness('English (United States)', 10),
+            'French (France)' => new LocaleCompleteness('French (France)', 0)
+        ]);
+        $ecommerceCompleteness = new ChannelCompleteness('E-Commerce', 25, 30, [
+            'English (United States)' => new LocaleCompleteness('English (United States)', 25),
+            'French (France)' => new LocaleCompleteness('French (France)', 5)
+        ]);
+        $completenessWidget = new CompletenessWidget([$mobileCompleteness, $ecommerceCompleteness]);
+        $getCompletenessPerChannelAndLocale->fetch('en_US')->willReturn($completenessWidget);
 
         $this->getData()->shouldReturn(
             [
@@ -87,8 +63,8 @@ class CompletenessWidgetSpec extends ObjectBehavior
                     ],
                 ],
                 'E-Commerce' => [
-                    'total' => 25,
-                    'complete' => 30,
+                    'total' => 30,
+                    'complete' => 25,
                     'locales' => [
                         'English (United States)' => 25,
                         'French (France)'  => 5,

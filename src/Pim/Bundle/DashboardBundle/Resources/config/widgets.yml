@@ -13,10 +13,8 @@ services:
     pim_dashboard.widget.completeness:
         class: '%pim_dashboard.widget.completeness.class%'
         arguments:
-            - '@pim_catalog.repository.completeness'
             - '@pim_user.context.user'
-            - '@pim_catalog.filter.chained'
-            - '@pim_catalog.repository.locale'
+            - '@pim_enrich.follow_up.completeness_widget_query'
         tags:
             - { name: pim_dashboard.widget, position: 20 }
 
