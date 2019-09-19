@@ -942,6 +942,19 @@ acceptance:
                 - test.channel.context
             filters:
                 tags: '@acceptance-back'
+        enrichment:
+            paths:
+                - '%paths.base%/tests/features/pim/enrichment'
+            contexts:
+                - test.attribute.context
+                - test.family.context
+                - test.catalog.product_creation.context
+                - test.enterprise_catalog.product_update.context
+                - test.catalog.product_validation.context
+                - test.asset_manager.asset_creation.context
+                - akeneo_assetmanager.tests.back.acceptance.context.edit_asset_family_context
+            filters:
+                tags: '@acceptance-back'
         franklin-insights:
             paths:
                 - '%paths.base%/src/Akeneo/Pim/Automation/FranklinInsights/tests/features'
