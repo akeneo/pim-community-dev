@@ -7,9 +7,11 @@ namespace Akeneo\Tool\Bundle\BatchQueueBundle\Command;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
+use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueue;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -22,10 +24,42 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PublishJobToQueueCommand extends ContainerAwareCommand
+class PublishJobToQueueCommand extends Command
 {
-    public const COMMAND_NAME = 'akeneo:batch:publish-job-to-queue';
+    protected static $defaultName = 'akeneo:batch:publish-job-to-queue';
+
     public const EXIT_SUCCESS_CODE = 0;
+
+    /** @var PublishJobToQueue */
+    private $publishJobToQueue;
+
+    /** @var JobRepositoryInterface */
+    private $jobRepository;
+
+    /** @var JobRegistry */
+    private $jobRegistry;
+
+    /** @var JobParametersFactory */
+    private $jobParametersFactory;
+
+    /** @var string */
+    private $jobInstanceClass;
+
+    public function __construct(
+        PublishJobToQueue $publishJobToQueue,
+        JobRepositoryInterface $jobRepository,
+        JobRegistry $jobRegistry,
+        JobParametersFactory $jobParametersFactory,
+        string $jobInstanceClass
+    ) {
+        parent::__construct();
+
+        $this->publishJobToQueue = $publishJobToQueue;
+        $this->jobRepository = $jobRepository;
+        $this->jobRegistry = $jobRegistry;
+        $this->jobParametersFactory = $jobParametersFactory;
+        $this->jobInstanceClass = $jobInstanceClass;
+    }
 
     /**
      * {@inheritdoc}
@@ -33,7 +67,6 @@ class PublishJobToQueueCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName(self::COMMAND_NAME)
             ->setDescription('Publish a registered job instance to execute into the job execution queue')
             ->addArgument('code', InputArgument::REQUIRED, 'Job instance code')
             ->addOption(
@@ -68,15 +101,13 @@ class PublishJobToQueueCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $publishJobToQueue = $this->getContainer()->get('akeneo_batch_queue.queue.publish_job_to_queue');
-
         $jobInstanceCode = $input->getArgument('code');
         $config = $input->getOption('config') ? $this->decodeConfiguration($input->getOption('config')) : [];
         $noLog = $input->getOption('no-log') ? true : false;
         $username = $input->getOption('username');
         $email = $input->getOption('email');
 
-        $publishJobToQueue->publish(
+        $this->publishJobToQueue->publish(
             $jobInstanceCode,
             $config,
             $noLog,
@@ -84,8 +115,7 @@ class PublishJobToQueueCommand extends ContainerAwareCommand
             $email
         );
 
-        $jobInstanceClass = $this->getContainer()->getParameter('akeneo_batch.entity.job_instance.class');
-        $jobInstance = $this->getJobManager()->getRepository($jobInstanceClass)->findOneBy(['code' => $jobInstanceCode]);
+        $jobInstance = $this->getJobManager()->getRepository($this->jobInstanceClass)->findOneBy(['code' => $jobInstanceCode]);
 
         $output->writeln(
             sprintf(
@@ -106,14 +136,13 @@ class PublishJobToQueueCommand extends ContainerAwareCommand
      */
     protected function createJobParameters(JobInstance $jobInstance, InputInterface $input): JobParameters
     {
-        $job = $this->getJobRegistry()->get($jobInstance->getJobName());
-        $jobParamsFactory = $this->getJobParametersFactory();
+        $job = $this->$this->jobRegistry->get($jobInstance->getJobName());
         $rawParameters = $jobInstance->getRawParameters();
 
         $config = $input->getOption('config') ? $this->decodeConfiguration($input->getOption('config')) : [];
 
         $rawParameters = array_merge($rawParameters, $config);
-        $jobParameters = $jobParamsFactory->create($job, $rawParameters);
+        $jobParameters = $this->jobParametersFactory->create($job, $rawParameters);
 
         return $jobParameters;
     }
@@ -157,15 +186,7 @@ class PublishJobToQueueCommand extends ContainerAwareCommand
      */
     private function getJobManager(): EntityManagerInterface
     {
-        return $this->getContainer()->get('akeneo_batch.job_repository')->getJobManager();
-    }
-
-    /**
-     * @return JobRegistry
-     */
-    private function getJobRegistry(): JobRegistry
-    {
-        return $this->getContainer()->get('akeneo_batch.job.job_registry');
+        return $this->jobRepository->getJobManager();
     }
 
     /**
