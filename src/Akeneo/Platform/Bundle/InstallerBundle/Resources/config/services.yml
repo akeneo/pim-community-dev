@@ -1,3 +1,6 @@
+parameters:
+    installer_bundle.command.database_command.class: 'Akeneo\Platform\Bundle\InstallerBundle\Command\EnterpriseDatabaseCommand'
+
 services:
     pim_installer.directories_registry:
         class: '%pim_installer.directories_registry.class%'
