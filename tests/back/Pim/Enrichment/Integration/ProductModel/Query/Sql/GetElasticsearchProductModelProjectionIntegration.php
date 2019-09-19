@@ -74,7 +74,7 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
         $this->checkProductModelProjectionFormat('child', $expected);
     }
 
-    public function test_it_get_projection_of_root_product_model()
+    public function test_that_it_gets_the_projection_of_a_root_product_model()
     {
         $this->createRootProductModel();
 
