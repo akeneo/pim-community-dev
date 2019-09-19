@@ -17,7 +17,7 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
         return $this->catalog->useTechnicalCatalog();
     }
 
-    public function test_it_get_projection_of_sub_product_model()
+    public function test_that_it_gets_the_projection_of_a_sub_product_model()
     {
         $this->createRootProductModel();
         $this->createSubProductModel();
