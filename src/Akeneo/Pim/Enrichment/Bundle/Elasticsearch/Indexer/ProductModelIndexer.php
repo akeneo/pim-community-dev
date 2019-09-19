@@ -6,7 +6,6 @@ namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductModelProjectionInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductModelProjection;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Tool\Component\StorageUtils\Indexer\ProductModelIndexerInterface;
@@ -29,21 +28,16 @@ class ProductModelIndexer implements ProductModelIndexerInterface
     /** @var Client */
     private $productAndProductModelClient;
 
-    /** @var ProductModelRepositoryInterface */
-    private $productModelRepository;
-
     /** @var GetElasticsearchProductModelProjectionInterface */
     private $getElasticsearchProductModelProjection;
 
     public function __construct(
         NormalizerInterface $normalizer,
         Client $productAndProductModelClient,
-        ProductModelRepositoryInterface $productModelRepository,
         GetElasticsearchProductModelProjectionInterface $getElasticsearchProductModelProjection
     ) {
         $this->normalizer = $normalizer;
         $this->productAndProductModelClient = $productAndProductModelClient;
-        $this->productModelRepository = $productModelRepository;
         $this->getElasticsearchProductModelProjection = $getElasticsearchProductModelProjection;
     }
 
