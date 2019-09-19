@@ -61,6 +61,8 @@
 - As SSO Log are now in a dedicated table, the following classes are unused and have been removed:
     - Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\CreateArchive
     - Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\FlySystemLogHandler
+- Change `Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Query\Product\ProductSubscriptionsExistQueryInterface` interface to add `executeWithIdentifiers(array $productIdentifiers): array;` new method
+- Remove class `Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Elasticsearch\Indexing\Normalizer\ProductSubscriptionNormalizer`
 
 ### CLI commands
 

@@ -240,6 +240,9 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Query\Filter',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer',
+
+            // allow to enrich the indexation of the product
+            'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductProjectionInterface',
         ]
     )->in('Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Elasticsearch'),
 

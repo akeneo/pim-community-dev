@@ -113,3 +113,15 @@ services:
         class: 'Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetEditableCategoryCodes'
         arguments:
             - '@database_connection'
+
+    # CE override
+    akeneo.pim.enrichment.product.query.get_elasticsearch_product_projection:
+        class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\GetElasticsearchProductProjection
+        arguments:
+            - '@pim_catalog.repository.product_without_permission'
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.repository.channel'
+            - '@pim_indexing_serializer'
+            - '@akeneo.pim.enrichment.product.query.get_product_completenesses'
+            - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
+            - !tagged akeneo.pim.enrichment.product.query.indexing_additional_properties

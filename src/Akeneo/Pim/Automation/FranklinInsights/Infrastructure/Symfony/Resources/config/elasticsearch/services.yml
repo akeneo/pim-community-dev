@@ -11,9 +11,9 @@ services:
             - ['%index_hosts%']
             - '%product_and_product_model_index_name%'
 
-    akeneo.pim.automation.franklin_insights.elasticsearch.normalizer.indexing.product_subscription:
-        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Elasticsearch\Indexing\Normalizer\ProductSubscriptionNormalizer'
+    akeneo.pim.automation.franklin_insights.elasticsearch.indexing.get_product_subscription_for_indexation:
+        class: Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Elasticsearch\Indexing\GetProductSubscriptionForProductProjection
         arguments:
             - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.product_subscriptions_exist'
         tags:
-            - { name: 'pim_catalog.normalizer.indexing_product_and_product_model.product.additional_properties' }
+            - { name: 'akeneo.pim.enrichment.product.query.indexing_additional_properties' }

@@ -24,4 +24,10 @@ interface ProductSubscriptionsExistQueryInterface
      * @return array
      */
     public function execute(array $productIds): array;
+
+    /**
+     * @param array $productIdentifiers
+     * @return array
+     */
+    public function executeWithIdentifiers(array $productIdentifiers): array;
 }
