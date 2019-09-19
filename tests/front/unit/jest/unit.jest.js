@@ -22,6 +22,7 @@ const eeConfig = {
     'vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/public/lib',
     'src/Akeneo/Pim/Enrichment/AssetManager/Bundle/Resources/public/assets-collection/infrastructure/fetcher',
     'src/Akeneo/Pim/Enrichment/AssetManager/Bundle/Resources/public/platform/component/common/index',
+    'src/Akeneo/Pim/Enrichment/AssetManager/Bundle/Resources/public/platform/component/common/button.tsx',
   ],
 };
 

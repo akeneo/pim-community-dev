@@ -14,7 +14,6 @@ import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import {Pill, Spacer, Separator} from 'akeneopimenrichmentassetmanager/platform/component/common';
 import {AssetCollection} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-collection';
 import {isValueComplete, hasValues} from 'akeneopimenrichmentassetmanager/enrich/domain/model/product';
-import {Button} from 'akeneopimenrichmentassetmanager/platform/component/common/button';
 import {Family} from 'akeneopimenrichmentassetmanager/platform/model/structure/family';
 import AssetIllustration from 'akeneopimenrichmentassetmanager/platform/component/visual/illustration/asset';
 import {HelperSection, HelperIcon, HelperSeparator, HelperTitle, HelperText} from 'akeneopimenrichmentassetmanager/platform/component/common/helper';
@@ -26,7 +25,8 @@ import {ValidationError} from 'akeneopimenrichmentassetmanager/platform/model/va
 import {ValidationErrorCollection} from 'akeneopimenrichmentassetmanager/platform/component/common/validation-error-collection';
 import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
 import {MoreButton} from 'akeneoassetmanager/application/component/app/more-button';
-import {emptyCollection} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
+import {addAssetToCollection, emptyCollection} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
+import {AssetPicker} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker';
 
 type ListStateProps = {
   attributes: Attribute[],
@@ -118,7 +118,7 @@ const DisplayValues = ({values, family, context, ruleRelations, onChange, errors
             ): null}
             {value.editable ? (
               <React.Fragment>
-                <Button buttonSize='medium' color='outline'>{__('pim_asset_manager.asset_collection.add_asset')}</Button>
+                <AssetPicker assetsToExclude={value.data} selectedAssets={(assetCodes: AssetCode[]) => {onChange(updateValueData(value, addAssetToCollection(value.data, assetCodes)))}} />
                 <MoreButton elements={[{
                   label: __('pim_asset_manager.asset_collection.remove_all_assets'),
                   action: () => {

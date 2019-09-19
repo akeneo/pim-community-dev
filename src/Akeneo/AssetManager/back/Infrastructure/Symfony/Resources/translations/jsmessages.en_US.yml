@@ -22,6 +22,8 @@ pim_asset_manager:
     other_actions: Other actions
     open_other_actions: Open other actions
     dismiss_other_actions: Dismiss other actions
+  asset_picker:
+    title: Add assets to your product
 #  app:
 #    image:
 #      wide:
