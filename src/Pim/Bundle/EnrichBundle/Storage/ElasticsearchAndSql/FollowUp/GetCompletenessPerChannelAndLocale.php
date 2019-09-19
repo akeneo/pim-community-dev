@@ -80,7 +80,7 @@ class GetCompletenessPerChannelAndLocale implements GetCompletenessPerChannelAnd
                   root.code,
                   CONCAT(COALESCE(child.children_codes, ''), ',', root.code)
                 ) as category_codes_in_channel,
-                pim_locales.json_locales as locales
+                COALESCE(pim_locales.json_locales, '') as locales
             FROM
                 pim_catalog_category AS root
                 LEFT JOIN
@@ -115,11 +115,6 @@ class GetCompletenessPerChannelAndLocale implements GetCompletenessPerChannelAnd
                 channel.code, root.code
 SQL;
 
-        $rows = $this->connection->executeQuery(
-            $sql,
-            ['locale' => $translationLocaleCode]
-        )->fetchAll();
-
         return array_map(
             function (array $row) {
                 $row['locales'] = \explode(',', $row['locales']);
@@ -127,7 +122,7 @@ SQL;
 
                 return $row;
             },
-            $rows
+            $this->connection->executeQuery($sql, ['locale' => $translationLocaleCode])->fetchAll()
         );
     }
 
