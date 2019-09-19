@@ -4,6 +4,7 @@
 ## Bug fixes
 
 - PIM-8738: Fix memory leak executing "akeneo:batch:purge-job-execution" command
+- PIM-7762: Fix completeness widget on dashboard with a lot of products
 
 # 2.3.62 (2019-09-13)
 
