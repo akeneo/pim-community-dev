@@ -3,7 +3,8 @@
 namespace Akeneo\Tool\Bundle\FileStorageBundle\Command;
 
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use League\Flysystem\MountManager;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -16,15 +17,32 @@ use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class StoreFileCommand extends ContainerAwareCommand
+class StoreFileCommand extends Command
 {
+    protected static $defaultName = 'akeneo:file-storage:store';
+
+    /** @var FileStorerInterface */
+    private $fileStorer;
+
+    /** @var MountManager */
+    private $mountManager;
+
+    public function __construct(
+        FileStorerInterface $fileStorer,
+        MountManager $mountManager
+    ) {
+        parent::__construct();
+
+        $this->fileStorer = $fileStorer;
+        $this->mountManager = $mountManager;
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
         $this
-            ->setName('akeneo:file-storage:store')
             ->addArgument('file', InputArgument::REQUIRED)
             ->addArgument('storage', InputArgument::REQUIRED)
         ;
@@ -50,8 +68,7 @@ class StoreFileCommand extends ContainerAwareCommand
         }
 
         $rawFile = new \SplFileInfo($filePath);
-        $storer = $this->getFileStorer();
-        $file = $storer->store($rawFile, $storageFsAlias);
+        $file = $this->fileStorer->store($rawFile, $storageFsAlias);
 
         $output->writeln(
             sprintf(
@@ -81,7 +98,7 @@ class StoreFileCommand extends ContainerAwareCommand
     protected function hasFileSystem($storageFsAlias)
     {
         try {
-            $this->getContainer()->get(sprintf('oneup_flysystem.%s_filesystem', $storageFsAlias));
+            $this->mountManager->getFilesystem($storageFsAlias);
         } catch (ServiceNotFoundException $e) {
             return false;
         }
