@@ -189,14 +189,14 @@ final class Controller
     public function downloadAuthenticationLogsAction()
     {
         try {
-            return new BinaryFileResponse(
+            return (new BinaryFileResponse(
                 $this->createArchive->create(),
                 Response::HTTP_OK,
                 [
                     'Content-Disposition' => sprintf('attachment; filename="authenticationLogs%s.zip"', date('YmdHis')),
                     'Content-Type'        => 'application/zip',
                 ]
-            );
+            ))->deleteFileAfterSend(true);
         } catch (\Exception $e) {
             throw new NotFoundHttpException("Unable to find archive file");
         }

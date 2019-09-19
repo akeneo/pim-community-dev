@@ -44,6 +44,12 @@ services:
             - '%logs_dir%'
             - '%tmp_storage_dir%'
 
+    akeneo_authentication.sso.log.create_archive_from_db_table:
+        class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\CreateArchiveFromDbTable'
+        arguments:
+            - '@database_connection'
+            - '%tmp_storage_dir%'
+
     hslavich_onelogin_saml.saml_token_factory:
         class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\SamlTokenFactory'
 
@@ -75,5 +81,11 @@ services:
         arguments:
             - '@oneup_flysystem.logs_storage_filesystem'
             - 'authentication.log'
+            - 10
+            - 'error'
+
+    Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\DbTableLogHandler:
+        arguments:
+            - '@database_connection'
             - 10
             - 'error'
