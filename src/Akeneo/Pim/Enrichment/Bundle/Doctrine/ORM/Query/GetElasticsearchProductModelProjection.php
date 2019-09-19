@@ -101,8 +101,8 @@ class GetElasticsearchProductModelProjection implements GetElasticsearchProductM
                 $normalizedData->allIncomplete(),
                 null !== $productModel->getParent() ? ['product_model_' . $productModel->getParent()->getId()] : [],
                 null !== $productModel->getParent() ? [$productModel->getParent()->getCode()] : [],
-                $this->getAncestorsLabels($productModel),
-                $this->getLabel($values, $productModel),
+                $this->getLabels($values, $productModel),
+                $this->getLabels($values, $productModel),
                 $this->getAttributesOfAncestors($productModel),
                 $this->getSortedAttributeCodes($productModel)
             );
@@ -111,90 +111,7 @@ class GetElasticsearchProductModelProjection implements GetElasticsearchProductM
         return $productProjections;
     }
 
-    private function getAncestorsLabels(ProductModelInterface $productModel): array
-    {
-        $family = $productModel->getFamily();
-        if (null === $family) {
-            return [];
-        }
-
-        $attributeAsLabel = $family->getAttributeAsLabel();
-        if (null === $attributeAsLabel) {
-            return [];
-        }
-
-        $ancestorsLabels = [];
-        $attributeCodeAsLabel = $attributeAsLabel->getCode();
-        switch (true) {
-            case $attributeAsLabel->isScopable() && $attributeAsLabel->isLocalizable():
-                $ancestorsLabels = $this->getLocalizableAndScopableLabels($productModel, $attributeCodeAsLabel);
-                break;
-
-            case $attributeAsLabel->isScopable():
-                $ancestorsLabels = $this->getScopableLabels($productModel, $attributeCodeAsLabel);
-                break;
-
-            case $attributeAsLabel->isLocalizable():
-                $ancestorsLabels = $this->getLocalizableLabels($productModel, $attributeCodeAsLabel);
-                break;
-
-            default:
-                $value = $productModel->getValue($attributeCodeAsLabel);
-                if (null !== $value) {
-                    $ancestorsLabels['<all_channels>']['<all_locales>'] = $value->getData();
-                }
-                break;
-        }
-
-        return $ancestorsLabels;
-    }
-
-    private function getLocalizableAndScopableLabels(
-        ProductModelInterface $productModel,
-        string $attributeCodeAsLabel
-    ): array {
-        $ancestorsLabels = [];
-        $localeCodes = $this->localeRepository->getActivatedLocaleCodes();
-        foreach ($this->channelRepository->getChannelCodes() as $channelCode) {
-            foreach ($localeCodes as $localeCode) {
-                $value = $productModel->getValue($attributeCodeAsLabel, $localeCode, $channelCode);
-                if (null !== $value) {
-                    $ancestorsLabels[$channelCode][$localeCode] = $value->getData();
-                }
-            }
-        }
-
-        return $ancestorsLabels;
-    }
-
-    private function getScopableLabels(ProductModelInterface $productModel, string $attributeCodeAsLabel): array
-    {
-        $ancestorsLabels = [];
-        foreach ($this->channelRepository->getChannelCodes() as $channelCode) {
-            $value = $productModel->getValue($attributeCodeAsLabel, null, $channelCode);
-            if (null !== $value) {
-                $ancestorsLabels[$channelCode]['<all_locales>'] = $value->getData();
-            }
-        }
-
-        return $ancestorsLabels;
-    }
-
-    private function getLocalizableLabels(ProductModelInterface $productModel, string $attributeCodeAsLabel): array
-    {
-        $ancestorsLabels = [];
-        $localeCodes = $this->localeRepository->getActivatedLocaleCodes();
-        foreach ($localeCodes as $localeCode) {
-            $value = $productModel->getValue($attributeCodeAsLabel, $localeCode);
-            if (null !== $value) {
-                $ancestorsLabels['<all_channels>'][$localeCode] = $value->getData();
-            }
-        }
-
-        return $ancestorsLabels;
-    }
-
-    private function getLabel(array $values, ProductModelInterface $productModel): array
+    private function getLabels(array $values, ProductModelInterface $productModel): array
     {
         if (null === $productModel->getFamily()) {
             return [];

@@ -82,7 +82,7 @@ class ElasticsearchProductModelProjectionSpec extends ObjectBehavior
                 'labels' => ['<all_channels>' => ['en_US' => 'ancestor_label']],
             ],
             'label' => ['<all_channels>' => ['en_US' => 'label']],
-            'document_type' => ProductModelInterface::class,
+            'document_type' => 'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface',
             'attributes_of_ancestors' => ['ancestor_attribute_code_1', 'ancestor_attribute_code_2'],
             'attributes_for_this_level' => ['attribute_for_this_level1', 'attribute_for_this_level2']
         ]);
