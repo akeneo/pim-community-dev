@@ -15,13 +15,30 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class QueryHelpProductModelCommand extends ContainerAwareCommand
 {
+    protected static $defaultName = 'pim:product-model:query-help';
+
+    /** @var DumperInterface */
+    private $fieldDumper;
+
+    /** @var DumperInterface */
+    private $attributeDumper;
+
+    public function __construct(
+        DumperInterface $fieldDumper,
+        DumperInterface $attributeDumper
+    ) {
+        parent::__construct();
+
+        $this->fieldDumper = $fieldDumper;
+        $this->attributeDumper = $attributeDumper;
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
         $this
-            ->setName('pim:product-model:query-help')
             ->setDescription('Display useable product model query filters');
     }
 
@@ -30,23 +47,7 @@ class QueryHelpProductModelCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->getFieldFilterDumper()->dump($output);
-        $this->getAttributeFilterDumper()->dump($output);
-    }
-
-    /**
-     * @return DumperInterface
-     */
-    protected function getFieldFilterDumper(): DumperInterface
-    {
-        return $this->getContainer()->get('pim_catalog.query.filter.product_model.field_dumper');
-    }
-
-    /**
-     * @return DumperInterface
-     */
-    protected function getAttributeFilterDumper(): DumperInterface
-    {
-        return $this->getContainer()->get('pim_catalog.query.filter.product_model.attribute_dumper');
+        $this->fieldDumper->dump($output);
+        $this->attributeDumper->dump($output);
     }
 }

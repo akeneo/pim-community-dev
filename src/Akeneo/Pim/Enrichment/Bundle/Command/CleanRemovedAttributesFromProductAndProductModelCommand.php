@@ -10,6 +10,7 @@ use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Oro\Bundle\PimDataGridBundle\Normalizer\IdEncoder;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -23,15 +24,42 @@ use Symfony\Component\Process\Process;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CleanRemovedAttributesFromProductAndProductModelCommand extends ContainerAwareCommand
+class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
 {
+    protected static $defaultName = 'pim:product:clean-removed-attributes';
+
+    /** @var EntityManagerClearerInterface */
+    private $entityManagerClearer;
+
+    /** @var ProductQueryBuilderFactoryInterface */
+    private $productQueryBuilderFactory;
+
+    /** @var string */
+    private $kernelRootDir;
+
+    /** @var int */
+    private $productBatchSize;
+
+    public function __construct(
+        EntityManagerClearerInterface $entityManagerClearer,
+        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
+        string $kernelRootDir,
+        int $productBatchSize
+    ) {
+        parent::__construct();
+
+        $this->entityManagerClearer = $entityManagerClearer;
+        $this->productQueryBuilderFactory = $productQueryBuilderFactory;
+        $this->kernelRootDir = $kernelRootDir;
+        $this->productBatchSize = $productBatchSize;
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
         $this
-            ->setName('pim:product:clean-removed-attributes')
             ->setDescription('Removes all values of deleted attributes on all products and product models');
     }
 
@@ -40,13 +68,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends ContainerA
      */
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
-        $productBatchSize = $this->getContainer()->getParameter('pim_job_product_batch_size');
-
         $io = new SymfonyStyle($input, $output);
-
-        $cacheClearer = $this->getContainer()->get('pim_connector.doctrine.cache_clearer');
-        $pqbFactory = $this->getContainer()->get('pim_catalog.query.product_and_product_model_query_builder_factory');
-        $rootDir = $this->getContainer()->get('kernel')->getRootDir();
         $env = $input->getOption('env');
 
         $io->title('Clean removed attributes values');
@@ -67,11 +89,11 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends ContainerA
         ]);
         $io->newLine(2);
 
-        $products = $this->getProducts($pqbFactory);
+        $products = $this->getProducts($this->productQueryBuilderFactory);
 
         $progressBar = new ProgressBar($output, count($products));
 
-        $this->cleanProducts($products, $progressBar, $productBatchSize, $cacheClearer, $env, $rootDir);
+        $this->cleanProducts($products, $progressBar, $this->productBatchSize, $this->entityManagerClearer, $env, $this->kernelRootDir);
         $io->newLine();
         $io->text(sprintf('%d products well cleaned', $products->count()));
     }

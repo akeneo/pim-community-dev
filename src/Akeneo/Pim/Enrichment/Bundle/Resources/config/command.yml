@@ -4,3 +4,49 @@ services:
         arguments:
             - 'Akeneo\Tool\Component\StorageUtils\Cursor\Paginator'
             - '%pim_job_product_batch_size%'
+
+    Akeneo\Pim\Enrichment\Bundle\Command\CleanRemovedAttributesFromProductAndProductModelCommand:
+        arguments:
+            - '@pim_connector.doctrine.cache_clearer'
+            - '@pim_catalog.query.product_and_product_model_query_builder_factory'
+            - '%kernel.root_dir%'
+            - '%pim_job_product_batch_size%'
+        tags:
+            - { name: console.command }
+
+    Akeneo\Pim\Enrichment\Bundle\Command\QueryHelpProductCommand:
+        arguments:
+            - '@pim_catalog.query.filter.product.field_dumper'
+            - '@pim_catalog.query.filter.product.attribute_dumper'
+        tags:
+            - { name: console.command }
+
+    Akeneo\Pim\Enrichment\Bundle\Command\QueryHelpProductModelCommand:
+        arguments:
+            - '@pim_catalog.query.filter.product_model.field_dumper'
+            - '@pim_catalog.query.filter.product_model.attribute_dumper'
+        tags:
+            - { name: console.command }
+
+    Akeneo\Pim\Enrichment\Bundle\Command\RefreshProductCommand:
+        arguments:
+            - '@pim_catalog.saver.product'
+            - '@pim_catalog.saver.product_model'
+            - '@pim_catalog.query.product_and_product_model_query_builder_factory'
+        tags:
+            - { name: console.command }
+
+    Akeneo\Pim\Enrichment\Bundle\Command\RemoveCompletenessForChannelAndLocaleCommand:
+        arguments:
+            - '@pim_connector.doctrine.cache_clearer'
+            - '@pim_notification.notifier'
+            - '@pim_notification.factory.notification'
+            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.saver.locale'
+            - '%kernel.root_dir%'
+            - '%kernel.environment%'
+            - '%pim_job_product_batch_size%'
+        tags:
+            - { name: console.command }

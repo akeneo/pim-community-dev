@@ -12,3 +12,9 @@ services:
             - '@database_connection'
         tags:
             - { name: kernel.event_subscriber }
+
+    Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Command\AggregateVolumesCommand:
+        arguments:
+            - '@pim_volume_monitoring.volume.aggregation'
+        tags:
+            - { name: console.command }

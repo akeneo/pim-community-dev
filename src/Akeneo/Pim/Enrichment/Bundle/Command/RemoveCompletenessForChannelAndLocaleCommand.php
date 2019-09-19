@@ -4,7 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
+use Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface;
+use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
+use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -20,8 +27,66 @@ use Symfony\Component\Process\Process;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class RemoveCompletenessForChannelAndLocaleCommand extends ContainerAwareCommand
+class RemoveCompletenessForChannelAndLocaleCommand extends Command
 {
+    protected static $defaultName = 'pim:catalog:remove-completeness-for-channel-and-locale';
+
+    /** @var EntityManagerClearerInterface */
+    private $cacheClearer;
+
+    /** @var NotifierInterface */
+    private $notifier;
+
+    /** @var SimpleFactoryInterface */
+    private $notificationFactory;
+
+    /** @var string */
+    private $rootDir;
+
+    /** @var string */
+    private $env;
+
+    /** @var int */
+    private $productBatchSize;
+
+    /** @var ProductQueryBuilderFactoryInterface */
+    private $productQueryBuilderFactory;
+
+    /** @var ChannelRepositoryInterface */
+    private $channelRepository;
+
+    /** @var LocaleRepositoryInterface */
+    private $localeRepository;
+
+    /** @var SaverInterface */
+    private $channelSaver;
+
+    public function __construct(
+        EntityManagerClearerInterface $cacheClearer,
+        NotifierInterface $notifier,
+        SimpleFactoryInterface $notificationFactory,
+        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository,
+        SaverInterface $channelSaver,
+        string $rootDir,
+        string $env,
+        int $productBatchSize
+    ) {
+        parent::__construct();
+
+        $this->cacheClearer = $cacheClearer;
+        $this->notifier = $notifier;
+        $this->notificationFactory = $notificationFactory;
+        $this->productQueryBuilderFactory = $productQueryBuilderFactory;
+        $this->rootDir = $rootDir;
+        $this->env = $env;
+        $this->productBatchSize = $productBatchSize;
+        $this->channelRepository = $channelRepository;
+        $this->localeRepository = $localeRepository;
+        $this->channelSaver = $channelSaver;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -29,7 +94,6 @@ class RemoveCompletenessForChannelAndLocaleCommand extends ContainerAwareCommand
     {
         $this
             ->setHidden(true)
-            ->setName('pim:catalog:remove-completeness-for-channel-and-locale')
             ->setDescription('When a channel is updated, products completenesses related to channel and locales need to be cleaned.')
             ->addArgument(
                 'channel-code',
@@ -56,12 +120,6 @@ class RemoveCompletenessForChannelAndLocaleCommand extends ContainerAwareCommand
         $localesIdentifiers  = explode(',', $input->getArgument('locales-identifier'));
         $channelCode         = $input->getArgument('channel-code');
         $username            = $input->getArgument('username');
-        $productBatchSize    = $this->getContainer()->getParameter('pim_job_product_batch_size');
-        $cacheClearer        = $this->getContainer()->get('pim_connector.doctrine.cache_clearer');
-        $notifier            = $this->getContainer()->get('pim_notification.notifier');
-        $notificationFactory = $this->getContainer()->get('pim_notification.factory.notification');
-        $rootDir             = $this->getContainer()->get('kernel')->getRootDir();
-        $env                 = $this->getContainer()->get('kernel')->getEnvironment();
 
         $output->writeln(
             sprintf(
@@ -73,7 +131,7 @@ class RemoveCompletenessForChannelAndLocaleCommand extends ContainerAwareCommand
             )
         );
 
-        $pushNotif = $notificationFactory->create();
+        $pushNotif = $this->notificationFactory->create();
         $pushNotif
             ->setType('warning')
             ->setMessage('pim_enrich.notification.settings.remove_completeness_for_channel_and_locale.start')
@@ -81,7 +139,7 @@ class RemoveCompletenessForChannelAndLocaleCommand extends ContainerAwareCommand
                 'actionType' => 'settings',
                 'showReportButton' => false
             ]);
-        $notifier->notify($pushNotif, [$username]);
+        $this->notifier->notify($pushNotif, [$username]);
         $output->writeln(
             sprintf(
                 '<info>[%s] User "%s" has been notified completenesses removal started.</info>',
@@ -91,8 +149,7 @@ class RemoveCompletenessForChannelAndLocaleCommand extends ContainerAwareCommand
         );
 
         $io = new SymfonyStyle($input, $output);
-        $products = $pqbFactory = $this->getContainer()
-            ->get('pim_catalog.query.product_query_builder_factory')
+        $products = $pqbFactory = $this->productQueryBuilderFactory
             ->create()
             ->execute();
 
@@ -101,37 +158,37 @@ class RemoveCompletenessForChannelAndLocaleCommand extends ContainerAwareCommand
         foreach ($products as $product) {
             $productsToClean[] = $product->getIdentifier();
 
-            if (count($productsToClean) >= $productBatchSize) {
-                $this->launchCleanTask($productsToClean, $env, $rootDir);
-                $cacheClearer->clear();
+            if (count($productsToClean) >= $this->productBatchSize) {
+                $this->launchCleanTask($productsToClean, $this->env, $this->rootDir);
+                $this->cacheClearer->clear();
                 $io->progressAdvance(count($productsToClean));
                 $productsToClean = [];
             }
         }
 
         if (!empty($productsToClean)) {
-            $this->launchCleanTask($productsToClean, $env, $rootDir);
+            $this->launchCleanTask($productsToClean, $this->env, $this->rootDir);
             $io->progressAdvance(count($productsToClean));
         }
         $io->progressFinish();
 
-        $channel = $this->getContainer()->get('pim_catalog.repository.channel')
+        $channel = $this->channelRepository
             ->findOneByIdentifier($channelCode);
 
-        $locales = $this->getContainer()->get('pim_catalog.repository.locale')
+        $locales = $this->localeRepository
             ->findBy(['code' => $localesIdentifiers]);
         foreach ($locales as $locale) {
             $locale->removeChannel($channel);
         }
 
         if (!empty($locales)) {
-            $this->getContainer()->get('pim_catalog.saver.locale')->saveAll($locales);
+            $this->channelSaver->saveAll($locales);
         }
         $output->writeln(
             sprintf('<info>[%s] Related products completenesses removal done.</info>', $this->getCurrentDateTime())
         );
 
-        $doneNotif = $notificationFactory->create();
+        $doneNotif = $this->notificationFactory->create();
         $doneNotif
             ->setType('success')
             ->setMessage('pim_enrich.notification.settings.remove_completeness_for_channel_and_locale.done')
@@ -139,7 +196,7 @@ class RemoveCompletenessForChannelAndLocaleCommand extends ContainerAwareCommand
                 'actionType' => 'settings',
                 'showReportButton' => false
             ]);
-        $notifier->notify($doneNotif, [$username]);
+        $this->notifier->notify($doneNotif, [$username]);
         $output->writeln(
             sprintf(
                 '<info>[%s] User "%s" has been notified completenesses removal is finished.</info>',

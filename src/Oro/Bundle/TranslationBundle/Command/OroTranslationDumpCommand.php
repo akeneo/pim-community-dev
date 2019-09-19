@@ -2,21 +2,61 @@
 
 namespace Oro\Bundle\TranslationBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Oro\Bundle\TranslationBundle\Controller\Controller;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Routing\RouterInterface;
 
-class OroTranslationDumpCommand extends ContainerAwareCommand
+class OroTranslationDumpCommand extends Command
 {
+    protected static $defaultName = 'oro:translation:dump';
+
+    /** @var Controller */
+    private $controller;
+
+    /** @var Filesystem */
+    private $filesystem;
+
+    /** @var string */
+    private $jsTranslationDomains;
+
+    /** @var string */
+    private $rootDir;
+
+    /** @var string */
+    private $defaultLocale;
+
+    /** @var RouterInterface */
+    private $router;
+
+    public function __construct(
+        Controller $controller,
+        Filesystem $filesystem,
+        RouterInterface $router,
+        array $jsTranslationDomains,
+        string $rootDir,
+        string $defaultLocale
+    ) {
+        parent::__construct();
+
+        $this->controller = $controller;
+        $this->filesystem = $filesystem;
+        $this->router = $router;
+        $this->jsTranslationDomains = $jsTranslationDomains;
+        $this->rootDir = $rootDir;
+        $this->defaultLocale = $defaultLocale;
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
         $this
-            ->setName('oro:translation:dump')
             ->setDescription('Dumps oro js-translations')
             ->addArgument(
                 'locale',
@@ -38,11 +78,11 @@ class OroTranslationDumpCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $locales = $input->getArgument('locale');
-        $locales = null === $locales ? [$this->getContainer()->getParameter('kernel.default_locale')] : explode(', ', $locales);
+        $locales = null === $locales ? [$this->defaultLocale] : explode(', ', $locales);
 
-        $domains = $this->getContainer()->getParameter('oro_translation.js_translation.domains');
-        $targetPattern = realpath($this->getContainer()->getParameter('kernel.root_dir') . '/../web')
-            . $this->getContainer()->get('router')->getRouteCollection()
+        $domains = $this->jsTranslationDomains;
+        $targetPattern = realpath($this->rootDir . '/../web')
+            . $this->router->getRouteCollection()
                 ->get('oro_translation_jstranslation')->getPath();
 
         foreach ($locales as $locale) {
@@ -56,10 +96,10 @@ class OroTranslationDumpCommand extends ContainerAwareCommand
                 )
             );
 
-            $content = $this->getContainer()->get('oro_translation.controller')
+            $content = $this->controller
                 ->renderJsTranslationContent($domains, $locale, $input->getOption('debug'));
 
-            $this->getContainer()->get('filesystem')->mkdir(dirname($target), 0777);
+            $this->filesystem->mkdir(dirname($target), 0777);
 
             if (false === @file_put_contents($target, $content)) {
                 throw new \RuntimeException('Unable to write file ' . $target);

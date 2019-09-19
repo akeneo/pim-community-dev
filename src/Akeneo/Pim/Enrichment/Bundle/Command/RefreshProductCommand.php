@@ -6,7 +6,10 @@ namespace Akeneo\Pim\Enrichment\Bundle\Command;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -20,15 +23,37 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class RefreshProductCommand extends ContainerAwareCommand
+class RefreshProductCommand extends Command
 {
+    protected static $defaultName = 'pim:product:refresh';
+
+    /** @var SaverInterface */
+    private $productSaver;
+
+    /** @var SaverInterface */
+    private $productModelSaver;
+
+    /** @var ProductQueryBuilderFactoryInterface */
+    private $productQueryBuilderFactory;
+
+    public function __construct(
+        SaverInterface $productSaver,
+        SaverInterface $productModelSaver,
+        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
+    ) {
+        parent::__construct();
+
+        $this->productSaver = $productSaver;
+        $this->productModelSaver = $productModelSaver;
+        $this->productQueryBuilderFactory = $productQueryBuilderFactory;
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
         $this
-            ->setName('pim:product:refresh')
             ->addArgument(
                 'identifiers',
                 InputArgument::REQUIRED,
@@ -43,15 +68,9 @@ class RefreshProductCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
-        $productSaver = $this->getContainer()
-            ->get('pim_catalog.saver.product');
-        $productModelSaver = $this->getContainer()
-            ->get('pim_catalog.saver.product_model');
-        $pqbFactory = $this->getContainer()
-            ->get('pim_catalog.query.product_and_product_model_query_builder_factory');
         $identifiers = $input->getArgument('identifiers');
 
-        $pqb = $pqbFactory->create();
+        $pqb = $this->productQueryBuilderFactory->create();
         $pqb->addFilter('id', Operators::IN_LIST, explode(',', $identifiers));
         $products = $pqb->execute();
 
@@ -63,7 +82,7 @@ class RefreshProductCommand extends ContainerAwareCommand
             $productsToSave[$product instanceof ProductModelInterface ? 'product_models' : 'products'][] = $product;
         }
 
-        $productSaver->saveAll($productsToSave['products']);
-        $productModelSaver->saveAll($productsToSave['product_models']);
+        $this->productSaver->saveAll($productsToSave['products']);
+        $this->productModelSaver->saveAll($productsToSave['product_models']);
     }
 }
