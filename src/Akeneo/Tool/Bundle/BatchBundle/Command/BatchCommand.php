@@ -37,7 +37,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class BatchCommand extends Command
 {
-    protected static $defaultName = 'pim:oauth-server:list-clients';
+    protected static $defaultName = 'akeneo:batch:job';
 
     const EXIT_SUCCESS_CODE = 0;
     const EXIT_ERROR_CODE = 1;
@@ -111,7 +111,6 @@ class BatchCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('akeneo:batch:job')
             ->setDescription(
                 '[DEPRECATED] Please use "akeneo:batch:publish-job-to-queue" to launch a registered job instance'
             )
