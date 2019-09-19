@@ -8,7 +8,7 @@ use Akeneo\Tool\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Tool\Component\Batch\Job\JobParametersValidator;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -22,10 +22,48 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CreateJobCommand extends ContainerAwareCommand
+class CreateJobCommand extends Command
 {
+    protected static $defaultName = 'akeneo:batch:create-job';
+
     const EXIT_SUCCESS_CODE = 0;
     const EXIT_ERROR_CODE = 1;
+
+    /** @var ValidatorInterface */
+    private $validator;
+
+    /** @var JobParametersValidator */
+    private $jobParametersValidator;
+
+    /** @var JobParametersFactory */
+    private $jobParametersFactory;
+
+    /** @var JobInstanceFactory */
+    private $jobInstanceFactory;
+
+    /** @var SaverInterface */
+    private $jobInstanceSaver;
+
+    /** @var JobRegistry */
+    private $jobRegistry;
+
+    public function __construct(
+        ValidatorInterface $validator,
+        JobParametersValidator $jobParametersValidator,
+        JobParametersFactory $jobParametersFactory,
+        JobInstanceFactory $jobInstanceFactory,
+        SaverInterface $jobInstanceSaver,
+        JobRegistry $jobRegistry
+    ) {
+        parent::__construct();
+
+        $this->validator = $validator;
+        $this->jobParametersValidator = $jobParametersValidator;
+        $this->jobParametersFactory = $jobParametersFactory;
+        $this->jobInstanceFactory = $jobInstanceFactory;
+        $this->jobInstanceSaver = $jobInstanceSaver;
+        $this->jobRegistry = $jobRegistry;
+    }
 
     /**
      * {@inheritdoc}
@@ -33,7 +71,6 @@ class CreateJobCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('akeneo:batch:create-job')
             ->setDescription('Create a job instance')
             ->addArgument('connector', InputArgument::REQUIRED, 'Connector code')
             ->addArgument('job', InputArgument::REQUIRED, 'Job name')
@@ -57,7 +94,7 @@ class CreateJobCommand extends ContainerAwareCommand
         $jsonConfig = $input->getArgument('config');
         $rawConfig = null === $jsonConfig ? [] : json_decode($jsonConfig, true);
 
-        $factory = $this->getJobInstanceFactory();
+        $factory = $this->jobInstanceFactory;
         $jobInstance = $factory->createJobInstance($type);
         $jobInstance->setConnector($connector);
         $jobInstance->setJobName($jobName);
@@ -66,7 +103,7 @@ class CreateJobCommand extends ContainerAwareCommand
         $jobInstance->setRawParameters($rawConfig);
 
         /** @var JobInterface */
-        $job = $this->getJobRegistry()->get($jobInstance->getJobName());
+        $job = $this->jobRegistry->get($jobInstance->getJobName());
         if (null === $job) {
             $output->writeln(
                 sprintf(
@@ -79,10 +116,10 @@ class CreateJobCommand extends ContainerAwareCommand
         }
 
         /** @var JobParameters $jobParameters */
-        $jobParameters = $this->getJobParametersFactory()->create($job, $rawConfig);
+        $jobParameters = $this->jobParametersFactory->create($job, $rawConfig);
         $jobInstance->setRawParameters($jobParameters->all());
 
-        $violations = $this->getJobParametersValidator()->validate($job, $jobParameters);
+        $violations = $this->jobParametersValidator->validate($job, $jobParameters);
         if (count($violations) > 0) {
             $output->writeln(
                 sprintf(
@@ -94,7 +131,7 @@ class CreateJobCommand extends ContainerAwareCommand
             return self::EXIT_ERROR_CODE;
         }
 
-        $violations = $this->getValidator()->validate($jobInstance);
+        $violations = $this->validator->validate($jobInstance);
         if (count($violations) > 0) {
             $output->writeln(
                 sprintf(
@@ -106,57 +143,9 @@ class CreateJobCommand extends ContainerAwareCommand
             return self::EXIT_ERROR_CODE;
         }
 
-        $this->getJobInstanceSaver()->save($jobInstance);
+        $this->jobInstanceSaver->save($jobInstance);
 
         return self::EXIT_SUCCESS_CODE;
-    }
-
-    /**
-     * @return ValidatorInterface
-     */
-    protected function getValidator()
-    {
-        return $this->getContainer()->get('validator');
-    }
-
-    /**
-     * @return JobParametersValidator
-     */
-    protected function getJobParametersValidator()
-    {
-        return $this->getContainer()->get('akeneo_batch.job.job_parameters_validator');
-    }
-
-    /**
-     * @return JobParametersFactory
-     */
-    protected function getJobParametersFactory()
-    {
-        return $this->getContainer()->get('akeneo_batch.job_parameters_factory');
-    }
-
-    /**
-     * @return JobInstanceFactory
-     */
-    protected function getJobInstanceFactory()
-    {
-        return $this->getContainer()->get('akeneo_batch.job_instance_factory');
-    }
-
-    /**
-     * @return SaverInterface
-     */
-    protected function getJobInstanceSaver()
-    {
-        return $this->getContainer()->get('akeneo_batch.saver.job_instance');
-    }
-
-    /**
-     * @return JobRegistry
-     */
-    protected function getJobRegistry()
-    {
-        return $this->getContainer()->get('akeneo_batch.job.job_registry');
     }
 
     /**
