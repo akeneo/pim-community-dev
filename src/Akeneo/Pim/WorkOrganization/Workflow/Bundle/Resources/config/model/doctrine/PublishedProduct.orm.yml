@@ -76,14 +76,6 @@ Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct:
                 - persist
                 - refresh
                 - detach
-        completenesses:
-            targetEntity: Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductCompletenessInterface
-            mappedBy: product
-            cascade:
-                - remove
-                - persist
-                - refresh
-                - detach
         uniqueData:
             targetEntity: Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductUniqueDataInterface
             mappedBy: product

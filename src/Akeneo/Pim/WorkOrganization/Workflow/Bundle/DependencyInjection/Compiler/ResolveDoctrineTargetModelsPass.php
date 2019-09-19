@@ -12,7 +12,6 @@
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\DependencyInjection\Compiler;
 
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductAssociationInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductCompletenessInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductUniqueDataInterface;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelPass;
@@ -31,7 +30,6 @@ class ResolveDoctrineTargetModelsPass extends AbstractResolveDoctrineTargetModel
     {
         return [
             PublishedProductInterface::class => 'pimee_workflow.entity.published_product.class',
-            PublishedProductCompletenessInterface::class => 'pimee_workflow.entity.published_product_completeness.class',
             PublishedProductAssociationInterface::class => 'pimee_workflow.entity.published_product_association.class',
             PublishedProductUniqueDataInterface::class => 'pimee_workflow.entity.published_product_unique_data.class',
         ];

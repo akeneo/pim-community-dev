@@ -158,6 +158,9 @@ $rules = [
 
         // TIP-1199: Workflow OroToPimGridFilterAdapter should not be linked to TeamworkAssistant ProjectCompletenessFilter
         'Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Datagrid\Filter\ProjectCompletenessFilter',
+
+        'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent',
+        'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
     ])->in('Akeneo\Pim\WorkOrganization\Workflow\Bundle'),
     $builder->only([
         'Doctrine\Common',
@@ -215,7 +218,6 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Model\AbstractCompleteness',
         'Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProductUniqueData',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnInfoExtractor',
         'Akeneo\Pim\Enrichment\Component\Product\Query\AbstractEntityWithValuesQueryBuilder',
@@ -248,7 +250,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder',
         'Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\FileNormalizer',
+        'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer',
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductNormalizer',
         'Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Query\GetAttributeLabelsInterface',

@@ -1,6 +1,5 @@
 parameters:
     pimee_workflow.entity.published_product.class:              Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct
-    pimee_workflow.entity.published_product_completeness.class: Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductCompleteness
     pimee_workflow.entity.published_product_association.class:  Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductAssociation
     pimee_workflow.entity.published_product_unique_data.class:  Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductUniqueData
     pimee_workflow.model.product_draft.class:                   Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft

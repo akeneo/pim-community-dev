@@ -63,6 +63,8 @@
     - Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\FlySystemLogHandler
 - Change `Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Query\Product\ProductSubscriptionsExistQueryInterface` interface to add `executeWithIdentifiers(array $productIdentifiers): array;` new method
 - Remove class `Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Elasticsearch\Indexing\Normalizer\ProductSubscriptionNormalizer`
+- Remove class `Akeneo\Pim\Permission\Bundle\Normalizer\InternalApi\IncompleteValuesNormalizer`
+- Remove interface `Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductCompletenessInterface` and its implementation `Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductCompleteness`
 
 ### CLI commands
 

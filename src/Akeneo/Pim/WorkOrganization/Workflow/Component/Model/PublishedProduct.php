@@ -91,9 +91,6 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     /** @var Collection $associations */
     protected $associations;
 
-    /** @var Collection $completenesses */
-    protected $completenesses;
-
     /** @var string */
     protected $identifier;
 
@@ -113,7 +110,6 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     {
         $this->values = new WriteValueCollection();
         $this->categories = new ArrayCollection();
-        $this->completenesses = new ArrayCollection();
         $this->groups = new ArrayCollection();
         $this->associations = new ArrayCollection();
         $this->uniqueData = new ArrayCollection();
