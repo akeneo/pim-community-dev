@@ -9,7 +9,6 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductModelPr
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Tool\Component\StorageUtils\Indexer\ProductModelIndexerInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Product model indexer, define custom logic and options for product model indexing in the search engine.
@@ -22,9 +21,6 @@ class ProductModelIndexer implements ProductModelIndexerInterface
 {
     private const PRODUCT_MODEL_IDENTIFIER_PREFIX = 'product_model_';
 
-    /** @var NormalizerInterface */
-    private $normalizer;
-
     /** @var Client */
     private $productAndProductModelClient;
 
@@ -32,11 +28,9 @@ class ProductModelIndexer implements ProductModelIndexerInterface
     private $getElasticsearchProductModelProjection;
 
     public function __construct(
-        NormalizerInterface $normalizer,
         Client $productAndProductModelClient,
         GetElasticsearchProductModelProjectionInterface $getElasticsearchProductModelProjection
     ) {
-        $this->normalizer = $normalizer;
         $this->productAndProductModelClient = $productAndProductModelClient;
         $this->getElasticsearchProductModelProjection = $getElasticsearchProductModelProjection;
     }
@@ -115,18 +109,5 @@ class ProductModelIndexer implements ProductModelIndexerInterface
                 ],
             ],
         ]);
-    }
-
-    /**
-     * @TODO Remove ?
-     * {@inheritdoc}
-     */
-    private function validateObjectNormalization(array $normalization) : void
-    {
-        if (!isset($normalization['id'])) {
-            throw new \InvalidArgumentException(
-                'Only product models with an "id" property can be indexed in the search engine.'
-            );
-        }
     }
 }
