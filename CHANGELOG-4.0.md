@@ -35,7 +35,11 @@
 - Remove `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductModel\ProductModelPropertiesNormalizer`
 - ProductQueryBuilder` should be used to search products and `ProductModelQueryBuilder` should be used to search product models.
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\IdFilter` to add `$prefix`.
-- Change constructor of `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer` to remove `$productClient`.
+- Change constructor of `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer` to remove
+    - `string $productClient`
+    - `Symfony\Component\Serializer\Normalizer\NormalizerInterface`
+    - `Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface` and add
+    - `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductProjectionInterface`
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelIndexer` to remove `$productClient` and `$productModelClient`.
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductAndProductModelQueryBuilderFactory` to add:
     - `Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface`

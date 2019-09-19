@@ -43,7 +43,7 @@ class ElasticsearchProductProjectionSpec extends ObjectBehavior
         );
     }
 
-    function it_is_an_indexable_product()
+    function it_is_an_elastic_search_projection()
     {
         $this->shouldBeAnInstanceOf(ElasticsearchProductProjection::class);
     }
@@ -84,10 +84,10 @@ class ElasticsearchProductProjectionSpec extends ObjectBehavior
         ]);
     }
 
-    function it_can_be_converted_in_array_with_additional_data()
+    function it_adds_additional_data()
     {
-        $this->addAdditionalData('key1', 'values1')
-            ->addAdditionalData('key2', ['array'])->shouldBeLike(
+        $this->addAdditionalData(['key1' => 'values1'])
+            ->addAdditionalData(['key2' => ['array']])->shouldBeLike(
             new ElasticsearchProductProjection(
                 '1',
                 'identifier',

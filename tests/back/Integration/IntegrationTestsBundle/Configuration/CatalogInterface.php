@@ -14,6 +14,8 @@ use Akeneo\Test\Integration\Configuration;
 interface CatalogInterface
 {
     /**
+     * @deprecated please do not use it as SQL is not maintainable at all
+     *
      * @return Configuration
      */
     public function useTechnicalSqlCatalog(): Configuration;

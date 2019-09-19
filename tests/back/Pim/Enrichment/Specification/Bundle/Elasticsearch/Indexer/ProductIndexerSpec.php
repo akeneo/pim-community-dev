@@ -2,25 +2,22 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductProjection;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductProjectionInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Prophecy\Argument;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductIndexerSpec extends ObjectBehavior
 {
     function let(
-        NormalizerInterface $normalizer,
         Client $productAndProductModelIndexClient,
-        ProductRepositoryInterface $productRepository
+        GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection
     ) {
-        $this->beConstructedWith($normalizer, $productAndProductModelIndexClient, $productRepository);
+        $this->beConstructedWith($productAndProductModelIndexClient, $getElasticsearchProductProjection);
     }
 
     function it_is_initializable()
@@ -34,89 +31,53 @@ class ProductIndexerSpec extends ObjectBehavior
     }
 
     function it_indexes_a_single_product_from_identifier(
-        $normalizer,
-        $productAndProductModelIndexClient,
-        $productRepository,
-        ProductInterface $product
+        Client $productAndProductModelIndexClient,
+        GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection
     ) {
         $identifier = 'foobar';
-        $productRepository->findOneByIdentifier($identifier)->willReturn($product);
-        $normalizer
-            ->normalize($product, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->willReturn(['id' => $identifier, 'a key' => 'a value']);
+        $getElasticsearchProductProjection->fromProductIdentifiers([$identifier])->willReturn([$this->getElasticSearchProjection('identifier_1')]);
         $productAndProductModelIndexClient
-            ->bulkIndexes([['id' => $identifier, 'a key' => 'a value']], 'id', Refresh::disable())
+            ->bulkIndexes([$this->getElasticSearchProjection('identifier_1')->toArray()], 'id', Refresh::disable())
             ->shouldBeCalled();
 
         $this->indexFromProductIdentifier($identifier);
     }
 
-    function it_does_not_index_anything_if_identifier_is_unknown(
-        $normalizer,
-        $productAndProductModelIndexClient,
-        $productRepository,
-        ProductInterface $product
-    ) {
-        $identifier = 'foobar';
-        $productRepository->findOneByIdentifier($identifier)->willReturn(null);
-        $normalizer
-            ->normalize(null, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->shouldNotBeCalled();
-        $productAndProductModelIndexClient
-            ->index($identifier, ['id' => $identifier, 'a key' => 'a value'])
-            ->shouldNotBeCalled();
-
-        $this->indexFromProductIdentifier($identifier);
-    }
-
     function it_bulk_indexes_products_from_identifiers(
-        $normalizer,
-        $productAndProductModelIndexClient,
-        $productRepository,
-        ProductInterface $product1,
-        ProductInterface $product2
+        Client $productAndProductModelIndexClient,
+        GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection
     ) {
         $identifiers = ['foo', 'bar', 'unknown'];
 
-        $productRepository->findOneByIdentifier($identifiers[0])->willReturn($product1);
-        $productRepository->findOneByIdentifier($identifiers[1])->willReturn($product2);
-        $productRepository->findOneByIdentifier($identifiers[2])->willReturn(null);
-
-        $normalizer->normalize($product1, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->willReturn(['id' => $identifiers[0], 'a key' => 'a value']);
-        $normalizer->normalize($product2, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->willReturn(['id' => $identifiers[1], 'a key' => 'another value']);
-        $normalizer->normalize(null, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->shouldNotBeCalled();
+        $getElasticsearchProductProjection->fromProductIdentifiers($identifiers)
+            ->willReturn([$this->getElasticSearchProjection('identifier_1'), $this->getElasticSearchProjection('identifier_2')]);
 
         $productAndProductModelIndexClient->bulkIndexes([
-            ['id' => $identifiers[0], 'a key' => 'a value'],
-            ['id' => $identifiers[1], 'a key' => 'another value'],
+            $this->getElasticSearchProjection('identifier_1')->toArray(),
+            $this->getElasticSearchProjection('identifier_2')->toArray(),
         ], 'id', Refresh::disable())->shouldBeCalled();
 
         $this->indexFromProductIdentifiers($identifiers);
     }
 
     function it_does_not_bulk_index_empty_arrays_of_identifiers(
-        $normalizer,
-        $productAndProductModelIndexClient,
-        $productRepository
+        Client $productAndProductModelIndexClient,
+        GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection
     ) {
-        $productRepository->findOneByIdentifier(Argument::cetera())->shouldNotBeCalled();
-        $normalizer->normalize(Argument::cetera())->shouldNotBeCalled();
+        $getElasticsearchProductProjection->fromProductIdentifiers(Argument::cetera())->shouldNotBeCalled();
         $productAndProductModelIndexClient->bulkIndexes(Argument::cetera())->shouldNotBeCalled();
 
         $this->indexFromProductIdentifiers([]);
     }
 
-    function it_deletes_products_from_elasticsearch_index($productAndProductModelIndexClient)
+    function it_deletes_products_from_elasticsearch_index(Client $productAndProductModelIndexClient)
     {
         $productAndProductModelIndexClient->delete('product_40')->shouldBeCalled();
 
         $this->removeFromProductId(40)->shouldReturn(null);
     }
 
-    function it_bulk_deletes_products_from_elasticsearch_index($productAndProductModelIndexClient)
+    function it_bulk_deletes_products_from_elasticsearch_index(Client $productAndProductModelIndexClient)
     {
         $productAndProductModelIndexClient->bulkDelete(['product_40', 'product_33'])
             ->shouldBeCalled();
@@ -125,86 +86,78 @@ class ProductIndexerSpec extends ObjectBehavior
     }
 
     function it_indexes_products_from_identifiers_and_waits_for_index_refresh(
-        $normalizer,
-        $productAndProductModelIndexClient,
-        $productRepository,
-        ProductInterface $product1,
-        ProductInterface $product2
+        Client $productAndProductModelIndexClient,
+        GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection
     ) {
-        $identifiers = ['foo', 'bar', 'unknown'];
+        $getElasticsearchProductProjection
+            ->fromProductIdentifiers(['identifier_1'])
+            ->willReturn([$this->getElasticSearchProjection('identifier_1')]);
 
-        $productRepository->findOneByIdentifier($identifiers[0])->willReturn($product1);
-        $productRepository->findOneByIdentifier($identifiers[1])->willReturn($product2);
-        $productRepository->findOneByIdentifier($identifiers[2])->willReturn(null);
+        $productAndProductModelIndexClient->bulkIndexes(
+            [$this->getElasticSearchProjection('identifier_1')->toArray()],
+            'id',
+            Refresh::waitFor()
+        )->shouldBeCalled();
 
-        $normalizer->normalize($product1, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->willReturn(['id' => $identifiers[0], 'a key' => 'a value']);
-        $normalizer->normalize($product2, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->willReturn(['id' => $identifiers[1], 'a key' => 'another value']);
-        $normalizer->normalize(null, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->shouldNotBeCalled();
-
-        $productAndProductModelIndexClient->bulkIndexes([
-            ['id' => $identifiers[0], 'a key' => 'a value'],
-            ['id' => $identifiers[1], 'a key' => 'another value'],
-        ], 'id', Refresh::waitFor())->shouldBeCalled();
-
-        $this->indexFromProductIdentifiers($identifiers, ['index_refresh' => Refresh::waitFor()]);
+        $this->indexFromProductIdentifiers(['identifier_1'], ['index_refresh' => Refresh::waitFor()]);
     }
 
     function it_indexes_products_from_identifiers_and_disables_index_refresh_by_default(
-        $normalizer,
-        $productAndProductModelIndexClient,
-        $productRepository,
-        ProductInterface $product1,
-        ProductInterface $product2
+        Client $productAndProductModelIndexClient,
+        GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection
     ) {
         $identifiers = ['foo', 'bar', 'unknown'];
 
-        $productRepository->findOneByIdentifier($identifiers[0])->willReturn($product1);
-        $productRepository->findOneByIdentifier($identifiers[1])->willReturn($product2);
-        $productRepository->findOneByIdentifier($identifiers[2])->willReturn(null);
-
-        $normalizer->normalize($product1, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->willReturn(['id' => $identifiers[0], 'a key' => 'a value']);
-        $normalizer->normalize($product2, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->willReturn(['id' => $identifiers[1], 'a key' => 'another value']);
-        $normalizer->normalize(null, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->shouldNotBeCalled();
+        $getElasticsearchProductProjection->fromProductIdentifiers($identifiers)
+            ->willReturn([$this->getElasticSearchProjection('identifier_1'), $this->getElasticSearchProjection('identifier_2')]);
 
         $productAndProductModelIndexClient->bulkIndexes([
-            ['id' => $identifiers[0], 'a key' => 'a value'],
-            ['id' => $identifiers[1], 'a key' => 'another value'],
+            $this->getElasticSearchProjection('identifier_1')->toArray(),
+            $this->getElasticSearchProjection('identifier_2')->toArray(),
         ], 'id', Refresh::disable())->shouldBeCalled();
 
         $this->indexFromProductIdentifiers($identifiers, ['index_refresh' => Refresh::disable()]);
     }
 
     function it_indexes_products_from_identifiers_and_enable_index_refresh_without_waiting_for_it(
-        $normalizer,
-        $productAndProductModelIndexClient,
-        $productRepository,
-        ProductInterface $product1,
-        ProductInterface $product2
+        Client $productAndProductModelIndexClient,
+        GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection
     ) {
         $identifiers = ['foo', 'bar', 'unknown'];
 
-        $productRepository->findOneByIdentifier($identifiers[0])->willReturn($product1);
-        $productRepository->findOneByIdentifier($identifiers[1])->willReturn($product2);
-        $productRepository->findOneByIdentifier($identifiers[2])->willReturn(null);
-
-        $normalizer->normalize($product1, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->willReturn(['id' => $identifiers[0], 'a key' => 'a value']);
-        $normalizer->normalize($product2, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->willReturn(['id' => $identifiers[1], 'a key' => 'another value']);
-        $normalizer->normalize(null, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->shouldNotBeCalled();
+        $getElasticsearchProductProjection->fromProductIdentifiers($identifiers)
+            ->willReturn([$this->getElasticSearchProjection('identifier_1'), $this->getElasticSearchProjection('identifier_2')]);
 
         $productAndProductModelIndexClient->bulkIndexes([
-            ['id' => $identifiers[0], 'a key' => 'a value'],
-            ['id' => $identifiers[1], 'a key' => 'another value'],
+            $this->getElasticSearchProjection('identifier_1')->toArray(),
+            $this->getElasticSearchProjection('identifier_2')->toArray(),
         ], 'id', Refresh::enable())->shouldBeCalled();
 
         $this->indexFromProductIdentifiers($identifiers, ['index_refresh' => Refresh::enable()]);
+    }
+
+    private function getElasticSearchProjection(string $identifier): ElasticsearchProductProjection
+    {
+        return new ElasticsearchProductProjection(
+            '1',
+            $identifier,
+            new \DateTimeImmutable('2019-03-16 12:03:00', new \DateTimeZone('UTC')),
+            new \DateTimeImmutable('2019-03-16 12:03:00', new \DateTimeZone('UTC')),
+            true,
+            'family_code',
+            [],
+            'family_variant_code',
+            [],
+            [],
+            [],
+            [],
+            null,
+            [],
+            [],
+            null,
+            [],
+            [],
+            []
+        );
     }
 }

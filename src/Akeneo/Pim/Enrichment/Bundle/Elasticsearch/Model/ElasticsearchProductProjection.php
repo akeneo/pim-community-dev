@@ -120,10 +120,9 @@ final class ElasticsearchProductProjection
         $this->additionalData = $additionalData;
     }
 
-    public function addAdditionalData(string $key, $value): ElasticsearchProductProjection
+    public function addAdditionalData(array $additionalData): ElasticsearchProductProjection
     {
-        $additionalData = $this->additionalData;
-        $additionalData[$key] = $value;
+        $additionalData = array_merge($this->additionalData, $additionalData);
 
         return new self(
             $this->id,
@@ -150,11 +149,11 @@ final class ElasticsearchProductProjection
 
     public function toArray(): array
     {
-        $in_group = null;
+        $inGroup = null;
         if (!empty($this->groupCodes)) {
-            $in_group = [];
+            $inGroup = [];
             foreach ($this->groupCodes as $groupCode) {
-                $in_group[$groupCode] = true;
+                $inGroup[$groupCode] = true;
             }
         }
 
@@ -187,8 +186,8 @@ final class ElasticsearchProductProjection
             'attributes_for_this_level' => $this->attributesForThisLevel,
         ];
 
-        if ($in_group !== null) {
-            $data['in_group'] = $in_group;
+        if ($inGroup !== null) {
+            $data['in_group'] = $inGroup;
         }
 
         return array_merge($data, $this->additionalData);

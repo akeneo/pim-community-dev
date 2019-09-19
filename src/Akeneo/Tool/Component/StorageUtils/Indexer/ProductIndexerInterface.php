@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Component\StorageUtils\Indexer;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
+
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -14,12 +16,16 @@ interface ProductIndexerInterface
     /**
      * @param string $productIdentifier
      * @param array  $options
+     *
+     * @throws ObjectNotFoundException if the identifier is unknown
      */
     public function indexFromProductIdentifier(string $productIdentifier, array $options = []): void;
 
     /**
      * @param string[] $productIdentifiers
      * @param array    $options
+     *
+     * @throws ObjectNotFoundException if one of the identifier is unknown
      */
     public function indexFromProductIdentifiers(array $productIdentifiers, array $options = []): void;
 
