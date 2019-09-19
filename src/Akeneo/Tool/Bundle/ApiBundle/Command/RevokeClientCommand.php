@@ -2,7 +2,8 @@
 
 namespace Akeneo\Tool\Bundle\ApiBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use FOS\OAuthServerBundle\Model\ClientManagerInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -15,15 +16,26 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class RevokeClientCommand extends ContainerAwareCommand
+class RevokeClientCommand extends Command
 {
+    protected static $defaultName = 'pim:oauth-server:revoke-client';
+
+    /** @var ClientManagerInterface */
+    private $clientManager;
+
+    public function __construct(ClientManagerInterface $clientManager)
+    {
+        parent::__construct();
+
+        $this->clientManager = $clientManager;
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
         $this
-            ->setName('pim:oauth-server:revoke-client')
             ->setDescription('This command revokes a pair of client id / secret')
             ->addArgument(
                 'client_id',
@@ -38,8 +50,7 @@ class RevokeClientCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $clientManager = $this->getContainer()->get('fos_oauth_server.client_manager.default');
-        $client = $clientManager->findClientByPublicId($input->getArgument('client_id'));
+        $client = $this->clientManager->findClientByPublicId($input->getArgument('client_id'));
 
         if (null === $client) {
             $output->writeln('<error>No client found for this id.</error>');
@@ -60,7 +71,7 @@ class RevokeClientCommand extends ContainerAwareCommand
 
         $clientId = $client->getPublicId();
         $secret = $client->getSecret();
-        $clientManager->deleteClient($client);
+        $this->clientManager->deleteClient($client);
 
         $output->writeln(sprintf(
             'Client with public id <info>%s</info> and secret <info>%s</info> has been revoked.',
