@@ -10,7 +10,7 @@ use Akeneo\Pim\Structure\Component\Model\ReferenceDataConfigurationInterface;
 use Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -21,15 +21,36 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CheckRequirementsCommand extends ContainerAwareCommand
+class CheckRequirementsCommand extends Command
 {
+    protected static $defaultName = 'pim:reference-data:check';
+
+    /** @var ConfigurationRegistryInterface */
+    private $configurationRegistry;
+
+    /** @var EntityManagerInterface */
+    private $entityManager;
+
+    /** @var string */
+    private $referenceDataInterface;
+
+    public function __construct(
+        ConfigurationRegistryInterface $configurationRegistry,
+        ObjectManager $entityManager,
+        string $referenceDataInterface
+    ) {
+        parent::__construct();
+        $this->configurationRegistry = $configurationRegistry;
+        $this->entityManager = $entityManager;
+        $this->referenceDataInterface = $referenceDataInterface;
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
         $this
-            ->setName('pim:reference-data:check')
             ->setDescription('Check the requirements of the reference data configuration');
     }
 
@@ -38,7 +59,7 @@ class CheckRequirementsCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        foreach ($this->getRegistry()->all() as $configuration) {
+        foreach ($this->configurationRegistry->all() as $configuration) {
             $output->writeln('');
             $output->writeln(
                 sprintf('<comment>Checking configuration of "%s"...</comment>', $configuration->getName())
@@ -57,8 +78,8 @@ class CheckRequirementsCommand extends ContainerAwareCommand
     {
         $checkers = [];
         $checkers[] = new ReferenceDataNameChecker();
-        $checkers[] = new ReferenceDataInterfaceChecker($this->getReferenceDataInterface());
-        $checkers[] = new ReferenceDataUniqueCodeChecker($this->getDoctrineEntityManager());
+        $checkers[] = new ReferenceDataInterfaceChecker($this->referenceDataInterface);
+        $checkers[] = new ReferenceDataUniqueCodeChecker($this->entityManager);
 
         return $checkers;
     }
@@ -85,37 +106,5 @@ class CheckRequirementsCommand extends ContainerAwareCommand
                 exit(-1);
             }
         }
-    }
-
-    /**
-     * @return ConfigurationRegistryInterface
-     */
-    protected function getRegistry()
-    {
-        return $this->getContainer()->get('pim_reference_data.registry');
-    }
-
-    /**
-     * @return ObjectManager
-     */
-    protected function getDoctrineProductManager()
-    {
-        return $this->getContainer()->get('pim_catalog.object_manager.product');
-    }
-
-    /**
-     * @return string
-     */
-    protected function getReferenceDataInterface()
-    {
-        return $this->getContainer()->getParameter('pim_reference_data.model.reference_data.interface');
-    }
-
-    /**
-     * @return EntityManagerInterface
-     */
-    protected function getDoctrineEntityManager()
-    {
-        return $this->getContainer()->get('doctrine.orm.default_entity_manager');
     }
 }
