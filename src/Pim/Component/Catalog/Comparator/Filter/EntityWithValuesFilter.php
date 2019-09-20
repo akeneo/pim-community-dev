@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Comparator\Filter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Pim\Component\Catalog\Comparator\ComparatorRegistry;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
@@ -109,6 +110,15 @@ class EntityWithValuesFilter implements FilterInterface
             $comparator = $this->comparatorRegistry->getAttributeComparator($this->attributeTypeByCodes[$code]);
 
             foreach ($value as $data) {
+                if (!is_array($data)) {
+                    throw InvalidPropertyTypeException::validArrayStructureExpected(
+                        $code,
+                        'one of the values is not an array.',
+                        static::class,
+                        $values
+                    );
+                }
+
                 $diff = $comparator->compare($data, $this->getOriginalAttribute($originalValues, $data, $code));
 
                 if (null !== $diff) {

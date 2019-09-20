@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\Catalog\Comparator\Filter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Comparator\ComparatorInterface;
 use Pim\Component\Catalog\Comparator\ComparatorRegistry;
@@ -224,5 +225,43 @@ class EntityWithValuesFilterSpec extends ObjectBehavior
                 'filter',
                 [$product, $newValues]
             );
+    }
+
+    function it_throws_an_exception_if_new_values_are_bad_formatted(
+        NormalizerInterface $normalizer,
+        AttributeRepositoryInterface $attributeRepository,
+        ProductInterface $product
+    ) {
+        $originalValues = [
+            'family' => 'tshirt',
+            'values' => [
+                'description'   => [
+                    [
+                        'locale' => 'en_US',
+                        'scope'  => 'ecommerce',
+                        'value'  => 'My description'
+                    ],
+                ],
+            ],
+        ];
+        $newValues = [
+            'family' => 'tshirt',
+            'values' => [
+                'description' => [
+                    'locale' => 'en_US',
+                    'scope'  => 'ecommerce',
+                    'value'  => 'My description',
+                ],
+            ],
+        ];
+
+        $normalizer->normalize($product, 'standard')->willReturn($originalValues);
+        $attributeRepository->getAttributeTypeByCodes(array_keys($newValues['values']))->willReturn([
+            'description' => 'pim_catalog_textarea'
+        ]);
+
+        $this
+            ->shouldThrow(InvalidPropertyTypeException::class)
+            ->during('filter', [$product, $newValues]);
     }
 }
