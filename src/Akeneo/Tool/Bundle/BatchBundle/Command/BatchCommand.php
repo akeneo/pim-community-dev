@@ -151,8 +151,7 @@ class BatchCommand extends Command
         $noLog = $input->getOption('no-log');
 
         if (!$noLog) {
-            $logger = $this->logger->get('monolog.logger.batch');
-            $logger->pushHandler(new ConsoleHandler($output));
+            $this->logger->pushHandler(new ConsoleHandler($output));
         }
 
         $code = $input->getArgument('code');
@@ -170,7 +169,7 @@ class BatchCommand extends Command
                     sprintf('Email "%s" is invalid: %s', $email, $this->getErrorMessages($errors))
                 );
             }
-            $this->$this->notifier->setRecipientEmail($email);
+            $this->notifier->setRecipientEmail($email);
         }
 
         $job = $this->jobRegistry->get($jobInstance->getJobName());

@@ -26,7 +26,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class PublishJobToQueueCommand extends Command
 {
-    protected static $defaultName = 'akeneo:batch:publish-job-to-queue';
+    public const COMMAND_NAME = 'akeneo:batch:publish-job-to-queue';
+
+    protected static $defaultName = self::COMMAND_NAME;
 
     public const EXIT_SUCCESS_CODE = 0;
 

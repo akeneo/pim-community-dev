@@ -14,7 +14,6 @@ class CreateClientIntegration extends KernelTestCase
     {
         self::bootKernel();
         $application = new Application(self::$kernel);
-        $application->add(new CreateClientCommand());
 
         $command = $application->find('pim:oauth-server:create-client');
         $commandTester = new CommandTester($command);
@@ -40,7 +39,6 @@ class CreateClientIntegration extends KernelTestCase
 
         self::bootKernel();
         $application = new Application(self::$kernel);
-        $application->add(new CreateClientCommand());
 
         $command = $application->find('pim:oauth-server:create-client');
         $commandTester = new CommandTester($command);

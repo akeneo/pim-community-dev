@@ -30,7 +30,9 @@ use Symfony\Component\Process\Process;
  */
 class JobQueueConsumerCommand extends Command
 {
-    protected static $defaultName = 'akeneo:batch:job-queue-consumer-daemon';
+    public const COMMAND_NAME = 'akeneo:batch:job-queue-consumer-daemon';
+
+    protected static $defaultName = self::COMMAND_NAME;
 
     /** Interval in seconds before updating health check if job is still running. */
     public const HEALTH_CHECK_INTERVAL = 5;
