@@ -16,19 +16,24 @@ use Symfony\Component\Validator\ConstraintValidator;
 class CreateUserValidator extends ConstraintValidator
 {
     /**
-     * @param UserInterface $user
-     * @param Constraint    $constraint
+     * @param UserInterface         $user
+     * @param Constraint|CreateUser $constraint
      */
     public function validate($user, Constraint $constraint)
     {
-        if (null !== $user->getId()) {
+        if (!$this->isUserCreated($user)) {
             return;
         }
 
         $this->validateUsername($user, $constraint);
     }
 
-    protected function validateUsername(UserInterface $user, CreateUser $constraint)
+    private function isUserCreated(UserInterface $user): bool
+    {
+        return null !== $user->getId();
+    }
+
+    private function validateUsername(UserInterface $user, CreateUser $constraint)
     {
         if (preg_match('/\s/', $user->getUsername()) !== 0) {
             $this->context->buildViolation($constraint->errorSpaceInUsername)
