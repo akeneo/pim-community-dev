@@ -21,7 +21,7 @@ class CreateUserValidator extends ConstraintValidator
      */
     public function validate($user, Constraint $constraint)
     {
-        if (!$this->isUserCreated($user)) {
+        if ($this->isUserCreated($user)) {
             return;
         }
 
