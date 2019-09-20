@@ -350,24 +350,20 @@ class UserController
     }
 
     /**
-     * Validate username only at creation.
-     *
      * @param array $data
      *
      * @return ConstraintViolationListInterface
-     *
-     * @see https://akeneo.atlassian.net/browse/PIM-8777
      */
-    private function validateUsernameCreate(array $data): ConstraintViolationListInterface
+    private function validatePasswordCreate(array $data): ConstraintViolationListInterface
     {
         $violations = [];
 
-        if (!isset($data['username'])) {
+        if (!isset($data['password'])) {
             return new ConstraintViolationList([]);
         }
 
-        if (strstr($data['username'], ' ') !== false) {
-            $violations[] = new ConstraintViolation('Username should not contain space character', '', [], '', 'username', '');
+        if (($data['password_repeat'] ?? '') !== $data['password']) {
+            $violations[] = new ConstraintViolation('Passwords do not match', '', [], '', 'password_repeat', '');
         }
 
         return new ConstraintViolationList($violations);
