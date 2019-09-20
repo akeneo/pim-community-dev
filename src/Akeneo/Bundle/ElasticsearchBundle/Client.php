@@ -173,6 +173,23 @@ class Client
 
     /**
      * @param string $indexType
+     * @param array  $body
+     *
+     * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-multi-search.html}
+     */
+    public function msearch(string $indexType, array $body): array
+    {
+        $params = [
+            'index' => $this->indexName,
+            'type' => $indexType,
+            'body' => $body,
+        ];
+
+        return $this->client->msearch($params);
+    }
+
+    /**
+     * @param string $indexType
      * @param string $id
      *
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_quickstart.html#_delete_a_document}

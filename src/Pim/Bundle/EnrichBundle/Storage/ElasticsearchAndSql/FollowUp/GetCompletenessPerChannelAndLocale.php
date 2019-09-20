@@ -140,9 +140,10 @@ SQL;
             return null;
         }
 
-        $totalProductsByChannel = [];
+        $body = [];
         foreach ($categoriesCodeAndLocalesByChannels as $categoriesCodeAndLocalesByChannel) {
-            $body = [
+            $body[] = [];
+            $body[] = [
                 'size' => 0,
                 'query' => [
                     'constant_score' => [
@@ -174,11 +175,17 @@ SQL;
                     ],
                 ],
             ];
+        }
 
-            $result = $this->client->search($this->indexType, $body);
+        $rows = $this->client->msearch($this->indexType, $body);
 
-            $total = $result['hits']['total'] ?? -1;
-            $totalProductsByChannel[$categoriesCodeAndLocalesByChannel['channel_code']] = $total;
+        $index = 0;
+        $totalProductsByChannel = [];
+
+        foreach ($categoriesCodeAndLocalesByChannels as $categoriesCodeAndLocalesByChannel) {
+            $nbTotalProducts = $rows['responses'][$index]['hits']['total'] ?? -1;
+            $totalProductsByChannel[$categoriesCodeAndLocalesByChannel['channel_code']] = $nbTotalProducts;
+            $index++;
         }
 
         return $totalProductsByChannel;
@@ -200,15 +207,13 @@ SQL;
             return null;
         }
 
-        $localesWithNbCompleteByChannel = [];
+        $body = [];
         foreach ($categoriesCodeAndLocalesByChannels as $categoriesCodeAndLocalesByChannel) {
             $channelCode = $categoriesCodeAndLocalesByChannel['channel_code'];
-            $localesWithNbCompleteByChannel[$channelCode] = [];
-            $localesWithNbCompleteByChannel[$channelCode]['total'] = 0;
-            $localesWithNbCompleteByChannel[$channelCode]['locales'] = [];
 
             foreach ($categoriesCodeAndLocalesByChannel['locales'] as $locale) {
-                $body = [
+                $body[] = [];
+                $body[] = [
                     'size' => 0,
                     'query' => [
                         'constant_score' => [
@@ -218,7 +223,7 @@ SQL;
                                         [
                                             'terms' => [
                                                 'categories' => $categoriesCodeAndLocalesByChannel['category_codes_in_channel']
-                                            ]
+                                            ],
                                         ],
                                         [
                                             'bool' => [
@@ -241,12 +246,24 @@ SQL;
                         ],
                     ],
                 ];
+            }
+        }
 
-                $result = $this->client->search($this->indexType, $body);
+        $rows = $this->client->msearch($this->indexType, $body);
 
-                $total = $result['hits']['total'] ?? -1;
+        $index = 0;
+        $localesWithNbCompleteByChannel = [];
+
+        foreach ($categoriesCodeAndLocalesByChannels as $i => $categoriesCodeAndLocalesByChannel) {
+            $channelCode = $categoriesCodeAndLocalesByChannel['channel_code'];
+            $localesWithNbCompleteByChannel[$channelCode] = [];
+            $localesWithNbCompleteByChannel[$channelCode]['total'] = 0;
+            $localesWithNbCompleteByChannel[$channelCode]['locales'] = [];
+            foreach ($categoriesCodeAndLocalesByChannel['locales'] as $locale) {
+                $total = $rows['responses'][$index]['hits']['total'] ?? -1;
                 $localesWithNbCompleteByChannel[$channelCode]['locales'][$locale] = $total;
                 $localesWithNbCompleteByChannel[$channelCode]['total'] += $total;
+                $index++;
             }
         }
 
