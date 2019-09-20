@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductModelProjectionInterface;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductModelProjection;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Tool\Component\StorageUtils\Indexer\ProductModelIndexerInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Product model indexer, define custom logic and options for product model indexing in the search engine.
@@ -23,28 +21,18 @@ class ProductModelIndexer implements ProductModelIndexerInterface
 {
     private const PRODUCT_MODEL_IDENTIFIER_PREFIX = 'product_model_';
 
-    /** @var NormalizerInterface */
-    private $normalizer;
-
     /** @var Client */
     private $productAndProductModelClient;
 
-    /** @var ProductModelRepositoryInterface */
-    private $productModelRepository;
+    /** @var GetElasticsearchProductModelProjectionInterface */
+    private $getElasticsearchProductModelProjection;
 
-    /**
-     * @param NormalizerInterface             $normalizer
-     * @param Client                          $productAndProductModelClient
-     * @param ProductModelRepositoryInterface $productModelRepository
-     */
     public function __construct(
-        NormalizerInterface $normalizer,
         Client $productAndProductModelClient,
-        ProductModelRepositoryInterface $productModelRepository
+        GetElasticsearchProductModelProjectionInterface $getElasticsearchProductModelProjection
     ) {
-        $this->normalizer = $normalizer;
         $this->productAndProductModelClient = $productAndProductModelClient;
-        $this->productModelRepository = $productModelRepository;
+        $this->getElasticsearchProductModelProjection = $getElasticsearchProductModelProjection;
     }
 
     /**
@@ -64,28 +52,26 @@ class ProductModelIndexer implements ProductModelIndexerInterface
      */
     public function indexFromProductModelCodes(array $productModelCodes, array $options = []): void
     {
-        $normalizedProductModels = [];
-        foreach ($productModelCodes as $productModelCode) {
-            $object = $this->productModelRepository->findOneByIdentifier($productModelCode);
-            if (!$object instanceof ProductModelInterface) {
-                continue;
-            }
-
-            $normalizedProductModel = $this->normalizer->normalize(
-                $object,
-                ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
-            );
-            $this->validateObjectNormalization($normalizedProductModel);
-            $normalizedProductModels[] = $normalizedProductModel;
+        if (empty($productModelCodes)) {
+            return;
         }
 
-        if (!empty($normalizedProductModels)) {
-            $this->productAndProductModelClient->bulkIndexes(
-                $normalizedProductModels,
-                'id',
-                $options['index_refresh'] ?? Refresh::disable()
-            );
-        }
+        $indexRefresh = $options['index_refresh'] ?? Refresh::disable();
+
+        $elasticsearchProductModelProjections =
+            $this->getElasticsearchProductModelProjection->fromProductModelCodes($productModelCodes);
+        $normalizedProductModelProjections = array_map(
+            function (ElasticsearchProductModelProjection $elasticsearchProductModelProjection) {
+                return $elasticsearchProductModelProjection->toArray();
+            },
+            $elasticsearchProductModelProjections
+        );
+
+        $this->productAndProductModelClient->bulkIndexes(
+            $normalizedProductModelProjections,
+            'id',
+            $indexRefresh
+        );
     }
 
     /**
@@ -127,17 +113,5 @@ class ProductModelIndexer implements ProductModelIndexerInterface
                 ],
             ],
         ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    private function validateObjectNormalization(array $normalization) : void
-    {
-        if (!isset($normalization['id'])) {
-            throw new \InvalidArgumentException(
-                'Only product models with an "id" property can be indexed in the search engine.'
-            );
-        }
     }
 }
