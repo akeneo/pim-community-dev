@@ -43,8 +43,12 @@ class CreateUserValidatorSpec extends ObjectBehavior
     ) {
         $user->getId()->willReturn(null);
         $user->getUsername()->willReturn('foo bar');
+
         $context->buildViolation('The username should not contain space character.')
             ->willReturn($constraintViolationBuilder);
+        $constraintViolationBuilder->atPath('[username]')
+            ->willReturn($constraintViolationBuilder);
+
         $constraintViolationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($user, $constraint);
