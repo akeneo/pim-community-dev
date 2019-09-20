@@ -30,6 +30,7 @@ class AkeneoPimEnrichmentAssetManagerExtension extends Extension
     public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('analytics.yml');
         $loader->load('datagrid/attribute_types.yml');
         $loader->load('datagrid/formatters.yml');
         $loader->load('datagrid/filters.yml');
