@@ -87,7 +87,7 @@ class CreateUserCommand extends ContainerAwareCommand
     private function askForUsername(InputInterface $input, OutputInterface $output): string
     {
         $question = new Question('Username : ');
-        $question->setValidator(function($answer) {
+        $question->setValidator(function ($answer) {
             if (empty($answer)) {
                 throw new \InvalidArgumentException("The username is mandatory.");
             }
@@ -104,7 +104,7 @@ class CreateUserCommand extends ContainerAwareCommand
         $question
             ->setHidden(true)
             ->setHiddenFallback(false)
-            ->setValidator(function($answer) {
+            ->setValidator(function ($answer) {
                 if (empty($answer)) {
                     throw new \InvalidArgumentException("The password is mandatory.");
                 }
@@ -121,7 +121,7 @@ class CreateUserCommand extends ContainerAwareCommand
         $question
             ->setHidden(true)
             ->setHiddenFallback(false)
-            ->setValidator(function($answer) use ($password) {
+            ->setValidator(function ($answer) use ($password) {
                 if ($password !== $answer) {
                     throw new \InvalidArgumentException("The passwords must match.");
                 }
@@ -135,7 +135,7 @@ class CreateUserCommand extends ContainerAwareCommand
     private function askForFirstName(InputInterface $input, OutputInterface $output): string
     {
         $question = new Question('First name : ');
-        $question->setValidator(function($answer) {
+        $question->setValidator(function ($answer) {
             if (empty($answer)) {
                 throw new \InvalidArgumentException("The first name is mandatory.");
             }
@@ -149,7 +149,7 @@ class CreateUserCommand extends ContainerAwareCommand
     private function askForLastName(InputInterface $input, OutputInterface $output): string
     {
         $question = new Question('Last name : ');
-        $question->setValidator(function($answer) {
+        $question->setValidator(function ($answer) {
             if (empty($answer)) {
                 throw new \InvalidArgumentException("The last name is mandatory.");
             }
@@ -163,7 +163,7 @@ class CreateUserCommand extends ContainerAwareCommand
     private function askForEmail(InputInterface $input, OutputInterface $output): string
     {
         $question = new Question('Email : ');
-        $question->setValidator(function($answer) {
+        $question->setValidator(function ($answer) {
             if (empty($answer)) {
                 throw new \InvalidArgumentException("The email is mandatory.");
             }
@@ -181,7 +181,7 @@ class CreateUserCommand extends ContainerAwareCommand
     private function askForUserDefaultLocaleCode(InputInterface $input, OutputInterface $output): string
     {
         $question = new Question('UI default locale code (e.g. "en_US") : ');
-        $question->setValidator(function($answer) {
+        $question->setValidator(function ($answer) {
             if (empty($answer)) {
                 throw new \InvalidArgumentException("The UI default locale is mandatory.");
             }
@@ -195,7 +195,7 @@ class CreateUserCommand extends ContainerAwareCommand
     private function askForCatalogDefaultLocaleCode(InputInterface $input, OutputInterface $output): string
     {
         $question = new Question('Catalog default locale code (e.g. "en_US") : ');
-        $question->setValidator(function($answer) {
+        $question->setValidator(function ($answer) {
             if (empty($answer)) {
                 throw new \InvalidArgumentException("The catalog default locale is mandatory.");
             }
@@ -209,7 +209,7 @@ class CreateUserCommand extends ContainerAwareCommand
     private function askForCatalogDefaultScopeCode(InputInterface $input, OutputInterface $output): string
     {
         $question = new Question('Catalog default scope code (e.g. "ecommerce") : ');
-        $question->setValidator(function($answer) {
+        $question->setValidator(function ($answer) {
             if (empty($answer)) {
                 throw new \InvalidArgumentException("The catalog default scope is mandatory.");
             }
@@ -223,7 +223,7 @@ class CreateUserCommand extends ContainerAwareCommand
     private function askForDefaultTreeCode(InputInterface $input, OutputInterface $output): string
     {
         $question = new Question('Default tree code (e.g. "master") : ');
-        $question->setValidator(function($answer) {
+        $question->setValidator(function ($answer) {
             if (empty($answer)) {
                 throw new \InvalidArgumentException("The default tree is mandatory.");
             }
