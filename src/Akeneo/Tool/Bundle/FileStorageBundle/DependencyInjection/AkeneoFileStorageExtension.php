@@ -28,6 +28,6 @@ class AkeneoFileStorageExtension extends Extension
         $loader->load('removers.yml');
         $loader->load('repositories.yml');
         $loader->load('savers.yml');
-        $loader->load('commands.yml');
+        $loader->load('cli_commands.yml');
     }
 }
