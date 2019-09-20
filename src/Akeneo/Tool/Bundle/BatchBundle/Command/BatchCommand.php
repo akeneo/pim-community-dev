@@ -173,7 +173,7 @@ class BatchCommand extends Command
             $this->$this->notifier->setRecipientEmail($email);
         }
 
-        $job = $this->$this->jobRegistry->get($jobInstance->getJobName());
+        $job = $this->jobRegistry->get($jobInstance->getJobName());
         $executionId = $input->hasArgument('execution') ? $input->getArgument('execution') : null;
 
         if (null !== $executionId && null !== $input->getOption('config')) {
@@ -195,7 +195,7 @@ class BatchCommand extends Command
                 $job->getJobRepository()->updateJobExecution($jobExecution);
             }
         } else {
-            $jobExecution = $this->jobRepository->getRepository($this->jobExecutionClass)->find($executionId);
+            $jobExecution = $this->getJobManager()->getRepository($this->jobExecutionClass)->find($executionId);
             if (!$jobExecution) {
                 throw new \InvalidArgumentException(sprintf('Could not find job execution "%s".', $executionId));
             }
@@ -329,7 +329,7 @@ class BatchCommand extends Command
      */
     protected function createJobParameters(JobInstance $jobInstance, InputInterface $input): JobParameters
     {
-        $job = $this->getJobRegistry()->get($jobInstance->getJobName());
+        $job = $this->jobRegistry->get($jobInstance->getJobName());
         $rawParameters = $jobInstance->getRawParameters();
 
         $config = $input->getOption('config') ? $this->decodeConfiguration($input->getOption('config')) : [];
