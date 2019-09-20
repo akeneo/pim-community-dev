@@ -92,9 +92,6 @@ class CreateUserCommand extends ContainerAwareCommand
             if (empty($answer)) {
                 throw new \InvalidArgumentException("The username is mandatory.");
             }
-            if (strstr($answer, ' ') !== false) {
-                throw new \InvalidArgumentException("The username should not contain space character.");
-            }
 
             return $answer;
         });
