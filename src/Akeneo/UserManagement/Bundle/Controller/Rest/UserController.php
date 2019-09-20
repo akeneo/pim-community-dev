@@ -146,7 +146,7 @@ class UserController
 
     /**
      * @param Request $request
-     * @param int $identifier
+     * @param int     $identifier
      *
      * @return Response
      *
@@ -169,7 +169,7 @@ class UserController
 
     /**
      * @param Request $request
-     * @param int $identifier
+     * @param int     $identifier
      *
      * @throws \HttpException
      *
@@ -226,7 +226,6 @@ class UserController
         $user = $this->factory->create();
         $content = json_decode($request->getContent(), true);
 
-        $usernameViolations = $this->validateUsernameCreate($content);
         $passwordViolations = $this->validatePasswordCreate($content);
         unset($content['password_repeat']);
 
@@ -234,15 +233,8 @@ class UserController
 
         $violations = $this->validator->validate($user);
 
-        if ($usernameViolations->count() > 0 || $violations->count() > 0 || $passwordViolations->count() > 0) {
+        if ($violations->count() > 0 || $passwordViolations->count() > 0) {
             $normalizedViolations = [];
-            foreach ($usernameViolations as $violation) {
-                $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
-                    $violation,
-                    'internal_api',
-                    ['user' => $user]
-                );
-            }
             foreach ($violations as $violation) {
                 $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
                     $violation,
@@ -376,26 +368,6 @@ class UserController
 
         if (strstr($data['username'], ' ') !== false) {
             $violations[] = new ConstraintViolation('Username should not contain space character', '', [], '', 'username', '');
-        }
-
-        return new ConstraintViolationList($violations);
-    }
-
-    /**
-     * @param array $data
-     *
-     * @return ConstraintViolationListInterface
-     */
-    private function validatePasswordCreate(array $data): ConstraintViolationListInterface
-    {
-        $violations = [];
-
-        if (!isset($data['password'])) {
-            return new ConstraintViolationList([]);
-        }
-
-        if (($data['password_repeat'] ?? '') !== $data['password']) {
-            $violations[] = new ConstraintViolation('Passwords do not match', '', [], '', 'password_repeat', '');
         }
 
         return new ConstraintViolationList($violations);
