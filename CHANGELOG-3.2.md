@@ -1,5 +1,7 @@
 # 3.2.x
 
+- PIM-8781: Fix catalog volume monitoring and system information showing unused data
+
 # 3.2.8 (2019-09-17)
 
 ## Bug fixes
