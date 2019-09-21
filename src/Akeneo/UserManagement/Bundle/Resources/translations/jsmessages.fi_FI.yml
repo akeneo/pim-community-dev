@@ -8,9 +8,9 @@ pim_title:
   pim_user_role_update: 'Rooli {{ role }} | Muokkaa'
   pim_user_role_create: 'Rooli | luo'
   pim_user_security_login: Kirjaudu sisään
-  pim_user_reset_reset: Salasanan nollaus
+  pim_user_reset_reset: Salasanan asettaminen
   pim_user_reset_request: Unohdin salasanani
-  pim_user_reset_check_email: Salasanan nollaus | tarkista sähköposti
+  pim_user_reset_check_email: Salasanan asettaminen | tarkista sähköposti
   pim_user_group_create: 'Käyttäjäryhmät | luo'
   pim_user_group_update: 'Ryhmä {{ group }} | Muokkaa'
 confirmation:

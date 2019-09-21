@@ -5,10 +5,13 @@ flash:
   comment:
     create:
       success: El seu comentari s'ha creat correctament.
+      error: S'ha produït un error durant la creació del seu comentari.
     delete:
       success: El seu comentari s'ha suprimit correctament.
+      error: S'ha produït un error durant la supressió del seu comentari.
     reply:
       success: La seva resposta s'ha creat amb èxit.
+      error: S'ha produït un error durant la creació de la seva resposta.
 pim_enrich.entity.product:
   label: producte
   uppercase_label: Producte
@@ -19,6 +22,7 @@ pim_enrich.entity.product:
       fail: El producte podria no actualitzar-se.
       fields_not_ready: "Ara no es pot guardar el producte. Els següents camps no estan preparats: {{ fields }}"
       already_in_upload: Ja s'ha carregat un arxiu per a aquest atribut en la configuració regional "{{ locale }}" i l'àmbit "{{ scope }}"
+      file_upload: S'ha produït un error duran la càrrega
     delete:
       success: Producte suprimit correctament.
       fail: No s'ha pogut suprimir el producte.
@@ -114,6 +118,8 @@ pim_enrich.entity.product:
       header_reply: '{{ user }} contesta al comentari'
       delete_confirm: Està segur que vol suprimir aquest comentari?
       removed_author: Usuari suprimit
+    asset:
+      title: Recursos
 pim_enrich.entity.product_model:
   label: model de producte
   uppercase_label: Model de producte
@@ -169,6 +175,13 @@ pim_enrich.entity.group:
       button: Crear grup
     delete:
       confirm: Esteu segur que voleu suprimir aquest grup?
+pim_enrich.entity.role:
+  module:
+    delete:
+      confirm: Estàs segur que vols suprimir aquest rol?
+  flash:
+    delete:
+      success: Rol eliminat correctament
 pim_enrich.entity.category:
   label: categoria
   uppercase_label: Categoria
@@ -261,6 +274,8 @@ pim_enrich.mass_edit.product:
       label: Configurar
     confirm:
       label: Confirmar
+    launch_error:
+      label: S'ha produït un error durant el llançament de l'operació d'edició en massa
     launched:
       label: L'acció en massa "{{ operation }}" ja s'ha engegat. Se li notificarà una cop acabi.
   operation:
@@ -327,6 +342,7 @@ pim_datagrid:
     delete:
       confirm_content: Esteu segur que voleu suprimir els productes seleccionats?
       success: Els productes seleccionats s'han eliminat correctament.
+      error: S'ha produït al intentar suprimir els productes seleccionats, intenteu-ho un altre cops, si us plau.
     quick_export:
       csv_all: CSV (tots els atributs)
       csv_grid_context: CSV (marc de quadrícula)
