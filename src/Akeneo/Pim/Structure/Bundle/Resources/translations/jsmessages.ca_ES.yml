@@ -67,7 +67,7 @@ pim_enrich.entity.attribute_option:
   flash:
     create:
       success: Opció d'atribut creat correctament
-      fail: Ha succeït un error intentant crear la opció d'atribut
+      fail: S'ha produït un error al intentar crear la opció d'atribut
     update:
       fail: No es pot desar aquesta opció d'atribut
     delete:
