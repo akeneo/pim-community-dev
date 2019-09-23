@@ -3,6 +3,7 @@
 ## Bug fixes:
 
 - PIM-8767: Fix user security token check
+- PIM-8787: Fix API search-after - missing search_scope in first, next, previous, current links
 
 # 3.2.8 (2019-09-17)
 
