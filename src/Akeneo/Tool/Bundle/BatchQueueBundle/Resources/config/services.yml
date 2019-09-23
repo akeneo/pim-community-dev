@@ -55,6 +55,6 @@ services:
             - '%kernel.environment%'
 
     akeneo_batch_queue.query.delete_job_execution_message_orphans:
-        class: Akeneo\Bundle\BatchQueueBundle\Query\SqlDeleteJobExecutionMessageOrphansQuery
+        class: Akeneo\Tool\Bundle\BatchQueueBundle\Query\SqlDeleteJobExecutionMessageOrphansQuery
         arguments:
             - '@database_connection'

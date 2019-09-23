@@ -171,6 +171,72 @@ JSON;
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
+    public function testProductCreationWithInvalidValues()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+<<<JSON
+    {
+        "identifier": "new_identifier",
+        "values": {
+            "a_metric": {
+                "locale": null,
+                "scope": null,
+                "data": null
+            }
+        }
+    }
+JSON;
+
+        $expectedContent = [
+            'code'    => 422,
+            'message' => 'Property "a_metric" expects an array with valid data, one of the values is not an array. Check the expected format on the API documentation.',
+            '_links' => [
+                'documentation' => ['href' => 'http://api.akeneo.com/api-reference.html#patch_products__code_'],
+            ],
+        ];
+
+        $client->request('PATCH', 'api/rest/v1/products/new_identifier', [], [], [], $data);
+
+        $response = $client->getResponse();
+        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+    }
+
+    public function testProductUpdateWithInvalidValues()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+<<<JSON
+    {
+        "identifier": "product_family",
+        "values": {
+            "a_metric": {
+                "locale": null,
+                "scope": null,
+                "data": null
+            }
+        }
+    }
+JSON;
+
+        $expectedContent = [
+            'code'    => 422,
+            'message' => 'Property "a_metric" expects an array with valid data, one of the values is not an array. Check the expected format on the API documentation.',
+            '_links' => [
+                'documentation' => ['href' => 'http://api.akeneo.com/api-reference.html#patch_products__code_'],
+            ],
+        ];
+
+        $client->request('PATCH', 'api/rest/v1/products/product_family', [], [], [], $data);
+
+        $response = $client->getResponse();
+        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+    }
+
     public function testProductPartialUpdateWithIdenticalIdentifiers()
     {
         $client = $this->createAuthenticatedClient();
