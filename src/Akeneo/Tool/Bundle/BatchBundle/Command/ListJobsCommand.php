@@ -2,8 +2,9 @@
 
 namespace Akeneo\Tool\Bundle\BatchBundle\Command;
 
+use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -16,12 +17,25 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ListJobsCommand extends ContainerAwareCommand
+class ListJobsCommand extends Command
 {
+    protected static $defaultName = 'akeneo:batch:list-jobs';
+
     /**
      * @staticvar string Option used to list all jobs
      */
     const LIST_ALL = 'all';
+
+    /** @var JobRepositoryInterface */
+    private $jobRepository;
+
+    public function __construct(
+        JobRepositoryInterface $jobRepository
+    ) {
+        parent::__construct();
+
+        $this->jobRepository = $jobRepository;
+    }
 
     /**
      * {@inheritdoc}
@@ -29,7 +43,6 @@ class ListJobsCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('akeneo:batch:list-jobs')
             ->setDescription('List the existing job instances')
             ->addOption(
                 'type',
@@ -80,6 +93,6 @@ class ListJobsCommand extends ContainerAwareCommand
      */
     protected function getJobManager()
     {
-        return $this->getContainer()->get('akeneo_batch.job_repository')->getJobManager();
+        return $this->jobRepository->getJobManager();
     }
 }

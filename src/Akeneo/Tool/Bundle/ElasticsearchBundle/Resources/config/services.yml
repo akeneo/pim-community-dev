@@ -8,3 +8,9 @@ services:
 
     akeneo_elasticsearch.client_builder:
         class: '%akeneo_elasticsearch.client_builder.class%'
+
+    Akeneo\Tool\Bundle\ElasticsearchBundle\Command\ResetIndexesCommand:
+        arguments:
+            - '@akeneo_elasticsearch.registry.clients'
+        tags:
+            - { name: console.command }

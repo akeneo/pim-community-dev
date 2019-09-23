@@ -9,7 +9,7 @@ use Akeneo\Tool\Bundle\BatchQueueBundle\Queue\JobExecutionMessageRepository;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionQueueInterface;
 use Ramsey\Uuid\Uuid;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
@@ -28,12 +28,14 @@ use Symfony\Component\Process\Process;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class JobQueueConsumerCommand extends ContainerAwareCommand
+class JobQueueConsumerCommand extends Command
 {
+    public const COMMAND_NAME = 'akeneo:batch:job-queue-consumer-daemon';
+
+    protected static $defaultName = self::COMMAND_NAME;
+
     /** Interval in seconds before updating health check if job is still running. */
     public const HEALTH_CHECK_INTERVAL = 5;
-
-    public const COMMAND_NAME = 'akeneo:batch:job-queue-consumer-daemon';
 
     /** Interval in seconds to wait after an exception occurred.*/
     private const EXCEPTION_WAIT_INTERVAL = 5;
@@ -41,13 +43,38 @@ class JobQueueConsumerCommand extends ContainerAwareCommand
     /** Interval in microseconds before checking if the process is still running. */
     private const RUNNING_PROCESS_CHECK_INTERVAL = 200000;
 
+    /** @var JobExecutionQueueInterface */
+    private $jobExecutionQueue;
+
+    /** @var JobExecutionMessageRepository */
+    private $executionMessageRepository;
+
+    /** @var JobExecutionManager */
+    private $executionManager;
+
+    /** @var string */
+    private $projectDir;
+
+    public function __construct(
+        JobExecutionQueueInterface $jobExecutionQueue,
+        JobExecutionMessageRepository $executionMessageRepository,
+        JobExecutionManager $executionManager,
+        string $projectDir
+    ) {
+        parent::__construct();
+
+        $this->jobExecutionQueue = $jobExecutionQueue;
+        $this->executionMessageRepository = $executionMessageRepository;
+        $this->executionManager = $executionManager;
+        $this->projectDir = $projectDir;
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
         $this
-            ->setName(self::COMMAND_NAME)
             ->setDescription('Launch a daemon that will consume job execution messages and launch the associated job execution in backgrounds')
             ->addOption('run-once', null, InputOption::VALUE_NONE, 'Launch only one job execution and stop the daemon once the job execution is finished')
             ->addOption('job', 'j', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Job instance codes that should be consumed')
@@ -67,11 +94,11 @@ class JobQueueConsumerCommand extends ContainerAwareCommand
         $output->writeln(sprintf('Consumer name: "%s"', $consumerName->toString()));
 
         $pathFinder = new PhpExecutableFinder();
-        $console = sprintf('%s%sbin%sconsole', $this->getContainer()->getParameter('kernel.project_dir'), DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR);
+        $console = sprintf('%s%sbin%sconsole', $this->projectDir, DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR);
 
         do {
             try {
-                $jobExecutionMessage = $this->getQueue()->consume($consumerName->toString(), $jobInstanceCodes);
+                $jobExecutionMessage = $this->jobExecutionQueue->consume($consumerName->toString(), $jobInstanceCodes);
 
                 $arguments = array_merge([$pathFinder->find(), $console, 'akeneo:batch:job' ], $this->getArguments($jobExecutionMessage));
                 $process = new Process($arguments);
@@ -80,7 +107,7 @@ class JobQueueConsumerCommand extends ContainerAwareCommand
                 $output->writeln(sprintf('Launching job execution "%s".', $jobExecutionMessage->getJobExecutionId()));
                 $output->writeln(sprintf('Command line: "%s"', $process->getCommandLine()));
 
-                $this->getJobExecutionManager()->updateHealthCheck($jobExecutionMessage);
+                $this->executionManager->updateHealthCheck($jobExecutionMessage);
 
                 $process->start();
 
@@ -98,14 +125,14 @@ class JobQueueConsumerCommand extends ContainerAwareCommand
                     $output->write($process->getIncrementalOutput());
                     $errOutput->write($process->getIncrementalErrorOutput());
 
-                    $this->getJobExecutionManager()->updateHealthCheck($jobExecutionMessage);
+                    $this->executionManager->updateHealthCheck($jobExecutionMessage);
                     $iteration = 1;
                 }
 
                 // update status if the job execution failed due to an uncatchable error as a fatal error
-                $exitStatus = $this->getJobExecutionManager()->getExitStatus($jobExecutionMessage);
+                $exitStatus = $this->executionManager->getExitStatus($jobExecutionMessage);
                 if ($exitStatus->isRunning()) {
-                    $this->getJobExecutionManager()->markAsFailed($jobExecutionMessage);
+                    $this->executionManager->markAsFailed($jobExecutionMessage);
                 }
 
                 $output->write($process->getIncrementalOutput());
@@ -131,7 +158,7 @@ class JobQueueConsumerCommand extends ContainerAwareCommand
      */
     protected function getArguments(JobExecutionMessage $jobExecutionMessage): array
     {
-        $jobInstanceCode = $this->getJobExecutionMessageRepository()->getJobInstanceCode($jobExecutionMessage);
+        $jobInstanceCode = $this->executionMessageRepository->getJobInstanceCode($jobExecutionMessage);
 
         $arguments = [
             $jobInstanceCode,
@@ -148,29 +175,5 @@ class JobQueueConsumerCommand extends ContainerAwareCommand
         }
 
         return $arguments;
-    }
-
-    /**
-     * @return JobExecutionQueueInterface
-     */
-    private function getQueue(): JobExecutionQueueInterface
-    {
-        return $this->getContainer()->get('akeneo_batch_queue.queue.database_job_execution_queue');
-    }
-
-    /**
-     * @return JobExecutionMessageRepository
-     */
-    private function getJobExecutionMessageRepository(): JobExecutionMessageRepository
-    {
-        return $this->getContainer()->get('akeneo_batch_queue.queue.job_execution_message_repository');
-    }
-
-    /**
-     * @return JobExecutionManager
-     */
-    private function getJobExecutionManager(): JobExecutionManager
-    {
-        return $this->getContainer()->get('akeneo_batch_queue.manager.job_execution_manager');
     }
 }

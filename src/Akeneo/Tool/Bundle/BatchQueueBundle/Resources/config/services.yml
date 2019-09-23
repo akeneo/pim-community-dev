@@ -75,3 +75,22 @@ services:
         class: Akeneo\Tool\Bundle\BatchQueueBundle\Query\SqlDeleteJobExecutionMessageOrphansQuery
         arguments:
             - '@database_connection'
+
+    Akeneo\Tool\Bundle\BatchQueueBundle\Command\JobQueueConsumerCommand:
+        arguments:
+            - '@akeneo_batch_queue.queue.database_job_execution_queue'
+            - '@akeneo_batch_queue.queue.job_execution_message_repository'
+            - '@akeneo_batch_queue.manager.job_execution_manager'
+            - '%kernel.project_dir%'
+        tags:
+            - { name: console.command }
+
+    Akeneo\Tool\Bundle\BatchQueueBundle\Command\PublishJobToQueueCommand:
+        arguments:
+            - '@akeneo_batch_queue.queue.publish_job_to_queue'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo_batch.job.job_registry'
+            - '@akeneo_batch.job_parameters_factory'
+            - '%akeneo_batch.entity.job_instance.class%'
+        tags:
+            - { name: console.command }

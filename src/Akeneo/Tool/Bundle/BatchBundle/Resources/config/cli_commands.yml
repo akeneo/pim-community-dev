@@ -1,0 +1,33 @@
+services:
+    Akeneo\Tool\Bundle\BatchBundle\Command\BatchCommand:
+        arguments:
+            - '@monolog.logger.batch'
+            - '@akeneo_batch.logger.batch_log_handler'
+            - '@akeneo_batch.job_repository'
+            - '@doctrine'
+            - '@validator'
+            - '@akeneo_batch.mail_notifier'
+            - '@akeneo_batch.job.job_registry'
+            - '@akeneo_batch.job_parameters_factory'
+            - '@akeneo_batch.job.job_parameters_validator'
+            - '%akeneo_batch.entity.job_instance.class%'
+            - '%akeneo_batch.entity.job_execution.class%'
+        tags:
+            - { name: console.command }
+
+    Akeneo\Tool\Bundle\BatchBundle\Command\CreateJobCommand:
+        arguments:
+            - '@validator'
+            - '@akeneo_batch.job.job_parameters_validator'
+            - '@akeneo_batch.job_parameters_factory'
+            - '@akeneo_batch.job_instance_factory'
+            - '@akeneo_batch.saver.job_instance'
+            - '@akeneo_batch.job.job_registry'
+        tags:
+            - { name: console.command }
+
+    Akeneo\Tool\Bundle\BatchBundle\Command\ListJobsCommand:
+        arguments:
+            - '@akeneo_batch.job_repository'
+        tags:
+            - { name: console.command }
