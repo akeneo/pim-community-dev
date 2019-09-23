@@ -4,6 +4,7 @@
 ## Bug fixes
 
 - PIM-8738: Fix memory leak executing "akeneo:batch:purge-job-execution" command
+- PIM-8790: Fix non removed category filter in job instances
 
 # 2.3.62 (2019-09-13)
 
