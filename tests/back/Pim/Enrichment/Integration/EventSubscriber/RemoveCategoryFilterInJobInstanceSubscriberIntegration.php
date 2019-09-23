@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\EnrichBundle\tests\integration\EventListener;
 
-use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Doctrine\ORM\EntityManager;
 
 /**
