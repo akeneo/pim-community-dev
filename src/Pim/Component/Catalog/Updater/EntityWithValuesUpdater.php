@@ -93,7 +93,7 @@ class EntityWithValuesUpdater implements ObjectUpdaterInterface
                 if (!is_array($value)) {
                     throw InvalidPropertyTypeException::validArrayStructureExpected(
                         $code,
-                        'one of the values is not an array.',
+                        'one of the values is not an array',
                         static::class,
                         $values
                     );
