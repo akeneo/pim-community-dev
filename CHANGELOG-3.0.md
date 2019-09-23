@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-8777: Forbid space in username at creation
+
 # 3.0.42 (2019-09-13)
 
 ## Bug fixes
