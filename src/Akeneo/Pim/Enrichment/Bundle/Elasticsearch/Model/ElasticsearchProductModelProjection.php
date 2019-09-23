@@ -125,7 +125,7 @@ final class ElasticsearchProductModelProjection
             'ancestors' => [
                 'ids' => null !== $this->parentId ? ['product_model_' . (string) $this->parentId] : [],
                 'codes' => null !== $this->parentCode ? [$this->parentCode] : [],
-                'labels' => $this->labels,
+                'labels' => null !== $this->parentId ? $this->labels : [],
             ],
             'label' => $this->labels,
             'document_type' => ProductModelInterface::class,
