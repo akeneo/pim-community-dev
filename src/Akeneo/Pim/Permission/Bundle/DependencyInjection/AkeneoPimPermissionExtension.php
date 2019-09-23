@@ -27,7 +27,6 @@ class AkeneoPimPermissionExtension extends Extension
         $loader->load('array_converters.yml');
         $loader->load('checkers.yml');
         $loader->load('controllers.yml');
-        $loader->load('elasticsearch.yml');
         $loader->load('entities.yml');
         $loader->load('event_subscribers.yml');
         $loader->load('factories.yml');
