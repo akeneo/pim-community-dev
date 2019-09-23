@@ -43,7 +43,23 @@ class RuleEngineRunner implements CompiledRuleRunnerInterface
             'code'       => '',
             'priority'   => '',
             'conditions' => $compiledRule->getConditions(),
-            'actions'    => $compiledRule->getActions()
+            'actions'    => $this->adaptActionsToRuleEngine($compiledRule->getActions())
         ];
+    }
+
+    /**
+     * The RuleEngine either needs a `value` or `items` property depending on the action type (`add` or `set`).
+     * In our case, we will always set both properties.
+     */
+    private function adaptActionsToRuleEngine(array $actions): array
+    {
+        return array_map(
+            function (array $action) {
+                $action['value'] = $action['items'];
+
+                return $action;
+            },
+            $actions
+        );
     }
 }
