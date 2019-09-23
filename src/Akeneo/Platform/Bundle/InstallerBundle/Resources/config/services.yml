@@ -6,3 +6,19 @@ services:
         class: '%pim_installer.directories_registry.class%'
         arguments:
             - ['%catalog_storage_dir%', '%tmp_storage_dir%', '%archive_dir%', '%asset_storage_dir%', '%upload_dir%', '%kernel.logs_dir%', '%upload_tmp_dir%']
+
+    Akeneo\Platform\Bundle\InstallerBundle\Command\CleanAttributeGroupAccessesCommand:
+        arguments:
+            - '@pimee_security.repository.attribute_group_access'
+            - '@pim_user.repository.group'
+        tags:
+            - { name: 'console.command' }
+
+    Akeneo\Platform\Bundle\InstallerBundle\Command\CleanCategoryAccessesCommand:
+        arguments:
+            - '@pimee_security.repository.category_access'
+            - '@pimee_product_asset.repository.asset_category_access'
+            - '@pim_user.repository.group'
+            - '@doctrine.orm.default_entity_manager'
+        tags:
+            - { name: 'console.command' }

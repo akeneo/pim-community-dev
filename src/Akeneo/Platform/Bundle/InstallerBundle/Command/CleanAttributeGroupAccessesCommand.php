@@ -12,8 +12,10 @@
 namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\AttributeGroupAccessRepository;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\GroupRepository;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -22,15 +24,32 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-class CleanAttributeGroupAccessesCommand extends ContainerAwareCommand
+class CleanAttributeGroupAccessesCommand extends Command
 {
+    protected static $defaultName = 'pimee:installer:clean-attribute-group-accesses';
+
+    /** @var AttributeGroupAccessRepository */
+    private $attributeGroupAccessRepository;
+
+    /** @var GroupRepositoryInterface */
+    private $groupRepository;
+
+    public function __construct(
+        AttributeGroupAccessRepository $attributeGroupAccessRepository,
+        GroupRepositoryInterface $groupRepository
+    ) {
+        parent::__construct();
+
+        $this->attributeGroupAccessRepository = $attributeGroupAccessRepository;
+        $this->groupRepository = $groupRepository;
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
         $this
-            ->setName('pimee:installer:clean-attribute-group-accesses')
             ->setDescription('Removing the group "ALL" from attribute groups\' permissions after a clean installation.');
     }
 
@@ -40,24 +59,8 @@ class CleanAttributeGroupAccessesCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('Removing the group "ALL" from attribute groups\' permissions...');
-        $groupAll = $this->getUserGroupRepository()->getDefaultUserGroup();
-        $this->getProductCategoryAccessRepository()->revokeAccessToGroups([$groupAll]);
+        $groupAll = $this->groupRepository->getDefaultUserGroup();
+        $this->attributeGroupAccessRepository->revokeAccessToGroups([$groupAll]);
         $output->writeln('<info>done !</info>');
-    }
-
-    /**
-     * @return AttributeGroupAccessRepository
-     */
-    protected function getProductCategoryAccessRepository()
-    {
-        return $this->getContainer()->get('pimee_security.repository.attribute_group_access');
-    }
-
-    /**
-     * @return GroupRepository
-     */
-    protected function getUserGroupRepository()
-    {
-        return $this->getContainer()->get('pim_user.repository.group');
     }
 }

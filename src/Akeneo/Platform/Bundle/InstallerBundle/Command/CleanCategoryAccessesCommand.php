@@ -12,9 +12,10 @@
 namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
-use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\GroupRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface;
+use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -23,15 +24,42 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-class CleanCategoryAccessesCommand extends ContainerAwareCommand
+class CleanCategoryAccessesCommand extends Command
 {
+    protected static $defaultName = 'pimee:installer:clean-category-accesses';
+
+    /** @var CategoryAccessRepository */
+    private $accessRepository;
+
+    /** @var CategoryAccessRepository */
+    private $categoryAccessRepository;
+
+    /** @var GroupRepositoryInterface */
+    private $groupRepository;
+
+    /** @var ObjectManager */
+    private $objectManager;
+
+    public function __construct(
+        CategoryAccessRepository $accessRepository,
+        CategoryAccessRepository $categoryAccessRepository,
+        GroupRepositoryInterface $groupRepository,
+        ObjectManager $objectManager
+    ) {
+        parent::__construct();
+
+        $this->accessRepository = $accessRepository;
+        $this->categoryAccessRepository = $categoryAccessRepository;
+        $this->groupRepository = $groupRepository;
+        $this->objectManager = $objectManager;
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
         $this
-            ->setName('pimee:installer:clean-category-accesses')
             ->setDescription('Removing the group "ALL" from categories\' permissions after a clean installation.');
     }
 
@@ -41,42 +69,10 @@ class CleanCategoryAccessesCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('Removing the group "ALL" from categories\' permissions...');
-        $groupAll = $this->getUserGroupRepository()->getDefaultUserGroup();
-        $this->getProductCategoryAccessRepository()->revokeAccessToGroups([$groupAll]);
-        $this->getAssetCategoryAccessRepository()->revokeAccessToGroups([$groupAll]);
-        $this->getDoctrine()->getManager()->flush();
+        $groupAll = $this->groupRepository->getDefaultUserGroup();
+        $this->accessRepository->revokeAccessToGroups([$groupAll]);
+        $this->categoryAccessRepository->revokeAccessToGroups([$groupAll]);
+        $this->objectManager->flush();
         $output->writeln('<info>done !</info>');
-    }
-
-    /**
-     * @return CategoryAccessRepository
-     */
-    protected function getProductCategoryAccessRepository()
-    {
-        return $this->getContainer()->get('pimee_security.repository.category_access');
-    }
-
-    /**
-     * @return CategoryAccessRepository
-     */
-    protected function getAssetCategoryAccessRepository()
-    {
-        return $this->getContainer()->get('pimee_product_asset.repository.asset_category_access');
-    }
-
-    /**
-     * @return GroupRepository
-     */
-    protected function getUserGroupRepository()
-    {
-        return $this->getContainer()->get('pim_user.repository.group');
-    }
-
-    /**
-     * @return ManagerRegistry
-     */
-    private function getDoctrine()
-    {
-        return $this->getContainer()->get('doctrine');
     }
 }

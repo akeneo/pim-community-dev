@@ -30,11 +30,8 @@ class PermissionCleaner
     {
         $application = new Application();
 
-        $cleanCategoryRight = $application->add(new CleanCategoryAccessesCommand());
-        $cleanAttributeGroupRight = $application->add(new CleanAttributeGroupAccessesCommand());
-
-        $cleanCategoryRight->setContainer($this->kernel->getContainer());
-        $cleanAttributeGroupRight->setContainer($this->kernel->getContainer());
+        $cleanCategoryRight = $application->add($this->kernel->getContainer()->get(CleanCategoryAccessesCommand::class));
+        $cleanAttributeGroupRight = $application->add($this->kernel->getContainer()->get(CleanAttributeGroupAccessesCommand::class));
 
         $cleanCategoryRightCommand = new CommandTester($cleanCategoryRight);
         $cleanAttributeGroupRightCommand = new CommandTester($cleanAttributeGroupRight);
