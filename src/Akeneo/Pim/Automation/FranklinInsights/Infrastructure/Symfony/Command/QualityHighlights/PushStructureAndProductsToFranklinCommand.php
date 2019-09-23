@@ -21,7 +21,7 @@ class PushStructureAndProductsToFranklinCommand extends Command
 {
     private const NAME = 'pimee:franklin-insights:quality-highlights:push-structure-and-products';
 
-    private const DEFAULT_BATCH_SIZE = 100;
+    private const DEFAULT_BATCH_SIZE = 10;
 
     /** @var PendingItemsRepositoryInterface */
     private $pendingItemsRepository;
