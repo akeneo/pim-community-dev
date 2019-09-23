@@ -4,13 +4,20 @@ declare(strict_types=1);
 
 namespace Akeneo\UserManagement\Bundle\Command;
 
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface;
+use Akeneo\UserManagement\Component\Repository\RoleRepositoryInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Interactive command to create a PIM user.
@@ -19,9 +26,9 @@ use Symfony\Component\Console\Question\Question;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class CreateUserCommand extends ContainerAwareCommand
+class CreateUserCommand extends Command
 {
-    public const COMMAND_NAME = 'pim:user:create';
+    protected static $defaultName = 'pim:user:create';
 
     /** @var string */
     private $password;
@@ -53,13 +60,53 @@ class CreateUserCommand extends ContainerAwareCommand
     /** @var bool */
     private $isAdmin = false;
 
+    /** @var SimpleFactoryInterface */
+    private $userFactory;
+
+    /** @var ObjectUpdaterInterface */
+    private $userUpdater;
+
+    /** @var ValidatorInterface */
+    private $validator;
+
+    /** @var SaverInterface */
+    private $userSaver;
+
+    /** @var GroupRepositoryInterface */
+    private $groupRepository;
+
+    /** @var RoleRepositoryInterface */
+    private $roleRepository;
+
+    /** @var LocaleRepositoryInterface */
+    private $localeRepository;
+
+    public function __construct(
+        SimpleFactoryInterface $userFactory,
+        ObjectUpdaterInterface $userUpdater,
+        ValidatorInterface $validator,
+        SaverInterface $userSaver,
+        GroupRepositoryInterface $groupRepository,
+        RoleRepositoryInterface $roleRepository,
+        LocaleRepositoryInterface $localeRepository
+    ) {
+        parent::__construct();
+
+        $this->userFactory = $userFactory;
+        $this->userUpdater = $userUpdater;
+        $this->validator = $validator;
+        $this->userSaver = $userSaver;
+        $this->groupRepository = $groupRepository;
+        $this->roleRepository = $roleRepository;
+        $this->localeRepository = $localeRepository;
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function configure(): void
     {
         $this
-            ->setName(static::COMMAND_NAME)
             ->setDescription(<<<DESC
 Creates a PIM user. This command can be launched interactively or non interactively (with the "-n" option). 
 When launched non interactively you have to provide arguments to the command. For instance:
@@ -88,8 +135,8 @@ DESC
             $this->gatherArgumentsForNonInteractiveMode($input);
         }
 
-        $user = $this->getContainer()->get('pim_user.factory.user')->create();
-        $this->getContainer()->get('pim_user.updater.user')->update(
+        $user = $this->userFactory->create();
+        $this->userUpdater->update(
             $user,
             [
                 'username' => $this->username,
@@ -104,7 +151,7 @@ DESC
             ]
         );
 
-        $errors = $this->getContainer()->get('validator')->validate($user);
+        $errors = $this->validator->validate($user);
         if (0 < count($errors)) {
             $errorMessages = [];
             foreach ($errors as $error) {
@@ -122,7 +169,7 @@ DESC
             $this->addEveryGroupTo($user);
         }
 
-        $this->getContainer()->get('pim_user.saver.user')->save($user);
+        $this->userSaver->save($user);
 
         $output->writeln(sprintf("<info>User %s has been created.</info>", $this->username));
     }
@@ -298,7 +345,7 @@ DESC
      */
     private function addDefaultGroupTo(UserInterface $user): void
     {
-        $group = $this->getContainer()->get('pim_user.repository.group')->findOneByIdentifier(User::GROUP_DEFAULT);
+        $group = $this->groupRepository->findOneByIdentifier(User::GROUP_DEFAULT);
 
         if (null === $group) {
             throw new \RuntimeException('Default user group not found.');
@@ -312,7 +359,7 @@ DESC
      */
     private function addDefaultRoleTo(UserInterface $user): void
     {
-        $role = $this->getContainer()->get('pim_user.repository.role')->findOneByIdentifier(User::ROLE_DEFAULT);
+        $role = $this->roleRepository->findOneByIdentifier(User::ROLE_DEFAULT);
 
         if (null === $role) {
             throw new \RuntimeException('Default user role not found.');
@@ -326,7 +373,7 @@ DESC
      */
     private function addAdminRoleTo(UserInterface $user): void
     {
-        $role = $this->getContainer()->get('pim_user.repository.role')->findOneByIdentifier('ROLE_ADMINISTRATOR');
+        $role = $this->roleRepository->findOneByIdentifier('ROLE_ADMINISTRATOR');
 
         if (null !== $role) {
             $user->addRole($role);
@@ -335,7 +382,7 @@ DESC
 
     private function addEveryGroupTo(UserInterface $user): void
     {
-        $groups = $this->getContainer()->get('pim_user.repository.group')->findAll();
+        $groups = $this->groupRepository->findAll();
 
         foreach ($groups as $group) {
             $user->addGroup($group);
@@ -370,7 +417,7 @@ DESC
         $this->lastName = $input->getArgument('lastName');
         $this->userDefaultLocaleCode = $input->getArgument('locale');
 
-        $activatedLocaleCodes = $this->getContainer()->get('pim_catalog.repository.locale')->getActivatedLocaleCodes();
+        $activatedLocaleCodes = $this->localeRepository->getActivatedLocaleCodes();
         if (empty($activatedLocaleCodes)) {
             throw new \InvalidArgumentException("There is no activated locale. The catalog default locale of the user must be an activated locale.");
         }
