@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter;
 
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorRegistry;
