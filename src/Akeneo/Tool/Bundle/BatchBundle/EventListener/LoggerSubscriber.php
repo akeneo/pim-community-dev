@@ -31,10 +31,6 @@ class LoggerSubscriber implements EventSubscriberInterface
     /** @var string */
     protected $translationDomain = 'messages';
 
-    /**
-     * @param LoggerInterface     $logger
-     * @param TranslatorInterface $translator
-     */
     public function __construct(LoggerInterface $logger, TranslatorInterface $translator)
     {
         $this->logger = $logger;
@@ -62,31 +58,16 @@ class LoggerSubscriber implements EventSubscriberInterface
         );
     }
 
-    /**
-     * Set the translation locale
-     *
-     * @param string $translationLocale
-     */
     public function setTranslationLocale($translationLocale)
     {
         $this->translationLocale = $translationLocale;
     }
 
-    /**
-     * Set the translation domain
-     *
-     * @param string $translationDomain
-     */
     public function setTranslationDomain($translationDomain)
     {
         $this->translationDomain = $translationDomain;
     }
 
-    /**
-     * Log the job execution creation
-     *
-     * @param JobExecutionEvent $event
-     */
     public function jobExecutionCreated(JobExecutionEvent $event)
     {
         $jobExecution = $event->getJobExecution();
@@ -94,23 +75,13 @@ class LoggerSubscriber implements EventSubscriberInterface
         $this->logger->debug(sprintf('Job execution is created: %s', $jobExecution));
     }
 
-    /**
-     * Log the job execution before the job execution
-     *
-     * @param JobExecutionEvent $event
-     */
     public function beforeJobExecution(JobExecutionEvent $event)
     {
         $jobExecution = $event->getJobExecution();
 
-        $this->logger->debug(sprintf('Job execution starting: %s', $jobExecution));
+        $this->logger->info(sprintf('Job execution starting: %s', $jobExecution));
     }
 
-    /**
-     * Log the job execution when the job execution stopped
-     *
-     * @param JobExecutionEvent $event
-     */
     public function jobExecutionStopped(JobExecutionEvent $event)
     {
         $jobExecution = $event->getJobExecution();
@@ -118,11 +89,6 @@ class LoggerSubscriber implements EventSubscriberInterface
         $this->logger->debug(sprintf('Job execution was stopped: %s', $jobExecution));
     }
 
-    /**
-     * Log the job execution when the job execution was interrupted
-     *
-     * @param JobExecutionEvent $event
-     */
     public function jobExecutionInterrupted(JobExecutionEvent $event)
     {
         $jobExecution = $event->getJobExecution();
@@ -131,11 +97,6 @@ class LoggerSubscriber implements EventSubscriberInterface
         $this->logger->debug('Full exception', ['exception', $jobExecution->getFailureExceptions()]);
     }
 
-    /**
-     * Log the job execution when a fatal error was raised during job execution
-     *
-     * @param JobExecutionEvent $event
-     */
     public function jobExecutionFatalError(JobExecutionEvent $event)
     {
         $jobExecution = $event->getJobExecution();
@@ -146,11 +107,6 @@ class LoggerSubscriber implements EventSubscriberInterface
         );
     }
 
-    /**
-     * Log the job execution before its status is upgraded
-     *
-     * @param JobExecutionEvent $event
-     */
     public function beforeJobStatusUpgrade(JobExecutionEvent $event)
     {
         $jobExecution = $event->getJobExecution();
@@ -158,11 +114,6 @@ class LoggerSubscriber implements EventSubscriberInterface
         $this->logger->debug(sprintf('Upgrading JobExecution status: %s', $jobExecution));
     }
 
-    /**
-     * Log the step execution before the step execution
-     *
-     * @param StepExecutionEvent $event
-     */
     public function beforeStepExecution(StepExecutionEvent $event)
     {
         $stepExecution = $event->getStepExecution();
@@ -170,23 +121,13 @@ class LoggerSubscriber implements EventSubscriberInterface
         $this->logger->info(sprintf('Step execution starting: %s', $stepExecution));
     }
 
-    /**
-     * Log the step execution when the step execution succeeded
-     *
-     * @param StepExecutionEvent $event
-     */
     public function stepExecutionSucceeded(StepExecutionEvent $event)
     {
         $stepExecution = $event->getStepExecution();
 
-        $this->logger->debug(sprintf('Step execution success: id= %d', $stepExecution->getId()));
+        $this->logger->info(sprintf('Step execution success: id= %d', $stepExecution->getId()));
     }
 
-    /**
-     * Log the step execution when the step execution was interrupted
-     *
-     * @param StepExecutionEvent $event
-     */
     public function stepExecutionInterrupted(StepExecutionEvent $event)
     {
         $stepExecution = $event->getStepExecution();
@@ -197,13 +138,6 @@ class LoggerSubscriber implements EventSubscriberInterface
         $this->logger->debug('Full exception', ['exception', $stepExecution->getFailureExceptions()]);
     }
 
-    /**
-     * Log the step execution when the step execution was errored
-     *
-     * @param StepExecutionEvent $event
-     *
-     * @return null
-     */
     public function stepExecutionErrored(StepExecutionEvent $event)
     {
         $stepExecution = $event->getStepExecution();
@@ -229,23 +163,13 @@ class LoggerSubscriber implements EventSubscriberInterface
         );
     }
 
-    /**
-     * Log the step execution when the step execution was completed
-     *
-     * @param StepExecutionEvent $event
-     */
     public function stepExecutionCompleted(StepExecutionEvent $event)
     {
         $stepExecution = $event->getStepExecution();
 
-        $this->logger->debug(sprintf('Step execution complete: %s', $stepExecution));
+        $this->logger->info(sprintf('Step execution complete: %s', $stepExecution));
     }
 
-    /**
-     * Log invalid item event
-     *
-     * @param InvalidItemEvent $event
-     */
     public function invalidItem(InvalidItemEvent $event)
     {
         $this->logger->warning(
@@ -263,13 +187,6 @@ class LoggerSubscriber implements EventSubscriberInterface
         );
     }
 
-    /**
-     * Format anything as a string
-     *
-     * @param mixed $data
-     *
-     * @return string
-     */
     private function formatAsString($data)
     {
         if (is_array($data)) {
