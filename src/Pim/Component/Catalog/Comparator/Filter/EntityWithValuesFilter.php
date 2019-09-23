@@ -113,7 +113,7 @@ class EntityWithValuesFilter implements FilterInterface
                 if (!is_array($data)) {
                     throw InvalidPropertyTypeException::validArrayStructureExpected(
                         $code,
-                        'one of the values is not an array.',
+                        'one of the values is not an array',
                         static::class,
                         $values
                     );

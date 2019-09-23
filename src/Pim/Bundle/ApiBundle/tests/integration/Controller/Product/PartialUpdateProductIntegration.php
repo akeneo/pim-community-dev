@@ -191,7 +191,7 @@ JSON;
 
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "a_metric" expects an array with valid data, one of the values is not an array.. Check the expected format on the API documentation.',
+            'message' => 'Property "a_metric" expects an array with valid data, one of the values is not an array. Check the expected format on the API documentation.',
             '_links' => [
                 'documentation' => ['href' => 'http://api.akeneo.com/api-reference.html#patch_products__code_'],
             ],
@@ -224,7 +224,7 @@ JSON;
 
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "a_metric" expects an array with valid data, one of the values is not an array.. Check the expected format on the API documentation.',
+            'message' => 'Property "a_metric" expects an array with valid data, one of the values is not an array. Check the expected format on the API documentation.',
             '_links' => [
                 'documentation' => ['href' => 'http://api.akeneo.com/api-reference.html#patch_products__code_'],
             ],
