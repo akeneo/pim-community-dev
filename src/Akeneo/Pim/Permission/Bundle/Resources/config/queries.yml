@@ -114,7 +114,7 @@ services:
         arguments:
             - '@database_connection'
 
-    # CE override
+    # CE override - temporary to remove in TIP-1224
     akeneo.pim.enrichment.product.query.get_elasticsearch_product_projection:
         class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\GetElasticsearchProductProjection
         arguments:
@@ -126,7 +126,7 @@ services:
             - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
             - !tagged akeneo.pim.enrichment.product.query.indexing_additional_properties
 
-    # CE override
+    # CE override - temporary to remove in TIP-1230
     akeneo.pim.enrichment.product.query.get_elasticsearch_product_model_projection:
         class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\GetElasticsearchProductModelProjection
         arguments:
