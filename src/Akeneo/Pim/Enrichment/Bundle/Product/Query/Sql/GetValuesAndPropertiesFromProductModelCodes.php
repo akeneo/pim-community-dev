@@ -118,7 +118,6 @@ SQL;
                 'parent_code' => $row['parent_code'],
                 'values' => $values,
                 'parent_id' => (int) $row['parent_id'],
-                'ancestor_labels' => isset($values[$row['attribute_as_label_code']]) ? $values[$row['attribute_as_label_code']] : [],
                 'labels' => isset($values[$row['attribute_as_label_code']]) ? $values[$row['attribute_as_label_code']] : [],
             ];
         }

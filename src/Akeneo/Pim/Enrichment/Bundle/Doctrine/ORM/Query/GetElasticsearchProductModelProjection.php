@@ -90,7 +90,6 @@ class GetElasticsearchProductModelProjection implements GetElasticsearchProductM
                 $normalizedData->allComplete(),
                 $normalizedData->allIncomplete(),
                 $valuesAndProperties[$productModelCode]['parent_id'],
-                $valuesAndProperties[$productModelCode]['ancestor_labels'],
                 $valuesAndProperties[$productModelCode]['labels'],
                 $this->getAttributesOfAncestors($productModel),
                 $this->getSortedAttributeCodes($productModel)

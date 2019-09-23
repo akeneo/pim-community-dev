@@ -57,9 +57,6 @@ final class ElasticsearchProductModelProjection
     /** @var int|null */
     private $parentId;
 
-    /** @var string[] */
-    private $ancestorLabels;
-
     /** @var array */
     private $labels;
 
@@ -84,7 +81,6 @@ final class ElasticsearchProductModelProjection
         array $allComplete,
         array $allIncomplete,
         ?int $parentId,
-        array $ancestorLabels,
         array $labels,
         array $ancestorAttributeCodes,
         array $attributesForThisLevel
@@ -103,7 +99,6 @@ final class ElasticsearchProductModelProjection
         $this->allComplete = $allComplete;
         $this->allIncomplete = $allIncomplete;
         $this->parentId = $parentId;
-        $this->ancestorLabels = $ancestorLabels;
         $this->labels = $labels;
         $this->ancestorAttributeCodes = $ancestorAttributeCodes;
         $this->attributesForThisLevel = $attributesForThisLevel;
@@ -130,7 +125,7 @@ final class ElasticsearchProductModelProjection
             'ancestors' => [
                 'ids' => null !== $this->parentId ? ['product_model_' . (string) $this->parentId] : [],
                 'codes' => null !== $this->parentCode ? [$this->parentCode] : [],
-                'labels' => $this->ancestorLabels,
+                'labels' => $this->labels,
             ],
             'label' => $this->labels,
             'document_type' => ProductModelInterface::class,
