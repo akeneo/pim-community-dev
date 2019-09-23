@@ -83,14 +83,6 @@ class StoreFileCommand extends Command
     }
 
     /**
-     * @return FileStorerInterface
-     */
-    protected function getFileStorer()
-    {
-        return $this->getContainer()->get('akeneo_file_storage.file_storage.file.file_storer');
-    }
-
-    /**
      * @param string $storageFsAlias
      *
      * @return bool
