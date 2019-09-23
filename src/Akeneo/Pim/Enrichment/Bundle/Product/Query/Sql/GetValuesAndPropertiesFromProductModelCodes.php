@@ -33,10 +33,11 @@ WITH
             product_model.created,
             root_product_model.code AS parent_code,
             GREATEST(product_model.updated, COALESCE(root_product_model.updated, 0)) as updated,
-            JSON_MERGE(COALESCE(root_product_model.raw_values, '{}'), COALESCE(product_model.raw_values, '{}')) AS raw_values,
+            JSON_MERGE_PRESERVE(COALESCE(root_product_model.raw_values, '{}'), COALESCE(product_model.raw_values, '{}')) AS raw_values,
             family.code AS family_code,
             family_variant.code AS family_variant_code,
             product_model.parent_id,
+            family_variant.family_id,
             family_variant.id AS family_variant_id,
             attribute.code AS attribute_as_label_code
         FROM
@@ -68,26 +69,29 @@ WITH
             INNER JOIN pim_catalog_category category ON category.id = category_product_model.category_id
         GROUP BY product_model.id
     ),
-    product_model_family AS (
+    product_model_family_labels AS (
         SELECT 
-            product_model.id AS product_model_id,
-            JSON_ARRAYAGG(JSON_OBJECT(family_translation.locale, family_translation.label)) AS labels
+            family.family_id,
+            JSON_OBJECTAGG(locale.code, family_translation.label) AS labels
         FROM 
-            product_model
-            JOIN pim_catalog_family family ON family.code = product_model.family_code
-            JOIN pim_catalog_family_translation family_translation ON family_translation.foreign_key = family.id
-            JOIN pim_catalog_locale locale ON locale.code = family_translation.locale WHERE locale.is_activated = true
-        GROUP BY product_model.id
+            (SELECT DISTINCT product_model.family_id FROM product_model) family  
+            CROSS JOIN pim_catalog_locale locale
+            LEFT JOIN pim_catalog_family_translation family_translation ON family_translation.foreign_key = family.family_id AND family_translation.locale = locale.code
+        WHERE locale.is_activated = true
+        GROUP BY family.family_id
     )
     SELECT
         product_model.*,
-        COALESCE(product_model_categories.category_codes, JSON_ARRAY()) as category_codes,
+        JSON_MERGE_PRESERVE(
+            COALESCE(product_model_categories.category_codes, JSON_ARRAY()),
+            COALESCE(root_product_model_categories.category_codes, JSON_ARRAY())
+        ) AS category_codes,
         COALESCE(root_product_model_categories.category_codes, JSON_ARRAY()) as ancestor_category_codes,
-        COALESCE(product_model_family.labels, JSON_ARRAY()) AS family_labels
+        COALESCE(product_model_family_labels.labels, JSON_ARRAY()) AS family_labels
     FROM product_model
     LEFT JOIN product_model_categories ON product_model_categories.product_model_id = product_model.id
     LEFT JOIN root_product_model_categories ON root_product_model_categories.product_model_id = product_model.id
-    LEFT JOIN product_model_family ON product_model_family.product_model_id = product_model.id
+    LEFT JOIN product_model_family_labels ON product_model_family_labels.family_id = product_model.family_id
 SQL;
 
         $rows = $this->connection->fetchAll(
@@ -102,19 +106,18 @@ SQL;
             $values = json_decode($row['raw_values'], true);
 
             $results[$row['code']] = [
-                'id' => Type::getType(Type::INTEGER)->convertToPHPValue($row['id'], $platform),
-                'code' => Type::getType(Type::STRING)->convertToPHPValue($row['code'], $platform),
+                'id' => (int) $row['id'],
+                'code' => $row['code'],
                 'created' => Type::getType(Type::DATETIME_IMMUTABLE)->convertToPHPValue($row['created'], $platform),
                 'updated' => Type::getType(Type::DATETIME_IMMUTABLE)->convertToPHPValue($row['updated'], $platform),
-                'family_code' => Type::getType(Type::STRING)->convertToPHPValue($row['family_code'], $platform),
+                'family_code' => $row['family_code'],
                 'family_labels' => json_decode($row['family_labels'], true),
-                'family_variant_code' => Type::getType(Type::STRING)->convertToPHPValue($row['family_variant_code'], $platform),
+                'family_variant_code' => $row['family_variant_code'],
                 'category_codes' => json_decode($row['category_codes']),
                 'ancestor_category_codes' => json_decode($row['ancestor_category_codes']),
                 'parent_code' => $row['parent_code'],
                 'values' => $values,
-                'ancestor_ids' => null !== $row['parent_id'] ? ['product_model_' . $row['parent_id']] : [],
-                'ancestor_codes' => null !== $row['parent_code'] ? [$row['parent_code']] : [],
+                'parent_id' => (int) $row['parent_id'],
                 'ancestor_labels' => isset($values[$row['attribute_as_label_code']]) ? $values[$row['attribute_as_label_code']] : [],
                 'labels' => isset($values[$row['attribute_as_label_code']]) ? $values[$row['attribute_as_label_code']] : [],
             ];

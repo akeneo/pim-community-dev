@@ -35,8 +35,8 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
                 ]
             ],
             'family_variant' => 'familyVariantA1',
-            'categories' => [],
-            'categories_of_ancestors' => [],
+            'categories' => ['categoryA2', 'categoryA1'],
+            'categories_of_ancestors' => ['categoryA1'],
             'parent' => 'root',
             'values' => [
                 'a_simple_select-option' => ['<all_channels>' => ['<all_locales>' => 'optionB']]
@@ -90,7 +90,7 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
                 ]
             ],
             'family_variant' => 'familyVariantA1',
-            'categories' => [],
+            'categories' => ['categoryA1'],
             'categories_of_ancestors' => [],
             'parent' => null,
             'values' => [],
@@ -146,7 +146,8 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
             'code' => 'root',
             'family_variant' => 'familyVariantA1',
             'values' => [
-            ]
+            ],
+            'categories' => ['categoryA1'],
         ]);
     }
 
@@ -158,7 +159,8 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
             'parent' => 'root',
             'values' => [
                 'a_simple_select' => [['locale' => null, 'scope'  => null, 'data' => 'optionB']],
-            ]
+            ],
+            'categories' => ['categoryA2'],
         ]);
     }
 
