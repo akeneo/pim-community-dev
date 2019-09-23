@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Bundle\BatchQueueBundle\Query;
+namespace Akeneo\Tool\Bundle\BatchQueueBundle\Query;
 
 use Akeneo\Component\BatchQueue\Query\DeleteJobExecutionMessageOrphansQueryInterface;
 use Doctrine\DBAL\Connection;

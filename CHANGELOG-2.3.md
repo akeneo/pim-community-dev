@@ -1,5 +1,14 @@
 # 2.3.x
 
+# 2.3.63 (2019-09-23)
+
+
+## Bug fixes
+
+- PIM-8738: Fix memory leak executing "akeneo:batch:purge-job-execution" command
+- PIM-8790: Fix non removed category filter in job instances
+- PIM-8778: Fix error code when request is bad formatted in product API
+
 # 2.3.62 (2019-09-13)
 
 ## Bug fixes

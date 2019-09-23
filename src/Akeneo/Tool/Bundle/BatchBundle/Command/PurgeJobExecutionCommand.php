@@ -2,7 +2,6 @@
 
 namespace Akeneo\Tool\Bundle\BatchBundle\Command;
 
-use Akeneo\Tool\Bundle\BatchBundle\Job\DoctrineJobRepository;
 use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\DeleteJobExecution;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -61,7 +60,7 @@ class PurgeJobExecutionCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return DoctrineJobRepository
+     * @return DeleteJobExecution
      */
     protected function getDeleteJobExecutionQuery(): DeleteJobExecution
     {
