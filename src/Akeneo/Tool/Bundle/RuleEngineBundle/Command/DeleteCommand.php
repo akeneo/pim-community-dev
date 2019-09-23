@@ -14,7 +14,7 @@ namespace Akeneo\Tool\Bundle\RuleEngineBundle\Command;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -25,8 +25,26 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
-class DeleteCommand extends ContainerAwareCommand
+class DeleteCommand extends Command
 {
+    protected static $defaultName = 'akeneo:rule:delete';
+
+    /** @var RuleDefinitionRepositoryInterface */
+    private $ruleDefinitionRepository;
+
+    /** @var BulkRemoverInterface */
+    private $bulkRemover;
+
+    public function __construct(
+        RuleDefinitionRepositoryInterface $ruleDefinitionRepository,
+        BulkRemoverInterface $bulkRemover
+    ) {
+        parent::__construct();
+
+        $this->ruleDefinitionRepository = $ruleDefinitionRepository;
+        $this->bulkRemover = $bulkRemover;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -48,8 +66,7 @@ class DeleteCommand extends ContainerAwareCommand
 
         if ($this->confirmDeletion($input, $output, $code)) {
             $rules = $this->getRules($code);
-            $remover = $this->getRuleDefinitionRemover();
-            $remover->removeAll($rules);
+            $this->bulkRemover->removeAll($rules);
             $output->writeln('<info>Done !</info>');
         }
     }
@@ -79,10 +96,8 @@ class DeleteCommand extends ContainerAwareCommand
      */
     protected function getRules($code)
     {
-        $repository = $this->getRuleDefinitionRepository();
-
         if (null !== $code) {
-            $rule = $repository->findOneBy(['code' => $code]);
+            $rule = $this->ruleDefinitionRepository->findOneBy(['code' => $code]);
 
             if (null === $rule) {
                 throw new \InvalidArgumentException(sprintf('The rule %s does not exist.', $code));
@@ -91,22 +106,6 @@ class DeleteCommand extends ContainerAwareCommand
             return [$rule];
         }
 
-        return $repository->findAll();
-    }
-
-    /**
-     * @return RuleDefinitionRepositoryInterface
-     */
-    protected function getRuleDefinitionRepository()
-    {
-        return $this->getContainer()->get('akeneo_rule_engine.repository.rule_definition');
-    }
-
-    /**
-     * @return BulkRemoverInterface
-     */
-    protected function getRuleDefinitionRemover()
-    {
-        return $this->getContainer()->get('akeneo_rule_engine.remover.rule_definition');
+        return $this->ruleDefinitionRepository->findAll();
     }
 }

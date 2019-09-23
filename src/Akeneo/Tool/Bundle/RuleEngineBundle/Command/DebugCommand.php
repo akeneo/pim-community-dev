@@ -12,7 +12,7 @@
 namespace Akeneo\Tool\Bundle\RuleEngineBundle\Command;
 
 use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -23,15 +23,26 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
-class DebugCommand extends ContainerAwareCommand
+class DebugCommand extends Command
 {
+    protected static $defaultName = 'akeneo:rule:debug';
+
+    /** @var RuleDefinitionRepositoryInterface */
+    private $ruleDefinitionRepository;
+
+    public function __construct(RuleDefinitionRepositoryInterface $ruleDefinitionRepository)
+    {
+        parent::__construct();
+
+        $this->ruleDefinitionRepository = $ruleDefinitionRepository;
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
         $this
-            ->setName('akeneo:rule:debug')
             ->addArgument('code', InputArgument::OPTIONAL, 'Code of the rule to display information')
             ->setDescription('Displays rules information.')
         ;
@@ -55,7 +66,7 @@ class DebugCommand extends ContainerAwareCommand
      */
     protected function showRule(OutputInterface $output, $code)
     {
-        $rule = $this->getRuleDefinitionRepository()->findOneBy(['code' => $code]);
+        $rule = $this->ruleDefinitionRepository->findOneBy(['code' => $code]);
 
         if (null === $rule) {
             throw new \InvalidArgumentException(sprintf('The rule %s does not exist.', $code));
@@ -78,7 +89,7 @@ class DebugCommand extends ContainerAwareCommand
 
         $headers = ['code', 'type', 'priority'];
         $rows = [];
-        $rules = $this->getRuleDefinitionRepository()->findAll();
+        $rules = $this->ruleDefinitionRepository->findAll();
 
         foreach ($rules as $rule) {
             $rows[] = [$rule->getCode(), $rule->getType(), $rule->getPriority()];
@@ -87,13 +98,5 @@ class DebugCommand extends ContainerAwareCommand
         $table = new Table($output);
         $table->setHeaders($headers)->setRows($rows);
         $table->render();
-    }
-
-    /**
-     * @return RuleDefinitionRepositoryInterface
-     */
-    protected function getRuleDefinitionRepository()
-    {
-        return $this->getContainer()->get('akeneo_rule_engine.repository.rule_definition');
     }
 }
