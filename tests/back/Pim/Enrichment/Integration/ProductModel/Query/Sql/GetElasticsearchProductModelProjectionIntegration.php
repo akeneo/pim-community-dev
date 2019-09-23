@@ -185,7 +185,7 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
         unset($normalizedProductModelProjection['created']);
         unset($normalizedProductModelProjection['updated']);
         unset($expected['id'], $normalizedProductModelProjection['id'], $normalizedProductModelProjection['ancestors']['ids'], $expected['ancestors']['ids']);
-
+        
         $this->assertEquals($expected, $normalizedProductModelProjection);
     }
 

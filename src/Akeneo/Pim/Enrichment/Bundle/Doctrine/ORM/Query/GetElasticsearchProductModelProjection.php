@@ -12,10 +12,10 @@ use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\CompleteFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @author    Pierre Allard <pierre.allard@akeneo.com>
@@ -39,7 +39,7 @@ class GetElasticsearchProductModelProjection implements GetElasticsearchProductM
     /** @var ValueCollectionFactory */
     private $valueCollectionFactory;
 
-    /** @var ValueCollectionNormalizer */
+    /** @var NormalizerInterface */
     private $valueCollectionNormalizer;
 
     public function __construct(
@@ -48,7 +48,7 @@ class GetElasticsearchProductModelProjection implements GetElasticsearchProductM
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         GetValuesAndPropertiesFromProductModelCodes $getValuesAndPropertiesFromProductModelCodes,
         ValueCollectionFactory $valueCollectionFactory,
-        ValueCollectionNormalizer $valueCollectionNormalizer
+        NormalizerInterface $valueCollectionNormalizer
     ) {
         $this->productModelRepository = $productModelRepository;
         $this->completenessGridFilterQuery = $completenessGridFilterQuery;
@@ -68,6 +68,7 @@ class GetElasticsearchProductModelProjection implements GetElasticsearchProductM
         foreach ($productModelCodes as $productModelCode) {
             $productModel = $this->productModelRepository->findOneByIdentifier($productModelCode);
             $normalizedData = $this->completenessGridFilterQuery->findCompleteFilterData($productModel);
+
             $valueCollection = $this
                 ->valueCollectionFactory
                 ->createFromStorageFormat($valuesAndProperties[$productModelCode]['values']);
