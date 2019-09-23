@@ -8,8 +8,11 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductModelProje
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductModelProjection;
 use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetValuesAndPropertiesFromProductModelCodes;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\CompleteFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -33,16 +36,26 @@ class GetElasticsearchProductModelProjection implements GetElasticsearchProductM
     /** @var GetValuesAndPropertiesFromProductModelCodes */
     private $getValuesAndPropertiesFromProductModelCodes;
 
+    /** @var ValueCollectionFactory */
+    private $valueCollectionFactory;
+
+    /** @var ValueCollectionNormalizer */
+    private $valueCollectionNormalizer;
+
     public function __construct(
         ProductModelRepositoryInterface $productModelRepository,
         CompleteFilterInterface $completenessGridFilterQuery,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
-        GetValuesAndPropertiesFromProductModelCodes $getValuesAndPropertiesFromProductModelCodes
+        GetValuesAndPropertiesFromProductModelCodes $getValuesAndPropertiesFromProductModelCodes,
+        ValueCollectionFactory $valueCollectionFactory,
+        ValueCollectionNormalizer $valueCollectionNormalizer
     ) {
         $this->productModelRepository = $productModelRepository;
         $this->completenessGridFilterQuery = $completenessGridFilterQuery;
         $this->attributesProvider = $attributesProvider;
         $this->getValuesAndPropertiesFromProductModelCodes = $getValuesAndPropertiesFromProductModelCodes;
+        $this->valueCollectionFactory = $valueCollectionFactory;
+        $this->valueCollectionNormalizer = $valueCollectionNormalizer;
     }
 
     public function fromProductModelCodes(array $productModelCodes): array
@@ -55,6 +68,12 @@ class GetElasticsearchProductModelProjection implements GetElasticsearchProductM
         foreach ($productModelCodes as $productModelCode) {
             $productModel = $this->productModelRepository->findOneByIdentifier($productModelCode);
             $normalizedData = $this->completenessGridFilterQuery->findCompleteFilterData($productModel);
+            $valueCollection = $this
+                ->valueCollectionFactory
+                ->createFromStorageFormat($valuesAndProperties[$productModelCode]['values']);
+            $values = $this
+                ->valueCollectionNormalizer
+                ->normalize($valueCollection, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX);
 
             $productProjections[$productModelCode] = new ElasticsearchProductModelProjection(
                 $valuesAndProperties[$productModelCode]['id'],
@@ -67,7 +86,7 @@ class GetElasticsearchProductModelProjection implements GetElasticsearchProductM
                 $valuesAndProperties[$productModelCode]['category_codes'],
                 $valuesAndProperties[$productModelCode]['ancestor_category_codes'],
                 $valuesAndProperties[$productModelCode]['parent_code'],
-                $valuesAndProperties[$productModelCode]['values'],
+                $values,
                 $normalizedData->allComplete(),
                 $normalizedData->allIncomplete(),
                 $valuesAndProperties[$productModelCode]['ancestor_ids'],
