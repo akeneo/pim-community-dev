@@ -31,43 +31,25 @@ class ProductModelDescendantsAndAncestorsIndexerSpec extends ObjectBehavior
         $this->shouldHaveType(ProductModelDescendantsAndAncestorsIndexer::class);
     }
 
-    function it_indexes_product_model_with_variant_products(
+    function it_indexes_the_product_models_with_variant_products(
         ProductIndexerInterface $productIndexer,
         ProductModelIndexerInterface $productModelIndexer,
         GetDescendantVariantProductIdentifiers $getDescendantVariantProductIdentifiers,
         GetAncestorAndDescendantProductModelCodes $getAncestorAndDescendantProductModelCodes
     ) {
-        $getDescendantVariantProductIdentifiers->fromProductModelCodes(['pm'])
-            ->willReturn(['foo', 'bar']);
+        $getDescendantVariantProductIdentifiers->fromProductModelCodes(['pm1', 'pm2'])
+            ->willReturn(['foo', 'bar', 'pika', 'chu']);
 
-        $getAncestorAndDescendantProductModelCodes->fromProductModelCodes(['pm'])
+        $getAncestorAndDescendantProductModelCodes->fromProductModelCodes(['pm1', 'pm2'])
             ->willReturn([]);
 
-        $productModelIndexer->indexFromProductModelCodes(['pm'], [])->shouldBeCalled();
-        $productIndexer->indexFromProductIdentifiers(['foo', 'bar'], [])->shouldBeCalled();
+        $productModelIndexer->indexFromProductModelCodes(['pm1', 'pm2'], [])->shouldBeCalled();
+        $productIndexer->indexFromProductIdentifiers(['foo', 'bar', 'pika', 'chu'], [])->shouldBeCalled();
 
-        $this->indexFromProductModelCode('pm');
+        $this->indexFromProductModelCodes(['pm1', 'pm2']);
     }
 
-    function it_indexes_a_product_model_with_sub_product_models_and_variant_products(
-        ProductIndexerInterface $productIndexer,
-        ProductModelIndexerInterface $productModelIndexer,
-        GetDescendantVariantProductIdentifiers $getDescendantVariantProductIdentifiers,
-        GetAncestorAndDescendantProductModelCodes $getAncestorAndDescendantProductModelCodes
-    ) {
-        $getDescendantVariantProductIdentifiers->fromProductModelCodes(['root'])
-            ->willReturn(['foo', 'bar']);
-
-        $getAncestorAndDescendantProductModelCodes->fromProductModelCodes(['root'])
-            ->willReturn(['code']);
-
-        $productModelIndexer->indexFromProductModelCodes(['root', 'code'], [])->shouldBeCalled();
-        $productIndexer->indexFromProductIdentifiers(['foo', 'bar'], [])->shouldBeCalled();
-
-        $this->indexFromProductModelCode('root');
-    }
-
-    function it_bulk_indexes_the_product_models_with_product_models_and_variant_products(
+    function it_indexes_the_product_models_with_product_models_and_variant_products(
         ProductIndexerInterface $productIndexer,
         ProductModelIndexerInterface $productModelIndexer,
         GetDescendantVariantProductIdentifiers $getDescendantVariantProductIdentifiers,
@@ -101,7 +83,7 @@ class ProductModelDescendantsAndAncestorsIndexerSpec extends ObjectBehavior
         $productModelIndexer->indexFromProductModelCodes(['pm', 'code'], $options)->shouldBeCalled();
         $productIndexer->indexFromProductIdentifiers(['foo'], $options)->shouldBeCalled();
 
-        $this->indexFromProductModelCode('pm', $options);
+        $this->indexFromProductModelCodes(['pm'], $options);
     }
 
     function it_does_not_bulk_index_empty_arrays_of_product_models(
