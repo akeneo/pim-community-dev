@@ -270,3 +270,8 @@ services:
         class: Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetValuesAndPropertiesFromProductModelCodes
         arguments:
             - '@database_connection'
+
+    akeneo.pim.enrichment.product.query.get_ancestor_product_model_codes:
+        class: Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetAncestorProductModelCodes
+        arguments:
+            - '@database_connection'
