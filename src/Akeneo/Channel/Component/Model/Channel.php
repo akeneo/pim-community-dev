@@ -3,6 +3,7 @@
 namespace Akeneo\Channel\Component\Model;
 
 use Akeneo\Channel\Component\Event\ChannelCategoryHasBeenUpdated;
+use Akeneo\Channel\Component\Event\ChannelLocalesHaveBeenUpdated;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -286,6 +287,8 @@ class Channel implements ChannelInterface
      */
     public function setLocales(array $locales)
     {
+        $previousLocaleCodes = $this->getLocaleCodes();
+
         foreach ($this->locales as $locale) {
             if (!in_array($locale, $locales)) {
                 $this->removeLocale($locale);
@@ -295,6 +298,10 @@ class Channel implements ChannelInterface
         foreach ($locales as $locale) {
             $this->addLocale($locale);
         }
+
+        $newLocaleCodes = $this->getLocaleCodes();
+
+        $this->addEvent(new ChannelLocalesHaveBeenUpdated($this->code, $previousLocaleCodes, $newLocaleCodes));
     }
 
     /**
