@@ -313,14 +313,6 @@ class BatchCommand extends Command
     }
 
     /**
-     * @return JobParametersValidator
-     */
-    protected function getJobParametersValidator(): JobParametersValidator
-    {
-        return $this->getContainer()->get('akeneo_batch.job.job_parameters_validator');
-    }
-
-    /**
      * @param JobInstance    $jobInstance
      * @param InputInterface $input
      *

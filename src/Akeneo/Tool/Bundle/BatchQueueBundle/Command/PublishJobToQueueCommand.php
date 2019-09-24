@@ -190,12 +190,4 @@ class PublishJobToQueueCommand extends Command
     {
         return $this->jobRepository->getJobManager();
     }
-
-    /**
-     * @return JobParametersFactory
-     */
-    private function getJobParametersFactory(): JobParametersFactory
-    {
-        return $this->getContainer()->get('akeneo_batch.job_parameters_factory');
-    }
 }
