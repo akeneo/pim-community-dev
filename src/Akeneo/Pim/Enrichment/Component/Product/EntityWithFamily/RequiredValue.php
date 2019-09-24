@@ -116,6 +116,10 @@ class RequiredValue
      */
     public function locale(): ?string
     {
-        return $this->forAttribute->isLocalizable() ? $this->forLocale->getCode() : null;
+        if ($this->forAttribute->isLocalizable() || $this->forAttribute->isLocaleSpecific()) {
+            return $this->forLocale->getCode();
+        }
+
+        return null;
     }
 }

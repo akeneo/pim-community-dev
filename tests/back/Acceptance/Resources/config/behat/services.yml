@@ -63,7 +63,6 @@ services:
             - '@pim_catalog.repository.locale'
             - '@test.locale.builder'
 
-
     test.channel.context:
         class: 'Akeneo\Test\Acceptance\Channel\ChannelContext'
         arguments:
@@ -75,7 +74,6 @@ services:
             - '@test.channel.builder'
             - '@test.currency.builder'
 
-
     test.attribute.context:
         class: 'Akeneo\Test\Acceptance\Attribute\AttributeContext'
         arguments:
@@ -83,7 +81,6 @@ services:
             - '@test.attribute.builder'
             - '@pim_catalog.repository.attribute_group'
             - '@test.attribute_group.builder'
-
 
     test.family.context:
         class: 'Akeneo\Test\Acceptance\Family\FamilyContext'
@@ -93,7 +90,6 @@ services:
             - '@pim_catalog.updater.family'
             - '@pim_catalog.repository.attribute'
 
-
     test.catalog.product_creation.context:
         class: 'Akeneo\Test\Acceptance\Catalog\Context\ProductCreation'
         arguments:
@@ -101,11 +97,18 @@ services:
             - '@test.catalog.product.builder'
             - '@pim_catalog.repository.product'
 
-
     test.catalog.product_validation.context:
         class: 'Akeneo\Test\Acceptance\Catalog\Context\ProductValidation'
         arguments:
             - '@test.catalog.product.builder'
             - '@pim_catalog.validator.product'
             - '@pim_catalog.repository.product'
+
+    test.user_management.user_validation.context:
+        class: 'Akeneo\Test\Acceptance\User\Context\UserValidation'
+        arguments:
+            - '@pim_user.factory.user'
+            - '@pim_user.updater.user'
+            - '@validator'
+            - '@pim_user.repository.group'
 

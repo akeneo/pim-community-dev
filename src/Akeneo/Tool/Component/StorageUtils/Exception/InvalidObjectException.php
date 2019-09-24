@@ -3,7 +3,7 @@
 namespace Akeneo\Tool\Component\StorageUtils\Exception;
 
 /**
- * Exception thrown when perfoming an action on an unsupported object.
+ * Exception thrown when performing an action on an unsupported object.
  *
  * @author    Alexandre Hocquard <alexandre.hocquard@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
