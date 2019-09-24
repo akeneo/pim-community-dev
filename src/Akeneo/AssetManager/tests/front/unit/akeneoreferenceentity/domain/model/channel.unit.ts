@@ -1,5 +1,4 @@
-import {ConcreteChannel, denormalizeChannel} from 'akeneoassetmanager/domain/model/channel';
-import {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
+import {denormalizeChannel, getChannelLabel} from 'akeneoassetmanager/domain/model/channel';
 import {denormalizeLocale} from 'akeneoassetmanager/domain/model/locale';
 
 describe('akeneo > asset family > domain > model --- channel', () => {
@@ -17,8 +16,8 @@ describe('akeneo > asset family > domain > model --- channel', () => {
       ],
     });
     expect(channel.code).toBe('ecommerce');
-    expect(channel.getLabel('en_US')).toBe('E-commerce');
-    expect(channel.getLabel('fr_FR')).toBe('[ecommerce]');
+    expect(getChannelLabel(channel, 'en_US')).toBe('E-commerce');
+    expect(getChannelLabel(channel, 'fr_FR')).toBe('[ecommerce]');
   });
 
   test('I cannot create a new channel with invalid parameters', () => {
@@ -27,23 +26,41 @@ describe('akeneo > asset family > domain > model --- channel', () => {
     }).toThrow('Channel expects a string as code to be created');
 
     expect(() => {
-      new ConcreteChannel('toto', {}, []);
-    }).toThrow('Channel expects a LabelCollection as second argument');
+      denormalizeChannel({code: 'toto', labels: 'labels', locales: []});
+    }).toThrow('Channel expects a label collection as labels to be created');
 
     expect(() => {
-      new ConcreteChannel('toto', createLabelCollection({}), [
-        denormalizeLocale({
-          code: 'en_US',
-          label: 'English (United States)',
-          region: 'United States',
-          language: 'English',
-        }),
-        {},
-      ]);
-    }).toThrow('Channel expects a Locale collection as third argument');
+      denormalizeChannel({
+        code: 'toto',
+        labels: {},
+        locales: [
+          denormalizeLocale({
+            code: 'en_US',
+            label: 'English (United States)',
+            region: 'United States',
+            language: 'English',
+          }),
+          {},
+        ],
+      });
+    }).toThrow('Channel expects an array as locales to be created');
 
     expect(() => {
-      new ConcreteChannel('toto', createLabelCollection({}), [{}]);
-    }).toThrow('Channel expects a Locale collection as third argument');
+      denormalizeChannel({code: 'toto', labels: {}, locales: [{}]});
+    }).toThrow('Channel expects an array as locales to be created');
+    expect(() => {
+      denormalizeChannel({
+        code: 'toto',
+        labels: {},
+        locales: [
+          {
+            code: 'en_US',
+          },
+        ],
+      });
+    }).toThrow('Channel expects an array as locales to be created');
+    expect(() => {
+      denormalizeChannel({code: 'toto', labels: {}, locales: 'locales'});
+    }).toThrow('Channel expects an array as locales to be created');
   });
 });

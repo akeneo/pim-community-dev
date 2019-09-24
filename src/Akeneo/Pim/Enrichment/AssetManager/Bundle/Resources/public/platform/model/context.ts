@@ -1,5 +1,5 @@
-import {ChannelCode} from 'akeneopimenrichmentassetmanager/platform/model/channel/channel';
-import {LocaleCode} from 'akeneopimenrichmentassetmanager/platform/model/channel/locale';
+import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
+import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 
 export type Context = {
   locale: LocaleCode;

@@ -1,8 +1,8 @@
-import {ChannelReference, ChannelCode} from 'akeneopimenrichmentassetmanager/platform/model/channel/channel';
-import {LocaleReference} from 'akeneopimenrichmentassetmanager/platform/model/channel/locale';
 import {AttributeCode, Attribute} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
 import {Labels} from 'akeneopimenrichmentassetmanager/platform/model/label';
 import {Family} from 'akeneopimenrichmentassetmanager/platform/model/structure/family';
+import {LocaleReference} from 'akeneoassetmanager/domain/model/locale';
+import {ChannelCode, ChannelReference} from 'akeneoassetmanager/domain/model/channel';
 
 type LocaleCompleteness = {
   completeness: {

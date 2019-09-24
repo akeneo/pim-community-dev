@@ -1,5 +1,5 @@
-import {LocaleCode} from 'akeneopimenrichmentassetmanager/platform/model/channel/locale';
 import {getLabel} from 'pimui/js/i18n';
+import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 
 export type AttributeCode = string;
 export type AttributeGroupCode = string;

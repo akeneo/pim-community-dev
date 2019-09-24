@@ -1,4 +1,4 @@
-import {ConcreteLocale, denormalizeLocale, createLocaleFromCode} from 'akeneoassetmanager/domain/model/locale';
+import {denormalizeLocale, createLocaleFromCode} from 'akeneoassetmanager/domain/model/locale';
 
 describe('akeneo > asset family > domain > model --- locale', () => {
   test('I can create a new locale from a normalized one', () => {
@@ -24,20 +24,20 @@ describe('akeneo > asset family > domain > model --- locale', () => {
 
   test('I cannot create a new locale with invalid parameters', () => {
     expect(() => {
-      new ConcreteLocale({});
-    }).toThrow('Locale expects a string as code');
+      denormalizeLocale({});
+    }).toThrow('Locale expects a string as code to be created');
 
     expect(() => {
-      new ConcreteLocale('en_US', {}, []);
-    }).toThrow('Locale expects a string as label');
+      denormalizeLocale({code: 'en_US'});
+    }).toThrow('Locale expects a string as label to be created');
 
     expect(() => {
-      new ConcreteLocale('en_US', 'English (United States)', []);
-    }).toThrow('Locale expects a string as region');
+      denormalizeLocale({code: 'en_US', label: 'English (United States)'});
+    }).toThrow('Locale expects a string as region to be created');
 
     expect(() => {
-      new ConcreteLocale('en_US', 'English (United States)', 'United States');
-    }).toThrow('Locale expects a string as language');
+      denormalizeLocale({code: 'en_US', label: 'English (United States)', region: 'United States'});
+    }).toThrow('Locale expects a string as language to be created');
 
     expect(() => {
       const locale = createLocaleFromCode(12);

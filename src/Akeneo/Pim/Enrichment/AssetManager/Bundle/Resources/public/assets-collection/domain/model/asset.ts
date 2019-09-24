@@ -5,8 +5,8 @@ import {
   AssetFamily,
   emptyAssetFamily,
 } from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset-family';
-import {LocaleCode} from 'akeneopimenrichmentassetmanager/platform/model/channel/locale';
 import {getLabel} from 'pimui/js/i18n';
+import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 
 export enum MoveDirection {
   Before,
@@ -43,17 +43,7 @@ export const emptyAsset = (): Asset => ({
     required: 0,
   },
 });
-export const isLabels = (labels: any): boolean => {
-  if (undefined === labels || typeof labels !== 'object') {
-    return false;
-  }
 
-  if (Object.keys(labels).some((key: string) => typeof key !== 'string' || typeof labels[key] !== 'string')) {
-    return false;
-  }
-
-  return true;
-};
 export const getAssetLabel = (asset: Asset, locale: LocaleCode) => {
   return getLabel(asset.labels, locale, asset.code);
 };

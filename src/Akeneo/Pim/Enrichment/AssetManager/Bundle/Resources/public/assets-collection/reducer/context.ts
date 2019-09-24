@@ -1,8 +1,8 @@
 import {Action} from 'redux';
 import {AssetCollectionState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/asset-collection';
-import {ChannelCode} from 'akeneopimenrichmentassetmanager/platform/model/channel/channel';
-import {LocaleCode} from 'akeneopimenrichmentassetmanager/platform/model/channel/locale';
 import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
+import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
+import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 
 export type ContextState = Context;
 

@@ -2,7 +2,6 @@ import {
   getImage,
   isComplete,
   emptyAsset,
-  isLabels,
   getAssetLabel,
   removeAssetFromCollection,
   emptyCollection,
@@ -11,6 +10,7 @@ import {
   moveAssetInCollection,
   getAssetCodes,
 } from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
+import {isLabels} from 'akeneoassetmanager/domain/model/utils';
 
 test('It should get the image from the asset', () => {
   const image = '/rest/asset/image/thumbnail/iphone.jpg';
