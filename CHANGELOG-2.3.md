@@ -1,5 +1,23 @@
 # 2.3.x
 
+# 2.3.63 (2019-09-23)
+
+
+## Bug fixes
+
+- PIM-8738: Fix memory leak executing "akeneo:batch:purge-job-execution" command
+- PIM-8790: Fix non removed category filter in job instances
+- PIM-8778: Fix error code when request is bad formatted in product API
+
+# 2.3.62 (2019-09-13)
+
+## Bug fixes
+
+- PIM-8757: Use a stream to create export archive
+- PIM-8751: Fix simple and multi select attributes history when creating a new option
+
+# 2.3.61 (2019-09-10)
+
 # 2.3.60 (2019-09-05)
 
 ## Improvement

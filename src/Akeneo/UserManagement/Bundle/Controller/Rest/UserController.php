@@ -77,6 +77,9 @@ class UserController
     /** @var RemoverInterface */
     private $remover;
 
+    /** @var TranslatorInterface */
+    private $translator;
+
     public function __construct(
         TokenStorageInterface $tokenStorage,
         NormalizerInterface $normalizer,
@@ -142,7 +145,7 @@ class UserController
 
     /**
      * @param Request $request
-     * @param int $identifier
+     * @param int     $identifier
      *
      * @return Response
      *
@@ -157,7 +160,6 @@ class UserController
         $user = $this->getUserOr404($identifier);
         $data = json_decode($request->getContent(), true);
 
-
         //code is useful to reach the route, cannot forget it in the query
         unset($data['code']);
 
@@ -166,7 +168,7 @@ class UserController
 
     /**
      * @param Request $request
-     * @param int $identifier
+     * @param int     $identifier
      *
      * @throws \HttpException
      *
@@ -198,10 +200,14 @@ class UserController
     {
         $this->eventDispatcher->dispatch(
             UserEvent::POST_UPDATE,
-            new GenericEvent($user, ['current_user' => $this->tokenStorage->getToken()->getUser(), 'previous_username' => $previousUsername])
+            new GenericEvent($user, [
+                'current_user' => $this->tokenStorage->getToken()->getUser(),
+                'previous_username' => $previousUsername,
+            ])
         );
 
         $this->session->remove('dataLocale');
+
         return $user;
     }
 
@@ -253,7 +259,7 @@ class UserController
 
     /**
      * @param Request $request
-     * @param int  $identifier
+     * @param int     $identifier
      *
      * @return Response
      */
@@ -327,6 +333,7 @@ class UserController
                     );
                 }
             }
+
             return new JsonResponse($normalizedViolations, Response::HTTP_BAD_REQUEST);
         }
 
@@ -391,7 +398,7 @@ class UserController
             );
         }
         if (
-            isset($data['new_password']) &&  strlen($data['new_password']) < 2
+            isset($data['new_password']) && strlen($data['new_password']) < 2
         ) {
             $violations[] = new ConstraintViolation(
                 $this->translator ?
@@ -400,6 +407,7 @@ class UserController
                     ) : 'Password must contains at least 2 characters', '', [], '', 'new_password', ''
             );
         }
+
         return new ConstraintViolationList($violations);
     }
 

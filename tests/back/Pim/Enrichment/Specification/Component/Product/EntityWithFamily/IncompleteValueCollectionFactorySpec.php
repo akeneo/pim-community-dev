@@ -32,9 +32,11 @@ class IncompleteValueCollectionFactorySpec extends ObjectBehavior
         $price->getCode()->willReturn('price');
         $price->isScopable()->willReturn(true);
         $price->isLocalizable()->willReturn(false);
+        $price->isLocaleSpecific()->willReturn(false);
         $description->getCode()->willReturn('description');
         $description->isScopable()->willReturn(true);
         $description->isLocalizable()->willReturn(true);
+        $description->isLocaleSpecific()->willReturn(true);
         $name->getCode()->willReturn('name');
         $name->isScopable()->willReturn(false);
         $name->isLocalizable()->willReturn(true);
