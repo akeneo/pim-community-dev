@@ -148,9 +148,7 @@ class ProductModelIndexerSpec extends ObjectBehavior
             [],
             [],
             [],
-            [],
-            [],
-            [],
+            null,
             [],
             [],
             []

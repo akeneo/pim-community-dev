@@ -8,7 +8,7 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductModelProje
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Doctrine\DBAL\Connection;
 
 class GetElasticsearchProductModelProjectionIntegration extends TestCase
 {
@@ -35,8 +35,8 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
                 ]
             ],
             'family_variant' => 'familyVariantA1',
-            'categories' => [],
-            'categories_of_ancestors' => [],
+            'categories' => ['categoryA2', 'categoryA1'],
+            'categories_of_ancestors' => ['categoryA1'],
             'parent' => 'root',
             'values' => [
                 'a_simple_select-option' => ['<all_channels>' => ['<all_locales>' => 'optionB']]
@@ -90,7 +90,7 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
                 ]
             ],
             'family_variant' => 'familyVariantA1',
-            'categories' => [],
+            'categories' => ['categoryA1'],
             'categories_of_ancestors' => [],
             'parent' => null,
             'values' => [],
@@ -124,13 +124,30 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
         $this->checkProductModelProjectionFormat('root', $expected);
     }
 
+    public function test_that_it_returns_latest_updated_date()
+    {
+        $this->createRootProductModel();
+        $this->createSubProductModel();
+        $date = new \DateTime();
+        $date->modify('+1 day');
+
+        $this->getConnection()->executeQuery(sprintf(
+            'UPDATE pim_catalog_product_model SET updated="%s" WHERE code="%s"',
+            $date->format('Y-m-d H:i:s'),
+            'root'
+        ));
+
+        $this->assertEquals($this->getProductModelProjectionArray('child')['updated'], $date->format('c'));
+    }
+
     private function createRootProductModel()
     {
         $this->createProductModel([
             'code' => 'root',
             'family_variant' => 'familyVariantA1',
             'values' => [
-            ]
+            ],
+            'categories' => ['categoryA1'],
         ]);
     }
 
@@ -142,7 +159,8 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
             'parent' => 'root',
             'values' => [
                 'a_simple_select' => [['locale' => null, 'scope'  => null, 'data' => 'optionB']],
-            ]
+            ],
+            'categories' => ['categoryA2'],
         ]);
     }
 
@@ -157,18 +175,9 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
         return $productModel;
     }
 
-    private function getGetElasticsearchProductModelProjection(): GetElasticsearchProductModelProjectionInterface
-    {
-        return $this->get('akeneo.pim.enrichment.product.query.get_elasticsearch_product_model_projection');
-    }
-
     private function checkProductModelProjectionFormat($code, $expected)
     {
-        $productModelProjection = $this
-            ->getGetElasticsearchProductModelProjection()
-            ->fromProductModelCodes([$code])[$code];
-
-        $normalizedProductModelProjection = $productModelProjection->toArray();
+        $normalizedProductModelProjection = $this->getProductModelProjectionArray($code);
 
         $this->assertRegExp('/product_model_\d+/', $normalizedProductModelProjection['id']);
         $this->assertRegexp('/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+\d{2}:\d{2}/', $normalizedProductModelProjection['created']);
@@ -176,8 +185,26 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
         unset($normalizedProductModelProjection['created']);
         unset($normalizedProductModelProjection['updated']);
         unset($expected['id'], $normalizedProductModelProjection['id'], $normalizedProductModelProjection['ancestors']['ids'], $expected['ancestors']['ids']);
-
+        
         $this->assertEquals($expected, $normalizedProductModelProjection);
     }
 
+    private function getProductModelProjectionArray($code): array
+    {
+        $productModelProjection = $this
+            ->getGetElasticsearchProductModelProjection()
+            ->fromProductModelCodes([$code])[$code];
+
+        return $productModelProjection->toArray();
+    }
+
+    private function getGetElasticsearchProductModelProjection(): GetElasticsearchProductModelProjectionInterface
+    {
+        return $this->get('akeneo.pim.enrichment.product.query.get_elasticsearch_product_model_projection');
+    }
+
+    private function getConnection(): Connection
+    {
+        return $this->get('database_connection');
+    }
 }

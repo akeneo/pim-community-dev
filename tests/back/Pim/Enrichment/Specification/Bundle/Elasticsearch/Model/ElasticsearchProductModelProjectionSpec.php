@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductModelProjection;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use PhpSpec\ObjectBehavior;
 
 class ElasticsearchProductModelProjectionSpec extends ObjectBehavior
@@ -35,9 +34,7 @@ class ElasticsearchProductModelProjectionSpec extends ObjectBehavior
                 'ecommerce' => ['de_DE' => 1, 'fr_FR' => 0],
                 'mobile' => ['de_DE' => 0, 'fr_FR' => 1],
             ],
-            ['ancestor_id_1', 'ancestor_id_2'],
-            ['ancestor_code_1', 'ancestor_code_2'],
-            ['<all_channels>' => ['en_US' => 'ancestor_label']],
+            2,
             ['<all_channels>' => ['en_US' => 'label']],
             ['ancestor_attribute_code_1', 'ancestor_attribute_code_2'],
             ['attribute_for_this_level1', 'attribute_for_this_level2']
@@ -77,9 +74,9 @@ class ElasticsearchProductModelProjectionSpec extends ObjectBehavior
                 'mobile' => ['de_DE' => 0, 'fr_FR' => 1],
             ],
             'ancestors' => [
-                'ids' => ['ancestor_id_1', 'ancestor_id_2'],
-                'codes' => ['ancestor_code_1', 'ancestor_code_2'],
-                'labels' => ['<all_channels>' => ['en_US' => 'ancestor_label']],
+                'ids' => ['product_model_2'],
+                'codes' => ['parent_product_model_code'],
+                'labels' => ['<all_channels>' => ['en_US' => 'label']],
             ],
             'label' => ['<all_channels>' => ['en_US' => 'label']],
             'document_type' => 'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface',

@@ -13,11 +13,10 @@ use Symfony\Component\Serializer\SerializerInterface;
 class ValueCollectionNormalizerSpec extends ObjectBehavior
 {
     function let(
-        SerializerInterface $serializer,
+        NormalizerInterface $serializer,
         WriteValueCollection $valueCollection
     ) {
-        $serializer->implement(NormalizerInterface::class);
-        $this->setSerializer($serializer);
+        $this->beConstructedWith($serializer);
     }
 
     function it_is_initializable()
@@ -29,7 +28,6 @@ class ValueCollectionNormalizerSpec extends ObjectBehavior
     {
         $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
         $this->supportsNormalization($valueCollection, 'whatever')->shouldReturn(false);
-
 
         $this->supportsNormalization(new \stdClass(), ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(false);

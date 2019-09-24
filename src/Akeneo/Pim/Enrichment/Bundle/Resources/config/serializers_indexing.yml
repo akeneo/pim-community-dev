@@ -28,6 +28,9 @@ services:
 
     pim_catalog.normalizer.indexing_product.product.product_value_collection:
         class: '%pim_catalog.normalizer.indexing_product.product.product_value_collection.class%'
+        lazy: true
+        arguments:
+            - '@pim_indexing_serializer'
         tags:
             - { name: pim_indexing_serializer.normalizer, priority: 90 }
 
