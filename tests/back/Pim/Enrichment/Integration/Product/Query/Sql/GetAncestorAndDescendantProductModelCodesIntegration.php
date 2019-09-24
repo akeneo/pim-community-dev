@@ -19,16 +19,13 @@ class GetAncestorAndDescendantProductModelCodesIntegration extends TestCase
 {
     protected function getConfiguration()
     {
-        return $this->catalog->useTechnicalSqlCatalog();
+        return $this->catalog->useTechnicalCatalog();
     }
 
-    protected function getAncestorAndDescendantsProductModelCodes(): GetAncestorAndDescendantProductModelCodes
+    protected function setUp(): void
     {
-        return $this->get('akeneo.pim.enrichment.product.query.get_ancestor_and_descendant_product_model_codes');
-    }
+        parent::setUp();
 
-    public function testFromProductModelCodes()
-    {
         $this->createFamilyVariant(
             [
                 'code' => 'shirt_size_color',
@@ -88,35 +85,62 @@ class GetAncestorAndDescendantProductModelCodesIntegration extends TestCase
                 ],
             ]
         );
+    }
 
+    protected function getAncestorAndDescendantProductModelCodes(): GetAncestorAndDescendantProductModelCodes
+    {
+        return $this->get('akeneo.pim.enrichment.product.query.get_ancestor_and_descendant_product_model_codes');
+    }
+
+    public function test_it_returns_descendant_codes()
+    {
         Assert::assertEqualsCanonicalizing(
-            [],
-            $this->getAncestorAndDescendantsProductModelCodes()->fromProductModelCodes(['a_shirt', 'a_shoe'])
+            ['a_medium_shirt', 'a_large_shirt'],
+            $this->getAncestorAndDescendantProductModelCodes()->fromProductModelCodes(['a_shirt'])
         );
 
         Assert::assertEqualsCanonicalizing(
-            [],
-            $this->getAncestorAndDescendantsProductModelCodes()->fromProductModelCodes(['unknown'])
+            ['a_medium_shirt', 'a_large_shirt', 'a_large_shoe'],
+            $this->getAncestorAndDescendantProductModelCodes()->fromProductModelCodes(['a_shirt', 'a_shoe'])
         );
+    }
 
-        Assert::assertEqualsCanonicalizing(
-            [],
-            $this->getAncestorAndDescendantsProductModelCodes()->fromProductModelCodes([])
-        );
-
+    public function test_it_returns_ancestor_codes()
+    {
         Assert::assertEqualsCanonicalizing(
             ['a_shoe'],
-            $this->getAncestorAndDescendantsProductModelCodes()->fromProductModelCodes(['a_shirt', 'a_large_shoe'])
-        );
-
-        Assert::assertEqualsCanonicalizing(
-            ['a_shoe'],
-            $this->getAncestorAndDescendantsProductModelCodes()->fromProductModelCodes(['a_shirt', 'a_large_shoe'])
+            $this->getAncestorAndDescendantProductModelCodes()->fromProductModelCodes(['a_large_shoe'])
         );
 
         Assert::assertEqualsCanonicalizing(
             ['a_shirt', 'a_shoe'],
-            $this->getAncestorAndDescendantsProductModelCodes()->fromProductModelCodes(['a_large_shirt', 'a_large_shoe'])
+            $this->getAncestorAndDescendantProductModelCodes()->fromProductModelCodes(['a_large_shirt', 'a_large_shoe'])
+        );
+    }
+
+    public function test_it_returns_ancestor_and_descendant_codes()
+    {
+        Assert::assertEqualsCanonicalizing(
+            ['a_large_shoe', 'a_shoe'],
+            $this->getAncestorAndDescendantProductModelCodes()->fromProductModelCodes(['a_large_shoe', 'a_shoe'])
+        );
+
+        Assert::assertEqualsCanonicalizing(
+            ['a_shirt', 'a_shoe', 'a_large_shirt', 'a_medium_shirt'],
+            $this->getAncestorAndDescendantProductModelCodes()->fromProductModelCodes(['a_large_shirt', 'a_large_shoe', 'a_shirt'])
+        );
+    }
+
+    public function test_it_returns_an_empty_array()
+    {
+        Assert::assertEqualsCanonicalizing(
+            [],
+            $this->getAncestorAndDescendantProductModelCodes()->fromProductModelCodes(['unknown'])
+        );
+
+        Assert::assertEqualsCanonicalizing(
+            [],
+            $this->getAncestorAndDescendantProductModelCodes()->fromProductModelCodes([])
         );
     }
 

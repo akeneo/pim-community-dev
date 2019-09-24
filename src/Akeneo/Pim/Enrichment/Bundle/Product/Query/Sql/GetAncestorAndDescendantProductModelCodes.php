@@ -28,12 +28,21 @@ class GetAncestorAndDescendantProductModelCodes
         }
 
         $sql = <<<SQL
+WITH
+filter_product_model AS (
+    SELECT id, parent_id FROM pim_catalog_product_model WHERE code IN (:codes)
+)
 SELECT
     root_product_model.code
 FROM
-    pim_catalog_product_model product_model
-    INNER JOIN pim_catalog_product_model root_product_model ON product_model.parent_id = root_product_model.id
-WHERE product_model.code IN (:codes)
+    filter_product_model
+    INNER JOIN pim_catalog_product_model root_product_model ON filter_product_model.parent_id = root_product_model.id
+UNION DISTINCT
+SELECT
+    sub_product_model.code
+FROM
+    filter_product_model
+    INNER JOIN pim_catalog_product_model sub_product_model ON filter_product_model.id = sub_product_model.parent_id
 SQL;
 
         return $this->connection->executeQuery(
