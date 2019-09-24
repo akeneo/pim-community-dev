@@ -276,8 +276,8 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo.pim.enrichment.product.query.get_ancestor_and_descendants_product_model_codes:
-        class: Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetAncestorAndDescendantsProductModelCodes
+    akeneo.pim.enrichment.product.query.get_ancestor_and_descendant_product_model_codes:
+        class: Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetAncestorAndDescendantProductModelCodes
         arguments:
             - '@database_connection'
 

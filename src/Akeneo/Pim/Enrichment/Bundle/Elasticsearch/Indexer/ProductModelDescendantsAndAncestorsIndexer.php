@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 
-use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetAncestorAndDescendantsProductModelCodes;
+use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetAncestorAndDescendantProductModelCodes;
 use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetDescendantVariantProductIdentifiers;
 use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\ProductModelIndexerInterface;
@@ -28,19 +28,19 @@ final class ProductModelDescendantsAndAncestorsIndexer
     /** @var GetDescendantVariantProductIdentifiers */
     private $getDescendantVariantProductIdentifiers;
 
-    /** @var GetAncestorAndDescendantsProductModelCodes */
-    private $getAncestorAndDescendantsProductModelCodes;
+    /** @var GetAncestorAndDescendantProductModelCodes */
+    private $getAncestorAndDescendantProductModelCodes;
 
     public function __construct(
         ProductIndexerInterface $productIndexer,
         ProductModelIndexerInterface $productModelIndexer,
         GetDescendantVariantProductIdentifiers $getDescendantVariantProductIdentifiers,
-        GetAncestorAndDescendantsProductModelCodes $getAncestorAndDescendantsProductModelCodes
+        GetAncestorAndDescendantProductModelCodes $getAncestorAndDescendantProductModelCodes
     ) {
         $this->productIndexer = $productIndexer;
         $this->productModelIndexer = $productModelIndexer;
         $this->getDescendantVariantProductIdentifiers = $getDescendantVariantProductIdentifiers;
-        $this->getAncestorAndDescendantsProductModelCodes = $getAncestorAndDescendantsProductModelCodes;
+        $this->getAncestorAndDescendantProductModelCodes = $getAncestorAndDescendantProductModelCodes;
     }
 
     /**
@@ -67,7 +67,7 @@ final class ProductModelDescendantsAndAncestorsIndexer
         }
 
         $ancestorAndDescendantsProductModelCodes = $this
-            ->getAncestorAndDescendantsProductModelCodes
+            ->getAncestorAndDescendantProductModelCodes
             ->fromProductModelCodes($productModelCodes)
         ;
         $this->productModelIndexer->indexFromProductModelCodes(

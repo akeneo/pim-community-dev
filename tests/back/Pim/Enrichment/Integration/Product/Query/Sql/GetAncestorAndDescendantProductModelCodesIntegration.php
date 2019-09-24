@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product\Query\Sql;
 
-use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetAncestorAndDescendantsProductModelCodes;
+use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetAncestorAndDescendantProductModelCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Test\Integration\TestCase;
@@ -15,16 +15,16 @@ use PHPUnit\Framework\Assert;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetAncestorAndDescendantsProductModelCodesIntegration extends TestCase
+class GetAncestorAndDescendantProductModelCodesIntegration extends TestCase
 {
     protected function getConfiguration()
     {
         return $this->catalog->useTechnicalSqlCatalog();
     }
 
-    protected function getAncestorAndDescendantsProductModelCodes(): GetAncestorAndDescendantsProductModelCodes
+    protected function getAncestorAndDescendantsProductModelCodes(): GetAncestorAndDescendantProductModelCodes
     {
-        return $this->get('akeneo.pim.enrichment.product.query.get_ancestor_and_descendants_product_model_codes');
+        return $this->get('akeneo.pim.enrichment.product.query.get_ancestor_and_descendant_product_model_codes');
     }
 
     public function testFromProductModelCodes()

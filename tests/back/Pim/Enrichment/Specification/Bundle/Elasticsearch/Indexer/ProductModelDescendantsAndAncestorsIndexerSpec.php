@@ -3,7 +3,7 @@
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelDescendantsAndAncestorsIndexer;
-use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetAncestorAndDescendantsProductModelCodes;
+use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetAncestorAndDescendantProductModelCodes;
 use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetDescendantVariantProductIdentifiers;
 use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\ProductModelIndexerInterface;
@@ -16,13 +16,13 @@ class ProductModelDescendantsAndAncestorsIndexerSpec extends ObjectBehavior
         ProductIndexerInterface $productIndexer,
         ProductModelIndexerInterface $productModelIndexer,
         GetDescendantVariantProductIdentifiers $getDescendantVariantProductIdentifiers,
-        GetAncestorAndDescendantsProductModelCodes $getAncestorAndDescendantsProductModelCodes
+        GetAncestorAndDescendantProductModelCodes $getAncestorAndDescendantProductModelCodes
     ) {
         $this->beConstructedWith(
             $productIndexer,
             $productModelIndexer,
             $getDescendantVariantProductIdentifiers,
-            $getAncestorAndDescendantsProductModelCodes
+            $getAncestorAndDescendantProductModelCodes
         );
     }
 
@@ -35,12 +35,12 @@ class ProductModelDescendantsAndAncestorsIndexerSpec extends ObjectBehavior
         ProductIndexerInterface $productIndexer,
         ProductModelIndexerInterface $productModelIndexer,
         GetDescendantVariantProductIdentifiers $getDescendantVariantProductIdentifiers,
-        GetAncestorAndDescendantsProductModelCodes $getAncestorAndDescendantsProductModelCodes
+        GetAncestorAndDescendantProductModelCodes $getAncestorAndDescendantProductModelCodes
     ) {
         $getDescendantVariantProductIdentifiers->fromProductModelCodes(['pm'])
             ->willReturn(['foo', 'bar']);
 
-        $getAncestorAndDescendantsProductModelCodes->fromProductModelCodes(['pm'])
+        $getAncestorAndDescendantProductModelCodes->fromProductModelCodes(['pm'])
             ->willReturn([]);
 
         $productModelIndexer->indexFromProductModelCodes(['pm'], [])->shouldBeCalled();
@@ -53,12 +53,12 @@ class ProductModelDescendantsAndAncestorsIndexerSpec extends ObjectBehavior
         ProductIndexerInterface $productIndexer,
         ProductModelIndexerInterface $productModelIndexer,
         GetDescendantVariantProductIdentifiers $getDescendantVariantProductIdentifiers,
-        GetAncestorAndDescendantsProductModelCodes $getAncestorAndDescendantsProductModelCodes
+        GetAncestorAndDescendantProductModelCodes $getAncestorAndDescendantProductModelCodes
     ) {
         $getDescendantVariantProductIdentifiers->fromProductModelCodes(['root'])
             ->willReturn(['foo', 'bar']);
 
-        $getAncestorAndDescendantsProductModelCodes->fromProductModelCodes(['root'])
+        $getAncestorAndDescendantProductModelCodes->fromProductModelCodes(['root'])
             ->willReturn(['code']);
 
         $productModelIndexer->indexFromProductModelCodes(['root', 'code'], [])->shouldBeCalled();
@@ -71,12 +71,12 @@ class ProductModelDescendantsAndAncestorsIndexerSpec extends ObjectBehavior
         ProductIndexerInterface $productIndexer,
         ProductModelIndexerInterface $productModelIndexer,
         GetDescendantVariantProductIdentifiers $getDescendantVariantProductIdentifiers,
-        GetAncestorAndDescendantsProductModelCodes $getAncestorAndDescendantsProductModelCodes
+        GetAncestorAndDescendantProductModelCodes $getAncestorAndDescendantProductModelCodes
     ) {
         $getDescendantVariantProductIdentifiers->fromProductModelCodes(['pm1', 'pm2'])
             ->willReturn(['foo', 'bar', 'pika', 'chu']);
 
-        $getAncestorAndDescendantsProductModelCodes->fromProductModelCodes(['pm1', 'pm2'])
+        $getAncestorAndDescendantProductModelCodes->fromProductModelCodes(['pm1', 'pm2'])
             ->willReturn(['sub_pm1', 'sub_pm2']);
 
         $productModelIndexer->indexFromProductModelCodes(['pm1', 'pm2', 'sub_pm1', 'sub_pm2'], [])->shouldBeCalled();
@@ -89,13 +89,13 @@ class ProductModelDescendantsAndAncestorsIndexerSpec extends ObjectBehavior
         ProductIndexerInterface $productIndexer,
         ProductModelIndexerInterface $productModelIndexer,
         GetDescendantVariantProductIdentifiers $getDescendantVariantProductIdentifiers,
-        GetAncestorAndDescendantsProductModelCodes $getAncestorAndDescendantsProductModelCodes
+        GetAncestorAndDescendantProductModelCodes $getAncestorAndDescendantProductModelCodes
     ) {
         $options = ['my_option_key' => 'my_option_value', 'my_option_key2' => 'my_option_value2'];
         $getDescendantVariantProductIdentifiers->fromProductModelCodes(['pm'])
             ->willReturn(['foo']);
 
-        $getAncestorAndDescendantsProductModelCodes->fromProductModelCodes(['pm'])
+        $getAncestorAndDescendantProductModelCodes->fromProductModelCodes(['pm'])
             ->willReturn(['code']);
 
         $productModelIndexer->indexFromProductModelCodes(['pm', 'code'], $options)->shouldBeCalled();
@@ -108,12 +108,12 @@ class ProductModelDescendantsAndAncestorsIndexerSpec extends ObjectBehavior
         ProductIndexerInterface $productIndexer,
         ProductModelIndexerInterface $productModelIndexer,
         GetDescendantVariantProductIdentifiers $getDescendantVariantProductIdentifiers,
-        GetAncestorAndDescendantsProductModelCodes $getAncestorAndDescendantsProductModelCodes
+        GetAncestorAndDescendantProductModelCodes $getAncestorAndDescendantProductModelCodes
     ) {
         $productIndexer->indexFromProductIdentifiers(Argument::cetera())->shouldNotBeCalled();
         $productModelIndexer->indexFromProductModelCodes(Argument::cetera())->shouldNotBeCalled();
         $getDescendantVariantProductIdentifiers->fromProductModelCodes(Argument::cetera())->shouldNotBeCalled();
-        $getAncestorAndDescendantsProductModelCodes->fromProductModelCodes(Argument::cetera())->shouldNotBeCalled();
+        $getAncestorAndDescendantProductModelCodes->fromProductModelCodes(Argument::cetera())->shouldNotBeCalled();
 
         $this->indexFromProductModelCodes([]);
     }
