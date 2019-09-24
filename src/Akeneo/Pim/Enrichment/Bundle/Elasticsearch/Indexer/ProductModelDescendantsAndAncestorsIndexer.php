@@ -49,7 +49,7 @@ final class ProductModelDescendantsAndAncestorsIndexer
      * @param string[] $productModelCodes
      * @param array    $options
      */
-    public function indexFromProductModelCodes(array $productModelCodes, array $options = []): void
+    public function indexFromProductModelCodes(array $productModelCodes): void
     {
         if (empty($productModelCodes)) {
             return;
@@ -60,15 +60,14 @@ final class ProductModelDescendantsAndAncestorsIndexer
             ->fromProductModelCodes($productModelCodes)
         ;
         $this->productModelIndexer->indexFromProductModelCodes(
-            array_unique(array_merge($productModelCodes, $ancestorAndDescendantsProductModelCodes)),
-            $options
+            array_unique(array_merge($productModelCodes, $ancestorAndDescendantsProductModelCodes))
         );
 
         $variantProductIdentifiers = $this->getDescendantVariantProductIdentifiers->fromProductModelCodes(
             $productModelCodes
         );
         if (!empty($variantProductIdentifiers)) {
-            $this->productIndexer->indexFromProductIdentifiers($variantProductIdentifiers, $options);
+            $this->productIndexer->indexFromProductIdentifiers($variantProductIdentifiers);
         }
     }
 }

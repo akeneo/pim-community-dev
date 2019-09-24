@@ -32,7 +32,7 @@ class GetAncestorAndDescendantProductModelCodesIntegration extends TestCase
                 'family' => 'familyA',
                 'variant_attribute_sets' => [
                     ['axes' => ['a_simple_select'], 'level' => 1],
-                    ['axes' => ['a_simple_select'], 'level' => 2],
+                    ['axes' => ['a_yes_no'], 'level' => 2],
                 ],
             ]
         );
@@ -68,7 +68,7 @@ class GetAncestorAndDescendantProductModelCodesIntegration extends TestCase
                 'family' => 'familyA',
                 'variant_attribute_sets' => [
                     ['axes' => ['a_simple_select'], 'level' => 1],
-                    ['axes' => ['a_simple_select'], 'level' => 2],
+                    ['axes' => ['a_yes_no'], 'level' => 2],
                 ],
             ]
         );
@@ -85,11 +85,6 @@ class GetAncestorAndDescendantProductModelCodesIntegration extends TestCase
                 ],
             ]
         );
-    }
-
-    protected function getAncestorAndDescendantProductModelCodes(): GetAncestorAndDescendantProductModelCodes
-    {
-        return $this->get('akeneo.pim.enrichment.product.query.get_ancestor_and_descendant_product_model_codes');
     }
 
     public function test_it_returns_descendant_codes()
@@ -144,10 +139,17 @@ class GetAncestorAndDescendantProductModelCodesIntegration extends TestCase
         );
     }
 
+    protected function getAncestorAndDescendantProductModelCodes(): GetAncestorAndDescendantProductModelCodes
+    {
+        return $this->get('akeneo.pim.enrichment.product.query.get_ancestor_and_descendant_product_model_codes');
+    }
+
     private function createFamilyVariant(array $data = []): FamilyVariantInterface
     {
         $family = $this->get('pim_catalog.factory.family_variant')->create();
         $this->get('pim_catalog.updater.family_variant')->update($family, $data);
+        $errors = $this->get('validator')->validate($family);
+        Assert::assertCount(0, $errors);
 
         $this->get('pim_catalog.saver.family_variant')->save($family);
 
@@ -160,15 +162,7 @@ class GetAncestorAndDescendantProductModelCodesIntegration extends TestCase
         $this->get('pim_catalog.updater.product_model')->update($productModel, $data);
 
         $errors = $this->get('pim_catalog.validator.product')->validate($productModel);
-        if (0 !== $errors->count()) {
-            throw new \Exception(
-                sprintf(
-                    'Impossible to setup test in %s: %s',
-                    static::class,
-                    $errors->get(0)->getMessage()
-                )
-            );
-        }
+        Assert::assertCount(0, $errors);
 
         $this->get('pim_catalog.saver.product_model')->save($productModel);
 
