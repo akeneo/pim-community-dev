@@ -5,6 +5,12 @@ extensions:
         targetZone: container
         position: 95
 
+    pim-product-view-form-assets:
+        module: pim/product-edit-form/assets
+        parent: pimee-product-view-column-tabs
+        targetZone: container
+        position: 95
+
     pim-menu-asset-family:
      module: pim/menu/tab
      parent: pim-menu
