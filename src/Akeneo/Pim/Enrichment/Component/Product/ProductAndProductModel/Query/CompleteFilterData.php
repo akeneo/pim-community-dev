@@ -55,7 +55,7 @@ class CompleteFilterData
     /**
      * Return an array of "integer" indexed by channel and locale:
      *    - 1 means that all variant product are incomplete
-     *    - 0 means that at least one product is incomplete
+     *    - 0 means that at least one product is complete
      *
      * This method will return an array like that:
      * [
