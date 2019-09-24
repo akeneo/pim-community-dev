@@ -11,7 +11,7 @@
 namespace Akeneo\Asset\Bundle\Command;
 
 use Akeneo\Asset\Component\Upload\UploadContext;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -22,9 +22,21 @@ use Symfony\Component\Filesystem\Filesystem;
  *
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
-class CopyAssetFilesCommand extends ContainerAwareCommand
+class CopyAssetFilesCommand extends Command
 {
     const NAME = 'pim:product-asset:copy-asset-files';
+
+    protected static $defaultName = self::NAME;
+
+    /** @var string */
+    private $tmpStorageDir;
+
+    public function __construct(string $tmpStorageDir)
+    {
+        parent::__construct();
+
+        $this->tmpStorageDir = $tmpStorageDir;
+    }
 
     /**
      * @inheritdoc}
@@ -32,7 +44,6 @@ class CopyAssetFilesCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName(static::NAME)
             ->setDescription(
                 'Copy the content of a source directory to the default assets mass upload import directory'
             )
@@ -69,7 +80,7 @@ class CopyAssetFilesCommand extends ContainerAwareCommand
         }
 
         $uploadContext = new UploadContext(
-            $this->getContainer()->getParameter('tmp_storage_dir'),
+            $this->tmpStorageDir,
             $input->getOption('user')
         );
 

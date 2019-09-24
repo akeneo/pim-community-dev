@@ -11,9 +11,23 @@
 
 namespace Akeneo\Asset\Bundle\Command;
 
+use Akeneo\Asset\Component\Builder\ReferenceBuilderInterface;
+use Akeneo\Asset\Component\Builder\VariationBuilderInterface;
+use Akeneo\Asset\Component\Finder\AssetFinderInterface;
+use Akeneo\Asset\Component\Persistence\Query\Sql\FindAssetCodesWithMissingVariationWithFileInterface;
+use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
+use Akeneo\Asset\Component\Repository\VariationRepositoryInterface;
+use Akeneo\Asset\Component\VariationFileGeneratorInterface;
+use Akeneo\Asset\Component\VariationsCollectionFilesGeneratorInterface;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Doctrine\DBAL\Driver\Connection;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Generate the variation files of an asset depending on a channel and eventually a locale.
@@ -22,12 +36,41 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class GenerateVariationFileCommand extends AbstractGenerationVariationFileCommand
 {
+    protected static $defaultName = 'pim:asset:generate-variation-file';
+
+    /** @var VariationsCollectionFilesGeneratorInterface */
+    private $variationsCollectionFilesGenerator;
+
+    public function __construct(
+        AssetFinderInterface $assetFinder,
+        ReferenceBuilderInterface $referenceBuilder,
+        VariationBuilderInterface $variationBuilder,
+        SaverInterface $assetSaver,
+        VariationFileGeneratorInterface $variationFileGenerator,
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository,
+        AssetRepositoryInterface $assetRepository,
+        VariationsCollectionFilesGeneratorInterface $variationsCollectionFilesGenerator
+    ) {
+        parent::__construct(
+            $assetFinder,
+            $referenceBuilder,
+            $variationBuilder,
+            $assetSaver,
+            $variationFileGenerator,
+            $channelRepository,
+            $localeRepository,
+            $assetRepository
+        );
+
+        $this->variationsCollectionFilesGenerator = $variationsCollectionFilesGenerator;
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
-        $this->setName('pim:asset:generate-variation-file');
         $this->setDescription('Generate the variation file for a given asset, channel and locale.');
         $this->addArgument('asset', InputArgument::REQUIRED);
         $this->addArgument('channel', InputArgument::REQUIRED);
@@ -58,11 +101,10 @@ class GenerateVariationFileCommand extends AbstractGenerationVariationFileComman
             return 1;
         }
 
-        $generator = $this->getContainer()->get('pimee_product_asset.variations_collection_files_generator');
         $output->writeln($this->getGenerationMessage($asset, $channel, $locale));
 
         try {
-            $generator->generate([$variation]);
+            $this->variationsCollectionFilesGenerator->generate([$variation]);
         } catch (\Exception $e) {
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
 

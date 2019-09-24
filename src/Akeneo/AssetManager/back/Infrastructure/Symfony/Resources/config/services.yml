@@ -82,3 +82,13 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
             - '@akeneo_assetmanager.infrastructure.persistence.asset.hydrator.value'
+
+    Akeneo\AssetManager\Infrastructure\Symfony\Command\IndexAssetsCommand:
+        arguments:
+            - '@akeneo_assetmanager.client.asset'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.asset_family_exists'
+            - '%asset_index_name%'
+        tags:
+            - { name: console.command }

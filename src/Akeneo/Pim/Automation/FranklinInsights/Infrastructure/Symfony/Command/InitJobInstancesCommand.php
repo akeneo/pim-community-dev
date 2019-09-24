@@ -14,19 +14,21 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Symfony\Command;
 
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\JobInstanceNames;
-use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Component\Console\CommandLauncher;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Doctrine\Common\Persistence\ObjectRepository;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-class InitJobInstancesCommand extends ContainerAwareCommand
+class InitJobInstancesCommand extends Command
 {
     /** @var string */
     public const NAME = 'pimee:franklin-insights:init-job-instances';
+
+    protected static $defaultName = self::NAME;
 
     /** @var CommandLauncher */
     private $commandLauncher;
@@ -34,21 +36,14 @@ class InitJobInstancesCommand extends ContainerAwareCommand
     /** @var JobInstanceRepository */
     private $jobInstanceRepository;
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure(): void
-    {
-        $this->setName(self::NAME);
-    }
+    public function __construct(
+        ObjectRepository $jobInstanceRepository,
+        CommandLauncher $commandLauncher
+    ) {
+        parent::__construct();
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function initialize(InputInterface $input, OutputInterface $output): void
-    {
-        $this->jobInstanceRepository = $this->getContainer()->get('pim_enrich.repository.job_instance');
-        $this->commandLauncher = $this->getContainer()->get('pim_catalog.command_launcher');
+        $this->jobInstanceRepository = $jobInstanceRepository;
+        $this->commandLauncher = $commandLauncher;
     }
 
     /**

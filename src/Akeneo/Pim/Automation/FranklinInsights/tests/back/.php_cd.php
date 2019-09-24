@@ -197,8 +197,6 @@ $rules = [
 
             // external dependencies
             'Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass',
-            // TODO: the next line could be removed with lazy-loaded commands
-            'Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand',
             'Symfony\Component',
 
             // TODO remove all links by reference
@@ -207,6 +205,8 @@ $rules = [
 
             // TIP-1017: Do not use public constants of AttributeTypes
             'Akeneo\Pim\Structure\Component\AttributeTypes',
+
+            'Doctrine\Common\Persistence\ObjectRepository',
         ]
     )->in('Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Symfony'),
 

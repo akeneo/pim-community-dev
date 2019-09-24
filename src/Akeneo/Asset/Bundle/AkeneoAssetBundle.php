@@ -55,18 +55,4 @@ class AkeneoAssetBundle extends Bundle
             )
         );
     }
-
-    /**
-     * Explicitly register commands
-     *
-     * @param Application $application
-     */
-    public function registerCommands(Application $application)
-    {
-        $application->add(new GenerateMissingVariationFilesCommand());
-        $application->add(new GenerateVariationFileCommand());
-        $application->add(new SendAlertNotificationsCommand());
-        $application->add(new ProcessMassUploadCommand());
-        $application->add(new CopyAssetFilesCommand());
-    }
 }

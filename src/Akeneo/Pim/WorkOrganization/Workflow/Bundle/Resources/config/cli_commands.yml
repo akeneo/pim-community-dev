@@ -1,0 +1,12 @@
+services:
+    Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command\IndexProductProposalCommand:
+        arguments:
+            - '@pimee_workflow.repository.product_draft'
+            - '@pim_catalog.elasticsearch.product_proposal_indexer'
+            - '@pimee_workflow.query.count_product_proposals'
+            - '@pimee_workflow.repository.product_model_draft'
+            - '@pim_catalog.elasticsearch.product_model_proposal_indexer'
+            - '@pimee_workflow.query.count_product_model_proposals'
+            - '%record_index_name%'
+        tags:
+            - { name: console.command }

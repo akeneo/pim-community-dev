@@ -29,3 +29,59 @@ services:
         arguments:
           - '%kernel.root_dir%'
           - '%kernel.environment%'
+
+    Akeneo\Asset\Bundle\Command\GenerateVariationFileCommand:
+        arguments:
+            - '@pimee_product_asset.finder.asset'
+            - '@pimee_product_asset.builder.reference'
+            - '@pimee_product_asset.builder.variation'
+            - '@pimee_product_asset.saver.asset'
+            - '@pimee_product_asset.variation_file_generator'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
+            - '@pimee_product_asset.repository.asset'
+            - '@pimee_product_asset.variations_collection_files_generator'
+        tags:
+            - { name: console.command }
+
+    Akeneo\Asset\Bundle\Command\GenerateMissingVariationFilesCommand:
+        arguments:
+            - '@pimee_product_asset.finder.asset'
+            - '@pimee_product_asset.builder.reference'
+            - '@pimee_product_asset.builder.variation'
+            - '@pimee_product_asset.saver.asset'
+            - '@pimee_product_asset.variation_file_generator'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
+            - '@pimee_product_asset.repository.asset'
+            - '@pimee_product_asset.variations_collection_files_generator'
+            - '@pimee_product_asset.repository.variation'
+            - '@pimee_product_asset.query.find_asset_codes_with_missing_variation_with_file'
+            - '@pim_connector.doctrine.cache_clearer'
+            - '@database_connection'
+            - '@event_dispatcher'
+        tags:
+            - { name: console.command }
+
+    Akeneo\Asset\Bundle\Command\CopyAssetFilesCommand:
+        arguments:
+            - '%tmp_storage_dir%'
+        tags:
+            - { name: console.command }
+
+    Akeneo\Asset\Bundle\Command\ProcessMassUploadCommand:
+        arguments:
+            - '@pimee_product_asset.mass_upload_processor'
+            - '%tmp_storage_dir%'
+        tags:
+            - { name: console.command }
+
+    Akeneo\Asset\Bundle\Command\SendAlertNotificationsCommand:
+        arguments:
+            - '@pim_user.repository.user'
+            - '@pimee_product_asset.repository.asset'
+            - '@router'
+            - '@templating'
+            - '@pim_notification.email.email_notifier'
+        tags:
+            - { name: console.command }

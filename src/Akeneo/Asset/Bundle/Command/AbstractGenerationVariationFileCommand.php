@@ -9,6 +9,7 @@
 
 namespace Akeneo\Asset\Bundle\Command;
 
+use Akeneo\Asset\Component\Builder\ReferenceBuilderInterface;
 use Akeneo\Asset\Component\Builder\VariationBuilderInterface;
 use Akeneo\Asset\Component\Finder\AssetFinderInterface;
 use Akeneo\Asset\Component\Model\AssetInterface;
@@ -20,7 +21,8 @@ use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Symfony\Component\Console\Command\Command;
 
 /**
  * Generate the variation files of a reference.
@@ -28,8 +30,63 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
  * @author Julien Janvier <jjanvier@akeneo.com>
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */
-abstract class AbstractGenerationVariationFileCommand extends ContainerAwareCommand
+abstract class AbstractGenerationVariationFileCommand extends Command
 {
+    /**
+     * @var AssetFinderInterface
+     */
+    private $assetFinder;
+    /**
+     * @var ReferenceBuilderInterface
+     */
+    private $referenceBuilder;
+    /**
+     * @var VariationBuilderInterface
+     */
+    private $variationBuilder;
+    /**
+     * @var SaverInterface
+     */
+    private $assetSaver;
+    /**
+     * @var VariationFileGeneratorInterface
+     */
+    private $variationFileGenerator;
+    /**
+     * @var ChannelRepositoryInterface
+     */
+    private $channelRepository;
+    /**
+     * @var LocaleRepositoryInterface
+     */
+    private $localeRepository;
+    /**
+     * @var AssetRepositoryInterface
+     */
+    private $assetRepository;
+
+    public function __construct(
+        AssetFinderInterface $assetFinder,
+        ReferenceBuilderInterface $referenceBuilder,
+        VariationBuilderInterface $variationBuilder,
+        SaverInterface $assetSaver,
+        VariationFileGeneratorInterface $variationFileGenerator,
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository,
+        AssetRepositoryInterface $assetRepository
+    ) {
+        parent::__construct();
+
+        $this->assetFinder = $assetFinder;
+        $this->referenceBuilder = $referenceBuilder;
+        $this->variationBuilder = $variationBuilder;
+        $this->assetSaver = $assetSaver;
+        $this->variationFileGenerator = $variationFileGenerator;
+        $this->channelRepository = $channelRepository;
+        $this->localeRepository = $localeRepository;
+        $this->assetRepository = $assetRepository;
+    }
+
     /**
      * @param AssetInterface   $asset
      * @param ChannelInterface $channel
@@ -58,7 +115,7 @@ abstract class AbstractGenerationVariationFileCommand extends ContainerAwareComm
      */
     protected function getAssetFinder()
     {
-        return $this->getContainer()->get('pimee_product_asset.finder.asset');
+        return $this->assetFinder;
     }
 
     /**
@@ -109,7 +166,7 @@ abstract class AbstractGenerationVariationFileCommand extends ContainerAwareComm
      */
     protected function getReferenceBuilder()
     {
-        return $this->getContainer()->get('pimee_product_asset.builder.reference');
+        return $this->referenceBuilder;
     }
 
     /**
@@ -117,7 +174,7 @@ abstract class AbstractGenerationVariationFileCommand extends ContainerAwareComm
      */
     protected function getVariationBuilder()
     {
-        return $this->getContainer()->get('pimee_product_asset.builder.variation');
+        return $this->variationBuilder;
     }
 
     /**
@@ -125,7 +182,7 @@ abstract class AbstractGenerationVariationFileCommand extends ContainerAwareComm
      */
     protected function getAssetSaver()
     {
-        return $this->getContainer()->get('pimee_product_asset.saver.asset');
+        return $this->assetSaver;
     }
 
     /**
@@ -159,7 +216,7 @@ abstract class AbstractGenerationVariationFileCommand extends ContainerAwareComm
      */
     protected function getVariationFileGenerator()
     {
-        return $this->getContainer()->get('pimee_product_asset.variation_file_generator');
+        return $this->variationFileGenerator;
     }
 
     /**
@@ -167,7 +224,7 @@ abstract class AbstractGenerationVariationFileCommand extends ContainerAwareComm
      */
     protected function getChannelRepository()
     {
-        return $this->getContainer()->get('pim_catalog.repository.channel');
+        return $this->channelRepository;
     }
 
     /**
@@ -175,7 +232,7 @@ abstract class AbstractGenerationVariationFileCommand extends ContainerAwareComm
      */
     protected function getLocaleRepository()
     {
-        return $this->getContainer()->get('pim_catalog.repository.locale');
+        return $this->localeRepository;
     }
 
     /**
@@ -183,6 +240,6 @@ abstract class AbstractGenerationVariationFileCommand extends ContainerAwareComm
      */
     protected function getAssetRepository()
     {
-        return $this->getContainer()->get('pimee_product_asset.repository.asset');
+        return $this->assetRepository;
     }
 }

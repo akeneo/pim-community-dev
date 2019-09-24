@@ -15,7 +15,7 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftIn
 use Behat\Gherkin\Node\TableNode;
 use Context\Spin\SpinCapableTrait;
 use PHPUnit\Framework\Assert;
-use Symfony\Component\Console\Application;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
@@ -59,11 +59,9 @@ class EnterpriseCommandContext extends CommandContext
      */
     public function iGenerateMissingVariations($assetCode = null)
     {
-        $application = new Application();
-        $application->add(new GenerateMissingVariationFilesCommand());
+        $application = new Application($this->getKernel());
 
         $command = $application->find('pim:asset:generate-missing-variation-files');
-        $command->setContainer($this->getContainer());
         $commandTester = new CommandTester($command);
 
         $commandOptions = ['command' => $command->getName()];

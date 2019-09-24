@@ -174,3 +174,20 @@ services:
         tags:
             - { name: pim_analytics.data_collector, type: update_checker }
             - { name: pim_analytics.data_collector, type: system_info_report }
+
+    Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Command\NotificationDueDateWarningCommand:
+        arguments:
+            - '@pimee_teamwork_assistant.repository.project'
+            - '@pimee_teamwork_assistant.notifier.project_due_date_reminder'
+            - '@pimee_teamwork_assistant.repository.project_completeness'
+            - '@pimee_teamwork_assistant.repository.user'
+        tags:
+            - { name: console.command }
+
+    Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Command\ProjectRecalculationCommand:
+        arguments:
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+            - '@pimee_teamwork_assistant.repository.project'
+            - '%pimee_teamwork_assistant.project_calculation.job_name%'
+        tags:
+            - { name: console.command }

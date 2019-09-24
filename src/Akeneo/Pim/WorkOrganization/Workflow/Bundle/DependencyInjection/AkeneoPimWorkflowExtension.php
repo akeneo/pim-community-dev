@@ -77,5 +77,6 @@ class AkeneoPimWorkflowExtension extends Extension
         $loader->load('processors.yml');
         $loader->load('writers.yml');
         $loader->load('presenters.yml');
+        $loader->load('cli_commands.yml');
     }
 }

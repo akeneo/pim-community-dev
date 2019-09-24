@@ -14,8 +14,12 @@ declare(strict_types=1);
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command;
 
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\CountProductModelProposals as CountProductModelProposalsQuery;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\CountProductProposals as CountProductProposalsQuery;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
+use Doctrine\Common\Persistence\ObjectRepository;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -24,10 +28,48 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Index product and product model proposals into Elasticsearch
  */
-class IndexProductProposalCommand extends ContainerAwareCommand
+class IndexProductProposalCommand extends Command
 {
+    protected static $defaultName = 'pimee:product-proposal:index';
+
     /** @var integer */
     const DEFAULT_BATCH_SIZE = 100;
+
+    /** @var ObjectRepository */
+    private $productDraftRepository;
+
+    /** @var BulkIndexerInterface */
+    private $productProposalIndexer;
+
+    /** @var CountProductProposalsQuery */
+    private $countProductProposals;
+
+    /** @var ObjectRepository */
+    private $productModelDraftRepository;
+
+    /** @var BulkIndexerInterface */
+    private $productModelDraftIndexer;
+
+    /** @var CountProductModelProposalsQuery */
+    private $countProductModelProposals;
+
+    public function __construct(
+        ObjectRepository $productDraftRepository,
+        BulkIndexerInterface $productProposalIndexer,
+        CountProductProposalsQuery $countProductProposals,
+        ObjectRepository $productModelDraftRepository,
+        BulkIndexerInterface $productModelDraftIndexer,
+        CountProductModelProposalsQuery $countProductModelProposals
+    ) {
+        parent::__construct();
+
+        $this->productDraftRepository = $productDraftRepository;
+        $this->productProposalIndexer = $productProposalIndexer;
+        $this->countProductProposals = $countProductProposals;
+        $this->productModelDraftRepository = $productModelDraftRepository;
+        $this->productModelDraftIndexer = $productModelDraftIndexer;
+        $this->countProductModelProposals = $countProductModelProposals;
+    }
 
     /**
      * {@inheritdoc}
@@ -35,7 +77,6 @@ class IndexProductProposalCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('pimee:product-proposal:index')
             ->addOption(
                 'batch-size',
                 false,
@@ -63,10 +104,7 @@ class IndexProductProposalCommand extends ContainerAwareCommand
      */
     private function indexProductProposals(int $batchSize, OutputInterface $output): void
     {
-        $productDraftRepository = $this->getContainer()->get('pimee_workflow.repository.product_draft');
-        $productProposalIndexer = $this->getContainer()->get('pim_catalog.elasticsearch.product_proposal_indexer');
-
-        $proposalsCount = $this->getContainer()->get('pimee_workflow.query.count_product_proposals')->fetch();
+        $proposalsCount = $this->countProductProposals->fetch();
 
         $output->writeln(sprintf('<info>%s product proposals to index</info>', $proposalsCount));
 
@@ -76,8 +114,8 @@ class IndexProductProposalCommand extends ContainerAwareCommand
         $proposalCriteria = ['status' => EntityWithValuesDraftInterface::READY];
         $offset = 0;
 
-        while (!empty($productProposals = $productDraftRepository->findBy($proposalCriteria, null, $batchSize, $offset))) {
-            $productProposalIndexer->indexAll($productProposals, ['index_refresh' => Refresh::disable()]);
+        while (!empty($productProposals = $this->productDraftRepository->findBy($proposalCriteria, null, $batchSize, $offset))) {
+            $this->productProposalIndexer->indexAll($productProposals, ['index_refresh' => Refresh::disable()]);
 
             $offset += $batchSize;
             $progressBar->advance(count($productProposals));
@@ -92,10 +130,7 @@ class IndexProductProposalCommand extends ContainerAwareCommand
      */
     private function indexProductModelProposals(int $batchSize, OutputInterface $output): void
     {
-        $productModelDraftRepository = $this->getContainer()->get('pimee_workflow.repository.product_model_draft');
-        $productModelProposalIndexer = $this->getContainer()->get('pim_catalog.elasticsearch.product_model_proposal_indexer');
-
-        $proposalsCount = $this->getContainer()->get('pimee_workflow.query.count_product_model_proposals')->fetch();
+        $proposalsCount = $this->countProductProposals->fetch();
 
         $output->writeln(sprintf('<info>%s product model proposals to index</info>', $proposalsCount));
 
@@ -105,8 +140,8 @@ class IndexProductProposalCommand extends ContainerAwareCommand
         $proposalCriteria = ['status' => EntityWithValuesDraftInterface::READY];
         $offset = 0;
 
-        while (!empty($productProposals = $productModelDraftRepository->findBy($proposalCriteria, null, $batchSize, $offset))) {
-            $productModelProposalIndexer->indexAll($productProposals, ['index_refresh' => Refresh::disable()]);
+        while (!empty($productProposals = $this->productModelDraftRepository->findBy($proposalCriteria, null, $batchSize, $offset))) {
+            $this->productModelDraftIndexer->indexAll($productProposals, ['index_refresh' => Refresh::disable()]);
 
             $offset += $batchSize;
             $progressBar->advance(count($productProposals));

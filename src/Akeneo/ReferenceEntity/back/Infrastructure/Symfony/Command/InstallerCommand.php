@@ -14,7 +14,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Symfony\Command;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\Installer\AssetsInstaller;
 use Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\Installer\FixturesInstaller;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -27,8 +27,10 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class InstallerCommand extends ContainerAwareCommand implements EventSubscriberInterface
+class InstallerCommand extends Command implements EventSubscriberInterface
 {
+    protected static $defaultName = self::RESET_FIXTURES_COMMAND_NAME;
+
     private const RESET_FIXTURES_COMMAND_NAME = 'akeneo:reference-entity:reset-fixtures';
 
     /** @var FixturesInstaller */
@@ -50,8 +52,6 @@ class InstallerCommand extends ContainerAwareCommand implements EventSubscriberI
         $this->fixturesInstaller = $fixturesInstaller;
         $this->assetInstaller = $assetInstaller;
         $this->catalogName = $catalogName;
-
-        parent::__construct();
     }
 
     /**
@@ -60,7 +60,6 @@ class InstallerCommand extends ContainerAwareCommand implements EventSubscriberI
     protected function configure()
     {
         $this
-            ->setName(self::RESET_FIXTURES_COMMAND_NAME)
             ->setDescription('Resets the fixtures of the reference entity bounded context.')
             ->setHidden(true);
     }

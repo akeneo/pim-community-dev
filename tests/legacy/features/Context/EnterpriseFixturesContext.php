@@ -37,7 +37,7 @@ use Behat\Gherkin\Node\TableNode;
 use Context\FixturesContext as BaseFixturesContext;
 use Context\Spin\SpinCapableTrait;
 use PHPUnit\Framework\Assert;
-use Symfony\Component\Console\Application;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Yaml\Parser;
 
@@ -1042,11 +1042,9 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      */
     public function theMissingVariationsHaveBeenGenerated()
     {
-        $application = new Application();
-        $application->add(new GenerateMissingVariationFilesCommand());
+        $application = new Application($this->getKernel());
 
         $generateCommand = $application->find('pim:asset:generate-missing-variation-files');
-        $generateCommand->setContainer($this->getContainer());
         $generateCommandTester = new CommandTester($generateCommand);
 
         $generateCommandTester->execute(

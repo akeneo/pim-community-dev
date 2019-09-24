@@ -9,7 +9,7 @@ use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\RefreshAssets\Refre
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\RefreshAssets\RefreshAsset;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -21,8 +21,10 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class RefreshAssetsCommand extends ContainerAwareCommand
+class RefreshAssetsCommand extends Command
 {
+    protected static $defaultName = self::REFRESH_ASSETS_COMMAND_NAME;
+
     public const REFRESH_ASSETS_COMMAND_NAME = 'akeneo:asset-manager:refresh-assets';
     private const BULK_SIZE = 100;
 

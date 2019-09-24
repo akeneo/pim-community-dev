@@ -12,14 +12,26 @@
 namespace Akeneo\Asset\Bundle\Command;
 
 use Akeneo\Asset\Bundle\Event\AssetEvent;
+use Akeneo\Asset\Component\Builder\ReferenceBuilderInterface;
+use Akeneo\Asset\Component\Builder\VariationBuilderInterface;
+use Akeneo\Asset\Component\Finder\AssetFinderInterface;
 use Akeneo\Asset\Component\Model\AssetInterface;
 use Akeneo\Asset\Component\Model\VariationInterface;
+use Akeneo\Asset\Component\Persistence\Query\Sql\FindAssetCodesWithMissingVariationWithFileInterface;
 use Akeneo\Asset\Component\ProcessedItem;
+use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
 use Akeneo\Asset\Component\Repository\VariationRepositoryInterface;
+use Akeneo\Asset\Component\VariationFileGeneratorInterface;
 use Akeneo\Asset\Component\VariationsCollectionFilesGeneratorInterface;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Doctrine\DBAL\Driver\Connection;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Generate the missing variation files
@@ -29,14 +41,68 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFileCommand
 {
+    protected static $defaultName = 'pim:asset:generate-missing-variation-files';
+
     const BATCH_SIZE = 100;
+
+    /** @var Connection */
+    private $connection;
+
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
+
+    /** @var VariationRepositoryInterface */
+    private $variationRepository;
+
+    /** @var FindAssetCodesWithMissingVariationWithFileInterface */
+    private $assetCodesWithMissingVariationWithFile;
+
+    /** @var EntityManagerClearerInterface */
+    private $entityManagerClearer;
+
+    /** @var VariationsCollectionFilesGeneratorInterface */
+    private $variationsCollectionFilesGenerator;
+
+    public function __construct(
+        AssetFinderInterface $assetFinder,
+        ReferenceBuilderInterface $referenceBuilder,
+        VariationBuilderInterface $variationBuilder,
+        SaverInterface $assetSaver,
+        VariationFileGeneratorInterface $variationFileGenerator,
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository,
+        AssetRepositoryInterface $assetRepository,
+        VariationsCollectionFilesGeneratorInterface $variationsCollectionFilesGenerator,
+        VariationRepositoryInterface $variationRepository,
+        FindAssetCodesWithMissingVariationWithFileInterface $assetCodesWithMissingVariationWithFile,
+        EntityManagerClearerInterface $entityManagerClearer,
+        Connection $connection,
+        EventDispatcherInterface $eventDispatcher
+    ) {
+        parent::__construct(
+            $assetFinder,
+            $referenceBuilder,
+            $variationBuilder,
+            $assetSaver,
+            $variationFileGenerator,
+            $channelRepository,
+            $localeRepository,
+            $assetRepository
+        );
+
+        $this->connection = $connection;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->variationRepository = $variationRepository;
+        $this->assetCodesWithMissingVariationWithFile = $assetCodesWithMissingVariationWithFile;
+        $this->entityManagerClearer = $entityManagerClearer;
+        $this->variationsCollectionFilesGenerator = $variationsCollectionFilesGenerator;
+    }
 
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
-        $this->setName('pim:asset:generate-missing-variation-files');
         $this->setDescription('Generate missing variation files for one asset or for all assets.');
         $this->addOption(
             'asset',
@@ -88,31 +154,13 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
     }
 
     /**
-     * @return VariationsCollectionFilesGeneratorInterface
-     */
-    protected function getVariationsCollectionFileGenerator()
-    {
-        return $this->getContainer()->get('pimee_product_asset.variations_collection_files_generator');
-    }
-
-    /**
-     * @return VariationRepositoryInterface
-     */
-    protected function getVariationRepository(): VariationRepositoryInterface
-    {
-        return $this->getContainer()->get('pimee_product_asset.repository.variation');
-    }
-
-    /**
      * @param array $assetCodes
      *
      * @return AssetInterface[]
      */
     protected function fetchAssetsByCode($assetCodes)
     {
-        $assetRepository = $this->getContainer()->get('pimee_product_asset.repository.asset');
-
-        return $assetRepository->findByIdentifiers($assetCodes);
+        return $this->getAssetRepository()->findByIdentifiers($assetCodes);
     }
 
     /**
@@ -120,14 +168,12 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
      */
     private function findAssetsWithMissingVariations(): array
     {
-        $query = $this->getContainer()->get('pimee_product_asset.query.find_asset_codes_with_missing_variation_with_file');
-
-        return $query->execute();
+        return $this->assetCodesWithMissingVariationWithFile->execute();
     }
 
     protected function clearCache()
     {
-        $this->getContainer()->get('pim_connector.doctrine.cache_clearer')->clear();
+        $this->entityManagerClearer->clear();
     }
 
     /**
@@ -157,7 +203,6 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
      */
     protected function retrieveIdsOfNotGeneratedVariations(): array
     {
-        $connection = $this->getContainer()->get('database_connection');
         $sql = <<<SQL
 SELECT ppav.id as id
 FROM pimee_product_asset_variation ppav
@@ -165,7 +210,7 @@ WHERE ppav.file_info_id IS NULL
   AND ppav.source_file_info_id IS NOT NULL
 SQL;
 
-        $statement = $connection->query($sql);
+        $statement = $this->connection->query($sql);
 
         return array_column($statement->fetchAll(), 'id');
     }
@@ -179,7 +224,7 @@ SQL;
         $chunks = array_chunk($missingVariationIds, static::BATCH_SIZE);
 
         foreach ($chunks as $missingVariationIdsToProcess) {
-            $missingVariations = $this->getVariationRepository()->findBy(['id' => $missingVariationIdsToProcess]);
+            $missingVariations = $this->variationRepository->findBy(['id' => $missingVariationIdsToProcess]);
             $this->generateVariationFiles($output, $missingVariations);
 
             $this->clearCache();
@@ -196,8 +241,7 @@ SQL;
      */
     private function generateVariationFiles(OutputInterface $output, array $missingVariations): array
     {
-        $generator = $this->getVariationsCollectionFileGenerator();
-        $processedList = $generator->generate($missingVariations, true);
+        $processedList = $this->variationsCollectionFilesGenerator->generate($missingVariations, true);
 
         $processedAssets = [];
         foreach ($processedList as $item) {
@@ -245,8 +289,6 @@ SQL;
      */
     protected function buildAssets(array $assetCodes, OutputInterface $output): void
     {
-        $eventDispatcher = $this->getContainer()->get('event_dispatcher');
-
         $chunks = array_chunk($assetCodes, static::BATCH_SIZE);
         foreach ($chunks as $assetCodesToBuild) {
             $assets = $this->fetchAssetsByCode($assetCodesToBuild);
@@ -260,7 +302,7 @@ SQL;
                 $assets
             );
             $this->getAssetSaver()->saveAll($builtAssets);
-            $eventDispatcher->dispatch(AssetEvent::POST_UPLOAD_FILES, new AssetEvent($builtAssets));
+            $this->eventDispatcher->dispatch(AssetEvent::POST_UPLOAD_FILES, new AssetEvent($builtAssets));
 
             $this->clearCache();
         }

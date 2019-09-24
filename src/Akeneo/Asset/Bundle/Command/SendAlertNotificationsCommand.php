@@ -12,10 +12,10 @@
 namespace Akeneo\Asset\Bundle\Command;
 
 use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
-use Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface;
+use Akeneo\Platform\Bundle\NotificationBundle\Email\MailNotifier;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -26,8 +26,10 @@ use Symfony\Component\Routing\RouterInterface;
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class SendAlertNotificationsCommand extends ContainerAwareCommand
+class SendAlertNotificationsCommand extends Command
 {
+    protected static $defaultName = 'pim:asset:send-expiration-notification';
+
     /** @var string */
     protected $htmlBodyTemplate = '@AkeneoAsset/Email/notification.html.twig';
 
@@ -37,13 +39,43 @@ class SendAlertNotificationsCommand extends ContainerAwareCommand
     /** @var string */
     protected $baseUrl = null;
 
+    /** @var UserRepositoryInterface */
+    private $userRepository;
+
+    /** @var AssetRepositoryInterface */
+    private $assetRepository;
+
+    /** @var RouterInterface */
+    private $router;
+
+    /** @var EngineInterface */
+    private $templateEngine;
+
+    /** @var MailNotifier */
+    private $notifier;
+
+    public function __construct(
+        UserRepositoryInterface $userRepository,
+        AssetRepositoryInterface $assetRepository,
+        RouterInterface $router,
+        EngineInterface $templateEngine,
+        MailNotifier $notifier
+    ) {
+        parent::__construct();
+
+        $this->userRepository = $userRepository;
+        $this->assetRepository = $assetRepository;
+        $this->router = $router;
+        $this->templateEngine = $templateEngine;
+        $this->notifier = $notifier;
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
-        $this->setName('pim:asset:send-expiration-notification')
-            ->setDescription(
+        $this->setDescription(
                 'Send a notification and an email if it\'s
                  enabled for the user when an Asset will be outdated soon'
             )
@@ -81,14 +113,14 @@ class SendAlertNotificationsCommand extends ContainerAwareCommand
             $this->baseUrl = $baseUrl;
         }
 
-        $users = $this->getUserRepository()->findBy(['emailNotifications' => true]);
+        $users = $this->userRepository->findBy(['emailNotifications' => true]);
 
         foreach ($users as $user) {
-            $assets = $this->getAssetRepository()
+            $assets = $this->assetRepository
                 ->findExpiringAssets(new \DateTime(), $user->getProperty('asset_delay_reminder'));
 
             foreach ($assets as &$asset) {
-                $uri = $this->getRouter()->generate('pimee_product_asset_edit', ['id' => $asset['id']]);
+                $uri = $this->router->generate('pimee_product_asset_edit', ['id' => $asset['id']]);
                 $asset['url'] = $uri;
             }
 
@@ -102,57 +134,17 @@ class SendAlertNotificationsCommand extends ContainerAwareCommand
                     'locale'  => 'en_US'
                 ];
 
-                $htmlBody = $this->getTemplating()
+                $htmlBody = $this->templateEngine
                     ->render($this->htmlBodyTemplate, $parameters);
-                $txtBody = $this->getTemplating()
+                $txtBody = $this->templateEngine
                     ->render($this->textBodyTemplate, $parameters);
 
-                $this->getMailNotifier()->notify([$user], 'Asset expiration', $txtBody, $htmlBody);
+                $this->notifier->notify([$user], 'Asset expiration', $txtBody, $htmlBody);
             }
         }
 
         $output->writeln('<info>Done!</info>');
 
         return 0;
-    }
-
-    /**
-     * @return UserRepositoryInterface
-     */
-    protected function getUserRepository()
-    {
-        return $this->getContainer()->get('pim_user.repository.user');
-    }
-
-    /**
-     * @return AssetRepositoryInterface
-     */
-    protected function getAssetRepository()
-    {
-        return $this->getContainer()->get('pimee_product_asset.repository.asset');
-    }
-
-    /**
-     * @return RouterInterface
-     */
-    protected function getRouter()
-    {
-        return $this->getContainer()->get('router');
-    }
-
-    /**
-     * @return EngineInterface
-     */
-    protected function getTemplating()
-    {
-        return $this->getContainer()->get('templating');
-    }
-
-    /**
-     * @return NotifierInterface
-     */
-    protected function getMailNotifier()
-    {
-        return $this->getContainer()->get('pim_notification.email.email_notifier');
     }
 }

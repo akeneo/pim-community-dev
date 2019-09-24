@@ -7,7 +7,7 @@ use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\RefreshRecords\
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\RefreshRecords\RefreshRecord;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -19,8 +19,10 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class RefreshRecordsCommand extends ContainerAwareCommand
+class RefreshRecordsCommand extends Command
 {
+    protected static $defaultName = self::REFRESH_RECORDS_COMMAND_NAME;
+
     public const REFRESH_RECORDS_COMMAND_NAME = 'akeneo:reference-entity:refresh-records';
     private const BULK_SIZE = 100;
 
@@ -51,7 +53,6 @@ class RefreshRecordsCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName(self::REFRESH_RECORDS_COMMAND_NAME)
             ->addOption(
                 'all',
                 true,

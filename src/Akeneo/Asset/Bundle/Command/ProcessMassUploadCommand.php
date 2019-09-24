@@ -10,11 +10,10 @@
  */
 namespace Akeneo\Asset\Bundle\Command;
 
-use Akeneo\Asset\Bundle\Doctrine\Common\Saver\AssetSaver;
 use Akeneo\Asset\Component\ProcessedItem;
 use Akeneo\Asset\Component\Upload\MassUpload\MassUploadProcessor;
 use Akeneo\Asset\Component\Upload\UploadContext;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -24,9 +23,27 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */
-class ProcessMassUploadCommand extends ContainerAwareCommand
+class ProcessMassUploadCommand extends Command
 {
     const NAME = 'pim:product-asset:mass-upload';
+
+    protected static $defaultName = self::NAME;
+
+    /** @var MassUploadProcessor */
+    private $massUploadProcessor;
+
+    /** @var string */
+    private $tmpStorageDir;
+
+    public function __construct(
+        MassUploadProcessor $massUploadProcessor,
+        string $tmpStorageDir
+    ) {
+        parent::__construct();
+
+        $this->tmpStorageDir = $tmpStorageDir;
+        $this->massUploadProcessor = $massUploadProcessor;
+    }
 
     /**
      * {@inheritdoc}
@@ -34,7 +51,6 @@ class ProcessMassUploadCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName(static::NAME)
             ->addOption(
                 'user',
                 null,
@@ -49,11 +65,8 @@ class ProcessMassUploadCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $sourceDir = $input->getOption('user');
-        $processor = $this->getMassUploadProcessor();
-
-        $context = new UploadContext($this->getTmpStorageDir(), $sourceDir);
-
-        $processedList = $processor->applyMassUpload($context);
+        $context = new UploadContext($this->tmpStorageDir, $sourceDir);
+        $processedList = $this->massUploadProcessor->applyMassUpload($context);
 
         foreach ($processedList as $item) {
             $file = $item->getItem();
@@ -76,29 +89,5 @@ class ProcessMassUploadCommand extends ContainerAwareCommand
         $output->writeln('<info>Done !</info>');
 
         return 0;
-    }
-
-    /**
-     * @return MassUploadProcessor
-     */
-    protected function getMassUploadProcessor()
-    {
-        return $this->getContainer()->get('pimee_product_asset.mass_upload_processor');
-    }
-
-    /**
-     * @return AssetSaver
-     */
-    protected function getAssetSaver()
-    {
-        return $this->getContainer()->get('pimee_product_asset.saver.asset');
-    }
-
-    /**
-     * @return string
-     */
-    protected function getTmpStorageDir()
-    {
-        return $this->getContainer()->getParameter('tmp_storage_dir');
     }
 }

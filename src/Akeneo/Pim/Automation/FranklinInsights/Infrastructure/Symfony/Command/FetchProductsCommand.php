@@ -16,13 +16,15 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Symfony\Command;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Service\ScheduleFetchProductsInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class FetchProductsCommand extends ContainerAwareCommand
+class FetchProductsCommand extends Command
 {
     public const NAME = 'pimee:franklin-insights:fetch-products';
+
+    protected static $defaultName = self::NAME;
 
     /** @var ScheduleFetchProductsInterface */
     private $scheduleFetchProducts;
@@ -30,19 +32,20 @@ class FetchProductsCommand extends ContainerAwareCommand
     /** @var GetConnectionStatusHandler */
     private $getConnectionStatusHandler;
 
+    public function __construct(
+        ScheduleFetchProductsInterface $scheduleFetchProducts,
+        GetConnectionStatusHandler $getConnectionStatusHandler
+    ) {
+        parent::__construct();
+
+        $this->scheduleFetchProducts = $scheduleFetchProducts;
+        $this->getConnectionStatusHandler = $getConnectionStatusHandler;
+    }
+
     protected function configure(): void
     {
         $this
-            ->setName(self::NAME)
             ->setDescription('Schedule fetch products from Ask Franklin');
-    }
-
-    protected function initialize(InputInterface $input, OutputInterface $output): void
-    {
-        $this->scheduleFetchProducts = $this->getContainer()->get('akeneo.pim.automation.franklin_insights.connector.job_launcher.schedule_fetch_products');
-        $this->getConnectionStatusHandler = $this->getContainer()->get(
-            'akeneo.pim.automation.franklin_insights.application.configuration.query.get_connection_status_handler'
-        );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): void
