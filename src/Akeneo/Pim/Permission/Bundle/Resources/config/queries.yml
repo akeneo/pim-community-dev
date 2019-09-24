@@ -131,8 +131,8 @@ services:
         class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\GetElasticsearchProductModelProjection
         arguments:
             - '@pim_catalog.repository.product_model_without_permission'
-            - '@pim_catalog.repository.locale'
-            - '@pim_indexing_serializer'
             - '@pim_catalog.doctrine.query.complete_filter'
-            - '@pim_catalog.repository.channel'
             - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
+            - '@akeneo.pim.enrichment.product_model.get_values_and_properties'
+            - '@akeneo.pim.enrichment.factory.read.value_collection'
+            - '@pim_catalog.normalizer.indexing_product.product.product_value_collection'
