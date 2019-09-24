@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AkeneoTest\Pim\Enrichment\Integration\ProductModel\Query\Sql;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductModelProjectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -24,7 +25,7 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
 
         $expected = [
             'id' => 'product_model_123',
-            'identifier' => 'child',
+            'identifier' => 'sub_product_model_code',
             'family' => [
                 'code' => 'familyA',
                 'labels' => [
@@ -37,14 +38,14 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
             'family_variant' => 'familyVariantA1',
             'categories' => ['categoryA2', 'categoryA1'],
             'categories_of_ancestors' => ['categoryA1'],
-            'parent' => 'root',
+            'parent' => 'root_product_model_code',
             'values' => [
                 'a_simple_select-option' => ['<all_channels>' => ['<all_locales>' => 'optionB']]
             ],
             'all_complete' => [],
             'all_incomplete' => [],
             'ancestors' => [
-                'codes' => ['root'],
+                'codes' => ['root_product_model_code'],
                 'labels' => []
             ],
             'label' => [],
@@ -71,7 +72,7 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
             ]
         ];
 
-        $this->checkProductModelProjectionFormat('child', $expected);
+        $this->checkProductModelProjectionFormat('sub_product_model_code', $expected);
     }
 
     public function test_that_it_gets_the_projection_of_a_root_product_model()
@@ -79,7 +80,7 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
         $this->createRootProductModel();
 
         $expected = [
-            'identifier' => 'root',
+            'identifier' => 'root_product_model_code',
             'family' => [
                 'code' => 'familyA',
                 'labels' => [
@@ -121,7 +122,7 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
             ]
         ];
 
-        $this->checkProductModelProjectionFormat('root', $expected);
+        $this->checkProductModelProjectionFormat('root_product_model_code', $expected);
     }
 
     public function test_that_it_returns_latest_updated_date()
@@ -134,16 +135,58 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
         $this->getConnection()->executeQuery(sprintf(
             'UPDATE pim_catalog_product_model SET updated="%s" WHERE code="%s"',
             $date->format('Y-m-d H:i:s'),
-            'root'
+            'root_product_model_code'
         ));
 
-        $this->assertEquals($this->getProductModelProjectionArray('child')['updated'], $date->format('c'));
+        $this->assertEquals($this->getProductModelProjectionArray('sub_product_model_code')['updated'], $date->format('c'));
+    }
+
+    public function test_that_it_computes_completeness_of_variant_product()
+    {
+        $this->createRootProductModel();
+        $this->createSubProductModel();
+        $this->createProduct([
+            'parent' => 'sub_product_model_code',
+            'values' => [
+                'a_yes_no' => [['locale' => null, 'scope' => null, 'data' => true]],
+            ],
+        ]);
+
+        $this->assertEquals($this->getProductModelProjectionArray('sub_product_model_code')['all_complete'], [
+            'tablet' => [
+                'de_DE' => 0,
+                'en_US' => 0,
+                'fr_FR' => 0,
+            ],
+            'ecommerce' => [
+                'en_US' => 0
+            ],
+            'ecommerce_china' => [
+                'en_US' => 1,
+                'zh_CN' => 1
+            ]
+        ]);
+
+        $this->assertEquals($this->getProductModelProjectionArray('sub_product_model_code')['all_incomplete'], [
+            'tablet' => [
+                'de_DE' => 1,
+                'en_US' => 1,
+                'fr_FR' => 1,
+            ],
+            'ecommerce' => [
+                'en_US' => 1
+            ],
+            'ecommerce_china' => [
+                'en_US' => 0,
+                'zh_CN' => 0
+            ]
+        ]);
     }
 
     private function createRootProductModel()
     {
         $this->createProductModel([
-            'code' => 'root',
+            'code' => 'root_product_model_code',
             'family_variant' => 'familyVariantA1',
             'values' => [
             ],
@@ -154,9 +197,9 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
     private function createSubProductModel()
     {
         $this->createProductModel([
-            'code' => 'child',
+            'code' => 'sub_product_model_code',
             'family_variant' => 'familyVariantA1',
-            'parent' => 'root',
+            'parent' => 'root_product_model_code',
             'values' => [
                 'a_simple_select' => [['locale' => null, 'scope'  => null, 'data' => 'optionB']],
             ],
@@ -173,6 +216,17 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
         $this->get('pim_catalog.saver.product_model')->save($productModel);
 
         return $productModel;
+    }
+
+    private function createProduct(array $data): ProductInterface
+    {
+        $product = $this->get('pim_catalog.builder.product')->createProduct('new_product_'.rand());
+        $this->get('pim_catalog.updater.product')->update($product, $data);
+        $errors = $this->get('pim_catalog.validator.product')->validate($product);
+        $this->assertCount(0, $errors);
+        $this->get('pim_catalog.saver.product')->save($product);
+
+        return $product;
     }
 
     private function checkProductModelProjectionFormat($code, $expected)

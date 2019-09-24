@@ -29,7 +29,6 @@ WITH products AS (
         product_model.code AS code,
         locale.code AS locale_code,
         channel.code AS channel_code,
-        JSON_ARRAYAGG(completeness.missing_count),
         SUM(completeness.missing_count) = 0 AS all_complete,
         MIN(completeness.missing_count) <> 0 AS all_incomplete
     FROM pim_catalog_product_model product_model
@@ -37,15 +36,13 @@ WITH products AS (
     INNER JOIN pim_catalog_completeness completeness ON product.id = completeness.product_id
     INNER JOIN pim_catalog_locale locale ON completeness.locale_id = locale.id
     INNER JOIN pim_catalog_channel channel ON completeness.channel_id = channel.id
-    WHERE product_model.parent_id IS NULL
-    AND product_model.code IN (:productModelCodes)
-    GROUP BY product_model.code, locale_code, channel_code
+    WHERE product_model.code IN (:productModelCodes)
+    GROUP BY code, locale_code, channel_code
 UNION
     SELECT
-        product_model.code AS code,
+        root_product_model.code AS code,
         locale.code AS locale_code,
         channel.code AS channel_code,
-        JSON_ARRAYAGG(completeness.missing_count),
         SUM(completeness.missing_count) = 0 AS allcomplete,
         MIN(completeness.missing_count) <> 0 AS allincomplete
     FROM pim_catalog_product_model product_model
@@ -55,7 +52,7 @@ UNION
     INNER JOIN pim_catalog_locale locale ON completeness.locale_id = locale.id
     INNER JOIN pim_catalog_channel channel ON completeness.channel_id = channel.id
     WHERE root_product_model.code IN (:productModelCodes)
-    GROUP BY product_model.code, locale_code, channel_code
+    GROUP BY code, locale_code, channel_code
 ), products_per_channel AS (
     SELECT
          code,
