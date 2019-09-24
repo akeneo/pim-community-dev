@@ -3,7 +3,7 @@
         "method": "PUT",
         "route": "akeneo_asset_manager_asset_index_rest",
         "query": {
-            "assetFamilyIdentifier": "designer"
+            "assetFamilyIdentifier": "packshot"
         },
         "body": {
             "locale": "en_US",
@@ -14,7 +14,7 @@
                 {
                     "field": "asset_family",
                     "operator": "=",
-                    "value": "designer",
+                    "value": "packshot",
                     "context": {}
                 }
             ]
@@ -25,14 +25,14 @@
         "body": {
             "items": [
                 {
-                    "identifier": "designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd",
-                    "asset_family_identifier": "designer",
-                    "code": "dyson",
+                    "identifier": "packshot_backview_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd",
+                    "asset_family_identifier": "packshot",
+                    "code": "backview",
                     "labels": {
-                        "en_US": "Dyson",
-                        "fr_FR": "Dyson"
+                        "en_US": "Backview",
+                        "fr_FR": "Backview"
                     },
-                    "image": "/rest/asset_manager/image_preview/image_designer_ca1857d521a3e5dbc487791da82b7428/thumbnail?data=",
+                    "image": "/rest/asset_manager/image_preview/image_packshot_ca1857d521a3e5dbc487791da82b7428/thumbnail?data=",
                     "values": {},
                     "completeness": {
                         "complete": 0,
@@ -40,13 +40,13 @@
                     }
                 },
                 {
-                    "identifier": "designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2",
-                    "asset_family_identifier": "designer",
-                    "code": "starck",
+                    "identifier": "packshot_frontview_29aea250-bc94-49b2-8259-bbc116410eb2",
+                    "asset_family_identifier": "packshot",
+                    "code": "frontview",
                     "labels": {
-                        "en_US": "Starck"
+                        "en_US": "Frontview"
                     },
-                    "image": "/rest/asset_manager/image_preview/image_designer_ca1857d521a3e5dbc487791da82b7428/thumbnail?data=",
+                    "image": "/rest/asset_manager/image_preview/image_packshot_ca1857d521a3e5dbc487791da82b7428/thumbnail?data=",
                     "values": {},
                     "completeness": {
                         "complete": 1,
@@ -54,13 +54,13 @@
                     }
                 },
                 {
-                    "identifier": "designer_coco_34aee120-fa95-4ff2-8439-bea116120e34",
-                    "asset_family_identifier": "designer",
-                    "code": "coco",
+                    "identifier": "packshot_sideview_34aee120-fa95-4ff2-8439-bea116120e34",
+                    "asset_family_identifier": "packshot",
+                    "code": "sideview",
                     "labels": {
-                        "en_US": "Coco Chanel"
+                        "en_US": "Sideview"
                     },
-                    "image": "/rest/asset_manager/image_preview/image_designer_ca1857d521a3e5dbc487791da82b7428/thumbnail?data=",
+                    "image": "/rest/asset_manager/image_preview/image_packshot_ca1857d521a3e5dbc487791da82b7428/thumbnail?data=",
                     "values": {},
                     "completeness": {
                         "complete": 2,

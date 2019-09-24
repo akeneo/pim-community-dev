@@ -5,7 +5,7 @@ const Close = ({color, title, ...props}: {color: string; title?: string} & any =
     <g fillRule="nonzero" stroke={color} fill="none" strokeLinecap="round">
       <path d="M4 4l16 16M20 4L4 20" />
     </g>
-    {title ? <title>{title}</title> : null}
+    {title === undefined ? <title>Close</title> : <title>{title}</title>}
   </svg>
 );
 

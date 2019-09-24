@@ -8,6 +8,11 @@ import {
 import {LocaleCode} from 'akeneopimenrichmentassetmanager/platform/model/channel/locale';
 import {getLabel} from 'pimui/js/i18n';
 
+export enum MoveDirection {
+  Before,
+  After,
+}
+
 export type AssetIdentifier = string;
 
 type Image = string;
@@ -59,6 +64,50 @@ export const removeAssetFromCollection = (assetCodes: AssetCode[], asset: Asset)
 export const emptyCollection = (_assetCodes: AssetCode): AssetCode[] => {
   return [];
 };
+
 export const addAssetToCollection = (assetCollection: AssetCode[], assetCodes: AssetCode[]): AssetCode[] => {
   return [...assetCollection, ...assetCodes];
+};
+
+export const assetWillNotMoveInCollection = (
+  assetCodes: AssetCode[],
+  asset: Asset,
+  direction: MoveDirection
+): boolean => {
+  const currentAssetPosition = assetCodes.indexOf(asset.code);
+
+  return (
+    (0 === currentAssetPosition && direction === MoveDirection.Before) ||
+    (assetCodes.length - 1 === currentAssetPosition && direction === MoveDirection.After) ||
+    -1 === currentAssetPosition
+  );
+};
+
+export const getAssetCodes = (assetCollection: Asset[]): AssetCode[] => {
+  return assetCollection.map(asset => asset.code);
+};
+
+export const moveAssetInCollection = (assetCodes: AssetCode[], asset: Asset, direction: MoveDirection): AssetCode[] => {
+  const currentAssetPosition = assetCodes.indexOf(asset.code);
+
+  //If asset already first, last or doesn't exists we do nothing
+  if (assetWillNotMoveInCollection(assetCodes, asset, direction)) {
+    return assetCodes;
+  }
+
+  const newAssetPosition = direction === MoveDirection.Before ? currentAssetPosition - 1 : currentAssetPosition + 1;
+
+  return direction === MoveDirection.Before
+    ? [
+        ...assetCodes.slice(0, newAssetPosition), // Begining of the array
+        assetCodes[currentAssetPosition], // Swap
+        assetCodes[newAssetPosition], // Swap
+        ...assetCodes.slice(currentAssetPosition + 1, assetCodes.length), // End of the array
+      ]
+    : [
+        ...assetCodes.slice(0, currentAssetPosition), // Begining of the array
+        assetCodes[newAssetPosition], // Swap
+        assetCodes[currentAssetPosition], // Swap
+        ...assetCodes.slice(newAssetPosition + 1, assetCodes.length), // End of the array
+      ];
 };

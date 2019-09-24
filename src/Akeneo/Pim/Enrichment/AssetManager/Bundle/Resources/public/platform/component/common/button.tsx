@@ -6,6 +6,17 @@ type ButtonProps = {
   color: 'green' | 'blue' | 'red' | 'grey' | 'outline'
 }
 
+export const TransparentButton = styled.button`
+  background: none;
+  border: none;
+  padding: 0;
+  margin: none
+
+  &:hover {
+    cursor: pointer;
+  }
+`
+
 export const Button = styled.div<ButtonProps>`
   ${(props: ThemedProps<ButtonProps>) => {
     switch(props.buttonSize) {

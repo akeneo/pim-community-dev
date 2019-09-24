@@ -21,7 +21,8 @@ services:
             - { name: pim_catalog.factory.value }
 
     akeneo_assetmanager.comparator.attribute.asset_multiple_link:
-        class: '%pim_catalog.comparator.attribute.options.class%'
+        public:    false
+        class:     'Akeneo\Pim\Enrichment\AssetManager\Component\Comparator\Attribute\AssetCollectionComparator'
         arguments:
             - ['pim_catalog_asset_collection']
         tags:

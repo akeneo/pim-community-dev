@@ -23,17 +23,13 @@ const UserContext = require('pim/user-context');
 const updateValueMiddleware = (formView: AssetTabForm) => {
   return () => (next: any) => (action: any) => {
     if ('VALUE_CHANGED' === action.type) {
-      const formData = formView.getFormData();
-
-      formData.values[action.value.attribute.code].map((value: LegacyValue) => {
-        if (value.scope === action.value.channel && value.locale === action.value.locale) {
-          value.data = action.value.data;
-        }
-
-        return value;
+      const valueToUpdate = formView.getFormData().values[action.value.attribute.code].find((value: LegacyValue) => {
+        return value.locale === action.value.locale &&
+          value.scope === action.value.channel
       })
 
-      formView.setData(formData)
+      valueToUpdate.data = action.value.data;
+      formView.getRoot().trigger('pim_enrich:form:entity:update_state');
     }
 
     return next(action);

@@ -86,12 +86,11 @@ const AssetCollectionList = styled.div`
   align-items: stretch;
 `;
 
-
 const DisplayValues = ({values, family, context, ruleRelations, onChange, errors}: DisplayValuesProps) => {
   return (
     <React.Fragment>
       {values.map((value: Value) => (
-        <AssetCollectionContainer key={value.attribute.code}>
+        <AssetCollectionContainer key={value.attribute.code} data-attribute={value.attribute.code}>
           <SectionTitle>
             <AttributeBreadCrumb>
               {value.attribute.group} / {getAttributeLabel(value.attribute, context.locale)}

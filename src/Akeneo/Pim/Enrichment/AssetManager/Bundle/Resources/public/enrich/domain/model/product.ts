@@ -62,3 +62,9 @@ export const isValueComplete = (value: Value, family: Family | null, channel: Ch
 export const hasValues = (values: Value[]): boolean => {
   return 0 !== values.length;
 };
+
+export const sameValue = (first: Value, second: Value): boolean => {
+  return (
+    first.locale === second.locale && first.channel === second.channel && first.attribute.code === second.attribute.code
+  );
+};
