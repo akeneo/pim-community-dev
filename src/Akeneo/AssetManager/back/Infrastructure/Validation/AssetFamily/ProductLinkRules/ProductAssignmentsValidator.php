@@ -35,14 +35,14 @@ class ProductAssignmentsValidator
     /** @var ChannelAndLocaleValidator */
     private $channelAndLocaleValidator;
 
-    /** @var FindAssetCollectionTypeACLInterface */
+    /** @var GetAssetCollectionTypeACLInterface */
     private $findAssetCollectionTypeACL;
 
     public function __construct(
         RuleEngineValidatorACLInterface $ruleEngineValidatorACL,
         ExtrapolatedAttributeValidator $extrapolatedAttributeValidator,
         ChannelAndLocaleValidator $channelAndLocaleValidator,
-        FindAssetCollectionTypeACLInterface $findAssetCollectionTypeACL
+        GetAssetCollectionTypeACLInterface $findAssetCollectionTypeACL
     ) {
         $this->ruleEngineValidatorACL = $ruleEngineValidatorACL;
         $this->extrapolatedAttributeValidator = $extrapolatedAttributeValidator;
@@ -74,9 +74,12 @@ class ProductAssignmentsValidator
         }
 
         if ($modeViolations->count() === 0) {
-            $violations->addAll($this->ruleEngineValidatorACL->validateProductAssignment($productAssignment));
+            $ruleEngineValidations = $this->ruleEngineValidatorACL->validateProductAssignment($productAssignment);
+            $violations->addAll($ruleEngineValidations);
+            if ($ruleEngineValidations->count() === 0) {
+                $violations->addAll($this->checkProductAttributeReferencesThisAssetFamily($productAssignment, $assetFamilyIdentifier));
+            }
         }
-        $violations->addAll($this->checkProductAttributeReferencesThisAssetFamily($productAssignment, $assetFamilyIdentifier));
 
         return $violations;
     }
@@ -164,19 +167,20 @@ class ProductAssignmentsValidator
 
     private function checkProductAttributeReferencesThisAssetFamily(
         array $productAssignment,
-        string $assetFamilyIdentifier
+        string $expectedAssetFamilyIdentifier
     ): ConstraintViolationListInterface {
         $validator = Validation::createValidator();
         $result = $validator->validate(
             $productAssignment['attribute'],
-            new Callback(function ($productAttributeCode, ExecutionContextInterface $context) use ($assetFamilyIdentifier) {
-                if ($assetFamilyIdentifier !== $this->findAssetCollectionTypeACL->fetch($productAttributeCode)) {
+            new Callback(function ($productAttributeCode, ExecutionContextInterface $context) use ($expectedAssetFamilyIdentifier) {
+                $actualAssetFamilyIdentifier = $this->findAssetCollectionTypeACL->fetch($productAttributeCode);
+                if ($expectedAssetFamilyIdentifier !== $actualAssetFamilyIdentifier) {
                     $context
                         ->buildViolation(
                             ProductLinkRulesShouldBeExecutable::ASSIGNMENT_ATTRIBUTE_DOES_NOT_SUPPORT_THIS_ASSET_FAMILY,
                             [
                                 '%product_attribute_code%'  => $productAttributeCode,
-                                '%asset_family_identifier%' => $assetFamilyIdentifier,
+                                '%asset_family_identifier%' => $expectedAssetFamilyIdentifier,
                             ]
                         )
                         ->addViolation();

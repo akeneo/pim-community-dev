@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules;
 
-use Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\FindAssetCollectionTypeACLInterface;
+use Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\GetAssetCollectionTypeACLInterface;
 use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetCollectionType;
 use Akeneo\Pim\Structure\Component\Model\AbstractAttribute;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -14,7 +14,7 @@ use PhpSpec\ObjectBehavior;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class FindAssetCollectionTypeACLSpec extends ObjectBehavior
+class GetAssetCollectionTypeACLSpec extends ObjectBehavior
 {
     function let(AttributeRepositoryInterface $attributeRepository)
     {
@@ -23,7 +23,7 @@ class FindAssetCollectionTypeACLSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldBeAnInstanceOf(FindAssetCollectionTypeACLInterface::class);
+        $this->shouldBeAnInstanceOf(GetAssetCollectionTypeACLInterface::class);
     }
 
     function it_fetches_the_asset_family_type_of_an_asset_collection_attribute(
@@ -39,6 +39,17 @@ class FindAssetCollectionTypeACLSpec extends ObjectBehavior
         $this->fetch($productAttributeCode)->shouldReturn($expectedAssetFamilyIdentifier);
     }
 
+    function it_throws_if_the_given_code_does_not_exist(
+        AttributeRepositoryInterface $attributeRepository
+    ){
+        $unknownAttributeCode = 'UNKNOWN_ASSET_COLLECTION_ATTRIBUTE';
+        $attributeRepository->findOneByIdentifier($unknownAttributeCode)->willReturn(null);
+
+        $this->shouldThrow(
+            new \RuntimeException(sprintf('Expected attribute "%s" to exist, none found', $unknownAttributeCode))
+        )->during('fetch', [$unknownAttributeCode]);
+    }
+
     function it_throws_if_the_given_code_does_not_reference_an_asset_collection_attribute(
         AttributeRepositoryInterface $attributeRepository,
         AbstractAttribute $assetCollectionAttribute
@@ -52,7 +63,7 @@ class FindAssetCollectionTypeACLSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier($productAttributeCode)->willReturn($assetCollectionAttribute);
 
         $this->shouldThrow(
-            new \InvalidArgumentException(
+            new \RuntimeException(
                 sprintf('Expected attribute "%s" to be of type "%s", "%s" given',
                     $productAttributeCode,
                     $expectedAssetFamilyIdentifier,

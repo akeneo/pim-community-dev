@@ -46,7 +46,7 @@ class BatchAssetsToLinkSpec extends ObjectBehavior
         $this->runBatch();
     }
 
-    public function it_does_not_call_the_link_asset_handler_if_the_there_is_not_asset_created(
+    public function it_does_not_call_the_link_asset_handler_if_there_is_not_asset_created(
         LinkAssetsHandler $linkAssetsHandler
     ) {
         $linkAssetsHandler->handle()->shouldNotBeCalled();

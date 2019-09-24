@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Common\Fake;
 
-use Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\FindAssetCollectionTypeACLInterface;
+use Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\GetAssetCollectionTypeACLInterface;
 
-class InMemoryFindAssetCollectionTypeACL implements FindAssetCollectionTypeACLInterface
+class InMemoryGetAssetCollectionTypeACL implements GetAssetCollectionTypeACLInterface
 {
     private $attributeType;
 

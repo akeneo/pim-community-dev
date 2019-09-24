@@ -8,7 +8,7 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 /**
  * This query is responsible for fetching the asset family identifier a product asset collection attribute.
  */
-interface FindAssetCollectionTypeACLInterface
+interface GetAssetCollectionTypeACLInterface
 {
     public function fetch(string $productAttributeCode): string;
 }

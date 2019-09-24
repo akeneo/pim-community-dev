@@ -19,7 +19,7 @@ use Akeneo\AssetManager\Common\Fake\Anticorruption\RuleEngineValidatorACLStub;
 use Akeneo\AssetManager\Common\Fake\InMemoryAssetFamilyRepository;
 use Akeneo\AssetManager\Common\Fake\InMemoryChannelExists;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
-use Akeneo\AssetManager\Common\Fake\InMemoryFindAssetCollectionTypeACL;
+use Akeneo\AssetManager\Common\Fake\InMemoryGetAssetCollectionTypeACL;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
@@ -70,7 +70,7 @@ final class CreateAssetFamilyContext implements Context
     /** @var InMemoryChannelExists */
     private $inMemoryChannelExists;
 
-    /** @var InMemoryFindAssetCollectionTypeACL */
+    /** @var InMemoryGetAssetCollectionTypeACL */
     private $inMemoryFindAssetCollectionTypeACL;
 
     public function __construct(
@@ -82,7 +82,7 @@ final class CreateAssetFamilyContext implements Context
         InMemoryFindActivatedLocalesByIdentifiers $activatedLocales,
         RuleEngineValidatorACLInterface $ruleEngineValidatorACLStub,
         InMemoryChannelExists $inMemoryChannelExists,
-        InMemoryFindAssetCollectionTypeACL $inMemoryFindAssetCollectionTypeACL,
+        InMemoryGetAssetCollectionTypeACL $inMemoryFindAssetCollectionTypeACL,
         int $ruleTemplateByAssetFamilyLimit
     ) {
         $this->assetFamilyRepository = $assetFamilyRepository;

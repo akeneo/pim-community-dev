@@ -16,7 +16,7 @@ namespace Akeneo\AssetManager\Integration\Connector\Api\Context\Collect;
 use Akeneo\AssetManager\Common\Fake\InMemoryChannelExists;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesPerChannels;
-use Akeneo\AssetManager\Common\Fake\InMemoryFindAssetCollectionTypeACL;
+use Akeneo\AssetManager\Common\Fake\InMemoryGetAssetCollectionTypeACL;
 use Akeneo\AssetManager\Common\Fake\InMemoryGetAttributeIdentifier;
 use Akeneo\AssetManager\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
@@ -65,7 +65,7 @@ class CreateOrUpdateAssetFamilyContext implements Context
     /** @var InMemoryGetAttributeIdentifier */
     private $getAttributeIdentifier;
 
-    /** @var InMemoryFindAssetCollectionTypeACL */
+    /** @var InMemoryGetAssetCollectionTypeACL */
     private $findAssetCollectionTypeACL;
 
     public function __construct(
@@ -76,7 +76,7 @@ class CreateOrUpdateAssetFamilyContext implements Context
         InMemoryFindActivatedLocalesByIdentifiers $activatedLocales,
         InMemoryFindActivatedLocalesPerChannels $activatedLocalesPerChannels,
         InMemoryGetAttributeIdentifier $getAttributeIdentifier,
-        InMemoryFindAssetCollectionTypeACL $findAssetCollectionTypeACL
+        InMemoryGetAssetCollectionTypeACL $findAssetCollectionTypeACL
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;

@@ -12,7 +12,7 @@ use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class FindAssetCollectionTypeACL implements FindAssetCollectionTypeACLInterface
+class GetAssetCollectionTypeACL implements GetAssetCollectionTypeACLInterface
 {
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
@@ -26,15 +26,25 @@ class FindAssetCollectionTypeACL implements FindAssetCollectionTypeACLInterface
     {
         /** @var AbstractAttribute $attribute */
         $attribute = $this->attributeRepository->findOneByIdentifier($productAttributeCode);
+        $this->checkAttributeExists($productAttributeCode, $attribute);
         $this->checkAttributeType($attribute);
 
         return $attribute->getReferenceDataName();
     }
 
+    private function checkAttributeExists(string $productAttributeCode, ?AbstractAttribute $attribute): void
+    {
+        if (null === $attribute) {
+            throw new \RuntimeException(
+                sprintf('Expected attribute "%s" to exist, none found', $productAttributeCode)
+            );
+        }
+    }
+
     private function checkAttributeType(AbstractAttribute $attribute): void
     {
         if ($attribute->getType() !== AssetCollectionType::ASSET_COLLECTION) {
-            throw new \InvalidArgumentException(
+            throw new \RuntimeException(
                 sprintf(
                     'Expected attribute "%s" to be of type "%s", "%s" given',
                     $attribute->getCode(),
