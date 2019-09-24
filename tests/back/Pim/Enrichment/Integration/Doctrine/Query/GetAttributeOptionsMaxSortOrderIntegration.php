@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Pim\Bundle\CatalogBundle\tests\integration\Doctrine\ORM\Query;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
@@ -58,12 +59,6 @@ class GetAttributeOptionsMaxSortOrderIntegration extends TestCase
                                     ->forAttributeCodes(['select_without_options']));
     }
 
-    protected function setUp()
-    {
-        parent::setUp();
-
-    }
-
     protected function getConfiguration()
     {
         return $this->catalog->useMinimalCatalog();
@@ -71,7 +66,7 @@ class GetAttributeOptionsMaxSortOrderIntegration extends TestCase
 
     private function createSimpleSelectAttribute(string $code, array $optionCodes): void
     {
-        $attribute = $this->get('pim_catalog.factory.attribute')->create();
+        $attribute = $this->createAttribute();
         $attribute->setCode($code);
         $attribute->setType(AttributeTypes::OPTION_SIMPLE_SELECT);
         $attribute->setBackendType(AttributeTypes::BACKEND_TYPE_OPTION);
@@ -85,5 +80,10 @@ class GetAttributeOptionsMaxSortOrderIntegration extends TestCase
             $option->setSortOrder($sortOrder);
             $this->get('pim_catalog.saver.attribute_option')->save($option);
         }
+    }
+
+    private function createAttribute(): AttributeInterface
+    {
+        return $this->get('pim_catalog.factory.attribute')->create();
     }
 }
