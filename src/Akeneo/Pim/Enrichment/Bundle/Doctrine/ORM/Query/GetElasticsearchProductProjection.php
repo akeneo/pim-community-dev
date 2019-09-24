@@ -16,6 +16,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\DBAL\Types\UTCDateTimeType;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -83,11 +84,12 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
             $valueCollection = $this->valueCollectionFactory->createFromStorageFormat($rawValues);
             $values = $this->valuesNormalizer->normalize($valueCollection, self::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX);
 
+            // use Type::DATETIME as it's overrided in the PIM (UTCDateTimeType) to handle UTC correctly
             $results[$row['identifier']] = new ElasticsearchProductProjection(
                 $row['id'],
                 $row['identifier'],
-                Type::getType(Type::DATETIME_IMMUTABLE)->convertToPhpValue($row['created_date'], $platform),
-                Type::getType(Type::DATETIME_IMMUTABLE)->convertToPhpValue($row['updated_date'], $platform),
+                \DateTimeImmutable::createFromMutable(Type::getType(Type::DATETIME)->convertToPhpValue($row['created_date'], $platform)),
+                \DateTimeImmutable::createFromMutable(Type::getType(Type::DATETIME)->convertToPhpValue($row['updated_date'], $platform)),
                 (bool) $row['is_enabled'],
                 $row['family_code'],
                 \json_decode($row['family_labels'], true),
@@ -98,11 +100,8 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
                 \json_decode($row['completeness'], true),
                 $row['parent_product_model_code'],
                 $values,
-                [
-                    'ids' => array_filter(\json_decode($row['ancestor_ids'], true)),
-                    'codes' => array_filter(\json_decode($row['ancestor_codes'], true)),
-                    'labels' => $productLabels
-                ],
+                array_filter(\json_decode($row['ancestor_ids'], true)),
+                array_filter(\json_decode($row['ancestor_codes'], true)),
                 $productLabels,
                 $row['attribute_codes_of_ancestor'],
                 $row['attribute_codes_for_this_level']
