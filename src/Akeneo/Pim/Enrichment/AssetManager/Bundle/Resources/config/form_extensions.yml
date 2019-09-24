@@ -11,16 +11,28 @@ extensions:
         targetZone: container
         position: 95
 
+    pimee-product-model-edit-form-assets:
+        module: pim/product-edit-form/assets
+        parent: pim-product-model-edit-form-column-tabs
+        targetZone: container
+        position: 95
+
+    pimee-product-model-view-form-assets:
+        module: pim/product-edit-form/assets
+        parent: pimee-product-model-view-form-column-tabs
+        targetZone: container
+        position: 95
+
     pim-menu-asset-family:
-     module: pim/menu/tab
-     parent: pim-menu
-     # aclResourceId: pimee_product_asset_index //TODO einrich
-     position: 33
-     targetZone: mainMenu
-     config:
-         title: pim_asset_manager.asset_family.title
-         iconModifier: iconAssetFamily
-         to: akeneo_asset_manager_asset_family_index
+        module: pim/menu/tab
+        parent: pim-menu
+        # aclResourceId: pimee_product_asset_index //TODO einrich
+        position: 33
+        targetZone: mainMenu
+        config:
+            title: pim_asset_manager.asset_family.title
+            iconModifier: iconAssetFamily
+            to: akeneo_asset_manager_asset_family_index
 
     pim-asset-family-index-user-navigation:
         module: pim/menu/user-navigation
