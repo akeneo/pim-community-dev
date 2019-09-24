@@ -91,38 +91,32 @@ class GetAncestorAndDescendantProductModelCodesIntegration extends TestCase
 
         Assert::assertEqualsCanonicalizing(
             [],
-            $this->getAncestorAndDescendantsProductModelCodes()
-                ->fromProductModelCodes(['a_shirt', 'a_shoe'])
+            $this->getAncestorAndDescendantsProductModelCodes()->fromProductModelCodes(['a_shirt', 'a_shoe'])
         );
 
         Assert::assertEqualsCanonicalizing(
             [],
-            $this->getAncestorAndDescendantsProductModelCodes()
-                ->fromProductModelCodes(['unknown'])
+            $this->getAncestorAndDescendantsProductModelCodes()->fromProductModelCodes(['unknown'])
         );
 
         Assert::assertEqualsCanonicalizing(
             [],
-            $this->getAncestorAndDescendantsProductModelCodes()
-                ->fromProductModelCodes([])
+            $this->getAncestorAndDescendantsProductModelCodes()->fromProductModelCodes([])
         );
 
         Assert::assertEqualsCanonicalizing(
             ['a_shoe'],
-            $this->getAncestorAndDescendantsProductModelCodes()
-                ->fromProductModelCodes(['a_shirt', 'a_large_shoe'])
+            $this->getAncestorAndDescendantsProductModelCodes()->fromProductModelCodes(['a_shirt', 'a_large_shoe'])
         );
 
         Assert::assertEqualsCanonicalizing(
             ['a_shoe'],
-            $this->getAncestorAndDescendantsProductModelCodes()
-                ->fromProductModelCodes(['a_shirt', 'a_large_shoe'])
+            $this->getAncestorAndDescendantsProductModelCodes()->fromProductModelCodes(['a_shirt', 'a_large_shoe'])
         );
 
         Assert::assertEqualsCanonicalizing(
             ['a_shirt', 'a_shoe'],
-            $this->getAncestorAndDescendantsProductModelCodes()
-                ->fromProductModelCodes(['a_large_shirt', 'a_large_shoe'])
+            $this->getAncestorAndDescendantsProductModelCodes()->fromProductModelCodes(['a_large_shirt', 'a_large_shoe'])
         );
     }
 
