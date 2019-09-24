@@ -22,3 +22,10 @@ services:
             - '@pim_catalog.elasticsearch.indexer.product'
             - '@pim_catalog.elasticsearch.indexer.product_model'
             - '@pim_catalog.repository.product_model'
+
+    akeneo.pim.enrichment.elasticsearch.indexer.product_and_ancestors:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer'
+        arguments:
+            - '@pim_catalog.elasticsearch.indexer.product'
+            - '@pim_catalog.elasticsearch.indexer.product_model'
+            - '@akeneo.pim.enrichment.product.query.get_ancestor_product_model_codes'
