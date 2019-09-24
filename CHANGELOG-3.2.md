@@ -3,6 +3,7 @@
 # 3.2.9 (2019-09-23)
 
 - PIM-8781: Fix catalog volume monitoring and system information showing unused data
+- DAPI-420: Add url for the "Read more" link on the option mapping screen when it is empty
 
 # 3.2.8 (2019-09-17)
 
