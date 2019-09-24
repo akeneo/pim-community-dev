@@ -74,6 +74,10 @@ jobs:
         - vendor/bin/phpunit -c src/Akeneo/AssetManager/tests/back
         - vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
         - vendor/bin/phpspec run -c src/Akeneo/AssetManager/tests/back/phpspec.yml.dist --no-interaction
+        - rm -rf var/cache
+        - rm -rf web/bundles
+        - ./bin/console pim:install:assets --env=prod
+        - yarn webpack --env=prod
 
 notifications:
   email: false
