@@ -50,7 +50,12 @@ package-lock.json
 yarn-error.log
 coverage/*
 .phpunit.result.cache
-.env.local
-.env.behat.local
-.env.test.local
-.env.dev.local
+
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+
+###> symfony/web-server-bundle ###
+/.web-server-pid
+###< symfony/web-server-bundle ###

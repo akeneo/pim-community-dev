@@ -1,7 +1,6 @@
 <?php
 
 return [
-    // Symfony bundles
     Doctrine\Bundle\DoctrineBundle\DoctrineBundle::class => ['all' => true],
     Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle::class => ['all' => true],
     Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle::class => ['all' => true],
@@ -11,21 +10,15 @@ return [
     Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle::class => ['all' => true],
     Symfony\Bundle\TwigBundle\TwigBundle::class => ['all' => true],
     Symfony\Bundle\AclBundle\AclBundle::class => ['all' => true],
-
-    // ORO dependencies
     Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle::class => ['all' => true],
     FOS\JsRoutingBundle\FOSJsRoutingBundle::class => ['all' => true],
     FOS\RestBundle\FOSRestBundle::class => ['all' => true],
     Liip\ImagineBundle\LiipImagineBundle::class => ['all' => true],
-
-    // ORO bundle
     Oro\Bundle\ConfigBundle\OroConfigBundle::class => ['all' => true],
     Oro\Bundle\DataGridBundle\OroDataGridBundle::class => ['all' => true],
     Oro\Bundle\FilterBundle\OroFilterBundle::class => ['all' => true],
     Oro\Bundle\SecurityBundle\OroSecurityBundle::class => ['all' => true],
     Oro\Bundle\TranslationBundle\OroTranslationBundle::class => ['all' => true],
-
-    // Pim dependencies
     Akeneo\Tool\Bundle\ElasticsearchBundle\AkeneoElasticsearchBundle::class => ['all' => true],
     Akeneo\Tool\Bundle\BatchBundle\AkeneoBatchBundle::class => ['all' => true],
     Akeneo\Tool\Bundle\BatchQueueBundle\AkeneoBatchQueueBundle::class => ['all' => true],
@@ -35,8 +28,6 @@ return [
     Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle::class => ['all' => true],
     FOS\OAuthServerBundle\FOSOAuthServerBundle::class => ['all' => true],
     Oneup\FlysystemBundle\OneupFlysystemBundle::class => ['all' => true],
-
-    // PIM bundles
     Oro\Bundle\PimFilterBundle\PimFilterBundle::class => ['all' => true],
     Akeneo\UserManagement\Bundle\PimUserBundle::class => ['all' => true],
     Akeneo\Channel\Bundle\AkeneoChannelBundle::class => ['all' => true],
@@ -54,13 +45,9 @@ return [
     Akeneo\Platform\Bundle\NotificationBundle\PimNotificationBundle::class => ['all' => true],
     Akeneo\Platform\Bundle\UIBundle\PimUIBundle::class => ['all' => true],
     Akeneo\Tool\Bundle\VersioningBundle\AkeneoVersioningBundle::class => ['all' => true],
-
-    // Dev related bundles
     Symfony\Bundle\DebugBundle\DebugBundle::class => ['dev' => true, 'test' => true, 'behat' => true],
     Symfony\Bundle\WebProfilerBundle\WebProfilerBundle::class => ['dev' => true, 'test' => true, 'behat' => true],
     Symfony\Bundle\WebServerBundle\WebServerBundle::class => ['dev' => true, 'test' => true, 'behat' => true],
-
-    // Tests related bundles
     Acme\Bundle\AppBundle\AcmeAppBundle::class => ['dev' => true, 'test' => true, 'behat' => true],
     Akeneo\Test\IntegrationTestsBundle\AkeneoIntegrationTestsBundle::class => ['dev' => true, 'test' => true],
     FriendsOfBehat\SymfonyExtension\Bundle\FriendsOfBehatSymfonyExtensionBundle::class => ['test_fake' => true],
