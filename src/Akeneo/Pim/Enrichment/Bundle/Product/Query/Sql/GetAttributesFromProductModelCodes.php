@@ -28,23 +28,24 @@ final class GetAttributesFromProductModelCodes
      *
      * Attributes for this level =
      * - if product_model level = 0 (no parent), return common attributes (see above)
-     * - if product_model level = 1 (with a parent), return family variant attributes.
+     * - if product_model level = 1 (with a parent), return family variant attributes of level 1.
      */
     public function fetchByProductModelCodes(array $productModelCodes): array
     {
         $query = <<<SQL
 WITH family_attributes AS (
     SELECT
-        product_model.code AS code,
-        product_model.parent_id,
+        product_family.id AS family_id,
         JSON_ARRAYAGG(attribute.code) AS attribute_codes
-    FROM pim_catalog_product_model product_model
-    INNER JOIN pim_catalog_family_variant family_variant ON family_variant.id = product_model.family_variant_id
-    INNER JOIN pim_catalog_family family ON family.id = family_variant.family_id
-    INNER JOIN pim_catalog_family_attribute family_attributes ON family_attributes.family_id = family.id
+    FROM (
+        SELECT DISTINCT(family_variant.family_id) AS id
+        FROM pim_catalog_family_variant family_variant
+        INNER JOIN pim_catalog_product_model product_model ON product_model.family_variant_id = family_variant.id
+        WHERE product_model.code IN (:productModelCodes)
+    ) AS product_family
+    INNER JOIN pim_catalog_family_attribute family_attributes ON family_attributes.family_id = product_family.id
     INNER JOIN pim_catalog_attribute attribute ON attribute.id = family_attributes.attribute_id
-    WHERE product_model.code IN (:productModelCodes)
-    GROUP BY code
+    GROUP BY family_id
 ),
 family_variant_attributes AS (
     SELECT
@@ -83,16 +84,18 @@ family_variant_attributes_for_sub_product_models AS (
     GROUP BY code
 )
 SELECT
-    family_attributes.code AS code,
-    family_attributes.parent_id AS parent_id,
+    product_model.code AS code,
+    product_model.parent_id AS parent_id,
     family_attributes.attribute_codes AS family_attribute_codes,
     COALESCE(family_variant_attributes.attribute_codes, '[]') AS variant_attributes,
     COALESCE(family_variant_axes.attribute_codes, '[]') AS variant_axes,
     COALESCE(family_variant_attributes_for_sub_product_models.attribute_codes, '[]') AS attributes_for_this_level
-FROM family_attributes
-LEFT JOIN family_variant_attributes ON family_variant_attributes.code = family_attributes.code
-LEFT JOIN family_variant_axes ON family_variant_axes.code = family_attributes.code
-LEFT JOIN family_variant_attributes_for_sub_product_models ON family_variant_attributes_for_sub_product_models.code = family_attributes.code
+FROM pim_catalog_product_model product_model
+INNER JOIN pim_catalog_family_variant family_variant ON family_variant.id = product_model.family_variant_id
+INNER JOIN family_attributes ON family_attributes.family_id = family_variant.family_id
+LEFT JOIN family_variant_attributes ON family_variant_attributes.code = product_model.code
+LEFT JOIN family_variant_axes ON family_variant_axes.code = product_model.code
+LEFT JOIN family_variant_attributes_for_sub_product_models ON family_variant_attributes_for_sub_product_models.code = product_model.code
 SQL;
 
         $rows = $this->connection->fetchAll(
@@ -101,22 +104,24 @@ SQL;
             ['productModelCodes' => Connection::PARAM_STR_ARRAY]
         );
 
-        $results = [];
-        foreach ($productModelCodes as $productModelCode) {
-            $results[$productModelCode]['ancestor_attribute_codes'] = [];
-        }
+        $results = array_fill_keys(
+            $productModelCodes,
+            [
+                'ancestor_attribute_codes' => [],
+                'attributes_for_this_level' => [],
+            ]
+        );
+
         foreach ($rows as $row) {
             $familyAttributes = json_decode($row['family_attribute_codes']);
             $variantAttributes = json_decode($row['variant_attributes']);
             $variantAxes = json_decode($row['variant_axes']);
             $attributesForThisLevel = json_decode($row['attributes_for_this_level']);
             $commonAttributes = array_diff($familyAttributes, $variantAttributes, $variantAxes);
-            sort($commonAttributes);
-            sort($attributesForThisLevel);
 
             $results[$row['code']] = [
-                'ancestor_attribute_codes' => null === $row['parent_id'] ? [] : $commonAttributes,
-                'attributes_for_this_level' => null === $row['parent_id'] ? $commonAttributes : $attributesForThisLevel,
+                'ancestor_attribute_codes' => null === $row['parent_id'] ? [] : array_values($commonAttributes),
+                'attributes_for_this_level' => null === $row['parent_id'] ? array_values($commonAttributes) : $attributesForThisLevel,
             ];
         }
 
