@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Storage;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\Storage;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelDescendantsAndAncestorsIndexer;
 use Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses;
 use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetDescendantVariantProductIdentifiers;
-use Akeneo\Pim\Enrichment\Component\Product\Storage\ComputeProductCompletenessAndIndexProductAndAncestors;
+use Akeneo\Pim\Enrichment\Bundle\Storage\ComputeProductCompletenessAndIndexProductAndAncestors;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
