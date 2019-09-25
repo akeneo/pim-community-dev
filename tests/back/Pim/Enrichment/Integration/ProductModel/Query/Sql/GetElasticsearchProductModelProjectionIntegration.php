@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AkeneoTest\Pim\Enrichment\Integration\ProductModel\Query\Sql;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductModelProjectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -19,12 +20,12 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
 
     public function test_that_it_gets_the_projection_of_a_sub_product_model()
     {
-        $this->createRootProductModel();
+        $this->createRootProductModel('familyVariantA1');
         $this->createSubProductModel();
 
         $expected = [
             'id' => 'product_model_123',
-            'identifier' => 'child',
+            'identifier' => 'sub_product_model_code',
             'family' => [
                 'code' => 'familyA',
                 'labels' => [
@@ -37,14 +38,14 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
             'family_variant' => 'familyVariantA1',
             'categories' => ['categoryA2', 'categoryA1'],
             'categories_of_ancestors' => ['categoryA1'],
-            'parent' => 'root',
+            'parent' => 'root_product_model_code',
             'values' => [
                 'a_simple_select-option' => ['<all_channels>' => ['<all_locales>' => 'optionB']]
             ],
             'all_complete' => [],
             'all_incomplete' => [],
             'ancestors' => [
-                'codes' => ['root'],
+                'codes' => ['root_product_model_code'],
                 'labels' => []
             ],
             'label' => [],
@@ -71,15 +72,15 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
             ]
         ];
 
-        $this->checkProductModelProjectionFormat('child', $expected);
+        $this->checkProductModelProjectionFormat('sub_product_model_code', $expected);
     }
 
     public function test_that_it_gets_the_projection_of_a_root_product_model()
     {
-        $this->createRootProductModel();
+        $this->createRootProductModel('familyVariantA1');
 
         $expected = [
-            'identifier' => 'root',
+            'identifier' => 'root_product_model_code',
             'family' => [
                 'code' => 'familyA',
                 'labels' => [
@@ -121,30 +122,138 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
             ]
         ];
 
-        $this->checkProductModelProjectionFormat('root', $expected);
+        $this->checkProductModelProjectionFormat('root_product_model_code', $expected);
     }
 
     public function test_that_it_returns_latest_updated_date()
     {
-        $this->createRootProductModel();
+        $dateBefore = '2000-12-30 12:34:56';
+        $dateAfter = '2010-12-30 12:34:56';
+
+        $this->createRootProductModel('familyVariantA1');
         $this->createSubProductModel();
-        $date = new \DateTime();
-        $date->modify('+1 day');
 
         $this->getConnection()->executeQuery(sprintf(
             'UPDATE pim_catalog_product_model SET updated="%s" WHERE code="%s"',
-            $date->format('Y-m-d H:i:s'),
-            'root'
+            $dateBefore,
+            'sub_product_model_code'
+        ));
+        $this->getConnection()->executeQuery(sprintf(
+            'UPDATE pim_catalog_product_model SET updated="%s" WHERE code="%s"',
+            $dateAfter,
+            'root_product_model_code'
         ));
 
-        $this->assertEquals($this->getProductModelProjectionArray('child')['updated'], $date->format('c'));
+        $this->assertEquals($this->getProductModelProjectionArray('sub_product_model_code')['updated'], '2010-12-30T13:34:56+01:00');
     }
 
-    private function createRootProductModel()
+    /**
+     * The all_complete fields is an array of "integer" indexed by channel and locale:
+     *    - 1 means that all variant product are complete
+     *    - 0 means that there is at least variant product incomplete
+     *
+     * The all_incomplete field is an array of "integer" indexed by channel and locale:
+     *    - 1 means that all variant product are incomplete
+     *    - 0 means that at least one product is complete
+     */
+    public function test_that_it_get_completeness_of_the_sub_and_root_product_models_with_complete_and_incomplete_variant_products()
+    {
+        $this->createRootProductModel('familyVariantA1');
+        $this->createSubProductModel();
+        $this->createProduct([
+            'parent' => 'sub_product_model_code',
+            'values' => [
+                'a_yes_no' => [['locale' => null, 'scope' => null, 'data' => true]],
+            ],
+        ]);
+
+        $expectedAllComplete = [
+            'tablet' => [
+                'de_DE' => 0,
+                'en_US' => 0,
+                'fr_FR' => 0,
+            ],
+            'ecommerce' => [
+                'en_US' => 0
+            ],
+            'ecommerce_china' => [
+                'en_US' => 1,
+                'zh_CN' => 1
+            ]
+        ];
+
+        $expectedAllIncomplete = [
+            'tablet' => [
+                'de_DE' => 1,
+                'en_US' => 1,
+                'fr_FR' => 1,
+            ],
+            'ecommerce' => [
+                'en_US' => 1
+            ],
+            'ecommerce_china' => [
+                'en_US' => 0,
+                'zh_CN' => 0
+            ]
+        ];
+
+        $this->assertEquals($this->getProductModelProjectionArray('sub_product_model_code')['all_complete'], $expectedAllComplete);
+        $this->assertEquals($this->getProductModelProjectionArray('root_product_model_code')['all_complete'], $expectedAllComplete);
+
+        $this->assertEquals($this->getProductModelProjectionArray('sub_product_model_code')['all_incomplete'], $expectedAllIncomplete);
+        $this->assertEquals($this->getProductModelProjectionArray('root_product_model_code')['all_incomplete'], $expectedAllIncomplete);
+    }
+
+    public function test_that_it_get_completeness_of_the_root_product_models_with_complete_and_incomplete_variant_products()
+    {
+        $this->createRootProductModel('familyVariantA2');
+        $this->createProduct([
+            'parent' => 'root_product_model_code',
+            'values' => [
+                'a_simple_select' => [['locale' => null, 'scope'  => null, 'data' => 'optionB']],
+                'a_yes_no' => [['locale' => null, 'scope' => null, 'data' => true]],
+            ],
+        ]);
+
+        $expectedAllComplete = [
+            'tablet' => [
+                'de_DE' => 0,
+                'en_US' => 0,
+                'fr_FR' => 0,
+            ],
+            'ecommerce' => [
+                'en_US' => 0
+            ],
+            'ecommerce_china' => [
+                'en_US' => 1,
+                'zh_CN' => 1
+            ]
+        ];
+
+        $expectedAllIncomplete = [
+            'tablet' => [
+                'de_DE' => 1,
+                'en_US' => 1,
+                'fr_FR' => 1,
+            ],
+            'ecommerce' => [
+                'en_US' => 1
+            ],
+            'ecommerce_china' => [
+                'en_US' => 0,
+                'zh_CN' => 0
+            ]
+        ];
+
+        $this->assertEquals($this->getProductModelProjectionArray('root_product_model_code')['all_complete'], $expectedAllComplete);
+        $this->assertEquals($this->getProductModelProjectionArray('root_product_model_code')['all_incomplete'], $expectedAllIncomplete);
+    }
+
+    private function createRootProductModel(string $familyVariantCode)
     {
         $this->createProductModel([
-            'code' => 'root',
-            'family_variant' => 'familyVariantA1',
+            'code' => 'root_product_model_code',
+            'family_variant' => $familyVariantCode,
             'values' => [
             ],
             'categories' => ['categoryA1'],
@@ -154,9 +263,9 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
     private function createSubProductModel()
     {
         $this->createProductModel([
-            'code' => 'child',
+            'code' => 'sub_product_model_code',
             'family_variant' => 'familyVariantA1',
-            'parent' => 'root',
+            'parent' => 'root_product_model_code',
             'values' => [
                 'a_simple_select' => [['locale' => null, 'scope'  => null, 'data' => 'optionB']],
             ],
@@ -173,6 +282,17 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
         $this->get('pim_catalog.saver.product_model')->save($productModel);
 
         return $productModel;
+    }
+
+    private function createProduct(array $data): ProductInterface
+    {
+        $product = $this->get('pim_catalog.builder.product')->createProduct('new_product_'.rand());
+        $this->get('pim_catalog.updater.product')->update($product, $data);
+        $errors = $this->get('pim_catalog.validator.product')->validate($product);
+        $this->assertCount(0, $errors);
+        $this->get('pim_catalog.saver.product')->save($product);
+
+        return $product;
     }
 
     private function checkProductModelProjectionFormat($code, $expected)
