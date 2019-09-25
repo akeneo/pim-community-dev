@@ -2,15 +2,13 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Command;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer;
 use Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
-use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
-use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\FetchMode;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Command\LockableTrait;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -25,41 +23,28 @@ class CalculateCompletenessCommand extends Command
 {
     use LockableTrait;
 
+    private const BATCH_SIZE = 1000;
+
     protected static $defaultName = 'pim:completeness:calculate';
 
-    /** @var Client */
-    private $productAndProductModelClient;
-
-    /** @var ProductQueryBuilderFactoryInterface */
-    private $productQueryBuilderFactory;
+    /** @var ProductAndAncestorsIndexer */
+    private $productAndAncestorsIndexer;
 
     /** @var ComputeAndPersistProductCompletenesses */
-    private $computeAndPersistProductCompletenesses;
+    private $computeAndPersistProductCompleteness;
 
-    /** @var ProductIndexerInterface */
-    private $productIndexer;
-
-    /** @var EntityManagerClearerInterface */
-    private $cacheClearer;
-
-    /** @var int */
-    private $batchSize;
+    /** @var Connection */
+    private $connection;
 
     public function __construct(
-        Client $productAndProductModelClient,
-        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
-        ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses,
-        ProductIndexerInterface $productIndexer,
-        EntityManagerClearerInterface $cacheClearer,
-        int $batchSize
+        ProductAndAncestorsIndexer $productANdAncestorsIndexer,
+        ComputeAndPersistProductCompletenesses $computeAndPersistProductCompleteness,
+        Connection $connection
     ) {
         parent::__construct();
-        $this->productAndProductModelClient = $productAndProductModelClient;
-        $this->productQueryBuilderFactory = $productQueryBuilderFactory;
-        $this->computeAndPersistProductCompletenesses = $computeAndPersistProductCompletenesses;
-        $this->productIndexer = $productIndexer;
-        $this->cacheClearer = $cacheClearer;
-        $this->batchSize = $batchSize;
+        $this->productAndAncestorsIndexer = $productANdAncestorsIndexer;
+        $this->computeAndPersistProductCompleteness = $computeAndPersistProductCompleteness;
+        $this->connection = $connection;
     }
 
     /**
@@ -81,45 +66,54 @@ class CalculateCompletenessCommand extends Command
             return 0;
         }
 
-        $output->writeln("<info>Generating missing completenesses...</info>");
+        $progressBar = new ProgressBar($output, $this->getTotalNumberOfProducts());
 
-        $options = [
-            'filters' => [
-                ['field' => 'completeness', 'operator' => Operators::IS_EMPTY, 'value' => null],
-                ['field' => 'family', 'operator' => Operators::IS_NOT_EMPTY, 'value' => null]
-            ]
-        ];
+        $output->writeln('<info>Computing product completenesses...</info>');
+        $progressBar->start();
+        foreach ($this->getProductIdentifiers() as $productIdentifiers) {
+            $this->computeAndPersistProductCompleteness->fromProductIdentifiers($productIdentifiers);
+            $this->productAndAncestorsIndexer->indexFromProductIdentifiers($productIdentifiers);
+            $progressBar->advance(self::BATCH_SIZE);
+        }
+        $progressBar->finish();
+        $output->writeln('');
+        $output->writeln('<info>Completeness successfully computed.</info>');
+    }
 
-        $this->productAndProductModelClient->refreshIndex();
+    private function getTotalNumberOfProducts(): int
+    {
+        return $this->connection->executeQuery('SELECT COUNT(0) FROM pim_catalog_product')->fetchColumn();
+    }
 
-        $pqb = $this->productQueryBuilderFactory->create($options);
-        $products = $pqb->execute();
+    private function getProductIdentifiers(): iterable
+    {
+        $formerId = 0;
+        $sql = <<<SQL
+SELECT id, identifier
+FROM pim_catalog_product
+WHERE id > :formerId
+ORDER BY id ASC
+LIMIT :limit
+SQL;
+        while (true) {
+            $rows = $this->connection->executeQuery(
+                $sql,
+                [
+                    'formerId' => $formerId,
+                    'limit' => self::BATCH_SIZE,
+                ],
+                [
+                    'formerId' => \PDO::PARAM_INT,
+                    'limit' => \PDO::PARAM_INT,
+                ]
+            )->fetchAll();
 
-        $productsToSave = [];
-        foreach ($products as $product) {
-            $productsToSave[] = $product;
-
-            if (count($productsToSave) === $this->batchSize) {
-                $identifiers = array_map(function (ProductInterface $product) {
-                    return $product->getIdentifier();
-                }, $productsToSave);
-
-                $this->computeAndPersistProductCompletenesses->fromProductIdentifiers($identifiers);
-                $this->productIndexer->indexFromProductIdentifiers($identifiers);
-                $this->cacheClearer->clear();
-                $productsToSave = [];
+            if (empty($rows)) {
+                return;
             }
+
+            $formerId = end($rows)['id'];
+            yield array_column($rows, 'identifier');
         }
-
-        if (!empty($productsToSave)) {
-            $identifiers = array_map(function (ProductInterface $product) {
-                return $product->getIdentifier();
-            }, $productsToSave);
-
-            $this->computeAndPersistProductCompletenesses->fromProductIdentifiers($identifiers);
-            $this->productIndexer->indexFromProductIdentifiers($identifiers);
-        }
-
-        $output->writeln("<info>Missing completenesses generated.</info>");
     }
 }
