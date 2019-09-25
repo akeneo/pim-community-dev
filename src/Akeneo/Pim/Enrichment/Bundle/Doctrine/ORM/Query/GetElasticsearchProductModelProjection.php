@@ -9,13 +9,8 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductModelPr
 use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetAttributesFromProductModelCodes;
 use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetCompleteFilterFromProductModelCodes;
 use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetValuesAndPropertiesFromProductModelCodes;
-use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueCollectionFactory;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -25,12 +20,6 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class GetElasticsearchProductModelProjection implements GetElasticsearchProductModelProjectionInterface
 {
-    /** @var ProductModelRepositoryInterface */
-    private $productModelRepository;
-
-    /** @var EntityWithFamilyVariantAttributesProvider */
-    private $attributesProvider;
-
     /** @var GetValuesAndPropertiesFromProductModelCodes */
     private $getValuesAndPropertiesFromProductModelCodes;
 
@@ -47,16 +36,12 @@ class GetElasticsearchProductModelProjection implements GetElasticsearchProductM
     private $valueCollectionNormalizer;
 
     public function __construct(
-        ProductModelRepositoryInterface $productModelRepository,
-        EntityWithFamilyVariantAttributesProvider $attributesProvider,
         GetValuesAndPropertiesFromProductModelCodes $getValuesAndPropertiesFromProductModelCodes,
         GetCompleteFilterFromProductModelCodes $getCompleteFilterFromProductModelCodes,
         GetAttributesFromProductModelCodes $getAttributesFromProductModelCodes,
         ValueCollectionFactory $valueCollectionFactory,
         NormalizerInterface $valueCollectionNormalizer
     ) {
-        $this->productModelRepository = $productModelRepository;
-        $this->attributesProvider = $attributesProvider;
         $this->getValuesAndPropertiesFromProductModelCodes = $getValuesAndPropertiesFromProductModelCodes;
         $this->getCompleteFilterFromProductModelCodes = $getCompleteFilterFromProductModelCodes;
         $this->getAttributesFromProductModelCodes = $getAttributesFromProductModelCodes;
@@ -79,8 +64,6 @@ class GetElasticsearchProductModelProjection implements GetElasticsearchProductM
         $productProjections = [];
 
         foreach ($productModelCodes as $productModelCode) {
-            $productModel = $this->productModelRepository->findOneByIdentifier($productModelCode);
-
             $valueCollection = $this
                 ->valueCollectionFactory
                 ->createFromStorageFormat($valuesAndProperties[$productModelCode]['values']);
@@ -105,22 +88,10 @@ class GetElasticsearchProductModelProjection implements GetElasticsearchProductM
                 $valuesAndProperties[$productModelCode]['parent_id'],
                 $valuesAndProperties[$productModelCode]['labels'],
                 $attributes[$productModelCode]['ancestor_attribute_codes'],
-                $this->getSortedAttributeCodes($productModel)
+                $attributes[$productModelCode]['attributes_for_this_level']
             );
         }
 
         return $productProjections;
-    }
-
-    private function getSortedAttributeCodes(ProductModelInterface $entityWithFamilyVariant): array
-    {
-        $attributes = $this->attributesProvider->getAttributes($entityWithFamilyVariant);
-        $attributeCodes = array_map(function (AttributeInterface $attribute) {
-            return $attribute->getCode();
-        }, $attributes);
-
-        sort($attributeCodes);
-
-        return $attributeCodes;
     }
 }
