@@ -141,7 +141,17 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
         $this->assertEquals($this->getProductModelProjectionArray('sub_product_model_code')['updated'], $date->format('c'));
     }
 
-    public function test_that_it_computes_completeness_of_variant_product()
+
+    /**
+     * The all_complete fields is an array of "integer" indexed by channel and locale:
+     *    - 1 means that all variant product are complete
+     *    - 0 means that there is at least variant product incomplete
+     *
+     * The all_incomplete field is an array of "integer" indexed by channel and locale:
+     *    - 1 means that all variant product are incomplete
+     *    - 0 means that at least one product is complete
+     */
+    public function test_that_it_get_completeness_of_the_product_model_with_complete_and_incomplete_variant_products()
     {
         $this->createRootProductModel();
         $this->createSubProductModel();

@@ -23,8 +23,14 @@ final class GetCompleteFilterFromProductModelCodes
 
     public function fetchByProductModelCodes(array $productModelCodes): array
     {
+        /**
+         * The 'all_complete' field means every product is complete, i.e. has a missing_count at 0. In other words,
+         * the sum of the product completenesses is 0.
+         * The 'all_incomplete' field means every product is incomplete, i.e. there is no product with a missing_count
+         * at 0. In other words, the minimal value of the product completenesses should not be 0.
+         */
         $query = <<<SQL
-WITH products AS (
+WITH product_model_completeness_by_channel_and_locale AS (
     SELECT
         product_model.code AS code,
         locale.code AS locale_code,
@@ -38,7 +44,7 @@ WITH products AS (
     INNER JOIN pim_catalog_channel channel ON completeness.channel_id = channel.id
     WHERE product_model.code IN (:productModelCodes)
     GROUP BY code, locale_code, channel_code
-UNION
+UNION ALL
     SELECT
         root_product_model.code AS code,
         locale.code AS locale_code,
@@ -53,20 +59,21 @@ UNION
     INNER JOIN pim_catalog_channel channel ON completeness.channel_id = channel.id
     WHERE root_product_model.code IN (:productModelCodes)
     GROUP BY code, locale_code, channel_code
-), products_per_channel AS (
+), 
+product_model_completeness_by_channel AS (
     SELECT
          code,
          channel_code,
          JSON_OBJECTAGG(locale_code, all_complete) AS all_complete,
          JSON_OBJECTAGG(locale_code, all_incomplete) AS all_incomplete
-    FROM products
+    FROM product_model_completeness_by_channel_and_locale
     GROUP BY code, channel_code
 )
 SELECT
     code,
     JSON_OBJECTAGG(channel_code, all_complete) AS all_complete,
     JSON_OBJECTAGG(channel_code, all_incomplete) AS all_incomplete
-FROM products_per_channel
+FROM product_model_completeness_by_channel
 GROUP BY code
 SQL;
 
