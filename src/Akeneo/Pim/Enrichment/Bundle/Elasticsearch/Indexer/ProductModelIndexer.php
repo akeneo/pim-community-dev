@@ -8,7 +8,7 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductModelProje
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductModelProjection;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
-use Akeneo\Tool\Component\StorageUtils\Indexer\ProductModelIndexerInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductModelIndexerInterface;
 
 /**
  * Product model indexer, define custom logic and options for product model indexing in the search engine.
