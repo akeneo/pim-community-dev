@@ -7,7 +7,6 @@ type Labels = {
 };
 
 export type ChannelCode = string;
-export type ChannelReference = ChannelCode | null;
 
 type Channel = {
   code: ChannelCode;

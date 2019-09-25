@@ -1,7 +1,5 @@
 import {createValue} from 'akeneoassetmanager/domain/model/asset/value';
 import {denormalize as denormalizeTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
-import {denormalizeChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
-import {denormalizeLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
 import {denormalize as denormalizeTextData} from 'akeneoassetmanager/domain/model/asset/data/text';
 
 const normalizedDescription = {
@@ -38,13 +36,13 @@ const normalizedWebsite = {
 };
 const description = denormalizeTextAttribute(normalizedDescription);
 const website = denormalizeTextAttribute(normalizedWebsite);
-const ecommerce = denormalizeChannelReference('ecommerce');
-const enUS = denormalizeLocaleReference('en_US');
+const ecommerce = 'ecommerce';
+const enUS = 'en_US';
 const data = denormalizeTextData('a nice description');
 
 describe('akeneo > asset family > domain > model > asset --- value', () => {
   test('I can create a new value with a text data', () => {
-    expect(createValue(description, denormalizeChannelReference(null), enUS, data).normalize()).toEqual({
+    expect(createValue(description, null, enUS, data).normalize()).toEqual({
       attribute: normalizedDescription,
       channel: null,
       data: 'a nice description',
@@ -61,7 +59,7 @@ describe('akeneo > asset family > domain > model > asset --- value', () => {
     }).toThrowError('The value for attribute "description" should have an empty channel reference');
     expect(() => {
       createValue(description, ecommerce, 'enUS', data).normalize();
-    }).toThrowError('Value expect LocaleReference as locale argument');
+    }).toThrowError('The value for attribute "description" should have an empty channel reference');
     expect(() => {
       createValue(description, ecommerce, enUS, 'data').normalize();
     }).toThrowError('Value expect ValueData as data argument');
@@ -69,7 +67,7 @@ describe('akeneo > asset family > domain > model > asset --- value', () => {
       createValue(description, ecommerce, enUS, data).normalize();
     }).toThrowError('The value for attribute "description" should have an empty channel reference');
     expect(() => {
-      createValue(description, denormalizeChannelReference(null), denormalizeLocaleReference(null), data).normalize();
+      createValue(description, null, null, data).normalize();
     }).toThrowError('The value for attribute "description" should have a non empty locale reference');
     const name = denormalizeTextAttribute({
       ...normalizedDescription,
@@ -78,7 +76,7 @@ describe('akeneo > asset family > domain > model > asset --- value', () => {
       value_per_locale: false,
     });
     expect(() => {
-      createValue(name, denormalizeChannelReference(null), denormalizeLocaleReference(null), data).normalize();
+      createValue(name, null, null, data).normalize();
     }).toThrowError('The value for attribute "name" should have a non empty channel reference');
     expect(() => {
       createValue(name, ecommerce, enUS, data).normalize();
@@ -87,7 +85,7 @@ describe('akeneo > asset family > domain > model > asset --- value', () => {
 
   test('I can set new data to a value', () => {
     expect(
-      createValue(description, denormalizeChannelReference(null), enUS, data)
+      createValue(description, null, enUS, data)
         .setData(denormalizeTextData('a new description!'))
         .normalize()
     ).toEqual({
@@ -99,74 +97,46 @@ describe('akeneo > asset family > domain > model > asset --- value', () => {
   });
 
   test('I can check if a value is empty', () => {
-    expect(createValue(description, denormalizeChannelReference(null), enUS, denormalizeTextData('')).isEmpty()).toBe(
-      true
-    );
-    expect(createValue(description, denormalizeChannelReference(null), enUS, denormalizeTextData(null)).isEmpty()).toBe(
-      true
-    );
+    expect(createValue(description, null, enUS, denormalizeTextData('')).isEmpty()).toBe(true);
+    expect(createValue(description, null, enUS, denormalizeTextData(null)).isEmpty()).toBe(true);
   });
 
   test('I can check if a value is empty', () => {
-    expect(createValue(description, denormalizeChannelReference(null), enUS, denormalizeTextData('')).isEmpty()).toBe(
-      true
-    );
-    expect(createValue(description, denormalizeChannelReference(null), enUS, denormalizeTextData(null)).isEmpty()).toBe(
-      true
-    );
+    expect(createValue(description, null, enUS, denormalizeTextData('')).isEmpty()).toBe(true);
+    expect(createValue(description, null, enUS, denormalizeTextData(null)).isEmpty()).toBe(true);
   });
 
   test('I can check equality on values', () => {
     expect(
-      createValue(description, denormalizeChannelReference(null), enUS, denormalizeTextData('')).equals(
-        createValue(description, denormalizeChannelReference(null), enUS, denormalizeTextData(null))
+      createValue(description, null, enUS, denormalizeTextData('')).equals(
+        createValue(description, null, enUS, denormalizeTextData(null))
       )
     ).toBe(true);
     expect(
-      createValue(description, denormalizeChannelReference(null), enUS, denormalizeTextData('')).equals(
-        createValue(
-          description,
-          denormalizeChannelReference(null),
-          denormalizeLocaleReference('fr_FR'),
-          denormalizeTextData(null)
-        )
+      createValue(description, null, enUS, denormalizeTextData('')).equals(
+        createValue(description, null, 'fr_FR', denormalizeTextData(null))
       )
     ).toBe(false);
   });
 
   test('I can check if a value is complete', () => {
-    expect(
-      createValue(
-        description,
-        denormalizeChannelReference(null),
-        enUS,
-        denormalizeTextData('test description')
-      ).isComplete()
-    ).toBe(true);
-    expect(
-      createValue(description, denormalizeChannelReference(null), enUS, denormalizeTextData('')).isComplete()
-    ).toBe(false);
+    expect(createValue(description, null, enUS, denormalizeTextData('test description')).isComplete()).toBe(true);
+    expect(createValue(description, null, enUS, denormalizeTextData('')).isComplete()).toBe(false);
   });
 
   test('I can check if a value is required', () => {
-    expect(
-      createValue(description, denormalizeChannelReference(null), enUS, denormalizeTextData('')).isRequired()
-    ).toBe(true);
-    expect(createValue(website, denormalizeChannelReference(null), enUS, denormalizeTextData('')).isRequired()).toBe(
-      false
-    );
+    expect(createValue(description, null, enUS, denormalizeTextData('')).isRequired()).toBe(true);
+    expect(createValue(website, null, enUS, denormalizeTextData('')).isRequired()).toBe(false);
   });
 
   test("I can normalize a value to it's minimal value", () => {
-    expect(createValue(description, denormalizeChannelReference(null), enUS, data).normalizeMinimal()).toEqual({
+    expect(createValue(description, null, enUS, data).normalizeMinimal()).toEqual({
       attribute: 'description_1234',
       channel: null,
       data: 'a nice description',
       locale: 'en_US',
     });
-    expect(
-      createValue(description, denormalizeChannelReference(null), enUS, denormalizeTextData(null)).normalizeMinimal()
-    ).toEqual({
+    expect(createValue(description, null, enUS, denormalizeTextData(null)).normalizeMinimal()).toEqual({
       attribute: 'description_1234',
       channel: null,
       data: null,

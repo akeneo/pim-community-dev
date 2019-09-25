@@ -1,5 +1,5 @@
 import * as React from 'react';
-import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
+import LocaleReference, {localeReferenceStringValue} from 'akeneoassetmanager/domain/model/locale-reference';
 import ChannelReference, {channelReferenceStringValue} from 'akeneoassetmanager/domain/model/channel-reference';
 import Value from 'akeneoassetmanager/domain/model/asset/value';
 import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
@@ -45,7 +45,7 @@ export default (
       >
         <div className="AknFieldContainer-header AknFieldContainer-header--light AknFieldContainer-header AknFieldContainer-header--light--small">
           <label
-            title={value.attribute.getLabel(locale.stringValue())}
+            title={value.attribute.getLabel(localeReferenceStringValue(locale))}
             className="AknFieldContainer-label"
             htmlFor={`pim_asset_manager.asset.enrich.${value.attribute.getCode().stringValue()}`}
           >
@@ -54,7 +54,7 @@ export default (
                 value.attribute.isRequired && value.data.isEmpty() ? '' : 'AknBadge--hidden'
               }`}
             />
-            {value.attribute.getLabel(locale.stringValue())}
+            {value.attribute.getLabel(localeReferenceStringValue(locale))}
           </label>
           <span className="AknFieldContainer-fieldInfo">
             <span>
@@ -62,7 +62,10 @@ export default (
               &nbsp;
               <span>
                 {value.attribute.valuePerLocale ? (
-                  <Flag locale={createLocaleFromCode(value.locale.stringValue())} displayLanguage={true} />
+                  <Flag
+                    locale={createLocaleFromCode(localeReferenceStringValue(value.locale))}
+                    displayLanguage={true}
+                  />
                 ) : null}
               </span>
             </span>
@@ -71,7 +74,7 @@ export default (
         <div className="AknFieldContainer-inputContainer">
           <ErrorBoundary
             errorMessage={__('pim_asset_manager.asset.error.value', {
-              fieldName: value.attribute.getLabel(locale.stringValue()),
+              fieldName: value.attribute.getLabel(localeReferenceStringValue(locale)),
             })}
           >
             <DataView

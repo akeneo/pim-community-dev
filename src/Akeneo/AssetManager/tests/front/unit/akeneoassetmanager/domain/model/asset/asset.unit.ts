@@ -5,11 +5,8 @@ import {createIdentifier as createAssetIdentifier} from 'akeneoassetmanager/doma
 import {createAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import {createEmptyFile} from 'akeneoassetmanager/domain/model/file';
 import {createValueCollection} from 'akeneoassetmanager/domain/model/asset/value-collection';
-import {denormalizeChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
-import {createLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
 import {createValue} from 'akeneoassetmanager/domain/model/asset/value';
 import {denormalize as denormalizeTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
-import {denormalizeLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
 import {denormalize as denormalizeTextData} from 'akeneoassetmanager/domain/model/asset/data/text';
 
 const michelIdentifier = createAssetIdentifier('michel');
@@ -21,8 +18,8 @@ const didierIdentifier = createAssetIdentifier('designer_didier_1');
 const didierCode = createCode('didier');
 const didierLabels = createLabelCollection({en_US: 'Didier'});
 const emptyFile = createEmptyFile();
-const channelEcommerce = denormalizeChannelReference('ecommerce');
-const localeFr = createLocaleReference('en_US');
+const channelEcommerce = 'ecommerce';
+const localeEnUS = 'en_US';
 const normalizedDescription = {
   identifier: 'description_1234',
   asset_family_identifier: 'designer',
@@ -58,19 +55,9 @@ const normalizedWebsite = {
 };
 const website = denormalizeTextAttribute(normalizedWebsite);
 const descriptionData = denormalizeTextData('a nice description');
-const descriptionValue = createValue(
-  description,
-  denormalizeChannelReference('ecommerce'),
-  denormalizeLocaleReference('en_US'),
-  descriptionData
-);
+const descriptionValue = createValue(description, 'ecommerce', 'en_US', descriptionData);
 const websiteData = denormalizeTextData('');
-const websiteValue = createValue(
-  website,
-  denormalizeChannelReference('ecommerce'),
-  denormalizeLocaleReference('en_US'),
-  websiteData
-);
+const websiteValue = createValue(website, 'ecommerce', 'en_US', websiteData);
 const valueCollection = createValueCollection([descriptionValue, websiteValue]);
 
 describe('akeneo > asset > domain > model --- asset', () => {
@@ -261,7 +248,7 @@ describe('akeneo > asset > domain > model --- asset', () => {
         michelLabels,
         emptyFile,
         valueCollection
-      ).getCompleteness(channelEcommerce, localeFr)
+      ).getCompleteness(channelEcommerce, localeEnUS)
     ).toEqual({complete: 1, required: 2});
   });
 });

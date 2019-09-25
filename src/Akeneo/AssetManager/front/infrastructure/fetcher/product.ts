@@ -8,7 +8,7 @@ import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import Product from 'akeneoassetmanager/domain/model/product/product';
 import AttributeCode from 'akeneoassetmanager/domain/model/product/attribute/code';
 import ChannelReference, {channelReferenceStringValue} from 'akeneoassetmanager/domain/model/channel-reference';
-import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
+import LocaleReference, {localeReferenceStringValue} from 'akeneoassetmanager/domain/model/locale-reference';
 import {SearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
 
 const routing = require('routing');
@@ -27,7 +27,7 @@ export class ProductFetcherImplementation implements ProductFetcher {
         assetCode: assetCode.stringValue(),
         attributeCode: attributeCode.stringValue(),
         channel: channelReferenceStringValue(channel),
-        locale: locale.stringValue(),
+        locale: localeReferenceStringValue(locale),
       })
     ).catch(errorHandler);
 

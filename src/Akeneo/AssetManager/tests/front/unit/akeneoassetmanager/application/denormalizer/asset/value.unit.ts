@@ -1,8 +1,6 @@
 import denormalize, {getValueDenormalizer} from 'akeneoassetmanager/application/denormalizer/asset/value';
 import {createValue} from 'akeneoassetmanager/domain/model/asset/value';
 import {denormalize as denormalizeTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
-import {denormalizeChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
-import {denormalizeLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
 import {denormalize as denormalizeTextData} from 'akeneoassetmanager/domain/model/asset/data/text';
 
 const normalizedDescription = {
@@ -22,9 +20,8 @@ const normalizedDescription = {
   regular_expression: null,
 };
 const description = denormalizeTextAttribute(normalizedDescription);
-const enUS = denormalizeLocaleReference('en_US');
 const data = denormalizeTextData('a nice description');
-const descriptionenUS = createValue(description, denormalizeChannelReference(null), enUS, data).normalize();
+const descriptionenUS = createValue(description, null, 'en_US', data).normalize();
 
 describe('akeneo > asset family > application > denormalizer > asset --- value', () => {
   test('I can denormalize a value', () => {

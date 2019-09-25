@@ -1,39 +1,39 @@
-import {createLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
+import {
+  denormalizeLocaleReference,
+  localeReferenceStringValue,
+  localeReferenceAreEqual,
+  localeReferenceIsEmpty,
+} from 'akeneoassetmanager/domain/model/locale-reference';
 
 describe('akeneo > asset family > domain > model --- locale reference', () => {
   test('I can create a new locale reference with a string value', () => {
-    expect(createLocaleReference('en_US').stringValue()).toBe('en_US');
+    expect(localeReferenceStringValue(denormalizeLocaleReference('en_US'))).toBe('en_US');
   });
 
   test('I can create a new locale reference with a null value', () => {
-    expect(createLocaleReference(null).stringValue()).toBe('');
+    expect(localeReferenceStringValue(denormalizeLocaleReference(null))).toBe('');
   });
 
   test('I cannot create a new locale reference with a value other than a string or null', () => {
     expect(() => {
-      createLocaleReference(12);
-    }).toThrow('LocaleReference expects a string or null as parameter to be created');
+      denormalizeLocaleReference(12);
+    }).toThrow('A locale reference should be a string or null');
   });
 
   test('I can compare two locale references', () => {
-    expect(createLocaleReference('en_US').equals(createLocaleReference('fr_FR'))).toBe(false);
-    expect(createLocaleReference('en_US').equals(createLocaleReference('en_US'))).toBe(true);
-    expect(createLocaleReference(null).equals(createLocaleReference(null))).toBe(true);
-    expect(createLocaleReference('en_US').equals(createLocaleReference(null))).toBe(false);
+    expect(localeReferenceAreEqual('en_US', 'fr_FR')).toBe(false);
+    expect(localeReferenceAreEqual('en_US', 'en_US')).toBe(true);
+    expect(localeReferenceAreEqual(null, null)).toBe(true);
+    expect(localeReferenceAreEqual('en_US', null)).toBe(false);
   });
 
   test('I can know if a locale reference is empty', () => {
-    expect(createLocaleReference('en_US').isEmpty()).toBe(false);
-    expect(createLocaleReference(null).isEmpty()).toBe(true);
-  });
-
-  test('I can normalize a locale reference', () => {
-    expect(createLocaleReference('en_US').normalize()).toBe('en_US');
-    expect(createLocaleReference(null).normalize()).toBe(null);
+    expect(localeReferenceIsEmpty('en_US')).toBe(false);
+    expect(localeReferenceIsEmpty(null)).toBe(true);
   });
 
   test('I can get the string value of a locale reference', () => {
-    expect(createLocaleReference('en_US').stringValue()).toBe('en_US');
-    expect(createLocaleReference(null).stringValue()).toBe('');
+    expect(localeReferenceStringValue('en_US')).toBe('en_US');
+    expect(localeReferenceStringValue(null)).toBe('');
   });
 });

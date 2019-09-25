@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 import AssetSelector from 'akeneoassetmanager/application/component/app/asset-selector';
 import {createIdentifier as createAssetFamilyIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import AssetCode, {createCode as createAssetCode} from 'akeneoassetmanager/domain/model/asset/code';
-import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
+import {denormalizeLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
 import {denormalizeChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
 import __ from 'akeneoassetmanager/tools/translator';
 
@@ -34,7 +34,7 @@ class AssetFamilyField extends (Field as {new (config: any): any}) {
       <AssetSelector
         assetFamilyIdentifier={createAssetFamilyIdentifier(templateContext.attribute.reference_data_name)}
         value={valueData}
-        locale={LocaleReference.create(UserContext.get('catalogLocale'))}
+        locale={denormalizeLocaleReference(UserContext.get('catalogLocale'))}
         channel={denormalizeChannelReference(UserContext.get('catalogScope'))}
         multiple={false}
         readOnly={'view' === templateContext.editMode}

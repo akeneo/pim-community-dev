@@ -5,8 +5,8 @@ import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/
 const routing = require('routing');
 import {NormalizedAsset, NormalizedItemAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
-import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
-import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
+import LocaleReference, {localeReferenceStringValue} from 'akeneoassetmanager/domain/model/locale-reference';
+import ChannelReference, {channelReferenceStringValue} from 'akeneoassetmanager/domain/model/channel-reference';
 import {getLabel} from 'pimui/js/i18n';
 import __ from 'akeneoassetmanager/tools/translator';
 
@@ -41,15 +41,16 @@ export type AssetSelectorProps = {
   multiple?: boolean;
   readOnly?: boolean;
   compact?: boolean;
+  id?: string;
   locale: LocaleReference;
   channel: ChannelReference;
-  placeholder: string;
+  placeholder?: string;
   onChange: (value: AssetCode[] | AssetCode | null) => void;
 };
 
 type Select2Item = {id: string; text: string; original: NormalizedItemAsset};
 
-export default class AssetSelector extends React.Component<AssetSelectorProps & any> {
+export default class AssetSelector extends React.Component<AssetSelectorProps> {
   PAGE_SIZE = 200;
   static defaultProps = {
     multiple: false,
@@ -59,7 +60,7 @@ export default class AssetSelector extends React.Component<AssetSelectorProps & 
   private DOMel: React.RefObject<HTMLInputElement>;
   private el: any;
 
-  constructor(props: AssetSelectorProps & any) {
+  constructor(props: AssetSelectorProps) {
     super(props);
 
     this.DOMel = React.createRef();
@@ -68,7 +69,7 @@ export default class AssetSelector extends React.Component<AssetSelectorProps & 
   formatItem(normalizedAsset: NormalizedItemAsset): Select2Item {
     return {
       id: normalizedAsset.code,
-      text: getLabel(normalizedAsset.labels, this.props.locale.stringValue(), normalizedAsset.code),
+      text: getLabel(normalizedAsset.labels, localeReferenceStringValue(this.props.locale), normalizedAsset.code),
       original: normalizedAsset,
     };
   }
@@ -114,8 +115,8 @@ export default class AssetSelector extends React.Component<AssetSelectorProps & 
           data: (term: string, page: number): string => {
             const selectedAssets = this.getSelectedAssetCode(this.props.value, this.props.multiple as boolean);
             const searchQuery = {
-              channel: this.props.channel.stringValue(),
-              locale: this.props.locale.stringValue(),
+              channel: channelReferenceStringValue(this.props.channel),
+              locale: localeReferenceStringValue(this.props.locale),
               size: this.PAGE_SIZE,
               page: page - 1,
               filters: [
@@ -157,7 +158,10 @@ export default class AssetSelector extends React.Component<AssetSelectorProps & 
             const result = await assetFetcher.fetchByCodes(
               this.props.assetFamilyIdentifier,
               initialAssetCodes,
-              {channel: this.props.channel.stringValue(), locale: this.props.locale.stringValue()},
+              {
+                channel: channelReferenceStringValue(this.props.channel),
+                locale: localeReferenceStringValue(this.props.locale),
+              },
               true
             );
 
@@ -166,8 +170,8 @@ export default class AssetSelector extends React.Component<AssetSelectorProps & 
             const initialValue = element.val();
             assetFetcher
               .fetchByCodes(this.props.assetFamilyIdentifier, [AssetCode.create(initialValue)], {
-                channel: this.props.channel.stringValue(),
-                locale: this.props.locale.stringValue(),
+                channel: channelReferenceStringValue(this.props.channel),
+                locale: localeReferenceStringValue(this.props.locale),
               })
               .then((assets: NormalizedItemAsset[]) => {
                 callback(this.formatItem(assets[0]));
@@ -180,12 +184,30 @@ export default class AssetSelector extends React.Component<AssetSelectorProps & 
           }
           container
             .addClass('select2-search-choice-value')
-            .append($(renderRow(asset.text, asset.original, false, this.props.compact)));
+            .append(
+              $(
+                renderRow(
+                  asset.text,
+                  asset.original,
+                  false,
+                  undefined === this.props.compact ? false : this.props.compact
+                )
+              )
+            );
         },
         formatResult: (asset: Select2Item, container: any) => {
           container
             .addClass('select2-search-choice-value')
-            .append($(renderRow(asset.text, asset.original, false, this.props.compact)));
+            .append(
+              $(
+                renderRow(
+                  asset.text,
+                  asset.original,
+                  false,
+                  undefined === this.props.compact ? false : this.props.compact
+                )
+              )
+            );
         },
       });
 

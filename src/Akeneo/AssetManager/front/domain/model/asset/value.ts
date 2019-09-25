@@ -1,9 +1,11 @@
 import ChannelReference, {
-  denormalizeChannelReference,
   channelReferenceIsEmpty,
   channelReferenceAreEqual,
 } from 'akeneoassetmanager/domain/model/channel-reference';
-import LocaleReference, {NormalizedLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
+import LocaleReference, {
+  localeReferenceIsEmpty,
+  localeReferenceAreEqual,
+} from 'akeneoassetmanager/domain/model/locale-reference';
 import Data from 'akeneoassetmanager/domain/model/asset/data';
 import {ConcreteAttribute, Attribute, NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {NormalizedAttributeIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
@@ -22,7 +24,7 @@ type NormalizedContext = {
 export type NormalizedValue = {
   attribute: NormalizedAttribute;
   channel: ChannelReference;
-  locale: NormalizedLocaleReference;
+  locale: LocaleReference;
   data: any;
   context?: NormalizedContext;
 };
@@ -30,7 +32,7 @@ export type NormalizedValue = {
 export type NormalizedMinimalValue = {
   attribute: NormalizedAttributeIdentifier;
   channel: ChannelReference;
-  locale: NormalizedLocaleReference;
+  locale: LocaleReference;
   data: any;
 };
 
@@ -46,9 +48,6 @@ class Value {
     if (!(attribute instanceof ConcreteAttribute)) {
       throw new InvalidTypeError('Value expect ConcreteAttribute as attribute argument');
     }
-    if (!(locale instanceof LocaleReference)) {
-      throw new InvalidTypeError('Value expect LocaleReference as locale argument');
-    }
     if (!(data instanceof Data)) {
       throw new InvalidTypeError('Value expect ValueData as data argument');
     }
@@ -62,12 +61,12 @@ class Value {
         `The value for attribute "${attribute.getCode().stringValue()}" should have an empty channel reference`
       );
     }
-    if (locale.isEmpty() && attribute.valuePerLocale) {
+    if (localeReferenceIsEmpty(locale) && attribute.valuePerLocale) {
       throw new InvalidTypeError(
         `The value for attribute "${attribute.getCode().stringValue()}" should have a non empty locale reference`
       );
     }
-    if (!locale.isEmpty() && !attribute.valuePerLocale) {
+    if (!localeReferenceIsEmpty(locale) && !attribute.valuePerLocale) {
       throw new InvalidTypeError(
         `The value for attribute "${attribute.getCode().stringValue()}" should have an empty locale reference`
       );
@@ -95,20 +94,20 @@ class Value {
   public equals(value: Value): boolean {
     return (
       channelReferenceAreEqual(this.channel, value.channel) &&
-      this.locale.equals(value.locale) &&
+      localeReferenceAreEqual(this.locale, value.locale) &&
       this.attribute.equals(value.attribute)
     );
   }
 
   public static create(attribute: Attribute, channel: ChannelReference, locale: LocaleReference, data: Data): Value {
-    return new Value(attribute, denormalizeChannelReference(channel), locale, data);
+    return new Value(attribute, channel, locale, data);
   }
 
   public normalize(): NormalizedValue {
     return {
       attribute: this.attribute.normalize(),
       channel: this.channel,
-      locale: this.locale.normalize(),
+      locale: this.locale,
       data: this.data.normalize(),
     };
   }
@@ -117,7 +116,7 @@ class Value {
     return {
       attribute: this.attribute.identifier.normalize(),
       channel: this.channel,
-      locale: this.locale.normalize(),
+      locale: this.locale,
       data: this.data.isEmpty() ? null : this.data.normalize(),
     };
   }

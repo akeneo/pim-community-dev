@@ -1,5 +1,4 @@
 import hydrator from 'akeneoassetmanager/application/hydrator/product';
-import {createLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
 import {denormalizeProduct} from 'akeneoassetmanager/domain/model/product/product';
 
 describe('akeneo > asset family > application > hydrator --- product', () => {
@@ -15,7 +14,7 @@ describe('akeneo > asset family > application > hydrator --- product', () => {
           completeness: 60,
           variant_product_completenesses: null,
         },
-        {locale: createLocaleReference('en_US')}
+        {locale: 'en_US'}
       )
     ).toEqual(
       denormalizeProduct({
@@ -42,7 +41,7 @@ describe('akeneo > asset family > application > hydrator --- product', () => {
           completeness: null,
           variant_product_completenesses: {completeChildren: 2, totalChildren: 4},
         },
-        {locale: createLocaleReference('en_US')}
+        {locale: 'en_US'}
       )
     ).toEqual(
       denormalizeProduct({
@@ -67,7 +66,7 @@ describe('akeneo > asset family > application > hydrator --- product', () => {
           label: 'My nice product',
           image: null,
         },
-        {locale: createLocaleReference('en_US')}
+        {locale: 'en_US'}
       )
     ).toEqual(
       denormalizeProduct({

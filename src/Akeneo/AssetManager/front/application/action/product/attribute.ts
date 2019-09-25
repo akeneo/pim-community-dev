@@ -13,7 +13,7 @@ import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/product/attri
 import hydrate from 'akeneoassetmanager/application/hydrator/product/attribute';
 import AttributeCode from 'akeneoassetmanager/domain/model/product/attribute/code';
 import {denormalizeChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
-import {createLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
+import {denormalizeLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
 
 const fetcherRegistry = require('pim/fetcher-registry');
 
@@ -45,7 +45,7 @@ export const updateProductList = () => async (dispatch: any, getState: () => Edi
   const assetCode = createAssetCode(getState().form.data.code);
   const attributeCode = createAttributeCode(normalizedAttribute.code);
   const channel = denormalizeChannelReference(getState().user.catalogChannel);
-  const locale = createLocaleReference(getState().user.catalogLocale);
+  const locale = denormalizeLocaleReference(getState().user.catalogLocale);
 
   const products = await productFetcher.fetchLinkedProducts(
     assetFamilyIdentifier,

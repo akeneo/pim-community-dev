@@ -52,7 +52,7 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset', () => {
               },
               channel: null,
               data: {textData: 'Philippe Starck'},
-              locale: {localeReference: null},
+              locale: null,
             },
             {
               attribute: {
@@ -73,7 +73,7 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset', () => {
               },
               channel: null,
               data: {textData: ''},
-              locale: {localeReference: 'en_US'},
+              locale: 'en_US',
             },
             {
               attribute: {
@@ -94,7 +94,7 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset', () => {
               },
               channel: null,
               data: {textData: ''},
-              locale: {localeReference: 'fr_FR'},
+              locale: 'fr_FR',
             },
             {
               attribute: {
@@ -115,7 +115,7 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset', () => {
               },
               channel: null,
               data: {textData: ''},
-              locale: {localeReference: null},
+              locale: null,
             },
             {
               attribute: {
@@ -133,7 +133,7 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset', () => {
               },
               channel: null,
               data: {fileData: {}},
-              locale: {localeReference: null},
+              locale: null,
             },
             {
               attribute: {
@@ -152,7 +152,7 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset', () => {
               },
               channel: null,
               data: {numberData: ''},
-              locale: {localeReference: null},
+              locale: null,
             },
           ],
         },

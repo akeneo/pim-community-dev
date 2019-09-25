@@ -1,8 +1,6 @@
 import {createValueCollection, generateKey} from 'akeneoassetmanager/domain/model/asset/value-collection';
 import {createValue} from 'akeneoassetmanager/domain/model/asset/value';
 import {denormalizeIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
-import {denormalizeChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
-import {denormalizeLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
 import {denormalize as denormalizeTextData} from 'akeneoassetmanager/domain/model/asset/data/text';
 import {denormalize as denormalizeTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
 
@@ -23,22 +21,22 @@ const normalizedDescription = {
   regular_expression: null,
 };
 const description = denormalizeTextAttribute(normalizedDescription);
-const ecommerce = denormalizeChannelReference('ecommerce');
-const mobile = denormalizeChannelReference('mobile');
-const enUS = denormalizeLocaleReference('en_US');
-const frFR = denormalizeLocaleReference('fr_FR');
+const ecommerce = 'ecommerce';
+const mobile = 'mobile';
+const enUS = 'en_US';
+const frFR = 'fr_FR';
 const niceDescription = denormalizeTextData('nice description');
 const awesomeName = denormalizeTextData('awesome name');
-const descriptionEnUsValue = createValue(description, denormalizeChannelReference(null), enUS, niceDescription);
-const descriptionFrFrValue = createValue(description, denormalizeChannelReference(null), frFR, niceDescription);
+const descriptionEnUsValue = createValue(description, null, enUS, niceDescription);
+const descriptionFrFrValue = createValue(description, null, frFR, niceDescription);
 const name = denormalizeTextAttribute({
   ...normalizedDescription,
   code: 'name',
   value_per_channel: true,
   value_per_locale: false,
 });
-const nameMobileValue = createValue(name, mobile, denormalizeLocaleReference(null), awesomeName);
-const nameEcommerceValue = createValue(name, ecommerce, denormalizeLocaleReference(null), awesomeName);
+const nameMobileValue = createValue(name, mobile, null, awesomeName);
+const nameEcommerceValue = createValue(name, ecommerce, null, awesomeName);
 
 describe('akeneo > asset family > domain > model > asset --- value collection', () => {
   test('I can create a new value collection', () => {
@@ -81,34 +79,12 @@ describe('akeneo > asset family > domain > model > asset --- value collection', 
   });
 
   test('I can generate a value key', () => {
-    expect(
-      generateKey(
-        denormalizeIdentifier('description'),
-        denormalizeChannelReference('ecommerce'),
-        denormalizeLocaleReference('en_US')
-      )
-    ).toEqual('description_ecommerce_en_US');
-    expect(
-      generateKey(
-        denormalizeIdentifier('description'),
-        denormalizeChannelReference('ecommerce'),
-        denormalizeLocaleReference(null)
-      )
-    ).toEqual('description_ecommerce');
-    expect(
-      generateKey(
-        denormalizeIdentifier('description'),
-        denormalizeChannelReference(null),
-        denormalizeLocaleReference('en_US')
-      )
-    ).toEqual('description_en_US');
-    expect(
-      generateKey(
-        denormalizeIdentifier('description'),
-        denormalizeChannelReference(null),
-        denormalizeLocaleReference(null)
-      )
-    ).toEqual('description');
+    expect(generateKey(denormalizeIdentifier('description'), 'ecommerce', 'en_US')).toEqual(
+      'description_ecommerce_en_US'
+    );
+    expect(generateKey(denormalizeIdentifier('description'), 'ecommerce', null)).toEqual('description_ecommerce');
+    expect(generateKey(denormalizeIdentifier('description'), null, 'en_US')).toEqual('description_en_US');
+    expect(generateKey(denormalizeIdentifier('description'), null, null)).toEqual('description');
   });
 
   test('I cannot create an invalid value collection', () => {

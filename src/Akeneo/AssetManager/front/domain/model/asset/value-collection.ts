@@ -4,7 +4,11 @@ import ChannelReference, {
   channelReferenceAreEqual,
   channelReferenceStringValue,
 } from 'akeneoassetmanager/domain/model/channel-reference';
-import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
+import LocaleReference, {
+  localeReferenceIsEmpty,
+  localeReferenceAreEqual,
+  localeReferenceStringValue,
+} from 'akeneoassetmanager/domain/model/locale-reference';
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
 
 class InvalidTypeError extends Error {}
@@ -28,7 +32,7 @@ export default class ValueCollection {
     return this.values.filter(
       (value: Value) =>
         (channelReferenceIsEmpty(value.channel) || channelReferenceAreEqual(value.channel, channel)) &&
-        (value.locale.isEmpty() || value.locale.equals(locale))
+        (localeReferenceIsEmpty(value.locale) || localeReferenceAreEqual(value.locale, locale))
     );
   }
 
@@ -48,7 +52,7 @@ export const generateKey = (
 ) => {
   let key = attributeIdentifier.stringValue();
   key = !channelReferenceIsEmpty(channel) ? `${key}_${channelReferenceStringValue(channel)}` : key;
-  key = !locale.isEmpty() ? `${key}_${locale.stringValue()}` : key;
+  key = !localeReferenceIsEmpty(locale) ? `${key}_${localeReferenceStringValue(locale)}` : key;
 
   return key;
 };

@@ -8,7 +8,10 @@ import ChannelReference, {
   channelReferenceIsEmpty,
   denormalizeChannelReference,
 } from 'akeneoassetmanager/domain/model/channel-reference';
-import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
+import LocaleReference, {
+  localeReferenceIsEmpty,
+  denormalizeLocaleReference,
+} from 'akeneoassetmanager/domain/model/locale-reference';
 import {Column} from 'akeneoassetmanager/application/reducer/grid';
 import Channel from 'akeneoassetmanager/domain/model/channel';
 import Locale from 'akeneoassetmanager/domain/model/locale';
@@ -49,7 +52,7 @@ const getColumn = (attribute: Attribute, channel: ChannelReference, locale: Loca
     throw new InvalidArgument('A column cannot be generated from an empty ChannelReference');
   }
 
-  if (locale.isEmpty()) {
+  if (localeReferenceIsEmpty(locale)) {
     throw new InvalidArgument('A column cannot be generated from an empty LocaleReference');
   }
 
@@ -57,7 +60,7 @@ const getColumn = (attribute: Attribute, channel: ChannelReference, locale: Loca
     key: generateKey(
       attribute.identifier,
       attribute.valuePerChannel ? channel : denormalizeChannelReference(null),
-      attribute.valuePerLocale ? locale : LocaleReference.create(null)
+      attribute.valuePerLocale ? locale : denormalizeLocaleReference(null)
     ),
     labels: attribute.getLabelCollection().normalize(),
     type: attribute.getType(),
@@ -82,7 +85,7 @@ export const getColumns = (attributes: Attribute[], channels: Channel[], columns
       channels.forEach((channel: Channel) => {
         channel.locales.forEach((locale: Locale) => {
           columns.push(
-            getColumn(attribute, denormalizeChannelReference(channel.code), LocaleReference.create(locale.code))
+            getColumn(attribute, denormalizeChannelReference(channel.code), denormalizeLocaleReference(locale.code))
           );
         });
       });

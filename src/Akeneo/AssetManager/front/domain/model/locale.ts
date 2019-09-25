@@ -1,7 +1,5 @@
 import {isString} from 'akeneoassetmanager/domain/model/utils';
 
-export type LocaleReference = LocaleCode | null;
-
 export type LocaleCode = string;
 export type LocaleLabel = string;
 export type LocaleRegion = string;

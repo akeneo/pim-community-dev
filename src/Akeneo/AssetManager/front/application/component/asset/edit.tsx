@@ -22,7 +22,7 @@ import Channel from 'akeneoassetmanager/domain/model/channel';
 import DeleteModal from 'akeneoassetmanager/application/component/app/delete-modal';
 import {openDeleteModal, cancelDeleteModal} from 'akeneoassetmanager/application/event/confirmDelete';
 import Key from 'akeneoassetmanager/tools/key';
-import {createLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
+import {denormalizeLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
 import {denormalizeChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
 import {getLocales} from 'akeneoassetmanager/application/reducer/structure';
 import CompletenessLabel from 'akeneoassetmanager/application/component/app/completeness';
@@ -128,7 +128,7 @@ class AssetEditView extends React.Component<EditProps> {
     const TabView = sidebarProvider.getView('akeneo_asset_manager_asset_edit', this.props.sidebar.currentTab);
     const completeness = asset.getCompleteness(
       denormalizeChannelReference(this.props.context.channel),
-      createLocaleReference(this.props.context.locale)
+      denormalizeLocaleReference(this.props.context.locale)
     );
     const isUsableSelectedAttributeOnTheGrid =
       null !== this.props.selectedAttribute && true === this.props.selectedAttribute.useable_as_grid_filter;

@@ -3,7 +3,7 @@ import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 import __ from 'akeneoassetmanager/tools/translator';
 import Value from 'akeneoassetmanager/domain/model/asset/value';
 import {channelReferenceAreEqual} from 'akeneoassetmanager/domain/model/channel-reference';
-import {denormalizeLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
+import {localeReferenceAreEqual} from 'akeneoassetmanager/domain/model/locale-reference';
 
 export const getErrorsView = (errors: ValidationError[], value: Value) => {
   const errorMessages = errors
@@ -11,7 +11,7 @@ export const getErrorsView = (errors: ValidationError[], value: Value) => {
       (error: ValidationError) =>
         `values.${value.attribute.getCode().stringValue()}` === error.propertyPath &&
         channelReferenceAreEqual(error.invalidValue.channel, value.channel) &&
-        denormalizeLocaleReference(error.invalidValue.locale).equals(value.locale)
+        localeReferenceAreEqual(error.invalidValue.locale, value.locale)
     )
     .map((error: ValidationError, key: number) => {
       return (
