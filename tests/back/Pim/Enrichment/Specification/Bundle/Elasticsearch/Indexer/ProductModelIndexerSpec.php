@@ -64,6 +64,37 @@ class ProductModelIndexerSpec extends ObjectBehavior
         $this->indexFromProductModelCodes([$code1, $code2]);
     }
 
+    function it_bulk_indexes_products_from_identifiers_using_batch(
+        Client $productAndProductModelClient,
+        GetElasticsearchProductModelProjectionInterface $getElasticsearchProductModelProjection
+    ) {
+        $identifiers = $this->getRangeCodes(1, 3002);
+
+        $getElasticsearchProductModelProjection->fromProductModelCodes($this->getRangeCodes(1, 1000))
+            ->willReturn([$this->getFakeProjection('identifier_1')]);
+        $getElasticsearchProductModelProjection->fromProductModelCodes($this->getRangeCodes(1001, 2000))
+            ->willReturn([$this->getFakeProjection('identifier_2')]);
+        $getElasticsearchProductModelProjection->fromProductModelCodes($this->getRangeCodes(2001, 3000))
+            ->willReturn([$this->getFakeProjection('identifier_3')]);
+        $getElasticsearchProductModelProjection->fromProductModelCodes($this->getRangeCodes(3001, 3002))
+            ->willReturn([$this->getFakeProjection('identifier_4')]);
+
+        $productAndProductModelClient->bulkIndexes([
+            $this->getFakeProjection('identifier_1')->toArray(),
+        ], 'id', Refresh::disable())->shouldBeCalled();
+        $productAndProductModelClient->bulkIndexes([
+            $this->getFakeProjection('identifier_2')->toArray(),
+        ], 'id', Refresh::disable())->shouldBeCalled();
+        $productAndProductModelClient->bulkIndexes([
+            $this->getFakeProjection('identifier_3')->toArray(),
+        ], 'id', Refresh::disable())->shouldBeCalled();
+        $productAndProductModelClient->bulkIndexes([
+            $this->getFakeProjection('identifier_4')->toArray(),
+        ], 'id', Refresh::disable())->shouldBeCalled();
+
+        $this->indexFromProductModelCodes($identifiers);
+    }
+
     function it_deletes_product_models_from_elasticsearch_index($productAndProductModelClient)
     {
         $productAndProductModelClient->deleteByQuery([
@@ -152,6 +183,16 @@ class ProductModelIndexerSpec extends ObjectBehavior
             [],
             [],
             []
+        );
+    }
+
+    private function getRangeCodes(int $start, int $end): array
+    {
+        return array_map(
+            function ($n) {
+                return sprintf('pm_%d', $n);
+            },
+            range($start, $end)
         );
     }
 }

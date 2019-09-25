@@ -20,6 +20,7 @@ use Akeneo\Tool\Component\StorageUtils\Indexer\ProductModelIndexerInterface;
 class ProductModelIndexer implements ProductModelIndexerInterface
 {
     private const PRODUCT_MODEL_IDENTIFIER_PREFIX = 'product_model_';
+    private const BATCH_SIZE = 1000;
 
     /** @var Client */
     private $productAndProductModelClient;
@@ -58,20 +59,18 @@ class ProductModelIndexer implements ProductModelIndexerInterface
 
         $indexRefresh = $options['index_refresh'] ?? Refresh::disable();
 
-        $elasticsearchProductModelProjections =
-            $this->getElasticsearchProductModelProjection->fromProductModelCodes($productModelCodes);
-        $normalizedProductModelProjections = array_map(
-            function (ElasticsearchProductModelProjection $elasticsearchProductModelProjection) {
-                return $elasticsearchProductModelProjection->toArray();
-            },
-            $elasticsearchProductModelProjections
-        );
+        foreach (array_chunk($productModelCodes, self::BATCH_SIZE) as $batchProductModelCodes) {
+            $elasticsearchProductModelProjections =
+                $this->getElasticsearchProductModelProjection->fromProductModelCodes($batchProductModelCodes);
+            $normalizedProductModelProjections = array_map(
+                function (ElasticsearchProductModelProjection $elasticsearchProductModelProjection) {
+                    return $elasticsearchProductModelProjection->toArray();
+                },
+                $elasticsearchProductModelProjections
+            );
 
-        $this->productAndProductModelClient->bulkIndexes(
-            $normalizedProductModelProjections,
-            'id',
-            $indexRefresh
-        );
+            $this->productAndProductModelClient->bulkIndexes($normalizedProductModelProjections, 'id', $indexRefresh);
+        }
     }
 
     /**
