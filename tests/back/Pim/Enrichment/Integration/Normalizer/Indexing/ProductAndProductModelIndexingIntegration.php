@@ -3,7 +3,6 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\Normalizer\Indexing;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Akeneo\Test\Integration\TestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
@@ -21,149 +20,6 @@ class ProductAndProductModelIndexingIntegration extends TestCase
     protected function getConfiguration()
     {
         return $this->catalog->useTechnicalSqlCatalog();
-    }
-
-    public function testRootProductModel()
-    {
-        $date = \DateTime::createFromFormat(
-            'Y-m-d H:i:s',
-            '2016-06-14 11:12:50',
-            new \DateTimeZone('UTC')
-        );
-
-        $expected = [
-            'id' => 'product_model_150',
-            'identifier' => 'qux',
-            'created' => $date->format('c'),
-            'updated' => $date->format('c'),
-            'family' => [
-                'code' => 'familyA',
-                'labels' => [
-                    'de_DE' => null,
-                    'en_US' => 'A family A',
-                    'fr_FR' => 'Une famille A',
-                ],
-            ],
-            'family_variant' => 'familyVariantA1',
-            'categories' => ['categoryA'],
-            'categories_of_ancestors' => [],
-            'parent' => null,
-            'values' => [
-                'a_text-text' => [
-                    '<all_channels>' => [
-                        '<all_locales>' => 'this is a text',
-                    ],
-                ],
-            ],
-            'all_complete' => [],
-            'all_incomplete' => [],
-            'ancestors' => [
-                'ids' => [],
-                'codes' => [],
-                'labels' => [],
-            ],
-            'label' => [],
-            'document_type' => ProductModelInterface::class,
-            'attributes_of_ancestors' => [],
-            'attributes_for_this_level' => [
-                'a_date',
-                'a_file',
-                'a_localizable_image',
-                'a_localized_and_scopable_text_area',
-                'a_metric',
-                'a_multi_select',
-                'a_number_float',
-                'a_number_float_negative',
-                'a_number_integer',
-                'a_price',
-                'a_ref_data_multi_select',
-                'a_ref_data_simple_select',
-                'a_scopable_price',
-                'a_simple_select',
-                'a_text',
-                'a_text_area',
-                'a_yes_no',
-                'an_image',
-                'sku',
-            ],
-            'associations' => null,
-        ];
-
-        $this->assertProductModelIndexingFormat('qux', $expected);
-    }
-
-    public function testSubProductModel()
-    {
-        $date = \DateTime::createFromFormat(
-            'Y-m-d H:i:s',
-            '2016-06-14 11:12:50',
-            new \DateTimeZone('UTC')
-        );
-
-        $expected = [
-            'id' => 'product_model_151',
-            'identifier' => 'quux',
-            'created' => $date->format('c'),
-            'updated' => $date->format('c'),
-            'family' => [
-                'code' => 'familyA',
-                'labels' => [
-                    'de_DE' => null,
-                    'en_US' => 'A family A',
-                    'fr_FR' => 'Une famille A',
-                ],
-            ],
-            'family_variant' => 'familyVariantA1',
-            'categories' => ['categoryA', 'categoryA1', 'categoryB'],
-            'categories_of_ancestors' => ['categoryA'],
-            'parent' => 'qux',
-            'values' => [
-                'a_text-text' => [
-                    '<all_channels>' => [
-                        '<all_locales>' => 'this is a text',
-                    ],
-                ],
-                'a_simple_select-option' => [
-                    '<all_channels>' => [
-                        '<all_locales>' => 'optionB',
-                    ],
-                ],
-            ],
-            'all_complete' => [],
-            'all_incomplete' => [],
-            'ancestors' => [
-                'ids' => ['product_model_150'],
-                'codes' => ['qux'],
-                'labels' => [],
-            ],
-            'label' => [],
-            'document_type' => ProductModelInterface::class,
-            'attributes_of_ancestors' => [
-                'a_date',
-                'a_file',
-                'a_localizable_image',
-                'a_localized_and_scopable_text_area',
-                'a_metric',
-                'a_multi_select',
-                'a_number_float',
-                'a_number_float_negative',
-                'a_number_integer',
-                'a_price',
-                'a_ref_data_multi_select',
-                'a_ref_data_simple_select',
-                'a_scopable_price',
-                'a_simple_select',
-                'a_text',
-                'a_text_area',
-                'a_yes_no',
-                'an_image',
-                'sku',
-            ],
-            'attributes_for_this_level' => [],
-            'associations' => null,
-        ];
-
-        $this->assertProductModelIndexingFormat('quux', $expected);
     }
 
     public function testVariantProduct()
@@ -593,18 +449,6 @@ class ProductAndProductModelIndexingIntegration extends TestCase
         $product = $repository->findOneByIdentifier($identifier);
 
         $this->assertIndexingFormat($product, $expected);
-    }
-
-    /**
-     * @param string $identifier
-     * @param array  $expected
-     */
-    private function assertProductModelIndexingFormat($identifier, array $expected)
-    {
-        $repository = $this->get('pim_catalog.repository.product_model');
-        $productModel = $repository->findOneByIdentifier($identifier);
-
-        $this->assertIndexingFormat($productModel, $expected);
     }
 
     /**
