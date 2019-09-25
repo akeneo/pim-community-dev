@@ -308,6 +308,8 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
 
         sort($expected['attributes_of_ancestors']);
         sort($actual['attributes_of_ancestors']);
+        sort($expected['attributes_for_this_level']);
+        sort($actual['attributes_for_this_level']);
 
         $this->assertEquals($expected, $actual);
     }

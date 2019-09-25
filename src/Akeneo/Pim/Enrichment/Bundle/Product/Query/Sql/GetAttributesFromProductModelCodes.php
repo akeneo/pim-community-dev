@@ -49,14 +49,17 @@ WITH family_attributes AS (
 ),
 family_variant_attributes AS (
     SELECT
-        product_model.code AS code,
+        product_family_variant.id AS family_variant_id,
         JSON_ARRAYAGG(attribute.code) AS attribute_codes
-    FROM pim_catalog_product_model product_model
-    INNER JOIN pim_catalog_family_variant_has_variant_attribute_sets variant_set ON product_model.family_variant_id = variant_set.family_variant_id
+    FROM (
+        SELECT DISTINCT(product_model.family_variant_id) AS id
+        FROM pim_catalog_product_model product_model
+        WHERE product_model.code IN (:productModelCodes)
+    ) AS product_family_variant
+    INNER JOIN pim_catalog_family_variant_has_variant_attribute_sets variant_set ON product_family_variant.id = variant_set.family_variant_id
     INNER JOIN pim_catalog_variant_attribute_set_has_attributes variant_attributes ON variant_attributes.variant_attribute_set_id = variant_set.variant_attribute_sets_id
     INNER JOIN pim_catalog_attribute attribute ON attribute.id = variant_attributes.attributes_id
-    WHERE product_model.code IN (:productModelCodes)
-    GROUP BY code
+    GROUP BY family_variant_id
 ),
 family_variant_axes AS (
     SELECT
@@ -93,7 +96,7 @@ SELECT
 FROM pim_catalog_product_model product_model
 INNER JOIN pim_catalog_family_variant family_variant ON family_variant.id = product_model.family_variant_id
 INNER JOIN family_attributes ON family_attributes.family_id = family_variant.family_id
-LEFT JOIN family_variant_attributes ON family_variant_attributes.code = product_model.code
+LEFT JOIN family_variant_attributes ON family_variant_attributes.family_variant_id = product_model.family_variant_id
 LEFT JOIN family_variant_axes ON family_variant_axes.code = product_model.code
 LEFT JOIN family_variant_attributes_for_sub_product_models ON family_variant_attributes_for_sub_product_models.code = product_model.code
 SQL;
