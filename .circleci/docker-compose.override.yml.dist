@@ -1,6 +1,12 @@
 version: '3.4'
 
 services:
+  php:
+    volumes:
+      - './:/srv/pim'
+      - '${HOST_COMPOSER_HOME:-~/.composer}:/var/www/.composer'
+      - '/tmp:/tmp'
+
   mysql:
     tmpfs:
       - '/tmp'
