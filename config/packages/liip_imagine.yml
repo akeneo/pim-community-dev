@@ -53,3 +53,12 @@ liip_imagine:
             filters:
                 thumbnail:    { size: [320, 320], mode: outbound }
                 strip:        ~
+    loaders:
+        default:
+            filesystem:
+                data_root:
+                    - "%kernel.project_dir%/public/"
+    resolvers:
+        default:
+            web_path:
+                web_root: "%kernel.project_dir%/public/"
