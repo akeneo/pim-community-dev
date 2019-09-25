@@ -297,16 +297,21 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
 
     private function checkProductModelProjectionFormat($code, $expected)
     {
-        $normalizedProductModelProjection = $this->getProductModelProjectionArray($code);
+        $actual = $this->getProductModelProjectionArray($code);
 
-        $this->assertRegExp('/product_model_\d+/', $normalizedProductModelProjection['id']);
-        $this->assertRegexp('/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+\d{2}:\d{2}/', $normalizedProductModelProjection['created']);
-        $this->assertRegexp('/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+\d{2}:\d{2}/', $normalizedProductModelProjection['updated']);
-        unset($normalizedProductModelProjection['created']);
-        unset($normalizedProductModelProjection['updated']);
-        unset($expected['id'], $normalizedProductModelProjection['id'], $normalizedProductModelProjection['ancestors']['ids'], $expected['ancestors']['ids']);
-        
-        $this->assertEquals($expected, $normalizedProductModelProjection);
+        $this->assertRegExp('/product_model_\d+/', $actual['id']);
+        $this->assertRegexp('/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+\d{2}:\d{2}/', $actual['created']);
+        $this->assertRegexp('/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+\d{2}:\d{2}/', $actual['updated']);
+        unset($actual['created']);
+        unset($actual['updated']);
+        unset($expected['id'], $actual['id'], $actual['ancestors']['ids'], $expected['ancestors']['ids']);
+
+        sort($expected['attributes_of_ancestors']);
+        sort($actual['attributes_of_ancestors']);
+        sort($expected['attributes_for_this_level']);
+        sort($actual['attributes_for_this_level']);
+
+        $this->assertEquals($expected, $actual);
     }
 
     private function getProductModelProjectionArray($code): array
