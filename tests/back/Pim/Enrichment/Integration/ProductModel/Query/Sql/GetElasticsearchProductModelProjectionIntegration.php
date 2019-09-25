@@ -127,18 +127,24 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
 
     public function test_that_it_returns_latest_updated_date()
     {
+        $dateBefore = '2000-12-30 12:34:56';
+        $dateAfter = '2010-12-30 12:34:56';
+
         $this->createRootProductModel('familyVariantA1');
         $this->createSubProductModel();
-        $date = new \DateTime();
-        $date->modify('+1 day');
 
         $this->getConnection()->executeQuery(sprintf(
             'UPDATE pim_catalog_product_model SET updated="%s" WHERE code="%s"',
-            $date->format('Y-m-d H:i:s'),
+            $dateBefore,
+            'sub_product_model_code'
+        ));
+        $this->getConnection()->executeQuery(sprintf(
+            'UPDATE pim_catalog_product_model SET updated="%s" WHERE code="%s"',
+            $dateAfter,
             'root_product_model_code'
         ));
 
-        $this->assertEquals($this->getProductModelProjectionArray('sub_product_model_code')['updated'], $date->format('c'));
+        $this->assertEquals($this->getProductModelProjectionArray('sub_product_model_code')['updated'], '2010-12-30T13:34:56+01:00');
     }
 
     /**

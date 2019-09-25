@@ -25,9 +25,9 @@ final class GetCompleteFilterFromProductModelCodes
     {
         /**
          * The 'all_complete' field means every product is complete, i.e. has a missing_count at 0. In other words,
-         * the sum of the product completenesses is 0.
+         * the sum of the missing attributes is 0.
          * The 'all_incomplete' field means every product is incomplete, i.e. there is no product with a missing_count
-         * at 0. In other words, the minimal value of the product completenesses should not be 0.
+         * at 0. In other words, the minimal value of the missing attributes should not be 0.
          */
         $query = <<<SQL
 WITH product_model_completeness_by_channel_and_locale AS (

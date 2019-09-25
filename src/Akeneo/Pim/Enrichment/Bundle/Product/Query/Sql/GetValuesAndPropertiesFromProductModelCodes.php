@@ -108,8 +108,12 @@ SQL;
             $results[$row['code']] = [
                 'id' => (int) $row['id'],
                 'code' => $row['code'],
-                'created' => Type::getType(Type::DATETIME_IMMUTABLE)->convertToPHPValue($row['created'], $platform),
-                'updated' => Type::getType(Type::DATETIME_IMMUTABLE)->convertToPHPValue($row['updated'], $platform),
+                'created' => \DateTimeImmutable::createFromMutable(
+                    Type::getType(Type::DATETIME)->convertToPhpValue($row['created'], $platform)
+                ),
+                'updated' => \DateTimeImmutable::createFromMutable(
+                    Type::getType(Type::DATETIME)->convertToPhpValue($row['updated'], $platform)
+                ),
                 'family_code' => $row['family_code'],
                 'family_labels' => json_decode($row['family_labels'], true),
                 'family_variant_code' => $row['family_variant_code'],
