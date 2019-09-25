@@ -7,7 +7,7 @@ const forbiden = [
   '/node_modules/',
   '/archive/',
   '/cache/',
-  '/web/',
+  '/public/',
   '/logs/',
   '.DS_Store',
   'tests/legacy/',

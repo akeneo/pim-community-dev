@@ -118,6 +118,6 @@ WORKDIR /srv/pim/
 COPY --from=builder /srv/pim/ .
 
 # Prepare the application
-RUN mkdir -p web/media && chown -R www-data:www-data web/media var
+RUN mkdir -p public/media && chown -R www-data:www-data public/media var
 USER www-data
 RUN rm -rf var/cache && bin/console cache:warmup

@@ -2,9 +2,9 @@ import {
     NormalizedMediaLinkAdditionalProperty,
     NormalizedMediaLinkAttribute,
 } from 'akeneoassetmanager/domain/model/attribute/type/media-link';
-import {NormalizedPrefix} from 'web/bundles/akeneoassetmanager/domain/model/attribute/type/media-link/prefix';
-import {NormalizedSuffix} from 'web/bundles/akeneoassetmanager/domain/model/attribute/type/media-link/suffix';
-import {NormalizedMediaType} from 'web/bundles/akeneoassetmanager/domain/model/attribute/type/media-link/media-type';
+import {NormalizedPrefix} from 'public/bundles/akeneoassetmanager/domain/model/attribute/type/media-link/prefix';
+import {NormalizedSuffix} from 'public/bundles/akeneoassetmanager/domain/model/attribute/type/media-link/suffix';
+import {NormalizedMediaType} from 'public/bundles/akeneoassetmanager/domain/model/attribute/type/media-link/media-type';
 
 const mediaLinkAttributeReducer = (
   normalizedAttribute: NormalizedMediaLinkAttribute,

@@ -1,7 +1,7 @@
 import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 import handleError from 'akeneoassetmanager/infrastructure/tools/error-handler';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import {PermissionCollection} from 'web/bundles/akeneoassetmanager/domain/model/asset-family/permission';
+import {PermissionCollection} from 'public/bundles/akeneoassetmanager/domain/model/asset-family/permission';
 import {postJSON} from 'akeneoassetmanager/tools/fetch';
 
 const routing = require('routing');

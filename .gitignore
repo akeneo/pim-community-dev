@@ -1,10 +1,10 @@
-web/bundles/*
-web/media/*
-web/css/*
-web/js/*
-web/dist/*
-web/test_dist/*
-web/cache/*
+public/bundles/*
+public/media/*
+public/css/*
+public/js/*
+public/dist/*
+public/test_dist/*
+public/cache/*
 var/archive/*
 var/*
 !var/SymfonyRequirements.php
@@ -44,7 +44,7 @@ yarn.lock
 package-lock.json
 yarn-error.log
 coverage/*
-/web/test_dist/*
+/public/test_dist/*
 .phpunit.result.cache
 .idea/*
 .env.local
