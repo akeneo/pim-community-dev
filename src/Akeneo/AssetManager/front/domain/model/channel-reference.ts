@@ -1,36 +1,19 @@
-class InvalidTypeError extends Error {}
+import {isString, isNull} from 'akeneoassetmanager/domain/model/utils';
 
-export type NormalizedChannelReference = string | null;
+type ChannelReference = string | null;
+export default ChannelReference;
 
-export default class ChannelReference {
-  private constructor(private channelReference: string | null) {
-    if (!('string' === typeof channelReference || null === channelReference)) {
-      throw new InvalidTypeError('ChannelReference expects a string or null as parameter to be created');
-    }
+export const channelReferenceIsEmpty = (channelReference: ChannelReference): channelReference is null =>
+  isNull(channelReference);
+export const channelReferenceAreEqual = (first: ChannelReference, second: ChannelReference): boolean =>
+  first === second;
+export const channelReferenceStringValue = (channelReference: ChannelReference) =>
+  isNull(channelReference) ? '' : channelReference;
 
-    Object.freeze(this);
+export const denormalizeChannelReference = (channelReference: any): ChannelReference => {
+  if (!(isString(channelReference) || isNull(channelReference))) {
+    throw new Error('A channel reference should be a string or null');
   }
 
-  public static create(channelReference: string | null): ChannelReference {
-    return new ChannelReference(channelReference);
-  }
-
-  public equals(channelReference: ChannelReference): boolean {
-    return this.stringValue() === channelReference.stringValue();
-  }
-
-  public isEmpty(): boolean {
-    return null === this.channelReference;
-  }
-
-  public stringValue(): string {
-    return null === this.channelReference ? '' : this.channelReference;
-  }
-
-  public normalize(): string | null {
-    return this.channelReference;
-  }
-}
-
-export const createChannelReference = ChannelReference.create;
-export const denormalizeChannelReference = ChannelReference.create;
+  return channelReference;
+};

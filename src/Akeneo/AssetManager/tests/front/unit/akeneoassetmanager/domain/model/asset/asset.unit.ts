@@ -5,12 +5,10 @@ import {createIdentifier as createAssetIdentifier} from 'akeneoassetmanager/doma
 import {createAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import {createEmptyFile} from 'akeneoassetmanager/domain/model/file';
 import {createValueCollection} from 'akeneoassetmanager/domain/model/asset/value-collection';
-import {createChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
+import {denormalizeChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
 import {createLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
-import ValueData from 'akeneoassetmanager/domain/model/asset/data';
 import {createValue} from 'akeneoassetmanager/domain/model/asset/value';
 import {denormalize as denormalizeTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
-import {denormalizeChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
 import {denormalizeLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
 import {denormalize as denormalizeTextData} from 'akeneoassetmanager/domain/model/asset/data/text';
 
@@ -23,7 +21,7 @@ const didierIdentifier = createAssetIdentifier('designer_didier_1');
 const didierCode = createCode('didier');
 const didierLabels = createLabelCollection({en_US: 'Didier'});
 const emptyFile = createEmptyFile();
-const channelEcommerce = createChannelReference('ecommerce');
+const channelEcommerce = denormalizeChannelReference('ecommerce');
 const localeFr = createLocaleReference('en_US');
 const normalizedDescription = {
   identifier: 'description_1234',

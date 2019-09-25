@@ -4,7 +4,10 @@ import attributeFetcher from 'akeneoassetmanager/infrastructure/fetcher/attribut
 import {attributeListUpdated} from 'akeneoassetmanager/domain/event/attribute/list';
 import {updateColumns} from 'akeneoassetmanager/application/event/search';
 import {notifyAttributeListUpdateFailed} from 'akeneoassetmanager/application/action/attribute/notify';
-import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
+import ChannelReference, {
+  channelReferenceIsEmpty,
+  denormalizeChannelReference,
+} from 'akeneoassetmanager/domain/model/channel-reference';
 import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
 import {Column} from 'akeneoassetmanager/application/reducer/grid';
 import Channel from 'akeneoassetmanager/domain/model/channel';
@@ -42,7 +45,7 @@ export const attributeListGotUpdated = (attributes: Attribute[]) => (
 };
 
 const getColumn = (attribute: Attribute, channel: ChannelReference, locale: LocaleReference): Column => {
-  if (channel.isEmpty()) {
+  if (channelReferenceIsEmpty(channel)) {
     throw new InvalidArgument('A column cannot be generated from an empty ChannelReference');
   }
 
@@ -53,12 +56,12 @@ const getColumn = (attribute: Attribute, channel: ChannelReference, locale: Loca
   return {
     key: generateKey(
       attribute.identifier,
-      attribute.valuePerChannel ? channel : ChannelReference.create(null),
+      attribute.valuePerChannel ? channel : denormalizeChannelReference(null),
       attribute.valuePerLocale ? locale : LocaleReference.create(null)
     ),
     labels: attribute.getLabelCollection().normalize(),
     type: attribute.getType(),
-    channel: channel.normalize() as string,
+    channel,
     locale: locale.normalize() as string,
     code: attribute.getCode().stringValue(),
     attribute: attribute.normalize(),
@@ -79,7 +82,7 @@ export const getColumns = (attributes: Attribute[], channels: Channel[], columns
       channels.forEach((channel: Channel) => {
         channel.locales.forEach((locale: Locale) => {
           columns.push(
-            getColumn(attribute, ChannelReference.create(channel.code), LocaleReference.create(locale.code))
+            getColumn(attribute, denormalizeChannelReference(channel.code), LocaleReference.create(locale.code))
           );
         });
       });

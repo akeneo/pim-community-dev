@@ -1,5 +1,9 @@
 import Value, {NormalizedValue, NormalizedMinimalValue} from 'akeneoassetmanager/domain/model/asset/value';
-import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
+import ChannelReference, {
+  channelReferenceIsEmpty,
+  channelReferenceAreEqual,
+  channelReferenceStringValue,
+} from 'akeneoassetmanager/domain/model/channel-reference';
 import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
 
@@ -23,7 +27,7 @@ export default class ValueCollection {
   public getValuesForChannelAndLocale(channel: ChannelReference, locale: LocaleReference): Value[] {
     return this.values.filter(
       (value: Value) =>
-        (value.channel.isEmpty() || value.channel.equals(channel)) &&
+        (channelReferenceIsEmpty(value.channel) || channelReferenceAreEqual(value.channel, channel)) &&
         (value.locale.isEmpty() || value.locale.equals(locale))
     );
   }
@@ -43,7 +47,7 @@ export const generateKey = (
   locale: LocaleReference
 ) => {
   let key = attributeIdentifier.stringValue();
-  key = !channel.isEmpty() ? `${key}_${channel.stringValue()}` : key;
+  key = !channelReferenceIsEmpty(channel) ? `${key}_${channelReferenceStringValue(channel)}` : key;
   key = !locale.isEmpty() ? `${key}_${locale.stringValue()}` : key;
 
   return key;

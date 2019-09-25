@@ -1,6 +1,6 @@
 import * as React from 'react';
 import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
-import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
+import ChannelReference, {channelReferenceStringValue} from 'akeneoassetmanager/domain/model/channel-reference';
 import Value from 'akeneoassetmanager/domain/model/asset/value';
 import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 import Asset from 'akeneoassetmanager/domain/model/asset/asset';
@@ -58,7 +58,7 @@ export default (
           </label>
           <span className="AknFieldContainer-fieldInfo">
             <span>
-              <span>{value.attribute.valuePerChannel ? value.channel.stringValue() : null}</span>
+              <span>{value.attribute.valuePerChannel ? channelReferenceStringValue(value.channel) : null}</span>
               &nbsp;
               <span>
                 {value.attribute.valuePerLocale ? (

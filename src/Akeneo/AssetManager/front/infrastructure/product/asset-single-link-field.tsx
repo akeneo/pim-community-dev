@@ -4,7 +4,7 @@ import AssetSelector from 'akeneoassetmanager/application/component/app/asset-se
 import {createIdentifier as createAssetFamilyIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import AssetCode, {createCode as createAssetCode} from 'akeneoassetmanager/domain/model/asset/code';
 import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
-import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
+import {denormalizeChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
 import __ from 'akeneoassetmanager/tools/translator';
 
 const Field = require('pim/field');
@@ -35,7 +35,7 @@ class AssetFamilyField extends (Field as {new (config: any): any}) {
         assetFamilyIdentifier={createAssetFamilyIdentifier(templateContext.attribute.reference_data_name)}
         value={valueData}
         locale={LocaleReference.create(UserContext.get('catalogLocale'))}
-        channel={ChannelReference.create(UserContext.get('catalogScope'))}
+        channel={denormalizeChannelReference(UserContext.get('catalogScope'))}
         multiple={false}
         readOnly={'view' === templateContext.editMode}
         placeholder={__('pim_asset_manager.asset.selector.no_value')}

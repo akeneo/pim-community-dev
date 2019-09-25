@@ -10,6 +10,9 @@ export const isBoolean = (value: any): value is boolean => {
 export const isNumber = (value: any): value is number => {
   return null !== value && undefined !== value && typeof value === 'number';
 };
+export const isNull = (value: any): value is null => {
+  return null === value;
+};
 export const isArray = (value: any): value is Array<any> => {
   return null !== value && undefined !== value && Array.isArray(value);
 };

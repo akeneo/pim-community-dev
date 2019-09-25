@@ -58,7 +58,7 @@ describe('akeneo > asset family > domain > model > asset --- value', () => {
     }).toThrowError('Value expect ConcreteAttribute as attribute argument');
     expect(() => {
       createValue(description, 'ecommerce', enUS, data).normalize();
-    }).toThrowError('Value expect ChannelReference as channel argument');
+    }).toThrowError('The value for attribute "description" should have an empty channel reference');
     expect(() => {
       createValue(description, ecommerce, 'enUS', data).normalize();
     }).toThrowError('Value expect LocaleReference as locale argument');

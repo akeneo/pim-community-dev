@@ -7,7 +7,7 @@ import errorHandler from 'akeneoassetmanager/infrastructure/tools/error-handler'
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import Product from 'akeneoassetmanager/domain/model/product/product';
 import AttributeCode from 'akeneoassetmanager/domain/model/product/attribute/code';
-import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
+import ChannelReference, {channelReferenceStringValue} from 'akeneoassetmanager/domain/model/channel-reference';
 import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
 import {SearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
 
@@ -26,7 +26,7 @@ export class ProductFetcherImplementation implements ProductFetcher {
         assetFamilyIdentifier: assetFamilyIdentifier.stringValue(),
         assetCode: assetCode.stringValue(),
         attributeCode: attributeCode.stringValue(),
-        channel: channel.stringValue(),
+        channel: channelReferenceStringValue(channel),
         locale: locale.stringValue(),
       })
     ).catch(errorHandler);

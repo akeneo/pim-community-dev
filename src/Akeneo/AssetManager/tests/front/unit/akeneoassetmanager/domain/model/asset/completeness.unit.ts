@@ -5,7 +5,6 @@ import {denormalizeLocaleReference} from 'akeneoassetmanager/domain/model/locale
 import {denormalize as denormalizeTextData} from 'akeneoassetmanager/domain/model/asset/data/text';
 import {createValue} from 'akeneoassetmanager/domain/model/asset/value';
 import {createValueCollection} from 'akeneoassetmanager/domain/model/asset/value-collection';
-import {createChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
 import {createLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
 
 const normalizedDescription = {
@@ -85,7 +84,7 @@ const valueCollection = createValueCollection([descriptionValue, websiteValue]);
 const valueCollectionWithNoRequired = createValueCollection([nicknameValue]);
 const valueCollectionIncomplete = createValueCollection([websiteValue]);
 const valueCollectionComplete = createValueCollection([descriptionValue]);
-const channelEcommerce = createChannelReference('ecommerce');
+const channelEcommerce = denormalizeChannelReference('ecommerce');
 const localeFr = createLocaleReference('en_US');
 
 describe('akeneo > asset > domain > model --- completeness', () => {

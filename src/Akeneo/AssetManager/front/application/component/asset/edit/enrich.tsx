@@ -5,7 +5,7 @@ import {assetLabelUpdated, assetValueUpdated, saveAsset} from 'akeneoassetmanage
 import {EditionFormState} from 'akeneoassetmanager/application/reducer/asset/edit/form';
 import denormalizeAsset from 'akeneoassetmanager/application/denormalizer/asset';
 import {createLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
-import {createChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
+import {denormalizeChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
 import renderValues from 'akeneoassetmanager/application/component/asset/edit/enrich/value';
 import Value from 'akeneoassetmanager/domain/model/asset/value';
 import Key from 'akeneoassetmanager/tools/key';
@@ -66,7 +66,7 @@ class Enrich extends React.Component<StateProps & DispatchProps> {
         <div className="AknFormContainer AknFormContainer--wide AknFormContainer--withPadding">
           {renderValues(
             asset,
-            createChannelReference(this.props.context.channel),
+            denormalizeChannelReference(this.props.context.channel),
             createLocaleReference(this.props.context.locale),
             this.props.form.errors,
             this.props.events.form.onValueChange,
