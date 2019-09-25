@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-7891: Update exports when an attribute is deleted
+
 # 2.3.63 (2019-09-23)
 
 
