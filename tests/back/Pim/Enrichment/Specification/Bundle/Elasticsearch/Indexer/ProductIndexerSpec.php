@@ -60,6 +60,37 @@ class ProductIndexerSpec extends ObjectBehavior
         $this->indexFromProductIdentifiers($identifiers);
     }
 
+    function it_bulk_indexes_products_from_identifiers_using_batch(
+        Client $productAndProductModelIndexClient,
+        GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection
+    ) {
+        $identifiers = $this->getRangeIdentifiers(1, 3002);
+
+        $getElasticsearchProductProjection->fromProductIdentifiers($this->getRangeIdentifiers(1, 1000))
+            ->willReturn([$this->getElasticSearchProjection('identifier_1')]);
+        $getElasticsearchProductProjection->fromProductIdentifiers($this->getRangeIdentifiers(1001, 2000))
+            ->willReturn([$this->getElasticSearchProjection('identifier_2')]);
+        $getElasticsearchProductProjection->fromProductIdentifiers($this->getRangeIdentifiers(2001, 3000))
+            ->willReturn([$this->getElasticSearchProjection('identifier_3')]);
+        $getElasticsearchProductProjection->fromProductIdentifiers($this->getRangeIdentifiers(3001, 3002))
+            ->willReturn([$this->getElasticSearchProjection('identifier_4')]);
+
+        $productAndProductModelIndexClient->bulkIndexes([
+            $this->getElasticSearchProjection('identifier_1')->toArray(),
+        ], 'id', Refresh::disable())->shouldBeCalled();
+        $productAndProductModelIndexClient->bulkIndexes([
+            $this->getElasticSearchProjection('identifier_2')->toArray(),
+        ], 'id', Refresh::disable())->shouldBeCalled();
+        $productAndProductModelIndexClient->bulkIndexes([
+            $this->getElasticSearchProjection('identifier_3')->toArray(),
+        ], 'id', Refresh::disable())->shouldBeCalled();
+        $productAndProductModelIndexClient->bulkIndexes([
+            $this->getElasticSearchProjection('identifier_4')->toArray(),
+        ], 'id', Refresh::disable())->shouldBeCalled();
+
+        $this->indexFromProductIdentifiers($identifiers);
+    }
+
     function it_does_not_bulk_index_empty_arrays_of_identifiers(
         Client $productAndProductModelIndexClient,
         GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection
@@ -158,6 +189,16 @@ class ProductIndexerSpec extends ObjectBehavior
             [],
             [],
             []
+        );
+    }
+
+    private function getRangeIdentifiers(int $start, int $end): array
+    {
+        return array_map(
+            function ($n) {
+                return sprintf('p_%d', $n);
+            },
+            range($start, $end)
         );
     }
 }
