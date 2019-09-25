@@ -51,6 +51,7 @@ class SimpleCsvExport implements ConstraintCollectionProviderInterface
                         new NotBlank(['groups' => ['Default', 'FileConfiguration']]),
                         new Choice(
                             [
+                                'strict' => true,
                                 'choices' => [",", ";", "|"],
                                 'message' => 'The value must be one of , or ; or |',
                                 'groups'  => ['Default', 'FileConfiguration'],
@@ -62,6 +63,7 @@ class SimpleCsvExport implements ConstraintCollectionProviderInterface
                             new NotBlank(['groups' => ['Default', 'FileConfiguration']]),
                             new Choice(
                                 [
+                                    'strict' => true,
                                     'choices' => ['"', "'"],
                                     'message' => 'The value must be one of " or \'',
                                     'groups'  => ['Default', 'FileConfiguration'],
