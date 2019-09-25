@@ -194,11 +194,6 @@ class ProductIndexerSpec extends ObjectBehavior
 
     private function getRangeIdentifiers(int $start, int $end): array
     {
-        return array_map(
-            function ($n) {
-                return sprintf('p_%d', $n);
-            },
-            range($start, $end)
-        );
+        return preg_filter('/^/', 'p_', range($start, $end));
     }
 }

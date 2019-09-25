@@ -18,7 +18,7 @@ use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetDescendantVariantProductId
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class RefreshProductCompletenessesAndIndex
+final class ComputeProductCompletenessAndIndexProductAndAncestors
 {
     /** @var ComputeAndPersistProductCompletenesses */
     private $computeAndPersistProductCompletenesses;
@@ -42,6 +42,9 @@ class RefreshProductCompletenessesAndIndex
     /**
      * We can make some optimizations here: if no variant products, we can only index product models
      * with the product model descendants. Ancestors needs to be indexed only if completeness changes.
+     * We can also:
+     *  - avoid to calculate the completeness if no required attribute has changed: so no indexation of the ancestors also
+     *  - avoid to calculate the products if no values, association, categories, etc has changed
      *
      * @param array $productModelCodes
      */

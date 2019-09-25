@@ -188,11 +188,6 @@ class ProductModelIndexerSpec extends ObjectBehavior
 
     private function getRangeCodes(int $start, int $end): array
     {
-        return array_map(
-            function ($n) {
-                return sprintf('pm_%d', $n);
-            },
-            range($start, $end)
-        );
+        return preg_filter('/^/', 'pm_', range($start, $end));
     }
 }

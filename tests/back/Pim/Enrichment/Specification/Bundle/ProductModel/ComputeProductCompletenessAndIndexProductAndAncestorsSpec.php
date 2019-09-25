@@ -7,7 +7,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Bundle\ProductModel;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelDescendantsAndAncestorsIndexer;
 use Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses;
 use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetDescendantVariantProductIdentifiers;
-use Akeneo\Pim\Enrichment\Bundle\ProductModel\RefreshProductCompletenessesAndIndex;
+use Akeneo\Pim\Enrichment\Bundle\ProductModel\ComputeProductCompletenessAndIndexProductAndAncestors;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -16,7 +16,7 @@ use Prophecy\Argument;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class RefreshProductCompletenessesAndIndexSpec extends ObjectBehavior
+class ComputeProductCompletenessAndIndexProductAndAncestorsSpec extends ObjectBehavior
 {
     public function let(
         ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses,
@@ -32,7 +32,7 @@ class RefreshProductCompletenessesAndIndexSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(RefreshProductCompletenessesAndIndex::class);
+        $this->shouldHaveType(ComputeProductCompletenessAndIndexProductAndAncestors::class);
     }
 
     function it_computes_variant_products_and_indexes(

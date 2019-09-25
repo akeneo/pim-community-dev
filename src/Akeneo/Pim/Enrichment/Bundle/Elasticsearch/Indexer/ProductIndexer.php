@@ -61,9 +61,10 @@ class ProductIndexer implements ProductIndexerInterface
 
         $indexRefresh = $options['index_refresh'] ?? Refresh::disable();
 
-        foreach (array_chunk($productIdentifiers, self::BATCH_SIZE) as $batchProductIdentifiers) {
+        $chunks = array_chunk($productIdentifiers, self::BATCH_SIZE);
+        foreach ($chunks as $productIdentifiersChunk) {
             $elasticsearchProductProjections = $this->getElasticsearchProductProjection->fromProductIdentifiers(
-                $batchProductIdentifiers
+                $productIdentifiersChunk
             );
             $normalizedProductProjections = array_map(
                 function (ElasticsearchProductProjection $indexableProduct) {
