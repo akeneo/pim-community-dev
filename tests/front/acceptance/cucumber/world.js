@@ -17,10 +17,10 @@ module.exports = function (cucumber) {
   Before({ timeout: 10 * 1000 }, async function () {
     this.baseUrl = 'http://pim.com';
     this.browser = await puppeteer.launch({
-      devtools: true,
+      devtools: this.parameters.debug,
       ignoreHTTPSErrors: true,
       args: ['--no-sandbox', '--disable-setuid-sandbox', '--window-size=1920,1080'],
-      headless: true,
+      headless: !this.parameters.debug,
       slowMo: 0,
       pipe: true,
       defaultViewport: {
