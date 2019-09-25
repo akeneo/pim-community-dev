@@ -6,10 +6,10 @@
     "sourceMap": true,
     "allowJs": true,
     "moduleResolution": "node",
-    "rootDir": "web/bundles",
+    "rootDir": "public/bundles",
     "baseUrl": ".",
     "paths": {
-      "*": ["*", "web/bundles/*"]
+      "*": ["*", "public/bundles/*"]
     },
     "jsx": "react",
     "skipLibCheck": true,
@@ -30,13 +30,13 @@
     "tests",
     "packages",
     "app",
-    "web/media",
-    "web/cache",
+    "public/media",
+    "public/cache",
     "var",
     "features",
     "spec",
     "upgrades",
-    "web/css"
+    "public/css"
   ],
   "types": [
     "typePatches",

@@ -23,9 +23,9 @@
     "unit": "jest --no-cache --config tests/front/unit/jest/unit.jest.js",
     "integration": "jest --no-cache --config ./tests/front/integration/jest/integration.jest.js",
     "acceptance": "cucumber-js --tags @acceptance-front -r ./frontend/test/acceptance/run-steps.js -r ./tests/front/acceptance/cucumber",
-    "acceptance-html-report": "yarn acceptance ./tests/features/ -f json:web/test_dist/acceptance-js.json && node frontend/test/acceptance/generate-html-report.js",
+    "acceptance-html-report": "yarn acceptance ./tests/features/ -f json:public/test_dist/acceptance-js.json && node frontend/test/acceptance/generate-html-report.js",
     "less": "node $npm_package_config_styles",
-    "less-watch": "SHELL=/bin/bash chokidar --verbose \"{$npm_package_config_source/src,src,web/bundles}/**/*.{less,css}\" -c \"yarn run less --dev\"",
+    "less-watch": "SHELL=/bin/bash chokidar --verbose \"{$npm_package_config_source/src,src,public/bundles}/**/*.{less,css}\" -c \"yarn run less --dev\"",
     "update-extensions": "node $npm_package_config_source/frontend/build/update-extensions.js"
   },
   "repository": {

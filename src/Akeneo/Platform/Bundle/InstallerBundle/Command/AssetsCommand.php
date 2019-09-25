@@ -126,7 +126,7 @@ class AssetsCommand extends Command
      */
     protected function getWebDir()
     {
-        return $this->rootDir.'/../web/';
+        return $this->rootDir.'/../public/';
     }
 
     /**

@@ -54,7 +54,7 @@ class TranslationsExtension extends \Twig_Extension
     public function getTranslationsFile()
     {
         $localeCode = $this->getLocale();
-        $relativeFilePath = sprintf('web/js/translation/%s.js', $localeCode);
+        $relativeFilePath = sprintf('public/js/translation/%s.js', $localeCode);
         $absoluteFilePath = realpath($relativeFilePath);
 
         if (!file_exists($absoluteFilePath)) {

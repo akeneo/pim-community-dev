@@ -23,7 +23,7 @@ include make-file/*.mk
 
 .PHONY: clean-front
 clean-front:
-	rm -rf web/bundles web/dist web/css web/js
+	rm -rf public/bundles public/dist public/css public/js
 
 node_modules: package.json
 	$(YARN_EXEC) install

@@ -8,8 +8,8 @@ const deepmerge = require('deepmerge')
 
 console.log('Updating form extensions.json'.blue)
 
-const BUNDLE_REQUIRE_PATH = resolve(rootDir, './web/js/require-paths')
-const EXTENSIONS_JSON_PATH = 'web/js/extensions.json'
+const BUNDLE_REQUIRE_PATH = resolve(rootDir, './public/js/require-paths')
+const EXTENSIONS_JSON_PATH = 'public/js/extensions.json'
 
 const EXTENSION_DEFAULTS = {
     module: null,
@@ -92,7 +92,7 @@ function mergeExtensions(paths) {
 }
 
 /**
- * Writes the merged form extensions to a file at web/js/extensions.json
+ * Writes the merged form extensions to a file at public/js/extensions.json
  *
  * @param {Object} contents
  */
