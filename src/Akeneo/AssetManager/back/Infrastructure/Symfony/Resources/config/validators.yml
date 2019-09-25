@@ -244,7 +244,7 @@ services:
             - '@akeneo_assetmanager.infrastructure.validation.asset_family.product_link_rule.rule_engine_validator_acl'
             - '@akeneo_assetmanager.validator.asset_family.product_link_rules.extrapolated_attribute_validator'
             - '@akeneo_assetmanager.validator.asset_family.product_link_rules.channel_and_locale_validator'
-            - '@akeneo_assetmanager.infrastructure.validation.asset_family.product_link_rule.get_asset_collection_type_acl'
+            - '@akeneo_assetmanager.infrastructure.validation.asset_family.product_link_rule.get_asset_collection_type_adapter'
 
     akeneo_assetmanager.validator.asset_family.product_link_rules.channel_and_locale_validator:
         class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\ChannelAndLocaleValidator
@@ -267,7 +267,7 @@ services:
             - '@validator'
             - '@validator'
 
-    akeneo_assetmanager.infrastructure.validation.asset_family.product_link_rule.get_asset_collection_type_acl:
-        class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\GetAssetCollectionTypeACL
+    akeneo_assetmanager.infrastructure.validation.asset_family.product_link_rule.get_asset_collection_type_adapter:
+        class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\GetAssetCollectionTypeAdapter
         arguments:
             - '@pim_catalog.repository.attribute'

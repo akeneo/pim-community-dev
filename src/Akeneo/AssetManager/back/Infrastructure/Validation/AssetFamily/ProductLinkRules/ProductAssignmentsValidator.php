@@ -35,14 +35,14 @@ class ProductAssignmentsValidator
     /** @var ChannelAndLocaleValidator */
     private $channelAndLocaleValidator;
 
-    /** @var GetAssetCollectionTypeACLInterface */
+    /** @var GetAssetCollectionTypeAdapterInterface */
     private $findAssetCollectionTypeACL;
 
     public function __construct(
         RuleEngineValidatorACLInterface $ruleEngineValidatorACL,
         ExtrapolatedAttributeValidator $extrapolatedAttributeValidator,
         ChannelAndLocaleValidator $channelAndLocaleValidator,
-        GetAssetCollectionTypeACLInterface $findAssetCollectionTypeACL
+        GetAssetCollectionTypeAdapterInterface $findAssetCollectionTypeACL
     ) {
         $this->ruleEngineValidatorACL = $ruleEngineValidatorACL;
         $this->extrapolatedAttributeValidator = $extrapolatedAttributeValidator;

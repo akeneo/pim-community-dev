@@ -12,7 +12,7 @@ use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class GetAssetCollectionTypeACL implements GetAssetCollectionTypeACLInterface
+class GetAssetCollectionTypeAdapter implements GetAssetCollectionTypeAdapterInterface
 {
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;

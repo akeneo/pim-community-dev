@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules;
 
-use Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\GetAssetCollectionTypeACLInterface;
+use Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\GetAssetCollectionTypeAdapterInterface;
 use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetCollectionType;
 use Akeneo\Pim\Structure\Component\Model\AbstractAttribute;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -14,7 +14,7 @@ use PhpSpec\ObjectBehavior;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class GetAssetCollectionTypeACLSpec extends ObjectBehavior
+class GetAssetCollectionTypeAdapterSpec extends ObjectBehavior
 {
     function let(AttributeRepositoryInterface $attributeRepository)
     {
@@ -23,7 +23,7 @@ class GetAssetCollectionTypeACLSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldBeAnInstanceOf(GetAssetCollectionTypeACLInterface::class);
+        $this->shouldBeAnInstanceOf(GetAssetCollectionTypeAdapterInterface::class);
     }
 
     function it_fetches_the_asset_family_type_of_an_asset_collection_attribute(

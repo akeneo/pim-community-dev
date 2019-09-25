@@ -20,7 +20,7 @@ use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyH
 use Akeneo\AssetManager\Common\Fake\Anticorruption\RuleEngineValidatorACLStub;
 use Akeneo\AssetManager\Common\Fake\InMemoryChannelExists;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
-use Akeneo\AssetManager\Common\Fake\InMemoryGetAssetCollectionTypeACL;
+use Akeneo\AssetManager\Common\Fake\InMemoryGetAssetCollectionTypeAdapter;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
@@ -80,7 +80,7 @@ final class EditAssetFamilyContext implements Context
     /** @var InMemoryChannelExists */
     private $channelExists;
 
-    /** @var InMemoryGetAssetCollectionTypeACL */
+    /** @var InMemoryGetAssetCollectionTypeAdapter */
     private $inMemoryFindAssetCollectionTypeACL;
 
     public function __construct(
@@ -93,7 +93,7 @@ final class EditAssetFamilyContext implements Context
         RuleEngineValidatorACLStub $ruleEngineValidatorACLStub,
         FixturesLoader $fixturesLoader,
         InMemoryChannelExists $channelExists,
-        InMemoryGetAssetCollectionTypeACL $inMemoryFindAssetCollectionTypeACL,
+        InMemoryGetAssetCollectionTypeAdapter $inMemoryFindAssetCollectionTypeACL,
         int $ruleTemplateByAssetFamilyLimit
     ) {
         $this->assetFamilyRepository = $assetFamilyRepository;
