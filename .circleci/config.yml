@@ -250,7 +250,7 @@ jobs:
       steps:
           - run:
               name: make test
-              command: make test
+              command: make notify
 
   release:
       machine:
