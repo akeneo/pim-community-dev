@@ -36,7 +36,7 @@ class PimContext extends RawMinkContext implements KernelAwareContext
             '%tmp%'      => getenv('BEHAT_TMPDIR') ?: '/tmp/pim-behat',
             //TODO: change that later
             '%fixtures%' => self::$kernelRootDir . '/../tests/legacy/features/Context/fixtures/',
-            '%web%'      => self::$kernelRootDir . '/../web/'
+            '%web%'      => self::$kernelRootDir . '/../public/'
         ];
     }
 

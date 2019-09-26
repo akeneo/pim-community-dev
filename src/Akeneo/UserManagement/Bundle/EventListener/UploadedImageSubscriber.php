@@ -21,7 +21,7 @@ class UploadedImageSubscriber implements EventSubscriber
      */
     public function __construct($kernelRootDir)
     {
-        $this->webRoot = realpath($kernelRootDir . '/../web');
+        $this->webRoot = realpath($kernelRootDir . '/../public');
         if (!$this->webRoot) {
             throw new \InvalidArgumentException('Invalid kernel root');
         }

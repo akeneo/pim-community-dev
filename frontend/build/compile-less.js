@@ -10,13 +10,13 @@ const glob = require('glob')
 const RewriteImageURLs = require('./less-rewrite-urls')
 
 // The file that contains the paths of all required bundles of the PIM
-const BUNDLE_REQUIRE_PATH = resolve(rootDir, './web/js/require-paths')
+const BUNDLE_REQUIRE_PATH = resolve(rootDir, './public/js/require-paths')
 
 // The file path for each bundle that imports all the .less files
 const BUNDLE_LESS_INDEX_PATH = 'Resources/public/less/index.less'
 
 // The final output path for all the CSS of the PIM
-const OUTPUT_CSS_PATH = 'web/css/pim.css'
+const OUTPUT_CSS_PATH = 'public/css/pim.css'
 
 if (!existsSync(`${BUNDLE_REQUIRE_PATH}.js`)) {
     console.log(`${BUNDLE_REQUIRE_PATH} does not exist - Run "bin/console pim:installer:dump-require-paths" and try again.`.red)
@@ -98,7 +98,7 @@ function formatParseError(error) {
  * @param {String} fileName
  */
 function writeCSSOutput(css, fileName) {
-    const folderPath = resolve(rootDir, 'web/css')
+    const folderPath = resolve(rootDir, 'public/css')
     const filePath = resolve(rootDir, fileName);
 
     try {
@@ -121,7 +121,7 @@ function convertLessToCss(cssFiles, fileName) {
         plugins: [new RewriteImageURLs({
             // Remove the 'web' part of the image/font urls
             replace: [{
-                search: './web/bundles',
+                search: './public/bundles',
                 replace: '/bundles'
             }]
         })]
@@ -140,5 +140,5 @@ const overrides = collectOverrideImports(bundlePaths)
 convertLessToCss(index, OUTPUT_CSS_PATH)
 
 Object.entries(overrides).forEach(([fileName, contents]) => {
-    convertLessToCss(contents, `web/css/${fileName}.css`);
+    convertLessToCss(contents, `public/css/${fileName}.css`);
 })
