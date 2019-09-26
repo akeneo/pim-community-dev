@@ -291,7 +291,28 @@ workflows:
       jobs:
           - wait_for_user_approval:
               type: approval
-              filters:
-                  branches:
-                      only:
-                          - master
+#              filters:
+#                  branches:
+#                      only:
+#                          - master
+          - build_images:
+                requires:
+                    - wait_for_user_approval
+          - test:
+                requires:
+                    - build_images
+          - test_prod:
+                requires:
+                    - test
+          - release:
+                requires:
+                    - test_prod
+          - deploy_pim:
+                requires:
+                    - release
+          - deploy_doc:
+                requires:
+                    - deploy_doc
+          - notify:
+                requires:
+                    - deploy_pim
