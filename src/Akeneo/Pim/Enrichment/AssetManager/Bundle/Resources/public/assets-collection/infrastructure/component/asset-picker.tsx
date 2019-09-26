@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import {Button} from 'akeneopimenrichmentassetmanager/platform/component/common/button';
+import {Button} from 'akeneoassetmanager/application/component/app/button';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import __ from 'akeneoreferenceentity/tools/translator';
 import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';

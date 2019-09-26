@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import More from 'akeneoassetmanager/application/component/app/icon/more';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import __ from 'akeneoassetmanager/tools/translator';
-import {TransparentButton} from 'akeneopimenrichmentassetmanager/platform/component/common/button';
+import {TransparentButton} from 'akeneoassetmanager/application/component/app/button';
 import Key from 'akeneoassetmanager/tools/key';
 
 const Mask = styled.button`

@@ -9,7 +9,7 @@ import Right from 'akeneoassetmanager/application/component/app/icon/right';
 import Left from 'akeneoassetmanager/application/component/app/icon/left';
 import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';
 import Key from 'akeneoassetmanager/tools/key';
-import {TransparentButton} from 'akeneopimenrichmentassetmanager/platform/component/common/button';
+import {TransparentButton} from 'akeneoassetmanager/application/component/app/button';
 
 const Img = styled.img`
   width: 140px;
