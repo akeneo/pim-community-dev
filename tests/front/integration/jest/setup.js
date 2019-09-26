@@ -10,7 +10,7 @@ module.exports = async function() {
   const browser = await puppeteer.launch({
       ignoreHTTPSErrors: true,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
-      headless: !process.env.DEBUG,
+      headless: false,
     });
   // store the browser instance so we can teardown it later
   global.__BROWSER__ = browser;
