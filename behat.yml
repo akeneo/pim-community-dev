@@ -10,7 +10,7 @@ legacy:
             contexts:
                 - Context\EnterpriseFeatureContext:
                     -
-                        base_url: 'http://127.0.0.1/'
+                        base_url: 'http://httpd/'
                         timeout: 50000
                         window_width: 1280
                         window_height: 1024
@@ -99,7 +99,7 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                 - PimEnterprise\Behat\Context\NavigationContext:
                     - 'Context\EnterpriseFeatureContext'
-                    - 'http://127.0.0.1/'
+                    - 'http://httpd/'
                 - Pim\Behat\Context\Storage\ProductStorage:
                     - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
                     - '@pim_catalog.repository.product'
@@ -197,7 +197,7 @@ legacy:
             contexts:
                 - Context\EnterpriseFeatureContext:
                     -
-                        base_url: 'http://127.0.0.1/'
+                        base_url: 'http://httpd/'
                         timeout: 50000
                         window_width: 1280
                         window_height: 1024
@@ -286,7 +286,7 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                 - PimEnterprise\Behat\Context\NavigationContext:
                     - 'Context\EnterpriseFeatureContext'
-                    - 'http://127.0.0.1/'
+                    - 'http://httpd/'
                 - Pim\Behat\Context\Storage\ProductStorage:
                     - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
                     - '@pim_catalog.repository.product'
@@ -386,7 +386,7 @@ legacy:
             contexts:
                 - Context\EnterpriseFeatureContext:
                     -
-                        base_url: 'http://127.0.0.1/'
+                        base_url: 'http://httpd/'
                         timeout: 50000
                         window_width: 1280
                         window_height: 1024
@@ -475,7 +475,7 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                 - PimEnterprise\Behat\Context\NavigationContext:
                     - 'Context\EnterpriseFeatureContext'
-                    - 'http://127.0.0.1/'
+                    - 'http://httpd/'
                 - Pim\Behat\Context\Storage\ProductStorage:
                     - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
                     - '@pim_catalog.repository.product'
@@ -535,7 +535,7 @@ legacy:
             contexts:
                 - Context\EnterpriseFeatureContext:
                     -
-                        base_url: 'http://127.0.0.1/'
+                        base_url: 'http://httpd/'
                         timeout: 50000
                         window_width: 1280
                         window_height: 1024
@@ -624,7 +624,7 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                 - PimEnterprise\Behat\Context\NavigationContext:
                     - 'Context\EnterpriseFeatureContext'
-                    - 'http://127.0.0.1/'
+                    - 'http://httpd/'
                 - Pim\Behat\Context\Storage\ProductStorage:
                     - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
                     - '@pim_catalog.repository.product'
@@ -684,7 +684,7 @@ legacy:
             contexts:
                 - Context\EnterpriseFeatureContext:
                     -
-                        base_url: 'http://127.0.0.1/'
+                        base_url: 'http://httpd/'
                         timeout: 50000
                         window_width: 1280
                         window_height: 1024
@@ -773,7 +773,7 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                 - PimEnterprise\Behat\Context\NavigationContext:
                     - 'Context\EnterpriseFeatureContext'
-                    - 'http://127.0.0.1/'
+                    - 'http://httpd/'
                 - Pim\Behat\Context\Storage\ProductStorage:
                     - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
                     - '@pim_catalog.repository.product'
@@ -830,7 +830,7 @@ legacy:
             contexts:
                 - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext:
                     -
-                        base_url: 'http://127.0.0.1/'
+                        base_url: 'http://httpd/'
                         timeout: 10000
                         window_width: 1280
                         window_height: 1024
@@ -850,7 +850,7 @@ legacy:
                     - 1024
                 - PimEnterprise\Behat\Context\NavigationContext:
                     - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
-                    - 'http://127.0.0.1/'
+                    - 'http://httpd/'
                 - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FixturesContext:
                     - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
                     - '@akeneo.pim.automation.franklin_insights.handler.update_identifiers_mapping'
@@ -901,8 +901,8 @@ legacy:
                     symfony2: ~
                 selenium2:
                     selenium2:
-                        wd_host: 'http://127.0.0.1:4444/wd/hub'
-            base_url: 'http://127.0.0.1/'
+                        wd_host: 'http://selenium:4444/wd/hub'
+            base_url: 'http://httpd/'
             files_path: 'tests/legacy/features/Context/fixtures/'
         Behat\Symfony2Extension:
             kernel:
@@ -916,7 +916,7 @@ legacy:
                 page: [Context\Page]
             factory:
                 page_parameters:
-                    base_url: 'http://127.0.0.1/'
+                    base_url: 'http://httpd/'
         Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
         Liuggio\Fastest\Behat\ListFeaturesExtension\Extension: ~
 

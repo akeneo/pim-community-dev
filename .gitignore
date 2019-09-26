@@ -25,7 +25,6 @@ vendor
 !/bin/docker/pim-local-object-storage-for-test.sh
 !/bin/console
 !/bin/pim-front.sh
-behat.yml
 .phpspec/*.tpl
 composer.phar
 /node_modules
