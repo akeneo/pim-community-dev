@@ -2,11 +2,11 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value;
 
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\BooleanNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -45,11 +45,11 @@ class BooleanNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
         $this->supportsNormalization($textValue, 'whatever')->shouldReturn(false);
 
-        $this->supportsNormalization(new \stdClass(), ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+        $this->supportsNormalization(new \stdClass(), ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(false);
-        $this->supportsNormalization($booleanValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+        $this->supportsNormalization($booleanValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(true);
-        $this->supportsNormalization($textValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+        $this->supportsNormalization($textValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(false);
     }
 
@@ -68,7 +68,7 @@ class BooleanNormalizerSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('a_yes_no');
         $attribute->getBackendType()->willReturn('boolean');
 
-        $this->normalize($value, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
+        $this->normalize($value, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'a_yes_no-boolean' => [
                 '<all_channels>' => [
                     '<all_locales>' => true
@@ -92,7 +92,7 @@ class BooleanNormalizerSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('a_yes_no');
         $attribute->getBackendType()->willReturn('boolean');
 
-        $this->normalize($value, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
+        $this->normalize($value, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'a_yes_no-boolean' => [
                 '<all_channels>' => [
                     'fr_FR' => true
@@ -116,7 +116,7 @@ class BooleanNormalizerSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('a_yes_no');
         $attribute->getBackendType()->willReturn('boolean');
 
-        $this->normalize($value, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
+        $this->normalize($value, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'a_yes_no-boolean' => [
                 'ecommerce' => [
                     '<all_locales>' => true
@@ -140,7 +140,7 @@ class BooleanNormalizerSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('a_yes_no');
         $attribute->getBackendType()->willReturn('boolean');
 
-        $this->normalize($value, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
+        $this->normalize($value, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'a_yes_no-boolean' => [
                 'ecommerce' => [
                     'fr_FR' => true
@@ -164,7 +164,7 @@ class BooleanNormalizerSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('a_yes_no');
         $attribute->getBackendType()->willReturn('boolean');
 
-        $this->normalize($value, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
+        $this->normalize($value, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'a_yes_no-boolean' => [
                 '<all_channels>' => [
                     '<all_locales>' => null

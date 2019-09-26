@@ -2,13 +2,13 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value;
 
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPrice;
 use Akeneo\Pim\Enrichment\Component\Product\Model\PriceCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\PriceCollectionNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValue;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -50,13 +50,13 @@ class PriceCollectionNormalizerSpec extends ObjectBehavior
 
         $this->supportsNormalization($priceCollectionValue, 'whatever')->shouldReturn(false);
 
-        $this->supportsNormalization(new \stdClass(), ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+        $this->supportsNormalization(new \stdClass(), ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(false);
-        $this->supportsNormalization($textValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+        $this->supportsNormalization($textValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(false);
         $this->supportsNormalization(
             $priceCollectionValue,
-            ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
+            ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
         )->shouldReturn(true);
     }
 
@@ -75,7 +75,7 @@ class PriceCollectionNormalizerSpec extends ObjectBehavior
         $priceCollectionAttribute->getBackendType()->willReturn('prices');
         $attributeRepository->findOneByIdentifier('a_price')->willReturn($priceCollectionAttribute);
 
-        $this->normalize($priceCollection, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
+        $this->normalize($priceCollection, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'a_price-prices' => [
                 '<all_channels>' => [
                     '<all_locales>' => null
@@ -106,7 +106,7 @@ class PriceCollectionNormalizerSpec extends ObjectBehavior
         $priceCollectionAttribute->getBackendType()->willReturn('prices');
         $attributeRepository->findOneByIdentifier('a_price')->willReturn($priceCollectionAttribute);
 
-        $this->normalize($priceCollection, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
+        $this->normalize($priceCollection, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'a_price-prices' => [
                 '<all_channels>' => [
                     '<all_locales>' => [
@@ -140,7 +140,7 @@ class PriceCollectionNormalizerSpec extends ObjectBehavior
         $priceCollectionAttribute->getBackendType()->willReturn('prices');
         $attributeRepository->findOneByIdentifier('a_price')->willReturn($priceCollectionAttribute);
 
-        $this->normalize($priceCollection, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
+        $this->normalize($priceCollection, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'a_price-prices' => [
                 '<all_channels>' => [
                     '<all_locales>' => [
@@ -174,7 +174,7 @@ class PriceCollectionNormalizerSpec extends ObjectBehavior
         $priceCollectionAttribute->getBackendType()->willReturn('prices');
         $attributeRepository->findOneByIdentifier('a_price')->willReturn($priceCollectionAttribute);
 
-        $this->normalize($priceCollection, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
+        $this->normalize($priceCollection, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'a_price-prices' => [
                 '<all_channels>' => [
                     'fr_FR' => [
@@ -208,7 +208,7 @@ class PriceCollectionNormalizerSpec extends ObjectBehavior
         $priceCollectionAttribute->getBackendType()->willReturn('prices');
         $attributeRepository->findOneByIdentifier('a_price')->willReturn($priceCollectionAttribute);
 
-        $this->normalize($priceCollection, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
+        $this->normalize($priceCollection, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'a_price-prices' => [
                 'ecommerce' => [
                     '<all_locales>' => [
@@ -242,7 +242,7 @@ class PriceCollectionNormalizerSpec extends ObjectBehavior
         $priceCollectionAttribute->getBackendType()->willReturn('prices');
         $attributeRepository->findOneByIdentifier('a_price')->willReturn($priceCollectionAttribute);
 
-        $this->normalize($priceCollection, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
+        $this->normalize($priceCollection, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'a_price-prices' => [
                 'ecommerce' => [
                     'fr_FR' => [
@@ -276,7 +276,7 @@ class PriceCollectionNormalizerSpec extends ObjectBehavior
         $priceCollectionAttribute->getBackendType()->willReturn('prices');
         $attributeRepository->findOneByIdentifier('a_price')->willReturn($priceCollectionAttribute);
 
-        $this->normalize($priceCollection, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
+        $this->normalize($priceCollection, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'a_price-prices' => [
                 'ecommerce' => [
                     'fr_FR' => [],

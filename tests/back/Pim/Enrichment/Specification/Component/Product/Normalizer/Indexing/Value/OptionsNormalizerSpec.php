@@ -2,11 +2,11 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value;
 
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\OptionsNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValueInterface;
@@ -48,11 +48,11 @@ class OptionsNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
         $this->supportsNormalization($optionsValue, 'whatever')->shouldReturn(false);
 
-        $this->supportsNormalization(new \stdClass(), ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+        $this->supportsNormalization(new \stdClass(), ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(false);
-        $this->supportsNormalization($textValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+        $this->supportsNormalization($textValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(false);
-        $this->supportsNormalization($optionsValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+        $this->supportsNormalization($optionsValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(true);
     }
 
@@ -72,7 +72,7 @@ class OptionsNormalizerSpec extends ObjectBehavior
 
         $optionsValue->getOptionCodes()->willReturn([]);
 
-        $this->normalize($optionsValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
+        $this->normalize($optionsValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
                 'tags-options' => [
                     '<all_channels>' => [
@@ -99,7 +99,7 @@ class OptionsNormalizerSpec extends ObjectBehavior
 
         $optionsValue->getOptionCodes()->willReturn(['tagA', 'tagB']);
 
-        $this->normalize($optionsValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
+        $this->normalize($optionsValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
                 'tags-options' => [
                     '<all_channels>' => [
@@ -129,7 +129,7 @@ class OptionsNormalizerSpec extends ObjectBehavior
 
         $optionsValue->getOptionCodes()->willReturn(['tagA', 'tagB']);
 
-        $this->normalize($optionsValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
+        $this->normalize($optionsValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
                 'tags-options' => [
                     '<all_channels>' => [
@@ -159,7 +159,7 @@ class OptionsNormalizerSpec extends ObjectBehavior
 
         $optionsValue->getOptionCodes()->willReturn(['tagA', 'tagB']);
 
-        $this->normalize($optionsValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
+        $this->normalize($optionsValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
                 'tags-options' => [
                     'ecommerce' => [
@@ -189,7 +189,7 @@ class OptionsNormalizerSpec extends ObjectBehavior
 
         $optionsValue->getOptionCodes()->willReturn(['tagA', 'tagB']);
 
-        $this->normalize($optionsValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
+        $this->normalize($optionsValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
                 'tags-options' => [
                     'ecommerce' => [

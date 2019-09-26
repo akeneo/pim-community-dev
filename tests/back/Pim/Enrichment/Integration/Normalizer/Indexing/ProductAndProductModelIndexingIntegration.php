@@ -3,7 +3,7 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\Normalizer\Indexing;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
 use Akeneo\Test\Integration\TestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 
@@ -458,7 +458,7 @@ class ProductAndProductModelIndexingIntegration extends TestCase
     private function assertIndexingFormat($entity, array $expected)
     {
         $serializer = $this->get('pim_indexing_serializer');
-        $actual = $serializer->normalize($entity, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX);
+        $actual = $serializer->normalize($entity, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX);
 
         NormalizedProductCleaner::clean($actual);
         NormalizedProductCleaner::clean($expected);

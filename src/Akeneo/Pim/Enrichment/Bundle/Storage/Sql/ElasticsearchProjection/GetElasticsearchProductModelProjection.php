@@ -7,7 +7,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ElasticsearchProjection;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductModelProjectionInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductModelProjection;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueCollectionFactory;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -52,7 +52,7 @@ class GetElasticsearchProductModelProjection implements GetElasticsearchProductM
                 ->createFromStorageFormat($valuesAndProperties[$productModelCode]['values']);
             $values = $this
                 ->valueCollectionNormalizer
-                ->normalize($valueCollection, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX);
+                ->normalize($valueCollection, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX);
 
             $productProjections[$productModelCode] = new ElasticsearchProductModelProjection(
                 $valuesAndProperties[$productModelCode]['id'],
