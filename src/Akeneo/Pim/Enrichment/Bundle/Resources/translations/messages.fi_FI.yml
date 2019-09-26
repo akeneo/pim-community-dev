@@ -20,7 +20,7 @@ pim_enrich:
       steps:
         first: Valitse tuotteet
         second: Valitse toiminto
-        third: Konfiguroi
+        third: Muuta asetuksia
         fourth: Vahvista
     change-status:
       label: Muuta tuotteen tila
@@ -38,23 +38,23 @@ pim_enrich:
         invalid_attribute: Attribuutti koodilla "attribute_code" ei yhdistä valittuja tuotteita, attributti ohitettu.
         no_valid_attribute: Mitään valituista attribuuteista ei voi ottaa käyttöön tällä tuotteella.
     classify-add:
-      label: Lisää kategorioihin
+      label: Lisää ryhmiin
       description: Tuotteet asetetaan seuraaviin kategorioihin, olemassaolevat asetukset pyyvät.
       success_flash: Tuote / tuotteet ovat luokiteltu valittuihin kategorioihin
       launched_flash: Massatoiminto "lisää kategorioihin" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
     classify-move:
-      label: Siirrä kategorioihin
+      label: Siirrä ryhmiin
       description: Tuotteet asetetaan seuraaviin kategorioihin, aikaisemmat kategorisoinnit menetetään.
       success_flash: Tuote/tuotteet on siirretty valittuihin kategorioihin
       launched_flash: Massatoiminto "siirrä kategorioihin" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
     classify-remove:
-      label: Poista kategorioista
+      label: Poista ryhmistä
       description: Tuotteet poistetaan seuraavista kategorioista.
       success_flash: Tuote/tuotteet on poistettu valituista kategorioista
       launched_flash: Massatoiminto "poista kategorioista" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
     change-family:
       label: Muuta perhe
-      description: Valittujen tuotteiden perhe vaihdetaan valittuun tuoteperheeseen
+      description: Valittujen tuotteiden perhe vaihdetaan valittuun perheeseen
       success_flash: Valittujen tuotteiden perhe on vaihdettu onnistuneesti
       launched_flash: Massatoiminto "Vaihda perhettä" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
     add-to-groups:
@@ -66,8 +66,8 @@ pim_enrich:
     set-attribute-requirements:
       label: Aseta vaaditut attribuutit
       description: Seuraavat attribuuttivaatimukset otetaan käyttöön valituille perheille
-      success_flash: Määritteen vaatimuksia sovellettiin valittuihin ryhmiin
-      launched_flash: Bulkkitoiminto "Aseta määritteen vaatimukset" on käynnistetty. Saat ilmoituksen, kun se on valmis.
+      success_flash: Attribuuttivaatimukset otetaan käyttöön valituille perheille
+      launched_flash: Massatoiminto "aseta attribuuttivaatimukset" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
     mass_action:
       quick_export:
         launched_flash: Tuotteiden vienti on parhaillaan käynnissä

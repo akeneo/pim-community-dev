@@ -9,6 +9,8 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Plugin\ListPaths;
+use League\Flysystem\Filesystem;
+use League\Flysystem\Plugin\ListPaths;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;

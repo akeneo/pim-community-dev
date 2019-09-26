@@ -1,5 +1,6 @@
 Akeneo\UserManagement\Component\Model\User:
     constraints:
+        - Akeneo\UserManagement\Bundle\Validator\Constraints\CreateUser: ~
         - Akeneo\UserManagement\Bundle\Validator\Constraints\UserPreferences:
             groups: [User]
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: username

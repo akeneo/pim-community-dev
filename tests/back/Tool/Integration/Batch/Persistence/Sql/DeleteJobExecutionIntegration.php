@@ -31,6 +31,23 @@ class DeleteJobExecutionIntegration extends TestCase
 
     }
 
+    public function test_that_it_deletes_all_jobs()
+    {
+        $this->launchJob();
+        $this->launchJob();
+        $numberOfJobs = (int) $this->getConnection()->executeQuery('SELECT COUNT(*) as number_of_jobs FROM akeneo_batch_job_execution')->fetch()['number_of_jobs'];
+        Assert::assertSame(2, $numberOfJobs);
+
+        $this->getConnection()->executeUpdate('UPDATE akeneo_batch_job_execution SET create_time = Date_ADD(end_time, INTERVAL -10 day)');
+
+        $deleteJobExecution = $this->getDeleteQuery();
+        $deleteJobExecution->all();
+
+        $numberOfJobs = (int) $this->getConnection()->executeQuery('SELECT COUNT(*) as number_of_jobs FROM akeneo_batch_job_execution')->fetch()['number_of_jobs'];
+        Assert::assertSame(0, $numberOfJobs);
+
+    }
+
     private function getDeleteQuery(): DeleteJobExecution
     {
         return $this->get('akeneo_batch.delete_job_execution');

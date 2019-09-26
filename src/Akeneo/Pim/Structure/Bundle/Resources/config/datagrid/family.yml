@@ -52,7 +52,7 @@ datagrid:
             columns:
                 code:
                     type: string
-                    label: pim_common.code
+                    label: Code
                     data_name: f.code
                 label:
                     type: search

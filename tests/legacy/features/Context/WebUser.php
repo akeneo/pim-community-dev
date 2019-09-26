@@ -1694,6 +1694,8 @@ class WebUser extends PimContext
      */
     public function iPressTheButton($button, $modalWait = null)
     {
+        $this->getCurrentPage()->pressButton($button);
+
         $this->spin(function () use ($button, $modalWait) {
             if (null !== $modalWait) {
                 foreach ($this->getCurrentPage()->findAll('css', '.modal') as $modal) {
@@ -1702,8 +1704,6 @@ class WebUser extends PimContext
                     }
                 }
             }
-
-            $this->getCurrentPage()->pressButton($button, true);
 
             return null === $modalWait;
         }, sprintf("Can not find any '%s' button%s", $button, null !== $modalWait ? ' or no modal found' : ''));

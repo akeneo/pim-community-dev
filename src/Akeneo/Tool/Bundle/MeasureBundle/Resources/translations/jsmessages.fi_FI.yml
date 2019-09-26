@@ -22,14 +22,14 @@ pim_measure:
     ACRE: Eekkeri
     ARE: Aari
     ARPENT: Eekkeri
-    CENTIARE: Centiare
+    CENTIARE: Senttiaari
     HECTARE: Hehtaari
     SQUARE_CENTIMETER: Neliösenttimetri
     SQUARE_DECIMETER: Neliödesimetri
     SQUARE_DEKAMETER: Neliödekametri
     SQUARE_FOOT: Neliöjalka
-    SQUARE_FURLONG: Neliöfurlong
-    SQUARE_HECTOMETER: Neliöhektametri
+    SQUARE_FURLONG: Vakomitta
+    SQUARE_HECTOMETER: Neliöhehtometri
     SQUARE_INCH: Neliötuuma
     SQUARE_KILOMETER: Neliökilometri
     SQUARE_METER: Neliömetri
@@ -50,16 +50,16 @@ pim_measure:
     TERAHERTZ: Terahertsi
     HERTZ: Hertsi
     CENTIMETER: Senttimetri
-    CHAIN: Ketju
+    CHAIN: Mittaketju
     DECIMETER: Desimetri
     DEKAMETER: Dekametri
     FEET: Jalka
-    FURLONG: Furlong
+    FURLONG: Vakomitta
     INCH: Tuuma
-    HECTOMETER: Hektametri
+    HECTOMETER: Hehtometri
     KILOMETER: Kilometri
     METER: Metri
-    MIL: Mil
+    MIL: Peninkulma
     MILE: Maili
     MILLIMETER: Millimetri
     YARD: Jaardi
@@ -108,14 +108,14 @@ pim_measure:
     WEEK: Viikko
     MONTH: Kuukausi
     YEAR: Vuosi
-    FOOT_PER_SECOND: Tuuma per sekunti
-    FOOT_PER_HOUR: Tuuma per tunti
-    KILOMETER_PER_HOUR: Kilometri per tunti
-    METER_PER_HOUR: Metri per tunti
-    METER_PER_MINUTE: Metri per minuutti
-    METER_PER_SECOND: Metri per sekunti
-    MILE_PER_HOUR: Maili per tunti
-    YARD_PER_HOUR: Jaardi per tunti
+    FOOT_PER_SECOND: Jalkaa sekunnissa
+    FOOT_PER_HOUR: Jalkaa tunnissa
+    KILOMETER_PER_HOUR: Kilometriä tunnissa
+    METER_PER_HOUR: Metriä tunnissa
+    METER_PER_MINUTE: Metriä minuutissa
+    METER_PER_SECOND: Metriä sekunnissa
+    MILE_PER_HOUR: Mailia tunnissa
+    YARD_PER_HOUR: Jaardia tunnissa
     CELSIUS: Celsius
     FAHRENHEIT: Fahrenheit
     KELVIN: Kelvin
@@ -135,16 +135,16 @@ pim_measure:
     LITER: Litra
     MILLILITER: Millilitra
     OUNCE: Unssi
-    PINT: Pint
+    PINT: Pintti
     DENIER: Denier
-    GRAIN: Vilja
+    GRAIN: Graani
     GRAM: Gramma
     KILOGRAM: Kilogramma
     LIVRE: Livre
     MARC: Marc
     MILLIGRAM: Milligramma
     ONCE: Unssi
-    POUND: Pound
+    POUND: Pauna
     TON: Tonni
     BAR: Baari
     PASCAL: Pascal
@@ -153,7 +153,7 @@ pim_measure:
     ATM: Ilmakehä
     PSI: Paunaa per neliötuuma
     TORR: Torri
-    MMHG: Millimetri elohopeaa
+    MMHG: elohopeamillimetri
     KILOCALORIE: Kilokalori
     KILOJOULE: kilojoule
     PIECE: Kappale

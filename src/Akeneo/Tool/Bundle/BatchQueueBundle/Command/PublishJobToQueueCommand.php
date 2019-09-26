@@ -26,9 +26,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class PublishJobToQueueCommand extends Command
 {
-    public const COMMAND_NAME = 'akeneo:batch:publish-job-to-queue';
-
-    protected static $defaultName = self::COMMAND_NAME;
+    protected static $defaultName = 'akeneo:batch:publish-job-to-queue';
 
     public const EXIT_SUCCESS_CODE = 0;
 
@@ -189,13 +187,5 @@ class PublishJobToQueueCommand extends Command
     private function getJobManager(): EntityManagerInterface
     {
         return $this->jobRepository->getJobManager();
-    }
-
-    /**
-     * @return JobParametersFactory
-     */
-    private function getJobParametersFactory(): JobParametersFactory
-    {
-        return $this->getContainer()->get('akeneo_batch.job_parameters_factory');
     }
 }

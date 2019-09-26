@@ -6,7 +6,6 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionValue;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionValueInterface;
-use Prophecy\Argument;
 
 class AttributeOptionSpec extends ObjectBehavior
 {
@@ -26,13 +25,15 @@ class AttributeOptionSpec extends ObjectBehavior
         $this->getCode()->shouldReturn('1234');
     }
 
-    function it_returns_the_expected_translation(AttributeOptionValueInterface $en, AttributeOptionValueInterface $fr)
-    {
+    function it_returns_the_expected_translation(
+        AttributeOptionValueInterface $en,
+        AttributeOptionValueInterface $fr
+    ) {
         $en->getLocale()->willReturn('en');
         $fr->getLocale()->willReturn('fr');
 
-        $en->setOption(Argument::any())->shouldBeCalled();
-        $fr->setOption(Argument::any())->shouldBeCalled();
+        $en->setOption($this)->shouldBeCalled();
+        $fr->setOption($this)->shouldBeCalled();
 
         $this->addOptionValue($en);
         $this->addOptionValue($fr);
@@ -41,15 +42,20 @@ class AttributeOptionSpec extends ObjectBehavior
         $this->getOptionValue()->shouldReturn($fr);
     }
 
-    function it_display_an_attribute_option()
+    function it_displays_an_attribute_option()
     {
         $value = new AttributeOptionValue();
-        $value->setLabel(100);
+        $value->setLabel('100');
         $value->setLocale('en_US');
 
         $this->setLocale('en_US');
         $this->addOptionValue($value);
 
         $this->__toString()->shouldReturn('100');
+    }
+
+    function it_has_no_default_sort_order()
+    {
+        $this->getSortOrder()->shouldBeNull();;
     }
 }

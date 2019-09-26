@@ -95,6 +95,9 @@ class ProductController
     protected $productAttributeFilter;
 
     /** @var Client */
+    private $productClient;
+
+    /** @var Client */
     private $productAndProductModelClient;
 
     /**
@@ -116,8 +119,8 @@ class ProductController
      * @param NormalizerInterface           $constraintViolationNormalizer
      * @param ProductBuilderInterface       $variantProductBuilder
      * @param AttributeFilterInterface      $productAttributeFilter
+     * @param Client                        $productClient
      * @param Client                        $productAndProductModelClient
-     *
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
@@ -138,6 +141,7 @@ class ProductController
         NormalizerInterface $constraintViolationNormalizer,
         ProductBuilderInterface $variantProductBuilder,
         AttributeFilterInterface $productAttributeFilter,
+        Client $productClient,
         Client $productAndProductModelClient
     ) {
         $this->productRepository = $productRepository;
@@ -158,6 +162,7 @@ class ProductController
         $this->constraintViolationNormalizer = $constraintViolationNormalizer;
         $this->variantProductBuilder = $variantProductBuilder;
         $this->productAttributeFilter = $productAttributeFilter;
+        $this->productClient = $productClient;
         $this->productAndProductModelClient = $productAndProductModelClient;
     }
 
@@ -328,6 +333,7 @@ class ProductController
         $product = $this->findProductOr404($id);
         $this->productRemover->remove($product);
 
+        $this->productClient->refreshIndex();
         $this->productAndProductModelClient->refreshIndex();
 
         return new JsonResponse();

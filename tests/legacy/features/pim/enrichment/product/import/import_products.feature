@@ -84,30 +84,6 @@ Feature: Import products coming from an external application
     And the english localizable value name of "SKU-001" should be "Donec"
     And the english tablet description of "SKU-001" should be "dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est"
 
-  @javascript
-  Scenario: Successfully import products through file upload
-    Given I am logged in as "Julia"
-    And the following CSV file to import:
-      """
-      sku;family;groups;categories;name-en_US;description-en_US-tablet
-      SKU-001;boots;;winter_boots;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
-      SKU-002;sneakers;;winter_boots;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames
-      SKU-003;sneakers;;sandals;ac;Morbi quis urna. Nunc quis arcu vel quam dignissim pharetra.
-      SKU-004;sneakers;;sandals;nec;justo sit amet nulla. Donec non justo. Proin non massa
-      SKU-005;boots;;winter_boots;non;tincidunt dui augue eu tellus. Phasellus elit pede, malesuada vel
-      SKU-006;boots;;winter_boots;ipsum;Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam auctor,
-      SKU-007;sneakers;;;rutrum.;quis, pede. Praesent eu dui. Cum sociis natoque penatibus et
-      SKU-008;boots;;sandals;ligula;urna et arcu imperdiet ullamcorper. Duis at lacus. Quisque purus
-      SKU-009;sneakers;;;porttitor;sagittis. Duis gravida. Praesent eu nulla at sem molestie sodales.
-      SKU-010;boots;;sandals,winter_boots;non,;vestibulum nec, euismod in, dolor. Fusce feugiat. Lorem ipsum dolor
-      """
-    And the following job "csv_footwear_product_import" configuration:
-      | uploadAllowed | yes |
-    When I am on the "csv_footwear_product_import" import job page
-    And I upload and import the file "%file to import%"
-    And I wait for the "csv_footwear_product_import" job to finish
-    Then there should be 10 products
-
   Scenario: Successfully import products prices
     Given the following CSV file to import:
       """
