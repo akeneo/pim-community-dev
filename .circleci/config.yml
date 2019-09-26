@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  setup:
+  build_dev:
     machine:
       image: ubuntu-1604:201903-01
     steps:
@@ -246,15 +246,15 @@ workflows:
                     branches:
                         ignore:
                             - master
-          - setup:
+          - build_dev:
                 requires:
                     - wait_for_user_approval
           - back_static_and_acceptance:
                 requires:
-                    - setup
+                    - build_dev
           - front_static_acceptance_and_integration:
                 requires:
-                    - setup
+                    - build_dev
           - back_phpunit:
                 requires:
                     - back_static_and_acceptance
@@ -272,13 +272,13 @@ workflows:
                         only:
                             - master
       jobs:
-          - setup
+          - build_dev
           - back_static_and_acceptance:
                 requires:
-                    - setup
+                    - build_dev
           - front_static_acceptance_and_integration:
                 requires:
-                    - setup
+                    - build_dev
           - back_phpunit:
                 requires:
                     - back_static_and_acceptance
