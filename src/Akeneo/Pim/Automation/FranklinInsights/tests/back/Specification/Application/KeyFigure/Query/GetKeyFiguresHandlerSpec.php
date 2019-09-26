@@ -53,10 +53,10 @@ class GetKeyFiguresHandlerSpec extends ObjectBehavior
             new KeyFigure('credits_total', 100),
         ]));
         $qualityHighlightsProvider->getKeyFigures()->willReturn(new KeyFigureCollection([
-            new KeyFigure('value_validated', 5),
-            new KeyFigure('value_in_error', 3),
-            new KeyFigure('value_suggested', 4),
-            new KeyFigure('name_and_value_suggested', 10),
+            new KeyFigure('franklin_values_validated', 5),
+            new KeyFigure('franklin_values_in_error', 3),
+            new KeyFigure('franklin_values_suggested', 4),
+            new KeyFigure('franklin_names_and_values_suggested', 10),
         ]));
 
         $query = new GetKeyFiguresQuery();
@@ -71,10 +71,10 @@ class GetKeyFiguresHandlerSpec extends ObjectBehavior
                     new KeyFigure('credits_consumed', 42),
                     new KeyFigure('credits_left', 58),
                     new KeyFigure('credits_total', 100),
-                    new KeyFigure('value_validated', 5),
-                    new KeyFigure('value_in_error', 3),
-                    new KeyFigure('value_suggested', 4),
-                    new KeyFigure('name_and_value_suggested', 10),
+                    new KeyFigure('franklin_values_validated', 5),
+                    new KeyFigure('franklin_values_in_error', 3),
+                    new KeyFigure('franklin_values_suggested', 4),
+                    new KeyFigure('franklin_names_and_values_suggested', 10),
                 ]
             )
         );

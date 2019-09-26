@@ -52,10 +52,10 @@ class QualityHighlightsProvider extends AbstractProvider implements QualityHighl
         }
 
         return new KeyFigureCollection([
-            new KeyFigure('value_validated', $qualityHighlightMetrics->getValueValidated()),
-            new KeyFigure('value_in_error', $qualityHighlightMetrics->getValueInError()),
-            new KeyFigure('value_suggested', $qualityHighlightMetrics->getValueSuggested()),
-            new KeyFigure('name_and_value_suggested', $qualityHighlightMetrics->getNameAndValueSuggested()),
+            new KeyFigure('franklin_values_validated', $qualityHighlightMetrics->getValuesValidated()),
+            new KeyFigure('franklin_values_in_error', $qualityHighlightMetrics->getValuesInError()),
+            new KeyFigure('franklin_values_suggested', $qualityHighlightMetrics->getValuesSuggested()),
+            new KeyFigure('franklin_names_and_values_suggested', $qualityHighlightMetrics->getNamesAndValuesSuggested()),
         ]);
     }
 }

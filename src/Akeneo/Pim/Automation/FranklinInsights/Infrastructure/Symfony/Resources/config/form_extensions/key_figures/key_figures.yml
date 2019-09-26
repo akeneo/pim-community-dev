@@ -67,7 +67,7 @@ extensions:
             axes:
                 - franklin_attribute_created
                 - franklin_attribute_added_to_family
-                - value_validated
-                - value_in_error
-                - value_suggested
-                - name_and_value_suggested
+                - franklin_values_validated
+                - franklin_values_in_error
+                - franklin_values_suggested
+                - franklin_names_and_values_suggested

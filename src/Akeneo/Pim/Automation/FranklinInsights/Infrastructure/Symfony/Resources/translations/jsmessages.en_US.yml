@@ -217,15 +217,15 @@ akeneo_franklin_insights:
             credits: Franklin credits
             key_figures: Franklin key figures
         axis:
-            franklin_attribute_created: Number of attributes created by Franklin
-            franklin_attribute_added_to_family: Number of attributes added to a family by Franklin
+            franklin_attribute_created: Attributes created
+            franklin_attribute_added_to_family: Attributes added to a family
             credits_total: Credits total
             credits_consumed: Credits consummed
             credits_left: Credits left
-            value_validated: Attribute value validated
-            value_in_error: Attribute value in error
-            value_suggested: Attribute value suggested
-            name_and_value_suggested: Attribute name and value suggested
+            franklin_values_validated: Attribute values validated
+            franklin_values_in_error: Attribute values in error
+            franklin_values_suggested: Attribute values suggested
+            franklin_names_and_values_suggested: Attribute names and values suggested
 
 batch_jobs:
     default_steps:

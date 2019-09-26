@@ -31,21 +31,21 @@ class QualityHighlightsMetricsSpec extends ObjectBehavior
 
     public function it_gives_the_number_of_value_suggested()
     {
-        $this->getValueSuggested()->shouldReturn(4);
+        $this->getValuesSuggested()->shouldReturn(4);
     }
 
     public function it_gives_the_number_of_name_and_value_suggested()
     {
-        $this->getNameAndValueSuggested()->shouldReturn(10);
+        $this->getNamesAndValuesSuggested()->shouldReturn(10);
     }
 
     public function it_gives_the_number_of_value_in_error()
     {
-        $this->getValueInError()->shouldReturn(3);
+        $this->getValuesInError()->shouldReturn(3);
     }
 
     public function it_gives_the_number_of_value_validated()
     {
-        $this->getValueValidated()->shouldReturn(5);
+        $this->getValuesValidated()->shouldReturn(5);
     }
 }

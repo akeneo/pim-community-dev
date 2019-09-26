@@ -54,10 +54,10 @@ class QualityHighlightsProviderSpec extends ObjectBehavior
         ]));
 
         $this->getKeyFigures()->shouldBeLike(new KeyFigureCollection([
-            new KeyFigure('value_validated', 5),
-            new KeyFigure('value_in_error', 3),
-            new KeyFigure('value_suggested', 4),
-            new KeyFigure('name_and_value_suggested', 10),
+            new KeyFigure('franklin_values_validated', 5),
+            new KeyFigure('franklin_values_in_error', 3),
+            new KeyFigure('franklin_values_suggested', 4),
+            new KeyFigure('franklin_names_and_values_suggested', 10),
         ]));
     }
 

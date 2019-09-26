@@ -28,7 +28,7 @@ class KeyFigureCollectionSpec extends ObjectBehavior
                     3
                 ),
                 new KeyFigure(
-                    'franklin_attributed_added_to_family',
+                    'franklin_attribute_added_to_family',
                     2
                 ),
             ]
@@ -56,7 +56,7 @@ class KeyFigureCollectionSpec extends ObjectBehavior
                     3
                 ),
                 new KeyFigure(
-                    'franklin_attributed_added_to_family',
+                    'franklin_attribute_added_to_family',
                     2
                 ),
             ]
@@ -71,7 +71,7 @@ class KeyFigureCollectionSpec extends ObjectBehavior
 
         $this->merge($keyFigures)->shouldBeLike(new KeyFigureCollection([
             new KeyFigure('franklin_attribute_created', 3),
-            new KeyFigure('franklin_attributed_added_to_family', 2),
+            new KeyFigure('franklin_attribute_added_to_family', 2),
             new KeyFigure('credits_consumed', 42),
         ]));
     }

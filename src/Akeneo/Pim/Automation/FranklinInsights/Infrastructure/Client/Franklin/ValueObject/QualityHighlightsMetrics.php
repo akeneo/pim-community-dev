@@ -15,37 +15,37 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\
 
 class QualityHighlightsMetrics
 {
-    private $valueSuggested;
-    private $nameAndValueSuggested;
-    private $valueInError;
-    private $valueValidated;
+    private $valuesSuggested;
+    private $namesAndValuesSuggested;
+    private $valuesInError;
+    private $valuesValidated;
 
     public function __construct(array $rawMetrics)
     {
-        $this->valueSuggested = $this->getFromRawMetrics('value_added', $rawMetrics);
-        $this->nameAndValueSuggested = $this->getFromRawMetrics('added', $rawMetrics);
-        $this->valueValidated = $this->getFromRawMetrics('value_validated', $rawMetrics);
-        $this->valueInError = $this->getFromRawMetrics('value_mismatch', $rawMetrics);
+        $this->valuesSuggested = $this->getFromRawMetrics('value_added', $rawMetrics);
+        $this->namesAndValuesSuggested = $this->getFromRawMetrics('added', $rawMetrics);
+        $this->valuesValidated = $this->getFromRawMetrics('value_validated', $rawMetrics);
+        $this->valuesInError = $this->getFromRawMetrics('value_mismatch', $rawMetrics);
     }
 
-    public function getValueSuggested(): int
+    public function getValuesSuggested(): int
     {
-        return $this->valueSuggested;
+        return $this->valuesSuggested;
     }
 
-    public function getNameAndValueSuggested(): int
+    public function getNamesAndValuesSuggested(): int
     {
-        return $this->nameAndValueSuggested;
+        return $this->namesAndValuesSuggested;
     }
 
-    public function getValueInError(): int
+    public function getValuesInError(): int
     {
-        return $this->valueInError;
+        return $this->valuesInError;
     }
 
-    public function getValueValidated(): int
+    public function getValuesValidated(): int
     {
-        return $this->valueValidated;
+        return $this->valuesValidated;
     }
 
     private function getFromRawMetrics(string $metricCode, array $rawMetrics): int
