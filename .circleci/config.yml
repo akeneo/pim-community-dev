@@ -268,6 +268,8 @@ jobs:
       machine:
           image: ubuntu-1604:201903-01
       steps:
+          -   attach_workspace:
+                  at: ~/
           - run:
               name: make release
               command: make release
@@ -276,6 +278,8 @@ jobs:
       machine:
           image: ubuntu-1604:201903-01
       steps:
+          -   attach_workspace:
+                  at: ~/
           - run:
               name: make deploy_pim
               command: make deploy_pim
@@ -284,6 +288,8 @@ jobs:
       machine:
           image: ubuntu-1604:201903-01
       steps:
+          -   attach_workspace:
+                  at: ~/
           - run:
               name: make deploy_doc
               command: make deploy_doc
@@ -292,6 +298,8 @@ jobs:
       machine:
           image: ubuntu-1604:201903-01
       steps:
+          -   attach_workspace:
+                  at: ~/
           - run:
               name: make notify
               command: make notify
@@ -349,13 +357,14 @@ workflows:
                     - back_phpunit
 
   deployment:
+      triggers:
+          - schedule:
+                cron: "0 4 * * *"
+                filters:
+                    branches:
+                        only:
+                            - master
       jobs:
-          - wait_for_user_approval:
-              type: approval
-#              filters:
-#                  branches:
-#                      only:
-#                          - master
           - build_dev:
                 requires:
                     - wait_for_user_approval
