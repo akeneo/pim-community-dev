@@ -52,6 +52,7 @@ class SimpleCsvImport implements ConstraintCollectionProviderInterface
                         new NotBlank(),
                         new Choice(
                             [
+                                'strict' => true,
                                 'choices' => [",", ";", "|"],
                                 'message' => 'The value must be one of , or ; or |'
                             ]
@@ -62,6 +63,7 @@ class SimpleCsvImport implements ConstraintCollectionProviderInterface
                             new NotBlank(),
                             new Choice(
                                 [
+                                    'strict' => true,
                                     'choices' => ['"', "'"],
                                     'message' => 'The value must be one of " or \''
                                 ]
