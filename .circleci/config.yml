@@ -30,9 +30,6 @@ jobs:
               sudo chown -R 1000:1000 ~/.composer
               sudo chown -R 1000:1000 ~/.cache/yarn
       - run:
-          name: Start containers
-          command: make up
-      - run:
           name: Change owner on project dir after restoring cache
           command: sudo chown -R 1000:1000 ../project
       - when:
