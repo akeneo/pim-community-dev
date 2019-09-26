@@ -236,6 +236,63 @@ jobs:
             command: docker-compose run --rm node yarn run integration
             when: always
 
+  build_images:
+      machine:
+          image: ubuntu-1604:201903-01
+      steps:
+          - run:
+              name: make build_images
+              command: sleep 1
+
+  test:
+      machine:
+          image: ubuntu-1604:201903-01
+      steps:
+          - run:
+              name: make test
+              command: sleep 1
+
+  test_prod:
+      machine:
+          image: ubuntu-1604:201903-01
+      steps:
+          - run:
+              name: make test_prod
+              command: sleep 1
+
+  release:
+      machine:
+          image: ubuntu-1604:201903-01
+      steps:
+          - run:
+              name: make release
+              command: sleep 1
+
+  deploy_pim:
+      machine:
+          image: ubuntu-1604:201903-01
+      steps:
+          - run:
+              name: make deploy_pim
+              command: sleep 1
+
+  deploy_doc:
+      machine:
+          image: ubuntu-1604:201903-01
+      steps:
+          - run:
+              name: make deploy_doc
+              command: sleep 1
+
+  notify:
+      machine:
+          image: ubuntu-1604:201903-01
+      steps:
+          - run:
+              name: make notify
+              command: sleep 1
+
+
 workflows:
   version: 2
   pull_request:
