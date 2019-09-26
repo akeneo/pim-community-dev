@@ -81,11 +81,11 @@ final class SqlGetAttributesIntegration extends TestCase
     public function getExpected(): array
     {
         return [
-            'a_text' => new Attribute('a_text', AttributeTypes::TEXT, [], false, false, null, false),
-            'a_textarea' => new Attribute('a_textarea', AttributeTypes::TEXTAREA, [], false, false, null, false),
-            'a_boolean' => new Attribute('a_boolean', AttributeTypes::BOOLEAN, [], false, false, null, false),
+            'a_text' => new Attribute('a_text', AttributeTypes::TEXT, [], false, false, null, false, 'text'),
+            'a_textarea' => new Attribute('a_textarea', AttributeTypes::TEXTAREA, [], false, false, null, false, 'textarea'),
+            'a_boolean' => new Attribute('a_boolean', AttributeTypes::BOOLEAN, [], false, false, null, false, 'boolean'),
             'unknown_attribute_code' => null,
-            '123' => new Attribute('123', AttributeTypes::TEXT, [], false, false, null, false)
+            '123' => new Attribute('123', AttributeTypes::TEXT, [], false, false, null, false, 'text')
         ];
     }
 
