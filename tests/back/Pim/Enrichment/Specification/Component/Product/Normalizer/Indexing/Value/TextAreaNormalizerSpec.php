@@ -2,19 +2,19 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value;
 
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\TextAreaNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
+use PhpSpec\ObjectBehavior;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class TextAreaNormalizerSpec extends ObjectBehavior
 {
-    function let(IdentifiableObjectRepositoryInterface $attributeRepository)
+    function let(GetAttributes $getAttributes)
     {
-        $this->beConstructedWith($attributeRepository);
+        $this->beConstructedWith($getAttributes);
     }
 
     function it_is_initializable()
@@ -30,18 +30,31 @@ class TextAreaNormalizerSpec extends ObjectBehavior
     function it_supports_text_area_product_value(
         ValueInterface $numberValue,
         ValueInterface $textAreaValue,
-        AttributeInterface $numberAttribute,
-        AttributeInterface $textAreaAttribute,
-        $attributeRepository
+        GetAttributes $getAttributes
     ) {
         $textAreaValue->getAttributeCode()->willReturn('my_textarea_attribute');
         $numberValue->getAttributeCode()->willReturn('my_number_attribute');
 
-        $textAreaAttribute->getBackendType()->willReturn('textarea');
-        $numberAttribute->getBackendType()->willReturn('decimal');
-
-        $attributeRepository->findOneByIdentifier('my_textarea_attribute')->willReturn($textAreaAttribute);
-        $attributeRepository->findOneByIdentifier('my_number_attribute')->willReturn($numberAttribute);
+        $getAttributes->forCode('my_textarea_attribute')->willReturn(new Attribute(
+            'my_textarea_attribute',
+            'pim_catalog_textarea',
+            [],
+            false,
+            false,
+            null,
+            true,
+            'textarea'
+        ));
+        $getAttributes->forCode('my_number_attribute')->willReturn(new Attribute(
+            'my_number_attribute',
+            'pim_catalog_number',
+            [],
+            false,
+            false,
+            null,
+            true,
+            'decimal'
+        ));
 
         $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
         $this->supportsNormalization($numberValue, 'whatever')->shouldReturn(false);
@@ -56,17 +69,23 @@ class TextAreaNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_simple_text_area(
         ValueInterface $textAreaValue,
-        AttributeInterface $textAreaAttribute,
-        $attributeRepository
+        GetAttributes $getAttributes
     ) {
         $textAreaValue->getAttributeCode()->willReturn('description');
         $textAreaValue->getLocaleCode()->willReturn(null);
         $textAreaValue->getScopeCode()->willReturn(null);
         $textAreaValue->getData()->willReturn('a product description');
 
-        $textAreaAttribute->getCode()->willReturn('description');
-        $textAreaAttribute->getBackendType()->willReturn('textarea');
-        $attributeRepository->findOneByIdentifier('description')->willReturn($textAreaAttribute);
+        $getAttributes->forCode('description')->willReturn(new Attribute(
+            'description',
+            'pim_catalog_textarea',
+            [],
+            false,
+            false,
+            null,
+            true,
+            'textarea'
+        ));
 
         $this->normalize($textAreaValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'description-textarea' => [
@@ -79,17 +98,23 @@ class TextAreaNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_an_empty_simple_text_area(
         ValueInterface $textAreaValue,
-        AttributeInterface $textAreaAttribute,
-        $attributeRepository
+        GetAttributes $getAttributes
     ) {
         $textAreaValue->getAttributeCode()->willReturn('description');
         $textAreaValue->getLocaleCode()->willReturn(null);
         $textAreaValue->getScopeCode()->willReturn(null);
         $textAreaValue->getData()->willReturn(null);
 
-        $textAreaAttribute->getCode()->willReturn('description');
-        $textAreaAttribute->getBackendType()->willReturn('textarea');
-        $attributeRepository->findOneByIdentifier('description')->willReturn($textAreaAttribute);
+        $getAttributes->forCode('description')->willReturn(new Attribute(
+            'description',
+            'pim_catalog_textarea',
+            [],
+            false,
+            false,
+            null,
+            true,
+            'textarea'
+        ));
 
         $this->normalize($textAreaValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'description-textarea' => [
@@ -102,8 +127,7 @@ class TextAreaNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_text_area_with_new_lines(
         ValueInterface $textAreaValue,
-        AttributeInterface $textAreaAttribute,
-        $attributeRepository
+        GetAttributes $getAttributes
     ) {
         $textAreaValue->getAttributeCode()->willReturn('description');
         $textAreaValue->getLocaleCode()->willReturn(null);
@@ -111,9 +135,16 @@ class TextAreaNormalizerSpec extends ObjectBehavior
         $textAreaValue->getData()->willReturn("a\n product \n\r\n\n
 description\r\n");
 
-        $textAreaAttribute->getCode()->willReturn('description');
-        $textAreaAttribute->getBackendType()->willReturn('textarea');
-        $attributeRepository->findOneByIdentifier('description')->willReturn($textAreaAttribute);
+        $getAttributes->forCode('description')->willReturn(new Attribute(
+            'description',
+            'pim_catalog_textarea',
+            [],
+            false,
+            false,
+            null,
+            true,
+            'textarea'
+        ));
 
         $this->normalize($textAreaValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'description-textarea' => [
@@ -126,17 +157,23 @@ description\r\n");
 
     function it_normalizes_a_text_area_with_html_tags(
         ValueInterface $textAreaValue,
-        AttributeInterface $textAreaAttribute,
-        $attributeRepository
+        GetAttributes $getAttributes
     ) {
         $textAreaValue->getAttributeCode()->willReturn('description');
         $textAreaValue->getLocaleCode()->willReturn(null);
         $textAreaValue->getScopeCode()->willReturn(null);
         $textAreaValue->getData()->willReturn('<br/><h1>a</h1> <i>product</i><br/> description<hr/><br/>');
 
-        $textAreaAttribute->getCode()->willReturn('description');
-        $textAreaAttribute->getBackendType()->willReturn('textarea');
-        $attributeRepository->findOneByIdentifier('description')->willReturn($textAreaAttribute);
+        $getAttributes->forCode('description')->willReturn(new Attribute(
+            'description',
+            'pim_catalog_textarea',
+            [],
+            false,
+            false,
+            null,
+            true,
+            'textarea'
+        ));
 
         $this->normalize($textAreaValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'description-textarea' => [
@@ -149,8 +186,7 @@ description\r\n");
 
     function it_normalizes_a_text_area_with_html_tags_and_new_lines(
         ValueInterface $textAreaValue,
-        AttributeInterface $textAreaAttribute,
-        $attributeRepository
+        GetAttributes $getAttributes
     ) {
         $textAreaValue->getAttributeCode()->willReturn('description');
         $textAreaValue->getLocaleCode()->willReturn(null);
@@ -158,9 +194,16 @@ description\r\n");
         $textAreaValue->getData()->willReturn("<br/>\n<h1>a</h1>\r\n <i>product</i>
 <br/>\n description<hr/><br/>\n");
 
-        $textAreaAttribute->getCode()->willReturn('description');
-        $textAreaAttribute->getBackendType()->willReturn('textarea');
-        $attributeRepository->findOneByIdentifier('description')->willReturn($textAreaAttribute);
+        $getAttributes->forCode('description')->willReturn(new Attribute(
+            'description',
+            'pim_catalog_textarea',
+            [],
+            false,
+            false,
+            null,
+            true,
+            'textarea'
+        ));
 
         $this->normalize($textAreaValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'description-textarea' => [
@@ -173,17 +216,23 @@ description\r\n");
 
     function it_normalizes_a_text_area_product_value_with_locale_and_no_scope(
         ValueInterface $textAreaValue,
-        AttributeInterface $textAreaAttribute,
-        $attributeRepository
+        GetAttributes $getAttributes
     ) {
         $textAreaValue->getAttributeCode()->willReturn('description');
         $textAreaValue->getLocaleCode()->willReturn('fr_FR');
         $textAreaValue->getScopeCode()->willReturn(null);
         $textAreaValue->getData()->willReturn("<h1>a product description</h1>\n");
 
-        $textAreaAttribute->getCode()->willReturn('description');
-        $textAreaAttribute->getBackendType()->willReturn('textarea');
-        $attributeRepository->findOneByIdentifier('description')->willReturn($textAreaAttribute);
+        $getAttributes->forCode('description')->willReturn(new Attribute(
+            'description',
+            'pim_catalog_textarea',
+            [],
+            true,
+            false,
+            null,
+            true,
+            'textarea'
+        ));
 
         $this->normalize($textAreaValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'description-textarea' => [
@@ -194,19 +243,25 @@ description\r\n");
         ]);
     }
 
-    function it_normalizes_a_text_area_product_value_with_no_scope_and_no_locale(
+    function it_normalizes_a_text_area_product_value_with_scope_and_no_locale(
         ValueInterface $textAreaValue,
-        AttributeInterface $textAreaAttribute,
-        $attributeRepository
+        GetAttributes $getAttributes
     ) {
         $textAreaValue->getAttributeCode()->willReturn('description');
         $textAreaValue->getLocaleCode()->willReturn(null);
         $textAreaValue->getScopeCode()->willReturn('ecommerce');
         $textAreaValue->getData()->willReturn("<h1>a product description</h1>\n");
 
-        $textAreaAttribute->getCode()->willReturn('description');
-        $textAreaAttribute->getBackendType()->willReturn('textarea');
-        $attributeRepository->findOneByIdentifier('description')->willReturn($textAreaAttribute);
+        $getAttributes->forCode('description')->willReturn(new Attribute(
+            'description',
+            'pim_catalog_textarea',
+            [],
+            false,
+            true,
+            null,
+            true,
+            'textarea'
+        ));
 
         $this->normalize($textAreaValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'description-textarea' => [
@@ -219,17 +274,23 @@ description\r\n");
 
     function it_normalizes_a_text_area_product_value_with_locale_and_scope(
         ValueInterface $textAreaValue,
-        AttributeInterface $textAreaAttribute,
-        $attributeRepository
+        GetAttributes $getAttributes
     ) {
         $textAreaValue->getAttributeCode()->willReturn('description');
         $textAreaValue->getLocaleCode()->willReturn('fr_FR');
         $textAreaValue->getScopeCode()->willReturn('ecommerce');
         $textAreaValue->getData()->willReturn("<h1>a product description</h1>\n");
 
-        $textAreaAttribute->getCode()->willReturn('description');
-        $textAreaAttribute->getBackendType()->willReturn('textarea');
-        $attributeRepository->findOneByIdentifier('description')->willReturn($textAreaAttribute);
+        $getAttributes->forCode('description')->willReturn(new Attribute(
+            'description',
+            'pim_catalog_textarea',
+            [],
+            true,
+            true,
+            null,
+            true,
+            'textarea'
+        ));
 
         $this->normalize($textAreaValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'description-textarea' => [

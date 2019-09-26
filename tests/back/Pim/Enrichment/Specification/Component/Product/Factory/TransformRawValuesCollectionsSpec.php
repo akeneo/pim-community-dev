@@ -24,10 +24,10 @@ class TransformRawValuesCollectionsSpec extends ObjectBehavior
     {
         $getAttributes->forCodes(['number', 'number2', '123', 'number3'])->willReturn(
             [
-                'number' => new Attribute('number', AttributeTypes::NUMBER, [], false, false, null, false),
-                'number2' => new Attribute('number2', AttributeTypes::NUMBER, [], false, false, null, false),
-                'number3' => new Attribute('number3', AttributeTypes::NUMBER, [], false, false, null, false),
-                '123' => new Attribute('123', AttributeTypes::NUMBER, [], false, false, null, false),
+                'number' => new Attribute('number', AttributeTypes::NUMBER, [], false, false, null, false, 'decimal'),
+                'number2' => new Attribute('number2', AttributeTypes::NUMBER, [], false, false, null, false, 'decimal'),
+                'number3' => new Attribute('number3', AttributeTypes::NUMBER, [], false, false, null, false, 'decimal'),
+                '123' => new Attribute('123', AttributeTypes::NUMBER, [], false, false, null, false, 'decimal'),
             ]
         );
         $this->toValueCollectionsIndexedByType([

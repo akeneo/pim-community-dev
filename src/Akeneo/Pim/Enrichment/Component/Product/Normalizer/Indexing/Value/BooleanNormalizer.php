@@ -22,9 +22,9 @@ class BooleanNormalizer extends AbstractProductValueNormalizer implements Normal
             return false;
         }
 
-        $attribute = $this->attributeRepository->findOneByIdentifier($data->getAttributeCode());
+        $attribute = $this->getAttributes->forCode($data->getAttributeCode());
 
-        return  null !== $attribute && AttributeTypes::BACKEND_TYPE_BOOLEAN === $attribute->getBackendType() && (
+        return  null !== $attribute && AttributeTypes::BACKEND_TYPE_BOOLEAN === $attribute->backendType() && (
                 $format === ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
             );
     }

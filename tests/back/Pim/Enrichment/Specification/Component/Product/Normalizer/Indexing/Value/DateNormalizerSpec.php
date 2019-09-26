@@ -2,17 +2,17 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value;
 
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
-use PhpSpec\ObjectBehavior;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Value\DateValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\DateNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Value\DateValueInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
+use PhpSpec\ObjectBehavior;
 
 class DateNormalizerSpec extends ObjectBehavior
 {
-    function let(IdentifiableObjectRepositoryInterface $attributeRepository)
+    function let(GetAttributes $getAttributes)
     {
-        $this->beConstructedWith($attributeRepository);
+        $this->beConstructedWith($getAttributes);
     }
 
     function it_is_initializable()

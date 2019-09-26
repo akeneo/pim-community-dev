@@ -2,21 +2,21 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value;
 
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
-use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\MediaNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValueInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
+use PhpSpec\ObjectBehavior;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class MediaNormalizerSpec extends ObjectBehavior
 {
-    function let(IdentifiableObjectRepositoryInterface $attributeRepository)
+    function let(GetAttributes $getAttributes)
     {
-        $this->beConstructedWith($attributeRepository);
+        $this->beConstructedWith($getAttributes);
     }
 
     function it_is_initializable()
@@ -47,9 +47,8 @@ class MediaNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_media_product_value_with_no_locale_and_no_channel(
         MediaValueInterface $mediaValue,
-        AttributeInterface $mediaAttribute,
         FileInfoInterface $fileInfo,
-        $attributeRepository
+        GetAttributes $getAttributes
     ) {
         $mediaValue->getAttributeCode()->willReturn('an_image');
         $mediaValue->getLocaleCode()->willReturn(null);
@@ -64,9 +63,16 @@ class MediaNormalizerSpec extends ObjectBehavior
         $fileInfo->getSize()->willReturn('42');
         $fileInfo->getStorage()->willReturn('catalogStorage');
 
-        $mediaAttribute->getCode()->willReturn('an_image');
-        $mediaAttribute->getBackendType()->willReturn('media');
-        $attributeRepository->findOneByIdentifier('an_image')->willReturn($mediaAttribute);
+        $getAttributes->forCode('an_image')->willReturn(new Attribute(
+            'an_image',
+            'pim_catalog_file',
+            [],
+            false,
+            false,
+            null,
+            true,
+            'media'
+        ));
 
         $this->normalize($mediaValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'an_image-media' => [
@@ -87,9 +93,8 @@ class MediaNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_media_product_value_with_locale_and_no_scope(
         ValueInterface $mediaValue,
-        AttributeInterface $mediaAttribute,
         FileInfoInterface $fileInfo,
-        $attributeRepository
+        GetAttributes $getAttributes
     ) {
         $mediaValue->getAttributeCode()->willReturn('an_image');
         $mediaValue->getLocaleCode()->willReturn('fr_FR');
@@ -104,9 +109,16 @@ class MediaNormalizerSpec extends ObjectBehavior
         $fileInfo->getSize()->willReturn('42');
         $fileInfo->getStorage()->willReturn('catalogStorage');
 
-        $mediaAttribute->getCode()->willReturn('an_image');
-        $mediaAttribute->getBackendType()->willReturn('media');
-        $attributeRepository->findOneByIdentifier('an_image')->willReturn($mediaAttribute);
+        $getAttributes->forCode('an_image')->willReturn(new Attribute(
+            'an_image',
+            'pim_catalog_file',
+            [],
+            true,
+            false,
+            null,
+            true,
+            'media'
+        ));
 
         $this->normalize($mediaValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'an_image-media' => [
@@ -127,9 +139,8 @@ class MediaNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_media_product_value_with_scope_and_no_locale(
         MediaValueInterface $mediaValue,
-        AttributeInterface $mediaAttribute,
         FileInfoInterface $fileInfo,
-        $attributeRepository
+        GetAttributes $getAttributes
     ) {
         $mediaValue->getAttributeCode()->willReturn('an_image');
         $mediaValue->getLocaleCode()->willReturn(null);
@@ -144,9 +155,16 @@ class MediaNormalizerSpec extends ObjectBehavior
         $fileInfo->getSize()->willReturn('42');
         $fileInfo->getStorage()->willReturn('catalogStorage');
 
-        $mediaAttribute->getCode()->willReturn('an_image');
-        $mediaAttribute->getBackendType()->willReturn('media');
-        $attributeRepository->findOneByIdentifier('an_image')->willReturn($mediaAttribute);
+        $getAttributes->forCode('an_image')->willReturn(new Attribute(
+            'an_image',
+            'pim_catalog_file',
+            [],
+            false,
+            true,
+            null,
+            true,
+            'media'
+        ));
 
         $this->normalize($mediaValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'an_image-media' => [
@@ -167,10 +185,8 @@ class MediaNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_media_product_value_with_locale_and_scope(
         MediaValueInterface $mediaValue,
-        AttributeInterface $mediaAttribute,
         FileInfoInterface $fileInfo,
-        $attributeRepository,
-        $fileInfoRepository
+        GetAttributes $getAttributes
     ) {
         $mediaValue->getAttributeCode()->willReturn('an_image');
         $mediaValue->getLocaleCode()->willReturn('fr_FR');
@@ -185,9 +201,16 @@ class MediaNormalizerSpec extends ObjectBehavior
         $fileInfo->getSize()->willReturn('42');
         $fileInfo->getStorage()->willReturn('catalogStorage');
 
-        $mediaAttribute->getCode()->willReturn('an_image');
-        $mediaAttribute->getBackendType()->willReturn('media');
-        $attributeRepository->findOneByIdentifier('an_image')->willReturn($mediaAttribute);
+        $getAttributes->forCode('an_image')->willReturn(new Attribute(
+            'an_image',
+            'pim_catalog_file',
+            [],
+            true,
+            true,
+            null,
+            true,
+            'media'
+        ));
 
         $this->normalize($mediaValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'an_image-media' => [
@@ -208,17 +231,23 @@ class MediaNormalizerSpec extends ObjectBehavior
 
     function it_should_normalize_an_empty_product_value(
         MediaValueInterface $mediaValue,
-        AttributeInterface $mediaAttribute,
-        $attributeRepository
+        GetAttributes $getAttributes
     ) {
         $mediaValue->getAttributeCode()->willReturn('an_image');
         $mediaValue->getLocaleCode()->willReturn('fr_FR');
         $mediaValue->getScopeCode()->willReturn('ecommerce');
         $mediaValue->getData()->willReturn(null);
 
-        $mediaAttribute->getCode()->willReturn('an_image');
-        $mediaAttribute->getBackendType()->willReturn('media');
-        $attributeRepository->findOneByIdentifier('an_image')->willReturn($mediaAttribute);
+        $getAttributes->forCode('an_image')->willReturn(new Attribute(
+            'an_image',
+            'pim_catalog_file',
+            [],
+            true,
+            true,
+            null,
+            true,
+            'media'
+        ));
 
         $this->normalize($mediaValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'an_image-media' => [
