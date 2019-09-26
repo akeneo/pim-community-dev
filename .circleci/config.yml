@@ -244,9 +244,10 @@ jobs:
           - run:
               name: Build dev and prod PIM images
               command: |
-                  IMAGE_TAG=$CIRCLE_SHA1 make pim-images
+                  IMAGE_TAG=$CIRCLE_SHA1 make php-image-dev
+#                  IMAGE_TAG=$CIRCLE_SHA1 make pim-images
                   docker save -o pim-image-dev.tar akeneo/pim-dev/php:7.3
-                  docker save -o pim-image-prod.tar eu.gcr.io/akeneo-cloud:$CIRCLE_SHA1
+#                  docker save -o pim-image-prod.tar eu.gcr.io/akeneo-cloud:$CIRCLE_SHA1
 
   tests:
       machine:
@@ -256,7 +257,7 @@ jobs:
                   name: make tests
                   command: |
                       docker load -i pim-image-dev.tar
-                      docker load -i pim-image-prod.tar
+#                      docker load -i pim-image-prod.tar
                       make tests
 
   release:
