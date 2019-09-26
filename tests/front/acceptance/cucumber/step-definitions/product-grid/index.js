@@ -135,16 +135,16 @@ module.exports = function(cucumber) {
       await filterSearch.disableFilters(uniqueFilters);
       await filterSearch.enableFilter(filters[i].filter);
       console.log('enabled filter', filters[i].filter)
-      // await filterList.setFilterValue(
-      //   filters[i].filter,
-      //   filters[i].operator,
-      //   filters[i].value
-      // )
+      await filterList.setFilterValue(
+        filters[i].filter,
+        filters[i].operator,
+        filters[i].value
+      )
 
-      // await this.page.waitForSelector('.AknLoadingMask.loading-mask', {hidden: true});
+      await this.page.waitForSelector('.AknLoadingMask.loading-mask', {hidden: true});
 
-      // const productGrid = await createElementDecorator(config)(this.page, 'Product grid')
-      // const rowNames = await productGrid.getRowNames();
+      const productGrid = await createElementDecorator(config)(this.page, 'Product grid')
+      const rowNames = await productGrid.getRowNames();
 
       // console.log(filters[i].result)
 
