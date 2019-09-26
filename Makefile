@@ -150,8 +150,8 @@ behat.yml:
 	sed -i "s/127.0.0.1\//httpd\//g" ./behat.yml
 	sed -i "s/127.0.0.1/selenium/g" ./behat.yml
 
-.PHONY: test
-test:
+.PHONY: tests
+tests:
 	echo "make coupling"
 	echo "make phpspec"
 	echo "make acceptance"

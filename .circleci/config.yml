@@ -240,17 +240,24 @@ jobs:
       machine:
           image: ubuntu-1604:201903-01
       steps:
+          - checkout
           - run:
-              name: make pim_images
-              command: echo "make pim-images"
+              name: Build dev and prod PIM images
+              command: |
+                  IMAGE_TAG=$CIRCLE_SHA1 make pim-images
+                  docker save -o pim-image-dev.tar akeneo/pim-dev/php:7.3
+                  docker save -o pim-image-prod.tar eu.gcr.io/akeneo-cloud:$CIRCLE_SHA1
 
-  test:
+  tests:
       machine:
           image: ubuntu-1604:201903-01
       steps:
-          - run:
-              name: make test
-              command: make notify
+          -   run:
+                  name: make tests
+                  command: |
+                      docker load -i pim-image-dev.tar
+                      docker load -i pim-image-prod.tar
+                      make tests
 
   release:
       machine:
@@ -347,12 +354,12 @@ workflows:
           - pim_images:
                 requires:
                     - wait_for_user_approval
-          - test:
+          - tests:
                 requires:
                     - pim_images
           - release:
                 requires:
-                    - test
+                    - tests
           - deploy_pim:
                 requires:
                     - release
