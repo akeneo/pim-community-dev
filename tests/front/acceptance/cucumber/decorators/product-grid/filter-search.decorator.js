@@ -35,12 +35,12 @@ const FilterSearch = async (nodeElement, createElementDecorator, parent) => {
     // await open();
     await parent.waitForSelector(`label[for="family"]`, { visible: true })
 
-    const matchingFilter = await parent.waitForSelector(`.filters-column label[for="${name}"]`, { visible: true })
-    console.log('name', await (await matchingFilter.getProperty('innerHTML')).jsonValue())
-
-    await matchingFilter.click();
-    // const closeButton = await nodeElement.$('.AknButton--apply')
-    // await closeButton.click();
+    try {
+      const matchingFilter = await parent.waitForSelector(`.filters-column label[for="${name}"]`, { visible: true })
+      await matchingFilter.click();
+    } catch (e) {
+      console.log(`Couldn't find filter "${name}"`);
+    }
   }
 
   return { open, close, enableFilter, disableFilters };

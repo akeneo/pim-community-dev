@@ -22,7 +22,7 @@ Feature: Filter products by number field
       | filter | operator     | value | result |
       | count  | is empty     |       |        |
       | count  | is not empty |       | postit |
-      # | count  | >            | 200   |        |
+      | count  | >            | 200   |        |
       # | count  | <            | 200   |        |
       # | count  | >            | 199   | postit |
       # | count  | <            | 201   | postit |
@@ -31,7 +31,7 @@ Feature: Filter products by number field
       # | count  | =            | 200   | postit |
       # | count  | =            | 0     |        |
       # | count  | >            | 0     | postit |
-      | rate   | is empty     |       |        |
+      # | rate   | is empty     |       |        |
       # | rate   | is not empty |       | book   |
       # | rate   | >            | 9.5   |        |
       # | rate   | <=           | 9.5   | book   |
