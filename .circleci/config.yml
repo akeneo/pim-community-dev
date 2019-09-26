@@ -242,7 +242,7 @@ jobs:
       steps:
           - run:
               name: make build_images
-              command: sleep 1
+              command: echo $CIRCLE_SHA1
 
   test:
       machine:
@@ -369,7 +369,7 @@ workflows:
                     - release
           - deploy_doc:
                 requires:
-                    - deploy_doc
+                    - deploy_pim
           - notify:
                 requires:
-                    - deploy_pim
+                    - deploy_doc
