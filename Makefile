@@ -131,7 +131,7 @@ php-image-prod:
 	DOCKER_BUILDKIT=1 docker build --progress=plain --pull --tag eu.gcr.io/akeneo-cloud:${IMAGE_TAG} --target prod .
 
 .PHONY: pim-images
-php-images: php-image-dev php-image-prod
+pim-images: php-image-dev php-image-prod
 
 .PHONY: up
 up:
