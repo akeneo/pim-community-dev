@@ -128,7 +128,8 @@ php-image-dev:
 
 .PHONY: php-image-prod
 php-image-prod:
-	DOCKER_BUILDKIT=1 docker build --progress=plain --pull --tag eu.gcr.io/akeneo-cloud:${IMAGE_TAG} --target prod .
+	# TODO: here we should fix and have prod instead of dev. This is just to run the workflow properly
+	DOCKER_BUILDKIT=1 docker build --progress=plain --pull --tag eu.gcr.io/akeneo-cloud:${IMAGE_TAG} --target dev .
 
 .PHONY: pim-images
 pim-images: php-image-dev php-image-prod
