@@ -126,9 +126,9 @@ module.exports = function (cucumber) {
       }
     }
 
-    // if (!this.parameters.debug) {
-    //   await this.page.close();
-    //   await this.browser.close();
-    // }
+    if (!this.parameters.debug) {
+      await this.page.close();
+      await this.browser.close();
+    }
   });
 };
