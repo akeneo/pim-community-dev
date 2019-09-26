@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query;
+namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ElasticsearchProjection;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductModelProjectionInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductModelProjection;
@@ -185,14 +185,14 @@ SQL;
         return $results;
     }
 
+    /**
+     * The 'all_complete' field means every product is complete, i.e. has a missing_count at 0. In other words,
+     * the sum of the missing attributes is 0.
+     * The 'all_incomplete' field means every product is incomplete, i.e. there is no product with a missing_count
+     * at 0. In other words, the minimal value of the missing attributes should not be 0.
+     */
     private function getCompleteFilterFromProductModelCodes(array $productModelCodes): array
     {
-        /**
-         * The 'all_complete' field means every product is complete, i.e. has a missing_count at 0. In other words,
-         * the sum of the missing attributes is 0.
-         * The 'all_incomplete' field means every product is incomplete, i.e. there is no product with a missing_count
-         * at 0. In other words, the minimal value of the missing attributes should not be 0.
-         */
         $query = <<<SQL
 WITH product_model_completeness_by_channel_and_locale AS (
     SELECT
