@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  setup:
+  build_dev:
     machine:
       image: ubuntu-1604:201903-01
     steps:
@@ -236,18 +236,20 @@ jobs:
             command: docker-compose run --rm node yarn run integration
             when: always
 
-  pim_images:
+  build_prod:
       machine:
           image: ubuntu-1604:201903-01
       steps:
           - checkout
           - run:
-              name: Build dev and prod PIM images
+              name: Build prod PIM image
               command: |
-                  IMAGE_TAG=$CIRCLE_SHA1 make pim-images
-                  docker save -o pim-image-dev.tar akeneo/pim-dev/php:7.3
+                  IMAGE_TAG=$CIRCLE_SHA1 make php-image-prod
                   docker save -o pim-image-prod.tar eu.gcr.io/akeneo-cloud:$CIRCLE_SHA1
-
+          -   persist_to_workspace:
+                  root: ~/
+                  paths:
+                      - project
   tests:
       machine:
           image: ubuntu-1604:201903-01
@@ -302,15 +304,15 @@ workflows:
                     branches:
                         ignore:
                             - master
-          - setup:
+          - build_dev:
                 requires:
                     - wait_for_user_approval
           - back_static_and_acceptance:
                 requires:
-                    - setup
+                    - build_dev
           - front_static_acceptance_and_integration:
                 requires:
-                    - setup
+                    - build_dev
           - back_phpunit:
                 requires:
                     - back_static_and_acceptance
@@ -328,13 +330,13 @@ workflows:
                         only:
                             - master
       jobs:
-          - setup
+          - build_dev
           - back_static_and_acceptance:
                 requires:
-                    - setup
+                    - build_dev
           - front_static_acceptance_and_integration:
                 requires:
-                    - setup
+                    - build_dev
           - back_phpunit:
                 requires:
                     - back_static_and_acceptance
@@ -351,7 +353,10 @@ workflows:
 #                  branches:
 #                      only:
 #                          - master
-          - pim_images:
+          - build_dev:
+                requires:
+                    - wait_for_user_approval
+          - build_prod:
                 requires:
                     - wait_for_user_approval
           - tests:
