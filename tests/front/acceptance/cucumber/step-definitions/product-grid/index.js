@@ -132,19 +132,29 @@ module.exports = function(cucumber) {
 
     for (let i = 0; i < filters.length; i++) {
       const uniqueFilters = Array.from(new Set(filters.map(filter => filter.filter)))
-      await filterSearch.disableFilters(uniqueFilters);
-      await filterSearch.enableFilter(filters[i].filter);
-      console.log('enabled filter', filters[i].filter)
-      await filterList.setFilterValue(
-        filters[i].filter,
-        filters[i].operator,
-        filters[i].value
-      )
-
+      await filterList.resetFilters(uniqueFilters);
       await this.page.waitForSelector('.AknLoadingMask.loading-mask', {hidden: true});
+      await filterSearch.open();
+      await this.page.waitFor(1000);
+      await filterSearch.enableFilter(filters[i].filter);
+      await filterSearch.close();
+      await this.page.waitFor(1000)
+      // // break;
+      // await this.page.waitForSelector('.AknLoadingMask.loading-mask', {hidden: true});
 
-      const productGrid = await createElementDecorator(config)(this.page, 'Product grid')
-      const rowNames = await productGrid.getRowNames();
+      // await filterList.setFilterValue(
+      //   filters[i].filter,
+      //   filters[i].operator,
+      //   filters[i].value
+      // )
+
+      // break;
+
+      // await this.page.waitForSelector('.AknLoadingMask.loading-mask', {hidden: true});
+      // console.log('set filter', filters[i].filter)
+
+      // const productGrid = await createElementDecorator(config)(this.page, 'Product grid')
+      // const rowNames = await productGrid.getRowNames();
 
       // console.log(filters[i].result)
 

@@ -31,8 +31,10 @@ const FilterList = async (nodeElement, createElementDecorator, parent) => {
   const resetFilters = async (filters) => {
     for (let i = 0; i < filters.length; i++) {
       const getChildren = createElementDecorator(children);
-      const matchingFilter = await getMatchingFilter(await getChildren(parent, 'Filter'), filters[i])
-      await matchingFilter.remove();
+      try {
+        const matchingFilter = await getMatchingFilter(await getChildren(parent, 'Filter'), filters[i])
+        await matchingFilter.remove();
+      } catch (e) {}
     }
   }
 

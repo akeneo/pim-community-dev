@@ -13,8 +13,9 @@ const FilterSearch = async (nodeElement, createElementDecorator, parent) => {
     await filterButton.click();
   }
 
-  const disableFilter = async () => {
-
+  const close = async () => {
+    const closeButton = await nodeElement.$('.AknButton--apply')
+    await closeButton.click();
   }
 
   const disableFilters = async (filterNames) => {
@@ -26,16 +27,23 @@ const FilterSearch = async (nodeElement, createElementDecorator, parent) => {
       await matchingFilter.click();
     }
 
-    const closeButton = await nodeElement.$('.AknButton--apply')
-    await closeButton.click();
+    // const closeButton = await nodeElement.$('.AknButton--apply')
+    // await closeButton.click();
   }
 
   const enableFilter = async (name) => {
-    // await nodeElement.$('')
-    // return matchingFilter;
+    // await open();
+    await parent.waitForSelector(`label[for="family"]`, { visible: true })
+
+    const matchingFilter = await parent.waitForSelector(`.filters-column label[for="${name}"]`, { visible: true })
+    console.log('name', await (await matchingFilter.getProperty('innerHTML')).jsonValue())
+
+    await matchingFilter.click();
+    // const closeButton = await nodeElement.$('.AknButton--apply')
+    // await closeButton.click();
   }
 
-  return { open, enableFilter, disableFilters };
+  return { open, close, enableFilter, disableFilters };
 };
 
 module.exports = FilterSearch;

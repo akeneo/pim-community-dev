@@ -17,10 +17,10 @@ module.exports = function (cucumber) {
   Before({ timeout: 10 * 1000 }, async function () {
     this.baseUrl = 'http://pim.com';
     this.browser = await puppeteer.launch({
-      devtools: this.parameters.debug,
+      devtools: true,
       ignoreHTTPSErrors: true,
       args: ['--no-sandbox', '--disable-setuid-sandbox', '--window-size=1920,1080'],
-      headless: !this.parameters.debug,
+      headless: false,
       slowMo: 0,
       pipe: true,
       defaultViewport: {
@@ -126,9 +126,9 @@ module.exports = function (cucumber) {
       }
     }
 
-    if (!this.parameters.debug) {
-      await this.page.close();
-      await this.browser.close();
-    }
+    // if (!this.parameters.debug) {
+    //   await this.page.close();
+    //   await this.browser.close();
+    // }
   });
 };
