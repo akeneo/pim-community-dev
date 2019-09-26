@@ -140,12 +140,3 @@ up:
 .PHONY: down
 down:
 	$(DOCKER_COMPOSE) down -v
-
-##
-## Deprecated targets
-##
-
-behat.yml:
-	cp ./behat.yml.dist ./behat.yml
-	sed -i "s/127.0.0.1\//httpd\//g" ./behat.yml
-	sed -i "s/127.0.0.1/selenium/g" ./behat.yml
