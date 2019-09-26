@@ -6,8 +6,8 @@ namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 
 use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetAncestorAndDescendantProductModelCodes;
 use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetDescendantVariantProductIdentifiers;
-use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
-use Akeneo\Tool\Component\StorageUtils\Indexer\ProductModelIndexerInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductModelIndexerInterface;
 
 /**
  * Indexer responsible for the indexing of the product models, product models ancestors
@@ -17,7 +17,7 @@ use Akeneo\Tool\Component\StorageUtils\Indexer\ProductModelIndexerInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class ProductModelDescendantsAndAncestorsIndexer
+class ProductModelDescendantsAndAncestorsIndexer
 {
     /** @var ProductIndexerInterface */
     private $productIndexer;

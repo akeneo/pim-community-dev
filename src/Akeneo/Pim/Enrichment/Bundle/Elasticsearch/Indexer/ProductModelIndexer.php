@@ -6,9 +6,9 @@ namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductModelProjectionInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductModelProjection;
+use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductModelIndexerInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
-use Akeneo\Tool\Component\StorageUtils\Indexer\ProductModelIndexerInterface;
 
 /**
  * Product model indexer, define custom logic and options for product model indexing in the search engine.
@@ -20,6 +20,7 @@ use Akeneo\Tool\Component\StorageUtils\Indexer\ProductModelIndexerInterface;
 class ProductModelIndexer implements ProductModelIndexerInterface
 {
     private const PRODUCT_MODEL_IDENTIFIER_PREFIX = 'product_model_';
+    private const BATCH_SIZE = 1000;
 
     /** @var Client */
     private $productAndProductModelClient;
@@ -58,20 +59,19 @@ class ProductModelIndexer implements ProductModelIndexerInterface
 
         $indexRefresh = $options['index_refresh'] ?? Refresh::disable();
 
-        $elasticsearchProductModelProjections =
-            $this->getElasticsearchProductModelProjection->fromProductModelCodes($productModelCodes);
-        $normalizedProductModelProjections = array_map(
-            function (ElasticsearchProductModelProjection $elasticsearchProductModelProjection) {
-                return $elasticsearchProductModelProjection->toArray();
-            },
-            $elasticsearchProductModelProjections
-        );
+        $chunks = array_chunk($productModelCodes, self::BATCH_SIZE);
+        foreach ($chunks as $productModelCodesChunk) {
+            $elasticsearchProductModelProjections =
+                $this->getElasticsearchProductModelProjection->fromProductModelCodes($productModelCodesChunk);
+            $normalizedProductModelProjections = array_map(
+                function (ElasticsearchProductModelProjection $elasticsearchProductModelProjection) {
+                    return $elasticsearchProductModelProjection->toArray();
+                },
+                $elasticsearchProductModelProjections
+            );
 
-        $this->productAndProductModelClient->bulkIndexes(
-            $normalizedProductModelProjections,
-            'id',
-            $indexRefresh
-        );
+            $this->productAndProductModelClient->bulkIndexes($normalizedProductModelProjections, 'id', $indexRefresh);
+        }
     }
 
     /**

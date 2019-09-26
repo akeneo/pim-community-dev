@@ -6,7 +6,7 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductModelProje
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductModelProjection;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
-use Akeneo\Tool\Component\StorageUtils\Indexer\ProductModelIndexerInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductModelIndexerInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelIndexer;
 
@@ -62,6 +62,37 @@ class ProductModelIndexerSpec extends ObjectBehavior
         ], 'id', Refresh::disable())->shouldBeCalled();
 
         $this->indexFromProductModelCodes([$code1, $code2]);
+    }
+
+    function it_bulk_indexes_products_from_identifiers_using_batch(
+        Client $productAndProductModelClient,
+        GetElasticsearchProductModelProjectionInterface $getElasticsearchProductModelProjection
+    ) {
+        $identifiers = $this->getRangeCodes(1, 3002);
+
+        $getElasticsearchProductModelProjection->fromProductModelCodes($this->getRangeCodes(1, 1000))
+            ->willReturn([$this->getFakeProjection('identifier_1')]);
+        $getElasticsearchProductModelProjection->fromProductModelCodes($this->getRangeCodes(1001, 2000))
+            ->willReturn([$this->getFakeProjection('identifier_2')]);
+        $getElasticsearchProductModelProjection->fromProductModelCodes($this->getRangeCodes(2001, 3000))
+            ->willReturn([$this->getFakeProjection('identifier_3')]);
+        $getElasticsearchProductModelProjection->fromProductModelCodes($this->getRangeCodes(3001, 3002))
+            ->willReturn([$this->getFakeProjection('identifier_4')]);
+
+        $productAndProductModelClient->bulkIndexes([
+            $this->getFakeProjection('identifier_1')->toArray(),
+        ], 'id', Refresh::disable())->shouldBeCalled();
+        $productAndProductModelClient->bulkIndexes([
+            $this->getFakeProjection('identifier_2')->toArray(),
+        ], 'id', Refresh::disable())->shouldBeCalled();
+        $productAndProductModelClient->bulkIndexes([
+            $this->getFakeProjection('identifier_3')->toArray(),
+        ], 'id', Refresh::disable())->shouldBeCalled();
+        $productAndProductModelClient->bulkIndexes([
+            $this->getFakeProjection('identifier_4')->toArray(),
+        ], 'id', Refresh::disable())->shouldBeCalled();
+
+        $this->indexFromProductModelCodes($identifiers);
     }
 
     function it_deletes_product_models_from_elasticsearch_index($productAndProductModelClient)
@@ -153,5 +184,10 @@ class ProductModelIndexerSpec extends ObjectBehavior
             [],
             []
         );
+    }
+
+    private function getRangeCodes(int $start, int $end): array
+    {
+        return preg_filter('/^/', 'pm_', range($start, $end));
     }
 }

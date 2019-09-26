@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Tool\Component\StorageUtils\Indexer;
+namespace Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 
