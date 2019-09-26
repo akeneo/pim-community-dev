@@ -256,7 +256,7 @@ services:
             - '@database_connection'
 
     akeneo.pim.enrichment.product.query.get_elasticsearch_product_model_projection:
-        class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\GetElasticsearchProductModelProjection
+        class: Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ElasticsearchProjection\GetElasticsearchProductModelProjection
         arguments:
             - '@database_connection'
             - '@akeneo.pim.enrichment.factory.read.value_collection'
