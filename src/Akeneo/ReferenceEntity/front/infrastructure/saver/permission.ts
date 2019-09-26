@@ -1,7 +1,7 @@
 import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
 import handleError from 'akeneoreferenceentity/infrastructure/tools/error-handler';
 import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-import {PermissionCollection} from 'web/bundles/akeneoreferenceentity/domain/model/reference-entity/permission';
+import {PermissionCollection} from 'public/bundles/akeneoreferenceentity/domain/model/reference-entity/permission';
 import {postJSON} from 'akeneoreferenceentity/tools/fetch';
 
 const routing = require('routing');

@@ -1,5 +1,5 @@
 import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
-import {PermissionCollection} from 'web/bundles/akeneoassetmanager/domain/model/asset-family/permission';
+import {PermissionCollection} from 'public/bundles/akeneoassetmanager/domain/model/asset-family/permission';
 
 export const permissionEditionReceived = (permissions: PermissionCollection) => {
   return {type: 'PERMISSION_EDITION_RECEIVED', permissions: permissions.normalize()};

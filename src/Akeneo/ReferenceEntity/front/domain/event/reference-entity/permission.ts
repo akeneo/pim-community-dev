@@ -1,5 +1,5 @@
 import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
-import {PermissionCollection} from 'web/bundles/akeneoreferenceentity/domain/model/reference-entity/permission';
+import {PermissionCollection} from 'public/bundles/akeneoreferenceentity/domain/model/reference-entity/permission';
 
 export const permissionEditionReceived = (permissions: PermissionCollection) => {
   return {type: 'PERMISSION_EDITION_RECEIVED', permissions: permissions.normalize()};
