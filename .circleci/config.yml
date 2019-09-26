@@ -236,13 +236,13 @@ jobs:
             command: docker-compose run --rm node yarn run integration
             when: always
 
-  build_images:
+  pim_images:
       machine:
           image: ubuntu-1604:201903-01
       steps:
           - run:
-              name: make build_images
-              command: echo $CIRCLE_SHA1
+              name: make pim_images
+              command: echo "make pim-images"
 
   test:
       machine:
@@ -250,15 +250,7 @@ jobs:
       steps:
           - run:
               name: make test
-              command: sleep 1
-
-  test_prod:
-      machine:
-          image: ubuntu-1604:201903-01
-      steps:
-          - run:
-              name: make test_prod
-              command: sleep 1
+              command: make test
 
   release:
       machine:
@@ -266,7 +258,7 @@ jobs:
       steps:
           - run:
               name: make release
-              command: sleep 1
+              command: make release
 
   deploy_pim:
       machine:
@@ -274,7 +266,7 @@ jobs:
       steps:
           - run:
               name: make deploy_pim
-              command: sleep 1
+              command: make deploy_pim
 
   deploy_doc:
       machine:
@@ -282,7 +274,7 @@ jobs:
       steps:
           - run:
               name: make deploy_doc
-              command: sleep 1
+              command: make deploy_doc
 
   notify:
       machine:
@@ -290,7 +282,7 @@ jobs:
       steps:
           - run:
               name: make notify
-              command: sleep 1
+              command: make notify
 
 
 workflows:
@@ -352,18 +344,15 @@ workflows:
 #                  branches:
 #                      only:
 #                          - master
-          - build_images:
+          - pim_images:
                 requires:
                     - wait_for_user_approval
           - test:
                 requires:
-                    - build_images
-          - test_prod:
-                requires:
-                    - test
+                    - pim_images
           - release:
                 requires:
-                    - test_prod
+                    - test
           - deploy_pim:
                 requires:
                     - release
