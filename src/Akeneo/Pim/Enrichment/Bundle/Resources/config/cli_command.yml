@@ -14,11 +14,9 @@ services:
     akeneo.pim.enrichment.command.index_product:
         class: 'Akeneo\Pim\Enrichment\Bundle\Command\IndexProductCommand'
         arguments:
-            - '@pim_catalog.repository.product'
-            - '@pim_catalog.elasticsearch.indexer.product'
-            - '@doctrine.orm.default_entity_manager'
+            - '@akeneo.pim.enrichment.elasticsearch.indexer.product_and_ancestors'
             - '@akeneo_elasticsearch.client.product_and_product_model'
-            - '%product_and_product_model_index_name%'
+            - '@database_connection'
         tags:
             - { name: 'console.command' }
 
