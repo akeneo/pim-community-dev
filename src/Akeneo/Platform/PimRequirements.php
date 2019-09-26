@@ -158,8 +158,8 @@ class PimRequirements
 
         foreach ($this->directoriesToCheck as $directoryToCheck) {
             $requirements[] = new Requirement(
-                is_writable($directoryToCheck),
-                sprintf('%s directory must be writable', $directoryToCheck),
+                $this->directoryIsWritableIfExists($directoryToCheck),
+                sprintf('%s directory must be writable if it exists', $directoryToCheck),
                 sprintf('Change the permissions of the "<strong>%s</strong>" directory', $directoryToCheck)
             );
         }
@@ -246,5 +246,23 @@ class PimRequirements
         }
 
         return (float) $val;
+    }
+
+    /**
+     * This checks is only useful for PIM instances that use a local filesystem for storage.
+     * In that case, we have to check the directories are writable when the directory already exists.
+     * If the directories do not exist, no problem, FlySystem will create them when needed.
+     *
+     * @param string $directory
+     *
+     * @return bool
+     */
+    private function directoryIsWritableIfExists(string $directory): bool
+    {
+        if (is_dir($directory)) {
+            return is_writable($directory);
+        }
+
+        return true;
     }
 }
