@@ -5,8 +5,6 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\SerializerAwareInterface;
-use Symfony\Component\Serializer\SerializerAwareTrait;
 
 /**
  * Normalizer for product value collection
@@ -19,6 +17,8 @@ use Symfony\Component\Serializer\SerializerAwareTrait;
  */
 class ValueCollectionNormalizer implements NormalizerInterface
 {
+    public const INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX = 'indexing_product_and_product_model';
+
     /** @var NormalizerInterface */
     private $serializer;
 
@@ -48,7 +48,7 @@ class ValueCollectionNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof WriteValueCollection && (
-                $format === ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
+                $format === self::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
             );
     }
 }

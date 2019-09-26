@@ -2,11 +2,11 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value;
 
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\TextAreaNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -46,11 +46,11 @@ class TextAreaNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
         $this->supportsNormalization($numberValue, 'whatever')->shouldReturn(false);
 
-        $this->supportsNormalization(new \stdClass(), ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+        $this->supportsNormalization(new \stdClass(), ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(false);
-        $this->supportsNormalization($textAreaValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+        $this->supportsNormalization($textAreaValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(true);
-        $this->supportsNormalization($numberValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+        $this->supportsNormalization($numberValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(false);
     }
 
@@ -68,7 +68,7 @@ class TextAreaNormalizerSpec extends ObjectBehavior
         $textAreaAttribute->getBackendType()->willReturn('textarea');
         $attributeRepository->findOneByIdentifier('description')->willReturn($textAreaAttribute);
 
-        $this->normalize($textAreaValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
+        $this->normalize($textAreaValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'description-textarea' => [
                 '<all_channels>' => [
                     '<all_locales>' => 'a product description'
@@ -91,7 +91,7 @@ class TextAreaNormalizerSpec extends ObjectBehavior
         $textAreaAttribute->getBackendType()->willReturn('textarea');
         $attributeRepository->findOneByIdentifier('description')->willReturn($textAreaAttribute);
 
-        $this->normalize($textAreaValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
+        $this->normalize($textAreaValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'description-textarea' => [
                 '<all_channels>' => [
                     '<all_locales>' => null
@@ -115,7 +115,7 @@ description\r\n");
         $textAreaAttribute->getBackendType()->willReturn('textarea');
         $attributeRepository->findOneByIdentifier('description')->willReturn($textAreaAttribute);
 
-        $this->normalize($textAreaValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
+        $this->normalize($textAreaValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'description-textarea' => [
                 '<all_channels>' => [
                     '<all_locales>' => 'a product description'
@@ -138,7 +138,7 @@ description\r\n");
         $textAreaAttribute->getBackendType()->willReturn('textarea');
         $attributeRepository->findOneByIdentifier('description')->willReturn($textAreaAttribute);
 
-        $this->normalize($textAreaValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
+        $this->normalize($textAreaValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'description-textarea' => [
                 '<all_channels>' => [
                     '<all_locales>' => 'a product description'
@@ -162,7 +162,7 @@ description\r\n");
         $textAreaAttribute->getBackendType()->willReturn('textarea');
         $attributeRepository->findOneByIdentifier('description')->willReturn($textAreaAttribute);
 
-        $this->normalize($textAreaValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
+        $this->normalize($textAreaValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'description-textarea' => [
                 '<all_channels>' => [
                     '<all_locales>' => 'a product description'
@@ -185,7 +185,7 @@ description\r\n");
         $textAreaAttribute->getBackendType()->willReturn('textarea');
         $attributeRepository->findOneByIdentifier('description')->willReturn($textAreaAttribute);
 
-        $this->normalize($textAreaValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
+        $this->normalize($textAreaValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'description-textarea' => [
                 '<all_channels>' => [
                     'fr_FR' => 'a product description'
@@ -208,7 +208,7 @@ description\r\n");
         $textAreaAttribute->getBackendType()->willReturn('textarea');
         $attributeRepository->findOneByIdentifier('description')->willReturn($textAreaAttribute);
 
-        $this->normalize($textAreaValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
+        $this->normalize($textAreaValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'description-textarea' => [
                 'ecommerce' => [
                     '<all_locales>' => 'a product description'
@@ -231,7 +231,7 @@ description\r\n");
         $textAreaAttribute->getBackendType()->willReturn('textarea');
         $attributeRepository->findOneByIdentifier('description')->willReturn($textAreaAttribute);
 
-        $this->normalize($textAreaValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
+        $this->normalize($textAreaValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'description-textarea' => [
                 'ecommerce' => [
                     'fr_FR' => 'a product description'

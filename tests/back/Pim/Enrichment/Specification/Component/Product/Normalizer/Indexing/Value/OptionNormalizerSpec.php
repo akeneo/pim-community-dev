@@ -2,11 +2,11 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value;
 
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\OptionNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -48,11 +48,11 @@ class OptionNormalizerSpec extends ObjectBehavior
 
         $this->supportsNormalization($optionValue, 'whatever')->shouldReturn(false);
 
-        $this->supportsNormalization(new \stdClass(), ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+        $this->supportsNormalization(new \stdClass(), ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(false);
-        $this->supportsNormalization($textValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+        $this->supportsNormalization($textValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(false);
-        $this->supportsNormalization($optionValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+        $this->supportsNormalization($optionValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(true);
     }
 
@@ -72,7 +72,7 @@ class OptionNormalizerSpec extends ObjectBehavior
 
         $optionValue->getData()->willReturn(null);
 
-        $this->normalize($optionValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
+        $this->normalize($optionValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
                 'color-option' => [
                     '<all_channels>' => [
@@ -99,7 +99,7 @@ class OptionNormalizerSpec extends ObjectBehavior
 
         $optionValue->getData()->willReturn('red');
 
-        $this->normalize($optionValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
+        $this->normalize($optionValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
                 'color-option' => [
                     '<all_channels>' => [
@@ -126,7 +126,7 @@ class OptionNormalizerSpec extends ObjectBehavior
 
         $optionValue->getData()->willReturn('red');
 
-        $this->normalize($optionValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
+        $this->normalize($optionValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
                 'color-option' => [
                     '<all_channels>' => [
@@ -153,7 +153,7 @@ class OptionNormalizerSpec extends ObjectBehavior
 
         $optionValue->getData()->willReturn('red');
 
-        $this->normalize($optionValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
+        $this->normalize($optionValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
                 'color-option' => [
                     'ecommerce' => [
@@ -180,7 +180,7 @@ class OptionNormalizerSpec extends ObjectBehavior
 
         $optionValue->getData()->willReturn('red');
 
-        $this->normalize($optionValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
+        $this->normalize($optionValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
                 'color-option' => [
                     'ecommerce' => [
