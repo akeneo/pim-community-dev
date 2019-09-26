@@ -287,11 +287,11 @@ workflows:
                 requires:
                     - back_phpunit
 
-    deployment:
-        jobs:
-            - wait_for_user_approval:
-                  type: approval
-                  filters:
-                      branches:
-                          only:
-                              - master
+  deployment:
+      jobs:
+          - wait_for_user_approval:
+              type: approval
+              filters:
+                  branches:
+                      only:
+                          - master
