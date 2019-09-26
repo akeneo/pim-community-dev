@@ -361,7 +361,8 @@ workflows:
                     - wait_for_user_approval
           - tests:
                 requires:
-                    - pim_images
+                    - build_dev
+                    - build_prod
           - release:
                 requires:
                     - tests
