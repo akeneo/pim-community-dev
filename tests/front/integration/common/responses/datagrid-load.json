@@ -1,0 +1,571 @@
+{
+  "metadata": {
+    "requireJSModules": [],
+    "options": {
+      "gridName": "product-grid",
+      "entityHint": "product",
+      "filtersAsColumn": true,
+      "displayTypes": {
+        "default": {
+          "label": "pim_datagrid.display_selector.list"
+        },
+        "gallery": {
+          "label": "pim_datagrid.display_selector.gallery",
+          "rowView": "oro\/datagrid\/product-row",
+          "manageColumns": false
+        }
+      },
+      "toolbarOptions": {
+        "hide": false,
+        "pageSize": {
+          "hide": false,
+          "default_per_page": 25,
+          "items": [
+            10,
+            25,
+            50,
+            100
+          ]
+        },
+        "pagination": {
+          "hide": false
+        }
+      },
+      "multipleSorting": false,
+      "url": "\/datagrid\/product-grid?product-grid%5BdataLocale%5D=en_US\u0026product-grid%5B_parameters%5D%5Bview%5D%5Bcolumns%5D=identifier%2Cimage%2Clabel%2Cfamily%2Cenabled%2Ccompleteness%2Ccreated%2Cupdated%2Ccomplete_variant_products%2Csuccess%2C%5Bobject%20Object%5D"
+    },
+    "rowActions": {
+      "edit": {
+        "type": "navigate-product-and-product-model",
+        "label": null,
+        "icon": null,
+        "rowAction": true,
+        "name": "edit",
+        "launcherOptions": {
+          "onClickReturnValue": false,
+          "runAction": true,
+          "className": "no-hash"
+        }
+      },
+      "edit_attributes": {
+        "launcherOptions": {
+          "onClickReturnValue": false,
+          "runAction": true,
+          "className": "AknIconButton AknIconButton--small AknIconButton--edit"
+        },
+        "type": "navigate-product-and-product-model",
+        "label": "pim_datagrid.actions.edit_product_attributes",
+        "tabRedirects": {
+          "product": "pim-product-edit-form-attributes",
+          "product_model": "pim-product-model-edit-form-attributes"
+        },
+        "name": "edit_attributes"
+      },
+      "edit_categories": {
+        "launcherOptions": {
+          "onClickReturnValue": false,
+          "runAction": true,
+          "className": "AknIconButton AknIconButton--small AknIconButton--folder"
+        },
+        "type": "navigate-product-and-product-model",
+        "label": "pim_datagrid.actions.classify_product",
+        "tabRedirects": {
+          "product": "pim-product-edit-form-categories",
+          "product_model": "pim-product-edit-form-categories"
+        },
+        "name": "edit_categories"
+      },
+      "delete": {
+        "launcherOptions": {
+          "className": "AknIconButton AknIconButton--small AknIconButton--trash"
+        },
+        "type": "delete-product",
+        "label": "pim_datagrid.actions.delete_product",
+        "link": "delete_link",
+        "name": "delete",
+        "confirmation": true
+      },
+      "toggle_status": {
+        "launcherOptions": {
+          "className": "AknIconButton AknIconButton--small AknIconButton--switch"
+        },
+        "type": "toggle-product",
+        "label": "pim_datagrid.actions.toggle_status",
+        "link": "toggle_status_link",
+        "name": "toggle_status",
+        "frontend_type": "ajax"
+      }
+    },
+    "massActions": {
+      "product_edit": {
+        "type": "edit",
+        "label": "pim_datagrid.mass_action.mass_edit",
+        "route": "pim_enrich_mass_edit_action",
+        "className": "AknButton AknButton--action AknButtonList-item",
+        "route_parameters": {
+          "actionName": "product-edit"
+        },
+        "name": "product_edit",
+        "handler": "mass_edit",
+        "frontend_type": "redirect"
+      },
+      "sequential_edit": {
+        "type": "sequential_edit",
+        "label": "pim_datagrid.mass_action.sequential_edit",
+        "className": "AknButton AknButton--action AknButtonList-item",
+        "name": "sequential_edit"
+      },
+      "delete_products_and_product_models": {
+        "type": "mass_delete",
+        "label": "Delete",
+        "entity_name": "product",
+        "handler": "product_mass_delete",
+        "className": "AknButton AknButton--important AknButtonList-item",
+        "messages": {
+          "confirm_title": "pim_common.confirm_deletion",
+          "confirm_content": "pim_datagrid.mass_action.delete.confirm_content",
+          "confirm_ok": "pim_common.ok",
+          "success": "pim_datagrid.mass_action.delete.success",
+          "error": "pim_datagrid.mass_action.delete.error",
+          "empty_selection": "pim_datagrid.mass_action.delete.empty_selection"
+        },
+        "name": "delete_products_and_product_models",
+        "frontend_type": "ajax",
+        "route": "oro_datagrid_mass_action",
+        "route_parameters": [],
+        "confirmation": true
+      },
+      "quick_export_grid_context_xlsx": {
+        "type": "export",
+        "label": "pim_datagrid.mass_action.quick_export.xlsx_grid_context",
+        "handler": "product_quick_export",
+        "route": "pim_datagrid_export_product_index",
+        "route_parameters": {
+          "_format": "xlsx",
+          "_contentType": "application\/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          "_jobCode": "xlsx_product_grid_context_quick_export",
+          "_displayedColumnsOnly": 1
+        },
+        "context": {
+          "withHeader": true
+        },
+        "messages": {
+          "empty_selection": "pim_datagrid.mass_action.delete.empty_selection"
+        },
+        "launcherOptions": {
+          "group": "quick_export"
+        },
+        "name": "quick_export_grid_context_xlsx",
+        "frontend_type": "export",
+        "frontend_options": []
+      },
+      "quick_export_xlsx": {
+        "type": "export",
+        "label": "pim_datagrid.mass_action.quick_export.xlsx_all",
+        "handler": "product_quick_export",
+        "route": "pim_datagrid_export_product_index",
+        "route_parameters": {
+          "_format": "xlsx",
+          "_contentType": "application\/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          "_jobCode": "xlsx_product_quick_export",
+          "_displayedColumnsOnly": 0
+        },
+        "context": {
+          "withHeader": true
+        },
+        "messages": {
+          "empty_selection": "pim_datagrid.mass_action.delete.empty_selection"
+        },
+        "launcherOptions": {
+          "group": "quick_export"
+        },
+        "name": "quick_export_xlsx",
+        "frontend_type": "export",
+        "frontend_options": []
+      },
+      "quick_export_grid_context_csv": {
+        "type": "export",
+        "label": "pim_datagrid.mass_action.quick_export.csv_grid_context",
+        "handler": "product_quick_export",
+        "route": "pim_datagrid_export_product_index",
+        "route_parameters": {
+          "_format": "csv",
+          "_contentType": "text\/csv",
+          "_jobCode": "csv_product_grid_context_quick_export",
+          "_displayedColumnsOnly": 1
+        },
+        "context": {
+          "withHeader": true
+        },
+        "messages": {
+          "empty_selection": "pim_datagrid.mass_action.delete.empty_selection"
+        },
+        "launcherOptions": {
+          "group": "quick_export"
+        },
+        "name": "quick_export_grid_context_csv",
+        "frontend_type": "export",
+        "frontend_options": []
+      },
+      "quick_export_csv": {
+        "type": "export",
+        "label": "pim_datagrid.mass_action.quick_export.csv_all",
+        "handler": "product_quick_export",
+        "route": "pim_datagrid_export_product_index",
+        "route_parameters": {
+          "_format": "csv",
+          "_contentType": "text\/csv",
+          "_jobCode": "csv_product_quick_export",
+          "_displayedColumnsOnly": 0
+        },
+        "context": {
+          "withHeader": true
+        },
+        "messages": {
+          "empty_selection": "pim_datagrid.mass_action.delete.empty_selection"
+        },
+        "launcherOptions": {
+          "group": "quick_export"
+        },
+        "name": "quick_export_csv",
+        "frontend_type": "export",
+        "frontend_options": []
+      }
+    },
+    "massActionsGroups": {
+      "bulk_actions": {
+        "label": "pim_datagrid.mass_action_group.bulk_actions.label"
+      },
+      "quick_export": {
+        "label": "pim_datagrid.mass_action_group.quick_export.label"
+      }
+    },
+    "columns": [
+      {
+        "label": "ID",
+        "type": "string",
+        "editable": false,
+        "renderable": true,
+        "name": "identifier",
+        "sortable": true
+      },
+      {
+        "label": "Image",
+        "type": "product-and-product-model-image",
+        "editable": false,
+        "renderable": true,
+        "name": "image"
+      },
+      {
+        "label": "Label",
+        "type": "product-and-product-model-label",
+        "editable": false,
+        "renderable": true,
+        "name": "label"
+      },
+      {
+        "label": "Family",
+        "type": "string",
+        "editable": false,
+        "renderable": true,
+        "name": "family",
+        "sortable": true
+      },
+      {
+        "label": "Status",
+        "type": "enabled",
+        "editable": false,
+        "renderable": true,
+        "name": "enabled",
+        "sortable": true
+      },
+      {
+        "label": "Complete",
+        "type": "completeness",
+        "editable": false,
+        "renderable": true,
+        "name": "completeness",
+        "sortable": true
+      },
+      {
+        "label": "Count",
+        "type": "string",
+        "editable": false,
+        "renderable": true,
+        "name": "count",
+        "sortable": true
+      },
+      {
+        "label": "Rate",
+        "type": "string",
+        "editable": false,
+        "renderable": true,
+        "name": "rate",
+        "sortable": true
+      }
+    ],
+    "state": {
+      "filters": [],
+      "sorters": {
+        "updated": "DESC"
+      },
+      "currentPage": 1,
+      "pageSize": 25
+    },
+    "filters": [
+      {
+        "name": "family",
+        "label": "Family",
+        "enabled": true,
+        "choices": [],
+        "type": "select2-rest-choice",
+        "populateDefault": true,
+        "choiceUrl": "pim_enrich_family_rest_index",
+        "choiceUrlParams": {
+          "options": {
+            "expanded": 0
+          }
+        },
+        "emptyChoice": true
+      },
+      {
+        "name": "groups",
+        "label": "Groups",
+        "enabled": true,
+        "choices": [],
+        "type": "select2-choice",
+        "populateDefault": true,
+        "choiceUrl": "pim_ui_ajaxentity_list",
+        "choiceUrlParams": {
+          "class": "Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Group",
+          "dataLocale": "en_US",
+          "collectionId": null,
+          "options": {
+            "type": "code"
+          }
+        },
+        "emptyChoice": false
+      },
+      {
+        "name": "enabled",
+        "label": "Status",
+        "choices": [
+          {
+            "label": "Enabled",
+            "value": "1"
+          },
+          {
+            "label": "Disabled",
+            "value": "0"
+          }
+        ],
+        "enabled": true,
+        "type": "choice",
+        "populateDefault": true
+      },
+      {
+        "name": "scope",
+        "label": "Channel",
+        "choices": [
+          {
+            "label": "Ecommerce",
+            "value": "ecommerce"
+          },
+          {
+            "label": "Mobile",
+            "value": "mobile"
+          },
+          {
+            "label": "Print",
+            "value": "print"
+          }
+        ],
+        "enabled": true,
+        "type": "product_scope",
+        "populateDefault": false
+      },
+      {
+        "name": "completeness",
+        "label": "Complete",
+        "choices": [
+          {
+            "label": "yes",
+            "value": "1"
+          },
+          {
+            "label": "no",
+            "value": "2"
+          }
+        ],
+        "enabled": true,
+        "type": "product_and_product_model_completeness",
+        "populateDefault": true
+      },
+      {
+        "name": "created",
+        "label": "Created at",
+        "choices": [
+          {
+            "label": "between",
+            "value": "1",
+            "data": 1,
+            "attr": []
+          },
+          {
+            "label": "not between",
+            "value": "2",
+            "data": 2,
+            "attr": []
+          },
+          {
+            "label": "more than",
+            "value": "3",
+            "data": 3,
+            "attr": []
+          },
+          {
+            "label": "less than",
+            "value": "4",
+            "data": 4,
+            "attr": []
+          }
+        ],
+        "enabled": true,
+        "type": "date",
+        "typeValues": {
+          "between": 1,
+          "notBetween": 2,
+          "moreThan": 3,
+          "lessThan": 4
+        },
+        "externalWidgetOptions": {
+          "firstDay": 0
+        }
+      },
+      {
+        "name": "updated",
+        "label": "Updated at",
+        "choices": [
+          {
+            "label": "between",
+            "value": "1",
+            "data": 1,
+            "attr": []
+          },
+          {
+            "label": "not between",
+            "value": "2",
+            "data": 2,
+            "attr": []
+          },
+          {
+            "label": "more than",
+            "value": "3",
+            "data": 3,
+            "attr": []
+          },
+          {
+            "label": "less than",
+            "value": "4",
+            "data": 4,
+            "attr": []
+          }
+        ],
+        "enabled": true,
+        "type": "date",
+        "typeValues": {
+          "between": 1,
+          "notBetween": 2,
+          "moreThan": 3,
+          "lessThan": 4
+        },
+        "externalWidgetOptions": {
+          "firstDay": 0
+        }
+      },
+      {
+        "name": "label_or_identifier",
+        "label": "Label or identifier",
+        "choices": [
+          {
+            "label": "contains",
+            "value": "1",
+            "data": 1,
+            "attr": []
+          },
+          {
+            "label": "does not contain",
+            "value": "2",
+            "data": 2,
+            "attr": []
+          },
+          {
+            "label": "is equal to",
+            "value": "3",
+            "data": 3,
+            "attr": []
+          },
+          {
+            "label": "starts with",
+            "value": "4",
+            "data": 4,
+            "attr": []
+          },
+          {
+            "label": "is empty",
+            "value": "empty",
+            "data": "empty",
+            "attr": []
+          }
+        ],
+        "enabled": true,
+        "type": "label_or_identifier"
+      },
+      {
+        "name": "parent",
+        "label": "Parent",
+        "choices": [
+          {
+            "label": "contains",
+            "value": "1",
+            "data": 1,
+            "attr": []
+          },
+          {
+            "label": "does not contain",
+            "value": "2",
+            "data": 2,
+            "attr": []
+          },
+          {
+            "label": "is equal to",
+            "value": "3",
+            "data": 3,
+            "attr": []
+          },
+          {
+            "label": "starts with",
+            "value": "4",
+            "data": 4,
+            "attr": []
+          },
+          {
+            "label": "is empty",
+            "value": "empty",
+            "data": "empty",
+            "attr": []
+          },
+          {
+            "label": "in list",
+            "value": "in",
+            "data": "in",
+            "attr": []
+          }
+        ],
+        "enabled": true,
+        "type": "parent"
+      }
+    ]
+  },
+  "data": ""
+}
