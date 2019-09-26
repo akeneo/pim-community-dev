@@ -49,7 +49,7 @@ class DumpRequirePathsCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('Generating require.js main config');
-        $webRoot = realpath($this->rootDir . '/../web');
+        $webRoot = realpath($this->rootDir . '/../public');
 
         $mainConfigContent = json_encode($this->collectConfigPaths($this->rootDir), JSON_UNESCAPED_SLASHES);
         $mainConfigContent = 'module.exports = ' . $mainConfigContent;

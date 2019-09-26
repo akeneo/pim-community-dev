@@ -58,12 +58,14 @@ services:
             - '@validator'
 
     test.locale.context:
+        public: true
         class: 'Akeneo\Test\Acceptance\Locale\LocaleContext'
         arguments:
             - '@pim_catalog.repository.locale'
             - '@test.locale.builder'
 
     test.channel.context:
+        public: true
         class: 'Akeneo\Test\Acceptance\Channel\ChannelContext'
         arguments:
             - '@pim_catalog.repository.locale'
@@ -75,6 +77,7 @@ services:
             - '@test.currency.builder'
 
     test.attribute.context:
+        public: true
         class: 'Akeneo\Test\Acceptance\Attribute\AttributeContext'
         arguments:
             - '@pim_catalog.repository.attribute'
@@ -91,6 +94,7 @@ services:
             - '@pim_catalog.repository.attribute'
 
     test.catalog.product_creation.context:
+        public: true
         class: 'Akeneo\Test\Acceptance\Catalog\Context\ProductCreation'
         arguments:
             - '@pim_catalog.repository.attribute'
@@ -98,6 +102,7 @@ services:
             - '@pim_catalog.repository.product'
 
     test.catalog.product_validation.context:
+        public: true
         class: 'Akeneo\Test\Acceptance\Catalog\Context\ProductValidation'
         arguments:
             - '@test.catalog.product.builder'

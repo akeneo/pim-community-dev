@@ -1,4 +1,5 @@
 services:
     test.enrichment.enrichment_follow_up_context:
+        public: true
         class: 'AkeneoTest\Pim\Enrichment\Acceptance\Context\EnrichmentFollowUpContext'
 

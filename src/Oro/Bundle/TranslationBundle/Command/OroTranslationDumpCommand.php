@@ -81,7 +81,7 @@ class OroTranslationDumpCommand extends Command
         $locales = null === $locales ? [$this->defaultLocale] : explode(', ', $locales);
 
         $domains = $this->jsTranslationDomains;
-        $targetPattern = realpath($this->rootDir . '/../web')
+        $targetPattern = realpath($this->rootDir . '/../public')
             . $this->router->getRouteCollection()
                 ->get('oro_translation_jstranslation')->getPath();
 

@@ -7,7 +7,7 @@ const prodConfig = require('./webpack.config.js');
 const config = Object.assign({}, prodConfig, {
   entry: ['babel-polyfill', path.resolve(__dirname, './tests/front/common/templates/index.js')],
   output: {
-    path: path.resolve('./web/test_dist/'),
+    path: path.resolve('./public/test_dist/'),
     publicPath: '/dist/',
     filename: '[name].min.js',
     chunkFilename: '[name].bundle.js',

@@ -6,9 +6,9 @@ namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductProjectionInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductProjection;
+use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
-use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
 
 /**
  * Indexer responsible for the indexing of products entities. Each product should be normalized in the right format
@@ -21,11 +21,12 @@ use Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface;
 class ProductIndexer implements ProductIndexerInterface
 {
     private const PRODUCT_IDENTIFIER_PREFIX = 'product_';
-    
+    private const BATCH_SIZE = 1000;
+
     /** @var Client */
     private $productAndProductModelClient;
 
-    /** @var \Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductProjectionInterface */
+    /** @var GetElasticsearchProductProjectionInterface */
     private $getElasticsearchProductProjection;
 
     public function __construct(Client $productAndProductModelClient, GetElasticsearchProductProjectionInterface $getElasticsearchProductProjectionQuery)
@@ -60,19 +61,20 @@ class ProductIndexer implements ProductIndexerInterface
 
         $indexRefresh = $options['index_refresh'] ?? Refresh::disable();
 
-        $elasticsearchProductProjections = $this->getElasticsearchProductProjection->fromProductIdentifiers($productIdentifiers);
-        $normalizedProductProjections = array_map(
-            function (ElasticsearchProductProjection $indexableProduct) {
-                return $indexableProduct->toArray();
-            },
-            $elasticsearchProductProjections
-        );
+        $chunks = array_chunk($productIdentifiers, self::BATCH_SIZE);
+        foreach ($chunks as $productIdentifiersChunk) {
+            $elasticsearchProductProjections = $this->getElasticsearchProductProjection->fromProductIdentifiers(
+                $productIdentifiersChunk
+            );
+            $normalizedProductProjections = array_map(
+                function (ElasticsearchProductProjection $indexableProduct) {
+                    return $indexableProduct->toArray();
+                },
+                $elasticsearchProductProjections
+            );
 
-        $this->productAndProductModelClient->bulkIndexes(
-            $normalizedProductProjections,
-            'id',
-            $indexRefresh
-        );
+            $this->productAndProductModelClient->bulkIndexes($normalizedProductProjections, 'id', $indexRefresh);
+        }
     }
 
     /**

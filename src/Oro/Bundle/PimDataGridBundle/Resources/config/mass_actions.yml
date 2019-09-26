@@ -27,12 +27,14 @@ services:
             - { name: pim_datagrid.extension.mass_action.handler, alias: mass_edit }
 
     pim_datagrid.extension.mass_action.type.edit:
+        public: true
         class: Oro\Bundle\PimDataGridBundle\Extension\MassAction\Actions\Redirect\EditMassAction
         shared: false
         tags:
             - { name: oro_datagrid.extension.mass_action.type, type: edit }
 
     pim_datagrid.extension.mass_action.type.sequential_edit:
+        public: true
         class: Oro\Bundle\PimDataGridBundle\Extension\MassAction\Actions\Redirect\SequentialEditMassAction
         shared: false
         tags:
@@ -40,18 +42,21 @@ services:
 
     # Mass actions
     pim_datagrid.extension.mass_action.type.export:
+        public: true
         class: '%pim_datagrid.extension.mass_action.type.export.class%'
         shared: false
         tags:
             - { name: oro_datagrid.extension.mass_action.type, type: export }
 
     pim_datagrid.extension.mass_action.type.delete:
+        public: true
         class: '%pim_datagrid.extension.mass_action.type.delete.class%'
         shared: false
         tags:
             - { name: oro_datagrid.extension.mass_action.type, type: delete }
 
     pim_datagrid.extension.mass_action.type.product_mass_delete:
+        public: true
         class: '%pim_datagrid.extension.mass_action.type.delete.class%'
         shared: false
         tags:

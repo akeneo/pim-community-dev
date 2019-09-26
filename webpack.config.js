@@ -56,9 +56,9 @@ const webpackConfig = {
   },
   mode: (isProd ? 'production' : 'development'),
   target: 'web',
-  entry: ['babel-polyfill', path.resolve(rootDir, './web/bundles/pimui/js/index.js')],
+  entry: ['babel-polyfill', path.resolve(rootDir, './public/bundles/pimui/js/index.js')],
   output: {
-    path: path.resolve('./web/dist/'),
+    path: path.resolve('./public/dist/'),
     publicPath: '/dist/',
     filename: '[name].min.js',
     chunkFilename: '[name].bundle.js',
@@ -67,7 +67,7 @@ const webpackConfig = {
   resolve: {
     symlinks: false,
     alias: _.mapKeys(aliases, (path, key) => `${key}$`),
-    modules: [path.resolve('./web/bundles'), path.resolve('./node_modules')],
+    modules: [path.resolve('./public/bundles'), path.resolve('./node_modules')],
     extensions: ['.js', '.json', '.ts', '.tsx']
   },
   module: {
@@ -160,7 +160,7 @@ const webpackConfig = {
       // Process the pim webpack files with babel
       {
         test: /\.js$/,
-        include: /(web\/bundles|webpack|spec)/,
+        include: /(public\/bundles|webpack|spec)/,
         exclude: /lib|node_modules/,
         use: [
           'thread-loader',
@@ -168,7 +168,7 @@ const webpackConfig = {
             loader: 'babel-loader',
             options: {
               presets: ['@babel/preset-env'],
-              cacheDirectory: 'web/cache',
+              cacheDirectory: 'public/cache',
             },
           }
         ],
@@ -193,7 +193,7 @@ const webpackConfig = {
             },
           },
         ],
-        include: /(web\/bundles)/,
+        include: /(public\/bundles)/,
         exclude: [
           path.resolve(rootDir, 'node_modules'),
           path.resolve(rootDir, 'vendor'),

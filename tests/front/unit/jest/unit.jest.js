@@ -8,7 +8,7 @@ const unitConfig = {
   },
   moduleNameMapper: {
     '^require-context$': `${__dirname}/../../../../frontend/webpack/require-context.js`,
-    '^module-registry$': `${__dirname}/../../../../web/js/module-registry.js`,
+    '^module-registry$': `${__dirname}/../../../../public/js/module-registry.js`,
     'pim/fetcher-registry': '<rootDir>/web/bundles/pimui/js/fetcher/fetcher-registry.js',
     'pim/router': '<rootDir>/web/bundles/pimui/js/router.js',
     routing: '<rootDir>/web/bundles/pimui/js/fos-routing-wrapper.js',
@@ -16,7 +16,7 @@ const unitConfig = {
   },
   testRegex: '(tests/front/unit)(.*)(unit).(jsx?|tsx?)$',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-  moduleDirectories: ['<rootDir>/node_modules', `<rootDir>/web/bundles/`],
+  moduleDirectories: ['<rootDir>/node_modules', `<rootDir>/public/bundles/`],
   globals: {
     __moduleConfig: {},
     'ts-jest': {

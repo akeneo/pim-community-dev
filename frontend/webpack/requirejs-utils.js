@@ -51,7 +51,7 @@ const utils = {
                 const requireMaps = _.get(parsed.config, 'map.*') || {};
                 const mergedPaths = Object.assign(requirePaths, requireMaps);
                 const absolutePaths = _.mapValues(mergedPaths, (modulePath) => {
-                    return path.resolve(baseDir, `./web/bundles/${modulePath}`);
+                    return path.resolve(baseDir, `./public/bundles/${modulePath}`);
                 });
 
                 paths = deepMerge(paths, absolutePaths);
@@ -70,13 +70,13 @@ const utils = {
      * @return {Object}               An object requirejs containing module config and aliases
      */
     getModulePaths(baseDir, sourceDir) {
-        const pathSourceFile = require(path.join(baseDir, 'web/js/require-paths.js'));
+        const pathSourceFile = require(path.join(baseDir, 'public/js/require-paths.js'));
         const { config, paths } = utils.getRequireConfig(pathSourceFile, baseDir);
-        const aliases = Object.assign(paths, getFrontModules(process.cwd(), './web/bundles')(), {
+        const aliases = Object.assign(paths, getFrontModules(process.cwd(), './public/bundles')(), {
             'require-polyfill': path.resolve(sourceDir, './frontend/webpack/require-polyfill.js'),
             'require-context': path.resolve(sourceDir, './frontend/webpack/require-context.js'),
-            'module-registry': path.resolve(baseDir, './web/js/module-registry.js'),
-            routes: path.resolve(baseDir, './web/js/routes.js'),
+            'module-registry': path.resolve(baseDir, './public/js/module-registry.js'),
+            routes: path.resolve(baseDir, './public/js/routes.js'),
             'fos-routing-base': path.resolve(baseDir, './vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.js'),
             summernote: path.resolve(baseDir, 'node_modules/summernote/dist/summernote.js'),
             json: path.resolve(baseDir, 'node_modules/JSON2/json2.js'),
@@ -112,7 +112,7 @@ const utils = {
             return __webpack_require__(paths[moduleName])
         }`;
 
-        writeFileSync(path.join(baseDir, './web/js/module-registry.js'), registry);
+        writeFileSync(path.join(baseDir, './public/js/module-registry.js'), registry);
     }
 };
 

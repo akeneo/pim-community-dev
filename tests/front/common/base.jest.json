@@ -3,11 +3,11 @@
     "node_modules"
   ],
   "projects": [
-    "<rootDir>/web/bundles"
+    "<rootDir>/public/bundles"
   ],
   "moduleDirectories": [
     "node_modules",
-    "web/bundles"
+    "public/bundles"
   ],
   "moduleFileExtensions": [
     "js",

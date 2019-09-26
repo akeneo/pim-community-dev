@@ -8,14 +8,14 @@ The frontend acceptance tests are run with [cucumber-js]() for the scenarios and
 
 #### 1. Make a dump of the form extensions using the FormExtensionProvider
 
-In our acceptance test definitions we can capture network requests called by the app and replace them with custom fixtures. When the app calls the form extensions endpoint we will return this dump. To create this dump, run `bin/console pim:installer:dump-extensions` and it will output a file at `web/test_dist/extensions.json`.
+In our acceptance test definitions we can capture network requests called by the app and replace them with custom fixtures. When the app calls the form extensions endpoint we will return this dump. To create this dump, run `bin/console pim:installer:dump-extensions` and it will output a file at `public/test_dist/extensions.json`.
 
 #### 2. Use webpack to create a test version of our frontend bundle
 For this step, we build the app using custom entry points (`index.html` and `index.js` in `webpack/test/templates`). This allows us to replace the normal `index.html.twig` from the EnrichBundle and eventually only render the views that we want instead of the whole app.
 
 We have a custom webpack test config `webpack-test.config.js` that uses the custom entry points and outputs all the built javascript inline inside the `index.html`.
 
-To create the test version of the PIM you can run `yarn run webpack-test`. This will generate in the `web/test_dist` folder a `index.html` file that includes all the frontend code (excluding the CSS).
+To create the test version of the PIM you can run `yarn run webpack-test`. This will generate in the `public/test_dist` folder a `index.html` file that includes all the frontend code (excluding the CSS).
 
 #### 3. Running the tests
 
@@ -41,7 +41,7 @@ The important files and folders are:
     - After each scenario capture and report the success or failure
     - Generate a screenshot for the scenario failure
     - Close the browser
-- `generate-report.js` - After the tests are run, this file can take the test output json from `web/test_dist/acceptance-js.json` and create a html report.
+- `generate-report.js` - After the tests are run, this file can take the test output json from `public/test_dist/acceptance-js.json` and create a html report.
 
 > Note: Cucumber normally handles the auto-discovery of steps but this feature doesn't work with the EE. Cucumber unfortunately doesn't support executing step definitions from CE using the cucumber executable from inside the EE node_modules. So we manually gather the step definition files and pass in the cucumber instance.
 

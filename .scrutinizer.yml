@@ -49,7 +49,7 @@ tools:
             - src/Pim/Bundle/JsFormValidationBundle/Generator/*
             - src/Oro/*
             - vendor/
-            - web/
+            - public/
     php_pdepend:
         excluded_dirs:
             - app/
@@ -57,4 +57,4 @@ tools:
             - src/Pim/Bundle/JsFormValidationBundle/Generator/*
             - src/Oro/*
             - vendor/
-            - web/
+            - public/
