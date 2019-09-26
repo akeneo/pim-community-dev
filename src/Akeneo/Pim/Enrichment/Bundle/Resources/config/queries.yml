@@ -1,301 +1,301 @@
 parameters:
-  pim_catalog.doctrine.query.find_variant_product_completeness.class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\VariantProductRatio'
-  pim_catalog.doctrine.query.complete_filter.class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CompleteFilter'
-  pim_catalog.doctrine.query.attribute_is_an_family_variant_axis.class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\AttributeIsAFamilyVariantAxis'
-  pim_catalog.doctrine.query.count_entity_with_family_variant.class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CountEntityWithFamilyVariant'
-  pim_catalog.doctrine.query.find_attributes_for_family.class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\FindAttributesForFamily'
+    pim_catalog.doctrine.query.find_variant_product_completeness.class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\VariantProductRatio'
+    pim_catalog.doctrine.query.complete_filter.class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CompleteFilter'
+    pim_catalog.doctrine.query.attribute_is_an_family_variant_axis.class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\AttributeIsAFamilyVariantAxis'
+    pim_catalog.doctrine.query.count_entity_with_family_variant.class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CountEntityWithFamilyVariant'
+    pim_catalog.doctrine.query.find_attributes_for_family.class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\FindAttributesForFamily'
 
 services:
-  pim_catalog.doctrine.query.find_variant_product_completeness:
-    class: '%pim_catalog.doctrine.query.find_variant_product_completeness.class%'
-    arguments:
-      - '@doctrine.orm.entity_manager'
+    pim_catalog.doctrine.query.find_variant_product_completeness:
+        class: '%pim_catalog.doctrine.query.find_variant_product_completeness.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
 
-  pim_catalog.doctrine.query.complete_filter:
-    class: '%pim_catalog.doctrine.query.complete_filter.class%'
-    arguments:
-      - '@database_connection'
+    pim_catalog.doctrine.query.complete_filter:
+        class: '%pim_catalog.doctrine.query.complete_filter.class%'
+        arguments:
+            - '@database_connection'
 
-  pim_catalog.doctrine.query.attribute_is_an_family_variant_axis:
-    class: '%pim_catalog.doctrine.query.attribute_is_an_family_variant_axis.class%'
-    arguments:
-      - '@doctrine.orm.entity_manager'
+    pim_catalog.doctrine.query.attribute_is_an_family_variant_axis:
+        class: '%pim_catalog.doctrine.query.attribute_is_an_family_variant_axis.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
 
-  pim_catalog.doctrine.query.count_entity_with_family_variant:
-    class: '%pim_catalog.doctrine.query.count_entity_with_family_variant.class%'
-    arguments:
-      - '@doctrine.orm.entity_manager'
+    pim_catalog.doctrine.query.count_entity_with_family_variant:
+        class: '%pim_catalog.doctrine.query.count_entity_with_family_variant.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
 
-  pim_catalog.doctrine.query.find_attributes_for_family:
-    class: '%pim_catalog.doctrine.query.find_attributes_for_family.class%'
-    arguments:
-      - '@doctrine.orm.entity_manager'
+    pim_catalog.doctrine.query.find_attributes_for_family:
+        class: '%pim_catalog.doctrine.query.find_attributes_for_family.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
 
-  pim_catalog.doctrine.query.count_products_with_family:
-    class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CountProductsWithFamily'
-    arguments:
-      - '@doctrine.orm.entity_manager'
+    pim_catalog.doctrine.query.count_products_with_family:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CountProductsWithFamily'
+        arguments:
+            - '@doctrine.orm.entity_manager'
 
-  pim_catalog.doctrine.query.find_family_variants_identifiers_by_attribute_axes:
-    class: 'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Query\FamilyVariantsByAttributeAxes'
-    arguments:
-      - '@doctrine.orm.entity_manager'
+    pim_catalog.doctrine.query.find_family_variants_identifiers_by_attribute_axes:
+        class: 'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Query\FamilyVariantsByAttributeAxes'
+        arguments:
+            - '@doctrine.orm.entity_manager'
 
-  pim_catalog.doctrine.query.find_attribute_group_orders_equal_or_superior_to:
-    class: 'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Query\FindAttributeGroupOrdersEqualOrSuperiorTo'
-    arguments:
-      - '@doctrine.orm.entity_manager'
+    pim_catalog.doctrine.query.find_attribute_group_orders_equal_or_superior_to:
+        class: 'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Query\FindAttributeGroupOrdersEqualOrSuperiorTo'
+        arguments:
+            - '@doctrine.orm.entity_manager'
 
-  pim_catalog.query.get_associated_product_codes_by_product:
-    class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\GetAssociatedProductCodesByProductFromDB'
-    arguments:
-      - '@doctrine.orm.entity_manager'
-      - '%pim_catalog.entity.association.class%'
+    pim_catalog.query.get_associated_product_codes_by_product:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\GetAssociatedProductCodesByProductFromDB'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.association.class%'
 
-  pim_enrich.doctrine.query.ascendant_categories:
-    class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\AscendantCategories'
-    arguments:
-      - '@doctrine.orm.entity_manager'
+    pim_enrich.doctrine.query.ascendant_categories:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\AscendantCategories'
+        arguments:
+            - '@doctrine.orm.entity_manager'
 
-  pim_enrich.doctrine.query.count_impacted_products:
-    class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CountImpactedProducts'
-    arguments:
-      - '@pim_catalog.query.product_and_product_model_query_builder_factory'
-      - '@pim_catalog.query.product_query_builder_factory'
+    pim_enrich.doctrine.query.count_impacted_products:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CountImpactedProducts'
+        arguments:
+            - '@pim_catalog.query.product_and_product_model_query_builder_factory'
+            - '@pim_catalog.query.product_query_builder_factory'
 
-  pim_catalog.query.find_activated_currencies:
-    class: Akeneo\Channel\Bundle\Doctrine\Query\FindActivatedCurrencies
-    arguments:
-      - '@doctrine.orm.entity_manager'
+    pim_catalog.query.find_activated_currencies:
+        class: Akeneo\Channel\Bundle\Doctrine\Query\FindActivatedCurrencies
+        arguments:
+            - '@doctrine.orm.entity_manager'
 
-  akeneo.pim.enrichment.product.grid.query.fetch_product_and_product_model_rows:
-    class: 'Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductGrid\FetchProductAndProductModelRows'
-    arguments:
-      - '@akeneo.pim.enrichment.product.grid.query.fetch_product_rows_from_identifiers'
-      - '@akeneo.pim.enrichment.product.grid.query.fetch_product_model_rows_from_codes'
-      - '@akeneo.pim.enrichment.product.grid.query.add_additional_product_properties'
-      - '@akeneo.pim.enrichment.product.grid.query.add_additional_product_model_properties'
+    akeneo.pim.enrichment.product.grid.query.fetch_product_and_product_model_rows:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductGrid\FetchProductAndProductModelRows'
+        arguments:
+            - '@akeneo.pim.enrichment.product.grid.query.fetch_product_rows_from_identifiers'
+            - '@akeneo.pim.enrichment.product.grid.query.fetch_product_model_rows_from_codes'
+            - '@akeneo.pim.enrichment.product.grid.query.add_additional_product_properties'
+            - '@akeneo.pim.enrichment.product.grid.query.add_additional_product_model_properties'
 
-  akeneo.pim.enrichment.product.grid.query.fetch_product_model_rows_from_codes:
-    class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid\FetchProductModelRowsFromCodes'
-    arguments:
-      - '@database_connection'
-      - '@akeneo.pim.enrichment.factory.read.write_value_collection'
-      - '@akeneo.pim.enrichment.product.grid.query.product_model_images_from_codes'
+    akeneo.pim.enrichment.product.grid.query.fetch_product_model_rows_from_codes:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid\FetchProductModelRowsFromCodes'
+        arguments:
+            - '@database_connection'
+            - '@akeneo.pim.enrichment.factory.read.write_value_collection'
+            - '@akeneo.pim.enrichment.product.grid.query.product_model_images_from_codes'
 
-  akeneo.pim.enrichment.product.grid.query.fetch_product_rows_from_identifiers:
-    class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid\FetchProductRowsFromIdentifiers'
-    arguments:
-      - '@database_connection'
-      - '@akeneo.pim.enrichment.factory.read.write_value_collection'
-      -
-  akeneo.pim.enrichment.product.grid.query.add_additional_product_properties:
-    class: 'Akeneo\Pim\Enrichment\Component\Product\Grid\Query\AddAdditionalProductPropertiesRegistry'
-    arguments:
-      - !tagged akeneo.pim.enrichment.product.grid.add_additional_product_properties
+    akeneo.pim.enrichment.product.grid.query.fetch_product_rows_from_identifiers:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid\FetchProductRowsFromIdentifiers'
+        arguments:
+            - '@database_connection'
+            - '@akeneo.pim.enrichment.factory.read.write_value_collection'
+            -
+    akeneo.pim.enrichment.product.grid.query.add_additional_product_properties:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Grid\Query\AddAdditionalProductPropertiesRegistry'
+        arguments:
+            - !tagged akeneo.pim.enrichment.product.grid.add_additional_product_properties
 
-  akeneo.pim.enrichment.product.grid.query.add_additional_product_model_properties:
-    class: 'Akeneo\Pim\Enrichment\Component\Product\Grid\Query\AddAdditionalProductModelPropertiesRegistry'
-    arguments:
-      - !tagged akeneo.pim.enrichment.product.grid.add_additional_product_model_properties
-
-
-  akeneo.pim.enrichment.product.grid.query.product_model_images_from_codes:
-    class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid\ProductModelImagesFromCodes'
-    arguments:
-      - '@database_connection'
-      - '@akeneo.pim.enrichment.factory.read.write_value_collection'
-
-  akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_family_codes:
-    class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector\Writer\File\Flat\GenerateHeadersFromFamilyCodes'
-    arguments:
-      - '@database_connection'
-
-  akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_attribute_codes:
-    class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector\Writer\File\Flat\GenerateHeadersFromAttributeCodes'
-    arguments:
-      - '@database_connection'
-
-  pim_catalog.query.get_descendent_category_codes:
-    class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\GetDescendentCategoryCodes'
-    arguments:
-      - '@database_connection'
-
-  pim_catalog.query.descendant_product_ids:
-    class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\DescendantProductIdsQuery
-    arguments:
-      - '@database_connection'
-
-  pim_catalog.query.descendant_product_model_ids:
-    class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\DescendantProductModelIdsQuery
-    arguments:
-      - '@database_connection'
-
-  akeneo.pim.enrichment.product.query.get_product_completenesses:
-    class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\Completeness\SqlGetProductCompletenesses'
-    arguments:
-      - '@database_connection'
-
-  akeneo.pim.enrichment.product.query.save_product_completenesses:
-    class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\Completeness\SqlSaveProductCompletenesses'
-    arguments:
-      - '@database_connection'
-
-  akeneo.pim.enrichment.product.query.category_codes_by_product_identifiers:
-    class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetCategoryCodesByProductIdentifiers'
-    arguments:
-      - '@database_connection'
-
-  akeneo.pim.enrichment.product.query.get_values_and_properties_from_product_identifiers:
-    class: Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetValuesAndPropertiesFromProductIdentifiers
-    arguments:
-      - '@database_connection'
-
-  akeneo.pim.enrichment.product.query.get_product_associations_by_product_identifiers:
-    class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetProductAssociationsByProductIdentifiers'
-    arguments:
-      - '@database_connection'
-
-  akeneo.pim.enrichment.product.query.get_group_associations_by_product_identifiers:
-    class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetGroupAssociationsByProductIdentifiers'
-    arguments:
-      - '@database_connection'
-
-  akeneo.pim.enrichment.product.query.get_product_model_associations_by_product_identifiers:
-    class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetProductModelAssociationsByProductIdentifiers'
-    arguments:
-      - '@database_connection'
-
-  akeneo.pim.enrichment.product.query.get_existing_reference_data_codes:
-    class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetExistingReferenceDataCodes'
-    arguments:
-      - '@doctrine.orm.entity_manager'
-      - '@pim_reference_data.repository_resolver'
-
-  akeneo.pim.enrichment.category.query.category_codes_by_product_model_codes:
-    class: 'Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetCategoryCodesByProductModelCodes'
-    arguments:
-      - '@database_connection'
-
-  akeneo.pim.enrichment.product_model.query.get_models_associations_by_product_model_codes:
-    class: 'Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetProductModelsAssociationsByProductModelCodes'
-    arguments:
-      - '@database_connection'
-
-  akeneo.pim.enrichment.product_model.query.get_group_associations_by_product_model_codes:
-    class: 'Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetGroupAssociationsByProductModelCodes'
-    arguments:
-      - '@database_connection'
-
-  akeneo.pim.enrichment.product_model.query.get_values_and_properties_from_product_model_codes:
-    class: 'Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetValuesAndPropertiesFromProductModelCodes'
-    arguments:
-      - '@database_connection'
-
-  akeneo.pim.enrichment.product_model.query.get_product_associations_by_product_model_codes:
-    class: 'Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetProductAssociationsByProductModelCodes'
-    arguments:
-      - '@database_connection'
-
-  akeneo.pim.enrichment.product.connector.get_product_from_identifiers:
-    class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector\SqlGetConnectorProducts'
-    arguments:
-      $getValuesAndPropertiesFromProductIdentifiers: '@akeneo.pim.enrichment.product.query.get_values_and_properties_from_product_identifiers'
-      $getProductModelAssociationsByProductIdentifiers: '@akeneo.pim.enrichment.product.query.get_product_model_associations_by_product_identifiers'
-      $getGroupAssociationsByProductIdentifiers: '@akeneo.pim.enrichment.product.query.get_group_associations_by_product_identifiers'
-      $getProductAssociationsByProductIdentifiers: '@akeneo.pim.enrichment.product.query.get_product_associations_by_product_identifiers'
-      $getCategoryCodesByProductIdentifiers: '@akeneo.pim.enrichment.product.query.category_codes_by_product_identifiers'
-      $valueCollectionFactory: '@akeneo.pim.enrichment.factory.read.value_collection'
-      $attributeRepository: '@pim_catalog.repository.attribute'
-
-  akeneo.pim.enrichment.product.connector.get_product_models_from_codes:
-    class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector\SqlGetConnectorProductModels'
-    arguments:
-      - '@akeneo.pim.enrichment.product_model.query.get_values_and_properties_from_product_model_codes'
-      - '@akeneo.pim.enrichment.category.query.category_codes_by_product_model_codes'
-      - '@akeneo.pim.enrichment.product_model.query.get_product_associations_by_product_model_codes'
-      - '@akeneo.pim.enrichment.product_model.query.get_models_associations_by_product_model_codes'
-      - '@akeneo.pim.enrichment.product_model.query.get_group_associations_by_product_model_codes'
-      - '@akeneo.pim.enrichment.factory.read.value_collection'
+    akeneo.pim.enrichment.product.grid.query.add_additional_product_model_properties:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Grid\Query\AddAdditionalProductModelPropertiesRegistry'
+        arguments:
+            - !tagged akeneo.pim.enrichment.product.grid.add_additional_product_model_properties
 
 
-  akeneo.pim.enrichment.product_model.query.count_product_models_and_children_product_models:
-    class: Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\CountProductModelsAndChildrenProductModels
-    arguments:
-      - '@database_connection'
+    akeneo.pim.enrichment.product.grid.query.product_model_images_from_codes:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid\ProductModelImagesFromCodes'
+        arguments:
+            - '@database_connection'
+            - '@akeneo.pim.enrichment.factory.read.write_value_collection'
 
-  akeneo.pim.enrichment.product_model.query.count_variant_products:
-    class: Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\CountVariantProducts
-    arguments:
-      - '@database_connection'
+    akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_family_codes:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector\Writer\File\Flat\GenerateHeadersFromFamilyCodes'
+        arguments:
+            - '@database_connection'
 
-  akeneo.pim.enrichment.product_model.query.get_values_of_siblings:
-    class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\SqlGetValuesOfSiblings
-    arguments:
-      - '@database_connection'
-      - '@akeneo.pim.enrichment.factory.read.write_value_collection'
+    akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_attribute_codes:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector\Writer\File\Flat\GenerateHeadersFromAttributeCodes'
+        arguments:
+            - '@database_connection'
 
-  akeneo.pim.enrichment.channel.query.get_labels:
-    class: Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\SqlGetChannelLabels
-    arguments:
-      - '@database_connection'
+    pim_catalog.query.get_descendent_category_codes:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\GetDescendentCategoryCodes'
+        arguments:
+            - '@database_connection'
 
-  akeneo.pim.enrichment.attribute.query.get_labels:
-    class: Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\SqlGetAttributeLabels
-    arguments:
-      - '@database_connection'
+    pim_catalog.query.descendant_product_ids:
+        class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\DescendantProductIdsQuery
+        arguments:
+            - '@database_connection'
 
-  akeneo.pim.enrichment.product.query.get_elasticsearch_product_projection:
-    class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\GetElasticsearchProductProjection
-    arguments:
-      - '@pim_catalog.repository.product'
-      - '@pim_catalog.repository.locale'
-      - '@pim_catalog.repository.channel'
-      - '@pim_indexing_serializer'
-      - '@akeneo.pim.enrichment.product.query.get_product_completenesses'
-      - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
-      - !tagged akeneo.pim.enrichment.product.query.indexing_additional_properties
+    pim_catalog.query.descendant_product_model_ids:
+        class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\DescendantProductModelIdsQuery
+        arguments:
+            - '@database_connection'
 
-  akeneo.pim.enrichment.product.query.get_ancestor_product_model_codes:
-    class: Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetAncestorProductModelCodes
-    arguments:
-      - '@database_connection'
+    akeneo.pim.enrichment.product.query.get_product_completenesses:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\Completeness\SqlGetProductCompletenesses'
+        arguments:
+            - '@database_connection'
 
-  akeneo.pim.enrichment.product.query.get_elasticsearch_product_model_projection:
-    class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\GetElasticsearchProductModelProjection
-    arguments:
-      - '@akeneo.pim.enrichment.product_model.get_values_and_properties'
-      - '@akeneo.pim.enrichment.product_model.get_complete_filter'
-      - '@akeneo.pim.enrichment.product_model.get_attributes'
-      - '@akeneo.pim.enrichment.factory.read.value_collection'
-      - '@pim_catalog.normalizer.indexing_product.product.product_value_collection'
+    akeneo.pim.enrichment.product.query.save_product_completenesses:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\Completeness\SqlSaveProductCompletenesses'
+        arguments:
+            - '@database_connection'
 
-  akeneo.pim.enrichment.product_model.get_values_and_properties:
-    class: Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetValuesAndPropertiesFromProductModelCodes
-    arguments:
-      - '@database_connection'
+    akeneo.pim.enrichment.product.query.category_codes_by_product_identifiers:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetCategoryCodesByProductIdentifiers'
+        arguments:
+            - '@database_connection'
 
-  akeneo.pim.enrichment.product.query.get_descendant_variant_product_identifiers:
-    class: Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetDescendantVariantProductIdentifiers
-    arguments:
-      - '@database_connection'
+    akeneo.pim.enrichment.product.query.get_values_and_properties_from_product_identifiers:
+        class: Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetValuesAndPropertiesFromProductIdentifiers
+        arguments:
+            - '@database_connection'
 
-  akeneo.pim.enrichment.product.query.get_ancestor_and_descendant_product_model_codes:
-    class: Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetAncestorAndDescendantProductModelCodes
-    arguments:
-      - '@database_connection'
+    akeneo.pim.enrichment.product.query.get_product_associations_by_product_identifiers:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetProductAssociationsByProductIdentifiers'
+        arguments:
+            - '@database_connection'
 
-  akeneo.pim.enrichment.product_model.get_complete_filter:
-    class: Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetCompleteFilterFromProductModelCodes
-    arguments:
-      - '@database_connection'
+    akeneo.pim.enrichment.product.query.get_group_associations_by_product_identifiers:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetGroupAssociationsByProductIdentifiers'
+        arguments:
+            - '@database_connection'
 
-  akeneo.pim.enrichment.product_model.get_attributes:
-    class: Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetAttributesFromProductModelCodes
-    arguments:
-      - '@database_connection'
+    akeneo.pim.enrichment.product.query.get_product_model_associations_by_product_identifiers:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetProductModelAssociationsByProductIdentifiers'
+        arguments:
+            - '@database_connection'
 
-  pim_catalog.query.get_attribute_options_max_sort_order:
-    class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\GetAttributeOptionsMaxSortOrder'
-    arguments:
-      - '@database_connection'
+    akeneo.pim.enrichment.product.query.get_existing_reference_data_codes:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetExistingReferenceDataCodes'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_reference_data.repository_resolver'
+
+    akeneo.pim.enrichment.category.query.category_codes_by_product_model_codes:
+        class: 'Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetCategoryCodesByProductModelCodes'
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.enrichment.product_model.query.get_models_associations_by_product_model_codes:
+        class: 'Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetProductModelsAssociationsByProductModelCodes'
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.enrichment.product_model.query.get_group_associations_by_product_model_codes:
+        class: 'Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetGroupAssociationsByProductModelCodes'
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.enrichment.product_model.query.get_values_and_properties_from_product_model_codes:
+        class: 'Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetValuesAndPropertiesFromProductModelCodes'
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.enrichment.product_model.query.get_product_associations_by_product_model_codes:
+        class: 'Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetProductAssociationsByProductModelCodes'
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.enrichment.product.connector.get_product_from_identifiers:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector\SqlGetConnectorProducts'
+        arguments:
+            $getValuesAndPropertiesFromProductIdentifiers: '@akeneo.pim.enrichment.product.query.get_values_and_properties_from_product_identifiers'
+            $getProductModelAssociationsByProductIdentifiers: '@akeneo.pim.enrichment.product.query.get_product_model_associations_by_product_identifiers'
+            $getGroupAssociationsByProductIdentifiers: '@akeneo.pim.enrichment.product.query.get_group_associations_by_product_identifiers'
+            $getProductAssociationsByProductIdentifiers: '@akeneo.pim.enrichment.product.query.get_product_associations_by_product_identifiers'
+            $getCategoryCodesByProductIdentifiers: '@akeneo.pim.enrichment.product.query.category_codes_by_product_identifiers'
+            $valueCollectionFactory: '@akeneo.pim.enrichment.factory.read.value_collection'
+            $attributeRepository: '@pim_catalog.repository.attribute'
+
+    akeneo.pim.enrichment.product.connector.get_product_models_from_codes:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector\SqlGetConnectorProductModels'
+        arguments:
+            - '@akeneo.pim.enrichment.product_model.query.get_values_and_properties_from_product_model_codes'
+            - '@akeneo.pim.enrichment.category.query.category_codes_by_product_model_codes'
+            - '@akeneo.pim.enrichment.product_model.query.get_product_associations_by_product_model_codes'
+            - '@akeneo.pim.enrichment.product_model.query.get_models_associations_by_product_model_codes'
+            - '@akeneo.pim.enrichment.product_model.query.get_group_associations_by_product_model_codes'
+            - '@akeneo.pim.enrichment.factory.read.value_collection'
+
+
+    akeneo.pim.enrichment.product_model.query.count_product_models_and_children_product_models:
+        class: Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\CountProductModelsAndChildrenProductModels
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.enrichment.product_model.query.count_variant_products:
+        class: Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\CountVariantProducts
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.enrichment.product_model.query.get_values_of_siblings:
+        class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\SqlGetValuesOfSiblings
+        arguments:
+            - '@database_connection'
+            - '@akeneo.pim.enrichment.factory.read.write_value_collection'
+
+    akeneo.pim.enrichment.channel.query.get_labels:
+        class: Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\SqlGetChannelLabels
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.enrichment.attribute.query.get_labels:
+        class: Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\SqlGetAttributeLabels
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.enrichment.product.query.get_elasticsearch_product_projection:
+        class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\GetElasticsearchProductProjection
+        arguments:
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.repository.channel'
+            - '@pim_indexing_serializer'
+            - '@akeneo.pim.enrichment.product.query.get_product_completenesses'
+            - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
+            - !tagged akeneo.pim.enrichment.product.query.indexing_additional_properties
+
+    akeneo.pim.enrichment.product.query.get_ancestor_product_model_codes:
+        class: Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetAncestorProductModelCodes
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.enrichment.product.query.get_elasticsearch_product_model_projection:
+        class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\GetElasticsearchProductModelProjection
+        arguments:
+            - '@akeneo.pim.enrichment.product_model.get_values_and_properties'
+            - '@akeneo.pim.enrichment.product_model.get_complete_filter'
+            - '@akeneo.pim.enrichment.product_model.get_attributes'
+            - '@akeneo.pim.enrichment.factory.read.value_collection'
+            - '@pim_catalog.normalizer.indexing_product.product.product_value_collection'
+
+    akeneo.pim.enrichment.product_model.get_values_and_properties:
+        class: Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetValuesAndPropertiesFromProductModelCodes
+        arguments:
+          - '@database_connection'
+
+    akeneo.pim.enrichment.product.query.get_descendant_variant_product_identifiers:
+        class: Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetDescendantVariantProductIdentifiers
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.enrichment.product.query.get_ancestor_and_descendant_product_model_codes:
+        class: Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetAncestorAndDescendantProductModelCodes
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.enrichment.product_model.get_complete_filter:
+        class: Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetCompleteFilterFromProductModelCodes
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.enrichment.product_model.get_attributes:
+        class: Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetAttributesFromProductModelCodes
+        arguments:
+            - '@database_connection'
+
+    pim_catalog.query.get_attribute_options_max_sort_order:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\GetAttributeOptionsMaxSortOrder'
+        arguments:
+            - '@database_connection'

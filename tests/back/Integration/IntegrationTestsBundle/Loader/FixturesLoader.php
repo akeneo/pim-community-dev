@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\IntegrationTestsBundle\Loader;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
-use League\Flysystem\Filesystem;
-use League\Flysystem\Plugin\ListPaths;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Plugin\ListPaths;
 use Symfony\Bundle\FrameworkBundle\Console\Application;

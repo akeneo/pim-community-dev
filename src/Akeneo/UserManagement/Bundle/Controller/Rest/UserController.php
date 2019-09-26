@@ -401,10 +401,12 @@ class UserController
             isset($data['new_password']) && strlen($data['new_password']) < 2
         ) {
             $violations[] = new ConstraintViolation(
-                $this->translator ?
-                    $this->translator->trans(
-                        'pim_user.user.fields_errors.new_password.minimum_length'
-                    ) : 'Password must contains at least 2 characters', '', [], '', 'new_password', ''
+                $this->translator->trans('pim_user.user.fields_errors.new_password.minimum_length'),
+                '',
+                [],
+                '',
+                'new_password',
+                ''
             );
         }
 

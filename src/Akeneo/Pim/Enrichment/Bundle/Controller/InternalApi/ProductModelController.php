@@ -89,9 +89,6 @@ class ProductModelController
     private $productModelAttributeFilter;
 
     /** @var Client */
-    private $productModelClient;
-
-    /** @var Client */
     private $productAndProductModelClient;
 
     /**
@@ -112,7 +109,6 @@ class ProductModelController
      * @param NormalizerInterface               $violationNormalizer
      * @param FamilyVariantRepositoryInterface  $familyVariantRepository
      * @param AttributeFilterInterface          $productModelAttributeFilter
-     * @param Client                            $productModelClient
      * @param Client                            $productAndProductModelClient
      */
     public function __construct(
@@ -133,7 +129,6 @@ class ProductModelController
         NormalizerInterface $violationNormalizer,
         FamilyVariantRepositoryInterface $familyVariantRepository,
         AttributeFilterInterface $productModelAttributeFilter,
-        Client $productModelClient,
         Client $productAndProductModelClient
     ) {
         $this->productModelRepository = $productModelRepository;
@@ -153,7 +148,6 @@ class ProductModelController
         $this->violationNormalizer = $violationNormalizer;
         $this->familyVariantRepository = $familyVariantRepository;
         $this->productModelAttributeFilter = $productModelAttributeFilter;
-        $this->productModelClient = $productModelClient;
         $this->productAndProductModelClient = $productAndProductModelClient;
     }
 
@@ -395,7 +389,6 @@ class ProductModelController
         $productModel = $this->findProductModelOr404($id);
         $this->productModelRemover->remove($productModel);
 
-        $this->productModelClient->refreshIndex();
         $this->productAndProductModelClient->refreshIndex();
 
         return new JsonResponse();
