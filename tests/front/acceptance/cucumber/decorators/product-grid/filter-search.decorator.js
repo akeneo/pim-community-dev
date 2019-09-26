@@ -26,13 +26,9 @@ const FilterSearch = async (nodeElement, createElementDecorator, parent) => {
       const matchingFilter = await nodeElement.$(`label[for="${filterNames[i]}"]`)
       await matchingFilter.click();
     }
-
-    // const closeButton = await nodeElement.$('.AknButton--apply')
-    // await closeButton.click();
   }
 
   const enableFilter = async (name) => {
-    // await open();
     await parent.waitForSelector(`label[for="family"]`, { visible: true })
 
     try {

@@ -27,7 +27,6 @@ const Filter = async (nodeElement) => {
   }
 
   const setValue = async (operator, value) => {
-    try {
     await nodeElement.click()
 
     const valueInput = await nodeElement.$('input')
@@ -44,10 +43,6 @@ const Filter = async (nodeElement) => {
 
     const updateButton = await nodeElement.$('button')
     await updateButton.click();
-
-    } catch (e) {
-      console.log(`Could not find operator by label ${operator}`)
-    }
   }
 
   return { getName, setValue, remove };

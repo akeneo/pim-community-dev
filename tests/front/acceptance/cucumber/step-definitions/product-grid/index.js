@@ -121,25 +121,8 @@ module.exports = function(cucumber) {
   Then('I should be able to use the following filters:', { timeout: 60000 }, async function (itemTable) {
     const filterList = await createElementDecorator(config)(this.page, 'Product grid filter list')
     const filters = convertItemTable(itemTable);
-    const filterSearch = await createElementDecorator(config)(this.page, 'Product grid filter search')
-
-    // console.log(filterSearch)
-    // this.page.on('request', request => {
-    //   const params = getQueryParamsFromRequest(request);
-    //   console.log(params)
-    //   request.continue();
-    // })
 
     for (let i = 0; i < filters.length; i++) {
-      const uniqueFilters = Array.from(new Set(filters.map(filter => filter.filter)))
-      await filterList.resetFilters(uniqueFilters);
-      await this.page.waitForSelector('.AknLoadingMask.loading-mask', {hidden: true});
-      await filterSearch.open();
-      await this.page.waitFor(500);
-      await filterSearch.enableFilter(filters[i].filter);
-      await filterSearch.close();
-      await this.page.waitFor(500)
-
       await filterList.setFilterValue(
         filters[i].filter,
         filters[i].operator,
@@ -151,8 +134,6 @@ module.exports = function(cucumber) {
 
       const productGrid = await createElementDecorator(config)(this.page, 'Product grid')
       const rowNames = await productGrid.getRowNames();
-
-      console.log('result', filters[i].result)
 
       // assert.deepEqual(rowNames, [filters[i].result]);
     }
