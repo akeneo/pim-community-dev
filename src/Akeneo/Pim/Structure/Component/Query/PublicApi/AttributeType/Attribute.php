@@ -30,6 +30,9 @@ final class Attribute
     /** @var bool */
     private $decimalsAllowed;
 
+    /** @var string */
+    private $backendType;
+
     public function __construct(
         string $attributeCode,
         string $attributeType,
@@ -37,7 +40,8 @@ final class Attribute
         bool $isLocalizable,
         bool $isScopable,
         ?string $metricFamily,
-        bool $decimalsAllowed
+        bool $decimalsAllowed,
+        string $backendType
     ) {
         $this->attributeCode = $attributeCode;
         $this->attributeType = $attributeType;
@@ -46,6 +50,7 @@ final class Attribute
         $this->isScopable = $isScopable;
         $this->metricFamily = $metricFamily;
         $this->decimalsAllowed = $decimalsAllowed;
+        $this->backendType = $backendType;
     }
 
     public function code(): string
@@ -86,5 +91,10 @@ final class Attribute
     public function isDecimalsAllowed(): bool
     {
         return $this->decimalsAllowed;
+    }
+
+    public function backendType(): string
+    {
+        return $this->backendType;
     }
 }

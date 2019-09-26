@@ -2,19 +2,19 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value;
 
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\BooleanNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class BooleanNormalizerSpec extends ObjectBehavior
 {
-    function let(IdentifiableObjectRepositoryInterface $attributeRepository)
+    function let(GetAttributes $getAttributes)
     {
-        $this->beConstructedWith($attributeRepository);
+        $this->beConstructedWith($getAttributes);
     }
 
     function it_is_initializable()
@@ -30,17 +30,31 @@ class BooleanNormalizerSpec extends ObjectBehavior
     function it_support_boolean_product_value_for_both_indexing_formats(
         ValueInterface $textValue,
         ValueInterface $booleanValue,
-        AttributeInterface $textAttribute,
-        AttributeInterface $booleanAttribute,
-        $attributeRepository
+        GetAttributes $getAttributes
     ) {
         $textValue->getAttributeCode()->willReturn('my_text_attribute');
-        $attributeRepository->findOneByIdentifier('my_text_attribute')->willReturn($textAttribute);
-        $textAttribute->getBackendType()->willReturn('text');
-
         $booleanValue->getAttributeCode()->willReturn('my_boolean_attribute');
-        $attributeRepository->findOneByIdentifier('my_boolean_attribute')->willReturn($booleanAttribute);
-        $booleanAttribute->getBackendType()->willReturn('boolean');
+
+        $getAttributes->forCode('my_boolean_attribute')->willReturn(new Attribute(
+            'my_boolean_attribute',
+            'pim_catalog_boolean',
+            [],
+            false,
+            false,
+            null,
+            true,
+            'boolean'
+        ));
+        $getAttributes->forCode('my_text_attribute')->willReturn(new Attribute(
+            'my_text_attribute',
+            'pim_catalog_text',
+            [],
+            false,
+            false,
+            null,
+            true,
+            'text'
+        ));
 
         $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
         $this->supportsNormalization($textValue, 'whatever')->shouldReturn(false);
@@ -55,21 +69,26 @@ class BooleanNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_boolean_product_value_with_no_locale_and_no_channel(
         ValueInterface $value,
-        AttributeInterface $attribute,
-        $attributeRepository
+        GetAttributes $getAttributes
     ) {
-        $value->getAttributeCode()->willReturn('a_yes_no');
-        $attributeRepository->findOneByIdentifier('a_yes_no')->willReturn($attribute);
+        $value->getAttributeCode()->willReturn('my_boolean_attribute');
+        $getAttributes->forCode('my_boolean_attribute')->willReturn(new Attribute(
+            'my_boolean_attribute',
+            'pim_catalog_boolean',
+            [],
+            false,
+            false,
+            null,
+            true,
+            'boolean'
+        ));
 
         $value->getLocaleCode()->willReturn(null);
         $value->getScopeCode()->willReturn(null);
         $value->getData()->willReturn(true);
 
-        $attribute->getCode()->willReturn('a_yes_no');
-        $attribute->getBackendType()->willReturn('boolean');
-
         $this->normalize($value, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
-            'a_yes_no-boolean' => [
+            'my_boolean_attribute-boolean' => [
                 '<all_channels>' => [
                     '<all_locales>' => true
                 ]
@@ -79,21 +98,26 @@ class BooleanNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_boolean_product_value_with_locale_and_no_scope(
         ValueInterface $value,
-        AttributeInterface $attribute,
-        $attributeRepository
+        GetAttributes $getAttributes
     ) {
-        $value->getAttributeCode()->willReturn('a_yes_no');
-        $attributeRepository->findOneByIdentifier('a_yes_no')->willReturn($attribute);
+        $value->getAttributeCode()->willReturn('my_boolean_attribute');
+        $getAttributes->forCode('my_boolean_attribute')->willReturn(new Attribute(
+            'my_boolean_attribute',
+            'pim_catalog_boolean',
+            [],
+            false,
+            false,
+            null,
+            true,
+            'boolean'
+        ));
 
         $value->getLocaleCode()->willReturn('fr_FR');
         $value->getScopeCode()->willReturn(null);
         $value->getData()->willReturn(true);
 
-        $attribute->getCode()->willReturn('a_yes_no');
-        $attribute->getBackendType()->willReturn('boolean');
-
         $this->normalize($value, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
-            'a_yes_no-boolean' => [
+            'my_boolean_attribute-boolean' => [
                 '<all_channels>' => [
                     'fr_FR' => true
                 ]
@@ -103,21 +127,26 @@ class BooleanNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_boolean_product_value_with_scope_and_no_locale(
         ValueInterface $value,
-        AttributeInterface $attribute,
-        $attributeRepository
+        GetAttributes $getAttributes
     ) {
-        $value->getAttributeCode()->willReturn('a_yes_no');
-        $attributeRepository->findOneByIdentifier('a_yes_no')->willReturn($attribute);
+        $value->getAttributeCode()->willReturn('my_boolean_attribute');
+        $getAttributes->forCode('my_boolean_attribute')->willReturn(new Attribute(
+            'my_boolean_attribute',
+            'pim_catalog_boolean',
+            [],
+            false,
+            false,
+            null,
+            true,
+            'boolean'
+        ));
 
         $value->getLocaleCode()->willReturn(null);
         $value->getScopeCode()->willReturn('ecommerce');
         $value->getData()->willReturn(true);
 
-        $attribute->getCode()->willReturn('a_yes_no');
-        $attribute->getBackendType()->willReturn('boolean');
-
         $this->normalize($value, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
-            'a_yes_no-boolean' => [
+            'my_boolean_attribute-boolean' => [
                 'ecommerce' => [
                     '<all_locales>' => true
                 ]
@@ -127,21 +156,26 @@ class BooleanNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_boolean_product_value_with_locale_and_scope(
         ValueInterface $value,
-        AttributeInterface $attribute,
-        $attributeRepository
+        GetAttributes $getAttributes
     ) {
-        $value->getAttributeCode()->willReturn('a_yes_no');
-        $attributeRepository->findOneByIdentifier('a_yes_no')->willReturn($attribute);
+        $value->getAttributeCode()->willReturn('my_boolean_attribute');
+        $getAttributes->forCode('my_boolean_attribute')->willReturn(new Attribute(
+            'my_boolean_attribute',
+            'pim_catalog_boolean',
+            [],
+            false,
+            false,
+            null,
+            true,
+            'boolean'
+        ));
 
         $value->getLocaleCode()->willReturn('fr_FR');
         $value->getScopeCode()->willReturn('ecommerce');
         $value->getData()->willReturn(true);
 
-        $attribute->getCode()->willReturn('a_yes_no');
-        $attribute->getBackendType()->willReturn('boolean');
-
         $this->normalize($value, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
-            'a_yes_no-boolean' => [
+            'my_boolean_attribute-boolean' => [
                 'ecommerce' => [
                     'fr_FR' => true
                 ]
@@ -151,21 +185,26 @@ class BooleanNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_an_empty_boolean_product_value(
         ValueInterface $value,
-        AttributeInterface $attribute,
-        $attributeRepository
+        GetAttributes $getAttributes
     ) {
-        $value->getAttributeCode()->willReturn('a_yes_no');
-        $attributeRepository->findOneByIdentifier('a_yes_no')->willReturn($attribute);
+        $value->getAttributeCode()->willReturn('my_boolean_attribute');
+        $getAttributes->forCode('my_boolean_attribute')->willReturn(new Attribute(
+            'my_boolean_attribute',
+            'pim_catalog_boolean',
+            [],
+            false,
+            false,
+            null,
+            true,
+            'boolean'
+        ));
 
         $value->getLocaleCode()->willReturn(null);
         $value->getScopeCode()->willReturn(null);
         $value->getData()->willReturn(null);
 
-        $attribute->getCode()->willReturn('a_yes_no');
-        $attribute->getBackendType()->willReturn('boolean');
-
         $this->normalize($value, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
-            'a_yes_no-boolean' => [
+            'my_boolean_attribute-boolean' => [
                 '<all_channels>' => [
                     '<all_locales>' => null
                 ]

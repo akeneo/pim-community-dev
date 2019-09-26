@@ -3,12 +3,10 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductValueNormalizer;
-use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -60,7 +58,8 @@ class ProductValueNormalizerSpec extends ObjectBehavior
             false,
             false,
             null,
-            false
+            false,
+            'text'
         );
 
         $getAttributes->forCode('attribute')->willReturn($attribute);
@@ -95,7 +94,8 @@ class ProductValueNormalizerSpec extends ObjectBehavior
             true,
             false,
             null,
-            false
+            false,
+            'text'
         );
 
         $getAttributes->forCode('attribute')->willReturn($attribute);
@@ -130,7 +130,8 @@ class ProductValueNormalizerSpec extends ObjectBehavior
             true,
             true,
             null,
-            false
+            false,
+            'text'
         );
 
         $getAttributes->forCode('attribute')->willReturn($attribute);
@@ -164,7 +165,8 @@ class ProductValueNormalizerSpec extends ObjectBehavior
             true,
             true,
             null,
-            true
+            true,
+            'integer'
         );
 
         $getAttributes->forCode('attribute')->willReturn($attribute);
@@ -198,7 +200,8 @@ class ProductValueNormalizerSpec extends ObjectBehavior
             true,
             true,
             null,
-            false
+            false,
+            'integer'
         );
 
         $getAttributes->forCode('attribute')->willReturn($attribute);
@@ -233,7 +236,8 @@ class ProductValueNormalizerSpec extends ObjectBehavior
             false,
             false,
             null,
-            false
+            false,
+            'option'
         );
 
         $getAttributes->forCode('attribute')->willReturn($attribute);
@@ -268,7 +272,8 @@ class ProductValueNormalizerSpec extends ObjectBehavior
             false,
             false,
             null,
-            false
+            false,
+            'options'
         );
 
         $getAttributes->forCode('attribute')->willReturn($attribute);

@@ -2,19 +2,19 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value;
 
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\NumberNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
+use PhpSpec\ObjectBehavior;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class NumberNormalizerSpec extends ObjectBehavior
 {
-    function let(IdentifiableObjectRepositoryInterface $attributeRepository)
+    function let(GetAttributes $getAttributes)
     {
-        $this->beConstructedWith($attributeRepository);
+        $this->beConstructedWith($getAttributes);
     }
 
     function it_is_initializable()
@@ -30,18 +30,31 @@ class NumberNormalizerSpec extends ObjectBehavior
     function it_support_number_product_value(
         ValueInterface $numberValue,
         ValueInterface $textValue,
-        AttributeInterface $numberAttribute,
-        AttributeInterface $textAttribute,
-        $attributeRepository
+        GetAttributes $getAttributes
     ) {
         $numberValue->getAttributeCode()->willReturn('my_number_attribute');
         $textValue->getAttributeCode()->willReturn('my_text_attribute');
 
-        $numberAttribute->getBackendType()->willReturn('decimal');
-        $textAttribute->getBackendType()->willReturn('text');
-
-        $attributeRepository->findOneByIdentifier('my_number_attribute')->willReturn($numberAttribute);
-        $attributeRepository->findOneByIdentifier('my_text_attribute')->willReturn($textAttribute);
+        $getAttributes->forCode('my_number_attribute')->willReturn(new Attribute(
+            'my_number_attribute',
+            'pim_catalog_number',
+            [],
+            false,
+            false,
+            null,
+            true,
+            'decimal'
+        ));
+        $getAttributes->forCode('my_text_attribute')->willReturn(new Attribute(
+            'my_text_attribute',
+            'pim_catalog_text',
+            [],
+            false,
+            false,
+            null,
+            true,
+            'text'
+        ));
 
         $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
 
@@ -58,21 +71,26 @@ class NumberNormalizerSpec extends ObjectBehavior
 
     function it_normamlizes_an_empty_number_product_value_with_no_locale_and_no_channel(
         ValueInterface $integerValue,
-        AttributeInterface $integerAttribute,
-        $attributeRepository
+        GetAttributes $getAttributes
     ) {
-        $integerValue->getAttributeCode()->willReturn('my_integer_attribute');
+        $integerValue->getAttributeCode()->willReturn('my_number_attribute');
         $integerValue->getLocaleCode()->willReturn(null);
         $integerValue->getScopeCode()->willReturn(null);
         $integerValue->getData()->willReturn(null);
 
-        $integerAttribute->isDecimalsAllowed()->willReturn(false);
-        $integerAttribute->getCode()->willReturn('box_quantity');
-        $integerAttribute->getBackendType()->willReturn('decimal');
-        $attributeRepository->findOneByIdentifier('my_integer_attribute')->willReturn($integerAttribute);
+        $getAttributes->forCode('my_number_attribute')->willReturn(new Attribute(
+            'my_number_attribute',
+            'pim_catalog_number',
+            [],
+            false,
+            false,
+            null,
+            false,
+            'decimal'
+        ));
 
         $this->normalize($integerValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
-            'box_quantity-decimal' => [
+            'my_number_attribute-decimal' => [
                 '<all_channels>' => [
                     '<all_locales>' => null
                 ]
@@ -82,21 +100,26 @@ class NumberNormalizerSpec extends ObjectBehavior
 
     function it_normalize_an_integer_product_value_with_no_locale_and_no_channel(
         ValueInterface $integerValue,
-        AttributeInterface $integerAttribute,
-        $attributeRepository
+        GetAttributes $getAttributes
     ) {
-        $integerValue->getAttributeCode()->willReturn('my_integer_attribute');
+        $integerValue->getAttributeCode()->willReturn('my_number_attribute');
         $integerValue->getLocaleCode()->willReturn(null);
         $integerValue->getScopeCode()->willReturn(null);
         $integerValue->getData()->willReturn(12);
 
-        $integerAttribute->isDecimalsAllowed()->willReturn(false);
-        $integerAttribute->getCode()->willReturn('box_quantity');
-        $integerAttribute->getBackendType()->willReturn('decimal');
-        $attributeRepository->findOneByIdentifier('my_integer_attribute')->willReturn($integerAttribute);
+        $getAttributes->forCode('my_number_attribute')->willReturn(new Attribute(
+            'my_number_attribute',
+            'pim_catalog_number',
+            [],
+            false,
+            false,
+            null,
+            false,
+            'decimal'
+        ));
 
         $this->normalize($integerValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
-            'box_quantity-decimal' => [
+            'my_number_attribute-decimal' => [
                 '<all_channels>' => [
                     '<all_locales>' => '12'
                 ]
@@ -106,21 +129,26 @@ class NumberNormalizerSpec extends ObjectBehavior
 
     function it_normalize_a_decimal_product_value_with_no_locale_and_no_channel(
         ValueInterface $decimalValue,
-        AttributeInterface $decimalAttribute,
-        $attributeRepository
+        GetAttributes $getAttributes
     ){
-        $decimalValue->getAttributeCode()->willReturn('my_decimal_attribute');
+        $decimalValue->getAttributeCode()->willReturn('my_number_attribute');
         $decimalValue->getLocaleCode()->willReturn(null);
         $decimalValue->getScopeCode()->willReturn(null);
         $decimalValue->getData()->willReturn('12.4999');
 
-        $decimalAttribute->isDecimalsAllowed()->willReturn(true);
-        $decimalAttribute->getCode()->willReturn('size');
-        $decimalAttribute->getBackendType()->willReturn('decimal');
-        $attributeRepository->findOneByIdentifier('my_decimal_attribute')->willReturn($decimalAttribute);
+        $getAttributes->forCode('my_number_attribute')->willReturn(new Attribute(
+            'my_number_attribute',
+            'pim_catalog_number',
+            [],
+            false,
+            false,
+            null,
+            true,
+            'decimal'
+        ));
 
         $this->normalize($decimalValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
-            'size-decimal' => [
+            'my_number_attribute-decimal' => [
                 '<all_channels>' => [
                     '<all_locales>' => '12.4999'
                 ]
@@ -130,21 +158,26 @@ class NumberNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_decimal_product_value_with_locale(
         ValueInterface $decimalValue,
-        AttributeInterface $decimalAttribute,
-        $attributeRepository
+        GetAttributes $getAttributes
     ) {
-        $decimalValue->getAttributeCode()->willReturn('my_decimal_attribute');
+        $decimalValue->getAttributeCode()->willReturn('my_number_attribute');
         $decimalValue->getLocaleCode()->willReturn('en_US');
         $decimalValue->getScopeCode()->willReturn(null);
         $decimalValue->getData()->willReturn('12.4999');
 
-        $decimalAttribute->isDecimalsAllowed()->willReturn(true);
-        $decimalAttribute->getCode()->willReturn('size');
-        $decimalAttribute->getBackendType()->willReturn('decimal');
-        $attributeRepository->findOneByIdentifier('my_decimal_attribute')->willReturn($decimalAttribute);
+        $getAttributes->forCode('my_number_attribute')->willReturn(new Attribute(
+            'my_number_attribute',
+            'pim_catalog_number',
+            [],
+            false,
+            false,
+            null,
+            true,
+            'decimal'
+        ));
 
         $this->normalize($decimalValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
-            'size-decimal' => [
+            'my_number_attribute-decimal' => [
                 '<all_channels>' => [
                     'en_US' => '12.4999'
                 ]
@@ -154,21 +187,26 @@ class NumberNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_integer_product_value_with_locale(
         ValueInterface $decimalValue,
-        AttributeInterface $decimalAttribute,
-        $attributeRepository
+        GetAttributes $getAttributes
     ) {
-        $decimalValue->getAttributeCode()->willReturn('my_decimal_attribute');
+        $decimalValue->getAttributeCode()->willReturn('my_number_attribute');
         $decimalValue->getLocaleCode()->willReturn(null);
         $decimalValue->getScopeCode()->willReturn('ecommerce');
         $decimalValue->getData()->willReturn(12);
 
-        $decimalAttribute->isDecimalsAllowed()->willReturn(false);
-        $decimalAttribute->getCode()->willReturn('size');
-        $decimalAttribute->getBackendType()->willReturn('decimal');
-        $attributeRepository->findOneByIdentifier('my_decimal_attribute')->willReturn($decimalAttribute);
+        $getAttributes->forCode('my_number_attribute')->willReturn(new Attribute(
+            'my_number_attribute',
+            'pim_catalog_number',
+            [],
+            false,
+            false,
+            null,
+            false,
+            'decimal'
+        ));
 
         $this->normalize($decimalValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
-            'size-decimal' => [
+            'my_number_attribute-decimal' => [
                 'ecommerce' => [
                     '<all_locales>' => '12'
                 ]
@@ -178,21 +216,26 @@ class NumberNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_integer_product_value_with_locale_and_channel(
         ValueInterface $decimalValue,
-        AttributeInterface $decimalAttribute,
-        $attributeRepository
+        GetAttributes $getAttributes
     ) {
-        $decimalValue->getAttributeCode()->willReturn('my_decimal_attribute');
+        $decimalValue->getAttributeCode()->willReturn('my_number_attribute');
         $decimalValue->getLocaleCode()->willReturn('fr_FR');
         $decimalValue->getScopeCode()->willReturn('ecommerce');
         $decimalValue->getData()->willReturn(12);
 
-        $decimalAttribute->isDecimalsAllowed()->willReturn(false);
-        $decimalAttribute->getCode()->willReturn('size');
-        $decimalAttribute->getBackendType()->willReturn('decimal');
-        $attributeRepository->findOneByIdentifier('my_decimal_attribute')->willReturn($decimalAttribute);
+        $getAttributes->forCode('my_number_attribute')->willReturn(new Attribute(
+            'my_number_attribute',
+            'pim_catalog_number',
+            [],
+            false,
+            false,
+            null,
+            false,
+            'decimal'
+        ));
 
         $this->normalize($decimalValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
-            'size-decimal' => [
+            'my_number_attribute-decimal' => [
                 'ecommerce' => [
                     'fr_FR' => '12'
                 ]
