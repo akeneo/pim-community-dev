@@ -286,3 +286,12 @@ workflows:
           - back_behat_legacy:
                 requires:
                     - back_phpunit
+
+    deployment:
+        jobs:
+            - wait_for_user_approval:
+                  type: approval
+                  filters:
+                      branches:
+                          only:
+                              - master
