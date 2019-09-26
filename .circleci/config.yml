@@ -357,14 +357,13 @@ workflows:
                     - back_phpunit
 
   deployment:
-      triggers:
-          - schedule:
-                cron: "0 4 * * *"
+      jobs:
+          - wait_for_user_approval:
+                type: approval
                 filters:
                     branches:
-                        only:
+                        ignore:
                             - master
-      jobs:
           - build_dev:
                 requires:
                     - wait_for_user_approval
