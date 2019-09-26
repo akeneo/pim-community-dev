@@ -247,9 +247,9 @@ jobs:
                   IMAGE_TAG=$CIRCLE_SHA1 make php-image-prod
                   docker save -o pim-image-prod.tar eu.gcr.io/akeneo-cloud:$CIRCLE_SHA1
           - persist_to_workspace:
-              root: ~/
+              root: ~/project
               paths:
-                  - project
+                  - pim-image-prod.tar
 
   tests:
       machine:
