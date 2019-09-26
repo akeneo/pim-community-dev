@@ -197,12 +197,14 @@ services:
             - { name: oro_datagrid.datasource, type: pimee_datasource_proposal_product }
 
     pimee_workflow.datagrid.extension.mass_action.type.mass_approve:
+        public: true
         class: '%oro_datagrid.extension.mass_action.type.redirect.class%'
         shared: false
         tags:
             - { name: oro_datagrid.extension.mass_action.type, type: mass-approve-proposal }
 
     pimee_workflow.datagrid.extension.mass_action.type.mass_refuse:
+        public: true
         class: '%oro_datagrid.extension.mass_action.type.redirect.class%'
         shared: false
         tags:
