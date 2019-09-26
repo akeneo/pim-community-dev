@@ -246,11 +246,17 @@ jobs:
               command: |
                   IMAGE_TAG=$CIRCLE_SHA1 make php-image-prod
                   docker save -o pim-image-prod.tar eu.gcr.io/akeneo-cloud:$CIRCLE_SHA1
+          - persist_to_workspace:
+              root: ~/
+              paths:
+                  - project
 
   tests:
       machine:
           image: ubuntu-1604:201903-01
       steps:
+          -   attach_workspace:
+                  at: ~/
           -   run:
                   name: make tests
                   command: |
