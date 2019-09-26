@@ -11,6 +11,7 @@ module.exports = async function() {
       ignoreHTTPSErrors: true,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
       headless: false,
+      devtools: true
     });
   // store the browser instance so we can teardown it later
   global.__BROWSER__ = browser;
