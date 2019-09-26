@@ -114,8 +114,6 @@ class ProductModelController
      * @param AttributeFilterInterface          $productModelAttributeFilter
      * @param Client                            $productModelClient
      * @param Client                            $productAndProductModelClient
-     *
-     * TODO: merge master remove null
      */
     public function __construct(
         ProductModelRepositoryInterface $productModelRepository,
