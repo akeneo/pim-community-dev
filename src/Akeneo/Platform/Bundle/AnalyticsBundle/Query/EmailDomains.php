@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\AnalyticsBundle\Query;
 
+use Akeneo\Tool\Component\Analytics\EmailDomainsQuery;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -11,7 +12,7 @@ use Doctrine\DBAL\Connection;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class EmailDomains
+class EmailDomains implements EmailDomainsQuery
 {
     /** @var Connection */
     private $connection;

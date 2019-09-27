@@ -3,9 +3,9 @@
 namespace Specification\Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector;
 
 use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
+use Akeneo\Tool\Component\Analytics\EmailDomainsQuery;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector\DBDataCollector;
-use Akeneo\Platform\Bundle\AnalyticsBundle\Query\EmailDomains;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
@@ -28,7 +28,7 @@ class DBDataCollectorSpec extends ObjectBehavior
         CountQuery $productValueCountQuery,
         AverageMaxQuery $productValueAverageMaxQuery,
         AverageMaxQuery $productValuePerFamilyAverageMaxQuery,
-        EmailDomains $emailDomains
+        EmailDomainsQuery $emailDomains
     ) {
         $this->beConstructedWith(
             $channelCountQuery,

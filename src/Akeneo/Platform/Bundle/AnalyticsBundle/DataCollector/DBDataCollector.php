@@ -2,10 +2,10 @@
 
 namespace Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector;
 
-use Akeneo\Platform\Bundle\AnalyticsBundle\Query\EmailDomains;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
 use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
+use Akeneo\Tool\Component\Analytics\EmailDomainsQuery;
 
 /**
  * Collects the structure of the PIM catalog:
@@ -70,7 +70,7 @@ class DBDataCollector implements DataCollectorInterface
     /** @var AverageMaxQuery */
     protected $productValuePerFamilyAverageMaxQuery;
 
-    /** @var EmailDomains */
+    /** @var EmailDomainsQuery */
     protected $emailDomains;
 
     public function __construct(
@@ -88,7 +88,7 @@ class DBDataCollector implements DataCollectorInterface
         CountQuery        $productValueCountQuery,
         AverageMaxQuery   $productValueAverageMaxQuery,
         AverageMaxQuery   $productValuePerFamilyAverageMaxQuery,
-        EmailDomains $emailDomains
+        EmailDomainsQuery $emailDomains
     ) {
         $this->channelCountQuery = $channelCountQuery;
         $this->productCountQuery = $productCountQuery;
