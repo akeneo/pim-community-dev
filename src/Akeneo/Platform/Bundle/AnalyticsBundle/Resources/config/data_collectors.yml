@@ -38,11 +38,6 @@ services:
             - { name: pim_analytics.data_collector, type: update_checker }
             - { name: pim_analytics.data_collector, type: system_info_report }
 
-    pim_analytics.query.email_domains:
-        class: Akeneo\Platform\Bundle\AnalyticsBundle\Query\EmailDomains
-        arguments:
-            - '@database_connection'
-
     pim_analytics.data_collector.database:
         class: '%pim_analytics.data_collector.database.class%'
         arguments:
