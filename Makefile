@@ -21,8 +21,8 @@ include make-file/*.mk
 ## Front
 ##
 
-.PHONY: cache-front
-cache-front:
+.PHONY: remove-front-files
+remove-front-files:
 	rm -rf public/bundles public/dist public/css public/js
 
 node_modules: package.json
@@ -53,7 +53,7 @@ javascript-test:
 	$(YARN_EXEC) run webpack-test
 
 .PHONY: front
-front: cache-front assets css javascript-test javascript-dev
+front: remove-front-files assets css javascript-test javascript-dev
 
 ##
 ## Back
@@ -63,8 +63,8 @@ front: cache-front assets css javascript-test javascript-dev
 fix-cs-back:
 	$(PHP_RUN) vendor/bin/php-cs-fixer fix --config=.php_cs.php
 
-.PHONY: cache-back
-cache-back:
+.PHONY: cache
+cache:
 	rm -rf var/cache && $(PHP_RUN) bin/console cache:warmup
 
 composer.lock: composer.json
@@ -83,9 +83,6 @@ database:
 
 .PHONY: dependencies
 dependencies: vendor node_modules
-
-.PHONY: cache
-cache: cache-back cache-front
 
 .PHONY: pim-behat
 pim-behat:
