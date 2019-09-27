@@ -112,35 +112,6 @@ class FetchProductRowsFromIdentifiersIntegration extends TestCase
         ]);
     }
 
-    public function test_it_works_with_empty_product_model()
-    {
-        $this->createFamily('family', ['a_simple_select']);
-        $this->createFamilyVariant('family', 'familyVariant', ['a_simple_select']);
-        $this->createProductModel('productModel', 'familyVariant');
-        $this->createVariantProduct('productVariant', 'productModel');
-
-        $query = $this->getFetchProductRowsFromIdentifiers();
-        $result = $query(['productVariant'], ['a_simple_select'], 'ecommerce', 'en_US');
-
-        Assert::count($result, 1);
-        $row = $result[0];
-
-        $expectedAttributesCodes = ['sku', 'a_simple_select'];
-        $expectedData = ['productVariant', 'optionA'];
-
-        $skuValue = $row->values()->getValues()[0];
-        $simpleSelectValue = $row->values()->getValues()[1];
-
-        \PHPUnit\Framework\Assert::assertEqualsCanonicalizing($expectedAttributesCodes, [
-            $skuValue->getAttributeCode(),
-            $simpleSelectValue->getAttributeCode()
-        ]);
-        \PHPUnit\Framework\Assert::assertEqualsCanonicalizing($expectedData, [
-            $skuValue->getData(),
-            $simpleSelectValue->getData()
-        ]);
-    }
-
     /**
      * {@inheritdoc}
      */
