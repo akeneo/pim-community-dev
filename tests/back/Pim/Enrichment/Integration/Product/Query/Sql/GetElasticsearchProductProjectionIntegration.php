@@ -11,6 +11,7 @@ use Akeneo\Test\IntegrationTestsBundle\Sanitizer\DateSanitizer;
 use Akeneo\Test\IntegrationTestsBundle\Sanitizer\MediaSanitizer;
 use AkeneoTest\Pim\Enrichment\Integration\Fixture\EntityBuilder;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
+use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -222,6 +223,20 @@ class GetElasticsearchProductProjectionIntegration extends TestCase
         Assert::assertSame($expectedAttributeCodesForThisLevel, $normalizedProductProjection['attributes_for_this_level']);
     }
 
+    public function test_that_it_returns_latest_updated_date_of_the_product_and_ancestors_with_correct_timezone()
+    {
+        $this->createVariantProduct();
+
+        $sql = 'UPDATE pim_catalog_product_model SET updated=:updated_date WHERE code=:code';
+        $this->getConnection()->executeQuery($sql, ['updated_date' => '2028-10-01 12:34:56', 'code' => 'root_product_model']);
+        $this->getConnection()->executeQuery($sql, ['updated_date' => '2030-10-01 12:34:56', 'code' => 'sub_product_model']);
+
+        $query = $this->get('akeneo.pim.enrichment.product.query.get_elasticsearch_product_projection');
+        $productProjection = $query->fromProductIdentifier('bar');
+
+        $this->assertEquals('2030-10-01T14:34:56+02:00', $productProjection->toArray()['updated']);
+    }
+
     protected function getConfiguration()
     {
         return $this->catalog->useTechnicalCatalog();
@@ -356,5 +371,10 @@ class GetElasticsearchProductProjectionIntegration extends TestCase
                 }
             }
         }
+    }
+
+    private function getConnection(): Connection
+    {
+        return $this->get('database_connection');
     }
 }
