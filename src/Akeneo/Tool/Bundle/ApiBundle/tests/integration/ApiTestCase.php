@@ -49,6 +49,8 @@ abstract class ApiTestCase extends WebTestCase
         $this->testKernel = new \AppKernelTest('test', false);
         $this->testKernel->boot();
 
+        $this->catalog = $this->getFromTestContainer('akeneo_integration_tests.configuration.catalog');
+        
         $authenticator = new SystemUserAuthenticator(
             $this->get('pim_user.factory.user'),
             $this->get('pim_user.repository.group'),
@@ -57,7 +59,6 @@ abstract class ApiTestCase extends WebTestCase
         );
         $authenticator->createSystemUser();
 
-        $this->catalog = $this->getFromTestContainer('akeneo_integration_tests.configuration.catalog');
         $this->testKernel->getContainer()->set('akeneo_integration_tests.catalog.configuration', $this->getConfiguration());
 
         $fixturesLoader = $this->getFromTestContainer('akeneo_integration_tests.loader.fixtures_loader');
