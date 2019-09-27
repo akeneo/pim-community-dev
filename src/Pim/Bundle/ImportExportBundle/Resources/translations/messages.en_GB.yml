@@ -1,7 +1,7 @@
-Job: Работа
+Job: Job
 Connector: Connector
 pim_import_export:
-  job: Работа
+  job: Job
   connector: Connector
   status:
     0: Ready
