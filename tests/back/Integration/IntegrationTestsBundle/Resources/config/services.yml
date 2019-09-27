@@ -24,7 +24,8 @@ services:
     akeneo_ee_integration_tests.loader.permission_cleaner:
         class: '%akeneo_ee_integration_tests.loader.permission_cleaner.class%'
         arguments:
-            - '@kernel'
+            - '@Akeneo\Platform\Bundle\InstallerBundle\Command\CleanCategoryAccessesCommand'
+            - '@Akeneo\Platform\Bundle\InstallerBundle\Command\CleanAttributeGroupAccessesCommand'
 
     akeneo_ee_integration_tests.configuration.catalog:
         class: '%akeneo_ee_integration_tests.configuration.catalog.class%'
