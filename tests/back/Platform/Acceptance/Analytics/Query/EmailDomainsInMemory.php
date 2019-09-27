@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Platform\Acceptance\Analytics\Query;
 
-use Akeneo\Tools\Component\Analytics\EmailDomainsQuery;
+use Akeneo\Tool\Component\Analytics\EmailDomainsQuery;
 
 class EmailDomainsInMemory implements EmailDomainsQuery
 {
