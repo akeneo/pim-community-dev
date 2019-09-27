@@ -20,7 +20,23 @@ const mockResponses = {
   ],
 }
 
-const matchResponses = (page, products = [], filters = []) => {
+const mockFilteredResponse = async (page, responses) => {
+  return page.on('request', (interceptedRequest) => {
+    const response = responses[interceptedRequest.url()]
+
+    if (response) {
+      const { productGridData } = constructProductsResponse(response)
+
+      return interceptedRequest.respond({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify(productGridData),
+      })
+    }
+  })
+}
+
+const constructProductsResponse = (products) => {
   const productGridData = {
     data: products,
     totalRecords: products.length,
@@ -33,6 +49,12 @@ const matchResponses = (page, products = [], filters = []) => {
     data: JSON.stringify(productGridData)
   })
 
+  return { productGridData, productLoadData };
+}
+
+const buildProductGridResponses = (page, products = [], filters = []) => {
+  const { productGridData, productLoadData } = constructProductsResponse(products)
+
   const productGridResponses = {
     'http://pim.com/datagrid/product-grid?dataLocale=en_US&product-grid%5B_pager%5D%5B_page%5D=1&product-grid%5B_pager%5D%5B_per_page%5D=25&product-grid%5B_parameters%5D%5Bview%5D%5Bcolumns%5D=identifier%2Cimage%2Clabel%2Cfamily%2Cenabled%2Ccompleteness%2Ccreated%2Cupdated%2Ccomplete_variant_products%2Csuccess%2C%5Bobject%20Object%5D&product-grid%5B_parameters%5D%5Bview%5D%5Bid%5D=&product-grid%5B_sort_by%5D%5Bupdated%5D=DESC&product-grid%5B_filter%5D%5Bscope%5D%5Bvalue%5D=ecommerce&product-grid%5B_filter%5D%5Bcategory%5D%5Bvalue%5D%5BtreeId%5D=1&product-grid%5B_filter%5D%5Bcategory%5D%5Bvalue%5D%5BcategoryId%5D=-2&product-grid%5B_filter%5D%5Bcategory%5D%5Btype%5D=1': [
       'application/json', productGridData
@@ -44,7 +66,6 @@ const matchResponses = (page, products = [], filters = []) => {
   };
 
   return page.on('request', (interceptedRequest) => {
-    // console.log('url', interceptedRequest.url())
     const response = Object.assign(mockResponses, productGridResponses)[interceptedRequest.url()];
 
     if (!response) {
@@ -61,8 +82,8 @@ const matchResponses = (page, products = [], filters = []) => {
   })
 }
 
-const loadProductGrid = async (page, products, filters) => {
-  await matchResponses(page, products, filters);
+const loadProductGrid = async (page, products, filters, filteredResponses) => {
+  await buildProductGridResponses(page, products, filters, filteredResponses);
 
   await page.addStyleTag({ content: readFileSync(`${process.cwd()}/public/css/pim.css`, 'utf-8')})
   await page.evaluate(async () => await require('pim/init')());
@@ -84,23 +105,64 @@ const loadProductGrid = async (page, products, filters) => {
   return await page.waitForSelector('.AknLoadingMask.loading-mask', {hidden: true});
 }
 
+const getOperatorChoiceByLabel = async (filter, choiceLabel) => {
+  const operatorChoices = await filter.$$('.operator_choice');
+  let matchingChoice = null;
+
+  for(let i = 0; i < operatorChoices.length; i++) {
+    const text = await (await operatorChoices[i].getProperty('textContent')).jsonValue();
+    if (text.trim() === choiceLabel) {
+      matchingChoice = operatorChoices[i];
+      break;
+    }
+  }
+
+  return matchingChoice;
+}
+
 // Custom matchers for the product grid
 expect.extend({
   filterToBeVisible: async (filterName, page) => {
     try {
-      const filter = await page.$(`.filter-box .filter-item[data-name="${filterName}"]`);
       return {
-        pass: filter !== null,
+        pass: (await page.$(`.filter-box .filter-item[data-name="${filterName}"]`)) !== null,
         message: () => `Filter "${filterName}" should be visible`
       }
     } catch (e) {
+      return { pass: false }
+    }
+  },
+  toBeFilterableByOperator: async (filterName, operator, page) => {
+    try {
+      const filter = await page.$(`.filter-item[data-name="${filterName}"]`);
+      await filter.click();
+
+      const operatorDropdown = await filter.$('.operator');
+      await operatorDropdown.click()
+
+      const operatorChoice = await getOperatorChoiceByLabel(filter, operator);
+      await operatorChoice.click();
+
+      const updateButton = await filter.$('button')
+      await updateButton.click();
+      await page.waitForSelector('.AknLoadingMask.loading-mask', {hidden: true});
+
       return {
-        pass: false
+        pass: true,
+        message: `Can't filter "${filterName}" by "${operator}"`
+      }
+    } catch (e) {
+      return {
+        pass: false,
       }
     }
+  },
+  toBeDisplayedOnTheProductGrid: async () => {
+
   }
 })
 
 module.exports = {
-  loadProductGrid
+  loadProductGrid,
+  mockFilteredResponse
 }
