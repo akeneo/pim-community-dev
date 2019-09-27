@@ -45,16 +45,17 @@ abstract class ApiTestCase extends WebTestCase
     protected function setUp(): void
     {
         static::bootKernel(['debug' => false]);
-        $authenticator = new SystemUserAuthenticator(static::$kernel->getContainer());
-        $authenticator->createSystemUser();
 
         $this->testKernel = new \AppKernelTest('test', false);
         $this->testKernel->boot();
 
-        $this->catalog = $this->testKernel->getContainer()->get('akeneo_integration_tests.configuration.catalog');
+        $authenticator = $this->getFromTestContainer('akeneo_integration_tests.security.system_user_authenticator');
+        $authenticator->createSystemUser();
+
+        $this->catalog = $this->getFromTestContainer('akeneo_integration_tests.configuration.catalog');
         $this->testKernel->getContainer()->set('akeneo_integration_tests.catalog.configuration', $this->getConfiguration());
 
-        $fixturesLoader = $this->testKernel->getContainer()->get('akeneo_integration_tests.loader.fixtures_loader');
+        $fixturesLoader = $this->getFromTestContainer('akeneo_integration_tests.loader.fixtures_loader');
         $fixturesLoader->load();
     }
 

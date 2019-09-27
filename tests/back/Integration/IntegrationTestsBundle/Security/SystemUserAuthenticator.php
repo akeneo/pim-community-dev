@@ -2,7 +2,10 @@
 
 namespace Akeneo\Test\IntegrationTestsBundle\Security;
 
-use Psr\Container\ContainerInterface;
+use Akeneo\UserManagement\Component\Factory\UserFactory;
+use Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface;
+use Akeneo\UserManagement\Component\Repository\RoleRepositoryInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
@@ -12,15 +15,28 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
  */
 final class SystemUserAuthenticator
 {
-    /** @var ContainerInterface */
-    private $container;
+    /** @var UserFactory */
+    private $userFactory;
 
-    /**
-     * @param ContainerInterface $container
-     */
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
+    /** @var GroupRepositoryInterface */
+    private $groupRepository;
+
+    /** @var RoleRepositoryInterface */
+    private $roleRepository;
+
+    /** @var TokenStorage */
+    private $tokenStorage;
+
+    public function __construct(
+        UserFactory $userFactory,
+        GroupRepositoryInterface $groupRepository,
+        RoleRepositoryInterface $roleRepository,
+        TokenStorage $tokenStorage
+    ) {
+        $this->userFactory = $userFactory;
+        $this->groupRepository = $groupRepository;
+        $this->roleRepository = $roleRepository;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -28,20 +44,20 @@ final class SystemUserAuthenticator
      */
     public function createSystemUser()
     {
-        $user = $this->container->get('pim_user.factory.user')->create();
+        $user = $this->userFactory->create();
         $user->setUsername('system');
-        $groups = $this->container->get('pim_user.repository.group')->findAll();
+        $groups = $this->groupRepository->findAll();
 
         foreach ($groups as $group) {
             $user->addGroup($group);
         }
 
-        $roles = $this->container->get('pim_user.repository.role')->findAll();
+        $roles = $this->roleRepository->findAll();
         foreach ($roles as $role) {
             $user->addRole($role);
         }
 
         $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-        $this->container->get('security.token_storage')->setToken($token);
+        $this->tokenStorage->setToken($token);
     }
 }

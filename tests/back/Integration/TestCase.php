@@ -48,7 +48,7 @@ abstract class TestCase extends KernelTestCase
         }
 
         // authentication should be done after loading the database as the user is created with first activated locale as default locale
-        $authenticator = new SystemUserAuthenticator(static::$kernel->getContainer());
+        $authenticator = $this->getFromTestContainer('akeneo_integration_tests.security.system_user_authenticator');
         $authenticator->createSystemUser();
         $this->get('doctrine.orm.default_entity_manager')->clear();
 
