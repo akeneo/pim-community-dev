@@ -1684,9 +1684,30 @@ class WebUser extends PimContext
     }
 
     /**
-     * $modalWait is a temporary solution waiting for Attributes PEFization
-     * TODO Remove the $modalWait parameter after the merge of TIP-732
+     * Dedicated method to click on the 'Add associations' button
+     * We had issues on CI because delegated events can take some time to be attached to the button
+     * and Behat would click on it before any event could be triggered
      *
+     * @Given /^I add associations$/
+     */
+    public function iPressTheAddAssociationsButton()
+    {
+        $currentPage = $this->getCurrentPage();
+        usleep(500000);
+        $currentPage->pressButton('Add associations');
+
+        $this->spin(function () use ($currentPage) {
+            foreach ($currentPage->findAll('css', 'div.modal') as $modal) {
+                if ($modal->isVisible()) {
+                    return true;
+                }
+            }
+
+            return false;
+        }, "Can not find any modal linked to 'Add associations' button");
+    }
+
+    /**
      * @param string      $button
      * @param string|null $modalWait
      *
@@ -1694,19 +1715,20 @@ class WebUser extends PimContext
      */
     public function iPressTheButton($button, $modalWait = null)
     {
-        $this->getCurrentPage()->pressButton($button);
+        $currentPage = $this->getCurrentPage();
+        $currentPage->pressButton($button);
 
-        $this->spin(function () use ($button, $modalWait) {
-            if (null !== $modalWait) {
-                foreach ($this->getCurrentPage()->findAll('css', '.modal') as $modal) {
+        if (null !== $modalWait) {
+            $this->spin(function () use ($button, $currentPage) {
+                foreach ($currentPage->findAll('css', 'div.modal') as $modal) {
                     if ($modal->isVisible()) {
                         return true;
                     }
                 }
-            }
 
-            return null === $modalWait;
-        }, sprintf("Can not find any '%s' button%s", $button, null !== $modalWait ? ' or no modal found' : ''));
+                return false;
+            }, sprintf("Can not find any modal linked to '%s' button", $button));
+        }
     }
 
     /**
