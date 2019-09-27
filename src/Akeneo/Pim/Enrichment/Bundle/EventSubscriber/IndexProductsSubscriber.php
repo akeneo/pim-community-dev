@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
@@ -26,12 +27,18 @@ class IndexProductsSubscriber implements EventSubscriberInterface
     /** @var ProductIndexerInterface */
     private $productIndexer;
 
+    /** @var ProductAndAncestorsIndexer */
+    private $productAndAncestorsIndexer;
+
     /**
      * @param ProductIndexerInterface $productIndexer
      */
-    public function __construct(ProductIndexerInterface $productIndexer)
-    {
+    public function __construct(
+        ProductIndexerInterface $productIndexer,
+        ProductAndAncestorsIndexer $productAndAncestorsIndexer
+    ) {
         $this->productIndexer = $productIndexer;
+        $this->productAndAncestorsIndexer = $productAndAncestorsIndexer;
     }
 
     /**
@@ -62,7 +69,7 @@ class IndexProductsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->productIndexer->indexFromProductIdentifier($product->getIdentifier());
+        $this->productAndAncestorsIndexer->indexFromProductIdentifiers([$product->getIdentifier()]);
     }
 
     /**
@@ -88,7 +95,7 @@ class IndexProductsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->productIndexer->indexFromProductIdentifiers($identifiers);
+        $this->productAndAncestorsIndexer->indexFromProductIdentifiers($identifiers);
     }
 
     /**
