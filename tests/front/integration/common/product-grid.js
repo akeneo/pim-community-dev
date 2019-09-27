@@ -71,7 +71,7 @@ const loadProductGrid = async (page, products, filters) => {
   await page.evaluate(async () => await require('pim/init-translator').fetch());
   await page.evaluate(async () => await require('oro/init-layout')());
 
-  return await page.evaluate(() => {
+  await page.evaluate(() => {
     const FormBuilder = require('pim/form-builder');
 
     return FormBuilder.build('pim-product-index').then(form => {
@@ -80,8 +80,26 @@ const loadProductGrid = async (page, products, filters) => {
       return form;
     });
   });
+
+  return await page.waitForSelector('.AknLoadingMask.loading-mask', {hidden: true});
 }
 
+// Custom matchers for the product grid
+expect.extend({
+  filterToBeVisible: async (filterName, page) => {
+    try {
+      const filter = await page.$(`.filter-box .filter-item[data-name="${filterName}"]`);
+      return {
+        pass: filter !== null,
+        message: () => `Filter "${filterName}" should be visible`
+      }
+    } catch (e) {
+      return {
+        pass: false
+      }
+    }
+  }
+})
 
 module.exports = {
   loadProductGrid

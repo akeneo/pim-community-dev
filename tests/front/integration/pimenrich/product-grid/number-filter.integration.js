@@ -1,4 +1,4 @@
-const { loadProductGrid } = require('../../common/product-grid');
+const { loadProductGrid, filterIsVisible } = require('../../common/product-grid');
 const DatagridProductBuilder = require('../../../common/builder/datagrid-product')
 const NumberFilterBuilder = require('../../../common/builder/filters/number')
 
@@ -28,8 +28,8 @@ describe('Pimenrich > product grid > number filter', () => {
         .build()
     ];
 
-    loadProductGrid(page, products, filters);
+    await loadProductGrid(page, products, filters);
+    await expect('count').filterToBeVisible(page);
 
-    // Check that the filter count exists
-  });
+  }, 30000);
 });
