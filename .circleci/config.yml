@@ -82,7 +82,7 @@ jobs:
                 command: docker load -i php-pim-image.tar
           - run:
                 name: Generate dev cache for Symfony's Phpstan extension
-                command: APP_ENV=dev make clean-back
+                command: APP_ENV=dev make cache
           - run:
                 name: PhpSpec
                 command: docker-compose run -u www-data --rm -T php vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
