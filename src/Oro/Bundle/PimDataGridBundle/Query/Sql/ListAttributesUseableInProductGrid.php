@@ -62,6 +62,7 @@ SQL;
         $attributes = array_map(function ($attribute) {
             $attribute['order'] = (int) $attribute['order'];
             $attribute['groupOrder'] = (int) $attribute['groupOrder'];
+            unset($attribute['identifier_priority']);
 
             return $attribute;
         }, $attributes);
