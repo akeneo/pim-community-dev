@@ -49,7 +49,12 @@ abstract class ApiTestCase extends WebTestCase
         $this->testKernel = new \AppKernelTest('test', false);
         $this->testKernel->boot();
 
-        $authenticator = $this->getFromTestContainer('akeneo_integration_tests.security.system_user_authenticator');
+        $authenticator = new SystemUserAuthenticator(
+            $this->get('pim_user.factory.user'),
+            $this->get('pim_user.repository.group'),
+            $this->get('pim_user.repository.role'),
+            $this->get('security.token_storage')
+        );
         $authenticator->createSystemUser();
 
         $this->catalog = $this->getFromTestContainer('akeneo_integration_tests.configuration.catalog');
