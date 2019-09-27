@@ -21,22 +21,22 @@ class EmailDomains
         $this->connection = $connection;
     }
 
-    public function fetch(): array
+    public function fetch(): string
     {
         $results = [];
 
         $sql = <<<SQL
-            SELECT COUNT(id) as user_count, SUBSTRING_INDEX(email, '@', -1) AS email_domain
+            SELECT DISTINCT(SUBSTRING_INDEX(email, '@', -1)) AS email_domain
                 FROM oro_user
-                GROUP BY email_domain;
+                ORDER by email_domain
 SQL;
 
         $rows = $this->connection->fetchAll($sql);
 
         foreach ($rows as $row) {
-            $results[$row['email_domain']] = $row['user_count'];
+            $results[] = $row['email_domain'];
         }
 
-        return $results;
+        return implode(',', $results);
     }
 }

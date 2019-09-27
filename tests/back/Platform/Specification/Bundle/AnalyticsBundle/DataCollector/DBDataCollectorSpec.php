@@ -86,7 +86,7 @@ class DBDataCollectorSpec extends ObjectBehavior
         $productValueCountQuery->fetch()->willReturn(new CountVolume(254897, -1, 'count_product_values'));
         $productValueAverageMaxQuery->fetch()->willReturn(new AverageMaxVolumes(8,7, -1, 'average_max_product_values'));
         $productValuePerFamilyAverageMaxQuery->fetch()->willReturn(new AverageMaxVolumes(12,10, -1, 'average_max_product_values_per_family'));
-        $emailDomains->fetch()->willReturn(['example.com' => 2, 'other-example.com' => 1]);
+        $emailDomains->fetch()->willReturn('example.com,other-example.com');
 
         $this->collect()->shouldReturn(
             [
@@ -105,7 +105,7 @@ class DBDataCollectorSpec extends ObjectBehavior
                 'avg_product_values_by_product' => 7,
                 'avg_product_values_by_family' => 10,
                 'max_product_values_by_family' => 12,
-                'email_domains' => ['example.com' => 2, 'other-example.com' => 1]
+                'email_domains' => 'example.com,other-example.com'
             ]
         );
     }
