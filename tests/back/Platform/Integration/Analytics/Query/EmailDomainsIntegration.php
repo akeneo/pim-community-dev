@@ -23,11 +23,7 @@ class EmailDomainsIntegration extends TestCase
         $emailDomains = $query->fetch();
 
         Assert::assertEquals(
-            [
-                'example.com' => 2,
-                'example2.com' => 2,
-                'example3.com' => 1
-            ],
+            'example.com,example2.com,example3.com',
             $emailDomains
         );
     }
