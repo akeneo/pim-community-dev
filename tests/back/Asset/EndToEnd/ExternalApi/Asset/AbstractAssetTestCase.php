@@ -451,6 +451,19 @@ JSON;
 
         ksort($asset);
 
+        $sortFiles = function(array $fileA, array $fileB) {
+            return $fileA['code'] <=> $fileB['code'];
+        };
+
+        if (isset($asset['variation_files'])) {
+            usort($asset['variation_files'], $sortFiles);
+        }
+        if (isset($asset['reference_files'])) {
+            usort($asset['reference_files'], $sortFiles);
+        }
+
+
+
         return $asset;
     }
 

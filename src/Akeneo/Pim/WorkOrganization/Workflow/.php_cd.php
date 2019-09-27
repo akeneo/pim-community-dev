@@ -102,6 +102,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions',
         'Akeneo\Pim\Enrichment\Component\Product\Query\DescendantProductIdsQueryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Query\DescendantProductModelIdsQueryInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper',
 
         // TIP-949: Assets should not be Reference Data
