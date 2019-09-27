@@ -22,7 +22,9 @@ class ImporterSpec extends ObjectBehavior
         UploadCheckerInterface $uploadChecker,
         ParsedFilenameInterface $fooParsed,
         ParsedFilenameInterface $barParsed,
-        FileStorerInterface $fileStorer
+        FileStorerInterface $fileStorer,
+        FilesystemProvider $filesystemProvider,
+        FileFetcher $fileFetcher
     ) {
         $this->createUploadBaseDirectory();
 
@@ -34,7 +36,7 @@ class ImporterSpec extends ObjectBehavior
         $uploadChecker->getParsedFilename(Argument::containingString('foo.png'))->willReturn($fooParsed);
         $uploadChecker->getParsedFilename(Argument::containingString('bar.png'))->willReturn($barParsed);
 
-        $this->beConstructedWith($uploadChecker, $fileStorer);
+        $this->beConstructedWith($uploadChecker, $fileStorer, $fileFetcher, $filesystemProvider);
     }
 
     function letGo()
@@ -48,28 +50,6 @@ class ImporterSpec extends ObjectBehavior
         $this->shouldImplement(ImporterInterface::class);
     }
 
-    function it_imports_files_from_local(UploadContext $uploadContext)
-    {
-        $sourceDirectory = $this->createSourceDirectory();
-        $importDirectory = $this->createImportDirectory();
-
-        $uploadContext->getTemporaryUploadDirectory()->willReturn($sourceDirectory);
-        $uploadContext->getTemporaryImportDirectory()->willReturn($importDirectory);
-
-        // create dummy files
-        $filename1 = $sourceDirectory . DIRECTORY_SEPARATOR . 'foo.png';
-        file_put_contents($filename1, 'foo');
-        $filename2 = $sourceDirectory . DIRECTORY_SEPARATOR . 'bar.png';
-        file_put_contents($filename2, 'bar');
-
-        $uploadTmpDirectory = $this->uploadDirectory . DIRECTORY_SEPARATOR. UploadContext::DIR_UPLOAD_TMP . DIRECTORY_SEPARATOR;
-        $this->import($uploadContext)
-            ->shouldReturn([
-                ['file' => $uploadTmpDirectory . 'bar.png', 'error' => null],
-                ['file' => $uploadTmpDirectory .'foo.png', 'error' => null],
-            ]);
-    }
-
     function it_imports_files_from_the_upload_filesystem(
         UploadCheckerInterface $uploadChecker,
         FileStorerInterface $fileStorer,
@@ -77,8 +57,6 @@ class ImporterSpec extends ObjectBehavior
         FilesystemProvider $filesystemProvider,
         FilesystemInterface $filesystem
     ) {
-        $this->beConstructedWith($uploadChecker, $fileStorer, $fileFetcher, $filesystemProvider);
-
         $filesystemProvider->getFilesystem('tmpAssetUpload')->willReturn($filesystem);
 
         $uploadContext = new UploadContext('/tmp', 'julia');

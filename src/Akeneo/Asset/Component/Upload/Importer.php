@@ -40,16 +40,14 @@ class Importer implements ImporterInterface
     /**
      * @param UploadCheckerInterface  $uploadChecker
      * @param FileStorerInterface     $fileStorer
-     * @param FileFetcher|null        $fileFetcher
-     * @param FilesystemProvider|null $filesystemProvider
-     *
-     * TODO @pullup in master: Make $fileFetcher and $filesystemProvider mandatory, and remove $fileStorer (unused)
+     * @param FileFetcher             $fileFetcher
+     * @param FilesystemProvider      $filesystemProvider
      */
     public function __construct(
         UploadCheckerInterface $uploadChecker,
         FileStorerInterface $fileStorer,
-        FileFetcher $fileFetcher = null,
-        FilesystemProvider $filesystemProvider = null
+        FileFetcher $fileFetcher,
+        FilesystemProvider $filesystemProvider
     ) {
         $this->uploadChecker = $uploadChecker;
         $this->fileStorer = $fileStorer;
@@ -65,12 +63,37 @@ class Importer implements ImporterInterface
      */
     public function import(UploadContext $uploadContext, array $fileNames = [])
     {
-        // TODO @pullup in master: remove this check, copy/paste content of "importFromUploadFilesystem" and remove function "importFromLocal"
-        if (null === $this->fileFetcher || null === $this->filesystemProvider) {
-            return $this->importFromLocal($uploadContext);
-        } else {
-            return $this->importFromUploadFilesystem($uploadContext, $fileNames);
+        $files = [];
+        $uploadFileSystem = $this->filesystemProvider->getFilesystem('tmpAssetUpload');
+        $importDirectory = $uploadContext->getTemporaryImportDirectoryRelativePath();
+
+        $filesToImport = array_filter($uploadFileSystem->listContents($importDirectory), function ($file) use ($fileNames) {
+            return $file['type'] === 'file' && (empty($fileNames) || in_array($file['basename'], $fileNames));
+        });
+
+        $importedFileNames = array_map(function ($file) {
+            return $file['basename'];
+        }, $filesToImport);
+
+        foreach ($filesToImport as $file) {
+            $result = [
+                'file'  => $file['basename'],
+                'error' => null,
+            ];
+            if (!$this->isValidImportedFilename($importedFileNames, $file['basename'])) {
+                $result['error'] = UploadMessages::ERROR_CONFLICTS;
+            } else {
+                $this->fileFetcher->fetch($uploadFileSystem, $file['path']);
+            }
+
+            if ($uploadFileSystem->has($file['path'])) {
+                $uploadFileSystem->delete($file['path']);
+            }
+
+            $files[] = $result;
         }
+
+        return $files;
     }
 
     /**
@@ -140,75 +163,5 @@ class Importer implements ImporterInterface
         }
 
         return true;
-    }
-
-    private function importFromUploadFilesystem(UploadContext $uploadContext, array $fileNames = []): array
-    {
-        $files = [];
-        $uploadFileSystem = $this->filesystemProvider->getFilesystem('tmpAssetUpload');
-        $importDirectory = $uploadContext->getTemporaryImportDirectoryRelativePath();
-
-        $filesToImport = array_filter($uploadFileSystem->listContents($importDirectory), function ($file) use ($fileNames) {
-            return $file['type'] === 'file' && (empty($fileNames) || in_array($file['basename'], $fileNames));
-        });
-
-        $importedFileNames = array_map(function ($file) {
-            return $file['basename'];
-        }, $filesToImport);
-
-        foreach ($filesToImport as $file) {
-            $result = [
-                'file'  => $file['basename'],
-                'error' => null,
-            ];
-            if (!$this->isValidImportedFilename($importedFileNames, $file['basename'])) {
-                $result['error'] = UploadMessages::ERROR_CONFLICTS;
-            } else {
-                $this->fileFetcher->fetch($uploadFileSystem, $file['path']);
-            }
-
-            if ($uploadFileSystem->has($file['path'])) {
-                $uploadFileSystem->delete($file['path']);
-            }
-
-            $files[] = $result;
-        }
-
-        return $files;
-    }
-
-    // TODO: To remove on master. It exists only to avoid a BC-break
-    private function importFromLocal(UploadContext $uploadContext): array
-    {
-        $files = [];
-        $fileSystem = new Filesystem();
-        $uploadDirectory = $uploadContext->getTemporaryUploadDirectory();
-        $importDirectory = $uploadContext->getTemporaryImportDirectory();
-
-        $storedFiles = array_map(function ($path) use ($uploadDirectory) {
-            return $uploadDirectory . DIRECTORY_SEPARATOR . $path;
-        }, array_diff(scandir($uploadDirectory), ['.', '..']));
-
-        if (!is_dir($importDirectory)) {
-            $fileSystem->mkdir($importDirectory);
-        }
-
-        foreach ($storedFiles as $file) {
-            $result = [
-                'file'  => $file,
-                'error' => null,
-            ];
-            if (!$this->isValidImportedFilename($storedFiles, $file)) {
-                $result['error'] = UploadMessages::ERROR_CONFLICTS;
-                $files[] = $result;
-            } else {
-                $newPath = $importDirectory . DIRECTORY_SEPARATOR . basename($file);
-
-                $fileSystem->rename($file, $newPath);
-                $files[] = $result;
-            }
-        }
-
-        return $files;
     }
 }

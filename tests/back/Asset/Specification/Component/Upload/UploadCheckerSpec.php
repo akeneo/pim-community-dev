@@ -22,6 +22,7 @@ class UploadCheckerSpec extends ObjectBehavior
     function let(
         AssetRepositoryInterface $assetRepo,
         LocaleRepositoryInterface $localeRepository,
+        FilesystemProvider $filesystemProvider,
         LocaleInterface $localeEn,
         LocaleInterface $localeFr
     ) {
@@ -32,7 +33,7 @@ class UploadCheckerSpec extends ObjectBehavior
         $localeEn->isActivated()->willReturn(true);
         $localeFr->isActivated()->willReturn(true);
 
-        $this->beConstructedWith($assetRepo, $localeRepository);
+        $this->beConstructedWith($assetRepo, $localeRepository, $filesystemProvider);
     }
 
     function letGo()
@@ -139,46 +140,6 @@ class UploadCheckerSpec extends ObjectBehavior
         $this->validateFilenameFormat($parsedFilename, 'dummySourceDir', 'dummyImportDir');
     }
 
-    function it_checks_an_invalid_filename_for_existing_uploaded_file(
-        ParsedFilenameInterface $parsedFilename,
-        $assetRepo
-    ) {
-        $parsedFilename->getAssetCode()->willReturn('foobar');
-        $parsedFilename->getLocaleCode()->willReturn('fr_FR');
-        $parsedFilename->getCleanFilename()->willReturn('foobar-fr_FR.jpg');
-
-        $this->createUploadBaseDirectory();
-        $sourceDirectory = $this->createSourceDirectory();
-
-        file_put_contents($sourceDirectory . DIRECTORY_SEPARATOR . 'foobar-fr_FR.jpg', 'foobar');
-
-        $assetRepo->findOneByCode('foobar')->willReturn(null);
-
-        $this->shouldThrow(DuplicateFileException::class)
-            ->during('validateUpload', [$parsedFilename, $sourceDirectory, 'dummyImportDir']);
-    }
-
-    function it_checks_an_invalid_filename_for_existing_imported_file(
-        ParsedFilenameInterface $parsedFilename,
-        $assetRepo
-    ) {
-        $parsedFilename->getAssetCode()->willReturn('foobar');
-        $parsedFilename->getLocaleCode()->willReturn('fr_FR');
-        $parsedFilename->getCleanFilename()->willReturn('foobar-fr_FR.png');
-
-        $this->createUploadBaseDirectory();
-        $sourceDirectory = $this->createSourceDirectory();
-        $importDirectory = $this->createImportDirectory();
-
-        $filename = 'foobar-fr_FR.png';
-        file_put_contents($importDirectory . DIRECTORY_SEPARATOR . $filename, 'foobar');
-
-        $assetRepo->findOneByCode('foobar')->willReturn(null);
-
-        $this->shouldThrow(DuplicateFileException::class)
-            ->during('validateUpload', [$parsedFilename, $sourceDirectory, $importDirectory]);
-    }
-
     function it_throws_an_exception_if_a_file_already_exists_in_the_filesystem(
         AssetRepositoryInterface $assetRepository,
         LocaleRepositoryInterface $localeRepository,
@@ -186,8 +147,6 @@ class UploadCheckerSpec extends ObjectBehavior
         FilesystemInterface $filesystem,
         ParsedFilenameInterface $parsedFilename
     ) {
-        $this->beConstructedWith($assetRepository, $localeRepository, $filesystemProvider);
-
         $parsedFilename->getAssetCode()->willReturn('foobar');
         $parsedFilename->getLocaleCode()->willReturn('fr_FR');
         $parsedFilename->getCleanFilename()->willReturn('foobar-fr_FR.png');

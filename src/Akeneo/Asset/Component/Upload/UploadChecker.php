@@ -39,12 +39,12 @@ class UploadChecker implements UploadCheckerInterface
     /**
      * @param AssetRepositoryInterface  $assetRepository
      * @param LocaleRepositoryInterface $localeRepository
-     * @param FilesystemProvider|null   $filesystemProvider
+     * @param FilesystemProvider        $filesystemProvider
      */
     public function __construct(
         AssetRepositoryInterface $assetRepository,
         LocaleRepositoryInterface $localeRepository,
-        FilesystemProvider $filesystemProvider = null
+        FilesystemProvider $filesystemProvider
     ) {
         $this->assetRepository = $assetRepository;
         $this->localeRepository = $localeRepository;
@@ -91,13 +91,8 @@ class UploadChecker implements UploadCheckerInterface
 
         $uploadPath = $tmpUploadDir . DIRECTORY_SEPARATOR . $parsedFilename->getCleanFilename();
 
-        // TODO @pullup on master : remove this condition and use only $this->filesystemProvider
-        if (null !== $this->filesystemProvider) {
-            $uploadFileSystem = $this->filesystemProvider->getFilesystem('tmpAssetUpload');
-            if ($uploadFileSystem->has($uploadPath)) {
-                throw new DuplicateFileException();
-            }
-        } elseif (file_exists($uploadPath)) {
+        $uploadFileSystem = $this->filesystemProvider->getFilesystem('tmpAssetUpload');
+        if ($uploadFileSystem->has($uploadPath)) {
             throw new DuplicateFileException();
         }
 
