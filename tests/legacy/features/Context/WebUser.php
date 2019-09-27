@@ -1694,7 +1694,7 @@ class WebUser extends PimContext
      */
     public function iPressTheButton($button, $modalWait = null)
     {
-        $this->getCurrentPage()->pressButton($button);
+        $this->getCurrentPage()->pressButton($button, true);
 
         $this->spin(function () use ($button, $modalWait) {
             if (null !== $modalWait) {
