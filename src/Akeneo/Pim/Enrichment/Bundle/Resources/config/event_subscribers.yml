@@ -8,8 +8,6 @@ parameters:
     pim_catalog.event_subscriber.load_product_values.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\LoadEntityWithValuesSubscriber
     pim_catalog.event_subscriber.index_products.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\IndexProductsSubscriber
     pim_catalog.event_subscriber.index_product_models.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\IndexProductModelsSubscriber
-    pim_catalog.event_subscriber.compute_product_model_descendants.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeProductModelDescendantsSubscriber
-    pim_catalog.event_subscriber.index_product_model_complete.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\IndexProductModelCompleteDataSubscriber
     pim_catalog.event_subscriber.compute_completeness_on_family_update.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeCompletenessOnFamilyUpdateSubscriber
 
 services:
@@ -78,16 +76,6 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    pim_catalog.event_subscriber.compute_product_model_descendants:
-        class: '%pim_catalog.event_subscriber.compute_product_model_descendants.class%'
-        arguments:
-            - '@security.token_storage'
-            - '@akeneo_batch_queue.launcher.queue_job_launcher'
-            - '@akeneo_batch.job.job_instance_repository'
-            - '%pim_catalog.compute_product_models_descendants.job_name%'
-        tags:
-            - { name: kernel.event_subscriber }
-
     pim_catalog.event_subscriber.compute_completeness_on_family_update_subscriber:
         class: '%pim_catalog.event_subscriber.compute_completeness_on_family_update.class%'
         arguments:
@@ -133,3 +121,12 @@ services:
             - '@database_connection'
         tags:
             - { name: 'kernel.event_subscriber' }
+
+    pim_catalog.event_subscriber.product_model.compute_descendant_completeness_and_index_product_and_ancestors_subscriber:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeDescendantCompletenessAndIndexProductAndAncestorsSubscriber'
+        arguments:
+            - '@pim_catalog.completeness.product.compute_and_persist'
+            - '@pim_catalog.elasticsearch.indexer.product_model_descendants_and_ancestors'
+            - '@akeneo.pim.enrichment.product.query.get_descendant_variant_product_identifiers'
+        tags:
+            - { name: kernel.event_subscriber }

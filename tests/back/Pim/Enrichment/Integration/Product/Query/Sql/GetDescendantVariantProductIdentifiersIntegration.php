@@ -229,12 +229,12 @@ class GetDescendantVariantProductIdentifiersIntegration extends TestCase
     private function createProduct(
         string $identifier,
         ?string $familyCode,
-        ?ProductModelInterface $productMode,
+        ?ProductModelInterface $productModel,
         array $values = []
     ): ProductInterface {
         $product = $this->get('pim_catalog.builder.product')->createProduct($identifier, $familyCode);
-        if (null !== $productMode) {
-            $product->setParent($productMode);
+        if (null !== $productModel) {
+            $product->setParent($productModel);
         }
 
         $this->get('pim_catalog.updater.product')->update($product, ['values' => $values]);
