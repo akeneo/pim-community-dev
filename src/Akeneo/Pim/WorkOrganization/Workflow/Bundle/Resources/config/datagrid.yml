@@ -220,18 +220,21 @@ services:
 
     # Action
     pimee_workflow.datagrid.extension.action.type.approve_proposal:
+        public: true
         class: '%oro_datagrid.extension.action.type.ajax.class%'
         shared: false
         tags:
             - { name: oro_datagrid.extension.action.type, type: approve-proposal }
 
     pimee_workflow.datagrid.extension.action.type.reject_proposal:
+        public: true
         class: '%oro_datagrid.extension.action.type.ajax.class%'
         shared: false
         tags:
             - { name: oro_datagrid.extension.action.type, type: refuse-proposal }
 
     pimee_workflow.datagrid.extension.action.type.remove_proposal:
+        public: true
         class: '%oro_datagrid.extension.action.type.ajax.class%'
         shared: false
         tags:
