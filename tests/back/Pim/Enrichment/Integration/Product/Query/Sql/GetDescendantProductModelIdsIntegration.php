@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product\Query\Sql;
 
-use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetAncestorAndDescendantProductModelCodes;
+use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetDescendantProductModelIds;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Test\Integration\TestCase;
@@ -15,7 +15,7 @@ use PHPUnit\Framework\Assert;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetAncestorAndDescendantProductModelCodesIntegration extends TestCase
+class GetDescendantProductModelIdsIntegration extends TestCase
 {
     protected function getConfiguration()
     {
@@ -87,91 +87,39 @@ class GetAncestorAndDescendantProductModelCodesIntegration extends TestCase
         );
     }
 
-    public function test_it_returns_descendant_codes()
+    public function test_it_returns_descendant_product_model_ids()
     {
-        Assert::assertEqualsCanonicalizing(
-            ['a_medium_shirt', 'a_large_shirt'],
-            $this->getAncestorAndDescendantProductModelCodes()->fromProductModelCodes(['a_shirt'])
-        );
+        $shirtProductModel = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('a_shirt');
+        $shoeProductModel = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('a_shoe');
 
-        Assert::assertEqualsCanonicalizing(
-            ['a_medium_shirt', 'a_large_shirt', 'a_large_shoe'],
-            $this->getAncestorAndDescendantProductModelCodes()->fromProductModelCodes(['a_shirt', 'a_shoe'])
-        );
-    }
-
-    public function test_it_returns_ancestor_codes()
-    {
-        Assert::assertEqualsCanonicalizing(
-            ['a_shoe'],
-            $this->getAncestorAndDescendantProductModelCodes()->fromProductModelCodes(['a_large_shoe'])
-        );
-
-        Assert::assertEqualsCanonicalizing(
-            ['a_shirt', 'a_shoe'],
-            $this->getAncestorAndDescendantProductModelCodes()->fromProductModelCodes(['a_large_shirt', 'a_large_shoe'])
-        );
-    }
-
-    public function test_it_returns_ancestor_and_descendant_codes()
-    {
-        Assert::assertEqualsCanonicalizing(
-            ['a_large_shoe', 'a_shoe'],
-            $this->getAncestorAndDescendantProductModelCodes()->fromProductModelCodes(['a_large_shoe', 'a_shoe'])
-        );
-
-        Assert::assertEqualsCanonicalizing(
-            ['a_shirt', 'a_shoe', 'a_large_shirt', 'a_medium_shirt'],
-            $this->getAncestorAndDescendantProductModelCodes()->fromProductModelCodes(['a_large_shirt', 'a_large_shoe', 'a_shirt'])
-        );
-    }
-
-    public function test_it_returns_an_empty_array()
-    {
-        Assert::assertEqualsCanonicalizing(
-            [],
-            $this->getAncestorAndDescendantProductModelCodes()->fromProductModelCodes(['unknown'])
-        );
-
-        Assert::assertEqualsCanonicalizing(
-            [],
-            $this->getAncestorAndDescendantProductModelCodes()->fromProductModelCodes([])
-        );
-    }
-
-    public function test_it_returns_only_ancestors_codes()
-    {
         $mediumShirtProductModel = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('a_medium_shirt');
         $largeShirtProductModel = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('a_large_shirt');
         $largeShoeProductModel = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('a_large_shoe');
-        Assert::assertEqualsCanonicalizing(
-            ['a_shirt', 'a_shoe'],
-            $this->getAncestorAndDescendantProductModelCodes()->getOnlyAncestorsFromProductModelIds([
-                $mediumShirtProductModel->getId(),
-                $largeShirtProductModel->getId(),
-                $largeShoeProductModel->getId(),
-            ])
-        );
 
-        $shirtProductModel = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('a_shirt');
-        $shoeProductModel = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('a_shoe');
         Assert::assertEqualsCanonicalizing(
             [],
-            $this->getAncestorAndDescendantProductModelCodes()->getOnlyAncestorsFromProductModelIds([
-                $shirtProductModel->getId(),
-                $shoeProductModel->getId(),
-            ])
+            $this->getDescendantProductModelIds()->fromProductModelIds([$mediumShirtProductModel->getId()])
+        );
+
+        Assert::assertEqualsCanonicalizing(
+            [$mediumShirtProductModel->getId(), $largeShirtProductModel->getId()],
+            $this->getDescendantProductModelIds()->fromProductModelIds([$shirtProductModel->getId()])
+        );
+
+        Assert::assertEqualsCanonicalizing(
+            [$mediumShirtProductModel->getId(), $largeShirtProductModel->getId(), $largeShoeProductModel->getId()],
+            $this->getDescendantProductModelIds()->fromProductModelIds([$shirtProductModel->getId(), $shoeProductModel->getId()])
         );
 
         Assert::assertEqualsCanonicalizing(
             [],
-            $this->getAncestorAndDescendantProductModelCodes()->fromProductModelCodes([])
+            $this->getDescendantProductModelIds()->fromProductModelIds([])
         );
     }
 
-    protected function getAncestorAndDescendantProductModelCodes(): GetAncestorAndDescendantProductModelCodes
+    protected function getDescendantProductModelIds(): GetDescendantProductModelIds
     {
-        return $this->get('akeneo.pim.enrichment.product.query.get_ancestor_and_descendant_product_model_codes');
+        return $this->get('akeneo.pim.enrichment.product.query.get_descendant_product_model_ids');
     }
 
     private function createFamilyVariant(array $data = []): FamilyVariantInterface

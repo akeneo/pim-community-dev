@@ -4,7 +4,9 @@ namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelDescendantsAndAncestorsIndexer;
 use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetAncestorAndDescendantProductModelCodes;
+use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetDescendantProductModelIds;
 use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetDescendantVariantProductIdentifiers;
+use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetDescendantVariantProductIds;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductModelIndexerInterface;
 use PhpSpec\ObjectBehavior;
@@ -16,13 +18,17 @@ class ProductModelDescendantsAndAncestorsIndexerSpec extends ObjectBehavior
         ProductIndexerInterface $productIndexer,
         ProductModelIndexerInterface $productModelIndexer,
         GetDescendantVariantProductIdentifiers $getDescendantVariantProductIdentifiers,
-        GetAncestorAndDescendantProductModelCodes $getAncestorAndDescendantProductModelCodes
+        GetAncestorAndDescendantProductModelCodes $getAncestorAndDescendantProductModelCodes,
+        GetDescendantVariantProductIds $getDescendantVariantProductIds,
+        GetDescendantProductModelIds $getDescendantProductModelIds
     ) {
         $this->beConstructedWith(
             $productIndexer,
             $productModelIndexer,
             $getDescendantVariantProductIdentifiers,
-            $getAncestorAndDescendantProductModelCodes
+            $getAncestorAndDescendantProductModelCodes,
+            $getDescendantVariantProductIds,
+            $getDescendantProductModelIds
         );
     }
 
@@ -79,5 +85,62 @@ class ProductModelDescendantsAndAncestorsIndexerSpec extends ObjectBehavior
         $getAncestorAndDescendantProductModelCodes->fromProductModelCodes(Argument::cetera())->shouldNotBeCalled();
 
         $this->indexFromProductModelCodes([]);
+    }
+
+    function it_bulk_remove_sub_product_models_and_descendants_from_index_and_index_ancestor(
+        ProductIndexerInterface $productIndexer,
+        ProductModelIndexerInterface $productModelIndexer,
+        GetAncestorAndDescendantProductModelCodes $getAncestorAndDescendantProductModelCodes,
+        GetDescendantVariantProductIds $getDescendantVariantProductIds,
+        GetDescendantProductModelIds $getDescendantProductModelIds
+    ) {
+        $getDescendantVariantProductIds->fromProductModelIds([1, 2])->willReturn([11, 12]);
+        $productIndexer->removeFromProductIds([11, 12])->shouldBeCalled();
+
+        $getDescendantProductModelIds->fromProductModelIds([1, 2])->willReturn([]);
+
+        $getAncestorAndDescendantProductModelCodes->getOnlyAncestorsFromProductModelIds([1, 2])->willReturn([20, 21]);
+        $productModelIndexer->indexFromProductModelCodes([20, 21])->shouldBeCalled();
+
+        $productModelIndexer->removeFromProductModelIds([1, 2])->shouldBeCalled();
+
+        $this->removeFromProductModelIds([1, 2]);
+    }
+
+    function it_bulk_remove_root_product_models_and_descendants_from_index_and_index_ancestor(
+        ProductIndexerInterface $productIndexer,
+        ProductModelIndexerInterface $productModelIndexer,
+        GetAncestorAndDescendantProductModelCodes $getAncestorAndDescendantProductModelCodes,
+        GetDescendantVariantProductIds $getDescendantVariantProductIds,
+        GetDescendantProductModelIds $getDescendantProductModelIds
+    ) {
+        $getDescendantVariantProductIds->fromProductModelIds([1, 2])->willReturn([11, 12]);
+        $productIndexer->removeFromProductIds([11, 12])->shouldBeCalled();
+
+        $getDescendantProductModelIds->fromProductModelIds([1, 2])->willReturn([20, 21]);
+        $productModelIndexer->removeFromProductModelIds([20, 21])->shouldBeCalled();
+
+        $getAncestorAndDescendantProductModelCodes->getOnlyAncestorsFromProductModelIds([1, 2])->willReturn([]);
+        $productModelIndexer->indexFromProductModelCodes(Argument::cetera())->shouldNotBeCalled();
+
+        $productModelIndexer->removeFromProductModelIds([1, 2])->shouldBeCalled();
+
+        $this->removeFromProductModelIds([1, 2]);
+    }
+
+    function it_does_not_bulk_remove_empty_arrays_of_product_models(
+        ProductIndexerInterface $productIndexer,
+        ProductModelIndexerInterface $productModelIndexer,
+        GetAncestorAndDescendantProductModelCodes $getAncestorAndDescendantProductModelCodes,
+        GetDescendantVariantProductIds $getDescendantVariantProductIds,
+        GetDescendantProductModelIds $getDescendantProductModelIds
+    ) {
+        $getDescendantVariantProductIds->fromProductModelIds(Argument::cetera())->shouldNotBeCalled();
+        $productIndexer->removeFromProductIds(Argument::cetera())->shouldNotBeCalled();
+        $getDescendantProductModelIds->fromProductModelIds(Argument::cetera())->shouldNotBeCalled();
+        $getAncestorAndDescendantProductModelCodes->getOnlyAncestorsFromProductModelIds(Argument::cetera())->shouldNotBeCalled();
+        $productModelIndexer->removeFromProductModelIds(Argument::cetera())->shouldNotBeCalled();
+
+        $this->removeFromProductModelIds([]);
     }
 }
