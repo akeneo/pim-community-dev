@@ -21,7 +21,7 @@ class GetProductAssociationsByProductIdentifiersIntegration extends TestCase
     {
         parent::setUp();
 
-        $entityBuilder = new EntityBuilder($this->testKernel->getContainer());
+        $entityBuilder = $this->getFromTestContainer('akeneo_integration_tests.catalog.fixture.build_entity');
         $this->givenBooleanAttributes(['first_yes_no', 'second_yes_no']);
         $this->givenFamilies([['code' => 'aFamily', 'attribute_codes' => ['first_yes_no', 'second_yes_no']]]);
         $entityBuilder->createFamilyVariant(

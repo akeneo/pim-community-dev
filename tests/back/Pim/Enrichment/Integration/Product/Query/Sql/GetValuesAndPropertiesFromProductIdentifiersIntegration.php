@@ -30,7 +30,7 @@ class GetValuesAndPropertiesFromProductIdentifiersIntegration extends TestCase
         ]);
         $this->get('pim_catalog.saver.family')->save($family);
 
-        $entityBuilder = new EntityBuilder($this->testKernel->getContainer());
+        $entityBuilder = $this->getFromTestContainer('akeneo_integration_tests.catalog.fixture.build_entity');
         $this->givenBooleanAttributes(['first_yes_no', 'second_yes_no']);
         $this->givenFamilies([['code' => 'FamilyWithVariant', 'attribute_codes' => ['first_yes_no', 'second_yes_no']]]);
         $this->givenGroups(['group1', 'group2']);
@@ -151,7 +151,7 @@ class GetValuesAndPropertiesFromProductIdentifiersIntegration extends TestCase
      */
     public function testVariantProductWithEmptyValuesFromParent()
     {
-        $entityBuilder = new EntityBuilder($this->testKernel->getContainer());
+        $entityBuilder = $this->getFromTestContainer('akeneo_integration_tests.catalog.fixture.build_entity');
         $entityBuilder->createFamilyVariant(
             [
                 'code' => 'familyVariantWithOneLevel',
