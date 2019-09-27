@@ -16,6 +16,7 @@ use Akeneo\Asset\Component\Upload\Exception\DuplicateFileException;
 use Akeneo\Asset\Component\Upload\Exception\InvalidCodeException;
 use Akeneo\Asset\Component\Upload\Exception\InvalidLocaleException;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 
 /**
  * Check uploaded files
@@ -32,16 +33,22 @@ class UploadChecker implements UploadCheckerInterface
 
     protected $locales;
 
+    /** @var FilesystemProvider */
+    private $filesystemProvider;
+
     /**
      * @param AssetRepositoryInterface  $assetRepository
      * @param LocaleRepositoryInterface $localeRepository
+     * @param FilesystemProvider|null   $filesystemProvider
      */
     public function __construct(
         AssetRepositoryInterface $assetRepository,
-        LocaleRepositoryInterface $localeRepository
+        LocaleRepositoryInterface $localeRepository,
+        FilesystemProvider $filesystemProvider = null
     ) {
         $this->assetRepository = $assetRepository;
         $this->localeRepository = $localeRepository;
+        $this->filesystemProvider = $filesystemProvider;
     }
 
     /**
@@ -83,7 +90,14 @@ class UploadChecker implements UploadCheckerInterface
         $this->validateFilenameFormat($parsedFilename);
 
         $uploadPath = $tmpUploadDir . DIRECTORY_SEPARATOR . $parsedFilename->getCleanFilename();
-        if (file_exists($uploadPath)) {
+
+        // TODO @pullup on master : remove this condition and use only $this->filesystemProvider
+        if (null !== $this->filesystemProvider) {
+            $uploadFileSystem = $this->filesystemProvider->getFilesystem('tmpAssetUpload');
+            if ($uploadFileSystem->has($uploadPath)) {
+                throw new DuplicateFileException();
+            }
+        } elseif (file_exists($uploadPath)) {
             throw new DuplicateFileException();
         }
 

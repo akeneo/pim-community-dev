@@ -4,7 +4,6 @@ namespace Specification\Akeneo\Asset\Component\Upload;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Asset\Component\Upload\UploadContext;
-use Prophecy\Argument;
 
 class UploadContextSpec extends ObjectBehavior
 {
@@ -42,5 +41,14 @@ class UploadContextSpec extends ObjectBehavior
             ->shouldReturn($this->uploadDirectory
                 . DIRECTORY_SEPARATOR . UploadContext::DIR_UPLOAD_IMPORTED
                 . DIRECTORY_SEPARATOR . 'foobar');
+    }
+
+    function it_gets_upload_directories_relative_paths()
+    {
+        $this->getTemporaryUploadDirectoryRelativePath()
+            ->shouldReturn(UploadContext::DIR_UPLOAD_TMP . DIRECTORY_SEPARATOR . 'foobar');
+
+        $this->getTemporaryImportDirectoryRelativePath()
+            ->shouldReturn(UploadContext::DIR_UPLOAD_IMPORTED . DIRECTORY_SEPARATOR . 'foobar');
     }
 }

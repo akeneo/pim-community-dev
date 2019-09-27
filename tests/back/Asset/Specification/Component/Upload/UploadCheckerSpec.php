@@ -6,13 +6,14 @@ use Akeneo\Asset\Component\Upload\Exception\DuplicateFileException;
 use Akeneo\Asset\Component\Upload\Exception\InvalidLocaleException;
 use Akeneo\Asset\Component\Upload\UploadChecker;
 use Akeneo\Asset\Component\Upload\UploadCheckerInterface;
+use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
+use League\Flysystem\FilesystemInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Asset\Component\Model\AssetInterface;
 use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
 use Akeneo\Asset\Component\Upload\ParsedFilenameInterface;
-use Prophecy\Argument;
 
 class UploadCheckerSpec extends ObjectBehavior
 {
@@ -176,6 +177,29 @@ class UploadCheckerSpec extends ObjectBehavior
 
         $this->shouldThrow(DuplicateFileException::class)
             ->during('validateUpload', [$parsedFilename, $sourceDirectory, $importDirectory]);
+    }
+
+    function it_throws_an_exception_if_a_file_already_exists_in_the_filesystem(
+        AssetRepositoryInterface $assetRepository,
+        LocaleRepositoryInterface $localeRepository,
+        FilesystemProvider $filesystemProvider,
+        FilesystemInterface $filesystem,
+        ParsedFilenameInterface $parsedFilename
+    ) {
+        $this->beConstructedWith($assetRepository, $localeRepository, $filesystemProvider);
+
+        $parsedFilename->getAssetCode()->willReturn('foobar');
+        $parsedFilename->getLocaleCode()->willReturn('fr_FR');
+        $parsedFilename->getCleanFilename()->willReturn('foobar-fr_FR.png');
+
+        $this->createUploadBaseDirectory();
+        $importDirectory = $this->createImportDirectory();
+
+        $filesystemProvider->getFilesystem('tmpAssetUpload')->willReturn($filesystem);
+        $filesystem->has('mass_upload_tmp/julia/foobar-fr_FR.png')->willReturn(true);
+
+        $this->shouldThrow(DuplicateFileException::class)
+            ->during('validateUpload', [$parsedFilename, 'mass_upload_tmp/julia', $importDirectory]);
     }
 
     protected function createUploadBaseDirectory()

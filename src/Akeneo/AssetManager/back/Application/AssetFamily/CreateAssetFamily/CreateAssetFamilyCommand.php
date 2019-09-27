@@ -19,7 +19,7 @@ namespace Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily;
 class CreateAssetFamilyCommand
 {
     /** @var string */
-    public $code;
+    public $identifier;
 
     /** @var array */
     public $labels;
@@ -27,9 +27,9 @@ class CreateAssetFamilyCommand
     /** @var array */
     public $productLinkRules;
 
-    public function __construct(string $code, array $labels, array $productLinkRules)
+    public function __construct(string $identifier, array $labels, array $productLinkRules)
     {
-        $this->code = $code;
+        $this->identifier = $identifier;
         $this->labels = $labels;
         $this->productLinkRules = $productLinkRules;
     }

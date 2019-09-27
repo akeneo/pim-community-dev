@@ -14,9 +14,7 @@ export default (router: any) => () => (next: any) => (action: any) => {
     }
   }
   if ('REDIRECT_TO_PRODUCT_GRID' === action.type) {
-    const filters = `f[${action.selectedAttribute}][value][]=${action.recordCode}&f[${
-      action.selectedAttribute
-    }][type]=in`;
+    const filters = `f[${action.selectedAttribute}][value][]=${action.recordCode}&f[${action.selectedAttribute}][type]=in`;
 
     DatagridState.set('product-grid', {
       filters: filters,

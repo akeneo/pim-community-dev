@@ -72,7 +72,7 @@ jobs:
       script:
         - yarn unit
         - yarn integration
-        - NODE_OPTIONS="--max-old-space-size=4096" NODE_PATH=./node_modules node_modules/.bin/cucumber-js --tags @acceptance-front -r ./src/Akeneo/AssetManager/tests/front/acceptance/run-steps.js src/Akeneo/AssetManager/tests/features
+        - RANDOM_LATENCY=false NODE_OPTIONS="--max-old-space-size=4096" NODE_PATH=./node_modules node_modules/.bin/cucumber-js --tags @acceptance-front -r ./src/Akeneo/Pim/Enrichment/AssetManager/tests/front/acceptance/run-steps.js src/Akeneo/Pim/Enrichment/AssetManager/tests/front/features
         - yarn lint
         - vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/AssetManager/tests/back/.php_cd.php src/Akeneo/AssetManager/back
         - vendor/bin/phpstan analyse --configuration src/Akeneo/AssetManager/tests/back/phpstan.neon.dist
@@ -80,6 +80,10 @@ jobs:
         - vendor/bin/phpunit -c src/Akeneo/AssetManager/tests/back
         - vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
         - vendor/bin/phpspec run -c src/Akeneo/AssetManager/tests/back/phpspec.yml.dist --no-interaction
+        - rm -rf var/cache
+        - rm -rf web/bundles
+        - ./bin/console pim:install:assets --env=prod
+        - yarn webpack --env=prod
 
 notifications:
   email: false

@@ -164,7 +164,7 @@ define(
                     autoQueue: false,
                     previewsContainer: '.mass-upload-container',
                     clickable: '.upload-zone-container',
-                    maxFilesize: 1000
+                    maxFilesize: 1000,
                 });
 
                 myDropzone.on('removedfile', function () {
@@ -228,7 +228,7 @@ define(
                 }.bind(this));
 
                 myDropzone.on('error', function (file, error) {
-                    file.previewElement.querySelector('.filename .error.text-danger')
+                    file.previewElement.querySelector('.AknFieldContainer-validationError')
                         .textContent = __(error.error);
                     this.setStatus(file);
                 }.bind(this));
@@ -334,7 +334,7 @@ define(
                     ? router.generate(this.importRoute, {
                         entityType: this.entity.type,
                         entityIdentifier: this.entity.identifier,
-                        attributeCode: this.entity.attributeCode
+                        attributeCode: this.entity.attributeCode,
                     })
                     : router.generate(this.importRoute);
 

@@ -1,0 +1,13 @@
+parameters:
+    pim_datagrid.product.attribute_type.pim_catalog_asset_collection:
+        column:
+            type:         .asset_multiple_link
+        filter:
+            type:    .asset_multiple_link
+            ftype:   .asset_multiple_link
+            options:
+                field_options:
+                    multiple: true
+                    attr:
+                        empty_choice: true
+        sorter: ~

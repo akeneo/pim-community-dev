@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\Action;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\ReplacePattern;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
-use Akeneo\AssetManager\Domain\Query\Attribute\AttributeExistsInterface;
+use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -21,16 +22,32 @@ use Symfony\Component\Validator\Validation;
  */
 class ProductAssignmentsValidator
 {
+    private const CHANNEL_CODE = 'channel';
+    private const LOCALE_FIELD = 'locale';
+    private const MODE_FIELD = 'mode';
+
     /** @var RuleEngineValidatorACLInterface */
     private $ruleEngineValidatorACL;
 
-    /** @var AttributeExistsInterface */
-    private $attributeExists;
+    /** @var ExtrapolatedAttributeValidator */
+    private $extrapolatedAttributeValidator;
 
-    public function __construct(RuleEngineValidatorACLInterface $ruleEngineValidatorACL, AttributeExistsInterface $attributeExists)
-    {
-        $this->attributeExists = $attributeExists;
+    /** @var ChannelAndLocaleValidator */
+    private $channelAndLocaleValidator;
+
+    /** @var GetAssetCollectionTypeAdapterInterface */
+    private $findAssetCollectionTypeACL;
+
+    public function __construct(
+        RuleEngineValidatorACLInterface $ruleEngineValidatorACL,
+        ExtrapolatedAttributeValidator $extrapolatedAttributeValidator,
+        ChannelAndLocaleValidator $channelAndLocaleValidator,
+        GetAssetCollectionTypeAdapterInterface $findAssetCollectionTypeACL
+    ) {
         $this->ruleEngineValidatorACL = $ruleEngineValidatorACL;
+        $this->extrapolatedAttributeValidator = $extrapolatedAttributeValidator;
+        $this->channelAndLocaleValidator = $channelAndLocaleValidator;
+        $this->findAssetCollectionTypeACL = $findAssetCollectionTypeACL;
     }
 
     public function validate(array $productAssignments, string $assetFamilyIdentifier): ConstraintViolationListInterface
@@ -45,42 +62,72 @@ class ProductAssignmentsValidator
 
     private function validateProductAssignment(array $productAssignment, string $assetFamilyIdentifier): ConstraintViolationListInterface
     {
+        $violations = $this->checkChannel($productAssignment);
+        $violations->addAll($this->checkLocale($productAssignment));
+        $modeViolations = $this->checkMode($productAssignment);
+        $violations->addAll($modeViolations);
+
         if ($this->hasAnyExtrapolation($productAssignment)) {
-            return $this->checkExtrapolatedAttributes($productAssignment, $assetFamilyIdentifier);
+            $violations->addAll($this->checkExtrapolatedAttributes($productAssignment, $assetFamilyIdentifier));
+
+            return $violations;
         }
 
-        return $this->ruleEngineValidatorACL->validateProductSelection($productAssignment);
+        if ($modeViolations->count() === 0) {
+            $ruleEngineValidations = $this->ruleEngineValidatorACL->validateProductAssignment($productAssignment);
+            $violations->addAll($ruleEngineValidations);
+            if ($ruleEngineValidations->count() === 0) {
+                $violations->addAll($this->checkProductAttributeReferencesThisAssetFamily($productAssignment, $assetFamilyIdentifier));
+            }
+        }
+
+        return $violations;
+    }
+
+    private function checkChannel(array $productAssignment): ConstraintViolationListInterface
+    {
+        $channelCode = $productAssignment[self::CHANNEL_CODE] ?? null;
+
+        return $this->channelAndLocaleValidator->checkChannelExistsIfAny($channelCode);
+    }
+
+    private function checkLocale(array $productAssignment): ConstraintViolationListInterface
+    {
+        $localeCode = $productAssignment[self::LOCALE_FIELD] ?? null;
+
+        return $this->channelAndLocaleValidator->checkLocaleExistsIfAny($localeCode);
     }
 
     private function hasAnyExtrapolation(array $productAssignment): bool
     {
         $isFieldExtrapolated = ReplacePattern::isExtrapolation($productAssignment['attribute']);
-        $isLocaleExtrapolated = isset($productAssignment['locale']) ? ReplacePattern::isExtrapolation($productAssignment['locale']) : false;
-        $isChannelExtrapolated = isset($productAssignment['channel']) ? ReplacePattern::isExtrapolation($productAssignment['channel']) : false;
+        $isLocaleExtrapolated = isset($productAssignment[self::LOCALE_FIELD]) ? ReplacePattern::isExtrapolation($productAssignment[self::LOCALE_FIELD]) : false;
+        $isChannelExtrapolated = isset($productAssignment[self::CHANNEL_CODE]) ? ReplacePattern::isExtrapolation($productAssignment[self::CHANNEL_CODE]) : false;
 
         return $isFieldExtrapolated || $isLocaleExtrapolated || $isChannelExtrapolated;
     }
 
     private function checkExtrapolatedAttributes(array $productAssignment, string $assetFamilyIdentifier): ConstraintViolationListInterface
     {
-        $extrapolatedAttributeCodes = ReplacePattern::detectPatterns($productAssignment['attribute']);
-        $validator = Validation::createValidator();
-        $violations = new ConstraintViolationList();
-        foreach ($extrapolatedAttributeCodes as $extrapolatedAttributeCode) {
-            $isAttributeExisting = $this->attributeExists->withAssetFamilyAndCode(
-                AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
-                AttributeCode::fromString($extrapolatedAttributeCode)
-            );
-            $violations = $validator->validate(
-                $isAttributeExisting,
-                new Callback(function ($attributeExists, ExecutionContextInterface $context) use ($extrapolatedAttributeCode) {
-                    if (!$attributeExists) {
-                        $context
-                            ->buildViolation(ProductLinkRulesShouldBeExecutable::EXTRAPOLATED_ATTRIBUTE_SHOULD_EXIST, ['%attribute_code%' => $extrapolatedAttributeCode])
-                            ->addViolation();
-                    }
-                })
-            );
+        $violations = $this->extrapolatedAttributeValidator->checkAttribute(
+            $productAssignment['attribute'],
+            $assetFamilyIdentifier,
+            [TextAttribute::ATTRIBUTE_TYPE]
+        );
+
+        if (isset($productAssignment[self::CHANNEL_CODE])) {
+            $violations->addAll($this->extrapolatedAttributeValidator->checkAttribute(
+                $productAssignment[self::CHANNEL_CODE],
+                $assetFamilyIdentifier,
+                [TextAttribute::ATTRIBUTE_TYPE]
+            ));
+        }
+        if (isset($productAssignment[self::LOCALE_FIELD])) {
+            $violations->addAll($this->extrapolatedAttributeValidator->checkAttribute(
+                $productAssignment[self::LOCALE_FIELD],
+                $assetFamilyIdentifier,
+                [TextAttribute::ATTRIBUTE_TYPE]
+            ));
         }
 
         return $violations;
@@ -94,5 +141,54 @@ class ProductAssignmentsValidator
         );
 
         return $ruleEngineViolations;
+    }
+
+    private function checkMode(array $productAssignment): ConstraintViolationListInterface
+    {
+        $allowedModes = Action::ALLOWED_MODES;
+        $validator = Validation::createValidator();
+        $result = $validator->validate(
+            $productAssignment[self::MODE_FIELD],
+            new Callback(function ($actualMode, ExecutionContextInterface $context) use ($allowedModes) {
+                if (!in_array($actualMode, $allowedModes)) {
+                    $context
+                        ->buildViolation(
+                            ProductLinkRulesShouldBeExecutable::ASSIGNMENT_MODE_NOT_SUPPORTED,
+                            ['%assignment_mode%' => $actualMode]
+                        )
+                        ->addViolation();
+                }
+            }
+            )
+        );
+
+        return $result;
+    }
+
+    private function checkProductAttributeReferencesThisAssetFamily(
+        array $productAssignment,
+        string $expectedAssetFamilyIdentifier
+    ): ConstraintViolationListInterface {
+        $validator = Validation::createValidator();
+        $result = $validator->validate(
+            $productAssignment['attribute'],
+            new Callback(function ($productAttributeCode, ExecutionContextInterface $context) use ($expectedAssetFamilyIdentifier) {
+                $actualAssetFamilyIdentifier = $this->findAssetCollectionTypeACL->fetch($productAttributeCode);
+                if ($expectedAssetFamilyIdentifier !== $actualAssetFamilyIdentifier) {
+                    $context
+                        ->buildViolation(
+                            ProductLinkRulesShouldBeExecutable::ASSIGNMENT_ATTRIBUTE_DOES_NOT_SUPPORT_THIS_ASSET_FAMILY,
+                            [
+                                '%product_attribute_code%'  => $productAttributeCode,
+                                '%asset_family_identifier%' => $expectedAssetFamilyIdentifier,
+                            ]
+                        )
+                        ->addViolation();
+                }
+            }
+            )
+        );
+
+        return $result;
     }
 }

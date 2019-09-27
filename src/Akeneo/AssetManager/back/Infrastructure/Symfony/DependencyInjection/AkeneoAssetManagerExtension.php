@@ -32,31 +32,25 @@ class AkeneoAssetManagerExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('attribute_factories.yml');
-        $loader->load('analytics.yml');
         $loader->load('attribute_command_factories.yml');
         $loader->load('asset_command_factories.yml');
         $loader->load('controllers.yml');
-        $loader->load('enrichment.yml');
         $loader->load('files.yml');
         $loader->load('filters.yml');
         $loader->load('handlers.yml');
         $loader->load('jobs.yml');
-        $loader->load('onboarder.yml');
         $loader->load('parameters.yml');
         $loader->load('persistence.yml');
-        $loader->load('product_value.yml');
         $loader->load('preview_generators.yml');
+        $loader->load('public_api/analytics.yml');
+        $loader->load('public_api/enrichment.yml');
+        $loader->load('public_api/onboarder.yml');
         $loader->load('rule_templates.yml');
         $loader->load('serializer.yml');
         $loader->load('services.yml');
         $loader->load('updaters.yml');
         $loader->load('validators.yml');
         $loader->load('search/services.yml');
-
-        $loader->load('datagrid/attribute_types.yml');
-        $loader->load('datagrid/formatters.yml');
-        $loader->load('datagrid/filters.yml');
-        $loader->load('datagrid/query.yml');
 
         $loader->load('connector/json_schema_validators.yml');
     }

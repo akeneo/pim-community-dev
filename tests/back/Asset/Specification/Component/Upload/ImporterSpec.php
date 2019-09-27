@@ -4,7 +4,10 @@ namespace Specification\Akeneo\Asset\Component\Upload;
 
 use Akeneo\Asset\Component\Upload\Importer;
 use Akeneo\Asset\Component\Upload\ImporterInterface;
+use Akeneo\Tool\Component\FileStorage\File\FileFetcher;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
+use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
+use League\Flysystem\FilesystemInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Asset\Component\Upload\ParsedFilenameInterface;
 use Akeneo\Asset\Component\Upload\UploadCheckerInterface;
@@ -21,17 +24,17 @@ class ImporterSpec extends ObjectBehavior
         ParsedFilenameInterface $barParsed,
         FileStorerInterface $fileStorer
     ) {
+        $this->createUploadBaseDirectory();
+
         $fooParsed->getAssetCode()->willReturn('foo');
         $fooParsed->getLocaleCode()->willReturn(null);
         $barParsed->getAssetCode()->willReturn('bar');
         $barParsed->getLocaleCode()->willReturn(null);
 
-        $uploadChecker->getParsedFilename('foo.png')->willReturn($fooParsed);
-        $uploadChecker->getParsedFilename('bar.png')->willReturn($barParsed);
+        $uploadChecker->getParsedFilename(Argument::containingString('foo.png'))->willReturn($fooParsed);
+        $uploadChecker->getParsedFilename(Argument::containingString('bar.png'))->willReturn($barParsed);
 
         $this->beConstructedWith($uploadChecker, $fileStorer);
-
-        $this->createUploadBaseDirectory();
     }
 
     function letGo()
@@ -45,7 +48,7 @@ class ImporterSpec extends ObjectBehavior
         $this->shouldImplement(ImporterInterface::class);
     }
 
-    function it_imports_files_for_processing(UploadContext $uploadContext)
+    function it_imports_files_from_local(UploadContext $uploadContext)
     {
         $sourceDirectory = $this->createSourceDirectory();
         $importDirectory = $this->createImportDirectory();
@@ -59,10 +62,116 @@ class ImporterSpec extends ObjectBehavior
         $filename2 = $sourceDirectory . DIRECTORY_SEPARATOR . 'bar.png';
         file_put_contents($filename2, 'bar');
 
+        $uploadTmpDirectory = $this->uploadDirectory . DIRECTORY_SEPARATOR. UploadContext::DIR_UPLOAD_TMP . DIRECTORY_SEPARATOR;
+        $this->import($uploadContext)
+            ->shouldReturn([
+                ['file' => $uploadTmpDirectory . 'bar.png', 'error' => null],
+                ['file' => $uploadTmpDirectory .'foo.png', 'error' => null],
+            ]);
+    }
+
+    function it_imports_files_from_the_upload_filesystem(
+        UploadCheckerInterface $uploadChecker,
+        FileStorerInterface $fileStorer,
+        FileFetcher $fileFetcher,
+        FilesystemProvider $filesystemProvider,
+        FilesystemInterface $filesystem
+    ) {
+        $this->beConstructedWith($uploadChecker, $fileStorer, $fileFetcher, $filesystemProvider);
+
+        $filesystemProvider->getFilesystem('tmpAssetUpload')->willReturn($filesystem);
+
+        $uploadContext = new UploadContext('/tmp', 'julia');
+        $uploadTmpDirectory = $uploadContext->getTemporaryImportDirectoryRelativePath();
+
+        $barImportPath = $uploadTmpDirectory . '/bar.png';
+        $fooImportPath = $uploadTmpDirectory . '/foo.png';
+
+        $filesystem->listContents($uploadTmpDirectory)->willReturn([
+            [
+                'path' => $barImportPath,
+                'dirname' => 'mass_upload_tmp/julia',
+                'basename' => 'bar.png',
+                'extension' => 'png',
+                'filename' => 'bar',
+                'timestamp' => 1568212566,
+                'size' => '130364',
+                'type' => 'file',
+            ],
+            [
+                'path' => $fooImportPath,
+                'dirname' => 'mass_upload_tmp/julia',
+                'basename' => 'foo.png',
+                'extension' => 'png',
+                'filename' => 'foo',
+                'timestamp' => 1568212567,
+                'size' => '26736',
+                'type' => 'file',
+            ]
+        ]);
+
+        $fileFetcher->fetch($filesystem, $barImportPath)->shouldBeCalled();
+        $fileFetcher->fetch($filesystem, $fooImportPath)->shouldBeCalled();
+        $filesystem->has($barImportPath)->willReturn(true);
+        $filesystem->has($fooImportPath)->willReturn(true);
+        $filesystem->delete($barImportPath)->shouldBeCalled();
+        $filesystem->delete($fooImportPath)->shouldBeCalled();
+
         $this->import($uploadContext)
             ->shouldReturn([
                 ['file' => 'bar.png', 'error' => null],
                 ['file' => 'foo.png', 'error' => null],
+            ]);
+    }
+
+    function it_imports_files_for_given_file_names(
+        UploadCheckerInterface $uploadChecker,
+        FileStorerInterface $fileStorer,
+        FileFetcher $fileFetcher,
+        FilesystemProvider $filesystemProvider,
+        FilesystemInterface $filesystem
+    ) {
+        $this->beConstructedWith($uploadChecker, $fileStorer, $fileFetcher, $filesystemProvider);
+
+        $filesystemProvider->getFilesystem('tmpAssetUpload')->willReturn($filesystem);
+
+        $uploadContext = new UploadContext('/tmp', 'julia');
+        $uploadTmpDirectory = $uploadContext->getTemporaryImportDirectoryRelativePath();
+
+        $barImportPath = $uploadTmpDirectory . '/bar.png';
+        $fooImportPath = $uploadTmpDirectory . '/foo.png';
+
+        $filesystem->listContents($uploadTmpDirectory)->willReturn([
+            [
+                'path' => $barImportPath,
+                'dirname' => 'mass_upload_tmp/julia',
+                'basename' => 'bar.png',
+                'extension' => 'png',
+                'filename' => 'bar',
+                'timestamp' => 1568212566,
+                'size' => '130364',
+                'type' => 'file',
+            ],
+            [
+                'path' => $fooImportPath,
+                'dirname' => 'mass_upload_tmp/julia',
+                'basename' => 'foo.png',
+                'extension' => 'png',
+                'filename' => 'foo',
+                'timestamp' => 1568212567,
+                'size' => '26736',
+                'type' => 'file',
+            ]
+        ]);
+
+        $fileFetcher->fetch($filesystem, $barImportPath)->shouldBeCalled();
+        $fileFetcher->fetch($filesystem, $fooImportPath)->shouldNotBeCalled();
+        $filesystem->has($barImportPath)->willReturn(true);
+        $filesystem->delete($barImportPath)->shouldBeCalled();
+
+        $this->import($uploadContext, ['bar.png'])
+            ->shouldReturn([
+                ['file' => 'bar.png', 'error' => null],
             ]);
     }
 

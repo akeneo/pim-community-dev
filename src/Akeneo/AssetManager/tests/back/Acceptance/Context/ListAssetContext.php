@@ -99,7 +99,7 @@ final class ListAssetContext implements Context
                 [
                     'field' => 'asset_family',
                     'operator' => '=',
-                    'value' => 'designer',
+                    'value' => 'packshot',
                     'context' => []
                 ]
             ]
@@ -122,13 +122,13 @@ final class ListAssetContext implements Context
                 [
                     'field' => $filter,
                     'operator' => $operator,
-                    'value' => $value,
+                    'value' => [$value],
                     'context' => []
                 ],
                 [
                     'field' => 'asset_family',
                     'operator' => '=',
-                    'value' => 'designer',
+                    'value' => 'packshot',
                     'context' => []
                 ]
             ]
@@ -181,7 +181,7 @@ final class ListAssetContext implements Context
                 [
                     'field' => 'asset_family',
                     'operator' => '=',
-                    'value' => 'designer',
+                    'value' => 'packshot',
                     'context' => []
                 ]
             ]
@@ -192,13 +192,13 @@ final class ListAssetContext implements Context
 
     private function loadAsset(): void
     {
-        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('packshot');
         $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
         $attributeAsLabel = $assetFamily->getAttributeAsLabelReference();
 
-        // STARCK
-        $assetCode = AssetCode::fromString('starck');
-        $identifier = AssetIdentifier::fromString('designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2');
+        // FRONTVIEW
+        $assetCode = AssetCode::fromString('frontview');
+        $identifier = AssetIdentifier::fromString('packshot_frontview_29aea250-bc94-49b2-8259-bbc116410eb2');
 
         $labelValue = Value::create(
             $attributeAsLabel->getIdentifier(),
@@ -215,9 +215,9 @@ final class ListAssetContext implements Context
         );
         $this->assetRepository->create($assetStarck);
 
-        // COCO
-        $assetCode = AssetCode::fromString('coco');
-        $identifier = AssetIdentifier::fromString('designer_coco_34aee120-fa95-4ff2-8439-bea116120e34');
+        // SIDEVIEW
+        $assetCode = AssetCode::fromString('sideview');
+        $identifier = AssetIdentifier::fromString('packshot_sideview_34aee120-fa95-4ff2-8439-bea116120e34');
 
         $labelValue = Value::create(
             $attributeAsLabel->getIdentifier(),
@@ -234,9 +234,9 @@ final class ListAssetContext implements Context
         );
         $this->assetRepository->create($assetCoco);
 
-        // DYSON
-        $assetCode = AssetCode::fromString('dyson');
-        $identifier = AssetIdentifier::fromString('designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd');
+        // BACKVIEW
+        $assetCode = AssetCode::fromString('backview');
+        $identifier = AssetIdentifier::fromString('packshot_backview_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd');
 
         $labelValue = Value::create(
             $attributeAsLabel->getIdentifier(),
@@ -257,10 +257,10 @@ final class ListAssetContext implements Context
     private function loadAssetFamily(): void
     {
         $assetFamily = AssetFamily::create(
-            AssetFamilyIdentifier::fromString('designer'),
+            AssetFamilyIdentifier::fromString('packshot'),
             [
-                'fr_FR' => 'Concepteur',
-                'en_US' => 'Designer',
+                'fr_FR' => 'Packshot',
+                'en_US' => 'Packshot',
             ],
             Image::createEmpty(),
             RuleTemplateCollection::empty()

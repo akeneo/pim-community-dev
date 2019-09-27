@@ -51,17 +51,14 @@ pimee_product_asset:
     flash:
       update:
         success: A mídia foi atualizada.
-        error: A mídia não foi atualizada. Ocorreu um erro.
       create:
         success: A mídia foi criada.
-        error: A mídia não foi criada. Ocorreu um erro.
       remove:
         success: A mídia foi removida.
   enrich_reference:
     flash:
       delete:
         success: O arquivo de referência foi excluído.
-        error: O arquivo de referência não foi excluído. Ocorreu um erro.
   enrich_variation:
     flash:
       transformation:
@@ -75,10 +72,8 @@ pimee_product_asset:
         success: Arquivos de variação foram gerados com sucesso.
       update:
         success: Arquivo de variação foi atualizado.
-        error: O arquivo de variação não foi atualizado. Ocorreu um erro.
       delete:
         success: O arquivo de variação foi excluído.
-        error: O arquivo de variação não foi excluído. Ocorreu um erro.
   popin.create:
     title: Criar uma nova mídia
     is_localized: Localizável
@@ -126,7 +121,6 @@ pimee_product_asset:
     import: Importação
     executed: Envio em massa executado
     error:
-      upload: Ocorreu um erro ao enviar
       code: Formato de código inválido para a mídia
       localizable: Uma mídia existe mas não é localizável
       invalid_locale: A localidade está desativada ou inválida

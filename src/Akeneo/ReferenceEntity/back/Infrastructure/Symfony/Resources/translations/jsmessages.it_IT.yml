@@ -40,10 +40,6 @@ pim_reference_entity:
       image: Immagine
     attribute:
       title: Attributi del record
-      attribute:
-        error:
-          render_list: 'Si è verificato un errore durante il rendering dell''attributo "{{ %attribute_code% }}"'
-          render_edit: 'Si è verificato un errore durante il rendering dei campi di proprietà aggiuntive dell''attributo "{{ %attribute_code% }}"'
     module:
       delete:
         button: Elimina entità
@@ -73,13 +69,10 @@ pim_reference_entity:
     notification:
       save:
         success: Entità di riferimento aggiornata correttamente.
-        fail: Si è verificato un errore durante il salvataggio dell'entità di riferimento
       create:
         success: Entità di riferimento creata correttamente.
-        fail: Si è verificato un errore durante la creazione dell'entità di riferimento
       delete:
         success: Entità di riferimento eliminata correttamente.
-        fail: Si è verificato un errore durante l'eliminazione dell'entità di riferimento
   permission:
     notification:
       save:
@@ -165,17 +158,13 @@ pim_reference_entity:
     notification:
       save:
         success: Record aggiornato correttamente.
-        fail: Si è verificato un errore durante il salvataggio del record
         validation_error: Il record non può essere aggiornato
       create:
         success: Record creato correttamente.
-        fail: Si è verificato un errore durante la creazione del record
       delete:
         success: Record "{{ code }}" eliminato correttamente.
-        fail: Si è verificato un errore durante l'eliminazione del record
       delete_all:
         success: Tutti i record di "{{ entityIdentifier }}" sono stati eliminati correttamente.
-        fail: Si è verificato un errore durante la cancellazione di tutti i record dell'entità di riferimento
     completeness:
       label: Completo
   attribute:
@@ -252,19 +241,14 @@ pim_reference_entity:
       message: Sei sicuro di voler eliminare l'attributo "{{ attributeLabel }}"?
       title: Attributo
     notification:
-      list:
-        fail: Si è verificato un errore durante l'aggiornamento della lista degli attributi
       save:
         success: Attributo aggiornato con successo.
-        fail: Si è verificato un errore durante il salvataggio dell'attributo
         validation_error: L'attributo non può essere aggiornato
       create:
         success: Attributo creato con successo.
-        fail: Si è verificato un errore durante la creazione dell'attributo
         validation_error: L'attributo non può essere creato
       delete:
         success: Attributo eliminato correttamente.
-        fail: Si è verificato un errore durate la cancellazione dell'attributo
     options:
       no_value: Clicca qui per selezionare un'opzione.
       sub_title: Entità di riferimento

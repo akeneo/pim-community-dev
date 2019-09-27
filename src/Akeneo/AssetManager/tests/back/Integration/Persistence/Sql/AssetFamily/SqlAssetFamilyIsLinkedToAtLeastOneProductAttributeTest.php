@@ -19,7 +19,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyIsLinkedToAtLeastOneProductAttributeInterface;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
-use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetMultipleLinkType;
+use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetCollectionType;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
 
 /**
@@ -98,7 +98,7 @@ class SqlAssetFamilyIsLinkedToAtLeastOneProductAttributeTest extends SqlIntegrat
         $this->get('pim_catalog.saver.attribute_group')->save($attributeGroup);
 
         $attributeAssetMultipleLink = $this->get('pim_catalog.factory.attribute')
-            ->createAttribute(AssetMultipleLinkType::ASSET_MULTIPLE_LINK);
+            ->createAttribute(AssetCollectionType::ASSET_COLLECTION);
         $this->get('pim_catalog.updater.attribute')
             ->update($attributeAssetMultipleLink, [
                 'code' => 'main_designer',

@@ -32,19 +32,16 @@ pimee_workflow:
     partial_accept:
       modal.title: Aprovar informació parcial
       modal.label: Deixa un comentari (opcional)
-      modal.error: S'ha produït un error, la proposta no ha estat parcialment aprovada
       modal.success: La proposta ha estat validada de forma parcialment correcta
     partial_approve:
       modal:
         title: Aprovar parcialment els canvis
         label: Deixa un comentari (opcional)
-        error: S'ha produït un error, la proposta no ha estat parcialment aprovada
         success: Els canvis han estat aprovats correctament
     partial_reject:
       modal:
         title: Rebutjar canvis parcialment
         label: Deixa un comentari (opcional)
-        error: S'ha produït un error, la proposta no ha estat rebutjada parcialment
         success: Els canvis han estat rebutjats correctament
 batch_jobs:
   csv_published_product_export:

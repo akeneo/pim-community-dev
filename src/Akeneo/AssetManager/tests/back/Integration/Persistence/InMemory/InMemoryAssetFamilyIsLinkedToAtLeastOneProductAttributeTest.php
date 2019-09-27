@@ -15,7 +15,7 @@ namespace Akeneo\AssetManager\Integration\Persistence\InMemory;
 
 use Akeneo\AssetManager\Common\Fake\InMemoryAssetFamilyIsLinkedToAtLeastOneProductAttribute;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetMultipleLinkType;
+use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetCollectionType;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository;
@@ -35,7 +35,7 @@ class InMemoryAssetFamilyIsLinkedToAtLeastOneProductAttributeTest extends TestCa
         parent::setUp();
         $assetFamilyattribute = new Attribute();
         $assetFamilyattribute->setCode('main_designer');
-        $assetFamilyattribute->setType(AssetMultipleLinkType::ASSET_MULTIPLE_LINK);
+        $assetFamilyattribute->setType(AssetCollectionType::ASSET_COLLECTION);
         $assetFamilyattribute->setProperties([
             'reference_data_name' => 'designer'
         ]);

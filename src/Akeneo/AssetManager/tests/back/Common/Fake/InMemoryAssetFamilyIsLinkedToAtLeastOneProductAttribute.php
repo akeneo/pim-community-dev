@@ -15,7 +15,7 @@ namespace Akeneo\AssetManager\Common\Fake;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyIsLinkedToAtLeastOneProductAttributeInterface;
-use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetMultipleLinkType;
+use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetCollectionType;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository as InMemoryProductAttributeRepository;
 
@@ -36,7 +36,7 @@ class InMemoryAssetFamilyIsLinkedToAtLeastOneProductAttribute implements AssetFa
     public function isLinked(AssetFamilyIdentifier $identifier): bool
     {
         $attributes = $this->inMemoryAttributeRepository->findBy([
-            'attributeType' => AssetMultipleLinkType::ASSET_MULTIPLE_LINK,
+            'attributeType' => AssetCollectionType::ASSET_COLLECTION,
         ]);
 
         $linkedAssets = [];

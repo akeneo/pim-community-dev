@@ -19,20 +19,20 @@ namespace Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate\Condition;
  */
 class Value
 {
-    /** @var string */
+    /** @var mixed */
     private $value;
 
-    private function __construct(string $value)
+    private function __construct($value)
     {
         $this->value = $value;
     }
 
-    public static function createFromNormalized(string $value): self
+    public static function createFromNormalized($value): self
     {
         return new self($value);
     }
 
-    public function stringValue(): string
+    public function normalize()
     {
         return $this->value;
     }

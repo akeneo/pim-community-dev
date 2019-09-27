@@ -35,15 +35,15 @@ class RuleEngineRunnerSpec extends ObjectBehavior
         Rule $rule
     ) {
         $conditions = ['conditions'];
-        $actions = ['actions'];
+        $actions = [['items' => ['product_1', 'product_2']]];
         $compiledRule = new CompiledRule($conditions, $actions);
 
         $ruleDenormalizer->denormalize(
             [
                 'code'       => '',
                 'priority'   => '',
-                'conditions' => $conditions,
-                'actions'    => $actions
+                'conditions' => ['conditions'],
+                'actions'    => [['items' => ['product_1', 'product_2'], 'value' => ['product_1', 'product_2']]]
             ],
             Rule::class
         )->willReturn($rule);

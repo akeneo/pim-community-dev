@@ -206,3 +206,10 @@ services:
             - '@pim_catalog.repository.cached_attribute'
         tags:
             - { name: pimee_workflow.presenter }
+
+    pimee_workflow.presenter.product_value.reference_entity:
+        class: 'Akeneo\Pim\Enrichment\ReferenceEntity\Component\Presenter\ReferenceEntityValuePresenter'
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
+        tags:
+            - { name: pimee_workflow.presenter }

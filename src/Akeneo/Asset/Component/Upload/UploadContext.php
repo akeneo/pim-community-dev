@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -38,6 +40,8 @@ class UploadContext
     /**
      * @param string $uploadDirectory The application temporary upload directory root
      * @param string $username
+     *
+     * @todo remove parameter $uploadDirectory. It should be define in a filesystem service, not here.
      */
     public function __construct($uploadDirectory, $username)
     {
@@ -58,11 +62,23 @@ class UploadContext
         return $this->uploadDirectory . DIRECTORY_SEPARATOR . $this->username;
     }
 
+    // @todo will replace method getTemporaryUploadDirectory when the attribute $uploadDirectory will be removed
+    public function getTemporaryUploadDirectoryRelativePath(): string
+    {
+        return static::DIR_UPLOAD_TMP . DIRECTORY_SEPARATOR . $this->username;
+    }
+
     /**
      * @return string
      */
     public function getTemporaryImportDirectory()
     {
         return $this->importDirectory . DIRECTORY_SEPARATOR . $this->username;
+    }
+
+    // @todo will replace method getTemporaryImportDirectory when the attribute $uploadDirectory will be removed
+    public function getTemporaryImportDirectoryRelativePath(): string
+    {
+        return static::DIR_UPLOAD_IMPORTED . DIRECTORY_SEPARATOR . $this->username;
     }
 }

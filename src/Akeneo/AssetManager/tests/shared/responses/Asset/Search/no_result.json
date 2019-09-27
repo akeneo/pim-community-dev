@@ -3,7 +3,7 @@
       "method": "PUT",
       "route": "akeneo_asset_manager_asset_index_rest",
       "query": {
-          "assetFamilyIdentifier": "designer"
+          "assetFamilyIdentifier": "packshot"
       },
       "body": {
           "locale": "en_US",
@@ -20,7 +20,7 @@
               {
                   "field": "asset_family",
                   "operator": "=",
-                  "value": "designer",
+                  "value": "packshot",
                   "context": {}
               }
           ]

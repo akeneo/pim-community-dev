@@ -1,0 +1,2 @@
+parameters:
+    enrich_max_asset_in_asset_collection: 50

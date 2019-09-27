@@ -22,10 +22,13 @@ interface ImporterInterface
      * Import all uploaded files
      *
      * @param UploadContext $uploadContext
+     * @param array         $fileNames
      *
      * @return array
+     *
+     * @todo Add a method to import by file names and remove the optional parameter $fileNames.
      */
-    public function import(UploadContext $uploadContext);
+    public function import(UploadContext $uploadContext, array $fileNames = []);
 
     /**
      * @param UploadContext $uploadContext

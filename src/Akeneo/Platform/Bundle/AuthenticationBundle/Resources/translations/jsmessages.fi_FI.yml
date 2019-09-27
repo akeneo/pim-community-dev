@@ -1,12 +1,44 @@
+pim_menu.item.sso: SAML pohjainen kertakirjautuminen
+pim_title:
+  authentication_sso_configuration_edit: SAML pohjaisen kertakirjautumisen konfigurointi
 authentication:
   sso:
     configuration:
+      download_logs_button: Lataa loki
+      info:
+        update_successful: Konfiguraatio tallennettu
+        update_failed: Konfiguraatiota ei voitu tallentaa
+        fields_not_ready: "Konfiguraatiota ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
+      section:
+        activation:
+          title: Kertakirjautumisen aktivointi
+          info:
+            description: Mikäli aiot aktivoida kertakirjautumisen, nykyinen istunto suljetaan. Sinut kirjataan ulos ja uudelleen ohjataan identiteetin tarjoajalle konfiguraation tallentamisen jälkeen.
+        identity_provider:
+          title: Identiteetin tarjoaja (IdP)
+          info:
+            description: Täällä voi määritellä parametrit, joita tarvitaan identiteetin tarjoajalle (IdP). Parametrit saat identiteetin tarjoajaltasi. Ota yhteyttä tietohallintoon saadaksesi parametrit.
+        service_provider:
+          title: Palveluntarjoaja (SP)
+          info:
+            description: Alta löydät tiedot koskien palveluntarjoajaasi. Tiedot on generoitu automaattisesti. Voit muokata niitä tarvittaessa. Nämä tiedot täytyy toimittaa tietohallintoon, jotta IdP voidaan konfiguroida.
       field:
+        activation:
+          label: Kertakirjautuminen aktivoitu
+        entity_id:
+          label: Entiteetin ID
+        sign_on_url:
+          label: Kirjautumisosoite
+        logout_url:
+          label: Ulkoskirjautumisosoite
         certificate:
           label: Sertifikaatti
+          expiration_warning: Tämä sertifikaatti vanhenee {{date}}.
         private_key:
           label: Yksityinen avain
         metadata_url:
+          label: Metadata -osoite
           tooltip_label: Kopioi URL
         acs_url:
+          label: ACS -osoite
           tooltip_label: Kopioi URL

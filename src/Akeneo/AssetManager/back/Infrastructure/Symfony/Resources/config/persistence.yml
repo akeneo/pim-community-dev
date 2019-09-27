@@ -195,6 +195,16 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo_assetmanager.infrastructure.persistence.query.attribute_has_one_value_per_channel:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlAttributeHasOneValuePerChannel
+        arguments:
+            - '@database_connection'
+
+    akeneo_assetmanager.infrastructure.persistence.query.attribute_has_one_value_per_locale:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlAttributeHasOneValuePerLocale
+        arguments:
+            - '@database_connection'
+
     akeneo_assetmanager.infrastructure.persistence.query.find_attribute_next_order:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlFindAttributeNextOrder
         arguments:
@@ -482,6 +492,11 @@ services:
 
     akeneo_assetmanager.infrastructure.persistence.asset.transformer.option_collection_connector_value:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer\OptionCollectionConnectorValueTransformer
+        tags:
+            - { name: akeneo_assetmanager.connector_value_transformer }
+
+    akeneo_assetmanager.infrastructure.persistence.asset.transformer.media_link_value:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transformer\MediaLinkConnectorValueTransformer
         tags:
             - { name: akeneo_assetmanager.connector_value_transformer }
 

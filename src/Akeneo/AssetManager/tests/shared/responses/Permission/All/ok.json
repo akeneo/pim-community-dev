@@ -1,0 +1,56 @@
+{
+    "request": {
+        "method": "GET",
+        "route": "pimee_security_permissions_rest",
+        "query": {}
+    },
+    "response": {
+        "status": 200,
+        "body": {
+            "locales": [
+                {
+                    "code": "de_DE",
+                    "view": true,
+                    "edit": true
+                },
+                {
+                    "code": "en_US",
+                    "view": true,
+                    "edit": true
+                },
+                {
+                    "code": "fr_FR",
+                    "view": true,
+                    "edit": true
+                }
+            ],
+            "attribute_groups": [
+                {
+                    "code": "marketing",
+                    "view": true,
+                    "edit": true
+                },
+                {
+                    "code": "technical",
+                    "view": true,
+                    "edit": true
+                }
+            ],
+            "categories": {
+                "VIEW_ITEMS": [
+                    "master",
+                    "sales",
+                    "tvs_projectors"
+                ],
+                "EDIT_ITEMS": [
+                    "master",
+                    "tvs_projectors"
+                ],
+                "OWN_PRODUCTS": [
+                    "master"
+                ]
+            },
+            "job_instances": []
+        }
+    }
+}
