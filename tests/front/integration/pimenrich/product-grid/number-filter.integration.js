@@ -29,5 +29,7 @@ describe('Pimenrich > product grid > number filter', () => {
     ];
 
     loadProductGrid(page, products, filters);
+
+    // Check that the filter count exists
   });
 });

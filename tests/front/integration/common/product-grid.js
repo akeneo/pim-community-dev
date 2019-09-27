@@ -64,6 +64,7 @@ const matchResponses = (page, products = [], filters = []) => {
 const loadProductGrid = async (page, products, filters) => {
   await matchResponses(page, products, filters);
 
+  await page.addStyleTag({ content: readFileSync(`${process.cwd()}/public/css/pim.css`, 'utf-8')})
   await page.evaluate(async () => await require('pim/init')());
   await page.evaluate(async () => await require('pim/user-context').initialize());
   await page.evaluate(async () => await require('pim/date-context').initialize());
