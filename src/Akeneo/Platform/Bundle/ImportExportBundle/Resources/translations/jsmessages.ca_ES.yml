@@ -28,6 +28,8 @@ pim_import_export:
       flash:
         create:
           success: Perfil d'importació creat correctament
+        upload:
+          error: No es pot pujar l'arxiu. El seva mida pot excedir la mida màxima de pujada configurada a la seva configuració del servidor PHP o HTTP
       page_title:
         index: "]-Inf, 1] {{ count }} perfil d'importació|]1, Inf [{{ count }} perfils d'importació"
       module:

@@ -11,7 +11,7 @@ batch_jobs:
     compute_family_variant_structure_changes: Calcular los cambios de estructura de las variantes de la familia
     compute_completeness_of_products_family: Calcular la completitud de la familia de productos
   csv_product_export:
-    label: Importar productos en CSV
+    label: Exportar productos a CSV
     export.label: Exportar producto
   csv_product_model_export:
     label: Exportación de modelo de producto en CSV
