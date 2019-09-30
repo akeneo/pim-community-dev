@@ -59,8 +59,15 @@ final class ProductValidation implements Context
     {
         $violations = $this->productValidator->validate($this->updatedProduct);
 
+        if ($violations->count() === 0) {
+            throw new \Exception(
+                sprintf('Expected error message "%s" but no violation was found', $errorMessage)
+            );
+        }
+
         $messages = [];
         $isFoundMessage = false;
+
         foreach ($violations as $violation) {
             $message = $violation->getMessage();
             $messages[] = $message;
