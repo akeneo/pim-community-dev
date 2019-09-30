@@ -1,7 +1,7 @@
 <div class="AknGridContainer">
     <table class="AknGrid AknGrid--unclickable groups">
         <thead>
-            <th class="AknGrid-headerCell"><%- label %></th>
+            <th class="AknGrid-headerCell" colspan="2"><%- label %></th>
             <% _.each(channels, function (channel) { %>
             <th class="AknGrid-headerCell AknGrid-headerCell--center channel">
                 <%- i18n.getLabel(channel.labels, catalogLocale, channel.code) %>
@@ -15,8 +15,10 @@
 
         <tbody class="AknGrid-bodyContainer <%- collapsed ? 'AknGrid-bodyContainer--collapsed': '' %>"  data-group="<%- group %>">
             <tr class="AknGrid-bodyRow AknGrid-bodyRow--highlight AknGrid-headerToggle group">
-                <td class="AknGrid-bodyCell" colspan="<%- colspan %>">
-                    <i class="<%- collapsed ? 'icon-expand-alt' : 'icon-collapse-alt' %>"></i>
+                <td class="AknGrid-bodyCell AknGrid-bodyCell--tight">
+                    <div class="<%- collapsed ? 'AknGrid-expand' : 'AknGrid-expand AknGrid-expand--expanded' %>"></div>
+                </td>
+                <td class="AknGrid-bodyCell">
                     <%-
                         i18n.getLabel(
                             attributeGroup.labels,
@@ -25,24 +27,29 @@
                         )
                     %>
                 </td>
+                <% _.times(channels.length, function (channel) { %>
+                    <td class="AknGrid-bodyCell AknGrid-bodyCell--center"></td>
+                <% }) %>
+                <td class="AknGrid-bodyCell AknGrid-bodyCell--right"></td>
             </tr>
             <% _.each(groupedAttributes[group], function (attribute) { %>
             <tr class="AknGrid-bodyRow">
-                <td class="AknGrid-bodyCell">
+                <td class="AknGrid-bodyCell" colspan="2">
                     <%- i18n.getLabel(attribute.labels, catalogLocale, attribute.code) %>
                 </td>
                 <% _.each(channels, function (channel) { %>
                 <td class="AknGrid-bodyCell AknGrid-bodyCell--center">
                     <div class="attribute-requirement">
-                        <% isRequired = isAttributeRequirementRequired(attribute, channel) %>
+                        <% attributeState = getAttributeState(attribute, channel) %>
+                        <% elementClass = getElementClass(attribute, channel) %>
                         <i
                             class="AknAcl-icon
-                                <%- isRequired ? 'AknAcl-icon--granted icon-ok required' : 'icon-circle non-required' %>
+                                <%- elementClass %>
                                 <%- isAttributeEditable(channel.code, attribute.code, attribute.type) ? '' : 'AknAcl-disabled' %>"
                             data-attribute="<%- attribute.code %>"
                             data-type="<%- attribute.type %>"
                             data-channel="<%- channel.code %>"
-                            data-required="<%- isRequired %>"
+                            data-attribute-state="<%- attributeState %>"
                             data-toggle="tooltip"
                             data-original-title="<%- getAttributeRequirementTooltip(attribute, channel) %>"
                             data-placement="right"

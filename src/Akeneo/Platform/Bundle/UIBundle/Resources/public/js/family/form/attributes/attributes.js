@@ -39,11 +39,7 @@ define([
     ) => {
         return BaseForm.extend({
             className: 'tabsection-content tab-content',
-            attributeRequiredIconClass: 'AknAcl-icon AknAcl-icon--granted icon-ok required',
-            attributeNotRequiredIconClass: 'AknAcl-icon icon-circle non-required',
             collapsedClass: 'AknGrid-bodyContainer--collapsed',
-            requiredLabel: __('pim_enrich.entity.family.module.attributes.required_label'),
-            notRequiredLabel: __('pim_enrich.entity.family.module.attributes.not_required_label'),
             identifierAttributeType: 'pim_catalog_identifier',
             template: _.template(template),
             errors: [],
@@ -55,6 +51,20 @@ define([
                 'click .remove-attribute': 'onRemoveAttribute'
             },
             readOnly: false,
+            attributeStates: {
+                default: {
+                    'not_required': {
+                        'elementClass': 'AknSelectButton non-required',
+                        'tooltipLabel': __('pim_enrich.entity.family.module.attributes.not_required_label'),
+                        'next_state': 'required'
+                    },
+                    'required': {
+                        'elementClass': 'AknSelectButton AknSelectButton--selected required',
+                        'tooltipLabel': __('pim_enrich.entity.family.module.attributes.required_label'),
+                        'next_state': 'not_required'
+                    }
+                }
+            },
 
             /**
              * {@inheritdoc}
@@ -156,14 +166,14 @@ define([
 
                             return group;
                         }),
-                        colspan: (this.channels.length + 2),
                         i18n: i18n,
                         identifierAttributeType: this.identifierAttributeType,
                         catalogLocale: this.catalogLocale,
                         readOnly: this.readOnly,
-                        isAttributeRequirementRequired: this.isAttributeRequirementRequired.bind(this),
                         isAttributeEditable: this.isAttributeEditable.bind(this),
-                        getAttributeRequirementTooltip: this.getAttributeRequirementTooltip.bind(this)
+                        getAttributeRequirementTooltip: this.getAttributeRequirementTooltip.bind(this),
+                        getAttributeState: this.getAttributeState.bind(this),
+                        getElementClass: this.getElementClass.bind(this)
                     };
                 });
             },
@@ -172,16 +182,40 @@ define([
              * @param {Object} attribute
              * @param {Object} channel
              *
-             * @returns {boolean}
+             * @returns {string}
              */
-            isAttributeRequirementRequired(attribute, channel) {
+            getElementClass(attribute, channel) {
                 const attributeRequirements = this.getFormData().attribute_requirements;
 
                 if (undefined === attributeRequirements[channel.code]) {
-                    return false;
+                    return this.attributeStates.default.not_required.elementClass;
                 }
 
-                return -1 < attributeRequirements[channel.code].indexOf(attribute.code);
+                if (-1 < attributeRequirements[channel.code].indexOf(attribute.code)) {
+                    return this.attributeStates.default.required.elementClass;
+                } else {
+                    return this.attributeStates.default.not_required.elementClass;
+                }
+            },
+
+            /**
+             * @param {Object} attribute
+             * @param {Object} channel
+             *
+             * @returns {boolean}
+             */
+            getAttributeState(attribute, channel) {
+                const attributeRequirements = this.getFormData().attribute_requirements;
+
+                if (undefined === attributeRequirements[channel.code]) {
+                    return 'not_required';
+                }
+
+                if (-1 < attributeRequirements[channel.code].indexOf(attribute.code)) {
+                    return 'required';
+                } else {
+                    return 'not_required';
+                }
             },
 
             /**
@@ -191,9 +225,13 @@ define([
              * @returns {string}
              */
             getAttributeRequirementTooltip(attribute, channel) {
-                return this.isAttributeRequirementRequired(attribute, channel)
-                    ? this.requiredLabel
-                    : this.notRequiredLabel;
+                switch (this.getAttributeState(attribute, channel)) {
+                    case 'not_required':
+                        return this.attributeStates.default.not_required.tooltipLabel;
+                    case 'required':
+                        return this.attributeStates.default.required.tooltipLabel;
+                    default:
+                }
             },
 
             /**
@@ -203,7 +241,7 @@ define([
              */
             toggleGroup(event) {
                 const target = event.currentTarget;
-                $(target).find('i').toggleClass('icon-expand-alt icon-collapse-alt');
+                $(target).find('div').toggleClass('AknGrid-expand--expanded');
                 $(target).parent().toggleClass(this.collapsedClass);
 
                 return this;
@@ -227,7 +265,10 @@ define([
                     return;
                 }
 
-                if ('true' === event.currentTarget.dataset.required) {
+                const currentState = event.currentTarget.dataset.attributeState;
+                const nextState = this.attributeStates.default[currentState].next_state;
+
+                if ('not_required' === nextState) {
                     this.removeFromAttributeRequirements(attributeCode, channelCode);
                 } else {
                     this.addToAttributeRequirements(attributeCode, channelCode);
