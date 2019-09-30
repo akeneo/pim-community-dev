@@ -66,6 +66,7 @@ const generate = async (product: Product): Promise<ValueCollection> => {
   valueCollection = filterReadOnlyAttribute(valueCollection);
   valueCollection = filterParentAttribute(valueCollection, product.meta);
   valueCollection = filterCategories(valueCollection, product.categories, permissions.categories);
+  valueCollection = sortByOrder(valueCollection);
 
   return valueCollection;
 };
@@ -122,6 +123,12 @@ const filterCategories = (
     ...value,
     editable: value.editable && categoryRight,
   }));
+};
+
+const sortByOrder = (values: ValueCollection): ValueCollection => {
+  console.log("values", values);
+
+  return values.sort((a, b) => (a.attribute.sort_order > b.attribute.sort_order) ? 1 : -1);
 };
 
 export default generate;
