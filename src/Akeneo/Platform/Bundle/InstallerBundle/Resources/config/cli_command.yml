@@ -23,6 +23,7 @@ services:
             - '@pim_installer.directories_registry'
             - '%pim_catalog.version.class%'
             - '%kernel.environment%'
+            - '%kernel.project_dir%'
         tags:
             - { name: console.command }
 
