@@ -156,7 +156,7 @@ class SavingProductModelDescendantsIntegration extends TestCase
      */
     private function createProductsAndProductModelsTree(string $seed)
     {
-        $entityBuilder = new EntityBuilder($this->testKernel->getContainer());
+        $entityBuilder = $this->getFromTestContainer('akeneo_integration_tests.catalog.fixture.build_entity');
 
         $rootProductModel = $entityBuilder->createProductModel($seed . '_root_product_model', 'familyVariantA1', null, []);
         $subProductModel1 = $entityBuilder->createProductModel($seed . '_sub_product_model_1', 'familyVariantA1', $rootProductModel, []);

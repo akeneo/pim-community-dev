@@ -5,10 +5,18 @@ declare(strict_types=1);
 namespace Akeneo\Test\IntegrationTestsBundle\Loader;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductModelIndexerInterface;
+use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
+use Akeneo\Tool\Bundle\BatchBundle\Job\DoctrineJobRepository;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry;
+use Doctrine\DBAL\Connection;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Plugin\ListPaths;
+use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -27,56 +35,91 @@ class FixturesLoader implements FixturesLoaderInterface
     const CACHE_DIR = '/pim-integration-tests-data-cache/';
 
     /** @var KernelInterface */
-    protected $kernel;
+    private $kernel;
 
     /** @var DatabaseSchemaHandler */
-    protected $databaseSchemaHandler;
+    private $databaseSchemaHandler;
 
     /** @var SystemUserAuthenticator */
-    protected $systemUserAuthenticator;
-
-    /** @var ContainerInterface */
-    protected $container;
+    private $systemUserAuthenticator;
 
     /** @var Application */
-    protected $cli;
+    private $cli;
 
     /** @var Configuration */
-    protected $configuration;
+    private $configuration;
+
+    /** @var ReferenceDataLoader */
+    private $referenceDataLoader;
 
     /** @var Filesystem */
     private $archivistFilesystem;
 
-    /**
-     * @param KernelInterface         $kernel
-     * @param DatabaseSchemaHandler   $databaseSchemaHandler
-     * @param SystemUserAuthenticator $systemUserAuthenticator
-     * @param Configuration           $configuration
-     */
+    /** @var DoctrineJobRepository */
+    private $doctrineJobRepository;
+
+    /** @var FixtureJobLoader */
+    private $fixtureJobLoader;
+
+    /** @var AclManager */
+    private $aclManager;
+
+    /** @var ProductIndexerInterface */
+    private $productIndexer;
+
+    /** @var ProductModelIndexerInterface */
+    private $productModelIndexer;
+
+    /** @var ClientRegistry */
+    private $clientRegistry;
+
+    /** @var Client */
+    private $esClient;
+
+    /** @var Connection */
+    private $dbConnection;
+
     public function __construct(
         KernelInterface $kernel,
         DatabaseSchemaHandler $databaseSchemaHandler,
         SystemUserAuthenticator $systemUserAuthenticator,
-        Configuration $configuration
+        Configuration $configuration,
+        ReferenceDataLoader $referenceDataLoader,
+        Filesystem $archivistFilesystem,
+        DoctrineJobRepository $doctrineJobRepository,
+        FixtureJobLoader $fixtureJobLoader,
+        AclManager $aclManager,
+        ProductIndexerInterface $productIndexer,
+        ProductModelIndexerInterface $productModelIndexer,
+        ClientRegistry $clientRegistry,
+        Client $esClient,
+        Connection $dbConnection
     ) {
         $this->kernel = $kernel;
         $this->databaseSchemaHandler = $databaseSchemaHandler;
         $this->systemUserAuthenticator = $systemUserAuthenticator;
         $this->configuration = $configuration;
+        $this->referenceDataLoader = $referenceDataLoader;
 
-        $this->container = $kernel->getContainer();
         $this->cli = new Application($kernel);
         $this->cli->setAutoExit(false);
 
-        $this->archivistFilesystem = $this->container->get('oneup_flysystem.archivist_filesystem');
+        $this->archivistFilesystem = $archivistFilesystem;
+        $this->doctrineJobRepository = $doctrineJobRepository;
+        $this->fixtureJobLoader = $fixtureJobLoader;
+        $this->aclManager = $aclManager;
+        $this->productIndexer = $productIndexer;
+        $this->productModelIndexer = $productModelIndexer;
+        $this->clientRegistry = $clientRegistry;
+        $this->esClient = $esClient;
+        $this->dbConnection = $dbConnection;
     }
 
     public function __destruct()
     {
         // close the connection created specifically for this repository
         // TODO: to remove when TIP-385 will be done
-        $doctrineJobRepository = $this->container->get('akeneo_batch.job_repository');
-        $doctrineJobRepository->getJobManager()->getConnection()->close();
+        $this->doctrineJobRepository->getJobManager()->getConnection()->close();
     }
 
     /**
@@ -191,11 +234,10 @@ class FixturesLoader implements FixturesLoaderInterface
         }
 
         // configure and load job instances in database
-        $jobLoader = $this->container->get('pim_installer.fixture_loader.job_loader');
-        $jobLoader->loadJobInstances($replacePaths);
+        $this->fixtureJobLoader->loadJobInstances($replacePaths);
 
         // install the catalog via the job instances
-        $jobInstances = $jobLoader->getLoadedJobInstances();
+        $jobInstances = $this->fixtureJobLoader->getLoadedJobInstances();
         foreach ($jobInstances as $jobInstance) {
             $input = new ArrayInput([
                 'command'  => 'akeneo:batch:job',
@@ -211,7 +253,7 @@ class FixturesLoader implements FixturesLoaderInterface
             }
         }
 
-        $jobLoader->deleteJobInstances();
+        $this->fixtureJobLoader->deleteJobInstances();
     }
 
     /**
@@ -219,8 +261,7 @@ class FixturesLoader implements FixturesLoaderInterface
      */
     protected function loadReferenceData(): void
     {
-        $referenceDataLoader = $this->container->get('akeneo_integration_tests.loader.reference_data_loader');
-        $referenceDataLoader->load();
+        $this->referenceDataLoader->load();
     }
 
     /**
@@ -365,8 +406,7 @@ class FixturesLoader implements FixturesLoaderInterface
      */
     protected function clearAclCache(): void
     {
-        $aclManager = $this->container->get('oro_security.acl.manager');
-        $aclManager->clearCache();
+        $this->aclManager->clearCache();
     }
 
     /**
@@ -374,9 +414,9 @@ class FixturesLoader implements FixturesLoaderInterface
      */
     protected function indexProducts(): void
     {
-        $this->container->get('pim_catalog.elasticsearch.indexer.product')->indexFromProductIdentifiers(
+        $this->productIndexer->indexFromProductIdentifiers(
             array_column(
-                $this->container->get('database_connection')->fetchAll('SELECT identifier FROM pim_catalog_product'),
+                $this->dbConnection->fetchAll('SELECT identifier FROM pim_catalog_product'),
                 'identifier'
             )
         );
@@ -387,9 +427,9 @@ class FixturesLoader implements FixturesLoaderInterface
      */
     protected function indexProductModels(): void
     {
-        $this->container->get('pim_catalog.elasticsearch.indexer.product_model')->indexFromProductModelCodes(
+        $this->productModelIndexer->indexFromProductModelCodes(
             array_column(
-                $this->container->get('database_connection')->fetchAll('SELECT code FROM pim_catalog_product_model'),
+                $this->dbConnection->fetchAll('SELECT code FROM pim_catalog_product_model'),
                 'code'
             )
         );
@@ -397,8 +437,7 @@ class FixturesLoader implements FixturesLoaderInterface
 
     protected function resetElasticsearchIndex(): void
     {
-        $clientRegistry = $this->container->get('akeneo_elasticsearch.registry.clients');
-        $clients = $clientRegistry->getClients();
+        $clients = $this->clientRegistry->getClients();
 
         foreach ($clients as $client) {
             $client->resetIndex();
@@ -407,7 +446,7 @@ class FixturesLoader implements FixturesLoaderInterface
 
     private function refreshES(): void
     {
-        $this->container->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        $this->esClient->refreshIndex();
     }
 
     private function resetFilesystem(): void
