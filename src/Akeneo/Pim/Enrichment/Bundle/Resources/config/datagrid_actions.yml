@@ -6,24 +6,28 @@ parameters:
 
 services:
     pim_enrich.extension.action.type.navigate_product_and_product_model:
+        public: true
         class: '%pim_enrich.extension.action.type.navigate_product_and_product_model.class%'
         shared: false
         tags:
             - { name: oro_datagrid.extension.action.type, type: navigate-product-and-product-model }
 
     pim_enrich.extension.action.type.edit_in_modal:
+        public: true
         class: '%pim_enrich.extension.action.type.edit_in_modal.class%'
         shared: false
         tags:
             - { name: oro_datagrid.extension.action.type, type: edit-in-modal }
 
     pim_enrich.extension.action.type.delete_product:
+        public: true
         class: '%pim_enrich.extension.action.type.delete_product.class%'
         shared: false
         tags:
             - { name: oro_datagrid.extension.action.type, type: delete-product }
 
     pim_enrich.extension.action.type.toggle_product:
+        public: true
         class: '%pim_enrich.extension.action.type.toggle_product.class%'
         shared: false
         tags:
