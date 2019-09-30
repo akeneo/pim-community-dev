@@ -34,7 +34,9 @@ class PuppeteerEnvironment extends NodeEnvironment {
         });
       }
     });
+
     await page.goto('http://pim.com');
+    await page.setViewport({ width: 1920, height: 1080 })
     await page.evaluate(async () => await require('pim/fetcher-registry').initialize());
 
     this.global.__PAGE__ = page;

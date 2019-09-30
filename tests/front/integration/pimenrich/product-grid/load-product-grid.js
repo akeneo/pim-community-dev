@@ -110,21 +110,6 @@ const getProductRowLabels = async (page) => {
   return rowLabels;
 }
 
-// const getProductRowByLabel = async (page, label) => {
-//   let matchingRow = null;
-
-//   for (row of rows) {
-//     const labelColumn = await row.$('[data-column="label"]');
-//     const rowLabel = await (await labelColumn.getProperty('textContent')).jsonValue();
-//     if (rowLabel.trim() === label) {
-//       matchingRow = row;
-//       break;
-//     }
-//   }
-
-//   return matchingRow;
-// }
-
 const waitForLoading = (page) => {
   return page.waitForSelector('.AknLoadingMask.loading-mask', {hidden: true});
 }
@@ -165,20 +150,22 @@ expect.extend({
     }
   },
   toBeFilterableByOperator: async (filterName, operator, page) => {
+    const filterSelector = `.filter-item[data-name="${filterName}"]`
+    const filter = await page.$(filterSelector);
+    const filterBox = await filter.$('.AknFilterBox-filter');
+
+    await filterBox.hover();
+    await filterBox.click();
+
     try {
-      const filter = await page.$(`.filter-item[data-name="${filterName}"]`);
-      await filter.click();
+      await page.waitForSelector(`${filterSelector} .filter-criteria`, {
+        visible: true, timeout: 500
+      })
 
-      const operatorDropdown = await filter.$('.operator');
-      await operatorDropdown.click()
-
-      const operatorChoice = await getOperatorChoiceByLabel(filter, operator);
-      await operatorChoice.click();
-
-      const updateButton = await filter.$('button')
-      await updateButton.click();
-
-      await waitForLoading(page);
+      await (await filter.$('.operator')).click();
+      await (await getOperatorChoiceByLabel(filter, operator)).click();
+      await (await filter.$('button')).click();
+      await page.waitFor(500);
 
       return {
         pass: true,
@@ -187,7 +174,7 @@ expect.extend({
     } catch (e) {
       return {
         pass: false,
-        message: () => 'It didnt work'
+        message: () => `Couldn't open filter "${filterName}"`
       }
     }
   },
