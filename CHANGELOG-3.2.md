@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes
+
+- PIM-8752: Fix reference entities filter box popup display
+
 # 3.2.9 (2019-09-23)
 
 - PIM-8781: Fix catalog volume monitoring and system information showing unused data
