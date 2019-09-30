@@ -11,6 +11,7 @@ import {
   MoveDirection,
   moveAssetInCollection,
   getAssetCodes,
+  getAssetByCode,
 } from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {isLabels} from 'akeneoassetmanager/domain/model/utils';
 
@@ -235,4 +236,26 @@ test('I can get asset codes of a collection', () => {
     labels: {en_US: 'Samsung'},
   };
   expect(getAssetCodes([iphone, samsung])).toEqual(['iphone', 'samsung']);
+});
+
+test('I can find an asset from a collection with his code', () => {
+  const assetCollection = [
+    {
+      identifier: 'packshot_iphone_fingerprint',
+      code: 'iphone',
+      labels: {en_US: 'Iphone'},
+    },
+    {
+      identifier: 'packshot_honor_fingerprint',
+      code: 'honor',
+      labels: {en_US: 'Honor'},
+    },
+  ];
+  const expectedAsset = {
+    identifier: 'packshot_honor_fingerprint',
+    code: 'honor',
+    labels: {en_US: 'Honor'},
+  };
+
+  expect(getAssetByCode(assetCollection, 'honor')).toMatchObject(expectedAsset);
 });

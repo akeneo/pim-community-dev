@@ -42,7 +42,7 @@ export const Button = styled.div<ButtonProps>`
         return `
           padding: 0 15px;
           height: 32px;
-          line-height: 23px;
+          line-height: 30px;
           border-radius: 16px;
           font-size: ${props.theme.fontSize.default};
           min-width: 100px;

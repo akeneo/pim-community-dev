@@ -27,18 +27,24 @@ pim_asset_manager:
     title: Add assets to your product
     no_result: Sorry, there is no asset for your search
     sub_title: Try again with new search criteria
-  #  app:
-  #    image:
-  #      wide:
-  #        remove: Remove the image
-  #        download: Download the image
-  #        upload: Drag and drop to upload or click here
-  #      small:
-  #        remove: Remove
-  #        download: Download
-  #        upload: Drag and drop to upload
-  #  grid:
-  #    counter: '{{ count }} result|{{ count }} results'
+    basket:
+      title: '{{ assetCount }} asset selected|{{ assetCount }} assets selected'
+      empty_title: Your basket is empty
+      remove_one_asset: Remove asset {{ assetName }} from asset selection
+      remove_all_assets: Remove all
+
+#  app:
+#    image:
+#      wide:
+#        remove: Remove the image
+#        download: Download the image
+#        upload: Drag and drop to upload or click here
+#      small:
+#        remove: Remove
+#        download: Download
+#        upload: Drag and drop to upload
+#  grid:
+#    counter: '{{ count }} result|{{ count }} results'
   asset_family:
     #    validation:
     #      code:

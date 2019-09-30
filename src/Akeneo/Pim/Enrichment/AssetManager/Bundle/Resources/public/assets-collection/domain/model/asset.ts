@@ -33,9 +33,9 @@ export const getImage = (asset: Asset): Image => {
 };
 
 export const isComplete = (asset: Asset) => asset.completeness.complete === asset.completeness.required;
-export const emptyAsset = (): Asset => ({
+export const emptyAsset = (assetCode?: AssetCode): Asset => ({
   identifier: '',
-  code: '',
+  code: assetCode || '',
   labels: {},
   image: '',
   assetFamily: emptyAssetFamily(),
@@ -66,7 +66,7 @@ export const isAssetInCollection = (assetCodeToLocate: AssetCode, assetCollectio
   return assetCollection.some((assetCode: AssetCode) => assetcodesAreEqual(assetCodeToLocate, assetCode));
 };
 
-export const emptyCollection = (_assetCodes: AssetCode): AssetCode[] => {
+export const emptyCollection = (_assetCodes: AssetCode[]): AssetCode[] => {
   return [];
 };
 
@@ -111,4 +111,8 @@ export const moveAssetInCollection = (assetCodes: AssetCode[], asset: Asset, dir
         assetCodes[currentAssetPosition], // Swap
         ...assetCodes.slice(newAssetPosition + 1, assetCodes.length), // End of the array
       ];
+};
+
+export const getAssetByCode = (assetCollection: Asset[], assetCode: AssetCode): Asset | undefined => {
+  return assetCollection.find((asset: Asset) => asset.code === assetCode);
 };

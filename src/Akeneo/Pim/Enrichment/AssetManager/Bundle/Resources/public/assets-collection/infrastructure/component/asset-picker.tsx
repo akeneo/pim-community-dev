@@ -10,6 +10,8 @@ import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import MosaicResult from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/mosaic';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
+import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
+import Basket from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/basket';
 
 type AssetFamilyIdentifier = string;
 type AssetPickerProps = {
@@ -52,9 +54,16 @@ const Title = styled.div`
 `;
 
 const Header = styled.div``;
-const Container = styled.div``;
-const FilterCollection = styled.div<any>``;
-const Basket = styled.div<any>``;
+const Container = styled.div`
+  display: flex;
+  height: 100%;
+`;
+const FilterCollection = styled.div<any>`
+  flex: 1;
+`;
+const Center = styled.div`
+  flex: 3;
+`;
 const Search = styled.div<any>``;
 const ResultCount = styled.div<any>``;
 const Context = styled.div<any>``;
@@ -70,8 +79,8 @@ export const AssetPicker = ({assetFamilyIdentifier, initialContext, onAssetPick}
 
   const dataProvider = {
     assetFetcher: {
-      fetchByCode: (_assetFamilyIdentifier: AssetFamilyIdentifier, _assetCodeCollection: AssetCode[]) => {
-        return new Promise(resolve => resolve([]));
+      fetchByCode: (assetFamilyIdentifier: AssetFamilyIdentifier, assetCodeCollection: AssetCode[]) => {
+        return assetFetcher.fetchByCodes(assetFamilyIdentifier, assetCodeCollection, context);
       },
       search: (_query: Query) => {
         return new Promise(resolve => resolve({}));
@@ -119,7 +128,7 @@ export const AssetPicker = ({assetFamilyIdentifier, initialContext, onAssetPick}
                 setFilterCollection(filterCollection);
               }}
             />
-            <div>
+            <Center>
               <div>
                 <Search
                   searchValue={searchValue}
@@ -148,7 +157,7 @@ export const AssetPicker = ({assetFamilyIdentifier, initialContext, onAssetPick}
                   setSelection(assetCodeCollection);
                 }}
               />
-            </div>
+            </Center>
             <Basket
               dataProvider={dataProvider}
               selection={selection}
