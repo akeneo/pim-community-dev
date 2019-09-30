@@ -2,12 +2,12 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value;
 
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\MediaNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -37,11 +37,11 @@ class MediaNormalizerSpec extends ObjectBehavior
 
         $this->supportsNormalization($numberValue, 'whatever')->shouldReturn(false);
 
-        $this->supportsNormalization(new \stdClass(), ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+        $this->supportsNormalization(new \stdClass(), ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(false);
-        $this->supportsNormalization($mediaValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+        $this->supportsNormalization($mediaValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(true);
-        $this->supportsNormalization($numberValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+        $this->supportsNormalization($numberValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(false);
     }
 
@@ -68,7 +68,7 @@ class MediaNormalizerSpec extends ObjectBehavior
         $mediaAttribute->getBackendType()->willReturn('media');
         $attributeRepository->findOneByIdentifier('an_image')->willReturn($mediaAttribute);
 
-        $this->normalize($mediaValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
+        $this->normalize($mediaValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'an_image-media' => [
                 '<all_channels>' => [
                     '<all_locales>' => [
@@ -108,7 +108,7 @@ class MediaNormalizerSpec extends ObjectBehavior
         $mediaAttribute->getBackendType()->willReturn('media');
         $attributeRepository->findOneByIdentifier('an_image')->willReturn($mediaAttribute);
 
-        $this->normalize($mediaValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
+        $this->normalize($mediaValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'an_image-media' => [
                 '<all_channels>' => [
                     'fr_FR' => [
@@ -148,7 +148,7 @@ class MediaNormalizerSpec extends ObjectBehavior
         $mediaAttribute->getBackendType()->willReturn('media');
         $attributeRepository->findOneByIdentifier('an_image')->willReturn($mediaAttribute);
 
-        $this->normalize($mediaValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
+        $this->normalize($mediaValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'an_image-media' => [
                 'ecommerce' => [
                     '<all_locales>' => [
@@ -189,7 +189,7 @@ class MediaNormalizerSpec extends ObjectBehavior
         $mediaAttribute->getBackendType()->willReturn('media');
         $attributeRepository->findOneByIdentifier('an_image')->willReturn($mediaAttribute);
 
-        $this->normalize($mediaValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
+        $this->normalize($mediaValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'an_image-media' => [
                 'ecommerce' => [
                     'fr_FR' => [
@@ -220,7 +220,7 @@ class MediaNormalizerSpec extends ObjectBehavior
         $mediaAttribute->getBackendType()->willReturn('media');
         $attributeRepository->findOneByIdentifier('an_image')->willReturn($mediaAttribute);
 
-        $this->normalize($mediaValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
+        $this->normalize($mediaValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'an_image-media' => [
                 'ecommerce' => [
                     'fr_FR' => null,

@@ -11,11 +11,10 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductProjection
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductProjection;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Webmozart\Assert\Assert;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
@@ -83,7 +82,7 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
                 $this->channelRepository->getChannelCodes(),
                 $this->normalizer->normalize(
                     $product->getValues(),
-                    ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
+                    ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
                 ),
                 $this->getProductCompletenesses->fromProductId($product->getId()),
                 $this->attributesProvider

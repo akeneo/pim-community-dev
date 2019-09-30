@@ -3,7 +3,6 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Value\DateValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -22,7 +21,7 @@ class DateNormalizer extends AbstractProductValueNormalizer implements Normalize
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof DateValueInterface && (
-                $format === ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
+                $format === ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
             );
     }
 
