@@ -36,7 +36,8 @@ jobs:
       - run:
             name: Install back dependencies
             command: |
-                C=mysql make up
+                C='mysql elasticsearch' make up
+                .circleci/wait_docker_up.sh
                 make vendor
       - run:
             name: Install front dependencies
