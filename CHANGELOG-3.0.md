@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8769: Fix 'SKU' filter disappearing from the filter options
+- PIM-8818: Fix project completeness for locale specific attributes
 
 # 3.0.43 (2019-09-24)
 
