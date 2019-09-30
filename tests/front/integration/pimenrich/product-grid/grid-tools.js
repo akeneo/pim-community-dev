@@ -28,7 +28,14 @@ const getProductRowLabels = async (page) => {
 
 const mockFilteredResponse = async (page, responses) => {
   return page.on('request', (interceptedRequest) => {
-    const response = responses[interceptedRequest.url()]
+    let response = null;
+
+    Object.entries(responses).forEach(([url, answer]) => {
+      if (interceptedRequest.url().includes(url)) {
+        response = answer
+        return;
+      }
+    })
 
     if (response) {
       const { productGridData } = constructProductsResponse(response)
@@ -130,14 +137,16 @@ expect.extend({
 
       await (await filter.$('.operator')).click();
       await (await getOperatorChoiceByLabel(filter, operator)).click();
-      await (await filter.$('button')).click();
-      await page.waitFor(500);
+      await page.waitFor(100);
+      await (await filter.$('.filter-update')).click();
+      await page.waitFor(100);
 
       return {
         pass: true,
         message: () => `Can't filter "${filterName}" by "${operator}"`
       }
     } catch (e) {
+      console.log(e.message)
       return {
         pass: false,
         message: () => `Couldn't open filter "${filterName}"`
