@@ -102,7 +102,7 @@ final class ImportExportFileContext extends PimContext implements SnippetAccepti
 
         $user = $this->getFixturesContext()->getUser(self::USERNAME_FOR_JOB_LAUNCH);
 
-        $launcher = $this->getService('akeneo_batch.launcher.simple_job_launcher');
+        $launcher = $this->getService('akeneo_batch_queue.launcher.queue_job_launcher');
         $launcher->launch($this->jobInstance, $user);
 
         $this->jobExecution = $this->waitForJobToFinish($this->jobInstance);
