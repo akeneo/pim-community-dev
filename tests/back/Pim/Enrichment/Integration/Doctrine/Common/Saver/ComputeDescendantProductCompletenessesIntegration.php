@@ -56,7 +56,7 @@ class ComputeDescendantProductCompletenessesIntegration extends AbstractComplete
         $this->assertNotEquals($completenessBeforeSave->ratio(), $completenessAfterSave->ratio());
     }
 
-    public function aatest_completeness_is_updated_after_bulk_product_models_save()
+    public function test_completeness_is_updated_after_bulk_product_models_save()
     {
         $productModel1 = $this->createProductModel([
             'code' => 'pm1',
