@@ -252,19 +252,19 @@ workflows:
           - build_dev:
                 requires:
                     - wait_for_user_approval
-          - back_static_and_acceptance:
-                requires:
-                    - build_dev
-          - front_static_acceptance_and_integration:
-                requires:
-                    - build_dev
-          - back_phpunit:
-                requires:
-                    - back_static_and_acceptance
-                    - front_static_acceptance_and_integration
+#          - back_static_and_acceptance:
+#                requires:
+#                    - build_dev
+#          - front_static_acceptance_and_integration:
+#                requires:
+#                    - build_dev
+#          - back_phpunit:
+#                requires:
+#                    - back_static_and_acceptance
+#                    - front_static_acceptance_and_integration
           - back_behat_legacy:
                 requires:
-                    - back_phpunit
+                    - build_dev
 
   nightly:
       triggers:
