@@ -71,6 +71,7 @@ composer.lock: composer.json
 	$(PHP_RUN) -d memory_limit=4G /usr/local/bin/composer update --no-interaction
 
 vendor: composer.lock
+	$(PHP_RUN) bin/console pim:installer:check-requirements
 	$(PHP_RUN) -d memory_limit=4G /usr/local/bin/composer install --no-interaction
 
 .PHONY: database
