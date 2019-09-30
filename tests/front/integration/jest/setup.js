@@ -17,6 +17,7 @@ module.exports = async function() {
         height: 1080
       }
     });
+
   // store the browser instance so we can teardown it later
   global.__BROWSER__ = browser;
 
