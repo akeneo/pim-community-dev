@@ -1,0 +1,9 @@
+extensions:
+    pim-menu-apps:
+        module: pim/menu/tab
+        parent: pim-menu
+        position: 0
+        targetZone: mainMenu
+        config:
+            title: pim_apps.title
+            to: akeneo_apps_index

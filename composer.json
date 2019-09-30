@@ -13,7 +13,8 @@
             "": "src/"
         },
         "psr-4": {
-            "Pim\\Upgrade\\": "upgrades/"
+            "Pim\\Upgrade\\": "upgrades/",
+            "Akeneo\\Apps\\": "src/Akeneo/Apps/back"
         }
     },
     "autoload-dev": {

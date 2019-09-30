@@ -37,6 +37,9 @@ pim_api:
 pim_volume_monitoring:
     resource: "@PimCatalogVolumeMonitoringBundle/Resources/config/routing.yml"
 
+pim_apps:
+    resource: "@AkeneoAppsBundle/Resources/config/routing.yml"
+
 # Oro platform
 
 oro_default:
