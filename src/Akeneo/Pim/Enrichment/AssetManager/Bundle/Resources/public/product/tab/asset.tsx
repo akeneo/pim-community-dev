@@ -14,7 +14,7 @@ import {errorsReceived, errorsRemovedAll} from 'akeneopimenrichmentassetmanager/
 import thunkMiddleware from 'redux-thunk';
 import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import {updateRuleRelations} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/structure';
-import {LegacyValue} from 'web/bundles/akeneopimenrichmentassetmanager/enrich/domain/model/product';
+import {LegacyValue} from 'akeneopimenrichmentassetmanager/enrich/domain/model/product';
 import {isValidErrorCollection, denormalizeErrorCollection} from 'akeneopimenrichmentassetmanager/platform/model/validation-error';
 
 const Form = require('pim/form');
