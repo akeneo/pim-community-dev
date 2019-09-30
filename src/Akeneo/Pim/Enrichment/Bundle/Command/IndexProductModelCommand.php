@@ -34,19 +34,19 @@ class IndexProductModelCommand extends Command
     private $productAndProductModelClient;
 
     /** @var ProductModelDescendantsAndAncestorsIndexer */
-    private $productModelDescendantAndAncestoresIndexer;
+    private $productModelDescendantAndAncestorsIndexer;
 
     /** @var Connection */
     private $connection;
 
     public function __construct(
         Client $productAndProductModelClient,
-        ProductModelDescendantsAndAncestorsIndexer $productModelDescendantAndAncestoresIndexer,
+        ProductModelDescendantsAndAncestorsIndexer $productModelDescendantAndAncestorsIndexer,
         Connection $connection
     ) {
         parent::__construct();
         $this->productAndProductModelClient = $productAndProductModelClient;
-        $this->productModelDescendantAndAncestoresIndexer = $productModelDescendantAndAncestoresIndexer;
+        $this->productModelDescendantAndAncestorsIndexer = $productModelDescendantAndAncestorsIndexer;
         $this->connection = $connection;
     }
 
@@ -117,7 +117,7 @@ class IndexProductModelCommand extends Command
 
         $progressBar->start();
         foreach ($chunkedProductModelCodes as $productModelCodes) {
-            $this->productModelDescendantAndAncestoresIndexer->indexFromProductModelCodes($productModelCodes);
+            $this->productModelDescendantAndAncestorsIndexer->indexFromProductModelCodes($productModelCodes);
             $indexedProductModelCount += count($productModelCodes);
             $progressBar->advance(count($productModelCodes));
         }
@@ -134,6 +134,7 @@ SELECT id, code
 FROM pim_catalog_product_model
 WHERE id > :formerId
 AND parent_id IS NULL
+ORDER BY id ASC
 LIMIT :limit
 SQL;
         while (true) {

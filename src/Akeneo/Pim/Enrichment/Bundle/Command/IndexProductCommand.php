@@ -133,6 +133,7 @@ class IndexProductCommand extends Command
 SELECT id, identifier
 FROM pim_catalog_product
 WHERE id > :formerId
+ORDER BY id ASC
 LIMIT :limit
 SQL;
         while (true) {
