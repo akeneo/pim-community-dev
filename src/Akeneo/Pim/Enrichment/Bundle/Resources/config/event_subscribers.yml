@@ -1,5 +1,4 @@
 parameters:
-    pim_catalog.event_subscriber.product_category.class:             Pim\Bundle\CatalogBundle\EventSubscriber\ProductCategorySubscriber
     pim_catalog.event_subscriber.create_attribute_requirement.class: Akeneo\Pim\Structure\Bundle\EventSubscriber\CreateAttributeRequirementSubscriber
     pim_catalog.event_subscriber.localizable.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\LocalizableSubscriber
     pim_catalog.event_subscriber.timestampable.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\TimestampableSubscriber
@@ -12,7 +11,6 @@ parameters:
     pim_catalog.event_subscriber.compute_product_model_descendants.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeProductModelDescendantsSubscriber
     pim_catalog.event_subscriber.index_product_model_complete.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\IndexProductModelCompleteDataSubscriber
     pim_catalog.event_subscriber.compute_completeness_on_family_update.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeCompletenessOnFamilyUpdateSubscriber
-    pim_catalog.event_subscriber.add_boolean_values_to_new_product.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\AddBooleanValuesToNewProductSubscriber
 
 services:
     # Subscribers
@@ -68,7 +66,8 @@ services:
     pim_catalog.event_subscriber.index_products:
         class: '%pim_catalog.event_subscriber.index_products.class%'
         arguments:
-              - '@pim_catalog.elasticsearch.indexer.product'
+            - '@pim_catalog.elasticsearch.indexer.product'
+            - '@akeneo.pim.enrichment.elasticsearch.indexer.product_and_ancestors'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -86,13 +85,6 @@ services:
             - '@akeneo_batch_queue.launcher.queue_job_launcher'
             - '@akeneo_batch.job.job_instance_repository'
             - '%pim_catalog.compute_product_models_descendants.job_name%'
-        tags:
-            - { name: kernel.event_subscriber }
-
-    pim_catalog.event_subscriber.index_product_model_completedata:
-        class: '%pim_catalog.event_subscriber.index_product_model_complete.class%'
-        arguments:
-            - '@pim_catalog.elasticsearch.indexer.product_model'
         tags:
             - { name: kernel.event_subscriber }
 
