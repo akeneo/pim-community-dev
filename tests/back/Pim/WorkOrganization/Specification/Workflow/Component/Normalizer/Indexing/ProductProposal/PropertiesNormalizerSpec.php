@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\ProductProposal;
 
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
@@ -56,14 +56,14 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $productProposal->getCreatedAt()->willReturn($now);
         $serializer->normalize(
             $productProposal->getWrappedObject()->getCreatedAt(),
-            ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
+            ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
         )->willReturn($now->format('c'));
 
         $product->getFamily()->willReturn($family);
         $family->getCode()->willReturn(null);
         $serializer->normalize(
             $product->getWrappedObject()->getFamily(),
-            ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
+            ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
         )->willReturn(['code' => 'family']);
 
         $productProposal->getValues()->willReturn($valueCollection);
@@ -108,14 +108,14 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $productProposal->getCreatedAt()->willReturn($now);
         $serializer->normalize(
             $productProposal->getWrappedObject()->getCreatedAt(),
-            ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
+            ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
         )->willReturn($now->format('c'));
 
         $product->getFamily()->willReturn($family);
         $family->getCode()->willReturn(null);
         $serializer->normalize(
             $product->getWrappedObject()->getFamily(),
-            ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
+            ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
         )->willReturn(['code' => 'family']);
 
         $productProposal->getValues()->willReturn($valueCollection);

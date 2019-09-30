@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\PublishedProduct;
 
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompleteness;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompletenessCollection;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\PublishedProduct\CompletenessCollectionNormalizer;
@@ -21,9 +21,9 @@ class CompletenessCollectionNormalizerSpec extends ObjectBehavior
     {
         $collection = new PublishedProductCompletenessCollection(42, []);
 
-        $this->supportsNormalization($collection, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+        $this->supportsNormalization($collection, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
              ->shouldReturn(true);
-        $this->supportsNormalization(new \stdClass(), ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+        $this->supportsNormalization(new \stdClass(), ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
              ->shouldReturn(false);
         $this->supportsNormalization($collection, 'other_format')
              ->shouldReturn(false);
@@ -52,7 +52,7 @@ class CompletenessCollectionNormalizerSpec extends ObjectBehavior
             ],
         ];
 
-        $this->normalize($collection, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+        $this->normalize($collection, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
              ->shouldReturn($expected);
     }
 }

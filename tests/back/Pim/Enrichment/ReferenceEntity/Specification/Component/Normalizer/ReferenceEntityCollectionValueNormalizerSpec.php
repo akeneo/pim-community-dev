@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\ReferenceEntity\Component\Normalizer;
 
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Normalizer\ReferenceEntityCollectionValueNormalizer;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Value\ReferenceEntityCollectionValue;
@@ -53,7 +53,7 @@ class ReferenceEntityCollectionValueNormalizerSpec extends ObjectBehavior {
         $designerValue->getData()->willReturn([]);
 
         $this->normalize($designerValue,
-            ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
+            ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
                 'designer-reference_data_options' => [
                     '<all_channels>' => [
@@ -91,7 +91,7 @@ class ReferenceEntityCollectionValueNormalizerSpec extends ObjectBehavior {
         $designerValue->getData()->willReturn([$starckCode, $dysonCode]);
 
         $this->normalize($designerValue,
-            ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
+            ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
                 'designer-reference_data_options' => [
                     '<all_channels>' => [
