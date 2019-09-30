@@ -1,6 +1,6 @@
 version: 2.1
 jobs:
-  setup:
+  build_dev:
     parameters:
         is_pull_request:
             type: boolean
@@ -29,9 +29,6 @@ jobs:
               sudo chown -R 1000:1000 ../project
               sudo chown -R 1000:1000 ~/.composer
               sudo chown -R 1000:1000 ~/.cache/yarn
-      - run:
-          name: Start containers
-          command: make up
       - run:
           name: Change owner on project dir after restoring cache
           command: sudo chown -R 1000:1000 ../project
@@ -303,15 +300,15 @@ workflows:
                     branches:
                         ignore:
                             - master
-          - setup:
+          - build_dev:
                 requires:
                     - wait_for_user_approval
           - back_static_and_acceptance:
                 requires:
-                    - setup
+                    - build_dev
           - front_static_acceptance_and_integration:
                 requires:
-                    - setup
+                    - build_dev
           - back_phpunit:
                 requires:
                     - back_static_and_acceptance
@@ -329,14 +326,14 @@ workflows:
                         only:
                             - master
       jobs:
-          - setup:
+          - build_dev:
                 is_pull_request: false
           - back_static_and_acceptance:
                 requires:
-                    - setup
+                    - build_dev
           - front_static_acceptance_and_integration:
                 requires:
-                    - setup
+                    - build_dev
           - back_phpunit:
                 requires:
                     - back_static_and_acceptance
