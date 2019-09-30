@@ -142,7 +142,7 @@ class FeatureContext extends MinkContext implements KernelAwareContext
      */
     public function getContainer()
     {
-        return $this->kernel->getContainer();
+        return $this->kernel->getContainer()->get('test.service_container');
     }
 
     /**

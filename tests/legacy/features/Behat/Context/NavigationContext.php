@@ -288,7 +288,7 @@ class NavigationContext extends PimContext implements PageObjectAware
      */
     public function iAmOnTheUserEditPage($identifier, $page)
     {
-        $user = $this->getKernel()->getContainer()->get('pim_user.repository.user')->findOneByIdentifier($identifier);
+        $user = $this->getMainContext()->getContainer()->get('pim_user.repository.user')->findOneByIdentifier($identifier);
 
         $this->openPage(
             sprintf('%s edit', ucfirst($page)),

@@ -77,7 +77,7 @@ class PimContext extends RawMinkContext implements KernelAwareContext
      */
     protected function getService($id)
     {
-        return $this->kernel->getContainer()->get($id);
+        return $this->kernel->getContainer()->get('test.service_container')->get($id);
     }
 
     /**
@@ -87,7 +87,7 @@ class PimContext extends RawMinkContext implements KernelAwareContext
      */
     protected function getParameter($name)
     {
-        return $this->kernel->getContainer()->getParameter($name);
+        return $this->kernel->getContainer()->get('test.service_container')->getParameter($name);
     }
 
     /**
