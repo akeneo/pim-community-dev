@@ -5,7 +5,6 @@ namespace Akeneo\Pim\Enrichment\Bundle\Command;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer;
 use Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\FetchMode;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Command\LockableTrait;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -73,7 +72,7 @@ class CalculateCompletenessCommand extends Command
         foreach ($this->getProductIdentifiers() as $productIdentifiers) {
             $this->computeAndPersistProductCompleteness->fromProductIdentifiers($productIdentifiers);
             $this->productAndAncestorsIndexer->indexFromProductIdentifiers($productIdentifiers);
-            $progressBar->advance(self::BATCH_SIZE);
+            $progressBar->advance(count($productIdentifiers));
         }
         $progressBar->finish();
         $output->writeln('');

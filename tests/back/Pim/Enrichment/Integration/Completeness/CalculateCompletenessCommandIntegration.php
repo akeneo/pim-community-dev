@@ -7,7 +7,6 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Completeness;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\CommandLauncher;
-use Doctrine\DBAL\Connection;
 use Elasticsearch\Common\Exceptions\Missing404Exception;
 use PHPUnit\Framework\Assert;
 
@@ -141,27 +140,10 @@ class CalculateCompletenessCommandIntegration extends TestCase
 
     private function assertCompletenessWasComputedForProducts(array $identifiers): void
     {
-        $sql = <<<SQL
-SELECT identifier, count(c.id) as completeness_count
-FROM pim_catalog_product p
-LEFT JOIN pim_catalog_completeness c ON c.product_id = p.id
-WHERE p.identifier IN (:identifiers)
-GROUP BY p.identifier
-SQL;
-
-        $rows = $this->get('database_connection')->executeQuery(
-            $sql,
-            [
-                'identifiers' => $identifiers,
-            ],
-            [
-                'identifiers' => Connection::PARAM_STR_ARRAY,
-            ]
-        )->fetchAll();
-
-        foreach ($rows as $row) {
-            Assert::assertContains($row['identifier'], $identifiers);
-            Assert::assertSame(6, (int)($row['completeness_count'])); // 3 channels * 2 locales
+        foreach ($identifiers as $identifier) {
+            $completenesses = $this->get('akeneo.pim.enrichment.product.query.get_product_completenesses')
+                ->fromProductId($this->productIds[$identifier]);
+            Assert::assertCount(6, $completenesses); // 3 channels * 2 locales
         }
     }
 
