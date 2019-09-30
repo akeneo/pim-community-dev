@@ -11,7 +11,7 @@ import {EventsHash} from 'backbone';
 import BaseForm = require('pimui/js/view/base');
 import * as _ from 'underscore';
 import {Filter, FilterValue} from '../../common/filterable';
-import {AttributeMappingStatus} from '../../model/attribute-mapping-status';
+import {AttributeMappingStatus} from '../../../react/domain/model/attribute-mapping-status.enum';
 
 const __ = require('oro/translator');
 const template = require('akeneo/franklin-insights/template/common/status-filter');
@@ -37,15 +37,15 @@ class StatusFilter extends BaseForm {
     return [
       {value: '', label: __('pim_common.all')},
       {
-        value: AttributeMappingStatus.ATTRIBUTE_PENDING,
+        value: AttributeMappingStatus.PENDING,
         label: __('akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.pending')
       },
       {
-        value: AttributeMappingStatus.ATTRIBUTE_ACTIVE,
+        value: AttributeMappingStatus.ACTIVE,
         label: __('akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.active')
       },
       {
-        value: AttributeMappingStatus.ATTRIBUTE_INACTIVE,
+        value: AttributeMappingStatus.INACTIVE,
         label: __('akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.inactive')
       }
     ];

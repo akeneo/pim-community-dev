@@ -51,7 +51,8 @@
     "puppeteer": "^1.1.1",
     "read-pkg": "4.0.1",
     "ts-jest": "^24.0.0",
-    "tslint": "^5.12.1"
+    "tslint": "^5.12.1",
+    "tslint-react": "^4.0.0"
   },
   "dependencies": {
     "@babel/core": "^7.3.4",
@@ -60,7 +61,7 @@
     "@types/node": "11.9.5",
     "@types/react": "^16.8.0",
     "@types/react-dom": "^16.8.0",
-    "@types/react-redux": "^6.0.0",
+    "@types/react-redux": "^7.1.0",
     "JSON2": "0.1.0",
     "babel-eslint": "10.0.1",
     "babel-loader": "8.0.5",
@@ -87,10 +88,10 @@
     "lodash": "4.17.14",
     "merge-objects": "1.0.5",
     "raw-loader": "1.0.0",
-    "react": "^16.8.0",
+    "react": "^16.8.3",
     "react-dom": "^16.9.0",
     "react-draft-wysiwyg": "^1.12.13",
-    "react-redux": "^5.1.0",
+    "react-redux": "^7.1.0",
     "redux": "^4.0.0",
     "redux-devtools-extension": "^2.13.2",
     "redux-thunk": "^2.2.0",

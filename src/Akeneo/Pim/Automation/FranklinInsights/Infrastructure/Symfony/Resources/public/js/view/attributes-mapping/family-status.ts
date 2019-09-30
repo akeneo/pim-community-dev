@@ -7,12 +7,12 @@
  * file that was distributed with this source code.
  */
 
-import BaseView = require('pimui/js/view/base');
 import * as _ from 'underscore';
-import AttributeMappingStatus from '../../model/attribute-mapping-status';
-import AttributesMapping from '../../model/attributes-mapping';
-import FamilyMapping from '../../model/family-mapping';
-import FamilyMappingStatus from '../../model/family-mapping-status';
+
+import {FamilyMappingStatus} from '../../../react/domain/model/family-mapping-status.enum';
+import {AttributesMapping} from '../../model/attributes-mapping';
+
+import BaseView = require('pimui/js/view/base');
 
 const __ = require('oro/translator');
 const template = require('akeneo/franklin-insights/template/settings/attributes-mapping/family-status');
@@ -48,11 +48,14 @@ class FamilyStatus extends BaseView {
     this.config = {...this.config, ...options.config};
   }
 
-  public render(): BaseView {
-    const familyMapping: FamilyMapping = this.getFormData();
-    const mapping = familyMapping.hasOwnProperty('mapping') ? familyMapping.mapping : {};
+  public configure(): any {
+    super.configure();
 
-    const familyMappingStatus = this.getFamilyMappingStatus(mapping);
+    this.getFormModel().on('change', this.render.bind(this));
+  }
+
+  public render(): BaseView {
+    const {familyMappingStatus} = this.getFormData() as AttributesMapping;
 
     this.$el.html(
       this.template({
@@ -62,28 +65,6 @@ class FamilyStatus extends BaseView {
     );
 
     return BaseView.prototype.render.apply(this, arguments);
-  }
-
-  /**
-   * @param {AttributesMapping} mapping
-   *
-   * @return {number}
-   */
-  private getFamilyMappingStatus(mapping: AttributesMapping): number {
-    const franklinAttributes = Object.keys(mapping);
-    let status = FamilyMappingStatus.MAPPING_FULL;
-
-    if (0 === franklinAttributes.length) {
-      status = FamilyMappingStatus.MAPPING_EMPTY;
-    }
-
-    franklinAttributes.forEach((franklinAttribute: string) => {
-      if (AttributeMappingStatus.ATTRIBUTE_PENDING === mapping[franklinAttribute].status) {
-        status = FamilyMappingStatus.MAPPING_PENDING;
-      }
-    });
-
-    return status;
   }
 
   /**
@@ -101,11 +82,11 @@ class FamilyStatus extends BaseView {
     };
 
     switch (familyMappingStatus) {
-      case FamilyMappingStatus.MAPPING_PENDING:
+      case FamilyMappingStatus.PENDING:
         formattedFamilyMappingStatus.className = 'pending';
         formattedFamilyMappingStatus.label = this.config.labels.familyMappingPending;
         break;
-      case FamilyMappingStatus.MAPPING_FULL:
+      case FamilyMappingStatus.FULL:
         formattedFamilyMappingStatus.className = 'full';
         formattedFamilyMappingStatus.label = this.config.labels.familyMappingFull;
         break;

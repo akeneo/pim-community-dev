@@ -1,4 +1,4 @@
-export default interface Family {
+export interface Family {
   code: string;
   labels: Array<{[localeCode: string]: string}>;
 }

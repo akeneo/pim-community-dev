@@ -8,7 +8,9 @@
  */
 
 import BaseView = require('pimui/js/view/base');
-import Family from '../../model/family';
+
+import {AttributesMapping} from '../../model/attributes-mapping';
+import {Family} from '../../model/family';
 
 const __ = require('oro/translator');
 const FetcherRegistry = require('pim/fetcher-registry');
@@ -19,9 +21,6 @@ interface Config {
   title: string;
 }
 
-/**
- * @author Paul Chasle <paul.chasle@akeneo.com>
- */
 class Title extends BaseView {
   private config: Config;
 
@@ -32,12 +31,12 @@ class Title extends BaseView {
   }
 
   public render(): BaseView {
-    const data: {code: string} = this.getFormData();
+    const {familyCode} = this.getFormData() as AttributesMapping;
 
     FetcherRegistry.getFetcher('family')
-      .fetch(data.code)
+      .fetch(familyCode)
       .then((family: Family) => {
-        const familyLabel = i18n.getLabel(family.labels, UserContext.get('catalogLocale'), family.code);
+        const familyLabel = i18n.getLabel(family.labels, UserContext.get('catalogLocale'), familyCode);
 
         this.$el.text(`${familyLabel} ${__(this.config.title)}`);
       });
