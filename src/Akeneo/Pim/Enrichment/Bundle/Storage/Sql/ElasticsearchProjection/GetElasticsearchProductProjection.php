@@ -2,25 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query;
+namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ElasticsearchProjection;
 
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductProjectionInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductProjectionInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductProjection;
-use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
-use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueCollectionFactory;
-use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
-use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
-use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\DBAL\Types\UTCDateTimeType;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -84,7 +74,7 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
             $valueCollection = $this->valueCollectionFactory->createFromStorageFormat($rawValues);
             $values = $this->valuesNormalizer->normalize($valueCollection, self::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX);
 
-            // use Type::DATETIME as it's overrided in the PIM (UTCDateTimeType) to handle UTC correctly
+            // use Type::DATETIME and not Type::DATETIME_IMMUTABLE as it's overrided in the PIM (UTCDateTimeType) to handle UTC correctly
             $results[$row['identifier']] = new ElasticsearchProductProjection(
                 $row['id'],
                 $row['identifier'],
@@ -183,7 +173,7 @@ WITH
             product.id AS product_id,
             JSON_ARRAYAGG(pim_group.code) AS group_codes
         FROM 
-            pim_catalog_product product
+            product
             JOIN pim_catalog_group_product group_product ON group_product.product_id = product.id
             JOIN pim_catalog_group pim_group ON pim_group.id = group_product.group_id
         GROUP BY  product.id
@@ -225,8 +215,8 @@ WITH
         GROUP BY family.family_id
     ),
     family_attributes AS (
-		SELECT 
-			family.family_id,
+        SELECT 
+            family.family_id,
             JSON_ARRAYAGG(attribute.code) as attribute_codes_in_family
         FROM 
         (SELECT DISTINCT product.family_id FROM product WHERE family_id IS NOT NULL) family 
@@ -235,18 +225,18 @@ WITH
         GROUP BY family.family_id
     ),
     variant_product_attributes AS (
-		SELECT 
-			family_variant.family_variant_id,
+        SELECT 
+            family_variant.family_variant_id,
             JSON_ARRAYAGG(attribute.code) as attribute_codes_at_variant_product_level
-		FROM 
-			(SELECT DISTINCT family_variant_id, product_lvl_in_attribute_set FROM product WHERE family_variant_id IS NOT NULL) family_variant
-			JOIN akeneo_pim.pim_catalog_family_variant_has_variant_attribute_sets family_variant_attribute_set ON family_variant_attribute_set.family_variant_id = family_variant.family_variant_id
-			JOIN pim_catalog_variant_attribute_set_has_attributes attribute_in_set ON attribute_in_set.variant_attribute_set_id = family_variant_attribute_set.variant_attribute_sets_id
-			JOIN pim_catalog_family_variant_attribute_set attribute_set ON attribute_set.id = family_variant_attribute_set.variant_attribute_sets_id
-			JOIN pim_catalog_attribute attribute ON attribute.id = attribute_in_set.attributes_id
-		WHERE
-			family_variant.product_lvl_in_attribute_set = attribute_set.level
-		GROUP BY family_variant.family_variant_id
+        FROM 
+            (SELECT DISTINCT family_variant_id, product_lvl_in_attribute_set FROM product WHERE family_variant_id IS NOT NULL) family_variant
+            JOIN akeneo_pim.pim_catalog_family_variant_has_variant_attribute_sets family_variant_attribute_set ON family_variant_attribute_set.family_variant_id = family_variant.family_variant_id
+            JOIN pim_catalog_variant_attribute_set_has_attributes attribute_in_set ON attribute_in_set.variant_attribute_set_id = family_variant_attribute_set.variant_attribute_sets_id
+            JOIN pim_catalog_family_variant_attribute_set attribute_set ON attribute_set.id = family_variant_attribute_set.variant_attribute_sets_id
+            JOIN pim_catalog_attribute attribute ON attribute.id = attribute_in_set.attributes_id
+        WHERE
+            family_variant.product_lvl_in_attribute_set = attribute_set.level
+        GROUP BY family_variant.family_variant_id
     )
     SELECT 
         product.id, 

@@ -240,7 +240,7 @@ services:
             - '@database_connection'
 
     akeneo.pim.enrichment.product.query.get_elasticsearch_product_projection:
-        class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\GetElasticsearchProductProjection
+        class: Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ElasticsearchProjection\GetElasticsearchProductProjection
         arguments:
             - '@database_connection'
             - '@pim_catalog.normalizer.indexing_product.product.product_value_collection'
