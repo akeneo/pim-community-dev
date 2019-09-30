@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-6424: update exports when a locale is removed from a channel
 - PIM-7891: Update exports when an attribute is deleted
 
 # 2.3.63 (2019-09-23)
