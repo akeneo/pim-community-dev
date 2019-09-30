@@ -84,10 +84,7 @@ const buildProductGridResponses = (page, products = [], filters = []) => {
 
   return page.on('request', (interceptedRequest) => {
     const response = Object.assign(mockResponses, productGridResponses)[interceptedRequest.url()];
-
-    if (!response) {
-      return interceptedRequest.continue();
-    }
+    if (!response) return;
 
     const [contentType, body] = response;
 

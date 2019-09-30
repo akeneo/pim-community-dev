@@ -82,9 +82,9 @@ class PuppeteerEnvironment extends NodeEnvironment {
     });
 
     await page.goto('http://pim.com');
+    await page.addStyleTag({ content: readFileSync(`${process.cwd()}/public/css/pim.css`, 'utf-8')})
     await page.setViewport({ width: 1920, height: 1080 })
     await page.evaluate(async () => await require('pim/fetcher-registry').initialize());
-    await page.addStyleTag({ content: readFileSync(`${process.cwd()}/public/css/pim.css`, 'utf-8')})
     await page.evaluate(async () => await require('pim/init')());
     await page.evaluate(async () => await require('pim/user-context').initialize());
     await page.evaluate(async () => await require('pim/date-context').initialize());
