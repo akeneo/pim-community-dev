@@ -7,6 +7,7 @@ import {
 } from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset-family';
 import {getLabel} from 'pimui/js/i18n';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
+import {assetcodesAreEqual} from 'akeneoassetmanager/domain/model/asset/code';
 
 export enum MoveDirection {
   Before,
@@ -48,15 +49,25 @@ export const getAssetLabel = (asset: Asset, locale: LocaleCode) => {
   return getLabel(asset.labels, locale, asset.code);
 };
 
-export const removeAssetFromCollection = (assetCodes: AssetCode[], asset: Asset): AssetCode[] => {
-  return assetCodes.filter((assetCode: AssetCode) => asset.code !== assetCode);
-};
-export const emptyCollection = (_assetCodes: AssetCode): AssetCode[] => {
-  return [];
+export const addAssetToCollection = (assetCollection: AssetCode[], codeToAdd: AssetCode) => [
+  ...assetCollection,
+  codeToAdd,
+];
+
+export const addAssetsToCollection = (assetCollection: AssetCode[], assetCodes: AssetCode[]): AssetCode[] => {
+  return [...assetCollection, ...assetCodes];
 };
 
-export const addAssetToCollection = (assetCollection: AssetCode[], assetCodes: AssetCode[]): AssetCode[] => {
-  return [...assetCollection, ...assetCodes];
+export const removeAssetFromCollection = (assetCodes: AssetCode[], assetCodeToRemove: AssetCode): AssetCode[] => {
+  return assetCodes.filter((assetCode: AssetCode) => assetCodeToRemove !== assetCode);
+};
+
+export const isAssetInCollection = (assetCodeToLocate: AssetCode, assetCollection: AssetCode[]): boolean => {
+  return assetCollection.some((assetCode: AssetCode) => assetcodesAreEqual(assetCodeToLocate, assetCode));
+};
+
+export const emptyCollection = (_assetCodes: AssetCode): AssetCode[] => {
+  return [];
 };
 
 export const assetWillNotMoveInCollection = (

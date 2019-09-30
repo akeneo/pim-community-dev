@@ -3,12 +3,13 @@ import styled from 'styled-components';
 import {Button} from 'akeneoassetmanager/application/component/app/button';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import __ from 'akeneoreferenceentity/tools/translator';
-import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';
 import {Asset} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
 import {Filter, Query} from 'akeneoassetmanager/application/reducer/grid';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
+import MosaicResult from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/mosaic';
+import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 
 type AssetFamilyIdentifier = string;
 type AssetPickerProps = {
@@ -57,48 +58,49 @@ const Basket = styled.div<any>``;
 const Search = styled.div<any>``;
 const ResultCount = styled.div<any>``;
 const Context = styled.div<any>``;
-const MosaicResult = styled.div<any>``;
 
 export const AssetPicker = ({assetFamilyIdentifier, initialContext, onAssetPick}: AssetPickerProps) => {
   const [isOpen, setOpen] = React.useState(false);
   const [filterCollection, setFilterCollection] = React.useState<Filter[]>([]);
   const [selection, setSelection] = React.useState<AssetCode[]>([]);
   const [searchValue, setSearchValue] = React.useState<string>('');
-  const [resultCount] = React.useState<number|null>(null);
+  const [resultCount] = React.useState<number | null>(null);
   const [resultCollection] = React.useState<Asset[]>([]);
   const [context, setContext] = React.useState<Context>(initialContext);
 
   const dataProvider = {
     assetFetcher: {
       fetchByCode: (_assetFamilyIdentifier: AssetFamilyIdentifier, _assetCodeCollection: AssetCode[]) => {
-        return new Promise((resolve) => resolve([]))
+        return new Promise(resolve => resolve([]));
       },
       search: (_query: Query) => {
-        return new Promise((resolve) => resolve({}))
-      }
+        return new Promise(resolve => resolve({}));
+      },
     },
     assetFamilyFetcher: {
       fetch: (_assetFamilyIdentifier: AssetFamilyIdentifier) => {
-        return new Promise((resolve) => resolve({}))
-      }
+        return new Promise(resolve => resolve({}));
+      },
     },
     channelFetcher: {
       fetchAll: () => {
-        return new Promise((resolve) => resolve([]))
-      }
-    }
+        return new Promise(resolve => resolve([]));
+      },
+    },
   };
 
   return (
     <React.Fragment>
-      <Button buttonSize='medium' color='outline' onClick={() => setOpen(true)}>{__('pim_asset_manager.asset_collection.add_asset')}</Button>
-      { isOpen ? (
+      <Button buttonSize="medium" color="outline" onClick={() => setOpen(true)}>
+        {__('pim_asset_manager.asset_collection.add_asset')}
+      </Button>
+      {isOpen ? (
         <Modal>
           <Header>
             <Title>{__('pim_asset_manager.asset_picker.title')}</Title>
             <ConfirmButton
-              buttonSize='medium'
-              color='green'
+              buttonSize="medium"
+              color="green"
               onClick={() => {
                 onAssetPick([]);
                 setOpen(false);
@@ -114,7 +116,7 @@ export const AssetPicker = ({assetFamilyIdentifier, initialContext, onAssetPick}
               assetFamilyIdentifier={assetFamilyIdentifier}
               context={context}
               onFilterCollectionChange={(filterCollection: Filter[]) => {
-                setFilterCollection(filterCollection)
+                setFilterCollection(filterCollection);
               }}
             />
             <div>
@@ -122,28 +124,29 @@ export const AssetPicker = ({assetFamilyIdentifier, initialContext, onAssetPick}
                 <Search
                   searchValue={searchValue}
                   onSearchChange={(newSearchValue: string) => {
-                    setSearchValue(newSearchValue)
+                    setSearchValue(newSearchValue);
                   }}
                 />
-                <ResultCount
-                  resultCount={resultCount}
-                />
+                <ResultCount resultCount={resultCount} />
                 <Context
                   dataProvider={dataProvider}
                   locale={context.locale}
                   onLocaleChange={(locale: LocaleCode) => {
-                    setContext({...context, locale})
+                    setContext({...context, locale});
                   }}
                   channel={context.channel}
                   onChannelChange={(channel: ChannelCode) => {
-                    setContext({...context, channel})
+                    setContext({...context, channel});
                   }}
                 />
               </div>
               <MosaicResult
                 selection={selection}
-                result={resultCollection}
+                assetCollection={resultCollection}
                 context={context}
+                onSelectionChange={(assetCodeCollection: AssetCode[]) => {
+                  setSelection(assetCodeCollection);
+                }}
               />
             </div>
             <Basket
@@ -152,12 +155,12 @@ export const AssetPicker = ({assetFamilyIdentifier, initialContext, onAssetPick}
               assetFamilyIdentifier={assetFamilyIdentifier}
               context={context}
               onSelectionChange={(assetCodeCollection: AssetCode[]) => {
-                setSelection(assetCodeCollection)
+                setSelection(assetCodeCollection);
               }}
             />
           </Container>
         </Modal>
-      ) : null }
+      ) : null}
     </React.Fragment>
   );
 };
