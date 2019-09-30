@@ -118,6 +118,7 @@
 
 - PIM-8262: Fix unused completeness removal on product save
 - PIM-8243: Fix error when a product draft with a modified reference data is sent for approval
+- PIM-7636: Fix the indexation and the calculation of the completeness during import product models with rules
 
 # 2.3.35 (2019-03-26)
 
