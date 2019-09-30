@@ -35,7 +35,10 @@ jobs:
               sudo chown -R 1000:1000 ~/.cache/yarn
       - run:
             name: Install back dependencies
-            command: make vendor
+            command: |
+                make up
+                sleep 10
+                make vendor
       - run:
             name: Install front dependencies
             command: make node_modules
