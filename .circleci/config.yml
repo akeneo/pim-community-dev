@@ -41,7 +41,10 @@ jobs:
             command: make node_modules
       - run:
             name: Check PIM requirements
-            command: make check-requirements
+            command: |
+                C='mysql elasticsearch' make up
+                .circleci/wait_docker_up.sh
+                make check-requirements
       - run:
             name: Install asset
             command: make assets
