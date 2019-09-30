@@ -89,6 +89,7 @@ pim_title:
     pimee_product_asset_mass_upload: Upload assets
     pimee_product_asset_index: Assets
     pimee_product_asset_edit: Asset {{ asset.label }} | Edit
+    pimee_product_asset_view: Asset {{ asset.label }} | View
     pimee_asset_categorytree_index: Categories
     pimee_asset_categorytree_edit: Category {{ category.label }} | Edit
 
