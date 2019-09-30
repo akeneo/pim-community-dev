@@ -1,17 +1,10 @@
-const UserBuilder = require('../../../common/builder/user');
-const adminUser = new UserBuilder().withUsername('admin').build();
 const datagridLoad = require('./responses/datagrid-load.json');
 const { readFileSync } = require('fs');
 
+// Every response required to load the product grid
 const mockResponses = {
-  'http://pim.com/js/extensions.json': ['application/json', require(`${process.cwd()}/public/js/extensions.json`)],
-  'http://pim.com/rest/security/': ['application/json', require('./responses/rest-security.json')],
-  'http://pim.com/configuration/locale/rest?activated=true': ['application/json', require('./responses/activated-locales.json')],
-  'http://pim.com/localization/format/date': ['application/json', require('./responses/date-format.json')],
   'http://pim.com/datagrid_view/rest/product-grid/default-columns': ['application/json', require('./responses/default-columns.json')],
   'http://pim.com/datagrid_view/rest/product-grid/default': ['application/json', require('./responses/default-views.json')],
-  'http://pim.com/rest/user/': ['application/json', adminUser],
-  'http://pim.com/js/translation/en_US.js': ['application/javascript', readFileSync(`${process.cwd()}/public/js/translation/en_US.js`, 'utf-8')],
   'http://pim.com/enrich/product-category-tree/product-grid/list-tree.json?dataLocale=undefined&select_node_id=0&include_sub=1&context=view': [
     'application/json', require('./responses/list-tree.json')
   ],
@@ -110,19 +103,8 @@ const getProductRowLabels = async (page) => {
   return rowLabels;
 }
 
-const waitForLoading = (page) => {
-  return page.waitForSelector('.AknLoadingMask.loading-mask', {hidden: true});
-}
-
 const loadProductGrid = async (page, products, filters, filteredResponses) => {
   await buildProductGridResponses(page, products, filters, filteredResponses);
-
-  await page.addStyleTag({ content: readFileSync(`${process.cwd()}/public/css/pim.css`, 'utf-8')})
-  await page.evaluate(async () => await require('pim/init')());
-  await page.evaluate(async () => await require('pim/user-context').initialize());
-  await page.evaluate(async () => await require('pim/date-context').initialize());
-  await page.evaluate(async () => await require('pim/init-translator').fetch());
-  await page.evaluate(async () => await require('oro/init-layout')());
 
   await page.evaluate(() => {
     const FormBuilder = require('pim/form-builder');
@@ -134,7 +116,7 @@ const loadProductGrid = async (page, products, filters, filteredResponses) => {
     });
   });
 
-  return waitForLoading(page);
+  return page.waitForSelector('.AknLoadingMask.loading-mask', {hidden: true});
 }
 
 // Custom matchers for the product grid
@@ -159,7 +141,8 @@ expect.extend({
 
     try {
       await page.waitForSelector(`${filterSelector} .filter-criteria`, {
-        visible: true, timeout: 500
+        visible: true,
+        timeout: 500
       })
 
       await (await filter.$('.operator')).click();
@@ -179,7 +162,7 @@ expect.extend({
     }
   },
   toBeDisplayedOnTheProductGrid: async function(products, page) {
-    await waitForLoading(page);
+    await page.waitForSelector('.AknLoadingMask.loading-mask', {hidden: true});
     const rowLabels = (await getProductRowLabels(page)).map(label => label.toLowerCase());
 
     return {
