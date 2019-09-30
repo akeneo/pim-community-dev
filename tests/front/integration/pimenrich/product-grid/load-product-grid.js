@@ -1,4 +1,4 @@
-const UserBuilder = require('../../common/builder/user');
+const UserBuilder = require('../../../common/builder/user');
 const adminUser = new UserBuilder().withUsername('admin').build();
 const datagridLoad = require('./responses/datagrid-load.json');
 const { readFileSync } = require('fs');
@@ -82,6 +82,53 @@ const buildProductGridResponses = (page, products = [], filters = []) => {
   })
 }
 
+const getOperatorChoiceByLabel = async (filter, choiceLabel) => {
+  const operatorChoices = await filter.$$('.operator_choice');
+  let matchingChoice = null;
+
+  for(let i = 0; i < operatorChoices.length; i++) {
+    const text = await (await operatorChoices[i].getProperty('textContent')).jsonValue();
+    if (text.trim() === choiceLabel) {
+      matchingChoice = operatorChoices[i];
+      break;
+    }
+  }
+
+  return matchingChoice;
+}
+
+const getProductRowLabels = async (page) => {
+  const rows = await page.$$('.grid .AknGrid-bodyRow.row-click-action');
+  const rowLabels = [];
+
+  for (row of rows) {
+    const labelColumn = await row.$('[data-column="label"]');
+    const rowLabel = await (await labelColumn.getProperty('textContent')).jsonValue();
+    if (rowLabel) rowLabels.push(rowLabel);
+  }
+
+  return rowLabels;
+}
+
+// const getProductRowByLabel = async (page, label) => {
+//   let matchingRow = null;
+
+//   for (row of rows) {
+//     const labelColumn = await row.$('[data-column="label"]');
+//     const rowLabel = await (await labelColumn.getProperty('textContent')).jsonValue();
+//     if (rowLabel.trim() === label) {
+//       matchingRow = row;
+//       break;
+//     }
+//   }
+
+//   return matchingRow;
+// }
+
+const waitForLoading = (page) => {
+  return page.waitForSelector('.AknLoadingMask.loading-mask', {hidden: true});
+}
+
 const loadProductGrid = async (page, products, filters, filteredResponses) => {
   await buildProductGridResponses(page, products, filters, filteredResponses);
 
@@ -102,22 +149,7 @@ const loadProductGrid = async (page, products, filters, filteredResponses) => {
     });
   });
 
-  return await page.waitForSelector('.AknLoadingMask.loading-mask', {hidden: true});
-}
-
-const getOperatorChoiceByLabel = async (filter, choiceLabel) => {
-  const operatorChoices = await filter.$$('.operator_choice');
-  let matchingChoice = null;
-
-  for(let i = 0; i < operatorChoices.length; i++) {
-    const text = await (await operatorChoices[i].getProperty('textContent')).jsonValue();
-    if (text.trim() === choiceLabel) {
-      matchingChoice = operatorChoices[i];
-      break;
-    }
-  }
-
-  return matchingChoice;
+  return waitForLoading(page);
 }
 
 // Custom matchers for the product grid
@@ -145,20 +177,28 @@ expect.extend({
 
       const updateButton = await filter.$('button')
       await updateButton.click();
-      await page.waitForSelector('.AknLoadingMask.loading-mask', {hidden: true});
+
+      await waitForLoading(page);
 
       return {
         pass: true,
-        message: `Can't filter "${filterName}" by "${operator}"`
+        message: () => `Can't filter "${filterName}" by "${operator}"`
       }
     } catch (e) {
       return {
         pass: false,
+        message: () => 'It didnt work'
       }
     }
   },
-  toBeDisplayedOnTheProductGrid: async () => {
+  toBeDisplayedOnTheProductGrid: async function(products, page) {
+    await waitForLoading(page);
+    const rowLabels = (await getProductRowLabels(page)).map(label => label.toLowerCase());
 
+    return {
+      pass: this.equals(rowLabels, products.map(product => product.toLowerCase())),
+      message: () => `Expected to see ${products.join(', ')} on the grid`
+    }
   }
 })
 
