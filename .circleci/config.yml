@@ -40,6 +40,9 @@ jobs:
             name: Install front dependencies
             command: make node_modules
       - run:
+            name: Check PIM requirements
+            command: make check-requirements
+      - run:
             name: Install asset
             command: make assets
       - run:
