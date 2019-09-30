@@ -9,8 +9,8 @@ module.exports = async function() {
   const browser = await puppeteer.launch({
       ignoreHTTPSErrors: true,
       args: ['--no-sandbox', '--disable-setuid-sandbox', '--window-size=1920,1080'],
-      headless: false,
-      devtools: true,
+      headless: !process.env.DEBUG,
+      devtools: !!process.env.DEBUG,
       defaultViewport: {
         width: 1920,
         height: 1080

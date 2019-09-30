@@ -26,21 +26,13 @@ const getProductRowLabels = async (page) => {
   return rowLabels;
 }
 
-const mockFilteredResponse = async (page, responses) => {
-  return page.on('request', (interceptedRequest) => {
-    let response = null;
+const mockFilteredProducts = (page, filter) => {
+  return page.on('request', (req) => {
+    const filterParam = encodeURI(`product-grid[_filter][${filter.name}][type]=${filter.type}`)
+    if (req.url().includes(filterParam)) {
+      const { productGridData } = constructProductsResponse(filter.response)
 
-    Object.entries(responses).forEach(([url, answer]) => {
-      if (interceptedRequest.url().includes(url)) {
-        response = answer
-        return;
-      }
-    })
-
-    if (response) {
-      const { productGridData } = constructProductsResponse(response)
-
-      return interceptedRequest.respond({
+      return req.respond({
         status: 200,
         contentType: 'application/json',
         body: JSON.stringify(productGridData),
@@ -137,9 +129,9 @@ expect.extend({
 
       await (await filter.$('.operator')).click();
       await (await getOperatorChoiceByLabel(filter, operator)).click();
-      await page.waitFor(100);
+      await page.waitFor(500);
       await (await filter.$('.filter-update')).click();
-      await page.waitFor(100);
+      await page.waitFor(500);
 
       return {
         pass: true,
@@ -166,5 +158,5 @@ expect.extend({
 
 module.exports = {
   loadProductGrid,
-  mockFilteredResponse
+  mockFilteredProducts
 }

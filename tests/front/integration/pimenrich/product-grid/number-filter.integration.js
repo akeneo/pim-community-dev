@@ -1,4 +1,4 @@
-const { loadProductGrid, mockFilteredResponse } = require('./grid-tools');
+const { loadProductGrid, mockFilteredProducts } = require('./grid-tools');
 const DatagridProductBuilder = require('../../../common/builder/datagrid-product')
 const NumberFilterBuilder = require('../../../common/builder/filters/number')
 
@@ -27,8 +27,11 @@ describe('Pimenrich > product grid > number filter', () => {
   ];
 
   it('filters the product grid by the "is empty" operator', async (done) => {
-    const filter = encodeURI('product-grid[_filter][count][type]=empty');
-    await mockFilteredResponse(page, { [filter]: [secondProduct] })
+    await mockFilteredProducts(page, {
+      name: 'count',
+      type: 'empty',
+      response: [secondProduct]
+    });
 
     await loadProductGrid(page, [firstProduct, secondProduct], filters);
     await expect('count').filterToBeVisible(page);
@@ -38,8 +41,11 @@ describe('Pimenrich > product grid > number filter', () => {
   }, 10000);
 
   it('filters the product grid by the "is not empty" operator', async (done) => {
-    const filter = encodeURI('product-grid[_filter][count][type]=not empty');
-    await mockFilteredResponse(page, { [filter]: [firstProduct] })
+    await mockFilteredProducts(page, {
+      name: 'count',
+      type: 'not empty',
+      response: [firstProduct]
+    });
 
     await expect('count').toBeFilterableByOperator('is not empty', page);
     await expect(['First']).toBeDisplayedOnTheProductGrid(page);
