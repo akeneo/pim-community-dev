@@ -140,6 +140,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer',
         'Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueFactory',
         'Akeneo\Pim\Enrichment\Component\Product\Factory\Read\WriteValueCollectionFactory',
+        'Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface',
         'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute',
         'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes',
 
