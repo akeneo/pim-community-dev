@@ -1,11 +1,5 @@
 import {ConcreteMediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
-import Identifier, {createIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
-import AssetFamilyIdentifier, {
-  createIdentifier as createAssetFamilyIdentifier,
-} from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import LabelCollection, {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
-import AttributeCode, {createCode} from 'akeneoassetmanager/domain/model/attribute/code';
-import {AttributeType} from 'akeneoassetmanager/domain/model/attribute/minimal';
+import {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
 
 const normalizedMediaLink = {
   identifier: 'url',
@@ -32,9 +26,9 @@ describe('akeneo > attribute > domain > model > attribute > type --- MediaLinkAt
   test('I cannot create an invalid ConcreteMediaLinkAttribute', () => {
     expect(() => {
       new ConcreteMediaLinkAttribute(
-        createIdentifier('designer', 'url'),
-        createAssetFamilyIdentifier('designer'),
-        createCode('url'),
+        'url',
+        'designer',
+        'url',
         createLabelCollection({en_US: 'Url'}),
         true,
         false,
@@ -44,9 +38,9 @@ describe('akeneo > attribute > domain > model > attribute > type --- MediaLinkAt
     }).toThrow('Attribute expects a valid Prefix as prefix');
     expect(() => {
       new ConcreteMediaLinkAttribute(
-        createIdentifier('designer', 'url'),
-        createAssetFamilyIdentifier('designer'),
-        createCode('url'),
+        'url',
+        'designer',
+        'url',
         createLabelCollection({en_US: 'Url'}),
         true,
         false,
@@ -57,9 +51,9 @@ describe('akeneo > attribute > domain > model > attribute > type --- MediaLinkAt
     }).toThrow('Attribute expects a valid Suffix as suffix');
     expect(() => {
       new ConcreteMediaLinkAttribute(
-        createIdentifier('designer', 'url'),
-        createAssetFamilyIdentifier('designer'),
-        createCode('url'),
+        'url',
+        'designer',
+        'url',
         createLabelCollection({en_US: 'Url'}),
         true,
         false,

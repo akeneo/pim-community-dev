@@ -19,7 +19,7 @@ const AssetCard = styled.div<{readonly: boolean}>`
   margin-top: 10px;
   justify-content: space-between;
   margin-right: 20px;
-  opacity: ${(props: ThemedProps<{readonly: boolean}>) => props.readonly ? .8 : 1}
+  opacity: ${(props: ThemedProps<{readonly: boolean}>) => props.readonly ? .4 : 1}
 `;
 
 const AssetTitle = styled.div`
@@ -33,14 +33,15 @@ const BaselinePill = styled(Pill)`
   align-self: unset;
 `;
 
-const EmptyAssetCollection = styled.div`
+const EmptyAssetCollection = styled.div<{readonly: boolean}>`
   height: 140px;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
   padding: 20px;
-  border: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey80};
+  border: 1px solid ${(props: ThemedProps<{readonly: boolean}>) => props.theme.color.grey80};
+  opacity: ${(props: ThemedProps<{readonly: boolean}>) => props.readonly ? .4 : 1}
   margin: 10px 0;
 `
 
@@ -116,7 +117,7 @@ export const AssetCollection = ({assetFamilyIdentifier, assetCodes, readonly, co
         })}
         </React.Fragment>
       ) : (
-        <EmptyAssetCollection title={__('pim_asset_manager.asset_collection.no_asset_in_collection')}>
+        <EmptyAssetCollection title={__('pim_asset_manager.asset_collection.no_asset_in_collection')} readonly={readonly}>
           <AssetIllustration size={80}/>
           <Label>{__('pim_asset_manager.asset_collection.no_asset_in_collection')}</Label>
         </EmptyAssetCollection>

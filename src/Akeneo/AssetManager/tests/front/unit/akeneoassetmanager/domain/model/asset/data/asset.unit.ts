@@ -1,15 +1,15 @@
 import {create, denormalize} from 'akeneoassetmanager/domain/model/asset/data/asset';
-import {createCode} from 'akeneoassetmanager/domain/model/asset/code';
+import {denormalizeAssetCode} from 'akeneoassetmanager/domain/model/asset/code';
 
 describe('akeneo > asset family > domain > model > asset > data --- asset', () => {
   test('I can create a new AssetData with a AssetCode value', () => {
-    expect(create(createCode('starck')).normalize()).toEqual('starck');
+    expect(create(denormalizeAssetCode('starck')).normalize()).toEqual('starck');
   });
 
   test('I cannot create a new AssetData with a value other than a AssetCode', () => {
     expect(() => {
       create(12);
-    }).toThrow('AssetData expects a AssetCode as parameter to be created');
+    }).toThrow('Code expects a string as parameter to be created');
   });
 
   test('I can normalize a AssetData', () => {

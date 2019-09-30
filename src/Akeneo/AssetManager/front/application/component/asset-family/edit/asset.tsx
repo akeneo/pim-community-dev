@@ -18,10 +18,8 @@ import {
   filterUpdated,
 } from 'akeneoassetmanager/application/action/asset/search';
 import {Column} from 'akeneoassetmanager/application/reducer/grid';
-import AssetFamilyIdentifier, {
-  createIdentifier as createReferenceIdentifier,
-} from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import AssetCode, {createCode as createAssetCode} from 'akeneoassetmanager/domain/model/asset/code';
+import AssetFamilyIdentifier, {denormalizeAssetFamilyIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import AssetCode, {denormalizeAssetCode} from 'akeneoassetmanager/domain/model/asset/code';
 import DeleteModal from 'akeneoassetmanager/application/component/app/delete-modal';
 import {openDeleteModal, cancelDeleteModal} from 'akeneoassetmanager/application/event/confirmDelete';
 import {
@@ -149,7 +147,7 @@ class Assets extends React.Component<StateProps & DispatchProps, {cellViews: Cel
         const attribute = denormalizeAttribute(normalizedAttribute);
 
         if (hasDataFilterView(attribute.type)) {
-          filters[attribute.getCode().stringValue()] = {
+          filters[attribute.getCode()] = {
             view: getDataFilterView(attribute.type),
             attribute,
           };
@@ -235,7 +233,7 @@ class Assets extends React.Component<StateProps & DispatchProps, {cellViews: Cel
         {confirmDelete.isActive && undefined === confirmDelete.identifier && (
           <DeleteModal
             message={__('pim_asset_manager.asset.delete_all.confirm', {
-              entityIdentifier: assetFamily.getIdentifier().stringValue(),
+              entityIdentifier: assetFamily.getIdentifier(),
             })}
             title={__('pim_asset_manager.asset.delete.title')}
             onConfirm={() => {
@@ -251,7 +249,10 @@ class Assets extends React.Component<StateProps & DispatchProps, {cellViews: Cel
             })}
             title={__('pim_asset_manager.asset.delete.title')}
             onConfirm={() => {
-              events.onDeleteAsset(assetFamily.getIdentifier(), createAssetCode(confirmDelete.identifier as string));
+              events.onDeleteAsset(
+                assetFamily.getIdentifier(),
+                denormalizeAssetCode(confirmDelete.identifier as string)
+              );
             }}
             onCancel={events.onCancelDeleteModal}
           />
@@ -318,7 +319,7 @@ export default connect(
       events: {
         onRedirectToAsset: (asset: NormalizedAsset) => {
           dispatch(
-            redirectToAsset(createReferenceIdentifier(asset.asset_family_identifier), createAssetCode(asset.code))
+            redirectToAsset(denormalizeAssetFamilyIdentifier(asset.asset_family_identifier), denormalizeAssetCode(asset.code))
           );
         },
         onDeleteAsset: (assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode) => {
@@ -349,7 +350,7 @@ export default connect(
           dispatch(openDeleteModal());
         },
         onOpenDeleteAssetModal: (assetCode: AssetCode, label: string) => {
-          dispatch(openDeleteModal(assetCode.stringValue(), label));
+          dispatch(openDeleteModal(assetCode, label));
         },
         onLocaleChanged: (locale: Locale) => {
           dispatch(catalogLocaleChanged(locale.code));

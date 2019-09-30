@@ -22,21 +22,16 @@ describe('Akeneoassetfamily > infrastructure > saver > asset', () => {
 
     const response = await page.evaluate(async () => {
       const createAsset = require('akeneoassetmanager/domain/model/asset/asset').createAsset;
-      const createAssetCode = require('akeneoassetmanager/domain/model/asset/code').createCode;
       const createValueCollection = require('akeneoassetmanager/domain/model/asset/value-collection')
         .createValueCollection;
-      const createIdentifier = require('akeneoassetmanager/domain/model/asset/identifier').createIdentifier;
-      const createAssetFamilyIdentifier = require('akeneoassetmanager/domain/model/asset-family/identifier')
-        .createIdentifier;
       const Image = require('akeneoassetmanager/domain/model/file').default;
-      const createLabelCollection = require('akeneoassetmanager/domain/model/label-collection')
-        .createLabelCollection;
+      const createLabelCollection = require('akeneoassetmanager/domain/model/label-collection').createLabelCollection;
       const saver = require('akeneoassetmanager/infrastructure/saver/asset').default;
 
       const assetCreated = createAsset(
-        createIdentifier('designer_starck_1'),
-        createAssetFamilyIdentifier('designer'),
-        createAssetCode('starck'),
+        'designer_starck_1',
+        'designer',
+        'starck',
         createLabelCollection({en_US: 'Stylist', fr_FR: 'Styliste'}),
         Image.createEmpty(),
         createValueCollection([])
@@ -93,21 +88,16 @@ describe('Akeneoassetfamily > infrastructure > saver > asset', () => {
 
     const response = await page.evaluate(async () => {
       const createAsset = require('akeneoassetmanager/domain/model/asset/asset').createAsset;
-      const createAssetCode = require('akeneoassetmanager/domain/model/asset/code').createCode;
-      const createIdentifier = require('akeneoassetmanager/domain/model/asset/identifier').createIdentifier;
-      const createAssetFamilyIdentifier = require('akeneoassetmanager/domain/model/asset-family/identifier')
-        .createIdentifier;
       const Image = require('akeneoassetmanager/domain/model/file').default;
-      const createLabelCollection = require('akeneoassetmanager/domain/model/label-collection')
-        .createLabelCollection;
+      const createLabelCollection = require('akeneoassetmanager/domain/model/label-collection').createLabelCollection;
       const createValueCollection = require('akeneoassetmanager/domain/model/asset/value-collection')
         .createValueCollection;
       const saver = require('akeneoassetmanager/infrastructure/saver/asset').default;
 
       const assetCreated = createAsset(
-        createIdentifier('invalid/identifier'),
-        createAssetFamilyIdentifier('designer'),
-        createAssetCode('invalid/identifier'),
+        'invalid/identifier',
+        'designer',
+        'invalid/identifier',
         createLabelCollection({en_US: 'Stylist', fr_FR: 'Styliste'}),
         Image.createEmpty(),
         createValueCollection([])

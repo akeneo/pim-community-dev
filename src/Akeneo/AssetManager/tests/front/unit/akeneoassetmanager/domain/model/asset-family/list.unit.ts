@@ -3,13 +3,12 @@ import {
   denormalizeAssetFamilyListItem,
   createEmptyAssetFamilyListItem,
 } from 'akeneoassetmanager/domain/model/asset-family/list';
-import {createIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import {createEmptyFile} from 'akeneoassetmanager/domain/model/file';
 
-const michelIdentifier = createIdentifier('michel');
+const michelIdentifier = 'michel';
 const michelLabels = createLabelCollection({en_US: 'Michel'});
-const didierCode = createIdentifier('didier');
+const didierCode = 'didier';
 const didierLabels = createLabelCollection({en_US: 'Didier'});
 
 describe('akeneo > asset family > domain > model --- asset family', () => {
@@ -23,12 +22,6 @@ describe('akeneo > asset family > domain > model --- asset family', () => {
     expect(() => {
       createAssetFamilyListItem(michelIdentifier);
     }).toThrow('AssetFamilyListItem expects a LabelCollection as labelCollection argument');
-    expect(() => {
-      createAssetFamilyListItem();
-    }).toThrow('AssetFamilyListItem expects an Identifier as identifier argument');
-    expect(() => {
-      createAssetFamilyListItem(12);
-    }).toThrow('AssetFamilyListItem expects an Identifier as identifier argument');
     expect(() => {
       createAssetFamilyListItem(michelIdentifier, 52);
     }).toThrow('AssetFamilyListItem expects a LabelCollection as labelCollection argument');

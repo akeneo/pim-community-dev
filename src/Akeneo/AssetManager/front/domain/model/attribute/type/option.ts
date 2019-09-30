@@ -1,12 +1,14 @@
-import Identifier, {createIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
+import AttributeIdentifier, {
+  denormalizeAttributeIdentifier,
+} from 'akeneoassetmanager/domain/model/attribute/identifier';
 import AssetFamilyIdentifier, {
-  createIdentifier as createAssetFamilyIdentifier,
+  denormalizeAssetFamilyIdentifier,
 } from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import LabelCollection, {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
-import AttributeCode, {createCode} from 'akeneoassetmanager/domain/model/attribute/code';
+import AttributeCode, {denormalizeAttributeCode} from 'akeneoassetmanager/domain/model/attribute/code';
 import {Attribute, ConcreteAttribute, NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {NormalizedOption, Option} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
-import OptionCode from 'akeneoassetmanager/domain/model/attribute/type/option/option-code';
+import OptionCode, {optioncodesAreEqual} from 'akeneoassetmanager/domain/model/attribute/type/option/option-code';
 
 export interface NormalizedOptionAttribute extends NormalizedAttribute {
   type: 'option';
@@ -30,7 +32,7 @@ export class InvalidArgumentError extends Error {}
 
 export class ConcreteOptionAttribute extends ConcreteAttribute implements OptionAttribute {
   private constructor(
-    identifier: Identifier,
+    identifier: AttributeIdentifier,
     assetFamilyIdentifier: AssetFamilyIdentifier,
     code: AttributeCode,
     labelCollection: LabelCollection,
@@ -63,9 +65,9 @@ export class ConcreteOptionAttribute extends ConcreteAttribute implements Option
 
   public static createFromNormalized(normalizedOptionAttribute: NormalizedOptionAttribute) {
     return new ConcreteOptionAttribute(
-      createIdentifier(normalizedOptionAttribute.identifier),
-      createAssetFamilyIdentifier(normalizedOptionAttribute.asset_family_identifier),
-      createCode(normalizedOptionAttribute.code),
+      denormalizeAttributeIdentifier(normalizedOptionAttribute.identifier),
+      denormalizeAssetFamilyIdentifier(normalizedOptionAttribute.asset_family_identifier),
+      denormalizeAttributeCode(normalizedOptionAttribute.code),
       createLabelCollection(normalizedOptionAttribute.labels),
       normalizedOptionAttribute.value_per_channel,
       normalizedOptionAttribute.value_per_locale,
@@ -76,7 +78,7 @@ export class ConcreteOptionAttribute extends ConcreteAttribute implements Option
   }
 
   public hasOption(optionCode: OptionCode) {
-    return this.options.some((option: Option) => option.code.equals(optionCode));
+    return this.options.some((option: Option) => optioncodesAreEqual(option.code, optionCode));
   }
 
   public normalize(): NormalizedOptionAttribute {

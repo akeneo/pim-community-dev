@@ -16,7 +16,7 @@ import {saveAttribute} from 'akeneoassetmanager/application/action/attribute/edi
 import {createLocaleFromCode} from 'akeneoassetmanager/domain/model/locale';
 import {TextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
 import {deleteAttribute} from 'akeneoassetmanager/application/action/attribute/delete';
-import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
+import AttributeIdentifier, {attributeidentifiersAreEqual} from 'akeneoassetmanager/domain/model/attribute/identifier';
 import DeleteModal from 'akeneoassetmanager/application/component/app/delete-modal';
 import {cancelDeleteModal, openDeleteModal} from 'akeneoassetmanager/application/event/confirmDelete';
 import denormalizeAttribute from 'akeneoassetmanager/application/denormalizer/attribute/attribute';
@@ -149,8 +149,8 @@ class Edit extends React.Component<EditProps> {
     // This will be simplyfied in the near future
     const displayDeleteButton =
       this.props.rights.attribute.delete &&
-      !this.props.assetFamily.getAttributeAsLabel().equals(this.props.attribute.getIdentifier()) &&
-      !this.props.assetFamily.getAttributeAsImage().equals(this.props.attribute.getIdentifier());
+      !attributeidentifiersAreEqual(this.props.assetFamily.getAttributeAsLabel(), this.props.attribute.getIdentifier()) &&
+      !attributeidentifiersAreEqual(this.props.assetFamily.getAttributeAsImage(), this.props.attribute.getIdentifier());
 
     return (
       <React.Fragment>
@@ -161,7 +161,7 @@ class Edit extends React.Component<EditProps> {
               style={{margin: '0 20px 25px 20px'}}
               className="AknSubsection-title AknSubsection-title--sticky AknSubsection-title--light"
             >
-              {__('pim_asset_manager.attribute.edit.title', {code: this.props.attribute.getCode().stringValue()})}
+              {__('pim_asset_manager.attribute.edit.title', {code: this.props.attribute.getCode()})}
             </header>
             <div className="AknFormContainer AknFormContainer--expanded AknFormContainer--withSmallPadding">
               <div className="AknFieldContainer" data-code="label">

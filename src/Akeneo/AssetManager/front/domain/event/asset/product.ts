@@ -10,7 +10,7 @@ export const productListAttributeListUpdated = (attributes: Attribute[]) => {
 };
 
 export const productListAttributeSelected = (attributeCode: AttributeCode) => {
-  return {type: 'PRODUCT_LIST_ATTRIBUTE_SELECTED', attributeCode: attributeCode.stringValue()};
+  return {type: 'PRODUCT_LIST_ATTRIBUTE_SELECTED', attributeCode};
 };
 
 export const productListProductListUpdated = (products: Product[], totalCount: number) => {

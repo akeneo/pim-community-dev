@@ -24,12 +24,14 @@ export const notifyAssetSaveValidationError = () => {
 };
 
 export const notifyAssetWellDeleted = (assetCode: AssetCode) => {
-  return notify('success', 'pim_asset_manager.asset.notification.delete.success', {code: assetCode.stringValue()});
+  return notify('success', 'pim_asset_manager.asset.notification.delete.success', {
+    code: assetCode,
+  });
 };
 
 export const notifyAllAssetsWellDeleted = (assetFamilyIdentifier: AssetFamilyIdentifier) => {
   return notify('success', 'pim_asset_manager.asset.notification.delete_all.success', {
-    entityIdentifier: assetFamilyIdentifier.stringValue(),
+    entityIdentifier: assetFamilyIdentifier,
   });
 };
 

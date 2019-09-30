@@ -8,7 +8,7 @@ import LocaleReference, {
 } from 'akeneoassetmanager/domain/model/locale-reference';
 import Data from 'akeneoassetmanager/domain/model/asset/data';
 import {ConcreteAttribute, Attribute, NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
-import {NormalizedAttributeIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
+import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
 
 type NormalizedContext = {
   labels: {
@@ -30,7 +30,7 @@ export type NormalizedValue = {
 };
 
 export type NormalizedMinimalValue = {
-  attribute: NormalizedAttributeIdentifier;
+  attribute: AttributeIdentifier;
   channel: ChannelReference;
   locale: LocaleReference;
   data: any;
@@ -53,22 +53,22 @@ class Value {
     }
     if (channelReferenceIsEmpty(channel) && attribute.valuePerChannel) {
       throw new InvalidTypeError(
-        `The value for attribute "${attribute.getCode().stringValue()}" should have a non empty channel reference`
+        `The value for attribute "${attribute.getCode()}" should have a non empty channel reference`
       );
     }
     if (!channelReferenceIsEmpty(channel) && !attribute.valuePerChannel) {
       throw new InvalidTypeError(
-        `The value for attribute "${attribute.getCode().stringValue()}" should have an empty channel reference`
+        `The value for attribute "${attribute.getCode()}" should have an empty channel reference`
       );
     }
     if (localeReferenceIsEmpty(locale) && attribute.valuePerLocale) {
       throw new InvalidTypeError(
-        `The value for attribute "${attribute.getCode().stringValue()}" should have a non empty locale reference`
+        `The value for attribute "${attribute.getCode()}" should have a non empty locale reference`
       );
     }
     if (!localeReferenceIsEmpty(locale) && !attribute.valuePerLocale) {
       throw new InvalidTypeError(
-        `The value for attribute "${attribute.getCode().stringValue()}" should have an empty locale reference`
+        `The value for attribute "${attribute.getCode()}" should have an empty locale reference`
       );
     }
 
@@ -114,7 +114,7 @@ class Value {
 
   public normalizeMinimal(): NormalizedMinimalValue {
     return {
-      attribute: this.attribute.identifier.normalize(),
+      attribute: this.attribute.identifier,
       channel: this.channel,
       locale: this.locale,
       data: this.data.isEmpty() ? null : this.data.normalize(),

@@ -3,8 +3,10 @@ import {Query, SearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
 import Asset, {NormalizedItemAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import hydrator from 'akeneoassetmanager/application/hydrator/asset';
 import {getJSON, putJSON} from 'akeneoassetmanager/tools/fetch';
-import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
+import AssetFamilyIdentifier, {
+  assetFamilyIdentifierStringValue,
+} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import AssetCode, {assetCodeStringValue} from 'akeneoassetmanager/domain/model/asset/code';
 import errorHandler from 'akeneoassetmanager/infrastructure/tools/error-handler';
 import {Filter} from 'akeneoassetmanager/application/reducer/grid';
 import {AssetFamilyPermission} from 'akeneoassetmanager/domain/model/permission/asset-family';
@@ -25,15 +27,15 @@ export class AssetFetcherImplementation implements AssetFetcher {
   async fetch(assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode): Promise<AssetResult> {
     const backendAsset = await getJSON(
       routing.generate('akeneo_asset_manager_asset_get_rest', {
-        assetFamilyIdentifier: assetFamilyIdentifier.stringValue(),
-        assetCode: assetCode.stringValue(),
+        assetFamilyIdentifier: assetFamilyIdentifierStringValue(assetFamilyIdentifier),
+        assetCode: assetCodeStringValue(assetCode),
       })
     ).catch(errorHandler);
 
     return {
       asset: hydrator(backendAsset),
       permission: {
-        assetFamilyIdentifier: assetFamilyIdentifier.stringValue(),
+        assetFamilyIdentifier: assetFamilyIdentifierStringValue(assetFamilyIdentifier),
         edit: backendAsset.permission.edit,
       },
     };
@@ -77,12 +79,12 @@ export class AssetFetcherImplementation implements AssetFetcher {
         {
           field: 'asset_family',
           operator: '=',
-          value: assetFamilyIdentifier.stringValue(),
+          value: assetFamilyIdentifierStringValue(assetFamilyIdentifier),
         },
         {
           field: 'code',
           operator: 'IN',
-          value: assetCodes.map((assetCode: AssetCode) => assetCode.stringValue()),
+          value: assetCodes.map((assetCode: AssetCode) => assetCodeStringValue(assetCode)),
         },
       ],
     };

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as $ from 'jquery';
-import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
+import AssetCode, {denormalizeAssetCode, assetCodeStringValue} from 'akeneoassetmanager/domain/model/asset/code';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 const routing = require('routing');
 import {NormalizedAsset, NormalizedItemAsset} from 'akeneoassetmanager/domain/model/asset/asset';
@@ -9,6 +9,7 @@ import LocaleReference, {localeReferenceStringValue} from 'akeneoassetmanager/do
 import ChannelReference, {channelReferenceStringValue} from 'akeneoassetmanager/domain/model/channel-reference';
 import {getLabel} from 'pimui/js/i18n';
 import __ from 'akeneoassetmanager/tools/translator';
+import {isNull, isArray} from 'akeneoassetmanager/domain/model/utils';
 
 const renderRow = (label: string, normalizedAsset: NormalizedItemAsset, withLink: boolean, compact: boolean) => {
   return `
@@ -76,9 +77,9 @@ export default class AssetSelector extends React.Component<AssetSelectorProps> {
 
   getSelectedAssetCode(value: null | AssetCode[] | AssetCode, multiple: boolean) {
     if (multiple) {
-      return (value as AssetCode[]).map((assetCode: AssetCode) => assetCode.stringValue());
+      return (value as AssetCode[]).map((assetCode: AssetCode) => assetCode);
     } else {
-      return null === value ? [] : [(value as AssetCode).stringValue()];
+      return null === value ? [] : [value as AssetCode];
     }
   }
 
@@ -106,7 +107,7 @@ export default class AssetSelector extends React.Component<AssetSelectorProps> {
         containerCssClass,
         ajax: {
           url: routing.generate('akeneo_asset_manager_asset_index_rest', {
-            assetFamilyIdentifier: this.props.assetFamilyIdentifier.stringValue(),
+            assetFamilyIdentifier: this.props.assetFamilyIdentifier,
           }),
           quietMillis: 250,
           cache: true,
@@ -123,7 +124,7 @@ export default class AssetSelector extends React.Component<AssetSelectorProps> {
                 {
                   field: 'asset_family',
                   operator: '=',
-                  value: this.props.assetFamilyIdentifier.stringValue(),
+                  value: this.props.assetFamilyIdentifier,
                 },
                 {
                   field: 'code_label',
@@ -154,7 +155,7 @@ export default class AssetSelector extends React.Component<AssetSelectorProps> {
             const initialAssetCodes = element
               .val()
               .split(',')
-              .map((assetCode: string) => AssetCode.create(assetCode));
+              .map((assetCode: string) => denormalizeAssetCode(assetCode));
             const result = await assetFetcher.fetchByCodes(
               this.props.assetFamilyIdentifier,
               initialAssetCodes,
@@ -169,7 +170,7 @@ export default class AssetSelector extends React.Component<AssetSelectorProps> {
           } else {
             const initialValue = element.val();
             assetFetcher
-              .fetchByCodes(this.props.assetFamilyIdentifier, [AssetCode.create(initialValue)], {
+              .fetchByCodes(this.props.assetFamilyIdentifier, [denormalizeAssetCode(initialValue)], {
                 channel: channelReferenceStringValue(this.props.channel),
                 locale: localeReferenceStringValue(this.props.locale),
               })
@@ -213,10 +214,10 @@ export default class AssetSelector extends React.Component<AssetSelectorProps> {
 
       this.el.on('change', (event: any) => {
         const newValue = this.props.multiple
-          ? event.val.map((assetCode: string) => AssetCode.create(assetCode))
+          ? event.val.map((assetCode: string) => denormalizeAssetCode(assetCode))
           : '' === event.val
           ? null
-          : AssetCode.create(event.val);
+          : denormalizeAssetCode(event.val);
         this.props.onChange(newValue);
       });
 
@@ -246,13 +247,17 @@ export default class AssetSelector extends React.Component<AssetSelectorProps> {
   }
 
   normalizeValue(value: AssetCode[] | AssetCode | null): string {
-    if (null === value) {
+    if (isNull(value)) {
       return '';
     }
 
-    return this.props.multiple
-      ? (value as AssetCode[]).map((assetCode: AssetCode) => assetCode.stringValue()).join(',')
-      : (value as AssetCode).stringValue();
+    if (this.props.multiple && !isArray(value)) {
+      throw new Error('The value should be an array if the selector is set to "multiple"');
+    }
+
+    return this.props.multiple && isArray(value)
+      ? value.map((assetCode: AssetCode) => assetCodeStringValue(assetCode)).join(',')
+      : assetCodeStringValue(value as AssetCode);
   }
 
   render(): JSX.Element | JSX.Element[] {
@@ -272,10 +277,10 @@ export default class AssetSelector extends React.Component<AssetSelectorProps> {
           disabled={this.props.readOnly}
           onChange={(event: any) => {
             const newValue = this.props.multiple
-              ? event.target.value.split(',').map((assetCode: string) => AssetCode.create(assetCode))
+              ? event.target.value.split(',').map((assetCode: string) => denormalizeAssetCode(assetCode))
               : '' === event.target.value
               ? null
-              : AssetCode.create(event.target.value);
+              : denormalizeAssetCode(event.target.value);
             this.props.onChange(newValue);
           }}
         />

@@ -1,9 +1,11 @@
-import Identifier, {createIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
+import AttributeIdentifier, {
+  denormalizeAttributeIdentifier,
+} from 'akeneoassetmanager/domain/model/attribute/identifier';
 import AssetFamilyIdentifier, {
-  createIdentifier as createAssetFamilyIdentifier,
+  denormalizeAssetFamilyIdentifier,
 } from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import LabelCollection, {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
-import AttributeCode, {createCode} from 'akeneoassetmanager/domain/model/attribute/code';
+import AttributeCode, {denormalizeAttributeCode} from 'akeneoassetmanager/domain/model/attribute/code';
 import {NormalizedAttribute, Attribute, ConcreteAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {
   Prefix,
@@ -50,7 +52,7 @@ export class InvalidArgumentError extends Error {}
 
 export class ConcreteMediaLinkAttribute extends ConcreteAttribute implements MediaLinkAttribute {
   private constructor(
-    identifier: Identifier,
+    identifier: AttributeIdentifier,
     assetFamilyIdentifier: AssetFamilyIdentifier,
     code: AttributeCode,
     labelCollection: LabelCollection,
@@ -91,9 +93,9 @@ export class ConcreteMediaLinkAttribute extends ConcreteAttribute implements Med
 
   public static createFromNormalized(normalizedMediaLinkAttribute: NormalizedMediaLinkAttribute) {
     return new ConcreteMediaLinkAttribute(
-      createIdentifier(normalizedMediaLinkAttribute.identifier),
-      createAssetFamilyIdentifier(normalizedMediaLinkAttribute.asset_family_identifier),
-      createCode(normalizedMediaLinkAttribute.code),
+      denormalizeAttributeIdentifier(normalizedMediaLinkAttribute.identifier),
+      denormalizeAssetFamilyIdentifier(normalizedMediaLinkAttribute.asset_family_identifier),
+      denormalizeAttributeCode(normalizedMediaLinkAttribute.code),
       createLabelCollection(normalizedMediaLinkAttribute.labels),
       normalizedMediaLinkAttribute.value_per_locale,
       normalizedMediaLinkAttribute.value_per_channel,

@@ -20,22 +20,16 @@ describe('Akeneoassetfamily > infrastructure > saver > asset-family', () => {
     });
 
     const response = await page.evaluate(async () => {
-      const createAssetFamily = require('akeneoassetmanager/domain/model/asset-family/asset-family')
-        .createAssetFamily;
-      const createIdentifier = require('akeneoassetmanager/domain/model/asset-family/identifier')
-        .createIdentifier;
-      const createLabelCollection = require('akeneoassetmanager/domain/model/label-collection')
-        .createLabelCollection;
-      const createAttributeIdentifier = require('akeneoassetmanager/domain/model/attribute/identifier')
-        .createIdentifier;
+      const createAssetFamily = require('akeneoassetmanager/domain/model/asset-family/asset-family').createAssetFamily;
+      const createLabelCollection = require('akeneoassetmanager/domain/model/label-collection').createLabelCollection;
       const Image = require('akeneoassetmanager/domain/model/file').default;
 
       const savedSofa = createAssetFamily(
-        createIdentifier('sofa'),
+        'sofa',
         createLabelCollection({en_US: 'Sofa', fr_FR: 'Canapé'}),
         Image.createEmpty(),
-        createAttributeIdentifier(''),
-        createAttributeIdentifier('')
+        '',
+        ''
       );
       const saver = require('akeneoassetmanager/infrastructure/saver/asset-family').default;
 
@@ -59,23 +53,17 @@ describe('Akeneoassetfamily > infrastructure > saver > asset-family', () => {
     });
 
     const response = await page.evaluate(async () => {
-      const createAssetFamily = require('akeneoassetmanager/domain/model/asset-family/asset-family')
-        .createAssetFamily;
-      const createIdentifier = require('akeneoassetmanager/domain/model/asset-family/identifier')
-        .createIdentifier;
-      const createLabelCollection = require('akeneoassetmanager/domain/model/label-collection')
-        .createLabelCollection;
-      const createAttributeIdentifier = require('akeneoassetmanager/domain/model/attribute/identifier')
-        .createIdentifier;
+      const createAssetFamily = require('akeneoassetmanager/domain/model/asset-family/asset-family').createAssetFamily;
+      const createLabelCollection = require('akeneoassetmanager/domain/model/label-collection').createLabelCollection;
       const Image = require('akeneoassetmanager/domain/model/file').default;
       const saver = require('akeneoassetmanager/infrastructure/saver/asset-family').default;
 
       const sofaCreated = createAssetFamily(
-        createIdentifier('sofa'),
+        'sofa',
         createLabelCollection({en_US: 'Sofa', fr_FR: 'Canapé'}),
         Image.createEmpty(),
-        createAttributeIdentifier(''),
-        createAttributeIdentifier('')
+        '',
+        ''
       );
 
       return await saver.create(sofaCreated);
@@ -127,23 +115,17 @@ describe('Akeneoassetfamily > infrastructure > saver > asset-family', () => {
     });
 
     const response = await page.evaluate(async () => {
-      const createAssetFamily = require('akeneoassetmanager/domain/model/asset-family/asset-family')
-        .createAssetFamily;
-      const createIdentifier = require('akeneoassetmanager/domain/model/asset-family/identifier')
-        .createIdentifier;
-      const createLabelCollection = require('akeneoassetmanager/domain/model/label-collection')
-        .createLabelCollection;
-      const createAttributeIdentifier = require('akeneoassetmanager/domain/model/attribute/identifier')
-        .createIdentifier;
+      const createAssetFamily = require('akeneoassetmanager/domain/model/asset-family/asset-family').createAssetFamily;
+      const createLabelCollection = require('akeneoassetmanager/domain/model/label-collection').createLabelCollection;
       const Image = require('akeneoassetmanager/domain/model/file').default;
       const saver = require('akeneoassetmanager/infrastructure/saver/asset-family').default;
 
       const sofaCreated = createAssetFamily(
-        createIdentifier('invalid/identifier'),
+        'invalid/identifier',
         createLabelCollection({en_US: 'Sofa', fr_FR: 'Canapé'}),
         Image.createEmpty(),
-        createAttributeIdentifier(''),
-        createAttributeIdentifier('')
+        '',
+        ''
       );
 
       return await saver.create(sofaCreated);

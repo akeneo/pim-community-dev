@@ -1,5 +1,7 @@
 import AttributeFetcher from 'akeneoassetmanager/domain/fetcher/attribute';
-import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import AssetFamilyIdentifier, {
+  assetFamilyIdentifierStringValue,
+} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import hydrator from 'akeneoassetmanager/application/hydrator/attribute';
 import hydrateAll from 'akeneoassetmanager/application/hydrator/hydrator';
 import {getJSON} from 'akeneoassetmanager/tools/fetch';
@@ -12,7 +14,7 @@ export class AttributeFetcherImplementation implements AttributeFetcher {
   async fetchAll(assetFamilyIdentifier: AssetFamilyIdentifier): Promise<Attribute[]> {
     const backendAttributes = await getJSON(
       routing.generate('akeneo_asset_manager_attribute_index_rest', {
-        assetFamilyIdentifier: assetFamilyIdentifier.stringValue(),
+        assetFamilyIdentifier: assetFamilyIdentifierStringValue(assetFamilyIdentifier),
       })
     ).catch(errorHandler);
 

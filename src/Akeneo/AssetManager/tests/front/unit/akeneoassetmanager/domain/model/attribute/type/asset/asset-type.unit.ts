@@ -1,11 +1,9 @@
 import {AssetType} from 'akeneoassetmanager/domain/model/attribute/type/asset/asset-type';
-import {createIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 
 describe('akeneo > attribute > domain > model > attribute > type > asset --- asset type', () => {
   test('I can create a AssetType from normalized', () => {
     expect(AssetType.createFromNormalized('brand').normalize()).toEqual('brand');
     expect(AssetType.createFromNormalized(null).normalize()).toEqual(null);
-    expect(() => new AssetType({my: 'object'})).toThrow();
   });
 
   test('I can validate a AssetType', () => {
@@ -23,7 +21,7 @@ describe('akeneo > attribute > domain > model > attribute > type > asset --- ass
   });
 
   test('I can get the asset family identifier', () => {
-    expect(AssetType.createFromString('brand').getAssetFamilyIdentifier()).toEqual(createIdentifier('brand'));
+    expect(AssetType.createFromString('brand').getAssetFamilyIdentifier()).toEqual('brand');
     expect(() => AssetType.createFromNormalized(null).getAssetFamilyIdentifier()).toThrow();
   });
 

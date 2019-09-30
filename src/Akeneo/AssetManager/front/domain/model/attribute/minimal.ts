@@ -1,11 +1,15 @@
 import AssetFamilyIdentifier, {
-  createIdentifier as createAssetFamilyIdentifier,
+  denormalizeAssetFamilyIdentifier,
+  assetFamilyIdentifierStringValue,
 } from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import LabelCollection, {
   NormalizedLabelCollection,
   createLabelCollection,
 } from 'akeneoassetmanager/domain/model/label-collection';
-import AttributeCode, {createCode} from 'akeneoassetmanager/domain/model/attribute/code';
+import AttributeCode, {
+  denormalizeAttributeCode,
+  attributeCodeStringValue,
+} from 'akeneoassetmanager/domain/model/attribute/code';
 import {AssetType, NormalizedAssetType} from 'akeneoassetmanager/domain/model/attribute/type/asset/asset-type';
 
 /**
@@ -56,12 +60,6 @@ export class MinimalConcreteAttribute implements MinimalAttribute {
     readonly valuePerLocale: boolean,
     readonly valuePerChannel: boolean
   ) {
-    if (!(assetFamilyIdentifier instanceof AssetFamilyIdentifier)) {
-      throw new InvalidArgumentError('Attribute expects an AssetFamilyIdentifier argument');
-    }
-    if (!(code instanceof AttributeCode)) {
-      throw new InvalidArgumentError('Attribute expects a AttributeCode argument');
-    }
     if (!(labelCollection instanceof LabelCollection)) {
       throw new InvalidArgumentError('Attribute expects a LabelCollection argument');
     }
@@ -78,8 +76,8 @@ export class MinimalConcreteAttribute implements MinimalAttribute {
 
   public static createFromNormalized(minimalNormalizedAttribute: MinimalNormalizedAttribute) {
     return new MinimalConcreteAttribute(
-      createAssetFamilyIdentifier(minimalNormalizedAttribute.asset_family_identifier),
-      createCode(minimalNormalizedAttribute.code),
+      denormalizeAssetFamilyIdentifier(minimalNormalizedAttribute.asset_family_identifier),
+      denormalizeAttributeCode(minimalNormalizedAttribute.code),
       createLabelCollection(minimalNormalizedAttribute.labels),
       minimalNormalizedAttribute.type,
       minimalNormalizedAttribute.value_per_locale,
@@ -101,7 +99,7 @@ export class MinimalConcreteAttribute implements MinimalAttribute {
 
   public getLabel(locale: string, fallbackOnCode: boolean = true) {
     if (!this.labelCollection.hasLabel(locale)) {
-      return fallbackOnCode ? `[${this.getCode().stringValue()}]` : '';
+      return fallbackOnCode ? `[${attributeCodeStringValue(this.getCode())}]` : '';
     }
 
     return this.labelCollection.getLabel(locale);
@@ -113,8 +111,8 @@ export class MinimalConcreteAttribute implements MinimalAttribute {
 
   public normalize(): MinimalNormalizedAttribute {
     return {
-      asset_family_identifier: this.assetFamilyIdentifier.stringValue(),
-      code: this.code.stringValue(),
+      asset_family_identifier: assetFamilyIdentifierStringValue(this.assetFamilyIdentifier),
+      code: attributeCodeStringValue(this.code),
       type: this.getType(),
       labels: this.labelCollection.normalize(),
       value_per_locale: this.valuePerLocale,
@@ -150,8 +148,8 @@ export class MinimalAssetConcreteAttribute extends MinimalConcreteAttribute {
 
   public static createFromNormalized(minimalNormalizedAttribute: MinimalAssetNormalizedAttribute) {
     return new MinimalAssetConcreteAttribute(
-      createAssetFamilyIdentifier(minimalNormalizedAttribute.asset_family_identifier),
-      createCode(minimalNormalizedAttribute.code),
+      denormalizeAssetFamilyIdentifier(minimalNormalizedAttribute.asset_family_identifier),
+      denormalizeAttributeCode(minimalNormalizedAttribute.code),
       createLabelCollection(minimalNormalizedAttribute.labels),
       minimalNormalizedAttribute.type,
       minimalNormalizedAttribute.value_per_locale,

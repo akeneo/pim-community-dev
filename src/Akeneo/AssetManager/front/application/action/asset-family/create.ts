@@ -11,7 +11,6 @@ import ValidationError, {createValidationError} from 'akeneoassetmanager/domain/
 import {IndexState} from 'akeneoassetmanager/application/reducer/asset-family/index';
 import {redirectToAssetFamily} from 'akeneoassetmanager/application/action/asset-family/router';
 import {denormalizeAssetFamilyCreation} from 'akeneoassetmanager/domain/model/asset-family/creation';
-import {createIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 
 export const createAssetFamily = () => async (dispatch: any, getState: () => IndexState): Promise<void> => {
   const assetFamily = denormalizeAssetFamilyCreation(getState().create.data);
@@ -33,7 +32,7 @@ export const createAssetFamily = () => async (dispatch: any, getState: () => Ind
 
   dispatch(assetFamilyCreationSucceeded());
   dispatch(notifyAssetFamilyWellCreated());
-  dispatch(redirectToAssetFamily(createIdentifier(assetFamily.getCode().stringValue()), 'attribute'));
+  dispatch(redirectToAssetFamily(assetFamily.getCode(), 'attribute'));
 
   return;
 };

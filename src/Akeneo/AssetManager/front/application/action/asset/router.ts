@@ -1,18 +1,20 @@
 import {redirectToRoute} from 'akeneoassetmanager/application/event/router';
-import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/identifier';
-import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
+import AssetFamilyIdentifier, {
+  assetFamilyIdentifierStringValue,
+} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import AssetCode, {assetCodeStringValue} from 'akeneoassetmanager/domain/model/asset/code';
 
 export const redirectToAsset = (assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode) => {
   return redirectToRoute('akeneo_asset_manager_asset_edit', {
-    assetCode: assetCode.stringValue(),
-    assetFamilyIdentifier: assetFamilyIdentifier.stringValue(),
+    assetCode: assetCodeStringValue(assetCode),
+    assetFamilyIdentifier: assetFamilyIdentifierStringValue(assetFamilyIdentifier),
     tab: 'enrich',
   });
 };
 
 export const redirectToAssetIndex = (assetFamilyIdentifier: AssetFamilyIdentifier) => {
   return redirectToRoute('akeneo_asset_manager_asset_family_edit', {
-    identifier: assetFamilyIdentifier.stringValue(),
+    identifier: assetFamilyIdentifierStringValue(assetFamilyIdentifier),
     tab: 'asset',
   });
 };

@@ -3,6 +3,7 @@ import Product, {PRODUCT_MODEL_TYPE} from 'akeneoassetmanager/domain/model/produ
 import {getImageShowUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import Completeness from 'akeneoassetmanager/domain/model/product/completeness';
 import ProductCompletenessLabel from 'akeneoassetmanager/application/component/app/product-completeness';
+import {productidentifiersAreEqual, denormalizeProductIdentifier, productIdentifierStringValue} from 'akeneoassetmanager/domain/model/product/identifier';
 
 const router = require('pim/router');
 
@@ -18,9 +19,9 @@ export default ({
   onRedirectToProduct: (product: Product) => void;
 }) => {
   const path =
-    '' !== product.getId().stringValue()
+    productidentifiersAreEqual(product.getId(), denormalizeProductIdentifier(''))
       ? `#${router.generate(`pim_enrich_${product.getType()}_edit`, {
-          id: product.getId().stringValue(),
+          id: productIdentifierStringValue(product.getId()),
         })}`
       : '';
   const completeness = Completeness.createFromNormalized(product.getCompleteness().normalize());
@@ -33,7 +34,7 @@ export default ({
       className={`AknGrid-bodyRow AknGrid-bodyRow--thumbnail AknGrid-bodyRow--withoutTopBorder ${
         isLoading ? 'AknLoadingPlaceHolder' : ''
       } ${PRODUCT_MODEL_TYPE === product.getType() ? 'AknGrid-bodyRow--withLayer' : ''}`}
-      data-identifier={product.getIdentifier().stringValue()}
+      data-identifier={productIdentifierStringValue(product.getIdentifier())}
     >
       <div
         className="AknGrid-fullImage"
@@ -44,7 +45,7 @@ export default ({
         <ProductCompletenessLabel completeness={completeness} type={product.getType()} />
       </div>
       <span className="AknGrid-title">{product.getLabel(locale)}</span>
-      <span className="AknGrid-subTitle">{product.getIdentifier().stringValue()}</span>
+      <span className="AknGrid-subTitle">{productIdentifierStringValue(product.getIdentifier())}</span>
     </a>
   );
 };

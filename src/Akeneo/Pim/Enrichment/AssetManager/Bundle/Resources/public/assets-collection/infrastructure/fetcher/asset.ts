@@ -1,8 +1,7 @@
 import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
 import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';
-import {createIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import {createCode} from 'akeneoassetmanager/domain/model/code';
+import {denormalizeAssetFamilyIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {NormalizedItemAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import {NormalizedAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {
@@ -13,6 +12,7 @@ import {Asset, Completeness} from 'akeneopimenrichmentassetmanager/assets-collec
 import {isNumber, isString, isLabels} from 'akeneoassetmanager/domain/model/utils';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
+import {denormalizeAssetCode} from 'akeneoassetmanager/domain/model/asset/code';
 
 export const fetchAssetCollection = async (
   assetFamilyIdentifier: AssetFamilyIdentifier,
@@ -20,8 +20,12 @@ export const fetchAssetCollection = async (
   context: {channel: ChannelCode; locale: LocaleCode}
 ): Promise<Asset[]> => {
   const [assetsResult, assetFamilyResult] = await Promise.all([
-    assetFetcher.fetchByCodes(createIdentifier(assetFamilyIdentifier), codes.map(createCode), context),
-    assetFamilyFetcher.fetch(createIdentifier(assetFamilyIdentifier)),
+    assetFetcher.fetchByCodes(
+      denormalizeAssetFamilyIdentifier(assetFamilyIdentifier),
+      codes.map(denormalizeAssetCode),
+      context
+    ),
+    assetFamilyFetcher.fetch(denormalizeAssetFamilyIdentifier(assetFamilyIdentifier)),
   ]);
 
   return denormalizeAssetCollection(assetsResult, assetFamilyResult);

@@ -32,7 +32,7 @@ const View = ({
     //I didn't found a better way to fix it. So we need this class
     <div className="asset-selector-container">
       <AssetSelector
-        id={`pim_asset_manager.asset.enrich.${value.attribute.getCode().stringValue()}`}
+        id={`pim_asset_manager.asset.enrich.${value.attribute.getCode()}`}
         value={value.data.assetCollectionData}
         multiple={true}
         locale={locale}

@@ -1,4 +1,7 @@
-import {createIdentifier as denormalizeProductIdentifier} from 'akeneoassetmanager/domain/model/product/identifier';
+import {
+  denormalizeProductIdentifier,
+  productidentifiersAreEqual,
+} from 'akeneoassetmanager/domain/model/product/identifier';
 import {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import {createProduct, denormalizeProduct} from 'akeneoassetmanager/domain/model/product/product';
 import {denormalizeFile} from 'akeneoassetmanager/domain/model/file';
@@ -23,7 +26,9 @@ const productModel = denormalizeProduct({
 
 describe('akeneo > asset family > domain > model --- product', () => {
   test('I can create a new product', () => {
-    expect(product.getIdentifier()).toEqual(denormalizeProductIdentifier('nice_product'));
+    expect(productidentifiersAreEqual(product.getIdentifier(), denormalizeProductIdentifier('nice_product'))).toBe(
+      true
+    );
   });
 
   test('I can compare two products', () => {
@@ -32,7 +37,7 @@ describe('akeneo > asset family > domain > model --- product', () => {
   });
 
   test('I can get the id of a product', () => {
-    expect(product.getId().stringValue()).toEqual('123456');
+    expect(product.getId()).toEqual('123456');
   });
 
   test('I can get the type of a product', () => {
@@ -66,26 +71,6 @@ describe('akeneo > asset family > domain > model --- product', () => {
   });
 
   test('I cannot create a malformed product', () => {
-    expect(() => {
-      createProduct(
-        '123456',
-        denormalizeProductIdentifier('nice_product'),
-        'product',
-        createLabelCollection({en_US: 'My nice product'}),
-        denormalizeFile(null)
-      );
-    }).toThrow('Product expects an ProductIdentifier as id argument');
-
-    expect(() => {
-      createProduct(
-        denormalizeProductIdentifier('123456'),
-        'nice_product',
-        'product',
-        createLabelCollection({en_US: 'My nice product'}),
-        denormalizeFile(null)
-      );
-    }).toThrow('Product expects an ProductIdentifier as identifier argument');
-
     expect(() => {
       createProduct(
         denormalizeProductIdentifier('123456'),
