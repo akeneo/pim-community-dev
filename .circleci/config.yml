@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  setup:
+  build_dev:
     machine:
       image: ubuntu-1604:201903-01
     steps:
@@ -22,9 +22,6 @@ jobs:
       - run:
           name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
           command: sudo chown -R 1000:1000 ../project
-      - run:
-          name: Start containers
-          command: make up
       - restore_cache:
           name: Restore cache - node_modules
           keys:
@@ -246,15 +243,15 @@ workflows:
                     branches:
                         ignore:
                             - master
-          - setup:
+          - build_dev:
                 requires:
                     - wait_for_user_approval
           - back_static_and_acceptance:
                 requires:
-                    - setup
+                    - build_dev
           - front_static_acceptance_and_integration:
                 requires:
-                    - setup
+                    - build_dev
           - back_phpunit:
                 requires:
                     - back_static_and_acceptance
@@ -272,13 +269,13 @@ workflows:
                         only:
                             - master
       jobs:
-          - setup
+          - build_dev
           - back_static_and_acceptance:
                 requires:
-                    - setup
+                    - build_dev
           - front_static_acceptance_and_integration:
                 requires:
-                    - setup
+                    - build_dev
           - back_phpunit:
                 requires:
                     - back_static_and_acceptance
