@@ -8,6 +8,10 @@ parameters:
     akeneo_integration_tests.launcher.job_execution_observer.class: Akeneo\Test\IntegrationTestsBundle\Jobs\JobExecutionObserver
 
 services:
+
+    _defaults:
+        public: true
+
     akeneo_integration_tests.loader.reference_data_loader:
         class: '%akeneo_integration_tests.loader.reference_data_loader.class%'
         arguments:
