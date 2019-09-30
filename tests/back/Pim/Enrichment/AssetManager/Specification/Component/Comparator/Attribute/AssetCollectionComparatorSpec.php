@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\AssetManager\Component\Comparator\Attribute;
 
+use Akeneo\Pim\Enrichment\AssetManager\Component\Comparator\Attribute\AssetCollectionComparator;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorInterface;
-use Akeneo\Pim\Enrichment\Asset\Component\Comparator\Attribute\AssetCollectionComparator;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
