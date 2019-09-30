@@ -36,8 +36,7 @@ jobs:
       - run:
             name: Install back dependencies
             command: |
-                make up
-                sleep 10
+                C=mysql make up
                 make vendor
       - run:
             name: Install front dependencies
