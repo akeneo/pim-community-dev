@@ -39,9 +39,9 @@ final class SelectExactMatchAttributeCodeQueryIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->attributeBuilder = $this->getFromTestContainer('akeneo_ee_integration_tests.builder.attribute');
-        $this->attributeSaver = $this->getFromTestContainer('pim_catalog.saver.attribute');
-        $this->query = $this->getFromTestContainer('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_exact_match_attribute_codes');
+        $this->attributeBuilder = $this->get('akeneo_ee_integration_tests.builder.attribute');
+        $this->attributeSaver = $this->get('pim_catalog.saver.attribute');
+        $this->query = $this->get('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_exact_match_attribute_codes');
     }
 
     public function test_it_returns_pim_attribute_code_exact_match_on_code()
@@ -164,10 +164,10 @@ final class SelectExactMatchAttributeCodeQueryIntegration extends TestCase
         ];
 
         $family = $this
-            ->getFromTestContainer('akeneo_ee_integration_tests.builder.family')
+            ->get('akeneo_ee_integration_tests.builder.family')
             ->build($familyData);
 
-        $this->getFromTestContainer('validator')->validate($family);
-        $this->getFromTestContainer('pim_catalog.saver.family')->save($family);
+        $this->get('validator')->validate($family);
+        $this->get('pim_catalog.saver.family')->save($family);
     }
 }

@@ -105,7 +105,7 @@ class SelectNonNullProductIdentifierValuesQueryIntegration extends TestCase
 INSERT INTO pimee_franklin_insights_subscription(subscription_id, product_id, misses_mapping, requested_asin, requested_upc, requested_brand, requested_mpn)
 VALUES (:subscriptionId, :productId, 0, :requestedAsin, :requestedUpc, :requestedBrand, :requestedMpn);
 SQL;
-        $this->getFromTestContainer('database_connection')->executeQuery($sql, [
+        $this->get('database_connection')->executeQuery($sql, [
             'subscriptionId' => uniqid(),
             'productId' => $productId,
             'requestedAsin' => $requestedValues['asin'] ?? null,
@@ -124,7 +124,7 @@ SQL;
      */
     private function executeQuery(array $updatedIdentifiers, int $searchAfter, int $limit): array
     {
-        return $this->getFromTestContainer('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_non_null_requested_identifiers')
+        return $this->get('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_non_null_requested_identifiers')
             ->execute($updatedIdentifiers, $searchAfter, $limit);
     }
 }

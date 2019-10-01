@@ -21,7 +21,7 @@ class ExistingFilterFieldValidatorIntegration extends TestCase
         ];
         $productCondition = new ProductCondition($condition);
 
-        $validator = $this->getFromTestContainer('validator');
+        $validator = $this->get('validator');
 
         $violations = $validator->validate($productCondition);
 

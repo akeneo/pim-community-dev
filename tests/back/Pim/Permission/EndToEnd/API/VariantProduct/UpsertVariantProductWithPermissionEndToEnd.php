@@ -203,9 +203,9 @@ SQL;
             ['code' => 'edit_category'],
         ]);
 
-        $this->getFromTestContainer('doctrine')->getManager()->clear();
+        $this->get('doctrine')->getManager()->clear();
         $product = $this
-            ->getFromTestContainer('pim_catalog.repository.product')
+            ->get('pim_catalog.repository.product')
             ->findOneByIdentifier('colored_sized_sweat_own');
 
         $categories = $product->getCategories();
@@ -485,9 +485,9 @@ JSON;
      */
     protected function assertSameProduct(array $expectedProduct, $identifier)
     {
-        $this->getFromTestContainer('doctrine')->getManager()->clear();
-        $product = $this->getFromTestContainer('pim_catalog.repository.product')->findOneByIdentifier($identifier);
-        $standardizedProduct = $this->getFromTestContainer('pim_standard_format_serializer')->normalize($product, 'standard');
+        $this->get('doctrine')->getManager()->clear();
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
+        $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
 
         NormalizedProductCleaner::clean($standardizedProduct);
         NormalizedProductCleaner::clean($expectedProduct);

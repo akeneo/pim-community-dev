@@ -30,9 +30,9 @@ class SelectAttributeLabelsFromCodesQueryIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->attributeBuilder = $this->getFromTestContainer('akeneo_ee_integration_tests.builder.attribute');
-        $this->attributeSaver = $this->getFromTestContainer('pim_catalog.saver.attribute');
-        $this->query = $this->getFromTestContainer('pimee_workflow.query.select_attribute_labels_from_codes');
+        $this->attributeBuilder = $this->get('akeneo_ee_integration_tests.builder.attribute');
+        $this->attributeSaver = $this->get('pim_catalog.saver.attribute');
+        $this->query = $this->get('pimee_workflow.query.select_attribute_labels_from_codes');
     }
 
     /**

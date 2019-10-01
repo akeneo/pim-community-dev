@@ -24,7 +24,7 @@ class AddFranklinSubscriptionIntoElasticsearchProductProjectionIntegration exten
 {
     public function test_that_it_adds_franklin_subscription_key_into_the_elasticsearch_projection_of_a_product(): void
     {
-        $getElasticsearchProductProjection = $this->getFromTestContainer(
+        $getElasticsearchProductProjection = $this->get(
             'akeneo.pim.enrichment.product.query.get_elasticsearch_product_projection'
         );
 
@@ -55,7 +55,7 @@ class AddFranklinSubscriptionIntoElasticsearchProductProjectionIntegration exten
 INSERT INTO pimee_franklin_insights_subscription(subscription_id, product_id, misses_mapping, requested_asin, requested_upc, requested_brand, requested_mpn)
 VALUES (:subscriptionId, :productId, 0, null, null, null, null);
 SQL;
-        $this->getFromTestContainer('database_connection')->executeQuery($sql, [
+        $this->get('database_connection')->executeQuery($sql, [
             'subscriptionId' => uniqid(),
             'productId' => $productId,
         ]);

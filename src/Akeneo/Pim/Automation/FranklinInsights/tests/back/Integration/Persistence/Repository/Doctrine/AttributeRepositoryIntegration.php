@@ -26,14 +26,14 @@ final class AttributeRepositoryIntegration extends TestCase
     public function test_find_one_by_identifier(): void
     {
         $attribute = $this
-            ->getFromTestContainer('akeneo.pim.automation.franklin_insights.repository.attribute')
+            ->get('akeneo.pim.automation.franklin_insights.repository.attribute')
             ->findOneByIdentifier('size');
         $this->assertNull($attribute);
 
         $this->createAttributeWithAllValues('size');
 
         $attribute = $this
-            ->getFromTestContainer('akeneo.pim.automation.franklin_insights.repository.attribute')
+            ->get('akeneo.pim.automation.franklin_insights.repository.attribute')
             ->findOneByIdentifier('size');
 
         $expectedAttribute = new Attribute(
@@ -54,7 +54,7 @@ final class AttributeRepositoryIntegration extends TestCase
 
         $this->createAttributeWithMinimumValues('size2');
         $attribute = $this
-            ->getFromTestContainer('akeneo.pim.automation.franklin_insights.repository.attribute')
+            ->get('akeneo.pim.automation.franklin_insights.repository.attribute')
             ->findOneByIdentifier('size2');
 
         $expectedAttribute = new Attribute(
@@ -74,7 +74,7 @@ final class AttributeRepositoryIntegration extends TestCase
     public function test_find_by_codes(): void
     {
         $attributes = $this
-            ->getFromTestContainer('akeneo.pim.automation.franklin_insights.repository.attribute')
+            ->get('akeneo.pim.automation.franklin_insights.repository.attribute')
             ->findOneByIdentifier('color');
         $this->assertEmpty($attributes);
 
@@ -82,7 +82,7 @@ final class AttributeRepositoryIntegration extends TestCase
         $this->createAttributeWithMinimumValues('size');
 
         $attributes = $this
-            ->getFromTestContainer('akeneo.pim.automation.franklin_insights.repository.attribute')
+            ->get('akeneo.pim.automation.franklin_insights.repository.attribute')
             ->findByCodes(['color', 'size']);
         $this->assertCount(2, $attributes);
         $this->assertContainsOnlyInstancesOf(Attribute::class, $attributes);
@@ -95,7 +95,7 @@ final class AttributeRepositoryIntegration extends TestCase
 
     private function createAttributeWithAllValues(string $code)
     {
-        $attribute = $this->getFromTestContainer('akeneo_ee_integration_tests.builder.attribute')->build(
+        $attribute = $this->get('akeneo_ee_integration_tests.builder.attribute')->build(
             [
                 'code' => $code,
                 'type' => 'pim_catalog_metric',
@@ -113,14 +113,14 @@ final class AttributeRepositoryIntegration extends TestCase
             ]
         );
 
-        $this->getFromTestContainer('pim_catalog.saver.attribute')->save($attribute);
+        $this->get('pim_catalog.saver.attribute')->save($attribute);
 
         return $attribute->getId();
     }
 
     private function createAttributeWithMinimumValues(string $code)
     {
-        $attribute = $this->getFromTestContainer('akeneo_ee_integration_tests.builder.attribute')->build(
+        $attribute = $this->get('akeneo_ee_integration_tests.builder.attribute')->build(
             [
                 'code' => $code,
                 'type' => 'pim_catalog_metric',
@@ -128,6 +128,6 @@ final class AttributeRepositoryIntegration extends TestCase
             ]
         );
 
-        $this->getFromTestContainer('pim_catalog.saver.attribute')->save($attribute);
+        $this->get('pim_catalog.saver.attribute')->save($attribute);
     }
 }

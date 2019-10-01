@@ -59,7 +59,7 @@ class ProductMassActionRepositoryIntegration extends TestCase
      */
     private function createNonVariantProduct(): ProductInterface
     {
-        $entityBuilder = $this->getFromTestContainer('akeneo_integration_tests.catalog.fixture.build_entity');
+        $entityBuilder = $this->get('akeneo_integration_tests.catalog.fixture.build_entity');
 
         return $entityBuilder->createProduct('a_product', 'familyA', []);
     }
@@ -69,7 +69,7 @@ class ProductMassActionRepositoryIntegration extends TestCase
      */
     private function createVariantProduct(): ProductInterface
     {
-        $entityBuilder = $this->getFromTestContainer('akeneo_integration_tests.catalog.fixture.build_entity');
+        $entityBuilder = $this->get('akeneo_integration_tests.catalog.fixture.build_entity');
 
         $productModel = $entityBuilder->createProductModel('a_product_model', 'familyVariantA2', null, []);
 

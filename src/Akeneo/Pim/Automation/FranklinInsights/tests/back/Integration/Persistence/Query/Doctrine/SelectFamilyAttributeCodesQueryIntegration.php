@@ -28,7 +28,7 @@ class SelectFamilyAttributeCodesQueryIntegration extends TestCase
         $this->createFamily('a_family', ['attribute_A', 'attribute_B']);
 
         $attributeCodes = $this
-            ->getFromTestContainer('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_family_attribute_codes')
+            ->get('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_family_attribute_codes')
             ->execute(new FamilyCode('a_family'));
 
         $expectedAttributeCodes = ['sku', 'attribute_A', 'attribute_B'];
@@ -44,11 +44,11 @@ class SelectFamilyAttributeCodesQueryIntegration extends TestCase
     private function createAttribute(string $attributeCode): void
     {
         $attribute = $this
-            ->getFromTestContainer('akeneo_ee_integration_tests.builder.attribute')
+            ->get('akeneo_ee_integration_tests.builder.attribute')
             ->build(['code' => $attributeCode, 'type' => AttributeTypes::TEXT]);
 
-        $this->getFromTestContainer('validator')->validate($attribute);
-        $this->getFromTestContainer('pim_catalog.saver.attribute')->save($attribute);
+        $this->get('validator')->validate($attribute);
+        $this->get('pim_catalog.saver.attribute')->save($attribute);
     }
 
     private function createFamily(string $familyCode, array $attributeCodes): void
@@ -59,10 +59,10 @@ class SelectFamilyAttributeCodesQueryIntegration extends TestCase
         ];
 
         $family = $this
-            ->getFromTestContainer('akeneo_ee_integration_tests.builder.family')
+            ->get('akeneo_ee_integration_tests.builder.family')
             ->build($familyData);
 
-        $this->getFromTestContainer('validator')->validate($family);
-        $this->getFromTestContainer('pim_catalog.saver.family')->save($family);
+        $this->get('validator')->validate($family);
+        $this->get('pim_catalog.saver.family')->save($family);
     }
 }

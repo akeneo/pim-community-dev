@@ -187,7 +187,7 @@ class SelectExactMatchAttributeCodesFromOtherFamiliesQueryIntegration extends Te
     private function createAttribute(string $attributeCode, array $labels): PimAttribute
     {
         $attribute = $this
-            ->getFromTestContainer('akeneo_ee_integration_tests.builder.attribute')
+            ->get('akeneo_ee_integration_tests.builder.attribute')
             ->build([
                 'code' => $attributeCode,
                 'type' => AttributeTypes::TEXT,
@@ -195,7 +195,7 @@ class SelectExactMatchAttributeCodesFromOtherFamiliesQueryIntegration extends Te
                 'labels' => $labels,
             ]);
 
-        $this->getFromTestContainer('pim_catalog.saver.attribute')->save($attribute);
+        $this->get('pim_catalog.saver.attribute')->save($attribute);
 
         return $attribute;
     }
@@ -203,14 +203,14 @@ class SelectExactMatchAttributeCodesFromOtherFamiliesQueryIntegration extends Te
     private function createFamily(string $familyCode, array $attributeCodes): PimFamily
     {
         $family = $this
-            ->getFromTestContainer('akeneo_ee_integration_tests.builder.family')
+            ->get('akeneo_ee_integration_tests.builder.family')
             ->build([
                 'code' => $familyCode,
                 'attributes' => array_merge(['sku'], $attributeCodes),
             ]);
 
-        $this->getFromTestContainer('validator')->validate($family);
-        $this->getFromTestContainer('pim_catalog.saver.family')->save($family);
+        $this->get('validator')->validate($family);
+        $this->get('pim_catalog.saver.family')->save($family);
 
         return $family;
     }

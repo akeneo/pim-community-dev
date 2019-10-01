@@ -422,9 +422,9 @@ JSON;
      */
     protected function assertSameProduct(array $expectedProduct, $identifier): void
     {
-        $this->getFromTestContainer('doctrine')->getManager()->clear();
-        $product = $this->getFromTestContainer('pim_catalog.repository.product')->findOneByIdentifier($identifier);
-        $standardizedProduct = $this->getFromTestContainer('pim_standard_format_serializer')->normalize($product, 'standard');
+        $this->get('doctrine')->getManager()->clear();
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
+        $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
 
         NormalizedProductCleaner::clean($standardizedProduct);
         NormalizedProductCleaner::clean($expectedProduct);
@@ -453,10 +453,10 @@ JSON;
             'group' => 'attributeGroupC'
         ];
 
-        $attribute = $this->getFromTestContainer('pim_catalog.repository.attribute')->findOneByIdentifier($code);
-        $this->getFromTestContainer('pim_catalog.updater.attribute')->update($attribute, $data);
-        $constraints = $this->getFromTestContainer('validator')->validate($attribute);
+        $attribute = $this->get('pim_catalog.repository.attribute')->findOneByIdentifier($code);
+        $this->get('pim_catalog.updater.attribute')->update($attribute, $data);
+        $constraints = $this->get('validator')->validate($attribute);
         Assert::assertCount(0, $constraints);
-        $this->getFromTestContainer('pim_catalog.saver.attribute')->save($attribute);
+        $this->get('pim_catalog.saver.attribute')->save($attribute);
     }
 }

@@ -79,16 +79,16 @@ class SelectProductFamilyIdQueryIntegration extends TestCase
     private function createProductWithFamily(): ProductInterface
     {
         $family = $this
-            ->getFromTestContainer('akeneo_ee_integration_tests.builder.family')
+            ->get('akeneo_ee_integration_tests.builder.family')
             ->build(['code' => 'a_test_family']);
-        $this->getFromTestContainer('pim_catalog.saver.family')->save($family);
+        $this->get('pim_catalog.saver.family')->save($family);
         $this->familyId = $family->getId();
 
-        $product = $this->getFromTestContainer('akeneo_integration_tests.catalog.product.builder')
+        $product = $this->get('akeneo_integration_tests.catalog.product.builder')
             ->withIdentifier('product_with_family')
             ->withFamily($family->getCode())
             ->build();
-        $this->getFromTestContainer('pim_catalog.saver.product')->save($product);
+        $this->get('pim_catalog.saver.product')->save($product);
 
         return $product;
     }
@@ -98,11 +98,11 @@ class SelectProductFamilyIdQueryIntegration extends TestCase
      */
     private function createProductWithoutFamily(): ProductInterface
     {
-        $product = $this->getFromTestContainer('akeneo_integration_tests.catalog.product.builder')
+        $product = $this->get('akeneo_integration_tests.catalog.product.builder')
             ->withIdentifier('product_without_family')
             ->build();
 
-        $this->getFromTestContainer('pim_catalog.saver.product')->save($product);
+        $this->get('pim_catalog.saver.product')->save($product);
 
         return $product;
     }

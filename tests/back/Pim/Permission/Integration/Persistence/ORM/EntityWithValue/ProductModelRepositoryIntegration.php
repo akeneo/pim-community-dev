@@ -51,7 +51,7 @@ class ProductModelRepositoryIntegration extends TestCase
 
     private function createProductModelVariantProducts(): ProductModelInterface
     {
-        $entityBuilder = $this->getFromTestContainer('akeneo_integration_tests.catalog.fixture.build_entity');
+        $entityBuilder = $this->get('akeneo_integration_tests.catalog.fixture.build_entity');
 
         $productModel = $entityBuilder->createProductModel('a_product_model', 'familyVariantA2', null, []);
 

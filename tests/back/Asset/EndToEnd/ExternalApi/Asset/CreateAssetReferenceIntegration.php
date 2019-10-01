@@ -36,8 +36,8 @@ class CreateAssetReferenceIntegration extends AbstractAssetTestCase
     {
         parent::setUp();
 
-        $product = $this->getFromTestContainer('pim_catalog.builder.product')->createProduct('foo');
-        $this->getFromTestContainer('akeneo_storage_utils.doctrine.object_detacher')->detach($product);
+        $product = $this->get('pim_catalog.builder.product')->createProduct('foo');
+        $this->get('akeneo_storage_utils.doctrine.object_detacher')->detach($product);
 
         $this->files['akeneo'] = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'akeneo.jpg';
         copy($this->getFixturePath('akeneo.jpg'), $this->files['akeneo']);
@@ -45,7 +45,7 @@ class CreateAssetReferenceIntegration extends AbstractAssetTestCase
         $this->files['ziggy'] = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'ziggy.png';
         copy($this->getFixturePath('ziggy.png'), $this->files['ziggy']);
 
-        $mountManager = $this->getFromTestContainer('oneup_flysystem.mount_manager');
+        $mountManager = $this->get('oneup_flysystem.mount_manager');
         $this->fileSystem = $mountManager->getFilesystem(FileStorage::ASSET_STORAGE_ALIAS);
     }
 

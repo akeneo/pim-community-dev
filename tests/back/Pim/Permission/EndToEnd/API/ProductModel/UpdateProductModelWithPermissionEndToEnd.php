@@ -377,9 +377,9 @@ JSON;
      */
     protected function assertSameProduct(array $expectedProductModel, $code)
     {
-        $this->getFromTestContainer('doctrine')->getManager()->clear();
-        $productModel = $this->getFromTestContainer('pim_catalog.repository.product_model')->findOneByCode($code);
-        $standardizedProductModel = $this->getFromTestContainer('pim_standard_format_serializer')->normalize($productModel, 'standard');
+        $this->get('doctrine')->getManager()->clear();
+        $productModel = $this->get('pim_catalog.repository.product_model')->findOneByCode($code);
+        $standardizedProductModel = $this->get('pim_standard_format_serializer')->normalize($productModel, 'standard');
 
         NormalizedProductCleaner::clean($standardizedProductModel);
         NormalizedProductCleaner::clean($expectedProductModel);
