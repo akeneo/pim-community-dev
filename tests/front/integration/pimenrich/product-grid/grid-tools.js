@@ -1,3 +1,4 @@
+// Static mock JSON for product grid
 const mockResponses = {
   '/datagrid_view/rest/product-grid/default-columns': require('./responses/default-columns.json'),
   '/datagrid_view/rest/product-grid/default': require('./responses/default-views.json'),
@@ -5,6 +6,20 @@ const mockResponses = {
   '/enrich/product-category-tree/product-grid/children.json': require('./responses/category-tree.json'),
 }
 
+/**
+ * Returns a JSON response for a given datagrid filter
+ *
+ * Example filter:
+ * {
+ *   name: 'count',
+ *   type: '>=,
+ *   response: [new DatagridProductBuilder().withIdentifier('two').build()]
+ * }
+ *
+ * @param {Puppeteer.Page} page
+ * @param {Object} filter
+ *
+ */
 const mockFilteredProducts = (page, filter) => {
   return page.on('request', (req) => {
     const filterParam = encodeURI(`product-grid[_filter][${filter.name}][type]=${filter.type}`)
@@ -20,6 +35,11 @@ const mockFilteredProducts = (page, filter) => {
   })
 }
 
+/**
+ * Constructs the responses for the product grid endpoints
+ *
+ * @param {Array} products An array of DatagridProductBuilder objects
+ */
 const constructProductsResponse = (products) => {
   const productGridData = {
     data: products,
@@ -36,6 +56,12 @@ const constructProductsResponse = (products) => {
   return { productGridData, productLoadData };
 }
 
+/**
+ * Returns the response body given a matching URL
+ *
+ * @param {Object} responses A map of urls and responses
+ * @param {String} url
+ */
 const matchResponseURL = (responses, url) => {
   for ([responseURL, body] of Object.entries(responses)) {
     if (url.includes(responseURL)) {
@@ -44,6 +70,12 @@ const matchResponseURL = (responses, url) => {
   }
 }
 
+/**
+ *
+ * @param {Puppeteer.Page} page
+ * @param {Array} products Array of DatagridProductBuilder objects
+ * @param {Array} filters Array of FilterBuilder objects
+ */
 const buildProductGridResponses = (page, products = [], filters = []) => {
   const { productGridData, productLoadData } = constructProductsResponse(products)
 
@@ -53,6 +85,7 @@ const buildProductGridResponses = (page, products = [], filters = []) => {
     '/datagrid/product-grid/attributes-filters': filters
   });
 
+  // Intercept the page requests and return configured products and filters
   return page.on('request', (interceptedRequest) => {
     const body = matchResponseURL(productGridResponses, interceptedRequest.url());
 
@@ -69,6 +102,7 @@ const buildProductGridResponses = (page, products = [], filters = []) => {
 const loadProductGrid = async (page, products, filters) => {
   await buildProductGridResponses(page, products, filters);
 
+  // Use the FormBuilder of the PIM to render the pim-product-index form extension on the page
   await page.evaluate(() => {
     return require('pim/form-builder').build('pim-product-index').then(form => {
       form.setElement(document.getElementById('app')).render();
@@ -79,6 +113,12 @@ const loadProductGrid = async (page, products, filters) => {
   return page.waitForSelector('.AknLoadingMask.loading-mask', { hidden: true });
 }
 
+/**
+ * Finds the operator choice in the filter dropdown given a label e.g. 'not empty'
+ *
+ * @param {Puppeteer.ElementHandle} filter The filter element
+ * @param {String} choiceLabel
+ */
 const getOperatorChoiceByLabel = async (filter, choiceLabel) => {
   const operatorChoices = await filter.$$('.operator_choice');
   let matchingChoice = null;
@@ -94,6 +134,11 @@ const getOperatorChoiceByLabel = async (filter, choiceLabel) => {
   return matchingChoice;
 }
 
+/**
+ * Fetches a list of product row labels
+ *
+ * @param {Puppeteer.Page} page
+ */
 const getProductRowLabels = async (page) => {
   const rows = await page.$$('.grid .AknGrid-bodyRow.row-click-action');
   const rowLabels = [];
@@ -107,7 +152,7 @@ const getProductRowLabels = async (page) => {
   return rowLabels;
 }
 
-// Custom Jest expect matchers for the product grid
+// Custom Jest expect matchers
 expect.extend({
   filterToBeVisible: async (filterName, page) => {
     return {
