@@ -26,27 +26,27 @@ node_modules: package.json
 
 .PHONY: assets
 assets:
-	rm -rf public/bundles
+	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/bundles public/js
 	$(PHP_RUN) bin/console --env=prod pim:installer:assets --symlink --clean
 
 .PHONY: css
 css:
-	rm -rf public/css
+	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/css
 	$(YARN_EXEC) run less
 
 .PHONY: javascript-prod
 javascript-prod:
-	rm -rf public/js public/dist
+	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/dist
 	$(YARN_EXEC) run webpack
 
 .PHONY: javascript-dev
 javascript-dev:
-	rm -rf public/js public/dist
+	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/dist
 	$(YARN_EXEC) run webpack-dev
 
 .PHONY: javascript-test
 javascript-test:
-	rm -rf public/js public/dist
+	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/dist
 	$(YARN_EXEC) run webpack-test
 
 .PHONY: front
