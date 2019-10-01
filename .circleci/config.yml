@@ -50,7 +50,7 @@ jobs:
           name: Check PIM requirements
           command: |
               C='mysql elasticsearch' make up
-              .circleci/wait_docker_up.sh
+              vendor/akeneo/pim-community-dev/.circleci/wait_docker_up.sh
               make check-requirements
       - run:
           name: Install asset
