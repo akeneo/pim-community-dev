@@ -15,9 +15,9 @@ class ParentFilterIntegration extends AbstractProductAndProductModelQueryBuilder
 {
     public function testQueryParentInList()
     {
-        $entityBuilder = $this->getFromTestContainer('akeneo_integration_tests.catalog.fixture.build_entity');
+        $entityBuilder = $this->get('akeneo_integration_tests.catalog.fixture.build_entity');
 
-        $bikerJacket = $this->getFromTestContainer('pim_catalog.repository.product_model')->findOneByIdentifier('model-biker-jacket');
+        $bikerJacket = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('model-biker-jacket');
         $entityBuilder->createVariantProduct(
             'product-biker-jacket',
             'clothing',
@@ -55,7 +55,7 @@ class ParentFilterIntegration extends AbstractProductAndProductModelQueryBuilder
 
     public function testQueryParentInListCaseInsensitive()
     {
-        $entityBuilder = $this->getFromTestContainer('akeneo_integration_tests.catalog.fixture.build_entity');
+        $entityBuilder = $this->get('akeneo_integration_tests.catalog.fixture.build_entity');
         $productModel = $entityBuilder->createProductModel(
             'MODEL_test',
             'clothing_color_size',

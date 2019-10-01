@@ -41,7 +41,7 @@ abstract class TestCase extends KernelTestCase
         $this->catalog = new Catalog();
 
         if (null !== $this->getConfiguration()) {
-            $fixturesLoader = $this->getFromTestContainer('akeneo_integration_tests.loader.fixtures_loader');
+            $fixturesLoader = $this->get('akeneo_integration_tests.loader.fixtures_loader');
             $fixturesLoader->load($this->getConfiguration());
         }
 
@@ -63,16 +63,6 @@ abstract class TestCase extends KernelTestCase
      * @return mixed
      */
     protected function get(string $service)
-    {
-        return static::$kernel->getContainer()->get($service);
-    }
-
-    /**
-     * @param string $service
-     *
-     * @return mixed
-     */
-    protected function getFromTestContainer(string $service)
     {
         return static::$kernel->getContainer()->get($service);
     }

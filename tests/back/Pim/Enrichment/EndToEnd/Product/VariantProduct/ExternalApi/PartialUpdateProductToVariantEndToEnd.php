@@ -47,8 +47,8 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
 
-        $product = $this->getFromTestContainer('pim_catalog.repository.product')->findOneByIdentifier('product_family_variant');
-        $standardizedProduct = $this->getFromTestContainer('pim_standard_format_serializer')->normalize($product, 'standard');
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_family_variant');
+        $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
         unset($standardizedProduct['categories']);
         NormalizedProductCleaner::clean($expectedProduct);
         NormalizedProductCleaner::clean($standardizedProduct);
@@ -235,8 +235,8 @@ JSON;
                 'a_yes_no' => [['data' => true, 'locale' => null, 'scope' => null]]
             ]
         ]);
-        $this->getFromTestContainer('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
-        $this->getFromTestContainer('doctrine.orm.default_entity_manager')->clear();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        $this->get('doctrine.orm.default_entity_manager')->clear();
     }
 
     /**

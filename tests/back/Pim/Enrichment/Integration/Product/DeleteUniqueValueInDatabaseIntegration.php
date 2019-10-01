@@ -84,7 +84,7 @@ class DeleteUniqueValueInDatabaseIntegration extends TestCase
             'group' => 'other'
         ], true);
 
-        $this->getFromTestContainer('pim_catalog.saver.attribute')->save($attribute);
+        $this->get('pim_catalog.saver.attribute')->save($attribute);
 
         return $attribute->getId();
     }
@@ -92,7 +92,7 @@ class DeleteUniqueValueInDatabaseIntegration extends TestCase
     private function createProductWithUniqueValue(string $attributeCode, string $uniqueValueData): void
     {
         $product = $this->getProductBuilder()->withIdentifier('foo')->withValue($attributeCode, $uniqueValueData)->build();
-        $this->getFromTestContainer('pim_catalog.saver.product')->save($product);
+        $this->get('pim_catalog.saver.product')->save($product);
     }
 
     private function setUniqueValueAtNullForAttribute(string $attributeCode): void
@@ -120,11 +120,11 @@ class DeleteUniqueValueInDatabaseIntegration extends TestCase
 
     private function getAttributeBuilder(): EntityBuilder
     {
-        return $this->getFromTestContainer('akeneo_integration_tests.base.attribute.builder');
+        return $this->get('akeneo_integration_tests.base.attribute.builder');
     }
 
     private function getProductBuilder(): Builder\Product
     {
-        return $this->getFromTestContainer('akeneo_integration_tests.catalog.product.builder');
+        return $this->get('akeneo_integration_tests.catalog.product.builder');
     }
 }

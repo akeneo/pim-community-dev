@@ -26,7 +26,7 @@ class GetGroupAssociationsByProductModelCodesIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->entityBuilder = $this->getFromTestContainer('akeneo_integration_tests.catalog.fixture.build_entity');
+        $this->entityBuilder = $this->get('akeneo_integration_tests.catalog.fixture.build_entity');
 
         $this->givenGroup(['groupA', 'groupB', 'groupC', 'groupD', 'groupE', 'groupF', 'groupG']);
 

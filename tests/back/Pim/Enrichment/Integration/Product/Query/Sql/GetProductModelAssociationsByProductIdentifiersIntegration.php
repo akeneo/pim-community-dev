@@ -25,7 +25,7 @@ class GetProductModelAssociationsByProductIdentifiersIntegration extends TestCas
     {
         parent::setUp();
 
-        $entityBuilder = $this->getFromTestContainer('akeneo_integration_tests.catalog.fixture.build_entity');
+        $entityBuilder = $this->get('akeneo_integration_tests.catalog.fixture.build_entity');
         $this->entityBuilder = $entityBuilder;
 
         $this->givenTheFollowingProductModels(

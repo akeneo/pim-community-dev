@@ -59,7 +59,7 @@ abstract class ApiTestCase extends WebTestCase
         );
         $authenticator->createSystemUser();
 
-        $fixturesLoader = $this->getFromTestContainer('akeneo_integration_tests.loader.fixtures_loader');
+        $fixturesLoader = $this->get('akeneo_integration_tests.loader.fixtures_loader');
         $fixturesLoader->load($this->getConfiguration());
     }
 

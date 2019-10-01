@@ -52,7 +52,7 @@ class AttributeOptionRemoverIntegration extends TestCase
 
     private function addAdditionalFixtures(): void
     {
-        $entityBuilder = $this->getFromTestContainer('akeneo_integration_tests.catalog.fixture.build_entity');
+        $entityBuilder = $this->get('akeneo_integration_tests.catalog.fixture.build_entity');
 
         $productModelRootA1 = $entityBuilder->createProductModel(
             'product_model_root_A1',

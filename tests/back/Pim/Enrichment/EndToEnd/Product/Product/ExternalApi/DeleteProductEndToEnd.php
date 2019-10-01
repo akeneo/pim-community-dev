@@ -22,16 +22,16 @@ class DeleteProductEndToEnd extends AbstractProductTestCase
         $this->createAdminUser();
         $client = $this->createAuthenticatedClient();
 
-        $this->assertCount(7, $this->getFromTestContainer('pim_catalog.repository.product')->findAll());
+        $this->assertCount(7, $this->get('pim_catalog.repository.product')->findAll());
 
-        $this->getFromTestContainer('pim_catalog.elasticsearch.indexer.product')->indexFromProductIdentifier('foo');
+        $this->get('pim_catalog.elasticsearch.indexer.product')->indexFromProductIdentifier('foo');
         $client->request('DELETE', 'api/rest/v1/products/foo');
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
 
-        $this->assertCount(6, $this->getFromTestContainer('pim_catalog.repository.product')->findAll());
-        $this->assertNull($this->getFromTestContainer('pim_catalog.repository.product')->findOneByIdentifier('foo'));
+        $this->assertCount(6, $this->get('pim_catalog.repository.product')->findAll());
+        $this->assertNull($this->get('pim_catalog.repository.product')->findOneByIdentifier('foo'));
     }
 
     public function testNotFoundAProduct()
