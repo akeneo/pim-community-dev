@@ -84,7 +84,7 @@ class ProductModelDescendantsAndAncestorsIndexer
     }
 
     /**
-     * Remove product model and descendants from index and re-index ancestor.
+     * Remove product model and descendants from index, and re-index ancestor.
      *
      * @param array $productModelIds
      */
@@ -94,15 +94,13 @@ class ProductModelDescendantsAndAncestorsIndexer
             return;
         }
 
-        $subProductModelIds = $this->getDescendantProductModelIds->fromProductModelIds($productModelIds);
-        if (!empty($subProductModelIds)) {
-            $this->productModelIndexer->removeFromProductModelIds($subProductModelIds);
-        }
-
         $productIds = $this->getDescendantVariantProductIds->fromProductModelIds($productModelIds);
         if (!empty($productIds)) {
             $this->productIndexer->removeFromProductIds($productIds);
         }
+
+        $subProductModelIds = $this->getDescendantProductModelIds->fromProductModelIds($productModelIds);
+        $this->productModelIndexer->removeFromProductModelIds(array_merge($productModelIds, $subProductModelIds));
 
         $rootProductModelCodes = $this
             ->getAncestorAndDescendantProductModelCodes
@@ -110,7 +108,5 @@ class ProductModelDescendantsAndAncestorsIndexer
         if (!empty($rootProductModelCodes)) {
             $this->productModelIndexer->indexFromProductModelCodes($rootProductModelCodes);
         }
-
-        $this->productModelIndexer->removeFromProductModelIds($productModelIds);
     }
 }

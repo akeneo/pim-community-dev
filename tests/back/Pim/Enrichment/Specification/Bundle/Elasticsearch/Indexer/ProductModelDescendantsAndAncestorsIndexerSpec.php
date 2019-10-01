@@ -87,7 +87,7 @@ class ProductModelDescendantsAndAncestorsIndexerSpec extends ObjectBehavior
         $this->indexFromProductModelCodes([]);
     }
 
-    function it_bulk_remove_sub_product_models_and_descendants_from_index_and_index_ancestor(
+    function it_bulk_removes_sub_product_models_and_descendants_from_index_and_index_ancestor(
         ProductIndexerInterface $productIndexer,
         ProductModelIndexerInterface $productModelIndexer,
         GetAncestorAndDescendantProductModelCodes $getAncestorAndDescendantProductModelCodes,
@@ -107,7 +107,7 @@ class ProductModelDescendantsAndAncestorsIndexerSpec extends ObjectBehavior
         $this->removeFromProductModelIds([1, 2]);
     }
 
-    function it_bulk_remove_root_product_models_and_descendants_from_index_and_index_ancestor(
+    function it_bulk_removes_root_product_models_and_descendants_from_index_and_index_ancestor(
         ProductIndexerInterface $productIndexer,
         ProductModelIndexerInterface $productModelIndexer,
         GetAncestorAndDescendantProductModelCodes $getAncestorAndDescendantProductModelCodes,
@@ -118,12 +118,10 @@ class ProductModelDescendantsAndAncestorsIndexerSpec extends ObjectBehavior
         $productIndexer->removeFromProductIds([11, 12])->shouldBeCalled();
 
         $getDescendantProductModelIds->fromProductModelIds([1, 2])->willReturn([20, 21]);
-        $productModelIndexer->removeFromProductModelIds([20, 21])->shouldBeCalled();
-
         $getAncestorAndDescendantProductModelCodes->getOnlyAncestorsFromProductModelIds([1, 2])->willReturn([]);
-        $productModelIndexer->indexFromProductModelCodes(Argument::cetera())->shouldNotBeCalled();
 
-        $productModelIndexer->removeFromProductModelIds([1, 2])->shouldBeCalled();
+        $productModelIndexer->indexFromProductModelCodes(Argument::cetera())->shouldNotBeCalled();
+        $productModelIndexer->removeFromProductModelIds([1, 2, 20, 21])->shouldBeCalled();
 
         $this->removeFromProductModelIds([1, 2]);
     }
