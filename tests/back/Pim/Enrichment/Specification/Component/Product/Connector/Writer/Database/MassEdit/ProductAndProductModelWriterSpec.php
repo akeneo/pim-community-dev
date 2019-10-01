@@ -26,19 +26,12 @@ class ProductAndProductModelWriterSpec extends ObjectBehavior
         VersionManager $versionManager,
         BulkSaverInterface $productSaver,
         BulkSaverInterface $productModelSaver,
-        TokenStorageInterface $tokenStorage,
-        JobLauncherInterface $jobLauncher,
-        IdentifiableObjectRepositoryInterface $jobInstanceRepository,
         StepExecution $stepExecution
     ) {
         $this->beConstructedWith(
             $versionManager,
             $productSaver,
-            $productModelSaver,
-            $tokenStorage,
-            $jobLauncher,
-            $jobInstanceRepository,
-            'compute_product_model_descendant'
+            $productModelSaver
         );
         $this->setStepExecution($stepExecution);
     }
@@ -62,16 +55,10 @@ class ProductAndProductModelWriterSpec extends ObjectBehavior
         $productSaver,
         $productModelSaver,
         $stepExecution,
-        $tokenStorage,
-        $jobLauncher,
-        $jobInstanceRepository,
         ProductInterface $product1,
         ProductModelInterface $productModel1,
         ProductInterface $product2,
-        JobParameters $jobParameters,
-        TokenInterface $token,
-        UserInterface $user,
-        JobInstance $jobInstance
+        JobParameters $jobParameters
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('realTimeVersioning')->willReturn(true);
@@ -92,12 +79,6 @@ class ProductAndProductModelWriterSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('create')->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('process')->shouldBeCalled();
 
-        $tokenStorage->getToken()->willReturn($token);
-        $token->getUser()->willReturn($user);
-        $jobInstanceRepository->findOneByIdentifier('compute_product_model_descendant')->willReturn($jobInstance);
-
-        $jobLauncher->launch($jobInstance, $user, ['product_model_codes' => [1 => 'product_model']])->shouldBeCalled();
-
         $this->write($items);
     }
 
@@ -105,16 +86,10 @@ class ProductAndProductModelWriterSpec extends ObjectBehavior
         $stepExecution,
         $productSaver,
         $productModelSaver,
-        $tokenStorage,
-        $jobLauncher,
-        $jobInstanceRepository,
         ProductInterface $product1,
         ProductInterface $product2,
         ProductModelInterface $productModel1,
-        JobParameters $jobParameters,
-        TokenInterface $token,
-        UserInterface $user,
-        JobInstance $jobInstance
+        JobParameters $jobParameters
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('realTimeVersioning')->willReturn(true);
@@ -131,12 +106,6 @@ class ProductAndProductModelWriterSpec extends ObjectBehavior
 
         $stepExecution->incrementSummaryInfo('create')->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('process')->shouldBeCalledTimes(2);
-
-        $tokenStorage->getToken()->willReturn($token);
-        $token->getUser()->willReturn($user);
-        $jobInstanceRepository->findOneByIdentifier('compute_product_model_descendant')->willReturn($jobInstance);
-
-        $jobLauncher->launch($jobInstance, $user, ['product_model_codes' => [1 => 'product_model']])->shouldBeCalled();
 
         $this->write($items);
     }

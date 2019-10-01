@@ -6,7 +6,7 @@
 
 # Technical Improvements
 
-- TIP-1185: Use a single index "product_and_product_model_index" to search on product and product models, instead dedicated product/product model indexes
+- TIP-1185: Use a single index "product_and_product_model_index" to search on product and product models, instead dedicated product\product model indexes
 
 ## BC breaks
 
@@ -191,6 +191,13 @@
 - Remove interface `Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\CompleteFilterInterface`
 - Remove class `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeProductModelDescendantsSubscriber`
 - Remove class `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\IndexProductModelsSubscriber`
+- Update class `Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\MassEdit\ProductAndProductModelWriter` to remove
+    - `Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface`,
+    - `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`,
+    - `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface` and
+    - `string $jobName`
+- Remove class `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductModelDescendantsSaver`
+- Remove class `Akeneo\Pim\Enrichment\Component\Product\Job\ComputeProductModelsDescendantsTasklet`
 
 ### CLI Commands
 
@@ -251,3 +258,20 @@ If you want to purge the completeness in order to recalculate it, please use the
 - Remove `pim_catalog.entity_with_family.required_value_collection_factory` and `pim_catalog.entity_with_family.incomplete_value_collection_factory`
 - Remove `pim_catalog.event_subscriber.compute_product_model_descendants`
 - Remove `pim_catalog.event_subscriber.index_product_models`
+- Remove `pim_catalog.job.job_parameters.default_values_provider.compute_product_models_descendants`
+- Remove `pim_catalog.tasklet.compute_product_models_descendants`
+- Remove `pim_catalog.step.compute_product_models_descendants`
+- Remove `pim_catalog.job.compute_product_models_descendants`
+- Remove `pim_connector.step.csv_compute_product_models_descendants.import` from `pim_connector.job.csv_product_model_import`
+- Remove `pim_connector.step.xlsx_compute_product_models_descendants.import` from `pim_connector.job.xlsx_product_model_import`
+- Remove `pim_connector.processor.denormalization.product_model_loader`
+- Remove `pim_catalog.saver.product_model_descendants`
+- Remove `pim_connector.step.csv_compute_product_models_descendants.import`
+- Remove `pim_connector.step.csv_compute_product_models_descendants.import` from `pim_installer.job.fixtures_product_model_csv`
+- Remove `pim_connector.step.xlsx_compute_product_models_descendants.import`
+- Remove `pim_connector.writer.database.product_model_descendants`
+- Remove from `pim_enrich.writer.database.product_and_product_model_writer`:
+    - `security.token_storage`
+    - `akeneo_batch_queue.launcher.queue_job_launcher`
+    - `akeneo_batch.job.job_instance_repository`
+    - `string $jobName`
