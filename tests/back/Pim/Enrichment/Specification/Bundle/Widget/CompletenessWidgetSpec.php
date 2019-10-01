@@ -55,6 +55,7 @@ class CompletenessWidgetSpec extends ObjectBehavior
         $this->getData()->shouldReturn(
             [
                 'Mobile' => [
+                    'labels'   => [],
                     'total'    => 40,
                     'complete' => 10,
                     'locales'  => [
@@ -63,12 +64,13 @@ class CompletenessWidgetSpec extends ObjectBehavior
                     ],
                 ],
                 'E-Commerce' => [
+                    'labels'   => [],
                     'total' => 30,
                     'complete' => 25,
                     'locales' => [
                         'English (United States)' => 25,
                         'French (France)'  => 5,
-                    ]
+                    ],
                 ]
             ]
         );

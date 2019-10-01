@@ -34,7 +34,7 @@ class SimpleSelectOptionNormalizer implements AxisValueLabelsNormalizer
         $option->setLocale($locale);
         $label = $option->getTranslation()->getLabel();
 
-        return empty($label) ? '[' . $option->getCode() . ']' : $label;
+        return (null === $label || '' === $label) ? '[' . $option->getCode() . ']' : $label;
     }
 
     public function supports(string $attributeType): bool

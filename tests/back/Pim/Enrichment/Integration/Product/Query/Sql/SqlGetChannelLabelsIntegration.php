@@ -20,9 +20,9 @@ class SqlGetChannelLabelsIntegration extends TestCase
         $result = $this->getChannelLabels()->forChannelCodes(['ecommerce', 'nonexistingchannel']);
         $expected = [
             'ecommerce' => [
-                'en_US' => 'Default',
-                'de_DE' => 'Standard',
-                'fr_FR' => 'Défaut'
+                'en_US' => 'Ecommerce',
+                'de_DE' => 'Ecommerce',
+                'fr_FR' => 'Ecommerce'
             ]
         ];
         Assert::assertSame($result, $expected);

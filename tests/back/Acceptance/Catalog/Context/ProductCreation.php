@@ -55,4 +55,17 @@ final class ProductCreation implements Context
         $product = $this->productBuilder->withIdentifier($identifier)->build();
         $this->productRepository->save($product);
     }
+
+    /**
+     * @Given /^a product in this family$/
+     */
+    public function aProductInThisFamily()
+    {
+        $product = $this->productBuilder
+            ->withIdentifier('my_product')
+            ->withFamily('my_family')
+            ->build(false);
+
+        $this->productRepository->save($product);
+    }
 }

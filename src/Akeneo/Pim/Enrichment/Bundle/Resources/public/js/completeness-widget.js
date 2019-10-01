@@ -1,6 +1,13 @@
 define(
-    ['jquery', 'underscore', 'pim/dashboard/abstract-widget', 'pim/dashboard/template/completeness-widget'],
-    function ($, _, AbstractWidget, template) {
+    [
+        'jquery',
+        'underscore',
+        'pim/i18n',
+        'pim/user-context',
+        'pim/dashboard/abstract-widget',
+        'pim/dashboard/template/completeness-widget'
+    ],
+    function ($, _, i18n, UserContext, AbstractWidget, template) {
         'use strict';
 
         return AbstractWidget.extend({
@@ -9,8 +16,12 @@ define(
 
             _processResponse: function (data) {
                 var channelArray = [];
-                _.each(data, function (channel, channelLabel) {
-                    channel.name = channelLabel;
+                _.each(data, function (channel, channelCode) {
+                    channel.name = i18n.getLabel(
+                        channel.labels,
+                        UserContext.get('catalogLocale'),
+                        channelCode
+                    );
                     channel.locales = channel.locales || {};
                     var divider = channel.total * _.keys(channel.locales).length;
 

@@ -18,6 +18,7 @@ define(
         'oro/datafilter/select-filter',
         'pim/user-context',
         'pim/datagrid/state',
+        'oro/app',
         'pim/template/datagrid/filter/scope-filter'
     ],
     function (
@@ -27,6 +28,7 @@ define(
         SelectFilter,
         UserContext,
         DatagridState,
+        app,
         template
     ) {
         'use strict';
@@ -92,6 +94,17 @@ define(
                 this.selectWidget.multiselect('refresh');
 
                 this.render();
+            },
+
+            /**
+             * Updates the current scope without refreshing the datagrid
+             */
+            setValueSilent: function(value) {
+                if (this._isNewValueUpdated(value)) {
+                    this.value = app.deepClone(value);
+                    this._updateDOMValue();
+                }
+                return this;
             },
 
             /**

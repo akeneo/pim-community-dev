@@ -294,3 +294,8 @@ services:
         class: Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetAttributesFromProductModelCodes
         arguments:
             - '@database_connection'
+
+    pim_catalog.query.get_attribute_options_max_sort_order:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\GetAttributeOptionsMaxSortOrder'
+        arguments:
+            - '@database_connection'

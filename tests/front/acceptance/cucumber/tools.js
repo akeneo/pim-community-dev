@@ -1,8 +1,8 @@
-const random = process.env.RANDOM_LATENCY || true;
+const random = process.env.RANDOM_LATENCY !== 'false';
 const maxRandomLatency = undefined !== process.env.MAX_RANDOM_LATENCY_MS ? process.env.MAX_RANDOM_LATENCY_MS : 1000;
 
 const answer = (methodToDelay, randomLatency = random, customMaxRandomLatency = maxRandomLatency) => {
-  setTimeout(methodToDelay, (randomLatency ? Math.random() : 1) * parseInt(customMaxRandomLatency));
+  setTimeout(methodToDelay, (randomLatency ? Math.random() : 0.1) * parseInt(customMaxRandomLatency));
 };
 
 const answerJson = (
@@ -54,16 +54,20 @@ const convertItemTable = dataTable => {
 };
 
 const renderView = async (page, extension, data) => {
-  return await page.evaluate(volumes => {
-    const FormBuilder = require('pim/form-builder');
+  return await page.evaluate(
+    (viewData, extension) => {
+      const FormBuilder = require('pim/form-builder');
 
-    return FormBuilder.build('pim-catalog-volume-index').then(form => {
-      form.setData(volumes);
-      form.setElement(document.getElementById('app')).render();
+      return FormBuilder.build(extension).then(async form => {
+        form.setData(viewData);
+        form.setElement(document.getElementById('app')).render();
 
-      return form;
-    });
-  }, data);
+        return form;
+      });
+    },
+    data,
+    extension
+  );
 };
 
 module.exports = {
