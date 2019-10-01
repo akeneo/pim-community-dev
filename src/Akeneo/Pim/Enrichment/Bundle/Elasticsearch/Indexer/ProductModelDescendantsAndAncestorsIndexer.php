@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 
 use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetAncestorAndDescendantProductModelCodes;
-use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetDescendantProductModelIds;
 use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetDescendantVariantProductIdentifiers;
-use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetDescendantVariantProductIds;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductModelIndexerInterface;
 
@@ -33,26 +31,16 @@ class ProductModelDescendantsAndAncestorsIndexer
     /** @var GetAncestorAndDescendantProductModelCodes */
     private $getAncestorAndDescendantProductModelCodes;
 
-    /** @var GetDescendantVariantProductIds */
-    private $getDescendantVariantProductIds;
-
-    /** @var GetDescendantProductModelIds */
-    private $getDescendantProductModelIds;
-
     public function __construct(
         ProductIndexerInterface $productIndexer,
         ProductModelIndexerInterface $productModelIndexer,
         GetDescendantVariantProductIdentifiers $getDescendantVariantProductIdentifiers,
-        GetAncestorAndDescendantProductModelCodes $getAncestorAndDescendantProductModelCodes,
-        GetDescendantVariantProductIds $getDescendantVariantProductIds,
-        GetDescendantProductModelIds $getDescendantProductModelIds
+        GetAncestorAndDescendantProductModelCodes $getAncestorAndDescendantProductModelCodes
     ) {
         $this->productIndexer = $productIndexer;
         $this->productModelIndexer = $productModelIndexer;
         $this->getDescendantVariantProductIdentifiers = $getDescendantVariantProductIdentifiers;
         $this->getAncestorAndDescendantProductModelCodes = $getAncestorAndDescendantProductModelCodes;
-        $this->getDescendantVariantProductIds = $getDescendantVariantProductIds;
-        $this->getDescendantProductModelIds = $getDescendantProductModelIds;
     }
 
     /**
@@ -94,15 +82,7 @@ class ProductModelDescendantsAndAncestorsIndexer
             return;
         }
 
-        $productIds = $this->getDescendantVariantProductIds->fromProductModelIds($productModelIds);
-        if (!empty($productIds)) {
-            $this->productIndexer->removeFromProductIds($productIds);
-        }
-
-        $subProductModelIds = $this->getDescendantProductModelIds->fromProductModelIds($productModelIds);
-        $this->productModelIndexer->removeFromProductModelIds(
-            array_unique(array_merge($productModelIds, $subProductModelIds))
-        );
+        $this->productModelIndexer->removeFromProductModelIds($productModelIds);
 
         $rootProductModelCodes = $this
             ->getAncestorAndDescendantProductModelCodes

@@ -271,13 +271,3 @@ services:
         class: Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetAncestorAndDescendantProductModelCodes
         arguments:
             - '@database_connection'
-
-    akeneo.pim.enrichment.product.query.get_descendant_variant_product_ids:
-        class: Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetDescendantVariantProductIds
-        arguments:
-            - '@database_connection'
-
-    akeneo.pim.enrichment.product.query.get_descendant_product_model_ids:
-        class: Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetDescendantProductModelIds
-        arguments:
-            - '@database_connection'
