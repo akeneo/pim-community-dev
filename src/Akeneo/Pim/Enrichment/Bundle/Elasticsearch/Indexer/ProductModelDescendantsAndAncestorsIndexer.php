@@ -100,7 +100,9 @@ class ProductModelDescendantsAndAncestorsIndexer
         }
 
         $subProductModelIds = $this->getDescendantProductModelIds->fromProductModelIds($productModelIds);
-        $this->productModelIndexer->removeFromProductModelIds(array_merge($productModelIds, $subProductModelIds));
+        $this->productModelIndexer->removeFromProductModelIds(
+            array_unique(array_merge($productModelIds, $subProductModelIds))
+        );
 
         $rootProductModelCodes = $this
             ->getAncestorAndDescendantProductModelCodes
