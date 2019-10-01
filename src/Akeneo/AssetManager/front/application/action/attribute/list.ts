@@ -66,7 +66,7 @@ const getColumn = (attribute: Attribute, channel: ChannelReference, locale: Loca
     type: attribute.getType(),
     channel,
     locale: locale.normalize() as string,
-    code: attribute.getCode().stringValue(),
+    code: attribute.getCode(),
     attribute: attribute.normalize(),
   };
 };
@@ -78,7 +78,7 @@ export const getColumns = (attributes: Attribute[], channels: Channel[], columns
   return attributes
     .filter((attribute: Attribute) => attributeTypes.includes(attribute.getType()))
     .filter((attribute: Attribute) => {
-      return !columnsToExclude.map(column => column.stringValue()).includes(attribute.getIdentifier().stringValue());
+      return !columnsToExclude.map(column => column).includes(attribute.getIdentifier());
     })
     .sort((first: Attribute, second: Attribute) => first.order - second.order)
     .reduce((columns: Column[], attribute: Attribute) => {

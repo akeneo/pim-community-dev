@@ -9,7 +9,9 @@ import LocaleReference, {
   localeReferenceAreEqual,
   localeReferenceStringValue,
 } from 'akeneoassetmanager/domain/model/locale-reference';
-import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
+import AttributeIdentifier, {
+  attributeIdentifierStringValue,
+} from 'akeneoassetmanager/domain/model/attribute/identifier';
 
 class InvalidTypeError extends Error {}
 
@@ -50,7 +52,7 @@ export const generateKey = (
   channel: ChannelReference,
   locale: LocaleReference
 ) => {
-  let key = attributeIdentifier.stringValue();
+  let key = attributeIdentifierStringValue(attributeIdentifier);
   key = !channelReferenceIsEmpty(channel) ? `${key}_${channelReferenceStringValue(channel)}` : key;
   key = !localeReferenceIsEmpty(locale) ? `${key}_${localeReferenceStringValue(locale)}` : key;
 

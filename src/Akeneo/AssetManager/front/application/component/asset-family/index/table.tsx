@@ -1,10 +1,9 @@
 import * as React from 'react';
 import ItemView from 'akeneoassetmanager/application/component/asset-family/index/item';
 import AssetFamily, {createAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
-import {createIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import {createIdentifier as createAttributeIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
 import {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import {createEmptyFile} from 'akeneoassetmanager/domain/model/file';
+import {assetFamilyIdentifierStringValue} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 
 interface TableState {
   locale: string;
@@ -36,14 +35,13 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
     onRedirectToAssetFamily: (assetFamily: AssetFamily) => void
   ): JSX.Element | JSX.Element[] {
     if (0 === assetFamilies.length && isLoading) {
-      const assetFamilyIdentifier = createIdentifier('');
       const labelCollection = createLabelCollection({});
       const assetFamily = createAssetFamily(
-        assetFamilyIdentifier,
+        '',
         labelCollection,
         createEmptyFile(),
-        createAttributeIdentifier(''),
-        createAttributeIdentifier('')
+        '',
+        ''
       );
 
       return Array(4)
@@ -65,7 +63,7 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
 
       return (
         <ItemView
-          key={assetFamily.getIdentifier().stringValue()}
+          key={assetFamilyIdentifierStringValue(assetFamily.getIdentifier())}
           assetFamily={assetFamily}
           locale={locale}
           onRedirectToAssetFamily={onRedirectToAssetFamily}

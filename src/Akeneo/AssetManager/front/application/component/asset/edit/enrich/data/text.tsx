@@ -38,7 +38,7 @@ const View = ({
           <RichTextEditor value={value.data.stringValue()} onChange={onValueChange} readOnly={!canEditData} />
         ) : (
           <textarea
-            id={`pim_asset_manager.asset.enrich.${value.attribute.getCode().stringValue()}`}
+            id={`pim_asset_manager.asset.enrich.${value.attribute.getCode()}`}
             className={`AknTextareaField AknTextareaField--light
             ${value.attribute.valuePerLocale ? 'AknTextareaField--localizable' : ''}
             ${!canEditData ? 'AknTextField--disabled' : ''}`}
@@ -51,7 +51,7 @@ const View = ({
         )
       ) : (
         <input
-          id={`pim_asset_manager.asset.enrich.${value.attribute.getCode().stringValue()}`}
+          id={`pim_asset_manager.asset.enrich.${value.attribute.getCode()}`}
           autoComplete="off"
           className={`AknTextField AknTextField--narrow AknTextField--light
           ${value.attribute.valuePerLocale ? 'AknTextField--localizable' : ''}

@@ -6,14 +6,17 @@ import {
   productListAttributeSelected,
 } from 'akeneoassetmanager/domain/event/asset/product';
 import productFetcher from 'akeneoassetmanager/infrastructure/fetcher/product';
-import AssetFamilyIdentifier, {createIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import {createCode as createAssetCode} from 'akeneoassetmanager/domain/model/asset/code';
-import {createCode as createAttributeCode} from 'akeneoassetmanager/domain/model/product/attribute/code';
+import AssetFamilyIdentifier, {
+  denormalizeAssetFamilyIdentifier,
+  assetFamilyidentifiersAreEqual,
+} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import {denormalizeAssetCode} from 'akeneoassetmanager/domain/model/asset/code';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/product/attribute';
 import hydrate from 'akeneoassetmanager/application/hydrator/product/attribute';
 import AttributeCode from 'akeneoassetmanager/domain/model/product/attribute/code';
 import {denormalizeChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
 import {denormalizeLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
+import {denormalizeAttributeCode} from 'akeneoassetmanager/domain/model/attribute/code';
 
 const fetcherRegistry = require('pim/fetcher-registry');
 
@@ -25,7 +28,12 @@ export const updateAttributeList = (assetFamilyIdentifier: AssetFamilyIdentifier
   );
 
   const linkedAttributes = attributes
-    .filter((attribute: NormalizedAttribute) => assetFamilyIdentifier.stringValue() === attribute.reference_data_name)
+    .filter((attribute: NormalizedAttribute) =>
+      assetFamilyidentifiersAreEqual(
+        assetFamilyIdentifier,
+        denormalizeAssetFamilyIdentifier(attribute.reference_data_name)
+      )
+    )
     .map(hydrate);
 
   dispatch(productListAttributeListUpdated(linkedAttributes));
@@ -41,9 +49,9 @@ export const updateProductList = () => async (dispatch: any, getState: () => Edi
     return;
   }
 
-  const assetFamilyIdentifier = createIdentifier(getState().form.data.asset_family_identifier);
-  const assetCode = createAssetCode(getState().form.data.code);
-  const attributeCode = createAttributeCode(normalizedAttribute.code);
+  const assetFamilyIdentifier = getState().form.data.asset_family_identifier;
+  const assetCode = denormalizeAssetCode(getState().form.data.code);
+  const attributeCode = denormalizeAttributeCode(normalizedAttribute.code);
   const channel = denormalizeChannelReference(getState().user.catalogChannel);
   const locale = denormalizeLocaleReference(getState().user.catalogLocale);
 

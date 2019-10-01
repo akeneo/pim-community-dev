@@ -1,27 +1,15 @@
-class InvalidTypeError extends Error {}
+import {isString} from 'akeneoassetmanager/domain/model/utils';
 
-export default class Identifier {
-  private constructor(private identifier: string) {
-    if ('string' !== typeof identifier) {
-      throw new InvalidTypeError('Identifier expects a string as parameter to be created');
-    }
+type Identifier = string;
 
-    Object.freeze(this);
-  }
+export default Identifier;
 
-  public static create(identifier: string): Identifier {
-    return new Identifier(identifier);
-  }
+export const denormalizeIdentifier = (identifier: any): Identifier => {
+  if (!isIdentifier(identifier)) throw new Error('Identifier expects a string as parameter to be created');
 
-  public equals(identifier: Identifier): boolean {
-    return this.stringValue() === identifier.stringValue();
-  }
+  return identifier;
+};
 
-  public stringValue(): string {
-    return this.identifier;
-  }
-}
-
-export type NormalizedIdentifier = string;
-
-export const createIdentifier = Identifier.create;
+export const identifiersAreEqual = (first: Identifier, second: Identifier) => first === second;
+export const identifierStringValue = (identifier: Identifier) => identifier;
+export const isIdentifier = isString;

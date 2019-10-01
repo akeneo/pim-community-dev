@@ -4,6 +4,8 @@ import handleError from 'akeneoassetmanager/infrastructure/tools/error-handler';
 import {Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {AttributeWithOptions, OptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
 import {Option} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
+import {attributeIdentifierStringValue} from 'akeneoassetmanager/domain/model/attribute/identifier';
+import {assetFamilyIdentifierStringValue} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 
 const routing = require('routing');
 
@@ -17,8 +19,10 @@ export class AttributeOptionSaver {
 
     return await postJSON(
       routing.generate('akeneo_asset_manager_attribute_edit_rest', {
-        assetFamilyIdentifier: (attribute as OptionAttribute).getAssetFamilyIdentifier().stringValue(),
-        attributeIdentifier: (attribute as OptionAttribute).getIdentifier().identifier,
+        assetFamilyIdentifier: assetFamilyIdentifierStringValue(
+          (attribute as OptionAttribute).getAssetFamilyIdentifier()
+        ),
+        attributeIdentifier: attributeIdentifierStringValue((attribute as OptionAttribute).getIdentifier()),
       }),
       {
         identifier: normalizedOptionAttribute.identifier,

@@ -11,12 +11,11 @@ import permissionSaver from 'akeneoassetmanager/infrastructure/saver/permission'
 import permissionFetcher from 'akeneoassetmanager/infrastructure/fetcher/permission';
 import ValidationError, {createValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
-import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {denormalizePermissionCollection} from 'akeneoassetmanager/domain/model/asset-family/permission';
 import {refreshAssetFamily} from 'akeneoassetmanager/application/action/asset-family/edit';
 
 export const savePermission = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
-  const assetFamilyIdentifier = AssetFamilyIdentifier.create(getState().form.data.identifier);
+  const assetFamilyIdentifier = getState().form.data.identifier;
   const permission = denormalizePermissionCollection(getState().permission.data);
 
   try {

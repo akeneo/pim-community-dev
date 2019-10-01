@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import AssetSelector from 'akeneoassetmanager/application/component/app/asset-selector';
-import {createIdentifier as createAssetFamilyIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import AssetCode, {createCode as createAssetCode} from 'akeneoassetmanager/domain/model/asset/code';
+import {denormalizeAssetFamilyIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import AssetCode, {denormalizeAssetCode, assetCodeStringValue} from 'akeneoassetmanager/domain/model/asset/code';
 import {denormalizeLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
 import {denormalizeChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
 import __ from 'akeneoassetmanager/tools/translator';
@@ -27,12 +27,12 @@ class AssetFamilyField extends (Field as {new (config: any): any}) {
     const container = document.createElement('div');
     let valueData = null;
     if (null !== templateContext.value.data) {
-      valueData = createAssetCode(templateContext.value.data);
+      valueData = denormalizeAssetCode(templateContext.value.data);
     }
 
     ReactDOM.render(
       <AssetSelector
-        assetFamilyIdentifier={createAssetFamilyIdentifier(templateContext.attribute.reference_data_name)}
+        assetFamilyIdentifier={denormalizeAssetFamilyIdentifier(templateContext.attribute.reference_data_name)}
         value={valueData}
         locale={denormalizeLocaleReference(UserContext.get('catalogLocale'))}
         channel={denormalizeChannelReference(UserContext.get('catalogScope'))}
@@ -41,7 +41,9 @@ class AssetFamilyField extends (Field as {new (config: any): any}) {
         placeholder={__('pim_asset_manager.asset.selector.no_value')}
         onChange={(assetCode: AssetCode) => {
           this.errors = [];
-          this.setCurrentValue(null !== assetCode && '' !== assetCode.stringValue() ? assetCode.stringValue() : null);
+          this.setCurrentValue(
+            null !== assetCode && '' !== assetCodeStringValue(assetCode) ? assetCodeStringValue(assetCode) : null
+          );
           this.render();
         }}
       />,

@@ -24,7 +24,6 @@ import {
 import {setUpSidebar} from 'akeneoassetmanager/application/action/sidebar';
 import {updateActivatedLocales} from 'akeneoassetmanager/application/action/locale';
 import {updateCurrentTab} from 'akeneoassetmanager/application/event/sidebar';
-import {createIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {updateChannels} from 'akeneoassetmanager/application/action/channel';
 import {attributeListGotUpdated} from 'akeneoassetmanager/application/action/attribute/list';
 import {PermissionCollection} from 'akeneoassetmanager/domain/model/asset-family/permission';
@@ -33,6 +32,7 @@ import {LocalePermission} from 'akeneoassetmanager/domain/model/permission/local
 import {Filter} from 'akeneoassetmanager/application/reducer/grid';
 import {restoreFilters} from 'akeneoassetmanager/application/action/asset/search';
 import {gridStateStoragePath} from 'akeneoassetmanager/infrastructure/middleware/grid';
+import {denormalizeAssetFamilyIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
 const userContext = require('pim/user-context');
@@ -54,10 +54,10 @@ class AssetFamilyEditController extends BaseController {
     $(window).on('beforeunload', this.beforeUnload);
 
     assetFamilyFetcher
-      .fetch(createIdentifier(route.params.identifier))
+      .fetch(denormalizeAssetFamilyIdentifier(route.params.identifier))
       .then(async (assetFamilyResult: AssetFamilyResult) => {
         this.store = createStore(true)(assetFamilyReducer);
-        const assetFamilyIdentifier = assetFamilyResult.assetFamily.getIdentifier().stringValue();
+        const assetFamilyIdentifier = assetFamilyResult.assetFamily.getIdentifier();
         const filters = this.getFilters(assetFamilyIdentifier);
 
         permissionFetcher

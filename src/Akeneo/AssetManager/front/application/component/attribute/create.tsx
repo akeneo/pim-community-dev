@@ -268,7 +268,7 @@ class Create extends React.Component<CreateProps> {
                           ItemView={AssetTypeItemView}
                           label={__('pim_asset_manager.attribute.create.input.asset_type')}
                           elements={this.state.assetFamilies.map((assetFamily: AssetFamily) => ({
-                            identifier: assetFamily.getIdentifier().stringValue(),
+                            identifier: assetFamily.getIdentifier(),
                             label: assetFamily.getLabel(this.props.context.locale),
                             original: assetFamily,
                           }))}

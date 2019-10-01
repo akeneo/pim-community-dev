@@ -1,11 +1,5 @@
 import {ConcreteImageAttribute} from 'akeneoassetmanager/domain/model/attribute/type/image';
-import Identifier, {createIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
-import AssetFamilyIdentifier, {
-  createIdentifier as createAssetFamilyIdentifier,
-} from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import LabelCollection, {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
-import AttributeCode, {createCode} from 'akeneoassetmanager/domain/model/attribute/code';
-import {AttributeType} from 'akeneoassetmanager/domain/model/attribute/minimal';
+import {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import {MaxFileSize} from 'akeneoassetmanager/domain/model/attribute/type/image/max-file-size';
 
 const normalizedFrontView = {
@@ -29,9 +23,9 @@ describe('akeneo > attribute > domain > model > attribute > type --- ImageAttrib
   test('I cannot create an invalid ConcreteImageAttribute', () => {
     expect(() => {
       new ConcreteImageAttribute(
-        createIdentifier('designer', 'front_view'),
-        createAssetFamilyIdentifier('designer'),
-        createCode('front_view'),
+        'front_view',
+        'designer',
+        'front_view',
         createLabelCollection({en_US: 'Front View'}),
         true,
         false,
@@ -42,9 +36,9 @@ describe('akeneo > attribute > domain > model > attribute > type --- ImageAttrib
 
     expect(() => {
       new ConcreteImageAttribute(
-        createIdentifier('designer', 'front_view'),
-        createAssetFamilyIdentifier('designer'),
-        createCode('front_view'),
+        'front_view',
+        'designer',
+        'front_view',
         createLabelCollection({en_US: 'Front View'}),
         true,
         false,

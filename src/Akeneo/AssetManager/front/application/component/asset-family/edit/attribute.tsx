@@ -150,18 +150,17 @@ class AttributeView extends React.Component<AttributeViewProps> {
       <div
         className="AknFieldContainer"
         data-placeholder="false"
-        data-identifier={attribute.getCode().stringValue()}
+        data-identifier={attribute.getCode()}
         data-type={attribute.getType()}
       >
         <div className="AknFieldContainer-header AknFieldContainer-header--light">
           <label
             className="AknFieldContainer-label AknFieldContainer-label--withImage"
-            htmlFor={`pim_asset_manager.asset_family.properties.${attribute.getCode().stringValue()}`}
+            htmlFor={`pim_asset_manager.asset_family.properties.${attribute.getCode()}`}
           >
             <img className="AknFieldContainer-labelImage" src={icon} />
             <span>
-              {attribute.getCode().stringValue()}{' '}
-              {attribute.isRequired ? `(${__('pim_asset_manager.attribute.is_required')})` : ''}
+              {attribute.getCode()} {attribute.isRequired ? `(${__('pim_asset_manager.attribute.is_required')})` : ''}
             </span>
           </label>
         </div>
@@ -169,7 +168,7 @@ class AttributeView extends React.Component<AttributeViewProps> {
           <input
             type="text"
             autoComplete="off"
-            id={`pim_asset_manager.asset_family.properties.${attribute.getCode().stringValue()}`}
+            id={`pim_asset_manager.asset_family.properties.${attribute.getCode()}`}
             className="AknTextField AknTextField--light AknTextField--disabled"
             value={attribute.getLabel(locale)}
             readOnly

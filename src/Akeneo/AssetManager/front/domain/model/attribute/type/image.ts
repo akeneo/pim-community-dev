@@ -1,9 +1,11 @@
-import Identifier, {createIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
+import AttributeIdentifier, {
+  denormalizeAttributeIdentifier,
+} from 'akeneoassetmanager/domain/model/attribute/identifier';
 import AssetFamilyIdentifier, {
-  createIdentifier as createAssetFamilyIdentifier,
+  denormalizeAssetFamilyIdentifier,
 } from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import LabelCollection, {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
-import AttributeCode, {createCode} from 'akeneoassetmanager/domain/model/attribute/code';
+import AttributeCode, {denormalizeAttributeCode} from 'akeneoassetmanager/domain/model/attribute/code';
 import {NormalizedAttribute, Attribute, ConcreteAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {NormalizedMaxFileSize, MaxFileSize} from 'akeneoassetmanager/domain/model/attribute/type/image/max-file-size';
 import {NormalizedAllowedExtensions, AllowedExtensions} from './image/allowed-extensions';
@@ -28,7 +30,7 @@ export class InvalidArgumentError extends Error {}
 
 export class ConcreteImageAttribute extends ConcreteAttribute implements ImageAttribute {
   private constructor(
-    identifier: Identifier,
+    identifier: AttributeIdentifier,
     assetFamilyIdentifier: AssetFamilyIdentifier,
     code: AttributeCode,
     labelCollection: LabelCollection,
@@ -64,9 +66,9 @@ export class ConcreteImageAttribute extends ConcreteAttribute implements ImageAt
 
   public static createFromNormalized(normalizedImageAttribute: NormalizedImageAttribute) {
     return new ConcreteImageAttribute(
-      createIdentifier(normalizedImageAttribute.identifier),
-      createAssetFamilyIdentifier(normalizedImageAttribute.asset_family_identifier),
-      createCode(normalizedImageAttribute.code),
+      denormalizeAttributeIdentifier(normalizedImageAttribute.identifier),
+      denormalizeAssetFamilyIdentifier(normalizedImageAttribute.asset_family_identifier),
+      denormalizeAttributeCode(normalizedImageAttribute.code),
       createLabelCollection(normalizedImageAttribute.labels),
       normalizedImageAttribute.value_per_locale,
       normalizedImageAttribute.value_per_channel,

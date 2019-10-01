@@ -123,7 +123,7 @@
                                 $('*[data-drop-zone="breadcrumbs"]').append(breadcrumbs.$el);
                             });
 
-                            PageTitle.set({ 'asset.label': '{{ asset.code }}' });
+                            PageTitle.render('pimee_product_asset_view', { 'asset.label': '{{ asset.code }}' });
 
                             FetcherRegistry.initialize().done(function () {
                                 FormBuilder.build('pim-menu-user-navigation').then(function (form) {

@@ -16,34 +16,30 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset', () => {
     const response = await page.evaluate(async () => {
       const fetcher = require('akeneoassetmanager/infrastructure/fetcher/asset').default;
 
-      const assetFamilyIdentifierModule = 'akeneoassetmanager/domain/model/asset-family/identifier';
-      const assetFamilyIdentifier = require(assetFamilyIdentifierModule).createIdentifier('designer');
-      const assetIdentifier = require(assetFamilyIdentifierModule).createIdentifier('starck');
-
-      return await fetcher.fetch(assetFamilyIdentifier, assetIdentifier);
+      return await fetcher.fetch('designer', 'starck');
     });
 
     expect(response).toEqual({
       permission: {edit: true, assetFamilyIdentifier: 'designer'},
       asset: {
-        code: {code: 'starck'},
-        identifier: {identifier: 'designer_starck_a1677570-a278-444b-ab46-baa1db199392'},
+        code: 'starck',
+        identifier: 'designer_starck_a1677570-a278-444b-ab46-baa1db199392',
         image: {},
         labelCollection: {labels: {fr_FR: 'Philippe Starck'}},
-        assetFamilyIdentifier: {identifier: 'designer'},
+        assetFamilyIdentifier: 'designer',
         valueCollection: {
           values: [
             {
               attribute: {
-                code: {code: 'name'},
-                identifier: {identifier: 'name_designer_fingerprint'},
+                code: 'name',
+                identifier: 'name_designer_fingerprint',
                 isRequired: false,
                 isRichTextEditor: {isRichTextEditor: false},
                 isTextarea: {isTextarea: false},
                 labelCollection: {labels: {fr_FR: 'Nom'}},
                 maxLength: {maxLength: 25},
                 order: 0,
-                assetFamilyIdentifier: {identifier: 'designer'},
+                assetFamilyIdentifier: 'designer',
                 regularExpression: {regularExpression: null},
                 type: 'text',
                 validationRule: {validationRule: 'none'},
@@ -56,15 +52,15 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset', () => {
             },
             {
               attribute: {
-                code: {code: 'description'},
-                identifier: {identifier: 'description_designer_fingerprint'},
+                code: 'description',
+                identifier: 'description_designer_fingerprint',
                 isRequired: false,
                 isRichTextEditor: {isRichTextEditor: true},
                 isTextarea: {isTextarea: true},
                 labelCollection: {labels: {fr_FR: 'Description'}},
                 maxLength: {maxLength: 25},
                 order: 1,
-                assetFamilyIdentifier: {identifier: 'designer'},
+                assetFamilyIdentifier: 'designer',
                 regularExpression: {regularExpression: null},
                 type: 'text',
                 validationRule: {validationRule: 'none'},
@@ -77,15 +73,15 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset', () => {
             },
             {
               attribute: {
-                code: {code: 'description'},
-                identifier: {identifier: 'description_designer_fingerprint'},
+                code: 'description',
+                identifier: 'description_designer_fingerprint',
                 isRequired: false,
                 isRichTextEditor: {isRichTextEditor: true},
                 isTextarea: {isTextarea: true},
                 labelCollection: {labels: {fr_FR: 'Description'}},
                 maxLength: {maxLength: 25},
                 order: 1,
-                assetFamilyIdentifier: {identifier: 'designer'},
+                assetFamilyIdentifier: 'designer',
                 regularExpression: {regularExpression: null},
                 type: 'text',
                 validationRule: {validationRule: 'none'},
@@ -98,15 +94,15 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset', () => {
             },
             {
               attribute: {
-                code: {code: 'website'},
-                identifier: {identifier: 'website_designer_fingerprint'},
+                code: 'website',
+                identifier: 'website_designer_fingerprint',
                 isRequired: true,
                 isRichTextEditor: {isRichTextEditor: false},
                 isTextarea: {isTextarea: false},
                 labelCollection: {labels: {fr_FR: 'Website'}},
                 maxLength: {maxLength: 25},
                 order: 2,
-                assetFamilyIdentifier: {identifier: 'designer'},
+                assetFamilyIdentifier: 'designer',
                 regularExpression: {regularExpression: null},
                 type: 'text',
                 validationRule: {validationRule: 'url'},
@@ -120,13 +116,13 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset', () => {
             {
               attribute: {
                 allowedExtensions: {allowedExtensions: ['png']},
-                code: {code: 'portrait'},
-                identifier: {identifier: 'portrait_designer_fingerprint'},
+                code: 'portrait',
+                identifier: 'portrait_designer_fingerprint',
                 isRequired: false,
                 labelCollection: {labels: {en_US: 'Portrait', fr_FR: 'Image autobiographique'}},
                 maxFileSize: {maxFileSize: '200.10'},
                 order: 3,
-                assetFamilyIdentifier: {identifier: 'designer'},
+                assetFamilyIdentifier: 'designer',
                 type: 'image',
                 valuePerChannel: false,
                 valuePerLocale: false,
@@ -137,9 +133,9 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset', () => {
             },
             {
               attribute: {
-                code: {code: 'age'},
-                assetFamilyIdentifier: {identifier: 'designer'},
-                identifier: {identifier: 'age_designer_fingerprint'},
+                code: 'age',
+                assetFamilyIdentifier: 'designer',
+                identifier: 'age_designer_fingerprint',
                 decimalsAllowed: {decimalsAllowed: false},
                 isRequired: false,
                 labelCollection: {labels: {en_US: 'Age', fr_FR: 'Age'}},

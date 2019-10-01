@@ -1,8 +1,5 @@
-import {createCode as denormalizeAttributeCode} from 'akeneoassetmanager/domain/model/product/attribute/code';
 import {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import {createAttribute, denormalizeAttribute} from 'akeneoassetmanager/domain/model/product/attribute';
-import {denormalizeFile} from 'akeneoassetmanager/domain/model/file';
-import {createEmptyFile} from 'akeneoassetmanager/domain/model/file';
 
 const frontView = denormalizeAttribute({
   code: 'front_view',
@@ -21,7 +18,7 @@ const sideView = denormalizeAttribute({
 
 describe('akeneo > asset family > domain > model --- attribute', () => {
   test('I can create a new attribute', () => {
-    expect(frontView.getCode()).toEqual(denormalizeAttributeCode('front_view'));
+    expect(frontView.getCode()).toEqual('front_view');
   });
 
   test('I can compare two attributes', () => {
@@ -59,38 +56,16 @@ describe('akeneo > asset family > domain > model --- attribute', () => {
 
   test('I cannot create a malformed attribute', () => {
     expect(() => {
-      createAttribute(
-        'nice_attribute',
-        'akeneo_asset',
-        createLabelCollection({en_US: 'My nice attribute'}),
-        'brand',
-        false
-      );
-    }).toThrow('Attribute expects an AttributeCode as code argument');
-
-    expect(() => {
-      createAttribute(
-        denormalizeAttributeCode('nice_attribute'),
-        12,
-        createLabelCollection({en_US: 'My nice attribute'}),
-        'brand',
-        false
-      );
+      createAttribute('nice_attribute', 12, createLabelCollection({en_US: 'My nice attribute'}), 'brand', false);
     }).toThrow('Attribute expects a string as type argument');
 
     expect(() => {
-      createAttribute(
-        denormalizeAttributeCode('nice_attribute'),
-        'akeneo_asset',
-        {en_US: 'My nice attribute'},
-        'brand',
-        false
-      );
+      createAttribute('nice_attribute', 'akeneo_asset', {en_US: 'My nice attribute'}, 'brand', false);
     }).toThrow('Attribute expects a LabelCollection as labelCollection argument');
 
     expect(() => {
       createAttribute(
-        denormalizeAttributeCode('nice_attribute'),
+        'nice_attribute',
         'akeneo_asset',
         createLabelCollection({en_US: 'My nice attribute'}),
         null,
@@ -100,7 +75,7 @@ describe('akeneo > asset family > domain > model --- attribute', () => {
 
     expect(() => {
       createAttribute(
-        denormalizeAttributeCode('nice_attribute'),
+        'nice_attribute',
         'akeneo_asset',
         createLabelCollection({en_US: 'My nice attribute'}),
         'brand',

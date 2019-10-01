@@ -1,6 +1,6 @@
-import {NormalizedIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 
 export interface AssetFamilyPermission {
-  assetFamilyIdentifier: NormalizedIdentifier;
+  assetFamilyIdentifier: AssetFamilyIdentifier;
   edit: boolean;
 }

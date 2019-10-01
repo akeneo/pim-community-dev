@@ -1,5 +1,4 @@
 import {create, denormalize} from 'akeneoassetmanager/domain/model/asset/data/option-collection';
-import {createCode} from 'akeneoassetmanager/domain/model/asset/code';
 import {denormalize as denormalizeOptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
 
 const designer = denormalizeOptionAttribute({
@@ -31,8 +30,8 @@ const designer = denormalizeOptionAttribute({
 describe('akeneo > asset family > domain > model > asset > data --- option collection', () => {
   test('I can create a new OptionData with a OptionCode collection value', () => {
     expect(create([]).normalize()).toEqual([]);
-    expect(create([createCode('starck')]).normalize()).toEqual(['starck']);
-    expect(create([createCode('starck'), createCode('dyson')]).normalize()).toEqual(['starck', 'dyson']);
+    expect(create(['starck']).normalize()).toEqual(['starck']);
+    expect(create(['starck', 'dyson']).normalize()).toEqual(['starck', 'dyson']);
   });
 
   test('I cannot create a new OptionData with a value other than a OptionCode collection', () => {

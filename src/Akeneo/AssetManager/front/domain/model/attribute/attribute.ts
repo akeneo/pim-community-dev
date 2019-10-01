@@ -1,4 +1,4 @@
-import Identifier, {NormalizedAttributeIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
+import AttributeIdentifier, {attributeidentifiersAreEqual} from 'akeneoassetmanager/domain/model/attribute/identifier';
 import MinimalAttribute, {
   MinimalNormalizedAttribute,
   MinimalConcreteAttribute,
@@ -11,7 +11,7 @@ import LabelCollection from 'akeneoassetmanager/domain/model/label-collection';
  * @api
  */
 export interface NormalizedAttribute extends MinimalNormalizedAttribute {
-  identifier: NormalizedAttributeIdentifier;
+  identifier: AttributeIdentifier;
   order: number;
   is_required: boolean;
 }
@@ -20,11 +20,11 @@ export interface NormalizedAttribute extends MinimalNormalizedAttribute {
  * @api
  */
 export interface Attribute extends MinimalAttribute {
-  identifier: Identifier;
+  identifier: AttributeIdentifier;
   order: number;
   isRequired: boolean;
   equals: (attribute: MinimalAttribute) => boolean;
-  getIdentifier: () => Identifier;
+  getIdentifier: () => AttributeIdentifier;
   normalize(): NormalizedAttribute;
 }
 
@@ -47,7 +47,7 @@ export const wrapNormalizableAdditionalProperty = <NormalizedAdditionalProperty>
  */
 export abstract class ConcreteAttribute extends MinimalConcreteAttribute implements Attribute {
   protected constructor(
-    readonly identifier: Identifier,
+    readonly identifier: AttributeIdentifier,
     assetFamilyIdentifier: AssetFamilyIdentifier,
     code: AttributeCode,
     labelCollection: LabelCollection,
@@ -59,10 +59,6 @@ export abstract class ConcreteAttribute extends MinimalConcreteAttribute impleme
   ) {
     super(assetFamilyIdentifier, code, labelCollection, type, valuePerLocale, valuePerChannel);
 
-    if (!(identifier instanceof Identifier)) {
-      throw new InvalidArgumentError('Attribute expects an AttributeIdentifier argument');
-    }
-
     if (typeof order !== 'number') {
       throw new InvalidArgumentError('Attribute expects a number as order');
     }
@@ -72,19 +68,19 @@ export abstract class ConcreteAttribute extends MinimalConcreteAttribute impleme
   }
 
   public equals(attribute: Attribute): boolean {
-    return attribute.getIdentifier().equals(this.identifier);
+    return attributeidentifiersAreEqual(attribute.getIdentifier(), this.identifier);
   }
 
   public normalize(): NormalizedAttribute {
     return {
-      identifier: this.identifier.normalize(),
+      identifier: this.identifier,
       ...super.normalize(),
       order: this.order,
       is_required: this.isRequired,
     };
   }
 
-  public getIdentifier(): Identifier {
+  public getIdentifier(): AttributeIdentifier {
     return this.identifier;
   }
 }

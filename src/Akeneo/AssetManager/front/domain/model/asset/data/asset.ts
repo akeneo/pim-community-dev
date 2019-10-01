@@ -1,7 +1,9 @@
 import ValueData from 'akeneoassetmanager/domain/model/asset/data';
-import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
-
-class InvalidTypeError extends Error {}
+import AssetCode, {
+  denormalizeAssetCode,
+  assetcodesAreEqual,
+  assetCodeStringValue,
+} from 'akeneoassetmanager/domain/model/asset/code';
 
 export type NormalizedAssetData = string | null;
 
@@ -13,18 +15,14 @@ class AssetData extends ValueData {
     if (null === assetData) {
       return;
     }
-
-    if (!(assetData instanceof AssetCode)) {
-      throw new InvalidTypeError('AssetData expects a AssetCode as parameter to be created');
-    }
   }
 
   public static create(assetData: AssetCode): AssetData {
-    return new AssetData(assetData);
+    return new AssetData(denormalizeAssetCode(assetData));
   }
 
   public static createFromNormalized(normalizedAssetData: NormalizedAssetData): AssetData {
-    return new AssetData(null === normalizedAssetData ? null : AssetCode.create(normalizedAssetData));
+    return new AssetData(null === normalizedAssetData ? null : denormalizeAssetCode(normalizedAssetData));
   }
 
   public isEmpty(): boolean {
@@ -35,12 +33,12 @@ class AssetData extends ValueData {
     return (
       data instanceof AssetData &&
       ((this.isEmpty() && data.isEmpty()) ||
-        (data.assetData !== null && this.assetData !== null && this.assetData.equals(data.assetData)))
+        (data.assetData !== null && this.assetData !== null && assetcodesAreEqual(this.assetData, data.assetData)))
     );
   }
 
   public normalize(): NormalizedAssetData {
-    return null === this.assetData ? null : this.assetData.stringValue();
+    return null === this.assetData ? null : assetCodeStringValue(this.assetData);
   }
 }
 

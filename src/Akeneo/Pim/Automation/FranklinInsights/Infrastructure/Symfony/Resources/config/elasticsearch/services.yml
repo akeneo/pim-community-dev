@@ -7,9 +7,7 @@ services:
     akeneo.pim.automation.franklin_insights.elasticsearch.updater.product_subscription:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Elasticsearch\ProductSubscriptionUpdater'
         arguments:
-            - '@akeneo_elasticsearch.client_builder'
-            - ['%index_hosts%']
-            - '%product_and_product_model_index_name%'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
 
     akeneo.pim.automation.franklin_insights.elasticsearch.normalizer.indexing.product_subscription:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Elasticsearch\Indexing\Normalizer\ProductSubscriptionNormalizer'

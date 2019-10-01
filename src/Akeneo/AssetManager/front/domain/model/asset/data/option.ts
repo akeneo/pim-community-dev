@@ -1,6 +1,10 @@
 import ValueData from 'akeneoassetmanager/domain/model/asset/data';
-import OptionCode, {createCode} from 'akeneoassetmanager/domain/model/attribute/type/option/option-code';
+import OptionCode, {
+  optioncodesAreEqual,
+  optionCodeStringValue,
+} from 'akeneoassetmanager/domain/model/attribute/type/option/option-code';
 import {OptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
+import {isString} from 'akeneoassetmanager/domain/model/utils';
 
 class InvalidTypeError extends Error {}
 
@@ -21,7 +25,7 @@ class OptionData extends ValueData {
       return;
     }
 
-    if (!(optionData instanceof OptionCode)) {
+    if (!isString(optionData)) {
       throw new InvalidTypeError('OptionData expects an OptionCode as parameter to be created');
     }
   }
@@ -32,11 +36,11 @@ class OptionData extends ValueData {
 
   public static createFromNormalized(optionData: NormalizedOptionData, attribute: OptionAttribute): OptionData {
     // We have to handle the case where the previous value has an option not in the attribute anymore
-    if (null === optionData || !attribute.hasOption(createCode(optionData))) {
+    if (null === optionData || !attribute.hasOption(optionData)) {
       return new OptionData(null);
     }
 
-    return new OptionData(createCode(optionData));
+    return new OptionData(optionData);
   }
 
   public isEmpty(): boolean {
@@ -55,12 +59,12 @@ class OptionData extends ValueData {
     return (
       data instanceof OptionData &&
       ((null === this.optionData && null === data.optionData) ||
-        (null !== this.optionData && null !== data.optionData && this.optionData.equals(data.optionData)))
+        (null !== this.optionData && null !== data.optionData && optioncodesAreEqual(this.optionData, data.optionData)))
     );
   }
 
   public stringValue(): string {
-    return null !== this.optionData ? this.optionData.stringValue() : '';
+    return null !== this.optionData ? optionCodeStringValue(this.optionData) : '';
   }
 
   public normalize(): string | null {

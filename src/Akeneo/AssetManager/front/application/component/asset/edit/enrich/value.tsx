@@ -10,6 +10,7 @@ import __ from 'akeneoassetmanager/tools/translator';
 import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-boundary';
 import Flag from 'akeneoassetmanager/tools/component/flag';
 import {createLocaleFromCode} from 'akeneoassetmanager/domain/model/locale';
+import {attributeIdentifierStringValue} from 'akeneoassetmanager/domain/model/attribute/identifier';
 
 export default (
   asset: Asset,
@@ -39,15 +40,15 @@ export default (
     const canEditData = value.attribute.valuePerLocale ? rights.asset.edit && rights.locale.edit : rights.asset.edit;
     return (
       <div
-        key={value.attribute.getIdentifier().stringValue()}
+        key={attributeIdentifierStringValue(value.attribute.getIdentifier())}
         className="AknFieldContainer"
-        data-code={value.attribute.getCode().stringValue()}
+        data-code={value.attribute.getCode()}
       >
         <div className="AknFieldContainer-header AknFieldContainer-header--light AknFieldContainer-header AknFieldContainer-header--light--small">
           <label
             title={value.attribute.getLabel(localeReferenceStringValue(locale))}
             className="AknFieldContainer-label"
-            htmlFor={`pim_asset_manager.asset.enrich.${value.attribute.getCode().stringValue()}`}
+            htmlFor={`pim_asset_manager.asset.enrich.${value.attribute.getCode()}`}
           >
             <span
               className={`AknBadge AknBadge--small AknBadge--highlight AknBadge--floating ${

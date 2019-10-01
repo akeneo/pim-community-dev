@@ -21,7 +21,7 @@ const View = ({
 
   return (
     <Image
-      id={`pim_asset_manager.asset.enrich.${value.attribute.getCode().stringValue()}`}
+      id={`pim_asset_manager.asset.enrich.${value.attribute.getCode()}`}
       alt={__('pim_asset_manager.asset.value.file', {
         '{{ attribute_code }}': value.attribute.getLabel(localeReferenceStringValue(value.locale)),
       })}

@@ -11,10 +11,7 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset-family', () => {
 
   it('It search for asset families', async () => {
     page.on('request', interceptedRequest => {
-      if (
-        'http://pim.com/rest/asset_manager' === interceptedRequest.url() &&
-        'GET' === interceptedRequest.method()
-      ) {
+      if ('http://pim.com/rest/asset_manager' === interceptedRequest.url() && 'GET' === interceptedRequest.method()) {
         interceptedRequest.respond({
           contentType: 'application/json',
           body: JSON.stringify({
@@ -65,25 +62,17 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset-family', () => {
 
     const response = await page.evaluate(async () => {
       const fetcher = require('akeneoassetmanager/infrastructure/fetcher/asset-family').default;
-      const identifierModule = 'akeneoassetmanager/domain/model/asset-family/identifier';
-      const assetFamilyIdentifier = require(identifierModule).createIdentifier('sofa');
 
-      return await fetcher.fetch(assetFamilyIdentifier);
+      return await fetcher.fetch('sofa');
     });
 
     expect(response).toEqual({
       attributes: [],
       assetCount: 123,
       assetFamily: {
-        attributeAsImage: {
-          identifier: '',
-        },
-        attributeAsLabel: {
-          identifier: '',
-        },
-        identifier: {
-          identifier: 'sofa',
-        },
+        attributeAsImage: '',
+        attributeAsLabel: '',
+        identifier: 'sofa',
         labelCollection: {
           labels: {
             en_US: 'Sofa',

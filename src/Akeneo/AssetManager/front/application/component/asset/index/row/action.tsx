@@ -85,7 +85,7 @@ const ActionRow = memo(
                 onKeyPress={(event: React.KeyboardEvent<HTMLAnchorElement>) => {
                   event.preventDefault();
 
-                  onDeleteAsset(AssetCode.create(asset.code), label);
+                  onDeleteAsset(asset.code, label);
 
                   return false;
                 }}
@@ -94,7 +94,7 @@ const ActionRow = memo(
                 onClick={event => {
                   event.preventDefault();
 
-                  onDeleteAsset(AssetCode.create(asset.code), label);
+                  onDeleteAsset(asset.code, label);
 
                   return false;
                 }}
