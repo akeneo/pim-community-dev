@@ -61,6 +61,12 @@ datagrid:
             id:
                 type:          field
                 data_name:     search_id
+            label:
+                type:          field
+                data_name:     label
+            image:
+                data_name:     image
+                frontend_type: product-and-product-model-image
             document_type: ~
             technical_id: ~
             delete_link:
