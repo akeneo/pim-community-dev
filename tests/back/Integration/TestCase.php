@@ -53,8 +53,8 @@ abstract class TestCase extends KernelTestCase
             $this->get('security.token_storage')
         );
         $authenticator->createSystemUser();
-        $this->get('doctrine.orm.default_entity_manager')->clear();
 
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
     }
 
     /**

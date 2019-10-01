@@ -61,6 +61,8 @@ abstract class ApiTestCase extends WebTestCase
 
         $fixturesLoader = $this->get('akeneo_integration_tests.loader.fixtures_loader');
         $fixturesLoader->load($this->getConfiguration());
+
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
     }
 
     /**
