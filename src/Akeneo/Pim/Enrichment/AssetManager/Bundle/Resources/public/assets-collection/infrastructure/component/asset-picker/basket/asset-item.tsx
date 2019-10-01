@@ -13,6 +13,9 @@ const Container = styled.li`
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey80};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const AssetThumbnail = styled.img`
@@ -40,7 +43,7 @@ const AssetItem = ({
   asset,
   context,
   onRemove,
-  isLoading = false
+  isLoading = false,
 }: {
   asset: Asset;
   context: Context;
@@ -48,7 +51,11 @@ const AssetItem = ({
   isLoading?: boolean;
 }) => {
   return (
-    <Container data-loading={isLoading} data-code={asset.code} className={(isLoading) ? 'AknLoadingPlaceHolderContainer' : ''}>
+    <Container
+      data-loading={isLoading}
+      data-code={asset.code}
+      className={isLoading ? 'AknLoadingPlaceHolderContainer' : ''}
+    >
       <AssetThumbnail src={asset.image} />
       <AssetDetails>
         <AssetCode>{asset.code}</AssetCode>
@@ -56,7 +63,7 @@ const AssetItem = ({
       </AssetDetails>
       <RemoveButton
         title={__('pim_asset_manager.asset_picker.basket.remove_one_asset', {
-          assetName: getAssetLabel(asset, context.locale)
+          assetName: getAssetLabel(asset, context.locale),
         })}
         onAction={onRemove}
       />

@@ -25,6 +25,7 @@ const Mosaic = ({
   onSelectionChange: (selection: AssetCode[]) => void;
 }) => {
   const Container = styled.div`
+    height: 100%;
     display: flex;
     flex-wrap: wrap;
     margin: 0 40px;
@@ -63,6 +64,7 @@ const EmptyResult = () => {
     flex-direction: column;
     align-items: center;
     flex: 1;
+    justify-content: center;
   `;
   const Title = styled.div`
     margin-bottom: 10px;

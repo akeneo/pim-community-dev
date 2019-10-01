@@ -1,7 +1,13 @@
 import * as React from 'react';
 import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
 import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';
-import {Asset, emptyCollection, getAssetByCode, emptyAsset, removeAssetFromCollection} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
+import {
+  Asset,
+  emptyCollection,
+  getAssetByCode,
+  emptyAsset,
+  removeAssetFromCollection,
+} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import styled from 'styled-components';
 import __ from 'akeneoreferenceentity/tools/translator';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
@@ -19,9 +25,10 @@ type BasketProps = {
 };
 
 const Container = styled.div`
-  flex: 1;
+  width: 280px;
   border-left: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey80};
   padding: 20px;
+  flex-shrink: 0;
 `;
 
 const Title = styled.div`
@@ -51,7 +58,11 @@ const IllustrationContainer = styled.div`
   text-align: center;
 `;
 
-const useLoadAssetCollection = (selection: AssetCode[], dataProvider: any, assetFamilyIdentifier: AssetFamilyIdentifier) => {
+const useLoadAssetCollection = (
+  selection: AssetCode[],
+  dataProvider: any,
+  assetFamilyIdentifier: AssetFamilyIdentifier
+) => {
   const [assetCollection, setAssetCollection] = React.useState([] as Asset[]);
 
   React.useEffect(() => {
@@ -66,15 +77,13 @@ const useLoadAssetCollection = (selection: AssetCode[], dataProvider: any, asset
   }, [selection]);
 
   return {assetCollection, setAssetCollection};
-}
+};
 
 const Basket = ({dataProvider, assetFamilyIdentifier, selection, context, onSelectionChange}: BasketProps) => {
   const {assetCollection} = useLoadAssetCollection(selection, dataProvider, assetFamilyIdentifier);
 
   if (0 === selection.length) {
-    return (
-      <EmptyResult />
-    );
+    return <EmptyResult />;
   }
 
   return (
@@ -123,13 +132,11 @@ const Basket = ({dataProvider, assetFamilyIdentifier, selection, context, onSele
 
 const EmptyResult = () => (
   <Container>
-    <Title>
-      {__('pim_asset_manager.asset_picker.basket.empty_title')}
-    </Title>
+    <Title>{__('pim_asset_manager.asset_picker.basket.empty_title')}</Title>
     <IllustrationContainer>
       <AssetIllustration size={128} />
     </IllustrationContainer>
   </Container>
-)
+);
 
 export default Basket;

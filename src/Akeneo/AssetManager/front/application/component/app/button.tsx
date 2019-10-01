@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 
 type ButtonProps = {
-  buttonSize: 'micro' | 'medium' | 'default';
+  buttonSize?: 'micro' | 'medium' | 'default';
   color: 'green' | 'blue' | 'red' | 'grey' | 'outline';
 };
 
@@ -18,6 +18,10 @@ export const TransparentButton = styled.button`
 `;
 
 export const Button = styled.div<ButtonProps>`
+  text-align: center;
+  cursor: pointer;
+  text-transform: uppercase;
+
   ${(props: ThemedProps<ButtonProps>) => {
     switch (props.buttonSize) {
       case 'micro':
@@ -65,7 +69,4 @@ export const Button = styled.div<ButtonProps>`
       border: 1px solid transparent;
     `;
   }}
-
-  cursor: pointer;
-  text-transform: uppercase;
 `;
