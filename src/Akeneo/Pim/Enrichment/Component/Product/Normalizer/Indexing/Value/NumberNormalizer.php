@@ -26,9 +26,9 @@ class NumberNormalizer extends AbstractProductValueNormalizer implements Normali
             return false;
         }
 
-        $attribute = $this->attributeRepository->findOneByIdentifier($data->getAttributeCode());
+        $attribute = $this->getAttributes->forCode($data->getAttributeCode());
 
-        return null !== $attribute && AttributeTypes::BACKEND_TYPE_DECIMAL === $attribute->getBackendType() && (
+        return null !== $attribute && AttributeTypes::BACKEND_TYPE_DECIMAL === $attribute->backendType() && (
                 $format === ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
             );
     }

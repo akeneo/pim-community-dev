@@ -28,9 +28,9 @@ final class SqlGetAttributes implements GetAttributes
         }
 
         $query = <<<SQL
-        SELECT code, attribute_type, properties, is_scopable, is_localizable, metric_family, decimals_allowed
-        FROM pim_catalog_attribute
-        WHERE code IN (:attributeCodes)
+SELECT code, attribute_type, properties, is_scopable, is_localizable, metric_family, decimals_allowed, backend_type
+FROM pim_catalog_attribute
+WHERE code IN (:attributeCodes)
 SQL;
 
         $rawResults = $this->connection->executeQuery(
@@ -51,7 +51,8 @@ SQL;
                 boolval($rawAttribute['is_localizable']),
                 boolval($rawAttribute['is_scopable']),
                 $rawAttribute['metric_family'],
-                boolval($rawAttribute['decimals_allowed'])
+                boolval($rawAttribute['decimals_allowed']),
+                $rawAttribute['backend_type']
             );
         }
 
