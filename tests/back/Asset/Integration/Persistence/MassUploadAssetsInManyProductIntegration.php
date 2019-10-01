@@ -33,12 +33,19 @@ class MassUploadAssetsInManyProductIntegration extends TestCase
     public function testToUploadSeveralFilesThenLaunchAllImport()
     {
         $uploadContext = new UploadContext($this->getParameter('tmp_storage_dir'), 'admin');
-        $originDir = __DIR__ . '/../../Common/images/%s';
 
-        $importer = $this->get('pimee_product_asset.upload_importer');
+        $originDir = __DIR__ . '/../../Common/images/%s';
+        $originMugFilePath = sprintf($originDir, 'mugs.jpg');
+        $originShoeFilePath = sprintf($originDir, 'shoe.jpg');
+        $uploadMugFilePath = $uploadContext->getTemporaryImportDirectoryRelativePath() . '/mugs.jpg';
+        $uploadShoeFilePath = $uploadContext->getTemporaryImportDirectoryRelativePath() . '/shoe.jpg';
+
+        $fs = $this->get('akeneo_file_storage.file_storage.filesystem_provider')->getFilesystem('tmpAssetUpload');
+        $fs->put($uploadMugFilePath, file_get_contents($originMugFilePath));
+        $fs->put($uploadShoeFilePath, file_get_contents($originShoeFilePath));
+
         $queueLauncher = new JobLauncher(static::$kernel);
         $jobPublisher = $this->get('akeneo_batch_queue.launcher.queue_job_launcher');
-        $fs = new Filesystem();
 
         $this->initializeCatalog();
 
@@ -47,9 +54,7 @@ class MassUploadAssetsInManyProductIntegration extends TestCase
         $user = $this->get('pim_user.repository.user')->findOneByIdentifier('admin');
 
         // I edit a product uploading a new "mugs" asset in the attribute. The job is published.
-        $originMugFilePath = sprintf($originDir, 'mugs.jpg');
-        $uploadedMugFilePath = $uploadContext->getTemporaryUploadDirectory() . '/mugs.jpg';
-        $fs->copy($originMugFilePath, $uploadedMugFilePath);
+        $importer = $this->get('pimee_product_asset.upload_importer');
         $importer->import($uploadContext);
         $mugJobExecution = $jobPublisher->launch(
             $jobInstance,
@@ -60,15 +65,11 @@ class MassUploadAssetsInManyProductIntegration extends TestCase
                 'entity_identifier' => 'mug_product',
                 'attribute_code' => 'my_asset',
                 'is_user_authenticated' => true,
-                'imported_file_names' => ['mugs.jpg']
+                'imported_file_names' => ['mugs.jpg'],
             ]
         );
 
         // I edit another product uploading a new "shoe" asset in the attribute. The job is published.
-        $originShoeFilePath = sprintf($originDir, 'shoe.jpg');
-        $targetShoeFilePath = $uploadContext->getTemporaryUploadDirectory() . '/shoe.jpg';
-        $fs->copy($originShoeFilePath, $targetShoeFilePath);
-        $importer->import($uploadContext);
         $shoeJobExecution = $jobPublisher->launch(
             $jobInstance,
             $user,
@@ -78,7 +79,7 @@ class MassUploadAssetsInManyProductIntegration extends TestCase
                 'entity_identifier' => 'shoe_product',
                 'attribute_code' => 'my_asset',
                 'is_user_authenticated' => true,
-                'imported_file_names' => ['shoe.jpg']
+                'imported_file_names' => ['shoe.jpg'],
             ]
         );
 
@@ -127,22 +128,11 @@ class MassUploadAssetsInManyProductIntegration extends TestCase
     {
         $fs = new Filesystem();
         $uploadContext = new UploadContext($this->getParameter('tmp_storage_dir'), 'admin');
-        $uploadDir = $uploadContext->getTemporaryUploadDirectory();
         $importDir = $uploadContext->getTemporaryImportDirectory();
-
-        $uploadedMugFilePath = $uploadDir . '/mugs.jpg';
-        if ($fs->exists($uploadedMugFilePath)) {
-            $fs->remove($uploadedMugFilePath);
-        }
 
         $importedMugPath = $importDir . '/mugs.jpg';
         if ($fs->exists($importedMugPath)) {
             $fs->remove($importedMugPath);
-        }
-
-        $targetShoeFilePath = $uploadDir . '/shoe.jpg';
-        if ($fs->exists($targetShoeFilePath)) {
-            $fs->remove($targetShoeFilePath);
         }
 
         $importedShoePath = $importDir . '/shoe.jpg';

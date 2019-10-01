@@ -25,9 +25,9 @@ pimee_product_asset:
       delete: Poista
       download: Lataa
       generate_from_reference: Luo viittauksesta
-      reset_variations: Nollaa variaatiot
+      reset_variations: Luo variaatiot
     confirmation.remove: Oletko varma, että haluat poistaa assetin "%asset%" ?
-    confirmation.subTitle: Resurssit
+    confirmation.subTitle: Assetit
     grid:
       edit: Muokkaa assetin ominaisuuksia
     view:
@@ -45,47 +45,43 @@ pimee_product_asset:
       filetype: Tiedoston tyyppi
       actions: Toiminnot
       download: Lataa
-      tag: Tunnisteet
+      tag: Asiasanat
       no_reference: Viitetiedostoa ei ole vielä tuotu järjestelmään.
       no_variation: Variaatiotiedostoa ei ole vielä luotu.
     flash:
       update:
         success: Assetti on päivitetty.
-        error: Assettia ei ole päivitetty. Tapahtui virhe.
       create:
         success: Assetti on luotu.
-        error: Assettia ei ole luotu. Tapahtui virhe.
       remove:
         success: Assetti on poistettu.
   enrich_reference:
     flash:
       delete:
         success: Viitetiedosto on poistettu.
-        error: Viitetiedostoa ei ole poistettu. Tapahtui virhe.
   enrich_variation:
     flash:
       transformation:
         invalid_options: Virheellisten asetusten takia variaatio %channel% n luominen on mahdotonta.
         image_width_error: Variaatio %channel% n luominen on mahdotonta, koska tuotu kuva on liian kapea.
         image_height_error: Variaatio %channel% n luominen on mahdotonta, koska tuotu kuva on liian matala.
-        not_applicable: Variaatio %channel% n luominen on mahdotonta.
+        not_applicable: Ei voida luoda variaatiota %channel%.
         non_registered: '%transformation% muutosta ei rekisteröity mime tyypille %mimeType%. Mahdotonta luoda variaatio %channel%.'
-        error: Variaatio %channel% n luominen on mahdotonta.
+        missing_asset_transformation_for_channel: Variaatiotiedostoa ei voi luoda kanavalle %channel%. Ole hyvä ja määrittele muunnos kanavalle.
+        error: Ei voida luoda variaatiota %channel%.
         success: Variaatiotiedoston luotu onnistuneesti.
       update:
         success: Variaatiotiedosto päivitetty.
-        error: Variaatiotiedostoa ei ole päivitetty. Tapahtui virhe.
       delete:
         success: Variaatiotiedosto on poistettu.
-        error: Variaatiotiedostoa ei ole poistettu. Tapahtui virhe.
   popin.create:
-    title: Luo uusi resurssi
-    is_localized: Lokalisoitavissa
-  menu: Resurssit
+    title: Luo uusi assetti
+    is_localized: Kielikohtainen
+  menu: Assetit
   page_tab:
     title:
-      view: Tuoteresurssi %asset.code% | Näkymä
-      edit: Tuotteen assetti %asset.code% | Muokkaa
+      view: Assetti %asset.code% | Näkymä
+      edit: Assetti %asset.code% | Muokkaa
       index: Tuotteen assetit
   code:
     label: Koodi
@@ -98,7 +94,7 @@ pimee_product_asset:
   endOfUse:
     label: Käyttö loppuu
   createdAt:
-    label: Luotu
+    label: Luontiaika
   updatedAt:
     label: Viimeksi päivitetty
   tags:
@@ -110,7 +106,7 @@ pimee_product_asset:
   validation:
     code:
       not_empty: Koodi vaaditaan. Se ei voi olla tyhjä.
-      unique: Koodin tulee olla uniikki.
+      unique: Koodin tulee olla yksilöllinen.
       new_generation: Loimme sinulle uuden koodin.
   notAvailable:
     label: ei saatavissa
@@ -125,9 +121,8 @@ pimee_product_asset:
     import: Tuonti
     executed: Massatuonti suoritettu
     error:
-      upload: Tuonnin yhteydessä tapahtui virhe
-      code: Vääränmuotoinen koodi assetille
-      localizable: Aseeti on olemassa, mutta se ei ole lokalisoitavissa
+      code: Assetin koodiformaatti ei ole pätevä
+      localizable: Assetti on olemassa, mutta se ei ole kielikohtainen
       invalid_locale: Lokaalit asetukset ovat poistettu käytöstä tai ne ovat virheelliset
   category:
     menu: Assettikategoriat
@@ -141,14 +136,20 @@ pimee_product_asset:
       apply_on_children.help: Kopioi käyttöoikeusmuutokset kaikkiin alatason objekteihin, olemassaolevat käyttöoikeudet alatason objekteihin pysyvät muuttumattomina
   mass_edit_action:
     asset:
-      page_title: Resurssit
+      page_title: Assetit
+      page_subtitle: Massamuokkaa (1 assetti)|Massamuokkaa (%count% assettia)
+      confirm: Olet päivittämässä assetin seuraavilla tiedoilla. Ole hyvä ja vahvista.|Olet päivittämässä %count% assettia seuraavilla tiedoilla. Ole hyvä ja vahvista.
       steps:
-        second: Konfiguroi
+        first: Valitse assetit
+        second: Muuta asetuksia
         third: Vahvista
   not_editable: Sinulla ei ole muokkausoikeuksia assettiin "%code%".
 pim_enrich:
   mass_edit_action:
     asset-classify-move:
+      label: Siirrä assetit kategorioihin
+      description: Assetit liitetään seuraaviin kategorioihin. Olemassa olevat liitokset poistetaan
+      success_flash: Assetit siirrettiin valittuihin kategorioihin
       launched_flash: Massatoiminto "siirrä kategorioihin" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
     add-tags-to-assets:
       label: Lisää tunnisteita asseteille
@@ -159,13 +160,17 @@ pim_enrich:
 pim:
   grid:
     mass_action:
+      mass_classify_assets: Luokittele
       add_tags_to_assets: Lisää tunnisteita
+      delete_assets: Poista assetteja
 btn.create.asset: Luo assetti
-btn.drag_or_upload: Vedä ja tiputa tiedosto tai klikkaa tästä
+btn.drag_or_upload: Vedä ja pudota tiedosto tai klikkaa tästä
 job_execution.summary:
   variations_not_generated: Variaatioita ei luotu
   pimee_product_asset.mass_upload.new: Assetti luotu tiedostosta
   pimee_product_asset.mass_upload.updated: Assetti päivitetty
+  error: Virhe assetin käsittelyssä
+  skipped_assets: Ohitetut assetit
 assets_mass_upload.steps:
   asset_mass_upload.title: Assettien massatuonti
 import_asset.steps.channel_configuration_processor.title: Prosessikanavien konfiguraatiot
@@ -173,7 +178,10 @@ pim_datagrid:
   cells:
     type:
       mass_upload: Massatuo assetteja
-pim_assets_collection: Resurssien keruu
+pim_analytics:
+  info_type:
+    nb_assets: Assettien lukumäärä
+pim_assets_collection: Assetit
 akeneo_reference_entity: Viitetiedot yksinkertainen valinta
 akeneo_reference_entity_collection: Viitetiedot monivalinta
 pim_api:
@@ -186,11 +194,11 @@ pim_api:
       list: Listaa assetit ja lataa niiden alkuperäiset ja varioidut tiedostot
   acl_group:
     asset_category: Assettikategoriat
-    asset: Resurssit
+    asset: Assetit
 pimee_enrich:
   channel:
     tab:
-      asset_transformation.title: Resurssien muunnokset
+      asset_transformation.title: Assettien muunnokset
   asset_transformation:
     not_found: Ei muunnosta löydettävissä
     title:

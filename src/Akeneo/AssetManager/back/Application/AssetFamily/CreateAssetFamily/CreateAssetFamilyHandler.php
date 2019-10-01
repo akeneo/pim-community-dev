@@ -36,7 +36,7 @@ class CreateAssetFamilyHandler
     public function __invoke(CreateAssetFamilyCommand $createAssetFamilyCommand): void
     {
         $assetFamily = AssetFamily::create(
-            AssetFamilyIdentifier::fromString($createAssetFamilyCommand->code),
+            AssetFamilyIdentifier::fromString($createAssetFamilyCommand->identifier),
             $createAssetFamilyCommand->labels,
             Image::createEmpty(),
             RuleTemplateCollection::createFromProductLinkRules($createAssetFamilyCommand->productLinkRules)

@@ -1,4 +1,4 @@
-View the product: Katso tuotte
+View the product: Katso tuote
 Unpublish the product: Ota tuote pois julkaisusta
 Approve: Hyväksy
 Refuse: Hylkää
@@ -6,8 +6,10 @@ Approve selected: Hyväksy valitut
 Refuse selected: Hylkää valitut
 pim_datagrid:
   no_entities:
+    proposal: Ehdotuksia ei ole tarkistettavaksi.
     product_draft: Tuoteluonnoksia ei ole tarkistettavaksi.
   no_results:
+    proposal: Ehdotuksia ei ole tarkistettavaksi. Yritä muuttaa hakuehtoja.
     product_draft: Tuoteluonnoksia ei ole tarkistettavaksi. Yritä muuttaa hakuehtoja.
 pimee_datagrid:
   cells:
@@ -24,18 +26,23 @@ pimee_workflow:
   proposal:
     overview: "]-Inf, 1]{{ count }} ehdotus|]1, Inf[{{ count }} ehdotusta"
     selected: ehdotusta valittu
+    mass_action_group:
+      review:
+        label: Massatoiminnot
     partial_accept:
       modal.title: Hyväksy osittaisia tietoja
       modal.label: Jätä kommentti (valinnainen)
-      modal.error: Virhe, ehdotusta ei ole hyväksytty osittain
       modal.success: Ehdotus on osittain vahvistettu onnistuneesti
     partial_approve:
       modal:
+        title: Hyväksy muutokset osittain
         label: Jätä kommentti (valinnainen)
-        error: Virhe, ehdotusta ei ole hyväksytty osittain
+        success: Muutokset hyväksytty onnistuneesti
     partial_reject:
       modal:
+        title: Hylkää muutokset osittain
         label: Jätä kommentti (valinnainen)
+        success: Muutokset hylätty onnistuneesti
 batch_jobs:
   csv_published_product_export:
     label: Julkaistun tuotteen vienti CSV-muodossa
@@ -47,20 +54,39 @@ batch_jobs:
     label: Hyväksy ehdotus
     perform.label: Hyväksy ehdotus
   refuse_product_draft:
-    label: Hylkää ehdotus
-    perform.label: Hylkää ehdotus
+    label: Hylkää ehdotukset
+    perform.label: Hylkää ehdotukset
   xlsx_published_product_export:
+    label: Julkaistujen tuotteiden vienti XLSX-muodossa
     export.label: Julkaistun tuotteen vienti
+  xlsx_product_proposal_import:
+    label: Tuote-ehdotusten tuonti XLSX-muodossa
+    import.label: Tuote-ehdotusten tuonti XLSX-muodossa
+  csv_published_product_quick_export:
+    export.label: Julkaistujen tuotteiden nopea vienti CSV-muodossa
+    perform.label: Julkaistujen tuotteiden nopea vienti CSV-muodossa
+  csv_published_product_grid_context_quick_export:
+    export.label: Julkaistujen tuotteiden (ruudukon sarakkeet) nopea vienti CSV-muodossa
+    perform.label: Julkaistujen tuotteiden (ruudukon sarakkeet) nopea vienti CSV-muodossa
+  xlsx_published_product_quick_export:
+    export.label: Julkaistujen tuotteiden nopea vienti XSLX-muodossa
+    perform.label: Julkaistujen tuotteiden nopea vienti XSLX-muodossa
+  xlsx_published_product_grid_context_quick_export:
+    export.label: Julkaistujen tuotteiden (ruudukon sarakkeet) nopea vienti XLSX-muodossa
+    perform.label: Julkaistujen tuotteiden (ruudukon sarakkeet) nopea vienti XLSX-muodossa
   publish_product:
     perform.label: Julkaise tuotteet
 pim_notification:
   types:
-    pimee_workflow_product_draft_notification_new_proposal: Uusi ehdotus
-    pimee_workflow_import_notification_new_proposals: Uusia ehdotuksia tuontiin
+    pimee_workflow_product_draft_notification_new_proposal: Uusi muutosehdotus
+    pimee_workflow_import_notification_new_proposals: Uusia muutosehdotuksia tuonnista
     pimee_workflow_product_draft_notification_partial_approve: Osittain hyväksytty ehdotus
+    pimee_workflow_product_draft_notification_partial_reject: Ehdotus hylätty osittain
+    pimee_workflow_product_draft_notification_partial_remove: Ehdotus poistettu osittain
     pimee_workflow_product_draft_notification_approve: Ehdotus hyväksytty
     pimee_workflow_product_draft_notification_refuse: Ehdotus hylätty
     pimee_workflow_product_draft_notification_remove: Ehdotus poistettu
+    pimee_workflow_product_draft_notification_sent: Ehdotus lähetetty
 pimee_dashboard:
   widget:
     product_drafts:
@@ -83,7 +109,7 @@ pimee_enrich.entity.product:
       owner_groups: Omistajaryhmät
       draft_status: Luonnoksen tila
       draft:
-        in_progress: Toiminto käynnissä
+        in_progress: Työn alla
         sent_for_approval: Odottaa hyväksyntää
         working_copy: Työkopio
     revert:
@@ -102,6 +128,8 @@ pimee_enrich.entity.product:
     approval:
       send: Lähetä hyväksyttäväksi
       sent: Lähetetty hyväksyttäväksi
+      send_and_next: Lähetä ja seuraava
+      send_and_finish: Lähetä ja lopeta
 pimee_enrich.entity.published_product:
   flash:
     publish:
@@ -135,12 +163,11 @@ pimee_enrich.entity.product_draft:
     create:
       success: Tuotteen luonnos lähetetty hyväksyttäväksi
       fail: Et voi lähettää tätä luonnosta hyväksyttäväksi
+      skip: Ehdotusta ei lähetetty hyväksyttäväksi, koska attribuutteja ei muokattu
   module:
-    create:
-      label: Tallenna luonnos
     proposal:
       accept: Hyväksy ehdotus
-      accept_selected: Hyävksy valittu ehdotus / ehdotukset
+      accept_selected: Hyväksy valittu ehdotus / ehdotukset
       reject: Hylkää ehdotus
       reject_selected: Hylkää valittu ehdotus / ehdotukset
       remove: Poista ehdotus
@@ -164,11 +191,11 @@ pimee_enrich.mass_edit.product:
       warning: '{{ itemsCount }} valitun tuotteen julkaisu perutaan.'
 pim_menu:
   navigation:
-    published_products: Julkaistut tuotteet
+    published_products: Julkaistu tuote
   item:
     proposal: Ehdotukset
-    published_product: Julkaistut tuotteet
+    published_product: Julkaistu tuote
 pim_title:
   pimee_workflow_proposal_index: Ehdotukset
-  pimee_workflow_published_product_index: Julkaistut tuotteet
+  pimee_workflow_published_product_index: Julkaistu tuote
   pimee_workflow_published_product_view: Julkaistu tuote {{ product.label }} | Näytä

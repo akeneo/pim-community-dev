@@ -42,10 +42,6 @@ pim_reference_entity:
       image: Imatge
     attribute:
       title: Registre atributs
-      attribute:
-        error:
-          render_list: 'S''ha produït un error durant la representació de l''atribut "{{ %attribute_code% }}"'
-          render_edit: 'S''ha produït un error durant la representació dels camps addicionals de propietat de l''atribut "{{ %attribute_code% }}"'
     module:
       delete:
         button: Eliminar entitat
@@ -71,13 +67,10 @@ pim_reference_entity:
     notification:
       save:
         success: Entitat de referència actualitzada correctament.
-        fail: S'ha produït un error durant el guardat de l'entitat de referència
       create:
         success: Entitat de referència creada correctament.
-        fail: S'ha produït un error durant la creació de l'entitat de referència
       delete:
         success: Entitat de referència eliminada correctament.
-        fail: S'ha produït un error durant l'eliminació de l'entitat de referència
   permission:
     no_data:
       title: No teniu cap grup d'usuaris
@@ -167,17 +160,13 @@ pim_reference_entity:
     notification:
       save:
         success: Registre actualitzat correctament.
-        fail: S'ha produït un error durant el guardat del registre
         validation_error: El registre no podria ser actualitzat
       create:
         success: Registre creat correctament.
-        fail: S'ha produït un error durant la creació del registre
       delete:
         success: Registre "{{ code }}" correctament eliminat.
-        fail: S'ha produït un error durant l'eliminació del registre
       delete_all:
         success: Tots el registres de "{{ entityIdentifier }}" s'han eliminat correctament.
-        fail: S'ha produït un error durant l'eliminació de tots els registres de l'entitat de referència
     completeness:
       label: Complet
   attribute:
@@ -255,19 +244,14 @@ pim_reference_entity:
       message: Esteu segur que voleu suprimir l'atribut "{{ attributeLabel }}"?
       title: Atribut
     notification:
-      list:
-        fail: S'ha produït un error durant l'actualització de la llista d'atributs
       save:
         success: Atribut actualitzat correctament.
-        fail: S'ha produït un error durant el guardat de l'atribut
         validation_error: No s'ha pogut actualitzar l'atribut
       create:
         success: Atribut creat correctament.
-        fail: S'ha produït un error durant la creació de l'atribut
         validation_error: No s'ha pogut crear l'atribut
       delete:
         success: Atribut eliminat correctament.
-        fail: S'ha produït un error durant l'eliminació de l'atribut
     options:
       no_value: Feu clic aquí per seleccionar una opció.
       sub_title: Entitats de referència

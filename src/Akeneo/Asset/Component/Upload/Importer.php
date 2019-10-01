@@ -11,7 +11,9 @@
 
 namespace Akeneo\Asset\Component\Upload;
 
+use Akeneo\Tool\Component\FileStorage\File\FileFetcher;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
+use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -29,16 +31,28 @@ class Importer implements ImporterInterface
     /** @var FileStorerInterface */
     protected $fileStorer;
 
+    /** @var FilesystemProvider */
+    private $filesystemProvider;
+
+    /** @var FileFetcher */
+    private $fileFetcher;
+
     /**
-     * @param UploadCheckerInterface $uploadChecker
-     * @param FileStorerInterface    $fileStorer
+     * @param UploadCheckerInterface  $uploadChecker
+     * @param FileStorerInterface     $fileStorer
+     * @param FileFetcher             $fileFetcher
+     * @param FilesystemProvider      $filesystemProvider
      */
     public function __construct(
         UploadCheckerInterface $uploadChecker,
-        FileStorerInterface $fileStorer
+        FileStorerInterface $fileStorer,
+        FileFetcher $fileFetcher,
+        FilesystemProvider $filesystemProvider
     ) {
         $this->uploadChecker = $uploadChecker;
         $this->fileStorer = $fileStorer;
+        $this->filesystemProvider = $filesystemProvider;
+        $this->fileFetcher = $fileFetcher;
     }
 
     /**
@@ -47,33 +61,36 @@ class Importer implements ImporterInterface
      * - check uploaded files
      * - Move files from tmp uploaded storage to tmp imported storage
      */
-    public function import(UploadContext $uploadContext)
+    public function import(UploadContext $uploadContext, array $fileNames = [])
     {
         $files = [];
-        $fileSystem = new Filesystem();
-        $uploadDirectory = $uploadContext->getTemporaryUploadDirectory();
-        $importDirectory = $uploadContext->getTemporaryImportDirectory();
+        $uploadFileSystem = $this->filesystemProvider->getFilesystem('tmpAssetUpload');
+        $importDirectory = $uploadContext->getTemporaryImportDirectoryRelativePath();
 
-        $storedFiles = array_diff(scandir($uploadDirectory), ['.', '..']);
+        $filesToImport = array_filter($uploadFileSystem->listContents($importDirectory), function ($file) use ($fileNames) {
+            return $file['type'] === 'file' && (empty($fileNames) || in_array($file['basename'], $fileNames));
+        });
 
-        if (!is_dir($importDirectory)) {
-            $fileSystem->mkdir($importDirectory);
-        }
+        $importedFileNames = array_map(function ($file) {
+            return $file['basename'];
+        }, $filesToImport);
 
-        foreach ($storedFiles as $file) {
+        foreach ($filesToImport as $file) {
             $result = [
-                'file'  => $file,
+                'file'  => $file['basename'],
                 'error' => null,
             ];
-            if (!$this->isValidImportedFilename($storedFiles, $file)) {
+            if (!$this->isValidImportedFilename($importedFileNames, $file['basename'])) {
                 $result['error'] = UploadMessages::ERROR_CONFLICTS;
-                $files[] = $result;
             } else {
-                $filePath = $uploadDirectory . DIRECTORY_SEPARATOR . $file;
-                $newPath = $importDirectory . DIRECTORY_SEPARATOR . $file;
-                $fileSystem->rename($filePath, $newPath);
-                $files[] = $result;
+                $this->fileFetcher->fetch($uploadFileSystem, $file['path']);
             }
+
+            if ($uploadFileSystem->has($file['path'])) {
+                $uploadFileSystem->delete($file['path']);
+            }
+
+            $files[] = $result;
         }
 
         return $files;

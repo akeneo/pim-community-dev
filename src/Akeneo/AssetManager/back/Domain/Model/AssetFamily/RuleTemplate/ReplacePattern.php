@@ -35,9 +35,9 @@ class ReplacePattern
     }
 
     /**
+     * @return array|string
      * @throws \InvalidArgumentException When the rule value has more than one pattern to replace and the asset value is an array
      *
-     * @return array|string
      */
     public static function replace($ruleValue, PropertyAccessibleAsset $propertyAccessibleAsset)
     {
@@ -49,19 +49,27 @@ class ReplacePattern
 
     public static function detectPatterns($ruleValue): array
     {
+        if (is_bool($ruleValue)) {
+            return [];
+        }
+
         if (is_array($ruleValue)) {
             $result = [];
             foreach ($ruleValue as $item) {
+                if (!is_string($item)) {
+                    continue;
+                }
                 preg_match_all(self::PATTERN_REGEXP, $item, $matchedPatterns);
                 $matchedPatterns = $matchedPatterns[1];
                 $result = array_merge($result, $matchedPatterns);
             }
-        } else {
-            preg_match_all(self::PATTERN_REGEXP, $ruleValue, $matchedPatterns);
-            $result = $matchedPatterns[1];
+
+            return $result;
         }
 
-        return $result;
+        preg_match_all(self::PATTERN_REGEXP, $ruleValue, $matchedPatterns);
+
+        return $matchedPatterns[1];
     }
 
     private static function findValuesForPatterns(

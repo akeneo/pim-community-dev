@@ -55,6 +55,10 @@ class BatchAssetsToLink
 
     public function runBatch(): void
     {
+        if (empty($this->linkMultipleAssetsCommand->linkAssetCommands)) {
+            return;
+        }
+
         $this->linkAssetsHandler->handle($this->linkMultipleAssetsCommand);
     }
 

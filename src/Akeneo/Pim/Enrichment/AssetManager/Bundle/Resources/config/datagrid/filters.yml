@@ -1,0 +1,13 @@
+services:
+    pimee_asset_family.filter.asset_family:
+        class: Akeneo\Pim\Enrichment\AssetManager\Bundle\Datagrid\Filter\ProductValue\AssetFamilyAssetFilter
+        arguments:
+            - '@form.factory'
+            - '@pim_filter.product_utility'
+            - '@pim_user.context.user'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.attribute_option'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_existing_asset_codes'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: .asset_multiple_link }

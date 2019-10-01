@@ -1,0 +1,54 @@
+{
+    "request": {
+        "method": "GET",
+        "route": "pimee_enrich_rule_relation_get",
+        "query": {
+          "relationType": "attribute"
+        }
+    },
+    "response": {
+        "status": 200,
+        "body": [
+            {
+                "rule": "camera_set_canon_brand",
+                "attribute": "camera_brand"
+            },
+            {
+                "rule": "camera_copy_name_to_model",
+                "attribute": "camera_model_name"
+            },
+            {
+                "rule": "camera_set_camera_type",
+                "attribute": "camera_type"
+            },
+            {
+                "rule": "camera_set_autofocus",
+                "attribute": "auto_focus_lock"
+            },
+            {
+                "rule": "camera_set_autofocus_point",
+                "attribute": "auto_focus_points"
+            },
+            {
+                "rule": "copy_description_print_us_to_ecommerce_us",
+                "attribute": "description"
+            },
+            {
+                "rule": "set_purple_tshirt_ecommerce_description",
+                "attribute": "description"
+            },
+            {
+                "rule": "set_tshirt_price",
+                "attribute": "price"
+            },
+            {
+                "rule": "set_tshirt_weight",
+                "attribute": "weight"
+            },
+            {
+                "rule": "set_tshirt_style",
+                "attribute": "tshirt_style"
+            }
+        ]
+    }
+}

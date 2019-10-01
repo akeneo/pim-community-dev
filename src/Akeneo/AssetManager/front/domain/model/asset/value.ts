@@ -1,5 +1,11 @@
-import ChannelReference, {NormalizedChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
-import LocaleReference, {NormalizedLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
+import ChannelReference, {
+  channelReferenceIsEmpty,
+  channelReferenceAreEqual,
+} from 'akeneoassetmanager/domain/model/channel-reference';
+import LocaleReference, {
+  localeReferenceIsEmpty,
+  localeReferenceAreEqual,
+} from 'akeneoassetmanager/domain/model/locale-reference';
 import Data from 'akeneoassetmanager/domain/model/asset/data';
 import {ConcreteAttribute, Attribute, NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {NormalizedAttributeIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
@@ -17,16 +23,16 @@ type NormalizedContext = {
  */
 export type NormalizedValue = {
   attribute: NormalizedAttribute;
-  channel: NormalizedChannelReference;
-  locale: NormalizedLocaleReference;
+  channel: ChannelReference;
+  locale: LocaleReference;
   data: any;
   context?: NormalizedContext;
 };
 
 export type NormalizedMinimalValue = {
   attribute: NormalizedAttributeIdentifier;
-  channel: NormalizedChannelReference;
-  locale: NormalizedLocaleReference;
+  channel: ChannelReference;
+  locale: LocaleReference;
   data: any;
 };
 
@@ -42,31 +48,25 @@ class Value {
     if (!(attribute instanceof ConcreteAttribute)) {
       throw new InvalidTypeError('Value expect ConcreteAttribute as attribute argument');
     }
-    if (!(channel instanceof ChannelReference)) {
-      throw new InvalidTypeError('Value expect ChannelReference as channel argument');
-    }
-    if (!(locale instanceof LocaleReference)) {
-      throw new InvalidTypeError('Value expect LocaleReference as locale argument');
-    }
     if (!(data instanceof Data)) {
       throw new InvalidTypeError('Value expect ValueData as data argument');
     }
-    if (channel.isEmpty() && attribute.valuePerChannel) {
+    if (channelReferenceIsEmpty(channel) && attribute.valuePerChannel) {
       throw new InvalidTypeError(
         `The value for attribute "${attribute.getCode().stringValue()}" should have a non empty channel reference`
       );
     }
-    if (!channel.isEmpty() && !attribute.valuePerChannel) {
+    if (!channelReferenceIsEmpty(channel) && !attribute.valuePerChannel) {
       throw new InvalidTypeError(
         `The value for attribute "${attribute.getCode().stringValue()}" should have an empty channel reference`
       );
     }
-    if (locale.isEmpty() && attribute.valuePerLocale) {
+    if (localeReferenceIsEmpty(locale) && attribute.valuePerLocale) {
       throw new InvalidTypeError(
         `The value for attribute "${attribute.getCode().stringValue()}" should have a non empty locale reference`
       );
     }
-    if (!locale.isEmpty() && !attribute.valuePerLocale) {
+    if (!localeReferenceIsEmpty(locale) && !attribute.valuePerLocale) {
       throw new InvalidTypeError(
         `The value for attribute "${attribute.getCode().stringValue()}" should have an empty locale reference`
       );
@@ -93,7 +93,9 @@ class Value {
 
   public equals(value: Value): boolean {
     return (
-      this.channel.equals(value.channel) && this.locale.equals(value.locale) && this.attribute.equals(value.attribute)
+      channelReferenceAreEqual(this.channel, value.channel) &&
+      localeReferenceAreEqual(this.locale, value.locale) &&
+      this.attribute.equals(value.attribute)
     );
   }
 
@@ -104,8 +106,8 @@ class Value {
   public normalize(): NormalizedValue {
     return {
       attribute: this.attribute.normalize(),
-      channel: this.channel.normalize(),
-      locale: this.locale.normalize(),
+      channel: this.channel,
+      locale: this.locale,
       data: this.data.normalize(),
     };
   }
@@ -113,8 +115,8 @@ class Value {
   public normalizeMinimal(): NormalizedMinimalValue {
     return {
       attribute: this.attribute.identifier.normalize(),
-      channel: this.channel.normalize(),
-      locale: this.locale.normalize(),
+      channel: this.channel,
+      locale: this.locale,
       data: this.data.isEmpty() ? null : this.data.normalize(),
     };
   }

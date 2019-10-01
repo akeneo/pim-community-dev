@@ -73,6 +73,7 @@ return [
     Hslavich\OneloginSamlBundle\HslavichOneloginSamlBundle::class => ['all' => true],
     Akeneo\Platform\Bundle\AuthenticationBundle\AkeneoAuthenticationBundle::class => ['all' => true],
     Akeneo\AssetManager\Infrastructure\Symfony\AkeneoAssetManagerBundle::class => ['all' => true],
+    Akeneo\Pim\Enrichment\AssetManager\Bundle\AkeneoPimEnrichmentAssetManagerBundle::class => ['all' => true],
 
     // Dev related bundles
     Symfony\Bundle\DebugBundle\DebugBundle::class => ['dev' => true, 'test' => true, 'behat' => true],

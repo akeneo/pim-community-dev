@@ -4,12 +4,12 @@ import {EditState} from 'akeneoassetmanager/application/reducer/asset/edit';
 import {assetLabelUpdated, assetValueUpdated, saveAsset} from 'akeneoassetmanager/application/action/asset/edit';
 import {EditionFormState} from 'akeneoassetmanager/application/reducer/asset/edit/form';
 import denormalizeAsset from 'akeneoassetmanager/application/denormalizer/asset';
-import {createLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
-import {createChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
+import {denormalizeChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
 import renderValues from 'akeneoassetmanager/application/component/asset/edit/enrich/value';
 import Value from 'akeneoassetmanager/domain/model/asset/value';
 import Key from 'akeneoassetmanager/tools/key';
 import {canEditAssetFamily, canEditLocale} from 'akeneoassetmanager/application/reducer/right';
+import {denormalizeLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
 
 // const securityContext = require('pim/security-context');
 
@@ -66,8 +66,8 @@ class Enrich extends React.Component<StateProps & DispatchProps> {
         <div className="AknFormContainer AknFormContainer--wide AknFormContainer--withPadding">
           {renderValues(
             asset,
-            createChannelReference(this.props.context.channel),
-            createLocaleReference(this.props.context.locale),
+            denormalizeChannelReference(this.props.context.channel),
+            denormalizeLocaleReference(this.props.context.locale),
             this.props.form.errors,
             this.props.events.form.onValueChange,
             this.props.events.form.onSubmit,

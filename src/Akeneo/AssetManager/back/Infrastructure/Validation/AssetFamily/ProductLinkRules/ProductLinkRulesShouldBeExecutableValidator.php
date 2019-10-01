@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules;
 
-use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyCommand;
-use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyCommand;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeExistsInterface;
 use Symfony\Component\Validator\Constraint;
@@ -44,19 +42,18 @@ class ProductLinkRulesShouldBeExecutableValidator extends ConstraintValidator
 
     public function validate($createOrUpdateAssetFamily, Constraint $constraint): void
     {
-        $assetFamilyIdentifier = null;
-        if ($createOrUpdateAssetFamily instanceof CreateAssetFamilyCommand) {
-            $assetFamilyIdentifier = $createOrUpdateAssetFamily->code;
-        } elseif ($createOrUpdateAssetFamily instanceof EditAssetFamilyCommand) {
-            $assetFamilyIdentifier = $createOrUpdateAssetFamily->identifier;
-        }
-
         foreach ($createOrUpdateAssetFamily->productLinkRules as $productLinkRule) {
             $this->addViolationsToContextIfAny(
-                $this->productSelectionValidator->validate($productLinkRule[RuleTemplate::PRODUCT_SELECTIONS], $assetFamilyIdentifier)
+                $this->productSelectionValidator->validate(
+                    $productLinkRule[RuleTemplate::PRODUCT_SELECTIONS],
+                    $createOrUpdateAssetFamily->identifier
+                )
             );
             $this->addViolationsToContextIfAny(
-                $this->productAssignmentsValidator->validate($productLinkRule[RuleTemplate::ASSIGN_ASSETS_TO], $assetFamilyIdentifier)
+                $this->productAssignmentsValidator->validate(
+                    $productLinkRule[RuleTemplate::ASSIGN_ASSETS_TO],
+                    $createOrUpdateAssetFamily->identifier
+                )
             );
         }
     }

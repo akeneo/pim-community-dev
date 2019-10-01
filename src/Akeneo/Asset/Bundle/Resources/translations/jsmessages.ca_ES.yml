@@ -44,9 +44,7 @@ pimee_product_asset:
       need_refresh: <b>S'ha llançat l'import de recurs</b><br> Per veure els recursos importats en la forma del producte, si us plau, actualitzeu la pàgina del producte quan us arribi la notificació de l'import.
     error:
       list: No es poden llegir els arxius que s'han carregat
-      upload: S'ha produït un error en la càrrega
       delete: No es pot eliminar aquest arxiu del servidor
-      import: S'ha produït un error durant la importació
       filename: Aquest nom de fitxer no és vàlid pel recurs
       code: Format de codi invàlid pel recurs
       locale: Ja existeix un recurs però no se li pot aplicar cap configuració regional
@@ -66,7 +64,6 @@ pimee_product_asset:
       delete:
         confirm_content: Està segur que vol eliminar els recursos seleccionats?
         success: Recursos seleccionats correctament.
-        error: S'ha produït un error en intentar suprimir els recursos seleccionats, torneu-ho a intentar.
         empty_selection: No hi ha cap recurs seleccionat
 pim_enrich:
   entity:

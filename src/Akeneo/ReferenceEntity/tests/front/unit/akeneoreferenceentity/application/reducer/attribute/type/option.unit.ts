@@ -528,7 +528,7 @@ describe('akeneo > reference entity > application > reducer > attribute > type >
     const state = editOptionsReducer(undefined, {});
     const newState = editOptionsReducer(state, {
       type: 'OPTIONS_EDITION_SELECTED',
-      id: 2
+      id: 2,
     });
     const stateUpdated = editOptionsReducer(newState, {
       type: 'OPTIONS_EDITION_START',

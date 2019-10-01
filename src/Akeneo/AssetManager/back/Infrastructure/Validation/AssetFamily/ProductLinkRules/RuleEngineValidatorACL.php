@@ -51,16 +51,21 @@ class RuleEngineValidatorACL implements RuleEngineValidatorACLInterface
     {
         $productAction = $this->createProductAction($normalizedProductAssignment);
 
-        return $this->productAtionValidator->validate($productAction);
+        $ruleEngineViolations = $this->productAtionValidator->validate($productAction);
+
+        return $ruleEngineViolations;
     }
 
-    private function createProductAction(array $productSelection): ActionInterface
+    private function createProductAction(array $productAssignment): ActionInterface
     {
-        $productSelection['type'] = $this->getRuleEngineActionType($productSelection['mode']);
-        $productSelection['field'] = $productSelection['attribute'];
-        $productSelection['items'] = ['VALIDATION_TEST'];
+        $productAssignment['type'] = $this->getRuleEngineActionType($productAssignment['mode']);
+        $productAssignment['field'] = $productAssignment['attribute'];
+        $productAssignment['items'] = ['VALIDATION_TEST'];
+        $productAssignment['value'] = ['VALIDATION_TEST'];
+        $productAssignment['scope'] = $productAssignment['channel'] ?? null;
+        $productAssignment['locale'] = $productAssignment['locale'] ?? null;
 
-        return $this->actionDenormalizer->denormalize($productSelection, ActionInterface::class);
+        return $this->actionDenormalizer->denormalize($productAssignment, ActionInterface::class);
     }
 
     private function getRuleEngineActionType(string $type): string

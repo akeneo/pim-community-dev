@@ -33,4 +33,4 @@
 #        average_percentage_scopable_only_attributes: Average percentage of scopable only attributes per asset family
 #        average_percentage_scopable_and_localizable_attributes: Average percentage of localizable and scopable attributes per asset family
 
-akeneo_asset_multiple_link: Asset multiple links
+pim_catalog_asset_collection: Asset multiple links

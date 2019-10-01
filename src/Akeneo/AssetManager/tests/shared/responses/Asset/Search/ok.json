@@ -3,7 +3,7 @@
         "method": "PUT",
         "route": "akeneo_asset_manager_asset_index_rest",
         "query": {
-            "assetFamilyIdentifier": "designer"
+            "assetFamilyIdentifier": "packshot"
         },
         "body": {
             "locale": "en_US",
@@ -20,7 +20,7 @@
                 {
                     "field": "asset_family",
                     "operator": "=",
-                    "value": "designer",
+                    "value": "packshot",
                     "context": {}
                 }
             ]
@@ -31,102 +31,52 @@
         "body": {
             "items": [
                 {
-                    "identifier": "designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd",
-                    "asset_family_identifier": "designer",
-                    "code": "dyson",
+                    "identifier": "packshot_backview_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd",
+                    "asset_family_identifier": "packshot",
+                    "code": "backview",
                     "labels": {
-                        "en_US": "Dyson",
-                        "fr_FR": "Dyson"
+                        "en_US": "Backview",
+                        "fr_FR": "Backview"
                     },
-                    "image": "/rest/asset_manager/image_preview/image_designer_ca1857d521a3e5dbc487791da82b7428/thumbnail?data=",
+                    "image": "/rest/asset_manager/image_preview/image_packshot_10b86252577a2f9691d90c162083c4a3/thumbnail?data=",
                     "values": {
-                        "label_designer_d00de54460082b239164135175588647_en_US": {
-                            "attribute": "label_designer_d00de54460082b239164135175588647",
+                        "label_packshot_ef993aecc49d7dd11497cdafbb001287_en_US": {
+                            "attribute": "label_packshot_ef993aecc49d7dd11497cdafbb001287",
                             "channel": null,
                             "locale": "en_US",
-                            "data": "Dyson"
+                            "data": "Backview"
                         },
-                        "label_designer_d00de54460082b239164135175588647_fr_FR": {
-                            "attribute": "label_designer_d00de54460082b239164135175588647",
+                        "label_packshot_ef993aecc49d7dd11497cdafbb001287_fr_FR": {
+                            "attribute": "label_packshot_ef993aecc49d7dd11497cdafbb001287",
                             "channel": null,
                             "locale": "fr_FR",
-                            "data": "Dyson"
-                        },
-                        "colors_designer_52609e00b7ee307e79eb100099b9a8bf": {
-                            "attribute": "colors_designer_52609e00b7ee307e79eb100099b9a8bf",
-                            "channel": null,
-                            "locale": null,
-                            "data": "red"
-                        },
-                        "city_designer_79eb100099b9a8bf52609e00b7ee307e": {
-                            "attribute": "city_designer_79eb100099b9a8bf52609e00b7ee307e",
-                            "channel": null,
-                            "locale": null,
-                            "data": "city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717",
-                            "context": {
-                                "labels": {
-                                    "city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717": {
-                                        "labels": {
-                                            "en_US": "Paris"
-                                        },
-                                        "code": "paris"
-                                    }
-                                }
-                            }
+                            "data": "Backview"
                         }
                     },
                     "completeness": {
                         "complete": 0,
-                        "required": 1
+                        "required": 0
                     }
                 },
                 {
-                    "identifier": "designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2",
-                    "asset_family_identifier": "designer",
-                    "code": "starck",
+                    "identifier": "packshot_frontview_29aea250-bc94-49b2-8259-bbc116410eb2",
+                    "asset_family_identifier": "packshot",
+                    "code": "frontview",
                     "labels": {
-                        "en_US": "Starck"
+                        "en_US": "Frontview"
                     },
-                    "image": "/rest/asset_manager/image_preview/image_designer_ca1857d521a3e5dbc487791da82b7428/thumbnail?data=",
+                    "image": "/rest/asset_manager/image_preview/image_packshot_10b86252577a2f9691d90c162083c4a3/thumbnail?data=",
                     "values": {
-                        "label_designer_d00de54460082b239164135175588647_en_US": {
-                            "attribute": "label_designer_d00de54460082b239164135175588647",
+                        "label_packshot_ef993aecc49d7dd11497cdafbb001287_en_US": {
+                            "attribute": "label_packshot_ef993aecc49d7dd11497cdafbb001287",
                             "channel": null,
                             "locale": "en_US",
-                            "data": "Starck"
-                        },
-                        "description_designer_29aea250-bc94-49b2-8259-bbc116410eb2_ecommerce_en_US": {
-                            "attribute": "description_designer_29aea250-bc94-49b2-8259-bbc116410eb2",
-                            "channel": "ecommerce",
-                            "locale": "en_US",
-                            "data": "an awesome designer!"
-                        },
-                        "colors_designer_52609e00b7ee307e79eb100099b9a8bf": {
-                            "attribute": "colors_designer_52609e00b7ee307e79eb100099b9a8bf",
-                            "channel": null,
-                            "locale": null,
-                            "data": "red"
-                        },
-                        "city_designer_79eb100099b9a8bf52609e00b7ee307e": {
-                            "attribute": "city_designer_79eb100099b9a8bf52609e00b7ee307e",
-                            "channel": null,
-                            "locale": null,
-                            "data": "city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717",
-                            "context": {
-                                "labels": {
-                                    "city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717": {
-                                        "labels": {
-                                            "en_US": "Paris"
-                                        },
-                                        "code": "paris"
-                                    }
-                                }
-                            }
+                            "data": "Frontview"
                         }
                     },
                     "completeness": {
                         "complete": 0,
-                        "required": 1
+                        "required": 0
                     }
                 }
             ],

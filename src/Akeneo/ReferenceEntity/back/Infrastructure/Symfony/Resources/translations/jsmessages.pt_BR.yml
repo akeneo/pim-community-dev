@@ -40,10 +40,6 @@ pim_reference_entity:
       image: Imagem
     attribute:
       title: Atributos do registro
-      attribute:
-        error:
-          render_list: 'Um erro ocorreu durante a renderização do atributo "{{ %attribute_code% }}"'
-          render_edit: 'Um erro ocorreu durante a renderização dos campos de propriedades adicionais do atributo "{{ %attribute_code% }}"'
     module:
       delete:
         button: Apagar o entidade
@@ -73,13 +69,10 @@ pim_reference_entity:
     notification:
       save:
         success: Entidade de referência atualizada com sucesso.
-        fail: Ocorreu um erro ao salvar a entidade de referência
       create:
         success: Entidade de referência criada com sucesso.
-        fail: Ocorreu um erro durante a criação da entidade de referência
       delete:
         success: Entidade de referência excluída com sucesso.
-        fail: Ocorreu um erro durante a exclusão da entidade de referência
   permission:
     notification:
       save:
@@ -172,17 +165,13 @@ pim_reference_entity:
     notification:
       save:
         success: Registro atualizado com sucesso.
-        fail: Ocorreu um erro ao salvar o registro
         validation_error: O registro não pôde ser atualizado
       create:
         success: Registro criado com sucesso.
-        fail: Ocorreu um erro ao criar o registro
       delete:
         success: Registro "{{ code }}" excluído com sucesso.
-        fail: Ocorreu um erro ao excluir o registro
       delete_all:
         success: Todos os "{{ entityIdentifier }}" registros foram excluídos com sucesso.
-        fail: Ocorreu um erro ao excluir todos os registros desta entidade de referência
     completeness:
       label: Completo
   attribute:
@@ -259,19 +248,14 @@ pim_reference_entity:
       message: Tem certeza que deseja excluir o atributo "{{ attributeLabel }}"?
       title: Atributo
     notification:
-      list:
-        fail: Ocorreu um erro ao atualizar a lista de atributos
       save:
         success: Atributo atualizado com sucesso.
-        fail: Ocorreu um erro ao salvar o atributo
         validation_error: O atributo não pôde ser atualizado
       create:
         success: Atributo criado com sucesso.
-        fail: Ocorreu um erro ao criar o atributo
         validation_error: O atributo não pôde ser criado
       delete:
         success: Atributo excluído com sucesso.
-        fail: Ocorreu um erro ao excluir o atributo
     options:
       no_value: Clique aqui para selecionar uma opção.
       sub_title: Entidades de referência

@@ -26,8 +26,6 @@ use Symfony\Component\Validator\Validation;
  */
 class CodeValidator extends ConstraintValidator
 {
-    private const MAX_IDENTIFIER_LENGTH = 255;
-
     public function validate($code, Constraint $constraint)
     {
         if (!$constraint instanceof Code) {
@@ -38,7 +36,7 @@ class CodeValidator extends ConstraintValidator
         $violations = $validator->validate($code, [
                 new Constraints\NotBlank(),
                 new Constraints\Type(['type' => 'string']),
-                new Constraints\Length(['max' => self::MAX_IDENTIFIER_LENGTH, 'min' => 1]),
+                new Constraints\Length(['max' => AttributeCode::MAX_LENGTH, 'min' => 1]),
                 new Constraints\Regex([
                         'pattern' => '/^[a-zA-Z0-9_]+$/',
                         'message' => Code::MESSAGE_WRONG_PATTERN,

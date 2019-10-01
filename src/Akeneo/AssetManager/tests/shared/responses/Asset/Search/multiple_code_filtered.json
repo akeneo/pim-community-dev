@@ -1,0 +1,162 @@
+{
+  "request": {
+      "method": "PUT",
+      "route": "akeneo_asset_manager_asset_index_rest",
+      "query": {
+          "assetFamilyIdentifier": "packshot"
+      },
+      "body": {
+          "channel": "ecommerce",
+          "locale": "en_US",
+          "size": 200,
+          "page": 0,
+          "filters": [
+              {
+                  "field": "asset_family",
+                  "operator": "=",
+                  "value": "packshot"
+              },
+              {
+                  "field": "code",
+                  "operator": "IN",
+                  "value": [
+                      "frontview",
+                      "sideview",
+                      "backview"
+                  ]
+              }
+          ]
+      }
+  },
+  "response": {
+      "status": 200,
+      "body": {
+          "items": [
+              {
+                  "identifier": "packshot_frontview_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd",
+                  "asset_family_identifier": "packshot",
+                  "code": "frontview",
+                  "labels": {
+                      "en_US": "Frontview",
+                      "fr_FR": "Frontview"
+                  },
+                  "image": "/rest/asset_manager/image_preview/image_packshot_ca1857d521a3e5dbc487791da82b7428/thumbnail?data=",
+                  "values": {
+                      "label_packshot_d00de54460082b239164135175588647_en_US": {
+                          "attribute": "label_packshot_d00de54460082b239164135175588647",
+                          "channel": null,
+                          "locale": "en_US",
+                          "data": "Frontview"
+                      },
+                      "label_packshot_d00de54460082b239164135175588647_fr_FR": {
+                          "attribute": "label_packshot_d00de54460082b239164135175588647",
+                          "channel": null,
+                          "locale": "fr_FR",
+                          "data": "Vue de face"
+                      },
+                      "colors_packshot_52609e00b7ee307e79eb100099b9a8bf": {
+                          "attribute": "colors_packshot_52609e00b7ee307e79eb100099b9a8bf",
+                          "channel": null,
+                          "locale": null,
+                          "data": "red"
+                      },
+                      "image_packshot_52609e00b7ee307e79eb100099b9a8bf": {
+                          "attribute": "image_packshot_52609e00b7ee307e79eb100099b9a8bf",
+                          "channel": null,
+                          "locale": null,
+                          "data": "5/6/a/5/56a5955ca1fbdf74d8d18ca6e5f62bc74b867a5d_packshot.jpg"
+                      }
+                  },
+                  "completeness": {
+                      "complete": 0,
+                      "required": 1
+                  }
+              },
+
+              {
+                  "identifier": "packshot_sideview_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd",
+                  "asset_family_identifier": "packshot",
+                  "code": "sideview",
+                  "labels": {
+                      "en_US": "Sideview",
+                      "fr_FR": "Sideview"
+                  },
+                  "image": "/rest/asset_manager/image_preview/image_packshot_ca1857d521a3e5dbc487791da82b7428/thumbnail?data=",
+                  "values": {
+                      "label_packshot_d00de54460082b239164135175588647_en_US": {
+                          "attribute": "label_packshot_d00de54460082b239164135175588647",
+                          "channel": null,
+                          "locale": "en_US",
+                          "data": "Sideview"
+                      },
+                      "label_packshot_d00de54460082b239164135175588647_fr_FR": {
+                          "attribute": "label_packshot_d00de54460082b239164135175588647",
+                          "channel": null,
+                          "locale": "fr_FR",
+                          "data": "Vue de côté"
+                      },
+                      "colors_packshot_52609e00b7ee307e79eb100099b9a8bf": {
+                          "attribute": "colors_packshot_52609e00b7ee307e79eb100099b9a8bf",
+                          "channel": null,
+                          "locale": null,
+                          "data": "red"
+                      },
+                      "image_packshot_52609e00b7ee307e79eb100099b9a8bf": {
+                          "attribute": "image_packshot_52609e00b7ee307e79eb100099b9a8bf",
+                          "channel": null,
+                          "locale": null,
+                          "data": "5/6/a/5/56a5955ca1fbdf74d8d18ca6e5f62bc74b867a5d_packshot.jpg"
+                      }
+                  },
+                  "completeness": {
+                      "complete": 0,
+                      "required": 1
+                  }
+              },
+
+              {
+                  "identifier": "packshot_backview_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd",
+                  "asset_family_identifier": "packshot",
+                  "code": "backview",
+                  "labels": {
+                      "en_US": "Backview",
+                      "fr_FR": "Vue de dos"
+                  },
+                  "image": "/rest/asset_manager/image_preview/image_packshot_ca1857d521a3e5dbc487791da82b7428/thumbnail?data=",
+                  "values": {
+                      "label_packshot_d00de54460082b239164135175588647_en_US": {
+                          "attribute": "label_packshot_d00de54460082b239164135175588647",
+                          "channel": null,
+                          "locale": "en_US",
+                          "data": "Backview"
+                      },
+                      "label_packshot_d00de54460082b239164135175588647_fr_FR": {
+                          "attribute": "label_packshot_d00de54460082b239164135175588647",
+                          "channel": null,
+                          "locale": "fr_FR",
+                          "data": "Vue de dos"
+                      },
+                      "colors_packshot_52609e00b7ee307e79eb100099b9a8bf": {
+                          "attribute": "colors_packshot_52609e00b7ee307e79eb100099b9a8bf",
+                          "channel": null,
+                          "locale": null,
+                          "data": "red"
+                      },
+                      "image_packshot_52609e00b7ee307e79eb100099b9a8bf": {
+                          "attribute": "image_packshot_52609e00b7ee307e79eb100099b9a8bf",
+                          "channel": null,
+                          "locale": null,
+                          "data": "5/6/a/5/56a5955ca1fbdf74d8d18ca6e5f62bc74b867a5d_packshot.jpg"
+                      }
+                  },
+                  "completeness": {
+                      "complete": 0,
+                      "required": 1
+                  }
+              }
+          ],
+          "matches_count": 1,
+          "total_count": 3
+      }
+  }
+}

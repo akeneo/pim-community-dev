@@ -1,36 +1,18 @@
-class InvalidTypeError extends Error {}
+import {isString, isNull} from 'akeneoassetmanager/domain/model/utils';
 
-export type NormalizedLocaleReference = string | null;
+type LocaleReference = string | null;
+export default LocaleReference;
 
-export default class LocaleReference {
-  private constructor(private localeReference: string | null) {
-    if (!('string' === typeof localeReference || null === localeReference)) {
-      throw new InvalidTypeError('LocaleReference expects a string or null as parameter to be created');
-    }
+export const localeReferenceIsEmpty = (localeReference: LocaleReference): localeReference is null =>
+  isNull(localeReference);
+export const localeReferenceAreEqual = (first: LocaleReference, second: LocaleReference): boolean => first === second;
+export const localeReferenceStringValue = (localeReference: LocaleReference) =>
+  isNull(localeReference) ? '' : localeReference;
 
-    Object.freeze(this);
+export const denormalizeLocaleReference = (localeReference: any): LocaleReference => {
+  if (!(isString(localeReference) || isNull(localeReference))) {
+    throw new Error('A locale reference should be a string or null');
   }
 
-  public static create(localeReference: string | null): LocaleReference {
-    return new LocaleReference(localeReference);
-  }
-
-  public equals(localeReference: LocaleReference): boolean {
-    return this.stringValue() === localeReference.stringValue();
-  }
-
-  public stringValue(): string {
-    return null === this.localeReference ? '' : this.localeReference;
-  }
-
-  public isEmpty(): boolean {
-    return null === this.localeReference;
-  }
-
-  public normalize(): string | null {
-    return this.localeReference;
-  }
-}
-
-export const createLocaleReference = LocaleReference.create;
-export const denormalizeLocaleReference = LocaleReference.create;
+  return localeReference;
+};

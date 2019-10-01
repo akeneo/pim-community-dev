@@ -40,13 +40,11 @@ pimee_catalog_rule:
           confirm_title: Confirmar execução
           confirm_content: Tem certeza que deseja executar as regras selecionadas?
           success: A ação em massa para executar as regras selecionadas foi lançada. Você receberá uma notificação quando finalizar
-          error: Ocorreu um erro durante a execução das regras.
           empty_selection: Nenhuma regra selecionada.
         delete:
           confirm_title: Confirmar execução
           confirm_content: Tem certeza que deseja excluir as regras selecionadas?
           success: Você excluiu com sucesso as regras.
-          error: Ocorreu um erro durante a exclusão das regras.
           empty_selection: Nenhuma regra selecionada.
   form:
     attribute:

@@ -3,6 +3,29 @@
 #  akeneo_asset_manager_asset_family_edit: Edit an asset family
 #  akeneo_asset_manager_asset_edit: Edit an asset
 pim_asset_manager:
+  asset_collection:
+    asset_count:
+      '{{ count }} asset|{{ count }} assets'
+    add_asset: 'Add asset'
+    no_asset_in_collection: 'Sorry, there is no asset in this collection.'
+    helper:
+      title: 'Welcome to your new product asset management area!'
+      text: 'There are no asset collection for the {{ family }} family! How to add an asset collection?'
+      link: 'How to add an asset collection?'
+    no_asset:
+      title: 'Sorry, there are no asset for this product'
+      text: 'There are no asset collection for the {{ family }} family!'
+    notification:
+      product_rule: 'This collection can be updated by a product rule:'
+    remove_one_asset: Remove asset {{ assetName }} from asset collection
+    remove_all_assets: Remove all assets
+    other_actions: Other actions
+    open_other_actions: Open other actions
+    dismiss_other_actions: Dismiss other actions
+    move_asset_to_left: Move asset {{ assetName }} to the left
+    move_asset_to_right: Move asset {{ assetName }} to the right
+  asset_picker:
+    title: Add assets to your product
 #  app:
 #    image:
 #      wide:
@@ -15,7 +38,7 @@ pim_asset_manager:
 #        upload: Drag and drop to upload
 #  grid:
 #    counter: '{{ count }} result|{{ count }} results'
-#  asset_family:
+  asset_family:
 #    validation:
 #      code:
 #        pattern: 'This field may only contain letters, numbers and underscores.'
@@ -27,7 +50,7 @@ pim_asset_manager:
 #      create: Create
 #    permission:
 #      title: Entity permissions
-#    title: Assets
+    title: Assets
 #    breadcrumb: Asset Families
 #    img: The main image of the asset family named "{{ label }}"
 #    tab:
@@ -91,7 +114,7 @@ pim_asset_manager:
 #      title: You have no user group
 #      subtitle: To manage permission on asset family you need to have at least one user group.
 #      link: Clic here to add your first user group
- asset:
+  asset:
 #    validation:
 #      limit_reached: 'You cannot create the asset "{{ %asset_label% }}" because you have reached the limit of {{ %limit% }} assets for this asset family'
 #      code:
@@ -103,8 +126,8 @@ pim_asset_manager:
 #    no_result:
 #      title: There are no result for your search
 #      subtitle: Try again with new search criteria.
-   selector:
-     no_value: Click here to select an asset.
+    selector:
+      no_value: Click here to select an asset.
 #    error:
 #      value: Oops, it seems that the rendering of the "{{ fieldName }}" field failed. See the developer console for more details.
 #    button:
@@ -198,7 +221,7 @@ pim_asset_manager:
 #        fail: An error occured during the deletion of all this asset family's assets
 #    completeness:
 #      label: Complete
-#  attribute:
+  attribute:
 #    validation:
 #      limit_reached: 'You cannot create the attribute "{{ %attribute_label% }}" because you have reached the limit of {{ %limit% }} attributes for this asset family'
 #    default:
@@ -213,7 +236,7 @@ pim_asset_manager:
 #      option: Single option
 #      option_collection: Multiple options
 #      number: Number
-#    is_required: required for completeness
+    is_required: required for completeness
 #    no_data:
 #      title: There are no custom attributes for {{ entityLabel }}
 #      subtitle: Click on the button "Add an attribute" to configure your first custom attribute
@@ -301,19 +324,19 @@ pim_asset_manager:
 #        cancel: Cancel
 #        confirm: Delete
 #
-#pim_enrich:
+pim_enrich:
 #  confirmation:
 #    discard_changes: 'You will lose changes to the "{{ entity }}" entity if you leave the page.'
-#  entity:
-#    attribute:
-#      property:
-#        type:
-#          akeneo_asset_multiple_link: Asset multiple links
-#        section:
-#          type_specific: Type specific parameters
-#        asset_family:
-#          identifier: Related asset family (required)
-#          default_label: Please select an asset family
+  entity:
+   attribute:
+     property:
+      #  type:
+      #    pim_catalog_asset_collection: Asset multiple links
+      #  section:
+      #    type_specific: Type specific parameters
+       asset_family:
+         identifier: Related asset family (required)
+         default_label: Please select an asset family
 #
 #permission:
 #  mass_action: Apply {{ rightLevel }} right on all groups

@@ -3,7 +3,7 @@
         "method": "POST",
         "route": "pim_enrich_attribute_rest_index",
         "query": {},
-        "body": "types=akeneo_asset%2Cakeneo_asset_multiple_link"
+        "body": "types=akeneo_asset%2Cpim_catalog_asset_collection"
     },
     "response": {
         "status": 200,
@@ -40,7 +40,7 @@
                 "empty_value": null,
                 "field_type": "akeneo-asset-single-link-field",
                 "filter_types": {
-                    "product-export-builder": "akeneo-attribute-asset-multiple-link-filter"
+                    "product-export-builder": "akeneo-attribute-asset-collection-filter"
                 },
                 "is_locale_specific": false,
                 "meta": {

@@ -21,6 +21,7 @@ use Akeneo\AssetManager\Domain\Model\Asset\Value\AssetData;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\FileData;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\MediaLinkData;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\OptionCollectionData;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\OptionData;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\TextData;
@@ -45,6 +46,10 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Prefix;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Suffix;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
@@ -131,6 +136,20 @@ class SqlFindConnectorAssetByAssetFamilyAndCodeTest extends SqlIntegrationTestCa
                         'locale'  => null,
                         'channel' => null,
                         'data'    => ['plastic', 'metal'],
+                    ]
+                ],
+                'front_view' => [
+                    [
+                        'locale'  => null,
+                        'channel' => null,
+                        'data'    => 'house_front_view'
+                    ]
+                ],
+                'front_view_dam' => [
+                    [
+                        'locale'  => null,
+                        'channel' => null,
+                        'data'    => 'house_front_view'
                     ]
                 ],
             ]
@@ -220,6 +239,18 @@ class SqlFindConnectorAssetByAssetFamilyAndCodeTest extends SqlIntegrationTestCa
                     LocaleReference::noReference(),
                     OptionCollectionData::createFromNormalize(['plastic', 'metal'])
                 ),
+                Value::Create(
+                    AttributeIdentifier::fromString('front_view_designer_fingerprint'),
+                    ChannelReference::noReference(),
+                    LocaleReference::noReference(),
+                    MediaLinkData::fromString('house_front_view')
+                ),
+                Value::Create(
+                    AttributeIdentifier::fromString('front_view_dam_designer_fingerprint'),
+                    ChannelReference::noReference(),
+                    LocaleReference::noReference(),
+                    MediaLinkData::fromString('house_front_view')
+                )
             ])
         );
 
@@ -326,6 +357,34 @@ class SqlFindConnectorAssetByAssetFamilyAndCodeTest extends SqlIntegrationTestCa
             AttributeOption::create(OptionCode::fromString('wood'), LabelCollection::fromArray([])),
         ]);
 
+        $frontView = MediaLinkAttribute::create(
+            AttributeIdentifier::create('designer', 'front_view', 'fingerprint'),
+            AssetFamilyIdentifier::fromString('designer'),
+            AttributeCode::fromString('front_view'),
+            LabelCollection::fromArray(['en_US' => 'Front View']),
+            AttributeOrder::fromInteger(8),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            Prefix::fromString(''),
+            Suffix::fromString(''),
+            MediaType::fromString(MediaType::IMAGE)
+        );
+
+        $frontViewDam = MediaLinkAttribute::create(
+            AttributeIdentifier::create('designer', 'front_view_dam', 'fingerprint'),
+            AssetFamilyIdentifier::fromString('designer'),
+            AttributeCode::fromString('front_view_dam'),
+            LabelCollection::fromArray(['en_US' => 'Front View Dam']),
+            AttributeOrder::fromInteger(9),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            Prefix::fromString('https://my-dam.com/'),
+            Suffix::fromString('/500x500/thumbnail'),
+            MediaType::fromString(MediaType::IMAGE)
+        );
+
         $attributesRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute');
         $attributesRepository->create($name);
         $attributesRepository->create($image);
@@ -333,6 +392,8 @@ class SqlFindConnectorAssetByAssetFamilyAndCodeTest extends SqlIntegrationTestCa
         $attributesRepository->create($brands);
         $attributesRepository->create($favoriteColor);
         $attributesRepository->create($materials);
+        $attributesRepository->create($frontView);
+        $attributesRepository->create($frontViewDam);
 
         $countryAsset = Asset::create(
             AssetIdentifier::fromString('country_france_fingerprint'),
