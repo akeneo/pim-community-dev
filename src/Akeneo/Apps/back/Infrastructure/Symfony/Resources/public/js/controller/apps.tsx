@@ -2,17 +2,16 @@ import * as $ from 'jquery';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
+import {AppsList} from 'akeneoapps-react/application/component/apps-list.tsx';
+
 const BaseController = require('pim/controller/base');
 
-class AppsListController extends BaseController {
+class AppsController extends BaseController {
   renderRoute() {
-    ReactDOM.render(
-      <>Hello world!</>,
-      this.el
-    );
+    ReactDOM.render(<AppsList />, this.el);
 
     return $.Deferred().resolve();
   }
 }
 
-export = AppsListController;
+export = AppsController;

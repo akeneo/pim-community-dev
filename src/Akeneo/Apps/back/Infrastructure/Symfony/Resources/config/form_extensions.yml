@@ -5,4 +5,4 @@ extensions:
         position: 120
         config:
             title: pim_menu.item.apps
-            to: akeneo_apps_index
+            to: akeneo_apps

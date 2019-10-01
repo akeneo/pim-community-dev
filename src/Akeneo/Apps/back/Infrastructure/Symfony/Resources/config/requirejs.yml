@@ -2,9 +2,9 @@ config:
     config:
         pim/controller-registry:
             controllers:
-                akeneo_apps_index:
-                    module: pim/controller/apps/list
+                akeneo_apps:
+                    module: pim/controller/apps
     
     paths:
-        pim/controller/apps/list: akeneoapps/infrastructure/controller/apps-list.backbone.tsx
+        pim/controller/apps: akeneoapps/js/controller/apps.tsx
         
