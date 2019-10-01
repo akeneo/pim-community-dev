@@ -7,10 +7,12 @@ namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ElasticsearchProjection;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductProjectionInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductProjectionInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductProjection;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueCollectionFactory;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -44,11 +46,6 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
         $this->additionalDataProviders = $additionalDataProviders;
     }
 
-    public function fromProductIdentifier(string $productIdentifier): ElasticsearchProductProjection
-    {
-        return $this->fromProductIdentifiers([$productIdentifier])[$productIdentifier];
-    }
-
     public function fromProductIdentifiers(array $productIdentifiers): array
     {
         if (empty($productIdentifiers)) {
@@ -58,6 +55,15 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
         $rows = $this->fetchRows($productIdentifiers);
         $rows = $this->calculateAttributeCodeAncestors($rows);
         $rows = $this->calculateAttributeCodeForOwnLevel($rows);
+
+        $rowIdentifiers = array_map(function (array $row) {
+            return $row['identifier'];
+        }, $rows);
+
+        $diffIdentifiers = array_diff($productIdentifiers, $rowIdentifiers);
+        if (count($diffIdentifiers) > 0) {
+            throw new ObjectNotFoundException(sprintf('Product identifiers "%s" were not found.', implode(',', $rowIdentifiers)));
+        }
 
         $platform = $this->connection->getDatabasePlatform();
 
@@ -74,7 +80,7 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
             $valueCollection = $this->valueCollectionFactory->createFromStorageFormat($rawValues);
             $values = $this->valuesNormalizer->normalize($valueCollection, self::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX);
 
-            // use Type::DATETIME and not Type::DATETIME_IMMUTABLE as it's overrided in the PIM (UTCDateTimeType) to handle UTC correctly
+            // use Type::DATETIME and not Type::DATETIME_IMMUTABLE as it's overridden in the PIM (UTCDateTimeType) to handle UTC correctly
             $results[$row['identifier']] = new ElasticsearchProductProjection(
                 $row['id'],
                 $row['identifier'],
@@ -96,6 +102,13 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
                 $row['attribute_codes_of_ancestor'],
                 $row['attribute_codes_for_this_level']
             );
+        }
+
+        foreach ($this->additionalDataProviders as $additionalDataProvider) {
+            $additionalDataPerProduct = $additionalDataProvider->fromProductIdentifiers($productIdentifiers);
+            foreach ($additionalDataPerProduct as $productIdentifier => $additionalData) {
+                $results[$productIdentifier] = $results[$productIdentifier]->addAdditionalData($additionalData);
+            }
         }
 
         return $results;

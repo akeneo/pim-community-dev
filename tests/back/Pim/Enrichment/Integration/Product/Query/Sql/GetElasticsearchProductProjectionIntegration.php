@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AkeneoTest\Pim\Enrichment\Integration\Product\Query\Sql;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductProjection;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Sanitizer\DateSanitizer;
@@ -302,7 +303,7 @@ class GetElasticsearchProductProjectionIntegration extends TestCase
         $this->createProductWithFamily();
 
         $query = $this->get('akeneo.pim.enrichment.product.query.get_elasticsearch_product_projection');
-        $productProjection = $query->fromProductIdentifier('bar');
+        $productProjection = $query->fromProductIdentifiers(['bar'])['bar'];
         $normalizedProductProjection = $productProjection->toArray();
 
         $expectedAttributeCodesForThisLevel = [
@@ -343,9 +344,17 @@ class GetElasticsearchProductProjectionIntegration extends TestCase
         $this->getConnection()->executeQuery($sql, ['updated_date' => '2030-10-01 12:34:56', 'code' => 'sub_product_model']);
 
         $query = $this->get('akeneo.pim.enrichment.product.query.get_elasticsearch_product_projection');
-        $productProjection = $query->fromProductIdentifier('bar');
+        $productProjection = $query->fromProductIdentifiers(['bar'])['bar'];
 
         $this->assertEquals('2030-10-01T14:34:56+02:00', $productProjection->toArray()['updated']);
+    }
+
+    public function test_that_it_throws_an_exception_when_product_identifier_does_not_exist()
+    {
+        $this->expectException(ObjectNotFoundException::class);
+
+        $query = $this->get('akeneo.pim.enrichment.product.query.get_elasticsearch_product_projection');
+        $query->fromProductIdentifiers(['bar'])['bar'];
     }
 
     protected function getConfiguration()
@@ -504,7 +513,8 @@ class GetElasticsearchProductProjectionIntegration extends TestCase
     {
 
         $query = $this->get('akeneo.pim.enrichment.product.query.get_elasticsearch_product_projection');
-        $productProjection = $query->fromProductIdentifier($identifier);
+        $productProjections = $query->fromProductIdentifiers([$identifier]);
+        $productProjection = $productProjections[$identifier];
 
         $normalizedProductProjection = $productProjection->toArray();
         // allows to execute test from EE by removing additional properties
