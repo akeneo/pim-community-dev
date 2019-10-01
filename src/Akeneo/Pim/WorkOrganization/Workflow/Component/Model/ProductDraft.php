@@ -178,7 +178,7 @@ class ProductDraft implements EntityWithValuesDraftInterface
 
         foreach ($changes['values'] as $code => $changeset) {
             foreach ($changeset as $index => $change) {
-                $changeStatus = $this->getReviewStatusForChange($code, $change['locale'], $change['scope']);
+                $changeStatus = $this->getReviewStatusForChange((string) $code, $change['locale'], $change['scope']);
                 if ($status !== $changeStatus) {
                     unset($changes['values'][$code][$index]);
                 }
