@@ -36,9 +36,7 @@ abstract class TestCase extends KernelTestCase
      */
     protected function setUp(): void
     {
-        static::bootKernel(['debug' => false]);
-        $this->testKernel = new \AppKernelTest('test', false);
-        $this->testKernel->boot();
+        $this->testKernel = static::bootKernel(['debug' => false]);
 
         $this->catalog = $this->getFromTestContainer('akeneo_integration_tests.configuration.catalog');
         if (null !== $this->getConfiguration()) {
@@ -76,7 +74,7 @@ abstract class TestCase extends KernelTestCase
      */
     protected function getFromTestContainer(string $service)
     {
-        return $this->testKernel->getContainer()->get($service);
+        return static::$kernel->getContainer()->get($service);
     }
 
     /**

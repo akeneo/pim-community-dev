@@ -185,11 +185,13 @@ abstract class ApiTestCase extends WebTestCase
     /**
      * @param string $service
      *
+     * TODO: remove it
+     *
      * @return mixed
      */
     protected function getFromTestContainer(string $service)
     {
-        return $this->testKernel->getContainer()->get($service);
+        return static::$kernel->getContainer()->get($service);
     }
 
     /**
