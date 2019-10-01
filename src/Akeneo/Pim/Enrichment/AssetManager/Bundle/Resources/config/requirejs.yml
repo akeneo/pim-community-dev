@@ -1,0 +1,12 @@
+config:
+    config:
+        pim/attribute-edit-form/type-specific-form-registry:
+            formNames:
+                pim_catalog_asset_collection:
+                    create: pim-attribute-form-asset
+                    edit:   pim-attribute-form-asset
+        pim/form/common/attributes/create-button:
+            attribute_icons:
+                pim_catalog_asset_collection: asset-collection
+    paths:
+        pim/product-edit-form/assets: akeneopimenrichmentassetmanager/product/tab/asset

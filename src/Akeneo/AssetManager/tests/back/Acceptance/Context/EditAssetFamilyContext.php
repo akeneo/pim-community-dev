@@ -18,15 +18,19 @@ use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFam
 use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyCommand;
 use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyHandler;
 use Akeneo\AssetManager\Common\Fake\Anticorruption\RuleEngineValidatorACLStub;
+use Akeneo\AssetManager\Common\Fake\InMemoryChannelExists;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
+use Akeneo\AssetManager\Common\Fake\InMemoryGetAssetCollectionTypeAdapter;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer\FixturesLoader;
+use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetMultipleLinkType;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -43,6 +47,8 @@ final class EditAssetFamilyContext implements Context
     private const RULE_ENGINE_VALIDATION_MESSAGE = 'RULE ENGINE WILL NOT EXECUTE';
     private const ASSET_FAMILY_IDENTIFIER = 'packshot';
     private const ATTRIBUTE_CODE = 'attribute_code';
+    private const UNKNOWN_CHANNEL = 'unknown_channel';
+    private const UNKNOWN_LOCALE = 'UNKNOWN_LOCALE';
 
     /** @var AssetFamilyRepositoryInterface */
     private $assetFamilyRepository;
@@ -71,6 +77,12 @@ final class EditAssetFamilyContext implements Context
     /** @var FixturesLoader */
     private $fixturesLoader;
 
+    /** @var InMemoryChannelExists */
+    private $channelExists;
+
+    /** @var InMemoryGetAssetCollectionTypeAdapter */
+    private $inMemoryFindAssetCollectionTypeACL;
+
     public function __construct(
         AssetFamilyRepositoryInterface $assetFamilyRepository,
         EditAssetFamilyHandler $editAssetFamilyHandler,
@@ -80,6 +92,8 @@ final class EditAssetFamilyContext implements Context
         InMemoryFindActivatedLocalesByIdentifiers $activatedLocales,
         RuleEngineValidatorACLStub $ruleEngineValidatorACLStub,
         FixturesLoader $fixturesLoader,
+        InMemoryChannelExists $channelExists,
+        InMemoryGetAssetCollectionTypeAdapter $inMemoryFindAssetCollectionTypeACL,
         int $ruleTemplateByAssetFamilyLimit
     ) {
         $this->assetFamilyRepository = $assetFamilyRepository;
@@ -90,7 +104,11 @@ final class EditAssetFamilyContext implements Context
         $this->activatedLocales = $activatedLocales;
         $this->ruleEngineValidatorACLStub = $ruleEngineValidatorACLStub;
         $this->fixturesLoader = $fixturesLoader;
+        $this->channelExists = $channelExists;
+        $this->inMemoryFindAssetCollectionTypeACL = $inMemoryFindAssetCollectionTypeACL;
         $this->ruleTemplateByAssetFamilyLimit = $ruleTemplateByAssetFamilyLimit;
+
+        $this->inMemoryFindAssetCollectionTypeACL->stubWith(self::ASSET_FAMILY_IDENTIFIER);
     }
 
     /**
@@ -321,8 +339,8 @@ final class EditAssetFamilyContext implements Context
      */
     public function anEmptyRuleTemplateCollectionOnTheAssetFamily(string $code)
     {
+        $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
         $createCommand = new CreateAssetFamilyCommand($code, [], []);
-
         $violations = $this->validator->validate($createCommand);
         if ($violations->count() > 0) {
             throw new \LogicException(sprintf('Cannot create asset family: %s', $violations->get(0)->getMessage()));
@@ -431,8 +449,10 @@ final class EditAssetFamilyContext implements Context
     /**
      * @Given /^an asset family with no product link rules and a text attribute$/
      */
-    public function anAssetFamilyWithSomeAttributes()
+    public function anAssetFamilyWithNoProductLinkRulesAndATextAttribute()
     {
+        $this->createEcommerceChannel();
+        $this->createEnUsLocale();
         $this->fixturesLoader
             ->assetFamily(self::ASSET_FAMILY_IDENTIFIER)
             ->withAttributeOfTypeText(self::ASSET_FAMILY_IDENTIFIER, self::ATTRIBUTE_CODE)
@@ -440,7 +460,35 @@ final class EditAssetFamilyContext implements Context
     }
 
     /**
-     * @When /^the user updates this asset family with a dynamic product link rule having a product selection field which references this text attribute$/
+     * @Given /^an asset family with no product link rules$/
+     */
+    public function anAssetFamilyWithNoProductLinkRules()
+    {
+        $this->createEcommerceChannel();
+        $this->createEnUsLocale();
+        $this->fixturesLoader->assetFamily(self::ASSET_FAMILY_IDENTIFIER)->load();
+    }
+
+    /**
+     * @Given /^an asset family with no product link rules and a channel$/
+     */
+    public function anAssetFamilyWithNoProductLinkRulesAndAChannel()
+    {
+        $this->createEcommerceChannel();
+        $this->fixturesLoader->assetFamily(self::ASSET_FAMILY_IDENTIFIER)->load();
+    }
+
+    /**
+     * @Given /^an asset family with no product link rules and a locale$/
+     */
+    public function anAssetFamilyWithNoProductLinkRulesAndALocale()
+    {
+        $this->createEnUsLocale();
+        $this->fixturesLoader->assetFamily(self::ASSET_FAMILY_IDENTIFIER)->load();
+    }
+
+    /**
+     * @When /^the user updates this asset family with a dynamic product link rule having a product selection field which references this attribute$/
      */
     public function theUserCreatesAnAssetFamilyWithADynamicProductLinkRuleWhichReferencesThoseAttributes()
     {
@@ -505,7 +553,7 @@ final class EditAssetFamilyContext implements Context
     }
 
     /**
-     * @When /^the user updates this asset family with a dynamic product link rule having a dynamic assignment value which references this text attribute$/
+     * @When /^the user updates this asset family with a dynamic product link rule having a dynamic assignment attribute which references this text attribute$/
      */
     public function theUserUpdatesThisAssetFamilyWithADynamicProductLinkRuleHavingADynamicAssignmentAttributeValueWhichReferencesThisAttribute(
     ) {
@@ -611,7 +659,7 @@ final class EditAssetFamilyContext implements Context
     }
 
     /**
-     * @When /^the user updates this asset family with a dynamic product link rule having a product selection channel this text attribute$/
+     * @When /^the user updates this asset family with a dynamic product link rule having a product selection channel referencing this text attribute$/
      */
     public function theUserUpdatesThisAssetFamilyWithADynamicProductLinkRuleHavingAProductSelectionChannelWhichReferencesThisMultipleOptionAttribute()
     {
@@ -734,34 +782,6 @@ final class EditAssetFamilyContext implements Context
     }
 
     /**
-     * @When /^the user updates this asset family with a dynamic product link rule having a product selection field which references this attribute$/
-     */
-    public function theUserUpdatesThisAssetFamilyWithADynamicProductLinkRuleHavingAProductSelectionFieldWhichReferencesAnAttributeHavingAnUnsupportedAttributeType()
-    {
-        $dynamicRuleTemplate = [
-            'product_selections' => [
-                [
-                    'field' => $this->toExtrapolation(self::ATTRIBUTE_CODE),
-                    'operator'  => '=',
-                    'value'     => '123456789',
-                    'channel' => 'ecommerce',
-                    'locale' => 'en_US',
-                ]
-            ],
-            'assign_assets_to'    => [
-                [
-                    'mode'      => 'replace',
-                    'attribute' => 'asset_collection',
-                    'channel' => 'ecommerce',
-                    'locale' => 'en_US',
-                ]
-            ]
-        ];
-        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
-        $this->editAssetFamily($command);
-    }
-
-    /**
      * @Then /^there should be a validation error stating that the product selection field does not support this attribute for extrapolation$/
      */
     public function thereShouldBeAValidationErrorStatingThatTheProductSelectionFieldDoesNotSupportExtrapolatedImageAttribute()
@@ -876,12 +896,637 @@ final class EditAssetFamilyContext implements Context
     }
 
     /**
+     * @When /^the user updates this asset family with a dynamic product link rule having an assignment attribute which references this attribute$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithADynamicProductLinkRuleHavingAnAssignmentAttributeWhichReferencesAnAttributeHavingAnUnsupportedAttributeType()
+    {
+        $dynamicRuleTemplate = [
+            'product_selections' => [
+                [
+                    'field' => 'sku',
+                    'operator'  => '=',
+                    'value'     => '123444456789',
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
+                ]
+            ],
+            'assign_assets_to'    => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => $this->toExtrapolation(self::ATTRIBUTE_CODE),
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
+                ]
+            ]
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
      * @Then /^there should be a validation error stating that the product selection locale does not support this attribute for extrapolation$/
      */
-    public function thereShouldBeAValidationErrorStatingThatTheProductSelectionLocaleDoesNotSupportExtrapolatedImageAttribute()
+    public function thereShouldBeAValidationErrorStatingThatTheAssignmentAttributeDoesNotSupportThisExtrapolatedAttributeType()
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
             sprintf('The attribute "%s" of type "image" is not supported, only the following attribute types are supported for this field: text', self::ATTRIBUTE_CODE)
+        );
+    }
+
+    /**
+     * @When /^the user updates this asset family with a dynamic product link rule having an assignment channel which references this attribute$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithADynamicProductLinkRuleHavingAnAssignmentChannelWhichReferencesThisAttribute()
+    {
+        $dynamicRuleTemplate = [
+            'product_selections' => [
+                [
+                    'field' => 'sku',
+                    'operator'  => '=',
+                    'value'     => '123444456789',
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
+                ]
+            ],
+            'assign_assets_to'    => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => 'my_asset_collection',
+                    'channel' => $this->toExtrapolation(self::ATTRIBUTE_CODE),
+                    'locale' => 'en_US',
+                ]
+            ]
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
+     * @Then /^there should be a validation error stating that the product assignment channel does not support this attribute for extrapolation$/
+     */
+    public function thereShouldBeAValidationErrorStatingThatTheProductAssignmentChannelDoesNotSupportThisAttributeForExtrapolation()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            sprintf('The attribute "%s" of type "image" is not supported, only the following attribute types are supported for this field: text', self::ATTRIBUTE_CODE)
+        );
+    }
+
+    /**
+     * @When /^the user updates this asset family with a dynamic product link rule having an assignment locale which references this attribute$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithADynamicProductLinkRuleHavingAnAssignmentLocaleWhichReferencesThisAttribute()
+    {
+        $dynamicRuleTemplate = [
+            'product_selections' => [
+                [
+                    'field' => 'sku',
+                    'operator'  => '=',
+                    'value'     => '123444456789',
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
+                ]
+            ],
+            'assign_assets_to'    => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => 'my_asset_collection',
+                    'channel' => 'ecommerce',
+                    'locale' => $this->toExtrapolation(self::ATTRIBUTE_CODE),
+                ]
+            ]
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
+     * @Then /^there should be a validation error stating that the product assignment locale does not support this attribute for extrapolation$/
+     */
+    public function thereShouldBeAValidationErrorStatingThatTheProductAssignmentLocaleDoesNotSupportThisAttributeForExtrapolation()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            sprintf('The attribute "%s" of type "image" is not supported, only the following attribute types are supported for this field: text', self::ATTRIBUTE_CODE)
+        );
+    }
+
+    /**
+     * @When /^the user updates this asset family with a product link rule having no product selection channel$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithAProductLinkRuleHavingANoProductSelectionChannel()
+    {
+        $dynamicRuleTemplate = [
+            'product_selections' => [
+                [
+                    'field' => 'sku',
+                    'operator'  => '=',
+                    'value'     => '11234567899',
+                    // No channel
+                    'locale' => 'en_US',
+                ]
+            ],
+            'assign_assets_to'    => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => 'asset_collection',
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
+                ]
+            ]
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
+     * @When /^the user updates this asset family with a product link rule having a product selection channel referencing this channel$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithAProductLinkRuleHavingAProductSelectionChannelReferencingThisChannel()
+    {
+        $dynamicRuleTemplate = [
+            'product_selections' => [
+                [
+                    'field'    => 'sku',
+                    'operator' => '=',
+                    'value'    => '11234567899',
+                    'channel'  => 'ecommerce',
+                    'locale'   => 'en_US',
+                ],
+            ],
+            'assign_assets_to'   => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => 'asset_collection',
+                    'channel'   => 'ecommerce',
+                    'locale'    => 'en_US',
+                ],
+            ],
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
+     * @Then /^there should be a validation error stating that the product selection channel does not exist$/
+     */
+    public function thereShouldBeAValidationErrorStatingThatTheProductSelectionChannelDoesNotExist()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            sprintf('The channel "%s" does not exist', self::UNKNOWN_CHANNEL)
+        );
+    }
+
+    /**
+     * @When /^the user updates this asset family with a product link rule having a product selection channel that does not exist$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithAProductLinkRuleHavingAProductSelectionChannelThatDoesNotExist()
+    {
+        $dynamicRuleTemplate = [
+            'product_selections' => [
+                [
+                    'field'    => 'sku',
+                    'operator' => '=',
+                    'value'    => '11234567899',
+                    'channel'  => self::UNKNOWN_CHANNEL,
+                    'locale'   => 'en_US',
+                ],
+            ],
+            'assign_assets_to'   => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => 'asset_collection',
+                    'channel'   => 'ecommerce',
+                    'locale'    => 'en_US',
+                ],
+            ],
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
+     * @When /^the user updates this asset family with a product link rule having no product selection locale$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithAProductLinkRuleHavingANoProductSelectionLocale()
+    {
+        $dynamicRuleTemplate = [
+            'product_selections' => [
+                [
+                    'field'    => 'sku',
+                    'operator' => '=',
+                    'value'    => '11234567899',
+                    'channel'  => 'ecommerce',
+                ],
+            ],
+            'assign_assets_to'   => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => 'asset_collection',
+                    'channel'   => 'ecommerce',
+                    'locale'    => 'en_US',
+                ],
+            ],
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
+     * @When /^the user updates this asset family with a product link rule having a product selection locale referencing this locale$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithAProductLinkRuleHavingAProductSelectionLocaleReferencingThisLocale()
+    {
+        $dynamicRuleTemplate = [
+            'product_selections' => [
+                [
+                    'field'    => 'sku',
+                    'operator' => '=',
+                    'value'    => '11234567899',
+                    'channel'  => 'ecommerce',
+                    'locale'   => 'en_US',
+                ],
+            ],
+            'assign_assets_to'   => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => 'asset_collection',
+                    'channel'   => 'ecommerce',
+                    'locale'    => 'en_US',
+                ],
+            ],
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
+     * @When /^the user updates this asset family with a product link rule having a product selection locale that does not exist$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithAProductLinkRuleHavingAProductSelectionLocaleThatDoesNotExist()
+    {
+        $productLinkRule = [
+            'product_selections' => [
+                [
+                    'field'    => 'sku',
+                    'operator' => '=',
+                    'value'    => '11234567899',
+                    'channel'  => 'ecommerce',
+                    'locale'   => self::UNKNOWN_LOCALE,
+                ],
+            ],
+            'assign_assets_to'   => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => 'asset_collection',
+                    'channel'   => 'ecommerce',
+                    'locale'    => 'en_US',
+                ],
+            ],
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$productLinkRule]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
+     * @Then /^there should be a validation error stating that the product selection locale does not exist$/
+     */
+    public function thereShouldBeAValidationErrorStatingThatTheProductSelectionLocaleDoesNotExist()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            sprintf('The locale "%s" is not activated or does not exist', self::UNKNOWN_LOCALE)
+        );
+    }
+
+    /**
+     * @When /^the user updates this asset family with a product link rule having no assignment channel$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithAProductLinkRuleHavingNoAssignmentChannel()
+    {
+        $productLinkRule = [
+            'product_selections' => [
+                [
+                    'field'    => 'sku',
+                    'operator' => '=',
+                    'value'    => '11234567899',
+                ],
+            ],
+            'assign_assets_to'   => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => 'asset_collection',
+                    'channel'   => 'ecommerce',
+                ],
+            ],
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$productLinkRule]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
+     * @When /^the user updates this asset family with a product link rule having an assignment channel referencing this channel$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithAProductLinkRuleHavingAnAssignmentChannelReferencingThisChannel()
+    {
+        $productLinkRule = [
+            'product_selections' => [
+                [
+                    'field'    => 'sku',
+                    'operator' => '=',
+                    'value'    => '11234567899',
+                ],
+            ],
+            'assign_assets_to'   => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => 'asset_collection',
+                    'channel'   => 'ecommerce',
+                    'locale'    => 'en_US'
+                ],
+            ],
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$productLinkRule]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
+     * @When /^the user updates this asset family with a product link rule having a assignment channel that does not exist$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithAProductLinkRuleHavingAAssignmentChannelThatDoesNotExist()
+    {
+        $productLinkRule = [
+            'product_selections' => [
+                [
+                    'field'    => 'sku',
+                    'operator' => '=',
+                    'value'    => '11234567899',
+                ],
+            ],
+            'assign_assets_to'   => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => 'asset_collection',
+                    'channel'   => self::UNKNOWN_CHANNEL,
+                    'locale'    => 'en_US'
+                ],
+            ],
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$productLinkRule]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
+     * @Then /^there should be a validation error stating that the assignment channel does not exist$/
+     */
+    public function thereShouldBeAValidationErrorStatingThatTheAssignmentChannelDoesNotExist()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            sprintf('The channel "%s" does not exist', self::UNKNOWN_CHANNEL)
+        );
+    }
+
+    /**
+     * @When /^the user updates this asset family with a product link rule having no assignment locale$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithAProductLinkRuleHavingNoAssignmentLocale()
+    {
+        $productLinkRule = [
+            'product_selections' => [
+                [
+                    'field' => 'sku',
+                    'operator'  => '=',
+                    'value'     => '11234567899',
+                ]
+            ],
+            'assign_assets_to'    => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => 'asset_collection',
+                ]
+            ]
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$productLinkRule]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
+     * @When /^the user updates this asset family with a product link rule having an assignment locale referencing this locale$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithAProductLinkRuleHavingAnAssignmentLocaleReferencingThisLocale()
+    {
+        $productLinkRule = [
+            'product_selections' => [
+                [
+                    'field' => 'sku',
+                    'operator'  => '=',
+                    'value'     => '11234567899',
+                ]
+            ],
+            'assign_assets_to'    => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => 'asset_collection',
+                    'locale'    =>  'en_US'
+                ]
+            ]
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$productLinkRule]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
+     * @When /^the user updates this asset family with a product link rule having an assignment locale that does not exist$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithAProductLinkRuleHavingAnAssignmentLocaleThatDoesNotExist()
+    {
+        $productLinkRule = [
+            'product_selections' => [
+                [
+                    'field' => 'sku',
+                    'operator'  => '=',
+                    'value'     => '11234567899',
+                ]
+            ],
+            'assign_assets_to'    => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => 'asset_collection',
+                    'locale'    =>  self::UNKNOWN_LOCALE
+                ]
+            ]
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$productLinkRule]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
+     * @Then /^there should be a validation error stating that the assignment locale does not exist$/
+     */
+    public function thereShouldBeAValidationErrorStatingThatTheAssignmentLocaleDoesNotExist()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            sprintf('The locale "%s" is not activated or does not exist', self::UNKNOWN_LOCALE)
+        );
+    }
+
+    /**
+     * @Given /^an asset family with no product link rules and an attribute with one value per channel$/
+     */
+    public function anAssetFamilyWithNoProductLinkRulesAndAScopableTextAttribute()
+    {
+        $this->createEcommerceChannel();
+        $this->createEnUsLocale();
+        $this->fixturesLoader
+            ->assetFamily(self::ASSET_FAMILY_IDENTIFIER)
+            ->withAttributeOfTypeText(self::ASSET_FAMILY_IDENTIFIER, self::ATTRIBUTE_CODE, true)
+            ->load();
+    }
+
+    /**
+     * @Then /^there should be a validation error stating that this attribute is not supported for extrapolation because it has one value per channel$/
+     */
+    public function thereShouldBeAValidationErrorStatingThatThisAttributeIsNotSupportedForExtrapolationBecauseItIsScopable()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            sprintf('The attribute "%s" cannot be used for extrapolation because it has one value per channel', self::ATTRIBUTE_CODE)
+        );
+    }
+
+    /**
+     * @Given /^an asset family with no product link rules and an attribute with one value per locale$/
+     */
+    public function anAssetFamilyWithNoProductLinkRulesAndALocalizableTextAttribute()
+    {
+        $this->createEcommerceChannel();
+        $this->createEnUsLocale();
+        $this->fixturesLoader
+            ->assetFamily(self::ASSET_FAMILY_IDENTIFIER)
+            ->withAttributeOfTypeText(self::ASSET_FAMILY_IDENTIFIER, self::ATTRIBUTE_CODE, false, true)
+            ->load();
+    }
+
+    /**
+     * @Then /^there should be a validation error stating that this attribute is not supported for extrapolation because it has one value per locale$/
+     */
+    public function thereShouldBeAValidationErrorStatingThatThisAttributeIsNotSupportedForExtrapolationBecauseItIsLocalizable()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            sprintf('The attribute "%s" cannot be used for extrapolation because it has one value per locale', self::ATTRIBUTE_CODE)
+        );
+    }
+
+    /**
+     * @When /^the user updates this asset family with a product link rule having "([^"]*)" assignment mode$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithAProductLinkRuleHavingAssignmentMode(string $mode)
+    {
+        $dynamicRuleTemplate = [
+            'product_selections' => [
+                [
+                    'field' => self::ATTRIBUTE_CODE,
+                    'operator'  => '=',
+                    'value'     => '123456789',
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
+                ]
+            ],
+            'assign_assets_to'    => [
+                [
+                    'mode'      => $mode,
+                    'attribute' => 'asset_collection',
+                    'channel' => 'ecommerce',
+                    'locale' => 'en_US',
+                ]
+            ]
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$dynamicRuleTemplate]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
+     * @When /^the user updates an asset family "([^"]*)" with a product selection field "([^"]*)" and channel$/
+     */
+    public function theUserUpdatesAnAssetFamilyWithAProductSelectionFieldAndChannel(string $assetFamilyIdentifier, string $productField)
+    {
+        $productLinkRule = [
+            'product_selections' => [
+                [
+                    'field' => $productField,
+                    'operator'  => '=',
+                    'value'     => '123456789',
+                    'channel' => 'ecommerce'
+                ]
+            ],
+            'assign_assets_to'    => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => 'asset_collection'
+                ]
+            ]
+        ];
+        $command = new EditAssetFamilyCommand($assetFamilyIdentifier, [], null, [$productLinkRule]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
+     * @When /^the user updates an asset family "([^"]*)" with a product selection field "([^"]*)" and locale$/
+     */
+    public function theUserUpdatesAnAssetFamilyWithAProductSelectionFieldAndLocale(string $assetFamilyIdentifier, string $productField)
+    {
+        $productLinkRule = [
+            'product_selections' => [
+                [
+                    'field' => $productField,
+                    'operator'  => '=',
+                    'value'     => '123456789',
+                    'locale' => 'fr_FR',
+                ]
+            ],
+            'assign_assets_to'    => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => 'asset_collection'
+                ]
+            ]
+        ];
+        $command = new EditAssetFamilyCommand($assetFamilyIdentifier, [], null, [$productLinkRule]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
+     * @When /^the user updates this asset family with a product link rule having an assignment attribute which references a product attribute which type does not point to the asset we are trying to update$/
+     */
+    public function theUserUpdatesThisAssetFamilyWithAProductLinkRuleHavingAnAssignmentAttributeWhichReferencesAProductAttributeWhichTypeDoesNotPointToTheAssetWeAreTryingToUpdate()
+    {
+        $this->inMemoryFindAssetCollectionTypeACL->stubWith('WRONG_ATTRIBUTE_TYPE');
+        $productLinkRule = [
+            'product_selections' => [
+                [
+                    'field' => 'sku',
+                    'operator'  => '=',
+                    'value'     => '123456789',
+                ]
+            ],
+            'assign_assets_to'    => [
+                [
+                    'mode'      => 'replace',
+                    'attribute' => self::ATTRIBUTE_CODE,
+                ]
+            ]
+        ];
+        $command = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, [$productLinkRule]);
+        $this->editAssetFamily($command);
+    }
+
+    /**
+     * @Then /^there should be a validation error stating that this attribute has not the same of the reference entity we are trying to update$/
+     */
+    public function thereShouldBeAValidationErrorStatingThatThisAttributeHasNotTheSameOfTheReferenceEntityWeAreTryingToUpdate()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            sprintf(
+                'The product attribute "%s" cannot contain assets of asset family "%s"',
+                self::ATTRIBUTE_CODE,
+                self::ASSET_FAMILY_IDENTIFIER
+            )
         );
     }
 
@@ -897,5 +1542,15 @@ final class EditAssetFamilyContext implements Context
     private function toExtrapolation(string $attributeCode): string
     {
         return sprintf('{{%s}}', $attributeCode);
+    }
+
+    private function createEcommerceChannel(): void
+    {
+        $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
+    }
+
+    private function createEnUsLocale(): void
+    {
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
     }
 }

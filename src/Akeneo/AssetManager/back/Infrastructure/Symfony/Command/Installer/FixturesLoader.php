@@ -122,8 +122,12 @@ class FixturesLoader
         return $this;
     }
 
-    public function withAttributeOfTypeText(string $assetFamilyIdentifier, string $attributeCode): self
-    {
+    public function withAttributeOfTypeText(
+        string $assetFamilyIdentifier,
+        string $attributeCode,
+        bool $valuePerChannel = false,
+        bool $valuePerLocale = false
+    ): self {
         $this->customLoadedAttributes[] = TextAttribute::createText(
             $this->attributeRepository->nextIdentifier(
                 AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
@@ -134,8 +138,8 @@ class FixturesLoader
             LabelCollection::fromArray([]),
             $this->getOrderForAttribute($attributeCode),
             AttributeIsRequired::fromBoolean(false),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean($valuePerChannel),
+            AttributeValuePerLocale::fromBoolean($valuePerLocale),
             AttributeMaxLength::fromInteger(25),
             AttributeValidationRule::none(),
             AttributeRegularExpression::createEmpty()

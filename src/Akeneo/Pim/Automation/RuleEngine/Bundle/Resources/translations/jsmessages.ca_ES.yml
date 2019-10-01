@@ -40,13 +40,11 @@ pimee_catalog_rule:
           confirm_title: Confirmar l'execució
           confirm_content: Esteu segur que voleu executar les regles seleccionades?
           success: L'acció massiva per executar les regles seleccionades s'ha posat en marxa. Se li notificarà quan finalitzi
-          error: S'ha produït un error durant l'execució de les regles.
           empty_selection: No hi ha cap regla seleccionada.
         delete:
           confirm_title: Confirmar l'execució
           confirm_content: Esteu segur que voleu suprimir les regles seleccionades?
           success: Heu suprimit les regles correctament.
-          error: S'ha produït un error durant l'execució de les regles.
           empty_selection: No hi ha cap regla seleccionada.
   form:
     attribute:

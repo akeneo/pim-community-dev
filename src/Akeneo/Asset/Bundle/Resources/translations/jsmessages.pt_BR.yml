@@ -44,9 +44,7 @@ pimee_product_asset:
       need_refresh: <b>A importação de mídia foi iniciada</b><br> Para ver as mídias importadas no formulário de produto, por favor, atualize a página do produto assim que receber a notificação de importação.
     error:
       list: Não é possível ler arquivos já enviados
-      upload: Ocorreu um erro ao enviar
       delete: Não é possível excluir o arquivo do servidor
-      import: Ocorreu um erro ao importar
       filename: Nome de arquivo inválido para a mídia
       code: Formato de código inválido para a mídia
       locale: Uma mídia existe mas não é localizável
@@ -66,7 +64,6 @@ pimee_product_asset:
       delete:
         confirm_content: Tem certeza que deseja excluir as mídias selecionadas?
         success: As mídias selecionadas foram excluídas com sucesso.
-        error: Ocorreu um erro ao tentar excluir as mídias selecionadas, por favor, tente novamente.
         empty_selection: Nenhuma mídia selecionada
 pim_enrich:
   entity:

@@ -21,7 +21,6 @@ const listenRequest = async function(page, requestContract, once = false) {
     requestContract.request.route,
     requestContract.request.query
   );
-
   const answerRequest = request => {
     if (
       url === request.url() &&

@@ -6,7 +6,6 @@ akeneo_franklin_insights:
     data_provider:
       ask_franklin_down: "Desculpe, algo deu errado. Por favor, tente novamente mais tarde."
       authentication_error: "Desculpe, falha ao autenticar às Intuições do Franklin, seu token é inválido. Por favor, insira um token válido ou entre em contato conosco para ajuda."
-      bad_request_error: "Desculpe, ocorreu um problema na comunicação com as Intuições do Franklin. Por favor, contate o administrador."
     identifier_mapping:
       plural_label: Identificadores
       flash:
@@ -110,7 +109,6 @@ akeneo_franklin_insights:
     flash:
       success: Código de ativação das Intuições do Franklin foi salvo com sucesso.
       invalid: O código de ativação é inválido. Por favor, tente novamente com um código válido.
-      error: Desculpe, ocorreu um erro.
     module:
       title:
         sub_title: 'Bem-vindo ao <span class="AknDescriptionHeader-title--highlight">assistente de informações de produtos com inteligência artificial</span>!'

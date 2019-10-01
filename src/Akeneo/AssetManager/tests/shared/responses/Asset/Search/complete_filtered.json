@@ -3,7 +3,7 @@
         "method": "PUT",
         "route": "akeneo_asset_manager_asset_index_rest",
         "query": {
-            "assetFamilyIdentifier": "designer"
+            "assetFamilyIdentifier": "packshot"
         },
         "body": {
             "locale": "en_US",
@@ -20,7 +20,7 @@
                 {
                     "field": "asset_family",
                     "operator": "=",
-                    "value": "designer",
+                    "value": "packshot",
                     "context": {}
                 }
             ]
@@ -29,49 +29,8 @@
     "response": {
         "status": 200,
         "body": {
-            "items": [
-                {
-                    "identifier": "brand_coco_0134dc3e-3def-4afr-85ef-e81b2d6e95fd",
-                    "asset_family_identifier": "designer",
-                    "code": "coco",
-                    "labels": {
-                        "en_US": "Coco Chanel",
-                        "fr_FR": "Coco Chanel"
-                    },
-                    "image": "/rest/asset_manager/image_preview/image_designer_ca1857d521a3e5dbc487791da82b7428/thumbnail?data=",
-                    "values": {
-                        "label_designer_d00de54460082b239164135175588647_en_US": {
-                            "attribute": "label_designer_d00de54460082b239164135175588647",
-                            "channel": null,
-                            "locale": "en_US",
-                            "data": "Coco Chanel"
-                        },
-                        "label_designer_d00de54460082b239164135175588647_fr_FR": {
-                            "attribute": "label_designer_d00de54460082b239164135175588647",
-                            "channel": null,
-                            "locale": "fr_FR",
-                            "data": "Coco Chanel"
-                        },
-                        "description_designer_29aea250-bc94-49b2-8259-bbc116410eb2_ecommerce_en_US": {
-                            "attribute": "description_designer_29aea250-bc94-49b2-8259-bbc116410eb2",
-                            "channel": "ecommerce",
-                            "locale": "en_US",
-                            "data": "You will love coco."
-                        },
-                        "nickname_designer_29aea250-bc94-49b2-8259-bbc116410eb2": {
-                            "attribute": "nickname_designer_29aea250-bc94-49b2-8259-bbc116410eb2",
-                            "channel": null,
-                            "locale": null,
-                            "data": "Mr coco"
-                        }
-                    },
-                    "completeness": {
-                        "complete": 1,
-                        "required": 1
-                    }
-                }
-            ],
-            "matches_count": 1,
+            "items": [],
+            "matches_count": 0,
             "total_count": 3
         }
     }

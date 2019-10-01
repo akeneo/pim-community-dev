@@ -4,12 +4,15 @@ services:
         arguments:
             - '@pimee_product_asset.repository.asset'
             - '@pim_catalog.repository.locale'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
 
     pimee_product_asset.upload_importer:
         class: 'Akeneo\Asset\Component\Upload\Importer'
         arguments:
             - '@pimee_product_asset.upload_checker'
             - '@akeneo_file_storage.file_storage.file.file_storer'
+            - '@akeneo_file_storage.file_storage.file.file_fetcher'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
 
     pimee_product_asset.mass_upload.builder.asset:
         class: 'Akeneo\Asset\Component\Upload\MassUpload\AssetBuilder'

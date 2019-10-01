@@ -29,6 +29,14 @@ class AssetBuilder {
     return this;
   }
 
+  withCompleteness(complete, required) {
+    this.asset.completeness = {};
+    this.asset.completeness.complete = complete;
+    this.asset.completeness.required = required;
+
+    return this;
+  }
+
   withLabels(labels) {
     this.asset.labels = labels;
 

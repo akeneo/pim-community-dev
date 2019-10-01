@@ -4,7 +4,6 @@ pim_asset_manager:
       code:
         pattern: 'Dieses Feld darf nur Buchstaben, Zahlen und Unterstriche enthalten.'
         should_be_unique: 'Eine Asset-Familie existiert bereits mit Code "%asset_family_identifier%"'
-        limit_reached: 'Sie können die Asset-Familie "%asset_family_label%" nicht erstellen, da Sie das Limit von %limit% Asset-Familien erreicht haben'
       assets:
         should_have_no_asset: 'Sie können diese Entität nicht löschen, da die Assets für diese Entität existieren'
       asset_family_attributes:
@@ -14,8 +13,6 @@ pim_asset_manager:
       product_attributes:
         should_not_be_linked: 'Sie können diese Entität nicht löschen, da Produktattribute mit dieser Entität verknüpft sind'
       should_exist: 'Die Asset-Familie "%asset_family_code%" wurde nicht gefunden.'
-      rule_template:
-        limit_reached: 'Sie können die Asset-Familie "%asset_family_label%" nicht erstellen, da Sie die Grenze der Produktlink-Regeln von %limit% erreicht haben'
   asset:
     validation:
       code:
@@ -71,7 +68,6 @@ pim_asset_manager:
         should_be_a_number: 'Dieser Wert sollte eine Zahl mit dem richtigen Dezimaltrennzeichen sein.'
         cannot_be_lower_than_min: 'Die max darf nicht niedriger als das min sein'
       code:
-        pattern: 'Dieses Feld darf nur Buchstaben, Zahlen und Unterstriche enthalten.'
         reserved_codes: 'Der Code kann nicht zu diesen Werten gehören: "{{ comma_separated_reserved_keywords }}"'
         should_not_exist: 'Das Attribut existiert bereits für die Asset-Familie "{{ asset_family_identifier }}" und den Attributcode "{{ code }}"'
         should_exist: 'Die Entität wurde nicht gefunden'

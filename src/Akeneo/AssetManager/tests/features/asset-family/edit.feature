@@ -50,39 +50,75 @@ Feature: Edit an asset family
     When the user updates the asset family 'packshot' to set a collection of rule templates
     Then the asset family 'packshot' should have the collection of rule templates
 
-  @acceptance-back
+  @acceptance-back @error
   Scenario: Cannot update an asset family if there is no product selections
     When the user updates an asset family "packshot" with an empty product selections
     Then there should be a validation error with message 'You must specify at least one product selection in your product link rule'
 
-  @acceptance-back
+  @acceptance-back @error
   Scenario: Cannot update an asset family if there is no product assignment
     When the user updates an asset family "packshot" with an empty product assignment
     Then there should be a validation error with message 'You must specify at least one product assignment in your product link rule'
 
-  @acceptance-back
+  @acceptance-back @error
   Scenario: Cannot update an asset family with a collection of rule templates that contains more than 2 items
     Given an empty rule template collection on the asset family 'packshot'
     When the user updates the asset family 'packshot' to set a collection of rule templates having more items than the limit
-    Then there should be a validation error with message 'You cannot create the asset family "Packshot" because you have reached the limit of 2 product link rules'
+    Then there should be a validation error with message 'You cannot create the asset family "packshot" because you have reached the limit of 2 product link rules'
 
-  @acceptance-back
+  @acceptance-back @error
   Scenario: Cannot update an asset family if one of the product link rule is not executable by the rule engine
     When the user updates the asset family 'packshot' with a product link rule not executable by the rule engine
     Then there should be a validation error stating why the rule engine cannot execute the product link rule
+
+  @acceptance-back @error
+  Scenario Outline: Cannot update an asset family if a product selection has a filter on a product property with a channel
+    Given an empty rule template collection on the asset family 'packshot'
+    When the user updates an asset family "packshot" with a product selection field "<product_field>" and channel
+    Then there should be a validation error with message '<error_message>'
+
+    Examples:
+      | product_field | error_message                                           |
+      | categories    | You cannot specify a channel for the field "categories" |
+      | family        | You cannot specify a channel for the field "family"     |
+      | enable        | You cannot specify a channel for the field "enable"     |
+
+  @acceptance-back @error
+  Scenario Outline: Cannot update an asset family if a product selection has a filter on a product property with a locale
+    Given an empty rule template collection on the asset family 'packshot'
+    When the user updates an asset family "packshot" with a product selection field "<product_field>" and locale
+    Then there should be a validation error with message '<error_message>'
+
+    Examples:
+      | product_field | error_message                                           |
+      | categories    | You cannot specify a locale for the field "categories" |
+      | family        | You cannot specify a locale for the field "family"     |
+      | enable        | You cannot specify a locale for the field "enable"     |
 
   # Product selection field
   @acceptance-back @nominal
   Scenario: Updating an asset family with a product link rule having a dynamic product selection field
     Given an asset family with no product link rules and a text attribute
-    When the user updates this asset family with a dynamic product link rule having a product selection field which references this text attribute
+    When the user updates this asset family with a dynamic product link rule having a product selection field which references this attribute
     Then there is an asset family with a product link rule
 
   @acceptance-back @error
-  Scenario: Updating an asset family with a product link rule having a dynamic product selection field referencing an unsupported attribute type
+  Scenario: Cannot update an asset family with a product link rule having a dynamic product selection field referencing an unsupported attribute type
     Given an asset family with no product link rules and an attribute with a type unsupported for extrapolation
     When the user updates this asset family with a dynamic product link rule having a product selection field which references this attribute
     Then there should be a validation error stating that the product selection field does not support this attribute for extrapolation
+
+  @acceptance-back @error
+  Scenario: Cannot update an asset family with a product link rule having a dynamic product selection field referencing an attribute with one value per channel
+    Given an asset family with no product link rules and an attribute with one value per channel
+    When the user updates this asset family with a dynamic product link rule having a product selection field which references this attribute
+    Then there should be a validation error stating that this attribute is not supported for extrapolation because it has one value per channel
+
+  @acceptance-back @error
+  Scenario: Cannot update an asset family with a product link rule having a dynamic product selection field referencing an attribute with one value per locale
+    Given an asset family with no product link rules and an attribute with one value per locale
+    When the user updates this asset family with a dynamic product link rule having a product selection field which references this attribute
+    Then there should be a validation error stating that this attribute is not supported for extrapolation because it has one value per locale
 
   # Product selection value
   @acceptance-back @nominal
@@ -104,25 +140,79 @@ Feature: Edit an asset family
     Then there is an asset family with a product link rule
 
   @acceptance-back @error
-  Scenario: Updating an asset family with a product link rule having a dynamic product selection value referencing an unsupported attribute type
+  Scenario: Cannot update an asset family with a product link rule having a dynamic product selection value referencing an unsupported attribute type
     Given an asset family with no product link rules and an attribute with a type unsupported for extrapolation
     When the user updates this asset family with a dynamic product link rule having a product selection value which references this attribute
     Then there should be a validation error stating that the product selection value does not support this attribute for extrapolation
 
+  @acceptance-back @error
+  Scenario: Cannot update an asset family with a product link rule having a dynamic product selection value referencing an attribute with one value per channel
+    Given an asset family with no product link rules and an attribute with one value per channel
+    When the user updates this asset family with a dynamic product link rule having a product selection value which references this attribute
+    Then there should be a validation error stating that this attribute is not supported for extrapolation because it has one value per channel
+
+  @acceptance-back @error
+  Scenario: Cannot update an asset family with a product link rule having a dynamic product selection value referencing an attribute with one value per locale
+    Given an asset family with no product link rules and an attribute with one value per locale
+    When the user updates this asset family with a dynamic product link rule having a product selection value which references this attribute
+    Then there should be a validation error stating that this attribute is not supported for extrapolation because it has one value per locale
+
   # Product selection channel
+  @acceptance-back @nominal
+  Scenario: Updating an asset family with a product link rule having no product selection channel
+    Given an asset family with no product link rules
+    When the user updates this asset family with a product link rule having no product selection channel
+    Then there is an asset family with a product link rule
+
+  @acceptance-back @nominal
+  Scenario: Updating an asset family with a product link rule having a static product selection channel
+    Given an asset family with no product link rules and a channel
+    When the user updates this asset family with a product link rule having a product selection channel referencing this channel
+    Then there is an asset family with a product link rule
+
   @acceptance-back @nominal
   Scenario: Updating an asset family with a product link rule having a dynamic product selection channel
     Given an asset family with no product link rules and a text attribute
-    When the user updates this asset family with a dynamic product link rule having a product selection channel this text attribute
+    When the user updates this asset family with a dynamic product link rule having a product selection channel referencing this text attribute
     Then there is an asset family with a product link rule
 
   @acceptance-back @error
-  Scenario: Updating an asset family with a product link rule having a dynamic product selection channel referencing an unsupported attribute type
+  Scenario: Cannot update an asset family with a product link rule having a static product selection channel that does not exist
+    Given an asset family with no product link rules
+    When the user updates this asset family with a product link rule having a product selection channel that does not exist
+    Then there should be a validation error stating that the product selection channel does not exist
+
+  @acceptance-back @error
+  Scenario: Cannot update an asset family with a product link rule having a dynamic product selection channel referencing an unsupported attribute type
     Given an asset family with no product link rules and an attribute with a type unsupported for extrapolation
     When the user updates this asset family with a dynamic product link rule having a product selection channel which references this attribute
     Then there should be a validation error stating that the product selection channel does not support this attribute for extrapolation
 
+  @acceptance-back @error
+  Scenario: Cannot update an asset family with a product link rule having a dynamic product selection channel referencing an attribute with one value per channel
+    Given an asset family with no product link rules and an attribute with one value per channel
+    When the user updates this asset family with a dynamic product link rule having a product selection channel which references this attribute
+    Then there should be a validation error stating that this attribute is not supported for extrapolation because it has one value per channel
+
+  @acceptance-back @error
+  Scenario: Cannot update an asset family with a product link rule having a dynamic product selection channel referencing an attribute with one value per locale
+    Given an asset family with no product link rules and an attribute with one value per locale
+    When the user updates this asset family with a dynamic product link rule having a product selection channel which references this attribute
+    Then there should be a validation error stating that this attribute is not supported for extrapolation because it has one value per locale
+
   # Product selection locale
+  @acceptance-back @nominal
+  Scenario: Updating an asset family with a product link rule having no product selection locale
+    Given an asset family with no product link rules
+    When the user updates this asset family with a product link rule having no product selection locale
+    Then there is an asset family with a product link rule
+
+  @acceptance-back @nominal
+  Scenario: Updating an asset family with a product link rule having a static product selection locale
+    Given an asset family with no product link rules and a locale
+    When the user updates this asset family with a product link rule having a product selection locale referencing this locale
+    Then there is an asset family with a product link rule
+
   @acceptance-back @nominal
   Scenario: Updating an asset family with a product link rule having a dynamic product selection locale
     Given an asset family with no product link rules and a text attribute
@@ -130,31 +220,163 @@ Feature: Edit an asset family
     Then there is an asset family with a product link rule
 
   @acceptance-back @error
-  Scenario: Updating an asset family with a product link rule having a dynamic product selection locale referencing an unsupported attribute type
+  Scenario: Cannot update an asset family with a product link rule having a static product selection locale that does not exist
+    Given an asset family with no product link rules
+    When the user updates this asset family with a product link rule having a product selection locale that does not exist
+    Then there should be a validation error stating that the product selection locale does not exist
+
+  @acceptance-back @error
+  Scenario: Cannot update an asset family with a product link rule having a dynamic product selection locale referencing an unsupported attribute type
     Given an asset family with no product link rules and an attribute with a type unsupported for extrapolation
     When the user updates this asset family with a dynamic product link rule having a product selection locale which references this attribute
     Then there should be a validation error stating that the product selection locale does not support this attribute for extrapolation
 
+  @acceptance-back @error
+  Scenario: Cannot update an asset family with a product link rule having a dynamic product selection locale referencing an attribute with one value per channel
+    Given an asset family with no product link rules and an attribute with one value per channel
+    When the user updates this asset family with a dynamic product link rule having a product selection locale which references this attribute
+    Then there should be a validation error stating that this attribute is not supported for extrapolation because it has one value per channel
+
+  @acceptance-back @error
+  Scenario: Cannot update an asset family with a product link rule having a dynamic product selection locale referencing an attribute with one value per locale
+    Given an asset family with no product link rules and an attribute with one value per locale
+    When the user updates this asset family with a dynamic product link rule having a product selection locale which references this attribute
+    Then there should be a validation error stating that this attribute is not supported for extrapolation because it has one value per locale
+
   # Product assignment attribute
-  @acceptance-back
+  @acceptance-back @nominal
   Scenario: Updating an asset family with a product link rule having a dynamic assignment attribute
     Given an asset family with no product link rules and a text attribute
-    When the user updates this asset family with a dynamic product link rule having a dynamic assignment value which references this text attribute
+    When the user updates this asset family with a dynamic product link rule having a dynamic assignment attribute which references this text attribute
     Then there is an asset family with a product link rule
 
+  @acceptance-back @error
+  Scenario: Cannot update an asset family with a product link rule having an assignment attribute referencing an attribute which is not of the same type of the asset family we are trying to update
+    Given an asset family with no product link rules
+    When the user updates this asset family with a product link rule having an assignment attribute which references a product attribute which type does not point to the asset we are trying to update
+    Then there should be a validation error stating that this attribute has not the same of the reference entity we are trying to update
+
+  @acceptance-back @error
+  Scenario: Cannot update an asset family with a product link rule having a dynamic assignment attribute referencing an unsupported attribute type
+    Given an asset family with no product link rules and an attribute with a type unsupported for extrapolation
+    When the user updates this asset family with a dynamic product link rule having an assignment attribute which references this attribute
+    Then there should be a validation error stating that the product selection locale does not support this attribute for extrapolation
+
+  @acceptance-back @error
+  Scenario: Cannot update an asset family with a product link rule having a dynamic assignment attribute referencing an attribute with one value per channel
+    Given an asset family with no product link rules and an attribute with one value per channel
+    When the user updates this asset family with a dynamic product link rule having an assignment attribute which references this attribute
+    Then there should be a validation error stating that this attribute is not supported for extrapolation because it has one value per channel
+
+  @acceptance-back @error
+  Scenario: Cannot update an asset family with a product link rule having a dynamic assignment attribute referencing an attribute with one value per locale
+    Given an asset family with no product link rules and an attribute with one value per locale
+    When the user updates this asset family with a dynamic product link rule having an assignment attribute which references this attribute
+    Then there should be a validation error stating that this attribute is not supported for extrapolation because it has one value per locale
+
+  # Product assignment mode
+  @acceptance-back @error
+  Scenario: Cannot update an asset family with a product link having an unsupported assignment mode
+    Given an asset family with no product link rules
+    When the user updates this asset family with a product link rule having "INVALID_MODE" assignment mode
+    Then there should be a validation error with message 'Invalid assignment mode "INVALID_MODE" found in a product link rule, expected to be "replace" or "add"'
+
+  @acceptance-back @nominal
+  Scenario Outline: Updating an asset family with a product link rule having a replace assignment mode
+    Given an asset family with no product link rules
+    When the user updates this asset family with a product link rule having "<mode>" assignment mode
+    Then there is an asset family with a product link rule
+
+    Examples:
+      | mode    |
+      | replace |
+      | add     |
+
   # Product assignment channel
-  @acceptance-back
+  @acceptance-back @nominal
+  Scenario: Updating an asset family with a product link rule having no assignment channel
+    Given an asset family with no product link rules
+    When the user updates this asset family with a product link rule having no assignment channel
+    Then there is an asset family with a product link rule
+
+  @acceptance-back @nominal
+  Scenario: Updating an asset family with a product link rule having a static assignment channel
+    Given an asset family with no product link rules and a channel
+    When the user updates this asset family with a product link rule having an assignment channel referencing this channel
+    Then there is an asset family with a product link rule
+
+  @acceptance-back @nominal
   Scenario: Updating an asset family with a product link rule having a dynamic assignment channel
     Given an asset family with no product link rules and a text attribute
     When the user updates this asset family with a dynamic product link rule having a dynamic assignment channel which references this text attribute
     Then there is an asset family with a product link rule
 
-  # Product assignment channel
-  @acceptance-back
+  @acceptance-back @error
+  Scenario: Cannot update an asset family with a product link rule having a static assignment channel that does not exist
+    Given an asset family with no product link rules
+    When the user updates this asset family with a product link rule having a assignment channel that does not exist
+    Then there should be a validation error stating that the assignment channel does not exist
+
+  @acceptance-back @error
+  Scenario: Cannot update an asset family with a product link rule having a dynamic assignment channel referencing an unsupported attribute type
+    Given an asset family with no product link rules and an attribute with a type unsupported for extrapolation
+    When the user updates this asset family with a dynamic product link rule having an assignment channel which references this attribute
+    Then there should be a validation error stating that the product assignment channel does not support this attribute for extrapolation
+
+  @acceptance-back @error
+  Scenario: Cannot update an asset family with a product link rule having a dynamic assignment channel referencing an attribute with one value per channel
+    Given an asset family with no product link rules and an attribute with one value per channel
+    When the user updates this asset family with a dynamic product link rule having an assignment channel which references this attribute
+    Then there should be a validation error stating that this attribute is not supported for extrapolation because it has one value per channel
+
+  @acceptance-back @error
+  Scenario: Cannot update an asset family with a product link rule having a dynamic assignment channel referencing an attribute with one value per locale
+    Given an asset family with no product link rules and an attribute with one value per locale
+    When the user updates this asset family with a dynamic product link rule having an assignment locale which references this attribute
+    Then there should be a validation error stating that this attribute is not supported for extrapolation because it has one value per locale
+
+  # Product assignment locale
+  @acceptance-back @nominal
+  Scenario: Updating an asset family with a product link rule having no assignment locale
+    Given an asset family with no product link rules
+    When the user updates this asset family with a product link rule having no assignment locale
+    Then there is an asset family with a product link rule
+
+  @acceptance-back @nominal
+  Scenario: Updating an asset family with a product link rule having a static assignment locale
+    Given an asset family with no product link rules and a locale
+    When the user updates this asset family with a product link rule having an assignment locale referencing this locale
+    Then there is an asset family with a product link rule
+
+  @acceptance-back @nominal
   Scenario: Updating an asset family with a product link rule having a dynamic assignment locale
     Given an asset family with no product link rules and a text attribute
     When the user updates this asset family with a dynamic product link rule having a dynamic assignment locale which references this text attribute
     Then there is an asset family with a product link rule
+
+  @acceptance-back @error
+  Scenario: Cannot update an asset family with a product link rule having a static assignment locale that does not exist
+    Given an asset family with no product link rules
+    When the user updates this asset family with a product link rule having an assignment locale that does not exist
+    Then there should be a validation error stating that the assignment locale does not exist
+
+  @acceptance-back @error
+  Scenario: Cannot update an asset family with a product link rule having a dynamic assignment locale referencing an unsupported attribute type
+    Given an asset family with no product link rules and an attribute with a type unsupported for extrapolation
+    When the user updates this asset family with a dynamic product link rule having an assignment locale which references this attribute
+    Then there should be a validation error stating that the product assignment locale does not support this attribute for extrapolation
+
+  @acceptance-back @error
+  Scenario: Cannot update an asset family with a product link rule having a dynamic assignment locale referencing an attribute with one value per channel
+    Given an asset family with no product link rules and an attribute with one value per channel
+    When the user updates this asset family with a dynamic product link rule having an assignment locale which references this attribute
+    Then there should be a validation error stating that this attribute is not supported for extrapolation because it has one value per channel
+
+  @acceptance-back @error
+  Scenario: Cannot update an asset family with a product link rule having a dynamic assignment locale referencing an attribute with one value per locale
+    Given an asset family with no product link rules and an attribute with one value per locale
+    When the user updates this asset family with a dynamic product link rule having an assignment locale which references this attribute
+    Then there should be a validation error stating that this attribute is not supported for extrapolation because it has one value per locale
 
   @acceptance-front
   Scenario: Updating an asset family labels

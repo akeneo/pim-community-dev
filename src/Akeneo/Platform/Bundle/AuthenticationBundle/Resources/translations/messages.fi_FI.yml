@@ -1,0 +1,6 @@
+akeneo_authentication:
+  acl:
+    sso:
+      title: Määritä kertakirjautuminen (SSO)
+  sso:
+    unknown_user_error: Sinulla ei ole pääsyä tähän sovellukseen. Ota yhteyttä pääkäyttäjään.

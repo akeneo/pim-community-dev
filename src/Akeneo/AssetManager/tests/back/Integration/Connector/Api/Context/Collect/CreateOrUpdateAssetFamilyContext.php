@@ -16,6 +16,7 @@ namespace Akeneo\AssetManager\Integration\Connector\Api\Context\Collect;
 use Akeneo\AssetManager\Common\Fake\InMemoryChannelExists;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesPerChannels;
+use Akeneo\AssetManager\Common\Fake\InMemoryGetAssetCollectionTypeAdapter;
 use Akeneo\AssetManager\Common\Fake\InMemoryGetAttributeIdentifier;
 use Akeneo\AssetManager\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
@@ -64,6 +65,9 @@ class CreateOrUpdateAssetFamilyContext implements Context
     /** @var InMemoryGetAttributeIdentifier */
     private $getAttributeIdentifier;
 
+    /** @var InMemoryGetAssetCollectionTypeAdapter */
+    private $findAssetCollectionTypeACL;
+
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
@@ -71,7 +75,8 @@ class CreateOrUpdateAssetFamilyContext implements Context
         InMemoryChannelExists $channelExists,
         InMemoryFindActivatedLocalesByIdentifiers $activatedLocales,
         InMemoryFindActivatedLocalesPerChannels $activatedLocalesPerChannels,
-        InMemoryGetAttributeIdentifier $getAttributeIdentifier
+        InMemoryGetAttributeIdentifier $getAttributeIdentifier,
+        InMemoryGetAssetCollectionTypeAdapter $findAssetCollectionTypeACL
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
@@ -80,6 +85,7 @@ class CreateOrUpdateAssetFamilyContext implements Context
         $this->activatedLocales = $activatedLocales;
         $this->activatedLocalesPerChannels = $activatedLocalesPerChannels;
         $this->getAttributeIdentifier = $getAttributeIdentifier;
+        $this->findAssetCollectionTypeACL = $findAssetCollectionTypeACL;
     }
 
     /**
@@ -87,6 +93,7 @@ class CreateOrUpdateAssetFamilyContext implements Context
      */
     public function theFrontviewAssetFamilyExistingInTheErpButNotInThePim()
     {
+        $this->findAssetCollectionTypeACL->stubWith('frontview');
         $this->requestContract = 'successful_frontview_asset_family_creation.json';
 
         $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
@@ -150,6 +157,7 @@ class CreateOrUpdateAssetFamilyContext implements Context
      */
     public function theBrandAssetFamilyExistingInTheErpAndInThePimWithDifferentProperties()
     {
+        $this->findAssetCollectionTypeACL->stubWith('brand');
         $this->requestContract = 'successful_brand_asset_family_update.json';
 
         $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
@@ -298,7 +306,31 @@ class CreateOrUpdateAssetFamilyContext implements Context
                     'field'    => 'sku',
                     'operator' => 'equals',
                     'value'    => '123134124123'
-                ]
+                ],
+                [
+                    'field'    => 'enabled',
+                    'operator' => '=',
+                    'value'    => true
+                ],
+                [
+                    'field'    => 'categories',
+                    'operator' => 'IN CHILDREN',
+                    'value'    => ['shoes', 'tshirts']
+                ],
+                [
+                    'field'    => 'description',
+                    'operator' => 'CONTAINS',
+                    'value'    => 'shoes',
+                    'locale'   => null,
+                    'channel'  => 'ecommerce',
+                ],
+                [
+                    'field'    => 'color',
+                    'operator' => '=',
+                    'value'    => 'yellow',
+                    'locale'   => 'en_US',
+                    'channel'  => null,
+                ],
             ],
             'assign_assets_to'    => [
                 [

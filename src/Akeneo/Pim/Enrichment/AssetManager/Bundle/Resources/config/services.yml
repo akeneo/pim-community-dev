@@ -1,0 +1,13 @@
+services:
+    akeneo_assetmanager.validator.constraint.limited_assets_in_value:
+        class: Akeneo\Pim\Enrichment\AssetManager\Component\Validator\Constraints\ThereShouldBeLessAssetsInValueThanLimitValidator
+        arguments:
+            - '%enrich_max_asset_in_asset_collection%'
+        tags:
+            - { name: validator.constraint_validator, alias: limited_assets_in_value }
+
+    akeneo_assetmanager.validator.constraint_guesser.asset_multiple_link:
+        public: false
+        class: Akeneo\Pim\Enrichment\AssetManager\Component\Validator\ConstraintGuesser\AssetMultipleLinkGuesser
+        tags:
+            - { name: pim_catalog.constraint_guesser.attribute }

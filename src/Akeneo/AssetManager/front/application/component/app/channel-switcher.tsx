@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Channel from 'akeneoassetmanager/domain/model/channel';
+import Channel, {getChannelLabel} from 'akeneoassetmanager/domain/model/channel';
 import __ from 'akeneoassetmanager/tools/translator';
 import Dropdown, {DropdownElement} from 'akeneoassetmanager/application/component/app/dropdown';
 import Key from 'akeneoassetmanager/tools/key';
@@ -69,7 +69,7 @@ const ChannelSwitcher = ({
       elements={channels.map((channel: Channel) => {
         return {
           identifier: channel.code,
-          label: channel.getLabel(locale),
+          label: getChannelLabel(channel, locale),
           original: channel,
         };
       })}

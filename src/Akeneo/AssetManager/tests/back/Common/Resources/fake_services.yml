@@ -93,6 +93,16 @@ services:
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
 
+    akeneo_assetmanager.infrastructure.persistence.query.attribute_has_one_value_per_channel:
+        class: Akeneo\AssetManager\Common\Fake\InMemoryAttributeHasOneValuePerChannel
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+
+    akeneo_assetmanager.infrastructure.persistence.query.attribute_has_one_value_per_locale:
+        class: Akeneo\AssetManager\Common\Fake\InMemoryAttributeHasOneValuePerLocale
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+
     akeneo_assetmanager.infrastructure.persistence.query.get_attribute_type:
         class: Akeneo\AssetManager\Common\Fake\InMemoryGetAttributeType
         arguments:
@@ -159,6 +169,9 @@ services:
 
     akeneo_assetmanager.infrastructure.persistence.query.channel_exists:
         class: Akeneo\AssetManager\Common\Fake\InMemoryChannelExists
+
+    akeneo_assetmanager.infrastructure.persistence.cache.query.channel_exists:
+        alias: akeneo_assetmanager.infrastructure.persistence.query.channel_exists
 
     akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers:
         class: Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers
@@ -236,6 +249,9 @@ services:
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+
+    akeneo_assetmanager.infrastructure.validation.asset_family.product_link_rule.get_asset_collection_type_adapter:
+        class: Akeneo\AssetManager\Common\Fake\InMemoryGetAssetCollectionTypeAdapter
 
     # Indexers
     akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer:

@@ -19,6 +19,8 @@ class ReplacePatternSpec extends ObjectBehavior
         $this::isExtrapolation('{{attribute}}')->shouldReturn(true);
         $this::isExtrapolation(['red', '{{attribute}}', 'blue'])->shouldReturn(true);
         $this::isExtrapolation(['red', 'blue'])->shouldReturn(false);
+        $this::isExtrapolation(true)->shouldReturn(false);
+        $this::isExtrapolation([true, false])->shouldReturn(false);
     }
 
     public function it_can_replace_string_properties(PropertyAccessibleAsset $accessibleAsset)

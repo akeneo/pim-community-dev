@@ -18,6 +18,8 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers'
             - '@akeneo_assetmanager.infrastructure.validation.asset_family.product_link_rule.rule_engine_validator_acl'
             - '@akeneo_assetmanager.common.helper.fixtures_loader'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.channel_exists'
+            - '@akeneo_assetmanager.infrastructure.validation.asset_family.product_link_rule.get_asset_collection_type_adapter'
             - '%asset_manager_rule_template_by_asset_family_limit%'
 
     akeneo_assetmanager.tests.back.acceptance.context.delete_asset_family_context:
@@ -40,6 +42,8 @@ services:
             - '@akeneo_assetmanager.tests.back.acceptance.context.constraint_violations_context'
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers'
             - '@akeneo_assetmanager.infrastructure.validation.asset_family.product_link_rule.rule_engine_validator_acl'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.channel_exists'
+            - '@akeneo_assetmanager.infrastructure.validation.asset_family.product_link_rule.get_asset_collection_type_adapter'
             - '%asset_manager_rule_template_by_asset_family_limit%'
 
     akeneo_assetmanager.tests.back.acceptance.context.create_asset_context:
