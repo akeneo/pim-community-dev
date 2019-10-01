@@ -34,7 +34,7 @@ class ProductFamilyUpdateSubscriberIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->productEsClient = $this->get('akeneo_elasticsearch.client.product');
+        $this->productEsClient = $this->get('akeneo_elasticsearch.client.product_and_product_model');
         $this->activateFranklinConnection();
         $this->createIdentifiersMapping();
 
