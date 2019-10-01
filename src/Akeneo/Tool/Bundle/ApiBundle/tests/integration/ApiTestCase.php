@@ -49,7 +49,7 @@ abstract class ApiTestCase extends WebTestCase
 
         $this->testKernel = new \AppKernelTest('test', false);
         $this->testKernel->boot();
-        $this->catalog = new Catalog();
+        $this->catalog = $this->get('akeneo_integration_tests.catalogs');
         
         $authenticator = new SystemUserAuthenticator(
             $this->get('pim_user.factory.user'),
