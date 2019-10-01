@@ -51,7 +51,8 @@
     "prettier": "^1.16.4",
     "puppeteer": "1.1.1",
     "read-pkg": "4.0.1",
-    "ts-jest": "24.0.0"
+    "ts-jest": "24.0.0",
+    "tslint": "^5.12.1"
   },
   "dependencies": {
     "@babel/core": "^7.3.4",
