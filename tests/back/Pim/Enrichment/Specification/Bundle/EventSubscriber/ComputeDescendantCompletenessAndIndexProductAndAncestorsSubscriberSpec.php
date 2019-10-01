@@ -155,7 +155,6 @@ class ComputeDescendantCompletenessAndIndexProductAndAncestorsSubscriberSpec ext
         ProductModelInterface $productModel
     ) {
         $event = new RemoveEvent($productModel->getWrappedObject(), 12, ['unitary' => true]);
-        $productModel->getId()->willReturn(12);
         $productModelDescendantsAndAncestorsIndexer->removeFromProductModelIds([12])->shouldBeCalled();
 
         $this->fromProductModelRemoveEvent($event);
@@ -175,8 +174,7 @@ class ComputeDescendantCompletenessAndIndexProductAndAncestorsSubscriberSpec ext
     }
 
     function it_does_not_remove_product_model_from_index_if_not_product_model(
-        ProductModelDescendantsAndAncestorsIndexer $productModelDescendantsAndAncestorsIndexer,
-        ProductModelInterface $productModel
+        ProductModelDescendantsAndAncestorsIndexer $productModelDescendantsAndAncestorsIndexer
     ) {
         $event = new RemoveEvent(new \stdClass(), 12, ['unitary' => true]);
         $productModelDescendantsAndAncestorsIndexer->removeFromProductModelIds(Argument::cetera())->shouldNotBeCalled();
@@ -189,17 +187,14 @@ class ComputeDescendantCompletenessAndIndexProductAndAncestorsSubscriberSpec ext
         ProductModelInterface $productModel1,
         ProductModelInterface $productModel2
     ) {
-        $event = new RemoveEvent([$productModel1->getWrappedObject(), $productModel2->getWrappedObject()], null);
-        $productModel1->getId()->willReturn(12);
-        $productModel2->getId()->willReturn(14);
+        $event = new RemoveEvent([$productModel1->getWrappedObject(), $productModel2->getWrappedObject()], [12, 14]);
         $productModelDescendantsAndAncestorsIndexer->removeFromProductModelIds([12, 14])->shouldBeCalled();
 
         $this->fromProductModelsRemoveEvent($event);
     }
 
     function it_does_not_remove_product_model_from_index_if_empty(
-        ProductModelDescendantsAndAncestorsIndexer $productModelDescendantsAndAncestorsIndexer,
-        ProductModelInterface $productModel
+        ProductModelDescendantsAndAncestorsIndexer $productModelDescendantsAndAncestorsIndexer
     ) {
         $event = new RemoveEvent([], null);
         $productModelDescendantsAndAncestorsIndexer->removeFromProductModelIds(Argument::cetera())->shouldNotBeCalled();

@@ -18,7 +18,7 @@ class RemoveEvent extends GenericEvent
 
     /**
      * @param mixed $subject
-     * @param int   $subjectId
+     * @param mixed $subjectId
      * @param array $arguments
      */
     public function __construct($subject, $subjectId, array $arguments = [])
@@ -31,7 +31,7 @@ class RemoveEvent extends GenericEvent
     /**
      * Get subject id
      *
-     * @return int
+     * @return mixed
      */
     public function getSubjectId()
     {

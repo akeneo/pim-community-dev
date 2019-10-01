@@ -102,7 +102,7 @@ final class ComputeDescendantCompletenessAndIndexProductAndAncestorsSubscriber i
             return;
         }
 
-        $this->productModelDescendantsAndAncestorsIndexer->removeFromProductModelIds([$productModel->getId()]);
+        $this->productModelDescendantsAndAncestorsIndexer->removeFromProductModelIds([$event->getSubjectId()]);
     }
 
     public function fromProductModelsRemoveEvent(RemoveEvent $event): void
@@ -112,12 +112,7 @@ final class ComputeDescendantCompletenessAndIndexProductAndAncestorsSubscriber i
             return;
         }
 
-        $this->productModelDescendantsAndAncestorsIndexer->removeFromProductModelIds(array_map(
-            function (ProductModelInterface $productModel) {
-                return $productModel->getId();
-            },
-            $productModels
-        ));
+        $this->productModelDescendantsAndAncestorsIndexer->removeFromProductModelIds($event->getSubjectId());
     }
 
     private function computeAndIndexFromProductModelCodes(array $productModelCodes): void
