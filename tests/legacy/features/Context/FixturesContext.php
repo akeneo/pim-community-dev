@@ -1441,7 +1441,7 @@ class FixturesContext extends BaseFixturesContext
      */
     public function thereShouldBeProducts($expectedTotal)
     {
-        $total = count($this->getProductRepository()->findAll());
+        $total = $this->getProductRepository()->countAll();
 
         Assert::assertEquals($expectedTotal, $total);
     }

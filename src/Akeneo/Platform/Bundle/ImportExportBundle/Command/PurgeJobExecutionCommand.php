@@ -7,6 +7,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 /**
  * Purge Jobs Execution history
@@ -37,7 +38,8 @@ class PurgeJobExecutionCommand extends Command
     protected function configure()
     {
         $this->setDescription(
-            'Purge jobs execution older than number of days you want except the last one, by default 90 days, minimum is 1 day'
+            'Purge jobs execution older than number of days you want except the last one.
+             If the value is equals to 0, it will delete everything. By default 90 days, minimum is 0 day'
         );
         $this->addOption(
             'days',
@@ -54,15 +56,28 @@ class PurgeJobExecutionCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $days = $input->getOption('days');
-        if (!(is_numeric($days) && $days > 0)) {
+        if (!(is_numeric($days) && $days >= 0)) {
             $output->writeln(
-                sprintf('<error>Option --days must be a number strictly superior to 0, "%s" given.</error>', $input->getOption('days'))
+                sprintf(
+                    '<error>Option --days must be a number greater than or equal to 0, "%s" given.</error>',
+                    $input->getOption('days')
+                )
             );
-
             return;
         }
 
-        $numberOfDeletedJobExecutions = $this->purgeJobExecution->olderThanDays($days);
-        $output->write(sprintf("%s jobs execution deleted ...\n", $numberOfDeletedJobExecutions));
+        if (0 === (int) $days) {
+            $helper = $this->getHelper('question');
+            $confirmation = new ConfirmationQuestion('This will delete ALL job executions. Do you confirm? ', false);
+            if (!$helper->ask($input, $output, $confirmation)) {
+                $output->write("Operation aborted\n");
+                return;
+            }
+            $this->purgeJobExecution->all();
+            $output->write("All jobs execution deleted ...\n");
+        } else {
+            $numberOfDeletedJobExecutions = $this->purgeJobExecution->olderThanDays($days);
+            $output->write(sprintf("%s jobs execution deleted ...\n", $numberOfDeletedJobExecutions));
+        }
     }
 }

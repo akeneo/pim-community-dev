@@ -117,7 +117,6 @@ class ProductController
      * @param ProductBuilderInterface       $variantProductBuilder
      * @param AttributeFilterInterface      $productAttributeFilter
      * @param Client                        $productAndProductModelClient
-     *
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,

@@ -1,5 +1,4 @@
 parameters:
-    pim_catalog.event_subscriber.product_category.class:             Pim\Bundle\CatalogBundle\EventSubscriber\ProductCategorySubscriber
     pim_catalog.event_subscriber.create_attribute_requirement.class: Akeneo\Pim\Structure\Bundle\EventSubscriber\CreateAttributeRequirementSubscriber
     pim_catalog.event_subscriber.localizable.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\LocalizableSubscriber
     pim_catalog.event_subscriber.timestampable.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\TimestampableSubscriber
@@ -141,3 +140,18 @@ services:
             - '@database_connection'
         tags:
             - { name: 'kernel.event_subscriber' }
+
+    pim_catalog.event_subscriber.attribute_option_set_sort_order:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\AttributeOption\SetAttributeOptionSortOrderSubscriber'
+        arguments:
+          - '@pim_catalog.query.get_attribute_options_max_sort_order'
+        tags:
+          - { name: kernel.event_subscriber }
+
+    pim_enrich.event_listener.remove_category_filter_in_job_instance:
+        class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Storage\RemoveCategoryFilterInJobInstanceSubscriber
+        arguments:
+          - '@akeneo_batch.job.job_instance_repository'
+          - '@akeneo_batch.saver.job_instance'
+        tags:
+          - { name: kernel.event_subscriber }
