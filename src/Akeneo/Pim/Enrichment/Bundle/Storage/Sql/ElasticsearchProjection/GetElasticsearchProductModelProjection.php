@@ -177,7 +177,7 @@ SQL;
                 'ancestor_category_codes' => json_decode($row['ancestor_category_codes']),
                 'parent_code' => $row['parent_code'],
                 'values' => $values,
-                'parent_id' => (int) $row['parent_id'],
+                'parent_id' => $row['parent_id'] ? (int) $row['parent_id'] : null,
                 'labels' => isset($values[$row['attribute_as_label_code']]) ? $values[$row['attribute_as_label_code']] : [],
             ];
         }
