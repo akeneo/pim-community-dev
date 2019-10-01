@@ -6,19 +6,14 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\El
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Elasticsearch\ProductSubscriptionUpdater;
-use Elasticsearch\Client;
-use Elasticsearch\ClientBuilder;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use PhpSpec\ObjectBehavior;
 
 class ProductSubscriptionUpdaterSpec extends ObjectBehavior
 {
-    public function let(ClientBuilder $clientBuilder, Client $client): void
+    public function let(Client $esClient): void
     {
-        $hosts = ['localhost: 9200'];
-        $clientBuilder->setHosts($hosts)->shouldBeCalled();
-        $clientBuilder->build()->willReturn($client);
-
-        $this->beConstructedWith($clientBuilder, $hosts, 'akeneo_pim_product_and_product_model');
+        $this->beConstructedWith($esClient);
     }
 
     public function it_is_initializable(): void
@@ -26,19 +21,15 @@ class ProductSubscriptionUpdaterSpec extends ObjectBehavior
         $this->shouldImplement(ProductSubscriptionUpdater::class);
     }
 
-    public function it_updates_a_product_subscribed_to_franklin(Client $client): void
+    public function it_updates_a_product_subscribed_to_franklin(Client $esClient): void
     {
-        $client->updateByQuery([
-            'index' => 'akeneo_pim_product_and_product_model',
-            'type' => 'pim_catalog_product',
-            'body' => [
-                'script' => [
-                    'inline' => 'ctx._source.franklin_subscription = true',
-                ],
-                'query' => [
-                    'term' => [
-                        'id' => 'product_42',
-                    ],
+        $esClient->updateByQuery([
+            'script' => [
+                'inline' => 'ctx._source.franklin_subscription = true',
+            ],
+            'query' => [
+                'term' => [
+                    'id' => 'product_42',
                 ],
             ],
         ])->shouldBeCalled();
@@ -46,19 +37,15 @@ class ProductSubscriptionUpdaterSpec extends ObjectBehavior
         $this->updateSubscribedProduct(new ProductId(42));
     }
 
-    public function it_updates_a_product_unsubscribed_to_franklin(Client $client): void
+    public function it_updates_a_product_unsubscribed_to_franklin(Client $esClient): void
     {
-        $client->updateByQuery([
-            'index' => 'akeneo_pim_product_and_product_model',
-            'type' => 'pim_catalog_product',
-            'body' => [
-                'script' => [
-                    'inline' => 'ctx._source.franklin_subscription = false',
-                ],
-                'query' => [
-                    'term' => [
-                        'id' => 'product_42',
-                    ],
+        $esClient->updateByQuery([
+            'script' => [
+                'inline' => 'ctx._source.franklin_subscription = false',
+            ],
+            'query' => [
+                'term' => [
+                    'id' => 'product_42',
                 ],
             ],
         ])->shouldBeCalled();

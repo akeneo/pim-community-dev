@@ -14,34 +14,19 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Elasticsearch;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
-use Elasticsearch\Client;
-use Elasticsearch\ClientBuilder;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 
 /**
  * Update the Franklin Insights subscription status for a product in ES.
  */
 class ProductSubscriptionUpdater
 {
-    /** @var string */
-    private $indexName;
-
     /** @var Client */
     private $esClient;
 
-    /**
-     * @param ClientBuilder $clientBuilder
-     * @param array $hosts
-     * @param string $indexName
-     */
-    public function __construct(
-        ClientBuilder $clientBuilder,
-        array $hosts,
-        string $indexName
-    ) {
-        $this->indexName = $indexName;
-
-        $clientBuilder->setHosts($hosts);
-        $this->esClient = $clientBuilder->build();
+    public function __construct(Client $esClient)
+    {
+        $this->esClient = $esClient;
     }
 
     public function updateSubscribedProduct(ProductId $productId): void
@@ -58,16 +43,12 @@ class ProductSubscriptionUpdater
     {
         $this->esClient->updateByQuery(
             [
-                'index' => $this->indexName,
-                'type' => 'pim_catalog_product',
-                'body' => [
-                    'script' => [
-                        'inline' => sprintf('ctx._source.franklin_subscription = %s', $isSubscribed ? 'true' : 'false'),
-                    ],
-                    'query' => [
-                        'term' => [
-                            'id' => sprintf('product_%d', $productId->toInt()),
-                        ],
+                'script' => [
+                    'inline' => sprintf('ctx._source.franklin_subscription = %s', $isSubscribed ? 'true' : 'false'),
+                ],
+                'query' => [
+                    'term' => [
+                        'id' => sprintf('product_%d', $productId->toInt()),
                     ],
                 ],
             ]
