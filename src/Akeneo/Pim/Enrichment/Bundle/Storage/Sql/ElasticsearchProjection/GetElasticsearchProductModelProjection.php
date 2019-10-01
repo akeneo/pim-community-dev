@@ -266,13 +266,17 @@ SQL;
     }
 
     /**
-     * Ancestor attribute codes =
-     * - if there is no parent, []
-     * - else, common attributes (i.e. attributes of the family without family variant attributes and family variant axes)
+     * Ancestor attribute codes:
+     * - root product model = no parent = no ancestor attribute codes
+     * - sub product model = with parent = common attributes as ancestor attribute codes
+     *      common attribute = family attributes MINUS all attribute codes in attribute set level 1 (product model) and attribute set level 2 (product)
      *
      * Attributes for this level =
-     * - if product_model level = 0 (no parent), return common attributes (see above)
-     * - if product_model level = 1 (with a parent), return family variant attributes of level 1.
+     * - root product model with sub product model = common attributes
+     *      common attribute = family attributes MINUS all attribute codes in attribute set level 1 (product model) and attribute set level 2 (product)
+     * - root product model without sub product model = common attributes
+     *      common attribute = family attributes MINUS all attribute codes in attribute set level 1 (product)
+     * - sub product model (with a parent) = all attribute codes in attribute set level 1 (as level 2 is for the product)
      */
     private function getAttributesFromProductModelCodes(array $productModelCodes): array
     {
@@ -291,65 +295,37 @@ WITH family_attributes AS (
     INNER JOIN pim_catalog_attribute attribute ON attribute.id = family_attributes.attribute_id
     GROUP BY family_id
 ),
-family_variant_attributes AS (
-    SELECT
-        product_family_variant.id AS family_variant_id,
-        JSON_ARRAYAGG(attribute.code) AS attribute_codes
+family_variant_attributes_per_level AS (
+    SELECT 
+        family_variant_id, 
+        JSON_OBJECTAGG(level, attribute_codes) as attribute_codes_per_level
     FROM (
-        SELECT DISTINCT(product_model.family_variant_id) AS id
-        FROM pim_catalog_product_model product_model
-        WHERE product_model.code IN (:productModelCodes)
-    ) AS product_family_variant
-    INNER JOIN pim_catalog_family_variant_has_variant_attribute_sets variant_set ON product_family_variant.id = variant_set.family_variant_id
-    INNER JOIN pim_catalog_variant_attribute_set_has_attributes variant_attributes ON variant_attributes.variant_attribute_set_id = variant_set.variant_attribute_sets_id
-    INNER JOIN pim_catalog_attribute attribute ON attribute.id = variant_attributes.attributes_id
-    GROUP BY family_variant_id
-),
-family_variant_axes AS (
-    SELECT
-        product_family_variant.id AS family_variant_id,
-        JSON_ARRAYAGG(attribute.code) AS attribute_codes
-    FROM (
-        SELECT DISTINCT(product_model.family_variant_id) AS id
-        FROM pim_catalog_product_model product_model
-        WHERE product_model.code IN (:productModelCodes)
-    ) AS product_family_variant
-    INNER JOIN pim_catalog_family_variant_has_variant_attribute_sets variant_set ON product_family_variant.id = variant_set.family_variant_id
-    INNER JOIN pim_catalog_variant_attribute_set_has_axes variant_axes ON variant_axes.variant_attribute_set_id = variant_set.variant_attribute_sets_id
-    INNER JOIN pim_catalog_attribute attribute ON attribute.id = variant_axes.axes_id
-    GROUP BY family_variant_id
-),
-family_variant_attributes_for_sub_product_models AS (
-    SELECT
-        product_family_variant.id AS family_variant_id,
-        JSON_ARRAYAGG(attribute.code) AS attribute_codes
-    FROM (
-        SELECT DISTINCT(product_model.family_variant_id) AS id
-        FROM pim_catalog_product_model product_model
-        WHERE product_model.code IN (:productModelCodes)
-        AND product_model.parent_id IS NOT NULL
-    ) AS product_family_variant
-    INNER JOIN pim_catalog_family_variant_has_variant_attribute_sets variant_set ON product_family_variant.id = variant_set.family_variant_id
-    INNER JOIN pim_catalog_family_variant_attribute_set attribute_set 
-        ON attribute_set.id = variant_set.variant_attribute_sets_id
-        AND attribute_set.level = 1
-    INNER JOIN pim_catalog_variant_attribute_set_has_attributes variant_attributes ON variant_attributes.variant_attribute_set_id = variant_set.variant_attribute_sets_id
-    INNER JOIN pim_catalog_attribute attribute ON attribute.id = variant_attributes.attributes_id
+        SELECT
+            product_family_variant.id AS family_variant_id,
+            attribute_set.level,
+            JSON_ARRAYAGG(attribute.code) AS attribute_codes
+        FROM (
+            SELECT DISTINCT(product_model.family_variant_id) AS id
+            FROM pim_catalog_product_model product_model
+            WHERE product_model.code IN (:productModelCodes)
+        ) AS product_family_variant
+        INNER JOIN pim_catalog_family_variant_has_variant_attribute_sets variant_set ON product_family_variant.id = variant_set.family_variant_id
+        INNER JOIN pim_catalog_family_variant_attribute_set attribute_set ON attribute_set.id = variant_set.variant_attribute_sets_id
+        INNER JOIN pim_catalog_variant_attribute_set_has_attributes variant_attributes ON variant_attributes.variant_attribute_set_id = variant_set.variant_attribute_sets_id
+        INNER JOIN pim_catalog_attribute attribute ON attribute.id = variant_attributes.attributes_id
+        GROUP BY family_variant_id, attribute_set.level
+    ) as family_variant_attributes_per_level
     GROUP BY family_variant_id
 )
 SELECT
     product_model.code AS code,
     product_model.parent_id AS parent_id,
     family_attributes.attribute_codes AS family_attribute_codes,
-    COALESCE(family_variant_attributes.attribute_codes, '[]') AS variant_attributes,
-    COALESCE(family_variant_axes.attribute_codes, '[]') AS variant_axes,
-    COALESCE(family_variant_attributes_for_sub_product_models.attribute_codes, '[]') AS attributes_for_this_level
+    family_variant_attributes_per_level.attribute_codes_per_level
 FROM pim_catalog_product_model product_model
 INNER JOIN pim_catalog_family_variant family_variant ON family_variant.id = product_model.family_variant_id
 INNER JOIN family_attributes ON family_attributes.family_id = family_variant.family_id
-LEFT JOIN family_variant_attributes ON family_variant_attributes.family_variant_id = product_model.family_variant_id
-LEFT JOIN family_variant_axes ON family_variant_axes.family_variant_id = product_model.family_variant_id
-LEFT JOIN family_variant_attributes_for_sub_product_models ON family_variant_attributes_for_sub_product_models.family_variant_id = product_model.family_variant_id
+INNER JOIN family_variant_attributes_per_level ON family_variant_attributes_per_level.family_variant_id = product_model.family_variant_id
 SQL;
 
         $rows = $this->connection->fetchAll(
@@ -367,15 +343,14 @@ SQL;
         );
 
         foreach ($rows as $row) {
-            $familyAttributes = json_decode($row['family_attribute_codes']);
-            $variantAttributes = json_decode($row['variant_attributes']);
-            $variantAxes = json_decode($row['variant_axes']);
-            $attributesForThisLevel = json_decode($row['attributes_for_this_level']);
-            $commonAttributes = array_diff($familyAttributes, $variantAttributes, $variantAxes);
+            $familyAttributes = json_decode($row['family_attribute_codes'], true);
+            $familyVariantAttributeCodesPerLevel = json_decode($row['attribute_codes_per_level'], true);
+            $variantAttributeCodes = array_merge(...array_values($familyVariantAttributeCodesPerLevel));
+            $commonAttributeCodes = array_values(array_diff($familyAttributes, $variantAttributeCodes));
 
             $results[$row['code']] = [
-                'ancestor_attribute_codes' => null === $row['parent_id'] ? [] : array_values($commonAttributes),
-                'attributes_for_this_level' => null === $row['parent_id'] ? array_values($commonAttributes) : $attributesForThisLevel,
+                'ancestor_attribute_codes' => null === $row['parent_id'] ? [] : $commonAttributeCodes,
+                'attributes_for_this_level' => null === $row['parent_id'] ? $commonAttributeCodes : $familyVariantAttributeCodesPerLevel['1'],
             ];
         }
 
