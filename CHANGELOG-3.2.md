@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes:
+
+- PIM-8820: Avoid multiple refresh of the product grid on product delete
+
 # 3.2.9 (2019-09-23)
 
 ## Bug fixes:
