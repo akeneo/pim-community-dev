@@ -67,6 +67,9 @@ datagrid:
             image:
                 data_name:     image
                 frontend_type: product-and-product-model-image
+            identifier:
+                type:          field
+                data_name:     identifier
             document_type: ~
             technical_id: ~
             delete_link:
