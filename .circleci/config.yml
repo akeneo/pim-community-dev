@@ -37,7 +37,7 @@ jobs:
                       command: >
                           curl --output /dev/null --silent --head --fail
                           https://github.com/akeneo/pim-community-dev/tree/${CIRCLE_BRANCH} &&
-                          docker-compose exec -u www-data:www-data fpm php
+                          docker-compose run --rm -u www-data:www-data php php
                           /usr/local/bin/composer require "akeneo/pim-community-dev:dev-${CIRCLE_BRANCH}" --no-update ||
                           echo "No CE branch $CIRCLE_BRANCH found. I don't touch the composer.json file."
       - run:
