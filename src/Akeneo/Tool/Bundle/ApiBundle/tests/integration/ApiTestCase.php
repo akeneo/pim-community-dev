@@ -4,6 +4,7 @@ namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration;
 
 use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\IntegrationTestsBundle\Configuration\Catalog;
 use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
 use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
@@ -48,8 +49,7 @@ abstract class ApiTestCase extends WebTestCase
 
         $this->testKernel = new \AppKernelTest('test', false);
         $this->testKernel->boot();
-
-        $this->catalog = $this->getFromTestContainer('akeneo_integration_tests.configuration.catalog');
+        $this->catalog = new Catalog();
         
         $authenticator = new SystemUserAuthenticator(
             $this->get('pim_user.factory.user'),
@@ -59,10 +59,8 @@ abstract class ApiTestCase extends WebTestCase
         );
         $authenticator->createSystemUser();
 
-        $this->testKernel->getContainer()->set('akeneo_integration_tests.catalog.configuration', $this->getConfiguration());
-
         $fixturesLoader = $this->getFromTestContainer('akeneo_integration_tests.loader.fixtures_loader');
-        $fixturesLoader->load();
+        $fixturesLoader->load($this->getConfiguration());
     }
 
     /**

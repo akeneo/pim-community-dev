@@ -4,7 +4,6 @@ parameters:
     akeneo_integration_tests.loader.database_schema_handler.class: Akeneo\Test\IntegrationTestsBundle\Loader\DatabaseSchemaHandler
     akeneo_integration_tests.doctrine.connection.connection_closer.class: Akeneo\Test\IntegrationTestsBundle\Doctrine\Connection\ConnectionCloser
     akeneo_integration_tests.security.system_user_authenticator.class: Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator
-    akeneo_integration_tests.configuration.catalog.class: Akeneo\Test\IntegrationTestsBundle\Configuration\Catalog
     akeneo_integration_tests.launcher.job_launcher.class: Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher
     akeneo_integration_tests.launcher.job_execution_observer.class: Akeneo\Test\IntegrationTestsBundle\Jobs\JobExecutionObserver
 
@@ -24,7 +23,6 @@ services:
             - '@kernel'
             - '@akeneo_integration_tests.loader.database_schema_handler'
             - '@akeneo_integration_tests.security.system_user_authenticator'
-            - '@akeneo_integration_tests.catalog.configuration'
             - '@akeneo_integration_tests.loader.reference_data_loader'
             - '@oneup_flysystem.archivist_filesystem'
             - '@akeneo_batch.job_repository'
@@ -91,12 +89,6 @@ services:
             - '@pim_enrich.repository.job_execution'
             - '@akeneo_batch.saver.job_instance'
             - '@doctrine.orm.default_entity_manager'
-
-    akeneo_integration_tests.configuration.catalog:
-        class: '%akeneo_integration_tests.configuration.catalog.class%'
-
-    akeneo_integration_tests.catalog.configuration:
-        synthetic: true
 
     ### Builder
     akeneo_integration_tests.catalog.product.builder:

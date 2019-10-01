@@ -6,6 +6,7 @@ namespace Akeneo\Test\Integration;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
+use Akeneo\Test\IntegrationTestsBundle\Configuration\Catalog;
 use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
 use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
 use Akeneo\UserManagement\Component\Model\User;
@@ -37,12 +38,11 @@ abstract class TestCase extends KernelTestCase
     protected function setUp(): void
     {
         $this->testKernel = static::bootKernel(['debug' => false]);
+        $this->catalog = new Catalog();
 
-        $this->catalog = $this->getFromTestContainer('akeneo_integration_tests.configuration.catalog');
         if (null !== $this->getConfiguration()) {
-            $this->testKernel->getContainer()->set('akeneo_integration_tests.catalog.configuration', $this->getConfiguration());
             $fixturesLoader = $this->getFromTestContainer('akeneo_integration_tests.loader.fixtures_loader');
-            $fixturesLoader->load();
+            $fixturesLoader->load($this->getConfiguration());
         }
 
         // authentication should be done after loading the database as the user is created with first activated locale as default locale
