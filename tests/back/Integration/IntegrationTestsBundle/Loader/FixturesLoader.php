@@ -77,6 +77,18 @@ class FixturesLoader implements FixturesLoaderInterface
     /** @var Connection */
     private $dbConnection;
 
+    /** @var string */
+    private $databaseHost;
+
+    /** @var string */
+    private $databaseName;
+
+    /** @var string */
+    private $databaseUser;
+
+    /** @var string */
+    private $databasePassword;
+
     public function __construct(
         KernelInterface $kernel,
         DatabaseSchemaHandler $databaseSchemaHandler,
@@ -91,7 +103,11 @@ class FixturesLoader implements FixturesLoaderInterface
         ProductModelIndexerInterface $productModelIndexer,
         ClientRegistry $clientRegistry,
         Client $esClient,
-        Connection $dbConnection
+        Connection $dbConnection,
+        string $databaseHost,
+        string $databaseName,
+        string $databaseUser,
+        string $databasePassword
     ) {
         $this->kernel = $kernel;
         $this->databaseSchemaHandler = $databaseSchemaHandler;
@@ -111,6 +127,10 @@ class FixturesLoader implements FixturesLoaderInterface
         $this->clientRegistry = $clientRegistry;
         $this->esClient = $esClient;
         $this->dbConnection = $dbConnection;
+        $this->databaseHost = $databaseHost;
+        $this->databaseName = $databaseName;
+        $this->databaseUser = $databaseUser;
+        $this->databasePassword = $databasePassword;
     }
 
     public function __destruct()
@@ -196,10 +216,10 @@ class FixturesLoader implements FixturesLoaderInterface
         foreach ($files as $file) {
             $this->execCommand([
                 'mysql',
-                '-h '.getenv('APP_DATABASE_HOST'),
-                '-u '.getenv('APP_DATABASE_USER'),
-                '-p'.getenv('APP_DATABASE_PASSWORD'),
-                getenv('APP_DATABASE_NAME'),
+                '-h '.$this->databaseHost,
+                '-u '.$this->databaseUser,
+                '-p'.$this->databasePassword,
+                $this->databaseName,
                 sprintf('< %s', $file),
             ]);
         }
@@ -353,12 +373,12 @@ class FixturesLoader implements FixturesLoaderInterface
 
         $this->execCommand([
             'mysqldump',
-            '-h '.getenv('APP_DATABASE_HOST'),
-            '-u '.getenv('APP_DATABASE_USER'),
-            '-p'.getenv('APP_DATABASE_PASSWORD'),
+            '-h '.$this->databaseHost,
+            '-u '.$this->databaseUser,
+            '-p'.$this->databasePassword,
             '--no-create-info',
             '--quick',
-            getenv('APP_DATABASE_NAME'),
+            $this->databaseName,
             '> '.$filepath,
         ]);
     }
@@ -370,10 +390,10 @@ class FixturesLoader implements FixturesLoaderInterface
     {
         $this->execCommand([
             'mysql',
-            '-h '.getenv('APP_DATABASE_HOST'),
-            '-u '.getenv('APP_DATABASE_USER'),
-            '-p'.getenv('APP_DATABASE_PASSWORD'),
-            getenv('APP_DATABASE_NAME'),
+            '-h '.$this->databaseHost,
+            '-u '.$this->databaseUser,
+            '-p'.$this->databasePassword,
+            $this->databaseName,
             '< '.$filepath,
         ]);
     }
