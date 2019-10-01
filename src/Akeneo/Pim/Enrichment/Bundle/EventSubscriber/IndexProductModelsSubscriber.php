@@ -9,7 +9,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductModelIndexerI
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Index product models in the search engine.
@@ -34,53 +33,9 @@ class IndexProductModelsSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents() : array
     {
         return [
-            StorageEvents::POST_SAVE       => 'indexProductModel',
-            StorageEvents::POST_SAVE_ALL   => 'bulkIndexProductModels',
             StorageEvents::POST_REMOVE     => 'deleteProductModel',
             StorageEvents::POST_REMOVE_ALL => 'bulkDeleteProductModels',
         ];
-    }
-
-    /**
-     * Index one product model.
-     *
-     * @param GenericEvent $event
-     */
-    public function indexProductModel(GenericEvent $event) : void
-    {
-        $product = $event->getSubject();
-        if (!$product instanceof ProductModelInterface) {
-            return;
-        }
-
-        if (!$event->hasArgument('unitary') || false === $event->getArgument('unitary')) {
-            return;
-        }
-
-        $this->productModelIndexer->indexFromProductModelCode($product->getCode());
-    }
-
-    /**
-     * Index several product models.
-     *
-     * @param GenericEvent $event
-     */
-    public function bulkIndexProductModels(GenericEvent $event) : void
-    {
-        $productModels = $event->getSubject();
-        if (!is_array($productModels)) {
-            return;
-        }
-
-        if (!current($productModels) instanceof ProductModelInterface) {
-            return;
-        }
-
-        $this->productModelIndexer->indexFromProductModelCodes(
-            array_map(function (ProductModelInterface $productModel) {
-                return $productModel->getCode();
-            }, $productModels)
-        );
     }
 
     /**

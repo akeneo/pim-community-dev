@@ -2,11 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\Storage;
+namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelDescendantsAndAncestorsIndexer;
 use Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses;
 use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetDescendantVariantProductIdentifiers;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Tool\Component\StorageUtils\StorageEvents;
+use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Orchestrator for below jobs:
@@ -18,7 +22,7 @@ use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetDescendantVariantProductId
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class ComputeProductCompletenessAndIndexProductAndAncestors
+final class ComputeDescendantCompletenessAndIndexProductAndAncestorsSubscriber implements EventSubscriberInterface
 {
     /** @var ComputeAndPersistProductCompletenesses */
     private $computeAndPersistProductCompletenesses;
@@ -39,16 +43,48 @@ final class ComputeProductCompletenessAndIndexProductAndAncestors
         $this->getDescendantVariantProductIdentifiers = $getDescendantVariantProductIdentifiers;
     }
 
-    /**
-     * We can make some optimizations here: if no variant products, we can only index product models
-     * with the product model descendants. Ancestors needs to be indexed only if completeness changes.
-     * We can also:
-     *  - avoid to calculate the completeness if no required attribute has changed: so no indexation of the ancestors also
-     *  - avoid to calculate the products if no values, association, categories, etc has changed
-     *
-     * @param array $productModelCodes
-     */
-    public function fromProductModelCodes(array $productModelCodes): void
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            StorageEvents::POST_SAVE     => 'fromProductModelEvent',
+            StorageEvents::POST_SAVE_ALL => 'fromProductModelsEvent',
+        ];
+    }
+
+    public function fromProductModelEvent(Event $event): void
+    {
+        $productModel = $event->getSubject();
+        if (!$productModel instanceof ProductModelInterface) {
+            return;
+        }
+
+        if (!$event->hasArgument('unitary') || false === $event->getArgument('unitary')) {
+            return;
+        }
+
+        $this->fromProductModelCodes([$productModel->getCode()]);
+    }
+
+    public function fromProductModelsEvent(Event $event): void
+    {
+        $productModels = $event->getSubject();
+        if (!is_array($productModels)) {
+            return;
+        }
+
+        if (!current($productModels) instanceof ProductModelInterface) {
+            return;
+        }
+
+        $this->fromProductModelCodes(array_map(
+            function (ProductModelInterface $productModel) {
+                return $productModel->getCode();
+            },
+            $productModels
+        ));
+    }
+
+    private function fromProductModelCodes(array $productModelCodes): void
     {
         if (empty($productModelCodes)) {
             return;
