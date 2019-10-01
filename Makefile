@@ -21,35 +21,36 @@ include make-file/*.mk
 ## Front
 ##
 
-.PHONY: remove-front-files
-remove-front-files:
-	rm -rf public/bundles public/dist public/css public/js
-
 node_modules: package.json
 	$(YARN_EXEC) install
 
 .PHONY: assets
 assets:
+	rm -rf public/bundles
 	$(PHP_RUN) bin/console --env=prod pim:installer:assets --symlink --clean
 
 .PHONY: css
 css:
+	rm -rf public/css
 	$(YARN_EXEC) run less
 
 .PHONY: javascript-prod
 javascript-prod:
+	rm -rf public/js public/dist
 	$(YARN_EXEC) run webpack
 
 .PHONY: javascript-dev
 javascript-dev:
+	rm -rf public/js public/dist
 	$(YARN_EXEC) run webpack-dev
 
 .PHONY: javascript-test
 javascript-test:
+	rm -rf public/js public/dist
 	$(YARN_EXEC) run webpack-test
 
 .PHONY: front
-front: remove-front-files assets css javascript-test javascript-dev
+front: assets css javascript-test javascript-dev
 
 ##
 ## Back
@@ -67,8 +68,11 @@ composer.lock: composer.json
 	$(PHP_RUN) -d memory_limit=4G /usr/local/bin/composer update
 
 vendor: composer.lock
-	$(PHP_RUN) bin/console pim:installer:check-requirements
 	$(PHP_RUN) -d memory_limit=4G /usr/local/bin/composer install
+
+.PHONY: check-requirements
+check-requirements:
+	$(PHP_RUN) bin/console pim:installer:check-requirements
 
 .PHONY: database
 database:
