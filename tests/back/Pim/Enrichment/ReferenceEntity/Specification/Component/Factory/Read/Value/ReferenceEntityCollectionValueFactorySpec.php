@@ -57,6 +57,6 @@ final class ReferenceEntityCollectionValueFactorySpec extends ObjectBehavior
 
     private function getAttribute(bool $isLocalizable, bool $isScopable): Attribute
     {
-        return new Attribute('an_attribute', ReferenceEntityCollectionType::REFERENCE_ENTITY_COLLECTION, ['reference_data_name' => 'color'], $isLocalizable, $isScopable, null, false);
+        return new Attribute('an_attribute', ReferenceEntityCollectionType::REFERENCE_ENTITY_COLLECTION, ['reference_data_name' => 'color'], $isLocalizable, $isScopable, null, false, 'reference_data_options');
     }
 }

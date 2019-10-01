@@ -9,17 +9,17 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueColle
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Normalizer\ReferenceEntityValueNormalizer;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Value\ReferenceEntityValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 
 class ReferenceEntityValueNormalizerSpec extends ObjectBehavior
 {
-    function let(IdentifiableObjectRepositoryInterface $attributeRepository)
+    function let(GetAttributes $getAttributes)
     {
-        $this->beConstructedWith($attributeRepository);
+        $this->beConstructedWith($getAttributes);
     }
 
     function it_is_initializable()
@@ -39,17 +39,22 @@ class ReferenceEntityValueNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_null_reference_data_product_value(
         ReferenceEntityValue $designerValue,
-        AttributeInterface $designer,
-        $attributeRepository
+        GetAttributes $getAttributes
     ) {
         $designerValue->getAttributeCode()->willReturn('designer');
-        $attributeRepository->findOneByIdentifier('designer')->willReturn($designer);
-        $designer->getBackendType()->willReturn(AttributeTypes::BACKEND_TYPE_REF_DATA_OPTION);
+        $getAttributes->forCode('designer')->willReturn(new Attribute(
+            'designer',
+            'pim_reference_data_simpleselect',
+            [],
+            false,
+            false,
+            null,
+            false,
+            AttributeTypes::BACKEND_TYPE_REF_DATA_OPTION
+        ));
 
         $designerValue->getLocaleCode()->willReturn(null);
         $designerValue->getScopeCode()->willReturn(null);
-
-        $designer->getCode()->willReturn('designer');
 
         $designerValue->getData()->willReturn(null);
 
@@ -67,19 +72,24 @@ class ReferenceEntityValueNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_reference_data_product_value(
         ReferenceEntityValue $designerValue,
-        AttributeInterface $designer,
         Record $dyson,
         RecordCode $dysonCode,
-        $attributeRepository
+        GetAttributes $getAttributes
     ) {
         $designerValue->getAttributeCode()->willReturn('designer');
-        $attributeRepository->findOneByIdentifier('designer')->willReturn($designer);
-        $designer->getBackendType()->willReturn(AttributeTypes::BACKEND_TYPE_REF_DATA_OPTION);
+        $getAttributes->forCode('designer')->willReturn(new Attribute(
+            'designer',
+            'pim_reference_data_simpleselect',
+            [],
+            false,
+            false,
+            null,
+            false,
+            AttributeTypes::BACKEND_TYPE_REF_DATA_OPTION
+        ));
 
         $designerValue->getLocaleCode()->willReturn(null);
         $designerValue->getScopeCode()->willReturn(null);
-
-        $designer->getCode()->willReturn('designer');
 
         $dysonCode->__toString()->willReturn('dyson');
         $dyson->getCode()->willReturn($dysonCode);
