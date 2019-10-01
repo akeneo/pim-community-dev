@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {LocaleCode, Locale} from 'akeneopimenrichmentassetmanager/platform/model/channel/locale';
 import styled from 'styled-components';
 import {Label} from 'akeneopimenrichmentassetmanager/platform/component/common/label';
 import Flag from 'akeneoassetmanager/tools/component/flag';
+import Locale, {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 
 const LocaleLabelView = styled(Label)`
   margin-left: 10px;

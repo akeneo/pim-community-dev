@@ -1,19 +1,23 @@
 import File, {NormalizedFile} from 'akeneoassetmanager/domain/model/file';
-import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import AssetFamilyIdentifier, {
+  denormalizeAssetFamilyIdentifier,
+} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import LabelCollection, {NormalizedLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
-import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
-import Identifier, {NormalizedAssetIdentifier} from 'akeneoassetmanager/domain/model/asset/identifier';
+import AssetCode, {denormalizeAssetCode, assetCodeStringValue} from 'akeneoassetmanager/domain/model/asset/code';
+import AssetIdentifier, {
+  denormalizeAssetIdentifier,
+  assetidentifiersAreEqual,
+} from 'akeneoassetmanager/domain/model/asset/identifier';
 import ValueCollection from 'akeneoassetmanager/domain/model/asset/value-collection';
 import {NormalizedValue, NormalizedMinimalValue} from 'akeneoassetmanager/domain/model/asset/value';
 import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
 import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
 import Completeness, {NormalizedCompleteness} from 'akeneoassetmanager/domain/model/asset/completeness';
-import {NormalizedCode as NormalizedAssetCode} from 'akeneoassetmanager/domain/model/asset/code';
 
 interface CommonNormalizedAsset {
-  identifier: NormalizedAssetIdentifier;
+  identifier: AssetIdentifier;
   asset_family_identifier: string;
-  code: NormalizedAssetCode;
+  code: AssetCode;
   labels: NormalizedLabelCollection;
 }
 
@@ -39,7 +43,7 @@ export enum NormalizeFormat {
 }
 
 export default interface Asset {
-  getIdentifier: () => Identifier;
+  getIdentifier: () => AssetIdentifier;
   getCode: () => AssetCode;
   getAssetFamilyIdentifier: () => AssetFamilyIdentifier;
   getLabel: (locale: string, fallbackOnCode?: boolean) => string;
@@ -56,22 +60,13 @@ class InvalidArgumentError extends Error {}
 
 class AssetImplementation implements Asset {
   private constructor(
-    private identifier: Identifier,
+    private identifier: AssetIdentifier,
     private assetFamilyIdentifier: AssetFamilyIdentifier,
     private code: AssetCode,
     private labelCollection: LabelCollection,
     private image: File,
     private valueCollection: ValueCollection
   ) {
-    if (!(identifier instanceof Identifier)) {
-      throw new InvalidArgumentError('Asset expects a AssetIdentifier as identifier argument');
-    }
-    if (!(assetFamilyIdentifier instanceof AssetFamilyIdentifier)) {
-      throw new InvalidArgumentError('Asset expects an AssetFamilyIdentifier as assetFamilyIdentifier argument');
-    }
-    if (!(code instanceof AssetCode)) {
-      throw new InvalidArgumentError('Asset expects a AssetCode as code argument');
-    }
     if (!(labelCollection instanceof LabelCollection)) {
       throw new InvalidArgumentError('Asset expects a LabelCollection as labelCollection argument');
     }
@@ -86,7 +81,7 @@ class AssetImplementation implements Asset {
   }
 
   public static create(
-    identifier: Identifier,
+    identifier: AssetIdentifier,
     assetFamilyIdentifier: AssetFamilyIdentifier,
     assetCode: AssetCode,
     labelCollection: LabelCollection,
@@ -94,16 +89,16 @@ class AssetImplementation implements Asset {
     valueCollection: ValueCollection
   ): Asset {
     return new AssetImplementation(
-      identifier,
-      assetFamilyIdentifier,
-      assetCode,
+      denormalizeAssetIdentifier(identifier),
+      denormalizeAssetFamilyIdentifier(assetFamilyIdentifier),
+      denormalizeAssetCode(assetCode),
       labelCollection,
       image,
       valueCollection
     );
   }
 
-  public getIdentifier(): Identifier {
+  public getIdentifier(): AssetIdentifier {
     return this.identifier;
   }
 
@@ -117,7 +112,7 @@ class AssetImplementation implements Asset {
 
   public getLabel(locale: string, fallbackOnCode: boolean = true) {
     if (!this.labelCollection.hasLabel(locale)) {
-      return fallbackOnCode ? `[${this.getCode().stringValue()}]` : '';
+      return fallbackOnCode ? `[${this.getCode()}]` : '';
     }
 
     return this.labelCollection.getLabel(locale);
@@ -136,14 +131,14 @@ class AssetImplementation implements Asset {
   }
 
   public equals(asset: Asset): boolean {
-    return asset.getIdentifier().equals(this.identifier);
+    return assetidentifiersAreEqual(asset.getIdentifier(), this.identifier);
   }
 
   public normalize(): NormalizedAsset {
     return {
-      identifier: this.getIdentifier().normalize(),
-      asset_family_identifier: this.getAssetFamilyIdentifier().stringValue(),
-      code: this.code.stringValue(),
+      identifier: this.getIdentifier(),
+      asset_family_identifier: this.getAssetFamilyIdentifier(),
+      code: assetCodeStringValue(this.code),
       labels: this.getLabelCollection().normalize(),
       image: this.getImage().normalize(),
       values: this.valueCollection.normalize(),
@@ -153,8 +148,8 @@ class AssetImplementation implements Asset {
   public normalizeMinimal(): NormalizedMinimalAsset {
     return {
       identifier: this.getIdentifier().normalize(),
-      asset_family_identifier: this.getAssetFamilyIdentifier().stringValue(),
-      code: this.code.stringValue(),
+      asset_family_identifier: this.getAssetFamilyIdentifier(),
+      code: assetCodeStringValue(this.code),
       labels: this.getLabelCollection().normalize(),
       image: this.getImage().normalize(),
       values: this.valueCollection.normalizeMinimal(),

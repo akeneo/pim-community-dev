@@ -1,31 +1,15 @@
-class InvalidTypeError extends Error {}
+import {isString} from 'akeneoassetmanager/domain/model/utils';
 
-export type NormalizedCode = string;
+type Code = string;
 
-export default class Code {
-  private constructor(private code: string) {
-    if ('string' !== typeof code) {
-      throw new InvalidTypeError('Code expects a string as parameter to be created');
-    }
+export default Code;
 
-    Object.freeze(this);
-  }
+export const denormalizeCode = (code: any): Code => {
+  if (!isCode(code)) throw new Error('Code expects a string as parameter to be created');
 
-  public static create(code: string): Code {
-    return new Code(code);
-  }
+  return code;
+};
 
-  public equals(code: Code): boolean {
-    return this.stringValue() === code.stringValue();
-  }
-
-  public stringValue(): string {
-    return this.code;
-  }
-
-  public normalize(): string {
-    return this.code;
-  }
-}
-
-export const createCode = Code.create;
+export const codesAreEqual = (first: Code, second: Code) => first === second;
+export const codeStringValue = (code: Code) => code;
+export const isCode = isString;

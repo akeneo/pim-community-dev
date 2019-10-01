@@ -22,15 +22,16 @@ import Channel from 'akeneoassetmanager/domain/model/channel';
 import DeleteModal from 'akeneoassetmanager/application/component/app/delete-modal';
 import {openDeleteModal, cancelDeleteModal} from 'akeneoassetmanager/application/event/confirmDelete';
 import Key from 'akeneoassetmanager/tools/key';
-import {createLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
-import {createChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
+import {denormalizeLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
+import {denormalizeChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
 import {getLocales} from 'akeneoassetmanager/application/reducer/structure';
 import CompletenessLabel from 'akeneoassetmanager/application/component/app/completeness';
 import {canEditAssetFamily} from 'akeneoassetmanager/application/reducer/right';
-import {NormalizedCode} from 'akeneoassetmanager/domain/model/asset/code';
-import {NormalizedCode as NormalizedAttributeCode} from 'akeneoassetmanager/domain/model/product/attribute/code';
+import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/product/attribute';
 import {redirectToProductGrid} from 'akeneoassetmanager/application/event/router';
+import AttributeCode from 'akeneoassetmanager/domain/model/attribute/code';
+import {assetFamilyIdentifierStringValue} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 
 // const securityContext = require('pim/security-context');
 
@@ -61,7 +62,7 @@ interface StateProps {
     isActive: boolean;
   };
   selectedAttribute: NormalizedAttribute | null;
-  assetCode: NormalizedCode;
+  assetCode: AssetCode;
 }
 
 interface DispatchProps {
@@ -74,7 +75,7 @@ interface DispatchProps {
     onOpenDeleteModal: () => void;
     onCancelDeleteModal: () => void;
     backToAssetFamily: () => void;
-    onRedirectToProductGrid: (selectedAttribute: NormalizedAttributeCode, assetCode: NormalizedCode) => void;
+    onRedirectToProductGrid: (selectedAttribute: AttributeCode, assetCode: AssetCode) => void;
   };
 }
 
@@ -127,8 +128,8 @@ class AssetEditView extends React.Component<EditProps> {
     const label = asset.getLabel(this.props.context.locale);
     const TabView = sidebarProvider.getView('akeneo_asset_manager_asset_edit', this.props.sidebar.currentTab);
     const completeness = asset.getCompleteness(
-      createChannelReference(this.props.context.channel),
-      createLocaleReference(this.props.context.locale)
+      denormalizeChannelReference(this.props.context.channel),
+      denormalizeLocaleReference(this.props.context.locale)
     );
     const isUsableSelectedAttributeOnTheGrid =
       null !== this.props.selectedAttribute && true === this.props.selectedAttribute.useable_as_grid_filter;
@@ -184,17 +185,17 @@ class AssetEditView extends React.Component<EditProps> {
                                   type: 'redirect',
                                   route: 'akeneo_asset_manager_asset_family_edit',
                                   parameters: {
-                                    identifier: asset.getAssetFamilyIdentifier().stringValue(),
+                                    identifier: assetFamilyIdentifierStringValue(asset.getAssetFamilyIdentifier()),
                                     tab: 'asset',
                                   },
                                 },
-                                label: asset.getAssetFamilyIdentifier().stringValue(),
+                                label: assetFamilyIdentifierStringValue(asset.getAssetFamilyIdentifier()),
                               },
                               {
                                 action: {
                                   type: 'display',
                                 },
-                                label: asset.getCode().stringValue(),
+                                label: asset.getCode(),
                               },
                             ]}
                           />
@@ -361,7 +362,7 @@ export default connect(
         backToAssetFamily: () => {
           dispatch(backToAssetFamily());
         },
-        onRedirectToProductGrid: (selectedAttribute: NormalizedAttributeCode, assetCode: NormalizedCode) => {
+        onRedirectToProductGrid: (selectedAttribute: AttributeCode, assetCode: AssetCode) => {
           dispatch(redirectToProductGrid(selectedAttribute, assetCode));
         },
       },

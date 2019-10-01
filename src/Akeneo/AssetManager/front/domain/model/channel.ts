@@ -1,48 +1,49 @@
-import Locale, {denormalizeLocale, ConcreteLocale, NormalizedLocale} from 'akeneoassetmanager/domain/model/locale';
-import LabelCollection, {
-  createLabelCollection,
-  NormalizedLabelCollection,
-} from 'akeneoassetmanager/domain/model/label-collection';
+import Locale, {LocaleCode, denormalizeLocale} from 'akeneoassetmanager/domain/model/locale';
+import {isString, isArray, isLabels} from 'akeneoassetmanager/domain/model/utils';
+import {getLabel} from 'pimui/js/i18n';
 
-export default interface Channel {
-  code: string;
-  labelCollection: LabelCollection;
+type Labels = {
+  [localeCode: string]: string;
+};
+
+export type ChannelCode = string;
+
+type Channel = {
+  code: ChannelCode;
+  labels: Labels;
   locales: Locale[];
-  getLabel(localeCode: string): string;
-}
-class InvalidTypeError extends Error {}
+};
 
-interface NormalizedChannel {
-  code: string;
-  labels: NormalizedLabelCollection;
-  locales: NormalizedLocale[];
-}
+export const getChannelLabel = (channel: Channel, locale: LocaleCode) => {
+  return getLabel(channel.labels, locale, channel.code);
+};
 
-export class ConcreteChannel {
-  public constructor(readonly code: string, readonly labelCollection: LabelCollection, readonly locales: Locale[]) {
-    if ('string' !== typeof code) {
-      throw new InvalidTypeError('Channel expects a string as code to be created');
-    }
-    if (!(labelCollection instanceof LabelCollection)) {
-      throw new InvalidTypeError('Channel expects a LabelCollection as second argument');
-    }
-    Object.keys(locales).forEach((localeKey: string) => {
-      if (!(locales[localeKey as any] instanceof ConcreteLocale)) {
-        throw new InvalidTypeError('Channel expects a Locale collection as third argument');
-      }
-    });
-    Object.freeze(this);
+export default Channel;
+
+const isLocales = (locales: any): locales is Locale[] => {
+  if (!isArray(locales)) {
+    return false;
   }
 
-  getLabel(localeCode: string) {
-    return this.labelCollection.hasLabel(localeCode) ? this.labelCollection.getLabel(localeCode) : `[${this.code}]`;
-  }
-}
+  return !locales.some((locale: any) => {
+    return !isString(locale.code) || !isString(locale.label) || !isString(locale.region) || !isString(locale.language);
+  });
+};
 
-export const denormalizeChannel = (rawChannel: NormalizedChannel): Channel => {
-  return new ConcreteChannel(
-    rawChannel.code,
-    createLabelCollection(rawChannel.labels),
-    rawChannel.locales.map((rawLocale: any) => denormalizeLocale(rawLocale))
-  );
+export const denormalizeChannel = (channel: any): Channel => {
+  if (!isString(channel.code)) {
+    throw new Error('Channel expects a string as code to be created');
+  }
+
+  if (!isLabels(channel.labels)) {
+    throw new Error('Channel expects a label collection as labels to be created');
+  }
+
+  if (!isLocales(channel.locales)) {
+    throw new Error('Channel expects an array as locales to be created');
+  }
+
+  const locales = channel.locales.map(denormalizeLocale);
+
+  return {...channel, locales};
 };

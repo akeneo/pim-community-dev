@@ -4,7 +4,7 @@ import Product, {
   PRODUCT_TYPE,
 } from 'akeneoassetmanager/domain/model/product/product';
 import {validateKeys} from 'akeneoassetmanager/application/hydrator/hydrator';
-import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
+import LocaleReference, {localeReferenceStringValue} from 'akeneoassetmanager/domain/model/locale-reference';
 import {NormalizedCompleteness} from 'akeneoassetmanager/domain/model/product/completeness';
 import {accessProperty} from 'akeneoassetmanager/tools/property';
 
@@ -47,7 +47,7 @@ export const hydrator = (denormalize: (denormalizeProduct: NormalizedProduct) =>
     id: String(normalizedProduct.id),
     identifier: normalizedProduct.identifier,
     type: normalizedProduct.document_type,
-    labels: {[context.locale.stringValue()]: normalizedProduct.label},
+    labels: {[localeReferenceStringValue(context.locale)]: normalizedProduct.label},
     image: normalizedProduct.image,
     completeness,
   });

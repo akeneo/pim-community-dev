@@ -27,12 +27,15 @@ type RecordFilterViewProps = FilterViewProps & {
 
 const DEFAULT_OPERATOR = 'IN';
 
+const RIGHT_POSITIONNING_THRESHOLD = 600;
+
 const RecordFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, context}: RecordFilterViewProps) => {
   if (!(attribute instanceof ConcreteRecordAttribute || attribute instanceof ConcreteRecordCollectionAttribute)) {
     return null;
   }
 
   const [isOpen, setIsOpen] = useState(false);
+  const [displayRight, setDisplayRight] = useState(false);
   const [hydratedRecords, setHydratedRecords] = useState([]);
 
   const rawValues = undefined !== filter ? filter.value : [];
@@ -61,6 +64,14 @@ const RecordFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
     });
   };
 
+  const openPopup = (event: MouseEvent): void => {
+    setIsOpen(true);
+
+    if ((event.target as Element).parentElement!.getBoundingClientRect().left < RIGHT_POSITIONNING_THRESHOLD) {
+      setDisplayRight(true);
+    }
+  };
+
   useEffect(() => {
     updateHydratedRecords();
   });
@@ -74,12 +85,19 @@ const RecordFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
 
   return (
     <React.Fragment>
-      <span className="AknFilterBox-filterLabel" onClick={() => setIsOpen(true)}>
+      <span
+        className="AknFilterBox-filterLabel"
+        onClick={(event: any) => {
+          openPopup(event);
+        }}
+      >
         {attribute.getLabel(context.locale)}
       </span>
       <span
         className="AknFilterBox-filterCriteria AknFilterBox-filterCriteria--limited"
-        onClick={() => setIsOpen(true)}
+        onClick={(event: any) => {
+          openPopup(event);
+        }}
       >
         <span className="AknFilterBox-filterCriteriaHint" title={hint}>
           {hint}
@@ -89,7 +107,7 @@ const RecordFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
       {isOpen ? (
         <div>
           <div className="AknDropdown-mask" onClick={() => setIsOpen(false)} />
-          <div className="AknFilterBox-filterDetails">
+          <div className={'AknFilterBox-filterDetails ' + (displayRight ? 'AknFilterBox-filterDetails--rightAlign' : '')}>
             <div className="AknFilterChoice">
               <div className="AknFilterChoice-header">
                 <div className="AknFilterChoice-title">{attribute.getLabel(context.locale)}</div>

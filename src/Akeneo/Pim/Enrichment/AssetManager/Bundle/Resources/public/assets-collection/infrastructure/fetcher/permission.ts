@@ -1,8 +1,9 @@
 import promisify from 'akeneoassetmanager/tools/promisify';
 import {AttributeGroupCode} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
-import {LocaleCode, LocaleReference} from 'akeneopimenrichmentassetmanager/platform/model/channel/locale';
 import {CategoryCode} from 'akeneopimenrichmentassetmanager/enrich/domain/model/product';
-import {isObject, isArray, isString, isBoolean} from 'util';
+import {isObject, isArray, isString, isBoolean} from 'akeneoassetmanager/domain/model/utils';
+import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
+import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
 const fetcherRegistry = require('pim/fetcher-registry');
 
 export type AttributeGroupPermission = {

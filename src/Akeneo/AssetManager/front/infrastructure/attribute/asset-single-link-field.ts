@@ -58,7 +58,7 @@ class AssetFamilyField extends (BaseField as {new (config: any): any}) {
 
   getChoices() {
     return this.assetFamilies.reduce((result: {[key: string]: string}, assetFamily: AssetFamilyListItem) => {
-      result[assetFamily.getIdentifier().stringValue()] = assetFamily.getLabel(UserContext.get('catalogLocale'));
+      result[assetFamily.getIdentifier()] = assetFamily.getLabel(UserContext.get('catalogLocale'));
 
       return result;
     }, {});

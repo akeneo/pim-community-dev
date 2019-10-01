@@ -7,13 +7,13 @@ Feature: Lists all assets of an asset family
   Scenario: Search assets of an asset family
     Given a list of assets
     When the user search for "s"
-    Then the search result should be "starck,dyson"
+    Then the search result should be "frontview,backview"
 
   @acceptance-back
   Scenario: List assets of an asset family
     Given a list of assets
     When the user list the assets
-    Then the search result should be "starck,dyson,coco"
+    Then the search result should be "frontview,backview,sideview"
 
   @acceptance-back
   Scenario: Search assets of an asset family with no results
@@ -24,14 +24,14 @@ Feature: Lists all assets of an asset family
   @acceptance-back
   Scenario: Search assets of an asset family by their code
     Given a list of assets
-    When the user filters assets by "code" with operator "NOT IN" and value "coco"
-    Then the search result should be "starck,dyson"
+    When the user filters assets by "code" with operator "NOT IN" and value "sideview"
+    Then the search result should be "frontview,backview"
 
   @acceptance-back
   Scenario: Search assets of an asset family by their code
     Given a list of assets
-    When the user filters assets by "code" with operator "IN" and value "dyson"
-    Then the search result should be "dyson"
+    When the user filters assets by "code" with operator "IN" and value "backview"
+    Then the search result should be "backview"
 
   @acceptance-front
   Scenario: List assets of an asset family

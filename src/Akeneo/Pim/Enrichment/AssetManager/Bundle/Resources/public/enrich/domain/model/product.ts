@@ -1,8 +1,9 @@
-import {ChannelReference, ChannelCode} from 'akeneopimenrichmentassetmanager/platform/model/channel/channel';
-import {LocaleReference} from 'akeneopimenrichmentassetmanager/platform/model/channel/locale';
 import {AttributeCode, Attribute} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
 import {Labels} from 'akeneopimenrichmentassetmanager/platform/model/label';
 import {Family} from 'akeneopimenrichmentassetmanager/platform/model/structure/family';
+import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
+import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
+import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
 
 type LocaleCompleteness = {
   completeness: {
@@ -61,4 +62,10 @@ export const isValueComplete = (value: Value, family: Family | null, channel: Ch
 
 export const hasValues = (values: Value[]): boolean => {
   return 0 !== values.length;
+};
+
+export const sameValue = (first: Value, second: Value): boolean => {
+  return (
+    first.locale === second.locale && first.channel === second.channel && first.attribute.code === second.attribute.code
+  );
 };

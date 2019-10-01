@@ -8,7 +8,8 @@
  */
 
 import * as _ from 'underscore';
-import FamilyMappingStatus from '../../model/family-mapping-status';
+
+import {FamilyMappingStatus} from '../../../react/domain/model/family-mapping-status.enum';
 
 const BaseSelect = require('pim/form/common/fields/simple-select-async');
 const FetcherRegistry = require('pim/fetcher-registry');
@@ -78,13 +79,13 @@ class FamilySelector extends BaseSelect {
   public convertBackendItem(item: {status: number}) {
     const result = BaseSelect.prototype.convertBackendItem.apply(this, arguments);
     switch (item.status) {
-      case FamilyMappingStatus.MAPPING_FULL:
+      case FamilyMappingStatus.FULL:
         result.className = 'select2-result-label-attribute select2-result-label-attribute--full';
         break;
-      case FamilyMappingStatus.MAPPING_PENDING:
+      case FamilyMappingStatus.PENDING:
         result.className = 'select2-result-label-attribute select2-result-label-attribute--pending';
         break;
-      case FamilyMappingStatus.MAPPING_EMPTY:
+      case FamilyMappingStatus.EMPTY:
       default:
         result.className = '';
     }

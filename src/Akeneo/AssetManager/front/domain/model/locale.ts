@@ -1,60 +1,47 @@
-export type NormalizedLocaleCode = string;
+import {isString} from 'akeneoassetmanager/domain/model/utils';
 
-export default interface Locale {
-  code: NormalizedLocaleCode;
-  label: string;
-  region: string;
-  language: string;
-}
+export type LocaleCode = string;
+export type LocaleLabel = string;
+export type LocaleRegion = string;
+export type LocaleLanguage = string;
 
-class InvalidTypeError extends Error {}
-
-export interface NormalizedLocale {
-  code: NormalizedLocaleCode;
-  label: string;
-  region: string;
-  language: string;
-}
-
-export class ConcreteLocale {
-  public constructor(
-    readonly code: NormalizedLocaleCode,
-    readonly label: string,
-    readonly region: string,
-    readonly language: string
-  ) {
-    if ('string' !== typeof code) {
-      throw new InvalidTypeError('Locale expects a string as code to be created');
-    }
-    if ('string' !== typeof label) {
-      throw new InvalidTypeError('Locale expects a string as label to be created');
-    }
-    if ('string' !== typeof region) {
-      throw new InvalidTypeError('Locale expects a string as region to be created');
-    }
-    if ('string' !== typeof language) {
-      throw new InvalidTypeError('Locale expects a string as language to be created');
-    }
-
-    Object.freeze(this);
-  }
-}
-
-export const denormalizeLocale = (normalizedLocale: NormalizedLocale): Locale => {
-  return new ConcreteLocale(
-    normalizedLocale.code,
-    normalizedLocale.label,
-    normalizedLocale.region,
-    normalizedLocale.language
-  );
+type Locale = {
+  code: LocaleCode;
+  label: LocaleLabel;
+  region: LocaleRegion;
+  language: LocaleLanguage;
 };
 
-export const createLocaleFromCode = (code: NormalizedLocaleCode): Locale => {
-  if ('string' !== typeof code) {
-    throw new InvalidTypeError(`CreateLocaleFromCode expects a string as parameter (${typeof code} given`);
+export default Locale;
+
+export const denormalizeLocale = (locale: any): Locale => {
+  if (!isString(locale.code)) {
+    throw new Error('Locale expects a string as code to be created');
+  }
+  if (!isString(locale.label)) {
+    throw new Error('Locale expects a string as label to be created');
+  }
+  if (!isString(locale.region)) {
+    throw new Error('Locale expects a string as region to be created');
+  }
+  if (!isString(locale.language)) {
+    throw new Error('Locale expects a string as language to be created');
+  }
+
+  return {...locale};
+};
+
+export const createLocaleFromCode = (code: LocaleCode): Locale => {
+  if (!isString(code)) {
+    throw new Error(`CreateLocaleFromCode expects a string as parameter (${typeof code} given`);
   }
 
   const [language, region] = code.split('_');
 
-  return new ConcreteLocale(code, code, region.toLowerCase(), language);
+  return {
+    code,
+    label: code,
+    region: region.toLowerCase(),
+    language,
+  };
 };

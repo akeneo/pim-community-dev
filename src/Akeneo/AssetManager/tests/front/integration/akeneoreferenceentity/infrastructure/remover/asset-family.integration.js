@@ -20,13 +20,9 @@ describe('Akeneoassetfamily > infrastructure > remover > asset-family', () => {
     });
 
     await page.evaluate(async () => {
-      const createIdentifier = require('akeneoassetmanager/domain/model/asset-family/identifier')
-        .createIdentifier;
       const remover = require('akeneoassetmanager/infrastructure/remover/asset-family').default;
 
-      const identifierToDelete = createIdentifier('designer');
-
-      return await remover.remove(identifierToDelete);
+      return await remover.remove('designer');
     });
   });
 });

@@ -56,24 +56,16 @@ describe('Akeneoassetfamily > infrastructure > fetcher > attribute', () => {
 
     const response = await page.evaluate(async () => {
       const fetcher = require('akeneoassetmanager/infrastructure/fetcher/attribute').default;
-      const identifierModule = 'akeneoassetmanager/domain/model/asset-family/identifier';
-      const assetFamilyIdentifier = require(identifierModule).createIdentifier('designer');
 
-      return await fetcher.fetchAll(assetFamilyIdentifier);
+      return await fetcher.fetchAll('designer');
     });
 
     // Missing properties such as "maxFileSize" and "AllowedExtensions"
     expect(response).toEqual([
       {
-        code: {
-          code: 'description',
-        },
-        assetFamilyIdentifier: {
-          identifier: 'designer',
-        },
-        identifier: {
-          identifier: 'description_1234',
-        },
+        code: 'description',
+        assetFamilyIdentifier: 'designer',
+        identifier: 'description_1234',
         isRichTextEditor: {
           isRichTextEditor: false,
         },
@@ -97,15 +89,9 @@ describe('Akeneoassetfamily > infrastructure > fetcher > attribute', () => {
         valuePerLocale: true,
       },
       {
-        code: {
-          code: 'side_view',
-        },
-        assetFamilyIdentifier: {
-          identifier: 'designer',
-        },
-        identifier: {
-          identifier: 'side_view_1234',
-        },
+        code: 'side_view',
+        assetFamilyIdentifier: 'designer',
+        identifier: 'side_view_1234',
         labelCollection: {
           labels: {
             en_US: 'Side view',

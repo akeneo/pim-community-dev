@@ -86,12 +86,11 @@ const AssetCollectionList = styled.div`
   align-items: stretch;
 `;
 
-
 const DisplayValues = ({values, family, context, ruleRelations, onChange, errors}: DisplayValuesProps) => {
   return (
     <React.Fragment>
       {values.map((value: Value) => (
-        <AssetCollectionContainer key={value.attribute.code}>
+        <AssetCollectionContainer key={value.attribute.code} data-attribute={value.attribute.code}>
           <SectionTitle>
             <AttributeBreadCrumb>
               {value.attribute.group} / {getAttributeLabel(value.attribute, context.locale)}
@@ -118,7 +117,7 @@ const DisplayValues = ({values, family, context, ruleRelations, onChange, errors
             ): null}
             {value.editable ? (
               <React.Fragment>
-                <AssetPicker assetsToExclude={value.data} selectedAssets={(assetCodes: AssetCode[]) => {onChange(updateValueData(value, addAssetToCollection(value.data, assetCodes)))}} />
+                <AssetPicker excludedAssetCollection={value.data} assetFamilyIdentifier={value.attribute.referenceDataName} initialContext={context} onAssetPick={(assetCodes: AssetCode[]) => {onChange(updateValueData(value, addAssetToCollection(value.data, assetCodes)))}} />
                 <MoreButton elements={[{
                   label: __('pim_asset_manager.asset_collection.remove_all_assets'),
                   action: () => {

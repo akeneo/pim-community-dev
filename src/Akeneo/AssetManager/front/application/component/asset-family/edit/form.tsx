@@ -8,6 +8,7 @@ import {createLocaleFromCode} from 'akeneoassetmanager/domain/model/locale';
 import File from 'akeneoassetmanager/domain/model/file';
 import Image from 'akeneoassetmanager/application/component/app/image';
 import Key from 'akeneoassetmanager/tools/key';
+import {assetFamilyIdentifierStringValue} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 
 interface FormProps {
   locale: string;
@@ -74,7 +75,7 @@ export default class EditForm extends React.Component<FormProps> {
               name="identifier"
               id="pim_asset_manager.asset_family.properties.identifier"
               className="AknTextField AknTextField--light AknTextField--disabled"
-              value={assetFamily.getIdentifier().stringValue()}
+              value={assetFamilyIdentifierStringValue(assetFamily.getIdentifier())}
               readOnly
             />
           </div>

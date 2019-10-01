@@ -37,7 +37,7 @@ const transformValues = (legacyValues: LegacyValueCollection, assetAttributes: A
         attribute,
         locale: legacyValue.locale,
         channel: legacyValue.scope,
-        data: legacyValue.data,
+        data: [...legacyValue.data],
         editable: true,
       })
     );

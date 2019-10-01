@@ -4,8 +4,7 @@ import {
   FamilyCode,
   AttributeRequirements,
 } from 'akeneopimenrichmentassetmanager/platform/model/structure/family';
-import {isString, isObject} from 'util';
-import {isLabels} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
+import {isString, isObject, isLabels} from 'akeneoassetmanager/domain/model/utils';
 const fetcherRegistry = require('pim/fetcher-registry');
 
 /**
@@ -45,11 +44,7 @@ const isAttributeRequirements = (attributeRequirements: any): attributeRequireme
     return false;
   }
 
-  return !Object.keys(attributeRequirements).some(
-    (key: string): boolean => {
-      return (
-        !isString(key) || attributeRequirements[key].some((attributeCode: any): boolean => !isString(attributeCode))
-      );
-    }
-  );
+  return !Object.keys(attributeRequirements).some((key: string): boolean => {
+    return !isString(key) || attributeRequirements[key].some((attributeCode: any): boolean => !isString(attributeCode));
+  });
 };

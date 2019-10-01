@@ -2,20 +2,20 @@ import LabelCollection, {
   NormalizedLabelCollection,
   createLabelCollection,
 } from 'akeneoassetmanager/domain/model/label-collection';
-import Identifier, {
-  NormalizedIdentifier,
-  createIdentifier,
+import AssetIdentifier, {
+  assetFamilyidentifiersAreEqual,
+  denormalizeAssetFamilyIdentifier,
 } from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import File, {NormalizedFile, denormalizeFile} from 'akeneoassetmanager/domain/model/file';
 
 export interface NormalizedAssetFamilyListItem {
-  identifier: NormalizedIdentifier;
+  identifier: AssetIdentifier;
   labels: NormalizedLabelCollection;
   image: NormalizedFile;
 }
 
 export default interface AssetFamilyListItem {
-  getIdentifier: () => Identifier;
+  getIdentifier: () => AssetIdentifier;
   getLabel: (locale: string, fallbackOnCode?: boolean) => string;
   getImage: () => File;
   equals: (assetFamilyListItem: AssetFamilyListItem) => boolean;
@@ -24,11 +24,11 @@ export default interface AssetFamilyListItem {
 class InvalidArgumentError extends Error {}
 
 class AssetFamilyListItemImplementation implements AssetFamilyListItem {
-  private constructor(private identifier: Identifier, private labelCollection: LabelCollection, private image: File) {
-    if (!(identifier instanceof Identifier)) {
-      throw new InvalidArgumentError('AssetFamilyListItem expects an Identifier as identifier argument');
-    }
-
+  private constructor(
+    private identifier: AssetIdentifier,
+    private labelCollection: LabelCollection,
+    private image: File
+  ) {
     if (!(labelCollection instanceof LabelCollection)) {
       throw new InvalidArgumentError('AssetFamilyListItem expects a LabelCollection as labelCollection argument');
     }
@@ -40,33 +40,37 @@ class AssetFamilyListItemImplementation implements AssetFamilyListItem {
     Object.freeze(this);
   }
 
-  public static create(identifier: Identifier, labelCollection: LabelCollection, image: File): AssetFamilyListItem {
+  public static create(
+    identifier: AssetIdentifier,
+    labelCollection: LabelCollection,
+    image: File
+  ): AssetFamilyListItem {
     return new AssetFamilyListItemImplementation(identifier, labelCollection, image);
   }
 
   public static createEmpty(): AssetFamilyListItem {
     return new AssetFamilyListItemImplementation(
-      createIdentifier(''),
+      denormalizeAssetFamilyIdentifier(''),
       createLabelCollection({}),
       denormalizeFile(null)
     );
   }
 
   public static createFromNormalized(normalizedAssetFamily: NormalizedAssetFamilyListItem): AssetFamilyListItem {
-    const identifier = createIdentifier(normalizedAssetFamily.identifier);
+    const identifier = denormalizeAssetFamilyIdentifier(normalizedAssetFamily.identifier);
     const labelCollection = createLabelCollection(normalizedAssetFamily.labels);
     const image = denormalizeFile(normalizedAssetFamily.image);
 
     return AssetFamilyListItemImplementation.create(identifier, labelCollection, image);
   }
 
-  public getIdentifier(): Identifier {
+  public getIdentifier(): AssetIdentifier {
     return this.identifier;
   }
 
   public getLabel(locale: string, fallbackOnCode: boolean = true) {
     if (!this.labelCollection.hasLabel(locale)) {
-      return fallbackOnCode ? `[${this.getIdentifier().stringValue()}]` : '';
+      return fallbackOnCode ? `[${this.getIdentifier()}]` : '';
     }
 
     return this.labelCollection.getLabel(locale);
@@ -81,12 +85,12 @@ class AssetFamilyListItemImplementation implements AssetFamilyListItem {
   }
 
   public equals(assetFamilyListItem: AssetFamilyListItem): boolean {
-    return assetFamilyListItem.getIdentifier().equals(this.identifier);
+    return assetFamilyidentifiersAreEqual(assetFamilyListItem.getIdentifier(), this.identifier);
   }
 
   public normalize(): NormalizedAssetFamilyListItem {
     return {
-      identifier: this.getIdentifier().stringValue(),
+      identifier: this.getIdentifier(),
       labels: this.getLabelCollection().normalize(),
       image: this.getImage().normalize(),
     };

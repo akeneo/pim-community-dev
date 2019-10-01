@@ -3,7 +3,7 @@ import LabelCollection, {
   createLabelCollection,
   NormalizedLabelCollection,
 } from 'akeneoassetmanager/domain/model/label-collection';
-import OptionCode, {createCode} from 'akeneoassetmanager/domain/model/attribute/type/option/option-code';
+import OptionCode, {denormalizeOptionCode} from 'akeneoassetmanager/domain/model/attribute/type/option/option-code';
 
 export type NormalizedOptionCode = string;
 
@@ -18,7 +18,7 @@ export class Option implements NormalizableAdditionalProperty {
   }
 
   public static createFromNormalized(normalizedOption: NormalizedOption) {
-    return new Option(createCode(normalizedOption.code), createLabelCollection(normalizedOption.labels));
+    return new Option(denormalizeOptionCode(normalizedOption.code), createLabelCollection(normalizedOption.labels));
   }
 
   public static create(optionCode: OptionCode, labels: LabelCollection) {
@@ -26,12 +26,12 @@ export class Option implements NormalizableAdditionalProperty {
   }
 
   public static createEmpty() {
-    return new Option(OptionCode.create(''), createLabelCollection({}));
+    return new Option(denormalizeOptionCode(''), createLabelCollection({}));
   }
 
   public getLabel(locale: string, fallbackOnCode: boolean = true) {
     if (!this.labels.hasLabel(locale)) {
-      return fallbackOnCode ? `[${this.code.stringValue()}]` : '';
+      return fallbackOnCode ? `[${this.code}]` : '';
     }
 
     return this.labels.getLabel(locale);

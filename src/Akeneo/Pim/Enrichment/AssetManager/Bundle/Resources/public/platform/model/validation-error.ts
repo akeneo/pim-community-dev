@@ -1,8 +1,8 @@
-import {isString} from 'util';
-import {ChannelReference} from 'akeneopimenrichmentassetmanager/platform/model/channel/channel';
-import {LocaleReference} from 'akeneopimenrichmentassetmanager/platform/model/channel/locale';
+import {isString} from 'akeneoassetmanager/domain/model/utils';
 import {AttributeCode} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
 import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
+import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
+import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
 
 export type ValidationError = {
   attribute: AttributeCode;

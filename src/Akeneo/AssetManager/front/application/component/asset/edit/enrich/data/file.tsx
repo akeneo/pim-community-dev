@@ -4,6 +4,7 @@ import Value from 'akeneoassetmanager/domain/model/asset/value';
 import FileData, {create} from 'akeneoassetmanager/domain/model/asset/data/file';
 import __ from 'akeneoassetmanager/tools/translator';
 import File from 'akeneoassetmanager/domain/model/file';
+import {localeReferenceStringValue} from 'akeneoassetmanager/domain/model/locale-reference';
 
 const View = ({
   value,
@@ -20,9 +21,9 @@ const View = ({
 
   return (
     <Image
-      id={`pim_asset_manager.asset.enrich.${value.attribute.getCode().stringValue()}`}
+      id={`pim_asset_manager.asset.enrich.${value.attribute.getCode()}`}
       alt={__('pim_asset_manager.asset.value.file', {
-        '{{ attribute_code }}': value.attribute.getLabel(value.locale.stringValue()),
+        '{{ attribute_code }}': value.attribute.getLabel(localeReferenceStringValue(value.locale)),
       })}
       image={value.data.getFile()}
       wide={true}

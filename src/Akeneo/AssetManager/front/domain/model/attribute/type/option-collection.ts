@@ -1,9 +1,11 @@
-import Identifier, {createIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
+import AttributeIdentifier, {
+  denormalizeAttributeIdentifier,
+} from 'akeneoassetmanager/domain/model/attribute/identifier';
 import AssetFamilyIdentifier, {
-  createIdentifier as createAssetFamilyIdentifier,
+  denormalizeAssetFamilyIdentifier,
 } from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import LabelCollection, {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
-import AttributeCode, {createCode} from 'akeneoassetmanager/domain/model/attribute/code';
+import AttributeCode, {denormalizeAttributeCode} from 'akeneoassetmanager/domain/model/attribute/code';
 import {Attribute, ConcreteAttribute, NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {NormalizedOption, Option} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
 import {AttributeWithOptions} from './option';
@@ -25,7 +27,7 @@ export class InvalidArgumentError extends Error {}
 // Todo: Invert valuePerLocale and valuePerChannel order in the constructor
 export class ConcreteOptionCollectionAttribute extends ConcreteAttribute implements OptionCollectionAttribute {
   private constructor(
-    identifier: Identifier,
+    identifier: AttributeIdentifier,
     assetFamilyIdentifier: AssetFamilyIdentifier,
     code: AttributeCode,
     labelCollection: LabelCollection,
@@ -58,9 +60,9 @@ export class ConcreteOptionCollectionAttribute extends ConcreteAttribute impleme
 
   public static createFromNormalized(normalizedOptionCollectionAttribute: NormalizedOptionCollectionAttribute) {
     return new ConcreteOptionCollectionAttribute(
-      createIdentifier(normalizedOptionCollectionAttribute.identifier),
-      createAssetFamilyIdentifier(normalizedOptionCollectionAttribute.asset_family_identifier),
-      createCode(normalizedOptionCollectionAttribute.code),
+      denormalizeAttributeIdentifier(normalizedOptionCollectionAttribute.identifier),
+      denormalizeAssetFamilyIdentifier(normalizedOptionCollectionAttribute.asset_family_identifier),
+      denormalizeAttributeCode(normalizedOptionCollectionAttribute.code),
       createLabelCollection(normalizedOptionCollectionAttribute.labels),
       normalizedOptionCollectionAttribute.value_per_channel,
       normalizedOptionCollectionAttribute.value_per_locale,

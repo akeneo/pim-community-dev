@@ -6,9 +6,9 @@ import {connect} from 'react-redux';
 import __ from 'akeneoassetmanager/tools/translator';
 import {ConcreteAssetCollectionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/asset-collection';
 import AssetSelector from 'akeneoassetmanager/application/component/app/asset-selector';
-import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
-import {createLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
-import {createChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
+import AssetCode, {denormalizeAssetCode, assetCodeStringValue} from 'akeneoassetmanager/domain/model/asset/code';
+import {denormalizeLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
+import {denormalizeChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
 import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import {NormalizedAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import {getLabel} from 'pimui/js/i18n';
@@ -36,7 +36,7 @@ const AssetFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, c
   const [hydratedAssets, setHydratedAssets] = useState([]);
 
   const rawValues = undefined !== filter ? filter.value : [];
-  const value = rawValues.map((assetCode: string) => AssetCode.create(assetCode));
+  const value = rawValues.map((assetCode: string) => denormalizeAssetCode(assetCode));
 
   const updateHydratedAssets = async () => {
     if (0 < value.length) {
@@ -98,13 +98,13 @@ const AssetFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, c
                 assetFamilyIdentifier={attribute.getAssetType().getAssetFamilyIdentifier()}
                 multiple={true}
                 compact={true}
-                locale={createLocaleReference(context.locale)}
-                channel={createChannelReference(context.channel)}
+                locale={denormalizeLocaleReference(context.locale)}
+                channel={denormalizeChannelReference(context.channel)}
                 onChange={(assetCodes: AssetCode[]) => {
                   onFilterUpdated({
                     field: getAttributeFilterKey(attribute),
                     operator: DEFAULT_OPERATOR,
-                    value: assetCodes.map((assetCode: AssetCode) => assetCode.stringValue()),
+                    value: assetCodes.map((assetCode: AssetCode) => assetCodeStringValue(assetCode)),
                     context: {},
                   });
                 }}

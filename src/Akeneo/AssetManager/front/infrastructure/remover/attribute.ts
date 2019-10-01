@@ -1,8 +1,12 @@
 import AttributeRemover from 'akeneoassetmanager/domain/remover/attribute';
-import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
+import AttributeIdentifier, {
+  attributeIdentifierStringValue,
+} from 'akeneoassetmanager/domain/model/attribute/identifier';
 import {deleteJSON} from 'akeneoassetmanager/tools/fetch';
 import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
-import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import AssetFamilyIdentifier, {
+  assetFamilyIdentifierStringValue,
+} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import errorHandler from 'akeneoassetmanager/infrastructure/tools/error-handler';
 
 const routing = require('routing');
@@ -18,8 +22,8 @@ export class AttributeRemoverImplementation implements AttributeRemover<AssetFam
   ): Promise<ValidationError[] | null> {
     return await deleteJSON(
       routing.generate('akeneo_asset_manager_attribute_delete_rest', {
-        assetFamilyIdentifier: assetFamilyIdentifier.stringValue(),
-        attributeIdentifier: attributeIdentifier.normalize(),
+        assetFamilyIdentifier: assetFamilyIdentifierStringValue(assetFamilyIdentifier),
+        attributeIdentifier: attributeIdentifierStringValue(attributeIdentifier),
       })
     ).catch(errorHandler);
   }

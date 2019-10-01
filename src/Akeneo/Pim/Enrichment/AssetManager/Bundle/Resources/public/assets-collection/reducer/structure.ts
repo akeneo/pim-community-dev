@@ -1,8 +1,6 @@
 import {Action} from 'redux';
 import {AssetCollectionState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/asset-collection';
-import {Channel} from 'akeneopimenrichmentassetmanager/platform/model/channel/channel';
 import {Attribute} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
-import {Locale} from 'akeneopimenrichmentassetmanager/platform/model/channel/locale';
 import {
   channelFetcher,
   fetchChannels,
@@ -14,6 +12,8 @@ import {
 } from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/family';
 import {fetchRuleRelations} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/rule-relation';
 import {RuleRelation} from 'akeneopimenrichmentassetmanager/platform/model/structure/rule-relation';
+import Locale from 'akeneoassetmanager/domain/model/locale';
+import Channel from 'akeneoassetmanager/domain/model/channel';
 
 export type StructureState = {
   attributes: Attribute[];

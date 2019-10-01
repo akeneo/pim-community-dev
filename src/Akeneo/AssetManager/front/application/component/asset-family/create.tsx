@@ -16,6 +16,7 @@ import Key from 'akeneoassetmanager/tools/key';
 import AssetFamilyCreation, {
   denormalizeAssetFamilyCreation,
 } from 'akeneoassetmanager/domain/model/asset-family/creation';
+import {codeStringValue} from 'akeneoassetmanager/domain/model/code';
 
 interface StateProps {
   context: {
@@ -120,7 +121,7 @@ class Create extends React.Component<CreateProps> {
                         className="AknTextField AknTextField--light"
                         id="pim_asset_manager.asset_family.create.input.code"
                         name="code"
-                        value={this.props.data.getCode().stringValue()}
+                        value={codeStringValue(this.props.data.getCode())}
                         onChange={this.onCodeUpdate}
                         onKeyPress={this.onKeyPress}
                       />

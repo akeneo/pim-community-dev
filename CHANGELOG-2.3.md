@@ -1,5 +1,15 @@
 # 2.3.x
 
+# 2.3.63 (2019-09-23)
+
+# 2.3.62 (2019-09-13)
+
+# 2.3.61 (2019-09-10)
+
+## Bug fixes
+
+- PIM-8747: Do not fallback to reference in asset collection attribute when no variation exists for the channel/locale
+
 # 2.3.60 (2019-09-05)
 
 ## Bug fixes

@@ -233,10 +233,9 @@ $rules = [
             'Akeneo\Pim\Automation\FranklinInsights\Domain',
 
             'Akeneo\Tool\Component\StorageUtils',
+            'Akeneo\Tool\Bundle\ElasticsearchBundle',
 
             // External dependencies
-            'Elasticsearch\Client',
-            'Elasticsearch\ClientBuilder',
             'Symfony\Component\Serializer\Normalizer',
 
             // TODO relationship between bounded context

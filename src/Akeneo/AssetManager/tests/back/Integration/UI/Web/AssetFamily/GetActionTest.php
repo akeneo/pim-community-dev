@@ -75,23 +75,23 @@ class GetActionTest extends ControllerIntegrationTestCase
         $queryHandler = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_details');
 
         $file = new FileInfo();
-        $file->setKey('5/6/a/5/56a5955ca1fbdf74d8d18ca6e5f62bc74b867a5d_designer.jpg');
-        $file->setOriginalFilename('designer.jpg');
+        $file->setKey('5/6/a/5/56a5955ca1fbdf74d8d18ca6e5f62bc74b867a5d_packshot.jpg');
+        $file->setOriginalFilename('packshot.jpg');
 
         $entityItem = new AssetFamilyDetails();
-        $entityItem->identifier = (AssetFamilyIdentifier::fromString('designer'));
+        $entityItem->identifier = (AssetFamilyIdentifier::fromString('packshot'));
         $entityItem->labels = LabelCollection::fromArray([
-            'en_US' => 'Designer',
-            'fr_FR' => 'Concepteur',
+            'en_US' => 'Packshot',
+            'fr_FR' => 'Packshot',
         ]);
         $entityItem->image = Image::fromFileInfo($file);
         $entityItem->assetCount = 123;
-        $entityItem->attributeAsImage = AttributeAsImageReference::createFromNormalized('designer_portrait_123456');
-        $entityItem->attributeAsLabel = AttributeAsLabelReference::createFromNormalized('designer_name_123456');
+        $entityItem->attributeAsImage = AttributeAsImageReference::createFromNormalized('packshot_image_123456');
+        $entityItem->attributeAsLabel = AttributeAsLabelReference::createFromNormalized('packshot_name_123456');
 
         $name = new AttributeDetails();
-        $name->identifier = 'designer_name_123456';
-        $name->assetFamilyIdentifier = 'designer';
+        $name->identifier = 'packshot_name_123456';
+        $name->assetFamilyIdentifier = 'packshot';
         $name->code = 'name';
         $name->isRequired = false;
         $name->order = 0;
@@ -107,42 +107,24 @@ class GetActionTest extends ControllerIntegrationTestCase
             'regular_expression'  => null,
         ];
 
-        $bio = new AttributeDetails();
-        $bio->identifier = 'designer_bio_123456';
-        $bio->assetFamilyIdentifier = 'designer';
-        $bio->code = 'bio';
-        $bio->isRequired = false;
-        $bio->order = 1;
-        $bio->valuePerChannel = false;
-        $bio->valuePerLocale = true;
-        $bio->type = 'text';
-        $bio->labels = ['en_US' => 'Bio', 'fr_FR' => 'Biographie'];
-        $bio->additionalProperties = [
-            'max_length'          => 255,
-            'is_textarea'         => false,
-            'is_rich_text_editor' => false,
-            'validation_rule'     => "none",
-            'regular_expression'  => null,
-        ];
-
-        $portrait = new AttributeDetails();
-        $portrait->identifier = 'designer_portrait_123456';
-        $portrait->assetFamilyIdentifier = 'designer';
-        $portrait->code = 'portrait';
-        $portrait->isRequired = false;
-        $portrait->order = 2;
-        $portrait->valuePerChannel = false;
-        $portrait->valuePerLocale = true;
-        $portrait->type = 'image';
-        $portrait->labels = ['en_US' => 'Portrait', 'fr_FR' => 'Image'];
-        $portrait->additionalProperties = [
+        $image = new AttributeDetails();
+        $image->identifier = 'packshot_image_123456';
+        $image->assetFamilyIdentifier = 'packshot';
+        $image->code = 'image';
+        $image->isRequired = false;
+        $image->order = 2;
+        $image->valuePerChannel = false;
+        $image->valuePerLocale = true;
+        $image->type = 'image';
+        $image->labels = ['en_US' => 'Image', 'fr_FR' => 'Image'];
+        $image->additionalProperties = [
             'max_file_size'      => '124.12',
             'allowed_extensions' => ['png', 'jpg'],
         ];
 
         $favoriteColor = new AttributeDetails();
-        $favoriteColor->identifier = 'favorite_color_designer_52609e00b7ee307e79eb100099b9a8bf';
-        $favoriteColor->assetFamilyIdentifier = 'designer';
+        $favoriteColor->identifier = 'favorite_color_packshot_52609e00b7ee307e79eb100099b9a8bf';
+        $favoriteColor->assetFamilyIdentifier = 'packshot';
         $favoriteColor->code = 'favorite_color';
         $favoriteColor->isRequired = true;
         $favoriteColor->order = 3;
@@ -163,67 +145,10 @@ class GetActionTest extends ControllerIntegrationTestCase
             ],
         ];
 
-        $colors = new AttributeDetails();
-        $colors->identifier = 'colors_designer_52609e00b7ee307e79eb100099b9a8bf';
-        $colors->assetFamilyIdentifier = 'designer';
-        $colors->code = 'colors';
-        $colors->isRequired = true;
-        $colors->order = 4;
-        $colors->valuePerChannel = true;
-        $colors->valuePerLocale = true;
-        $colors->type = 'option_collection';
-        $colors->labels = ['en_US' => 'Colors'];
-        $colors->additionalProperties = [
-            'options' => [
-                [
-                    'code'   => 'red',
-                    'labels' => ['en_US' => 'Red', 'fr_FR' => 'Rouge'],
-                ],
-                [
-                    'code'   => 'blue',
-                    'labels' => ['en_US' => 'Blue', 'fr_FR' => 'Bleu'],
-                ],
-            ],
-        ];
-
-        $city = new AttributeDetails();
-        $city->identifier = 'city_designer_79eb100099b9a8bf52609e00b7ee307e';
-        $city->assetFamilyIdentifier = 'designer';
-        $city->code = 'city';
-        $city->isRequired = false;
-        $city->order = 5;
-        $city->valuePerChannel = false;
-        $city->valuePerLocale = false;
-        $city->type = 'asset';
-        $city->labels = ['en_US' => 'City'];
-        $city->additionalProperties = [
-            'asset_type' => 'city'
-        ];
-
-        $birthdate = new AttributeDetails();
-        $birthdate->identifier = 'year_of_birth_designer_79eb100099b9a8bf52609e00b7ee307e';
-        $birthdate->assetFamilyIdentifier = 'designer';
-        $birthdate->code = 'year_of_birth';
-        $birthdate->isRequired = false;
-        $birthdate->order = 6;
-        $birthdate->valuePerChannel = false;
-        $birthdate->valuePerLocale = false;
-        $birthdate->type = 'number';
-        $birthdate->labels = ['en_US' => 'Year of Birth'];
-        $birthdate->additionalProperties = [
-            'decimals_allowed' => false,
-            'min_value'  => '10',
-            'max_value'  => '50'
-        ];
-
         $entityItem->attributes = [
             $name,
-            $bio,
-            $portrait,
-            $favoriteColor,
-            $colors,
-            $city,
-            $birthdate
+            $image,
+            $favoriteColor
         ];
         $queryHandler->save($entityItem);
 

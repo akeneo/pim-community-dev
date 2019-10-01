@@ -1,7 +1,17 @@
 import Value, {NormalizedValue, NormalizedMinimalValue} from 'akeneoassetmanager/domain/model/asset/value';
-import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
-import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
-import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
+import ChannelReference, {
+  channelReferenceIsEmpty,
+  channelReferenceAreEqual,
+  channelReferenceStringValue,
+} from 'akeneoassetmanager/domain/model/channel-reference';
+import LocaleReference, {
+  localeReferenceIsEmpty,
+  localeReferenceAreEqual,
+  localeReferenceStringValue,
+} from 'akeneoassetmanager/domain/model/locale-reference';
+import AttributeIdentifier, {
+  attributeIdentifierStringValue,
+} from 'akeneoassetmanager/domain/model/attribute/identifier';
 
 class InvalidTypeError extends Error {}
 
@@ -23,8 +33,8 @@ export default class ValueCollection {
   public getValuesForChannelAndLocale(channel: ChannelReference, locale: LocaleReference): Value[] {
     return this.values.filter(
       (value: Value) =>
-        (value.channel.isEmpty() || value.channel.equals(channel)) &&
-        (value.locale.isEmpty() || value.locale.equals(locale))
+        (channelReferenceIsEmpty(value.channel) || channelReferenceAreEqual(value.channel, channel)) &&
+        (localeReferenceIsEmpty(value.locale) || localeReferenceAreEqual(value.locale, locale))
     );
   }
 
@@ -42,9 +52,9 @@ export const generateKey = (
   channel: ChannelReference,
   locale: LocaleReference
 ) => {
-  let key = attributeIdentifier.stringValue();
-  key = !channel.isEmpty() ? `${key}_${channel.stringValue()}` : key;
-  key = !locale.isEmpty() ? `${key}_${locale.stringValue()}` : key;
+  let key = attributeIdentifierStringValue(attributeIdentifier);
+  key = !channelReferenceIsEmpty(channel) ? `${key}_${channelReferenceStringValue(channel)}` : key;
+  key = !localeReferenceIsEmpty(locale) ? `${key}_${localeReferenceStringValue(locale)}` : key;
 
   return key;
 };

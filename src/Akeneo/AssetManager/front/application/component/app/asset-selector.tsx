@@ -1,14 +1,15 @@
 import * as React from 'react';
 import * as $ from 'jquery';
-import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
+import AssetCode, {denormalizeAssetCode, assetCodeStringValue} from 'akeneoassetmanager/domain/model/asset/code';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 const routing = require('routing');
 import {NormalizedAsset, NormalizedItemAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
-import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
-import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
+import LocaleReference, {localeReferenceStringValue} from 'akeneoassetmanager/domain/model/locale-reference';
+import ChannelReference, {channelReferenceStringValue} from 'akeneoassetmanager/domain/model/channel-reference';
 import {getLabel} from 'pimui/js/i18n';
 import __ from 'akeneoassetmanager/tools/translator';
+import {isNull, isArray} from 'akeneoassetmanager/domain/model/utils';
 
 const renderRow = (label: string, normalizedAsset: NormalizedItemAsset, withLink: boolean, compact: boolean) => {
   return `
@@ -41,15 +42,16 @@ export type AssetSelectorProps = {
   multiple?: boolean;
   readOnly?: boolean;
   compact?: boolean;
+  id?: string;
   locale: LocaleReference;
   channel: ChannelReference;
-  placeholder: string;
+  placeholder?: string;
   onChange: (value: AssetCode[] | AssetCode | null) => void;
 };
 
 type Select2Item = {id: string; text: string; original: NormalizedItemAsset};
 
-export default class AssetSelector extends React.Component<AssetSelectorProps & any> {
+export default class AssetSelector extends React.Component<AssetSelectorProps> {
   PAGE_SIZE = 200;
   static defaultProps = {
     multiple: false,
@@ -59,7 +61,7 @@ export default class AssetSelector extends React.Component<AssetSelectorProps & 
   private DOMel: React.RefObject<HTMLInputElement>;
   private el: any;
 
-  constructor(props: AssetSelectorProps & any) {
+  constructor(props: AssetSelectorProps) {
     super(props);
 
     this.DOMel = React.createRef();
@@ -68,16 +70,16 @@ export default class AssetSelector extends React.Component<AssetSelectorProps & 
   formatItem(normalizedAsset: NormalizedItemAsset): Select2Item {
     return {
       id: normalizedAsset.code,
-      text: getLabel(normalizedAsset.labels, this.props.locale.stringValue(), normalizedAsset.code),
+      text: getLabel(normalizedAsset.labels, localeReferenceStringValue(this.props.locale), normalizedAsset.code),
       original: normalizedAsset,
     };
   }
 
   getSelectedAssetCode(value: null | AssetCode[] | AssetCode, multiple: boolean) {
     if (multiple) {
-      return (value as AssetCode[]).map((assetCode: AssetCode) => assetCode.stringValue());
+      return (value as AssetCode[]).map((assetCode: AssetCode) => assetCode);
     } else {
-      return null === value ? [] : [(value as AssetCode).stringValue()];
+      return null === value ? [] : [value as AssetCode];
     }
   }
 
@@ -105,7 +107,7 @@ export default class AssetSelector extends React.Component<AssetSelectorProps & 
         containerCssClass,
         ajax: {
           url: routing.generate('akeneo_asset_manager_asset_index_rest', {
-            assetFamilyIdentifier: this.props.assetFamilyIdentifier.stringValue(),
+            assetFamilyIdentifier: this.props.assetFamilyIdentifier,
           }),
           quietMillis: 250,
           cache: true,
@@ -114,15 +116,15 @@ export default class AssetSelector extends React.Component<AssetSelectorProps & 
           data: (term: string, page: number): string => {
             const selectedAssets = this.getSelectedAssetCode(this.props.value, this.props.multiple as boolean);
             const searchQuery = {
-              channel: this.props.channel.stringValue(),
-              locale: this.props.locale.stringValue(),
+              channel: channelReferenceStringValue(this.props.channel),
+              locale: localeReferenceStringValue(this.props.locale),
               size: this.PAGE_SIZE,
               page: page - 1,
               filters: [
                 {
                   field: 'asset_family',
                   operator: '=',
-                  value: this.props.assetFamilyIdentifier.stringValue(),
+                  value: this.props.assetFamilyIdentifier,
                 },
                 {
                   field: 'code_label',
@@ -153,11 +155,14 @@ export default class AssetSelector extends React.Component<AssetSelectorProps & 
             const initialAssetCodes = element
               .val()
               .split(',')
-              .map((assetCode: string) => AssetCode.create(assetCode));
+              .map((assetCode: string) => denormalizeAssetCode(assetCode));
             const result = await assetFetcher.fetchByCodes(
               this.props.assetFamilyIdentifier,
               initialAssetCodes,
-              {channel: this.props.channel.stringValue(), locale: this.props.locale.stringValue()},
+              {
+                channel: channelReferenceStringValue(this.props.channel),
+                locale: localeReferenceStringValue(this.props.locale),
+              },
               true
             );
 
@@ -165,9 +170,9 @@ export default class AssetSelector extends React.Component<AssetSelectorProps & 
           } else {
             const initialValue = element.val();
             assetFetcher
-              .fetchByCodes(this.props.assetFamilyIdentifier, [AssetCode.create(initialValue)], {
-                channel: this.props.channel.stringValue(),
-                locale: this.props.locale.stringValue(),
+              .fetchByCodes(this.props.assetFamilyIdentifier, [denormalizeAssetCode(initialValue)], {
+                channel: channelReferenceStringValue(this.props.channel),
+                locale: localeReferenceStringValue(this.props.locale),
               })
               .then((assets: NormalizedItemAsset[]) => {
                 callback(this.formatItem(assets[0]));
@@ -180,21 +185,39 @@ export default class AssetSelector extends React.Component<AssetSelectorProps & 
           }
           container
             .addClass('select2-search-choice-value')
-            .append($(renderRow(asset.text, asset.original, false, this.props.compact)));
+            .append(
+              $(
+                renderRow(
+                  asset.text,
+                  asset.original,
+                  false,
+                  undefined === this.props.compact ? false : this.props.compact
+                )
+              )
+            );
         },
         formatResult: (asset: Select2Item, container: any) => {
           container
             .addClass('select2-search-choice-value')
-            .append($(renderRow(asset.text, asset.original, false, this.props.compact)));
+            .append(
+              $(
+                renderRow(
+                  asset.text,
+                  asset.original,
+                  false,
+                  undefined === this.props.compact ? false : this.props.compact
+                )
+              )
+            );
         },
       });
 
       this.el.on('change', (event: any) => {
         const newValue = this.props.multiple
-          ? event.val.map((assetCode: string) => AssetCode.create(assetCode))
+          ? event.val.map((assetCode: string) => denormalizeAssetCode(assetCode))
           : '' === event.val
           ? null
-          : AssetCode.create(event.val);
+          : denormalizeAssetCode(event.val);
         this.props.onChange(newValue);
       });
 
@@ -224,13 +247,17 @@ export default class AssetSelector extends React.Component<AssetSelectorProps & 
   }
 
   normalizeValue(value: AssetCode[] | AssetCode | null): string {
-    if (null === value) {
+    if (isNull(value)) {
       return '';
     }
 
-    return this.props.multiple
-      ? (value as AssetCode[]).map((assetCode: AssetCode) => assetCode.stringValue()).join(',')
-      : (value as AssetCode).stringValue();
+    if (this.props.multiple && !isArray(value)) {
+      throw new Error('The value should be an array if the selector is set to "multiple"');
+    }
+
+    return this.props.multiple && isArray(value)
+      ? value.map((assetCode: AssetCode) => assetCodeStringValue(assetCode)).join(',')
+      : assetCodeStringValue(value as AssetCode);
   }
 
   render(): JSX.Element | JSX.Element[] {
@@ -250,10 +277,10 @@ export default class AssetSelector extends React.Component<AssetSelectorProps & 
           disabled={this.props.readOnly}
           onChange={(event: any) => {
             const newValue = this.props.multiple
-              ? event.target.value.split(',').map((assetCode: string) => AssetCode.create(assetCode))
+              ? event.target.value.split(',').map((assetCode: string) => denormalizeAssetCode(assetCode))
               : '' === event.target.value
               ? null
-              : AssetCode.create(event.target.value);
+              : denormalizeAssetCode(event.target.value);
             this.props.onChange(newValue);
           }}
         />

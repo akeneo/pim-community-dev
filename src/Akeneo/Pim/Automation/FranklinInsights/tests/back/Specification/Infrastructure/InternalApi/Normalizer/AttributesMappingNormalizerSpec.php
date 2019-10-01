@@ -62,6 +62,7 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
         $expectedMapping = [
             'product_weight' => [
                 'franklinAttribute' => [
+                    'code' => 'product_weight',
                     'label' => 'Product Weight',
                     'type' => 'metric',
                     'summary' => ['23kg', '12kg'],
@@ -73,6 +74,7 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
             ],
             'product_width' => [
                 'franklinAttribute' => [
+                    'code' => 'product_width',
                     'label' => 'Product Width',
                     'type' => 'metric',
                     'summary' => ['0.5m', '1.2m'],
@@ -84,6 +86,7 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
             ],
             'product_height' => [
                 'franklinAttribute' => [
+                    'code' => 'product_height',
                     'label' => 'Product Height',
                     'type' => 'metric',
                     'summary' => ['1m', '2.8m'],
@@ -115,6 +118,7 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
         $expectedMapping = [
             'product_weight' => [
                 'franklinAttribute' => [
+                    'code' => 'product_weight',
                     'label' => 'Product Weight',
                     'type' => 'metric',
                     'summary' => [],
