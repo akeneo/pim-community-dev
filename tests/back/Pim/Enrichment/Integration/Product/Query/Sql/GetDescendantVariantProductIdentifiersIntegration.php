@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Pim\Enrichment\Integration\Normalizer\Indexing;
+namespace AkeneoTest\Pim\Enrichment\Integration\Product\Query\Sql;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
