@@ -222,6 +222,9 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/
+      - add_ssh_keys:
+          fingerprints:
+            - "3b:a2:61:e2:63:33:69:5e:29:9b:c4:92:e9:77:71:c5"
       - run:
           name: Change owner on project dir in order to archive the project into the workspace
           command: sudo chown -R 1000:1000 ../project
@@ -236,6 +239,9 @@ jobs:
       - run:
           name: Compress HTML coverage report
           command: tar -cvf coverage.tar ./coverage/
+      - run:
+          name: Deploy coverage report
+          command: scp akeneo@coverage.core.akeneo.com:coverage /var/www/html/coverage
       - store_artifacts:
           path: coverage.tar
           destination: coverage_report
