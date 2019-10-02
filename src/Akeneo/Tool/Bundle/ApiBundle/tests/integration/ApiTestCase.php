@@ -4,7 +4,6 @@ namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration;
 
 use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\IntegrationTestsBundle\Configuration\Catalog;
 use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
 use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
@@ -45,7 +44,7 @@ abstract class ApiTestCase extends WebTestCase
      */
     protected function setUp(): void
     {
-        $this->testKernel = static::bootKernel(['debug' => false]);
+        static::bootKernel(['debug' => false]);
         $this->catalog = $this->get('akeneo_integration_tests.catalogs');
         
         $authenticator = new SystemUserAuthenticator(
@@ -145,7 +144,7 @@ abstract class ApiTestCase extends WebTestCase
      */
     protected function authenticate($clientId, $secret, $username, $password)
     {
-        $webClient = static::createClient();
+        $webClient = static::createClient(['debug' => false]);
         $webClient->request('POST', 'api/oauth/v1/token',
             [
                 'username'   => $username,
@@ -174,31 +173,19 @@ abstract class ApiTestCase extends WebTestCase
      *
      * @return mixed
      */
-    protected function get($service)
+    protected function get(string $service)
     {
         return static::$kernel->getContainer()->get($service);
     }
 
     /**
-     * @param string $service
-     *
-     * TODO: remove it
+     * @param string $parameter
      *
      * @return mixed
      */
-    protected function getFromTestContainer(string $service)
+    protected function getParameter(string $parameter)
     {
-        return static::$kernel->getContainer()->get($service);
-    }
-
-    /**
-     * @param string $parameterName
-     *
-     * @return mixed
-     */
-    protected function getParameter(string $parameterName)
-    {
-        return static::$kernel->getContainer()->getParameter($parameterName);
+        return static::$kernel->getContainer()->getParameter($parameter);
     }
 
     /**
@@ -206,7 +193,7 @@ abstract class ApiTestCase extends WebTestCase
      */
     protected function tearDown(): void
     {
-        $connectionCloser = $this->testKernel->getContainer()->get('akeneo_integration_tests.doctrine.connection.connection_closer');
+        $connectionCloser = $this->get('akeneo_integration_tests.doctrine.connection.connection_closer');
         $connectionCloser->closeConnections();
 
         parent::tearDown();

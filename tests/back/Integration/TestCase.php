@@ -6,7 +6,6 @@ namespace Akeneo\Test\Integration;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
-use Akeneo\Test\IntegrationTestsBundle\Configuration\Catalog;
 use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
 use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
 use Akeneo\UserManagement\Component\Model\User;
@@ -37,7 +36,7 @@ abstract class TestCase extends KernelTestCase
      */
     protected function setUp(): void
     {
-        $this->testKernel = static::bootKernel(['debug' => false]);
+        static::bootKernel(['debug' => false]);
         $this->catalog = $this->get('akeneo_integration_tests.catalogs');
 
         if (null !== $this->getConfiguration()) {
@@ -92,7 +91,7 @@ abstract class TestCase extends KernelTestCase
      */
     protected function tearDown(): void
     {
-        $connectionCloser = $this->testKernel->getContainer()->get('akeneo_integration_tests.doctrine.connection.connection_closer');
+        $connectionCloser = $this->get('akeneo_integration_tests.doctrine.connection.connection_closer');
         $connectionCloser->closeConnections();
 
         $this->esClient = null;

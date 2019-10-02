@@ -102,7 +102,7 @@ class GetProductAssociationsByProductIdentifiersIntegration extends TestCase
 
     private function getQuery(): GetProductAssociationsByProductIdentifiers
     {
-        return $this->testKernel->getContainer()->get('akeneo.pim.enrichment.product.query.get_product_associations_by_product_identifiers');
+        return $this->get('akeneo.pim.enrichment.product.query.get_product_associations_by_product_identifiers');
     }
 
     private function givenAssociationTypes(array $codes): void
