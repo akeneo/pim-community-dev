@@ -14,3 +14,6 @@ Pure React stack, no legacy allowed (Backbone, JQuery, ...)
     -   `service/`
         -   `shared/` Interface for shared services (translation, security, ...)
 
+## Tests
+
+- [Snapshot testing](https://jestjs.io/docs/en/snapshot-testing)

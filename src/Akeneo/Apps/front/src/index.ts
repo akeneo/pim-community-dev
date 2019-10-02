@@ -1,3 +1,3 @@
-import {AppsList} from './application/component/apps-list';
+import {AppsList} from './application/apps/apps-list.component';
 
 export {AppsList};

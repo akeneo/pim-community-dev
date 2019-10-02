@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import {Breadcrumb} from './app/breadcrumb';
-import {Page} from './app/page';
+import {Breadcrumb} from '../common/breadcrumb.component';
+import {Page} from '../common/page.component';
 
 const breadcrumb = (
     <Breadcrumb

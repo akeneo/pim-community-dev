@@ -1,10 +1,8 @@
 import * as React from 'react';
-
-const router = require('pim/router');
+import {withRouter} from '../shared/router/router.hoc-factory';
+import {Router} from '../shared/router/router.interface';
 
 class InvalidItemTypeError extends Error {}
-
-export type BreadcrumbConfiguration = BreadcrumbItem[];
 
 interface BreadcrumbItem {
     action: {
@@ -15,10 +13,10 @@ interface BreadcrumbItem {
     label: string;
 }
 
-const renderItem = (item: BreadcrumbItem, key: number, last: boolean) => {
+const renderItem = (router: Router, item: BreadcrumbItem, key: number, last: boolean) => {
     switch (item.action.type) {
         case 'redirect':
-            return renderRedirect(item, key, last);
+            return renderRedirect(router, item, key, last);
         case 'display':
             return renderDisplay(item, key, last);
         default:
@@ -28,8 +26,11 @@ const renderItem = (item: BreadcrumbItem, key: number, last: boolean) => {
     }
 };
 
-const renderRedirect = (item: BreadcrumbItem, key: number, last: boolean) => {
-    const path = `#${router.generate(item.action.route, item.action.parameters ? item.action.parameters : {})}`;
+const renderRedirect = (router: Router, item: BreadcrumbItem, key: number, last: boolean) => {
+    const path = `#${router.generate(
+        item.action.route as string,
+        item.action.parameters ? item.action.parameters : {}
+    )}`;
 
     return (
         <a
@@ -60,10 +61,10 @@ const renderDisplay = (item: BreadcrumbItem, key: number, last: boolean) => {
     );
 };
 
-export const Breadcrumb = ({items}: {items: BreadcrumbItem[]}) => {
+export const Breadcrumb = withRouter(({router, items}: {router: Router; items: BreadcrumbItem[]}) => {
     return (
         <div className='AknBreadcrumb'>
-            {items.map((item: BreadcrumbItem, key: number) => renderItem(item, key, key === items.length - 1))}
+            {items.map((item: BreadcrumbItem, key: number) => renderItem(router, item, key, key === items.length - 1))}
         </div>
     );
-};
+});

@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button component Matches the snapshot 1`] = `
+<button
+  className="AknButton--action AknButton"
+  disabled={false}
+  onClick={[Function]}
+/>
+`;

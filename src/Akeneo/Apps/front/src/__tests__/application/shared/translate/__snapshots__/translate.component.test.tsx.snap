@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Translate component Matches the snapshot 1`] = `"Bonjour le monde"`;
