@@ -29,7 +29,7 @@ class AssetMultipleLinkGuesser implements ConstraintGuesserInterface
         return in_array(
             $attribute->getType(),
             [
-                AttributeTypes::ASSETS_COLLECTION,
+                AttributeTypes::ASSET_COLLECTION,
             ]
         );
     }
