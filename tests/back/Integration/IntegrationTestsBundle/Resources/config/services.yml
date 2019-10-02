@@ -25,11 +25,22 @@ services:
             - '@akeneo_integration_tests.loader.database_schema_handler'
             - '@akeneo_integration_tests.security.system_user_authenticator'
             - '@akeneo_integration_tests.catalog.configuration'
+            - '@akeneo_integration_tests.loader.reference_data_loader'
+            - '@oneup_flysystem.archivist_filesystem'
+            - '@akeneo_batch.job_repository'
+            - '@pim_installer.fixture_loader.job_loader'
+            - '@oro_security.acl.manager'
+            - '@pim_catalog.elasticsearch.indexer.product'
+            - '@pim_catalog.elasticsearch.indexer.product_model'
+            - '@akeneo_elasticsearch.registry.clients'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@database_connection'
 
     akeneo_integration_tests.loader.database_schema_handler:
         class: '%akeneo_integration_tests.loader.database_schema_handler.class%'
         arguments:
             - '@kernel'
+            - '@database_connection'
 
     akeneo_integration_tests.doctrine.connection.connection_closer:
         class: '%akeneo_integration_tests.doctrine.connection.connection_closer.class%'
@@ -39,12 +50,29 @@ services:
     akeneo_integration_tests.security.system_user_authenticator:
         class: '%akeneo_integration_tests.security.system_user_authenticator.class%'
         arguments:
-            - '@service_container'
+            - '@pim_user.factory.user'
+            - '@pim_user.repository.group'
+            - '@pim_user.repository.role'
+            - '@security.token_storage'
 
     akeneo_integration_tests.catalog.fixture.build_entity:
         class: 'AkeneoTest\Pim\Enrichment\Integration\Fixture\EntityBuilder'
         arguments:
-            - '@service_container'
+            - '@akeneo_integration_tests.launcher.job_launcher'
+            - '@validator'
+            - '@pim_catalog.builder.entity_with_values'
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.saver.product'
+            - '@pim_catalog.factory.product_model'
+            - '@pim_catalog.updater.product_model'
+            - '@pim_catalog.saver.product_model'
+            - '@pim_catalog.repository.family_variant'
+            - '@pim_catalog.factory.family_variant'
+            - '@pim_catalog.updater.family_variant'
+            - '@pim_catalog.saver.family_variant'
+            - '@pim_catalog.repository.attribute'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
 
     akeneo_integration_tests.catalog.fixture.completeness_filter:
         class: 'AkeneoTest\Pim\Enrichment\Integration\Fixture\CompletenessFilter'

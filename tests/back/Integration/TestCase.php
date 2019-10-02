@@ -40,15 +40,20 @@ abstract class TestCase extends KernelTestCase
         $this->testKernel = new \AppKernelTest('test', false);
         $this->testKernel->boot();
 
-        $this->catalog = $this->testKernel->getContainer()->get('akeneo_integration_tests.configuration.catalog');
+        $this->catalog = $this->getFromTestContainer('akeneo_integration_tests.configuration.catalog');
         if (null !== $this->getConfiguration()) {
             $this->testKernel->getContainer()->set('akeneo_integration_tests.catalog.configuration', $this->getConfiguration());
-            $fixturesLoader = $this->testKernel->getContainer()->get('akeneo_integration_tests.loader.fixtures_loader');
+            $fixturesLoader = $this->getFromTestContainer('akeneo_integration_tests.loader.fixtures_loader');
             $fixturesLoader->load();
         }
 
         // authentication should be done after loading the database as the user is created with first activated locale as default locale
-        $authenticator = new SystemUserAuthenticator(static::$kernel->getContainer());
+        $authenticator = new SystemUserAuthenticator(
+            $this->get('pim_user.factory.user'),
+            $this->get('pim_user.repository.group'),
+            $this->get('pim_user.repository.role'),
+            $this->get('security.token_storage')
+        );
         $authenticator->createSystemUser();
         $this->get('doctrine.orm.default_entity_manager')->clear();
 

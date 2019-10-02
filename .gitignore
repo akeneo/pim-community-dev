@@ -33,7 +33,6 @@ composer.phar
 !/bin/pim-front.sh
 !/bin/check-services-instantiability
 !/bin/benchmark_products_api.sh
-behat.yml
 /phpspec.yml
 uploads_test/
 .phpspec/*.tpl
