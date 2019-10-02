@@ -45,10 +45,7 @@ abstract class ApiTestCase extends WebTestCase
      */
     protected function setUp(): void
     {
-        static::bootKernel(['debug' => false]);
-
-        $this->testKernel = new \AppKernelTest('test', false);
-        $this->testKernel->boot();
+        $this->testKernel = static::bootKernel(['debug' => false]);
         $this->catalog = $this->get('akeneo_integration_tests.catalogs');
         
         $authenticator = new SystemUserAuthenticator(
