@@ -55,6 +55,7 @@ services:
             - '@pim_volume_monitoring.persistence.query.aggregated_count_product_and_product_model_values'
             - '@pim_volume_monitoring.persistence.query.aggregated_average_max_product_and_product_model_values'
             - '@pim_volume_monitoring.persistence.query.average_max_product_values_per_family'
+            - '@pim_analytics.query.email_domains'
         tags:
             - { name: pim_analytics.data_collector, type: update_checker }
             - { name: pim_analytics.data_collector, type: system_info_report }

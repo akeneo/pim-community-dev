@@ -5,6 +5,7 @@ namespace Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
 use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
+use Akeneo\Tool\Component\Analytics\EmailDomainsQuery;
 
 /**
  * Collects the structure of the PIM catalog:
@@ -69,22 +70,9 @@ class DBDataCollector implements DataCollectorInterface
     /** @var AverageMaxQuery */
     protected $productValuePerFamilyAverageMaxQuery;
 
-    /**
-     * @param CountQuery      $channelCountQuery
-     * @param CountQuery      $productCountQuery
-     * @param CountQuery      $localeCountQuery
-     * @param CountQuery      $familyCountQuery
-     * @param CountQuery      $userCountQuery
-     * @param CountQuery      $productModelCountQuery
-     * @param CountQuery      $variantProductCountQuery
-     * @param CountQuery      $categoryCountQuery
-     * @param CountQuery      $categoryTreeCountQuery
-     * @param AverageMaxQuery $categoriesInOneCategoryAverageMax
-     * @param AverageMaxQuery $categoryLevelsAverageMax
-     * @param CountQuery      $productValueCountQuery
-     * @param AverageMaxQuery $productValueAverageMaxQuery
-     * @param AverageMaxQuery $productValuePerFamilyAverageMaxQuery
-     */
+    /** @var EmailDomainsQuery */
+    protected $emailDomains;
+
     public function __construct(
         CountQuery        $channelCountQuery,
         CountQuery        $productCountQuery,
@@ -99,7 +87,8 @@ class DBDataCollector implements DataCollectorInterface
         AverageMaxQuery   $categoryLevelsAverageMax,
         CountQuery        $productValueCountQuery,
         AverageMaxQuery   $productValueAverageMaxQuery,
-        AverageMaxQuery   $productValuePerFamilyAverageMaxQuery
+        AverageMaxQuery   $productValuePerFamilyAverageMaxQuery,
+        EmailDomainsQuery $emailDomains
     ) {
         $this->channelCountQuery = $channelCountQuery;
         $this->productCountQuery = $productCountQuery;
@@ -115,6 +104,7 @@ class DBDataCollector implements DataCollectorInterface
         $this->productValueCountQuery = $productValueCountQuery;
         $this->productValueAverageMaxQuery = $productValueAverageMaxQuery;
         $this->productValuePerFamilyAverageMaxQuery = $productValuePerFamilyAverageMaxQuery;
+        $this->emailDomains = $emailDomains;
     }
 
     /**
@@ -138,6 +128,7 @@ class DBDataCollector implements DataCollectorInterface
             'avg_product_values_by_product'  => $this->productValueAverageMaxQuery->fetch()->getAverageVolume(),
             'avg_product_values_by_family'  => $this->productValuePerFamilyAverageMaxQuery->fetch()->getAverageVolume(),
             'max_product_values_by_family'  => $this->productValuePerFamilyAverageMaxQuery->fetch()->getMaxVolume(),
+            'email_domains' => $this->emailDomains->fetch()
         ];
     }
 }
