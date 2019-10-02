@@ -29,14 +29,14 @@ class AddFranklinSubscriptionIntoElasticsearchProductProjectionIntegration exten
         );
 
         $product = $this->createProduct('bar');
-        $serializedProduct = $getElasticsearchProductProjection->fromProductIdentifier('bar')->toArray();
+        $serializedProduct = $getElasticsearchProductProjection->fromProductIdentifiers(['bar'])['bar']->toArray();
 
         $this->assertArrayHasKey('franklin_subscription', $serializedProduct);
         $this->assertFalse($serializedProduct['franklin_subscription']);
 
         $this->insertSubscription($product->getId());
 
-        $serializedProduct = $getElasticsearchProductProjection->fromProductIdentifier('bar')->toArray();
+        $serializedProduct = $getElasticsearchProductProjection->fromProductIdentifiers(['bar'])['bar']->toArray();
         $this->assertArrayHasKey('franklin_subscription', $serializedProduct);
         $this->assertTrue($serializedProduct['franklin_subscription']);
     }

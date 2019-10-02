@@ -88,7 +88,7 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
             ]
         ]);
 
-        $textAttribute = new Attribute('name', 'text', [], false, false, '', false);
+        $textAttribute = new Attribute('name', 'text', [], false, false, '', false, 'text');
         $getAttributes->forCode('name')->willReturn($textAttribute);
         $comparatorRegistry->getAttributeComparator('text')->willReturn($textComparator);
         $textComparator->compare(
@@ -144,7 +144,7 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
         $valueCollectionFactory->createFromStorageFormat($rawValues)->willReturn($originalValuesCollection);
         $normalizer->normalize($originalValuesCollection, 'standard')->willReturn([]);
 
-        $textAttribute = new Attribute('name', 'text', [], false, false, '', false);
+        $textAttribute = new Attribute('name', 'text', [], false, false, '', false, 'text');
         $getAttributes->forCode('name')->willReturn($textAttribute);
         $comparatorRegistry->getAttributeComparator('text')->willReturn($textComparator);
         $textComparator->compare(
@@ -204,7 +204,7 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
             ]
         ]);
 
-        $textAttribute = new Attribute('name', 'text', [], false, false, '', false);
+        $textAttribute = new Attribute('name', 'text', [], false, false, '', false, 'text');
         $getAttributes->forCode('name')->willReturn($textAttribute);
         $comparatorRegistry->getAttributeComparator('text')->willReturn($textComparator);
         $textComparator->compare(
@@ -296,7 +296,7 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
             ]
         ]);
 
-        $textAttribute = new Attribute('name', 'text', [], false, false, '', false);
+        $textAttribute = new Attribute('name', 'text', [], false, false, '', false, 'text');
         $getAttributes->forCode('name')->willReturn($textAttribute);
         $comparatorRegistry->getAttributeComparator('text')->willReturn($textComparator);
         $textComparator->compare(
@@ -385,7 +385,7 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
             ]
         ]);
 
-        $textAttribute = new Attribute('name', 'text', [], false, false, '', false);
+        $textAttribute = new Attribute('name', 'text', [], false, false, '', false, 'text');
         $getAttributes->forCode('name')->willReturn($textAttribute);
         $comparatorRegistry->getAttributeComparator('text')->willReturn($textComparator);
         $textComparator->compare(
@@ -399,7 +399,7 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
         $newTextValue->getScopeCode()->willReturn(null);
         $newTextValue->getLocaleCode()->willReturn(null);
 
-        $colorAttribute = new Attribute('color', 'simpleselect', [], false, false, '', false);
+        $colorAttribute = new Attribute('color', 'simpleselect', [], false, false, '', false, 'option');
         $getAttributes->forCode('color')->willReturn($colorAttribute);
         $comparatorRegistry->getAttributeComparator('simpleselect')->willReturn($colorComparator);
         $colorComparator->compare(

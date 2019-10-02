@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Indexer\PublishedProductIndexer;
@@ -24,9 +25,12 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class IndexProductsSubscriberSpec extends ObjectBehavior
 {
-    function let(ProductIndexerInterface $productIndexer, PublishedProductIndexer $publishedProductIndexer)
-    {
-        $this->beConstructedWith($productIndexer, $publishedProductIndexer);
+    function let(
+        ProductIndexerInterface $productIndexer,
+        PublishedProductIndexer $publishedProductIndexer,
+        ProductAndAncestorsIndexer $productAndAncestorsIndexer
+    ) {
+        $this->beConstructedWith($productIndexer, $publishedProductIndexer, $productAndAncestorsIndexer);
     }
 
     function it_is_initializable()
@@ -49,8 +53,8 @@ class IndexProductsSubscriberSpec extends ObjectBehavior
     }
 
     function it_indexes_a_single_published_product(
-        $publishedProductIndexer,
-        $productIndexer,
+        PublishedProductIndexer $publishedProductIndexer,
+        ProductAndAncestorsIndexer $productAndAncestorsIndexer,
         GenericEvent $event,
         PublishedProduct $publishedProduct
     ) {
@@ -59,14 +63,14 @@ class IndexProductsSubscriberSpec extends ObjectBehavior
         $event->getArgument('unitary')->willReturn(true);
 
         $publishedProductIndexer->index($publishedProduct)->shouldBeCalled();
-        $productIndexer->indexFromProductIdentifier(Argument::any())->shouldNotBeCalled();
+        $productAndAncestorsIndexer->indexFromProductIdentifiers(Argument::any())->shouldNotBeCalled();
 
         $this->indexProduct($event);
     }
 
     function it_indexes_a_single_product(
-        $publishedProductIndexer,
-        $productIndexer,
+        PublishedProductIndexer $publishedProductIndexer,
+        ProductAndAncestorsIndexer $productAndAncestorsIndexer,
         GenericEvent $event,
         ProductInterface $product
     ) {
@@ -76,14 +80,14 @@ class IndexProductsSubscriberSpec extends ObjectBehavior
 
         $product->getIdentifier()->willReturn('identifier');
         $publishedProductIndexer->index(Argument::any())->shouldNotBeCalled();
-        $productIndexer->indexFromProductIdentifier('identifier')->shouldBeCalled();
+        $productAndAncestorsIndexer->indexFromProductIdentifiers(['identifier'])->shouldBeCalled();
 
         $this->indexProduct($event);
     }
 
     function it_does_not_index_a_non_unitary_save_of_a_product(
-        $publishedProductIndexer,
-        $productIndexer,
+        PublishedProductIndexer $publishedProductIndexer,
+        ProductAndAncestorsIndexer $productAndAncestorsIndexer,
         GenericEvent $event,
         ProductInterface $product
     ) {
@@ -92,14 +96,14 @@ class IndexProductsSubscriberSpec extends ObjectBehavior
         $event->getArgument('unitary')->willReturn(false);
 
         $publishedProductIndexer->index(Argument::any())->shouldNotBeCalled();
-        $productIndexer->indexFromProductIdentifier(Argument::any())->shouldNotBeCalled();
+        $productAndAncestorsIndexer->indexFromProductIdentifiers(Argument::any())->shouldNotBeCalled();
 
         $this->indexProduct($event);
     }
 
     function it_does_not_index_a_non_unitary_save_of_a_product_bis(
-        $publishedProductIndexer,
-        $productIndexer,
+        PublishedProductIndexer $publishedProductIndexer,
+        ProductAndAncestorsIndexer $productAndAncestorsIndexer,
         GenericEvent $event,
         ProductInterface $product
     ) {
@@ -107,22 +111,24 @@ class IndexProductsSubscriberSpec extends ObjectBehavior
         $event->hasArgument('unitary')->willReturn(false);
 
         $publishedProductIndexer->index(Argument::any())->shouldNotBeCalled();
-        $productIndexer->indexFromProductIdentifier(Argument::any())->shouldNotBeCalled();
+        $productAndAncestorsIndexer->indexFromProductIdentifiers(Argument::any())->shouldNotBeCalled();
 
         $this->indexProduct($event);
     }
 
-    function it_does_not_index_a_non_product_entity($productIndexer, $publishedProductIndexer)
-    {
+    function it_does_not_index_a_non_product_entity(
+        ProductAndAncestorsIndexer $productAndAncestorsIndexer,
+        PublishedProductIndexer $publishedProductIndexer
+    ) {
         $publishedProductIndexer->index(Argument::any())->shouldNotBeCalled();
-        $productIndexer->indexFromProductIdentifier(Argument::cetera())->shouldNotBeCalled();
+        $productAndAncestorsIndexer->indexFromProductIdentifiers(Argument::cetera())->shouldNotBeCalled();
 
         $this->indexProduct(new GenericEvent(new \stdClass()));
     }
 
     function it_indexes_several_products(
-        $publishedProductIndexer,
-        $productIndexer,
+        PublishedProductIndexer $publishedProductIndexer,
+        ProductAndAncestorsIndexer $productAndAncestorsIndexer,
         ProductInterface $product1,
         ProductInterface $product2
     ) {
@@ -131,64 +137,66 @@ class IndexProductsSubscriberSpec extends ObjectBehavior
         $product2->getIdentifier()->willReturn('bar');
 
         $publishedProductIndexer->indexAll(Argument::any())->shouldNotBeCalled();
-        $productIndexer->indexFromProductIdentifiers(['foo', 'bar'])->shouldBeCalled();
+        $productAndAncestorsIndexer->indexFromProductIdentifiers(['foo', 'bar'])->shouldBeCalled();
 
         $this->bulkIndexProducts($event);
     }
 
     function it_indexes_several_published_products(
-        $publishedProductIndexer,
-        $productIndexer,
+        PublishedProductIndexer $publishedProductIndexer,
+        ProductAndAncestorsIndexer $productAndAncestorsIndexer,
         PublishedProductInterface $product1,
         PublishedProductInterface $product2
     ) {
         $event = new GenericEvent([$product1->getWrappedObject(), $product2->getWrappedObject()]);
 
         $publishedProductIndexer->indexAll([$product1, $product2])->shouldBeCalled();
-        $productIndexer->indexFromProductIdentifiers(Argument::any())->shouldNotBeCalled();
+        $productAndAncestorsIndexer->indexFromProductIdentifiers(Argument::any())->shouldNotBeCalled();
 
         $this->bulkIndexProducts($event);
     }
 
     function it_does_not_bulk_index_non_product_entities(
-        $publishedProductIndexer,
-        $productIndexer,
+        PublishedProductIndexer $publishedProductIndexer,
+        ProductAndAncestorsIndexer $productAndAncestorsIndexer,
         GenericEvent $event,
         \stdClass $subject1
     ) {
         $event->getSubject()->willReturn([$subject1]);
 
         $publishedProductIndexer->indexAll(Argument::any())->shouldNotBeCalled();
-        $productIndexer->indexFromProductIdentifiers(Argument::any())->shouldNotBeCalled();
+        $productAndAncestorsIndexer->indexFromProductIdentifiers(Argument::any())->shouldNotBeCalled();
 
         $this->bulkIndexProducts($event);
     }
 
-    function it_does_not_bulk_index_non_collections($publishedProductIndexer, $productIndexer)
-    {
+    function it_does_not_bulk_index_non_collections(
+        PublishedProductIndexer $publishedProductIndexer,
+        ProductAndAncestorsIndexer $productAndAncestorsIndexer
+    ) {
         $publishedProductIndexer->indexAll(Argument::any())->shouldNotBeCalled();
-        $productIndexer->indexFromProductIdentifiers(Argument::any())->shouldNotBeCalled();
+        $productAndAncestorsIndexer->indexFromProductIdentifiers(Argument::any())->shouldNotBeCalled();
 
         $this->bulkIndexProducts(new GenericEvent(new \stdClass()));
     }
 
     function it_delete_product_from_elasticsearch_index(
-        $publishedProductIndexer,
-        $productIndexer,
+        PublishedProductIndexer $publishedProductIndexer,
+        ProductIndexerInterface $productIndexer,
         ProductInterface $product
     ) {
         $event = new RemoveEvent($product->getWrappedObject(), 40);
         $product->getId()->willReturn(40);
 
         $publishedProductIndexer->remove(Argument::any())->shouldNotBeCalled();
-        $productIndexer->removeFromProductId('40')->shouldBeCalled();
+        $productIndexer->removeFromProductId(40)->shouldBeCalled();
 
         $this->deleteProduct($event)->shouldReturn(null);
     }
 
     function it_delete_published_product_from_elasticsearch_index(
-        $publishedProductIndexer,
-        $productIndexer,
+        PublishedProductIndexer $publishedProductIndexer,
+        ProductIndexerInterface $productIndexer,
         PublishedProductInterface $product
     ) {
         $event = new RemoveEvent($product->getWrappedObject(), 40);
@@ -200,8 +208,8 @@ class IndexProductsSubscriberSpec extends ObjectBehavior
     }
 
     function it_does_not_delete_a_non_product_entity_from_elastisearch(
-        $publishedProductIndexer,
-        $productIndexer,
+        PublishedProductIndexer $publishedProductIndexer,
+        ProductIndexerInterface $productIndexer,
         PublishedProductInterface $product
     ) {
         $event = new RemoveEvent(new \stdClass(), 1);

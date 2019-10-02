@@ -16,7 +16,7 @@ class AssetMultipleLinkGuesserSpec extends ObjectBehavior
         AttributeInterface $assetMultipleLinkAttribute
     ) {
         $booleanAttribute->getType()->willReturn(AttributeTypes::BOOLEAN);
-        $assetMultipleLinkAttribute->getType()->willReturn(AttributeTypes::ASSETS_COLLECTION);
+        $assetMultipleLinkAttribute->getType()->willReturn(AttributeTypes::ASSET_COLLECTION);
 
         $this->supportAttribute($booleanAttribute)->shouldReturn(false);
         $this->supportAttribute($assetMultipleLinkAttribute)->shouldReturn(true);

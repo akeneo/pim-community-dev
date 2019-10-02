@@ -140,6 +140,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer',
         'Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueFactory',
         'Akeneo\Pim\Enrichment\Component\Product\Factory\Read\WriteValueCollectionFactory',
+        'Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface',
         'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute',
         'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes',
 
@@ -238,6 +239,7 @@ $rules = [
         // TIP-1032: Workflow should not depend on PIM/Enrichment normalizers
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer',
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\PropertiesNormalizer',
+        'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer',
 
         // TIP-990: Move classes to component
         'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Helper\ProductDraftChangesPermissionHelper',

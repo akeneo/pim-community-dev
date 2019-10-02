@@ -11,6 +11,7 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Indexer\PublishedProductIndexer;
@@ -39,21 +40,22 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class IndexProductsSubscriber implements EventSubscriberInterface
 {
     /** @var ProductIndexerInterface */
-    protected $productIndexer;
+    private $productIndexer;
 
     /** @var PublishedProductIndexer */
-    protected $publishedProductIndexer;
+    private $publishedProductIndexer;
 
-    /**
-     * @param ProductIndexerInterface $productIndexer
-     * @param PublishedProductIndexer $publishedProductIndexer
-     */
+    /** @var ProductAndAncestorsIndexer */
+    private $productAndAncestorsIndexer;
+
     public function __construct(
         ProductIndexerInterface $productIndexer,
-        PublishedProductIndexer $publishedProductIndexer
+        PublishedProductIndexer $publishedProductIndexer,
+        ProductAndAncestorsIndexer $productAndAncestorsIndexer
     ) {
         $this->productIndexer = $productIndexer;
         $this->publishedProductIndexer = $publishedProductIndexer;
+        $this->productAndAncestorsIndexer = $productAndAncestorsIndexer;
     }
 
     /**
@@ -87,7 +89,7 @@ class IndexProductsSubscriber implements EventSubscriberInterface
         if ($product instanceof PublishedProductInterface) {
             $this->publishedProductIndexer->index($product);
         } else {
-            $this->productIndexer->indexFromProductIdentifier($product->getIdentifier());
+            $this->productAndAncestorsIndexer->indexFromProductIdentifiers([$product->getIdentifier()]);
         }
     }
 
@@ -110,7 +112,7 @@ class IndexProductsSubscriber implements EventSubscriberInterface
         if (current($products) instanceof PublishedProductInterface) {
             $this->publishedProductIndexer->indexAll($products);
         } else {
-            $this->productIndexer->indexFromProductIdentifiers(
+            $this->productAndAncestorsIndexer->indexFromProductIdentifiers(
                 array_map(
                     function (ProductInterface $product) {
                         return $product->getIdentifier();

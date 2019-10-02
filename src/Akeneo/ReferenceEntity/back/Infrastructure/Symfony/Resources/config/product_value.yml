@@ -106,14 +106,14 @@ services:
     akeneo_referenceentity.infrastructure.catalog.normalizer.reference_entity_collection_value:
         class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Normalizer\ReferenceEntityCollectionValueNormalizer
         arguments:
-            - '@pim_catalog.repository.cached_attribute'
+            - '@akeneo.pim.structure.query.get_attributes'
         tags:
             - { name: pim_indexing_serializer.normalizer, priority: 90 }
 
     akeneo_referenceentity.infrastructure.catalog.normalizer.reference_entity_value:
         class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Normalizer\ReferenceEntityValueNormalizer
         arguments:
-            - '@pim_catalog.repository.cached_attribute'
+            - '@akeneo.pim.structure.query.get_attributes'
         tags:
             - { name: pim_indexing_serializer.normalizer, priority: 90 }
 

@@ -152,6 +152,7 @@ services:
         arguments:
             - '@pim_catalog.elasticsearch.indexer.product'
             - '@pim_catalog.elasticsearch.published_product_indexer'
+            - '@akeneo.pim.enrichment.elasticsearch.indexer.product_and_ancestors'
         tags:
             - { name: kernel.event_subscriber }
 
