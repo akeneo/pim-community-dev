@@ -62,7 +62,8 @@ class ChannelRemoverSpec extends ObjectBehavior
         TranslatorInterface $translator
     ) {
         $channelRepository->countAll()->willReturn(1);
-        $translator->trans('flash.channel.not removable')->willReturn('exception message');
+        $channel->getCode()->willReturn('code');
+        $translator->trans('pim_enrich.channel.flash.delete.error', ['%channelCode%' => 'code'])->willReturn('exception message');
         $logicException = new \LogicException('exception message');
 
         $this->shouldThrow($logicException)->during('remove', [$channel]);

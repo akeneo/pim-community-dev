@@ -94,7 +94,10 @@ class ChannelRemover implements RemoverInterface
 
         $channelCount = $this->channelRepository->countAll();
         if (1 === $channelCount) {
-            throw new \LogicException($this->translator->trans('flash.channel.not removable'));
+            throw new \LogicException($this->translator->trans(
+                'pim_enrich.channel.flash.delete.error',
+                ['%channelCode%' => $object->getCode() ]
+            ));
         }
     }
 }

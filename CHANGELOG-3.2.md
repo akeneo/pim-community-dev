@@ -5,6 +5,7 @@
 ## Bug fixes:
 
 - PIM-8820: Avoid multiple refresh of the product grid on product delete
+- PIM-8736: Fix error message on channel deletion
 
 # 3.2.9 (2019-09-23)
 
