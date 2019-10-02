@@ -3,13 +3,17 @@
 namespace spec\Pim\Component\Catalog\Validator\ConstraintGuesser;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Validator\ConstraintGuesserInterface;
+use Pim\Component\Catalog\Validator\Constraints\Range;
 
 class RangeGuesserSpec extends ObjectBehavior
 {
     function it_is_an_attribute_constraint_guesser()
     {
-        $this->shouldImplement('Pim\Component\Catalog\Validator\ConstraintGuesserInterface');
+        $this->shouldImplement(ConstraintGuesserInterface::class);
     }
 
     function it_enforces_attribute_type(AttributeInterface $attribute)
@@ -55,7 +59,7 @@ class RangeGuesserSpec extends ObjectBehavior
         $constraints->shouldHaveCount(1);
 
         $constraint = $constraints[0];
-        $constraint->shouldBeAnInstanceOf('Pim\Component\Catalog\Validator\Constraints\Range');
+        $constraint->shouldBeAnInstanceOf(Range::class);
         $constraint->min->shouldBe(doubleval(5));
         $constraint->max->shouldBe(null);
     }
@@ -75,7 +79,7 @@ class RangeGuesserSpec extends ObjectBehavior
         $constraints->shouldHaveCount(1);
 
         $constraint = $constraints[0];
-        $constraint->shouldBeAnInstanceOf('Pim\Component\Catalog\Validator\Constraints\Range');
+        $constraint->shouldBeAnInstanceOf(Range::class);
         $constraint->min->shouldBe(null);
         $constraint->max->shouldBe(doubleval(10));
     }
@@ -95,7 +99,7 @@ class RangeGuesserSpec extends ObjectBehavior
         $constraints->shouldHaveCount(1);
 
         $constraint = $constraints[0];
-        $constraint->shouldBeAnInstanceOf('Pim\Component\Catalog\Validator\Constraints\Range');
+        $constraint->shouldBeAnInstanceOf(Range::class);
         $constraint->min->shouldBe(doubleval(5));
         $constraint->max->shouldBe(doubleval(10));
     }
@@ -112,7 +116,7 @@ class RangeGuesserSpec extends ObjectBehavior
         $constraints->shouldHaveCount(1);
 
         $constraint = $constraints[0];
-        $constraint->shouldBeAnInstanceOf('Pim\Component\Catalog\Validator\Constraints\Range');
+        $constraint->shouldBeAnInstanceOf(Range::class);
         $constraint->min->shouldBe(doubleval(-5));
         $constraint->max->shouldBe(null);
     }
@@ -129,7 +133,7 @@ class RangeGuesserSpec extends ObjectBehavior
         $constraints->shouldHaveCount(1);
 
         $constraint = $constraints[0];
-        $constraint->shouldBeAnInstanceOf('Pim\Component\Catalog\Validator\Constraints\Range');
+        $constraint->shouldBeAnInstanceOf(Range::class);
         $constraint->min->shouldBe(doubleval(0));
         $constraint->max->shouldBe(null);
     }
@@ -149,7 +153,7 @@ class RangeGuesserSpec extends ObjectBehavior
         $constraints->shouldHaveCount(1);
 
         $constraint = $constraints[0];
-        $constraint->shouldBeAnInstanceOf('Pim\Component\Catalog\Validator\Constraints\Range');
+        $constraint->shouldBeAnInstanceOf(Range::class);
         $constraint->min->shouldBe('1970-01-01');
         $constraint->max->shouldBe(null);
     }
@@ -169,7 +173,7 @@ class RangeGuesserSpec extends ObjectBehavior
         $constraints->shouldHaveCount(1);
 
         $constraint = $constraints[0];
-        $constraint->shouldBeAnInstanceOf('Pim\Component\Catalog\Validator\Constraints\Range');
+        $constraint->shouldBeAnInstanceOf(Range::class);
         $constraint->min->shouldBe(null);
         $constraint->max->shouldBe('2038-01-19');
     }
@@ -189,7 +193,7 @@ class RangeGuesserSpec extends ObjectBehavior
         $constraints->shouldHaveCount(1);
 
         $constraint = $constraints[0];
-        $constraint->shouldBeAnInstanceOf('Pim\Component\Catalog\Validator\Constraints\Range');
+        $constraint->shouldBeAnInstanceOf(Range::class);
         $constraint->min->shouldBe('1970-01-01');
         $constraint->max->shouldBe('2038-01-19');
     }
@@ -240,5 +244,17 @@ class RangeGuesserSpec extends ObjectBehavior
         $constraints = $this->guessConstraints($attribute);
 
         $constraints->shouldReturn([]);
+    }
+
+    function it_forces_number_max_if_nothing_was_specified()
+    {
+        $number = new Attribute();
+        $number->setType(AttributeTypes::NUMBER);
+
+        $constraints = $this->guessConstraints($number);
+        $constraints->shouldHaveCount(1);
+        $range = $constraints[0];
+        $range->shouldBeAnInstanceOf(Range::class);
+        $range->max->shouldBe(floatval(PHP_INT_MAX));
     }
 }

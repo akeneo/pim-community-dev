@@ -13,6 +13,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class ValidNumberRange extends Constraint
 {
+    public const PHP_INT_MAX_REACHED = 'pim_catalog.constraint.php_int_max_reached';
     public $message = 'The max number must be greater than the min number';
     public $invalidNumberMessage = 'This number is not valid';
 

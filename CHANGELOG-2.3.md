@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-6424: update exports when a locale is removed from a channel
+- PIM-7332: show an error message when a number attribute field reaches the PHP_INT_MAX.
 
 # 2.3.63 (2019-09-23)
 

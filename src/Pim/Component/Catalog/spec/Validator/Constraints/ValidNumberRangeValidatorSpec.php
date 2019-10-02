@@ -3,8 +3,10 @@
 namespace spec\Pim\Component\Catalog\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Validator\Constraints\ValidNumberRange;
+use Pim\Component\Catalog\Validator\Constraints\ValidNumberRangeValidator;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -19,7 +21,7 @@ class ValidNumberRangeValidatorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Catalog\Validator\Constraints\ValidNumberRangeValidator');
+        $this->shouldHaveType(ValidNumberRangeValidator::class);
     }
 
     function it_does_nothing_when_number_range_is_valid(
@@ -37,6 +39,28 @@ class ValidNumberRangeValidatorSpec extends ObjectBehavior
             ->shouldNotBeCalled();
 
         $this->validate($attribute, $constraint);
+    }
+
+    function it_adds_violation_when_max_reaches_the_php_int_max(
+        $context,
+        ValidNumberRange $constraint,
+        ConstraintViolationBuilderInterface $violation
+    ) {
+        $number = new Attribute();
+        $number->setNumberMax('555337203685477580742332342');
+
+        $context
+            ->buildViolation(
+                ValidNumberRange::PHP_INT_MAX_REACHED,
+                ['%php_int_max%' => PHP_INT_MAX]
+            )
+            ->shouldBeCalled()
+            ->willReturn($violation);
+
+        $violation->atPath('numberMax')->shouldBeCalled()->willReturn($violation);
+        $violation->addViolation()->shouldBeCalled();
+
+        $this->validate($number, $constraint);
     }
 
     function it_adds_violation_when_min_is_negative_allowed_but_decimal_not_allowed(
