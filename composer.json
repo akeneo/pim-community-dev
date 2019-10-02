@@ -25,8 +25,7 @@
             "AkeneoTest\\": "tests/back",
             "Akeneo\\Test\\IntegrationTestsBundle\\": "tests/back/Integration/IntegrationTestsBundle/",
             "Akeneo\\Test\\": "tests/back/"
-        },
-        "classmap": [ "tests/back/Integration/AppKernelTest.php" ]
+        }
     },
     "require": {
         "php": "7.3.*",
