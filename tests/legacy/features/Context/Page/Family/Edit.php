@@ -162,7 +162,7 @@ class Edit extends Form
             );
         }
 
-        return 'required' === $checkbox->getAttribute('data-attribute-state');
+        return 'true' === $checkbox->getAttribute('data-required');
     }
 
     /**
