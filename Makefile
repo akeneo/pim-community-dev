@@ -21,39 +21,41 @@ include make-file/*.mk
 ## Front
 ##
 
-.PHONY: clean-front
-clean-front:
-	rm -rf public/bundles public/dist public/css public/js
-
 node_modules: package.json
 	$(YARN_EXEC) install
 
 .PHONY: assets
 assets:
+	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/bundles public/js
 	$(PHP_RUN) bin/console --env=prod pim:installer:assets --symlink --clean
 
 .PHONY: css
 css:
+	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/css
 	$(YARN_EXEC) run less
 
 .PHONY: javascript-cloud
 javascript-cloud:
+	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/dist
 	$(DOCKER_COMPOSE) run -e EDITION=cloud --rm node yarn run webpack
 
 .PHONY: javascript-prod
 javascript-prod:
+	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/dist
 	$(YARN_EXEC) run webpack
 
 .PHONY: javascript-dev
 javascript-dev:
+	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/dist
 	$(YARN_EXEC) run webpack-dev
 
 .PHONY: javascript-test
 javascript-test:
+	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/dist
 	$(YARN_EXEC) run webpack-test
 
 .PHONY: front
-front: clean-front assets css javascript-test javascript-dev
+front: assets css javascript-test javascript-dev
 
 ##
 ## Back
@@ -63,8 +65,8 @@ front: clean-front assets css javascript-test javascript-dev
 fix-cs-back:
 	$(PHP_RUN) vendor/bin/php-cs-fixer fix --config=.php_cs.php
 
-.PHONY: clean-back
-clean-back:
+.PHONY: cache
+cache:
 	rm -rf var/cache && $(PHP_RUN) bin/console cache:warmup
 
 composer.lock: composer.json
@@ -72,6 +74,10 @@ composer.lock: composer.json
 
 vendor: composer.lock
 	$(PHP_RUN) -d memory_limit=4G /usr/local/bin/composer install --no-interaction
+
+.PHONY: check-requirements
+check-requirements:
+	$(PHP_RUN) bin/console pim:installer:check-requirements
 
 .PHONY: database
 database:
@@ -84,13 +90,10 @@ database:
 .PHONY: dependencies
 dependencies: vendor node_modules
 
-.PHONY: clean
-clean: clean-back clean-front
-
 .PHONY: pim-behat
 pim-behat:
 	APP_ENV=behat $(MAKE) up
-	APP_ENV=behat $(MAKE) clean
+	APP_ENV=behat $(MAKE) cache
 	$(MAKE) assets
 	$(MAKE) css
 	$(MAKE) javascript-test
@@ -103,13 +106,13 @@ pim-behat:
 .PHONY: pim-test
 pim-test:
 	APP_ENV=test $(MAKE) up
-	APP_ENV=test $(MAKE) clean
+	APP_ENV=test $(MAKE) cache
 	APP_ENV=test $(MAKE) database
 
 .PHONY: pim-dev
 pim-dev:
 	APP_ENV=dev $(MAKE) up
-	APP_ENV=dev $(MAKE) clean
+	APP_ENV=dev $(MAKE) cache
 	$(MAKE) assets
 	$(MAKE) css
 	$(MAKE) javascript-dev
@@ -118,7 +121,7 @@ pim-dev:
 .PHONY: pim-prod
 pim-prod:
 	APP_ENV=prod $(MAKE) up
-	APP_ENV=prod $(MAKE) clean
+	APP_ENV=prod $(MAKE) cache
 	$(MAKE) assets
 	$(MAKE) css
 	$(MAKE) javascript-cloud
@@ -147,12 +150,3 @@ up:
 .PHONY: down
 down:
 	$(DOCKER_COMPOSE) down -v
-
-##
-## Deprecated targets
-##
-
-behat.yml:
-	cp ./behat.yml.dist ./behat.yml
-	sed -i "s/127.0.0.1\//httpd\//g" ./behat.yml
-	sed -i "s/127.0.0.1/selenium/g" ./behat.yml

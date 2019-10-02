@@ -1,6 +1,6 @@
 version: 2.1
 jobs:
-  setup:
+  build_dev:
     parameters:
         is_pull_request:
             type: boolean
@@ -21,17 +21,11 @@ jobs:
           name: Setup tests results folder and log folder
           command: mkdir -p var/tests/phpunit var/tests/behat var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.composer
       - run:
-          name: Setup behat
-          command: make behat.yml
-      - run:
           name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
           command: |
               sudo chown -R 1000:1000 ../project
               sudo chown -R 1000:1000 ~/.composer
               sudo chown -R 1000:1000 ~/.cache/yarn
-      - run:
-          name: Start containers
-          command: make up
       - run:
           name: Change owner on project dir after restoring cache
           command: sudo chown -R 1000:1000 ../project
@@ -43,7 +37,7 @@ jobs:
                       command: >
                           curl --output /dev/null --silent --head --fail
                           https://github.com/akeneo/pim-community-dev/tree/${CIRCLE_BRANCH} &&
-                          docker-compose exec -u www-data:www-data fpm php
+                          docker-compose run --rm -u www-data:www-data php php
                           /usr/local/bin/composer require "akeneo/pim-community-dev:dev-${CIRCLE_BRANCH}" --no-update ||
                           echo "No CE branch $CIRCLE_BRANCH found. I don't touch the composer.json file."
       - run:
@@ -52,6 +46,12 @@ jobs:
       - run:
           name: Install front dependencies
           command: make node_modules
+      - run:
+          name: Check PIM requirements
+          command: |
+              C='mysql elasticsearch' make up
+              vendor/akeneo/pim-community-dev/.circleci/wait_docker_up.sh
+              make check-requirements
       - run:
           name: Install asset
           command: make assets
@@ -85,7 +85,7 @@ jobs:
                 command: docker load -i php-pim-image.tar
           - run:
                 name: Generate dev cache for Symfony's Phpstan extension
-                command: APP_ENV=dev make clean-back
+                command: APP_ENV=dev make cache
           - run:
                 name: PhpSpec
                 command: docker-compose run -u www-data --rm -T php vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
@@ -303,15 +303,15 @@ workflows:
                     branches:
                         ignore:
                             - master
-          - setup:
+          - build_dev:
                 requires:
                     - wait_for_user_approval
           - back_static_and_acceptance:
                 requires:
-                    - setup
+                    - build_dev
           - front_static_acceptance_and_integration:
                 requires:
-                    - setup
+                    - build_dev
           - back_phpunit:
                 requires:
                     - back_static_and_acceptance
@@ -329,14 +329,14 @@ workflows:
                         only:
                             - master
       jobs:
-          - setup:
+          - build_dev:
                 is_pull_request: false
           - back_static_and_acceptance:
                 requires:
-                    - setup
+                    - build_dev
           - front_static_acceptance_and_integration:
                 requires:
-                    - setup
+                    - build_dev
           - back_phpunit:
                 requires:
                     - back_static_and_acceptance

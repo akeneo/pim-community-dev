@@ -10,15 +10,18 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 class PermissionCleaner
 {
-    /** @var KernelInterface */
-    protected $kernel;
+    /** @var CleanCategoryAccessesCommand */
+    private $cleanCategoryAccessesCommand;
 
-    /**
-     * @param KernelInterface $kernel
-     */
-    public function __construct(KernelInterface $kernel)
-    {
-        $this->kernel = $kernel;
+    /** @var CleanAttributeGroupAccessesCommand */
+    private $cleanAttributeGroupAccessesCommand;
+
+    public function __construct(
+        CleanCategoryAccessesCommand $cleanCategoryAccessesCommand,
+        CleanAttributeGroupAccessesCommand $cleanAttributeGroupAccessesCommand
+    ) {
+        $this->cleanCategoryAccessesCommand = $cleanCategoryAccessesCommand;
+        $this->cleanAttributeGroupAccessesCommand = $cleanAttributeGroupAccessesCommand;
     }
 
     /**
@@ -30,8 +33,8 @@ class PermissionCleaner
     {
         $application = new Application();
 
-        $cleanCategoryRight = $application->add($this->kernel->getContainer()->get(CleanCategoryAccessesCommand::class));
-        $cleanAttributeGroupRight = $application->add($this->kernel->getContainer()->get(CleanAttributeGroupAccessesCommand::class));
+        $cleanCategoryRight = $application->add($this->cleanCategoryAccessesCommand);
+        $cleanAttributeGroupRight = $application->add($this->cleanAttributeGroupAccessesCommand);
 
         $cleanCategoryRightCommand = new CommandTester($cleanCategoryRight);
         $cleanAttributeGroupRightCommand = new CommandTester($cleanAttributeGroupRight);
