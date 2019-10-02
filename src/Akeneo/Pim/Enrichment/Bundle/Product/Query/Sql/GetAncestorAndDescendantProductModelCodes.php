@@ -51,4 +51,22 @@ SQL;
             ['codes' => Connection::PARAM_STR_ARRAY]
         )->fetchAll(\PDO::FETCH_COLUMN, 0);
     }
+
+    public function getOnlyAncestorsFromProductModelIds(array $productModelIds): array
+    {
+        $sql = <<<SQL
+SELECT DISTINCT
+    root_product_model.code
+FROM
+    pim_catalog_product_model product_model
+    INNER JOIN pim_catalog_product_model root_product_model ON product_model.parent_id = root_product_model.id
+WHERE product_model.id IN (:ids)
+SQL;
+
+        return $this->connection->executeQuery(
+            $sql,
+            ['ids' => $productModelIds],
+            ['ids' => Connection::PARAM_STR_ARRAY]
+        )->fetchAll(\PDO::FETCH_COLUMN, 0);
+    }
 }

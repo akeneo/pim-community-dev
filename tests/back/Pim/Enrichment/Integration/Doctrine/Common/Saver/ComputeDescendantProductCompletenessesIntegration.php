@@ -37,7 +37,6 @@ class ComputeDescendantProductCompletenessesIntegration extends AbstractComplete
         $completenessBeforeSave = $this->getCompletenessByLocaleCode($product, 'en_US');
 
         $data = [
-            'code' => 'pm',
             'family_variant' => 'familyVariantA1',
             'values' => [
                 'a_date' => [

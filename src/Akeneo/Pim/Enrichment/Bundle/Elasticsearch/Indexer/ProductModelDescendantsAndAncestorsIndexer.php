@@ -70,4 +70,25 @@ class ProductModelDescendantsAndAncestorsIndexer
             $this->productIndexer->indexFromProductIdentifiers($variantProductIdentifiers);
         }
     }
+
+    /**
+     * Remove product model and descendants from index, and re-index ancestor.
+     *
+     * @param array $productModelIds
+     */
+    public function removeFromProductModelIds(array $productModelIds): void
+    {
+        if (empty($productModelIds)) {
+            return;
+        }
+
+        $this->productModelIndexer->removeFromProductModelIds($productModelIds);
+
+        $rootProductModelCodes = $this
+            ->getAncestorAndDescendantProductModelCodes
+            ->getOnlyAncestorsFromProductModelIds($productModelIds);
+        if (!empty($rootProductModelCodes)) {
+            $this->productModelIndexer->indexFromProductModelCodes($rootProductModelCodes);
+        }
+    }
 }

@@ -8,15 +8,20 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelDescendantsAn
 use Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses;
 use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetDescendantVariantProductIdentifiers;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Orchestrator for below jobs:
+ * Orchestrator for below jobs on update:
  *  - Computes and saves the completenesses for the variant products of the given product models.
  *  - Indexes these variant products
  *  - Indexes the product models impacted by the new completeness (= ancestors and descendants of the given product models)
+ *
+ * On delete:
+ *   - Remove given product models and its descendants (product models and variant products)
+ *   - Re-index ancestor if any
  *
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -46,8 +51,10 @@ final class ComputeDescendantCompletenessAndIndexProductAndAncestorsSubscriber i
     public static function getSubscribedEvents(): array
     {
         return [
-            StorageEvents::POST_SAVE     => 'fromProductModelEvent',
-            StorageEvents::POST_SAVE_ALL => 'fromProductModelsEvent',
+            StorageEvents::POST_SAVE       => 'fromProductModelEvent',
+            StorageEvents::POST_SAVE_ALL   => 'fromProductModelsEvent',
+            StorageEvents::POST_REMOVE     => 'fromProductModelRemoveEvent',
+            StorageEvents::POST_REMOVE_ALL => 'fromProductModelsRemoveEvent',
         ];
     }
 
@@ -62,7 +69,7 @@ final class ComputeDescendantCompletenessAndIndexProductAndAncestorsSubscriber i
             return;
         }
 
-        $this->fromProductModelCodes([$productModel->getCode()]);
+        $this->computeAndIndexFromProductModelCodes([$productModel->getCode()]);
     }
 
     public function fromProductModelsEvent(Event $event): void
@@ -76,7 +83,7 @@ final class ComputeDescendantCompletenessAndIndexProductAndAncestorsSubscriber i
             return;
         }
 
-        $this->fromProductModelCodes(array_map(
+        $this->computeAndIndexFromProductModelCodes(array_map(
             function (ProductModelInterface $productModel) {
                 return $productModel->getCode();
             },
@@ -84,7 +91,31 @@ final class ComputeDescendantCompletenessAndIndexProductAndAncestorsSubscriber i
         ));
     }
 
-    private function fromProductModelCodes(array $productModelCodes): void
+    public function fromProductModelRemoveEvent(RemoveEvent $event): void
+    {
+        $productModel = $event->getSubject();
+        if (!$productModel instanceof ProductModelInterface) {
+            return;
+        }
+
+        if (!$event->hasArgument('unitary') || false === $event->getArgument('unitary')) {
+            return;
+        }
+
+        $this->productModelDescendantsAndAncestorsIndexer->removeFromProductModelIds([$event->getSubjectId()]);
+    }
+
+    public function fromProductModelsRemoveEvent(RemoveEvent $event): void
+    {
+        $productModels = $event->getSubject();
+        if (!is_array($productModels) || !current($productModels) instanceof ProductModelInterface) {
+            return;
+        }
+
+        $this->productModelDescendantsAndAncestorsIndexer->removeFromProductModelIds($event->getSubjectId());
+    }
+
+    private function computeAndIndexFromProductModelCodes(array $productModelCodes): void
     {
         if (empty($productModelCodes)) {
             return;

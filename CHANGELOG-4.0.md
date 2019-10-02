@@ -190,7 +190,7 @@
 - Remove class `Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\CompleteFilterData`
 - Remove interface `Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\CompleteFilterInterface`
 - Remove class `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeProductModelDescendantsSubscriber`
-- Remove methods `indexProductModel` and `bulkIndexProductModels` from class `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\IndexProductModelsSubscriber`
+- Remove class `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\IndexProductModelsSubscriber`
 
 ### CLI Commands
 
@@ -250,3 +250,4 @@ If you want to purge the completeness in order to recalculate it, please use the
 - Remove `pim_enrich.normalizer.incomplete_values`
 - Remove `pim_catalog.entity_with_family.required_value_collection_factory` and `pim_catalog.entity_with_family.incomplete_value_collection_factory`
 - Remove `pim_catalog.event_subscriber.compute_product_model_descendants`
+- Remove `pim_catalog.event_subscriber.index_product_models`

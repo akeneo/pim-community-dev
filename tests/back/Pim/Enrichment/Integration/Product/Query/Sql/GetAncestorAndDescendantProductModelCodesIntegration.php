@@ -139,6 +139,36 @@ class GetAncestorAndDescendantProductModelCodesIntegration extends TestCase
         );
     }
 
+    public function test_it_returns_only_ancestors_codes()
+    {
+        $mediumShirtProductModel = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('a_medium_shirt');
+        $largeShirtProductModel = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('a_large_shirt');
+        $largeShoeProductModel = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('a_large_shoe');
+        Assert::assertEqualsCanonicalizing(
+            ['a_shirt', 'a_shoe'],
+            $this->getAncestorAndDescendantProductModelCodes()->getOnlyAncestorsFromProductModelIds([
+                $mediumShirtProductModel->getId(),
+                $largeShirtProductModel->getId(),
+                $largeShoeProductModel->getId(),
+            ])
+        );
+
+        $shirtProductModel = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('a_shirt');
+        $shoeProductModel = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('a_shoe');
+        Assert::assertEqualsCanonicalizing(
+            [],
+            $this->getAncestorAndDescendantProductModelCodes()->getOnlyAncestorsFromProductModelIds([
+                $shirtProductModel->getId(),
+                $shoeProductModel->getId(),
+            ])
+        );
+
+        Assert::assertEqualsCanonicalizing(
+            [],
+            $this->getAncestorAndDescendantProductModelCodes()->fromProductModelCodes([])
+        );
+    }
+
     protected function getAncestorAndDescendantProductModelCodes(): GetAncestorAndDescendantProductModelCodes
     {
         return $this->get('akeneo.pim.enrichment.product.query.get_ancestor_and_descendant_product_model_codes');

@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeDescendantCompletenessAn
 use Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses;
 use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetDescendantVariantProductIdentifiers;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -49,6 +50,8 @@ class ComputeDescendantCompletenessAndIndexProductAndAncestorsSubscriberSpec ext
         $this->getSubscribedEvents()->shouldReturn([
             StorageEvents::POST_SAVE     => 'fromProductModelEvent',
             StorageEvents::POST_SAVE_ALL => 'fromProductModelsEvent',
+            StorageEvents::POST_REMOVE     => 'fromProductModelRemoveEvent',
+            StorageEvents::POST_REMOVE_ALL => 'fromProductModelsRemoveEvent',
         ]);
     }
 
@@ -145,5 +148,57 @@ class ComputeDescendantCompletenessAndIndexProductAndAncestorsSubscriberSpec ext
         $productModelDescendantsAndAncestorsIndexer->indexFromProductModelCodes(Argument::cetera())->shouldNotBeCalled();
 
         $this->fromProductModelsEvent($event);
+    }
+
+    function it_removes_product_model_from_index(
+        ProductModelDescendantsAndAncestorsIndexer $productModelDescendantsAndAncestorsIndexer,
+        ProductModelInterface $productModel
+    ) {
+        $event = new RemoveEvent($productModel->getWrappedObject(), 12, ['unitary' => true]);
+        $productModelDescendantsAndAncestorsIndexer->removeFromProductModelIds([12])->shouldBeCalled();
+
+        $this->fromProductModelRemoveEvent($event);
+    }
+
+    function it_does_not_remove_product_model_from_index_if_not_unitary(
+        ProductModelDescendantsAndAncestorsIndexer $productModelDescendantsAndAncestorsIndexer,
+        ProductModelInterface $productModel
+    ) {
+        $event = new RemoveEvent($productModel->getWrappedObject(), 12, ['unitary' => false]);
+        $productModelDescendantsAndAncestorsIndexer->removeFromProductModelIds(Argument::cetera())->shouldNotBeCalled();
+        $this->fromProductModelRemoveEvent($event);
+
+        $event = new RemoveEvent($productModel->getWrappedObject(), 12);
+        $productModelDescendantsAndAncestorsIndexer->removeFromProductModelIds(Argument::cetera())->shouldNotBeCalled();
+        $this->fromProductModelRemoveEvent($event);
+    }
+
+    function it_does_not_remove_product_model_from_index_if_not_product_model(
+        ProductModelDescendantsAndAncestorsIndexer $productModelDescendantsAndAncestorsIndexer
+    ) {
+        $event = new RemoveEvent(new \stdClass(), 12, ['unitary' => true]);
+        $productModelDescendantsAndAncestorsIndexer->removeFromProductModelIds(Argument::cetera())->shouldNotBeCalled();
+
+        $this->fromProductModelRemoveEvent($event);
+    }
+
+    function it_bulk_removes_product_models_from_index(
+        ProductModelDescendantsAndAncestorsIndexer $productModelDescendantsAndAncestorsIndexer,
+        ProductModelInterface $productModel1,
+        ProductModelInterface $productModel2
+    ) {
+        $event = new RemoveEvent([$productModel1->getWrappedObject(), $productModel2->getWrappedObject()], [12, 14]);
+        $productModelDescendantsAndAncestorsIndexer->removeFromProductModelIds([12, 14])->shouldBeCalled();
+
+        $this->fromProductModelsRemoveEvent($event);
+    }
+
+    function it_does_not_remove_product_model_from_index_if_empty(
+        ProductModelDescendantsAndAncestorsIndexer $productModelDescendantsAndAncestorsIndexer
+    ) {
+        $event = new RemoveEvent([], null);
+        $productModelDescendantsAndAncestorsIndexer->removeFromProductModelIds(Argument::cetera())->shouldNotBeCalled();
+
+        $this->fromProductModelRemoveEvent($event);
     }
 }
