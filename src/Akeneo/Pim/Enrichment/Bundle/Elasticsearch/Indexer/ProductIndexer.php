@@ -12,7 +12,7 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 
 /**
  * Indexer responsible for the indexing of products entities. Each product should be normalized in the right format
- * prior to be indexed in the both product and product and product model indexes elasticsearch.
+ * prior to be indexed in the ES product and product model index.
  *
  * @author    Julien Janvier <j.janvier@gmail.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -78,21 +78,21 @@ class ProductIndexer implements ProductIndexerInterface
     }
 
     /**
-     * Removes the product from the product index and the product model index.
+     * Removes the product from the product and product model index.
      *
      * {@inheritdoc}
      */
-    public function removeFromProductId(int $productId, array $options = []): void
+    public function removeFromProductId(int $productId): void
     {
         $this->productAndProductModelClient->delete(self::PRODUCT_IDENTIFIER_PREFIX . $productId);
     }
 
     /**
-     * Removes the products from the product index and the product model index.
+     * Removes the products from the product and product model index.
      *
      * {@inheritdoc}
      */
-    public function removeFromProductIds(array $productIds, array $options = []): void
+    public function removeFromProductIds(array $productIds): void
     {
         $this->productAndProductModelClient->bulkDelete(array_map(
             function ($productId) {

@@ -31,13 +31,11 @@ interface ProductIndexerInterface
 
     /**
      * @param int   $productId
-     * @param array $options
      */
-    public function removeFromProductId(int $productId, array $options = []): void;
+    public function removeFromProductId(int $productId): void;
 
     /**
-     * @param int[] $productIdentifiers
-     * @param array $options
+     * @param int[] $productIds
      */
-    public function removeFromProductIds(array $productIdentifiers, array $options = []): void;
+    public function removeFromProductIds(array $productIds): void;
 }
