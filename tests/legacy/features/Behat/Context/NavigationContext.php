@@ -383,8 +383,24 @@ class NavigationContext extends PimContext implements PageObjectAware
      */
     public function iRefreshCurrentPage()
     {
+        $this->writeJSCoverageReport();
         $this->getMainContext()->getSession()->reload();
         $this->wait();
+    }
+
+    public function writeJSCoverageReport()
+    {
+        if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
+            try {
+                $script = 'return window.coverage;';
+                $coverage = $this->getSession()->evaluateScript($script);
+                $path = sprintf('%s/%s.json', './.coverage', uniqid());
+                $fs = new \Symfony\Component\Filesystem\Filesystem();
+                $fs->dumpFile($path, json_encode($coverage));
+            } catch (\Exception $e) {
+                var_dump($e->getMessage());
+            }
+        }
     }
 
     /**

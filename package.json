@@ -9,6 +9,8 @@
     "styles": "frontend/build/compile-less.js"
   },
   "scripts": {
+    "instrument-report": "./node_modules/.bin/nyc report --reporter=html --exclude=tests --exclude-after-remap=false",
+    "instrument-merge": "./node_modules/.bin/nyc merge .coverage .nyc_output/coverage.json && sed -i 's/\\/srv\\/pim\\///g' .nyc_output/coverage.json",
     "requirements": "node $npm_package_config_source/frontend/build/check-requirements.js",
     "sync": "NODE_PATH=node_modules node $npm_package_config_check --source=$npm_package_config_source",
     "webpack": "yarn requirements && NODE_PATH=node_modules webpack --config $npm_package_config_source/webpack.config.js --env=prod",
