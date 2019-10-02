@@ -54,21 +54,21 @@ class AttributeGroupCompletenessCalculator implements ProjectItemCalculatorInter
         ChannelInterface $channel,
         LocaleInterface $locale
     ) {
-        $requiredAttributes = $this->familyRequirementRepository->findRequiredAttributes(
+        $requiredAttributesPerGroup = $this->familyRequirementRepository->findRequiredAttributes(
             $product,
             $channel,
             $locale
         );
-        $filledAttributes = $this->findFilledAttributes($product, $channel, $locale);
+        $filledAttributesPerGroup = $this->findFilledAttributes($product, $channel, $locale);
 
         $result = [];
-        foreach ($requiredAttributes as $attributeGroupId => $attributes) {
-            if (!isset($filledAttributes[$attributeGroupId])) {
-                $filledAttributes[$attributeGroupId] = [];
+        foreach ($requiredAttributesPerGroup as $attributeGroupId => $requiredAttributes) {
+            if (!isset($filledAttributesPerGroup[$attributeGroupId])) {
+                $filledAttributesPerGroup[$attributeGroupId] = [];
             }
 
-            $intersection = array_intersect($attributes, $filledAttributes[$attributeGroupId]);
-            if ($intersection === $attributes) {
+            $intersection = array_intersect($requiredAttributes, $filledAttributesPerGroup[$attributeGroupId]);
+            if ($intersection === $requiredAttributes) {
                 $result[] = new AttributeGroupCompleteness($attributeGroupId, 0, 1);
             } elseif (count($intersection) > 0) {
                 $result[] = new AttributeGroupCompleteness($attributeGroupId, 1, 0);
