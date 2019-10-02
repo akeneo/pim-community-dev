@@ -1,9 +1,8 @@
 import * as React from 'react';
-import {PropsWithChildren} from 'react';
 
 import {PimView} from '../../../infrastructure/component/pim-view';
 
-type Props = PropsWithChildren<{
+type Props = React.PropsWithChildren<{
     breadcrumb?: any;
     actionButtons?: any[];
     title?: any

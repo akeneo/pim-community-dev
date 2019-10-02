@@ -28,7 +28,7 @@ class AssetsInstaller
 
     public function installAssets(bool $shouldSymlink): void
     {
-        $originDir = __DIR__ . '/../../../front';
+        $originDir = __DIR__ . '/../../../front/src';
         $targetDir = $this->projectDir . '/public/bundles/akeneoapps-react';
         if ($shouldSymlink) {
             $this->relativeSymlinkWithFallback($originDir, $targetDir);

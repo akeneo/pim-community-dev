@@ -16,7 +16,7 @@ export class PimView extends React.Component<PimViewProps, {}> {
     this.el = React.createRef();
   }
 
-  componentDidMount() {
+  public componentDidMount() {
     if (null !== this.el.current) {
       setTimeout(() => {
         viewBuilder.build(this.props.viewName).then((view: any) => {
@@ -26,7 +26,7 @@ export class PimView extends React.Component<PimViewProps, {}> {
     }
   }
 
-  render() {
+  public render() {
     return <div className={this.props.className} ref={this.el} />;
   }
 }

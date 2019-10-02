@@ -1,0 +1,29 @@
+{
+    "name": "@akeneo-pim-ce/apps",
+    "version": "0.0.0",
+    "license": "OSL-3.0",
+    "main": "src/index.ts",
+    "scripts": {
+        "tslint": "tslint --config tslint.json src/**/*.{ts,tsx}",
+        "prettier": "prettier --config .prettierrc.json src/**/*.{ts,tsx}",
+        "jest": "jest --config jest.config.js"
+    },
+    "devDependencies": {
+        "@types/jest": "^24",
+        "@types/react-test-renderer": "^16",
+        "enzyme": "^3",
+        "jest": "^24",
+        "prettier": "^1",
+        "react-test-renderer": "^16",
+        "ts-jest": "^24",
+        "tslint": "^5"
+    },
+    "dependencies": {
+        "@types/react": "^16",
+        "@types/react-dom": "^16",
+        "react": "^16",
+        "react-dom": "^16",
+        "typescript": "^3"
+    },
+    "private": true
+}
