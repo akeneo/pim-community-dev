@@ -67,8 +67,8 @@ class ProductIndexer implements ProductIndexerInterface
                 $productIdentifiersChunk
             );
             $normalizedProductProjections = array_map(
-                function (ElasticsearchProductProjection $indexableProduct) {
-                    return $indexableProduct->toArray();
+                function (ElasticsearchProductProjection $elasticsearchProductProjection) {
+                    return $elasticsearchProductProjection->toArray();
                 },
                 $elasticsearchProductProjections
             );

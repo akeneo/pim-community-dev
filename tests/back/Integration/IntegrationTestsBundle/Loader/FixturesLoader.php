@@ -412,12 +412,9 @@ class FixturesLoader implements FixturesLoaderInterface
      */
     protected function indexProducts(): void
     {
-        $this->productIndexer->indexFromProductIdentifiers(
-            array_column(
-                $this->dbConnection->fetchAll('SELECT identifier FROM pim_catalog_product'),
-                'identifier'
-            )
-        );
+        $query = 'SELECT identifier FROM pim_catalog_product';
+        $productIdentifiers = $this->dbConnection->executeQuery($query)->fetchAll(\PDO::FETCH_COLUMN, 0);
+        $this->productIndexer->indexFromProductIdentifiers($productIdentifiers);
     }
 
     /**
@@ -425,12 +422,9 @@ class FixturesLoader implements FixturesLoaderInterface
      */
     protected function indexProductModels(): void
     {
-        $this->productModelIndexer->indexFromProductModelCodes(
-            array_column(
-                $this->dbConnection->fetchAll('SELECT code FROM pim_catalog_product_model'),
-                'code'
-            )
-        );
+        $query = 'SELECT code FROM pim_catalog_product_model';
+        $productModelCodes = $this->dbConnection->executeQuery($query)->fetchAll(\PDO::FETCH_COLUMN, 0);
+        $this->productModelIndexer->indexFromProductModelCodes($productModelCodes);
     }
 
     protected function resetElasticsearchIndex(): void

@@ -2,11 +2,11 @@
 
 namespace Specification\Akeneo\Pim\Structure\Component\Normalizer\Indexing;
 
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
 use Akeneo\Pim\Structure\Component\Normalizer\Indexing\FamilyNormalizer;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPrice;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -30,11 +30,11 @@ class FamilyNormalizerSpec extends ObjectBehavior
     function it_supports_families_in_indexing_format(FamilyInterface $family, ProductPrice $price)
     {
         $this->supportsNormalization($family, 'standard')->shouldReturn(false);
-        $this->supportsNormalization($family, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+        $this->supportsNormalization($family, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(true);
 
         $this->supportsNormalization($price, 'standard')->shouldReturn(false);
-        $this->supportsNormalization($price, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+        $this->supportsNormalization($price, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(false);
     }
 

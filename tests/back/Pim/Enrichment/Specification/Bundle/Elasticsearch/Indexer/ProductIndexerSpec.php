@@ -185,7 +185,8 @@ class ProductIndexerSpec extends ObjectBehavior
             null,
             [],
             [],
-            null,
+            [],
+            [],
             [],
             [],
             []

@@ -2,20 +2,20 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value;
 
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ReferenceDataNormalizer;
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ReferenceDataNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataValue;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
+use PhpSpec\ObjectBehavior;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ReferenceDataNormalizerSpec extends ObjectBehavior
 {
-    function let(IdentifiableObjectRepositoryInterface $attributeRepository)
+    function let(GetAttributes $getAttributes)
     {
-        $this->beConstructedWith($attributeRepository);
+        $this->beConstructedWith($getAttributes);
     }
 
     function it_is_initializable()
@@ -31,46 +31,67 @@ class ReferenceDataNormalizerSpec extends ObjectBehavior
     function it_support_reference_data_product_value(
         ReferenceDataValue $referenceDataProductValue,
         ValueInterface $textValue,
-        AttributeInterface $referenceData,
-        AttributeInterface $textAttribute,
-        $attributeRepository
+        GetAttributes $getAttributes
     ) {
         $referenceDataProductValue->getAttributeCode()->willReturn('my_referencedata_attribute');
         $textValue->getAttributeCode()->willReturn('my_text_attribute');
 
-        $attributeRepository->findOneByIdentifier('my_referencedata_attribute')->willReturn($referenceData);
-        $attributeRepository->findOneByIdentifier('my_text_attribute')->willReturn($textAttribute);
+        $getAttributes->forCode('my_referencedata_attribute')->willReturn(new Attribute(
+            'my_referencedata_attribute',
+            'pim_reference_data_simpleselect',
+            [],
+            false,
+            false,
+            null,
+            true,
+            'reference_data_option'
+        ));
+        $getAttributes->forCode('my_text_attribute')->willReturn(new Attribute(
+            'my_text_attribute',
+            'pim_catalog_text',
+            [],
+            false,
+            false,
+            null,
+            true,
+            'text'
+        ));
 
-        $this->supportsNormalization(new \stdClass(), ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+        $this->supportsNormalization(new \stdClass(), ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(false);
         $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
 
-        $this->supportsNormalization($textValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+        $this->supportsNormalization($textValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(false);
         $this->supportsNormalization($referenceDataProductValue, 'whatever')->shouldReturn(false);
 
-        $this->supportsNormalization($referenceDataProductValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(true);
+        $this->supportsNormalization($referenceDataProductValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(true);
     }
 
     function it_normalize_an_empty_reference_data_product_value(
         ReferenceDataValue $referenceDataValue,
-        AttributeInterface $referenceData,
-        $attributeRepository
+        GetAttributes $getAttributes
     ) {
-        $referenceDataValue->getAttributeCode()->willReturn('reference_data_option');
-        $referenceData->getBackendType()->willReturn('reference_data_option');
-        $attributeRepository->findOneByIdentifier('reference_data_option')->willReturn($referenceData);
+        $referenceDataValue->getAttributeCode()->willReturn('my_referencedata_attribute');
+        $getAttributes->forCode('my_referencedata_attribute')->willReturn(new Attribute(
+            'my_referencedata_attribute',
+            'pim_reference_data_simpleselect',
+            [],
+            false,
+            false,
+            null,
+            true,
+            'reference_data_option'
+        ));
 
         $referenceDataValue->getLocaleCode()->willReturn(null);
         $referenceDataValue->getScopeCode()->willReturn(null);
 
-        $referenceData->getCode()->willReturn('color');
-
         $referenceDataValue->getData()->willReturn(null);
 
-        $this->normalize($referenceDataValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
+        $this->normalize($referenceDataValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
-                'color-reference_data_option' => [
+                'my_referencedata_attribute-reference_data_option' => [
                     '<all_channels>' => [
                         '<all_locales>' => null,
                     ],
@@ -81,23 +102,28 @@ class ReferenceDataNormalizerSpec extends ObjectBehavior
 
     function it_normalize_a_reference_data_product_value_with_no_locale_and_no_channel(
         ReferenceDataValue $referenceDataValue,
-        AttributeInterface $referenceData,
-        $attributeRepository
+        GetAttributes $getAttributes
     ) {
-        $referenceDataValue->getAttributeCode()->willReturn('reference_data_option');
-        $referenceData->getBackendType()->willReturn('reference_data_option');
-        $attributeRepository->findOneByIdentifier('reference_data_option')->willReturn($referenceData);
+        $referenceDataValue->getAttributeCode()->willReturn('my_referencedata_attribute');
+        $getAttributes->forCode('my_referencedata_attribute')->willReturn(new Attribute(
+            'my_referencedata_attribute',
+            'pim_reference_data_simpleselect',
+            [],
+            false,
+            false,
+            null,
+            true,
+            'reference_data_option'
+        ));
 
         $referenceDataValue->getLocaleCode()->willReturn(null);
         $referenceDataValue->getScopeCode()->willReturn(null);
 
-        $referenceData->getCode()->willReturn('color');
-
         $referenceDataValue->getData()->willReturn('red');
 
-        $this->normalize($referenceDataValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
+        $this->normalize($referenceDataValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
-                'color-reference_data_option' => [
+                'my_referencedata_attribute-reference_data_option' => [
                     '<all_channels>' => [
                         '<all_locales>' => 'red',
                     ],
@@ -108,23 +134,28 @@ class ReferenceDataNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_an_option_product_value_with_locale(
         ReferenceDataValue $referenceDataValue,
-        AttributeInterface $referenceData,
-        $attributeRepository
+        GetAttributes $getAttributes
     ){
-        $referenceDataValue->getAttributeCode()->willReturn('reference_data_option');
-        $referenceData->getBackendType()->willReturn('reference_data_option');
-        $attributeRepository->findOneByIdentifier('reference_data_option')->willReturn($referenceData);
+        $referenceDataValue->getAttributeCode()->willReturn('my_referencedata_attribute');
+        $getAttributes->forCode('my_referencedata_attribute')->willReturn(new Attribute(
+            'my_referencedata_attribute',
+            'pim_reference_data_simpleselect',
+            [],
+            false,
+            false,
+            null,
+            true,
+            'reference_data_option'
+        ));
 
         $referenceDataValue->getLocaleCode()->willReturn('en_US');
         $referenceDataValue->getScopeCode()->willReturn(null);
 
-        $referenceData->getCode()->willReturn('color');
-
         $referenceDataValue->getData()->willReturn('red');
 
-        $this->normalize($referenceDataValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
+        $this->normalize($referenceDataValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
-                'color-reference_data_option' => [
+                'my_referencedata_attribute-reference_data_option' => [
                     '<all_channels>' => [
                         'en_US' => 'red',
                     ],
@@ -135,23 +166,28 @@ class ReferenceDataNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_reference_data_product_value_with_channel(
         ReferenceDataValue $referenceDataValue,
-        AttributeInterface $referenceData,
-        $attributeRepository
+        GetAttributes $getAttributes
     ){
-        $referenceDataValue->getAttributeCode()->willReturn('reference_data_option');
-        $referenceData->getBackendType()->willReturn('reference_data_option');
-        $attributeRepository->findOneByIdentifier('reference_data_option')->willReturn($referenceData);
+        $referenceDataValue->getAttributeCode()->willReturn('my_referencedata_attribute');
+        $getAttributes->forCode('my_referencedata_attribute')->willReturn(new Attribute(
+            'my_referencedata_attribute',
+            'pim_reference_data_simpleselect',
+            [],
+            false,
+            false,
+            null,
+            true,
+            'reference_data_option'
+        ));
 
         $referenceDataValue->getLocaleCode()->willReturn(null);
         $referenceDataValue->getScopeCode()->willReturn('ecommerce');
 
-        $referenceData->getCode()->willReturn('color');
-
         $referenceDataValue->getData()->willReturn('red');
 
-        $this->normalize($referenceDataValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
+        $this->normalize($referenceDataValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
-                'color-reference_data_option' => [
+                'my_referencedata_attribute-reference_data_option' => [
                     'ecommerce' => [
                         '<all_locales>' => 'red',
                     ],
@@ -162,23 +198,28 @@ class ReferenceDataNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_reference_data_product_value_with_locale_and_channel(
         ReferenceDataValue $referenceDataValue,
-        AttributeInterface $referenceData,
-        $attributeRepository
+        GetAttributes $getAttributes
     ) {
-        $referenceDataValue->getAttributeCode()->willReturn('reference_data_option');
-        $referenceData->getBackendType()->willReturn('reference_data_option');
-        $attributeRepository->findOneByIdentifier('reference_data_option')->willReturn($referenceData);
+        $referenceDataValue->getAttributeCode()->willReturn('my_referencedata_attribute');
+        $getAttributes->forCode('my_referencedata_attribute')->willReturn(new Attribute(
+            'my_referencedata_attribute',
+            'pim_reference_data_simpleselect',
+            [],
+            false,
+            false,
+            null,
+            true,
+            'reference_data_option'
+        ));
 
         $referenceDataValue->getLocaleCode()->willReturn('en_US');
         $referenceDataValue->getScopeCode()->willReturn('ecommerce');
 
-        $referenceData->getCode()->willReturn('color');
-
         $referenceDataValue->getData()->willReturn('red');
 
-        $this->normalize($referenceDataValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
+        $this->normalize($referenceDataValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
-                'color-reference_data_option' => [
+                'my_referencedata_attribute-reference_data_option' => [
                     'ecommerce' => [
                         'en_US' => 'red',
                     ],

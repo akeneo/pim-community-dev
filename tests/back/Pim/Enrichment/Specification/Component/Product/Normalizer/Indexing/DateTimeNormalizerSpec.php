@@ -2,9 +2,9 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing;
 
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\DateTimeNormalizer;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class DateTimeNormalizerSpec extends ObjectBehavior
@@ -23,20 +23,20 @@ class DateTimeNormalizerSpec extends ObjectBehavior
     {
         $date = new \DateTime('now', new \DateTimeZone('UTC'));
         $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
-        $this->supportsNormalization(new \stdClass(), ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+        $this->supportsNormalization(new \stdClass(), ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(false);
 
         $this->supportsNormalization($date, 'whatever')->shouldReturn(false);
-        $this->supportsNormalization($date, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+        $this->supportsNormalization($date, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(true);
     }
 
     function it_normalizes_product_assocations($standardNormalizer)
     {
         $date = new \DateTime('now', new \DateTimeZone('UTC'));
-        $standardNormalizer->normalize($date, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, ['context'])
+        $standardNormalizer->normalize($date, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, ['context'])
             ->willReturn('date');
-        $this->normalize($date, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, ['context'])
+        $this->normalize($date, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, ['context'])
             ->shouldReturn('date');
     }
 }

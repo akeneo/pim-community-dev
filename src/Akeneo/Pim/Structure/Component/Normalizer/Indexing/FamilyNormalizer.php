@@ -3,7 +3,7 @@
 namespace Akeneo\Pim\Structure\Component\Normalizer\Indexing;
 
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -62,7 +62,7 @@ class FamilyNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return (
-                ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX === $format
+                ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX === $format
             ) && $data instanceof FamilyInterface;
     }
 }
