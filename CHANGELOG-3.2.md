@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.10 (2019-10-02)
+
 ## Bug fixes
 
 - PIM-8752: Fix reference entities filter box popup display
