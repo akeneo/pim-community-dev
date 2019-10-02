@@ -184,11 +184,11 @@ jobs:
       - run:
             name: Install database
             command: APP_ENV=behat make database
-      - run:
-            name: Non critical Behat
-            command: |
-                TESTFILES=$(docker-compose run --rm -T php vendor/bin/behat --list-scenarios -p legacy -s $TESTSUITE | circleci tests split --split-by=timings)
-                .circleci/run_behat.sh $TESTSUITE $TESTFILES
+    #   - run:
+    #         name: Non critical Behat
+    #         command: |
+    #             TESTFILES=$(docker-compose run --rm -T php vendor/bin/behat --list-scenarios -p legacy -s $TESTSUITE | circleci tests split --split-by=timings)
+    #             .circleci/run_behat.sh $TESTSUITE $TESTFILES
       - run:
             name: Critical Behat
             command: |
@@ -241,7 +241,7 @@ jobs:
           command: tar -cvf coverage.tar ./coverage/
       - run:
           name: Deploy coverage report
-          command: scp akeneo@coverage.core.akeneo.com:coverage /var/www/html/coverage
+          command: scp akeneo@coverage.core.akeneo.com:coverage /var/www/html/frontend
       - store_artifacts:
           path: coverage.tar
           destination: coverage_report
@@ -286,19 +286,19 @@ workflows:
           - build_dev:
                 requires:
                     - wait_for_user_approval
-          - back_static_and_acceptance:
-                requires:
-                    - build_dev
-          - front_static_acceptance_and_integration:
-                requires:
-                    - build_dev
-          - back_phpunit:
-                requires:
-                    - back_static_and_acceptance
-                    - front_static_acceptance_and_integration
+        #   - back_static_and_acceptance:
+        #         requires:
+        #             - build_dev
+        #   - front_static_acceptance_and_integration:
+        #         requires:
+        #             - build_dev
+        #   - back_phpunit:
+        #         requires:
+        #             - back_static_and_acceptance
+        #             - front_static_acceptance_and_integration
           - back_behat_legacy:
                 requires:
-                    - back_phpunit
+                    - build_dev
           - collect_js_coverage:
                 requires:
                     - back_behat_legacy
