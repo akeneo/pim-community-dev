@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-8331: Fix display of category tree in the product grid when user does not have access to its default tree
+
 # 3.0.44 (2019-10-02)
 
 # 3.0.43 (2019-09-24)
