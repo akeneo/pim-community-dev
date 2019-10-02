@@ -4,6 +4,8 @@
 
 - PIM-8769: Fix 'SKU' filter disappearing from the filter options
 
+# 3.0.44 (2019-10-02)
+
 # 3.0.43 (2019-09-24)
 
 ## Bug fixes
