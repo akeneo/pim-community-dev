@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Command;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\FetchMode;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
@@ -26,39 +24,30 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class IndexProductCommand extends Command
 {
-    protected static $defaultName = 'pim:product:index';
+    private const BATCH_SIZE = 1000;
 
-    private const BULK_SIZE = 100;
     private const ERROR_CODE_USAGE = 1;
 
-    /** @var ProductRepositoryInterface */
-    private $productRepository;
+    protected static $defaultName = 'pim:product:index';
 
-    /** @var ProductIndexerInterface */
-    private $productIndexer;
-
-    /** @var ObjectManager */
-    private $objectManager;
+    /** @var ProductAndAncestorsIndexer */
+    private $productAndAncestorsIndexer;
 
     /** @var Client */
     private $productAndProductModelClient;
 
-    /** @var string */
-    private $productAndProductModelIndexName;
+    /** @var Connection */
+    private $connection;
 
     public function __construct(
-        ProductRepositoryInterface $productRepository,
-        ProductIndexerInterface $productIndexer,
-        ObjectManager $objectManager,
+        ProductAndAncestorsIndexer $productAndAncestorsIndexer,
         Client $productAndProductModelClient,
-        string $productAndProductModelIndexName
+        Connection $connection
     ) {
         parent::__construct();
-        $this->productRepository = $productRepository;
-        $this->productIndexer = $productIndexer;
-        $this->objectManager = $objectManager;
+        $this->productAndAncestorsIndexer = $productAndAncestorsIndexer;
         $this->productAndProductModelClient = $productAndProductModelClient;
-        $this->productAndProductModelIndexName = $productAndProductModelIndexName;
+        $this->connection = $connection;
     }
 
     /**
@@ -75,7 +64,7 @@ class IndexProductCommand extends Command
             )
             ->addOption(
                 'all',
-                true,
+                'a',
                 InputOption::VALUE_NONE,
                 'Index all existing products into Elasticsearch'
             )
@@ -87,140 +76,122 @@ class IndexProductCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->checkIndexesExist();
+        $this->checkIndexExists();
 
-        $isIndexAll = $input->getOption('all');
-        $productIdentifiers = $input->getArgument('identifiers');
-
-        if ($isIndexAll) {
-            $totalIndexedProducts = $this->indexAll($output);
-        } elseif (0 < count($productIdentifiers)) {
-            $totalIndexedProducts = $this->index($output, $productIdentifiers);
+        if (true === $input->getOption('all')) {
+            $chunkedProductIdentifiers = $this->getAllProductIdentifiers();
+            $productCount = $this->getTotalNumberOfProducts();
+        } elseif (!empty($input->getArgument('identifiers'))) {
+            $requestedIdentifiers = $input->getArgument('identifiers');
+            $existingIdentifiers = $this->getExistingProductIdentifiers($requestedIdentifiers);
+            $nonExistingIdentifiers = array_diff($requestedIdentifiers, $existingIdentifiers);
+            if (!empty($nonExistingIdentifiers)) {
+                $output->writeln(
+                    sprintf(
+                        '<error>Some products were not found for the given identifiers: %s</error>',
+                        implode(', ', $nonExistingIdentifiers)
+                    )
+                );
+            }
+            $chunkedProductIdentifiers = array_chunk($existingIdentifiers, self::BATCH_SIZE);
+            $productCount = count($existingIdentifiers);
         } else {
-            $output->writeln('<error>Please specify a list of product identifiers to index or use the flag --all to index all products</error>');
+            $output->writeln(
+                '<error>Please specify a list of product identifiers to index or use the flag --all to index all products</error>'
+            );
 
             return self::ERROR_CODE_USAGE;
         }
 
-        $message = sprintf('<info>%d products indexed</info>', $totalIndexedProducts);
+        $numberOfIndexedProducts = $this->doIndex($chunkedProductIdentifiers, new ProgressBar($output, $productCount));
 
-        $output->writeln($message);
+        $output->writeln('');
+        $output->writeln(sprintf('<info>%d products indexed</info>', $numberOfIndexedProducts));
+
+        return 0;
     }
 
-    /**
-     * Indexes all the products in elasticsearch.
-     *
-     * @param OutputInterface $output
-     *
-     * @return int
-     */
-    private function indexAll(OutputInterface $output): int
+    private function doIndex(iterable $chunkedProductIdentifiers, ProgressBar $progressBar): int
     {
-        $totalElements = (int) $this->productRepository->countAll();
-
-        $output->writeln(sprintf('<info>%s products to index</info>', $totalElements));
-
-        $lastProduct = null;
-        $progressBar = new ProgressBar($output, $totalElements);
+        $indexedProductCount = 0;
 
         $progressBar->start();
-        while (!empty($products = $this->productRepository->searchAfter($lastProduct, self::BULK_SIZE))) {
-            $identifiers = array_map(function (ProductInterface $product) {
-                return $product->getIdentifier();
-            }, $products);
-            $this->productIndexer->indexFromProductIdentifiers($identifiers, ['index_refresh' => Refresh::disable()]);
-            $this->objectManager->clear();
-
-            $lastProduct = end($products);
-            $progressBar->advance(count($products));
-        }
-
-        $progressBar->finish();
-
-        return $totalElements;
-    }
-
-    /**
-     * Indexes the given list of product identifiers in Elasticsearch.
-     *
-     * @param OutputInterface $output
-     * @param array           $identifiers
-     *
-     * @return int
-     */
-    private function index(OutputInterface $output, array $identifiers): int
-    {
-        $products = $this->productRepository->findBy(['identifier' => $identifiers]);
-        $productsCount = count($products);
-
-        if ($productsCount !== count($identifiers)) {
-            $identifiersFound = [];
-            foreach ($products as $product) {
-                $identifiersFound[] = $product->getIdentifier();
-            }
-
-            $notFoundIdentifiers = array_diff($identifiers, $identifiersFound);
-            $output->writeln(sprintf(
-                '<error>Some products were not found for the given identifiers: %s</error>',
-                implode(', ', $notFoundIdentifiers)
-            ));
-        }
-
-        $output->writeln(sprintf('<info>%d products found for indexing</info>', $productsCount));
-
-        $i = 0;
-        $identifiers = [];
-        $totalProductsIndexed = 0;
-        $progressBar = new ProgressBar($output, $productsCount);
-
-        $progressBar->start();
-        foreach ($products as $product) {
-            $identifiers[] = $product->getIdentifier();
-
-            $i++;
-
-            if (0 === $i % self::BULK_SIZE) {
-                $this->productIndexer->indexFromProductIdentifiers(
-                    $identifiers,
-                    ['index_refresh' => Refresh::disable()]
-                );
-
-                $this->objectManager->clear();
-
-                $progressBar->advance(count($identifiers));
-
-                $identifiers = [];
-
-                $totalProductsIndexed += self::BULK_SIZE;
-            }
-        }
-
-        if (!empty($identifiers)) {
-            $this->productIndexer->indexFromProductIdentifiers(
-                $identifiers,
-                ['index_refresh' => Refresh::disable()]
-            );
-            $this->objectManager->clear();
-
-            $progressBar->advance(count($identifiers));
-
-            $totalProductsIndexed += count($identifiers);
+        foreach ($chunkedProductIdentifiers as $productIdentifiers) {
+            $this->productAndAncestorsIndexer->indexFromProductIdentifiers($productIdentifiers);
+            $indexedProductCount += count($productIdentifiers);
+            $progressBar->advance(count($productIdentifiers));
         }
         $progressBar->finish();
 
-        return $totalProductsIndexed;
+        return $indexedProductCount;
+    }
+
+    private function getAllProductIdentifiers(): iterable
+    {
+        $formerId = 0;
+        $sql = <<< SQL
+SELECT id, identifier
+FROM pim_catalog_product
+WHERE id > :formerId
+ORDER BY id ASC
+LIMIT :limit
+SQL;
+        while (true) {
+            $rows = $this->connection->executeQuery(
+                $sql,
+                [
+                    'formerId' => $formerId,
+                    'limit' => self::BATCH_SIZE,
+                ],
+                [
+                    'formerId' => \PDO::PARAM_INT,
+                    'limit' => \PDO::PARAM_INT,
+                ]
+            )->fetchAll();
+
+            if (empty($rows)) {
+                return;
+            }
+
+            $formerId = (int)end($rows)['id'];
+            yield array_column($rows, 'identifier');
+        }
+    }
+
+    private function getTotalNumberOfProducts(): int
+    {
+        return (int)$this->connection->executeQuery('SELECT COUNT(0) FROM pim_catalog_product')->fetchColumn(0);
+    }
+
+    private function getExistingProductIdentifiers(array $identifiers): array
+    {
+        $sql = <<<SQL
+SELECT identifier
+FROM pim_catalog_product
+WHERE identifier IN (:identifiers);
+SQL;
+
+        return $this->connection->executeQuery(
+            $sql,
+            [
+                'identifiers' => $identifiers,
+            ],
+            [
+                'identifiers' => Connection::PARAM_STR_ARRAY,
+            ]
+        )->fetchAll(FetchMode::COLUMN, 0);
     }
 
     /**
      * @throws \RuntimeException
      */
-    private function checkIndexesExist()
+    private function checkIndexExists(): void
     {
         if (!$this->productAndProductModelClient->hasIndex()) {
             throw new \RuntimeException(
                 sprintf(
                     'The index "%s" does not exist in Elasticsearch.',
-                    $this->productAndProductModelIndexName
+                    $this->productAndProductModelClient->getIndexName()
                 )
             );
         }
