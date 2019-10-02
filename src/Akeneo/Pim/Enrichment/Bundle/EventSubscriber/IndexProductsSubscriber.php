@@ -27,18 +27,9 @@ class IndexProductsSubscriber implements EventSubscriberInterface
     /** @var ProductIndexerInterface */
     private $productIndexer;
 
-    /** @var ProductAndAncestorsIndexer */
-    private $productAndAncestorsIndexer;
-
-    /**
-     * @param ProductIndexerInterface $productIndexer
-     */
-    public function __construct(
-        ProductIndexerInterface $productIndexer,
-        ProductAndAncestorsIndexer $productAndAncestorsIndexer
-    ) {
+    public function __construct(ProductIndexerInterface $productIndexer)
+    {
         $this->productIndexer = $productIndexer;
-        $this->productAndAncestorsIndexer = $productAndAncestorsIndexer;
     }
 
     /**
@@ -47,55 +38,8 @@ class IndexProductsSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents() : array
     {
         return [
-            StorageEvents::POST_SAVE     => ['indexProduct', 300],
-            StorageEvents::POST_SAVE_ALL => ['bulkIndexProducts', 300],
             StorageEvents::POST_REMOVE   => ['deleteProduct', 300],
         ];
-    }
-
-    /**
-     * Index one single product.
-     *
-     * @param GenericEvent $event
-     */
-    public function indexProduct(GenericEvent $event) : void
-    {
-        $product = $event->getSubject();
-        if (!$product instanceof ProductInterface) {
-            return;
-        }
-
-        if (!$event->hasArgument('unitary') || false === $event->getArgument('unitary')) {
-            return;
-        }
-
-        $this->productAndAncestorsIndexer->indexFromProductIdentifiers([$product->getIdentifier()]);
-    }
-
-    /**
-     * Index several products at a time.
-     *
-     * @param GenericEvent $event
-     */
-    public function bulkIndexProducts(GenericEvent $event) : void
-    {
-        $products = $event->getSubject();
-        if (!is_array($products)) {
-            return;
-        }
-
-        $identifiers = [];
-        foreach ($products as $product) {
-            if ($product instanceof ProductInterface) {
-                $identifiers[] = $product->getIdentifier();
-            }
-        }
-
-        if (empty($identifiers)) {
-            return;
-        }
-
-        $this->productAndAncestorsIndexer->indexFromProductIdentifiers($identifiers);
     }
 
     /**
