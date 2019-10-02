@@ -217,8 +217,7 @@ jobs:
 
   collect_js_coverage:
     machine:
-        enabled: true
-        docker_layer_caching: true
+      image: ubuntu-1604:201903-01
     steps:
       - attach_workspace:
           at: ~/
@@ -226,11 +225,8 @@ jobs:
           fingerprints:
             - "3b:a2:61:e2:63:33:69:5e:29:9b:c4:92:e9:77:71:c5"
       - run:
-          name: Change owner on project dir in order to archive the project into the workspace
+          name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
           command: sudo chown -R 1000:1000 ../project
-      - run:
-          name: Pull the latest Docker images
-          command: docker-compose pull
       - run:
           name: Merge JS code coverage reports and output HTML
           command: |
@@ -241,7 +237,7 @@ jobs:
           command: tar -cvf coverage.tar ./coverage/
       - run:
           name: Deploy coverage report
-          command: scp akeneo@coverage.core.akeneo.com:coverage /var/www/html/frontend
+          command: scp -P 2202 -r ./coverage/* akeneo@coverage.core.akeneo.com:/var/www/html/frontend/
       - store_artifacts:
           path: coverage.tar
           destination: coverage_report
