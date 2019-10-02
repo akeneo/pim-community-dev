@@ -136,7 +136,6 @@ pim_import_export:
         export: エクスポート
         mass_edit: 一括編集
         quick_export: クイック エクスポート
-        compute_product_models_descendants: 製品モデルの子孫を計算します。
       header.view_all: 全て表示
   batch_status:
     1: 完了

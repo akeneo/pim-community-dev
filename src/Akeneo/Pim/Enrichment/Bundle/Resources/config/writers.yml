@@ -175,6 +175,3 @@ services:
             - '@pim_versioning.manager.version'
             - '@pim_catalog.saver.product'
             - '@pim_catalog.saver.product_model'
-            - '@security.token_storage'
-            - '@akeneo_batch_queue.launcher.queue_job_launcher'
-            - '@akeneo_batch.job.job_instance_repository'

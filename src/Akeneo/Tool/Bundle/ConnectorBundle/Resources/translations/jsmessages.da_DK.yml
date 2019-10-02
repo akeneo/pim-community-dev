@@ -7,7 +7,6 @@ batch_jobs:
     compute_data_related_to_family_root_product_models: Beregn rod produkt model data
     compute_data_related_to_family_sub_product_models: Beregn under produkt model data
     compute_data_related_to_family_products: Beregn produkt model data
-    compute_product_models_descendants: Beregne underliggende produkt modeller
     compute_family_variant_structure_changes: Beregner familie variant struktur ændringer
     compute_completeness_of_products_family: Beregner fuldstændigheden af produkter familie
   csv_product_export:

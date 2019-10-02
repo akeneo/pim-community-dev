@@ -6,7 +6,7 @@
 
 # Technical Improvements
 
-- TIP-1185: Use a single index "product_and_product_model_index" to search on product and product models, instead dedicated product\product model indexes
+- TIP-1185: Use a single index "product_and_product_model_index" to search on product and product models, instead dedicated product/product model indexes
 
 ## BC breaks
 

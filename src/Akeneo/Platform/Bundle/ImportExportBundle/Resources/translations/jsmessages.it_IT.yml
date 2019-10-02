@@ -143,7 +143,6 @@ pim_import_export:
         export: Esportazioni
         mass_edit: Azione di massa modificata
         quick_export: Esportazione rapida
-        compute_product_models_descendants: Calcola modelli di prodotto discendenti
         compute_family_variant_structure_changes: Calcola le modifiche della struttura della famiglia variante
         compute_completeness_of_products_family: Calcola la completezza della famiglia di prodotti
         mass_delete: Eliminazione in massa prodotti
