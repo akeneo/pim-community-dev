@@ -15,7 +15,7 @@ jobs:
                 docker save -o php-pim-image.tar akeneo/pim-dev/php:7.3
       - run:
           name: Setup tests results folder and log folder
-          command: mkdir -p var/tests/phpunit var/tests/behat var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.composer
+          command: mkdir -p var/tests/phpunit var/tests/behat var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.composer .nyc_output .coverage
       - run:
           name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
           command: sudo chown -R 1000:1000 ../project
@@ -210,6 +210,37 @@ jobs:
           path: var/tests/screenshots
       - store_artifacts:
           path: var/logs
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/.coverage
+
+  collect_js_coverage:
+    machine:
+        enabled: true
+        docker_layer_caching: true
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Change owner on project dir in order to archive the project into the workspace
+          command: sudo chown -R 1000:1000 ../project
+      - run:
+          name: Pull the latest Docker images
+          command: docker-compose pull
+      - run:
+          name: Merge JS code coverage reports and output HTML
+          command: |
+              docker-compose run --rm node yarn run instrument-merge
+              docker-compose run --rm node yarn run instrument-report
+      - run:
+          name: Compress HTML coverage report
+          command: tar -cvf coverage.tar ./coverage/
+      - store_artifacts:
+          path: coverage.tar
+          destination: coverage_report
+      - store_artifacts:
+          path: .nyc_output
 
   front_static_acceptance_and_integration:
       machine:
@@ -262,6 +293,9 @@ workflows:
           - back_behat_legacy:
                 requires:
                     - back_phpunit
+          - collect_js_coverage:
+                requires:
+                    - back_behat_legacy
 
   nightly:
       triggers:
