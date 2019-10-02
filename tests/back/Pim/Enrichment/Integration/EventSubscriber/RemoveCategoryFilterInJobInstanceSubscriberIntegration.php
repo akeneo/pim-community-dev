@@ -18,7 +18,7 @@ class RemoveCategoryFilterInJobInstanceSubscriberIntegration extends TestCase
     public function testValueFilterIsDeletedInJobInstance()
     {
         $category = $this->createCategory(['code' => 'foo']);
-        $category = $this->getFromTestContainer('pim_catalog.repository.category')->findOneByIdentifier(
+        $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier(
             $category->getCode()
         );
         $jobInstance = $this->createJobInstanceWithCategoryFilter(
@@ -26,10 +26,10 @@ class RemoveCategoryFilterInJobInstanceSubscriberIntegration extends TestCase
             ['master_accessories_scarves', $category->getCode(), 'whatever']
         );
 
-        $this->getFromTestContainer('pim_catalog.remover.category')->remove($this->getFromTestContainer('pim_catalog.repository.category')->findOneByIdentifier($category->getCode()));
+        $this->get('pim_catalog.remover.category')->remove($this->get('pim_catalog.repository.category')->findOneByIdentifier($category->getCode()));
 
         $jobInstance = $this
-            ->getFromTestContainer('akeneo_batch.job.job_instance_repository')
+            ->get('akeneo_batch.job.job_instance_repository')
             ->findOneByIdentifier($jobInstance->getCode());
         $rawParameters = $jobInstance->getRawParameters();
         $filters = array_filter($rawParameters['filters']['data'] ?? [], function ($filter) {
@@ -43,7 +43,7 @@ class RemoveCategoryFilterInJobInstanceSubscriberIntegration extends TestCase
     public function testEntireFilterIsDeletedInJobInstance()
     {
         $category = $this->createCategory(['code' => 'bar']);
-        $category = $this->getFromTestContainer('pim_catalog.repository.category')->findOneByIdentifier(
+        $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier(
             $category->getCode()
         );
         $jobInstance = $this->createJobInstanceWithCategoryFilter(
@@ -51,10 +51,10 @@ class RemoveCategoryFilterInJobInstanceSubscriberIntegration extends TestCase
             [$category->getCode()]
         );
 
-        $this->getFromTestContainer('pim_catalog.remover.category')->remove($this->getFromTestContainer('pim_catalog.repository.category')->findOneByIdentifier($category->getCode()));
+        $this->get('pim_catalog.remover.category')->remove($this->get('pim_catalog.repository.category')->findOneByIdentifier($category->getCode()));
 
         $jobInstance = $this
-            ->getFromTestContainer('akeneo_batch.job.job_instance_repository')
+            ->get('akeneo_batch.job.job_instance_repository')
             ->findOneByIdentifier($jobInstance->getCode());
         $rawParameters = $jobInstance->getRawParameters();
         $filters = array_filter($rawParameters['filters']['data'] ?? [], function ($filter) {
@@ -74,13 +74,13 @@ class RemoveCategoryFilterInJobInstanceSubscriberIntegration extends TestCase
             [$category->getCode()]
         );
 
-        $this->getFromTestContainer('pim_catalog.remover.category')->remove($this->getFromTestContainer('pim_catalog.repository.category')->findOneByIdentifier($parentCategory->getCode()));
-        $this->assertNull($this->getFromTestContainer('pim_catalog.repository.category')->findOneByIdentifier(
+        $this->get('pim_catalog.remover.category')->remove($this->get('pim_catalog.repository.category')->findOneByIdentifier($parentCategory->getCode()));
+        $this->assertNull($this->get('pim_catalog.repository.category')->findOneByIdentifier(
             $category->getCode()
         ));
 
         $jobInstance = $this
-            ->getFromTestContainer('akeneo_batch.job.job_instance_repository')
+            ->get('akeneo_batch.job.job_instance_repository')
             ->findOneByIdentifier($jobInstance->getCode());
         $rawParameters = $jobInstance->getRawParameters();
         $filters = array_filter($rawParameters['filters']['data'] ?? [], function ($filter) {
@@ -102,13 +102,13 @@ class RemoveCategoryFilterInJobInstanceSubscriberIntegration extends TestCase
             ['master_accessories_scarves', $category1->getCode(), $category2->getCode(), $category3->getCode(), 'what']
         );
 
-        $this->getFromTestContainer('pim_catalog.remover.category')->removeAll([
-            $this->getFromTestContainer('pim_catalog.repository.category')->findOneByIdentifier($parentCategory->getCode()),
-            $this->getFromTestContainer('pim_catalog.repository.category')->findOneByIdentifier($category3->getCode()),
+        $this->get('pim_catalog.remover.category')->removeAll([
+            $this->get('pim_catalog.repository.category')->findOneByIdentifier($parentCategory->getCode()),
+            $this->get('pim_catalog.repository.category')->findOneByIdentifier($category3->getCode()),
         ]);
 
         $jobInstance = $this
-            ->getFromTestContainer('akeneo_batch.job.job_instance_repository')
+            ->get('akeneo_batch.job.job_instance_repository')
             ->findOneByIdentifier($jobInstance->getCode());
         $rawParameters = $jobInstance->getRawParameters();
         $filters = array_filter($rawParameters['filters']['data'] ?? [], function ($filter) {
@@ -122,7 +122,7 @@ class RemoveCategoryFilterInJobInstanceSubscriberIntegration extends TestCase
     private function createJobInstanceWithCategoryFilter(string $code, array $values = []): JobInstance
     {
         /** @var EntityManager $entityManager */
-        $entityManager = $this->getFromTestContainer('doctrine.orm.default_entity_manager');
+        $entityManager = $this->get('doctrine.orm.default_entity_manager');
 
         $jobInstance = new JobInstance('connector', 'type', 'job_name');
         $jobInstance->setCode($code);
