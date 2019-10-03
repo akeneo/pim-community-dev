@@ -60,6 +60,5 @@ class AkeneoPimPermissionExtension extends Extension
         $loader->load('job_defaults.yml');
         $loader->load('jobs.yml');
         $loader->load('validators.yml');
-        $loader->load('cli_commands.yml');
     }
 }
