@@ -4,7 +4,6 @@ parameters:
     pim_catalog.event_subscriber.timestampable.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\TimestampableSubscriber
     pim_catalog.event_subscriber.category.check_channels.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\CheckChannelsOnDeletionSubscriber
     pim_catalog.event_subscriber.reset_unique_validation.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ResetUniqueValidationSubscriber
-    pim_catalog.event_subscriber.compute_product_raw_values.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeEntityRawValuesSubscriber
     pim_catalog.event_subscriber.load_product_values.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\LoadEntityWithValuesSubscriber
     pim_catalog.event_subscriber.index_products.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\IndexProductsSubscriber
 
@@ -45,7 +44,7 @@ services:
            - { name: kernel.event_listener, event: akeneo_batch.item_step_after_batch }
 
     pim_catalog.event_subscriber.compute_product_raw_values:
-        class: '%pim_catalog.event_subscriber.compute_product_raw_values.class%'
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithValues\ComputeEntityRawValuesSubscriber'
         arguments:
             - '@pim_storage_serializer'
             - '@pim_catalog.repository.attribute'
