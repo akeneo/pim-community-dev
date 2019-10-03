@@ -7,7 +7,6 @@ parameters:
     pim_catalog.event_subscriber.compute_product_raw_values.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeEntityRawValuesSubscriber
     pim_catalog.event_subscriber.load_product_values.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\LoadEntityWithValuesSubscriber
     pim_catalog.event_subscriber.index_products.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\IndexProductsSubscriber
-    pim_catalog.event_subscriber.compute_completeness_on_family_update.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeCompletenessOnFamilyUpdateSubscriber
 
 services:
     # Subscribers
@@ -69,7 +68,7 @@ services:
             - { name: kernel.event_subscriber }
 
     pim_catalog.event_subscriber.compute_completeness_on_family_update_subscriber:
-        class: '%pim_catalog.event_subscriber.compute_completeness_on_family_update.class%'
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Family\ComputeCompletenessOnFamilyUpdateSubscriber'
         arguments:
             - '@security.token_storage'
             - '@akeneo_batch_queue.launcher.queue_job_launcher'
