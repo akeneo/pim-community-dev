@@ -34,7 +34,6 @@ class BlackListJobsFromGridListenerSpec extends ObjectBehavior
     ) {
         $notVisibleJobsRegistry->getCodes()->willReturn([
             'refresh_project_completeness_calculation',
-            'compute_product_models_descendants',
         ]);
         $event->getDatagrid()->willReturn($datagrid);
         $datagrid->getDatasource()->willReturn($datasource);
@@ -44,7 +43,6 @@ class BlackListJobsFromGridListenerSpec extends ObjectBehavior
                 'this_is' => 'a parameter',
                 'blackListedJobCodes' => [
                     'refresh_project_completeness_calculation',
-                    'compute_product_models_descendants',
                 ]
             ]
         )->shouldBeCalled();

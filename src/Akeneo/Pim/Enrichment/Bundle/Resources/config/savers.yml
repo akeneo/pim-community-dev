@@ -3,7 +3,6 @@ parameters:
     pim_catalog.saver.product.class:                       Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductSaver
     pim_catalog.saver.group_options_resolver.class:        Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\GroupSavingOptionsResolver
     pim_catalog.saver.group.class:                         Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\GroupSaver
-    pim_catalog.saver.product_model_descendants.class:     Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductModelDescendantsSaver
     pim_catalog.synchronizer.product_unique_data.class:    Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer
 
 services:
@@ -62,15 +61,6 @@ services:
 
     pim_catalog.saver.group_options_resolver:
         class: '%pim_catalog.saver.group_options_resolver.class%'
-
-    pim_catalog.saver.product_model_descendants:
-        class: '%pim_catalog.saver.product_model_descendants.class%'
-        arguments:
-            - '@pim_catalog.repository.product_model'
-            - '@pim_catalog.elasticsearch.indexer.product'
-            - '@pim_catalog.elasticsearch.indexer.product_model'
-            - '@pim_catalog.completeness.product.compute_and_persist'
-            - '%pim_job_product_batch_size%'
 
     pim_comment.saver.comment:
         class: '%akeneo_storage_utils.saver.base.class%'

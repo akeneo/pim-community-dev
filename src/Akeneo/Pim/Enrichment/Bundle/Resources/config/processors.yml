@@ -45,11 +45,6 @@ services:
             - '@pim_connector.processor.denormalization.media_storer'
             - 'sub_product_model'
 
-    pim_connector.processor.denormalization.product_model_loader:
-        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\ProductModelLoaderProcessor'
-        arguments:
-            - '@pim_catalog.repository.product_model'
-
     pim_connector.processor.denormalization.product_association:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\ProductAssociationProcessor'
         arguments:

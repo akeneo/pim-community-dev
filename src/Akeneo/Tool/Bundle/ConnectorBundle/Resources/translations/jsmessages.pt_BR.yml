@@ -7,7 +7,6 @@ batch_jobs:
     compute_data_related_to_family_root_product_models: Calcular dados dos modelos de produtos raiz
     compute_data_related_to_family_sub_product_models: Calcular dados dos modelos de subproduto
     compute_data_related_to_family_products: Calcular dados de produtos
-    compute_product_models_descendants: Calcular os modelos de produto descendentes
     compute_family_variant_structure_changes: Calcular mudanças na estrutura da variante de família
     compute_completeness_of_products_family: Calcular a completude da família de produtos
   csv_product_export:

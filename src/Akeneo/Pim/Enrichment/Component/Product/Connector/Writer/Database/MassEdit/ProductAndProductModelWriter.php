@@ -1,19 +1,16 @@
 <?php
 
- namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\MassEdit;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\MassEdit;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Product and product model writer for mass edit
@@ -36,43 +33,19 @@ class ProductAndProductModelWriter implements ItemWriterInterface, StepExecution
     /** @var BulkSaverInterface */
     protected $productModelSaver;
 
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
-
-    /** @var JobLauncherInterface */
-    private $jobLauncher;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $jobInstanceRepository;
-
-    /** @var string */
-    private $jobName;
-
     /**
-     * @param VersionManager                        $versionManager
-     * @param BulkSaverInterface                    $productSaver
-     * @param BulkSaverInterface                    $productModelSaver
-     * @param TokenStorageInterface                 $tokenStorage
-     * @param JobLauncherInterface                  $jobLauncher
-     * @param IdentifiableObjectRepositoryInterface $jobInstanceRepository
-     * @param string                                $jobName
+     * @param VersionManager $versionManager
+     * @param BulkSaverInterface $productSaver
+     * @param BulkSaverInterface $productModelSaver
      */
     public function __construct(
         VersionManager $versionManager,
         BulkSaverInterface $productSaver,
-        BulkSaverInterface $productModelSaver,
-        TokenStorageInterface $tokenStorage,
-        JobLauncherInterface $jobLauncher,
-        IdentifiableObjectRepositoryInterface $jobInstanceRepository,
-        string $jobName
+        BulkSaverInterface $productModelSaver
     ) {
         $this->versionManager = $versionManager;
         $this->productSaver = $productSaver;
         $this->productModelSaver = $productModelSaver;
-        $this->tokenStorage = $tokenStorage;
-        $this->jobLauncher = $jobLauncher;
-        $this->jobInstanceRepository = $jobInstanceRepository;
-        $this->jobName = $jobName;
     }
 
     /**
@@ -93,10 +66,6 @@ class ProductAndProductModelWriter implements ItemWriterInterface, StepExecution
 
         $this->productSaver->saveAll($products);
         $this->productModelSaver->saveAll($productModels);
-
-        if (!empty($productModels)) {
-            $this->computeProductModelDescendants($productModels);
-        }
     }
 
     /**
@@ -127,23 +96,5 @@ class ProductAndProductModelWriter implements ItemWriterInterface, StepExecution
         } else {
             $this->stepExecution->incrementSummaryInfo('create');
         }
-    }
-
-    /**
-     * @param array $productModels
-     */
-    private function computeProductModelDescendants(array $productModels)
-    {
-        $user = $this->tokenStorage->getToken()->getUser();
-        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($this->jobName);
-
-        $productModelCodes = array_map(
-            function ($productModel) {
-                return $productModel->getCode();
-            },
-            $productModels
-        );
-
-        $this->jobLauncher->launch($jobInstance, $user, ['product_model_codes' => $productModelCodes]);
     }
 }

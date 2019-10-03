@@ -1,12 +1,6 @@
 parameters:
-    pim_catalog.tasklet.compute_product_models_descendants.class: Akeneo\Pim\Enrichment\Component\Product\Job\ComputeProductModelsDescendantsTasklet
     pim_catalog.tasklet.compute_completeness_of_products_family.class: Akeneo\Pim\Enrichment\Component\Product\Job\ComputeCompletenessOfProductsFamilyTasklet
     pim_catalog.tasklet.compute_family_variant_structure_changes.class: Akeneo\Pim\Enrichment\Component\Product\Job\ComputeFamilyVariantStructureChangesTasklet
-
-    pim_catalog.compute_product_models_descendants.job_type: 'compute_product_models_descendants'
-    pim_catalog.compute_product_models_descendants.job_name: 'compute_product_models_descendants'
-    pim_catalog.compute_product_models_descendants.tasklet_name: 'compute_product_models_descendants'
-    pim_catalog.compute_descendants.connector_name: 'compute descendants completeness'
 
     pim_catalog.compute_completeness_of_products_family.job_type: 'compute_completeness_of_products_family'
     pim_catalog.compute_completeness_of_products_family.job_name: 'compute_completeness_of_products_family'
@@ -60,14 +54,6 @@ parameters:
     pim_enrich.job.mass_edit_type: mass_edit
 
 services:
-    pim_catalog.tasklet.compute_product_models_descendants:
-        class: '%pim_catalog.tasklet.compute_product_models_descendants.class%'
-        arguments:
-            - '@pim_catalog.repository.product_model'
-            - '@pim_catalog.saver.product_model_descendants'
-            - '@pim_connector.doctrine.cache_clearer'
-        public: false
-
     pim_catalog.tasklet.compute_completeness_of_products_family:
         class: '%pim_catalog.tasklet.compute_completeness_of_products_family.class%'
         arguments:
@@ -75,15 +61,6 @@ services:
             - '@pim_catalog.query.product_query_builder_factory'
             - '@pim_catalog.saver.product'
             - '@pim_connector.doctrine.cache_clearer'
-        public: false
-
-    pim_catalog.step.compute_product_models_descendants:
-        class: '%pim_connector.step.tasklet.class%'
-        arguments:
-            - '%pim_catalog.compute_product_models_descendants.tasklet_name%'
-            - '@event_dispatcher'
-            - '@akeneo_batch.job_repository'
-            - '@pim_catalog.tasklet.compute_product_models_descendants'
         public: false
 
     pim_catalog.step.compute_completeness_of_products_family:
@@ -94,23 +71,6 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pim_catalog.tasklet.compute_completeness_of_products_family'
         public: false
-
-    pim_catalog.job.compute_product_models_descendants:
-        class: '%pim_connector.job.simple_job.class%'
-        arguments:
-            - '%pim_catalog.compute_product_models_descendants.job_name%'
-            - '@event_dispatcher'
-            - '@akeneo_batch.job_repository'
-            -
-                - '@pim_catalog.step.compute_product_models_descendants'
-        public: false
-        tags:
-            -
-                name: akeneo_batch.job
-                connector: '%pim_catalog.compute_descendants.connector_name%'
-                type: '%pim_catalog.compute_product_models_descendants.job_type%'
-            -
-                name: akeneo_batch.job.not_visible
 
     pim_catalog.job.compute_completeness_of_products_family:
         class: '%pim_connector.job.simple_job.class%'
@@ -310,7 +270,6 @@ services:
                 - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.csv_root_product_model.import'
                 - '@pim_connector.step.csv_sub_product_model.import'
-                - '@pim_connector.step.csv_compute_product_models_descendants.import'
                 - '@pim_connector.step.csv_product_model.import_associations'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.import_type%' }
@@ -360,7 +319,6 @@ services:
                 - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.xlsx_root_product_model.import'
                 - '@pim_connector.step.xlsx_sub_product_model.import'
-                - '@pim_connector.step.xlsx_compute_product_models_descendants.import'
                 - '@pim_connector.step.xlsx_product_model.import_associations'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.import_type%' }
