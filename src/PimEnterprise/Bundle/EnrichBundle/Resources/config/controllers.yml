@@ -158,6 +158,7 @@ services:
             - '@pim_enrich.normalizer.attribute'
             - '@translator'
             - '@pim_catalog.doctrine.query.attribute_is_an_family_variant_axis'
+            - '@pim_catalog.repository.channel'
 
     pim_enrich.controller.rest.job_instance:
         class: '%pim_enrich.controller.rest.job_instance.class%'
