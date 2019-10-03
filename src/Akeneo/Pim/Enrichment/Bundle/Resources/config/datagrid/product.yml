@@ -70,6 +70,13 @@ datagrid:
             identifier:
                 type:          field
                 data_name:     identifier
+            completeness:
+                type:          field
+                frontend_type: completeness
+            complete_variant_products:
+                type:          field
+                data_name:     complete_variant_product
+                frontend_type: complete-variant-product
             document_type: ~
             technical_id: ~
             delete_link:
