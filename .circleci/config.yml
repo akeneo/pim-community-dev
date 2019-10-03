@@ -237,7 +237,7 @@ jobs:
           command: tar -cvf coverage.tar ./coverage/
       - run:
           name: Deploy coverage report
-          command: scp -P 2202 -r ./coverage/* akeneo@coverage.core.akeneo.com:/var/www/html/frontend/
+          command: scp -P 2202 -r ./coverage/* akeneo@coverage.core.akeneo.com:/var/www/html/frontend-ce/
       - store_artifacts:
           path: coverage.tar
           destination: coverage_report
