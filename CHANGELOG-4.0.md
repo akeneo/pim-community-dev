@@ -189,15 +189,21 @@
 - Remove class `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\PRoductModelPropertiesNormalizer`
 - Remove class `Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\CompleteFilterData`
 - Remove interface `Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\CompleteFilterInterface`
-- Remove class `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeProductModelDescendantsSubscriber`
-- Remove class `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\IndexProductModelsSubscriber`
-- Update class `Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\MassEdit\ProductAndProductModelWriter` to remove
-    - `Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface`,
-    - `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`,
-    - `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface` and
-    - `string $jobName`
-- Remove class `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductModelDescendantsSaver`
-- Remove class `Akeneo\Pim\Enrichment\Component\Product\Job\ComputeProductModelsDescendantsTasklet`
+- Remove class `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeProductModelDescendantsSubscriber` and replace it by
+    - `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductModel\OnSave\ComputeProductAndAncestorsSubscriber` and
+    - `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductModel\OnDelete\ComputeProductAndAncestorsSubscriber`
+- Remove class `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\IndexProductModelsSubscriber` and replace it by
+    - `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductModel\OnSave\ComputeProductAndAncestorsSubscriber` and
+    - `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductModel\OnDelete\ComputeProductAndAncestorsSubscriber`
+- Move class from `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\LocalizableSubscriber` to `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\AttributeOption\LocalizableSubscriber` and mark it as final
+- Move class from `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\CheckChannelsOnDeletionSubscriber` to `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnDelete\CheckChannelsOnDeletionSubscriber` and mark it as final
+- Move class from `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Storage\RemoveCategoryFilterInJobInstanceSubscriber` to `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnDelete\RemoveCategoryFilterInJobInstanceSubscriber`
+- Move class from `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\UpdateIndexesOnCategoryDeletion` to `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnDelete\UpdateIndexesOnCategoryDeletion`
+- Move class from `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ConfigureCategoryTreeForExportJobsAfterChangingTheChannelCategoryTree` to `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnSave\ConfigureCategoryTreeForExportJobsAfterChangingTheChannelCategoryTree`
+- Move class from `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\InitCompletenessDbSchemaSubscriber` to `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Db\InitCompletenessDbSchemaSubscriber`
+- Move class from `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeEntityRawValuesSubscriber` to `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithValues\ComputeEntityRawValuesSubscriber` and mark it as final
+- Move class from `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\LoadEntityWithValuesSubscriber` to `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithValues\LoadEntityWithValuesSubscriber` and mark it as final
+- Move class from `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeCompletenessOnFamilyUpdateSubscriber` to `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Family\ComputeCompletenessOnFamilyUpdateSubscriber` and mark it as final
 
 ### CLI Commands
 
