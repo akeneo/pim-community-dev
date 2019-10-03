@@ -41,4 +41,10 @@ class ProductAndAncestorsIndexer
         }
         $this->productIndexer->indexFromProductIdentifiers($identifiers, $options);
     }
+
+    public function removeFromProductIdsAndReindexAncestors(array $productIds, array $productModelCodes): void
+    {
+        $this->productIndexer->removeFromProductIds($productIds);
+        $this->productModelIndexer->indexFromProductModelCodes($productModelCodes);
+    }
 }

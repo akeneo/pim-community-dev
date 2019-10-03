@@ -55,10 +55,10 @@ services:
         tags:
             - { name: doctrine.event_subscriber, priority: 50 }
 
-    pim_catalog.event_subscriber.index_products:
-        class: '%pim_catalog.event_subscriber.index_products.class%'
+    pim_catalog.event_subscriber.delete_products_from index:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\DeleteProductsFromIndexSubscriber'
         arguments:
-            - '@pim_catalog.elasticsearch.indexer.product'
+            - '@akeneo.pim.enrichment.elasticsearch.indexer.product_and_ancestors'
         tags:
             - { name: kernel.event_subscriber }
 
