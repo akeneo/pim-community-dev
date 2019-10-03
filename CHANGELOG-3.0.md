@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8331: Fix display of category tree in the product grid when user does not have access to its default tree
+- PIM-8852: Locale specific and localized metric attribute is well displayed in product edit form.
 
 # 3.0.44 (2019-10-02)
 
