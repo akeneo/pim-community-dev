@@ -129,11 +129,18 @@ services:
         tags:
           - { name: kernel.event_subscriber }
 
-    pim_catalog.event_subscriber.product_model.compute_descendant_completeness_and_index_product_and_ancestors_subscriber:
-        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeDescendantCompletenessAndIndexProductAndAncestorsSubscriber'
+    pim_catalog.event_subscriber.product_model.on_save.compute_descendant_completeness_and_index_product_and_ancestors_subscriber:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductModel\OnSave\ComputeProductAndAncestorsSubscriber'
         arguments:
             - '@pim_catalog.completeness.product.compute_and_persist'
             - '@pim_catalog.elasticsearch.indexer.product_model_descendants_and_ancestors'
             - '@akeneo.pim.enrichment.product.query.get_descendant_variant_product_identifiers'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.product_model.on_delete.compute_descendant_completeness_and_index_product_and_ancestors_subscriber:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductModel\OnDelete\ComputeProductAndAncestorsSubscriber'
+        arguments:
+            - '@pim_catalog.elasticsearch.indexer.product_model_descendants_and_ancestors'
         tags:
             - { name: kernel.event_subscriber }
