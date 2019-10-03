@@ -1,9 +1,13 @@
 # 3.2.x
 
+# 3.2.10 (2019-10-02)
+
 ## Bug fixes
 
 - PIM-8752: Fix reference entities filter box popup display
+- PIM-8837: Fix issue on the draft creation, when an attribute code is a numerical value
 - PIM-8834: Fix asset title page
+- PIM-8859: Add translation messages
 
 # 3.2.9 (2019-09-23)
 
