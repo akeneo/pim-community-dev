@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace AkeneoTestEnterprise\Pim\Permission\Integration\Import\ProductModel;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
-use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 
 /**
  * +--------------+-----------------------------------+
@@ -95,11 +94,11 @@ CSV;
                     'field' => 'a_text',
                     'operator' => Operators::CONTAINS,
                     'value' => 'random',
-                ]
+                ],
             ],
             [
                 'sub_product_model',
-            ]
+            ],
         );
     }
 

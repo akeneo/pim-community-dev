@@ -65,6 +65,14 @@
 - Remove class `Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Elasticsearch\Indexing\Normalizer\ProductSubscriptionNormalizer`
 - Remove class `Akeneo\Pim\Permission\Bundle\Normalizer\InternalApi\IncompleteValuesNormalizer`
 - Remove interface `Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductCompletenessInterface` and its implementation `Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductCompleteness`
+- Update `Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleApplier\ProductSaver` to remove:
+    - `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface` and
+    - `Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface`
+- Update `Akeneo\Pim\Permission\Bundle\MassEdit\Writer\ProductAndProductModelWriter` to remove:
+    - `Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface`
+    - `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`
+    - `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
+    - `string $jobName`
 
 ### CLI commands
 
@@ -105,3 +113,4 @@ The following CLI commands have been deleted:
 - Remove `pimee_workflow.query.product_proposal_query_builder_factory`
 - Update `pimee_workflow.doctrine.query.proposal_product_and_product_model_query_builder_from_size_factory` to use `Akeneo\Pim\WorkOrganization\Workflow\Component\Query\ProductProposalAndProductModelProposalQueryBuilder`
 - Update `pimee_teamwork_assistant.controller.project_completeness_controller` to remove `@security.token_storage` as dependency
+- Update `pimee_catalog_rule.applier.product.saver` to remove `@pim_catalog.saver.product_model_descendants` as dependency
