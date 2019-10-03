@@ -86,7 +86,7 @@ class FileController
             if (FileTypes::IMAGE === $fileType) {
                 try {
                     $result = $this->imagineController->filterAction($request, $filename, $filter);
-                } catch (NotFoundHttpException $exception) {
+                } catch (NotFoundHttpException|\RuntimeException $exception) {
                     $result = $this->renderDefaultImage(FileTypes::IMAGE, $filter);
                 }
             }
