@@ -36,6 +36,25 @@ class DatabaseToFranklinProductNormalizerSpec extends ObjectBehavior
         $this->shouldImplement(ProductNormalizerInterface::class);
     }
 
+    function it_normalizes_a_product_with_no_attribute_values(SelectSupportedAttributesByFamilyQueryInterface $selectAttributesByFamilyQuery)
+    {
+        $selectAttributesByFamilyQuery->execute(new FamilyCode('mugs'))->willReturn([]);
+
+        $product = new Product(
+            new ProductId(42),
+            new FamilyCode('mugs'),
+            []
+        );
+
+        $expectedNormalizedProduct = [
+            'id' => '42',
+            'family' => 'mugs',
+            'attributes' => (object) [],
+        ];
+
+        $this->normalize($product)->shouldBeLike($expectedNormalizedProduct);
+    }
+
     function it_normalizes_a_product_from_database_to_franklin(SelectSupportedAttributesByFamilyQueryInterface $selectAttributesByFamilyQuery)
     {
         $selectAttributesByFamilyQuery->execute(new FamilyCode('mugs'))->willReturn([
@@ -116,7 +135,7 @@ class DatabaseToFranklinProductNormalizerSpec extends ObjectBehavior
         $expectedNormalizedProduct = [
             'id' => '42',
             'family' => 'mugs',
-            'attributes' => [
+            'attributes' => (object) [
                 'text' => [
                     [
                         'value' => 'Product test',
@@ -198,7 +217,7 @@ class DatabaseToFranklinProductNormalizerSpec extends ObjectBehavior
             ],
         ];
 
-        $this->normalize($product)->shouldReturn($expectedNormalizedProduct);
+        $this->normalize($product)->shouldBeLike($expectedNormalizedProduct);
     }
 
     function it_removes_unsupported_attributes(SelectSupportedAttributesByFamilyQueryInterface $selectAttributesByFamilyQuery)
@@ -227,7 +246,7 @@ class DatabaseToFranklinProductNormalizerSpec extends ObjectBehavior
         $expectedNormalizedProduct = [
             'id' => '42',
             'family' => 'mugs',
-            'attributes' => [
+            'attributes' => (object) [
                 'name' => [
                     [
                         'value' => 'Product test',
@@ -238,7 +257,7 @@ class DatabaseToFranklinProductNormalizerSpec extends ObjectBehavior
             ],
         ];
 
-        $this->normalize($product)->shouldReturn($expectedNormalizedProduct);
+        $this->normalize($product)->shouldBeLike($expectedNormalizedProduct);
     }
 
     function it_removes_unsupported_locales(SelectSupportedAttributesByFamilyQueryInterface $selectAttributesByFamilyQuery)
@@ -265,7 +284,7 @@ class DatabaseToFranklinProductNormalizerSpec extends ObjectBehavior
         $expectedNormalizedProduct = [
             'id' => '42',
             'family' => 'mugs',
-            'attributes' => [
+            'attributes' => (object) [
                 'name' => [
                     [
                         'value' => 'Product test',
@@ -281,6 +300,6 @@ class DatabaseToFranklinProductNormalizerSpec extends ObjectBehavior
             ],
         ];
 
-        $this->normalize($product)->shouldReturn($expectedNormalizedProduct);
+        $this->normalize($product)->shouldBeLike($expectedNormalizedProduct);
     }
 }

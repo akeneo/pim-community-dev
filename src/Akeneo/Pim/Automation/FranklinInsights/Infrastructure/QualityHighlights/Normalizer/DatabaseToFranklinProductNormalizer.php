@@ -21,6 +21,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 class DatabaseToFranklinProductNormalizer implements ProductNormalizerInterface
 {
+
     /** @var SelectSupportedAttributesByFamilyQueryInterface */
     private $selectAttributesByFamilyQuery;
 
@@ -34,7 +35,7 @@ class DatabaseToFranklinProductNormalizer implements ProductNormalizerInterface
         return [
             'id' => $product->getId()->__toString(),
             'family' => $product->getFamilyCode()->__toString(),
-            'attributes' => $this->normalizeProductValues($product),
+            'attributes' => (object) $this->normalizeProductValues($product),
         ];
     }
 
