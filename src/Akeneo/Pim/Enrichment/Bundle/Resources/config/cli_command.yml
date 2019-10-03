@@ -2,12 +2,9 @@ services:
     akeneo.pim.enrichment.command.calculate_product_completeness:
         class: 'Akeneo\Pim\Enrichment\Bundle\Command\CalculateCompletenessCommand'
         arguments:
-            - '@akeneo_elasticsearch.client.product_and_product_model'
-            - '@pim_catalog.query.product_query_builder_factory'
+            - '@akeneo.pim.enrichment.elasticsearch.indexer.product_and_ancestors'
             - '@pim_catalog.completeness.product.compute_and_persist'
-            - '@pim_catalog.elasticsearch.indexer.product'
-            - '@pim_connector.doctrine.cache_clearer'
-            - '%pim_job_product_batch_size%'
+            - '@database_connection'
         tags:
             - { name: 'console.command' }
 
