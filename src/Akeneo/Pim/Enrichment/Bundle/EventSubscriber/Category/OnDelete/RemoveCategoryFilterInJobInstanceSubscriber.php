@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Storage;
+namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnDelete;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
