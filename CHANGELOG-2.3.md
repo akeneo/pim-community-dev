@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-7274: Do not remove the values used by a proposal diff when the proposal is refused
+
 # 2.3.64 (2019-10-01)
 
 # 2.3.63 (2019-09-23)

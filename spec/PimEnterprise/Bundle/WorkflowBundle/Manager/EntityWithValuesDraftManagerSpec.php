@@ -11,6 +11,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use PimEnterprise\Component\Workflow\Applier\DraftApplierInterface;
 use PimEnterprise\Component\Workflow\Event\EntityWithValuesDraftEvents;
 use PimEnterprise\Component\Workflow\Factory\EntityWithValuesDraftFactory;
@@ -117,13 +118,14 @@ class EntityWithValuesDraftManagerSpec extends ObjectBehavior
         AttributeInterface $attribute,
         ProductInterface $product,
         EntityWithValuesDraftInterface $partialDraft,
-        ValueCollectionInterface $values
+        ValueCollectionInterface $values,
+        ValueInterface $value
     ) {
         $draft->getStatus()->willReturn(EntityWithValuesDraftInterface::READY);
         $draft->getEntityWithValue()->willReturn($product);
         $draft->getAuthor()->willReturn('author');
         $draft->getValues()->willReturn($values);
-        $values->getByCodes('sku', null, null)->willReturn(null);
+        $values->getByCodes('sku', null, null)->willReturn($value);
         $attribute->getCode()->willReturn('sku');
         $partialDraft->getEntityWithValue()->willReturn($product);
 
