@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnSave;
 
 use Akeneo\Channel\Component\Event\ChannelCategoryHasBeenUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;

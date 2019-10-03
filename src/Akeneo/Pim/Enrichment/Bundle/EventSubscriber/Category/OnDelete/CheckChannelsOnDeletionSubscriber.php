@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category;
+namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnDelete;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -16,7 +16,7 @@ use Symfony\Component\Translation\TranslatorInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CheckChannelsOnDeletionSubscriber implements EventSubscriberInterface
+final class CheckChannelsOnDeletionSubscriber implements EventSubscriberInterface
 {
     /** @var TranslatorInterface */
     protected $translator;
