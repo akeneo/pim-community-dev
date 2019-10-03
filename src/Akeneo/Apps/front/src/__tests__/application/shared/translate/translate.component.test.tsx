@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {create} from 'react-test-renderer';
+import {TranslateContext} from '../../../../application/shared/translate/translate-context';
 import {Translate} from '../../../../application/shared/translate/translate.component';
-import {TranslateContext} from '../../../../application/shared/translate/translate.context';
 
 describe('Translate component', () => {
     test('Matches the snapshot', () => {

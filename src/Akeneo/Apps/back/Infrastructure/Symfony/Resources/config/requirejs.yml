@@ -2,7 +2,9 @@ config:
     config:
         pim/controller-registry:
             controllers:
-                akeneo_apps:
+                akeneo_apps_index:
+                    module: pim/controller/apps
+                akeneo_apps_any:
                     module: pim/controller/apps
     
     paths:

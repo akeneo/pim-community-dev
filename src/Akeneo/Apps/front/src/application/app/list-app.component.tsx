@@ -1,7 +1,8 @@
 import * as React from 'react';
-
+import {HashRouter as Router, Link, Route, Switch} from 'react-router-dom';
 import {Breadcrumb} from '../common/breadcrumb.component';
 import {Page} from '../common/page.component';
+import {EditApp} from './edit-app.component';
 
 const breadcrumb = (
     <Breadcrumb
@@ -23,8 +24,16 @@ const button = (
     </button>
 );
 
-export const AppsList = () => (
+export const ListApp = () => (
     <Page breadcrumb={breadcrumb} actionButtons={[button]} title='Apps'>
-        Hello world!
+        <Router>
+            <Link to='/apps/edit'>Edit</Link>
+            <Switch>
+                <Route path='/apps/edit'>
+                    <EditApp />
+                </Route>
+                <Route path='/apps'>Hello world!</Route>
+            </Switch>
+        </Router>
     </Page>
 );

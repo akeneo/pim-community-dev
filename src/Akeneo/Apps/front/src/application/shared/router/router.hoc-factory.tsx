@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {RouterContext} from './router.context';
+import {RouterContext} from './router-context';
 import {Router} from './router.interface';
 
 interface Props {

@@ -5,7 +5,7 @@ extensions:
         position: 120
         config:
             title: pim_menu.item.apps
-            to: akeneo_apps
+            to: akeneo_apps_index
 
     pim-apps-user-navigation:
         module: pim/menu/user-navigation

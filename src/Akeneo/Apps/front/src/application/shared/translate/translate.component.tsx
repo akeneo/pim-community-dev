@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {useContext} from 'react';
 
-import {TranslateContext} from './translate.context';
+import {TranslateContext} from './translate-context';
 
 interface Props {
   id: string;
