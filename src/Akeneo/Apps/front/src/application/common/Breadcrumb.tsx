@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {withRouter} from '../shared/router/router.hoc-factory';
 import {Router} from '../shared/router/router.interface';
+import {withRouter} from '../shared/router/with-router.hoc-factory';
 
 class InvalidItemTypeError extends Error {}
 
