@@ -1,3 +1,6 @@
 import {ListApp} from './application/app/list-app.component';
+import {RouterContext} from './application/shared/router/router-context';
 
-export {ListApp as Apps};
+const RouterProvider = RouterContext.Provider;
+
+export {ListApp as Apps, RouterProvider};
