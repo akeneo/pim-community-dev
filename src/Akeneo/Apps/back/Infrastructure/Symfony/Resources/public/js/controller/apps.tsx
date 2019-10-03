@@ -2,7 +2,7 @@ import * as $ from 'jquery';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import {AppsList} from '@apps';
+import {AppsList} from '@akeneo-pim-ce/apps';
 
 const BaseController = require('pim/controller/base');
 

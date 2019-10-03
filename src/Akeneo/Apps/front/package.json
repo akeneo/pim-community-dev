@@ -1,6 +1,6 @@
 {
     "name": "@akeneo-pim-ce/apps",
-    "version": "0.0.0",
+    "version": "1.0.0",
     "license": "OSL-3.0",
     "main": "src/index.ts",
     "scripts": {
@@ -9,21 +9,21 @@
         "jest": "jest --config jest.config.js"
     },
     "devDependencies": {
-        "@types/jest": "^24",
-        "@types/react-test-renderer": "^16",
-        "enzyme": "^3",
-        "jest": "^24",
-        "prettier": "^1",
-        "react-test-renderer": "^16",
-        "ts-jest": "^24",
-        "tslint": "^5"
+        "@types/jest": "^24.0.0",
+        "@types/react-test-renderer": "^16.8.0",
+        "enzyme": "^3.9.0",
+        "jest": "^24.0.0",
+        "prettier": "^1.16.0",
+        "react-test-renderer": "^16.8.0",
+        "ts-jest": "^24.0.0",
+        "tslint": "^5.12.0"
     },
     "dependencies": {
-        "@types/react": "^16",
-        "@types/react-dom": "^16",
-        "react": "^16",
-        "react-dom": "^16",
-        "typescript": "^3"
+        "@types/react": "^16.8.0",
+        "@types/react-dom": "^16.8.0",
+        "react": "^16.8.0",
+        "react-dom": "^16.8.0",
+        "typescript": "^3.3.0"
     },
     "private": true
 }

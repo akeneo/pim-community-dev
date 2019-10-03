@@ -68,7 +68,7 @@ const webpackConfig = {
     symlinks: false,
     alias: {
       ..._.mapKeys(aliases, (path, key) => `${key}$`),
-      '@apps': path.resolve(__dirname, 'public/bundles/akeneoapps-react/index.ts')
+      '@akeneo-pim-ce/apps': path.resolve(__dirname, 'public/bundles/akeneoapps-react/index.ts')
     },
     modules: [path.resolve('./public/bundles'), path.resolve('./node_modules')],
     extensions: ['.js', '.json', '.ts', '.tsx']
