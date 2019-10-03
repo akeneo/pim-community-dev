@@ -58,6 +58,9 @@ batch_jobs:
     csv_product_proposal_import:
         label: Product proposal import in CSV
         import.label: Product proposal import
+    csv_product_model_proposal_import:
+        label: Product model proposal import in CSV
+        import.label: Product model proposal import in CSV
     approve_product_draft:
         label: Approve proposal
         perform.label: Approve proposal
@@ -70,6 +73,9 @@ batch_jobs:
     xlsx_product_proposal_import:
         label: Product proposal import in XLSX
         import.label: Product proposal import in XLSX
+    xlsx_product_model_proposal_import:
+        label: Product model proposal import in XLSX
+        import.label: Product model proposal import in XLSX
     csv_published_product_quick_export:
         export.label: Csv published products quick export
         perform.label: Csv published products quick export
