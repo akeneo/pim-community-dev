@@ -24,8 +24,8 @@ Feature: Create an attribute
     Then I should see validation error "Attribute code may contain only letters, numbers and underscores"
     
   @info Codes 'id', associationTypes', 'categories', 'categoryId', 'completeness', 'enabled', 'family', 'groups', 'associations', 'products', 'scope', 'treeId', 'values', 'entity_type' '*_groups' and '*_products' are reserved for grid filters and import/export column names
-  Scenario: Fail to create a text attribute with a reserved code
-    Given I change the "Code" to "categories"
+  Scenario: Fail to create a text attribute with a reserved code (case insensitive)
+    Given I change the "Code" to "cAtEgOrIes"
     And I change the "Attribute group" to "Other"
     And I save the attribute
     Then I should see validation error "This code is not available"
