@@ -44,6 +44,10 @@ final class ComputeProductsAndAncestorsSubscriber implements EventSubscriberInte
         if (!$product instanceof ProductInterface) {
             return;
         }
+        // TODO TIP-987 Remove this when decoupling PublishedProduct from Enrichment
+        if (get_class($product) == 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct') {
+            return;
+        }
         if (!$event->hasArgument('unitary') || true !== $event->getArgument('unitary')) {
             return;
         }
