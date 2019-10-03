@@ -271,15 +271,11 @@ class HookContext extends PimContext
     {
         if ($event->getTestResult() !== StepResult::UNDEFINED || $event === null) {
             if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
-                try {
-                    $script = 'return window.coverage;';
-                    $coverage = $this->getSession()->evaluateScript($script);
-                    $path = sprintf('%s/%s.json', './.coverage', uniqid());
-                    $fs = new \Symfony\Component\Filesystem\Filesystem();
-                    $fs->dumpFile($path, json_encode($coverage));
-                } catch (\Exception $e) {
-                    var_dump($e->getMessage());
-                }
+                $script = 'return window.coverage;';
+                $coverage = $this->getSession()->evaluateScript($script);
+                $path = sprintf('%s/%s.json', './.coverage', uniqid());
+                $fs = new \Symfony\Component\Filesystem\Filesystem();
+                $fs->dumpFile($path, json_encode($coverage));
             }
         }
     }

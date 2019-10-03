@@ -6,17 +6,17 @@ const webpack = require('webpack');
 const path = require('path');
 const _ = require('lodash');
 
-
 const WebpackShellPlugin = require('webpack-shell-plugin');
 const ExtraWatchWebpackPlugin = require('extra-watch-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const isProd = process.argv && process.argv.indexOf('--env=prod') > -1;
+const injectInstrumentation = process.argv && process.argv.indexOf('--coverage') > -1;
 const {getModulePaths, createModuleRegistry} = require('./frontend/webpack/requirejs-utils');
 const {aliases, config} = getModulePaths(rootDir, __dirname);
 
 createModuleRegistry(Object.keys(aliases), rootDir);
 
-console.log('Starting webpack from', rootDir, 'in', isProd ? 'prod' : 'dev', 'mode');
+console.log('Starting webpack from', rootDir, 'in', isProd ? 'prod' : 'dev', 'mode', injectInstrumentation ? ' with instrumentation': '');
 
 const webpackConfig = {
   stats: {
@@ -156,8 +156,10 @@ const webpackConfig = {
           },
         ],
       },
+
+      // Inject code coverage listeners into the bundle
       {
-        test: /\.js$|\.jsx|\.tsx|\.ts$/,
+        test: injectInstrumentation ? /\.js$|\.jsx|\.tsx|\.ts$/ : [],
         use: {
           loader: 'istanbul-instrumenter-loader',
           options: {

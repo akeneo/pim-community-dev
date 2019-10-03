@@ -15,7 +15,7 @@ jobs:
                 docker save -o php-pim-image.tar akeneo/pim-dev/php:7.3
       - run:
           name: Setup tests results folder and log folder
-          command: mkdir -p var/tests/phpunit var/tests/behat var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.composer .nyc_output .coverage
+          command: mkdir -p var/tests/phpunit var/tests/behat var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.composer
       - run:
           name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
           command: sudo chown -R 1000:1000 ../project
@@ -184,11 +184,11 @@ jobs:
       - run:
             name: Install database
             command: APP_ENV=behat make database
-    #   - run:
-    #         name: Non critical Behat
-    #         command: |
-    #             TESTFILES=$(docker-compose run --rm -T php vendor/bin/behat --list-scenarios -p legacy -s $TESTSUITE | circleci tests split --split-by=timings)
-    #             .circleci/run_behat.sh $TESTSUITE $TESTFILES
+      - run:
+            name: Non critical Behat
+            command: |
+                TESTFILES=$(docker-compose run --rm -T php vendor/bin/behat --list-scenarios -p legacy -s $TESTSUITE | circleci tests split --split-by=timings)
+                .circleci/run_behat.sh $TESTSUITE $TESTFILES
       - run:
             name: Critical Behat
             command: |
@@ -210,39 +210,6 @@ jobs:
           path: var/tests/screenshots
       - store_artifacts:
           path: var/logs
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - project/.coverage
-
-  collect_js_coverage:
-    machine:
-      image: ubuntu-1604:201903-01
-    steps:
-      - attach_workspace:
-          at: ~/
-      - add_ssh_keys:
-          fingerprints:
-            - "3b:a2:61:e2:63:33:69:5e:29:9b:c4:92:e9:77:71:c5"
-      - run:
-          name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
-          command: sudo chown -R 1000:1000 ../project
-      - run:
-          name: Merge JS code coverage reports and output HTML
-          command: |
-              docker-compose run --rm node yarn run instrument-merge
-              docker-compose run --rm node yarn run instrument-report
-      - run:
-          name: Compress HTML coverage report
-          command: tar -cvf coverage.tar ./coverage/
-      - run:
-          name: Deploy coverage report
-          command: scp -P 2202 -r ./coverage/* akeneo@coverage.core.akeneo.com:/var/www/html/frontend-ce/
-      - store_artifacts:
-          path: coverage.tar
-          destination: coverage_report
-      - store_artifacts:
-          path: .nyc_output
 
   front_static_acceptance_and_integration:
       machine:
@@ -282,22 +249,19 @@ workflows:
           - build_dev:
                 requires:
                     - wait_for_user_approval
-        #   - back_static_and_acceptance:
-        #         requires:
-        #             - build_dev
-        #   - front_static_acceptance_and_integration:
-        #         requires:
-        #             - build_dev
-        #   - back_phpunit:
-        #         requires:
-        #             - back_static_and_acceptance
-        #             - front_static_acceptance_and_integration
-          - back_behat_legacy:
+          - back_static_and_acceptance:
                 requires:
                     - build_dev
-          - collect_js_coverage:
+          - front_static_acceptance_and_integration:
                 requires:
-                    - back_behat_legacy
+                    - build_dev
+          - back_phpunit:
+                requires:
+                    - back_static_and_acceptance
+                    - front_static_acceptance_and_integration
+          - back_behat_legacy:
+                requires:
+                    - back_phpunit
 
   nightly:
       triggers:
