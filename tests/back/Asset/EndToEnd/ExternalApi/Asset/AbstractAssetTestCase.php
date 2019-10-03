@@ -19,6 +19,7 @@ use Akeneo\Asset\Component\Model\TagInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Sanitizer\DateSanitizer;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use PHPUnit\Framework\AssertionFailedError;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
@@ -470,7 +471,7 @@ JSON;
     /**
      * @param string $code
      *
-     * @throws \PHPUnit_Framework_AssertionFailedError
+     * @throws AssertionFailedError
      *
      * @return TagInterface
      */

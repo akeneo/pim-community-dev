@@ -154,6 +154,7 @@ JSON;
         foreach ($assets as $code => $jsonAsset) {
             $asset = json_decode($jsonAsset, true);
             $asset['_links']['self']['href'] = sprintf('http://localhost/api/rest/v1/assets/%s', $code);
+            $asset = $this->sanitizeNormalizedAsset($asset);
             $assetsWithLinks[$code] = json_encode($asset);
         }
 
@@ -179,6 +180,16 @@ JSON;
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
+
+        $actual = json_decode($response->getContent(), true);
+        if (isset($actual['_embedded']['items'])) {
+            $assets = $actual['_embedded']['items'];
+            array_walk($assets, function (&$asset) {
+                $asset = $this->sanitizeNormalizedAsset($asset);
+            });
+            $actual['_embedded']['items'] = $assets;
+        }
+
+        $this->assertJsonStringEqualsJsonString($expected, json_encode($actual));
     }
 }
