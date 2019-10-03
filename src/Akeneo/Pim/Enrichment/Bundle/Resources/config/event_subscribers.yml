@@ -4,7 +4,6 @@ parameters:
     pim_catalog.event_subscriber.timestampable.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\TimestampableSubscriber
     pim_catalog.event_subscriber.category.check_channels.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\CheckChannelsOnDeletionSubscriber
     pim_catalog.event_subscriber.reset_unique_validation.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ResetUniqueValidationSubscriber
-    pim_catalog.event_subscriber.load_product_values.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\LoadEntityWithValuesSubscriber
     pim_catalog.event_subscriber.index_products.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\IndexProductsSubscriber
 
 services:
@@ -52,7 +51,7 @@ services:
             - { name: kernel.event_subscriber }
 
     pim_catalog.event_subscriber.load_product_values:
-        class: '%pim_catalog.event_subscriber.load_product_values.class%'
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithValues\LoadEntityWithValuesSubscriber'
         arguments:
             - '@akeneo.pim.enrichment.factory.read.write_value_collection'
         tags:
@@ -87,7 +86,7 @@ services:
             - { name: kernel.event_subscriber }
 
     pim_catalog.event_subscriber.update_exports_on_channel_update:
-        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ConfigureCategoryTreeForExportJobsAfterChangingTheChannelCategoryTree'
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\ConfigureCategoryTreeForExportJobsAfterChangingTheChannelCategoryTree'
         arguments:
             - '@akeneo_batch.job.job_instance_repository'
             - '@akeneo_batch.updater.job_instance'
@@ -106,7 +105,7 @@ services:
             - { name: kernel.event_subscriber }
 
     pim_catalog.event_subscriber.init_completeness_db_schema:
-        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\InitCompletenessDbSchemaSubscriber'
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Db\InitCompletenessDbSchemaSubscriber'
         arguments:
             - '@database_connection'
         tags:

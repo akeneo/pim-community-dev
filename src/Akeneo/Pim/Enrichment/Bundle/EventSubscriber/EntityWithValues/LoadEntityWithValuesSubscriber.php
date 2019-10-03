@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
+namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithValues;
 
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
@@ -20,7 +20,7 @@ use Doctrine\ORM\Events;
  * TODO: cf. http://symfony.com/doc/current/bundles/DoctrineBundle/entity-listeners.html
  * TODO: cf. http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/events.html#entity-listeners
  */
-class LoadEntityWithValuesSubscriber implements EventSubscriber
+final class LoadEntityWithValuesSubscriber implements EventSubscriber
 {
     /** @var WriteValueCollectionFactory */
     private $valueCollectionFactory;
