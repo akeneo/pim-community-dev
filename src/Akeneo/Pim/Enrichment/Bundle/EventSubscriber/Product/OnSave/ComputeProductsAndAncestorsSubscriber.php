@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
+namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnSave;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer;
 use Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses;
@@ -20,7 +20,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ComputeCompletenessAndIndexProductsSubscriber implements EventSubscriberInterface
+final class ComputeProductsAndAncestorsSubscriber implements EventSubscriberInterface
 {
     /** @var ComputeAndPersistProductCompletenesses */
     private $computeAndPersistProductCompletenesses;
@@ -46,7 +46,7 @@ class ComputeCompletenessAndIndexProductsSubscriber implements EventSubscriberIn
 
     public function handleSingleProduct(GenericEvent $event): void
     {
-        if (false === ($event->getArguments()['unitary'] || true)) {
+        if (false === ($event->getArguments()['unitary'] ?? false)) {
             return;
         }
         $this->handleMultipleProducts(new GenericEvent([$event->getSubject()], $event->getArguments()));

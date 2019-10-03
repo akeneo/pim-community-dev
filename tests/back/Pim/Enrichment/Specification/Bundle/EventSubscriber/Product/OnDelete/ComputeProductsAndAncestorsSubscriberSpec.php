@@ -1,9 +1,9 @@
 <?php
 
-namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnDelete;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer;
-use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\DeleteProductsFromIndexSubscriber;
+use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnDelete\ComputeProductsAndAncestorsSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
@@ -11,7 +11,7 @@ use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class DeleteProductsFromIndexSubscriberSpec extends ObjectBehavior
+class ComputeProductsAndAncestorsSubscriberSpec extends ObjectBehavior
 {
     function let(ProductAndAncestorsIndexer $indexer)
     {
@@ -20,7 +20,7 @@ class DeleteProductsFromIndexSubscriberSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(DeleteProductsFromIndexSubscriber::class);
+        $this->shouldHaveType(ComputeProductsAndAncestorsSubscriber::class);
     }
 
     function it_subscribes_to_remove_events()

@@ -1,9 +1,9 @@
 <?php
 
-namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnSave;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer;
-use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeCompletenessAndIndexProductsSubscriber;
+use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnSave\ComputeProductsAndAncestorsSubscriber;
 use Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -12,7 +12,7 @@ use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-class ComputeCompletenessAndIndexProductsSubscriberSpec extends ObjectBehavior
+class ComputeProductsAndAncestorsSubscriberSpec extends ObjectBehavior
 {
     function let(
         ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses,
@@ -23,7 +23,7 @@ class ComputeCompletenessAndIndexProductsSubscriberSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(ComputeCompletenessAndIndexProductsSubscriber::class);
+        $this->shouldHaveType(ComputeProductsAndAncestorsSubscriber::class);
     }
 
     function it_is_an_event_subscriber()
@@ -56,7 +56,7 @@ class ComputeCompletenessAndIndexProductsSubscriberSpec extends ObjectBehavior
         $productAndAncestorsIndexer->indexFromProductIdentifiers(Argument::any())->shouldNotBeCalled();
 
         $this->handleSingleProduct(new GenericEvent(new \stdClass(), ['unitary' => false]));
-        $this->handleMultipleProducts(new GenericEvent([new \stdClass()]));
+        $this->handleSingleProduct(new GenericEvent([new \stdClass()]));
     }
 
     function it_computes_completeness_and_reindexes_a_product_and_its_ancestors(

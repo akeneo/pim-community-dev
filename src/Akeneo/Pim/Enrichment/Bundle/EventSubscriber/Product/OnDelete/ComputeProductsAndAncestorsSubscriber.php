@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
+namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnDelete;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -11,16 +11,13 @@ use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Removes products from the search engine.
+ * Removes products from the search engine. Also, reindexes the ancestor product models, as the deletion of products
+ * may have changed the completeness 'all_complete' or 'all_incomplete' projections
  *
- * Also Reindexes the ancestor product models, as the deletion of products may have changed the
- * completeness 'all_complete' or 'all_incomplete' projections
- *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
- * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DeleteProductsFromIndexSubscriber implements EventSubscriberInterface
+final class ComputeProductsAndAncestorsSubscriber implements EventSubscriberInterface
 {
     /** @var ProductAndAncestorsIndexer */
     private $productAndAncestorsIndexer;
@@ -41,11 +38,6 @@ class DeleteProductsFromIndexSubscriber implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * Delete one single product from ES index
-     *
-     * @param RemoveEvent $event
-     */
     public function deleteProduct(RemoveEvent $event) : void
     {
         $product = $event->getSubject();
@@ -65,7 +57,7 @@ class DeleteProductsFromIndexSubscriber implements EventSubscriberInterface
     public function deleteProducts(RemoveEvent $event): void
     {
         $products = $event->getSubject();
-        if (!is_array($products) || !is_array ($event->getSubjectId())) {
+        if (!is_array($products) || !is_array($event->getSubjectId())) {
             return;
         }
         $products = array_filter($products, function ($product) {
