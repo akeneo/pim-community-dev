@@ -2,8 +2,14 @@
 
 ## Bug fixes
 
-- PIM-7274: Do not remove the values used by a proposal diff when the proposal is refused
 - PIM-7644: Fix 500 error on thumbnail of TIFF images
+
+# 2.3.65 (2019-10-04)
+
+## Bug fixes
+
+- PIM-7274: Do not remove the values used by a proposal diff when the proposal is refused
+- PIM-6276: Fix asset filter on product export builder
 
 # 2.3.64 (2019-10-01)
 
