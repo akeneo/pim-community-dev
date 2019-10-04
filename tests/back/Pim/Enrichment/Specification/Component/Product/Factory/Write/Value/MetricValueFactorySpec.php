@@ -29,7 +29,7 @@ class MetricValueFactorySpec extends ObjectBehavior
         $this->supports('pim_catalog_metric')->shouldReturn(true);
     }
 
-    function it_creates_an_empty_metric_product_value(
+    function it_throws_an_exception_when_creating_an_empty_metric_product_value(
         $metricFactory,
         AttributeInterface $attribute,
         MetricInterface $metric
@@ -48,21 +48,10 @@ class MetricValueFactorySpec extends ObjectBehavior
         $metric->getUnit()->willReturn('METER');
         $metric->getFamily()->willReturn('Length');
 
-        $productValue = $this->create(
-            $attribute,
-            null,
-            null,
-            null
-        );
-
-        $productValue->shouldReturnAnInstanceOf(MetricValue::class);
-        $productValue->shouldHaveAttribute('metric_attribute');
-        $productValue->shouldNotBeLocalizable();
-        $productValue->shouldNotBeScopable();
-        $productValue->shouldBeEmpty('METER');
+        $this->shouldThrow(\InvalidArgumentException::class)->during('create', [$attribute, null, null, null]);
     }
 
-    function it_creates_a_localizable_and_scopable_empty_metric_product_value(
+    function it_throws_an_exception_when_creating_a_localizable_and_scopable_empty_metric_product_value(
         $metricFactory,
         AttributeInterface $attribute,
         MetricInterface $metric
@@ -81,20 +70,7 @@ class MetricValueFactorySpec extends ObjectBehavior
         $metric->getUnit()->willReturn('METER');
         $metric->getFamily()->willReturn('Length');
 
-        $productValue = $this->create(
-            $attribute,
-            'ecommerce',
-            'en_US',
-            null
-        );
-
-        $productValue->shouldReturnAnInstanceOf(MetricValue::class);
-        $productValue->shouldHaveAttribute('metric_attribute');
-        $productValue->shouldBeLocalizable();
-        $productValue->shouldHaveLocale('en_US');
-        $productValue->shouldBeScopable();
-        $productValue->shouldHaveChannel('ecommerce');
-        $productValue->shouldBeEmpty('METER');
+        $this->shouldThrow(\InvalidArgumentException::class)->during('create', [$attribute, null, null, null]);
     }
 
     function it_creates_a_metric_product_value(

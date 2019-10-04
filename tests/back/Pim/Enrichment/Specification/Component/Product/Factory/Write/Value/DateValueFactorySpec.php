@@ -27,7 +27,7 @@ class DateValueFactorySpec extends ObjectBehavior
         $this->supports('pim_catalog_date')->shouldReturn(true);
     }
 
-    function it_creates_an_empty_date_product_value(AttributeInterface $attribute)
+    function it_throws_an_exception_when_creating_an_empty_date_product_value(AttributeInterface $attribute)
     {
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
@@ -36,43 +36,7 @@ class DateValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('date');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $productValue = $this->create(
-            $attribute,
-            null,
-            null,
-            null
-        );
-
-        $productValue->shouldReturnAnInstanceOf(DateValue::class);
-        $productValue->shouldHaveAttribute('date_attribute');
-        $productValue->shouldNotBeLocalizable();
-        $productValue->shouldNotBeScopable();
-        $productValue->shouldBeEmpty();
-    }
-
-    function it_creates_a_localizable_and_scopable_empty_date_product_value(AttributeInterface $attribute)
-    {
-        $attribute->isScopable()->willReturn(true);
-        $attribute->isLocalizable()->willReturn(true);
-        $attribute->getCode()->willReturn('date_attribute');
-        $attribute->getType()->willReturn('pim_catalog_date');
-        $attribute->getBackendType()->willReturn('date');
-        $attribute->isBackendTypeReferenceData()->willReturn(false);
-
-        $productValue = $this->create(
-            $attribute,
-            'ecommerce',
-            'en_US',
-            null
-        );
-
-        $productValue->shouldReturnAnInstanceOf(DateValue::class);
-        $productValue->shouldHaveAttribute('date_attribute');
-        $productValue->shouldBeLocalizable();
-        $productValue->shouldHaveLocale('en_US');
-        $productValue->shouldBeScopable();
-        $productValue->shouldHaveChannel('ecommerce');
-        $productValue->shouldBeEmpty();
+        $this->shouldThrow(\InvalidArgumentException::class)->during('create', [$attribute, null, null, null]);
     }
 
     function it_creates_a_date_product_value(AttributeInterface $attribute)

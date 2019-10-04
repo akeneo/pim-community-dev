@@ -30,8 +30,8 @@ class OptionsValueFactory extends AbstractValueFactory
      */
     protected function prepareData(AttributeInterface $attribute, $data, bool $ignoreUnknownData)
     {
-        if (null === $data) {
-            return [];
+        if (null === $data || $data === []) {
+            throw new \InvalidArgumentException('Options value cannot be null');
         }
 
         if (!is_array($data)) {
@@ -43,7 +43,7 @@ class OptionsValueFactory extends AbstractValueFactory
         }
 
         foreach ($data as $value) {
-            if (!is_string($value)) {
+            if (!is_string($value) || trim($value) === '') {
                 throw InvalidPropertyTypeException::validArrayStructureExpected(
                     $attribute->getCode(),
                     sprintf('one of the options is not a string, "%s" given', gettype($value)),

@@ -63,7 +63,7 @@ class PriceCollectionValueFactory implements ValueFactoryInterface
         bool $ignoreUnknownData = false
     ): ValueInterface {
         if (null === $data) {
-            $data = [];
+            throw new \InvalidArgumentException('Price value cannot be null');
         }
 
         $data = $this->prepareData($attribute, $data, $channelCode);
@@ -119,7 +119,7 @@ class PriceCollectionValueFactory implements ValueFactoryInterface
                 );
             }
 
-            if (!array_key_exists('amount', $price)) {
+            if (!isset($price['amount'])) {
                 throw InvalidPropertyTypeException::arrayKeyExpected(
                     $attribute->getCode(),
                     'amount',
@@ -128,7 +128,7 @@ class PriceCollectionValueFactory implements ValueFactoryInterface
                 );
             }
 
-            if (!array_key_exists('currency', $price)) {
+            if (!isset($price['currency'])) {
                 throw InvalidPropertyTypeException::arrayKeyExpected(
                     $attribute->getCode(),
                     'currency',
