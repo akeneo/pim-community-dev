@@ -27,7 +27,7 @@ class OptionValueFactorySpec extends ObjectBehavior
         $this->supports(AttributeTypes::OPTION_SIMPLE_SELECT)->shouldReturn(true);
     }
 
-    function it_creates_an_empty_simple_select_product_value(AttributeInterface $attribute) {
+    function it_throws_an_exception_when_creating_an_empty_simple_select_product_value(AttributeInterface $attribute) {
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('simple_select_attribute');
@@ -35,21 +35,10 @@ class OptionValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('option');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $productValue = $this->create(
-            $attribute,
-            null,
-            null,
-            null
-        );
-
-        $productValue->shouldReturnAnInstanceOf(OptionValue::class);
-        $productValue->shouldHaveAttribute('simple_select_attribute');
-        $productValue->shouldNotBeLocalizable();
-        $productValue->shouldNotBeScopable();
-        $productValue->shouldBeEmpty();
+        $this->shouldThrow(\InvalidArgumentException::class)->during('create', [$attribute, null, null, null]);
     }
 
-    function it_creates_a_localizable_and_scopable_empty_simple_select_product_value(AttributeInterface $attribute) {
+    function it_throws_an_exception_when_creating_a_localizable_and_scopable_empty_simple_select_product_value(AttributeInterface $attribute) {
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('simple_select_attribute');
@@ -57,20 +46,7 @@ class OptionValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('option');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $productValue = $this->create(
-            $attribute,
-            'ecommerce',
-            'en_US',
-            null
-        );
-
-        $productValue->shouldReturnAnInstanceOf(OptionValue::class);
-        $productValue->shouldHaveAttribute('simple_select_attribute');
-        $productValue->shouldBeLocalizable();
-        $productValue->shouldHaveLocale('en_US');
-        $productValue->shouldBeScopable();
-        $productValue->shouldHaveChannel('ecommerce');
-        $productValue->shouldBeEmpty();
+        $this->shouldThrow(\InvalidArgumentException::class)->during('create', [$attribute, null, null, null]);
     }
 
     function it_creates_a_simple_select_product_value(AttributeInterface $attribute) {

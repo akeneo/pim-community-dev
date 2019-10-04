@@ -23,7 +23,7 @@ class DateValueFactory extends AbstractValueFactory
     protected function prepareData(AttributeInterface $attribute, $data, bool $ignoreUnknownData)
     {
         if (null === $data) {
-            return null;
+            throw new \InvalidArgumentException('Date value cannot be null');
         }
 
         if (!is_string($data)) {

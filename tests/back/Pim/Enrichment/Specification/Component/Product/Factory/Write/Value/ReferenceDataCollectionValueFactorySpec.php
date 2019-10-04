@@ -37,7 +37,7 @@ class ReferenceDataCollectionValueFactorySpec extends ObjectBehavior
         $this->supports('pim_reference_data_catalog_multiselect')->shouldReturn(true);
     }
 
-    function it_creates_an_empty_reference_data_multi_select_product_value(
+    function it_throws_an_exception_when_creating_an_empty_reference_data_multi_select_product_value(
         $repositoryResolver,
         AttributeInterface $attribute,
         ReferenceDataRepositoryInterface $referenceDataRepository
@@ -53,21 +53,10 @@ class ReferenceDataCollectionValueFactorySpec extends ObjectBehavior
         $repositoryResolver->resolve('fabrics')->willReturn($referenceDataRepository);
         $referenceDataRepository->findOneBy(Argument::any())->shouldNotBeCalled();
 
-        $productValue = $this->create(
-            $attribute,
-            null,
-            null,
-            null
-        );
-
-        $productValue->shouldReturnAnInstanceOf(ReferenceDataCollectionValue::class);
-        $productValue->shouldHaveAttribute('reference_data_multi_select_attribute');
-        $productValue->shouldNotBeLocalizable();
-        $productValue->shouldNotBeScopable();
-        $productValue->shouldBeEmpty();
+        $this->shouldThrow(\InvalidArgumentException::class)->during('create', [$attribute, null, null, null]);
     }
 
-    function it_creates_a_localizable_and_scopable_empty_reference_data_multi_select_product_value(
+    function it_throws_an_exception_when_creating_an_empty_localizable_and_scopable_empty_reference_data_multi_select_product_value(
         $repositoryResolver,
         AttributeInterface $attribute,
         ReferenceDataRepositoryInterface $referenceDataRepository
@@ -83,20 +72,7 @@ class ReferenceDataCollectionValueFactorySpec extends ObjectBehavior
         $repositoryResolver->resolve('fabrics')->willReturn($referenceDataRepository);
         $referenceDataRepository->findOneBy(Argument::any())->shouldNotBeCalled();
 
-        $productValue = $this->create(
-            $attribute,
-            'ecommerce',
-            'en_US',
-            null
-        );
-
-        $productValue->shouldReturnAnInstanceOf(ReferenceDataCollectionValue::class);
-        $productValue->shouldHaveAttribute('reference_data_multi_select_attribute');
-        $productValue->shouldBeLocalizable();
-        $productValue->shouldHaveLocale('en_US');
-        $productValue->shouldBeScopable();
-        $productValue->shouldHaveChannel('ecommerce');
-        $productValue->shouldBeEmpty();
+        $this->shouldThrow(\InvalidArgumentException::class)->during('create', [$attribute, null, null, null]);
     }
 
     function it_creates_a_reference_data_multi_select_product_value(

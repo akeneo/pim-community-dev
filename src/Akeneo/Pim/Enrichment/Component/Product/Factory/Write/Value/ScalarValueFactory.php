@@ -23,7 +23,7 @@ class ScalarValueFactory extends AbstractValueFactory
     protected function prepareData(AttributeInterface $attribute, $data, bool $ignoreUnknownData)
     {
         if (null === $data) {
-            return;
+            throw new \InvalidArgumentException('Scalar value cannot be null');
         }
 
         if (!is_scalar($data)) {
@@ -35,13 +35,15 @@ class ScalarValueFactory extends AbstractValueFactory
         }
 
         if (is_string($data) && '' === trim($data)) {
-            $data = null;
+            throw new \InvalidArgumentException('Scalar value cannot be empty');
         }
 
-        if (AttributeTypes::BOOLEAN === $attribute->getType() &&
-            (1 === $data || '1' === $data || 0 === $data || '0' === $data)
-        ) {
-            $data = boolval($data);
+        if (AttributeTypes::BOOLEAN === $attribute->getType()) {
+            if (is_bool($data)) {
+                $data = boolval($data);
+            } else {
+                throw new \InvalidArgumentException('Scalar value for boolean attribute type should a boolean');
+            }
         }
 
         return $data;

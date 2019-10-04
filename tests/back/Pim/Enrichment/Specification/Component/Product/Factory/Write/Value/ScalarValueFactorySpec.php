@@ -21,7 +21,7 @@ class ScalarValueFactorySpec extends ObjectBehavior
         $this->shouldHaveType(ScalarValueFactory::class);
     }
 
-    function it_creates_an_empty_text_product_value(AttributeInterface $attribute)
+    function it_throws_an_exception_when_creating_an_empty_text_product_value(AttributeInterface $attribute)
     {
         $this->beConstructedWith(ScalarValue::class, 'pim_catalog_text');
         $this->supports('foo')->shouldReturn(false);
@@ -38,21 +38,10 @@ class ScalarValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('text');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $productValue = $this->create(
-            $attribute,
-            null,
-            null,
-            null
-        );
-
-        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
-        $productValue->shouldHaveAttribute('text_attribute');
-        $productValue->shouldNotBeLocalizable();
-        $productValue->shouldNotBeScopable();
-        $productValue->shouldBeEmpty();
+        $this->shouldThrow(\InvalidArgumentException::class)->during('create', [$attribute, null, null, null]);
     }
 
-    function it_creates_a_localizable_and_scopable_empty_text_product_value(AttributeInterface $attribute)
+    function it_throws_an_exception_when_creating_a_localizable_and_scopable_empty_text_product_value(AttributeInterface $attribute)
     {
         $this->beConstructedWith(ScalarValue::class, 'pim_catalog_text');
         $this->supports('foo')->shouldReturn(false);
@@ -69,20 +58,7 @@ class ScalarValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('text');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $productValue = $this->create(
-            $attribute,
-            'ecommerce',
-            'en_US',
-            null
-        );
-
-        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
-        $productValue->shouldHaveAttribute('text_attribute');
-        $productValue->shouldBeLocalizable();
-        $productValue->shouldHaveLocale('en_US');
-        $productValue->shouldBeScopable();
-        $productValue->shouldHaveChannel('ecommerce');
-        $productValue->shouldBeEmpty();
+        $this->shouldThrow(\InvalidArgumentException::class)->during('create', [$attribute, null, null, null]);
     }
 
     function it_creates_a_text_product_value(AttributeInterface $attribute)
@@ -116,7 +92,7 @@ class ScalarValueFactorySpec extends ObjectBehavior
         $productValue->getData()->shouldReturn('foobar');
     }
 
-    function it_creates_a_localizable_and_scopable_text_product_value(AttributeInterface $attribute)
+    function it_throws_an_exception_when_creating_a_localizable_and_scopable_product_value(AttributeInterface $attribute)
     {
         $this->beConstructedWith(ScalarValue::class, 'pim_catalog_text');
         $this->supports('foo')->shouldReturn(false);
@@ -133,23 +109,10 @@ class ScalarValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('text');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $productValue = $this->create(
-            $attribute,
-            'ecommerce',
-            'en_US',
-            'foobar'
-        );
-
-        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
-        $productValue->shouldHaveAttribute('text_attribute');
-        $productValue->shouldBeLocalizable();
-        $productValue->shouldHaveLocale('en_US');
-        $productValue->shouldBeScopable();
-        $productValue->shouldHaveChannel('ecommerce');
-        $productValue->getData()->shouldReturn('foobar');
+        $this->shouldThrow(\InvalidArgumentException::class)->during('create', [$attribute, null, null, null]);
     }
 
-    function it_creates_an_empty_textarea_product_value(AttributeInterface $attribute)
+    function it_throws_an_exception_when_creating_textarea_product_value(AttributeInterface $attribute)
     {
         $this->beConstructedWith(ScalarValue::class, 'pim_catalog_textarea');
         $this->supports('foo')->shouldReturn(false);
@@ -166,21 +129,10 @@ class ScalarValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('textarea');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $productValue = $this->create(
-            $attribute,
-            null,
-            null,
-            null
-        );
-
-        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
-        $productValue->shouldHaveAttribute('textarea_attribute');
-        $productValue->shouldNotBeLocalizable();
-        $productValue->shouldNotBeScopable();
-        $productValue->shouldBeEmpty();
+        $this->shouldThrow(\InvalidArgumentException::class)->during('create', [$attribute, null, null, null]);
     }
 
-    function it_creates_a_localizable_and_scopable_empty_textarea_product_value(AttributeInterface $attribute)
+    function it_throws_an_exception_when_creating_a_localizable_and_scopable_empty_textarea_product_value(AttributeInterface $attribute)
     {
         $this->beConstructedWith(ScalarValue::class, 'pim_catalog_textarea');
         $this->supports('foo')->shouldReturn(false);
@@ -197,20 +149,7 @@ class ScalarValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('textarea');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $productValue = $this->create(
-            $attribute,
-            'ecommerce',
-            'en_US',
-            null
-        );
-
-        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
-        $productValue->shouldHaveAttribute('textarea_attribute');
-        $productValue->shouldBeLocalizable();
-        $productValue->shouldHaveLocale('en_US');
-        $productValue->shouldBeScopable();
-        $productValue->shouldHaveChannel('ecommerce');
-        $productValue->shouldBeEmpty();
+        $this->shouldThrow(\InvalidArgumentException::class)->during('create', [$attribute, null, null, null]);
     }
 
     function it_creates_an_textarea_product_value(AttributeInterface $attribute)
@@ -244,7 +183,7 @@ class ScalarValueFactorySpec extends ObjectBehavior
         $productValue->getData()->shouldReturn('foobar');
     }
 
-    function it_creates_a_localizable_and_scopable_textarea_product_value(AttributeInterface $attribute)
+    function it_throws_an_exception_when_creating_a_localizable_and_scopablearea_product_value(AttributeInterface $attribute)
     {
         $this->beConstructedWith(ScalarValue::class, 'pim_catalog_textarea');
         $this->supports('foo')->shouldReturn(false);
@@ -261,23 +200,10 @@ class ScalarValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('textarea');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $productValue = $this->create(
-            $attribute,
-            'ecommerce',
-            'en_US',
-            'foobar'
-        );
-
-        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
-        $productValue->shouldHaveAttribute('textarea_attribute');
-        $productValue->shouldBeLocalizable();
-        $productValue->shouldHaveLocale('en_US');
-        $productValue->shouldBeScopable();
-        $productValue->shouldHaveChannel('ecommerce');
-        $productValue->getData()->shouldReturn('foobar');
+        $this->shouldThrow(\InvalidArgumentException::class)->during('create', [$attribute, null, null, null]);
     }
 
-    function it_creates_an_empty_integer_product_value(AttributeInterface $attribute)
+    function it_throws_an_exception_when_creating_integer_product_value(AttributeInterface $attribute)
     {
         $this->beConstructedWith(ScalarValue::class, 'pim_catalog_number');
         $this->supports('foo')->shouldReturn(false);
@@ -294,21 +220,10 @@ class ScalarValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('integer');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $productValue = $this->create(
-            $attribute,
-            null,
-            null,
-            null
-        );
-
-        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
-        $productValue->shouldHaveAttribute('integer_attribute');
-        $productValue->shouldNotBeLocalizable();
-        $productValue->shouldNotBeScopable();
-        $productValue->shouldBeEmpty();
+        $this->shouldThrow(\InvalidArgumentException::class)->during('create', [$attribute, null, null, null]);
     }
 
-    function it_creates_a_localizable_and_scopable_empty_integer_product_value(AttributeInterface $attribute)
+    function it_throws_an_exception_when_creating_a_localizable_and_scopable_empty_integer_product_value(AttributeInterface $attribute)
     {
         $this->beConstructedWith(ScalarValue::class, 'pim_catalog_number');
         $this->supports('foo')->shouldReturn(false);
@@ -325,20 +240,7 @@ class ScalarValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('integer');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $productValue = $this->create(
-            $attribute,
-            'ecommerce',
-            'en_US',
-            null
-        );
-
-        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
-        $productValue->shouldHaveAttribute('integer_attribute');
-        $productValue->shouldBeLocalizable();
-        $productValue->shouldHaveLocale('en_US');
-        $productValue->shouldBeScopable();
-        $productValue->shouldHaveChannel('ecommerce');
-        $productValue->shouldBeEmpty();
+        $this->shouldThrow(\InvalidArgumentException::class)->during('create', [$attribute, null, null, null]);
     }
 
     function it_creates_an_numeric_product_value(AttributeInterface $attribute)
@@ -405,7 +307,7 @@ class ScalarValueFactorySpec extends ObjectBehavior
         $productValue->getData()->shouldReturn(42);
     }
 
-    function it_creates_an_empty_boolean_product_value(AttributeInterface $attribute)
+    function it_throws_an_exception_when_creating_an_empty_boolean_product_value(AttributeInterface $attribute)
     {
         $this->beConstructedWith(ScalarValue::class, 'pim_catalog_boolean');
         $this->supports('foo')->shouldReturn(false);
@@ -422,21 +324,10 @@ class ScalarValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('boolean');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $productValue = $this->create(
-            $attribute,
-            null,
-            null,
-            null
-        );
-
-        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
-        $productValue->shouldHaveAttribute('boolean_attribute');
-        $productValue->shouldNotBeLocalizable();
-        $productValue->shouldNotBeScopable();
-        $productValue->shouldBeEmpty();
+        $this->shouldThrow(\InvalidArgumentException::class)->during('create', [$attribute, null, null, null]);
     }
 
-    function it_creates_a_localizable_and_scopable_empty_boolean_product_value(AttributeInterface $attribute)
+    function it_throws_an_exception_when_creating_a_localizable_and_scopable_empty_boolean_product_value(AttributeInterface $attribute)
     {
         $this->beConstructedWith(ScalarValue::class, 'pim_catalog_boolean');
         $this->supports('foo')->shouldReturn(false);
@@ -453,21 +344,7 @@ class ScalarValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('boolean');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-
-        $productValue = $this->create(
-            $attribute,
-            'ecommerce',
-            'en_US',
-            null
-        );
-
-        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
-        $productValue->shouldHaveAttribute('boolean_attribute');
-        $productValue->shouldBeLocalizable();
-        $productValue->shouldHaveLocale('en_US');
-        $productValue->shouldBeScopable();
-        $productValue->shouldHaveChannel('ecommerce');
-        $productValue->shouldBeEmpty();
+        $this->shouldThrow(\InvalidArgumentException::class)->during('create', [$attribute, null, null, null]);
     }
 
     function it_creates_a_boolean_product_value(AttributeInterface $attribute)
@@ -501,7 +378,7 @@ class ScalarValueFactorySpec extends ObjectBehavior
         $productValue->getData()->shouldReturn(true);
     }
 
-    function it_creates_a_localizable_and_scopable_boolean_product_value(AttributeInterface $attribute)
+    function it_throws_an_exception_when_creating_a_localizable_and_scopable_boolean_product_value(AttributeInterface $attribute)
     {
         $this->beConstructedWith(ScalarValue::class, 'pim_catalog_boolean');
         $this->supports('foo')->shouldReturn(false);
@@ -518,24 +395,10 @@ class ScalarValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('boolean');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-
-        $productValue = $this->create(
-            $attribute,
-            'ecommerce',
-            'en_US',
-            true
-        );
-
-        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
-        $productValue->shouldHaveAttribute('boolean_attribute');
-        $productValue->shouldBeLocalizable();
-        $productValue->shouldHaveLocale('en_US');
-        $productValue->shouldBeScopable();
-        $productValue->shouldHaveChannel('ecommerce');
-        $productValue->getData()->shouldReturn(true);
+        $this->shouldThrow(\InvalidArgumentException::class)->during('create', [$attribute, null, null, null]);
     }
 
-    function it_creates_an_empty_identifier_product_value(AttributeInterface $attribute)
+    function it_throws_an_exception_when_creating_an_empty_identifier_product_value(AttributeInterface $attribute)
     {
         $this->beConstructedWith(ScalarValue::class, 'pim_catalog_identifier');
         $this->supports('foo')->shouldReturn(false);
@@ -552,18 +415,7 @@ class ScalarValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('text');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $productValue = $this->create(
-            $attribute,
-            null,
-            null,
-            null
-        );
-
-        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
-        $productValue->shouldHaveAttribute('identifier_attribute');
-        $productValue->shouldNotBeLocalizable();
-        $productValue->shouldNotBeScopable();
-        $productValue->shouldBeEmpty();
+        $this->shouldThrow(\InvalidArgumentException::class)->during('create', [$attribute, null, null, null]);
     }
 
     function it_creates_an_identifier_product_value(AttributeInterface $attribute)
