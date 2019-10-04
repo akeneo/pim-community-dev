@@ -1,4 +1,4 @@
 import * as React from 'react';
-import {translate} from './translate.interface';
+import {Translate} from './translate.interface';
 
-export const TranslateContext = React.createContext<translate>(id => id);
+export const TranslateContext = React.createContext<Translate>(id => id);
