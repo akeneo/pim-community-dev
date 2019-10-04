@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-8586: Fix association type order in association tab
+
 # 3.0.45 (2019-10-04)
 
 ## Bug fixes

@@ -278,7 +278,17 @@ define(
              * @returns {Promise}
              */
             loadAssociationTypes: function () {
-                return FetcherRegistry.getFetcher('association-type').fetchAll();
+                return $.when(
+                    FetcherRegistry.getFetcher('association-type').fetchAll(),
+                ).then(associationTypes => {
+                    return associationTypes.sort((associationType1, associationType2) => {
+                        const locale = UserContext.get('catalogLocale');
+                        const labelAssociationType1 = associationType1.labels[locale] || '[' + associationType1.code + ']';
+                        const labelAssociationType2 = associationType2.labels[locale] || '[' + associationType2.code + ']';
+
+                        return labelAssociationType1 > labelAssociationType2 ? 1 : -1;
+                    });
+                });
             },
 
             /**
