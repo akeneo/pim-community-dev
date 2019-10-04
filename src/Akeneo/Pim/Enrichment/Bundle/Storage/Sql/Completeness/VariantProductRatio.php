@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query;
+namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\CompleteVariantProducts;
@@ -15,7 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VariantProductRatio implements VariantProductRatioInterface
+final class VariantProductRatio implements VariantProductRatioInterface
 {
     /** @var EntityManagerInterface */
     private $entityManager;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query;
+namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Attribute;
 
 use Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -19,19 +19,11 @@ class AttributeIsAFamilyVariantAxis
     /** @var EntityManagerInterface */
     private $entityManager;
 
-    /**
-     * @param EntityManagerInterface $entityManager
-     */
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
     }
 
-    /**
-     * @param string $attributeCode
-     *
-     * @return bool
-     */
     public function execute(string $attributeCode): bool
     {
         $query = $this->entityManager->createQueryBuilder()

@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query;
+namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProductCodesByProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
@@ -8,7 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociationInterfa
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 
-class GetAssociatedProductCodesByProductFromDB implements GetAssociatedProductCodesByProduct
+final class GetAssociatedProductCodesByProductFromDB implements GetAssociatedProductCodesByProduct
 {
     /** @var Connection */
     private $connection;

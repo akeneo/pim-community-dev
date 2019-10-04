@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\PimDataGridBundle\Adapter;
 
-use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CountImpactedProducts;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid\CountImpactedProducts;
 
 /**
  * Counts the number of items selected in the grid.
@@ -16,9 +16,6 @@ class ItemsCounter
     /** @var CountImpactedProducts */
     private $countImpactedProducts;
 
-    /**
-     * @param CountImpactedProducts $countImpactedProducts
-     */
     public function __construct(CountImpactedProducts $countImpactedProducts)
     {
         $this->countImpactedProducts = $countImpactedProducts;

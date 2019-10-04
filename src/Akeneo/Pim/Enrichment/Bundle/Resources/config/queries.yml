@@ -1,32 +1,26 @@
-parameters:
-    pim_catalog.doctrine.query.find_variant_product_completeness.class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\VariantProductRatio'
-    pim_catalog.doctrine.query.attribute_is_an_family_variant_axis.class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\AttributeIsAFamilyVariantAxis'
-    pim_catalog.doctrine.query.count_entity_with_family_variant.class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CountEntityWithFamilyVariant'
-    pim_catalog.doctrine.query.find_attributes_for_family.class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\FindAttributesForFamily'
-
 services:
     pim_catalog.doctrine.query.find_variant_product_completeness:
-        class: '%pim_catalog.doctrine.query.find_variant_product_completeness.class%'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness\VariantProductRatio'
         arguments:
             - '@doctrine.orm.entity_manager'
 
     pim_catalog.doctrine.query.attribute_is_an_family_variant_axis:
-        class: '%pim_catalog.doctrine.query.attribute_is_an_family_variant_axis.class%'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Attribute\AttributeIsAFamilyVariantAxis'
         arguments:
             - '@doctrine.orm.entity_manager'
 
     pim_catalog.doctrine.query.count_entity_with_family_variant:
-        class: '%pim_catalog.doctrine.query.count_entity_with_family_variant.class%'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Family\CountEntityWithFamilyVariant'
         arguments:
             - '@doctrine.orm.entity_manager'
 
     pim_catalog.doctrine.query.find_attributes_for_family:
-        class: '%pim_catalog.doctrine.query.find_attributes_for_family.class%'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Family\FindAttributesForFamily'
         arguments:
             - '@doctrine.orm.entity_manager'
 
     pim_catalog.doctrine.query.count_products_with_family:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CountProductsWithFamily'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Family\CountProductsWithFamily'
         arguments:
             - '@doctrine.orm.entity_manager'
 
@@ -41,18 +35,18 @@ services:
             - '@doctrine.orm.entity_manager'
 
     pim_catalog.query.get_associated_product_codes_by_product:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\GetAssociatedProductCodesByProductFromDB'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetAssociatedProductCodesByProductFromDB'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '%pim_catalog.entity.association.class%'
 
     pim_enrich.doctrine.query.ascendant_categories:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\AscendantCategories'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\AscendantCategories'
         arguments:
             - '@doctrine.orm.entity_manager'
 
     pim_enrich.doctrine.query.count_impacted_products:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CountImpactedProducts'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid\CountImpactedProducts'
         arguments:
             - '@pim_catalog.query.product_and_product_model_query_builder_factory'
             - '@pim_catalog.query.product_query_builder_factory'
@@ -111,17 +105,17 @@ services:
             - '@database_connection'
 
     pim_catalog.query.get_descendent_category_codes:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\GetDescendentCategoryCodes'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\GetDescendentCategoryCodes'
         arguments:
             - '@database_connection'
 
     pim_catalog.query.descendant_product_ids:
-        class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\DescendantProductIdsQuery
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\DescendantProductIdsQuery'
         arguments:
             - '@database_connection'
 
     pim_catalog.query.descendant_product_model_ids:
-        class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\DescendantProductModelIdsQuery
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\DescendantProductModelIdsQuery'
         arguments:
             - '@database_connection'
 
@@ -224,7 +218,7 @@ services:
             - '@database_connection'
 
     akeneo.pim.enrichment.product_model.query.get_values_of_siblings:
-        class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\SqlGetValuesOfSiblings
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlGetValuesOfSiblings'
         arguments:
             - '@database_connection'
             - '@akeneo.pim.enrichment.factory.read.write_value_collection'
@@ -270,6 +264,6 @@ services:
             - '@database_connection'
 
     pim_catalog.query.get_attribute_options_max_sort_order:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\GetAttributeOptionsMaxSortOrder'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Attribute\GetAttributeOptionsMaxSortOrder'
         arguments:
             - '@database_connection'

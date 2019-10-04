@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query;
+namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
@@ -156,22 +156,21 @@ class CountImpactedProducts
         $attributeCodesWithIsEmptyOperator = $this->getAttributeCodesWithIsEmptyOperator($pqb->getRawFilters());
         if (!empty($attributeCodesWithIsEmptyOperator)) {
             $pqb->getQueryBuilder()->addFilter([
-                    'bool' => [
-                        'should' => [
-                            [
-                                'terms' => [
-                                    'attributes_for_this_level' => $attributeCodesWithIsEmptyOperator
-                                ],
+                'bool' => [
+                    'should' => [
+                        [
+                            'terms' => [
+                                'attributes_for_this_level' => $attributeCodesWithIsEmptyOperator
                             ],
-                            [
-                                'terms' => [
-                                    'attributes_of_ancestors' => $attributeCodesWithIsEmptyOperator
-                                ],
-                            ]
-                        ]
-                    ]
-                ]
-            );
+                        ],
+                        [
+                            'terms' => [
+                                'attributes_of_ancestors' => $attributeCodesWithIsEmptyOperator
+                            ],
+                        ],
+                    ],
+                ],
+            ]);
         }
 
         return $pqb->execute()->count();

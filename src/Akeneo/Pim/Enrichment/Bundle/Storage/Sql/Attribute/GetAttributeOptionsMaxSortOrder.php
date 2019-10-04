@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query;
+namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Attribute;
 
 use Doctrine\DBAL\Connection;
 
@@ -35,7 +35,7 @@ SQL;
         $rows = $this->connection->executeQuery(
             $sql,
             [
-                'attributeCodes' => $attributeCodes
+                'attributeCodes' => $attributeCodes,
             ],
             [
                 'attributeCodes' => Connection::PARAM_STR_ARRAY,

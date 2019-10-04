@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query;
+namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Doctrine\DBAL\Connection;

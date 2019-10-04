@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query;
+namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Family;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
@@ -16,24 +16,16 @@ use Doctrine\ORM\EntityManagerInterface;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CountEntityWithFamilyVariant implements CountEntityWithFamilyVariantInterface
+final class CountEntityWithFamilyVariant implements CountEntityWithFamilyVariantInterface
 {
     /** @var EntityManagerInterface */
     private $entityManager;
 
-    /**
-     * @param EntityManagerInterface $entityManager
-     */
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
     }
 
-    /**
-     * @param FamilyVariantInterface $familyVariant
-     *
-     * @return int
-     */
     public function belongingToFamilyVariant(FamilyVariantInterface $familyVariant): int
     {
         $productModelCount = $this->countProductModels($familyVariant);
