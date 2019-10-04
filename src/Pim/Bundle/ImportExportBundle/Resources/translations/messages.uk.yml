@@ -1,7 +1,9 @@
+#Entities
 Job: Робота
 Connector: З'єднувач
 pim_import_export:
   connector: Коннектор
+  ## Job status
   status:
     0: Готовий
   batch_status:
@@ -31,6 +33,7 @@ pim_import_export:
   job_profile:
     tab:
       job_content.title: Вміст
+#Page titles:
 pim_title.export_profile.index: Керування профілями експорту
 pim_title.export_profile.edit: Профіль експорту %job.label% | Редагувати
 pim_title.export_profile.show: Профіль експорту %job.label% | Показати
@@ -41,12 +44,14 @@ pim_title.import_profile.edit: Профіль імпорту %job.label% | Ре�
 pim_title.import_profile.show: Профіль імпорту %job.label% | Показати
 pim_title.import_execution.index: Історія запусків імпорту
 pim_title.import_execution.show: Запуски імпорту | Подробиці
+#Entity and page header titles
 export profile:
   title: профіль експорту
   edit: редагувати профіль експорту
 import profile:
   title: профіль імпорту
   edit: редагувати профіль імпорту
+#ACLs
 pim_importexport:
   acl:
     export_profile:
@@ -85,10 +90,12 @@ pim_importexport:
 Upload and import now: Завантажити та імпортувати зараз
 import now: Імпортувати зараз
 export now: Експортувати зараз
+#Confirmation messages
 confirmation:
   remove:
     export profile: Ви впевнені, що ви хочете видалили профіль експорту %name%?
     import profile: Ви впевнені, що ви хочете видалити профіль імпорту %name%?
+#Flash messages
 flash:
   export:
     created: Експорт було успішно створено
@@ -104,6 +111,7 @@ History: Історія
 pane.accordion:
   global_settings: Глобальні налаштування
   filters: Фільтри
+#Popin titles
 popin.create:
   export_profile.title: Створити новий профіль експорту
   import_profile.title: Створити новий профіль імпорту
@@ -130,6 +138,7 @@ Warnings: Попередження
 Summary: Зведення
 Start: Початок
 End: Кінець
+#Process tracker
 set_attribute_requirements: Назначити вимоги атрибутів
 COMPLETED: Завершено
 STARTING: Запущено

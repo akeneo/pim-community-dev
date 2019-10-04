@@ -12,6 +12,7 @@ pim_user:
     tab:
       general.title: Generelt
       users.title: Brugere
+#user grids
 oro.user.controller:
   group.message.saved: "Gruppe gemt"
   role.message.saved: "Rolle gemt"
@@ -32,11 +33,13 @@ oro.user.grid.roles:
 oro.user.grid.groups:
   columns:
     name: "Navn"
+#Page titles
 pim_title:
   user.index: Brugere
   user_role.index: Roller
   user_group.index: Grupper
   system_configuration.index: Konfiguration
+#User
 user.title: Bruger
 user.overview: Bruger
 Users Management: Bruger administration
@@ -90,6 +93,7 @@ user:
   default_grid_view:
     none: Ingen
   timezone: Tidszone
+#Role
 Role: Rolle
 Owner: Ejer
 General: Generelt
@@ -126,6 +130,7 @@ oro_security:
       create: Opret en brugergruppe
       edit: Rediger brugergrupper
       delete: Fjern en brugergruppe
+#Security
 (default): Standardtilladelse på enheder
 VIEW: Se
 CREATE: Opret
@@ -142,11 +147,13 @@ oro:
       GLOBAL: Organisation
       SYSTEM: System
       NONE: Ingen
+#User Group
 Create group: Opret gruppe
 btn.create.user-group: Opret gruppe
 Has group: Har gruppen
 Save and Close: Gem og luk
 user-group.overview: Grupper
+#Login page
 Log in: Log på
 Remember me on this computer: Husk mig på denne computer
 Forgot your password?: Glemt din adgangskode?

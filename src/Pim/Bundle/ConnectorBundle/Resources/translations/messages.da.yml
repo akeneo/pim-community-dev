@@ -44,6 +44,7 @@ job_execution.summary:
   item_position: læs linjer
   skipped_in_root_product_model: produkter sprunget over med forældre
   skipped_in_sub_product_model: Produkter sprunget over uden forældre
+#Job labels
 batch_jobs:
   csv_product_export:
     label: Produkt eksport til CSV

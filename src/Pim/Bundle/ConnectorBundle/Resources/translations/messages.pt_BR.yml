@@ -45,6 +45,7 @@ job_execution.summary:
   item_position: ler linhas
   skipped_in_root_product_model: modelo de produto ignorado com pai
   skipped_in_sub_product_model: modelo de produto ignorado sem pai
+#Job labels
 batch_jobs:
   csv_product_export:
     label: Exportação de produto em CSV

@@ -63,6 +63,7 @@ pim:
       label: Currency
     category_filter:
       done: Done
+#Column configuration
 Available Columns: Available Columns
 Displayed Columns: Selected Columns
 datagrid_view.columns.min_message: You must select at least one datagrid column to display
@@ -84,15 +85,19 @@ pim_datagrid:
       confirm_title: Confirm deletion
       confirm_ok: OK
       empty_selection: No product selected
+#Quick export
 pim.grid.mass_action.quick_export.title: Quick Export
 pim.grid.mass_action.quick_export.launched: Quick export has been launched
+#Custom actions
 pim.grid.action.launch.title: Launch
 pim.grid.action.show.title: Show
 Please select view: Please select view
 Loading...: Loading...
 View: View
+#Datetimepicker
 from: from
 to: to
+#View selector
 grid.view_selector:
   default_view: Default view
   save_changes: Save this view
@@ -106,11 +111,14 @@ grid.view_selector:
   confirmation:
     remove: Are you sure you want to delete this view?
     delete: Confirm deletion
+#View selector flash messages
 grid.view_selector.flash.updated: Datagrid view successfully updated
+#Display selector
 grid.display_selector:
   label: Display
   gallery: Gallery
   list: List
+#Credentials cell
 Client ID: Client ID
 Secret: Secret
 grid.empty_results:

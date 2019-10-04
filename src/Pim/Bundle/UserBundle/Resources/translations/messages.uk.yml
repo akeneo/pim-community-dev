@@ -11,6 +11,7 @@ pim_user:
     tab:
       general.title: Загальне
       users.title: Користувачі
+#user grids
 oro.user.controller:
   group.message.saved: "Групу збережено"
   role.message.saved: "Роль збережено"
@@ -22,10 +23,12 @@ oro.user.grid.users:
     email: "Email"
     firstName: "Ім'я"
     lastName: "Прізвище"
+#Page titles
 pim_title:
   user.index: Користувачі
   user_role.index: Ролі
   system_configuration.index: Конфігурація
+#User
 user.title: Користувач
 Users Management: Керування користувачами
 Create user: Створити користувача
@@ -74,6 +77,7 @@ user:
   product_grid_filters: Фільтри товарів
   default_product_grid_view:
     label: Усталене представлення сітки продуктів
+#Role
 Role: Роль
 Owner: Власник
 General: Загальне
@@ -107,6 +111,7 @@ oro_security:
       create: Створення групи користувача
       edit: Зміна груп користувача
       delete: Видалення групи користувача
+#Security
 (default): Дозволи на сутності за промовчанням
 VIEW: Вид
 ASSIGN: Призначити
@@ -117,8 +122,10 @@ oro:
       LOCAL: Бізнес-підрозділ
       DEEP: Ділення
       GLOBAL: Організація
+#User Group
 Create group: Створити групу
 Has group: Має групу
+#Login page
 Log in: Увійти
 Remember me on this computer: Запам'ятати мене на цьому комп'ютері
 Forgot your password?: Забули пароль?

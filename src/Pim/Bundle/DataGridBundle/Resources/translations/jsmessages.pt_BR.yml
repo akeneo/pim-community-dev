@@ -62,6 +62,7 @@ pim:
       label: Moeda
     category_filter:
       done: Cocluído
+#Column configuration
 Available Columns: Colunas Disponíveis
 Displayed Columns: Colunas selecionadas
 datagrid_view.columns.min_message: Você deve selecionar ao menos uma coluna para exibição
@@ -81,15 +82,19 @@ pim_datagrid:
       confirm_title: Confirmar exclusão
       confirm_ok: OK
       empty_selection: Nenhum produto selecionado
+#Quick export
 pim.grid.mass_action.quick_export.title: Exportação Rápida
 pim.grid.mass_action.quick_export.launched: A exportação rápida foi iniciada
+#Custom actions
 pim.grid.action.launch.title: Começar
 pim.grid.action.show.title: Exibir
 Please select view: Por favor, selecione uma visualização
 Loading...: Carregando...
 View: Visão
+#Datetimepicker
 from: de
 to: para
+#View selector
 grid.view_selector:
   default_view: Vista por defeito
   save_changes: Salvar essa visualização
@@ -102,7 +107,9 @@ grid.view_selector:
   choose_label: Escolha um rótulo para a visualização
   confirmation:
     delete: Confirmar exclusão
+#View selector flash messages
 grid.view_selector.flash.updated: Visualização de grid atualizada com sucesso
+#Display selector
 grid.display_selector:
   label: Exibir
 grid.empty_results:

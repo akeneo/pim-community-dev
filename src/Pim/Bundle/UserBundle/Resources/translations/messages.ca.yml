@@ -12,6 +12,7 @@ pim_user:
     tab:
       general.title: General
       users.title: Usuaris
+#user grids
 oro.user.controller:
   group.message.saved: "Grup desat"
   role.message.saved: "Rol desat"
@@ -32,11 +33,13 @@ oro.user.grid.roles:
 oro.user.grid.groups:
   columns:
     name: "Nom"
+#Page titles
 pim_title:
   user.index: Usuaris
   user_role.index: Rols
   user_group.index: Grups
   system_configuration.index: Configuració
+#User
 user.title: Usuari
 user.overview: Usuari
 Users Management: Gestió d'usuaris
@@ -91,6 +94,7 @@ user:
   default_grid_view:
     none: Cap
   timezone: Zona horària
+#Role
 Role: Rol
 Owner: Propietari
 General: General
@@ -127,6 +131,7 @@ oro_security:
       create: Crear un grup d'usuaris
       edit: Editar grups d'usuaris
       delete: Suprimir un grup d'usuaris
+#Security
 (default): Permís per defecte a les entitats
 VIEW: Vista
 CREATE: Crear
@@ -143,11 +148,13 @@ oro:
       GLOBAL: Organització
       SYSTEM: Sistema
       NONE: Cap
+#User Group
 Create group: Crear grup
 btn.create.user-group: Crear grup
 Has group: Té grup
 Save and Close: Desar i tancar
 user-group.overview: Grups
+#Login page
 Log in: Entrar
 Remember me on this computer: Recorda'm en aquest ordinador
 Forgot your password?: Heu oblidat la contrasenya?

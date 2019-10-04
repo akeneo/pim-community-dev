@@ -1,34 +1,43 @@
 pim_enrich:
+  #Product
   product:
     tab:
       attribute.title: Egenskaber
       association.title: Tilknytninger
       completeness.title: Fuldstændighed
       history.title: Historik
+    #Product comparison
     no_comparison_locale_available: Ingen andre landestandarder er tilgængelige for sammenligning
     no_compared_media: Ingen medier er tilgængelig til sammenligning
+  #Attribute
   attribute:
     tab:
       parameter.title: Parametre
       value.title: Værdier
       history.title: Historik
+  #Attribute group
   attribute_group:
     tab:
       attribute.title: Egenskaber
       history.title: Historik
+  #Family
   family:
     tab:
       attribute.title: Egenskaber
       history.title: Historik
+  #Association type
   association_type:
     tab:
       history.title: Historik
+  #Category
   category:
     tab:
       history.title: Historik
+  #Locale
   locale:
     tab:
       permission.title: Rettigheder
+  #Product group
   group:
     axis.help: 'Akse er attributter, der definerer varianter af gruppen variant. Akse er attributter med optioner, ikke oversættelige og ikke postobjektet. Det kan ikke ændres efter oprettelsen af gruppen variant.'
     type:
@@ -39,12 +48,14 @@ pim_enrich:
     tab:
       product.title: Produkter
       history.title: Historik
+  #Product completeness
   completeness:
     progress_bar.title: '%ratio%% komplet (1 værdi kræves) |%ratio%% komplet (%count% krævede værdier)'
     subtitle: '{0} komplet|{1} 1 værdi mangler|]1, Inf] %count% manglende værdier'
     missing_attributes: Mangler værdi|Manglende værdier
     legend:
       locale_not_associated: Landestandarden er ikke er knyttet til denne kanal
+  #Mass edit operations
   mass_edit_action:
     limit_exceeded: Vælg venligst mindst %limit% elementer der skal redigeres
     product:
@@ -110,10 +121,12 @@ pim_enrich:
     mass_action:
       quick_export:
         launched_flash: Jobbet, der eksporterer produkter kører i øjeblikket
+  #Sequential edit operations
   sequential_edit_action:
     product:
       previous: Spring tilbage til "%product%" uden at gemme.
       next: Spring til "%product%" uden at gemme.
+  #ACLs
   acl:
     locale:
       index: Liste over landestandarder
@@ -223,6 +236,7 @@ pim_enrich:
       remove_completeness_for_channel_and_locale:
         start: Landestandard er blevet fjernet fra denne kannal. Relaterede fulstændighed ajourføres 
         done: Fjernelse af landestandard fra denne kannal er afsluttet.
+#Entity and page header titles
 attribute:
   title: attribut
   edit: rediger attribut
@@ -275,6 +289,7 @@ association type:
   title: sammenhængstype
   create: opret sammenhængstype
   edit: redigere sammehængstype
+#Buttons
 btn:
   create:
     attribute: opret attribut
@@ -304,6 +319,7 @@ btn:
   to parent: tilbage til forældre
   download_pdf: PDF
   download: download
+#Confirmation messages
 confirmation:
   confirm: Bekræftelse
   leave: Er du sikker på du vil forlade denne side?
@@ -325,6 +341,7 @@ confirmation:
     remove attribute: Vil du fjerne attributten %name% fra denne familie?
   product:
     remove attribute: Vil du fjerne attributten %name% fra denne familie?
+#Flash messages
 flash:
   entity:
     removed: Elementet blev slettet
@@ -387,6 +404,7 @@ flash:
   user:
     removed: Brugeren blev fjernet
   error ocurred: Handlingen fejlede. Prøv venligst igen.
+#Info messages
 info:
   updated: Der er ikke-gemte ændringer.
   category:
@@ -421,6 +439,7 @@ info:
     auto option sorting: Hvis aktiveret, bliver etiketter automatisk sorteret efter deres oversatte etiket
   completeness:
     not calculated: Endnu ikke beregnet
+#Form elements
 Options: Muligheder
 Created at: Oprettet den
 Updated at: Opdateret den
@@ -491,16 +510,20 @@ Category tree: Kategoritræstrukturen
 Completeness: Fuldstændighed
 Attribute used as label: Attributten anvendes som etiket
 Credentials: Legitimationsoplysninger
+#Scopes
 Global: Global
 Expand all channels: Udvid alle kanaler
 Collapse all channels: Skjul alle kanaler
+#Variants
 Always override: Altid tilsidesætte
 Ask: Spørg
+#Attribute group
 General Properties: Generelle egenskaber
 Group values: Gruppeværdier
 New group: Ny gruppe
 Groups overview: Gruppe oversigt
 'Y-m-d h:i:s': 'Å-m-d t:m:s'
+#Attribute properties
 Max characters: Maks. tegn
 Validation rule: Valideringsregel
 Validation regexp: Validering regexp
@@ -521,8 +544,11 @@ URL: URL
 Regular expression: Regulære udtryk
 Minimum input length: Minimum inputlængde
 Default: Standard
+#Family
 Attributes: Egenskaber
+#Category
 Title: Titel
+#Page titles
 pim_title.attribute_group:
   index: "Attributgrupper"
   create: "Attribut grupper | Oprette"
@@ -577,12 +603,15 @@ pim_catalog_date: Dato
 pim_catalog_metric: Metrisk
 pim_reference_data_simpleselect: Referencedata simpel Vælg
 pim_reference_data_multiselect: Reference data multi Vælg
+#Locales
 Activated: Aktiveret
 Disable: Deaktivér
+#Sequential edit operations
 pim_enrich.sequential_edit_action:
   product:
     previous: Spring tilbage til "%product%" uden at gemme.
     next: Spring til "%product%" uden at gemme.
+#Mass edit operations
 pim_enrich.mass_edit_action:
   limit_exceeded: Vælg venligst mindst %limit% elementer der skal redigeres
   product:
@@ -632,6 +661,7 @@ Select: Vælg
 Remove this attribute: Fjern denne attribut
 Copy: Kopier
 Current tab: Aktuelle fane
+#Product view
 Group: Gruppe
 View group: Se gruppe
 Products: Produkter
@@ -646,11 +676,13 @@ pane.accordion:
   label_translations: Etiket oversættelser
   options: Muligheder
   group_values: Gruppeværdier
+#Popin titles
 popin.create:
   association_type.title: Oprette en ny sammenhæng
   group.title: Opret en ny gruppe
   product.title: Opret et nyt produkt
   option.title: Opret en ny mulighed
+#Datagrid contents
 In group: I gruppen
 Attribute as label: Attribut som etiket
 Is associated: Er forbundet
@@ -658,6 +690,7 @@ Complete: Fuldført
 Enabled: Aktiveret
 Disabled: Deaktiveret
 Status: Status
+#Versioning / history
 Change History: Ændre historie
 Data Audit: Data revision
 Data Audit - System: 'Data revision - system'
@@ -672,6 +705,7 @@ Logged at: Logget af
 Deleted: Slettet
 Old values: Gamle værdier
 New values: Nye værdier
+#Configuration
 System configuration: Systemkonfiguration
 General setup: Generel opsætning
 Localization: Lokalisering
@@ -703,6 +737,7 @@ oro.locale:
       language: "Vælge det systemsprog du ønsker at bruge"
       timezone: "Vælg tidszone for visning af dato og klokkeslæt"
       currency: "Vælg standardvalutaen"
+#Datagrid
 Selected products successfully deleted: Udvalgte produkter blev slettet
 pim_mass_edit:
   notification:
@@ -733,6 +768,7 @@ remove_product_value.steps.update_product_value_processor.title: Fjern produktv�
 edit_common_attributes: Rediger attributter
 perform.steps.duplicated.title: Duplikeret akse
 perform.steps.excluded.title: Udelukkede produkt
+#Background jobs & steps labels
 batch_jobs:
   add_product_value:
     label: Tilføj produktværdi

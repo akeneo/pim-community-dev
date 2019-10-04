@@ -14,12 +14,14 @@ oro.grid.mass_action.delete.confirm_content: Sind Sie sicher, dass Sie die gewä
 oro.grid.mass_action.delete.item_limit: Sie können nicht mehr als %limit% Produkte massenhaft löschen (%count% ausgewählt)
 oro.grid.datagrid.page_size.all: Alle
 oro.grid.mass_action.delete.success_message: "{0} Keine Entität wurde entfernt|{1} Eine Entität wurde entfernt|]1,Inf[ %count% Entitäten wurden entfernt"
+#Datagrid views constraints
 datagrid_view:
   columns:
     min_message: Sie müssen mindestens eine Spalte der Tabelle zur Anzeige auswählen
   label:
     unique_message: Die Bezeichnung muss eindeutig sein.
     not_blank_message: Die Bezeichnung darf nicht leer sein.
+#View selector flash messages
 grid.view_selector.flash:
   created: Tabellenansicht erfolgreich erstellt
   removed: Tabellenansicht erfolgreich entfernt

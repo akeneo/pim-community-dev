@@ -1,3 +1,4 @@
+#Grid action messages
 confirmation:
   title: Підтвердження
   remove:
@@ -110,6 +111,7 @@ Delete the product: Видалити продукт
 Change status: Змінити статус
 Toggle status: Переключити статус
 mass_delete: Масове видалення
+#Quick export labels
 pim:
   grid:
     mass_action:
@@ -122,6 +124,7 @@ pim:
       mass_edit: Масові дії
       category_edit: Переміщення товарів в категоріях
       sequential_edit: Послідовне редагування
+#Jstree context menu actions
 jstree.create: Створити
 switch_on: "Так"
 switch_off: "Ні"
@@ -926,6 +929,7 @@ pim_enrich.error:
   exception.title: Ой, ні! Сталася помилка {{ status_code }}...
   http:
     403: Заборонено. У вас немає доступу до цієї сторінки
+#Page titles
 page_title:
   pim_enrich_attributegroup_index: Групи атрибутів
   pim_enrich_attributegroup_edit: Групи атрибутів {{ group.label }}| Редагувати
@@ -950,6 +954,7 @@ page_title:
   pim_enrich_api_connection_index: API підключення
   pim_enrich_api_connection_create: Підключення до API | Створити
   pim_enrich_mass_edit_action: Масове редагування
+#Batch job labels
 batch_jobs:
   add_product_value:
     label: Додати значення продукту

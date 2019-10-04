@@ -40,6 +40,7 @@ oro.datagrid.nocolumns: Sense columnes configurades per aquesta graella
 oro.datagrid.pagination.label: "Pàgina"
 oro.datagrid.pagination.totalPages: "de {{ totalPages }}"
 oro.datagrid.pagination.totalRecords: "{{ totalRecords }} registres"
+#TODO @merge 3.0: move this key under 'pim.datagrid.limit_warning'
 oro.datagrid.pagination.limit_warning: "La grilla no pot mostrar més resultats {{ limit }}, prova a filtrar criteris de cerca addicionals."
 oro.datagrid.action.reset: "Reinicia"
 oro.datagrid.action.refresh: "Actualitza"
@@ -64,6 +65,7 @@ pim:
       label: Moneda
     category_filter:
       done: Fet
+#Column configuration
 Available Columns: Columnes disponibles
 Displayed Columns: Columnes seleccionades
 datagrid_view.columns.min_message: Heu de seleccionar almenys una columna de la graella de dades per mostrar
@@ -85,15 +87,19 @@ pim_datagrid:
       confirm_title: Confirmar l'eliminació
       confirm_ok: OK
       empty_selection: No hi ha productes seleccionats
+#Quick export
 pim.grid.mass_action.quick_export.title: Exportació ràpida
 pim.grid.mass_action.quick_export.launched: S'ha executat la exportació ràpida
+#Custom actions
 pim.grid.action.launch.title: Arrencar
 pim.grid.action.show.title: Mostrar
 Please select view: Si us plau, seleccioneu la visualització
 Loading...: Carregant...
 View: Vista
+#Datetimepicker
 from: des de
 to: fins a
+#View selector
 grid.view_selector:
   default_view: Vista per defecte
   save_changes: Desa aquesta vista
@@ -107,11 +113,14 @@ grid.view_selector:
   confirmation:
     remove: Està segur que vol suprimir aquesta vista?
     delete: Confirmar l'eliminació
+#View selector flash messages
 grid.view_selector.flash.updated: Vista de Graella de dades actualitzada correctament
+#Display selector
 grid.display_selector:
   label: Mostrar
   gallery: Galeria
   list: Llista
+#Credentials cell
 Client ID: Identificador del client
 Secret: Secret
 grid.empty_results:

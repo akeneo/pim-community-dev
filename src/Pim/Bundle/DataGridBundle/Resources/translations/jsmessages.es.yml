@@ -40,6 +40,7 @@ oro.datagrid.nocolumns: Sin columnas configuradas para esta cuadrícula
 oro.datagrid.pagination.label: "Página"
 oro.datagrid.pagination.totalPages: "de {{ totalPages }}"
 oro.datagrid.pagination.totalRecords: "{{ totalRecords }} registros"
+#TODO @merge 3.0: move this key under 'pim.datagrid.limit_warning'
 oro.datagrid.pagination.limit_warning: "La cuadrícula no puede mostrar más de {{ limit }} resultados, intente filtrar más criterios de búsqueda."
 oro.datagrid.action.reset: "Reiniciar"
 oro.datagrid.action.refresh: "Actualizar"
@@ -64,6 +65,7 @@ pim:
       label: Moneda
     category_filter:
       done: Hecho
+#Column configuration
 Available Columns: Columnas disponibles
 Displayed Columns: Columnas seleccionadas
 datagrid_view.columns.min_message: Debe seleccionar al menos una columna de datagrid para mostrar
@@ -85,15 +87,19 @@ pim_datagrid:
       confirm_title: Confirmar la eliminación
       confirm_ok: OK
       empty_selection: Ningún producto seleccionado
+#Quick export
 pim.grid.mass_action.quick_export.title: Exportación rápida
 pim.grid.mass_action.quick_export.launched: Se ha ejecutado la exportación rápida
+#Custom actions
 pim.grid.action.launch.title: Ejecutar
 pim.grid.action.show.title: Mostrar
 Please select view: Por favor, seleccione Vista
 Loading...: Cargando...
 View: Vista
+#Datetimepicker
 from: desde
 to: hasta
+#View selector
 grid.view_selector:
   default_view: Vista por defecto
   save_changes: Guardar esta vista
@@ -107,11 +113,14 @@ grid.view_selector:
   confirmation:
     remove: '¿Está seguro que desea eliminar esta vista?'
     delete: Confirmar la eliminación
+#View selector flash messages
 grid.view_selector.flash.updated: Vista de cuadrícula de datos actualizada correctamente
+#Display selector
 grid.display_selector:
   label: Mostrar
   gallery: Galería
   list: Lista
+#Credentials cell
 Client ID: Client ID
 Secret: Secreto
 grid.empty_results:

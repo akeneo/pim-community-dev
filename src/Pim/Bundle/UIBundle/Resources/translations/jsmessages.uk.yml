@@ -29,6 +29,7 @@ Second: Секунда
 Millisecond: Мілісекунда
 Microsecond: Мікросекунда
 "Time Zone": "Часовий пояс"
+#PIM messages
 Localized value: Локалізоване значення
 Columns: Стовпці
 Datagrid Configuration: Конфігурація сітки
@@ -41,6 +42,7 @@ jstree:
   no_tree: Немає доступного дерева
   include_sub: Включати підкатегорії
   loading: Завантаження ...
+#Datetimepicker
 datetimepicker:
   days:
     Sunday: Неділя
@@ -91,6 +93,7 @@ datetimepicker:
     Oct: Жов
     Nov: Лис
     Dec: Гру
+#ORO
 oro_config:
   form:
     config:

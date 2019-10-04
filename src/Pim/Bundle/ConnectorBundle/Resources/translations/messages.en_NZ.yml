@@ -45,6 +45,7 @@ job_execution.summary:
   item_position: read lines
   skipped_in_root_product_model: skipped product model with parent
   skipped_in_sub_product_model: skipped product model without parent
+#Job labels
 batch_jobs:
   csv_product_export:
     label: Product export in CSV

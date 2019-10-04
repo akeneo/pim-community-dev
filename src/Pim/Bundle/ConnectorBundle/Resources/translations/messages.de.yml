@@ -46,6 +46,7 @@ job_execution.summary:
   item_position: gelesene Zeilen
   skipped_in_root_product_model: Produktmodell mit übergeordneter Ebene übersprungen
   skipped_in_sub_product_model: Produktmodell ohne übergeordnete Ebene übersprungen
+#Job labels
 batch_jobs:
   csv_product_export:
     label: Produkt-Export als CSV-Datei

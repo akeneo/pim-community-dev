@@ -1,3 +1,4 @@
+#ORO messages
 Close: Luk
 Update: Opdater
 Selected Rows: Markerede rækker
@@ -31,10 +32,12 @@ Second: Sekund
 Millisecond: Millisekund
 Microsecond: Mikrosekund
 "Time Zone": "Tidszone"
+#PIM messages
 Localized value: Lokaliseret værdi
 Columns: Kolonner
 Datagrid Configuration: DataGrid konfiguration
 Apply: Anvend
+#Filters
 Action: Handling
 Unit: Enhed
 Currency: Valuta
@@ -47,6 +50,7 @@ jstree:
   no_tree: Intet træ tilgængeligt
   include_sub: Inkluder underkategorier
   loading: Indlæser ...
+#Datetimepicker
 datetimepicker:
   days:
     Sunday: Søndag
@@ -98,6 +102,7 @@ datetimepicker:
     Oct: Okt
     Nov: Nov
     Dec: Dec
+#ORO
 oro_config:
   form:
     config:

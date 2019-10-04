@@ -16,6 +16,7 @@ pim_connector:
     locales:
       validation:
         not_blank: One locale must be selected, please choose a locale to export.
+#Page titles
 page_title:
   pim_importexport_export_profile_index: Export profiles management
   pim_importexport_export_profile_edit: Export profile {{ job.label }} | Edit

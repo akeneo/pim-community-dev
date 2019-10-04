@@ -1,3 +1,4 @@
+#Grid action messages
 confirmation:
   remove:
     item: Er du sikker på at du vil slette dette emne?
@@ -111,6 +112,7 @@ Delete the product: Slet produktet
 Change status: Skift status
 Toggle status: Skift status
 mass_delete: Masse slet
+#Quick export labels
 pim:
   grid:
     mass_action:
@@ -123,6 +125,7 @@ pim:
       mass_edit: Massehandlinger
       category_edit: Flytte produkter i kategorier
       sequential_edit: Sekventiel redigering
+#Jstree context menu actions
 jstree.create: Opret
 switch_on: "Ja"
 switch_off: "Nej"
@@ -940,6 +943,7 @@ pim_enrich.error:
   exception.title: Oh snap! Der opstod en {{ status_code }}...
   http:
     403: Forbudt. Du har ikke adgang til denne side
+#Page titles
 page_title:
   oro_default: Kontrolpanel
   pim_enrich_attributegroup_index: Attributgrupper
@@ -973,6 +977,7 @@ page_title:
   pim_enrich_job_tracker_show: Process overvågning | Vis job
   pim_enrich_api_connection_index: API-forbindelser
   pim_enrich_api_connection_create: API forbindelser | Oprette
+#Batch job labels
 batch_jobs:
   add_product_value:
     label: Tilføj produktværdi

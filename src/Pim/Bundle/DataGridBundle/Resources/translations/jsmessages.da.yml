@@ -59,6 +59,7 @@ pim:
       label: Valuta
     category_filter:
       done: Udført
+#Column configuration
 Available Columns: Tilgængelige kolonner
 Displayed Columns: Valgte kolonner
 datagrid_view.columns.min_message: Du skal vælge mindst én datagrid kolonne der skal vises
@@ -80,15 +81,19 @@ pim_datagrid:
       confirm_title: Bekræft sletning
       confirm_ok: OK
       empty_selection: Du har ikke valgt et produkt
+#Quick export
 pim.grid.mass_action.quick_export.title: Hurtig eksport
 pim.grid.mass_action.quick_export.launched: Hurtig eksport er blevet startet
+#Custom actions
 pim.grid.action.launch.title: Kør
 pim.grid.action.show.title: Vis
 Please select view: Vælg visning
 Loading...: Indlæser...
 View: Se
+#Datetimepicker
 from: fra
 to: til
+#View selector
 grid.view_selector:
   default_view: Standardvisning
   save_changes: Gem denne visning
@@ -102,11 +107,14 @@ grid.view_selector:
   confirmation:
     remove: Er du sikker på du vil slette denne visning?
     delete: Bekræft sletning
+#View selector flash messages
 grid.view_selector.flash.updated: DataGrid visningen er opdateret
+#Display selector
 grid.display_selector:
   label: Vis
   gallery: Galleri
   list: Liste
+#Credentials cell
 Client ID: Klient ID
 Secret: Hemmelighed
 grid.empty_results:

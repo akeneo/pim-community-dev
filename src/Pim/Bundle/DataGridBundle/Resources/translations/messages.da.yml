@@ -14,12 +14,14 @@ oro.grid.mass_action.delete.confirm_content: Er du sikker på at du vil sletter 
 oro.grid.mass_action.delete.item_limit: Du kan ikke masse slette mere end %limit% af produkterne (%count% valgte)
 oro.grid.datagrid.page_size.all: Alle
 oro.grid.mass_action.delete.success_message: "{0} ingen enheder blev fjernet|{1} én enhed blev fjernet|]1, Inf [%count% enheder blev fjernet"
+#Datagrid views constraints
 datagrid_view:
   columns:
     min_message: Du skal vælge mindst én datagrid kolonne der skal vises
   label:
     unique_message: Etiketten skal være unik
     not_blank_message: Etiketten må ikke være tom
+#View selector flash messages
 grid.view_selector.flash:
   created: DataGrid visningen er oprettet
   removed: DataGrid visningen er fjernet

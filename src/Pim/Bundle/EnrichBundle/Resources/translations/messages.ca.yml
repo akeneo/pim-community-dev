@@ -1,4 +1,5 @@
 pim_enrich:
+  #Product
   product:
     tab:
       attribute.title: Atributs
@@ -6,18 +7,22 @@ pim_enrich:
       association.title: Associacions
       completeness.title: Integritat
       history.title: Històric
+    #Product comparison
     no_comparison_locale_available: No hi ha cap altre configuració regional està disponible per a la comparació
     no_compared_media: No hi ha cap fitxer multimèdia disponible per a la comparació
+  #Attribute
   attribute:
     tab:
       parameter.title: Paràmetres
       value.title: Valors
       history.title: Històric
+  #Attribute group
   attribute_group:
     tab:
       property.title: Propietats
       attribute.title: Atributs
       history.title: Històric
+  #Family
   family:
     info:
       cant_remove_attribute_used_as_axis: No podeu suprimir aquest atribut utilitzat com un eix variant en una variant familiar
@@ -25,21 +30,26 @@ pim_enrich:
       property.title: Propietats
       attribute.title: Atributs
       history.title: Històric
+  #Association type
   association_type:
     tab:
       property.title: Propietats
       history.title: Històric
+  #Group type
   group_type:
     tab:
       property.title: Propietats
+  #Category
   category:
     tab:
       property.title: Propietats
       history.title: Històric
+  #Locale
   locale:
     tab:
       property.title: Propietats
       permission.title: Permisos
+  #Product group
   group:
     axis.help: 'Els eixos defineixen els atributs sobre els que els productes del grup han de variar. Els eixos són atributs amb opcions, sense configuració regional i sense abast. No es poden canviar després de la creació del grup de variants.'
     type:
@@ -51,12 +61,14 @@ pim_enrich:
       product.title: Productes
       property.title: Propietats
       history.title: Històric
+  #Product completeness
   completeness:
     progress_bar.title: '%ratio% completa (1 valor requerit) |%ratio%% completa (%count% valors requerits)'
     subtitle: '{0} Complet|{1} falta 1 valor|] 1, Inf] %count% valors perduts'
     missing_attributes: Valor perdut|Valors perduts
     legend:
       locale_not_associated: Configuració regional no associada a aquest canal
+  #Mass edit operations
   mass_edit_action:
     limit_exceeded: Trieu menys de %limit% elements per editar
     product:
@@ -130,10 +142,12 @@ pim_enrich:
     mass_action:
       quick_export:
         launched_flash: La tasca d'exportació del(s) producte(s) està en marxa
+  #Sequential edit operations
   sequential_edit_action:
     product:
       previous: Tornar a "%product%" sense guardar.
       next: Vés a "%product%" sense guardar.
+  #ACLs
   acl:
     locale:
       index: Llistar configuracions regionals
@@ -249,6 +263,7 @@ pim_enrich:
       remove_completeness_for_channel_and_locale:
         start: El local s'ha eliminat del canal. Actualment s'està netejant la completesa d'ells.
         done: S'ha acabat de suprimir el local en un canal.
+#Entity and page header titles
 attribute:
   title: atribut
   edit: editar atribut
@@ -304,7 +319,9 @@ association type:
   title: tipus d'associació
   create: crear tipus d'associació
   edit: editar tipus d'associació
+#Custom titles
 products: productes
+#Buttons
 btn:
   create:
     attribute: crear atribut
@@ -335,6 +352,7 @@ btn:
   to parent: tornar al nivell superior
   download_pdf: PDF
   download: descarregar
+#Confirmation messages
 confirmation:
   confirm: Confirmació
   delete: Confirmar l'eliminació
@@ -357,6 +375,7 @@ confirmation:
     remove attribute: Esteu segur que voleu suprimir l'atribut %name% d'aquesta família?
   product:
     remove attribute: Esteu segur que voleu suprimir l'atribut %name% d'aquest producte?
+#Flash messages
 flash:
   entity:
     removed: L'element ha estat suprimit
@@ -419,6 +438,7 @@ flash:
   user:
     removed: Usuari suprimit correctament
   error ocurred: Acció fallida. Si us plau, torneu-ho a provar.
+#Info messages
 info:
   updated: Hi ha canvis sense guardar.
   category:
@@ -453,6 +473,7 @@ info:
     auto option sorting: Si s'activa, les opcions s'ordenaran automàticament per les seves etiquetes configurades regionalment
   completeness:
     not calculated: No s'ha calculat encara
+#Form elements
 Options: Opcions
 Created at: Creat el
 Updated at: Actualitzat el
@@ -527,17 +548,21 @@ Category tree: Arbre de categories
 Completeness: Integritat
 Attribute used as label: Atribut utilitzat com a etiqueta
 Credentials: Credencials
+#Scopes
 Global: Global
 Channel: Canal
 Expand all channels: Ampliar tots els canals
 Collapse all channels: Col·lapsa tots els canals
+#Variants
 Always override: Anul·lar sempre
 Ask: Preguntar
+#Attribute group
 General Properties: Propietats generals
 Group values: Valors de grup
 New group: Nou grup
 Groups overview: Resum de grups
 'Y-m-d h:i:s': 'A-m-d H:m:s'
+#Attribute properties
 Max characters: Màxim de caràcters
 Validation rule: Regla de validació
 Validation regexp: Validació regexp
@@ -558,8 +583,11 @@ URL: URL
 Regular expression: Expressió regular
 Minimum input length: Longitud mínima d'entrada
 Default: Per defecte
+#Family
 Attributes: Atributs
+#Category
 Title: Títol
+#Page titles
 pim_title.attribute_group:
   index: "Grups d'atribut"
   create: "Grups d'atributs | Crear"
@@ -619,12 +647,15 @@ pim_catalog_date: Data
 pim_catalog_metric: Mètrica
 pim_reference_data_simpleselect: Selecció simple de dades de referència
 pim_reference_data_multiselect: Selecció múltiple de dades de referència
+#Locales
 Activated: Activat
 Disable: Deshabilitar
+#Sequential edit operations
 pim_enrich.sequential_edit_action:
   product:
     previous: Tornar a "%product%" sense guardar.
     next: Anar a "%product%" sense guardar.
+#Mass edit operations
 pim_enrich.mass_edit_action:
   limit_exceeded: Trieu menys de %limit% elements per editar
   product:
@@ -683,9 +714,11 @@ Select: Seleccionar
 Remove this attribute: Eliminar aquest atribut
 Copy: Copiar
 Current tab: Pestanya actual
+#Product view
 Group: Grup
 View group: Veure grup
 Products: Productes
+#Tabs
 Properties: Propietats
 History: Històric
 pane.accordion:
@@ -698,11 +731,13 @@ pane.accordion:
   label_translations: Traduccions d'etiquetes
   options: Opcions
   group_values: Valors de grup
+#Popin titles
 popin.create:
   association_type.title: Crear un nou tipus d'associació
   group.title: Crea un grup nou
   product.title: Crear un nou producte
   option.title: Crear una nova opció
+#Datagrid contents
 In group: En grup
 Attribute as label: Atribut com a etiqueta
 Is associated: Està associat
@@ -712,6 +747,7 @@ Updated At: Actualitzat el
 Enabled: Habilitat
 Disabled: Deshabilitat
 Status: Estat
+#Versioning / history
 Change History: Historial de canvis
 Data Audit: Auditoria de dades
 Data Audit - System: 'Auditoria de dades - sistema'
@@ -726,6 +762,7 @@ Logged at: Connectat a
 Deleted: Eliminat
 Old values: Valors antics
 New values: Valors nous
+#Configuration
 System configuration: Configuració de sistema
 General setup: Organització general
 Localization: Configuració regional
@@ -757,6 +794,7 @@ oro.locale:
       language: "Seleccioneu l'idioma de sistema que desitjeu utilitzar"
       timezone: "Seleccioneu la zona horària per mostrar data i hora"
       currency: "Seleccioneu la moneda per defecte"
+#Datagrid
 Selected products successfully deleted: Els productes seleccionats s'han eliminat correctament
 pim_mass_edit:
   notification:
@@ -788,6 +826,7 @@ edit_common_attributes: Editar atributs
 edit_common_attributes_clean: Netejar arxius per atributs
 perform.steps.duplicated.title: Eix duplicat
 perform.steps.excluded.title: Producte exclòs
+#Background jobs & steps labels
 batch_jobs:
   add_product_value:
     label: Afegir valor de producte

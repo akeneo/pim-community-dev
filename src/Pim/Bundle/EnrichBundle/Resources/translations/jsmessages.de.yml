@@ -1,3 +1,4 @@
+#Grid action messages
 confirmation:
   title: Bestätigen
   remove:
@@ -115,6 +116,7 @@ Delete the product: Produkt löschen
 Change status: Status ändern
 Toggle status: Status umschalten
 mass_delete: Mehrfachauswahl löschen
+#Quick export labels
 pim:
   grid:
     mass_action:
@@ -127,6 +129,7 @@ pim:
       mass_edit: Massenbearbeitung
       category_edit: Produkte in Kategorien verschieben
       sequential_edit: Sequentielle Bearbeitung
+#Jstree context menu actions
 jstree.create: Anlegen
 jstree.done: Fertig
 switch_on: "Ja"
@@ -1112,6 +1115,7 @@ pim_enrich.error:
   exception.title: Oh nein! Ein {{ status_code }} Fehler ist aufgetreten...
   http:
     403: Sie haben keine Berechtigung, diese Seite anzuzeigen
+#Page titles
 page_title:
   oro_default: Dashboard
   pim_enrich_attributegroup_index: Attributgruppen
@@ -1150,6 +1154,7 @@ page_title:
   pim_enrich_api_connection_create: API Verbindungen | Erstellen
   pim_enrich_mass_edit_action: Massenbearbeitung
   pim_analytics_system_info_index: Systeminformationen
+#Batch job labels
 batch_jobs:
   add_product_value:
     label: Produktwert hinzufügen

@@ -1,4 +1,5 @@
 pim_enrich:
+  #Product
   product:
     tab:
       attribute.title: Attributes
@@ -6,18 +7,22 @@ pim_enrich:
       association.title: Associations
       completeness.title: Completeness
       history.title: History
+    #Product comparison
     no_comparison_locale_available: No other locale is available for comparison
     no_compared_media: No media available for comparison
+  #Attribute
   attribute:
     tab:
       parameter.title: Parameters
       value.title: Values
       history.title: History
+  #Attribute group
   attribute_group:
     tab:
       property.title: Properties
       attribute.title: Attributes
       history.title: History
+  #Family
   family:
     info:
       cant_remove_attribute_used_as_axis: Cannot remove this attribute used as a variant axis in a family variant
@@ -25,21 +30,26 @@ pim_enrich:
       property.title: Properties
       attribute.title: Attributes
       history.title: History
+  #Association type
   association_type:
     tab:
       property.title: Properties
       history.title: History
+  #Group type
   group_type:
     tab:
       property.title: Properties
+  #Category
   category:
     tab:
       property.title: Properties
       history.title: History
+  #Locale
   locale:
     tab:
       property.title: Properties
       permission.title: Permissions
+  #Product group
   group:
     axis.help: 'Axis define the attributes over which the products of the group should vary. Axis are attributes with options, not localizable and not scoped. They cannot be changed after the creation of the variant group.'
     type:
@@ -51,12 +61,14 @@ pim_enrich:
       product.title: Products
       property.title: Properties
       history.title: History
+  #Product completeness
   completeness:
     progress_bar.title: '%ratio%% complete (1 required value)|%ratio%% complete (%count% required values)'
     subtitle: '{0} Complete|{1} 1 missing value|]1,Inf] %count% missing values'
     missing_attributes: Missing value|Missing values
     legend:
       locale_not_associated: Locale not associated to this channel
+  #Mass edit operations
   mass_edit_action:
     limit_exceeded: Please choose less than %limit% items to edit
     product:
@@ -130,10 +142,12 @@ pim_enrich:
     mass_action:
       quick_export:
         launched_flash: The job exporting products is currently running
+  #Sequential edit operations
   sequential_edit_action:
     product:
       previous: Skip back to "%product%" without saving.
       next: Skip to "%product%" without saving.
+  #ACLs
   acl:
     locale:
       index: List locales
@@ -248,6 +262,7 @@ pim_enrich:
       remove_completeness_for_channel_and_locale:
         start: The locale has been removed from the channel. We are currently cleaning completenesses linked to them.
         done: Removal of a locale on a channel finished.
+#Entity and page header titles
 attribute:
   title: attribute
   edit: edit attribute
@@ -301,7 +316,9 @@ association type:
   title: association type
   create: create association type
   edit: edit association type
+#Custom titles
 products: products
+#Buttons
 btn:
   create:
     attribute: create attribute
@@ -331,6 +348,7 @@ btn:
   to parent: back to parent
   download_pdf: PDF
   download: download
+#Confirmation messages
 confirmation:
   confirm: Confirmation
   delete: Confirm deletion
@@ -353,6 +371,7 @@ confirmation:
     remove attribute: Are you sure you want to remove the attribute %name% from this family?
   product:
     remove attribute: Are you sure you want to remove the attribute %name% from this product?
+#Flash messages
 flash:
   entity:
     removed: Item was deleted
@@ -415,6 +434,7 @@ flash:
   user:
     removed: User successfully removed
   error ocurred: Action failed. Please retry.
+#Info messages
 info:
   updated: There are unsaved changes.
   category:
@@ -449,6 +469,7 @@ info:
     auto option sorting: If enabled, options will be sorted automatically by their localized labels
   completeness:
     not calculated: Not yet calculated
+#Form elements
 Options: Options
 Created at: Created at
 Updated at: Updated at
@@ -523,17 +544,21 @@ Category tree: Category tree
 Completeness: Completeness
 Attribute used as label: Attribute used as label
 Credentials: Credentials
+#Scopes
 Global: Global
 Channel: Channel
 Expand all channels: Expand all channels
 Collapse all channels: Collapse all channels
+#Variants
 Always override: Always override
 Ask: Ask
+#Attribute group
 General Properties: General Properties
 Group values: Group values
 New group: New group
 Groups overview: Groups overview
 'Y-m-d h:i:s': 'Y-m-d h:i:s'
+#Attribute properties
 Max characters: Max characters
 Validation rule: Validation rule
 Validation regexp: Validation regexp
@@ -554,8 +579,11 @@ URL: URL
 Regular expression: Regular expression
 Minimum input length: Minimum input length
 Default: Default
+#Family
 Attributes: Attributes
+#Category
 Title: Title
+#Page titles
 pim_title.attribute_group:
   index: "Attribute groups"
   create: "Attribute groups | Create"
@@ -615,12 +643,15 @@ pim_catalog_date: Date
 pim_catalog_metric: Metric
 pim_reference_data_simpleselect: Reference data simple select
 pim_reference_data_multiselect: Reference data multi select
+#Locales
 Activated: Activated
 Disable: Disable
+#Sequential edit operations
 pim_enrich.sequential_edit_action:
   product:
     previous: Skip back to "%product%" without saving.
     next: Skip to "%product%" without saving.
+#Mass edit operations
 pim_enrich.mass_edit_action:
   limit_exceeded: Please choose less than %limit% items to edit
   product:
@@ -679,9 +710,11 @@ Select: Select
 Remove this attribute: Remove this attribute
 Copy: Copy
 Current tab: Current tab
+#Product view
 Group: Group
 View group: View group
 Products: Products
+#Tabs
 Properties: Properties
 History: History
 pane.accordion:
@@ -694,11 +727,13 @@ pane.accordion:
   label_translations: Label translations
   options: Options
   group_values: Group values
+#Popin titles
 popin.create:
   association_type.title: Create a new association type
   group.title: Create a new group
   product.title: Create a new product
   option.title: Create a new option
+#Datagrid contents
 In group: In group
 Attribute as label: Attribute as label
 Is associated: Is associated
@@ -708,6 +743,7 @@ Updated At: Updated at
 Enabled: Enabled
 Disabled: Disabled
 Status: Status
+#Versioning / history
 Change History: Change history
 Data Audit: Data audit
 Data Audit - System: 'Data audit - system'
@@ -722,6 +758,7 @@ Logged at: Logged at
 Deleted: Deleted
 Old values: Old values
 New values: New values
+#Configuration
 System configuration: System configuration
 General setup: General setup
 Localization: Localization
@@ -753,6 +790,7 @@ oro.locale:
       language: "Select the system language you wish to use"
       timezone: "Select the timezone for displaying date and time"
       currency: "Select the default currency"
+#Datagrid
 Selected products successfully deleted: Selected products successfully deleted
 pim_mass_edit:
   notification:
@@ -784,6 +822,7 @@ edit_common_attributes: Edit attributes
 edit_common_attributes_clean: Clean files for attributes
 perform.steps.duplicated.title: Duplicated Axis
 perform.steps.excluded.title: Excluded product
+#Background jobs & steps labels
 batch_jobs:
   add_product_value:
     label: Add product value

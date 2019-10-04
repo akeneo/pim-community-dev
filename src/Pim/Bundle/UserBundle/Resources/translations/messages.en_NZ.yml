@@ -12,6 +12,7 @@ pim_user:
     tab:
       general.title: General
       users.title: Users
+#user grids
 oro.user.controller:
   group.message.saved: "Group saved"
   role.message.saved: "Role saved"
@@ -32,11 +33,13 @@ oro.user.grid.roles:
 oro.user.grid.groups:
   columns:
     name: "Name"
+#Page titles
 pim_title:
   user.index: Users
   user_role.index: Roles
   user_group.index: Groups
   system_configuration.index: Configuration
+#User
 user.title: User
 user.overview: User
 Users Management: Users Management
@@ -91,6 +94,7 @@ user:
   default_grid_view:
     none: None
   timezone: Timezone
+#Role
 Role: Role
 Owner: Owner
 General: General
@@ -127,6 +131,7 @@ oro_security:
       create: Create a user group
       edit: Edit user groups
       delete: Remove a user group
+#Security
 (default): Default permission on entities
 VIEW: View
 CREATE: Create
@@ -143,11 +148,13 @@ oro:
       GLOBAL: Organization
       SYSTEM: System
       NONE: None
+#User Group
 Create group: Create group
 btn.create.user-group: Create group
 Has group: Has group
 Save and Close: Save and close
 user-group.overview: Groups
+#Login page
 Log in: Log in
 Remember me on this computer: Remember me on this computer
 Forgot your password?: Forgot your password?
