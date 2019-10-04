@@ -36,6 +36,8 @@ services:
                 - '@pimee_catalog_rule.step.csv_root_product_model.import'
                 - '@pimee_catalog_rule.step.csv_sub_product_model.import'
                 - '@pimee_catalog_rule.step.csv_product_model.execute_rules'
+                - '@pim_connector.step.csv_compute_product_models_descendants.import'
+                - '@pim_connector.step.csv_product_model.import_associations'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.import_type%' }
 
@@ -65,6 +67,8 @@ services:
                 - '@pimee_catalog_rule.step.xlsx_root_product_model.import'
                 - '@pimee_catalog_rule.step.xlsx_sub_product_model.import'
                 - '@pimee_catalog_rule.step.xlsx_product_model.execute_rules'
+                - '@pim_connector.step.xlsx_compute_product_models_descendants.import'
+                - '@pim_connector.step.xlsx_product_model.import_associations'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.import_type%' }
 

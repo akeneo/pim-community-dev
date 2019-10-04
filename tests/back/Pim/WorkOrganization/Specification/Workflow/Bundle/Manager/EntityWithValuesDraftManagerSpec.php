@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Exception\DraftNotReviewableException;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
@@ -118,13 +119,14 @@ class EntityWithValuesDraftManagerSpec extends ObjectBehavior
         AttributeInterface $attribute,
         ProductInterface $product,
         EntityWithValuesDraftInterface $partialDraft,
-        ValueCollectionInterface $values
+        ValueCollectionInterface $values,
+        ValueInterface $value
     ) {
         $draft->getStatus()->willReturn(EntityWithValuesDraftInterface::READY);
         $draft->getEntityWithValue()->willReturn($product);
         $draft->getAuthor()->willReturn('author');
         $draft->getValues()->willReturn($values);
-        $values->getByCodes('sku', null, null)->willReturn(null);
+        $values->getByCodes('sku', null, null)->willReturn($value);
         $attribute->getCode()->willReturn('sku');
         $partialDraft->getEntityWithValue()->willReturn($product);
 
