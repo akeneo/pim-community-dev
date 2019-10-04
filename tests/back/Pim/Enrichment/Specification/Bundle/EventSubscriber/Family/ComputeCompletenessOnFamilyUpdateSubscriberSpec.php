@@ -1,6 +1,6 @@
 <?php
 
-namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Family;
 
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
@@ -9,7 +9,7 @@ use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\FindAttributesForFamily;
-use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeCompletenessOnFamilyUpdateSubscriber;
+use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Family\ComputeCompletenessOnFamilyUpdateSubscriber;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;

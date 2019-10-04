@@ -1,6 +1,6 @@
 <?php
 
-namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber\AttributeOption;
 
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use PhpSpec\ObjectBehavior;

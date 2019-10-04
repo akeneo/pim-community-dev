@@ -1,13 +1,8 @@
 parameters:
     pim_catalog.event_subscriber.create_attribute_requirement.class: Akeneo\Pim\Structure\Bundle\EventSubscriber\CreateAttributeRequirementSubscriber
-    pim_catalog.event_subscriber.localizable.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\LocalizableSubscriber
     pim_catalog.event_subscriber.timestampable.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\TimestampableSubscriber
-    pim_catalog.event_subscriber.category.check_channels.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\CheckChannelsOnDeletionSubscriber
     pim_catalog.event_subscriber.reset_unique_validation.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ResetUniqueValidationSubscriber
-    pim_catalog.event_subscriber.compute_product_raw_values.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeEntityRawValuesSubscriber
-    pim_catalog.event_subscriber.load_product_values.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\LoadEntityWithValuesSubscriber
     pim_catalog.event_subscriber.index_products.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\IndexProductsSubscriber
-    pim_catalog.event_subscriber.compute_completeness_on_family_update.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeCompletenessOnFamilyUpdateSubscriber
 
 services:
     # Subscribers
@@ -19,7 +14,7 @@ services:
             - { name: doctrine.event_subscriber }
 
     pim_catalog.event_subscriber.localizable:
-        class: '%pim_catalog.event_subscriber.localizable.class%'
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\AttributeOption\LocalizableSubscriber'
         arguments:
             - '@pim_catalog.context.catalog'
         tags:
@@ -31,7 +26,7 @@ services:
             - { name: doctrine.event_subscriber }
 
     pim_catalog.event_subscriber.category.check_channels:
-        class: '%pim_catalog.event_subscriber.category.check_channels.class%'
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnDelete\CheckChannelsOnDeletionSubscriber'
         arguments:
             - '@translator'
         tags:
@@ -46,7 +41,7 @@ services:
            - { name: kernel.event_listener, event: akeneo_batch.item_step_after_batch }
 
     pim_catalog.event_subscriber.compute_product_raw_values:
-        class: '%pim_catalog.event_subscriber.compute_product_raw_values.class%'
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithValues\ComputeEntityRawValuesSubscriber'
         arguments:
             - '@pim_storage_serializer'
             - '@pim_catalog.repository.attribute'
@@ -54,7 +49,7 @@ services:
             - { name: kernel.event_subscriber }
 
     pim_catalog.event_subscriber.load_product_values:
-        class: '%pim_catalog.event_subscriber.load_product_values.class%'
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithValues\LoadEntityWithValuesSubscriber'
         arguments:
             - '@akeneo.pim.enrichment.factory.read.write_value_collection'
         tags:
@@ -69,7 +64,7 @@ services:
             - { name: kernel.event_subscriber }
 
     pim_catalog.event_subscriber.compute_completeness_on_family_update_subscriber:
-        class: '%pim_catalog.event_subscriber.compute_completeness_on_family_update.class%'
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Family\ComputeCompletenessOnFamilyUpdateSubscriber'
         arguments:
             - '@security.token_storage'
             - '@akeneo_batch_queue.launcher.queue_job_launcher'
@@ -81,7 +76,7 @@ services:
             - { name: kernel.event_subscriber }
 
     pim_catalog.event_subscriber.category.update_indexes_on_category_deletion:
-        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\UpdateIndexesOnCategoryDeletion'
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnDelete\UpdateIndexesOnCategoryDeletion'
         arguments:
             - '@pim_catalog.query.get_descendent_category_codes'
             - '@akeneo_elasticsearch.client.product_and_product_model'
@@ -89,7 +84,7 @@ services:
             - { name: kernel.event_subscriber }
 
     pim_catalog.event_subscriber.update_exports_on_channel_update:
-        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ConfigureCategoryTreeForExportJobsAfterChangingTheChannelCategoryTree'
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnSave\ConfigureCategoryTreeForExportJobsAfterChangingTheChannelCategoryTree'
         arguments:
             - '@akeneo_batch.job.job_instance_repository'
             - '@akeneo_batch.updater.job_instance'
@@ -108,7 +103,7 @@ services:
             - { name: kernel.event_subscriber }
 
     pim_catalog.event_subscriber.init_completeness_db_schema:
-        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\InitCompletenessDbSchemaSubscriber'
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Db\InitCompletenessDbSchemaSubscriber'
         arguments:
             - '@database_connection'
         tags:
@@ -122,18 +117,25 @@ services:
           - { name: kernel.event_subscriber }
 
     pim_enrich.event_listener.remove_category_filter_in_job_instance:
-        class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Storage\RemoveCategoryFilterInJobInstanceSubscriber
+        class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnDelete\RemoveCategoryFilterInJobInstanceSubscriber
         arguments:
           - '@akeneo_batch.job.job_instance_repository'
           - '@akeneo_batch.saver.job_instance'
         tags:
           - { name: kernel.event_subscriber }
 
-    pim_catalog.event_subscriber.product_model.compute_descendant_completeness_and_index_product_and_ancestors_subscriber:
-        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeDescendantCompletenessAndIndexProductAndAncestorsSubscriber'
+    pim_catalog.event_subscriber.product_model.on_save.compute_descendant_completeness_and_index_product_and_ancestors_subscriber:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductModel\OnSave\ComputeProductAndAncestorsSubscriber'
         arguments:
             - '@pim_catalog.completeness.product.compute_and_persist'
             - '@pim_catalog.elasticsearch.indexer.product_model_descendants_and_ancestors'
             - '@akeneo.pim.enrichment.product.query.get_descendant_variant_product_identifiers'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.product_model.on_delete.compute_descendant_completeness_and_index_product_and_ancestors_subscriber:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductModel\OnDelete\ComputeProductAndAncestorsSubscriber'
+        arguments:
+            - '@pim_catalog.elasticsearch.indexer.product_model_descendants_and_ancestors'
         tags:
             - { name: kernel.event_subscriber }

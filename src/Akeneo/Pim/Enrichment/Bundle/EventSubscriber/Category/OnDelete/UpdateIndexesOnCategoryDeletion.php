@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
+namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnDelete;
 
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\GetDescendentCategoryCodes;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
@@ -27,7 +27,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 final class UpdateIndexesOnCategoryDeletion implements EventSubscriberInterface
 {
-    /** @var \Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\GetDescendentCategoryCodes */
+    /** @var GetDescendentCategoryCodes */
     private $getDescendentCategoryCodes;
 
     /** @var Client */

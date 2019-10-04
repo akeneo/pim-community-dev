@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
+namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\AttributeOption;
 
 use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
@@ -14,7 +14,7 @@ use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class LocalizableSubscriber implements EventSubscriber
+final class LocalizableSubscriber implements EventSubscriber
 {
     /**
      * @var CatalogContext
