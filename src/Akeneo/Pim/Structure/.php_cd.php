@@ -11,6 +11,7 @@ $builder = new RuleBuilder();
 $rules = [
     $builder->only([
         'Doctrine',
+        'Storage',
         'Symfony',
         'Akeneo\Tool',
         'Akeneo\Pim\Structure\Component',
