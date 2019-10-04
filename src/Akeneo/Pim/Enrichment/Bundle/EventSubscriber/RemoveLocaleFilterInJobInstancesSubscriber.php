@@ -2,29 +2,24 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2019 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 
-namespace Pim\Bundle\CatalogBundle\EventSubscriber;
-
-use Akeneo\Component\Batch\Model\JobInstance;
-use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
-use Akeneo\Component\StorageUtils\StorageEvents;
+use Akeneo\Channel\Bundle\Doctrine\Query\GetChannelActiveLocaleCodes;
+use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\GetChannelActiveLocaleCodes;
-use Pim\Component\Catalog\Model\ChannelInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Store the channel original locale codes during the pre-save events
  * and remove the channel deleted locales in all exports during the post-save events
+ *
+ * @author JM Leroux <jean-marie.leroux@akeneo.com>
+ * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class RemoveLocaleFilterInJobInstancesSubscriber implements EventSubscriberInterface
 {

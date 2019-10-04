@@ -1,11 +1,11 @@
 <?php
 
-namespace tests\integration\Pim\Bundle\CatalogBundle\EventSubscriber;
+namespace AkeneoTest\Pim\Enrichment\Integration\EventSubscriber;
 
-use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Doctrine\ORM\EntityManager;
-use Pim\Component\Catalog\Model\ChannelInterface;
 
 class RemoveLocaleFilterInJobInstanceSubscriberIntegration extends TestCase
 {
