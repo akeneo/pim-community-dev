@@ -1,6 +1,6 @@
 <?php
 
-namespace AkeneoTest\Pim\Enrichment\Integration\Doctrine\Query;
+namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\Product;
 
 use Akeneo\Test\Integration\TestCase;
 

@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace AkeneoTest\Pim\Enrichment\Integration\Doctrine\Query;
+namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\Completeness;
 
-use keneo\Test\Integration\Configuration;
+use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
 class VariantProductRatioIntegration extends TestCase
