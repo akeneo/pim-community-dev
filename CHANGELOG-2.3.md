@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.65 (2019-10-04)
+
 ## Bug fixes
 
 - PIM-7122: User can not delete an attribute used as conversion unit in a channel
