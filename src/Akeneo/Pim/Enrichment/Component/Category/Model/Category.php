@@ -39,6 +39,9 @@ class Category extends BaseCategory implements CategoryInterface
     /** @var \DateTime */
     protected $created;
 
+    /** @var \DateTime */
+    protected $updated;
+
     public function __construct()
     {
         parent::__construct();
@@ -99,6 +102,30 @@ class Category extends BaseCategory implements CategoryInterface
     public function getCreated()
     {
         return $this->created;
+    }
+
+    /**
+     * Get updated date
+     *
+     * @return \DateTime
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
+    }
+
+    /**
+     * Set updated date
+     *
+     * @param $updated
+     *
+     * @return $this
+     */
+    public function setUpdated($updated)
+    {
+        $this->updated = $updated;
+
+        return $this;
     }
 
     /**
