@@ -16,12 +16,14 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Pr
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Service\ProposalUpsertInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Proposal\ValueObject\ProposalSuggestedData;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\Factory\FranklinUserDraftSourceFactory;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\ProposalUpsert;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Builder\EntityWithValuesDraftBuilderInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\EntityWithValuesDraftEvents;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\DraftSource;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -40,14 +42,16 @@ class ProposalUpsertSpec extends ObjectBehavior
         ObjectUpdaterInterface $productUpdater,
         EntityWithValuesDraftBuilderInterface $draftBuilder,
         SaverInterface $draftSaver,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        FranklinUserDraftSourceFactory $draftSourceFactory
     ): void {
         $this->beConstructedWith(
             $productRepository,
             $productUpdater,
             $draftBuilder,
             $draftSaver,
-            $eventDispatcher
+            $eventDispatcher,
+            $draftSourceFactory
         );
     }
 
@@ -63,24 +67,28 @@ class ProposalUpsertSpec extends ObjectBehavior
         $draftBuilder,
         $draftSaver,
         $eventDispatcher,
+        $draftSourceFactory,
         ProductInterface $product,
         FamilyInterface $family,
         ProductInterface $otherProduct,
         FamilyInterface $otherFamily,
         EntityWithValuesDraftInterface $productDraft,
-        EntityWithValuesDraftInterface $otherProductDraft
+        EntityWithValuesDraftInterface $otherProductDraft,
+        DraftSource $draftSource
     ): void {
+        $draftSourceFactory->create()->willReturn($draftSource);
+
         $family->getAttributeCodes()->willReturn(['foo']);
         $product->getFamily()->willReturn($family);
         $productRepository->find(42)->willReturn($product);
         $suggestedData = ['foo' => 'bar'];
-        $draftBuilder->build($product, 'Franklin')->willReturn($productDraft);
+        $draftBuilder->build($product, $draftSource)->willReturn($productDraft);
 
         $otherFamily->getAttributeCodes()->willReturn(['test']);
         $otherProduct->getFamily()->willReturn($otherFamily);
         $productRepository->find(56)->willReturn($otherProduct);
         $otherSuggestedData = ['test' => 42];
-        $draftBuilder->build($otherProduct, 'Franklin')->willReturn($otherProductDraft);
+        $draftBuilder->build($otherProduct, $draftSource)->willReturn($otherProductDraft);
 
         $productUpdater->update($product, ['values' => $suggestedData])->shouldBeCalled();
         $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW)->shouldBeCalled();
@@ -105,8 +113,7 @@ class ProposalUpsertSpec extends ObjectBehavior
             [
                 new ProposalSuggestedData(new ProductId(42), $suggestedData),
                 new ProposalSuggestedData(new ProductId(56), $otherSuggestedData),
-            ],
-            'Franklin'
+            ]
         )->shouldReturn(2);
     }
 
@@ -114,40 +121,47 @@ class ProposalUpsertSpec extends ObjectBehavior
         $productRepository,
         $productUpdater,
         $draftBuilder,
+        $draftSourceFactory,
         ProductInterface $product,
         FamilyInterface $family,
         ProductInterface $otherProduct,
-        FamilyInterface $otherFamily
+        FamilyInterface $otherFamily,
+        DraftSource $draftSource
     ): void {
+        $draftSourceFactory->create()->willReturn($draftSource);
+
         $family->getAttributeCodes()->willReturn(['foo']);
         $product->getFamily()->willReturn($family);
         $productRepository->find(42)->willReturn($product);
         $suggestedData = ['foo' => 'bar'];
         $productUpdater->update($product, ['values' => $suggestedData])->willThrow(new \LogicException());
-        $draftBuilder->build($product, 'Franklin')->shouldNotBeCalled();
+        $draftBuilder->build($product, $draftSource)->shouldNotBeCalled();
 
         $otherFamily->getAttributeCodes()->willReturn(['test']);
         $otherProduct->getFamily()->willReturn($otherFamily);
         $productRepository->find(56)->willReturn($otherProduct);
         $otherSuggestedData = ['test' => 42];
         $productUpdater->update($otherProduct, ['values' => $otherSuggestedData])->willReturn($otherProduct);
-        $draftBuilder->build($otherProduct, 'Franklin')->willThrow(new \LogicException());
+        $draftBuilder->build($otherProduct, $draftSource)->willThrow(new \LogicException());
 
         $this->process(
             [
                 new ProposalSuggestedData(new ProductId(42), $suggestedData),
                 new ProposalSuggestedData(new ProductId(56), $otherSuggestedData),
-            ],
-            'Franklin'
+            ]
         )->shouldReturn(0);
     }
 
     public function it_filters_attributes_that_do_not_belong_to_the_products_family(
         $productRepository,
         $productUpdater,
+        $draftSourceFactory,
         ProductInterface $product,
-        FamilyInterface $family
+        FamilyInterface $family,
+        DraftSource $draftSource
     ): void {
+        $draftSourceFactory->create()->willReturn($draftSource);
+
         $family->getAttributeCodes()->willReturn(['color', 'weight', 'size']);
         $product->getFamily()->willReturn($family);
         $productRepository->find(42)->willReturn($product);
@@ -157,8 +171,7 @@ class ProposalUpsertSpec extends ObjectBehavior
         $this->process(
             [
                 new ProposalSuggestedData(new ProductId(42), $suggestedData),
-            ],
-            'Franklin'
+            ]
         )->shouldReturn(0);
     }
 }

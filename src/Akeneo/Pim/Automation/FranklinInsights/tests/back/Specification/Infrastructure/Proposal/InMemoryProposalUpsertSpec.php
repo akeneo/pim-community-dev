@@ -6,6 +6,7 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Pr
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Service\ProposalUpsertInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Proposal\ValueObject\ProposalAuthor;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Proposal\ValueObject\ProposalSuggestedData;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\InMemoryProposalUpsert;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -64,9 +65,9 @@ class InMemoryProposalUpsertSpec extends ObjectBehavior
         $productUpdater->update($product, ['values' => ['foo' => 'bar']])->shouldBeCalled();
         $productUpdater->update($product2, ['values' => ['test' => 42]])->shouldBeCalled();
 
-        $this->process([$suggestedData, $suggestedData2], 'an_author')->shouldReturn(2);
+        $this->process([$suggestedData, $suggestedData2])->shouldReturn(2);
 
-        $this->hasProposalForProduct('test', 'an_author')->shouldReturn(true);
-        $this->hasProposalForProduct('test2', 'an_author')->shouldReturn(true);
+        $this->hasProposalForProduct('test', ProposalAuthor::USERNAME)->shouldReturn(true);
+        $this->hasProposalForProduct('test2', ProposalAuthor::USERNAME)->shouldReturn(true);
     }
 }

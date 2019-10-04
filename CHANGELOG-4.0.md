@@ -73,6 +73,17 @@
     - `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`
     - `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
     - `string $jobName`
+- Change interface `Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Service\ProposalUpsertInterface` to remove the second parameter `$author` of the method `process` 
+- Change constructor of `Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\ProposalUpsert` to add `Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\Factory\FranklinUserDraftSourceFactory $draftSourceFactory`
+- Change interface `Akeneo\Pim\WorkOrganization\Workflow\Component\Builder\EntityWithValuesDraftBuilderInterface` to replace the parameter `string $username` of the method `build` by `Akeneo\Pim\WorkOrganization\Workflow\Component\Model\DraftSource $draftSource`
+- Change interface `Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\EntityWithValuesDraftFactory` to replace the parameter `string $username` of the method `createEntityWithValueDraft` by `Akeneo\Pim\WorkOrganization\Workflow\Component\Model\DraftSource $draftSource`
+- Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\Common\Saver\DelegatingProductSaver` to add `Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\PimUserDraftSourceFactory`
+- Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\Common\Saver\DelegatingProductModelSaver` to add `Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\PimUserDraftSourceFactory`
+- Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Query\DraftAuthors` to replace `Doctrine\ORM\EntityManagerInterface` by `Doctrine\DBAL\Connection`
+- Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\EntityWithValuesDraftManager` to add `Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\PimUserDraftSourceFactory`
+- Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\Processor\Denormalization\ProductDraftProcessor` to add `Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\PimUserDraftSourceFactory`
+- Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\Processor\Denormalization\ProductModelDraftProcessor` to add `Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\PimUserDraftSourceFactory`
+- Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Widget\ProposalWidget` to remove `Akeneo\UserManagement\Bundle\Manager\UserManager $userManager`
 
 ### CLI commands
 

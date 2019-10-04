@@ -4,21 +4,22 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Builder;
 
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorRegistry;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Builder\EntityWithValuesDraftBuilder;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\ProductDraftFactory;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\DraftSource;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
+use PhpSpec\ObjectBehavior;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
@@ -111,7 +112,9 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
         ])->shouldBeCalled();
         $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_DRAFT)->shouldBeCalled();
 
-        $this->build($product, 'mary')->shouldReturn($productDraft);
+        $draftSource = new DraftSource('pim', 'PIM', 'mary', 'Mary Smith');
+
+        $this->build($product, $draftSource)->shouldReturn($productDraft);
     }
 
     function it_builds_a_simple_product_draft_when_submitted_data_is_new(
@@ -165,7 +168,9 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
         ])->shouldBeCalled();
         $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_DRAFT)->shouldBeCalled();
 
-        $this->build($product, 'mary')->shouldReturn($productDraft);
+        $draftSource = new DraftSource('pim', 'PIM', 'mary', 'Mary Smith');
+
+        $this->build($product, $draftSource)->shouldReturn($productDraft);
     }
 
     function it_does_not_build_a_simple_product_draft_if_submitted_data_is_the_same_as_product_data(
@@ -212,7 +217,9 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
             ['data' => 'my product', 'locale' => null, 'scope' => null]
         )->willReturn(null);
 
-        $this->build($product, 'mary')->shouldReturn(null);
+        $draftSource = new DraftSource('pim', 'PIM', 'mary', 'Mary Smith');
+
+        $this->build($product, $draftSource)->shouldReturn(null);
     }
 
     function it_throws_an_exception_if_the_attribute_does_not_exist(
@@ -251,9 +258,11 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
 
         $getAttributes->forCode('name')->willReturn(null);
 
+        $draftSource = new DraftSource('pim', 'PIM', 'mary', 'Mary Smith');
+
         $this->shouldThrow(
             new \LogicException('Cannot find attribute with code "name".')
-        )->during('build', [$product, 'mary']);
+        )->during('build', [$product, $draftSource]);
     }
 
     function it_builds_a_variant_product_draft_when_submitted_data_is_different_from_product_data(
@@ -317,7 +326,9 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
         ])->shouldBeCalled();
         $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_DRAFT)->shouldBeCalled();
 
-        $this->build($variantProduct, 'mary')->shouldReturn($productDraft);
+        $draftSource = new DraftSource('pim', 'PIM', 'mary', 'Mary Smith');
+
+        $this->build($variantProduct, $draftSource)->shouldReturn($productDraft);
     }
 
     function it_builds_a_variant_product_draft_but_do_not_create_value_if_values_are_same_as_parent(
@@ -414,6 +425,8 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
         ])->shouldBeCalled();
         $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_DRAFT)->shouldBeCalled();
 
-        $this->build($variantProduct, 'mary')->shouldReturn($productDraft);
+        $draftSource = new DraftSource('pim', 'PIM', 'mary', 'Mary Smith');
+
+        $this->build($variantProduct, $draftSource)->shouldReturn($productDraft);
     }
 }

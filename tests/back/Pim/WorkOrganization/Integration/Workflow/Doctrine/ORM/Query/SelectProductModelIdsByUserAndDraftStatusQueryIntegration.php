@@ -96,7 +96,12 @@ class SelectProductModelIdsByUserAndDraftStatusQueryIntegration extends TestCase
             ]
         ]]);
 
-        $productModelDraft = $this->get('pimee_workflow.product_model.builder.draft')->build($productModel, $userName);
+        $user = $this->get('pim_user.provider.user')->loadUserByUsername($userName);
+
+        $productModelDraft = $this->get('pimee_workflow.product_model.builder.draft')->build(
+            $productModel,
+            $this->get('Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\PimUserDraftSourceFactory')->createFromUser($user)
+        );
 
         if (EntityWithValuesDraftInterface::READY === $draftStatus) {
             $productModelDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW);

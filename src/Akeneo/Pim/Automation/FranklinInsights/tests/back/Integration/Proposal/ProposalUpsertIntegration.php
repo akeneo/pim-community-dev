@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Service\Proposal
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Proposal\ValueObject\ProposalAuthor;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Proposal\ValueObject\ProposalSuggestedData;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\Factory\FranklinUserDraftSourceFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
@@ -62,8 +63,7 @@ class ProposalUpsertIntegration extends TestCase
         ];
 
         $this->proposalUpsert->process(
-            [new ProposalSuggestedData(new ProductId($product->getId()), $suggestedValues)],
-            ProposalAuthor::USERNAME
+            [new ProposalSuggestedData(new ProductId($product->getId()), $suggestedValues)]
         );
 
         $draft = $this->getDraft($product, ProposalAuthor::USERNAME);
@@ -92,8 +92,7 @@ class ProposalUpsertIntegration extends TestCase
         );
 
         $this->proposalUpsert->process(
-            [new ProposalSuggestedData(new ProductId($product->getId()), $suggestedValues)],
-            ProposalAuthor::USERNAME
+            [new ProposalSuggestedData(new ProductId($product->getId()), $suggestedValues)]
         );
 
         Assert::assertNull($this->getDraft($product, ProposalAuthor::USERNAME));
@@ -114,7 +113,7 @@ class ProposalUpsertIntegration extends TestCase
                 ],
             ],
         ];
-        $this->createProposal($product, $firstSuggestedValues, ProposalAuthor::USERNAME);
+        $this->createProposal($product, $firstSuggestedValues);
         $draft = $this->getDraft($product, ProposalAuthor::USERNAME);
         Assert::assertInstanceOf(EntityWithValuesDraftInterface::class, $draft);
         $aText = $draft->getValue('a_text', null, null);
@@ -137,8 +136,7 @@ class ProposalUpsertIntegration extends TestCase
             ],
         ];
         $this->proposalUpsert->process(
-            [new ProposalSuggestedData(new ProductId($product->getId()), $newSuggestedValues)],
-            ProposalAuthor::USERNAME
+            [new ProposalSuggestedData(new ProductId($product->getId()), $newSuggestedValues)]
         );
 
         $draft = $this->getDraft($product, ProposalAuthor::USERNAME);
@@ -167,8 +165,7 @@ class ProposalUpsertIntegration extends TestCase
         $this->proposalUpsert->process(
             [
                 new ProposalSuggestedData(new ProductId($product->getId()), $invalidValues),
-            ],
-            ProposalAuthor::USERNAME
+            ]
         );
 
         Assert::assertNull($this->getDraft($product, ProposalAuthor::USERNAME));
@@ -204,12 +201,14 @@ class ProposalUpsertIntegration extends TestCase
     /**
      * @param EntityWithValuesInterface $product
      * @param array $values
-     * @param string $author
      */
-    private function createProposal(EntityWithValuesInterface $product, array $values, string $author): void
+    private function createProposal(EntityWithValuesInterface $product, array $values): void
     {
         $this->get('pimee_workflow.updater.product_without_permission')->update($product, ['values' => $values]);
-        $draft = $this->get('pimee_workflow.product.builder.draft')->build($product, $author);
+        $draft = $this->get('pimee_workflow.product.builder.draft')->build(
+            $product,
+            $this->get(FranklinUserDraftSourceFactory::class)->create()
+        );
         Assert::assertInstanceOf(EntityWithValuesDraftInterface::class, $draft);
         $draft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW);
         $draft->markAsReady();

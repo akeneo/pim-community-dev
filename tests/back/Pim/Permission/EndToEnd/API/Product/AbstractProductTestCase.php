@@ -2,11 +2,11 @@
 
 namespace AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\Product;
 
-use PHPUnit\Framework\Assert;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
+use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
 abstract class AbstractProductTestCase extends ApiTestCase
@@ -95,7 +95,13 @@ abstract class AbstractProductTestCase extends ApiTestCase
     ) : EntityWithValuesDraftInterface {
         $this->get('pim_catalog.updater.product')->update($product, $changes);
 
-        $productDraft = $this->get('pimee_workflow.product.builder.draft')->build($product, $userName);
+        // @todo[DAPI-443] avoid the coupling with the bounded context Workflow
+        $user = $this->get('pim_user.provider.user')->loadUserByUsername($userName);
+
+        $productDraft = $this->get('pimee_workflow.product.builder.draft')->build(
+            $product,
+            $this->get('Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\PimUserDraftSourceFactory')->createFromUser($user)
+        );
         $this->get('pimee_workflow.saver.product_draft')->save($productDraft);
 
         return $productDraft;

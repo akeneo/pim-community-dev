@@ -65,6 +65,9 @@ class ProductProposalNormalizer implements NormalizerInterface
         $data['createdAt'] = $this->datagridNormlizer->normalize($proposalProduct->getCreatedAt(), $format, $context);
         $data['product'] = $proposalProduct->getEntityWithValue();
         $data['author'] = $proposalProduct->getAuthor();
+        $data['author_label'] = $proposalProduct->getAuthorLabel();
+        $data['source'] = $proposalProduct->getSource();
+        $data['source_label'] = $proposalProduct->getSourceLabel();
         $data['status'] = $proposalProduct->getStatus();
         $data['proposal'] = $proposalProduct;
         $data['search_id'] = $proposalProduct->getEntityWithValue()->getIdentifier();

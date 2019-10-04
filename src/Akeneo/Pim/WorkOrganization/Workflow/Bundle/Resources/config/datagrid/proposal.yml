@@ -14,7 +14,7 @@ datagrid:
                 type: twig
                 template: AkeneoPimWorkflowBundle:Datagrid/Property:product_link.html.twig
                 frontend_type: html
-            author:
+            author_label:
                 label: pimee_workflow.product_draft.author
                 type: field
                 frontend_type: string
@@ -82,6 +82,14 @@ datagrid:
                             multiple: true
                             attr:
                                 empty_choice: true
+                draft_source:
+                    type:        product_draft_source
+                    data_name:   draft_source
+                    label:       pimee_workflow.product_draft.source
+                    options:
+                        field_options:
+                            choices: '@pimee_workflow.query.select_draft_source_filter_choices->execute'
+                            multiple: true
                 createdAt:
                     type:      product_draft_date
                     ftype:     date
@@ -102,7 +110,7 @@ datagrid:
                                 choice_list: true
         sorters:
             columns:
-                author:
+                author_label:
                     data_name: author
                     sorter:    product_field
                 createdAt:

@@ -146,4 +146,16 @@ interface EntityWithValuesDraftInterface extends EntityWithValuesInterface
      * @return EntityWithValuesInterface
      */
     public function getEntityWithValue(): EntityWithValuesInterface;
+
+    public function getSource(): string;
+
+    public function setSource(string $source): EntityWithValuesDraftInterface;
+
+    public function getSourceLabel(): string;
+
+    public function setSourceLabel(string $sourceLabel): EntityWithValuesDraftInterface;
+
+    public function getAuthorLabel(): string;
+
+    public function setAuthorLabel(string $authorLabel): EntityWithValuesDraftInterface;
 }

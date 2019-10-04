@@ -34,6 +34,7 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
     const FIELD_ID = 'id';
     const FIELD_ENTITY_WITH_VALUES_IDENTIFIER = 'entity_with_values_identifier';
     const FIELD_AUTHOR = 'author';
+    const FIELD_SOURCE = 'source';
 
     /**
      * {@inheritdoc}
@@ -59,7 +60,8 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
             $productModel->getFamily(),
             ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
         ) : null;
-        $data[self::FIELD_AUTHOR] = (string) $productModelProposal->getAuthor();
+        $data[self::FIELD_AUTHOR] = $productModelProposal->getAuthor();
+        $data[self::FIELD_SOURCE] = $productModelProposal->getSource();
         $data[StandardPropertiesNormalizer::FIELD_CATEGORIES] = $productModel->getCategoryCodes();
         $data[StandardPropertiesNormalizer::FIELD_VALUES] = !$productModelProposal->getValues()->isEmpty()
             ? $this->serializer->normalize(

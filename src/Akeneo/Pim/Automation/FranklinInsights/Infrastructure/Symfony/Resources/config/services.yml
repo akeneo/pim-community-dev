@@ -7,7 +7,7 @@ services:
             - '@pimee_workflow.product.builder.draft'
             - '@pimee_workflow.saver.product_draft'
             - '@event_dispatcher'
-            - '@pim_connector.doctrine.cache_clearer'
+            - '@Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\Factory\FranklinUserDraftSourceFactory'
 
     akeneo.pim.automation.franklin_insights.application.mapping.service.remove_attributes_from_mapping:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\JobLauncher\RemoveAttributesFromMapping'
@@ -108,3 +108,5 @@ services:
             - '@pim_catalog.command_launcher'
         tags:
             - { name: console.command }
+
+    Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\Factory\FranklinUserDraftSourceFactory: ~

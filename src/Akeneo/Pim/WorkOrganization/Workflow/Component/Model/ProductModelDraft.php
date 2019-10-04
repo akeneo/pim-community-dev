@@ -29,9 +29,6 @@ class ProductModelDraft implements EntityWithValuesDraftInterface
     /** @var ProductModelInterface */
     protected $entityWithValues;
 
-    /** @var string */
-    protected $author;
-
     /** @var \DateTime */
     protected $createdAt;
 
@@ -52,6 +49,19 @@ class ProductModelDraft implements EntityWithValuesDraftInterface
 
     /** @var string not persisted, used to contextualize the productModel draft */
     protected $dataLocale = null;
+
+    /** @var string : identifier code of the source */
+    protected $source;
+
+    /** @var string : displayable label for the source */
+    protected $sourceLabel;
+
+    /** @var string : identifier code of the author */
+    protected $author;
+
+    /** @var string : displayable label for the author */
+    protected $authorLabel;
+
 
     public function __construct()
     {
@@ -458,5 +468,59 @@ class ProductModelDraft implements EntityWithValuesDraftInterface
     public function hasAttribute(string $attributeCode): bool
     {
         return in_array($attributeCode, $this->getValues()->getAttributeCodes(), true);
+    }
+
+    /**
+     * @return string
+     */
+    public function getSource(): string
+    {
+        return $this->source;
+    }
+
+    /**
+     * @param string $source
+     * @return ProductModelDraft
+     */
+    public function setSource(string $source): EntityWithValuesDraftInterface
+    {
+        $this->source = $source;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSourceLabel(): string
+    {
+        return $this->sourceLabel;
+    }
+
+    /**
+     * @param string $sourceLabel
+     * @return ProductModelDraft
+     */
+    public function setSourceLabel(string $sourceLabel): EntityWithValuesDraftInterface
+    {
+        $this->sourceLabel = $sourceLabel;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAuthorLabel(): string
+    {
+        return $this->authorLabel;
+    }
+
+    /**
+     * @param string $authorLabel
+     * @return ProductModelDraft
+     */
+    public function setAuthorLabel(string $authorLabel): EntityWithValuesDraftInterface
+    {
+        $this->authorLabel = $authorLabel;
+        return $this;
     }
 }

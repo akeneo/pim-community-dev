@@ -18,6 +18,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInt
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Permission\Component\NotGrantedDataMergerInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Builder\EntityWithValuesDraftBuilderInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\PimUserDraftSourceFactory;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
@@ -69,6 +70,9 @@ class DelegatingProductModelSaver implements SaverInterface, BulkSaverInterface
     /** @var BulkSaverInterface */
     private $bulkProductModelSaver;
 
+    /** @var PimUserDraftSourceFactory */
+    private $draftSourceFactory;
+
     public function __construct(
         ObjectManager $objectManager,
         SaverInterface $productModelSaver,
@@ -80,7 +84,8 @@ class DelegatingProductModelSaver implements SaverInterface, BulkSaverInterface
         NotGrantedDataMergerInterface $mergeDataOnProductModel,
         ProductModelRepositoryInterface $productModelRepository,
         EntityWithValuesDraftRepositoryInterface $productModelDraftRepository,
-        BulkSaverInterface $bulkProductModelSaver
+        BulkSaverInterface $bulkProductModelSaver,
+        PimUserDraftSourceFactory $draftSourceFactory
     ) {
         $this->objectManager = $objectManager;
         $this->productModelSaver = $productModelSaver;
@@ -93,6 +98,7 @@ class DelegatingProductModelSaver implements SaverInterface, BulkSaverInterface
         $this->productModelRepository = $productModelRepository;
         $this->productModelDraftRepository = $productModelDraftRepository;
         $this->bulkProductModelSaver = $bulkProductModelSaver;
+        $this->draftSourceFactory = $draftSourceFactory;
     }
 
     /**
@@ -174,7 +180,9 @@ class DelegatingProductModelSaver implements SaverInterface, BulkSaverInterface
     private function saveProductModelDraft(ProductModelInterface $fullProductModel, array $options): void
     {
         $username = $this->tokenStorage->getToken()->getUser()->getUsername();
-        $productModelDraft = $this->draftBuilder->build($fullProductModel, $username);
+        $productModelDraft = $this->draftBuilder->build($fullProductModel,
+            $this->draftSourceFactory->createFromUser($this->tokenStorage->getToken()->getUser())
+        );
 
         if (null !== $productModelDraft) {
             $this->productModelDraftSaver->save($productModelDraft, $options);

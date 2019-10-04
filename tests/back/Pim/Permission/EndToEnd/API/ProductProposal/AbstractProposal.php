@@ -81,7 +81,9 @@ class AbstractProposal extends ApiTestCase
     {
         $this->get('pim_catalog.updater.product')->update($product, $changes);
 
-        $productDraft = $this->get('pimee_workflow.product.builder.draft')->build($product, $userName);
+        $user = $this->get('pim_user.provider.user')->loadUserByUsername($userName);
+        $draftSource = $this->get('Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\PimUserDraftSourceFactory')->createFromUser($user);
+        $productDraft = $this->get('pimee_workflow.product.builder.draft')->build($product, $draftSource);
 
         $this->get('pimee_workflow.saver.product_draft')->save($productDraft);
 

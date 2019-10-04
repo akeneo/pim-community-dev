@@ -3,9 +3,9 @@
 namespace AkeneoTestEnterprise\Pim\WorkOrganization\EndToEnd\Workflow\ProductDraft;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
-use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
+use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -210,7 +210,12 @@ JSON;
     {
         $this->get('pim_catalog.updater.product')->update($product, $changes);
 
-        $productDraft = $this->get('pimee_workflow.product.builder.draft')->build($product, $userName);
+        $user = $this->get('pim_user.provider.user')->loadUserByUsername($userName);
+
+        $productDraft = $this->get('pimee_workflow.product.builder.draft')->build(
+            $product,
+            $this->get('Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\PimUserDraftSourceFactory')->createFromUser($user)
+        );
 
         $this->get('pimee_workflow.saver.product_draft')->save($productDraft);
 

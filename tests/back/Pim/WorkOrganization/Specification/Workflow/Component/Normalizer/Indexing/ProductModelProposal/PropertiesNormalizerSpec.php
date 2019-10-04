@@ -52,6 +52,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $productModel->getCode()->willReturn('code');
 
         $productModelProposal->getAuthor()->willReturn('mary');
+        $productModelProposal->getSource()->willReturn('pim');
         $productModel->getCategoryCodes()->willReturn([]);
 
         $productModelProposal->getCreatedAt()->willReturn($now);
@@ -82,6 +83,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
                 'created' => $now->format('c'),
                 'family' => ['code' => 'family'],
                 'author' => 'mary',
+                'source' => 'pim',
                 'categories' => [],
                 'values' => [],
                 'label' => [],
@@ -104,6 +106,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $productModel->getCode()->willReturn('code');
 
         $productModelProposal->getAuthor()->willReturn('mary');
+        $productModelProposal->getSource()->willReturn('pim');
         $productModel->getCategoryCodes()->willReturn([]);
 
         $productModelProposal->getCreatedAt()->willReturn($now);
@@ -134,6 +137,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
                 'created' => $now->format('c'),
                 'family' => ['code' => 'family'],
                 'author' => 'mary',
+                'source' => 'pim',
                 'categories' => [],
                 'values' => [],
                 'label' => [],

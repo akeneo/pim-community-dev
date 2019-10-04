@@ -22,6 +22,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Builder\EntityWithValuesDraftBuilderInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\EntityWithValuesDraftFactory;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\DraftSource;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -75,7 +76,7 @@ class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterf
     /**
      * {@inheritdoc}
      */
-    public function build(EntityWithValuesInterface $entityWithValues, string $username): ?EntityWithValuesDraftInterface
+    public function build(EntityWithValuesInterface $entityWithValues, DraftSource $draftSource): ?EntityWithValuesDraftInterface
     {
         $values = $entityWithValues instanceof EntityWithFamilyVariantInterface ?
             $entityWithValues->getValuesForVariation() : $entityWithValues->getValues();
@@ -116,7 +117,7 @@ class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterf
         }
 
         if (!empty($diff)) {
-            $entityWithValuesDraft = $this->getEntityWithValuesDraft($entityWithValues, $username);
+            $entityWithValuesDraft = $this->getEntityWithValuesDraft($entityWithValues, $draftSource);
             $entityWithValuesDraft->setValues(new WriteValueCollection($values));
             $entityWithValuesDraft->setChanges($diff);
             $entityWithValuesDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_DRAFT);
@@ -127,13 +128,13 @@ class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterf
         return null;
     }
 
-    protected function getEntityWithValuesDraft(EntityWithValuesInterface $entityWithValues, string $username): EntityWithValuesDraftInterface
+    protected function getEntityWithValuesDraft(EntityWithValuesInterface $entityWithValues, DraftSource $draftSource): EntityWithValuesDraftInterface
     {
         if (null === $entityWithValuesDraft = $this->entityWithValuesDraftRepository->findUserEntityWithValuesDraft(
                 $entityWithValues,
-                $username
+                $draftSource->getAuthor()
             )) {
-            $entityWithValuesDraft = $this->factory->createEntityWithValueDraft($entityWithValues, $username);
+            $entityWithValuesDraft = $this->factory->createEntityWithValueDraft($entityWithValues, $draftSource);
         }
 
         return $entityWithValuesDraft;

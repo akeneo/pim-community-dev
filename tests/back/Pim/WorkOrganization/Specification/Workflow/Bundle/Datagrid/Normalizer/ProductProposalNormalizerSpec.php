@@ -3,13 +3,13 @@
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Normalizer;
 
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductProposalNormalizerSpec extends ObjectBehavior
@@ -61,6 +61,9 @@ class ProductProposalNormalizerSpec extends ObjectBehavior
 
         $productProposal->getId()->willReturn(1);
         $productProposal->getAuthor()->willReturn('Mary');
+        $productProposal->getAuthorLabel()->willReturn('Mary Smith');
+        $productProposal->getSource()->willReturn('pim');
+        $productProposal->getSourceLabel()->willReturn('PIM');
         $productProposal->getStatus()->willReturn(1);
         $productProposal->getEntityWithValue()->willReturn($product);
         $productProposal->getCreatedAt()->willReturn($created);
@@ -103,6 +106,9 @@ class ProductProposalNormalizerSpec extends ObjectBehavior
                 'createdAt' => '2017-01-01',
                 'product' => $product,
                 'author' => 'Mary',
+                'author_label' => 'Mary Smith',
+                'source' => 'pim',
+                'source_label' => 'PIM',
                 'status' => 1,
                 'proposal' => $productProposal,
                 'search_id' => 2,

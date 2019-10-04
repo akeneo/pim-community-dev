@@ -13,6 +13,7 @@ $rules = [
         'Symfony\Component',
         'Akeneo\Tool',
         'Symfony\Bundle',
+        'Psr\Log\LoggerInterface',
         'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         'Akeneo\Pim\WorkOrganization\Workflow\Component',
 

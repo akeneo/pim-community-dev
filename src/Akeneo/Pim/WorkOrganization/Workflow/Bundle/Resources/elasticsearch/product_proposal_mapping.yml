@@ -5,6 +5,9 @@ mappings:
         author:
             type: 'keyword'
             normalizer: 'text_normalizer'
+        source:
+            type: 'keyword'
+            normalizer: 'text_normalizer'
         categories:
             type: 'keyword'
         family.code:

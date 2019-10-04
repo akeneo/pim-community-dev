@@ -39,7 +39,10 @@ class SelectModelProposalIdsFromProductModelIdsQueryIntegration extends TestCase
         );
 
         // Create a draft of the product model
-        $draft = $this->get('pimee_workflow.product_model.builder.draft')->build($productModel, 'julia');
+        $user = $this->get('pim_user.provider.user')->loadUserByUsername('julia');
+        $draftSource = $this->get('Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\PimUserDraftSourceFactory')->createFromUser($user);
+
+        $draft = $this->get('pimee_workflow.product_model.builder.draft')->build($productModel, $draftSource);
         $draft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW);
         $draft->markAsReady();
 

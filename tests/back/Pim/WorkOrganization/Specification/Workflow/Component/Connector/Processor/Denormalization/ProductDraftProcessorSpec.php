@@ -6,6 +6,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\Med
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Applier\DraftApplierInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Builder\EntityWithValuesDraftBuilderInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\PimUserDraftSourceFactory;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\DraftSource;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
@@ -16,6 +18,7 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -33,7 +36,8 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         EntityWithValuesDraftRepositoryInterface $productDraftRepo,
         StepExecution $stepExecution,
         TokenStorageInterface $tokenStorage,
-        MediaStorer $mediaStorer
+        MediaStorer $mediaStorer,
+        PimUserDraftSourceFactory $draftSourceFactory
     ) {
         $this->beConstructedWith(
             $repository,
@@ -43,7 +47,8 @@ class ProductDraftProcessorSpec extends ObjectBehavior
             $productDraftApplier,
             $productDraftRepo,
             $tokenStorage,
-            $mediaStorer
+            $mediaStorer,
+            $draftSourceFactory
         );
         $this->setStepExecution($stepExecution);
     }
@@ -62,13 +67,18 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $stepExecution,
         $tokenStorage,
         $mediaStorer,
+        $draftSourceFactory,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         EntityWithValuesDraftInterface $productDraft,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
-        TokenInterface $token
+        TokenInterface $token,
+        UserInterface $user,
+        DraftSource $draftSource
     ) {
+        $this->prepareDraftSource($tokenStorage, $token, $user, $draftSource, $draftSourceFactory);
+
         $repository->findOneByIdentifier('my-sku')->willReturn($product);
         $product->isVariant()->willReturn(false);
         $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW)->willReturn($productDraft);
@@ -85,10 +95,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
             ->validate($product)
             ->willReturn($violationList);
 
-        $productDraftBuilder->build($product, 'mary')->willReturn($productDraft);
-
-        $tokenStorage->getToken()->willReturn($token);
-        $token->getUsername()->willReturn('mary');
+        $productDraftBuilder->build($product, $draftSource)->willReturn($productDraft);
 
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
@@ -141,11 +148,16 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $stepExecution,
         $tokenStorage,
         $mediaStorer,
+        $draftSourceFactory,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobExecution $jobExecution,
-        TokenInterface $token
+        TokenInterface $token,
+        UserInterface $user,
+        DraftSource $draftSource
     ) {
+        $this->prepareDraftSource($tokenStorage, $token, $user, $draftSource, $draftSourceFactory);
+
         $repository->findOneByIdentifier('my-sku')->willReturn($product);
         $product->isVariant()->willReturn(false);
 
@@ -161,10 +173,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
             ->validate($product)
             ->willReturn($violationList);
 
-        $productDraftBuilder->build($product, 'mary')->willReturn(null);
-
-        $tokenStorage->getToken()->willReturn($token);
-        $token->getUsername()->willReturn('mary');
+        $productDraftBuilder->build($product, $draftSource)->willReturn(null);
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $stepExecution->incrementSummaryInfo('proposal_skipped')->shouldBeCalled();
@@ -180,14 +189,19 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $stepExecution,
         $tokenStorage,
         $mediaStorer,
+        $draftSourceFactory,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         EntityWithValuesDraftInterface $productDraft,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
-        TokenInterface $token
+        TokenInterface $token,
+        UserInterface $user,
+        DraftSource $draftSource
     )
     {
+        $this->prepareDraftSource($tokenStorage, $token, $user, $draftSource, $draftSourceFactory);
+
         $repository->findOneByIdentifier('my-sku')->willReturn($product);
         $product->isVariant()->willReturn(false);
         $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW)->willReturn($productDraft);
@@ -201,12 +215,13 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $validator
             ->validate($product)
             ->willReturn($violationList);
-        $productDraftBuilder->build($product, 'mary')->willReturn($productDraft);
-        $tokenStorage->getToken()->willReturn($token);
-        $token->getUsername()->willReturn('mary');
+
+        $productDraftBuilder->build($product, $draftSource)->willReturn($productDraft);
+
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $values['parent'] = '';
+
         $this->process($values)->shouldReturn($productDraft);
     }
 
@@ -266,5 +281,40 @@ class ProductDraftProcessorSpec extends ObjectBehavior
                 ],
             ],
         ];
+    }
+
+    /**
+     * @param $tokenStorage
+     * @param TokenInterface $token
+     * @param UserInterface $user
+     * @param DraftSource $draftSource
+     * @param PimUserDraftSourceFactory $draftSourceFactory
+     */
+    private function prepareDraftSource(
+       TokenStorageInterface $tokenStorage,
+       TokenInterface $token,
+       UserInterface $user,
+       DraftSource $draftSource,
+       PimUserDraftSourceFactory $draftSourceFactory
+    ): void {
+        $fullName = 'Mary Smith';
+        $username = 'mary';
+        $source = 'pim';
+        $sourceLabel = 'PIM';
+
+        $user->getFullName()->willReturn($fullName);
+        $user->getUsername()->willReturn($username);
+
+        $tokenStorage->getToken()->willReturn($token);
+
+        $token->getUsername()->willReturn($username);
+        $token->getUser()->willReturn($user);
+
+        $draftSource->getSource()->willReturn($source);
+        $draftSource->getSourceLabel()->willReturn($sourceLabel);
+        $draftSource->getAuthor()->willReturn($username);
+        $draftSource->getAuthorLabel()->willReturn($fullName);
+
+        $draftSourceFactory->createFromUser($user)->willReturn($draftSource);
     }
 }

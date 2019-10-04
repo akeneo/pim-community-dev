@@ -18,10 +18,10 @@ Feature: Display proposal widget
       | my-jacket    | jackets | jackets    |
       | my-tee-shirt | tees    | tees       |
     And the following product drafts:
-      | product      | author | status      | result                                                                    |
-      | my-jacket    | mary   | ready       | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My change1"}]}} |
-      | my-tee-shirt | mary   | ready       | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My change2"}]}} |
-      | my-jacket    | john   | in progress | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My change3"}]}} |
+      | product      | source | source_label | author | author_label | status      | result                                                                    |
+      | my-jacket    | pim    | PIM          | mary   | Mary Smith   | ready       | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My change1"}]}} |
+      | my-tee-shirt | pim    | PIM          | mary   | Mary Smith   | ready       | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My change2"}]}} |
+      | my-jacket    | pim    | PIM          | john   | John Doe     | in progress | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My change3"}]}} |
     And I am logged in as "Julia"
     When I am on the dashboard page
     Then I should see the text "Proposals to review"
@@ -35,8 +35,8 @@ Feature: Display proposal widget
       | sku          | family | categories |
       | my-tee-shirt | tees   | tees       |
     And the following product drafts:
-      | product      | author | status | result                                                                    |
-      | my-tee-shirt | mary   | ready  | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My change1"}]}} |
+      | product      | source | source_label | author | author_label | status | result                                                                    |
+      | my-tee-shirt | pim    | PIM          | mary   | Mary Smith   | ready  | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My change1"}]}} |
     And I am logged in as "Peter"
     When I edit the "my-tee-shirt" product
     And I visit the "Categories" column tab
@@ -59,9 +59,9 @@ Feature: Display proposal widget
       | sku       | family  | categories |
       | my-jacket | jackets | jackets    |
     And the following product drafts:
-      | product   | author | status      | result                                                                    |
-      | my-jacket | mary   | ready       | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My change1"}]}} |
-      | my-jacket | john   | in progress | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My change2"}]}} |
+      | product   | source | source_label | author | author_label | status      | result                                                                    |
+      | my-jacket | pim    | PIM          | mary   | Mary Smith   | ready       | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My change1"}]}} |
+      | my-jacket | pim    | PIM          | john   | John Doe     | in progress | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My change2"}]}} |
     And I am logged in as "Peter"
     When I am on the "jackets" category page
     When I press the secondary action "Delete"

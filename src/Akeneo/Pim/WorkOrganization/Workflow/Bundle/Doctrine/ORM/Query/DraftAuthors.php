@@ -14,69 +14,69 @@ declare(strict_types=1);
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Query;
 
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\DraftAuthors as DraftAuthorsInterface;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\DBAL\Connection;
 
 /**
  * Find all authors for all drafts (product & product model)
  */
 class DraftAuthors implements DraftAuthorsInterface
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    /** @var Connection */
+    private $connection;
 
-    /**
-     * @param EntityManagerInterface $entityManager
-     */
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(Connection $connection)
     {
-        $this->entityManager = $entityManager;
+        $this->connection = $connection;
     }
 
     public function findAuthors(?string $search, int $page = 1, int $limit = 20, array $identifiers = []): array
     {
-        $sqlPmd = <<<SQL
-SELECT u.username, u.username AS label
-FROM oro_user u
-INNER JOIN pimee_workflow_product_model_draft pmd ON u.username = pmd.author
-WHERE 1=1
+        $sql = <<<SQL
+(
+    SELECT DISTINCT author AS username, author_label AS label
+    FROM pimee_workflow_product_model_draft %s
+)
+UNION 
+(
+    SELECT DISTINCT author AS username, author_label AS label
+    FROM pimee_workflow_product_draft %s
+) 
+LIMIT :start,:limit
 SQL;
-        $sqlPd = <<<SQL
-SELECT u.username, u.username AS label
-FROM oro_user u
-INNER JOIN pimee_workflow_product_draft pd ON u.username = pd.author
-WHERE 1=1
-SQL;
+        $sqlSearch = ' WHERE 1=1';
 
         if (null !== $search && '' !== $search) {
-            $sqlPmd .= ' AND pmd.author LIKE :search';
-            $sqlPd .= ' AND pd.author LIKE :search';
+            $sqlSearch .= ' AND (author LIKE :search OR author_label LIKE :search)';
         }
 
         if (!empty($identifiers)) {
-            $sqlPmd .= ' AND pmd.author in (:identifiers)';
-            $sqlPd .= ' AND pd.author in (:identifiers)';
+            $sqlSearch .= ' AND author in (:identifiers)';
         }
 
-        $sqlPmd .= ' LIMIT :start,:limit';
-        $sqlPd .= ' LIMIT :start,:limit';
-        $start = $limit * ($page - 1);
-
-        $sql = '(' . $sqlPmd . ') UNION (' . $sqlPd . ')';
-
-        $stmt = $this->entityManager->getConnection()->prepare($sql);
+        $queryParams = [
+            'start' => $limit * ($page - 1),
+            'limit' => $limit,
+        ];
+        $queryParamTypes = [
+            'start' => \PDO::PARAM_INT,
+            'limit' => \PDO::PARAM_INT,
+        ];
 
         if (null !== $search && '' !== $search) {
-            $stmt->bindValue('search', "%" . $search . "%");
+            $queryParams['search'] = "%" . $search . "%";
+            $queryParamTypes['search'] = \PDO::PARAM_STR;
         }
 
         if (!empty($identifiers)) {
-            $stmt->bindValue('identifiers', $identifiers);
+            $queryParams['identifiers'] = $identifiers;
+            $queryParamTypes['identifiers'] = Connection::PARAM_STR_ARRAY;
         }
 
-        $stmt->bindValue('start', $start, \PDO::PARAM_INT);
-        $stmt->bindValue('limit', $limit, \PDO::PARAM_INT);
-
-        $stmt->execute();
+        $stmt = $this->connection->executeQuery(
+            sprintf($sql, $sqlSearch, $sqlSearch),
+            $queryParams,
+            $queryParamTypes,
+        );
 
         return $stmt->fetchAll();
     }

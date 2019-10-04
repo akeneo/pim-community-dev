@@ -146,6 +146,15 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    pimee_workflow.subscriber.track_proposal:
+        class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProposalTracking\TrackProposalSubscriber
+        arguments:
+            - '@Akeneo\Pim\WorkOrganization\Workflow\Bundle\ProposalTracking\TrackProposal'
+            - '@Akeneo\Pim\WorkOrganization\Workflow\Bundle\FeatureFlag\ProposalTrackingFeature'
+            - '@logger'
+        tags:
+            - { name: kernel.event_subscriber }
+
     # CE override
     pim_catalog.event_subscriber.index_products:
         class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\IndexProductsSubscriber'
@@ -187,6 +196,13 @@ services:
 
     pimee_workflow.evnt_subscriber.create_published_product_completeness_tables:
         class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\CreatePublishedProductCompletenessTablesSubscriber'
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_workflow.event_subscriber.proposal_tracking.install_database:
+        class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProposalTracking\InstallDatabaseSubscriber
         arguments:
             - '@database_connection'
         tags:

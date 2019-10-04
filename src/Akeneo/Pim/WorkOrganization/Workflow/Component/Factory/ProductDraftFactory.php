@@ -12,8 +12,8 @@
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Factory;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\DraftSource;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
 
@@ -35,22 +35,17 @@ class ProductDraftFactory implements EntityWithValuesDraftFactory
         $this->productRepository = $productRepository;
     }
 
-    /**
-     * Create and configure a ProductDraft instance
-     *
-     * @param ProductInterface $product
-     * @param string           $username
-     *
-     * @return EntityWithValuesDraftInterface
-     */
-    public function createEntityWithValueDraft(EntityWithValuesInterface $product, string $username): EntityWithValuesDraftInterface
+    public function createEntityWithValueDraft(EntityWithValuesInterface $product, DraftSource $draftSource): EntityWithValuesDraftInterface
     {
         $fullProduct = $this->productRepository->find($product->getId());
 
         $productDraft = new ProductDraft();
         $productDraft
             ->setEntityWithValue($fullProduct)
-            ->setAuthor($username)
+            ->setAuthor($draftSource->getAuthor())
+            ->setAuthorLabel($draftSource->getAuthorLabel())
+            ->setSource($draftSource->getSource())
+            ->setSourceLabel($draftSource->getSourceLabel())
             ->setCreatedAt(new \DateTime());
 
         return $productDraft;

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Writer;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Service\ProposalUpsertInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Proposal\ValueObject\ProposalAuthor;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -56,7 +55,7 @@ class ProposalWriter implements ItemWriterInterface, StepExecutionAwareInterface
             $productIds[] = $proposalSuggestedData->getProductId();
         }
 
-        $processedCount = $this->proposalUpsert->process($proposalsSuggestedData, ProposalAuthor::USERNAME);
+        $processedCount = $this->proposalUpsert->process($proposalsSuggestedData);
         $this->subscriptionRepository->emptySuggestedDataByProducts($productIds);
 
         $this->stepExecution->incrementSummaryInfo('processed', $processedCount);

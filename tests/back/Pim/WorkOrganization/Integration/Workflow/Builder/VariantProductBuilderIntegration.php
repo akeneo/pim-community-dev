@@ -80,7 +80,12 @@ class VariantProductBuilderIntegration extends TestCase
             ]
         ]);
 
-        $productDraft = $this->get('pimee_workflow.product.builder.draft')->build($product, 'mary');
+        $user = $this->get('pim_user.provider.user')->loadUserByUsername('mary');
+
+        $productDraft = $this->get('pimee_workflow.product.builder.draft')->build(
+            $product,
+            $this->get('Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\PimUserDraftSourceFactory')->createFromUser($user)
+        );
 
         $this->get('pimee_workflow.saver.product_draft')->save($productDraft);
     }

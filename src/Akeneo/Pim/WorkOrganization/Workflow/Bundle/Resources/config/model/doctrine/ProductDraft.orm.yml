@@ -11,19 +11,36 @@ Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft:
         createdAt:
             type: datetime
             column: created_at
-            nullalble: false
+            nullable: false
         changes:
             type: json_array
-            nullalble: false
+            nullable: false
         rawValues:
             type: json
             column: raw_values
-        author:
-            type: string
-            nullalble: false
         status:
             type: integer
             nullable: false
+        source:
+            type: string
+            nullable: false
+            options:
+                default: ''
+        sourceLabel:
+            type: string
+            column: source_label
+            nullable: false
+            options:
+                default: ''
+        author:
+            type: string
+            nullable: false
+        authorLabel:
+            type: string
+            column: author_label
+            nullable: false
+            options:
+                default: ''
     manyToOne:
         entityWithValues:
             targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface

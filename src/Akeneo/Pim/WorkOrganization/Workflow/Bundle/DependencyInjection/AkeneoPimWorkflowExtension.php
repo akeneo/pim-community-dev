@@ -55,6 +55,7 @@ class AkeneoPimWorkflowExtension extends Extension
         $loader->load('mass_review_actions.yml');
         $loader->load('normalizers.yml');
         $loader->load('presenters.yml');
+        $loader->load('proposal_tracking.yml');
         $loader->load('providers.yml');
         $loader->load('publishers.yml');
         $loader->load('purgers.yml');
@@ -78,5 +79,6 @@ class AkeneoPimWorkflowExtension extends Extension
         $loader->load('writers.yml');
         $loader->load('presenters.yml');
         $loader->load('cli_commands.yml');
+        $loader->load('feature_flags.yml');
     }
 }

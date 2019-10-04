@@ -264,6 +264,15 @@ services:
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_draft_author }
 
+    pimee_workflow.datagrid.product_draft_source_filter:
+        class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Filter\ChoiceFilter
+        arguments:
+            - '@form.factory'
+            - '@pimee_workflow.datagrid.product_draft_utility'
+            - '@pimee_workflow.query.elasticsearch.filter.draft_source'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: product_draft_source}
+
     pimee_workflow.datagrid.product_draft_attribute_choice_filter:
         class: '%pimee_workflow.datagrid.product_draft_attribute_choice_filter.class%'
         parent: pimee_workflow.datagrid.product_draft_choice_filter

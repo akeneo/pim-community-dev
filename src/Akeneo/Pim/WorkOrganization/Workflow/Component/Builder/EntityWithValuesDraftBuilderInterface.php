@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Builder;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\DraftSource;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 
 /**
@@ -24,9 +25,9 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftIn
 interface EntityWithValuesDraftBuilderInterface
 {
     /**
-     * @throws \LogicException
-     *
+     * @param EntityWithValuesInterface $entityWithValues
+     * @param DraftSource $draftSource
      * @return EntityWithValuesDraftInterface|null returns null if no draft is created
      */
-    public function build(EntityWithValuesInterface $entityWithValues, string $username): ?EntityWithValuesDraftInterface;
+    public function build(EntityWithValuesInterface $entityWithValues, DraftSource $draftSource): ?EntityWithValuesDraftInterface;
 }

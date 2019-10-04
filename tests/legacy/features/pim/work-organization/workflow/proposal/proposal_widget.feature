@@ -11,10 +11,10 @@ Feature: Display proposal widget
       | my-jacket    | jackets | jackets    |
       | my-tee-shirt | jackets | jackets    |
     And the following product drafts:
-      | product      | author | status | result                                                                    |
-      | my-jacket    | mary   | ready  | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My change1"}]}} |
-      | my-jacket    | sandra | ready  | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My change2"}]}} |
-      | my-tee-shirt | sandra | ready  | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My change3"}]}} |
+      | product      | source | source_label | author | author_label  | status | result                                                                    |
+      | my-jacket    | pim    | PIM          | mary   | Mary Smith    | ready  | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My change1"}]}} |
+      | my-jacket    | pim    | PIM          | sandra | Sandra Harvey | ready  | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My change2"}]}} |
+      | my-tee-shirt | pim    | PIM          | sandra | Sandra Harvey | ready  | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My change3"}]}} |
     And I am logged in as "Julia"
 
   Scenario: Successfully get redirected to correct Sandra's proposal grid filtered on selected proposal

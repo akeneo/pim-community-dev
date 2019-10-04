@@ -87,3 +87,8 @@ services:
             - '@pim_catalog.repository.product_model'
             - '@pimee_workflow.repository.product_model_draft'
             - '@pimee_workflow.applier.draft'
+
+    pimee_workflow.repository.proposal_tracking:
+        class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Repository\ProposalTrackingRepository
+        arguments:
+            - '@database_connection'

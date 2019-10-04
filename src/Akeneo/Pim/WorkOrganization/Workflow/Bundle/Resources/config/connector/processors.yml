@@ -14,6 +14,7 @@ services:
             - '@pimee_workflow.repository.product_draft'
             - '@security.token_storage'
             - '@pim_connector.processor.denormalization.media_storer'
+            - '@Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\PimUserDraftSourceFactory'
 
     pimee_workflow.connector.processor.quick_export.published_product:
         class: '%pim_enrich.connector.processor.quick_export.product_and_product_model.class%'
@@ -39,6 +40,7 @@ services:
             - '@security.token_storage'
             - '@pim_connector.processor.attribute_filter.product_model'
             - '@pim_connector.processor.denormalization.media_storer'
+            - '@Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\PimUserDraftSourceFactory'
 
     pimee_workflow.processor.normalization.published_product:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization\ProductProcessor'

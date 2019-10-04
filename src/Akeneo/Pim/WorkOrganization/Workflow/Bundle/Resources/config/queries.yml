@@ -5,7 +5,12 @@ services:
     pimee_workflow.query.draft_authors:
         class: '%pimee_workflow.query.draft_authors.class%'
         arguments:
-            - '@doctrine.orm.entity_manager'
+            - '@database_connection'
+
+    pimee_workflow.query.select_draft_source_filter_choices:
+        class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Query\SelectDraftSourceFilterChoicesQuery
+        arguments:
+            - '@database_connection'
 
     pimee_workflow.query.get_associated_product_codes_by_published_product:
         class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Query\GetAssociatedProductCodesByPublishedProductFromDB
@@ -75,5 +80,10 @@ services:
 
     pimee_workflow.query.save_published_product_completenesses:
         class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\SqlSavePublishedProductCompletenesses'
+        arguments:
+            - '@database_connection'
+
+    pimee_workflow.query.select_attribute_labels_from_codes:
+        class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Query\SelectAttributeLabelsFromCodesQuery
         arguments:
             - '@database_connection'

@@ -258,8 +258,9 @@ class GetWorkflowStatusFromProductIdentifiersIntegration extends TestCase
 
         $this->get('pim_catalog.updater.product')->update($product, $changes);
 
-        $productDraft = $this->get('pimee_workflow.product.builder.draft')->build($product, $userName);
-
+        $user = $this->get('pim_user.provider.user')->loadUserByUsername($userName);
+        $draftSource = $this->get('Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\PimUserDraftSourceFactory')->createFromUser($user);
+        $productDraft = $this->get('pimee_workflow.product.builder.draft')->build($product, $draftSource);
 
         if (true === $ready) {
             $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW);

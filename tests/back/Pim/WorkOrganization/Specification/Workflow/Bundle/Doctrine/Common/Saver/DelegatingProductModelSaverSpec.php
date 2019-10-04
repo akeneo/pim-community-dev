@@ -2,21 +2,22 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\Common\Saver;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
+use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\Pim\Permission\Component\NotGrantedDataMergerInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Builder\EntityWithValuesDraftBuilderInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\PimUserDraftSourceFactory;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\DraftSource;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
-use Akeneo\Pim\Permission\Component\Attributes;
-use Akeneo\Pim\Permission\Component\NotGrantedDataMergerInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Builder\EntityWithValuesDraftBuilderInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Prophecy\Argument;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -35,7 +36,8 @@ class DelegatingProductModelSaverSpec extends ObjectBehavior
         NotGrantedDataMergerInterface $mergeDataOnProductModel,
         ProductModelRepositoryInterface $productModelRepository,
         EntityWithValuesDraftRepositoryInterface $productModelDraftRepository,
-        BulkSaverInterface $bulkProductModelSaver
+        BulkSaverInterface $bulkProductModelSaver,
+        PimUserDraftSourceFactory $draftSourceFactory
     ) {
         $this->beConstructedWith(
             $objectManager,
@@ -48,7 +50,8 @@ class DelegatingProductModelSaverSpec extends ObjectBehavior
             $mergeDataOnProductModel,
             $productModelRepository,
             $productModelDraftRepository,
-            $bulkProductModelSaver
+            $bulkProductModelSaver,
+            $draftSourceFactory
         );
     }
 
@@ -148,12 +151,16 @@ class DelegatingProductModelSaverSpec extends ObjectBehavior
         $draftBuilder,
         $productModelDraftRepository,
         $productModelDraftRemover,
+        $draftSourceFactory,
         ProductModelInterface $filteredProductModel,
         ProductModelInterface $fullProductModel,
         EntityWithValuesDraftInterface $filteredProductModelDraft,
         UsernamePasswordToken $token,
-        UserInterface $user
+        UserInterface $user,
+        DraftSource $draftSource
     ) {
+        $this->prepareDraftSource($tokenStorage, $token, $user, $draftSource, $draftSourceFactory);
+
         $productModelRepository->find(42)->willReturn($fullProductModel);
         $mergeDataOnProductModel->merge($filteredProductModel, $fullProductModel)->willReturn($filteredProductModel);
         $productModelRepository->findOneByIdentifier('code')->willReturn($fullProductModel);
@@ -166,11 +173,7 @@ class DelegatingProductModelSaverSpec extends ObjectBehavior
         $authorizationChecker->isGranted(Attributes::EDIT, $filteredProductModel)
             ->willReturn(true);
 
-        $user->getUsername()->willReturn('username');
-        $token->getUser()->willReturn($user);
-        $tokenStorage->getToken()->willReturn($token);
-
-        $draftBuilder->build($filteredProductModel, 'username')
+        $draftBuilder->build($filteredProductModel, $draftSource)
             ->willReturn(null)
             ->shouldBeCalled();
 
@@ -191,12 +194,16 @@ class DelegatingProductModelSaverSpec extends ObjectBehavior
         $productModelRepository,
         $productModelDraftRemover,
         $productModelDraftRepository,
+        $draftSourceFactory,
         ProductModelInterface $filteredProductModel,
         ProductModelInterface $fullProductModel,
         EntityWithValuesDraftInterface $filteredProductModelDraft,
         UsernamePasswordToken $token,
-        UserInterface $user
+        UserInterface $user,
+        DraftSource $draftSource
     ) {
+        $this->prepareDraftSource($tokenStorage, $token, $user, $draftSource, $draftSourceFactory);
+
         $productModelRepository->find(42)->willReturn($fullProductModel);
         $mergeDataOnProductModel->merge($filteredProductModel, $fullProductModel)->willReturn($filteredProductModel);
 
@@ -208,11 +215,7 @@ class DelegatingProductModelSaverSpec extends ObjectBehavior
         $authorizationChecker->isGranted(Attributes::EDIT, $filteredProductModel)
             ->willReturn(true);
 
-        $user->getUsername()->willReturn('username');
-        $token->getUser()->willReturn($user);
-        $tokenStorage->getToken()->willReturn($token);
-
-        $draftBuilder->build($filteredProductModel, 'username')
+        $draftBuilder->build($filteredProductModel, $draftSource)
             ->willReturn(null)
             ->shouldBeCalled();
 
@@ -233,11 +236,15 @@ class DelegatingProductModelSaverSpec extends ObjectBehavior
         $productModelDraftRepository,
         $productModelDraftRemover,
         $productModelRepository,
+        $draftSourceFactory,
         ProductModelInterface $filteredProductModel,
         ProductModelInterface $fullProductModel,
         UsernamePasswordToken $token,
-        UserInterface $user
+        UserInterface $user,
+        DraftSource $draftSource
     ) {
+        $this->prepareDraftSource($tokenStorage, $token, $user, $draftSource, $draftSourceFactory);
+
         $productModelRepository->find(42)->willReturn($fullProductModel);
         $mergeDataOnProductModel->merge($filteredProductModel, $fullProductModel)->willReturn($filteredProductModel);
 
@@ -249,11 +256,7 @@ class DelegatingProductModelSaverSpec extends ObjectBehavior
         $authorizationChecker->isGranted(Attributes::EDIT, $filteredProductModel)
             ->willReturn(true);
 
-        $user->getUsername()->willReturn('username');
-        $token->getUser()->willReturn($user);
-        $tokenStorage->getToken()->willReturn($token);
-
-        $draftBuilder->build($filteredProductModel, 'username')
+        $draftBuilder->build($filteredProductModel, $draftSource)
             ->willReturn(null)
             ->shouldBeCalled();
 
@@ -272,12 +275,16 @@ class DelegatingProductModelSaverSpec extends ObjectBehavior
         $tokenStorage,
         $mergeDataOnProductModel,
         $productModelRepository,
+        $draftSourceFactory,
         ProductModelInterface $filteredProductModel,
         ProductModelInterface $fullProductModel,
         EntityWithValuesDraftInterface $filteredProductDraft,
         UsernamePasswordToken $token,
-        UserInterface $user
+        UserInterface $user,
+        DraftSource $draftSource
     ) {
+        $this->prepareDraftSource($tokenStorage, $token, $user, $draftSource, $draftSourceFactory);
+
         $productModelRepository->find(42)->willReturn($fullProductModel);
         $filteredProductModel->getCode()->willReturn('sku');
         $productModelRepository->findOneByIdentifier('sku')->willReturn($fullProductModel);
@@ -289,11 +296,7 @@ class DelegatingProductModelSaverSpec extends ObjectBehavior
         $authorizationChecker->isGranted(Attributes::EDIT, $filteredProductModel)
             ->willReturn(true);
 
-        $user->getUsername()->willReturn('username');
-        $token->getUser()->willReturn($user);
-        $tokenStorage->getToken()->willReturn($token);
-
-        $draftBuilder->build($filteredProductModel, 'username')
+        $draftBuilder->build($filteredProductModel, $draftSource)
             ->willReturn($filteredProductDraft)
             ->shouldBeCalled();
 
@@ -336,5 +339,33 @@ class DelegatingProductModelSaverSpec extends ObjectBehavior
         $bulkProductModelSaver->saveAll([$filteredProductModel1, $filteredProductModel2], [])->shouldBeCalled();
 
         $this->saveAll([$filteredProductModel1, $filteredProductModel2], []);
+    }
+
+    private function prepareDraftSource(
+        TokenStorageInterface $tokenStorage,
+        TokenInterface $token,
+        UserInterface $user,
+        DraftSource $draftSource,
+        PimUserDraftSourceFactory $draftSourceFactory
+    ): void {
+        $fullName = 'User full name';
+        $username = 'username';
+        $source = 'pim';
+        $sourceLabel = 'PIM';
+
+        $user->getFullName()->willReturn($fullName);
+        $user->getUsername()->willReturn($username);
+
+        $tokenStorage->getToken()->willReturn($token);
+
+        $token->getUsername()->willReturn($username);
+        $token->getUser()->willReturn($user);
+
+        $draftSource->getSource()->willReturn($source);
+        $draftSource->getSourceLabel()->willReturn($sourceLabel);
+        $draftSource->getAuthor()->willReturn($username);
+        $draftSource->getAuthorLabel()->willReturn($fullName);
+
+        $draftSourceFactory->createFromUser($user)->willReturn($draftSource);
     }
 }

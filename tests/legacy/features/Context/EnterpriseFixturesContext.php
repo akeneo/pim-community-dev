@@ -10,7 +10,6 @@ use Akeneo\Asset\Component\Model\Tag;
 use Akeneo\Asset\Component\Model\TagInterface;
 use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
@@ -18,10 +17,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterfac
 use Akeneo\Pim\Permission\Bundle\Manager\AttributeGroupAccessManager;
 use Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager;
 use Akeneo\Pim\Permission\Component\Attributes;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\PublishedProductManager;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\ProductDraftFactory;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\DraftSource;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
@@ -93,10 +91,14 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             );
             $product = $this->getProduct($data['product']);
 
-            $productDraft = $this->getProductDraftFactory()->createEntityWithValueDraft(
-                $product,
-                $data['author']
+            $draftSource = new DraftSource(
+                $data['source'],
+                $data['source_label'],
+                $data['author'],
+                $data['author_label']
             );
+
+            $productDraft = $this->getProductDraftFactory()->createEntityWithValueDraft($product, $draftSource);
             if (isset($data['createdAt'])) {
                 $productDraft->setCreatedAt(new \DateTime($data['createdAt']));
             }

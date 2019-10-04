@@ -2,9 +2,9 @@
 
 namespace AkeneoTestEnterprise\Pim\WorkOrganization\EndToEnd\Workflow\ProductModelDraft;
 
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 class GetProductModelDraftEndToEnd extends ApiTestCase
@@ -173,7 +173,12 @@ JSON;
             ]
         ]);
 
-        $productModelDraft = $this->get('pimee_workflow.product_model.builder.draft')->build($productModel, $userName);
+        $user = $this->get('pim_user.provider.user')->loadUserByUsername($userName);
+
+        $productModelDraft = $this->get('pimee_workflow.product_model.builder.draft')->build(
+            $productModel,
+            $this->get('Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\PimUserDraftSourceFactory')->createFromUser($user)
+        );
 
         $this->get('pimee_workflow.saver.product_model_draft')->save($productModelDraft);
 

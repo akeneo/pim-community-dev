@@ -80,7 +80,9 @@ abstract class AbstractProductImportTestCase extends TestCase
         string $username,
         array $draftData
     ): EntityWithValuesDraftInterface {
-        $productDraft = $this->get('pimee_workflow.factory.product_draft')->createEntityWithValueDraft($product, $username);
+        $user = $this->get('pim_user.provider.user')->loadUserByUsername($username);
+        $draftSource = $this->get('Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\PimUserDraftSourceFactory')->createFromUser($user);
+        $productDraft = $this->get('pimee_workflow.factory.product_draft')->createEntityWithValueDraft($product, $draftSource);
         $productDraft->setChanges($draftData);
 
 
