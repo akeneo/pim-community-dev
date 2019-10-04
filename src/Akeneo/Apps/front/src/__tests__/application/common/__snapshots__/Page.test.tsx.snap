@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Page component Matches the snapshot 1`] = `
+<div
+  className="AknDefault-contentWithColumn"
+>
+  <div
+    className="AknDefault-thirdColumnContainer"
+  >
+    <div
+      className="AknDefault-thirdColumn"
+    />
+  </div>
+  <div
+    className="AknDefault-contentWithBottom"
+  >
+    <div
+      className="AknDefault-mainContent"
+    />
+  </div>
+</div>
+`;

@@ -1,31 +1,36 @@
 import * as React from 'react';
 import {Link} from 'react-router-dom';
-import {Breadcrumb} from '../../common/Breadcrumb';
-import {Page} from '../../common/Page';
+import {ApplyButton, Breadcrumb, BreadcrumbItem, Header, Page} from '../../common';
+import {RouterContext} from '../../shared/router';
+import {Translate, TranslateContext} from '../../shared/translate';
 
-const breadcrumb = (
-    <Breadcrumb
-        items={[
-            {
-                action: {
-                    type: 'redirect',
-                    route: 'oro_config_configuration_system',
-                },
-                label: 'pim_menu.item.configuration',
-            },
-        ]}
-    />
-);
+export const ListApp = () => {
+    const translate = React.useContext(TranslateContext);
+    const router = React.useContext(RouterContext);
 
-const button = (
-    <button type='button' className='AknButton AknButton--apply AknButtonList-item'>
-        Create
-    </button>
-);
+    const breadcrumb = (
+        <Breadcrumb>
+            <BreadcrumbItem
+                label={translate('pim_menu.tab.system')}
+                onClick={() => router.redirect(router.generate('oro_config_configuration_system'))}
+            />
+            <BreadcrumbItem label={translate('pim_menu.item.apps')} onClick={() => undefined} isLast={false} />
+        </Breadcrumb>
+    );
 
-export const ListApp = () => (
-    <Page breadcrumb={breadcrumb} buttons={[button]} title='Apps'>
-        ListApp
-        <Link to='/apps/edit'>Edit</Link>
-    </Page>
-);
+    const createButton = (
+        <ApplyButton onClick={() => console.log('CREATE')} classNames={['AknButtonList-item']}>
+            <Translate id='TRANSLATION_KEY.CREATE' />
+        </ApplyButton>
+    );
+
+    return (
+        <Page>
+            <Header breadcrumb={breadcrumb} buttons={[createButton]}>
+                <Translate id='pim_menu.item.apps' />
+            </Header>
+            ListApp
+            <Link to='/apps/1'>Edit</Link>
+        </Page>
+    );
+};

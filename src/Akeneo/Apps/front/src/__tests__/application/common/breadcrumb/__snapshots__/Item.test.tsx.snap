@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Breadcrumb Item component Matches the snapshot 1`] = `
+<span
+  className="AknBreadcrumb-item AknBreadcrumb-item--final AknBreadcrumb-item--routable"
+  onClick={[Function]}
+  title="Is a link"
+>
+  Is a link
+</span>
+`;

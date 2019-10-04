@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button component Matches the snapshot 1`] = `
+<div
+  className="AknBreadcrumb"
+>
+  <span
+    className="AknBreadcrumb-item AknBreadcrumb-item--routable"
+    onClick={[Function]}
+    title="Is a link"
+  >
+    Is a link
+  </span>
+  <span
+    className="AknBreadcrumb-item"
+    title="Not a link"
+  >
+    Not a link
+  </span>
+  <span
+    className="AknBreadcrumb-item AknBreadcrumb-item--final AknBreadcrumb-item--routable"
+    onClick={[Function]}
+    title="Is a link and last item"
+  >
+    Is a link and last item
+  </span>
+</div>
+`;

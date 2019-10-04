@@ -2,7 +2,7 @@
 
 exports[`Button component Matches the snapshot 1`] = `
 <button
-  className="AknButton--action AknButton"
+  className="AknButton--apply AknButton"
   disabled={false}
   onClick={[Function]}
 />
