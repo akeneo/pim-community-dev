@@ -15,7 +15,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * This subscriber is responsible for
  * - computing and persisting product completeness
  * - reindexing products
- * - reindexing ancestor product models
+ * - reindexing ancestor product models as the completeness could change and impact the product model field 'all_complete' or 'all_incomplete' in the ES projection
  *
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
