@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-7644: Fix 500 error on thumbnail of TIFF images
+
 # 2.3.65 (2019-10-04)
 
 ## Bug fixes
