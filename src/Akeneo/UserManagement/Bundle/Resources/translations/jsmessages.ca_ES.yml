@@ -63,9 +63,9 @@ pim_user_management:
         ui_locale: Configuració regional de la interfície d'usuari
         timezone: Zona horària
         default_product_grid_view: Vista de quadrícula de producte per defecte
-        default_published_product_grid_view: Vista de graella de productes publicats per defecte
-        proposals_to_review_notification: Quan hi hagi una nova proposta per revisar
-        proposals_state_notifications: Quan la proposta sigui acceptada o rebutjada
+        default_published_product_grid_view: Vista de graella de productes publicats per defecte #EE Only
+        proposals_to_review_notification: Quan hi hagi una nova proposta per revisar #EE Only
+        proposals_state_notifications: Quan la proposta sigui acceptada o rebutjada #EE Only
       module:
         create:
           button: Crear usuari
@@ -76,7 +76,7 @@ pim_user_management:
           groups_and_roles: Grups i rols
           password: Contrasenya
           interfaces: Interfícies
-          notifications: Notificacions
+          notifications: Notificacions #TODO EE Only
     role:
       plural_label: Rols
       page_title:

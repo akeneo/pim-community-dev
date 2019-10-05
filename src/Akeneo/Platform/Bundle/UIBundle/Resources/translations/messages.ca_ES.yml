@@ -62,6 +62,7 @@ pim_common:
   name: Nom
   remove: Eliminar
 pim_enrich:
+  #ACLs
   acl:
     locale:
       index: Llistar configuracions regionals
@@ -187,6 +188,7 @@ pim_enrich:
     association type: crear tipus d'associació
     group type: crear tipus de grup
     drag_or_upload: Arrossegar i deixar per carrgar o feu clic aquí
+#Confirmation messages
 confirmation:
   delete: Confirmar l'eliminació
   leave: Esteu segur que voleu sortir d'aquesta pàgina?
@@ -194,6 +196,7 @@ confirmation:
   remove:
     category: Esteu segur que voleu eliminar la categoria %name%?
     user: Esteu segur que voleu suprimir l'usuari %name%?
+#Flash messages
 flash:
   entity:
     removed: L'element ha estat suprimit
@@ -215,6 +218,7 @@ flash:
   user:
     removed: Usuari suprimit correctament
   error occurred: Acció fallida. Si us plau, torneu-ho a provar.
+#Info messages
 info:
   updated: Hi ha canvis sense guardar.
   category:
@@ -249,6 +253,7 @@ info:
     auto option sorting: Si s'activa, les opcions s'ordenaran automàticament per les seves etiquetes configurades regionalment
   completeness:
     not calculated: No s'ha calculat encara
+#Form elements
 Created: Creat
 Updated: Actualitzat
 Last update: Darrera actualització
@@ -316,17 +321,21 @@ Category tree: Arbre de categories
 Completeness: Integritat
 Attribute used as label: Atribut utilitzat com a etiqueta
 Credentials: Credencials
+#Scopes
 Global: Global
 Channel: Canal
 Expand all channels: Ampliar tots els canals
 Collapse all channels: Col·lapsa tots els canals
+#Variants
 Always override: Anul·lar sempre
 Ask: Preguntar
+#Attribute group
 General Properties: Propietats generals
 Group values: Valors de grup
 New group: Nou grup
 Groups overview: Resum de grups
 'Y-m-d h:i:s': 'A-m-d H:m:s'
+#Attribute properties
 Max characters: Màxim de caràcters
 Validation rule: Regla de validació
 Validation regexp: Validació regexp
@@ -347,8 +356,11 @@ URL: URL
 Regular expression: Expressió regular
 Minimum input length: Longitud mínima d'entrada
 Default: Per defecte
+#Family
 Attributes: Atributs
+#Category
 Title: Títol
+#Page titles
 pim_catalog_identifier: Identificador
 pim_catalog_text: Texte
 pim_catalog_textarea: Àrea de Text
@@ -363,6 +375,7 @@ pim_catalog_date: Data
 pim_catalog_metric: Mètrica
 pim_reference_data_simpleselect: Selecció simple de dades de referència
 pim_reference_data_multiselect: Selecció múltiple de dades de referència
+#Locales
 Activated: Activat
 Edit: Editar
 Disable: Deshabilitar
@@ -373,9 +386,11 @@ Remove this attribute: Eliminar aquest atribut
 Copy: Copiar
 Translate from: Traduir de
 Current tab: Pestanya actual
+#Product view
 Group: Grup
 View group: Veure grup
 Products: Productes
+#Tabs
 Properties: Propietats
 History: Històric
 pane.accordion:
@@ -388,11 +403,13 @@ pane.accordion:
   label_translations: Traduccions d'etiquetes
   options: Opcions
   group_values: Valors de grup
+#Popin titles
 popin.create:
   association_type.title: Crear un nou tipus d'associació
   group.title: Crear un nou grup
   product.title: Crear un nou producte
   option.title: Crear una nova opció
+#Datagrid contents
 In group: En grup
 Attribute as label: Atribut com a etiqueta
 Is associated: Està associat
@@ -402,6 +419,7 @@ Updated At: Actualitzat el
 Enabled: Habilitat
 Disabled: Deshabilitat
 Status: Estat
+#Versioning / history
 Change History: Historial de canvis
 Data Audit: Auditoria de dades
 Data Audit - System: 'Auditoria de dades - sistema'
@@ -416,6 +434,7 @@ Logged at: Connectat a
 Deleted: Eliminat
 Old values: Valors antics
 New values: Valors nous
+#Configuration
 System configuration: Configuració de sistema
 General setup: Organització general
 Localization: Configuració regional
@@ -446,6 +465,7 @@ oro.locale:
       language: "Seleccioneu l'idioma de sistema que desitjeu utilitzar"
       timezone: "Seleccioneu la zona horària per mostrar data i hora"
       currency: "Seleccioneu la moneda per defecte"
+#Datagrid
 Selected products successfully deleted: Els productes seleccionats s'han eliminat correctament
 pim_mass_edit:
   notification:
