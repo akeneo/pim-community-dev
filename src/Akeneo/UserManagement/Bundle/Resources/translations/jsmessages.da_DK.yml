@@ -47,9 +47,9 @@ pim_user_management:
         ui_locale: UI landestandard
         timezone: Tidszone
         default_product_grid_view: Standard produkt gittervisningen
-        default_published_product_grid_view: Standard offentliggjorte produkter grid view
-        proposals_to_review_notification: Når nye forslag til revision
-        proposals_state_notifications: Når forslaget er accepteret eller afvist
+        default_published_product_grid_view: Standard offentliggjorte produkter grid view #EE Only
+        proposals_to_review_notification: Når nye forslag til revision #EE Only
+        proposals_state_notifications: Når forslaget er accepteret eller afvist #EE Only
       module:
         create:
           button: Opret bruger
@@ -59,7 +59,7 @@ pim_user_management:
           additional: Yderligere
           password: Adgangskode
           interfaces: Grænseflader
-          notifications: Notifikationer
+          notifications: Notifikationer #TODO EE Only
     role:
       plural_label: Roller
       module:

@@ -63,9 +63,9 @@ pim_user_management:
         ui_locale: Linguagem do UI
         timezone: Fuso horário
         default_product_grid_view: Exibição padrão da grade de produtos
-        default_published_product_grid_view: Exibição padrão da grade de produtos publicada
-        proposals_to_review_notification: Quando houver novas propostas para revisar
-        proposals_state_notifications: Quando a proposta é aceita ou rejeitada
+        default_published_product_grid_view: Exibição padrão da grade de produtos publicada #EE Only
+        proposals_to_review_notification: Quando houver novas propostas para revisar #EE Only
+        proposals_state_notifications: Quando a proposta é aceita ou rejeitada #EE Only
       module:
         create:
           button: Criar Usuário
@@ -76,7 +76,7 @@ pim_user_management:
           groups_and_roles: Grupos e papéis
           password: Senha
           interfaces: Interfaces
-          notifications: Notificações
+          notifications: Notificações #TODO EE Only
     role:
       plural_label: Papeis
       page_title:

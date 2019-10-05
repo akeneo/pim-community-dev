@@ -1,3 +1,4 @@
+#ORO messages
 "Yes, I Agree": "Ja, jeg er enig"
 "Yes, do it": "Ja, gør det"
 "Ok, got it.": "OK, fik det."
@@ -19,9 +20,11 @@ Second: Sekund
 Millisecond: Millisekund
 Microsecond: Mikrosekund
 "Time Zone": "Tidszone"
+#PIM messages
 Localized value: Lokaliseret værdi
 Columns: Kolonner
 Datagrid Configuration: DataGrid konfiguration
+#Filters
 Action: Handling
 Unit: Enhed
 Currency: Valuta
@@ -33,6 +36,7 @@ jstree:
     unclassified: Ikke-klassificerede produkter
   no_tree: Intet træ tilgængeligt
   include_sub: Inkluder underkategorier
+#Datetimepicker
 datetimepicker:
   days:
     Sunday: Søndag
@@ -84,6 +88,7 @@ datetimepicker:
     Oct: Okt
     Nov: Nov
     Dec: Dec
+#ORO
 oro_config:
   form:
     config:
@@ -107,6 +112,33 @@ oro_config:
 "Your local changes will be lost. Are you sure you want to refresh the page?": "Din lokale ændringer vil gå tabt. Er du sikker på at du opdatere siden?"
 "navigation.message.content.outdated": "Indhold af {{title}} side er forældet, venligst <a href='#' data-action='page-refresh'> opdater siden</a>"
 "Content of pinned page is outdated": "Indholdet af den fastgjorte side er forældet"
+#Global structure of translation files
+#pim_bundle_name:
+#entity:
+#entity_name:
+#label: entity
+#uppercase_label: Entity
+#plural_label: Entities
+#flash:
+#update:
+#fail: Update failed
+#success: Entity Successfully updated
+#delete:
+#fail: Cannot delete this entity
+#success: Entity successfully removed
+#create:
+#fail: Can not create this entity
+#success: Entity successfully created
+#page_title:
+#index: "]-Inf, 1]1 entity|]1, Inf[{{ count }} entities"
+#property:
+#field_name: Field name
+#complex_field:
+#label: Field name
+#choose: Choose a field name
+#module:
+#module_name:
+#key: message
 pim_common:
   actions: Aktioner
   add: Tilføj

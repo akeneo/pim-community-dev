@@ -1,8 +1,10 @@
+#Entities
 Job: Työ
 Connector: Liitin
 pim_import_export:
   job: Työ
   connector: Liitin
+  ## Job status
   status:
     0: Valmiina
   batch_status:
@@ -35,6 +37,7 @@ pim_import_export:
       property.title: Yleiset ominaisuudet
       history.title: Historia
       job_content.title: Sisältö
+#Page titles:
 pim_title.export_profile.index: Vientiprofiilien hallinta
 pim_title.export_profile.edit: Vientiprofiili %job.label% | Muokkaa
 pim_title.export_profile.show: Vientiprofiili %job.label% | Näytä
@@ -45,12 +48,14 @@ pim_title.import_profile.edit: Tuontiprofiili %job.label% | Muokkaa
 pim_title.import_profile.show: Tuontiprofiili %job.label% | Näytä
 pim_title.import_execution.index: Tuontihistoria
 pim_title.import_execution.show: Tuontisuoritukset | Yksityiskohdat
+#Entity and page header titles
 export profile:
   title: vientiprofiili
   edit: muokkaa vientiprofiilia
 import profile:
   title: tuontiprofiili
   edit: muokkaa tuontiprofiilia
+#ACLs
 pim_importexport:
   acl:
     export_profile:
@@ -86,6 +91,7 @@ pim_importexport:
   acl_group:
     export: Vientiprofiili
     import: Tuontiprofiilit
+#Buttons
 btn:
   create:
     export profile: luo vientiprofiili
@@ -93,10 +99,12 @@ btn:
 Upload and import now: Lataa ja tuo nyt
 import now: Tuo nyt
 export now: Vie nyt
+#Confirmation messages
 confirmation:
   remove:
     export profile: Oletko varma, että haluat poistaa vientiprofiilin %name%?
     import profile: Oletko varma, että haluat poistaa tuontiprofiilin %name%?
+#Flash messages
 flash:
   export:
     created: Vienti onnistui
@@ -108,15 +116,18 @@ flash:
     removed: Tuonti poistettu
     updated: Tuonti päivitetty
     running: Tuonti on käynnissä
+#Tabs
 General properties: Yleiset ominaisuudet
 History: Historia
 pane.accordion:
   properties: Ominaisuudet
   global_settings: Yleiset asetukset
   filters: Suodattimet
+#Popin titles
 popin.create:
   export_profile.title: Luo uusi vientiprofiili
   import_profile.title: Luo uusi tuontiprofiili
+#Job execution
 'Display item': Näytä kohde
 'Hide item': Piilota kohde
 'Collecting data about job execution...': Kerää tietoja työsuorituksesta...
@@ -142,6 +153,7 @@ Warnings: Varoitukset
 Summary: Yhteenveto
 Start: Aloitus
 End: Loppu
+#Process tracker
 set_attribute_requirements: Aseta vaaditut attribuutit
 COMPLETED: Valmis
 STARTING: Alkaa

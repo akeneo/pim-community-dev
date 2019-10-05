@@ -126,6 +126,7 @@ oro_security:
       create: Crea gruppo di utenti
       edit: Modifica gruppo utenti
       delete: Rimuovi gruppo utenti
+#Security
 (default): Autorizzazione predefinita su entità
 VIEW: Visualizzazione
 CREATE: Creare

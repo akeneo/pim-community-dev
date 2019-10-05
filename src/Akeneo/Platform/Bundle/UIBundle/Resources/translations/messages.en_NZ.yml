@@ -61,6 +61,7 @@ pim_common:
   name: Name
   remove: Remove
 pim_enrich:
+  #ACLs
   acl:
     locale:
       index: List locales
@@ -185,6 +186,7 @@ pim_enrich:
     association type: create association type
     group type: create group type
     drag_or_upload: Drag and drop to upload or click here
+#Confirmation messages
 confirmation:
   delete: Confirm deletion
   leave: Are you sure you want to leave this page?
@@ -192,6 +194,7 @@ confirmation:
   remove:
     category: Are you sure you want to delete the category %name%?
     user: Are you sure you want to delete the user %name%?
+#Flash messages
 flash:
   entity:
     removed: Item was deleted
@@ -213,6 +216,7 @@ flash:
   user:
     removed: User successfully removed
   error occurred: Action failed. Please retry.
+#Info messages
 info:
   updated: There are unsaved changes.
   category:
@@ -247,6 +251,7 @@ info:
     auto option sorting: If enabled, options will be sorted automatically by their localized labels
   completeness:
     not calculated: Not yet calculated
+#Form elements
 Created: Created
 Updated: Updated
 Last update: Last update
@@ -314,17 +319,21 @@ Category tree: Category tree
 Completeness: Completeness
 Attribute used as label: Attribute used as label
 Credentials: Credentials
+#Scopes
 Global: Global
 Channel: Channel
 Expand all channels: Expand all channels
 Collapse all channels: Collapse all channels
+#Variants
 Always override: Always override
 Ask: Ask
+#Attribute group
 General Properties: General Properties
 Group values: Group values
 New group: New group
 Groups overview: Groups overview
 'Y-m-d h:i:s': 'Y-m-d h:i:s'
+#Attribute properties
 Max characters: Max characters
 Validation rule: Validation rule
 Validation regexp: Validation regexp
@@ -345,8 +354,11 @@ URL: URL
 Regular expression: Regular expression
 Minimum input length: Minimum input length
 Default: Default
+#Family
 Attributes: Attributes
+#Category
 Title: Title
+#Page titles
 pim_catalog_identifier: Identifier
 pim_catalog_text: Text
 pim_catalog_textarea: Text Area
@@ -361,6 +373,7 @@ pim_catalog_date: Date
 pim_catalog_metric: Metric
 pim_reference_data_simpleselect: Reference data simple select
 pim_reference_data_multiselect: Reference data multi select
+#Locales
 Activated: Activated
 Edit: Edit
 Disable: Disable
@@ -371,9 +384,11 @@ Remove this attribute: Remove this attribute
 Copy: Copy
 Translate from: Translate from
 Current tab: Current tab
+#Product view
 Group: Group
 View group: View group
 Products: Products
+#Tabs
 Properties: Properties
 History: History
 pane.accordion:
@@ -386,11 +401,13 @@ pane.accordion:
   label_translations: Label translations
   options: Options
   group_values: Group values
+#Popin titles
 popin.create:
   association_type.title: Create a new association type
   group.title: Create a new group
   product.title: Create a new product
   option.title: Create a new option
+#Datagrid contents
 In group: In group
 Attribute as label: Attribute as label
 Is associated: Is associated
@@ -400,6 +417,7 @@ Updated At: Updated at
 Enabled: Enabled
 Disabled: Disabled
 Status: Status
+#Versioning / history
 Change History: Change history
 Data Audit: Data audit
 Data Audit - System: 'Data audit - system'
@@ -414,6 +432,7 @@ Logged at: Logged at
 Deleted: Deleted
 Old values: Old values
 New values: New values
+#Configuration
 System configuration: System configuration
 General setup: General setup
 Localization: Localization
@@ -444,6 +463,7 @@ oro.locale:
       language: "Select the system language you wish to use"
       timezone: "Select the timezone for displaying date and time"
       currency: "Select the default currency"
+#Datagrid
 Selected products successfully deleted: Selected products successfully deleted
 pim_mass_edit:
   notification:

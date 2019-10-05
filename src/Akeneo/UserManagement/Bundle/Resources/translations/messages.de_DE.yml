@@ -133,6 +133,7 @@ oro_security:
       create: Benutzergruppe anlegen
       edit: Benutzergruppe bearbeiten
       delete: Benutzergruppe entfernen
+#Security
 (default): Standardberechtigung für Entitäten
 VIEW: Ansehen
 CREATE: Anlegen

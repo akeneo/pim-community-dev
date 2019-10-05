@@ -133,6 +133,7 @@ oro_security:
       create: Crear un grup d'usuaris
       edit: Editar grups d'usuaris
       delete: Suprimir un grup d'usuaris
+#Security
 (default): Permís per defecte a les entitats
 VIEW: Vista
 CREATE: Crear

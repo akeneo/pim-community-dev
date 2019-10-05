@@ -61,6 +61,7 @@ pim_common:
   name: Nome
   remove: Rimuovere
 pim_enrich:
+  #ACLs
   acl:
     locale:
       index: Elenco formato impostazioni locali
@@ -185,6 +186,7 @@ pim_enrich:
     association type: Crea tipo associazione
     group type: Crea tipo gruppo
     drag_or_upload: Trascina e rilascia qui un file per caricarlo o fai click qui
+#Confirmation messages
 confirmation:
   delete: Conferma cancellazione
   leave: Sei sicuro di voler lasciare questa pagina?
@@ -192,6 +194,7 @@ confirmation:
   remove:
     category: Sei sicuro di voler eliminare la categoria %name%?
     user: Sei sicuro di voler eliminare  l'utente %name%?
+#Flash messages
 flash:
   entity:
     removed: L'elemento è stato eliminato
@@ -213,6 +216,7 @@ flash:
   user:
     removed: Utente rimosso con successo
   error occurred: Azione non riuscita. Si prega di riprovare.
+#Info messages
 info:
   updated: Ci sono modifiche non salvate.
   category:
@@ -247,6 +251,7 @@ info:
     auto option sorting: Se abilitato, le opzioni verranno ordinate automaticamente secondo le loro etichette
   completeness:
     not calculated: Non ancora calcolato
+#Form elements
 Created: Creato
 Updated: Caricato
 Last update: Ultimo aggiornamento
@@ -314,17 +319,21 @@ Category tree: Struttura della categoria
 Completeness: Completamento
 Attribute used as label: Attributo utilizzato come etichetta
 Credentials: Credenziali
+#Scopes
 Global: Globale
 Channel: Canale
 Expand all channels: Espandere tutti i canali
 Collapse all channels: Comprimi tutti i canali
+#Variants
 Always override: Ignorare sempre
 Ask: Chiedi
+#Attribute group
 General Properties: Proprietà generali
 Group values: Valori di gruppo
 New group: Nuovo gruppo
 Groups overview: Anteprima gruppi
 'Y-m-d h:i:s': 'Y-m-d h:i:s'
+#Attribute properties
 Max characters: Numero massimo di caratteri
 Validation rule: Regola di convalida
 Validation regexp: Convalida regexp
@@ -345,8 +354,11 @@ URL: URL
 Regular expression: Espressione regolare
 Minimum input length: Lunghezza minima di input
 Default: Predefinito
+#Family
 Attributes: Atributi
+#Category
 Title: Titolo
+#Page titles
 pim_catalog_identifier: Identificatore
 pim_catalog_text: Testo
 pim_catalog_textarea: Area di testo
@@ -361,6 +373,7 @@ pim_catalog_date: Data
 pim_catalog_metric: Metrico
 pim_reference_data_simpleselect: Seleziona un singolo riferimento dati
 pim_reference_data_multiselect: Seleziona un riferimento dati multiplo
+#Locales
 Activated: Attivato
 Edit: Modifica
 Disable: Disabilita
@@ -371,9 +384,11 @@ Remove this attribute: Rimuovere l'attributo
 Copy: Copia
 Translate from: Traduci da
 Current tab: Scheda corrente
+#Product view
 Group: Gruppo
 View group: Visualizzazione gruppo
 Products: Prodotti
+#Tabs
 Properties: Proprietà
 History: Cronologia
 pane.accordion:
@@ -386,11 +401,13 @@ pane.accordion:
   label_translations: Traduzioni etichetta
   options: Opzioni
   group_values: Valori di gruppo
+#Popin titles
 popin.create:
   association_type.title: Creare un nuovo tipo di associazione
   group.title: Crea un nuovo gruppo
   product.title: Crea un nuovo articolo
   option.title: Crea una nuova opzione
+#Datagrid contents
 In group: Nel gruppo
 Attribute as label: Attributo come etichetta
 Is associated: È associato
@@ -400,6 +417,7 @@ Updated At: Aggiornato il
 Enabled: Attivato
 Disabled: Disattivato
 Status: Stato
+#Versioning / history
 Change History: Cambia la cronologia
 Data Audit: Revisione dei dati
 Data Audit - System: 'Sistema di revisione dei dati'
@@ -414,6 +432,7 @@ Logged at: Loggato il
 Deleted: Eliminato
 Old values: Vecchi valori
 New values: Nuovi valori
+#Configuration
 System configuration: Configurazione del sistema
 General setup: Impostazioni generali
 Localization: Localizzazione
@@ -444,6 +463,7 @@ oro.locale:
       language: "Selezionare la lingua di sistema che si desidera utilizzare"
       timezone: "Selezionare il fuso orario per la visualizzazione di data e ora"
       currency: "Selezionare la valuta predefinita"
+#Datagrid
 Selected products successfully deleted: Gli articoli selezionati sono stati eliminati con successo
 pim_mass_edit:
   notification:

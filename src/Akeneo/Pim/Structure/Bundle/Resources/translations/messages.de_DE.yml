@@ -1,15 +1,19 @@
 pim_enrich:
+  #Attribute
   attribute:
     tab:
       parameter.title: Parameter
       value.title: Werte
       history.title: Historie
+  #Family
   family:
     info:
       cant_remove_attribute_used_as_axis: Sie können dieses Attribut nicht entfernen, da es als Achse in der Variante der Produktfamilie verwendet wird
+  #Group type
   group_type:
     tab:
       property.title: Eigenschaften
+  #Mass edit operations
   mass_edit_action:
     family:
       page_title: Produktfamilien

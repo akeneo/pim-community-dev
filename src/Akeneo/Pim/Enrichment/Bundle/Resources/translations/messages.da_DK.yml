@@ -2,6 +2,7 @@ No products to remove: Ingen produkter at fjerne
 "dot (.)": punktum (.)
 "comma (,)": komma (,)
 pim_enrich:
+  #Category
   category:
     tab:
       property.title: Egenskaber
@@ -9,6 +10,7 @@ pim_enrich:
     suggest_selection: Vælg venligst en kategori til venstre
     or: eller
     create_new: Opret ny kategori
+  #Mass edit operations
   mass_edit_action:
     limit_exceeded: Vælg venligst mindst %limit% elementer der skal redigeres
     product:

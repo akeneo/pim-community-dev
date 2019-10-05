@@ -126,6 +126,7 @@ oro_security:
       create: Create a user group
       edit: Edit user groups
       delete: Remove a user group
+#Security
 (default): Default permission on entities
 VIEW: View
 CREATE: Create

@@ -1,3 +1,4 @@
+#ORO messages
 "Yes, I Agree": "Kyllä, hyväksyn"
 "Yes, do it": "Kyllä, tee se"
 "Ok, got it.": "OK."
@@ -19,9 +20,11 @@ Second: Sekunti
 Millisecond: Millisekunti
 Microsecond: Mikrosekunti
 "Time Zone": "Aikavyöhyke"
+#PIM messages
 Localized value: Paikallinen arvo
 Columns: Sarakkeet
 Datagrid Configuration: Datagrid-kokoonpano
+#Filters
 Action: Toiminto
 Unit: Yksikkö
 Currency: Valuutta
@@ -33,6 +36,7 @@ jstree:
     unclassified: Luokittelemattomat tuotteet
   no_tree: Ei puuta käytettävissä
   include_sub: Sisällytä alakategoriat
+#Datetimepicker
 datetimepicker:
   days:
     Sunday: Sunnuntai
@@ -84,6 +88,7 @@ datetimepicker:
     Oct: Loka
     Nov: Marras
     Dec: Joulu
+#ORO
 oro_config:
   form:
     config:
@@ -110,6 +115,33 @@ pim_ui:
 "Your local changes will be lost. Are you sure you want to refresh the page?": "Paikalliset muutoksesi menetetään. Oletko varma, että haluat päivittää sivun?"
 "navigation.message.content.outdated": "{{ title }} sivun sisältö on vanhentunut, ole hyvä ja <a href='#' data-action='page-refresh'> päivitä sivu</a>"
 "Content of pinned page is outdated": "Valitsemasi sivun sisältö on päivittämätön"
+#Global structure of translation files
+#pim_bundle_name:
+#entity:
+#entity_name:
+#label: entity
+#uppercase_label: Entity
+#plural_label: Entities
+#flash:
+#update:
+#fail: Update failed
+#success: Entity Successfully updated
+#delete:
+#fail: Cannot delete this entity
+#success: Entity successfully removed
+#create:
+#fail: Can not create this entity
+#success: Entity successfully created
+#page_title:
+#index: "]-Inf, 1]1 entity|]1, Inf[{{ count }} entities"
+#property:
+#field_name: Field name
+#complex_field:
+#label: Field name
+#choose: Choose a field name
+#module:
+#module_name:
+#key: message
 pim_common:
   actions: Toiminnot
   add: Lisää

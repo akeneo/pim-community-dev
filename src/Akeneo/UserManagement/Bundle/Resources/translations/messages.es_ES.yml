@@ -133,6 +133,7 @@ oro_security:
       create: Crear un grupo de usuarios
       edit: Editar grupos de usuarios
       delete: Eliminar un usuario del grupo
+#Security
 (default): Permisos predeterminados en entidades
 VIEW: Visualizar
 CREATE: Crear
