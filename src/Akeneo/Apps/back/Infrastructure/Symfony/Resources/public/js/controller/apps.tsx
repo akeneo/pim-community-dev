@@ -1,29 +1,25 @@
-import {composeProviders, Index, RouterProvider, TranslateProvider} from '@akeneo-pim-ce/apps';
+import {Apps} from '@akeneo-pim-ce/apps';
 import * as $ from 'jquery';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
 const BaseController = require('pim/controller/base');
-const Router = require('pim/router');
-const Mediator = require('oro/mediator');
-const Translator = require('oro/translator');
 
-const Providers = composeProviders(
-  [RouterProvider, Router],
-  [TranslateProvider, Translator]
-);
+const mediator = require('oro/mediator');
+const router = require('pim/router');
+const translate = require('oro/translator');
+
+const dependencies = {
+  router,
+  translate,
+};
 
 class AppsController extends BaseController {
   renderRoute() {
-    Mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-system'});
-    Mediator.trigger('pim_menu:highlight:item', {extension: 'pim-menu-system-apps'});
+    mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-system'});
+    mediator.trigger('pim_menu:highlight:item', {extension: 'pim-menu-system-apps'});
 
-    ReactDOM.render(
-      <Providers>
-        <Index />
-      </Providers>,
-      this.el
-    );
+    ReactDOM.render(<Apps {...dependencies} />, this.el);
 
     return $.Deferred().resolve();
   }

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-
-const viewBuilder = require('pim/form-builder');
+import {viewBuilder} from './view-builder';
 
 interface Props {
     viewName: string;
