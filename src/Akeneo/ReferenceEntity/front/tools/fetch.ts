@@ -8,7 +8,13 @@ export const getJSON = (...args: any[]) => {
 };
 
 export const postJSON = (url: string, data: {}) => {
-  const promise = $.post(url, JSON.stringify(data), null, 'json');
+  const promise = $.ajax({
+    url,
+    type: 'POST',
+    data: JSON.stringify(data),
+    contentType: 'application/json',
+    dataType: 'json'
+  });
 
   return promisify(promise);
 };
