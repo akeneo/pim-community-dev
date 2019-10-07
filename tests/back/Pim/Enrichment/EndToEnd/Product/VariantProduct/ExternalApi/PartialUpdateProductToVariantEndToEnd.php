@@ -123,6 +123,8 @@ JSON;
 
     public function testProductHasNotTheSameFamilyThanTheProductModel()
     {
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
+
         $this->createProduct('product_familyA3', [
             'family' => 'familyA3',
             'categories' => ['master'],
@@ -159,6 +161,8 @@ JSON;
 
     public function testProductHasNoValueForTheVariantAxis()
     {
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
+
         $this->createProductModel(
             [
                 'code' => 'parent_product_no_value',
