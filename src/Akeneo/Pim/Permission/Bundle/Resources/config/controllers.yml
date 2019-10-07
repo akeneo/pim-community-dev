@@ -41,7 +41,7 @@ services:
             - '@pim_catalog.localization.localizer.number'
             - '@pim_enrich.normalizer.attribute'
             - '@translator'
-            - '@pim_catalog.doctrine.query.attribute_is_an_family_variant_axis'
+            - '@akeneo.pim.structure.query.attribute_is_an_family_variant_axis'
 
     pim_datagrid.controller.productgrid:
         public: true
