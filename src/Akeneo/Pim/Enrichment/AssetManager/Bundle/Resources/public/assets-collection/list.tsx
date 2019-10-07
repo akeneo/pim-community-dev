@@ -27,6 +27,7 @@ import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
 import {MoreButton} from 'akeneoassetmanager/application/component/app/more-button';
 import {addAssetToCollection, emptyCollection} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {AssetPicker} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker';
+import LockIcon from 'akeneopimenrichmentassetmanager/platform/component/visual/icon/lock';
 
 type ListStateProps = {
   attributes: Attribute[],
@@ -56,12 +57,13 @@ const SectionTitle = styled.div`
   border-bottom: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey140}
 `;
 
-const AttributeBreadCrumb = styled.div`
+const AttributeBreadCrumb = styled.div<{readonly: boolean}>`
   font-size: 15px;
   font-weight: normal;
   text-transform: uppercase;
   white-space: nowrap;
-  color: ${(props: ThemedProps<void>) => props.theme.color.grey140}
+  color: ${(props: ThemedProps<{readonly: boolean}>) => props.theme.color.grey140}
+  opacity: ${(props: ThemedProps<{readonly: boolean}>) => props.readonly ? .3 : 1}
 `;
 
 const IncompleteIndicator = styled.div`
@@ -86,13 +88,22 @@ const AssetCollectionList = styled.div`
   align-items: stretch;
 `;
 
+const LockIconContainer = styled.div`
+  margin-right: 5px;
+`;
+
 const DisplayValues = ({values, family, context, ruleRelations, onChange, errors}: DisplayValuesProps) => {
   return (
     <React.Fragment>
       {values.map((value: Value) => (
         <AssetCollectionContainer key={value.attribute.code} data-attribute={value.attribute.code}>
           <SectionTitle>
-            <AttributeBreadCrumb>
+            {!value.editable ? (
+              <LockIconContainer>
+                <LockIcon />
+              </LockIconContainer>
+            ) : null}
+            <AttributeBreadCrumb readonly={!value.editable}>
               {value.attribute.group} / {getAttributeLabel(value.attribute, context.locale)}
             </AttributeBreadCrumb>
             {!isValueComplete(value, family, context.channel) ? (
@@ -105,7 +116,9 @@ const DisplayValues = ({values, family, context, ruleRelations, onChange, errors
             <AssetCounter>
               {__('pim_asset_manager.asset_collection.asset_count', {count: value.data.length}, value.data.length)}
             </AssetCounter>
-            <Separator />
+            {value.editable ? (
+              <Separator />
+            ) : null }
             {value.channel !== null || value.locale !== null ? (
               <React.Fragment>
                 <ContextLabel>
