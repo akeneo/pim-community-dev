@@ -16,6 +16,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -82,23 +83,9 @@ class AttributeController
     /** @var AttributeIsAFamilyVariantAxis */
     private $attributeIsAFamilyVariantAxisQuery;
 
-    /**
-     * @param AttributeRepositoryInterface  $attributeRepository
-     * @param NormalizerInterface           $normalizer
-     * @param TokenStorageInterface         $tokenStorage
-     * @param ObjectFilterInterface         $attributeFilter
-     * @param SearchableRepositoryInterface $attributeSearchRepository
-     * @param ObjectUpdaterInterface        $updater
-     * @param ValidatorInterface            $validator
-     * @param SaverInterface                $saver
-     * @param RemoverInterface              $remover
-     * @param AttributeFactory              $factory
-     * @param UserContext                   $userContext
-     * @param LocalizerInterface            $numberLocalizer
-     * @param NormalizerInterface           $lightAttributeNormalizer
-     * @param TranslatorInterface           $translator
-     * @param AttributeIsAFamilyVariantAxis $attributeIsAFamilyVariantAxisQuery
-     */
+    /** @var ObjectRepository */
+    private $channelRepository;
+
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
         NormalizerInterface $normalizer,
@@ -114,7 +101,8 @@ class AttributeController
         LocalizerInterface $numberLocalizer,
         NormalizerInterface $lightAttributeNormalizer,
         TranslatorInterface $translator,
-        AttributeIsAFamilyVariantAxis $attributeIsAFamilyVariantAxisQuery
+        AttributeIsAFamilyVariantAxis $attributeIsAFamilyVariantAxisQuery,
+        ObjectRepository $channelRepository = null // TODO Merge remove null on master
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->normalizer = $normalizer;
@@ -131,6 +119,7 @@ class AttributeController
         $this->lightAttributeNormalizer = $lightAttributeNormalizer;
         $this->translator = $translator;
         $this->attributeIsAFamilyVariantAxisQuery = $attributeIsAFamilyVariantAxisQuery;
+        $this->channelRepository = $channelRepository;
     }
 
     /**
@@ -376,6 +365,21 @@ class AttributeController
             );
         }
 
+        $channelCodes = $this->channelCodesUsedAsConversionUnit($code);
+        if (count($channelCodes) > 0) {
+            $message = $this->translator->trans('flash.attribute.used_as_conversion_unit', [
+                '%channelCodes%' => join(', ', $channelCodes)
+            ]);
+
+            return new JsonResponse(
+                [
+                    'message' => $message,
+                    'global' => true,
+                ],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
         $this->remover->remove($attribute);
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
@@ -466,5 +470,23 @@ class AttributeController
         $attributeAxes = $this->attributeRepository->getAxesQuery($locale)->getArrayResult();
 
         return new JsonResponse($attributeAxes);
+    }
+
+    private function channelCodesUsedAsConversionUnit(string $code): array
+    {
+        // TODO Merge Remove this on master
+        // TODO This method can be updated with a real SQL query (not in 2.3 because we can't filter on JSON columns)
+        if (null === $this->channelRepository) {
+            return [];
+        }
+        $channelCodes = [];
+        foreach ($this->channelRepository->findAll() as $channel) {
+            $attributeCodes = array_keys($channel->getConversionUnits());
+            if (in_array($code, $attributeCodes)) {
+                $channelCodes[] = $channel->getCode();
+            }
+        }
+
+        return $channelCodes;
     }
 }
