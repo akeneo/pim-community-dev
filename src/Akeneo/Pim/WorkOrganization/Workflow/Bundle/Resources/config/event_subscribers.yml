@@ -155,13 +155,19 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    # CE override
-    pim_catalog.event_subscriber.index_products:
-        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\IndexProductsSubscriber'
+    pimee_workflow.subscriber.published_product.save.compute_published_product:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\OnSave\ComputePublishedProductsSubscriber'
         arguments:
-            - '@pim_catalog.elasticsearch.indexer.product'
+            - '@pimee_workflow.query.save_published_product_completenesses'
+            - '@pim_catalog.completeness.calculator'
             - '@pim_catalog.elasticsearch.published_product_indexer'
-            - '@akeneo.pim.enrichment.elasticsearch.indexer.product_and_ancestors'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_workflow.subscriber.published_product.delete.compute_published_product:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\OnDelete\ComputePublishedProductsSubscriber'
+        arguments:
+            - '@pim_catalog.elasticsearch.published_product_indexer'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -183,14 +189,6 @@ services:
             - '@pim_catalog.query.descendant_product_model_ids'
             - '@pim_catalog.elasticsearch.product_model_proposal_indexer'
             - '@pim_catalog.elasticsearch.product_proposal_indexer'
-        tags:
-            - { name: kernel.event_subscriber }
-
-    pimee_workflow.event_subscriber.compute_product_completeness:
-        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\ComputeAndPersistPublishedProductCompletenessSubscriber'
-        arguments:
-            - '@pimee_workflow.query.save_published_product_completenesses'
-            - '@pim_catalog.completeness.calculator'
         tags:
             - { name: kernel.event_subscriber }
 

@@ -54,8 +54,6 @@
 - Remove interface `Akeneo\Pim\Enrichment\Asset\Component\Completeness\CompletenessRemoverInterface` 
 - Remove methods `getCompletenesses` and `setCompletenesses` from `Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct`
 - Remove class `Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\Product\CompletenessPublisher`
-- Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\IndexProductsSubscriber` to replace
-    `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer` by `Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface`
 - Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer\ProductNormalizer` to add 
     `Akeneo\Pim\Enrichment\Component\Product\Completeness\MissingRequiredAttributesCalculator` and `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\MissingRequiredAttributesNormalizerInterface`
 - As SSO Log are now in a dedicated table, the following classes are unused and have been removed:
@@ -84,6 +82,9 @@
 - Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\Processor\Denormalization\ProductDraftProcessor` to add `Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\PimUserDraftSourceFactory`
 - Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\Processor\Denormalization\ProductModelDraftProcessor` to add `Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\PimUserDraftSourceFactory`
 - Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Widget\ProposalWidget` to remove `Akeneo\UserManagement\Bundle\Manager\UserManager $userManager`
+- Remove class `Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\IndexProductsSubscriber',
+    replaced by `Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\OnSave\ComputePublishedProductsSubscriber`
+    and `Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\OnDelete\ComputePublishedProductsSubscriber`
 
 ### CLI commands
 

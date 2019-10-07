@@ -18,11 +18,10 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface;
-use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class PublishedProductIndexer implements IndexerInterface, BulkIndexerInterface, RemoverInterface, BulkRemoverInterface
+class PublishedProductIndexer implements IndexerInterface, BulkIndexerInterface, RemoverInterface
 {
     /** @var NormalizerInterface */
     private $normalizer;
@@ -76,23 +75,13 @@ class PublishedProductIndexer implements IndexerInterface, BulkIndexerInterface,
     }
 
     /**
-     * Removes the product from both the product index and the product and product model index.
+     * Removes the published product from published product index
      *
      * {@inheritdoc}
      */
-    public function remove($objectId, array $options = []) : void
+    public function remove($publishedProductId, array $options = []) : void
     {
-        $this->publishedProductClient->delete($objectId);
-    }
-
-    /**
-     * Removes the products from both the product index and the product and product model index.
-     *
-     * {@inheritdoc}
-     */
-    public function removeAll(array $objects, array $options = []) : void
-    {
-        $this->publishedProductClient->bulkDelete($objects);
+        $this->publishedProductClient->delete($publishedProductId);
     }
 
     /**

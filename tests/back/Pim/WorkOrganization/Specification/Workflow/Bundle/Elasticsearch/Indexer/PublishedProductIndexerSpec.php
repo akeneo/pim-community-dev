@@ -13,17 +13,16 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Indexer;
 
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\PublishedProduct\PublishedProductNormalizer;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface;
-use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Prophecy\Argument;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class PublishedProductIndexerSpec extends ObjectBehavior
 {
@@ -43,7 +42,6 @@ class PublishedProductIndexerSpec extends ObjectBehavior
     function it_is_a_index_remover()
     {
         $this->shouldImplement(RemoverInterface::class);
-        $this->shouldImplement(BulkRemoverInterface::class);
     }
 
     function it_throws_an_exception_when_attempting_to_index_a_published_product_without_id(
@@ -86,7 +84,7 @@ class PublishedProductIndexerSpec extends ObjectBehavior
         $this->index($publishedProduct);
     }
 
-    function it_bulk_indexes_products(
+    function it_bulk_indexes_published_products(
         $normalizer,
         $publishedProductClient,
         PublishedProductInterface $publishedProduct1,
@@ -105,7 +103,7 @@ class PublishedProductIndexerSpec extends ObjectBehavior
         $this->indexAll([$publishedProduct1, $publishedProduct2], ['index_refresh' => Refresh::disable()]);
     }
 
-    function it_does_not_bulk_index_empty_arrays_of_products($normalizer, $publishedProductClient)
+    function it_does_not_bulk_index_empty_arrays_of_published_products($normalizer, $publishedProductClient)
     {
         $normalizer->normalize(Argument::cetera())->shouldNotBeCalled();
         $publishedProductClient->bulkIndexes(Argument::cetera())->shouldNotBeCalled();
@@ -113,21 +111,14 @@ class PublishedProductIndexerSpec extends ObjectBehavior
         $this->indexAll([]);
     }
 
-    function it_deletes_products_from_elasticsearch_index($publishedProductClient)
+    function it_deletes_published_products_from_elasticsearch_index($publishedProductClient)
     {
         $publishedProductClient->delete('40')->shouldBeCalled();
 
         $this->remove(40)->shouldReturn(null);
     }
 
-    function it_bulk_deletes_products_from_elasticsearch_index($publishedProductClient)
-    {
-        $publishedProductClient->bulkDelete(['40', '33'])->shouldBeCalled();
-
-        $this->removeAll([40, 33])->shouldReturn(null);
-    }
-
-    function it_indexes_products_and_waits_for_index_refresh(
+    function it_indexes_published_products_and_waits_for_index_refresh(
         PublishedProductInterface $publishedProduct1,
         PublishedProductInterface $publishedProduct2,
         $normalizer,
@@ -146,7 +137,7 @@ class PublishedProductIndexerSpec extends ObjectBehavior
         $this->indexAll([$publishedProduct1, $publishedProduct2], ['index_refresh' => Refresh::waitFor()]);
     }
 
-    function it_indexes_products_and_enable_index_refresh_without_waiting_for_it(
+    function it_indexes_published_products_and_enable_index_refresh_without_waiting_for_it(
         PublishedProductInterface $publishedProduct1,
         PublishedProductInterface $publishedProduct2,
         $normalizer,
@@ -164,5 +155,4 @@ class PublishedProductIndexerSpec extends ObjectBehavior
 
         $this->indexAll([$publishedProduct1, $publishedProduct2], ['index_refresh' => Refresh::enable()]);
     }
-
 }
