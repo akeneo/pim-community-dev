@@ -19,7 +19,7 @@ const AssetCard = styled.div<{readonly: boolean}>`
   margin-top: 10px;
   justify-content: space-between;
   margin-right: 20px;
-  opacity: ${(props: ThemedProps<{readonly: boolean}>) => props.readonly ? .3 : 1}
+  opacity: ${(props: ThemedProps<{readonly: boolean}>) => props.readonly ? .4 : 1}
 `;
 
 const AssetTitle = styled.div`

@@ -63,7 +63,7 @@ const AttributeBreadCrumb = styled.div<{readonly: boolean}>`
   text-transform: uppercase;
   white-space: nowrap;
   color: ${(props: ThemedProps<{readonly: boolean}>) => props.theme.color.grey140}
-  opacity: ${(props: ThemedProps<{readonly: boolean}>) => props.readonly ? .3 : 1}
+  opacity: ${(props: ThemedProps<{readonly: boolean}>) => props.readonly ? .4 : 1}
 `;
 
 const IncompleteIndicator = styled.div`
