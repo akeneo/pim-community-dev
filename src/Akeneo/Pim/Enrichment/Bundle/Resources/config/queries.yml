@@ -4,11 +4,6 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
 
-    pim_catalog.doctrine.query.attribute_is_an_family_variant_axis:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Attribute\AttributeIsAFamilyVariantAxis'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-
     pim_catalog.doctrine.query.count_entity_with_family_variant:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Family\CountEntityWithFamilyVariant'
         arguments:
