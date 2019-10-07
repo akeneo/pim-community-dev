@@ -6,20 +6,15 @@ use Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProdu
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociationInterface;
 use Doctrine\DBAL\Connection;
-use Doctrine\ORM\EntityManagerInterface;
 
 final class GetAssociatedProductCodesByProductFromDB implements GetAssociatedProductCodesByProduct
 {
     /** @var Connection */
     private $connection;
 
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(Connection $connection)
     {
-        $this->entityManager = $entityManager;
-        $this->connection = $entityManager->getConnection();
+        $this->connection = $connection;
     }
 
     /**
@@ -49,10 +44,6 @@ SQL;
             ]
         );
 
-        $codes = array_map(function ($row) {
-            return $row['code'];
-        }, $stmt->fetchAll(\PDO::FETCH_ASSOC));
-
-        return $codes;
+        return $stmt->fetchColumn();
     }
 }
