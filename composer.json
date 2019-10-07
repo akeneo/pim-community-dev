@@ -19,13 +19,15 @@
     },
     "autoload-dev": {
         "psr-0": {
-            "Context": "tests/legacy/features/"
+            "Context": "tests/legacy/features/",
+            "Akeneo\\Apps\\": "src/Akeneo/Apps/back"
         },
         "psr-4": {
             "Pim\\Behat\\": "tests/legacy/features/Behat",
             "AkeneoTest\\": "tests/back",
             "Akeneo\\Test\\IntegrationTestsBundle\\": "tests/back/Integration/IntegrationTestsBundle/",
-            "Akeneo\\Test\\": "tests/back/"
+            "Akeneo\\Test\\": "tests/back/",
+            "Akeneo\\Apps\\": "src/Akeneo/Apps/tests/back"
         },
         "classmap": [ "tests/back/Integration/AppKernelTest.php" ]
     },

@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Apps\Infrastructure\EventSubscriber;
+namespace Akeneo\Apps\Infrastructure\Install;
 
 use Akeneo\Apps\Infrastructure\Installer\AssetsInstaller;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
@@ -11,7 +11,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class InstallerSubscriber implements EventSubscriberInterface
+class InstallSubscriber implements EventSubscriberInterface
 {
     /** @var AssetsInstaller */
     private $assetInstaller;

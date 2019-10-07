@@ -1,0 +1,13 @@
+services:
+    akeneo_apps.install.assets_installer:
+        class: Akeneo\Apps\Infrastructure\Install\AssetsInstaller
+        arguments:
+            - '@filesystem'
+            - '%kernel.project_dir%'
+
+    akeneo_apps.install.installer_subscriber:
+        class: Akeneo\Apps\Infrastructure\Install\InstallerSubscriber
+        arguments:
+            - '@akeneo_apps.install.assets_installer'
+        tags:
+            - { name: kernel.event_subscriber }
