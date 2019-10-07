@@ -65,4 +65,14 @@ class ProductAndAncestorsIndexerSpec extends ObjectBehavior
 
         $this->indexFromProductIdentifiers(['a_variant'], $options);
     }
+
+    function it_deletes_products_from_index_and_reindexes_ancestors(
+        ProductIndexerInterface $productIndexer,
+        ProductModelIndexerInterface $productModelIndexer
+    ) {
+        $productIndexer->removeFromProductIds([44, 56])->shouldBeCalled();
+        $productModelIndexer->indexFromProductModelCodes(['root_pm', 'sub_pm_1', 'sub_pm_2'])->shouldBeCalled();
+
+        $this->removeFromProductIdsAndReindexAncestors([44, 56], ['root_pm', 'sub_pm_1', 'sub_pm_2']);
+    }
 }
