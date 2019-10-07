@@ -113,7 +113,7 @@ SQL;
             }
         }
 
-        $statement = $this->entityManager->getConnection()->prepare($query);
+        $statement = $this->connection->prepare($query);
 
         foreach ($parameters as $parameter) {
             $statement->bindValue($parameter['name'], $parameter['value']);

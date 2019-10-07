@@ -6,6 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProdu
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociationInterface;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\FetchMode;
 
 final class GetAssociatedProductCodesByProductFromDB implements GetAssociatedProductCodesByProduct
 {
@@ -33,7 +34,8 @@ FROM $associationTable a
 WHERE a.owner_id = :ownerId AND a.association_type_id = :associationTypeId
 ORDER BY p.identifier ASC;
 SQL;
-        $stmt = $this->connection->executeQuery($sql,
+        $stmt = $this->connection->executeQuery(
+            $sql,
             [
                 'ownerId'           => $productId,
                 'associationTypeId' => $association->getAssociationType()->getId()
@@ -44,6 +46,6 @@ SQL;
             ]
         );
 
-        return $stmt->fetchColumn();
+        return $stmt->fetchAll(FetchMode::COLUMN);
     }
 }
