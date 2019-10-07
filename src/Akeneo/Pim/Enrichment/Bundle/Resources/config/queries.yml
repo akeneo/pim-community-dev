@@ -156,27 +156,27 @@ services:
             - '@pim_reference_data.repository_resolver'
 
     akeneo.pim.enrichment.category.query.category_codes_by_product_model_codes:
-        class: 'Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetCategoryCodesByProductModelCodes'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetCategoryCodesByProductModelCodes'
         arguments:
             - '@database_connection'
 
     akeneo.pim.enrichment.product_model.query.get_models_associations_by_product_model_codes:
-        class: 'Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetProductModelsAssociationsByProductModelCodes'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetProductModelsAssociationsByProductModelCodes'
         arguments:
             - '@database_connection'
 
     akeneo.pim.enrichment.product_model.query.get_group_associations_by_product_model_codes:
-        class: 'Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetGroupAssociationsByProductModelCodes'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetGroupAssociationsByProductModelCodes'
         arguments:
             - '@database_connection'
 
     akeneo.pim.enrichment.product_model.query.get_values_and_properties_from_product_model_codes:
-        class: 'Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetValuesAndPropertiesFromProductModelCodes'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetValuesAndPropertiesFromProductModelCodes'
         arguments:
             - '@database_connection'
 
     akeneo.pim.enrichment.product_model.query.get_product_associations_by_product_model_codes:
-        class: 'Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetProductAssociationsByProductModelCodes'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetProductAssociationsByProductModelCodes'
         arguments:
             - '@database_connection'
 
@@ -203,7 +203,7 @@ services:
 
 
     akeneo.pim.enrichment.product_model.query.count_product_models_and_children_product_models:
-        class: Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\CountProductModelsAndChildrenProductModels
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\CountProductModelsAndChildrenProductModels'
         arguments:
             - '@database_connection'
 

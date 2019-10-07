@@ -228,6 +228,12 @@
 - Move class from `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\VariantProductRatio` to `Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness\VariantProductRatio` and mark it as final
 - Move class from `Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\CountVariantProducts` to `Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\CountVariantProducts`
 - Move class from `Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Attribute\AttributeIsAFamilyVariantAxis` to `Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql\AttributeIsAFamilyVariantAxis`
+- Move class from `Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\CountProductModelsAndChildrenProductModels` to `Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\CountProductModelsAndChildrenProductModels`
+- Move class from `Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetCategoryCodesByProductModelCodes` to `Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetCategoryCodesByProductModelCodes`
+- Move class from `Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetGroupAssociationsByProductModelCodes` to `Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetGroupAssociationsByProductModelCodes`
+- Move class from `Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetProductAssociationsByProductModelCodes` to `Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetProductAssociationsByProductModelCodes`
+- Move class from `Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetProductModelsAssociationsByProductModelCodes` to `Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetProductModelsAssociationsByProductModelCodes`
+- Move class from `Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetValuesAndPropertiesFromProductModelCodes` to `Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetValuesAndPropertiesFromProductModelCodes`
 
 ### CLI Commands
 

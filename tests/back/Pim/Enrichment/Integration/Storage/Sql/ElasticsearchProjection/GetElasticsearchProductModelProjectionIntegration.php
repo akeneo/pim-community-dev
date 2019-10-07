@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Pim\Enrichment\Integration\ProductModel\Query\Sql;
+namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\ElasticsearchProjection;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductModelProjectionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
