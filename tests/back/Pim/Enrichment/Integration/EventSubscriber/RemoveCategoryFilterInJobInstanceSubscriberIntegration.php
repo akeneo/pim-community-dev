@@ -74,6 +74,8 @@ class RemoveCategoryFilterInJobInstanceSubscriberIntegration extends TestCase
             [$category->getCode()]
         );
 
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
+
         $this->get('pim_catalog.remover.category')->remove($this->get('pim_catalog.repository.category')->findOneByIdentifier($parentCategory->getCode()));
         $this->assertNull($this->get('pim_catalog.repository.category')->findOneByIdentifier(
             $category->getCode()
@@ -101,6 +103,8 @@ class RemoveCategoryFilterInJobInstanceSubscriberIntegration extends TestCase
             'job3',
             ['master_accessories_scarves', $category1->getCode(), $category2->getCode(), $category3->getCode(), 'what']
         );
+
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
 
         $this->get('pim_catalog.remover.category')->removeAll([
             $this->get('pim_catalog.repository.category')->findOneByIdentifier($parentCategory->getCode()),
