@@ -6,7 +6,7 @@ import {ListApp} from './ListApp';
 export const Index = () => (
     <Router>
         <Switch>
-            <Route path='/apps/:id'>
+            <Route path='/apps/:appId'>
                 <EditApp />
             </Route>
             <Route path='/apps'>

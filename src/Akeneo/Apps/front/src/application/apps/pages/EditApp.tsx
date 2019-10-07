@@ -1,11 +1,12 @@
 import * as React from 'react';
-import {useHistory} from 'react-router';
+import {useHistory, useParams} from 'react-router';
 import {ApplyButton, Breadcrumb, BreadcrumbItem, Header, Page} from '../../common';
 import {BreadcrumbRouterLink} from '../../shared/router';
 import {Translate} from '../../shared/translate';
 import {AppForm} from '../components/AppForm';
 
 export const EditApp = () => {
+    const {appId} = useParams();
     const history = useHistory();
 
     const breadcrumb = (
@@ -33,7 +34,7 @@ export const EditApp = () => {
             <Header breadcrumb={breadcrumb} buttons={[saveButton]}>
                 <Translate id='pim_menu.item.apps' />
             </Header>
-            ListApp
+            EditApp {appId}
             <AppForm />
         </Page>
     );

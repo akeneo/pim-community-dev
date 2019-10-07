@@ -1,32 +1,29 @@
 import * as React from 'react';
+import styled from 'styled-components';
 
 const viewBuilder = require('pim/form-builder');
 
-interface PimViewProps {
-  viewName: string;
-  className: string;
+interface Props {
+    viewName: string;
+    className: string;
 }
 
-export class PimView extends React.Component<PimViewProps, {}> {
-  private el: React.RefObject<HTMLDivElement>;
+const StyledPimView = styled.div<{rendered: boolean}>`
+    visibility: ${({rendered}) => (rendered ? 'visible' : 'hidden')};
+    opacity: ${({rendered}) => (rendered ? '1' : '0')};
+    transition: opacity 0.5s linear;
+`;
 
-  constructor(props: PimViewProps) {
-    super(props);
+export const PimView = ({viewName, className}: Props) => {
+    const el = React.useRef<HTMLDivElement>(null);
+    const [rendered, setRendered] = React.useState(false);
 
-    this.el = React.createRef();
-  }
-
-  public componentDidMount() {
-    if (null !== this.el.current) {
-      setTimeout(() => {
-        viewBuilder.build(this.props.viewName).then((view: any) => {
-          view.setElement(this.el.current).render();
+    React.useEffect(() => {
+        viewBuilder.build(viewName).then((view: any) => {
+            view.setElement(el.current).render();
+            setRendered(true);
         });
-      });
-    }
-  }
+    }, [viewName]);
 
-  public render() {
-    return <div className={this.props.className} ref={this.el} />;
-  }
-}
+    return <StyledPimView className={className} ref={el} rendered={rendered} />;
+};

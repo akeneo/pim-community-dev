@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {PimView} from '../../infrastructure/PimView';
 
 type Props = React.PropsWithChildren<{
     breadcrumb?: React.ReactElement;
@@ -12,10 +13,10 @@ export const Header = ({children: title, breadcrumb, buttons}: Props) => (
                 <div className='AknTitleContainer-line'>
                     <div className='AknTitleContainer-breadcrumbs'>{breadcrumb}</div>
                     <div className='AknTitleContainer-buttonsContainer'>
-                        {/* <PimView
+                        <PimView
                             className='AknTitleContainer-userMenuContainer AknTitleContainer-userMenu'
                             viewName='pim-apps-user-navigation'
-                        /> */}
+                        />
                         {buttons && (
                             <div className='AknTitleContainer-actionsContainer AknButtonList'>
                                 {buttons.map((button, index) => (
