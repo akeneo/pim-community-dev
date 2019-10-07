@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.11 (2019-10-07)
+
 ## Bug fixes:
 
 - PIM-8838: Force display of label and image in gallery mode even if they are not in the column list
