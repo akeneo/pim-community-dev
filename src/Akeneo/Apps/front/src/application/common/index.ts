@@ -1,5 +1,5 @@
 import {Breadcrumb} from './breadcrumb/Breadcrumb';
-import {Item as BreadcrumbItem} from './breadcrumb/Item';
+import {BreadcrumbItem} from './breadcrumb/BreadcrumbItem';
 import {ApplyButton} from './button/ApplyButton';
 import {Header} from './Header';
 import {Page} from './Page';

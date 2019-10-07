@@ -1,11 +1,11 @@
 import * as React from 'react';
-import {ItemProps} from './Item';
+import {Props as ItemProps} from './BreadcrumbItem';
 
-interface BreadcrumbProps {
+interface Props {
     children: React.ReactElement<ItemProps> | Array<React.ReactElement<ItemProps>>;
 }
 
-export const Breadcrumb = ({children}: BreadcrumbProps) => {
+export const Breadcrumb = ({children}: Props) => {
     const count = React.Children.count(children);
 
     return (

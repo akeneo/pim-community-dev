@@ -6,9 +6,9 @@ describe('Button component', () => {
     test('Matches the snapshot', () => {
         const component = create(
             <Breadcrumb>
-                <BreadcrumbItem label='Is a link' onClick={() => undefined} />
-                <BreadcrumbItem label='Not a link' />
-                <BreadcrumbItem label='Is a link and last item' onClick={() => undefined} />
+                <BreadcrumbItem onClick={() => undefined}>Is clickable</BreadcrumbItem>
+                <BreadcrumbItem>Is just a label</BreadcrumbItem>
+                <BreadcrumbItem onClick={() => undefined}>Is clickable and the last item</BreadcrumbItem>
             </Breadcrumb>
         );
 

@@ -7,22 +7,19 @@ exports[`Button component Matches the snapshot 1`] = `
   <span
     className="AknBreadcrumb-item AknBreadcrumb-item--routable"
     onClick={[Function]}
-    title="Is a link"
   >
-    Is a link
+    Is clickable
   </span>
   <span
     className="AknBreadcrumb-item"
-    title="Not a link"
   >
-    Not a link
+    Is just a label
   </span>
   <span
     className="AknBreadcrumb-item AknBreadcrumb-item--final AknBreadcrumb-item--routable"
     onClick={[Function]}
-    title="Is a link and last item"
   >
-    Is a link and last item
+    Is clickable and the last item
   </span>
 </div>
 `;

@@ -1,20 +1,18 @@
 import * as React from 'react';
 import {Link} from 'react-router-dom';
 import {ApplyButton, Breadcrumb, BreadcrumbItem, Header, Page} from '../../common';
-import {RouterContext} from '../../shared/router';
-import {Translate, TranslateContext} from '../../shared/translate';
+import {BreadcrumbRouterLink} from '../../shared/router';
+import {Translate} from '../../shared/translate';
 
 export const ListApp = () => {
-    const translate = React.useContext(TranslateContext);
-    const router = React.useContext(RouterContext);
-
     const breadcrumb = (
         <Breadcrumb>
-            <BreadcrumbItem
-                label={translate('pim_menu.tab.system')}
-                onClick={() => router.redirect(router.generate('oro_config_configuration_system'))}
-            />
-            <BreadcrumbItem label={translate('pim_menu.item.apps')} onClick={() => undefined} isLast={false} />
+            <BreadcrumbRouterLink route={'oro_config_configuration_system'}>
+                <Translate id='pim_menu.tab.system' />
+            </BreadcrumbRouterLink>
+            <BreadcrumbItem onClick={() => undefined} isLast={false}>
+                <Translate id='pim_menu.item.apps' />
+            </BreadcrumbItem>
         </Breadcrumb>
     );
 
