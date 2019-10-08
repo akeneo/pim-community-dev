@@ -108,7 +108,7 @@ class DatabaseCommand extends Command
                 'catalog',
                 null,
                 InputOption::VALUE_OPTIONAL,
-                'Should the command install any fixtures',
+                'Directory of the fixtures to install',
                 'src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal'
             );
     }
