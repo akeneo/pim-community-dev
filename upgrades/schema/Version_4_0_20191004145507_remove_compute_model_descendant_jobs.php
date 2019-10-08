@@ -9,10 +9,10 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * As the job "compute product models descendants" is removed in v4, this migration checks the job in the queues and:
+ * As the job "compute product models descendants" is removed in v4, this migration checks the jobs in the queue and:
  *  - load product model codes involved in "compute product models descendants" future jobs (= in the queue)
  *  - recompute completeness and index the trees for those product model codes
- *  - remove the  "compute product models descendants" future jobs
+ *  - remove the  "compute product models descendants" future jobs in DB
  */
 final class Version_4_0_20191004145507_remove_compute_model_descendant_jobs
     extends AbstractMigration
