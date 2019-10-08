@@ -60,6 +60,18 @@ class BuilderSpec extends ObjectBehavior
         $attribute->isScopable()->shouldReturn(false);
     }
 
+    function it_builds_a_localizable_and_scopable_attribute()
+    {
+        $this->aTextAttribute()->localizable()->scopable();
+
+        $attribute = $this->build();
+        $attribute->getType()->shouldReturn(AttributeTypes::TEXT);
+        $attribute->getCode()->shouldReturn('code');
+        $attribute->isUnique()->shouldReturn(false);
+        $attribute->isLocalizable()->shouldReturn(true);
+        $attribute->isScopable()->shouldReturn(true);
+    }
+
     function its_code_is_mutable()
     {
         $this->withCode('code')->shouldReturn($this);
