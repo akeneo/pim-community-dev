@@ -7,7 +7,6 @@ namespace AkeneoTestEnterprise\Pim\Permission\Integration\Enrichment\Storage\Sql
 use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetEditableCategoryCodes;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use AkeneoTestEnterprise\Pim\Permission\Integration\Enrichment\Storage\ElasticsearchAndSql\CategoryTree\CategoryTreeFixturesLoaderWithPermission;
 
 /**
  * @author    Anaël CHARDAN <anael.chardan@akeneo.com>
@@ -21,7 +20,7 @@ class GetEditableCategoryCodesIntegration extends TestCase
 
         $this->createAdminUser();
 
-        $fixturesLoader = new CategoryTreeFixturesLoaderWithPermission($this->testKernel->getContainer());
+        $fixturesLoader = $this->get('akeneo_integration_tests.loader.category_tree_loader_with_permissions');
 
         $fixturesLoader->adminUserAsRedactorAndITSupport();
 
