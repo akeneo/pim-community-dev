@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import {FilterView} from 'akeneoassetmanager/application/configuration/value';
 import {Filter} from 'akeneoassetmanager/application/reducer/grid';
 import {getAttributeFilterKey} from 'akeneoassetmanager/tools/filter';
-import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import __ from 'akeneoreferenceentity/tools/translator';
 import {FilterViewCollection} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker';
@@ -13,11 +12,12 @@ import {OptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/op
 import {OptionCollectionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option-collection';
 import {AssetAttribute} from 'akeneoassetmanager/domain/model/attribute/type/asset';
 import {AssetCollectionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/asset-collection';
+import {Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 
 type FilterCollectionProps = {
   dataProvider: any;
   filterViewsProvider: {
-    getFilterViews: (attributes: NormalizedAttribute[]) => FilterViewCollection;
+    getFilterViews: (attributes: Attribute[]) => FilterViewCollection;
   };
   filterCollection: Filter[];
   assetFamilyIdentifier: AssetFamilyIdentifier;
@@ -116,13 +116,13 @@ const useFilterViews = (
   assetFamilyIdentifier: AssetFamilyIdentifier,
   dataProvider: any,
   filterViewsProvider: {
-    getFilterViews: (attributes: NormalizedAttribute[]) => FilterViewCollection;
+    getFilterViews: (attributes: Attribute[]) => FilterViewCollection;
   }
 ) => {
   const [filterViews, setFilterViews] = React.useState<FilterViewCollection>([]);
 
   React.useEffect(() => {
-    dataProvider.assetAttributesFetcher.fetchAll(assetFamilyIdentifier).then((attributes: NormalizedAttribute[]) => {
+    dataProvider.assetAttributesFetcher.fetchAll(assetFamilyIdentifier).then((attributes: Attribute[]) => {
       setFilterViews(filterViewsProvider.getFilterViews(attributes));
     });
   }, [assetFamilyIdentifier]);

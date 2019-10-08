@@ -62,7 +62,8 @@ const IllustrationContainer = styled.div`
 const useLoadAssetCollection = (
   selection: AssetCode[],
   dataProvider: any,
-  assetFamilyIdentifier: AssetFamilyIdentifier
+  assetFamilyIdentifier: AssetFamilyIdentifier,
+  context: Context
 ) => {
   const [assetCollection, setAssetCollection] = React.useState([] as Asset[]);
 
@@ -72,7 +73,7 @@ const useLoadAssetCollection = (
       return;
     }
 
-    dataProvider.assetFetcher.fetchByCode(assetFamilyIdentifier, selection).then((receivedAssets: Asset[]) => {
+    dataProvider.assetFetcher.fetchByCode(assetFamilyIdentifier, selection, context).then((receivedAssets: Asset[]) => {
       setAssetCollection(receivedAssets);
     });
   }, [selection]);
@@ -81,7 +82,7 @@ const useLoadAssetCollection = (
 };
 
 const Basket = ({dataProvider, assetFamilyIdentifier, selection, context, onSelectionChange}: BasketProps) => {
-  const {assetCollection} = useLoadAssetCollection(selection, dataProvider, assetFamilyIdentifier);
+  const {assetCollection} = useLoadAssetCollection(selection, dataProvider, assetFamilyIdentifier, context);
 
   if (0 === selection.length) {
     return <EmptyResult />;
