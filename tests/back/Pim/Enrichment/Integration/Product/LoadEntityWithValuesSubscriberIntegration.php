@@ -46,22 +46,6 @@ class LoadEntityWithValuesSubscriberIntegration extends TestCase
         $this->assertProductHasValues($expectedValues, $product);
     }
 
-    public function testItDoesNotLoadValuesOfAProductForWhichThereIsARemovedAttribute()
-    {
-        // replace service "akeneo.pim.enrichment.factory.read.write_value_collection" because it uses a LRU cache
-        static::$kernel->getContainer()->set('akeneo.pim.enrichment.factory.read.write_value_collection',
-            new SqlGetAttributes($this->get('database_connection'))
-        );
-
-        $this->removeAttribute('a_metric');
-        $amputatedStandardValues = $this->removeAttributeFromAllStandardValues('a_metric');
-        $expectedValues = $this->getValuesFromStandardValues(
-            $amputatedStandardValues
-        );
-        $product = $this->findProductByIdentifier('foo');
-        $this->assertProductHasValues($expectedValues, $product);
-    }
-
     public function testItDoesNotLoadValuesOfAProductForWhichThereIsARemovedAttributeOptionOfSimpleselect()
     {
         $this->removeAttributeOptionFromAttribute('a_simple_select', 'optionB');
