@@ -2,51 +2,131 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Pim\Enrichment\Integration\ProductModel\Query\Sql;
+namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\ProductModel;
 
-use Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetGroupAssociationsByProductModelCodes;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetProductModelsAssociationsByProductModelCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\TestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Fixture\EntityBuilder;
-use Webmozart\Assert\Assert;
 use PHPUnit\Framework\Assert as PHPUnitAssert;
+use Webmozart\Assert\Assert;
 
 /**
  * @author    Anael Chardan <anael.chardan@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetGroupAssociationsByProductModelCodesIntegration extends TestCase
+class GetProductModelsAssociationsByProductModelCodesIntegration extends TestCase
 {
     /** @var EntityBuilder */
     private $entityBuilder;
 
-    public function setUp(): void
+    public function testWithoutAnyProductModels(): void
+    {
+        $expected = [];
+        $actual = $this->getQuery()->fromProductModelCodes([]);
+
+        PHPUnitAssert::assertEqualsCanonicalizing($expected, $actual);
+    }
+
+    public function testWithMixingAllKindsOfModelsForProductModelsAssociationsAndInheritance()
+    {
+        $expected = [
+            'root_product_model_1' => [
+                'PACK' => ['product_models' => ['productModelA', 'productModelC']],
+                'UPSELL' => ['product_models' => []],
+                'X_SELL' => ['product_models' => ['productModelF']],
+                'A_NEW_TYPE' => ['product_models' => []],
+                'SUBSTITUTION' => ['product_models' => []],
+            ],
+            'root_product_model_2' => [
+                'PACK' => ['product_models' => []],
+                'UPSELL' => ['product_models' => []],
+                'X_SELL' => ['product_models' => []],
+                'A_NEW_TYPE' => ['product_models' => []],
+                'SUBSTITUTION' => ['product_models' => []],
+            ],
+            'sub_product_model_1_1' => [
+                'PACK' => ['product_models' => ['productModelA', 'productModelC']],
+                'UPSELL' => ['product_models' => []],
+                'X_SELL' => ['product_models' => ['productModelD', 'productModelF']],
+                'A_NEW_TYPE' => ['product_models' => []],
+                'SUBSTITUTION' => ['product_models' => ['productModelB']],
+            ],
+            'sub_product_model_1_2' => [
+                'PACK' => ['product_models' => ['productModelA', 'productModelG', 'productModelC']],
+                'UPSELL' => ['product_models' => ['productModelE']],
+                'X_SELL' => ['product_models' => ['productModelF']],
+                'A_NEW_TYPE' => ['product_models' => []],
+                'SUBSTITUTION' => ['product_models' => []],
+            ],
+            'sub_product_model_2_1' => [
+                'PACK' => ['product_models' => []],
+                'UPSELL' => ['product_models' => []],
+                'X_SELL' => ['product_models' => []],
+                'A_NEW_TYPE' => ['product_models' => []],
+                'SUBSTITUTION' => ['product_models' => []],
+            ],
+            'sub_product_model_2_2' => [
+                'PACK' => ['product_models' => ['productModelC']],
+                'UPSELL' => ['product_models' => []],
+                'X_SELL' => ['product_models' => []],
+                'A_NEW_TYPE' => ['product_models' => []],
+                'SUBSTITUTION' => ['product_models' => []],
+            ],
+        ];
+
+        $actual = $this->getQuery()->fromProductModelCodes(
+            [
+                'root_product_model_1',
+                'sub_product_model_1_1',
+                'sub_product_model_1_2',
+                'root_product_model_2',
+                'sub_product_model_2_1',
+                'sub_product_model_2_2',
+            ]
+        );
+
+        $this->recursiveSort($expected);
+        $this->recursiveSort($actual);
+
+        PHPUnitAssert::assertEqualsCanonicalizing($expected, $actual);
+    }
+
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->entityBuilder = $this->getFromTestContainer('akeneo_integration_tests.catalog.fixture.build_entity');
 
-        $this->givenGroup(['groupA', 'groupB', 'groupC', 'groupD', 'groupE', 'groupF', 'groupG']);
+        $this->givenTheFollowingProductModels([
+            'productModelA',
+            'productModelB',
+            'productModelC',
+            'productModelD',
+            'productModelE',
+            'productModelF',
+            'productModelG',
+        ]);
 
-        $this->givenTheFollowingProductModelsWithGroupAssociations([
+        $this->givenTheFollowingProductModelsWithProductModelsAssociations([
             'root_product_model_1' => [
                 'associations' => [
-                    'X_SELL' => ['groups' => ['groupF']],
-                    'PACK' => ['groups' => ['groupA', 'groupC']],
+                    'X_SELL' => ['product_models' => ['productModelF']],
+                    'PACK' => ['product_models' => ['productModelA', 'productModelC']],
                 ],
                 'sub_product_models' => [
                     'sub_product_model_1_1' => [
                         'associations' => [
-                            'X_SELL' => ['groups' => ['groupD']],
-                            'SUBSTITUTION' => ['groups' => ['groupB']],
+                            'X_SELL' => ['product_models' => ['productModelD']],
+                            'SUBSTITUTION' => ['product_models' => ['productModelB']],
                         ],
                     ],
                     'sub_product_model_1_2' => [
                         'associations' => [
-                            'PACK' => ['groups' => ['groupG']],
-                            'UPSELL' => ['groups' => ['groupE']],
+                            'PACK' => ['product_models' => ['productModelG']],
+                            'UPSELL' => ['product_models' => ['productModelE']],
                         ],
                     ],
                 ]
@@ -59,7 +139,7 @@ class GetGroupAssociationsByProductModelCodesIntegration extends TestCase
                     ],
                     'sub_product_model_2_2' => [
                         'associations' => [
-                            'PACK' => ['groups' => ['groupC']],
+                            'PACK' => ['product_models' => ['productModelC']],
                         ],
                     ]
                 ]
@@ -67,76 +147,6 @@ class GetGroupAssociationsByProductModelCodesIntegration extends TestCase
         ]);
 
         $this->givenAssociationTypes(['A_NEW_TYPE']);
-    }
-
-    public function testWithoutAnyProductModels(): void
-    {
-        $expected = [];
-        $actual = $this->getQuery()->fromProductModelCodes([]);
-
-        PHPUnitAssert::assertEqualsCanonicalizing($expected, $actual);
-    }
-
-    public function testWithMixingAllKindsOfModelsForGroupAssociationsAndInheritance()
-    {
-        $expected = [
-            'root_product_model_1' => [
-                'PACK' => ['groups' => ['groupA', 'groupC']],
-                'UPSELL' => ['groups' => []],
-                'X_SELL' => ['groups' => ['groupF']],
-                'A_NEW_TYPE' => ['groups' => []],
-                'SUBSTITUTION' => ['groups' => []],
-            ],
-            'root_product_model_2' => [
-                'PACK' => ['groups' => []],
-                'UPSELL' => ['groups' => []],
-                'X_SELL' => ['groups' => []],
-                'A_NEW_TYPE' => ['groups' => []],
-                'SUBSTITUTION' => ['groups' => []],
-            ],
-            'sub_product_model_1_1' => [
-                'PACK' => ['groups' => ['groupA', 'groupC']],
-                'UPSELL' => ['groups' => []],
-                'X_SELL' => ['groups' => ['groupD', 'groupF']],
-                'A_NEW_TYPE' => ['groups' => []],
-                'SUBSTITUTION' => ['groups' => ['groupB']],
-            ],
-            'sub_product_model_1_2' => [
-                'PACK' => ['groups' => ['groupA', 'groupG', 'groupC']],
-                'UPSELL' => ['groups' => ['groupE']],
-                'X_SELL' => ['groups' => ['groupF']],
-                'A_NEW_TYPE' => ['groups' => []],
-                'SUBSTITUTION' => ['groups' => []],
-            ],
-            'sub_product_model_2_1' => [
-                'PACK' => ['groups' => []],
-                'UPSELL' => ['groups' => []],
-                'X_SELL' => ['groups' => []],
-                'A_NEW_TYPE' => ['groups' => []],
-                'SUBSTITUTION' => ['groups' => []],
-            ],
-            'sub_product_model_2_2' => [
-                'PACK' => ['groups' => ['groupC']],
-                'UPSELL' => ['groups' => []],
-                'X_SELL' => ['groups' => []],
-                'A_NEW_TYPE' => ['groups' => []],
-                'SUBSTITUTION' => ['groups' => []],
-            ]
-        ];
-
-        $actual = $this->getQuery()->fromProductModelCodes([
-            'root_product_model_1',
-            'sub_product_model_1_1',
-            'sub_product_model_1_2',
-            'root_product_model_2',
-            'sub_product_model_2_1',
-            'sub_product_model_2_2',
-        ]);
-
-        $this->recursiveSort($expected);
-        $this->recursiveSort($actual);
-
-        PHPUnitAssert::assertEqualsCanonicalizing($expected, $actual);
     }
 
     private function recursiveSort(&$array): bool
@@ -164,7 +174,7 @@ class GetGroupAssociationsByProductModelCodesIntegration extends TestCase
         $this->get('pim_catalog.saver.association_type')->saveAll($associationTypes);
     }
 
-    private function givenGroup(array $codes): void
+    private function givenTheFollowingProductModels(array $productModelCodes): void
     {
         $this->givenBooleanAttributes(['first_yes_no', 'second_yes_no']);
         $this->givenFamilies([['code' => 'aFamily', 'attribute_codes' => ['first_yes_no', 'second_yes_no']]]);
@@ -187,25 +197,14 @@ class GetGroupAssociationsByProductModelCodesIntegration extends TestCase
             ]
         );
 
-        $groups = array_map(function (string $code) {
-            $group = $this->get('pim_catalog.factory.group')->createGroup('RELATED');
-            $this->get('pim_catalog.updater.group')->update($group, [
-                'code' => $code
-            ]);
-
-            $errors = $this->get('validator')->validate($group);
-
-            Assert::count($errors, 0);
-
-            return $group;
-        }, $codes);
-
-        $this->get('pim_catalog.saver.group')->saveAll($groups);
+        foreach ($productModelCodes as $productModelCode) {
+            $this->entityBuilder->createProductModel($productModelCode, 'familyVariantWithTwoLevels', null, []);
+        }
     }
 
-    private function getQuery(): GetGroupAssociationsByProductModelCodes
+    private function getQuery(): GetProductModelsAssociationsByProductModelCodes
     {
-        return $this->testKernel->getContainer()->get('akeneo.pim.enrichment.product_model.query.get_group_associations_by_product_model_codes');
+        return $this->testKernel->getContainer()->get('akeneo.pim.enrichment.product_model.query.get_models_associations_by_product_model_codes');
     }
 
     private function givenBooleanAttributes(array $codes): void
@@ -252,12 +251,12 @@ class GetGroupAssociationsByProductModelCodesIntegration extends TestCase
         $this->get('pim_catalog.saver.family')->saveAll($families);
     }
 
-    private function givenTheFollowingProductModelsWithGroupAssociations(array $productModelsTree, ?ProductModelInterface $parent = null): void
+    private function givenTheFollowingProductModelsWithProductModelsAssociations(array $productModelsTree, ?ProductModelInterface $parent = null): void
     {
         foreach ($productModelsTree as $productModelCode => $data) {
             $associations = $data['associations'] ?? [];
             $productModel = $this->entityBuilder->createProductModel($productModelCode, 'familyVariantWithTwoLevels', $parent, ['associations' => $associations]);
-            $this->givenTheFollowingProductModelsWithGroupAssociations($data['sub_product_models'] ?? [], $productModel);
+            $this->givenTheFollowingProductModelsWithProductModelsAssociations($data['sub_product_models'] ?? [], $productModel);
         }
     }
 

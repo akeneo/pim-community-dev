@@ -3,12 +3,11 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Pim\Enrichment\Integration\ProductModel\Query\Sql;
+namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\ProductModel;
 
-use Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetProductAssociationsByProductModelCodes;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetProductAssociationsByProductModelCodes;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\TestCase;
-use AkeneoTest\Pim\Enrichment\Integration\Fixture\EntityBuilder;
 use Webmozart\Assert\Assert;
 use PHPUnit\Framework\Assert as PHPUnitAssert;
 
