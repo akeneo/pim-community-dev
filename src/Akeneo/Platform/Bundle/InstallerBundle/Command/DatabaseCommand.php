@@ -246,6 +246,7 @@ class DatabaseCommand extends Command
      */
     protected function loadFixturesStep(InputInterface $input, OutputInterface $output)
     {
+        $catalog = $input->getOption('catalog');
         if ($input->getOption('env') === 'behat') {
             $input->setOption('fixtures', self::LOAD_BASE);
         }
@@ -253,7 +254,7 @@ class DatabaseCommand extends Command
         $output->writeln(
             sprintf(
                 '<info>Load jobs for fixtures. (data set: %s)</info>',
-                $input->getOption('catalog')
+                $catalog
             )
         );
         $this->fixtureJobLoader->loadJobInstances($input->getOption('catalog'));
@@ -269,7 +270,9 @@ class DatabaseCommand extends Command
 
             $this->eventDispatcher->dispatch(
                 InstallerEvents::PRE_LOAD_FIXTURE,
-                new InstallerEvent($this->commandExecutor, $jobInstance->getCode())
+                new InstallerEvent($this->commandExecutor, $jobInstance->getCode(), [
+                    'catalog' => $catalog
+                ])
             );
             if ($input->getOption('verbose')) {
                 $output->writeln(

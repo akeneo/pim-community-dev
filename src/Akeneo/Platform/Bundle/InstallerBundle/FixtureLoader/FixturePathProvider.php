@@ -32,7 +32,7 @@ class FixturePathProvider
             $reflection = new \ReflectionClass($this->bundles[$matches['bundle']]);
             $installerDataDir = dirname($reflection->getFilename()) . '/Resources/fixtures/' . $matches['directory'];
         } else {
-            $installerDataDir = $this->installerData;
+            $installerDataDir = $catalogPath;
         }
 
         if (null === $installerDataDir || !is_dir($installerDataDir)) {
