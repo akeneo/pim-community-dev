@@ -181,7 +181,9 @@ class DatabaseCommand extends Command
 
             $this->eventDispatcher->dispatch(
                 InstallerEvents::POST_LOAD_FIXTURES,
-                new InstallerEvent($this->commandExecutor)
+                new InstallerEvent($this->commandExecutor, null, [
+                    'catalog' => $input->getOption('catalog')
+                ])
             );
         }
 
