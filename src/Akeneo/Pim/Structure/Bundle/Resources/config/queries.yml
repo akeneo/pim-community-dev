@@ -23,3 +23,8 @@ services:
         class: 'Akeneo\Pim\Structure\Bundle\Query\PublicApi\Family\Cache\LRUCachedGetRequiredAttributesMasks'
         arguments:
             - '@akeneo.pim.structure.query.sql_get_required_attributes_masks'
+
+    akeneo.pim.structure.query.attribute_is_an_family_variant_axis:
+        class: 'Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql\AttributeIsAFamilyVariantAxis'
+        arguments:
+            - '@doctrine.orm.entity_manager'

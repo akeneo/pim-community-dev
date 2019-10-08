@@ -2,13 +2,13 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Family;
 
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Family\FindAttributesForFamily;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\FindAttributesForFamily;
 use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Family\ComputeCompletenessOnFamilyUpdateSubscriber;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;

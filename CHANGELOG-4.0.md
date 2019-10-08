@@ -159,9 +159,6 @@
 - Class `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelIndexer` now implements the single interface `Akeneo\Tool\Component\StorageUtils\Indexer\ProductModelIndexerInterface` instead of
     `Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface`, `Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface`, `Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface` and `Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface`
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelIndexer` to remove `$indexType`.
-- Update constructor of `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\IndexProductsSubscriber` to remove
-    `Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface`, `Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface` and `Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface`
-    and add `Akeneo\Tool\Component\StorageUtils\Indexer\ProductIndexerInterface`
 - Commands `Akeneo\Pim\Enrichment\Bundle\Command\IndexProductCommand` and `Akeneo\Pim\Enrichment\Bundle\Command\IndexProductModelCommand` do not extend `Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand` anymore
 - Remove class `Akeneo\Pim\Enrichment\Bundle\EventSubscriberAddBooleanValuesToNewProductSubscriber`
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\AbstractEntityWithFamilyValuesFiller` to add `Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory`
@@ -204,6 +201,33 @@
 - Move class from `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeEntityRawValuesSubscriber` to `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithValues\ComputeEntityRawValuesSubscriber` and mark it as final
 - Move class from `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\LoadEntityWithValuesSubscriber` to `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithValues\LoadEntityWithValuesSubscriber` and mark it as final
 - Move class from `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeCompletenessOnFamilyUpdateSubscriber` to `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Family\ComputeCompletenessOnFamilyUpdateSubscriber` and mark it as final
+- Remove class `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeProductModelDescendantsSubscriber`
+- Remove class `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\IndexProductModelsSubscriber`
+- Update class `Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\MassEdit\ProductAndProductModelWriter` to remove
+    - `Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface`,
+    - `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`,
+    - `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface` and
+    - `string $jobName`
+- Remove class `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductModelDescendantsSaver`
+- Remove class `Akeneo\Pim\Enrichment\Component\Product\Job\ComputeProductModelsDescendantsTasklet`
+- Remove class `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\IndexProductsSubscriber`,
+    replaced by `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnSave\ComputeProductsAndAncestorsSubscriber`
+    and `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnDelete\ComputeProductsAndAncestorsSubscriber`
+- Move class from `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\AscendantCategories` to `Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\AscendantCategories` and mark it as final
+- Move class from `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\AttributeIsAFamilyVariantAxis` to `Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Attribute\AttributeIsAFamilyVariantAxis`
+- Move class from `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CountEntityWithFamilyVariant` to `Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Family\CountEntityWithFamilyVariant` and mark it as final
+- Move class from `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CountImpactedProducts` to `Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid\CountImpactedProducts`
+- Move class from `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CountProductsWithFamily` to `Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Family\CountProductsWithFamily` and mark it as final
+- Move class from `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\DescendantProductIdsQuery` to `Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\DescendantProductIdsQuery` and mark it as final
+- Move class from `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\DescendantProductModelIdsQuery` to `Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\DescendantProductModelIdsQuery` and mark it as final
+- Move class from `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\FindAttributesForFamily` to `Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Family\FindAttributesForFamily`
+- Move class from `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\GetAssociatedProductCodesByProductFromDB` to `Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetAssociatedProductCodesByProductFromDB` and mark it as final
+- Move class from `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\GetAttributeOptionsMaxSortOrder` to `Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Attribute\GetAttributeOptionsMaxSortOrder`
+- Move class from `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\GetDescendentCategoryCodes` to `Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\GetDescendentCategoryCodes`
+- Move class from `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\SqlGetValuesOfSiblings` to `Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlGetValuesOfSiblings`
+- Move class from `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\VariantProductRatio` to `Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness\VariantProductRatio` and mark it as final
+- Move class from `Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\CountVariantProducts` to `Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\CountVariantProducts`
+- Move class from `Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Attribute\AttributeIsAFamilyVariantAxis` to `Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql\AttributeIsAFamilyVariantAxis`
 
 ### CLI Commands
 
@@ -281,3 +305,5 @@ If you want to purge the completeness in order to recalculate it, please use the
     - `akeneo_batch_queue.launcher.queue_job_launcher`
     - `akeneo_batch.job.job_instance_repository`
     - `string $jobName`
+- Remove `pim_catalog.event_subscriber.index_products`
+- Rename service `pim_catalog.doctrine.query.attribute_is_an_family_variant_axis` in `akeneo.pim.structure.query.attribute_is_an_family_variant_axis`
