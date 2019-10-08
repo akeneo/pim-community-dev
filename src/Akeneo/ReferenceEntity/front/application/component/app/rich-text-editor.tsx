@@ -16,8 +16,6 @@ const draftToRaw = (editorState: any) => {
   return draftToHtml(convertToRaw(editorState.getCurrentContent()));
 };
 
-console.log(draftToRaw)
-
 const rawToEditorState = (value: string) => {
   const contentBlock = htmlToDraft(value);
   if (contentBlock) {
@@ -44,29 +42,14 @@ export default class RichTextEditor extends React.Component<RichTextEditorProps,
   };
 
   static getDerivedStateFromProps(props: RichTextEditorProps, state: RichTextEditorState) {
-    if (props.value === draftToRaw(state.editorState)) return;
+    const valueIsTheSame = props.value === draftToRaw(state.editorState);
+    const editorIsInFocus = state.editorState.getSelection().getHasFocus();
 
-    const { editorState } = rawToEditorState(props.value);
-
-    if (editorState) {
-      const originalSelection = state.editorState.getSelection();
-
-      const updateSelection = editorState.getSelection().merge({
-        anchorOffset: originalSelection.getAnchorOffset(),
-        focusOffset: originalSelection.getFocusOffset(),
-        isBackward: false,
-      })
-
-      const restoredSelection: any = editorState.getSelection().merge(updateSelection);
-
-      return {
-        editorState: originalSelection.getHasFocus() ?
-        EditorState.forceSelection(editorState, restoredSelection) :
-        EditorState.moveSelectionToEnd(editorState)
-      }
+    if (valueIsTheSame || editorIsInFocus) {
+      return null;
     }
 
-    return {};
+    return rawToEditorState(props.value);
   }
 
   render(): JSX.Element | JSX.Element[] {
