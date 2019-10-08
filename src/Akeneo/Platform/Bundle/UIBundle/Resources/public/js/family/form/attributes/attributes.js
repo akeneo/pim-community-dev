@@ -156,7 +156,7 @@ define([
 
                             return group;
                         }),
-                        colspan: (this.channels.length + 2),
+                        colspan: (this.channels.length + 1),
                         i18n: i18n,
                         identifierAttributeType: this.identifierAttributeType,
                         catalogLocale: this.catalogLocale,
@@ -203,7 +203,7 @@ define([
              */
             toggleGroup(event) {
                 const target = event.currentTarget;
-                $(target).find('i').toggleClass('icon-expand-alt icon-collapse-alt');
+                $(target).find('div').toggleClass('AknGrid-expand--expanded');
                 $(target).parent().toggleClass(this.collapsedClass);
 
                 return this;
