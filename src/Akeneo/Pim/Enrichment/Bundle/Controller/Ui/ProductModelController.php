@@ -21,9 +21,6 @@ class ProductModelController extends AbstractListCategoryController
     /** @var ProductModelRepositoryInterface */
     protected $productModelRepository;
 
-    /** @var EntityWithFamilyValuesFillerInterface */
-    protected $valuesFiller;
-
     /**
      * @param ProductModelRepositoryInterface       $productModelRepository
      * @param EntityWithFamilyValuesFillerInterface $valuesFiller
@@ -35,7 +32,6 @@ class ProductModelController extends AbstractListCategoryController
      */
     public function __construct(
         ProductModelRepositoryInterface $productModelRepository,
-        EntityWithFamilyValuesFillerInterface $valuesFiller,
         CategoryRepositoryInterface $categoryRepository,
         SecurityFacade $securityFacade,
         string $categoryClass,
@@ -45,7 +41,6 @@ class ProductModelController extends AbstractListCategoryController
         parent::__construct($categoryRepository, $securityFacade, $categoryClass, $acl, $template);
 
         $this->productModelRepository = $productModelRepository;
-        $this->valuesFiller = $valuesFiller;
     }
 
     /**
@@ -65,8 +60,6 @@ class ProductModelController extends AbstractListCategoryController
                 sprintf('Product model with ID "%s" could not be found.', $id)
             );
         }
-        // With this version of the form we need to add missing values from family
-        $this->valuesFiller->fillMissingValues($productModel);
 
         return $productModel;
     }
