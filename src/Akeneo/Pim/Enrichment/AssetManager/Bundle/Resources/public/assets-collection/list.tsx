@@ -91,7 +91,7 @@ const AssetCollectionList = styled.div`
 
 const LockIconContainer = styled.div`
   margin-right: 5px;
-  line-height: 14px;
+  height: 14px;
 `;
 
 const DisplayValues = ({values, family, context, ruleRelations, onChange, errors}: DisplayValuesProps) => {
