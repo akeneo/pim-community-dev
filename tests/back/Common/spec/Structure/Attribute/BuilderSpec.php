@@ -60,6 +60,18 @@ class BuilderSpec extends ObjectBehavior
         $attribute->isScopable()->shouldReturn(false);
     }
 
+    function it_builds_a_price_collection_attribute()
+    {
+        $this->aPriceCollectionAttribute();
+
+        $attribute = $this->build();
+        $attribute->getType()->shouldReturn(AttributeTypes::PRICE_COLLECTION);
+        $attribute->getCode()->shouldReturn('code');
+        $attribute->isUnique()->shouldReturn(false);
+        $attribute->isLocalizable()->shouldReturn(false);
+        $attribute->isScopable()->shouldReturn(false);
+    }
+
     function it_builds_a_localizable_and_scopable_attribute()
     {
         $this->aTextAttribute()->localizable()->scopable();
