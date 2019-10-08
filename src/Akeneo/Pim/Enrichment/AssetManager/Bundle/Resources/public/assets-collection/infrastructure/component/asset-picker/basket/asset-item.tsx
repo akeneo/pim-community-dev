@@ -13,9 +13,6 @@ const Container = styled.li`
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey80};
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 `;
 
 const AssetThumbnail = styled.img`
@@ -26,17 +23,22 @@ const AssetThumbnail = styled.img`
 const AssetDetails = styled.div`
   flex-grow: 1;
   padding: 0 10px;
+  overflow: hidden;
 `;
 
 const AssetCode = styled.div`
   font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.small};
+  overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const AssetLabel = styled.div`
   color: ${(props: ThemedProps<void>) => props.theme.color.purple100};
   font-weight: bolditalic;
+  overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const AssetItem = ({
@@ -58,8 +60,8 @@ const AssetItem = ({
     >
       <AssetThumbnail src={asset.image} />
       <AssetDetails>
-        <AssetCode>{asset.code}</AssetCode>
-        <AssetLabel>{getAssetLabel(asset, context.locale)}</AssetLabel>
+        <AssetCode title={asset.code}>{asset.code}</AssetCode>
+        <AssetLabel title={getAssetLabel(asset, context.locale)}>{getAssetLabel(asset, context.locale)}</AssetLabel>
       </AssetDetails>
       <RemoveButton
         title={__('pim_asset_manager.asset_picker.basket.remove_one_asset', {

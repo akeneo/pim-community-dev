@@ -75,6 +75,8 @@ const Container = styled.div`
 `;
 const Context = styled.div``;
 const Grid = styled.div`
+  display: flex;
+  flex-direction: column;
   flex: 1;
   height: 100%;
   margin: 0 40px;

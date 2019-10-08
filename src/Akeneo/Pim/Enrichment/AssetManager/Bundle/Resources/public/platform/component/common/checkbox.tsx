@@ -19,6 +19,7 @@ const Tick = styled(TickIcon)`
 `;
 
 const Container = styled.div<ContainerProps>`
+  outline: none;
   margin-right: 5px;
   width: 18px;
   height: 18px;

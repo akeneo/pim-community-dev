@@ -54,7 +54,11 @@ const AssetCard = ({
       <AssetCompleteness>
         <CompletenessBadge completeness={asset.completeness} />
       </AssetCompleteness>
-      <Thumbnail src={getImage(asset)} isSelected={isSelected} />
+      <Thumbnail
+        src={getImage(asset)}
+        isSelected={isSelected}
+        onClick={() => onSelectionChange(asset.code, !isSelected)}
+      />
       <Title>
         <Checkbox
           value={isSelected}

@@ -13,6 +13,14 @@ import AssetIllustration from 'akeneopimenrichmentassetmanager/platform/componen
 import __ from 'akeneoreferenceentity/tools/translator';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 
+const Container = styled.div`
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  overflow-y: auto;
+  flex: 1;
+`;
+
 const Mosaic = ({
   context,
   selection,
@@ -24,12 +32,6 @@ const Mosaic = ({
   context: Context;
   onSelectionChange: (selection: AssetCode[]) => void;
 }) => {
-  const Container = styled.div`
-    height: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    overflow-y: scroll;
-  `;
   return (
     <Container>
       {assetCollection.length > 0 ? (
@@ -58,29 +60,29 @@ const Mosaic = ({
 
 export default Mosaic;
 
-const EmptyResult = () => {
-  const Container = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex: 1;
-    justify-content: center;
-  `;
-  const Title = styled.div`
-    margin-bottom: 10px;
-    font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.title};
-    color: ${(props: ThemedProps<void>) => props.theme.color.grey140};
-  `;
-  const SubTitle = styled.div`
-    font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.bigger};
-    color: ${(props: ThemedProps<void>) => props.theme.color.grey120};
-  `;
+const EmptyContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  justify-content: center;
+`;
+const Title = styled.div`
+  margin-bottom: 10px;
+  font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.title};
+  color: ${(props: ThemedProps<void>) => props.theme.color.grey140};
+`;
+const SubTitle = styled.div`
+  font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.bigger};
+  color: ${(props: ThemedProps<void>) => props.theme.color.grey120};
+`;
 
+const EmptyResult = () => {
   return (
-    <Container>
+    <EmptyContainer>
       <AssetIllustration size={256} />
       <Title>{__('pim_asset_manager.asset_picker.no_result.title')}</Title>
       <SubTitle>{__('pim_asset_manager.asset_picker.no_result.sub_title')}</SubTitle>
-    </Container>
+    </EmptyContainer>
   );
 };

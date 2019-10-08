@@ -29,6 +29,8 @@ const Container = styled.div`
   border-left: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey80};
   padding: 0 20px;
   flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Title = styled.div`
@@ -40,8 +42,8 @@ const Title = styled.div`
 `;
 
 const List = styled.ul`
-  overflow-y: scroll;
-  height: 600px;
+  flex: 1;
+  overflow-y: auto;
 `;
 
 const Footer = styled.div`

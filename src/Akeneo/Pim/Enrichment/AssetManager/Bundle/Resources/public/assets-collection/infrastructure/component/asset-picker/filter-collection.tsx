@@ -34,21 +34,22 @@ const Container = styled.div`
   width: 280px;
   padding-right: 20px;
   border-right: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey80}
-  overflow: auto;
+  overflow-y: auto;
 `;
 
-const Title = styled.span`
+const Title = styled.div`
+  padding-bottom: 10px;
+  padding-top: 4px;
   color: ${(props: ThemedProps<void>) => props.theme.color.grey140};
   text-transform: uppercase;
   font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.default};
-  margin-bottom: 16px;
-  position: sticky;
-  top: 0;
   background-color: white;
-  z-index: 1000;
-  padding-bottom: 10px;
-  padding-top: 4px;
   border-bottom: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey140};
+`;
+
+const Filters = styled.div`
+  padding-top: 16px;
+  overflow-y: auto;
 `;
 
 const replaceFilter = (filterCollection: Filter[], filterToReplace: Filter) => {
@@ -83,29 +84,33 @@ const FilterCollection = ({
       {orderedFilterViews.length !== 0 ? (
         <Container>
           <Title>{__('pim_asset_manager.asset_picker.filter.title')}</Title>
-          {orderedFilterViews.map((filterView: {view: FilterView; attribute: FilterableAttribute}) => {
-            const View = filterView.view;
-            const attribute = filterView.attribute;
-            const filter = filterCollection.find((filter: Filter) => filter.field === getAttributeFilterKey(attribute));
+          <Filters>
+            {orderedFilterViews.map((filterView: {view: FilterView; attribute: FilterableAttribute}) => {
+              const View = filterView.view;
+              const attribute = filterView.attribute;
+              const filter = filterCollection.find(
+                (filter: Filter) => filter.field === getAttributeFilterKey(attribute)
+              );
 
-            return (
-              <div
-                key={attribute.getCode()}
-                className="AknFilterBox-filter AknFilterBox-filter--relative AknFilterBox-filter--smallMargin"
-                data-attribute={attribute.getCode()}
-                data-type={attribute.getType()}
-              >
-                <View
-                  attribute={attribute}
-                  filter={filter}
-                  onFilterUpdated={(filter: Filter) =>
-                    onFilterCollectionChange(replaceFilter(filterCollection, filter))
-                  }
-                  context={context}
-                />
-              </div>
-            );
-          })}
+              return (
+                <div
+                  key={attribute.getCode()}
+                  className="AknFilterBox-filter AknFilterBox-filter--relative AknFilterBox-filter--smallMargin"
+                  data-attribute={attribute.getCode()}
+                  data-type={attribute.getType()}
+                >
+                  <View
+                    attribute={attribute}
+                    filter={filter}
+                    onFilterUpdated={(filter: Filter) =>
+                      onFilterCollectionChange(replaceFilter(filterCollection, filter))
+                    }
+                    context={context}
+                  />
+                </div>
+              );
+            })}
+          </Filters>
         </Container>
       ) : null}
     </React.Fragment>
