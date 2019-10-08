@@ -1,4 +1,0 @@
-services:
-    akeneo.pim.structure.query.get_attributes:
-        alias: 'akeneo.pim.structure.query.sql_get_attributes'
-

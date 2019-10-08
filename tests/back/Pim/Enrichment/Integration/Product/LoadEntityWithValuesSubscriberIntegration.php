@@ -48,6 +48,11 @@ class LoadEntityWithValuesSubscriberIntegration extends TestCase
 
     public function testItDoesNotLoadValuesOfAProductForWhichThereIsARemovedAttribute()
     {
+        // replace service "akeneo.pim.enrichment.factory.read.write_value_collection" because it uses a LRU cache
+        static::$kernel->getContainer()->set('akeneo.pim.enrichment.factory.read.write_value_collection',
+            new SqlGetAttributes($this->get('database_connection'))
+        );
+
         $this->removeAttribute('a_metric');
         $amputatedStandardValues = $this->removeAttributeFromAllStandardValues('a_metric');
         $expectedValues = $this->getValuesFromStandardValues(
