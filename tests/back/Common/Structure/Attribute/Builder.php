@@ -75,6 +75,13 @@ class Builder
         return $this;
     }
 
+    public function aPriceCollectionAttribute(): Builder
+    {
+        $this->type = new Type(AttributeTypes::PRICE_COLLECTION);
+
+        return $this;
+    }
+
     public function aUniqueAttribute(): Builder
     {
         $this->type = new Type(AttributeTypes::TEXT);
