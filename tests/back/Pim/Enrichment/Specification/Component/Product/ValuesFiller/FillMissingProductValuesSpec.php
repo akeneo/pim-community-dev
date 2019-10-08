@@ -12,7 +12,6 @@ use Akeneo\Pim\Structure\Component\Model\Family;
 use Akeneo\Test\Common\Structure\Attribute\Builder;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class FillMissingProductValuesSpec extends ObjectBehavior
 {
@@ -89,7 +88,7 @@ class FillMissingProductValuesSpec extends ObjectBehavior
         $this->shouldHaveType(FillMissingProductValues::class);
     }
 
-    function it_creates_all_all_missing_values()
+    function it_creates_all_missing_values()
     {
         $this->fromStandardFormat([
             'family' => 'shoes',
@@ -293,6 +292,267 @@ class FillMissingProductValuesSpec extends ObjectBehavior
                         ]
                     ],
                 ]
+            ]
+        );
+    }
+
+    function it_creates_all_null_price_values()
+    {
+        $this->fromStandardFormat(
+            [
+                'family' => 'family_with_price',
+                'values' => []
+            ]
+        )->shouldBeLike(
+            [
+                'family' => 'family_with_price',
+                'values' => [
+                    'price' => [
+                        [
+                            'scope' => null,
+                            'locale' => null,
+                            'data' => [
+                                ['currency' => 'USD', 'amount' => null],
+                                ['currency' => 'EUR', 'amount' => null],
+                                ['currency' => 'AED', 'amount' => null],
+                            ],
+                        ],
+                    ],
+                    'scopable_price' => [
+                        [
+                            'scope' => 'tablet',
+                            'locale' => null,
+                            'data' => [
+                                ['currency' => 'AED', 'amount' => null],
+                                ['currency' => 'EUR', 'amount' => null],
+                            ],
+                        ],
+                        [
+                            'scope' => 'ecommerce',
+                            'locale' => null,
+                            'data' => [
+                                ['currency' => 'USD', 'amount' => null],
+                                ['currency' => 'EUR', 'amount' => null],
+                            ],
+                        ],
+                    ],
+                    'localizable_price' => [
+                        [
+                            'scope' => null,
+                            'locale' => 'en_US',
+                            'data' => [
+                                ['currency' => 'USD', 'amount' => null],
+                                ['currency' => 'EUR', 'amount' => null],
+                                ['currency' => 'AED', 'amount' => null],
+                            ],
+                        ],
+                        [
+                            'scope' => null,
+                            'locale' => 'fr_FR',
+                            'data' => [
+                                ['currency' => 'USD', 'amount' => null],
+                                ['currency' => 'EUR', 'amount' => null],
+                                ['currency' => 'AED', 'amount' => null],
+                            ],
+                        ],
+                        [
+                            'scope' => null,
+                            'locale' => 'de_DE',
+                            'data' => [
+                                ['currency' => 'USD', 'amount' => null],
+                                ['currency' => 'EUR', 'amount' => null],
+                                ['currency' => 'AED', 'amount' => null],
+                            ],
+                        ],
+                    ],
+                    'localizable_scopable_price' => [
+                        [
+                            'scope' => 'tablet',
+                            'locale' => 'en_US',
+                            'data' => [
+                                ['currency' => 'AED', 'amount' => null],
+                                ['currency' => 'EUR', 'amount' => null],
+                            ]
+                        ],
+                        [
+                            'scope' => 'tablet',
+                            'locale' => 'fr_FR',
+                            'data' => [
+                                ['currency' => 'AED', 'amount' => null],
+                                ['currency' => 'EUR', 'amount' => null],
+                            ]
+                        ],
+                        [
+                            'scope' => 'ecommerce',
+                            'locale' => 'fr_FR',
+                            'data' => [
+                                ['currency' => 'USD', 'amount' => null],
+                                ['currency' => 'EUR', 'amount' => null],
+                            ]
+                        ],
+                        [
+                            'scope' => 'ecommerce',
+                            'locale' => 'de_DE',
+                            'data' => [
+                                ['currency' => 'USD', 'amount' => null],
+                                ['currency' => 'EUR', 'amount' => null],
+                            ]
+                        ],
+                    ],
+                ],
+            ]
+        );
+    }
+
+    function it_does_not_replace_existing_price_values()
+    {
+        $this->fromStandardFormat(
+            [
+                'family' => 'family_with_price',
+                'values' => [
+                    'price' => [
+                        [
+                            'scope' => null,
+                            'locale' => null,
+                            'data' => [
+                                ['currency' => 'EUR', 'amount' => '10.00'],
+                            ],
+                        ],
+                    ],
+                    'scopable_price' => [
+                        [
+                            'scope' => 'tablet',
+                            'locale' => null,
+                            'data' => [
+                                ['currency' => 'AED', 'amount' => '10.00'],
+                            ],
+                        ],
+                    ],
+                    'localizable_price' => [
+                        [
+                            'scope' => null,
+                            'locale' => 'en_US',
+                            'data' => [
+                                ['currency' => 'USD', 'amount' => '10.00'],
+                            ],
+                        ],
+                        [
+                            'scope' => null,
+                            'locale' => 'de_DE',
+                            'data' => [
+                                ['currency' => 'USD', 'amount' => '10.00'],
+                                ['currency' => 'AED', 'amount' => '10.00'],
+                            ],
+                        ],
+                    ],
+                    'localizable_scopable_price' => [
+                        [
+                            'scope' => 'tablet',
+                            'locale' => 'en_US',
+                            'data' => [
+                                ['currency' => 'AED', 'amount' => '10.00'],
+                            ]
+                        ],
+                    ],
+                ]
+            ]
+        )->shouldBeLike(
+            [
+                'family' => 'family_with_price',
+                'values' => [
+                    'price' => [
+                        [
+                            'scope' => null,
+                            'locale' => null,
+                            'data' => [
+                                ['currency' => 'USD', 'amount' => null],
+                                ['currency' => 'EUR', 'amount' => '10.00'],
+                                ['currency' => 'AED', 'amount' => null],
+                            ],
+                        ],
+                    ],
+                    'scopable_price' => [
+                        [
+                            'scope' => 'tablet',
+                            'locale' => null,
+                            'data' => [
+                                ['currency' => 'AED', 'amount' => '10.00'],
+                                ['currency' => 'EUR', 'amount' => null],
+                            ],
+                        ],
+                        [
+                            'scope' => 'ecommerce',
+                            'locale' => null,
+                            'data' => [
+                                ['currency' => 'USD', 'amount' => null],
+                                ['currency' => 'EUR', 'amount' => null],
+                            ],
+                        ],
+                    ],
+                    'localizable_price' => [
+                        [
+                            'scope' => null,
+                            'locale' => 'en_US',
+                            'data' => [
+                                ['currency' => 'USD', 'amount' => '10.00'],
+                                ['currency' => 'EUR', 'amount' => null],
+                                ['currency' => 'AED', 'amount' => null],
+                            ],
+                        ],
+                        [
+                            'scope' => null,
+                            'locale' => 'fr_FR',
+                            'data' => [
+                                ['currency' => 'USD', 'amount' => null],
+                                ['currency' => 'EUR', 'amount' => null],
+                                ['currency' => 'AED', 'amount' => null],
+                            ],
+                        ],
+                        [
+                            'scope' => null,
+                            'locale' => 'de_DE',
+                            'data' => [
+                                ['currency' => 'USD', 'amount' => '10.00'],
+                                ['currency' => 'EUR', 'amount' => null],
+                                ['currency' => 'AED', 'amount' => '10.00'],
+                            ],
+                        ],
+                    ],
+                    'localizable_scopable_price' => [
+                        [
+                            'scope' => 'tablet',
+                            'locale' => 'en_US',
+                            'data' => [
+                                ['currency' => 'AED', 'amount' => '10.00'],
+                                ['currency' => 'EUR', 'amount' => null],
+                            ]
+                        ],
+                        [
+                            'scope' => 'tablet',
+                            'locale' => 'fr_FR',
+                            'data' => [
+                                ['currency' => 'AED', 'amount' => null],
+                                ['currency' => 'EUR', 'amount' => null],
+                            ]
+                        ],
+                        [
+                            'scope' => 'ecommerce',
+                            'locale' => 'fr_FR',
+                            'data' => [
+                                ['currency' => 'USD', 'amount' => null],
+                                ['currency' => 'EUR', 'amount' => null],
+                            ]
+                        ],
+                        [
+                            'scope' => 'ecommerce',
+                            'locale' => 'de_DE',
+                            'data' => [
+                                ['currency' => 'USD', 'amount' => null],
+                                ['currency' => 'EUR', 'amount' => null],
+                            ]
+                        ],
+                    ],
+                ],
             ]
         );
     }
