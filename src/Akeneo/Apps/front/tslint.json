@@ -3,6 +3,7 @@
     "rules": {
         "arrow-parens": [true, "ban-single-arg-parens"],
         "interface-name": [true, "never-prefix"],
+        "no-shadowed-variable": false,
         "object-literal-sort-keys": false,
         "quotemark": [true, "single", "avoid-escape"],
         "trailing-comma": false,
