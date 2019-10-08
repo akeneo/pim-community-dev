@@ -28,6 +28,7 @@ const Mosaic = ({
     height: 100%;
     display: flex;
     flex-wrap: wrap;
+    overflow-y: scroll;
   `;
   return (
     <Container>

@@ -40,7 +40,7 @@ const Title = styled.div`
 `;
 
 const List = styled.ul`
-  overflow-x: scroll;
+  overflow-y: scroll;
   height: 600px;
 `;
 
