@@ -47,6 +47,10 @@ class GetElasticsearchProductModelProjection implements GetElasticsearchProductM
         $productProjections = [];
 
         foreach ($productModelCodes as $productModelCode) {
+            if (!array_key_exists($productModelCode, $valuesAndProperties)) {
+                continue;
+            }
+
             $valueCollection = $this
                 ->valueCollectionFactory
                 ->createFromStorageFormat($valuesAndProperties[$productModelCode]['values']);
