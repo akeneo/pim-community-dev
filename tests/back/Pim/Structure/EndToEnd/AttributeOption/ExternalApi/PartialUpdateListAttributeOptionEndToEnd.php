@@ -50,7 +50,7 @@ JSON;
             'optionC' => [
                 'code' => 'optionC',
                 'attribute' => 'a_multi_select',
-                'sort_order' => 1,
+                'sort_order' => 21,
                 'labels' => [
                     'en_US' => 'Option C',
                 ],

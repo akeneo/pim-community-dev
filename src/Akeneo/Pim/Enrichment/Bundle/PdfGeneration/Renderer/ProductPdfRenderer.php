@@ -55,7 +55,7 @@ class ProductPdfRenderer implements RendererInterface
     /** @var string|null */
     protected $customFont;
 
-    /** @var IdentifiableObjectRepositoryInterface|null */
+    /** @var IdentifiableObjectRepositoryInterface */
     private $attributeOptionRepository;
 
     public function __construct(
@@ -80,6 +80,7 @@ class ProductPdfRenderer implements RendererInterface
         $this->uploadDirectory = $uploadDirectory;
         $this->attributeOptionRepository = $attributeOptionRepository;
         $this->customFont = $customFont;
+        $this->attributeOptionRepository = $attributeOptionRepository;
     }
 
     /**

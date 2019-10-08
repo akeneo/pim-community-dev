@@ -2,21 +2,21 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value;
 
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\MetricNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValueInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
+use PhpSpec\ObjectBehavior;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class MetricNormalizerSpec extends ObjectBehavior
 {
-    function let(IdentifiableObjectRepositoryInterface $attributeRepository)
+    function let(GetAttributes $getAttributes)
     {
-        $this->beConstructedWith($attributeRepository);
+        $this->beConstructedWith($getAttributes);
     }
 
     function it_is_initializable()
@@ -32,45 +32,66 @@ class MetricNormalizerSpec extends ObjectBehavior
     function it_support_metric_product_value(
         MetricValueInterface $metricValue,
         ValueInterface $textValue,
-        AttributeInterface $metricAttribute,
-        AttributeInterface $textAttribute,
-        $attributeRepository
+        GetAttributes $getAttributes
     ) {
         $metricValue->getAttributeCode()->willReturn('my_metric_attribute');
-        $attributeRepository->findOneByidentifier('my_metric_attribute')->willReturn($metricAttribute);
         $textValue->getAttributeCode()->willReturn('my_text_attribute');
-        $attributeRepository->findOneByidentifier('my_text_attribute')->willReturn($textAttribute);
 
-        $textAttribute->getBackendType()->willReturn('text');
+        $getAttributes->forCode('my_metric_attribute')->willReturn(new Attribute(
+            'my_metric_attribute',
+            'pim_catalog_metric',
+            [],
+            false,
+            false,
+            null,
+            true,
+            'metric'
+        ));
+        $getAttributes->forCode('my_text_attribute')->willReturn(new Attribute(
+            'my_text_attribute',
+            'pim_catalog_text',
+            [],
+            false,
+            false,
+            null,
+            true,
+            'text'
+        ));
 
         $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
 
         $this->supportsNormalization($metricValue, 'whatever')->shouldReturn(false);
 
-        $this->supportsNormalization(new \stdClass(), ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+        $this->supportsNormalization(new \stdClass(), ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(false);
-        $this->supportsNormalization($textValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+        $this->supportsNormalization($textValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(false);
-        $this->supportsNormalization($metricValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+        $this->supportsNormalization($metricValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(true);
     }
 
     function it_normalizes_an_empty_metric_product_value_with_no_locale_and_no_channel(
         MetricValueInterface $metricValue,
-        AttributeInterface $metricAttribute,
-        $attributeRepository
+        GetAttributes $getAttributes
     ) {
         $metricValue->getAttributeCode()->willReturn('my_metric_attribute');
         $metricValue->getLocaleCode()->willReturn(null);
         $metricValue->getScopeCode()->willReturn(null);
         $metricValue->getData()->willReturn(null);
 
-        $metricAttribute->getCode()->willReturn('weight');
-        $metricAttribute->getBackendType()->willReturn('metric');
-        $attributeRepository->findOneByIdentifier('my_metric_attribute')->willReturn($metricAttribute);
+        $getAttributes->forCode('my_metric_attribute')->willReturn(new Attribute(
+            'my_metric_attribute',
+            'pim_catalog_metric',
+            [],
+            false,
+            false,
+            null,
+            true,
+            'metric'
+        ));
 
-        $this->normalize($metricValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
-            'weight-metric' => [
+        $this->normalize($metricValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
+            'my_metric_attribute-metric' => [
                 '<all_channels>' => [
                     '<all_locales>' => null,
                 ],
@@ -80,9 +101,8 @@ class MetricNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_metric_product_value_with_no_locale_and_no_channel(
         ValueInterface $metricValue,
-        AttributeInterface $metricAttribute,
         MetricInterface $metric,
-        $attributeRepository
+        GetAttributes $getAttributes
     ) {
         $metric->getData()->willReturn(125.12);
         $metric->getBaseData()->willReturn(0.12512);
@@ -94,12 +114,19 @@ class MetricNormalizerSpec extends ObjectBehavior
         $metricValue->getScopeCode()->willReturn(null);
         $metricValue->getData()->willReturn($metric);
 
-        $metricAttribute->getCode()->willReturn('weight');
-        $metricAttribute->getBackendType()->willReturn('metric');
-        $attributeRepository->findOneByIdentifier('my_metric_attribute')->willReturn($metricAttribute);
+        $getAttributes->forCode('my_metric_attribute')->willReturn(new Attribute(
+            'my_metric_attribute',
+            'pim_catalog_metric',
+            [],
+            false,
+            false,
+            null,
+            true,
+            'metric'
+        ));
 
-        $this->normalize($metricValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
-            'weight-metric' => [
+        $this->normalize($metricValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
+            'my_metric_attribute-metric' => [
                 '<all_channels>' => [
                     '<all_locales>' => [
                         'data'      => '125.12',
@@ -114,9 +141,8 @@ class MetricNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_metric_product_value_with_locale(
         ValueInterface $metricValue,
-        AttributeInterface $metricAttribute,
         MetricInterface $metric,
-        $attributeRepository
+        GetAttributes $getAttributes
     ) {
         $metric->getData()->willReturn(125.12);
         $metric->getBaseData()->willReturn(0.12512);
@@ -128,12 +154,19 @@ class MetricNormalizerSpec extends ObjectBehavior
         $metricValue->getScopeCode()->willReturn(null);
         $metricValue->getData()->willReturn($metric);
 
-        $metricAttribute->getCode()->willReturn('weight');
-        $metricAttribute->getBackendType()->willReturn('metric');
-        $attributeRepository->findOneByIdentifier('my_metric_attribute')->willReturn($metricAttribute);
+        $getAttributes->forCode('my_metric_attribute')->willReturn(new Attribute(
+            'my_metric_attribute',
+            'pim_catalog_metric',
+            [],
+            true,
+            false,
+            null,
+            true,
+            'metric'
+        ));
 
-        $this->normalize($metricValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
-            'weight-metric' => [
+        $this->normalize($metricValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
+            'my_metric_attribute-metric' => [
                 '<all_channels>' => [
                     'en_US' => [
                         'data'      => '125.12',
@@ -148,9 +181,8 @@ class MetricNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_integer_product_value_with_locale_and_channel(
         ValueInterface $metricValue,
-        AttributeInterface $metricAttribute,
         MetricInterface $metric,
-        $attributeRepository
+        GetAttributes $getAttributes
     ) {
         $metric->getData()->willReturn(125.12);
         $metric->getBaseData()->willReturn(0.12512);
@@ -162,13 +194,19 @@ class MetricNormalizerSpec extends ObjectBehavior
         $metricValue->getScopeCode()->willReturn('ecommerce');
         $metricValue->getData()->willReturn($metric);
 
-        $metricAttribute->isDecimalsAllowed()->willReturn(false);
-        $metricAttribute->getCode()->willReturn('weight');
-        $metricAttribute->getBackendType()->willReturn('metric');
-        $attributeRepository->findOneByIdentifier('my_metric_attribute')->willReturn($metricAttribute);
+        $getAttributes->forCode('my_metric_attribute')->willReturn(new Attribute(
+            'my_metric_attribute',
+            'pim_catalog_metric',
+            [],
+            true,
+            true,
+            null,
+            false,
+            'metric'
+        ));
 
-        $this->normalize($metricValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
-            'weight-metric' => [
+        $this->normalize($metricValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
+            'my_metric_attribute-metric' => [
                 'ecommerce' => [
                     'fr_FR' => [
                         'data'      => '125.12',

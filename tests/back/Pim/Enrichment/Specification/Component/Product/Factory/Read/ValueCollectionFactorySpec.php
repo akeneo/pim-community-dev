@@ -58,8 +58,8 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         GetAttributes $getAttributeByCodes,
         ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter
     ) {
-        $sku = new Attribute('sku', AttributeTypes::IDENTIFIER, [], false, false, null, false);
-        $description = new Attribute('description', AttributeTypes::TEXTAREA, [], true, true, null, false);
+        $sku = new Attribute('sku', AttributeTypes::IDENTIFIER, [], false, false, null, false, 'text');
+        $description = new Attribute('description', AttributeTypes::TEXTAREA, [], true, true, null, false, 'textarea');
 
         $rawValues = [
             'sku' => [
@@ -172,7 +172,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
             ]
         ];
 
-        $color = new Attribute('color', AttributeTypes::OPTION_SIMPLE_SELECT, [], false, false, null, false);
+        $color = new Attribute('color', AttributeTypes::OPTION_SIMPLE_SELECT, [], false, false, null, false, 'option');
         $getAttributeByCodes->forCodes(['unknown_attribute', 'color'])->willReturn(['color' => $color, 'unknown_attribute' => null]);
         $getAttributeByCodes->forCodes(['color'])->willReturn(['color' => $color]);
 
@@ -216,7 +216,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         ];
 
         $getAttributeByCodes->forCodes(['color'])->willReturn([
-            'color' => new Attribute('color', AttributeTypes::OPTION_SIMPLE_SELECT, [], false, false, null, false)
+            'color' => new Attribute('color', AttributeTypes::OPTION_SIMPLE_SELECT, [], false, false, null, false, 'option')
         ]);
         $getAttributeByCodes->forCodes([])->willReturn([]);
 
@@ -283,9 +283,9 @@ class ValueCollectionFactorySpec extends ObjectBehavior
             ],
         ];
 
-        $number = new Attribute('number', AttributeTypes::NUMBER, [], false, false, null, false);
-        $text = new Attribute('text', AttributeTypes::TEXTAREA, [], false, false, null, false);
-        $yesNo = new Attribute('yes_no', AttributeTypes::BOOLEAN, [], false, false, null, false);
+        $number = new Attribute('number', AttributeTypes::NUMBER, [], false, false, null, false, 'decimal');
+        $text = new Attribute('text', AttributeTypes::TEXTAREA, [], false, false, null, false, 'text');
+        $yesNo = new Attribute('yes_no', AttributeTypes::BOOLEAN, [], false, false, null, false, 'boolean');
         $getAttributeByCodes->forCodes(['number', 'text', 'yes_no'])->willReturn(['number' => $number, 'text' => $text, 'yes_no' => $yesNo]);
 
         $typesToCode = [

@@ -66,6 +66,7 @@ define(['jquery', 'underscore', 'pim/base-fetcher', 'routing'], function($, _, B
     clear: function() {
       BaseFetcher.prototype.clear.apply(this, arguments);
 
+      this.fetchByTypesPromises = [];
       this.identifierPromise = null;
     },
   });

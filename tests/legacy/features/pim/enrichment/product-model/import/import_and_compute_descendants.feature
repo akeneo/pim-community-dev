@@ -28,7 +28,7 @@ Feature: Create product models through CSV import and update their descendants
     When I am on the "csv_catalog_modeling_product_model_import" import job page
     And I launch the import job
     And I wait for the "csv_catalog_modeling_product_model_import" job to finish
-    Then I should see the text "processed 2"
+    Then I should see the text "processed 1"
     When I am on the "tshirt-divided-navy-blue-m" product page
     And I visit the "Completeness" column tab
     Then I should see the completeness:
@@ -50,7 +50,7 @@ Feature: Create product models through CSV import and update their descendants
     When I am on the "csv_catalog_modeling_product_model_import" import job page
     And I launch the import job
     And I wait for the "csv_catalog_modeling_product_model_import" job to finish
-    Then I should see the text "processed 2"
+    Then I should see the text "processed 1"
     When I am on the products grid
     And I show the filter "supplier"
     And I filter by "supplier" with operator "in list" and value "zaro"

@@ -41,4 +41,11 @@ final class PurgeJobExecution
 
         return $numberOfDeletedJobExecutions;
     }
+
+    public function all(): void
+    {
+        $this->deleteJobExecution->all();
+        $this->deleteOrphanJobExecutionMessages->execute();
+        $this->deleteOrphansJobExecutionDirectories->execute();
+    }
 }

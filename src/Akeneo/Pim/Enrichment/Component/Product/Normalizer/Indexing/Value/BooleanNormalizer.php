@@ -3,7 +3,6 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -23,10 +22,10 @@ class BooleanNormalizer extends AbstractProductValueNormalizer implements Normal
             return false;
         }
 
-        $attribute = $this->attributeRepository->findOneByIdentifier($data->getAttributeCode());
+        $attribute = $this->getAttributes->forCode($data->getAttributeCode());
 
-        return  null !== $attribute && AttributeTypes::BACKEND_TYPE_BOOLEAN === $attribute->getBackendType() && (
-                $format === ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
+        return  null !== $attribute && AttributeTypes::BACKEND_TYPE_BOOLEAN === $attribute->backendType() && (
+                $format === ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
             );
     }
 

@@ -5,7 +5,6 @@ pim_enrich.entity.family:
   flash:
     update:
       success: Produktfamilie erfolgreich aktualisiert.
-      fail: Beim Aktualisieren der Produktfamilie ist ein Fehler aufgetreten.
       cant_remove_attribute_as_label: Das Attribut kann nicht entfernt werden, da es als Label verwendet wird
       cant_remove_attribute_as_image: Attribute kann nicht entfernt werden, da es als Hauptbild verwendet wird
       cant_remove_attribute_used_as_axis: Dieses Attribut, das als Variantenachse in einer Variante der Produktfamilie verwendet wird, kann nicht entfernt werden
@@ -67,7 +66,6 @@ pim_enrich.entity.attribute_option:
   flash:
     create:
       success: Attributoption erfolgreich erstellt
-      fail: Während des Erstellens der Attributoption ist ein Fehler aufgetreten
     update:
       fail: Attributoption kann nicht gespeichert werden
     delete:

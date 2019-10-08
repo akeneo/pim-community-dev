@@ -8,6 +8,7 @@ use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\PropertiesNormalizer as StandardPropertiesNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -105,7 +106,7 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
         $completenesses = $this->getProductCompletenesses->fromProductId($product->getId());
         $data[self::FIELD_COMPLETENESS] = $this->serializer->normalize(
             $completenesses,
-            ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
+            ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
             $context
         );
 
@@ -125,7 +126,7 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
         $data[StandardPropertiesNormalizer::FIELD_VALUES] = !$product->getValues()->isEmpty()
             ? $this->serializer->normalize(
                 $product->getValues(),
-                ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
+                ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
                 $context
             ) : [];
 
@@ -172,7 +173,7 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof ProductInterface
-            && ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX === $format;
+            && ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX === $format;
     }
 
     /**

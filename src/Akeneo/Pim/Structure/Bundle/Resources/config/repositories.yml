@@ -51,6 +51,7 @@ services:
 
     ### Internal API
     pim_enrich.repository.attribute_group:
+        public: true
         class: 'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\AttributeGroupRepository'
         arguments:
             - '@pim_user.context.user'
@@ -58,6 +59,7 @@ services:
             - '%pim_catalog.entity.attribute_group.class%'
 
     pim_enrich.repository.attribute:
+        public: true
         class: 'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\AttributeRepository'
         arguments:
             - '@pim_user.context.user'
@@ -116,6 +118,7 @@ services:
             - { name: 'pim_repository' }
 
     pim_enrich.repository.group_type:
+        public: true
         class: 'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\GroupTypeRepository'
         arguments:
             - '@pim_user.context.user'

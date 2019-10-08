@@ -30,7 +30,7 @@ class GetValuesAndPropertiesFromProductModelCodesIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->entityBuilder = new EntityBuilder($this->testKernel->getContainer());
+        $this->entityBuilder = $this->getFromTestContainer('akeneo_integration_tests.catalog.fixture.build_entity');
 
         $this->givenTheFollowingProductModelsWithValues([
             'root_product_model_1' => [

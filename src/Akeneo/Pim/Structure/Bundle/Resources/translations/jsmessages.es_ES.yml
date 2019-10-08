@@ -67,7 +67,6 @@ pim_enrich.entity.attribute_option:
   flash:
     create:
       success: Opción del atributo creada con éxito
-      fail: Un error ha ocurrido durante la creación de la opción de atributo
     update:
       fail: No se puede guardar la opción de atributo
     delete:

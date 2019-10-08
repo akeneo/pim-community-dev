@@ -30,16 +30,21 @@ class CheckRequirementsCommand extends Command
     /** @var string */
     private $env;
 
+    /** @var string */
+    private $rootDirectory;
+
     public function __construct(
         PimDirectoriesRegistry $pimDirectoriesRegistry,
         string $pimVersion,
-        string $env
+        string $env,
+        string $rootDirectory
     ) {
         parent::__construct();
 
         $this->pimDirectoriesRegistry = $pimDirectoriesRegistry;
         $this->pimVersion = $pimVersion;
         $this->env = $env;
+        $this->rootDirectory = $rootDirectory;
     }
 
     /**
@@ -62,18 +67,12 @@ class CheckRequirementsCommand extends Command
 
     protected function getRequirements(): Requirements
     {
-        $baseDirectory = __DIR__.'/../../../';
-
-        if (CommunityVersion::class !== $this->pimVersion) {
-            $baseDirectory = $baseDirectory.'../../../';
-        }
-
         $directories = [];
         if ($this->env !== 'behat') {
             $directories = $this->pimDirectoriesRegistry->getDirectories();
         }
 
-        return new Requirements($baseDirectory, $directories);
+        return new Requirements($this->rootDirectory, $directories);
     }
 
     /**

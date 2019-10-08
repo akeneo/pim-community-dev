@@ -34,7 +34,7 @@ JSON;
         $clientPatch->request('PATCH', 'api/rest/v1/product-models/prod_mod_optB', [], [], [], $updates);
         $this->assertSame(Response::HTTP_NO_CONTENT, $clientPatch->getResponse()->getStatusCode());
 
-        $this->waitUntilJobsHaveBeenConsumed();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         $client = $this->createAuthenticatedClient();
         $search = sprintf('{"updated":[{"operator":">","value":"%s"}]}', $discriminantDatetime->format('Y-m-d H:i:s'));
@@ -352,14 +352,6 @@ JSON;
                 ]
             ]
         ]);
-    }
-
-    private function waitUntilJobsHaveBeenConsumed(): void
-    {
-        $jobLauncher = new JobLauncher(static::$kernel);
-        while ($jobLauncher->hasJobInQueue()) {
-            $jobLauncher->launchConsumerOnce();
-        }
     }
 
     private function getDiscriminantDatetime(): \Datetime

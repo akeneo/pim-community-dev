@@ -140,6 +140,7 @@ services:
             - '@pim_catalog.repository.product'
 
     pim_enrich.repository.category:
+        public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\InternalApi\CategoryRepository'
         arguments:
             - '@pim_user.context.user'
