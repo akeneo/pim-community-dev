@@ -35,6 +35,10 @@ services:
             - '@akeneo_elasticsearch.registry.clients'
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@database_connection'
+            - '%env(APP_DATABASE_HOST)%'
+            - '%env(APP_DATABASE_NAME)%'
+            - '%env(APP_DATABASE_USER)%'
+            - '%env(APP_DATABASE_PASSWORD)%'
 
     akeneo_integration_tests.loader.database_schema_handler:
         class: '%akeneo_integration_tests.loader.database_schema_handler.class%'
