@@ -83,12 +83,12 @@ class GetViewableCategoryCodesIntegration extends TestCase
 
     private function getAdminUser(): UserInterface
     {
-        return $this->testKernel->getContainer()->get('pim_user.repository.user')->findOneByIdentifier('admin');
+        return $this->get('pim_user.repository.user')->findOneByIdentifier('admin');
     }
 
     private function getQuery(): GetViewableCategoryCodes
     {
-        return $this->testKernel->getContainer()->get('akeneo.pim.enrichment.category.get_viewable_category_codes');
+        return $this->get('akeneo.pim.enrichment.category.get_viewable_category_codes');
     }
 
     /**
