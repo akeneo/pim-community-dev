@@ -312,9 +312,38 @@ class FillMissingProductValuesSpec extends ObjectBehavior
                             'scope' => null,
                             'locale' => null,
                             'data' => [
-                                ['currency' => 'USD', 'amount' => null],
-                                ['currency' => 'EUR', 'amount' => null],
                                 ['currency' => 'AED', 'amount' => null],
+                                ['currency' => 'EUR', 'amount' => null],
+                                ['currency' => 'USD', 'amount' => null],
+                            ],
+                        ],
+                    ],
+                    'localizable_price' => [
+                        [
+                            'scope' => null,
+                            'locale' => 'en_US',
+                            'data' => [
+                                ['currency' => 'AED', 'amount' => null],
+                                ['currency' => 'EUR', 'amount' => null],
+                                ['currency' => 'USD', 'amount' => null],
+                            ],
+                        ],
+                        [
+                            'scope' => null,
+                            'locale' => 'fr_FR',
+                            'data' => [
+                                ['currency' => 'AED', 'amount' => null],
+                                ['currency' => 'EUR', 'amount' => null],
+                                ['currency' => 'USD', 'amount' => null],
+                            ],
+                        ],
+                        [
+                            'scope' => null,
+                            'locale' => 'de_DE',
+                            'data' => [
+                                ['currency' => 'AED', 'amount' => null],
+                                ['currency' => 'EUR', 'amount' => null],
+                                ['currency' => 'USD', 'amount' => null],
                             ],
                         ],
                     ],
@@ -333,35 +362,6 @@ class FillMissingProductValuesSpec extends ObjectBehavior
                             'data' => [
                                 ['currency' => 'USD', 'amount' => null],
                                 ['currency' => 'EUR', 'amount' => null],
-                            ],
-                        ],
-                    ],
-                    'localizable_price' => [
-                        [
-                            'scope' => null,
-                            'locale' => 'en_US',
-                            'data' => [
-                                ['currency' => 'USD', 'amount' => null],
-                                ['currency' => 'EUR', 'amount' => null],
-                                ['currency' => 'AED', 'amount' => null],
-                            ],
-                        ],
-                        [
-                            'scope' => null,
-                            'locale' => 'fr_FR',
-                            'data' => [
-                                ['currency' => 'USD', 'amount' => null],
-                                ['currency' => 'EUR', 'amount' => null],
-                                ['currency' => 'AED', 'amount' => null],
-                            ],
-                        ],
-                        [
-                            'scope' => null,
-                            'locale' => 'de_DE',
-                            'data' => [
-                                ['currency' => 'USD', 'amount' => null],
-                                ['currency' => 'EUR', 'amount' => null],
-                                ['currency' => 'AED', 'amount' => null],
                             ],
                         ],
                     ],
@@ -465,9 +465,38 @@ class FillMissingProductValuesSpec extends ObjectBehavior
                             'scope' => null,
                             'locale' => null,
                             'data' => [
-                                ['currency' => 'USD', 'amount' => null],
-                                ['currency' => 'EUR', 'amount' => '10.00'],
                                 ['currency' => 'AED', 'amount' => null],
+                                ['currency' => 'EUR', 'amount' => '10.00'],
+                                ['currency' => 'USD', 'amount' => null],
+                            ],
+                        ],
+                    ],
+                    'localizable_price' => [
+                        [
+                            'scope' => null,
+                            'locale' => 'en_US',
+                            'data' => [
+                                ['currency' => 'AED', 'amount' => null],
+                                ['currency' => 'EUR', 'amount' => null],
+                                ['currency' => 'USD', 'amount' => '10.00'],
+                            ],
+                        ],
+                        [
+                            'scope' => null,
+                            'locale' => 'fr_FR',
+                            'data' => [
+                                ['currency' => 'AED', 'amount' => null],
+                                ['currency' => 'EUR', 'amount' => null],
+                                ['currency' => 'USD', 'amount' => null],
+                            ],
+                        ],
+                        [
+                            'scope' => null,
+                            'locale' => 'de_DE',
+                            'data' => [
+                                ['currency' => 'AED', 'amount' => '10.00'],
+                                ['currency' => 'EUR', 'amount' => null],
+                                ['currency' => 'USD', 'amount' => '10.00'],
                             ],
                         ],
                     ],
@@ -486,35 +515,6 @@ class FillMissingProductValuesSpec extends ObjectBehavior
                             'data' => [
                                 ['currency' => 'USD', 'amount' => null],
                                 ['currency' => 'EUR', 'amount' => null],
-                            ],
-                        ],
-                    ],
-                    'localizable_price' => [
-                        [
-                            'scope' => null,
-                            'locale' => 'en_US',
-                            'data' => [
-                                ['currency' => 'USD', 'amount' => '10.00'],
-                                ['currency' => 'EUR', 'amount' => null],
-                                ['currency' => 'AED', 'amount' => null],
-                            ],
-                        ],
-                        [
-                            'scope' => null,
-                            'locale' => 'fr_FR',
-                            'data' => [
-                                ['currency' => 'USD', 'amount' => null],
-                                ['currency' => 'EUR', 'amount' => null],
-                                ['currency' => 'AED', 'amount' => null],
-                            ],
-                        ],
-                        [
-                            'scope' => null,
-                            'locale' => 'de_DE',
-                            'data' => [
-                                ['currency' => 'USD', 'amount' => '10.00'],
-                                ['currency' => 'EUR', 'amount' => null],
-                                ['currency' => 'AED', 'amount' => '10.00'],
                             ],
                         ],
                     ],

@@ -8,8 +8,20 @@ use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
+/**
+ * The standard format of a product does not contain values that are not filled.
+ * We need to have even values that are not filled for rendering purpose, such as in the PEF or the export.
+ *
+ * The goal of this class is to generate all missing values of a product, including values that are missing in parent product models.
+ * It uses an internal pivot format to ease the merge. The price is handled in dedicated function to isolate the behavior of this attribute type.
+ *
+ * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 final class FillMissingProductValues
 {
     /** @var IdentifiableObjectRepositoryInterface */
@@ -47,16 +59,17 @@ final class FillMissingProductValues
             return $productStandardFormat;
         }
 
-        $family = $this->familyRepository->findOneByIdentifier($familyCode);
-        $attributesInFamily = $family->getAttributes()->toArray();
-
         $productValuesInPivotFormat = $this->createProductValuesInPivotFormat($productStandardFormat);
-        $nullValuesInPivotFormat = $this->createNullValuesInPivotFormat($attributesInFamily);
-
+        $nullValuesInPivotFormat = $this->createNullValuesInPivotFormat($familyCode);
         $productValuesWithNullValuesInPivotFormat = array_replace_recursive($nullValuesInPivotFormat, $productValuesInPivotFormat);
-        $productStandardFormat['values'] = $this->pivotFormatToStandardFormat($productValuesWithNullValuesInPivotFormat);
+        $standardProductValues = $this->pivotFormatToStandardFormat($productValuesWithNullValuesInPivotFormat);
 
-        //$productStandardFormat = $this->addPriceValuesInStandardFormat($productStandardFormat);
+        $priceProductValuesInPivotFormat = $this->createPriceProductValuesInPivotFormat($productStandardFormat);
+        $nullPriceValuesInPivotFormat = $this->createNullPriceValuesInPivotFormat($familyCode);
+        $priceProductValuesWithNullValuesInPivotFormat = array_replace_recursive($nullPriceValuesInPivotFormat, $priceProductValuesInPivotFormat);
+        $standardPriceProductValues = $this->pivotFormatToStandardFormatForPriceValues($priceProductValuesWithNullValuesInPivotFormat);
+
+        $productStandardFormat['values'] = array_merge($standardProductValues, $standardPriceProductValues);
 
         return $productStandardFormat;
     }
@@ -70,27 +83,32 @@ final class FillMissingProductValues
      *     'attribute_code_2' => [ '<all_channels>' => [ '<all_locales>' => null ]]
      * ]
      */
-    private function createNullValuesInPivotFormat(array $attributesInFamily): array
+    private function createNullValuesInPivotFormat(string $familyCode): array
     {
         $nullValues = [];
-        foreach ($attributesInFamily as $attribute) {
+
+        $attributesInFamily = $this->getAttributesInFamilyIndexedByCode($familyCode);
+        $nonPriceAttributes = array_filter($attributesInFamily, function (AttributeInterface $attribute): bool {
+            return AttributeTypes::PRICE_COLLECTION !== $attribute->getType();
+        });
+
+        foreach ($nonPriceAttributes as $attribute) {
             if (!$attribute->isScopable() && !$attribute->isLocalizable()) {
                 $nullValues[$attribute->getCode()]['<all_channels>']['<all_locales>'] = null;
-            } else if ($attribute->isScopable() && !$attribute->isLocalizable()) {
+            } elseif ($attribute->isScopable() && !$attribute->isLocalizable()) {
                 foreach ($this->getChannels() as $channel) {
                     $nullValues[$attribute->getCode()][$channel->getCode()]['<all_locales>'] = null;
                 }
-            } else if (!$attribute->isScopable() && $attribute->isLocalizable()) {
+            } elseif (!$attribute->isScopable() && $attribute->isLocalizable()) {
                 foreach ($this->getLocales() as $locale) {
                     $nullValues[$attribute->getCode()]['<all_channels>'][$locale->getCode()] = null;
                 }
-            } else if ($attribute->isScopable() && $attribute->isLocalizable()) {
+            } elseif ($attribute->isScopable() && $attribute->isLocalizable()) {
                 foreach ($this->getChannels() as $channel) {
                     foreach ($channel->getLocales() as $locale) {
                         $nullValues[$attribute->getCode()][$channel->getCode()][$locale->getCode()] = null;
                     }
                 }
-
             }
         }
 
@@ -99,6 +117,7 @@ final class FillMissingProductValues
 
     /**
      * Create existing values in a pivot format to ease the use of array replace recursive.
+     * It does no include price values because this attribute type is the only one that has a different behavior.
      *
      * The format is the following:
      * [
@@ -108,10 +127,16 @@ final class FillMissingProductValues
      */
     private function createProductValuesInPivotFormat(array $productStandardFormat): array
     {
-        $valuesInPivotFormat = [];
-        $valuesInStandardFormat = $productStandardFormat['values'];
+        $attributesInFamily = $this->getAttributesInFamilyIndexedByCode($productStandardFormat['family']);
+        $nonPriceAttributes = array_filter($attributesInFamily, function (AttributeInterface $attribute): bool {
+            return AttributeTypes::PRICE_COLLECTION !== $attribute->getType();
+        });
 
-        foreach ($valuesInStandardFormat as $attributeCode => $values) {
+        $valuesInPivotFormat = [];
+        foreach ($productStandardFormat['values'] as $attributeCode => $values) {
+            if (!isset($nonPriceAttributes[$attributeCode])) {
+                continue;
+            }
             foreach ($values as $value) {
                 $channelCode = null === $value['scope'] ? '<all_channels>' : $value['scope'];
                 $localeCode = null === $value['locale'] ? '<all_locales>' : $value['locale'];
@@ -129,8 +154,8 @@ final class FillMissingProductValues
             foreach ($valuesIndexedByChannel as $channelCode => $valuesIndexedByLocale) {
                 foreach ($valuesIndexedByLocale as $localeCode => $data) {
                     $valuesInStandardFormat[$attributeCode][] = [
-                        'scope' => '<all_channels>' === $channelCode ? null : $channelCode,
-                        'locale' => '<all_locales>' === $localeCode ? null : $localeCode,
+                        'scope' => '<all_channels>' === $channelCode ? null : (string) $channelCode,
+                        'locale' => '<all_locales>' === $localeCode ? null : (string) $localeCode,
                         'data' => $data,
                     ];
                 }
@@ -140,9 +165,112 @@ final class FillMissingProductValues
         return $valuesInStandardFormat;
     }
 
-    private function addPriceValuesInStandardFormat(array $productStandardFormat): array
+    /**
+     * Create null Price values in a pivot format to ease the use of array replace recursive.
+     *
+     * The format is the following:
+     * [
+     *     'attribute_code_1' => [ 'channel_code' => [ 'locale_code' => ['USD' => null ]],
+     *     'attribute_code_2' => [ '<all_channels>' => [ '<all_locales>' => ['EUR' => null, 'USD' => null ] ]]
+     * ]
+     */
+    private function createNullPriceValuesInPivotFormat(string $familyCode): array
     {
-        return [];
+        $nullValues = [];
+        $attributesInFamily = $this->getAttributesInFamilyIndexedByCode($familyCode);
+
+        $priceAttributes = array_filter($attributesInFamily, function (AttributeInterface $attribute): bool {
+            return AttributeTypes::PRICE_COLLECTION === $attribute->getType();
+        });
+
+        foreach ($priceAttributes as $attribute) {
+            if (!$attribute->isScopable() && !$attribute->isLocalizable()) {
+                foreach ($this->getCurrencies() as $currency) {
+                    $nullValues[$attribute->getCode()]['<all_channels>']['<all_locales>'][$currency->getCode()] = null;
+                }
+            } elseif ($attribute->isScopable() && !$attribute->isLocalizable()) {
+                foreach ($this->getChannels() as $channel) {
+                    foreach ($channel->getCurrencies() as $currency) {
+                        $nullValues[$attribute->getCode()][$channel->getCode()]['<all_locales>'][$currency->getCode()] = null;
+                    }
+                }
+            } elseif (!$attribute->isScopable() && $attribute->isLocalizable()) {
+                foreach ($this->getLocales() as $locale) {
+                    foreach ($this->getCurrencies() as $currency) {
+                        $nullValues[$attribute->getCode()]['<all_channels>'][$locale->getCode()][$currency->getCode()] = null;
+                    }
+                }
+            } elseif ($attribute->isScopable() && $attribute->isLocalizable()) {
+                foreach ($this->getChannels() as $channel) {
+                    foreach ($channel->getLocales() as $locale) {
+                        foreach ($channel->getCurrencies() as $currency) {
+                            $nullValues[$attribute->getCode()][$channel->getCode()][$locale->getCode()][$currency->getCode()] = null;
+                        }
+                    }
+                }
+            }
+        }
+
+        return $nullValues;
+    }
+
+    /**
+     * Create existing price values in a pivot format to ease the use of array replace recursive.
+     * It only handles price values because this attribute type is the only one that has a different behavior.
+     *
+     * The format is the following:
+     * [
+     *     'attribute_code_1' => [ 'channel_code' => [ 'locale_code' => '['USD' => '10.00' ] ]],
+     *     'attribute_code_2' => [ '<all_channels>' => [ '<all_locales>' => ['EUR' => '12.00', 'USD' => '14.00' ] ]]
+     * ]
+     */
+    private function createPriceProductValuesInPivotFormat(array $productStandardFormat): array
+    {
+        $attributesInFamily = $this->getAttributesInFamilyIndexedByCode($productStandardFormat['family']);
+        $priceAttributes = array_filter($attributesInFamily, function (AttributeInterface $attribute): bool {
+            return AttributeTypes::PRICE_COLLECTION === $attribute->getType();
+        });
+
+        $valuesInPivotFormat = [];
+        foreach ($productStandardFormat['values'] as $attributeCode => $values) {
+            if (!isset($priceAttributes[$attributeCode])) {
+                continue;
+            }
+            foreach ($values as $value) {
+                $channelCode = null === $value['scope'] ? '<all_channels>' : $value['scope'];
+                $localeCode = null === $value['locale'] ? '<all_locales>' : $value['locale'];
+
+                foreach ($value['data'] as $price) {
+                    $valuesInPivotFormat[$attributeCode][$channelCode][$localeCode][$price['currency']] = $price['amount'];
+                }
+            }
+        }
+
+        return $valuesInPivotFormat;
+    }
+
+    private function pivotFormatToStandardFormatForPriceValues(array $valuesInPivotFormat): array
+    {
+        $valuesInStandardFormat = [];
+        foreach ($valuesInPivotFormat as $attributeCode => $valuesIndexedByChannel) {
+            foreach ($valuesIndexedByChannel as $channelCode => $valuesIndexedByLocale) {
+                foreach ($valuesIndexedByLocale as $localeCode => $valuesByCurrency) {
+                    $standardFormatData = [];
+
+                    foreach ($valuesByCurrency as $currencyCode => $amount) {
+                        $standardFormatData[] = ['currency' => (string) $currencyCode, 'amount' => $amount];
+                    }
+
+                    $valuesInStandardFormat[$attributeCode][] = [
+                        'scope' => '<all_channels>' === $channelCode ? null : (string) $channelCode,
+                        'locale' => '<all_locales>' === $localeCode ? null : (string) $localeCode,
+                        'data' => $standardFormatData,
+                    ];
+                }
+            }
+        }
+
+        return $valuesInStandardFormat;
     }
 
     private function getChannels() : array
@@ -161,5 +289,31 @@ final class FillMissingProductValues
         }
 
         return $this->locales;
+    }
+
+    private function getCurrencies() : array
+    {
+        $currencies = [];
+        foreach ($this->getChannels() as $channel) {
+            foreach ($channel->getCurrencies() as $currency) {
+                $currencies[$currency->getCode()] = $currency;
+            }
+        }
+
+        return $currencies;
+    }
+
+    private function getAttributesInFamilyIndexedByCode(string $familyCode): array
+    {
+        $attributesInFamilyIndexedByCode = [];
+
+        $family = $this->familyRepository->findOneByIdentifier($familyCode);
+        $attributesInFamily = $family->getAttributes()->toArray();
+
+        foreach ($attributesInFamily as $attribute) {
+            $attributesInFamilyIndexedByCode[$attribute->getCode()] = $attribute;
+        }
+
+        return $attributesInFamilyIndexedByCode;
     }
 }
