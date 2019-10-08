@@ -55,8 +55,6 @@ class DatabaseCommand extends Command
     private $eventDispatcher;
 
     /** @var string */
-    private $installerData;
-    /** @var string */
     private $env;
 
     public function __construct(
@@ -65,7 +63,6 @@ class DatabaseCommand extends Command
         Connection $connection,
         FixtureJobLoader $fixtureJobLoader,
         EventDispatcherInterface $eventDispatcher,
-        string $installerData,
         string $env
     ) {
         parent::__construct();
@@ -75,7 +72,6 @@ class DatabaseCommand extends Command
         $this->connection = $connection;
         $this->fixtureJobLoader = $fixtureJobLoader;
         $this->eventDispatcher = $eventDispatcher;
-        $this->installerData = $installerData;
         $this->env = $env;
     }
 
@@ -107,6 +103,13 @@ class DatabaseCommand extends Command
                 InputOption::VALUE_OPTIONAL,
                 'Should the command install any fixtures',
                 false
+            )
+            ->addOption(
+                'catalog',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Should the command install any fixtures',
+                'src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal'
             );
     }
 
@@ -250,10 +253,10 @@ class DatabaseCommand extends Command
         $output->writeln(
             sprintf(
                 '<info>Load jobs for fixtures. (data set: %s)</info>',
-                $this->installerData
+                $input->getOption('catalog')
             )
         );
-        $this->fixtureJobLoader->loadJobInstances();
+        $this->fixtureJobLoader->loadJobInstances($input->getOption('catalog'));
 
         $jobInstances = $this->fixtureJobLoader->getLoadedJobInstances();
         foreach ($jobInstances as $jobInstance) {

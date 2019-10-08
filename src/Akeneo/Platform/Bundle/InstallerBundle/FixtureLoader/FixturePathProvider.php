@@ -14,17 +14,9 @@ class FixturePathProvider
     /** @var array */
     protected $bundles;
 
-    /** @var string */
-    protected $installerData;
-
-    /**
-     * @param array  $bundles
-     * @param string $installerData
-     */
-    public function __construct(array $bundles, $installerData)
+    public function __construct(array $bundles)
     {
         $this->bundles = $bundles;
-        $this->installerData = $installerData;
     }
 
     /**
@@ -32,11 +24,11 @@ class FixturePathProvider
      *
      * @return string
      */
-    public function getFixturesPath()
+    public function getFixturesPath(string $catalogPath)
     {
         $installerDataDir = null;
 
-        if (preg_match('/^(?P<bundle>\w+):(?P<directory>\w+)$/', $this->installerData, $matches)) {
+        if (preg_match('/^(?P<bundle>\w+):(?P<directory>\w+)$/', $catalogPath, $matches)) {
             $reflection = new \ReflectionClass($this->bundles[$matches['bundle']]);
             $installerDataDir = dirname($reflection->getFilename()) . '/Resources/fixtures/' . $matches['directory'];
         } else {
