@@ -10,7 +10,6 @@ use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
-
 final class FillMissingProductValues
 {
     /** @var IdentifiableObjectRepositoryInterface */
@@ -107,7 +106,7 @@ final class FillMissingProductValues
      *     'attribute_code_2' => [ '<all_channels>' => [ '<all_locales>' => ['option_code'] ]]
      * ]
      */
-    private function createProductValuesInPivotFormat(array $productStandardFormat)
+    private function createProductValuesInPivotFormat(array $productStandardFormat): array
     {
         $valuesInPivotFormat = [];
         $valuesInStandardFormat = $productStandardFormat['values'];
@@ -163,5 +162,4 @@ final class FillMissingProductValues
 
         return $this->locales;
     }
-
 }
