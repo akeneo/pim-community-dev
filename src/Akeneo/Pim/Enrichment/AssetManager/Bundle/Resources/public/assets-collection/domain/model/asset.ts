@@ -18,6 +18,8 @@ export type AssetIdentifier = string;
 
 type Image = string;
 export type Completeness = NormalizedCompleteness;
+export const getCompletenessPercentage = (completeness: Completeness) =>
+  Math.floor((completeness.complete / completeness.required) * 100);
 
 export type Asset = {
   identifier: AssetIdentifier;

@@ -7,7 +7,7 @@ import {
 } from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
 import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';
-import AssetCard from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/asset-card';
+import AssetCard from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/mosaic/asset-card';
 import styled from 'styled-components';
 import AssetIllustration from 'akeneopimenrichmentassetmanager/platform/component/visual/illustration/asset';
 import __ from 'akeneoreferenceentity/tools/translator';
@@ -28,7 +28,6 @@ const Mosaic = ({
     height: 100%;
     display: flex;
     flex-wrap: wrap;
-    margin: 0 40px;
   `;
   return (
     <Container>

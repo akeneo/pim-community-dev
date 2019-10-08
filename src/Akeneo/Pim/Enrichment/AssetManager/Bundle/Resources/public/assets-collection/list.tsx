@@ -55,6 +55,7 @@ import {
 } from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {AssetPicker} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker';
 import LockIcon from 'akeneopimenrichmentassetmanager/platform/component/visual/icon/lock';
+import AssetCounter from 'akeneopimenrichmentassetmanager/platform/component/common/asset-counter';
 
 type ListStateProps = {
   attributes: Attribute[];
@@ -96,12 +97,6 @@ const IncompleteIndicator = styled.div`
   display: flex;
 `;
 
-const AssetCounter = styled.div`
-  white-space: nowrap;
-  color: ${(props: ThemedProps<void>) => props.theme.color.purple100};
-  margin-left: 10px;
-`;
-
 const AssetCollectionContainer = styled.div<{readonly: boolean}>`
   display: flex;
   flex-direction: column;
@@ -141,16 +136,12 @@ const DisplayValues = ({values, family, context, ruleRelations, onChange, errors
             {!isValueComplete(value, family, context.channel) ? (
               <IncompleteIndicator>
                 <Pill />
-                <Label small grey>
-                  {__('pim_asset_manager.attribute.is_required')}
-                </Label>
+                <Label>{__('pim_asset_manager.attribute.is_required')}</Label>
               </IncompleteIndicator>
             ) : null}
             <Spacer />
-            <AssetCounter>
-              {__('pim_asset_manager.asset_collection.asset_count', {count: value.data.length}, value.data.length)}
-            </AssetCounter>
-            {value.editable ? <Separator /> : null}
+            <AssetCounter resultCount={value.data.length} />
+            <Separator />
             {value.channel !== null || value.locale !== null ? (
               <React.Fragment>
                 <ContextLabel>

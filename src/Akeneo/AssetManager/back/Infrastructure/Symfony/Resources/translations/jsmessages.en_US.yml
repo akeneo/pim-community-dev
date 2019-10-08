@@ -25,6 +25,7 @@ pim_asset_manager:
     move_asset_to_right: Move asset {{ assetName }} to the right
   asset_picker:
     title: Add assets to your product
+    sub_title: Choose the asset you want to attach to your asset collection
     no_result:
       title: Sorry, there is no asset for your search
       sub_title: Try again with new search criteria
@@ -36,18 +37,18 @@ pim_asset_manager:
       remove_one_asset: Remove asset {{ assetName }} from asset selection
       remove_all_assets: Remove all
 
-#  app:
-#    image:
-#      wide:
-#        remove: Remove the image
-#        download: Download the image
-#        upload: Drag and drop to upload or click here
-#      small:
-#        remove: Remove
-#        download: Download
-#        upload: Drag and drop to upload
-#  grid:
-#    counter: '{{ count }} result|{{ count }} results'
+  #  app:
+  #    image:
+  #      wide:
+  #        remove: Remove the image
+  #        download: Download the image
+  #        upload: Drag and drop to upload or click here
+  #      small:
+  #        remove: Remove
+  #        download: Download
+  #        upload: Drag and drop to upload
+  grid:
+    counter: '{{ count }} result|{{ count }} results'
   asset_family:
     #    validation:
     #      code:

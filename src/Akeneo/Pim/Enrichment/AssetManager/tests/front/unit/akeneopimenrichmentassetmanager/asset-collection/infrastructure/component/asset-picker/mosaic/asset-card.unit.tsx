@@ -3,7 +3,7 @@ import '@testing-library/jest-dom/extend-expect';
 import {render, fireEvent} from '@testing-library/react';
 import {ThemeProvider} from 'styled-components';
 import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
-import AssetCard from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/asset-card';
+import AssetCard from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/mosaic/asset-card';
 
 const asset = {
   code: 'iphone',
@@ -11,6 +11,7 @@ const asset = {
     en_US: 'iPhone X',
   },
   image: 'my_image_url',
+  completeness: {},
 };
 
 test('It displays an unselected asset card', () => {

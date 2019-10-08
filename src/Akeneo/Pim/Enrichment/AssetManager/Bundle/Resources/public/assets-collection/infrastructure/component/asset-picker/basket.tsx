@@ -27,7 +27,7 @@ type BasketProps = {
 const Container = styled.div`
   width: 280px;
   border-left: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey80};
-  padding: 20px;
+  padding: 0 20px;
   flex-shrink: 0;
 `;
 
@@ -35,6 +35,7 @@ const Title = styled.div`
   color: ${(props: ThemedProps<void>) => props.theme.color.purple100};
   text-transform: uppercase;
   padding-bottom: 10px;
+  padding-top: 4px;
   border-bottom: 1px solid ${(props: ThemedProps<void>) => props.theme.color.purple100};
 `;
 

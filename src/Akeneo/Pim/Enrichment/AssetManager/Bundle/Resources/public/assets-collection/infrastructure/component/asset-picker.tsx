@@ -6,8 +6,6 @@ import __ from 'akeneoreferenceentity/tools/translator';
 import {Asset} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
 import {Filter, Query, createQuery} from 'akeneoassetmanager/application/reducer/grid';
-import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
-import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import FilterCollection from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/filter-collection';
 import MosaicResult from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/mosaic';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
@@ -16,7 +14,8 @@ import Basket from 'akeneopimenrichmentassetmanager/assets-collection/infrastruc
 import {hasDataFilterView, getDataFilterView, FilterView} from 'akeneoassetmanager/application/configuration/value';
 import {NormalizedAttribute, Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import denormalizeAttribute from 'akeneoassetmanager/application/denormalizer/attribute/attribute';
-import {SearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
+import SearchBar from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/search-bar';
+import fetchAllChannels from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/channel';
 
 type AssetFamilyIdentifier = string;
 type AssetPickerProps = {
@@ -48,11 +47,19 @@ const ConfirmButton = styled(Button)`
 `;
 
 const Title = styled.div`
+  margin-bottom: 14px;
   width: 100%;
   color: ${(props: ThemedProps<void>) => props.theme.color.purple100};
   font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.title};
   line-height: ${(props: ThemedProps<void>) => props.theme.fontSize.title};
   text-align: center;
+`;
+const SubTitle = styled.div`
+  width: 100%
+  text-align: center;
+  font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.default};
+  color: ${(props: ThemedProps<void>) => props.theme.color.grey120};
+  margin-bottom: 10px;
 `;
 
 const Header = styled.div`
@@ -63,12 +70,11 @@ const Container = styled.div`
   flex: 1;
   height: 100%;
 `;
-const Search = styled.div<any>``;
-const ResultCount = styled.div<any>``;
-const Context = styled.div<any>``;
+const Context = styled.div``;
 const Grid = styled.div`
   flex: 1;
   height: 100%;
+  margin: 0 40px;
 `;
 
 export type FilterViewCollection = {
@@ -90,16 +96,15 @@ export const AssetPicker = ({assetFamilyIdentifier, initialContext, onAssetPick}
   const [filterCollection, setFilterCollection] = React.useState<Filter[]>([]);
   const [selection, setSelection] = React.useState<AssetCode[]>([]);
   const [searchValue, setSearchValue] = React.useState<string>('');
-  const [resultCount] = React.useState<number | null>(null);
+  const [resultCount, setResultCount] = React.useState<number | null>(null);
   const [resultCollection, setResultCollection] = React.useState<Asset[]>([]);
   const [context, setContext] = React.useState<Context>(initialContext);
 
   React.useEffect(() => {
-    dataProvider.assetFetcher
-      .search(createQuery({filters: filterCollection}))
-      .then((searchResult: SearchResult<Asset>) => {
-        setResultCollection(searchResult.items);
-      });
+    dataProvider.assetFetcher.search(createQuery({filters: filterCollection})).then((searchResult: any) => {
+      setResultCollection(searchResult.items);
+      setResultCount(searchResult.matches_count);
+    });
   }, []);
 
   const dataProvider = {
@@ -241,9 +246,7 @@ export const AssetPicker = ({assetFamilyIdentifier, initialContext, onAssetPick}
       },
     },
     channelFetcher: {
-      fetchAll: () => {
-        return new Promise(resolve => resolve([]));
-      },
+      fetchAll: fetchAllChannels,
     },
     assetAttributesFetcher: {
       fetchAll: (_assetFamilyIdentifier: AssetFamilyIdentifier) => {
@@ -357,6 +360,7 @@ export const AssetPicker = ({assetFamilyIdentifier, initialContext, onAssetPick}
         <Modal>
           <Header>
             <Title>{__('pim_asset_manager.asset_picker.title')}</Title>
+            <SubTitle>{__('pim_asset_manager.asset_picker.sub_title')}</SubTitle>
             <ConfirmButton
               color="green"
               onClick={() => {
@@ -379,26 +383,14 @@ export const AssetPicker = ({assetFamilyIdentifier, initialContext, onAssetPick}
               }}
             />
             <Grid>
-              <div>
-                <Search
-                  searchValue={searchValue}
-                  onSearchChange={(newSearchValue: string) => {
-                    setSearchValue(newSearchValue);
-                  }}
-                />
-                <ResultCount resultCount={resultCount} />
-                <Context
-                  dataProvider={dataProvider}
-                  locale={context.locale}
-                  onLocaleChange={(locale: LocaleCode) => {
-                    setContext({...context, locale});
-                  }}
-                  channel={context.channel}
-                  onChannelChange={(channel: ChannelCode) => {
-                    setContext({...context, channel});
-                  }}
-                />
-              </div>
+              <SearchBar
+                dataProvider={dataProvider}
+                searchValue={searchValue}
+                context={context}
+                resultCount={resultCount}
+                onSearchChange={setSearchValue}
+                onContextChange={setContext}
+              />
               <MosaicResult
                 selection={selection}
                 assetCollection={resultCollection}

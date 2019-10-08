@@ -21,6 +21,10 @@ const eeConfig = {
     'akeneoassetmanager/application/component/app/button',
     'akeneofranklininsights/react/application/action',
     'akeneoassetmanager/application/component/asset/index/completeness-filter',
+    'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/search-bar/search-field', // cannot trigger re-render
+    'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/search-bar', // cannot test hooks + asynchronous fetching
+    'akeneoassetmanager/application/component/app/channel-switcher.tsx',
+    'akeneoassetmanager/application/component/app/locale-switcher.tsx',
 
     'src/Akeneo/AssetManager/front/tools',
     'vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/public/lib',
@@ -29,6 +33,10 @@ const eeConfig = {
     'src/Akeneo/AssetManager/front/application/component/app/button',
     'src/Akeneo/Pim/Automation/FranklinInsights/Infrastructure/Symfony/Resources/public/react/application/action',
     'src/Akeneo/AssetManager/front/application/component/asset/index/completeness-filter',
+    'src/Akeneo/Pim/Enrichment/AssetManager/Bundle/Resources/public/assets-collection/infrastructure/component/asset-picker/search-bar/search-field', // cannot test hooks + asynchronous fetching + cannot trigger re-render
+    'src/Akeneo/Pim/Enrichment/AssetManager/Bundle/Resources/public/assets-collection/infrastructure/component/asset-picker/search-bar', // cannot test hooks + asynchronous fetching
+    'src/Akeneo/AssetManager/front/application/component/app/channel-switcher.tsx',
+    'src/Akeneo/AssetManager/front/application/component/app/locale-switcher.tsx',
   ],
 };
 

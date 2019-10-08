@@ -38,15 +38,17 @@ const Container = styled.div`
 `;
 
 const Title = styled.span`
-  color: ${(props: ThemedProps<void>) => props.theme.color.grey100}
+  color: ${(props: ThemedProps<void>) => props.theme.color.grey140};
   text-transform: uppercase;
-  font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.default}
+  font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.default};
   margin-bottom: 16px;
   position: sticky;
   top: 0;
   background-color: white;
   z-index: 1000;
-  padding-bottom: 16px;
+  padding-bottom: 10px;
+  padding-top: 4px;
+  border-bottom: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey140};
 `;
 
 const replaceFilter = (filterCollection: Filter[], filterToReplace: Filter) => {
