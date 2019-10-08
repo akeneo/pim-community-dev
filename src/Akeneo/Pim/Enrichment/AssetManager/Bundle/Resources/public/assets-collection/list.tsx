@@ -54,16 +54,16 @@ const SectionTitle = styled.div`
   display: flex;
   padding: 12px 0;
   align-items: center; //Should be baseline but the alignment is then very weird
-  border-bottom: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey140}
+  border-bottom: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey140};
+  max-height: 44px;
 `;
 
-const AttributeBreadCrumb = styled.div<{readonly: boolean}>`
+const AttributeBreadCrumb = styled.div`
   font-size: 15px;
   font-weight: normal;
   text-transform: uppercase;
   white-space: nowrap;
-  color: ${(props: ThemedProps<{readonly: boolean}>) => props.theme.color.grey140}
-  opacity: ${(props: ThemedProps<{readonly: boolean}>) => props.readonly ? .4 : 1}
+  color: ${(props: ThemedProps<{readonly: boolean}>) => props.theme.color.grey140};
 `;
 
 const IncompleteIndicator = styled.div`
@@ -76,10 +76,11 @@ const AssetCounter = styled.div`
   margin-left: 10px;
 `;
 
-const AssetCollectionContainer = styled.div`
+const AssetCollectionContainer = styled.div<{readonly: boolean}>`
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  opacity: ${(props: ThemedProps<{readonly: boolean}>) => props.readonly ? .4 : 1}
 `;
 
 const AssetCollectionList = styled.div`
@@ -90,20 +91,21 @@ const AssetCollectionList = styled.div`
 
 const LockIconContainer = styled.div`
   margin-right: 5px;
+  line-height: 14px;
 `;
 
 const DisplayValues = ({values, family, context, ruleRelations, onChange, errors}: DisplayValuesProps) => {
   return (
     <React.Fragment>
       {values.map((value: Value) => (
-        <AssetCollectionContainer key={value.attribute.code} data-attribute={value.attribute.code}>
+        <AssetCollectionContainer key={value.attribute.code} readonly={!value.editable} data-attribute={value.attribute.code}>
           <SectionTitle>
             {!value.editable ? (
               <LockIconContainer>
                 <LockIcon />
               </LockIconContainer>
             ) : null}
-            <AttributeBreadCrumb readonly={!value.editable}>
+            <AttributeBreadCrumb>
               {value.attribute.group} / {getAttributeLabel(value.attribute, context.locale)}
             </AttributeBreadCrumb>
             {!isValueComplete(value, family, context.channel) ? (
