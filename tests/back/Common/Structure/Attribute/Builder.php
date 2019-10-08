@@ -98,4 +98,18 @@ class Builder
 
         return $this;
     }
+
+    public function localizable(): Builder
+    {
+        $this->localizable = true;
+
+        return $this;
+    }
+
+    public function scopable(): Builder
+    {
+        $this->scopable = true;
+
+        return $this;
+    }
 }
