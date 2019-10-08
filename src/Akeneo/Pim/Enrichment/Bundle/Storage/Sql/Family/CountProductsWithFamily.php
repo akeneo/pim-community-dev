@@ -28,7 +28,7 @@ final class CountProductsWithFamily implements CountProductsWithFamilyInterface
     public function count(FamilyInterface $family): int
     {
         return (int) $this->connection->executeQuery(
-            'SELECT COUNT(id) FROM pim_catalog_product WHERE family = :family_id',
+            'SELECT COUNT(id) FROM pim_catalog_product WHERE family_id = :family_id',
             ['family_id' => $family->getId()]
         )->fetchColumn();
     }
