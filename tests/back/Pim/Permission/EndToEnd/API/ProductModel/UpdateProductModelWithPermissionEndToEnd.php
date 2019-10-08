@@ -18,7 +18,7 @@ class UpdateProductModelWithPermissionEndToEnd extends ApiTestCase
     {
         parent::setUp();
 
-        $this->loader = new PermissionFixturesLoader($this->testKernel->getContainer());
+        $this->loader = $this->get('akeneo_integration_tests.loader.permissions');
     }
 
     /**

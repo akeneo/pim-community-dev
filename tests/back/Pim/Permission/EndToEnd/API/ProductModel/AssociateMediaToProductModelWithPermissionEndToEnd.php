@@ -25,7 +25,7 @@ class AssociateMediaToProductModelWithPermissionEndToEnd extends ApiTestCase
     {
         parent::setUp();
 
-        $this->loader = new PermissionFixturesLoader($this->testKernel->getContainer());
+        $this->loader = $this->get('akeneo_integration_tests.loader.permissions');
         $this->files['image'] = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'akeneo.jpg';
         copy($this->getFixturePath('akeneo.jpg'), $this->files['image']);
 
