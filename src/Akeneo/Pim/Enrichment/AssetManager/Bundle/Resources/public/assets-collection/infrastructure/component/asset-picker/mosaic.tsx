@@ -33,7 +33,7 @@ const Mosaic = ({
   onSelectionChange: (selection: AssetCode[]) => void;
 }) => {
   return (
-    <Container>
+    <Container data-container="mosaic">
       {assetCollection.length > 0 ? (
         assetCollection.map((asset: Asset) => {
           return (

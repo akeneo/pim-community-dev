@@ -15,7 +15,7 @@ const answerRuleRelationList = async page => {
 
   await listenRequest(page, requestContract);
 };
-const answerAttributeList = async page => {
+const answerProductAttributeList = async page => {
   const requestContract = getRequestContract('ProductAttribute/ok.json');
 
   await listenRequest(page, requestContract);
@@ -30,17 +30,26 @@ const answerAssetFamilyDetails = async page => {
 
   await listenRequest(page, requestContract);
 };
-const answerAssetList = async page => {
-  const requestContract = getRequestContract('Asset/Search/multiple_code_filtered.json');
+const answerAssetAttributes = async page => {
+  const requestContract = getRequestContract('Attribute/ListDetails/ok/designer.json');
 
   await listenRequest(page, requestContract);
+};
+const answerAssetList = async page => {
+  const requestContract = getRequestContract('Asset/Search/multiple_code_filtered.json');
+  await listenRequest(page, requestContract);
+  const requestContract2 = getRequestContract('Asset/Search/multiple_code_filtered_2.json');
+  await listenRequest(page, requestContract2);
+  const requestContract3 = getRequestContract('Asset/Search/asset_picker_search.json');
+  await listenRequest(page, requestContract3);
 };
 
 module.exports = {
   answerChannelList,
   answerRuleRelationList,
-  answerAttributeList,
+  answerProductAttributeList,
   answerPermissionList,
   answerAssetFamilyDetails,
   answerAssetList,
+  answerAssetAttributes,
 };

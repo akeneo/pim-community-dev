@@ -6,6 +6,7 @@ pim_asset_manager:
   asset_collection:
     asset_count: '{{ count }} asset|{{ count }} assets'
     add_asset: 'Add asset'
+    add_asset_title: 'Open the asset picker to add assets to the collection'
     no_asset_in_collection: 'Sorry, there is no asset in this collection.'
     helper:
       title: 'Welcome to your new product asset management area!'

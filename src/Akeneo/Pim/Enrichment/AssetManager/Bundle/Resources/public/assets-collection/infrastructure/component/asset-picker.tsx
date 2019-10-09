@@ -231,6 +231,7 @@ export const AssetPicker = ({
   return (
     <React.Fragment>
       <Button
+        title={__('pim_asset_manager.asset_collection.add_asset_title')}
         buttonSize="medium"
         color="outline"
         onClick={() => {
@@ -241,11 +242,12 @@ export const AssetPicker = ({
         {__('pim_asset_manager.asset_collection.add_asset')}
       </Button>
       {isOpen ? (
-        <Modal>
+        <Modal data-container="asset-picker">
           <Header>
             <Title>{__('pim_asset_manager.asset_picker.title')}</Title>
             <SubTitle>{__('pim_asset_manager.asset_picker.sub_title')}</SubTitle>
             <ConfirmButton
+              title={__('pim_common.confirm')}
               color="green"
               onClick={() => {
                 onAssetPick(selection);

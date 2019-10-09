@@ -82,7 +82,7 @@ const FilterCollection = ({
   return (
     <React.Fragment>
       {orderedFilterViews.length !== 0 ? (
-        <Container>
+        <Container data-container="filter-collection">
           <Title>{__('pim_asset_manager.asset_picker.filter.title')}</Title>
           <Filters>
             {orderedFilterViews.map((filterView: {view: FilterView; attribute: FilterableAttribute}) => {

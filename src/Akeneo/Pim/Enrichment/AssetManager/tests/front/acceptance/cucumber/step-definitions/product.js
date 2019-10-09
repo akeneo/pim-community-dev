@@ -9,7 +9,7 @@ module.exports = async function(cucumber) {
   const {
     answerChannelList,
     answerRuleRelationList,
-    answerAttributeList,
+    answerProductAttributeList,
     answerPermissionList,
     answerAssetFamilyDetails,
     answerAssetList,
@@ -52,7 +52,7 @@ module.exports = async function(cucumber) {
   Given('an asset collection with three assets', async function() {
     answerChannelList(this.page);
     answerRuleRelationList(this.page);
-    answerAttributeList(this.page);
+    answerProductAttributeList(this.page);
     answerPermissionList(this.page);
     answerAssetFamilyDetails(this.page);
     answerAssetList(this.page);
@@ -63,6 +63,24 @@ module.exports = async function(cucumber) {
         locale: null,
         scope: null,
         data: ['starck', 'coco', 'dyson'],
+      },
+    ];
+  });
+
+  Given('an asset collection with two assets', async function() {
+    answerChannelList(this.page);
+    answerRuleRelationList(this.page);
+    answerProductAttributeList(this.page);
+    answerPermissionList(this.page);
+    answerAssetFamilyDetails(this.page);
+    answerAssetList(this.page);
+    grantAllAcls(this.page);
+
+    product.values.designer = [
+      {
+        locale: null,
+        scope: null,
+        data: ['starck', 'coco'],
       },
     ];
   });
@@ -105,5 +123,9 @@ module.exports = async function(cucumber) {
 
   Then('there should be no asset in the collection', async function() {
     await assertAssetCodesToBe(this.page, []);
+  });
+
+  Then('there should be three assets selected', async function() {
+    await assertAssetCodesToBe(this.page, ['dyson', 'starck', 'coco']);
   });
 };

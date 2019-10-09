@@ -91,7 +91,7 @@ const Basket = ({dataProvider, assetFamilyIdentifier, selection, context, onSele
   }
 
   return (
-    <Container>
+    <Container data-container="basket">
       <Title>
         {__('pim_asset_manager.asset_picker.basket.title', {assetCount: selection.length}, selection.length)}
       </Title>
