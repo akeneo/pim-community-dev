@@ -7,7 +7,7 @@ use Akeneo\Channel\Component\Model\Currency;
 use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingProductModelValuesFiller;
+use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingProductModelValues;
 use Akeneo\Pim\Structure\Component\Model\Family;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
 use Akeneo\Pim\Structure\Component\Model\VariantAttributeSet;
@@ -15,7 +15,7 @@ use Akeneo\Test\Common\Structure\Attribute\Builder;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 
-class FillMissingProductModelValuesFillerSpec extends ObjectBehavior
+class FillMissingProductModelValuesSpec extends ObjectBehavior
 {
     function let(
         IdentifiableObjectRepositoryInterface $familyVariantRepository,
@@ -98,7 +98,7 @@ class FillMissingProductModelValuesFillerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(FillMissingProductModelValuesFiller::class);
+        $this->shouldHaveType(FillMissingProductModelValues::class);
     }
 
     function it_creates_missing_values_for_a_root_product_model()

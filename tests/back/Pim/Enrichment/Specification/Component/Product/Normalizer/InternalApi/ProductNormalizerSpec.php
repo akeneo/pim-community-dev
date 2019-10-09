@@ -21,6 +21,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\MissingRequir
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductCompletenessWithMissingAttributeCodesCollectionNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\VariantNavigationNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
+use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingProductValues;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
@@ -47,7 +48,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         ConverterInterface $productValueConverter,
         ProductCompletenessWithMissingAttributeCodesCollectionNormalizer $completenessCollectionNormalizer,
         UserContext $userContext,
-        EntityWithFamilyValuesFillerInterface $productValuesFiller,
+        FillMissingProductValues $fillMissingProductValues,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         VariantNavigationNormalizer $navigationNormalizer,
         AscendantCategoriesInterface $ascendantCategories,
@@ -69,7 +70,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             $productValueConverter,
             $completenessCollectionNormalizer,
             $userContext,
-            $productValuesFiller,
+            $fillMissingProductValues,
             $attributesProvider,
             $navigationNormalizer,
             $ascendantCategories,
@@ -98,7 +99,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         ConverterInterface $productValueConverter,
         ProductCompletenessWithMissingAttributeCodesCollectionNormalizer $completenessCollectionNormalizer,
         UserContext $userContext,
-        EntityWithFamilyValuesFillerInterface $productValuesFiller,
+        FillMissingProductValues $fillMissingProductValues,
         MissingAssociationAdder $missingAssociationAdder,
         CompletenessCalculator $completenessCalculator,
         MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer,
@@ -141,6 +142,7 @@ class ProductNormalizerSpec extends ObjectBehavior
 
         $userContext->getUserTimezone()->willReturn('Pacific/Kiritimati');
         $normalizer->normalize($mug, 'standard', $options)->willReturn($productNormalized);
+        $fillMissingProductValues->fromStandardFormat($productNormalized)->willReturn($productNormalized);
         $localizedConverter->convertToLocalizedFormats($productNormalized['values'], $options)->willReturn($valuesLocalized);
 
         $valuesConverted = $valuesLocalized;
@@ -196,7 +198,6 @@ class ProductNormalizerSpec extends ObjectBehavior
         $formProvider->getForm($mug)->willReturn('product-edit-form');
 
         $missingAssociationAdder->addMissingAssociations($mug)->shouldBeCalled();
-        $productValuesFiller->fillMissingValues($mug)->shouldBeCalled();
 
         $this->normalize($mug, 'internal_api', $options)->shouldReturn(
             [
@@ -251,7 +252,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         ConverterInterface $productValueConverter,
         ProductCompletenessWithMissingAttributeCodesCollectionNormalizer $completenessCollectionNormalizer,
         UserContext $userContext,
-        EntityWithFamilyValuesFillerInterface $productValuesFiller,
+        FillMissingProductValues $fillMissingProductValues,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         VariantNavigationNormalizer $navigationNormalizer,
         AscendantCategoriesInterface $ascendantCategories,
@@ -303,6 +304,9 @@ class ProductNormalizerSpec extends ObjectBehavior
         $mug->isVariant()->willReturn(true);
         $userContext->getUserTimezone()->willReturn('Pacific/Kiritimati');
         $normalizer->normalize($mug, 'standard', $options)->willReturn($productNormalized);
+
+        $fillMissingProductValues->fromStandardFormat($productNormalized)->willReturn($productNormalized);
+
         $localizedConverter->convertToLocalizedFormats($productNormalized['values'], $options)->willReturn($valuesLocalized);
 
         $valuesConverted = $valuesLocalized;
@@ -354,7 +358,6 @@ class ProductNormalizerSpec extends ObjectBehavior
         $formProvider->getForm($mug)->willReturn('product-edit-form');
 
         $missingAssociationAdder->addMissingAssociations($mug)->shouldBeCalled();
-        $productValuesFiller->fillMissingValues($mug)->shouldBeCalled();
 
         $navigationNormalizer->normalize($mug, 'internal_api', $options)
             ->willReturn(['NAVIGATION NORMALIZED']);
