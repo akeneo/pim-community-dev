@@ -14,9 +14,7 @@ class RemoveAttributeFiltersInJobInstancesOnAttributeDeletionIntegration extends
     public function testUpdateExportsFiltersOnAttributeDeletion()
     {
         $jobInstance = $this->createJobInstanceWithAttributeFilter('job1', ['a_yes_no', 'a_text', 'a_date']);
-        $rawParameters = $jobInstance->getRawParameters();
-        $attributes = $rawParameters['filters']['structure']['attributes'];
-        $this->assertSame(['a_yes_no', 'a_text', 'a_date'], $attributes);
+        $jobInstance2 = $this->createJobInstanceWithAttributeFilter('job2', ['a_number', 'a_date', 'a_text']);
 
         $this
             ->getFromTestContainer('pim_enrich.event_listener.remove_attribute_filter_in_job_instances')
@@ -24,6 +22,9 @@ class RemoveAttributeFiltersInJobInstancesOnAttributeDeletionIntegration extends
 
         $rawParameters = $this->getJobParameters($jobInstance);
         $this->assertSame(['a_yes_no', 'a_date'], $rawParameters['filters']['structure']['attributes']);
+
+        $rawParameters = $this->getJobParameters($jobInstance2);
+        $this->assertSame(['a_number', 'a_date'], $rawParameters['filters']['structure']['attributes']);
     }
 
     private function createJobInstanceWithAttributeFilter(string $jobCode, array $attributes)
