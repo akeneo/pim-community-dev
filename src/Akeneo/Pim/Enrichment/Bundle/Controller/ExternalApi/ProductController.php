@@ -374,8 +374,6 @@ class ProductController
 
     /**
      * Products are saved 1 by 1, but we batch events in order to improve performances.
-     * The "ON_SAVE" events are marked as non unitary, and a "ON_SAVE_ALL" event is dispatched at the end
-     * with all saved products.
      *
      * @param Request $request
      * @return Response

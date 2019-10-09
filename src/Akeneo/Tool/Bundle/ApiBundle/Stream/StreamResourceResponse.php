@@ -129,6 +129,7 @@ class StreamResourceResponse
                         'message'     => $e->getMessage(),
                     ];
                 } catch (\Throwable $e) {
+                    // Ensure the post actions are executed even if an error occurred
                     if (is_callable($postResponseCallable)) {
                         $postResponseCallable();
                     }
