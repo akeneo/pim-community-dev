@@ -20,7 +20,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormaliz
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\MissingRequiredAttributesNormalizerInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductCompletenessWithMissingAttributeCodesCollectionNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\VariantNavigationNormalizer;
-use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingProductValues;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;

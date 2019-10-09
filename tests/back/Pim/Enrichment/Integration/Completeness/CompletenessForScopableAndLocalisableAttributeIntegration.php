@@ -209,14 +209,14 @@ class CompletenessForScopableAndLocalisableAttributeIntegration extends Abstract
                 [
                     'locale' => null,
                     'scope'  => null,
-                    'data'   => 4
+                    'data'   => "4"
                 ],
             ],
             'size' => [
                 [
                     'locale' => null,
                     'scope'  => null,
-                    'data'   => 43
+                    'data'   => "43"
                 ],
             ],
             'lace_color' => [

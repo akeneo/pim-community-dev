@@ -16,7 +16,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\ImageAsLabel;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\VariantProductRatioInterface;
-use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
+use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingProductModelValues;
 use Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
@@ -56,8 +56,8 @@ class ProductModelNormalizer implements NormalizerInterface
     /** @var LocaleRepositoryInterface */
     private $localeRepository;
 
-    /** @var EntityWithFamilyValuesFillerInterface */
-    private $entityValuesFiller;
+    /** @var FillMissingProductModelValues */
+    private $fillMissingProductModelValues;
 
     /** @var EntityWithFamilyVariantAttributesProvider */
     private $attributesProvider;
@@ -101,7 +101,7 @@ class ProductModelNormalizer implements NormalizerInterface
         ConverterInterface $productValueConverter,
         FormProviderInterface $formProvider,
         LocaleRepositoryInterface $localeRepository,
-        EntityWithFamilyValuesFillerInterface $entityValuesFiller,
+        FillMissingProductModelValues $fillMissingProductModelValues,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         VariantNavigationNormalizer $navigationNormalizer,
         VariantProductRatioInterface $variantProductRatioQuery,
@@ -122,7 +122,7 @@ class ProductModelNormalizer implements NormalizerInterface
         $this->productValueConverter = $productValueConverter;
         $this->formProvider = $formProvider;
         $this->localeRepository = $localeRepository;
-        $this->entityValuesFiller = $entityValuesFiller;
+        $this->fillMissingProductModelValues = $fillMissingProductModelValues;
         $this->attributesProvider = $attributesProvider;
         $this->navigationNormalizer = $navigationNormalizer;
         $this->variantProductRatioQuery = $variantProductRatioQuery;
@@ -144,9 +144,8 @@ class ProductModelNormalizer implements NormalizerInterface
     public function normalize($productModel, $format = null, array $context = []): array
     {
         $this->missingAssociationAdder->addMissingAssociations($productModel);
-        $this->entityValuesFiller->fillMissingValues($productModel);
-
         $normalizedProductModel = $this->normalizer->normalize($productModel, 'standard', $context);
+        $normalizedProductModel = $this->fillMissingProductModelValues->fromStandardFormat($normalizedProductModel);
 
         $normalizedProductModel['values'] = $this->localizedConverter->convertToLocalizedFormats(
             $normalizedProductModel['values'],
