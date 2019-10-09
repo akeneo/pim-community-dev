@@ -5,6 +5,12 @@ import {MediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type
 import {suffixStringValue} from 'akeneoassetmanager/domain/model/attribute/type/media-link/suffix';
 import {prefixStringValue} from 'akeneoassetmanager/domain/model/attribute/type/media-link/prefix';
 
+export enum MediaPreviewTypes {
+  Preview = 'preview',
+  Thumbnail = 'thumbnail',
+  ThumbnailSmall = 'thumbnail_small',
+}
+
 export const getImageShowUrl = (image: File, filter: string): string => {
   const path = !image.isEmpty() ? image.getFilePath() : 'undefined';
   const filename = encodeURIComponent(path);
@@ -46,15 +52,6 @@ export const getMediaDownloadUrl = (filePath: string): string => {
   return routing.generate('pim_enrich_media_download', {filename});
 };
 
-/**
- * Get the preview url of MediaLink
- *
- * @param string type
- * @param MediaLinkData mediaLink
- * @param MediaLinkAttribute attribute
- *
- * @return {string}
- */
 export const getMediaLinkPreviewUrl = (
   type: string,
   mediaLink: MediaLinkData,
@@ -66,14 +63,6 @@ export const getMediaLinkPreviewUrl = (
   return routing.generate('akeneo_asset_manager_image_preview', {type, attributeIdentifier, data});
 };
 
-/**
- * Get the url of MediaLink
- *
- * @param MediaLinkData mediaLink
- * @param MediaLinkAttribute attribute
- *
- * @return {string}
- */
 export const getMediaLinkUrl = (mediaLink: MediaLinkData, attribute: MediaLinkAttribute): string => {
   return prefixStringValue(attribute.prefix) + mediaLink.stringValue() + suffixStringValue(attribute.suffix);
 };
