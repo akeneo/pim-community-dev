@@ -23,7 +23,7 @@ class RemoveAttributeFiltersInJobInstancesOnAttributeDeletionIntegration extends
             ->removeDeletedAttributeFromJobInstancesFilters(new GenericEvent((new Attribute())->setCode('a_text')));
 
         $rawParameters = $this->getJobParameters($jobInstance);
-        $this->assertSame(['a_yes_no', 'a_date'], array_values($rawParameters['filters']['structure']['attributes']));
+        $this->assertSame(['a_yes_no', 'a_date'], $rawParameters['filters']['structure']['attributes']);
     }
 
     private function createJobInstanceWithAttributeFilter(string $jobCode, array $attributes)
