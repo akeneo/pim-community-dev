@@ -167,16 +167,16 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $productStandard = [
             'values' => [
-                'picture' => [
+                'picture' => [[
                     'locale' => null,
                     'scope'  => null,
                     'data'   => ['filePath' => 'a/b/c/d/e/f/little_cat.jpg']
-                ],
-                'pdf_description' => [
+                ]],
+                'pdf_description' => [[
                     'locale' => 'en_US',
                     'scope'  => null,
                     'data'   => ['filePath' => 'a/f/c/c/e/f/little_cat.pdf']
-                ]
+                ]]
             ]
         ];
 
@@ -232,11 +232,11 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $productStandard = [
             'values' => [
-                'pdf_description' => [
+                'pdf_description' => [[
                     'locale' => 'en_US',
                     'scope'  => null,
                     'data'   => ['filePath' => 'path/not_found.jpg']
-                ]
+                ]]
             ]
         ];
 

@@ -2,9 +2,9 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\FilterValues;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingProductModelValues;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
@@ -86,10 +86,15 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
             $productStandard = $this->fillMissingProductModelValues->fromStandardFormat($product);
         }
 
-        if ($this->areAttributesToFilter($parameters)) {
-            $attributesToFilter = $this->getAttributesToFilter($parameters);
-            $productStandard['values'] = $this->filterValues($productStandard['values'], $attributesToFilter);
-        }
+        $attributeCodes = $this->areAttributesToFilter($parameters) ? $this->getAttributesCodesToFilter($parameters) : [];
+
+        $productStandard['values'] = FilterValues::create()
+            ->filterByChannelCode($channel->getCode())
+            ->filterByLocaleCodes(array_intersect(
+                $channel->getLocaleCodes(),
+                $parameters->get('filters')['structure']['locales']))
+            ->filterByAttributeCodes($attributeCodes)
+            ->execute($productStandard['values']);
 
         if ($parameters->has('with_media') && $parameters->get('with_media')) {
             $directory = $this->stepExecution->getJobExecution()->getExecutionContext()
@@ -162,7 +167,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
      *
      * @return array
      */
-    protected function getAttributesToFilter(JobParameters $parameters)
+    protected function getAttributesCodesToFilter(JobParameters $parameters)
     {
         $attributes = $parameters->get('filters')['structure']['attributes'];
         $identifierCode = $this->attributeRepository->getIdentifierCode();
