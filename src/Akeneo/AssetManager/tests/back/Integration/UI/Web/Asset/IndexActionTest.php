@@ -160,8 +160,8 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $attributeRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute');
         $attributeRepository->create(
             TextAttribute::createText(
-                AttributeIdentifier::create('packshot', 'description', '29aea250-bc94-49b2-8259-bbc116410eb2'),
-                AssetFamilyIdentifier::fromString('packshot'),
+                AttributeIdentifier::create('designer', 'description', '29aea250-bc94-49b2-8259-bbc116410eb2'),
+                AssetFamilyIdentifier::fromString('designer'),
                 AttributeCode::fromString('description'),
                 LabelCollection::fromArray(['fr_FR' => 'Nom']),
                 AttributeOrder::fromInteger(4),
@@ -173,15 +173,55 @@ class IndexActionTest extends ControllerIntegrationTestCase
                 AttributeRegularExpression::createEmpty()
             )
         );
+        $attributeRepository->create(
+            TextAttribute::createText(
+                AttributeIdentifier::create('designer', 'nickname', '29aea250-bc94-49b2-8259-bbc116410eb2'),
+                AssetFamilyIdentifier::fromString('designer'),
+                AttributeCode::fromString('nickname'),
+                LabelCollection::fromArray(['fr_FR' => 'Surnom']),
+                AttributeOrder::fromInteger(3),
+                AttributeIsRequired::fromBoolean(true),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                AttributeMaxLength::fromInteger(512),
+                AttributeValidationRule::none(),
+                AttributeRegularExpression::createEmpty()
+            )
+        );
+        $attributeRepository->create(
+            OptionAttribute::create(
+                AttributeIdentifier::create('designer', 'colors', '52609e00b7ee307e79eb100099b9a8bf'),
+                AssetFamilyIdentifier::fromString('designer'),
+                AttributeCode::fromString('colors'),
+                LabelCollection::fromArray(['en_US' => 'Color']),
+                AttributeOrder::fromInteger(5),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false)
+            )
+        );
+        $attributeRepository->create(
+            AssetAttribute::create(
+                AttributeIdentifier::create('designer', 'city', '79eb100099b9a8bf52609e00b7ee307e'),
+                AssetFamilyIdentifier::fromString('designer'),
+                AttributeCode::fromString('city'),
+                LabelCollection::fromArray(['en_US' => 'City']),
+                AttributeOrder::fromInteger(6),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                AssetFamilyIdentifier::fromString('city')
+            )
+        );
 
-        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('packshot');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
         $assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
         $assetFamilyRepository->create(
             AssetFamily::create(
-               $assetFamilyIdentifier,
-               [],
-               Image::createEmpty(),
-               RuleTemplateCollection::empty()
+                $assetFamilyIdentifier,
+                [],
+                Image::createEmpty(),
+                RuleTemplateCollection::empty()
             )
         );
 
@@ -189,10 +229,10 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
         $assetFamilyRepository->create(
             AssetFamily::create(
-               $cityAssetFamilyIdentifier,
-               [],
-               Image::createEmpty(),
-               RuleTemplateCollection::empty()
+                $cityAssetFamilyIdentifier,
+                [],
+                Image::createEmpty(),
+                RuleTemplateCollection::empty()
             )
         );
         /** @var AssetFamily $assetFamily */
@@ -200,72 +240,114 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $attributeAsLabelIdentifier = $assetFamily->getAttributeAsLabelReference()->getIdentifier();
 
         // STARCK
-        $assetCode = AssetCode::fromString('frontview');
-        $identifier = AssetIdentifier::fromString('packshot_frontview_29aea250-bc94-49b2-8259-bbc116410eb2');
+        $assetCode = AssetCode::fromString('starck');
+        $identifier = AssetIdentifier::fromString('designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2');
 
         $labelValueEnUS = Value::create(
             $attributeAsLabelIdentifier,
             ChannelReference::noReference(),
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
-            TextData::fromString('Frontview')
+            TextData::fromString('Starck')
+        );
+        $starckDescriptionValue = Value::create(
+            AttributeIdentifier::fromString('description_designer_29aea250-bc94-49b2-8259-bbc116410eb2'),
+            ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
+            LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+            TextData::fromString('an awesome designer!')
+        );
+        $starkColorValue = Value::create(
+            AttributeIdentifier::create('designer', 'colors', '52609e00b7ee307e79eb100099b9a8bf'),
+            ChannelReference::noReference(),
+            LocaleReference::noReference(),
+            OptionData::createFromNormalize('red')
+        );
+        $starkCityValue = Value::create(
+            AttributeIdentifier::fromString('city_designer_79eb100099b9a8bf52609e00b7ee307e'),
+            ChannelReference::noReference(),
+            LocaleReference::noReference(),
+            AssetData::createFromNormalize('city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717')
         );
 
-        $assetFrontview = Asset::create(
+        $assetStarck = Asset::create(
             $identifier,
             $assetFamilyIdentifier,
             $assetCode,
-            ValueCollection::fromValues([$labelValueEnUS])
+            ValueCollection::fromValues([$labelValueEnUS, $starckDescriptionValue, $starkColorValue, $starkCityValue])
         );
-        $assetRepository->create($assetFrontview);
+        $assetRepository->create($assetStarck);
 
         // COCO
-        $assetCode = AssetCode::fromString('sideview');
-        $identifier = AssetIdentifier::fromString('notice_sideview_0134dc3e-3def-4afr-85ef-e81b2d6e95fd');
+        $assetCode = AssetCode::fromString('coco');
+        $identifier = AssetIdentifier::fromString('brand_coco_0134dc3e-3def-4afr-85ef-e81b2d6e95fd');
 
+        $cocoDescriptionValue = Value::create(
+            AttributeIdentifier::fromString('description_designer_29aea250-bc94-49b2-8259-bbc116410eb2'),
+            ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
+            LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+            TextData::fromString('You will love coco.')
+        );
+        $cocoNicknameValue = Value::create(
+            AttributeIdentifier::fromString('nickname_designer_29aea250-bc94-49b2-8259-bbc116410eb2'),
+            ChannelReference::noReference(),
+            LocaleReference::noReference(),
+            TextData::fromString('Mr coco')
+        );
         $labelValueEnUS = Value::create(
             $attributeAsLabelIdentifier,
             ChannelReference::noReference(),
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
-            TextData::fromString('Sideview')
+            TextData::fromString('Coco Chanel')
         );
         $labelValuefrFR = Value::create(
             $attributeAsLabelIdentifier,
             ChannelReference::noReference(),
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
-            TextData::fromString('Sideview')
+            TextData::fromString('Coco Chanel')
         );
 
-        $assetSideview = Asset::create(
+        $assetCoco = Asset::create(
             $identifier,
             $assetFamilyIdentifier,
             $assetCode,
-            ValueCollection::fromValues([$labelValueEnUS, $labelValuefrFR])
+            ValueCollection::fromValues([$labelValueEnUS, $labelValuefrFR, $cocoDescriptionValue, $cocoNicknameValue])
         );
-        $assetRepository->create($assetSideview);
+        $assetRepository->create($assetCoco);
 
         // DYSON
-        $assetCode = AssetCode::fromString('backview');
-        $identifier = AssetIdentifier::fromString('packshot_backview_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd');
+        $assetCode = AssetCode::fromString('dyson');
+        $identifier = AssetIdentifier::fromString('designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd');
 
         $labelValueEnUS = Value::create(
             $attributeAsLabelIdentifier,
             ChannelReference::noReference(),
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
-            TextData::fromString('Backview')
+            TextData::fromString('Dyson')
         );
         $labelValuefrFR = Value::create(
             $attributeAsLabelIdentifier,
             ChannelReference::noReference(),
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
-            TextData::fromString('Backview')
+            TextData::fromString('Dyson')
         );
-        $assetBackview = Asset::create(
+        $dysonColorValue = Value::create(
+            AttributeIdentifier::create('designer', 'colors', '52609e00b7ee307e79eb100099b9a8bf'),
+            ChannelReference::noReference(),
+            LocaleReference::noReference(),
+            OptionData::createFromNormalize('red')
+        );
+        $dysonCityValue = Value::create(
+            AttributeIdentifier::fromString('city_designer_79eb100099b9a8bf52609e00b7ee307e'),
+            ChannelReference::noReference(),
+            LocaleReference::noReference(),
+            AssetData::createFromNormalize('city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717')
+        );
+        $assetDyson = Asset::create(
             $identifier,
             $assetFamilyIdentifier,
             $assetCode,
-            ValueCollection::fromValues([$labelValueEnUS, $labelValuefrFR])
+            ValueCollection::fromValues([$labelValueEnUS, $labelValuefrFR, $dysonColorValue, $dysonCityValue])
         );
-        $assetRepository->create($assetBackview);
+        $assetRepository->create($assetDyson);
 
         // Paris
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('city');

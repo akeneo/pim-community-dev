@@ -6,6 +6,9 @@ const answerChannelList = async page => {
   const requestContract = getRequestContract('Channel/List/filtered_locale.json');
 
   await listenRequest(page, requestContract);
+
+  const filteredRequestContract = getRequestContract('Channel/List/ok.json');
+  await listenRequest(page, filteredRequestContract);
 };
 const answerRuleRelationList = async page => {
   const requestContract = getRequestContract('Rule/ok.json');

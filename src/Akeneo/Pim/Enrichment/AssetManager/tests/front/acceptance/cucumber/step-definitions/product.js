@@ -18,8 +18,8 @@ module.exports = async function(cucumber) {
   const {grantAllAcls} = require('../helpers/acl.js');
 
   const config = {
-    'Packshot asset collection': {
-      selector: 'div[data-attribute="packshot"]',
+    'Designer asset collection': {
+      selector: 'div[data-attribute="designer"]',
       decorator: require('../decorator/asset-collection'),
     },
   };
@@ -33,7 +33,7 @@ module.exports = async function(cucumber) {
 
   const getElement = createElementDecorator(config);
   const getAssetCollection = async page => {
-    return await await getElement(page, 'Packshot asset collection');
+    return await await getElement(page, 'Designer asset collection');
   };
 
   const assertAssetCodesToBe = async (page, expectedAssetCodes) => {
@@ -58,11 +58,11 @@ module.exports = async function(cucumber) {
     answerAssetList(this.page);
     grantAllAcls(this.page);
 
-    product.values.packshot = [
+    product.values.designer = [
       {
         locale: null,
         scope: null,
-        data: ['frontview', 'sideview', 'backview'],
+        data: ['starck', 'coco', 'dyson'],
       },
     ];
   });
@@ -73,9 +73,9 @@ module.exports = async function(cucumber) {
 
   When('remove an asset', async function() {
     const assetCollection = await getAssetCollection(this.page);
-    const sideview = await assetCollection.getAsset('sideview');
+    const coco = await assetCollection.getAsset('coco');
 
-    await sideview.remove();
+    await coco.remove();
   });
 
   When('remove all assets', async function() {
@@ -86,21 +86,21 @@ module.exports = async function(cucumber) {
 
   When('move an asset', async function() {
     const assetCollection = await getAssetCollection(this.page);
-    const sideview = await assetCollection.getAsset('sideview');
+    const coco = await assetCollection.getAsset('coco');
 
-    await sideview.move('right');
+    await coco.move('right');
   });
 
   Then('the three assets in the collection be displayed', async function() {
-    await assertAssetCodesToBe(this.page, ['frontview', 'sideview', 'backview']);
+    await assertAssetCodesToBe(this.page, ['starck', 'coco', 'dyson']);
   });
 
   Then('I should only see two remaining assets', async function() {
-    await assertAssetCodesToBe(this.page, ['frontview', 'backview']);
+    await assertAssetCodesToBe(this.page, ['starck', 'dyson']);
   });
 
   Then('I should only see the reordered assets', async function() {
-    await assertAssetCodesToBe(this.page, ['frontview', 'backview', 'sideview']);
+    await assertAssetCodesToBe(this.page, ['starck', 'dyson', 'coco']);
   });
 
   Then('there should be no asset in the collection', async function() {
