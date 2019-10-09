@@ -3,6 +3,7 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization\ProductProcessor;
+use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingProductModelValues;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\ExecutionContext;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
@@ -29,13 +30,15 @@ class ProductProcessorSpec extends ObjectBehavior
         ChannelRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
         BulkMediaFetcher $mediaFetcher,
-        StepExecution $stepExecution
+        StepExecution $stepExecution,
+        FillMissingProductModelValues $fillMissingProductModelValues
     ) {
         $this->beConstructedWith(
             $normalizer,
             $channelRepository,
             $attributeRepository,
-            $mediaFetcher
+            $mediaFetcher,
+            $fillMissingProductModelValues
         );
 
         $this->setStepExecution($stepExecution);
@@ -59,7 +62,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $stepExecution,
         $mediaFetcher,
         $attributeRepository,
-        $clearer,
         ChannelInterface $channel,
         LocaleInterface $locale,
         ProductInterface $product,

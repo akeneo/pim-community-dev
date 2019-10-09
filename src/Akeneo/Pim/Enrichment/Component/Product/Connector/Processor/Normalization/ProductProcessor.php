@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalizat
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
+use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingProductModelValues;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
@@ -40,28 +41,21 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     /** @var BulkMediaFetcher */
     protected $mediaFetcher;
 
-    /** @var EntityWithFamilyValuesFillerInterface */
-    protected $productValuesFiller;
+    /** @var FillMissingProductModelValues */
+    protected $fillMissingProductModelValues;
 
-    /**
-     * @param NormalizerInterface                   $normalizer
-     * @param IdentifiableObjectRepositoryInterface $channelRepository
-     * @param AttributeRepositoryInterface          $attributeRepository
-     * @param BulkMediaFetcher                      $mediaFetcher
-     * @param EntityWithFamilyValuesFillerInterface $productValuesFiller
-     */
     public function __construct(
         NormalizerInterface $normalizer,
         IdentifiableObjectRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
         BulkMediaFetcher $mediaFetcher,
-        ?EntityWithFamilyValuesFillerInterface $productValuesFiller = null
+        FillMissingProductModelValues $fillMissingProductModelValues
     ) {
         $this->normalizer          = $normalizer;
         $this->channelRepository   = $channelRepository;
         $this->attributeRepository = $attributeRepository;
         $this->mediaFetcher        = $mediaFetcher;
-        $this->productValuesFiller = $productValuesFiller;
+        $this->fillMissingProductModelValues = $fillMissingProductModelValues;
     }
 
     /**
@@ -72,9 +66,6 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
         $parameters = $this->stepExecution->getJobParameters();
         $structure = $parameters->get('filters')['structure'];
         $channel = $this->channelRepository->findOneByIdentifier($structure['scope']);
-        if ($product instanceof ProductModelInterface) {
-            $this->productValuesFiller->fillMissingValues($product);
-        }
 
         $productStandard = $this->normalizer->normalize(
             $product,
@@ -88,6 +79,12 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
                 ),
             ]
         );
+
+        // not done for product as it fill missing product values at the end for performance purpose
+        // not done yet for product model export so we have to do it
+        if ($product instanceof ProductModelInterface) {
+            $productStandard = $this->fillMissingProductModelValues->fromStandardFormat($product);
+        }
 
         if ($this->areAttributesToFilter($parameters)) {
             $attributesToFilter = $this->getAttributesToFilter($parameters);
