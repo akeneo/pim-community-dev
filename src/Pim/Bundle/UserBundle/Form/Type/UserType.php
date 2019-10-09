@@ -61,20 +61,20 @@ class UserType extends AbstractType
 
     /**
      * @param TokenStorageInterface     $tokenStorage
+     * @param SecurityFacade            $securityFacade
      * @param UserPreferencesSubscriber $subscriber
      * @param RoleRepository            $roleRepository
      * @param GroupRepository           $groupRepository
      * @param EventDispatcherInterface  $eventDispatcher
-     * @param SecurityFacade            $securityFacade
      * @param string                    $productGridFilterTypeClassName
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
+        SecurityFacade $securityFacade,
         UserPreferencesSubscriber $subscriber,
         RoleRepository $roleRepository,
         GroupRepository $groupRepository,
         EventDispatcherInterface $eventDispatcher,
-        SecurityFacade $securityFacade,
         string $productGridFilterTypeClassName
     ) {
         $this->tokenStorage = $tokenStorage;

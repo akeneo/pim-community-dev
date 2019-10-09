@@ -22,12 +22,11 @@ services:
         class: '%pim_user.form.type.user.class%'
         arguments:
             - '@security.token_storage'
-            - '@request_stack'
+            - '@oro_security.security_facade'
             - '@pim_user.form.subscriber.user_preferences'
             - '@pim_user.repository.role'
             - '@pim_user.repository.group'
             - '@event_dispatcher'
-            - '@oro_security.security_facade'
             - '%pim_enrich.form.type.product_grid_filter_choice.class%'
         tags:
             - { name: form.type, alias: pim_user_user }
