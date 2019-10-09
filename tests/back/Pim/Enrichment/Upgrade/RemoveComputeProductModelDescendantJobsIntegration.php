@@ -22,6 +22,11 @@ class RemoveComputeProductModelDescendantJobsIntegration extends AbstractPimCata
 
     private const MIGRATION_LABEL = '_4_0_20191004145507_remove_compute_model_descendant_jobs';
 
+    protected function getConfiguration()
+    {
+        return $this->catalog->useTechnicalCatalog();
+    }
+
     public function test_it_computes_products_and_remove_jobs()
     {
         $this->createJobs();
@@ -83,10 +88,10 @@ SQL;
     protected function createProductsAndProductModels(): void
     {
         $sql = <<<SQL
-INSERT INTO pim_catalog_product_model (id, code, raw_values, created, updated, root, lvl, lft, rgt)
+INSERT INTO pim_catalog_product_model (id, code, family_variant_id, raw_values, created, updated, root, lvl, lft, rgt)
 VALUES
-    (3000, 'pm1', '{"name": {"<all_channels>": {"<all_locales>": ""}}}', NOW(), NOW(), 0, 0, 0, 0),
-    (3001, 'pm2', '{"name": {"<all_channels>": {"<all_locales>": []}}}', NOW(), NOW(), 0, 0, 0, 0)
+    (3000, 'pm1', 1, '{"name": {"<all_channels>": {"<all_locales>": ""}}}', NOW(), NOW(), 0, 0, 0, 0),
+    (3001, 'pm2', 1, '{"name": {"<all_channels>": {"<all_locales>": []}}}', NOW(), NOW(), 0, 0, 0, 0)
 SQL;
         $this->getConnection()->exec($sql);
 
