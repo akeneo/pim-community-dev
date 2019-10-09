@@ -5,13 +5,10 @@ flash:
   comment:
     create:
       success: Din kommentar er blevet oprettet.
-      error: Der opstod en fejl under oprettelsen af din kommentar.
     delete:
       success: Din kommentar er blevet slettet.
-      error: Der opstod en fejl under sletningen af din kommentar.
     reply:
       success: Dit svar er blevet oprettet.
-      error: Der opstod en fejl under oprettelsen af dit svar.
 pim_enrich.entity.product:
   label: produkt
   uppercase_label: Produkt
@@ -22,7 +19,6 @@ pim_enrich.entity.product:
       fail: Produktet kunne ikke opdateres.
       fields_not_ready: "Produktet kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
       already_in_upload: Der findes allerede en fil indlæst for denne attribut for denne landestandard "{{ locale }}" og "{{ scope }}"
-      file_upload: Der opstod en fejl under fil indlæsningen
     delete:
       success: Produktet blev slettet.
       fail: Produktet kunne ikke slettes.
@@ -265,8 +261,6 @@ pim_enrich.mass_edit.product:
       label: Konfigurér
     confirm:
       label: Bekræft
-    launch_error:
-      label: Der opstod en fejl under opstart af handlingen masse Rediger
     launched:
       label: Bulk-handlingen "{{ operation }}" er blevet igangsat. Du får besked, når den er afsluttet.
   operation:
@@ -332,7 +326,6 @@ pim_datagrid:
     delete:
       confirm_content: Er du sikker på du vil slette de valgte produkter?
       success: Udvalgte produkter blev slettet.
-      error: Der opstod en fejl under forsøget på at slette de valgte produkter, prøv venligst igen.
     quick_export:
       csv_all: CSV (alle attributter)
       csv_grid_context: CSV (gitter kontekst)

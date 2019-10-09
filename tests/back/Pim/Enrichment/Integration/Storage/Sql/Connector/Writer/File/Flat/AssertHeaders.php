@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\Connector\Writer\File\Flat;
 
 use PHPUnit\Framework\Assert;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\FlatFileHeader;
 
 final class AssertHeaders
 {

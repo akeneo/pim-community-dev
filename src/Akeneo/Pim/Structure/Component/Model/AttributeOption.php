@@ -37,7 +37,7 @@ class AttributeOption implements AttributeOptionInterface
     protected $locale;
 
     /** @var int */
-    protected $sortOrder = 1;
+    protected $sortOrder;
 
     /**
      * Constructor

@@ -1,6 +1,6 @@
 services:
     akeneo.pim.enrichment.completeness.query.get_product_masks:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\Completeness\SqlGetCompletenessProductMasks'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness\SqlGetCompletenessProductMasks'
         arguments:
             - '@database_connection'
             - '@akeneo.pim.enrichment.completeness.mask_item_generator.generator'

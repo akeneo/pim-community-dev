@@ -13,7 +13,7 @@ use Doctrine\ORM\Events;
 /**
  * Aims to filter raw values field (JSON array) when an entity with values is loaded by Doctrine.
  *
- * This subscriber have to be executed before Akeneo\Pim\Enrichment\Bundle\EventSubscriber\LoadEntityWithValuesSubscriber.
+ * This subscriber have to be executed before Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithValues\LoadEntityWithValuesSubscriber.
  * It allows to increase drastically performance of the datagrid loading,
  * because it avoids to hydrate all the values of an entity.
  * Hydration is very costly when the number of values is important.
@@ -26,7 +26,7 @@ use Doctrine\ORM\Events;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * TODO: use an Entity Listener instead, as for Akeneo\Pim\Enrichment\Bundle\EventSubscriber\LoadEntityWithValuesSubscriber
+ * TODO: use an Entity Listener instead, as for Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithValues\LoadEntityWithValuesSubscriber
  * TODO: refactor the loading of the datagrid to not use ProductInterface entity
  */
 class FilterEntityWithValuesSubscriber implements EventSubscriber

@@ -110,7 +110,6 @@ class ProductModelController
      * @param FamilyVariantRepositoryInterface  $familyVariantRepository
      * @param AttributeFilterInterface          $productModelAttributeFilter
      * @param Client                            $productAndProductModelClient
-     *
      */
     public function __construct(
         ProductModelRepositoryInterface $productModelRepository,

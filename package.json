@@ -39,7 +39,7 @@
   "devDependencies": {
     "@types/enzyme": "^3.9.0",
     "@types/jest": "^24.0.9",
-    "@types/react-test-renderer": "^16.8.0",
+    "@types/styled-components": "^4.1.18",
     "cucumber": "4.0.0",
     "cucumber-html-reporter": "5.0.0",
     "cucumber-junit": "^1.7.1",
@@ -51,7 +51,6 @@
     "jest": "^24.3.1",
     "prettier": "^1.16.4",
     "puppeteer": "1.1.1",
-    "react-test-renderer": "^16.8.0",
     "read-pkg": "4.0.1",
     "ts-jest": "24.0.0",
     "tslint": "^5.12.1"
@@ -88,6 +87,7 @@
     "raw-loader": "1.0.0",
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
+    "styled-components": "^4.3.2",
     "summernote": "0.6.16",
     "text-loader": "0.0.1",
     "thread-loader": "^2.1.2",
@@ -104,5 +104,7 @@
   },
   "resolutions": {
     "jest/**/ip-regex": "2.1.0"
-  }
+  },
+  "private": true,
+  "workspaces": ["src/Akeneo/Apps/front"]
 }

@@ -30,6 +30,7 @@ extensions:
             stateCode: pim-menu-activity
             tab: pim-menu-activity
             navigationTitle: pim_menu.navigation.activity
+            collapsedModifier: AknColumn--firstColumn
 
     pim-menu-activity-navigation-block:
         module: pim/menu/navigation-block

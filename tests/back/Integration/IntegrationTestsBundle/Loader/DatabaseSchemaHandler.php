@@ -2,6 +2,7 @@
 
 namespace Akeneo\Test\IntegrationTestsBundle\Loader;
 
+use Doctrine\DBAL\Connection;
 use Pim\Behat\Context\DBALPurger;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -14,19 +15,20 @@ use Symfony\Component\HttpKernel\KernelInterface;
 class DatabaseSchemaHandler
 {
     /** @var KernelInterface */
-    protected $kernel;
+    private $kernel;
 
     /** @var Application */
-    protected $cli;
+    private $cli;
 
-    /**
-     * @param KernelInterface $kernel
-     */
-    public function __construct(KernelInterface $kernel)
+    /** @var Connection */
+    private $dbConnection;
+
+    public function __construct(KernelInterface $kernel, Connection $dbConnection)
     {
         $this->kernel = $kernel;
         $this->cli = new Application($this->kernel);
         $this->cli->setAutoExit(false);
+        $this->dbConnection = $dbConnection;
     }
 
     /**
@@ -37,12 +39,11 @@ class DatabaseSchemaHandler
      */
     public function reset()
     {
-        $connection = $this->kernel->getContainer()->get('database_connection');
-        $schemaManager = $connection->getSchemaManager();
+        $schemaManager = $this->dbConnection->getSchemaManager();
         $tables = $schemaManager->listTableNames();
 
         $purger = new DBALPurger(
-            $this->kernel->getContainer()->get('database_connection'),
+            $this->dbConnection,
             $tables,
             [
                 'pim_catalog_product',

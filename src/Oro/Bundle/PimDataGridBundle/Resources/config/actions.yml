@@ -3,6 +3,7 @@ parameters:
 
 services:
     pim_datagrid.extension.action.type.tab_redirect:
+        public: true
         class: '%pim_datagrid.extension.action.type.tab_redirect.class%'
         shared: false
         tags:

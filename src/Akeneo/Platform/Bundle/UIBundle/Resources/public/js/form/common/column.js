@@ -107,10 +107,14 @@ define(
             setCollapsed: function (value) {
                 sessionStorage.setItem(this.getSessionStorageKey(), value ? '1' : '0');
 
+                var collapseModifier = '';
+                if (this.config.collapsedModifier !== undefined) {
+                    collapseModifier = this.config.collapsedModifier;
+                }
                 if (value) {
-                    this.$el.addClass('AknColumn--collapsed');
+                    this.$el.addClass('AknColumn--collapsed ' + collapseModifier);
                 } else {
-                    this.$el.removeClass('AknColumn--collapsed');
+                    this.$el.removeClass('AknColumn--collapsed ' + collapseModifier);
                 }
             },
 

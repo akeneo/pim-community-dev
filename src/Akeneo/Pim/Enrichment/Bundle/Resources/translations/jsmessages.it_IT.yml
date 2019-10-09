@@ -5,13 +5,10 @@ flash:
   comment:
     create:
       success: Commento creato con successo.
-      error: Si è verificato un errore durante la creazione del tuo commento.
     delete:
       success: Commento eliminato con successo.
-      error: Si è verificato un errore durante la creazione del tuo commento.
     reply:
       success: Risposta creata con successo.
-      error: Si è verificato un errore durante la creazione della risposta.
 pim_enrich.entity.product:
   label: prodotto
   uppercase_label: Articolo
@@ -22,7 +19,6 @@ pim_enrich.entity.product:
       fail: Il prodotto non può essere aggiornato.
       fields_not_ready: "Il prodotto non può essere salvato in questo momento. I seguenti campi non sono pronti: {{ fields }}"
       already_in_upload: Un file è già in caricamento per questo attributo nell'impostazione internazionale "{{ locale }}" e nell'ambito "{{ scope }}"
-      file_upload: Si è verificato un errore durante il caricamento del file
     delete:
       success: Prodotto eliminato correttamente.
       fail: Il prodotto non può essere eliminato.
@@ -265,8 +261,6 @@ pim_enrich.mass_edit.product:
       label: Configura
     confirm:
       label: Conferma
-    launch_error:
-      label: Si è verificato un errore durante l'avvio dell'operazione di modifica di massa
     launched:
       label: L'azione di massa "{{ operation }}" è stato lanciata. Sarai avvisato quando finisce.
   operation:
@@ -295,6 +289,7 @@ pim_enrich.mass_edit.product:
       label_count: "{1}Aggiungi <span class=\"AknFullPage-title--highlight\">1 prodotto</span> ai gruppo|]1, Inf[Aggiungi <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span> ai gruppi"
       description: Selezionare i gruppi in cui aggiungere gli articoli selezionati
       field: Gruppi
+      no_update: Seleziona un gruppo per continuare
     add_to_category:
       label: Aggiungi alle categorie
       label_count: "{1}Aggiungi <span class=\"AknFullPage-title--highlight\">1 prodotto</span> alle categorie|]1, Inf[Aggiungi <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span> alle categorie"
@@ -311,6 +306,7 @@ pim_enrich.mass_edit.product:
       label: Aggiungere ad un modello di prodotto esistente
       label_count: "{1}Aggiungi <span class=\"AknFullPage-title--highlight\">1 prodotto</span> ad un modello di prodotto esistente|]1, Inf[Aggiungi <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span> ad un modello di prodotto esistente"
       description: Il modello di prodotto selezionato raccoglierà i prodotti e permetterà l'arricchimento delle loro proprietà comuni.
+      no_update: Seleziona un modello di prodotto per continuare
     associate_to_product_and_product_model:
       label: Associa
       label_count: "{1}Associa <span class=\"AknFullPage-title--highlight\">1 prodotto</span> a prodotti o modelli di prodotto|]1, Inf[Associa <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span> a prodotti o modelli di prodotto"
@@ -330,7 +326,6 @@ pim_datagrid:
     delete:
       confirm_content: Sei sicuro di voler eliminare i prodotti selezionati?
       success: I prodotti selezionati sono stati eliminati con successo.
-      error: Si è verificato un errore cancellando i prodotti selezionati, per favore riprova.
     quick_export:
       csv_all: CSV (tutti gli attributi)
       csv_grid_context: CSV (Contesto di griglia)

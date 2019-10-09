@@ -5,7 +5,6 @@ pim_enrich.entity.family:
   flash:
     update:
       success: Família atualizada com sucesso.
-      fail: Ocorreu um erro durante a atualização de família.
       cant_remove_attribute_as_label: O atributo usado como rótulo não pode ser excluído
       cant_remove_attribute_as_image: Não é possível remover o atributo usado como a imagem principal
       cant_remove_attribute_used_as_axis: Não é possível remover este atributo usado como um eixo de variante em uma variante de família
@@ -67,7 +66,6 @@ pim_enrich.entity.attribute_option:
   flash:
     create:
       success: Opção de atributo criada com sucesso
-      fail: Ocorreu um erro ao tentar criar a opção de atributo
     update:
       fail: Opções de Atributos não pode ser salva
     delete:

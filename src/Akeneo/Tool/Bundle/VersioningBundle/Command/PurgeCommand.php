@@ -94,10 +94,6 @@ class PurgeCommand extends Command
             );
         }
 
-        if (null === $input->getOption('more-than-days') && null === $input->getOption('less-than-days')) {
-            $input->setOption('more-than-days', self::DEFAULT_MORE_THAN_DAYS);
-        }
-
         $resourceFQCN = $input->hasArgument('entity') ? $input->getArgument('entity') : null;
         $isForced = $input->getOption('force');
 
@@ -152,6 +148,10 @@ class PurgeCommand extends Command
         $isForced = $input->getOption('force');
         $moreThanDays = null !== $input->getOption('more-than-days') ? (int) $input->getOption('more-than-days') : null;
         $lessThanDays = null !== $input->getOption('less-than-days') ? (int) $input->getOption('less-than-days') : null;
+
+        if (null === $moreThanDays && null === $lessThanDays) {
+            $moreThanDays = self::DEFAULT_MORE_THAN_DAYS;
+        }
 
         $resourceName = $input->hasArgument('entity') ? $input->getArgument('entity') : null;
         $resourceNameLabel = '';

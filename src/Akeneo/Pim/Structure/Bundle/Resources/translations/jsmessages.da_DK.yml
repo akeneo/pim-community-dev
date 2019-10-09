@@ -5,7 +5,6 @@ pim_enrich.entity.family:
   flash:
     update:
       success: Familien opdateret
-      fail: Der opstod en fejl under opdatering af familie.
       cant_remove_attribute_as_label: Kan ikke fjerne en attribut der bruges som etiket
       cant_remove_attribute_as_image: Kan ikke fjerne attributten anvendes som det primære billede
       cant_remove_attribute_used_as_axis: Kan ikke fjerne denne attribut, bruges som en variant akse i en familie variant
@@ -67,7 +66,6 @@ pim_enrich.entity.attribute_option:
   flash:
     create:
       success: Attribut tilvalg oprettet
-      fail: Der opstod en fejl under oprettelsen af attribut egenskaben
     update:
       fail: Kan ikke gemme attribut indstilling
     delete:

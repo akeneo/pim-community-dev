@@ -28,6 +28,8 @@ pim_import_export:
       flash:
         create:
           success: Profilo di importazione creato correttamente
+        upload:
+          error: Impossibile caricare il file. La sua dimensione potrebbe superare la dimensione massima di upload sulla tua configurazione di PHP o del server HTTP
       page_title:
         index: "]-Inf, 1] {{ count }} Profilo di importazione|]1, Inf [{{ count }} Profili di importazione"
       module:
@@ -141,7 +143,6 @@ pim_import_export:
         export: Esportazioni
         mass_edit: Azione di massa modificata
         quick_export: Esportazione rapida
-        compute_product_models_descendants: Calcola modelli di prodotto discendenti
         compute_family_variant_structure_changes: Calcola le modifiche della struttura della famiglia variante
         compute_completeness_of_products_family: Calcola la completezza della famiglia di prodotti
         mass_delete: Eliminazione in massa prodotti
