@@ -2,6 +2,8 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\QuickExport;
 
+use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingProductModelValues;
+use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingProductValues;
 use Akeneo\Tool\Component\Batch\Item\ExecutionContext;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
@@ -32,7 +34,8 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         NormalizerInterface $normalizer,
         ChannelRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
-        EntityWithFamilyValuesFillerInterface $valuesFiller,
+        FillMissingProductModelValues $fillMissingProductModelValues,
+        FillMissingProductValues $fillMissingProductValues,
         ObjectDetacherInterface $detacher,
         UserProviderInterface $userProvider,
         TokenStorageInterface $tokenStorage,
@@ -43,7 +46,8 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
             $normalizer,
             $channelRepository,
             $attributeRepository,
-            $valuesFiller,
+            $fillMissingProductModelValues,
+            $fillMissingProductValues,
             $detacher,
             $userProvider,
             $tokenStorage,
@@ -87,6 +91,7 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         $attributeRepository,
         $normalizer,
         $detacher,
+        FillMissingProductValues $fillMissingProductValues,
         ProductInterface $product,
         JobExecution $jobExecution,
         UserInterface $user,
@@ -116,12 +121,14 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
 
         $detacher->detach($product)->shouldBeCalled();
 
-        $normalizer->normalize($product, 'standard', Argument::any())->willReturn([
+        $standardFormat = [
             'sku' => 'foo',
             'family' => 'shoes',
             'description-en_US' => 'Shoes',
             'size' => '42'
-        ]);
+        ];
+        $normalizer->normalize($product, 'standard', Argument::any())->willReturn($standardFormat);
+        $fillMissingProductValues->fromStandardFormat($standardFormat)->willReturn($standardFormat);
 
         $this->process($product)->shouldReturn([
             'sku' => 'foo',
@@ -139,6 +146,7 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         $attributeRepository,
         $normalizer,
         $detacher,
+        FillMissingProductValues $fillMissingProductValues,
         ProductInterface $product,
         JobExecution $jobExecution,
         UserInterface $user,
@@ -168,12 +176,14 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
 
         $detacher->detach($product)->shouldBeCalled();
 
-        $normalizer->normalize($product, 'standard', Argument::any())->willReturn([
+        $standardFormat = [
             'sku' => 'foo',
             'family' => 'shoes',
             'description-en_US' => 'Shoes',
             'size' => '42'
-        ]);
+        ];
+        $normalizer->normalize($product, 'standard', Argument::any())->willReturn($standardFormat);
+        $fillMissingProductValues->fromStandardFormat($standardFormat)->willReturn($standardFormat);
 
         $this->process($product)->shouldReturn([
             'sku' => 'foo',
@@ -191,6 +201,7 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         $attributeRepository,
         $normalizer,
         $detacher,
+        FillMissingProductModelValues $fillMissingProductModelValues,
         ProductModelInterface $productModel,
         JobExecution $jobExecution,
         UserInterface $user,
@@ -220,12 +231,14 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
 
         $detacher->detach($productModel)->shouldBeCalled();
 
-        $normalizer->normalize($productModel, 'standard', Argument::any())->willReturn([
+        $standardFormat = [
             'code' => 'foo',
             'family_variant' => 'shoes',
             'description-en_US' => 'Shoes',
             'size' => '42'
-        ]);
+        ];
+        $normalizer->normalize($productModel, 'standard', Argument::any())->willReturn($standardFormat);
+        $fillMissingProductModelValues->fromStandardFormat($standardFormat)->willReturn($standardFormat);
 
         $this->process($productModel)->shouldReturn([
             'code' => 'foo',
@@ -243,6 +256,7 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         $normalizer,
         $detacher,
         $bulkMediaFetcher,
+        FillMissingProductValues $fillMissingProductValues,
         ProductInterface $product,
         JobExecution $jobExecution,
         UserInterface $user,
@@ -285,12 +299,15 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
 
         $detacher->detach($product)->shouldBeCalled();
 
-        $normalizer->normalize($product, 'standard', Argument::any())->willReturn([
+        $standardFormat = [
             'sku' => 'foo',
             'family' => 'shoes',
             'description-en_US' => 'Shoes',
             'size' => '42'
-        ]);
+        ];
+
+        $normalizer->normalize($product, 'standard', Argument::any())->willReturn($standardFormat);
+        $fillMissingProductValues->fromStandardFormat($standardFormat)->willReturn($standardFormat);
 
         $this->process($product)->shouldReturn([
             'sku' => 'foo',
@@ -308,6 +325,7 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         $normalizer,
         $detacher,
         $bulkMediaFetcher,
+        FillMissingProductValues $fillMissingProductValues,
         ProductInterface $product,
         JobExecution $jobExecution,
         UserInterface $user,
@@ -349,12 +367,15 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
 
         $detacher->detach($product)->shouldBeCalled();
 
-        $normalizer->normalize($product, 'standard', Argument::any())->willReturn([
+        $standardFormat = [
             'sku' => 'foo',
             'family' => 'shoes',
             'description-en_US' => 'Shoes',
             'size' => '42'
-        ]);
+        ];
+
+        $normalizer->normalize($product, 'standard', Argument::any())->willReturn($standardFormat);
+        $fillMissingProductValues->fromStandardFormat($standardFormat)->willReturn($standardFormat);
 
         $this->process($product)->shouldReturn([
             'sku' => 'foo',

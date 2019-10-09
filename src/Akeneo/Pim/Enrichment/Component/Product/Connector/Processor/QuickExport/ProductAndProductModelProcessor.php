@@ -7,6 +7,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\Abstrac
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
+use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingProductModelValues;
+use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingProductValues;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
@@ -41,8 +43,11 @@ class ProductAndProductModelProcessor extends AbstractProcessor
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var EntityWithFamilyValuesFillerInterface */
-    protected $valuesFiller;
+    /** @var FillMissingProductModelValues */
+    protected $fillMissingProductModelValues;
+
+    /** @var FillMissingProductValues */
+    protected $fillMissingProductValues;
 
     /** @var ObjectDetacherInterface */
     protected $detacher;
@@ -56,21 +61,12 @@ class ProductAndProductModelProcessor extends AbstractProcessor
     /** @var BulkMediaFetcher */
     protected $mediaFetcher;
 
-    /**
-     * @param NormalizerInterface                   $normalizer
-     * @param ChannelRepositoryInterface            $channelRepository
-     * @param AttributeRepositoryInterface          $attributeRepository
-     * @param EntityWithFamilyValuesFillerInterface $valuesFiller
-     * @param ObjectDetacherInterface               $detacher
-     * @param UserProviderInterface                 $userProvider
-     * @param TokenStorageInterface                 $tokenStorage
-     * @param BulkMediaFetcher                      $mediaFetcher
-     */
     public function __construct(
         NormalizerInterface $normalizer,
         ChannelRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
-        EntityWithFamilyValuesFillerInterface $valuesFiller,
+        FillMissingProductModelValues $fillMissingProductModelValues,
+        FillMissingProductValues $fillMissingProductValues,
         ObjectDetacherInterface $detacher,
         UserProviderInterface $userProvider,
         TokenStorageInterface $tokenStorage,
@@ -79,7 +75,8 @@ class ProductAndProductModelProcessor extends AbstractProcessor
         $this->normalizer = $normalizer;
         $this->channelRepository = $channelRepository;
         $this->attributeRepository = $attributeRepository;
-        $this->valuesFiller = $valuesFiller;
+        $this->fillMissingProductModelValues = $fillMissingProductModelValues;
+        $this->fillMissingProductValues = $fillMissingProductValues;
         $this->detacher = $detacher;
         $this->userProvider = $userProvider;
         $this->tokenStorage = $tokenStorage;
@@ -93,11 +90,17 @@ class ProductAndProductModelProcessor extends AbstractProcessor
     {
         $this->initSecurityContext($this->stepExecution);
 
-        $this->valuesFiller->fillMissingValues($entityWithValues);
-
         $parameters = $this->stepExecution->getJobParameters();
         $normalizerContext = $this->getNormalizerContext($parameters);
         $productStandard = $this->normalizer->normalize($entityWithValues, 'standard', $normalizerContext);
+
+
+        if ($entityWithValues instanceof ProductInterface) {
+            $productStandard = $this->fillMissingProductValues->fromStandardFormat($productStandard);
+        } else {
+            $productStandard = $this->fillMissingProductModelValues->fromStandardFormat($productStandard);
+        }
+
         $selectedProperties = $parameters->get('selected_properties');
 
         if ($this->areAttributesToFilter($parameters)) {
