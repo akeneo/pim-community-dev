@@ -61,6 +61,7 @@ services:
             - '@pim_api.normalizer.connector_products'
             - '@security.token_storage'
             - '@akeneo.pim.enrichment.product.connector.get_product_from_identifiers'
+            - '@pim_catalog.event_subscriber.product.on_save.batch_event_subscriber'
 
     pim_api.controller.product_model:
         public: true

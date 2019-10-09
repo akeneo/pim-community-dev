@@ -19,6 +19,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
+use Akeneo\Tool\Bundle\ApiBundle\EventSubscriber\BatchEventSubscriberInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Akeneo\Tool\Component\Api\Exception\DocumentedHttpException;
 use Akeneo\Tool\Component\Api\Exception\InvalidQueryException;
@@ -132,6 +133,9 @@ class ProductController
     /** @var GetConnectorProducts */
     private $getConnectorProducts;
 
+    /** @var BatchEventSubscriberInterface */
+    private $batchOnSaveEventSubscriber;
+
     public function __construct(
         NormalizerInterface $normalizer,
         IdentifiableObjectRepositoryInterface $channelRepository,
@@ -157,7 +161,8 @@ class ProductController
         ListProductsQueryHandler $listProductsQueryHandler,
         ConnectorProductNormalizer $connectorProductNormalizer,
         TokenStorageInterface $tokenStorage,
-        GetConnectorProducts $getConnectorProducts
+        GetConnectorProducts $getConnectorProducts,
+        BatchEventSubscriberInterface $batchOnSaveEventSubscriber
     ) {
         $this->normalizer = $normalizer;
         $this->channelRepository = $channelRepository;
@@ -184,6 +189,7 @@ class ProductController
         $this->connectorProductNormalizer = $connectorProductNormalizer;
         $this->tokenStorage = $tokenStorage;
         $this->getConnectorProducts = $getConnectorProducts;
+        $this->batchOnSaveEventSubscriber = $batchOnSaveEventSubscriber;
     }
 
     /**
@@ -367,16 +373,21 @@ class ProductController
     }
 
     /**
+     * Products are saved 1 by 1, but we batch events in order to improve performances.
+     * The "ON_SAVE" events are marked as non unitary, and a "ON_SAVE_ALL" event is dispatched at the end
+     * with all saved products.
+     *
      * @param Request $request
-     *
-     * @throws HttpException
-     *
      * @return Response
+     * @throws HttpException
      */
     public function partialUpdateListAction(Request $request): Response
     {
         $resource = $request->getContent(true);
+        $this->batchOnSaveEventSubscriber->activate();
         $response = $this->partialUpdateStreamResource->streamResponse($resource);
+        $this->batchOnSaveEventSubscriber->dispatchAllEvents();
+        $this->batchOnSaveEventSubscriber->deactivate();
 
         return $response;
     }

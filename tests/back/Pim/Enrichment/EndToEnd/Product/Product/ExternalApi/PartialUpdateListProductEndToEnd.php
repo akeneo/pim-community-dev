@@ -6,6 +6,7 @@ namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
+use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
 class PartialUpdateListProductEndToEnd extends AbstractProductTestCase
@@ -85,6 +86,16 @@ JSON;
 
         $this->assertSameProducts($expectedProducts['product_family'], 'product_family');
         $this->assertSameProducts($expectedProducts['my_identifier'], 'my_identifier');
+
+        $this->assertCompletenessWasComputedForProducts(['product_family', 'my_identifier']);
+
+        $esProduct = $this->getProductFromIndex('product_family');
+        Assert::assertNotNull($esProduct);
+        Assert::assertEquals('familyA1', $esProduct['family']['code']);
+
+        $esProduct = $this->getProductFromIndex('my_identifier');
+        Assert::assertNotNull($esProduct);
+        Assert::assertEquals('familyA2', $esProduct['family']['code']);
     }
 
     public function testCreateAndUpdateSameProduct()
@@ -306,6 +317,29 @@ JSON;
     protected function getMaxNumberResources()
     {
         return $this->getParameter('api_input_max_resources_number');
+    }
+
+    protected function getProductFromIndex(string $identifier): ?array
+    {
+        $esProductClient = $this->getFromTestContainer('akeneo_elasticsearch.client.product_and_product_model');
+
+        $esProductClient->refreshIndex();
+        $res = $esProductClient->search(['query' => ['term' => ['identifier' => $identifier]]]);
+
+        return $res['hits']['hits'][0]['_source'] ?? null;
+    }
+
+    private function assertCompletenessWasComputedForProducts(array $identifiers): void
+    {
+        foreach ($identifiers as $identifier) {
+            $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
+            Assert::assertNotNull($product);
+
+            $completenesses = $this
+                ->getFromTestContainer('akeneo.pim.enrichment.product.query.get_product_completenesses')
+                ->fromProductId($product->getId());
+            Assert::assertCount(6, $completenesses); // 3 channels * 2 locales
+        }
     }
 
     /**

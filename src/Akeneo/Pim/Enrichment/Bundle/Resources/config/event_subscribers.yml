@@ -139,3 +139,10 @@ services:
             - '@pim_catalog.elasticsearch.indexer.product_model_descendants_and_ancestors'
         tags:
             - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.product.on_save.batch_event_subscriber:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnSave\BatchOnSaveProductEventSubscriber'
+        arguments:
+            - '@event_dispatcher'
+        tags:
+            - { name: kernel.event_subscriber }
