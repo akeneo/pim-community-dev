@@ -3,7 +3,7 @@
 ##
 
 .PHONY: coupling
-coupling: structure-coupling user-management-coupling channel-coupling enrichment-coupling
+coupling: structure-coupling user-management-coupling channel-coupling enrichment-coupling apps-coupling
 
 .PHONY: phpspec
 phpspec:
