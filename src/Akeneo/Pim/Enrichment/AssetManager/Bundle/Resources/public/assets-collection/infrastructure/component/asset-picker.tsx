@@ -154,6 +154,55 @@ const dataProvider = {
   },
 };
 
+const MAX_RESULT = 500;
+const FIRST_PAGE_SIZE = 50;
+
+let totalRequestCount = 0;
+const useFetchResult = (
+  dataProvider: any,
+  assetFamilyIdentifier: AssetFamilyIdentifier,
+  filters: Filter[],
+  searchValue: string,
+  excludedAssetCollection: AssetCode[],
+  context: Context,
+  setResultCollection: (resultCollection: Asset[]) => void,
+  setResultCount: (count: number) => void
+) => {
+  React.useEffect(() => {
+    const query = createQuery(
+      assetFamilyIdentifier,
+      filters,
+      searchValue,
+      excludedAssetCollection,
+      context.channel,
+      context.locale,
+      0,
+      FIRST_PAGE_SIZE
+    );
+    totalRequestCount++;
+    dataProvider.assetFetcher.search(query).then((searchResult: any) => {
+      const currentRequestCount = totalRequestCount;
+      setResultCollection(searchResult.items);
+      setResultCount(searchResult.matchesCount);
+
+      if (searchResult.matchesCount > FIRST_PAGE_SIZE) {
+        fetchMoreResult(currentRequestCount)(query, setResultCollection);
+      }
+    });
+  }, [filters, searchValue, context, excludedAssetCollection]);
+};
+
+const fetchMoreResult = (currentRequestCount: number) => (
+  query: Query,
+  setResultCollection: (resultCollection: Asset[]) => void
+) => {
+  dataProvider.assetFetcher.search({...query, size: MAX_RESULT}).then((searchResult: any) => {
+    if (currentRequestCount === totalRequestCount) {
+      setResultCollection(searchResult.items);
+    }
+  });
+};
+
 export const AssetPicker = ({
   assetFamilyIdentifier,
   initialContext,
@@ -168,22 +217,16 @@ export const AssetPicker = ({
   const [resultCollection, setResultCollection] = React.useState<Asset[]>([]);
   const [context, setContext] = React.useState<Context>(initialContext);
 
-  React.useEffect(() => {
-    const query = createQuery(
-      assetFamilyIdentifier,
-      filterCollection,
-      searchValue,
-      excludedAssetCollection,
-      context.channel,
-      context.locale,
-      0,
-      100
-    );
-    dataProvider.assetFetcher.search(query).then((searchResult: any) => {
-      setResultCollection(searchResult.items);
-      setResultCount(searchResult.matchesCount);
-    });
-  }, [filterCollection, searchValue, context, excludedAssetCollection]);
+  useFetchResult(
+    dataProvider,
+    assetFamilyIdentifier,
+    filterCollection,
+    searchValue,
+    excludedAssetCollection,
+    context,
+    setResultCollection,
+    setResultCount
+  );
 
   return (
     <React.Fragment>
