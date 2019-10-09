@@ -2,7 +2,6 @@
 
 namespace Pim\Upgrade\Schema;
 
-use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -14,10 +13,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *  - recompute completeness and index the trees for those product model codes
  *  - remove the  "compute product models descendants" future jobs in DB
  */
-final class Version_4_0_20191004145507_remove_compute_model_descendant_jobs
-    extends AbstractMigration
-    implements ContainerAwareInterface
+final class Version_4_0_20191004145507_remove_compute_model_descendant_jobs extends AbstractMigration implements
+    ContainerAwareInterface
 {
+    private const BATCH_SIZE = 10000;
+
     /** @var ContainerInterface */
     private $container;
 
@@ -31,52 +31,82 @@ final class Version_4_0_20191004145507_remove_compute_model_descendant_jobs
 
     public function up(Schema $schema) : void
     {
-        $jobs = $this->getComputeModelDescendantJobsInQueue();
-        if (empty($jobs)) {
+        $jobInstanceId = $this->getComputeProductModelDescendantsJobId();
+        if ($jobInstanceId === null) {
             return;
         }
 
-        $productModelCodes = [];
-        foreach ($jobs as $job) {
-            $rawParameters = \json_decode($job['raw_parameters'], true);
-            $productModelCodes = array_merge($productModelCodes, $rawParameters['product_model_codes']);
+        $batchProductModelCodes = $this->getBatchProductModelCodesForJobId($jobInstanceId);
+        foreach ($batchProductModelCodes as $productModelCodes) {
+            $this->computeAndIndexFromProductModelCodes($productModelCodes);
         }
 
-        if (empty($productModelCodes)) {
-            return;
-        }
-
-        $this->computeAndIndexFromProductModelCodes(array_unique($productModelCodes));
-        $this->removeComputeModelDescendantJobs(array_column($jobs, 'job_execution_id'));
+        $this->removeComputeModelDescendantJobs($jobInstanceId);
     }
 
     public function down(Schema $schema) : void
     {
     }
 
-    private function getComputeModelDescendantJobsInQueue(): array
+    private function getComputeProductModelDescendantsJobId(): ?int
     {
-        $sql = <<<SQL
-SELECT
-    execution.id AS job_execution_id,
-    execution.raw_parameters,
-    queue.id AS job_execution_queue_id
-FROM akeneo_batch_job_execution execution
-    INNER JOIN akeneo_batch_job_execution_queue queue ON execution.id = queue.job_execution_id
-    INNER JOIN akeneo_batch_job_instance instance ON execution.job_instance_id = instance.id
-WHERE execution.end_time IS NULL AND instance.code = 'compute_product_models_descendants'
-SQL;
+        $job = $this->container->get('pim_enrich.repository.job_instance')->findOneBy(
+            ['code' => 'compute_product_models_descendants']
+        );
 
-        return $this->connection->executeQuery($sql)->fetchAll();
+        return $job === null ? null : $job->getId();
     }
 
-    private function removeComputeModelDescendantJobs(array $jobIds)
+    private function getBatchProductModelCodesForJobId(int $jobInstanceId): \Generator
     {
-        $sql = 'DELETE FROM akeneo_batch_job_execution_queue WHERE job_execution_id IN (:job_ids)';
-        $this->addSql($sql, ['job_ids' => $jobIds], ['job_ids' => Connection::PARAM_INT_ARRAY]);
+        $sql = <<<SQL
+SELECT DISTINCT product_model.id, product_model.code
+FROM
+    akeneo_batch_job_execution,
+    JSON_TABLE(raw_parameters, '$.product_model_codes[*]' COLUMNS (
+        code text PATH '$'
+    )) product_model_in_job
+    INNER JOIN pim_catalog_product_model product_model ON BINARY product_model.code = BINARY product_model_in_job.code
+WHERE job_instance_id = :jobInstanceId AND product_model.id > :formerId
+ORDER BY product_model.id
+LIMIT :limit
+SQL;
 
-        $sql = 'DELETE FROM akeneo_batch_job_execution WHERE id IN (:job_ids)';
-        $this->addSql($sql, ['job_ids' => $jobIds], ['job_ids' => Connection::PARAM_INT_ARRAY]);
+        $formerId = -1;
+        while (true) {
+            $productModels = $this->connection->executeQuery(
+                $sql,
+                [
+                    'jobInstanceId' => $jobInstanceId,
+                    'formerId' => $formerId,
+                    'limit' => self::BATCH_SIZE,
+                ],
+                [
+                    'jobInstanceId' => \PDO::PARAM_INT,
+                    'formerId' => \PDO::PARAM_INT,
+                    'limit' => \PDO::PARAM_INT,
+                ]
+            )->fetchAll();
+
+            if (empty($productModels)) {
+                break;
+            }
+
+            $formerId = (int) end($productModels)['id'];
+            yield array_column($productModels, 'code');
+        }
+    }
+
+    private function removeComputeModelDescendantJobs(int $jobInstanceId)
+    {
+        $sql = <<<SQL
+DELETE execution, queue
+FROM  akeneo_batch_job_execution execution
+    INNER JOIN akeneo_batch_job_execution_queue queue ON execution.id = queue.job_execution_id
+WHERE execution.job_instance_id = :jobInstanceId
+SQL;
+
+        $this->addSql($sql, ['jobInstanceId' => $jobInstanceId], ['jobInstanceId' => \PDO::PARAM_INT]);
 
         $this->addSql("DELETE FROM akeneo_batch_job_instance WHERE code = 'compute_product_models_descendants'");
     }
