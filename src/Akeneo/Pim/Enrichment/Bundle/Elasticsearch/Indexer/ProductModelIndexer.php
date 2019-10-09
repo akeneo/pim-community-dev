@@ -70,9 +70,6 @@ class ProductModelIndexer implements ProductModelIndexerInterface
                 $elasticsearchProductModelProjections
             );
 
-            if (empty($normalizedProductModelProjections)) {
-                continue;
-            }
             $this->productAndProductModelClient->bulkIndexes($normalizedProductModelProjections, 'id', $indexRefresh);
         }
     }
