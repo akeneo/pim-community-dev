@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes:
+
+- PIM-8773: Fix logout after opening a select2 dropdown
+
 # 3.2.12 (2019-10-08)
 
 # 3.2.11 (2019-10-07)
