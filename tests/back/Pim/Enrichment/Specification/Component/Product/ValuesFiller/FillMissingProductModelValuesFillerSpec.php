@@ -208,12 +208,117 @@ class FillMissingProductModelValuesFillerSpec extends ObjectBehavior
             ]
         );
     }
-//
-//    function it_creates_empty_price_values()
-//    {
-//
-//    }
-//
+
+    function it_creates_empty_price_values()
+    {
+        $this->fromStandardFormat(
+            [
+                'family_variant' => 'with_prices',
+                'parent' => null,
+                'values' => [],
+            ]
+        )->shouldBeLike(
+            [
+                'family_variant' => 'with_prices',
+                'parent' => null,
+                'values' => [
+                    'price' => [
+                        [
+                            'scope' => null,
+                            'locale' => null,
+                            'data' => [
+                                ['currency' => 'AED', 'amount' => null],
+                                ['currency' => 'EUR', 'amount' => null],
+                                ['currency' => 'USD', 'amount' => null],
+                            ],
+                        ],
+                    ],
+                    'localizable_price' => [
+                        [
+                            'scope' => null,
+                            'locale' => 'en_US',
+                            'data' => [
+                                ['currency' => 'AED', 'amount' => null],
+                                ['currency' => 'EUR', 'amount' => null],
+                                ['currency' => 'USD', 'amount' => null],
+                            ],
+                        ],
+                        [
+                            'scope' => null,
+                            'locale' => 'fr_FR',
+                            'data' => [
+                                ['currency' => 'AED', 'amount' => null],
+                                ['currency' => 'EUR', 'amount' => null],
+                                ['currency' => 'USD', 'amount' => null],
+                            ],
+                        ],
+                        [
+                            'scope' => null,
+                            'locale' => 'de_DE',
+                            'data' => [
+                                ['currency' => 'AED', 'amount' => null],
+                                ['currency' => 'EUR', 'amount' => null],
+                                ['currency' => 'USD', 'amount' => null],
+                            ],
+                        ],
+                    ],
+                    'scopable_price' => [
+                        [
+                            'scope' => 'tablet',
+                            'locale' => null,
+                            'data' => [
+                                ['currency' => 'AED', 'amount' => null],
+                                ['currency' => 'EUR', 'amount' => null],
+                            ],
+                        ],
+                        [
+                            'scope' => 'ecommerce',
+                            'locale' => null,
+                            'data' => [
+                                ['currency' => 'USD', 'amount' => null],
+                                ['currency' => 'EUR', 'amount' => null],
+                            ],
+                        ],
+                    ],
+                    'scopable_localizable_price' => [
+                        [
+                            'scope' => 'tablet',
+                            'locale' => 'en_US',
+                            'data' => [
+                                ['currency' => 'AED', 'amount' => null],
+                                ['currency' => 'EUR', 'amount' => null],
+                            ]
+                        ],
+                        [
+                            'scope' => 'tablet',
+                            'locale' => 'fr_FR',
+                            'data' => [
+                                ['currency' => 'AED', 'amount' => null],
+                                ['currency' => 'EUR', 'amount' => null],
+                            ]
+                        ],
+                        [
+                            'scope' => 'ecommerce',
+                            'locale' => 'fr_FR',
+                            'data' => [
+                                ['currency' => 'USD', 'amount' => null],
+                                ['currency' => 'EUR', 'amount' => null],
+                            ]
+                        ],
+                        [
+                            'scope' => 'ecommerce',
+                            'locale' => 'de_DE',
+                            'data' => [
+                                ['currency' => 'USD', 'amount' => null],
+                                ['currency' => 'EUR', 'amount' => null],
+                            ]
+                        ],
+                    ],
+                ],
+            ]
+        );
+    }
+
 //    function it_does_not_replace_existing_priice_values()
 //    {
 //

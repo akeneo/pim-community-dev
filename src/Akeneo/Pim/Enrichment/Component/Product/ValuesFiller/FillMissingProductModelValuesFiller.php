@@ -62,18 +62,18 @@ final class FillMissingProductModelValuesFiller
         );
         $standardProductModelValues = $this->pivotFormatToStandardFormat($productValuesWithNullValuesInPivotFormat);
 
-//        $priceProductModelValuesInPivotFormat = $this->createPriceProductModelValuesInPivotFormat($productModelStandardFormat);
-//        $nullPriceValuesInPivotFormat = $this->createNullPriceValuesInPivotFormat($familyVariantCode, $level);
-//        $priceProductModelValuesWithNullValuesInPivotFormat = array_replace_recursive(
-//            $nullPriceValuesInPivotFormat,
-//            $priceProductModelValuesInPivotFormat
-//        );
-//        $standardPriceProductModelValues = $this->pivotFormatToStandardFormatForPriceValues(
-//            $priceProductModelValuesWithNullValuesInPivotFormat
-//        );
-//
-        $standardPriceProductModelValues = [];
+        $priceProductModelValuesInPivotFormat = $this->createPriceProductModelValuesInPivotFormat($productModelStandardFormat);
+        $nullPriceValuesInPivotFormat = $this->createNullPriceValuesInPivotFormat($familyVariantCode, $level);
+        $priceProductModelValuesWithNullValuesInPivotFormat = array_replace_recursive(
+            $nullPriceValuesInPivotFormat,
+            $priceProductModelValuesInPivotFormat
+        );
+        $standardPriceProductModelValues = $this->pivotFormatToStandardFormatForPriceValues(
+            $priceProductModelValuesWithNullValuesInPivotFormat
+        );
+
         $productModelStandardFormat['values'] = array_merge($standardProductModelValues, $standardPriceProductModelValues);
+
 
         return $productModelStandardFormat;
     }
