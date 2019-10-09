@@ -62,3 +62,11 @@ services:
             - '@akeneo_batch.saver.job_instance'
         tags:
             - { name: kernel.event_subscriber }
+
+    pim_enrich.event_listener.remove_attribute_filter_in_job_instances:
+        class: Pim\Bundle\CatalogBundle\EventSubscriber\RemoveAttributeFiltersInJobInstancesOnAttributeDeletion
+        arguments:
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@akeneo_batch.saver.job_instance'
+        tags:
+            - { name: kernel.event_subscriber }
