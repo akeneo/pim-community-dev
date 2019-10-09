@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\UserBundle\Form\Type;
 
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Oro\Bundle\UserBundle\Form\EventListener\UserSubscriber;
 use Oro\Bundle\UserBundle\Form\Type\ChangePasswordType;
 use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\GroupRepository;
@@ -21,7 +22,6 @@ use Symfony\Component\Form\Extension\Core\Type\TimezoneType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Constraints\Valid;
@@ -51,34 +51,35 @@ class UserType extends AbstractType
     protected $tokenStorage;
 
     /** @var bool */
-    protected $isMyProfilePage;
+    protected $isEditRolesAllowed;
+
+    /** @var bool */
+    protected $isEditGroupsAllowed;
 
     /** @var string */
     protected $productGridFilterTypeClassName;
 
     /**
      * @param TokenStorageInterface     $tokenStorage
-     * @param RequestStack              $requestStack
      * @param UserPreferencesSubscriber $subscriber
      * @param RoleRepository            $roleRepository
      * @param GroupRepository           $groupRepository
      * @param EventDispatcherInterface  $eventDispatcher
+     * @param SecurityFacade            $securityFacade
      * @param string                    $productGridFilterTypeClassName
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
-        RequestStack $requestStack,
         UserPreferencesSubscriber $subscriber,
         RoleRepository $roleRepository,
         GroupRepository $groupRepository,
         EventDispatcherInterface $eventDispatcher,
+        SecurityFacade $securityFacade,
         string $productGridFilterTypeClassName
     ) {
         $this->tokenStorage = $tokenStorage;
-        $this->isMyProfilePage = 'oro_user_profile_update' === $requestStack
-                ->getCurrentRequest()
-                ->attributes
-                ->get('_route');
+        $this->isEditRolesAllowed = $securityFacade->isGranted('pim_user_role_edit');
+        $this->isEditGroupsAllowed = $securityFacade->isGranted('pim_user_group_edit');
         $this->subscriber = $subscriber;
         $this->roleRepository = $roleRepository;
         $this->groupRepository = $groupRepository;
@@ -117,11 +118,11 @@ class UserType extends AbstractType
                     'query_builder' => $this->roleRepository->getAllButAnonymousQB(),
                     'multiple'      => true,
                     'expanded'      => true,
-                    'required'      => !$this->isMyProfilePage,
+                    'required'      => $this->isEditRolesAllowed,
                     'attr'          => [
-                        'read_only' => $this->isMyProfilePage,
+                        'read_only' => !$this->isEditRolesAllowed,
                     ],
-                    'disabled'      => $this->isMyProfilePage,
+                    'disabled'      => !$this->isEditRolesAllowed,
                 ]
             )
             ->add(
@@ -135,9 +136,9 @@ class UserType extends AbstractType
                     'expanded'      => true,
                     'required'      => false,
                     'attr'          => [
-                        'read_only' => $this->isMyProfilePage,
+                        'read_only' => !$this->isEditGroupsAllowed,
                     ],
-                    'disabled'      => $this->isMyProfilePage,
+                    'disabled'      => !$this->isEditGroupsAllowed,
                 ]
             )
             ->add(
