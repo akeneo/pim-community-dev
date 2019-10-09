@@ -26,11 +26,14 @@ class FillMissingProductModelValuesFillerSpec extends ObjectBehavior
         $name = (new Builder())->aTextAttribute()->withCode('name')->build();
         $localizableName = (new Builder())->aTextAttribute()->withCode('localizable_name')->localizable()->build();
         $scopableName = (new Builder())->aTextAttribute()->withCode('scopable_name')->scopable()->build();
-        $scopableLocalizableName = (new Builder())->aTextAttribute()->withCode('scopable_localizable_name')->scopable()->localizable()->build();
+        $scopableLocalizableName = (new Builder())->aTextAttribute()->withCode('scopable_localizable_name')->scopable()
+                                                  ->localizable()->build();
         $price = (new Builder())->aPriceCollectionAttribute()->withCode('price')->build();
-        $localizablePrice = (new Builder())->aPriceCollectionAttribute()->withCode('localizable_price')->localizable()->build();
+        $localizablePrice = (new Builder())->aPriceCollectionAttribute()->withCode('localizable_price')->localizable()
+                                           ->build();
         $scopablePrice = (new Builder())->aPriceCollectionAttribute()->withCode('scopable_price')->scopable()->build();
-        $scopableLocalizablePrice = (new Builder())->aPriceCollectionAttribute()->withCode('scopable_localizable_price')->scopable()->localizable()->build();
+        $scopableLocalizablePrice = (new Builder())->aPriceCollectionAttribute()->withCode('scopable_localizable_price')
+                                                   ->scopable()->localizable()->build();
 
         $family = new Family();
         $family
@@ -51,7 +54,9 @@ class FillMissingProductModelValuesFillerSpec extends ObjectBehavior
         $familyVariantWithoutPrices->setFamily($family);
         $productAttributeSet = new VariantAttributeSet();
         $productAttributeSet->setLevel(2);
-        $productAttributeSet->setAttributes([$sku, $price, $localizablePrice, $scopablePrice, $scopableLocalizablePrice]);
+        $productAttributeSet->setAttributes(
+            [$sku, $price, $localizablePrice, $scopablePrice, $scopableLocalizablePrice]
+        );
         $familyVariantWithoutPrices->addVariantAttributeSet($productAttributeSet);
         $subProductModelAttributeSet = new VariantAttributeSet();
         $subProductModelAttributeSet->setLevel(1);
@@ -287,7 +292,7 @@ class FillMissingProductModelValuesFillerSpec extends ObjectBehavior
                             'data' => [
                                 ['currency' => 'AED', 'amount' => null],
                                 ['currency' => 'EUR', 'amount' => null],
-                            ]
+                            ],
                         ],
                         [
                             'scope' => 'tablet',
@@ -295,7 +300,7 @@ class FillMissingProductModelValuesFillerSpec extends ObjectBehavior
                             'data' => [
                                 ['currency' => 'AED', 'amount' => null],
                                 ['currency' => 'EUR', 'amount' => null],
-                            ]
+                            ],
                         ],
                         [
                             'scope' => 'ecommerce',
@@ -303,7 +308,7 @@ class FillMissingProductModelValuesFillerSpec extends ObjectBehavior
                             'data' => [
                                 ['currency' => 'USD', 'amount' => null],
                                 ['currency' => 'EUR', 'amount' => null],
-                            ]
+                            ],
                         ],
                         [
                             'scope' => 'ecommerce',
@@ -311,7 +316,7 @@ class FillMissingProductModelValuesFillerSpec extends ObjectBehavior
                             'data' => [
                                 ['currency' => 'USD', 'amount' => null],
                                 ['currency' => 'EUR', 'amount' => null],
-                            ]
+                            ],
                         ],
                     ],
                 ],
@@ -319,8 +324,175 @@ class FillMissingProductModelValuesFillerSpec extends ObjectBehavior
         );
     }
 
-//    function it_does_not_replace_existing_priice_values()
-//    {
-//
-//    }
+    function it_does_not_replace_existing_price_values()
+    {
+        $this->fromStandardFormat(
+            [
+                'family_variant' => 'with_prices',
+                'parent' => null,
+                'values' => [
+                    'price' => [
+                        [
+                            'scope' => null,
+                            'locale' => null,
+                            'data' => [
+                                ['currency' => 'AED', 'amount' => '10.00'],
+                            ],
+                        ],
+                    ],
+                    'localizable_price' => [
+                        [
+                            'scope' => null,
+                            'locale' => 'en_US',
+                            'data' => [
+                                ['currency' => 'AED', 'amount' => '10.00'],
+                                ['currency' => 'USD', 'amount' => '10.00'],
+                            ],
+                        ],
+                        [
+                            'scope' => null,
+                            'locale' => 'de_DE',
+                            'data' => [
+                                ['currency' => 'AED', 'amount' => null],
+                                ['currency' => 'EUR', 'amount' => null],
+                                ['currency' => 'USD', 'amount' => '10.00'],
+                            ],
+                        ],
+                    ],
+                    'scopable_price' => [
+                        [
+                            'scope' => 'tablet',
+                            'locale' => null,
+                            'data' => [
+                                ['currency' => 'AED', 'amount' => '10.00'],
+                            ],
+                        ],
+                        [
+                            'scope' => 'ecommerce',
+                            'locale' => null,
+                            'data' => [
+                                ['currency' => 'EUR', 'amount' => '10.00'],
+                            ],
+                        ],
+                    ],
+                    'scopable_localizable_price' => [
+                        [
+                            'scope' => 'tablet',
+                            'locale' => 'en_US',
+                            'data' => [
+                                ['currency' => 'AED', 'amount' => '10.00'],
+                                ['currency' => 'EUR', 'amount' => '10.00'],
+                            ],
+                        ],
+                        [
+                            'scope' => 'ecommerce',
+                            'locale' => 'de_DE',
+                            'data' => [
+                                ['currency' => 'EUR', 'amount' => '10.00'],
+                            ],
+                        ],
+                    ],
+                ],
+            ]
+        )->shouldBeLike(
+            [
+                'family_variant' => 'with_prices',
+                'parent' => null,
+                'values' => [
+                    'price' => [
+                        [
+                            'scope' => null,
+                            'locale' => null,
+                            'data' => [
+                                ['currency' => 'AED', 'amount' => '10.00'],
+                                ['currency' => 'EUR', 'amount' => null],
+                                ['currency' => 'USD', 'amount' => null],
+                            ],
+                        ],
+                    ],
+                    'localizable_price' => [
+                        [
+                            'scope' => null,
+                            'locale' => 'en_US',
+                            'data' => [
+                                ['currency' => 'AED', 'amount' => '10.00'],
+                                ['currency' => 'EUR', 'amount' => null],
+                                ['currency' => 'USD', 'amount' => '10.00'],
+                            ],
+                        ],
+                        [
+                            'scope' => null,
+                            'locale' => 'fr_FR',
+                            'data' => [
+                                ['currency' => 'AED', 'amount' => null],
+                                ['currency' => 'EUR', 'amount' => null],
+                                ['currency' => 'USD', 'amount' => null],
+                            ],
+                        ],
+                        [
+                            'scope' => null,
+                            'locale' => 'de_DE',
+                            'data' => [
+                                ['currency' => 'AED', 'amount' => null],
+                                ['currency' => 'EUR', 'amount' => null],
+                                ['currency' => 'USD', 'amount' => '10.00'],
+                            ],
+                        ],
+                    ],
+                    'scopable_price' => [
+                        [
+                            'scope' => 'tablet',
+                            'locale' => null,
+                            'data' => [
+                                ['currency' => 'AED', 'amount' => '10.00'],
+                                ['currency' => 'EUR', 'amount' => null],
+                            ],
+                        ],
+                        [
+                            'scope' => 'ecommerce',
+                            'locale' => null,
+                            'data' => [
+                                ['currency' => 'USD', 'amount' => null],
+                                ['currency' => 'EUR', 'amount' => '10.00'],
+                            ],
+                        ],
+                    ],
+                    'scopable_localizable_price' => [
+                        [
+                            'scope' => 'tablet',
+                            'locale' => 'en_US',
+                            'data' => [
+                                ['currency' => 'AED', 'amount' => '10.00'],
+                                ['currency' => 'EUR', 'amount' => '10.00'],
+                            ],
+                        ],
+                        [
+                            'scope' => 'tablet',
+                            'locale' => 'fr_FR',
+                            'data' => [
+                                ['currency' => 'AED', 'amount' => null],
+                                ['currency' => 'EUR', 'amount' => null],
+                            ],
+                        ],
+                        [
+                            'scope' => 'ecommerce',
+                            'locale' => 'fr_FR',
+                            'data' => [
+                                ['currency' => 'USD', 'amount' => null],
+                                ['currency' => 'EUR', 'amount' => null],
+                            ],
+                        ],
+                        [
+                            'scope' => 'ecommerce',
+                            'locale' => 'de_DE',
+                            'data' => [
+                                ['currency' => 'USD', 'amount' => null],
+                                ['currency' => 'EUR', 'amount' => '10.00'],
+                            ],
+                        ],
+                    ],
+                ],
+            ]
+        );
+    }
 }
