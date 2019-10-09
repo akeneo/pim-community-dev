@@ -4,6 +4,7 @@
 
 - PIM-7332: show an error message when a number attribute field reaches the PHP_INT_MAX.
 - PIM-7691: Users were able to edit their own roles
+- PIM-6437: Remove empty or already added attribute groups from family edit screen
 
 # 2.3.66 (2019-10-09)
 
