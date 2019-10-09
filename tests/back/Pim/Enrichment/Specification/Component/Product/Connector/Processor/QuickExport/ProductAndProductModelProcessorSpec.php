@@ -20,7 +20,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Akeneo\Tool\Component\Connector\Processor\BulkMediaFetcher;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -124,8 +123,7 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         $standardFormat = [
             'sku' => 'foo',
             'family' => 'shoes',
-            'description-en_US' => 'Shoes',
-            'size' => '42'
+            'values' => []
         ];
         $normalizer->normalize($product, 'standard', Argument::any())->willReturn($standardFormat);
         $fillMissingProductValues->fromStandardFormat($standardFormat)->willReturn($standardFormat);
@@ -133,7 +131,7 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         $this->process($product)->shouldReturn([
             'sku' => 'foo',
             'family' => 'shoes',
-            'description-en_US' => 'Shoes'
+            'values' => []
         ]);
     }
 
@@ -179,8 +177,7 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         $standardFormat = [
             'sku' => 'foo',
             'family' => 'shoes',
-            'description-en_US' => 'Shoes',
-            'size' => '42'
+            'values' => []
         ];
         $normalizer->normalize($product, 'standard', Argument::any())->willReturn($standardFormat);
         $fillMissingProductValues->fromStandardFormat($standardFormat)->willReturn($standardFormat);
@@ -188,8 +185,7 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         $this->process($product)->shouldReturn([
             'sku' => 'foo',
             'family' => 'shoes',
-            'description-en_US' => 'Shoes',
-            'size' => '42'
+            'values' => []
         ]);
     }
 
@@ -234,8 +230,7 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         $standardFormat = [
             'code' => 'foo',
             'family_variant' => 'shoes',
-            'description-en_US' => 'Shoes',
-            'size' => '42'
+            'values' => []
         ];
         $normalizer->normalize($productModel, 'standard', Argument::any())->willReturn($standardFormat);
         $fillMissingProductModelValues->fromStandardFormat($standardFormat)->willReturn($standardFormat);
@@ -243,7 +238,7 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         $this->process($productModel)->shouldReturn([
             'code' => 'foo',
             'family_variant' => 'shoes',
-            'description-en_US' => 'Shoes'
+            'values' => []
         ]);
     }
 
@@ -302,8 +297,7 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         $standardFormat = [
             'sku' => 'foo',
             'family' => 'shoes',
-            'description-en_US' => 'Shoes',
-            'size' => '42'
+            'values' => []
         ];
 
         $normalizer->normalize($product, 'standard', Argument::any())->willReturn($standardFormat);
@@ -312,7 +306,7 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         $this->process($product)->shouldReturn([
             'sku' => 'foo',
             'family' => 'shoes',
-            'description-en_US' => 'Shoes'
+            'values' => []
         ]);
     }
 
@@ -370,8 +364,7 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         $standardFormat = [
             'sku' => 'foo',
             'family' => 'shoes',
-            'description-en_US' => 'Shoes',
-            'size' => '42'
+            'values' => []
         ];
 
         $normalizer->normalize($product, 'standard', Argument::any())->willReturn($standardFormat);
@@ -380,8 +373,7 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         $this->process($product)->shouldReturn([
             'sku' => 'foo',
             'family' => 'shoes',
-            'description-en_US' => 'Shoes',
-            'size' => '42'
+            'values' => []
         ]);
     }
 }

@@ -51,13 +51,13 @@ final class FilterValues
 
         foreach ($standardFormatValues as &$values) {
             if ([] !== $this->localeCodesToKeep) {
-                $values = array_filter($values, function(array $value): bool {
+                $values = array_filter($values, function (array $value): bool {
                     return null === $value['locale'] || in_array($value['locale'], $this->localeCodesToKeep, true);
                 });
             }
 
             if ('' !== $this->channelCodeToKeep) {
-                $values = array_filter($values, function(array $value): bool {
+                $values = array_filter($values, function (array $value): bool {
                     return null === $value['scope'] || $value['scope'] === $this->channelCodeToKeep;
                 });
             }
@@ -65,7 +65,7 @@ final class FilterValues
             $values = array_values($values);
         }
 
-        $standardFormatValues = array_filter($standardFormatValues, function($value) :bool{
+        $standardFormatValues = array_filter($standardFormatValues, function ($value) :bool {
             return [] !== $value;
         });
 

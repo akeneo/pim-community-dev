@@ -84,7 +84,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $channel->getCode()->willReturn('foobar');
         $channel->getLocaleCodes()->willReturn(['en_US', 'de_DE']);
 
-        $normalizer->normalize($product, 'standard', ['filter_types' => ['pim.transform.product_value.structured'], 'channels' => ['foobar'], 'locales' => ['en_US']])
+        $normalizer->normalize($product, 'standard')
             ->willReturn([
                 'enabled'    => true,
                 'categories' => ['cat1', 'cat2'],
@@ -180,8 +180,7 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
-        $normalizer->normalize($product, 'standard', ['filter_types' => ['pim.transform.product_value.structured'], 'filter_types' => ['pim.transform.product_value.structured'], 'channels' => ['foobar'], 'locales' => ['en_US']])
-            ->willReturn($productStandard);
+        $normalizer->normalize($product, 'standard')->willReturn($productStandard);
 
         $mediaFetcher->fetchAll($valuesCollection, '/working/directory/', 'AKIS_XS')->shouldBeCalled();
         $mediaFetcher->getErrors()->willReturn([]);
@@ -240,8 +239,7 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
-        $normalizer->normalize($product, 'standard', ['filter_types' => ['pim.transform.product_value.structured'], 'channels' => ['foobar'], 'locales' => ['en_US']])
-            ->willReturn($productStandard);
+        $normalizer->normalize($product, 'standard')->willReturn($productStandard);
 
         $mediaFetcher->fetchAll($valuesCollection, '/working/directory/', 'AKIS_XS')->shouldBeCalled();
         $mediaFetcher->getErrors()->willReturn(

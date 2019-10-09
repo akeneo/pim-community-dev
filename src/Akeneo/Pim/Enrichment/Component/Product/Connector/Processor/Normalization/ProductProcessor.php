@@ -67,32 +67,19 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
         $structure = $parameters->get('filters')['structure'];
         $channel = $this->channelRepository->findOneByIdentifier($structure['scope']);
 
-        $productStandard = $this->normalizer->normalize(
-            $product,
-            'standard',
-            [
-                'filter_types' => ['pim.transform.product_value.structured'],
-                'channels' => [$channel->getCode()],
-                'locales'  => array_intersect(
-                    $channel->getLocaleCodes(),
-                    $parameters->get('filters')['structure']['locales']
-                ),
-            ]
-        );
+        $productStandard = $this->normalizer->normalize($product, 'standard');
 
         // not done for product as it fill missing product values at the end for performance purpose
         // not done yet for product model export so we have to do it
         if ($product instanceof ProductModelInterface) {
-            $productStandard = $this->fillMissingProductModelValues->fromStandardFormat($product);
+            $productStandard = $this->fillMissingProductModelValues->fromStandardFormat($productStandard);
         }
 
         $attributeCodes = $this->areAttributesToFilter($parameters) ? $this->getAttributesCodesToFilter($parameters) : [];
 
         $productStandard['values'] = FilterValues::create()
             ->filterByChannelCode($channel->getCode())
-            ->filterByLocaleCodes(array_intersect(
-                $channel->getLocaleCodes(),
-                $parameters->get('filters')['structure']['locales']))
+            ->filterByLocaleCodes(array_intersect($channel->getLocaleCodes(), $parameters->get('filters')['structure']['locales']))
             ->filterByAttributeCodes($attributeCodes)
             ->execute($productStandard['values']);
 
@@ -137,27 +124,6 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
         foreach ($this->mediaFetcher->getErrors() as $error) {
             $this->stepExecution->addWarning($error['message'], [], new DataInvalidItem($error['media']));
         }
-    }
-
-    /**
-     * Filters the attributes that have to be exported based on a product and a list of attributes
-     *
-     * @param array $values
-     * @param array $attributesToFilter
-     *
-     * @return array
-     */
-    protected function filterValues(array $values, array $attributesToFilter)
-    {
-        $valuesToExport = [];
-        $attributesToFilter = array_flip($attributesToFilter);
-        foreach ($values as $code => $value) {
-            if (isset($attributesToFilter[$code])) {
-                $valuesToExport[$code] = $value;
-            }
-        }
-
-        return $valuesToExport;
     }
 
     /**

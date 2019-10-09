@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\QuickExport;
 
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\FilterValues;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\AbstractProcessor;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
@@ -94,12 +95,20 @@ class ProductAndProductModelProcessor extends AbstractProcessor
         $normalizerContext = $this->getNormalizerContext($parameters);
         $productStandard = $this->normalizer->normalize($entityWithValues, 'standard', $normalizerContext);
 
-
         if ($entityWithValues instanceof ProductInterface) {
             $productStandard = $this->fillMissingProductValues->fromStandardFormat($productStandard);
         } else {
             $productStandard = $this->fillMissingProductModelValues->fromStandardFormat($productStandard);
         }
+
+        $locales = $parameters->has('selected_locales') ?
+            $parameters->get('selected_locales') :
+            $this->getLocaleCodes($parameters->get('scope'));
+
+        $productStandard['values'] = FilterValues::create()
+            ->filterByChannelCode($parameters->get('scope'))
+            ->filterByLocaleCodes($locales)
+            ->execute($productStandard['values']);
 
         $selectedProperties = $parameters->get('selected_properties');
 
