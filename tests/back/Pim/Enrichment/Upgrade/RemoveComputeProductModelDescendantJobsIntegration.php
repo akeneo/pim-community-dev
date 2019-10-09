@@ -87,11 +87,14 @@ SQL;
 
     protected function createProductsAndProductModels(): void
     {
+        $familyVariant = $this->get('pim_catalog.repository.family_variant')->findOneByIdentifier('familyVariantA1');
+        $familyVariantId = $familyVariant->getId();
+
         $sql = <<<SQL
 INSERT INTO pim_catalog_product_model (id, code, family_variant_id, raw_values, created, updated, root, lvl, lft, rgt)
 VALUES
-    (3000, 'pm1', 1, '{"name": {"<all_channels>": {"<all_locales>": ""}}}', NOW(), NOW(), 0, 0, 0, 0),
-    (3001, 'pm2', 1, '{"name": {"<all_channels>": {"<all_locales>": []}}}', NOW(), NOW(), 0, 0, 0, 0)
+    (3000, 'pm1', $familyVariantId, '{"name": {"<all_channels>": {"<all_locales>": ""}}}', NOW(), NOW(), 0, 0, 0, 0),
+    (3001, 'pm2', $familyVariantId, '{"name": {"<all_channels>": {"<all_locales>": []}}}', NOW(), NOW(), 0, 0, 0, 0)
 SQL;
         $this->getConnection()->exec($sql);
 
