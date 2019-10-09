@@ -70,19 +70,20 @@ class StreamResourceResponse
     /**
      * @param resource $resource      resource containing the whole data to process
      * @param array    $uriParameters default uri parameters to use when forwarding requests
+     * @param null|callable $postResponseCallable inject callable to execute after output response flushing
      *
      * @throws HttpException
      *
      * @return StreamedResponse
      */
-    public function streamResponse($resource, array $uriParameters = [])
+    public function streamResponse($resource, array $uriParameters = [], callable $postResponseCallable = null)
     {
         $response = new StreamedResponse();
         $response->headers->set('Content-Type', static::CONTENT_TYPE);
 
         $this->checkLineNumberInInput($resource);
 
-        $response->setCallback(function () use ($resource, $uriParameters) {
+        $response->setCallback(function () use ($resource, $uriParameters, $postResponseCallable) {
             rewind($resource);
             $this->ensureOutputBufferingIsStarted();
 
@@ -127,12 +128,22 @@ class StreamResourceResponse
                         'status_code' => $e->getStatusCode(),
                         'message'     => $e->getMessage(),
                     ];
+                } catch (\Throwable $e) {
+                    if (is_callable($postResponseCallable)) {
+                        $postResponseCallable();
+                    }
+
+                    throw $e;
                 }
 
                 $this->uniqueValuesSet->reset();
                 $this->flushOutputBuffer($response, $lineNumber);
                 $lineNumber++;
                 $line = stream_get_line($resource, $bufferSize + 1, PHP_EOL);
+            }
+
+            if (is_callable($postResponseCallable)) {
+                $postResponseCallable();
             }
         });
 

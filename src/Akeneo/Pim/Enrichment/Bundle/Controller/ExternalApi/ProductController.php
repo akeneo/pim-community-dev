@@ -385,9 +385,10 @@ class ProductController
     {
         $resource = $request->getContent(true);
         $this->batchOnSaveEventSubscriber->activate();
-        $response = $this->partialUpdateStreamResource->streamResponse($resource);
-        $this->batchOnSaveEventSubscriber->dispatchAllEvents();
-        $this->batchOnSaveEventSubscriber->deactivate();
+        $response = $this->partialUpdateStreamResource->streamResponse($resource, [], function () {
+            $this->batchOnSaveEventSubscriber->dispatchAllEvents();
+            $this->batchOnSaveEventSubscriber->deactivate();
+        });
 
         return $response;
     }

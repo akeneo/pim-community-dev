@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\ProductModel\ExternalApi;
 
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
+use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
 class PartialUpdateListProductModelEndToEnd extends AbstractProductModelTestCase
@@ -52,6 +53,9 @@ class PartialUpdateListProductModelEndToEnd extends AbstractProductModelTestCase
      */
     public function testCreateAndUpdateAListOfProductModels()
     {
+        // We remove all completenesses in order to check that completeness is recomputed.
+        $this->get('database_connection')->exec('TRUNCATE pim_catalog_completeness;');
+
         $data =
             <<<JSON
     {"code": "sub_sweat_option_a", "family_variant": "familyVariantA1", "parent": "sweat", "values": {"a_simple_select": [{"locale": null, "scope": null, "data": "optionA"}]}}
@@ -217,6 +221,17 @@ JSON;
         $this->assertSameProductModels($expectedProductModels['sub_sweat_option_b'], 'sub_sweat_option_b');
         $this->assertSameProductModels($expectedProductModels['sweat'], 'sweat');
         $this->assertSameProductModels($expectedProductModels['root_product_model'], 'root_product_model');
+
+        $this->assertCompletenessWasComputedForProducts(['apollon_optiona_true']);
+
+        $esProduct = $this->getProductFromIndex('apollon_optiona_true');
+        Assert::assertNotNull($esProduct);
+        Assert::assertArrayHasKey('a_yes_no-boolean', $esProduct['values']);
+        Assert::assertArrayHasKey('a_price-prices', $esProduct['values']);
+        Assert::assertArrayHasKey('a_simple_select-option', $esProduct['values']);
+
+        $esProductModel = $this->getProductModelFromIndex('sub_sweat_option_a');
+        Assert::assertNotNull($esProductModel);
     }
 
     public function testCreateAndUpdateSameProductModel()
@@ -338,6 +353,39 @@ JSON;
         NormalizedProductCleaner::clean($standardizedProductModel);
 
         $this->assertSame($expectedProductModel, $standardizedProductModel);
+    }
+
+    protected function getProductFromIndex(string $identifier): ?array
+    {
+        $esProductClient = $this->getFromTestContainer('akeneo_elasticsearch.client.product_and_product_model');
+
+        $esProductClient->refreshIndex();
+        $res = $esProductClient->search(['query' => ['term' => ['identifier' => $identifier]]]);
+
+        return $res['hits']['hits'][0]['_source'] ?? null;
+    }
+
+    protected function getProductModelFromIndex(string $code): ?array
+    {
+        $esProductClient = $this->getFromTestContainer('akeneo_elasticsearch.client.product_and_product_model');
+
+        $esProductClient->refreshIndex();
+        $res = $esProductClient->search(['query' => ['term' => ['identifier' => $code]]]);
+
+        return $res['hits']['hits'][0]['_source'] ?? null;
+    }
+
+    private function assertCompletenessWasComputedForProducts(array $identifiers): void
+    {
+        foreach ($identifiers as $identifier) {
+            $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
+            Assert::assertNotNull($product);
+
+            $completenesses = $this
+                ->getFromTestContainer('akeneo.pim.enrichment.product.query.get_product_completenesses')
+                ->fromProductId($product->getId());
+            Assert::assertCount(6, $completenesses); // 3 channels * 2 locales
+        }
     }
 
     /**

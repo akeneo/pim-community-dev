@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnSave;
+namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductModel\OnSave;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Bundle\ApiBundle\EventSubscriber\BatchEventSubscriberInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
- * When activated, the goal of this subscriber is to catch every POST_SAVE events for products,
- * and then dispatch a single POST_SAVE_ALL event with all saved products.
+ * When activated, the goal of this subscriber is to catch every POST_SAVE events for product models,
+ * and then dispatch a single POST_SAVE_ALL event with all saved product models.
  * This subscriber is deactivated by default.
  *
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class BatchOnSaveProductEventSubscriber implements BatchEventSubscriberInterface
+final class BatchOnSaveProductModelEventSubscriber implements BatchEventSubscriberInterface
 {
     const BATCH_SIZE = 1000;
 
@@ -30,7 +30,7 @@ final class BatchOnSaveProductEventSubscriber implements BatchEventSubscriberInt
     private $isActivated = false;
 
     /** @var array */
-    private $eventProducts = [];
+    private $eventProductModels = [];
 
     /**
      * BatchOnSaveProductEvent constructor.
@@ -42,9 +42,9 @@ final class BatchOnSaveProductEventSubscriber implements BatchEventSubscriberInt
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function getEventProducts(): array
+    public function getEventProductModels(): array
     {
-        return $this->eventProducts;
+        return $this->eventProductModels;
     }
 
     public static function getSubscribedEvents(): array
@@ -67,29 +67,29 @@ final class BatchOnSaveProductEventSubscriber implements BatchEventSubscriberInt
 
     public function batchEvents(GenericEvent $event)
     {
-        $product = $event->getSubject();
+        $productModel = $event->getSubject();
         $unitary = $event->getArguments()['unitary'] ?? false;
-        if (!$this->isActivated || !$product instanceof ProductInterface || !$unitary) {
+        if (!$this->isActivated || !$productModel instanceof ProductModelInterface || !$unitary) {
             return;
         }
 
-        $this->eventProducts[$product->getId()] = $product;
+        $this->eventProductModels[$productModel->getCode()] = $productModel;
 
         // We don't stop propagation because subscribers may not handle the bulk save.
         $event->setArgument('unitary', false);
 
-        if (count($this->eventProducts) >= self::BATCH_SIZE) {
+        if (count($this->eventProductModels) >= self::BATCH_SIZE) {
             $this->dispatchAllEvents();
         }
     }
 
     public function dispatchAllEvents(): void
     {
-        if (empty($this->eventProducts)) {
+        if (empty($this->eventProductModels)) {
             return;
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($this->eventProducts));
-        $this->eventProducts = [];
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($this->eventProductModels));
+        $this->eventProductModels = [];
     }
 }
