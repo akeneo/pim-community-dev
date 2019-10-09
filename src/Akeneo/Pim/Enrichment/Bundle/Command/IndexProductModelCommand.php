@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Command;
 
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelDescendantsIndexer;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductModelIndexerInterface;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelDescendantsAndAncestorsIndexer;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\FetchMode;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
@@ -29,41 +26,28 @@ class IndexProductModelCommand extends Command
 {
     protected static $defaultName = 'pim:product-model:index';
 
-    private const BULK_SIZE = 100;
+    private const BATCH_SIZE = 1000;
 
-    /** @var ProductModelRepositoryInterface */
-    private $productModelRepository;
-
-    /** @var ProductModelIndexerInterface */
-    private $productModelIndexer;
-
-    /** @var ProductModelDescendantsIndexer */
-    private $bulkProductModelDescendantsIndexer;
-
-    /** @var ObjectManager */
-    private $objectManager;
+    private const ERROR_CODE_USAGE = 1;
 
     /** @var Client */
     private $productAndProductModelClient;
 
-    /** @var string */
-    private $productAndProductModelIndexName;
+    /** @var ProductModelDescendantsAndAncestorsIndexer */
+    private $productModelDescendantAndAncestorsIndexer;
+
+    /** @var Connection */
+    private $connection;
 
     public function __construct(
-        ProductModelRepositoryInterface $productModelRepository,
-        ProductModelIndexerInterface $productModelIndexer,
-        ProductModelDescendantsIndexer $bulkProductModelDescendantsIndexer,
-        ObjectManager $objectManager,
         Client $productAndProductModelClient,
-        string $productAndProductModelIndexName
+        ProductModelDescendantsAndAncestorsIndexer $productModelDescendantAndAncestorsIndexer,
+        Connection $connection
     ) {
         parent::__construct();
-        $this->productModelRepository = $productModelRepository;
-        $this->productModelIndexer = $productModelIndexer;
-        $this->bulkProductModelDescendantsIndexer = $bulkProductModelDescendantsIndexer;
-        $this->objectManager = $objectManager;
         $this->productAndProductModelClient = $productAndProductModelClient;
-        $this->productAndProductModelIndexName = $productAndProductModelIndexName;
+        $this->productModelDescendantAndAncestorsIndexer = $productModelDescendantAndAncestorsIndexer;
+        $this->connection = $connection;
     }
 
     /**
@@ -80,7 +64,7 @@ class IndexProductModelCommand extends Command
             )
             ->addOption(
                 'all',
-                true,
+                'a',
                 InputOption::VALUE_NONE,
                 'Index all existing product models into Elasticsearch'
             )
@@ -89,145 +73,127 @@ class IndexProductModelCommand extends Command
 
     /**
      * {@inheritdoc}
-     *
-     * TODO: Once the ProductModelQueryBuilder is written, we can use it instead of the productModelRepository.
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->checkIndexesExist();
+        $this->checkIndexExists();
 
-        $isIndexAll = $input->getOption('all');
-        $productModelCodes = $input->getArgument('codes');
-
-        if ($isIndexAll) {
-            $totalIndexedProductModels = $this->indexAll($output);
-        } elseif (0 < count($productModelCodes)) {
-            $totalIndexedProductModels = $this->index($output, $productModelCodes);
-        } else {
-            $output->writeln('<error>Please specify a list of product model codes to index or use the flag --all to index all product models</error>');
-
-            return;
-        }
-
-        $message = sprintf('<info>%d product models indexed</info>', $totalIndexedProductModels);
-
-        $output->writeln($message);
-    }
-
-    /**
-     * Indexes all the product models in Elasticsearch.
-     *
-     * @param OutputInterface $output
-     *
-     * @return int
-     */
-    private function indexAll(OutputInterface $output): int
-    {
-        $totalElements = $this->productModelRepository->countRootProductModels();
-
-        $output->writeln(sprintf('<info>%s product models to index</info>', $totalElements));
-
-        $lastRootProductModel = null;
-        $progressBar = new ProgressBar($output, $totalElements);
-
-        $progressBar->start();
-        while (!empty($rootProductModels =
-            $this->productModelRepository->searchRootProductModelsAfter($lastRootProductModel, self::BULK_SIZE))) {
-            $productModelCodes = array_map(function (ProductModelInterface $productModel) {
-                return $productModel->getCode();
-            }, $rootProductModels);
-
-            $this->productModelIndexer->indexFromProductModelCodes(
-                $productModelCodes,
-                ['index_refresh' => Refresh::disable()]
-            );
-            $this->bulkProductModelDescendantsIndexer->indexfromProductModelCodes(
-                $productModelCodes,
-                ['index_refresh' => Refresh::disable()]
-            );
-            $this->objectManager->clear();
-
-            $lastRootProductModel = end($rootProductModels);
-            $progressBar->advance(count($rootProductModels));
-        }
-
-        $progressBar->finish();
-
-        return $totalElements;
-    }
-
-    /**
-     * Indexes the given list of product model codes in Elasticsearch.
-     *
-     * @param OutputInterface $output
-     * @param string[]        $productModelCodes
-     *
-     * @return int
-     */
-    private function index(OutputInterface $output, array $productModelCodes): int
-    {
-        $output->writeln(sprintf('<info>%d product models found for indexing</info>', count($productModelCodes)));
-
-        $i = 0;
-        $productModelBulk = [];
-        $totalProductModelsIndexed = 0;
-        $progressBar = new ProgressBar($output, count($productModelCodes));
-
-        $progressBar->start();
-        foreach ($productModelCodes as $productModelCode) {
-            $productModelBulk[] = $productModelCode;
-
-            $i++;
-
-            if (0 === $i % self::BULK_SIZE) {
-                $this->productModelIndexer->indexFromProductModelCodes(
-                    $productModelBulk,
-                    ['index_refresh' => Refresh::disable()]
+        if (true === $input->getOption('all')) {
+            $chunkedProductModelCodes = $this->getAllRootProductModelCodes();
+            $productModelCount = $this->getTotalNumberOfRootProductModels();
+        } elseif (!empty($input->getArgument('codes'))) {
+            $requestedCodes = $input->getArgument('codes');
+            $existingroductModelCodes = $this->getExistingProductModelCodes($requestedCodes);
+            $nonExistingCodes = array_diff($requestedCodes, $existingroductModelCodes);
+            if (!empty($nonExistingCodes)) {
+                $output->writeln(
+                    sprintf(
+                        '<error>Some product models were not found for the given codes: %s</error>',
+                        implode(', ', $nonExistingCodes)
+                    )
                 );
-                $this->bulkProductModelDescendantsIndexer->indexfromProductModelCodes(
-                    $productModelBulk,
-                    ['index_refresh' => Refresh::disable()]
-                );
-                $this->objectManager->clear();
-
-                $progressBar->advance(count($productModelBulk));
-
-                $productModelBulk = [];
-
-                $totalProductModelsIndexed += self::BULK_SIZE;
             }
+            $chunkedProductModelCodes = array_chunk($existingroductModelCodes, self::BATCH_SIZE);
+            $productModelCount = count($existingroductModelCodes);
+        } else {
+            $output->writeln(
+                '<error>Please specify a list of product model codes to index or use the flag --all to index all product models</error>'
+            );
+
+            return self::ERROR_CODE_USAGE;
         }
 
-        if (!empty($productModelBulk)) {
-            $this->productModelIndexer->indexFromProductModelCodes(
-                $productModelBulk,
-                ['index_refresh' => Refresh::disable()]
-            );
-            $this->bulkProductModelDescendantsIndexer->indexfromProductModelCodes(
-                $productModelBulk,
-                ['index_refresh' => Refresh::disable()]
-            );
-            $this->objectManager->clear();
+        $numberOfIndexedProducts = $this->doIndex($chunkedProductModelCodes, new ProgressBar($output, $productModelCount));
 
-            $progressBar->advance(count($productModelBulk));
+        $output->writeln('');
+        $output->writeln(sprintf('<info>%d product models indexed</info>', $numberOfIndexedProducts));
 
-            $totalProductModelsIndexed += count($productModelBulk);
+        return 0;
+    }
+
+    private function doIndex(iterable $chunkedProductModelCodes, ProgressBar $progressBar): int
+    {
+        $indexedProductModelCount = 0;
+
+        $progressBar->start();
+        foreach ($chunkedProductModelCodes as $productModelCodes) {
+            $this->productModelDescendantAndAncestorsIndexer->indexFromProductModelCodes($productModelCodes);
+            $indexedProductModelCount += count($productModelCodes);
+            $progressBar->advance(count($productModelCodes));
         }
         $progressBar->finish();
 
-        return $totalProductModelsIndexed;
+        return $indexedProductModelCount;
+    }
+
+    private function getAllRootProductModelCodes(): iterable
+    {
+        $formerId = 0;
+        $sql = <<< SQL
+SELECT id, code
+FROM pim_catalog_product_model
+WHERE id > :formerId
+AND parent_id IS NULL
+ORDER BY id ASC
+LIMIT :limit
+SQL;
+        while (true) {
+            $rows = $this->connection->executeQuery(
+                $sql,
+                [
+                    'formerId' => $formerId,
+                    'limit' => self::BATCH_SIZE,
+                ],
+                [
+                    'formerId' => \PDO::PARAM_INT,
+                    'limit' => \PDO::PARAM_INT,
+                ]
+            )->fetchAll();
+
+            if (empty($rows)) {
+                return;
+            }
+
+            $formerId = (int)end($rows)['id'];
+            yield array_column($rows, 'code');
+        }
+    }
+
+    private function getExistingproductModelCodes(array $productModelCodes): array
+    {
+        $sql = <<<SQL
+SELECT code FROM pim_catalog_product_model
+WHERE code IN (:codes);
+SQL;
+
+        return $this->connection->executeQuery(
+            $sql,
+            [
+                'codes' => $productModelCodes,
+            ],
+            [
+                'codes' => Connection::PARAM_STR_ARRAY,
+            ]
+        )->fetchAll(FetchMode::COLUMN, 0);
+    }
+
+    private function getTotalNumberOfRootProductModels(): int
+    {
+        return (int)$this->connection->executeQuery(
+            'SELECT COUNT(0) FROM pim_catalog_product_model WHERE parent_id IS NULL'
+        )->fetchColumn(0);
     }
 
     /**
      * @throws \RuntimeException
      */
-    private function checkIndexesExist()
+    private function checkIndexExists(): void
     {
         if (!$this->productAndProductModelClient->hasIndex()) {
             throw new \RuntimeException(
                 sprintf(
                     'The index "%s" does not exist in Elasticsearch.',
-                    $this->productAndProductModelIndexName
+                    $this->productAndProductModelClient->getIndexName()
                 )
             );
         }

@@ -3,7 +3,7 @@
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer;
-use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetAncestorProductModelCodes;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetAncestorProductModelCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductModelIndexerInterface;
 use PhpSpec\ObjectBehavior;
@@ -64,5 +64,15 @@ class ProductAndAncestorsIndexerSpec extends ObjectBehavior
         $productIndexer->indexFromProductIdentifiers(['a_variant'], $options)->shouldBeCalled();
 
         $this->indexFromProductIdentifiers(['a_variant'], $options);
+    }
+
+    function it_deletes_products_from_index_and_reindexes_ancestors(
+        ProductIndexerInterface $productIndexer,
+        ProductModelIndexerInterface $productModelIndexer
+    ) {
+        $productIndexer->removeFromProductIds([44, 56])->shouldBeCalled();
+        $productModelIndexer->indexFromProductModelCodes(['root_pm', 'sub_pm_1', 'sub_pm_2'])->shouldBeCalled();
+
+        $this->removeFromProductIdsAndReindexAncestors([44, 56], ['root_pm', 'sub_pm_1', 'sub_pm_2']);
     }
 }

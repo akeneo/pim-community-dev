@@ -6,7 +6,6 @@ namespace Akeneo\Pim\Structure\Bundle\EventSubscriber;
 
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
-use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -61,9 +60,8 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
     /**
      * Validates and saves the family variants belonging to a family whenever it is updated.
      *
-     * By explicitly calling the `FamilyVariantSaver::save` function we ensure that the:
-     * 1. `compute_family_variant_structure_changes` job will run
-     * 2. `compute_product_model_descendants` job will run.
+     * By explicitly calling the `FamilyVariantSaver::save` function we ensure that the
+     * `compute_family_variant_structure_changes` job will run.
      *
      * hence, updating the catalog asynchronously.
      *

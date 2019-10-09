@@ -2,10 +2,19 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Fixture;
 
+use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\FamilyVariantRepositoryInterface;
+use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Helper to create some catalog entities, such as VariantProduct and ProductModel
@@ -16,15 +25,83 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class EntityBuilder
 {
-    /** @var ContainerInterface */
-    private $container;
+    /** @var JobLauncher */
+    private $jobLauncher;
 
-    /**
-     * @param ContainerInterface $container
-     */
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
+    /** @var ValidatorInterface */
+    private $validator;
+
+    /** @var EntityWithValuesBuilderInterface */
+    private $entityWithValuesBuilder;
+
+    /** @var ProductBuilderInterface */
+    private $productBuilder;
+
+    /** @var ObjectUpdaterInterface */
+    private $productUpdater;
+
+    /** @var SaverInterface */
+    private $productSaver;
+
+    /** @var SimpleFactoryInterface */
+    private $productModelFactory;
+
+    /** @var ObjectUpdaterInterface */
+    private $productModelUpdater;
+
+    /** @var SaverInterface */
+    private $productModelSaver;
+
+    /** @var FamilyVariantRepositoryInterface */
+    private $familyVariantRepository;
+
+    /** @var SimpleFactoryInterface */
+    private $familyVariantFactory;
+
+    /** @var ObjectUpdaterInterface */
+    private $familyVariantUpdater;
+
+    /** @var SaverInterface */
+    private $familyVariantSaver;
+
+    /** @var AttributeRepositoryInterface */
+    private $attributeRepository;
+
+    /** @var Client */
+    private $esClient;
+
+    public function __construct(
+        JobLauncher $jobLauncher,
+        ValidatorInterface $validator,
+        EntityWithValuesBuilderInterface $entityWithValuesBuilder,
+        ProductBuilderInterface $productBuilder,
+        ObjectUpdaterInterface $productUpdater,
+        SaverInterface $productSaver,
+        SimpleFactoryInterface $productModelFactory,
+        ObjectUpdaterInterface $productModelUpdater,
+        SaverInterface $productModelSaver,
+        FamilyVariantRepositoryInterface $familyVariantRepository,
+        SimpleFactoryInterface $familyVariantFactory,
+        ObjectUpdaterInterface $familyVariantUpdater,
+        SaverInterface $familyVariantSaver,
+        AttributeRepositoryInterface $attributeRepository,
+        Client $esClient
+    ) {
+        $this->jobLauncher = $jobLauncher;
+        $this->validator = $validator;
+        $this->entityWithValuesBuilder = $entityWithValuesBuilder;
+        $this->productBuilder = $productBuilder;
+        $this->productUpdater = $productUpdater;
+        $this->productSaver = $productSaver;
+        $this->productModelFactory = $productModelFactory;
+        $this->productModelUpdater = $productModelUpdater;
+        $this->productModelSaver = $productModelSaver;
+        $this->familyVariantRepository = $familyVariantRepository;
+        $this->familyVariantFactory = $familyVariantFactory;
+        $this->familyVariantUpdater = $familyVariantUpdater;
+        $this->familyVariantSaver = $familyVariantSaver;
+        $this->attributeRepository = $attributeRepository;
+        $this->esClient = $esClient;
     }
 
     /**
@@ -39,10 +116,10 @@ class EntityBuilder
         string $familyCode,
         array $data
     ): ProductInterface {
-        $product = $this->container->get('pim_catalog.builder.product')->createProduct($identifier, $familyCode);
-        $this->container->get('pim_catalog.updater.product')->update($product, $data);
-        $this->container->get('validator')->validate($product);
-        $this->container->get('pim_catalog.saver.product')->save($product);
+        $product = $this->productBuilder->createProduct($identifier, $familyCode);
+        $this->productUpdater->update($product, $data);
+        $this->validator->validate($product);
+        $this->productSaver->save($product);
 
         return $product;
     }
@@ -54,10 +131,10 @@ class EntityBuilder
      */
     public function createFamilyVariant(array $data)
     {
-        $family = $this->container->get('pim_catalog.factory.family_variant')->create();
-        $this->container->get('pim_catalog.updater.family_variant')->update($family, $data);
-        $this->container->get('validator')->validate($family);
-        $this->container->get('pim_catalog.saver.family_variant')->save($family);
+        $family = $this->familyVariantFactory->create();
+        $this->familyVariantUpdater->update($family, $data);
+        $this->validator->validate($family);
+        $this->familyVariantSaver->save($family);
 
         return $family;
     }
@@ -76,12 +153,15 @@ class EntityBuilder
         ?ProductModelInterface $parent,
         array $data
     ): ProductModelInterface {
-        $productModel = $this->container->get('pim_catalog.factory.product_model')->create();
+        $productModel = $this->productModelFactory->create();
 
-        $this->container->get('pim_catalog.updater.product_model')->update($productModel, [
-            'code'           => $identifier,
-            'family_variant' => $familyVariantCode,
-        ]);
+        $this->productModelUpdater->update(
+            $productModel,
+            [
+                'code'           => $identifier,
+                'family_variant' => $familyVariantCode,
+            ]
+        );
 
         if (null !== $parent) {
             $productModel->setParent($parent);
@@ -114,12 +194,11 @@ class EntityBuilder
     ): ProductInterface {
         $variantProduct = new Product();
 
-        $identifierAttribute = $this->container->get('pim_catalog.repository.attribute')->findOneByCode('sku');
+        $identifierAttribute = $this->attributeRepository->findOneByCode('sku');
 
-        $entityWithValuesBuilder = $this->container->get('pim_catalog.builder.entity_with_values');
-        $entityWithValuesBuilder->addOrReplaceValue($variantProduct, $identifierAttribute, null, null, $identifier);
+        $this->entityWithValuesBuilder->addOrReplaceValue($variantProduct, $identifierAttribute, null, null, $identifier);
 
-        $this->container->get('pim_catalog.updater.product')->update(
+        $this->productUpdater->update(
             $variantProduct,
             [
                 'family' => $familyCode,
@@ -128,7 +207,9 @@ class EntityBuilder
 
         $variantProduct->setParent($parent);
 
-        $familyVariant = $this->container->get('pim_catalog.repository.family_variant')->findOneByCode($familyVariantCode);
+        $familyVariant = $this->familyVariantRepository->findOneByCode(
+            $familyVariantCode
+        );
         $variantProduct->setFamilyVariant($familyVariant);
 
         $this->updateVariantProduct($variantProduct, $data);
@@ -142,16 +223,14 @@ class EntityBuilder
      */
     protected function updateProductModel(ProductModelInterface $productModel, array $data): void
     {
-        $this->container->get('pim_catalog.updater.product_model')->update($productModel, $data);
-        $this->container->get('pim_catalog.saver.product_model')->save($productModel);
+        $this->productModelUpdater->update($productModel, $data);
+        $this->productModelSaver->save($productModel);
 
-        $launcher = $this->container->get('akeneo_integration_tests.launcher.job_launcher');
-
-        while ($launcher->hasJobInQueue()) {
-            $launcher->launchConsumerOnce();
+        while ($this->jobLauncher->hasJobInQueue()) {
+            $this->jobLauncher->launchConsumerOnce();
         }
 
-        $this->container->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        $this->esClient->refreshIndex();
     }
 
     /**
@@ -160,8 +239,8 @@ class EntityBuilder
      */
     protected function updateVariantProduct(ProductInterface $variantProduct, array $data): void
     {
-        $this->container->get('pim_catalog.updater.product')->update($variantProduct, $data);
-        $this->container->get('pim_catalog.saver.product')->save($variantProduct);
-        $this->container->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        $this->productUpdater->update($variantProduct, $data);
+        $this->productSaver->save($variantProduct);
+        $this->esClient->refreshIndex();
     }
 }

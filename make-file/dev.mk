@@ -10,7 +10,7 @@ phpspec:
 	${PHP_RUN} vendor/bin/phpspec run ${F}
 
 .PHONY: acceptance
-acceptance: behat.yml
+acceptance:
 	${PHP_RUN} vendor/bin/behat -p acceptance ${F}
 
 .PHONY: phpunit
@@ -18,7 +18,7 @@ phpunit:
 	${PHP_RUN} vendor/bin/phpunit -c phpunit.xml.dist ${F}
 
 .PHONY: behat-legacy
-behat-legacy: behat.yml
+behat-legacy:
 	APP_ENV=behat $(PHP_EXEC) vendor/bin/behat -p legacy -s all ${F}
 
 ##

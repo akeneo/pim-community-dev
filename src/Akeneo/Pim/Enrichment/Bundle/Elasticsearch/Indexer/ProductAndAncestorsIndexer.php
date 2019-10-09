@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 
-use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetAncestorProductModelCodes;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetAncestorProductModelCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductModelIndexerInterface;
 
@@ -40,5 +40,18 @@ class ProductAndAncestorsIndexer
             $this->productModelIndexer->indexFromProductModelCodes($ancestorProductModelCodes, $options);
         }
         $this->productIndexer->indexFromProductIdentifiers($identifiers, $options);
+    }
+
+    /**
+     * Deletes products from the search engine and reindexes their ancestors. As the products do not exist anymore,
+     * we need to provide the ancestors' codes in order to reindex them.
+     *
+     * @param int[] $productIds
+     * @param string[] $ancestorProductModelCodes
+     */
+    public function removeFromProductIdsAndReindexAncestors(array $productIds, array $ancestorProductModelCodes): void
+    {
+        $this->productIndexer->removeFromProductIds($productIds);
+        $this->productModelIndexer->indexFromProductModelCodes($ancestorProductModelCodes);
     }
 }

@@ -53,7 +53,7 @@ Feature: Apply a add to products to existing product model
     And I save the product
     And I am on the products grid
     And I select rows 1111111171
-    And I press the "Bulk actions" button
+    And I press the "Bulk actions" bottom button
     And I choose the "Add to an existing product model" operation
     And I fill in the following information:
       | Family (required)        | Accessories |
@@ -83,7 +83,7 @@ Feature: Apply a add to products to existing product model
       | 68591524    | led_tvs  |                 | black | 478 GRAM |
     And I filter by "family" with operator "in list" and value "LED TVs"
     And I select rows 68591524
-    And I press the "Bulk actions" button
+    And I press the "Bulk actions" bottom button
     And I choose the "Add to an existing product model" operation
     And I fill in the following information:
       | Family (required)        | LED TVs |

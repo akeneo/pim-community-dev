@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 
-use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetAncestorAndDescendantProductModelCodes;
-use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetDescendantVariantProductIdentifiers;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetAncestorAndDescendantProductModelCodes;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetDescendantVariantProductIdentifiers;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductModelIndexerInterface;
 
@@ -68,6 +68,27 @@ class ProductModelDescendantsAndAncestorsIndexer
         );
         if (!empty($variantProductIdentifiers)) {
             $this->productIndexer->indexFromProductIdentifiers($variantProductIdentifiers);
+        }
+    }
+
+    /**
+     * Remove product model and descendants from index, and re-index ancestor.
+     *
+     * @param array $productModelIds
+     */
+    public function removeFromProductModelIds(array $productModelIds): void
+    {
+        if (empty($productModelIds)) {
+            return;
+        }
+
+        $this->productModelIndexer->removeFromProductModelIds($productModelIds);
+
+        $rootProductModelCodes = $this
+            ->getAncestorAndDescendantProductModelCodes
+            ->getOnlyAncestorsFromProductModelIds($productModelIds);
+        if (!empty($rootProductModelCodes)) {
+            $this->productModelIndexer->indexFromProductModelCodes($rootProductModelCodes);
         }
     }
 }

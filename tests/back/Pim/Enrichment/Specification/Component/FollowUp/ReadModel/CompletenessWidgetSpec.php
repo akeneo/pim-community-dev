@@ -37,11 +37,13 @@ class CompletenessWidgetSpec extends ObjectBehavior
     {
         $this->toArray()->shouldReturn([
             "Ecommerce" => [
+                'labels' => [],
                 "total" => 20,
                 "complete" => 10,
                 "locales" => ['French' => 2, 'English' => 8]
             ],
             "Mobile" => [
+                'labels' => [],
                 "total" => 9,
                 "complete" => 5,
                 "locales" => ['French' => 3, 'English' => 5]

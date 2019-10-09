@@ -78,6 +78,6 @@ final class TextValueFactorySpec extends ObjectBehavior
 
     private function getAttribute(bool $isLocalizable, bool $isScopable): Attribute
     {
-        return new Attribute('an_attribute', AttributeTypes::TEXT, [], $isLocalizable, $isScopable, null, false);
+        return new Attribute('an_attribute', AttributeTypes::TEXT, [], $isLocalizable, $isScopable, null, false, 'text');
     }
 }

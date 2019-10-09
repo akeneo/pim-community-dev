@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Test\Acceptance\Catalog\Context;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
 use Akeneo\Test\Common\EntityWithValue\Builder;
 use Behat\Behat\Context\Context;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -28,12 +29,17 @@ final class ProductValidation implements Context
     /** @var ValidatorInterface */
     private $productValidator;
 
+    /** @var InMemoryProductRepository */
+    private $productRepository;
+
     public function __construct(
         Builder\Product $productBuilder,
-        ValidatorInterface $productValidator
+        ValidatorInterface $productValidator,
+        InMemoryProductRepository $productRepository
     ) {
         $this->productBuilder = $productBuilder;
         $this->productValidator = $productValidator;
+        $this->productRepository = $productRepository;
     }
 
     /**
@@ -53,8 +59,15 @@ final class ProductValidation implements Context
     {
         $violations = $this->productValidator->validate($this->updatedProduct);
 
+        if ($violations->count() === 0) {
+            throw new \Exception(
+                sprintf('Expected error message "%s" but no violation was found', $errorMessage)
+            );
+        }
+
         $messages = [];
         $isFoundMessage = false;
+
         foreach ($violations as $violation) {
             $message = $violation->getMessage();
             $messages[] = $message;
@@ -71,5 +84,15 @@ final class ProductValidation implements Context
                 )
             );
         }
+    }
+
+    /**
+     * @Then the error :errorMessage is raised on validation
+     */
+    public function theErrorIsRaisedOnValidation(string $errorMessage): void
+    {
+        $this->updatedProduct = $this->productRepository->findOneByIdentifier('my_product');
+
+        $this->theErrorIsRaised($errorMessage);
     }
 }
