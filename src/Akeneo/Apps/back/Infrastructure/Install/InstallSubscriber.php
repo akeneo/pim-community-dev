@@ -16,7 +16,8 @@ class InstallSubscriber implements EventSubscriberInterface
     /** @var AssetsInstaller */
     private $assetInstaller;
 
-    public function __construct(AssetsInstaller $assetInstaller) {
+    public function __construct(AssetsInstaller $assetInstaller)
+    {
         $this->assetInstaller = $assetInstaller;
     }
 
