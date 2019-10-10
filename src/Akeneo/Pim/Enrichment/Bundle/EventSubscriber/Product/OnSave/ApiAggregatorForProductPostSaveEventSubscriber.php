@@ -19,10 +19,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class BatchOnSaveProductEventSubscriber implements BatchEventSubscriberInterface
+final class ApiAggregatorForProductPostSaveEventSubscriber implements BatchEventSubscriberInterface
 {
-    const BATCH_SIZE = 1000;
-
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
@@ -77,10 +75,6 @@ final class BatchOnSaveProductEventSubscriber implements BatchEventSubscriberInt
 
         // We don't stop propagation because subscribers may not handle the bulk save.
         $event->setArgument('unitary', false);
-
-        if (count($this->eventProducts) >= self::BATCH_SIZE) {
-            $this->dispatchAllEvents();
-        }
     }
 
     public function dispatchAllEvents(): void

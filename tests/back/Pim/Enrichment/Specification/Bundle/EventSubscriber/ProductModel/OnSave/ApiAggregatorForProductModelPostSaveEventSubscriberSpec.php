@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductModel\OnSave;
 
-use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductModel\OnSave\BatchOnSaveProductModelEventSubscriber;
+use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductModel\OnSave\ApiAggregatorForProductModelPostSaveEventSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Tool\Bundle\ApiBundle\EventSubscriber\BatchEventSubscriberInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -19,7 +19,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class BatchOnSaveProductModelEventSubscriberSpec extends ObjectBehavior
+class ApiAggregatorForProductModelPostSaveEventSubscriberSpec extends ObjectBehavior
 {
     function let(EventDispatcherInterface $dispatcher)
     {
@@ -28,7 +28,7 @@ class BatchOnSaveProductModelEventSubscriberSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(BatchOnSaveProductModelEventSubscriber::class);
+        $this->shouldHaveType(ApiAggregatorForProductModelPostSaveEventSubscriber::class);
     }
 
     function it_is_a_batch_event_subscriber()

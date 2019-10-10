@@ -61,7 +61,7 @@ services:
             - '@pim_api.normalizer.connector_products'
             - '@security.token_storage'
             - '@akeneo.pim.enrichment.product.connector.get_product_from_identifiers'
-            - '@pim_catalog.event_subscriber.product.on_save.batch_event_subscriber'
+            - '@pim_catalog.event_subscriber.product.on_save.api_aggregator_event_subscriber'
 
     pim_api.controller.product_model:
         public: true
@@ -87,7 +87,7 @@ services:
             - '@pim_api.normalizer.connector_product_models'
             - '@akeneo.pim.enrichment.product.connector.get_product_models_from_codes'
             - '@security.token_storage'
-            - '@pim_catalog.event_subscriber.product_model.on_save.batch_event_subscriber'
+            - '@pim_catalog.event_subscriber.product_model.on_save.api_aggregator_event_subscriber'
             - '%pim_api.configuration%'
 
     pim_api.controller.category:

@@ -140,15 +140,15 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    pim_catalog.event_subscriber.product.on_save.batch_event_subscriber:
-        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnSave\BatchOnSaveProductEventSubscriber'
+    pim_catalog.event_subscriber.product.on_save.api_aggregator_event_subscriber:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnSave\ApiAggregatorForProductPostSaveEventSubscriber'
         arguments:
             - '@event_dispatcher'
         tags:
             - { name: kernel.event_subscriber }
 
-    pim_catalog.event_subscriber.product_model.on_save.batch_event_subscriber:
-        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductModel\OnSave\BatchOnSaveProductModelEventSubscriber'
+    pim_catalog.event_subscriber.product_model.on_save.api_aggregator_event_subscriber:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductModel\OnSave\ApiAggregatorForProductModelPostSaveEventSubscriber'
         arguments:
             - '@event_dispatcher'
         tags:
