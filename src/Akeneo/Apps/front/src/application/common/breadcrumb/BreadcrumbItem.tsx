@@ -16,9 +16,5 @@ export const BreadcrumbItem = ({children: label, onClick, isLast}: React.PropsWi
         );
     }
 
-    return (
-        <span className={className}>
-            {label}
-        </span>
-    );
+    return <span className={className}>{label}</span>;
 };

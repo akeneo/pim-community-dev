@@ -1,22 +1,19 @@
 import * as React from 'react';
-import {PimView} from '../../infrastructure/pim-view/PimView';
 
 type Props = React.PropsWithChildren<{
     breadcrumb?: React.ReactElement;
     buttons?: React.ReactElement[];
+    userButtons?: React.ReactNode;
 }>;
 
-export const Header = ({children: title, breadcrumb, buttons}: Props) => (
+export const Header = ({children: title, breadcrumb, buttons, userButtons}: Props) => (
     <header className='AknTitleContainer'>
         <div className='AknTitleContainer-line'>
             <div className='AknTitleContainer-mainContainer'>
                 <div className='AknTitleContainer-line'>
                     <div className='AknTitleContainer-breadcrumbs'>{breadcrumb}</div>
                     <div className='AknTitleContainer-buttonsContainer'>
-                        <PimView
-                            className='AknTitleContainer-userMenuContainer AknTitleContainer-userMenu'
-                            viewName='pim-apps-user-navigation'
-                        />
+                        {userButtons}
                         {buttons && (
                             <div className='AknTitleContainer-actionsContainer AknButtonList'>
                                 {buttons.map((button, index) => (

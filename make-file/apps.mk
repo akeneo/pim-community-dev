@@ -5,7 +5,7 @@ _APPS_YARN_RUN = $(YARN_EXEC) run --cwd=src/Akeneo/Apps/front/
 apps-front-tests:
 	$(_APPS_YARN_RUN) jest
 
-apps-front-codestyle-check:
+apps-front-lint:
 	$(_APPS_YARN_RUN) tslint
 	$(_APPS_YARN_RUN) prettier --check
 
@@ -14,6 +14,6 @@ apps-front-codestyle-check:
 apps-front-tests-watch:
 	$(_APPS_YARN_RUN) jest --watchAll
 
-apps-front-codestyle-fix:
+apps-front-lint-fix:
 	$(_APPS_YARN_RUN) tslint --fix
-	$(_APPS_YARN_RUN) prettier
+	$(_APPS_YARN_RUN) prettier --write

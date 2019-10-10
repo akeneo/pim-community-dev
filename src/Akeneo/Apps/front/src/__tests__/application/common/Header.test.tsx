@@ -4,7 +4,7 @@ import {Header} from '../../../application/common';
 
 describe('Header component', () => {
     test('Matches the snapshot', () => {
-        const component = create(<Header />);
+        const component = create(<Header userButtons={<></>} />);
 
         expect(component.toJSON()).toMatchSnapshot();
     });
