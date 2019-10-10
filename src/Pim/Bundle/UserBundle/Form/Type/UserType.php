@@ -90,9 +90,9 @@ class UserType extends AbstractType
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->isMyProfilePage = 'oro_user_profile_update' === $requestStack
-            ->getCurrentRequest()
-            ->attributes
-            ->get('_route');
+                ->getCurrentRequest()
+                ->attributes
+                ->get('_route');
 
         $this->isEditRolesAllowed = null !== $securityFacade ?
             $securityFacade->isGranted('pim_user_role_edit') : !$this->isMyProfilePage;
