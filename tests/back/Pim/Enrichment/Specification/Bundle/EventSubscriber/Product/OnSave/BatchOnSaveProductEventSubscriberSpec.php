@@ -121,7 +121,7 @@ class BatchOnSaveProductEventSubscriberSpec extends ObjectBehavior
         $this->getEventProducts()->shouldHaveCount(0);
     }
 
-    function it_dispatch_bulk_event(EventDispatcherInterface $dispatcher)
+    function it_dispatches_bulk_event(EventDispatcherInterface $dispatcher)
     {
         $this->activate();
 
