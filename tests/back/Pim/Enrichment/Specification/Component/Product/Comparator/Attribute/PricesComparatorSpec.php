@@ -62,6 +62,44 @@ class PricesComparatorSpec extends ObjectBehavior
         ]);
     }
 
+    function it_gets_changes_when_removing_a_price()
+    {
+        $changes = ['data' => [
+            ['amount' => '100', 'currency' => 'EUR'],
+            ['amount' => null, 'currency' => 'USD'],
+        ], 'locale' => null, 'scope' => null];
+        $originals = ['data' => [
+            ['amount' => '100', 'currency' => 'EUR'],
+            ['amount' => '120', 'currency' => 'USD'],
+        ], 'locale' => null, 'scope' => null];
+
+        $this->compare($changes, $originals)->shouldReturn([
+            'data' => [
+                ['amount' => '100', 'currency' => 'EUR'],
+            ],
+            'locale' => null,
+            'scope'  => null,
+        ]);
+    }
+
+    function it_gets_changes_when_removing_all_prices()
+    {
+        $changes = ['data' => [
+            ['amount' => null, 'currency' => 'EUR'],
+            ['amount' => null, 'currency' => 'USD'],
+        ], 'locale' => null, 'scope' => null];
+        $originals = ['data' => [
+            ['amount' => '100', 'currency' => 'EUR'],
+            ['amount' => '120', 'currency' => 'USD'],
+        ], 'locale' => null, 'scope' => null];
+
+        $this->compare($changes, $originals)->shouldReturn([
+            'data' => [],
+            'locale' => null,
+            'scope'  => null,
+        ]);
+    }
+
     function it_returns_null_when_prices_are_the_same()
     {
         $changes = ['data' => [
