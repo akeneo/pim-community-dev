@@ -146,7 +146,7 @@ class ProductNormalizer implements NormalizerInterface
     {
         $this->missingAssociationAdder->addMissingAssociations($product);
         $normalizedProduct = $this->normalizer->normalize($product, 'standard', $context);
-        $this->fillMissingProductValues->fromStandardFormat($normalizedProduct);
+        $normalizedProduct = $this->fillMissingProductValues->fromStandardFormat($normalizedProduct);
         $normalizedProduct['values'] = $this->localizedConverter->convertToLocalizedFormats(
             $normalizedProduct['values'],
             $context

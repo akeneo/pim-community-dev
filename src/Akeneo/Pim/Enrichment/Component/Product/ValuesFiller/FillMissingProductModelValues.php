@@ -101,20 +101,31 @@ class FillMissingProductModelValues
         );
 
         foreach ($nonPriceAttributes as $attribute) {
+            $nullValue = null;
+            if (in_array($attribute->getType(), [
+                AttributeTypes::OPTION_MULTI_SELECT,
+                AttributeTypes::REFERENCE_DATA_MULTI_SELECT,
+                AttributeTypes::REFERENCE_ENTITY_COLLECTION,
+                AttributeTypes::ASSET_COLLECTION,
+                AttributeTypes::ASSETS_COLLECTION,
+            ])) {
+                $nullValue = [];
+            }
+
             if (!$attribute->isScopable() && !$attribute->isLocalizable()) {
-                $nullValues[$attribute->getCode()]['<all_channels>']['<all_locales>'] = null;
+                $nullValues[$attribute->getCode()]['<all_channels>']['<all_locales>'] = $nullValue;
             } elseif ($attribute->isScopable() && !$attribute->isLocalizable()) {
                 foreach ($this->getChannels() as $channel) {
-                    $nullValues[$attribute->getCode()][$channel->getCode()]['<all_locales>'] = null;
+                    $nullValues[$attribute->getCode()][$channel->getCode()]['<all_locales>'] = $nullValue;
                 }
             } elseif (!$attribute->isScopable() && $attribute->isLocalizable()) {
                 foreach ($this->getLocales() as $locale) {
-                    $nullValues[$attribute->getCode()]['<all_channels>'][$locale->getCode()] = null;
+                    $nullValues[$attribute->getCode()]['<all_channels>'][$locale->getCode()] = $nullValue;
                 }
             } elseif ($attribute->isScopable() && $attribute->isLocalizable()) {
                 foreach ($this->getChannels() as $channel) {
                     foreach ($channel->getLocales() as $locale) {
-                        $nullValues[$attribute->getCode()][$channel->getCode()][$locale->getCode()] = null;
+                        $nullValues[$attribute->getCode()][$channel->getCode()][$locale->getCode()] = $nullValue;
                     }
                 }
             }
