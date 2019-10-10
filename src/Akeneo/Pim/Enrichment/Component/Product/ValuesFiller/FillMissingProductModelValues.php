@@ -101,15 +101,20 @@ class FillMissingProductModelValues
         );
 
         foreach ($nonPriceAttributes as $attribute) {
-            $nullValue = null;
-            if (in_array($attribute->getType(), [
-                AttributeTypes::OPTION_MULTI_SELECT,
-                AttributeTypes::REFERENCE_DATA_MULTI_SELECT,
-                AttributeTypes::REFERENCE_ENTITY_COLLECTION,
-                AttributeTypes::ASSET_COLLECTION,
-                AttributeTypes::ASSETS_COLLECTION,
-            ])) {
-                $nullValue = [];
+            switch ($attribute->getType()) {
+                case AttributeTypes::METRIC:
+                    $nullValue = ['unit' => null, 'amount' => null];
+                    break;
+                case AttributeTypes::OPTION_MULTI_SELECT:
+                case AttributeTypes::REFERENCE_DATA_MULTI_SELECT:
+                case AttributeTypes::REFERENCE_ENTITY_COLLECTION:
+                case AttributeTypes::ASSET_COLLECTION:
+                case AttributeTypes::ASSETS_COLLECTION:
+                    $nullValue = [];
+                    break;
+                default:
+                    $nullValue = null;
+                    break;
             }
 
             if (!$attribute->isScopable() && !$attribute->isLocalizable()) {
