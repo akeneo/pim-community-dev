@@ -22,6 +22,7 @@ use Symfony\Component\Form\Extension\Core\Type\TimezoneType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Constraints\Valid;
@@ -50,6 +51,12 @@ class UserType extends AbstractType
     /** @var TokenStorageInterface */
     protected $tokenStorage;
 
+    /**
+     * @var bool
+     * @deprecated You can use the security facade for checking permissions instead
+     */
+    protected $isMyProfilePage;
+
     /** @var bool */
     protected $isEditRolesAllowed;
 
@@ -60,26 +67,38 @@ class UserType extends AbstractType
     protected $productGridFilterTypeClassName;
 
     /**
+     * TODO: remove $requestStack and requires $securityFacade dependency
+     *
      * @param TokenStorageInterface     $tokenStorage
-     * @param SecurityFacade            $securityFacade
+     * @param RequestStack              $requestStack
      * @param UserPreferencesSubscriber $subscriber
      * @param RoleRepository            $roleRepository
      * @param GroupRepository           $groupRepository
      * @param EventDispatcherInterface  $eventDispatcher
      * @param string                    $productGridFilterTypeClassName
+     * @param SecurityFacade|null       $securityFacade
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
-        SecurityFacade $securityFacade,
+        RequestStack $requestStack,
         UserPreferencesSubscriber $subscriber,
         RoleRepository $roleRepository,
         GroupRepository $groupRepository,
         EventDispatcherInterface $eventDispatcher,
-        string $productGridFilterTypeClassName
+        string $productGridFilterTypeClassName,
+        SecurityFacade $securityFacade = null
     ) {
         $this->tokenStorage = $tokenStorage;
-        $this->isEditRolesAllowed = $securityFacade->isGranted('pim_user_role_edit');
-        $this->isEditGroupsAllowed = $securityFacade->isGranted('pim_user_group_edit');
+        $this->isMyProfilePage = 'oro_user_profile_update' === $requestStack
+            ->getCurrentRequest()
+            ->attributes
+            ->get('_route');
+
+        $this->isEditRolesAllowed = null !== $securityFacade ?
+            $securityFacade->isGranted('pim_user_role_edit') : !$this->isMyProfilePage;
+        $this->isEditGroupsAllowed = null !== $securityFacade ?
+            $securityFacade->isGranted('pim_user_group_edit') : !$this->isMyProfilePage;
+
         $this->subscriber = $subscriber;
         $this->roleRepository = $roleRepository;
         $this->groupRepository = $groupRepository;
