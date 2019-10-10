@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Platform\Acceptance\Analytics\Query;
+namespace AkeneoTest\Platform\Acceptance\Analytics\Query\Sql;
 
 use Akeneo\Tool\Component\Analytics\EmailDomainsQuery;
 

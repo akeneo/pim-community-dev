@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\Bundle\AnalyticsBundle\Query;
+namespace Akeneo\Platform\Bundle\AnalyticsBundle\Query\Sql;
 
 use Akeneo\Tool\Component\Analytics\EmailDomainsQuery;
 use Doctrine\DBAL\Connection;
@@ -24,20 +24,14 @@ class EmailDomains implements EmailDomainsQuery
 
     public function fetch(): string
     {
-        $results = [];
-
-        $sql = <<<SQL
+        $query = <<<SQL
             SELECT DISTINCT(SUBSTRING_INDEX(email, '@', -1)) AS email_domain
                 FROM oro_user
                 ORDER by email_domain
 SQL;
 
-        $rows = $this->connection->fetchAll($sql);
+        $domains = $this->connection->executeQuery($query)->fetchAll(\PDO::FETCH_COLUMN, 0);
 
-        foreach ($rows as $row) {
-            $results[] = $row['email_domain'];
-        }
-
-        return implode(',', $results);
+        return implode(',', $domains);
     }
 }
