@@ -51,7 +51,7 @@ services:
     pim_catalog.event_subscriber.load_product_values:
         class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithValues\LoadEntityWithValuesSubscriber'
         arguments:
-            - '@akeneo.pim.enrichment.factory.read.write_value_collection'
+            - '@akeneo.pim.enrichment.factory.write_value_collection'
         tags:
             - { name: doctrine.event_subscriber, priority: 50 }
 
