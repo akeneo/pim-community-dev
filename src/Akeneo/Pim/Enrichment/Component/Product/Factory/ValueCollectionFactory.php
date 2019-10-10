@@ -1,23 +1,21 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Factory\Read;
+namespace Akeneo\Pim\Enrichment\Component\Product\Factory;
 
-use Akeneo\Pim\Enrichment\Component\Product\Factory\EmptyValuesCleaner;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueFactory as ReadValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\ChainedNonExistentValuesFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\OnGoingFilteredRawValues;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\TransformRawValuesCollections;
-use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 
 /**
  * @author    Anael Chardan <anael.chardan@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class WriteValueCollectionFactory
+class ValueCollectionFactory
 {
-    /** @var ValueFactory */
+    /** @var ReadValueFactory */
     private $valueFactory;
 
     /** @var GetAttributes */
@@ -33,7 +31,7 @@ class WriteValueCollectionFactory
     private $transformRawValuesCollections;
 
     public function __construct(
-        ValueFactory $valueFactory,
+        ReadValueFactory $valueFactory,
         GetAttributes $getAttributeByCodes,
         ChainedNonExistentValuesFilterInterface $chainedNonExistentValuesFilter,
         EmptyValuesCleaner $emptyValuesCleaner,
@@ -46,7 +44,7 @@ class WriteValueCollectionFactory
         $this->transformRawValuesCollections = $transformRawValuesCollections;
     }
 
-    public function createFromStorageFormat(array $rawValues): WriteValueCollection
+    public function createFromStorageFormat(array $rawValues): ReadValueCollection
     {
         $notUsedIdentifier = 'not_used_identifier';
 
@@ -70,7 +68,7 @@ class WriteValueCollectionFactory
         $identifiersWithOnlyUnknownAttributes = array_diff(array_keys($rawValueCollections), array_keys($valueCollections));
 
         foreach ($identifiersWithOnlyUnknownAttributes as $identifier) {
-            $valueCollections[$identifier] = new WriteValueCollection([]);
+            $valueCollections[$identifier] = new ReadValueCollection([]);
         }
 
         return $valueCollections;
@@ -112,16 +110,17 @@ class WriteValueCollectionFactory
                             $localeCode = null;
                         }
 
-                        try {
-                            //TEMPORARY
-                            $values[] = $this->valueFactory->createByCheckingData($attribute, $channelCode, $localeCode, $data);
-                        } catch (InvalidPropertyException $exception) {
-                        }
+                        $values[] = $this->valueFactory->createWithoutCheckingData(
+                            $attribute,
+                            $channelCode,
+                            $localeCode,
+                            $data
+                        );
                     }
                 }
             }
 
-            $entities[$productIdentifier] = new WriteValueCollection($values);
+            $entities[$productIdentifier] = new ReadValueCollection($values);
         }
 
         return $entities;

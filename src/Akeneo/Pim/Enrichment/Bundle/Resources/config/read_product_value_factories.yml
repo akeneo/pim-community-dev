@@ -67,7 +67,7 @@ services:
             $valueFactories: !tagged akeneo.pim.enrichment.factory.read.product_value
 
     akeneo.pim.enrichment.factory.read.value_collection:
-        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueCollectionFactory
+        class: Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactory
         arguments:
             $valueFactory: '@akeneo.pim.enrichment.factory.read.value'
             $getAttributeByCodes: '@akeneo.pim.structure.query.get_attributes'
@@ -76,7 +76,7 @@ services:
             $transformRawValuesCollections: '@akeneo.pim.enrichment.factory.transform_raw_values_collections'
 
     akeneo.pim.enrichment.factory.read.write_value_collection:
-        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Read\WriteValueCollectionFactory
+        class: Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory
         arguments:
             $valueFactory: '@akeneo.pim.enrichment.factory.read.value'
             $getAttributeByCodes: '@akeneo.pim.structure.query.get_attributes'
