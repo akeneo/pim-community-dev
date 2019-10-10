@@ -360,8 +360,8 @@ class FillMissingProductValuesSpec extends ObjectBehavior
                             'scope' => 'ecommerce',
                             'locale' => null,
                             'data' => [
-                                ['currency' => 'USD', 'amount' => null],
                                 ['currency' => 'EUR', 'amount' => null],
+                                ['currency' => 'USD', 'amount' => null],
                             ],
                         ],
                     ],
@@ -386,16 +386,16 @@ class FillMissingProductValuesSpec extends ObjectBehavior
                             'scope' => 'ecommerce',
                             'locale' => 'fr_FR',
                             'data' => [
-                                ['currency' => 'USD', 'amount' => null],
                                 ['currency' => 'EUR', 'amount' => null],
+                                ['currency' => 'USD', 'amount' => null],
                             ]
                         ],
                         [
                             'scope' => 'ecommerce',
                             'locale' => 'de_DE',
                             'data' => [
-                                ['currency' => 'USD', 'amount' => null],
                                 ['currency' => 'EUR', 'amount' => null],
+                                ['currency' => 'USD', 'amount' => null],
                             ]
                         ],
                     ],
@@ -404,6 +404,9 @@ class FillMissingProductValuesSpec extends ObjectBehavior
         );
     }
 
+    /**
+     * The order of the price collection in the values matters: the prices MUST be sorted by currency code
+     */
     function it_does_not_replace_existing_price_values()
     {
         $this->fromStandardFormat(
@@ -513,8 +516,8 @@ class FillMissingProductValuesSpec extends ObjectBehavior
                             'scope' => 'ecommerce',
                             'locale' => null,
                             'data' => [
-                                ['currency' => 'USD', 'amount' => null],
                                 ['currency' => 'EUR', 'amount' => null],
+                                ['currency' => 'USD', 'amount' => null],
                             ],
                         ],
                     ],
@@ -539,16 +542,16 @@ class FillMissingProductValuesSpec extends ObjectBehavior
                             'scope' => 'ecommerce',
                             'locale' => 'fr_FR',
                             'data' => [
-                                ['currency' => 'USD', 'amount' => null],
                                 ['currency' => 'EUR', 'amount' => null],
+                                ['currency' => 'USD', 'amount' => null],
                             ]
                         ],
                         [
                             'scope' => 'ecommerce',
                             'locale' => 'de_DE',
                             'data' => [
-                                ['currency' => 'USD', 'amount' => null],
                                 ['currency' => 'EUR', 'amount' => null],
+                                ['currency' => 'USD', 'amount' => null],
                             ]
                         ],
                     ],

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\ValuesFiller;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\CurrencyInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
@@ -180,6 +181,7 @@ class FillMissingProductModelValues
 
     /**
      * Create null Price values in a pivot format to ease the use of array replace recursive.
+     * The list of prices (in a value) is sorted by currency code, as it is what the front-end expects
      *
      * The format is the following:
      * [
@@ -206,7 +208,7 @@ class FillMissingProductModelValues
                 }
             } elseif ($attribute->isScopable() && !$attribute->isLocalizable()) {
                 foreach ($this->getChannels() as $channel) {
-                    foreach ($channel->getCurrencies() as $currency) {
+                    foreach ($this->sortCurrenciesByCode($channel->getCurrencies()->toArray()) as $currency) {
                         $nullValues[$attribute->getCode()][$channel->getCode()]['<all_locales>'][$currency->getCode(
                         )] = null;
                     }
@@ -221,7 +223,7 @@ class FillMissingProductModelValues
             } elseif ($attribute->isScopable() && $attribute->isLocalizable()) {
                 foreach ($this->getChannels() as $channel) {
                     foreach ($channel->getLocales() as $locale) {
-                        foreach ($channel->getCurrencies() as $currency) {
+                        foreach ($this->sortCurrenciesByCode($channel->getCurrencies()->toArray()) as $currency) {
                             $nullValues[$attribute->getCode()][$channel->getCode()][$locale->getCode(
                             )][$currency->getCode()] = null;
                         }
@@ -325,6 +327,8 @@ class FillMissingProductModelValues
             }
         }
 
+        ksort($currencies);
+
         return $currencies;
     }
 
@@ -347,5 +351,14 @@ class FillMissingProductModelValues
         }
 
         return $attributes;
+    }
+
+    private function sortCurrenciesByCode(array $currencies): array
+    {
+        usort($currencies, function (CurrencyInterface $a, CurrencyInterface $b) {
+            return $a->getCode() <=> $b->getCode();
+        });
+
+        return $currencies;
     }
 }
