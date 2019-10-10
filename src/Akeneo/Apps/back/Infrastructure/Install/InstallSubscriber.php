@@ -1,8 +1,7 @@
 <?php
 
-namespace Akeneo\Apps\Infrastructure\EventSubscriber;
+namespace Akeneo\Apps\Infrastructure\Install;
 
-use Akeneo\Apps\Infrastructure\Installer\AssetsInstaller;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -11,13 +10,13 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class InstallerSubscriber implements EventSubscriberInterface
+class InstallSubscriber implements EventSubscriberInterface
 {
-    /** @var AssetsInstaller */
-    private $assetInstaller;
+    private $assetsInstaller;
 
-    public function __construct(AssetsInstaller $assetInstaller) {
-        $this->assetInstaller = $assetInstaller;
+    public function __construct(AssetsInstaller $assetsInstaller)
+    {
+        $this->assetsInstaller = $assetsInstaller;
     }
 
     public static function getSubscribedEvents()
@@ -31,6 +30,6 @@ class InstallerSubscriber implements EventSubscriberInterface
     public function installAssets(GenericEvent $event): void
     {
         $shouldSymlink = $event->getArgument('symlink');
-        $this->assetInstaller->installAssets($shouldSymlink);
+        $this->assetsInstaller->installAssets($shouldSymlink);
     }
 }

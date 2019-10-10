@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Apps\Infrastructure\Installer;
+namespace Akeneo\Apps\Infrastructure\Install;
 
+use Akeneo\Apps\Infrastructure\Install\AssetsInstaller;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -12,7 +13,7 @@ use Symfony\Component\Finder\Finder;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class AssetsInstaller
+class FileSystemAssetsInstaller implements AssetsInstaller
 {
     /** @var Filesystem */
     private $filesystem;
