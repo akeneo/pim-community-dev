@@ -22,15 +22,16 @@ use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\UriGen
 use PhpSpec\ObjectBehavior;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
 class AttributesMappingWebServiceSpec extends ObjectBehavior
 {
-    public function let(UriGenerator $uriGenerator, GuzzleClient $httpClient): void
+    public function let(UriGenerator $uriGenerator, GuzzleClient $httpClient, LoggerInterface $logger): void
     {
-        $this->beConstructedWith($uriGenerator, $httpClient);
+        $this->beConstructedWith($uriGenerator, $httpClient, $logger);
     }
 
     public function it_is_a_attributes_mapping_webservice(): void
