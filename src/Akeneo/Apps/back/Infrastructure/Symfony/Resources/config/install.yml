@@ -1,6 +1,6 @@
 services:
     akeneo_apps.install.assets_installer:
-        class: Akeneo\Apps\Infrastructure\Install\AssetsInstaller
+        class: Akeneo\Apps\Infrastructure\Install\FileSystemAssetsInstaller
         arguments:
             - '@filesystem'
             - '%kernel.project_dir%'

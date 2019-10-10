@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Apps\Infrastructure\Install;
 
+use Akeneo\Apps\Infrastructure\Install\AssetsInstaller;
 use Akeneo\Apps\Infrastructure\Install\InstallSubscriber;
-use Akeneo\Apps\Infrastructure\Installer\AssetsInstaller;
 use PhpSpec\ObjectBehavior;
 
 /**
