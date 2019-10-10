@@ -8,10 +8,12 @@ const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
 const router = require('pim/router');
 const translate = require('oro/translator');
+const viewBuilder = require('pim/form-builder');
 
 const dependencies = {
   router,
   translate,
+  viewBuilder
 };
 
 class AppsController extends BaseController {

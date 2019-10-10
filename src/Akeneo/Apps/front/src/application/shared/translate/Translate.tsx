@@ -4,13 +4,13 @@ import {useContext} from 'react';
 import {TranslateContext} from './translate-context';
 
 interface Props {
-  id: string;
-  placeholders?: any;
-  count?: number;
+    id: string;
+    placeholders?: any;
+    count?: number;
 }
 
 export const Translate = ({id, placeholders = {}, count = 1}: Props) => {
-  const translate = useContext(TranslateContext);
+    const translate = useContext(TranslateContext);
 
-  return <>{translate(id, placeholders, count)}</>;
+    return <>{translate(id, placeholders, count)}</>;
 };
