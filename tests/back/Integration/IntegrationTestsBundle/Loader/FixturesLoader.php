@@ -252,7 +252,7 @@ class FixturesLoader implements FixturesLoaderInterface
         }
 
         // configure and load job instances in database
-        $this->fixtureJobLoader->loadJobInstances($replacePaths);
+        $this->fixtureJobLoader->loadJobInstances('src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal', $replacePaths);
 
         // install the catalog via the job instances
         $jobInstances = $this->fixtureJobLoader->getLoadedJobInstances();
