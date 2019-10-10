@@ -1,64 +1,64 @@
 services:
     akeneo.pim.enrichment.factory.read.value.boolean:
-        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\BooleanValueFactory
+        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Value\BooleanValueFactory
         tags: ['akeneo.pim.enrichment.factory.read.product_value']
 
     akeneo.pim.enrichment.factory.read.value.date:
-        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\DateValueFactory
+        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Value\DateValueFactory
         tags: ['akeneo.pim.enrichment.factory.read.product_value']
 
     akeneo.pim.enrichment.factory.read.value.file:
-        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\FileValueFactory
+        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Value\FileValueFactory
         arguments:
             $fileInfoRepository: '@akeneo_file_storage.repository.file_info'
         tags: ['akeneo.pim.enrichment.factory.read.product_value']
 
     akeneo.pim.enrichment.factory.read.value.image:
-        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\ImageValueFactory
+        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ImageValueFactory
         arguments:
             $fileInfoRepository: '@akeneo_file_storage.repository.file_info'
         tags: ['akeneo.pim.enrichment.factory.read.product_value']
 
     akeneo.pim.enrichment.factory.read.value.identifier:
-        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\IdentifierValueFactory
+        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Value\IdentifierValueFactory
         tags: ['akeneo.pim.enrichment.factory.read.product_value']
 
     akeneo.pim.enrichment.factory.read.value.metric:
-        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\MetricValueFactory
+        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Value\MetricValueFactory
         arguments:
             $metricFactory: '@pim_catalog.factory.metric'
         tags: ['akeneo.pim.enrichment.factory.read.product_value']
 
     akeneo.pim.enrichment.factory.read.value.number:
-        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\NumberValueFactory
+        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Value\NumberValueFactory
         tags: ['akeneo.pim.enrichment.factory.read.product_value']
 
     akeneo.pim.enrichment.factory.read.value.options:
-        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\OptionsValueFactory
+        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Value\OptionsValueFactory
         tags: ['akeneo.pim.enrichment.factory.read.product_value']
 
     akeneo.pim.enrichment.factory.read.value.option:
-        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\OptionValueFactory
+        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Value\OptionValueFactory
         tags: ['akeneo.pim.enrichment.factory.read.product_value']
 
     akeneo.pim.enrichment.factory.read.value.price_collection:
-        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\PriceCollectionValueFactory
+        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Value\PriceCollectionValueFactory
         tags: ['akeneo.pim.enrichment.factory.read.product_value']
 
     akeneo.pim.enrichment.factory.read.value.reference_data_collection:
-        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\ReferenceDataCollectionValueFactory
+        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ReferenceDataCollectionValueFactory
         tags: ['akeneo.pim.enrichment.factory.read.product_value']
 
     akeneo.pim.enrichment.factory.read.value.reference_data:
-        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\ReferenceDataValueFactory
+        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ReferenceDataValueFactory
         tags: ['akeneo.pim.enrichment.factory.read.product_value']
 
     akeneo.pim.enrichment.factory.read.value.textarea:
-        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\TextAreaValueFactory
+        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Value\TextAreaValueFactory
         tags: ['akeneo.pim.enrichment.factory.read.product_value']
 
     akeneo.pim.enrichment.factory.read.value.text:
-        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\TextValueFactory
+        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Value\TextValueFactory
         tags: ['akeneo.pim.enrichment.factory.read.product_value']
 
     akeneo.pim.enrichment.factory.read.value:

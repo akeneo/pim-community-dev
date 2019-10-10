@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory\Read;
 
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\ValueFactory as SingleValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactory as SingleValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use OutOfBoundsException;
