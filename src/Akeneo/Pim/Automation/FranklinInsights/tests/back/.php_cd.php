@@ -39,6 +39,7 @@ $rules = [
             'Guzzle',
             'Symfony\Component\HttpFoundation\Response',
             'Psr\Http\Message\ResponseInterface',
+            'Psr\Log\LoggerInterface',
         ]
     )->in('Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client'),
 

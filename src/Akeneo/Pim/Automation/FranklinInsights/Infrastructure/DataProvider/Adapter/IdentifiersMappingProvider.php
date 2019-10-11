@@ -21,6 +21,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\Id
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\BadRequestException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\FranklinServerException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\InvalidTokenException;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\UnableToConnectToFranklinException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Normalizer\IdentifiersMappingNormalizer;
 
 /**
@@ -58,7 +59,7 @@ class IdentifiersMappingProvider extends AbstractProvider implements Identifiers
 
         try {
             $this->api->save($this->normalizer->normalize($identifiersMapping));
-        } catch (FranklinServerException $e) {
+        } catch (FranklinServerException | UnableToConnectToFranklinException $e) {
             throw DataProviderException::serverIsDown($e);
         } catch (InvalidTokenException $e) {
             throw DataProviderException::authenticationError($e);
