@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\UserBundle\Form\Type;
 
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Oro\Bundle\UserBundle\Form\EventListener\UserSubscriber;
 use Oro\Bundle\UserBundle\Form\Type\ChangePasswordType;
 use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\GroupRepository;
@@ -50,13 +51,24 @@ class UserType extends AbstractType
     /** @var TokenStorageInterface */
     protected $tokenStorage;
 
-    /** @var bool */
+    /**
+     * @var bool
+     * @deprecated You can use the security facade for checking permissions instead
+     */
     protected $isMyProfilePage;
+
+    /** @var bool */
+    protected $isEditRolesAllowed;
+
+    /** @var bool */
+    protected $isEditGroupsAllowed;
 
     /** @var string */
     protected $productGridFilterTypeClassName;
 
     /**
+     * TODO: remove $requestStack and requires $securityFacade dependency
+     *
      * @param TokenStorageInterface     $tokenStorage
      * @param RequestStack              $requestStack
      * @param UserPreferencesSubscriber $subscriber
@@ -64,6 +76,7 @@ class UserType extends AbstractType
      * @param GroupRepository           $groupRepository
      * @param EventDispatcherInterface  $eventDispatcher
      * @param string                    $productGridFilterTypeClassName
+     * @param SecurityFacade|null       $securityFacade
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
@@ -72,13 +85,20 @@ class UserType extends AbstractType
         RoleRepository $roleRepository,
         GroupRepository $groupRepository,
         EventDispatcherInterface $eventDispatcher,
-        string $productGridFilterTypeClassName
+        string $productGridFilterTypeClassName,
+        SecurityFacade $securityFacade = null
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->isMyProfilePage = 'oro_user_profile_update' === $requestStack
                 ->getCurrentRequest()
                 ->attributes
                 ->get('_route');
+
+        $this->isEditRolesAllowed = null !== $securityFacade ?
+            $securityFacade->isGranted('pim_user_role_edit') : !$this->isMyProfilePage;
+        $this->isEditGroupsAllowed = null !== $securityFacade ?
+            $securityFacade->isGranted('pim_user_group_edit') : !$this->isMyProfilePage;
+
         $this->subscriber = $subscriber;
         $this->roleRepository = $roleRepository;
         $this->groupRepository = $groupRepository;
@@ -117,11 +137,11 @@ class UserType extends AbstractType
                     'query_builder' => $this->roleRepository->getAllButAnonymousQB(),
                     'multiple'      => true,
                     'expanded'      => true,
-                    'required'      => !$this->isMyProfilePage,
+                    'required'      => $this->isEditRolesAllowed,
                     'attr'          => [
-                        'read_only' => $this->isMyProfilePage,
+                        'read_only' => !$this->isEditRolesAllowed,
                     ],
-                    'disabled'      => $this->isMyProfilePage,
+                    'disabled'      => !$this->isEditRolesAllowed,
                 ]
             )
             ->add(
@@ -135,9 +155,9 @@ class UserType extends AbstractType
                     'expanded'      => true,
                     'required'      => false,
                     'attr'          => [
-                        'read_only' => $this->isMyProfilePage,
+                        'read_only' => !$this->isEditGroupsAllowed,
                     ],
-                    'disabled'      => $this->isMyProfilePage,
+                    'disabled'      => !$this->isEditGroupsAllowed,
                 ]
             )
             ->add(

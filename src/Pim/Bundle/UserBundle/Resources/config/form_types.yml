@@ -28,6 +28,7 @@ services:
             - '@pim_user.repository.group'
             - '@event_dispatcher'
             - '%pim_enrich.form.type.product_grid_filter_choice.class%'
+            - '@oro_security.security_facade'
         tags:
             - { name: form.type, alias: pim_user_user }
 

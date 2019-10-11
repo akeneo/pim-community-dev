@@ -66,3 +66,31 @@ Feature: Edit a user
     And I reload the page
     And I visit the "Interfaces" tab
     Then I should see the text "Panama EST (UTC-05:00)"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-7691
+  Scenario: Fail to change a user role without correct permissions
+    Given I edit the "User" Role
+    When I visit the "Permissions" tab
+    And I grant rights to group System
+    And I revoke rights to resource Edit roles
+    And I save the Role
+    When I logout
+    And I am logged in as "Mary"
+    And I edit the "mary" user
+    And I visit the "Groups and Roles" tab
+    And I check "Administrator"
+    Then the "Administrator" checkbox should be unchecked
+
+  @jira https://akeneo.atlassian.net/browse/PIM-7691
+  Scenario: Fail to change a user group without correct permissions
+    Given I edit the "User" Role
+    When I visit the "Permissions" tab
+    And I grant rights to group System
+    And I revoke rights to resource Edit user groups
+    And I save the Role
+    When I logout
+    And I am logged in as "Mary"
+    And I edit the "mary" user
+    And I visit the "Groups and Roles" tab
+    And I check "Manager"
+    Then the "Manager" checkbox should be unchecked
