@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-7332: show an error message when a number attribute field reaches the PHP_INT_MAX.
+
 # 2.3.66 (2019-10-09)
 
 # 2.3.65 (2019-10-04)
