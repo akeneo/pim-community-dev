@@ -1,64 +1,24 @@
-# Add new attribute type
+# Add a new attribute type
 
 ## Context
 
 This documentation will help you to add a new attribute type in the PIM. 
-We will add a new attribute type called `Range`, defined with a min and a max value.
+We will add a new attribute type called `Range`, defined by a min and a max value.
+This documentation will allow you to:
+- be able to save product (and product model) values with this attribute type,
+- calculate the completeness of these entities,
+- update the values in the product edit form,
+- export your product values.
 
-**Warnings**
+This documentation will not:
+- cover the indexation of this field (you can take a look at `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\AbstractProductValueNormalizer`),
+- cover the search on the values defined on this attribute (you can take a look at `Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface`),
+- cover the import processes (take a look at `Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter\ValueConverterInterface`).
 
-- It does not imply the search on the values defined on this attribute
-- It does not imply the indexation of this field
-- It does not imply the API import nor export processes
-- It does not do any validation on the Range values (min inferior to max, etc)
+## Step 1: Create the attribute type (backend)
 
-## Step 1: Initialize your Symfony bundle
-
-Create the Symfony bundle
-
-```php
-<?php #src/Acme/RangeBundle/AcmeRangeBundle.php
-
-namespace Acme\RangeBundle;
-
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-
-class AcmeRangeBundle extends Bundle {}
-```
-
-Temporary, create an empty service file
-
-```yaml
-# src/Acme/RangeBundle/Resources/config/services.yml
-services:
-```
-
-Then add the bundle extension to allow to load it.
-
-```php
-<?php #src/Acme/RangeBundle/DependencyInjection/AcmeRangeExtension.php
-
-namespace Acme\RangeBundle\DependencyInjection;
-
-use Symfony\Component\Config\FileLocator;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-
-class AcmeRangeExtension extends Extension
-{
-    public function load(array $configs, ContainerBuilder $container)
-    {
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('services.yml');
-    }
-}
-```
-
-## Step 2: Create the attribute type (backend)
-
-Attribute types are auto loaded with `RegisterAttributeTypePass`. 
-You need to create a new `AttributeTypeInterface` and add its service. For it, you can use the `AbstractAttributeType`.
+You need to create a new `AttributeTypeInterface` and add its service. 
+For it, you can use the `AbstractAttributeType` and add its definition as a service.
 
 ```php
 <?php #src/Acme/RangeBundle/AttributeType/RangeType.php
@@ -78,8 +38,9 @@ class RangeType extends AbstractAttributeType
 }
 ```
 
-Call this class in services file with the `pim_catalog.attribute_type` tag.
-You can customize the backend type to do special treatments on the validation and normalization processes. We will use the default one `text`. 
+Add this class in `services.yml` with the `pim_catalog.attribute_type` tag.
+Please note that services with such a tag will be loaded by the `RegisterAttributePass`.
+You can customize the backend type to do special processes for validation and normalization processes. We will use the default one `text`. 
 
 ```yaml
 # src/Acme/RangeBundle/Resources/config/services.yml
@@ -91,13 +52,13 @@ services:
             - { name: pim_catalog.attribute_type, alias: range, entity: '%pim_catalog.entity.product.class%' }
 ```
 
-## Step 3: Create the values
+## Step 2: Create the values
 
-**Warning** For now, you have to create 2 value factories (one for reading purpose, one for writing purpose).
+**Warning** For now, you have to create 2 value factories (one for reading purpose, another one for writing purpose).
 They are very similar, and will probably be refactored in the next months.
 
-To keep this tutorial as the simplest possible, we will use the same format, from back-end to front-end.
-A range value will be defined as an array, with `min` and `max` keys.
+For the sake of simplicity, we will re-use the same format both for back-end and front-end.
+A range value will be defined as an array, with `min` and `max` as keys.
 The factories are here to create localizable and scopable values, linked to a specific attribute.
 
 ```php
@@ -119,10 +80,10 @@ class RangeValueFactory extends AbstractValueFactory
         if (!is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected($attribute->getCode(), static::class, $data);
         }
-        if (!key_exists('min', $data)) {
+        if (!array_key_exists('min', $data)) {
             throw InvalidPropertyTypeException::arrayKeyExpected($attribute->getCode(), 'min', static::class, $data);
         }
-        if (!key_exists('max', $data)) {
+        if (!array_key_exists('max', $data)) {
             throw InvalidPropertyTypeException::arrayKeyExpected($attribute->getCode(), 'max', static::class, $data);
         }
 
@@ -145,18 +106,22 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 class RangeValueFactory implements ValueFactory
 {
-    function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
-    {
+    public function createByCheckingData(
+        Attribute $attribute,
+        ?string $channelCode,
+        ?string $localeCode, 
+        $data
+    ): ValueInterface {
         if ($data === null) {
             $data = ['min' => null, 'max' => null];
         }
         if (!is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected($attribute->code(), static::class, $data);
         }
-        if (!key_exists('min', $data)) {
+        if (!array_key_exists('min', $data)) {
             throw InvalidPropertyTypeException::arrayKeyExpected($attribute->code(), 'min', static::class, $data);
         }
-        if (!key_exists('max', $data)) {
+        if (!array_key_exists('max', $data)) {
             throw InvalidPropertyTypeException::arrayKeyExpected($attribute->code(), 'max', static::class, $data);
         }
 
@@ -202,11 +167,11 @@ class RangeValueFactory implements ValueFactory
             - { name: pim_catalog.factory.value }
 ```
 
-## Step 4: Process the values
+## Step 3: Process the values
 
-You will need 2 new services to process the values.
-First, the setter, used on the product updater, to update the entity values.
-For this one, as there is no specific treatment, we will use the default `AttributeSetter`:
+You will need 2 new services to process the values: a setter and a comparator.
+First, the setter, used by the product updater, responsible for updating entity values.
+For this one, as there is no specific processing, we will use the default `AttributeSetter`:
 
 ```yaml
 # src/Acme/RangeBundle/Resources/config/services.yml [...]
@@ -218,7 +183,7 @@ For this one, as there is no specific treatment, we will use the default `Attrib
             - { name: 'pim_catalog.updater.setter' }
 ```
 
-Next, the comparator, used to know if the value was updated or not. A comparator returns null if the data was not updated.
+Next, the comparator, used to know whether the value was updated or not. A comparator returns null if the data was not updated.
 
 ```php
 <?php #src/Acme/RangeBundle/Product/Comparator/Attribute/RangeComparator.php
@@ -257,16 +222,17 @@ class RangeComparator implements ComparatorInterface
     acme.range.comparator.attribute.range:
         class: Acme\RangeBundle\Product\Comparator\Attribute\RangeComparator
         tags:
-            - { name: pim_catalog.attribute.comparator, priority: -100 }
+            - { name: pim_catalog.attribute.comparator }
 ```
 
-## Step 5: Completeness
+## Step 4: Completeness
 
-To compute the completeness, you will define when a value is **complete** or **incomplete**.
-Since 4.0, we use the notion of masks to generate keys for each filled value.
-The generated mask for a filled value should looks like `attributeCode-channelCode-localeCode`.
+To be able to compute the completeness, it has to be defined when a value is considered to be **complete** or **incomplete**.
+Since Akeneo PIM 4.0, we use the notion of masks to generate keys for each filled value.
+The generated mask for a filled value should look like `attributeCode-channelCode-localeCode`.
+For more information about completeness masks, please read documentation of `RequiredAttributesMask` class.
 You need to define your own mask generator for your new attribute type.
-In our case, we will define a value as **complete** only of the `min` and `max` are filled.
+In our case, we will define a value as **complete** only if the `min` and `max` are filled.
 You can define your own logic in this class.
 
 ```php
@@ -309,10 +275,11 @@ class RangeMaskItemGenerator implements MaskItemGeneratorForAttributeType
         tags: [{ name: akeneo.pim.enrichment.completeness.mask_item_generator }]
 ```
 
-## Step 6: User Interface
+## Step 5: User Interface
 
-You will need to display a new field in the PEF to manipulate your new attribute type.
-Simply add a new HTML template with 2 fields:
+You will need to display a new field in the product edit form to be able to use your new attribute type.
+Add a new HTML template with 2 fields. 
+You can customize the style of your page using our [styleguide](https://docs.akeneo.com/master/design_pim/styleguide/index.php). 
 
 ```html
 <!-- src/Acme/RangeBundle/Resources/public/templates/product/field/range-field.html -->
@@ -328,8 +295,9 @@ config:
         acme/template/range-field: acmerange/templates/product/field/range-field.html
 ```
 
-Next, you have to create the linked JS module. 
-The `updateModel` function will be called when the user will write in one of the inputs.  
+Each attribute type (text, boolean, single option, etc) have a dedicated javascript module loaded in the product edit form.
+You have to create a new `range` javascript module to edit these values. 
+The `updateModel` function will be called each time the user will fill in the fields.  
 
 ```javascript
 // src/Acme/RangeBundle/Resources/public/js/product/field/range-field.js
@@ -355,7 +323,7 @@ define(
 );
 ```
 
-Register it in the requirejs file:
+Register it as a new entry in your `requirejs.yml` file:
 ```yaml
 # src/Acme/RangeBundle/Resources/config/requirejs.yml
 config:
@@ -364,10 +332,10 @@ config:
         acme/template/range-field: acmerange/templates/product/field/range-field.html
 ```
 
-Next, you will need to tell the front what module to use regarding your new attribute type.
-The attribute types it can be manipulated through UI have to own a `FieldProviderInterface`.
+Next, the backend needs to indicate to the front what module to use regarding the attribute type.
+For that, each attribute type have a corresponding `FieldProviderInterface`.
 Define this new provider, it supports only `range` attribute types.
-This class will send to front-end the JS extension to use (here, `acme-range-field`)
+This class indicate what javascript extension to use (here, `acme-range-field`).
 
 ```php
 <?php #src/Acme/RangeBundle/Enrich/Provider/Field/RangeFieldProvider.php
@@ -430,10 +398,10 @@ pim_enrich.entity.attribute.property.type.range: 'Range'
 }
 ```
 
-## Step 7: Export values
+## Step 6: Export values
 
 If you want to be able to export values through flat files, you need to code how to convert a range value into a cell.
-Here, we render a 10 to 20 range value in this format: `[10...20]`.
+Here, a value will be normalized like this: `[10...20]`.
 
 ```php
 <?php #src/Acme/RangeBundle/Product/Connector/ArrayConverter/StandardToFlat/Product/ValueConverter/RangeConverter.php
