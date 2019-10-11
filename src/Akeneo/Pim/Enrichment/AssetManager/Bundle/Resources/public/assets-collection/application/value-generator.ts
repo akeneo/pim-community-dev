@@ -22,6 +22,11 @@ import {
   attributeFetcher,
   fetchAssetAttributes,
 } from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/attribute';
+import {AttributeGroupCollection} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute-group';
+import {
+  attributeGroupFetcher,
+  fetchAssetAttributeGroups,
+} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/attribute-group';
 
 const transformValues = (legacyValues: LegacyValueCollection, assetAttributes: Attribute[]): ValueCollection => {
   const attributeCodes = assetAttributes.map((attribute: Attribute) => attribute.code);
@@ -60,13 +65,15 @@ const generate = async (product: Product): Promise<ValueCollection> => {
 
   let valueCollection: ValueCollection = transformValues(product.values, assetAttributes);
 
+  const assetAttributeGroups: AttributeGroupCollection = await fetchAssetAttributeGroups(attributeGroupFetcher())();
+
   const permissions: Permissions = await fetchPermissions(permissionFetcher())();
   valueCollection = filterAttributeGroups(valueCollection, permissions.attributeGroups);
   valueCollection = filterLocales(valueCollection, permissions.locales);
   valueCollection = filterReadOnlyAttribute(valueCollection);
   valueCollection = filterParentAttribute(valueCollection, product.meta);
   valueCollection = filterCategories(valueCollection, product.categories, permissions.categories);
-  valueCollection = sortByOrder(valueCollection);
+  valueCollection = sortByOrder(valueCollection, assetAttributeGroups);
 
   return valueCollection;
 };
@@ -125,10 +132,14 @@ const filterCategories = (
   }));
 };
 
-const sortByOrder = (values: ValueCollection): ValueCollection => {
-  console.log("values", values);
+const sortByOrder = (values: ValueCollection, attributeGroups: AttributeGroupCollection): ValueCollection => {
+  return values.sort((a, b) => {
+    if (a.attribute.group === b.attribute.group) {
+      return a.attribute.sort_order > b.attribute.sort_order ? 1 : -1;
+    }
 
-  return values.sort((a, b) => (a.attribute.sort_order > b.attribute.sort_order) ? 1 : -1);
+    return attributeGroups[a.attribute.group].sort_order > attributeGroups[b.attribute.group].sort_order ? 1 : -1;
+  });
 };
 
 export default generate;
