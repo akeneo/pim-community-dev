@@ -15,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * Test case dedicated to PIM API interaction including authentication handling.
@@ -95,6 +96,10 @@ abstract class ApiTestCase extends WebTestCase
 
         $client = static::createClient($options, $server);
         $client->setServerParameter('HTTP_AUTHORIZATION', 'Bearer '.$accessToken);
+
+        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
+        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $this->get('security.token_storage')->setToken($token);
 
         $aclManager = $this->get('oro_security.acl.manager');
         $aclManager->clearCache();
