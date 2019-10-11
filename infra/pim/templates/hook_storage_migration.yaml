@@ -33,8 +33,8 @@ spec:
           image: {{ template "pim.imageNameAndTag" . }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
           resources:
-{{ toYaml .Values.pim.resources | indent 12 }}          
-          command: 
+{{ toYaml .Values.pim.resources | indent 12 }}
+          command:
             - 'sh'
             - '-c'
             - |
@@ -53,7 +53,7 @@ spec:
               php upgrades/schema/archived_logs_local_filesystem_to_object_storage.php && \
               touch ${PIM_SHARED_STORAGE}/archive/export/export.txt && touch ${PIM_SHARED_STORAGE}/archive/import/import.txt && \
               gsutil -m cp -r ${PIM_SHARED_STORAGE}/archive/export/* gs://${SRNT_GOOGLE_BUCKET_NAME}/archivist/export/ && \
-              gsutil -m cp -r ${PIM_SHARED_STORAGE}/archive/import/* gs://${SRNT_GOOGLE_BUCKET_NAME}/archivist/import/ && \ 
+              gsutil -m cp -r ${PIM_SHARED_STORAGE}/archive/import/* gs://${SRNT_GOOGLE_BUCKET_NAME}/archivist/import/ && \
               gsutil -m cp -r ${PIM_SHARED_STORAGE}/file_storage/catalog/* gs://${SRNT_GOOGLE_BUCKET_NAME}/catalog_storage/ && \
               gsutil -m cp -r ${PIM_SHARED_STORAGE}/file_storage/assets/* gs://${SRNT_GOOGLE_BUCKET_NAME}/asset_storage/
           envFrom: [ configMapRef: { name: {{ template "pim.fullName" . }}-env } ]
@@ -63,7 +63,7 @@ spec:
             - { name: SRNT_GOOGLE_APPLICATION_CREDENTIALS, value: "/var/secrets/google/srnt.json" }
             - { name: MAILER_USER, valueFrom: { secretKeyRef: { name: pim-secrets, key: mailerLogin } } }
             - { name: MAILER_PASSWORD, valueFrom: { secretKeyRef: { name: pim-secrets, key: mailerPassword } } }
-            - { name: PIM_DATABASE_PASSWORD, valueFrom: { secretKeyRef: { name: pim-secrets, key: mysqlPimUserPassword } } }
+            - { name: APP_DATABASE_PASSWORD, valueFrom: { secretKeyRef: { name: pim-secrets, key: mysqlPimUserPassword } } }
             - { name: GOOGLE_NAMESPACE, valueFrom: { fieldRef: { fieldPath: metadata.namespace } } }
             - { name: GOOGLE_POD_NAME, valueFrom: { fieldRef: { fieldPath: metadata.name } } }
             - { name: GOOGLE_STORAGE_KEY, value: {{ .Values.pim.storage.serviceAccountKey }} }
