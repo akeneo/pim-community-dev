@@ -2,8 +2,22 @@
 
 ## Bug fixes
 
-- PIM-6424: update exports when a locale is removed from a channel
 - PIM-7332: show an error message when a number attribute field reaches the PHP_INT_MAX.
+
+# 2.3.66 (2019-10-09)
+
+# 2.3.65 (2019-10-04)
+
+## Bug fixes
+
+- PIM-7122: User can not delete an attribute used as conversion unit in a channel
+
+# 2.3.64 (2019-10-01)
+
+## Bug fixes
+
+- PIM-6424: update exports when a locale is removed from a channel
+- PIM-7891: Update exports when an attribute is deleted
 
 # 2.3.63 (2019-09-23)
 
