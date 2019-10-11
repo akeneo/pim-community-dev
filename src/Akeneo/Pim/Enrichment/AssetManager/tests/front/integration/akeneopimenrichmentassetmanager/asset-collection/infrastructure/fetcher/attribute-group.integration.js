@@ -5,8 +5,11 @@ let page = global.__PAGE__;
 // Setup to intercept the calls and return a fake response
 beforeEach(async () => {
   page.on('request', interceptedRequest => {
-    // Intercept the call to get the product attributes
-    if ('http://pim.com/rest/attribute-group/' === interceptedRequest.url() && 'GET' === interceptedRequest.method()) {
+    // Intercept the call to get the product attribute groups
+    if (
+      'http://pim.com/rest/attribute-group/?options%5Blimit%5D=-1' === interceptedRequest.url() &&
+      'GET' === interceptedRequest.method()
+    ) {
       const attributeGroups = {
         marketing: {
           code: 'marketing',
