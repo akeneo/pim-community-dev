@@ -37,11 +37,13 @@ const answerAssetAttributes = async page => {
 };
 const answerAssetList = async page => {
   const requestContract = getRequestContract('Asset/Search/multiple_code_filtered.json');
+  const requestContract2 = getRequestContract('Asset/Search/asset_picker_search.json');
+  const requestContract3 = getRequestContract('Asset/Search/product_asset_collection.json');
+  const requestContract4 = getRequestContract('Asset/Search/product_asset_collection_updated.json');
   await listenRequest(page, requestContract);
-  const requestContract2 = getRequestContract('Asset/Search/multiple_code_filtered_2.json');
   await listenRequest(page, requestContract2);
-  const requestContract3 = getRequestContract('Asset/Search/asset_picker_search.json');
   await listenRequest(page, requestContract3);
+  await listenRequest(page, requestContract4);
 };
 
 module.exports = {

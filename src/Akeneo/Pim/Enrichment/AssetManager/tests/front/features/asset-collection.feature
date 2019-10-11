@@ -7,7 +7,7 @@ Feature: Show an asset collection
   Scenario: See multiple asset collections
     Given an asset collection with three assets
     When the user go to the asset tab
-    Then the three assets in the collection be displayed
+    Then the three assets in the collection should be displayed
 
   @acceptance-front
   Scenario: Remove one asset from the collection

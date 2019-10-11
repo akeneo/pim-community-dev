@@ -8,6 +8,7 @@ import __ from 'akeneoreferenceentity/tools/translator';
 import {RemoveButton} from 'akeneoassetmanager/application/component/app/remove-button';
 
 const Container = styled.li`
+  height: 65px;
   padding: 10px 0;
   display: flex;
   justify-content: space-between;
@@ -27,6 +28,7 @@ const AssetDetails = styled.div`
 `;
 
 const AssetCode = styled.div`
+  margin-bottom: -4px;
   font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.small};
   overflow: hidden;
   text-overflow: ellipsis;
@@ -36,6 +38,7 @@ const AssetCode = styled.div`
 const AssetLabel = styled.div`
   color: ${(props: ThemedProps<void>) => props.theme.color.purple100};
   font-weight: bolditalic;
+  font-style: italic;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

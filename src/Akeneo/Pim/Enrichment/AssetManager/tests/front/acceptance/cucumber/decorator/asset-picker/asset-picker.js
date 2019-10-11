@@ -52,7 +52,7 @@ const AssetPicker = async (nodeElement, createElementDecorator, page) => {
 
     await page.waitFor(confirmButtonSelector);
     const confirmSelectionButton = await nodeElement.$(confirmButtonSelector);
-    confirmSelectionButton.click();
+    await confirmSelectionButton.click();
   };
 
   return {getSearchBar, getFilterCollection, getMosaic, getBasket, confirmSelection};

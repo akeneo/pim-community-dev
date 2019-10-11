@@ -7,8 +7,8 @@ import Close from 'akeneoassetmanager/application/component/app/icon/close';
 import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 
 const Container = styled(TransparentButton)`
-  width: 22px;
-  height: 22px;
+  width: 12px;
+  height: 12px;
 `;
 
 export const RemoveButton = ({title, onAction}: {title: string; onAction: () => void}) => {

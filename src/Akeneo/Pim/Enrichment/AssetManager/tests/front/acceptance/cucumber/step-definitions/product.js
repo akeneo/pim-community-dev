@@ -109,7 +109,7 @@ module.exports = async function(cucumber) {
     await coco.move('right');
   });
 
-  Then('the three assets in the collection be displayed', async function() {
+  Then('the three assets in the collection should be displayed', async function() {
     await assertAssetCodesToBe(this.page, ['starck', 'coco', 'dyson']);
   });
 
@@ -123,9 +123,5 @@ module.exports = async function(cucumber) {
 
   Then('there should be no asset in the collection', async function() {
     await assertAssetCodesToBe(this.page, []);
-  });
-
-  Then('there should be three assets selected', async function() {
-    await assertAssetCodesToBe(this.page, ['dyson', 'starck', 'coco']);
   });
 };

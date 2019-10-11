@@ -1,4 +1,4 @@
-const Mosaic = async (nodeElement, page) => {
+const Mosaic = async (nodeElement, createElementDecorator, page) => {
   const select = async assetCode => {
     const unselectedAssetSelector = `[data-asset="${assetCode}"][data-selected="false"]`;
     await page.waitForSelector(unselectedAssetSelector);

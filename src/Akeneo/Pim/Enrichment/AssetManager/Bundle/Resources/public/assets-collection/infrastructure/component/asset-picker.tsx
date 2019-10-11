@@ -43,6 +43,15 @@ const Modal = styled.div`
   padding: 40px;
 `;
 
+const CloseModal = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 24px;
+  height: 24px;
+  background-color: red;
+`;
+
 const ConfirmButton = styled(Button)`
   position: absolute;
   top: 0;
@@ -217,6 +226,12 @@ export const AssetPicker = ({
   const [resultCollection, setResultCollection] = React.useState<Asset[]>([]);
   const [context, setContext] = React.useState<Context>(initialContext);
 
+  const resetModal = () => {
+    setSearchValue('');
+    setFilterCollection([]);
+    setOpen(false);
+  };
+
   useFetchResult(
     dataProvider,
     assetFamilyIdentifier,
@@ -243,6 +258,12 @@ export const AssetPicker = ({
       </Button>
       {isOpen ? (
         <Modal data-container="asset-picker">
+          <CloseModal
+            onClick={() => {
+              onAssetPick([]);
+              resetModal();
+            }}
+          />
           <Header>
             <Title>{__('pim_asset_manager.asset_picker.title')}</Title>
             <SubTitle>{__('pim_asset_manager.asset_picker.sub_title')}</SubTitle>
@@ -251,7 +272,7 @@ export const AssetPicker = ({
               color="green"
               onClick={() => {
                 onAssetPick(selection);
-                setOpen(false);
+                resetModal();
               }}
             >
               {__('pim_common.confirm')}

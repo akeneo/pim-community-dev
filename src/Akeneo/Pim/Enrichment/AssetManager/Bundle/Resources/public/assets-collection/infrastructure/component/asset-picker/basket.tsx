@@ -34,11 +34,12 @@ const Container = styled.div`
 `;
 
 const Title = styled.div`
-  color: ${(props: ThemedProps<void>) => props.theme.color.purple100};
-  text-transform: uppercase;
   padding-bottom: 10px;
   padding-top: 4px;
   border-bottom: 1px solid ${(props: ThemedProps<void>) => props.theme.color.purple100};
+  color: ${(props: ThemedProps<void>) => props.theme.color.purple100};
+  font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.small};
+  text-transform: uppercase;
 `;
 
 const List = styled.ul`
