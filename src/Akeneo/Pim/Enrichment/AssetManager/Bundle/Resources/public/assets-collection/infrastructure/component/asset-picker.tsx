@@ -296,6 +296,7 @@ export const AssetPicker = ({
                 selection={selection}
                 assetCollection={resultCollection}
                 context={context}
+                resultCount={resultCount}
                 onSelectionChange={(assetCodeCollection: AssetCode[]) => {
                   setSelection(assetCodeCollection);
                 }}

@@ -17,46 +17,82 @@ const Container = styled.div`
   height: 100%;
   overflow-y: auto;
   flex: 1;
+`;
+
+const Grid = styled.div`
+  margin-top: 20px;
   display: grid;
   grid-gap: 20px;
   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+`;
+
+const MoreResults = styled.div`
   margin-top: 20px;
 `;
+
+const MAX_DISPLAYED_ASSETS = 500;
 
 const Mosaic = ({
   context,
   selection,
   onSelectionChange,
   assetCollection,
+  resultCount,
 }: {
   selection: AssetCode[];
   assetCollection: Asset[];
   context: Context;
+  resultCount: number | null;
   onSelectionChange: (selection: AssetCode[]) => void;
 }) => {
   return (
-    <Container data-container="mosaic">
+    <React.Fragment>
       {assetCollection.length > 0 ? (
-        assetCollection.map((asset: Asset) => {
-          return (
-            <AssetCard
-              key={asset.code}
-              asset={asset}
-              context={context}
-              isSelected={isAssetInCollection(asset.code, selection)}
-              onSelectionChange={(code: AssetCode, isChecked: boolean) => {
-                const newSelection = isChecked
-                  ? addAssetToCollection(selection, code)
-                  : removeAssetFromCollection(selection, code);
-                onSelectionChange(newSelection);
-              }}
-            />
-          );
-        })
+        <Container data-container="mosaic">
+          <Grid>
+            {assetCollection.map((asset: Asset) => {
+              return (
+                <AssetCard
+                  key={asset.code}
+                  asset={asset}
+                  context={context}
+                  isSelected={isAssetInCollection(asset.code, selection)}
+                  onSelectionChange={(code: AssetCode, isChecked: boolean) => {
+                    const newSelection = isChecked
+                      ? addAssetToCollection(selection, code)
+                      : removeAssetFromCollection(selection, code);
+                    onSelectionChange(newSelection);
+                  }}
+                />
+              );
+            })}
+          </Grid>
+          <MoreResults>
+            {null !== resultCount &&
+            resultCount >= MAX_DISPLAYED_ASSETS &&
+            assetCollection.length === MAX_DISPLAYED_ASSETS ? (
+              <div className="AknDescriptionHeader AknDescriptionHeader--sticky">
+                <div
+                  className="AknDescriptionHeader-icon"
+                  style={{backgroundImage: 'url("/bundles/pimui/images/illustrations/Product.svg")'}}
+                />
+                <div className="AknDescriptionHeader-title">
+                  {__('pim_asset_manager.asset.grid.more_result.title')}
+                  <div className="AknDescriptionHeader-description">
+                    {__('pim_asset_manager.asset.grid.more_result.description', {
+                      total: resultCount,
+                      maxDisplayedAssets: MAX_DISPLAYED_ASSETS,
+                    })}
+                  </div>
+                </div>
+              </div>
+            ) : null}
+          </MoreResults>
+        </Container>
       ) : (
         <EmptyResult />
       )}
-    </Container>
+    </React.Fragment>
   );
 };
 

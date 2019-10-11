@@ -201,15 +201,15 @@ pim_asset_manager:
           no_value: Select an option to filter
           operator:
             in: In list
+      more_result:
+        title: That's not it!
+        description: You just scrolled through the first {{ maxDisplayedAssets }} results out of {{ total }} assets. To see more, try with more specific search criteria.
   #      column:
   #        code: Code
   #        image: Image
   #        label: Label
   #        complete: Complete
   #        action: Actions
-  #      more_result:
-  #        title: That's not it!
-  #        description: You just scrolled through the first 500 results out of {{ total }} assets. To see more, try with more specific search criteria.
   #      completeness:
   #        title_no_required: No attribute required
   #        title_non_complete: 0 out of {{ required }} attributes complete
