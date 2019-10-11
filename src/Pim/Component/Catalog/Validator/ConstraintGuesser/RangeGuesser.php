@@ -49,6 +49,10 @@ class RangeGuesser implements ConstraintGuesserInterface
             }
         }
 
+        if (AttributeTypes::NUMBER === $attribute->getType() && (null === $max || PHP_INT_MAX < $max)) {
+            $max = PHP_INT_MAX;
+        }
+
         if (null !== $min || null !== $max) {
             $constraints[] = new Range(['min' => $min, 'max' => $max]);
         }

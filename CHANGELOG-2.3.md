@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-7332: show an error message when a number attribute field reaches the PHP_INT_MAX.
 - PIM-7691: Users were able to edit their own roles
 
 # 2.3.66 (2019-10-09)
@@ -17,6 +18,7 @@
 ## Bug fixes
 
 - PIM-6424: update exports when a locale is removed from a channel
+- PIM-7891: Update exports when an attribute is deleted
 
 # 2.3.63 (2019-09-23)
 
