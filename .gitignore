@@ -39,7 +39,6 @@ npm-debug.log
 !/docker/sso_authsources.php
 docker-compose.override.yml
 composer.lock
-yarn.lock
 package-lock.json
 yarn-error.log
 coverage/*

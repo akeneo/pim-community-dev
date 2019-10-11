@@ -22,7 +22,7 @@ include make-file/*.mk
 ##
 
 node_modules: package.json
-	$(YARN_EXEC) install
+	$(YARN_EXEC) install --frozen-lockfile
 
 .PHONY: assets
 assets:
