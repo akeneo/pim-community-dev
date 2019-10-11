@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {create} from 'react-test-renderer';
-import {Page} from '../../../application/common';
+import {ApplyButton} from '../../../../../application/common';
 
-describe('Page component', () => {
+describe('Button component', () => {
     test('Matches the snapshot', () => {
-        const component = create(<Page />);
+        const component = create(<ApplyButton onClick={() => undefined} />);
 
         expect(component.toJSON()).toMatchSnapshot();
     });

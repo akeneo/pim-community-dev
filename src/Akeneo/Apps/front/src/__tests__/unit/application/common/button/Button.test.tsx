@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {create} from 'react-test-renderer';
-import {Header} from '../../../application/common';
+import {Button} from '../../../../../application/common/button/Button';
 
-describe('Header component', () => {
+describe('Button component', () => {
     test('Matches the snapshot', () => {
-        const component = create(<Header userButtons={<></>} />);
+        const component = create(<Button onClick={() => undefined} />);
 
         expect(component.toJSON()).toMatchSnapshot();
     });

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {create} from 'react-test-renderer';
-import {Breadcrumb, BreadcrumbItem} from '../../../../application/common';
+import {Breadcrumb, BreadcrumbItem} from '../../../../../application/common';
 
 describe('Button component', () => {
     test('Matches the snapshot', () => {
