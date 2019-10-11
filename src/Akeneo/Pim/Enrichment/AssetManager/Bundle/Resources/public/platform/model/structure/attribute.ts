@@ -12,7 +12,7 @@ export type Attribute = {
   group: AttributeGroupCode;
   isReadOnly: boolean;
   referenceDataName: ReferenceDataName;
-  sort_order: string;
+  sort_order: number;
 };
 
 export const getAttributeLabel = (attribute: Attribute, locale: LocaleCode) => {
