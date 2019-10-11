@@ -62,6 +62,7 @@ class AkeneoElasticsearchExtension extends Extension
                     new Reference($configurationLoaderServiceName),
                     $config['hosts'],
                     $index['index_name'],
+                    $index['id_prefix'],
                 ]);
 
             $esClientRegistryDefinition->addMethodCall('register', [new Reference($index['service_name'])]);

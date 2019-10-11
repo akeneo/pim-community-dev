@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Features
+
+- AOB-661: allow prefix of ES document `_id`
+
 ## Bug fixes:
 
 - PIM-8773: Fix logout after opening a select2 dropdown
