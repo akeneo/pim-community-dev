@@ -8,7 +8,6 @@ import __ from 'akeneoreferenceentity/tools/translator';
 import {RemoveButton} from 'akeneoassetmanager/application/component/app/remove-button';
 
 const Container = styled.li`
-  height: 65px;
   padding: 10px 0;
   display: flex;
   justify-content: space-between;
@@ -19,6 +18,7 @@ const Container = styled.li`
 const AssetThumbnail = styled.img`
   width: 44px;
   height: 44px;
+  flex-shrink: 0;
 `;
 
 const AssetDetails = styled.div`
@@ -28,7 +28,8 @@ const AssetDetails = styled.div`
 `;
 
 const AssetCode = styled.div`
-  margin-bottom: -4px;
+  margin-bottom: 2px;
+  line-height: 13px;
   font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.small};
   overflow: hidden;
   text-overflow: ellipsis;
@@ -36,6 +37,7 @@ const AssetCode = styled.div`
 `;
 
 const AssetLabel = styled.div`
+  line-height: 16px;
   color: ${(props: ThemedProps<void>) => props.theme.color.purple100};
   font-weight: bolditalic;
   font-style: italic;
@@ -61,7 +63,7 @@ const AssetItem = ({
       data-code={asset.code}
       className={isLoading ? 'AknLoadingPlaceHolderContainer' : ''}
     >
-      <AssetThumbnail src={asset.image} />
+      <AssetThumbnail src={asset.image} width={44} height={44} />
       <AssetDetails>
         <AssetCode title={asset.code}>{asset.code}</AssetCode>
         <AssetLabel title={getAssetLabel(asset, context.locale)}>{getAssetLabel(asset, context.locale)}</AssetLabel>

@@ -31,8 +31,9 @@ const Container = styled.div`
   display: flex;
   flex-shrink: 0;
   flex-direction: column;
-  width: 280px;
+  width: 300px;
   padding-right: 20px;
+  padding-left: 30px;
   border-right: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey80}
   overflow-y: auto;
 `;
@@ -40,11 +41,10 @@ const Container = styled.div`
 const Title = styled.div`
   padding-bottom: 10px;
   padding-top: 4px;
-  color: ${(props: ThemedProps<void>) => props.theme.color.grey140};
+  color: ${(props: ThemedProps<void>) => props.theme.color.grey100};
   text-transform: uppercase;
   font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.default};
   background-color: white;
-  border-bottom: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey140};
 `;
 
 const Filters = styled.div`

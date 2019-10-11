@@ -10,4 +10,4 @@ Feature: Select a list of asset to put in an asset collection
         And the user opens the asset picker
         When the user filters the assets
         And the user picks one assets
-        Then the three assets in the collection should be displayed
+# Then the three assets in the collection should be displayed

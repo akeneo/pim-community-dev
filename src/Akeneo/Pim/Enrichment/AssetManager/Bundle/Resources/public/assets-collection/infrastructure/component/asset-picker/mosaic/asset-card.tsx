@@ -12,24 +12,23 @@ const Container = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  height: 165px;
-  margin: 10px 20px 10px 0;
+  width: 100%;
   justify-content: space-between;
 `;
 const Title = styled.div`
   display: flex;
-  width: 140px;
+  flex: 1;
   align-items: center;
   min-height: 15px;
 `;
 type ThumbnailProps = {isSelected: boolean};
 const Thumbnail = styled.img<ThumbnailProps>`
   border-width: ${(props: ThemedProps<ThumbnailProps>) => (props.isSelected ? '2px' : '1px')};
+  width: ${(props: ThemedProps<ThumbnailProps>) => (props.isSelected ? 'calc(100% - 2px)' : '100%')};
   border-color: ${(props: ThemedProps<ThumbnailProps>) =>
     props.isSelected ? props.theme.color.blue100 : props.theme.color.grey100};
   border-style: solid;
-  width: 140px;
-  height: 140px;
+  margin-bottom: 6px;
 `;
 
 const AssetCompleteness = styled.div`

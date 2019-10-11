@@ -48,7 +48,7 @@ test('It displays selected asset card', () => {
   expect(getByText(asset.labels.en_US)).toBeInTheDocument();
 });
 
-test('it can be selected', () => {
+test('it can be selected when clicking on the checkbox', () => {
   let isSelected = false;
   let selectedCode = null;
   const {container} = render(
@@ -66,6 +66,29 @@ test('it can be selected', () => {
   );
 
   fireEvent.click(container.querySelector('[data-checked]'));
+
+  expect(isSelected).toEqual(true);
+  expect(selectedCode).toEqual(asset.code);
+});
+
+test('it can be selected when clicking on the asset card', () => {
+  let isSelected = false;
+  let selectedCode = null;
+  const {container} = render(
+    <ThemeProvider theme={akeneoTheme}>
+      <AssetCard
+        asset={asset}
+        context={{locale: 'en_US', channel: 'ecommerce'}}
+        isSelected={isSelected}
+        onSelectionChange={(code, value) => {
+          isSelected = value;
+          selectedCode = code;
+        }}
+      />
+    </ThemeProvider>
+  );
+
+  fireEvent.click(container.querySelector('img'));
 
   expect(isSelected).toEqual(true);
   expect(selectedCode).toEqual(asset.code);

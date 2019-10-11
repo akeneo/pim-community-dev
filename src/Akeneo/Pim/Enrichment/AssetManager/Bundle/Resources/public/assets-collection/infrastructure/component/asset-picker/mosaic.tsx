@@ -15,10 +15,12 @@ import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 
 const Container = styled.div`
   height: 100%;
-  display: flex;
-  flex-wrap: wrap;
   overflow-y: auto;
   flex: 1;
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  margin-top: 20px;
 `;
 
 const Mosaic = ({

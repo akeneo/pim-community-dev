@@ -25,7 +25,7 @@ type BasketProps = {
 };
 
 const Container = styled.div`
-  width: 280px;
+  width: 300px;
   border-left: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey80};
   padding: 0 20px;
   flex-shrink: 0;
@@ -37,7 +37,7 @@ const Title = styled.div`
   padding-bottom: 10px;
   padding-top: 4px;
   border-bottom: 1px solid ${(props: ThemedProps<void>) => props.theme.color.purple100};
-  color: ${(props: ThemedProps<void>) => props.theme.color.purple100};
+  color: ${(props: ThemedProps<void>) => props.theme.color.purple120};
   font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.small};
   text-transform: uppercase;
 `;

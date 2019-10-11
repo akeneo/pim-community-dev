@@ -12,7 +12,6 @@ type SearchFieldProps = {
 const Container = styled.div`
   display: flex;
   flex: 1;
-  min-width: 300px;
 `;
 const SearchLogo = styled(SearchIcon)`
   margin-right: 6px;

@@ -7,12 +7,14 @@ import Close from 'akeneoassetmanager/application/component/app/icon/close';
 import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 
 const Container = styled(TransparentButton)`
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 0;
+  left: 0;
 `;
 
-export const RemoveButton = ({title, onAction}: {title: string; onAction: () => void}) => {
+export const CloseButton = ({title, onAction}: {title: string; onAction: () => void}) => {
   return (
     <Container
       title={title}
@@ -22,7 +24,7 @@ export const RemoveButton = ({title, onAction}: {title: string; onAction: () => 
         if (Key.Space === event.key) onAction();
       }}
     >
-      <Close color={akeneoTheme.color.grey100} title={title} size={18} />
+      <Close color={akeneoTheme.color.grey100} title={title} size={24} />
     </Container>
   );
 };

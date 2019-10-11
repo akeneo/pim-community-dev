@@ -16,9 +16,10 @@ import SearchBar from 'akeneopimenrichmentassetmanager/assets-collection/infrast
 import fetchAllChannels from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/channel';
 import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
-import {ChannelCode} from 'web/bundles/akeneoassetmanager/domain/model/channel';
-import {Query} from 'web/bundles/akeneoassetmanager/domain/fetcher/fetcher';
+import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
+import {Query} from 'akeneoassetmanager/domain/fetcher/fetcher';
 import attributeFetcher from 'akeneoassetmanager/infrastructure/fetcher/attribute';
+import {CloseButton} from 'akeneoassetmanager/application/component/app/close-button';
 
 type AssetFamilyIdentifier = string;
 type AssetPickerProps = {
@@ -41,15 +42,7 @@ const Modal = styled.div`
   width: 100%;
   height: 100%;
   padding: 40px;
-`;
-
-const CloseModal = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 24px;
-  height: 24px;
-  background-color: red;
+  overflow-x: auto;
 `;
 
 const ConfirmButton = styled(Button)`
@@ -258,13 +251,14 @@ export const AssetPicker = ({
       </Button>
       {isOpen ? (
         <Modal data-container="asset-picker">
-          <CloseModal
-            onClick={() => {
-              onAssetPick([]);
-              resetModal();
-            }}
-          />
           <Header>
+            <CloseButton
+              onAction={() => {
+                onAssetPick([]);
+                resetModal();
+              }}
+              title={__('pim_asset_manager.asset_picker.close')}
+            />
             <Title>{__('pim_asset_manager.asset_picker.title')}</Title>
             <SubTitle>{__('pim_asset_manager.asset_picker.sub_title')}</SubTitle>
             <ConfirmButton

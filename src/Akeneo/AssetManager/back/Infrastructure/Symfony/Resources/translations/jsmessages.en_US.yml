@@ -25,6 +25,7 @@ pim_asset_manager:
     move_asset_to_left: Move asset {{ assetName }} to the left
     move_asset_to_right: Move asset {{ assetName }} to the right
   asset_picker:
+    close: Close the asset picker
     title: Add assets to your product
     sub_title: Choose the asset you want to attach to your asset collection
     no_result:
