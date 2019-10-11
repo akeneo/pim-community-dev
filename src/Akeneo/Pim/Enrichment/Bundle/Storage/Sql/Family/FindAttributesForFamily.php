@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Family;
 
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
-use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Checks if an attribute is part of the family attributes.
@@ -17,12 +17,12 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class FindAttributesForFamily
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    /** @var Connection */
+    private $connection;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(Connection $connection)
     {
-        $this->entityManager = $entityManager;
+        $this->connection = $connection;
     }
 
     /**
@@ -41,7 +41,7 @@ class FindAttributesForFamily
           INNER JOIN pim_catalog_attribute a ON fa.attribute_id = a.id
         WHERE (f.code = :family_code)
 SQL;
-        $stmt = $this->entityManager->getConnection()->executeQuery($sql, ['family_code' => $family->getCode()]);
+        $stmt = $this->connection->executeQuery($sql, ['family_code' => $family->getCode()]);
 
         return $this->getAttributeCodes($stmt);
     }

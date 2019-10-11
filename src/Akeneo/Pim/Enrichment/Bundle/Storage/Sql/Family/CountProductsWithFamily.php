@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Family;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\CountProductsWithFamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\DBAL\Connection;
 
 /**
  * Count the number of products belonging to the given family
@@ -18,24 +17,19 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 final class CountProductsWithFamily implements CountProductsWithFamilyInterface
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    /** @var Connection */
+    private $connection;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(Connection $connection)
     {
-        $this->entityManager = $entityManager;
+        $this->connection = $connection;
     }
 
     public function count(FamilyInterface $family): int
     {
-        $queryBuilder = $this->entityManager->createQueryBuilder();
-        $productCount = $queryBuilder->select('COUNT(p)')
-            ->from(ProductInterface::class, 'p')
-            ->where('p.family = :family_id')
-            ->setParameter(':family_id', $family->getId())
-            ->getQuery()
-            ->getSingleScalarResult();
-
-        return (int) $productCount;
+        return (int) $this->connection->executeQuery(
+            'SELECT COUNT(id) FROM pim_catalog_product WHERE family_id = :family_id',
+            ['family_id' => $family->getId()]
+        )->fetchColumn();
     }
 }

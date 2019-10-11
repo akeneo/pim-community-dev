@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\CompleteVariantProducts;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\VariantProductRatioInterface;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\DBAL\Connection;
 
 /**
  * Query variant product completenesses to build the complete variant product ratio on the PMEF
@@ -17,17 +17,12 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 final class VariantProductRatio implements VariantProductRatioInterface
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    /** @var Connection */
+    private $connection;
 
-    /**
-     * VariantProductRatio constructor.
-     *
-     * @param EntityManagerInterface $entityManager
-     */
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(Connection $connection)
     {
-        $this->entityManager = $entityManager;
+        $this->connection = $connection;
     }
 
     /**
@@ -118,7 +113,7 @@ SQL;
             }
         }
 
-        $statement = $this->entityManager->getConnection()->prepare($query);
+        $statement = $this->connection->prepare($query);
 
         foreach ($parameters as $parameter) {
             $statement->bindValue($parameter['name'], $parameter['value']);
