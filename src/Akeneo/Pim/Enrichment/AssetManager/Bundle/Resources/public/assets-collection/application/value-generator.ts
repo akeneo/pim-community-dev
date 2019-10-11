@@ -135,10 +135,10 @@ const filterCategories = (
 const sortByOrder = (values: ValueCollection, attributeGroups: AttributeGroupCollection): ValueCollection => {
   return values.sort((a, b) => {
     if (a.attribute.group === b.attribute.group) {
-      return a.attribute.sort_order > b.attribute.sort_order ? 1 : -1;
+      return a.attribute.sort_order - b.attribute.sort_order;
     }
 
-    return attributeGroups[a.attribute.group].sort_order > attributeGroups[b.attribute.group].sort_order ? 1 : -1;
+    return attributeGroups[a.attribute.group].sort_order - attributeGroups[b.attribute.group].sort_order;
   });
 };
 
