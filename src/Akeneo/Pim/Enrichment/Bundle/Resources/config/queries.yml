@@ -2,22 +2,22 @@ services:
     pim_catalog.doctrine.query.find_variant_product_completeness:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness\VariantProductRatio'
         arguments:
-            - '@doctrine.orm.entity_manager'
+            - '@database_connection'
 
     pim_catalog.doctrine.query.count_entity_with_family_variant:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Family\CountEntityWithFamilyVariant'
         arguments:
-            - '@doctrine.orm.entity_manager'
+            - '@database_connection'
 
     pim_catalog.doctrine.query.find_attributes_for_family:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Family\FindAttributesForFamily'
         arguments:
-            - '@doctrine.orm.entity_manager'
+            - '@database_connection'
 
     pim_catalog.doctrine.query.count_products_with_family:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Family\CountProductsWithFamily'
         arguments:
-            - '@doctrine.orm.entity_manager'
+            - '@database_connection'
 
     pim_catalog.doctrine.query.find_family_variants_identifiers_by_attribute_axes:
         class: 'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Query\FamilyVariantsByAttributeAxes'
@@ -32,8 +32,7 @@ services:
     pim_catalog.query.get_associated_product_codes_by_product:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetAssociatedProductCodesByProductFromDB'
         arguments:
-            - '@doctrine.orm.entity_manager'
-            - '%pim_catalog.entity.association.class%'
+            - '@database_connection'
 
     pim_enrich.doctrine.query.ascendant_categories:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\AscendantCategories'
@@ -156,27 +155,27 @@ services:
             - '@pim_reference_data.repository_resolver'
 
     akeneo.pim.enrichment.category.query.category_codes_by_product_model_codes:
-        class: 'Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetCategoryCodesByProductModelCodes'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetCategoryCodesByProductModelCodes'
         arguments:
             - '@database_connection'
 
     akeneo.pim.enrichment.product_model.query.get_models_associations_by_product_model_codes:
-        class: 'Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetProductModelsAssociationsByProductModelCodes'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetProductModelsAssociationsByProductModelCodes'
         arguments:
             - '@database_connection'
 
     akeneo.pim.enrichment.product_model.query.get_group_associations_by_product_model_codes:
-        class: 'Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetGroupAssociationsByProductModelCodes'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetGroupAssociationsByProductModelCodes'
         arguments:
             - '@database_connection'
 
     akeneo.pim.enrichment.product_model.query.get_values_and_properties_from_product_model_codes:
-        class: 'Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetValuesAndPropertiesFromProductModelCodes'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetValuesAndPropertiesFromProductModelCodes'
         arguments:
             - '@database_connection'
 
     akeneo.pim.enrichment.product_model.query.get_product_associations_by_product_model_codes:
-        class: 'Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetProductAssociationsByProductModelCodes'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetProductAssociationsByProductModelCodes'
         arguments:
             - '@database_connection'
 
@@ -203,7 +202,7 @@ services:
 
 
     akeneo.pim.enrichment.product_model.query.count_product_models_and_children_product_models:
-        class: Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\CountProductModelsAndChildrenProductModels
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\CountProductModelsAndChildrenProductModels'
         arguments:
             - '@database_connection'
 

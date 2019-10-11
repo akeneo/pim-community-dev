@@ -61,7 +61,7 @@ SQL;
             $sql,
             [
                 'parentId' => $entity->getParent()->getId(),
-                'identifier' => $identifier
+                'identifier' => $identifier,
             ]
         );
         foreach ($rows as $row) {

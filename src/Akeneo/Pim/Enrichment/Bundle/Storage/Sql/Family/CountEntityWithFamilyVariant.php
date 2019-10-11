@@ -3,11 +3,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Family;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\CountEntityWithFamilyVariantInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\DBAL\Connection;
 
 /**
  * Find the number of product and product models count belonging to the given family variant
@@ -18,12 +16,12 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 final class CountEntityWithFamilyVariant implements CountEntityWithFamilyVariantInterface
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    /** @var Connection */
+    private $connection;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(Connection $connection)
     {
-        $this->entityManager = $entityManager;
+        $this->connection = $connection;
     }
 
     public function belongingToFamilyVariant(FamilyVariantInterface $familyVariant): int
@@ -38,41 +36,27 @@ final class CountEntityWithFamilyVariant implements CountEntityWithFamilyVariant
      * @param FamilyVariantInterface $familyVariant
      *
      * @return int
-     *
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\DBAL\DBALException
      */
     private function countProductModels(FamilyVariantInterface $familyVariant): int
     {
-        $queryBuilder = $this->entityManager->createQueryBuilder();
-        $productModelCount = $queryBuilder->select('COUNT(pm)')
-            ->from(ProductModelInterface::class, 'pm')
-            ->where('pm.familyVariant = :family_variant_id')
-            ->setParameter(':family_variant_id', $familyVariant->getId())
-            ->getQuery()
-            ->getSingleScalarResult();
-
-        return (int) $productModelCount;
+        return (int) $this->connection->executeQuery(
+            'SELECT COUNT(id) FROM pim_catalog_product_model WHERE family_variant_id = :family_variant_id',
+            ['family_variant_id' => $familyVariant->getId()]
+        )->fetchColumn();
     }
 
     /**
      * @param FamilyVariantInterface $familyVariant
      *
      * @return int
-     *
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\DBAL\DBALException
      */
     private function countVariantProducts(FamilyVariantInterface $familyVariant): int
     {
-        $queryBuilder = $this->entityManager->createQueryBuilder();
-        $productCount = $queryBuilder->select('COUNT(p)')
-            ->from(ProductInterface::class, 'p')
-            ->where('p.familyVariant = :family_variant_id')
-            ->setParameter(':family_variant_id', $familyVariant->getId())
-            ->getQuery()
-            ->getSingleScalarResult();
-
-        return (int) $productCount;
+        return (int) $this->connection->executeQuery(
+            'SELECT COUNT(id) FROM pim_catalog_product WHERE family_variant_id = :family_variant_id',
+            ['family_variant_id' => $familyVariant->getId()]
+        )->fetchColumn();
     }
 }

@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
-use Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetCategoryCodesByProductModelCodes;
-use Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetGroupAssociationsByProductModelCodes;
-use Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetProductAssociationsByProductModelCodes;
-use Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetProductModelsAssociationsByProductModelCodes;
-use Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetValuesAndPropertiesFromProductModelCodes;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetCategoryCodesByProductModelCodes;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetGroupAssociationsByProductModelCodes;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetProductAssociationsByProductModelCodes;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetProductModelsAssociationsByProductModelCodes;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetValuesAndPropertiesFromProductModelCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModelList;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;

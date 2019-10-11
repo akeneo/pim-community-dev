@@ -100,7 +100,7 @@ COPY . .
 ENV APP_ENV=prod
 RUN php -d 'memory_limit=3G' /usr/local/bin/composer install --optimize-autoloader --no-scripts --no-interaction --no-ansi --no-dev --prefer-dist && \
     bin/console pim:installer:assets --symlink --clean && \
-    yarn install && \
+    yarn install --frozen-lockfile && \
     yarn run less && \
     yarn run webpack && \
     rm -rf node_modules

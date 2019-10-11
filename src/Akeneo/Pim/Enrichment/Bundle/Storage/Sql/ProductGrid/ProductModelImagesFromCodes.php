@@ -33,7 +33,7 @@ final class ProductModelImagesFromCodes
     /** @var Connection */
     private $connection;
 
-    /** @var \Akeneo\Pim\Enrichment\Component\Product\Factory\Read\WriteValueCollectionFactory */
+    /** @var WriteValueCollectionFactory */
     private $valueCollectionFactory;
 
     public function __construct(Connection $connection, WriteValueCollectionFactory $valueCollectionFactory)

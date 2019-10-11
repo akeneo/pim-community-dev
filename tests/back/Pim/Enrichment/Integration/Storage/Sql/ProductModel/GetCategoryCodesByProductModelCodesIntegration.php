@@ -1,8 +1,8 @@
 <?php
 
-namespace AkeneoTest\Pim\Enrichment\Integration\ProductModel\Query\Sql;
+namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\ProductModel;
 
-use Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetCategoryCodesByProductModelCodes;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetCategoryCodesByProductModelCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\TestCase;
