@@ -3,6 +3,7 @@
 namespace Specification\Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector;
 
 use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
+use Akeneo\Tool\Component\Analytics\EmailDomainsQuery;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector\DBDataCollector;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
@@ -26,7 +27,8 @@ class DBDataCollectorSpec extends ObjectBehavior
         AverageMaxQuery $categoryLevelsAverageMax,
         CountQuery $productValueCountQuery,
         AverageMaxQuery $productValueAverageMaxQuery,
-        AverageMaxQuery $productValuePerFamilyAverageMaxQuery
+        AverageMaxQuery $productValuePerFamilyAverageMaxQuery,
+        EmailDomainsQuery $emailDomains
     ) {
         $this->beConstructedWith(
             $channelCountQuery,
@@ -42,7 +44,8 @@ class DBDataCollectorSpec extends ObjectBehavior
             $categoryLevelsAverageMax,
             $productValueCountQuery,
             $productValueAverageMaxQuery,
-            $productValuePerFamilyAverageMaxQuery
+            $productValuePerFamilyAverageMaxQuery,
+            $emailDomains
         );
     }
 
@@ -66,7 +69,8 @@ class DBDataCollectorSpec extends ObjectBehavior
         $categoryLevelsAverageMax,
         $productValueCountQuery,
         $productValueAverageMaxQuery,
-        $productValuePerFamilyAverageMaxQuery
+        $productValuePerFamilyAverageMaxQuery,
+        $emailDomains
     ) {
         $channelCountQuery->fetch()->willReturn(new CountVolume(3, -1, 'count_channels'));
         $productCountQuery->fetch()->willReturn(new CountVolume(1121, -1, 'count_products'));
@@ -82,6 +86,7 @@ class DBDataCollectorSpec extends ObjectBehavior
         $productValueCountQuery->fetch()->willReturn(new CountVolume(254897, -1, 'count_product_values'));
         $productValueAverageMaxQuery->fetch()->willReturn(new AverageMaxVolumes(8,7, -1, 'average_max_product_values'));
         $productValuePerFamilyAverageMaxQuery->fetch()->willReturn(new AverageMaxVolumes(12,10, -1, 'average_max_product_values_per_family'));
+        $emailDomains->fetch()->willReturn('example.com,other-example.com');
 
         $this->collect()->shouldReturn(
             [
@@ -99,7 +104,8 @@ class DBDataCollectorSpec extends ObjectBehavior
                 'nb_product_values'     => 254897,
                 'avg_product_values_by_product' => 7,
                 'avg_product_values_by_family' => 10,
-                'max_product_values_by_family' => 12
+                'max_product_values_by_family' => 12,
+                'email_domains' => 'example.com,other-example.com'
             ]
         );
     }

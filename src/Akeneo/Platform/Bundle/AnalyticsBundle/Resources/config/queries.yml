@@ -1,0 +1,5 @@
+services:
+    pim_analytics.query.email_domains:
+        class: Akeneo\Platform\Bundle\AnalyticsBundle\Query\Sql\EmailDomains
+        arguments:
+            - '@database_connection'
