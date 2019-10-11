@@ -14,12 +14,14 @@ oro.grid.mass_action.delete.confirm_content: Esteu segur que voleu suprimir els 
 oro.grid.mass_action.delete.item_limit: Vostè no pot suprimir en massa més %limit% productes (%count% seleccionats)
 oro.grid.datagrid.page_size.all: Tot
 oro.grid.mass_action.delete.success_message: "{0} no s'ha eliminat cap entitat|{1} s'ha eliminat una entitat|] 1, Inf [s'han eliminat %count% entitats"
+#Datagrid views constraints
 datagrid_view:
   columns:
     min_message: Heu de seleccionar almenys una columna de la graella de dades per mostrar
   label:
     unique_message: L'etiqueta ha de ser única
     not_blank_message: L'etiqueta no pot quedar en blanc
+#View selector flash messages
 grid.view_selector.flash:
   created: Vista de Graella de dades creada correctament
   removed: Vista de Graella de dades eliminada correctament

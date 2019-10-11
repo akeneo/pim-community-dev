@@ -1,3 +1,4 @@
+#ORO messages
 Close: Close
 Update: Update
 Selected Rows: Selected Rows
@@ -31,10 +32,12 @@ Second: Second
 Millisecond: Millisecond
 Microsecond: Microsecond
 "Time Zone": "Time Zone"
+#PIM messages
 Localized value: Localized value
 Columns: Columns
 Datagrid Configuration: Datagrid Configuration
 Apply: Apply
+#Filters
 Action: Action
 Unit: Unit
 Currency: Currency
@@ -47,6 +50,7 @@ jstree:
   no_tree: No tree available
   include_sub: Include sub-categories
   loading: Loading ...
+#Datetimepicker
 datetimepicker:
   days:
     Sunday: Sunday
@@ -98,6 +102,7 @@ datetimepicker:
     Oct: Oct
     Nov: Nov
     Dec: Dec
+#ORO
 oro_config:
   form:
     config:

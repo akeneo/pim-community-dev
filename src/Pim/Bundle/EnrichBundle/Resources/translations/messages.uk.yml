@@ -1,20 +1,26 @@
 pim_enrich:
+  #Product
   product:
     tab:
       association.title: Асоціації
       completeness.title: Ступінь заповненості
+    #Product comparison
     no_comparison_locale_available: Немає іншої локалі для порівняння
     no_compared_media: Немає доступних для порівняння медіа
+  #Attribute
   attribute:
     tab:
       parameter.title: Параметри
       value.title: Значення
+  #Family
   family:
     info:
       cant_remove_attribute_used_as_axis: Неможливо видалити атрибут, який використовується в якості різновиду основи у сімействі різновидів
+  #Locale
   locale:
     tab:
       permission.title: Права доступу
+  #Product group
   group:
     axis.help: 'Основа є атрибутом, який визначає варіанти для групи варіантів. Основа - це атрибут з параметрами, який не локалізується і визначається місцезнаходженням. Це налаштування неможливо змінити після створення групи варіантів.'
     type:
@@ -22,12 +28,14 @@ pim_enrich:
       X_SELL: Перехресні продажі
       ADDITIONAL: Додатково
       RELATED: Пов'язані
+  #Product completeness
   completeness:
     progress_bar.title: '%ratio%% завершено (1 обов''язкове значення)|%ratio%% завершено (%count% обов''язкових значень)'
     subtitle: '{0} Завершено|{1} 1 відсутнє значення|]1,Inf] %count% відсутніх значень'
     missing_attributes: Відсутнє значення|Відсутні значення
     legend:
       locale_not_associated: Локаль не призначена для цього каналу
+  #Mass edit operations
   mass_edit_action:
     limit_exceeded: Будь ласка, виберіть менш ніж %limit% елементів для редагування
     product:
@@ -100,10 +108,12 @@ pim_enrich:
     mass_action:
       quick_export:
         launched_flash: Триває робота експорту продуктів
+  #Sequential edit operations
   sequential_edit_action:
     product:
       previous: Повернутися до "%product%" без збереження.
       next: Повернутися до "%product%" без збереження змін.
+  #ACLs
   acl:
     locale:
       index: Перегляд локалей
@@ -211,6 +221,7 @@ pim_enrich:
       remove_completeness_for_channel_and_locale:
         start: Локаль була видалена з каналу. Триває видалення пов'язаних з нею даних.
         done: Видалення локалі на каналі завершене.
+#Entity and page header titles
 attribute:
   title: атрибут
   edit: редагувати атрибут
@@ -263,6 +274,7 @@ association type:
   title: тип асоціації
   create: створити тип асоціації
   edit: редагувати тип асоціації
+#Buttons
 btn:
   create:
     drag_or_upload: Перетягніть для завантаження, або натисніть тут
@@ -281,6 +293,7 @@ btn:
   to parent: назад до батьківського об'єкту
   download_pdf: PDF
   download: завантажити
+#Confirmation messages
 confirmation:
   confirm: Підтвердження
   delete: Підтвердити видалення
@@ -303,6 +316,7 @@ confirmation:
     remove attribute: Ви впевнені, що ви хочете видалити атрибут %name% з цього сімейства?
   product:
     remove attribute: Ви впевнені, що ви хочете видалити атрибут %name% з цього продукту?
+#Flash messages
 flash:
   entity:
     removed: Елемент було видалено
@@ -365,6 +379,7 @@ flash:
   user:
     removed: Користувача успішно видалено
   error ocurred: Не вдалося виконати дію. Спробуйте ще раз.
+#Info messages
 info:
   updated: Є незбережені зміни.
   category:
@@ -394,6 +409,7 @@ info:
     auto option sorting: Якщо активовано, параметри будуть впорядковані автоматично за їх локалізованими ярликами
   completeness:
     not calculated: не обчислена
+#Form elements
 Options: Параметри
 Created at: Створено в
 Updated at: Оновлено в
@@ -464,16 +480,20 @@ Category tree: Дерево категорій
 Completeness: Ступінь заповненості
 Attribute used as label: Атрибут, який використовується як мітка
 Credentials: Дані доступу
+#Scopes
 Global: Глобальний
 Expand all channels: Розгорнути всі канали
 Collapse all channels: Згорнути всі канали
+#Variants
 Always override: Завжди перевизначити
 Ask: Запитати
+#Attribute group
 General Properties: Загальні властивості
 Group values: Значення групи
 New group: Нова група
 Groups overview: Огляд груп
 'Y-m-d h:i:s': 'd-m-Y H:i:s'
+#Attribute properties
 Max characters: Максимум символів
 Validation rule: Правило перевірки
 Validation regexp: Регулярний вираз для перевірки
@@ -493,7 +513,9 @@ E-mail: E-mail
 URL: URL
 Regular expression: Регулярний вираз
 Minimum input length: Мінімальна довжина вводу
+#Category
 Title: Назва
+#Page titles
 pim_title.attribute_group:
   create: "Групи атрибутів | Створити"
   edit: "Групи атрибутів %group.label% | Редагувати"
@@ -536,11 +558,14 @@ pim_catalog_boolean: "Так/Ні"
 pim_catalog_date: Дата
 pim_reference_data_simpleselect: Простий розкривний список довідкових даниx
 pim_reference_data_multiselect: Множинний розкривний список довідкових даниx
+#Locales
 Activated: Активовано
+#Sequential edit operations
 pim_enrich.sequential_edit_action:
   product:
     previous: Повернутися до "%product%" без збереження.
     next: Перейти до "%product%" без збереження змін.
+#Mass edit operations
 pim_enrich.mass_edit_action:
   limit_exceeded: Будь ласка, виберіть менш ніж %limit% елементів для редагування
   product:
@@ -585,6 +610,7 @@ Select attributes: Виберіть атрибути
 Select: Виберіть
 Remove this attribute: Видалити цей атрибут
 Copy: Копія
+#Product view
 Group: Група
 View group: Переглянути групу
 History: Історія
@@ -593,14 +619,17 @@ pane.accordion:
   general_properties: Загальні властивості
   locale_values: Значення локалі
   validation_parameters: Параметри перевірки
+#Popin titles
 popin.create:
   association_type.title: Створити новий тип асоціації
   group.title: Створити нову групу
   option.title: Створити новий параметр
+#Datagrid contents
 In group: У групі
 Attribute as label: Атрибут як мітка
 Is associated: Пов'язано
 Complete: Завершено
+#Versioning / history
 Change History: Історія змін
 Data Audit: Аудит даних
 Data Audit - System: 'Аудит даних - система'
@@ -615,6 +644,7 @@ Logged at: Увійти в
 Deleted: Видалено
 Old values: Старі значення
 New values: Нові значення
+#Configuration
 System configuration: Конфігурація системи
 General setup: Загальні установки
 Localization: Локалізація
@@ -646,6 +676,7 @@ oro.locale:
       language: "Виберіть мову системи, яку ви хочете використовувати"
       timezone: "Виберіть часовий пояс для відображення дати та часу"
       currency: "Виберіть валюту за промовчанням"
+#Datagrid
 Selected products successfully deleted: Вибрані продукти успішно видалені
 pim_mass_edit:
   notification:
@@ -677,6 +708,7 @@ edit_common_attributes: Редагувати атрибути
 edit_common_attributes_clean: Очищення файлів для атрибутів
 perform.steps.duplicated.title: Продубльовані конфігураційні атрибути
 perform.steps.excluded.title: Виключені продукти
+#Background jobs & steps labels
 batch_jobs:
   add_product_value:
     label: Додати значення продукту

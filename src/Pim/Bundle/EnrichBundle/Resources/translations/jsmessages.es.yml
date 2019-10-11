@@ -1,3 +1,4 @@
+#Grid action messages
 confirmation:
   title: Confirmación
   remove:
@@ -115,6 +116,7 @@ Delete the product: Eliminar el producto
 Change status: Cambiar el estado
 Toggle status: Alternar Estado
 mass_delete: Eliminación masiva
+#Quick export labels
 pim:
   grid:
     mass_action:
@@ -127,6 +129,7 @@ pim:
       mass_edit: Acciones en masa
       category_edit: Mover producto en categorías
       sequential_edit: Edición secuencial
+#Jstree context menu actions
 jstree.create: Crear
 jstree.done: Hecho
 switch_on: "SÍ"
@@ -1112,6 +1115,7 @@ pim_enrich.error:
   exception.title: Oups! Un error {{ status_code }} ha ocurrido...
   http:
     403: Prohibido. No tiene permiso para acceder a esta página
+#Page titles
 page_title:
   oro_default: Cartelera
   pim_enrich_attributegroup_index: Grupos de atributos
@@ -1150,6 +1154,7 @@ page_title:
   pim_enrich_api_connection_create: Conexiones API | Crear
   pim_enrich_mass_edit_action: Edición en masa
   pim_analytics_system_info_index: Información del sistema
+#Batch job labels
 batch_jobs:
   add_product_value:
     label: Agregar un valor de producto

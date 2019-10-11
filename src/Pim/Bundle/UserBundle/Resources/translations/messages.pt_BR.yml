@@ -12,6 +12,7 @@ pim_user:
     tab:
       general.title: Geral
       users.title: Usuários
+#user grids
 oro.user.controller:
   group.message.saved: "Grupo salvo"
   role.message.saved: "Função salva"
@@ -32,11 +33,13 @@ oro.user.grid.roles:
 oro.user.grid.groups:
   columns:
     name: "Nome"
+#Page titles
 pim_title:
   user.index: Usuários
   user_role.index: Funções
   user_group.index: Grupos
   system_configuration.index: Configuração
+#User
 user.title: Usuário
 user.overview: Usuário
 Users Management: Gerenciamento de usuários
@@ -90,6 +93,7 @@ user:
   default_grid_view:
     none: Nenhum
   timezone: Fuso horário
+#Role
 Role: Função
 Owner: Proprietário
 General: Geral
@@ -126,6 +130,7 @@ oro_security:
       create: Criar um grupo de usuário
       edit: Editar Grupos de Usuários
       delete: Remover um grupo de usuário
+#Security
 (default): Permissão padrão nas entidades
 VIEW: Visualizar
 CREATE: Criar
@@ -142,11 +147,13 @@ oro:
       GLOBAL: Organização
       SYSTEM: Sistema
       NONE: Nenhum
+#User Group
 Create group: Criar grupo
 btn.create.user-group: Criar Grupo
 Has group: Possui grupo
 Save and Close: Salvar e Fechar
 user-group.overview: Grupos
+#Login page
 Log in: Entrar
 Remember me on this computer: Lembrar neste computador
 Forgot your password?: Esqueceu a senha?

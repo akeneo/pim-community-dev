@@ -46,6 +46,7 @@ job_execution.summary:
   item_position: líneas leídas
   skipped_in_root_product_model: modelo del producto con padres omitido
   skipped_in_sub_product_model: modelo del productos sin padres omitido
+#Job labels
 batch_jobs:
   csv_product_export:
     label: Exportar productos a CSV
