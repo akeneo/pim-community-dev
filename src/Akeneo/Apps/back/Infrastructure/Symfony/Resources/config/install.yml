@@ -5,8 +5,8 @@ services:
             - '@filesystem'
             - '%kernel.project_dir%'
 
-    akeneo_apps.install.installer_subscriber:
-        class: Akeneo\Apps\Infrastructure\Install\InstallerSubscriber
+    akeneo_apps.install.install_subscriber:
+        class: Akeneo\Apps\Infrastructure\Install\InstallSubscriber
         arguments:
             - '@akeneo_apps.install.assets_installer'
         tags:
