@@ -10,6 +10,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Test\Integration\TestCase;
+use PHPUnit\Framework\Assert;
 
 /**
  * @author    Julien Janvier <j.janvier@gmail.com>
@@ -94,6 +95,7 @@ abstract class AbstractCompletenessTestCase extends TestCase
     {
         $product = $this->get('pim_catalog.builder.product')->createProduct($code, $family->getCode());
         $this->get('pim_catalog.updater.product')->update($product, $standardValues);
+        Assert::assertCount(0, $this->get('validator')->validate($product));
         $this->get('pim_catalog.saver.product')->save($product);
         $this->get('pim_catalog.validator.unique_value_set')->reset();
 

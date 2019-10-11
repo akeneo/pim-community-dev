@@ -2,9 +2,9 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Factory;
 
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueFactory as ReadValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\ChainedNonExistentValuesFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\OnGoingFilteredRawValues;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueFactory as ReadValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 
