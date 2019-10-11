@@ -1,0 +1,10 @@
+dependencies:
+- name: mysql
+  repository: gs://akeneo-charts/
+  version: 1.1.6
+- name: elasticsearch
+  version: "1.21.3"
+  repository: "@stable"
+- name: memcached
+  version: "2.6.0"
+  repository: "@stable"
