@@ -34,6 +34,9 @@ class FillMissingProductValuesSpec extends ObjectBehavior
         $family->addAttribute(
             (new Builder())->aTextAttribute()->withCode('localizable_scopable_name')->localizable()->scopable()->build()
         );
+        $family->addAttribute(
+            (new Builder())->aTextAttribute()->withCode('123')->build()
+        );
 
         $familyWithPrice = new Family();
 
@@ -156,12 +159,19 @@ class FillMissingProductValuesSpec extends ObjectBehavior
                             'data' => null
                         ],
                     ],
+                    '123' => [
+                        [
+                            'scope' => null,
+                            'locale' => null,
+                            'data' => null
+                        ]
+                    ],
                 ]
             ]
         );
     }
 
-    function it_merges_correctly_the_null_values_without_replacing_existing_values()
+    function it_correctly_merges_the_null_values_without_replacing_existing_values()
     {
         $this->fromStandardFormat([
             'family' => 'shoes',
@@ -171,6 +181,13 @@ class FillMissingProductValuesSpec extends ObjectBehavior
                         'scope' => null,
                         'locale' => null,
                         'data' => 'foo'
+                    ]
+                ],
+                '123' => [
+                    [
+                        'scope' => null,
+                        'locale' => null,
+                        'data' => 'foo',
                     ]
                 ],
                 'localizable_name' => [
@@ -262,7 +279,14 @@ class FillMissingProductValuesSpec extends ObjectBehavior
                             'data' => 'foo'
                         ],
                     ],
-                ]
+                    '123' => [
+                        [
+                            'scope' => null,
+                            'locale' => null,
+                            'data' => 'foo',
+                        ]
+                    ],
+                ],
             ]
         );
     }

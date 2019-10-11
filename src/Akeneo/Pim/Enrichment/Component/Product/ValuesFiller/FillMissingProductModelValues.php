@@ -73,7 +73,7 @@ class FillMissingProductModelValues
             $priceProductModelValuesWithNullValuesInPivotFormat
         );
 
-        $productModelStandardFormat['values'] = array_merge($standardProductModelValues, $standardPriceProductModelValues);
+        $productModelStandardFormat['values'] = $standardProductModelValues + $standardPriceProductModelValues;
 
 
         return $productModelStandardFormat;

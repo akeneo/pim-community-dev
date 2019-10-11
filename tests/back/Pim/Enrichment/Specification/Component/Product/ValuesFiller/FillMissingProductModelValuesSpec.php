@@ -28,6 +28,7 @@ class FillMissingProductModelValuesSpec extends ObjectBehavior
         $scopableName = (new Builder())->aTextAttribute()->withCode('scopable_name')->scopable()->build();
         $scopableLocalizableName = (new Builder())->aTextAttribute()->withCode('scopable_localizable_name')->scopable()
                                                   ->localizable()->build();
+        $attributeWithNumericCode = (new Builder())->withCode('123')->aTextAttribute()->build();
         $price = (new Builder())->aPriceCollectionAttribute()->withCode('price')->build();
         $localizablePrice = (new Builder())->aPriceCollectionAttribute()->withCode('localizable_price')->localizable()
                                            ->build();
@@ -42,12 +43,13 @@ class FillMissingProductModelValuesSpec extends ObjectBehavior
             ->addAttribute($localizableName)
             ->addAttribute($scopableName)
             ->addAttribute($scopableLocalizableName)
+            ->addAttribute($attributeWithNumericCode)
             ->addAttribute($price)
             ->addAttribute($localizablePrice)
             ->addAttribute($scopablePrice)
             ->addAttribute($scopableLocalizablePrice);
 
-        // common attributes: name, scopable_localizable_name
+        // common attributes: name, scopable_localizable_name, 123
         // level 1 attributes: localizable_name, scopable_name
         // level 2 (variant product) attributes: sku, price, localizable_price, scopable_price, scopable_localizable_price
         $familyVariantWithoutPrices = new FamilyVariant();
@@ -64,13 +66,13 @@ class FillMissingProductModelValuesSpec extends ObjectBehavior
         $familyVariantWithoutPrices->addVariantAttributeSet($subProductModelAttributeSet);
         $familyVariantRepository->findOneByIdentifier('without_prices')->willReturn($familyVariantWithoutPrices);
 
-        // common attributes: price, localizable_price, scopable_price, scopable_localizable_price
+        // common attributes: price, localizable_price, scopable_price, scopable_localizable_price, 123
         // level 1 (variant product) attributes: sku, name, localizable_name, scopable_name, scopable_localizable_name
         $familyVariantWithPrices = new FamilyVariant();
         $familyVariantWithPrices->setFamily($family);
         $attributeSet = new VariantAttributeSet();
         $attributeSet->setLevel(1);
-        $attributeSet->setAttributes([$sku, $name, $localizableName, $scopableName, $scopableLocalizableName]);
+        $attributeSet->setAttributes([$sku, $name, $localizableName, $scopableName, $scopableLocalizableName, $attributeWithNumericCode]);
         $familyVariantWithPrices->addVariantAttributeSet($attributeSet);
         $familyVariantRepository->findOneByIdentifier('with_prices')->willReturn($familyVariantWithPrices);
 
@@ -123,6 +125,9 @@ class FillMissingProductModelValuesSpec extends ObjectBehavior
                         ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'data' => null],
                         ['scope' => 'ecommerce', 'locale' => 'de_DE', 'data' => null],
                     ],
+                    '123' => [
+                        ['scope' => null, 'locale' => null, 'data' => null],
+                    ],
                 ],
             ]
         );
@@ -150,6 +155,9 @@ class FillMissingProductModelValuesSpec extends ObjectBehavior
                         ['scope' => 'tablet', 'locale' => 'fr_FR', 'data' => null],
                         ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'data' => null],
                         ['scope' => 'ecommerce', 'locale' => 'de_DE', 'data' => null],
+                    ],
+                    '123' => [
+                        ['scope' => null, 'locale' => null, 'data' => null],
                     ],
                     'localizable_name' => [
                         ['scope' => null, 'locale' => 'en_US', 'data' => null],
@@ -184,6 +192,9 @@ class FillMissingProductModelValuesSpec extends ObjectBehavior
                     'scopable_name' => [
                         ['scope' => 'tablet', 'locale' => null, 'data' => 'foo'],
                     ],
+                    '123' => [
+                        ['scope' => null, 'locale' => null, 'data' => 'foo'],
+                    ],
                 ],
             ]
         )->shouldBeLike(
@@ -199,6 +210,9 @@ class FillMissingProductModelValuesSpec extends ObjectBehavior
                         ['scope' => 'tablet', 'locale' => 'fr_FR', 'data' => 'foo'],
                         ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'data' => null],
                         ['scope' => 'ecommerce', 'locale' => 'de_DE', 'data' => null],
+                    ],
+                    '123' => [
+                        ['scope' => null, 'locale' => null, 'data' => 'foo'],
                     ],
                     'localizable_name' => [
                         ['scope' => null, 'locale' => 'en_US', 'data' => 'foo'],

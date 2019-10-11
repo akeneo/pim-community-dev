@@ -70,7 +70,7 @@ class FillMissingProductValues
         $priceProductValuesWithNullValuesInPivotFormat = array_replace_recursive($nullPriceValuesInPivotFormat, $priceProductValuesInPivotFormat);
         $standardPriceProductValues = $this->pivotFormatToStandardFormatForPriceValues($priceProductValuesWithNullValuesInPivotFormat);
 
-        $productStandardFormat['values'] = array_merge($standardProductValues, $standardPriceProductValues);
+        $productStandardFormat['values'] = $standardProductValues + $standardPriceProductValues;
 
         return $productStandardFormat;
     }
