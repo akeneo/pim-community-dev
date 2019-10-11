@@ -12,7 +12,7 @@ apps-front-lint:
 # Development
 
 apps-front-tests-watch:
-	$(_APPS_YARN_RUN) jest --watchAll
+	$(_APPS_YARN_RUN) jest --watchAll --coverage
 
 apps-front-lint-fix:
 	$(_APPS_YARN_RUN) tslint --fix
