@@ -1,15 +1,19 @@
 pim_enrich:
+  #Attribute
   attribute:
     tab:
       parameter.title: Parametros
       value.title: Valores
       history.title: História
+  #Family
   family:
     info:
       cant_remove_attribute_used_as_axis: Não é possível remover este atributo usado como um eixo de variante em uma variante de família
+  #Group type
   group_type:
     tab:
       property.title: Propriedade
+  #Mass edit operations
   mass_edit_action:
     family:
       page_title: Famílias

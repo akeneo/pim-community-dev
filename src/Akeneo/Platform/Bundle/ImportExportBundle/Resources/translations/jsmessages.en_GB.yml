@@ -8,6 +8,7 @@ pim_connector:
       selector:
         modal:
           title: Categories selection
+        label: "{0}All products|{1}One selected category|]1,Inf[{{ count }} selected categories"
         title: Select categories
     locales:
       validation:
@@ -15,6 +16,7 @@ pim_connector:
 pim_import_export:
   entity:
     job_instance:
+      label: job profile
       flash:
         update:
           success: The job profile has been successfully updated.
@@ -28,6 +30,8 @@ pim_import_export:
           success: Import profile successfully created
         upload:
           error: Unable to upload the file. Its size may exceed the configured maximum upload size on your PHP or HTTP server configuration
+      page_title:
+        index: "]-Inf, 1] {{ count }} import profile|]1, Inf [{{ count }} import profiles"
       module:
         create:
           button: Create import profile
@@ -36,6 +40,8 @@ pim_import_export:
       flash:
         create:
           success: Export profile successfully created
+      page_title:
+        index: "]-Inf, 1] {{ count }} export profile|]1, Inf [{{ count }} export profiles"
       module:
         create:
           button: Create export profile
@@ -83,6 +89,7 @@ pim_import_export:
           file_path:
             title: File path
             help: Where to write the generated file on the file system
+            help_import: The directory of the file to be used for the import
           delimiter:
             title: Delimiter
             help: One character used to set the field delimiter

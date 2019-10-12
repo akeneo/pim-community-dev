@@ -8,9 +8,9 @@ pim_title:
   pim_user_role_update: 'Rooli {{ role }} | Muokkaa'
   pim_user_role_create: 'Rooli | luo'
   pim_user_security_login: Kirjaudu sisään
-  pim_user_reset_reset: Salasanan nollaus
+  pim_user_reset_reset: Salasanan asettaminen
   pim_user_reset_request: Unohdin salasanani
-  pim_user_reset_check_email: Salasanan nollaus | tarkista sähköposti
+  pim_user_reset_check_email: Salasanan asettaminen | tarkista sähköposti
   pim_user_group_create: 'Käyttäjäryhmät | luo'
   pim_user_group_update: 'Ryhmä {{ group }} | Muokkaa'
 confirmation:
@@ -63,9 +63,9 @@ pim_user_management:
         ui_locale: Käyttöliittymän kieli
         timezone: Aikavyöhyke
         default_product_grid_view: Tuoteruudukon oletusnäkymä
-        default_published_product_grid_view: Oletusarvoinen julkaistujen tuotteiden ruudukkonäkymä
-        proposals_to_review_notification: Kun uusi muutosehdotus on hyväksyttävissä
-        proposals_state_notifications: Kun uusi muutosehdotus on hyväksytty tai hylätty
+        default_published_product_grid_view: Oletusarvoinen julkaistujen tuotteiden ruudukkonäkymä #EE Only
+        proposals_to_review_notification: Kun uusi muutosehdotus on hyväksyttävissä #EE Only
+        proposals_state_notifications: Kun uusi muutosehdotus on hyväksytty tai hylätty #EE Only
       module:
         create:
           button: Luo käyttäjä
@@ -76,7 +76,7 @@ pim_user_management:
           groups_and_roles: Käyttäjäyhmät ja roolit
           password: Salasana
           interfaces: Käyttöliittymä
-          notifications: Ilmoitukset
+          notifications: Ilmoitukset #TODO EE Only
     role:
       plural_label: Roolit
       page_title:
