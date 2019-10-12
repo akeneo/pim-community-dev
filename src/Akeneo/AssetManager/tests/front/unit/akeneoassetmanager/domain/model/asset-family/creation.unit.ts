@@ -2,9 +2,8 @@ import {
   createEmptyAssetFamilyCreation,
   denormalizeAssetFamilyCreation,
 } from 'akeneoassetmanager/domain/model/asset-family/creation';
-import {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
 
-const michelLabels = createLabelCollection({en_US: 'Michel'});
+const michelLabels = {en_US: 'Michel'};
 
 describe('akeneo > asset family > domain > model --- asset family', () => {
   test('I can compare two asset families', () => {

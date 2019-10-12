@@ -1,5 +1,4 @@
 import {ConcreteNumberAttribute} from 'akeneoassetmanager/domain/model/attribute/type/number';
-import {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import {MinValue} from 'akeneoassetmanager/domain/model/attribute/type/number/min-value';
 import {DecimalsAllowed} from 'akeneoassetmanager/domain/model/attribute/type/number/decimals-allowed';
 
@@ -25,19 +24,7 @@ describe('akeneo > attribute > domain > model > attribute > type --- NumberAttri
 
   test('I cannot create an invalid ConcreteNumberAttribute (wrong decimalsAllowed)', () => {
     expect(() => {
-      new ConcreteNumberAttribute(
-        'age',
-        'designer',
-        'age',
-        createLabelCollection({en_US: 'Age'}),
-        false,
-        false,
-        0,
-        true,
-        false,
-        12,
-        13
-      );
+      new ConcreteNumberAttribute('age', 'designer', 'age', {en_US: 'Age'}, false, false, 0, true, false, 12, 13);
     }).toThrow('Attribute expects a DecimalsAllowed as decimalsAllowed');
   });
   test('I cannot create an invalid ConcreteNumberAttribute (wrong MinValue)', () => {
@@ -46,7 +33,7 @@ describe('akeneo > attribute > domain > model > attribute > type --- NumberAttri
         'age',
         'designer',
         'age',
-        createLabelCollection({en_US: 'Age'}),
+        {en_US: 'Age'},
         false,
         false,
         0,
@@ -64,7 +51,7 @@ describe('akeneo > attribute > domain > model > attribute > type --- NumberAttri
         'age',
         'designer',
         'age',
-        createLabelCollection({en_US: 'Age'}),
+        {en_US: 'Age'},
         false,
         false,
         0,

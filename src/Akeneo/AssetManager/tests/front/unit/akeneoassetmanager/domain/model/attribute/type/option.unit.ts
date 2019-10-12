@@ -1,5 +1,4 @@
 import {ConcreteOptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
-import {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import {Option} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
 
 const normalizedFavoriteColor = {
@@ -37,7 +36,7 @@ describe('akeneo > attribute > domain > model > attribute > type --- OptionAttri
         'favorite_color',
         'designer',
         'favorite_color',
-        createLabelCollection({en_US: 'Favorite color'}),
+        {en_US: 'Favorite color'},
         true,
         false,
         0,

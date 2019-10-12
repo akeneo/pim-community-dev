@@ -1,4 +1,3 @@
-import {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import {createAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import {createEmptyFile} from 'akeneoassetmanager/domain/model/file';
 import {createValueCollection} from 'akeneoassetmanager/domain/model/asset/value-collection';
@@ -9,11 +8,11 @@ import {denormalize as denormalizeTextData} from 'akeneoassetmanager/domain/mode
 const michelIdentifier = 'michel';
 const designerIdentifier = 'designer';
 const michelCode = 'michel';
-const michelLabels = createLabelCollection({en_US: 'Michel'});
+const michelLabels = {en_US: 'Michel'};
 const sofaIdentifier = 'sofa';
 const didierIdentifier = 'designer_didier_1';
 const didierCode = 'didier';
-const didierLabels = createLabelCollection({en_US: 'Didier'});
+const didierLabels = {en_US: 'Didier'};
 const emptyFile = createEmptyFile();
 const channelEcommerce = 'ecommerce';
 const localeEnUS = 'en_US';
@@ -73,9 +72,6 @@ describe('akeneo > asset > domain > model --- asset', () => {
 
   test('I cannot create a malformed asset', () => {
     expect(() => {
-      createAsset(michelIdentifier, designerIdentifier, didierCode);
-    }).toThrow('Asset expects a LabelCollection as labelCollection argument');
-    expect(() => {
       createAsset(michelIdentifier, undefined, '');
     }).toThrow('Identifier expects a string as parameter to be created');
     expect(() => {
@@ -88,9 +84,6 @@ describe('akeneo > asset > domain > model --- asset', () => {
       createAsset(12, '', '');
     }).toThrow('Identifier expects a string as parameter to be created');
     expect(() => {
-      createAsset(michelIdentifier, designerIdentifier, didierCode, 52);
-    }).toThrow('Asset expects a LabelCollection as labelCollection argument');
-    expect(() => {
       createAsset(michelIdentifier, designerIdentifier, didierCode, didierLabels);
     }).toThrow('Asset expects a File as image argument');
     expect(() => {
@@ -102,7 +95,7 @@ describe('akeneo > asset > domain > model --- asset', () => {
   });
 
   test('I can compare two asset', () => {
-    const michelLabels = createLabelCollection({en_US: 'Michel'});
+    const michelLabels = {en_US: 'Michel'};
     expect(
       createAsset(
         didierIdentifier,
@@ -153,7 +146,7 @@ describe('akeneo > asset > domain > model --- asset', () => {
         emptyFile,
         createValueCollection([])
       ).getLabelCollection()
-    ).toBe(didierLabels);
+    ).toEqual(didierLabels);
   });
 
   test('I can get the code of the asset', () => {

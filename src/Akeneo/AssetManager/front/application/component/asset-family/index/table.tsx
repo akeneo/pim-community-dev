@@ -1,8 +1,6 @@
 import * as React from 'react';
 import ItemView from 'akeneoassetmanager/application/component/asset-family/index/item';
-import AssetFamily, {createAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
-import {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
-import {createEmptyFile} from 'akeneoassetmanager/domain/model/file';
+import AssetFamily, {createEmptyAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {assetFamilyIdentifierStringValue} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 
 interface TableState {
@@ -35,14 +33,7 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
     onRedirectToAssetFamily: (assetFamily: AssetFamily) => void
   ): JSX.Element | JSX.Element[] {
     if (0 === assetFamilies.length && isLoading) {
-      const labelCollection = createLabelCollection({});
-      const assetFamily = createAssetFamily(
-        '',
-        labelCollection,
-        createEmptyFile(),
-        '',
-        ''
-      );
+      const assetFamily = createEmptyAssetFamily();
 
       return Array(4)
         .fill('placeholder')

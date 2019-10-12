@@ -3,8 +3,8 @@ import ProductIdentifier, {
   productidentifiersAreEqual,
 } from 'akeneoassetmanager/domain/model/product/identifier';
 import LabelCollection, {
-  NormalizedLabelCollection,
-  createLabelCollection,
+  denormalizeLabelCollection,
+  getLabelInCollection,
 } from 'akeneoassetmanager/domain/model/label-collection';
 import File, {NormalizedFile, denormalizeFile} from 'akeneoassetmanager/domain/model/file';
 import Completeness, {
@@ -23,7 +23,7 @@ export interface NormalizedProduct {
   id: NormalizedProductId;
   identifier: NormalizedProductIdentifier;
   type: ProductType;
-  labels: NormalizedLabelCollection;
+  labels: LabelCollection;
   image: NormalizedFile;
   completeness: NormalizedCompleteness;
 }
@@ -53,9 +53,6 @@ class ProductImplementation implements Product {
     if (!['product', 'product_model'].includes(type)) {
       throw new InvalidArgumentError('Product expects an ProductType as type argument');
     }
-    if (!(labelCollection instanceof LabelCollection)) {
-      throw new InvalidArgumentError('Product expects a LabelCollection as labelCollection argument');
-    }
     if (!(image instanceof File)) {
       throw new InvalidArgumentError('Product expects a File as image argument');
     }
@@ -81,7 +78,7 @@ class ProductImplementation implements Product {
     const id = denormalizeProductIdentifier(normalizedProduct.id);
     const type = normalizedProduct.type;
     const identifier = denormalizeProductIdentifier(normalizedProduct.identifier);
-    const labelCollection = createLabelCollection(normalizedProduct.labels);
+    const labelCollection = denormalizeLabelCollection(normalizedProduct.labels);
     const image = denormalizeFile(normalizedProduct.image);
     const completeness = denormalizeCompleteness(normalizedProduct.completeness);
 
@@ -101,11 +98,7 @@ class ProductImplementation implements Product {
   }
 
   public getLabel(locale: string, fallbackOnCode: boolean = true) {
-    if (!this.labelCollection.hasLabel(locale)) {
-      return fallbackOnCode ? `[${this.getIdentifier()}]` : '';
-    }
-
-    return this.labelCollection.getLabel(locale);
+    return getLabelInCollection(this.labelCollection, locale, fallbackOnCode, this.getIdentifier());
   }
 
   public getLabelCollection(): LabelCollection {
@@ -129,7 +122,7 @@ class ProductImplementation implements Product {
       id: this.getId(),
       identifier: this.getIdentifier(),
       type: this.getType(),
-      labels: this.getLabelCollection().normalize(),
+      labels: this.getLabelCollection(),
       image: this.getImage().normalize(),
       completeness: this.getCompleteness().normalize(),
     };

@@ -4,7 +4,7 @@ import AttributeIdentifier, {
 import AssetFamilyIdentifier, {
   denormalizeAssetFamilyIdentifier,
 } from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import LabelCollection, {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
+import LabelCollection, {denormalizeLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import AttributeCode, {denormalizeAttributeCode} from 'akeneoassetmanager/domain/model/attribute/code';
 import {Attribute, ConcreteAttribute, NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {NormalizedOption, Option} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
@@ -68,7 +68,7 @@ export class ConcreteOptionAttribute extends ConcreteAttribute implements Option
       denormalizeAttributeIdentifier(normalizedOptionAttribute.identifier),
       denormalizeAssetFamilyIdentifier(normalizedOptionAttribute.asset_family_identifier),
       denormalizeAttributeCode(normalizedOptionAttribute.code),
-      createLabelCollection(normalizedOptionAttribute.labels),
+      denormalizeLabelCollection(normalizedOptionAttribute.labels),
       normalizedOptionAttribute.value_per_channel,
       normalizedOptionAttribute.value_per_locale,
       normalizedOptionAttribute.order,

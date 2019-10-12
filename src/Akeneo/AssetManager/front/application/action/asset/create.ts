@@ -5,7 +5,6 @@ import {
   assetCreationSucceeded,
   assetCreationStart,
 } from 'akeneoassetmanager/domain/event/asset/create';
-import {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import {createAsset as assetFactory} from 'akeneoassetmanager/domain/model/asset/asset';
 import ValidationError, {createValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import assetSaver from 'akeneoassetmanager/infrastructure/saver/asset';
@@ -25,7 +24,7 @@ export const createAsset = (createAnother: boolean) => async (
     code,
     assetFamily.identifier,
     denormalizeAssetCode(code),
-    createLabelCollection(labels),
+    labels,
     createEmptyFile(),
     createValueCollection([])
   );

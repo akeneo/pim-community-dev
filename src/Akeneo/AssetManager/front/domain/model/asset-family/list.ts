@@ -1,6 +1,6 @@
 import LabelCollection, {
-  NormalizedLabelCollection,
-  createLabelCollection,
+  denormalizeLabelCollection,
+  getLabelInCollection,
 } from 'akeneoassetmanager/domain/model/label-collection';
 import AssetIdentifier, {
   assetFamilyidentifiersAreEqual,
@@ -10,7 +10,7 @@ import File, {NormalizedFile, denormalizeFile} from 'akeneoassetmanager/domain/m
 
 export interface NormalizedAssetFamilyListItem {
   identifier: AssetIdentifier;
-  labels: NormalizedLabelCollection;
+  labels: LabelCollection;
   image: NormalizedFile;
 }
 
@@ -29,10 +29,6 @@ class AssetFamilyListItemImplementation implements AssetFamilyListItem {
     private labelCollection: LabelCollection,
     private image: File
   ) {
-    if (!(labelCollection instanceof LabelCollection)) {
-      throw new InvalidArgumentError('AssetFamilyListItem expects a LabelCollection as labelCollection argument');
-    }
-
     if (!(image instanceof File)) {
       throw new InvalidArgumentError('AssetFamilyListItem expects a File as image argument');
     }
@@ -51,14 +47,14 @@ class AssetFamilyListItemImplementation implements AssetFamilyListItem {
   public static createEmpty(): AssetFamilyListItem {
     return new AssetFamilyListItemImplementation(
       denormalizeAssetFamilyIdentifier(''),
-      createLabelCollection({}),
+      denormalizeLabelCollection({}),
       denormalizeFile(null)
     );
   }
 
   public static createFromNormalized(normalizedAssetFamily: NormalizedAssetFamilyListItem): AssetFamilyListItem {
     const identifier = denormalizeAssetFamilyIdentifier(normalizedAssetFamily.identifier);
-    const labelCollection = createLabelCollection(normalizedAssetFamily.labels);
+    const labelCollection = denormalizeLabelCollection(normalizedAssetFamily.labels);
     const image = denormalizeFile(normalizedAssetFamily.image);
 
     return AssetFamilyListItemImplementation.create(identifier, labelCollection, image);
@@ -69,11 +65,7 @@ class AssetFamilyListItemImplementation implements AssetFamilyListItem {
   }
 
   public getLabel(locale: string, fallbackOnCode: boolean = true) {
-    if (!this.labelCollection.hasLabel(locale)) {
-      return fallbackOnCode ? `[${this.getIdentifier()}]` : '';
-    }
-
-    return this.labelCollection.getLabel(locale);
+    return getLabelInCollection(this.labelCollection, locale, fallbackOnCode, this.getIdentifier());
   }
 
   public getImage(): File {
@@ -91,7 +83,7 @@ class AssetFamilyListItemImplementation implements AssetFamilyListItem {
   public normalize(): NormalizedAssetFamilyListItem {
     return {
       identifier: this.getIdentifier(),
-      labels: this.getLabelCollection().normalize(),
+      labels: this.getLabelCollection(),
       image: this.getImage().normalize(),
     };
   }

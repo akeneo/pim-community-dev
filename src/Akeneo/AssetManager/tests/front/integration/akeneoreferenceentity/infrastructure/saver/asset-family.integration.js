@@ -21,16 +21,9 @@ describe('Akeneoassetfamily > infrastructure > saver > asset-family', () => {
 
     const response = await page.evaluate(async () => {
       const createAssetFamily = require('akeneoassetmanager/domain/model/asset-family/asset-family').createAssetFamily;
-      const createLabelCollection = require('akeneoassetmanager/domain/model/label-collection').createLabelCollection;
       const Image = require('akeneoassetmanager/domain/model/file').default;
 
-      const savedSofa = createAssetFamily(
-        'sofa',
-        createLabelCollection({en_US: 'Sofa', fr_FR: 'Canapé'}),
-        Image.createEmpty(),
-        '',
-        ''
-      );
+      const savedSofa = createAssetFamily('sofa', {en_US: 'Sofa', fr_FR: 'Canapé'}, Image.createEmpty(), '', '');
       const saver = require('akeneoassetmanager/infrastructure/saver/asset-family').default;
 
       return await saver.save(savedSofa);
@@ -54,17 +47,10 @@ describe('Akeneoassetfamily > infrastructure > saver > asset-family', () => {
 
     const response = await page.evaluate(async () => {
       const createAssetFamily = require('akeneoassetmanager/domain/model/asset-family/asset-family').createAssetFamily;
-      const createLabelCollection = require('akeneoassetmanager/domain/model/label-collection').createLabelCollection;
       const Image = require('akeneoassetmanager/domain/model/file').default;
       const saver = require('akeneoassetmanager/infrastructure/saver/asset-family').default;
 
-      const sofaCreated = createAssetFamily(
-        'sofa',
-        createLabelCollection({en_US: 'Sofa', fr_FR: 'Canapé'}),
-        Image.createEmpty(),
-        '',
-        ''
-      );
+      const sofaCreated = createAssetFamily('sofa', {en_US: 'Sofa', fr_FR: 'Canapé'}, Image.createEmpty(), '', '');
 
       return await saver.create(sofaCreated);
     });
@@ -116,13 +102,12 @@ describe('Akeneoassetfamily > infrastructure > saver > asset-family', () => {
 
     const response = await page.evaluate(async () => {
       const createAssetFamily = require('akeneoassetmanager/domain/model/asset-family/asset-family').createAssetFamily;
-      const createLabelCollection = require('akeneoassetmanager/domain/model/label-collection').createLabelCollection;
       const Image = require('akeneoassetmanager/domain/model/file').default;
       const saver = require('akeneoassetmanager/infrastructure/saver/asset-family').default;
 
       const sofaCreated = createAssetFamily(
         'invalid/identifier',
-        createLabelCollection({en_US: 'Sofa', fr_FR: 'Canapé'}),
+        {en_US: 'Sofa', fr_FR: 'Canapé'},
         Image.createEmpty(),
         '',
         ''

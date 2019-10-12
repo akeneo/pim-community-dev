@@ -2,7 +2,6 @@ import {denormalize as denormalizeTextAttribute} from 'akeneoassetmanager/domain
 import {wrapNormalizableAdditionalProperty} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {denormalize as denormalizeImageAttribute} from 'akeneoassetmanager/domain/model/attribute/type/image';
 import {ConcreteImageAttribute} from 'akeneoassetmanager/domain/model/attribute/type/image';
-import {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
 
 const description = denormalizeTextAttribute({
   identifier: 'description_1234',
@@ -46,26 +45,11 @@ describe('akeneo > attribute > domain > model --- attribute', () => {
 
   test('I cannot create a malformed attribute', () => {
     expect(() => {
-      new ConcreteImageAttribute(
-        'front_view_1234',
-        'designer',
-        'front_view',
-        createLabelCollection({en_US: 'Front View'}),
-        true,
-        false,
-        0
-      );
+      new ConcreteImageAttribute('front_view_1234', 'designer', 'front_view', {en_US: 'Front View'}, true, false, 0);
     }).toThrow('Attribute expects a boolean as isRequired value');
 
     expect(() => {
-      new ConcreteImageAttribute(
-        'front_view_1234',
-        'designer',
-        'front_view',
-        createLabelCollection({en_US: 'Front View'}),
-        true,
-        false
-      );
+      new ConcreteImageAttribute('front_view_1234', 'designer', 'front_view', {en_US: 'Front View'}, true, false);
     }).toThrow('Attribute expects a number as order');
   });
 
