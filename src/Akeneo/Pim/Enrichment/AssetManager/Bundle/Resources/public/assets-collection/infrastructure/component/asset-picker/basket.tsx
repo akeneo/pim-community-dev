@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
-import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';
+import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import {
   Asset,
   emptyCollection,

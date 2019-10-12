@@ -25,9 +25,11 @@ pim_asset_manager:
     move_asset_to_left: Move asset {{ assetName }} to the left
     move_asset_to_right: Move asset {{ assetName }} to the right
   asset_picker:
+    notification:
+      maximum_selection_reached: You have reached the limit of {{ maxSelectionCount }} assets per collection, you can no longer add an asset to your collection.
     close: Close the asset picker
     title: Add assets to your product
-    sub_title: Choose the asset you want to attach to your asset collection
+    sub_title: Choose the asset you want to attach to your product {{ productLabel }} in {{ attributeLabel }} collection
     no_result:
       title: Sorry, there is no asset for your search
       sub_title: Try again with new search criteria

@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
 import {Asset, getAssetLabel} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
-import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';
+import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import __ from 'akeneoreferenceentity/tools/translator';
 import {RemoveButton} from 'akeneoassetmanager/application/component/app/remove-button';

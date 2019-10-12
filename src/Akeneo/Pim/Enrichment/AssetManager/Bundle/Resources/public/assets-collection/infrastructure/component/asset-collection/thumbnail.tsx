@@ -13,7 +13,7 @@ import __ from 'akeneoreferenceentity/tools/translator';
 import {ContextState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
 import Right from 'akeneoassetmanager/application/component/app/icon/right';
 import Left from 'akeneoassetmanager/application/component/app/icon/left';
-import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';
+import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import Key from 'akeneoassetmanager/tools/key';
 import {TransparentButton} from 'akeneoassetmanager/application/component/app/button';
 

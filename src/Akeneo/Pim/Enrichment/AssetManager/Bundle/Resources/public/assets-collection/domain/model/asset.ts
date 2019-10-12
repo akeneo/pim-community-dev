@@ -1,5 +1,5 @@
 import {Labels} from 'akeneopimenrichmentassetmanager/platform/model/label';
-import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';
+import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import {NormalizedCompleteness} from 'akeneoassetmanager/domain/model/asset/completeness';
 import {
   AssetFamily,

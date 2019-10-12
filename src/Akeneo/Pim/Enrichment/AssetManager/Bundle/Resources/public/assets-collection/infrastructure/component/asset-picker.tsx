@@ -20,12 +20,18 @@ import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import {Query} from 'akeneoassetmanager/domain/fetcher/fetcher';
 import attributeFetcher from 'akeneoassetmanager/infrastructure/fetcher/attribute';
 import {CloseButton} from 'akeneoassetmanager/application/component/app/close-button';
+import Key from 'akeneoassetmanager/tools/key';
+import {LabelCollection} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
+import {getLabel} from 'pimui/js/i18n';
+import {getAttributeLabel, Attribute as ProductAttribute} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
 
 type AssetFamilyIdentifier = string;
 type AssetPickerProps = {
   excludedAssetCollection: AssetCode[];
   assetFamilyIdentifier: AssetFamilyIdentifier;
   initialContext: Context;
+  productLabels: LabelCollection;
+  productAttribute: ProductAttribute;
   onAssetPick: (assetCodes: AssetCode[]) => void;
 };
 
@@ -157,6 +163,7 @@ const dataProvider = {
 };
 
 const MAX_RESULT = 500;
+const MAX_SELECTION_SIZE = 50; // TODO: Use `canAddAssetToCollection` assets-collection/domain/model/asset.ts instead
 const FIRST_PAGE_SIZE = 50;
 
 let totalRequestCount = 0;
@@ -210,6 +217,8 @@ export const AssetPicker = ({
   initialContext,
   onAssetPick,
   excludedAssetCollection,
+  productLabels,
+  productAttribute
 }: AssetPickerProps) => {
   const [isOpen, setOpen] = React.useState(false);
   const [filterCollection, setFilterCollection] = React.useState<Filter[]>([]);
@@ -224,6 +233,10 @@ export const AssetPicker = ({
     setFilterCollection([]);
     setOpen(false);
   };
+  const cancelModal = () => {
+    onAssetPick([]);
+    resetModal();
+  };
 
   useFetchResult(
     dataProvider,
@@ -235,6 +248,16 @@ export const AssetPicker = ({
     setResultCollection,
     setResultCount
   );
+
+  React.useEffect(() => {
+    const cancelModalOnEscape = (event: KeyboardEvent) => (Key.Escape === event.code ? cancelModal() : null);
+    document.addEventListener('keydown', cancelModalOnEscape);
+
+    return () => document.removeEventListener('keydown', cancelModalOnEscape);
+  }, []);
+
+  // TODO: Use `canAddAssetToCollection` assets-collection/domain/model/asset.ts instead
+  const hasReachMaximumSelection = MAX_SELECTION_SIZE === selection.length + excludedAssetCollection.length;
 
   return (
     <React.Fragment>
@@ -252,15 +275,9 @@ export const AssetPicker = ({
       {isOpen ? (
         <Modal data-container="asset-picker">
           <Header>
-            <CloseButton
-              onAction={() => {
-                onAssetPick([]);
-                resetModal();
-              }}
-              title={__('pim_asset_manager.asset_picker.close')}
-            />
+            <CloseButton onAction={cancelModal} title={__('pim_asset_manager.asset_picker.close')} />
             <Title>{__('pim_asset_manager.asset_picker.title')}</Title>
-            <SubTitle>{__('pim_asset_manager.asset_picker.sub_title')}</SubTitle>
+            <SubTitle>{__('pim_asset_manager.asset_picker.sub_title', {productLabel: getLabel(productLabels, context.locale, ''), attributeLabel: getAttributeLabel(productAttribute, context.locale)})}</SubTitle>
             <ConfirmButton
               title={__('pim_common.confirm')}
               color="green"
@@ -297,6 +314,7 @@ export const AssetPicker = ({
                 assetCollection={resultCollection}
                 context={context}
                 resultCount={resultCount}
+                hasReachMaximumSelection={hasReachMaximumSelection}
                 onSelectionChange={(assetCodeCollection: AssetCode[]) => {
                   setSelection(assetCodeCollection);
                 }}

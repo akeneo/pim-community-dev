@@ -13,7 +13,9 @@ import {
   AssetCode,
   updateValueData,
   valueChanged,
-} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';
+  selectProductLabels,
+  LabelCollection,
+} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import {selectContext} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
 import styled from 'styled-components';
 import __ from 'akeneoassetmanager/tools/translator';
@@ -60,6 +62,7 @@ import AssetCounter from 'akeneopimenrichmentassetmanager/platform/component/com
 type ListStateProps = {
   attributes: Attribute[];
   values: ValueCollection;
+  productLabels: LabelCollection;
   family: Family | null;
   context: Context;
   ruleRelations: RuleRelation[];
@@ -71,6 +74,7 @@ type ListDispatchProps = {
 
 type DisplayValuesProps = {
   values: ValueCollection;
+  productLabels: LabelCollection;
   family: Family | null;
   context: Context;
   ruleRelations: RuleRelation[];
@@ -115,7 +119,15 @@ const LockIconContainer = styled.div`
   height: 14px;
 `;
 
-const DisplayValues = ({values, family, context, ruleRelations, onChange, errors}: DisplayValuesProps) => {
+const DisplayValues = ({
+  values,
+  family,
+  context,
+  ruleRelations,
+  onChange,
+  errors,
+  productLabels,
+}: DisplayValuesProps) => {
   return (
     <React.Fragment>
       {values.map((value: Value) => (
@@ -157,9 +169,11 @@ const DisplayValues = ({values, family, context, ruleRelations, onChange, errors
                   excludedAssetCollection={value.data}
                   assetFamilyIdentifier={value.attribute.referenceDataName}
                   initialContext={context}
+                  productAttribute={value.attribute}
                   onAssetPick={(assetCodes: AssetCode[]) => {
                     onChange(updateValueData(value, addAssetsToCollection(value.data, assetCodes)));
                   }}
+                  productLabels={productLabels}
                 />
                 <MoreButton
                   elements={[
@@ -191,7 +205,15 @@ const DisplayValues = ({values, family, context, ruleRelations, onChange, errors
   );
 };
 
-const List = ({values, family, context, ruleRelations, errors, onChange}: ListStateProps & ListDispatchProps) => {
+const List = ({
+  values,
+  family,
+  context,
+  ruleRelations,
+  errors,
+  productLabels,
+  onChange,
+}: ListStateProps & ListDispatchProps) => {
   const familyLabel = null !== family ? family.labels[context.locale] : '';
 
   return (
@@ -204,6 +226,7 @@ const List = ({values, family, context, ruleRelations, errors, onChange}: ListSt
           ruleRelations={ruleRelations}
           onChange={onChange}
           errors={errors}
+          productLabels={productLabels}
         />
       ) : (
         <React.Fragment>
@@ -239,6 +262,7 @@ export default connect(
     attributes: selectAttributeList(state),
     context: selectContext(state),
     values: selectCurrentValues(state),
+    productLabels: selectProductLabels(state),
     family: selectFamily(state),
     ruleRelations: selectRuleRelations(state),
     errors: selectErrors(state),

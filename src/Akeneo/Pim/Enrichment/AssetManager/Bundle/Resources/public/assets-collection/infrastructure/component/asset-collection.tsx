@@ -10,7 +10,7 @@ import {
   moveAssetInCollection,
   getAssetCodes,
 } from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
-import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';
+import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import styled from 'styled-components';
 import {Pill} from 'akeneopimenrichmentassetmanager/platform/component/common';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
