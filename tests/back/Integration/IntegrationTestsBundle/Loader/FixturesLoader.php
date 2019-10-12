@@ -156,8 +156,8 @@ class FixturesLoader implements FixturesLoaderInterface
         $dumpFile = $this->sqlDumpDirectory . $fixturesHash . '.sql';
         if (file_exists($dumpFile)) {
             $this->databaseSchemaHandler->reset();
-
             $this->restoreDatabase($dumpFile);
+
             $this->clearAclCache();
 
             $this->systemUserAuthenticator->createSystemUser();
@@ -212,14 +212,7 @@ class FixturesLoader implements FixturesLoaderInterface
     protected function loadSqlFiles(array $files): void
     {
         foreach ($files as $file) {
-            $this->execCommand([
-                'mysql',
-                '-h '.$this->databaseHost,
-                '-u '.$this->databaseUser,
-                '-p'.$this->databasePassword,
-                $this->databaseName,
-                sprintf('< %s', $file),
-            ]);
+            $this->dbConnection->exec(file_get_contents($file));
         }
     }
 
@@ -376,6 +369,8 @@ class FixturesLoader implements FixturesLoaderInterface
             '-p'.$this->databasePassword,
             '--no-create-info',
             '--quick',
+            '--skip-add-locks',
+            '--skip-disable-keys',
             $this->databaseName,
             '> '.$filepath,
         ]);
@@ -386,14 +381,7 @@ class FixturesLoader implements FixturesLoaderInterface
      */
     protected function restoreDatabase($filepath): void
     {
-        $this->execCommand([
-            'mysql',
-            '-h '.$this->databaseHost,
-            '-u '.$this->databaseUser,
-            '-p'.$this->databasePassword,
-            $this->databaseName,
-            '< '.$filepath,
-        ]);
+        $this->dbConnection->exec(file_get_contents($filepath));
     }
 
     /**
