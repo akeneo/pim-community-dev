@@ -12,7 +12,10 @@ use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
 use Akeneo\Tool\Bundle\BatchBundle\Job\DoctrineJobRepository;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Exception\IndexationException;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Exception\MissingIdentifierException;
 use Doctrine\DBAL\Connection;
+use Elasticsearch\ClientBuilder;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Plugin\ListPaths;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
@@ -87,6 +90,9 @@ class FixturesLoader implements FixturesLoaderInterface
     /** @var string */
     private $sqlDumpDirectory;
 
+    /** @var \Elasticsearch\Client */
+    private $nativeElasticsearchClient;
+
     public function __construct(
         KernelInterface $kernel,
         DatabaseSchemaHandler $databaseSchemaHandler,
@@ -105,7 +111,8 @@ class FixturesLoader implements FixturesLoaderInterface
         string $databaseName,
         string $databaseUser,
         string $databasePassword,
-        string $sqlDumpDirectory
+        string $sqlDumpDirectory,
+        string $elasticsearchHost
     ) {
         $this->kernel = $kernel;
         $this->databaseSchemaHandler = $databaseSchemaHandler;
@@ -129,6 +136,9 @@ class FixturesLoader implements FixturesLoaderInterface
         $this->databaseUser = $databaseUser;
         $this->databasePassword = $databasePassword;
         $this->sqlDumpDirectory = $sqlDumpDirectory;
+        $clientBuilder = new ClientBuilder();
+        $clientBuilder->setHosts([$elasticsearchHost]);
+        $this->nativeElasticsearchClient = $clientBuilder->build();
     }
 
     public function __destruct()
@@ -147,37 +157,29 @@ class FixturesLoader implements FixturesLoaderInterface
      */
     public function load(Configuration $configuration): void
     {
-        $this->resetElasticsearchIndex();
+        $this->deleteAllDocumentsInElasticsearch();
+        $this->databaseSchemaHandler->reset();
+
         $this->resetFilesystem();
 
         $files = $this->getFilesToLoad($configuration->getCatalogDirectories());
         $fixturesHash = $this->getHashForFiles($files);
-
         $dumpFile = $this->sqlDumpDirectory . $fixturesHash . '.sql';
         if (file_exists($dumpFile)) {
-            $this->databaseSchemaHandler->reset();
             $this->restoreDatabase($dumpFile);
-
-            $this->clearAclCache();
-
-            $this->systemUserAuthenticator->createSystemUser();
-
             $this->indexProductModels();
             $this->indexProducts();
 
-            $this->refreshES();
-            return;
+        } else {
+            $this->loadData($configuration);
+            $this->dumpDatabase($dumpFile);
         }
 
-        $this->databaseSchemaHandler->reset();
+        $this->nativeElasticsearchClient->indices()->refresh(['index' => '_all']);
         $this->clearAclCache();
 
-        $this->loadData($configuration);
-        $this->refreshES();
-
-        $this->dumpDatabase($dumpFile);
-
         $this->systemUserAuthenticator->createSystemUser();
+
     }
 
     protected function loadData(Configuration $configuration): void
@@ -433,20 +435,6 @@ class FixturesLoader implements FixturesLoaderInterface
         $this->productModelIndexer->indexFromProductModelCodes($productModelCodes);
     }
 
-    protected function resetElasticsearchIndex(): void
-    {
-        $clients = $this->clientRegistry->getClients();
-
-        foreach ($clients as $client) {
-            $client->resetIndex();
-        }
-    }
-
-    private function refreshES(): void
-    {
-        $this->esClient->refreshIndex();
-    }
-
     private function resetFilesystem(): void
     {
         $this->archivistFilesystem->addPlugin(new ListPaths());
@@ -455,5 +443,20 @@ class FixturesLoader implements FixturesLoaderInterface
         foreach ($paths as $path) {
             $this->archivistFilesystem->deleteDir($path);
         }
+    }
+
+    private function deleteAllDocumentsInElasticsearch(): void
+    {
+        $this->nativeElasticsearchClient->indices()->refresh(['index' => '_all']);
+
+        $this->nativeElasticsearchClient->deleteByQuery([
+            'body' => [
+                'query' => [
+                    'match_all' => new \stdClass()
+                ],
+            ],
+            'index' => '_all',
+            'refresh' => true
+        ]);
     }
 }
