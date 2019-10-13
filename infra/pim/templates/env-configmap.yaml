@@ -24,7 +24,7 @@ data:
   APP_DATABASE_USER: {{ .Values.mysql.mysql.defaultUser | quote }}
   APP_INDEX_HOSTS: {{ .Values.elasticsearch.fullnameOverride }}-client:9200
   PIM_INSTALLER_DATA: {{ with (index .Values.catalog.EE .Values.pim.defaultCatalog ) }}{{ .class }}{{ end }}
-  PIM_SECRET: {{ .Values.pim.secret }}
+  APP_SECRET: {{ .Values.pim.secret }}
   SRNT_GOOGLE_APPLICATION_CREDENTIALS: /var/secrets/google/srnt.json
   SRNT_GOOGLE_BUCKET_NAME: {{ .Values.pim.storage.bucketName | quote }}
   APP_ENV: prod
