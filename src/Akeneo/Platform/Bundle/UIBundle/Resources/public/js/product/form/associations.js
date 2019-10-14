@@ -292,7 +292,7 @@ define([
           const labelAssociationType1 = associationType1.labels[locale] || '[' + associationType1.code + ']';
           const labelAssociationType2 = associationType2.labels[locale] || '[' + associationType2.code + ']';
 
-          return labelAssociationType1 > labelAssociationType2 ? 1 : -1;
+          return labelAssociationType1.toLowerCase() > labelAssociationType2.toLowerCase() ? 1 : -1;
         });
       });
     },
