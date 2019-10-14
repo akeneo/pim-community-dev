@@ -7,7 +7,7 @@ franklin-insights-coupling:
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Pim/Automation/FranklinInsights/tests/back/.php_cd.php src/Akeneo/Pim/Automation/FranklinInsights
 
 .PHONY: franklin-insights-phpstan
-franklin-insights-phpstan:
+franklin-insights-phpstan: var/cache/dev
 	$(PHP_EXEC) vendor/bin/phpstan analyse src/Akeneo/Pim/Automation/FranklinInsights -l 1
 
 .PHONY: franklin-insights-unit
@@ -47,6 +47,9 @@ franklin-insights-cs-fix:
 	$(YARN_EXEC) tslint -c src/Akeneo/Pim/Automation/FranklinInsights/tslint.json src/Akeneo/Pim/Automation/FranklinInsights/**/*.{ts,tsx} --fix
 	$(DOCKER_COMPOSE) run --rm node ./node_modules/.bin/prettier --config src/Akeneo/Pim/Automation/FranklinInsights/.prettierrc.json --check src/Akeneo/Pim/Automation/FranklinInsights/**/*.{ts,tsx} --write
 	$(YARN_EXEC) lint-fix
+
+var/cache/dev:
+	$(PHP_EXEC) bin/console cache:warmup --no-interaction --env=dev > /dev/null
 
 .PHONY: franklin-insights-tests
 franklin-insights-tests: franklin-insights-coupling franklin-insights-cs franklin-insights-phpstan franklin-insights-unit franklin-insights-unit-front franklin-insights-acceptance franklin-insights-integration franklin-insights-end-to-end
