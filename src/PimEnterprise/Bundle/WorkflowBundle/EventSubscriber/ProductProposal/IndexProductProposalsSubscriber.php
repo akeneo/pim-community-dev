@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductProposal;
 
+use Akeneo\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Indexer\ProductProposalIndexer;
@@ -70,9 +71,13 @@ class IndexProductProposalsSubscriber implements EventSubscriberInterface
             $changesToReview = $productProposal->getChangesToReview();
             if (!empty($changesToReview['values'])) {
                 $productProposal->setChanges($changesToReview);
-                $this->productProposalIndexer->index($productProposal);
+                $this->productProposalIndexer->index($productProposal, [
+                    'index_refresh' => Refresh::enable()
+                ]);
             } else {
-                $this->productProposalIndexer->remove($productProposal->getId());
+                $this->productProposalIndexer->remove($productProposal->getId(), [
+                    'index_refresh' => Refresh::enable()
+                ]);
             }
         }
     }

@@ -8,6 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductModel;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Normalizer\Indexing\ProductModelProposalNormalizer;
+use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductModelProposalIndexerSpec extends ObjectBehavior
@@ -31,7 +32,7 @@ class ProductModelProposalIndexerSpec extends ObjectBehavior
         $normalizer->normalize($productModelDraft, ProductModelProposalNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_PROPOSAL_INDEX)
             ->willReturn($productModelDraftNormalized);
 
-        $productModelProposalClient->index('pimee_workflow_product_proposal', 1, $productModelDraftNormalized)->shouldBeCalled();
+        $productModelProposalClient->index('pimee_workflow_product_proposal', 1, $productModelDraftNormalized, Argument::type(Refresh::class))->shouldBeCalled();
 
         $this->index($productModelDraft, [])->shouldReturn(null);
     }
@@ -114,8 +115,22 @@ class ProductModelProposalIndexerSpec extends ObjectBehavior
         )->willReturn(['hits' => ['total' => 1]]);
 
         $productModelProposalClient->delete('pimee_workflow_product_proposal', 'product_model_draft_1')->shouldBeCalled();
+        $productModelProposalClient->refreshIndex()->shouldNotBeCalled();
 
         $this->remove(1, [])->shouldReturn(null);
+    }
+
+    function it_removes_product_model_proposal_and_refresh_index($productModelProposalClient)
+    {
+        $productModelProposalClient->search(
+            'pimee_workflow_product_proposal',
+            ['query' => ['term' => ['id' => 'product_model_draft_1']]]
+        )->willReturn(['hits' => ['total' => 1]]);
+
+        $productModelProposalClient->delete('pimee_workflow_product_proposal', 'product_model_draft_1')->shouldBeCalled();
+        $productModelProposalClient->refreshIndex()->shouldBeCalled();
+
+        $this->remove(1, ['index_refresh' => Refresh::enable()])->shouldReturn(null);
     }
 
     function it_does_not_remove_product_model_proposal_if_it_does_not_exist($productModelProposalClient)

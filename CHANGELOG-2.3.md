@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-7691: Users were able to edit their own roles
+- PIM-8878: Force to refresh the Elasticsearch index for the proposals after partial rejecting or approving
 
 # 2.3.66 (2019-10-09)
 
