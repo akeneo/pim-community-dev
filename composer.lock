@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3b4e0ca736107c768fff5a026814b724",
+    "content-hash": "e3f1bffb095d59ad737330f47991b6f7",
     "packages": [
         {
             "name": "ass/xmlsecurity",
@@ -3443,6 +3443,65 @@
             "description": "Symfony AclBundle",
             "homepage": "https://symfony.com",
             "time": "2018-01-03T11:21:11+00:00"
+        },
+        {
+            "name": "symfony/error-handler",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/error-handler.git",
+                "reference": "b9953aca90ef7f0ae8ff2a6b06a7221c4a8a77f4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/error-handler/zipball/b9953aca90ef7f0ae8ff2a6b06a7221c4a8a77f4",
+                "reference": "b9953aca90ef7f0ae8ff2a6b06a7221c4a8a77f4",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2.9",
+                "psr/log": "~1.0"
+            },
+            "conflict": {
+                "symfony/http-kernel": "<3.4"
+            },
+            "require-dev": {
+                "symfony/http-kernel": "^3.4|^4.0|^5.0"
+            },
+            "suggest": {
+                "symfony/error-renderer": "For better error rendering"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "5.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\ErrorHandler\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony ErrorHandler Component",
+            "homepage": "https://symfony.com",
+            "time": "2019-10-11T14:48:48+00:00"
         },
         {
             "name": "symfony/monolog-bundle",
@@ -8569,7 +8628,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "dompdf/dompdf": 20
+        "dompdf/dompdf": 20,
+        "symfony/error-handler": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
