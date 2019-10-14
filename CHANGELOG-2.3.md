@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-7691: Users were able to edit their own roles
+
 # 2.3.66 (2019-10-09)
 
 ## Bug fixes

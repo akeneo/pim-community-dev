@@ -10,6 +10,7 @@
 
 namespace PimEnterprise\Bundle\UserBundle\Form\Type;
 
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\EnrichBundle\Form\Type\LightEntityType;
 use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\GroupRepository;
 use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\RoleRepository;
@@ -47,6 +48,7 @@ class UserType extends BaseUserType
      * @param EEUserPreferencesSubscriber       $eeSubscriber
      * @param TranslatedLabelsProviderInterface $categoryProvider
      * @param string                            $productGridFilterTypeClassName
+     * @param SecurityFacade|null               $securityFacade
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
@@ -57,7 +59,8 @@ class UserType extends BaseUserType
         EventDispatcherInterface $eventDispatcher,
         EEUserPreferencesSubscriber $eeSubscriber,
         TranslatedLabelsProviderInterface $categoryProvider,
-        string $productGridFilterTypeClassName
+        string $productGridFilterTypeClassName,
+        SecurityFacade $securityFacade = null
     ) {
         parent::__construct(
             $tokenStorage,
@@ -66,7 +69,8 @@ class UserType extends BaseUserType
             $roleRepository,
             $groupRepository,
             $eventDispatcher,
-            $productGridFilterTypeClassName
+            $productGridFilterTypeClassName,
+            $securityFacade
         );
 
         $this->eeSubscriber = $eeSubscriber;
