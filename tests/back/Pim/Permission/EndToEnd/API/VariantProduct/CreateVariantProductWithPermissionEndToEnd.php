@@ -422,6 +422,8 @@ JSON;
      */
     protected function assertSameProductWithoutPermission(array $expectedProduct, $identifier): void
     {
+        $this->get('akeneo_integration_tests.security.system_user_authenticator')->createSystemUser();
+
         $this->get('doctrine')->getManager()->clear();
         $product = $this->get('pim_catalog.repository.product_without_permission')->findOneByIdentifier($identifier);
         $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');

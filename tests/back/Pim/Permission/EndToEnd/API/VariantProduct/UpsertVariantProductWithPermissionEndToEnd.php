@@ -3,11 +3,14 @@
 namespace AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\VariantProduct;
 
 use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use PHPUnit\Framework\Assert;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\PermissionFixturesLoader;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class UpsertVariantProductWithPermissionEndToEnd extends ApiTestCase
 {
@@ -204,6 +207,8 @@ SQL;
         ]);
 
         $this->get('doctrine')->getManager()->clear();
+        $this->get('akeneo_integration_tests.security.system_user_authenticator')->createSystemUser();
+
         $product = $this
             ->get('pim_catalog.repository.product')
             ->findOneByIdentifier('colored_sized_sweat_own');
@@ -485,8 +490,10 @@ JSON;
      */
     protected function assertSameProductWithoutPermission(array $expectedProduct, $identifier)
     {
+        $this->get('akeneo_integration_tests.security.system_user_authenticator')->createSystemUser();
+
         $this->get('doctrine')->getManager()->clear();
-        $product = $this->get('pim_catalog.repository.product_without_permission')->findOneByIdentifier($identifier);
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
         $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
 
         NormalizedProductCleaner::clean($standardizedProduct);
