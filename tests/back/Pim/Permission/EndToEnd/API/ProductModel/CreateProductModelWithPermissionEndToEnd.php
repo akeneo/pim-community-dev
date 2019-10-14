@@ -312,7 +312,7 @@ JSON;
     protected function assertSameProductModelWithoutPermission(array $expectedProductModel, $code)
     {
         $this->get('doctrine')->getManager()->clear();
-        $productModel = $this->get('pim_catalog.repository.product_model')->findOneByCode($code);
+        $productModel = $this->get('pim_catalog.repository.product_model_without_permission')->findOneByCode($code);
         $standardizedProductModel = $this->get('pim_standard_format_serializer')->normalize($productModel, 'standard');
 
         NormalizedProductCleaner::clean($standardizedProductModel);
