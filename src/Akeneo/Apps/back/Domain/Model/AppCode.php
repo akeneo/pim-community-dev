@@ -20,7 +20,15 @@ class AppCode
 
     public static function create(string $code): self
     {
-        // TODO: Validation
+        if (empty($code)) {
+            throw new \InvalidArgumentException('Code is required');
+        }
+        if (strlen($code) > 100) {
+            throw new \InvalidArgumentException('Code cannot be longer than 100 characters');
+        }
+        if (!preg_match('/^[0-9a-zA-Z_]+$/', $code)) {
+            throw new \InvalidArgumentException('Code can only contain alphanumeric characters and underscore');
+        }
 
         return new self($code);
     }

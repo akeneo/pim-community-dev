@@ -23,6 +23,8 @@ class CreateAppHandler
 
     public function handle(CreateAppCommand $command): void
     {
+        // TODO: Validate code unicity
+
         $app = App::create(
             $command->appCode(),
             $command->appLabel(),
