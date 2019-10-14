@@ -114,7 +114,7 @@ class CatalogConfigurationContext extends PimContext
         }
 
         // configure and load job instances in database
-        $this->getFixtureJobLoader()->loadJobInstances($replacePaths);
+        $this->getFixtureJobLoader()->loadJobInstances('src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal', $replacePaths);
 
         // setup application to be able to run akeneo:batch:job command
         $application = new Application($this->getContainer()->get('kernel'));
