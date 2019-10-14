@@ -1,7 +1,7 @@
 // Static mock JSON for product grid
 const mockResponses = {
   '/datagrid_view/rest/product-grid/default-columns': require('./responses/default-columns.json'),
-  '/datagrid_view/rest/product-grid/default': require('./responses/default-views.json'),
+  '/datagrid_view/rest/product-grid/default': { view: null },
   '/enrich/product-category-tree/product-grid/list-tree.json': require('./responses/list-tree.json'),
   '/enrich/product-category-tree/product-grid/children.json': require('./responses/category-tree.json'),
 }
