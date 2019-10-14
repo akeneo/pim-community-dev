@@ -35,4 +35,9 @@ class FlowType
     {
         return new self(self::OTHERS);
     }
+
+    public function __toString(): string
+    {
+        return $this->flowType;
+    }
 }
