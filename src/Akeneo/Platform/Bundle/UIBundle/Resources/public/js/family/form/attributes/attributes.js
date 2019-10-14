@@ -134,11 +134,12 @@ define([
                     )
                 ).then((channels, attributeGroups) => {
                     this.channels = channels;
-                    const groupedAttributes = _.groupBy(data.attributes, 'group');
 
-                    _.sortBy(groupedAttributes, (attributes, group) => {
-                        return _.findWhere(attributeGroups, {code: group}).sort_order;
+                    const sortedAttributes = _.sortBy(data.attributes, (attribute) => {
+                       return _.findWhere(attributeGroups, {code: attribute.group}).sort_order;
                     });
+
+                    const groupedAttributes = _.groupBy(sortedAttributes, 'group');
 
                     _.each(groupedAttributes, (attributes, group) => {
                         attributes = _.sortBy(attributes, (attribute) => attribute.sort_order);
