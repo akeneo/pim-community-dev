@@ -1,0 +1,7 @@
+services:
+    pimee_workflow.values_filler.published_product_model:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\InternalApi\FillMissingPublishedProductValues'
+        arguments:
+            - '@pim_catalog.repository.cached_family'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'

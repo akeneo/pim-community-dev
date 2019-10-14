@@ -32,7 +32,6 @@ class ProductModelController extends BaseProductModelController
 
     /**
      * @param ProductModelRepositoryInterface       $productModelRepository
-     * @param EntityWithFamilyValuesFillerInterface $valuesFiller
      * @param CategoryRepositoryInterface           $categoryRepository
      * @param SecurityFacade                        $securityFacade
      * @param string                                $categoryClass
@@ -42,7 +41,6 @@ class ProductModelController extends BaseProductModelController
      */
     public function __construct(
         ProductModelRepositoryInterface $productModelRepository,
-        EntityWithFamilyValuesFillerInterface $valuesFiller,
         CategoryRepositoryInterface $categoryRepository,
         SecurityFacade $securityFacade,
         string $categoryClass,
@@ -52,7 +50,6 @@ class ProductModelController extends BaseProductModelController
     ) {
         parent::__construct(
             $productModelRepository,
-            $valuesFiller,
             $categoryRepository,
             $securityFacade,
             $categoryClass,

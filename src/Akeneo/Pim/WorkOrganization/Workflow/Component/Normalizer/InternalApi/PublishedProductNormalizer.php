@@ -17,7 +17,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductNormalizer;
-use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer\PublishedProductNormalizer as StandardPublishedProductNormalizer;
@@ -44,8 +43,8 @@ class PublishedProductNormalizer implements NormalizerInterface
     /** @var MissingAssociationAdder */
     private $missingAssociationAdder;
 
-    /** @var EntityWithFamilyValuesFillerInterface */
-    private $productValuesFiller;
+    /** @var FillMissingPublishedProductValues */
+    private $fillMissingPublishedProductValues;
 
     /** @var AttributeConverterInterface */
     private $localizedConverter;
@@ -92,7 +91,7 @@ class PublishedProductNormalizer implements NormalizerInterface
     public function __construct(
         StandardPublishedProductNormalizer $standardPublishedProductNormalizer,
         MissingAssociationAdder $missingAssociationAdder,
-        EntityWithFamilyValuesFillerInterface $productValuesFiller,
+        FillMissingPublishedProductValues $fillMissingPublishedProductValues,
         AttributeConverterInterface $localizedConverter,
         ConverterInterface $productValueConverter,
         NormalizerInterface $versionNormalizer,
@@ -110,7 +109,7 @@ class PublishedProductNormalizer implements NormalizerInterface
     ) {
         $this->standardPublishedProductNormalizer = $standardPublishedProductNormalizer;
         $this->missingAssociationAdder = $missingAssociationAdder;
-        $this->productValuesFiller = $productValuesFiller;
+        $this->fillMissingPublishedProductValues = $fillMissingPublishedProductValues;
         $this->localizedConverter = $localizedConverter;
         $this->productValueConverter = $productValueConverter;
         $this->versionNormalizer = $versionNormalizer;
@@ -133,21 +132,27 @@ class PublishedProductNormalizer implements NormalizerInterface
     public function normalize($publishedProduct, $format = null, array $context = [])
     {
         $this->missingAssociationAdder->addMissingAssociations($publishedProduct);
-        $this->productValuesFiller->fillMissingValues($publishedProduct);
+        $normalizedPublishedProduct = $this->standardPublishedProductNormalizer->normalize(
+            $publishedProduct,
+            'standard',
+            $context
+        );
 
-        $normalizedProduct = $this->standardPublishedProductNormalizer->normalize($publishedProduct, 'standard', $context);
+        $normalizedPublishedProduct = $this->fillMissingPublishedProductValues->fromStandardFormat(
+            $normalizedPublishedProduct
+        );
 
-        $normalizedProduct['values'] = $this->productValueConverter->convert(
-            $this->localizedConverter->convertToLocalizedFormats($normalizedProduct['values'], $context)
+        $normalizedPublishedProduct['values'] = $this->productValueConverter->convert(
+            $this->localizedConverter->convertToLocalizedFormats($normalizedPublishedProduct['values'], $context)
         );
 
         $userTimezone = $this->userContext->getUserTimezone();
 
         $ownerGroups = $this->categoryAccessRepo->getGrantedUserGroupsForEntityWithValues($publishedProduct, Attributes::OWN_PRODUCTS);
 
-        $normalizedProduct['parent_associations'] = [];
+        $normalizedPublishedProduct['parent_associations'] = [];
 
-        $normalizedProduct['meta'] = [
+        $normalizedPublishedProduct['meta'] = [
             'form' => $this->formProvider->getForm($publishedProduct),
             'id' => $publishedProduct->getId(),
             'created' => $this->normalizeVersion($this->versionManager->getOldestLogEntry($publishedProduct), $userTimezone),
@@ -173,7 +178,7 @@ class PublishedProductNormalizer implements NormalizerInterface
             'original_product_id' => $publishedProduct->getOriginalProduct()->getId(),
         ];
 
-        return $normalizedProduct;
+        return $normalizedPublishedProduct;
     }
 
     /**

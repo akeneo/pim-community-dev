@@ -33,27 +33,12 @@ class ProductController extends BaseProductController
     /** @var CategoryManager */
     protected $categoryManager;
 
-    /**
-     * @param TranslatorInterface                   $translator
-     * @param ProductRepositoryInterface            $productRepository
-     * @param CategoryRepositoryInterface           $categoryRepository
-     * @param SaverInterface                        $productSaver
-     * @param EntityWithFamilyValuesFillerInterface $valuesFiller
-     * @param MissingAssociationAdder               $missingAssociationAdder
-     * @param string                                $categoryClass
-     * @param SecurityFacade                        $securityFacade
-     * @param string                                $acl
-     * @param string                                $template
-     * @param CategoryManager                       $categoryManager
-     */
     public function __construct(
         TranslatorInterface $translator,
         ProductRepositoryInterface $productRepository,
         CategoryRepositoryInterface $categoryRepository,
         SaverInterface $productSaver,
         MissingAssociationAdder $missingAssociationAdder,
-        EntityWithFamilyValuesFillerInterface $valuesFiller,
-        string $categoryClass,
         SecurityFacade $securityFacade,
         string $acl,
         string $template,
@@ -65,8 +50,6 @@ class ProductController extends BaseProductController
             $categoryRepository,
             $productSaver,
             $missingAssociationAdder,
-            $valuesFiller,
-            $categoryClass,
             $securityFacade,
             $acl,
             $template

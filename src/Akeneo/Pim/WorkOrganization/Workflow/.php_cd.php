@@ -182,6 +182,9 @@ $rules = [
 
         // TODO: Workflow should not be linked to channel
         'Akeneo\Channel\Component\Model\ChannelInterface',
+        'Akeneo\Channel\Component\Model\CurrencyInterface',
+        'Akeneo\Channel\Component\Model\LocaleInterface',
+        'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
 
         // TIP-1011: Create a Versioning component
         'Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager',
