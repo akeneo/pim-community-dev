@@ -14,9 +14,9 @@ class DeleteVariantProductEndToEnd extends AbstractProductTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $this->assertCount(242, $this->getFromTestContainer('pim_catalog.repository.product')->findAll());
+        $this->assertCount(242, $this->get('pim_catalog.repository.product')->findAll());
 
-        $bikerJacketLeatherXxs = $this->getFromTestContainer('pim_catalog.repository.product')->findOneByIdentifier('biker-jacket-leather-xxs');
+        $bikerJacketLeatherXxs = $this->get('pim_catalog.repository.product')->findOneByIdentifier('biker-jacket-leather-xxs');
         $this->get('pim_catalog.elasticsearch.indexer.product')->indexFromProductIdentifier(
             $bikerJacketLeatherXxs->getIdentifier()
         );
@@ -25,8 +25,8 @@ class DeleteVariantProductEndToEnd extends AbstractProductTestCase
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
 
-        $this->assertCount(241, $this->getFromTestContainer('pim_catalog.repository.product')->findAll());
-        $this->assertNull($this->getFromTestContainer('pim_catalog.repository.product')->findOneByIdentifier('biker-jacket-leather-xxs'));
+        $this->assertCount(241, $this->get('pim_catalog.repository.product')->findAll());
+        $this->assertNull($this->get('pim_catalog.repository.product')->findOneByIdentifier('biker-jacket-leather-xxs'));
     }
 
     /**

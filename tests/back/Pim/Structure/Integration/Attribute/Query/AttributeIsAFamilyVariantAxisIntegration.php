@@ -9,7 +9,7 @@ class AttributeIsAFamilyVariantAxisIntegration extends TestCase
 {
     function testItReturnsTrueIfAnAttributeIsUsedAsVariantAxis()
     {
-        $result = $this->getFromTestContainer('akeneo.pim.structure.query.attribute_is_an_family_variant_axis')
+        $result = $this->get('akeneo.pim.structure.query.attribute_is_an_family_variant_axis')
             ->execute('color');
 
         $this->assertTrue($result);
@@ -17,7 +17,7 @@ class AttributeIsAFamilyVariantAxisIntegration extends TestCase
 
     function testItReturnsFalseIfAnAttributeIsNotUsedAsVariantAxis()
     {
-        $result = $this->getFromTestContainer('akeneo.pim.structure.query.attribute_is_an_family_variant_axis')
+        $result = $this->get('akeneo.pim.structure.query.attribute_is_an_family_variant_axis')
             ->execute('sku');
 
         $this->assertFalse($result);

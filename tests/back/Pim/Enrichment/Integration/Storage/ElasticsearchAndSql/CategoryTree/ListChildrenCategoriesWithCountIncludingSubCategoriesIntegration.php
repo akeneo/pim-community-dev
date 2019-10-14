@@ -19,7 +19,7 @@ class ListChildrenCategoriesWithCountIncludingSubCategoriesIntegration extends T
         parent::setUp();
         $this->createAdminUser();
 
-        $fixturesLoader = new CategoryTreeFixturesLoader($this->testKernel->getContainer());
+        $fixturesLoader = $this->get('akeneo_integration_tests.loader.category_tree_loader');
         $fixturesLoader->givenTheCategoryTrees([
             'tree_1' => [
                 'tree_1_child_1_level_1' => [

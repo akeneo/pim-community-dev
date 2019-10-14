@@ -18,8 +18,8 @@ class GetCategoryCodesByProductIdentifiersIntegration extends TestCase
     {
         parent::setUp();
 
-        $fixturesLoader = new CategoryTreeFixturesLoader($this->testKernel->getContainer());
-        $this->entityBuilder =  $this->getFromTestContainer('akeneo_integration_tests.catalog.fixture.build_entity');
+        $fixturesLoader = $this->get('akeneo_integration_tests.loader.category_tree_loader');
+        $this->entityBuilder =  $this->get('akeneo_integration_tests.catalog.fixture.build_entity');
 
         $fixturesLoader->givenTheCategoryTrees([
             'root_master' => [

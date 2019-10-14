@@ -18,7 +18,7 @@ interface FixturesLoaderInterface
     /**
      * Loads test catalog accordingly to the given configuration.
      *
-     * @throws \Exception
+     * @param Configuration $configuration
      */
-    public function load(): void;
+    public function load(Configuration $configuration): void;
 }

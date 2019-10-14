@@ -20,7 +20,7 @@ class GetDescendentCategoryCodesIntegration extends TestCase
     {
         parent::setUp();
 
-        $fixturesLoader = new CategoryTreeFixturesLoader($this->testKernel->getContainer());
+        $fixturesLoader = $this->get('akeneo_integration_tests.loader.category_tree_loader');
         $fixturesLoader->givenTheCategoryTrees([
             'ecommerce' => [
                 'ecommerce_accessories' => [

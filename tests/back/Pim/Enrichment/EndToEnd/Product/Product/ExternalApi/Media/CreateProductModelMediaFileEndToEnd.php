@@ -517,8 +517,8 @@ JSON;
     {
         parent::setUp();
 
-        $familyA = $this->getFromTestContainer('pim_catalog.repository.family')->findOneByIdentifier('familyA');
-        $this->getFromTestContainer('pim_catalog.updater.family')->update(
+        $familyA = $this->get('pim_catalog.repository.family')->findOneByIdentifier('familyA');
+        $this->get('pim_catalog.updater.family')->update(
             $familyA,
             [
                 'attributes' => [
@@ -543,11 +543,11 @@ JSON;
                     'a_localizable_scopable_image'
             ]
         ]);
-        $this->assertCount(0, $this->getFromTestContainer('validator')->validate($familyA));
-        $this->getFromTestContainer('pim_catalog.saver.family')->save($familyA);
+        $this->assertCount(0, $this->get('validator')->validate($familyA));
+        $this->get('pim_catalog.saver.family')->save($familyA);
 
-        $familyVariant = $this->getFromTestContainer('pim_catalog.factory.family_variant')->create();
-        $this->getFromTestContainer('pim_catalog.updater.family_variant')
+        $familyVariant = $this->get('pim_catalog.factory.family_variant')->create();
+        $this->get('pim_catalog.updater.family_variant')
             ->update(
                 $familyVariant,
                 [
@@ -575,13 +575,13 @@ JSON;
                     ],
                 ]
             );
-        $this->assertCount(0, $this->getFromTestContainer('validator')->validate($familyVariant));
-        $this->getFromTestContainer('pim_catalog.saver.family_variant')->save($familyVariant);
+        $this->assertCount(0, $this->get('validator')->validate($familyVariant));
+        $this->get('pim_catalog.saver.family_variant')->save($familyVariant);
 
-        $productModelParent = $this->getFromTestContainer('pim_catalog.factory.product_model')->create();
-        $productModel = $this->getFromTestContainer('pim_catalog.factory.product_model')->create();
+        $productModelParent = $this->get('pim_catalog.factory.product_model')->create();
+        $productModel = $this->get('pim_catalog.factory.product_model')->create();
 
-        $this->getFromTestContainer('pim_catalog.updater.product_model')
+        $this->get('pim_catalog.updater.product_model')
             ->update(
                 $productModelParent,
                 [
@@ -590,10 +590,10 @@ JSON;
                     'values' => []
                 ]
             );
-        $this->assertCount(0, $this->getFromTestContainer('pim_catalog.validator.product_model')->validate($productModelParent));
-        $this->getFromTestContainer('pim_catalog.saver.product_model')->save($productModelParent);
+        $this->assertCount(0, $this->get('pim_catalog.validator.product_model')->validate($productModelParent));
+        $this->get('pim_catalog.saver.product_model')->save($productModelParent);
 
-        $this->getFromTestContainer('pim_catalog.updater.product_model')
+        $this->get('pim_catalog.updater.product_model')
             ->update(
                 $productModel,
                 [
@@ -606,21 +606,21 @@ JSON;
                     ]
                 ]
             );
-        $this->assertCount(0, $this->getFromTestContainer('pim_catalog.validator.product_model')->validate($productModel));
-        $this->getFromTestContainer('pim_catalog.saver.product_model')->save($productModel);
+        $this->assertCount(0, $this->get('pim_catalog.validator.product_model')->validate($productModel));
+        $this->get('pim_catalog.saver.product_model')->save($productModel);
 
-        $this->getFromTestContainer('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
-        $this->fileRepository = $this->getFromTestContainer('pim_api.repository.media_file');
-        $this->productModelRepository = $this->getFromTestContainer('pim_catalog.repository.product_model');
+        $this->fileRepository = $this->get('pim_api.repository.media_file');
+        $this->productModelRepository = $this->get('pim_catalog.repository.product_model');
 
         $this->files['image'] = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'akeneo.jpg';
         copy($this->getFixturePath('akeneo.jpg'), $this->files['image']);
 
-        $mountManager = $this->getFromTestContainer('oneup_flysystem.mount_manager');
+        $mountManager = $this->get('oneup_flysystem.mount_manager');
         $this->fileSystem = $mountManager->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS);
 
-        $this->getFromTestContainer('doctrine.orm.default_entity_manager')->clear();
+        $this->get('doctrine.orm.default_entity_manager')->clear();
     }
 
     /**

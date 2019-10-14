@@ -23,6 +23,17 @@ class DatabaseSchemaHandler
     /** @var Connection */
     private $dbConnection;
 
+    /** @var array */
+    private static $tablesToTruncate = [
+        'pim_catalog_product',
+        'pim_catalog_product_model',
+        'pim_catalog_group',
+        'acl_security_identities',
+        'pimee_security_product_category_access',
+        'pimee_workflow_published_product',
+        'oro_access_group'
+    ];
+
     public function __construct(KernelInterface $kernel, Connection $dbConnection)
     {
         $this->kernel = $kernel;
@@ -35,6 +46,9 @@ class DatabaseSchemaHandler
      * Reset the schema by deleting all rows in the data.
      * Do note that is faster than dropping and creating the schema.
      *
+     * We avoid to truncate EE tables in CE (with array_intersect), otherwise the purger will fail at the first
+     * EE table to truncate without raising any error (no way to catch it).
+     *
      * @throws \RuntimeException
      */
     public function reset()
@@ -44,16 +58,8 @@ class DatabaseSchemaHandler
 
         $purger = new DBALPurger(
             $this->dbConnection,
-            $tables,
-            [
-                'pim_catalog_product',
-                'pim_catalog_product_model',
-                'pim_catalog_group',
-                'acl_security_identities',
-                'pimee_security_product_category_access',
-                'pimee_workflow_published_product',
-                'oro_access_group'
-            ]
+            array_diff($tables, self::$tablesToTruncate),
+            array_intersect($tables, self::$tablesToTruncate)
         );
         $purger->purge();
     }

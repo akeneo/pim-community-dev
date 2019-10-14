@@ -37,14 +37,11 @@ abstract class TestCase extends KernelTestCase
     protected function setUp(): void
     {
         static::bootKernel(['debug' => false]);
-        $this->testKernel = new \AppKernelTest('test', false);
-        $this->testKernel->boot();
+        $this->catalog = $this->get('akeneo_integration_tests.catalogs');
 
-        $this->catalog = $this->getFromTestContainer('akeneo_integration_tests.configuration.catalog');
         if (null !== $this->getConfiguration()) {
-            $this->testKernel->getContainer()->set('akeneo_integration_tests.catalog.configuration', $this->getConfiguration());
-            $fixturesLoader = $this->getFromTestContainer('akeneo_integration_tests.loader.fixtures_loader');
-            $fixturesLoader->load();
+            $fixturesLoader = $this->get('akeneo_integration_tests.loader.fixtures_loader');
+            $fixturesLoader->load($this->getConfiguration());
         }
 
         // authentication should be done after loading the database as the user is created with first activated locale as default locale
@@ -55,8 +52,8 @@ abstract class TestCase extends KernelTestCase
             $this->get('security.token_storage')
         );
         $authenticator->createSystemUser();
-        $this->get('doctrine.orm.default_entity_manager')->clear();
 
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
     }
 
     /**
@@ -67,16 +64,6 @@ abstract class TestCase extends KernelTestCase
     protected function get(string $service)
     {
         return static::$kernel->getContainer()->get($service);
-    }
-
-    /**
-     * @param string $service
-     *
-     * @return mixed
-     */
-    protected function getFromTestContainer(string $service)
-    {
-        return $this->testKernel->getContainer()->get($service);
     }
 
     /**
@@ -104,7 +91,7 @@ abstract class TestCase extends KernelTestCase
      */
     protected function tearDown(): void
     {
-        $connectionCloser = $this->testKernel->getContainer()->get('akeneo_integration_tests.doctrine.connection.connection_closer');
+        $connectionCloser = $this->get('akeneo_integration_tests.doctrine.connection.connection_closer');
         $connectionCloser->closeConnections();
 
         $this->esClient = null;

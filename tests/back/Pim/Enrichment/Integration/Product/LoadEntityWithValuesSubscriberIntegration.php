@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql\SqlGetAttributes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Test\Integration\TestCase;
 
@@ -12,6 +13,7 @@ use Akeneo\Test\Integration\TestCase;
  */
 class LoadEntityWithValuesSubscriberIntegration extends TestCase
 {
+
     public function testLoadValuesForProductWithAllAttributes()
     {
         $product = $this->findProductByIdentifier('foo');
@@ -41,17 +43,6 @@ class LoadEntityWithValuesSubscriberIntegration extends TestCase
             $this->getStandardValuesOfVariantProduct()
         );
 
-        $this->assertProductHasValues($expectedValues, $product);
-    }
-
-    public function testItDoesNotLoadValuesOfAProductForWhichThereIsARemovedAttribute()
-    {
-        $this->removeAttribute('a_metric');
-        $amputatedStandardValues = $this->removeAttributeFromAllStandardValues('a_metric');
-        $expectedValues = $this->getValuesFromStandardValues(
-            $amputatedStandardValues
-        );
-        $product = $this->findProductByIdentifier('foo');
         $this->assertProductHasValues($expectedValues, $product);
     }
 

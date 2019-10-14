@@ -202,6 +202,6 @@ class ProductStandardSortedCollectionIntegration extends TestCase
 
     private function getProductBuilder(): ProductBuilder
     {
-        return $this->getFromTestContainer('akeneo_integration_tests.catalog.product.builder');
+        return $this->get('akeneo_integration_tests.catalog.product.builder');
     }
 }

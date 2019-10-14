@@ -44,9 +44,6 @@ class FixturesLoader implements FixturesLoaderInterface
     /** @var Application */
     private $cli;
 
-    /** @var Configuration */
-    private $configuration;
-
     /** @var ReferenceDataLoader */
     private $referenceDataLoader;
 
@@ -93,7 +90,6 @@ class FixturesLoader implements FixturesLoaderInterface
         KernelInterface $kernel,
         DatabaseSchemaHandler $databaseSchemaHandler,
         SystemUserAuthenticator $systemUserAuthenticator,
-        Configuration $configuration,
         ReferenceDataLoader $referenceDataLoader,
         Filesystem $archivistFilesystem,
         DoctrineJobRepository $doctrineJobRepository,
@@ -112,7 +108,6 @@ class FixturesLoader implements FixturesLoaderInterface
         $this->kernel = $kernel;
         $this->databaseSchemaHandler = $databaseSchemaHandler;
         $this->systemUserAuthenticator = $systemUserAuthenticator;
-        $this->configuration = $configuration;
         $this->referenceDataLoader = $referenceDataLoader;
 
         $this->cli = new Application($kernel);
@@ -147,12 +142,12 @@ class FixturesLoader implements FixturesLoaderInterface
      * However, the second index is not reset directly after the first one, as it could
      * prevent the first one to be correctly dilated.
      */
-    public function load(): void
+    public function load(Configuration $configuration): void
     {
         $this->resetElasticsearchIndex();
         $this->resetFilesystem();
 
-        $files = $this->getFilesToLoad($this->configuration->getCatalogDirectories());
+        $files = $this->getFilesToLoad($configuration->getCatalogDirectories());
         $fixturesHash = $this->getHashForFiles($files);
 
         $dumpFile = sys_get_temp_dir().self::CACHE_DIR.$fixturesHash.'.sql';
@@ -174,7 +169,7 @@ class FixturesLoader implements FixturesLoaderInterface
         $this->databaseSchemaHandler->reset();
         $this->clearAclCache();
 
-        $this->loadData();
+        $this->loadData($configuration);
         $this->refreshES();
 
         $this->dumpDatabase($dumpFile);
@@ -182,9 +177,9 @@ class FixturesLoader implements FixturesLoaderInterface
         $this->systemUserAuthenticator->createSystemUser();
     }
 
-    protected function loadData(): void
+    protected function loadData(Configuration $configuration): void
     {
-        $files = $this->getFilesToLoad($this->configuration->getCatalogDirectories());
+        $files = $this->getFilesToLoad($configuration->getCatalogDirectories());
         $filesByType = $this->getFilesToLoadByType($files);
 
         $this->loadSqlFiles($filesByType['sql']);
