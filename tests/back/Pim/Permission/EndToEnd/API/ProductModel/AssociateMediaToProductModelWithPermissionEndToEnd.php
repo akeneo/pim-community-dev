@@ -25,7 +25,7 @@ class AssociateMediaToProductModelWithPermissionEndToEnd extends ApiTestCase
     {
         parent::setUp();
 
-        $this->loader = new PermissionFixturesLoader($this->testKernel->getContainer());
+        $this->loader = $this->get('akeneo_integration_tests.loader.permissions');
         $this->files['image'] = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'akeneo.jpg';
         copy($this->getFixturePath('akeneo.jpg'), $this->files['image']);
 
@@ -37,7 +37,7 @@ class AssociateMediaToProductModelWithPermissionEndToEnd extends ApiTestCase
     {
         $this->loadProductModelsFixturesForAttributeAndLocaleAndMediaPermissions();
 
-        $this->assertCount(0, $this->getFromTestContainer('pim_api.repository.media_file')->findAll());
+        $this->assertCount(0, $this->get('pim_api.repository.media_file')->findAll());
 
         $client = $this->createAuthenticatedClient([], ['CONTENT_TYPE' => 'multipart/form-data'], null, null, 'mary', 'mary');
 
@@ -55,8 +55,8 @@ class AssociateMediaToProductModelWithPermissionEndToEnd extends ApiTestCase
     "message": "Property \"root_product_model_no_view_attribute_media\" does not exist."
 }
 JSON;
-        $this->getFromTestContainer('doctrine')->getManager()->clear();
-        $this->assertCount(0, $this->getFromTestContainer('pim_api.repository.media_file')->findAll());
+        $this->get('doctrine')->getManager()->clear();
+        $this->assertCount(0, $this->get('pim_api.repository.media_file')->findAll());
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
 
@@ -67,7 +67,7 @@ JSON;
     {
         $this->loadProductModelsFixturesForAttributeAndLocaleAndMediaPermissions();
 
-        $this->assertCount(0, $this->getFromTestContainer('pim_api.repository.media_file')->findAll());
+        $this->assertCount(0, $this->get('pim_api.repository.media_file')->findAll());
 
         $client = $this->createAuthenticatedClient([], ['CONTENT_TYPE' => 'multipart/form-data'], null, null, 'mary', 'mary');
 
@@ -85,8 +85,8 @@ JSON;
     "message": "Attribute \"root_product_model_view_attribute_media\" belongs to the attribute group \"attributeGroupB\" on which you only have view permission."
 }
 JSON;
-        $this->getFromTestContainer('doctrine')->getManager()->clear();
-        $this->assertCount(1, $this->getFromTestContainer('pim_api.repository.media_file')->findAll());
+        $this->get('doctrine')->getManager()->clear();
+        $this->assertCount(1, $this->get('pim_api.repository.media_file')->findAll());
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
 
@@ -96,7 +96,7 @@ JSON;
     {
         $this->loadProductModelsFixturesForAttributeAndLocaleAndMediaPermissions();
 
-        $this->assertCount(0, $this->getFromTestContainer('pim_api.repository.media_file')->findAll());
+        $this->assertCount(0, $this->get('pim_api.repository.media_file')->findAll());
 
         $client = $this->createAuthenticatedClient([], ['CONTENT_TYPE' => 'multipart/form-data'], null, null, 'mary', 'mary');
 
@@ -114,7 +114,7 @@ JSON;
         $this->assertEmpty($response->getContent());
 
         // check in repo if file has been created
-        $fileInfos = $this->getFromTestContainer('pim_api.repository.media_file')->findAll();
+        $fileInfos = $this->get('pim_api.repository.media_file')->findAll();
 
         $this->assertCount(1, $fileInfos);
 
@@ -125,8 +125,8 @@ JSON;
         $this->assertSame('catalogStorage', $fileInfo->getStorage());
 
         // check if product model value has been created
-        $this->getFromTestContainer('doctrine')->getManager()->clear();
-        $productModel = $this->getFromTestContainer('pim_catalog.repository.product_model')->findOneByCode('root_product_model');
+        $this->get('doctrine')->getManager()->clear();
+        $productModel = $this->get('pim_catalog.repository.product_model')->findOneByCode('root_product_model');
         $attributeCodes = $productModel->getUsedAttributeCodes();
         $mediaAttributeCode = current(array_filter($attributeCodes, function($attributeCode){
             return $attributeCode == 'root_product_model_edit_attribute_media';
@@ -157,8 +157,8 @@ JSON;
         $this->loader->createAttribute('sub_product_model_view_attribute_media', 'view', true, AttributeTypes::FILE);
         $this->loader->createAttribute('sub_product_model_edit_attribute_media', 'edit', true, AttributeTypes::FILE);
 
-        $family = $this->getFromTestContainer('pim_catalog.repository.family')->findOneByIdentifier('family_permission');
-        $this->getFromTestContainer('pim_catalog.updater.family')->update($family, [
+        $family = $this->get('pim_catalog.repository.family')->findOneByIdentifier('family_permission');
+        $this->get('pim_catalog.updater.family')->update($family, [
             'attributes'  => [
                 'root_product_model_no_view_attribute',
                 'root_product_model_view_attribute',
@@ -180,13 +180,13 @@ JSON;
             ]
         ]);
 
-        $errors = $this->getFromTestContainer('validator')->validate($family);
+        $errors = $this->get('validator')->validate($family);
         Assert::assertCount(0, $errors);
-        $this->getFromTestContainer('pim_catalog.saver.family')->save($family);
+        $this->get('pim_catalog.saver.family')->save($family);
 
 
-        $familyVariant = $this->getFromTestContainer('pim_catalog.repository.family_variant')->findOneByIdentifier('family_variant_permission');
-        $this->getFromTestContainer('pim_catalog.updater.family_variant')->update($familyVariant, [
+        $familyVariant = $this->get('pim_catalog.repository.family_variant')->findOneByIdentifier('family_variant_permission');
+        $this->get('pim_catalog.updater.family_variant')->update($familyVariant, [
             'variant_attribute_sets' => [
                 [
                     'axes' => ['sub_product_model_axis_attribute'],
@@ -208,8 +208,8 @@ JSON;
             ],
         ]);
 
-        $errors = $this->getFromTestContainer('validator')->validate($familyVariant);
+        $errors = $this->get('validator')->validate($familyVariant);
         Assert::assertCount(0, $errors);
-        $this->getFromTestContainer('pim_catalog.saver.family_variant')->save($familyVariant);
+        $this->get('pim_catalog.saver.family_variant')->save($familyVariant);
     }
 }

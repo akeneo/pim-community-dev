@@ -94,7 +94,7 @@ class ProductModelWorkflowIntegration extends ApiTestCase
     {
         parent::setUp();
 
-        $this->loader = new PermissionFixturesLoader($this->testKernel->getContainer());
+        $this->loader = $this->get('akeneo_integration_tests.loader.permissions');
     }
 
     private function assertProductModelDraft(string $code, array $data): ProductModelInterface

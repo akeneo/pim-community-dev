@@ -102,17 +102,17 @@ class SelectProductInfosForSubscriptionQueryIntegration extends TestCase
     {
         $this->createProductModel('modelA');
 
-        $product = $this->getFromTestContainer('pim_catalog.builder.product')->createProduct($identifier, 'familyA1');
-        $this->getFromTestContainer('validator')->validate($product);
-        $this->getFromTestContainer('pim_catalog.updater.product')->update($product, ['parent' => 'modelA']);
-        $this->getFromTestContainer('pim_catalog.saver.product')->save($product);
+        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier, 'familyA1');
+        $this->get('validator')->validate($product);
+        $this->get('pim_catalog.updater.product')->update($product, ['parent' => 'modelA']);
+        $this->get('pim_catalog.saver.product')->save($product);
 
         return new ProductId($product->getId());
     }
 
     private function createProduct(string $identifier, array $values = []): ProductId
     {
-        $builder = $this->getFromTestContainer('akeneo_integration_tests.catalog.product.builder')
+        $builder = $this->get('akeneo_integration_tests.catalog.product.builder')
             ->withFamily('familyA')
             ->withIdentifier($identifier);
 
@@ -121,18 +121,18 @@ class SelectProductInfosForSubscriptionQueryIntegration extends TestCase
         }
 
         $product = $builder->build();
-        $this->getFromTestContainer('pim_catalog.saver.product')->save($product);
+        $this->get('pim_catalog.saver.product')->save($product);
 
         return new ProductId($product->getId());
     }
 
     private function createProductWithoutFamily(string $identifier): ProductId
     {
-        $builder = $this->getFromTestContainer('akeneo_integration_tests.catalog.product.builder')
+        $builder = $this->get('akeneo_integration_tests.catalog.product.builder')
             ->withIdentifier($identifier);
 
         $product = $builder->build();
-        $this->getFromTestContainer('pim_catalog.saver.product')->save($product);
+        $this->get('pim_catalog.saver.product')->save($product);
 
         return new ProductId($product->getId());
     }
@@ -141,13 +141,13 @@ class SelectProductInfosForSubscriptionQueryIntegration extends TestCase
     {
         $productSubscription = new ProductSubscription($productId, new SubscriptionId('a-random-string'), []);
 
-        $this->getFromTestContainer('akeneo.pim.automation.franklin_insights.repository.product_subscription')->save($productSubscription);
+        $this->get('akeneo.pim.automation.franklin_insights.repository.product_subscription')->save($productSubscription);
     }
 
     private function createProductModel(string $identifier): void
     {
-        $productModel = $this->getFromTestContainer('pim_catalog.factory.product_model')->create();
-        $this->getFromTestContainer('pim_catalog.updater.product_model')->update(
+        $productModel = $this->get('pim_catalog.factory.product_model')->create();
+        $this->get('pim_catalog.updater.product_model')->update(
             $productModel,
             [
                 'code' => $identifier,
@@ -155,33 +155,33 @@ class SelectProductInfosForSubscriptionQueryIntegration extends TestCase
             ]
         );
 
-        $this->getFromTestContainer('pim_catalog.saver.product_model')->save($productModel);
+        $this->get('pim_catalog.saver.product_model')->save($productModel);
     }
 
     private function createTextAttribute(string $code): void
     {
-        $attribute = $this->getFromTestContainer('akeneo_ee_integration_tests.builder.attribute')->build(
+        $attribute = $this->get('akeneo_ee_integration_tests.builder.attribute')->build(
             [
                 'code' => $code,
                 'type' => 'pim_catalog_text',
                 'group' => 'other',
             ]
         );
-        $this->getFromTestContainer('pim_catalog.saver.attribute')->save($attribute);
+        $this->get('pim_catalog.saver.attribute')->save($attribute);
     }
 
     private function createIdentifiersMapping(): void
     {
-        $mapping = $this->getFromTestContainer('akeneo.pim.automation.franklin_insights.repository.identifiers_mapping')
+        $mapping = $this->get('akeneo.pim.automation.franklin_insights.repository.identifiers_mapping')
             ->find()
             ->map('asin', new AttributeCode('asin'))
             ->map('upc', new AttributeCode('ean'));
 
-        $this->getFromTestContainer('akeneo.pim.automation.franklin_insights.repository.identifiers_mapping')->save($mapping);
+        $this->get('akeneo.pim.automation.franklin_insights.repository.identifiers_mapping')->save($mapping);
     }
 
     private function getQuery(): SelectProductInfosForSubscriptionQuery
     {
-        return $this->getFromTestContainer('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.product.select_product_infos_for_subscription');
+        return $this->get('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.product.select_product_infos_for_subscription');
     }
 }

@@ -46,35 +46,35 @@ final class FamilyMappingStatusRepositoryIntegration extends TestCase
     {
         parent::setUp();
 
-        $testFamily = $this->getFromTestContainer('akeneo_ee_integration_tests.builder.family')->build([
+        $testFamily = $this->get('akeneo_ee_integration_tests.builder.family')->build([
             'code' => self::TEST_FAMILY_CODE,
             'labels' => self::TEST_FAMILY_LABELS,
             'attributes' => ['sku'],
         ]);
-        $this->getFromTestContainer('validator')->validate($testFamily);
+        $this->get('validator')->validate($testFamily);
 
-        $controlFamily = $this->getFromTestContainer('akeneo_ee_integration_tests.builder.family')->build([
+        $controlFamily = $this->get('akeneo_ee_integration_tests.builder.family')->build([
             'code' => self::CONTROL_FAMILY_CODE,
             'labels' => self::CONTROL_FAMILY_LABELS,
             'attributes' => ['sku'],
         ]);
-        $this->getFromTestContainer('validator')->validate($controlFamily);
+        $this->get('validator')->validate($controlFamily);
 
-        $onlyCodeFamily = $this->getFromTestContainer('akeneo_ee_integration_tests.builder.family')->build([
+        $onlyCodeFamily = $this->get('akeneo_ee_integration_tests.builder.family')->build([
             'code' => self::ONLY_CODE_FAMILY_CODE,
             'labels' => [],
             'attributes' => ['sku'],
         ]);
-        $this->getFromTestContainer('validator')->validate($onlyCodeFamily);
+        $this->get('validator')->validate($onlyCodeFamily);
 
-        $unexpectedFamily = $this->getFromTestContainer('akeneo_ee_integration_tests.builder.family')->build([
+        $unexpectedFamily = $this->get('akeneo_ee_integration_tests.builder.family')->build([
             'code' => self::UNEXPECTED_FAMILY_CODE,
             'attributes' => ['sku'],
         ]);
-        $this->getFromTestContainer('validator')->validate($controlFamily);
+        $this->get('validator')->validate($controlFamily);
 
         $this
-            ->getFromTestContainer('pim_catalog.saver.family')
+            ->get('pim_catalog.saver.family')
             ->saveAll([$testFamily, $controlFamily, $unexpectedFamily, $onlyCodeFamily]);
 
         $controlProduct = $this->createProduct('control_product', self::CONTROL_FAMILY_CODE);

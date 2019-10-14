@@ -27,7 +27,7 @@ class SelectFamilyCodesByAttributeQueryIntegration extends TestCase
         $this->createFamily('a_test_family', 'test_attribute');
 
         $familyCodes = $this
-            ->getFromTestContainer('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_family_codes_by_attribute_query')
+            ->get('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_family_codes_by_attribute_query')
             ->execute('test_attribute')
         ;
 
@@ -40,7 +40,7 @@ class SelectFamilyCodesByAttributeQueryIntegration extends TestCase
         $this->createFamily('a_test_family');
 
         $familyCodes = $this
-            ->getFromTestContainer('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_family_codes_by_attribute_query')
+            ->get('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_family_codes_by_attribute_query')
             ->execute('test_attribute')
         ;
 
@@ -55,12 +55,12 @@ class SelectFamilyCodesByAttributeQueryIntegration extends TestCase
     private function createAttribute(string $attributeCode): void
     {
         $attribute = $this
-            ->getFromTestContainer('akeneo_ee_integration_tests.builder.attribute')
+            ->get('akeneo_ee_integration_tests.builder.attribute')
             ->build(['code' => $attributeCode, 'type' => AttributeTypes::TEXT]);
 
-        $this->getFromTestContainer('validator')->validate($attribute);
+        $this->get('validator')->validate($attribute);
 
-        $this->getFromTestContainer('pim_catalog.saver.attribute')->save($attribute);
+        $this->get('pim_catalog.saver.attribute')->save($attribute);
     }
 
     private function createFamily(string $familyCode, ?string $attributeCode = null): void
@@ -75,11 +75,11 @@ class SelectFamilyCodesByAttributeQueryIntegration extends TestCase
         }
 
         $family = $this
-            ->getFromTestContainer('akeneo_ee_integration_tests.builder.family')
+            ->get('akeneo_ee_integration_tests.builder.family')
             ->build($familyData);
 
-        $this->getFromTestContainer('validator')->validate($family);
+        $this->get('validator')->validate($family);
 
-        $this->getFromTestContainer('pim_catalog.saver.family')->save($family);
+        $this->get('pim_catalog.saver.family')->save($family);
     }
 }

@@ -20,7 +20,7 @@ class ListGrantedChildrenCategoriesWithCountNotIncludingSubCategoriesIntegration
 
         $this->createAdminUser();
 
-        $fixturesLoader = new CategoryTreeFixturesLoaderWithPermission($this->testKernel->getContainer());
+        $fixturesLoader = $this->get('akeneo_integration_tests.loader.category_tree_loader_with_permissions');
         $fixturesLoader->adminUserAsRedactorAndITSupport();
         $fixturesLoader->givenTheCategoryTreesWithoutViewPermission([
             'tree_1' => [
