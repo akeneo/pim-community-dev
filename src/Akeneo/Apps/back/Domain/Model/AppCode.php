@@ -13,13 +13,15 @@ class AppCode
 {
     private $code;
 
-    private function __construct(string $code)
+    public function __construct(string $code)
     {
         $this->code = $code;
     }
 
     public static function create(string $code): self
     {
+        // TODO: Validation
+
         return new self($code);
     }
 

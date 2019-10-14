@@ -18,7 +18,7 @@ class App
 
     private $flowType;
 
-    private function __construct(AppCode $code, string $label, FlowType $flowType)
+    public function __construct(AppCode $code, string $label, FlowType $flowType)
     {
         $this->code = $code;
         $this->label = $label;
@@ -27,6 +27,8 @@ class App
 
     public static function create(AppCode $appCode, string $label, FlowType $flowType): self
     {
+        // TODO: Validation + Id Generation
+
         return new self(
             $appCode,
             $label,

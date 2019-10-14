@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\Apps\Infrastructure\Persistence\Dbal;
 
 use Akeneo\Apps\Domain\Model\App;
+use Akeneo\Apps\Domain\Model\AppCode;
+use Akeneo\Apps\Domain\Model\FlowType;
 use Akeneo\Apps\Domain\Persistence\Repository\AppRepository;
-use Doctrine\DBAL\Driver\Connection;
+use Doctrine\DBAL\Connection;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -35,5 +37,25 @@ SQL;
             'label' => $app->label(),
             'flow_type' => (string) $app->flowType(),
         ]);
+    }
+
+    public function fetchAll(): array
+    {
+        $selectSQL = <<<SQL
+SELECT code, label, flow_type FROM akeneo_app ORDER BY created ASC
+SQL;
+
+        $dataRows = $this->dbalConnection->executeQuery($selectSQL)->fetchAll();
+
+        $apps = [];
+        foreach ($dataRows as $dataRow) {
+            $apps[] = new App(
+                new AppCode($dataRow['code']),
+                $dataRow['label'],
+                new FlowType($dataRow['flow_type'])
+            );
+        }
+
+        return $apps;
     }
 }
