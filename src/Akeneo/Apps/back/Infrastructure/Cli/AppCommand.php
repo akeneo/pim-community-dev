@@ -9,6 +9,7 @@ use Akeneo\Apps\Application\Command\CreateAppHandler;
 use Akeneo\Apps\Application\Query\FetchAppsHandler;
 use Akeneo\Apps\Application\Query\FetchAppsQuery;
 use Akeneo\Apps\Domain\Model\AppCode;
+use Akeneo\Apps\Domain\Model\AppLabel;
 use Akeneo\Apps\Domain\Model\FlowType;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -38,25 +39,25 @@ class AppCommand extends ContainerAwareCommand
     {
         $this->createAppHandler->handle(new CreateAppCommand(
             AppCode::create('AS_400'),
-            'AS 400',
+            AppLabel::create('AS 400'),
             FlowType::create(FlowType::DATA_SOURCE)
         ));
 
         $this->createAppHandler->handle(new CreateAppCommand(
             AppCode::create('MagentoConnector'),
-            'Magento Connector',
+            AppLabel::create('Magento Connector'),
             FlowType::create(FlowType::DATA_DESTINATION)
         ));
 
         $this->createAppHandler->handle(new CreateAppCommand(
             AppCode::create('Google_Shopping'),
-            'Google Shopping',
+            AppLabel::create('Google Shopping'),
             FlowType::create(FlowType::DATA_DESTINATION)
         ));
 
         $this->createAppHandler->handle(new CreateAppCommand(
             AppCode::create('Bynder'),
-            'Bynder DAM',
+            AppLabel::create('Bynder DAM'),
             FlowType::create(FlowType::OTHERS)
         ));
 

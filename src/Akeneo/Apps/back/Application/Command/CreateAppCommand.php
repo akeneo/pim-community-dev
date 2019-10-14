@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Apps\Application\Command;
 
 use Akeneo\Apps\Domain\Model\AppCode;
+use Akeneo\Apps\Domain\Model\AppLabel;
 use Akeneo\Apps\Domain\Model\FlowType;
 
 /**
@@ -18,7 +19,7 @@ class CreateAppCommand
     private $appLabel;
     private $flowType;
 
-    public function __construct(AppCode $appCode, string $appLabel, FlowType $flowType)
+    public function __construct(AppCode $appCode, AppLabel $appLabel, FlowType $flowType)
     {
         $this->appCode = $appCode;
         $this->appLabel = $appLabel;
@@ -30,7 +31,7 @@ class CreateAppCommand
         return $this->appCode;
     }
 
-    public function appLabel(): string
+    public function appLabel(): AppLabel
     {
         return $this->appLabel;
     }

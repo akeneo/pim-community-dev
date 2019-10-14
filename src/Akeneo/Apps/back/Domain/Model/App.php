@@ -18,14 +18,14 @@ class App
 
     private $flowType;
 
-    public function __construct(AppCode $code, string $label, FlowType $flowType)
+    public function __construct(AppCode $code, AppLabel $label, FlowType $flowType)
     {
         $this->code = $code;
         $this->label = $label;
         $this->flowType = $flowType;
     }
 
-    public static function create(AppCode $appCode, string $label, FlowType $flowType): self
+    public static function create(AppCode $appCode, AppLabel $label, FlowType $flowType): self
     {
         // TODO: Validation + Id Generation
 
@@ -41,7 +41,7 @@ class App
         return $this->code;
     }
 
-    public function label(): string
+    public function label(): AppLabel
     {
         return $this->label;
     }

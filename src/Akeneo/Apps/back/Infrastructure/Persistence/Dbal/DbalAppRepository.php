@@ -6,6 +6,7 @@ namespace Akeneo\Apps\Infrastructure\Persistence\Dbal;
 
 use Akeneo\Apps\Domain\Model\App;
 use Akeneo\Apps\Domain\Model\AppCode;
+use Akeneo\Apps\Domain\Model\AppLabel;
 use Akeneo\Apps\Domain\Model\FlowType;
 use Akeneo\Apps\Domain\Persistence\Repository\AppRepository;
 use Doctrine\DBAL\Connection;
@@ -51,7 +52,7 @@ SQL;
         foreach ($dataRows as $dataRow) {
             $apps[] = new App(
                 new AppCode($dataRow['code']),
-                $dataRow['label'],
+                new AppLabel($dataRow['label']),
                 new FlowType($dataRow['flow_type'])
             );
         }
