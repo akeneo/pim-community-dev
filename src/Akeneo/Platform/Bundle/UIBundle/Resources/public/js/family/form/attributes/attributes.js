@@ -307,7 +307,7 @@ define([
                 if (attributeAsLabel === attributeToRemove) {
                     Messenger.notify(
                         'error',
-                        __('pim_enrich.entity.family.flash.update.can_remove_attribute_as_label')
+                        __('pim_enrich.entity.family.flash.update.cant_remove_attribute_as_label')
                     );
 
                     return false;
