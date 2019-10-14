@@ -88,7 +88,7 @@ JSON;
         ];
 
 
-        $this->assertSameProduct($expectedProduct, 'variant_product');
+        $this->assertSameProductWithoutPermission($expectedProduct, 'variant_product');
     }
 
     /**
@@ -178,7 +178,7 @@ JSON;
             'associations'  => [],
         ];
 
-        $this->assertSameProduct($expectedProduct, 'variant_product');
+        $this->assertSameProductWithoutPermission($expectedProduct, 'variant_product');
     }
 
     /**
@@ -483,7 +483,7 @@ JSON;
      * @param array  $expectedProduct normalized data of the product that should be created
      * @param string $identifier      identifier of the product that should be created
      */
-    protected function assertSameProduct(array $expectedProduct, $identifier)
+    protected function assertSameProductWithoutPermission(array $expectedProduct, $identifier)
     {
         $this->get('doctrine')->getManager()->clear();
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);

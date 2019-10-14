@@ -50,7 +50,7 @@ JSON;
         ];
 
 
-        $this->assertSameProductModel($expectedProductModel, 'root_product_model_creation');
+        $this->assertSameProductModelWithoutPermission($expectedProductModel, 'root_product_model_creation');
     }
 
     public function testCreateSubProductModel()
@@ -93,7 +93,7 @@ JSON;
         ];
 
 
-        $this->assertSameProductModel($expectedProductModel, 'sub_product_model_creation');
+        $this->assertSameProductModelWithoutPermission($expectedProductModel, 'sub_product_model_creation');
     }
 
     public function testCreateSubProductModelWithNotVisibleAxisAttribute()
@@ -309,7 +309,7 @@ JSON;
      * @param array  $expectedProductModel  normalized data of the product that should be created
      * @param string $code                  identifier of the product that should be created
      */
-    protected function assertSameProductModel(array $expectedProductModel, $code)
+    protected function assertSameProductModelWithoutPermission(array $expectedProductModel, $code)
     {
         $this->get('doctrine')->getManager()->clear();
         $productModel = $this->get('pim_catalog.repository.product_model')->findOneByCode($code);

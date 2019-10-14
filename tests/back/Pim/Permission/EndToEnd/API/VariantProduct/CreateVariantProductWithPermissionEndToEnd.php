@@ -92,7 +92,7 @@ JSON;
         ];
 
 
-        $this->assertSameProduct($expectedProduct, 'variant_product_creation');
+        $this->assertSameProductWithoutPermission($expectedProduct, 'variant_product_creation');
     }
 
     public function testCreateVariantProductWithNotVisibleAxisAttribute()
@@ -420,7 +420,7 @@ JSON;
      * @param array  $expectedProduct normalized data of the product that should be created
      * @param string $identifier      identifier of the product that should be created
      */
-    protected function assertSameProduct(array $expectedProduct, $identifier): void
+    protected function assertSameProductWithoutPermission(array $expectedProduct, $identifier): void
     {
         $this->get('doctrine')->getManager()->clear();
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
