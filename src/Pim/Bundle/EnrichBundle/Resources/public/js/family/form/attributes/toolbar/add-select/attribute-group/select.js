@@ -57,7 +57,7 @@ define(
                 return FetcherRegistry.getFetcher(this.mainFetcher)
                     .search(searchParameters)
                     .then((loadedGroups) => this.filterAllowedAttributeGroups(loadedGroups))
-            },
+            }
         });
     }
 );
