@@ -19,5 +19,9 @@ class AkeneoAppsExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('install.yml');
+
+        $loader->load('cli.yml');
+        $loader->load('handlers.yml');
+        $loader->load('repositories.yml');
     }
 }
