@@ -9,6 +9,8 @@ services:
       PHP_IDE_CONFIG: 'serverName=pim-ce-cli'
       XDEBUG_ENABLED: '${XDEBUG_ENABLED:-0}'
       XDEBUG_CONFIG: 'remote_host=172.17.0.1'
+      BLACKFIRE_CLIENT_ID: '${BLACKFIRE_CLIENT_ID:-client_id}'
+      BLACKFIRE_CLIENT_TOKEN: '${BLACKFIRE_CLIENT_TOKEN:-client_token}'
     volumes:
       - './:/srv/pim'
       - '${HOST_COMPOSER_HOME:-~/.composer}:/var/www/.composer'
@@ -26,6 +28,8 @@ services:
       PHP_IDE_CONFIG: 'serverName=pim-ce'
       XDEBUG_ENABLED: '${XDEBUG_ENABLED:-0}'
       XDEBUG_CONFIG: 'remote_host=172.17.0.1'
+      BLACKFIRE_CLIENT_ID: '${BLACKFIRE_CLIENT_ID:-client_id}'
+      BLACKFIRE_CLIENT_TOKEN: '${BLACKFIRE_CLIENT_TOKEN:-client_token}'
     volumes:
       - './:/srv/pim'
     working_dir: '/srv/pim'
@@ -99,6 +103,14 @@ services:
       MINIO_SECRET_KEY: 'AKENEO_OBJECT_STORAGE_SECRET_KEY'
     ports:
       - '${DOCKER_PORT_OBJECT_STORAGE:-9090}:9000'
+    networks:
+      - 'pim'
+
+  blackfire:
+    image: blackfire/blackfire
+    environment:
+      BLACKFIRE_SERVER_ID: '${BLACKFIRE_SERVER_ID:-server_id}'
+      BLACKFIRE_SERVER_TOKEN: '${BLACKFIRE_SERVER_TOKEN:-server_token}'
     networks:
       - 'pim'
 
