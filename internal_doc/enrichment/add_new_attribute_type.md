@@ -18,7 +18,7 @@ This documentation will not:
 ## Step 1: Create the attribute type (backend)
 
 You need to create a new `AttributeTypeInterface` and add its service. 
-For it, you can use the `AbstractAttributeType` and add its definition as a service.
+To do so, you can use the `AbstractAttributeType` and add its definition as a service.
 
 ```php
 <?php #src/Acme/RangeBundle/AttributeType/RangeType.php
@@ -40,7 +40,8 @@ class RangeType extends AbstractAttributeType
 
 Add this class in `services.yml` with the `pim_catalog.attribute_type` tag.
 Please note that services with such a tag will be loaded by the `RegisterAttributePass`.
-You can customize the backend type to do special processes for validation and normalization processes. We will use the default one `text`. 
+You can customize the backend type for special validation and normalization processes.
+We will use the default one `text`. 
 
 ```yaml
 # src/Acme/RangeBundle/Resources/config/services.yml
@@ -54,7 +55,7 @@ services:
 
 ## Step 2: Create the values
 
-**Warning** For now, you have to create 2 value factories (one for reading purpose, another one for writing purpose).
+**Warning** For now, you have to create 2 value factories (one for reading purposes, another one for writing purposes).
 They are very similar, and will probably be refactored in the next months.
 
 For the sake of simplicity, we will re-use the same format both for back-end and front-end.
@@ -227,10 +228,10 @@ class RangeComparator implements ComparatorInterface
 
 ## Step 4: Completeness
 
-To be able to compute the completeness, it has to be defined when a value is considered to be **complete** or **incomplete**.
+To be able to compute the completeness, a value has to be defined as **complete** or **incomplete**.
 Since Akeneo PIM 4.0, we use the notion of masks to generate keys for each filled value.
 The generated mask for a filled value should look like `attributeCode-channelCode-localeCode`.
-For more information about completeness masks, please read documentation of `RequiredAttributesMask` class.
+For more information about completeness masks, please read the documentation of `RequiredAttributesMask` class.
 You need to define your own mask generator for your new attribute type.
 In our case, we will define a value as **complete** only if the `min` and `max` are filled.
 You can define your own logic in this class.
@@ -287,7 +288,7 @@ You can customize the style of your page using our [styleguide](https://docs.ake
 <input class="AknTextField AknTextField--noLeftRadius max" value="<%- value.data.max %>">
 ```
 
-Register it in the requirejs file:
+Register it in the `requirejs` file:
 ```yaml
 # src/Acme/RangeBundle/Resources/config/requirejs.yml
 config:
@@ -297,7 +298,7 @@ config:
 
 Each attribute type (text, boolean, single option, etc) have a dedicated javascript module loaded in the product edit form.
 You have to create a new `range` javascript module to edit these values. 
-The `updateModel` function will be called each time the user will fill in the fields.  
+The `updateModel` function will be called each time the user fills in the fields.  
 
 ```javascript
 // src/Acme/RangeBundle/Resources/public/js/product/field/range-field.js
@@ -333,9 +334,9 @@ config:
 ```
 
 Next, the backend needs to indicate to the front what module to use regarding the attribute type.
-For that, each attribute type have a corresponding `FieldProviderInterface`.
-Define this new provider, it supports only `range` attribute types.
-This class indicate what javascript extension to use (here, `acme-range-field`).
+To that end, each attribute type has a corresponding `FieldProviderInterface`.
+Define this new provider, it only supports `range` attribute types.
+This class indicates what javascript extension to use (here, `acme-range-field`).
 
 ```php
 <?php #src/Acme/RangeBundle/Enrich/Provider/Field/RangeFieldProvider.php
@@ -368,7 +369,7 @@ class RangeFieldProvider implements FieldProviderInterface
             - { name: pim_enrich.provider.field }
 ```
 
-Then, register in the form extensions, that the `acme-range-field` have to load the `acme/range-field` extension defined above. 
+Then, register in the form extensions, that the `acme-range-field` has to load the `acme/range-field` extension defined above. 
 ```
 # src/Acme/RangeBundle/Resources/config/form_extensions.yml
 attribute_fields:
