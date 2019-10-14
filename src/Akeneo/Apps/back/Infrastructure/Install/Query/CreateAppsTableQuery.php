@@ -6,7 +6,7 @@ namespace Akeneo\Apps\Infrastructure\Install\Query;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
- * @copyright {2019} Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 final class CreateAppsTableQuery
@@ -20,5 +20,4 @@ CREATE TABLE IF NOT EXISTS akeneo_app(
     INDEX IDX_APP_code (code)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB ROW_FORMAT = DYNAMIC
 SQL;
-
 }
