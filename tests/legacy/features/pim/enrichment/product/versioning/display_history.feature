@@ -26,7 +26,7 @@ Feature: Display the product history
     And I am logged in as "Julia"
     And the following products:
       | sku   | price-EUR | price-USD |
-      | boots |           |           |
+      | boots | 5.00      | 7.00      |
     And I am on the "boots" product page
     When I visit the "Marketing" group
     And I change the "Price" to "10 EUR"

@@ -231,6 +231,7 @@ services:
             - '@pim_catalog.validator.product'
             - '@pim_catalog.repository.attribute'
             - '@pim_enrich.normalizer.product_violation'
+            - '@pim_catalog.comparator.filter.product'
 
     pim_enrich.controller.rest.mass_edit:
         public: true
@@ -306,8 +307,6 @@ services:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.category'
             - '@pim_catalog.saver.product'
-            - '@pim_catalog.association.missing_association_adder'
-            - '@pim_catalog.values_filler.product'
             - '%pim_catalog.entity.category.class%'
             - '@oro_security.security_facade'
             - 'pim_enrich_product_categories_view'

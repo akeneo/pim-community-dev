@@ -2,17 +2,19 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit;
 
+use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\CheckAttributeEditable;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\CheckAttributeEditable;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -27,15 +29,36 @@ class EditAttributesProcessorSpec extends ObjectBehavior
         ObjectUpdaterInterface $productUpdater,
         ObjectUpdaterInterface $productModelUpdater,
         IdentifiableObjectRepositoryInterface $attributeRepository,
-        CheckAttributeEditable $checkAttributeEditable
+        CheckAttributeEditable $checkAttributeEditable,
+        FilterInterface $productEmptyValuesFilter,
+        FilterInterface $productModelEmptyValuesFilter
     ) {
+        // TODO: add a test where values are actually filtered
+        $productEmptyValuesFilter->filter(
+            Argument::type(ProductInterface::class),
+            Argument::type('array')
+        )->will(function (array $args): array {
+            return $args[1];
+        }
+        );
+
+        $productModelEmptyValuesFilter->filter(
+            Argument::type(EntityWithValuesInterface::class),
+            Argument::type('array')
+        )->will(function (array $args): array {
+            return $args[1];
+        }
+        );
+
         $this->beConstructedWith(
             $productValidator,
             $productModelValidator,
             $productUpdater,
             $productModelUpdater,
             $attributeRepository,
-            $checkAttributeEditable
+            $checkAttributeEditable,
+            $productEmptyValuesFilter,
+            $productModelEmptyValuesFilter
         );
     }
 
@@ -45,10 +68,10 @@ class EditAttributesProcessorSpec extends ObjectBehavior
     }
 
     function it_sets_values_to_products_attributes(
-        $productValidator,
-        $productUpdater,
-        $attributeRepository,
-        $checkAttributeEditable,
+        ValidatorInterface $productValidator,
+        ObjectUpdaterInterface $productUpdater,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        CheckAttributeEditable $checkAttributeEditable,
         ProductInterface $product,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
@@ -74,6 +97,7 @@ class EditAttributesProcessorSpec extends ObjectBehavior
                 'attribute_locale'  => 'en_US',
                 'attribute_channel' => null
             ]]);
+
 
         $violations = new ConstraintViolationList([]);
         $productValidator->validate($product)->willReturn($violations);

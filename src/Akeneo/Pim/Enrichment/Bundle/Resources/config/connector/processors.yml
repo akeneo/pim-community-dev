@@ -45,6 +45,8 @@ services:
             - '@pim_catalog.updater.product_model'
             - '@pim_catalog.repository.cached_attribute'
             - '@pim_catalog.entity_with_family_variant.check_attribute_editable'
+            - '@pim_catalog.comparator.filter.product'
+            - '@pim_catalog.comparator.filter.product_model'
 
     pim_enrich.connector.processor.mass_edit.product.add_attribute_value:
         class: '%pim_enrich.connector.processor.mass_edit.product.add_attribute_value.class%'

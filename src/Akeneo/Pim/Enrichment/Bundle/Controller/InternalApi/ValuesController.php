@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -49,16 +50,9 @@ class ValuesController
     /** @var NormalizerInterface */
     protected $constraintViolationNormalizer;
 
-    /**
-     * @param ProductBuilderInterface      $productBuilder
-     * @param UserContext                  $userContext
-     * @param ConverterInterface           $productValueConverter
-     * @param AttributeConverterInterface  $localizedConverter
-     * @param ObjectUpdaterInterface       $productUpdater
-     * @param ValidatorInterface           $productValidator
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param NormalizerInterface          $constraintViolationNormalizer
-     */
+    /** @var FilterInterface */
+    protected $emptyValuesFilter;
+
     public function __construct(
         ProductBuilderInterface $productBuilder,
         UserContext $userContext,
@@ -67,16 +61,18 @@ class ValuesController
         ObjectUpdaterInterface $productUpdater,
         ValidatorInterface $productValidator,
         AttributeRepositoryInterface $attributeRepository,
-        NormalizerInterface $constraintViolationNormalizer
+        NormalizerInterface $constraintViolationNormalizer,
+        FilterInterface $emptyValuesFilter
     ) {
-        $this->productBuilder                = $productBuilder;
-        $this->userContext                   = $userContext;
-        $this->productValueConverter         = $productValueConverter;
-        $this->localizedConverter            = $localizedConverter;
-        $this->productUpdater                = $productUpdater;
-        $this->productValidator              = $productValidator;
-        $this->attributeRepository           = $attributeRepository;
+        $this->productBuilder = $productBuilder;
+        $this->userContext = $userContext;
+        $this->productValueConverter = $productValueConverter;
+        $this->localizedConverter = $localizedConverter;
+        $this->productUpdater = $productUpdater;
+        $this->productValidator = $productValidator;
+        $this->attributeRepository = $attributeRepository;
         $this->constraintViolationNormalizer = $constraintViolationNormalizer;
+        $this->emptyValuesFilter = $emptyValuesFilter;
     }
 
     /**
@@ -97,9 +93,12 @@ class ValuesController
         $locale = $this->userContext->getUiLocale()->getCode();
         $data   = $this->productValueConverter->convert($data);
         $data   = $this->localizedConverter->convertToDefaultFormats($data, ['locale' => $locale]);
+        $data = ['values' => $data];
 
         $product = $this->productBuilder->createProduct('FAKE_SKU_FOR_MASS_EDIT_VALIDATION_' . microtime());
-        $this->productUpdater->update($product, ['values' => $data]);
+        $data = $this->emptyValuesFilter->filter($product, $data);
+
+        $this->productUpdater->update($product, $data);
         $violations = $this->productValidator->validate($product);
         $violations->addAll($this->localizedConverter->getViolations());
 

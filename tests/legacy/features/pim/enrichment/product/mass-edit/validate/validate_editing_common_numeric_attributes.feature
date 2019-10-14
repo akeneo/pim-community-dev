@@ -56,7 +56,7 @@ Feature: Validate editing common numeric attributes of multiple products
     And I display the Length attribute
     And I confirm mass edit
     And I wait for the "edit_common_attributes" job to finish
-    Then the metric "Length" of products boots, sandals and sneakers should be ""
+    Then the value "Length" of products boots, sandals and sneakers should be empty
     When I am on the products grid
     And I select rows boots, sandals and sneakers
     And I press the "Bulk actions" button
@@ -65,7 +65,7 @@ Feature: Validate editing common numeric attributes of multiple products
     And I change the Length to "foo"
     And I move on to the next step
     Then I should see validation tooltip "This value should be a valid number."
-    Then the metric "Length" of products boots, sandals and sneakers should be ""
+    Then the value "Length" of products boots, sandals and sneakers should be empty
 
   Scenario: Successfully mass edit a number attribute
     Given I select rows boots and sneakers
@@ -125,10 +125,7 @@ Feature: Validate editing common numeric attributes of multiple products
     And I display the Price attribute
     And I confirm mass edit
     And I wait for the "edit_common_attributes" job to finish
-    Then the prices "Price" of products boots, sandals and sneakers should be:
-      | amount | currency |
-      |        | USD      |
-      |        | EUR      |
+    Then the value "Price" of products boots, sandals and sneakers should be empty
     When I am on the products grid
     And I select rows boots, sandals and sneakers
     And I press the "Bulk actions" button
@@ -137,7 +134,4 @@ Feature: Validate editing common numeric attributes of multiple products
     And I change the "Price" to "500 USD"
     And I move on to the next step
     Then I should see validation tooltip "This value should be 200 or less."
-    Then the prices "Price" of products boots, sandals and sneakers should be:
-      | amount | currency |
-      |        | USD      |
-      |        | EUR      |
+    Then the value "Price" of products boots, sandals and sneakers should be empty

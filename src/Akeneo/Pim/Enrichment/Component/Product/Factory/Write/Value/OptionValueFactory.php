@@ -32,7 +32,7 @@ class OptionValueFactory extends AbstractValueFactory
             throw new \InvalidArgumentException('Option value cannot be null');
         }
 
-        if (!is_string($data) || trim($data) === '') {
+        if (!(is_string($data) || is_numeric($data)) || trim((string) $data) === '') {
             throw InvalidPropertyTypeException::stringExpected(
                 $attribute->getCode(),
                 static::class,
@@ -40,6 +40,6 @@ class OptionValueFactory extends AbstractValueFactory
             );
         }
 
-        return $data;
+        return (string) $data;
     }
 }

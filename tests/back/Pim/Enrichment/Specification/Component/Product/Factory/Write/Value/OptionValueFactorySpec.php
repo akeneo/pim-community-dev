@@ -21,6 +21,16 @@ class OptionValueFactorySpec extends ObjectBehavior
         $this->shouldHaveType(OptionValueFactory::class);
     }
 
+    function it_does_not_supports_array(AttributeInterface $attribute)
+    {
+        $this->shouldThrow(InvalidPropertyTypeException::class)->during('create', [$attribute, null, null, []]);
+    }
+
+    function it_supports_numeric(AttributeInterface $attribute)
+    {
+        $this->shouldNotThrow(InvalidPropertyTypeException::class)->during('create', [$attribute, null, null, 5]);
+    }
+
     function it_supports_simpleselect_attribute_type()
     {
         $this->supports('foo')->shouldReturn(false);

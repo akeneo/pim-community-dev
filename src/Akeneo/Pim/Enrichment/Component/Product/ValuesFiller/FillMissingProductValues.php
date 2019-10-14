@@ -11,6 +11,8 @@ use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
@@ -34,20 +36,26 @@ class FillMissingProductValues
     /** @var LocaleRepositoryInterface */
     private $localeRepository;
 
+    /** @var GetAttributes */
+    private $getAttributes;
+
     /** @var ChannelInterface[] */
     private $channels;
 
     /** @var LocaleInterface[] */
     private $locales;
 
+
     public function __construct(
         IdentifiableObjectRepositoryInterface $familyRepository,
         ChannelRepositoryInterface $channelRepository,
-        LocaleRepositoryInterface $localeRepository)
-    {
+        LocaleRepositoryInterface $localeRepository,
+        GetAttributes $getAttributes
+    ) {
         $this->familyRepository = $familyRepository;
         $this->channelRepository = $channelRepository;
         $this->localeRepository = $localeRepository;
+        $this->getAttributes = $getAttributes;
     }
 
     /**
@@ -144,9 +152,12 @@ class FillMissingProductValues
      */
     private function createProductValuesInPivotFormat(array $productStandardFormat): array
     {
-        $attributesInFamily = $this->getAttributesInFamilyIndexedByCode($productStandardFormat['family']);
-        $nonPriceAttributes = array_filter($attributesInFamily, function (AttributeInterface $attribute): bool {
-            return AttributeTypes::PRICE_COLLECTION !== $attribute->getType();
+        $attributeCodes = array_map(function ($key) {
+            return (string) $key;
+        }, array_keys($productStandardFormat['values']));
+        $attributes = $this->getAttributes->forCodes($attributeCodes);
+        $nonPriceAttributes = array_filter($attributes, function (Attribute $attribute): bool {
+            return AttributeTypes::PRICE_COLLECTION !== $attribute->type();
         });
 
         $valuesInPivotFormat = [];
@@ -244,9 +255,12 @@ class FillMissingProductValues
      */
     private function createPriceProductValuesInPivotFormat(array $productStandardFormat): array
     {
-        $attributesInFamily = $this->getAttributesInFamilyIndexedByCode($productStandardFormat['family']);
-        $priceAttributes = array_filter($attributesInFamily, function (AttributeInterface $attribute): bool {
-            return AttributeTypes::PRICE_COLLECTION === $attribute->getType();
+        $attributeCodes = array_map(function ($key) {
+            return (string) $key;
+        }, array_keys($productStandardFormat['values']));
+        $attributes = $this->getAttributes->forCodes($attributeCodes);
+        $priceAttributes = array_filter($attributes, function (Attribute $attribute): bool {
+            return AttributeTypes::PRICE_COLLECTION === $attribute->type();
         });
 
         $valuesInPivotFormat = [];

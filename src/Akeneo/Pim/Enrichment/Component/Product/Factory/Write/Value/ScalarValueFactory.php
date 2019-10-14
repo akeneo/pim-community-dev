@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 
 /**
  * Factory that creates simple product values (text, textarea and number).
@@ -42,7 +43,7 @@ class ScalarValueFactory extends AbstractValueFactory
             if (is_bool($data)) {
                 $data = boolval($data);
             } else {
-                throw new \InvalidArgumentException('Scalar value for boolean attribute type should a boolean');
+                throw new InvalidArgumentException('Scalar value for boolean attribute type should a boolean');
             }
         }
 
