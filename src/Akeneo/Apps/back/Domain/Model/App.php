@@ -25,12 +25,27 @@ class App
         $this->flowType = $flowType;
     }
 
-    public function create(AppCode $appCode, string $label, FlowType $flowType): self
+    public static function create(AppCode $appCode, string $label, FlowType $flowType): self
     {
         return new self(
             $appCode,
             $label,
             $flowType
         );
+    }
+
+    public function code(): AppCode
+    {
+        return $this->code;
+    }
+
+    public function label(): string
+    {
+        return $this->label;
+    }
+
+    public function flowType(): FlowType
+    {
+        return $this->flowType;
     }
 }
