@@ -35,10 +35,7 @@ jobs:
               sudo chown -R 1000:1000 ~/.cache/yarn
       - run:
             name: Install back dependencies
-            command: |
-                C='mysql elasticsearch' make up
-                .circleci/wait_docker_up.sh
-                make vendor
+            command: make vendor
       - run:
             name: Install front dependencies
             command: make node_modules
