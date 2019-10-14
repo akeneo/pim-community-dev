@@ -12,8 +12,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueColle
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\PropertiesNormalizer as StandardPropertiesNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\SerializerAwareInterface;
-use Symfony\Component\Serializer\SerializerAwareTrait;
 
 /**
  * Transform the properties of products and variant product objects (fields and product values)
@@ -23,10 +21,8 @@ use Symfony\Component\Serializer\SerializerAwareTrait;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwareInterface
+class ProductPropertiesNormalizer implements NormalizerInterface
 {
-    use SerializerAwareTrait;
-
     private const FIELD_COMPLETENESS = 'completeness';
     private const FIELD_FAMILY_VARIANT = 'family_variant';
     private const FIELD_IN_GROUP = 'in_group';
@@ -47,15 +43,20 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
     /** @var GetProductCompletenesses */
     private $getProductCompletenesses;
 
+    /** @var NormalizerInterface */
+    private $normalizer;
+
     public function __construct(
         ChannelRepositoryInterface $channelRepository,
         LocaleRepositoryInterface $localeRepository,
         GetProductCompletenesses $getProductCompletenesses,
+        NormalizerInterface $normalizer,
         iterable $additionalDataNormalizers = []
     ) {
         $this->channelRepository = $channelRepository;
         $this->localeRepository = $localeRepository;
         $this->getProductCompletenesses = $getProductCompletenesses;
+        $this->normalizer = $normalizer;
 
         $this->ensureAdditionalNormalizersAreValid($additionalDataNormalizers);
         $this->additionalDataNormalizers = $additionalDataNormalizers;
@@ -68,7 +69,7 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
      */
     public function normalize($product, $format = null, array $context = [])
     {
-        if (!$this->serializer instanceof NormalizerInterface) {
+        if (!$this->normalizer instanceof NormalizerInterface) {
             throw new \LogicException('Serializer must be a normalizer');
         }
 
@@ -76,15 +77,15 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
 
         $data[self::FIELD_ID] = 'product_' .(string) $product->getId();
         $data[StandardPropertiesNormalizer::FIELD_IDENTIFIER] = $product->getIdentifier();
-        $data[StandardPropertiesNormalizer::FIELD_CREATED] = $this->serializer->normalize(
+        $data[StandardPropertiesNormalizer::FIELD_CREATED] = $this->normalizer->normalize(
             $product->getCreated(),
             $format
         );
-        $data[StandardPropertiesNormalizer::FIELD_UPDATED] = $this->serializer->normalize(
+        $data[StandardPropertiesNormalizer::FIELD_UPDATED] = $this->normalizer->normalize(
             $this->getUpdatedAt($product),
             $format
         );
-        $data[StandardPropertiesNormalizer::FIELD_FAMILY] = $this->serializer->normalize(
+        $data[StandardPropertiesNormalizer::FIELD_FAMILY] = $this->normalizer->normalize(
             $product->getFamily(),
             $format
         );
@@ -104,7 +105,7 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
         }
 
         $completenesses = $this->getProductCompletenesses->fromProductId($product->getId());
-        $data[self::FIELD_COMPLETENESS] = $this->serializer->normalize(
+        $data[self::FIELD_COMPLETENESS] = $this->normalizer->normalize(
             $completenesses,
             ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
             $context
@@ -124,7 +125,7 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
         $data[self::FIELD_PARENT] = $parentCode;
 
         $data[StandardPropertiesNormalizer::FIELD_VALUES] = !$product->getValues()->isEmpty()
-            ? $this->serializer->normalize(
+            ? $this->normalizer->normalize(
                 $product->getValues(),
                 ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
                 $context
