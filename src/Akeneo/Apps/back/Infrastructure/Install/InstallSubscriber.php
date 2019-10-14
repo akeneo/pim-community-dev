@@ -2,7 +2,9 @@
 
 namespace Akeneo\Apps\Infrastructure\Install;
 
+use Akeneo\Apps\Infrastructure\Install\Query\CreateAppsTableQuery;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
+use Doctrine\DBAL\Driver\Connection;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -13,15 +15,18 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class InstallSubscriber implements EventSubscriberInterface
 {
     private $assetsInstaller;
+    private $dbalConnection;
 
-    public function __construct(AssetsInstaller $assetsInstaller)
+    public function __construct(AssetsInstaller $assetsInstaller, Connection $dbalConnection)
     {
         $this->assetsInstaller = $assetsInstaller;
+        $this->dbalConnection = $dbalConnection;
     }
 
     public static function getSubscribedEvents()
     {
         return [
+            InstallerEvents::POST_DB_CREATE => ['createAppsTable'],
             InstallerEvents::POST_SYMFONY_ASSETS_DUMP => ['installAssets'],
             InstallerEvents::POST_ASSETS_DUMP => ['installAssets']
         ];
@@ -31,5 +36,10 @@ class InstallSubscriber implements EventSubscriberInterface
     {
         $shouldSymlink = $event->getArgument('symlink');
         $this->assetsInstaller->installAssets($shouldSymlink);
+    }
+
+    public function createAppsTable(GenericEvent $event): void
+    {
+        $this->dbalConnection->exec(CreateAppsTableQuery::QUERY);
     }
 }

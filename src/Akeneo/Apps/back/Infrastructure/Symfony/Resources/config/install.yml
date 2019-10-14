@@ -9,5 +9,6 @@ services:
         class: Akeneo\Apps\Infrastructure\Install\InstallSubscriber
         arguments:
             - '@akeneo_apps.install.assets_installer'
+            - '@database_connection'
         tags:
             - { name: kernel.event_subscriber }
