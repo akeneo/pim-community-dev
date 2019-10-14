@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-8369: Remove flex from families dropdown css
+
 # 3.0.45 (2019-10-04)
 
 ## Bug fixes
