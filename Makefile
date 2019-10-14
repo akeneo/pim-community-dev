@@ -81,7 +81,7 @@ check-requirements:
 
 .PHONY: database
 database:
-	$(PHP_RUN) bin/console pim:installer:db
+	$(PHP_RUN) bin/console pim:installer:db ${O}
 
 ##
 ## PIM install
@@ -116,7 +116,7 @@ pim-dev:
 	$(MAKE) assets
 	$(MAKE) css
 	$(MAKE) javascript-dev
-	APP_ENV=dev $(MAKE) database
+	APP_ENV=dev O="--catalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev" $(MAKE) database
 
 .PHONY: pim-prod
 pim-prod:
