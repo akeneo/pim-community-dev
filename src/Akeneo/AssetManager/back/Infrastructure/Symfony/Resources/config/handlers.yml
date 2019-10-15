@@ -62,12 +62,6 @@ services:
             - '@akeneoassetmanager.infrastructure.persistence.query.get_attribute_identifier'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
 
-    akeneo_assetmanager.application.attribute.append_attribute_option_handler:
-        class: Akeneo\AssetManager\Application\Attribute\AppendAttributeOption\AppendAttributeOptionHandler
-        arguments:
-            - '@akeneoassetmanager.infrastructure.persistence.query.get_attribute_identifier'
-            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
-
     # Assets
     akeneo_assetmanager.application.asset.create_asset_handler:
         class: Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetHandler
