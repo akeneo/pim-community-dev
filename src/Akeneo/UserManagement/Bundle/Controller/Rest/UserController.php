@@ -85,7 +85,7 @@ class UserController
     private $securityFacade;
 
     /**
-     * @todo merge 3.2:
+     * @todo merge master:
      *       - remove the $objectManager argument
      *       - the last three arguments ($translator $remover $securityFacade) must not be nullable anymore
      */
