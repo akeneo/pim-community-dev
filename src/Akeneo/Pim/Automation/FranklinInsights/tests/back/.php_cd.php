@@ -35,6 +35,7 @@ $rules = [
 
     $builder->only(
         [
+            'Akeneo\Pim\Automation\FranklinInsights\Domain',
             // External dependencies
             'Guzzle',
             'Symfony\Component\HttpFoundation\Response',

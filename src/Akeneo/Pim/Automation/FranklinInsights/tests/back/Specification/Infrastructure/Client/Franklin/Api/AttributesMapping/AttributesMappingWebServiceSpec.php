@@ -74,6 +74,36 @@ class AttributesMappingWebServiceSpec extends ObjectBehavior
         $httpClient->request('PUT', '/my_route', ['form_params' => $mapping]);
     }
 
+    public function it_logs_attributes_in_error(
+        ResponseInterface $apiResponse,
+        StreamInterface $stream,
+        $uriGenerator,
+        $httpClient,
+        $logger
+    )
+    {
+        $familyCode = new FamilyCode('router');
+        $route = sprintf('/api/mapping/%s/attributes', $familyCode);
+        $uriGenerator->generate($route)->willReturn('/my_route');
+
+        $apiResponse->getBody()->willReturn($stream);
+        $stream->getContents()->willReturn($this->getApiJsonReturn());
+
+        $httpClient->request('GET', '/my_route')->willReturn($apiResponse);
+
+        $attributesMapping = $this->fetchByFamily((string) $familyCode);
+
+        $logger->error(
+            'Unable to hydrate following AttributeMapping object',
+            [
+                'attribute' => ["from" => ["id" => "malformedAttribute", "label" => ["en_us" => "malformedAttribute"], "type" => "text"], "summary" => [], "status" => "pending"],
+                'error_message' => 'Missing key "to" in attribute'
+            ]
+        )->shouldBeCalled();
+
+        $attributesMapping->getIterator()->count()->shouldReturn(4);
+    }
+
     private function getApiJsonReturn(): string
     {
         $filepath = realpath(FakeClient::FAKE_PATH) . '/mapping/router/attributes.json';

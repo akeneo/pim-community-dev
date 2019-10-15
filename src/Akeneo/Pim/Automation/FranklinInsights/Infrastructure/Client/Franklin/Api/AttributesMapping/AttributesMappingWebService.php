@@ -19,6 +19,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Except
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\FranklinServerException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\InvalidTokenException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\UnableToConnectToFranklinException;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\AttributesMapping;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ConnectException;
@@ -39,7 +40,22 @@ class AttributesMappingWebService extends AbstractApi implements AuthenticatedAp
                 throw new FranklinServerException('Response data incorrect! No "mapping" key found');
             }
 
-            return new AttributesMapping($content['mapping']);
+            $attributesMapping = new AttributesMapping();
+
+            foreach ($content['mapping'] as $attribute) {
+                try {
+                    $attributesMapping->add(new AttributeMapping($attribute));
+                } catch (\Exception $e) {
+                    $this->logger->error('Unable to hydrate following AttributeMapping object', [
+                            'attribute' => $attribute,
+                            'error_message' => $e->getMessage()
+                        ]
+                    );
+                    continue;
+                }
+            }
+
+            return $attributesMapping;
         } catch (ConnectException $e) {
             $this->logger->error('Cannot connect to Ask Franklin to retrieve attributes mapping', [
                 'exception' => $e->getMessage(),
