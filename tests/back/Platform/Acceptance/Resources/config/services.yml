@@ -1,5 +1,6 @@
 services:
     test.authentication.sso_context:
+        public: true
         class: 'AkeneoTestEnterprise\Platform\Acceptance\Authentication\Context\SsoContext'
         arguments:
             - '@validator'

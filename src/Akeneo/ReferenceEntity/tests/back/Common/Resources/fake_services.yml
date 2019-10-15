@@ -207,11 +207,6 @@ services:
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
 
-    akeneo_referenceentity.infrastructure.persistence.query.find_identifiers_by_reference_entity_and_codes:
-        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindIdentifiersByReferenceEntityAndCodes
-        arguments:
-            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
-
     akeneo_referenceentity.infrastructure.persistence.query.find_codes_by_identifiers:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindCodesByIdentifiers
         arguments:
