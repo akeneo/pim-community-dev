@@ -136,8 +136,6 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         FamilyInterface $family,
         AttributeInterface $sku
     ) {
-        $normalizer->implement(NormalizerInterface::class);
-
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
         $product->isVariant()->willReturn(false);
@@ -768,7 +766,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         ProductInterface $product,
         WriteValueCollection $valueCollection
     ) {
-        $this->beConstructedWith($channelRepository, $localeRepository, $getProductCompletenesses, [$normalizer1, $normalizer2]);
+        $this->beConstructedWith($channelRepository, $localeRepository, $getProductCompletenesses, $normalizer, [$normalizer1, $normalizer2]);
 
         $product->getId()->willReturn(67);
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
@@ -842,6 +840,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
     }
 
     public function it_fails_if_an_extra_normalizer_is_not_a_normalizer(
+        $normalizer,
         $channelRepository,
         $localeRepository,
         $getProductCompletenesses
@@ -850,6 +849,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
             $channelRepository,
             $localeRepository,
             $getProductCompletenesses,
+            $normalizer,
             [new \stdClass()]
         );
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
