@@ -428,6 +428,10 @@ class AttributeController
             ]);
         }
 
+        if (isset($data['max_characters'])) {
+            $data['max_characters'] = $this->numberLocalizer->delocalize($data['max_characters']);
+        }
+
         $this->updater->update($attribute, $data);
     }
 
