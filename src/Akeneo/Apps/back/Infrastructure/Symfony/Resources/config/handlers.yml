@@ -2,9 +2,9 @@ services:
     akeneo_app.application.handler.create_app:
         class: 'Akeneo\Apps\Application\Command\CreateAppHandler'
         arguments:
-            - '@akeneo_app.repository.app'
+            - '@akeneo_app.persistence.repository.app'
 
     akeneo_app.application.handler.fetch_apps:
         class: 'Akeneo\Apps\Application\Query\FetchAppsHandler'
         arguments:
-            - '@akeneo_app.repository.app'
+            - '@akeneo_app.persistence.repository.app'
