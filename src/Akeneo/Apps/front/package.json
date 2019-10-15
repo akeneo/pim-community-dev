@@ -4,19 +4,23 @@
     "license": "OSL-3.0",
     "main": "src/index.ts",
     "scripts": {
-        "tslint": "tslint --config tslint.json src/**/*.{ts,tsx}",
+        "eslint": "eslint --config .eslintrc.json --quiet src/**/*.{ts,tsx}",
         "prettier": "prettier --config .prettierrc.json src/**/*.{ts,tsx}",
         "jest": "jest --config jest.config.js"
     },
     "devDependencies": {
         "@types/jest": "^24.0.0",
         "@types/react-test-renderer": "^16.8.0",
+        "@typescript-eslint/eslint-plugin": "^2.3.3",
+        "@typescript-eslint/parser": "^2.3.3",
         "enzyme": "^3.9.0",
+        "eslint": "^6.5.1",
+        "eslint-plugin-react": "^7.16.0",
+        "eslint-plugin-react-hooks": "^2.1.2",
         "jest": "^24.0.0",
         "prettier": "^1.16.0",
         "react-test-renderer": "^16.8.0",
-        "ts-jest": "^24.0.0",
-        "tslint": "^5.12.0"
+        "ts-jest": "^24.0.0"
     },
     "dependencies": {
         "@types/react": "^16.8.0",

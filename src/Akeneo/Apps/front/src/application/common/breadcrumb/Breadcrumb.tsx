@@ -12,6 +12,7 @@ export const Breadcrumb = ({children}: Props) => {
         <div className='AknBreadcrumb'>
             {React.Children.map(children, (item, index) => {
                 const isLast = item.props.isLast === undefined ? index === count - 1 : item.props.isLast;
+
                 return React.cloneElement(item, {isLast});
             })}
         </div>
