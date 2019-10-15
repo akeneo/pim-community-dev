@@ -11,6 +11,7 @@ use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -80,10 +81,13 @@ class UserController
     /** @var TranslatorInterface */
     private $translator;
 
+    /** @var SecurityFacade|null */
+    private $securityFacade;
+
     /**
      * @todo merge 3.2:
      *       - remove the $objectManager argument
-     *       - the last two arguments ($translator $remover) must not be nullable anymore
+     *       - the last three arguments ($translator $remover $securityFacade) must not be nullable anymore
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
@@ -99,7 +103,8 @@ class UserController
         Session $session,
         ObjectManager $objectManager,
         ?RemoverInterface $remover = null,
-        ?TranslatorInterface $translator = null
+        ?TranslatorInterface $translator = null,
+        ?SecurityFacade $securityFacade = null
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->normalizer = $normalizer;
@@ -115,6 +120,7 @@ class UserController
         $this->objectManager = $objectManager;
         $this->remover = $remover;
         $this->translator = $translator;
+        $this->securityFacade = $securityFacade;
     }
 
     /**
@@ -163,6 +169,16 @@ class UserController
 
         //code is useful to reach the route, cannot forget it in the query
         unset($data['code']);
+
+        // @todo remove this check when $securityFacade is not nullable anymore
+        if (null !== $this->securityFacade) {
+            if (!$this->securityFacade->isGranted('pim_user_role_edit')) {
+                unset($data['roles']);
+            }
+            if (!$this->securityFacade->isGranted('pim_user_group_edit')) {
+                unset($data['groups']);
+            }
+        }
 
         return $this->updateUser($user, $data);
     }

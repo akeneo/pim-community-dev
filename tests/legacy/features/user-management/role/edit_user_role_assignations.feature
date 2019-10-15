@@ -48,3 +48,19 @@ Feature: Edit a user groups and roles
     When I logout
     And I am logged in as "Peter"
     Then I am on the Role index page
+
+  @jira https://akeneo.atlassian.net/browse/PIM-7691
+  Scenario: Fail to change a user role without correct permissions
+    Given I edit the "User" Role
+    When I visit the "Permissions" tab
+    And I grant rights to group System
+    And I revoke rights to resource Edit roles
+    And I save the Role
+    When I logout
+    And I am logged in as "Mary"
+    And I edit the "mary" user
+    And I visit the "Groups and roles" tab
+    And I fill in the following information:
+      | Roles | Administrator, User |
+    And I save the user
+    And the user "mary" should have 1 role
