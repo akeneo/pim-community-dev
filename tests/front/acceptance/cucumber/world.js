@@ -30,7 +30,7 @@ module.exports = function(cucumber) {
         this.consoleLogs.push(message.text());
       }
     });
-
+    this.page.setMaxListeners(20);
     this.page.on('request', request => {
       if (request.url() === `${this.baseUrl}/`) {
         request.respond({

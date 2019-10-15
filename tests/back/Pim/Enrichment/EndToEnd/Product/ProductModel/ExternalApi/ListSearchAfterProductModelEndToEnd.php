@@ -103,7 +103,7 @@ class ListSearchAfterProductModelEndToEnd extends AbstractProductModelTestCase
      */
     private function getEncryptedId($productModelIdentifier)
     {
-        $encrypter = $this->getFromTestContainer('pim_api.security.primary_key_encrypter');
+        $encrypter = $this->get('pim_api.security.primary_key_encrypter');
 
         $productModelId = $this->get('database_connection')->fetchColumn(
             'SELECT id from pim_catalog_product_model where code = :code',

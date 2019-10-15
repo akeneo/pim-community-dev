@@ -14,11 +14,10 @@ class FixturePathProviderSpec extends ObjectBehavior
             'PimDashboardBundle' => PimDashboardBundle::class,
             'PimInstallerBundle' => PimInstallerBundle::class
         ];
-        $installerData = 'PimInstallerBundle:minimal';
-        $this->beConstructedWith($bundles, $installerData);
+        $this->beConstructedWith($bundles);
         $reflection = new \ReflectionClass(PimInstallerBundle::class);
-        $expected = $installerDataDir = dirname($reflection->getFilename()) . '/Resources/fixtures/minimal/';
-        $this->getFixturesPath()->shouldReturn($expected);
+        $expected = dirname($reflection->getFilename()) . '/Resources/fixtures/minimal/';
+        $this->getFixturesPath('PimInstallerBundle:minimal')->shouldReturn($expected);
     }
 
     function it_provides_a_full_path_when_no_short_definition_is_provided()
@@ -29,8 +28,8 @@ class FixturePathProviderSpec extends ObjectBehavior
         ];
         $reflection = new \ReflectionClass(PimInstallerBundle::class);
         $installerData = dirname($reflection->getFileName());
-        $this->beConstructedWith($bundles, $installerData);
-        $this->getFixturesPath()->shouldReturn($installerData.DIRECTORY_SEPARATOR);
+        $this->beConstructedWith($bundles);
+        $this->getFixturesPath($installerData)->shouldReturn($installerData.DIRECTORY_SEPARATOR);
     }
 
     function it_throws_an_exception_when_the_directory_does_not_exist()
@@ -39,8 +38,7 @@ class FixturePathProviderSpec extends ObjectBehavior
             'PimDashboardBundle' => PimDashboardBundle::class,
             'PimInstallerBundle' => 'Akeneo\Platform\Bundle\InstallerBundle\PimYoloBundle'
         ];
-        $installerData = '/tmp/FakeProject/YoloBundle';
-        $this->beConstructedWith($bundles, $installerData);
-        $this->shouldThrow('\RuntimeException')->during('getFixturesPath', []);
+        $this->beConstructedWith($bundles);
+        $this->shouldThrow('\RuntimeException')->during('getFixturesPath', ['/tmp/FakeProject/YoloBundle']);
     }
 }

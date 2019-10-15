@@ -21,9 +21,6 @@ class FixtureJobLoader
     /** @staticvar */
     const JOB_TYPE = 'fixtures';
 
-    /** @var FixturePathProvider */
-    private $pathProvider;
-
     /** @var JobInstancesBuilder */
     private $jobInstancesBuilder;
 
@@ -39,23 +36,13 @@ class FixtureJobLoader
     /** @var ObjectRepository */
     private $jobInstanceRepository;
 
-    /**
-     * @param FixturePathProvider      $pathProvider
-     * @param JobInstancesBuilder      $jobInstancesBuilder
-     * @param JobInstancesConfigurator $jobInstancesConfigurator
-     * @param BulkSaverInterface       $jobInstanceSaver
-     * @param BulkRemoverInterface     $jobInstanceRemover
-     * @param ObjectRepository         $jobInstanceRepository
-     */
     public function __construct(
-        FixturePathProvider $pathProvider,
         JobInstancesBuilder $jobInstancesBuilder,
         JobInstancesConfigurator $jobInstancesConfigurator,
         BulkSaverInterface $jobInstanceSaver,
         BulkRemoverInterface $jobInstanceRemover,
         ObjectRepository $jobInstanceRepository
     ) {
-        $this->pathProvider = $pathProvider;
         $this->jobInstancesBuilder = $jobInstancesBuilder;
         $this->jobInstancesConfigurator = $jobInstancesConfigurator;
         $this->jobInstanceSaver = $jobInstanceSaver;
@@ -70,10 +57,10 @@ class FixtureJobLoader
      *
      * @throws \Exception
      */
-    public function loadJobInstances(array $replacePaths = [])
+    public function loadJobInstances(string $catalogPath, array $replacePaths = [])
     {
         $jobInstances = $this->jobInstancesBuilder->build();
-        $configuredJobInstances = $this->configureJobInstances($jobInstances, $replacePaths);
+        $configuredJobInstances = $this->configureJobInstances($catalogPath, $jobInstances, $replacePaths);
         $this->jobInstanceSaver->saveAll($configuredJobInstances, ['is_installation' => true]);
     }
 
@@ -104,10 +91,10 @@ class FixtureJobLoader
      * @throws \Exception
      * @return JobInstance[]
      */
-    protected function configureJobInstances(array $jobInstances, array $replacePaths)
+    protected function configureJobInstances(string $catalogPath, array $jobInstances, array $replacePaths)
     {
         if (0 === count($replacePaths)) {
-            return $this->jobInstancesConfigurator->configureJobInstancesWithInstallerData($jobInstances);
+            return $this->jobInstancesConfigurator->configureJobInstancesWithInstallerData($catalogPath, $jobInstances);
         } else {
             return $this->jobInstancesConfigurator->configureJobInstancesWithReplacementPaths(
                 $jobInstances,

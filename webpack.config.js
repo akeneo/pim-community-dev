@@ -6,17 +6,17 @@ const webpack = require('webpack');
 const path = require('path');
 const _ = require('lodash');
 
-
 const WebpackShellPlugin = require('webpack-shell-plugin');
 const ExtraWatchWebpackPlugin = require('extra-watch-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const isProd = process.argv && process.argv.indexOf('--env=prod') > -1;
+const injectInstrumentation = process.argv && process.argv.indexOf('--coverage') > -1;
 const {getModulePaths, createModuleRegistry} = require('./frontend/webpack/requirejs-utils');
 const {aliases, config} = getModulePaths(rootDir, __dirname);
 
 createModuleRegistry(Object.keys(aliases), rootDir);
 
-console.log('Starting webpack from', rootDir, 'in', isProd ? 'prod' : 'dev', 'mode');
+console.log('Starting webpack from', rootDir, 'in', isProd ? 'prod' : 'dev', 'mode', injectInstrumentation ? ' with instrumentation': '');
 
 const webpackConfig = {
   stats: {
@@ -159,6 +159,23 @@ const webpackConfig = {
         ],
       },
 
+      // Inject code coverage listeners into the bundle
+      {
+        test: injectInstrumentation ? /\.js$|\.jsx|\.tsx|\.ts$/ : [],
+        use: {
+          loader: 'istanbul-instrumenter-loader',
+          options: {
+            esModules: true,
+            extension: ['.js', '.ts', '.tsx'],
+            produceSourceMap: true,
+            preserveComments: true,
+            coverageVariable: 'coverage'
+          }
+        },
+        enforce: 'pre',
+        exclude: /node_modules|\.spec\.js$/,
+      },
+
       // Process the pim webpack files with babel
       {
         test: /\.js$/,
@@ -195,6 +212,7 @@ const webpackConfig = {
             },
           },
         ],
+        enforce: 'pre',
         include: /(public\/bundles)/,
         exclude: [
           path.resolve(rootDir, 'node_modules'),

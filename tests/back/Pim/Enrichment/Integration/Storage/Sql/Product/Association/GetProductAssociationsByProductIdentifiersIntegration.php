@@ -20,7 +20,7 @@ class GetProductAssociationsByProductIdentifiersIntegration extends TestCase
     {
         parent::setUp();
 
-        $entityBuilder = $this->getFromTestContainer('akeneo_integration_tests.catalog.fixture.build_entity');
+        $entityBuilder = $this->get('akeneo_integration_tests.catalog.fixture.build_entity');
         $this->givenBooleanAttributes(['first_yes_no', 'second_yes_no']);
         $this->givenFamilies([['code' => 'aFamily', 'attribute_codes' => ['first_yes_no', 'second_yes_no']]]);
         $entityBuilder->createFamilyVariant(
@@ -101,7 +101,7 @@ class GetProductAssociationsByProductIdentifiersIntegration extends TestCase
 
     private function getQuery(): GetProductAssociationsByProductIdentifiers
     {
-        return $this->testKernel->getContainer()->get('akeneo.pim.enrichment.product.query.get_product_associations_by_product_identifiers');
+        return $this->get('akeneo.pim.enrichment.product.query.get_product_associations_by_product_identifiers');
     }
 
     private function givenAssociationTypes(array $codes): void

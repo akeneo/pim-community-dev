@@ -15,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * Test case dedicated to PIM API interaction including authentication handling.
@@ -45,11 +46,7 @@ abstract class ApiTestCase extends WebTestCase
     protected function setUp(): void
     {
         static::bootKernel(['debug' => false]);
-
-        $this->testKernel = new \AppKernelTest('test', false);
-        $this->testKernel->boot();
-
-        $this->catalog = $this->getFromTestContainer('akeneo_integration_tests.configuration.catalog');
+        $this->catalog = $this->get('akeneo_integration_tests.catalogs');
         
         $authenticator = new SystemUserAuthenticator(
             $this->get('pim_user.factory.user'),
@@ -59,10 +56,10 @@ abstract class ApiTestCase extends WebTestCase
         );
         $authenticator->createSystemUser();
 
-        $this->testKernel->getContainer()->set('akeneo_integration_tests.catalog.configuration', $this->getConfiguration());
+        $fixturesLoader = $this->get('akeneo_integration_tests.loader.fixtures_loader');
+        $fixturesLoader->load($this->getConfiguration());
 
-        $fixturesLoader = $this->getFromTestContainer('akeneo_integration_tests.loader.fixtures_loader');
-        $fixturesLoader->load();
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
     }
 
     /**
@@ -99,6 +96,10 @@ abstract class ApiTestCase extends WebTestCase
 
         $client = static::createClient($options, $server);
         $client->setServerParameter('HTTP_AUTHORIZATION', 'Bearer '.$accessToken);
+
+        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
+        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $this->get('security.token_storage')->setToken($token);
 
         $aclManager = $this->get('oro_security.acl.manager');
         $aclManager->clearCache();
@@ -148,7 +149,7 @@ abstract class ApiTestCase extends WebTestCase
      */
     protected function authenticate($clientId, $secret, $username, $password)
     {
-        $webClient = static::createClient();
+        $webClient = static::createClient(['debug' => false]);
         $webClient->request('POST', 'api/oauth/v1/token',
             [
                 'username'   => $username,
@@ -177,29 +178,19 @@ abstract class ApiTestCase extends WebTestCase
      *
      * @return mixed
      */
-    protected function get($service)
+    protected function get(string $service)
     {
         return static::$kernel->getContainer()->get($service);
     }
 
     /**
-     * @param string $service
+     * @param string $parameter
      *
      * @return mixed
      */
-    protected function getFromTestContainer(string $service)
+    protected function getParameter(string $parameter)
     {
-        return $this->testKernel->getContainer()->get($service);
-    }
-
-    /**
-     * @param string $parameterName
-     *
-     * @return mixed
-     */
-    protected function getParameter(string $parameterName)
-    {
-        return static::$kernel->getContainer()->getParameter($parameterName);
+        return static::$kernel->getContainer()->getParameter($parameter);
     }
 
     /**
@@ -207,7 +198,7 @@ abstract class ApiTestCase extends WebTestCase
      */
     protected function tearDown(): void
     {
-        $connectionCloser = $this->testKernel->getContainer()->get('akeneo_integration_tests.doctrine.connection.connection_closer');
+        $connectionCloser = $this->get('akeneo_integration_tests.doctrine.connection.connection_closer');
         $connectionCloser->closeConnections();
 
         parent::tearDown();

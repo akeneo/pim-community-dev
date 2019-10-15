@@ -53,7 +53,8 @@ class DBALPurger implements PurgerInterface
             $sql .= sprintf('TRUNCATE TABLE %s;', $table);
         }
 
-        $sql .= 'SET FOREIGN_KEY_CHECKS = 1;';
+        // this query can fail without triggering any error, if a table does not exist
         $this->connection->exec($sql);
+        $this->connection->exec('SET FOREIGN_KEY_CHECKS = 1');
     }
 }

@@ -267,6 +267,24 @@ class HookContext extends PimContext
      *
      * @AfterScenario
      */
+    public function writeJSCoverageReport(AfterScenarioScope $event)
+    {
+        if ($event->getTestResult() !== StepResult::UNDEFINED || $event === null) {
+            if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
+                $script = 'return window.coverage;';
+                $coverage = $this->getSession()->evaluateScript($script);
+                $path = sprintf('%s/%s.json', './.coverage', uniqid());
+                $fs = new \Symfony\Component\Filesystem\Filesystem();
+                $fs->dumpFile($path, json_encode($coverage));
+            }
+        }
+    }
+
+    /**
+     * @param AfterScenarioScope $event
+     *
+     * @AfterScenario
+     */
     public function resetCurrentPage(AfterScenarioScope $event)
     {
         if ($event->getTestResult() !== StepResult::UNDEFINED) {

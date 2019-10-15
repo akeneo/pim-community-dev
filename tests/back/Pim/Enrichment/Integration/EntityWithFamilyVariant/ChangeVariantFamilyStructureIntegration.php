@@ -343,8 +343,8 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
         parent::setUp();
 
         $this->purgeJobExecutions('compute_family_variant_structure_changes');
-        $this->jobLauncher = $this->getFromTestContainer('akeneo_integration_tests.launcher.job_launcher');
-        $this->jobExecutionObserver = $this->getFromTestContainer(
+        $this->jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
+        $this->jobExecutionObserver = $this->get(
             'akeneo_integration_tests.launcher.job_execution_observer'
         );
         $this->jobExecutionObserver->purge('compute_family_variant_structure_changes');

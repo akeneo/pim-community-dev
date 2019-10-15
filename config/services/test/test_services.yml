@@ -4,7 +4,6 @@ parameters:
     akeneo_integration_tests.loader.database_schema_handler.class: Akeneo\Test\IntegrationTestsBundle\Loader\DatabaseSchemaHandler
     akeneo_integration_tests.doctrine.connection.connection_closer.class: Akeneo\Test\IntegrationTestsBundle\Doctrine\Connection\ConnectionCloser
     akeneo_integration_tests.security.system_user_authenticator.class: Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator
-    akeneo_integration_tests.configuration.catalog.class: Akeneo\Test\IntegrationTestsBundle\Configuration\Catalog
     akeneo_integration_tests.launcher.job_launcher.class: Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher
     akeneo_integration_tests.launcher.job_execution_observer.class: Akeneo\Test\IntegrationTestsBundle\Jobs\JobExecutionObserver
 
@@ -24,7 +23,6 @@ services:
             - '@kernel'
             - '@akeneo_integration_tests.loader.database_schema_handler'
             - '@akeneo_integration_tests.security.system_user_authenticator'
-            - '@akeneo_integration_tests.catalog.configuration'
             - '@akeneo_integration_tests.loader.reference_data_loader'
             - '@oneup_flysystem.archivist_filesystem'
             - '@akeneo_batch.job_repository'
@@ -39,6 +37,32 @@ services:
             - '%env(APP_DATABASE_NAME)%'
             - '%env(APP_DATABASE_USER)%'
             - '%env(APP_DATABASE_PASSWORD)%'
+
+    akeneo_integration_tests.loader.category_tree_loader:
+        class: 'AkeneoTest\Pim\Enrichment\Integration\Storage\ElasticsearchAndSql\CategoryTree\CategoryTreeFixturesLoader'
+        arguments:
+            - '@pim_catalog.factory.category'
+            - '@pim_catalog.updater.category'
+            - '@pim_catalog.saver.category'
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.validator.product'
+            - '@pim_catalog.saver.product'
+            - '@pim_catalog.factory.product_model'
+            - '@pim_catalog.updater.product_model'
+            - '@pim_catalog.validator.product'
+            - '@pim_catalog.saver.product_model'
+            - '@pim_catalog.factory.family'
+            - '@pim_catalog.updater.family'
+            - '@pim_catalog.saver.family'
+            - '@pim_catalog.factory.family_variant'
+            - '@pim_catalog.updater.family_variant'
+            - '@pim_catalog.saver.family_variant'
+            - '@pim_catalog.factory.attribute'
+            - '@pim_catalog.updater.attribute'
+            - '@pim_catalog.saver.attribute'
+            - '@validator'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
 
     akeneo_integration_tests.loader.database_schema_handler:
         class: '%akeneo_integration_tests.loader.database_schema_handler.class%'
@@ -96,11 +120,8 @@ services:
             - '@akeneo_batch.saver.job_instance'
             - '@doctrine.orm.default_entity_manager'
 
-    akeneo_integration_tests.configuration.catalog:
-        class: '%akeneo_integration_tests.configuration.catalog.class%'
-
-    akeneo_integration_tests.catalog.configuration:
-        synthetic: true
+    akeneo_integration_tests.catalogs:
+        class: 'Akeneo\Test\IntegrationTestsBundle\Configuration\Catalog'
 
     ### Builder
     akeneo_integration_tests.catalog.product.builder:

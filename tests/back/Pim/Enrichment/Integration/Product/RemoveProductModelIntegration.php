@@ -50,7 +50,7 @@ class RemoveProductModelIntegration extends TestCase
      */
     private function arrange(): array
     {
-        $entityBuilder = $this->getFromTestContainer('akeneo_integration_tests.catalog.fixture.build_entity');
+        $entityBuilder = $this->get('akeneo_integration_tests.catalog.fixture.build_entity');
         $entityBuilder->createFamilyVariant(
             [
                 'code' => 'two_level_family_variant',

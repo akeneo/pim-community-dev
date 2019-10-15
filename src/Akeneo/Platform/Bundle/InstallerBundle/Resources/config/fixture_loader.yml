@@ -10,7 +10,6 @@ services:
         class: '%pim_installer.fixture_loader.path_provider.class%'
         arguments:
             - '%kernel.bundles%'
-            - '%installer_data%'
 
     pim_installer.fixture_loader.job_instances_builder:
         class: '%pim_installer.fixture_loader.job_instances_builder.class%'
@@ -28,7 +27,6 @@ services:
     pim_installer.fixture_loader.job_loader:
         class: '%pim_installer.fixture_loader.job_loader.class%'
         arguments:
-            - '@pim_installer.fixture_loader.path_provider'
             - '@pim_installer.fixture_loader.job_instances_builder'
             - '@pim_installer.fixture_loader.job_instances_configurator'
             - '@akeneo_batch.saver.job_instance'

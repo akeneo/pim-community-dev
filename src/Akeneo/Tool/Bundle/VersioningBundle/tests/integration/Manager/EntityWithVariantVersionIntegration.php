@@ -139,7 +139,7 @@ class EntityWithVariantVersionIntegration extends TestCase
 
         $this->get('pim_catalog.saver.product_model')->save($productModel);
 
-        $launcher = $this->getFromTestContainer('akeneo_integration_tests.launcher.job_launcher');
+        $launcher = $this->get('akeneo_integration_tests.launcher.job_launcher');
 
         while ($launcher->hasJobInQueue()) {
             $launcher->launchConsumerOnce();
