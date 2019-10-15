@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi;
 
+use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductModel\OnSave\ApiAggregatorForProductModelPostSaveEventSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModelList;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductModelsQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductModelsQueryHandler;
@@ -15,7 +16,6 @@ use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterI
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetConnectorProductModels;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
-use Akeneo\Tool\Bundle\ApiBundle\EventSubscriber\BatchEventSubscriberInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Akeneo\Tool\Component\Api\Exception\DocumentedHttpException;
 use Akeneo\Tool\Component\Api\Exception\InvalidQueryException;
@@ -116,8 +116,8 @@ class ProductModelController
     /** @var TokenStorageInterface */
     private $tokenStorage;
 
-    /** @var BatchEventSubscriberInterface */
-    private $batchOnSaveEventSubscriber;
+    /** @var ApiAggregatorForProductModelPostSaveEventSubscriber */
+    private $apiAggregatorForProductModelPostSave;
 
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
@@ -140,7 +140,7 @@ class ProductModelController
         ConnectorProductModelNormalizer $connectorProductModelNormalizer,
         GetConnectorProductModels $getConnectorProductModels,
         TokenStorageInterface $tokenStorage,
-        BatchEventSubscriberInterface $batchOnSaveEventSubscriber,
+        ApiAggregatorForProductModelPostSaveEventSubscriber $apiAggregatorForProductModelPostSave,
         array $apiConfiguration
     ) {
         $this->pqbFactory = $pqbFactory;
@@ -163,7 +163,7 @@ class ProductModelController
         $this->connectorProductModelNormalizer = $connectorProductModelNormalizer;
         $this->getConnectorProductModels = $getConnectorProductModels;
         $this->tokenStorage = $tokenStorage;
-        $this->batchOnSaveEventSubscriber = $batchOnSaveEventSubscriber;
+        $this->apiAggregatorForProductModelPostSave = $apiAggregatorForProductModelPostSave;
         $this->apiConfiguration = $apiConfiguration;
     }
 
@@ -313,10 +313,10 @@ class ProductModelController
     public function partialUpdateListAction(Request $request): Response
     {
         $resource = $request->getContent(true);
-        $this->batchOnSaveEventSubscriber->activate();
+        $this->apiAggregatorForProductModelPostSave->activate();
         $response = $this->partialUpdateStreamResource->streamResponse($resource, [], function () {
-            $this->batchOnSaveEventSubscriber->dispatchAllEvents();
-            $this->batchOnSaveEventSubscriber->deactivate();
+            $this->apiAggregatorForProductModelPostSave->dispatchAllEvents();
+            $this->apiAggregatorForProductModelPostSave->deactivate();
         });
 
         return $response;

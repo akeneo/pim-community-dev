@@ -6,7 +6,6 @@ namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductMode
 
 use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductModel\OnSave\ApiAggregatorForProductModelPostSaveEventSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
-use Akeneo\Tool\Bundle\ApiBundle\EventSubscriber\BatchEventSubscriberInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -33,7 +32,6 @@ class ApiAggregatorForProductModelPostSaveEventSubscriberSpec extends ObjectBeha
 
     function it_is_a_batch_event_subscriber()
     {
-        $this->shouldImplement(BatchEventSubscriberInterface::class);
         $this->shouldImplement(EventSubscriberInterface::class);
     }
 
