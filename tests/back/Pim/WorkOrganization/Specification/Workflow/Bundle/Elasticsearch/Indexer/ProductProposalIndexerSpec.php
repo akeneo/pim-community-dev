@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Indexer;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\ProductProposalNormalizer;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Bundle\ElasticsearchBundle\Refresh;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ProductModel;
-use PimEnterprise\Component\Workflow\Normalizer\Indexing\ProductProposalNormalizer;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
