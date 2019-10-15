@@ -11,7 +11,6 @@ namespace Akeneo\Apps\Domain\Model\Read;
  */
 class App
 {
-
     private $code;
 
     private $label;
