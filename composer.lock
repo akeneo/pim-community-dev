@@ -4832,16 +4832,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.112.16",
+            "version": "3.112.20",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "782f304ef4dc2fa73f5ecfbb49fcba46238ed541"
+                "reference": "c84de8adf2b014124b0058013805caf2ae384137"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/782f304ef4dc2fa73f5ecfbb49fcba46238ed541",
-                "reference": "782f304ef4dc2fa73f5ecfbb49fcba46238ed541",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/c84de8adf2b014124b0058013805caf2ae384137",
+                "reference": "c84de8adf2b014124b0058013805caf2ae384137",
                 "shasum": ""
             },
             "require": {
@@ -4911,7 +4911,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-10-07T18:13:37+00:00"
+            "time": "2019-10-11T18:14:55+00:00"
         },
         {
             "name": "behat/behat",
@@ -5484,16 +5484,16 @@
         },
         {
             "name": "friends-of-behat/symfony-extension",
-            "version": "v2.0.8",
+            "version": "v2.0.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfBehat/SymfonyExtension.git",
-                "reference": "47ecdcc9a022775cbb612345b43962a9963cfb65"
+                "reference": "96dfafd63e4bf989c22662d1adc69e8d8a3568c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfBehat/SymfonyExtension/zipball/47ecdcc9a022775cbb612345b43962a9963cfb65",
-                "reference": "47ecdcc9a022775cbb612345b43962a9963cfb65",
+                "url": "https://api.github.com/repos/FriendsOfBehat/SymfonyExtension/zipball/96dfafd63e4bf989c22662d1adc69e8d8a3568c7",
+                "reference": "96dfafd63e4bf989c22662d1adc69e8d8a3568c7",
                 "shasum": ""
             },
             "require": {
@@ -5536,11 +5536,11 @@
                 {
                     "name": "Kamil Kokot",
                     "email": "kamil@kokot.me",
-                    "homepage": "http://kamil.kokot.me"
+                    "homepage": "https://kamilkokot.com"
                 }
             ],
             "description": "Integrates Behat with Symfony.",
-            "time": "2019-03-21T16:26:33+00:00"
+            "time": "2019-10-10T16:00:08+00:00"
         },
         {
             "name": "friendsofphp/php-cs-fixer",
