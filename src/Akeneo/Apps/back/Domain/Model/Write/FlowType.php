@@ -31,11 +31,6 @@ class FlowType
         return new self($flowType);
     }
 
-    public static function createDefault(): self
-    {
-        return new self(self::OTHERS);
-    }
-
     public function __toString(): string
     {
         return $this->flowType;

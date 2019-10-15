@@ -34,7 +34,7 @@ class AppLabelSpec extends ObjectBehavior
         $this->__toString()->shouldReturn('Magento Connector');
     }
 
-    function it_contains_an_empty_string()
+    function it_can_contains_an_empty_string()
     {
         $this->beConstructedThrough('create', ['']);
         $this->__toString()->shouldReturn('');
