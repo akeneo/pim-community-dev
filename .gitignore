@@ -32,3 +32,5 @@ coverage/*
 .env.test.local
 .env.dev.local
 config/credentials_gcp.json
+coverage
+.nyc_output
