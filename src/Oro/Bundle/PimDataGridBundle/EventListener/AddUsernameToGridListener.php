@@ -17,9 +17,13 @@ class AddUsernameToGridListener
      */
     protected $tokenStorage;
 
-    public function __construct(TokenStorageInterface $tokenStorage)
+    /** @var array */
+    protected $notRestrictedRoles;
+
+    public function __construct(TokenStorageInterface $tokenStorage, array $notRestrictedRoles = [])
     {
         $this->tokenStorage = $tokenStorage;
+        $this->notRestrictedRoles = $notRestrictedRoles;
     }
 
     public function onBuildAfter(BuildAfter $event)
@@ -27,6 +31,9 @@ class AddUsernameToGridListener
         $dataSource = $event->getDatagrid()->getDatasource();
 
         $token = $this->tokenStorage->getToken();
+        if ($token && count(array_intersect($token->getRoles(), $this->notRestrictedRoles)) > 0) {
+            return;
+        }
         $user = null !== $token ? $token->getUsername() : null;
 
         $parameters = $dataSource->getParameters();
