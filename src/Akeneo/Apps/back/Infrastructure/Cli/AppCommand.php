@@ -8,9 +8,9 @@ use Akeneo\Apps\Application\Command\CreateAppCommand;
 use Akeneo\Apps\Application\Command\CreateAppHandler;
 use Akeneo\Apps\Application\Query\FetchAppsHandler;
 use Akeneo\Apps\Application\Query\FetchAppsQuery;
-use Akeneo\Apps\Domain\Model\AppCode;
-use Akeneo\Apps\Domain\Model\AppLabel;
-use Akeneo\Apps\Domain\Model\FlowType;
+use Akeneo\Apps\Domain\Model\Write\AppCode;
+use Akeneo\Apps\Domain\Model\Write\AppLabel;
+use Akeneo\Apps\Domain\Model\Write\FlowType;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -61,7 +61,7 @@ class AppCommand extends ContainerAwareCommand
             FlowType::create(FlowType::OTHERS)
         ));
 
-        $apps = $this->fetchAppsHandler->query(new FetchAppsQuery());
+        $apps = $this->fetchAppsHandler->query();
         $output->writeln(sprintf('<info>%s apps</info>', count($apps)));
     }
 }

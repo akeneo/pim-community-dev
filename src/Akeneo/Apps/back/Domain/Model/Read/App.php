@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Apps\Domain\Model;
+namespace Akeneo\Apps\Domain\Model\Read;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -18,35 +18,24 @@ class App
 
     private $flowType;
 
-    public function __construct(AppCode $code, AppLabel $label, FlowType $flowType)
+    public function __construct(string $code, string $label, string $flowType)
     {
         $this->code = $code;
         $this->label = $label;
         $this->flowType = $flowType;
     }
 
-    public static function create(AppCode $appCode, AppLabel $label, FlowType $flowType): self
-    {
-        // TODO: Validation + Id Generation
-
-        return new self(
-            $appCode,
-            $label,
-            $flowType
-        );
-    }
-
-    public function code(): AppCode
+    public function code(): string
     {
         return $this->code;
     }
 
-    public function label(): AppLabel
+    public function label(): string
     {
         return $this->label;
     }
 
-    public function flowType(): FlowType
+    public function flowType(): string
     {
         return $this->flowType;
     }

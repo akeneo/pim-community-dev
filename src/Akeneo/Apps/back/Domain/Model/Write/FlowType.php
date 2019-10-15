@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Apps\Domain\Model;
+namespace Akeneo\Apps\Domain\Model\Write;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>

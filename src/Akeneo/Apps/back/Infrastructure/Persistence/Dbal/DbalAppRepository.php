@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Infrastructure\Persistence\Dbal;
 
-use Akeneo\Apps\Domain\Model\App;
-use Akeneo\Apps\Domain\Model\AppCode;
-use Akeneo\Apps\Domain\Model\AppLabel;
-use Akeneo\Apps\Domain\Model\FlowType;
+use Akeneo\Apps\Domain\Model\Read\App as ReadApp;
+use Akeneo\Apps\Domain\Model\Write\App as WriteApp;
 use Akeneo\Apps\Domain\Persistence\Repository\AppRepository;
 use Doctrine\DBAL\Connection;
 
@@ -25,7 +23,7 @@ class DbalAppRepository implements AppRepository
         $this->dbalConnection = $dbalConnection;
     }
 
-    public function create(App $app): void
+    public function create(WriteApp $app): void
     {
         $insertSQL = <<<SQL
 INSERT INTO akeneo_app (code, label, flow_type)
@@ -50,11 +48,7 @@ SQL;
 
         $apps = [];
         foreach ($dataRows as $dataRow) {
-            $apps[] = new App(
-                new AppCode($dataRow['code']),
-                new AppLabel($dataRow['label']),
-                new FlowType($dataRow['flow_type'])
-            );
+            $apps[] = new ReadApp($dataRow['code'], $dataRow['label'], $dataRow['flow_type']);
         }
 
         return $apps;
