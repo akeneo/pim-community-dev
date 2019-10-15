@@ -17,7 +17,7 @@ class FlowType
     const DATA_DESTINATION = 'data_destination';
     const OTHERS = 'others';
 
-    public function __construct(string $flowType)
+    private function __construct(string $flowType)
     {
         $this->flowType = $flowType;
     }

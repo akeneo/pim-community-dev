@@ -13,7 +13,7 @@ class AppLabel
 {
     private $label;
 
-    public function __construct(string $label)
+    private function __construct(string $label)
     {
         $this->label = $label;
     }
@@ -21,9 +21,8 @@ class AppLabel
     public static function create(string $label): self
     {
         if (strlen($label) > 100) {
-            throw new \Exception('Label is too long');
+            throw new \InvalidArgumentException('Label cannot be longer than 100 characters');
         }
-        // TODO: Validation + Id Generation
 
         return new self($label);
     }

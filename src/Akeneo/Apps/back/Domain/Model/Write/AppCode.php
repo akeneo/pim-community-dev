@@ -13,7 +13,7 @@ class AppCode
 {
     private $code;
 
-    public function __construct(string $code)
+    private function __construct(string $code)
     {
         $this->code = $code;
     }
