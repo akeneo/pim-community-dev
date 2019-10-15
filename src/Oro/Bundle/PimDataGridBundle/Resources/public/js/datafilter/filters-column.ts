@@ -8,6 +8,7 @@ const Routing = require('routing');
 interface FiltersConfig {
   title: string;
   description: string;
+  onlyDefaultFilters: boolean;
 }
 
 interface GridFilter {
@@ -66,9 +67,10 @@ class FiltersColumn extends BaseView {
     </ul>`;
 
   constructor(options: {config: FiltersConfig}) {
+
     super(options);
 
-    this.config = {...this.config, ...options.config};
+    this.config = {...this.config, ...{onlyDefaultFilters: false}, ...options.config};
     this.defaultFilters = [];
     this.gridCollection = {};
     this.ignoredFilters = ['scope'];
@@ -124,6 +126,10 @@ class FiltersColumn extends BaseView {
   }
 
   fetchFilters(search?: string | null, page: number = this.page) {
+    if (this.config.onlyDefaultFilters) {
+      return $.Deferred().resolve([]).promise();
+    }
+
     const locale = this.getLocale();
     const url = Routing.generate('pim_datagrid_productgrid_attributes_filters');
     return $.get(search ? `${url}?search=${search}&locale=${locale}` : `${url}?page=${page}&locale=${locale}`);
