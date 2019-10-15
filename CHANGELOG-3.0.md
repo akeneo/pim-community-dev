@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-8369: Remove flex from families dropdown css
 - PIM-8585: fix incorrect displayed order in attributes groups
 
 # 3.0.45 (2019-10-04)
