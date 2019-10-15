@@ -56,6 +56,7 @@ Feature: Remove attribute from a family
     And I should see the text "Model picture"
     When I press the cancel button in the popin
     And I visit the "Attributes" tab
+    And I scroll
     And I remove the "weight" attribute
     And I remove the "image" attribute
     And I save the family
