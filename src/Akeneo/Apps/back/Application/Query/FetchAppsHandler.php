@@ -20,7 +20,7 @@ class FetchAppsHandler
         $this->repository = $repository;
     }
 
-    public function query(FetchAppsQuery $query): array
+    public function query(): array
     {
         return $this->repository->fetchAll();
     }
