@@ -21,8 +21,10 @@
     "suppressImplicitAnyIndexErrors": false,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "removeComments": true
+    "removeComments": true,
+    "esModuleInterop": true
   },
+  "include": ["frontend/types.d.ts"],
   "exclude": [
     "node_modules",
     "vendor",

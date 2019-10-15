@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PageHeader should render 1`] = `
+<header
+  className="AknTitleContainer"
+>
+  <div
+    className="AknTitleContainer-line"
+  >
+    <div
+      className="AknTitleContainer-mainContainer"
+    >
+      <div
+        className="AknTitleContainer-line"
+      >
+        <div
+          className="AknTitleContainer-breadcrumbs"
+        >
+          breadcrumb
+        </div>
+        <div
+          className="AknTitleContainer-buttonsContainer"
+        >
+          user buttons
+          <div
+            className="AknTitleContainer-actionsContainer AknButtonList"
+          >
+            button 1
+            button 2
+          </div>
+        </div>
+      </div>
+      <div
+        className="AknTitleContainer-line"
+      >
+        <div
+          className="AknTitleContainer-title"
+        >
+          title
+        </div>
+        <div
+          className="AknTitleContainer-state"
+        />
+      </div>
+      <div
+        className="AknTitleContainer-line"
+      >
+        <div
+          className="AknTitleContainer-context AknButtonList"
+        />
+      </div>
+      <div
+        className="AknTitleContainer-line"
+      >
+        <div
+          className="AknTitleContainer-meta AknButtonList"
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    className="AknTitleContainer-line"
+  >
+    <div
+      className="AknTitleContainer-navigation"
+    />
+  </div>
+  <div
+    className="AknTitleContainer-line"
+  >
+    <div
+      className="AknTitleContainer-search"
+    />
+  </div>
+</header>
+`;

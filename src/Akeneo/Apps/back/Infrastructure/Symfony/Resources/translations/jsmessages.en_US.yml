@@ -5,3 +5,18 @@ pim_menu:
 pim_title:
     akeneo_apps_index: Apps
     akeneo_apps_any: Apps
+
+pim_apps:
+    helper:
+        title: 👋 Welcome in the feature that will properly connect your PIM!
+        description: A PIM without any connections is kinda useless, isn't it? Thanks to apps, you can declare all the data flows that will be pushed inside and pulled outside your PIM.
+        link: Eager to know more? Find out what is an app and how to make the most of it right here!
+    flow_type:
+        data_source: External data source | External data sources
+        data_destination: External data destination | External data destinations
+        other: Other | Others
+    app_count: '{{ count }} app | {{ count }} apps'
+    no_app:
+        title: No app declared yet.
+        message: Add your first one by clicking on the “Create” button above or
+        message_link: click here.

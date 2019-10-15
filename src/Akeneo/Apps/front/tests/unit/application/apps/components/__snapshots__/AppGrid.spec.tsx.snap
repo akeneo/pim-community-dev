@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AppGrid should render 1`] = `
+Array [
+  <header
+    className="sc-bxivhb hBwOxB"
+  >
+    <div
+      className="sc-ifAKCX kUmVnp"
+    >
+      others
+    </div>
+    <div
+      className="sc-EHOje cXIxvv"
+    >
+      pim_apps.app_count
+    </div>
+  </header>,
+  <div
+    className="sc-bZQynM kPpGNB"
+  />,
+]
+`;

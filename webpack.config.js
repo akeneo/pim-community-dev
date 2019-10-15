@@ -176,6 +176,14 @@ const webpackConfig = {
         ],
       },
 
+      {
+        test: /\.(svg)$/,
+        loader: 'file-loader',
+        options: {
+          outputPath: 'assets'
+        },
+      },
+
       // Process the typescript loader files
       {
         test: /\.tsx?$/,

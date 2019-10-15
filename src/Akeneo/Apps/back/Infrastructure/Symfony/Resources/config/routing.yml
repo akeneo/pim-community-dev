@@ -2,4 +2,6 @@ akeneo_apps_index:
    path: '/apps'
 
 akeneo_apps_any:
-   path: '/apps/{any}'
+    path: '/apps/{any}'
+    requirements:
+        any: .*

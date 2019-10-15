@@ -1,4 +1,4 @@
-import * as $ from 'jquery';
+import $ from 'jquery';
 import * as i18n from 'pimui/js/i18n';
 import * as _ from 'underscore';
 import NormalizedAttribute from 'pim/model/attribute';
@@ -70,7 +70,7 @@ class ProductGridFilters extends BaseMultiSelectAsync {
    * {@inheritdoc}
    */
   protected select2InitSelection(element: any, callback: any): void {
-    const strValues = (<any> $(element)).val() as string;
+    const strValues = ($(element)).val() as string;
     const values = strValues.split(',');
     if (values.length > 0) {
       $.ajax({

@@ -2,7 +2,8 @@
     "compilerOptions": {
         "strict": true,
         "jsx": "react",
-        "noEmit": true
+        "noEmit": true,
+        "esModuleInterop": true
     },
-    "include": ["src"]
+    "include": ["src", "types.d.ts"]
 }

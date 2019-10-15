@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Section should render 1`] = `
+<header
+  className="sc-bxivhb hBwOxB"
+>
+  <div
+    className="sc-ifAKCX kUmVnp"
+  >
+    title
+  </div>
+</header>
+`;
+
+exports[`Section should render content 1`] = `
+<header
+  className="sc-bxivhb hBwOxB"
+>
+  <div
+    className="sc-ifAKCX kUmVnp"
+  >
+    title
+  </div>
+  content
+</header>
+`;

@@ -1,11 +1,10 @@
 import * as React from 'react';
 import {useContext} from 'react';
-
 import {TranslateContext} from './translate-context';
 
 interface Props {
     id: string;
-    placeholders?: any;
+    placeholders?: {[name: string]: string | number};
     count?: number;
 }
 

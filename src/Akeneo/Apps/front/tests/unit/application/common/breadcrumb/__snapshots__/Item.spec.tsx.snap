@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BreadcrumbItem should be clickable 1`] = `
+<span
+  className="AknBreadcrumb-item AknBreadcrumb-item--routable"
+  onClick={[Function]}
+>
+  content
+</span>
+`;
+
+exports[`BreadcrumbItem should have the last item style 1`] = `
+<span
+  className="AknBreadcrumb-item AknBreadcrumb-item--final"
+>
+  content
+</span>
+`;
+
+exports[`BreadcrumbItem should render 1`] = `
+<span
+  className="AknBreadcrumb-item"
+>
+  content
+</span>
+`;
