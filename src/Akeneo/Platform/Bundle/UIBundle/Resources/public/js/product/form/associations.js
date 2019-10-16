@@ -286,16 +286,18 @@ define([
      * @returns {Promise}
      */
     loadAssociationTypes: function() {
-      const locale = UserContext.get('catalogLocale');
-      const registry = FetcherRegistry.getFetcher('association-type');
-      registry.clear();
-      return registry.fetchAll().then(associationTypes => {
-        return associationTypes.sort((associationType1, associationType2) => {
-          const labelAssociationType1 = associationType1.labels[locale] || '[' + associationType1.code + ']';
-          const labelAssociationType2 = associationType2.labels[locale] || '[' + associationType2.code + ']';
-          return labelAssociationType1.localeCompare(labelAssociationType2, undefined, {sensitivity: 'base'});
+      return FetcherRegistry.getFetcher('association-type')
+        .fetchAll()
+        .then(associationTypes => {
+          const locale = UserContext.get('catalogLocale');
+
+          return associationTypes.sort((associationType1, associationType2) => {
+            const labelAssociationType1 = associationType1.labels[locale] || '[' + associationType1.code + ']';
+            const labelAssociationType2 = associationType2.labels[locale] || '[' + associationType2.code + ']';
+
+            return labelAssociationType1.localeCompare(labelAssociationType2, undefined, {sensitivity: 'base'});
+          });
         });
-      });
     },
 
     /**
