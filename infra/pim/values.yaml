@@ -96,9 +96,6 @@ pim:
   hook:
     addAdmin:
       enabled: true
-    migrateStorage:
-      enabled: false # Set me to true when upgrading to a minor version
-      hook: "pre-upgrade"
     installPim:
       enabled: true
     upgradePim:
