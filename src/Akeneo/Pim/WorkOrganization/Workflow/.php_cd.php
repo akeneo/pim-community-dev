@@ -142,6 +142,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueFactory',
         'Akeneo\Pim\Enrichment\Component\Product\Factory\Read\WriteValueCollectionFactory',
         'Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface',
         'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute',
         'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes',
 
@@ -179,6 +180,8 @@ $rules = [
 
         // TIP-983: Workflow should not be linked to Attribute
         'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
+        'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes',
+        'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute',
 
         // TODO: Workflow should not be linked to channel
         'Akeneo\Channel\Component\Model\ChannelInterface',
@@ -228,6 +231,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProductUniqueData',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnInfoExtractor',
         'Akeneo\Pim\Enrichment\Component\Product\Query\AbstractEntityWithValuesQueryBuilder',
+        'Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface',
 
         // TIP-980: Workflow should not be linked to User
         // TIP-982: Rework User/Draft link

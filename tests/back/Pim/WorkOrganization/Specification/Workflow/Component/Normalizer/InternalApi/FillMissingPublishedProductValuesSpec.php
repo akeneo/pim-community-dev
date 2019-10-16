@@ -7,7 +7,10 @@ use Akeneo\Channel\Component\Model\Currency;
 use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\Family;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\InternalApi\FillMissingPublishedProductValues;
 use Akeneo\Test\Common\Structure\Attribute\Builder;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -18,7 +21,8 @@ class FillMissingPublishedProductValuesSpec extends ObjectBehavior
     function let(
         IdentifiableObjectRepositoryInterface $familyRepository,
         ChannelRepositoryInterface $channelRepository,
-        LocaleRepositoryInterface $localeRepository
+        LocaleRepositoryInterface $localeRepository,
+        GetAttributes $getAttributes
     ) {
         $family = new Family();
 
@@ -81,7 +85,7 @@ class FillMissingPublishedProductValuesSpec extends ObjectBehavior
         $channelRepository->findAll()->willReturn([$tablet, $ecommerce]);
         $localeRepository->getActivatedLocales()->willReturn([$enUs, $frFR, $deDe]);
 
-        $this->beConstructedWith($familyRepository, $channelRepository, $localeRepository);
+        $this->beConstructedWith($familyRepository, $channelRepository, $localeRepository, $getAttributes);
     }
 
     function it_is_initializable()
@@ -89,8 +93,10 @@ class FillMissingPublishedProductValuesSpec extends ObjectBehavior
         $this->shouldHaveType(FillMissingPublishedProductValues::class);
     }
 
-    function it_creates_all_missing_values()
+    function it_creates_all_missing_values(GetAttributes $getAttributes)
     {
+        $getAttributes->forCodes([])->willReturn([]);
+
         $this->fromStandardFormat(
             [
                 'family' => 'shoes',
@@ -164,8 +170,15 @@ class FillMissingPublishedProductValuesSpec extends ObjectBehavior
         );
     }
 
-    function it_merges_correctly_the_null_values_without_replacing_existing_values()
+    function it_merges_correctly_the_null_values_without_replacing_existing_values(GetAttributes $getAttributes)
     {
+        $getAttributes->forCodes(['name', 'localizable_name', 'scopable_name', 'localizable_scopable_name'])->willReturn([
+            'name' => new Attribute('name', AttributeTypes::TEXT, [], false, false, null, false, 'text'),
+            'localizable_name' => new Attribute('localizable_name', AttributeTypes::TEXT, [], true, false, null, false, 'text'),
+            'scopable_name' => new Attribute('scopable_name', AttributeTypes::TEXT, [], false, true, null, false, 'text'),
+            'localizable_scopable_name' => new Attribute('localizable_scopable_name', AttributeTypes::TEXT, [], true, true, null, false, 'text')
+        ]);
+
         $this->fromStandardFormat(
             [
                 'family' => 'shoes',
@@ -303,8 +316,10 @@ class FillMissingPublishedProductValuesSpec extends ObjectBehavior
         );
     }
 
-    function it_creates_all_null_price_values()
+    function it_creates_all_null_price_values(GetAttributes $getAttributes)
     {
+        $getAttributes->forCodes([])->willReturn([]);
+
         $this->fromStandardFormat(
             [
                 'family' => 'family_with_price',
@@ -414,8 +429,15 @@ class FillMissingPublishedProductValuesSpec extends ObjectBehavior
     /**
      * The order of the price collection in the values matters: the prices MUST be sorted by currency code
      */
-    function it_does_not_replace_existing_price_values()
+    function it_does_not_replace_existing_price_values(GetAttributes $getAttributes)
     {
+        $getAttributes->forCodes(['price', 'scopable_price', 'localizable_price', 'localizable_scopable_price'])->willReturn([
+            'price' => new Attribute('price', AttributeTypes::PRICE_COLLECTION, [], false, false, null, false, 'text'),
+            'scopable_price' => new Attribute('scopable_price', AttributeTypes::PRICE_COLLECTION, [], false, true, null, false, 'text'),
+            'localizable_price' => new Attribute('localizable_price', AttributeTypes::PRICE_COLLECTION, [], true, false, null, false, 'text'),
+            'localizable_scopable_price' => new Attribute('localizable_scopable_price', AttributeTypes::PRICE_COLLECTION, [], true, true, null, false, 'text')
+        ]);
+
         $this->fromStandardFormat(
             [
                 'family' => 'family_with_price',

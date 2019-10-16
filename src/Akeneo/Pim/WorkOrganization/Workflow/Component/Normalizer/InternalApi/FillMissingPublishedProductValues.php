@@ -18,8 +18,11 @@ use Akeneo\Channel\Component\Model\CurrencyInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
@@ -29,7 +32,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
  * The goal of this class is to generate all missing values of a published product
  * It uses an internal pivot format to ease the merge. The prices are handled in a dedicated function to isolate the behavior of this attribute type.
  */
-class FillMissingPublishedProductValues
+class FillMissingPublishedProductValues implements FillMissingValuesInterface
 {
     /** @var IdentifiableObjectRepositoryInterface */
     private $familyRepository;
@@ -46,14 +49,19 @@ class FillMissingPublishedProductValues
     /** @var LocaleInterface[] */
     private $locales;
 
+    /** @var GetAttributes */
+    private $getAttributes;
+
     public function __construct(
         IdentifiableObjectRepositoryInterface $familyRepository,
         ChannelRepositoryInterface $channelRepository,
-        LocaleRepositoryInterface $localeRepository
+        LocaleRepositoryInterface $localeRepository,
+        GetAttributes $getAttributes
     ) {
         $this->familyRepository = $familyRepository;
         $this->channelRepository = $channelRepository;
         $this->localeRepository = $localeRepository;
+        $this->getAttributes = $getAttributes;
     }
 
     /**
@@ -145,11 +153,14 @@ class FillMissingPublishedProductValues
      */
     private function createProductValuesInPivotFormat(array $productStandardFormat): array
     {
-        $attributesInFamily = $this->getAttributesInFamilyIndexedByCode($productStandardFormat['family']);
+        $attributeCodes = array_map(function ($key) {
+            return (string) $key;
+        }, array_keys($productStandardFormat['values']));
+        $attributes = $this->getAttributes->forCodes($attributeCodes);
         $nonPriceAttributes = array_filter(
-            $attributesInFamily,
-            function (AttributeInterface $attribute): bool {
-                return AttributeTypes::PRICE_COLLECTION !== $attribute->getType();
+            $attributes,
+            function (Attribute $attribute): bool {
+                return AttributeTypes::PRICE_COLLECTION !== $attribute->type();
             }
         );
 
@@ -254,11 +265,14 @@ class FillMissingPublishedProductValues
      */
     private function createPriceProductValuesInPivotFormat(array $productStandardFormat): array
     {
-        $attributesInFamily = $this->getAttributesInFamilyIndexedByCode($productStandardFormat['family']);
+        $attributeCodes = array_map(function ($key) {
+            return (string) $key;
+        }, array_keys($productStandardFormat['values']));
+        $attributes = $this->getAttributes->forCodes($attributeCodes);
         $priceAttributes = array_filter(
-            $attributesInFamily,
-            function (AttributeInterface $attribute): bool {
-                return AttributeTypes::PRICE_COLLECTION === $attribute->getType();
+            $attributes,
+            function (Attribute $attribute): bool {
+                return AttributeTypes::PRICE_COLLECTION === $attribute->type();
             }
         );
 
