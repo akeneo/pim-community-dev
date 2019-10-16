@@ -105,6 +105,7 @@ services:
 
     pim_catalog.query.descendant_product_ids:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\DescendantProductIdsQuery'
+        public: true
         arguments:
             - '@database_connection'
 
