@@ -135,6 +135,8 @@ services:
         class: '%akeneo_integration_tests.launcher.job_launcher.class%'
         arguments:
             - '@kernel'
+            - '@database_connection'
+            - '@akeneo_batch_queue.queue.job_execution_message_repository'
 
     akeneo_integration_tests.launcher.job_execution_observer:
         class: '%akeneo_integration_tests.launcher.job_execution_observer.class%'

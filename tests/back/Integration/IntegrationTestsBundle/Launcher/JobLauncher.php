@@ -6,8 +6,11 @@ namespace Akeneo\Test\IntegrationTestsBundle\Launcher;
 
 use Akeneo\Tool\Bundle\BatchBundle\Command\BatchCommand;
 use Akeneo\Tool\Bundle\BatchQueueBundle\Command\JobQueueConsumerCommand;
+use Akeneo\Tool\Bundle\BatchQueueBundle\Queue\JobExecutionMessageRepository;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\DBAL\Driver\Connection;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -30,14 +33,19 @@ class JobLauncher
     const IMPORT_DIRECTORY = 'pim-integration-tests-import';
 
     /** @var KernelInterface */
-    protected $kernel;
+    private $kernel;
 
-    /**
-     * @param KernelInterface $kernel
-     */
-    public function __construct(KernelInterface $kernel)
+    /** @var Connection */
+    private $dbConnection;
+
+    /** @var JobExecutionMessageRepository */
+    private $jobExecutionMessageRepository;
+
+    public function __construct(KernelInterface $kernel, Connection $dbConnection, JobExecutionMessageRepository $jobExecutionMessageRepository)
     {
         $this->kernel = $kernel;
+        $this->dbConnection = $dbConnection;
+        $this->jobExecutionMessageRepository = $jobExecutionMessageRepository;
     }
 
     /**
@@ -250,8 +258,7 @@ class JobLauncher
         $timeout = 0;
         $isCompleted = false;
 
-        $connection = $this->kernel->getContainer()->get('doctrine.orm.default_entity_manager')->getConnection();
-        $stmt = $connection->prepare('SELECT status from akeneo_batch_job_execution where id = :id');
+        $stmt = $this->dbConnection->prepare('SELECT status from akeneo_batch_job_execution where id = :id');
 
         while (!$isCompleted) {
             if ($timeout > 30) {
@@ -276,7 +283,7 @@ class JobLauncher
      */
     public function hasJobInQueue(): bool
     {
-        $jobExecutionMessage = $this->kernel->getContainer()->get('akeneo_batch_queue.queue.job_execution_message_repository')->getAvailableJobExecutionMessage();
+        $jobExecutionMessage = $this->jobExecutionMessageRepository->getAvailableJobExecutionMessage();
 
         return null !== $jobExecutionMessage;
     }
