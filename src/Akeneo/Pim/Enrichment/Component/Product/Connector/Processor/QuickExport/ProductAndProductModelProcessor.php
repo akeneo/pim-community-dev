@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingProductModelValues;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingProductValues;
+use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
@@ -43,10 +44,10 @@ class ProductAndProductModelProcessor extends AbstractProcessor
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var FillMissingProductModelValues */
+    /** @var FillMissingValuesInterface */
     protected $fillMissingProductModelValues;
 
-    /** @var FillMissingProductValues */
+    /** @var FillMissingValuesInterface */
     protected $fillMissingProductValues;
 
     /** @var ObjectDetacherInterface */
@@ -65,8 +66,8 @@ class ProductAndProductModelProcessor extends AbstractProcessor
         NormalizerInterface $normalizer,
         ChannelRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
-        FillMissingProductModelValues $fillMissingProductModelValues,
-        FillMissingProductValues $fillMissingProductValues,
+        FillMissingValuesInterface $fillMissingProductModelValues,
+        FillMissingValuesInterface $fillMissingProductValues,
         ObjectDetacherInterface $detacher,
         UserProviderInterface $userProvider,
         TokenStorageInterface $tokenStorage,

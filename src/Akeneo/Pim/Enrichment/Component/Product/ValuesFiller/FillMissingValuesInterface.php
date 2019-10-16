@@ -11,4 +11,5 @@ namespace Akeneo\Pim\Enrichment\Component\Product\ValuesFiller;
  */
 interface FillMissingValuesInterface
 {
+    public function fromStandardFormat(array $standardFormat): array;
 }

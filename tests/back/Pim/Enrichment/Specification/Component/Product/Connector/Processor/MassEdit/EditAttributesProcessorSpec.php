@@ -33,23 +33,6 @@ class EditAttributesProcessorSpec extends ObjectBehavior
         FilterInterface $productEmptyValuesFilter,
         FilterInterface $productModelEmptyValuesFilter
     ) {
-        // TODO: add a test where values are actually filtered
-        $productEmptyValuesFilter->filter(
-            Argument::type(ProductInterface::class),
-            Argument::type('array')
-        )->will(function (array $args): array {
-            return $args[1];
-        }
-        );
-
-        $productModelEmptyValuesFilter->filter(
-            Argument::type(EntityWithValuesInterface::class),
-            Argument::type('array')
-        )->will(function (array $args): array {
-            return $args[1];
-        }
-        );
-
         $this->beConstructedWith(
             $productValidator,
             $productModelValidator,
@@ -72,6 +55,7 @@ class EditAttributesProcessorSpec extends ObjectBehavior
         ObjectUpdaterInterface $productUpdater,
         IdentifiableObjectRepositoryInterface $attributeRepository,
         CheckAttributeEditable $checkAttributeEditable,
+        FilterInterface $productEmptyValuesFilter,
         ProductInterface $product,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
@@ -83,21 +67,15 @@ class EditAttributesProcessorSpec extends ObjectBehavior
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filters')->willReturn([]);
+        $values = [
+            'number' => [['scope' => null, 'locale' => null, 'data' => '2.5']],
+        ];
         $jobParameters->get('actions')->willReturn([[
-                'normalized_values' => [
-                    'number' => [
-                        [
-                            'scope' => null,
-                            'locale' => null,
-                            'data' => '2.5'
-                        ]
-                    ]
-                ],
-                'ui_locale'         => 'fr_FR',
-                'attribute_locale'  => 'en_US',
-                'attribute_channel' => null
-            ]]);
-
+            'normalized_values' => $values,
+            'ui_locale'         => 'fr_FR',
+            'attribute_locale'  => 'en_US',
+            'attribute_channel' => null
+        ]]);
 
         $violations = new ConstraintViolationList([]);
         $productValidator->validate($product)->willReturn($violations);
@@ -105,6 +83,8 @@ class EditAttributesProcessorSpec extends ObjectBehavior
 
         $attributeRepository->findOneByIdentifier('number')->willReturn($attribute);
         $checkAttributeEditable->isEditable($product, $attribute)->willReturn(true);
+
+        $productEmptyValuesFilter->filter($product, ['values' => $values])->willReturn(['values' => $values]);
 
         $productUpdater->update($product, [
             'values' => [
@@ -121,11 +101,55 @@ class EditAttributesProcessorSpec extends ObjectBehavior
         $this->process($product)->shouldReturn($product);
     }
 
+    function it_filters_values_to_products_attributes(
+        ValidatorInterface $productValidator,
+        ObjectUpdaterInterface $productUpdater,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        CheckAttributeEditable $checkAttributeEditable,
+        FilterInterface $productEmptyValuesFilter,
+        ProductInterface $product,
+        StepExecution $stepExecution,
+        JobExecution $jobExecution,
+        JobParameters $jobParameters,
+        AttributeInterface $attribute
+    ) {
+        $this->setStepExecution($stepExecution);
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn([]);
+        $values = [
+            'number' => [['scope' => null, 'locale' => null, 'data' => '2.5']],
+        ];
+        $jobParameters->get('actions')->willReturn([[
+            'normalized_values' => $values,
+            'ui_locale'         => 'fr_FR',
+            'attribute_locale'  => 'en_US',
+            'attribute_channel' => null
+        ]]);
+
+        $violations = new ConstraintViolationList([]);
+        $productValidator->validate($product)->willReturn($violations);
+        $product->getId()->willReturn(10);
+
+        $attributeRepository->findOneByIdentifier('number')->willReturn($attribute);
+        $checkAttributeEditable->isEditable($product, $attribute)->willReturn(true);
+
+        $productEmptyValuesFilter->filter($product, ['values' => $values])->willReturn(['values' => []]);
+
+        $productUpdater->update($product, Argument::any())->shouldNotBeCalled();
+
+        $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalled();
+
+        $this->process($product)->shouldReturn(null);
+    }
+
     function it_skips_invalid_products(
         $productValidator,
         $productUpdater,
         $attributeRepository,
         $checkAttributeEditable,
+        FilterInterface $productEmptyValuesFilter,
         ProductInterface $product,
         ConstraintViolationListInterface $violations,
         StepExecution $stepExecution,
@@ -138,16 +162,11 @@ class EditAttributesProcessorSpec extends ObjectBehavior
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filters')->willReturn([]);
+        $values = [
+            'categories' => [['scope' => null, 'locale' => null, 'data' => ['office', 'bedroom']]]
+        ];
         $jobParameters->get('actions')->willReturn([[
-                'normalized_values' => [
-                    'categories' => [
-                        [
-                            'scope' => null,
-                            'locale' => null,
-                            'data' => ['office', 'bedroom']
-                        ]
-                    ]
-                ],
+                'normalized_values' => $values,
                 'ui_locale'         => 'fr_FR',
                 'attribute_locale'  => 'en_US',
                 'attribute_channel' => null
@@ -162,6 +181,8 @@ class EditAttributesProcessorSpec extends ObjectBehavior
 
         $attributeRepository->findOneByIdentifier('categories')->willReturn($attribute);
         $checkAttributeEditable->isEditable($product, $attribute)->willReturn(true);
+
+        $productEmptyValuesFilter->filter($product, ['values' => $values])->willReturn(['values' => $values]);
 
         $productUpdater->update($product, [
             'values' => [
@@ -187,6 +208,7 @@ class EditAttributesProcessorSpec extends ObjectBehavior
         $productModelUpdater,
         $attributeRepository,
         $checkAttributeEditable,
+        FilterInterface $productModelEmptyValuesFilter,
         ProductModelInterface $productModel,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
@@ -198,17 +220,12 @@ class EditAttributesProcessorSpec extends ObjectBehavior
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filters')->willReturn([]);
+        $values = [
+            'number' => [['scope'  => null, 'locale' => null, 'data'   => '2.5']]
+        ];
         $jobParameters->get('actions')->willReturn([
             [
-                'normalized_values' => [
-                    'number' => [
-                        [
-                            'scope'  => null,
-                            'locale' => null,
-                            'data'   => '2.5',
-                        ],
-                    ],
-                ],
+                'normalized_values' => $values,
                 'ui_locale'         => 'fr_FR',
                 'attribute_locale'  => 'en_US',
                 'attribute_channel' => null,
@@ -221,6 +238,8 @@ class EditAttributesProcessorSpec extends ObjectBehavior
 
         $attributeRepository->findOneByIdentifier('number')->willReturn($attribute);
         $checkAttributeEditable->isEditable($productModel, $attribute)->willReturn(true);
+
+        $productModelEmptyValuesFilter->filter($productModel, ['values' => $values])->willReturn(['values' => $values]);
 
         $productModelUpdater->update($productModel, [
             'values' => [
@@ -244,6 +263,7 @@ class EditAttributesProcessorSpec extends ObjectBehavior
         $productUpdater,
         $attributeRepository,
         $checkAttributeEditable,
+        FilterInterface $productModelEmptyValuesFilter,
         EntityWithFamilyInterface $entityWithFamily,
         ConstraintViolationListInterface $violations,
         StepExecution $stepExecution,
@@ -256,17 +276,12 @@ class EditAttributesProcessorSpec extends ObjectBehavior
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filters')->willReturn([]);
+        $values = [
+            'categories' => [['scope'  => null, 'locale' => null, 'data' => ['office', 'bedroom']]],
+        ];
         $jobParameters->get('actions')->willReturn([
             [
-                'normalized_values' => [
-                    'categories' => [
-                        [
-                            'scope'  => null,
-                            'locale' => null,
-                            'data'   => ['office', 'bedroom'],
-                        ],
-                    ],
-                ],
+                'normalized_values' => $values,
                 'ui_locale'         => 'fr_FR',
                 'attribute_locale'  => 'en_US',
                 'attribute_channel' => null,
@@ -284,6 +299,8 @@ class EditAttributesProcessorSpec extends ObjectBehavior
 
         $this->setStepExecution($stepExecution);
         $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalled();
+
+        $productModelEmptyValuesFilter->filter($entityWithFamily, ['values' => []])->willReturn(['values' => []]);
 
         $this->process($entityWithFamily)->shouldReturn(null);
     }

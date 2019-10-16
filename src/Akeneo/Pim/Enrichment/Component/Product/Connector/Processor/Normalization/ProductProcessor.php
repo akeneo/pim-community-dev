@@ -6,6 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\FilterValues;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingProductModelValues;
+use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
@@ -41,7 +42,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     /** @var BulkMediaFetcher */
     protected $mediaFetcher;
 
-    /** @var FillMissingProductModelValues */
+    /** @var FillMissingValuesInterface */
     protected $fillMissingProductModelValues;
 
     public function __construct(
@@ -49,7 +50,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
         IdentifiableObjectRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
         BulkMediaFetcher $mediaFetcher,
-        FillMissingProductModelValues $fillMissingProductModelValues
+        FillMissingValuesInterface $fillMissingProductModelValues
     ) {
         $this->normalizer          = $normalizer;
         $this->channelRepository   = $channelRepository;
