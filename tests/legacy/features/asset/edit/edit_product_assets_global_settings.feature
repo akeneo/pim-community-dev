@@ -58,7 +58,7 @@ Feature: Edit product assets properties
     Given I am on the "blue_shirt" asset page
     And I visit the "Properties" tab
     When I fill the following text in the "Tags" select2 : back
-    Then I should see the text "back less"
+    Then I should see the text "backless"
 
   @unstable
   Scenario: Successfully edit the end of use at of an asset
