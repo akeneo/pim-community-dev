@@ -30,7 +30,7 @@ class SavingProductModelDescendantsIntegration extends TestCase
 
         $this->authenticateUserAdmin();
 
-        $this->launcher = new JobLauncher(static::$kernel);
+        $this->jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
     }
 
     public function testIndexingProductModelDescendantsOnUnitarySave()

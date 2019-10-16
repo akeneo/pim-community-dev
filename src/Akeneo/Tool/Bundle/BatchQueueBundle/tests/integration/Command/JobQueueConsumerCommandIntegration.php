@@ -35,7 +35,7 @@ class JobQueueConsumerCommandIntegration extends TestCase
         $jobInstanceSaver = $this->get('akeneo_batch.saver.job_instance');
         $jobInstanceSaver->save($jobInstance);
 
-        $this->jobLauncher = new JobLauncher(static::$kernel);
+        $this->jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
     }
 
     public function testLaunchAJobExecution()
