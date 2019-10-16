@@ -58,7 +58,7 @@ class AppCommand extends ContainerAwareCommand
         $this->createAppHandler->handle(new CreateAppCommand(
             AppCode::create('Bynder'),
             AppLabel::create('Bynder DAM'),
-            FlowType::create(FlowType::OTHERS)
+            FlowType::create(FlowType::OTHER)
         ));
 
         $apps = $this->fetchAppsHandler->query();
