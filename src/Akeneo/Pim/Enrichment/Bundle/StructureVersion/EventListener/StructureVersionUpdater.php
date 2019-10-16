@@ -36,26 +36,41 @@ class StructureVersionUpdater implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            StorageEvents::POST_SAVE => 'onPostDBCreate'
+            StorageEvents::POST_SAVE => 'onPostSave',
+            StorageEvents::POST_SAVE_ALL => 'onPostSaveAll',
         ];
     }
 
 
-    public function onPostDBCreate(GenericEvent $event)
+    public function onPostSave(GenericEvent $event)
     {
         if ($event->getSubject() instanceof ProductInterface || $event->getSubject() instanceof ProductModelInterface) {
             return;
         }
 
+        if ($event->hasArgument('unitary') && $event->getArgument('unitary')) {
+            $this->replaceVersionLastUpdate($event);
+        }
+    }
+
+    public function onPostSaveAll(GenericEvent $event)
+    {
+        if ($event->getSubject() instanceof ProductInterface || $event->getSubject() instanceof ProductModelInterface) {
+            return;
+        }
+
+        $this->replaceVersionLastUpdate($event);
+    }
+
+    private function replaceVersionLastUpdate(GenericEvent $event): void
+    {
         $sql = <<<'SQL'
-REPLACE INTO akeneo_structure_version_last_update SET resource_name = :resource_name, last_update = :last_update;
+REPLACE INTO akeneo_structure_version_last_update SET resource_name = :resource_name, last_update = now();
 SQL;
 
         $connection = $this->doctrine->getConnection();
-        $now = $connection->convertToDatabaseValue(new \DateTime(), 'datetime');
-        $connection->executeUpdate(
-            $sql,
-            ['resource_name' => ClassUtils::getClass($event->getSubject()), 'last_update' => $now]
-        );
+        $connection->executeUpdate($sql, [
+            'resource_name' => ClassUtils::getClass($event->getSubject()),
+        ]);
     }
 }
