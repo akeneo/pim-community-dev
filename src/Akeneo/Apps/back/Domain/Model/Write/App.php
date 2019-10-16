@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Domain\Model\Write;
 
+use Akeneo\Apps\Domain\Model\ClientId;
+
 /**
  * @author Romain Monceau <romain@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -11,28 +13,35 @@ namespace Akeneo\Apps\Domain\Model\Write;
  */
 class App
 {
-
+    /** @var AppCode */
     private $code;
 
+    /** @var AppLabel */
     private $label;
 
+    /** @var FlowType */
     private $flowType;
 
-    public function __construct(AppCode $code, AppLabel $label, FlowType $flowType)
+    /** @var ClientId */
+    private $clientId;
+
+    private function __construct(AppCode $code, AppLabel $label, FlowType $flowType, ClientId $clientId)
     {
         $this->code = $code;
         $this->label = $label;
         $this->flowType = $flowType;
+        $this->clientId = $clientId;
     }
 
-    public static function create(AppCode $appCode, AppLabel $label, FlowType $flowType): self
+    public static function create(AppCode $appCode, AppLabel $label, FlowType $flowType, ClientId $clientId): self
     {
         // TODO: Validation + Id Generation
 
         return new self(
             $appCode,
             $label,
-            $flowType
+            $flowType,
+            $clientId
         );
     }
 
@@ -49,5 +58,10 @@ class App
     public function flowType(): FlowType
     {
         return $this->flowType;
+    }
+
+    public function clientId(): ClientId
+    {
+        return $this->clientId;
     }
 }
