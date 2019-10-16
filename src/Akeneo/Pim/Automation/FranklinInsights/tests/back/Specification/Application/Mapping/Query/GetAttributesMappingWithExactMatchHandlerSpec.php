@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingByFamilyHandler;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingWithSuggestionsHandler;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingWithSuggestionsQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingWithExactMatchHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingWithExactMatchQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Service\DataProcessor\ApplyAttributeExactMatches;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Service\DataProcessor\SuggestExactMatchAttributesFromOtherFamilies;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMappingCollection;
@@ -26,7 +26,7 @@ use Prophecy\Argument;
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class GetAttributesMappingWithSuggestionsHandlerSpec extends ObjectBehavior
+class GetAttributesMappingWithExactMatchHandlerSpec extends ObjectBehavior
 {
     public function let(
         GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler,
@@ -38,7 +38,7 @@ class GetAttributesMappingWithSuggestionsHandlerSpec extends ObjectBehavior
 
     public function it_is_a_get_attributes_mapping_with_suggestions_query_handler(): void
     {
-        $this->shouldHaveType(GetAttributesMappingWithSuggestionsHandler::class);
+        $this->shouldHaveType(GetAttributesMappingWithExactMatchHandler::class);
     }
 
     public function it_handles_a_get_attributes_mapping(
@@ -50,7 +50,7 @@ class GetAttributesMappingWithSuggestionsHandlerSpec extends ObjectBehavior
     ): void
     {
         $familyCode = new FamilyCode('family_code');
-        $query = new GetAttributesMappingWithSuggestionsQuery($familyCode);
+        $query = new GetAttributesMappingWithExactMatchQuery($familyCode);
 
         $getAttributesMappingByFamilyHandler->handle(Argument::any())
             ->willReturn($attributeMappingCollection);

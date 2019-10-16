@@ -1,7 +1,7 @@
 {
   "_links": {
     "map-attributes": {
-      "href": "/api/mapping/headphones/attributes",
+      "href": "/api/mapping/router_exact_match/attributes",
       "type": "application/prs.hal-forms+json"
     }
   },
@@ -9,7 +9,7 @@
     "map-attributes": {
       "_links": {
         "self": {
-          "href": "/api/mapping/headphones/attributes"
+          "href": "/api/mapping/router_exact_match/attributes"
         }
       },
       "_templates": {
@@ -39,7 +39,8 @@
       ],
       "status": "pending",
       "suggestions": []
-    }, {
+    },
+    {
       "from": {
         "id": "color",
         "label": {
@@ -48,16 +49,40 @@
         "type": "multiselect"
       },
       "to": {
-        "id": "product color"
+        "id": "color"
       },
       "summary": [
         "blue",
         "red"
       ],
       "status": "active",
-      "suggestions": [
-        "color"
-      ]
+      "suggestions": []
+    },
+    {
+      "from": {
+        "id": "label",
+        "label": {
+          "en_us": "Label"
+        },
+        "type": "text"
+      },
+      "to": null,
+      "summary": [],
+      "status": "pending",
+      "suggestions": []
+    },
+    {
+      "from": {
+        "id": "connectivity",
+        "label": {
+          "en_us": "Connectivity"
+        },
+        "type": "text"
+      },
+      "to": null,
+      "summary": [],
+      "status": "pending",
+      "suggestions": []
     }
   ]
 }

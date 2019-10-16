@@ -20,7 +20,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\At
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class GetAttributesMappingWithSuggestionsHandler
+class GetAttributesMappingWithExactMatchHandler
 {
     private $getAttributesMappingByFamilyHandler;
 
@@ -38,7 +38,7 @@ class GetAttributesMappingWithSuggestionsHandler
         $this->suggestExactMatchAttributesFromOtherFamilies = $suggestExactMatchAttributesFromOtherFamilies;
     }
 
-    public function handle(GetAttributesMappingWithSuggestionsQuery $query): AttributeMappingCollection
+    public function handle(GetAttributesMappingWithExactMatchQuery $query): AttributeMappingCollection
     {
         $familyCode = $query->getFamilyCode();
         $attributeMappingCollection = $this->getAttributesMappingByFamilyHandler->handle(

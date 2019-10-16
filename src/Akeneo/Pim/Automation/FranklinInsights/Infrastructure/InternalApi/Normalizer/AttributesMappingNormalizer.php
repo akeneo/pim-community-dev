@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer;
 
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMappingCollection;
 
 /**
@@ -37,6 +36,7 @@ class AttributesMappingNormalizer
                 'status' => $attribute->getStatus(),
                 'exactMatchAttributeFromOtherFamily' => $attribute->getExactMatchAttributeFromOtherFamily(),
                 'canCreateAttribute' =>$attribute->canCreateAttribute(),
+                'suggestions' => $attribute->getSuggestions(),
             ];
         }
 

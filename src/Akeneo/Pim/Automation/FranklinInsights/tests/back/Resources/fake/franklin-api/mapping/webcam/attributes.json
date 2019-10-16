@@ -37,7 +37,8 @@
         "true",
         "strixos"
       ],
-      "status": "pending"
+      "status": "pending",
+      "suggestions": []
     }
   ]
 }

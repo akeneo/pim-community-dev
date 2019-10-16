@@ -84,7 +84,8 @@ akeneo_franklin_insights:
                     family_progress:
                         title: 'Number of mapped attributes'
                         description: "Use this bar to see at a glance your work status"
-                        mapped_attribute_count: '{{ count }} mapped attributes'
+                        mapped_attribute: '{{ mapped_count }} attributes <span class="family-progress-mapped">mapped</span> and {{ suggested_count }} <span class="family-progress-suggested">suggested</span>'
+                    suggested: Suggested
                 toolbar:
                     bulk_create_attribute: Create attribute
                     bulk_add_to_family: Add to family

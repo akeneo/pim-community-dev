@@ -1,7 +1,7 @@
 {
   "_links": {
     "map-attributes": {
-      "href": "/api/mapping/headphones/attributes",
+      "href": "/api/mapping/router/attributes",
       "type": "application/prs.hal-forms+json"
     }
   },
@@ -9,7 +9,7 @@
     "map-attributes": {
       "_links": {
         "self": {
-          "href": "/api/mapping/headphones/attributes"
+          "href": "/api/mapping/router/attributes"
         }
       },
       "_templates": {
@@ -38,8 +38,12 @@
         "12kg"
       ],
       "status": "pending",
-      "suggestions": []
-    }, {
+      "suggestions": [
+        "weight",
+        "item_weight"
+      ]
+    },
+    {
       "from": {
         "id": "color",
         "label": {
@@ -48,7 +52,7 @@
         "type": "multiselect"
       },
       "to": {
-        "id": "product color"
+        "id": "color"
       },
       "summary": [
         "blue",
@@ -56,8 +60,34 @@
       ],
       "status": "active",
       "suggestions": [
-        "color"
+        "secondary_color"
       ]
+    },
+    {
+      "from": {
+        "id": "label",
+        "label": {
+          "en_us": "Label"
+        },
+        "type": "text"
+      },
+      "to": null,
+      "summary": [],
+      "status": "pending",
+      "suggestions": []
+    },
+    {
+      "from": {
+        "id": "warranty",
+        "label": {
+          "en_us": "Warranty"
+        },
+        "type": "text"
+      },
+      "to": null,
+      "summary": [],
+      "status": "pending",
+      "suggestions": []
     }
   ]
 }

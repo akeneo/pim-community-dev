@@ -37,7 +37,8 @@
         "23kg",
         "12kg"
       ],
-      "status": "pending"
+      "status": "pending",
+      "suggestions": []
     },
     {
       "from": {
@@ -54,7 +55,8 @@
         "blue",
         "red"
       ],
-      "status": "active"
+      "status": "active",
+      "suggestions": []
     },
     {
       "from": {
@@ -66,7 +68,8 @@
       },
       "to": null,
       "summary": [],
-      "status": "pending"
+      "status": "pending",
+      "suggestions": []
     },
     {
       "from": {
@@ -78,7 +81,8 @@
       },
       "to": null,
       "summary": [],
-      "status": "pending"
+      "status": "pending",
+      "suggestions": []
     }
   ]
 }

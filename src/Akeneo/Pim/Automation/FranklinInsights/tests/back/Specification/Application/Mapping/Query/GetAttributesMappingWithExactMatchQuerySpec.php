@@ -13,19 +13,19 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query;
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingWithSuggestionsQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingWithExactMatchQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use PhpSpec\ObjectBehavior;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class GetAttributesMappingWithSuggestionsQuerySpec extends ObjectBehavior
+class GetAttributesMappingWithExactMatchQuerySpec extends ObjectBehavior
 {
     public function it_is_a_get_attributes_mapping_with_suggestion_query(): void
     {
         $this->beConstructedWith(new FamilyCode('camcorders'));
-        $this->shouldHaveType(GetAttributesMappingWithSuggestionsQuery::class);
+        $this->shouldHaveType(GetAttributesMappingWithExactMatchQuery::class);
     }
 
     public function it_returns_the_family_code(): void

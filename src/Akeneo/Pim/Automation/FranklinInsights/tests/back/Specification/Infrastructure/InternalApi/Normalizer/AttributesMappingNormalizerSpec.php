@@ -47,7 +47,9 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
                 'metric',
                 'height',
                 AttributeMappingStatus::ATTRIBUTE_ACTIVE,
-                ['1m', '2.8m']
+                ['1m', '2.8m'],
+                [],
+                null
             ))
             ->addAttribute(new AttributeMapping(
                 'product_width',
@@ -56,6 +58,7 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
                 null,
                 AttributeMappingStatus::ATTRIBUTE_PENDING,
                 ['0.5m', '1.2m'],
+                ['width', 'size_width'],
                 'width'
             ));
 
@@ -71,6 +74,7 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
                 'status' => AttributeMappingStatus::ATTRIBUTE_PENDING,
                 'exactMatchAttributeFromOtherFamily' => null,
                 'canCreateAttribute' => true,
+                'suggestions' => [],
             ],
             'product_width' => [
                 'franklinAttribute' => [
@@ -83,6 +87,7 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
                 'status' => AttributeMappingStatus::ATTRIBUTE_PENDING,
                 'exactMatchAttributeFromOtherFamily' => 'width',
                 'canCreateAttribute' => false,
+                'suggestions' => ['width', 'size_width'],
             ],
             'product_height' => [
                 'franklinAttribute' => [
@@ -95,6 +100,7 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
                 'status' => AttributeMappingStatus::ATTRIBUTE_ACTIVE,
                 'exactMatchAttributeFromOtherFamily' => null,
                 'canCreateAttribute' => false,
+                'suggestions' => [],
             ],
         ];
 
@@ -127,6 +133,7 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
                 'status' => AttributeMappingStatus::ATTRIBUTE_PENDING,
                 'exactMatchAttributeFromOtherFamily' => null,
                 'canCreateAttribute' => true,
+                'suggestions' => [],
             ],
         ];
 

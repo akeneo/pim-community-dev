@@ -1,5 +1,5 @@
 {
-    "code": "router",
+    "code": "router_suggestions",
     "attributes": [
         "sku",
         "asin",
@@ -15,13 +15,15 @@
         "release_date",
         "power_device",
         "color",
+        "secondary_color",
         "weight",
+        "item_weight",
         "specifications"
     ],
     "attribute_as_label": "name",
     "attribute_as_image": "picture",
     "labels": {
-        "en_US": "Routers",
+        "en_US": "Routers for suggestions tests",
         "fr_FR": "Routeurs"
     }
 }

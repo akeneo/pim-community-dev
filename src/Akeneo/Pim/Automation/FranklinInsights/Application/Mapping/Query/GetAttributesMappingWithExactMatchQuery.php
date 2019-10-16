@@ -18,7 +18,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class GetAttributesMappingWithSuggestionsQuery
+class GetAttributesMappingWithExactMatchQuery
 {
     /** @var FamilyCode */
     private $familyCode;

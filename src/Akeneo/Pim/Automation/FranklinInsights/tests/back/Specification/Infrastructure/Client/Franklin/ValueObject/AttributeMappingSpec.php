@@ -34,6 +34,7 @@ class AttributeMappingSpec extends ObjectBehavior
             'type' => 'metric',
             'summary' => ['23kg',  '12kg'],
             'status' => 'pending',
+            'suggestions' => ['weight']
         ]);
     }
 
@@ -81,6 +82,11 @@ class AttributeMappingSpec extends ObjectBehavior
         $this->getSummary()->shouldReturn(['23kg',  '12kg']);
     }
 
+    public function it_gives_suggestions()
+    {
+        $this->getSuggestions()->shouldReturn(['weight']);
+    }
+
     public function it_throws_an_exception_if_some_fields_are_missing(): void
     {
         $this->beConstructedWith([]);
@@ -124,5 +130,45 @@ class AttributeMappingSpec extends ObjectBehavior
         ]);
 
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
+    public function it_throws_an_exception_if_the_suggestions_are_not_an_array()
+    {
+        $this->beConstructedWith([
+            'from' => [
+                'id' => 'product_weight',
+                'label' => [
+                    'en_us' => 'Product Weight',
+                ],
+            ],
+            'to' => ['id' => 'color'],
+            'type' => 'metric',
+            'summary' => ['23kg',  '12kg'],
+            'status' => 'pending',
+            'suggestions' => 'weight'
+        ]);
+
+        $this->shouldThrow(new \InvalidArgumentException('The property "suggestions" is not an array'))->duringInstantiation();
+    }
+
+    public function it_throws_an_exception_if_the_suggestions_are_malformed()
+    {
+        $this->beConstructedWith([
+            'from' => [
+                'id' => 'product_weight',
+                'label' => [
+                    'en_us' => 'Product Weight',
+                ],
+            ],
+            'to' => ['id' => 'color'],
+            'type' => 'metric',
+            'summary' => ['23kg',  '12kg'],
+            'status' => 'pending',
+            'suggestions' => [
+                ['id' => 'weight']
+            ]
+        ]);
+
+        $this->shouldThrow(new \InvalidArgumentException('The property "suggestions" is malformed'))->duringInstantiation();
     }
 }

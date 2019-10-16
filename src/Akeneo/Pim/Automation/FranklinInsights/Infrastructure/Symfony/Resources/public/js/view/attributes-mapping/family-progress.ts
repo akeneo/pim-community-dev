@@ -26,9 +26,17 @@ class FamilyProgress extends View {
   }
 
   public render() {
-    const {attributeCount, mappedAttributeCount} = this.getFormData() as AttributesMapping;
+    const {attributeCount, mappedAttributeCount, suggestedAttributeCount} = this.getFormData() as AttributesMapping;
 
-    this.$el.html(this.template({__, attributeCount, mappedAttributeCount}));
+    const progressBarTitle = __(
+      'akeneo_franklin_insights.entity.attributes_mapping.module.index.family_progress.mapped_attribute',
+      {
+        mapped_count: `${mappedAttributeCount}/${attributeCount}`,
+        suggested_count: `${suggestedAttributeCount}/${attributeCount}`
+      }
+    );
+
+    this.$el.html(this.template({__, attributeCount, mappedAttributeCount, suggestedAttributeCount, progressBarTitle}));
 
     return super.render();
   }

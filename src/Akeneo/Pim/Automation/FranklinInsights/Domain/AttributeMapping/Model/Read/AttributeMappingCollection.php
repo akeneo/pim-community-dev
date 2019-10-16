@@ -79,7 +79,9 @@ class AttributeMappingCollection implements \IteratorAggregate
             $attributeMapping->getTargetAttributeType(),
             $pimAttributeCode,
             $pimAttributeCode === null ? AttributeMappingStatus::ATTRIBUTE_PENDING : AttributeMappingStatus::ATTRIBUTE_ACTIVE,
-            $attributeMapping->getSummary()
+            $attributeMapping->getSummary(),
+            $attributeMapping->getSuggestions(),
+            null
         );
 
         $this->attributes[$targetAttributeCode] = $newAttributeMapping;
@@ -98,6 +100,7 @@ class AttributeMappingCollection implements \IteratorAggregate
             $attributeMapping->getPimAttributeCode(),
             $attributeMapping->getStatus(),
             $attributeMapping->getSummary(),
+            $attributeMapping->getSuggestions(),
             $pimAttributeCode
         );
 

@@ -68,7 +68,8 @@ class AttributesMappingProvider extends AbstractProvider implements AttributesMa
                 $attribute->getTargetAttributeType(),
                 $attribute->getPimAttributeCode(),
                 $attribute->getStatus(),
-                $attribute->getSummary()
+                $attribute->getSummary(),
+                $attribute->getSuggestions()
             );
             $attributesMapping->addAttribute($attribute);
         }

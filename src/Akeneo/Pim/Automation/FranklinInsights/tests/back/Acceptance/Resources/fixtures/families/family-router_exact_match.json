@@ -1,5 +1,5 @@
 {
-    "code": "router",
+    "code": "router_exact_match",
     "attributes": [
         "sku",
         "asin",
@@ -16,7 +16,8 @@
         "power_device",
         "color",
         "weight",
-        "specifications"
+        "specifications",
+        "connectivity"
     ],
     "attribute_as_label": "name",
     "attribute_as_image": "picture",

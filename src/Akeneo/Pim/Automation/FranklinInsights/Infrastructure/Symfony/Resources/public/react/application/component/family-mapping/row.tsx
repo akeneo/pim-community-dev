@@ -111,6 +111,8 @@ export const Row = ({franklinAttributeCode, mapping}: Props) => {
         <div className={'AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline'}>
           <AttributeSelector
             selectedAttributeCode={mapping.attribute || undefined}
+            suggestedAttributeCodes={mapping.suggestions}
+            franklinAttributeCode={franklinAttributeCode}
             onSelect={handleSelectAttribute}
             hasError={isAttributeAlreadyMapped}
           />
