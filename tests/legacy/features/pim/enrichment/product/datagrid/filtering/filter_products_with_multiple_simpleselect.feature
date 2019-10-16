@@ -19,18 +19,18 @@ Feature: Filter products with multiples simpleselect filters
     And the following products:
       | sku    | family    | company   | color |
       | BOOK   | library   |           |       |
-      | MUG-1  | furniture | canonical | green |
-      | MUG-2  | furniture | suze      | green |
-      | MUG-3  | furniture | debian    | green |
-      | MUG-4  | furniture | canonical | black |
-      | MUG-5  | furniture | suze      | black |
-      | POST-1 | furniture | suze      |       |
-      | POST-2 | furniture | canonical |       |
-      | POST-3 | furniture | debian    |       |
+      | MUG-1  | furniture | Canonical | Green |
+      | MUG-2  | furniture | Suze      | Green |
+      | MUG-3  | furniture | Debian    | Green |
+      | MUG-4  | furniture | Canonical | Black |
+      | MUG-5  | furniture | Suze      | Black |
+      | POST-1 | furniture | Suze      |       |
+      | POST-2 | furniture | Canonical |       |
+      | POST-3 | furniture | Debian    |       |
     And I am logged in as "Mary"
 
   @critical
-  Scenario: Successfully filter products with the sames attributes
+  Scenario: Successfully filter products with the same attributes
     Given I am on the products grid
     And I show the filter "company"
     And I filter by "company" with operator "in list" and value "Suze"
@@ -41,7 +41,7 @@ Feature: Filter products with multiples simpleselect filters
     And I hide the filter "company"
     And I hide the filter "color"
 
-  Scenario: Successfully filter product without commons attributes
+  Scenario: Successfully filter products without common attribute
     Given I am on the products grid
     And I show the filter "company"
     And I filter by "company" with operator "in list" and value "Debian"

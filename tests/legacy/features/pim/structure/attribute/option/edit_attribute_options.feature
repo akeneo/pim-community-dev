@@ -58,7 +58,7 @@ Feature: Edit attribute options
     And I save the attribute
     And the following product:
       | sku     | colors     |
-      | shoe_42 | Red, Green |
+      | shoe_42 | red, green |
     When I am on the "colors" attribute page
     And I visit the "Options" tab
     And I edit the following attribute option:
