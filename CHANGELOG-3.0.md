@@ -1,8 +1,19 @@
 # 3.0.x
 
+# 3.0.46 (2019-10-16)
+
 ## Bug fixes
 
-- PIM-8769: Fix 'SKU' filter disappearing from the filter options
+- PIM-8369: Remove flex from families dropdown css
+- PIM-8585: fix incorrect displayed order in attributes groups
+
+# 3.0.45 (2019-10-04)
+
+## Bug fixes
+
+- PIM-8331: Fix display of category tree in the product grid when user does not have access to its default tree
+- PIM-8852: Locale specific and localized metric attribute is well displayed in product edit form.
+- PIM-8865: Forbid category codes (add case insensitive option)
 
 # 3.0.44 (2019-10-02)
 

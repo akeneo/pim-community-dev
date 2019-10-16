@@ -84,11 +84,16 @@ class FileController
 
         $fileType = $this->fileTypeGuesser->guess($fileInfo->getMimeType());
 
-        if (FileTypes::IMAGE === $fileType) {
-            try {
-                return $this->imagineController->filterAction($request, $filename, $filter);
-            } catch (\Exception $exception) {
-                return $this->renderDefaultImage(FileTypes::IMAGE, $filter);
+        if (self::DEFAULT_IMAGE_KEY !== $filename) {
+            $fileType = $this->fileTypeGuesser->guess($this->getMimeType($filename));
+
+            $result = $this->renderDefaultImage($fileType, $filter);
+            if (FileTypes::IMAGE === $fileType) {
+                try {
+                    $result = $this->imagineController->filterAction($request, $filename, $filter);
+                } catch (NotFoundHttpException|\RuntimeException $exception) {
+                    $result = $this->renderDefaultImage(FileTypes::IMAGE, $filter);
+                }
             }
         }
 

@@ -134,11 +134,12 @@ define([
                     )
                 ).then((channels, attributeGroups) => {
                     this.channels = channels;
-                    const groupedAttributes = _.groupBy(data.attributes, 'group');
 
-                    _.sortBy(groupedAttributes, (attributes, group) => {
-                        return _.findWhere(attributeGroups, {code: group}).sort_order;
+                    const sortedAttributes = _.sortBy(data.attributes, (attribute) => {
+                       return _.findWhere(attributeGroups, {code: attribute.group}).sort_order;
                     });
+
+                    const groupedAttributes = _.groupBy(sortedAttributes, 'group');
 
                     _.each(groupedAttributes, (attributes, group) => {
                         attributes = _.sortBy(attributes, (attribute) => attribute.sort_order);
@@ -156,7 +157,7 @@ define([
 
                             return group;
                         }),
-                        colspan: (this.channels.length + 2),
+                        colspan: (this.channels.length + 1),
                         i18n: i18n,
                         identifierAttributeType: this.identifierAttributeType,
                         catalogLocale: this.catalogLocale,
@@ -203,7 +204,7 @@ define([
              */
             toggleGroup(event) {
                 const target = event.currentTarget;
-                $(target).find('i').toggleClass('icon-expand-alt icon-collapse-alt');
+                $(target).find('div').toggleClass('AknGrid-expand--expanded');
                 $(target).parent().toggleClass(this.collapsedClass);
 
                 return this;
@@ -306,7 +307,7 @@ define([
                 if (attributeAsLabel === attributeToRemove) {
                     Messenger.notify(
                         'error',
-                        __('pim_enrich.entity.family.flash.update.can_remove_attribute_as_label')
+                        __('pim_enrich.entity.family.flash.update.cant_remove_attribute_as_label')
                     );
 
                     return false;

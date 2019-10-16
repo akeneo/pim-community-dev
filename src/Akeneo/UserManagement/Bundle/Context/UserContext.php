@@ -313,6 +313,14 @@ class UserContext
             'channel'  => $this->getUserChannelCode()
         ];
     }
+    
+    /**
+     * @return CategoryInterface
+     */
+    public function getAccessibleUserTree()
+    {
+        return $this->getUserProductCategoryTree();
+    }
 
     /**
      * Returns the request locale
