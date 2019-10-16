@@ -6,6 +6,7 @@ parameters:
 services:
     pim_catalog.elasticsearch.indexer.product:
         class: '%pim_catalog.elasticsearch.indexer.product.class%'
+        public: true
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@akeneo.pim.enrichment.product.query.get_elasticsearch_product_projection'
