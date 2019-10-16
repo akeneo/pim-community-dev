@@ -96,6 +96,10 @@ class FiltersColumn extends BaseView {
   }
 
   fetchFilters(search?: string | null, page: number = this.page) {
+    if (undefined === this.config.attributeFiltersRoute) {
+      return $.Deferred().resolve([]).promise();
+    }
+
     const locale = this.getLocale();
     const url = Routing.generate(this.config.attributeFiltersRoute);
     return $.get(search ? `${url}?search=${search}&locale=${locale}` : `${url}?page=${page}&locale=${locale}`);
