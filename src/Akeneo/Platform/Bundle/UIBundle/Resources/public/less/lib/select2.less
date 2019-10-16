@@ -104,12 +104,13 @@
   }
 
   .select2-result-label, .select2-no-results {
-    height: @AknSelectLineHeight;
-    padding: 0 6px;
+    line-height: @AknSelectLineHeight;
     min-height: 0;
-    display: flex;
-    align-items: center;
-    flex: 1;
+    overflow: hidden;
+    padding: 0 6px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
 
     .select2-result-label-main {
       flex: 1;
