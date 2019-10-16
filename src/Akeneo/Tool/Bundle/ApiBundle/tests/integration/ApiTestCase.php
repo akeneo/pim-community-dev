@@ -81,6 +81,8 @@ abstract class ApiTestCase extends WebTestCase
         $accessToken = null,
         $refreshToken = null
     ) {
+        $options = array_merge($options, ['debug' => false]);
+
         if (null === $clientId || null === $secret) {
             list($clientId, $secret) = $this->createOAuthClient();
         }
