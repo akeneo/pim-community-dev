@@ -5,6 +5,9 @@ _APPS_YARN_RUN = $(YARN_EXEC) run --cwd=src/Akeneo/Apps/front/
 apps-coupling:
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Apps/back/tests/.php_cd.php src/Akeneo/Apps/back
 
+apps-acceptance:
+    $(PHP_RUN) vendor/bin/behat --strict --config src/Akeneo/Apps/back/tests/Acceptance/behat.yml -vvv
+
 apps-front-tests:
 	$(_APPS_YARN_RUN) jest
 
