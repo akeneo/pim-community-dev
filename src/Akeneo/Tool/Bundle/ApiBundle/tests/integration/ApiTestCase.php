@@ -175,7 +175,7 @@ abstract class ApiTestCase extends WebTestCase
      */
     protected function get(string $service)
     {
-        return static::$kernel->getContainer()->get($service);
+        return self::$container->get($service);
     }
 
     /**
@@ -185,7 +185,7 @@ abstract class ApiTestCase extends WebTestCase
      */
     protected function getParameter(string $parameter)
     {
-        return static::$kernel->getContainer()->getParameter($parameter);
+        return self::$container->getParameter($parameter);
     }
 
     /**
