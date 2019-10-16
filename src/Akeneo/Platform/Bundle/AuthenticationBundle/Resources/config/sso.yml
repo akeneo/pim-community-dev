@@ -46,12 +46,11 @@ services:
     hslavich_onelogin_saml.saml_token_factory:
         class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\SamlTokenFactory'
 
-    akeneo_authentication.sso.firewall_map:
+    security.firewall.map:
         class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\FirewallMap'
-        decorates: 'security.firewall.map'
-        decoration_inner_name: 'security.firewall.map.inner'
         arguments:
-            - '@security.firewall.map.inner'
+            - '@service_container'
+            - []
             - '@akeneo_authentication.sso.configuration.repository'
 
     akeneo_authentication.sso.user.factory:
