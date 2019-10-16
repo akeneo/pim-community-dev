@@ -20,6 +20,7 @@ services:
 
     pim_api.controller.measure_family:
         class: '%pim_api.controller.measure_family.class%'
+        public: true
         arguments:
         - '@pim_api.converter.measure_family'
         - '@pim_api.pagination.parameter_validator'
