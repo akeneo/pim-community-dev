@@ -19,7 +19,7 @@ class InMemoryAppRepository implements AppRepository
 
     public function create(WriteApp $app): void
     {
-        $this->dataRows[] = [
+        $this->dataRows[(string) $app->code()] = [
             'code' => (string) $app->code(),
             'label' => (string) $app->label(),
             'flow_type' => (string) $app->flowType(),
@@ -34,5 +34,22 @@ class InMemoryAppRepository implements AppRepository
         }
 
         return $apps;
+    }
+
+    public function findOneByCode(string $code): ?ReadApp
+    {
+        if (isset($this->dataRows[$code])) {
+            $dataRow = $this->dataRows[$code];
+            return new ReadApp(
+                $dataRow['code'],
+                $dataRow['label'],
+                $dataRow['flow_type']
+            );
+        }
+    }
+
+    public function count(): int
+    {
+        return count($this->dataRows);
     }
 }
