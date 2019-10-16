@@ -49,7 +49,7 @@ class StructureVersionUpdater implements EventSubscriberInterface
         }
 
         if ($event->hasArgument('unitary') && $event->getArgument('unitary')) {
-            $this->replaceVersionLastUpdate($event);
+            $this->replaceVersionLastUpdate(ClassUtils::getClass($event->getSubject()));
         }
     }
 
@@ -59,10 +59,10 @@ class StructureVersionUpdater implements EventSubscriberInterface
             return;
         }
 
-        $this->replaceVersionLastUpdate($event);
+        $this->replaceVersionLastUpdate(ClassUtils::getClass(current($event->getSubject())));
     }
 
-    private function replaceVersionLastUpdate(GenericEvent $event): void
+    private function replaceVersionLastUpdate($subject): void
     {
         $sql = <<<'SQL'
 REPLACE INTO akeneo_structure_version_last_update SET resource_name = :resource_name, last_update = now();
@@ -70,7 +70,7 @@ SQL;
 
         $connection = $this->doctrine->getConnection();
         $connection->executeUpdate($sql, [
-            'resource_name' => ClassUtils::getClass($event->getSubject()),
+            'resource_name' => $subject,
         ]);
     }
 }
