@@ -38,7 +38,7 @@ JSON;
 
         $client = $this->createAuthenticatedClient();
         $search = sprintf('{"updated":[{"operator":">","value":"%s"}]}', $discriminantDatetime->format('Y-m-d H:i:s'));
-        $searchEncoded = rawurlencode($search);
+        $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
 
         $client->request('GET', 'api/rest/v1/products?search=' . $search);
         $response = $client->getResponse();

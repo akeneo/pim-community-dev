@@ -320,4 +320,30 @@ abstract class ApiTestCase extends WebTestCase
 
         return $user;
     }
+
+    /**
+     * See https://github.com/symfony/symfony/commit/76f6c97416aca79e24a5b3e20e182fd6cc064b69...
+     *
+     * @param string $string
+     *
+     * @return string
+     */
+    protected function encodeStringWithSymfonyUrlGeneratorCompatibility(string $string): string
+    {
+        $toReplace = [
+            // RFC 3986 explicitly allows those in the query/fragment to reference other URIs unencoded
+            '%2F' => '/',
+            '%3F' => '?',
+            // reserved chars that have no special meaning for HTTP URIs in a query or fragment
+            // this excludes esp. "&", "=" and also "+" because PHP would treat it as a space (form-encoded)
+            '%40' => '@',
+            '%3A' => ':',
+            '%21' => '!',
+            '%3B' => ';',
+            '%2C' => ',',
+            '%2A' => '*',
+        ];
+
+        return strtr(rawurlencode($string), self::$toReplace);
+    }
 }

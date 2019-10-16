@@ -11,7 +11,7 @@ class FilterLocaleEndToEnd extends ApiTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $searchString = rawurlencode('{"enabled":[{"operator":"=","value":true}]}');
+        $searchString = $this->encodeStringWithSymfonyUrlGeneratorCompatibility('{"enabled":[{"operator":"=","value":true}]}');
         $filterLocaleUrl = sprintf('api/rest/v1/locales?search=%s', $searchString);
         $client->request('GET', $filterLocaleUrl);
 
@@ -69,7 +69,7 @@ class FilterLocaleEndToEnd extends ApiTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $searchString = rawurlencode('{"enabled":[{"operator":"=","value":false}]}');
+        $searchString = $this->encodeStringWithSymfonyUrlGeneratorCompatibility('{"enabled":[{"operator":"=","value":false}]}');
         $filterLocaleUrl = sprintf('api/rest/v1/locales?search=%s', $searchString);
         $client->request('GET', $filterLocaleUrl);
 

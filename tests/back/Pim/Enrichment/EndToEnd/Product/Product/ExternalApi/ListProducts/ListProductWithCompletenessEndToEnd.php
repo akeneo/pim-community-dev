@@ -74,7 +74,7 @@ class ListProductWithCompletenessEndToEnd extends AbstractProductTestCase
 
         $search = '{"completeness":[{"operator":"=","value":100,"scope":"ecommerce"}]}';
         $client->request('GET', 'api/rest/v1/products?scope=ecommerce&locales=en_US&limit=2&search=' . $search);
-        $searchEncoded = rawurlencode($search);
+        $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
         $expected = <<<JSON
 {
     "_links": {
