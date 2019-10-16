@@ -11,7 +11,7 @@ Feature: Publish a product and search for the published product
   Scenario: Successfully search for a published product even if the original product has been modified
     Given the following product:
       | sku       | family  | name-en_US | manufacturer |
-      | my-jacket | jackets | Jackets    | desigual     |
+      | my-jacket | jackets | Jackets    | Desigual     |
     And I edit the "my-jacket" product
     And I press the secondary action "Publish"
     And I confirm the publishing
