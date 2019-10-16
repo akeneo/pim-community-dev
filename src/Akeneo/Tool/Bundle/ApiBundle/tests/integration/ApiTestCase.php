@@ -344,6 +344,6 @@ abstract class ApiTestCase extends WebTestCase
             '%2A' => '*',
         ];
 
-        return strtr(rawurlencode($string), self::$toReplace);
+        return strtr(rawurlencode($string), $toReplace);
     }
 }
