@@ -215,7 +215,7 @@ class SqlGetConnectorProductModelsWithPermissionsIntegration extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->loader = new PermissionFixturesLoader($this->testKernel->getContainer());
+        $this->loader = $this->get('akeneo_integration_tests.loader.permissions');
     }
 
     /**

@@ -50,11 +50,11 @@ final class AttributeOptionRepositoryIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->attributeBuilder = $this->getFromTestContainer('akeneo_ee_integration_tests.builder.attribute');
-        $this->attributeSaver = $this->getFromTestContainer('pim_catalog.saver.attribute');
-        $this->attributeOptionSaver = $this->getFromTestContainer('pim_catalog.saver.attribute_option');
-        $this->attributeOptionUpdater = $this->getFromTestContainer('pim_catalog.updater.attribute_option');
-        $this->attributeOptionRepository = $this->getFromTestContainer(
+        $this->attributeBuilder = $this->get('akeneo_ee_integration_tests.builder.attribute');
+        $this->attributeSaver = $this->get('pim_catalog.saver.attribute');
+        $this->attributeOptionSaver = $this->get('pim_catalog.saver.attribute_option');
+        $this->attributeOptionUpdater = $this->get('pim_catalog.updater.attribute_option');
+        $this->attributeOptionRepository = $this->get(
             'akeneo.pim.automation.franklin_insights.repository.attribute_option'
         );
     }

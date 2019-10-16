@@ -17,7 +17,7 @@ class DeleteVariantProductWithPermissionEndToEnd extends ApiTestCase
     {
         parent::setUp();
 
-        $this->loader = new PermissionFixturesLoader($this->testKernel->getContainer());
+        $this->loader = $this->get('akeneo_integration_tests.loader.permissions');
     }
 
     public function testDeleteNotViewableVariantProduct()
@@ -80,8 +80,8 @@ class DeleteVariantProductWithPermissionEndToEnd extends ApiTestCase
         $client->request('DELETE', 'api/rest/v1/products/' . $identifier, [], [], [], $data);
         Assert::assertSame(Response::HTTP_NO_CONTENT, $client->getResponse()->getStatusCode());
 
-        $this->getFromTestContainer('doctrine')->getManager()->clear();
-        $product = $this->getFromTestContainer('pim_catalog.repository.product')->findOneByIdentifier($identifier);
+        $this->get('doctrine')->getManager()->clear();
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
 
         Assert::assertNull($product);
     }

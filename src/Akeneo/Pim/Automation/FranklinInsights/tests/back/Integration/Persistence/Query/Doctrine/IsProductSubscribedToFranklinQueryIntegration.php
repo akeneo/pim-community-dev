@@ -23,7 +23,7 @@ class IsProductSubscribedToFranklinQueryIntegration extends TestCase
     public function test_is_product_is_subscribed_to_franklin(): void
     {
         $productSubscriptionExist = $this
-            ->getFromTestContainer('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.product_subscriptions_exist')
+            ->get('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.product_subscriptions_exist')
             ->execute([15, 42]);
         $this->assertEquals([15 => false, 42 => false], $productSubscriptionExist);
 
@@ -31,7 +31,7 @@ class IsProductSubscribedToFranklinQueryIntegration extends TestCase
         $this->insertSubscription(42);
 
         $productSubscriptionExist = $this
-            ->getFromTestContainer('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.product_subscriptions_exist')
+            ->get('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.product_subscriptions_exist')
             ->execute([15, 42]);
         $this->assertEquals([15 => true, 42 => true], $productSubscriptionExist);
     }
@@ -47,7 +47,7 @@ class IsProductSubscribedToFranklinQueryIntegration extends TestCase
 INSERT INTO pimee_franklin_insights_subscription(subscription_id, product_id, misses_mapping, requested_asin, requested_upc, requested_brand, requested_mpn)
 VALUES (:subscriptionId, :productId, 0, null, null, null, null);
 SQL;
-        $this->getFromTestContainer('database_connection')->executeQuery($sql, [
+        $this->get('database_connection')->executeQuery($sql, [
             'subscriptionId' => uniqid(),
             'productId' => $productId,
         ]);

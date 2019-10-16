@@ -11,6 +11,7 @@
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Symfony\Command;
 
+use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\Installer\AssetsInstaller;
 use Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\Installer\FixturesInstaller;
@@ -39,19 +40,14 @@ class InstallerCommand extends Command implements EventSubscriberInterface
     /** @var AssetsInstaller */
     private $assetInstaller;
 
-    /** @var string */
-    private $catalogName;
-
     public function __construct(
         FixturesInstaller $fixturesInstaller,
-        AssetsInstaller $assetInstaller,
-        string $catalogName
+        AssetsInstaller $assetInstaller
     ) {
         parent::__construct(self::RESET_FIXTURES_COMMAND_NAME);
 
         $this->fixturesInstaller = $fixturesInstaller;
         $this->assetInstaller = $assetInstaller;
-        $this->catalogName = $catalogName;
     }
 
     /**
@@ -82,9 +78,9 @@ class InstallerCommand extends Command implements EventSubscriberInterface
         $this->fixturesInstaller->createSchema();
     }
 
-    public function loadFixtures(): void
+    public function loadFixtures(InstallerEvent $event): void
     {
-        $this->fixturesInstaller->loadCatalog($this->catalogName);
+        $this->fixturesInstaller->loadCatalog($event->getArgument('catalog'));
     }
 
     public function installAssets(GenericEvent $event): void

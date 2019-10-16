@@ -3,11 +3,14 @@
 namespace AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\VariantProduct;
 
 use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use PHPUnit\Framework\Assert;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\PermissionFixturesLoader;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class UpsertVariantProductWithPermissionEndToEnd extends ApiTestCase
 {
@@ -18,7 +21,7 @@ class UpsertVariantProductWithPermissionEndToEnd extends ApiTestCase
     {
         parent::setUp();
 
-        $this->loader = new PermissionFixturesLoader($this->testKernel->getContainer());
+        $this->loader = $this->get('akeneo_integration_tests.loader.permissions');
     }
 
     /**
@@ -88,7 +91,7 @@ JSON;
         ];
 
 
-        $this->assertSameProduct($expectedProduct, 'variant_product');
+        $this->assertSameProductWithoutPermission($expectedProduct, 'variant_product');
     }
 
     /**
@@ -178,7 +181,7 @@ JSON;
             'associations'  => [],
         ];
 
-        $this->assertSameProduct($expectedProduct, 'variant_product');
+        $this->assertSameProductWithoutPermission($expectedProduct, 'variant_product');
     }
 
     /**
@@ -203,9 +206,11 @@ SQL;
             ['code' => 'edit_category'],
         ]);
 
-        $this->getFromTestContainer('doctrine')->getManager()->clear();
+        $this->get('doctrine')->getManager()->clear();
+        $this->get('akeneo_integration_tests.security.system_user_authenticator')->createSystemUser();
+
         $product = $this
-            ->getFromTestContainer('pim_catalog.repository.product')
+            ->get('pim_catalog.repository.product')
             ->findOneByIdentifier('colored_sized_sweat_own');
 
         $categories = $product->getCategories();
@@ -483,11 +488,13 @@ JSON;
      * @param array  $expectedProduct normalized data of the product that should be created
      * @param string $identifier      identifier of the product that should be created
      */
-    protected function assertSameProduct(array $expectedProduct, $identifier)
+    protected function assertSameProductWithoutPermission(array $expectedProduct, $identifier)
     {
-        $this->getFromTestContainer('doctrine')->getManager()->clear();
-        $product = $this->getFromTestContainer('pim_catalog.repository.product')->findOneByIdentifier($identifier);
-        $standardizedProduct = $this->getFromTestContainer('pim_standard_format_serializer')->normalize($product, 'standard');
+        $this->get('akeneo_integration_tests.security.system_user_authenticator')->createSystemUser();
+
+        $this->get('doctrine')->getManager()->clear();
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
+        $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
 
         NormalizedProductCleaner::clean($standardizedProduct);
         NormalizedProductCleaner::clean($expectedProduct);

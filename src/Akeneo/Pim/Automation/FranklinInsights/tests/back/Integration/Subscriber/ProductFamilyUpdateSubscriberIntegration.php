@@ -38,7 +38,7 @@ class ProductFamilyUpdateSubscriberIntegration extends TestCase
         $this->activateFranklinConnection();
         $this->createIdentifiersMapping();
 
-        $this->getFromTestContainer('akeneo.pim.automation.franklin_insights.application.configuration.query.get_connection_status_handler')
+        $this->get('akeneo.pim.automation.franklin_insights.application.configuration.query.get_connection_status_handler')
             ->clearCache();
     }
 
@@ -81,13 +81,13 @@ class ProductFamilyUpdateSubscriberIntegration extends TestCase
 
     private function createProduct(string $identifier): ProductInterface
     {
-        $product = $this->getFromTestContainer('akeneo_integration_tests.catalog.product.builder')
+        $product = $this->get('akeneo_integration_tests.catalog.product.builder')
             ->withIdentifier($identifier)
             ->withFamily('familyA')
             ->withCategories('master')
             ->build();
 
-        $this->getFromTestContainer('pim_catalog.saver.product')->save($product);
+        $this->get('pim_catalog.saver.product')->save($product);
 
         return $product;
     }
@@ -106,8 +106,8 @@ class ProductFamilyUpdateSubscriberIntegration extends TestCase
 
     private function updateProduct(ProductInterface $product, array $productData): void
     {
-        $this->getFromTestContainer('pim_catalog.updater.product')->update($product, $productData);
-        $this->getFromTestContainer('pim_catalog.saver.product')->save($product);
+        $this->get('pim_catalog.updater.product')->update($product, $productData);
+        $this->get('pim_catalog.saver.product')->save($product);
     }
 
     private function assertProductSubscriptionDoesNotExist(int $productId): void
@@ -136,13 +136,13 @@ class ProductFamilyUpdateSubscriberIntegration extends TestCase
 
     private function createIdentifiersMapping(): void
     {
-        $asin = $this->getFromTestContainer('akeneo_integration_tests.base.attribute.builder')->build([
+        $asin = $this->get('akeneo_integration_tests.base.attribute.builder')->build([
             'code' => 'asin',
             'type' => AttributeTypes::TEXT,
             'group' => 'other',
         ]);
 
-        $this->getFromTestContainer('pim_catalog.saver.attribute')->save($asin);
+        $this->get('pim_catalog.saver.attribute')->save($asin);
 
         $mapping = array_fill_keys(IdentifiersMapping::FRANKLIN_IDENTIFIERS, null);
         $mapping['asin'] = 'asin';

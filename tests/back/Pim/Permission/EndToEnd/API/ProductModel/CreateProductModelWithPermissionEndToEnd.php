@@ -18,7 +18,7 @@ class CreateProductModelWithPermissionEndToEnd extends ApiTestCase
     {
         parent::setUp();
 
-        $this->loader = new PermissionFixturesLoader($this->testKernel->getContainer());
+        $this->loader = $this->get('akeneo_integration_tests.loader.permissions');
     }
 
     public function testCreateRootProductModel()
@@ -50,7 +50,7 @@ JSON;
         ];
 
 
-        $this->assertSameProductModel($expectedProductModel, 'root_product_model_creation');
+        $this->assertSameProductModelWithoutPermission($expectedProductModel, 'root_product_model_creation');
     }
 
     public function testCreateSubProductModel()
@@ -93,7 +93,7 @@ JSON;
         ];
 
 
-        $this->assertSameProductModel($expectedProductModel, 'sub_product_model_creation');
+        $this->assertSameProductModelWithoutPermission($expectedProductModel, 'sub_product_model_creation');
     }
 
     public function testCreateSubProductModelWithNotVisibleAxisAttribute()
@@ -309,11 +309,13 @@ JSON;
      * @param array  $expectedProductModel  normalized data of the product that should be created
      * @param string $code                  identifier of the product that should be created
      */
-    protected function assertSameProductModel(array $expectedProductModel, $code)
+    protected function assertSameProductModelWithoutPermission(array $expectedProductModel, $code)
     {
-        $this->getFromTestContainer('doctrine')->getManager()->clear();
-        $productModel = $this->getFromTestContainer('pim_catalog.repository.product_model')->findOneByCode($code);
-        $standardizedProductModel = $this->getFromTestContainer('pim_standard_format_serializer')->normalize($productModel, 'standard');
+        $this->get('akeneo_integration_tests.security.system_user_authenticator')->createSystemUser();
+
+        $this->get('doctrine')->getManager()->clear();
+        $productModel = $this->get('pim_catalog.repository.product_model_without_permission')->findOneByCode($code);
+        $standardizedProductModel = $this->get('pim_standard_format_serializer')->normalize($productModel, 'standard');
 
         NormalizedProductCleaner::clean($standardizedProductModel);
         NormalizedProductCleaner::clean($expectedProductModel);
@@ -341,10 +343,10 @@ JSON;
             'group' => 'attributeGroupA'
         ];
 
-        $attribute = $this->getFromTestContainer('pim_catalog.repository.attribute')->findOneByIdentifier($code);
-        $this->getFromTestContainer('pim_catalog.updater.attribute')->update($attribute, $data);
-        $constraints = $this->getFromTestContainer('validator')->validate($attribute);
+        $attribute = $this->get('pim_catalog.repository.attribute')->findOneByIdentifier($code);
+        $this->get('pim_catalog.updater.attribute')->update($attribute, $data);
+        $constraints = $this->get('validator')->validate($attribute);
         Assert::assertCount(0, $constraints);
-        $this->getFromTestContainer('pim_catalog.saver.attribute')->save($attribute);
+        $this->get('pim_catalog.saver.attribute')->save($attribute);
     }
 }

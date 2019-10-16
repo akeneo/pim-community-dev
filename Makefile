@@ -54,6 +54,11 @@ javascript-test:
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/dist
 	$(YARN_EXEC) run webpack-test
 
+.PHONY: javascript-coverage
+javascript-coverage:
+	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/dist
+	$(YARN_EXEC) run webpack-dev --coverage
+
 .PHONY: front
 front: assets css javascript-test javascript-dev
 
@@ -81,7 +86,7 @@ check-requirements:
 
 .PHONY: database
 database:
-	$(PHP_RUN) bin/console pim:installer:db
+	$(PHP_RUN) bin/console pim:installer:db ${O}
 
 ##
 ## PIM install
@@ -116,7 +121,7 @@ pim-dev:
 	$(MAKE) assets
 	$(MAKE) css
 	$(MAKE) javascript-dev
-	APP_ENV=dev $(MAKE) database
+	APP_ENV=dev O="--catalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev" $(MAKE) database
 
 .PHONY: pim-prod
 pim-prod:

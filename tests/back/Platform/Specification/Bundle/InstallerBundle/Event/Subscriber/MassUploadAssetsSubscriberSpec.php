@@ -19,7 +19,7 @@ class MassUploadAssetsSubscriberSpec extends ObjectBehavior
 {
     function let(FixturePathProvider $pathProvider, Filesystem $filesystem)
     {
-        $pathProvider->getFixturesPath()->willReturn('/path/to/fixtures/');
+        $pathProvider->getFixturesPath('minimal')->willReturn('/path/to/fixtures/');
         $filesystem->exists('/path/to/fixtures/assets')->willReturn(true);
         $this->beConstructedWith($pathProvider, $filesystem);
     }
@@ -51,7 +51,9 @@ class MassUploadAssetsSubscriberSpec extends ObjectBehavior
         $filesystem->exists('/path/to/fixtures/assets')->willReturn(false);
         $commandExecutor->runCommand(Argument::any())->shouldNotBeCalled();
 
-        $this->massUploadAssets(new InstallerEvent($commandExecutor->getWrappedObject(), 'fixtures_asset_csv'));
+        $this->massUploadAssets(
+            new InstallerEvent($commandExecutor->getWrappedObject(), 'fixtures_asset_csv', ['catalog' => 'minimal'])
+        );
     }
 
     function it_launches_copy_asset_files_and_mass_upload_assets_commands($filesystem, CommandExecutor $commandExecutor)
@@ -75,6 +77,8 @@ class MassUploadAssetsSubscriberSpec extends ObjectBehavior
             ]
         )->willReturn($commandExecutor);
 
-        $this->massUploadAssets(new InstallerEvent($commandExecutor->getWrappedObject(), 'fixtures_asset_csv'));
+        $this->massUploadAssets(
+            new InstallerEvent($commandExecutor->getWrappedObject(), 'fixtures_asset_csv', ['catalog' => 'minimal'])
+        );
     }
 }

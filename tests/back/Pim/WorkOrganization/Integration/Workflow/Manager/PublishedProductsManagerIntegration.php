@@ -45,7 +45,7 @@ class PublishedProductsManagerIntegration extends TestCase
     {
         parent::setUp();
 
-        $productBuilder = $this->getFromTestContainer('akeneo_integration_tests.catalog.product.builder');
+        $productBuilder = $this->get('akeneo_integration_tests.catalog.product.builder');
 
         $foo = $productBuilder
             ->withIdentifier('foo')
@@ -70,7 +70,7 @@ class PublishedProductsManagerIntegration extends TestCase
                 '',
                 'ecommerce'
             )->build();
-        $this->getFromTestContainer('pim_catalog.saver.product')->saveAll([$foo, $bar]);
+        $this->get('pim_catalog.saver.product')->saveAll([$foo, $bar]);
 
         $this->publishedProductRepository = $this->get('pimee_workflow.repository.published_product');
         $this->publishedProductManager = $this->get('pimee_workflow.manager.published_product');

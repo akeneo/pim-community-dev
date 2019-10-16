@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\ReferenceEntity\Infrastructure\Symfony\Command;
 
+use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\Installer\AssetsInstaller;
 use Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\Installer\FixturesInstaller;
@@ -16,7 +17,7 @@ class InstallerCommandSpec extends ObjectBehavior
 {
     function let(FixturesInstaller $fixturesInstaller, AssetsInstaller $assetsInstaller)
     {
-        $this->beConstructedWith($fixturesInstaller, $assetsInstaller, 'catalog_name');
+        $this->beConstructedWith($fixturesInstaller, $assetsInstaller);
     }
 
     function it_is_initializable()
@@ -40,10 +41,12 @@ class InstallerCommandSpec extends ObjectBehavior
         $this->createSchema();
     }
 
-    function it_loads_the_fixtures(FixturesInstaller $fixturesInstaller)
+    function it_loads_the_fixtures(FixturesInstaller $fixturesInstaller, InstallerEvent $installerEvent)
     {
+        $installerEvent->getArgument('catalog')->willReturn('catalog_name');
+
         $fixturesInstaller->loadCatalog('catalog_name')->shouldBeCalled();
-        $this->loadFixtures();
+        $this->loadFixtures($installerEvent);
     }
 
     function it_installs_the_assets(AssetsInstaller $assetsInstaller)

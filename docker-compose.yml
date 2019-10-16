@@ -9,6 +9,8 @@ services:
       PHP_IDE_CONFIG: 'serverName=pim-ee-cli'
       XDEBUG_ENABLED: '${XDEBUG_ENABLED:-0}'
       XDEBUG_CONFIG: 'remote_host=172.17.0.1'
+      BLACKFIRE_CLIENT_ID: '${BLACKFIRE_CLIENT_ID:-client_id}'
+      BLACKFIRE_CLIENT_TOKEN: '${BLACKFIRE_CLIENT_TOKEN:-client_token}'
     volumes:
       - './:/srv/pim'
       - '${HOST_COMPOSER_HOME:-~/.composer}:/var/www/.composer'
@@ -25,7 +27,9 @@ services:
       BEHAT_SCREENSHOT_PATH: '/srv/pim/var/tests/screenshots'
       PHP_IDE_CONFIG: 'serverName=pim-ee'
       XDEBUG_ENABLED: '${XDEBUG_ENABLED:-0}'
-      XDEBUG_CONFIG: 'remote_host=172.17.0.1'
+      XDEBUG_CONFIG: 'remote_host=172.17.0.1  '
+      BLACKFIRE_CLIENT_ID: '${BLACKFIRE_CLIENT_ID:-client_id}'
+      BLACKFIRE_CLIENT_TOKEN: '${BLACKFIRE_CLIENT_TOKEN:-client_token}'
     volumes:
       - './:/srv/pim'
     working_dir: '/srv/pim'
@@ -61,10 +65,13 @@ services:
       - 'fpm'
     ports:
       - '${DOCKER_PORT_HTTP:-8080}:80'
+      - '${DOCKER_PORT_HTTPS:-8443}:443'
     volumes:
       - './:/srv/pim:ro'
       - './docker/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro'
-      - './docker/akeneo.conf:/usr/local/apache2/conf/vhost.conf:ro'
+      - './docker/vhost.conf:/usr/local/apache2/conf/vhost.conf:ro'
+      - './docker/server.crt:/usr/local/apache2/conf/server.crt:ro'
+      - './docker/server.key:/usr/local/apache2/conf/server.key:ro'
     networks:
       - 'pim'
 
@@ -112,6 +119,14 @@ services:
       MINIO_SECRET_KEY: 'AKENEO_OBJECT_STORAGE_SECRET_KEY'
     ports:
         - '${DOCKER_PORT_OBJECT_STORAGE:-9090}:9000'
+    networks:
+      - 'pim'
+
+  blackfire:
+    image: blackfire/blackfire
+    environment:
+      BLACKFIRE_SERVER_ID: '${BLACKFIRE_SERVER_ID:-server_id}'
+      BLACKFIRE_SERVER_TOKEN: '${BLACKFIRE_SERVER_TOKEN:-server_token}'
     networks:
       - 'pim'
 

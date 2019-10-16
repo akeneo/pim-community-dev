@@ -5,13 +5,6 @@ parameters:
 
     asset_storage_dir:    '%kernel.root_dir%/file_storage/asset'
 
-    # You can use installer_data to install an outside catalog (like one from akeneo/catalogs)
-    # installer_data: %kernel.root_dir%/../vendor/akeneo/catalogs/master/enterprise/small/fixtures
-    # or you can use one of the provided catalogs
-    # use PimEnterpriseInstallerBundle:minimal for minimal data set
-    installer_data:       PimEnterpriseInstallerBundle:icecat_demo_dev
-
-
     # Files used as configuration for the Elasticsearch index
     elasticsearch_index_configuration_files:
         - '%pim_ce_dev_src_folder_location%/src/Akeneo/Pim/Enrichment/Bundle/Resources/elasticsearch/settings.yml'
