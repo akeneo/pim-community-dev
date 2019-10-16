@@ -32,7 +32,7 @@ coverage/*
 .env.test.local
 .env.dev.local
 config/credentials_gcp.json
-infra/charts/
+infra/pim/charts/
 infra/*.tgz
 infra/terraform.tfvars
 infra/kubeconfig

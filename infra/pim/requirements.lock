@@ -1,12 +1,12 @@
 dependencies:
 - name: mysql
-  repository: gs://akeneo-charts/
-  version: 1.1.6
+  repository: https://kubernetes-charts.storage.googleapis.com
+  version: 1.4.0
 - name: elasticsearch
   repository: https://kubernetes-charts.storage.googleapis.com
   version: 1.21.3
 - name: memcached
   repository: https://kubernetes-charts.storage.googleapis.com
   version: 2.6.0
-digest: sha256:4fd40c6c921223d30b877842fa05ad950d44a94444eafa8ea0aa7f0b5f5a5775
-generated: "2019-08-22T12:31:00.97442618+02:00"
+digest: sha256:ad708ec8b1e132c17a16e6de2318c99768a97f23029bb677955c5f90659e71c4
+generated: 2019-10-16T18:34:01.815275058+02:00
