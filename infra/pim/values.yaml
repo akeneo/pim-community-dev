@@ -119,7 +119,7 @@ pim:
     requests:
       cpu: "200m"
       memory: "512Mi"
-  defaultCatalog: minimal
+  defaultCatalog: src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal
   defaultAdminUser:
     login : nil # Fill me
     firstName: nil # Fill me
@@ -283,15 +283,3 @@ elasticsearch:
         memory: "1024Mi"
     updateStrategy:
       type: RollingUpdate
-
-catalog:
-  EE:
-    minimal:
-      path: vendor/akeneo/pim-enterprise-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal
-      class: PimEnterpriseInstallerBundle:minimal
-    icecat:
-      path: vendor/akeneo/pim-enterprise-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
-      class: PimEnterpriseInstallerBundle:icecat_demo_dev
-    onboarder:
-      path: vendor/akeneo/pim-onboarder/src/Bundle/Resources/fixtures/onboarder
-      class: PimOnboarderBundle:onboarder

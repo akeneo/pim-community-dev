@@ -29,7 +29,7 @@ spec:
         - name: pim-upgrade
           image: {{ template "pim.imageNameAndTag" . }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
-          command: ['sh', '-c', 'export HOME=/var/www && su -m -l www-data -s /bin/bash -c "rm -rf var/cache && bin/console doctrine:migration:migrate -vvv --allow-no-migration --no-interaction"']
+          command: ['sh', '-c', 'su -m -l www-data -s /bin/bash -c "cd /srv/pim && bin/console doctrine:migration:migrate -vvv --allow-no-migration --no-interaction"']
           envFrom: [ configMapRef: { name: {{ template "pim.fullName" . }}-env } ]
           env:
             - { name: MAILER_USER, valueFrom: { secretKeyRef: { name: pim-secrets, key: mailerLogin } } }

@@ -29,7 +29,7 @@ spec:
         - name: pim-install-catalog
           image:  {{ template "pim.imageNameAndTag" . }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
-          command: ['sh', '-c', 'export HOME=/var/www/ && su -m -l www-data -s /bin/bash -c "php bin/console pim:install"']
+          command: ['sh', '-c', 'su -m -l www-data -s /bin/bash -c ', '"', 'cd /srv/pim && php bin/console pim:installer:db', Values.pim.defaultCatalog, '"']
           envFrom: [ configMapRef: { name: {{ template "pim.fullName" . }}-env } ]
           env:
             - { name: MAILER_USER, valueFrom: { secretKeyRef: { name: pim-secrets, key: mailerLogin } } }

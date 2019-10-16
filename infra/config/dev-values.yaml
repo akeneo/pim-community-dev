@@ -7,7 +7,7 @@ backup:
   enabled: false
 
 pim:
-  defaultCatalog: icecat
+  defaultCatalog: src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
   persistence:
     diskSize: 10Gi
   replicas: 1

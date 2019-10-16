@@ -39,7 +39,7 @@ spec:
         - name: update-family-requirements
           image:  {{ template "pim.imageNameAndTag" . }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
-          command: ['sh', '-c', 'export HOME=/var/www && su -m -l www-data -s /bin/bash -c "bin/console akeneo:batch:job csv_family_import -c ''{\"filePath\": \"/var/www/html/vendor/akeneo/pim-onboarder/src/Bundle/Resources/fixtures/setup/family_requirements.csv\"}''"']
+          command: ['sh', '-c', 'su -m -l www-data -s /bin/bash -c "cd /srv/pim && bin/console akeneo:batch:job csv_family_import -c ''{\"filePath\": \"/srv/pim/vendor/akeneo/pim-onboarder/src/Bundle/Resources/fixtures/setup/family_requirements.csv\"}''"']
           envFrom: [ configMapRef: { name: {{ template "pim.fullName" . }}-env } ]
           env:
             - { name: MAILER_USER, valueFrom: { secretKeyRef: { name: pim-secrets, key: mailerLogin } } }
@@ -62,7 +62,7 @@ spec:
         - name: update-channel-activated-locales
           image:  {{ template "pim.imageNameAndTag" . }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
-          command: ['sh', '-c', 'export HOME=/var/www && su -m -l www-data -s /bin/bash -c "bin/console akeneo:batch:job csv_channel_import -c ''{\"filePath\": \"/var/www/html/vendor/akeneo/pim-onboarder/src/Bundle/Resources/fixtures/setup/channels.csv\"}''"']
+          command: ['sh', '-c', 'su -m -l www-data -s /bin/bash -c "cd /srv/pim && bin/console akeneo:batch:job csv_channel_import -c ''{\"filePath\": \"/srv/pim/vendor/akeneo/pim-onboarder/src/Bundle/Resources/fixtures/setup/channels.csv\"}''"']
           envFrom: [ configMapRef: { name: {{ template "pim.fullName" . }}-env } ]
           env:
             - { name: MAILER_USER, valueFrom: { secretKeyRef: { name: pim-secrets, key: mailerLogin } } }
