@@ -48,7 +48,7 @@ final class ApiAggregatorForProductPostSaveEventSubscriber implements EventSubsc
     public static function getSubscribedEvents(): array
     {
         return [
-            // Priority must be high in order to catch events and stop propagation!
+            // Priority must be high in order to catch events before any other subscribers.
             StorageEvents::POST_SAVE => ['batchEvents', 10000],
         ];
     }
