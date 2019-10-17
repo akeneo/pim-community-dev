@@ -16,7 +16,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\ImageAsLabel;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\VariantProductRatioInterface;
-use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingProductModelValues;
+use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
@@ -56,7 +56,7 @@ class ProductModelNormalizer implements NormalizerInterface
     /** @var LocaleRepositoryInterface */
     private $localeRepository;
 
-    /** @var FillMissingProductModelValues */
+    /** @var FillMissingValuesInterface */
     private $fillMissingProductModelValues;
 
     /** @var EntityWithFamilyVariantAttributesProvider */
@@ -101,7 +101,7 @@ class ProductModelNormalizer implements NormalizerInterface
         ConverterInterface $productValueConverter,
         FormProviderInterface $formProvider,
         LocaleRepositoryInterface $localeRepository,
-        FillMissingProductModelValues $fillMissingProductModelValues,
+        FillMissingValuesInterface $fillMissingProductModelValues,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         VariantNavigationNormalizer $navigationNormalizer,
         VariantProductRatioInterface $variantProductRatioQuery,

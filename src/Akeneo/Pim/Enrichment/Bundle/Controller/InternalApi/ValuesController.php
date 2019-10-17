@@ -51,7 +51,7 @@ class ValuesController
     protected $constraintViolationNormalizer;
 
     /** @var FilterInterface */
-    protected $emptyValuesFilter;
+    protected $unchangedValuesFilter;
 
     public function __construct(
         ProductBuilderInterface $productBuilder,
@@ -72,7 +72,7 @@ class ValuesController
         $this->productValidator = $productValidator;
         $this->attributeRepository = $attributeRepository;
         $this->constraintViolationNormalizer = $constraintViolationNormalizer;
-        $this->emptyValuesFilter = $emptyValuesFilter;
+        $this->unchangedValuesFilter = $emptyValuesFilter;
     }
 
     /**
@@ -96,7 +96,7 @@ class ValuesController
         $data = ['values' => $data];
 
         $product = $this->productBuilder->createProduct('FAKE_SKU_FOR_MASS_EDIT_VALIDATION_' . microtime());
-        $data = $this->emptyValuesFilter->filter($product, $data);
+        $data = $this->unchangedValuesFilter->filter($product, $data);
 
         $this->productUpdater->update($product, $data);
         $violations = $this->productValidator->validate($product);

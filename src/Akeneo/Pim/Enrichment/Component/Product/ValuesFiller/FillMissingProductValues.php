@@ -25,7 +25,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FillMissingProductValues implements FillMissingValuesInterface
+final class FillMissingProductValues implements FillMissingValuesInterface
 {
     /** @var IdentifiableObjectRepositoryInterface */
     private $familyRepository;
@@ -44,7 +44,6 @@ class FillMissingProductValues implements FillMissingValuesInterface
 
     /** @var LocaleInterface[] */
     private $locales;
-
 
     public function __construct(
         IdentifiableObjectRepositoryInterface $familyRepository,

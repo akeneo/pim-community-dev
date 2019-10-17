@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Proces
 
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingProductModelValues;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingProductValues;
+use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface;
 use Akeneo\Tool\Component\Batch\Item\ExecutionContext;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
@@ -33,8 +34,8 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         NormalizerInterface $normalizer,
         ChannelRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
-        FillMissingProductModelValues $fillMissingProductModelValues,
-        FillMissingProductValues $fillMissingProductValues,
+        FillMissingValuesInterface $fillMissingProductModelValues,
+        FillMissingValuesInterface $fillMissingProductValues,
         ObjectDetacherInterface $detacher,
         UserProviderInterface $userProvider,
         TokenStorageInterface $tokenStorage,
@@ -90,7 +91,7 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         $attributeRepository,
         $normalizer,
         $detacher,
-        FillMissingProductValues $fillMissingProductValues,
+        FillMissingValuesInterface $fillMissingProductValues,
         ProductInterface $product,
         JobExecution $jobExecution,
         UserInterface $user,
@@ -144,7 +145,7 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         $attributeRepository,
         $normalizer,
         $detacher,
-        FillMissingProductValues $fillMissingProductValues,
+        FillMissingValuesInterface $fillMissingProductValues,
         ProductInterface $product,
         JobExecution $jobExecution,
         UserInterface $user,
@@ -197,7 +198,7 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         $attributeRepository,
         $normalizer,
         $detacher,
-        FillMissingProductModelValues $fillMissingProductModelValues,
+        FillMissingValuesInterface $fillMissingProductModelValues,
         ProductModelInterface $productModel,
         JobExecution $jobExecution,
         UserInterface $user,
@@ -251,7 +252,7 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         $normalizer,
         $detacher,
         $bulkMediaFetcher,
-        FillMissingProductValues $fillMissingProductValues,
+        FillMissingValuesInterface $fillMissingProductValues,
         ProductInterface $product,
         JobExecution $jobExecution,
         UserInterface $user,
@@ -319,7 +320,7 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         $normalizer,
         $detacher,
         $bulkMediaFetcher,
-        FillMissingProductValues $fillMissingProductValues,
+        FillMissingValuesInterface $fillMissingProductValues,
         ProductInterface $product,
         JobExecution $jobExecution,
         UserInterface $user,

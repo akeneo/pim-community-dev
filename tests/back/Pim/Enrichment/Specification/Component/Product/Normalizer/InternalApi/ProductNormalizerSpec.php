@@ -21,6 +21,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\MissingRequir
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductCompletenessWithMissingAttributeCodesCollectionNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\VariantNavigationNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingProductValues;
+use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
@@ -47,7 +48,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         ConverterInterface $productValueConverter,
         ProductCompletenessWithMissingAttributeCodesCollectionNormalizer $completenessCollectionNormalizer,
         UserContext $userContext,
-        FillMissingProductValues $fillMissingProductValues,
+        FillMissingValuesInterface $fillMissingProductValues,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         VariantNavigationNormalizer $navigationNormalizer,
         AscendantCategoriesInterface $ascendantCategories,
@@ -98,7 +99,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         ConverterInterface $productValueConverter,
         ProductCompletenessWithMissingAttributeCodesCollectionNormalizer $completenessCollectionNormalizer,
         UserContext $userContext,
-        FillMissingProductValues $fillMissingProductValues,
+        FillMissingValuesInterface $fillMissingProductValues,
         MissingAssociationAdder $missingAssociationAdder,
         CompletenessCalculator $completenessCalculator,
         MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer,
@@ -251,7 +252,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         ConverterInterface $productValueConverter,
         ProductCompletenessWithMissingAttributeCodesCollectionNormalizer $completenessCollectionNormalizer,
         UserContext $userContext,
-        FillMissingProductValues $fillMissingProductValues,
+        FillMissingValuesInterface $fillMissingProductValues,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         VariantNavigationNormalizer $navigationNormalizer,
         AscendantCategoriesInterface $ascendantCategories,

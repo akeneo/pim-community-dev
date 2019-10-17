@@ -32,6 +32,7 @@ class OptionValueFactory extends AbstractValueFactory
             throw new \InvalidArgumentException('Option value cannot be null');
         }
 
+        // TODO TIP-1325 Fix the cast to string
         if (!(is_string($data) || is_numeric($data)) || trim((string) $data) === '') {
             throw InvalidPropertyTypeException::stringExpected(
                 $attribute->getCode(),
