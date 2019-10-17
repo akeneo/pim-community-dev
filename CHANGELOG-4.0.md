@@ -140,6 +140,12 @@
   - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\OptionsPresenter`
   - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PresenterInterface`
   - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PricesPresenter`
+- Change constructor of `Akeneo\Pim\Permission\Bundle\MassEdit\Processor\EditAttributesProcessor` to
+    - add `Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface` (as `productEmptyValuesFilter`)
+    - add `Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface` (as `productModelEmptyValuesFilter`)
+- Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\InternalApi` to
+    - remove `Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface`
+    - add `Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\InternalApi\FillMissingPublishedProductValues`
 
 ### CLI commands
 
