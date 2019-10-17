@@ -61,13 +61,9 @@ Feature: List proposals
 
     Examples:
       | filter              | operator     | value         | count | result                  |
-      | author              | in list      | Julia         | 1     | jacket                  |
       | author              | in list      | Sandra,Mary   | 2     | sweater, tshirt         |
       | label_or_identifier | equals       | tshirt        | 1     | tshirt                  |
-      | identifier          | in list      | tshirt,jacket | 2     | tshirt, jacket          |
       | name                | is not empty |               | 3     | tshirt, sweater, jacket |
-      | description         | is not empty |               | 1     | tshirt                  |
-      | price               | is not empty |               | 1     | jacket                  |
 
   Scenario: Successfully apply multiple filters on proposal grid
     Given I am logged in as "Peter"

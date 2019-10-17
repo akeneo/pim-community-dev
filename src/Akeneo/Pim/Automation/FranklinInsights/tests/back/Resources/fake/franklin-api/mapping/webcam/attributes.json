@@ -26,6 +26,21 @@
   "mapping": [
     {
       "from": {
+        "id": "color",
+        "label": {
+          "en_us": "Color"
+        },
+        "type": "multiselect"
+      },
+      "to": null,
+      "summary": [
+        "blue",
+        "red"
+      ],
+      "status": "pending"
+    },
+    {
+      "from": {
         "id": "idontreallyknowwhatiam",
         "label": {
           "en_us": "An attribute that has no type"

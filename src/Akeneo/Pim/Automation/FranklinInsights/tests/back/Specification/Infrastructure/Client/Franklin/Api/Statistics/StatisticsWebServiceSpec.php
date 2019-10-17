@@ -25,12 +25,13 @@ use GuzzleHttp\Exception\ServerException;
 use PhpSpec\ObjectBehavior;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
+use Psr\Log\LoggerInterface;
 
 class StatisticsWebServiceSpec extends ObjectBehavior
 {
-    public function let(UriGenerator $uriGenerator, GuzzleClient $httpClient): void
+    public function let(UriGenerator $uriGenerator, GuzzleClient $httpClient, LoggerInterface $logger): void
     {
-        $this->beConstructedWith($uriGenerator, $httpClient);
+        $this->beConstructedWith($uriGenerator, $httpClient, $logger);
     }
 
     public function it_is_a_statistics_webservice(): void

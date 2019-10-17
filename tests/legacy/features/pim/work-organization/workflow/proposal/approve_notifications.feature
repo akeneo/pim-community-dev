@@ -21,21 +21,6 @@ Feature: Approve notifications
     Given I am logged in as "Julia"
     And I am on the proposals page
     And I click on the "Approve all" action of the row which contains "Summer t-shirt"
-    And I press the "Send" button in the popin
-    When I logout
-    And I am logged in as "Mary"
-    And I am on the dashboard page
-    Then I should have 1 new notification
-    And I should see notification:
-      | type    | message                                                               |
-      | success | Julia Stark has accepted your proposal for the product Summer t-shirt |
-    When I click on the notification "Julia Stark has accepted your proposal for the product Summer t-shirt"
-    Then I should be on the product "tshirt" edit page
-
-  Scenario: A notification is sent when I approve a proposal from the proposal grid with a comment
-    Given I am logged in as "Julia"
-    And I am on the proposals page
-    And I click on the "Approve all" action of the row which contains "Summer t-shirt"
     And I fill in this comment in the popin: "You did a nice job on this proposal. Thank you!"
     And I press the "Send" button in the popin
     When I logout
@@ -45,22 +30,6 @@ Feature: Approve notifications
     And I should see notification:
       | type    | message                                                               | comment                                         |
       | success | Julia Stark has accepted your proposal for the product Summer t-shirt | You did a nice job on this proposal. Thank you! |
-    When I click on the notification "Julia Stark has accepted your proposal for the product Summer t-shirt"
-    Then I should be on the product "tshirt" edit page
-
-  Scenario: A notification is sent when I approve a proposal from the product draft page
-    Given I am logged in as "Julia"
-    And I edit the "tshirt" product
-    And I visit the "Proposals" column tab
-    And I click on the "Approve all" action of the row which contains "Summer t-shirt"
-    And I press the "Send" button in the popin
-    When I logout
-    And I am logged in as "Mary"
-    And I am on the dashboard page
-    Then I should have 1 new notification
-    And I should see notification:
-      | type    | message                                                               |
-      | success | Julia Stark has accepted your proposal for the product Summer t-shirt |
     When I click on the notification "Julia Stark has accepted your proposal for the product Summer t-shirt"
     Then I should be on the product "tshirt" edit page
 
@@ -82,22 +51,6 @@ Feature: Approve notifications
     Then I should be on the product "tshirt" edit page
 
   Scenario: A notification is sent when I approve a proposal from mass approval
-    Given I am logged in as "Julia"
-    And I am on the proposals page
-    And I select rows tshirt
-    And I press the "Approve all selected" button
-    And I press the "Send" button in the popin
-    When I logout
-    And I am logged in as "Mary"
-    And I am on the dashboard page
-    Then I should have 1 new notification
-    And I should see notification:
-      | type    | message                                                               |
-      | success | Julia Stark has accepted your proposal for the product Summer t-shirt |
-    When I click on the notification "Julia Stark has accepted your proposal for the product Summer t-shirt"
-    Then I should be on the product "tshirt" edit page
-
-  Scenario: A notification is sent when I approve and comment a proposal from mass approval
     Given I am logged in as "Julia"
     And I am on the proposals page
     And I select rows tshirt

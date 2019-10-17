@@ -26,6 +26,7 @@ use PhpSpec\ObjectBehavior;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -36,10 +37,11 @@ class OptionsMappingWebServiceSpec extends ObjectBehavior
         UriGenerator $uriGenerator,
         GuzzleClient $httpClient,
         ResponseInterface $response,
-        StreamInterface $stream
+        StreamInterface $stream,
+        LoggerInterface $logger
     ): void {
         $response->getBody()->willReturn($stream);
-        $this->beConstructedWith($uriGenerator, $httpClient);
+        $this->beConstructedWith($uriGenerator, $httpClient, $logger);
     }
 
     public function it_is_an_attribute_options_mapping_web_service(): void

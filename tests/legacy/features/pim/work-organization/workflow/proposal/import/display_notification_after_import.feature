@@ -1,5 +1,5 @@
 @javascript
-Feature: Display proposals after import
+Feature: Display notification after import
   In order to summarize proposals
   As a product manager
   I need to be able to have only one notification after an import

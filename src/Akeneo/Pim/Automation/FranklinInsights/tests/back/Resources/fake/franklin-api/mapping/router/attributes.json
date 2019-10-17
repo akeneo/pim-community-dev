@@ -83,6 +83,18 @@
       "summary": [],
       "status": "pending",
       "suggestions": []
+    },
+    {
+      "from": {
+          "id": "malformedAttribute",
+          "label": {
+              "en_us": "malformedAttribute"
+          },
+          "type": "text"
+      },
+      "summary": [],
+      "status": "pending",
+      "suggestions": []
     }
   ]
 }

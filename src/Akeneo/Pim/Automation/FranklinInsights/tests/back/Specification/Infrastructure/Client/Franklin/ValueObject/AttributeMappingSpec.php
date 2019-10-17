@@ -29,9 +29,9 @@ class AttributeMappingSpec extends ObjectBehavior
                 'label' => [
                     'en_us' => 'Product Weight',
                 ],
+                'type' => 'metric',
             ],
             'to' => ['id' => 'color'],
-            'type' => 'metric',
             'summary' => ['23kg',  '12kg'],
             'status' => 'pending',
             'suggestions' => ['weight']
@@ -58,9 +58,9 @@ class AttributeMappingSpec extends ObjectBehavior
         $this->beConstructedWith([
             'from' => [
                 'id' => 'product_weight',
+                'type' => 'metric',
             ],
             'to' => null,
-            'type' => 'metric',
             'status' => 'pending',
         ]);
 
@@ -98,10 +98,23 @@ class AttributeMappingSpec extends ObjectBehavior
         $this->beConstructedWith([
             'from' => [
                 'id' => 'product_weight',
+                'type' => 'metric',
             ],
             'to' => null,
-            'type' => 'metric',
             'status' => 'invalid-status',
+        ]);
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
+    public function it_throws_an_exception_if_attribute_type_is_invalid(): void
+    {
+        $this->beConstructedWith([
+            'from' => [
+                'id' => 'product_weight',
+                'type' => 'unhandled-type',
+            ],
+            'to' => null,
+            'status' => 'pending',
         ]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
@@ -109,9 +122,10 @@ class AttributeMappingSpec extends ObjectBehavior
     public function it_throws_an_exception_if_target_attribute_code_is_malformed(): void
     {
         $this->beConstructedWith([
-            'from' => [],
+            'from' => [
+                'type' => 'metric',
+            ],
             'to' => null,
-            'type' => 'metric',
             'status' => 'pending',
         ]);
 
@@ -123,9 +137,9 @@ class AttributeMappingSpec extends ObjectBehavior
         $this->beConstructedWith([
             'from' => [
                 'id' => 'product_weight',
+                'type' => 'metric',
             ],
             'to' => 'invalid-value',
-            'type' => 'metric',
             'status' => 'pending',
         ]);
 

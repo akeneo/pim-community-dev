@@ -410,14 +410,6 @@ class EntityWithValuesDraftManager
                     $value['locale'],
                     $value['scope']
                 );
-                $valueToRemove = $draft->getValues()->getByCodes(
-                    $attributeCode,
-                    $value['scope'],
-                    $value['locale']
-                );
-                if (null !== $valueToRemove) {
-                    $draft->getValues()->remove($valueToRemove);
-                }
             }
         }
 

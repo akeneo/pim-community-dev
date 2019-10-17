@@ -32,6 +32,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Except
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\FranklinServerException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\InsufficientCreditsException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\InvalidTokenException;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\UnableToConnectToFranklinException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\Subscription;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Normalizer\FamilyNormalizer;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\SubscriptionsCursor;
@@ -123,7 +124,7 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
 
         try {
             $subscriptionsPage = $this->api->fetchProducts(null, $updatedSince);
-        } catch (FranklinServerException $e) {
+        } catch (FranklinServerException | UnableToConnectToFranklinException $e) {
             throw DataProviderException::serverIsDown($e);
         } catch (InvalidTokenException $e) {
             throw DataProviderException::authenticationError($e);
@@ -145,7 +146,7 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
 
         try {
             $this->api->unsubscribeProduct((string) $subscriptionId);
-        } catch (FranklinServerException $e) {
+        } catch (FranklinServerException | UnableToConnectToFranklinException $e) {
             throw DataProviderException::serverIsDown($e);
         } catch (InvalidTokenException $e) {
             throw DataProviderException::authenticationError($e);
@@ -167,7 +168,7 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
             $normalizer = new FamilyNormalizer();
             $familyInfos = $normalizer->normalize($family);
             $this->api->updateFamilyInfos((string) $subscriptionId, $familyInfos);
-        } catch (FranklinServerException $e) {
+        } catch (FranklinServerException | UnableToConnectToFranklinException $e) {
             throw DataProviderException::serverIsDown($e);
         } catch (InvalidTokenException $e) {
             throw DataProviderException::authenticationError($e);
@@ -235,7 +236,7 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
     {
         try {
             return $this->api->subscribe($clientRequests);
-        } catch (FranklinServerException $e) {
+        } catch (FranklinServerException | UnableToConnectToFranklinException $e) {
             throw DataProviderException::serverIsDown($e);
         } catch (InvalidTokenException $e) {
             throw DataProviderException::authenticationError($e);

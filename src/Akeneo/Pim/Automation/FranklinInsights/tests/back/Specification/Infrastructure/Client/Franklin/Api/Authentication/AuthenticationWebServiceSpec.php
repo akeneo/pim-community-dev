@@ -20,17 +20,16 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\Psr7\Response;
 use PhpSpec\ObjectBehavior;
+use Psr\Log\LoggerInterface;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
 class AuthenticationWebServiceSpec extends ObjectBehavior
 {
-    public function let(
-        UriGenerator $uriGenerator,
-        ClientInterface $httpClient
-    ): void {
-        $this->beConstructedWith($uriGenerator, $httpClient);
+    public function let( UriGenerator $uriGenerator, ClientInterface $httpClient, LoggerInterface $logger): void
+    {
+        $this->beConstructedWith($uriGenerator, $httpClient, $logger);
     }
 
     public function it_is_an_authentication_web_service(): void
