@@ -3,6 +3,7 @@
 namespace Akeneo\Tool\Component\Connector\Exception;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException as BaseInvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -56,12 +57,13 @@ class InvalidItemFromViolationsException extends BaseInvalidItemException
             $propertyPath = str_replace('-<all_channels>', '', $violation->getPropertyPath());
             $propertyPath = str_replace('-<all_locales>', '', $propertyPath);
 
-            $errors[] = sprintf(
-                "%s: %s: %s\n",
-                $propertyPath,
-                $violation->getMessage(),
-                $invalidValue
-            );
+            if ($violation->getInvalidValue() instanceof WriteValueCollection) {
+                $error = sprintf('%s: %s', $propertyPath, $violation->getMessage());
+            } else {
+                $error = sprintf('%s: %s: %s', $propertyPath, $violation->getMessage(), $invalidValue);
+            }
+
+            $errors[] = $error . PHP_EOL;
         }
 
         parent::__construct(implode("\n", $errors), $item, $messageParameters, $code, $previous);

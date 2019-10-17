@@ -40,7 +40,7 @@ Feature: Define the attribute requirement
   Scenario: Ensure attribute requirement removal
     Given the following product:
       | sku      | family | name-en_US | price          | size | color |
-      | BIGBOOTS | Boots  | Big boots  | 20 EUR, 20 USD | 35   | Black |
+      | BIGBOOTS | Boots  | Big boots  | 20 EUR, 20 USD | 35   | black |
     And I launched the completeness calculator
     When I am on the "BIGBOOTS" product page
     And I visit the "Completeness" column tab

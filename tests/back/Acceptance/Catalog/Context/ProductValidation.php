@@ -7,8 +7,11 @@ namespace Akeneo\Test\Acceptance\Catalog\Context;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
 use Akeneo\Test\Common\EntityWithValue\Builder;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Behat\Behat\Context\Context;
+use Behat\Gherkin\Node\TableNode;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Use this context to check product validation rules. Create a product with specific values, valid the product
@@ -51,6 +54,23 @@ final class ProductValidation implements Context
     }
 
     /**
+     * @When a product is created with values:
+     */
+    public function aProductIsCreatedWithValues(TableNode $table): void
+    {
+        $this->productBuilder->withIdentifier('foo');
+        foreach ($table as $row) {
+            $data = $row['data'];
+            if (preg_match('/,/', $data)) {
+                $data = explode(',', $row['data']);
+            }
+            $this->productBuilder->withValue($row['attribute'], $data);
+        }
+
+        $this->updatedProduct = $this->productBuilder->build(false);
+    }
+
+    /**
      * @Then the error :errorMessage is raised
      *
      * @throws \Exception
@@ -87,5 +107,14 @@ final class ProductValidation implements Context
         $this->updatedProduct = $this->productRepository->findOneByIdentifier('my_product');
 
         $this->theErrorIsRaised($errorMessage);
+    }
+
+    /**
+     * @Then no error is raised
+     */
+    public function noErrorIsRaised()
+    {
+        $violations = $this->productValidator->validate($this->updatedProduct);
+        Assert::count($violations, 0);
     }
 }

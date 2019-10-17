@@ -38,7 +38,7 @@ Feature: Filter product and product models
       | tshirt-unique-color |        | clothing_color_size | master_men | 10 USD, 15 EUR | blue  | A unique color t-shirt      |
     And the following products:
       | sku                  | family   | name-en_US           | categories | size | description-en_US-ecommerce |
-      | tshirt-kurt-cobain-s | clothing | Tshirt Kurt Cobain S | Tshirts    | S    | A Kurt Cobain t-shirt       |
+      | tshirt-kurt-cobain-s | clothing | Tshirt Kurt Cobain S | Tshirts    | s    | A Kurt Cobain t-shirt       |
     When I am on the products grid
     Then I should see products tshirt-unique-color
     And I should see the product models tshirt-kurt-cobain-s

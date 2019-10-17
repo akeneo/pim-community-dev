@@ -68,8 +68,6 @@ final class EntityBuilder
             }
         }
 
-
-
         return $entity;
     }
 }

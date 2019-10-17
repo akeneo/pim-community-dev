@@ -19,19 +19,19 @@ Feature: Filter products with multiples multiselect filters
     And the following products:
       | sku    | family    | company   | color |
       | BOOK   | library   |           |       |
-      | MUG-1  | furniture | canonical | green |
-      | MUG-2  | furniture | suze      | green |
-      | MUG-3  | furniture | suze      | green |
-      | MUG-4  | furniture | suze      | green |
-      | MUG-5  | furniture |           | green |
-      | POST-1 | furniture | suze      |       |
-      | POST-2 | furniture | suze      |       |
-      | POST-3 | furniture | redHat    |       |
+      | MUG-1  | furniture | Canonical | Green |
+      | MUG-2  | furniture | Suze      | Green |
+      | MUG-3  | furniture | Suze      | Green |
+      | MUG-4  | furniture | Suze      | Green |
+      | MUG-5  | furniture |           | Green |
+      | POST-1 | furniture | Suze      |       |
+      | POST-2 | furniture | Suze      |       |
+      | POST-3 | furniture | RedHat    |       |
     And I am logged in as "Mary"
     And I am on the products grid
 
   @critical
-  Scenario: Successfully filter products with the sames attributes
+  Scenario: Successfully filter products with the same attributes
     Given I show the filter "company"
     And I filter by "company" with operator "in list" and value "Suze"
     Then I should be able to use the following filters:
@@ -40,7 +40,7 @@ Feature: Filter products with multiples multiselect filters
       | color  | is empty     |       | POST-1 and POST-2      |
       | color  | is not empty |       | MUG-2, MUG-3 and MUG-4 |
 
-  Scenario: Successfully filter product without commons attributes
+  Scenario: Successfully filter products without common attribute
     Given I show the filter "color"
     And I filter by "color" with operator "in list" and value "Green"
     Then I should be able to use the following filters:

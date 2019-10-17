@@ -36,7 +36,7 @@ class AttributeContext implements Context
     }
 
     /**
-     * @Given the following attribute:
+     * @Given /the following attributes?:/
      */
     public function theFollowingAttribute(TableNode $table)
     {
