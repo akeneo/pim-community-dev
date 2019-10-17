@@ -44,7 +44,13 @@ class StructureVersionUpdater implements EventSubscriberInterface
 
     public function onPostSave(GenericEvent $event)
     {
-        if ($event->getSubject() instanceof ProductInterface || $event->getSubject() instanceof ProductModelInterface) {
+        $subject = $event->getSubject();
+
+        if (!is_object($subject)) {
+            return;
+        }
+
+        if ($subject instanceof ProductInterface || $subject instanceof ProductModelInterface) {
             return;
         }
 
@@ -55,11 +61,17 @@ class StructureVersionUpdater implements EventSubscriberInterface
 
     public function onPostSaveAll(GenericEvent $event)
     {
-        if ($event->getSubject() instanceof ProductInterface || $event->getSubject() instanceof ProductModelInterface) {
+        $subject = current($event->getSubject());
+
+        if (!is_object($subject)) {
             return;
         }
 
-        $this->replaceVersionLastUpdate(ClassUtils::getClass(current($event->getSubject())));
+        if ($subject instanceof ProductInterface || $subject instanceof ProductModelInterface) {
+            return;
+        }
+
+        $this->replaceVersionLastUpdate(ClassUtils::getClass($subject));
     }
 
     private function replaceVersionLastUpdate($subject): void
