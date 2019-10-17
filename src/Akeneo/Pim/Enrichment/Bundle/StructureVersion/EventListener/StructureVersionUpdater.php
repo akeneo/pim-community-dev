@@ -36,26 +36,53 @@ class StructureVersionUpdater implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            StorageEvents::POST_SAVE => 'onPostDBCreate'
+            StorageEvents::POST_SAVE => 'onPostSave',
+            StorageEvents::POST_SAVE_ALL => 'onPostSaveAll',
         ];
     }
 
 
-    public function onPostDBCreate(GenericEvent $event)
+    public function onPostSave(GenericEvent $event)
     {
-        if ($event->getSubject() instanceof ProductInterface || $event->getSubject() instanceof ProductModelInterface) {
+        $subject = $event->getSubject();
+
+        if (!is_object($subject)) {
             return;
         }
 
+        if ($subject instanceof ProductInterface || $subject instanceof ProductModelInterface) {
+            return;
+        }
+
+        if ($event->hasArgument('unitary') && $event->getArgument('unitary')) {
+            $this->replaceVersionLastUpdate(ClassUtils::getClass($event->getSubject()));
+        }
+    }
+
+    public function onPostSaveAll(GenericEvent $event)
+    {
+        $subject = current($event->getSubject());
+
+        if (!is_object($subject)) {
+            return;
+        }
+
+        if ($subject instanceof ProductInterface || $subject instanceof ProductModelInterface) {
+            return;
+        }
+
+        $this->replaceVersionLastUpdate(ClassUtils::getClass($subject));
+    }
+
+    private function replaceVersionLastUpdate($subject): void
+    {
         $sql = <<<'SQL'
-REPLACE INTO akeneo_structure_version_last_update SET resource_name = :resource_name, last_update = :last_update;
+REPLACE INTO akeneo_structure_version_last_update SET resource_name = :resource_name, last_update = now();
 SQL;
 
         $connection = $this->doctrine->getConnection();
-        $now = $connection->convertToDatabaseValue(new \DateTime(), 'datetime');
-        $connection->executeUpdate(
-            $sql,
-            ['resource_name' => ClassUtils::getClass($event->getSubject()), 'last_update' => $now]
-        );
+        $connection->executeUpdate($sql, [
+            'resource_name' => $subject,
+        ]);
     }
 }
