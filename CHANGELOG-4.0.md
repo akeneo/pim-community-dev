@@ -126,5 +126,3 @@ The following CLI commands have been deleted:
 - Update `pimee_workflow.doctrine.query.proposal_product_and_product_model_query_builder_from_size_factory` to use `Akeneo\Pim\WorkOrganization\Workflow\Component\Query\ProductProposalAndProductModelProposalQueryBuilder`
 - Update `pimee_teamwork_assistant.controller.project_completeness_controller` to remove `@security.token_storage` as dependency
 - Update `pimee_catalog_rule.applier.product.saver` to remove `@pim_catalog.saver.product_model_descendants` as dependency
-- Update `pim_api.controller.product` to use `pim_catalog.event_subscriber.product.on_save.api_aggregator_event_subscriber` as dependency
-- Update `pim_api.controller.product_model` to use `pim_catalog.event_subscriber.product_model.on_save.api_aggregator_event_subscriber` as dependency
