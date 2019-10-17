@@ -321,7 +321,7 @@ JSON;
 
     protected function getProductFromIndex(string $identifier): ?array
     {
-        $esProductClient = $this->getFromTestContainer('akeneo_elasticsearch.client.product_and_product_model');
+        $esProductClient = $this->get('akeneo_elasticsearch.client.product_and_product_model');
 
         $esProductClient->refreshIndex();
         $res = $esProductClient->search(['query' => ['term' => ['identifier' => $identifier]]]);
@@ -336,7 +336,7 @@ JSON;
             Assert::assertNotNull($product);
 
             $completenesses = $this
-                ->getFromTestContainer('akeneo.pim.enrichment.product.query.get_product_completenesses')
+                ->get('akeneo.pim.enrichment.product.query.get_product_completenesses')
                 ->fromProductId($product->getId());
             Assert::assertCount(6, $completenesses); // 3 channels * 2 locales
         }
