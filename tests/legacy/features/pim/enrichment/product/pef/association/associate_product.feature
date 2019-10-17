@@ -153,4 +153,4 @@ Feature: Associate a product
     Then I should not see association type social_sell
     When I edit the "charcoal-boots" product
     And I visit the "Associations" column tab
-    Then I should see the text "shoelaces"
+    Then I should see the text "CROSS SELL"
