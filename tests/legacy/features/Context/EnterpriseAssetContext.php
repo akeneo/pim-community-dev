@@ -345,9 +345,14 @@ class EnterpriseAssetContext extends PimContext
      */
     public function clearAssetTmpFileStorage()
     {
-        $fileSystem = $this->getMainContext()->getContainer()->get('oneup_flysystem.tmp_storage_filesystem');
-        foreach ($fileSystem->listFiles('', true) as $file) {
-            $fileSystem->delete($file['path']);
+        $fileSystem = $this->getMainContext()->getContainer()
+                           ->get('akeneo_file_storage.file_storage.filesystem_provider')
+                           ->getFileSystem('tmpAssetUpload');
+
+        foreach ($fileSystem->listContents('', true) as $file) {
+            if ('file' === ($file['type'] ?? null)) {
+                $fileSystem->delete($file['path']);
+            }
         }
     }
 
