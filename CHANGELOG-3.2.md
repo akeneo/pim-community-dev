@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes
+
+- PIM-8884: Remove unknown source map comment
+
 # 3.2.12 (2019-10-08)
 
 # 3.2.11 (2019-10-07)
