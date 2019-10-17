@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     akeneo_assetmanager.tests.back.integration.connector.distribute.get_connector_asset_context:
         class: Akeneo\AssetManager\Integration\Connector\Api\Context\Distribute\GetConnectorAssetContext
         arguments:
