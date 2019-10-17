@@ -13,7 +13,6 @@ use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFa
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingProductValues;
 use Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface;
