@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8884: Remove unknown source map comment
+- PIM-8886: Fix form for creating a product variant with a reference entity as axis
 
 # 3.2.12 (2019-10-08)
 
