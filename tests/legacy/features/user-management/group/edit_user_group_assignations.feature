@@ -90,3 +90,19 @@ Feature: Edit a user groups and roles
     When I edit the "Manager" UserGroup
     And I visit the "Users" tab
     Then the last page number should be 2
+
+  @jira https://akeneo.atlassian.net/browse/PIM-7691
+  Scenario: Fail to change a user group without correct permissions
+    Given I edit the "User" Role
+    When I visit the "Permissions" tab
+    And I grant rights to group System
+    And I revoke rights to resource Edit user groups
+    And I save the Role
+    When I logout
+    And I am logged in as "Mary"
+    And I edit the "mary" user
+   And I visit the "Groups and roles" tab
+    And I fill in the following information:
+      | User groups | Manager, Redactor |
+    And I save the user
+    And the user "mary" should have 1 role
