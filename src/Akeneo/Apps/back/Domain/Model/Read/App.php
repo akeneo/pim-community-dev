@@ -11,10 +11,13 @@ namespace Akeneo\Apps\Domain\Model\Read;
  */
 class App
 {
+    /** @var string */
     private $code;
 
+    /** @var string */
     private $label;
 
+    /** @var string */
     private $flowType;
 
     public function __construct(string $code, string $label, string $flowType)

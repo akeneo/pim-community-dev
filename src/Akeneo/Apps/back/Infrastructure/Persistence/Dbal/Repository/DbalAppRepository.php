@@ -16,6 +16,7 @@ use Doctrine\DBAL\Connection;
  */
 class DbalAppRepository implements AppRepository
 {
+    /** @var Connection */
     private $dbalConnection;
 
     public function __construct(Connection $dbalConnection)
@@ -26,8 +27,8 @@ class DbalAppRepository implements AppRepository
     public function create(WriteApp $app): void
     {
         $insertSQL = <<<SQL
-INSERT INTO akeneo_app (code, label, flow_type)
-VALUES (:code, :label, :flow_type)
+INSERT INTO akeneo_app (client_id, code, label, flow_type)
+VALUES (:client_id, :code, :label, :flow_type)
 SQL;
 
         $stmt = $this->dbalConnection->prepare($insertSQL);
@@ -35,6 +36,7 @@ SQL;
             'code' => (string) $app->code(),
             'label' => $app->label(),
             'flow_type' => (string) $app->flowType(),
+            'client_id' => $app->clientId()->id(),
         ]);
     }
 
