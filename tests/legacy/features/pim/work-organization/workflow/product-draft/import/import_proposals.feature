@@ -69,7 +69,7 @@ Feature: Import proposals
     Given the following product drafts:
       | product    | status | source | source_label | author | author_label | result                                                                                                                                        |
       | my-jacket  | ready  | pim    | PIM          | Mary   | Mary Smith   | {"values":{"name":[{"locale":"fr_FR","scope":null,"data":"My jacket"}],"description":[{"locale":"fr_FR","scope":"mobile","data":"Ma desc"}]}} |
-      | my-jacket3 | ready  | pim    | PIM          | Mary   | Mary Smith   | {"values":{"name":[{"locale":"fr_FR","scope":null,"data":null}]}}                                                                             |
+      | my-jacket3 | ready  | pim    | PIM          | Mary   | Mary Smith   | {"values":{}}                                                                             |
     And the following CSV file to import:
       """
       sku;description-fr_FR-ecommerce;name-fr_FR;manufacturer
@@ -95,7 +95,7 @@ Feature: Import proposals
   Scenario: Remove a proposal if there is no diff
     Given the following product drafts:
       | product   | status | source | source_label | author | author_label | result                                                          |
-      | my-jacket | ready  | pim    | PIM          | Mary   | Mary Smith   | {"values":{"handmade":[{"locale":null,"scope":null,"data":0}]}} |
+      | my-jacket | ready  | pim    | PIM          | Mary   | Mary Smith   | {"values":{"handmade":[{"locale":null,"scope":null,"data":false}]}} |
     Then there is one proposal for product "my-jacket" and author Mary
     And the following CSV file to import:
       """
@@ -108,7 +108,7 @@ Feature: Import proposals
   Scenario: Remove an optional attribute to a proposal
     Given the following product drafts:
       | product   | status | source | source_label | author | author_label | result                                                                                                                      |
-      | my-jacket | ready  | pim    | PIM          | Mary   | Mary Smith   | {"values":{"name":[{"locale":"fr_FR","scope":null,"data":"My jacket"}],"handmade":[{"locale":null,"scope":null,"data":0}]}} |
+      | my-jacket | ready  | pim    | PIM          | Mary   | Mary Smith   | {"values":{"name":[{"locale":"fr_FR","scope":null,"data":"My jacket"}],"handmade":[{"locale":null,"scope":null,"data":false}]}} |
     And the following CSV file to import:
       """
       sku;handmade

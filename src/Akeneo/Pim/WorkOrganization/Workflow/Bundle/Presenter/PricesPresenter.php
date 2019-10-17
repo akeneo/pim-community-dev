@@ -53,9 +53,9 @@ class PricesPresenter extends AbstractProductValuePresenter
         $change = $this->normalizeChange($change);
 
         foreach ($value as $currency => $price) {
-            if (!isset($change[$currency]) || (isset($change[$currency]) && $price === $change[$currency])) {
-                unset($value[$currency]);
+            if (isset($change[$currency]) && $price === $change[$currency]) {
                 unset($change[$currency]);
+                unset($value[$currency]);
             }
         }
 

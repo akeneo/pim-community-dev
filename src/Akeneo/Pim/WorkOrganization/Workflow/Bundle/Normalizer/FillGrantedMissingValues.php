@@ -62,10 +62,13 @@ class FillGrantedMissingValues implements FillMissingValuesInterface
 
         foreach ($missingValues as $attributeCode => $values) {
             $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
-            if (null !== $attribute && $this->authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $attribute)) {
+            if ($this->authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $attribute)) {
                 foreach ($values as $value) {
-                    $locale = $this->localeRepository->findOneByIdentifier($value['locale']);
-                    if (null === $locale || $this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $locale)) {
+                    $localeCode = $value['locale'];
+                    if (null === $localeCode || $this->authorizationChecker->isGranted(
+                        Attributes::VIEW_ITEMS,
+                        $this->localeRepository->findOneByIdentifier($localeCode)
+                    )) {
                         $result[$attributeCode][] = $value;
                     }
                 }

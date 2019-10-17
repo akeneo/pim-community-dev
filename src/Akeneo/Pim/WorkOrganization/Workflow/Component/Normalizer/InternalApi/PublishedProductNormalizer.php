@@ -17,6 +17,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer\PublishedProductNormalizer as StandardPublishedProductNormalizer;
@@ -43,7 +44,7 @@ class PublishedProductNormalizer implements NormalizerInterface
     /** @var MissingAssociationAdder */
     private $missingAssociationAdder;
 
-    /** @var FillMissingPublishedProductValues */
+    /** @var FillMissingValuesInterface */
     private $fillMissingPublishedProductValues;
 
     /** @var AttributeConverterInterface */
@@ -91,7 +92,7 @@ class PublishedProductNormalizer implements NormalizerInterface
     public function __construct(
         StandardPublishedProductNormalizer $standardPublishedProductNormalizer,
         MissingAssociationAdder $missingAssociationAdder,
-        FillMissingPublishedProductValues $fillMissingPublishedProductValues,
+        FillMissingValuesInterface $fillMissingPublishedProductValues,
         AttributeConverterInterface $localizedConverter,
         ConverterInterface $productValueConverter,
         NormalizerInterface $versionNormalizer,

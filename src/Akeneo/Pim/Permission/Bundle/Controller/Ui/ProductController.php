@@ -13,9 +13,7 @@ namespace Akeneo\Pim\Permission\Bundle\Controller\Ui;
 
 use Akeneo\Pim\Enrichment\Bundle\Controller\Ui\ProductController as BaseProductController;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\CategoryManager;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
@@ -38,7 +36,7 @@ class ProductController extends BaseProductController
         ProductRepositoryInterface $productRepository,
         CategoryRepositoryInterface $categoryRepository,
         SaverInterface $productSaver,
-        MissingAssociationAdder $missingAssociationAdder,
+        string $categoryClass,
         SecurityFacade $securityFacade,
         string $acl,
         string $template,
@@ -49,7 +47,7 @@ class ProductController extends BaseProductController
             $productRepository,
             $categoryRepository,
             $productSaver,
-            $missingAssociationAdder,
+            $categoryClass,
             $securityFacade,
             $acl,
             $template
