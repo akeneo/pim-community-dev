@@ -35,6 +35,7 @@ services:
 
     pim_catalog.elasticsearch.indexer.product_model_descendants_and_ancestors:
         class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelDescendantsAndAncestorsIndexer'
+        public: true
         arguments:
             - '@pim_catalog.elasticsearch.indexer.product'
             - '@pim_catalog.elasticsearch.indexer.product_model'

@@ -251,6 +251,7 @@ services:
 
     akeneo.pim.enrichment.product.query.get_descendant_variant_product_identifiers:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetDescendantVariantProductIdentifiers'
+        public: true
         arguments:
             - '@database_connection'
 
