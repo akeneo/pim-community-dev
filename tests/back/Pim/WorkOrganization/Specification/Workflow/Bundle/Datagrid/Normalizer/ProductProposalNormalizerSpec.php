@@ -10,6 +10,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductProposalNormalizerSpec extends ObjectBehavior
@@ -42,7 +43,8 @@ class ProductProposalNormalizerSpec extends ObjectBehavior
         WriteValueCollection $valueCollection,
         ProductInterface $product,
         ValueInterface $value,
-        AttributeInterface $attribute
+        AttributeInterface $attributeText,
+        AttributeInterface $attributeDescription
     ) {
         $context = [
             'filter_types' => ['pim.transform.product_value.structured'],
@@ -54,7 +56,8 @@ class ProductProposalNormalizerSpec extends ObjectBehavior
         $created = new \DateTime('2017-01-01T01:03:34+01:00');
         $changes = [
             'values' => [
-                'text' => [['locale' => null, 'scope' => null, 'data' => 'my text']]
+                'text' => [['locale' => null, 'scope' => null, 'data' => 'my text']],
+                'description' => [['locale' => null, 'scope' => null, 'data' => null]]
             ]
         ];
         $datagridNormalizer->normalize($created, 'datagrid', $context)->willReturn('2017-01-01');
@@ -69,8 +72,10 @@ class ProductProposalNormalizerSpec extends ObjectBehavior
         $productProposal->getCreatedAt()->willReturn($created);
         $productProposal->getValues()->willReturn($valueCollection);
         $productProposal->getChanges()->willReturn($changes);
-        $attributeRepository->findOneByIdentifier('text')->willReturn($attribute);
-        $valueFactory->create($attribute, null, null, 'my text')->willReturn($value);
+        $attributeRepository->findOneByIdentifier('text')->willReturn($attributeText);
+        $attributeRepository->findOneByIdentifier('description')->willReturn($attributeDescription);
+        $valueFactory->create($attributeText, null, null, 'my text')->willReturn($value);
+        $valueFactory->create($attributeDescription, Argument::cetera())->shouldNotBeCalled();
         $value->getAttributeCode()->willReturn('text');
         $value->getScopeCode()->willReturn(null);
         $value->getLocaleCode()->willReturn(null);
@@ -82,26 +87,14 @@ class ProductProposalNormalizerSpec extends ObjectBehavior
             'standard',
             $context
         )->willReturn([
-                'text' => [
-                    [
-                        'locale' => null,
-                        'scope'  => null,
-                        'data'   => 'my text',
-                    ],
-                ]
-            ]
-        );
+            'text' => [['locale' => null, 'scope'  => null, 'data'   => 'my text']],
+        ]);
 
         $this->normalize($productProposal, 'datagrid', $context)->shouldReturn(
             [
                 'changes' => [
-                    'text' => [
-                        [
-                            'locale' => null,
-                            'scope'  => null,
-                            'data'   => 'my text',
-                        ],
-                    ],
+                    'text' => [['locale' => null, 'scope'  => null, 'data'   => 'my text']],
+                    'description' => [['data' => null, 'locale' => null, 'scope' => null]],
                 ],
                 'createdAt' => '2017-01-01',
                 'product' => $product,
