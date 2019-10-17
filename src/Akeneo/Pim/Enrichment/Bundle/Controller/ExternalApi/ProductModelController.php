@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductModel\OnSave\ApiAggregatorForProductModelPostSaveEventSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModelList;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductModelsQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductModelsQueryHandler;
@@ -15,7 +15,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProd
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetConnectorProductModels;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
-use Akeneo\Tool\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Akeneo\Tool\Component\Api\Exception\DocumentedHttpException;
@@ -102,9 +101,6 @@ class ProductModelController
     /** @var StreamResourceResponse */
     protected $partialUpdateStreamResource;
 
-    /** @var QueryParametersCheckerInterface */
-    protected $queryParametersChecker;
-
     /** @var ListProductModelsQueryValidator */
     private $listProductModelsQueryValidator;
 
@@ -119,6 +115,9 @@ class ProductModelController
 
     /** @var TokenStorageInterface */
     private $tokenStorage;
+
+    /** @var ApiAggregatorForProductModelPostSaveEventSubscriber */
+    private $apiAggregatorForProductModelPostSave;
 
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
@@ -141,6 +140,7 @@ class ProductModelController
         ConnectorProductModelNormalizer $connectorProductModelNormalizer,
         GetConnectorProductModels $getConnectorProductModels,
         TokenStorageInterface $tokenStorage,
+        ApiAggregatorForProductModelPostSaveEventSubscriber $apiAggregatorForProductModelPostSave,
         array $apiConfiguration
     ) {
         $this->pqbFactory = $pqbFactory;
@@ -163,6 +163,7 @@ class ProductModelController
         $this->connectorProductModelNormalizer = $connectorProductModelNormalizer;
         $this->getConnectorProductModels = $getConnectorProductModels;
         $this->tokenStorage = $tokenStorage;
+        $this->apiAggregatorForProductModelPostSave = $apiAggregatorForProductModelPostSave;
         $this->apiConfiguration = $apiConfiguration;
     }
 
@@ -303,26 +304,24 @@ class ProductModelController
     }
 
     /**
+     * Product models are saved 1 by 1, but we batch events in order to improve performances.
+     *
      * @param Request $request
-     *
-     * @throws HttpException
-     *
      * @return Response
+     * @throws HttpException
      */
     public function partialUpdateListAction(Request $request): Response
     {
         $resource = $request->getContent(true);
-        $response = $this->partialUpdateStreamResource->streamResponse($resource);
+        $this->apiAggregatorForProductModelPostSave->activate();
+        $response = $this->partialUpdateStreamResource->streamResponse($resource, [], function () {
+            $this->apiAggregatorForProductModelPostSave->dispatchAllEvents();
+            $this->apiAggregatorForProductModelPostSave->deactivate();
+        });
 
         return $response;
     }
 
-    /**
-     * @param Request               $request
-     * @param ChannelInterface|null $channel
-     *
-     * @return array
-     */
     protected function getNormalizerOptions(ListProductModelsQuery $query): array
     {
         $normalizerOptions = [];
