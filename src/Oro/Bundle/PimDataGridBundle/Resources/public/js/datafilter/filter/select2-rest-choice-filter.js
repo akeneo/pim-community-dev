@@ -50,11 +50,21 @@ define(
                     };
                 }
 
-                this.operatorChoices = {
+                const operatorChoices = {
                     'in': __('pim_datagrid.filters.common.in_list'),
                     'empty': __('pim_datagrid.filters.common.empty'),
                     'not empty': __('pim_datagrid.filters.common.not_empty')
                 };
+
+                if (undefined !== this.options.onlyOperators) {
+                    for (var operatorChoice in operatorChoices) {
+                        if (-1 === this.options.onlyOperators.indexOf(operatorChoice)) {
+                            delete operatorChoices[operatorChoice];
+                        }
+                    }
+                }
+
+                this.operatorChoices = operatorChoices;
 
                 TextFilter.prototype.initialize.apply(this, arguments);
             },
