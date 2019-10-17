@@ -86,3 +86,4 @@ services:
         arguments:
             - '@akeneo.pim.automation.franklin_insights.franklin_client.uri_generator'
             - '@akeneo.pim.automation.franklin_insights.franklin_client.http_client'
+            - '@logger'
