@@ -3,6 +3,9 @@ parameters:
     akeneo_ee_integration_tests.loader.permission_cleaner.class: AkeneoEnterprise\Test\IntegrationTestsBundle\Loader\PermissionCleaner
 
 services:
+    _defaults:
+        public: true
+
     akeneo_integration_tests.loader.reference_data_loader:
         class: '%akeneo_integration_tests.loader.reference_data_loader.class%'
         arguments:
