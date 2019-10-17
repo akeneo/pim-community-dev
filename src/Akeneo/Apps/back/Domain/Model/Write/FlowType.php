@@ -15,7 +15,7 @@ class FlowType
 
     const DATA_SOURCE = 'data_source';
     const DATA_DESTINATION = 'data_destination';
-    const OTHERS = 'others';
+    const OTHER = 'other';
 
     private function __construct(string $flowType)
     {
@@ -24,7 +24,7 @@ class FlowType
 
     public static function create(string $flowType): self
     {
-        if (!in_array($flowType, [self::DATA_DESTINATION, self::DATA_SOURCE, self::OTHERS])) {
+        if (!in_array($flowType, [self::DATA_DESTINATION, self::DATA_SOURCE, self::OTHER])) {
             throw new \InvalidArgumentException('invalid_flow_type');
         }
 

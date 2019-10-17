@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Apps\Infrastructure\Persistence\Dbal;
+namespace Akeneo\Apps\Infrastructure\Persistence\Dbal\Repository;
 
 use Akeneo\Apps\Domain\Model\Read\App as ReadApp;
 use Akeneo\Apps\Domain\Model\Write\App as WriteApp;

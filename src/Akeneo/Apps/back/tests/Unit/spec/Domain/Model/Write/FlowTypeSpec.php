@@ -18,7 +18,7 @@ class FlowTypeSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->beConstructedThrough('create', [FlowType::OTHERS]);
+        $this->beConstructedThrough('create', [FlowType::OTHER]);
         $this->shouldBeAnInstanceOf(FlowType::class);
     }
 
@@ -44,7 +44,7 @@ class FlowTypeSpec extends ObjectBehavior
 
     function it_creates_an_others_flow_type()
     {
-        $this->beConstructedThrough('create', [FlowType::OTHERS]);
+        $this->beConstructedThrough('create', [FlowType::OTHER]);
         $this->shouldBeAnInstanceOf(FlowType::class);
     }
 

@@ -111,7 +111,9 @@ jobs:
                 when: always
           - run:
                 name: Acceptance back
-                command: docker-compose run --rm -T php vendor/bin/behat --strict -p acceptance -vv
+                command: |
+                    docker-compose run --rm -T php vendor/bin/behat --strict -p acceptance -vv
+                    make apps-acceptance
                 when: always
           - store_test_results:
                 path: var/tests
