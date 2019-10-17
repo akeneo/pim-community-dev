@@ -50,6 +50,8 @@ package-lock.json
 yarn-error.log
 coverage/*
 .phpunit.result.cache
+.nyc_output
+.coverage
 
 ###> symfony/framework-bundle ###
 /.env.local

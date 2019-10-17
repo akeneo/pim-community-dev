@@ -44,7 +44,7 @@ final class ChannelSaverIntegration extends TestCase
         self::assertEquals($createdNormalizedChannel, $savedNormalizedChannel);
     }
 
-    public function test_that_it_saves_an_existing_channel(): void
+    public function test_that_it_saves_an_existing_channel_by_removing_a_locale_from_this_channel(): void
     {
         $channel = $this->getRepository()->findOneByIdentifier('ecommerce');
         $notUpdatedNormalizedChannel = $this->getNormalizer()->normalize($channel);
@@ -59,6 +59,17 @@ final class ChannelSaverIntegration extends TestCase
 
         self::assertNotEquals($notUpdatedNormalizedChannel, $savedNormalizedChannel);
         self::assertEquals($updatedNormalizedChannel, $savedNormalizedChannel);
+
+        // @see https://github.com/akeneo/pim-community-dev/issues/10828
+        // kill background process because you can have a race condition:
+        // - this test triggers the asynchronous job pim:catalog:remove-completeness-for-channel-and-locale and then the test finishes (but not the job)
+        // - then table are cleaned in the next test with the fixture loader
+        // - then the pim:catalog:remove-completeness-for-channel-and-locale insert data into a table
+        // - then the dump is loaded to load the fixtures of the next test
+        // - INSERT INTO of this dump fails because the data inserted by "pim:catalog:remove-completeness-for-channel-and-locale" already exists
+        //
+        // ideally, we should not trigger this asynchronous job and test it differently
+        exec('pkill -f "pim:catalog:remove-completeness-for-channel-and-locale"');
     }
 
     public function test_it_updates_job_instances_when_a_channel_as_a_changed_category_tree(): void
