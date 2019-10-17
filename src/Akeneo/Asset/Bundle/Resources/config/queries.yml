@@ -25,6 +25,7 @@ services:
 
     pimee_product_asset.query.family_codes_where_attributes_are_required:
         class: 'Akeneo\Asset\Bundle\Persistence\Query\Sql\FindFamilyCodesWhereAttributesAreRequired'
+        public: true
         arguments:
             - '@database_connection'
 
