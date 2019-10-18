@@ -104,14 +104,13 @@ class ProductProposalNormalizer implements NormalizerInterface
             $attribute = $this->attributeRepository->findOneByIdentifier($code);
             foreach ($changeset as $index => $change) {
                 if (!$this->isChangeDataNull($change['data'])) {
-                    $value = $this->valueFactory->create(
+                    $valueCollection->add($this->valueFactory->create(
                         $attribute,
                         $change['scope'],
                         $change['locale'],
                         $change['data']
-                    );
+                    ));
                 }
-                $valueCollection->add($value);
             }
         }
 
@@ -142,7 +141,8 @@ class ProductProposalNormalizer implements NormalizerInterface
         return $normalizedValues;
     }
 
-    private function isChangeDataNull($changeData): bool {
+    private function isChangeDataNull($changeData): bool
+    {
         return null === $changeData || '' === $changeData || [] === $changeData;
     }
 }
