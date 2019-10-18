@@ -267,7 +267,7 @@ workflows:
   version: 2
   pull_request:
       jobs:
-          - test
+          - jml
 
   nightly:
       triggers:
