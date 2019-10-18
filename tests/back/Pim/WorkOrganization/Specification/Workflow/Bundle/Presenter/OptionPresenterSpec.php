@@ -42,6 +42,6 @@ class OptionPresenterSpec extends ObjectBehavior
         $renderer->renderDiff('Red', 'Blue')->willReturn('diff between two options');
 
         $this->setRenderer($renderer);
-        $this->present(['data' => 'blue', 'attribute' => 'color'], 'red')->shouldReturn('diff between two options');
+        $this->present('red', ['data' => 'blue', 'attribute' => 'color'])->shouldReturn('diff between two options');
     }
 }

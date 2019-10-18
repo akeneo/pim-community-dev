@@ -52,7 +52,7 @@ class PricesPresenter extends AbstractProductValuePresenter
     /**
      * {@inheritdoc}
      */
-    public function present(array $change, $formerData)
+    public function present($formerData, array $change)
     {
         // Done
         $value = $this->normalizeData($formerData);

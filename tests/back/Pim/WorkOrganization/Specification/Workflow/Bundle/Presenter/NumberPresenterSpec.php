@@ -39,6 +39,6 @@ class NumberPresenterSpec extends ObjectBehavior
         $this->setRenderer($renderer);
         $renderer->renderDiff(null, '150,1234')->willReturn('150,1234');
 
-        $this->present(['data' => 150.1234], null)->shouldReturn("150,1234");
+        $this->present(null, ['data' => 150.1234])->shouldReturn("150,1234");
     }
 }

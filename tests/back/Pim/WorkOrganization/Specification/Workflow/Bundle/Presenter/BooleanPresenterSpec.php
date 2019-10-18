@@ -43,6 +43,6 @@ class BooleanPresenterSpec extends ObjectBehavior
 
         $this->setRenderer($renderer);
         $this->setTranslator($translator);
-        $this->present(['data' => '1'], false)->shouldReturn('diff between two booleans');
+        $this->present(false, ['data' => '1'])->shouldReturn('diff between two booleans');
     }
 }

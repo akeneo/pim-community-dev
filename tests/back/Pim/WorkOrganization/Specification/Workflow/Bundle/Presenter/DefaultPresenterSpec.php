@@ -29,6 +29,6 @@ class DefaultPresenterSpec extends ObjectBehavior
         $renderer->renderDiff('bar', 'foo')->willReturn('diff between two simple values');
         $this->setRenderer($renderer);
 
-        $this->present(['id' => 123, 'data' => 'foo'], 'bar')->shouldReturn('diff between two simple values');
+        $this->present('bar', ['id' => 123, 'data' => 'foo'])->shouldReturn('diff between two simple values');
     }
 }

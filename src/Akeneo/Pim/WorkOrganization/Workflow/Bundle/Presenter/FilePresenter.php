@@ -55,7 +55,7 @@ class FilePresenter implements PresenterInterface
     /**
      * {@inheritdoc}
      */
-    public function present(array $change, $formerData)
+    public function present($formerData, array $change)
     {
         // Done
         $result = ['before' => '', 'after' => ''];

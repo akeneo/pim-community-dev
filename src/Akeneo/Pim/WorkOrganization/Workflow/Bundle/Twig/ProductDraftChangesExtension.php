@@ -158,7 +158,7 @@ class ProductDraftChangesExtension extends \Twig_Extension
                         $presenter->setRenderer($this->renderer);
                     }
 
-                    return $presenter->present($change, $formerValue->getData());
+                    return $presenter->present($formerValue->getData(), $change);
                 }
             }
         }

@@ -34,7 +34,7 @@ abstract class AbstractProductValuePresenter implements PresenterInterface, Rend
     /**
      * {@inheritdoc}
      */
-    public function present(array $change, $formerData)
+    public function present($formerData, array $change)
     {
         // Done
         return $this->renderer->renderDiff(

@@ -81,7 +81,7 @@ class PricesPresenterSpec extends ObjectBehavior
             ->willReturn('diff between two price collections');
 
         $this->setRenderer($renderer);
-        $this->present($change, $collection)->shouldReturn('diff between two price collections');
+        $this->present($collection, $change)->shouldReturn('diff between two price collections');
     }
 
     function it_presents_french_prices(
@@ -97,9 +97,9 @@ class PricesPresenterSpec extends ObjectBehavior
         $renderer->renderDiff([], ["15.12 €", "15.48 $"])->willReturn('15.12 €<br/>15.48 $');
         $this->setRenderer($renderer);
 
-        $this->present(['data' => [
+        $this->present([], ['data' => [
             ['amount' => 15.12, 'currency' => 'EUR'],
             ['amount' => 15.48, 'currency' => 'USD'],
-        ]], [])->shouldReturn('15.12 €<br/>15.48 $');
+        ]])->shouldReturn('15.12 €<br/>15.48 $');
     }
 }

@@ -41,6 +41,6 @@ class ReferenceEntityValuePresenterSpec extends ObjectBehavior
         $renderer->renderDiff('foo', 'bar')->willReturn('diff between two record codes');
         $this->setRenderer($renderer);
 
-        $this->present(['data' => 'bar', 'attribute' => 'description'], $foo)->shouldReturn('diff between two record codes');
+        $this->present($foo, ['data' => 'bar', 'attribute' => 'description'])->shouldReturn('diff between two record codes');
     }
 }

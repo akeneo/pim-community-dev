@@ -62,7 +62,7 @@ class MetricPresenterSpec extends ObjectBehavior
         $this->setRenderer($renderer);
         $this->setTranslator($translator);
         $this
-            ->present(['data' => ['unit' => 'MILLIMETER', 'amount' => '123.456']], $metric)
+            ->present($metric, ['data' => ['unit' => 'MILLIMETER', 'amount' => '123.456']])
             ->shouldReturn('diff between two metrics');
     }
 
@@ -82,7 +82,7 @@ class MetricPresenterSpec extends ObjectBehavior
 
         $this->setRenderer($renderer);
         $this->setTranslator($translator);
-        $this->present(['data' => ['unit' => 'MILLIMETER', 'amount' => '123.456']], null)
+        $this->present(null, ['data' => ['unit' => 'MILLIMETER', 'amount' => '123.456']])
             ->shouldReturn('a new metric');
     }
 
@@ -101,7 +101,7 @@ class MetricPresenterSpec extends ObjectBehavior
         $this->setRenderer($renderer);
         $this->setTranslator($translator);
 
-        $this->present(['data' => ['amount' => 150.123456, 'unit' => 'KILOGRAM']], null)
+        $this->present(null, ['data' => ['amount' => 150.123456, 'unit' => 'KILOGRAM']])
             ->shouldReturn("150,123456 trans_kilogram");
     }
 }

@@ -33,13 +33,13 @@ class FilePresenterSpec extends ObjectBehavior
     function it_does_not_presents_original_if_original_is_empty()
     {
         $this
-            ->present(['data' => 'key/of/the/change.jpg'], null)
+            ->present(null, ['data' => 'key/of/the/change.jpg'])
             ->shouldReturn(['before' => '', 'after' => '']);
     }
 
     function it_does_not_presents_new_if_new_is_empty(FileInfoInterface $media) {
         $this
-            ->present(['data' => null], $media)
+            ->present($media, ['data' => null])
             ->shouldReturn(['before' => '', 'after' => '']);
     }
 
@@ -73,7 +73,7 @@ class FilePresenterSpec extends ObjectBehavior
             ->willReturn('url/of/the/changed/media.jpg');
 
         $this
-            ->present(['data' => 'key/of/the/changed/media.jpg'], $media)
+            ->present($media, ['data' => 'key/of/the/changed/media.jpg'])
             ->shouldReturn([
                 'before' => sprintf(
                     '<i class="icon-file"></i><a target="_blank" class="no-hash" href="%s">%s</a>',

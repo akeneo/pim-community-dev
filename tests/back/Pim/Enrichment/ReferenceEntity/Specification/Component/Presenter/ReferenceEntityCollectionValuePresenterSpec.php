@@ -42,6 +42,6 @@ class ReferenceEntityCollectionValuePresenterSpec extends ObjectBehavior
         $renderer->renderDiff(['foo', 'bar'], ['foo', 'bar', 'baz'])->willReturn('diff between two collections');
         $this->setRenderer($renderer);
 
-        $this->present(['data' => ['foo', 'bar', 'baz']], [$foo, $bar])->shouldReturn('diff between two collections');
+        $this->present([$foo, $bar], ['data' => ['foo', 'bar', 'baz']])->shouldReturn('diff between two collections');
     }
 }

@@ -50,7 +50,7 @@ class OptionsPresenterSpec extends ObjectBehavior
 
         $this->setRenderer($renderer);
         $this
-            ->present(['data' => ['red', 'green', 'blue'], 'attribute' => 'color'], ['red', 'green'])
+            ->present(['red', 'green'], ['data' => ['red', 'green', 'blue'], 'attribute' => 'color'])
             ->shouldReturn('diff between two options collections');
     }
 }
