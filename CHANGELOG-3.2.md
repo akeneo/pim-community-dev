@@ -1,5 +1,7 @@
 # 3.2.x
 
+- PIM-7963: Fix datepicker width not adapting to the dropdown
+
 # 3.2.13 (2019-10-18)
 
 ## Bug fixes:
