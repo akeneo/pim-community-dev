@@ -34,16 +34,11 @@ class AssetsCollectionPresenter implements PresenterInterface
     /** @var RouterInterface */
     protected $router;
 
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $attributeRepository;
-
     public function __construct(
         AssetRepositoryInterface $repository,
-        IdentifiableObjectRepositoryInterface $attributeRepository,
         RouterInterface $router
     ) {
         $this->repository = $repository;
-        $this->attributeRepository = $attributeRepository;
         $this->router = $router;
     }
 
@@ -63,8 +58,6 @@ class AssetsCollectionPresenter implements PresenterInterface
             'after'  => $this->presentAssets($afterCodes)
         ];
     }
-
-
 
     /**
      * {@inheritdoc}

@@ -30,16 +30,10 @@ class DatePresenter extends AbstractProductValuePresenter
     /** @var LocaleResolver */
     protected $localeResolver;
 
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $attributeRepository;
-
     public function __construct(
-        IdentifiableObjectRepositoryInterface $attributeRepository,
         BasePresenterInterface $datePresenter,
         LocaleResolver $localeResolver
     ) {
-        parent::__construct($attributeRepository);
-
         $this->datePresenter = $datePresenter;
         $this->localeResolver = $localeResolver;
     }

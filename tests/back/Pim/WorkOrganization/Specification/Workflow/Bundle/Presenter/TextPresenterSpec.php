@@ -4,7 +4,6 @@ namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
 
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PresenterInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\RendererInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
@@ -13,7 +12,6 @@ class TextPresenterSpec extends ObjectBehavior
     function let(
         IdentifiableObjectRepositoryInterface $attributeRepository
     ) {
-        $this->beConstructedWith($attributeRepository);
     }
 
     function it_is_a_presenter()

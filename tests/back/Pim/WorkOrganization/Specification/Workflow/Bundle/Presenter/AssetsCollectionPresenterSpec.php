@@ -5,25 +5,21 @@ namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PresenterInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Asset\Bundle\AttributeType\AttributeTypes as AssetAttributeType;
 use Akeneo\Asset\Component\Model\AssetInterface;
 use Akeneo\Asset\Component\Model\VariationInterface;
 use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 class AssetsCollectionPresenterSpec extends ObjectBehavior
 {
     function let(
         AssetRepositoryInterface $assetRepository,
-        IdentifiableObjectRepositoryInterface $attributeRepository,
         RouterInterface $router
     ) {
-        $this->beConstructedWith($assetRepository, $attributeRepository, $router);
+        $this->beConstructedWith($assetRepository, $router);
     }
 
     function it_is_a_presenter()

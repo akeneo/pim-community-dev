@@ -54,29 +54,22 @@ services:
     ##
     pimee_workflow.presenter.default:
         class: '%pimee_workflow.presenter.default.class%'
-        arguments:
-            - '@pim_catalog.repository.cached_attribute'
         tags:
             - { name: pimee_workflow.presenter, priority: -128 }
 
     pimee_workflow.presenter.text:
         class: '%pimee_workflow.presenter.text.class%'
-        arguments:
-            - '@pim_catalog.repository.cached_attribute'
         tags:
             - { name: pimee_workflow.presenter }
 
     pimee_workflow.presenter.textarea:
         class: '%pimee_workflow.presenter.textarea.class%'
-        arguments:
-            - '@pim_catalog.repository.cached_attribute'
         tags:
             - { name: pimee_workflow.presenter }
 
     pimee_workflow.presenter.metric:
         class: '%pimee_workflow.presenter.metric.class%'
         arguments:
-            - '@pim_catalog.repository.cached_attribute'
             - '@pim_catalog.localization.presenter.metric'
             - '@pim_enrich.resolver.locale'
         tags:
@@ -85,7 +78,6 @@ services:
     pimee_workflow.presenter.date:
         class: '%pimee_workflow.presenter.date.class%'
         arguments:
-            - '@pim_catalog.repository.cached_attribute'
             - '@pim_catalog.localization.presenter.date'
             - '@pim_enrich.resolver.locale'
         tags:
@@ -94,7 +86,6 @@ services:
     pimee_workflow.presenter.prices:
         class: '%pimee_workflow.presenter.prices.class%'
         arguments:
-            - '@pim_catalog.repository.cached_attribute'
             - '@pim_catalog.localization.presenter.prices'
             - '@pim_enrich.resolver.locale'
         tags:
@@ -103,7 +94,6 @@ services:
     pimee_workflow.presenter.number:
         class: '%pimee_workflow.presenter.number.class%'
         arguments:
-            - '@pim_catalog.repository.cached_attribute'
             - '@pim_catalog.localization.presenter.number'
             - '@pim_enrich.resolver.locale'
         tags:
@@ -111,15 +101,12 @@ services:
 
     pimee_workflow.presenter.boolean:
         class: '%pimee_workflow.presenter.boolean.class%'
-        arguments:
-            - '@pim_catalog.repository.cached_attribute'
         tags:
             - { name: pimee_workflow.presenter }
 
     pimee_workflow.presenter.option:
         class: '%pimee_workflow.presenter.option.class%'
         arguments:
-            - '@pim_catalog.repository.cached_attribute'
             - '@pim_catalog.repository.cached_attribute_option'
         tags:
             - { name: pimee_workflow.presenter }
@@ -127,7 +114,6 @@ services:
     pimee_workflow.presenter.options:
         class: '%pimee_workflow.presenter.options.class%'
         arguments:
-            - '@pim_catalog.repository.cached_attribute'
             - '@pim_catalog.repository.cached_attribute_option'
         tags:
             - { name: pimee_workflow.presenter }
@@ -135,7 +121,6 @@ services:
     pimee_workflow.presenter.file:
         class: '%pimee_workflow.presenter.file.class%'
         arguments:
-            - '@pim_catalog.repository.cached_attribute'
             - '@router'
             - '@akeneo_file_storage.repository.file_info'
         tags:
@@ -144,7 +129,6 @@ services:
     pimee_workflow.presenter.image:
         class: '%pimee_workflow.presenter.image.class%'
         arguments:
-            - '@pim_catalog.repository.cached_attribute'
             - '@router'
             - '@akeneo_file_storage.repository.file_info'
         tags:
@@ -153,7 +137,6 @@ services:
     pimee_workflow.presenter.product_value.date:
         class: '%pimee_workflow.presenter.product_value.date.class%'
         arguments:
-            - '@pim_catalog.repository.cached_attribute'
             - '@pim_catalog.localization.presenter.date'
             - '@pim_enrich.resolver.locale'
         tags:
@@ -161,15 +144,12 @@ services:
 
     pimee_workflow.presenter.product_value.boolean:
         class: '%pimee_workflow.presenter.product_value.boolean.class%'
-        arguments:
-            - '@pim_catalog.repository.cached_attribute'
         tags:
             - { name: pimee_workflow.product_value_presenter }
 
     pimee_workflow.presenter.product_value.image:
         class: '%pimee_workflow.presenter.product_value.image.class%'
         arguments:
-            - '@pim_catalog.repository.cached_attribute'
             - '@router'
             - '@akeneo_file_storage.repository.file_info'
         tags:
@@ -178,7 +158,6 @@ services:
     pimee_workflow.presenter.product_value.file:
         class: '%pimee_workflow.presenter.product_value.file.class%'
         arguments:
-            - '@pim_catalog.repository.cached_attribute'
             - '@router'
             - '@akeneo_file_storage.repository.file_info'
         tags:
@@ -187,7 +166,6 @@ services:
     pimee_reference_data.workflow.presenter.reference_data:
         class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\ReferenceData\ReferenceDataPresenter'
         arguments:
-            - '@pim_catalog.repository.cached_attribute'
             - '@pim_reference_data.repository_resolver'
         tags:
             - { name: pimee_workflow.presenter }
@@ -195,21 +173,16 @@ services:
     pimee_reference_data.workflow.presenter.reference_data_collection:
         class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\ReferenceData\ReferenceDataCollectionPresenter'
         arguments:
-            - '@pim_catalog.repository.cached_attribute'
             - '@pim_reference_data.repository_resolver'
         tags:
             - { name: pimee_workflow.presenter }
 
     pimee_workflow.presenter.product_value.reference_entity_collection:
         class: 'Akeneo\Pim\Enrichment\ReferenceEntity\Component\Presenter\ReferenceEntityCollectionValuePresenter'
-        arguments:
-            - '@pim_catalog.repository.cached_attribute'
         tags:
             - { name: pimee_workflow.presenter }
 
     pimee_workflow.presenter.product_value.reference_entity:
         class: 'Akeneo\Pim\Enrichment\ReferenceEntity\Component\Presenter\ReferenceEntityValuePresenter'
-        arguments:
-            - '@pim_catalog.repository.cached_attribute'
         tags:
             - { name: pimee_workflow.presenter }

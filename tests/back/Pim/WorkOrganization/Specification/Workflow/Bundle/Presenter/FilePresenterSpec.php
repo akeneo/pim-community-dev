@@ -6,19 +6,15 @@ use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PresenterInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 class FilePresenterSpec extends ObjectBehavior
 {
     function let(
-        IdentifiableObjectRepositoryInterface $attributeRepository,
         UrlGeneratorInterface $generator,
         FileInfoRepositoryInterface $repository
     ) {
-        $this->beConstructedWith($attributeRepository, $generator, $repository);
+        $this->beConstructedWith($generator, $repository);
     }
 
     function it_is_a_presenter()

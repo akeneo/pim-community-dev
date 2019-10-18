@@ -5,11 +5,9 @@ namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PresenterInterface;
 use Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface as LocalizationPresenter;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\TranslatorAwareInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Metric;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\RendererInterface;
 use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -17,7 +15,6 @@ use Symfony\Component\Translation\TranslatorInterface;
 class MetricPresenterSpec extends ObjectBehavior
 {
     function let(
-        IdentifiableObjectRepositoryInterface $attributeRepository,
         TranslatorInterface $translator,
         LocalizationPresenter $metricPresenter,
         LocaleResolver $localeResolver
@@ -25,7 +22,7 @@ class MetricPresenterSpec extends ObjectBehavior
         $translator->trans(Argument::type('string'))->will(function ($args) {
             return 'trans_'.strtolower($args[0]);
         });
-        $this->beConstructedWith($attributeRepository, $metricPresenter, $localeResolver);
+        $this->beConstructedWith($metricPresenter, $localeResolver);
     }
 
     function it_is_a_translator_aware_presenter()

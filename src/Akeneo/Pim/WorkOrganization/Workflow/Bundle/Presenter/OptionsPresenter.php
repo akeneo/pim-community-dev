@@ -26,11 +26,8 @@ class OptionsPresenter extends AbstractProductValuePresenter
     protected $optionRepository;
 
     public function __construct(
-        IdentifiableObjectRepositoryInterface $attributeRepository,
         IdentifiableObjectRepositoryInterface $optionRepository
     ) {
-        parent::__construct($attributeRepository);
-
         $this->optionRepository = $optionRepository;
     }
 

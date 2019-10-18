@@ -25,9 +25,6 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class FilePresenter implements PresenterInterface
 {
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $attributeRepository;
-
     /** @var UrlGeneratorInterface */
     protected $generator;
 
@@ -35,11 +32,9 @@ class FilePresenter implements PresenterInterface
     protected $fileInfoRepository;
 
     public function __construct(
-        IdentifiableObjectRepositoryInterface $attributeRepository,
         UrlGeneratorInterface $generator,
         FileInfoRepositoryInterface $fileInfoRepository)
     {
-        $this->attributeRepository = $attributeRepository;
         $this->generator = $generator;
         $this->fileInfoRepository = $fileInfoRepository;
     }

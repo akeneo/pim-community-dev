@@ -32,12 +32,9 @@ class MetricPresenter extends AbstractProductValuePresenter implements Translato
     protected $localeResolver;
 
     public function __construct(
-        IdentifiableObjectRepositoryInterface $attributeRepository,
         BasePresenterInterface $metricPresenter,
         LocaleResolver $localeResolver
     ) {
-        parent::__construct($attributeRepository);
-
         $this->metricPresenter = $metricPresenter;
         $this->localeResolver = $localeResolver;
     }

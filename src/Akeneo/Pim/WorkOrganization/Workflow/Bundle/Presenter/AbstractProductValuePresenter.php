@@ -23,14 +23,6 @@ abstract class AbstractProductValuePresenter implements PresenterInterface, Rend
 {
     use RendererAware;
 
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $attributeRepository;
-
-    public function __construct(IdentifiableObjectRepositoryInterface $attributeRepository)
-    {
-        $this->attributeRepository = $attributeRepository;
-    }
-
     /**
      * {@inheritdoc}
      */

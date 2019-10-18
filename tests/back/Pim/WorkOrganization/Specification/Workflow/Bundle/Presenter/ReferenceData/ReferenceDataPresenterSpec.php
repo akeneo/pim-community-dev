@@ -7,19 +7,16 @@ use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PresenterInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ReferenceDataRepositoryResolver;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\ReferenceDataConfigurationInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\RendererInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 class ReferenceDataPresenterSpec extends ObjectBehavior
 {
     function let(
-        IdentifiableObjectRepositoryInterface $attributeRepository,
         ReferenceDataRepositoryResolver $repositoryResolver
     ) {
-        $this->beConstructedWith($attributeRepository, $repositoryResolver);
+        $this->beConstructedWith($repositoryResolver);
     }
 
     function it_is_a_presenter()
@@ -42,7 +39,6 @@ class ReferenceDataPresenterSpec extends ObjectBehavior
         ObjectRepository $repository,
         ReferenceDataConfigurationInterface $configuration,
         RendererInterface $renderer,
-        CustomValuePresenter $value,
         CustomValuePresenter $red,
         CustomValuePresenter $blue
     ) {

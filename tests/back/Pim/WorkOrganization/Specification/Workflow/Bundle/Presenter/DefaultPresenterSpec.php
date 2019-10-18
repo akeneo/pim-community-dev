@@ -5,15 +5,9 @@ namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\DefaultPresenter;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\RendererInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 class DefaultPresenterSpec extends ObjectBehavior
 {
-    function let(IdentifiableObjectRepositoryInterface $attributeRepository)
-    {
-        $this->beConstructedWith($attributeRepository);
-    }
-
     function it_is_a_presenter()
     {
         $this->shouldHaveType(DefaultPresenter::class);

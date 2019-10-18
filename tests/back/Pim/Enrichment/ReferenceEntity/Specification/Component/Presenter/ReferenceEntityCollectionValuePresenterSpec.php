@@ -2,9 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\ReferenceEntity\Component\Presenter;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PresenterInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\TranslatorAwareInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\RendererInterface;
@@ -16,7 +14,6 @@ class ReferenceEntityCollectionValuePresenterSpec extends ObjectBehavior
 {
     function let(IdentifiableObjectRepositoryInterface $attributeRepository)
     {
-        $this->beConstructedWith($attributeRepository);
     }
 
     function it_is_a_presenter()

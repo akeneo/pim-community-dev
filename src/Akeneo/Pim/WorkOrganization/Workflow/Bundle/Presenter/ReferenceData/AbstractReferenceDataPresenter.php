@@ -29,11 +29,8 @@ abstract class AbstractReferenceDataPresenter extends AbstractProductValuePresen
     protected $referenceDataName;
 
     public function __construct(
-        IdentifiableObjectRepositoryInterface $attributeRepository,
         ReferenceDataRepositoryResolver $repositoryResolver
     ) {
-        parent::__construct($attributeRepository);
-
         $this->repositoryResolver = $repositoryResolver;
     }
 

@@ -30,12 +30,9 @@ class NumberPresenter extends AbstractProductValuePresenter
     protected $localeResolver;
 
     public function __construct(
-        IdentifiableObjectRepositoryInterface $attributeRepository,
         BasePresenterInterface $numberPresenter,
         LocaleResolver $localeResolver
     ) {
-        parent::__construct($attributeRepository);
-
         $this->numberPresenter = $numberPresenter;
         $this->localeResolver = $localeResolver;
     }

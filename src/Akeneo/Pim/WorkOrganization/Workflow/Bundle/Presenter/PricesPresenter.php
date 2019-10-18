@@ -31,12 +31,9 @@ class PricesPresenter extends AbstractProductValuePresenter
     protected $localeResolver;
 
     public function __construct(
-        IdentifiableObjectRepositoryInterface $attributeRepository,
         BasePresenterInterface $pricesPresenter,
         LocaleResolver $localeResolver
     ) {
-        parent::__construct($attributeRepository);
-
         $this->pricesPresenter = $pricesPresenter;
         $this->localeResolver = $localeResolver;
     }
