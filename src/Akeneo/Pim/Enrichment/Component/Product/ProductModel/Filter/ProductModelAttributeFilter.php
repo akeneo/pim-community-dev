@@ -112,7 +112,7 @@ class ProductModelAttributeFilter implements AttributeFilterInterface
     private function keepOnlyAttributes(array $flatProductModel, Collection $attributesToKeep): array
     {
         foreach ($flatProductModel['values'] as $attributeName => $value) {
-            $shortAttributeName = explode('-', $attributeName);
+            $shortAttributeName = explode('-', (string) $attributeName);
             $shortAttributeName = $shortAttributeName[0];
 
             $keepedAttributeCodes = $attributesToKeep->exists(
