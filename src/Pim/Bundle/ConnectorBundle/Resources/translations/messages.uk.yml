@@ -44,6 +44,7 @@ job_execution.summary:
   item_position: прочитаних рядків
   skipped_in_root_product_model: модель продукту пропущена разом з батьківською
   skipped_in_sub_product_model: модель продукту пропущена без батьківської
+#Job labels
 batch_jobs:
   csv_product_export:
     label: Експорт продуктів у CSV

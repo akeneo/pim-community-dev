@@ -14,12 +14,14 @@ oro.grid.mass_action.delete.confirm_content: Sei sicuro di voler rimuovere gli a
 oro.grid.mass_action.delete.item_limit: Non è possibile cancellare in massa più di %limit% prodotti (selezionati %count%)
 oro.grid.datagrid.page_size.all: Tutto
 oro.grid.mass_action.delete.success_message: "{0} nessuna entità rimossa|{1} una entità rimossa|]1, Inf[%count% entità sono state rimosse"
+#Datagrid views constraints
 datagrid_view:
   columns:
     min_message: È necessario selezionare almeno una colonna della griglia di dati da visualizzare
   label:
     unique_message: L'etichetta deve essere univoca
     not_blank_message: L'etichetta non può essere vuota
+#View selector flash messages
 grid.view_selector.flash:
   created: La griglia di dati è stata creata con successo
   removed: La griglia di dati è stata rimossa con successo

@@ -1,4 +1,5 @@
 pim_enrich:
+  #Product
   product:
     tab:
       attribute.title: Attribute
@@ -6,18 +7,22 @@ pim_enrich:
       association.title: Verbindungen
       completeness.title: Vollständigkeit
       history.title: Historie
+    #Product comparison
     no_comparison_locale_available: Es ist kein anderes Gebietsschema für einen Vergleich vorhanden
     no_compared_media: Keine Medien für einen Vergleich vorhanden
+  #Attribute
   attribute:
     tab:
       parameter.title: Parameter
       value.title: Werte
       history.title: Historie
+  #Attribute group
   attribute_group:
     tab:
       property.title: Eigenschaften
       attribute.title: Attribute
       history.title: Historie
+  #Family
   family:
     info:
       cant_remove_attribute_used_as_axis: Dieses Attribut, das als Variantenachse in einer Familienvariante verwendet wird, kann nicht entfernt werden
@@ -25,21 +30,26 @@ pim_enrich:
       property.title: Eigenschaften
       attribute.title: Attribute
       history.title: Historie
+  #Association type
   association_type:
     tab:
       property.title: Eigenschaften
       history.title: Historie
+  #Group type
   group_type:
     tab:
       property.title: Eigenschaften
+  #Category
   category:
     tab:
       property.title: Eigenschaften
       history.title: Historie
+  #Locale
   locale:
     tab:
       property.title: Eigenschaften
       permission.title: Berechtigungen
+  #Product group
   group:
     axis.help: 'Achsen sind Attribute, die Varianten der Variantengruppe definieren. Achsen sind Attribute mit Optionen, welche nicht sprachabhängig sind und keinen Gültigkeitsbereich haben. Eine Achse kann nach der Erstellung der Variantengruppe nicht geändert werden.'
     type:
@@ -51,12 +61,14 @@ pim_enrich:
       product.title: Produkte
       property.title: Eigenschaften
       history.title: Historie
+  #Product completeness
   completeness:
     progress_bar.title: '%ratio%% vollständig (1 fehlender Wert)|%ratio%% vollständig (%count% fehlende Werte)'
     subtitle: '{0} Vollständig|{1} 1 fehlender Wert|]1,Inf] %count% fehlende Werte'
     missing_attributes: Fehlender Wert|Fehlende Werte
     legend:
       locale_not_associated: Das Gebietsschema ist nicht mit diesem Ausgabekanal verbunden
+  #Mass edit operations
   mass_edit_action:
     limit_exceeded: Bitte wählen Sie weniger als %limit% Elemente für die Bearbeitung
     product:
@@ -130,10 +142,12 @@ pim_enrich:
     mass_action:
       quick_export:
         launched_flash: Der Produkt-Export wird derzeit ausgeführt
+  #Sequential edit operations
   sequential_edit_action:
     product:
       previous: Zurück zu "%product%" ohne zu speichern.
       next: Weiter zu "%product%" ohne zu speichern.
+  #ACLs
   acl:
     locale:
       index: Gebietsschemata auflisten
@@ -249,6 +263,7 @@ pim_enrich:
       remove_completeness_for_channel_and_locale:
         start: Das Gebietsschema wurde aus dem Kanal entfernt. Die damit verbundene Vollständigkeit wird derzeit aktualisiert.
         done: Das Gebietschema ist nun aus dem Kanal entfernt.
+#Entity and page header titles
 attribute:
   title: Attribut
   edit: Attribut bearbeiten
@@ -304,7 +319,9 @@ association type:
   title: Verbindungstyp
   create: Verbindungstyp anlegen
   edit: Verbindungstyp bearbeiten
+#Custom titles
 products: Produkte
+#Buttons
 btn:
   create:
     attribute: Attribut anlegen
@@ -335,6 +352,7 @@ btn:
   to parent: Zurück zur übergeordneten Ebene
   download_pdf: PDF
   download: Download
+#Confirmation messages
 confirmation:
   confirm: Bestätigung
   delete: Löschen bestätigen
@@ -357,6 +375,7 @@ confirmation:
     remove attribute: Sind Sie sicher, dass Sie das Attribut %name% aus dieser Produktfamilie entfernen möchten?
   product:
     remove attribute: Sind Sie sicher, dass Sie das Attribut %name% aus diesem Produkt entfernen möchten?
+#Flash messages
 flash:
   entity:
     removed: Element wurde gelöscht
@@ -419,6 +438,7 @@ flash:
   user:
     removed: Benutzer erfolgreich entfernt
   error ocurred: Die Aktion ist fehlgeschlagen. Bitte wiederholen Sie den Vorgang.
+#Info messages
 info:
   updated: Es gibt ungespeicherte Änderungen.
   category:
@@ -453,6 +473,7 @@ info:
     auto option sorting: Wenn aktiviert, werden Optionen automatisch nach ihren lokalisierten Bezeichnungen sortiert
   completeness:
     not calculated: Noch nicht berechnet
+#Form elements
 Options: Optionen
 Created at: Erstellt am
 Updated at: Aktualisiert am
@@ -527,17 +548,21 @@ Category tree: Kategorie-Strukturbaum
 Completeness: Vollständigkeit
 Attribute used as label: Attribut als Label verwendet
 Credentials: Anmeldeinformationen
+#Scopes
 Global: Global
 Channel: Ausgabekanal
 Expand all channels: Alle Ausgabekanäle erweitern
 Collapse all channels: Alle Ausgabekanäle reduzieren
+#Variants
 Always override: Immer überschreiben
 Ask: Fragen
+#Attribute group
 General Properties: Allgemeine Eigenschaften
 Group values: Werte der Gruppe
 New group: Neue Gruppe
 Groups overview: Gruppen-Übersicht
 'Y-m-d h:i:s': 'd.m.Y h:i:s'
+#Attribute properties
 Max characters: Max. Zeichen
 Validation rule: Validierungsregel
 Validation regexp: Validierung RexExp
@@ -558,8 +583,11 @@ URL: URL
 Regular expression: Regulärer Ausdruck
 Minimum input length: Minimale Eingabelänge
 Default: Standard
+#Family
 Attributes: Attribute
+#Category
 Title: Titel
+#Page titles
 pim_title.attribute_group:
   index: "Attributgruppen"
   create: "Attributgruppen | Anlegen"
@@ -619,12 +647,15 @@ pim_catalog_date: Datum
 pim_catalog_metric: Maßeinheit
 pim_reference_data_simpleselect: Referenz-Datentyp Einfachauswahl
 pim_reference_data_multiselect: Referenz-Datentyp Mehrfachauswahl
+#Locales
 Activated: Aktiviert
 Disable: Deaktivieren
+#Sequential edit operations
 pim_enrich.sequential_edit_action:
   product:
     previous: Zurück zu "%product%" ohne zu speichern.
     next: Weiter zu "%product%" ohne zu speichern.
+#Mass edit operations
 pim_enrich.mass_edit_action:
   limit_exceeded: Bitte wählen Sie weniger als %limit% Elemente für die Bearbeitung
   product:
@@ -683,9 +714,11 @@ Select: Auswählen
 Remove this attribute: Dieses Attribut entfernen
 Copy: Kopie
 Current tab: Aktueller Reiter
+#Product view
 Group: Gruppe
 View group: Gruppe ansehen
 Products: Produkte
+#Tabs
 Properties: Eigenschaften
 History: Historie
 pane.accordion:
@@ -698,11 +731,13 @@ pane.accordion:
   label_translations: Feldbezeichner-Übersetzungen
   options: Optionen
   group_values: Werte der Gruppe
+#Popin titles
 popin.create:
   association_type.title: Einen neuen Verbindungstyp anlegen
   group.title: Neue Gruppe anlegen
   product.title: Neues Produkt anlegen
   option.title: Neue Option anlegen
+#Datagrid contents
 In group: In Gruppe
 Attribute as label: Attribut als Label
 Is associated: Ist verbunden
@@ -712,6 +747,7 @@ Updated At: Aktualisiert am
 Enabled: Aktiviert
 Disabled: Deaktiviert
 Status: Status
+#Versioning / history
 Change History: Änderungshistorie
 Data Audit: Datenhistorie
 Data Audit - System: 'Datenhistorie - System'
@@ -726,6 +762,7 @@ Logged at: Aufgezeichnet am
 Deleted: Gelöscht
 Old values: Alte Werte
 New values: Neue Werte
+#Configuration
 System configuration: Systemkonfiguration
 General setup: Allgemeine Konfiguration
 Localization: Lokalisierung
@@ -757,6 +794,7 @@ oro.locale:
       language: "Wählen Sie die Systemsprache die Sie verwenden möchten"
       timezone: "Wählen Sie die Zeitzone für die Anzeige von Datum und Uhrzeit"
       currency: "Wählen Sie die Standardwährung"
+#Datagrid
 Selected products successfully deleted: Ausgewählte Produkte erfolgreich gelöscht
 pim_mass_edit:
   notification:
@@ -788,6 +826,7 @@ edit_common_attributes: Attribute bearbeiten
 edit_common_attributes_clean: Bereinige Dateien für gemeinsame Attribute
 perform.steps.duplicated.title: Doppelte Achse
 perform.steps.excluded.title: Produkt ausschließen
+#Background jobs & steps labels
 batch_jobs:
   add_product_value:
     label: Produktwert hinzufügen

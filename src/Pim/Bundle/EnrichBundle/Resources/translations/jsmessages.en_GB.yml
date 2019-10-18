@@ -1,3 +1,4 @@
+#Grid action messages
 confirmation:
   title: Confirm
   remove:
@@ -115,6 +116,7 @@ Delete the product: Delete the product
 Change status: Change status
 Toggle status: Toggle status
 mass_delete: Mass delete
+#Quick export labels
 pim:
   grid:
     mass_action:
@@ -127,6 +129,7 @@ pim:
       mass_edit: Bulk actions
       category_edit: Move products in categories
       sequential_edit: Sequential edit
+#Jstree context menu actions
 jstree.create: Create
 jstree.done: Done
 switch_on: "Yes"
@@ -1112,6 +1115,7 @@ pim_enrich.error:
   exception.title: Oh snap! A {{ status_code }} error occured...
   http:
     403: Access forbidden. You are not allowed to access this page
+#Page titles
 page_title:
   oro_default: Dashboard
   pim_enrich_attributegroup_index: Attribute groups
@@ -1150,6 +1154,7 @@ page_title:
   pim_enrich_api_connection_create: API connections | Create
   pim_enrich_mass_edit_action: Mass Edit
   pim_analytics_system_info_index: System information
+#Batch job labels
 batch_jobs:
   add_product_value:
     label: Add product value
