@@ -164,25 +164,29 @@ expect.extend({
     try {
       const filterSelector = `.filter-item[data-name="${filterName}"]`
       const filter = await page.$(filterSelector);
-      await (await filter.$('.AknFilterBox-filter')).click();
-
-      await page.waitForSelector(`${filterSelector} .filter-criteria`, {
-        visible: true,
-        timeout: 500
-      })
-
+      await page.evaluate((selector) => $(`${selector} .AknFilterBox-filter`).focus().trigger('click'), filterSelector)
+      await (await filter.$('.AknFilterBox-filter')).click({ delay: 500 });
       await (await filter.$('.operator')).click();
       await (await getOperatorChoiceByLabel(filter, operator)).click();
-      await page.waitFor(500);
-      await (await filter.$('.filter-update')).click();
-      await page.waitFor(500);
+
+      await page.waitForFunction(({filterSelector}) => {
+        return $(`${filterSelector} .operator .AknDropdown-menu`).css('opacity') === '0'
+      }, {timeout: 1000}, {filterSelector});
+
+      await page.evaluate((filterSelector) => {
+        $(`${filterSelector} .filter-update`).focus().trigger('click');
+      }, filterSelector)
+
+      await page.waitForFunction(({filterSelector}) => {
+        return $(`${filterSelector} .filter-criteria`).is(':hidden')
+      }, { timeout: 1000 }, {filterSelector});
 
       return {
         pass: true,
         message: () => `Can't filter "${filterName}" by "${operator}"`
       }
     } catch (e) {
-      console.log(e.message)
+      console.log(e)
       return {
         pass: false,
         message: () => `Couldn't open filter "${filterName}"`
