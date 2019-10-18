@@ -80,10 +80,10 @@ class AuthenticatedClientFactory
 
     private function createSession(Client $client, TokenInterface $token): void
     {
-        $session = $client->getContainer()->get('session');
-        $session->set('_security_main', serialize($token));
-        $session->save();
+        $tokenStorage = $client->getContainer()->get('security.token_storage');
+        $tokenStorage->setToken($token);
 
+        $session = $client->getContainer()->get('session');
         $cookie = new Cookie($session->getName(), $session->getId());
         $client->getCookieJar()->set($cookie);
     }

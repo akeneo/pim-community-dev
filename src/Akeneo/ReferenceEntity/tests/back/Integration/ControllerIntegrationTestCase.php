@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Integration;
 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * This class is used for running integration tests testing the web controllers.
@@ -27,27 +26,13 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 abstract class ControllerIntegrationTestCase extends KernelTestCase
 {
-    /** @var KernelInterface */
-    protected $testKernel;
-
-    /**
-     * {@inheritdoc}
-     */
     protected function setUp(): void
     {
-        if (null === $this->testKernel) {
-            $this->bootTestFakeKernel();
-        }
+        static::bootKernel(['environment' => 'test_fake', 'debug' => false]);
     }
 
     protected function get(string $service)
     {
-        return $this->testKernel->getContainer()->get($service);
-    }
-
-    private function bootTestFakeKernel(): void
-    {
-        $this->testKernel = new \AppKernelTest('test_fake', false);
-        $this->testKernel->boot();
+        return self::$container->get($service);
     }
 }
