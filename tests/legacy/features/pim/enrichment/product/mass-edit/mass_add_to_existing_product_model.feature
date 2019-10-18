@@ -11,7 +11,7 @@ Feature: Apply a add to products to existing product model
   Scenario: It automatically selects family variant when there is only one
     Given I am on the products page
     And I select rows 1111111171
-    And I press the "Bulk actions" button
+    And I press the "Bulk actions" bottom button
     And I choose the "Add to an existing product model" operation
     And I fill in the following information:
       | Family | Accessories |
@@ -20,7 +20,7 @@ Feature: Apply a add to products to existing product model
   Scenario: Successfully display leaf product models
     Given I am on the products page
     And I select rows 1111111171
-    And I press the "Bulk actions" button
+    And I press the "Bulk actions" bottom button
     And I choose the "Add to an existing product model" operation
     And I fill in the following information:
       | Family (required)        | Clothing                   |
@@ -33,7 +33,7 @@ Feature: Apply a add to products to existing product model
   Scenario: Successfully show validation error on family issues
     Given I am on the products page
     And I select rows 1111111171
-    And I press the "Bulk actions" button
+    And I press the "Bulk actions" bottom button
     And I choose the "Add to an existing product model" operation
     And I fill in the following information:
       | Family (required)        | Clothing                   |
