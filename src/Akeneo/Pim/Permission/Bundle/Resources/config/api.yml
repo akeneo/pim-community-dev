@@ -78,6 +78,7 @@ services:
 
     pim_api.controller.product_model:
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ProductModelController'
+        public: true
         arguments:
             - '@pim_catalog.query.product_model_query_builder_factory'
             - '@pim_catalog.query.product_model_query_builder_search_after_size_factory'
