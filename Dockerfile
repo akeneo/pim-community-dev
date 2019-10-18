@@ -107,11 +107,11 @@ COPY config config
 COPY public public
 COPY src src
 COPY upgrades upgrades
-COPY var var
 COPY composer.json package.json yarn.lock .env .
 
 ENV APP_ENV=prod
-RUN php -d 'memory_limit=3G' /usr/local/bin/composer install --optimize-autoloader --no-scripts --no-interaction --no-ansi --no-dev --prefer-dist && \
+RUN mkdir var && \
+    php -d 'memory_limit=3G' /usr/local/bin/composer install --optimize-autoloader --no-scripts --no-interaction --no-ansi --no-dev --prefer-dist && \
     bin/console pim:installer:assets --symlink --clean && \
     yarnpkg install --frozen-lockfile && \
     yarnpkg run less && \
