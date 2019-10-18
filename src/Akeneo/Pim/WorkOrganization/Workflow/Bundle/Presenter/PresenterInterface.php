@@ -32,10 +32,10 @@ interface PresenterInterface
     /**
      * Present the provided change into html
      *
-     * @param ValueInterface $value
      * @param array $change
+     * @param mixed $formerData
      *
      * @return mixed
      */
-    public function present(ValueInterface $value, array $change);
+    public function present(array $change, $formerData);
 }

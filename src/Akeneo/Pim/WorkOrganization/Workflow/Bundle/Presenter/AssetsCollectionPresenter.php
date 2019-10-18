@@ -50,11 +50,12 @@ class AssetsCollectionPresenter implements PresenterInterface
     /**
      * {@inheritdoc}
      */
-    public function present(ValueInterface $value, array $change)
+    public function present(array $change, $formerData)
     {
+        // Done
         $beforeCodes = array_map(function (string $assetCode) {
             return $assetCode;
-        }, $value->getData());
+        }, $formerData);
         $afterCodes = $change['data'];
 
         return [

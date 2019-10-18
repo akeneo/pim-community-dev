@@ -44,11 +44,8 @@ class MetricPresenterSpec extends ObjectBehavior
         $metricPresenter,
         $localeResolver,
         RendererInterface $renderer,
-        ValueInterface $value,
         Metric $metric
     ) {
-        $value->getData()->willReturn($metric);
-        $value->getAttributeCode()->willReturn('size');
         $metric->getData()->willReturn(50.123);
         $metric->getUnit()->willReturn('KILOGRAM');
         $localeResolver->getCurrentLocale()->willReturn('en_US');
@@ -65,7 +62,7 @@ class MetricPresenterSpec extends ObjectBehavior
         $this->setRenderer($renderer);
         $this->setTranslator($translator);
         $this
-            ->present($value, ['data' => ['unit' => 'MILLIMETER', 'amount' => '123.456']])
+            ->present(['data' => ['unit' => 'MILLIMETER', 'amount' => '123.456']], $metric)
             ->shouldReturn('diff between two metrics');
     }
 
@@ -73,11 +70,8 @@ class MetricPresenterSpec extends ObjectBehavior
         $translator,
         $metricPresenter,
         $localeResolver,
-        RendererInterface $renderer,
-        ValueInterface $value
+        RendererInterface $renderer
     ) {
-        $value->getData()->willReturn(null);
-        $value->getAttributeCode()->willReturn('size');
         $localeResolver->getCurrentLocale()->willReturn('en_US');
         $metricPresenter->present(null, ['locale' => 'en_US'])->willReturn(null);
         $metricPresenter
@@ -88,7 +82,7 @@ class MetricPresenterSpec extends ObjectBehavior
 
         $this->setRenderer($renderer);
         $this->setTranslator($translator);
-        $this->present($value, ['data' => ['unit' => 'MILLIMETER', 'amount' => '123.456']])
+        $this->present(['data' => ['unit' => 'MILLIMETER', 'amount' => '123.456']], null)
             ->shouldReturn('a new metric');
     }
 
@@ -96,11 +90,8 @@ class MetricPresenterSpec extends ObjectBehavior
         $translator,
         $metricPresenter,
         $localeResolver,
-        RendererInterface $renderer,
-        ValueInterface $value
+        RendererInterface $renderer
     ) {
-        $value->getData()->willReturn(null);
-        $value->getAttributeCode()->willReturn('size');
         $localeResolver->getCurrentLocale()->willReturn('fr_FR');
         $renderer->renderDiff('', '150,123456 trans_kilogram')->willReturn("150,123456 trans_kilogram");
         $metricPresenter
@@ -110,7 +101,7 @@ class MetricPresenterSpec extends ObjectBehavior
         $this->setRenderer($renderer);
         $this->setTranslator($translator);
 
-        $this->present($value, ['data' => ['amount' => 150.123456, 'unit' => 'KILOGRAM']])
+        $this->present(['data' => ['amount' => 150.123456, 'unit' => 'KILOGRAM']], null)
             ->shouldReturn("150,123456 trans_kilogram");
     }
 }

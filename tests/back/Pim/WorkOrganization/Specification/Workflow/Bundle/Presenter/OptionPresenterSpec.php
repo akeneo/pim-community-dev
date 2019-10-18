@@ -31,20 +31,17 @@ class OptionPresenterSpec extends ObjectBehavior
     function it_presents_option_change_using_the_injected_renderer(
         $optionRepository,
         RendererInterface $renderer,
-        ValueInterface $value,
         AttributeOptionInterface $blue,
         AttributeOptionInterface $red
     ) {
         $optionRepository->findOneByIdentifier('color.blue')->willReturn($blue);
         $optionRepository->findOneByIdentifier('color.red')->willReturn($red);
-        $value->getData()->willReturn('red');
-        $value->getAttributeCode()->willReturn('color');
         $red->__toString()->willReturn('Red');
         $blue->__toString()->willReturn('Blue');
 
         $renderer->renderDiff('Red', 'Blue')->willReturn('diff between two options');
 
         $this->setRenderer($renderer);
-        $this->present($value, ['data' => 'blue'])->shouldReturn('diff between two options');
+        $this->present(['data' => 'blue', 'attribute' => 'color'], 'red')->shouldReturn('diff between two options');
     }
 }

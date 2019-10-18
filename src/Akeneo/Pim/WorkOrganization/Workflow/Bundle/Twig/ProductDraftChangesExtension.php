@@ -145,6 +145,7 @@ class ProductDraftChangesExtension extends \Twig_Extension
 
     protected function present(ValueInterface $formerValue, array $change)
     {
+        $change = array_merge($change, ['attribute' => $formerValue->getAttributeCode()]);
         $attribute = $this->attributeRepository->findOneByIdentifier($formerValue->getAttributeCode());
         if (null !== $attribute) {
             foreach ($this->getPresenters() as $presenter) {
@@ -157,7 +158,7 @@ class ProductDraftChangesExtension extends \Twig_Extension
                         $presenter->setRenderer($this->renderer);
                     }
 
-                    return $presenter->present($formerValue, $change);
+                    return $presenter->present($change, $formerValue->getData());
                 }
             }
         }

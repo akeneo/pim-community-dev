@@ -41,9 +41,6 @@ class AssetsCollectionPresenterSpec extends ObjectBehavior
 
     function it_presents_assets_collection_changes(
         $assetRepository,
-        $attributeRepository,
-        ValueInterface $productValue,
-        AttributeInterface $attribute,
         AssetInterface $leather,
         AssetInterface $neoprene,
         AssetInterface $kevlar,
@@ -99,11 +96,7 @@ class AssetsCollectionPresenterSpec extends ObjectBehavior
             'localeCode' => 'en_US'
         ])->willReturn('kevlar/assetUrl');
 
-        $productValue->getData()->willReturn(['leather', 'neoprene']);
-        $productValue->getAttributeCode()->willReturn('media');
-        $attributeRepository->findOneByIdentifier('media')->willReturn($attribute);
-        $attribute->getCode()->willReturn('media');
-        $this->present($productValue, ['data' => ['leather', 'kevlar']])->shouldReturn(
+        $this->present(['data' => ['leather', 'kevlar']], ['leather', 'neoprene'])->shouldReturn(
             [
                 'before' => '<div class="AknThumbnail" style="background-image: url(\'leather/assetUrl\')"><span class="AknThumbnail-label">Awesome leather picture</span></div><div class="AknThumbnail" style="background-image: url(\'neoprene/assetUrl\')"><span class="AknThumbnail-label">Awesome neoprene picture</span></div>',
                 'after' => '<div class="AknThumbnail" style="background-image: url(\'leather/assetUrl\')"><span class="AknThumbnail-label">Awesome leather picture</span></div><div class="AknThumbnail" style="background-image: url(\'kevlar/assetUrl\')"><span class="AknThumbnail-label">Awesome kevlar picture</span></div>'

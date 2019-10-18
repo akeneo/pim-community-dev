@@ -30,8 +30,6 @@ class NumberPresenterSpec extends ObjectBehavior
         ValueInterface $value,
         RendererInterface $renderer
     ) {
-        $value->getData()->willReturn(null);
-        $value->getAttributeCode()->willReturn('size');
         $localeResolver->getCurrentLocale()->willReturn('fr_FR');
         $numberPresenter->present(150.1234, ['locale' => 'fr_FR'])
             ->willReturn('150,1234');
@@ -41,7 +39,6 @@ class NumberPresenterSpec extends ObjectBehavior
         $this->setRenderer($renderer);
         $renderer->renderDiff(null, '150,1234')->willReturn('150,1234');
 
-        $this->present($value, ['data' => 150.1234])
-            ->shouldReturn("150,1234");
+        $this->present(['data' => 150.1234], null)->shouldReturn("150,1234");
     }
 }

@@ -55,11 +55,12 @@ class FilePresenter implements PresenterInterface
     /**
      * {@inheritdoc}
      */
-    public function present(ValueInterface $value, array $change)
+    public function present(array $change, $formerData)
     {
+        // Done
         $result = ['before' => '', 'after' => ''];
 
-        $originalMedia = $value->getData();
+        $originalMedia = $formerData;
         $changedMedia  = isset($change['data']) ? $this->fileInfoRepository->findOneByIdentifier($change['data']) : null;
 
         if (!$this->hasChanged($changedMedia, $originalMedia)) {

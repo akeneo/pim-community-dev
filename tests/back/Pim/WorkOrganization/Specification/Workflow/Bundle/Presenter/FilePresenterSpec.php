@@ -30,30 +30,21 @@ class FilePresenterSpec extends ObjectBehavior
         $this->supports('pim_catalog_file')->shouldBe(true);
     }
 
-    function it_does_not_presents_original_if_original_is_empty(
-        ValueInterface $value
-    ) {
-        $value->getData()->willReturn(null);
-
+    function it_does_not_presents_original_if_original_is_empty()
+    {
         $this
-            ->present($value, ['data' => 'key/of/the/change.jpg'])
+            ->present(['data' => 'key/of/the/change.jpg'], null)
             ->shouldReturn(['before' => '', 'after' => '']);
     }
 
-    function it_does_not_presents_new_if_new_is_empty(
-        ValueInterface $value,
-        FileInfoInterface $media
-    ) {
-        $value->getData()->willReturn($media);
-
+    function it_does_not_presents_new_if_new_is_empty(FileInfoInterface $media) {
         $this
-            ->present($value, ['data' => null])
+            ->present(['data' => null], $media)
             ->shouldReturn(['before' => '', 'after' => '']);
     }
 
     function it_presents_file(
         $generator,
-        ValueInterface $value,
         FileInfoInterface $media,
         FileInfoInterface $changedMedia,
         FileInfoRepositoryInterface $repository
@@ -63,7 +54,6 @@ class FilePresenterSpec extends ObjectBehavior
         $changedMedia->getHash()->willReturn('different_hash');
         $changedMedia->getOriginalFilename()->willReturn('changed_media.jpg');
 
-        $value->getData()->willReturn($media);
         $media->getKey()->willReturn('key/of/the/original/media.jpg');
         $media->getHash()->willReturn('hash');
         $media->getOriginalFilename()->willReturn('media.jpg');
@@ -83,7 +73,7 @@ class FilePresenterSpec extends ObjectBehavior
             ->willReturn('url/of/the/changed/media.jpg');
 
         $this
-            ->present($value, ['data' => 'key/of/the/changed/media.jpg'])
+            ->present(['data' => 'key/of/the/changed/media.jpg'], $media)
             ->shouldReturn([
                 'before' => sprintf(
                     '<i class="icon-file"></i><a target="_blank" class="no-hash" href="%s">%s</a>',

@@ -61,6 +61,7 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         $productDraft->getEntityWithValue()->willReturn($product);
         $product->getValue('description', 'en_US', 'ecommerce')->willReturn($value);
         $value->getAttributeCode()->willReturn('description');
+        $value->getData()->willReturn('data');
         $attributeRepository->findOneByIdentifier('description')->willReturn($attributeDescription);
         $attributeDescription->getType()->willReturn('pim_catalog_text');
 
@@ -71,7 +72,7 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         ];
         $attributePresenter->supports('pim_catalog_text')->willReturn(false);
         $valuePresenter->supports('pim_catalog_text')->willReturn(true);
-        $valuePresenter->present($value, $change)->willReturn('<b>changes</b>');
+        $valuePresenter->present(array_merge($change, ['attribute' => 'description']), 'data')->willReturn('<b>changes</b>');
 
         $this->presentChange($productDraft, $change, 'description')->shouldReturn('<b>changes</b>');
     }
@@ -91,6 +92,7 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         $productDraft->getEntityWithValue()->willReturn($product);
         $product->getValue('description', 'en_US', 'ecommerce')->willReturn($value);
         $value->getAttributeCode()->willReturn('description');
+        $value->getData()->willReturn('data');
         $attributeRepository->findOneByIdentifier('description')->willReturn($attributeDescription);
         $attributeDescription->getType()->willReturn('pim_catalog_text');
 
@@ -103,7 +105,7 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         $attributePresenter->supports('pim_catalog_text')->willReturn(false);
         $valuePresenter->supports('pim_catalog_text')->willReturn(false);
         $presenter->supports('pim_catalog_text')->willReturn(true);
-        $presenter->present($value, $change)->willReturn('<b>changes</b>');
+        $presenter->present($change, 'data')->willReturn('<b>changes</b>');
 
         $presenter->setTranslator($translator)->shouldBeCalled();
 
@@ -126,6 +128,7 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         $productDraft->getEntityWithValue()->willReturn($product);
         $product->getValue('description', 'en_US', 'ecommerce')->willReturn($value);
         $value->getAttributeCode()->willReturn('description');
+        $value->getData()->willReturn('data');
         $attributeRepository->findOneByIdentifier('description')->willReturn($attributeDescription);
         $attributeDescription->getType()->willReturn('pim_catalog_text');
 
@@ -138,7 +141,7 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         $attributePresenter->supports('pim_catalog_text')->willReturn(false);
         $valuePresenter->supports('pim_catalog_text')->willReturn(false);
         $presenter->supports('pim_catalog_text')->willReturn(true);
-        $presenter->present($value, $change)->willReturn('<b>changes</b>');
+        $presenter->present($change, 'data')->willReturn('<b>changes</b>');
 
         $presenter->setRenderer($renderer)->shouldBeCalled();
 

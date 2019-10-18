@@ -36,14 +36,12 @@ class PricesPresenterSpec extends ObjectBehavior
         $pricesPresenter,
         $localeResolver,
         RendererInterface $renderer,
-        ValueInterface $value,
         Collection $collection,
         ProductPriceInterface $eur,
         ProductPriceInterface $usd,
         ProductPriceInterface $gbp,
         ProductPriceInterface $jpy
     ) {
-        $value->getData()->willReturn($collection);
         $collection->getIterator()->willReturn(new \ArrayIterator([
             $eur->getWrappedObject(),
             $gbp->getWrappedObject(),
@@ -83,16 +81,14 @@ class PricesPresenterSpec extends ObjectBehavior
             ->willReturn('diff between two price collections');
 
         $this->setRenderer($renderer);
-        $this->present($value, $change)->shouldReturn('diff between two price collections');
+        $this->present($change, $collection)->shouldReturn('diff between two price collections');
     }
 
     function it_presents_french_prices(
         $pricesPresenter,
         $localeResolver,
-        ValueInterface $value,
         RendererInterface $renderer
     ) {
-        $value->getData()->willReturn([]);
         $localeResolver->getCurrentLocale()->willReturn('fr_FR');
 
         $pricesPresenter->present(['amount' => 15.12, 'currency' => 'EUR'], ['locale' => 'fr_FR'])->willReturn('15.12 €');
@@ -101,9 +97,9 @@ class PricesPresenterSpec extends ObjectBehavior
         $renderer->renderDiff([], ["15.12 €", "15.48 $"])->willReturn('15.12 €<br/>15.48 $');
         $this->setRenderer($renderer);
 
-        $this->present($value, ['data' => [
+        $this->present(['data' => [
             ['amount' => 15.12, 'currency' => 'EUR'],
             ['amount' => 15.48, 'currency' => 'USD'],
-        ]])->shouldReturn('15.12 €<br/>15.48 $');
+        ]], [])->shouldReturn('15.12 €<br/>15.48 $');
     }
 }

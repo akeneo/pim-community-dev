@@ -35,27 +35,13 @@ class ReferenceEntityCollectionValuePresenterSpec extends ObjectBehavior
         $this->supports('other')->shouldBe(false);
     }
 
-    function it_presents_reference_entity_collection_change_using_the_injected_renderer(
-        RendererInterface $renderer,
-        ValueInterface $value,
-        AttributeInterface $attribute,
-        $attributeRepository
-    ) {
-
+    function it_presents_reference_entity_collection_change_using_the_injected_renderer(RendererInterface $renderer)
+    {
         $foo = RecordCode::fromString('foo');
         $bar = RecordCode::fromString('bar');
-
-        $value->getData()->willReturn([$foo, $bar]);
-        $value->getAttributeCode()->willReturn('multi_reference_entity');
-
-        $attributeRepository->findOneByIdentifier('multi_reference_entity')->willReturn($attribute);
-
-        $attribute->getType()->willReturn(ReferenceEntityCollectionType::REFERENCE_ENTITY_COLLECTION);
-
         $renderer->renderDiff(['foo', 'bar'], ['foo', 'bar', 'baz'])->willReturn('diff between two collections');
-
         $this->setRenderer($renderer);
 
-        $this->present($value, ['data' => ['foo', 'bar', 'baz']])->shouldReturn('diff between two collections');
+        $this->present(['data' => ['foo', 'bar', 'baz']], [$foo, $bar])->shouldReturn('diff between two collections');
     }
 }

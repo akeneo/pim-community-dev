@@ -31,15 +31,11 @@ class BooleanPresenterSpec extends ObjectBehavior
     function it_presents_boolean_change_using_the_injected_renderer(
         RendererInterface $renderer,
         TranslatorInterface $translator,
-        ValueInterface $value,
         AttributeInterface $attribute,
         $attributeRepository
     ) {
         $translator->trans('Yes')->willReturn('Yes');
         $translator->trans('No')->willReturn('No');
-
-        $value->getData()->willReturn(false);
-        $value->getAttributeCode()->willReturn('enabled');
         $attributeRepository->findOneByIdentifier('enabled')->willReturn($attribute);
         $attribute->getCode()->willReturn('enabled');
 
@@ -47,6 +43,6 @@ class BooleanPresenterSpec extends ObjectBehavior
 
         $this->setRenderer($renderer);
         $this->setTranslator($translator);
-        $this->present($value, ['data' => '1'])->shouldReturn('diff between two booleans');
+        $this->present(['data' => '1'], false)->shouldReturn('diff between two booleans');
     }
 }

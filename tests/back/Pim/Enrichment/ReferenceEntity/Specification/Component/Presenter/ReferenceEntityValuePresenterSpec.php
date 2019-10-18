@@ -36,25 +36,11 @@ class ReferenceEntityValuePresenterSpec extends ObjectBehavior
         $this->supports('other')->shouldBe(false);
     }
 
-    function it_presents_reference_entity_collection_change_using_the_injected_renderer(
-        RendererInterface $renderer,
-        ValueInterface $value,
-        AttributeInterface $attribute,
-        $attributeRepository
-    ) {
+    function it_presents_reference_entity_collection_change_using_the_injected_renderer(RendererInterface $renderer) {
         $foo = RecordCode::fromString('foo');
-
-        $value->getData()->willReturn($foo);
-        $value->getAttributeCode()->willReturn('simple_reference_entity');
-
-        $attributeRepository->findOneByIdentifier('simple_reference_entity')->willReturn($attribute);
-
-        $attribute->getType()->willReturn(ReferenceEntityType::REFERENCE_ENTITY);
-
         $renderer->renderDiff('foo', 'bar')->willReturn('diff between two record codes');
-
         $this->setRenderer($renderer);
 
-        $this->present($value, ['data' => 'bar'])->shouldReturn('diff between two record codes');
+        $this->present(['data' => 'bar', 'attribute' => 'description'], $foo)->shouldReturn('diff between two record codes');
     }
 }

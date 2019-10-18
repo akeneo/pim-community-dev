@@ -37,15 +37,13 @@ class OptionsPresenter extends AbstractProductValuePresenter
     /**
      * {@inheritdoc}
      */
-    public function present(ValueInterface $value, array $change)
+    public function present(array $change, $formerData)
     {
-        $change = array_merge($change, ['attribute' => $value->getAttributeCode()]);
-
+        // Done
         $options = [];
-
-        foreach ($value->getData() as $optionCode) {
+        foreach ($formerData as $optionCode) {
             $options[] = $this->optionRepository->findOneByIdentifier(
-                $value->getAttributeCode().'.'.$optionCode
+                $change['attribute'].'.'.$optionCode
             );
         }
 

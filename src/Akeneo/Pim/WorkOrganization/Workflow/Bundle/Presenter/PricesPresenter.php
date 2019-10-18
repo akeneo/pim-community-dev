@@ -52,9 +52,10 @@ class PricesPresenter extends AbstractProductValuePresenter
     /**
      * {@inheritdoc}
      */
-    public function present(ValueInterface $value, array $change)
+    public function present(array $change, $formerData)
     {
-        $value = $this->normalizeData($value->getData());
+        // Done
+        $value = $this->normalizeData($formerData);
         $change = $this->normalizeChange($change);
 
         foreach ($value as $currency => $price) {

@@ -39,8 +39,6 @@ class OptionsPresenterSpec extends ObjectBehavior
         $optionRepository->findOneByIdentifier('color.red')->willReturn($red);
         $optionRepository->findOneByIdentifier('color.green')->willReturn($green);
         $optionRepository->findOneByIdentifier('color.blue')->willReturn($blue);
-        $value->getData()->willReturn(['red', 'green']);
-        $value->getAttributeCode()->willReturn('color');
         $blue->__toString()->willReturn('blue');
         $red->__toString()->willReturn('Red');
         $green->__toString()->willReturn('Green');
@@ -51,6 +49,8 @@ class OptionsPresenterSpec extends ObjectBehavior
             ->willReturn('diff between two options collections');
 
         $this->setRenderer($renderer);
-        $this->present($value, ['data' => ['red', 'green', 'blue']])->shouldReturn('diff between two options collections');
+        $this
+            ->present(['data' => ['red', 'green', 'blue'], 'attribute' => 'color'], ['red', 'green'])
+            ->shouldReturn('diff between two options collections');
     }
 }
