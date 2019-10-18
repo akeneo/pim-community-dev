@@ -26,16 +26,8 @@ class ImagePresenterSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(PresenterInterface::class);
     }
 
-    function it_supports_media(
-        ValueInterface $value,
-        AttributeInterface $attribute,
-        $attributeRepository
-    ) {
-        $attribute->getType()->willReturn('pim_catalog_image');
-        $value->getAttributeCode()->willReturn('image_attribute');
-        $attributeRepository->findOneByIdentifier('image_attribute')->willReturn($attribute);
-
-        $this->supports($value)->shouldBe(true);
+    function it_supports_media() {
+        $this->supports('pim_catalog_image')->shouldBe(true);
     }
 
     function it_does_not_presents_original_if_original_is_empty(

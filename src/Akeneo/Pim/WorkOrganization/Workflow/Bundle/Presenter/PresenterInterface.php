@@ -11,6 +11,8 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+
 /**
  * Present change data into HTML
  *
@@ -21,19 +23,19 @@ interface PresenterInterface
     /**
      * Whether or not this class can present the provided change
      *
-     * @param mixed $data
+     * @param string $attributeType
      *
      * @return bool
      */
-    public function supports($data);
+    public function supports(string $attributeType, string $referenceDataName = null): bool;
 
     /**
      * Present the provided change into html
      *
-     * @param mixed $data
+     * @param ValueInterface $value
      * @param array $change
      *
-     * @return string
+     * @return mixed
      */
-    public function present($data, array $change);
+    public function present(ValueInterface $value, array $change);
 }

@@ -14,6 +14,7 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PresenterInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\RendererAwareInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\TranslatorAwareInterface;
@@ -142,29 +143,26 @@ class ProductDraftChangesExtension extends \Twig_Extension
         return $presenters;
     }
 
-    /**
-     * Present an object
-     *
-     * @param object $object
-     * @param array  $change
-     *
-     * @return null|string
-     */
-    protected function present($object, array $change = [])
+    protected function present(ValueInterface $formerValue, array $change)
     {
-        foreach ($this->getPresenters() as $presenter) {
-            if ($presenter->supports($object)) {
-                if ($presenter instanceof TranslatorAwareInterface) {
-                    $presenter->setTranslator($this->translator);
-                }
+        $attribute = $this->attributeRepository->findOneByIdentifier($formerValue->getAttributeCode());
+        if (null !== $attribute) {
+            foreach ($this->getPresenters() as $presenter) {
+                if ($presenter->supports($attribute->getType())) {
+                    if ($presenter instanceof TranslatorAwareInterface) {
+                        $presenter->setTranslator($this->translator);
+                    }
 
-                if ($presenter instanceof RendererAwareInterface) {
-                    $presenter->setRenderer($this->renderer);
-                }
+                    if ($presenter instanceof RendererAwareInterface) {
+                        $presenter->setRenderer($this->renderer);
+                    }
 
-                return $presenter->present($object, $change);
+                    return $presenter->present($formerValue, $change);
+                }
             }
         }
+
+        return null;
     }
 
     /**

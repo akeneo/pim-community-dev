@@ -47,24 +47,19 @@ class FilePresenter implements PresenterInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($data)
+    public function supports(string $attributeType, string $referenceDataName = null): bool
     {
-        if ($data instanceof ValueInterface) {
-            $attribute = $this->attributeRepository->findOneByIdentifier($data->getAttributeCode());
-            return null !== $attribute && AttributeTypes::FILE === $attribute->getType();
-        }
-
-        return false;
+        return $attributeType === AttributeTypes::FILE;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function present($data, array $change)
+    public function present(ValueInterface $value, array $change)
     {
         $result = ['before' => '', 'after' => ''];
 
-        $originalMedia = $data->getData();
+        $originalMedia = $value->getData();
         $changedMedia  = isset($change['data']) ? $this->fileInfoRepository->findOneByIdentifier($change['data']) : null;
 
         if (!$this->hasChanged($changedMedia, $originalMedia)) {

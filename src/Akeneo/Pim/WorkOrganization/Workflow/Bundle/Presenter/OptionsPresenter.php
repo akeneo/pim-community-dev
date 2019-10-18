@@ -11,6 +11,7 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
@@ -36,7 +37,7 @@ class OptionsPresenter extends AbstractProductValuePresenter
     /**
      * {@inheritdoc}
      */
-    public function present($value, array $change)
+    public function present(ValueInterface $value, array $change)
     {
         $change = array_merge($change, ['attribute' => $value->getAttributeCode()]);
 

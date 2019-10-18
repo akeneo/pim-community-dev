@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
@@ -49,48 +50,59 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
     }
 
     function it_presents_product_draft_using_a_supporting_presenter(
+        IdentifiableObjectRepositoryInterface $attributeRepository,
         $attributePresenter,
         $valuePresenter,
         ValueInterface $value,
         ProductInterface $product,
-        EntityWithValuesDraftInterface $productDraft
+        EntityWithValuesDraftInterface $productDraft,
+        AttributeInterface $attributeDescription
     ) {
         $productDraft->getEntityWithValue()->willReturn($product);
         $product->getValue('description', 'en_US', 'ecommerce')->willReturn($value);
+        $value->getAttributeCode()->willReturn('description');
+        $attributeRepository->findOneByIdentifier('description')->willReturn($attributeDescription);
+        $attributeDescription->getType()->willReturn('pim_catalog_text');
 
         $change = [
             'value' => 'foo',
             'locale' => 'en_US',
             'scope' => 'ecommerce',
         ];
-        $attributePresenter->supports($value)->willReturn(false);
-        $valuePresenter->supports($value)->willReturn(true);
+        $attributePresenter->supports('pim_catalog_text')->willReturn(false);
+        $valuePresenter->supports('pim_catalog_text')->willReturn(true);
         $valuePresenter->present($value, $change)->willReturn('<b>changes</b>');
 
         $this->presentChange($productDraft, $change, 'description')->shouldReturn('<b>changes</b>');
     }
 
     function it_injects_translator_in_translator_aware_presenter(
+        IdentifiableObjectRepositoryInterface $attributeRepository,
         $translator,
         $attributePresenter,
         $valuePresenter,
         ValueInterface $value,
         ProductInterface $product,
         PresenterInterface $presenter,
-        EntityWithValuesDraftInterface $productDraft
+        EntityWithValuesDraftInterface $productDraft,
+        AttributeInterface $attributeDescription
     ) {
         $presenter->implement('Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\TranslatorAwareInterface');
         $productDraft->getEntityWithValue()->willReturn($product);
         $product->getValue('description', 'en_US', 'ecommerce')->willReturn($value);
+        $value->getAttributeCode()->willReturn('description');
+        $attributeRepository->findOneByIdentifier('description')->willReturn($attributeDescription);
+        $attributeDescription->getType()->willReturn('pim_catalog_text');
+
         $change = [
             'attribute' => 'description',
             'locale' => 'en_US',
             'scope' => 'ecommerce',
         ];
 
-        $attributePresenter->supports($value)->willReturn(false);
-        $valuePresenter->supports($value)->willReturn(false);
-        $presenter->supports($value)->willReturn(true);
+        $attributePresenter->supports('pim_catalog_text')->willReturn(false);
+        $valuePresenter->supports('pim_catalog_text')->willReturn(false);
+        $presenter->supports('pim_catalog_text')->willReturn(true);
         $presenter->present($value, $change)->willReturn('<b>changes</b>');
 
         $presenter->setTranslator($translator)->shouldBeCalled();
@@ -100,26 +112,32 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
     }
 
     function it_injects_renderer_in_renderer_aware_presenter(
+        IdentifiableObjectRepositoryInterface $attributeRepository,
         $renderer,
         $attributePresenter,
         $valuePresenter,
         ValueInterface $value,
         ProductInterface $product,
         PresenterInterface $presenter,
-        EntityWithValuesDraftInterface $productDraft
+        EntityWithValuesDraftInterface $productDraft,
+        AttributeInterface $attributeDescription
     ) {
         $presenter->implement('Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\RendererAwareInterface');
         $productDraft->getEntityWithValue()->willReturn($product);
         $product->getValue('description', 'en_US', 'ecommerce')->willReturn($value);
+        $value->getAttributeCode()->willReturn('description');
+        $attributeRepository->findOneByIdentifier('description')->willReturn($attributeDescription);
+        $attributeDescription->getType()->willReturn('pim_catalog_text');
+
         $change = [
             'attribute' => 'description',
             'locale' => 'en_US',
             'scope' => 'ecommerce',
         ];
 
-        $attributePresenter->supports($value)->willReturn(false);
-        $valuePresenter->supports($value)->willReturn(false);
-        $presenter->supports($value)->willReturn(true);
+        $attributePresenter->supports('pim_catalog_text')->willReturn(false);
+        $valuePresenter->supports('pim_catalog_text')->willReturn(false);
+        $presenter->supports('pim_catalog_text')->willReturn(true);
         $presenter->present($value, $change)->willReturn('<b>changes</b>');
 
         $presenter->setRenderer($renderer)->shouldBeCalled();

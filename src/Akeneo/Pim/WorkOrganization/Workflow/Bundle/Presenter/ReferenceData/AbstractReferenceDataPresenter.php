@@ -40,19 +40,8 @@ abstract class AbstractReferenceDataPresenter extends AbstractProductValuePresen
     /**
      * {@inheritdoc}
      */
-    public function supports($data)
+    public function supports(string $attributeType, string $referenceDataName = null): bool
     {
-        $supports = parent::supports($data);
-        if ($supports) {
-            $attribute = $this->attributeRepository->findOneByIdentifier($data->getAttributeCode());
-
-            if (null !== $attribute) {
-                $this->referenceDataName = $attribute->getReferenceDataName();
-
-                return true;
-            }
-        }
-
-        return false;
+        return parent::supports($attributeType) && $this->referenceDataName === $referenceDataName;
     }
 }

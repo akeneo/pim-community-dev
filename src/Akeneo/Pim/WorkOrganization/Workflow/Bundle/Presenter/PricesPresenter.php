@@ -11,6 +11,7 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface as BasePresenterInterface;
@@ -51,14 +52,14 @@ class PricesPresenter extends AbstractProductValuePresenter
     /**
      * {@inheritdoc}
      */
-    public function present($data, array $change)
+    public function present(ValueInterface $value, array $change)
     {
-        $data = $this->normalizeData($data->getData());
+        $value = $this->normalizeData($value->getData());
         $change = $this->normalizeChange($change);
 
-        foreach ($data as $currency => $price) {
+        foreach ($value as $currency => $price) {
             if (!isset($change[$currency]) || (isset($change[$currency]) && $price === $change[$currency])) {
-                unset($data[$currency]);
+                unset($value[$currency]);
                 unset($change[$currency]);
             }
         }
@@ -69,7 +70,7 @@ class PricesPresenter extends AbstractProductValuePresenter
             }
         }
 
-        return $this->renderer->renderDiff(array_values($data), array_values($change));
+        return $this->renderer->renderDiff(array_values($value), array_values($change));
     }
 
     /**

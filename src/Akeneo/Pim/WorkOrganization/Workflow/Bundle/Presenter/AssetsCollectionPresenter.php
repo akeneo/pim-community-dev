@@ -13,6 +13,7 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
 
 use Akeneo\Asset\Bundle\AttributeType\AttributeTypes;
 use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -49,11 +50,11 @@ class AssetsCollectionPresenter implements PresenterInterface
     /**
      * {@inheritdoc}
      */
-    public function present($data, array $change)
+    public function present(ValueInterface $value, array $change)
     {
         $beforeCodes = array_map(function (string $assetCode) {
             return $assetCode;
-        }, $data->getData());
+        }, $value->getData());
         $afterCodes = $change['data'];
 
         return [
@@ -98,10 +99,8 @@ class AssetsCollectionPresenter implements PresenterInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($value)
+    public function supports(string $attributeType, string $referenceDataName = null): bool
     {
-        $attribute = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
-
-        return null !== $attribute && AttributeTypes::ASSETS_COLLECTION === $attribute->getType();
+        return $attributeType === AttributeTypes::ASSETS_COLLECTION;
     }
 }

@@ -26,16 +26,8 @@ class FilePresenterSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(PresenterInterface::class);
     }
 
-    function it_supports_file(
-        ValueInterface $value,
-        AttributeInterface $attribute,
-        $attributeRepository
-    ) {
-        $attribute->getType()->willReturn('pim_catalog_file');
-        $value->getAttributeCode()->willReturn('file_attribute');
-        $attributeRepository->findOneByIdentifier('file_attribute')->willReturn($attribute);
-
-        $this->supports($value)->shouldBe(true);
+    function it_supports_file() {
+        $this->supports('pim_catalog_file')->shouldBe(true);
     }
 
     function it_does_not_presents_original_if_original_is_empty(

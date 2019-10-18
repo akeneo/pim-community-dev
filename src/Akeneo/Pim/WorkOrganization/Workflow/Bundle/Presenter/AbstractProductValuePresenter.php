@@ -34,21 +34,15 @@ abstract class AbstractProductValuePresenter implements PresenterInterface, Rend
     /**
      * {@inheritdoc}
      */
-    public function supports($data)
+    public function supports(string $attributeType, string $referenceDataName = null): bool
     {
-        if ($data instanceof ValueInterface) {
-            $attribute = $this->attributeRepository->findOneByIdentifier($data->getAttributeCode());
-
-            return null !== $attribute && $this->supportsChange($attribute->getType());
-        }
-
-        return false;
+        return $this->supportsChange($attributeType);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function present($value, array $change)
+    public function present(ValueInterface $value, array $change)
     {
         $change = array_merge($change, ['attribute' => $value->getAttributeCode()]);
 
