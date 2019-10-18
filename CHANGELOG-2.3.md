@@ -34,6 +34,7 @@
 
 # 2.3.63 (2019-09-23)
 
+
 ## Bug fixes
 
 - PIM-8738: Fix memory leak executing "akeneo:batch:purge-job-execution" command
@@ -66,7 +67,7 @@
 ## Bug fixes
 
 - PIM-8461: Do not display 'Compare/translate' if user has no permission to edit product attributes
-- PIM-7583: Allow user to import custom locales without '\_'
+- PIM-7583: Allow user to import custom locales without '_'
 - PIM-8630: Fix revert action when it exists an association type with integer as code
 
 # 2.3.57 (2019-07-31)
@@ -130,8 +131,8 @@
 ## BC Break
 
 - Change constructor of `src/Pim/Component/Catalog/Job/ComputeFamilyVariantStructureChangesTasklet.php`:
-  added: `Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface` and `Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface`
-  removed: `Pim\Component\Catalog\Repository\ProductModelRepositoryInterface` and `Pim\Component\Catalog\Repository\ProductRepositoryInterface`
+    added: `Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface` and `Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface`
+    removed: `Pim\Component\Catalog\Repository\ProductModelRepositoryInterface` and `Pim\Component\Catalog\Repository\ProductRepositoryInterface`
 
 ## Improvement
 
@@ -358,9 +359,9 @@
 - PIM-7910: Search parent filter is now case insensitive
 - PIM-7936: Missing breadcrumb when you create Attribute group or Channel
 
-## Elasticsearch
+ ## Elasticsearch
 
-- Please re-index the products and product models by launching the commands `console akeneo:elasticsearch:reset-indexes -e prod` and `pim:product:index --all -e prod`.
+ - Please re-index the products and product models by launching the commands `console akeneo:elasticsearch:reset-indexes -e prod` and `pim:product:index --all -e prod`.
 
 # 2.3.21 (2018-12-07)
 
@@ -575,6 +576,7 @@ PIM-7810: Fix to mass delete products and product models
 ## Migration
 
 **IMPORTANT** Please run the doctrine migrations command to fix the product models export profiles : `bin/console doctrine:migrations:migrate --env=prod`
+
 
 # 2.3.1 (2018-07-04)
 
