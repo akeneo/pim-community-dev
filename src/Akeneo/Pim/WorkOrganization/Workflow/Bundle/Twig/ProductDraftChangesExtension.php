@@ -91,29 +91,21 @@ class ProductDraftChangesExtension extends \Twig_Extension
      *
      * @param EntityWithValuesDraftInterface $productDraft
      * @param array                                $change
-     * @param string                               $code
-     *
-     * @throws \InvalidArgumentException
-     * @throws \LogicException
+     * @param string                               $attributeCode
      *
      * @return string
+     *@throws \LogicException
+     *
+     * @throws \InvalidArgumentException
      */
-    public function presentChange(EntityWithValuesDraftInterface $productDraft, array $change, $code)
+    public function presentChange(EntityWithValuesDraftInterface $productDraft, array $change, string $attributeCode)
     {
-        if (null === $value = $productDraft->getEntityWithValue()->getValue($code, $change['locale'], $change['scope'])) {
-            $value = $this->createFakeValue($code);
-        }
+        $formerValue = $productDraft
+            ->getEntityWithValue()
+            ->getValue($attributeCode, $change['locale'], $change['scope']);
+        $formerData = (null !== $formerValue) ? $formerValue->getData() : null;
 
-        if (null !== $result = $this->present($value, $change)) {
-            return $result;
-        }
-
-        throw new \LogicException(
-            sprintf(
-                'No presenter supports the provided change with key(s) "%s"',
-                implode(', ', array_keys($change))
-            )
-        );
+        return $this->present($attributeCode, $formerData, $change);
     }
 
     /**
@@ -143,49 +135,28 @@ class ProductDraftChangesExtension extends \Twig_Extension
         return $presenters;
     }
 
-    protected function present(ValueInterface $formerValue, array $change)
+    protected function present(string $attributeCode, $data, array $change)
     {
-        $change = array_merge($change, ['attribute' => $formerValue->getAttributeCode()]);
-        $attribute = $this->attributeRepository->findOneByIdentifier($formerValue->getAttributeCode());
-        if (null !== $attribute) {
-            foreach ($this->getPresenters() as $presenter) {
-                if ($presenter->supports($attribute->getType())) {
-                    if ($presenter instanceof TranslatorAwareInterface) {
-                        $presenter->setTranslator($this->translator);
-                    }
-
-                    if ($presenter instanceof RendererAwareInterface) {
-                        $presenter->setRenderer($this->renderer);
-                    }
-
-                    return $presenter->present($formerValue->getData(), $change);
+        $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+        foreach ($this->getPresenters() as $presenter) {
+            if ($presenter->supports($attribute->getType())) {
+                if ($presenter instanceof TranslatorAwareInterface) {
+                    $presenter->setTranslator($this->translator);
                 }
+
+                if ($presenter instanceof RendererAwareInterface) {
+                    $presenter->setRenderer($this->renderer);
+                }
+
+                return $presenter->present($data, array_merge($change, ['attribute' => $attributeCode]));
             }
         }
 
-        return null;
-    }
-
-    /**
-     * Create a fake value
-     *
-     * @param string $code
-     *
-     * @return ValueInterface
-     */
-    protected function createFakeValue($code)
-    {
-        $attribute = $this->attributeRepository->findOneByIdentifier($code);
-        $newAttribute = $this->attributeFactory->createAttribute($attribute->getType());
-        $newAttribute->setCode($code);
-        $newAttribute->setMetricFamily($attribute->getMetricFamily());
-
-        if ($attribute->isBackendTypeReferenceData()) {
-            $newAttribute->setReferenceDataName($attribute->getReferenceDataName());
-        }
-
-        $value = $this->valueFactory->createTemporaryNull($newAttribute, null, null);
-
-        return $value;
+        throw new \LogicException(
+            sprintf(
+                'No presenter supports the provided change with key(s) "%s"',
+                implode(', ', array_keys($change))
+            )
+        );
     }
 }
