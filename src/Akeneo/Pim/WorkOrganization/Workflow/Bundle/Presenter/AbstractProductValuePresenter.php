@@ -34,14 +34,6 @@ abstract class AbstractProductValuePresenter implements PresenterInterface, Rend
     /**
      * {@inheritdoc}
      */
-    public function supports(string $attributeType, string $referenceDataName = null): bool
-    {
-        return $this->supportsChange($attributeType);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function present(ValueInterface $value, array $change)
     {
         $change = array_merge($change, ['attribute' => $value->getAttributeCode()]);
@@ -51,15 +43,6 @@ abstract class AbstractProductValuePresenter implements PresenterInterface, Rend
             $this->normalizeChange($change)
         );
     }
-
-    /**
-     * Whether or not this class can present the provided change
-     *
-     * @param string $attributeType
-     *
-     * @return bool
-     */
-    abstract protected function supportsChange($attributeType);
 
     /**
      * Normalize data

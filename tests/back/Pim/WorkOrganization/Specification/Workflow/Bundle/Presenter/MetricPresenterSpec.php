@@ -36,7 +36,7 @@ class MetricPresenterSpec extends ObjectBehavior
 
     function it_supports_metric()
     {
-        $this->supportsChange('pim_catalog_metric')->shouldBe(true);
+        $this->supports('pim_catalog_metric')->shouldBe(true);
     }
 
     function it_presents_metric_change_using_the_injected_renderer(

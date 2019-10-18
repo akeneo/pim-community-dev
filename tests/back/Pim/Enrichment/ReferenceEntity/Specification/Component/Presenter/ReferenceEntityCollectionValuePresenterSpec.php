@@ -31,8 +31,8 @@ class ReferenceEntityCollectionValuePresenterSpec extends ObjectBehavior
 
     function it_supports_reference_entity_collection_value_type()
     {
-        $this->supportsChange(ReferenceEntityCollectionType::REFERENCE_ENTITY_COLLECTION)->shouldBe(true);
-        $this->supportsChange('other')->shouldBe(false);
+        $this->supports(ReferenceEntityCollectionType::REFERENCE_ENTITY_COLLECTION)->shouldBe(true);
+        $this->supports('other')->shouldBe(false);
     }
 
     function it_presents_reference_entity_collection_change_using_the_injected_renderer(

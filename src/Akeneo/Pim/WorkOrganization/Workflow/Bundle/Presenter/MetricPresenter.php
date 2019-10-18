@@ -45,7 +45,7 @@ class MetricPresenter extends AbstractProductValuePresenter implements Translato
     /**
      * {@inheritdoc}
      */
-    public function supportsChange($attributeType)
+    public function supports(string $attributeType, string $referenceDataName = null): bool
     {
         return AttributeTypes::METRIC === $attributeType;
     }

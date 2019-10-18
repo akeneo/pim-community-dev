@@ -23,7 +23,7 @@ class DefaultPresenterSpec extends ObjectBehavior
 
     function it_supports_all_the_product_values()
     {
-        $this->supportsChange(null)->shouldBe(true);
+        $this->supports('foo')->shouldBe(true);
     }
 
     function it_presents_change_using_the_injected_renderer(

@@ -28,8 +28,8 @@ class DatePresenterSpec extends ObjectBehavior
 
     function it_supports_change_if_it_has_a_date_key()
     {
-        $this->supportsChange('pim_catalog_date')->shouldBe(true);
-        $this->supportsChange('other')->shouldBe(false);
+        $this->supports('pim_catalog_date')->shouldBe(true);
+        $this->supports('other')->shouldBe(false);
     }
 
     function it_presents_date_change_using_the_injected_renderer(

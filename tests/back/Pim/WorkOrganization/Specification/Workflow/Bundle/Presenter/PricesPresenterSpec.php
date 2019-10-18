@@ -29,7 +29,7 @@ class PricesPresenterSpec extends ObjectBehavior
 
     function it_supports_price()
     {
-        $this->supportsChange('pim_catalog_price_collection')->shouldBe(true);
+        $this->supports('pim_catalog_price_collection')->shouldBe(true);
     }
 
     function it_presents_prices_change_using_the_injected_renderer(

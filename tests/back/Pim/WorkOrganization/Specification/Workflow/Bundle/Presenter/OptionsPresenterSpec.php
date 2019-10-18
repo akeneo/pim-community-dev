@@ -25,7 +25,7 @@ class OptionsPresenterSpec extends ObjectBehavior
 
     function it_supports_multiselect()
     {
-        $this->supportsChange('pim_catalog_multiselect')->shouldBe(true);
+        $this->supports('pim_catalog_multiselect')->shouldBe(true);
     }
 
     function it_presents_options_change_using_the_injected_renderer(

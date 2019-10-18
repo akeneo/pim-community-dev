@@ -21,7 +21,7 @@ class NumberPresenterSpec extends ObjectBehavior
 
     function it_supports_number()
     {
-        $this->supportsChange('pim_catalog_number')->shouldBe(true);
+        $this->supports('pim_catalog_number')->shouldBe(true);
     }
 
     function it_presents_french_format_numbers(

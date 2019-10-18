@@ -58,7 +58,7 @@ class OptionsPresenter extends AbstractProductValuePresenter
     /**
      * {@inheritdoc}
      */
-    public function supportsChange($attributeType)
+    public function supports(string $attributeType, string $referenceDataName = null): bool
     {
         return AttributeTypes::OPTION_MULTI_SELECT === $attributeType;
     }

@@ -24,8 +24,8 @@ class BooleanPresenterSpec extends ObjectBehavior
 
     function it_supports_boolean_type()
     {
-        $this->supportsChange('pim_catalog_boolean')->shouldBe(true);
-        $this->supportsChange('other')->shouldBe(false);
+        $this->supports('pim_catalog_boolean')->shouldBe(true);
+        $this->supports('other')->shouldBe(false);
     }
 
     function it_presents_boolean_change_using_the_injected_renderer(

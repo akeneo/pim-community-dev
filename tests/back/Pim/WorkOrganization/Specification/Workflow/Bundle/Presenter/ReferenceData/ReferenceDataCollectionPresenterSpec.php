@@ -29,12 +29,12 @@ class ReferenceDataCollectionPresenterSpec extends ObjectBehavior
 
     function it_supports_a_multi_reference_data()
     {
-        $this->supportsChange('pim_reference_data_multiselect')->shouldBe(true);
+        $this->supports('pim_reference_data_multiselect')->shouldBe(true);
     }
 
     function it_does_not_support_a_simple_reference_data()
     {
-        $this->supportsChange('pim_reference_data_simpleselect')->shouldBe(false);
+        $this->supports('pim_reference_data_simpleselect')->shouldBe(false);
     }
 
     function it_presents_reference_data_change_using_the_injected_renderer(

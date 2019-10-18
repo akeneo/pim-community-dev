@@ -25,7 +25,7 @@ class OptionPresenterSpec extends ObjectBehavior
 
     function it_supports_simpleselect()
     {
-        $this->supportsChange('pim_catalog_simpleselect')->shouldBe(true);
+        $this->supports('pim_catalog_simpleselect')->shouldBe(true);
     }
 
     function it_presents_option_change_using_the_injected_renderer(

@@ -21,7 +21,7 @@ class ReferenceDataPresenter extends AbstractReferenceDataPresenter
     /**
      * {@inheritdoc}
      */
-    public function supportsChange($attributeType)
+    public function supports(string $attributeType, string $referenceDataName = null): bool
     {
         return 'pim_reference_data_simpleselect' === $attributeType;
     }
