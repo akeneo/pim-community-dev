@@ -2,6 +2,7 @@ No products to remove: No hay productos para eliminar
 "dot (.)": punto (.)
 "comma (,)": coma (,)
 pim_enrich:
+  #Category
   category:
     tab:
       property.title: Propiedades
@@ -9,6 +10,7 @@ pim_enrich:
     suggest_selection: Por favor, seleccione una categoría de la izquierda
     or: o
     create_new: Crear una nueva categoría
+  #Mass edit operations
   mass_edit_action:
     limit_exceeded: Por favor seleccione menos de %limit% productos a editar
     product:
