@@ -61,6 +61,7 @@ pim_common:
   name: Navn
   remove: Fjern
 pim_enrich:
+  #ACLs
   acl:
     locale:
       index: Liste over landestandarder
@@ -184,6 +185,7 @@ pim_enrich:
     association type: opret sammenhængstype
     group type: opret gruppetype
     drag_or_upload: Træk og slip for at indlæse eller klik her
+#Confirmation messages
 confirmation:
   delete: Bekræft sletning
   leave: Er du sikker på du vil forlade denne side?
@@ -191,6 +193,7 @@ confirmation:
   remove:
     category: Er du sikker på du vil slette kategorien %name%?
     user: Er du sikker på du vil slette brugeren %name%?
+#Flash messages
 flash:
   entity:
     removed: Elementet blev slettet
@@ -212,6 +215,7 @@ flash:
   user:
     removed: Brugeren blev fjernet
   error occurred: Handlingen fejlede. Prøv venligst igen.
+#Info messages
 info:
   updated: Der er ikke-gemte ændringer.
   category:
@@ -246,6 +250,7 @@ info:
     auto option sorting: Hvis aktiveret, bliver etiketter automatisk sorteret efter deres oversatte etiket
   completeness:
     not calculated: Endnu ikke beregnet
+#Form elements
 Created: Oprettet
 Updated: Opdateret
 Last update: Sidst opdateret
@@ -312,17 +317,21 @@ Category tree: Kategoritræstrukturen
 Completeness: Fuldstændighed
 Attribute used as label: Attributten anvendes som etiket
 Credentials: Legitimationsoplysninger
+#Scopes
 Global: Global
 Channel: Kanal
 Expand all channels: Udvid alle kanaler
 Collapse all channels: Skjul alle kanaler
+#Variants
 Always override: Altid tilsidesæt
 Ask: Spørg
+#Attribute group
 General Properties: Generelle egenskaber
 Group values: Gruppeværdier
 New group: Ny gruppe
 Groups overview: Gruppe oversigt
 'Y-m-d h:i:s': 'Å-m-d t:m:s'
+#Attribute properties
 Max characters: Maks. tegn
 Validation rule: Valideringsregel
 Validation regexp: Validering regexp
@@ -343,8 +352,11 @@ URL: URL
 Regular expression: Regulære udtryk
 Minimum input length: Minimum inputlængde
 Default: Standard
+#Family
 Attributes: Egenskaber
+#Category
 Title: Titel
+#Page titles
 pim_catalog_identifier: Identifikator
 pim_catalog_text: Tekst
 pim_catalog_textarea: Tekstområde
@@ -359,6 +371,7 @@ pim_catalog_date: Dato
 pim_catalog_metric: Metrisk
 pim_reference_data_simpleselect: Referencedata simpel valg
 pim_reference_data_multiselect: Reference data multi valg
+#Locales
 Activated: Aktiveret
 Edit: Redigér
 Disable: Deaktivér
@@ -369,9 +382,11 @@ Remove this attribute: Fjern denne attribut
 Copy: Kopier
 Translate from: Oversæt fra
 Current tab: Aktuelle fane
+#Product view
 Group: Gruppe
 View group: Se gruppe
 Products: Produkter
+#Tabs
 Properties: Egenskaber
 History: Historik
 pane.accordion:
@@ -384,11 +399,13 @@ pane.accordion:
   label_translations: Etiket oversættelser
   options: Valgmuligheder
   group_values: Gruppeværdier
+#Popin titles
 popin.create:
   association_type.title: Oprette en ny sammenhæng
   group.title: Opret en ny gruppe
   product.title: Opret et nyt produkt
   option.title: Opret et nyt tilvalg
+#Datagrid contents
 In group: I gruppen
 Attribute as label: Attribut som etiket
 Is associated: Er forbundet
@@ -398,6 +415,7 @@ Updated At: Opdateret den
 Enabled: Aktiveret
 Disabled: Deaktiveret
 Status: Status
+#Versioning / history
 Change History: Ændre historie
 Data Audit: Data revision
 Data Audit - System: 'Data revision - system'
@@ -412,6 +430,7 @@ Logged at: Logget af
 Deleted: Slettet
 Old values: Gamle værdier
 New values: Nye værdier
+#Configuration
 System configuration: Systemkonfiguration
 General setup: Generel opsætning
 Localization: Lokalisering
@@ -442,6 +461,7 @@ oro.locale:
       language: "Vælge det systemsprog du ønsker at bruge"
       timezone: "Vælg tidszone for visning af dato og klokkeslæt"
       currency: "Vælg standardvalutaen"
+#Datagrid
 Selected products successfully deleted: Udvalgte produkter blev slettet
 pim_mass_edit:
   notification:

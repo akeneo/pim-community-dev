@@ -62,6 +62,7 @@ pim_common:
   name: Name
   remove: Entfernen
 pim_enrich:
+  #ACLs
   acl:
     locale:
       index: Gebietsschemata auflisten
@@ -187,6 +188,7 @@ pim_enrich:
     association type: Verbindungstyp anlegen
     group type: Gruppentyp anlegen
     drag_or_upload: Upload per Drag & Drop oder hier klicken
+#Confirmation messages
 confirmation:
   delete: Löschen bestätigen
   leave: Möchten Sie diese Seite wirklich verlassen?
@@ -194,6 +196,7 @@ confirmation:
   remove:
     category: Sind Sie sicher, dass Sie die Kategorie %name% löschen möchten?
     user: Sind Sie sicher, dass Sie den Benutzer %name% löschen möchten?
+#Flash messages
 flash:
   entity:
     removed: Element wurde gelöscht
@@ -215,6 +218,7 @@ flash:
   user:
     removed: Benutzer erfolgreich entfernt
   error occurred: Die Aktion ist fehlgeschlagen. Bitte wiederholen Sie den Vorgang.
+#Info messages
 info:
   updated: Es gibt ungespeicherte Änderungen.
   category:
@@ -249,6 +253,7 @@ info:
     auto option sorting: Wenn aktiviert, werden Optionen automatisch nach ihren lokalisierten Bezeichnungen sortiert
   completeness:
     not calculated: Noch nicht berechnet
+#Form elements
 Created: Erstellt
 Updated: Aktualisiert
 Last update: Letzte Aktualisierung
@@ -316,17 +321,21 @@ Category tree: Kategorie-Strukturbaum
 Completeness: Vollständigkeit
 Attribute used as label: Attribut als Label verwendet
 Credentials: Anmeldeinformationen
+#Scopes
 Global: Global
 Channel: Ausgabekanal
 Expand all channels: Alle Ausgabekanäle erweitern
 Collapse all channels: Alle Ausgabekanäle reduzieren
+#Variants
 Always override: Immer überschreiben
 Ask: Fragen
+#Attribute group
 General Properties: Allgemeine Eigenschaften
 Group values: Werte der Gruppe
 New group: Neue Gruppe
 Groups overview: Gruppen-Übersicht
 'Y-m-d h:i:s': 'd.m.Y h:i:s'
+#Attribute properties
 Max characters: Max. Zeichen
 Validation rule: Validierungsregel
 Validation regexp: Validierung RexExp
@@ -347,8 +356,11 @@ URL: URL
 Regular expression: Regulärer Ausdruck
 Minimum input length: Minimale Eingabelänge
 Default: Standard
+#Family
 Attributes: Attribute
+#Category
 Title: Titel
+#Page titles
 pim_catalog_identifier: Kennung
 pim_catalog_text: Text
 pim_catalog_textarea: Textbereich
@@ -363,6 +375,7 @@ pim_catalog_date: Datum
 pim_catalog_metric: Maßeinheit
 pim_reference_data_simpleselect: Referenz-Datentyp Einfachauswahl
 pim_reference_data_multiselect: Referenz-Datentyp Mehrfachauswahl
+#Locales
 Activated: Aktiviert
 Edit: Bearbeiten
 Disable: Deaktivieren
@@ -373,9 +386,11 @@ Remove this attribute: Dieses Attribut entfernen
 Copy: Kopie
 Translate from: Übersetzen von
 Current tab: Aktueller Reiter
+#Product view
 Group: Gruppe
 View group: Gruppe ansehen
 Products: Produkte
+#Tabs
 Properties: Eigenschaften
 History: Historie
 pane.accordion:
@@ -388,11 +403,13 @@ pane.accordion:
   label_translations: Feldbezeichner-Übersetzungen
   options: Optionen
   group_values: Werte der Gruppe
+#Popin titles
 popin.create:
   association_type.title: Einen neuen Verbindungstyp anlegen
   group.title: Neue Gruppe anlegen
   product.title: Neues Produkt anlegen
   option.title: Neue Option anlegen
+#Datagrid contents
 In group: In Gruppe
 Attribute as label: Attribut als Label
 Is associated: Ist verbunden
@@ -402,6 +419,7 @@ Updated At: Aktualisiert am
 Enabled: Aktiviert
 Disabled: Deaktiviert
 Status: Status
+#Versioning / history
 Change History: Änderungshistorie
 Data Audit: Datenhistorie
 Data Audit - System: 'Datenhistorie - System'
@@ -416,6 +434,7 @@ Logged at: Aufgezeichnet am
 Deleted: Gelöscht
 Old values: Alte Werte
 New values: Neue Werte
+#Configuration
 System configuration: Systemkonfiguration
 General setup: Allgemeine Konfiguration
 Localization: Lokalisierung
@@ -446,6 +465,7 @@ oro.locale:
       language: "Wählen Sie die Systemsprache die Sie verwenden möchten"
       timezone: "Wählen Sie die Zeitzone für die Anzeige von Datum und Uhrzeit"
       currency: "Wählen Sie die Standardwährung"
+#Datagrid
 Selected products successfully deleted: Ausgewählte Produkte erfolgreich gelöscht
 pim_mass_edit:
   notification:

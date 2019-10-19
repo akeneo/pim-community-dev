@@ -122,6 +122,7 @@ oro_security:
       create: Opret en brugergruppe
       edit: Rediger brugergrupper
       delete: Fjern en brugergruppe
+#Security
 (default): Standardtilladelse på enheder
 VIEW: Se
 CREATE: Opret

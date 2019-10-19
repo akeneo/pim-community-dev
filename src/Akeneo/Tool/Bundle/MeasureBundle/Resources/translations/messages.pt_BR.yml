@@ -19,6 +19,7 @@ pim_measure:
     Energy: Energia
     CaseBox: Embalagens
   units:
+    #Area
     ACRE: Acre é o nome de uma antiga unidade de medida usada para medir terras. Atualmente, o acre é uma unidade de área utilizada no sistema imperial e no sistema tradicional dos Estados Unidos. O acre não é mais usado na maioria dos países, apesar de algumas exceções notáveis, que incluem os EUA, Austrália, Índia, Paquistão e Birmânia. A partir de 2010, o acre deixou de ser oficialmente utilizado no Reino Unido, embora ainda seja usado em descrições de imóveis. Ele continua sendo usado, ainda, em certa medida, no Canadá. No Brasil e em Portugal, essa medida nunca foi utilizada, sendo que nestes países se utiliza o alqueire e o hectare (que seria a unidade mais simples de utilização) como unidades de medida em áreas rurais.
     ARE: Area
     ARPENT: Arpent
@@ -37,18 +38,22 @@ pim_measure:
     SQUARE_MILE: Milha quadrada
     SQUARE_MILLIMETER: Milímetro quadrado
     SQUARE_YARD: Jarda quadrada
+    #Binary
     BIT: Bit
     BYTE: Byte
     KILOBYTE: Kilobyte (KB)
     MEGABYTE: Megabyte (MB)
     GIGABYTE: Gigabyte (GB)
     TERABYTE: Terabyte (TB)
+    #Decibel
     DECIBEL: Decibel
+    #Frequency
     GIGAHERTZ: Gigahertz (GHz)
     KILOHERTZ: Kilohertz (kHz)
     MEGAHERTZ: Megahertz (MHz)
     TERAHERTZ: Terahertz (THz)
     HERTZ: Hertz (Hz)
+    #Length
     CENTIMETER: Centímetro
     CHAIN: Cadeia
     DECIMETER: Decímetro
@@ -63,11 +68,13 @@ pim_measure:
     MILE: Milha
     MILLIMETER: Milímetro
     YARD: Jarda
+    #Power
     GIGAWATT: Gigawatt
     KILOWATT: Kilowatt
     MEGAWATT: Megawatt
     TERAWATT: Terawatt
     WATT: Watt
+    #Resistance
     MILLIOHM: Milliohm
     CENTIOHM: Centiohm
     DECIOHM: Deciohm
@@ -76,6 +83,7 @@ pim_measure:
     HECTOHM: Hectohm
     KILOHM: Kilohm
     MEGOHM: Megohm
+    #Voltage
     MILLIVOLT: Millivolt
     CENTIVOLT: Centivolt
     DECIVOLT: Decivolt
@@ -83,6 +91,7 @@ pim_measure:
     DEKAVOLT: Dekavolt
     HECTOVOLT: Hectovolt
     KILOVOLT: Kilovolt
+    #Intensity
     MILLIAMPERE: Miliampère
     CENTIAMPERE: Centiampere
     DECIAMPERE: Deciampere
@@ -91,6 +100,7 @@ pim_measure:
     HECTOAMPERE: Hectoampere
     KILOAMPERE: Kiloampere
     MEGAAMPERE: Megaampere
+    #ElectricCharge
     MILLIAMPEREHOUR: Miliampère/hora
     AMPEREHOUR: Ampère/hora
     MILLICOULOMB: Milicoulomb
@@ -100,6 +110,7 @@ pim_measure:
     DEKACOULOMB: Dekacoulomb
     HECTOCOULOMB: Hectocoulomb
     KILOCOULOMB: Quilocoulomb
+    #Duration
     MILLISECOND: Milissegundo
     SECOND: Segundo
     MINUTE: Minuto
@@ -108,6 +119,7 @@ pim_measure:
     WEEK: Semana
     MONTH: Mês
     YEAR: Ano
+    #Speed
     FOOT_PER_SECOND: Pé por segundo
     FOOT_PER_HOUR: Pé por hora
     KILOMETER_PER_HOUR: Quilômetro por hora
@@ -116,11 +128,13 @@ pim_measure:
     METER_PER_SECOND: Metro por segundo
     MILE_PER_HOUR: Milha por hora
     YARD_PER_HOUR: Jarda por hora
+    #Temperature
     CELSIUS: Celsius
     FAHRENHEIT: Fahrenheit
     KELVIN: Kelvin
     RANKINE: Rankine
     REAUMUR: Reaumur
+    #Volume
     BARREL: Barril
     CENTILITER: Centilitro
     CUBIC_CENTIMETER: Centímetro cúbico
@@ -136,6 +150,7 @@ pim_measure:
     MILLILITER: Mililitro
     OUNCE: Onça
     PINT: Pinta
+    #Weight
     DENIER: Denier
     GRAIN: Grão
     GRAM: Grama
@@ -146,6 +161,7 @@ pim_measure:
     ONCE: Onça
     POUND: Libra
     TON: Tonelada
+    #Pressure
     BAR: Bar
     PASCAL: Pascal
     HECTOPASCAL: hecto Pascal
@@ -154,7 +170,9 @@ pim_measure:
     PSI: Libra por polegada quadrada
     TORR: Torr
     MMHG: milímetro de mercúrio
+    #Energy
     KILOCALORIE: quilocaloria
     KILOJOULE: kilojoule
+    #CaseBox
     PIECE: Peça
     DOZEN: Dúzia

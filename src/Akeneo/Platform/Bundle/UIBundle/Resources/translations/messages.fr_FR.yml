@@ -62,6 +62,7 @@ pim_common:
   name: Nom
   remove: Supprimer
 pim_enrich:
+  #ACLs
   acl:
     locale:
       index: Liste des locales
@@ -187,6 +188,7 @@ pim_enrich:
     association type: Créer un type d'association
     group type: Créer un type de groupe
     drag_or_upload: Glissez et déposez un fichier pour le télécharger ou cliquez ici
+#Confirmation messages
 confirmation:
   delete: Supprimer l'élément
   leave: Êtes-vous sûr(e) de vouloir quitter cette page ?
@@ -194,6 +196,7 @@ confirmation:
   remove:
     category: Êtes-vous sûr(e) de vouloir supprimer la catégorie %name% ?
     user: Êtes vous sûr(e) de vouloir supprimer l'utilisateur %name% ?
+#Flash messages
 flash:
   entity:
     removed: L'entité a été supprimée
@@ -215,6 +218,7 @@ flash:
   user:
     removed: L'utilisateur a bien été supprimé
   error occurred: Opération échouée. Merci de réessayer.
+#Info messages
 info:
   updated: Des modifications n'ont pas encore été sauvegardées.
   category:
@@ -249,6 +253,7 @@ info:
     auto option sorting: Si activé, les options sont automatiquement triées par leurs valeurs traduites
   completeness:
     not calculated: Pas encore calculé
+#Form elements
 Created: Créé
 Updated: Mis à jour
 Last update: Dernière mise à jour
@@ -316,17 +321,21 @@ Category tree: Arborescence
 Completeness: Complétude
 Attribute used as label: Attribut utilisé comme étiquette
 Credentials: Certificats
+#Scopes
 Global: Général
 Channel: Canal
 Expand all channels: Afficher tous les canaux
 Collapse all channels: Masquer les canaux
+#Variants
 Always override: Toujours écraser
 Ask: Demander
+#Attribute group
 General Properties: Propriétés générales
 Group values: Valeurs du groupe
 New group: Nouveau groupe
 Groups overview: Liste des groupes
 'Y-m-d h:i:s': 'Y-m-d h:i:s'
+#Attribute properties
 Max characters: Nombre maximum de caractères
 Validation rule: Règle de validation
 Validation regexp: Expression régulière
@@ -347,8 +356,11 @@ URL: URL
 Regular expression: Expression régulière
 Minimum input length: Longueur de texte minimale
 Default: Défaut
+#Family
 Attributes: Attributs
+#Category
 Title: Titre
+#Page titles
 pim_catalog_identifier: Identifiant
 pim_catalog_text: Texte
 pim_catalog_textarea: Zone de texte
@@ -363,6 +375,7 @@ pim_catalog_date: Date
 pim_catalog_metric: Unité de mesure
 pim_reference_data_simpleselect: Liste à choix unique de données référentielles
 pim_reference_data_multiselect: Liste à choix multiples de données référentielles
+#Locales
 Activated: Activé
 Edit: Modifier
 Disable: Désactiver
@@ -373,9 +386,11 @@ Remove this attribute: Supprimer cet attribut
 Copy: Copier
 Translate from: Traduire depuis
 Current tab: Onglet actif
+#Product view
 Group: Groupe
 View group: Afficher le groupe
 Products: Produits
+#Tabs
 Properties: Propriétés
 History: Historique
 pane.accordion:
@@ -388,11 +403,13 @@ pane.accordion:
   label_translations: Traduction des libellés
   options: Options
   group_values: Valeurs du groupe
+#Popin titles
 popin.create:
   association_type.title: Créer un nouveau type d'association
   group.title: Créer un nouveau groupe
   product.title: Créer un nouveau produit
   option.title: Créer une nouvelle option
+#Datagrid contents
 In group: Dans le groupe
 Attribute as label: Attribut en tant que libellé
 Is associated: Est associé
@@ -402,6 +419,7 @@ Updated At: Mis à jour le
 Enabled: Activé
 Disabled: Désactivé
 Status: État
+#Versioning / history
 Change History: Historique des modifications
 Data Audit: Historique des données
 Data Audit - System: 'Historique des données - système'
@@ -416,6 +434,7 @@ Logged at: Connecté(e) le
 Deleted: Supprimé
 Old values: Anciennes valeurs
 New values: Nouvelles valeurs
+#Configuration
 System configuration: Configuration système
 General setup: Paramétrage général
 Localization: Localisation
@@ -446,6 +465,7 @@ oro.locale:
       language: "Sélectionnez la langue du système que vous souhaitez utiliser"
       timezone: "Sélectionnez le fuseau horaire pour afficher la date et l'heure"
       currency: "Sélectionnez la monnaie par défaut"
+#Datagrid
 Selected products successfully deleted: La sélection de produits a été supprimée
 pim_mass_edit:
   notification:

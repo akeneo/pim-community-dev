@@ -1,15 +1,19 @@
 pim_enrich:
+  #Attribute
   attribute:
     tab:
       parameter.title: Parametrit
       value.title: Arvot
       history.title: Historia
+  #Family
   family:
     info:
       cant_remove_attribute_used_as_axis: Et voi poistaa tätä attribuuttia, koska sitä on käytössä varianttiperheessä
+  #Group type
   group_type:
     tab:
       property.title: Ominaisuudet
+  #Mass edit operations
   mass_edit_action:
     family:
       page_title: Tuoteperheet

@@ -1,8 +1,10 @@
+#Entities
 Job: Treball
 Connector: Connector
 pim_import_export:
   job: Treball
   connector: Connector
+  ## Job status
   status:
     0: A punt
   batch_status:
@@ -35,6 +37,7 @@ pim_import_export:
       property.title: Propietats generals
       history.title: Històric
       job_content.title: Contingut
+#Page titles:
 pim_title.export_profile.index: Gestió de perfils d'exportació
 pim_title.export_profile.edit: Exportar perfil %job.label% | Editar
 pim_title.export_profile.show: Exportar perfil %job.label% | Mostrar
@@ -45,12 +48,14 @@ pim_title.import_profile.edit: Importar perfil %job.label% | Editar
 pim_title.import_profile.show: Importar perfil %job.label% | Mostrar
 pim_title.import_execution.index: Importar històric d'execucions
 pim_title.import_execution.show: Importar execucions | Detalls
+#Entity and page header titles
 export profile:
   title: exportar perfil
   edit: editar perfil d'exportació
 import profile:
   title: importar perfil
   edit: editar perfil d'importació
+#ACLs
 pim_importexport:
   acl:
     export_profile:
@@ -86,6 +91,7 @@ pim_importexport:
   acl_group:
     export: Perfils d'exportació
     import: Perfils d'importació
+#Buttons
 btn:
   create:
     export profile: crear perfil d'exportació
@@ -93,10 +99,12 @@ btn:
 Upload and import now: Carregar i importar ara
 import now: Importar ara
 export now: Exportar ara
+#Confirmation messages
 confirmation:
   remove:
     export profile: Esteu segur que voleu suprimir el perfil d'exportació %name%?
     import profile: Esteu segur que voleu suprimir el perfil d'importació %name%?
+#Flash messages
 flash:
   export:
     created: La exportació s'ha creat amb èxit
@@ -108,15 +116,18 @@ flash:
     removed: S'ha eliminat la importació
     updated: La importació s'ha actualitzat correctament
     running: La importació s'està executant
+#Tabs
 General properties: Propietats generals
 History: Històric
 pane.accordion:
   properties: Propietats
   global_settings: Configuració global
   filters: Filtres
+#Popin titles
 popin.create:
   export_profile.title: Crear un nou perfil d'exportació
   import_profile.title: Crear un nou perfil d'importació
+#Job execution
 'Display item': Visualitzar element
 'Hide item': Amagar element
 'Collecting data about job execution...': Recollida de dades sobre l'execució del job...
@@ -142,6 +153,7 @@ Warnings: Avisos
 Summary: Sumari
 Start: Començar
 End: Fi
+#Process tracker
 set_attribute_requirements: Establir els requeriments d'atribut
 COMPLETED: Acabat
 STARTING: Començant
