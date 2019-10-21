@@ -33,6 +33,10 @@
             <directory suffix="Integration.php">tests</directory>
         </testsuite>
 
+        <testsuite name="Akeneo_Apps_Integration_Tests">
+            <directory suffix="Integration.php">src/Akeneo/Apps/back/tests/Integration</directory>
+        </testsuite>
+
         <testsuite name="End_to_End">
             <directory suffix="EndToEnd.php">tests/back</directory>
             <directory suffix="EndToEnd.php">src</directory>

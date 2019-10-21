@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\Apps\Domain\Model\Read;
 
 use Akeneo\Apps\Domain\Model\Read\App;
-use Akeneo\Apps\Domain\Model\Write\FlowType;
+use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -22,15 +22,15 @@ class AppSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldBeAnInstanceOf(App::class);
+        $this->shouldHaveType(App::class);
     }
 
-    function it_returns_the_app_code()
+    function it_returns_the_code()
     {
         $this->code()->shouldReturn('magento');
     }
 
-    function it_returns_the_app_label()
+    function it_returns_the_label()
     {
         $this->label()->shouldReturn('Magento Connector');
     }
@@ -38,5 +38,14 @@ class AppSpec extends ObjectBehavior
     function it_returns_the_flow_type()
     {
         $this->flowType()->shouldReturn(FlowType::DATA_DESTINATION);
+    }
+
+    function it_normalizes_an_app()
+    {
+        $this->normalize()->shouldReturn([
+            'code' => 'magento',
+            'label' => 'Magento Connector',
+            'flowType' => FlowType::DATA_DESTINATION
+        ]);
     }
 }

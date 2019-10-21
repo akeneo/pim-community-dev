@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Apps\Domain\Model\Write;
+namespace spec\Akeneo\Apps\Domain\Model\ValueObject;
 
-use Akeneo\Apps\Domain\Model\Write\AppLabel;
+use Akeneo\Apps\Domain\Model\ValueObject\AppLabel;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -24,7 +24,7 @@ class AppLabelSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('create', [str_repeat('a', 101)]);
         $this->shouldThrow(
-            new \InvalidArgumentException('Label cannot be longer than 100 characters')
+            new \InvalidArgumentException('akeneo_apps.app.constraint.label.too_long')
         )->duringInstantiation();
     }
 

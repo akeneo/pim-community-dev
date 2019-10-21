@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Application\Command;
 
-use Akeneo\Apps\Domain\Model\Write\AppCode;
-use Akeneo\Apps\Domain\Model\Write\AppLabel;
-use Akeneo\Apps\Domain\Model\Write\FlowType;
+use Akeneo\Apps\Domain\Model\ValueObject\AppCode;
+use Akeneo\Apps\Domain\Model\ValueObject\AppLabel;
+use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -15,28 +15,28 @@ use Akeneo\Apps\Domain\Model\Write\FlowType;
  */
 class CreateAppCommand
 {
-    private $appCode;
-    private $appLabel;
+    private $code;
+    private $label;
     private $flowType;
 
-    public function __construct(AppCode $appCode, AppLabel $appLabel, FlowType $flowType)
+    public function __construct(string $code, string $label, string $flowType)
     {
-        $this->appCode = $appCode;
-        $this->appLabel = $appLabel;
+        $this->code = $code;
+        $this->label = $label;
         $this->flowType = $flowType;
     }
 
-    public function appCode(): AppCode
+    public function code(): string
     {
-        return $this->appCode;
+        return $this->code;
     }
 
-    public function appLabel(): AppLabel
+    public function label(): string
     {
-        return $this->appLabel;
+        return $this->label;
     }
 
-    public function flowType(): FlowType
+    public function flowType(): string
     {
         return $this->flowType;
     }

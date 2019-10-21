@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Domain\Model\Write;
 
-use Akeneo\Apps\Domain\Model\ClientId;
+use Akeneo\Apps\Domain\Model\ValueObject\ClientId;
+use Akeneo\Apps\Domain\Model\ValueObject\AppCode;
+use Akeneo\Apps\Domain\Model\ValueObject\AppLabel;
+use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -33,14 +36,14 @@ class App
         $this->clientId = $clientId;
     }
 
-    public static function create(AppCode $appCode, AppLabel $label, FlowType $flowType, ClientId $clientId): self
+    public static function create(string $appCode, string $label, string $flowType, ClientId $clientId): self
     {
         // TODO: Validation + Id Generation
 
         return new self(
-            $appCode,
-            $label,
-            $flowType,
+            AppCode::create($appCode),
+            AppLabel::create($label),
+            FlowType::create($flowType),
             $clientId
         );
     }

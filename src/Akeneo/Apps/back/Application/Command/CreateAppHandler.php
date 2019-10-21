@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\Apps\Application\Command;
 
 use Akeneo\Apps\Application\Service\CreateClientInterface;
+use Akeneo\Apps\Domain\Exception\ConstraintViolationListException;
 use Akeneo\Apps\Domain\Model\Write\App;
 use Akeneo\Apps\Domain\Persistence\Repository\AppRepository;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -21,20 +23,32 @@ class CreateAppHandler
     /** @var CreateClientInterface */
     private $createClient;
 
-    public function __construct(AppRepository $repository, CreateClientInterface $createClient)
-    {
+    /** @var ValidatorInterface */
+    private $validator;
+
+    public function __construct(
+        ValidatorInterface $validator,
+        AppRepository $repository,
+        CreateClientInterface $createClient
+    ) {
+        $this->validator = $validator;
         $this->repository = $repository;
         $this->createClient = $createClient;
     }
 
     public function handle(CreateAppCommand $command): void
     {
-        $clientId = $this->createClient->execute((string) $command->appLabel());
-
         // TODO: Validate code unicity
+        $violations = $this->validator->validate($command);
+        if ($violations->count() > 0) {
+            throw new ConstraintViolationListException($violations);
+        }
+
+        $clientId = $this->createClient->execute($command->label());
+
         $app = App::create(
-            $command->appCode(),
-            $command->appLabel(),
+            $command->code(),
+            $command->label(),
             $command->flowType(),
             $clientId
         );

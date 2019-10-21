@@ -41,4 +41,13 @@ class App
     {
         return $this->flowType;
     }
+
+    public function normalize(): array
+    {
+        return [
+            'code' => $this->code,
+            'label' => $this->label,
+            'flowType' => $this->flowType
+        ];
+    }
 }
