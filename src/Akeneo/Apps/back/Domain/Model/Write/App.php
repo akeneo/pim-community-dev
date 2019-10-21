@@ -47,7 +47,7 @@ class App
 
         return new self(
             new AppId($id),
-            AppCode::create($appCode),
+            new AppCode($appCode),
             AppLabel::create($label),
             FlowType::create($flowType),
             $clientId

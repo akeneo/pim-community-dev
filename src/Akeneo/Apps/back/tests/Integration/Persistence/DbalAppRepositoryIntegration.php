@@ -27,7 +27,7 @@ class DbalAppRepositoryIntegration extends TestCase
     {
         $id = $this->getClientId('magento');
         $this->appRepository->create(WriteApp::create(
-            AppCode::create('magento'),
+            new AppCode('magento'),
             AppLabel::create('Magento connector'),
             FlowType::create(FlowType::DATA_DESTINATION),
             ClientId::create($id)

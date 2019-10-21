@@ -46,7 +46,7 @@ class AppSpec extends ObjectBehavior
 
     public function it_returns_the_code()
     {
-        $this->code()->shouldBeLike(AppCode::create('magento'));
+        $this->code()->shouldBeLike(new AppCode('magento'));
     }
 
     public function it_returns_the_label()
