@@ -43,7 +43,11 @@ class ScalarValueFactory extends AbstractValueFactory
             if (is_bool($data)) {
                 $data = boolval($data);
             } else {
-                throw new InvalidArgumentException('Scalar value for boolean attribute type should a boolean');
+                throw InvalidPropertyTypeException::booleanExpected(
+                    $attribute->getCode(),
+                    static::class,
+                    $data
+                );
             }
         }
 
