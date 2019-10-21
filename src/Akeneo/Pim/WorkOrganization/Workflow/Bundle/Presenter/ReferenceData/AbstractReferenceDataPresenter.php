@@ -13,7 +13,6 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\ReferenceData;
 
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ReferenceDataRepositoryResolver;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\AbstractProductValuePresenter;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
  * Abstract Present changes of reference data

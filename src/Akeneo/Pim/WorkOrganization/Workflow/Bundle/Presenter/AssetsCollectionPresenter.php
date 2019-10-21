@@ -13,8 +13,6 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
 
 use Akeneo\Asset\Bundle\AttributeType\AttributeTypes;
 use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -47,7 +45,6 @@ class AssetsCollectionPresenter implements PresenterInterface
      */
     public function present($formerData, array $change)
     {
-        // Done
         $beforeCodes = array_map(function (string $assetCode) {
             return $assetCode;
         }, $formerData);

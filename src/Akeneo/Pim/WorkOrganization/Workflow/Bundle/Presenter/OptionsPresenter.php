@@ -11,7 +11,6 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
@@ -36,7 +35,6 @@ class OptionsPresenter extends AbstractProductValuePresenter
      */
     public function present($formerData, array $change)
     {
-        // Done
         $options = [];
         foreach ($formerData as $optionCode) {
             $options[] = $this->optionRepository->findOneByIdentifier(

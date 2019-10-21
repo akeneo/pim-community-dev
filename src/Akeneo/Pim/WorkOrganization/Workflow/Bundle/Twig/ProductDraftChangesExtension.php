@@ -12,9 +12,6 @@
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig;
 
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PresenterInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\RendererAwareInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\TranslatorAwareInterface;
@@ -39,9 +36,6 @@ class ProductDraftChangesExtension extends \Twig_Extension
     /** @var TranslatorInterface */
     protected $translator;
 
-    /** @var AttributeFactory */
-    protected $attributeFactory;
-
     /** @var PresenterInterface[] */
     protected $presenters = [];
 
@@ -56,20 +50,17 @@ class ProductDraftChangesExtension extends \Twig_Extension
      * @param RendererInterface                     $renderer
      * @param TranslatorInterface                   $translator
      * @param ValueFactory                          $valueFactory
-     * @param AttributeFactory                      $attributeFactory
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $attributeRepository,
         RendererInterface $renderer,
         TranslatorInterface $translator,
-        ValueFactory $valueFactory,
-        AttributeFactory $attributeFactory
+        ValueFactory $valueFactory
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->renderer = $renderer;
         $this->translator = $translator;
         $this->valueFactory = $valueFactory;
-        $this->attributeFactory = $attributeFactory;
     }
 
     /**
@@ -139,7 +130,7 @@ class ProductDraftChangesExtension extends \Twig_Extension
     {
         $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
         foreach ($this->getPresenters() as $presenter) {
-            if ($presenter->supports($attribute->getType())) {
+            if ($presenter->supports($attribute->getType(), $attribute->getReferenceDataName())) {
                 if ($presenter instanceof TranslatorAwareInterface) {
                     $presenter->setTranslator($this->translator);
                 }

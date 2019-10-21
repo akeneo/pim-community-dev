@@ -11,8 +11,6 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-
 /**
  * Present change data into HTML
  *
@@ -32,8 +30,8 @@ interface PresenterInterface
     /**
      * Present the provided change into html
      *
-     * @param array $change
      * @param mixed $formerData
+     * @param array $change
      *
      * @return mixed
      */

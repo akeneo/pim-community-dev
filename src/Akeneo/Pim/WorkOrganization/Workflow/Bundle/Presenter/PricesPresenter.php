@@ -11,11 +11,9 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface as BasePresenterInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
  * Present changes on prices
@@ -51,7 +49,6 @@ class PricesPresenter extends AbstractProductValuePresenter
      */
     public function present($formerData, array $change)
     {
-        // Done
         $value = $this->normalizeData($formerData);
         $change = $this->normalizeChange($change);
 
