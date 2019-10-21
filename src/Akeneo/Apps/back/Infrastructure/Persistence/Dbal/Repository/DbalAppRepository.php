@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Akeneo\Apps\Infrastructure\Persistence\Dbal\Repository;
 
 use Akeneo\Apps\Domain\Model\Read\App as ReadApp;
+use Akeneo\Apps\Domain\Model\ValueObject\AppId;
 use Akeneo\Apps\Domain\Model\Write\App as WriteApp;
 use Akeneo\Apps\Domain\Persistence\Repository\AppRepository;
 use Doctrine\DBAL\Connection;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -22,6 +24,11 @@ class DbalAppRepository implements AppRepository
     public function __construct(Connection $dbalConnection)
     {
         $this->dbalConnection = $dbalConnection;
+    }
+
+    public function generateId(): AppId
+    {
+        return new AppId(Uuid::uuid4()->toString());
     }
 
     public function create(WriteApp $app): void

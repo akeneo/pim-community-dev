@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\Apps\Infrastructure\Persistence\InMemory\Repository;
 
 use Akeneo\Apps\Domain\Model\Read\App as ReadApp;
+use Akeneo\Apps\Domain\Model\ValueObject\AppId;
 use Akeneo\Apps\Domain\Model\Write\App as WriteApp;
 use Akeneo\Apps\Domain\Persistence\Repository\AppRepository;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -16,6 +18,11 @@ use Akeneo\Apps\Domain\Persistence\Repository\AppRepository;
 class InMemoryAppRepository implements AppRepository
 {
     private $dataRows = [];
+
+    public function generateId(): AppId
+    {
+        return new AppId(Uuid::uuid4()->toString());
+    }
 
     public function create(WriteApp $app): void
     {
