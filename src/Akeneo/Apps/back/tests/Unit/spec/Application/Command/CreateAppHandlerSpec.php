@@ -45,6 +45,7 @@ class CreateAppHandlerSpec extends ObjectBehavior
         $clientId = ClientId::create(42);
         $createClient->execute('Magento Connector')->shouldBeCalled()->willReturn($clientId);
 
+        $repository->generateId()->willReturn('471');
         $repository->create(Argument::type(App::class))->shouldBeCalled();
 
         $this->handle($command);
@@ -62,6 +63,7 @@ class CreateAppHandlerSpec extends ObjectBehavior
         $constraintViolationList->count()->willReturn(1);
 
         $createClient->execute($command->label())->shouldNotBeCalled();
+        $repository->generateId()->shouldNotBeCalled();
         $repository->create(Argument::any())->shouldNotBeCalled();
 
         $this

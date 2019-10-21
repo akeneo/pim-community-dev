@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Apps\Infrastructure\Persistence\InMemory\Repository;
 
 use Akeneo\Apps\Domain\Model\Read\App as ReadApp;
-use Akeneo\Apps\Domain\Model\ValueObject\AppId;
 use Akeneo\Apps\Domain\Model\Write\App as WriteApp;
 use Akeneo\Apps\Domain\Persistence\Repository\AppRepository;
 use Ramsey\Uuid\Uuid;
@@ -19,14 +18,15 @@ class InMemoryAppRepository implements AppRepository
 {
     private $dataRows = [];
 
-    public function generateId(): AppId
+    public function generateId(): string
     {
-        return new AppId(Uuid::uuid4()->toString());
+        return Uuid::uuid4()->toString();
     }
 
     public function create(WriteApp $app): void
     {
         $this->dataRows[(string) $app->code()] = [
+            'id' => (string) $app->id(),
             'code' => (string) $app->code(),
             'label' => (string) $app->label(),
             'flow_type' => (string) $app->flowType(),
@@ -37,7 +37,7 @@ class InMemoryAppRepository implements AppRepository
     {
         $apps = [];
         foreach ($this->dataRows as $dataRow) {
-            $apps[] = new ReadApp($dataRow['code'], $dataRow['label'], $dataRow['flow_type']);
+            $apps[] = new ReadApp($dataRow['id'], $dataRow['code'], $dataRow['label'], $dataRow['flow_type']);
         }
 
         return $apps;
@@ -48,6 +48,7 @@ class InMemoryAppRepository implements AppRepository
         if (isset($this->dataRows[$code])) {
             $dataRow = $this->dataRows[$code];
             return new ReadApp(
+                $dataRow['id'],
                 $dataRow['code'],
                 $dataRow['label'],
                 $dataRow['flow_type']

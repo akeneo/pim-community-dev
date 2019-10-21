@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Domain\Persistence\Repository;
 
-use Akeneo\Apps\Domain\Model\ValueObject\AppId;
 use Akeneo\Apps\Domain\Model\Write\App;
 
 /**
@@ -18,5 +17,5 @@ interface AppRepository
 
     public function fetchAll(): array;
 
-    public function generateId(): AppId;
+    public function generateId(): string;
 }

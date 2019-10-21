@@ -17,12 +17,22 @@ class AppSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith('magento', 'Magento Connector', FlowType::DATA_DESTINATION);
+        $this->beConstructedWith(
+            '42',
+            'magento',
+            'Magento Connector',
+            FlowType::DATA_DESTINATION
+        );
     }
 
     function it_is_initializable()
     {
         $this->shouldHaveType(App::class);
+    }
+
+    function it_returns_the_id()
+    {
+        $this->id()->shouldReturn('42');
     }
 
     function it_returns_the_code()
@@ -43,6 +53,7 @@ class AppSpec extends ObjectBehavior
     function it_normalizes_an_app()
     {
         $this->normalize()->shouldReturn([
+            'id' => '42',
             'code' => 'magento',
             'label' => 'Magento Connector',
             'flowType' => FlowType::DATA_DESTINATION

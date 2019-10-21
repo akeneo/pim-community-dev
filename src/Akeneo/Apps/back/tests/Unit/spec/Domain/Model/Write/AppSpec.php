@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Apps\Domain\Model\Write;
 
+use Akeneo\Apps\Domain\Model\ValueObject\AppId;
 use Akeneo\Apps\Domain\Model\ValueObject\ClientId;
 use Akeneo\Apps\Domain\Model\Write\App;
 use Akeneo\Apps\Domain\Model\ValueObject\AppCode;
 use Akeneo\Apps\Domain\Model\ValueObject\AppLabel;
 use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -23,6 +25,7 @@ class AppSpec extends ObjectBehavior
         $this->beConstructedThrough(
             'create',
             [
+                '42',
                 'magento',
                 'Magento Connector',
                 FlowType::DATA_DESTINATION,
@@ -34,6 +37,11 @@ class AppSpec extends ObjectBehavior
     public function it_is_initializable()
     {
         $this->shouldHaveType(App::class);
+    }
+
+    public function it_returns_the_id()
+    {
+        $this->id()->shouldBeLike(new AppId('42'));
     }
 
     public function it_returns_the_code()

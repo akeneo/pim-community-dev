@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Domain\Model\Write;
 
+use Akeneo\Apps\Domain\Model\ValueObject\AppId;
 use Akeneo\Apps\Domain\Model\ValueObject\ClientId;
 use Akeneo\Apps\Domain\Model\ValueObject\AppCode;
 use Akeneo\Apps\Domain\Model\ValueObject\AppLabel;
@@ -16,6 +17,9 @@ use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
  */
 class App
 {
+    /** @var AppId */
+    private $id;
+
     /** @var AppCode */
     private $code;
 
@@ -28,24 +32,31 @@ class App
     /** @var ClientId */
     private $clientId;
 
-    private function __construct(AppCode $code, AppLabel $label, FlowType $flowType, ClientId $clientId)
+    private function __construct(AppId $id, AppCode $code, AppLabel $label, FlowType $flowType, ClientId $clientId)
     {
+        $this->id = $id;
         $this->code = $code;
         $this->label = $label;
         $this->flowType = $flowType;
         $this->clientId = $clientId;
     }
 
-    public static function create(string $appCode, string $label, string $flowType, ClientId $clientId): self
+    public static function create(string $id, string $appCode, string $label, string $flowType, ClientId $clientId): self
     {
         // TODO: Validation + Id Generation
 
         return new self(
+            new AppId($id),
             AppCode::create($appCode),
             AppLabel::create($label),
             FlowType::create($flowType),
             $clientId
         );
+    }
+
+    public function id(): AppId
+    {
+        return $this->id;
     }
 
     public function code(): AppCode
