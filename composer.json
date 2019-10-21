@@ -25,9 +25,9 @@
         "psr-4": {
             "Pim\\Behat\\": "tests/legacy/features/Behat",
             "AkeneoTest\\": "tests/back",
-            "Akeneo\\Test\\IntegrationTestsBundle\\": "tests/back/Integration/IntegrationTestsBundle/"
-        },
-        "classmap": [ "tests/back/Integration/AppKernelTest.php" ]
+            "Akeneo\\Test\\IntegrationTestsBundle\\": "tests/back/Integration/IntegrationTestsBundle/",
+            "Akeneo\\Test\\": "tests/back/"
+        }
     },
     "require": {
         "php": "7.3.*",

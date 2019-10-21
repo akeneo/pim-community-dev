@@ -137,7 +137,7 @@ SET user = :to
 WHERE user = :from;
 SQL;
 
-        $this->getFromTestContainer('database_connection')->executeQuery($sql, [
+        $this->get('database_connection')->executeQuery($sql, [
             'to' => $to,
             'from' => $from,
         ]);
@@ -145,7 +145,7 @@ SQL;
 
     private function addWarningToStep(StepExecution $step, $number): void
     {
-        $connection = $this->getFromTestContainer('database_connection');
+        $connection = $this->get('database_connection');
         while (0 !== $number) {
             $sql = <<<SQL
 INSERT INTO akeneo_batch_warning (step_execution_id, reason, reason_parameters, item)

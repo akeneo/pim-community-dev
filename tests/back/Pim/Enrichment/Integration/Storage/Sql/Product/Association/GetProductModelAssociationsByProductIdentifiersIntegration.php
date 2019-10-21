@@ -25,7 +25,7 @@ class GetProductModelAssociationsByProductIdentifiersIntegration extends TestCas
     {
         parent::setUp();
 
-        $entityBuilder = $this->getFromTestContainer('akeneo_integration_tests.catalog.fixture.build_entity');
+        $entityBuilder = $this->get('akeneo_integration_tests.catalog.fixture.build_entity');
         $this->entityBuilder = $entityBuilder;
 
         $this->givenTheFollowingProductModels(
@@ -184,7 +184,7 @@ class GetProductModelAssociationsByProductIdentifiersIntegration extends TestCas
 
     private function getQuery(): GetProductModelAssociationsByProductIdentifiers
     {
-        return $this->testKernel->getContainer()->get('akeneo.pim.enrichment.product.query.get_product_model_associations_by_product_identifiers');
+        return $this->get('akeneo.pim.enrichment.product.query.get_product_model_associations_by_product_identifiers');
     }
 
     private function givenAssociationTypes(array $codes): void

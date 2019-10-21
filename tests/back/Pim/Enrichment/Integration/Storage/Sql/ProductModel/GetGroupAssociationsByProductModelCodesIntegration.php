@@ -26,7 +26,7 @@ class GetGroupAssociationsByProductModelCodesIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->entityBuilder = $this->getFromTestContainer('akeneo_integration_tests.catalog.fixture.build_entity');
+        $this->entityBuilder = $this->get('akeneo_integration_tests.catalog.fixture.build_entity');
 
         $this->givenGroup(['groupA', 'groupB', 'groupC', 'groupD', 'groupE', 'groupF', 'groupG']);
 
@@ -205,7 +205,7 @@ class GetGroupAssociationsByProductModelCodesIntegration extends TestCase
 
     private function getQuery(): GetGroupAssociationsByProductModelCodes
     {
-        return $this->testKernel->getContainer()->get('akeneo.pim.enrichment.product_model.query.get_group_associations_by_product_model_codes');
+        return $this->get('akeneo.pim.enrichment.product_model.query.get_group_associations_by_product_model_codes');
     }
 
     private function givenBooleanAttributes(array $codes): void

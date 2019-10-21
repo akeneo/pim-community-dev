@@ -116,12 +116,12 @@ class ClassifyProductModelIntegration extends TestCase
     {
         parent::setUp();
 
-        $builder = $this->getFromTestContainer('akeneo_integration_tests.catalog.fixture.build_entity');
+        $builder = $this->get('akeneo_integration_tests.catalog.fixture.build_entity');
 
         $productModel = $builder->createProductModel('model-tee', 'clothing_color_size', null, []);
-        $this->getFromTestContainer('pim_catalog.updater.product_model')->update($productModel, ['categories' => ['supplier_zaro']]);
-        $this->getFromTestContainer('pim_catalog.validator.product_model')->validate($productModel);
-        $this->getFromTestContainer('pim_catalog.saver.product_model')->save($productModel);
+        $this->get('pim_catalog.updater.product_model')->update($productModel, ['categories' => ['supplier_zaro']]);
+        $this->get('pim_catalog.validator.product_model')->validate($productModel);
+        $this->get('pim_catalog.saver.product_model')->save($productModel);
 
         $subProductModel = $builder->createProductModel(
             'model-tee-red',
@@ -129,8 +129,8 @@ class ClassifyProductModelIntegration extends TestCase
             $productModel,
             ['values' => ['color' => [['data' => 'red', 'locale' => null, 'scope' => null]]]]
         );
-        $this->getFromTestContainer('pim_catalog.validator.product_model')->validate($subProductModel);
-        $this->getFromTestContainer('pim_catalog.saver.product_model')->save($subProductModel);
+        $this->get('pim_catalog.validator.product_model')->validate($subProductModel);
+        $this->get('pim_catalog.saver.product_model')->save($subProductModel);
 
         $variantProduct = $builder->createVariantProduct(
             'tee-red-s',
@@ -139,10 +139,10 @@ class ClassifyProductModelIntegration extends TestCase
             $subProductModel,
             ['values' => ['size' => [['data' => 's', 'locale' => null, 'scope' => null]]]]
         );
-        $this->getFromTestContainer('pim_catalog.validator.product')->validate($variantProduct);
-        $this->getFromTestContainer('pim_catalog.saver.product')->save($variantProduct);
+        $this->get('pim_catalog.validator.product')->validate($variantProduct);
+        $this->get('pim_catalog.saver.product')->save($variantProduct);
 
-        $launcher = $this->getFromTestContainer('akeneo_integration_tests.launcher.job_launcher');
+        $launcher = $this->get('akeneo_integration_tests.launcher.job_launcher');
         while ($launcher->hasJobInQueue()) {
             $launcher->launchConsumerOnce();
         }

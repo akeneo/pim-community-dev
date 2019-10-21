@@ -29,7 +29,7 @@ class RemovingProductModelFromIndexIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->entityBuilder = $this->getFromTestContainer('akeneo_integration_tests.catalog.fixture.build_entity');
+        $this->entityBuilder = $this->get('akeneo_integration_tests.catalog.fixture.build_entity');
         $this->esProductAndProductModelClient = $this->get('akeneo_elasticsearch.client.product_and_product_model');
 
         $this->entityBuilder->createFamilyVariant(

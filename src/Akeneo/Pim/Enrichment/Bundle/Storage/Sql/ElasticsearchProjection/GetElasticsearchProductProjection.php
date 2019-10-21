@@ -62,7 +62,7 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
 
         $diffIdentifiers = array_diff($productIdentifiers, $rowIdentifiers);
         if (count($diffIdentifiers) > 0) {
-            throw new ObjectNotFoundException(sprintf('Product identifiers "%s" were not found.', implode(',', $rowIdentifiers)));
+            throw new ObjectNotFoundException(sprintf('Product identifiers "%s" were not found.', implode(',', $diffIdentifiers)));
         }
 
         $platform = $this->connection->getDatabasePlatform();

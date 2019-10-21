@@ -55,8 +55,6 @@ class DatabaseCommand extends Command
     private $eventDispatcher;
 
     /** @var string */
-    private $installerData;
-    /** @var string */
     private $env;
 
     public function __construct(
@@ -65,7 +63,6 @@ class DatabaseCommand extends Command
         Connection $connection,
         FixtureJobLoader $fixtureJobLoader,
         EventDispatcherInterface $eventDispatcher,
-        string $installerData,
         string $env
     ) {
         parent::__construct();
@@ -75,7 +72,6 @@ class DatabaseCommand extends Command
         $this->connection = $connection;
         $this->fixtureJobLoader = $fixtureJobLoader;
         $this->eventDispatcher = $eventDispatcher;
-        $this->installerData = $installerData;
         $this->env = $env;
     }
 
@@ -107,6 +103,13 @@ class DatabaseCommand extends Command
                 InputOption::VALUE_OPTIONAL,
                 'Should the command install any fixtures',
                 false
+            )
+            ->addOption(
+                'catalog',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Directory of the fixtures to install',
+                'src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal'
             );
     }
 
@@ -178,7 +181,9 @@ class DatabaseCommand extends Command
 
             $this->eventDispatcher->dispatch(
                 InstallerEvents::POST_LOAD_FIXTURES,
-                new InstallerEvent($this->commandExecutor)
+                new InstallerEvent($this->commandExecutor, null, [
+                    'catalog' => $input->getOption('catalog')
+                ])
             );
         }
 
@@ -243,6 +248,7 @@ class DatabaseCommand extends Command
      */
     protected function loadFixturesStep(InputInterface $input, OutputInterface $output)
     {
+        $catalog = $input->getOption('catalog');
         if ($input->getOption('env') === 'behat') {
             $input->setOption('fixtures', self::LOAD_BASE);
         }
@@ -250,10 +256,10 @@ class DatabaseCommand extends Command
         $output->writeln(
             sprintf(
                 '<info>Load jobs for fixtures. (data set: %s)</info>',
-                $this->installerData
+                $catalog
             )
         );
-        $this->fixtureJobLoader->loadJobInstances();
+        $this->fixtureJobLoader->loadJobInstances($input->getOption('catalog'));
 
         $jobInstances = $this->fixtureJobLoader->getLoadedJobInstances();
         foreach ($jobInstances as $jobInstance) {
@@ -266,7 +272,9 @@ class DatabaseCommand extends Command
 
             $this->eventDispatcher->dispatch(
                 InstallerEvents::PRE_LOAD_FIXTURE,
-                new InstallerEvent($this->commandExecutor, $jobInstance->getCode())
+                new InstallerEvent($this->commandExecutor, $jobInstance->getCode(), [
+                    'catalog' => $catalog
+                ])
             );
             if ($input->getOption('verbose')) {
                 $output->writeln(

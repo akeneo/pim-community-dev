@@ -50,7 +50,7 @@ class ValueFactory
         }
 
         throw new \OutOfBoundsException(sprintf(
-            'No factory has been registered to create a Product Value for the attribute type "%s"',
+            'No read factory has been registered to create a Product Value for the attribute type "%s"',
             $attribute->type()
         ));
     }

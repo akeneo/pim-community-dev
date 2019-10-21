@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ElasticsearchProjection;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductModelProjectionInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductModelProjection;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
 use Doctrine\DBAL\Connection;
@@ -45,6 +46,17 @@ class GetElasticsearchProductModelProjection implements GetElasticsearchProductM
         $attributes = $this->getAttributesFromProductModelCodes($productModelCodes);
 
         $productProjections = [];
+
+        $rowCodes = array_map(function (array $row) {
+            return $row['code'];
+        }, $valuesAndProperties);
+
+        $diffCodes = array_diff($productModelCodes, $rowCodes);
+        if (count($diffCodes) > 0) {
+            throw new ObjectNotFoundException(
+                sprintf('Product model codes "%s" were not found.', implode(',', $diffCodes))
+            );
+        }
 
         foreach ($productModelCodes as $productModelCode) {
             $valueCollection = $this

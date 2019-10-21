@@ -18,11 +18,11 @@ class JobInstancesConfiguratorSpec extends ObjectBehavior
         $myFilePath = __FILE__;
         $myInstallerPath = dirname($myFilePath);
         $myFileName = str_replace($myInstallerPath, '', $myFilePath);
-        $pathProvider->getFixturesPath()->willReturn($myInstallerPath);
+        $pathProvider->getFixturesPath('minimal')->willReturn($myInstallerPath);
         $instance->getRawParameters()->willReturn(['filePath' => $myFileName]);
         $instance->setRawParameters(['filePath' => $myInstallerPath.$myFileName])->shouldBeCalled();
 
-        $this->configureJobInstancesWithInstallerData([$instance]);
+        $this->configureJobInstancesWithInstallerData('minimal', [$instance]);
     }
 
     function it_configures_job_instances_with_a_single_replacement_path(JobInstance $instance)

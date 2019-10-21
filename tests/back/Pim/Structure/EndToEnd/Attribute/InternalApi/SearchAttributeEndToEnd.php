@@ -137,7 +137,7 @@ JSON;
     {
         $standardizedAttributes = [];
 
-        $attribute = $this->getFromTestContainer('pim_api.repository.attribute')->findOneByIdentifier('sku');
+        $attribute = $this->get('pim_api.repository.attribute')->findOneByIdentifier('sku');
 
         $standardizedAttributes['sku'] = <<<JSON
         {
@@ -180,7 +180,7 @@ JSON;
         }
 JSON;
 
-        $attribute = $this->getFromTestContainer('pim_api.repository.attribute')->findOneByIdentifier('a_metric');
+        $attribute = $this->get('pim_api.repository.attribute')->findOneByIdentifier('a_metric');
 
         $standardizedAttributes['a_metric'] = <<<JSON
         {

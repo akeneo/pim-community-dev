@@ -4,20 +4,107 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Storage\ElasticsearchAndSql\CategoryTree;
 
+use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PHPUnit\Framework\Assert;
-use Psr\Container\ContainerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CategoryTreeFixturesLoader
 {
-    /** @var  ContainerInterface */
-    private $container;
+    /** @var SimpleFactoryInterface */
+    private $categoryFactory;
+    /** @var ObjectUpdaterInterface */
+    private $categoryUpdater;
+    /** @var ValidatorInterface */
+    private $validator;
+    /** @var SaverInterface */
+    private $categorySaver;
+    /** @var ProductBuilderInterface */
+    private $productBuilder;
+    /** @var ObjectUpdaterInterface */
+    private $productUpdater;
+    /** @var ValidatorInterface */
+    private $productValidator;
+    /** @var SaverInterface */
+    private $productSaver;
+    /** @var SimpleFactoryInterface */
+    private $productModelFactory;
+    /** @var ObjectUpdaterInterface */
+    private $productModelUpdater;
+    /** @var ValidatorInterface */
+    private $productModelValidator;
+    /** @var SaverInterface */
+    private $productModelSaver;
+    /** @var SimpleFactoryInterface */
+    private $familyFactory;
+    /** @var ObjectUpdaterInterface */
+    private $familyUpdater;
+    /** @var SaverInterface */
+    private $familySaver;
+    /** @var SimpleFactoryInterface */
+    private $familyVariantFactory;
+    /** @var ObjectUpdaterInterface */
+    private $familyVariantUpdater;
+    /** @var SaverInterface */
+    private $familyVariantSaver;
+    /** @var SimpleFactoryInterface */
+    private $attributeFactory;
+    /** @var ObjectUpdaterInterface */
+    private $attributeUpdater;
+    /** @var SaverInterface */
+    private $attributeSaver;
+    /** @var Client */
+    private $esClient;
 
-    /**
-     * @param ContainerInterface $container
-     */
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
+    public function __construct(
+        SimpleFactoryInterface $categoryFactory,
+        ObjectUpdaterInterface $categoryUpdater,
+        SaverInterface $categorySaver,
+        ProductBuilderInterface $productBuilder,
+        ObjectUpdaterInterface $productUpdater,
+        ValidatorInterface $productValidator,
+        SaverInterface $productSaver,
+        SimpleFactoryInterface $productModelFactory,
+        ObjectUpdaterInterface $productModelUpdater,
+        ValidatorInterface $productModelValidator,
+        SaverInterface $productModelSaver,
+        SimpleFactoryInterface $familyFactory,
+        ObjectUpdaterInterface $familyUpdater,
+        SaverInterface $familySaver,
+        SimpleFactoryInterface $familyVariantFactory,
+        ObjectUpdaterInterface $familyVariantUpdater,
+        SaverInterface $familyVariantSaver,
+        SimpleFactoryInterface $attributeFactory,
+        ObjectUpdaterInterface $attributeUpdater,
+        SaverInterface $attributeSaver,
+        ValidatorInterface $validator,
+        Client $esClient
+    ) {
+        $this->categoryFactory = $categoryFactory;
+        $this->categoryUpdater = $categoryUpdater;
+        $this->validator = $validator;
+        $this->categorySaver = $categorySaver;
+        $this->productBuilder = $productBuilder;
+        $this->productUpdater = $productUpdater;
+        $this->productValidator = $productValidator;
+        $this->productSaver = $productSaver;
+        $this->productModelFactory = $productModelFactory;
+        $this->productModelUpdater = $productModelUpdater;
+        $this->productModelValidator = $productModelValidator;
+        $this->productModelSaver = $productModelSaver;
+        $this->familyFactory = $familyFactory;
+        $this->familyUpdater = $familyUpdater;
+        $this->familySaver = $familySaver;
+        $this->familyVariantFactory = $familyVariantFactory;
+        $this->familyVariantUpdater = $familyVariantUpdater;
+        $this->familyVariantSaver = $familyVariantSaver;
+        $this->attributeFactory = $attributeFactory;
+        $this->attributeUpdater = $attributeUpdater;
+        $this->attributeSaver = $attributeSaver;
+        $this->esClient = $esClient;
     }
 
     /**
@@ -27,14 +114,17 @@ class CategoryTreeFixturesLoader
     public function givenTheCategoryTrees(array $categories, ?string $parentCode = null): void
     {
         foreach ($categories as $categoryCode => $children) {
-            $category = $this->container->get('pim_catalog.factory.category')->create();
-            $this->container->get('pim_catalog.updater.category')->update($category, [
-                'code' => $categoryCode,
-                'parent' => $parentCode ?? null,
-                'labels' => ['en_US' => ucfirst($categoryCode)]
-            ]);
-            Assert::assertEquals(0, $this->container->get('validator')->validate($category)->count());
-            $this->container->get('pim_catalog.saver.category')->save($category);
+            $category = $this->categoryFactory->create();
+            $this->categoryUpdater->update(
+                $category,
+                [
+                    'code'   => $categoryCode,
+                    'parent' => $parentCode ?? null,
+                    'labels' => ['en_US' => ucfirst($categoryCode)]
+                ]
+            );
+            Assert::assertEquals(0, $this->validator->validate($category)->count());
+            $this->categorySaver->save($category);
 
             $this->givenTheCategoryTrees($children, $categoryCode);
         }
@@ -46,16 +136,19 @@ class CategoryTreeFixturesLoader
     public function givenTheProductsWithCategories(array $products): void
     {
         foreach ($products as $identifier => $categories) {
-            $product = $this->container->get('pim_catalog.builder.product')->createProduct($identifier);
-            $this->container->get('pim_catalog.updater.product')->update($product, [
-                'categories' => $categories
-            ]);
-            $constraintList = $this->container->get('pim_catalog.validator.product')->validate($product);
+            $product = $this->productBuilder->createProduct($identifier);
+            $this->productUpdater->update(
+                $product,
+                [
+                    'categories' => $categories
+                ]
+            );
+            $constraintList = $this->productValidator->validate($product);
             Assert::assertEquals(0, $constraintList->count());
-            $this->container->get('pim_catalog.saver.product')->save($product);
+            $this->productSaver->save($product);
         }
 
-        $this->container->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        $this->esClient->refreshIndex();
     }
 
     /**
@@ -67,19 +160,22 @@ class CategoryTreeFixturesLoader
         $this->createFamilyVariant();
 
         foreach ($categoryCodes as $identifier => $categories) {
-            $productModel = $this->container->get('pim_catalog.factory.product_model')->create();
-            $this->container->get('pim_catalog.updater.product_model')->update($productModel, [
-                'categories' => $categories,
-                'code' => 'product_model_'.$identifier,
-                'family_variant' => 'family_variant',
-                'values'  => []
-            ]);
-            $constraintList = $this->container->get('pim_catalog.validator.product_model')->validate($productModel);
+            $productModel = $this->productModelFactory->create();
+            $this->productModelUpdater->update(
+                $productModel,
+                [
+                    'categories'     => $categories,
+                    'code'           => 'product_model_' . $identifier,
+                    'family_variant' => 'family_variant',
+                    'values'         => []
+                ]
+            );
+            $constraintList = $this->productModelValidator->validate($productModel);
             Assert::assertEquals(0, $constraintList->count());
-            $this->container->get('pim_catalog.saver.product_model')->save($productModel);
+            $this->productModelSaver->save($productModel);
         }
 
-        $this->container->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        $this->esClient->refreshIndex();
     }
 
     private function createFamily(): void
@@ -91,13 +187,13 @@ class CategoryTreeFixturesLoader
             'scopable'          => false,
         ]);
 
-        $family = $this->container->get('pim_catalog.factory.family')->create();
-        $this->container->get('pim_catalog.updater.family')->update($family, [
+        $family = $this->familyFactory->create();
+        $this->familyUpdater->update($family, [
             'code'        => 'family_for_pm',
             'attributes'  => ['sku', 'name']
         ]);
 
-        $this->container->get('pim_catalog.saver.family')->save($family);
+        $this->familySaver->save($family);
     }
 
     private function createFamilyVariant(): void
@@ -109,8 +205,8 @@ class CategoryTreeFixturesLoader
             'scopable'          => false,
         ]);
 
-        $family = $this->container->get('pim_catalog.factory.family_variant')->create();
-        $this->container->get('pim_catalog.updater.family_variant')->update($family, [
+        $family = $this->familyVariantFactory->create();
+        $this->familyVariantUpdater->update($family, [
             'code'        => 'family_variant',
             'family'      => 'family_for_pm',
             'variant_attribute_sets' => [
@@ -121,14 +217,13 @@ class CategoryTreeFixturesLoader
                 ],
             ]
         ]);
-        $this->container->get('pim_catalog.saver.family_variant')->save($family);
+        $this->familyVariantSaver->save($family);
     }
 
     private function createAttribute(array $data): void
     {
-        $attribute = $this->container->get('pim_catalog.factory.attribute')->create();
-        $this->container->get('pim_catalog.updater.attribute')->update($attribute, $data);
-        $this->container->get('pim_catalog.saver.attribute')->save($attribute);
-
+        $attribute = $this->attributeFactory->create();
+        $this->attributeUpdater->update($attribute, $data);
+        $this->attributeSaver->save($attribute);
     }
 }
