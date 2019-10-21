@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Domain\Persistence\Repository;
 
-use Akeneo\Apps\Domain\Model\App;
+use Akeneo\Apps\Domain\Model\Write\App;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>

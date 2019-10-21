@@ -1,5 +1,5 @@
 services:
-    akeneo_app.repository.app:
-        class: 'Akeneo\Apps\Infrastructure\Persistence\Dbal\DbalAppRepository'
+    akeneo_app.persistence.repository.app:
+        class: 'Akeneo\Apps\Infrastructure\Persistence\Dbal\Repository\DbalAppRepository'
         arguments:
             - '@database_connection'

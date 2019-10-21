@@ -8,6 +8,13 @@ akeneo_pim_structure:
 akeneo_pim_enrichment:
     resource: "@AkeneoPimEnrichmentBundle/Resources/config/routing.yml"
 
+akeneo_apps_frontend:
+    resource: "@AkeneoAppsBundle/Resources/config/routing.yml"
+
+akeneo_apps_rest:
+    resource: "@AkeneoAppsBundle/Resources/config/routing_rest.yml"
+    condition: "request.isXmlHttpRequest()"
+
 # PIM
 pim_analytics:
     resource: "@PimAnalyticsBundle/Resources/config/routing.yml"
@@ -36,9 +43,6 @@ pim_api:
 
 pim_volume_monitoring:
     resource: "@PimCatalogVolumeMonitoringBundle/Resources/config/routing.yml"
-
-pim_apps:
-    resource: "@AkeneoAppsBundle/Resources/config/routing.yml"
 
 # Oro platform
 

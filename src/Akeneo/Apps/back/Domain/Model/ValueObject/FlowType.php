@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Apps\Domain\Model;
+namespace Akeneo\Apps\Domain\Model\ValueObject;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -11,29 +11,25 @@ namespace Akeneo\Apps\Domain\Model;
  */
 class FlowType
 {
+    private const CONSTRAINT_KEY = 'akeneo_apps.app.constraint.flow_type.%s';
     private $flowType;
 
     const DATA_SOURCE = 'data_source';
     const DATA_DESTINATION = 'data_destination';
-    const OTHERS = 'others';
+    const OTHER = 'other';
 
-    public function __construct(string $flowType)
+    private function __construct(string $flowType)
     {
         $this->flowType = $flowType;
     }
 
     public static function create(string $flowType): self
     {
-        if (!in_array($flowType, [self::DATA_DESTINATION, self::DATA_SOURCE, self::OTHERS])) {
-            throw new \InvalidArgumentException('invalid_flow_type');
+        if (!in_array($flowType, [self::DATA_DESTINATION, self::DATA_SOURCE, self::OTHER])) {
+            throw new \InvalidArgumentException(sprintf(self::CONSTRAINT_KEY, 'invalid'));
         }
 
         return new self($flowType);
-    }
-
-    public static function createDefault(): self
-    {
-        return new self(self::OTHERS);
     }
 
     public function __toString(): string
