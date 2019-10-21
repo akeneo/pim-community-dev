@@ -11,6 +11,7 @@ namespace Akeneo\Apps\Domain\Model\Write;
  */
 class AppCode
 {
+    private const CONSTRAINT_KEY = 'akeneo_apps.app.constraint.code.%s';
     private $code;
 
     private function __construct(string $code)
@@ -21,13 +22,13 @@ class AppCode
     public static function create(string $code): self
     {
         if (empty($code)) {
-            throw new \InvalidArgumentException('Code is required');
+            throw new \InvalidArgumentException(sprintf(self::CONSTRAINT_KEY, 'required'));
         }
         if (strlen($code) > 100) {
-            throw new \InvalidArgumentException('Code cannot be longer than 100 characters');
+            throw new \InvalidArgumentException(sprintf(self::CONSTRAINT_KEY, 'too_long'));
         }
         if (!preg_match('/^[0-9a-zA-Z_]+$/', $code)) {
-            throw new \InvalidArgumentException('Code can only contain alphanumeric characters and underscore');
+            throw new \InvalidArgumentException(sprintf(self::CONSTRAINT_KEY, 'invalid'));
         }
 
         return new self($code);

@@ -27,7 +27,7 @@ class AppLabelMustBeValidSpec extends ObjectBehavior
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $builder
     ) {
-        $context->buildViolation('Label cannot be longer than 100 characters')->willReturn($builder);
+        $context->buildViolation('akeneo_apps.app.constraint.label.too_long')->willReturn($builder);
         $builder->addViolation()->shouldBeCalled();
 
         $this->validate(str_repeat('A', 103), $context);

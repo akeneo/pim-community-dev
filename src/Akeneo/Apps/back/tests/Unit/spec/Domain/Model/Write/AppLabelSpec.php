@@ -24,7 +24,7 @@ class AppLabelSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('create', [str_repeat('a', 101)]);
         $this->shouldThrow(
-            new \InvalidArgumentException('Label cannot be longer than 100 characters')
+            new \InvalidArgumentException('akeneo_apps.app.constraint.label.too_long')
         )->duringInstantiation();
     }
 

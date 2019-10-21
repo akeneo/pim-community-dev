@@ -28,7 +28,7 @@ class FlowTypeMustBeValidSpec extends ObjectBehavior
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $builder
     ) {
-        $context->buildViolation('invalid_flow_type')->willReturn($builder);
+        $context->buildViolation('akeneo_apps.app.constraint.flow_type.invalid')->willReturn($builder);
         $builder->addViolation()->shouldBeCalled();
 
         $this->validate('Unknown Flow Type', $context);

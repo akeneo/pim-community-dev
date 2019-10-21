@@ -23,14 +23,14 @@ class AppCodeSpec extends ObjectBehavior
     function it_cannot_contains_an_empty_string()
     {
         $this->beConstructedThrough('create', ['']);
-        $this->shouldThrow(new \InvalidArgumentException('Code is required'))->duringInstantiation();
+        $this->shouldThrow(new \InvalidArgumentException('akeneo_apps.app.constraint.code.required'))->duringInstantiation();
     }
 
     function it_cannot_contains_a_string_longer_than_100_characters()
     {
         $this->beConstructedThrough('create', [str_repeat('a', 101)]);
         $this->shouldThrow(
-            new \InvalidArgumentException('Code cannot be longer than 100 characters')
+            new \InvalidArgumentException('akeneo_apps.app.constraint.code.too_long')
         )->duringInstantiation();
     }
 
@@ -38,7 +38,7 @@ class AppCodeSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('create', ['foo-bar']);
         $this->shouldThrow(
-            new \InvalidArgumentException('Code can only contain alphanumeric characters and underscore')
+            new \InvalidArgumentException('akeneo_apps.app.constraint.code.invalid')
         )->duringInstantiation();
     }
 
