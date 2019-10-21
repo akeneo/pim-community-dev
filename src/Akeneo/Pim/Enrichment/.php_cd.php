@@ -18,6 +18,7 @@ $rules = [
         'Oro\Bundle\SecurityBundle\SecurityFacade',
         'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         'Liip\ImagineBundle',
+        'Dompdf\Dompdf',
         'Webmozart\Assert\Assert',
         // TODO the feature use the datagrid
         'Oro\Bundle\DataGridBundle',
