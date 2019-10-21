@@ -6,6 +6,8 @@
 
 # 2.9.1 (2019-10-21)
 
+# 2.9.1 (2019-10-21)
+
 ## Bug fixes
 
 - PIM-7963: fix datepicker width not adapting to the dropdown
