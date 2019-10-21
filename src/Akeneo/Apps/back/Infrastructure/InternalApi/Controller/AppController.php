@@ -26,7 +26,7 @@ class AppController
 {
     /** @var CreateAppHandler */
     private $createAppHandler;
-    
+
     /** @var FetchAppsHandler */
     private $fetchAppsHandler;
 
