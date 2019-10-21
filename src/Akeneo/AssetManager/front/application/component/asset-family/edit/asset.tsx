@@ -18,7 +18,9 @@ import {
   filterUpdated,
 } from 'akeneoassetmanager/application/action/asset/search';
 import {Column} from 'akeneoassetmanager/application/reducer/grid';
-import AssetFamilyIdentifier, {denormalizeAssetFamilyIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import AssetFamilyIdentifier, {
+  denormalizeAssetFamilyIdentifier,
+} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import AssetCode, {denormalizeAssetCode} from 'akeneoassetmanager/domain/model/asset/code';
 import DeleteModal from 'akeneoassetmanager/application/component/app/delete-modal';
 import {openDeleteModal, cancelDeleteModal} from 'akeneoassetmanager/application/event/confirmDelete';
@@ -319,7 +321,10 @@ export default connect(
       events: {
         onRedirectToAsset: (asset: NormalizedAsset) => {
           dispatch(
-            redirectToAsset(denormalizeAssetFamilyIdentifier(asset.asset_family_identifier), denormalizeAssetCode(asset.code))
+            redirectToAsset(
+              denormalizeAssetFamilyIdentifier(asset.asset_family_identifier),
+              denormalizeAssetCode(asset.code)
+            )
           );
         },
         onDeleteAsset: (assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode) => {

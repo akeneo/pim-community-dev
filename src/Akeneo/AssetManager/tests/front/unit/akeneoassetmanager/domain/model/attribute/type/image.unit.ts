@@ -1,5 +1,4 @@
 import {ConcreteImageAttribute} from 'akeneoassetmanager/domain/model/attribute/type/image';
-import {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import {MaxFileSize} from 'akeneoassetmanager/domain/model/attribute/type/image/max-file-size';
 
 const normalizedFrontView = {
@@ -22,16 +21,7 @@ describe('akeneo > attribute > domain > model > attribute > type --- ImageAttrib
   });
   test('I cannot create an invalid ConcreteImageAttribute', () => {
     expect(() => {
-      new ConcreteImageAttribute(
-        'front_view',
-        'designer',
-        'front_view',
-        createLabelCollection({en_US: 'Front View'}),
-        true,
-        false,
-        0,
-        true
-      );
+      new ConcreteImageAttribute('front_view', 'designer', 'front_view', {en_US: 'Front View'}, true, false, 0, true);
     }).toThrow('Attribute expects a MaxFileSize as maxFileSize');
 
     expect(() => {
@@ -39,7 +29,7 @@ describe('akeneo > attribute > domain > model > attribute > type --- ImageAttrib
         'front_view',
         'designer',
         'front_view',
-        createLabelCollection({en_US: 'Front View'}),
+        {en_US: 'Front View'},
         true,
         false,
         0,

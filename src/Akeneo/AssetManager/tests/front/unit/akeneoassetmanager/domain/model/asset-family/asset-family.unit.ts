@@ -1,11 +1,14 @@
-import {createAssetFamily, denormalizeAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
-import {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
+import {
+  createAssetFamily,
+  denormalizeAssetFamily,
+  createEmptyAssetFamily,
+} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {createEmptyFile} from 'akeneoassetmanager/domain/model/file';
 
 const michelIdentifier = 'michel';
-const michelLabels = createLabelCollection({en_US: 'Michel'});
+const michelLabels = {en_US: 'Michel'};
 const didierIdentifier = 'didier';
-const didierLabels = createLabelCollection({en_US: 'Didier'});
+const didierLabels = {en_US: 'Didier'};
 const attributeAsImage = 'name';
 const attributeAsLabel = 'portrait';
 
@@ -24,21 +27,12 @@ describe('akeneo > asset family > domain > model --- asset family', () => {
 
   test('I cannot create a malformed asset family', () => {
     expect(() => {
-      createAssetFamily(michelIdentifier);
-    }).toThrow('AssetFamily expects a LabelCollection as labelCollection argument');
-    expect(() => {
-      createAssetFamily(michelIdentifier, 52);
-    }).toThrow('AssetFamily expects a LabelCollection as labelCollection argument');
-    expect(() => {
-      createAssetFamily(michelIdentifier, 52, {filePath: 'my_path.png', originalFilename: 'path.png'});
-    }).toThrow('AssetFamily expects a LabelCollection as labelCollection argument');
-    expect(() => {
       createAssetFamily(michelIdentifier, michelLabels, {filePath: 'my_path.png', originalFilename: 'path.png'});
     }).toThrow('AssetFamily expects a File as image argument');
   });
 
   test('I can compare two asset families', () => {
-    const michelLabels = createLabelCollection({en_US: 'Michel'});
+    const michelLabels = {en_US: 'Michel'};
     expect(
       createAssetFamily(
         didierIdentifier,
@@ -133,6 +127,19 @@ describe('akeneo > asset family > domain > model --- asset family', () => {
       image: null,
       attribute_as_image: 'portrait',
       attribute_as_label: 'name',
+    });
+  });
+
+  test('I should be able to create an empty asset family', () => {
+    const emptyAssetFamily = createEmptyAssetFamily();
+
+    expect(emptyAssetFamily.normalize()).toEqual({
+      identifier: '',
+      code: '',
+      labels: {},
+      image: null,
+      attribute_as_image: '',
+      attribute_as_label: '',
     });
   });
 

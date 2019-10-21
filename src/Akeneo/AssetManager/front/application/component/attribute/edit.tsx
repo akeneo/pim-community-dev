@@ -149,7 +149,10 @@ class Edit extends React.Component<EditProps> {
     // This will be simplyfied in the near future
     const displayDeleteButton =
       this.props.rights.attribute.delete &&
-      !attributeidentifiersAreEqual(this.props.assetFamily.getAttributeAsLabel(), this.props.attribute.getIdentifier()) &&
+      !attributeidentifiersAreEqual(
+        this.props.assetFamily.getAttributeAsLabel(),
+        this.props.attribute.getIdentifier()
+      ) &&
       !attributeidentifiersAreEqual(this.props.assetFamily.getAttributeAsImage(), this.props.attribute.getIdentifier());
 
     return (

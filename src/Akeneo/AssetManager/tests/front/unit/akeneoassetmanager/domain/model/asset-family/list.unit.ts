@@ -3,13 +3,12 @@ import {
   denormalizeAssetFamilyListItem,
   createEmptyAssetFamilyListItem,
 } from 'akeneoassetmanager/domain/model/asset-family/list';
-import {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import {createEmptyFile} from 'akeneoassetmanager/domain/model/file';
 
 const michelIdentifier = 'michel';
-const michelLabels = createLabelCollection({en_US: 'Michel'});
+const michelLabels = {en_US: 'Michel'};
 const didierCode = 'didier';
-const didierLabels = createLabelCollection({en_US: 'Didier'});
+const didierLabels = {en_US: 'Didier'};
 
 describe('akeneo > asset family > domain > model --- asset family', () => {
   test('I can create a new asset family with an identifier and labels', () => {
@@ -20,15 +19,6 @@ describe('akeneo > asset family > domain > model --- asset family', () => {
 
   test('I cannot create a malformed asset family', () => {
     expect(() => {
-      createAssetFamilyListItem(michelIdentifier);
-    }).toThrow('AssetFamilyListItem expects a LabelCollection as labelCollection argument');
-    expect(() => {
-      createAssetFamilyListItem(michelIdentifier, 52);
-    }).toThrow('AssetFamilyListItem expects a LabelCollection as labelCollection argument');
-    expect(() => {
-      createAssetFamilyListItem(michelIdentifier, 52, {filePath: 'my_path.png', originalFilename: 'path.png'});
-    }).toThrow('AssetFamilyListItem expects a LabelCollection as labelCollection argument');
-    expect(() => {
       createAssetFamilyListItem(michelIdentifier, michelLabels, {
         filePath: 'my_path.png',
         originalFilename: 'path.png',
@@ -37,7 +27,7 @@ describe('akeneo > asset family > domain > model --- asset family', () => {
   });
 
   test('I can compare two asset families', () => {
-    const michelLabels = createLabelCollection({en_US: 'Michel'});
+    const michelLabels = {en_US: 'Michel'};
     expect(
       createAssetFamilyListItem(didierCode, didierLabels, createEmptyFile()).equals(
         createAssetFamilyListItem(didierCode, didierLabels, createEmptyFile())

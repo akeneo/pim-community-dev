@@ -3,10 +3,11 @@ import AssetFamilyIdentifier, {
   assetFamilyidentifiersAreEqual,
 } from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import LabelCollection, {
-  NormalizedLabelCollection,
-  createLabelCollection,
+  emptyLabelCollection,
+  getLabelInCollection,
+  denormalizeLabelCollection,
 } from 'akeneoassetmanager/domain/model/label-collection';
-import File, {NormalizedFile, denormalizeFile} from 'akeneoassetmanager/domain/model/file';
+import File, {NormalizedFile, denormalizeFile, createEmptyFile} from 'akeneoassetmanager/domain/model/file';
 import AttributeIdentifier, {
   denormalizeAttributeIdentifier,
 } from 'akeneoassetmanager/domain/model/attribute/identifier';
@@ -14,7 +15,7 @@ import AttributeIdentifier, {
 export interface NormalizedAssetFamily {
   identifier: string;
   code: string;
-  labels: NormalizedLabelCollection;
+  labels: LabelCollection;
   image: NormalizedFile;
   attribute_as_label: AttributeIdentifier;
   attribute_as_image: AttributeIdentifier;
@@ -40,9 +41,6 @@ class AssetFamilyImplementation implements AssetFamily {
     private attributeAsLabel: AttributeIdentifier,
     private attributeAsImage: AttributeIdentifier
   ) {
-    if (!(labelCollection instanceof LabelCollection)) {
-      throw new InvalidArgumentError('AssetFamily expects a LabelCollection as labelCollection argument');
-    }
     if (!(image instanceof File)) {
       throw new InvalidArgumentError('AssetFamily expects a File as image argument');
     }
@@ -62,7 +60,7 @@ class AssetFamilyImplementation implements AssetFamily {
 
   public static createFromNormalized(normalizedAssetFamily: NormalizedAssetFamily): AssetFamily {
     const identifier = denormalizeAssetFamilyIdentifier(normalizedAssetFamily.identifier);
-    const labelCollection = createLabelCollection(normalizedAssetFamily.labels);
+    const labelCollection = denormalizeLabelCollection(normalizedAssetFamily.labels);
     const image = denormalizeFile(normalizedAssetFamily.image);
     const attributeAsLabel = denormalizeAttributeIdentifier(normalizedAssetFamily.attribute_as_label);
     const attributeAsImage = denormalizeAttributeIdentifier(normalizedAssetFamily.attribute_as_image);
@@ -75,11 +73,7 @@ class AssetFamilyImplementation implements AssetFamily {
   }
 
   public getLabel(locale: string, fallbackOnCode: boolean = true) {
-    if (!this.labelCollection.hasLabel(locale)) {
-      return fallbackOnCode ? `[${this.getIdentifier()}]` : '';
-    }
-
-    return this.labelCollection.getLabel(locale);
+    return getLabelInCollection(this.labelCollection, locale, fallbackOnCode, this.getIdentifier());
   }
 
   public getLabelCollection(): LabelCollection {
@@ -106,7 +100,7 @@ class AssetFamilyImplementation implements AssetFamily {
     return {
       identifier: this.getIdentifier(),
       code: this.getIdentifier(),
-      labels: this.getLabelCollection().normalize(),
+      labels: this.getLabelCollection(),
       image: this.getImage().normalize(),
       attribute_as_label: this.getAttributeAsLabel().normalize(),
       attribute_as_image: this.getAttributeAsImage().normalize(),
@@ -114,5 +108,6 @@ class AssetFamilyImplementation implements AssetFamily {
   }
 }
 
+export const createEmptyAssetFamily = () => createAssetFamily('', emptyLabelCollection(), createEmptyFile(), '', '');
 export const createAssetFamily = AssetFamilyImplementation.create;
 export const denormalizeAssetFamily = AssetFamilyImplementation.createFromNormalized;

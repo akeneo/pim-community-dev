@@ -2,9 +2,9 @@ import styled from 'styled-components';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 
 type ButtonProps = {
-  buttonSize: 'micro' | 'medium' | 'default',
-  color: 'green' | 'blue' | 'red' | 'grey' | 'outline'
-}
+  buttonSize: 'micro' | 'medium' | 'default';
+  color: 'green' | 'blue' | 'red' | 'grey' | 'outline';
+};
 
 export const TransparentButton = styled.button`
   background: none;
@@ -15,11 +15,11 @@ export const TransparentButton = styled.button`
   &:hover {
     cursor: pointer;
   }
-`
+`;
 
 export const Button = styled.div<ButtonProps>`
   ${(props: ThemedProps<ButtonProps>) => {
-    switch(props.buttonSize) {
+    switch (props.buttonSize) {
       case 'micro':
         return `
           padding: 0 10px;
@@ -50,7 +50,6 @@ export const Button = styled.div<ButtonProps>`
     }
   }}
 
-
   ${(props: ThemedProps<ButtonProps>) => {
     if ('outline' === props.color) {
       return `
@@ -58,13 +57,13 @@ export const Button = styled.div<ButtonProps>`
         background-color: white;
         border: 1px solid ${props.theme.color.grey80};
         `;
-      }
+    }
 
-      return `
+    return `
       color: white;
       background-color: ${(props.theme.color as any)[props.color + '100']}
       border: 1px solid transparent;
-    `
+    `;
   }}
 
   cursor: pointer;

@@ -3,7 +3,11 @@ import Product, {PRODUCT_MODEL_TYPE} from 'akeneoassetmanager/domain/model/produ
 import {getImageShowUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import Completeness from 'akeneoassetmanager/domain/model/product/completeness';
 import ProductCompletenessLabel from 'akeneoassetmanager/application/component/app/product-completeness';
-import {productidentifiersAreEqual, denormalizeProductIdentifier, productIdentifierStringValue} from 'akeneoassetmanager/domain/model/product/identifier';
+import {
+  productidentifiersAreEqual,
+  denormalizeProductIdentifier,
+  productIdentifierStringValue,
+} from 'akeneoassetmanager/domain/model/product/identifier';
 
 const router = require('pim/router');
 
@@ -18,12 +22,11 @@ export default ({
 } & {
   onRedirectToProduct: (product: Product) => void;
 }) => {
-  const path =
-    productidentifiersAreEqual(product.getId(), denormalizeProductIdentifier(''))
-      ? `#${router.generate(`pim_enrich_${product.getType()}_edit`, {
-          id: productIdentifierStringValue(product.getId()),
-        })}`
-      : '';
+  const path = productidentifiersAreEqual(product.getId(), denormalizeProductIdentifier(''))
+    ? `#${router.generate(`pim_enrich_${product.getType()}_edit`, {
+        id: productIdentifierStringValue(product.getId()),
+      })}`
+    : '';
   const completeness = Completeness.createFromNormalized(product.getCompleteness().normalize());
 
   return (

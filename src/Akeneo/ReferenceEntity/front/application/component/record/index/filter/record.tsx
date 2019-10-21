@@ -107,7 +107,9 @@ const RecordFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
       {isOpen ? (
         <div>
           <div className="AknDropdown-mask" onClick={() => setIsOpen(false)} />
-          <div className={'AknFilterBox-filterDetails ' + (displayRight ? 'AknFilterBox-filterDetails--rightAlign' : '')}>
+          <div
+            className={'AknFilterBox-filterDetails ' + (displayRight ? 'AknFilterBox-filterDetails--rightAlign' : '')}
+          >
             <div className="AknFilterChoice">
               <div className="AknFilterChoice-header">
                 <div className="AknFilterChoice-title">{attribute.getLabel(context.locale)}</div>

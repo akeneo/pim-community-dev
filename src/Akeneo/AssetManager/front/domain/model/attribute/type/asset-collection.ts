@@ -4,7 +4,7 @@ import AttributeIdentifier, {
 import AssetFamilyIdentifier, {
   denormalizeAssetFamilyIdentifier,
 } from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import LabelCollection, {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
+import LabelCollection, {denormalizeLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import AttributeCode, {denormalizeAttributeCode} from 'akeneoassetmanager/domain/model/attribute/code';
 import {NormalizedAttribute, Attribute, ConcreteAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {AssetType, NormalizedAssetType} from 'akeneoassetmanager/domain/model/attribute/type/asset/asset-type';
@@ -62,7 +62,7 @@ export class ConcreteAssetCollectionAttribute extends ConcreteAttribute implemen
       denormalizeAttributeIdentifier(normalizedAssetCollectionAttribute.identifier),
       denormalizeAssetFamilyIdentifier(normalizedAssetCollectionAttribute.asset_family_identifier),
       denormalizeAttributeCode(normalizedAssetCollectionAttribute.code),
-      createLabelCollection(normalizedAssetCollectionAttribute.labels),
+      denormalizeLabelCollection(normalizedAssetCollectionAttribute.labels),
       normalizedAssetCollectionAttribute.value_per_locale,
       normalizedAssetCollectionAttribute.value_per_channel,
       normalizedAssetCollectionAttribute.order,

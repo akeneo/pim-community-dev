@@ -2,7 +2,10 @@ import File, {NormalizedFile} from 'akeneoassetmanager/domain/model/file';
 import AssetFamilyIdentifier, {
   denormalizeAssetFamilyIdentifier,
 } from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import LabelCollection, {NormalizedLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
+import LabelCollection, {
+  denormalizeLabelCollection,
+  getLabelInCollection,
+} from 'akeneoassetmanager/domain/model/label-collection';
 import AssetCode, {denormalizeAssetCode, assetCodeStringValue} from 'akeneoassetmanager/domain/model/asset/code';
 import AssetIdentifier, {
   denormalizeAssetIdentifier,
@@ -18,7 +21,7 @@ interface CommonNormalizedAsset {
   identifier: AssetIdentifier;
   asset_family_identifier: string;
   code: AssetCode;
-  labels: NormalizedLabelCollection;
+  labels: LabelCollection;
 }
 
 export interface NormalizedAsset extends CommonNormalizedAsset {
@@ -67,9 +70,6 @@ class AssetImplementation implements Asset {
     private image: File,
     private valueCollection: ValueCollection
   ) {
-    if (!(labelCollection instanceof LabelCollection)) {
-      throw new InvalidArgumentError('Asset expects a LabelCollection as labelCollection argument');
-    }
     if (!(image instanceof File)) {
       throw new InvalidArgumentError('Asset expects a File as image argument');
     }
@@ -92,7 +92,7 @@ class AssetImplementation implements Asset {
       denormalizeAssetIdentifier(identifier),
       denormalizeAssetFamilyIdentifier(assetFamilyIdentifier),
       denormalizeAssetCode(assetCode),
-      labelCollection,
+      denormalizeLabelCollection(labelCollection),
       image,
       valueCollection
     );
@@ -111,11 +111,7 @@ class AssetImplementation implements Asset {
   }
 
   public getLabel(locale: string, fallbackOnCode: boolean = true) {
-    if (!this.labelCollection.hasLabel(locale)) {
-      return fallbackOnCode ? `[${this.getCode()}]` : '';
-    }
-
-    return this.labelCollection.getLabel(locale);
+    return getLabelInCollection(this.labelCollection, locale, fallbackOnCode, this.getCode());
   }
 
   public getImage(): File {
@@ -139,7 +135,7 @@ class AssetImplementation implements Asset {
       identifier: this.getIdentifier(),
       asset_family_identifier: this.getAssetFamilyIdentifier(),
       code: assetCodeStringValue(this.code),
-      labels: this.getLabelCollection().normalize(),
+      labels: this.getLabelCollection(),
       image: this.getImage().normalize(),
       values: this.valueCollection.normalize(),
     };
@@ -150,7 +146,7 @@ class AssetImplementation implements Asset {
       identifier: this.getIdentifier().normalize(),
       asset_family_identifier: this.getAssetFamilyIdentifier(),
       code: assetCodeStringValue(this.code),
-      labels: this.getLabelCollection().normalize(),
+      labels: this.getLabelCollection(),
       image: this.getImage().normalize(),
       values: this.valueCollection.normalizeMinimal(),
     };
