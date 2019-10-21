@@ -33,14 +33,14 @@ class App
         $this->clientId = $clientId;
     }
 
-    public static function create(AppCode $appCode, AppLabel $label, FlowType $flowType, ClientId $clientId): self
+    public static function create(string $appCode, string $label, string $flowType, ClientId $clientId): self
     {
         // TODO: Validation + Id Generation
 
         return new self(
-            $appCode,
-            $label,
-            $flowType,
+            AppCode::create($appCode),
+            AppLabel::create($label),
+            FlowType::create($flowType),
             $clientId
         );
     }

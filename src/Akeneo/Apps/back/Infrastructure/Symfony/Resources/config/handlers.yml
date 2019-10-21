@@ -2,6 +2,7 @@ services:
     akeneo_app.application.handler.create_app:
         class: 'Akeneo\Apps\Application\Command\CreateAppHandler'
         arguments:
+            - '@validator'
             - '@akeneo_app.persistence.repository.app'
             - '@akeneo_app.service.client.create_client'
 

@@ -19,24 +19,24 @@ class CreateAppCommand
     private $appLabel;
     private $flowType;
 
-    public function __construct(AppCode $appCode, AppLabel $appLabel, FlowType $flowType)
+    public function __construct(string $appCode, string $appLabel, string $flowType)
     {
         $this->appCode = $appCode;
         $this->appLabel = $appLabel;
         $this->flowType = $flowType;
     }
 
-    public function appCode(): AppCode
+    public function appCode(): string
     {
         return $this->appCode;
     }
 
-    public function appLabel(): AppLabel
+    public function appLabel(): string
     {
         return $this->appLabel;
     }
 
-    public function flowType(): FlowType
+    public function flowType(): string
     {
         return $this->flowType;
     }

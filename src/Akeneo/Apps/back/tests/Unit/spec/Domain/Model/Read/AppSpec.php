@@ -39,4 +39,13 @@ class AppSpec extends ObjectBehavior
     {
         $this->flowType()->shouldReturn(FlowType::DATA_DESTINATION);
     }
+
+    function it_normalizes_an_app()
+    {
+        $this->normalize()->shouldReturn([
+            'code' => 'magento',
+            'label' => 'Magento Connector',
+            'flowType' => FlowType::DATA_DESTINATION
+        ]);
+    }
 }
