@@ -47,7 +47,7 @@ class CreateAppHandler
         $clientId = $this->createClient->execute($command->label());
 
         $appId = $this->repository->generateId();
-        $app = App::create(
+        $app = new App(
             $appId,
             $command->code(),
             $command->label(),

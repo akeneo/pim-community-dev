@@ -22,15 +22,12 @@ class AppSpec extends ObjectBehavior
 {
     public function let()
     {
-        $this->beConstructedThrough(
-            'create',
-            [
-                '42',
-                'magento',
-                'Magento Connector',
-                FlowType::DATA_DESTINATION,
-                new ClientId(42),
-            ]
+        $this->beConstructedWith(
+            '42',
+            'magento',
+            'Magento Connector',
+            FlowType::DATA_DESTINATION,
+            new ClientId(42)
         );
     }
 
