@@ -11,6 +11,9 @@ apps-back-phpspec:
 apps-back-acceptance:
 	$(PHP_RUN) vendor/bin/behat --strict --config src/Akeneo/Apps/back/tests/Acceptance/behat.yml
 
+apps-back-integration:
+	$(PHP_run) vendor/bin/phpunit --testsuite=Akeneo_Apps_Integration_Tests --testdox
+
 apps-front-tests:
 	$(_APPS_YARN_RUN) jest
 
