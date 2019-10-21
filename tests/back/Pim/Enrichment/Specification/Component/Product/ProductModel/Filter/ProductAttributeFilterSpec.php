@@ -50,6 +50,7 @@ class ProductAttributeFilterSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('sku')->willReturn($attribute);
         $attributeRepository->findOneByIdentifier('name')->willReturn($attribute);
         $attributeRepository->findOneByIdentifier('description')->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('123')->willReturn($attribute);
 
         $familyRepository->findOneByIdentifier('Summer Tshirt')->willReturn($family);
         $family->getAttributes()->willReturn($familyAttributes);
@@ -105,6 +106,13 @@ class ProductAttributeFilterSpec extends ObjectBehavior
                             'locale' => 'en_US',
                             'scope' => 'mobile',
                             'data' => 'My awesome description',
+                        ],
+                    ],
+                    '123' => [
+                        [
+                            'locale' => 'en_US',
+                            'scope' => 'mobile',
+                            'data' => 'Data for 123',
                         ],
                     ],
                 ],

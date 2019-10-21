@@ -44,6 +44,7 @@ class ProductModelAttributeFilterSpec extends ObjectBehavior
     ) {
         $attributeRepository->findOneByIdentifier('name')->willReturn($attribute);
         $attributeRepository->findOneByIdentifier('description')->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('123')->willReturn($attribute);
 
         $familyVariantRepository->findOneByIdentifier('family_variant')->willreturn($familyVariant);
         $familyVariant->getCommonAttributes()->willReturn($commonAttributeCollection);
@@ -63,6 +64,11 @@ class ProductModelAttributeFilterSpec extends ObjectBehavior
                     'locale' => 'en_US',
                     'scope' => 'ecommerce',
                     'data' => 'description'
+                ],
+                '123' => [
+                    'locale' => 'en_US',
+                    'scope' => 'ecommerce',
+                    'data' => 'Data for 123'
                 ],
             ]
         ])->shouldReturn([
