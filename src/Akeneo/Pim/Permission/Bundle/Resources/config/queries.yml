@@ -91,13 +91,11 @@ services:
 
     pimee_security.query.get_viewable_attribute_codes_for_user:
         class: 'Akeneo\Pim\Permission\Bundle\Persistence\Sql\GetViewableAttributeCodesForUser'
-        public: true
         arguments:
             - '@database_connection'
 
     pimee_security.query.get_all_viewable_locales_for_user:
         class: 'Akeneo\Pim\Permission\Bundle\Persistence\Sql\LocaleRight\GetAllViewableLocalesForUser'
-        public: true
         arguments:
             - '@database_connection'
 

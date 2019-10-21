@@ -74,7 +74,6 @@ services:
     ### Factory
     pimee_teamwork_assistant.factory.project:
         class: '%pimee_teamwork_assistant.factory.project.class%'
-        public: true
         arguments:
             - '@pimee_teamwork_assistant.updater.project'
             - '@pim_datagrid.factory.datagrid_view'

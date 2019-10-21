@@ -9,7 +9,6 @@ services:
 
     pimee_workflow.query.select_draft_source_filter_choices:
         class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Query\SelectDraftSourceFilterChoicesQuery
-        public: true
         arguments:
             - '@database_connection'
 
@@ -56,13 +55,11 @@ services:
 
     pimee_workflow.query.get_workflow_status_from_product_model_codes:
         class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\GetWorkflowStatusFromProductModelCodes
-        public: true
         arguments:
             - '@database_connection'
 
     pimee_workflow.query.get_workflow_status_from_product_identifiers:
         class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\GetWorkflowStatusFromProductIdentifiers
-        public: true
         arguments:
             - '@database_connection'
 
