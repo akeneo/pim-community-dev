@@ -1,5 +1,5 @@
 const BaseField = require('pim/form/common/fields/field');
-import * as $ from 'jquery';
+import $ from 'jquery';
 import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
 import AssetFamilyListItem from 'akeneoassetmanager/domain/model/asset-family/list';
 const __ = require('oro/translator');

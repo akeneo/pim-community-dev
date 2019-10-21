@@ -8,7 +8,7 @@
  */
 
 import {EventsHash} from 'backbone';
-import * as $ from 'jquery';
+import $ from 'jquery';
 import BaseView = require('pimui/js/view/base');
 import * as _ from 'underscore';
 
