@@ -27,7 +27,7 @@ final class OptionsValueFactorySpec extends ObjectBehavior
         $this->supportedAttributeType()->shouldReturn(AttributeTypes::OPTION_MULTI_SELECT);
     }
 
-    public function it_does_not_supports_null()
+    public function it_does_not_support_null()
     {
         $this->shouldThrow(\Throwable::class)->during('createByCheckingData', [
             $this->getAttribute(true, true),

@@ -34,7 +34,7 @@ final class ImageValueFactorySpec extends ObjectBehavior
         $this->supportedAttributeType()->shouldReturn(AttributeTypes::IMAGE);
     }
 
-    public function it_does_not_supports_null()
+    public function it_does_not_support_null()
     {
         $this->shouldThrow(InvalidPropertyException::class)->during('createByCheckingData', [
             $this->getAttribute(true, true),

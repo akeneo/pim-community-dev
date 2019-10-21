@@ -27,7 +27,7 @@ final class ReferenceDataValueFactorySpec extends ObjectBehavior
         $this->supportedAttributeType()->shouldReturn(AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT);
     }
 
-    public function it_does_not_supports_null()
+    public function it_does_not_support_null()
     {
         $this->shouldThrow(InvalidPropertyTypeException::class)->during('createByCheckingData', [
             $this->getAttribute(true, true),
