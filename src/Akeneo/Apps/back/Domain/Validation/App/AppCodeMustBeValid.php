@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Apps\Domain\Model\ValidationConstraint;
+namespace Akeneo\Apps\Domain\Validation\App;
 
-use Akeneo\Apps\Domain\Model\Write\AppCode;
-use Akeneo\Apps\Domain\Model\Write\AppLabel;
+use Akeneo\Apps\Domain\Model\ValueObject\AppCode;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
@@ -13,12 +12,12 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-final class AppLabelMustBeValid
+final class AppCodeMustBeValid
 {
-    public static function validate(string $appLabel, ExecutionContextInterface $context): void
+    public static function validate(string $appCode, ExecutionContextInterface $context): void
     {
         try {
-            AppLabel::create($appLabel);
+            AppCode::create($appCode);
         } catch (\InvalidArgumentException $e) {
             $context->buildViolation($e->getMessage())->addViolation();
         }

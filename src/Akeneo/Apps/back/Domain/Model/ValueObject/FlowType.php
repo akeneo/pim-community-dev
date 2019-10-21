@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Apps\Domain\Model\Write;
+namespace Akeneo\Apps\Domain\Model\ValueObject;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -11,6 +11,7 @@ namespace Akeneo\Apps\Domain\Model\Write;
  */
 class FlowType
 {
+    private const CONSTRAINT_KEY = 'akeneo_apps.app.constraint.flow_type.%s';
     private $flowType;
 
     const DATA_SOURCE = 'data_source';
@@ -25,7 +26,7 @@ class FlowType
     public static function create(string $flowType): self
     {
         if (!in_array($flowType, [self::DATA_DESTINATION, self::DATA_SOURCE, self::OTHER])) {
-            throw new \InvalidArgumentException('invalid_flow_type');
+            throw new \InvalidArgumentException(sprintf(self::CONSTRAINT_KEY, 'invalid'));
         }
 
         return new self($flowType);

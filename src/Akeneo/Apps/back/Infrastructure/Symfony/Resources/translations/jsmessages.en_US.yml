@@ -5,3 +5,14 @@ pim_menu:
 pim_title:
     akeneo_apps_index: Apps
     akeneo_apps_any: Apps
+
+akeneo.apps:
+    constraint:
+        code:
+            required: 'Application code required.'
+            invalid: 'Application can only contains alphanumeric characters and underscode.'
+            too_long: 'Application code cannot exceeds 100 characters.'
+        label:
+            too_long: 'Application label cannot exceeds 100 characters.'
+        flow_type:
+            invalid: 'Application flow type can be data_source, data_destination or others.'

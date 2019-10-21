@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Apps\Domain\Model\Write;
+namespace Akeneo\Apps\Domain\Model\ValueObject;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -11,6 +11,7 @@ namespace Akeneo\Apps\Domain\Model\Write;
  */
 class AppLabel
 {
+    private const CONSTRAINT_KEY = 'akeneo_apps.app.constraint.label.%s';
     private $label;
 
     private function __construct(string $label)
@@ -21,7 +22,7 @@ class AppLabel
     public static function create(string $label): self
     {
         if (strlen($label) > 100) {
-            throw new \InvalidArgumentException('Label cannot be longer than 100 characters');
+            throw new \InvalidArgumentException(sprintf(self::CONSTRAINT_KEY, 'too_long'));
         }
 
         return new self($label);

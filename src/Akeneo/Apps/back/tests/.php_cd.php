@@ -15,8 +15,20 @@ $rules = [
         [
             'Akeneo\Apps\Application',
             'Akeneo\Apps\Domain',
+
+            // Dependency on Symfony Validator to ease validation
+            'Symfony\Component\Validator\Validator\ValidatorInterface',
         ]
     )->in('Akeneo\Apps\Application'),
+
+    $builder->only(
+        [
+            'Akeneo\Apps\Application\Service\CreateClientInterface',
+            'Akeneo\Apps\Domain\Model\ValueObject\ClientId',
+            'FOS\OAuthServerBundle\Model\ClientManagerInterface',
+            'OAuth2\OAuth2',
+        ]
+    )->in('Akeneo\Apps\Infrastructure\Client'),
 
     $builder->only(
         [
@@ -28,18 +40,30 @@ $rules = [
 
     $builder->only(
         [
-            'Symfony\Component',
+            'Akeneo\Apps\Application',
+            'Akeneo\Apps\Domain',
+
+            // Dependency on HTTP foundation for Request/Response
+            'Symfony\Component\HttpFoundation',
+            // Dependency on constraint violations to correctly display errors on frontend
+            'Symfony\Component\Validator\ConstraintViolationListInterface'
         ]
-    )->in('Akeneo\Apps\Infrastructure\Symfony'),
+    )->in('Akeneo\Apps\Infrastructure\InternalApi'),
 
     $builder->only(
         [
-            'Akeneo\Apps\Application\Service\CreateClientInterface',
-            'Akeneo\Apps\Domain\Model\ClientId',
-            'FOS\OAuthServerBundle\Model\ClientManagerInterface',
-            'OAuth2\OAuth2',
+            'Akeneo\Apps\Domain',
+
+            // Dependency on Doctrine DBAL for persistence layer
+            'Doctrine\DBAL\Connection',
         ]
-    )->in('Akeneo\Apps\Infrastructure\Client'),
+    )->in('Akeneo\Apps\Infrastructure\Persistence'),
+
+    $builder->only(
+        [
+            'Symfony\Component',
+        ]
+    )->in('Akeneo\Apps\Infrastructure\Symfony'),
 ];
 
 $config = new Configuration($rules, $finder);

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Application\Service;
 
-use Akeneo\Apps\Domain\Model\ClientId;
+use Akeneo\Apps\Domain\Model\ValueObject\ClientId;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>

@@ -8,9 +8,9 @@ use Akeneo\Apps\Application\Command\CreateAppCommand;
 use Akeneo\Apps\Application\Command\CreateAppHandler;
 use Akeneo\Apps\Application\Query\FetchAppsHandler;
 use Akeneo\Apps\Domain\Model\Read\App;
-use Akeneo\Apps\Domain\Model\Write\AppCode;
-use Akeneo\Apps\Domain\Model\Write\AppLabel;
-use Akeneo\Apps\Domain\Model\Write\FlowType;
+use Akeneo\Apps\Domain\Model\ValueObject\AppCode;
+use Akeneo\Apps\Domain\Model\ValueObject\AppLabel;
+use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
 use Akeneo\Apps\Infrastructure\Persistence\InMemory\Repository\InMemoryAppRepository;
 use Behat\Behat\Context\Context;
 use Webmozart\Assert\Assert;
@@ -54,10 +54,7 @@ class AppContext implements Context
     {
         $startCount = $this->appRepository->count();
 
-        $appCode = AppCode::create(self::slugify($label));
-        $flowType = FlowType::create(self::defineFlowType($flowType));
-
-        $command = new CreateAppCommand($appCode, AppLabel::create($label), $flowType);
+        $command = new CreateAppCommand(self::slugify($label), $label, self::defineFlowType($flowType));
         $this->createAppHandler->handle($command);
 
         Assert::eq($this->appRepository->count(), $startCount+1);
@@ -79,10 +76,7 @@ class AppContext implements Context
      */
     public function iCreateTheApp(string $flowType, string $label): void
     {
-        $appCode = AppCode::create(self::slugify($label));
-        $flowType = FlowType::create(self::defineFlowType($flowType));
-
-        $command = new CreateAppCommand($appCode, AppLabel::create($label), $flowType);
+        $command = new CreateAppCommand(self::slugify($label), $label, self::defineFlowType($flowType));
         $this->createAppHandler->handle($command);
     }
 

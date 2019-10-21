@@ -2,12 +2,10 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Apps\Domain\Model\Write;
+namespace spec\Akeneo\Apps\Domain\Model\ValueObject;
 
-use Akeneo\Apps\Domain\Model\Write\AppLabel;
-use Akeneo\Apps\Domain\Model\Write\FlowType;
+use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -26,7 +24,7 @@ class FlowTypeSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('create', ['foo']);
         $this->shouldThrow(
-            new \InvalidArgumentException('invalid_flow_type')
+            new \InvalidArgumentException('akeneo_apps.app.constraint.flow_type.invalid')
         )->duringInstantiation();
     }
 

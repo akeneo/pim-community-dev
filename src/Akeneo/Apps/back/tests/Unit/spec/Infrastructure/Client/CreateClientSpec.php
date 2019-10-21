@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\Apps\Infrastructure\Client;
 
 use Akeneo\Apps\Application\Service\CreateClientInterface;
-use Akeneo\Apps\Domain\Model\ClientId;
+use Akeneo\Apps\Domain\Model\ValueObject\ClientId;
 use Akeneo\Apps\Infrastructure\Client\CreateClient;
 use Akeneo\Tool\Bundle\ApiBundle\Entity\Client;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;

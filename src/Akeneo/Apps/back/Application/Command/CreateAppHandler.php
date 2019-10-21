@@ -31,9 +31,9 @@ class CreateAppHandler
         AppRepository $repository,
         CreateClientInterface $createClient
     ) {
+        $this->validator = $validator;
         $this->repository = $repository;
         $this->createClient = $createClient;
-        $this->validator = $validator;
     }
 
     public function handle(CreateAppCommand $command): void
@@ -44,11 +44,11 @@ class CreateAppHandler
             throw new ConstraintViolationListException($violations);
         }
 
-        $clientId = $this->createClient->execute((string) $command->appLabel());
+        $clientId = $this->createClient->execute($command->label());
 
         $app = App::create(
-            $command->appCode(),
-            $command->appLabel(),
+            $command->code(),
+            $command->label(),
             $command->flowType(),
             $clientId
         );

@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace spec\Akeneo\Apps\Domain\Model;
+namespace spec\Akeneo\Apps\Domain\Model\ValueObject;
 
-use Akeneo\Apps\Domain\Model\ClientId;
+use Akeneo\Apps\Domain\Model\ValueObject\ClientId;
 use PhpSpec\ObjectBehavior;
 
 class ClientIdSpec extends ObjectBehavior

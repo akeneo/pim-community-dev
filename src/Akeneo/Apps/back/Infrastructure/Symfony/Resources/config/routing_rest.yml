@@ -5,5 +5,5 @@ akeneo_apps_list_rest:
 
 akeneo_apps_create_rest:
    path: '/rest/apps'
-      defaults: { _controller: akeneo_app.internal_api.controller.app::create }
+   defaults: { _controller: akeneo_app.internal_api.controller.app::create }
    methods: [POST]
