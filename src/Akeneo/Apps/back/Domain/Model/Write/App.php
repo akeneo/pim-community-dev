@@ -48,8 +48,8 @@ class App
         return new self(
             new AppId($id),
             new AppCode($appCode),
-            AppLabel::create($label),
-            FlowType::create($flowType),
+            new AppLabel($label),
+            new FlowType($flowType),
             $clientId
         );
     }

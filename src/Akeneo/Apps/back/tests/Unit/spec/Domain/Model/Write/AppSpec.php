@@ -29,7 +29,7 @@ class AppSpec extends ObjectBehavior
                 'magento',
                 'Magento Connector',
                 FlowType::DATA_DESTINATION,
-                ClientId::create(42),
+                new ClientId(42),
             ]
         );
     }
@@ -51,16 +51,16 @@ class AppSpec extends ObjectBehavior
 
     public function it_returns_the_label()
     {
-        $this->label()->shouldBeLike(AppLabel::create('Magento Connector'));
+        $this->label()->shouldBeLike(new AppLabel('Magento Connector'));
     }
 
     public function it_returns_the_flow_type()
     {
-        $this->flowType()->shouldBeLike(FlowType::create(FlowType::DATA_DESTINATION));
+        $this->flowType()->shouldBeLike(new FlowType(FlowType::DATA_DESTINATION));
     }
 
     public function it_returns_the_client_id()
     {
-        $this->clientId()->shouldBeLike(ClientId::create(42));
+        $this->clientId()->shouldBeLike(new ClientId(42));
     }
 }

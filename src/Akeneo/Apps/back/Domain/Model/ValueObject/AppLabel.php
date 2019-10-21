@@ -14,18 +14,13 @@ class AppLabel
     private const CONSTRAINT_KEY = 'akeneo_apps.app.constraint.label.%s';
     private $label;
 
-    private function __construct(string $label)
-    {
-        $this->label = $label;
-    }
-
-    public static function create(string $label): self
+    public function __construct(string $label)
     {
         if (strlen($label) > 100) {
             throw new \InvalidArgumentException(sprintf(self::CONSTRAINT_KEY, 'too_long'));
         }
 
-        return new self($label);
+        $this->label = $label;
     }
 
     public function __toString(): string

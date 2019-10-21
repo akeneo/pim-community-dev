@@ -16,13 +16,13 @@ class FlowTypeSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->beConstructedThrough('create', [FlowType::OTHER]);
+        $this->beConstructedWith(FlowType::OTHER);
         $this->shouldBeAnInstanceOf(FlowType::class);
     }
 
     function it_cannot_be_created_with_an_unknown_flow_type()
     {
-        $this->beConstructedThrough('create', ['foo']);
+        $this->beConstructedWith('foo');
         $this->shouldThrow(
             new \InvalidArgumentException('akeneo_apps.app.constraint.flow_type.invalid')
         )->duringInstantiation();
@@ -30,25 +30,25 @@ class FlowTypeSpec extends ObjectBehavior
 
     function it_creates_a_data_destination_flow_type()
     {
-        $this->beConstructedThrough('create', [FlowType::DATA_DESTINATION]);
+        $this->beConstructedWith(FlowType::DATA_DESTINATION);
         $this->shouldBeAnInstanceOf(FlowType::class);
     }
 
     function it_creates_a_data_source_flow_type()
     {
-        $this->beConstructedThrough('create', [FlowType::DATA_SOURCE]);
+        $this->beConstructedWith(FlowType::DATA_SOURCE);
         $this->shouldBeAnInstanceOf(FlowType::class);
     }
 
     function it_creates_an_others_flow_type()
     {
-        $this->beConstructedThrough('create', [FlowType::OTHER]);
+        $this->beConstructedWith(FlowType::OTHER);
         $this->shouldBeAnInstanceOf(FlowType::class);
     }
 
     function it_returns_the_flow_type_as_string()
     {
-        $this->beConstructedThrough('create', [FlowType::DATA_SOURCE]);
+        $this->beConstructedWith(FlowType::DATA_SOURCE);
         $this->__toString()->shouldReturn(FlowType::DATA_SOURCE);
     }
 }

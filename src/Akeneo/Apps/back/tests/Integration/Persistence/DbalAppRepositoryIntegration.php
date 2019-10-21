@@ -27,10 +27,11 @@ class DbalAppRepositoryIntegration extends TestCase
     {
         $id = $this->getClientId('magento');
         $this->appRepository->create(WriteApp::create(
-            new AppCode('magento'),
-            AppLabel::create('Magento connector'),
-            FlowType::create(FlowType::DATA_DESTINATION),
-            ClientId::create($id)
+            '42',
+            'magento',
+            'Magento connector',
+            FlowType::DATA_DESTINATION,
+            new ClientId($id)
         ));
 
         $query = <<<SQL
