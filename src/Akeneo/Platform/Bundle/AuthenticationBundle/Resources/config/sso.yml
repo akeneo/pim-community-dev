@@ -47,13 +47,6 @@ services:
     hslavich_onelogin_saml.saml_token_factory:
         class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\SamlTokenFactory'
 
-    security.firewall.map:
-        class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\FirewallMap'
-        arguments:
-            - '@service_container'
-            - []
-            - '@akeneo_authentication.sso.configuration.repository'
-
     akeneo_authentication.sso.user.factory:
         class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\User\Factory'
 
