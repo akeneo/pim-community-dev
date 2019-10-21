@@ -44,7 +44,7 @@ class ReferenceDataCollectionPresenter extends AbstractReferenceDataPresenter
     protected function normalizeChange(array $change)
     {
         $result = [];
-        $repository = $this->repositoryResolver->resolve($this->referenceDataName);
+        $repository = $this->repositoryResolver->resolve($change['reference_data_name']);
         $references = $repository->findBy(['code' => $change['data']]);
 
         foreach ($references as $reference) {

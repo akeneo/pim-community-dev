@@ -12,6 +12,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PresenterInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\RendererInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
+use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class ProductDraftChangesExtensionSpec extends ObjectBehavior
@@ -64,15 +65,16 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         $value->getData()->willReturn('data');
         $attributeRepository->findOneByIdentifier('description')->willReturn($attributeDescription);
         $attributeDescription->getType()->willReturn('pim_catalog_text');
+        $attributeDescription->getReferenceDataName()->willReturn(null);
 
         $change = [
             'value' => 'foo',
             'locale' => 'en_US',
             'scope' => 'ecommerce',
         ];
-        $attributePresenter->supports('pim_catalog_text')->willReturn(false);
-        $valuePresenter->supports('pim_catalog_text')->willReturn(true);
-        $valuePresenter->present('data', array_merge($change, ['attribute' => 'description']))->willReturn('<b>changes</b>');
+        $attributePresenter->supports('pim_catalog_text', Argument::any())->willReturn(false);
+        $valuePresenter->supports('pim_catalog_text', Argument::any())->willReturn(true);
+        $valuePresenter->present('data', array_merge($change, ['attribute' => 'description', 'reference_data_name' => null]))->willReturn('<b>changes</b>');
 
         $this->presentChange($productDraft, $change, 'description')->shouldReturn('<b>changes</b>');
     }
@@ -95,16 +97,18 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         $value->getData()->willReturn('data');
         $attributeRepository->findOneByIdentifier('description')->willReturn($attributeDescription);
         $attributeDescription->getType()->willReturn('pim_catalog_text');
+        $attributeDescription->getReferenceDataName()->willReturn(null);
 
         $change = [
             'attribute' => 'description',
             'locale' => 'en_US',
             'scope' => 'ecommerce',
+            'reference_data_name' => null,
         ];
 
-        $attributePresenter->supports('pim_catalog_text')->willReturn(false);
-        $valuePresenter->supports('pim_catalog_text')->willReturn(false);
-        $presenter->supports('pim_catalog_text')->willReturn(true);
+        $attributePresenter->supports('pim_catalog_text', Argument::any())->willReturn(false);
+        $valuePresenter->supports('pim_catalog_text', Argument::any())->willReturn(false);
+        $presenter->supports('pim_catalog_text', Argument::any())->willReturn(true);
         $presenter->present('data', $change)->willReturn('<b>changes</b>');
 
         $presenter->setTranslator($translator)->shouldBeCalled();
@@ -131,16 +135,18 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         $value->getData()->willReturn('data');
         $attributeRepository->findOneByIdentifier('description')->willReturn($attributeDescription);
         $attributeDescription->getType()->willReturn('pim_catalog_text');
+        $attributeDescription->getReferenceDataName()->willReturn(null);
 
         $change = [
             'attribute' => 'description',
             'locale' => 'en_US',
             'scope' => 'ecommerce',
+            'reference_data_name' => null,
         ];
 
-        $attributePresenter->supports('pim_catalog_text')->willReturn(false);
-        $valuePresenter->supports('pim_catalog_text')->willReturn(false);
-        $presenter->supports('pim_catalog_text')->willReturn(true);
+        $attributePresenter->supports('pim_catalog_text', Argument::any())->willReturn(false);
+        $valuePresenter->supports('pim_catalog_text', Argument::any())->willReturn(false);
+        $presenter->supports('pim_catalog_text', Argument::any())->willReturn(true);
         $presenter->present('data', $change)->willReturn('<b>changes</b>');
 
         $presenter->setRenderer($renderer)->shouldBeCalled();

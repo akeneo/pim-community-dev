@@ -139,7 +139,10 @@ class ProductDraftChangesExtension extends \Twig_Extension
                     $presenter->setRenderer($this->renderer);
                 }
 
-                return $presenter->present($data, array_merge($change, ['attribute' => $attributeCode]));
+                return $presenter->present($data, array_merge($change, [
+                    'attribute' => $attributeCode,
+                    'reference_data_name' => $attribute->getReferenceDataName()
+                ]));
             }
         }
 

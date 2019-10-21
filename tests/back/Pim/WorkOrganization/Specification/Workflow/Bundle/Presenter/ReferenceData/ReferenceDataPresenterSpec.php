@@ -47,13 +47,13 @@ class ReferenceDataPresenterSpec extends ObjectBehavior
         $blue->__toString()->willReturn('Blue');
 
         $configuration->getClass()->willReturn(Color::class);
-        $repositoryResolver->resolve(null)->willReturn($repository);
+        $repositoryResolver->resolve('color')->willReturn($repository);
         $repository->findOneBy(['code' => 'red'])->willReturn($blue);
 
         $renderer->renderDiff('[Red]', 'Blue')->willReturn('diff between two reference data');
         $this->setRenderer($renderer);
 
-        $this->present($red, ['data' => 'red'])->shouldReturn('diff between two reference data');
+        $this->present($red, ['data' => 'red', 'reference_data_name' => 'color'])->shouldReturn('diff between two reference data');
     }
 }
 
