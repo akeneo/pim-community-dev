@@ -2,6 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Builder;
 
+use Dompdf\Dompdf;
+
 /**
  * PDF builder using DOMPDF library
  *
@@ -17,7 +19,7 @@ class DompdfBuilder implements PdfBuilderInterface
     protected $rootDir;
 
     /**
-     * @var \DOMPDF
+     * @var Dompdf
      */
     protected $dompdf;
 
@@ -48,20 +50,10 @@ class DompdfBuilder implements PdfBuilderInterface
      */
     protected function render($html)
     {
-        // DOMPDF doesn't follow PSR convention, it uses classmap in autoload
-        // and it requires some config to be used
-        define('DOMPDF_ENABLE_AUTOLOAD', false);
-        define('DOMPDF_ENABLE_REMOTE', true);
-        $filePath = $this->rootDir."/../vendor/dompdf/dompdf/dompdf_config.inc.php";
-        if (file_exists($filePath)) {
-            require_once $filePath;
-        } else {
-            throw new \RuntimeException('DomPDF cannot be loaded');
-        }
-
-        $this->dompdf = new \DOMPDF();
-        $this->dompdf->set_paper(constant('DOMPDF_DEFAULT_PAPER_SIZE'));
-        $this->dompdf->load_html($html);
+        $this->dompdf = new Dompdf([
+            'isRemoteEnabled' => true,
+        ]);
+        $this->dompdf->loadHtml($html);
         $this->dompdf->render();
     }
 

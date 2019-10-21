@@ -1,5 +1,8 @@
 # 3.2.x
 
+## Bug fixes:
+
+- PIM-8893: update dompdf because the pdf export fail on some products
 - PIM-7963: Fix datepicker width not adapting to the dropdown
 
 # 3.2.13 (2019-10-18)
