@@ -25,11 +25,6 @@ class ConstraintViolationListException extends \InvalidArgumentException
         $this->constraintViolationList = $constraintViolationList;
     }
 
-    public static function create(ConstraintViolationListInterface $constraintViolationList): self
-    {
-        return new self($constraintViolationList);
-    }
-
     public function getConstraintViolationList(): ConstraintViolationListInterface
     {
         return $this->constraintViolationList;

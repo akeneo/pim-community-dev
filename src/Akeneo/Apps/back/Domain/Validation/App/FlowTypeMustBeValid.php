@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Apps\Domain\Model\ValidationConstraint;
+namespace Akeneo\Apps\Domain\Validation\App;
 
 use Akeneo\Apps\Domain\Model\Write\AppCode;
 use Akeneo\Apps\Domain\Model\Write\AppLabel;

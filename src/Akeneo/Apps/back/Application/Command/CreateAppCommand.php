@@ -15,25 +15,25 @@ use Akeneo\Apps\Domain\Model\Write\FlowType;
  */
 class CreateAppCommand
 {
-    private $appCode;
-    private $appLabel;
+    private $code;
+    private $label;
     private $flowType;
 
-    public function __construct(string $appCode, string $appLabel, string $flowType)
+    public function __construct(string $code, string $label, string $flowType)
     {
-        $this->appCode = $appCode;
-        $this->appLabel = $appLabel;
+        $this->code = $code;
+        $this->label = $label;
         $this->flowType = $flowType;
     }
 
-    public function appCode(): string
+    public function code(): string
     {
-        return $this->appCode;
+        return $this->code;
     }
 
-    public function appLabel(): string
+    public function label(): string
     {
-        return $this->appLabel;
+        return $this->label;
     }
 
     public function flowType(): string

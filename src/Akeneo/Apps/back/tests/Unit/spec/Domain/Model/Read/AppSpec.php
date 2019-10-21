@@ -22,15 +22,15 @@ class AppSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldBeAnInstanceOf(App::class);
+        $this->shouldHaveType(App::class);
     }
 
-    function it_returns_the_app_code()
+    function it_returns_the_code()
     {
         $this->code()->shouldReturn('magento');
     }
 
-    function it_returns_the_app_label()
+    function it_returns_the_label()
     {
         $this->label()->shouldReturn('Magento Connector');
     }

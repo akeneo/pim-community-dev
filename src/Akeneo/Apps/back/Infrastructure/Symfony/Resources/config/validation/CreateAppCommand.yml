@@ -2,10 +2,10 @@ Akeneo\Apps\Application\Command\CreateAppCommand:
     properties:
         appCode:
             - Callback:
-                  callback: [Akeneo\Apps\Domain\Model\ValidationConstraint\AppCodeMustBeValid, validate]
+                  callback: [Akeneo\Apps\Domain\Validation\App\AppCodeMustBeValid, validate]
         appLabel:
             - Callback:
-                  callback: [Akeneo\Apps\Domain\Model\ValidationConstraint\AppLabelMustBeValid, validate]
+                  callback: [Akeneo\Apps\Domain\Validation\App\AppLabelMustBeValid, validate]
         flowType:
             - Callback:
-                  callback: [Akeneo\Apps\Domain\Model\ValidationConstraint\FlowTypeMustBeValid, validate]
+                  callback: [Akeneo\Apps\Domain\Validation\App\FlowTypeMustBeValid, validate]
