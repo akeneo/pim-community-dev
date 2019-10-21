@@ -2,12 +2,10 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Apps\Domain\Model\Write;
+namespace spec\Akeneo\Apps\Domain\Model\ValueObject;
 
-use Akeneo\Apps\Domain\Model\Write\AppLabel;
-use Akeneo\Apps\Domain\Model\Write\FlowType;
+use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>

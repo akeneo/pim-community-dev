@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Application\Command;
 
-use Akeneo\Apps\Domain\Model\Write\AppCode;
-use Akeneo\Apps\Domain\Model\Write\AppLabel;
-use Akeneo\Apps\Domain\Model\Write\FlowType;
+use Akeneo\Apps\Domain\Model\ValueObject\AppCode;
+use Akeneo\Apps\Domain\Model\ValueObject\AppLabel;
+use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>

@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Domain\Validation\App;
 
-use Akeneo\Apps\Domain\Model\Write\AppCode;
-use Akeneo\Apps\Domain\Model\Write\AppLabel;
-use Akeneo\Apps\Domain\Model\Write\FlowType;
+use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**

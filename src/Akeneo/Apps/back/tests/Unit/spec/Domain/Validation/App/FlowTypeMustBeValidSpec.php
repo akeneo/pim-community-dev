@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Apps\Domain\Validation\App;
 
-use Akeneo\Apps\Domain\Model\Write\FlowType;
+use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
 use Akeneo\Apps\Domain\Validation\App\FlowTypeMustBeValid;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

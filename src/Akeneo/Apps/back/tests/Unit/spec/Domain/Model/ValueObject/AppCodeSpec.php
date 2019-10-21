@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Apps\Domain\Model\Write;
+namespace spec\Akeneo\Apps\Domain\Model\ValueObject;
 
-use Akeneo\Apps\Domain\Model\Write\AppCode;
+use Akeneo\Apps\Domain\Model\ValueObject\AppCode;
 use PhpSpec\ObjectBehavior;
 
 /**

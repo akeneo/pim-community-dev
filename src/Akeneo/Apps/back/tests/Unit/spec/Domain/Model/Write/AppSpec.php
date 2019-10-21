@@ -6,9 +6,9 @@ namespace spec\Akeneo\Apps\Domain\Model\Write;
 
 use Akeneo\Apps\Domain\Model\ClientId;
 use Akeneo\Apps\Domain\Model\Write\App;
-use Akeneo\Apps\Domain\Model\Write\AppCode;
-use Akeneo\Apps\Domain\Model\Write\AppLabel;
-use Akeneo\Apps\Domain\Model\Write\FlowType;
+use Akeneo\Apps\Domain\Model\ValueObject\AppCode;
+use Akeneo\Apps\Domain\Model\ValueObject\AppLabel;
+use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
 use PhpSpec\ObjectBehavior;
 
 /**

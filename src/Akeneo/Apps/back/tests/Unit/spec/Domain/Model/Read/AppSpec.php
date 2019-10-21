@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\Apps\Domain\Model\Read;
 
 use Akeneo\Apps\Domain\Model\Read\App;
-use Akeneo\Apps\Domain\Model\Write\FlowType;
+use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
 use PhpSpec\ObjectBehavior;
 
 /**
