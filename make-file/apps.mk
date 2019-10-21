@@ -8,7 +8,7 @@ apps-coupling:
 apps-back-phpspec:
 	$(PHP_RUN) vendor/bin/phpspec -c src/Akeneo/Apps/back/tests/phpspec.yml.dist run
 
-apps-acceptance:
+apps-back-acceptance:
 	$(PHP_RUN) vendor/bin/behat --strict --config src/Akeneo/Apps/back/tests/Acceptance/behat.yml
 
 apps-front-tests:

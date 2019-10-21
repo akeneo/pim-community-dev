@@ -54,10 +54,7 @@ class AppContext implements Context
     {
         $startCount = $this->appRepository->count();
 
-        $appCode = AppCode::create(self::slugify($label));
-        $flowType = FlowType::create(self::defineFlowType($flowType));
-
-        $command = new CreateAppCommand($appCode, AppLabel::create($label), $flowType);
+        $command = new CreateAppCommand(self::slugify($label), $label, self::defineFlowType($flowType));
         $this->createAppHandler->handle($command);
 
         Assert::eq($this->appRepository->count(), $startCount+1);
@@ -79,10 +76,7 @@ class AppContext implements Context
      */
     public function iCreateTheApp(string $flowType, string $label): void
     {
-        $appCode = AppCode::create(self::slugify($label));
-        $flowType = FlowType::create(self::defineFlowType($flowType));
-
-        $command = new CreateAppCommand($appCode, AppLabel::create($label), $flowType);
+        $command = new CreateAppCommand(self::slugify($label), $label, self::defineFlowType($flowType));
         $this->createAppHandler->handle($command);
     }
 
