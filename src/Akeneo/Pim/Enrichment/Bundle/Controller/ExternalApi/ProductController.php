@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi;
 
+use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnSave\ApiAggregatorForProductPostSaveEventSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
@@ -132,6 +133,9 @@ class ProductController
     /** @var GetConnectorProducts */
     private $getConnectorProducts;
 
+    /** @var ApiAggregatorForProductPostSaveEventSubscriber */
+    private $apiAggregatorForProductPostSave;
+
     public function __construct(
         NormalizerInterface $normalizer,
         IdentifiableObjectRepositoryInterface $channelRepository,
@@ -157,7 +161,8 @@ class ProductController
         ListProductsQueryHandler $listProductsQueryHandler,
         ConnectorProductNormalizer $connectorProductNormalizer,
         TokenStorageInterface $tokenStorage,
-        GetConnectorProducts $getConnectorProducts
+        GetConnectorProducts $getConnectorProducts,
+        ApiAggregatorForProductPostSaveEventSubscriber $apiAggregatorForProductPostSave
     ) {
         $this->normalizer = $normalizer;
         $this->channelRepository = $channelRepository;
@@ -184,6 +189,7 @@ class ProductController
         $this->connectorProductNormalizer = $connectorProductNormalizer;
         $this->tokenStorage = $tokenStorage;
         $this->getConnectorProducts = $getConnectorProducts;
+        $this->apiAggregatorForProductPostSave = $apiAggregatorForProductPostSave;
     }
 
     /**
@@ -367,16 +373,20 @@ class ProductController
     }
 
     /**
+     * Products are saved 1 by 1, but we batch events in order to improve performances.
+     *
      * @param Request $request
-     *
-     * @throws HttpException
-     *
      * @return Response
+     * @throws HttpException
      */
     public function partialUpdateListAction(Request $request): Response
     {
         $resource = $request->getContent(true);
-        $response = $this->partialUpdateStreamResource->streamResponse($resource);
+        $this->apiAggregatorForProductPostSave->activate();
+        $response = $this->partialUpdateStreamResource->streamResponse($resource, [], function () {
+            $this->apiAggregatorForProductPostSave->dispatchAllEvents();
+            $this->apiAggregatorForProductPostSave->deactivate();
+        });
 
         return $response;
     }
