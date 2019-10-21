@@ -11,7 +11,6 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 /**
@@ -24,14 +23,9 @@ class ImagePresenter extends FilePresenter
     /**
      * {@inheritdoc}
      */
-    public function supports($data)
+    public function supports(string $attributeType, string $referenceDataName = null): bool
     {
-        if ($data instanceof ValueInterface) {
-            $attribute = $this->attributeRepository->findOneByIdentifier($data->getAttributeCode());
-            return null !== $attribute && AttributeTypes::IMAGE === $attribute->getType();
-        }
-
-        return false;
+        return $attributeType === AttributeTypes::IMAGE;
     }
 
     /**

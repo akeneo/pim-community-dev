@@ -88,7 +88,7 @@ class RefreshAssetLinksTest extends SqlIntegrationTestCase
 
     private function runRefreshAssetsCommand(): void
     {
-        $application = new Application($this->testKernel);
+        $application = new Application(self::$kernel);
         $command = $application->find('akeneo:asset-manager:refresh-assets');
         $commandTester = new CommandTester($command);
         $commandTester->execute([

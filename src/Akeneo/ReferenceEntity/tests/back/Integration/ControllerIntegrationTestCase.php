@@ -33,6 +33,6 @@ abstract class ControllerIntegrationTestCase extends KernelTestCase
 
     protected function get(string $service)
     {
-        return self::$container->get($service);
+        return self::$kernel->getContainer()->get($service);
     }
 }

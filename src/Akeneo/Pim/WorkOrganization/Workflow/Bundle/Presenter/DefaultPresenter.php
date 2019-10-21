@@ -21,7 +21,7 @@ class DefaultPresenter extends AbstractProductValuePresenter
     /**
      * {@inheritdoc}
      */
-    public function supportsChange($attributeType)
+    public function supports(string $attributeType, string $referenceDataName = null): bool
     {
         return true;
     }

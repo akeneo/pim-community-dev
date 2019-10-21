@@ -85,6 +85,61 @@
 - Remove class `Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\IndexProductsSubscriber',
     replaced by `Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\OnSave\ComputePublishedProductsSubscriber`
     and `Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\OnDelete\ComputePublishedProductsSubscriber`
+- Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig\ProductDraftChangesExtension` to remove `Akeneo\Pim\Structure\Component\Factory\AttributeFactory`
+- Rename `supportsChange` method to `supports` in
+  - `Akeneo\Pim\Enrichment\ReferenceEntity\Component\Presenter\ReferenceEntityCollectionValuePresenter`
+  - `Akeneo\Pim\Enrichment\ReferenceEntity\Component\Presenter\ReferenceEntityValuePresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\BooleanPresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\DatePresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\DefaultPresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\MetricPresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\NumberPresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\OptionPresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\OptionsPresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PricesPresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\ReferenceData\ReferenceDataCollectionPresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\ReferenceData\ReferenceDataPresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\TextPresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\TextareaPresenter`
+- Change constructor to remove `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface` from
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\AbstractProductValuePresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\AssetsCollectionPresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\DatePresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\FilePresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\MetricPresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\NumberPresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\OptionPresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\OptionsPresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PricesPresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\ReferenceData\AbstractReferenceDataPresenter`
+- Update `supports` signature to `(string $attributeType, string $referenceDataName)` on
+  - `Akeneo\Pim\Enrichment\ReferenceEntity\Component\Presenter\ReferenceEntityCollectionValuePresenter`
+  - `Akeneo\Pim\Enrichment\ReferenceEntity\Component\Presenter\ReferenceEntityValuePresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\AssetsCollectionPresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\BooleanPresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\DatePresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\DefaultPresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\FilePresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\ImagePresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\MetricPresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\NumberPresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\OptionPresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\OptionsPresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PresenterInterface`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PricesPresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\ReferenceData\AbstractReferenceDataPresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\ReferenceData\ReferenceDataCollectionPresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\ReferenceData\ReferenceDataPresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\TextPresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\TextareaPresenter`
+- Update `present` first argument to `mixed $formerData` on
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\AbstractProductValuePresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\AssetsCollectionPresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\FilePresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\OptionPresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\OptionsPresenter`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PresenterInterface`
+  - `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PricesPresenter`
 
 ### CLI commands
 

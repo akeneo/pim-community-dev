@@ -21,7 +21,7 @@ class ReferenceDataPresenter extends AbstractReferenceDataPresenter
     /**
      * {@inheritdoc}
      */
-    public function supportsChange($attributeType)
+    public function supports(string $attributeType, string $referenceDataName = null): bool
     {
         return 'pim_reference_data_simpleselect' === $attributeType;
     }
@@ -39,7 +39,7 @@ class ReferenceDataPresenter extends AbstractReferenceDataPresenter
      */
     protected function normalizeChange(array $change)
     {
-        $repository = $this->repositoryResolver->resolve($this->referenceDataName);
+        $repository = $this->repositoryResolver->resolve($change['reference_data_name']);
 
         return (string) $repository->findOneBy(['code' => $change['data']]);
     }

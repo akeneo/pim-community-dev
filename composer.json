@@ -27,9 +27,6 @@
             "Context": "vendor/akeneo/pim-community-dev/tests/legacy/features/",
             "": "tests/legacy/features/"
         },
-        "classmap": [
-            "tests/back/Integration/AppKernelTest.php"
-        ],
         "psr-4": {
             "Pim\\Behat\\": "vendor/akeneo/pim-community-dev/tests/legacy/features/Behat",
             "PimEnterprise\\Behat\\": "tests/legacy/features/Behat/",

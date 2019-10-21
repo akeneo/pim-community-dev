@@ -27,27 +27,13 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 abstract class ControllerIntegrationTestCase extends KernelTestCase
 {
-    /** @var KernelInterface */
-    protected $testKernel;
-
-    /**
-     * {@inheritdoc}
-     */
     protected function setUp(): void
     {
-        if (null === $this->testKernel) {
-            $this->bootTestFakeKernel();
-        }
+        static::bootKernel(['environment' => 'test_fake', 'debug' => false]);
     }
 
     protected function get(string $service)
     {
-        return $this->testKernel->getContainer()->get($service);
-    }
-
-    private function bootTestFakeKernel(): void
-    {
-        $this->testKernel = new \AppKernelTest('test_fake', false);
-        $this->testKernel->boot();
+        return self::$kernel->getContainer()->get($service);
     }
 }
