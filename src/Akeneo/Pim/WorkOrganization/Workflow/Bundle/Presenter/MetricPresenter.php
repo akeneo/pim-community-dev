@@ -14,7 +14,6 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface as BasePresenterInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
  * Present change on metric data
@@ -32,12 +31,9 @@ class MetricPresenter extends AbstractProductValuePresenter implements Translato
     protected $localeResolver;
 
     public function __construct(
-        IdentifiableObjectRepositoryInterface $attributeRepository,
         BasePresenterInterface $metricPresenter,
         LocaleResolver $localeResolver
     ) {
-        parent::__construct($attributeRepository);
-
         $this->metricPresenter = $metricPresenter;
         $this->localeResolver = $localeResolver;
     }
@@ -45,7 +41,7 @@ class MetricPresenter extends AbstractProductValuePresenter implements Translato
     /**
      * {@inheritdoc}
      */
-    public function supportsChange($attributeType)
+    public function supports(string $attributeType, string $referenceDataName = null): bool
     {
         return AttributeTypes::METRIC === $attributeType;
     }

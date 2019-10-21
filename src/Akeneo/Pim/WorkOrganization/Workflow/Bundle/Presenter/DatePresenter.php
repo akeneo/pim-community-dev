@@ -14,7 +14,6 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface as BasePresenterInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
  * Present changes on date data
@@ -30,16 +29,10 @@ class DatePresenter extends AbstractProductValuePresenter
     /** @var LocaleResolver */
     protected $localeResolver;
 
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $attributeRepository;
-
     public function __construct(
-        IdentifiableObjectRepositoryInterface $attributeRepository,
         BasePresenterInterface $datePresenter,
         LocaleResolver $localeResolver
     ) {
-        parent::__construct($attributeRepository);
-
         $this->datePresenter = $datePresenter;
         $this->localeResolver = $localeResolver;
     }
@@ -47,7 +40,7 @@ class DatePresenter extends AbstractProductValuePresenter
     /**
      * {@inheritdoc}
      */
-    public function supportsChange($attributeType)
+    public function supports(string $attributeType, string $referenceDataName = null): bool
     {
         return AttributeTypes::DATE === $attributeType;
     }
