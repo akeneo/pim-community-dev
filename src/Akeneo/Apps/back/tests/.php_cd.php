@@ -24,7 +24,7 @@ $rules = [
     $builder->only(
         [
             'Akeneo\Apps\Application\Service\CreateClientInterface',
-            'Akeneo\Apps\Domain\Model\ClientId',
+            'Akeneo\Apps\Domain\Model\ValueObject\ClientId',
             'FOS\OAuthServerBundle\Model\ClientManagerInterface',
             'OAuth2\OAuth2',
         ]

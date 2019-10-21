@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Apps\Domain\Model;
+namespace Akeneo\Apps\Domain\Model\ValueObject;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>

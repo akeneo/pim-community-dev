@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Apps\Domain\Model\Write;
 
-use Akeneo\Apps\Domain\Model\ClientId;
+use Akeneo\Apps\Domain\Model\ValueObject\ClientId;
 use Akeneo\Apps\Domain\Model\Write\App;
 use Akeneo\Apps\Domain\Model\ValueObject\AppCode;
 use Akeneo\Apps\Domain\Model\ValueObject\AppLabel;
