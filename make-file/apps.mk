@@ -6,7 +6,7 @@ apps-coupling:
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Apps/back/tests/.php_cd.php src/Akeneo/Apps/back
 
 apps-back-phpspec:
-	$(PHP_RUN) vendor/bin/phpspec -c src/Akeneo/Apps/back/tests/phpspec.yml.dist run
+	$(PHP_RUN) vendor/bin/phpspec run src/Akeneo/Apps/back/tests/Unit/spec/
 
 apps-back-acceptance:
 	$(PHP_RUN) vendor/bin/behat --strict --config src/Akeneo/Apps/back/tests/Acceptance/behat.yml
