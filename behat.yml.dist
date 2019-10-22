@@ -149,6 +149,8 @@ acceptance:
             contexts_services:
                 - test.locale.context
                 - test.channel.context
+                - test.catalog.product_creation.context
+                - test.catalog.product_validation.context
             filters:
                 tags: '@acceptance-back'
         volume-monitoring:
@@ -178,8 +180,6 @@ acceptance:
                 - test.catalog_volume_limits.variant_product_context
                 - test.catalog_volume_limits.product_model_context
                 - test.catalog_volume_limits.product_value_context
-                - test.catalog.product_creation.context
-                - test.catalog.product_validation.context
                 - test.catalog_volume_limits.user_context
                 - test.catalog_volume_limits.category_in_one_category_context
                 - test.catalog_volume_limits.category_level_context
