@@ -43,7 +43,7 @@ jobs:
             name: Check PIM requirements
             command: |
                 C='mysql elasticsearch' make up
-                .circleci/wait_docker_up.sh
+                docker/wait_docker_up.sh
                 make check-requirements
       - run:
             name: Install asset
@@ -135,7 +135,7 @@ jobs:
                 command: |
                     docker load -i php-pim-image.tar
                     APP_ENV=test C='fpm mysql elasticsearch object-storage' make up
-                    .circleci/wait_docker_up.sh
+                    docker/wait_docker_up.sh
           - run:
                 name: Install database
                 command: APP_ENV=test make database
@@ -180,7 +180,7 @@ jobs:
             command: |
                 docker load -i php-pim-image.tar
                 APP_ENV=behat C='fpm mysql elasticsearch httpd object-storage selenium' make up
-                .circleci/wait_docker_up.sh
+                docker/wait_docker_up.sh
       - run:
             name: Install database
             command: APP_ENV=behat make database
