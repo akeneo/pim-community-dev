@@ -9,6 +9,7 @@ apps-back-phpspec:
 	$(PHP_RUN) vendor/bin/phpspec run src/Akeneo/Apps/back/tests/Unit/spec/
 
 apps-back-acceptance:
+	make down
 	$(PHP_RUN) vendor/bin/behat --strict --config src/Akeneo/Apps/back/tests/Acceptance/behat.yml
 
 apps-back-integration:
