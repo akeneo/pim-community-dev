@@ -17,7 +17,7 @@ final class FlowTypeMustBeValid
     public static function validate(string $flowType, ExecutionContextInterface $context): void
     {
         try {
-            FlowType::create($flowType);
+            new FlowType($flowType);
         } catch (\InvalidArgumentException $e) {
             $context->buildViolation($e->getMessage())->addViolation();
         }

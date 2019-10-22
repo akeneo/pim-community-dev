@@ -18,18 +18,13 @@ class FlowType
     const DATA_DESTINATION = 'data_destination';
     const OTHER = 'other';
 
-    private function __construct(string $flowType)
-    {
-        $this->flowType = $flowType;
-    }
-
-    public static function create(string $flowType): self
+    public function __construct(string $flowType)
     {
         if (!in_array($flowType, [self::DATA_DESTINATION, self::DATA_SOURCE, self::OTHER])) {
             throw new \InvalidArgumentException(sprintf(self::CONSTRAINT_KEY, 'invalid'));
         }
 
-        return new self($flowType);
+        $this->flowType = $flowType;
     }
 
     public function __toString(): string

@@ -14,12 +14,7 @@ class AppCode
     private const CONSTRAINT_KEY = 'akeneo_apps.app.constraint.code.%s';
     private $code;
 
-    private function __construct(string $code)
-    {
-        $this->code = $code;
-    }
-
-    public static function create(string $code): self
+    public function __construct(string $code)
     {
         if (empty($code)) {
             throw new \InvalidArgumentException(sprintf(self::CONSTRAINT_KEY, 'required'));
@@ -31,7 +26,7 @@ class AppCode
             throw new \InvalidArgumentException(sprintf(self::CONSTRAINT_KEY, 'invalid'));
         }
 
-        return new self($code);
+        $this->code = $code;
     }
 
     public function __toString(): string

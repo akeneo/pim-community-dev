@@ -31,8 +31,8 @@ class FetchAppsHandlerSpec extends ObjectBehavior
     public function it_fetches_apps($repository)
     {
         $apps = [
-            new App('magento', 'Magento Connector', FlowType::DATA_DESTINATION),
-            new App('bynder', 'Bynder DAM', FlowType::OTHER),
+            new App('42', 'magento', 'Magento Connector', FlowType::DATA_DESTINATION),
+            new App('43', 'bynder', 'Bynder DAM', FlowType::OTHER),
         ];
 
         $repository->fetchAll()->willReturn($apps);

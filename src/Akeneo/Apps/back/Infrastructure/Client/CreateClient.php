@@ -30,6 +30,6 @@ class CreateClient implements CreateClientInterface
         $fosClient->setAllowedGrantTypes([OAuth2::GRANT_TYPE_USER_CREDENTIALS, OAuth2::GRANT_TYPE_REFRESH_TOKEN]);
         $this->clientManager->updateClient($fosClient);
 
-        return ClientId::create($fosClient->getId());
+        return new ClientId($fosClient->getId());
     }
 }

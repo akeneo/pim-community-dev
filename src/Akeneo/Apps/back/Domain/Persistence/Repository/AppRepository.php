@@ -16,4 +16,6 @@ interface AppRepository
     public function create(App $app): void;
 
     public function fetchAll(): array;
+
+    public function generateId(): string;
 }

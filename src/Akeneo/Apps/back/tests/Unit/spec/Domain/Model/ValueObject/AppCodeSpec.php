@@ -16,19 +16,19 @@ class AppCodeSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->beConstructedThrough('create', ['magento']);
+        $this->beConstructedWith('magento');
         $this->shouldBeAnInstanceOf(AppCode::class);
     }
 
     function it_cannot_contains_an_empty_string()
     {
-        $this->beConstructedThrough('create', ['']);
+        $this->beConstructedWith('');
         $this->shouldThrow(new \InvalidArgumentException('akeneo_apps.app.constraint.code.required'))->duringInstantiation();
     }
 
     function it_cannot_contains_a_string_longer_than_100_characters()
     {
-        $this->beConstructedThrough('create', [str_repeat('a', 101)]);
+        $this->beConstructedWith(str_repeat('a', 103));
         $this->shouldThrow(
             new \InvalidArgumentException('akeneo_apps.app.constraint.code.too_long')
         )->duringInstantiation();
@@ -36,7 +36,7 @@ class AppCodeSpec extends ObjectBehavior
 
     function it_contains_only_alphanumeric_characters()
     {
-        $this->beConstructedThrough('create', ['foo-bar']);
+        $this->beConstructedWith('magento-connector');
         $this->shouldThrow(
             new \InvalidArgumentException('akeneo_apps.app.constraint.code.invalid')
         )->duringInstantiation();
@@ -44,7 +44,7 @@ class AppCodeSpec extends ObjectBehavior
 
     function it_returns_the_app_code_as_a_string()
     {
-        $this->beConstructedThrough('create', ['foo_bar']);
-        $this->__toString()->shouldReturn('foo_bar');
+        $this->beConstructedWith('magento');
+        $this->__toString()->shouldReturn('magento');
     }
 }
