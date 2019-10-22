@@ -6,10 +6,7 @@
     "sourceMap": true,
     "allowJs": true,
     "moduleResolution": "node",
-    "baseUrl": ".",
-    "paths": {
-      "*": ["public/bundles/*"]
-    },
+    "baseUrl": "./public/bundles",
     "jsx": "react",
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
@@ -21,16 +18,10 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "removeComments": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true
+    "esModuleInterop": true
   },
   "include": [
     "public/bundles",
     "frontend/types.d.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "src",
-    "tests"
   ]
 }
