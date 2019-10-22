@@ -729,7 +729,7 @@ class ProductAssetController extends Controller
         $assetForm = $this->createForm(AssetType::class, $productAsset);
         $assetForm->handleRequest($request);
 
-        if ($assetForm->isValid()) {
+        if ($assetForm->isSubmitted() && $assetForm->isValid()) {
             try {
                 $this->assetFilesUpdater->updateAssetFiles($productAsset);
                 $this->assetSaver->save($productAsset);
