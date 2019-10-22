@@ -11,8 +11,6 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  * @author    Damien Carcel (damien.carcel@akeneo.com)
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
- *
- *            This field should not contain any comma or semicolon.
  */
 class ProductIdentifierValidationIntegration extends TestCase
 {
@@ -31,26 +29,6 @@ class ProductIdentifierValidationIntegration extends TestCase
         $this->assertCount(1, $violations);
         $this->assertSame($violations->get(0)->getMessage(), 'The same identifier is already set on another product');
         $this->assertSame($violations->get(0)->getPropertyPath(), 'identifier');
-    }
-
-    public function testForbiddenIdentifierCharactersValidation()
-    {
-        $product1 = $this->createProduct('a,product,with,comma');
-        $product2 = $this->createProduct('a;product;with;semi-column');
-
-        $product1Violations = $this->validateProduct($product1);
-        $product2Violations = $this->validateProduct($product2);
-
-        $this->assertCount(1, $product1Violations);
-        $this->assertCount(1, $product2Violations);
-        $this->assertSame(
-            $product1Violations->get(0)->getMessage(),
-            'This field should not contain any comma or semicolon.'
-        );
-        $this->assertSame(
-            $product1Violations->get(0)->getMessage(),
-            'This field should not contain any comma or semicolon.'
-        );
     }
 
     public function testMaxCharactersValidation()
