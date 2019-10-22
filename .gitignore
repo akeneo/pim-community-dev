@@ -31,6 +31,6 @@ coverage/*
 .env.behat.local
 .env.test.local
 .env.dev.local
-config/credentials_gcp.json
+config/gcp_credentials.json
 coverage
 .nyc_output

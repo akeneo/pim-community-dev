@@ -32,7 +32,8 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
         php7.3-imagick \
         php7.3-apcu \
         php7.3-exif \
-        php-memcached && \
+        php-memcached \
+        ca-certificates && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     ln -s /usr/sbin/php-fpm7.3 /usr/local/sbin/php-fpm && \
@@ -52,14 +53,8 @@ FROM base AS dev
 ENV PHP_CONF_OPCACHE_VALIDATE_TIMESTAMP=1
 
 RUN apt-get update && \
-    apt-get --yes install git && \
-    apt-get --yes install ca-certificates && \
-    apt-get --yes install unzip && \
-    apt-get --yes install curl && \
-    apt-get --yes install default-mysql-client && \
-    apt-get --yes install php7.3-xdebug && \
-    apt-get --yes install procps && \
-    apt-get --yes install perceptualdiff && \
+    apt-get --yes install git unzip curl \
+        default-mysql-client php7.3-xdebug procps perceptualdiff && \
     phpdismod xdebug && \
     mkdir /etc/php/7.3/enable-xdebug && \
     ln -s /etc/php/7.3/mods-available/xdebug.ini /etc/php/7.3/enable-xdebug/xdebug.ini && \
@@ -101,22 +96,27 @@ VOLUME /srv/pim
 #
 FROM dev AS builder
 
-RUN apt-get --yes install yarnpkg \
-        nodejs \
+RUN apt-get update && \
+    apt-get --yes install yarnpkg nodejs && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /srv/pim/
 
-COPY . .
+COPY bin bin
+COPY config config
+COPY public public
+COPY src src
+COPY upgrades upgrades
+COPY composer.json package.json yarn.lock .env .
 
 ENV APP_ENV=prod
-RUN php -d 'memory_limit=3G' /usr/local/bin/composer install --optimize-autoloader --no-scripts --no-interaction --no-ansi --no-dev --prefer-dist && \
+RUN mkdir var && \
+    php -d 'memory_limit=3G' /usr/local/bin/composer install --optimize-autoloader --no-scripts --no-interaction --no-ansi --no-dev --prefer-dist && \
     bin/console pim:installer:assets --symlink --clean && \
-    yarn install --frozen-lockfile && \
-    yarn run less && \
-    yarn run webpack && \
-    rm -rf node_modules
+    yarnpkg install --frozen-lockfile && \
+    yarnpkg run less && \
+    yarnpkg run webpack
 
 #
 # Image used for production
@@ -126,11 +126,18 @@ FROM base AS prod
 ENV APP_ENV=prod \
     PHP_CONF_OPCACHE_VALIDATE_TIMESTAMP=0
 
-# Copy the application with its dependencies
 WORKDIR /srv/pim/
-COPY --from=builder /srv/pim/ .
+# Copy the application with its dependencies
+COPY --from=builder /srv/pim/bin bin
+COPY --from=builder /srv/pim/config config
+COPY --from=builder /srv/pim/public public
+COPY --from=builder /srv/pim/src src
+COPY --from=builder /srv/pim/upgrades upgrades
+COPY --from=builder /srv/pim/var var
+COPY --from=builder /srv/pim/vendor vendor
+COPY --from=builder /srv/pim/.env .
 
 # Prepare the application
-RUN mkdir -p public/media && chown -R www-data:www-data public/media var
-USER www-data
-RUN rm -rf var/cache && bin/console cache:warmup
+RUN rm -rf public/test_dist && \
+    mkdir public/media && chown -R www-data:www-data public/media var && \
+    rm -rf var/cache && su www-data -s /bin/bash bash -c "bin/console cache:warmup"
