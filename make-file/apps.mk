@@ -2,7 +2,7 @@ _APPS_YARN_RUN = $(YARN_EXEC) run --cwd=src/Akeneo/Apps/front/
 
 # Tests
 # Back
-apps-coupling:
+apps-back-coupling:
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Apps/back/tests/.php_cd.php src/Akeneo/Apps/back
 
 apps-back-phpspec:
@@ -12,7 +12,13 @@ apps-back-acceptance:
 	$(PHP_RUN) vendor/bin/behat --strict --config src/Akeneo/Apps/back/tests/Acceptance/behat.yml
 
 apps-back-integration:
-    $(PHP_RUN) vendor/bin/phpunit -c phpunit.xml.dist --testsuite=Akeneo_Apps_Integration
+	$(PHP_RUN) vendor/bin/phpunit -c phpunit.xml.dist --testsuite=Akeneo_Apps_Integration
+
+apps-back:
+	make apps-back-coupling
+	make apps-back-phpspec
+	make apps-back-acceptance
+	make apps-back-integration
 
 # Front
 apps-front-tests:
