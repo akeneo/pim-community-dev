@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Asset\Component;
 
 use Akeneo\Asset\Bundle\AttributeType\AttributeTypes;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\ValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetExistingReferenceDataCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValue;

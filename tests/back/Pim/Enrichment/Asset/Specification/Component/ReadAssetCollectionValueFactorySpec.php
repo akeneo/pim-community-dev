@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Asset\Component;
 
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\ValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetExistingReferenceDataCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValue;
 use Akeneo\Asset\Bundle\AttributeType\AttributeTypes;

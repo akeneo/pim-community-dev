@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\ReferenceEntity\Component\Factory\Read\Value;
 
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\ValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactory;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityType;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Value\ReferenceEntityValue;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
