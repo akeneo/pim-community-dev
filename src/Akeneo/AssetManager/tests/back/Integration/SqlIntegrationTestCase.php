@@ -44,14 +44,14 @@ abstract class SqlIntegrationTestCase extends KernelTestCase
 
     protected function get(string $service)
     {
-        return self::$kernel->getContainer()->get($service);
+        return self::$container->get($service);
     }
 
     protected function overrideContainer(): void
     {
         $realEventDispatcher = $this->get('event_dispatcher');
-        self::$kernel->getContainer()->set('event_dispatcher', new EventDispatcherMock($realEventDispatcher));
-        self::$kernel->getContainer()->set('akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer', new AssetIndexerSpy());
+        self::$container->set('event_dispatcher', new EventDispatcherMock($realEventDispatcher));
+        self::$container->set('akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer', new AssetIndexerSpy());
     }
 
     /**
