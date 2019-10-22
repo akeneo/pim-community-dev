@@ -84,9 +84,10 @@ certmanager:
 
 image:
   pim:
-    repository: eu.gcr.io/akeneo-cloud/pim-enterprise-cloud
+    repository: eu.gcr.io/akeneo-ci/pim-enterprise-dev
     # image.pim.tag is added by the Jenkinsfile when running the CI, manually use "--set image.pim.tag x.y.z-AB"
     pullPolicy: IfNotPresent
+    tag: master
   httpd:
     repository: httpd
     tag: 2.4.33
@@ -227,60 +228,31 @@ memcached:
   pdbMinAvailable: 0
 
 elasticsearch:
-  appVersion: 7.3.1
-  image:
-    repository: docker.elastic.co/elasticsearch/elasticsearch-oss
-    tag: 7.3.1
+  appVersion: 7.4.0
+  image: "docker.elastic.co/elasticsearch/elasticsearch"
+  tag: 7.4.0
+  pullPolicy: IfNotPresent
   fullnameOverride: elasticsearch
+  clusterName: "elasticsearch"
   sysctlInitContainer:
     enabled: false
   cluster:
-    name: "pim-es"
     env:
-      # See chart config map: https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/configmap.yaml
-      # And elasticsearch documentation: https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-gateway.html
-      MINIMUM_MASTER_NODES: "2" # Might be equal to "lower((master.replicas/2)+1)
-      EXPECTED_MASTER_NODES: "2" # Equals to MINIMUM_MASTER_NODES
-      RECOVER_AFTER_MASTER_NODES: "2" # Equals to MINIMUM_MASTER_NODES
-      EXPECTED_DATA_NODES: "2" # Equals to data.replica
-      RECOVER_AFTER_DATA_NODES: "2" # Equals to data.replica
+      MINIMUM_MASTER_NODES: 2
+      RECOVER_AFTER_MASTER_NODES: 2
+      EXPECTED_MASTER_NODES: 2
   client:
-    replicas: 1
-    heapSize: "128m"
-    resources:
-      limits:
-        cpu: "1"
-        memory: "512Mi"
-      requests:
-        cpu: "25m"
-        memory: "160Mi"
+    replicas: 2
+    discovery:
+      seed_hosts: [localhost]
   master:
     replicas: 2
+    exposeHttp: true
+    podDisruptionBudget:
+      minAvailable: 2
     persistence:
-      size: 1Gi
-      storageClass: ssd-retain
-    heapSize: "256m"
-    resources:
-      limits:
-        cpu: "1"
-        memory: "512Mi"
-      requests:
-        cpu: "25m"
-        memory: "320Mi"
-    updateStrategy:
-      type: RollingUpdate
+      storageClass: standard
   data:
     replicas: 2
     persistence:
-      size: 10Gi
-      storageClass: ssd-retain
-    heapSize: "1G"
-    resources:
-      limits:
-        cpu: "1"
-        memory: "1536Mi"
-      requests:
-        cpu: "25m"
-        memory: "1024Mi"
-    updateStrategy:
-      type: RollingUpdate
+     storageClass: standard
