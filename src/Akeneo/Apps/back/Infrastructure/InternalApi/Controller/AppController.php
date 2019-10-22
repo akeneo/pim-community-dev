@@ -41,7 +41,9 @@ class AppController
         $apps = $this->fetchAppsHandler->query();
 
         return new JsonResponse(
-            array_map(function(App $app) { return $app->normalize(); }, $apps)
+            array_map(function (App $app) {
+                return $app->normalize();
+            }, $apps)
         );
     }
 
