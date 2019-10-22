@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.14 (2019-10-22)
+
 ## Features
 
 - AOB-661: allow prefix of ES document `_id`
