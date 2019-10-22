@@ -244,6 +244,8 @@
 - Move class from `Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetProductAssociationsByProductModelCodes` to `Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetProductAssociationsByProductModelCodes`
 - Move class from `Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetProductModelsAssociationsByProductModelCodes` to `Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetProductModelsAssociationsByProductModelCodes`
 - Move class from `Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetValuesAndPropertiesFromProductModelCodes` to `Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetValuesAndPropertiesFromProductModelCodes`
+- Change constructor of `Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ProductController` to add `Akeneo\Tool\Bundle\ApiBundle\EventSubscriber\BatchEventSubscriberInterface`
+- Change constructor of `Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ProductModelController` to add `Akeneo\Tool\Bundle\ApiBundle\EventSubscriber\BatchEventSubscriberInterface`
 
 ### CLI Commands
 

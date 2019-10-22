@@ -193,6 +193,14 @@ const webpackConfig = {
         ],
       },
 
+      {
+        test: /\.(svg)$/,
+        loader: 'file-loader',
+        options: {
+          outputPath: 'assets'
+        },
+      },
+
       // Process the typescript loader files
       {
         test: /\.tsx?$/,
@@ -200,7 +208,7 @@ const webpackConfig = {
           {
             loader: 'ts-loader',
             options: {
-              configFile: path.resolve(__dirname, 'tsconfig.json'),
+              configFile: path.resolve(rootDir, 'tsconfig.json'),
               context: path.resolve(rootDir),
             },
           },
@@ -211,15 +219,6 @@ const webpackConfig = {
               configMap: config,
             },
           },
-        ],
-        enforce: 'pre',
-        include: /(public\/bundles)/,
-        exclude: [
-          path.resolve(rootDir, 'node_modules'),
-          path.resolve(rootDir, 'vendor'),
-          path.resolve(rootDir, 'tests'),
-          path.resolve(__dirname, 'tests'),
-          path.resolve(rootDir, 'src')
         ],
       },
     ],

@@ -13,7 +13,7 @@ const viewBuilder = require('pim/form-builder');
 const dependencies = {
   router,
   translate,
-  viewBuilder
+  viewBuilder,
 };
 
 class AppsController extends BaseController {
@@ -24,6 +24,12 @@ class AppsController extends BaseController {
     ReactDOM.render(<Apps {...dependencies} />, this.el);
 
     return $.Deferred().resolve();
+  }
+
+  remove() {
+    ReactDOM.unmountComponentAtNode(this.el);
+
+    return super.remove();
   }
 }
 

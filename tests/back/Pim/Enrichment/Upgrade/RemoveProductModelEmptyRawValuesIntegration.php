@@ -1,8 +1,9 @@
 <?php
 
+namespace AkeneoTest\Pim\Enrichment\Upgrade;
+
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Tool\Component\Console\CommandLauncher;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -12,6 +13,8 @@ use Doctrine\DBAL\Connection;
  */
 class RemoveProductModelEmptyRawValuesIntegration extends TestCase
 {
+    use ExecuteMigrationTrait;
+
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
@@ -45,11 +48,6 @@ SQL;
         $this->assertProductModelRawValuesEquals('pm7', '{"name": {"mobile": {"<all_locales>": "bar"}}}');
     }
 
-    private function getCommandLauncher(): CommandLauncher
-    {
-        return $this->get('pim_catalog.command_launcher');
-    }
-
     private function getConnection(): Connection
     {
         return $this->get('database_connection');
@@ -62,14 +60,5 @@ SQL;
             ['code' => $productModelCode]
         );
         $this->assertEquals($expectedRawValues, $result[0]);
-    }
-
-    private function reExecuteMigration(string $migrationLabel)
-    {
-        $resultDown = $this->getCommandLauncher()->executeForeground(sprintf('doctrine:migrations:execute %s --down -n', $migrationLabel));
-        $this->assertEquals(0, $resultDown->getCommandStatus(), json_encode($resultDown->getCommandOutput()));
-
-        $resultUp = $this->getCommandLauncher()->executeForeground(sprintf('doctrine:migrations:execute %s --up -n', $migrationLabel));
-        $this->assertEquals(0, $resultUp->getCommandStatus(), json_encode($resultUp->getCommandOutput()));
     }
 }
