@@ -1,16 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace spec\Akeneo\Apps\Infrastructure\Client;
+namespace spec\Akeneo\Apps\Infrastructure\Client\Fos;
 
 use Akeneo\Apps\Application\Service\CreateClientInterface;
 use Akeneo\Apps\Domain\Model\ValueObject\ClientId;
-use Akeneo\Apps\Infrastructure\Client\CreateClient;
+use Akeneo\Apps\Infrastructure\Client\Fos\CreateClient;
 use Akeneo\Tool\Bundle\ApiBundle\Entity\Client;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use OAuth2\OAuth2;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class CreateClientSpec extends ObjectBehavior
 {
