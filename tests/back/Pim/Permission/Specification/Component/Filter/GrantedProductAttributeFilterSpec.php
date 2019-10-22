@@ -56,10 +56,18 @@ class GrantedProductAttributeFilterSpec extends ObjectBehavior
                         'data' => 'My very awesome T-shirt',
                     ],
                 ],
+                '123' => [
+                    [
+                        'locale' => 'en_US',
+                        'scope' => null,
+                        'data' => 'Test with numeric attribute name',
+                    ],
+                ],
             ],
         ];
 
         $attributeRepository->findOneByIdentifier('name')->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('123')->willReturn($attribute);
         $attribute->getGroup()->willReturn($group);
         $authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $group)->willReturn(true);
 
