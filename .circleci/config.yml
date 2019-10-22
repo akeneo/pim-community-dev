@@ -50,7 +50,7 @@ jobs:
           name: Check PIM requirements
           command: |
               C='mysql elasticsearch' make up
-              vendor/akeneo/pim-community-dev/.circleci/wait_docker_up.sh
+              vendor/akeneo/pim-community-dev/docker/wait_docker_up.sh
               make check-requirements
       - run:
           name: Install asset
@@ -156,7 +156,7 @@ jobs:
                 command: |
                     docker load -i php-pim-image.tar
                     APP_ENV=test C='fpm mysql elasticsearch object-storage' make up
-                    vendor/akeneo/pim-community-dev/.circleci/wait_docker_up.sh
+                    vendor/akeneo/pim-community-dev/docker/wait_docker_up.sh
           - run:
                 name: Install database
                 command: APP_ENV=test make database
@@ -214,7 +214,7 @@ jobs:
           command: |
             docker load -i php-pim-image.tar
             APP_ENV=behat C='fpm mysql elasticsearch httpd object-storage selenium' make up
-            vendor/akeneo/pim-community-dev/.circleci/wait_docker_up.sh
+            vendor/akeneo/pim-community-dev/docker/wait_docker_up.sh
       - run:
           name: Install database
           command: APP_ENV=behat make database
@@ -317,7 +317,7 @@ jobs:
             export ES_JAVA_OPTS='-Xms2g -Xmx2g'
             docker load -i php-pim-image.tar
             APP_ENV=behat C='fpm mysql httpd elasticsearch object-storage' make up
-            vendor/akeneo/pim-community-dev/.circleci/wait_docker_up.sh
+            vendor/akeneo/pim-community-dev/docker/wait_docker_up.sh
       - run:
           name: Run performance tests
           command: .circleci/run_performance_tests.sh

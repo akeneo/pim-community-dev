@@ -42,8 +42,9 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
     sed -i "s#listen = /run/php/php7.3-fpm.sock#listen = 9000#g" /etc/php/7.3/fpm/pool.d/www.conf && \
     mkdir -p /run/php
 
-COPY docker/build/akeneo.ini /etc/php/7.3/cli/conf.d/99-akeneo.ini
-COPY docker/build/akeneo.ini /etc/php/7.3/fpm/conf.d/99-akeneo.ini
+COPY docker/php.ini /etc/php/7.3/cli/conf.d/99-akeneo.ini
+COPY docker/php.ini /etc/php/7.3/fpm/conf.d/99-akeneo.ini
+COPY docker/fpm.conf /etc/php/7.3/fpm/pool.d/zzz-akeneo.conf
 
 #
 # Image used for development
@@ -139,5 +140,5 @@ COPY --from=builder /srv/pim/.env .
 
 # Prepare the application
 RUN rm -rf public/test_dist && \
-    mkdir public/media && chown -R www-data:www-data public/media var && \
+    mkdir -p public/media var/logs/batch && chown -R www-data:www-data public/media var && \
     rm -rf var/cache && su www-data -s /bin/bash bash -c "bin/console cache:warmup"

@@ -1,10 +1,20 @@
 monolog:
     handlers:
+        main:
+            type:         fingers_crossed
+            action_level: error
+            handler:      nested
+        nested:
+            type:  stream
+            path:  "php://stderr"
+            level: warning
+            formatter: 'monolog.formatter.json'
         franklin:
-            level: info
             type: stream
-            path: '%kernel.logs_dir%/ask-franklin.log'
+            path:  "php://stderr"
+            level: warning
             channels: ['franklin']
+            formatter: 'monolog.formatter.json'
         authentication:
             type: service
             id: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\DbTableLogHandler'
