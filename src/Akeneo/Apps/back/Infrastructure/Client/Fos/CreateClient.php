@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Apps\Infrastructure\Client;
+namespace Akeneo\Apps\Infrastructure\Client\Fos;
 
 use Akeneo\Apps\Application\Service\CreateClientInterface;
 use Akeneo\Apps\Domain\Model\ValueObject\ClientId;

@@ -1,6 +1,0 @@
-suites:
-    Apps:
-        namespace: Akeneo\Apps
-        psr4_prefix: Akeneo\Apps
-        spec_path: src/Akeneo/Apps/back/tests/Unit
-        src_path: src/Akeneo/Apps/back

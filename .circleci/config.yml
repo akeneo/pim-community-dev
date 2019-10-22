@@ -112,8 +112,8 @@ jobs:
           - run:
                 name: Acceptance back
                 command: |
-                    docker-compose run --rm -T php vendor/bin/behat --strict -p acceptance -vv
-                    make apps-back-acceptance
+                    docker-compose run -u www-data --rm -T php vendor/bin/behat --strict -p acceptance -vv
+                    docker-compose run -u www-data --rm php php vendor/bin/behat --strict --config src/Akeneo/Apps/back/tests/Acceptance/behat.yml
                 when: always
           - store_test_results:
                 path: var/tests

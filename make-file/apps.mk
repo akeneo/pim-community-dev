@@ -1,16 +1,27 @@
 _APPS_YARN_RUN = $(YARN_EXEC) run --cwd=src/Akeneo/Apps/front/
 
 # Tests
-
-apps-coupling:
+# Back
+apps-back-coupling:
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Apps/back/tests/.php_cd.php src/Akeneo/Apps/back
 
 apps-back-phpspec:
-	$(PHP_RUN) vendor/bin/phpspec -c src/Akeneo/Apps/back/tests/phpspec.yml.dist run
+	$(PHP_RUN) vendor/bin/phpspec run src/Akeneo/Apps/back/tests/Unit/spec/
 
 apps-back-acceptance:
+	docker-compose stop
 	$(PHP_RUN) vendor/bin/behat --strict --config src/Akeneo/Apps/back/tests/Acceptance/behat.yml
 
+apps-back-integration:
+	$(PHP_RUN) vendor/bin/phpunit -c phpunit.xml.dist --testsuite=Akeneo_Apps_Integration
+
+apps-back:
+	make apps-back-coupling
+	make apps-back-phpspec
+	make apps-back-integration
+	make apps-back-acceptance
+
+# Front
 apps-front-tests:
 	$(_APPS_YARN_RUN) jest
 

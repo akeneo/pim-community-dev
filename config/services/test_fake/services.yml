@@ -6,4 +6,6 @@ imports:
     - { resource: ../../../tests/back/Platform/Acceptance/CatalogVolumeMonitoring/Resources/config/behat/services.yml }
     - { resource: ../../../tests/back/Pim/Enrichment/Acceptance/Resources/config/behat/services.yml }
     - { resource: ../../../tests/back/Platform/Acceptance/Analytics/Resources/config/queries.yml }
+    # Akeneo/Apps
     - { resource: ../../../src/Akeneo/Apps/back/tests/Acceptance/Resources/config/repositories.yml }
+    - { resource: ../../../src/Akeneo/Apps/back/tests/Acceptance/Resources/config/services.yml }
