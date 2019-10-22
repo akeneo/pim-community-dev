@@ -1,5 +1,5 @@
 services:
-  akeneo_app.service.client.create_client:
-    class: Akeneo\Apps\Infrastructure\Client\CreateClient
-    arguments:
-      - '@fos_oauth_server.client_manager.default'
+    akeneo_app.service.client.create_client:
+        class: Akeneo\Apps\Infrastructure\Client\Fos\CreateClient
+        arguments:
+            - '@fos_oauth_server.client_manager.default'

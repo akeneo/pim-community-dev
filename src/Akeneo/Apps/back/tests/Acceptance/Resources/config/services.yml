@@ -1,0 +1,3 @@
+services:
+    akeneo_app.service.client.create_client:
+        class: Akeneo\Apps\Infrastructure\Client\Fake\CreateClient
