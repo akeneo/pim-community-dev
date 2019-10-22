@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import * as $ from 'jquery';
+import $ from 'jquery';
 
 const BaseController = require('pim/controller/front');
 const FormBuilder = require('pim/form-builder');

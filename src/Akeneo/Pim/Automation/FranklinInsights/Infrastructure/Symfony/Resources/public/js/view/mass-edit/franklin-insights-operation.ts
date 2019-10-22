@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import * as $ from 'jquery';
+import $ from 'jquery';
 import * as _ from 'underscore';
 import {getConnectionStatus} from '../../fetcher/franklin-connection';
 import ConnectionStatus from '../../model/connection-status';

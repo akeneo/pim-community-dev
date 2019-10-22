@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import * as $ from 'jquery';
+import $ from 'jquery';
 import * as _ from 'underscore';
 const noDataTemplate = require('pim/template/common/no-data');
 const __ = require('oro/translator');

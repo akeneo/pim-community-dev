@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as $ from 'jquery';
+import $ from 'jquery';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {NormalizedAsset, NormalizedItemAsset} from 'akeneoassetmanager/domain/model/asset/asset';
