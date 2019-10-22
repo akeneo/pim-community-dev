@@ -13,7 +13,7 @@ use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetValuesAndProperties
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModelList;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueCollectionFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 

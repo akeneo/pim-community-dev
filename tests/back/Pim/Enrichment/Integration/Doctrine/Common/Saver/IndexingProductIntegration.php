@@ -7,8 +7,7 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 
 /**
  * Test products have been correctly indexed after being saved.
- * They should be indexed in 2 indexes:
- *      - pim_catalog_product
+ * They should be indexed in 1 index:
  *      - pim_catalog_product_and_product_model
  */
 class IndexingProductIntegration extends TestCase

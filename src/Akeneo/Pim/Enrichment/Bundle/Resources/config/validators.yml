@@ -121,7 +121,7 @@ services:
         class: '%pim_catalog.validator.constraint.immutable_variant_axis_values.class%'
         arguments:
             - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
-            - '@akeneo.pim.enrichment.factory.read.write_value_collection'
+            - '@akeneo.pim.enrichment.factory.write_value_collection'
         tags:
             - { name: validator.constraint_validator, alias: pim_immutable_variant_axis_values_validator }
 
