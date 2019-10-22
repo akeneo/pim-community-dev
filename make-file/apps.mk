@@ -18,8 +18,8 @@ apps-back-integration:
 apps-back:
 	make apps-back-coupling
 	make apps-back-phpspec
-	make apps-back-acceptance
 	make apps-back-integration
+	make apps-back-acceptance
 
 # Front
 apps-front-tests:
