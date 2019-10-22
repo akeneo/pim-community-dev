@@ -22,8 +22,8 @@ Pim\Component\Catalog\Model\Product:
         identifier:
             - NotBlank: ~
             - Regex:
-                pattern: '/^[^,;]+$/'
-                message: 'regex.comma_or_semicolon.message'
+                pattern: '/^(?!\s)[^,;]+(?<!\s)$/'
+                message: 'regex.comma_or_semicolon_or_surrounding_space.message'
             - Length:
                 max: 255
     getters:
