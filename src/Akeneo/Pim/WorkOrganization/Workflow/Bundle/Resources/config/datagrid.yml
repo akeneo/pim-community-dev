@@ -127,6 +127,7 @@ services:
 
     pimee_workflow.datagrid.configuration.published_product.grid_helper:
         class: '%pimee_workflow.datagrid.configuration.published_product.grid_helper.class%'
+        public: true
         arguments:
             - '@security.authorization_checker'
             - '@pimee_workflow.repository.published_product'
@@ -301,6 +302,7 @@ services:
     # Controller
     pimee_workflow.datagrid.controller.published_product_export:
         class: '%pim_datagrid.controller.product_export.class%'
+        public: true
         arguments:
             - '@request_stack'
             - '@pim_datagrid.extension.mass_action.dispatcher'
