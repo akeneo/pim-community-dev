@@ -156,6 +156,7 @@ services:
     ### Controllers
     pimee_teamwork_assistant.controller.project_controller:
         class: '%pimee_teamwork_assistant.controller.project_controller.class%'
+        public: true
         arguments:
             - '@pimee_teamwork_assistant.converter.filter'
             - '@pimee_teamwork_assistant.factory.project'
