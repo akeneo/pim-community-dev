@@ -21,7 +21,10 @@ class AppCommand extends Command
 {
     protected static $defaultName = 'akeneo:app:create';
 
+    /** @var CreateAppHandler */
     private $createAppHandler;
+
+    /** @var FetchAppsHandler */
     private $fetchAppsHandler;
 
     public function __construct(CreateAppHandler $createAppHandler, FetchAppsHandler $fetchAppsHandler)

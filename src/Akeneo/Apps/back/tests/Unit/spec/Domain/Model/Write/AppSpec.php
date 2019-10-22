@@ -6,6 +6,7 @@ namespace spec\Akeneo\Apps\Domain\Model\Write;
 
 use Akeneo\Apps\Domain\Model\ValueObject\AppId;
 use Akeneo\Apps\Domain\Model\ValueObject\ClientId;
+use Akeneo\Apps\Domain\Model\ValueObject\UserId;
 use Akeneo\Apps\Domain\Model\Write\App;
 use Akeneo\Apps\Domain\Model\ValueObject\AppCode;
 use Akeneo\Apps\Domain\Model\ValueObject\AppLabel;
@@ -27,7 +28,8 @@ class AppSpec extends ObjectBehavior
             'magento',
             'Magento Connector',
             FlowType::DATA_DESTINATION,
-            new ClientId(42)
+            new ClientId(42),
+            new UserId(24)
         );
     }
 
@@ -59,5 +61,10 @@ class AppSpec extends ObjectBehavior
     public function it_returns_the_client_id()
     {
         $this->clientId()->shouldBeLike(new ClientId(42));
+    }
+
+    public function it_returns_the_user_id()
+    {
+        $this->userId()->shouldBeLike(new UserId(24));
     }
 }

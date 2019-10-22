@@ -1,3 +1,6 @@
 services:
     akeneo_app.service.client.create_client:
         class: Akeneo\Apps\Infrastructure\Client\Fake\CreateClient
+
+    akeneo_app.service.user.create_user:
+        class: Akeneo\Apps\Infrastructure\User\Fake\CreateUser
