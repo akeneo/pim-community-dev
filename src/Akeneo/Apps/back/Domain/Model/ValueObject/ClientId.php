@@ -13,18 +13,13 @@ class ClientId
     /** @var int */
     private $id;
 
-    private function __construct(int $id)
-    {
-        $this->id = $id;
-    }
-
-    public static function create(int $id): self
+    public function __construct(int $id)
     {
         if (0 > $id) {
             throw new \InvalidArgumentException('Client id must be positive.');
         }
 
-        return new self($id);
+        $this->id = $id;
     }
 
     public function id(): int

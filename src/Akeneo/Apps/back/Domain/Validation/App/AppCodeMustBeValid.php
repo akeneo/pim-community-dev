@@ -17,7 +17,7 @@ final class AppCodeMustBeValid
     public static function validate(string $appCode, ExecutionContextInterface $context): void
     {
         try {
-            AppCode::create($appCode);
+            new AppCode($appCode);
         } catch (\InvalidArgumentException $e) {
             $context->buildViolation($e->getMessage())->addViolation();
         }

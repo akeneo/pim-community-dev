@@ -17,7 +17,7 @@ final class AppLabelMustBeValid
     public static function validate(string $appLabel, ExecutionContextInterface $context): void
     {
         try {
-            AppLabel::create($appLabel);
+            new AppLabel($appLabel);
         } catch (\InvalidArgumentException $e) {
             $context->buildViolation($e->getMessage())->addViolation();
         }

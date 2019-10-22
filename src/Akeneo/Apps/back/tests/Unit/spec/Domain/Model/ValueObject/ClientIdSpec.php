@@ -10,13 +10,13 @@ class ClientIdSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->beConstructedThrough('create', [42]);
+        $this->beConstructedWith(42);
         $this->shouldBeAnInstanceOf(ClientId::class);
     }
 
     function it_must_be_positive()
     {
-        $this->beConstructedThrough('create', [-1]);
+        $this->beConstructedWith(-1);
         $this->shouldThrow(
             new \InvalidArgumentException('Client id must be positive.')
         )->duringInstantiation();
@@ -24,7 +24,7 @@ class ClientIdSpec extends ObjectBehavior
 
     function it_provides_the_client_id()
     {
-        $this->beConstructedThrough('create', [42]);
+        $this->beConstructedWith(42);
         $this->id()->shouldReturn(42);
     }
 }

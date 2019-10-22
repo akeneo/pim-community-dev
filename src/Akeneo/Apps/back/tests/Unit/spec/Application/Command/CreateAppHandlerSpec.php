@@ -42,7 +42,7 @@ class CreateAppHandlerSpec extends ObjectBehavior
         $validator->validate($command)->willReturn($constraintViolationList);
         $constraintViolationList->count()->willReturn(0);
 
-        $clientId = ClientId::create(42);
+        $clientId = new ClientId(42);
         $createClient->execute('Magento Connector')->shouldBeCalled()->willReturn($clientId);
 
         $repository->generateId()->willReturn('471');

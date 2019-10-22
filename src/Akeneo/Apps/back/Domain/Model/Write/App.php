@@ -32,26 +32,13 @@ class App
     /** @var ClientId */
     private $clientId;
 
-    private function __construct(AppId $id, AppCode $code, AppLabel $label, FlowType $flowType, ClientId $clientId)
+    public function __construct(string $id, string $code, string $label, string $flowType, ClientId $clientId)
     {
-        $this->id = $id;
-        $this->code = $code;
-        $this->label = $label;
-        $this->flowType = $flowType;
+        $this->id = new AppId($id);
+        $this->code = new AppCode($code);
+        $this->label = new AppLabel($label);
+        $this->flowType = new FlowType($flowType);
         $this->clientId = $clientId;
-    }
-
-    public static function create(string $id, string $appCode, string $label, string $flowType, ClientId $clientId): self
-    {
-        // TODO: Validation + Id Generation
-
-        return new self(
-            new AppId($id),
-            AppCode::create($appCode),
-            AppLabel::create($label),
-            FlowType::create($flowType),
-            $clientId
-        );
     }
 
     public function id(): AppId
