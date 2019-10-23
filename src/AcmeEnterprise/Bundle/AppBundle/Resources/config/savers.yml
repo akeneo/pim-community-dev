@@ -1,6 +1,7 @@
 services:
     acme_app.saver.color:
         class: '%akeneo_storage_utils.saver.base.class%'
+        public: true
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
@@ -8,6 +9,7 @@ services:
 
     acme_app.saver.fabric:
         class: '%akeneo_storage_utils.saver.base.class%'
+        public: true
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
