@@ -34,7 +34,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         parent::setUp();
 
         $this->loadFixtures();
-        $this->get('akeneoreference_entity.tests.helper.authenticated_client_factory')->logIn($this->client, 'julia');
+        $this->get('akeneoreference_entity.tests.helper.authenticated_client')->logIn($this->client, 'julia');
         $this->webClientHelper = $this->get('akeneoreference_entity.tests.helper.web_client_helper');
     }
 

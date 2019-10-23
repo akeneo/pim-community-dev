@@ -28,8 +28,8 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
             - '@akeneo_referenceentity.infrastructure.persistence.record.hydrator.value'
 
-    akeneoreference_entity.tests.helper.authenticated_client_factory:
-        class: Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClientFactory
+    akeneoreference_entity.tests.helper.authenticated_client:
+        class: Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClient
         arguments:
             - '@pim_user.repository.user'
             - '@session'

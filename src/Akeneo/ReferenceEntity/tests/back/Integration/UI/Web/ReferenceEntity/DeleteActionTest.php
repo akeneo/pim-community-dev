@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Integration\UI\Web\ReferenceEntity;
 
 use Akeneo\Channel\Component\Model\Locale;
-use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClientFactory;
+use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClient;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
@@ -39,7 +39,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
 
         $this->resetDB();
         $this->loadFixtures();
-        $this->get('akeneoreference_entity.tests.helper.authenticated_client_factory')->logIn($this->client, 'julia');
+        $this->get('akeneoreference_entity.tests.helper.authenticated_client')->logIn($this->client, 'julia');
         $this->webClientHelper = $this->get('akeneoreference_entity.tests.helper.web_client_helper');
     }
 
