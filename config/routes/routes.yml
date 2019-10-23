@@ -8,7 +8,7 @@ akeneo_pim_structure:
 akeneo_pim_enrichment:
     resource: "@AkeneoPimEnrichmentBundle/Resources/config/routing.yml"
 
-akeneo_apps_frontend:
+akeneo_apps:
     resource: "@AkeneoAppsBundle/Resources/config/routing.yml"
 
 akeneo_apps_rest:

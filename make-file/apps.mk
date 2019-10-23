@@ -1,7 +1,7 @@
 _APPS_YARN_RUN = $(YARN_EXEC) run --cwd=src/Akeneo/Apps/front/
 
-# Tests
-# Back
+# Tests Back
+
 apps-back-coupling:
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Apps/back/tests/.php_cd.php src/Akeneo/Apps/back
 
@@ -21,7 +21,8 @@ apps-back:
 	make apps-back-integration
 	make apps-back-acceptance
 
-# Front
+# Tests Front
+
 apps-front-tests:
 	$(_APPS_YARN_RUN) jest
 

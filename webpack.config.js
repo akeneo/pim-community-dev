@@ -66,9 +66,7 @@ const webpackConfig = {
   devtool: 'source-map',
   resolve: {
     symlinks: false,
-    alias: {
-      ..._.mapKeys(aliases, (path, key) => `${key}$`),
-    },
+    alias: _.mapKeys(aliases, (path, key) => `${key}$`),
     modules: [path.resolve('./public/bundles'), path.resolve('./node_modules')],
     extensions: ['.js', '.json', '.ts', '.tsx']
   },
@@ -202,6 +200,14 @@ const webpackConfig = {
               configMap: config,
             },
           },
+        ],
+        include: /(public\/bundles)/,
+        exclude: [
+          path.resolve(rootDir, 'node_modules'),
+          path.resolve(rootDir, 'vendor'),
+          path.resolve(rootDir, 'tests'),
+          path.resolve(__dirname, 'tests'),
+          path.resolve(rootDir, 'src')
         ],
       },
     ],
