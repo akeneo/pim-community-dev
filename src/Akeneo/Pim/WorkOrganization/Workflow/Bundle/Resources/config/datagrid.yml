@@ -107,6 +107,7 @@ services:
     # Configuration
     pimee_workflow.datagrid.configuration.product_draft.grid_helper:
         class: '%pimee_workflow.datagrid.configuration.product_draft.grid_helper.class%'
+        public: true
         arguments:
             - '@security.authorization_checker'
             - '@pimee_workflow.helper.product_draft_changes_permission'
