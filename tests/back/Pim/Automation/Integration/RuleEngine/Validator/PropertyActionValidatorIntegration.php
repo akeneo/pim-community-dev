@@ -25,10 +25,10 @@ class PropertyActionValidatorIntegration extends TestCase
      */
     public function testValidationOnARuleRegexConstraintOnSku()
     {
-        $skuAttribute = $this->getFromTestContainer('pim_api.repository.attribute')->findOneByIdentifier('sku');
+        $skuAttribute = $this->get('pim_api.repository.attribute')->findOneByIdentifier('sku');
         $skuAttribute->setValidationRule('regexp');
         $skuAttribute->setValidationRegexp('/^foo$/');
-        $this->getFromTestContainer('pim_catalog.saver.attribute')->save($skuAttribute);
+        $this->get('pim_catalog.saver.attribute')->save($skuAttribute);
 
         $item  = [
             'actions' => [
@@ -69,10 +69,10 @@ class PropertyActionValidatorIntegration extends TestCase
     {
         $data['group'] = $data['group'] ?? 'other';
 
-        $attribute = $this->getFromTestContainer('pim_catalog.factory.attribute')->create();
-        $this->getFromTestContainer('pim_catalog.updater.attribute')->update($attribute, $data);
-        $constraints = $this->getFromTestContainer('validator')->validate($attribute);
+        $attribute = $this->get('pim_catalog.factory.attribute')->create();
+        $this->get('pim_catalog.updater.attribute')->update($attribute, $data);
+        $constraints = $this->get('validator')->validate($attribute);
         $this->assertCount(0, $constraints);
-        $this->getFromTestContainer('pim_catalog.saver.attribute')->save($attribute);
+        $this->get('pim_catalog.saver.attribute')->save($attribute);
     }
 }

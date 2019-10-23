@@ -25,23 +25,18 @@ class OptionPresenter extends AbstractProductValuePresenter
     protected $optionRepository;
 
     public function __construct(
-        IdentifiableObjectRepositoryInterface $attributeRepository,
         IdentifiableObjectRepositoryInterface $optionRepository
     ) {
-        parent::__construct($attributeRepository);
-
         $this->optionRepository = $optionRepository;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function present($value, array $change)
+    public function present($formerData, array $change)
     {
-        $change = array_merge($change, ['attribute' => $value->getAttributeCode()]);
-
         $option = $this->optionRepository->findOneByIdentifier(
-            $value->getAttributeCode().'.'.$value->getData()
+            $change['attribute'].'.'.$formerData
         );
 
         return $this->renderer->renderDiff(
@@ -53,7 +48,7 @@ class OptionPresenter extends AbstractProductValuePresenter
     /**
      * {@inheritdoc}
      */
-    public function supportsChange($attributeType)
+    public function supports(string $attributeType, string $referenceDataName = null): bool
     {
         return AttributeTypes::OPTION_SIMPLE_SELECT === $attributeType;
     }

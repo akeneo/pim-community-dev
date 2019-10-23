@@ -5,21 +5,18 @@ namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PresenterInterface;
 use Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface as LocalizationPresenter;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\RendererInterface;
 
 class PricesPresenterSpec extends ObjectBehavior
 {
     function let(
-        IdentifiableObjectRepositoryInterface $attributeRepository,
         LocalizationPresenter $pricesPresenter,
         LocaleResolver $localeResolver
     ) {
-        $this->beConstructedWith($attributeRepository, $pricesPresenter, $localeResolver);
+        $this->beConstructedWith($pricesPresenter, $localeResolver);
     }
 
     function it_is_a_presenter()
@@ -29,21 +26,19 @@ class PricesPresenterSpec extends ObjectBehavior
 
     function it_supports_price()
     {
-        $this->supportsChange('pim_catalog_price_collection')->shouldBe(true);
+        $this->supports('pim_catalog_price_collection')->shouldBe(true);
     }
 
     function it_presents_prices_change_using_the_injected_renderer(
         $pricesPresenter,
         $localeResolver,
         RendererInterface $renderer,
-        ValueInterface $value,
         Collection $collection,
         ProductPriceInterface $eur,
         ProductPriceInterface $usd,
         ProductPriceInterface $gbp,
         ProductPriceInterface $jpy
     ) {
-        $value->getData()->willReturn($collection);
         $collection->getIterator()->willReturn(new \ArrayIterator([
             $eur->getWrappedObject(),
             $gbp->getWrappedObject(),
@@ -83,16 +78,14 @@ class PricesPresenterSpec extends ObjectBehavior
             ->willReturn('diff between two price collections');
 
         $this->setRenderer($renderer);
-        $this->present($value, $change)->shouldReturn('diff between two price collections');
+        $this->present($collection, $change)->shouldReturn('diff between two price collections');
     }
 
     function it_presents_french_prices(
         $pricesPresenter,
         $localeResolver,
-        ValueInterface $value,
         RendererInterface $renderer
     ) {
-        $value->getData()->willReturn([]);
         $localeResolver->getCurrentLocale()->willReturn('fr_FR');
 
         $pricesPresenter->present(['amount' => 15.12, 'currency' => 'EUR'], ['locale' => 'fr_FR'])->willReturn('15.12 €');
@@ -101,7 +94,7 @@ class PricesPresenterSpec extends ObjectBehavior
         $renderer->renderDiff([], ["15.12 €", "15.48 $"])->willReturn('15.12 €<br/>15.48 $');
         $this->setRenderer($renderer);
 
-        $this->present($value, ['data' => [
+        $this->present([], ['data' => [
             ['amount' => 15.12, 'currency' => 'EUR'],
             ['amount' => 15.48, 'currency' => 'USD'],
         ]])->shouldReturn('15.12 €<br/>15.48 $');

@@ -136,7 +136,7 @@ class SelectUsersAbleToCompleteFamiliesMissingMappingQueryIntegration extends Te
             ->build();
         $this->validate($productOnlyForManagers);
 
-        $this->getFromTestContainer('pim_catalog.saver.product')->saveAll(
+        $this->get('pim_catalog.saver.product')->saveAll(
             [
                 $productForEverybody1,
                 $productForEverybody2,
@@ -160,7 +160,7 @@ class SelectUsersAbleToCompleteFamiliesMissingMappingQueryIntegration extends Te
      */
     private function validate(ProductInterface $product): void
     {
-        $violations = $this->getFromTestContainer('pim_catalog.validator.product')->validate($product);
+        $violations = $this->get('pim_catalog.validator.product')->validate($product);
 
         if (0 < count($violations)) {
             throw new \Exception((string) $violations);
@@ -197,7 +197,7 @@ SQL;
      */
     private function productBuilder(): Builder\Product
     {
-        return $this->getFromTestContainer('akeneo_integration_tests.catalog.product.builder');
+        return $this->get('akeneo_integration_tests.catalog.product.builder');
     }
 
     /**

@@ -6,7 +6,7 @@
 coupling: twa-coupling asset-coupling franklin-insights-coupling reference-entity-coupling asset-manager-coupling rule-engine-coupling workflow-coupling permission-coupling
 
 .PHONY: phpspec
-phpspec:
+phpspec: asset-manager-phpspec reference-entity-phpspec
 	${PHP_RUN} vendor/bin/phpspec run ${F}
 
 .PHONY: acceptance

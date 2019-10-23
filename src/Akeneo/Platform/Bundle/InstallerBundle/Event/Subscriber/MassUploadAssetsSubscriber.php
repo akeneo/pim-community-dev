@@ -61,7 +61,7 @@ class MassUploadAssetsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $assetsPath = $this->pathProvider->getFixturesPath() . 'assets';
+        $assetsPath = $this->pathProvider->getFixturesPath($event->getArgument('catalog')) . 'assets';
         if (!$this->filesystem->exists($assetsPath)) {
             return;
         }

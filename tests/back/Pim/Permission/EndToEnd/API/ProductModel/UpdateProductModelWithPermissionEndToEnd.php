@@ -18,7 +18,7 @@ class UpdateProductModelWithPermissionEndToEnd extends ApiTestCase
     {
         parent::setUp();
 
-        $this->loader = new PermissionFixturesLoader($this->testKernel->getContainer());
+        $this->loader = $this->get('akeneo_integration_tests.loader.permissions');
     }
 
     /**
@@ -67,7 +67,7 @@ JSON;
             'associations'  => [],
         ];
 
-        $this->assertSameProduct($expectedProductModel, 'root_product_model');
+        $this->assertSameProductWithoutPermission($expectedProductModel, 'root_product_model');
     }
 
     /**
@@ -126,7 +126,7 @@ JSON;
             'associations'  => [],
         ];
 
-        $this->assertSameProduct($expectedProductModel, 'sub_product_model');
+        $this->assertSameProductWithoutPermission($expectedProductModel, 'sub_product_model');
     }
 
     /**
@@ -375,11 +375,13 @@ JSON;
      * @param array  $expectedProductModel normalized data of the product model that should be created
      * @param string $code      code of the product model that should be created
      */
-    protected function assertSameProduct(array $expectedProductModel, $code)
+    protected function assertSameProductWithoutPermission(array $expectedProductModel, $code)
     {
-        $this->getFromTestContainer('doctrine')->getManager()->clear();
-        $productModel = $this->getFromTestContainer('pim_catalog.repository.product_model')->findOneByCode($code);
-        $standardizedProductModel = $this->getFromTestContainer('pim_standard_format_serializer')->normalize($productModel, 'standard');
+        $this->get('akeneo_integration_tests.security.system_user_authenticator')->createSystemUser();
+
+        $this->get('doctrine')->getManager()->clear();
+        $productModel = $this->get('pim_catalog.repository.product_model_without_permission')->findOneByCode($code);
+        $standardizedProductModel = $this->get('pim_standard_format_serializer')->normalize($productModel, 'standard');
 
         NormalizedProductCleaner::clean($standardizedProductModel);
         NormalizedProductCleaner::clean($expectedProductModel);

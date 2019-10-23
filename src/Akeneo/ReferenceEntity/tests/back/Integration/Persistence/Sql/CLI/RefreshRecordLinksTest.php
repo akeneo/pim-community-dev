@@ -87,7 +87,7 @@ class RefreshRecordLinksTest extends SqlIntegrationTestCase
 
     private function runRefreshRecordsCommand(): void
     {
-        $application = new Application($this->testKernel);
+        $application = new Application(self::$kernel);
         $command = $application->find('akeneo:reference-entity:refresh-records');
         $commandTester = new CommandTester($command);
         $commandTester->execute([

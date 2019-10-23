@@ -27,9 +27,6 @@
             "Context": "vendor/akeneo/pim-community-dev/tests/legacy/features/",
             "": "tests/legacy/features/"
         },
-        "classmap": [
-            "tests/back/Integration/AppKernelTest.php"
-        ],
         "psr-4": {
             "Pim\\Behat\\": "vendor/akeneo/pim-community-dev/tests/legacy/features/Behat",
             "PimEnterprise\\Behat\\": "tests/legacy/features/Behat/",
@@ -46,7 +43,6 @@
     },
     "require": {
         "akeneo/pim-community-dev": "dev-master",
-        "google/cloud-error-reporting": "0.14.5",
         "guzzlehttp/guzzle": "6.3.3",
         "hslavich/oneloginsaml-bundle": "1.4.0",
         "justinrainbow/json-schema": "^5.2",

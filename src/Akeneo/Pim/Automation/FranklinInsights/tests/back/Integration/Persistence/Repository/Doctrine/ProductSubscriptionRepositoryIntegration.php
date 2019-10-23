@@ -335,12 +335,12 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
         ];
 
         $family = $this
-            ->getFromTestContainer('akeneo_ee_integration_tests.builder.family')
+            ->get('akeneo_ee_integration_tests.builder.family')
             ->build($familyData);
 
-        $this->getFromTestContainer('validator')->validate($family);
+        $this->get('validator')->validate($family);
 
-        $this->getFromTestContainer('pim_catalog.saver.family')->save($family);
+        $this->get('pim_catalog.saver.family')->save($family);
     }
 
     /**

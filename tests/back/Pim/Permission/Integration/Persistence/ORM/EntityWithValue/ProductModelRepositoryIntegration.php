@@ -27,15 +27,15 @@ class ProductModelRepositoryIntegration extends TestCase
 {
     public function testCanFindChildrenProductsFilteredByPermissions()
     {
+        $productModel = $this->createProductModelVariantProducts();
+
         /** @var UserRepository $userRepository */
         $userRepository = $this->get('pim_user.repository.user');
+
         /** @var User $user */
         $user = $userRepository->findOneBy(['username' => 'mary']);
-        $token = new UsernamePasswordToken($user, $user->getPassword(), 'main', ['ROLE_USER']);
-        /** @var TokenStorageInterface $tokenStorage */
-        $tokenStorage = $this->get('security.token_storage');
-        $tokenStorage->setToken($token);
-        $productModel = $this->createProductModelVariantProducts();
+        $token = new UsernamePasswordToken($user, null, 'main', ['ROLE_USER']);
+        $this->get('security.token_storage')->setToken($token);
 
         $products = $this->get('pimee_security.repository.product_model')->findChildrenProducts($productModel);
         $this->assertCount(1, $products);
@@ -51,7 +51,7 @@ class ProductModelRepositoryIntegration extends TestCase
 
     private function createProductModelVariantProducts(): ProductModelInterface
     {
-        $entityBuilder = $this->getFromTestContainer('akeneo_integration_tests.catalog.fixture.build_entity');
+        $entityBuilder = $this->get('akeneo_integration_tests.catalog.fixture.build_entity');
 
         $productModel = $entityBuilder->createProductModel('a_product_model', 'familyVariantA2', null, []);
 

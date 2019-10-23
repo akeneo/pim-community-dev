@@ -25,16 +25,16 @@ class FindExistingAttributeCodesQueryIntegration extends TestCase
     public function testExistingAttributeCodes()
     {
         $attribute = $this
-            ->getFromTestContainer('akeneo_ee_integration_tests.builder.attribute')
+            ->get('akeneo_ee_integration_tests.builder.attribute')
             ->build([
             'code' => 'attribute_1',
             'type' => AttributeTypes::TEXT
         ]);
 
-        $this->getFromTestContainer('pim_catalog.saver.attribute')->save($attribute);
+        $this->get('pim_catalog.saver.attribute')->save($attribute);
 
         $existingCodes = $this
-            ->getFromTestContainer('pimee_workflow.sql.product.find_existing_attribute_codes')
+            ->get('pimee_workflow.sql.product.find_existing_attribute_codes')
             ->execute(['attribute_1', 'attribute_2', 'attribute_3', 'attribute_4']);
 
         Assert::assertCount(1, $existingCodes);

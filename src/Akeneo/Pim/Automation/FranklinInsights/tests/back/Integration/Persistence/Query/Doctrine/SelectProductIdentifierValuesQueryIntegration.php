@@ -41,7 +41,7 @@ class SelectProductIdentifierValuesQueryIntegration extends TestCase
 
     public function test_that_it_retrieves_product_identifier_values(): void
     {
-        $mapping = $this->getFromTestContainer('akeneo.pim.automation.franklin_insights.repository.identifiers_mapping')
+        $mapping = $this->get('akeneo.pim.automation.franklin_insights.repository.identifiers_mapping')
                         ->find();
         $mapping
             ->map('asin', new AttributeCode('asin'))
@@ -87,7 +87,7 @@ class SelectProductIdentifierValuesQueryIntegration extends TestCase
 
     public function test_that_it_convert_null_json_raw_values_as_null(): void
     {
-        $mapping = $this->getFromTestContainer('akeneo.pim.automation.franklin_insights.repository.identifiers_mapping')
+        $mapping = $this->get('akeneo.pim.automation.franklin_insights.repository.identifiers_mapping')
                         ->find();
         $mapping
             ->map('asin', new AttributeCode('asin'))
@@ -132,7 +132,7 @@ class SelectProductIdentifierValuesQueryIntegration extends TestCase
 
     public function test_that_it_filters_non_existing_products(): void
     {
-        $mapping = $this->getFromTestContainer('akeneo.pim.automation.franklin_insights.repository.identifiers_mapping')
+        $mapping = $this->get('akeneo.pim.automation.franklin_insights.repository.identifiers_mapping')
                         ->find();
         $product = $this->createProduct(
             'some_sku',
@@ -171,7 +171,7 @@ class SelectProductIdentifierValuesQueryIntegration extends TestCase
 
     public function test_that_it_completes_unmapped_identifiers_with_null(): void
     {
-        $mapping = $this->getFromTestContainer('akeneo.pim.automation.franklin_insights.repository.identifiers_mapping')
+        $mapping = $this->get('akeneo.pim.automation.franklin_insights.repository.identifiers_mapping')
                         ->find();
         $mapping->map('upc', new AttributeCode('ean'));
         $this->saveMapping($mapping);
@@ -201,7 +201,7 @@ class SelectProductIdentifierValuesQueryIntegration extends TestCase
 
     public function test_that_it_completes_missing_identifier_values_with_null(): void
     {
-        $mapping = $this->getFromTestContainer('akeneo.pim.automation.franklin_insights.repository.identifiers_mapping')
+        $mapping = $this->get('akeneo.pim.automation.franklin_insights.repository.identifiers_mapping')
                         ->find();
         $mapping
             ->map('asin', new AttributeCode('asin'))
@@ -240,7 +240,7 @@ class SelectProductIdentifierValuesQueryIntegration extends TestCase
      */
     private function getIdentifierValues(array $productIds): ProductIdentifierValuesCollection
     {
-        return $this->getFromTestContainer(
+        return $this->get(
             sprintf(
                 '%s.%s',
                 'akeneo.pim.automation.franklin_insights',
@@ -269,14 +269,14 @@ class SelectProductIdentifierValuesQueryIntegration extends TestCase
      */
     private function createTextAttribute(string $code): void
     {
-        $attribute = $this->getFromTestContainer('akeneo_ee_integration_tests.builder.attribute')->build(
+        $attribute = $this->get('akeneo_ee_integration_tests.builder.attribute')->build(
             [
                 'code' => $code,
                 'type' => 'pim_catalog_text',
                 'group' => 'other',
             ]
         );
-        $this->getFromTestContainer('pim_catalog.saver.attribute')->save($attribute);
+        $this->get('pim_catalog.saver.attribute')->save($attribute);
     }
 
     /**
@@ -287,13 +287,13 @@ class SelectProductIdentifierValuesQueryIntegration extends TestCase
      */
     private function createProduct(string $identifier, array $values): ProductInterface
     {
-        $builder = $this->getFromTestContainer('akeneo_integration_tests.catalog.product.builder')
+        $builder = $this->get('akeneo_integration_tests.catalog.product.builder')
                         ->withIdentifier($identifier);
         foreach ($values as $attrCode => $data) {
             $builder->withValue($attrCode, $data);
         }
         $product = $builder->build();
-        $this->getFromTestContainer('pim_catalog.saver.product')->save($product);
+        $this->get('pim_catalog.saver.product')->save($product);
 
         return $product;
     }
@@ -304,8 +304,8 @@ class SelectProductIdentifierValuesQueryIntegration extends TestCase
      */
     private function updateProductValues(ProductInterface $product, array $values): void
     {
-        $this->getFromTestContainer('pim_catalog.updater.product')->update($product, ['values' => $values]);
-        $this->getFromTestContainer('pim_catalog.saver.product')->save($product);
+        $this->get('pim_catalog.updater.product')->update($product, ['values' => $values]);
+        $this->get('pim_catalog.saver.product')->save($product);
     }
 
     /**
@@ -313,7 +313,7 @@ class SelectProductIdentifierValuesQueryIntegration extends TestCase
      */
     private function saveMapping(IdentifiersMapping $mapping): void
     {
-        $this->getFromTestContainer('akeneo.pim.automation.franklin_insights.repository.identifiers_mapping')->save(
+        $this->get('akeneo.pim.automation.franklin_insights.repository.identifiers_mapping')->save(
             $mapping
         );
     }

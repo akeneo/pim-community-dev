@@ -11,11 +11,9 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
@@ -25,9 +23,6 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class FilePresenter implements PresenterInterface
 {
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $attributeRepository;
-
     /** @var UrlGeneratorInterface */
     protected $generator;
 
@@ -35,11 +30,9 @@ class FilePresenter implements PresenterInterface
     protected $fileInfoRepository;
 
     public function __construct(
-        IdentifiableObjectRepositoryInterface $attributeRepository,
         UrlGeneratorInterface $generator,
         FileInfoRepositoryInterface $fileInfoRepository)
     {
-        $this->attributeRepository = $attributeRepository;
         $this->generator = $generator;
         $this->fileInfoRepository = $fileInfoRepository;
     }
@@ -47,24 +40,19 @@ class FilePresenter implements PresenterInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($data)
+    public function supports(string $attributeType, string $referenceDataName = null): bool
     {
-        if ($data instanceof ValueInterface) {
-            $attribute = $this->attributeRepository->findOneByIdentifier($data->getAttributeCode());
-            return null !== $attribute && AttributeTypes::FILE === $attribute->getType();
-        }
-
-        return false;
+        return $attributeType === AttributeTypes::FILE;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function present($data, array $change)
+    public function present($formerData, array $change)
     {
         $result = ['before' => '', 'after' => ''];
 
-        $originalMedia = $data->getData();
+        $originalMedia = $formerData;
         $changedMedia  = isset($change['data']) ? $this->fileInfoRepository->findOneByIdentifier($change['data']) : null;
 
         if (!$this->hasChanged($changedMedia, $originalMedia)) {

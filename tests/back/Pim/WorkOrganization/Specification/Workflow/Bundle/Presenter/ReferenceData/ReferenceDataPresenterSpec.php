@@ -7,19 +7,16 @@ use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PresenterInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ReferenceDataRepositoryResolver;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\ReferenceDataConfigurationInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\RendererInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 class ReferenceDataPresenterSpec extends ObjectBehavior
 {
     function let(
-        IdentifiableObjectRepositoryInterface $attributeRepository,
         ReferenceDataRepositoryResolver $repositoryResolver
     ) {
-        $this->beConstructedWith($attributeRepository, $repositoryResolver);
+        $this->beConstructedWith($repositoryResolver);
     }
 
     function it_is_a_presenter()
@@ -29,12 +26,12 @@ class ReferenceDataPresenterSpec extends ObjectBehavior
 
     function it_supports_a_simple_reference_data()
     {
-        $this->supportsChange('pim_reference_data_simpleselect')->shouldBe(true);
+        $this->supports('pim_reference_data_simpleselect')->shouldBe(true);
     }
 
     function it_does_not_support_a_multi_reference_data()
     {
-        $this->supportsChange('pim_reference_data_multiselect')->shouldBe(false);
+        $this->supports('pim_reference_data_multiselect')->shouldBe(false);
     }
 
     function it_presents_reference_data_change_using_the_injected_renderer(
@@ -42,7 +39,6 @@ class ReferenceDataPresenterSpec extends ObjectBehavior
         ObjectRepository $repository,
         ReferenceDataConfigurationInterface $configuration,
         RendererInterface $renderer,
-        CustomValuePresenter $value,
         CustomValuePresenter $red,
         CustomValuePresenter $blue
     ) {
@@ -51,15 +47,13 @@ class ReferenceDataPresenterSpec extends ObjectBehavior
         $blue->__toString()->willReturn('Blue');
 
         $configuration->getClass()->willReturn(Color::class);
-        $repositoryResolver->resolve(null)->willReturn($repository);
+        $repositoryResolver->resolve('color')->willReturn($repository);
         $repository->findOneBy(['code' => 'red'])->willReturn($blue);
 
         $renderer->renderDiff('[Red]', 'Blue')->willReturn('diff between two reference data');
         $this->setRenderer($renderer);
 
-        $value->getData()->willReturn($red);
-        $value->getAttributeCode()->willReturn('fabric');
-        $this->present($value, ['data' => 'red'])->shouldReturn('diff between two reference data');
+        $this->present($red, ['data' => 'red', 'reference_data_name' => 'color'])->shouldReturn('diff between two reference data');
     }
 }
 

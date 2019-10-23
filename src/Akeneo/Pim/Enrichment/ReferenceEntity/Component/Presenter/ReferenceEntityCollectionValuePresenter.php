@@ -25,7 +25,7 @@ class ReferenceEntityCollectionValuePresenter extends AbstractProductValuePresen
     /**
      * {@inheritdoc}
      */
-    public function supportsChange($attributeType)
+    public function supports(string $attributeType, string $referenceDataName = null): bool
     {
         return ReferenceEntityCollectionType::REFERENCE_ENTITY_COLLECTION  === $attributeType;
     }
