@@ -2,11 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\Ui;
 
-use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
-use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
@@ -33,32 +30,12 @@ class ProductController extends AbstractListCategoryController
 
     /** @var SaverInterface */
     protected $productSaver;
-
-    /** @var EntityWithFamilyValuesFillerInterface */
-    protected $valuesFiller;
-
-    /** @var MissingAssociationAdder */
-    private $missingAssociationAdder;
-
-    /**
-     * @param TranslatorInterface                   $translator
-     * @param ProductRepositoryInterface            $productRepository
-     * @param CategoryRepositoryInterface           $categoryRepository
-     * @param SaverInterface                        $productSaver
-     * @param MissingAssociationAdder               $missingAssociationAdder
-     * @param EntityWithFamilyValuesFillerInterface $valuesFiller
-     * @param SecurityFacade                        $securityFacade
-     * @param string                                $categoryClass
-     * @param string                                $acl
-     * @param string                                $template
-     */
+    
     public function __construct(
         TranslatorInterface $translator,
         ProductRepositoryInterface $productRepository,
         CategoryRepositoryInterface $categoryRepository,
         SaverInterface $productSaver,
-        MissingAssociationAdder $missingAssociationAdder,
-        EntityWithFamilyValuesFillerInterface $valuesFiller,
         string $categoryClass,
         SecurityFacade $securityFacade,
         string $acl,
@@ -69,8 +46,6 @@ class ProductController extends AbstractListCategoryController
         $this->productRepository = $productRepository;
         $this->translator = $translator;
         $this->productSaver = $productSaver;
-        $this->missingAssociationAdder = $missingAssociationAdder;
-        $this->valuesFiller = $valuesFiller;
         $this->acl = $acl;
     }
 
@@ -115,9 +90,6 @@ class ProductController extends AbstractListCategoryController
                 sprintf('Product with with ID "%s" could not be found.', $id)
             );
         }
-        // With this version of the form we need to add missing values from family
-        $this->valuesFiller->fillMissingValues($product);
-        $this->missingAssociationAdder->addMissingAssociations($product);
 
         return $product;
     }

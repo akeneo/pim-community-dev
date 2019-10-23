@@ -24,7 +24,7 @@ class MediaValueFactorySpec extends ObjectBehavior
         $this->shouldHaveType(MediaValueFactory::class);
     }
 
-    function it_creates_an_empty_file_product_value($fileInfoRepository, AttributeInterface $attribute)
+    function it_throws_an_exception_when_creating_an_empty_file_product_value($fileInfoRepository, AttributeInterface $attribute)
     {
         $this->beConstructedWith($fileInfoRepository, MediaValue::class, 'pim_catalog_file');
         $this->supports('foo')->shouldReturn(false);
@@ -40,52 +40,7 @@ class MediaValueFactorySpec extends ObjectBehavior
 
         $fileInfoRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
 
-        $productValue = $this->create(
-            $attribute,
-            null,
-            null,
-            null
-        );
-
-        $productValue->shouldReturnAnInstanceOf(MediaValue::class);
-        $productValue->shouldHaveAttribute('file_attribute');
-        $productValue->shouldNotBeLocalizable();
-        $productValue->shouldNotBeScopable();
-        $productValue->shouldBeEmpty();
-    }
-
-    function it_creates_a_localizable_and_scopable_empty_file_product_value(
-        $fileInfoRepository,
-        AttributeInterface $attribute
-    ) {
-        $this->beConstructedWith($fileInfoRepository, MediaValue::class, 'pim_catalog_file');
-        $this->supports('foo')->shouldReturn(false);
-        $this->supports('pim_catalog_file')->shouldReturn(true);
-        $this->supports('pim_catalog_image')->shouldReturn(false);
-
-        $attribute->isScopable()->willReturn(true);
-        $attribute->isLocalizable()->willReturn(true);
-        $attribute->getCode()->willReturn('file_attribute');
-        $attribute->getType()->willReturn('pim_catalog_file');
-        $attribute->getBackendType()->willReturn('media');
-        $attribute->isBackendTypeReferenceData()->willReturn(false);
-
-        $fileInfoRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
-
-        $productValue = $this->create(
-            $attribute,
-            'ecommerce',
-            'en_US',
-            null
-        );
-
-        $productValue->shouldReturnAnInstanceOf(MediaValue::class);
-        $productValue->shouldHaveAttribute('file_attribute');
-        $productValue->shouldBeLocalizable();
-        $productValue->shouldHaveLocale('en_US');
-        $productValue->shouldBeScopable();
-        $productValue->shouldHaveChannel('ecommerce');
-        $productValue->shouldBeEmpty();
+        $this->shouldThrow(\InvalidArgumentException::class)->during('create', [$attribute, null, null, null]);
     }
 
     function it_creates_a_file_product_value(
@@ -156,7 +111,7 @@ class MediaValueFactorySpec extends ObjectBehavior
         $productValue->shouldHaveMedia($file);
     }
 
-    function it_creates_an_empty_image_product_value($fileInfoRepository, AttributeInterface $attribute)
+    function it_throws_an_exception_when_creating_an_empty_image_product_value($fileInfoRepository, AttributeInterface $attribute)
     {
         $this->beConstructedWith($fileInfoRepository, MediaValue::class, 'pim_catalog_image');
         $this->supports('foo')->shouldReturn(false);
@@ -172,52 +127,7 @@ class MediaValueFactorySpec extends ObjectBehavior
 
         $fileInfoRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
 
-        $productValue = $this->create(
-            $attribute,
-            null,
-            null,
-            null
-        );
-
-        $productValue->shouldReturnAnInstanceOf(MediaValue::class);
-        $productValue->shouldHaveAttribute('image_attribute');
-        $productValue->shouldNotBeLocalizable();
-        $productValue->shouldNotBeScopable();
-        $productValue->shouldBeEmpty();
-    }
-
-    function it_creates_a_localizable_and_scopable_empty_image_product_value(
-        $fileInfoRepository,
-        AttributeInterface $attribute
-    ) {
-        $this->beConstructedWith($fileInfoRepository, MediaValue::class, 'pim_catalog_image');
-        $this->supports('foo')->shouldReturn(false);
-        $this->supports('pim_catalog_file')->shouldReturn(false);
-        $this->supports('pim_catalog_image')->shouldReturn(true);
-
-        $attribute->isScopable()->willReturn(true);
-        $attribute->isLocalizable()->willReturn(true);
-        $attribute->getCode()->willReturn('image_attribute');
-        $attribute->getType()->willReturn('pim_catalog_image');
-        $attribute->getBackendType()->willReturn('media');
-        $attribute->isBackendTypeReferenceData()->willReturn(false);
-
-        $fileInfoRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
-
-        $productValue = $this->create(
-            $attribute,
-            'ecommerce',
-            'en_US',
-            null
-        );
-
-        $productValue->shouldReturnAnInstanceOf(MediaValue::class);
-        $productValue->shouldHaveAttribute('image_attribute');
-        $productValue->shouldBeLocalizable();
-        $productValue->shouldHaveLocale('en_US');
-        $productValue->shouldBeScopable();
-        $productValue->shouldHaveChannel('ecommerce');
-        $productValue->shouldBeEmpty();
+        $this->shouldThrow(\InvalidArgumentException::class)->during('create', [$attribute, null, null, null]);
     }
 
     function it_creates_an_image_product_value(

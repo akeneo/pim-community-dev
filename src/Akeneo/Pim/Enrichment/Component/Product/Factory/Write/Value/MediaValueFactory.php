@@ -37,7 +37,7 @@ class MediaValueFactory extends AbstractValueFactory
     protected function prepareData(AttributeInterface $attribute, $data, bool $ignoreUnknownData)
     {
         if (null === $data) {
-            return;
+            throw new \InvalidArgumentException('Media value cannot be null');
         }
 
         if (!is_string($data)) {

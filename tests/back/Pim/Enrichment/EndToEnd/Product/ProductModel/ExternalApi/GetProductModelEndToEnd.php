@@ -54,18 +54,6 @@ class GetProductModelEndToEnd extends ApiTestCase
                         'data' => 'Biker jacket',
                     ]
                 ],
-                'price' => [
-                    [
-                        'locale' => null,
-                        'scope' => null,
-                        'data' => [
-                            [
-                                'amount' => null,
-                                'currency' => 'EUR',
-                            ]
-                        ]
-                    ]
-                ],
                 'collection' => [
                     [
                         'locale' => null,

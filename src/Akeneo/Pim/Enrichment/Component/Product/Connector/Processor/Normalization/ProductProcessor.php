@@ -2,9 +2,11 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\FilterValues;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
+use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingProductModelValues;
+use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
@@ -40,28 +42,21 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     /** @var BulkMediaFetcher */
     protected $mediaFetcher;
 
-    /** @var EntityWithFamilyValuesFillerInterface */
-    protected $productValuesFiller;
+    /** @var FillMissingValuesInterface */
+    protected $fillMissingProductModelValues;
 
-    /**
-     * @param NormalizerInterface                   $normalizer
-     * @param IdentifiableObjectRepositoryInterface $channelRepository
-     * @param AttributeRepositoryInterface          $attributeRepository
-     * @param BulkMediaFetcher                      $mediaFetcher
-     * @param EntityWithFamilyValuesFillerInterface $productValuesFiller
-     */
     public function __construct(
         NormalizerInterface $normalizer,
         IdentifiableObjectRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
         BulkMediaFetcher $mediaFetcher,
-        ?EntityWithFamilyValuesFillerInterface $productValuesFiller = null
+        FillMissingValuesInterface $fillMissingProductModelValues
     ) {
         $this->normalizer          = $normalizer;
         $this->channelRepository   = $channelRepository;
         $this->attributeRepository = $attributeRepository;
         $this->mediaFetcher        = $mediaFetcher;
-        $this->productValuesFiller = $productValuesFiller;
+        $this->fillMissingProductModelValues = $fillMissingProductModelValues;
     }
 
     /**
@@ -72,27 +67,22 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
         $parameters = $this->stepExecution->getJobParameters();
         $structure = $parameters->get('filters')['structure'];
         $channel = $this->channelRepository->findOneByIdentifier($structure['scope']);
+
+        $productStandard = $this->normalizer->normalize($product, 'standard');
+
+        // not done for product as it fill missing product values at the end for performance purpose
+        // not done yet for product model export so we have to do it
         if ($product instanceof ProductModelInterface) {
-            $this->productValuesFiller->fillMissingValues($product);
+            $productStandard = $this->fillMissingProductModelValues->fromStandardFormat($productStandard);
         }
 
-        $productStandard = $this->normalizer->normalize(
-            $product,
-            'standard',
-            [
-                'filter_types' => ['pim.transform.product_value.structured'],
-                'channels' => [$channel->getCode()],
-                'locales'  => array_intersect(
-                    $channel->getLocaleCodes(),
-                    $parameters->get('filters')['structure']['locales']
-                ),
-            ]
-        );
+        $attributeCodes = $this->areAttributesToFilter($parameters) ? $this->getAttributesCodesToFilter($parameters) : [];
 
-        if ($this->areAttributesToFilter($parameters)) {
-            $attributesToFilter = $this->getAttributesToFilter($parameters);
-            $productStandard['values'] = $this->filterValues($productStandard['values'], $attributesToFilter);
-        }
+        $productStandard['values'] = FilterValues::create()
+            ->filterByChannelCode($channel->getCode())
+            ->filterByLocaleCodes(array_intersect($channel->getLocaleCodes(), $parameters->get('filters')['structure']['locales']))
+            ->filterByAttributeCodes($attributeCodes)
+            ->execute($productStandard['values']);
 
         if ($parameters->has('with_media') && $parameters->get('with_media')) {
             $directory = $this->stepExecution->getJobExecution()->getExecutionContext()
@@ -138,34 +128,13 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     }
 
     /**
-     * Filters the attributes that have to be exported based on a product and a list of attributes
-     *
-     * @param array $values
-     * @param array $attributesToFilter
-     *
-     * @return array
-     */
-    protected function filterValues(array $values, array $attributesToFilter)
-    {
-        $valuesToExport = [];
-        $attributesToFilter = array_flip($attributesToFilter);
-        foreach ($values as $code => $value) {
-            if (isset($attributesToFilter[$code])) {
-                $valuesToExport[$code] = $value;
-            }
-        }
-
-        return $valuesToExport;
-    }
-
-    /**
      * Return a list of attributes to export
      *
      * @param JobParameters $parameters
      *
      * @return array
      */
-    protected function getAttributesToFilter(JobParameters $parameters)
+    protected function getAttributesCodesToFilter(JobParameters $parameters)
     {
         $attributes = $parameters->get('filters')['structure']['attributes'];
         $identifierCode = $this->attributeRepository->getIdentifierCode();

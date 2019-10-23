@@ -29,10 +29,11 @@ class OptionValueFactory extends AbstractValueFactory
     protected function prepareData(AttributeInterface $attribute, $data, bool $ignoreUnknownData)
     {
         if (null === $data) {
-            return null;
+            throw new \InvalidArgumentException('Option value cannot be null');
         }
 
-        if (!is_string($data) && !is_numeric($data)) {
+        // TODO TIP-1325 Fix the cast to string
+        if (!(is_string($data) || is_numeric($data)) || trim((string) $data) === '') {
             throw InvalidPropertyTypeException::stringExpected(
                 $attribute->getCode(),
                 static::class,
@@ -40,6 +41,6 @@ class OptionValueFactory extends AbstractValueFactory
             );
         }
 
-        return $data;
+        return (string) $data;
     }
 }

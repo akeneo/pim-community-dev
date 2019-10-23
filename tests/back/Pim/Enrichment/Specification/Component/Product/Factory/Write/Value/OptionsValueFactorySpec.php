@@ -28,7 +28,7 @@ class OptionsValueFactorySpec extends ObjectBehavior
         $this->supports(AttributeTypes::OPTION_MULTI_SELECT)->shouldReturn(true);
     }
 
-    function it_creates_an_empty_multi_select_product_value(AttributeInterface $attribute) {
+    function it_throws_an_exception_when_creating_an_empty_multi_select_product_value(AttributeInterface $attribute) {
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('multi_select_attribute');
@@ -36,21 +36,10 @@ class OptionsValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('options');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $productValue = $this->create(
-            $attribute,
-            null,
-            null,
-            []
-        );
-
-        $productValue->shouldReturnAnInstanceOf(OptionsValue::class);
-        $productValue->shouldHaveAttribute('multi_select_attribute');
-        $productValue->shouldNotBeLocalizable();
-        $productValue->shouldNotBeScopable();
-        $productValue->shouldBeEmpty();
+        $this->shouldThrow(\InvalidArgumentException::class)->during('create', [$attribute, null, null, null]);
     }
 
-    function it_creates_a_localizable_and_scopable_empty_multi_select_product_value(AttributeInterface $attribute) {
+    function it_throws_exception_when_creating_a_localizable_and_scopable_empty_multi_select_product_value(AttributeInterface $attribute) {
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('multi_select_attribute');
@@ -58,20 +47,7 @@ class OptionsValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('options');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $productValue = $this->create(
-            $attribute,
-            'ecommerce',
-            'en_US',
-            []
-        );
-
-        $productValue->shouldReturnAnInstanceOf(OptionsValue::class);
-        $productValue->shouldHaveAttribute('multi_select_attribute');
-        $productValue->shouldBeLocalizable();
-        $productValue->shouldHaveLocale('en_US');
-        $productValue->shouldBeScopable();
-        $productValue->shouldHaveChannel('ecommerce');
-        $productValue->shouldBeEmpty();
+        $this->shouldThrow(\InvalidArgumentException::class)->during('create', [$attribute, null, null, null]);
     }
 
     function it_creates_a_multi_select_product_value(AttributeInterface $attribute) {

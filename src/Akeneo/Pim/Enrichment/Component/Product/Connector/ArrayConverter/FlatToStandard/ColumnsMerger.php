@@ -151,10 +151,9 @@ class ColumnsMerger
     protected function collectPriceData(array $collectedPrices, array $attributeInfos, $fieldValue)
     {
         $cleanField = $this->getCleanFieldName($attributeInfos);
-        if (null !== $attributeInfos['price_currency']) {
-            if (!in_array($cleanField, array_keys($collectedPrices))) {
-                $collectedPrices[$cleanField] = [];
-            }
+        if (null !== $attributeInfos['price_currency'] && trim($fieldValue) !== '') {
+            $collectedPrices[$cleanField] = $collectedPrices[$cleanField] ?? [];
+
             $collectedPrices[$cleanField][] = sprintf(
                 '%s%s%s',
                 $fieldValue,

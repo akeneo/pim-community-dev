@@ -36,10 +36,7 @@ class MetricValueFactory extends AbstractValueFactory
     protected function prepareData(AttributeInterface $attribute, $data, bool $ignoreUnknownData)
     {
         if (null === $data) {
-            $data = [
-                'amount' => null,
-                'unit'   => $attribute->getDefaultMetricUnit(),
-            ];
+            throw new \InvalidArgumentException('Metric value cannot be null');
         }
 
         if (!is_array($data)) {
@@ -50,7 +47,7 @@ class MetricValueFactory extends AbstractValueFactory
             );
         }
 
-        if (!array_key_exists('amount', $data)) {
+        if (!isset($data['amount'])) {
             throw InvalidPropertyTypeException::arrayKeyExpected(
                 $attribute->getCode(),
                 'amount',
@@ -59,7 +56,7 @@ class MetricValueFactory extends AbstractValueFactory
             );
         }
 
-        if (!array_key_exists('unit', $data)) {
+        if (!isset($data['unit'])) {
             throw InvalidPropertyTypeException::arrayKeyExpected(
                 $attribute->getCode(),
                 'unit',

@@ -138,6 +138,7 @@ $rules = [
         // TIP-922: PIM/Enrichment should not be linked to Currency
         'Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface',
         'Akeneo\Channel\Component\Query\FindActivatedCurrenciesInterface',
+        'Akeneo\Channel\Component\Model\CurrencyInterface',
 
         // TIP-926: Each context should have its own "User"
         // TIP-924: PIM/Enrichment should not be linked to User

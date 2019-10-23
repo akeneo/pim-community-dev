@@ -75,6 +75,13 @@ class Builder
         return $this;
     }
 
+    public function aPriceCollectionAttribute(): Builder
+    {
+        $this->type = new Type(AttributeTypes::PRICE_COLLECTION);
+
+        return $this;
+    }
+
     public function aUniqueAttribute(): Builder
     {
         $this->type = new Type(AttributeTypes::TEXT);
@@ -95,6 +102,20 @@ class Builder
         $this->localizable = false;
         $this->scopable = false;
         $this->isUnique = true;
+
+        return $this;
+    }
+
+    public function localizable(): Builder
+    {
+        $this->localizable = true;
+
+        return $this;
+    }
+
+    public function scopable(): Builder
+    {
+        $this->scopable = true;
 
         return $this;
     }
