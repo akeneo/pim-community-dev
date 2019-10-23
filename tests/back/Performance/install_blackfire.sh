@@ -18,4 +18,3 @@ docker-compose exec -T fpm bash -c "printf '$BLACKFIRE_CLIENT_ID\n$BLACKFIRE_CLI
 docker-compose exec -T fpm sudo apt-get install -y --allow-unauthenticated blackfire-php
 docker-compose restart fpm
 docker-compose exec -T fpm sudo /etc/init.d/blackfire-agent restart
-docker-compose exec fpm php -d memory_limit=3G /usr/local/bin/composer require blackfire/php-sdk
