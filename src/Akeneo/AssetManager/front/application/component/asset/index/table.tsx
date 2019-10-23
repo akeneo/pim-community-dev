@@ -218,7 +218,12 @@ export default class Table extends React.Component<TableProps, {columns: Column[
                     data-attribute={attribute.getCode()}
                     data-type={attribute.getType()}
                   >
-                    <View attribute={attribute} filter={filter} onFilterUpdated={onFilterUpdated} />
+                    <View
+                      attribute={attribute}
+                      filter={filter}
+                      onFilterUpdated={onFilterUpdated}
+                      context={{locale, channel}}
+                    />
                   </div>
                 );
               })}

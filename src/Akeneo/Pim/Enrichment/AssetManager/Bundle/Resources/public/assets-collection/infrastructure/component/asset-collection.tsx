@@ -1,7 +1,16 @@
-import * as React from 'react'
+import * as React from 'react';
 import {AssetFamilyIdentifier} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset-family';
-import {Asset, isComplete, emptyAsset, getAssetLabel, removeAssetFromCollection, MoveDirection, moveAssetInCollection, getAssetCodes} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
-import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';
+import {
+  Asset,
+  isComplete,
+  emptyAsset,
+  getAssetLabel,
+  removeAssetFromCollection,
+  MoveDirection,
+  moveAssetInCollection,
+  getAssetCodes,
+} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
+import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import styled from 'styled-components';
 import {Pill} from 'akeneopimenrichmentassetmanager/platform/component/common';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
@@ -19,14 +28,14 @@ const AssetCard = styled.div<{readonly: boolean}>`
   margin-top: 10px;
   justify-content: space-between;
   margin-right: 20px;
-  opacity: ${(props: ThemedProps<{readonly: boolean}>) => props.readonly ? .4 : 1}
+  opacity: ${(props: ThemedProps<{readonly: boolean}>) => (props.readonly ? 0.4 : 1)};
 `;
 
 const AssetTitle = styled.div`
   display: flex;
   width: 140px;
   align-items: baseline;
-  min-height: 15px
+  min-height: 15px;
 `;
 
 const BaselinePill = styled(Pill)`
@@ -41,9 +50,9 @@ const EmptyAssetCollection = styled.div<{readonly: boolean}>`
   width: 100%;
   padding: 20px;
   border: 1px solid ${(props: ThemedProps<{readonly: boolean}>) => props.theme.color.grey80};
-  opacity: ${(props: ThemedProps<{readonly: boolean}>) => props.readonly ? .4 : 1}
+  opacity: ${(props: ThemedProps<{readonly: boolean}>) => (props.readonly ? 0.4 : 1)}
   margin: 10px 0;
-`
+`;
 
 const Container = styled.div`
   display: flex;
@@ -51,35 +60,47 @@ const Container = styled.div`
 `;
 
 type AssetCollectionProps = {
-  assetFamilyIdentifier: AssetFamilyIdentifier
-  assetCodes: AssetCode[],
-  readonly: boolean
-  context: ContextState
-  onChange: (value: AssetCode[]) => void
-}
+  assetFamilyIdentifier: AssetFamilyIdentifier;
+  assetCodes: AssetCode[];
+  readonly: boolean;
+  context: ContextState;
+  onChange: (value: AssetCode[]) => void;
+};
 
-const useLoadAssets = (assetCodes: AssetCode[], assetFamilyIdentifier: AssetFamilyIdentifier, context: ContextState) => {
+const useLoadAssets = (
+  assetCodes: AssetCode[],
+  assetFamilyIdentifier: AssetFamilyIdentifier,
+  context: ContextState
+) => {
   const [assets, assetsReceived] = React.useState<Asset[]>([]);
   const hasChangeInCollection = (assetCodes: AssetCode[], assets: Asset[]) => {
     const collectionSizesAreTheSame = assets.length === assetCodes.length;
     const fetchedAssetCollectionIsEmpty = assets.length === 0;
-    const arrayCodesAreIdentical = getAssetCodes(assets).sort().every((assetCode: AssetCode, index: number) => [...assetCodes].sort().indexOf(assetCode) === index);
+    const arrayCodesAreIdentical = getAssetCodes(assets)
+      .sort()
+      .every((assetCode: AssetCode, index: number) => [...assetCodes].sort().indexOf(assetCode) === index);
 
     return !(collectionSizesAreTheSame && (fetchedAssetCollectionIsEmpty || arrayCodesAreIdentical));
-  }
+  };
 
   React.useEffect(() => {
-    if (assetCodes.length !== 0 && hasChangeInCollection(assetCodes, assets)) {
+    if (assetCodes.length !== 0 && hasChangeInCollection(assetCodes, assets)) {
       fetchAssetCollection(assetFamilyIdentifier, assetCodes, context).then((receivedAssets: Asset[]) => {
         assetsReceived(receivedAssets);
-      })
+      });
     }
   });
 
   return assets;
-}
+};
 
-export const AssetCollection = ({assetFamilyIdentifier, assetCodes, readonly, context, onChange}: AssetCollectionProps) => {
+export const AssetCollection = ({
+  assetFamilyIdentifier,
+  assetCodes,
+  readonly,
+  context,
+  onChange,
+}: AssetCollectionProps) => {
   const assets = useLoadAssets(assetCodes, assetFamilyIdentifier, context);
 
   return (
@@ -92,36 +113,51 @@ export const AssetCollection = ({assetFamilyIdentifier, assetCodes, readonly, co
 
             if (undefined === asset) {
               return (
-                <AssetCard key={assetCode} className='AknLoadingPlaceHolderContainer' readonly={false}>
-                  <Thumbnail asset={emptyAsset()} context={context} readonly={true} assetCollection={[]} onRemove={() => {}} onMove={() => {}}/>
+                <AssetCard key={assetCode} className="AknLoadingPlaceHolderContainer" readonly={false}>
+                  <Thumbnail
+                    asset={emptyAsset()}
+                    context={context}
+                    readonly={true}
+                    assetCollection={[]}
+                    onRemove={() => {}}
+                    onMove={() => {}}
+                  />
                   <AssetTitle />
                 </AssetCard>
-              )
+              );
             }
 
             return (
               <AssetCard key={asset.code} data-asset={asset.code} readonly={readonly}>
-                <Thumbnail asset={asset} context={context} readonly={readonly} assetCollection={assetCodes} onRemove={() => {
-                  onChange(removeAssetFromCollection(assetCodes, asset))
-                }} onMove={(direction: MoveDirection) => {
-                    onChange(moveAssetInCollection(assetCodes, asset, direction))
-                }}/>
+                <Thumbnail
+                  asset={asset}
+                  context={context}
+                  readonly={readonly}
+                  assetCollection={assetCodes}
+                  onRemove={() => {
+                    onChange(removeAssetFromCollection(assetCodes, asset.code));
+                  }}
+                  onMove={(direction: MoveDirection) => {
+                    onChange(moveAssetInCollection(assetCodes, asset, direction));
+                  }}
+                />
                 <AssetTitle>
-                  <Label>
-                    {getAssetLabel(asset, context.locale)}
-                  </Label>
+                  <Label>{getAssetLabel(asset, context.locale)}</Label>
                   {!isComplete(asset) ? <BaselinePill /> : null}
                 </AssetTitle>
               </AssetCard>
-            )
-        })}
+            );
+          })}
         </React.Fragment>
       ) : (
-        <EmptyAssetCollection title={__('pim_asset_manager.asset_collection.no_asset_in_collection')} readonly={readonly}>
-          <AssetIllustration size={80}/>
+        <EmptyAssetCollection
+          title={__('pim_asset_manager.asset_collection.no_asset_in_collection')}
+          readonly={readonly}
+        >
+          <AssetIllustration size={80} />
           <Label>{__('pim_asset_manager.asset_collection.no_asset_in_collection')}</Label>
         </EmptyAssetCollection>
       )}
     </Container>
-  )
-}
+  );
+};

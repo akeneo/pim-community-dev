@@ -179,7 +179,7 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset', () => {
           {
             field: 'asset_family',
             operator: '=',
-            value: 'packshot',
+            value: 'designer',
             context: {},
           },
         ],
@@ -189,47 +189,97 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset', () => {
     expect(response).toEqual({
       items: [
         {
-          code: 'backview',
-          identifier: 'packshot_backview_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd',
-          labels: {en_US: 'Backview', fr_FR: 'Backview'},
-          asset_family_identifier: 'packshot',
-          image: '/rest/asset_manager/image_preview/image_packshot_10b86252577a2f9691d90c162083c4a3/thumbnail?data=',
+          code: 'dyson',
+          identifier: 'designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd',
+          labels: {en_US: 'Dyson', fr_FR: 'Dyson'},
+          asset_family_identifier: 'designer',
+          image: '/rest/asset_manager/image_preview/image_designer_ca1857d521a3e5dbc487791da82b7428/thumbnail?data=',
           values: {
-            label_packshot_ef993aecc49d7dd11497cdafbb001287_en_US: {
-              attribute: 'label_packshot_ef993aecc49d7dd11497cdafbb001287',
+            label_designer_d00de54460082b239164135175588647_en_US: {
+              attribute: 'label_designer_d00de54460082b239164135175588647',
               channel: null,
-              data: 'Backview',
+              data: 'Dyson',
               locale: 'en_US',
             },
-            label_packshot_ef993aecc49d7dd11497cdafbb001287_fr_FR: {
-              attribute: 'label_packshot_ef993aecc49d7dd11497cdafbb001287',
+            label_designer_d00de54460082b239164135175588647_fr_FR: {
+              attribute: 'label_designer_d00de54460082b239164135175588647',
               channel: null,
-              data: 'Backview',
+              data: 'Dyson',
               locale: 'fr_FR',
+            },
+            city_designer_79eb100099b9a8bf52609e00b7ee307e: {
+              attribute: 'city_designer_79eb100099b9a8bf52609e00b7ee307e',
+              channel: null,
+              context: {
+                labels: {
+                  'city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717': {
+                    labels: {
+                      en_US: 'Paris',
+                    },
+                    code: 'paris',
+                  },
+                },
+              },
+              data: 'city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717',
+              locale: null,
+            },
+            colors_designer_52609e00b7ee307e79eb100099b9a8bf: {
+              attribute: 'colors_designer_52609e00b7ee307e79eb100099b9a8bf',
+              channel: null,
+              data: 'red',
+              locale: null,
             },
           },
           completeness: {
             complete: 0,
-            required: 0,
+            required: 1,
           },
         },
         {
-          code: 'frontview',
-          identifier: 'packshot_frontview_29aea250-bc94-49b2-8259-bbc116410eb2',
-          labels: {en_US: 'Frontview'},
-          asset_family_identifier: 'packshot',
-          image: '/rest/asset_manager/image_preview/image_packshot_10b86252577a2f9691d90c162083c4a3/thumbnail?data=',
+          code: 'starck',
+          identifier: 'designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2',
+          labels: {en_US: 'Starck'},
+          asset_family_identifier: 'designer',
+          image: '/rest/asset_manager/image_preview/image_designer_ca1857d521a3e5dbc487791da82b7428/thumbnail?data=',
           values: {
-            label_packshot_ef993aecc49d7dd11497cdafbb001287_en_US: {
-              attribute: 'label_packshot_ef993aecc49d7dd11497cdafbb001287',
-              channel: null,
-              data: 'Frontview',
+            'description_designer_29aea250-bc94-49b2-8259-bbc116410eb2_ecommerce_en_US': {
+              attribute: 'description_designer_29aea250-bc94-49b2-8259-bbc116410eb2',
+              channel: 'ecommerce',
+              data: 'an awesome designer!',
               locale: 'en_US',
+            },
+            label_designer_d00de54460082b239164135175588647_en_US: {
+              attribute: 'label_designer_d00de54460082b239164135175588647',
+              channel: null,
+              data: 'Starck',
+              locale: 'en_US',
+            },
+            city_designer_79eb100099b9a8bf52609e00b7ee307e: {
+              attribute: 'city_designer_79eb100099b9a8bf52609e00b7ee307e',
+              channel: null,
+              context: {
+                labels: {
+                  'city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717': {
+                    labels: {
+                      en_US: 'Paris',
+                    },
+                    code: 'paris',
+                  },
+                },
+              },
+              data: 'city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717',
+              locale: null,
+            },
+            colors_designer_52609e00b7ee307e79eb100099b9a8bf: {
+              attribute: 'colors_designer_52609e00b7ee307e79eb100099b9a8bf',
+              channel: null,
+              data: 'red',
+              locale: null,
             },
           },
           completeness: {
             complete: 0,
-            required: 0,
+            required: 1,
           },
         },
       ],
@@ -261,7 +311,7 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset', () => {
           {
             field: 'asset_family',
             operator: '=',
-            value: 'packshot',
+            value: 'designer',
             context: {},
           },
         ],

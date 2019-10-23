@@ -45,3 +45,7 @@ export const createLocaleFromCode = (code: LocaleCode): Locale => {
     language,
   };
 };
+
+export const localeExists = (locales: Locale[], currentLocale: LocaleCode) => {
+  return locales.some(({code}: Locale) => code === currentLocale);
+};

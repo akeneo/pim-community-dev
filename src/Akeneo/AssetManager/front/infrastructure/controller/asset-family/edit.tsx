@@ -33,13 +33,14 @@ import {Filter} from 'akeneoassetmanager/application/reducer/grid';
 import {restoreFilters} from 'akeneoassetmanager/application/action/asset/search';
 import {gridStateStoragePath} from 'akeneoassetmanager/infrastructure/middleware/grid';
 import {denormalizeAssetFamilyIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import Key from 'akeneoassetmanager/tools/key';
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
 const userContext = require('pim/user-context');
 const fetcherRegistry = require('pim/fetcher-registry');
 
 const shortcutDispatcher = (store: any) => (event: KeyboardEvent) => {
-  if ('Escape' === event.code) {
+  if (Key.Escape === event.code) {
     store.dispatch({type: 'DISMISS'});
   }
 };

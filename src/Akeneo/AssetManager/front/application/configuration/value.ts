@@ -3,6 +3,8 @@ import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference'
 import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
 import {Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {Column, Filter} from 'akeneoassetmanager/application/reducer/grid';
+import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
+import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 
 export class InvalidArgument extends Error {}
 
@@ -23,6 +25,10 @@ export type FilterViewProps = {
   attribute: Attribute;
   filter: Filter | undefined;
   onFilterUpdated: (filter: Filter) => void;
+  context: {
+    channel: ChannelCode;
+    locale: LocaleCode;
+  };
 };
 
 export type FilterView = React.SFC<FilterViewProps>;

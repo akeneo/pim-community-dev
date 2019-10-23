@@ -49,7 +49,14 @@ const AssetCollection = async (nodeElement, createElementDecorator, page) => {
     removeAllButton.click();
   };
 
-  return {getAssetCodes, getAsset, removeAll, isEmpty};
+  const openPicker = async () => {
+    await page.waitFor('[title="Open the asset picker to add assets to the collection"]');
+    const openPickerButton = await nodeElement.$('[title="Open the asset picker to add assets to the collection"]');
+
+    openPickerButton.click();
+  };
+
+  return {getAssetCodes, getAsset, removeAll, isEmpty, openPicker};
 };
 
 module.exports = AssetCollection;
