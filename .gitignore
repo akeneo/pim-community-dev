@@ -37,5 +37,3 @@ coverage/*
 .env.behat.local
 .env.test.local
 .env.dev.local
-.nyc_output
-.coverage
