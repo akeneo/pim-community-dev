@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithValues;
 
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\WriteValueCollectionFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;

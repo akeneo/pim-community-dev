@@ -4,12 +4,15 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Factory\Read;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidArgumentException;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\ValueFactory as SingleValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactory as SingleValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Webmozart\Assert\Assert;
 
 /**
+ * @TODO: move this class in Akeneo\Pim\Enrichment\Component\Product\Factory when the ValueFactory in this namespace
+ * will be deleted at the end of TIP-1073
+ *
  * @author    Anael Chardan <anael.chardan@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -39,7 +42,7 @@ class ValueFactory
         if (null === $data || [] === $data || '' === $data || [''] === $data || [null] === $data) {
             throw new InvalidArgumentException(get_class($this), sprintf('Data should not be empty, %s found', json_encode($data)));
         }
-        
+
         return $this->getFactory($attribute)->createByCheckingData($attribute, $channelCode, $localeCode, $data);
     }
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
 
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\WriteValueCollectionFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Symfony\Component\Validator\Constraint;
@@ -24,12 +24,12 @@ class ImmutableVariantAxesValuesValidator extends ConstraintValidator
     /** @var EntityWithFamilyVariantAttributesProvider */
     private $attributesProvider;
 
-    /** @var \Akeneo\Pim\Enrichment\Component\Product\Factory\Read\WriteValueCollectionFactory */
+    /** @var WriteValueCollectionFactory */
     private $valueCollectionFactory;
 
     /**
-     * @param EntityWithFamilyVariantAttributesProvider                                          $attributesProvider
-     * @param \Akeneo\Pim\Enrichment\Component\Product\Factory\Read\WriteValueCollectionFactory $valueCollectionFactory
+     * @param EntityWithFamilyVariantAttributesProvider $attributesProvider
+     * @param WriteValueCollectionFactory $valueCollectionFactory
      */
     public function __construct(
         EntityWithFamilyVariantAttributesProvider $attributesProvider,

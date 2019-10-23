@@ -62,14 +62,14 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid\FetchProductModelRowsFromCodes'
         arguments:
             - '@database_connection'
-            - '@akeneo.pim.enrichment.factory.read.write_value_collection'
+            - '@akeneo.pim.enrichment.factory.write_value_collection'
             - '@akeneo.pim.enrichment.product.grid.query.product_model_images_from_codes'
 
     akeneo.pim.enrichment.product.grid.query.fetch_product_rows_from_identifiers:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid\FetchProductRowsFromIdentifiers'
         arguments:
             - '@database_connection'
-            - '@akeneo.pim.enrichment.factory.read.write_value_collection'
+            - '@akeneo.pim.enrichment.factory.write_value_collection'
             -
     akeneo.pim.enrichment.product.grid.query.add_additional_product_properties:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Grid\Query\AddAdditionalProductPropertiesRegistry'
@@ -86,7 +86,7 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid\ProductModelImagesFromCodes'
         arguments:
             - '@database_connection'
-            - '@akeneo.pim.enrichment.factory.read.write_value_collection'
+            - '@akeneo.pim.enrichment.factory.write_value_collection'
 
     akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_family_codes:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector\Writer\File\Flat\GenerateHeadersFromFamilyCodes'
@@ -187,7 +187,7 @@ services:
             $getGroupAssociationsByProductIdentifiers: '@akeneo.pim.enrichment.product.query.get_group_associations_by_product_identifiers'
             $getProductAssociationsByProductIdentifiers: '@akeneo.pim.enrichment.product.query.get_product_associations_by_product_identifiers'
             $getCategoryCodesByProductIdentifiers: '@akeneo.pim.enrichment.product.query.category_codes_by_product_identifiers'
-            $valueCollectionFactory: '@akeneo.pim.enrichment.factory.read.value_collection'
+            $valueCollectionFactory: '@akeneo.pim.enrichment.factory.value_collection'
             $attributeRepository: '@pim_catalog.repository.attribute'
 
     akeneo.pim.enrichment.product.connector.get_product_models_from_codes:
@@ -198,7 +198,7 @@ services:
             - '@akeneo.pim.enrichment.product_model.query.get_product_associations_by_product_model_codes'
             - '@akeneo.pim.enrichment.product_model.query.get_models_associations_by_product_model_codes'
             - '@akeneo.pim.enrichment.product_model.query.get_group_associations_by_product_model_codes'
-            - '@akeneo.pim.enrichment.factory.read.value_collection'
+            - '@akeneo.pim.enrichment.factory.value_collection'
 
 
     akeneo.pim.enrichment.product_model.query.count_product_models_and_children_product_models:
@@ -215,7 +215,7 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlGetValuesOfSiblings'
         arguments:
             - '@database_connection'
-            - '@akeneo.pim.enrichment.factory.read.write_value_collection'
+            - '@akeneo.pim.enrichment.factory.write_value_collection'
 
     akeneo.pim.enrichment.channel.query.get_labels:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Channel\SqlGetChannelLabels'
@@ -232,7 +232,7 @@ services:
         arguments:
             - '@database_connection'
             - '@pim_catalog.normalizer.indexing_product.product.product_value_collection'
-            - '@akeneo.pim.enrichment.factory.read.value_collection'
+            - '@akeneo.pim.enrichment.factory.value_collection'
             - !tagged akeneo.pim.enrichment.product.query.indexing_additional_properties
 
     akeneo.pim.enrichment.product.query.get_ancestor_product_model_codes:
@@ -244,7 +244,7 @@ services:
         class: Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ElasticsearchProjection\GetElasticsearchProductModelProjection
         arguments:
             - '@database_connection'
-            - '@akeneo.pim.enrichment.factory.read.value_collection'
+            - '@akeneo.pim.enrichment.factory.value_collection'
             - '@pim_catalog.normalizer.indexing_product.product.product_value_collection'
 
     akeneo.pim.enrichment.product.query.get_descendant_variant_product_identifiers:
