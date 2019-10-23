@@ -4,7 +4,8 @@
 #  akeneo_asset_manager_asset_edit: Edit an asset
 pim_asset_manager:
   asset_collection:
-    asset_count: '{{ count }} asset|{{ count }} assets'
+    asset_count: '{{ resultCount }} assets'
+    asset_count_empty: '0 asset'
     add_asset: 'Add asset'
     add_asset_title: 'Open the asset picker to add assets to the collection'
     no_asset_in_collection: 'Sorry, there is no asset in this collection.'
@@ -29,7 +30,7 @@ pim_asset_manager:
       maximum_selection_reached: You have reached the limit of {{ maxSelectionCount }} assets per collection, you can no longer add an asset to your collection.
     close: Close the asset picker
     title: Add assets to your product
-    sub_title: Choose the asset you want to attach to your product {{ productLabel }} in {{ attributeLabel }} collection
+    sub_title: Choose the assets you want to attach to your product {{ productLabel }} in {{ attributeLabel }} collection
     no_result:
       title: Sorry, there is no asset for your search
       sub_title: Try again with new search criteria
@@ -52,7 +53,8 @@ pim_asset_manager:
   #        download: Download
   #        upload: Drag and drop to upload
   grid:
-    counter: '{{ count }} result|{{ count }} results'
+    counter: '{{ resultCount }} results'
+    counter_empty: '0 result'
   asset_family:
     #    validation:
     #      code:

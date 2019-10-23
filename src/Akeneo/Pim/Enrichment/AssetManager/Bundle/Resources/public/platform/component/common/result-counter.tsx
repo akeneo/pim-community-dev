@@ -15,7 +15,13 @@ type ResultCountProps = {
 const ResultCounter = ({resultCount = null}: ResultCountProps) => {
   if (resultCount === null) return null;
 
-  return <Container>{__('pim_asset_manager.grid.counter', {count: resultCount}, resultCount)}</Container>;
+  return (
+    <Container>
+      {0 < resultCount
+        ? __('pim_asset_manager.grid.counter', {resultCount})
+        : __('pim_asset_manager.grid.counter_empty')}
+    </Container>
+  );
 };
 
 export default ResultCounter;

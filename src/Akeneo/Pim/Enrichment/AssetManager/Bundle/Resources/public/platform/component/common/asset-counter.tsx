@@ -16,8 +16,11 @@ const AssetCounter = ({resultCount = null}: ResultCountProps) => {
   if (resultCount === null) return null;
 
   return (
-    <Container>{__('pim_asset_manager.asset_collection.asset_count', {count: resultCount}, resultCount)}</Container>
+    <Container>
+      {0 < resultCount
+        ? __('pim_asset_manager.asset_collection.asset_count', {resultCount})
+        : __('pim_asset_manager.asset_collection.asset_count_empty')}
+    </Container>
   );
 };
-
 export default AssetCounter;

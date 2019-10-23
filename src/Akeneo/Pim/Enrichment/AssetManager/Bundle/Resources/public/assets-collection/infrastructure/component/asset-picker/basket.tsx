@@ -34,8 +34,7 @@ const Container = styled.div`
 `;
 
 const Title = styled.div`
-  padding-bottom: 10px;
-  padding-top: 4px;
+  line-height: 43px;
   border-bottom: 1px solid ${(props: ThemedProps<void>) => props.theme.color.purple100};
   color: ${(props: ThemedProps<void>) => props.theme.color.purple120};
   font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.small};
