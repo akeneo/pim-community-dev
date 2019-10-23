@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react';
 import {err, ok, Result} from './result';
 
 const defaultInit: RequestInit = {
-    credentials: 'include'
+    credentials: 'include',
 };
 
 export const useFetch = <T, E>(input: RequestInfo, init?: RequestInit): Result<T | undefined, E> => {
