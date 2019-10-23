@@ -1,5 +1,9 @@
 # 3.0.x
 
+# Improvements
+
+- PIM-8906: Fix file storage UUID generator
+
 # 3.0.48 (2019-10-23)
 
 ## Bug fixes
