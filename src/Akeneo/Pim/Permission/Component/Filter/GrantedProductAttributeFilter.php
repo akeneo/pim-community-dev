@@ -31,12 +31,6 @@ class GrantedProductAttributeFilter implements AttributeFilterInterface
     /** @var AuthorizationCheckerInterface */
     private $authorizationChecker;
 
-    /**
-     * @param AttributeFilterInterface              $productAttributeFilter
-     * @param IdentifiableObjectRepositoryInterface $attributeRepository
-     * @param IdentifiableObjectRepositoryInterface $localeRepository
-     * @param AuthorizationCheckerInterface         $authorizationChecker
-     */
     public function __construct(
         AttributeFilterInterface $productAttributeFilter,
         IdentifiableObjectRepositoryInterface $attributeRepository,
@@ -56,11 +50,11 @@ class GrantedProductAttributeFilter implements AttributeFilterInterface
     {
         if (array_key_exists('values', $standardProduct) && is_array($standardProduct['values'])) {
             foreach ($standardProduct['values'] as $attributeCode => $values) {
-                $this->checkGrantedAttribute($attributeCode);
+                $this->checkGrantedAttribute((string) $attributeCode);
 
                 if (is_array($values)) {
                     foreach ($values as $value) {
-                        $this->checkGrantedLocale($attributeCode, $value);
+                        $this->checkGrantedLocale((string) $attributeCode, $value);
                     }
                 }
             }

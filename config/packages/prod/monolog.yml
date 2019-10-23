@@ -1,9 +1,0 @@
-monolog:
-    handlers:
-        nested:
-            type: service
-            id: monolog_psr_batch_logger
-        franklin:
-            level: info
-            type: console
-            channels: ['franklin']

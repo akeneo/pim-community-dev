@@ -54,6 +54,16 @@ class RecordPropertiesValidatorSpec extends ObjectBehavior
         $this->validate($record)->shouldReturn([]);
     }
 
+    function it_returns_an_empty_array_if_values_is_an_empty_array_instead_of_an_object_due_to_json_decode()
+    {
+        $record = [
+            'code' => 'starck',
+            'values' => [],
+        ];
+
+        $this->validate($record)->shouldReturn([]);
+    }
+
     function it_accepts_links_in_order_to_update_a_record_previously_requested_with_the_api()
     {
         $record = [

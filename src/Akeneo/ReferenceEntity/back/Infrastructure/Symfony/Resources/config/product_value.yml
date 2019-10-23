@@ -167,10 +167,10 @@ services:
         class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Factory\Read\Value\ReferenceEntityCollectionValueFactory
         public: false
         tags:
-            - { name: akeneo.pim.enrichment.factory.read.product_value }
+            - { name: akeneo.pim.enrichment.factory.product_value }
 
     akeneo_referenceentity.factory.read.product_value.reference_entity:
         class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Factory\Read\Value\ReferenceEntityValueFactory
         public: false
         tags:
-            - { name: akeneo.pim.enrichment.factory.read.product_value }
+            - { name: akeneo.pim.enrichment.factory.product_value }

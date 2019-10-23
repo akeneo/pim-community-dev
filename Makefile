@@ -54,11 +54,6 @@ javascript-test:
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/dist
 	$(YARN_EXEC) run webpack-test
 
-.PHONY: javascript-coverage
-javascript-coverage:
-	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/dist
-	$(YARN_EXEC) run webpack-dev --coverage
-
 .PHONY: front
 front: assets css javascript-test javascript-dev
 
@@ -103,6 +98,7 @@ pim-behat:
 	$(MAKE) css
 	$(MAKE) javascript-test
 	$(MAKE) javascript-dev
+	vendor/akeneo/pim-community-dev/docker/wait_docker_up.sh
 	APP_ENV=behat $(MAKE) database
 	APP_ENV=behat $(PHP_RUN) bin/console pim:installer:prepare-required-directories
 	APP_ENV=test $(PHP_RUN) bin/console pim:installer:prepare-required-directories
@@ -112,6 +108,7 @@ pim-behat:
 pim-test:
 	APP_ENV=test $(MAKE) up
 	APP_ENV=test $(MAKE) cache
+	vendor/akeneo/pim-community-dev/docker/wait_docker_up.sh
 	APP_ENV=test $(MAKE) database
 
 .PHONY: pim-dev
@@ -121,6 +118,7 @@ pim-dev:
 	$(MAKE) assets
 	$(MAKE) css
 	$(MAKE) javascript-dev
+	vendor/akeneo/pim-community-dev/docker/wait_docker_up.sh
 	APP_ENV=dev O="--catalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev" $(MAKE) database
 
 .PHONY: pim-prod
@@ -131,7 +129,23 @@ pim-prod:
 	$(MAKE) css
 	$(MAKE) javascript-cloud
 	APP_ENV=prod $(PHP_RUN) bin/console pim:installer:prepare-required-directories
+	vendor/akeneo/pim-community-dev/docker/wait_docker_up.sh
 	APP_ENV=prod $(MAKE) database
+
+.PHONY: pim-saas-like
+pim-saas-like: export COMPOSE_PROJECT_NAME = pim-saas-like
+pim-saas-like: export COMPOSE_FILE = docker-compose.saas-like.yml
+pim-saas-like:
+	$(DOCKER_COMPOSE) up --detach --remove-orphan
+	vendor/akeneo/pim-community-dev/docker/wait_docker_up.sh
+	$(DOCKER_COMPOSE) run fpm bin/console pim:installer:db
+	$(DOCKER_COMPOSE) run fpm bin/console pim:user:create --admin -n -- admin admin test@example.com John Doe en_US
+
+.PHONY: down-pim-saas-like
+down-pim-saas-like: export COMPOSE_PROJECT_NAME = pim-saas-like
+down-pim-saas-like: export COMPOSE_FILE = docker-compose.saas-like.yml
+down-pim-saas-like:
+	$(DOCKER_COMPOSE) down
 
 ##
 ## Docker
