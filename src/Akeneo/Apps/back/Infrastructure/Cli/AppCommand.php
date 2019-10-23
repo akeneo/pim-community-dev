@@ -7,12 +7,8 @@ namespace Akeneo\Apps\Infrastructure\Cli;
 use Akeneo\Apps\Application\Command\CreateAppCommand;
 use Akeneo\Apps\Application\Command\CreateAppHandler;
 use Akeneo\Apps\Application\Query\FetchAppsHandler;
-use Akeneo\Apps\Application\Query\FetchAppsQuery;
-use Akeneo\Apps\Domain\Exception\ConstraintViolationListException;
-use Akeneo\Apps\Domain\Model\ValueObject\AppCode;
-use Akeneo\Apps\Domain\Model\ValueObject\AppLabel;
 use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -21,7 +17,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class AppCommand extends ContainerAwareCommand
+class AppCommand extends Command
 {
     protected static $defaultName = 'akeneo:app:create';
 
@@ -34,6 +30,11 @@ class AppCommand extends ContainerAwareCommand
 
         $this->createAppHandler = $createAppHandler;
         $this->fetchAppsHandler = $fetchAppsHandler;
+    }
+
+    protected function configure()
+    {
+        $this->setHidden(true);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): void

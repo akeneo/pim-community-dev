@@ -13,7 +13,6 @@ akeneo_apps_frontend:
 
 akeneo_apps_rest:
     resource: "@AkeneoAppsBundle/Resources/config/routing_rest.yml"
-    condition: "request.isXmlHttpRequest()"
 
 # PIM
 pim_analytics:

@@ -8,7 +8,7 @@ import {ApplyButton, Breadcrumb, BreadcrumbItem, Helper, HelperLink, HelperTitle
 import {isOk} from '../../shared/result';
 import {BreadcrumbRouterLink} from '../../shared/router';
 import {Translate} from '../../shared/translate';
-import {useFetch} from '../../shared/use-fetch';
+import {useFetchFromRoute} from '../../shared/use-fetch-from-route';
 import {AppGrid} from '../components/AppGrid';
 
 const MAXIMUM_NUMBER_OF_ALLOWED_APPS = 50;
@@ -16,7 +16,7 @@ const MAXIMUM_NUMBER_OF_ALLOWED_APPS = 50;
 export const AppList = () => {
     const history = useHistory();
 
-    const result = useFetch<AppInterface[], Error>('http://localhost:3000/apps');
+    const result = useFetchFromRoute<AppInterface[], Error>('akeneo_apps_list_rest');
     const apps = isOk(result) ? result.ok : [];
 
     const handleCreate = () => history.push('/apps/create');

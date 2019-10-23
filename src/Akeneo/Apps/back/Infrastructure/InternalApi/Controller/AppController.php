@@ -9,11 +9,7 @@ use Akeneo\Apps\Application\Command\CreateAppHandler;
 use Akeneo\Apps\Application\Query\FetchAppsHandler;
 use Akeneo\Apps\Domain\Exception\ConstraintViolationListException;
 use Akeneo\Apps\Domain\Model\Read\App;
-use Akeneo\Apps\Domain\Model\ValueObject\AppCode;
-use Akeneo\Apps\Domain\Model\ValueObject\AppLabel;
-use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
@@ -36,7 +32,7 @@ class AppController
         $this->fetchAppsHandler = $fetchAppsHandler;
     }
 
-    public function listAction()
+    public function list()
     {
         $apps = $this->fetchAppsHandler->query();
 
@@ -47,7 +43,7 @@ class AppController
         );
     }
 
-    public function createAction(Request $request)
+    public function create(Request $request)
     {
         $data = json_decode($request->getContent(), true);
         // TODO: Valid JSON format
