@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Component\FileStorage;
 
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
@@ -29,7 +30,7 @@ class PathGenerator implements PathGeneratorInterface
      *
      * @return array
      */
-    public function generate(\SplFileInfo $file)
+    public function generate(\SplFileInfo $file): array
     {
         $originalFileName = ($file instanceof UploadedFile) ? $file->getClientOriginalName() : $file->getFilename();
         $uuid = $this->generateUuid($originalFileName);
@@ -54,8 +55,8 @@ class PathGenerator implements PathGeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function generateUuid($fileName)
+    public function generateUuid($fileName): string
     {
-        return sha1($fileName . microtime());
+        return sha1(Uuid::uuid4()->toString());
     }
 }
