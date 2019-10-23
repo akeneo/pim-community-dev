@@ -64,13 +64,12 @@ describe('Tests filter collection', () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
           <FilterCollection
+            orderedFilterViews={[
+              {view: FilterView, attribute: denormalize(attributes[1])},
+              {view: FilterView, attribute: denormalize(attributes[0])},
+            ]}
             dataProvider={dataProvider}
-            filterViewsProvider={{
-              getFilterViews: () => [
-                {view: FilterView, attribute: denormalize(attributes[0])},
-                {view: FilterView, attribute: denormalize(attributes[1])},
-              ],
-            }}
+            filterViewsProvider={{}}
             filterCollection={[]}
             assetFamilyIdentifier={'packshot'}
             context={{channel: 'ecommerce', locale: 'locale'}}
@@ -85,10 +84,14 @@ describe('Tests filter collection', () => {
   });
 
   it('It displays an empty filter collection', async () => {
+    const FilterView = ({attribute}) => <div data-code={attribute.code}></div>;
+
     await act(async () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
           <FilterCollection
+            orderedFilterViews={[
+            ]}
             dataProvider={dataProvider}
             filterViewsProvider={{getFilterViews: () => []}}
             filterCollection={[]}
@@ -123,10 +126,9 @@ describe('Tests filter collection', () => {
       ReactDOM.render(
         <ThemeProvider theme={akeneoTheme}>
           <FilterCollection
+            orderedFilterViews={[{view: ClickableFilterView, attribute: denormalize(attributes[0])}]}
             dataProvider={dataProvider}
-            filterViewsProvider={{
-              getFilterViews: () => [{view: ClickableFilterView, attribute: denormalize(attributes[0])}],
-            }}
+            filterViewsProvider={{}}
             filterCollection={actualFilterCollection}
             assetFamilyIdentifier={'packshot'}
             context={{channel: 'ecommerce', locale: 'locale'}}

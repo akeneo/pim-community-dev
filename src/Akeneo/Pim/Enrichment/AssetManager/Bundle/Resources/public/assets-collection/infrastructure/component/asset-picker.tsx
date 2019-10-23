@@ -23,7 +23,14 @@ import {CloseButton} from 'akeneoassetmanager/application/component/app/close-bu
 import Key from 'akeneoassetmanager/tools/key';
 import {LabelCollection} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import {getLabel} from 'pimui/js/i18n';
-import {getAttributeLabel, Attribute as ProductAttribute} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
+import {
+  getAttributeLabel,
+  Attribute as ProductAttribute,
+} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
+import {OptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
+import {OptionCollectionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option-collection';
+import {AssetAttribute} from 'akeneoassetmanager/domain/model/attribute/type/asset';
+import {AssetCollectionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/asset-collection';
 
 type AssetFamilyIdentifier = string;
 type AssetPickerProps = {
@@ -94,6 +101,18 @@ export type FilterViewCollection = {
   view: FilterView;
   attribute: Attribute;
 }[];
+export type FilterableAttribute =
+  | OptionAttribute
+  | OptionCollectionAttribute
+  | AssetAttribute
+  | AssetCollectionAttribute;
+
+export const sortFilterViewsByAttributeOrder = (filterViewCollection: FilterViewCollection) => {
+  return [...filterViewCollection].sort(
+    (filterViewA, filterviewB) => filterViewA.attribute.order - filterviewB.attribute.order
+  );
+};
+
 const getFilterViews = (attributes: Attribute[]): FilterViewCollection => {
   const attributesWithFilterViews = attributes.filter(({type}: Attribute) => hasDataFilterView(type));
   const filterViews = attributesWithFilterViews.map((attribute: Attribute) => ({
@@ -212,13 +231,29 @@ const fetchMoreResult = (currentRequestCount: number) => (
   });
 };
 
+const useFilterViews = (
+  assetFamilyIdentifier: AssetFamilyIdentifier,
+  dataProvider: any,
+  getFilterViews: (attributes: Attribute[]) => FilterViewCollection
+): FilterViewCollection => {
+  const [filterViews, setFilterViews] = React.useState<FilterViewCollection>([]);
+
+  React.useEffect(() => {
+    dataProvider.assetAttributesFetcher.fetchAll(assetFamilyIdentifier).then((attributes: Attribute[]) => {
+      setFilterViews(getFilterViews(attributes));
+    });
+  }, [assetFamilyIdentifier]);
+
+  return filterViews;
+};
+
 export const AssetPicker = ({
   assetFamilyIdentifier,
   initialContext,
   onAssetPick,
   excludedAssetCollection,
   productLabels,
-  productAttribute
+  productAttribute,
 }: AssetPickerProps) => {
   const [isOpen, setOpen] = React.useState(false);
   const [filterCollection, setFilterCollection] = React.useState<Filter[]>([]);
@@ -248,6 +283,9 @@ export const AssetPicker = ({
     setResultCollection,
     setResultCount
   );
+  const filterViews = sortFilterViewsByAttributeOrder(
+    useFilterViews(assetFamilyIdentifier, dataProvider, getFilterViews)
+  );
 
   React.useEffect(() => {
     const cancelModalOnEscape = (event: KeyboardEvent) => (Key.Escape === event.code ? cancelModal() : null);
@@ -272,12 +310,17 @@ export const AssetPicker = ({
       >
         {__('pim_asset_manager.asset_collection.add_asset')}
       </Button>
-      {isOpen ? (
+      {isOpen && filterViews.length !== 0 ? (
         <Modal data-container="asset-picker">
           <Header>
             <CloseButton onAction={cancelModal} title={__('pim_asset_manager.asset_picker.close')} />
             <Title>{__('pim_asset_manager.asset_picker.title')}</Title>
-            <SubTitle>{__('pim_asset_manager.asset_picker.sub_title', {productLabel: getLabel(productLabels, context.locale, ''), attributeLabel: getAttributeLabel(productAttribute, context.locale)})}</SubTitle>
+            <SubTitle>
+              {__('pim_asset_manager.asset_picker.sub_title', {
+                productLabel: getLabel(productLabels, context.locale, ''),
+                attributeLabel: getAttributeLabel(productAttribute, context.locale),
+              })}
+            </SubTitle>
             <ConfirmButton
               title={__('pim_common.confirm')}
               color="green"
@@ -291,14 +334,12 @@ export const AssetPicker = ({
           </Header>
           <Container>
             <FilterCollection
-              dataProvider={dataProvider}
-              filterViewsProvider={{getFilterViews}}
               filterCollection={filterCollection}
-              assetFamilyIdentifier={assetFamilyIdentifier}
               context={context}
               onFilterCollectionChange={(filterCollection: Filter[]) => {
                 setFilterCollection(filterCollection);
               }}
+              orderedFilterViews={filterViews}
             />
             <Grid>
               <SearchBar

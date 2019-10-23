@@ -18,13 +18,12 @@ module.exports = async function(cucumber) {
   const getElement = createElementDecorator(config);
 
   Given('the user opens the asset picker', async function() {
+    answerAssetAttributes(this.page);
     const assetCollection = await await getElement(this.page, 'Designer asset collection');
     await assetCollection.openPicker();
   });
 
   When('the user filters the assets', async function() {
-    answerAssetAttributes(this.page);
-
     const assetPicker = await await getElement(this.page, 'Asset picker');
     const searchBar = await assetPicker.getSearchBar();
     await searchBar.search('s');
