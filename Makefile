@@ -93,6 +93,7 @@ pim-behat:
 	$(MAKE) css
 	$(MAKE) javascript-test
 	$(MAKE) javascript-dev
+	docker/wait_docker_up.sh
 	APP_ENV=behat $(MAKE) database
 	APP_ENV=behat $(PHP_RUN) bin/console pim:user:create --admin -n -- admin admin test@example.com John Doe en_US
 
@@ -100,6 +101,7 @@ pim-behat:
 pim-test:
 	APP_ENV=test $(MAKE) up
 	APP_ENV=test $(MAKE) cache
+	docker/wait_docker_up.sh
 	APP_ENV=test $(MAKE) database
 
 .PHONY: pim-dev
@@ -109,6 +111,7 @@ pim-dev:
 	$(MAKE) assets
 	$(MAKE) css
 	$(MAKE) javascript-dev
+	docker/wait_docker_up.sh
 	APP_ENV=dev O="--catalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev" $(MAKE) database
 
 .PHONY: pim-prod
@@ -118,6 +121,7 @@ pim-prod:
 	$(MAKE) assets
 	$(MAKE) css
 	$(MAKE) javascript-prod
+	docker/wait_docker_up.sh
 	APP_ENV=prod $(MAKE) database
 
 ##

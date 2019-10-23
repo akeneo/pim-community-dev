@@ -63,9 +63,9 @@ A range value will be defined as an array, with `min` and `max` as keys.
 The factories are here to create localizable and scopable values, linked to a specific attribute.
 
 ```php
-<?php #src/Acme/RangeBundle/Product/Factory/Value/RangeValueFactory.php
+<?php #src/Acme/RangeBundle/Product/Factory/Write/Value/RangeValueFactory.php
 
-namespace Acme\RangeBundle\Product\Factory\Value;
+namespace Acme\RangeBundle\Product\Factory\Write\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\AbstractValueFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -94,13 +94,13 @@ class RangeValueFactory extends AbstractValueFactory
 ```
 
 ```php
-<?php # src/Acme/RangeBundle/Product/Factory/Read/Value/RangeValueFactory.php
+<?php # src/Acme/RangeBundle/Product/Factory/Value/RangeValueFactory.php
 
-namespace Acme\RangeBundle\Product\Factory\Read\Value;
+namespace Acme\RangeBundle\Product\Factory\Value;
 
 use Acme\RangeBundle\AttributeType\RangeType;
 use Acme\RangeBundle\Product\Value\RangeValue;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\ValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -153,19 +153,18 @@ class RangeValueFactory implements ValueFactory
 
 ```yaml
 # src/Acme/RangeBundle/Resources/config/services.yml [...]
-    acme.range.provider.field.range:
-        class: Acme\RangeBundle\Enrich\Provider\Field\RangeFieldProvider
-        tags:
-            - { name: pim_enrich.provider.field }
-
-    acme.range.factory.value.range:
-        class: Acme\RangeBundle\Product\Factory\Value\RangeValueFactory
+    acme.range.factory.write.value.range:
+        class: Acme\RangeBundle\Product\Factory\Write\Value\RangeValueFactory
         public: false
         arguments:
             - 'Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue'
             - 'range'
         tags:
             - { name: pim_catalog.factory.value }
+
+    acme.range.factory.value.range:
+        class: 'Acme\RangeBundle\Product\Factory\Value\RangeValueFactory'
+        tags: ['akeneo.pim.enrichment.factory.product_value']
 ```
 
 ## Step 3: Process the values

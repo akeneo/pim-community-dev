@@ -18,31 +18,14 @@ var/uploads/*
 var/uploads/product/*
 var/file_storage/*
 vendor
+bin/symfony_requirements
 composer.phar
 /cov
-/bin/*
-!/bin/docker
-/bin/docker/*
-!/bin/docker/pim-dependencies.sh
-!/bin/docker/pim-front.sh
-!/bin/docker/pim-initialize.sh
-!/bin/docker/pim-setup.sh
-!/bin/merge-coverage
-!/bin/console
-!/bin/check-pullup
-!/bin/pim-front.sh
-!/bin/check-services-instantiability
-!/bin/benchmark_products_api.sh
 /phpspec.yml
 uploads_test/
 .phpspec/*.tpl
 /node_modules
 npm-debug.log
-/docker/*
-!/docker/build
-!/docker/akeneo.conf
-!/docker/akeneo-behat.conf
-!/docker/httpd.conf
 docker-compose.override.yml
 .web-server-pid
 package-lock.json
@@ -50,8 +33,6 @@ package-lock.json
 yarn-error.log
 coverage/*
 .phpunit.result.cache
-.nyc_output
-.coverage
 
 ###> symfony/framework-bundle ###
 /.env.local

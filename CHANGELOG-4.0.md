@@ -246,6 +246,9 @@
 - Move class from `Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetValuesAndPropertiesFromProductModelCodes` to `Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetValuesAndPropertiesFromProductModelCodes`
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ProductController` to add `Akeneo\Tool\Bundle\ApiBundle\EventSubscriber\BatchEventSubscriberInterface`
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ProductModelController` to add `Akeneo\Tool\Bundle\ApiBundle\EventSubscriber\BatchEventSubscriberInterface`
+- Move all factory classes in `Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value` to `Akeneo\Pim\Enrichment\Component\Product\Factory\Value`
+- Move class from `Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueCollectionFactory` to `Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactory`
+- Move class from `Akeneo\Pim\Enrichment\Component\Product\Factory\Read\WriteValueCollectionFactory` to `Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory`
 
 ### CLI Commands
 
