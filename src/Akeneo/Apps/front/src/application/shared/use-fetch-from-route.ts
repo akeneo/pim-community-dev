@@ -1,9 +1,11 @@
-import React from 'react';
+import {useContext, useMemo} from 'react';
 import {RouterContext} from './router/router-context';
 import {useFetch} from './use-fetch';
 
 export const useFetchFromRoute = <T, E>(route: string, parameters?: object) => {
-    const {generate} = React.useContext(RouterContext);
+    const {generate} = useContext(RouterContext);
 
-    return useFetch<T, E>(generate(route, parameters));
+    const url = useMemo(() => generate(route, parameters), [generate, route, parameters]);
+
+    return useFetch<T, E>(url);
 };
