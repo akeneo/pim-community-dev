@@ -20,8 +20,8 @@ use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetConnectorProdu
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetViewableCategoryCodes;
 use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Product\FetchUserRightsOnProduct;
-use Akeneo\Pim\Permission\Bundle\Persistence\Sql\GetViewableAttributeCodesForUser;
 use Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser;
+use Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\PublicApi\GetWorkflowStatusFromProductModelCodes;
 
 /**
@@ -35,7 +35,7 @@ class SqlGetConnectorProductModelsWithPermissions implements GetConnectorProduct
     /** @var GetViewableCategoryCodes */
     private $getViewableCategoryCodes;
 
-    /** @var GetViewableAttributeCodesForUser */
+    /** @var GetViewableAttributeCodesForUserInterface */
     private $getViewableAttributeCodesForUser;
 
     /** @var GetAllViewableLocalesForUser */
@@ -53,7 +53,7 @@ class SqlGetConnectorProductModelsWithPermissions implements GetConnectorProduct
     public function __construct(
         GetConnectorProductModels $getConnectorProductModels,
         GetViewableCategoryCodes $getViewableCategoryCodes,
-        GetViewableAttributeCodesForUser $getViewableAttributeCodesForUser,
+        GetViewableAttributeCodesForUserInterface $getViewableAttributeCodesForUser,
         GetAllViewableLocalesForUser $getViewableLocaleCodesForUser,
         FetchUserRightsOnProduct $fetchUserRightsOnProduct,
         FetchUserRightsOnProductModel $fetchUserRightsOnProductModel,

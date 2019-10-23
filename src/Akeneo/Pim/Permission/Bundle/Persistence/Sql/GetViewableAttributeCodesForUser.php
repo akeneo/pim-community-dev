@@ -55,13 +55,6 @@ SQL;
             'attributeCodes' => $attributeCodes
         ], ['attributeCodes' => Connection::PARAM_STR_ARRAY]);
 
-        $allowedAttributes = $statement->fetchAll(\PDO::FETCH_ASSOC);
-
-        return array_map(
-            function ($row) {
-                return $row['code'];
-            },
-            $allowedAttributes
-        );
+        return $statement->fetchAll(\PDO::FETCH_COLUMN, 'code');
     }
 }

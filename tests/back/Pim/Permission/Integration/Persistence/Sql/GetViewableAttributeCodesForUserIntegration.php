@@ -2,10 +2,10 @@
 
 namespace AkeneoTestEnterprise\Pim\Permission\Integration\Persistence\Sql;
 
+use Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
-use Akeneo\Pim\Permission\Bundle\Persistence\Sql\GetViewableAttributeCodesForUser;
 
 class GetViewableAttributeCodesForUserIntegration extends TestCase
 {
@@ -32,7 +32,7 @@ class GetViewableAttributeCodesForUserIntegration extends TestCase
         return $this->catalog->useTechnicalCatalog();
     }
 
-    private function getQuery(): GetViewableAttributeCodesForUser
+    private function getQuery(): GetViewableAttributeCodesForUserInterface
     {
         return $this->get('pimee_security.query.get_viewable_attribute_codes_for_user');
     }
