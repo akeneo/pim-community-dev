@@ -19,7 +19,7 @@ class LRUCachedGetViewableAttributeCodesForUserSpec extends ObjectBehavior
         $this->forAttributeCodes($requestedAttributeCodes, 42);
     }
 
-    function it_is_a_get_viewable_attribvute_codes_for_user_query()
+    function it_is_a_get_viewable_attribute_codes_for_user_query()
     {
         $this->shouldImplement(GetViewableAttributeCodesForUserInterface::class);
     }

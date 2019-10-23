@@ -25,17 +25,17 @@ services:
         class: '%pimee_security.filter.granted_product_attribute_filter.class%'
         arguments:
             - '@pim_api.filter.product_attribute_filter'
-            - '@pim_catalog.repository.cached_attribute'
-            - '@pim_catalog.repository.cached_locale'
-            - '@security.authorization_checker'
+            - '@pimee_security.query.get_viewable_attribute_codes_for_user'
+            - '@pimee_security.query.get_all_viewable_locales_for_user'
+            - '@security.token_storage'
 
     pimee_security.filter.granted_product_model_attribute_filter:
         class: '%pimee_security.filter.granted_product_model_attribute_filter.class%'
         arguments:
             - '@pim_api.filter.product_model_attribute_filter'
-            - '@pim_catalog.repository.cached_attribute'
-            - '@pim_catalog.repository.cached_locale'
-            - '@security.authorization_checker'
+            - '@pimee_security.query.get_viewable_attribute_codes_for_user'
+            - '@pimee_security.query.get_all_viewable_locales_for_user'
+            - '@security.token_storage'
 
     pimee_catalog.filter.abstract_authorization:
         class: '%pimee_catalog.filter.abstract_authorization.class%'

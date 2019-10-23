@@ -4,10 +4,10 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Permission\Component\Filter;
 
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
-use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser;
+use Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Filter granted product values belonging to the parents.
@@ -22,25 +22,25 @@ class GrantedProductAttributeFilter implements AttributeFilterInterface
     /** @var AttributeFilterInterface */
     private $productAttributeFilter;
 
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $attributeRepository;
+    /** @var GetViewableAttributeCodesForUserInterface */
+    private $getViewableAttributeCodesForUser;
 
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $localeRepository;
+    /** @var GetAllViewableLocalesForUser */
+    private $getViewableLocalesForUser;
 
-    /** @var AuthorizationCheckerInterface */
-    private $authorizationChecker;
+    /** @var TokenStorageInterface */
+    private $tokenStorage;
 
     public function __construct(
         AttributeFilterInterface $productAttributeFilter,
-        IdentifiableObjectRepositoryInterface $attributeRepository,
-        IdentifiableObjectRepositoryInterface $localeRepository,
-        AuthorizationCheckerInterface $authorizationChecker
+        GetViewableAttributeCodesForUserInterface $getViewableAttributeCodesForUser,
+        GetAllViewableLocalesForUser $getViewableLocalesForUser,
+        TokenStorageInterface $tokenStorage
     ) {
         $this->productAttributeFilter = $productAttributeFilter;
-        $this->attributeRepository = $attributeRepository;
-        $this->localeRepository = $localeRepository;
-        $this->authorizationChecker = $authorizationChecker;
+        $this->getViewableAttributeCodesForUser = $getViewableAttributeCodesForUser;
+        $this->getViewableLocalesForUser = $getViewableLocalesForUser;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -48,13 +48,24 @@ class GrantedProductAttributeFilter implements AttributeFilterInterface
      */
     public function filter(array $standardProduct): array
     {
+        $userId = $this->getUserId();
+        $viewableLocaleCodes = $this->getViewableLocalesForUser->fetchAll($userId);
+
         if (array_key_exists('values', $standardProduct) && is_array($standardProduct['values'])) {
+            $attributeCodes = array_keys($standardProduct['values']);
+            $grantedAttributeCodes = array_fill_keys(
+                $this->getViewableAttributeCodesForUser->forAttributeCodes($attributeCodes, $userId),
+                true
+            );
+
             foreach ($standardProduct['values'] as $attributeCode => $values) {
-                $this->checkGrantedAttribute((string) $attributeCode);
+                if (!isset($grantedAttributeCodes[(string)$attributeCode])) {
+                    throw UnknownPropertyException::unknownProperty($attributeCode);
+                }
 
                 if (is_array($values)) {
                     foreach ($values as $value) {
-                        $this->checkGrantedLocale((string) $attributeCode, $value);
+                        $this->checkGrantedLocale((string)$attributeCode, $value, $viewableLocaleCodes);
                     }
                 }
             }
@@ -64,51 +75,38 @@ class GrantedProductAttributeFilter implements AttributeFilterInterface
     }
 
     /**
-     * @param string $code
-     *
-     * @throws UnknownPropertyException
-     */
-    private function checkGrantedAttribute(string $code): void
-    {
-        $attribute = $this->attributeRepository->findOneByIdentifier($code);
-
-        if (null === $attribute) {
-            throw UnknownPropertyException::unknownProperty($code);
-        }
-
-        $group = $attribute->getGroup();
-        if (!$this->authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $group)) {
-            throw UnknownPropertyException::unknownProperty($code);
-        }
-    }
-
-    /**
      * @param string $attributeCode
      *
      * @throws UnknownPropertyException
      */
-    private function checkGrantedLocale(string $attributeCode, array $value): void
+    private function checkGrantedLocale(string $attributeCode, array $value, array $grantedLocaleCodes): void
     {
         if (!isset($value['locale'])) {
             return;
         }
 
-        $locale = $this->localeRepository->findOneByIdentifier($value['locale']);
+        if (!in_array($value['locale'], $grantedLocaleCodes)) {
+            throw new UnknownPropertyException(
+                $value['locale'],
+                sprintf(
+                    'Attribute "%s" expects an existing and activated locale, "%s" given.',
+                    $attributeCode,
+                    $value['locale']
+                )
+            );
+        }
+    }
 
-        if (null === $locale) {
-            throw new UnknownPropertyException($value['locale'], sprintf(
-                'Attribute "%s" expects an existing and activated locale, "%s" given.',
-                $attributeCode,
-                $value['locale']
-            ));
+    private function getUserId(): int
+    {
+        if (null === $this->tokenStorage->getToken()) {
+            throw new \RuntimeException();
+        }
+        $user = $this->tokenStorage->getToken()->getUser();
+        if (null === $user || null === $user->getId()) {
+            throw new \RuntimeException();
         }
 
-        if (!$this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $locale)) {
-            throw new UnknownPropertyException($value['locale'], sprintf(
-                'Attribute "%s" expects an existing and activated locale, "%s" given.',
-                $attributeCode,
-                $value['locale']
-            ));
-        }
+        return $user->getId();
     }
 }
