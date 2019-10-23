@@ -95,8 +95,6 @@ Feature: Import proposals with decimals
       SKU-003;"125,00 EUR. 199,00 USD";"sku 003"
       SKU-004;"125,00 EUR.199,00 USD";"sku 004"
       SKU-005;"";"sku 005"
-      SKU-006;" EUR, USD";"sku 006"
-      SKU-007;"EUR,USD";"sku 007"
       """
     And the following job "csv_clothing_product_proposal_import" configuration:
       | filePath         | %file to import% |
@@ -105,7 +103,7 @@ Feature: Import proposals with decimals
     And I launch the import job
     And I wait for the "csv_clothing_product_proposal_import" job to finish
     When I am on the proposals page
-    Then the grid should contain 7 element
+    Then the grid should contain 5 element
     And I should see the following proposals:
       | product | author | attribute | locale | original | new             |
       | SKU-001 | Julia  | name      | en_US  |          | sku 001         |
@@ -117,8 +115,6 @@ Feature: Import proposals with decimals
       | SKU-004 | Julia  | name      | en_US  |          | sku 004         |
       | SKU-004 | Julia  | price     |        |          | €125.00,$199.00 |
       | SKU-005 | Julia  | name      | en_US  |          | sku 005         |
-      | SKU-006 | Julia  | name      | en_US  |          | sku 006         |
-      | SKU-007 | Julia  | name      | en_US  |          | sku 007         |
 
   Scenario: Successfully import a csv file (with decimal separator as a comma) with a price attribute splitting the data and currency
     Given the following CSV file to import:

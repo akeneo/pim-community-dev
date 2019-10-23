@@ -1,0 +1,38 @@
+services:
+    pimee_workflow.values_filler.not_granted_published_product:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\InternalApi\FillMissingPublishedProductValues'
+        arguments:
+            - '@pim_catalog.repository.cached_family'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
+            - '@akeneo.pim.structure.query.get_attributes'
+
+    pimee_workflow.values_filler.published_product_with_permission:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer\FillGrantedMissingValues'
+        decorates: 'pimee_workflow.values_filler.not_granted_published_product'
+        decoration_inner_name: 'not_granted_published_product'
+        arguments:
+            - '@not_granted_published_product'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.locale'
+            - '@security.authorization_checker'
+
+    pim_catalog.product.fill_missing_values_with_permission:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer\FillGrantedMissingValues'
+        decorates: 'pim_catalog.product.fill_missing_values'
+        decoration_inner_name: 'not_granted_product'
+        arguments:
+            - '@not_granted_product'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.locale'
+            - '@security.authorization_checker'
+
+    pim_catalog.product_model.fill_missing_values_with_permission:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer\FillGrantedMissingValues'
+        decorates: 'pim_catalog.product_model.fill_missing_values'
+        decoration_inner_name: 'not_granted_product_model'
+        arguments:
+            - '@not_granted_product_model'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.locale'
+            - '@security.authorization_checker'
