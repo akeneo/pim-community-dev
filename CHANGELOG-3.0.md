@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.48 (2019-10-23)
+
 ## Bug fixes
 
 AOB-691: Allow to show only specific operators in datagrid
