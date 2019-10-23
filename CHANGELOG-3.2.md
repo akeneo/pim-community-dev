@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes:
+
+- PIM-8908: Fix asset default image always showing
+
 # 3.2.14 (2019-10-22)
 
 ## Features
