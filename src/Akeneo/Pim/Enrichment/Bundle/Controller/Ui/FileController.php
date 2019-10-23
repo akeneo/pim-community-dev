@@ -83,6 +83,7 @@ class FileController
         }
 
         $fileType = $this->fileTypeGuesser->guess($fileInfo->getMimeType());
+        $result = $this->renderDefaultImage($fileType, $filter);
 
         if (self::DEFAULT_IMAGE_KEY !== $filename) {
             $fileType = $this->fileTypeGuesser->guess($this->getMimeType($filename));
@@ -97,7 +98,7 @@ class FileController
             }
         }
 
-        return $this->renderDefaultImage($fileType, $filter);
+        return $result;
     }
 
     /**
