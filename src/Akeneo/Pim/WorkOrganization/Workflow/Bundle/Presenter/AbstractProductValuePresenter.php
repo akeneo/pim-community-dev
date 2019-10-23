@@ -11,9 +11,6 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-
 /**
  * A product value diff presenter
  *
@@ -23,49 +20,16 @@ abstract class AbstractProductValuePresenter implements PresenterInterface, Rend
 {
     use RendererAware;
 
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $attributeRepository;
-
-    public function __construct(IdentifiableObjectRepositoryInterface $attributeRepository)
-    {
-        $this->attributeRepository = $attributeRepository;
-    }
-
     /**
      * {@inheritdoc}
      */
-    public function supports($data)
+    public function present($formerData, array $change)
     {
-        if ($data instanceof ValueInterface) {
-            $attribute = $this->attributeRepository->findOneByIdentifier($data->getAttributeCode());
-
-            return null !== $attribute && $this->supportsChange($attribute->getType());
-        }
-
-        return false;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function present($value, array $change)
-    {
-        $change = array_merge($change, ['attribute' => $value->getAttributeCode()]);
-
         return $this->renderer->renderDiff(
-            $this->normalizeData($value->getData()),
+            $this->normalizeData($formerData),
             $this->normalizeChange($change)
         );
     }
-
-    /**
-     * Whether or not this class can present the provided change
-     *
-     * @param string $attributeType
-     *
-     * @return bool
-     */
-    abstract protected function supportsChange($attributeType);
 
     /**
      * Normalize data

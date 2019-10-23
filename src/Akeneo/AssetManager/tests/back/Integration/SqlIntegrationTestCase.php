@@ -29,9 +29,6 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 abstract class SqlIntegrationTestCase extends KernelTestCase
 {
-    /** @var KernelInterface|null */
-    protected $testKernel;
-
     /** @var FixturesLoader */
     protected $fixturesLoader;
 
@@ -40,33 +37,21 @@ abstract class SqlIntegrationTestCase extends KernelTestCase
      */
     protected function setUp(): void
     {
-        if (null === $this->testKernel) {
-            $this->bootTestKernel();
-        }
-
+        static::bootKernel(['debug' => false]);
+        $this->overrideContainer();
         $this->fixturesLoader = $this->get('akeneoasset_manager.tests.helper.fixtures_loader');
     }
 
-    protected function bootTestKernel(): void
-    {
-        $this->testKernel = new \AppKernelTest('test', false);
-        $this->testKernel->boot();
-        $this->overrideContainer();
-    }
-
-    /*
-     * @return mixed
-     */
     protected function get(string $service)
     {
-        return $this->testKernel->getContainer()->get($service);
+        return self::$kernel->getContainer()->get($service);
     }
 
     protected function overrideContainer(): void
     {
-        $realEventDispatcher = $this->testKernel->getContainer()->get('event_dispatcher');
-        $this->testKernel->getContainer()->set('event_dispatcher', new EventDispatcherMock($realEventDispatcher));
-        $this->testKernel->getContainer()->set('akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer', new AssetIndexerSpy());
+        $realEventDispatcher = $this->get('event_dispatcher');
+        self::$kernel->getContainer()->set('event_dispatcher', new EventDispatcherMock($realEventDispatcher));
+        self::$kernel->getContainer()->set('akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer', new AssetIndexerSpy());
     }
 
     /**
@@ -74,9 +59,9 @@ abstract class SqlIntegrationTestCase extends KernelTestCase
      */
     protected function tearDown(): void
     {
-        $connectionCloser = $this->testKernel->getContainer()->get('akeneo_integration_tests.doctrine.connection.connection_closer');
+        $connectionCloser = $this->get('akeneo_integration_tests.doctrine.connection.connection_closer');
         $connectionCloser->closeConnections();
 
-        $this->testKernel->shutdown();
+        $this->ensureKernelShutdown();
     }
 }

@@ -25,6 +25,10 @@ class RecordPropertiesValidator
 {
     public function validate(array $normalizedRecord): array
     {
+        if (isset($normalizedRecord['values']) && [] === $normalizedRecord['values']) {
+            $normalizedRecord['values'] = (object) [];
+        }
+
         $validator = new Validator();
         $normalizedRecordObject = Validator::arrayToObjectRecursive($normalizedRecord);
         $validator->validate($normalizedRecordObject, $this->getJsonSchema());

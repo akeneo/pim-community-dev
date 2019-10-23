@@ -32,7 +32,8 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
         php7.3-imagick \
         php7.3-apcu \
         php7.3-exif \
-        php-memcached && \
+        php-memcached \
+        ca-certificates && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     ln -s /usr/sbin/php-fpm7.3 /usr/local/sbin/php-fpm && \
@@ -41,8 +42,9 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
     sed -i "s#listen = /run/php/php7.3-fpm.sock#listen = 9000#g" /etc/php/7.3/fpm/pool.d/www.conf && \
     mkdir -p /run/php
 
-COPY docker/build/akeneo.ini /etc/php/7.3/cli/conf.d/99-akeneo.ini
-COPY docker/build/akeneo.ini /etc/php/7.3/fpm/conf.d/99-akeneo.ini
+COPY docker/php.ini /etc/php/7.3/cli/conf.d/99-akeneo.ini
+COPY docker/php.ini /etc/php/7.3/fpm/conf.d/99-akeneo.ini
+COPY docker/fpm.conf /etc/php/7.3/fpm/pool.d/zzz-akeneo.conf
 
 #
 # Image used for development
@@ -52,7 +54,7 @@ FROM base AS dev
 ENV PHP_CONF_OPCACHE_VALIDATE_TIMESTAMP=1
 
 RUN apt-get update && \
-    apt-get --yes install git ca-certificates unzip curl \
+    apt-get --yes install git unzip curl \
         default-mysql-client php7.3-xdebug procps perceptualdiff && \
     phpdismod xdebug && \
     mkdir /etc/php/7.3/enable-xdebug && \
@@ -137,6 +139,6 @@ COPY --from=builder /srv/pim/vendor vendor
 COPY --from=builder /srv/pim/.env .
 
 # Prepare the application
-RUN mkdir -p public/media && chown -R www-data:www-data public/media var
-USER www-data
-RUN rm -rf var/cache && bin/console cache:warmup
+RUN rm -rf public/test_dist && \
+    mkdir -p public/media var/logs/batch && chown -R www-data:www-data public/media var && \
+    rm -rf var/cache && su www-data -s /bin/bash bash -c "bin/console cache:warmup"

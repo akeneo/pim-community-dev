@@ -57,11 +57,7 @@ class ProductProposalNormalizer implements NormalizerInterface
     {
         $data = [];
 
-        $data['changes'] = $this->standardNormalizer->normalize(
-            $this->getValueCollectionFromChanges($proposalProduct),
-            'standard',
-            $context
-        );
+        $data['changes'] = $this->getChanges($proposalProduct, $context);
         $data['createdAt'] = $this->datagridNormlizer->normalize($proposalProduct->getCreatedAt(), $format, $context);
         $data['product'] = $proposalProduct->getEntityWithValue();
         $data['author'] = $proposalProduct->getAuthor();
@@ -99,7 +95,7 @@ class ProductProposalNormalizer implements NormalizerInterface
      *
      * @return WriteValueCollection
      */
-    private function getValueCollectionFromChanges(ProductDraft $proposal): WriteValueCollection
+    private function getValueCollectionFromChangesWithoutEmptyValues(ProductDraft $proposal): WriteValueCollection
     {
         $changes = $proposal->getChanges();
         $valueCollection = new WriteValueCollection();
@@ -107,24 +103,46 @@ class ProductProposalNormalizer implements NormalizerInterface
         foreach ($changes['values'] as $code => $changeset) {
             $attribute = $this->attributeRepository->findOneByIdentifier($code);
             foreach ($changeset as $index => $change) {
-                if (null === $change['data'] || '' === $change['data'] || [] === $change['data']) {
-                    $value = $this->valueFactory->createTemporaryNull(
-                        $attribute,
-                        $change['scope'],
-                        $change['locale']
-                    );
-                } else {
-                    $value = $this->valueFactory->create(
+                if (!$this->isChangeDataNull($change['data'])) {
+                    $valueCollection->add($this->valueFactory->create(
                         $attribute,
                         $change['scope'],
                         $change['locale'],
                         $change['data']
-                    );
+                    ));
                 }
-                $valueCollection->add($value);
             }
         }
 
         return $valueCollection;
+    }
+
+    private function getChanges(ProductDraft $proposal, array $context): array
+    {
+        $normalizedValues = $this->standardNormalizer->normalize(
+            $this->getValueCollectionFromChangesWithoutEmptyValues($proposal),
+            'standard',
+            $context
+        );
+
+        $changes = $proposal->getChanges();
+        foreach ($changes['values'] as $code => $changeset) {
+            foreach ($changeset as $index => $change) {
+                if ($this->isChangeDataNull($change['data'])) {
+                    $normalizedValues[$code][] = [
+                        'data' => null,
+                        'locale' => $change['locale'],
+                        'scope' => $change['scope']
+                    ];
+                }
+            }
+        }
+
+        return $normalizedValues;
+    }
+
+    private function isChangeDataNull($changeData): bool
+    {
+        return null === $changeData || '' === $changeData || [] === $changeData;
     }
 }

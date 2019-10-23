@@ -64,7 +64,7 @@ services:
         arguments:
             - '@akeneo.pim.enrichment.product.query.get_existing_reference_data_codes'
         tags:
-            - { name: akeneo.pim.enrichment.factory.read.product_value }
+            - { name: akeneo.pim.enrichment.factory.product_value }
 
     ##### User Factory
     pimee_asset.factory.user.default_asset_delay_reminder:
