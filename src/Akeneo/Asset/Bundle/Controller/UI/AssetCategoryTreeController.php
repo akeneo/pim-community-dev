@@ -315,7 +315,7 @@ class AssetCategoryTreeController
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
 
-            if ($form->isValid()) {
+            if ($form->isSubmitted() && $form->isValid()) {
                 $this->categorySaver->save($category);
                 $message = sprintf('flash.%s.updated', $category->getParent() ? 'category' : 'tree');
                 $this->session->getFlashBag()->add('success', $this->translator->trans($message));
