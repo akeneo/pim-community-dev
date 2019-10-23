@@ -208,6 +208,12 @@ class ProductAssetController extends Controller
         $form = $this->createForm(CreateAssetType::class);
         $form->handleRequest($request);
 
+        if (!$form->isSubmitted()) {
+            return [
+                'form' => $form->createView()
+            ];
+        }
+
         if ($form->isSubmitted() && $form->isValid()) {
             $uploadedFile = $form->get('reference_file')->get('uploadedFile')->getData();
             $isLocalized = $form->get('isLocalized')->getData();
@@ -275,10 +281,6 @@ class ProductAssetController extends Controller
 
             return new JsonResponse(['route' => 'pimee_product_asset_index']);
         }
-
-        return [
-            'form' => $form->createView()
-        ];
     }
 
     /**
