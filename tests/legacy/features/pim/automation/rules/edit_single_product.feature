@@ -53,7 +53,7 @@ Feature: Read a single product by applying rules
         priority: 10
         conditions:
           - field:    sku
-            operator: !=
+            operator: '!='
             value:    my-cardigan
         actions:
           - type:  set
