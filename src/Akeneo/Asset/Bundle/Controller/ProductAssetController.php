@@ -208,7 +208,7 @@ class ProductAssetController extends Controller
         $form = $this->createForm(CreateAssetType::class);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $uploadedFile = $form->get('reference_file')->get('uploadedFile')->getData();
             $isLocalized = $form->get('isLocalized')->getData();
 
