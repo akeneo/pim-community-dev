@@ -15,9 +15,6 @@ class SetActionTest extends ControllerIntegrationTestCase
 {
     private const SET_REFERENCE_ENTITY_PERMISSION_ROUTE = 'akeneo_reference_entities_reference_entity_permission_set_rest';
 
-    /** @var Client */
-    private $client;
-
     /** @var WebClientHelper */
     private $webClientHelper;
 
@@ -25,8 +22,7 @@ class SetActionTest extends ControllerIntegrationTestCase
     {
         parent::setUp();
 
-        $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), self::$kernel))
-            ->logIn('julia');
+        $this->get('akeneoreference_entity.tests.helper.authenticated_client_factory')->logIn($this->client, 'julia');
         $this->webClientHelper = $this->get('akeneoreference_entity.tests.helper.web_client_helper');
 
         $securityFacadeStub = $this->get('oro_security.security_facade');

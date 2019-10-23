@@ -13,24 +13,18 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\UI\Web\Attribute;
 
-use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClientFactory;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
 use PHPUnit\Framework\Assert;
-use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateActionTest extends ControllerIntegrationTestCase
 {
     private const CREATE_ATTRIBUTE_ROUTE = 'akeneo_reference_entities_attribute_create_rest';
-
-    /** @var Client */
-    private $client;
 
     /** @var WebClientHelper */
     private $webClientHelper;
@@ -40,8 +34,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         parent::setUp();
 
         $this->loadFixtures();
-        $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), self::$kernel))
-            ->logIn('julia');
+        $this->get('akeneoreference_entity.tests.helper.authenticated_client_factory')->logIn($this->client, 'julia');
         $this->webClientHelper = $this->get('akeneoreference_entity.tests.helper.web_client_helper');
     }
 

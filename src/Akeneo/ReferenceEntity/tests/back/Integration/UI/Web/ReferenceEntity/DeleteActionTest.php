@@ -30,9 +30,6 @@ class DeleteActionTest extends ControllerIntegrationTestCase
 {
     private const REFERENCE_ENTITY_DELETE_ROUTE = 'akeneo_reference_entities_reference_entity_delete_rest';
 
-    /** @var Client */
-    private $client;
-
     /** @var WebClientHelper */
     private $webClientHelper;
 
@@ -42,8 +39,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
 
         $this->resetDB();
         $this->loadFixtures();
-        $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), self::$kernel))
-            ->logIn('julia');
+        $this->get('akeneoreference_entity.tests.helper.authenticated_client_factory')->logIn($this->client, 'julia');
         $this->webClientHelper = $this->get('akeneoreference_entity.tests.helper.web_client_helper');
     }
 
