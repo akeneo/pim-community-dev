@@ -3,8 +3,8 @@ dependencies:
   version: "1.4.0"
   repository: "@stable"
 - name: elasticsearch
-  version: "7.4.0"
-  repository: "@elastic"
+  version: "1.32.0"
+  repository: "@stable"
 - name: memcached
   version: "2.6.0"
   repository: "@stable"

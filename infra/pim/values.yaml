@@ -213,6 +213,7 @@ mysql:
       timeoutSeconds: 30
       successThreshold: 1
       failureThreshold: 3
+
 memcached:
   fullnameOverride: memcached
   replicaCount: 1
@@ -227,116 +228,64 @@ memcached:
     maxItemMemory: 64
   pdbMinAvailable: 0
 
-elasticsearch-master:
-  appVersion: 7.4.0
-  image: "docker.elastic.co/elasticsearch/elasticsearch"
-  tag: 7.4.0
-  pullPolicy: IfNotPresent
-  replicas: 2
-  env:
-    - name: node.name
-      valueFrom:
-        fieldRef:
-          fieldPath: metadata.name
-    - name: cluster.initial_master_nodes
-      value: "elasticsearch-master-0"
-    - name: discovery.seed_hosts
-      value: "elasticsearch-master-headless"
-    - name: cluster.name
-      value: "elasticsearch"
-    - name: network.host
-      value: "0.0.0.0"
-    - name: ES_JAVA_OPTS
-      value: "-Xmx1g -Xms1g"
-    - name: node.data
-      value: "false"
-    - name: node.ingest
-      value: "true"
-    - name: node.master
-      value: "true"
-
-elasticsearch-master:
+elasticsearch:
   appVersion: 7.3.2
-  image: "docker.elastic.co/elasticsearch/elasticsearch"
-  tag: 7.3.2
-  pullPolicy: IfNotPresent
-  replicas: 1
-  env:
-    - name: node.name
-      valueFrom:
-        fieldRef:
-          fieldPath: metadata.name
-    - name: cluster.initial_master_nodes
-      value: "elasticsearch-master-0,elasticsearch-master-1,elasticsearch-master-2"
-    - name: discovery.seed_hosts
-      value: "elasticsearch-master-headless"
-    - name: cluster.name
-      value: "elasticsearch"
-    - name: network.host
-      value: "0.0.0.0"
-    - name: ES_JAVA_OPTS
-      value: "-Xmx1g -Xms1g"
-    - name: node.data
-      value: "false"
-    - name: node.ingest
-      value: "false"
-    - name: node.master
-      value: "true"
-
-elasticsearch-data:
-  appVersion: 7.3.2
-  image: "docker.elastic.co/elasticsearch/elasticsearch"
-  tag: 7.3.2
-  pullPolicy: IfNotPresent
-  replicas: 1
-  env:
-    - name: node.name
-      valueFrom:
-        fieldRef:
-          fieldPath: metadata.name
-    - name: cluster.initial_master_nodes
-      value: "elasticsearch-master-0,elasticsearch-master-1,elasticsearch-master-2"
-    - name: discovery.seed_hosts
-      value: "elasticsearch-master-headless"
-    - name: cluster.name
-      value: "elasticsearch"
-    - name: network.host
-      value: "0.0.0.0"
-    - name: ES_JAVA_OPTS
-      value: "-Xmx1g -Xms1g"
-    - name: node.data
-      value: "true"
-    - name: node.ingest
-      value: "false"
-    - name: node.master
-      value: "false"
-
-
-elasticsearch-client:
-  appVersion: 7.3.2
-  image: "docker.elastic.co/elasticsearch/elasticsearch"
-  tag: 7.3.2
-  pullPolicy: IfNotPresent
-  replicas: 1
-  env:
-    - name: node.name
-      valueFrom:
-        fieldRef:
-          fieldPath: metadata.name
-    - name: cluster.initial_master_nodes
-      value: "elasticsearch-master-0,elasticsearch-master-1,elasticsearch-master-2"
-    - name: discovery.seed_hosts
-      value: "elasticsearch-master-headless"
-    - name: cluster.name
-      value: "elasticsearch"
-    - name: network.host
-      value: "0.0.0.0"
-    - name: ES_JAVA_OPTS
-      value: "-Xmx1g -Xms1g"
-    - name: node.data
-      value: "false"
-    - name: node.ingest
-      value: "false"
-    - name: node.master
-      value: "false"
-
+  image:
+    repository: docker.elastic.co/elasticsearch/elasticsearch-oss
+    tag: 7.3.2
+  fullnameOverride: elasticsearch
+  sysctlInitContainer:
+    enabled: false
+  cluster:
+    name: "pim-es"
+    env:
+      # See chart config map: https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/configmap.yaml
+      # And elasticsearch documentation: https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-gateway.html
+      MINIMUM_MASTER_NODES: null
+      EXPECTED_MASTER_NODES: null
+      RECOVER_AFTER_MASTER_NODES: null
+      EXPECTED_DATA_NODES: null
+      RECOVER_AFTER_DATA_NODES: null
+      #INITIAL_MASTER_NODES: "elasticsearch-master-0,elasticsearch-master-1"
+      #cluster.initial_master_nodes: "elasticsearch-master-0"
+      discovery.seed_hosts: "elasticsearch-discovery"
+  client:
+    replicas: 1
+    heapSize: "128m"
+    resources:
+      limits:
+        cpu: "1"
+        memory: "512Mi"
+      requests:
+        cpu: "25m"
+        memory: "160Mi"
+  master:
+    replicas: 1
+    persistence:
+      size: 1Gi
+      storageClass: ssd-retain
+    heapSize: "256m"
+    resources:
+      limits:
+        cpu: "1"
+        memory: "512Mi"
+      requests:
+        cpu: "25m"
+        memory: "320Mi"
+    updateStrategy:
+      type: RollingUpdate
+  data:
+    replicas: 1
+    persistence:
+      size: 10Gi
+      storageClass: ssd-retain
+    heapSize: "1G"
+    resources:
+      limits:
+        cpu: "1"
+        memory: "1536Mi"
+      requests:
+        cpu: "25m"
+        memory: "1024Mi"
+    updateStrategy:
+      type: RollingUpdate
