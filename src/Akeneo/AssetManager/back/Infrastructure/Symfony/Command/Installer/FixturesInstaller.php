@@ -173,7 +173,6 @@ ALTER TABLE `akeneo_asset_manager_attribute`
 SET foreign_key_checks = 1;
 SQL;
         $this->sqlConnection->exec($sql);
-        $this->assetClient->resetIndex();
     }
 
     /**
@@ -718,7 +717,6 @@ SQL;
 
     private function indexAssets(): void
     {
-        $this->assetClient->resetIndex();
         $this->commandLauncher->executeForeground(
             sprintf('%s %s', IndexAssetsCommand::INDEX_ASSETS_COMMAND_NAME, '--all')
         );
