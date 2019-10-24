@@ -6,12 +6,11 @@ namespace AkeneoTestEnterprise\Pim\Permission\Performance;
 
 use Blackfire\Bridge\PhpUnit\TestCaseTrait;
 use Blackfire\Profile\Configuration;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
+use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
-use PHPUnit\Framework\Assert;
 
 class ListProductWithApiPerformance extends WebTestCase
 {
@@ -23,8 +22,9 @@ class ListProductWithApiPerformance extends WebTestCase
     protected function setUp(): void
     {
         static::bootKernel(['debug' => false]);
-        $authenticator = new SystemUserAuthenticator(static::$kernel->getContainer());
-        $authenticator->createSystemUser();
+        static::$kernel->getContainer()
+                       ->get('akeneo_integration_tests.security.system_user_authenticator')
+                       ->createSystemUser();
     }
 
     /**
