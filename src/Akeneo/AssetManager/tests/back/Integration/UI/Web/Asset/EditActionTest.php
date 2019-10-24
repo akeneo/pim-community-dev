@@ -81,7 +81,7 @@ class EditActionTest extends ControllerIntegrationTestCase
         parent::setUp();
 
         $this->fixturesLoader = $this->get('akeneo_assetmanager.common.helper.fixtures_loader');
-        $this->get('akeneoasset_manager.tests.helper.authenticated_client')->logIn('julia');
+        $this->get('akeneoasset_manager.tests.helper.authenticated_client')->logIn($this->client, 'julia');
         $this->webClientHelper = $this->get('akeneoasset_manager.tests.helper.web_client_helper');
         $this->fileExists = $this->get('akeneo_assetmanager.infrastructure.persistence.query.file_exists');
         $this->findFileData = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_file_data_by_file_key');

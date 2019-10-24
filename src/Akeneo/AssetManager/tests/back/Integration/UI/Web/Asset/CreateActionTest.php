@@ -35,7 +35,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
     {
         parent::setUp();
 
-        $this->get('akeneoasset_manager.tests.helper.authenticated_client')->logIn('julia');
+        $this->get('akeneoasset_manager.tests.helper.authenticated_client')->logIn($this->client, 'julia');
         $this->webClientHelper = $this->get('akeneoasset_manager.tests.helper.web_client_helper');
         $this->fixturesLoader = $this->get('akeneo_assetmanager.common.helper.fixtures_loader');
         $this->loadFixtures();
