@@ -3,6 +3,7 @@
 # Bug fixes
 
 - GITHUB-10247: Fix regex to compile the frontend assets. Thanks @liamjtoohey!
+- PIM-8894: Change product identifier validation to forbid surrounding spaces
 
 # Technical Improvements
 

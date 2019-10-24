@@ -46,14 +46,20 @@ final class ProductCreation implements Context
      */
     public function aProductWithAnIdentifier(string $identifier): void
     {
+        $product = $this->productBuilder->withIdentifier($identifier)->build();
+        $this->productRepository->save($product);
+    }
+
+    /**
+     * @Given a catalog with the attribute :identifierAttributeCode as product identifier
+     */
+    public function aCatalogWithTheAttributeAsProductIdentifier(string $identifierAttributeCode)
+    {
         $attribute = (new Attribute\Builder())->aIdentifier()
-            ->withCode(self::IDENTIFIER_ATTRIBUTE)
+            ->withCode($identifierAttributeCode)
             ->build();
 
         $this->attributeSaver->save($attribute);
-
-        $product = $this->productBuilder->withIdentifier($identifier)->build();
-        $this->productRepository->save($product);
     }
 
     /**

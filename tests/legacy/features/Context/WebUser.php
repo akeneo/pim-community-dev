@@ -2676,6 +2676,7 @@ class WebUser extends PimContext
             case 'attribute creation.description':
                 return $this->lorem(256);
             case 'product edit.sku':
+                return str_repeat('foobar_', 50);
             case 'product edit.description':
                 return str_repeat('foobar ', 50);
             case 'product edit.longtext':
