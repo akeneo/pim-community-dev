@@ -33,7 +33,7 @@ class EventDispatcherMock implements EventDispatcherInterface
     public function dispatch($eventName, Event $event = null)
     {
         $this->dispatchedEvents[$eventName] = $event;
-        $this->eventDispatcher->dispatch($eventName, $event);
+        return $this->eventDispatcher->dispatch($eventName, $event);
     }
 
     public function assertEventDispatched(string $expectedEventClass): void
