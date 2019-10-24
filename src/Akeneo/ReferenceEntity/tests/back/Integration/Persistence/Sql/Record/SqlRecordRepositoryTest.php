@@ -56,6 +56,8 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
+        $this->get('akeneo_referenceentity.client.record')->refreshIndex();
+
         $this->repository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
         $this->referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
         $this->eventDispatcherMock = $this->get('event_dispatcher');
@@ -596,7 +598,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
 
         $this->eventDispatcherMock->assertEventDispatched(RecordDeletedEvent::class);
         $this->expectException(RecordNotFoundException::class);
-        $this->repository->deleteByReferenceEntityAndCode($referenceEntityIdentifier, $recordCode);
+        $this->repository->getByReferenceEntityAndCode($referenceEntityIdentifier, $recordCode);
     }
 
     /**
