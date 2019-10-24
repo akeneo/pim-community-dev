@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\UI\Web\Asset;
 
-use Akeneo\AssetManager\Common\Helper\AuthenticatedClientFactory;
+use Akeneo\AssetManager\Common\Helper\AuthenticatedClient;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer\FixturesLoader;
@@ -35,7 +35,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
     {
         parent::setUp();
 
-        $this->get('akeneoasset_manager.tests.helper.authenticated_client_factory')->logIn('julia');
+        $this->get('akeneoasset_manager.tests.helper.authenticated_client')->logIn('julia');
         $this->webClientHelper = $this->get('akeneoasset_manager.tests.helper.web_client_helper');
         $this->fixturesLoader = $this->get('akeneo_assetmanager.common.helper.fixtures_loader');
         $this->loadFixtures();
