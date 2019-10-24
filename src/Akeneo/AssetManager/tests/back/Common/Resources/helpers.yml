@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     akeneoasset_manager.tests.helper.oauth_authenticated_client_factory:
         class: Akeneo\AssetManager\Common\Helper\OauthAuthenticatedClientFactory
         arguments:
