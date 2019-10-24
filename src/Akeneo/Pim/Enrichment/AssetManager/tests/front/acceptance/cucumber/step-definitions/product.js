@@ -14,6 +14,7 @@ module.exports = async function(cucumber) {
     answerPermissionList,
     answerAssetFamilyDetails,
     answerAssetList,
+    answerAssetAttributes
   } = require('../helpers/fetchers');
 
   const {grantAllAcls} = require('../helpers/acl.js');
@@ -59,6 +60,7 @@ module.exports = async function(cucumber) {
     answerAssetFamilyDetails(this.page);
     answerAssetList(this.page);
     grantAllAcls(this.page);
+    answerAssetAttributes(this.page);
 
     product.values.designer = [
       {
@@ -78,6 +80,7 @@ module.exports = async function(cucumber) {
     answerAssetFamilyDetails(this.page);
     answerAssetList(this.page);
     grantAllAcls(this.page);
+    answerAssetAttributes(this.page);
 
     product.values.designer = [
       {
