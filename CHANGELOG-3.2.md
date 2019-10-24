@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes:
+
+- GITHUB-10955: Remove database prefix in queries
+
 # 3.2.15 (2019-10-24)
 
 ## Improvements

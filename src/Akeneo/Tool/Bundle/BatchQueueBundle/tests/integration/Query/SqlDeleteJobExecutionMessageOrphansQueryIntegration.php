@@ -66,7 +66,7 @@ class SqlDeleteJobExecutionMessageOrphansQueryIntegration extends TestCase
     {
         $sql = <<<SQL
 SELECT 1
-FROM akeneo_pim.akeneo_batch_job_execution_queue
+FROM akeneo_batch_job_execution_queue
 WHERE job_execution_id = :jobExecutionId
 SQL;
 
