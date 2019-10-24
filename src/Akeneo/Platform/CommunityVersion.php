@@ -12,7 +12,7 @@ namespace Akeneo\Platform;
 class CommunityVersion
 {
     /** @staticvar string */
-    const VERSION = '3.0.48';
+    const VERSION = '3.0.49';
 
     /** @staticvar string */
     const VERSION_CODENAME = 'Super-Rabbit';
