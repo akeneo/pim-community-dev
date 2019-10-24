@@ -22,3 +22,10 @@ services:
         class: Akeneo\Pim\Enrichment\AssetManager\Component\Normalizer\LinkedProductsNormalizer
         arguments:
             - '@pim_enrich.normalizer.image'
+
+    pimee.asset_manager.enrichment.asset_preview_generator:
+        class: Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\AssetPreviewGenerator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@akeneo_assetmanager.infrastructure.persistence.asset.hydrator.image_preview_url_generator'
