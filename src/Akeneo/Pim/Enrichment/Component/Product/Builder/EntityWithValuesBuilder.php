@@ -2,13 +2,15 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Builder;
 
-use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolverInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 
 /**
  * @author    Julien Janvier <julien.janvier@akeneo.com>
@@ -23,16 +25,21 @@ class EntityWithValuesBuilder implements EntityWithValuesBuilderInterface
     /** @var ValueFactory */
     protected $productValueFactory;
 
+    /** @var GetAttributes */
+    protected $getAttributesQuery;
+
     /**
      * @param AttributeValuesResolverInterface $valuesResolver
      * @param ValueFactory                     $productValueFactory
      */
     public function __construct(
         AttributeValuesResolverInterface $valuesResolver,
-        ValueFactory $productValueFactory
+        ValueFactory $productValueFactory,
+        GetAttributes $getAttributesQuery
     ) {
         $this->valuesResolver = $valuesResolver;
         $this->productValueFactory = $productValueFactory;
+        $this->getAttributesQuery = $getAttributesQuery;
     }
 
     /**
@@ -54,23 +61,25 @@ class EntityWithValuesBuilder implements EntityWithValuesBuilderInterface
         EntityWithValuesInterface $entityWithValues,
         AttributeInterface $attribute,
         ?string $localeCode,
-        ?string $scopeCode,
+        ?string $channelCode,
         $data
     ): ?ValueInterface {
-        $formerValue = $entityWithValues->getValue($attribute->getCode(), $localeCode, $scopeCode);
+        $attribute = $this->getAttributesQuery->forCode($attribute->getCode());
+
+        $formerValue = $entityWithValues->getValue($attribute->code(), $localeCode, $channelCode);
         $isFormerValueFilled = null !== $formerValue && '' !== $formerValue && [] !== $formerValue;
         $isNewValueFilled = null !== $data && '' !== $data && [] !== $data;
 
         if (!$isFormerValueFilled && $isNewValueFilled) {
-            return $this->createValue($entityWithValues, $attribute, $localeCode, $scopeCode, $data);
+            return $this->createValue($entityWithValues, $attribute, $localeCode, $channelCode, $data);
         }
 
         if ($isFormerValueFilled && $isNewValueFilled) {
-            return $this->updateValue($entityWithValues, $attribute, $localeCode, $scopeCode, $data);
+            return $this->updateValue($entityWithValues, $attribute, $localeCode, $channelCode, $data);
         }
 
         if ($isFormerValueFilled && !$isNewValueFilled) {
-            return $this->removeValue($entityWithValues, $attribute, $localeCode, $scopeCode, $data);
+            return $this->removeValue($entityWithValues, $attribute, $localeCode, $channelCode, $data);
         }
 
         return null;
@@ -78,12 +87,12 @@ class EntityWithValuesBuilder implements EntityWithValuesBuilderInterface
 
     private function createValue(
         EntityWithValuesInterface $entityWithValues,
-        AttributeInterface $attribute,
+        Attribute $attribute,
         ?string $localeCode,
-        ?string $scopeCode,
+        ?string $channelCode,
         $data
     ): ValueInterface {
-        $newValue = $this->productValueFactory->create($attribute, $scopeCode, $localeCode, $data);
+        $newValue = $this->productValueFactory->createByCheckingData($attribute, $channelCode, $localeCode, $data);
         $entityWithValues->addValue($newValue);
         $this->updateProductIdentiferIfNeeded($attribute, $entityWithValues, $data);
 
@@ -92,13 +101,13 @@ class EntityWithValuesBuilder implements EntityWithValuesBuilderInterface
 
     private function updateValue(
         EntityWithValuesInterface $entityWithValues,
-        AttributeInterface $attribute,
+        Attribute $attribute,
         ?string $localeCode,
-        ?string $scopeCode,
+        ?string $channelCode,
         $data
     ): ValueInterface {
-        $formerValue = $entityWithValues->getValue($attribute->getCode(), $localeCode, $scopeCode);
-        $updatedValue = $this->productValueFactory->create($attribute, $scopeCode, $localeCode, $data);
+        $formerValue = $entityWithValues->getValue($attribute->code(), $localeCode, $channelCode);
+        $updatedValue = $this->productValueFactory->createByCheckingData($attribute, $channelCode, $localeCode, $data);
         $entityWithValues->removeValue($formerValue)->addValue($updatedValue);
         $this->updateProductIdentiferIfNeeded($attribute, $entityWithValues, $data);
 
@@ -107,12 +116,12 @@ class EntityWithValuesBuilder implements EntityWithValuesBuilderInterface
 
     private function removeValue(
         EntityWithValuesInterface $entityWithValues,
-        AttributeInterface $attribute,
+        Attribute $attribute,
         ?string $localeCode,
-        ?string $scopeCode,
+        ?string $channelCode,
         $data
     ): ?ValueInterface {
-        $formerValue = $entityWithValues->getValue($attribute->getCode(), $localeCode, $scopeCode);
+        $formerValue = $entityWithValues->getValue($attribute->code(), $localeCode, $channelCode);
         $entityWithValues->removeValue($formerValue);
         $this->updateProductIdentiferIfNeeded($attribute, $entityWithValues, $data);
 
@@ -120,12 +129,12 @@ class EntityWithValuesBuilder implements EntityWithValuesBuilderInterface
     }
 
     private function updateProductIdentiferIfNeeded(
-        AttributeInterface $attribute,
+        Attribute $attribute,
         EntityWithValuesInterface $entityWithValues,
         $data
     ): void {
         // TODO: TIP-722: This is a temporary fix, Product identifier should be used only as a field
-        if (AttributeTypes::IDENTIFIER === $attribute->getType() && $entityWithValues instanceof ProductInterface) {
+        if (AttributeTypes::IDENTIFIER === $attribute->type() && $entityWithValues instanceof ProductInterface) {
             $entityWithValues->setIdentifier($data);
         }
     }
