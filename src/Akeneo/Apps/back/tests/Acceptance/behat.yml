@@ -10,7 +10,7 @@ default:
         default:
             paths:
                 - 'src/Akeneo/Apps/back/tests/Acceptance/features'
-                - 'vendor/akeneo/pim-community-dev/Akeneo/Apps/back/tests/Acceptance/features'
+                - 'vendor/akeneo/pim-community-dev/src/Akeneo/Apps/back/tests/Acceptance/features'
             contexts:
                 - Akeneo\Apps\Tests\Acceptance\Context\AppContext:
                       - '@akeneo_app.persistence.repository.app'

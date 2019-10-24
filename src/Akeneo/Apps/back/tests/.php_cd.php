@@ -32,6 +32,15 @@ $rules = [
 
     $builder->only(
         [
+            'Akeneo\Apps\Application\Service\CreateUserInterface',
+            'Akeneo\Apps\Domain\Model\ValueObject\UserId',
+            'Akeneo\Tool\Component\StorageUtils',
+            'Symfony\Component\Validator\Validator\ValidatorInterface',
+        ]
+    )->in('Akeneo\Apps\Infrastructure\User'),
+
+    $builder->only(
+        [
             'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
             'Doctrine\DBAL\Driver\Connection',
             'Symfony\Component',

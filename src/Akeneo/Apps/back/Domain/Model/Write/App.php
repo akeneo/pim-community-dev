@@ -9,6 +9,7 @@ use Akeneo\Apps\Domain\Model\ValueObject\AppId;
 use Akeneo\Apps\Domain\Model\ValueObject\AppLabel;
 use Akeneo\Apps\Domain\Model\ValueObject\ClientId;
 use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
+use Akeneo\Apps\Domain\Model\ValueObject\UserId;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -32,13 +33,23 @@ class App
     /** @var ClientId */
     private $clientId;
 
-    public function __construct(string $id, string $code, string $label, string $flowType, ClientId $clientId)
-    {
+    /** @var UserId */
+    private $userId;
+
+    public function __construct(
+        string $id,
+        string $code,
+        string $label,
+        string $flowType,
+        ClientId $clientId,
+        UserId $userId
+    ) {
         $this->id = new AppId($id);
         $this->code = new AppCode($code);
         $this->label = new AppLabel($label);
         $this->flowType = new FlowType($flowType);
         $this->clientId = $clientId;
+        $this->userId = $userId;
     }
 
     public function id(): AppId
@@ -64,5 +75,10 @@ class App
     public function clientId(): ClientId
     {
         return $this->clientId;
+    }
+
+    public function userId(): UserId
+    {
+        return $this->userId;
     }
 }
