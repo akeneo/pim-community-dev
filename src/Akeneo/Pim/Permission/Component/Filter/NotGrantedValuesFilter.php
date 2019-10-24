@@ -17,6 +17,7 @@ use Akeneo\Pim\Permission\Component\NotGrantedDataFilterInterface;
 use Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser;
 use Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -56,6 +57,10 @@ class NotGrantedValuesFilter implements NotGrantedDataFilterInterface
         }
 
         $filteredEntityWithValues = clone $entityWithValues;
+        $userId = $this->getUserId();
+        if (-1 === $userId) {
+            return $filteredEntityWithValues;
+        }
 
         if ($filteredEntityWithValues instanceof EntityWithFamilyVariantInterface &&
             null !== $filteredEntityWithValues->getFamilyVariant()) {
@@ -64,7 +69,6 @@ class NotGrantedValuesFilter implements NotGrantedDataFilterInterface
             $values = clone $filteredEntityWithValues->getValues();
         }
 
-        $userId = $this->getUserId();
         $grantedAttributeCodes = array_flip(
             $this->getViewableAttributeCodes->forAttributeCodes($values->getAttributeCodes(), $userId)
         );
@@ -88,11 +92,15 @@ class NotGrantedValuesFilter implements NotGrantedDataFilterInterface
 
     private function getUserId(): int
     {
-        if (null === $this->tokenStorage->getToken()) {
+        if (null === $this->tokenStorage->getToken() || null === $this->tokenStorage->getToken()->getUser()) {
             throw new \RuntimeException('Could not find any authenticated user');
         }
+
         $user = $this->tokenStorage->getToken()->getUser();
-        if (null === $user || null === $user->getId()) {
+        if (null === $user->getId()) {
+            if (UserInterface::SYSTEM_USER_NAME === $user->getUsername()) {
+                return -1;
+            }
             throw new \RuntimeException('Could not find any authenticated user');
         }
 

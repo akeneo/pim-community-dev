@@ -20,6 +20,7 @@ use Akeneo\Pim\Permission\Component\NotGrantedDataMergerInterface;
 use Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser;
 use Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -127,24 +128,26 @@ class NotGrantedValuesMerger implements NotGrantedDataMergerInterface
         }
 
         $rawValuesToMerge = [];
+
         $userId = $this->getUserId();
+        if (-1 !== $userId) {
+            $grantedAttributeCodes = array_flip(
+                $this->getViewableAttributeCodes->forAttributeCodes(
+                    array_keys($fullEntityWithValues->getRawValues()),
+                    $userId
+                )
+            );
+            $grantedLocaleCodes = $this->getViewableLocaleCodesForUser->fetchAll($userId);
 
-        $grantedAttributeCodes = array_flip(
-            $this->getViewableAttributeCodes->forAttributeCodes(
-                array_keys($fullEntityWithValues->getRawValues()),
-                $userId
-            )
-        );
-        $grantedLocaleCodes = $this->getViewableLocaleCodesForUser->fetchAll($userId);
-
-        foreach ($fullEntityWithValues->getRawValues() as $attributeCode => $values) {
-            if (!isset($grantedAttributeCodes[$attributeCode])) {
-                $rawValuesToMerge[$attributeCode] = $values;
-            } else {
-                foreach ($values as $channelCode => $localeRawValue) {
-                    foreach ($localeRawValue as $localeCode => $data) {
-                        if ('<all_locales>' !== $localeCode && !in_array($localeCode, $grantedLocaleCodes)) {
-                            $rawValuesToMerge[$attributeCode][$channelCode][$localeCode] = $data;
+            foreach ($fullEntityWithValues->getRawValues() as $attributeCode => $values) {
+                if (!isset($grantedAttributeCodes[$attributeCode])) {
+                    $rawValuesToMerge[$attributeCode] = $values;
+                } else {
+                    foreach ($values as $channelCode => $localeRawValue) {
+                        foreach ($localeRawValue as $localeCode => $data) {
+                            if ('<all_locales>' !== $localeCode && !in_array($localeCode, $grantedLocaleCodes)) {
+                                $rawValuesToMerge[$attributeCode][$channelCode][$localeCode] = $data;
+                            }
                         }
                     }
                 }
@@ -174,11 +177,15 @@ class NotGrantedValuesMerger implements NotGrantedDataMergerInterface
 
     private function getUserId(): int
     {
-        if (null === $this->tokenStorage->getToken()) {
+        if (null === $this->tokenStorage->getToken() || null === $this->tokenStorage->getToken()->getUser()) {
             throw new \RuntimeException('Could not find any authenticated user');
         }
+
         $user = $this->tokenStorage->getToken()->getUser();
-        if (null === $user || null === $user->getId()) {
+        if (null === $user->getId()) {
+            if (UserInterface::SYSTEM_USER_NAME === $user->getUsername()) {
+                return -1;
+            }
             throw new \RuntimeException('Could not find any authenticated user');
         }
 

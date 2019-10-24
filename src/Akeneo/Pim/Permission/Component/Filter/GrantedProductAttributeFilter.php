@@ -7,6 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterI
 use Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser;
 use Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
@@ -49,9 +50,9 @@ class GrantedProductAttributeFilter implements AttributeFilterInterface
     public function filter(array $standardProduct): array
     {
         $userId = $this->getUserId();
-        $viewableLocaleCodes = $this->getViewableLocalesForUser->fetchAll($userId);
 
-        if (array_key_exists('values', $standardProduct) && is_array($standardProduct['values'])) {
+        if (array_key_exists('values', $standardProduct) && is_array($standardProduct['values']) && -1 !== $userId) {
+            $viewableLocaleCodes = $this->getViewableLocalesForUser->fetchAll($userId);
             $attributeCodes = array_keys($standardProduct['values']);
             $grantedAttributeCodes = array_flip(
                 $this->getViewableAttributeCodesForUser->forAttributeCodes($attributeCodes, $userId)
@@ -74,8 +75,6 @@ class GrantedProductAttributeFilter implements AttributeFilterInterface
     }
 
     /**
-     * @param string $attributeCode
-     *
      * @throws UnknownPropertyException
      */
     private function checkGrantedLocale(string $attributeCode, array $value, array $grantedLocaleCodes): void
@@ -98,11 +97,15 @@ class GrantedProductAttributeFilter implements AttributeFilterInterface
 
     private function getUserId(): int
     {
-        if (null === $this->tokenStorage->getToken()) {
+        if (null === $this->tokenStorage->getToken() || null === $this->tokenStorage->getToken()->getUser()) {
             throw new \RuntimeException('Could not find any authenticated user');
         }
+
         $user = $this->tokenStorage->getToken()->getUser();
-        if (null === $user || null === $user->getId()) {
+        if (null === $user->getId()) {
+            if (UserInterface::SYSTEM_USER_NAME === $user->getUsername()) {
+                return -1;
+            }
             throw new \RuntimeException('Could not find any authenticated user');
         }
 

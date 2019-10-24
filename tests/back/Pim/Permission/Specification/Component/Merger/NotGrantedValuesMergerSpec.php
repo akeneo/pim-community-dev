@@ -13,7 +13,7 @@ use Akeneo\Pim\Permission\Component\NotGrantedDataMergerInterface;
 use Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser;
 use Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
-use Akeneo\UserManagement\Component\Model\User;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\Common\Util\ClassUtils;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -27,10 +27,10 @@ class NotGrantedValuesMergerSpec extends ObjectBehavior
         GetAllViewableLocalesForUser $getViewableLocaleCodesForUser,
         TokenStorageInterface $tokenStorage,
         WriteValueCollectionFactory $valueCollectionFactory,
-        TokenInterface $token
+        TokenInterface $token,
+        UserInterface $user
     ) {
-        $user = new User();
-        $user->setId(42);
+        $user->getId()->willReturn(42);
         $token->getUser()->willReturn($user);
         $tokenStorage->getToken()->willReturn($token);
         $getViewableLocaleCodesForUser->fetchAll(42)->willReturn(['en_US']);
@@ -131,5 +131,46 @@ class NotGrantedValuesMergerSpec extends ObjectBehavior
     {
         $this->shouldThrow(InvalidObjectException::objectExpected(ClassUtils::getClass(new \stdClass()), EntityWithValuesInterface::class))
             ->during('merge', [new Product(), new \stdClass()]);
+    }
+
+    function it_throws_an_exception_when_no_user_is_authenticated(
+        TokenInterface $token
+    ) {
+        $token->getUser()->willReturn(null);
+        $this->shouldThrow(
+            new \RuntimeException('Could not find any authenticated user')
+        )->during('merge', [new Product(), new Product()]);
+    }
+
+    function it_only_takes_the_new_values_for_the_system_user(
+        GetViewableAttributeCodesForUserInterface $getViewableAttributeCodes,
+        UserInterface $user
+    ) {
+        $user->getId()->willReturn(null);
+        $user->getUsername()->willReturn(UserInterface::SYSTEM_USER_NAME);
+
+        $filteredProduct = (new Product())->setIdentifier('filtered');
+        $newValues = new WriteValueCollection(
+            [
+                ScalarValue::value('a_test', 'foo'),
+                ScalarValue::value('a_boolean', true),
+            ]
+        );
+        $filteredProduct->setValues($newValues);
+
+        $fullEntity = (new Product())->setIdentifier('full');
+        $fullEntity->setValues(new WriteValueCollection(
+            [
+                OptionValue::value('color', 'red'),
+                OptionValue::value('size', 'XXL'),
+            ]
+        ));
+
+
+        $getViewableAttributeCodes->forAttributeCodes(Argument::cetera())->shouldNotBeCalled();
+
+        $result = $this->merge($filteredProduct, $fullEntity);
+        $result->shouldBeEqualTo($fullEntity);
+        $result->getValues()->shouldBeLike($newValues);
     }
 }

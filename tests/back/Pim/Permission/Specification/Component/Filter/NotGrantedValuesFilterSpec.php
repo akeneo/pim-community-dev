@@ -2,27 +2,22 @@
 
 namespace Specification\Akeneo\Pim\Permission\Component\Filter;
 
-use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
-use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Permission\Component\Filter\NotGrantedValuesFilter;
 use Akeneo\Pim\Permission\Component\NotGrantedDataFilterInterface;
 use Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser;
 use Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
-use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
-use Akeneo\UserManagement\Component\Model\User;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\Common\Util\ClassUtils;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
@@ -32,10 +27,10 @@ class NotGrantedValuesFilterSpec extends ObjectBehavior
         GetViewableAttributeCodesForUserInterface $getViewableAttributeCodes,
         GetAllViewableLocalesForUser $getViewableLocaleCodesForUser,
         TokenStorageInterface $tokenStorage,
-        TokenInterface $token
+        TokenInterface $token,
+        UserInterface $user
     ) {
-        $user = new User();
-        $user->setid(42);
+        $user->getId()->willReturn(42);
         $token->getUser()->willReturn($user);
         $tokenStorage->getToken()->willReturn($token);
         $getViewableLocaleCodesForUser->fetchAll(42)->willReturn(['en_US', 'fr_FR']);
@@ -126,5 +121,29 @@ class NotGrantedValuesFilterSpec extends ObjectBehavior
     {
         $this->shouldThrow(InvalidObjectException::objectExpected(ClassUtils::getClass(new \stdClass()), EntityWithValuesInterface::class))
             ->during('filter', [new \stdClass()]);
+    }
+
+    function it_throws_an_exception_when_no_user_is_authenticated(
+        TokenInterface $token
+    ) {
+        $token->getUser()->willReturn(null);
+        $this->shouldThrow(new \RuntimeException('Could not find any authenticated user'))->during('filter', [new Product()]);
+    }
+
+    function it_does_not_filter_anything_for_the_system_user(
+        GetViewableAttributeCodesForUserInterface $getViewableAttributeCodes,
+        UserInterface $user,
+        WriteValueCollection $values
+    ) {
+        $user->getId()->willReturn(null);
+        $user->getUsername()->willReturn(UserInterface::SYSTEM_USER_NAME);
+
+        $product = new Product();
+        $product->setValues($values->getWrappedObject());
+
+        $getViewableAttributeCodes->forAttributeCodes(Argument::cetera())->shouldNotBeCalled();
+        $values->remove(Argument::any())->shouldNotBeCalled();
+
+        $this->filter($product)->shouldBeLike($product);
     }
 }
