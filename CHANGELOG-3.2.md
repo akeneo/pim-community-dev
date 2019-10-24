@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.15 (2019-10-24)
+
 ## Improvements
 
 - PIM-8909: Remove css.map links
