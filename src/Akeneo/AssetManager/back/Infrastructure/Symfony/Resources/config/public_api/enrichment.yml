@@ -28,4 +28,5 @@ services:
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
             - '@akeneo_assetmanager.infrastructure.persistence.asset.hydrator.image_preview_url_generator'

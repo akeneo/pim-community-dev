@@ -54,8 +54,7 @@ class ImageNormalizer extends BaseImageNormalizer
      */
     public function normalize(?ValueInterface $value, ?string $localeCode = null): ?array
     {
-        if ($value instanceof AssetCollectionValue)
-        {
+        if ($value instanceof AssetCollectionValue) {
             return $this->normalizeAssetManagerFile($value);
         }
 
@@ -109,10 +108,16 @@ class ImageNormalizer extends BaseImageNormalizer
         $assetFamilyIdentifier = $attribute->getReferenceDataName();
 
         $assetCode = $data[0];
-        $filepath = $this->assetPreviewGenerator->getImageUrl($assetCode, $assetFamilyIdentifier, 'thumbnail');
+        $filepath = $this->assetPreviewGenerator->getImageUrl(
+            (string) $assetCode,
+            $assetFamilyIdentifier,
+            $value->getScopeCode(),
+            $value->getLocaleCode(),
+            'thumbnail'
+        );
 
         return [
-            'filePath'         => $filepath,
+            'filePath' => $filepath,
             'originalFilename' => '',
         ];
     }

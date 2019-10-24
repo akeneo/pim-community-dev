@@ -20,6 +20,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetItem\ImagePreviewUrlGenerator;
 
 /**
@@ -34,31 +35,51 @@ class AssetPreviewGenerator
     /** @var AssetFamilyRepositoryInterface */
     private $assetFamilyRepository;
 
+    /** @var AttributeRepositoryInterface */
+    private $attributeRepository;
+
     /** @var ImagePreviewUrlGenerator */
     private $imagePreviewUrlGenerator;
 
     public function __construct(
         AssetRepositoryInterface $assetRepository,
         AssetFamilyRepositoryInterface $assetFamilyRepository,
+        AttributeRepositoryInterface $attributeRepository,
         ImagePreviewUrlGenerator $imagePreviewUrlGenerator
     ) {
         $this->assetRepository = $assetRepository;
         $this->assetFamilyRepository = $assetFamilyRepository;
+        $this->attributeRepository = $attributeRepository;
         $this->imagePreviewUrlGenerator = $imagePreviewUrlGenerator;
     }
 
-    public function getImageUrl(string $assetCode, string $assetFamilyIdentifier, string $format): string
+    public function getImageUrl(
+        string $assetCode,
+        string $assetFamilyIdentifier,
+        ?string $channelCode,
+        ?string $localeCode,
+        string $format
+    ): string
     {
         $familyIdentifier = AssetFamilyIdentifier::fromString($assetFamilyIdentifier);
         $code = AssetCode::fromString($assetCode);
         $asset = $this->assetRepository->getByAssetFamilyAndCode($familyIdentifier, $code);
         $family = $this->assetFamilyRepository->getByIdentifier($familyIdentifier);
         $attributeAsImageIdentifier = $family->getAttributeAsImageReference()->getIdentifier();
+        $attribute = $this->attributeRepository->getByIdentifier($attributeAsImageIdentifier);
+
+        $channelReference = $attribute->hasValuePerChannel()
+            ? ChannelReference::createfromNormalized($channelCode)
+            : ChannelReference::noReference();
+
+        $localeReference = $attribute->hasValuePerLocale()
+            ? LocaleReference::createFromNormalized($localeCode)
+            : LocaleReference::noReference();
 
         $valueKey = ValueKey::create(
             $attributeAsImageIdentifier,
-            ChannelReference::noReference(),
-            LocaleReference::noReference()
+            $channelReference,
+            $localeReference
         );
 
         $value = $asset->findValue($valueKey);
