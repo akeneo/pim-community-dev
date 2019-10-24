@@ -4,6 +4,9 @@ parameters:
     reference_entity_connector_maximum_records_to_process_per_request: 10
 
 services:
+    _defaults:
+        public: true
+
     # Repositories
     akeneo_referenceentity.infrastructure.persistence.repository.reference_entity:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryReferenceEntityRepository
