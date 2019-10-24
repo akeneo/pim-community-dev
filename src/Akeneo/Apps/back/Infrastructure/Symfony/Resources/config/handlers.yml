@@ -5,6 +5,7 @@ services:
             - '@validator'
             - '@akeneo_app.persistence.repository.app'
             - '@akeneo_app.service.client.create_client'
+            - '@akeneo_app.service.user.create_user'
 
     akeneo_app.application.handler.fetch_apps:
         class: 'Akeneo\Apps\Application\Query\FetchAppsHandler'

@@ -30,6 +30,8 @@ class InMemoryAppRepository implements AppRepository
             'code' => (string) $app->code(),
             'label' => (string) $app->label(),
             'flow_type' => (string) $app->flowType(),
+            'client_id' => $app->clientId()->id(),
+            'user_id' => $app->userId()->id(),
         ];
     }
 

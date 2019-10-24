@@ -8,12 +8,14 @@ use Akeneo\Apps\Application\Command\CreateAppHandler;
 use Akeneo\Apps\Application\Service\CreateClientInterface;
 use Akeneo\Apps\Domain\Exception\ConstraintViolationListException;
 use Akeneo\Apps\Domain\Model\ValueObject\ClientId;
+use Akeneo\Apps\Application\Service\CreateUserInterface;
 use Akeneo\Apps\Domain\Model\Write\App;
 use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
 use Akeneo\Apps\Domain\Persistence\Repository\AppRepository;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CreateAppHandlerSpec extends ObjectBehavior
@@ -21,9 +23,10 @@ class CreateAppHandlerSpec extends ObjectBehavior
     public function let(
         ValidatorInterface $validator,
         AppRepository $repository,
-        CreateClientInterface $createClient
+        CreateClientInterface $createClient,
+        CreateUserInterface $createUser
     ): void {
-        $this->beConstructedWith($validator, $repository, $createClient);
+        $this->beConstructedWith($validator, $repository, $createClient, $createUser);
     }
 
     public function it_is_initializable(): void
@@ -35,15 +38,16 @@ class CreateAppHandlerSpec extends ObjectBehavior
         $validator,
         $repository,
         $createClient,
-        ConstraintViolationListInterface $constraintViolationList
+        $createUser
     ): void {
         $command = new CreateAppCommand('magento', 'Magento Connector', FlowType::DATA_DESTINATION);
 
-        $validator->validate($command)->willReturn($constraintViolationList);
-        $constraintViolationList->count()->willReturn(0);
+        $violations = new ConstraintViolationList([]);
+        $validator->validate($command)->willReturn($violations);
 
         $clientId = new ClientId(42);
         $createClient->execute('Magento Connector')->shouldBeCalled()->willReturn($clientId);
+        $createUser->execute('magento', 'Magento Connector', 'APP', 'magento', Argument::any())->shouldBeCalled();
 
         $repository->generateId()->willReturn('471');
         $repository->create(Argument::type(App::class))->shouldBeCalled();
@@ -55,14 +59,23 @@ class CreateAppHandlerSpec extends ObjectBehavior
         $validator,
         $repository,
         $createClient,
-        ConstraintViolationListInterface $constraintViolationList
+        $createUser
     ): void {
         $command = new CreateAppCommand('magento', 'Magento Connector', 'Wrong Flow Type');
+        $violations = new ConstraintViolationList([
+            new ConstraintViolation(
+                'wrong flow type',
+                'wrong',
+                [],
+                'wrong',
+                'flowtype',
+                'wrong'
+            )
+        ]);
+        $validator->validate($command)->willReturn($violations);
 
-        $validator->validate($command)->willReturn($constraintViolationList);
-        $constraintViolationList->count()->willReturn(1);
-
-        $createClient->execute($command->label())->shouldNotBeCalled();
+        $createClient->execute(Argument::any())->shouldNotBeCalled();
+        $createUser->execute(Argument::cetera())->shouldNotBeCalled();
         $repository->generateId()->shouldNotBeCalled();
         $repository->create(Argument::any())->shouldNotBeCalled();
 

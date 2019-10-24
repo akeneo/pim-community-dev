@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Apps\Infrastructure\Persistence\Dbal\Repository;
 
 use Akeneo\Apps\Domain\Model\Read\App as ReadApp;
-use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
 use Akeneo\Apps\Domain\Model\Write\App as WriteApp;
 use Akeneo\Apps\Domain\Persistence\Repository\AppRepository;
 use Doctrine\DBAL\Connection;
@@ -34,14 +33,15 @@ class DbalAppRepository implements AppRepository
     public function create(WriteApp $app): void
     {
         $insertSQL = <<<SQL
-INSERT INTO akeneo_app (id, client_id, code, label, flow_type)
-VALUES (UUID_TO_BIN(:id), :client_id, :code, :label, :flow_type)
+INSERT INTO akeneo_app (id, client_id, user_id, code, label, flow_type)
+VALUES (UUID_TO_BIN(:id), :client_id, :user_id, :code, :label, :flow_type)
 SQL;
 
         $stmt = $this->dbalConnection->prepare($insertSQL);
         $stmt->execute([
             'id' => (string) $app->id(),
             'client_id' => $app->clientId()->id(),
+            'user_id' => $app->userId()->id(),
             'code' => (string) $app->code(),
             'label' => (string) $app->label(),
             'flow_type' => (string) $app->flowType(),

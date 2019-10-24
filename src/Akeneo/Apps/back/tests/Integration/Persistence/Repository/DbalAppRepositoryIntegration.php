@@ -6,6 +6,7 @@ namespace Akeneo\Apps\back\tests\Integration\Persistence\Repository;
 use Akeneo\Apps\Domain\Model\Read\App as ReadApp;
 use Akeneo\Apps\Domain\Model\ValueObject\ClientId;
 use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
+use Akeneo\Apps\Domain\Model\ValueObject\UserId;
 use Akeneo\Apps\Domain\Model\Write\App as WriteApp;
 use Akeneo\Apps\Infrastructure\Persistence\Dbal\Repository\DbalAppRepository;
 use Akeneo\Test\Integration\Configuration;
@@ -32,6 +33,7 @@ class DbalAppRepositoryIntegration extends TestCase
     public function test_it_saves_a_new_app()
     {
         $clientId = $this->createClient('magento');
+        $userId = $this->createUser('magento', 'Magento connector');
         $uuid = $this->repository->generateId();
 
         $this->repository->create(
@@ -40,12 +42,13 @@ class DbalAppRepositoryIntegration extends TestCase
                 'magento',
                 'Magento connector',
                 FlowType::DATA_DESTINATION,
-                $clientId
+                $clientId,
+                $userId
             )
         );
 
         $query = <<<SQL
-    SELECT BIN_TO_UUID(id) AS id, code, label, flow_type, client_id
+    SELECT BIN_TO_UUID(id) AS id, code, label, flow_type, client_id, user_id
     FROM akeneo_app
     WHERE code = :code
 SQL;
@@ -57,6 +60,7 @@ SQL;
         Assert::assertSame('Magento connector', $result['label']);
         Assert::assertSame(FlowType::DATA_DESTINATION, $result['flow_type']);
         Assert::assertSame($clientId->id(), (int) $result['client_id']);
+        Assert::assertSame($userId->id(), (int) $result['user_id']);
     }
 
     public function test_it_fetches_all_apps()
@@ -82,16 +86,24 @@ SQL;
     private function insertApp(string $code, string $label, string $flowType): void
     {
         $clientId = $this->createClient($label);
+        $userId = $this->createUser($code, $label);
         $id = $this->repository->generateId();
 
         $insertSql = <<<SQL
-    INSERT INTO akeneo_app (id, client_id, code, label, flow_type)
-    VALUES (UUID_TO_BIN(:id), :client_id, :code, :label, :flow_type)
+    INSERT INTO akeneo_app (id, client_id, user_id, code, label, flow_type)
+    VALUES (UUID_TO_BIN(:id), :client_id, :user_id, :code, :label, :flow_type)
 SQL;
 
         $this->dbal->executeQuery(
             $insertSql,
-            ['id' => $id, 'client_id' => $clientId->id(), 'code' => $code, 'label' => $label, 'flow_type' => $flowType]
+            [
+                'id' => $id,
+                'client_id' => $clientId->id(),
+                'user_id' => $userId->id(),
+                'code' => $code,
+                'label' => $label,
+                'flow_type' => $flowType
+            ]
         );
     }
 
@@ -105,5 +117,18 @@ SQL;
         return $this
             ->get('akeneo_app.service.client.create_client')
             ->execute($label);
+    }
+
+    private function createUser(string $username, string $firstname): UserId
+    {
+        return $this
+            ->get('akeneo_app.service.user.create_user')
+            ->execute(
+                $username,
+                $firstname,
+                'APP',
+                $username,
+                sprintf('%s@email.com', $username)
+            );
     }
 }
