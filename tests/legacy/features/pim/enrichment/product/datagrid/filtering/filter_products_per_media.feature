@@ -26,7 +26,6 @@ Feature: Filter products per media
       | shirt-three | image      | %fixtures%/fanatic-freewave-76.gif |
       | shirt-one   | attachment | %fixtures%/akeneo.txt              |
       | shirt-two   | attachment | %fixtures%/fanatic-freewave-76.txt |
-    And the "shirt-four" product has the "attachment" attribute
     And I am logged in as "Mary"
     When I am on the products grid
     Then the grid should contain 4 elements

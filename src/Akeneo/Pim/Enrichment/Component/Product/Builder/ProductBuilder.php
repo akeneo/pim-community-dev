@@ -82,14 +82,6 @@ class ProductBuilder implements ProductBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttribute(EntityWithValuesInterface $values, AttributeInterface $attribute)
-    {
-        $this->entityWithValuesBuilder->addAttribute($values, $attribute);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function addOrReplaceValue(
         EntityWithValuesInterface $values,
         AttributeInterface $attribute,

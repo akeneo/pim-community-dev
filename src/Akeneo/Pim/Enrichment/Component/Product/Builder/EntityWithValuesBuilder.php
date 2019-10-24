@@ -45,18 +45,6 @@ class EntityWithValuesBuilder implements EntityWithValuesBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttribute(EntityWithValuesInterface $entityWithValues, AttributeInterface $attribute)
-    {
-        $requiredValues = $this->valuesResolver->resolveEligibleValues([$attribute]);
-
-        foreach ($requiredValues as $value) {
-            $this->addOrReplaceValue($entityWithValues, $attribute, $value['locale'], $value['scope'], null);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function addOrReplaceValue(
         EntityWithValuesInterface $entityWithValues,
         AttributeInterface $attribute,

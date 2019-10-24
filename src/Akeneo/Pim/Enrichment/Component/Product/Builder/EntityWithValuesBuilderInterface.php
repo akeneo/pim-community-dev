@@ -13,11 +13,6 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
  */
 interface EntityWithValuesBuilderInterface
 {
-    /**
-     * Creates required value(s) to add the attribute to entity
-     */
-    public function addAttribute(EntityWithValuesInterface $entityWithValues, AttributeInterface $attribute);
-
     public function addOrReplaceValue(
         EntityWithValuesInterface $entityWithValues,
         AttributeInterface $attribute,
