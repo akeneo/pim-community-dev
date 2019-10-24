@@ -21,6 +21,11 @@ define([
             getMediaShowUrl: function (filePath, filter) {
                 var filename = encodeURIComponent(filePath);
 
+                // In case the filepath is already a direct URL to an asset preview, directly returns it
+                if (filePath && filePath.includes('rest/asset_manager/image_preview')) {
+                    return filePath;
+                }
+
                 return Routing.generate('pim_enrich_media_show', {
                     filename: filename,
                     filter: filter
