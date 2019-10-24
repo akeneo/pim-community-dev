@@ -183,9 +183,9 @@ services:
     pimee_catalog.security.filter.not_granted_values:
         class: 'Akeneo\Pim\Permission\Component\Filter\NotGrantedValuesFilter'
         arguments:
-            - '@security.authorization_checker'
-            - '@pim_catalog.repository.cached_locale'
-            - '@pim_catalog.repository.cached_attribute'
+            - '@pimee_security.query.get_viewable_attribute_codes_for_user'
+            - '@pimee_security.query.get_all_viewable_locales_for_user'
+            - '@security.token_storage'
 
     pimee_catalog.security.filter.not_granted_parent:
         class: 'Akeneo\Pim\Permission\Component\Filter\NotGrantedParentFilter'

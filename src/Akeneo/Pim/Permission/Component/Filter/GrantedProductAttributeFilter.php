@@ -53,9 +53,8 @@ class GrantedProductAttributeFilter implements AttributeFilterInterface
 
         if (array_key_exists('values', $standardProduct) && is_array($standardProduct['values'])) {
             $attributeCodes = array_keys($standardProduct['values']);
-            $grantedAttributeCodes = array_fill_keys(
-                $this->getViewableAttributeCodesForUser->forAttributeCodes($attributeCodes, $userId),
-                true
+            $grantedAttributeCodes = array_flip(
+                $this->getViewableAttributeCodesForUser->forAttributeCodes($attributeCodes, $userId)
             );
 
             foreach ($standardProduct['values'] as $attributeCode => $values) {
@@ -100,11 +99,11 @@ class GrantedProductAttributeFilter implements AttributeFilterInterface
     private function getUserId(): int
     {
         if (null === $this->tokenStorage->getToken()) {
-            throw new \RuntimeException();
+            throw new \RuntimeException('Could not find any authenticated user');
         }
         $user = $this->tokenStorage->getToken()->getUser();
         if (null === $user || null === $user->getId()) {
-            throw new \RuntimeException();
+            throw new \RuntimeException('Could not find any authenticated user');
         }
 
         return $user->getId();

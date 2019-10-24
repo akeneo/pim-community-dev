@@ -13,12 +13,12 @@ namespace Akeneo\Pim\Permission\Component\Filter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
-use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Permission\Component\NotGrantedDataFilterInterface;
+use Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser;
+use Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Filter not granted values
@@ -27,23 +27,23 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 class NotGrantedValuesFilter implements NotGrantedDataFilterInterface
 {
-    /** @var AuthorizationCheckerInterface */
-    private $authorizationChecker;
+    /** @var GetViewableAttributeCodesForUserInterface */
+    private $getViewableAttributeCodes;
 
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $localeRepository;
+    /** @var GetAllViewableLocalesForUser */
+    private $getViewableLocaleCodesForUser;
 
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $attributeRepository;
+    /** @var TokenStorageInterface */
+    private $tokenStorage;
 
     public function __construct(
-        AuthorizationCheckerInterface $authorizationChecker,
-        IdentifiableObjectRepositoryInterface $localeRepository,
-        IdentifiableObjectRepositoryInterface $attributeRepository
+        GetViewableAttributeCodesForUserInterface $getViewableAttributeCodes,
+        GetAllViewableLocalesForUser $getViewableLocaleCodesForUser,
+        TokenStorageInterface $tokenStorage
     ) {
-        $this->authorizationChecker = $authorizationChecker;
-        $this->localeRepository = $localeRepository;
-        $this->attributeRepository = $attributeRepository;
+        $this->getViewableAttributeCodes = $getViewableAttributeCodes;
+        $this->getViewableLocaleCodesForUser = $getViewableLocaleCodesForUser;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -64,21 +64,19 @@ class NotGrantedValuesFilter implements NotGrantedDataFilterInterface
             $values = clone $filteredEntityWithValues->getValues();
         }
 
-        foreach ($values as $value) {
-            $attribute = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
+        $userId = $this->getUserId();
+        $grantedAttributeCodes = array_flip(
+            $this->getViewableAttributeCodes->forAttributeCodes($values->getAttributeCodes(), $userId)
+        );
+        $grantedLocaleCodes = $this->getViewableLocaleCodesForUser->fetchAll($userId);
 
-            if (null === $attribute || !$this->authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $attribute)) {
+        foreach ($values as $value) {
+            if (!isset($grantedAttributeCodes[$value->getAttributeCode()])) {
                 $values->remove($value);
 
                 continue;
             }
-
-            if (null === $value->getLocaleCode()) {
-                continue;
-            }
-
-            $locale = $this->localeRepository->findOneByIdentifier($value->getLocaleCode());
-            if (!$this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $locale)) {
+            if (null !== $value->getLocaleCode() && !in_array($value->getLocaleCode(), $grantedLocaleCodes)) {
                 $values->remove($value);
             }
         }
@@ -86,5 +84,18 @@ class NotGrantedValuesFilter implements NotGrantedDataFilterInterface
         $filteredEntityWithValues->setValues($values);
 
         return $filteredEntityWithValues;
+    }
+
+    private function getUserId(): int
+    {
+        if (null === $this->tokenStorage->getToken()) {
+            throw new \RuntimeException('Could not find any authenticated user');
+        }
+        $user = $this->tokenStorage->getToken()->getUser();
+        if (null === $user || null === $user->getId()) {
+            throw new \RuntimeException('Could not find any authenticated user');
+        }
+
+        return $user->getId();
     }
 }
