@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Improvements
+
+- PIM-8909: Remove css.map links
+
 ## Bug fixes:
 
 - PIM-8908: Fix asset default image always showing
