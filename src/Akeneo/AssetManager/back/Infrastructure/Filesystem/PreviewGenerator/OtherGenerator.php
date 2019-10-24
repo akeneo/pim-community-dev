@@ -23,14 +23,14 @@ use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
  */
 class OtherGenerator implements PreviewGeneratorInterface
 {
-    public const DEFAULT_OTHER = 'pim_asset_manager.default_image.other';
     public const THUMBNAIL_TYPE = 'thumbnail';
     public const THUMBNAIL_SMALL_TYPE = 'thumbnail_small';
     public const PREVIEW_TYPE = 'preview';
+
     public const SUPPORTED_TYPES = [
-        self::THUMBNAIL_TYPE,
-        self::THUMBNAIL_SMALL_TYPE,
-        self::PREVIEW_TYPE
+        self::THUMBNAIL_TYPE => 'am_binary_thumbnail',
+        self::THUMBNAIL_SMALL_TYPE => 'am_binary_thumbnail',
+        self::PREVIEW_TYPE => 'am_binary_preview'
     ];
 
     /** @var DefaultImageProviderInterface  */
@@ -44,12 +44,12 @@ class OtherGenerator implements PreviewGeneratorInterface
     public function supports(string $data, AbstractAttribute $attribute, string $type): bool
     {
         return MediaLinkAttribute::ATTRIBUTE_TYPE === $attribute->getType()
-               && MediaType::OTHER === $attribute->getMediaType()->normalize()
-               && in_array($type, self::SUPPORTED_TYPES);
+            && MediaType::OTHER === $attribute->getMediaType()->normalize()
+            && array_key_exists($type, self::SUPPORTED_TYPES);
     }
 
     public function generate(string $data, AbstractAttribute $attribute, string $type): string
     {
-        return $this->defaultImageProvider->getImageUrl(self::DEFAULT_OTHER, $type);
+        return $this->defaultImageProvider->getImageUrl(self::DEFAULT_OTHER, self::SUPPORTED_TYPES[$type]);
     }
 }

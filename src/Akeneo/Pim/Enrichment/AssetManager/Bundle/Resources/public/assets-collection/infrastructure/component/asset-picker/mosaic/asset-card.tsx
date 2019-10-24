@@ -31,6 +31,7 @@ const Thumbnail = styled.img<ThumbnailProps>`
   border-style: solid;
   margin-bottom: 6px;
   min-height: 140px;
+  object-fit: contain;
 `;
 
 const AssetCompleteness = styled.div`

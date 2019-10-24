@@ -19,6 +19,7 @@ const AssetThumbnail = styled.img`
   width: 44px;
   height: 44px;
   flex-shrink: 0;
+  object-fit: contain;
 `;
 
 const AssetDetails = styled.div`
