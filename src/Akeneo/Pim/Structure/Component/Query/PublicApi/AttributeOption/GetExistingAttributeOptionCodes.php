@@ -15,5 +15,10 @@ namespace Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption;
  */
 interface GetExistingAttributeOptionCodes
 {
+    /**
+     * Get all existing option codes among a list of option codes, for several attribute at once.
+     *
+     * @param array $optionCodesIndexedByAttributeCodes ['color' => ['blue', 'red'], 'brand' => ['abscscd', 'weryet']]
+     */
     public function fromOptionCodesByAttributeCode(array $optionCodesIndexedByAttributeCodes): array;
 }
