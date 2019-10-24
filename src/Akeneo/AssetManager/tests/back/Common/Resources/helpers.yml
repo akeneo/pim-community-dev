@@ -27,3 +27,9 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
             - '@akeneo_assetmanager.infrastructure.persistence.asset.hydrator.value'
+
+    akeneoasset_manager.tests.helper.authenticated_client_factory:
+        class: Akeneo\AssetManager\Common\Helper\AuthenticatedClientFactory
+        arguments:
+            - '@pim_user.repository.user'
+            - '@session'

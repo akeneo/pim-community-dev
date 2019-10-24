@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration;
 
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
  * This class is used for running integration tests testing the web controllers.
@@ -25,11 +25,15 @@ use Symfony\Component\HttpKernel\KernelInterface;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-abstract class ControllerIntegrationTestCase extends KernelTestCase
+abstract class ControllerIntegrationTestCase extends WebTestCase
 {
+    /** @var KernelBrowser */
+    protected $client;
+
     protected function setUp(): void
     {
-        static::bootKernel(['environment' => 'test_fake', 'debug' => false]);
+        $this->client = static::createClient(['environment' => 'test_fake', 'debug' => false]);
+        $this->client->disableReboot();
     }
 
     protected function get(string $service)

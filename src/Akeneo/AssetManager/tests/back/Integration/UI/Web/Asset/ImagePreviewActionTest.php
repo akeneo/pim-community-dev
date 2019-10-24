@@ -30,9 +30,6 @@ final class ImagePreviewActionTest extends ControllerIntegrationTestCase
     private const URL_VALUE_PREVIEW_ROUTE = 'akeneo_asset_manager_image_preview';
     private const FILENAME = '2016/04/Fred-site-web.jpg';
 
-    /* @var Client */
-    private $client;
-
     /** @var WebClientHelper */
     private $webClientHelper;
 
@@ -49,8 +46,7 @@ final class ImagePreviewActionTest extends ControllerIntegrationTestCase
     {
         parent::setUp();
 
-        $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), self::$kernel))
-            ->logIn('julia');
+        $this->get('akeneoasset_manager.tests.helper.authenticated_client_factory')->logIn('julia');
         $this->webClientHelper = $this->get('akeneoasset_manager.tests.helper.web_client_helper');
         $this->fixturesLoader = $this->get('akeneoasset_manager.tests.helper.fixtures_loader');
 

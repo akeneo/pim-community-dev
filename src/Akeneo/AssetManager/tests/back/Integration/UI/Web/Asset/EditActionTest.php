@@ -64,9 +64,6 @@ class EditActionTest extends ControllerIntegrationTestCase
 {
     private const ASSET_EDIT_ROUTE = 'akeneo_asset_manager_asset_edit_rest';
 
-    /** @var Client */
-    private $client;
-
     /** @var WebClientHelper */
     private $webClientHelper;
 
@@ -84,8 +81,7 @@ class EditActionTest extends ControllerIntegrationTestCase
         parent::setUp();
 
         $this->fixturesLoader = $this->get('akeneo_assetmanager.common.helper.fixtures_loader');
-        $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), self::$kernel))
-            ->logIn('julia');
+        $this->get('akeneoasset_manager.tests.helper.authenticated_client_factory')->logIn('julia');
         $this->webClientHelper = $this->get('akeneoasset_manager.tests.helper.web_client_helper');
         $this->fileExists = $this->get('akeneo_assetmanager.infrastructure.persistence.query.file_exists');
         $this->findFileData = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_file_data_by_file_key');
