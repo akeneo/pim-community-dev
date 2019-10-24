@@ -2,19 +2,14 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2019 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Query;
 
 use Doctrine\DBAL\Connection;
 
+/**
+ * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class GetChannelActiveLocaleCodes
 {
     /** @var Connection */
@@ -30,8 +25,8 @@ class GetChannelActiveLocaleCodes
         $sql = <<<SQL
 SELECT DISTINCT locale.code
 FROM pim_catalog_channel AS channel
-  INNER JOIN akeneo_pim.pim_catalog_channel_locale AS channel_locale ON (channel.id = channel_locale.channel_id)
-  INNER JOIN akeneo_pim.pim_catalog_locale AS locale ON (channel_locale.locale_id = locale.id)
+  INNER JOIN pim_catalog_channel_locale AS channel_locale ON (channel.id = channel_locale.channel_id)
+  INNER JOIN pim_catalog_locale AS locale ON (channel_locale.locale_id = locale.id)
 WHERE channel.code = :channel_code
 SQL;
         $statement = $this->connection->executeQuery(
