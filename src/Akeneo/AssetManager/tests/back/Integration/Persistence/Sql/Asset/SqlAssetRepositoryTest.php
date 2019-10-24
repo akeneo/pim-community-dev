@@ -64,6 +64,7 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
         $this->eventDispatcherMock->reset();
 
         $this->resetDB();
+        $this->get('akeneo_assetmanager.client.asset')->refreshIndex();
         $this->loadFixtures();
     }
 
