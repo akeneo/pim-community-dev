@@ -174,20 +174,12 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
 
         $productQueryBuilder = $this->pqbFactory->create($options);
         foreach ($filters as $filter) {
-            try {
-                $productQueryBuilder->addFilter(
-                    $filter['field'],
-                    $filter['operator'],
-                    $filter['value'],
-                    $filter['context'] ?? []
-                );
-            } catch (ObjectNotFoundException $e) {
-                /**
-                 * PIM-8127: If a filter can not be applied because the object can not be found, it is ignored.
-                 * ie: Family or group does not exists.
-                 */
-                continue;
-            }
+            $productQueryBuilder->addFilter(
+                $filter['field'],
+                $filter['operator'],
+                $filter['value'],
+                $filter['context'] ?? []
+            );
         }
 
         return $productQueryBuilder->execute();
