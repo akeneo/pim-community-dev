@@ -9,6 +9,7 @@ use Akeneo\Apps\Application\Command\CreateAppHandler;
 use Akeneo\Apps\Application\Query\FetchAppsHandler;
 use Akeneo\Apps\Domain\Exception\ConstraintViolationListException;
 use Akeneo\Apps\Domain\Model\Read\App;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -32,6 +33,9 @@ class AppController
         $this->fetchAppsHandler = $fetchAppsHandler;
     }
 
+    /**
+     * @AclAncestor("akeneo_app_manage_settings")
+     */
     public function list()
     {
         $apps = $this->fetchAppsHandler->query();
@@ -43,6 +47,9 @@ class AppController
         );
     }
 
+    /**
+     * @AclAncestor("akeneo_app_manage_settings")
+     */
     public function create(Request $request)
     {
         $data = json_decode($request->getContent(), true);

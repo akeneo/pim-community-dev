@@ -2,6 +2,7 @@ extensions:
     pim-menu-system-apps:
         module: pim/menu/item
         parent: pim-menu-system-navigation-block
+        aclResourceId: akeneo_app_manage_settings
         position: 120
         config:
             title: pim_menu.item.apps

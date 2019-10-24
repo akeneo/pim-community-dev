@@ -1,0 +1,4 @@
+akeneo_app:
+    acl_group.apps: Apps
+    acl:
+        manage_settings: Manage Apps settings
