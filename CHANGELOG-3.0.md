@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-8903: Fix export job instances filters when a family is deleted
+
 # 3.0.48 (2019-10-23)
 
 ## Bug fixes
