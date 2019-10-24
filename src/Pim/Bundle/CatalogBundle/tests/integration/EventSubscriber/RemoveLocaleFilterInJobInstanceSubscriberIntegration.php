@@ -107,7 +107,7 @@ class RemoveLocaleFilterInJobInstanceSubscriberIntegration extends TestCase
     {
         $sql = <<<SQL
 SELECT raw_parameters
-FROM akeneo_pim.akeneo_batch_job_instance
+FROM akeneo_batch_job_instance
 WHERE id = :jobId
 SQL;
         $stmt = $this->getFromTestContainer('doctrine.orm.entity_manager')->getConnection()->prepare($sql);
