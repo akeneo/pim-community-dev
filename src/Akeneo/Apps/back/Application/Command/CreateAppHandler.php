@@ -43,7 +43,6 @@ class CreateAppHandler
 
     public function handle(CreateAppCommand $command): void
     {
-        // TODO: Validate code unicity
         $violations = $this->validator->validate($command);
         if ($violations->count() > 0) {
             throw new ConstraintViolationListException($violations);

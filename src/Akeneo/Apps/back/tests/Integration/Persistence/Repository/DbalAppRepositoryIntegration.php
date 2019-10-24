@@ -63,6 +63,17 @@ SQL;
         Assert::assertSame($userId->id(), (int) $result['user_id']);
     }
 
+    public function test_it_finds_an_app_by_code()
+    {
+        $this->insertApp('magento', 'Magento connector', FlowType::DATA_DESTINATION);
+        $app = $this->repository->findOneByCode('magento');
+
+        Assert::assertInstanceOf(ReadApp::class, $app);
+        Assert::assertSame('magento', $app->code());
+        Assert::assertSame('Magento connector', $app->label());
+        Assert::assertSame(FlowType::DATA_DESTINATION, $app->flowType());
+    }
+
     public function test_it_fetches_all_apps()
     {
         $this->insertApp('magento', 'Magento connector', FlowType::DATA_DESTINATION);

@@ -47,15 +47,17 @@ class InMemoryAppRepository implements AppRepository
 
     public function findOneByCode(string $code): ?ReadApp
     {
-        if (isset($this->dataRows[$code])) {
-            $dataRow = $this->dataRows[$code];
-            return new ReadApp(
-                $dataRow['id'],
-                $dataRow['code'],
-                $dataRow['label'],
-                $dataRow['flow_type']
-            );
+        if (!isset($this->dataRows[$code])) {
+            return null;
         }
+        $dataRow = $this->dataRows[$code];
+
+        return new ReadApp(
+            $dataRow['id'],
+            $dataRow['code'],
+            $dataRow['label'],
+            $dataRow['flow_type']
+        );
     }
 
     public function count(): int

@@ -7,6 +7,7 @@ namespace Akeneo\Apps\Tests\Acceptance\Context;
 use Akeneo\Apps\Application\Command\CreateAppCommand;
 use Akeneo\Apps\Application\Command\CreateAppHandler;
 use Akeneo\Apps\Application\Query\FetchAppsHandler;
+use Akeneo\Apps\Domain\Exception\ConstraintViolationListException;
 use Akeneo\Apps\Domain\Model\Read\App;
 use Akeneo\Apps\Domain\Model\ValueObject\AppCode;
 use Akeneo\Apps\Domain\Model\ValueObject\AppLabel;
@@ -25,6 +26,7 @@ class AppContext implements Context
     private $appRepository;
     private $fetchAppsHandler;
     private $createAppHandler;
+    private $violations;
 
     public function __construct(
         InMemoryAppRepository $appRepository,
@@ -76,8 +78,12 @@ class AppContext implements Context
      */
     public function iCreateTheApp(string $flowType, string $label): void
     {
-        $command = new CreateAppCommand(self::slugify($label), $label, self::defineFlowType($flowType));
-        $this->createAppHandler->handle($command);
+        try {
+            $command = new CreateAppCommand(self::slugify($label), $label, self::defineFlowType($flowType));
+            $this->createAppHandler->handle($command);
+        } catch (ConstraintViolationListException $violationList) {
+            $this->violations = $violationList;
+        }
     }
 
     /**
@@ -101,6 +107,24 @@ class AppContext implements Context
     public function thereShouldBeApps(int $count): void
     {
         Assert::eq($count, $this->appRepository->count());
+    }
+
+    /**
+     * @Then I should have been warn that the code must be unique
+     */
+    public function iShouldHaveBeenWarnThatTheCodeMustBeUnique()
+    {
+        Assert::isInstanceOf($this->violations, ConstraintViolationListException::class);
+
+        foreach ($this->violations->getConstraintViolationList() as $violation) {
+            if ('code' === $violation->getPropertyPath() &&
+                'akeneo_apps.constraint.code.must_be_unique' === $violation->getMessage()
+            ) {
+                return;
+            }
+        }
+
+        throw new \Exception('No exception about code uniqueness received.');
     }
 
     private static function slugify(string $label): string

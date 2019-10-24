@@ -30,6 +30,21 @@ class DbalAppRepository implements AppRepository
         return Uuid::uuid4()->toString();
     }
 
+    public function findOneByCode(string $code): ?ReadApp
+    {
+        $selectQuery = <<<SQL
+SELECT BIN_TO_UUID(id) AS id, code, label, flow_type
+FROM akeneo_app
+WHERE code = :code
+SQL;
+
+        $dataRow = $this->dbalConnection->executeQuery($selectQuery, ['code' => $code])->fetch();
+
+        return $dataRow ?
+            new ReadApp($dataRow['id'], $dataRow['code'], $dataRow['label'], $dataRow['flow_type']) :
+            null;
+    }
+
     public function create(WriteApp $app): void
     {
         $insertSQL = <<<SQL
