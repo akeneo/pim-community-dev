@@ -105,3 +105,9 @@ services:
             - '@doctrine.orm.default_entity_manager'
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@validator'
+
+    akeneo_integration_tests.event_dispatcher:
+        class: 'Akeneo\ReferenceEntity\Common\Fake\EventDispatcherMock'
+        decorates: event_dispatcher
+        arguments:
+            - '@akeneo_integration_tests.event_dispatcher.inner'

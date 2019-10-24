@@ -101,7 +101,7 @@ class EventDispatcherMock implements EventDispatcherInterface
      */
     public function getListeners($eventName = null)
     {
-        $this->eventDispatcher->getListeners($eventName);
+        return $this->eventDispatcher->getListeners($eventName);
     }
 
     /**
@@ -109,7 +109,7 @@ class EventDispatcherMock implements EventDispatcherInterface
      */
     public function getListenerPriority($eventName, $listener)
     {
-        $this->eventDispatcher->getListenerPriority($eventName, $listener);
+        return $this->eventDispatcher->getListenerPriority($eventName, $listener);
     }
 
     /**
@@ -117,6 +117,6 @@ class EventDispatcherMock implements EventDispatcherInterface
      */
     public function hasListeners($eventName = null)
     {
-        $this->eventDispatcher->hasListeners($eventName);
+        return $this->eventDispatcher->hasListeners($eventName);
     }
 }
