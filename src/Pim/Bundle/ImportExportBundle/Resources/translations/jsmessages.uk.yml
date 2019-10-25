@@ -14,6 +14,7 @@ pim_connector:
     locales:
       validation:
         not_blank: Одна локаль має бути вибрана, будь ласка, оберіть локаль для експорту.
+#Page titles
 page_title:
   pim_importexport_export_profile_edit: Експорт профілю {{ job.label }} | Редагувати
   pim_importexport_export_profile_show: Експорт профілю {{ job.label }} | Показати

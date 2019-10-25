@@ -1,4 +1,5 @@
 pim_enrich:
+  #Product
   product:
     tab:
       attribute.title: Atributi
@@ -6,18 +7,22 @@ pim_enrich:
       association.title: Associazioni
       completeness.title: Completamento
       history.title: Cronologia
+    #Product comparison
     no_comparison_locale_available: Nessun'altra impostazione locale disponibile per il confronto
     no_compared_media: Nessun media disponibile per il confronto
+  #Attribute
   attribute:
     tab:
       parameter.title: Parametri
       value.title: Valori
       history.title: Cronologia
+  #Attribute group
   attribute_group:
     tab:
       property.title: Proprietà
       attribute.title: Atributi
       history.title: Cronologia
+  #Family
   family:
     info:
       cant_remove_attribute_used_as_axis: Impossibile rimuovere questo attributo usato come asse variante in una famiglia variante
@@ -25,21 +30,26 @@ pim_enrich:
       property.title: Proprietà
       attribute.title: Atributi
       history.title: Cronologia
+  #Association type
   association_type:
     tab:
       property.title: Proprietà
       history.title: Cronologia
+  #Group type
   group_type:
     tab:
       property.title: Proprietà
+  #Category
   category:
     tab:
       property.title: Proprietà
       history.title: Cronologia
+  #Locale
   locale:
     tab:
       property.title: Proprietà
       permission.title: Autorizzazioni
+  #Product group
   group:
     axis.help: 'Gli assi definiscono gli attributi sui quali i prodotti di un gruppo dovrebbero variare. Gli assi sono attributi con opzioni, non localizzabili e senza ambito. Non possono essere modificati dopo la creazione del gruppo di varianti.'
     type:
@@ -51,12 +61,14 @@ pim_enrich:
       product.title: Prodotti
       property.title: Proprietà
       history.title: Cronologia
+  #Product completeness
   completeness:
     progress_bar.title: 'completo al %ratio%% (1 valore richiesto)|completo al %ratio%% (%count% valori richiesti)'
     subtitle: '{0} Completo|{1} 1 valore mancante|]1,Inf] %count% valori mancanti'
     missing_attributes: Valore mancante|Valori mancanti
     legend:
       locale_not_associated: Impostazioni locali non associate a questo canale
+  #Mass edit operations
   mass_edit_action:
     limit_exceeded: Si prega di scegliere meno di %limit% elementi da modificare
     product:
@@ -130,10 +142,12 @@ pim_enrich:
     mass_action:
       quick_export:
         launched_flash: Il processo di esportazione dei prodotti è attualmente in esecuzione
+  #Sequential edit operations
   sequential_edit_action:
     product:
       previous: Torna indietro a "%product%" senza salvare.
       next: Torna a "%product%" senza salvare.
+  #ACLs
   acl:
     locale:
       index: Elenco formato impostazioni locali
@@ -248,6 +262,7 @@ pim_enrich:
       remove_completeness_for_channel_and_locale:
         start: La locale è stata rimossa dal canale. Attualmente stiamo pulendo le completezze collegate a loro.
         done: Rimozione di una locale su un canale finito.
+#Entity and page header titles
 attribute:
   title: attributo
   edit: Modifica attributo
@@ -303,7 +318,9 @@ association type:
   title: Tipo associazione
   create: Crea tipo associazione
   edit: Modifica tipo associazione
+#Custom titles
 products: prodotti
+#Buttons
 btn:
   create:
     attribute: Crea attributo
@@ -334,6 +351,7 @@ btn:
   to parent: Torna al padre
   download_pdf: PDF
   download: scarica
+#Confirmation messages
 confirmation:
   confirm: Conferma
   delete: Conferma cancellazione
@@ -356,6 +374,7 @@ confirmation:
     remove attribute: Sei sicuro di voler rimuovere l'attributo %name% da questa famiglia?
   product:
     remove attribute: Sei sicuro di voler rimuovere l'attributo %name% da questo articolo?
+#Flash messages
 flash:
   entity:
     removed: L'elemento è stato eliminato
@@ -418,6 +437,7 @@ flash:
   user:
     removed: Utente rimosso con successo
   error ocurred: Azione non riuscita. Si prega di riprovare.
+#Info messages
 info:
   updated: Ci sono modifiche non salvate.
   category:
@@ -452,6 +472,7 @@ info:
     auto option sorting: Se abilitato, le opzioni verranno ordinate automaticamente secondo le loro etichette
   completeness:
     not calculated: Non ancora calcolato
+#Form elements
 Options: Opzioni
 Created at: Creato il
 Updated at: Caricato il
@@ -526,17 +547,21 @@ Category tree: Struttura della categoria
 Completeness: Completamento
 Attribute used as label: Attributo utilizzato come etichetta
 Credentials: Credenziali
+#Scopes
 Global: Globale
 Channel: Canale
 Expand all channels: Espandere tutti i canali
 Collapse all channels: Comprimi tutti i canali
+#Variants
 Always override: Ignorare sempre
 Ask: Chiedi
+#Attribute group
 General Properties: Proprietà generali
 Group values: Valori di gruppo
 New group: Nuovo gruppo
 Groups overview: Anteprima gruppi
 'Y-m-d h:i:s': 'Y-m-d h:i:s'
+#Attribute properties
 Max characters: Numero massimo di caratteri
 Validation rule: Regola di convalida
 Validation regexp: Convalida regexp
@@ -557,8 +582,11 @@ URL: URL
 Regular expression: Espressione regolare
 Minimum input length: Lunghezza minima di input
 Default: Predefinito
+#Family
 Attributes: Atributi
+#Category
 Title: Titolo
+#Page titles
 pim_title.attribute_group:
   index: "Gruppi di attributi"
   create: "Gruppi di attributo | Crea"
@@ -618,12 +646,15 @@ pim_catalog_date: Data
 pim_catalog_metric: Metrico
 pim_reference_data_simpleselect: Seleziona un singolo riferimento dati
 pim_reference_data_multiselect: Seleziona un riferimento dati multiplo
+#Locales
 Activated: Attivato
 Disable: Disabilita
+#Sequential edit operations
 pim_enrich.sequential_edit_action:
   product:
     previous: Torna indietro a "%product%" senza salvare.
     next: Torna a "%product%" senza salvare.
+#Mass edit operations
 pim_enrich.mass_edit_action:
   limit_exceeded: Si prega di scegliere meno di %limit% elementi da modificare
   product:
@@ -682,9 +713,11 @@ Select: Selezionare
 Remove this attribute: Rimuovere l'attributo
 Copy: Copia
 Current tab: Scheda corrente
+#Product view
 Group: Gruppo
 View group: Visualizzazione gruppo
 Products: Prodotti
+#Tabs
 Properties: Proprietà
 History: Cronologia
 pane.accordion:
@@ -697,11 +730,13 @@ pane.accordion:
   label_translations: Traduzioni etichetta
   options: Opzioni
   group_values: Valori di gruppo
+#Popin titles
 popin.create:
   association_type.title: Creare un nuovo tipo di associazione
   group.title: Crea un nuovo gruppo
   product.title: Crea un nuovo articolo
   option.title: Crea una nuova opzione
+#Datagrid contents
 In group: Nel gruppo
 Attribute as label: Attributo come etichetta
 Is associated: È associato
@@ -711,6 +746,7 @@ Updated At: Aggiornato il
 Enabled: Attivato
 Disabled: Disattivato
 Status: Stato
+#Versioning / history
 Change History: Cambia la cronologia
 Data Audit: Revisione dei dati
 Data Audit - System: 'Sistema di revisione dei dati'
@@ -725,6 +761,7 @@ Logged at: Loggato il
 Deleted: Eliminato
 Old values: Vecchi valori
 New values: Nuovi valori
+#Configuration
 System configuration: Configurazione del sistema
 General setup: Impostazioni generali
 Localization: Localizzazione
@@ -756,6 +793,7 @@ oro.locale:
       language: "Selezionare la lingua di sistema che si desidera utilizzare"
       timezone: "Selezionare il fuso orario per la visualizzazione di data e ora"
       currency: "Selezionare la valuta predefinita"
+#Datagrid
 Selected products successfully deleted: Gli articoli selezionati sono stati eliminati con successo
 pim_mass_edit:
   notification:
@@ -787,6 +825,7 @@ edit_common_attributes: Modificare gli attributi
 edit_common_attributes_clean: Pulisci i file per gli attributi
 perform.steps.duplicated.title: Dimensione Duplicata
 perform.steps.excluded.title: Prodotto escluso
+#Background jobs & steps labels
 batch_jobs:
   add_product_value:
     label: Aggiungi un valore di prodotto

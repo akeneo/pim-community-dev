@@ -1,3 +1,4 @@
+#Grid action messages
 confirmation:
   title: Bekräfta
   remove:
@@ -7,6 +8,7 @@ confirmation:
     attribute_group: Är du säker på att du vill radera det här attributet?
     family: Är du säker på att du vill radera den här familjen?
     product: Är du säker på att du vill ta bort denna produkt?
+    product_model: Är du säker på att du vill ta bort denna produkt modell? Alla barn, modell och variant produkter, kommer att tas bort.
     channel: Är du säker på att du vill ta bort denna kanal?
     group: Är du säker på att du vill ta bort denna grupp?
     group_type: Är du säker på att du vill ta bort denna grupptyp?
@@ -52,9 +54,9 @@ flash:
     removed: Gruppen har tagits bort
   group_type:
     removed: Grupptypen har tagits bort
-  import profile:
+  import_profile:
     removed: Importprofilen har tagits bort
-  export profile:
+  export_profile:
     removed: Exportprofilen har tagits bort
   user:
     removed: Användaren har tagits bort
@@ -106,6 +108,7 @@ Classify the product: Klassificera produkten
 Delete the product: Ta bort denna produkt
 Change status: Ändra status
 Toggle status: Växla status
+#Quick export labels
 pim:
   grid:
     mass_action:
@@ -117,6 +120,7 @@ pim:
       delete: Ta bort
       mass_edit: Massåtgärder
       category_edit: Flytta produkter i kategorier
+#Jstree context menu actions
 jstree.create: Skapa
 jstree.done: Slutförd
 switch_on: "Ja"
@@ -124,7 +128,7 @@ switch_off: "Nej"
 pim_enrich:
   item:
     list:
-      delete.label: Ta bort
+      delete.label: Radera
       delete.error: Fel under radering av artikel
     delete:
       confirm.content: Är du säker du vill ta bort denna {{ itemName }}? Det går inte att ångra åtgärden
@@ -159,7 +163,7 @@ pim_enrich:
         disabled: Avaktiverad
         download_pdf: PDF
         compare_translate: Jämför / Översätta
-        delete: Ta bort
+        delete: Radera
         save: Spara
       history:
         version: Version
@@ -205,7 +209,7 @@ pim_enrich:
         select: Välj
         all: Alla
         all_visible: Alla synliga
-        none: Ingen
+        none: Inga
         copy: Kopiera
       optional_attribute:
         remove: Ta bort detta attributet
@@ -224,7 +228,7 @@ pim_enrich:
           cancel: Avbryt
       message:
         created: Produkten har skapts
-      completeness: Klart
+      completeness: Slutförd
     product_model:
       create_popin:
         type: Produktmodell
@@ -242,7 +246,7 @@ pim_enrich:
         update_failed: Associationstypen kunde inte ändras.
         field_not_ready: "Produkten kan inte sparas just nu. Följande fält inte är redo: {{ fields }}"
       meta:
-        created: Skapat
+        created: Skapad
         created_by: Skapad av
         updated: Ändrad
         updated_by: Ändrad av
@@ -267,11 +271,11 @@ pim_enrich:
         updated_by: Ändrad av
       btn:
         save: Spara
-      title: grupp typ
+      title: grupptyp
       create_popin:
         title: Skapa
       message:
-        created: Grupptyp skapades
+        created: Grupptyp har skapats
     channel:
       title: kanal
       info:
@@ -283,7 +287,7 @@ pim_enrich:
         create_failed: Kanalen kunde inte skapas.
         field_not_ready: "Kanalen kan inte sparas just nu. Följande fält inte är redo: {{ fields }}"
       meta:
-        created: Skapat
+        created: Skapad
         created_by: Skapad av
         updated: Ändrad
         updated_by: Ändrad av
@@ -299,7 +303,7 @@ pim_enrich:
         cant_remove_attribute_as_image: Kan inte ta bort attributet används som huvudbild
         attribute_edit_permission_is_not_granted: Du saknar rättigheter för att ändra på en familjs attribut
       meta:
-        created: Skapat
+        created: Skapad
         created_by: Skapad av
         updated: Ändrad
         updated_by: Ändrad av
@@ -330,7 +334,7 @@ pim_enrich:
         save: Spara
       meta:
         product_count: Products
-        created: Skapat
+        created: Skapad
         created_by: Skapad av
         updated: Ändrad
         updated_by: Ändrad av
@@ -344,27 +348,26 @@ pim_enrich:
         update_failed: Jobbets profil kunde inte ändras.
         update_successful: Jobbets profil har ändrats.
     attribute:
-      scopable: Omfattningbar
       type:
         pim_catalog_identifier: Identifierare
         pim_catalog_text: Text
         pim_catalog_textarea: Textruta
         pim_catalog_number: Nummer
         pim_catalog_price_collection: Pris
-        pim_catalog_multiselect: Välj Flera
-        pim_catalog_simpleselect: Enkel Välj
+        pim_catalog_multiselect: Flerval
+        pim_catalog_simpleselect: Enkelval
         pim_catalog_file: Fil
         pim_catalog_image: Bild
         pim_catalog_boolean: "Ja/Nej"
         pim_catalog_date: Datum
         pim_catalog_metric: Metrisk
-        pim_reference_data_simpleselect: Referensdata enkel Välj
-        pim_reference_data_multiselect: Referens data multi Välj
+        pim_reference_data_simpleselect: Referensdata enkelval
+        pim_reference_data_multiselect: Referensdata flerval
       validation_rule:
-        email: E-mail
+        email: E-post
         regexp: Reguljära uttryck
         url: URL
-      title: attributet
+      title: attribut
     attribute_group:
       info:
         update_successful: Attributgruppen uppdaterades
@@ -398,7 +401,7 @@ pim_enrich:
           title: Associationer
           info:
             none_exist: Det finns inga associationstyper.
-            show_products: Displayprodukter
+            show_products: Visa produkter
           target: Mål
         attributes:
           title: Attribut
@@ -408,6 +411,7 @@ pim_enrich:
           info:
             search_attributes: Sök...
             no_available_attributes: Det finns inga fler attribut att lägga till
+            attributes_selected: "{{ itemsCount }} attribut valda"
             no_match: Inga träffar hittades
             load_more: Laddar fler resultat...
           attribute_group_selector: Attributgrupp
@@ -486,9 +490,8 @@ pim_enrich:
           title: Egenskaper
           general: Allmänna
           code: Kod
-          attribute_as_label: Attribut används som etikett
+          attribute_as_label: Attribut som etikett
           attribute_as_image: Attribut används som huvudbilden
-          empty_attribute_as_image: Inte markerad
           label_translations: Etikettsöversättningar
         attributes:
           title: Attribut
@@ -544,7 +547,6 @@ pim_enrich:
           table:
             name: Namn
             type: Typ
-            scopable: Omfattningbar
             localizable: Lokaliserbar
         history.title: Historik
     common:
@@ -584,14 +586,13 @@ pim_enrich:
         import: Importprofil
         export: Exportprofil
       button:
-        edit.title: Redigera
+        edit.title: Ändra
         export.title: Exportera nu
         import.launch: Importera nu
         import.upload: Ladda upp och importera nu
         import.upload_file: Ladda upp en fil
       meta:
         job: Jobb
-        connector: Connector
       subsection:
         last_executions: Senaste körning
       tab:
@@ -674,23 +675,22 @@ pim_enrich:
             code: Kod
             date_max: Max datum
             date_min: Min datum
-            decimals_allowed: Tillåt decimala värden
+            decimals_allowed: Decimala värden tillåtna
             default_metric_unit: Metrisk standardenhet
             group: Attributgrupp
             is_locale_specific: Specifik språk
+            localizable: Värde per språk
             max_characters: Max tecken
             max_file_size: Max filstorlek (MB)
             metric_family: Metrisk familj
             minimum_input_length: Minsta längd för autokomplettering
-            negative_allowed: Tillåt negativa värden
-            number_max: Max antal
-            number_min: Min antal
+            negative_allowed: Negativa värden som är tillåtna
             reference_data_name: Referens datatyp
+            scopable: Värde per kanal
             type: Typ
             unique: Unikt värde
             useable_as_grid_filter: Användbara i rutnät
             validation_regexp: Reguljära uttryck
-            validation_rule: Verifieringsuttryck
             wysiwyg_enabled: RTF-redigeraren aktiverad
           default_label:
             default_metric_unit: Välj en enhet
@@ -700,7 +700,7 @@ pim_enrich:
         labels:
           title: Etikettsöversättningar
         choices:
-          title: Inställningar
+          title: Alternativ
         history:
           title: Historik
     mass_edit:
@@ -732,7 +732,7 @@ pim_enrich:
           help: "Språken väljer de lokaliserade produktvärdena att exportera. Ex: endast produktinformation på franska."
         attributes:
           title: Attribut
-          edit: Redigera
+          edit: Ändra
           help: "Välj vilken produktinformation som ska exporteras. Ex: endast tekniska attribut."
           empty: Alla attribut kommer att exporteras
           modal:
@@ -917,7 +917,7 @@ pim_enrich:
           field: Familj
         add_to_group:
           label: Lägg till i grupp
-          description: Markera de grupper som du vill lägga till valda produkter
+          description: Markera de grupper som du vill lägga till de valda produkterna
           field: Grupper
         remove_from_category:
           description: Produkterna kommer att tas bort från följande kategorier.
@@ -933,13 +933,14 @@ pim_enrich.error:
   exception.title: Oh snap! Ett {{ status_code }} fel uppstod...
   http:
     403: Forbidden. You are not allowed to access this page
+#Page titles
 page_title:
   oro_default: Instrumentpanel
   pim_enrich_attributegroup_index: Attributgrupper
-  pim_enrich_attributegroup_create: Attributgrupp | Skapa
+  pim_enrich_attributegroup_create: Attributgrupper | Skapa
   pim_enrich_categorytree_index: Kategoriträd
-  pim_enrich_categorytree_create: Kategori träd | Skapa
-  pim_enrich_categorytree_create_tree: Kategori träd | Skapa
+  pim_enrich_categorytree_create: Kategoriträd | Skapa
+  pim_enrich_categorytree_create_tree: Kategoriträd | Skapa
   pim_enrich_attribute_index: Attribut
   pim_enrich_attribute_create: Attribut | Skapa
   pim_enrich_product_index: Products
@@ -949,7 +950,7 @@ page_title:
   pim_enrich_currency_index: Valutor
   pim_enrich_locale_index: Språk
   pim_enrich_group_index: Grupper
-  pim_enrich_associationtype_index: Associationstyp
+  pim_enrich_associationtype_index: Associationstyper
   pim_enrich_grouptype_index: Grupptyper
   pim_enrich_mass_edit_action_choose: Mass redigera | Välj
   pim_enrich_mass_edit_action_configure: Mass redigera | Konfigurera
@@ -959,11 +960,12 @@ page_title:
   pim_enrich_api_connection_index: API-anslutning
   pim_enrich_mass_edit_action: Massredigera
   pim_analytics_system_info_index: Systeminformation
+#Batch job labels
 batch_jobs:
   add_product_value:
-    label: Lägga till produktens värde
+    label: Lägg till produkt värde
     perform:
-      label: Lägga till produktens värde
+      label: Lägg till produkt värde
   update_product_value:
     label: Uppdatera produktens värde
     perform:
@@ -974,31 +976,12 @@ batch_jobs:
       label: Redigera Attribut
   csv_product_quick_export:
     quick_export.label: CSV-produkt snabb export
-    perform:
-      label: CSV-produkt snabb export
   csv_product_grid_context_quick_export:
     quick_export.label: CSV-produkt rutnät sammanhang snabb export
-    perform:
-      label: CSV-produkt rutnät sammanhang snabb export
   xlsx_product_quick_export:
     quick_export.label: XLSX produkt snabb export
-    perform:
-      label: XLSX produkt snabb export
   xlsx_product_grid_context_quick_export:
     quick_export.label: XLSX produkt rutnät sammanhang snabb export
-    perform:
-      label: XLSX produkt rutnät sammanhang snabb export
-  csv_product_export:
-    label: Exportera produkt till CSV
-    export.label: Exportera produkt
-  csv_product_model_export:
-    export.label: Exportera produkt
-  csv_category_export:
-    label: Exportera kategorier till CSV
-    export.label: Exportera kategorier
-  csv_attribute_export:
-    label: Exportera egenskaper till CSV
-    export.label: Exportera egenskaper
   csv_attribute_option_export:
     label: Exportera attributalternativ till CSV
     export.label: Exportera attributalternativ
@@ -1012,36 +995,18 @@ batch_jobs:
     label: Exportera familjer till CSV
     export.label: Exportera familjer
   csv_product_import:
-    label: Importera produkter från CSV
-    validation.label: Filvalidering
-    import.label: Importera produkter
     import_associations.label: Importera associationer
-  csv_category_import:
-    label: Importera kategorier från CSV
-    validation.label: Filvalidering
-    import.label: Importera produkt
-  csv_attribute_import:
-    label: Importera attribut från CSV
-    validation.label: Filvalidering
-    import.label: Importera attribut
   csv_attribute_option_import:
     label: Importera attributalternativ från CSV
-    validation.label: Filvalidering
     import.label: Importera attributalternativ
   csv_association_type_import:
     label: Importera associationstyp från CSV
-    validation.label: Filvalidering
-    import.label: Importera associationstyp
+    import.label: Importera associationer
   csv_family_import:
     label: Importera familjer från CSV
-    validation.label: Filvalidering
     import.label: Importera familjer
-  csv_family_variant_import:
-    validation.label: Filvalidering
   csv_group_import:
     label: Importera grupper från CSV
-    validation.label: Filvalidering
-    import.label: Importera grupper
   csv_channel_export:
     label: Exportera kanaler till CSV
     export.label: Exportera kanaler
@@ -1059,111 +1024,43 @@ batch_jobs:
     export.label: Exportera grupptyper
   csv_channel_import:
     label: Importera kanaler från CSV
-    validation.label: Filvalidering
     import.label: Importera kanaler
   csv_locale_import:
     label: Importera språk från CSV
-    validation.label: Filvalidering
     import.label: Importera språk
   csv_attribute_group_import:
     label: Importera attributgrupp från CSV
-    validation.label: Filvalidering
     import.label: Importera attributgrupp
   csv_currency_import:
     label: Importera valutor från CSV
-    validation.label: Filvalidering
     import.label: Importera valutor
   csv_group_type_import:
     label: Importera grupptyper från CSV
-    validation.label: Filvalidering
     import.label: Importera grupptyper
-  xlsx_category_import:
-    label: Importera kategorier från XLSX
-    validation.label: Filvalidering
-    import.label: Importera produkt
-  xlsx_association_type_import:
-    label: Importera associationstyp från XLSX
-    validation.label: Filvalidering
-    import.label: Importera associationstyp
-  xlsx_attribute_import:
-    label: Importera attribut i XLSX
-    validation.label: Filvalidering
-    import.label: Importera attribut
-  xlsx_attribute_option_import:
-    label: Importera attributalternativ från XLSX
-    validation.label: Filvalidering
-    import.label: Importera attributalternativ
   xlsx_family_import:
-    label: Importera familjer från XLSX
-    validation.label: Filvalidering
-    import.label: Importera familjer
-  xlsx_family_variant_import:
-    validation.label: Filvalidering
-  xlsx_product_export:
-    label: Exportera produkt till XLSX
-    export.label: Exportera produkt
-  xlsx_product_import:
-    label: Importera produkter från XLSX
-    validation.label: Filvalidering
-    import.label: Importera produkter
-    import_associations.label: Importera associationer
-  xlsx_group_export:
-    label: Exportera grupper till XLSX
-    export.label: Exportera grupper
-  xlsx_group_import:
-    label: Importera grupper från XLSX
-    validation.label: Filvalidering
-    import.label: Importera grupper
+    import.label: Importera familj
   xlsx_family_export:
-    label: Exportera familjer till XLSX
-    export.label: Exportera familjer
-  xlsx_category_export:
-    label: Exportera kategorier till XLSX
-    export.label: Exportera kategorier
-  xlsx_attribute_export:
-    label: Exportera attribut till XLSX
-    export.label: Exportera attribut till XLSX
-  xlsx_attribute_option_export:
-    label: Exportera attributalternativ till XLSX
-    export.label: Exportera attributalternativ till XLSX
-  xlsx_association_type_export:
-    label: Exportera associationstyp till XLSX
-    export.label: Exportera associationstyp till XLSX
+    export.label: Exportera familj
   xlsx_channel_export:
     label: Exportera kanaler till XLSX
-    export.label: Exportera kanaler
   xlsx_locale_export:
     label: Exportera språk till XLSX
-    export.label: Exportera språk
   xlsx_attribute_group_export:
     label: Exportera attributgrupp till XLSX
-    export.label: Exportera attributgrupp
   xlsx_currency_export:
     label: Exportera valutor till XLSX
-    export.label: Exportera valutor
   xlsx_group_type_export:
     label: Exportera grupptyper till XLSX
-    export.label: Exportera grupptyper
   xlsx_channel_import:
     label: Importera kanaler från XLSX
-    validation.label: Filvalidering
-    import.label: Importera kanaler
   xlsx_locale_import:
     label: Importera språk från XLSX
-    validation.label: Filvalidering
-    import.label: Importera språk
   xlsx_attribute_group_import:
     label: Importera attributgrupp från XLSX
-    validation.label: Filvalidering
-    import.label: Importera attributgrupp
   xlsx_currency_import:
     label: Importera valutor från XLSX
-    validation.label: Filvalidering
-    import.label: Importera valutor
   xlsx_group_type_import:
     label: Importera grupptyper från XLSX
-    validation.label: Filvalidering
-    import.label: Importera grupptyper
 job_tracker:
   download_archive:
     archive: Ladda ner genererat arkiv
@@ -1182,45 +1079,30 @@ pim_menu:
     help:
       title: Hjälp
   item:
-    association_type: Associationstyp
+    association_type: Associationstyper
     attribute: Attribut
     attribute_group: Attributgrupper
     category: Kategorier
     channel: Kanaler
     currency: Valutor
-    dashboard: Instrumentpanel
     family: Familjer
     group: Grupper
     group_type: Grupptyper
     locale: Språk
     product: Products
-    published_product: Publicerade produkter
     export_history: Exporthistorik
     export_profile: Exportprofiler
     import_history: Importhistorik
     import_profile: Importprofiler
-    configuration: Inställningar
-    user_management: Hantering av användare
-    user: Användare
     user_group: Grupper
-    user_role: Roller
-    info: Systeminformation
-    job_tracker: Spåra process
+    job_tracker: Process spårare
     api_connection: API-anslutning
   navigation:
     system: System navigering
-  user:
-    logout: Logga ut
-    user_account: Mitt konto
 pim_notification:
   mark_all_as_read: Markera alla som lästa
-  loading: Laddar...
 catalog_volume:
   axis:
     count_products: Products
-    count_channels: Kanaler
-    count_families: Familjer
     count_attributes: Attribut
     count_categories: Kategorier
-    count_category_trees: Kategoriträd
-    count_product_models: Produktmodeller

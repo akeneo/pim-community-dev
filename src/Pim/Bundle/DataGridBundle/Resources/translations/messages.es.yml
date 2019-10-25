@@ -14,12 +14,14 @@ oro.grid.mass_action.delete.confirm_content: '¿Está seguro que desea eliminar 
 oro.grid.mass_action.delete.item_limit: Usted no puede eliminar en mas más de %limit% productos (%count% seleccionados)
 oro.grid.datagrid.page_size.all: Todo
 oro.grid.mass_action.delete.success_message: "{0} Ninguna entidad fue  eliminada|{1} Una entidad eliminada|]1, Inf [%count% entidades fueron eliminadas"
+#Datagrid views constraints
 datagrid_view:
   columns:
     min_message: Debe seleccionar al menos una columna de datagrid para mostrar
   label:
     unique_message: La etiqueta debe ser única
     not_blank_message: La etiqueta no debe estar en blanco
+#View selector flash messages
 grid.view_selector.flash:
   created: Vista de cuadrícula de datos creada correctamente
   removed: Vista de cuadrícula de datos eliminada correctamente

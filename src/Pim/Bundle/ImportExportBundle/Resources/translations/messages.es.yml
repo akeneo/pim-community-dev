@@ -1,8 +1,10 @@
+#Entities
 Job: Trabajo
 Connector: Conector
 pim_import_export:
   job: Trabajo
   connector: Conector
+  ## Job status
   status:
     0: Listo
   batch_status:
@@ -35,6 +37,7 @@ pim_import_export:
       property.title: Propiedades generales
       history.title: Historial
       job_content.title: Contenido
+#Page titles:
 pim_title.export_profile.index: Gestión de perfiles de exportación
 pim_title.export_profile.edit: Exportar perfil %job.label% | Editar
 pim_title.export_profile.show: Exportar perfil %job.label% | Mostrar
@@ -45,12 +48,14 @@ pim_title.import_profile.edit: Importar perfil %job.label% | Editar
 pim_title.import_profile.show: Importar perfil %job.label% | Mostrar
 pim_title.import_execution.index: Historia de las ejecuciones de importación
 pim_title.import_execution.show: Ejecuciones de importación | Detalles
+#Entity and page header titles
 export profile:
   title: Perfil de exportación
   edit: Editar perfil exportador
 import profile:
   title: Perfil de importación
   edit: editar perfil de importación
+#ACLs
 pim_importexport:
   acl:
     export_profile:
@@ -86,6 +91,7 @@ pim_importexport:
   acl_group:
     export: Perfiles de exportación
     import: Perfiles de importación
+#Buttons
 btn:
   create:
     export profile: crear perfil exportador
@@ -93,10 +99,12 @@ btn:
 Upload and import now: Cargar e importar ahora
 import now: Importar ahora
 export now: Exportar Ahora
+#Confirmation messages
 confirmation:
   remove:
     export profile: '¿Está seguro que desea eliminar el perfil de exportación %name% ?'
     import profile: '¿Está seguro que desea eliminar el perfil de importación %name%?'
+#Flash messages
 flash:
   export:
     created: La exportación se ha creado con éxito
@@ -108,15 +116,18 @@ flash:
     removed: La importación se ha eliminado
     updated: La importación se ha actualizado exitosamente
     running: La importación se está ejecutando
+#Tabs
 General properties: Propiedades generales
 History: Historial
 pane.accordion:
   properties: Propiedades
   global_settings: Configuración global
   filters: Filtros
+#Popin titles
 popin.create:
   export_profile.title: Crear un nuevo perfil de exportación
   import_profile.title: Crear un nuevo perfil de importación
+#Job execution
 'Display item': Mostrar elemento
 'Hide item': Ocultar elemento
 'Collecting data about job execution...': Colectando datos sobre la ejecución del trabajo...
@@ -142,6 +153,7 @@ Warnings: Advertencias
 Summary: Resumen
 Start: Iniciar
 End: Finalizar
+#Process tracker
 set_attribute_requirements: Establecer los requisitos de atributos
 COMPLETED: Finalizado
 STARTING: Iniciando

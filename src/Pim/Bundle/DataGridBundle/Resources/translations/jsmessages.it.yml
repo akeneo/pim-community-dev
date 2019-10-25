@@ -63,6 +63,7 @@ pim:
       label: Valuta
     category_filter:
       done: Completato
+#Column configuration
 Available Columns: Colonne disponibili
 Displayed Columns: Colonne Selezionate
 datagrid_view.columns.min_message: È necessario selezionare almeno una colonna della griglia di dati da visualizzare
@@ -84,15 +85,19 @@ pim_datagrid:
       confirm_title: Conferma cancellazione
       confirm_ok: Ok
       empty_selection: Nessun prodotto selezionato
+#Quick export
 pim.grid.mass_action.quick_export.title: Esportazione rapida
 pim.grid.mass_action.quick_export.launched: E' stata lanciata l'esportazione rapida
+#Custom actions
 pim.grid.action.launch.title: Lancia
 pim.grid.action.show.title: Visualizza
 Please select view: Per favore seleziona una visualizzazione
 Loading...: Caricamento in corso...
 View: Visualizzazione
+#Datetimepicker
 from: Da
 to: A
+#View selector
 grid.view_selector:
   default_view: Visualizzazione predefinita
   save_changes: Salva questa visualizzazione
@@ -106,11 +111,14 @@ grid.view_selector:
   confirmation:
     remove: Sei sicuro di voler cancellare questa visualizzazione?
     delete: Conferma cancellazione
+#View selector flash messages
 grid.view_selector.flash.updated: La griglia di dati è stata aggiornata con successo
+#Display selector
 grid.display_selector:
   label: Mostra
   gallery: Galleria
   list: Elenco
+#Credentials cell
 Client ID: ID cliente
 Secret: Segreto
 grid.empty_results:

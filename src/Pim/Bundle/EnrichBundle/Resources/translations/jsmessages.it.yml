@@ -1,3 +1,4 @@
+#Grid action messages
 confirmation:
   title: Conferma
   remove:
@@ -115,6 +116,7 @@ Delete the product: Eliminare il prodotto
 Change status: Modificare lo stato
 Toggle status: Stato di conversione
 mass_delete: Eliminazione di massa
+#Quick export labels
 pim:
   grid:
     mass_action:
@@ -127,6 +129,7 @@ pim:
       mass_edit: Azioni di massa
       category_edit: Spostare i prodotti nelle categorie
       sequential_edit: Modifica sequenziale
+#Jstree context menu actions
 jstree.create: Crea
 jstree.done: Completato
 switch_on: "Sì"
@@ -1112,6 +1115,7 @@ pim_enrich.error:
   exception.title: Accidenti! Si è verificato un errore con il codice {{ status_code }}...
   http:
     403: Vietato. Non è consentito accedere a questa pagina
+#Page titles
 page_title:
   oro_default: Dashboard
   pim_enrich_attributegroup_index: Gruppi di attributi
@@ -1150,6 +1154,7 @@ page_title:
   pim_enrich_api_connection_create: Connessione API | Crea
   pim_enrich_mass_edit_action: Modifica di massa
   pim_analytics_system_info_index: Informazioni di sistema
+#Batch job labels
 batch_jobs:
   add_product_value:
     label: Aggiungi un valore di prodotto

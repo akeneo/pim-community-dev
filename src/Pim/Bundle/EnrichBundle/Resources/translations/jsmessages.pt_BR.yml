@@ -1,3 +1,4 @@
+#Grid action messages
 confirmation:
   title: Confirmar
   remove:
@@ -6,6 +7,7 @@ confirmation:
     attribute: Tem certeza de que deseja excluir este atributo?
     attribute_group: Tem certeza que deseja excluir este grupo de atributos?
     family: Tem certeza de que deseja excluir esta família?
+    family_variant: Tem certeza que deseja excluir esta variante de família?
     product: Tem certeza de que deseja excluir este produto?
     product_model: Tem certeza que deseja excluir este modelo de produto? Todos os seus filhos, modelos de produto e produtos variantes, também serão excluídos.
     channel: Tem certeza de que deseja excluir este canal?
@@ -111,6 +113,7 @@ Delete the product: Deletar o produto
 Change status: Alterar Status
 Toggle status: Ativar/Desativar Status
 mass_delete: Apagar em Massa
+#Quick export labels
 pim:
   grid:
     mass_action:
@@ -123,6 +126,7 @@ pim:
       mass_edit: Ações em massa
       category_edit: Mover produtos para categorias
       sequential_edit: Edição Sequencial
+#Jstree context menu actions
 jstree.create: Criar
 jstree.done: Cocluído
 switch_on: "Sim"
@@ -154,6 +158,7 @@ pim_enrich:
     product:
       navigation: Navegação de produto
       infos: Informações de produto
+      index_title: "] -Inf, 1 ]{{ count }} resultado|] 1, Inf [{{ count }} resultados"
       title: produto
       locale: Localidade
       category: Categoria
@@ -252,6 +257,7 @@ pim_enrich:
       read_only_parent_attribute_from_common: Este atributo pode ser atualizado nos atributos comuns.
       read_only_parent_attribute_from_model: "Este atributo pode ser atualizado nos atributos de {{ axes }}"
       variant_axis: Eixo de variante
+      title: modelos de produto
       add_child:
         create: Adicionar novo
         cancel: Cancelar
@@ -352,6 +358,7 @@ pim_enrich:
         label: Rótulo
         levels: Níveis de variantes
         axis_level: Nível do eixo da variante
+        required: obrigatório
         confirm_attribute_removal:
           title: Confirmar a remoção dos atributos
           message: Ao remover estes atributos você os colocará de volta aos atributos comuns da variante da família e removerá os valores das variantes de produtos
@@ -1054,6 +1061,7 @@ pim_enrich.error:
   exception.title: Oh snap! Um {{ status_code }} erro aconteceu...
   http:
     403: Proibido. Você não tem permissão para acessar esta página
+#Page titles
 page_title:
   oro_default: Dashboard
   pim_enrich_attributegroup_index: Grupo de atributos
@@ -1092,6 +1100,7 @@ page_title:
   pim_enrich_api_connection_create: Conexões de API | Criar
   pim_enrich_mass_edit_action: Edição em Massa
   pim_analytics_system_info_index: Informações do Sistema
+#Batch job labels
 batch_jobs:
   add_product_value:
     label: Adicionar valor de produto

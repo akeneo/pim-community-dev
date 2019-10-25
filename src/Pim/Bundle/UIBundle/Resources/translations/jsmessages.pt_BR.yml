@@ -1,3 +1,4 @@
+#ORO messages
 Close: Fechar
 Update: Atualizar
 Selected Rows: Linhas selecionadas
@@ -31,10 +32,12 @@ Second: Segundo
 Millisecond: Milissegundo
 Microsecond: Microssegundo
 "Time Zone": "Fuso Horário"
+#PIM messages
 Localized value: Valor localizado
 Columns: Colunas
 Datagrid Configuration: Configuração do Datagrid
 Apply: Aplicar
+#Filters
 Action: Ação
 Unit: Unidade
 Currency: Moeda
@@ -47,6 +50,7 @@ jstree:
   no_tree: Nenhuma árvore de classificação disponível
   include_sub: Incluir subcategorias
   loading: Carregando ...
+#Datetimepicker
 datetimepicker:
   days:
     Sunday: Domingo
@@ -98,6 +102,7 @@ datetimepicker:
     Oct: Out
     Nov: Nov
     Dec: Dez
+#ORO
 oro_config:
   form:
     config:

@@ -1,3 +1,4 @@
+#Grid action messages
 confirmation:
   title: Confirmar
   remove:
@@ -115,6 +116,7 @@ Delete the product: Eliminar el producte
 Change status: Canviar l'estat
 Toggle status: Tancar estat
 mass_delete: Esborrat massiu
+#Quick export labels
 pim:
   grid:
     mass_action:
@@ -127,6 +129,7 @@ pim:
       mass_edit: Accions en bloc
       category_edit: Moure els productes a les categories
       sequential_edit: Editar seqüencialment
+#Jstree context menu actions
 jstree.create: Crear
 jstree.done: Fet
 switch_on: "Sí"
@@ -1112,6 +1115,7 @@ pim_enrich.error:
   exception.title: Oh no! S'ha produït un error de {{ status_code }}...
   http:
     403: Prohibit. No té permís per accedir a aquesta pàgina
+#Page titles
 page_title:
   oro_default: Panell de contol
   pim_enrich_attributegroup_index: Grups d'atribut
@@ -1150,6 +1154,7 @@ page_title:
   pim_enrich_api_connection_create: Connexions d'API | Crear
   pim_enrich_mass_edit_action: Edició massiva
   pim_analytics_system_info_index: Informació del sistema
+#Batch job labels
 batch_jobs:
   add_product_value:
     label: Afegir valor de producte

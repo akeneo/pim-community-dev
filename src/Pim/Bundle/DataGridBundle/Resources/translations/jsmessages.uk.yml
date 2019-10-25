@@ -45,6 +45,7 @@ pim:
       label_not_empty: не є порожнім
       label_in_list: у списку
       operator: Оператор
+#Column configuration
 Available Columns: Доступні стовпці
 Displayed Columns: Вибрані стовпці
 datagrid_view.columns.min_message: Ви повинні вибрати принаймні один стовпець для відображення
@@ -61,15 +62,19 @@ pim_datagrid:
       confirm_title: Підтвердіть видалення
       confirm_ok: Підтвердити
       empty_selection: Не вибрано жодного продукту
+#Quick export
 pim.grid.mass_action.quick_export.title: Швидкий експорт
 pim.grid.mass_action.quick_export.launched: Експорт запущений
+#Custom actions
 pim.grid.action.launch.title: Запуск
 pim.grid.action.show.title: Показати
 Please select view: Будь ласка, виберіть представлення
 Loading...: Завантаження...
 View: Вид
+#Datetimepicker
 from: від
 to: до
+#View selector
 grid.view_selector:
   default_view: Типовий вигляд
   save_changes: Зберегти представлення
@@ -81,11 +86,14 @@ grid.view_selector:
   confirmation:
     remove: Ви дійсно бажаєте видалити це представлення?
     delete: Підтвердіть видалення
+#View selector flash messages
 grid.view_selector.flash.updated: Представлення табличних даних успішно оновлено
+#Display selector
 grid.display_selector:
   label: Показати
   gallery: Галерея
   list: Список
+#Credentials cell
 Client ID: ID клієнта
 Secret: Секретний
 grid.empty_results:

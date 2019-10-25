@@ -1,4 +1,6 @@
+#Grid action messages
 confirmation:
+  title: Bekræft
   remove:
     item: Er du sikker på at du vil slette dette emne?
     association_type: Er du sikker på du vil slette denne associations type?
@@ -31,8 +33,11 @@ pim_datagrid:
       success: Udvalgte produkter blev slettet.
       error: Der opstod en fejl under forsøget på at slette de valgte produkter, prøv venligst igen.
   view_selector:
+    view: Visninger
     create_view_modal:
       create: Opret
+      confirm: OK
+      cancel: Annuller
 flash:
   item:
     removed: Vare fjernet succesfuldt
@@ -111,6 +116,7 @@ Delete the product: Slet produktet
 Change status: Skift status
 Toggle status: Skift status
 mass_delete: Masse slet
+#Quick export labels
 pim:
   grid:
     mass_action:
@@ -123,12 +129,15 @@ pim:
       mass_edit: Massehandlinger
       category_edit: Flytte produkter i kategorier
       sequential_edit: Sekventiel redigering
+#Jstree context menu actions
 jstree.create: Opret
+jstree.done: Udført
 switch_on: "Ja"
 switch_off: "Nej"
 pim_enrich:
   item:
     list:
+      delete.label: Slet
       delete.error: Fejl under sletning af elementet
     delete:
       confirm.content: Er du sikker på du vil slette denne {{ itemName }}? Det er ikke muligt at fortryde denne handling
@@ -148,15 +157,18 @@ pim_enrich:
       label: Etiket
       labels:
         save: Gem
+        cancel: Annuller
     product:
       navigation: Produkt navigation
       infos: Produkt info
       index_title: "] -Inf, 1] {{ count }} resultat |] 1, Inf [{{ count }} resultater"
       title: produkt
+      locale: Landestandard
       category: Kategori
       create: Opret
       subTitle: Opret produkt
       modalTitle: Vælg en handling
+      filters: Filtre
       selected: udvalgte resultater
       common: Almindelig
       btn:
@@ -164,6 +176,8 @@ pim_enrich:
         disabled: Deaktiveret
         download_pdf: PDF
         compare_translate: Sammenlign / oversætte
+        delete: Slet
+        save: Gem
       history:
         version: Version
         author: Forfatter
@@ -191,6 +205,7 @@ pim_enrich:
           title: Familie
           none: Ingen
         family_variant:
+          title: Variant
           none: Ingen
         groups:
           title: Grupper
@@ -202,6 +217,7 @@ pim_enrich:
             close: Luk
         status: Status
         scope: Kanal
+        locale: Landestandard
       copy:
         select: Vælg
         all: Alle
@@ -217,10 +233,16 @@ pim_enrich:
       media:
         upload: Træk og slip for at uploade eller klik her
       create_popin:
+        type: Produkt
         title: Opret
         labels:
           family: Vælg familie
           family_variant: Vælg en familie variant
+          save: Gem
+          cancel: Annuller
+      message:
+        created: Produktet blev oprettet
+      completeness: Fuldført
       sequential_edit:
         item_limit: Kun de første 1000 poster vist i dette sekventiel redigere ({{ count }} udvalgte)
         empty: Dit valg er tom, skal du ændre dine søgekriterier
@@ -241,6 +263,8 @@ pim_enrich:
       title: Produktmodeller
       add_child:
         create: Tilføj ny
+        cancel: Annuller
+        confirm: Bekræft
         create_label: "Tilføje en ny {{ axes }}"
         fields:
           required_label: (variant akse)
@@ -253,11 +277,17 @@ pim_enrich:
         update_failed: Sammenhængs type kunne ikke opdateres.
         field_not_ready: "Produktet kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
       meta:
+        created: Oprettet
         created_by: Oprettet af
+        updated: Opdateret
         updated_by: opdateret af
+      btn:
+        save: Gem
       title: sammenhængstype
       create_popin:
         title: Opret
+      message:
+        created: Sammenhængstype oprettet
     group_type:
       info:
         deletion_successful: Gruppen type slettet.
@@ -275,6 +305,8 @@ pim_enrich:
       title: gruppetype
       create_popin:
         title: Opret
+      message:
+        created: Gruppetypen oprettet
     channel:
       title: kanal
       info:
@@ -286,13 +318,18 @@ pim_enrich:
         create_failed: Kanalen kunne ikke opdateres.
         field_not_ready: "Produktet kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
       meta:
+        created: Oprettet
         created_by: Oprettet af
+        updated: Opdateret
         updated_by: opdateret af
+      btn:
+        save: Gem
     family:
       title: familie
       selected: udvalgte familier
       info:
         update_successful: Familien opdateret
+        create_successful: Kanal oprettet.
         update_failed: Der opstod en fejl under opdatering af familie.
         cant_remove_attribute_as_label: Kan ikke fjerne en attribut der bruges som etiket
         cant_remove_attribute_as_image: Kan ikke fjerne attributten anvendes som det primære billede
@@ -338,9 +375,13 @@ pim_enrich:
         update_successful: Gruppe opdateret
         update_failed: Gruppen kunne ikke opdateres.
         field_not_ready: "Gruppen kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
+      btn:
+        save: Gem
       meta:
         product_count: Produkter
+        created: Oprettet
         created_by: Oprettet af
+        updated: Opdateret
         updated_by: opdateret af
       create_popin:
         title: Opret
@@ -363,6 +404,19 @@ pim_enrich:
       scopable: Omfangbar
       type:
         pim_catalog_identifier: Id
+        pim_catalog_simpleselect: Simpel valg
+        pim_catalog_file: Fil
+        pim_catalog_image: Billede
+        pim_catalog_boolean: "Ja / Nej"
+        pim_catalog_date: Dato
+        pim_catalog_metric: Metrisk
+        pim_reference_data_simpleselect: Referencedata simpel valg
+        pim_reference_data_multiselect: Reference data multi valg
+      validation_rule:
+        email: E-mail
+        regexp: Regulære udtryk
+        url: URL
+      title: attribut
     attribute_group:
       info:
         update_failed: Attributgruppe kunne ikke opdateres
@@ -377,6 +431,7 @@ pim_enrich:
     discard_changes: Du vil miste ændringer til %entity%, hvis du forlader siden.
     delete_item: Bekræft sletning
     remove_item: Bekræft fjernelse af
+    remove: Fjern
     delete:
       attribute: Er du sikker på du vil slette denne attribut fra produktet?
       attribute_group: Vil du fjerne attributten {{ attribute }} fra denne attributgruppe?
@@ -397,6 +452,8 @@ pim_enrich:
       choose_variant: Vælg en variant
       complete_variant_product: variant produkt
       complete_variant_products: variant produkter
+      family_variant: Variant
+      product_model: Produktmodel
       flash:
         product_model_added: Produktmodellen føjet til produktmodellen
         variant_product_added: Variant produkt føjet til produktmodellen
@@ -406,6 +463,7 @@ pim_enrich:
           title: Tilknytninger
           info:
             none_exist: Der findes ingen sammenhængstype.
+            show_products: Display-produkter
             show_groups: Visningsgrupper
             number_of_associations: "{{ productCount }} produkt(er), {{ productModelCount }} produkt model(er) og {{ groupCount }} gruppe(r)"
           association_type_selector: Sammenhængstyper
@@ -424,6 +482,7 @@ pim_enrich:
             attributes_selected: "{{ itemsCount }} attribut(ter) valgt"
             no_match: Ingen fundet
             load_more: Indlæser flere resultater...
+          attribute_group_selector: Attributgruppe
           attribute_group_all: Alle
           attribute_group.to_fill_count: "{1}1 tom kræved attribut |] 1, Inf [{{ count }} tomme krævede attributter"
           attribute_filter:
@@ -442,6 +501,9 @@ pim_enrich:
           missing_values: "{1} 1 mangler værdi |] 1, Inf [{{ count }} manglende værdier"
         history:
           title: Historik
+      switch:
+        "no": "Nej"
+        "yes": "Ja"
       sequential_edit:
         info:
           products: produkter
@@ -456,6 +518,7 @@ pim_enrich:
           merge_attributes: Aktuelle attributter flettes med dem i den nye familie.
           keep_attributes: Ingen attributter vil blive fjernet.
           change_family_to: Ændre familien til
+          empty_selection: Vælg familie
       flash:
         attribute_deletion_error: Der opstod en fejl under attribut sletning
       mass_edit:
@@ -464,6 +527,9 @@ pim_enrich:
     association_type:
       tab:
         properties:
+          title: Egenskaber
+          general: Generelle egenskaber
+          code: Kode
           label_translations: Etiket oversættelser
         history:
           title: Historik
@@ -481,6 +547,9 @@ pim_enrich:
         history:
           title: Historik
         properties:
+          title: Egenskaber
+          general: Generelt
+          code: Kode
           currencies: Valutaer
           locales: Landestandarder
           category_tree: Kategoritræstrukturen
@@ -491,8 +560,12 @@ pim_enrich:
     family:
       tab:
         properties:
+          title: Egenskaber
+          general: Generelt
+          code: Kode
           attribute_as_label: Attributten anvendes som etiket
           attribute_as_image: Attributten anvendes som det primære billede
+          empty_attribute_as_image: Ikke valgte
           label_translations: Etiket oversættelser
         attributes:
           title: Egenskaber
@@ -500,6 +573,7 @@ pim_enrich:
           toolbox:
             select_attributes_by_groups: Tilføj efter gruppe
             select_attributes: Tilføj attributter
+            add: Tilføj
             attributes_groups_selected: '{{ itemsCount }} gruppe(r) valgt'
           not_required_label: Ikke påkrævet
           required_label: Påkrævet
@@ -521,6 +595,12 @@ pim_enrich:
         error_creating_option: Der opstod en fejl hvor prøver hen til oprette indstillingen attribut
       add_option_modal:
         title: Tilføj attribut tilvalg
+        confirm: Tilføj
+        cancel: Annuller
+    entity:
+      switch:
+        "no": "Nej"
+        "yes": "Ja"
     group:
       tab:
         properties:
@@ -940,6 +1020,7 @@ pim_enrich.error:
   exception.title: Oh snap! Der opstod en {{ status_code }}...
   http:
     403: Forbudt. Du har ikke adgang til denne side
+#Page titles
 page_title:
   oro_default: Kontrolpanel
   pim_enrich_attributegroup_index: Attributgrupper
@@ -973,6 +1054,7 @@ page_title:
   pim_enrich_job_tracker_show: Process overvågning | Vis job
   pim_enrich_api_connection_index: API-forbindelser
   pim_enrich_api_connection_create: API forbindelser | Oprette
+#Batch job labels
 batch_jobs:
   add_product_value:
     label: Tilføj produktværdi

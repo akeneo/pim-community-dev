@@ -1,10 +1,8 @@
-Close: Stäng
 Update: Uppdatera
 Selected Rows: Markerade rader
 "Yes": "Ja"
 "Yes, Delete": "Ja, ta bort"
 "Yes, I Agree": "Ja, jag godkänner"
-"Yes, do it": "Ja, gör det"
 "No": "Nej"
 "Ok, got it.": "Ok, jag förstår."
 "Cancel": "Avbryt"
@@ -29,22 +27,20 @@ Second: Sekund
 Millisecond: Millisekund
 Microsecond: Mikrosekund
 "Time Zone": "Tidszon"
+#PIM messages
 Localized value: Språkberoende värde
 Columns: Kolumner
 Datagrid Configuration: Tabellkonfigurering
 Apply: Tillämpa
-Action: Åtgärd
 Unit: Enhet
 Currency: Valuta
 jstree:
   all: Alla produkter
   unclassified: Oklassificerade produkter
-  product:
-    all: Alla produkter
-    unclassified: Oklassificerade produkter
   no_tree: Inga träd är tillgängliga
   include_sub: Inkludera underkategorier
   loading: Laddar ...
+#Datetimepicker
 datetimepicker:
   days:
     Sunday: Söndag
@@ -96,6 +92,7 @@ datetimepicker:
     Oct: Okt
     Nov: Nov
     Dec: Dec
+#ORO
 oro_config:
   form:
     config:
@@ -106,10 +103,7 @@ oro_config:
       group:
         localization:
           title: Lokalisering
-          system_locale: Språk
-        notification:
-          title: Notiser
-          system_notification: Ny versionsnotiser
+          system_locale: Spåk
         loading_message:
           title: Hämtar meddelanden
           label: Aktivera hämtning av meddelanden
