@@ -27,7 +27,6 @@ class ImportProductsWithApiPerformance extends AbstractApiPerformance
     private const CATEGORY_COUNT = 3;
 
     /**
-     * This method will patch PRODUCT_MODEL_COUNT product models through API, by updating their category to set
      * This method will patch 10 product models through API by updating categories that are randomly picked.
      * We check if this import is performant, regarding the main time, memory, SQL counts and some completeness
      * calculation metrics.
@@ -44,7 +43,7 @@ class ImportProductsWithApiPerformance extends AbstractApiPerformance
             new Metric('completeness_calculation', '=Akeneo\\Pim\\Enrichment\\Component\\Product\\Completeness\\CompletenessCalculator::fromProductIdentifiers')
         );
 
-        // 2019/10/25: original value was 1848.
+        // Original value was 1848.
         $profileConfig->assert('metrics.sql.queries.count < 1947', 'SQL queries');
         // Original value: 14.4s
         $profileConfig->assert('main.wall_time < 20s', 'Total time');
@@ -59,15 +58,9 @@ class ImportProductsWithApiPerformance extends AbstractApiPerformance
 
         $client = $this->createAuthenticatedClient();
 
-        $categoryCodes = $this->getCategoryCodes(self::CATEGORY_COUNT);
-        $categoryCodesAsString = json_encode($categoryCodes);
-        $data = join("\n", array_map(function ($productCode) use ($categoryCodesAsString) {
-            return '{"code": "' . $productCode . '", "categories": ' . $categoryCodesAsString . '}';
-        }, $this->getProductModelCodes(self::PRODUCT_MODEL_COUNT)));
-
-        $profile = $this->assertBlackfire($profileConfig, function () use ($client, $data) {
+        $profile = $this->assertBlackfire($profileConfig, function () use ($client) {
             $client->setServerParameter('CONTENT_TYPE', StreamResourceResponse::CONTENT_TYPE);
-            $client->request('PATCH', 'api/rest/v1/product-models', [], [], [], $data);
+            $client->request('PATCH', 'api/rest/v1/product-models', [], [], [], $this->getBody());
         });
 
         $response = $client->getResponse();
@@ -104,5 +97,15 @@ SQL;
         }
 
         return $categoryCodes;
+    }
+
+    private function getBody(): string
+    {
+        $categoryCodes = $this->getCategoryCodes(self::CATEGORY_COUNT);
+        $categoryCodesAsString = json_encode($categoryCodes);
+
+        return join("\n", array_map(function ($productCode) use ($categoryCodesAsString) {
+            return '{"code": "' . $productCode . '", "categories": ' . $categoryCodesAsString . '}';
+        }, $this->getProductModelCodes(self::PRODUCT_MODEL_COUNT)));
     }
 }

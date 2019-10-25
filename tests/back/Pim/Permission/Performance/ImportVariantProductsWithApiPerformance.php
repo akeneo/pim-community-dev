@@ -27,8 +27,8 @@ class ImportProductWithApiPerformance extends AbstractApiPerformance
     private const CATEGORY_COUNT = 3;
 
     /**
-     * This method will patch VARIANT_PRODUCT_COUNT variant products through API, by updating their category to set
-     * CATEGORY_COUNT new categories. Each variant product belongs to a different family.
+     * This method will patch 8 variant products through API by updating categories that are randomly picked.
+     * Each variant product belongs to a different family.
      * We check if this import is performant, regarding the main time, memory, SQL counts and some completeness
      * calculation metrics.
      */
@@ -44,7 +44,7 @@ class ImportProductWithApiPerformance extends AbstractApiPerformance
             new Metric('completeness_calculation', '=Akeneo\\Pim\\Enrichment\\Component\\Product\\Completeness\\CompletenessCalculator::fromProductIdentifiers')
         );
 
-        // 2019/10/25: original value was 1388.
+        // Original value was 1388.
         $profileConfig->assert('metrics.sql.queries.count < 1487', 'SQL queries');
         // Original value: 8.6s
         $profileConfig->assert('main.wall_time < 11s', 'Total time');
@@ -59,15 +59,9 @@ class ImportProductWithApiPerformance extends AbstractApiPerformance
 
         $client = $this->createAuthenticatedClient();
 
-        $categoryCodes = $this->getCategoryCodes(self::CATEGORY_COUNT);
-        $categoryCodesAsString = json_encode($categoryCodes);
-        $data = join("\n", array_map(function ($variantProductIdentifier) use ($categoryCodesAsString) {
-            return '{"identifier": "' . $variantProductIdentifier . '", "categories": ' . $categoryCodesAsString . '}';
-        }, $this->getVariantProductIdentifiers(self::VARIANT_PRODUCT_COUNT)));
-
-        $profile = $this->assertBlackfire($profileConfig, function () use ($client, $data) {
+        $profile = $this->assertBlackfire($profileConfig, function () use ($client) {
             $client->setServerParameter('CONTENT_TYPE', StreamResourceResponse::CONTENT_TYPE);
-            $client->request('PATCH', 'api/rest/v1/products', [], [], [], $data);
+            $client->request('PATCH', 'api/rest/v1/products', [], [], [], $this->getBody());
         });
 
         $response = $client->getResponse();
@@ -106,5 +100,15 @@ SQL;
         }
 
         return $categoryCodes;
+    }
+
+    private function getBody(): string
+    {
+        $categoryCodes = $this->getCategoryCodes(self::CATEGORY_COUNT);
+        $categoryCodesAsString = json_encode($categoryCodes);
+
+        return join("\n", array_map(function ($variantProductIdentifier) use ($categoryCodesAsString) {
+            return '{"identifier": "' . $variantProductIdentifier . '", "categories": ' . $categoryCodesAsString . '}';
+        }, $this->getVariantProductIdentifiers(self::VARIANT_PRODUCT_COUNT)));
     }
 }
