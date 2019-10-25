@@ -59,8 +59,7 @@ class AssetPreviewGenerator
         ?string $channelCode,
         ?string $localeCode,
         string $format
-    ): string
-    {
+    ): string {
         $familyIdentifier = AssetFamilyIdentifier::fromString($assetFamilyIdentifier);
         $code = AssetCode::fromString($assetCode);
         $asset = $this->assetRepository->getByAssetFamilyAndCode($familyIdentifier, $code);
