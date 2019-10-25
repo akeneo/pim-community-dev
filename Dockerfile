@@ -11,11 +11,26 @@ ENV PHP_CONF_DATE_TIMEZONE=UTC \
     PHP_CONF_MAX_INPUT_VARS=1000 \
     PHP_CONF_UPLOAD_LIMIT=40M \
     PHP_CONF_MAX_POST_SIZE=40M \
-    XDEBUG_ENABLED=0
+    XDEBUG_ENABLED=0 \
+    PHP_CONF_DISPLAY_ERRORS=0 \
+    PHP_CONF_DISPLAY_STARTUP_ERRORS=0
+
 
 RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/apt.conf.d/01-no-recommended && \
     echo 'path-exclude=/usr/share/man/*' > /etc/dpkg/dpkg.cfg.d/path_exclusions && \
     echo 'path-exclude=/usr/share/doc/*' >> /etc/dpkg/dpkg.cfg.d/path_exclusions && \
+    apt-get update && \
+    apt-get --no-install-recommends --no-install-suggests --yes --quiet install \
+        apt-transport-https \
+        ca-certificates \
+        curl \
+        gpg \
+        gpg-agent && \
+    apt-get clean && \
+    apt-get --yes autoremove --purge && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+    echo 'deb https://packages.sury.org/php/ buster main' > /etc/apt/sources.list.d/sury.list && \
+    curl https://packages.sury.org/php/apt.gpg -O && apt-key add apt.gpg && rm apt.gpg && \
     apt-get update && \
     apt-get --yes install imagemagick \
         php7.3-fpm \
@@ -40,13 +55,14 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
     usermod --uid 1000 www-data && groupmod --gid 1000 www-data && \
     mkdir /srv/pim && \
     usermod -d /srv/pim www-data && \
-    sed -i "s#listen = /run/php/php7.3-fpm.sock#listen = 9000#g" /etc/php/7.3/fpm/pool.d/www.conf && \
     mkdir -p /run/php
+
+#sed -i "s#listen = /run/php/php7.3-fpm.sock#listen = 9000#g" /etc/php/7.3/fpm/pool.d/www.conf && \
 
 COPY docker/php.ini /etc/php/7.3/cli/conf.d/99-akeneo.ini
 COPY docker/php.ini /etc/php/7.3/fpm/conf.d/99-akeneo.ini
 COPY docker/fpm.conf /etc/php/7.3/fpm/pool.d/zzz-akeneo.conf
-COPY docker/php-fpm.conf /etc/php/7.3/fpm/php-fpm.conf
+#COPY docker/php-fpm.conf /etc/php/7.3/fpm/php-fpm.conf
 
 #
 # Image used for development
@@ -131,14 +147,14 @@ ENV APP_ENV=prod \
 
 WORKDIR /srv/pim/
 # Copy the application with its dependencies
-COPY --from=builder /srv/pim/bin bin
-COPY --from=builder /srv/pim/config config
-COPY --from=builder /srv/pim/public public
-COPY --from=builder /srv/pim/src src
-COPY --from=builder /srv/pim/upgrades upgrades
-COPY --from=builder /srv/pim/var var
-COPY --from=builder /srv/pim/vendor vendor
-COPY --from=builder /srv/pim/.env .
+COPY --from=builder --chown=1000:1000 /srv/pim/bin bin
+COPY --from=builder --chown=1000:1000 /srv/pim/config config
+COPY --from=builder --chown=1000:1000 /srv/pim/public public
+COPY --from=builder --chown=1000:1000 /srv/pim/src src
+COPY --from=builder --chown=1000:1000 /srv/pim/upgrades upgrades
+COPY --from=builder --chown=1000:1000 /srv/pim/var var
+COPY --from=builder --chown=1000:1000 /srv/pim/vendor vendor
+COPY --from=builder --chown=1000:1000 /srv/pim/.env .
 
 # Prepare the application
 RUN rm -rf public/test_dist && \
