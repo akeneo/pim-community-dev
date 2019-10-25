@@ -24,7 +24,7 @@ spec:
           - name: php
             image: {{ template "pim.imageNameAndTag" $tplCtx }}
             imagePullPolicy: {{ $tplCtx.Values.image.pim.pullPolicy | quote }}
-            command: ['sh', '-c', 'su -m -l www-data -s /bin/bash -c "cd /srv/pim && php bin/console {{ $jobOptions.pimCommand }}"']
+            command: ['sh', '-c', 'su www-data -s /bin/bash -c "cd /srv/pim && php bin/console {{ $jobOptions.pimCommand }}"']
             resources:
   {{ toYaml $tplCtx.Values.pim.resources | indent 12 }}
             volumeMounts:

@@ -39,7 +39,7 @@ spec:
         - name: setup-onboarder-database
           image:  {{ template "pim.imageNameAndTag" . }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
-          command: ['sh', '-c', 'su -m -l www-data -s /bin/bash -c "cd /srv/pim && bin/console akeneo:onboarder:setup-database -vvv --no-interaction"']
+          command: ['sh', '-c', 'su www-data -s /bin/bash -c "cd /srv/pim && bin/console akeneo:onboarder:setup-database -vvv --no-interaction"']
           envFrom: [ configMapRef: { name: {{ template "pim.fullName" . }}-env } ]
           env:
             - { name: MAILER_USER, valueFrom: { secretKeyRef: { name: pim-secrets, key: mailerLogin } } }

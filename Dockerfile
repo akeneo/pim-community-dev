@@ -39,12 +39,14 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
     ln -s /usr/sbin/php-fpm7.3 /usr/local/sbin/php-fpm && \
     usermod --uid 1000 www-data && groupmod --gid 1000 www-data && \
     mkdir /srv/pim && \
+    usermod -d /srv/pim www-data && \
     sed -i "s#listen = /run/php/php7.3-fpm.sock#listen = 9000#g" /etc/php/7.3/fpm/pool.d/www.conf && \
     mkdir -p /run/php
 
 COPY docker/php.ini /etc/php/7.3/cli/conf.d/99-akeneo.ini
 COPY docker/php.ini /etc/php/7.3/fpm/conf.d/99-akeneo.ini
 COPY docker/fpm.conf /etc/php/7.3/fpm/pool.d/zzz-akeneo.conf
+COPY docker/php-fpm.conf /etc/php/7.3/fpm/php-fpm.conf
 
 #
 # Image used for development
@@ -142,3 +144,6 @@ COPY --from=builder /srv/pim/.env .
 RUN rm -rf public/test_dist && \
     mkdir -p public/media var/logs/batch && chown -R www-data:www-data public/media var && \
     rm -rf var/cache && su www-data -s /bin/bash bash -c "bin/console cache:warmup"
+
+# Keep root as default user
+USER root
