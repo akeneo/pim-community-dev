@@ -4,7 +4,6 @@ import {PimView} from '../../../infrastructure/pim-view/PimView';
 import {ApplyButton, Breadcrumb, BreadcrumbItem, PageHeader, Page} from '../../common';
 import {BreadcrumbRouterLink} from '../../shared/router';
 import {Translate} from '../../shared/translate';
-import {AppForm} from '../components/AppForm';
 
 export const AppEdit = () => {
     const {appId} = useParams();
@@ -43,7 +42,6 @@ export const AppEdit = () => {
                 <Translate id='pim_menu.item.apps' />
             </PageHeader>
             EditApp {appId}
-            <AppForm />
         </Page>
     );
 };

@@ -1,23 +1,24 @@
-import * as React from 'react';
+import React, {useContext} from 'react';
 import {useHistory} from 'react-router';
 import {App as AppInterface} from '../../../domain/apps/app.interface';
 import {FlowType} from '../../../domain/apps/flow-type.enum';
 import {PimView} from '../../../infrastructure/pim-view/PimView';
 import {NoApp} from '../../apps/components/NoApp';
 import {ApplyButton, Breadcrumb, BreadcrumbItem, Helper, HelperLink, HelperTitle, Page, PageHeader} from '../../common';
-import {isOk} from '../../shared/result';
-import {BreadcrumbRouterLink} from '../../shared/router';
-import {Translate} from '../../shared/translate';
-import {useFetchFromRoute} from '../../shared/use-fetch-from-route';
+import {isOk} from '../../shared/fetch/result';
+import {BreadcrumbRouterLink, useRoute} from '../../shared/router';
+import {Translate, TranslateContext} from '../../shared/translate';
 import {AppGrid} from '../components/AppGrid';
+import {useFetch} from '../../shared/fetch';
 
 const MAXIMUM_NUMBER_OF_ALLOWED_APPS = 50;
 
 export const AppList = () => {
     const history = useHistory();
+    const translate = useContext(TranslateContext);
 
-    const result = useFetchFromRoute<AppInterface[], Error>('akeneo_apps_list_rest');
-    const apps = isOk(result) ? result.ok : [];
+    const result = useFetch<AppInterface[], Error>(useRoute('akeneo_apps_list_rest'));
+    const apps = isOk(result) ? result.data : [];
 
     const handleCreate = () => history.push('/apps/create');
 
@@ -66,7 +67,7 @@ export const AppList = () => {
                 <p>
                     <Translate id='pim_apps.helper.description' />
                 </p>
-                <HelperLink href='#'>
+                <HelperLink href={translate('pim_apps.helper.link_url')}>
                     <Translate id='pim_apps.helper.link' />
                 </HelperLink>
             </Helper>

@@ -7,28 +7,45 @@ pim_title:
     akeneo_apps_any: Apps
 
 pim_apps:
+    apps: Apps
+    app:
+        code: Code
+        label: Label
+        flow_type: Flow type
+    flow_type:
+        data_source: Data source | Data sources
+        data_destination: Data destination | Data destinations
+        other: Other | Others
     helper:
         title: 👋 Welcome in the feature that will properly connect your PIM!
         description: A PIM without any connections is kinda useless, isn't it? Thanks to apps, you can declare all the data flows that will be pushed inside and pulled outside your PIM.
         link: Eager to know more? Find out what is an app and how to make the most of it right here!
-    flow_type:
-        data_source: External data source | External data sources
-        data_destination: External data destination | External data destinations
-        other: Other | Others
+        link_url: https://www.akeneo.com/
+    flow_type_helper:
+        message: Wondering what flow type is?
+        link: We can help you right here!
+        link_url: https://www.akeneo.com/
     app_count: '{{ count }} app | {{ count }} apps'
     no_app:
         title: No app declared yet.
         message: Add your first one by clicking on the “Create” button above or
         message_link: click here.
+    create_app:
+        title: Create a new app
+        description: You can create up to 50 apps.
+        flash:
+            success: App successfully created.
+            error: Sorry, an error occurred while creating the App.
 
-akeneo.apps:
+akeneo_apps:
     constraint:
         code:
-            required: 'Application code required.'
-            invalid: 'Application can only contains alphanumeric characters and underscore.'
-            too_long: 'Application code cannot exceeds 100 characters.'
-            must_be_unique: 'Application code must be unique.'
+            required: App code is required.
+            invalid: App code may contain only letters, numbers and underscores.
+            too_long: App code is too long. It should have 100 characters or less.
+            must_be_unique: App code must be unique.
         label:
-            too_long: 'Application label cannot exceeds 100 characters.'
+            required: App code is required.
+            too_long: App label is too long. It should have 100 characters or less.
         flow_type:
-            invalid: 'Application flow type can be data_source, data_destination or others.'
+            invalid: App flow type can only be 'data_source', 'data_destination' or 'other'.
