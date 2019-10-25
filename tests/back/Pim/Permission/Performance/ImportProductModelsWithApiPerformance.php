@@ -23,16 +23,16 @@ use PHPUnit\Framework\Assert;
  */
 class ImportProductsWithApiPerformance extends AbstractApiPerformance
 {
-    private const PRODUCT_COUNT = 10;
+    private const PRODUCT_MODEL_COUNT = 10;
     private const CATEGORY_COUNT = 3;
 
     /**
-     * This method will patch PRODUCT_COUNT simple products through API, by updating their category to set
+     * This method will patch PRODUCT_MODEL_COUNT product models through API, by updating their category to set
      * CATEGORY_COUNT new categories.
      * We check if this import is performant, regarding the main time, memory, SQL counts and some completeness
      * calculation metrics.
      */
-    public function test_that_importing_products_with_api_is_performant()
+    public function test_that_importing_product_models_with_api_is_performant()
     {
         $clientConfiguration = $this->getBlackfireClientConfiguration();
         $clientConfiguration->setEnv('CI');
@@ -44,30 +44,30 @@ class ImportProductsWithApiPerformance extends AbstractApiPerformance
             new Metric('completeness_calculation', '=Akeneo\\Pim\\Enrichment\\Component\\Product\\Completeness\\CompletenessCalculator::fromProductIdentifiers')
         );
 
-        // 2019/10/25: original value was 2397.
-        $profileConfig->assert('metrics.sql.queries.count < 2496', 'SQL queries');
-        // Original value: 11.8s
-        $profileConfig->assert('main.wall_time < 18s', 'Total time');
-        // Original value: 31.2MB
-        $profileConfig->assert('main.peak_memory < 40mb', 'Memory');
+        // 2019/10/25: original value was 1848.
+        $profileConfig->assert('metrics.sql.queries.count < 1947', 'SQL queries');
+        // Original value: 14.4s
+        $profileConfig->assert('main.wall_time < 20s', 'Total time');
+        // Original value: 39.1MB
+        $profileConfig->assert('main.peak_memory < 50mb', 'Memory');
         // Ensure only 1 completeness calculation is done
         $profileConfig->assert('metrics.completeness_calculation.count == 1', 'Completeness calculation calls');
         // Ensure only 1 call is done to ES
-        $profileConfig->assert('metrics.http.curl.requests.count == 1', 'Queries to ES');
-        // Original value: 354ms
-        $profileConfig->assert('metrics.completeness_calculation.wall_time < 500ms', 'Completeness calculation time');
+        $profileConfig->assert('metrics.http.curl.requests.count == 2', 'Queries to ES');
+        // Original value: 845ms
+        $profileConfig->assert('metrics.completeness_calculation.wall_time < 1200ms', 'Completeness calculation time');
 
         $client = $this->createAuthenticatedClient();
 
         $categoryCodes = $this->getCategoryCodes(self::CATEGORY_COUNT);
         $categoryCodesAsString = json_encode($categoryCodes);
-        $data = join("\n", array_map(function ($productIdentifier) use ($categoryCodesAsString) {
-            return '{"identifier": "' . $productIdentifier . '", "categories": ' . $categoryCodesAsString . '}';
-        }, $this->getProductIdentifiers(self::PRODUCT_COUNT)));
+        $data = join("\n", array_map(function ($productCode) use ($categoryCodesAsString) {
+            return '{"code": "' . $productCode . '", "categories": ' . $categoryCodesAsString . '}';
+        }, $this->getProductModelCodes(self::PRODUCT_MODEL_COUNT)));
 
         $profile = $this->assertBlackfire($profileConfig, function () use ($client, $data) {
             $client->setServerParameter('CONTENT_TYPE', StreamResourceResponse::CONTENT_TYPE);
-            $client->request('PATCH', 'api/rest/v1/products', [], [], [], $data);
+            $client->request('PATCH', 'api/rest/v1/product-models', [], [], [], $data);
         });
 
         $response = $client->getResponse();
@@ -76,21 +76,19 @@ class ImportProductsWithApiPerformance extends AbstractApiPerformance
         echo PHP_EOL. 'Profile complete: ' . $profile->getUrl() . PHP_EOL;
     }
 
-    private function getProductIdentifiers(int $limit) {
+    private function getProductModelCodes(int $limit) {
         $sql = <<<SQL
-SELECT MIN(product.identifier) AS identifier
-FROM pim_catalog_product product
-WHERE product.product_model_id IS NULL
-GROUP BY product.family_id
+SELECT product_model.code AS code
+FROM pim_catalog_product_model product_model
 LIMIT ${limit}
 SQL;
-        $productIdentifiers = [];
+        $productModelCodes = [];
         $rows = $this->get('database_connection')->executeQuery($sql)->fetchAll();
         foreach ($rows as $row) {
-            $productIdentifiers[] = $row['identifier'];
+            $productModelCodes[] = $row['code'];
         }
 
-        return $productIdentifiers;
+        return $productModelCodes;
     }
 
     private function getCategoryCodes(int $limit) {

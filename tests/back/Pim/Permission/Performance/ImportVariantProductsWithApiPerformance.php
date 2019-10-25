@@ -61,8 +61,8 @@ class ImportProductWithApiPerformance extends AbstractApiPerformance
 
         $categoryCodes = $this->getCategoryCodes(self::CATEGORY_COUNT);
         $categoryCodesAsString = json_encode($categoryCodes);
-        $data = join("\n", array_map(function ($productCode) use ($categoryCodesAsString) {
-            return '{"identifier": "' . $productCode . '", "categories": ' . $categoryCodesAsString . '}';
+        $data = join("\n", array_map(function ($variantProductIdentifier) use ($categoryCodesAsString) {
+            return '{"identifier": "' . $variantProductIdentifier . '", "categories": ' . $categoryCodesAsString . '}';
         }, $this->getVariantProductIdentifiers(self::VARIANT_PRODUCT_COUNT)));
 
         $profile = $this->assertBlackfire($profileConfig, function () use ($client, $data) {
