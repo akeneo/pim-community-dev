@@ -23,7 +23,7 @@ use PHPUnit\Framework\Assert;
  */
 class ImportProductWithApiPerformance extends AbstractApiPerformance
 {
-    private const VARIANT_PRODUCT_COUNT = 2;
+    private const VARIANT_PRODUCT_COUNT = 8;
     private const CATEGORY_COUNT = 3;
 
     /**
@@ -44,19 +44,18 @@ class ImportProductWithApiPerformance extends AbstractApiPerformance
             new Metric('completeness_calculation', '=Akeneo\\Pim\\Enrichment\\Component\\Product\\Completeness\\CompletenessCalculator::fromProductIdentifiers')
         );
 
-        // 2019/10/25: original value was 342.
-        $profileConfig->assert('metrics.sql.queries.count < 441', 'SQL queries');
-        // Original value: 2.62s
-        $profileConfig->assert('main.wall_time < 4s', 'Total time');
-        // Original value: 18.5MB
-        $profileConfig->assert('main.peak_memory < 30mb', 'Memory');
+        // 2019/10/25: original value was 1388.
+        $profileConfig->assert('metrics.sql.queries.count < 1487', 'SQL queries');
+        // Original value: 8.6s
+        $profileConfig->assert('main.wall_time < 11s', 'Total time');
+        // Original value: 27.9MB
+        $profileConfig->assert('main.peak_memory < 40mb', 'Memory');
         // Ensure only 1 completeness calculation is done
         $profileConfig->assert('metrics.completeness_calculation.count == 1', 'Completeness calculation calls');
         // Ensure only 2 calls are done to ES
         $profileConfig->assert('metrics.http.curl.requests.count == 2', 'Queries to ES');
-        // Original value: 44ms
-        $profileConfig->assert('metrics.completeness_calculation.wall_time < 80ms', 'Completeness calculation time');
-
+        // Original value: 329ms
+        $profileConfig->assert('metrics.completeness_calculation.wall_time < 420ms', 'Completeness calculation time');
 
         $client = $this->createAuthenticatedClient();
 
@@ -79,9 +78,10 @@ class ImportProductWithApiPerformance extends AbstractApiPerformance
 
     private function getVariantProductIdentifiers(int $limit) {
         $sql = <<<SQL
-SELECT product.identifier AS identifier
-FROM pim_catalog_product product
+SELECT MIN(product.identifier) AS identifier
+FROM pim_catalog_product product 
 WHERE product.product_model_id IS NOT NULL
+GROUP BY family_id
 LIMIT ${limit}
 SQL;
         $variantProductIdentifiers = [];
