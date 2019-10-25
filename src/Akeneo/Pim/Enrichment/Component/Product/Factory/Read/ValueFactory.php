@@ -47,9 +47,10 @@ class ValueFactory
     private function getFactory(Attribute $attribute): SingleValueFactory
     {
         // a recursive dependency happens if you do it in the constructor because the class LoadEntityWithValuesSubscriber
-        // is registered as Doctrine subscriber, and looping the iterable $valueFactories triggers it
-        // the result is here a segmentation fault
-        // maybe we should use a listener in LoadEntityWithValuesSubscriber
+        // is registered as Doctrine subscriber
+        // When looping over the service, some factories load the entity manager trying to initialize again this service...
+        // The result is here a segmentation fault due to this recursive dependency.
+        // maybe we should use a listener in LoadEntityWithValuesSubscriber, but it's declared per entity
         if (null === $this->valueFactories) {
             Assert::allIsInstanceOf($this->notIndexedValuesFactories, SingleValueFactory::class);
 
