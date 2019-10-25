@@ -110,8 +110,8 @@ pim:
     serviceAccountKey: nil
   updateStrategy:
     type: RollingUpdate
-  replicas: 2
-  numDaemon: 2
+  replicas: 1
+  numDaemon: 1
   extraLabels: {}
   secret: nil # Generate me with `uuidgen`
   resources:
@@ -247,10 +247,10 @@ elasticsearch:
       EXPECTED_DATA_NODES: null
       RECOVER_AFTER_DATA_NODES: null
       #INITIAL_MASTER_NODES: "elasticsearch-master-0,elasticsearch-master-1"
-      #cluster.initial_master_nodes: "elasticsearch-master-0"
+      cluster.initial_master_nodes: "elasticsearch-master-0"
       discovery.seed_hosts: "elasticsearch-discovery"
   client:
-    replicas: 1
+    replicas: 2
     heapSize: "128m"
     resources:
       limits:
@@ -260,7 +260,7 @@ elasticsearch:
         cpu: "25m"
         memory: "160Mi"
   master:
-    replicas: 1
+    replicas: 2
     persistence:
       size: 1Gi
       storageClass: ssd-retain
@@ -275,7 +275,7 @@ elasticsearch:
     updateStrategy:
       type: RollingUpdate
   data:
-    replicas: 1
+    replicas: 2
     persistence:
       size: 10Gi
       storageClass: ssd-retain
