@@ -23,12 +23,12 @@ use PHPUnit\Framework\Assert;
  */
 class ImportProductWithApiPerformance extends AbstractApiPerformance
 {
-    private const PRODUCT_COUNT = 10;
+    private const VARIANT_PRODUCT_COUNT = 2;
     private const CATEGORY_COUNT = 3;
 
     /**
-     * This method will patch PRODUCT_COUNT simple products through API, by updating their category to set
-     * CATEGORY_COUNT new categories.
+     * This method will patch VARIANT_PRODUCT_COUNT variant products through API, by updating their category to set
+     * CATEGORY_COUNT new categories. Each variant product belongs to a different family.
      * We check if this import is performant, regarding the main time, memory, SQL counts and some completeness
      * calculation metrics.
      */
@@ -44,18 +44,18 @@ class ImportProductWithApiPerformance extends AbstractApiPerformance
             new Metric('completeness_calculation', '=Akeneo\\Pim\\Enrichment\\Component\\Product\\Completeness\\CompletenessCalculator::fromProductIdentifiers')
         );
 
-        // 2019/10/25: original value was 2282.
-        $profileConfig->assert('metrics.sql.queries.count < 2291', 'SQL queries');
-        // Original value: 11.8s
-        $profileConfig->assert('main.wall_time < 18s', 'Total time');
-        // Original value: 31.2MB
-        $profileConfig->assert('main.peak_memory < 40mb', 'Memory');
+        // 2019/10/25: original value was 342.
+        $profileConfig->assert('metrics.sql.queries.count < 441', 'SQL queries');
+        // Original value: 2.62s
+        $profileConfig->assert('main.wall_time < 4s', 'Total time');
+        // Original value: 18.5MB
+        $profileConfig->assert('main.peak_memory < 30mb', 'Memory');
         // Ensure only 1 completeness calculation is done
         $profileConfig->assert('metrics.completeness_calculation.count == 1', 'Completeness calculation calls');
-        // Ensure only 1 call is done to ES
-        $profileConfig->assert('metrics.http.curl.requests.count == 1', 'Queries to ES');
-        // Original value: 539ms
-        $profileConfig->assert('metrics.completeness_calculation.wall_time < 650ms', 'Completeness calculation time');
+        // Ensure only 2 calls are done to ES
+        $profileConfig->assert('metrics.http.curl.requests.count == 2', 'Queries to ES');
+        // Original value: 44ms
+        $profileConfig->assert('metrics.completeness_calculation.wall_time < 80ms', 'Completeness calculation time');
 
 
         $client = $this->createAuthenticatedClient();
@@ -64,7 +64,7 @@ class ImportProductWithApiPerformance extends AbstractApiPerformance
         $categoryCodesAsString = json_encode($categoryCodes);
         $data = join("\n", array_map(function ($productCode) use ($categoryCodesAsString) {
             return '{"identifier": "' . $productCode . '", "categories": ' . $categoryCodesAsString . '}';
-        }, $this->getProductIdentifiers(self::PRODUCT_COUNT)));
+        }, $this->getVariantProductIdentifiers(self::VARIANT_PRODUCT_COUNT)));
 
         $profile = $this->assertBlackfire($profileConfig, function () use ($client, $data) {
             $client->setServerParameter('CONTENT_TYPE', StreamResourceResponse::CONTENT_TYPE);
@@ -77,20 +77,20 @@ class ImportProductWithApiPerformance extends AbstractApiPerformance
         echo PHP_EOL. 'Profile complete: ' . $profile->getUrl() . PHP_EOL;
     }
 
-    private function getProductIdentifiers(int $limit) {
+    private function getVariantProductIdentifiers(int $limit) {
         $sql = <<<SQL
 SELECT product.identifier AS identifier
 FROM pim_catalog_product product
-WHERE product.product_model_id IS NULL
+WHERE product.product_model_id IS NOT NULL
 LIMIT ${limit}
 SQL;
-        $productIdentifiers = [];
+        $variantProductIdentifiers = [];
         $rows = $this->get('database_connection')->executeQuery($sql)->fetchAll();
         foreach ($rows as $row) {
-            $productIdentifiers[] = $row['identifier'];
+            $variantProductIdentifiers[] = $row['identifier'];
         }
 
-        return $productIdentifiers;
+        return $variantProductIdentifiers;
     }
 
     private function getCategoryCodes(int $limit) {
