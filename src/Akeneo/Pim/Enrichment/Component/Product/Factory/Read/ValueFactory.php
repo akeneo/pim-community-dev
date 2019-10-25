@@ -22,14 +22,12 @@ class ValueFactory
     /** @var array|SingleValueFactory[] */
     private $valueFactories;
 
+    /** @var array|SingleValueFactory[] */
+    private $notIndexedValuesFactories;
+
     public function __construct(iterable $valueFactories)
     {
-        Assert::allIsInstanceOf($valueFactories, SingleValueFactory::class);
-
-        /** @var ValueFactory $readValueFactory */
-        foreach ($valueFactories as $readValueFactory) {
-            $this->valueFactories[$readValueFactory->supportedAttributeType()] = $readValueFactory;
-        }
+        $this->notIndexedValuesFactories = $valueFactories;
     }
 
     public function createWithoutCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
@@ -48,6 +46,19 @@ class ValueFactory
 
     private function getFactory(Attribute $attribute): SingleValueFactory
     {
+        // a recursive dependency happens if you do it in the constructor because the class LoadEntityWithValuesSubscriber
+        // is registered as Doctrine subscriber, and looping the iterable $valueFactories triggers it
+        // the result is here a segmentation fault
+        // maybe we should use a listener in LoadEntityWithValuesSubscriber
+        if (null === $this->valueFactories) {
+            Assert::allIsInstanceOf($this->notIndexedValuesFactories, SingleValueFactory::class);
+
+            /** @var ValueFactory $readValueFactory */
+            foreach ($this->notIndexedValuesFactories as $readValueFactory) {
+                $this->valueFactories[$readValueFactory->supportedAttributeType()] = $readValueFactory;
+            }
+        }
+
         if (isset($this->valueFactories[$attribute->type()])) {
             return $this->valueFactories[$attribute->type()];
         }
