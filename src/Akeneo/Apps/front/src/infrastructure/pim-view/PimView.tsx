@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useRef, useContext, useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {LegacyContext} from '../legacy-context';
 
@@ -14,11 +14,11 @@ const StyledPimView = styled.div<{rendered: boolean}>`
 `;
 
 export const PimView = ({viewName, className}: Props) => {
-    const el = React.useRef<HTMLDivElement>(null);
-    const [rendered, setRendered] = React.useState(false);
+    const el = useRef<HTMLDivElement>(null);
+    const [rendered, setRendered] = useState(false);
 
-    const {viewBuilder} = React.useContext(LegacyContext);
-    React.useEffect(() => {
+    const {viewBuilder} = useContext(LegacyContext);
+    useEffect(() => {
         if (!viewBuilder) {
             return;
         }
@@ -26,7 +26,7 @@ export const PimView = ({viewName, className}: Props) => {
             view.setElement(el.current).render();
             setRendered(true);
         });
-    }, [viewName]);
+    }, [viewBuilder, viewName]);
 
     return <StyledPimView className={className} ref={el} rendered={rendered} />;
 };

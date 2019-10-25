@@ -1,6 +1,6 @@
-import * as React from 'react';
+import React, {PropsWithChildren} from 'react';
 
-export const Page = ({children}: React.PropsWithChildren<{}>) => (
+export const Page = ({children}: PropsWithChildren<{}>) => (
     <div className='AknDefault-contentWithColumn'>
         <div className='AknDefault-thirdColumnContainer'>
             <div className='AknDefault-thirdColumn' />

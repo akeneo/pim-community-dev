@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import {Index} from '../application/apps/pages/Index';
 import {RouterContext, RouterInterface} from '../application/shared/router';
 import {TranslateContext, TranslateInterface} from '../application/shared/translate';

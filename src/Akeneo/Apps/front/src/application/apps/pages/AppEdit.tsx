@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import {useHistory, useParams} from 'react-router';
 import {PimView} from '../../../infrastructure/pim-view/PimView';
 import {ApplyButton, Breadcrumb, BreadcrumbItem, PageHeader, Page} from '../../common';

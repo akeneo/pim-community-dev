@@ -1,9 +1,9 @@
-import * as React from 'react';
+import React, {PropsWithChildren, ReactElement, ReactNode, Fragment} from 'react';
 
-type Props = React.PropsWithChildren<{
-    breadcrumb?: React.ReactElement;
-    buttons?: React.ReactElement[];
-    userButtons?: React.ReactNode;
+type Props = PropsWithChildren<{
+    breadcrumb?: ReactElement;
+    buttons?: ReactElement[];
+    userButtons?: ReactNode;
 }>;
 
 export const PageHeader = ({children: title, breadcrumb, buttons, userButtons}: Props) => (
@@ -17,7 +17,7 @@ export const PageHeader = ({children: title, breadcrumb, buttons, userButtons}: 
                         {buttons && (
                             <div className='AknTitleContainer-actionsContainer AknButtonList'>
                                 {buttons.map((button, index) => (
-                                    <React.Fragment key={index}>{button}</React.Fragment>
+                                    <Fragment key={index}>{button}</Fragment>
                                 ))}
                             </div>
                         )}

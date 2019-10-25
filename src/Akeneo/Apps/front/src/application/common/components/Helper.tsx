@@ -1,18 +1,18 @@
-import * as React from 'react';
+import React, {PropsWithChildren, isValidElement, Children, DetailedHTMLProps, AnchorHTMLAttributes} from 'react';
 import Api from '../assets/illustrations/Api.svg';
 
-export const HelperTitle = ({children}: React.PropsWithChildren<{}>) => <>{children}</>;
+export const HelperTitle = ({children}: PropsWithChildren<{}>) => <>{children}</>;
 
 interface Props {
     illustration?: string;
 }
 
-export const Helper = ({children, illustration = Api}: React.PropsWithChildren<Props>) => {
-    const titleChildren = React.Children.toArray(children).filter(
-        child => React.isValidElement(child) && child.type === HelperTitle
+export const Helper = ({children, illustration = Api}: PropsWithChildren<Props>) => {
+    const titleChildren = Children.toArray(children).filter(
+        child => isValidElement(child) && child.type === HelperTitle
     );
-    const descriptionChildren = React.Children.toArray(children).filter(
-        child => !React.isValidElement(child) || child.type !== HelperTitle
+    const descriptionChildren = Children.toArray(children).filter(
+        child => !isValidElement(child) || child.type !== HelperTitle
     );
 
     return (
@@ -26,6 +26,6 @@ export const Helper = ({children, illustration = Api}: React.PropsWithChildren<P
     );
 };
 
-export const HelperLink = (
-    props: React.DetailedHTMLProps<React.AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>
-) => <a {...props} className='AknDescriptionHeader-link' />;
+export const HelperLink = (props: DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>) => (
+    <a {...props} className='AknDescriptionHeader-link' />
+);

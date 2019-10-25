@@ -1,19 +1,19 @@
-import * as React from 'react';
+import React, {ReactElement, Children, cloneElement} from 'react';
 import {Props as ItemProps} from './BreadcrumbItem';
 
 interface Props {
-    children: React.ReactElement<ItemProps> | Array<React.ReactElement<ItemProps>>;
+    children: ReactElement<ItemProps> | Array<ReactElement<ItemProps>>;
 }
 
 export const Breadcrumb = ({children}: Props) => {
-    const count = React.Children.count(children);
+    const count = Children.count(children);
 
     return (
         <div className='AknBreadcrumb'>
-            {React.Children.map(children, (item, index) => {
+            {Children.map(children, (item, index) => {
                 const isLast = item.props.isLast === undefined ? index === count - 1 : item.props.isLast;
 
-                return React.cloneElement(item, {isLast});
+                return cloneElement(item, {isLast});
             })}
         </div>
     );
