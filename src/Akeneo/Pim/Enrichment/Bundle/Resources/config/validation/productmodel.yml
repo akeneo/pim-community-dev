@@ -16,8 +16,8 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel:
             - NotBlank:
                 message: 'product_model.code.not_blank.message'
             - Regex:
-                pattern: '/^[^,;]+$/'
-                message: 'regex.comma_or_semicolon.message'
+                pattern: '/^(?!\s)[^,;]+(?<!\s)$/'
+                message: 'regex.comma_or_semicolon_or_surrounding_space.message'
             - Length:
                 max: 255
         familyVariant:

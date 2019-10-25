@@ -32,26 +32,3 @@ Feature: Product creation
     Then I should be on the product "caterpillar_1" edit page
     And I should see the text "caterpillar_1"
     And I should see the text "Family sandals"
-
-  Scenario: Fail to create a product with an already used code
-    Given I create a product
-    And I fill in the following information in the popin:
-      | SKU | sandals |
-    And I press the "Save" button in the popin
-    Then I should see validation error "The same identifier is already set on another product"
-
-  @jira https://akeneo.atlassian.net/browse/PIM-4706
-  Scenario: Fail to create a product with a comma in the identifier
-    Given I create a product
-    And I fill in the following information in the popin:
-      | SKU | to,to |
-    And I press the "Save" button in the popin
-    Then I should see validation error "This field should not contain any comma or semicolon."
-
-  @jira https://akeneo.atlassian.net/browse/PIM-4706
-  Scenario: Fail to create a product with a semicolon in the identifier
-    Given I create a product
-    And I fill in the following information in the popin:
-      | SKU | to;to |
-    And I press the "Save" button in the popin
-    Then I should see validation error "This field should not contain any comma or semicolon."

@@ -274,7 +274,7 @@ JSON;
 
         $expectedContent =
 <<<JSON
-{"line":1,"identifier":"foo,","status_code":422,"message":"Validation failed.","errors":[{"property":"identifier","message":"This field should not contain any comma or semicolon."}]}
+{"line":1,"identifier":"foo,","status_code":422,"message":"Validation failed.","errors":[{"property":"identifier","message":"This field should not contain any comma or semicolon or surrounding space."}]}
 JSON;
 
 
