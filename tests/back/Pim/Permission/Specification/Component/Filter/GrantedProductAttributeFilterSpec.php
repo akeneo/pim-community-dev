@@ -4,26 +4,38 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Permission\Component\Filter;
 
-use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Permission\Component\Filter\GrantedProductAttributeFilter;
-use Akeneo\Pim\Permission\Component\Attributes;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser;
+use Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
+use Akeneo\UserManagement\Component\Model\UserInterface;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class GrantedProductAttributeFilterSpec extends ObjectBehavior
 {
     function let(
         AttributeFilterInterface $productAttributeFilter,
-        IdentifiableObjectRepositoryInterface $attributeRepository,
-        IdentifiableObjectRepositoryInterface $localeRepository,
-        AuthorizationCheckerInterface $authorizationChecker
+        GetViewableAttributeCodesForUserInterface $getViewableAttributeCodesForUser,
+        GetAllViewableLocalesForUser $getViewableLocalesForUser,
+        TokenStorageInterface $tokenStorage,
+        TokenInterface $token,
+        UserInterface $user
     ) {
-        $this->beConstructedWith($productAttributeFilter, $attributeRepository, $localeRepository, $authorizationChecker);
+        $user->getId()->willReturn(42);
+        $token->getUser()->willReturn($user);
+        $tokenStorage->getToken()->willReturn($token);
+        $getViewableLocalesForUser->fetchAll(42)->willReturn(['en_US', 'fr_FR']);
+
+        $this->beConstructedWith(
+            $productAttributeFilter,
+            $getViewableAttributeCodesForUser,
+            $getViewableLocalesForUser,
+            $tokenStorage
+        );
     }
 
     function it_is_initializable()
@@ -37,13 +49,8 @@ class GrantedProductAttributeFilterSpec extends ObjectBehavior
     }
 
     function it_filters_when_attributes_and_locales_are_granted(
-        $productAttributeFilter,
-        $attributeRepository,
-        $localeRepository,
-        $authorizationChecker,
-        AttributeInterface $attribute,
-        AttributeGroupInterface $group,
-        LocaleInterface $locale
+        AttributeFilterInterface $productAttributeFilter,
+        GetViewableAttributeCodesForUserInterface $getViewableAttributeCodesForUser
     ) {
         $data = [
             'identifier' => 'tshirt',
@@ -66,26 +73,14 @@ class GrantedProductAttributeFilterSpec extends ObjectBehavior
             ],
         ];
 
-        $attributeRepository->findOneByIdentifier('name')->willReturn($attribute);
-        $attributeRepository->findOneByIdentifier('123')->willReturn($attribute);
-        $attribute->getGroup()->willReturn($group);
-        $authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $group)->willReturn(true);
-
-        $localeRepository->findOneByIdentifier('en_US')->willReturn($locale);
-        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $locale)->willReturn(true);
-
+        $getViewableAttributeCodesForUser->forAttributeCodes(['name', '123'], 42)->willReturn(['name', '123']);
         $productAttributeFilter->filter($data)->willReturn($data);
 
         $this->filter($data)->shouldReturn($data);
     }
 
     function it_throws_exception_when_filters_locale_not_granted(
-        $attributeRepository,
-        $localeRepository,
-        $authorizationChecker,
-        AttributeInterface $attribute,
-        AttributeGroupInterface $group,
-        LocaleInterface $locale
+        GetViewableAttributeCodesForUserInterface $getViewableAttributeCodesForUser
     ) {
         $data = [
             'identifier' => 'tshirt',
@@ -93,7 +88,7 @@ class GrantedProductAttributeFilterSpec extends ObjectBehavior
             'values' => [
                 'name' => [
                     [
-                        'locale' => 'en_US',
+                        'locale' => 'en_GB',
                         'scope' => null,
                         'data' => 'My very awesome T-shirt',
                     ],
@@ -101,12 +96,7 @@ class GrantedProductAttributeFilterSpec extends ObjectBehavior
             ],
         ];
 
-        $attributeRepository->findOneByIdentifier('name')->willReturn($attribute);
-        $attribute->getGroup()->willReturn($group);
-        $authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $group)->willReturn(true);
-
-        $localeRepository->findOneByIdentifier('en_US')->willReturn($locale);
-        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $locale)->willReturn(false);
+        $getViewableAttributeCodesForUser->forAttributeCodes(['name'], 42)->willReturn(['name']);
 
         $this->shouldThrow(
             UnknownPropertyException::class
@@ -117,10 +107,7 @@ class GrantedProductAttributeFilterSpec extends ObjectBehavior
     }
 
     function it_throws_exception_when_filters_attribute_not_granted(
-        $attributeRepository,
-        $authorizationChecker,
-        AttributeInterface $attribute,
-        AttributeGroupInterface $group
+        GetViewableAttributeCodesForUserInterface $getViewableAttributeCodesForUser
     ) {
         $data = [
             'identifier' => 'tshirt',
@@ -135,10 +122,7 @@ class GrantedProductAttributeFilterSpec extends ObjectBehavior
                 ],
             ],
         ];
-
-        $attributeRepository->findOneByIdentifier('name')->willReturn($attribute);
-        $attribute->getGroup()->willReturn($group);
-        $authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $group)->willReturn(false);
+        $getViewableAttributeCodesForUser->forAttributeCodes(['name'], 42)->willReturn([]);
 
         $this->shouldThrow(
             UnknownPropertyException::class
@@ -146,5 +130,41 @@ class GrantedProductAttributeFilterSpec extends ObjectBehavior
             'filter',
             [$data]
         );
+    }
+
+    function it_throws_an_exception_when_no_user_is_authenticated(
+        TokenInterface $token
+    ) {
+        $token->getUser()->willReturn(null);
+        $this->shouldThrow(
+            new \RuntimeException('Could not find any authenticated user')
+        )->during('filter', [['any_data']]);
+    }
+
+    function it_does_not_check_permissions_for_system_user(
+        AttributeFilterInterface $productAttributeFilter,
+        GetViewableAttributeCodesForUserInterface $getViewableAttributeCodesForUser,
+        UserInterface $user
+    ) {
+        $user->getId()->willReturn(null);
+        $user->getUsername()->willReturn(UserInterface::SYSTEM_USER_NAME);
+
+        $data = [
+            'identifier' => 'tshirt',
+            'family' => 'Summer Tshirt',
+            'values' => [
+                'name' => [
+                    [
+                        'locale' => 'en_US',
+                        'scope' => null,
+                        'data' => 'My very awesome T-shirt',
+                    ],
+                ],
+            ],
+        ];
+        $productAttributeFilter->filter($data)->willReturn(['filtered_data']);;
+
+        $getViewableAttributeCodesForUser->forAttributeCodes(Argument::cetera())->shouldNotBeCalled();
+        $this->filter($data)->shouldReturn(['filtered_data']);
     }
 }
