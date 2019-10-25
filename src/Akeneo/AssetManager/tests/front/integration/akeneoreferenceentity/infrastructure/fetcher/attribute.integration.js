@@ -72,7 +72,7 @@ describe('Akeneoassetfamily > infrastructure > fetcher > attribute', () => {
         isTextarea: {
           isTextarea: true,
         },
-        labelCollection: {labels: {en_US: 'Description'}},
+        labelCollection: {en_US: 'Description'},
         maxLength: {
           maxLength: 12,
         },
@@ -93,9 +93,7 @@ describe('Akeneoassetfamily > infrastructure > fetcher > attribute', () => {
         assetFamilyIdentifier: 'designer',
         identifier: 'side_view_1234',
         labelCollection: {
-          labels: {
-            en_US: 'Side view',
-          },
+          en_US: 'Side view',
         },
         order: 1,
         isRequired: false,

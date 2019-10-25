@@ -13,7 +13,7 @@ export const postJSON = (url: string, data: {}) => {
     type: 'POST',
     data: JSON.stringify(data),
     contentType: 'application/json',
-    dataType: 'json'
+    dataType: 'json',
   });
 
   return promisify(promise);

@@ -5,6 +5,11 @@ export type MediaType = 'image' | 'other';
 
 const validMediaTypes = ['image', 'other'];
 
+export enum MediaTypes {
+  image = 'image',
+  other = 'other',
+}
+
 export const isValidMediaType = (mediaType: NormalizedMediaType): mediaType is MediaType => {
   return validMediaTypes.includes(mediaType);
 };

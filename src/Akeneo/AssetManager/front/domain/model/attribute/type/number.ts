@@ -4,7 +4,7 @@ import AttributeIdentifier, {
 import AssetFamilyIdentifier, {
   denormalizeAssetFamilyIdentifier,
 } from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import LabelCollection, {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
+import LabelCollection, {denormalizeLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import AttributeCode, {denormalizeAttributeCode} from 'akeneoassetmanager/domain/model/attribute/code';
 import {NormalizedAttribute, Attribute, ConcreteAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {
@@ -79,7 +79,7 @@ export class ConcreteNumberAttribute extends ConcreteAttribute implements Number
       denormalizeAttributeIdentifier(normalizedNumberAttribute.identifier),
       denormalizeAssetFamilyIdentifier(normalizedNumberAttribute.asset_family_identifier),
       denormalizeAttributeCode(normalizedNumberAttribute.code),
-      createLabelCollection(normalizedNumberAttribute.labels),
+      denormalizeLabelCollection(normalizedNumberAttribute.labels),
       normalizedNumberAttribute.value_per_locale,
       normalizedNumberAttribute.value_per_channel,
       normalizedNumberAttribute.order,

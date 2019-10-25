@@ -1,4 +1,4 @@
-import {denormalizeLocale, createLocaleFromCode} from 'akeneoassetmanager/domain/model/locale';
+import {denormalizeLocale, createLocaleFromCode, localeExists} from 'akeneoassetmanager/domain/model/locale';
 
 describe('akeneo > asset family > domain > model --- locale', () => {
   test('I can create a new locale from a normalized one', () => {
@@ -42,5 +42,19 @@ describe('akeneo > asset family > domain > model --- locale', () => {
     expect(() => {
       const locale = createLocaleFromCode(12);
     }).toThrow('CreateLocaleFromCode expects a string as parameter (number given');
+  });
+
+  test('I tells if a locale exists in a list of locales', () => {
+    const expectedLocaleCode = 'en_US';
+    const locales = [
+      {
+        code: expectedLocaleCode,
+        label: 'English (United States)',
+        region: 'United States',
+        language: 'English',
+      },
+    ];
+    expect(localeExists(locales, expectedLocaleCode)).toEqual(true);
+    expect(localeExists(locales, 'UNKNOWN_LOCALE_CODE')).toEqual(false);
   });
 });

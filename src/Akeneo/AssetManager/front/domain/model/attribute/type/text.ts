@@ -4,7 +4,7 @@ import AttributeIdentifier, {
 import AssetFamilyIdentifier, {
   denormalizeAssetFamilyIdentifier,
 } from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import LabelCollection, {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
+import LabelCollection, {denormalizeLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import AttributeCode, {denormalizeAttributeCode} from 'akeneoassetmanager/domain/model/attribute/code';
 import {NormalizedAttribute, Attribute, ConcreteAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {MaxLength, NormalizedMaxLength} from 'akeneoassetmanager/domain/model/attribute/type/text/max-length';
@@ -121,7 +121,7 @@ export class ConcreteTextAttribute extends ConcreteAttribute implements TextAttr
       denormalizeAttributeIdentifier(normalizedTextAttribute.identifier),
       denormalizeAssetFamilyIdentifier(normalizedTextAttribute.asset_family_identifier),
       denormalizeAttributeCode(normalizedTextAttribute.code),
-      createLabelCollection(normalizedTextAttribute.labels),
+      denormalizeLabelCollection(normalizedTextAttribute.labels),
       normalizedTextAttribute.value_per_locale,
       normalizedTextAttribute.value_per_channel,
       normalizedTextAttribute.order,

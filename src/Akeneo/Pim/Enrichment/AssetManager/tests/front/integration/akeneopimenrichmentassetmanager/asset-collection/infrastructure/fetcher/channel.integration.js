@@ -7,47 +7,50 @@ beforeEach(async () => {
   page.on('request', interceptedRequest => {
     // Intercept the call to get the channels
     if (
-      'http://pim.com/configuration/channel/rest' === interceptedRequest.url() &&
+      'http://pim.com/configuration/channel/rest?filter_locales=false' === interceptedRequest.url() &&
       'GET' === interceptedRequest.method()
     ) {
-      const channels = [{
+      const channels = [
+        {
           code: 'ecommerce',
-          locales: [{
+          locales: [
+            {
               code: 'en_US',
               label: 'English (United States)',
               region: 'United States',
-              language: 'English'
+              language: 'English',
             },
             {
               code: 'fr_FR',
               label: 'French (France)',
               region: 'France',
-              language: 'French'
-            }
+              language: 'French',
+            },
           ],
           labels: {
-            en_US: 'Ecommerce'
-          }
+            en_US: 'Ecommerce',
+          },
         },
         {
           code: 'mobile',
-          locales: [{
+          locales: [
+            {
               code: 'en_US',
               label: 'English (United States)',
               region: 'United States',
-              language: 'English'
+              language: 'English',
             },
             {
               code: 'fr_FR',
               label: 'French (France)',
               region: 'France',
-              language: 'French'
-            }
+              language: 'French',
+            },
           ],
           labels: {
-            en_US: 'Mobile'
-          }
-        }
+            en_US: 'Mobile',
+          },
+        },
       ];
 
       interceptedRequest.respond({
@@ -63,8 +66,7 @@ beforeEach(async () => {
 it('It fetches the channels', async () => {
   // It fetches the channels
   const response = await page.evaluate(async () => {
-    const fetchChannels =
-      require('akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/channel')
+    const fetchChannels = require('akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/channel')
       .fetchChannels;
     const fetcherRegistry = require('pim/fetcher-registry');
     fetcherRegistry.initialize();
@@ -73,43 +75,46 @@ it('It fetches the channels', async () => {
   });
 
   // Check the channels returned by the fetcher are the expected ones
-  expect(response).toEqual([{
+  expect(response).toEqual([
+    {
       code: 'ecommerce',
-      locales: [{
+      locales: [
+        {
           code: 'en_US',
           label: 'English (United States)',
           region: 'United States',
-          language: 'English'
+          language: 'English',
         },
         {
           code: 'fr_FR',
           label: 'French (France)',
           region: 'France',
-          language: 'French'
-        }
+          language: 'French',
+        },
       ],
       labels: {
-        en_US: 'Ecommerce'
-      }
+        en_US: 'Ecommerce',
+      },
     },
     {
       code: 'mobile',
-      locales: [{
+      locales: [
+        {
           code: 'en_US',
           label: 'English (United States)',
           region: 'United States',
-          language: 'English'
+          language: 'English',
         },
         {
           code: 'fr_FR',
           label: 'French (France)',
           region: 'France',
-          language: 'French'
-        }
+          language: 'French',
+        },
       ],
       labels: {
-        en_US: 'Mobile'
-      }
-    }
+        en_US: 'Mobile',
+      },
+    },
   ]);
 });

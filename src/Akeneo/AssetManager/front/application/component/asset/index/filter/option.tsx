@@ -1,17 +1,12 @@
 import * as React from 'react';
 import {FilterView, FilterViewProps} from 'akeneoassetmanager/application/configuration/value';
 import {ConcreteOptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
-import {
-  Option,
-  NormalizedOption,
-  NormalizedOptionCode,
-} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
-import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
-import {connect} from 'react-redux';
+import {Option, NormalizedOption} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
 import Select2 from 'akeneoassetmanager/application/component/app/select2';
 import __ from 'akeneoassetmanager/tools/translator';
 import {ConcreteOptionCollectionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option-collection';
 import {getAttributeFilterKey} from 'akeneoassetmanager/tools/filter';
+import OptionCode from 'akeneoassetmanager/domain/model/attribute/type/option/option-code';
 
 const memo = (React as any).memo;
 const useState = (React as any).useState;
@@ -51,19 +46,25 @@ const OptionFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
     });
   };
   const value = undefined !== filter ? filter.value : [];
-  const labels = value.map((optionCode: NormalizedOptionCode) =>
+  const labels = value.map((optionCode: OptionCode) =>
     undefined !== availableOptions[optionCode] ? availableOptions[optionCode] : `[${optionCode}]`
   );
+  const [position, setPosition] = React.useState({top: 0, left: 0});
+  const labelRef = React.useRef<HTMLSpanElement>(null);
+  const openPanel = () => {
+    setIsOpen(true);
+    if (null !== labelRef.current) {
+      const viewportOffset = labelRef.current.getBoundingClientRect();
+      setPosition({top: viewportOffset.top, left: viewportOffset.left});
+    }
+  };
 
   return (
     <React.Fragment>
-      <span className="AknFilterBox-filterLabel" onClick={() => setIsOpen(true)}>
+      <span ref={labelRef} className="AknFilterBox-filterLabel" onClick={() => openPanel}>
         {attribute.getLabel(context.locale)}
       </span>
-      <span
-        className="AknFilterBox-filterCriteria AknFilterBox-filterCriteria--limited"
-        onClick={() => setIsOpen(true)}
-      >
+      <span className="AknFilterBox-filterCriteria AknFilterBox-filterCriteria--limited" onClick={openPanel}>
         <span className="AknFilterBox-filterCriteriaHint">
           {0 === labels.length ? __('pim_asset_manager.asset.grid.filter.option.all') : labels.join(', ')}
         </span>
@@ -72,7 +73,10 @@ const OptionFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
       {isOpen ? (
         <div>
           <div className="AknDropdown-mask" onClick={() => setIsOpen(false)} />
-          <div className="AknFilterBox-filterDetails">
+          <div
+            className="AknFilterBox-filterDetails AknFilterBox-filterDetails--rightAlign"
+            style={{top: `${position.top + 20}px`, left: `${position.left}px`, position: 'fixed'}}
+          >
             <div className="AknFilterChoice">
               <div className="AknFilterChoice-header">
                 <div className="AknFilterChoice-title">{attribute.getLabel(context.locale)}</div>
@@ -107,13 +111,4 @@ const OptionFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
   );
 });
 
-export const filter = connect(
-  (state: EditState, ownProps: FilterViewProps): OptionFilterViewProps => {
-    return {
-      ...ownProps,
-      context: {
-        locale: state.user.catalogLocale,
-      },
-    };
-  }
-)(OptionFilterView);
+export const filter = OptionFilterView;

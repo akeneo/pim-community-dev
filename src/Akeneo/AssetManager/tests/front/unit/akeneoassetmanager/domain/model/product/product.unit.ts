@@ -1,8 +1,4 @@
-import {
-  denormalizeProductIdentifier,
-  productidentifiersAreEqual,
-} from 'akeneoassetmanager/domain/model/product/identifier';
-import {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
+import {productidentifiersAreEqual} from 'akeneoassetmanager/domain/model/product/identifier';
 import {createProduct, denormalizeProduct} from 'akeneoassetmanager/domain/model/product/product';
 import {denormalizeFile} from 'akeneoassetmanager/domain/model/file';
 import {createEmptyFile} from 'akeneoassetmanager/domain/model/file';
@@ -26,9 +22,7 @@ const productModel = denormalizeProduct({
 
 describe('akeneo > asset family > domain > model --- product', () => {
   test('I can create a new product', () => {
-    expect(productidentifiersAreEqual(product.getIdentifier(), denormalizeProductIdentifier('nice_product'))).toBe(
-      true
-    );
+    expect(productidentifiersAreEqual(product.getIdentifier(), 'nice_product')).toBe(true);
   });
 
   test('I can compare two products', () => {
@@ -56,7 +50,7 @@ describe('akeneo > asset family > domain > model --- product', () => {
   });
 
   test('I can get the label collection of a product', () => {
-    expect(product.getLabelCollection()).toEqual(createLabelCollection({en_US: 'My nice product'}));
+    expect(product.getLabelCollection()).toEqual({en_US: 'My nice product'});
   });
 
   test('I can normalize my product', () => {
@@ -72,43 +66,15 @@ describe('akeneo > asset family > domain > model --- product', () => {
 
   test('I cannot create a malformed product', () => {
     expect(() => {
-      createProduct(
-        denormalizeProductIdentifier('123456'),
-        denormalizeProductIdentifier('nice_product'),
-        'nice',
-        createLabelCollection({en_US: 'My nice product'}),
-        denormalizeFile(null)
-      );
+      createProduct('123456', 'nice_product', 'nice', {en_US: 'My nice product'}, denormalizeFile(null));
     }).toThrow('Product expects an ProductType as type argument');
 
     expect(() => {
-      createProduct(
-        denormalizeProductIdentifier('123456'),
-        denormalizeProductIdentifier('nice_product'),
-        'product',
-        {en_US: 'My nice product'},
-        denormalizeFile(null)
-      );
-    }).toThrow('Product expects a LabelCollection as labelCollection argument');
-
-    expect(() => {
-      createProduct(
-        denormalizeProductIdentifier('123456'),
-        denormalizeProductIdentifier('nice_product'),
-        'product',
-        createLabelCollection({en_US: 'My nice product'}),
-        null
-      );
+      createProduct('123456', 'nice_product', 'product', {en_US: 'My nice product'}, null);
     }).toThrow('Product expects a File as image argument');
 
     expect(() => {
-      createProduct(
-        denormalizeProductIdentifier('123456'),
-        denormalizeProductIdentifier('nice_product'),
-        'product',
-        createLabelCollection({en_US: 'My nice product'}),
-        denormalizeFile(null)
-      );
+      createProduct('123456', 'nice_product', 'product', {en_US: 'My nice product'}, denormalizeFile(null));
     }).toThrow('Product expects a Completeness as completeness argument');
   });
 });

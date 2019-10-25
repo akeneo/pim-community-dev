@@ -41,7 +41,17 @@ define([
      */
     postRender(templateContext) {
       this.getSelect2Options(templateContext).then(select2Configuration => {
-        initSelect2.init(this.$('.select2'), select2Configuration);
+        const $select2 = this.$('.select2');
+
+        initSelect2.init($select2, select2Configuration);
+
+        const onChange = (event) => {
+          event.stopImmediatePropagation();
+          this.errors = [];
+          this.updateModel(this.getFieldValue($select2));
+        }
+
+        $select2.on('change', onChange);
       });
     },
 

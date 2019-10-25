@@ -1,16 +1,15 @@
 import LabelCollection, {
-  NormalizedLabelCollection,
-  createLabelCollection,
+  denormalizeLabelCollection,
+  getLabelInCollection,
 } from 'akeneoassetmanager/domain/model/label-collection';
 import AttributeCode, {
   denormalizeAttributeCode,
   attributecodesAreEqual,
-  attributeCodeStringValue,
 } from 'akeneoassetmanager/domain/model/attribute/code';
 
 export interface NormalizedAssetFamilyCreation {
   code: AttributeCode;
-  labels: NormalizedLabelCollection;
+  labels: LabelCollection;
 }
 
 export default interface AssetFamilyCreation {
@@ -30,12 +29,12 @@ class AssetFamilyCreationImplementation implements AssetFamilyCreation {
   }
 
   public static createEmpty(): AssetFamilyCreation {
-    return new AssetFamilyCreationImplementation(denormalizeAttributeCode(''), createLabelCollection({}));
+    return new AssetFamilyCreationImplementation(denormalizeAttributeCode(''), denormalizeLabelCollection({}));
   }
 
   public static createFromNormalized(normalizedAssetFamily: NormalizedAssetFamilyCreation): AssetFamilyCreation {
     const code = denormalizeAttributeCode(normalizedAssetFamily.code);
-    const labelCollection = createLabelCollection(normalizedAssetFamily.labels);
+    const labelCollection = denormalizeLabelCollection(normalizedAssetFamily.labels);
 
     return AssetFamilyCreationImplementation.create(code, labelCollection);
   }
@@ -45,11 +44,7 @@ class AssetFamilyCreationImplementation implements AssetFamilyCreation {
   }
 
   public getLabel(locale: string, fallbackOnCode: boolean = true) {
-    if (!this.labelCollection.hasLabel(locale)) {
-      return fallbackOnCode ? `[${this.getCode()}]` : '';
-    }
-
-    return this.labelCollection.getLabel(locale);
+    return getLabelInCollection(this.labelCollection, locale, fallbackOnCode, this.getCode());
   }
 
   public getLabelCollection(): LabelCollection {
@@ -62,8 +57,8 @@ class AssetFamilyCreationImplementation implements AssetFamilyCreation {
 
   public normalize(): NormalizedAssetFamilyCreation {
     return {
-      code: attributeCodeStringValue(this.getCode()),
-      labels: this.getLabelCollection().normalize(),
+      code: this.getCode(),
+      labels: this.getLabelCollection(),
     };
   }
 }

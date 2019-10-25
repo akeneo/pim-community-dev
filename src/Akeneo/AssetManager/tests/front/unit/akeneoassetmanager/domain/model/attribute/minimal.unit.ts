@@ -3,7 +3,6 @@ import {
   MinimalConcreteAttribute,
   MinimalAssetConcreteAttribute,
 } from 'akeneoassetmanager/domain/model/attribute/minimal';
-import {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
 
 const description = denormalizeMinimalAttribute({
   asset_family_identifier: 'designer',
@@ -39,7 +38,7 @@ describe('akeneo > attribute > domain > model --- minimal attribute', () => {
     expect(description.getLabel('en_US')).toEqual('Description');
     expect(description.getLabel('fr_fr')).toEqual('[description]');
     expect(description.getLabel('fr_fr', false)).toEqual('');
-    expect(description.getLabelCollection()).toEqual(createLabelCollection({en_US: 'Description'}));
+    expect(description.getLabelCollection()).toEqual({en_US: 'Description'});
   });
   test('I can create a new asset attribute with a identifier and labels', () => {
     expect(brands.getAssetFamilyIdentifier()).toEqual('designer');
@@ -48,7 +47,7 @@ describe('akeneo > attribute > domain > model --- minimal attribute', () => {
     expect(brands.getLabel('en_US')).toEqual('Brands');
     expect(brands.getLabel('fr_fr')).toEqual('[brands]');
     expect(brands.getLabel('fr_fr', false)).toEqual('');
-    expect(brands.getLabelCollection()).toEqual(createLabelCollection({en_US: 'Brands'}));
+    expect(brands.getLabelCollection()).toEqual({en_US: 'Brands'});
   });
 
   test('I can normalize a asset attribute', () => {
@@ -65,45 +64,22 @@ describe('akeneo > attribute > domain > model --- minimal attribute', () => {
 
   test('I cannot create a malformed attribute', () => {
     expect(() => {
-      new MinimalConcreteAttribute(
-        'designer',
-        'front_view',
-        createLabelCollection({en_US: 'Front View'}),
-        'text',
-        true
-      );
+      new MinimalConcreteAttribute('designer', 'front_view', {en_US: 'Front View'}, 'text', true);
     }).toThrow('Attribute expects a boolean as valuePerChannel');
 
     expect(() => {
-      new MinimalAssetConcreteAttribute(
-        'designer',
-        'brands',
-        createLabelCollection({en_US: 'Brands'}),
-        'asset',
-        true,
-        false
-      );
+      new MinimalAssetConcreteAttribute('designer', 'brands', {en_US: 'Brands'}, 'asset', true, false);
     }).toThrow('Attribute expects a AssetType argument');
 
     expect(() => {
-      new MinimalAssetConcreteAttribute(
-        'designer',
-        'brands',
-        createLabelCollection({en_US: 'Brands'}),
-        'text',
-        true,
-        false
-      );
+      new MinimalAssetConcreteAttribute('designer', 'brands', {en_US: 'Brands'}, 'text', true, false);
     }).toThrow('MinimalAssetAttribute type needs to be "asset" or "asset_collection"');
 
     expect(() => {
-      new MinimalConcreteAttribute('designer', 'front_view', createLabelCollection({en_US: 'Front View'}), 'text');
+      new MinimalConcreteAttribute('designer', 'front_view', {en_US: 'Front View'}, 'text');
     }).toThrow('Attribute expects a boolean as valuePerLocale');
     expect(() => {
-      new MinimalConcreteAttribute('designer', 'front_view', createLabelCollection({en_US: 'Front View'}));
+      new MinimalConcreteAttribute('designer', 'front_view', {en_US: 'Front View'});
     }).toThrow('Attribute expects a string as attribute type');
-    expect(() => {
-      new MinimalConcreteAttribute('designer', 'description');
-    }).toThrow('Attribute expects a LabelCollection argument');
   });
 });

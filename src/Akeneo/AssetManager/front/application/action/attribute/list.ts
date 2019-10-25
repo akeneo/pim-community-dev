@@ -62,7 +62,7 @@ const getColumn = (attribute: Attribute, channel: ChannelReference, locale: Loca
       attribute.valuePerChannel ? channel : denormalizeChannelReference(null),
       attribute.valuePerLocale ? locale : denormalizeLocaleReference(null)
     ),
-    labels: attribute.getLabelCollection().normalize(),
+    labels: attribute.getLabelCollection(),
     type: attribute.getType(),
     channel,
     locale: locale.normalize() as string,

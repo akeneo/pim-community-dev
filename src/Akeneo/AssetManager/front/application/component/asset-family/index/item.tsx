@@ -1,7 +1,11 @@
 import * as React from 'react';
 import AssetFamily from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {getImageShowUrl} from 'akeneoassetmanager/tools/media-url-generator';
-import {assetFamilyidentifiersAreEqual, denormalizeAssetFamilyIdentifier, assetFamilyIdentifierStringValue} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import {
+  assetFamilyidentifiersAreEqual,
+  denormalizeAssetFamilyIdentifier,
+  assetFamilyIdentifierStringValue,
+} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 const router = require('pim/router');
 
 export default ({
@@ -17,13 +21,12 @@ export default ({
 } & {
   onRedirectToAssetFamily: (assetFamily: AssetFamily) => void;
 }) => {
-  const path =
-    !assetFamilyidentifiersAreEqual(assetFamily.getIdentifier(), denormalizeAssetFamilyIdentifier(''))
-      ? `#${router.generate('akeneo_asset_manager_asset_family_edit', {
-          identifier: assetFamilyIdentifierStringValue(assetFamily.getIdentifier()),
-          tab: 'asset',
-        })}`
-      : '';
+  const path = !assetFamilyidentifiersAreEqual(assetFamily.getIdentifier(), denormalizeAssetFamilyIdentifier(''))
+    ? `#${router.generate('akeneo_asset_manager_asset_family_edit', {
+        identifier: assetFamilyIdentifierStringValue(assetFamily.getIdentifier()),
+        tab: 'asset',
+      })}`
+    : '';
 
   return (
     <a

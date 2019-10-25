@@ -1,6 +1,6 @@
 import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
 import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
-import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';
+import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import {denormalizeAssetFamilyIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {NormalizedItemAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import {NormalizedAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';

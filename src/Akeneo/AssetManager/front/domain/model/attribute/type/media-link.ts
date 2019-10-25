@@ -4,7 +4,7 @@ import AttributeIdentifier, {
 import AssetFamilyIdentifier, {
   denormalizeAssetFamilyIdentifier,
 } from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import LabelCollection, {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
+import LabelCollection, {denormalizeLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import AttributeCode, {denormalizeAttributeCode} from 'akeneoassetmanager/domain/model/attribute/code';
 import {NormalizedAttribute, Attribute, ConcreteAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {
@@ -96,7 +96,7 @@ export class ConcreteMediaLinkAttribute extends ConcreteAttribute implements Med
       denormalizeAttributeIdentifier(normalizedMediaLinkAttribute.identifier),
       denormalizeAssetFamilyIdentifier(normalizedMediaLinkAttribute.asset_family_identifier),
       denormalizeAttributeCode(normalizedMediaLinkAttribute.code),
-      createLabelCollection(normalizedMediaLinkAttribute.labels),
+      denormalizeLabelCollection(normalizedMediaLinkAttribute.labels),
       normalizedMediaLinkAttribute.value_per_locale,
       normalizedMediaLinkAttribute.value_per_channel,
       normalizedMediaLinkAttribute.order,

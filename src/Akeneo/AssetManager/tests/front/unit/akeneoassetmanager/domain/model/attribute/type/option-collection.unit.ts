@@ -1,5 +1,4 @@
 import {ConcreteOptionCollectionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option-collection';
-import {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import {Option} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
 
 const normalizedFavoriteColor = {
@@ -32,17 +31,9 @@ describe('akeneo > attribute > domain > model > attribute > type --- OptionColle
   });
   test('I cannot create an invalid ConcreteOptionCollectionAttribute', () => {
     expect(() => {
-      new ConcreteOptionCollectionAttribute(
-        'colors',
-        'designer',
-        'colors',
-        createLabelCollection({en_US: 'Colors'}),
-        true,
-        false,
-        0,
-        true,
-        ['hello']
-      );
+      new ConcreteOptionCollectionAttribute('colors', 'designer', 'colors', {en_US: 'Colors'}, true, false, 0, true, [
+        'hello',
+      ]);
     }).toThrow('Attribute expects a list of Option as options');
   });
 
