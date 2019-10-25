@@ -28,7 +28,7 @@ class ImportProductsWithApiPerformance extends AbstractApiPerformance
 
     /**
      * This method will patch PRODUCT_MODEL_COUNT product models through API, by updating their category to set
-     * CATEGORY_COUNT new categories.
+     * This method will patch 10 product models through API by updating categories that are randomly picked.
      * We check if this import is performant, regarding the main time, memory, SQL counts and some completeness
      * calculation metrics.
      */
@@ -52,7 +52,7 @@ class ImportProductsWithApiPerformance extends AbstractApiPerformance
         $profileConfig->assert('main.peak_memory < 50mb', 'Memory');
         // Ensure only 1 completeness calculation is done
         $profileConfig->assert('metrics.completeness_calculation.count == 1', 'Completeness calculation calls');
-        // Ensure only 1 call is done to ES
+        // Ensure only 2 calls are done to ES (1 for product model, 1 for products)
         $profileConfig->assert('metrics.http.curl.requests.count == 2', 'Queries to ES');
         // Original value: 845ms
         $profileConfig->assert('metrics.completeness_calculation.wall_time < 1200ms', 'Completeness calculation time');
