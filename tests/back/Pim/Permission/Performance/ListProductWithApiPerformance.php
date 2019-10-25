@@ -20,6 +20,7 @@ class ListProductWithApiPerformance extends AbstractApiPerformance
     public function test_that_exporting_products_with_api_is_performant()
     {
         $clientConfiguration = $this->getBlackfireClientConfiguration();
+
         $clientConfiguration->setEnv('CI');
 
         $profileConfig = new Configuration();

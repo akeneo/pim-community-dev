@@ -91,7 +91,7 @@ abstract class AbstractApiPerformance extends WebTestCase
         ];
     }
 
-    private function get(string $service)
+    protected function get(string $service)
     {
         return static::$kernel->getContainer()->get($service);
     }
