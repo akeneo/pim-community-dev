@@ -138,7 +138,7 @@ services:
         arguments:
             - '@akeneo.pim.enrichment.product.connector.get_product_from_identifiers_without_permissions'
             - '@akeneo.pim.enrichment.category.get_viewable_category_codes'
-            - '@pimee_security.query.get_viewable_attribute_codes_for_user'
+            - '@pimee_security.query.sql.get_viewable_attribute_codes_for_user'
             - '@pimee_security.query.get_all_viewable_locales_for_user'
             - '@akeneo.pim.permission.product.query.fetch_user_rights_on_product'
             - '@akeneo.pim.permission.product.query.fetch_user_rights_on_product_model'
@@ -151,7 +151,7 @@ services:
         arguments:
             - '@akeneo.pim.enrichment.product.connector.get_product_models_from_codes_without_permissions'
             - '@akeneo.pim.enrichment.category.get_viewable_category_codes'
-            - '@pimee_security.query.get_viewable_attribute_codes_for_user'
+            - '@pimee_security.query.sql.get_viewable_attribute_codes_for_user'
             - '@pimee_security.query.get_all_viewable_locales_for_user'
             - '@akeneo.pim.permission.product.query.fetch_user_rights_on_product'
             - '@akeneo.pim.permission.product.query.fetch_user_rights_on_product_model'

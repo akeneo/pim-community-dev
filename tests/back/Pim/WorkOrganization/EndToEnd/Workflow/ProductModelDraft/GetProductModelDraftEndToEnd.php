@@ -43,15 +43,6 @@ class GetProductModelDraftEndToEnd extends ApiTestCase
         "data": "jack"
       }
     ],
-    "price": [
-      {
-        "locale": null,
-        "scope": null,
-        "data": [
-          {"amount": null, "currency": "EUR"}
-        ]
-      }
-    ],
     "wash_temperature": [
       {
         "locale": null,
