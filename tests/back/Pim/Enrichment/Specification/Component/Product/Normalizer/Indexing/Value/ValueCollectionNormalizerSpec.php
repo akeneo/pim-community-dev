@@ -12,11 +12,8 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class ValueCollectionNormalizerSpec extends ObjectBehavior
 {
-    function let(
-        NormalizerInterface $serializer,
-        WriteValueCollection $valueCollection
-    ) {
-        $this->beConstructedWith($serializer);
+    function let(NormalizerInterface $normalizer) {
+        $this->beConstructedWith($normalizer);
     }
 
     function it_is_initializable()
@@ -24,10 +21,11 @@ class ValueCollectionNormalizerSpec extends ObjectBehavior
         $this->shouldHaveType(ValueCollectionNormalizer::class);
     }
 
-    function it_support_product_value_collection($valueCollection)
+    function it_support_product_value_collection(WriteValueCollection $valueCollection)
     {
         $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
         $this->supportsNormalization($valueCollection, 'whatever')->shouldReturn(false);
+
 
         $this->supportsNormalization(new \stdClass(), ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(false);
@@ -40,11 +38,11 @@ class ValueCollectionNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_product_value_collection(
-        $valueCollection,
+        WriteValueCollection $valueCollection,
         ValueInterface $value1,
         ValueInterface $value2,
         \ArrayIterator $valueCollectionIterator,
-        SerializerInterface $serializer
+        NormalizerInterface $normalizer
     ) {
         $valueCollection->getIterator()->willReturn($valueCollectionIterator);
         $valueCollectionIterator->rewind()->shouldBeCalled();
@@ -53,7 +51,7 @@ class ValueCollectionNormalizerSpec extends ObjectBehavior
 
         $valueCollectionIterator->next()->shouldBeCalled();
 
-        $serializer->normalize($value1, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])->willReturn(
+        $normalizer->normalize($value1, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])->willReturn(
             [
                 'box_quantity-decimal' => [
                     '<all_channels>' => [
@@ -63,7 +61,7 @@ class ValueCollectionNormalizerSpec extends ObjectBehavior
             ]
         );
 
-        $serializer->normalize($value2, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])->willReturn(
+        $normalizer->normalize($value2, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])->willReturn(
             [
                 'description-textarea' => [
                     '<all_channels>' => [

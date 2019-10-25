@@ -7,6 +7,7 @@ services:
 
     pim_catalog.completeness.product.compute_and_persist:
         class: 'Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses'
+        public: true
         arguments:
             - '@pim_catalog.completeness.calculator'
             - '@akeneo.pim.enrichment.product.query.save_product_completenesses'

@@ -29,7 +29,7 @@ class ListProductModelWithCompletenessEndToEnd extends AbstractProductModelTestC
 
         $search = '{"completeness":[{"operator":"ALL COMPLETE","scope":"ecommerce","locales":["en_US"]}]}';
         $client->request('GET', 'api/rest/v1/product-models?locales=en_US&limit=2&search=' . $search);
-        $searchEncoded = rawurlencode($search);
+        $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
         $expected = <<<JSON
 {
     "_links": {

@@ -29,11 +29,9 @@ class FetchProductRowsFromIdentifiersIntegration extends TestCase
             ->get('database_connection')
             ->fetchColumn('SELECT id FROM oro_user WHERE username = "admin"', [], 0);
 
-        $fixturesLoader = new ProductGridFixturesLoader(
-            static::$kernel->getContainer(),
-            $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))
-        );
-        [$product1, $product2] = $fixturesLoader->createProductAndProductModels()['products'];
+        $fixturesLoader = $this->get('akeneo_integration_tests.loader.product_grid_fixtures_loader');
+        $imagePath = $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'));
+        [$product1, $product2] = $fixturesLoader->createProductAndProductModels($imagePath)['products'];
 
         $query = $this->getFetchProductRowsFromIdentifiers();
         $rows = $query(['baz', 'foo'], ['sku', 'a_localizable_image', 'a_scopable_image'], 'ecommerce', 'en_US', $userId);

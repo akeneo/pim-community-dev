@@ -6,18 +6,21 @@ parameters:
 services:
     pim_catalog.elasticsearch.indexer.product:
         class: '%pim_catalog.elasticsearch.indexer.product.class%'
+        public: true
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@akeneo.pim.enrichment.product.query.get_elasticsearch_product_projection'
 
     pim_catalog.elasticsearch.indexer.product_model:
         class: '%pim_catalog.elasticsearch.indexer.product_model_indexer.class%'
+        public: true
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@akeneo.pim.enrichment.product.query.get_elasticsearch_product_model_projection'
 
     pim_catalog.elasticsearch.indexer.product_model_descendance:
         class: '%pim_catalog.elasticsearch.indexer.product_model_descendants_indexer.class%'
+        public: true
         arguments:
             - '@pim_catalog.elasticsearch.indexer.product'
             - '@pim_catalog.elasticsearch.indexer.product_model'
@@ -32,6 +35,7 @@ services:
 
     pim_catalog.elasticsearch.indexer.product_model_descendants_and_ancestors:
         class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelDescendantsAndAncestorsIndexer'
+        public: true
         arguments:
             - '@pim_catalog.elasticsearch.indexer.product'
             - '@pim_catalog.elasticsearch.indexer.product_model'

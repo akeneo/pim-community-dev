@@ -62,7 +62,7 @@ class CreateProductModelMediaFileEndToEnd extends ApiTestCase
         $this->assertSame('catalogStorage', $fileInfo->getStorage());
 
         // check if product value has been created
-        $productModel = $this->productModelRepository->findOneByIdentifier('product_model_image');
+        $productModel = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('product_model_image');
         $this->assertCount(3, $productModel->getRawValues());
 
         $valueImage = $productModel->getValues()->getByCodes('an_image');

@@ -264,6 +264,7 @@ services:
             - { name: akeneo.pim.enrichment.factory.non_existent_values_filter }
 
     akeneo.pim.enrichment.factory.empty_values_cleaner:
+        public: true
         class: 'Akeneo\Pim\Enrichment\Component\Product\Factory\EmptyValuesCleaner'
 
     akeneo.pim.enrichment.factory.transform_raw_values_collections:

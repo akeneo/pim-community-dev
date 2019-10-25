@@ -32,12 +32,9 @@ class FetchProductAndProductModelRowsIntegration extends TestCase
             ->get('database_connection')
             ->fetchColumn('SELECT id from oro_user where username = "admin"', [], 0);
 
-        $fixturesLoader = new ProductGridFixturesLoader(
-            static::$kernel->getContainer(),
-            $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))
-        );
-
-        $fixtures = $fixturesLoader->createProductAndProductModels();
+        $fixturesLoader = $this->get('akeneo_integration_tests.loader.product_grid_fixtures_loader');
+        $imagePath = $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'));
+        $fixtures = $fixturesLoader->createProductAndProductModels($imagePath);
         [$rootProductModel, $subProductModel] = $fixtures['product_models'];
         [$product1, $product2] = $fixtures['products'];
 

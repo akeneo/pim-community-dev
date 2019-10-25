@@ -12,6 +12,7 @@ services:
 
     oro_datagrid.extension.mass_action.type.ajax:
         class: '%oro_datagrid.extension.mass_action.type.ajax.class%'
+        public: true
         shared: false
         tags:
             - { name:  oro_datagrid.extension.mass_action.type, type: ajax }

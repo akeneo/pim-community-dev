@@ -18,7 +18,7 @@ class SavingProductModelDescendantsIntegration extends TestCase
     private $esProductAndProductModelClient;
 
     /** @var JobLauncher */
-    private $launcher;
+    private $jobLauncher;
 
     /**
      * {@inheritdoc}
@@ -30,7 +30,7 @@ class SavingProductModelDescendantsIntegration extends TestCase
 
         $this->authenticateUserAdmin();
 
-        $this->launcher = new JobLauncher(static::$kernel);
+        $this->jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
     }
 
     public function testIndexingProductModelDescendantsOnUnitarySave()
@@ -53,8 +53,8 @@ class SavingProductModelDescendantsIntegration extends TestCase
 
         $this->get('pim_catalog.saver.product_model')->save($rootProductModel);
 
-        while ($this->launcher->hasJobInQueue()) {
-            $this->launcher->launchConsumerOnce();
+        while ($this->jobLauncher->hasJobInQueue()) {
+            $this->jobLauncher->launchConsumerOnce();
         }
 
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
@@ -109,8 +109,8 @@ class SavingProductModelDescendantsIntegration extends TestCase
 
         $this->get('pim_catalog.saver.product_model')->save($rootProductModel);
 
-        while ($this->launcher->hasJobInQueue()) {
-            $this->launcher->launchConsumerOnce();
+        while ($this->jobLauncher->hasJobInQueue()) {
+            $this->jobLauncher->launchConsumerOnce();
         }
 
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();

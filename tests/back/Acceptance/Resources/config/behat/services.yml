@@ -86,6 +86,7 @@ services:
             - '@test.attribute_group.builder'
 
     test.family.context:
+        public: true
         class: 'Akeneo\Test\Acceptance\Family\FamilyContext'
         arguments:
             - '@pim_catalog.repository.family'

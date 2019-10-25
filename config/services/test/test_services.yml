@@ -8,6 +8,10 @@ parameters:
     akeneo_integration_tests.launcher.job_execution_observer.class: Akeneo\Test\IntegrationTestsBundle\Jobs\JobExecutionObserver
 
 services:
+
+    _defaults:
+        public: true
+
     akeneo_integration_tests.loader.reference_data_loader:
         class: '%akeneo_integration_tests.loader.reference_data_loader.class%'
         arguments:
@@ -64,6 +68,26 @@ services:
             - '@validator'
             - '@akeneo_elasticsearch.client.product_and_product_model'
 
+    akeneo_integration_tests.loader.product_grid_fixtures_loader:
+        class: 'AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\ProductGrid\ProductGridFixturesLoader'
+        arguments:
+            - '@pim_catalog.factory.product_model'
+            - '@pim_catalog.updater.product_model'
+            - '@pim_catalog.validator.product'
+            - '@pim_catalog.saver.product_model'
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.saver.product'
+            - '@pim_catalog.saver.product'
+            - '@pim_catalog.factory.family'
+            - '@pim_catalog.updater.family'
+            - '@pim_catalog.saver.family'
+            - '@validator'
+            - '@pim_catalog.factory.family_variant'
+            - '@pim_catalog.updater.family_variant'
+            - '@pim_catalog.saver.family_variant'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+
     akeneo_integration_tests.loader.database_schema_handler:
         class: '%akeneo_integration_tests.loader.database_schema_handler.class%'
         arguments:
@@ -111,6 +135,8 @@ services:
         class: '%akeneo_integration_tests.launcher.job_launcher.class%'
         arguments:
             - '@kernel'
+            - '@database_connection'
+            - '@akeneo_batch_queue.queue.job_execution_message_repository'
 
     akeneo_integration_tests.launcher.job_execution_observer:
         class: '%akeneo_integration_tests.launcher.job_execution_observer.class%'

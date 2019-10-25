@@ -4,53 +4,128 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\ProductGrid;
 
+use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PHPUnit\Framework\Assert;
-use Psr\Container\ContainerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class ProductGridFixturesLoader
 {
-    /** @var  ContainerInterface */
-    private $container;
+    /** @var SimpleFactoryInterface */
+    private $productModelFactory;
 
-    /** @var string */
-    private $akeneoImagePath;
+    /** @var ObjectUpdaterInterface */
+    private $productModelUpdater;
 
-    /**
-     * @param ContainerInterface $container
-     * @param string             $akeneoImageKey
-     */
-    public function __construct(ContainerInterface $container, string $akeneoImageKey)
-    {
-        $this->container = $container;
-        $this->akeneoImagePath = $akeneoImageKey;
+    /** @var ValidatorInterface */
+    private $productValidator;
+
+    /** @var SaverInterface */
+    private $productModelSaver;
+
+    /** @var ProductBuilderInterface */
+    private $productBuilder;
+
+    /** @var ObjectUpdaterInterface */
+    private $productUpdater;
+
+    /** @var SaverInterface */
+    private $productSaver;
+
+    /** @var SaverInterface */
+    private $productsSaver;
+
+    /** @var SimpleFactoryInterface */
+    private $familyFactory;
+
+    /** @var ObjectUpdaterInterface */
+    private $familyUpdater;
+
+    /** @var ValidatorInterface */
+    private $validator;
+
+    /** @var SaverInterface */
+    private $familySaver;
+
+    /** @var SimpleFactoryInterface */
+    private $familyVariantFactory;
+
+    /** @var ObjectUpdaterInterface */
+    private $familyVariantUpdater;
+
+    /** @var SaverInterface */
+    private $familyVariantSaver;
+
+    /** @var Client */
+    private $esClient;
+
+    public function __construct(
+        SimpleFactoryInterface $productModelFactory,
+        ObjectUpdaterInterface $productModelUpdater,
+        ValidatorInterface $productValidator,
+        SaverInterface $productModelSaver,
+        ProductBuilderInterface $productBuilder,
+        ObjectUpdaterInterface $productUpdater,
+        SaverInterface $productSaver,
+        BulkSaverInterface $productsSaver,
+        SimpleFactoryInterface $familyFactory,
+        ObjectUpdaterInterface $familyUpdater,
+        SaverInterface $familySaver,
+        ValidatorInterface $validator,
+        SimpleFactoryInterface $familyVariantFactory,
+        ObjectUpdaterInterface $familyVariantUpdater,
+        SaverInterface $familyVariantSaver,
+        Client $esClient
+    ) {
+        $this->productModelFactory = $productModelFactory;
+        $this->productModelUpdater = $productModelUpdater;
+
+        $this->productValidator = $productValidator;
+        $this->productModelSaver = $productModelSaver;
+        $this->productBuilder = $productBuilder;
+        $this->productUpdater = $productUpdater;
+        $this->productSaver = $productSaver;
+        $this->productsSaver = $productsSaver;
+        $this->familyFactory = $familyFactory;
+        $this->familyUpdater = $familyUpdater;
+        $this->validator = $validator;
+        $this->familySaver = $familySaver;
+        $this->familyVariantFactory = $familyVariantFactory;
+        $this->familyVariantUpdater = $familyVariantUpdater;
+        $this->familyVariantSaver = $familyVariantSaver;
+        $this->esClient = $esClient;
     }
 
-    public function createProductModelsWithLabelInProduct(): ProductModelInterface
+    public function createProductModelsWithLabelInProduct(string $akeneoImagePath): ProductModelInterface
     {
         $this->createFamilyVariant();
-        $rootProductModelWithoutSubProductModel = $this->container->get('pim_catalog.factory.product_model')->create();
-        $this->container->get('pim_catalog.updater.product_model')->update($rootProductModelWithoutSubProductModel, [
+        $rootProductModelWithoutSubProductModel = $this->productModelFactory->create();
+        $this->productModelUpdater->update($rootProductModelWithoutSubProductModel, [
             'code' => 'root_product_model_without_sub_product_model',
             'family_variant' => 'family_variant_image_in_product',
             'values' => [
                 'a_localizable_image' => [
-                    ['data' => $this->akeneoImagePath, 'locale' => 'en_US', 'scope' => null],
-                    ['data' => $this->akeneoImagePath, 'locale' => 'fr_FR', 'scope' => null],
+                    ['data' => $akeneoImagePath, 'locale' => 'en_US', 'scope' => null],
+                    ['data' => $akeneoImagePath, 'locale' => 'fr_FR', 'scope' => null],
                 ],
                 'a_scopable_image' => [
-                    ['data' => $this->akeneoImagePath, 'locale' => null, 'scope' => 'ecommerce'],
-                    ['data' => $this->akeneoImagePath, 'locale' => null, 'scope' => 'tablet'],
+                    ['data' => $akeneoImagePath, 'locale' => null, 'scope' => 'ecommerce'],
+                    ['data' => $akeneoImagePath, 'locale' => null, 'scope' => 'tablet'],
                 ],
             ]
         ]);
 
-        $errors = $this->container->get('pim_catalog.validator.product')->validate($rootProductModelWithoutSubProductModel);
+        $errors = $this->productValidator->validate($rootProductModelWithoutSubProductModel);
         Assert::assertCount(0, $errors);
-        $this->container->get('pim_catalog.saver.product_model')->save($rootProductModelWithoutSubProductModel);
+        $this->productModelSaver->save($rootProductModelWithoutSubProductModel);
 
-        $product = $this->container->get('pim_catalog.builder.product')->createProduct('product_with_image', 'test_family');
-        $this->container->get('pim_catalog.updater.product')->update($product, [
+        $product = $this->productBuilder->createProduct('product_with_image', 'test_family');
+        $this->productUpdater->update($product, [
             'groups' => ['groupA', 'groupB'],
             'parent' => 'root_product_model_without_sub_product_model',
             'values' => [
@@ -58,39 +133,39 @@ final class ProductGridFixturesLoader
                     ['data' => true, 'locale' => null, 'scope' => null]
                 ],
                 'an_image' => [
-                    ['data' => $this->akeneoImagePath, 'locale' => null, 'scope' => null],
+                    ['data' => $akeneoImagePath, 'locale' => null, 'scope' => null],
                 ],
             ]
         ]);
 
-        $errors = $this->container->get('validator')->validate($product);
+        $errors = $this->productValidator->validate($product);
         Assert::assertCount(0, $errors);
 
-        $this->container->get('pim_catalog.saver.product')->save($product);
+        $this->productSaver->save($product);
         $this->refreshEsIndex();
 
         return $rootProductModelWithoutSubProductModel;
     }
 
-    public function createProductModelsWithLabelInParentProductModel()
+    public function createProductModelsWithLabelInParentProductModel(string $akeneoImagePath)
     {
-        $rootProductModelWithSubProductModel = $this->container->get('pim_catalog.factory.product_model')->create();
-        $this->container->get('pim_catalog.updater.product_model')->update($rootProductModelWithSubProductModel, [
+        $rootProductModelWithSubProductModel = $this->productModelFactory->create();
+        $this->productModelUpdater->update($rootProductModelWithSubProductModel, [
             'code' => 'root_product_model_with_sub_product_model',
             'family_variant' => 'family_variant_image_in_parent_product_model',
             'values' => [
                 'an_image' => [
-                    ['data' => $this->akeneoImagePath, 'locale' => null, 'scope' => null],
+                    ['data' => $akeneoImagePath, 'locale' => null, 'scope' => null],
                 ],
             ]
         ]);
 
-        $errors = $this->container->get('pim_catalog.validator.product')->validate($rootProductModelWithSubProductModel);
+        $errors = $this->productValidator->validate($rootProductModelWithSubProductModel);
         Assert::assertCount(0, $errors);
-        $this->container->get('pim_catalog.saver.product_model')->save($rootProductModelWithSubProductModel);
+        $this->productModelSaver->save($rootProductModelWithSubProductModel);
 
-        $subProductModel = $this->container->get('pim_catalog.factory.product_model')->create();
-        $this->container->get('pim_catalog.updater.product_model')->update($subProductModel, [
+        $subProductModel = $this->productModelFactory->create();
+        $this->productModelUpdater->update($subProductModel, [
             'code' => 'sub_product_model',
             'parent' => 'root_product_model_with_sub_product_model',
             'family_variant' => 'family_variant_image_in_parent_product_model',
@@ -101,29 +176,29 @@ final class ProductGridFixturesLoader
             ]
         ]);
 
-        $errors = $this->container->get('pim_catalog.validator.product')->validate($subProductModel);
+        $errors = $this->productValidator->validate($subProductModel);
         Assert::assertCount(0, $errors);
-        $this->container->get('pim_catalog.saver.product_model')->save($subProductModel);
+        $this->productModelSaver->save($subProductModel);
         $this->refreshEsIndex();
 
         return $subProductModel;
     }
 
-    public function createProductModelsWithLabelInSubProductModel()
+    public function createProductModelsWithLabelInSubProductModel(string $akeneoImagePath)
     {
-        $rootProductModelWithoutSubProductModel = $this->container->get('pim_catalog.factory.product_model')->create();
-        $this->container->get('pim_catalog.updater.product_model')->update($rootProductModelWithoutSubProductModel, [
+        $rootProductModelWithoutSubProductModel = $this->productModelFactory->create();
+        $this->productModelUpdater->update($rootProductModelWithoutSubProductModel, [
             'code' => 'root_product_model_with_image_in_sub_product_model',
             'family_variant' => 'family_variant_image_in_sub_product_model',
             'values' => []
         ]);
 
-        $errors = $this->container->get('pim_catalog.validator.product')->validate($rootProductModelWithoutSubProductModel);
+        $errors = $this->productValidator->validate($rootProductModelWithoutSubProductModel);
         Assert::assertCount(0, $errors);
-        $this->container->get('pim_catalog.saver.product_model')->save($rootProductModelWithoutSubProductModel);
+        $this->productModelSaver->save($rootProductModelWithoutSubProductModel);
 
-        $subProductModel = $this->container->get('pim_catalog.factory.product_model')->create();
-        $this->container->get('pim_catalog.updater.product_model')->update($subProductModel, [
+        $subProductModel = $this->productModelFactory->create();
+        $this->productModelUpdater->update($subProductModel, [
             'code' => 'sub_product_model_with_image_in_sub_product_model',
             'parent' => 'root_product_model_with_image_in_sub_product_model',
             'family_variant' => 'family_variant_image_in_sub_product_model',
@@ -132,24 +207,24 @@ final class ProductGridFixturesLoader
                     ['data' => true, 'locale' => null, 'scope' => null],
                 ],
                 'an_image' => [
-                    ['data' => $this->akeneoImagePath, 'locale' => null, 'scope' => null],
+                    ['data' => $akeneoImagePath, 'locale' => null, 'scope' => null],
                 ],
             ]
         ]);
 
-        $errors = $this->container->get('pim_catalog.validator.product')->validate($subProductModel);
+        $errors = $this->productValidator->validate($subProductModel);
         Assert::assertCount(0, $errors);
-        $this->container->get('pim_catalog.saver.product_model')->save($subProductModel);
+        $this->productModelSaver->save($subProductModel);
         $this->refreshEsIndex();
 
         return $rootProductModelWithoutSubProductModel;
     }
 
-    public function createProductAndProductModels()
+    public function createProductAndProductModels(string $akeneoImagePath)
     {
         $fixtures = [
-            'product_models' => $this->createProductModels(),
-            'products' => $this->createProducts()
+            'product_models' => $this->createProductModels($akeneoImagePath),
+            'products' => $this->createProducts($akeneoImagePath)
         ];
 
         $this->refreshEsIndex();
@@ -157,15 +232,15 @@ final class ProductGridFixturesLoader
         return $fixtures;
     }
 
-    private function createProductModels() : array
+    private function createProductModels(string $akeneoImagePath) : array
     {
-        $rootProductModel = $this->container->get('pim_catalog.factory.product_model')->create();
-        $this->container->get('pim_catalog.updater.product_model')->update($rootProductModel, [
+        $rootProductModel = $this->productModelFactory->create();
+        $this->productModelUpdater->update($rootProductModel, [
             'code' => 'root_product_model',
             'family_variant' => 'familyVariantA1',
             'values' => [
                 'an_image' => [
-                    ['data' => $this->akeneoImagePath, 'locale' => null, 'scope' => null],
+                    ['data' => $akeneoImagePath, 'locale' => null, 'scope' => null],
                 ],
                 'a_number_integer' => [
                     ['locale' => null, 'scope'  => null, 'data'   => 10],
@@ -173,12 +248,12 @@ final class ProductGridFixturesLoader
             ]
         ]);
 
-        $errors = $this->container->get('pim_catalog.validator.product')->validate($rootProductModel);
+        $errors = $this->productValidator->validate($rootProductModel);
         Assert::assertCount(0, $errors);
-        $this->container->get('pim_catalog.saver.product_model')->save($rootProductModel);
+        $this->productModelSaver->save($rootProductModel);
 
-        $subProductModel = $this->container->get('pim_catalog.factory.product_model')->create();
-        $this->container->get('pim_catalog.updater.product_model')->update($subProductModel, [
+        $subProductModel = $this->productModelFactory->create();
+        $this->productModelUpdater->update($subProductModel, [
             'code' => 'sub_product_model',
             'parent' => 'root_product_model',
             'family_variant' => 'familyVariantA1',
@@ -192,17 +267,17 @@ final class ProductGridFixturesLoader
             ]
         ]);
 
-        $errors = $this->container->get('pim_catalog.validator.product')->validate($subProductModel);
+        $errors = $this->productValidator->validate($subProductModel);
         Assert::assertCount(0, $errors);
-        $this->container->get('pim_catalog.saver.product_model')->save($subProductModel);
+        $this->productModelSaver->save($subProductModel);
 
         return [$rootProductModel, $subProductModel];
     }
 
-    private function createProducts(): array
+    private function createProducts(string $akeneoImagePath): array
     {
-        $product1 = $this->container->get('pim_catalog.builder.product')->createProduct('foo', 'familyA');
-        $this->container->get('pim_catalog.updater.product')->update($product1, [
+        $product1 = $this->productBuilder->createProduct('foo', 'familyA');
+        $this->productUpdater->update($product1, [
             'groups' => ['groupA', 'groupB'],
             'parent' => 'sub_product_model',
             'values' => [
@@ -212,16 +287,16 @@ final class ProductGridFixturesLoader
             ]
         ]);
 
-        $product2 = $this->container->get('pim_catalog.builder.product')->createProduct('baz', null);
-        $this->container->get('pim_catalog.updater.product')->update($product2, [
+        $product2 = $this->productBuilder->createProduct('baz', null);
+        $this->productUpdater->update($product2, [
             'values' => [
                 'a_localizable_image' => [
-                    ['data' => $this->akeneoImagePath, 'locale' => 'en_US', 'scope' => null],
-                    ['data' => $this->akeneoImagePath, 'locale' => 'fr_FR', 'scope' => null],
+                    ['data' => $akeneoImagePath, 'locale' => 'en_US', 'scope' => null],
+                    ['data' => $akeneoImagePath, 'locale' => 'fr_FR', 'scope' => null],
                 ],
                 'a_scopable_image' => [
-                    ['data' => $this->akeneoImagePath, 'locale' => null, 'scope' => 'ecommerce'],
-                    ['data' => $this->akeneoImagePath, 'locale' => null, 'scope' => 'tablet'],
+                    ['data' => $akeneoImagePath, 'locale' => null, 'scope' => 'ecommerce'],
+                    ['data' => $akeneoImagePath, 'locale' => null, 'scope' => 'tablet'],
                 ],
                 'a_yes_no' => [
                     ['data' => true, 'locale' => null, 'scope' => null]
@@ -229,20 +304,20 @@ final class ProductGridFixturesLoader
             ]
         ]);
 
-        $errors = $this->container->get('validator')->validate($product1);
+        $errors = $this->productValidator->validate($product1);
         Assert::assertCount(0, $errors);
-        $errors = $this->container->get('validator')->validate($product2);
+        $errors = $this->productValidator->validate($product2);
         Assert::assertCount(0, $errors);
 
-        $this->container->get('pim_catalog.saver.product')->saveAll([$product1, $product2]);
+        $this->productsSaver->saveAll([$product1, $product2]);
 
         return [$product1, $product2];
     }
 
     private function createFamilyVariant(): void
     {
-        $family = $this->container->get('pim_catalog.factory.family')->create();
-        $this->container->get('pim_catalog.updater.family')->update($family, [
+        $family = $this->familyFactory->create();
+        $this->familyUpdater->update($family, [
             'code' => 'test_family',
             'attributes'  => [
                 'sku',
@@ -255,12 +330,12 @@ final class ProductGridFixturesLoader
             "attribute_as_image" => "an_image"
         ]);
 
-        $errors = $this->container->get('validator')->validate($family);
+        $errors = $this->validator->validate($family);
         Assert::assertCount(0, $errors);
-        $this->container->get('pim_catalog.saver.family')->save($family);
+        $this->familySaver->save($family);
 
-        $familyVariant = $this->container->get('pim_catalog.factory.family_variant')->create();
-        $this->container->get('pim_catalog.updater.family_variant')->update($familyVariant, [
+        $familyVariant = $this->familyVariantFactory->create();
+        $this->familyVariantUpdater->update($familyVariant, [
             'code' => 'family_variant_image_in_product',
             'family' => 'test_family',
             'variant_attribute_sets' => [
@@ -272,12 +347,12 @@ final class ProductGridFixturesLoader
             ],
         ]);
 
-        $errors = $this->container->get('validator')->validate($familyVariant);
+        $errors = $this->validator->validate($familyVariant);
         Assert::assertCount(0, $errors);
-        $this->container->get('pim_catalog.saver.family_variant')->save($familyVariant);
+        $this->familyVariantSaver->save($familyVariant);
 
-        $familyVariant = $this->container->get('pim_catalog.factory.family_variant')->create();
-        $this->container->get('pim_catalog.updater.family_variant')->update($familyVariant, [
+        $familyVariant = $this->familyVariantFactory->create();
+        $this->familyVariantUpdater->update($familyVariant, [
             'code' => 'family_variant_image_in_parent_product_model',
             'family' => 'test_family',
             'variant_attribute_sets' => [
@@ -294,12 +369,12 @@ final class ProductGridFixturesLoader
             ],
         ]);
 
-        $errors = $this->container->get('validator')->validate($familyVariant);
+        $errors = $this->validator->validate($familyVariant);
         Assert::assertCount(0, $errors);
-        $this->container->get('pim_catalog.saver.family_variant')->save($familyVariant);
+        $this->familyVariantSaver->save($familyVariant);
 
-        $familyVariant = $this->container->get('pim_catalog.factory.family_variant')->create();
-        $this->container->get('pim_catalog.updater.family_variant')->update($familyVariant, [
+        $familyVariant = $this->familyVariantFactory->create();
+        $this->familyVariantUpdater->update($familyVariant, [
             'code' => 'family_variant_image_in_sub_product_model',
             'family' => 'test_family',
             'variant_attribute_sets' => [
@@ -316,13 +391,13 @@ final class ProductGridFixturesLoader
             ],
         ]);
 
-        $errors = $this->container->get('validator')->validate($familyVariant);
+        $errors = $this->validator->validate($familyVariant);
         Assert::assertCount(0, $errors);
-        $this->container->get('pim_catalog.saver.family_variant')->save($familyVariant);
+        $this->familyVariantSaver->save($familyVariant);
     }
 
     private function refreshEsIndex(): void
     {
-        $this->container->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        $this->esClient->refreshIndex();
     }
 }
