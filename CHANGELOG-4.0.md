@@ -149,19 +149,18 @@
 - Change Constructor of `Akeneo\Pim\Permission\Component\Filter\GrantedProductAttributeFilter` to
     - remove `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface $attributeRepository`, `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface $localeRepository`
         and `Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface`
-    - add `Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface`, `use Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser`
+    - add `Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface`, `Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser`
         and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface` 
 - Change Constructor of `Akeneo\Pim\Permission\Component\Filter\NotGrantedValuesFilter` to
     - remove `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface $attributeRepository`, `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface $localeRepository`
         and `Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface`
-    - add `Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface`, `use Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser`
+    - add `Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface`, `Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser`
         and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
 - Change Constructor of `Akeneo\Pim\Permission\Component\Merger\NotGrantedValuesMerger` to
     - remove `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface $attributeRepository`, `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface $localeRepository`
         and `Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface`
-    - add `Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface`, `use Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser`
+    - add `Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface`, `Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser`
         and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
-
 
 ### CLI commands
 
