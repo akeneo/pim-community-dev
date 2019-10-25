@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     # Asset family
     akeneo_assetmanager.infrastructure.action.asset_family.create:
         class: Akeneo\AssetManager\Infrastructure\Controller\AssetFamily\CreateAction

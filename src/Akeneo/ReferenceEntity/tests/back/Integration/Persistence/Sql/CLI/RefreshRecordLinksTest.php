@@ -52,6 +52,7 @@ class RefreshRecordLinksTest extends SqlIntegrationTestCase
     {
         $this->loadRecordsForReferenceEntity('brand', ['kartell']);
         $this->loadRecordsForReferenceEntity('designer', ['stark']);
+        sleep(1);
         $this->createAttributeRecordSingleLinkOnReferenceEntity('brand', 'designer');
         $this->linkRecordFromTo('kartell', 'stark');
         $this->removeRecord('designer', 'stark');
@@ -68,6 +69,7 @@ class RefreshRecordLinksTest extends SqlIntegrationTestCase
     {
         $this->loadRecordsForReferenceEntity('brand', ['kartell']);
         $this->loadRecordsForReferenceEntity('designer', ['stark', 'dyson']);
+        sleep(1);
         $this->createAttributeRecordMultipleLinkOnReferenceEntity('brand', 'designer');
         $this->linkMultipleRecordsFromTo('kartell', ['stark', 'dyson']);
         $this->removeRecord('designer', 'stark');

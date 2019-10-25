@@ -26,13 +26,11 @@ services:
             - '@Akeneo\Platform\Bundle\InstallerBundle\Command\CleanCategoryAccessesCommand'
             - '@Akeneo\Platform\Bundle\InstallerBundle\Command\CleanAttributeGroupAccessesCommand'
 
-    akeneo_integration_tests.community_catalogs:
-        class: 'Akeneo\Test\IntegrationTestsBundle\Configuration\Catalog'
-
-    akeneo_integration_tests.catalogs:
+    akeneo_integration_tests.catalogs_enterprise:
         class: 'AkeneoEnterprise\Test\IntegrationTestsBundle\Configuration\Catalog'
+        decorates: 'akeneo_integration_tests.catalogs'
         arguments:
-            - '@akeneo_integration_tests.community_catalogs'
+            - '@akeneo_integration_tests.catalogs_enterprise.inner'
 
     akeneo_ee_integration_tests.builder.attribute:
         class: 'Akeneo\Test\Common\EntityBuilder'
@@ -107,3 +105,9 @@ services:
             - '@doctrine.orm.default_entity_manager'
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@validator'
+
+    akeneo_integration_tests.event_dispatcher:
+        class: 'Akeneo\ReferenceEntity\Common\Fake\EventDispatcherMock'
+        decorates: event_dispatcher
+        arguments:
+            - '@akeneo_integration_tests.event_dispatcher.inner'

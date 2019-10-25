@@ -19,7 +19,7 @@ abstract class AbstractProductModelExportTestCase extends TestCase
     {
         parent::setUp();
 
-        $this->jobLauncher = new JobLauncher(static::$kernel);
+        $this->jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
 
         $this->createProductModel('root_product_model_visible_for_redactor', [
             'family_variant' => 'familyVariantA1',

@@ -24,7 +24,7 @@ class ExportPublishedVariantProductsEndToEnd extends TestCase
         $jobInstance->setLabel('Published CSV product export');
         $this->get('akeneo_batch.saver.job_instance')->save($jobInstance);
 
-        $this->jobLauncher       = new JobLauncher(static::$kernel);
+        $this->jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
         $publishedProductManager = $this->get('pimee_workflow.manager.published_product');
 
         $product = $this->get('pimee_security.repository.product')->findOneByIdentifier('1111111113');

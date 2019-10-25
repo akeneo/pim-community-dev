@@ -44,6 +44,7 @@ class RefreshAssetLinksTest extends SqlIntegrationTestCase
         parent::setUp();
 
         $this->resetDB();
+        $this->get('akeneo_assetmanager.client.asset')->refreshIndex();
     }
 
     /**
@@ -53,6 +54,7 @@ class RefreshAssetLinksTest extends SqlIntegrationTestCase
     {
         $this->loadAssetsForAssetFamily('brand', ['kartell']);
         $this->loadAssetsForAssetFamily('designer', ['stark']);
+        sleep(1);
         $this->createAttributeAssetSingleLinkOnAssetFamily('brand', 'designer');
         $this->linkAssetFromTo('kartell', 'stark');
         $this->removeAsset('designer', 'stark');
@@ -69,6 +71,7 @@ class RefreshAssetLinksTest extends SqlIntegrationTestCase
     {
         $this->loadAssetsForAssetFamily('brand', ['kartell']);
         $this->loadAssetsForAssetFamily('designer', ['stark', 'dyson']);
+        sleep(1);
         $this->createAttributeAssetMultipleLinkOnAssetFamily('brand', 'designer');
         $this->linkMultipleAssetsFromTo('kartell', ['stark', 'dyson']);
         $this->removeAsset('designer', 'stark');
@@ -88,6 +91,8 @@ class RefreshAssetLinksTest extends SqlIntegrationTestCase
 
     private function runRefreshAssetsCommand(): void
     {
+        sleep(10);
+
         $application = new Application(self::$kernel);
         $command = $application->find('akeneo:asset-manager:refresh-assets');
         $commandTester = new CommandTester($command);

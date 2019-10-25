@@ -12,10 +12,10 @@
         "body": {
             "_links": {
                 "self": {
-                    "href": "http://localhost/api/rest/v1/asset-families/brand/assets?search=%7B%22complete%22%3A%7B%22operator%22%3A%22%3D%22%2C%22value%22%3Atrue%2C%22channel%22%3A%22ecommerce%22%2C%22locales%22%3A%5B%22en_US%22%2C%22fr_FR%22%5D%7D%7D"
+                    "href": "http://localhost/api/rest/v1/asset-families/brand/assets?search=%7B%22complete%22:%7B%22operator%22:%22%3D%22,%22value%22:true,%22channel%22:%22ecommerce%22,%22locales%22:%5B%22en_US%22,%22fr_FR%22%5D%7D%7D"
                 },
                 "first": {
-                    "href": "http://localhost/api/rest/v1/asset-families/brand/assets?search=%7B%22complete%22%3A%7B%22operator%22%3A%22%3D%22%2C%22value%22%3Atrue%2C%22channel%22%3A%22ecommerce%22%2C%22locales%22%3A%5B%22en_US%22%2C%22fr_FR%22%5D%7D%7D"
+                    "href": "http://localhost/api/rest/v1/asset-families/brand/assets?search=%7B%22complete%22:%7B%22operator%22:%22%3D%22,%22value%22:true,%22channel%22:%22ecommerce%22,%22locales%22:%5B%22en_US%22,%22fr_FR%22%5D%7D%7D"
                 }
             },
             "_embedded": {

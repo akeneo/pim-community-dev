@@ -36,7 +36,14 @@ class RuleEngineValidatorACLStub implements RuleEngineValidatorACLInterface
     public function stubWithViolationMessage(string $message): void
     {
         $this->violations->add(
-            new ConstraintViolation($message, '', [], '', '', '')
+            new ConstraintViolation(
+                $message,
+                '',
+                [],
+                '',
+                '',
+                ''
+            )
         );
     }
 }

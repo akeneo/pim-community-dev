@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     test.catalog_volume_limits.reference_entity_context:
         class: 'AkeneoTestEnterprise\ReferenceEntity\Acceptance\Context\ReferenceEntityContext'
         arguments:

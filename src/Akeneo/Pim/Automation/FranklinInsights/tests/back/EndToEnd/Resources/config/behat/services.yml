@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     akeneo_e2e.context.franklin_insights.builder.attribute:
         class: 'Akeneo\Test\Common\EntityBuilder'
         shared: false

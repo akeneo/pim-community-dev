@@ -77,6 +77,7 @@ services:
 
     pimee_product_asset.repository.tag:
         class: '%pimee_product_asset.repository.tag.class%'
+        public: true
         factory: 'doctrine.orm.default_entity_manager:getRepository'
         arguments:
             - '%pimee_product_asset.model.tag.class%'

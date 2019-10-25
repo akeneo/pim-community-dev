@@ -25,6 +25,7 @@ services:
     # Controllers
     pim_api.controller.media_file:
         class: '%pim_api.controller.media_file.class%'
+        public: true
         arguments:
             - '@pim_api.repository.media_file'
             - '@pim_external_api_serializer'
@@ -47,6 +48,7 @@ services:
 
     pim_api.controller.product:
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ProductController'
+        public: true
         arguments:
             - '@pim_external_api_serializer'
             - '@pim_api.repository.channel'
@@ -77,6 +79,7 @@ services:
 
     pim_api.controller.product_model:
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ProductModelController'
+        public: true
         arguments:
             - '@pim_catalog.query.product_model_query_builder_factory'
             - '@pim_catalog.query.product_model_query_builder_search_after_size_factory'

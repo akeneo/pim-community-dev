@@ -49,7 +49,7 @@ abstract class PreviewGeneratorIntegrationTestCase extends KernelTestCase
 
     protected function get(string $service)
     {
-        return self::$kernel->getContainer()->get($service);
+        return self::$container->get($service);
     }
 
     protected function resetDB(): void

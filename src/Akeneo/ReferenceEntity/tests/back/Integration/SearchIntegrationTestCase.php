@@ -42,6 +42,6 @@ abstract class SearchIntegrationTestCase extends KernelTestCase
 
     protected function get(string $service)
     {
-        return self::$kernel->getContainer()->get($service);
+        return self::$container->get($service);
     }
 }
