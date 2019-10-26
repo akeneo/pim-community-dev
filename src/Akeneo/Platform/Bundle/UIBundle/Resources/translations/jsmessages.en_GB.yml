@@ -1,7 +1,9 @@
+#ORO messages
 "Yes, I Agree": "Yes, I Agree"
 "Yes, do it": "Yes, do it"
 "Ok, got it.": "Ok, got it."
 "Edit": "Edit"
+"Unexpected error occurred. Please contact system administrator.": "An unexpected error occurred. Please contact your system administrator."
 "Yes, revoke": "Yes, revoke"
 "Revoke Confirmation": "Revoke confirmation"
 Prev: Previous
@@ -19,9 +21,11 @@ Second: Second
 Millisecond: Millisecond
 Microsecond: Microsecond
 "Time Zone": "Time Zone"
+#PIM messages
 Localized value: Localized value
 Columns: Columns
 Datagrid Configuration: Datagrid Configuration
+#Filters
 Action: Action
 Unit: Unit
 Currency: Currency
@@ -33,6 +37,7 @@ jstree:
     unclassified: Unclassified products
   no_tree: No tree available
   include_sub: Include sub-categories
+#Datetimepicker
 datetimepicker:
   days:
     Sunday: Sunday
@@ -84,6 +89,7 @@ datetimepicker:
     Oct: Oct
     Nov: Nov
     Dec: Dec
+#ORO
 oro_config:
   form:
     config:
@@ -110,6 +116,33 @@ pim_ui:
 "Your local changes will be lost. Are you sure you want to refresh the page?": "Your local changes will be lost. Are you sure you want to refresh the page?"
 "navigation.message.content.outdated": "Content of {{ title }} page is outdated, please <a href='#' data-action='page-refresh'>refresh the page</a>"
 "Content of pinned page is outdated": "Content of pinned page is outdated"
+#Global structure of translation files
+#pim_bundle_name:
+#entity:
+#entity_name:
+#label: entity
+#uppercase_label: Entity
+#plural_label: Entities
+#flash:
+#update:
+#fail: Update failed
+#success: Entity Successfully updated
+#delete:
+#fail: Cannot delete this entity
+#success: Entity successfully removed
+#create:
+#fail: Can not create this entity
+#success: Entity successfully created
+#page_title:
+#index: "]-Inf, 1]1 entity|]1, Inf[{{ count }} entities"
+#property:
+#field_name: Field name
+#complex_field:
+#label: Field name
+#choose: Choose a field name
+#module:
+#module_name:
+#key: message
 pim_common:
   actions: Actions
   add: Add
@@ -178,14 +211,17 @@ pim_common:
     STARTS WITH: Starts with
     ENDS WITH: Ends with
 error:
+  exception: Oh snap! A {{ status_code }} error occurred...
   forbidden: Forbidden. You are not allowed to access this page
 alert:
   attribute_option:
+    error_occurred_during_submission: An error occurred during the form submission on the server
     save_before_edit_other: Please register your modifications on other rows before editing this one
   session_storage:
     not_available: Your web browser does not seem compatible with sessionStorage. Please contact your administrator
 pim_enrich.entity.fallback:
   flash:
+    generic_error: An error occurred
     update:
       fail: Update failed
       success: Successfully updated
