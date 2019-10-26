@@ -22,7 +22,7 @@ pim_enrich.entity.product:
       fail: Produktet kunne ikke opdateres.
       fields_not_ready: "Produktet kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
       already_in_upload: Der findes allerede en fil indlæst for denne attribut for denne landestandard "{{ locale }}" og "{{ scope }}"
-      file_upload: Der opstod en fejl under fil indlæsningen
+      file_upload: Der opstod en fejl under upload af filen
     delete:
       success: Produktet blev slettet.
       fail: Produktet kunne ikke slettes.
@@ -266,7 +266,7 @@ pim_enrich.mass_edit.product:
     confirm:
       label: Bekræft
     launch_error:
-      label: Der opstod en fejl under opstart af handlingen masse Rediger
+      label: Der opstod en fejl under lanceringen af masseredigeringsoperationen
     launched:
       label: Bulk-handlingen "{{ operation }}" er blevet igangsat. Du får besked, når den er afsluttet.
   operation:
@@ -308,6 +308,7 @@ pim_enrich.mass_edit.product:
       label: Fjern fra kategorier
       label_count: "{1}Fjern <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> fra kategorier |] 1, Inf [Fjern <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> fra kategorier"
       description: Produkterne vil blive fjernet fra følgende kategorier.
+      no_update: Du har ikke markeret en kategori at fjerne de valgte produkter fra.
     add_to_existing_product_model:
       label: Føj til en eksisterende produktmodel
       label_count: "{1}Tilføj <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> gruppe |] 1, Inf [Tilføj <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> til grupper"
@@ -332,7 +333,7 @@ pim_datagrid:
     delete:
       confirm_content: Er du sikker på du vil slette de valgte produkter?
       success: Udvalgte produkter blev slettet.
-      error: Der opstod en fejl under forsøget på at slette de valgte produkter, prøv venligst igen.
+      error: Der opstod en fejl under sletningen af valgte produkter, prøv igen senere.
     quick_export:
       csv_all: CSV (alle attributter)
       csv_grid_context: CSV (gitter kontekst)

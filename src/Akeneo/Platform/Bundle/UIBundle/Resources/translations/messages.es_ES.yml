@@ -62,6 +62,7 @@ pim_common:
   name: Nombre
   remove: Eliminar
 pim_enrich:
+  #ACLs
   acl:
     locale:
       index: Lista de locales
@@ -187,6 +188,7 @@ pim_enrich:
     association type: crear asociación de tipo
     group type: crear tipo de grupo
     drag_or_upload: Arrastre y suelte aquí o haga clic aquí para subir el fichero
+#Confirmation messages
 confirmation:
   delete: Confirmar la eliminación
   leave: '¿Está usted seguro que desea abandonar esta página?'
@@ -194,6 +196,7 @@ confirmation:
   remove:
     category: '¿Está seguro que desea eliminar la categoría %name%?'
     user: '¿Está seguro que desea eliminar usuario(a) %name%?'
+#Flash messages
 flash:
   entity:
     removed: Artículo eliminado
@@ -215,6 +218,7 @@ flash:
   user:
     removed: Usuario eliminado correctamente
   error occurred: Acción fallida. Por favor vuelva a intentarlo.
+#Info messages
 info:
   updated: Hay cambios sin guardar.
   category:
@@ -249,6 +253,7 @@ info:
     auto option sorting: Si está habilitado, las opciones se ordenarán automáticamente por sus etiquetas
   completeness:
     not calculated: Aún no calculados
+#Form elements
 Created: creado
 Updated: actualizado
 Last update: Última actualización
@@ -316,17 +321,21 @@ Category tree: Árbol de categoría
 Completeness: Completitud
 Attribute used as label: Atributo utilizado como etiqueta
 Credentials: Credenciales
+#Scopes
 Global: Global
 Channel: Canal
 Expand all channels: Expandir todos los canales
 Collapse all channels: Contraer todos los canales
+#Variants
 Always override: Siempre reemplace
 Ask: Preguntar
+#Attribute group
 General Properties: Propiedades generales
 Group values: Valores de grupo
 New group: Nuevo grupo
 Groups overview: Resumen de grupos
 'Y-m-d h:i:s': 'A-m-d h:m:s'
+#Attribute properties
 Max characters: Caracteres Max
 Validation rule: Regla de validación
 Validation regexp: Validación regexp
@@ -347,8 +356,11 @@ URL: URL
 Regular expression: Expresión regular
 Minimum input length: Longitud mínima de entrada
 Default: Predefinido
+#Family
 Attributes: Atributos
+#Category
 Title: Título
+#Page titles
 pim_catalog_identifier: Identificador
 pim_catalog_text: Texto
 pim_catalog_textarea: Área de Texto
@@ -363,6 +375,7 @@ pim_catalog_date: Fecha
 pim_catalog_metric: Métrica
 pim_reference_data_simpleselect: Selección simple de datos de referencia
 pim_reference_data_multiselect: Selección múltiple de datos de referencia
+#Locales
 Activated: Habilitado
 Edit: Editar
 Disable: Inhabilitar
@@ -373,9 +386,11 @@ Remove this attribute: Suprimir este atributo
 Copy: Copiar
 Translate from: Traducir desde
 Current tab: Pestaña actual
+#Product view
 Group: Grupo
 View group: Ver grupo
 Products: Productos
+#Tabs
 Properties: Propiedades
 History: Historial
 pane.accordion:
@@ -388,11 +403,13 @@ pane.accordion:
   label_translations: Traducciones de etiqueta
   options: Opciones
   group_values: Valores de grupo
+#Popin titles
 popin.create:
   association_type.title: Crear un nuevo tipo de asociación
   group.title: Crea un nuevo grupo
   product.title: Crear un nuevo producto
   option.title: Crear una nueva opción
+#Datagrid contents
 In group: En grupo
 Attribute as label: Atributo como etiqueta
 Is associated: Está asociado
@@ -402,6 +419,7 @@ Updated At: Actualizado el
 Enabled: Habilitado
 Disabled: Inhabilitado
 Status: Estado
+#Versioning / history
 Change History: Historial de cambios
 Data Audit: Auditoría de datos
 Data Audit - System: 'Auditoría de datos - sistema'
@@ -416,6 +434,7 @@ Logged at: Registrado el
 Deleted: Eliminados
 Old values: Valores anteriores
 New values: Nuevos valores
+#Configuration
 System configuration: Configuración del sitema
 General setup: Configuración general
 Localization: Localización
@@ -446,6 +465,7 @@ oro.locale:
       language: "Seleccione el idioma del sistema que desee utilizar"
       timezone: "Seleccione la zona horaria para visualización de fecha y hora"
       currency: "Seleccione la divisa predeterminada"
+#Datagrid
 Selected products successfully deleted: Productos seleccionados borrados con éxito
 pim_mass_edit:
   notification:

@@ -1,8 +1,9 @@
+#ORO messages
 "Yes, I Agree": "Ja, jeg er enig"
 "Yes, do it": "Ja, gør det"
 "Ok, got it.": "OK, fik det."
 "Edit": "Redigér"
-"Unexpected error occurred. Please contact system administrator.": "Der opstod en uventet fejl. Kontakt systemadministratoren."
+"Unexpected error occurred. Please contact system administrator.": "Uventet fejl opstod. Kontakt venligst systemadministratoren."
 "Yes, revoke": "Ja, tilbagekald"
 "Revoke Confirmation": "Tilbagekald bekræftelse"
 Prev: Forrige
@@ -20,9 +21,11 @@ Second: Sekund
 Millisecond: Millisekund
 Microsecond: Mikrosekund
 "Time Zone": "Tidszone"
+#PIM messages
 Localized value: Lokaliseret værdi
 Columns: Kolonner
 Datagrid Configuration: DataGrid konfiguration
+#Filters
 Action: Handling
 Unit: Enhed
 Currency: Valuta
@@ -34,6 +37,7 @@ jstree:
     unclassified: Ikke-klassificerede produkter
   no_tree: Intet træ tilgængeligt
   include_sub: Inkluder underkategorier
+#Datetimepicker
 datetimepicker:
   days:
     Sunday: Søndag
@@ -85,6 +89,7 @@ datetimepicker:
     Oct: Okt
     Nov: Nov
     Dec: Dec
+#ORO
 oro_config:
   form:
     config:
@@ -104,22 +109,55 @@ oro_config:
           label: Aktivere indlæsning af meddelelser
         loading_messages:
           label: Tilgængelige indlæsnings meddelelser
+pim_ui:
+  flash:
+    unsaved_changes: 'Du har ugemte ændringer, er du sikker på, at du vil forlade siden?'
 "Sorry, page was not loaded correctly": "Beklager, siden ikke blev indlæst korrekt"
 "Your local changes will be lost. Are you sure you want to refresh the page?": "Din lokale ændringer vil gå tabt. Er du sikker på at du opdatere siden?"
 "navigation.message.content.outdated": "Indhold af {{title}} side er forældet, venligst <a href='#' data-action='page-refresh'> opdater siden</a>"
 "Content of pinned page is outdated": "Indholdet af den fastgjorte side er forældet"
+#Global structure of translation files
+#pim_bundle_name:
+#entity:
+#entity_name:
+#label: entity
+#uppercase_label: Entity
+#plural_label: Entities
+#flash:
+#update:
+#fail: Update failed
+#success: Entity Successfully updated
+#delete:
+#fail: Cannot delete this entity
+#success: Entity successfully removed
+#create:
+#fail: Can not create this entity
+#success: Entity successfully created
+#page_title:
+#index: "]-Inf, 1]1 entity|]1, Inf[{{ count }} entities"
+#property:
+#field_name: Field name
+#complex_field:
+#label: Field name
+#choose: Choose a field name
+#module:
+#module_name:
+#key: message
 pim_common:
   actions: Aktioner
   add: Tilføj
   add_attributes: Tilføj egenskab
+  after: Efter
   all: Alle
   and: og
   apply: Anvend
+  before: Før
   by: af
   cancel: Annuller
   code: Kode
   confirm: Bekræft
   confirm_deletion: Bekræft sletning
+  confirm_revocation: Bekræft tilbagekaldelse
   create: Opret
   created: Oprettet
   delete: Slet
@@ -131,6 +169,7 @@ pim_common:
   history: Historik
   label: Etiket
   label_translations: Etiket oversættelser
+  Label or identifier: etiket eller identifikator
   less_than: Mindre end
   loading: Indlæser...
   media_upload: Træk og slip for at indlæse eller klik her
@@ -172,17 +211,17 @@ pim_common:
     STARTS WITH: Starter med
     ENDS WITH: Ender med
 error:
-  exception: Beklager! Der opstod en {{ status_code }} fejl...
+  exception: Åh nej! En {{ status_code }} fejl opstod...
   forbidden: Du har ikke adgang til denne side
 alert:
   attribute_option:
-    error_occurred_during_submission: Der opstod en fejl under formular modtagelsen på serveren
+    error_occurred_during_submission: Der opstod en fejl under formularindgivelsen i serveren
     save_before_edit_other: Registrer dine ændringer på andre rækker før du redigerer denne ene
   session_storage:
     not_available: Din webbrowser er ikke kompatibel med sessionStorage. Kontakt din administrator
 pim_enrich.entity.fallback:
   flash:
-    generic_error: Der er opstået en fejl
+    generic_error: Der opstod en fejl
     update:
       fail: Opdateringen fejlede
       success: Opdatering lykkedes
@@ -194,16 +233,26 @@ pim_enrich.entity.fallback:
       title: Slet denne {{ itemName }}
       alternative_title: Bekræft fjernelse af
       item: Er du sikker på at du vil slette dette emne?
+      item_placeholder: Er du sikker på, at du vil slette dette {{ itemName }}? Det er ikke muligt at fortryde denne handling.
     edit:
       leave: Er du sikker på du vil forlade denne side?
       discard_changes: Du vil miste ændringer til {{ entity }}, hvis du forlader siden.
+      discard_changes_title: Er du sikker?
 pim_enrich.entity.api_connection:
   flash:
     create:
       success: API forbindelse oprettet
     delete:
       success: API forbindelse tilbagekaldt
+      fail: Denne API-forbindelse kan ikke tilbagekaldes
+  page_title:
+    index: "]-Inf, 1]{{ count }} API-forbindelse|]1, Inf[{{ count }} API-forbindelser"
+  module:
+    revoke:
+      confirm: Er du sikker på, at du vil tilbagekalde denne API-forbindelse?
 pim_enrich.entity.job_execution:
+  page_title:
+    index: "]-Inf, 1]{{ count }} operation|]1, Inf[{{ count }} operationer"
   module:
     create:
       upload: Slip din {{ type }} fil her, eller klik for at gennemse disken
