@@ -89,8 +89,6 @@ pimee_product_asset:
     label: Kod
   thumbnail:
     label: Miniatyrbild
-  status:
-    label: Status
   description:
     label: Beskrivning
   endOfUse:
@@ -115,18 +113,17 @@ pimee_product_asset:
   asset:
     title: Tillgång
   mass_upload:
-    menu: Ladda upp tillgångar
+    menu: Överföra tillgångar
     new: En ny tillgång kommer att skapas
     add_files: lägga till filer
     start: Börja ladda upp
     cancel: Avbryt uppladdning
-    import: Import
     executed: Massa uppladdning avrättades
     error:
       upload: Ett fel uppstod vid uppladdning
       code: Ogiltig kodformat för tillgång
       localizable: En tillgång finns men är inte lokaliserbar
-      invalid_locale: Språket är inaktiverat eller ogiltigt
+      invalid_locale: Lokalen är inaktiverad eller ogiltig
   category:
     menu: Tillgångskategorier
     permissions:

@@ -33,6 +33,7 @@ btn:
   save draft and finish: Enregistrer le brouillon et terminer
   send for approval: Envoyer pour approbation
   sent for approval: Envoyé pour approbation
+#Mass edit operations
 pim_enrich:
   mass_edit_action:
     product:

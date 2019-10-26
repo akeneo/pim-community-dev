@@ -17,38 +17,19 @@ pim_enrich:
   entity:
     attribute_label:
       pim_assets_collection: Tillgångar kollektion
-    attribute:
-      type:
-        pim_assets_collection: Tillgångar kollektion
-  form:
-    attribute:
-      tab:
-        properties:
-          label:
-            is_read_only: Endast läsning
 pimee_enrich:
   form:
     job_instance:
       tab:
         permission:
-          title: Behörigheter
           added: Grupp {{ group }} kommer att få {{ permission }} jobbprofil
-          execute.label: Tillåt att köra jobbprofil
-          edit.label: Tillåt att redigera jobbprofil
           removed: Grupp {{ group }} kommer inte att få {{ permission }} jobbprofil
     channel:
       tab:
         asset-transformation:
           title: Tillgångs transformationer
-    attribute_group:
-      tab:
-        permission:
-          title: Behörigheter
-          view.label: Tillåtet för att visa attribut
-          edit.label: Får redigera attribut
   entity:
     product:
-      navigation: Publicerade produkter
       history:
         published: Publicerad
         revert: Återställ
@@ -126,10 +107,9 @@ pimee_enrich:
         discard_changes: Osparade ändringar förloras. Är du säker du vill sända ditt utkast för godkännande utan osparade ändringar?
         discard_changes_title: Är du säker du vill sända detta utkast?
   asset_transformation:
-    not_found: Ingen transformation hittades
+    not_found: Ingen transformation som hittade
     title:
-      transformation: Omvandling
-      options: Inställningar
+      options: Alternativ
     colorspace:
       title: Färgrymd
       options:
@@ -156,10 +136,7 @@ pimee_enrich:
         width: '%value%px bredd'
         height: '%value%px höjd'
   mass_edit:
-    next: Nästa
-    previous: Tillbaka
     cancel: Avbryt
-    confirm: Bekräfta
     product:
       operation:
         publish:
@@ -167,75 +144,30 @@ pimee_enrich:
           description: Produkterna kommer att publiceras
         unpublish:
           label: Avpublicera
-    asset:
-      step:
-        select:
-          label: Välja tillgångar
-        configure:
-          label: Konfigurera
-        confirm:
-          label: Bekräfta
-      operation:
-        add_tag:
-          label: Lägg till taggar till tillgångar
-          field: Taggar
-        add_to_category:
-          field: Kategorier
 pim_menu:
-  tab:
-    asset: Tillgångar
   item:
-    asset_category: Tillgångskategorier
     proposal: Förslag
-    published_product: Publicerade produkter
-    rule: Regler
 page_title:
   pimee_workflow_proposal_index: Förslag
-  pimee_workflow_published_product_index: Publicerade produkter
-  pimee_product_asset_index: Tillgångar
-  pimee_asset_categorytree_index: Kategorier
-  pimee_catalog_rule_rule_index: Regler
 batch_jobs:
   yml_asset_channel_configuration_import:
     import:
       label: Kanal tillgångar importera konfiguration
   add_product_value_with_permission_and_rules:
     label: Lägg till produkt värde med behörighet kontrollera & regler ansökan
-    perform.label: Lägga till produktens värde
-    execute_rules.label: Regler utförande
   update_product_value_with_permission_and_rules:
     label: Uppdatera produkt värde med behörighet kontrollera & regler ansökan
-    perform.label: Uppdatera produktens värde
-    execute_rules.label: Regler utförande
   remove_product_value_with_permission_and_rules:
     label: Ta bort produktvärde med tillstånd kontrollera & regler ansökan
-    perform.label: Ta bort produktvärde
-    execute_rules.label: Regler utförande
   edit_common_attributes_with_permission_and_rules:
-    perform.label: Redigera Attribut
-    execute_rules.label: Regler utförande
     cleaner.label: Rensa temporära filer
   csv_published_product_quick_export:
     export.label: CSV publicerade produkter snabb export
-    perform:
-      label: CSV publicerade produkter snabb export
   csv_published_product_grid_context_quick_export:
     export.label: CSV publicerade produkter rutnät sammanhang snabb export
-    perform:
-      label: CSV publicerade produkter rutnät sammanhang snabb export
   xlsx_published_product_quick_export:
     export.label: XLSX publicerade produkter snabb export
-    perform:
-      label: XLSX publicerade produkter snabb export
   xlsx_published_product_grid_context_quick_export:
     export.label: XLSX publicerade produkter rutnät sammanhang snabb export
-    perform:
-      label: XLSX publicerade produkter rutnät sammanhang snabb export
-  add_attribute_value:
-    execute_rules.label: Regler utförande
   publish_product:
     perform.label: Publicera produkt
-catalog_volume:
-  axis:
-    count_assets: Tillgångar
-    count_asset_categories: Tillgångskategorier

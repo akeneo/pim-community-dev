@@ -33,6 +33,7 @@ btn:
   save draft and finish: Save de draft den finish am
   send for approval: Make you send am for approval
   sent for approval: E don dey sent for approval
+#Mass edit operations
 pim_enrich:
   mass_edit_action:
     product:

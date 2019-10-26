@@ -33,6 +33,7 @@ btn:
   save draft and finish: Desar l'esborrany i finalitzar
   send for approval: Enviar per a la seva aprovació
   sent for approval: Enviat per a la seva aprovació
+#Mass edit operations
 pim_enrich:
   mass_edit_action:
     product:

@@ -1,7 +1,5 @@
 pim_title.locale:
   edit: "Språk %locale.code% | Redigera"
-Permissions: Behörigheter
-pane.accordion.permissions: Behörigheter
 attribute group.permissions:
   view.label: Tillåtet för att visa attribut
   view.help: Tillåt för att Visa produkterna i detta attributgrupp
@@ -33,11 +31,12 @@ btn:
   save draft and finish: Spara utkast och finish
   send for approval: Skicka för godkännande
   sent for approval: Skickat för godkännande
+#Mass edit operations
 pim_enrich:
   mass_edit_action:
     product:
       not_editable: Du har inte behörighet att redigera produkterna "%identifiers%".
-      page_title: Products
+      page_title: Produkter
       page_subtitle: Massredigera (1 produkt) | Massredigera (%count% produkter)
       title: Välj åtgärd
       subtitle: Välj den funktion som du vill utföra på den valda produkten | Välj den funktion som du vill utföra på de valda %count% produkterna
@@ -48,7 +47,6 @@ pim_enrich:
         third: Konfigurera
         fourth: Bekräfta
     publish:
-      label: Publicera
       description: Publicera de utvalda produkterna, aktuella publicerade data kommer att raderas av nuvarande arbetskopian.
       success_flash: Utvalda produkter har publicerats framgångsrikt.
       launched_flash: Jobbet publicera produkt(er) körs för närvarande.
@@ -58,7 +56,6 @@ pim_enrich:
         info: '%nbProducts% utvalda produkter kommer att publiceras.'
       not_editable: Du har inte behörighet att redigera produkterna "%identifiers%".
     unpublish:
-      label: Avpublicera
       description: Avpublicera de utvalda produkterna, aktuella publicerade data kommer att raderas.
       success_flash: Utvalda produkter har publicerats framgångsrikt.
       launched_flash: Jobbet avpublicera produkt(er) körs för närvarande.
@@ -78,18 +75,6 @@ flash.product.updated: Produkten arbetskopia har uppdaterats
 flash.product_draft.updated: Utkastet har sparats
 flash.locale.updated: De nationella inställningar och behörigheter har uppdaterats
 pimee_enrich:
-  attribute_group:
-    tab:
-      permission.title: Behörigheter
-  product:
-    tab:
-      proposal.title: Förslag
-  category:
-    tab:
-      permission.title: Behörigheter
-  locale:
-    tab:
-      permission.title: Behörigheter
   channel:
     tab:
       asset_transformation.title: Tillgångs transformationer
@@ -102,8 +87,7 @@ pimee_enrich:
   asset_transformation:
     not_found: Ingen transformation hittades
     title:
-      transformation: Omvandling
-      options: Inställningar
+      options: Alternativ
     colorspace:
       title: Färgrymd
       options:
@@ -130,13 +114,9 @@ pimee_enrich:
         width: '%value%px bredd'
         height: '%value%px höjd'
 add_product_value_with_permission_and_rules:
-  steps.perform: Lägga till produktens värde
+  steps.perform: Lägg till produkt värde
 update_product_value_with_permission_and_rules:
   steps.perform: Uppdatera produktens värde
-edit_common_attributes_with_permission_and_rules:
-  steps.perform: Redigera Attribut
-  steps.edit_common_attributes_processor.title: Redigera Attribut
-edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Redigera Attribut
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Lägg till produktvärde med tillstånd
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Uppdatera produktens värde med tillstånd
 remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Ta bort produktvärde med tillstånd
@@ -147,6 +127,3 @@ job_execution.summary:
   proposal_deleted: raderad
 pim_enrich_attribute_form:
   isReadOnly: Endast läsning
-batch_jobs:
-  edit_common_attributes:
-    execute_rules.label: Kör regler

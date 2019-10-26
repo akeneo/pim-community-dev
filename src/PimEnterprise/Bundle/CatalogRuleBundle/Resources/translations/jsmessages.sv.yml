@@ -1,5 +1,5 @@
 pimee_catalog_rule:
-  execution_button: Kör regler
+  execution_button: Utför regler
   popin:
     execute_rules:
       confirm_content: Är du säker på att du vill köra alla regler? (detta kan ta lång tid)
@@ -9,7 +9,6 @@ pimee_catalog_rule:
     list:
       code.label: Kod
       condition.label: Villkor
-      action.label: Åtgärd
       no_rule_yet.label: Ingen regel för nu
   rule:
     condition:
@@ -27,29 +26,19 @@ pimee_catalog_rule:
       actions:
         execute:
           confirm_content: Är du säker på att du vill köra regeln?
-          confirm_ok: OK
       mass_edit_action:
         confirm_content: Är du säker på att du vill beräkna de påverkade produkterna för regler?
-        confirm_ok: OK
       mass_action:
         execute:
-          confirm_ok: OK
           confirm_content: Är du säker du vill köra de valda reglerna?
           success: Bulk åtgärden för att verkställa de valda reglerna har lanserats. Du meddelas när det är gjort
           error: Ett fel uppstod under körningen av reglerna.
           empty_selection: Inga regler som valts.
         delete:
-          confirm_ok: OK
-          confirm_title: Bekräfta radering
           confirm_content: Är du säker på att du vill ta bort de valda reglerna?
           success: Du lyckades ta bort reglerna.
           error: Ett fel uppstod vid borttagning av reglerna.
-          empty_selection: Inga regler som valts.
-  form:
-    attribute:
-      tab:
-        rules:
-          title: Regler
+          empty_selection: Inga regler har valts.
 confirmation:
   remove:
     rule: Är du säker du vill ta bort denna regel? Det går inte att ångra åtgärden
@@ -69,22 +58,7 @@ batch_jobs:
   rule_impacted_product_count:
     label: Berörda produkter för regler
     perform.label: Räkna påverkade produkter
-    execute_rules.label: Regler utförande
   csv_product_import_with_rules:
     label: Produkt import i CSV-filen med reglerna
-    execute_rules.label: Regler utförande
-    validation.label: Filvalidering
-    import.label: Importera produkter
-    import_associations.label: Importera associationer
-  csv_product_model_import_with_rules:
-    execute_rules.label: Regler utförande
-    validation.label: Filvalidering
   xlsx_product_import_with_rules:
     label: Produkt import i XLSX med regler
-    execute_rules.label: Regler utförande
-    validation.label: Filvalidering
-    import.label: Importera produkter
-    import_associations.label: Importera associationer
-  xlsx_product_model_import_with_rules:
-    execute_rules.label: Regler utförande
-    validation.label: Filvalidering

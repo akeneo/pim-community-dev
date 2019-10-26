@@ -70,6 +70,7 @@ pimee_product_asset:
         image_height_error: No es pot generar la variació %channel% perquè la imatge carregada té una alçada més petita del mínim per a la transformació.
         not_applicable: No es pot generar la variació %channel%.
         non_registered: No s'ha registrat cap transformació %transformation% per la mime type %mimeType%. No es pot generar la variació %channel%.
+        missing_asset_transformation_for_channel: Impossible generar la variació del %channel%, si us plau, estableix una transformació d'actius per a aquest canal.
         error: No es pot generar la variació %channel%.
         success: Els arxius de variació s'han generat correctament.
       update:
