@@ -74,7 +74,7 @@ akeneo_franklin_insights:
         no_identifiers_mapping: 'Si us plau, mapa els teus identificadors de producte de catàleg a Configuració > Abans de subscriure''s productes a Franklin Insights.'
         insufficient_credits: "Ho sentim, no ha pogut subscriure el producte a les estadístiques de Franklin. No té prou crèdit."
         invalid_mapped_values: 'Ho sentim, ha fallat la subscripció del producte a les estadístiques de Franklin. Si us plau subscriu el producte amb una combinació d''identificadors vàlid.'
-        data_provider_error: 'Franklin ha retornat un error en intentar subscriure el producte'
+        data_provider_error: 'Franklin ha retornat un error en intentar subscriure el producte' #TODO: check with POs
         not_subscribed: 'El producte no està subscrit'
         already_subscribed_product: 'El producte ja està subscrit.'
         variant_product: 'Ho sentim. Els productes variants no poden ser subscrits a Franklin Insights.'

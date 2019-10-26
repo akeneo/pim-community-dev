@@ -9,6 +9,8 @@ pim_reference_entity:
         should_have_no_record: 'No es pot eliminar aquesta entitat perquè existeixen registres per a aquesta entitat'
       reference_entity_attributes:
         should_not_be_linked: 'No pots eliminar aquesta entitat perquè els atributs de l''entitat de referència estan relacionades amb aquesta entitat'
+      reference_entity_permissions:
+        at_least_one_user_group_should_have_edit_permission: 'Com a mínim un grup d''usuaris té que tenir permís d''edició sobre l''entitat'
       product_attributes:
         should_not_be_linked: 'No pots eliminar aquesta entitat perque els atributs de producte estan relacionats amb aquesta entitat'
       should_exist: 'L''entitat de referencia "%reference_entity_code%" no s''ha trobat.'
@@ -34,8 +36,12 @@ pim_reference_entity:
         should_exist: 'Els registres "%record_codes%" no s''han trobat.'
       limit_reached: 'Vostè no pot crear el registre "%record_label%" perquè vostè ha arribat al límit de registres %limit% per a aquesta entitat de referència'
       channel:
+        is_expected: 'S''espera un canal per l''atribut "%attribute_code%" perquè té un valor per canal.'
+        is_not_expected: 'No s''espera un canal per l''atribut "%attribute_code%" perquè no té un valor per canal.'
         should_exist: 'El canal "%channel_identifier%" no existeix.'
       locale:
+        is_expected: 'S''espera una localització per l''atribut "%attribute_code%" perquè té un valor per local.'
+        is_not_expected: 'No s''espera una localització per l''atribut "%attribute_code%" perquè no té un valor per local.'
         is_not_activated: 'La localització "%locale_identifier%" no està activada.'
         is_not_activated_for_channel: 'La localització "%locale_identifier%" no està activada pel canal "%channel_identifier%".'
   attribute:
@@ -62,5 +68,8 @@ pim_reference_entity:
       should_be_a_textarea_to_update_is_rich_text_editor: 'Un atribut de text simple no pot tenir un editor de text enriquit'
       should_be_a_simple_text_to_set_validation_rule_to_something_else_than_none: 'Un atribut d''àrea de text no pot tenir una regla de validació'
       cannot_set_a_non_empty_regular_expression: 'L''atribut no pot tenir una expressió regular'
+      cannot_update_the_regular_expression: 'No es pot establir una expressió regular en l''atribut de text'
+      limit_reached: 'Vostè no pot crear l''atribut "%attribute_label%" perquè vostè ha arribat al límit d''atributs de %limit% per a aquesta entitat de referència'
       record_type:
+        is_required: 'Necessita especificar el tipus d''entitat de referencia per crear un atribut d''enllaç d''Entitat de referencia'
         reference_entity_should_exist: 'L''entitat de referencia "%reference_entity_code%" no s''ha trobat.'
