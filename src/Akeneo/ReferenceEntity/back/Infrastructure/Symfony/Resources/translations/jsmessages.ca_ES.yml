@@ -42,6 +42,10 @@ pim_reference_entity:
       image: Imatge
     attribute:
       title: Registre atributs
+      attribute:
+        error:
+          render_list: 'S''ha produït un error durant la representació de l''atribut "{{ %attribute_code% }}"'
+          render_edit: 'S''ha produït un error durant la representació dels camps addicionals de propietat de l''atribut "{{ %attribute_code% }}"'
     module:
       delete:
         button: Eliminar entitat
@@ -51,7 +55,11 @@ pim_reference_entity:
         count: '{0} Sense entitats de referència|{1} {{ count }} Entitats de referència|]1,Inf] {{ count }} Entitats de referència'
         help:
           title: 'Benvingut a les entitats de referència!'
+          description_part_one: Enriquir la informació rellevant relacionada amb els productes (per exemple, marques, fabricants, colors, materials, ingredients...).
+          description_part_two: Li permetrà oferir una millor experiència del producte als seus clients.
           description_part_three: Feu clic al botó "Crea" per crear la teva primera entitat de referència, i estableixi els seus atributs i registres.
+          description_part_four: Desprès, per enllaçar amb productes, crea un tipus d'atribut de producte relacionat amb aquesta entitat de referència.
+          description_part_five: Per a més detalls, l'invitem a navegar per a aquest article.
     create:
       header:
         title: Crear
@@ -67,13 +75,21 @@ pim_reference_entity:
     notification:
       save:
         success: Entitat de referència actualitzada correctament.
+        fail: S'ha produït un error durant el guardat de l'entitat de referència
       create:
         success: Entitat de referència creada correctament.
+        fail: S'ha produït un error durant la creació de l'entitat de referència
       delete:
         success: Entitat de referència eliminada correctament.
+        fail: S'ha produït un error durant l'eliminació de l'entitat de referència
   permission:
+    notification:
+      save:
+        success: Els permisos de l'entitat de referència s'han actualitzat correctament.
+        fail: Com a mínim un grup d'usuaris té que tenir permisos d'edició sobre a aquesta entitat
     no_data:
       title: No teniu cap grup d'usuaris
+      subtitle: Per gestionar els permisos de l'entitat de referència es necessari tenir com mínim un grup d'usuaris.
       link: Clic aquí per afegir el teu primer grup usuari
   record:
     validation:
@@ -104,9 +120,17 @@ pim_reference_entity:
         attribute: Atribut de producte
       title: Productes
       no_attribute:
+        title: No hi ha cap atribut de producte vinculat a l'entitat de referència "{{ entityLabel }}"
+        subtitle: "Per comença a vincular productes a aquesta entitat de referència, pot crear una nova: "
         link: Crear un nou atribut de producte
       not_enough_items:
+        subtitle:
+          usable_in_grid: Per descobrir tots els productes enllaçats, feu clic a sota!
+          not_usable_in_grid: Per descobrir tots els productes enllaçats, l'atribut del producte té que ser configurat com "utilitzable a la grilla".
         button: Veure tots els productes
+      no_product:
+        title: No hi ha productes enllaçats per l'atribut de producte "{{ entityLabel }}"
+        subtitle: "Comença a enllaçar productes a aquest atribut per veure'ls aquí"
     enrich:
       title: Registre atributs
       code: Codi
@@ -160,13 +184,17 @@ pim_reference_entity:
     notification:
       save:
         success: Registre actualitzat correctament.
+        fail: S'ha produït un error durant el guardat del registre
         validation_error: El registre no podria ser actualitzat
       create:
         success: Registre creat correctament.
+        fail: S'ha produït un error durant la creació del registre
       delete:
         success: Registre "{{ code }}" correctament eliminat.
+        fail: S'ha produït un error durant l'eliminació del registre
       delete_all:
         success: Tots el registres de "{{ entityIdentifier }}" s'han eliminat correctament.
+        fail: S'ha produït un error durant l'eliminació de tots els registres de l'entitat de referència
     completeness:
       label: Complet
   attribute:
@@ -195,6 +223,7 @@ pim_reference_entity:
         title: Crear
       subtitle: Entitats de referència
       title: Afegir nou atribut de registre
+      description: Els següents paràmetres, excepte l'etiqueta, no poden actualitzar-se desprès de la creació de l'atribut
       input:
         code: Codi (requerit)
         label: Etiqueta
@@ -202,6 +231,8 @@ pim_reference_entity:
         record_type: Entitat de referència per enllaçar (obligatori)
         value_per_locale: Valor per local
         value_per_channel: Valor per canal
+      placeholder:
+        record_type: Selecciona la seva entitat de referència vinculada
       confirm: Desar
     edit:
       delete: Eliminar l'atribut
@@ -244,14 +275,19 @@ pim_reference_entity:
       message: Esteu segur que voleu suprimir l'atribut "{{ attributeLabel }}"?
       title: Atribut
     notification:
+      list:
+        fail: S'ha produït un error durant l'actualització de la llista d'atributs
       save:
         success: Atribut actualitzat correctament.
+        fail: S'ha produït un error durant el guardat de l'atribut
         validation_error: No s'ha pogut actualitzar l'atribut
       create:
         success: Atribut creat correctament.
+        fail: S'ha produït un error durant la creació de l'atribut
         validation_error: No s'ha pogut crear l'atribut
       delete:
         success: Atribut eliminat correctament.
+        fail: S'ha produït un error durant l'eliminació de l'atribut
     options:
       no_value: Feu clic aquí per seleccionar una opció.
       sub_title: Entitats de referència
@@ -279,7 +315,12 @@ pim_enrich:
           default_label: Si us plau, selecciona una entitat de referència
 permission:
   mass_action: Aplicar {{ rightLevel }} regles en tots els grups
+#Analytics
 pim_catalog_volume:
+  section:
+    reference_entity:
+      title: Eixos a l'entitat de referència
+      hint: Si esteu utilitzant les entitats de referència, aquí teniu ajuda dels eixos per controlar el volum.
   axis:
     count_reference_entity: Entitats de referència
     average_max_records_per_reference_entity: Registres per entitat de referencia
