@@ -9,10 +9,8 @@ use Akeneo\Apps\Application\Command\CreateAppHandler;
 use Akeneo\Apps\Application\Query\FetchAppsHandler;
 use Akeneo\Apps\Domain\Exception\ConstraintViolationListException;
 use Akeneo\Apps\Domain\Model\Read\App;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -46,7 +44,7 @@ class AppController
 
     public function list()
     {
-        if (true !== $this->securityFacade->isGranted('akeneo_apps_manage_settings')) {
+        if (true !== $this->securityFacade->isGranted('akeneo_app_manage_settings')) {
             throw new AccessDeniedException();
         }
 
@@ -59,12 +57,9 @@ class AppController
         );
     }
 
-    /**
-     * @AclAncestor("akeneo_app_manage_settings")
-     */
     public function create(Request $request)
     {
-        if (true !== $this->securityFacade->isGranted('akeneo_apps_manage_settings')) {
+        if (true !== $this->securityFacade->isGranted('akeneo_app_manage_settings')) {
             throw new AccessDeniedException();
         }
 
