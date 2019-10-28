@@ -7,11 +7,12 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\Pub
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\PropertiesNormalizer as StandardPropertiesNormalizer;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\GetPublishedProductCompletenesses;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class PublishedProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
+class PublishedProductNormalizer implements NormalizerInterface, NormalizerAwareInterface, CacheableSupportsMethodInterface
 {
     use NormalizerAwareTrait;
 
@@ -118,5 +119,10 @@ class PublishedProductNormalizer implements NormalizerInterface, NormalizerAware
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof PublishedProductInterface && self::INDEXING_FORMAT_PRODUCT_INDEX === $format;
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 }
