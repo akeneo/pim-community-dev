@@ -3,10 +3,13 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\QuickExport;
 
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\FilterValues;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\AbstractProcessor;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
-use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
+use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingProductModelValues;
+use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingProductValues;
+use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
@@ -41,8 +44,11 @@ class ProductAndProductModelProcessor extends AbstractProcessor
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var EntityWithFamilyValuesFillerInterface */
-    protected $valuesFiller;
+    /** @var FillMissingValuesInterface */
+    protected $fillMissingProductModelValues;
+
+    /** @var FillMissingValuesInterface */
+    protected $fillMissingProductValues;
 
     /** @var ObjectDetacherInterface */
     protected $detacher;
@@ -56,21 +62,12 @@ class ProductAndProductModelProcessor extends AbstractProcessor
     /** @var BulkMediaFetcher */
     protected $mediaFetcher;
 
-    /**
-     * @param NormalizerInterface                   $normalizer
-     * @param ChannelRepositoryInterface            $channelRepository
-     * @param AttributeRepositoryInterface          $attributeRepository
-     * @param EntityWithFamilyValuesFillerInterface $valuesFiller
-     * @param ObjectDetacherInterface               $detacher
-     * @param UserProviderInterface                 $userProvider
-     * @param TokenStorageInterface                 $tokenStorage
-     * @param BulkMediaFetcher                      $mediaFetcher
-     */
     public function __construct(
         NormalizerInterface $normalizer,
         ChannelRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
-        EntityWithFamilyValuesFillerInterface $valuesFiller,
+        FillMissingValuesInterface $fillMissingProductModelValues,
+        FillMissingValuesInterface $fillMissingProductValues,
         ObjectDetacherInterface $detacher,
         UserProviderInterface $userProvider,
         TokenStorageInterface $tokenStorage,
@@ -79,7 +76,8 @@ class ProductAndProductModelProcessor extends AbstractProcessor
         $this->normalizer = $normalizer;
         $this->channelRepository = $channelRepository;
         $this->attributeRepository = $attributeRepository;
-        $this->valuesFiller = $valuesFiller;
+        $this->fillMissingProductModelValues = $fillMissingProductModelValues;
+        $this->fillMissingProductValues = $fillMissingProductValues;
         $this->detacher = $detacher;
         $this->userProvider = $userProvider;
         $this->tokenStorage = $tokenStorage;
@@ -93,11 +91,25 @@ class ProductAndProductModelProcessor extends AbstractProcessor
     {
         $this->initSecurityContext($this->stepExecution);
 
-        $this->valuesFiller->fillMissingValues($entityWithValues);
-
         $parameters = $this->stepExecution->getJobParameters();
         $normalizerContext = $this->getNormalizerContext($parameters);
         $productStandard = $this->normalizer->normalize($entityWithValues, 'standard', $normalizerContext);
+
+        if ($entityWithValues instanceof ProductInterface) {
+            $productStandard = $this->fillMissingProductValues->fromStandardFormat($productStandard);
+        } else {
+            $productStandard = $this->fillMissingProductModelValues->fromStandardFormat($productStandard);
+        }
+
+        $locales = $parameters->has('selected_locales') ?
+            $parameters->get('selected_locales') :
+            $this->getLocaleCodes($parameters->get('scope'));
+
+        $productStandard['values'] = FilterValues::create()
+            ->filterByChannelCode($parameters->get('scope'))
+            ->filterByLocaleCodes($locales)
+            ->execute($productStandard['values']);
+
         $selectedProperties = $parameters->get('selected_properties');
 
         if ($this->areAttributesToFilter($parameters)) {

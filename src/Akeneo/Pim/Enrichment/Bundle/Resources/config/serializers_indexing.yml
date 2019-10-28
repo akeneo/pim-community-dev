@@ -26,11 +26,11 @@ services:
 
     pim_catalog.normalizer.indexing_product.product.product_value_collection:
         class: '%pim_catalog.normalizer.indexing_product.product.product_value_collection.class%'
-        lazy: true
         arguments:
             - '@pim_indexing_serializer'
         tags:
-            - { name: pim_indexing_serializer.normalizer, priority: 90 }
+            - { name: pim_indexing_serializer.normalizer, priority: 40 }
+        lazy: true
 
     pim_catalog.normalizer.indexing_product.product.product_completeness_collection:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductCompletenessCollectionNormalizer'
@@ -128,10 +128,11 @@ services:
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.locale'
             - '@akeneo.pim.enrichment.product.query.get_product_completenesses'
+            - '@pim_indexing_serializer'
             - !tagged pim_catalog.normalizer.indexing_product_and_product_model.product.additional_properties
         tags:
             - { name: pim_indexing_serializer.normalizer, priority: 40 }
-
+        lazy: true
 
     pim_reference_data.normalizer.indexing.product.reference_data:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ReferenceDataNormalizer'

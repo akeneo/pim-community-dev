@@ -1370,6 +1370,20 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
+     * @param string $attributeCode
+     * @param string $products
+     *
+     * @Given /^the value "([^"]*)" of products? (.*) should be empty$/
+     */
+    public function theValueOfProductsShouldBeEmpty($attributeCode, $products)
+    {
+        foreach ($this->listToArray($products) as $identifier) {
+            $product = $this->getProduct($identifier);
+            Assert::assertNull($product->getValue(strtolower($attributeCode)));
+        }
+    }
+
+    /**
      * @param string $attribute
      * @param string $identifier
      * @param string $value

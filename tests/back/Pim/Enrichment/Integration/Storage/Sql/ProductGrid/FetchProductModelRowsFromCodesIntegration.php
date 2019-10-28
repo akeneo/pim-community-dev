@@ -29,11 +29,9 @@ class FetchProductModelRowsFromCodesIntegration extends TestCase
             ->get('database_connection')
             ->fetchColumn('SELECT id FROM oro_user WHERE username = "admin"', [], 0);
 
-        $fixturesLoader = new ProductGridFixturesLoader(
-            static::$kernel->getContainer(),
-            $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))
-        );
-        [$rootProductModel, $subProductModel] = $fixturesLoader->createProductAndProductModels()['product_models'];
+        $fixturesLoader = $this->get('akeneo_integration_tests.loader.product_grid_fixtures_loader');
+        $imagePath = $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'));
+        [$rootProductModel, $subProductModel] = $fixturesLoader->createProductAndProductModels($imagePath)['product_models'];
 
         $query = $this->getFetchProductRowsFromCodes();
         $rows = $query(['root_product_model', 'sub_product_model'], ['sku', 'an_image', 'a_text'], 'ecommerce', 'en_US', $userId);
@@ -84,13 +82,12 @@ class FetchProductModelRowsFromCodesIntegration extends TestCase
             ->get('database_connection')
             ->fetchColumn('SELECT id FROM oro_user WHERE username = "admin"', [], 0);
 
-        $fixturesLoader = new ProductGridFixturesLoader(
-            static::$kernel->getContainer(),
-            $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))
-        );
-        $rootProductModelWithLabelInProduct = $fixturesLoader->createProductModelsWithLabelInProduct();
-        $rootProductModelWithLabelInSubProductModel = $fixturesLoader->createProductModelsWithLabelInSubProductModel();
-        $subProductModelWithLabelInParent = $fixturesLoader->createProductModelsWithLabelInParentProductModel();
+        $fixturesLoader = $this->get('akeneo_integration_tests.loader.product_grid_fixtures_loader');
+        $imagePath = $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'));
+
+        $rootProductModelWithLabelInProduct = $fixturesLoader->createProductModelsWithLabelInProduct($imagePath);
+        $rootProductModelWithLabelInSubProductModel = $fixturesLoader->createProductModelsWithLabelInSubProductModel($imagePath);
+        $subProductModelWithLabelInParent = $fixturesLoader->createProductModelsWithLabelInParentProductModel($imagePath);
 
         $query = $this->getFetchProductRowsFromCodes();
         $rows = $query(['root_product_model_without_sub_product_model', 'root_product_model_with_image_in_sub_product_model', 'sub_product_model'], [], 'ecommerce', 'en_US', $userId);

@@ -47,13 +47,8 @@ abstract class ApiTestCase extends WebTestCase
     {
         static::bootKernel(['debug' => false]);
         $this->catalog = $this->get('akeneo_integration_tests.catalogs');
-        
-        $authenticator = new SystemUserAuthenticator(
-            $this->get('pim_user.factory.user'),
-            $this->get('pim_user.repository.group'),
-            $this->get('pim_user.repository.role'),
-            $this->get('security.token_storage')
-        );
+
+        $authenticator = $this->get('akeneo_integration_tests.security.system_user_authenticator');
         $authenticator->createSystemUser();
 
         $fixturesLoader = $this->get('akeneo_integration_tests.loader.fixtures_loader');
@@ -86,6 +81,8 @@ abstract class ApiTestCase extends WebTestCase
         $accessToken = null,
         $refreshToken = null
     ) {
+        $options = array_merge($options, ['debug' => false]);
+
         if (null === $clientId || null === $secret) {
             list($clientId, $secret) = $this->createOAuthClient();
         }
@@ -180,7 +177,7 @@ abstract class ApiTestCase extends WebTestCase
      */
     protected function get(string $service)
     {
-        return static::$kernel->getContainer()->get($service);
+        return self::$container->get($service);
     }
 
     /**
@@ -190,7 +187,7 @@ abstract class ApiTestCase extends WebTestCase
      */
     protected function getParameter(string $parameter)
     {
-        return static::$kernel->getContainer()->getParameter($parameter);
+        return self::$container->getParameter($parameter);
     }
 
     /**
@@ -322,5 +319,31 @@ abstract class ApiTestCase extends WebTestCase
         $this->get('pim_user.saver.user')->save($user);
 
         return $user;
+    }
+
+    /**
+     * See https://github.com/symfony/symfony/commit/76f6c97416aca79e24a5b3e20e182fd6cc064b69...
+     *
+     * @param string $string
+     *
+     * @return string
+     */
+    protected function encodeStringWithSymfonyUrlGeneratorCompatibility(string $string): string
+    {
+        $toReplace = [
+            // RFC 3986 explicitly allows those in the query/fragment to reference other URIs unencoded
+            '%2F' => '/',
+            '%3F' => '?',
+            // reserved chars that have no special meaning for HTTP URIs in a query or fragment
+            // this excludes esp. "&", "=" and also "+" because PHP would treat it as a space (form-encoded)
+            '%40' => '@',
+            '%3A' => ':',
+            '%21' => '!',
+            '%3B' => ';',
+            '%2C' => ',',
+            '%2A' => '*',
+        ];
+
+        return strtr(rawurlencode($string), $toReplace);
     }
 }

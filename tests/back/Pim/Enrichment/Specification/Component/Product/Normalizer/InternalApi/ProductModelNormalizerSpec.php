@@ -21,7 +21,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\VariantNaviga
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\ImageAsLabel;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\CompleteVariantProducts;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\VariantProductRatioInterface;
-use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
+use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingProductModelValues;
+use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
@@ -45,7 +46,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         ConverterInterface $productValueConverter,
         FormProviderInterface $formProvider,
         LocaleRepositoryInterface $localeRepository,
-        EntityWithFamilyValuesFillerInterface $entityValuesFiller,
+        FillMissingValuesInterface $fillMissingProductModelValues,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         VariantNavigationNormalizer $navigationNormalizer,
         VariantProductRatioInterface $variantProductRatioQuery,
@@ -67,7 +68,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             $productValueConverter,
             $formProvider,
             $localeRepository,
-            $entityValuesFiller,
+            $fillMissingProductModelValues,
             $attributesProvider,
             $navigationNormalizer,
             $variantProductRatioQuery,
@@ -96,6 +97,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         ConverterInterface $productValueConverter,
         FormProviderInterface $formProvider,
         LocaleRepositoryInterface $localeRepository,
+        FillMissingValuesInterface $fillMissingProductModelValues,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         VariantNavigationNormalizer $navigationNormalizer,
         VariantProductRatioInterface $variantProductRatioQuery,
@@ -161,6 +163,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
 
         $userContext->getUserTimezone()->willReturn('Pacific/Kiritimati');
         $normalizer->normalize($productModel, 'standard', $options)->willReturn($productModelNormalized);
+        $fillMissingProductModelValues->fromStandardFormat($productModelNormalized)->willReturn($productModelNormalized);
         $localizedConverter->convertToLocalizedFormats($productModelNormalized['values'], $options)->willReturn($valuesLocalized);
 
         $valuesConverted = $valuesLocalized;
@@ -280,6 +283,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         ConverterInterface $productValueConverter,
         FormProviderInterface $formProvider,
         LocaleRepositoryInterface $localeRepository,
+        FillMissingValuesInterface $fillMissingProductModelValues,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         VariantNavigationNormalizer $navigationNormalizer,
         VariantProductRatioInterface $variantProductRatioQuery,
@@ -334,6 +338,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
 
         $userContext->getUserTimezone()->willReturn('UTC');
         $normalizer->normalize($productModel, 'standard', $options)->willReturn($productModelNormalized);
+        $fillMissingProductModelValues->fromStandardFormat($productModelNormalized)->willReturn($productModelNormalized);
         $localizedConverter->convertToLocalizedFormats($productModelNormalized['values'], $options)->willReturn($valuesLocalized);
 
         $valuesConverted = $valuesLocalized;
@@ -435,6 +440,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         ConverterInterface $productValueConverter,
         FormProviderInterface $formProvider,
         LocaleRepositoryInterface $localeRepository,
+        FillMissingValuesInterface $fillMissingProductModelValues,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         VariantNavigationNormalizer $navigationNormalizer,
         VariantProductRatioInterface $variantProductRatioQuery,
@@ -495,6 +501,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
 
         $userContext->getUserTimezone()->willReturn('UTC');
         $normalizer->normalize($productModel, 'standard', $options)->willReturn($productModelNormalized);
+        $fillMissingProductModelValues->fromStandardFormat($productModelNormalized)->willReturn($productModelNormalized);
         $localizedConverter->convertToLocalizedFormats($productModelNormalized['values'], $options)->willReturn($valuesLocalized);
 
         $valuesConverted = $valuesLocalized;

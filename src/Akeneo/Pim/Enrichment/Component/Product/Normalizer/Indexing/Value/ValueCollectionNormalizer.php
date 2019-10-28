@@ -3,7 +3,6 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -20,11 +19,11 @@ class ValueCollectionNormalizer implements NormalizerInterface
     public const INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX = 'indexing_product_and_product_model';
 
     /** @var NormalizerInterface */
-    private $serializer;
+    private $normalizer;
 
-    public function __construct(NormalizerInterface $serializer)
+    public function __construct(NormalizerInterface $normalizer)
     {
-        $this->serializer = $serializer;
+        $this->normalizer = $normalizer;
     }
 
     /**
@@ -34,7 +33,7 @@ class ValueCollectionNormalizer implements NormalizerInterface
     {
         $normalizedValues = [];
         foreach ($values as $value) {
-            $normalizedValues[] = $this->serializer->normalize($value, $format, $context);
+            $normalizedValues[] = $this->normalizer->normalize($value, $format, $context);
         }
 
         $result = empty($normalizedValues) ? [] : array_replace_recursive(...$normalizedValues);

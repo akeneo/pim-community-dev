@@ -3,6 +3,7 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization\ProductProcessor;
+use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\ExecutionContext;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
@@ -29,13 +30,15 @@ class ProductProcessorSpec extends ObjectBehavior
         ChannelRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
         BulkMediaFetcher $mediaFetcher,
-        StepExecution $stepExecution
+        StepExecution $stepExecution,
+        FillMissingValuesInterface $fillMissingProductModelValues
     ) {
         $this->beConstructedWith(
             $normalizer,
             $channelRepository,
             $attributeRepository,
-            $mediaFetcher
+            $mediaFetcher,
+            $fillMissingProductModelValues
         );
 
         $this->setStepExecution($stepExecution);
@@ -59,7 +62,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $stepExecution,
         $mediaFetcher,
         $attributeRepository,
-        $clearer,
         ChannelInterface $channel,
         LocaleInterface $locale,
         ProductInterface $product,
@@ -82,7 +84,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $channel->getCode()->willReturn('foobar');
         $channel->getLocaleCodes()->willReturn(['en_US', 'de_DE']);
 
-        $normalizer->normalize($product, 'standard', ['filter_types' => ['pim.transform.product_value.structured'], 'channels' => ['foobar'], 'locales' => ['en_US']])
+        $normalizer->normalize($product, 'standard')
             ->willReturn([
                 'enabled'    => true,
                 'categories' => ['cat1', 'cat2'],
@@ -127,7 +129,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $channelRepository,
         $stepExecution,
         $mediaFetcher,
-        $clearer,
         ChannelInterface $channel,
         LocaleInterface $locale,
         ProductInterface $product,
@@ -165,21 +166,20 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $productStandard = [
             'values' => [
-                'picture' => [
+                'picture' => [[
                     'locale' => null,
                     'scope'  => null,
                     'data'   => ['filePath' => 'a/b/c/d/e/f/little_cat.jpg']
-                ],
-                'pdf_description' => [
+                ]],
+                'pdf_description' => [[
                     'locale' => 'en_US',
                     'scope'  => null,
                     'data'   => ['filePath' => 'a/f/c/c/e/f/little_cat.pdf']
-                ]
+                ]]
             ]
         ];
 
-        $normalizer->normalize($product, 'standard', ['filter_types' => ['pim.transform.product_value.structured'], 'filter_types' => ['pim.transform.product_value.structured'], 'channels' => ['foobar'], 'locales' => ['en_US']])
-            ->willReturn($productStandard);
+        $normalizer->normalize($product, 'standard')->willReturn($productStandard);
 
         $mediaFetcher->fetchAll($valuesCollection, '/working/directory/', 'AKIS_XS')->shouldBeCalled();
         $mediaFetcher->getErrors()->willReturn([]);
@@ -192,7 +192,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $channelRepository,
         $stepExecution,
         $mediaFetcher,
-        $clearer,
         ChannelInterface $channel,
         LocaleInterface $locale,
         ProductInterface $product,
@@ -230,16 +229,15 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $productStandard = [
             'values' => [
-                'pdf_description' => [
+                'pdf_description' => [[
                     'locale' => 'en_US',
                     'scope'  => null,
                     'data'   => ['filePath' => 'path/not_found.jpg']
-                ]
+                ]]
             ]
         ];
 
-        $normalizer->normalize($product, 'standard', ['filter_types' => ['pim.transform.product_value.structured'], 'channels' => ['foobar'], 'locales' => ['en_US']])
-            ->willReturn($productStandard);
+        $normalizer->normalize($product, 'standard')->willReturn($productStandard);
 
         $mediaFetcher->fetchAll($valuesCollection, '/working/directory/', 'AKIS_XS')->shouldBeCalled();
         $mediaFetcher->getErrors()->willReturn(

@@ -43,7 +43,7 @@ final class ProductValidation implements Context
     }
 
     /**
-     * @When another product is created with identifier :identifier
+     * @When /^a(?:nother)? product is created with identifier "([^"]*)"$/
      */
     public function aProductIsCreatedWithIdentifier(string $identifier): void
     {

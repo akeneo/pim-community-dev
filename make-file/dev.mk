@@ -19,7 +19,7 @@ phpunit:
 
 .PHONY: behat-legacy
 behat-legacy:
-	APP_ENV=behat $(PHP_EXEC) vendor/bin/behat -p legacy -s all ${F}
+	APP_ENV=behat $(PHP_RUN) vendor/bin/behat -p legacy -s all ${F}
 
 ##
 ## Xdebug

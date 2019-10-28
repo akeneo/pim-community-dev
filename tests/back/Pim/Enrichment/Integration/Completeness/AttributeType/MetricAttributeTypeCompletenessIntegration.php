@@ -86,40 +86,6 @@ class MetricAttributeTypeCompletenessIntegration extends AbstractCompletenessPer
             ]
         );
         $this->assertNotComplete($productDataNull);
-
-        $productAmountNull = $this->createProductWithStandardValues(
-            $family,
-            'product_amount_null',
-            [
-                'values' => [
-                    'a_metric' => [
-                        [
-                            'locale' => null,
-                            'scope'  => null,
-                            'data'   => ['amount' => null, 'unit' => 'METER'],
-                        ],
-                    ],
-                ],
-            ]
-        );
-        $this->assertNotComplete($productAmountNull);
-
-        $productAmountAndUnitNull = $this->createProductWithStandardValues(
-            $family,
-            'product_amount_and_unit_null',
-            [
-                'values' => [
-                    'a_metric' => [
-                        [
-                            'locale' => null,
-                            'scope'  => null,
-                            'data'   => ['amount' => null, 'unit' => null],
-                        ],
-                    ],
-                ],
-            ]
-        );
-        $this->assertNotComplete($productAmountAndUnitNull);
     }
 
     /**

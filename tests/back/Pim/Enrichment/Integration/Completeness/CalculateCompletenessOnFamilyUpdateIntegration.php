@@ -76,7 +76,7 @@ class CalculateCompletenessOnFamilyUpdateIntegration extends AbstractCompletenes
         parent::setUp();
 
         $this->purgeJobExecutions('compute_completeness_of_products_family');
-        $this->jobLauncher = new JobLauncher(static::$kernel);
+        $this->jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
     }
 
     /**

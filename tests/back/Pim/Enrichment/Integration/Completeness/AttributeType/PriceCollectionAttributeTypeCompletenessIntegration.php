@@ -167,34 +167,6 @@ class PriceCollectionAttributeTypeCompletenessIntegration extends AbstractComple
         $this->assertNotCompleteOnChannel($productWithoutValues, 'print');
         $this->assertNotCompleteOnChannel($productWithoutValues, 'tablet');
 
-        $productAmountsNull = $this->createProductWithStandardValues(
-            $family,
-            'product_amounts_null',
-            [
-                'values' => [
-                    'a_price_collection' => [
-                        [
-                            'locale' => null,
-                            'scope'  => null,
-                            'data'   => [
-                                [
-                                    'amount'   => null,
-                                    'currency' => 'USD',
-                                ],
-                                [
-                                    'amount'   => null,
-                                    'currency' => 'EUR',
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ]
-        );
-        $this->assertNotCompleteOnChannel($productAmountsNull, 'ecommerce');
-        $this->assertNotCompleteOnChannel($productAmountsNull, 'print');
-        $this->assertNotCompleteOnChannel($productAmountsNull, 'tablet');
-
         $productAmountNull = $this->createProductWithStandardValues(
             $family,
             'product_amount_null',
@@ -208,11 +180,7 @@ class PriceCollectionAttributeTypeCompletenessIntegration extends AbstractComple
                                 [
                                     'amount'   => 7,
                                     'currency' => 'USD',
-                                ],
-                                [
-                                    'amount'   => null,
-                                    'currency' => 'EUR',
-                                ],
+                                ]
                             ],
                         ],
                     ],

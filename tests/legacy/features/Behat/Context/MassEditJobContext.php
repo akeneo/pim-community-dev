@@ -76,7 +76,7 @@ final class MassEditJobContext extends PimContext implements SnippetAcceptingCon
 
         $jobExecutionConfiguration = $this->buildJobExecutionConfiguration($productIds, $fieldName, $newFieldValue);
 
-        $launcher = $this->mainContext->getContainer()->get('akeneo_batch.launcher.simple_job_launcher');
+        $launcher = $this->mainContext->getContainer()->get('akeneo_batch_queue.launcher.queue_job_launcher');
         $launcher->launch($jobInstance, $user, $jobExecutionConfiguration);
 
         $this->waitForJobToFinish($jobInstance);

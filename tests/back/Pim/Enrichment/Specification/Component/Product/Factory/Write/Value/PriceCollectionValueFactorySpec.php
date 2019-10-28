@@ -36,7 +36,7 @@ class PriceCollectionValueFactorySpec extends ObjectBehavior
         $this->supports('pim_catalog_price_collection')->shouldReturn(true);
     }
 
-    function it_creates_a_empty_price_collection_product_value(
+    function it_throws_an_exception_when_creating_an_empty_price_collection_product_value(
         $priceFactory,
         AttributeInterface $attribute,
         FindActivatedCurrenciesInterface $findActivatedCurrencies
@@ -52,21 +52,10 @@ class PriceCollectionValueFactorySpec extends ObjectBehavior
 
         $priceFactory->createPrice(Argument::cetera())->shouldNotBeCalled();
 
-        $productValue = $this->create(
-            $attribute,
-            null,
-            null,
-            []
-        );
-
-        $productValue->shouldReturnAnInstanceOf(PriceCollectionValue::class);
-        $productValue->shouldHaveAttribute('price_collection_attribute');
-        $productValue->shouldNotBeLocalizable();
-        $productValue->shouldNotBeScopable();
-        $productValue->shouldBeEmpty();
+        $this->shouldThrow(\InvalidArgumentException::class)->during('create', [$attribute, null, null, null]);
     }
 
-    function it_creates_a_localizable_and_scopable_empty_price_collection_product_value(
+    function it_throws_an_exception_when_creating_a_localizable_and_scopable_empty_price_collection_product_value(
         $priceFactory,
         AttributeInterface $attribute,
         FindActivatedCurrenciesInterface $findActivatedCurrencies
@@ -82,20 +71,7 @@ class PriceCollectionValueFactorySpec extends ObjectBehavior
 
         $priceFactory->createPrice(Argument::cetera())->shouldNotBeCalled();
 
-        $productValue = $this->create(
-            $attribute,
-            'ecommerce',
-            'en_US',
-            []
-        );
-
-        $productValue->shouldReturnAnInstanceOf(PriceCollectionValue::class);
-        $productValue->shouldHaveAttribute('price_collection_attribute');
-        $productValue->shouldBeLocalizable();
-        $productValue->shouldHaveLocale('en_US');
-        $productValue->shouldBeScopable();
-        $productValue->shouldHaveChannel('ecommerce');
-        $productValue->shouldBeEmpty();
+        $this->shouldThrow(\InvalidArgumentException::class)->during('create', [$attribute, null, null, null]);
     }
 
     function it_creates_a_price_collection_product_value(
@@ -180,9 +156,8 @@ class PriceCollectionValueFactorySpec extends ObjectBehavior
 
         $findActivatedCurrencies->forAllChannels()->willReturn(['EUR', 'USD', 'AFA']);
 
-        $priceFactory->createPrice(42, 'EUR')->shouldNotBeCalled();
-        $priceFactory->createPrice(null, 'EUR')->shouldBeCalled()->willReturn($priceEUR);
-        $priceFactory->createPrice(null, 'USD')->shouldNotBeCalled();
+        $priceFactory->createPrice(42, 'EUR')->willReturn($priceEUR);
+        $priceFactory->createPrice(30, 'USD')->shouldNotBeCalled();
         $priceFactory->createPrice(63, 'USD')->shouldBeCalled()->willReturn($priceUSD);
 
         $productValue = $this->create(
@@ -190,10 +165,9 @@ class PriceCollectionValueFactorySpec extends ObjectBehavior
             null,
             null,
             [
-                ['amount' => null, 'currency' => 'USD'],
+                ['amount' => 30, 'currency' => 'USD'],
                 ['amount' => 42, 'currency' => 'EUR'],
                 ['amount' => 63, 'currency' => 'USD'],
-                ['amount' => null, 'currency' => 'EUR'],
             ]
         );
 

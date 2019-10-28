@@ -37,7 +37,7 @@ class ReferenceDataCollectionValueFactory extends AbstractValueFactory
     protected function prepareData(AttributeInterface $attribute, $data, bool $ignoreUnknownData = false)
     {
         if (null === $data) {
-            $data = [];
+            throw new \InvalidArgumentException('Reference data collection value cannot be null');
         }
 
         if (!is_array($data)) {

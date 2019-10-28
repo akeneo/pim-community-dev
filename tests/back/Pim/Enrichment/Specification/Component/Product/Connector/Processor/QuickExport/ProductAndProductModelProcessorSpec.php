@@ -2,6 +2,9 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\QuickExport;
 
+use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingProductModelValues;
+use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingProductValues;
+use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface;
 use Akeneo\Tool\Component\Batch\Item\ExecutionContext;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
@@ -18,7 +21,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Akeneo\Tool\Component\Connector\Processor\BulkMediaFetcher;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -32,7 +34,8 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         NormalizerInterface $normalizer,
         ChannelRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
-        EntityWithFamilyValuesFillerInterface $valuesFiller,
+        FillMissingValuesInterface $fillMissingProductModelValues,
+        FillMissingValuesInterface $fillMissingProductValues,
         ObjectDetacherInterface $detacher,
         UserProviderInterface $userProvider,
         TokenStorageInterface $tokenStorage,
@@ -43,7 +46,8 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
             $normalizer,
             $channelRepository,
             $attributeRepository,
-            $valuesFiller,
+            $fillMissingProductModelValues,
+            $fillMissingProductValues,
             $detacher,
             $userProvider,
             $tokenStorage,
@@ -87,6 +91,7 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         $attributeRepository,
         $normalizer,
         $detacher,
+        FillMissingValuesInterface $fillMissingProductValues,
         ProductInterface $product,
         JobExecution $jobExecution,
         UserInterface $user,
@@ -116,17 +121,18 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
 
         $detacher->detach($product)->shouldBeCalled();
 
-        $normalizer->normalize($product, 'standard', Argument::any())->willReturn([
+        $standardFormat = [
             'sku' => 'foo',
             'family' => 'shoes',
-            'description-en_US' => 'Shoes',
-            'size' => '42'
-        ]);
+            'values' => []
+        ];
+        $normalizer->normalize($product, 'standard', Argument::any())->willReturn($standardFormat);
+        $fillMissingProductValues->fromStandardFormat($standardFormat)->willReturn($standardFormat);
 
         $this->process($product)->shouldReturn([
             'sku' => 'foo',
             'family' => 'shoes',
-            'description-en_US' => 'Shoes'
+            'values' => []
         ]);
     }
 
@@ -139,6 +145,7 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         $attributeRepository,
         $normalizer,
         $detacher,
+        FillMissingValuesInterface $fillMissingProductValues,
         ProductInterface $product,
         JobExecution $jobExecution,
         UserInterface $user,
@@ -168,18 +175,18 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
 
         $detacher->detach($product)->shouldBeCalled();
 
-        $normalizer->normalize($product, 'standard', Argument::any())->willReturn([
+        $standardFormat = [
             'sku' => 'foo',
             'family' => 'shoes',
-            'description-en_US' => 'Shoes',
-            'size' => '42'
-        ]);
+            'values' => []
+        ];
+        $normalizer->normalize($product, 'standard', Argument::any())->willReturn($standardFormat);
+        $fillMissingProductValues->fromStandardFormat($standardFormat)->willReturn($standardFormat);
 
         $this->process($product)->shouldReturn([
             'sku' => 'foo',
             'family' => 'shoes',
-            'description-en_US' => 'Shoes',
-            'size' => '42'
+            'values' => []
         ]);
     }
 
@@ -191,6 +198,7 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         $attributeRepository,
         $normalizer,
         $detacher,
+        FillMissingValuesInterface $fillMissingProductModelValues,
         ProductModelInterface $productModel,
         JobExecution $jobExecution,
         UserInterface $user,
@@ -220,17 +228,18 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
 
         $detacher->detach($productModel)->shouldBeCalled();
 
-        $normalizer->normalize($productModel, 'standard', Argument::any())->willReturn([
+        $standardFormat = [
             'code' => 'foo',
             'family_variant' => 'shoes',
-            'description-en_US' => 'Shoes',
-            'size' => '42'
-        ]);
+            'values' => []
+        ];
+        $normalizer->normalize($productModel, 'standard', Argument::any())->willReturn($standardFormat);
+        $fillMissingProductModelValues->fromStandardFormat($standardFormat)->willReturn($standardFormat);
 
         $this->process($productModel)->shouldReturn([
             'code' => 'foo',
             'family_variant' => 'shoes',
-            'description-en_US' => 'Shoes'
+            'values' => []
         ]);
     }
 
@@ -243,6 +252,7 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         $normalizer,
         $detacher,
         $bulkMediaFetcher,
+        FillMissingValuesInterface $fillMissingProductValues,
         ProductInterface $product,
         JobExecution $jobExecution,
         UserInterface $user,
@@ -285,17 +295,19 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
 
         $detacher->detach($product)->shouldBeCalled();
 
-        $normalizer->normalize($product, 'standard', Argument::any())->willReturn([
+        $standardFormat = [
             'sku' => 'foo',
             'family' => 'shoes',
-            'description-en_US' => 'Shoes',
-            'size' => '42'
-        ]);
+            'values' => []
+        ];
+
+        $normalizer->normalize($product, 'standard', Argument::any())->willReturn($standardFormat);
+        $fillMissingProductValues->fromStandardFormat($standardFormat)->willReturn($standardFormat);
 
         $this->process($product)->shouldReturn([
             'sku' => 'foo',
             'family' => 'shoes',
-            'description-en_US' => 'Shoes'
+            'values' => []
         ]);
     }
 
@@ -308,6 +320,7 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         $normalizer,
         $detacher,
         $bulkMediaFetcher,
+        FillMissingValuesInterface $fillMissingProductValues,
         ProductInterface $product,
         JobExecution $jobExecution,
         UserInterface $user,
@@ -349,18 +362,19 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
 
         $detacher->detach($product)->shouldBeCalled();
 
-        $normalizer->normalize($product, 'standard', Argument::any())->willReturn([
+        $standardFormat = [
             'sku' => 'foo',
             'family' => 'shoes',
-            'description-en_US' => 'Shoes',
-            'size' => '42'
-        ]);
+            'values' => []
+        ];
+
+        $normalizer->normalize($product, 'standard', Argument::any())->willReturn($standardFormat);
+        $fillMissingProductValues->fromStandardFormat($standardFormat)->willReturn($standardFormat);
 
         $this->process($product)->shouldReturn([
             'sku' => 'foo',
             'family' => 'shoes',
-            'description-en_US' => 'Shoes',
-            'size' => '42'
+            'values' => []
         ]);
     }
 }
