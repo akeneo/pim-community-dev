@@ -3,6 +3,7 @@
 namespace Akeneo\Channel\Component\Normalizer\Versioning;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -12,7 +13,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ChannelNormalizer implements NormalizerInterface
+class ChannelNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     const ITEM_SEPARATOR = ',';
     const UNIT_LABEL_PREFIX = 'conversion_unit';
@@ -71,6 +72,11 @@ class ChannelNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof ChannelInterface && in_array($format, $this->supportedFormats);
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 
     /**
