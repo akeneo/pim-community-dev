@@ -10,8 +10,12 @@ use Akeneo\Apps\Application\Query\FetchAppsHandler;
 use Akeneo\Apps\Domain\Exception\ConstraintViolationListException;
 use Akeneo\Apps\Domain\Model\Read\App;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
@@ -27,17 +31,25 @@ class AppController
     /** @var FetchAppsHandler */
     private $fetchAppsHandler;
 
-    public function __construct(CreateAppHandler $createAppHandler, FetchAppsHandler $fetchAppsHandler)
-    {
+    /** @var SecurityFacade */
+    private $securityFacade;
+
+    public function __construct(
+        CreateAppHandler $createAppHandler,
+        FetchAppsHandler $fetchAppsHandler,
+        SecurityFacade $securityFacade
+    ) {
         $this->createAppHandler = $createAppHandler;
         $this->fetchAppsHandler = $fetchAppsHandler;
+        $this->securityFacade = $securityFacade;
     }
 
-    /**
-     * @AclAncestor("akeneo_app_manage_settings")
-     */
     public function list()
     {
+        if (true !== $this->securityFacade->isGranted('akeneo_apps_manage_settings')) {
+            throw new AccessDeniedException();
+        }
+
         $apps = $this->fetchAppsHandler->query();
 
         return new JsonResponse(
@@ -52,6 +64,10 @@ class AppController
      */
     public function create(Request $request)
     {
+        if (true !== $this->securityFacade->isGranted('akeneo_apps_manage_settings')) {
+            throw new AccessDeniedException();
+        }
+
         $data = json_decode($request->getContent(), true);
         // TODO: Valid JSON format
 
