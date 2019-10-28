@@ -223,7 +223,7 @@ pim_reference_entity:
       delete: Poista attribuutti
       title: Muokkaa attribuuttia {{ code }}
       save: Tallenna
-      cancel: Hylkää
+      cancel: Peruuta
       input:
         code: Koodi (pakollinen)
         label: Nimike
@@ -277,11 +277,11 @@ pim_reference_entity:
     delete:
       subtitle: Vahvista poisto
       button:
-        cancel: Hylkää
+        cancel: Peruuta
         confirm: Poista
 pim_enrich:
   confirmation:
-    discard_changes: 'Menetät muutokset tähän "{{ entity }}", jos poistut sivulta.'
+    discard_changes: 'Käsittelemäsi {{ entity }} on muuttunut. Menetät muutokset siihen, jos poistut sivulta.'
   entity:
     attribute:
       property:
@@ -293,6 +293,7 @@ pim_enrich:
         reference_entity:
           identifier: Liittyvä viittaustieto (vaadittu)
           default_label: Valitse viittaustieto
+#Analytics
 pim_catalog_volume:
   axis:
     count_reference_entity: Viitetiedot
