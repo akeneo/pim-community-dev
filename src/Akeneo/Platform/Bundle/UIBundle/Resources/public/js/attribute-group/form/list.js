@@ -59,29 +59,33 @@ define([
              * {@inheritdoc}
              */
             render: function () {
+                const canSortAttributeGroup = securityContext.isGranted('pim_enrich_attributegroup_sort');
                 this.$el.html(this.template({
                     attributeGroups: _.sortBy(_.values(this.attributeGroups), function (attributeGroup) {
                         return attributeGroup.sort_order;
                     }),
                     i18n: i18n,
-                    uiLocale: UserContext.get('catalogLocale')
+                    uiLocale: UserContext.get('catalogLocale'),
+                    canSortAttributeGroup
                 }));
 
-                this.$('tbody').sortable({
-                    handle: '.handle',
-                    containment: 'parent',
-                    tolerance: 'pointer',
-                    update: this.updateAttributeOrders.bind(this),
-                    helper: function (e, tr) {
-                        var $originals = tr.children();
-                        var $helper = tr.clone();
-                        $helper.children().each(function (index) {
-                            $(this).width($originals.eq(index).width());
-                        });
+                if (canSortAttributeGroup) {
+                    this.$('tbody').sortable({
+                        handle: '.handle',
+                        containment: 'parent',
+                        tolerance: 'pointer',
+                        update: this.updateAttributeOrders.bind(this),
+                        helper: function (e, tr) {
+                            var $originals = tr.children();
+                            var $helper = tr.clone();
+                            $helper.children().each(function (index) {
+                                $(this).width($originals.eq(index).width());
+                            });
 
-                        return $helper;
-                    }
-                });
+                            return $helper;
+                        }
+                    });
+                }
 
                 this.renderExtensions();
             },
