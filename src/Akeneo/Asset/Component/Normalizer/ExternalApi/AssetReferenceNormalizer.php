@@ -17,12 +17,13 @@ use Akeneo\Asset\Component\Model\ReferenceInterface;
 use Akeneo\Tool\Component\Api\Hal\Link;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class AssetReferenceNormalizer implements NormalizerInterface
+class AssetReferenceNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /** @var RouterInterface */
     private $router;
@@ -76,5 +77,10 @@ class AssetReferenceNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ReferenceInterface && 'external_api' === $format;
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 }

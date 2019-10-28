@@ -12,12 +12,13 @@
 namespace Akeneo\Asset\Component\Normalizer\Flat;
 
 use Akeneo\Asset\Component\Model\AssetInterface;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class AssetNormalizer implements NormalizerInterface
+class AssetNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     const INNER_SEPARATOR = ',';
 
@@ -67,5 +68,10 @@ class AssetNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof AssetInterface && in_array($format, $this->supportedFormats);
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 }

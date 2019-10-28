@@ -14,9 +14,10 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Permission\Component\Normalizer\Authorization;
 
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class ProductDraftNormalizer implements NormalizerInterface
+class ProductDraftNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /**
      * {@inheritdoc}
@@ -35,5 +36,10 @@ class ProductDraftNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof EntityWithValuesDraftInterface && 'authorization' === $format;
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 }
