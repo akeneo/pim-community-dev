@@ -90,11 +90,11 @@ jobs:
                 command: make lint-back
           - run:
                 name: Code Coupling Detection
-                command: make coupling
+                command: make coupling-back
                 when: always
           - run:
                 name: Unit tests
-                command: make unit-back
+                command: make unit-back CI=1
           - run:
                 name: Acceptance tests
                 command: make acceptance-back + docker-compose run -u www-data --rm php php vendor/bin/behat --strict --config src/Akeneo/Apps/back/tests/Acceptance/behat.yml

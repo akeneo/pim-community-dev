@@ -2,13 +2,12 @@
 ## Run tests suite
 ##
 
-.PHONY: coupling
-coupling: structure-coupling user-management-coupling channel-coupling enrichment-coupling apps-back-coupling
-
+# @deprecated please use the target unit-back or add target for your bounded context
 .PHONY: phpspec
 phpspec:
 	${PHP_RUN} vendor/bin/phpspec run ${F}
 
+# @deprecated please use the target acceptance-back or add target for your bounded context
 .PHONY: acceptance
 acceptance:
 	${PHP_RUN} vendor/bin/behat -p acceptance ${F}
