@@ -69,4 +69,9 @@ class AttributeGroupNormalizer implements NormalizerInterface, CacheableSupports
     {
         return $data instanceof AttributeGroupInterface && in_array($format, $this->supportedFormats);
     }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
+    }
 }

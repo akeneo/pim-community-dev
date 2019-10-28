@@ -6,6 +6,7 @@ use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -17,7 +18,7 @@ use Symfony\Component\Serializer\SerializerInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeOptionNormalizer implements NormalizerInterface, SerializerAwareInterface
+class AttributeOptionNormalizer implements NormalizerInterface, SerializerAwareInterface, CacheableSupportsMethodInterface
 {
     /** @var array */
     protected $supportedFormat = ['array'];
@@ -68,6 +69,11 @@ class AttributeOptionNormalizer implements NormalizerInterface, SerializerAwareI
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof AttributeOptionInterface && in_array($format, $this->supportedFormat);
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 
     /**
