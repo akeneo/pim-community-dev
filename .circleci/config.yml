@@ -287,11 +287,11 @@ jobs:
           command: |
             export ES_JAVA_OPTS='-Xms2g -Xmx2g'
             docker load -i php-pim-image.tar
-            APP_ENV=behat C='fpm mysql httpd elasticsearch object-storage' make up
+            APP_ENV=test APP_DEBUG=false C='fpm mysql httpd elasticsearch object-storage blackfire' make up
             vendor/akeneo/pim-community-dev/docker/wait_docker_up.sh
       - run:
           name: Run performance tests
-          command: .circleci/run_performance_tests.sh
+          command: APP_ENV=test .circleci/run_performance_tests.sh
       - store_test_results:
           path: var/tests/phpunit
       - store_artifacts:

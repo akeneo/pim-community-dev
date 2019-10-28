@@ -53,7 +53,7 @@ Feature: Read a single product by applying rules
         priority: 10
         conditions:
           - field:    sku
-            operator: !=
+            operator: '!='
             value:    my-cardigan
         actions:
           - type:  set
@@ -271,7 +271,7 @@ Feature: Read a single product by applying rules
             locale: fr_FR
           - type:  set
             field: handmade
-            value: 1
+            value: true
           - type:  set
             field: release_date
             value: "2015-08-08"

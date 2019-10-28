@@ -28,6 +28,7 @@ use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer\PublishedProductNorma
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompleteness;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompletenessCollection;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\InternalApi\FillMissingPublishedProductValues;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\InternalApi\PublishedProductNormalizer;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\GetPublishedProductCompletenesses;
 use Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface;
@@ -45,7 +46,7 @@ final class PublishedProductNormalizerSpec extends ObjectBehavior
     public function let(
         StandardPublishedProductNormalizer $standardPublishedProductNormalizer,
         MissingAssociationAdder $missingAssociationAdder,
-        EntityWithFamilyValuesFillerInterface $productValuesFiller,
+        FillMissingPublishedProductValues $productValuesFiller,
         AttributeConverterInterface $localizedConverter,
         ConverterInterface $productValueConverter,
         UserContext $userContext,
@@ -90,7 +91,7 @@ final class PublishedProductNormalizerSpec extends ObjectBehavior
     public function it_normalizes_a_published_product(
         StandardPublishedProductNormalizer $standardPublishedProductNormalizer,
         MissingAssociationAdder $missingAssociationAdder,
-        EntityWithFamilyValuesFillerInterface $productValuesFiller,
+        FillMissingPublishedProductValues $productValuesFiller,
         AttributeConverterInterface $localizedConverter,
         ConverterInterface $productValueConverter,
         UserContext $userContext,
@@ -121,9 +122,8 @@ final class PublishedProductNormalizerSpec extends ObjectBehavior
         $publishedProduct->setAssociations(new ArrayCollection());
 
         $missingAssociationAdder->addMissingAssociations($publishedProduct)->shouldBeCalled();
-        $productValuesFiller->fillMissingValues($publishedProduct)->shouldBeCalled();
 
-        $standardPublishedProductNormalizer->normalize($publishedProduct, 'standard', [])->willReturn([
+        $standard = [
             'identifier' => 'my_identifier',
             'label' => 'My product',
             'family' => 'familyA',
@@ -141,7 +141,10 @@ final class PublishedProductNormalizerSpec extends ObjectBehavior
                     'groups' => [],
                 ],
             ],
-        ]);
+        ];
+        $standardFilled = $standard;
+        $standardPublishedProductNormalizer->normalize($publishedProduct, 'standard', [])->willReturn($standard);
+        $productValuesFiller->fromStandardFormat($standard)->willReturn($standardFilled);
 
         $userTimezone = 'Pacific/Kiritimati';
 

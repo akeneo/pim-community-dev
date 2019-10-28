@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     # Reference entity
     akeneo_referenceentity.infrastructure.action.reference_entity.create:
         class: Akeneo\ReferenceEntity\Infrastructure\Controller\ReferenceEntity\CreateAction

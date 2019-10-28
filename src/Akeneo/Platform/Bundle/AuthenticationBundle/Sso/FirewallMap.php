@@ -6,6 +6,7 @@ namespace Akeneo\Platform\Bundle\AuthenticationBundle\Sso;
 
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\ConfigurationNotFound;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\Repository;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\FirewallMapInterface;
 
@@ -20,9 +21,14 @@ class FirewallMap implements FirewallMapInterface
     /** @var Repository */
     private $configRepository;
 
-    public function __construct(FirewallMapInterface $firewallMap, Repository $configRepository)
+    private $container;
+    private $map;
+
+    public function __construct(ContainerInterface $container, iterable $map, Repository $configRepository)
     {
-        $this->firewallMap = $firewallMap;
+        $this->container = $container;
+        $this->map = $map;
+        $this->contexts = new \SplObjectStorage();
         $this->configRepository = $configRepository;
     }
 
@@ -41,20 +47,20 @@ class FirewallMap implements FirewallMapInterface
     {
         if ($request->attributes->has('_firewall_context')) {
             $storedContextId = $request->attributes->get('_firewall_context');
-            foreach ($this->firewallMap->map as $contextId => $requestMatcher) {
+            foreach ($this->map as $contextId => $requestMatcher) {
                 if ($contextId === $storedContextId) {
-                    return $this->firewallMap->container->get($contextId);
+                    return $this->container->get($contextId);
                 }
             }
 
             $request->attributes->remove('_firewall_context');
         }
 
-        foreach ($this->firewallMap->map as $contextId => $requestMatcher) {
+        foreach ($this->map as $contextId => $requestMatcher) {
             if (null === $requestMatcher || $requestMatcher->matches($request)) {
                 $request->attributes->set('_firewall_context', $contextId);
 
-                $contextService = $this->firewallMap->container->get($contextId);
+                $contextService = $this->container->get($contextId);
                 if (self::SSO_FIREWALL_NAME === $contextService->getConfig()->getName()
                     && !$this->isSSOEnabled()
                 ) {

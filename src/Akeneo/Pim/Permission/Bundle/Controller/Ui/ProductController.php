@@ -13,9 +13,7 @@ namespace Akeneo\Pim\Permission\Bundle\Controller\Ui;
 
 use Akeneo\Pim\Enrichment\Bundle\Controller\Ui\ProductController as BaseProductController;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\CategoryManager;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
@@ -33,26 +31,11 @@ class ProductController extends BaseProductController
     /** @var CategoryManager */
     protected $categoryManager;
 
-    /**
-     * @param TranslatorInterface                   $translator
-     * @param ProductRepositoryInterface            $productRepository
-     * @param CategoryRepositoryInterface           $categoryRepository
-     * @param SaverInterface                        $productSaver
-     * @param EntityWithFamilyValuesFillerInterface $valuesFiller
-     * @param MissingAssociationAdder               $missingAssociationAdder
-     * @param string                                $categoryClass
-     * @param SecurityFacade                        $securityFacade
-     * @param string                                $acl
-     * @param string                                $template
-     * @param CategoryManager                       $categoryManager
-     */
     public function __construct(
         TranslatorInterface $translator,
         ProductRepositoryInterface $productRepository,
         CategoryRepositoryInterface $categoryRepository,
         SaverInterface $productSaver,
-        MissingAssociationAdder $missingAssociationAdder,
-        EntityWithFamilyValuesFillerInterface $valuesFiller,
         string $categoryClass,
         SecurityFacade $securityFacade,
         string $acl,
@@ -64,8 +47,6 @@ class ProductController extends BaseProductController
             $productRepository,
             $categoryRepository,
             $productSaver,
-            $missingAssociationAdder,
-            $valuesFiller,
             $categoryClass,
             $securityFacade,
             $acl,

@@ -1,13 +1,19 @@
 pimee_catalog_rule:
+  overview: "]-Inf, 1]{{ count }} rule|]1, Inf[{{ count }} rules"
   execution_button: Vykonať pravidlá
+  selected: 'rules selected'
   popin:
     execute_rules:
+      confirm_title: Confirm execution
       confirm_content: Are you sure you want to execute all the rules? (It can take a while)
   notification:
     fail: The action could not be performed
     launched: The rules execution has been launched. You will be notified when it is done.
   attribute:
     list:
+      code.label: Code
+      condition.label: Condition
+      action.label: Action
       no_rule_yet.label: No rule for now
   rule:
     condition:
@@ -85,3 +91,15 @@ batch_jobs:
     label: Product model import in CSV with rules
   xlsx_product_import_with_rules:
     label: Product import in XLSX with rules
+    import.label: Product import
+  xlsx_product_model_import_with_rules:
+    label: Product model import in XLSX with rules
+pim_notification:
+  types:
+    rule: Rules Settings
+    mass_edit_rule: Mass edit rule
+pim_menu:
+  item:
+    rule: Rules
+pim_title:
+  pimee_catalog_rule_rule_index: Rules

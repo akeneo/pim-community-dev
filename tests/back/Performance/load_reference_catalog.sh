@@ -3,23 +3,23 @@
 set -eu
 
 SCRIPT_DIR=$(dirname $0)
-DOCKER_BRIDGE_IP=$(ip address show | grep "global docker" | cut -c10- | cut -d '/' -f1)
-PUBLIC_PIM_HTTP_PORT=$(docker-compose port httpd 80 | cut -d ':' -f 2)
+
+PIM_HTTPD_CONTAINER=$(docker-compose images | grep httpd | cut -d " " -f 1)
 REFERENCE_CATALOG_FILE="$SCRIPT_DIR/reference_catalog.yml"
-DOCKER_COMPOSE_EXEC='docker-compose exec -T -u www-data -e APP_ENV=behat'
+DOCKER_COMPOSE_RUN='docker-compose run -T -u www-data --rm'
 
 echo "Reset the database with the minimal catalog"
 
-$DOCKER_COMPOSE_EXEC fpm bin/console pim:install:db -e behat
+$DOCKER_COMPOSE_RUN php bin/console pim:installer:db
 
 echo "Generates an API user for the benchmarks in test environment"
 
-$DOCKER_COMPOSE_EXEC fpm bin/console pim:user:create -e behat --admin -n -- admin admin test@example.com John Doe en_US
+$DOCKER_COMPOSE_RUN php bin/console pim:user:create --admin -n -- admin admin test@example.com John Doe en_US
 
-CREDENTIALS=$($DOCKER_COMPOSE_EXEC fpm bin/console pim:oauth-server:create-client --no-ansi -e behat generator | tr -d '\r ')
+CREDENTIALS=$($DOCKER_COMPOSE_RUN php bin/console pim:oauth-server:create-client --no-ansi generator | tr -d '\r ')
 export API_CLIENT=$(echo $CREDENTIALS | cut -d " " -f 2 | cut -d ":" -f 2)
 export API_SECRET=$(echo $CREDENTIALS | cut -d " " -f 3 | cut -d ":" -f 2)
-export API_URL="http://$DOCKER_BRIDGE_IP:${PUBLIC_PIM_HTTP_PORT}"
+export API_URL="http://localhost"
 export API_USER="admin"
 export API_PASSWORD="admin"
 export API_AUTH="$(echo -n $API_CLIENT:$API_SECRET | base64 -w 0 )"
@@ -31,7 +31,7 @@ docker pull akeneo/data-generator:3.0
 ABSOLUTE_CATALOG_FILE=$(readlink -f -- $REFERENCE_CATALOG_FILE)
 
 docker run \
-  -t \
+  -t --network container:${PIM_HTTPD_CONTAINER} \
   -e API_CLIENT -e API_SECRET -e API_URL -e API_USER -e API_PASSWORD \
   -v "$ABSOLUTE_CATALOG_FILE:/app/akeneo-data-generator/app/catalog/product_api_catalog.yml" \
   akeneo/data-generator:3.0 akeneo:api:generate-catalog --with-products --check-minimal-install product_api_catalog.yml

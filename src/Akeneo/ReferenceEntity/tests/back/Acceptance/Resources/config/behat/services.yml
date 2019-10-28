@@ -1,11 +1,12 @@
 services:
+    _defaults:
+        public: true
+
     akeneo_referenceentity.tests.back.acceptance.context.exception_context:
         class: Akeneo\ReferenceEntity\Acceptance\Context\ExceptionContext
 
-
     akeneo_referenceentity.tests.back.acceptance.context.constraint_violations_context:
         class: Akeneo\ReferenceEntity\Acceptance\Context\ConstraintViolationsContext
-
 
     akeneo_referenceentity.tests.back.acceptance.context.edit_reference_entity_context:
         class: Akeneo\ReferenceEntity\Acceptance\Context\EditReferenceEntityContext

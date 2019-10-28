@@ -160,10 +160,14 @@ class EditNumberValueCommandValidator extends ConstraintValidator
         if (!is_numeric($command->number)) {
             $violation = new ConstraintViolation(
                 EditNumberValueCommandConstraint::NUMBER_SHOULD_BE_NUMERIC,
+                null,
                 [],
                 [],
                 '',
                 '',
+                0,
+                0,
+                null,
                 $command->number
             );
 

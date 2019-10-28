@@ -1,11 +1,11 @@
 services:
+    _defaults:
+        public: true
     akeneo_assetmanager.tests.back.acceptance.context.exception_context:
         class: Akeneo\AssetManager\Acceptance\Context\ExceptionContext
 
-
     akeneo_assetmanager.tests.back.acceptance.context.constraint_violations_context:
         class: Akeneo\AssetManager\Acceptance\Context\ConstraintViolationsContext
-
 
     akeneo_assetmanager.tests.back.acceptance.context.edit_asset_family_context:
         class: Akeneo\AssetManager\Acceptance\Context\EditAssetFamilyContext

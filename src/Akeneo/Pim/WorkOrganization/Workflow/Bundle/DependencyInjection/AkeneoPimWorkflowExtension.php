@@ -72,6 +72,7 @@ class AkeneoPimWorkflowExtension extends Extension
         $loader->load('readers.yml');
         $loader->load('steps.yml');
         $loader->load('security.yml');
+        $loader->load('value_fillers.yml');
         $loader->load('jobs.yml');
         $loader->load('widgets.yml');
         $loader->load('mass_actions.yml');

@@ -56,7 +56,7 @@ services:
         arguments:
             - '@pimee_workflow.normalizer.published_product'
             - '@pim_catalog.association.missing_association_adder'
-            - '@pim_catalog.values_filler.product'
+            - '@pimee_workflow.values_filler.published_product_with_permission'
             - '@pim_catalog.localization.localizer.converter'
             - '@pim_enrich.converter.standard_to_enrich.product_value'
             - '@pim_enrich.normalizer.version'

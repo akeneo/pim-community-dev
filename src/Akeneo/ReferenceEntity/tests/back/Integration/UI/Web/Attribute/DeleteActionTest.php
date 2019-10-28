@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\UI\Web\Attribute;
 
-use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClientFactory;
+use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClient;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
@@ -44,9 +44,6 @@ class DeleteActionTest extends ControllerIntegrationTestCase
 {
     private const DELETE_ATTRIBUTE_ROUTE = 'akeneo_reference_entities_attribute_delete_rest';
 
-    /** @var Client */
-    private $client;
-
     /** @var WebClientHelper */
     private $webClientHelper;
 
@@ -55,8 +52,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
         parent::setUp();
 
         $this->loadFixtures();
-        $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), self::$kernel))
-            ->logIn('julia');
+        $this->get('akeneoreference_entity.tests.helper.authenticated_client')->logIn($this->client, 'julia');
         $this->webClientHelper = $this->get('akeneoreference_entity.tests.helper.web_client_helper');
     }
 

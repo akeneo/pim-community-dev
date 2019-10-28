@@ -1,4 +1,6 @@
 services:
+    _defaults:
+        public: true
     test.product_asset.asset_context:
         class: 'AkeneoTestEnterprise\Asset\Acceptance\Context\AssetContext'
         arguments:
