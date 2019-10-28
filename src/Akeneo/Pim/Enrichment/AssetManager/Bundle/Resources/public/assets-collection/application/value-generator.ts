@@ -1,21 +1,21 @@
 import {
-  ValueCollection,
-  Value,
-  Product,
-  LegacyValueCollection,
-  Meta,
   CategoryCode,
   LegacyValue,
+  LegacyValueCollection,
+  Meta,
+  Product,
+  Value,
+  ValueCollection,
 } from 'akeneopimenrichmentassetmanager/enrich/domain/model/product';
 import {Attribute, AttributeCode} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
 import {
-  permissionFetcher,
-  fetchPermissions,
   AttributeGroupPermission,
-  LocalePermission,
   CategoryPermissions,
-  isLocaleEditable,
+  fetchPermissions,
   isAttributeGroupEditable,
+  isLocaleEditable,
+  LocalePermission,
+  permissionFetcher,
   Permissions,
 } from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/permission';
 import {
@@ -135,6 +135,12 @@ const filterCategories = (
 const sortByOrder = (values: ValueCollection, attributeGroups: AttributeGroupCollection): ValueCollection => {
   return values.sort((a, b) => {
     if (a.attribute.group === b.attribute.group) {
+      // there is a legacy bug when sometimes, 2 attributes will have the same sort_order.
+      // If that the case, order by code to keep visual consistency
+      if (a.attribute.sort_order === b.attribute.sort_order) {
+        return a.attribute.code.localeCompare(b.attribute.code);
+      }
+
       return a.attribute.sort_order - b.attribute.sort_order;
     }
 
