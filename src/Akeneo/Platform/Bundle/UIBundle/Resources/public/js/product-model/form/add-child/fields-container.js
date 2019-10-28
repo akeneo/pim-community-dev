@@ -177,7 +177,7 @@ define(
                         newFormMeta.config.fieldName = `values.${attribute.code}`;
                         newFormMeta.config.label = i18n.getLabel(
                             attribute.labels,
-                            UserContext.get('uiLocale'),
+                            UserContext.get('catalogLocale'),
                             attribute.code
                         );
 
