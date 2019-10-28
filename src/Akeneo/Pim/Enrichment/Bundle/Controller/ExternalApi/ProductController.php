@@ -15,7 +15,6 @@ use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\AddParent;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductNormalizer;
-use Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\QueryCacheWarmer;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
@@ -139,7 +138,7 @@ class ProductController
     private $apiAggregatorForProductPostSave;
 
     /** @var WarmupQueryCache */
-    private $queryCacheWarmer;
+    private $warmupQueryCache;
 
     public function __construct(
         NormalizerInterface $normalizer,
