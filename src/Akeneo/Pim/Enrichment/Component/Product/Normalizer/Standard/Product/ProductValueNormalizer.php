@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValueIn
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -18,7 +19,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductValueNormalizer implements NormalizerInterface
+class ProductValueNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     const DECIMAL_PRECISION = 4;
 
@@ -59,6 +60,11 @@ class ProductValueNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ValueInterface && 'standard' === $format;
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 
     protected function getCollectionValue(ValueInterface $value, ?string $format = null, array $context = []): array

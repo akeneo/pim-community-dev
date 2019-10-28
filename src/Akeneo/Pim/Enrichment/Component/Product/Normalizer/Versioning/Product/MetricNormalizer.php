@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 
 /**
  * Normalize a metric data
@@ -11,7 +12,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MetricNormalizer extends AbstractValueDataNormalizer
+class MetricNormalizer extends AbstractValueDataNormalizer implements CacheableSupportsMethodInterface
 {
     const LABEL_SEPARATOR = '-';
     const MULTIPLE_FIELDS_FORMAT = 'multiple_fields';
@@ -27,6 +28,11 @@ class MetricNormalizer extends AbstractValueDataNormalizer
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof MetricInterface && in_array($format, $this->supportedFormats);
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 
     /**

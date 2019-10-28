@@ -9,6 +9,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Inflector\Inflector;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -20,7 +21,7 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class ViolationNormalizer implements NormalizerInterface
+class ViolationNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /** @var AttributeRepository */
     protected $attributeRepository;
@@ -52,6 +53,11 @@ class ViolationNormalizer implements NormalizerInterface
     public function supportsNormalization($exception, $format = null)
     {
         return $exception instanceof ViolationHttpException;
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 
     /**
