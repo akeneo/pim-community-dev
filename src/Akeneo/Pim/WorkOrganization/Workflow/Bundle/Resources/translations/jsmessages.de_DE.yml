@@ -32,16 +32,19 @@ pimee_workflow:
     partial_accept:
       modal.title: Teilinformationen genehmigen
       modal.label: Kommentar hinterlassen (optional)
+      modal.error: Es ist ein Fehler aufgetreten, der Vorschlag wurde nicht teilweise genehmigt
       modal.success: Der Vorschlag wurde erfolgreich teilweise überprüft
     partial_approve:
       modal:
         title: Änderungen teilweise genehmigen
         label: Kommentar hinterlassen (optional)
+        error: Es ist ein Fehler aufgetreten, der Vorschlag wurde nicht teilweise genehmigt
         success: Die Änderungen wurden erfolgreich genehmigt
     partial_reject:
       modal:
         title: Änderungen teilweise ablehnen
         label: Kommentar hinterlassen (optional)
+        error: Es ist ein Fehler aufgetreten, der Vorschlag wurde nicht teilweise abgelehnt
         success: Die Änderungen wurden erfolgreich abgelehnt
 batch_jobs:
   csv_published_product_export:
@@ -50,6 +53,9 @@ batch_jobs:
   csv_product_proposal_import:
     label: Produktvorschläge in CSV-Datei importieren
     import.label: Produktvorschlag-Import
+  csv_product_model_proposal_import:
+    label: Produktmodell-Vorschlag Import in CSV
+    import.label: Produktmodell-Vorschlag Import in CSV
   approve_product_draft:
     label: Vorschlag freigeben
     perform.label: Vorschlag freigeben
@@ -62,6 +68,9 @@ batch_jobs:
   xlsx_product_proposal_import:
     label: Produktvorschlag-Import aus XLSX
     import.label: Produktvorschlag-Import aus XLSX
+  xlsx_product_model_proposal_import:
+    label: Produktmodell-Vorschlag Import in XLSX
+    import.label: Produktmodell-Vorschlag Import in XLSX
   csv_published_product_quick_export:
     export.label: Schnellexport veröffentlichter Produkte als CSV
     perform.label: Schnellexport veröffentlichter Produkte als CSV

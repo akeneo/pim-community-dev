@@ -64,7 +64,6 @@ akeneo_franklin_insights:
           error: "Es necesario crear una familia en su catálogo para acceder a esta página."
           family_status:
             pending: 'Nuevos atributos de Franklin para revisar'
-          types_mismatch_warning: 'Advertencia: los tipos de atributos no coinciden.'
       constraint:
         attribute_not_in_family_not_allowed: 'El atributo PIM debe estar en la familia seleccionada.'
         only_unknown_mapped_attributes: 'No se puede encontrar ningún atributo en el mapeo de atributos'
@@ -80,7 +79,7 @@ akeneo_franklin_insights:
         no_identifiers_mapping: 'Por favor, mapea los identificadores de su producto en Ajustes > Franklin Insights antes de suscribir productos.'
         insufficient_credits: "Lo sentimos, no se pudo suscribir el producto a Franklin Insights. No tienes suficiente crédito."
         invalid_mapped_values: 'Lo sentimos, no pudo suscribirse el producto a Franklin Insights. Por favor, suscriba el producto con una combinación de identificadores válida.'
-        data_provider_error: 'Franklin devolvió un error al intentar suscribir el producto'
+        data_provider_error: 'Franklin devolvió un error al intentar suscribir el producto' #TODO: check with POs
         not_subscribed: 'El producto no se ha suscrito'
         already_subscribed_product: 'El producto ya está suscrito.'
         variant_product: 'Lo sentimos, los productos variantes no pueden ser suscritos a Franklin Insights.'
