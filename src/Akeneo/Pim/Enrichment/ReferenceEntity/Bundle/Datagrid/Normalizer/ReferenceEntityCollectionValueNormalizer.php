@@ -10,6 +10,7 @@ use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Value\ReferenceEntityCollect
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -19,7 +20,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ReferenceEntityCollectionValueNormalizer implements NormalizerInterface
+class ReferenceEntityCollectionValueNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /** @var IdentifiableObjectRepositoryInterface */
     private $attributeRepository;
@@ -59,6 +60,11 @@ class ReferenceEntityCollectionValueNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null): bool
     {
         return 'datagrid' === $format && $data instanceof ReferenceEntityCollectionValueInterface;
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 
     private function valueIsEmpty(ReferenceEntityCollectionValueInterface $value): bool

@@ -12,12 +12,13 @@
 namespace Akeneo\Asset\Component\Normalizer\Standard;
 
 use Akeneo\Asset\Component\Model\VariationInterface;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
-class VariationNormalizer implements NormalizerInterface
+class VariationNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /**
      * {@inheritdoc}
@@ -57,5 +58,10 @@ class VariationNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof VariationInterface && 'standard' === $format;
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 }

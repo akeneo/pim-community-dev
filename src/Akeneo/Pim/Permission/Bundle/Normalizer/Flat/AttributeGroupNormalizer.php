@@ -13,6 +13,7 @@ namespace Akeneo\Pim\Permission\Bundle\Normalizer\Flat;
 
 use Akeneo\Pim\Permission\Bundle\Manager\AttributeGroupAccessManager;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -20,7 +21,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class AttributeGroupNormalizer implements NormalizerInterface
+class AttributeGroupNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /** @var NormalizerInterface */
     protected $attrGroupNormalizer;
@@ -67,5 +68,11 @@ class AttributeGroupNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $this->attrGroupNormalizer->supportsNormalization($data, $format);
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return $this->attrGroupNormalizer instanceof CacheableSupportsMethodInterface
+            && $this->attrGroupNormalizer->hasCacheableSupportsMethod();
     }
 }

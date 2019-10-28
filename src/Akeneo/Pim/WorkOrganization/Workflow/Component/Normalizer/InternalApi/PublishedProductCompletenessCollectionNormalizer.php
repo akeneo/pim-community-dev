@@ -17,12 +17,13 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\GetAttributeLabelsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetChannelLabelsInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompleteness;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompletenessCollection;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
-class PublishedProductCompletenessCollectionNormalizer implements NormalizerInterface
+class PublishedProductCompletenessCollectionNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /** @var NormalizerInterface */
     private $standardNormalizer;
@@ -146,6 +147,11 @@ class PublishedProductCompletenessCollectionNormalizer implements NormalizerInte
     public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof PublishedProductCompletenessCollection && 'internal_api' === $format;
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 
     /**

@@ -12,6 +12,7 @@
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Versioning;
 
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -21,7 +22,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VersionNormalizer implements NormalizerInterface
+class VersionNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /** @var NormalizerInterface */
     protected $versionNormalizer;
@@ -63,5 +64,11 @@ class VersionNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $this->versionNormalizer->supportsNormalization($data, $format);
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return $this->versionNormalizer instanceof CacheableSupportsMethodInterface
+            && $this->versionNormalizer->hasCacheableSupportsMethod();
     }
 }

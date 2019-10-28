@@ -12,6 +12,7 @@
 namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Normalizer;
 
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectCompleteness;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -19,7 +20,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class ProjectCompletenessNormalizer implements NormalizerInterface
+class ProjectCompletenessNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /** @var array $supportedFormats */
     protected $supportedFormats = ['internal_api'];
@@ -57,5 +58,10 @@ class ProjectCompletenessNormalizer implements NormalizerInterface
     public function supportsNormalization($projectCompleteness, $format = null)
     {
         return $projectCompleteness instanceof ProjectCompleteness && in_array($format, $this->supportedFormats);
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 }

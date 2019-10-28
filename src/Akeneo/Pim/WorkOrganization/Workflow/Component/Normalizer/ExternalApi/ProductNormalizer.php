@@ -17,6 +17,7 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftIn
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -24,7 +25,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  *
  * @author Laurent Petard <laurent.petard@akeneo.com>
  */
-class ProductNormalizer implements NormalizerInterface
+class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     const WORKFLOW_STATUS_WORKING_COPY = 'working_copy';
     const WORKFLOW_STATUS_READ_ONLY = 'read_only';
@@ -78,6 +79,12 @@ class ProductNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $this->productNormalizer->supportsNormalization($data, $format);
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return $this->productNormalizer instanceof CacheableSupportsMethodInterface
+            && $this->productNormalizer->hasCacheableSupportsMethod();
     }
 
     /**

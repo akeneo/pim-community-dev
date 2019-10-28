@@ -13,6 +13,7 @@ namespace Akeneo\Pim\Permission\Bundle\Normalizer\Flat;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -20,7 +21,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class CategoryNormalizer implements NormalizerInterface
+class CategoryNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /** @var array */
     protected $supportedFormats = ['flat'];
@@ -72,5 +73,10 @@ class CategoryNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof CategoryInterface && in_array($format, $this->supportedFormats);
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 }

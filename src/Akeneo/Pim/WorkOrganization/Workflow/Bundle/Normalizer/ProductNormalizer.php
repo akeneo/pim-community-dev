@@ -24,6 +24,7 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterfa
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -33,7 +34,7 @@ use Symfony\Component\Serializer\SerializerInterface;
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
+class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface, CacheableSupportsMethodInterface
 {
     /** @var NormalizerInterface */
     protected $normalizer;
@@ -147,6 +148,11 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof ProductInterface && !$data instanceof PublishedProductInterface && $format === 'internal_api';
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 
     /**

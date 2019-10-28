@@ -18,6 +18,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueColle
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\PropertiesNormalizer as StandardPropertiesNormalizer;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\ProductModelProposalNormalizer;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerAwareTrait;
@@ -27,7 +28,7 @@ use Symfony\Component\Serializer\SerializerAwareTrait;
  *
  * @author Philippe Mossière <philippe.mossiere@akeneo.com>
  */
-class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterface
+class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterface, CacheableSupportsMethodInterface
 {
     use SerializerAwareTrait;
 
@@ -113,5 +114,10 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
     public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ProductModelDraft && ProductModelProposalNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_PROPOSAL_INDEX === $format;
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 }

@@ -16,13 +16,14 @@ namespace Akeneo\Pim\Enrichment\ReferenceEntity\Component\Normalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\AbstractProductValueNormalizer;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Value\ReferenceEntityValue;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class ReferenceEntityValueNormalizer extends AbstractProductValueNormalizer implements NormalizerInterface
+class ReferenceEntityValueNormalizer extends AbstractProductValueNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     private $supportedFormats = ['indexing_product', 'indexing_product_and_product_model', 'indexing_product_model'];
 
@@ -40,5 +41,10 @@ class ReferenceEntityValueNormalizer extends AbstractProductValueNormalizer impl
     public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ReferenceEntityValue && in_array($format, $this->supportedFormats);
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 }

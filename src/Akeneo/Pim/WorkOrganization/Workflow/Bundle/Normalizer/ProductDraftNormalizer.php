@@ -12,6 +12,7 @@
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer;
 
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -19,7 +20,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  *
  * @author Filips Alpe <filips@akeneo.com>
  */
-class ProductDraftNormalizer implements NormalizerInterface
+class ProductDraftNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /** @var array */
     protected $supportedFormats = ['internal_api'];
@@ -44,5 +45,10 @@ class ProductDraftNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof EntityWithValuesDraftInterface && in_array($format, $this->supportedFormats);
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 }

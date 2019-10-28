@@ -7,6 +7,7 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\InternalApi;
 use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetGrantedCategoryCodes;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -14,7 +15,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class UserNormalizer implements NormalizerInterface
+class UserNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /** @var CategoryAccessRepository */
     private $categoryAccessRepository;
@@ -52,6 +53,11 @@ class UserNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof UserInterface && 'internal_api' === $format;
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 
     private function displayProposalsToReviewNotification(UserInterface $user): bool

@@ -14,12 +14,13 @@ namespace Akeneo\Asset\Component\Normalizer\InternalApi;
 use Akeneo\Asset\Component\Model\AssetInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class AssetNormalizer implements NormalizerInterface
+class AssetNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /** @var array */
     protected $supportedFormats = ['internal_api'];
@@ -58,6 +59,11 @@ class AssetNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof AssetInterface && in_array($format, $this->supportedFormats);
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 
     /**
