@@ -42,6 +42,10 @@ pim_reference_entity:
       image: Bild
     attribute:
       title: Attribute erfassen
+      attribute:
+        error:
+          render_list: 'Bei der Darstellung des Attributs "{{ %attribute_code% }}" ist ein Fehler aufgetreten'
+          render_edit: 'Beim Rendern des Attributs "{{ %attribute_code% }}" ist ein Fehler aufgetreten'
     module:
       delete:
         button: Entität löschen
@@ -71,10 +75,13 @@ pim_reference_entity:
     notification:
       save:
         success: Referenzentität erfolgreich aktualisiert.
+        fail: Beim Speichern der Referenzentität ist ein Fehler aufgetreten
       create:
         success: Referenzobjekt erfolgreich angelegt.
+        fail: Beim Speichern der Referenzentität ist ein Fehler aufgetreten
       delete:
         success: Referenzobjekt erfolgreich gelöscht.
+        fail: Beim Löschen der Referenzentität ist ein Fehler aufgetreten
   permission:
     notification:
       save:
@@ -178,13 +185,17 @@ pim_reference_entity:
     notification:
       save:
         success: Datensatz erfolgreich aktualisiert
+        fail: Beim Speichern des Datensatzes ist ein Fehler aufgetreten
         validation_error: Der Datensatz konnte nicht aktualisiert werden.
       create:
         success: Datensatz erfolgreich erstellt.
+        fail: Bei der Erstellung des Datensatzes ist ein Fehler aufgetreten
       delete:
         success: Datensatz "{{ code }}}" wurde erfolgreich gelöscht.
+        fail: Beim Löschen des Datensatzes ist ein Fehler aufgetreten
       delete_all:
         success: Alle "{{ entityIdentifier }}}" Datensätze wurden erfolgreich gelöscht.
+        fail: Beim Löschen aller Datensätze dieser Referenz-Entität ist ein Fehler aufgetreten
     completeness:
       label: Vollständig
   attribute:
@@ -265,14 +276,19 @@ pim_reference_entity:
       message: Sind Sie sicher, dass Sie das Attribut "{{ attributeLabel }}}" löschen wollen?
       title: Attribut
     notification:
+      list:
+        fail: Bei der Aktualisierung der Attributliste ist ein Fehler aufgetreten
       save:
         success: Attribut erfolgreich aktualisiert.
+        fail: Beim Speichern des Attributs ist ein Fehler aufgetreten
         validation_error: Das Attribut konnte nicht aktualisiert werden.
       create:
         success: Attribut erfolgreich erstellt.
+        fail: Bei der Erstellung des Attributs ist ein Fehler aufgetreten
         validation_error: Das Attribut konnte nicht erstellt werden
       delete:
         success: Attribut erfolgreich gelöscht.
+        fail: Beim Löschen des Attributs ist ein Fehler aufgetreten
     options:
       no_value: Klicken Sie hier, um eine Option auszuwählen.
       sub_title: Referenz Entitäten
@@ -300,6 +316,7 @@ pim_enrich:
           default_label: Bitte wählen Sie eine Referenzentität aus
 permission:
   mass_action: Wenden Sie {{ rightLevel }}} Rechte auf alle Gruppen an.
+#Analytics
 pim_catalog_volume:
   section:
     reference_entity:

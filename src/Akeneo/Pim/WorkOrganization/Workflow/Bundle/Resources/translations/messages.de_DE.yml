@@ -1,6 +1,7 @@
 pimee_workflow:
   product_draft:
     author: Autor
+    source: Quelle
     created: Vorgeschlagen am
     changes: Änderungen
     locale: Gebietsschemakontext

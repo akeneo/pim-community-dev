@@ -4,27 +4,27 @@
 #akeneo_asset_manager_asset_edit: Edit an asset
 pim_asset_manager:
   asset_collection:
-    asset_count: '{{ count }} Asset|{{ count }} Assets'
-    add_asset: 'Asset hinzufügen'
-    no_asset_in_collection: 'Es tut uns leid, es gibt keine Assets in dieser Sammlung.'
+    asset_count: '{{ count }} asset|{{ count }} assets'
+    add_asset: 'Add asset'
+    no_asset_in_collection: 'Sorry, there is no asset in this collection.'
     helper:
-      title: 'Willkommen in Ihrem neuen Bereich für das Asset Management!'
-      text: 'Es gibt keine Asset-Sammlung für die {{ family }} -Familie! Wie kann eine Asset-Sammlung hinzugefügt werden?'
-      link: 'Wie kann eine Asset-Sammlung hinzugefügt werden?'
+      title: 'Welcome to your new product asset management area!'
+      text: 'There are no asset collection for the {{ family }} family! How to add an asset collection?'
+      link: 'How to add an asset collection?'
     no_asset:
-      title: 'Es gibt kein Asset für dieses Produkt'
-      text: 'Es gibt keine Asset-Sammlung für die {{ family }} -Familie!'
+      title: 'Sorry, there are no asset for this product'
+      text: 'There are no asset collection for the {{ family }} family!'
     notification:
-      product_rule: 'Diese Sammlung kann durch eine Produktregel aktualisiert werden:'
-    remove_one_asset: Asset {{ assetName }} aus der Asset-Sammlung entfernen
-    remove_all_assets: Alle Assets löschen
-    other_actions: Weitere Aktionen
-    open_other_actions: Andere Aktionen öffnen
-    dismiss_other_actions: Andere Aktionen ablehnen
-    move_asset_to_left: Asset {{ assetName }} nach links verschieben
-    move_asset_to_right: Asset {{ assetName }} nach rechts verschieben
+      product_rule: 'This collection can be updated by a product rule:'
+    remove_one_asset: Remove asset {{ assetName }} from asset collection
+    remove_all_assets: Remove all assets
+    other_actions: Other actions
+    open_other_actions: Open other actions
+    dismiss_other_actions: Dismiss other actions
+    move_asset_to_left: Move asset {{ assetName }} to the left
+    move_asset_to_right: Move asset {{ assetName }} to the right
   asset_picker:
-    title: Assets zu Ihrem Produkt hinzufügen
+    title: Add assets to your product
   #app:
   #image:
   #wide:
@@ -126,7 +126,7 @@ pim_asset_manager:
     #title: There are no result for your search
     #subtitle: Try again with new search criteria.
     selector:
-      no_value: Klicken Sie hier, um ein Asset auszuwählen.
+      no_value: Click here to select an asset.
   #error:
   #value: Oops, it seems that the rendering of the "{{ fieldName }}" field failed. See the developer console for more details.
   #button:
@@ -235,7 +235,7 @@ pim_asset_manager:
     #option: Single option
     #option_collection: Multiple options
     #number: Number
-    is_required: zur Vollständigkeit erforderlich
+    is_required: required for completeness
 #no_data:
 #title: There are no custom attributes for {{ entityLabel }}
 #subtitle: Click on the button "Add an attribute" to configure your first custom attribute
@@ -333,5 +333,5 @@ pim_enrich:
         #section:
         #type_specific: Type specific parameters
         asset_family:
-          identifier: Verwandte Asset-Familie (erforderlich)
-          default_label: Bitte wählen Sie eine Asset-Familie
+          identifier: Related asset family (required)
+          default_label: Please select an asset family

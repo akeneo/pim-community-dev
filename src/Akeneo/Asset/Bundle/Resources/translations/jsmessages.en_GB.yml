@@ -74,7 +74,7 @@ pim_enrich:
       property:
         type:
           pim_assets_collection: Assets collection
-pim_dashboard:
+pim_import_export:
   widget:
     last_operations:
       job_type:
