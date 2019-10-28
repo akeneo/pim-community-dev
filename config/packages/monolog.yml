@@ -5,10 +5,9 @@ monolog:
             action_level: error
             handler:      nested
         nested:
-            type:  stream
-            path:  "php://stderr"
-            level: warning
-            formatter: 'monolog.formatter.json'
+            type: stream
+            path: '%kernel.logs_dir%/%kernel.environment%.log'
+            level: info
         franklin:
             type: stream
             path:  "php://stderr"
