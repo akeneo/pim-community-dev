@@ -12,12 +12,13 @@
 namespace Akeneo\Asset\Component\Normalizer\Standard;
 
 use Akeneo\Asset\Component\Model\AssetInterface;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
-class AssetNormalizer implements NormalizerInterface
+class AssetNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /** @var NormalizerInterface */
     protected $datetimeNormalizer;
@@ -51,5 +52,10 @@ class AssetNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof AssetInterface && 'standard' === $format;
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 }
