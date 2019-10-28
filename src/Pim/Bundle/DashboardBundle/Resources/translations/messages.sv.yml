@@ -1,5 +1,5 @@
 pim_dashboard:
-  title: Instrumentpanel
+  title: Översiktspanel
   version: Version
   link.label:
     product: Hantera produkter
@@ -25,3 +25,4 @@ pim_dashboard:
         export: Export
         mass_edit: Massredigera
         quick_export: Snabbexport
+        compute_product_models_descendants: Beräkna produktmodellers ättlingar

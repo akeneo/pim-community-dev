@@ -6,7 +6,6 @@ Attribute Group list: Attributgruppslista
 Users: Användare
 Roles: Roller
 Groups: Grupper
-Configuration: Inställningar
 Currency list: Valutalistan
 Locale list: Språklista
 Logged in as: Inloggad som
@@ -18,7 +17,7 @@ Channel list: Kanallista
 Select file: Välj fil
 Change file: Byta fil
 Remove file: Ta bort fil
-Delete: Ta bort
+Delete: Radera
 Save: Spara
 Cancel: Avbryt
 Get help: Få hjälp
@@ -45,4 +44,3 @@ pim_ui.system_config:
     loading_messages.tooltip: Alla tillgängliga laddningsmeddelanden separerade med radbrytningar
   group:
     loading_message.title: Hämtar meddelanden
-other_actions: Andra åtgärder

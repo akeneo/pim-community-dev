@@ -16,6 +16,7 @@ pim_connector:
     locales:
       validation:
         not_blank: En landestandard skal være valgt, skal du vælge en landestandard til eksport.
+#Page titles
 page_title:
   pim_importexport_export_profile_index: Eksporter profil håndtering
   pim_importexport_export_profile_edit: Eksportere profiler {{ job.label }} | Rediger

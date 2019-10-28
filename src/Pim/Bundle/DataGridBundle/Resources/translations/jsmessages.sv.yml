@@ -28,8 +28,8 @@ Action is not performed.: Åtgärd har inte utförts.
 Please, select item to perform action.: Välj ett objekt för åtgärd.
 View per page: Visa per sida
 Enabled: Aktiverad
-Disabled: Avaktiverad
-not_available: '-'
+Disabled: Inaktiverad
+not_available: N/A
 Yes: true
 No: false
 oro.datagrid.entityHint: Enhet
@@ -60,6 +60,7 @@ pim:
       label: Valuta
     category_filter:
       done: Slutförd
+#Column configuration
 Available Columns: Tillgängliga Kolumner
 Displayed Columns: Valda Kolumner
 datagrid_view.columns.min_message: Du måste välja minst en tabellkolumn att visa
@@ -79,15 +80,19 @@ pim_datagrid:
       confirm_title: Bekräfta radering
       confirm_ok: OK
       empty_selection: Ingen produkt har valts
+#Quick export
 pim.grid.mass_action.quick_export.title: Snabbexport
 pim.grid.mass_action.quick_export.launched: Snabbexport har startats
+#Custom actions
 pim.grid.action.launch.title: Starta
 pim.grid.action.show.title: Visa
 Please select view: Välj en vy
 Loading...: Laddar...
 View: Visa
+#Datetimepicker
 from: från
 to: till
+#View selector
 grid.view_selector:
   default_view: Standardvy
   save_changes: Spara denna vy
@@ -100,5 +105,11 @@ grid.view_selector:
   choose_label: Välj en etikett för vyn
   confirmation:
     delete: Bekräfta radering
+#View selector flash messages
 grid.view_selector.flash.updated: Vy har uppdaterats
+#Display selector
+grid.display_selector:
+  gallery: Galleri
+  list: Lista
+#Credentials cell
 Client ID: Klient-ID

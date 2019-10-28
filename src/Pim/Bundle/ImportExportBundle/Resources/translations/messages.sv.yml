@@ -1,8 +1,8 @@
+#Entities
 Job: Jobb
 Connector: Connector
 pim_import_export:
-  job: Jobb
-  connector: Connector
+  ## Job status
   status:
     0: Redo
   batch_status:
@@ -35,18 +35,21 @@ pim_import_export:
       property.title: Allmänna egenskaper
       history.title: Historik
       job_content.title: Innehåll
+#Page titles:
 pim_title.export_profile.index: Hantera exportprofiler
 pim_title.export_execution.index: Exporthistorik
 pim_title.export_execution.show: Exporthistorik | Detaljer
 pim_title.import_profile.index: Hantera importprofiler
 pim_title.import_execution.index: Importhistorik
 pim_title.import_execution.show: Importhistorik | Detaljer
+#Entity and page header titles
 export profile:
   title: exportprofil
   edit: redigera exportprofil
 import profile:
   title: importprofile
   edit: redigera importprofil
+#ACLs
 pim_importexport:
   acl:
     export_profile:
@@ -82,6 +85,7 @@ pim_importexport:
   acl_group:
     export: Exportprofiler
     import: Importprofiler
+#Buttons
 btn:
   create:
     export profile: skapa exportprofil
@@ -89,10 +93,12 @@ btn:
 Upload and import now: Ladda upp och importera nu
 import now: Importera nu
 export now: Exportera nu
+#Confirmation messages
 confirmation:
   remove:
     export profile: Är du säker på att du vill ta bort exportprofilen %name%?
     import profile: Är du säker på att du vill ta bort importprofilen %name%?
+#Flash messages
 flash:
   export:
     created: Exporten har skapats med lyckat resultat
@@ -104,15 +110,18 @@ flash:
     removed: Importen har tagits bort
     updated: Importen har ändrats med lyckat resultat
     running: Importen körs
+#Tabs
 General properties: Allmänna egenskaper
 History: Historik
 pane.accordion:
   properties: Egenskaper
   global_settings: Globala inställningar
   filters: Filter
+#Popin titles
 popin.create:
   export_profile.title: Skapa en ny exportprofil
   import_profile.title: Skapa en ny importprofil
+#Job execution
 'Display item': Visa objekt
 'Hide item': Dölj objekt
 'Collecting data about job execution...': Samlar in data om jobbkörning...
@@ -121,7 +130,7 @@ Download log: Ladda ner logg
 Show profile: Visa profil
 execution details: utförandedetaljer
 job_execution.summary:
-  read: läst
+  read: läs
   write: skrivet
   skip: hoppades över
   create: skapades
@@ -133,17 +142,7 @@ job_execution.summary:
     title: 'Filkodning:'
     skipped: hoppades över, filändelsen i godkäntlistan
 Step: Steg
-Status: Status
-Warnings: Varningar
 Summary: Sammanfattning
 Start: Start
 End: Slut
-COMPLETED: Slutförd
-STARTING: Startar
-STARTED: Startad
-STOPPING: Stoppar
-STOPPED: Stoppad
-FAILED: Misslyckad
-ABANDONED: Övergiven
-UNKNOWN: Okänt
 warning.label: Varning

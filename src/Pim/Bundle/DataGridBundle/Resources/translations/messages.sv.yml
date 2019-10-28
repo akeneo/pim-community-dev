@@ -12,12 +12,14 @@ oro.grid.mass_action.delete.confirm_title: Bekräfta massborttagning
 oro.grid.mass_action.delete.confirm_content: Är du säker du vill ta bort markerade objekt?
 oro.grid.datagrid.page_size.all: Alla
 oro.grid.mass_action.delete.success_message: "{0} Inga entiteter togs bort|{1} En entitet togs bort|]1,Inf[ %count% entiteter togs bort"
+#Datagrid views constraints
 datagrid_view:
   columns:
     min_message: Du måste välja minst en tabellkolumn att visa
   label:
     unique_message: Etiketten måste vara unik
     not_blank_message: Etiketten får inte vara tom
+#View selector flash messages
 grid.view_selector.flash:
   created: Vy har skapats
   removed: Vy har tagits bort

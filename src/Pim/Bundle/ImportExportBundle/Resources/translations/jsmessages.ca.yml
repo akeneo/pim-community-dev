@@ -16,6 +16,7 @@ pim_connector:
     locales:
       validation:
         not_blank: S'ha de seleccionar una configuració regional, trieu una configuració regional per exportar.
+#Page titles
 page_title:
   pim_importexport_export_profile_index: Gestió de perfils d'exportació
   pim_importexport_export_profile_edit: Exportar perfil {{ job.label }} | Editar

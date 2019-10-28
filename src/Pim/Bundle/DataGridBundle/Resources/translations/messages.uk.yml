@@ -9,12 +9,14 @@ oro.grid.mass_action.delete.confirm_title: Підтвердження масов
 oro.grid.mass_action.delete.confirm_content: Ви впевнені, що ви хочете видалити виділені елементи?
 oro.grid.mass_action.delete.item_limit: Ви не можете масово видалити більше, ніж %limit% продуктів (%count% вибрано)
 oro.grid.mass_action.delete.success_message: "{0} Жодна сутність не була видалена|{1} Одна сутність була видалена|]1,Inf[ %count% сутностей було видалено"
+#Datagrid views constraints
 datagrid_view:
   columns:
     min_message: Ви повинні вибрати принаймні один стовпець для відображення
   label:
     unique_message: Ярлик має бути унікальним
     not_blank_message: Ярлик не має бути порожнім
+#View selector flash messages
 grid.view_selector.flash:
   created: Представлення табличних даних успішно створено
   removed: Представлення табличних даних успішно видалено

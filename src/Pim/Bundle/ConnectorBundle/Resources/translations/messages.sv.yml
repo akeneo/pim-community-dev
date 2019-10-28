@@ -42,6 +42,7 @@ job_execution.summary:
   product_skipped_no_diff: hoppade över produkten (inga skillnader)
   product_skipped_no_associations: hoppade över produkten (inga associationer hittades)
   item_position: lästa rader
+#Job labels
 batch_jobs:
   csv_product_export:
     label: Exportera produkt till CSV
@@ -135,7 +136,7 @@ batch_jobs:
   xlsx_category_import:
     label: Importera kategorier från XLSX
     validation.label: Filvalidering
-    import.label: Importera produkt
+    import.label: Importera kategorier
   xlsx_association_type_import:
     label: Importera associationstyp från XLSX
     validation.label: Filvalidering

@@ -1,8 +1,10 @@
+#Entities
 Job: Job
 Connector: Connector
 pim_import_export:
   job: Job
   connector: Connector
+  ## Job status
   status:
     0: Klar
   batch_status:
@@ -35,6 +37,7 @@ pim_import_export:
       property.title: Generelle egenskaber
       history.title: Historik
       job_content.title: Indhold
+#Page titles:
 pim_title.export_profile.index: Eksporter profil håndtering
 pim_title.export_profile.edit: Eksporter profiler %job.label% | Rediger
 pim_title.export_profile.show: Eksporter profiler %job.label% | Vis
@@ -45,12 +48,14 @@ pim_title.import_profile.edit: Importer profiler %job.label% | Rediger
 pim_title.import_profile.show: Import profiler %job.label% | Vis
 pim_title.import_execution.index: Importer aktivitets historik
 pim_title.import_execution.show: Importer aktiviter | Detaljer
+#Entity and page header titles
 export profile:
   title: eksporter profil
   edit: redigere eksportprofil
 import profile:
   title: import profil
   edit: rediger import profil
+#ACLs
 pim_importexport:
   acl:
     export_profile:
@@ -86,6 +91,7 @@ pim_importexport:
   acl_group:
     export: Eksport profiler
     import: Import profiler
+#Buttons
 btn:
   create:
     export profile: opret eksportprofil
@@ -93,10 +99,12 @@ btn:
 Upload and import now: Indlæs og importer nu
 import now: Importer nu
 export now: Eksporter nu
+#Confirmation messages
 confirmation:
   remove:
     export profile: Er du sikker på du vil slette denne eksport profil %name%?
     import profile: Er du sikker på du vil slette denne import profil %name%?
+#Flash messages
 flash:
   export:
     created: Eksporten er blevet oprettet
@@ -108,15 +116,18 @@ flash:
     removed: Importen er blevet fjernet
     updated: Importen er blevet opdateret
     running: Importen kører
+#Tabs
 General properties: Generelle egenskaber
 History: Historik
 pane.accordion:
   properties: Egenskaber
   global_settings: Globale indstillinger
   filters: Filtre
+#Popin titles
 popin.create:
   export_profile.title: Opret en ny eksportprofil
   import_profile.title: Opret en ny importprofil
+#Job execution
 'Display item': Vis element
 'Hide item': Skjul element
 'Collecting data about job execution...': Indsamling af data om job udførelse...
@@ -142,6 +153,7 @@ Warnings: Advarsler
 Summary: Opsummering
 Start: Start
 End: Slut
+#Process tracker
 set_attribute_requirements: Indstil attribut krav
 COMPLETED: Afsluttet
 STARTING: Starter

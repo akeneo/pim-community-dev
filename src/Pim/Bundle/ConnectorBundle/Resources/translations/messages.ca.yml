@@ -46,6 +46,7 @@ job_execution.summary:
   item_position: llegir les línies
   skipped_in_root_product_model: ometre el model de producte amb el pare
   skipped_in_sub_product_model: ometre el model de producte sense el pare
+#Job labels
 batch_jobs:
   csv_product_export:
     label: Exportar productes a CSV

@@ -14,12 +14,14 @@ oro.grid.mass_action.delete.confirm_content: Are you sure you want to do delete 
 oro.grid.mass_action.delete.item_limit: You cannot mass delete more than %limit% products (%count% selected)
 oro.grid.datagrid.page_size.all: All
 oro.grid.mass_action.delete.success_message: "{0} No entities were removed|{1} One entity was removed|]1,Inf[ %count% entities were removed"
+#Datagrid views constraints
 datagrid_view:
   columns:
     min_message: You must select at least one data grid column to display
   label:
     unique_message: The label must be unique
     not_blank_message: Label cannot be empty
+#View selector flash messages
 grid.view_selector.flash:
   created: Datagrid view successfully created
   removed: Datagrid view successfully removed

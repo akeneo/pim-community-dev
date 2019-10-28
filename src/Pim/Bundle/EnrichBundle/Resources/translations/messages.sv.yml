@@ -1,4 +1,5 @@
 pim_enrich:
+  #Product
   product:
     tab:
       attribute.title: Attribut
@@ -6,38 +7,47 @@ pim_enrich:
       association.title: Associationer
       completeness.title: Fullständighet
       history.title: Historik
+    #Product comparison
     no_comparison_locale_available: Inga andra språk är tillgängliga för jämförelse
     no_compared_media: Inga medier tillgängliga för jämförelse
+  #Attribute
   attribute:
     tab:
       parameter.title: Parametrar
       value.title: Värden
       history.title: Historik
+  #Attribute group
   attribute_group:
     tab:
       property.title: Egenskaper
       attribute.title: Attribut
       history.title: Historik
+  #Family
   family:
     tab:
       property.title: Egenskaper
       attribute.title: Attribut
       history.title: Historik
+  #Association type
   association_type:
     tab:
       property.title: Egenskaper
       history.title: Historik
+  #Group type
   group_type:
     tab:
       property.title: Egenskaper
+  #Category
   category:
     tab:
       property.title: Egenskaper
       history.title: Historik
+  #Locale
   locale:
     tab:
       property.title: Egenskaper
       permission.title: Behörigheter
+  #Product group
   group:
     axis.help: 'Axlar definierar de attribut som produkterna i gruppen varieras av. Axlar är attribut med val som inte är lokaliserbar eller områdesbegränsad. Axlar kan inte ändras efter variantgruppen är skapad.'
     type:
@@ -46,19 +56,21 @@ pim_enrich:
       ADDITIONAL: Ytterligare
       RELATED: Related
     tab:
-      product.title: Products
+      product.title: Produkter
       property.title: Egenskaper
       history.title: Historik
+  #Product completeness
   completeness:
     progress_bar.title: '%ratio%% färdigställt (1 obligatoriskt värde) | %ratio%% färdigställt (%count% obligatoriska värden)'
     subtitle: '{0} färdigställt |{1} 1 saknat värde |] 1 Inf] %count% saknade värden'
     missing_attributes: Saknat värde | Saknade värden
     legend:
       locale_not_associated: Språk som inte är associerade till denna kanal
+  #Mass edit operations
   mass_edit_action:
     limit_exceeded: Välj mindre än %limit% poster att redigera
     product:
-      page_title: Products
+      page_title: Produkter
       page_subtitle: Massredigera (1 produkt) | Massredigera (%count% produkter)
       title: Välj åtgärd
       subtitle: Välj den funktion som du vill utföra på den valda produkten | Välj den funktion som du vill utföra på de valda %count% produkterna
@@ -80,7 +92,6 @@ pim_enrich:
         third: Konfigurera
         fourth: Bekräfta
     change-status:
-      label: Ändra status
       description: De utvalda produkterna kommer att aktiveras eller inaktiveras.
       success_flash: Produkt(er) status har ändrats
       launched_flash: Massåtgärd "ändra status" har inletts. Du meddelas när det är gjort.
@@ -106,7 +117,6 @@ pim_enrich:
       success_flash: Produkterna har tagits bort från de valda kategorierna
       launched_flash: Massåtgärd "ta bort från kategorier" har inletts. Du meddelas när det är klart.
     change-family:
-      label: Ändra familj
       description: Familjen av de utvalda produkterna kommer att ändras till den valda familjen
       success_flash: Familjen av vald(a) produkt(er) har ändrats
       launched_flash: Massåtgärd "ändra familj" har inletts. Du meddelas när det är gjort.
@@ -123,10 +133,12 @@ pim_enrich:
     mass_action:
       quick_export:
         launched_flash: Kör jobbet exportera produkter
+  #Sequential edit operations
   sequential_edit_action:
     product:
       previous: Hoppa tillbaka till "%product%" utan att spara.
       next: Hoppa till "%product%" utan att spara.
+  #ACLs
   acl:
     locale:
       index: Lista språk
@@ -142,7 +154,6 @@ pim_enrich:
       remove_attribute: Ta bort ett attribut från en produkt
       categories_view: Rådfråga kategorierna av en produkt
       change_family: Ändra produktfamilj
-      change_state: Ändra status för produkten
       add_to_groups: Lägga till produkten i grupper
       mass_edit: Produkt mass redigera
       comment: Kommentera produkter
@@ -209,21 +220,21 @@ pim_enrich:
       manage: Hantera API-anslutningarna
   acl_group:
     association_type: Associationstyp
-    attribute: Attribut
+    attribute: Attributer
     attribute_group: Attributgrupper
     category: Kategorier
     channel: Kanaler
     currency: Valutor
     family: Familjer
-    group: Grupper
     group_type: Grupptyper
     locale: Språk
-    product: Products
+    product: Produkter
     product_model: Produktmodeller
   reference_data:
     empty_value:
       reference_data_type:
         label: Välj referens datatyp
+#Entity and page header titles
 attribute:
   title: attributet
   edit: redigera attribut
@@ -277,7 +288,9 @@ association type:
   title: associationstyp
   create: skapa associationstyp
   edit: redigera associationstyp
+#Custom titles
 products: produkter
+#Buttons
 btn:
   create:
     attribute: skapa attribut
@@ -307,9 +320,9 @@ btn:
   to parent: tillbaka till förälder
   download_pdf: PDF
   download: hämta
+#Confirmation messages
 confirmation:
   confirm: Bekräfta
-  delete: Bekräfta radering
   leave: Är det säkert att du vill lämna den här sidan?
   discard changes: Du kommer att förlora ändringar till %entity% om du lämnar sidan.
   remove:
@@ -328,6 +341,7 @@ confirmation:
     remove attribute: Är du säker på att du vill ta bort attribut %name% från denna familj?
   product:
     remove attribute: Är du säker på att du vill ta bort attribut %name% från denna produkt?
+#Flash messages
 flash:
   entity:
     removed: Objektet har tagits bort
@@ -390,8 +404,9 @@ flash:
   user:
     removed: Användaren har tagits bort
   error ocurred: Åtgärden misslyckades. Försök igen.
+#Info messages
 info:
-  updated: Det finns ändringar som inte sparats.
+  updated: Det finns osparade ändringar.
   category:
     remove children: Alla underkategorier kommer att raderas.
     keep products: Produkter i dessa kategorier tas inte bort.
@@ -399,15 +414,15 @@ info:
   product:
     no available attributes: Det finns inga fler attribut att lägga till
     no family defined: Ingen familj har definieras
-    change family: Välj produktfamilj
+    change family: Ändra produktfamiljen
     change family to: Ändra familjen till
     merge attributes: Aktuella attribut slås samman med de i den nya familjen.
     keep attributes: Inga attribut kommer att tas bort.
     number of associations: '%productCount% produkter och %groupCount% grupper'
     enable: Aktivera
     enabled: Aktiverad
-    disable: Avaktivera
-    disabled: Avaktiverad
+    disable: Inaktivera
+    disabled: Inaktiverad
   group:
     axis: 'Variation axel %attributes%'
     select products: Välj produkter som bör tillhöra denna grupp.
@@ -424,14 +439,15 @@ info:
     auto option sorting: Om aktiverad, sorteras alternativ automatiskt efter deras lokaliserade etiketter
   completeness:
     not calculated: Ännu inte beräknas
+#Form elements
 Options: Inställningar
 Created at: Skapad den
 Updated at: Uppdaterad den
-Created: Skapat
-Updated: Ändrad
-Last update: Senaste uppdatering
+Created: Skapad
+Updated: Uppdaterad
+Last update: Senast uppdaterad
 by: Av
-N/A: '-'
+N/A: N/A
 Manage products: Hantera produkter
 Manage groups: Hantera grupper
 Code: Kod
@@ -450,7 +466,7 @@ Other: Övrigt
 Variants behavior when edited: Variant beteende när redigeras
 Edit: Redigera
 Remove: Ta bort
-Delete: Ta bort
+Delete: Radera
 Parameters: Parametrar
 System: System
 Values: Värden
@@ -474,8 +490,6 @@ default: Standard
 Axis: Axel
 Add attributes: Lägg till attribut
 Translate from: Översätt från
-switch_on: "Ja"
-switch_off: "Nej"
 Close: Stäng
 Search: Sök
 Choose the attribute type: Välj attributtyp
@@ -496,17 +510,21 @@ No matches found: Inga träffar hittades
 Category tree: Kategoriträd
 Completeness: Fullständighet
 Attribute used as label: Attribut används som etikett
+#Scopes
 Global: Global
 Channel: Kanal
 Expand all channels: Expandera alla kanaler
 Collapse all channels: Kollapsa alla kanaler
+#Variants
 Always override: Alltid åsidosätta
 Ask: Fråga
+#Attribute group
 General Properties: Allmänna egenskaper
 Group values: Gruppvärden
 New group: Ny grupp
 Groups overview: Grupper översikt
 'Y-m-d h:i:s': 'Y-m-d h:i:s'
+#Attribute properties
 Max characters: Max tecken
 Validation rule: Verifieringsuttryck
 Validation regexp: Validering regexp
@@ -521,14 +539,17 @@ Metric family: Metrisk familj
 Default metric unit: Metrisk standardenhet
 Max file size: Max filstorlek (MB)
 Allowed extensions: Tillåtna tillägg
-None: Ingen
+None: Inga
 E-mail: E-mail
 URL: URL
 Regular expression: Reguljära uttryck
 Minimum input length: Minsta indatalängden
 Default: Standard
-Attributes: Attribut
+#Family
+Attributes: Attributer
+#Category
 Title: Titel
+#Page titles
 pim_title.attribute_group:
   index: "Attributgrupper"
   create: "Attributgrupp | Skapa"
@@ -538,11 +559,11 @@ pim_title.category:
   create: "Kategori träd | Skapa"
   edit: "Kategori träd %category.label% | Redigera"
 pim_title.attribute:
-  index: "Attribut"
+  index: "Attributer"
   create: "Attribut | Skapa"
   edit: "Attributen %attribute.label% | Redigera"
 pim_title.product:
-  index: "Products"
+  index: "Produkter"
 pim_title.family:
   index: "Familjer"
   edit: "Familjer %family.label% | Redigera"
@@ -555,10 +576,9 @@ pim_title.currency:
 pim_title.locale:
   index: "Språk"
 pim_title.group:
-  index: "Grupper"
   edit: "Grupper %group.label% | Redigera"
 pim_title.association_type:
-  index: "Associationstyp"
+  index: "Associationstyp(er)"
   edit: "Associationstyp %association type.label% | Redigera"
 pim_title.group_type:
   index: "Grupptyper"
@@ -587,16 +607,19 @@ pim_catalog_date: Datum
 pim_catalog_metric: Metrisk
 pim_reference_data_simpleselect: Referensdata enkel Välj
 pim_reference_data_multiselect: Referens data multi Välj
+#Locales
 Activated: Aktiverad
-Disable: Avaktivera
+Disable: Inaktivera
+#Sequential edit operations
 pim_enrich.sequential_edit_action:
   product:
     previous: Hoppa tillbaka till "%product%" utan att spara.
     next: Hoppa till "%product%" utan att spara.
+#Mass edit operations
 pim_enrich.mass_edit_action:
-  limit_exceeded: Välj mindre än %limit% poster att redigera
+  limit_exceeded: Välj mindre än %limit% objekt att redigera
   product:
-    page_title: Products
+    page_title: Produkter
     page_subtitle: Massredigera (1 produkt) | Massredigera (%count% produkter)
     title: Välj åtgärd
     subtitle: Välj den funktion som du vill utföra på den valda produkten | Välj den funktion som du vill utföra på de valda %count% produkterna
@@ -618,27 +641,25 @@ pim_enrich.mass_edit_action:
       third: Konfigurera
       fourth: Bekräfta
   change-status:
-    label: Ändra status
     description: De utvalda produkterna kommer att aktiveras eller inaktiveras.
     success_flash: Produkt(er) status har ändrats
   edit-common-attributes:
     label: Redigera Attribut
-    description: Valda produktens attribut kommer att redigeras med följande uppgifter för det valda språket.
+    description: Den valda produktens attribut kommer att redigeras med följande uppgifter för det valda språket.
     empty: Välj de attribut(er) som du vill redigera
     success_flash: Produkt(er) attribut har uppdaterats
-    message.warning: Det finns inga attribut gemensamt för de valda produkterna. Vänligen ändra ditt val.
-    no_attribute.warning: Det finns inga attribut gemensamt för de valda produkterna. Vänligen ändra ditt val.
+    message.warning: Det finns inga gemensamma attribut för de valda produkterna. Vänligen ändra ditt val.
+    no_attribute.warning: Det finns inga gemensamma attribut för de valda produkterna. Vänligen ändra ditt val.
   classify:
     description: Produkterna kommer att vara placerad i följande kategorier, befintliga placeringen hålls.
     success_flash: Produkten har klassificerats i valda kategorier
   change-family:
-    label: Ändra familj
     description: Familjen av de utvalda produkterna kommer att ändras till den valda familjen
     success_flash: Familjen av vald(a) produkt(er) har ändrats
     no_family: Ingen familj
   add-to-groups:
     label: Lägg till i grupp
-    description: Markera de grupper som du vill lägga till valda produkter
+    description: Markera de grupper som du vill lägga till de valda produkter
     success_flash: Produkter har lagts till de valda grupperna
   set-attribute-requirements:
     description: Följande attributkrav kommer att tillämpas på de valda familjerna
@@ -649,9 +670,11 @@ Select: Välj
 Remove this attribute: Ta bort detta attributet
 Copy: Kopiera
 Current tab: Aktuell flik
+#Product view
 Group: Grupp
 View group: Visa grupp
-Products: Products
+Products: Produkter
+#Tabs
 Properties: Egenskaper
 History: Historik
 pane.accordion:
@@ -662,13 +685,15 @@ pane.accordion:
   general_parameters: Allmänna parametrar
   validation_parameters: Valideringsparametrar
   label_translations: Etikettsöversättningar
-  options: Inställningar
+  options: Alternativ
   group_values: Gruppvärden
+#Popin titles
 popin.create:
   association_type.title: Skapa en ny typ av association
   group.title: Skapa en ny grupp
   product.title: Skapa en ny produkt
   option.title: Skapa ett nytt alternativ
+#Datagrid contents
 In group: I grupp
 Attribute as label: Attribut som etikett
 Is associated: Är associerad
@@ -676,8 +701,8 @@ Complete: Klart
 Created At: Skapad den
 Updated At: Uppdaterad den
 Enabled: Aktiverad
-Disabled: Avaktiverad
-Status: Status
+Disabled: Inaktiverad
+#Versioning / history
 Change History: Ändra historik
 Data Audit: Data revision
 Data Audit - System: 'Data revision - system'
@@ -687,11 +712,12 @@ Entity type: Entitet typ
 Entity name: Entitetsnamn
 Entity id: Entitet-id
 Data: Data
-Author: Upphovsman
+Author: Skapare
 Logged at: Loggad den
 Deleted: Raderad
 Old values: Gammalt värde
 New values: Nytt värde
+#Configuration
 System configuration: Systemkonfiguration
 General setup: Allmänna inställningar
 Localization: Lokalisering
@@ -723,6 +749,7 @@ oro.locale:
       language: "Välj det systemspråk du vill använda"
       timezone: "Välj tidszonen för visning av datum och tid"
       currency: "Välj standardvaluta"
+#Datagrid
 Selected products successfully deleted: Valda produkter har tagits bort
 pim_mass_edit:
   notification:
@@ -745,8 +772,9 @@ edit_common_attributes.steps.edit_common_attributes_processor.title: Redigera At
 update_product_value.steps.update_product_value_processor.title: Uppdatera produktens värde
 remove_product_value.steps.update_product_value_processor.title: Ta bort produktvärde
 edit_common_attributes: Redigera Attribut
-perform.steps.duplicated.title: Duplicerade Axis
-perform.steps.excluded.title: Utesluten produkt
+perform.steps.duplicated.title: Duplicerade Axlar
+perform.steps.excluded.title: Uteslutna produkt
+#Background jobs & steps labels
 batch_jobs:
   add_product_value:
     label: Lägga till produktens värde
@@ -780,13 +808,15 @@ mass_edit report:
   overview: Massa redigera rapporter
 job_tracker:
   tab:
-    title: Spåra process
+    title: Process spårare
   filter:
     started_at: Startade den
 pim_enrich_attribute_form:
   code: Kod
   type: Attribut typ
   reference_data_name: Data Referensnamn
+  scopable: Värde per kanal
+  localizable: Värde per språk
   unique: Unikt värde
   availableLocales: Tillgängliga språk
   locale_specific: Specifik språk

@@ -40,6 +40,7 @@ oro.datagrid.nocolumns: Es sind keine Spalten für diese Tabelle konfiguriert
 oro.datagrid.pagination.label: "Seite"
 oro.datagrid.pagination.totalPages: "von {{ totalPages }}"
 oro.datagrid.pagination.totalRecords: "{{ totalRecords }} Datensätze"
+#TODO @merge 3.0: move this key under 'pim.datagrid.limit_warning'
 oro.datagrid.pagination.limit_warning: "Das Raster kann nicht mehr als {{ limit }} Ergebnisse zeigen, versuchen, auf zusätzliche Suchkriterien zu filtern."
 oro.datagrid.action.reset: "Zurücksetzen"
 oro.datagrid.action.refresh: "Aktualisieren"
@@ -64,6 +65,7 @@ pim:
       label: Währung
     category_filter:
       done: Fertig
+#Column configuration
 Available Columns: Verfügbare Spalten
 Displayed Columns: Ausgewählte Spalten
 datagrid_view.columns.min_message: Sie müssen mindestens eine Spalte der Tabelle zur Anzeige auswählen
@@ -85,15 +87,19 @@ pim_datagrid:
       confirm_title: Löschen bestätigen
       confirm_ok: OK
       empty_selection: Kein Produkt ausgewählt
+#Quick export
 pim.grid.mass_action.quick_export.title: Schnellexport
 pim.grid.mass_action.quick_export.launched: Der Schnellexport wurde gestartet
+#Custom actions
 pim.grid.action.launch.title: Starten
 pim.grid.action.show.title: Anzeigen
 Please select view: Bitte Ansicht auswählen
 Loading...: Lädt...
 View: Ansehen
+#Datetimepicker
 from: von
 to: bis
+#View selector
 grid.view_selector:
   default_view: Standardansicht
   save_changes: Diese Ansicht speichern
@@ -107,11 +113,14 @@ grid.view_selector:
   confirmation:
     remove: Sind Sie sicher, dass Sie diese Ansicht löschen möchten?
     delete: Löschen bestätigen
+#View selector flash messages
 grid.view_selector.flash.updated: Tabellenansicht erfolgreich aktualisiert
+#Display selector
 grid.display_selector:
   label: Anzeige
   gallery: Galerie
   list: Liste
+#Credentials cell
 Client ID: Client-ID
 Secret: Secret
 grid.empty_results:

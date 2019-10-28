@@ -1,3 +1,4 @@
+#ORO messages
 Close: Tancar
 Update: Actualitzar
 Selected Rows: Files seleccionades
@@ -31,10 +32,12 @@ Second: Segon
 Millisecond: Mil·lisegon
 Microsecond: Microsegon
 "Time Zone": "Zona horària"
+#PIM messages
 Localized value: Valor amb configuració regional
 Columns: Columnes
 Datagrid Configuration: Configuració de la quadrícula de dades
 Apply: Aplicar
+#Filters
 Action: Acció
 Unit: Unitat
 Currency: Moneda
@@ -47,6 +50,7 @@ jstree:
   no_tree: No hi ha cap arbre disponible
   include_sub: Incloure subcategories
   loading: Carregant ...
+#Datetimepicker
 datetimepicker:
   days:
     Sunday: Diumenge
@@ -98,6 +102,7 @@ datetimepicker:
     Oct: Oct
     Nov: Nov
     Dec: Des
+#ORO
 oro_config:
   form:
     config:
