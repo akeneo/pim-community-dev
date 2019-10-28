@@ -1,5 +1,28 @@
 # 3.0.x
 
+# 3.0.50 (2019-10-28)
+
+# 3.0.49 (2019-10-24)
+
+## Bug fixes
+
+- GITHUB-10955: Remove database prefix in queries
+- PIM-8903: Fix export job instances filters when a family is deleted
+
+# 3.0.48 (2019-10-23)
+
+## Bug fixes
+
+AOB-691: Allow to show only specific operators in datagrid
+AOB-691: Allow only default filters without calling a dynamic attributes query in datagrid
+
+# 3.0.47 (2019-10-21)
+
+## Bug fixes
+
+- PIM-8586: Fix association type order in association tab
+- PIM-8892: Fix product bulk actions on categories
+
 # 3.0.46 (2019-10-16)
 
 ## Bug fixes

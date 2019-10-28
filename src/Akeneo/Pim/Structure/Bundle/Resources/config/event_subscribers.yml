@@ -29,3 +29,11 @@ services:
             - '@pim_catalog.saver.family_variant'
         tags:
             - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.remove_family_from_job_instance_filters_on_family_deletion:
+        class: Akeneo\Pim\Structure\Bundle\EventSubscriber\RemoveFamilyFromJobInstanceFiltersOnFamilyDeletionSubscriber
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@akeneo_batch.saver.job_instance'
+        tags:
+            - { name: kernel.event_subscriber }
