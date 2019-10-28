@@ -11,7 +11,7 @@ const AppCount = styled.div`
 `;
 
 const Grid = styled.div`
-    margin-top: 10px;
+    margin: 10px 0;
     display: grid;
     grid-gap: 20px;
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
