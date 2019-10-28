@@ -2,16 +2,20 @@
 
 exports[`App should render 1`] = `
 <div
-  className="sc-bdVaJa cmhhvk"
+  className="sc-bdVaJa Dsuco"
   onClick={[Function]}
 >
-  <img
-    alt="Google Shopping"
-    className="sc-bwzfXH cUPYub"
-    src="test-file-stub"
-  />
   <div
-    className="sc-htpNat jRBRyW"
+    className="sc-htpNat iQoyqR"
+  >
+    <img
+      alt="Google Shopping"
+      className="sc-bwzfXH foaHqu"
+      src="test-file-stub"
+    />
+  </div>
+  <div
+    className="sc-bxivhb ffTZNS"
     title="Google Shopping"
   >
     Google Shopping
