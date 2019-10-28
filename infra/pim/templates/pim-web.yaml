@@ -41,7 +41,7 @@ spec:
         - name: init-fpm
           image:  {{ template "pim.imageNameAndTag" . }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
-          command: ['sh', '-c', 'su www-data -c "cp -p -r -f /srv/pim/public/* /srv/pim/public/.htaccess /web-src/."']
+          command: ['sh', '-c', 'su www-data -s /bin/bash -c "cp -p -r -f /srv/pim/public/* /srv/pim/public/.htaccess /web-src/."']
           volumeMounts:
             - name: web-src
               mountPath: /web-src

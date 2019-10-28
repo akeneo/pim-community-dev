@@ -192,14 +192,19 @@ onboarder:
   serviceAccount: nil
 
 mysql:
-  imageTag: 8.0.16
+  image:
+    mysql:
+      repository: mysql
+      tag: "8.0.16"
+      pullPolicy: IfNotPresent
   common:
     class: ssd-retain
   mysql:
+    dataDiskPath: "/var/lib/mysql/datadir/"
     serviceName: pim-mysql
     defaultUser: akeneo_pim
-    userPassword: nil # Generate me with `pwgen -sB 22`
-    rootPassword: nil # Generate me with `pwgen -sB 22`
+    userPassword: 9vbtChLWrLsRhnKkjozHEqqL # Generate me with `pwgen -sB 22`
+    rootPassword: exKJXyqPcVRxsMv7J9W7MdCC # Generate me with `pwgen -sB 22`
     defaultDatabase: akeneo_pim
     dataDiskSize: 100Gi
     stateful:
