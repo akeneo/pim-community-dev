@@ -1,3 +1,4 @@
+#ORO messages
 "Yes, I Agree": "Sí, estoy de acuerdo"
 "Yes, do it": "Sí, hazlo"
 "Ok, got it.": "De acuerdo."
@@ -19,9 +20,11 @@ Second: Segundo
 Millisecond: Milisegundo
 Microsecond: Microsegundo
 "Time Zone": "Zona Horaria"
+#PIM messages
 Localized value: Valor localizado
 Columns: Columnas
 Datagrid Configuration: Configuración de cuadrícula de datos
+#Filters
 Action: Acción
 Unit: Unidad
 Currency: Moneda
@@ -33,6 +36,7 @@ jstree:
     unclassified: Productos sin clasificar
   no_tree: Ningún árbol disponible
   include_sub: Incluir subcategorías
+#Datetimepicker
 datetimepicker:
   days:
     Sunday: Domingo
@@ -84,6 +88,7 @@ datetimepicker:
     Oct: Oct
     Nov: Nov
     Dec: Dic
+#ORO
 oro_config:
   form:
     config:
@@ -110,6 +115,33 @@ pim_ui:
 "Your local changes will be lost. Are you sure you want to refresh the page?": "Se perderán los cambios locales. ¿Está seguro que desea actualizar la página?"
 "navigation.message.content.outdated": "El contenido de la página {{ title }} es obsoleto, por favor <a href='#' data-action='page-refresh'> actualice la página</a>"
 "Content of pinned page is outdated": "Contenido de página anclada esta anticuado"
+#Global structure of translation files
+#pim_bundle_name:
+#entity:
+#entity_name:
+#label: entity
+#uppercase_label: Entity
+#plural_label: Entities
+#flash:
+#update:
+#fail: Update failed
+#success: Entity Successfully updated
+#delete:
+#fail: Cannot delete this entity
+#success: Entity successfully removed
+#create:
+#fail: Can not create this entity
+#success: Entity successfully created
+#page_title:
+#index: "]-Inf, 1]1 entity|]1, Inf[{{ count }} entities"
+#property:
+#field_name: Field name
+#complex_field:
+#label: Field name
+#choose: Choose a field name
+#module:
+#module_name:
+#key: message
 pim_common:
   actions: Acciones
   add: Agregar

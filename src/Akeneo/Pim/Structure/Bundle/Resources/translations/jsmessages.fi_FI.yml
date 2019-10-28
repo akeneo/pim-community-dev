@@ -208,6 +208,7 @@ pim_enrich.entity.attribute_group:
   module:
     add_attribute_group:
       label: Lisää ryhmittäin
+      no_attribute_groups_available: Attribuuttiryhmää ei ole
       attributes_groups_selected: '{{ itemsCount }} ryhmä(ä) valittu'
     delete:
       confirm: Oletko varma, että haluat poistaa tämän attribuuttiryhmän?

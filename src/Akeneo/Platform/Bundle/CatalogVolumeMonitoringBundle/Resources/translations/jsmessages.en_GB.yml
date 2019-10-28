@@ -25,5 +25,7 @@ pim_catalog_volume:
     count_categories: Categories
     count_category_trees: Category trees
     count_variant_products: Variant products
+    count_product_models: Product models
     warning: Wow! You hit a record with this axis! Do not hesitate to contact us if you need any help with this kind of volume.
   mean: 'Mean:'
+  max: 'Max:'

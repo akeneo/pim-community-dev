@@ -2,6 +2,7 @@ No products to remove: Ei poistettavia tuotteita
 "dot (.)": piste (.)
 "comma (,)": pilkku (,)
 pim_enrich:
+  #Category
   category:
     tab:
       property.title: Ominaisuudet
@@ -9,6 +10,7 @@ pim_enrich:
     suggest_selection: Valitse kategoria vasemmalta
     or: tai
     create_new: Luo uusi kategoria
+  #Mass edit operations
   mass_edit_action:
     limit_exceeded: Ole hyvä ja valitse alle %limit% kohdetta muokattavaksi
     product:

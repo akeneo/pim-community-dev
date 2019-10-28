@@ -61,6 +61,7 @@ pim_common:
   name: Nome
   remove: Remover
 pim_enrich:
+  #ACLs
   acl:
     locale:
       index: Lista de localidades
@@ -185,6 +186,7 @@ pim_enrich:
     association type: criar tipo de associação
     group type: criar tipo de grupo
     drag_or_upload: Arraste e solte para fazer o envio ou clique aqui
+#Confirmation messages
 confirmation:
   delete: Confirmar exclusão
   leave: Tem certeza que deseja sair desta página?
@@ -192,6 +194,7 @@ confirmation:
   remove:
     category: Tem certeza de que deseja excluir a categoria %name%?
     user: Tem certeza de que deseja excluir o usuário %name%?
+#Flash messages
 flash:
   entity:
     removed: O Item foi removido
@@ -213,6 +216,7 @@ flash:
   user:
     removed: Usuário removido com sucesso
   error occurred: A ação falhou. Por favor, tente novamente.
+#Info messages
 info:
   updated: Existem alterações não salvas.
   category:
@@ -247,6 +251,7 @@ info:
     auto option sorting: Se ativado, as opções serão ordenadas automaticamente por seus rótulos localizáveis
   completeness:
     not calculated: Ainda não calculado
+#Form elements
 Created: Criado
 Updated: Atualizado
 Last update: Última atualização
@@ -314,17 +319,21 @@ Category tree: Árvore de categorias
 Completeness: Plenitude
 Attribute used as label: Atributo usado como rótulo
 Credentials: Credenciais
+#Scopes
 Global: Global
 Channel: Canal
 Expand all channels: Expandir todos os canais
 Collapse all channels: Recolher todos os canais
+#Variants
 Always override: Sempre substituir
 Ask: Perguntar
+#Attribute group
 General Properties: Propriedades Gerais
 Group values: Valores do grupo
 New group: Novo grupo
 Groups overview: Visão geral dos grupos
 'Y-m-d h:i:s': 'A-m-d h:m:s'
+#Attribute properties
 Max characters: Limite máximo de caracteres
 Validation rule: Regra de validação
 Validation regexp: Expressão Regular (regexp) de validação
@@ -345,8 +354,11 @@ URL: URL
 Regular expression: Expressão Regular
 Minimum input length: Comprimento mínimo da entrada
 Default: Padrão
+#Family
 Attributes: Atributos
+#Category
 Title: Título
+#Page titles
 pim_catalog_identifier: Identificador
 pim_catalog_text: Texto
 pim_catalog_textarea: Área de texto
@@ -361,6 +373,7 @@ pim_catalog_date: Data
 pim_catalog_metric: Métrico
 pim_reference_data_simpleselect: Seleção simples de dados de referência
 pim_reference_data_multiselect: Seleção múltipla de dados de referência
+#Locales
 Activated: Ativado
 Edit: Editar
 Disable: Desabilitar
@@ -371,9 +384,11 @@ Remove this attribute: Remover esse atributo
 Copy: Cópia
 Translate from: Traduzir do
 Current tab: Aba atual
+#Product view
 Group: Grupo
 View group: Visualizar grupo
 Products: Produtos
+#Tabs
 Properties: Propriedade
 History: História
 pane.accordion:
@@ -386,11 +401,13 @@ pane.accordion:
   label_translations: Traduções do rótulo
   options: Opções
   group_values: Valores do grupo
+#Popin titles
 popin.create:
   association_type.title: Criar um novo tipo de associação
   group.title: Criar um novo grupo
   product.title: Criar um novo produto
   option.title: Criar uma nova opção
+#Datagrid contents
 In group: No grupo
 Attribute as label: Atributo como rótulo
 Is associated: Está associado
@@ -400,6 +417,7 @@ Updated At: Atualizado em
 Enabled: Habilitado
 Disabled: Desabilitado
 Status: Status
+#Versioning / history
 Change History: Histórico de alterações
 Data Audit: Auditoria de dados
 Data Audit - System: 'Auditoria de dados - sistema'
@@ -414,6 +432,7 @@ Logged at: Logado em
 Deleted: Excluído
 Old values: Valores antigos
 New values: Novo valores
+#Configuration
 System configuration: Configuração do sistema
 General setup: Configuração geral
 Localization: Localização
@@ -444,6 +463,7 @@ oro.locale:
       language: "Selecione o idioma do sistema que deseja usar"
       timezone: "Selecione o fuso horário para exibir a data e a hora"
       currency: "Selecione a moeda padrão"
+#Datagrid
 Selected products successfully deleted: Os produtos selecionados foram excluídos com sucesso
 pim_mass_edit:
   notification:

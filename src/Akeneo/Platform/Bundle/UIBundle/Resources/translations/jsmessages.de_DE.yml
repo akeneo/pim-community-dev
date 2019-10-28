@@ -1,7 +1,9 @@
+#ORO messages
 "Yes, I Agree": "Ja, ich stimme zu"
 "Yes, do it": "Ja, ausführen"
 "Ok, got it.": "Ja, verstanden."
 "Edit": "Bearbeiten"
+"Unexpected error occurred. Please contact system administrator.": "Es ist ein unerwarteter Fehler aufgetreten. Bitte wenden Sie sich an den Systemadministrator."
 "Yes, revoke": "Ja, widerrufen"
 "Revoke Confirmation": "Bestätigung widerrufen"
 Prev: Zurück
@@ -19,9 +21,11 @@ Second: Sekunde
 Millisecond: Millisekunde
 Microsecond: Mikrosekunde
 "Time Zone": "Zeitzone"
+#PIM messages
 Localized value: Vom Gebietsschema abhängiger Wert
 Columns: Spalten
 Datagrid Configuration: Konfiguration Listenansicht
+#Filters
 Action: Aktion
 Unit: Einheit
 Currency: Währung
@@ -33,6 +37,7 @@ jstree:
     unclassified: Nicht klassifizierte Produkte
   no_tree: Kein Strukturbaum verfügbar
   include_sub: Unterkategorien einschließen
+#Datetimepicker
 datetimepicker:
   days:
     Sunday: Sonntag
@@ -84,6 +89,7 @@ datetimepicker:
     Oct: Okt
     Nov: Nov
     Dec: Dez
+#ORO
 oro_config:
   form:
     config:
@@ -110,6 +116,33 @@ pim_ui:
 "Your local changes will be lost. Are you sure you want to refresh the page?": "Ihre lokalen Änderungen gehen verloren. Sind Sie sicher, dass Sie die Seite aktualisieren möchten?"
 "navigation.message.content.outdated": "Der Inhalt der Seite {{ title }} ist veraltet, bitte <a href='#' data-action='page-refresh'>aktualisieren Sie die Seite</a>"
 "Content of pinned page is outdated": "Inhalt der fixierten Seite ist veraltet"
+#Global structure of translation files
+#pim_bundle_name:
+#entity:
+#entity_name:
+#label: entity
+#uppercase_label: Entity
+#plural_label: Entities
+#flash:
+#update:
+#fail: Update failed
+#success: Entity Successfully updated
+#delete:
+#fail: Cannot delete this entity
+#success: Entity successfully removed
+#create:
+#fail: Can not create this entity
+#success: Entity successfully created
+#page_title:
+#index: "]-Inf, 1]1 entity|]1, Inf[{{ count }} entities"
+#property:
+#field_name: Field name
+#complex_field:
+#label: Field name
+#choose: Choose a field name
+#module:
+#module_name:
+#key: message
 pim_common:
   actions: Aktionen
   add: Hinzufügen
@@ -178,14 +211,17 @@ pim_common:
     STARTS WITH: Beginnt mit
     ENDS WITH: Endet mit
 error:
+  exception: Oh nein! Ein {{ status_code }} Fehler ist aufgetreten...
   forbidden: Sie haben keine Berechtigung, diese Seite anzuzeigen
 alert:
   attribute_option:
+    error_occurred_during_submission: Während der Formularübertragung auf dem Server ist ein Fehler aufgetreten
     save_before_edit_other: Bitte speichern Sie die Änderungen in den anderen Zeilen bevor Sie diese bearbeiten
   session_storage:
     not_available: Ihr Webbrowser scheint nicht kompatibel mit sessionStorage zu sein. Bitte kontaktieren Sie Ihren Administrator
 pim_enrich.entity.fallback:
   flash:
+    generic_error: Es ist ein Fehler aufgetreten
     update:
       fail: Update fehlgeschlagen
       success: Update erfolgreich

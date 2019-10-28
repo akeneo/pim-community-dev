@@ -1,15 +1,19 @@
 pim_enrich:
+  #Attribute
   attribute:
     tab:
       parameter.title: Parametre
       value.title: Værdier
       history.title: Historik
+  #Family
   family:
     info:
       cant_remove_attribute_used_as_axis: Kan ikke fjerne denne attribut, bruges som en variant akse i en familie variant
+  #Group type
   group_type:
     tab:
       property.title: Egenskaber
+  #Mass edit operations
   mass_edit_action:
     family:
       page_title: Familier
