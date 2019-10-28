@@ -333,7 +333,7 @@ pim_datagrid:
     delete:
       confirm_content: Are you sure you want to delete the selected products?
       success: Selected products successfully deleted.
-      error: Error occurred when trying to delete selected products, please try again.
+      error: An error occurred when trying to delete selected products, please try again.
     quick_export:
       csv_all: CSV (All attributes)
       csv_grid_context: CSV (Grid context)

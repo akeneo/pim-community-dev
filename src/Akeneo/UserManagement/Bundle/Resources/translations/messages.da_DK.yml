@@ -9,6 +9,7 @@ pim_user:
       middle_name: Mellemnavn
       last_name: Efternavn
       name_suffix: Navnesuffiks
+      phone: Telefon
       date_of_birth: Fødselsdato
       avatar: Avatar
       timezone: Tidszone
@@ -39,12 +40,22 @@ pim_user:
       has_group: Har gruppen
       active: Aktiv
       inactive: Inaktiv
+    fields_errors:
+      new_password:
+        minimum_length: Adgangskode skal indeholde mindst to tegn
+      new_password_repeat:
+        not_match: Adgangskode stemmer ikke overens
+      current_password:
+        wrong: Forkert adgangskode
     tabs:
       general:
         title: Generelt
+        basic_information: Basisinformation
         contact_information: Kontaktoplysninger
       additional:
         title: Yderligere
+      additional_data:
+        title: Yderligere data
       interfaces:
         title: Grænseflader
       group_and_role.title: Grupper og roller
@@ -122,6 +133,7 @@ oro_security:
       create: Opret en brugergruppe
       edit: Rediger brugergrupper
       delete: Fjern en brugergruppe
+#Security
 (default): Standardtilladelse på enheder
 VIEW: Se
 CREATE: Opret
