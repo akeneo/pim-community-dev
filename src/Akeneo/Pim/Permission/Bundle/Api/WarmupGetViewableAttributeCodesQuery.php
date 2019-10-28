@@ -66,6 +66,7 @@ final class WarmupGetViewableAttributeCodesQuery implements WarmupQueryCache
                 [];
             $attributeCodes[] = array_keys($values);
         }
+
         return array_values(array_unique(array_merge_recursive(... $attributeCodes)));
     }
 

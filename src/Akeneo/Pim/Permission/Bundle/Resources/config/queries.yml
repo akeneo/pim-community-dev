@@ -99,13 +99,6 @@ services:
         arguments:
             - '@pimee_security.query.sql.get_viewable_attribute_codes_for_user'
 
-    pimee_security.warmup_query_cache.get_viewable_attribute_codes_for_user:
-        class: 'Akeneo\Pim\Permission\Bundle\Api\WarmupGetViewableAttributeCodesQuery'
-        arguments:
-            - '@pimee_security.query.get_viewable_attribute_codes_for_user'
-            - '@security.token_storage'
-            - '%api_input_buffer_size%'
-
     pimee_security.query.get_all_viewable_locales_for_user:
         class: 'Akeneo\Pim\Permission\Bundle\Persistence\Sql\LocaleRight\GetAllViewableLocalesForUser'
         arguments:
