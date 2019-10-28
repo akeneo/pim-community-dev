@@ -2,7 +2,3 @@ jstree:
   asset:
     all: Alla Tillgångar
     unclassified: Oklassificerade tillgångar
-asset_grid:
-  label: Produkt tillgångar
-create_asset:
-  title: Skapa en tillgång

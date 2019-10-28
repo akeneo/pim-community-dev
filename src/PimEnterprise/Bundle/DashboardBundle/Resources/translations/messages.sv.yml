@@ -2,9 +2,7 @@ pimee_dashboard:
   widget:
     product_drafts:
       title: Förslag att granska
-      date: Datum
-      author: Upphovsman
-      product: Produkt
+      author: Skapare
       review: Granska
       empty: Inga produktutkast att granska
   version:

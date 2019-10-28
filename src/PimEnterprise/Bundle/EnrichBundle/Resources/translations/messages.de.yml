@@ -33,6 +33,7 @@ btn:
   save draft and finish: Entwurf speichern und fertigstellen
   send for approval: Zur Genehmigung senden
   sent for approval: Zur Freigabe gesendet
+#Mass edit operations
 pim_enrich:
   mass_edit_action:
     product:

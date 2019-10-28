@@ -33,6 +33,7 @@ btn:
   save draft and finish: Salva la bozza e termina
   send for approval: Invia per approvazione
   sent for approval: Inviata per approvazione
+#Mass edit operations
 pim_enrich:
   mass_edit_action:
     product:

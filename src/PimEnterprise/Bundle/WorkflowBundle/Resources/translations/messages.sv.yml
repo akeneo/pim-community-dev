@@ -1,6 +1,6 @@
 pimee_workflow:
   product_draft:
-    author: Upphovsman
+    author: Författare
     created: På förslag
     changes: Förändringar
     locale: Lokalt sammanhang
@@ -9,7 +9,6 @@ pimee_workflow:
     attribute:
       label: Attribut
     status:
-      label: Status
       working_copy: Arbetar kopia
       in_progress: Pågående
       ready: Väntar på godkännande
@@ -60,10 +59,8 @@ pimee_workflow:
     index: Hantera publicerade produkter
   product:
     permission:
-      label: Behörigheter
       own: Granska / publicera
       edit: Redigera
-      view: Visa
   steps:
     product_draft_processor.title: Förslag-processor
     approve.title: Godkänna förslag
@@ -101,38 +98,31 @@ flash:
     refuse:
       success: Förslaget har förkastats.
     remove:
-      success: Förslaget har tagits bort.
+      success: Förslaget har nekats.
 pim_menu:
   item:
-    published_product: Publicerade produkter
     proposal: Förslag
-pim_title:
-  published_product:
-    index: Publicerade produkter
-  proposal:
-    index: Förslag
 btn.editworkingcopy: Redigera arbetskopian
 confirmation:
   product:
     publish: Är du säker du vill publicera denna produkt?
     unpublish: Är du säker du vill Avpublicera den här produkten?
-Attributes.title: Attribut
+Attributes.title: Attributer
 Completeness.title: Fullständighet
 publish_product.steps.publish_product_tasklet.title: Publicera produkt
 unpublish_product.steps.unpublish_product_tasklet.title: Avpublicera produkt
-approve_product_draft.steps.approve.title: Godkänna förslag
+approve_product_draft.steps.approve.title: Godkänn förslag
 approve_product_draft.steps.refuse.title: Förkasta förslag
 job_execution.summary:
   approved: godkänt
   refused: avvisade
-  mass_published: Produkten publiceras
-  mass_unpublished: Produkt opublicerad
+  mass_published: Produkten publicerad
+  mass_unpublished: Produkten opublicerad
   proposal: Förslaget skapat
   proposal_deleted: borttagna förslag
   proposal_updated: uppdaterade förslag
   proposal_created: skapade förslag
   proposal_skipped: överhoppade förslag (inga skillnader)
-published products: Publicerade produkter
 pim_analytics:
   info_type:
     nb_published_products: Antal publicerade produkter
