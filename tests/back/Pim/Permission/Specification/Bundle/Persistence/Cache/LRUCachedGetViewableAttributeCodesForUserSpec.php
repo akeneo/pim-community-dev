@@ -10,8 +10,8 @@ class LRUCachedGetViewableAttributeCodesForUserSpec extends ObjectBehavior
 {
     function let(GetViewableAttributeCodesForUserInterface $getViewableAttributeCodesForUser)
     {
-        $grantedAttributeCodes = ['name', 'description', 'image'];
-        $requestedAttributeCodes = ['name', 'weight', 'description', 'image', 'size'];
+        $grantedAttributeCodes = ['name', 'description', 'image', '123'];
+        $requestedAttributeCodes = ['name', 'weight', 'description', 'image', '123', 'size'];
         $getViewableAttributeCodesForUser->forAttributeCodes($requestedAttributeCodes, 42)
                                          ->willReturn($grantedAttributeCodes);
 
@@ -32,16 +32,16 @@ class LRUCachedGetViewableAttributeCodesForUserSpec extends ObjectBehavior
     function it_gets_granted_attributes_by_doing_a_query_if_the_cache_is_not_hit(
         GetViewableAttributeCodesForUserInterface $getViewableAttributeCodesForUser
     ) {
-        $getViewableAttributeCodesForUser->forAttributeCodes(['color', 'brand', 'collection'], 42)
-                                         ->shouldBeCalled()->willReturn(['color', 'collection']);
-        $this->forAttributeCodes(['color', 'brand', 'collection'], 42)->shouldReturn(['color', 'collection']);
+        $getViewableAttributeCodesForUser->forAttributeCodes(['color', 'brand', 'collection', '456'], 42)
+                                         ->shouldBeCalled()->willReturn(['color', 'collection', '456']);
+        $this->forAttributeCodes(['color', 'brand', 'collection', '456'], 42)->shouldReturn(['color', 'collection', '456']);
     }
 
     function it_gets_granted_attributes_from_the_cache_when_the_cache_is_hit(
         GetViewableAttributeCodesForUserInterface $getViewableAttributeCodesForUser
     ) {
-        $getViewableAttributeCodesForUser->forAttributeCodes(['description', 'image', 'size'], 42)->shouldNotBeCalled();
-        $this->forAttributeCodes(['description', 'image', 'size'], 42)->shouldBeLike(['description', 'image']);
+        $getViewableAttributeCodesForUser->forAttributeCodes(['description', 'image', '123', 'size'], 42)->shouldNotBeCalled();
+        $this->forAttributeCodes(['description', 'image', '123', 'size'], 42)->shouldBeLike(['description', 'image', '123']);
     }
 
     function it_mixes_the_call_between_cached_and_non_cached_attribute_codes(
@@ -49,8 +49,8 @@ class LRUCachedGetViewableAttributeCodesForUserSpec extends ObjectBehavior
     ) {
         $getViewableAttributeCodesForUser->forAttributeCodes(['color', 'brand'], 42)->willReturn(['color']);
 
-        $this->forAttributeCodes(['name', 'weight', 'description', 'image', 'color', 'size', 'brand'], 42)
-             ->shouldReturn(['color', 'name', 'description', 'image']);
+        $this->forAttributeCodes(['name', 'weight', 'description', 'image', '123', 'color', 'size', 'brand'], 42)
+             ->shouldReturn(['color', 'name', 'description', 'image', '123']);
     }
 
     function it_can_get_more_than_the_cache_size(
@@ -70,10 +70,10 @@ class LRUCachedGetViewableAttributeCodesForUserSpec extends ObjectBehavior
     function it_clears_the_cache_for_another_user(
         GetViewableAttributeCodesForUserInterface $getViewableAttributeCodesForUser
     ) {
-        $getViewableAttributeCodesForUser->forAttributeCodes(['name', 'weight', 'description', 'image', 'size'], 56)
+        $getViewableAttributeCodesForUser->forAttributeCodes(['name', 'weight', 'description', 'image', '123', 'size'], 56)
                                          ->shouldBeCalled()
-                                         ->willReturn(['name', 'weight', 'description', 'image', 'size']);
-        $this->forAttributeCodes(['name', 'weight', 'description', 'image', 'size'], 56)
-             ->shouldReturn(['name', 'weight', 'description', 'image', 'size']);
+                                         ->willReturn(['name', 'weight', 'description', 'image', '123', 'size']);
+        $this->forAttributeCodes(['name', 'weight', 'description', 'image', '123', 'size'], 56)
+             ->shouldReturn(['name', 'weight', 'description', 'image', '123', 'size']);
     }
 }
