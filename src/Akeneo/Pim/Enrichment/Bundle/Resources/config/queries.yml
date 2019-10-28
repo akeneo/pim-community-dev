@@ -264,3 +264,6 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Attribute\GetAttributeOptionsMaxSortOrder'
         arguments:
             - '@database_connection'
+
+    akeneo.pim.enrichment.storage.sql.warmup_query_cache.dummy:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Cache\DummyWarmupQueryCache'
