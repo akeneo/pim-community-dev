@@ -64,7 +64,9 @@ services:
     akeneo.pim.enrichment.factory.value:
         class: Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueFactory
         arguments:
-            $valueFactories: !tagged akeneo.pim.enrichment.factory.product_value
+            - !tagged akeneo.pim.enrichment.factory.product_value
+            - '@pim_catalog.repository.cached_locale'
+            - '@pim_catalog.repository.cached_channel'
 
     akeneo.pim.enrichment.factory.value_collection:
         class: Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactory

@@ -2,6 +2,8 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory;
 
+use Akeneo\Channel\Component\Model\Channel;
+use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\EmptyValuesCleaner;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\ChainedNonExistentValuesFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\OnGoingFilteredRawValues;
@@ -19,6 +21,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 
@@ -26,8 +29,26 @@ class WriteValueCollectionFactorySpec extends ObjectBehavior
 {
     function let(
         GetAttributes $getAttributeByCodes,
-        ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter
+        ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter,
+        IdentifiableObjectRepositoryInterface $localeRepository,
+        IdentifiableObjectRepositoryInterface $channelRepository
     ) {
+        $ecommerce = new Channel();
+        $tablet = new Channel();
+
+        $enUS = new Locale();
+        $enUS->setCode('en_US');
+        $enUS->addChannel($ecommerce);
+
+        $frFR = new Locale();
+        $frFR->setCode('fr_FR');
+        $frFR->addChannel($ecommerce);
+
+        $localeRepository->findOneByIdentifier('en_US')->willReturn($enUS);
+        $localeRepository->findOneByIdentifier('fr_FR')->willReturn($frFR);
+
+        $channelRepository->findOneByIdentifier('ecommerce')->willReturn($ecommerce);
+        $channelRepository->findOneByIdentifier('tablet')->willReturn($tablet);
 
         $valueFactory = new ValueFactory(
             [
@@ -37,7 +58,9 @@ class WriteValueCollectionFactorySpec extends ObjectBehavior
                 new IdentifierValueFactory(),
                 new TextAreaValueFactory(),
                 new TextValueFactory(),
-            ]
+            ],
+            $localeRepository->getWrappedObject(),
+            $channelRepository->getWrappedObject()
         );
 
         $this->beConstructedWith(
@@ -74,7 +97,6 @@ class WriteValueCollectionFactorySpec extends ObjectBehavior
                 'tablet' => [
                     'en_US' => 'a text area for tablets in English',
                     'fr_FR' => 'une zone de texte pour les tablettes en français',
-
                 ],
             ],
         ];
