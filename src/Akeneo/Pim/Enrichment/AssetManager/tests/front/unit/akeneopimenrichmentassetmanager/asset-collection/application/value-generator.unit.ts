@@ -650,6 +650,113 @@ test('It should generate a value collection from the product with editable categ
   expect(valueCollection).toEqual(expectedValueCollection);
 });
 
+test('It should consistently order a value collection even when the order is the same', async () => {
+  const attributeGroupPermission = {
+    code: 'marketing',
+    view: true,
+    edit: true,
+  };
+  const localePermission = {
+    code: 'en_US',
+    view: true,
+    edit: true,
+  };
+  const isReadOnly = false;
+  const attributesForThisLevel = ['video_presentation', 'packshot', 'notices'];
+  const categoriesEditPermission = [];
+
+  fetchAssetAttributes.mockImplementation(attributeFetcher => () => [
+    {
+      code: 'video_presentation',
+      labels: {
+        en_US: 'video_presentation',
+      },
+      group: 'marketing',
+      isReadOnly,
+      referenceDataName: 'video_presentation',
+      sort_order: 0,
+    },
+    {
+      code: 'packshot',
+      labels: {
+        en_US: 'packshot',
+      },
+      group: 'marketing',
+      isReadOnly,
+      referenceDataName: 'packshot',
+      sort_order: 0,
+    },
+    {
+      code: 'notices',
+      labels: {
+        en_US: 'notices',
+      },
+      group: 'marketing',
+      isReadOnly,
+      referenceDataName: 'notices',
+      sort_order: 0,
+    },
+  ]);
+  fetchAssetAttributeGroups.mockImplementation(attributeGroupFetcher => () => getMockAssetAttributeGroups());
+  fetchPermissions.mockImplementation(permissionFetcher => () =>
+    getMockPermissions(attributeGroupPermission, localePermission, categoriesEditPermission)
+  );
+  const product = getMockProduct(attributesForThisLevel);
+  const expectedValueCollection = [
+    {
+      attribute: {
+        code: 'notices',
+        labels: {
+          en_US: 'notices',
+        },
+        group: 'marketing',
+        isReadOnly: false,
+        referenceDataName: 'notices',
+        sort_order: 0,
+      },
+      locale: null,
+      channel: 'ecommerce',
+      data: [],
+      editable: false,
+    },
+    {
+      attribute: {
+        code: 'packshot',
+        labels: {
+          en_US: 'packshot',
+        },
+        group: 'marketing',
+        isReadOnly: false,
+        referenceDataName: 'packshot',
+        sort_order: 0,
+      },
+      locale: 'en_US',
+      channel: 'ecommerce',
+      data: ['iphone'],
+      editable: false,
+    },
+    {
+      attribute: {
+        code: 'video_presentation',
+        labels: {
+          en_US: 'video_presentation',
+        },
+        group: 'marketing',
+        isReadOnly: false,
+        referenceDataName: 'video_presentation',
+        sort_order: 0,
+      },
+      locale: null,
+      channel: 'ecommerce',
+      data: [],
+      editable: false,
+    },
+  ];
+
+  const valueCollection = await generate(product);
+  expect(valueCollection).toEqual(expectedValueCollection);
+});
+
 const getMockAssetAttributes = (isReadOnly: boolean) => {
   return [
     {
