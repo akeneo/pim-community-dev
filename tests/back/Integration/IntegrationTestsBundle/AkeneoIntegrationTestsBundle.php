@@ -2,6 +2,9 @@
 
 namespace Akeneo\Test\IntegrationTestsBundle;
 
+use Akeneo\Test\IntegrationTestsBundle\DependencyInjection\MakeServicesPublicForTestEnv;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
@@ -13,4 +16,8 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class AkeneoIntegrationTestsBundle extends Bundle
 {
+    public function build(ContainerBuilder $container): void
+    {
+        $container->addCompilerPass(new MakeServicesPublicForTestEnv(), PassConfig::TYPE_BEFORE_OPTIMIZATION);
+    }
 }
