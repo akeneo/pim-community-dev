@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Tool\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -13,7 +14,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductValuesNormalizer implements NormalizerInterface
+class ProductValuesNormalizer implements NormalizerInterface, CachedObjectRepositoryInterface
 {
     /** @var NormalizerInterface */
     private $normalizer;
@@ -44,5 +45,10 @@ class ProductValuesNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return 'standard' === $format && ($data instanceof WriteValueCollection || $data instanceof ReadValueCollection);
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 }
