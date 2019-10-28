@@ -94,7 +94,8 @@
         "symfony/debug-bundle": "^4.3",
         "symfony/web-profiler-bundle": "^4.3",
         "symfony/web-server-bundle": "^4.3",
-        "symfony/lock": "^4.3"
+        "symfony/lock": "^4.3",
+        "symfony/yaml": "^4.3"
     },
     "require-dev": {
         "akeneo/php-coupling-detector": "0.3.*",
