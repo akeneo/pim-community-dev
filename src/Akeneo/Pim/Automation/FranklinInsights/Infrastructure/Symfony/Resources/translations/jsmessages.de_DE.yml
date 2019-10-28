@@ -83,7 +83,7 @@ akeneo_franklin_insights:
         no_identifiers_mapping: 'Bitte ordnen Sie Ihre Katalogproduktbezeichnungen unter Einstellungen > Franklin Insights zu, bevor Sie Produkte abonnieren.'
         insufficient_credits: "Sorry, ich konnte das Produkt bei Franklin Insights nicht abonnieren. Sie haben nicht genug Guthaben."
         invalid_mapped_values: 'Sorry, ich konnte das Produkt nicht bei Franklin Insights abonnieren. Bitte abonnieren Sie das Produkt mit einer gültigen Kombination von Identifikatoren.'
-        data_provider_error: 'Franklin meldet einen Fehler beim Versuch, das Produkt zu abonnieren.'
+        data_provider_error: 'Franklin meldet einen Fehler beim Versuch, das Produkt zu abonnieren.' #TODO: check with POs
         not_subscribed: 'Das Produkt ist nicht abonniert.'
         already_subscribed_product: 'Das Produkt ist bereits abonniert.'
         variant_product: 'Leider können Variantenprodukte nicht bei Franklin Insights abonniert werden.'

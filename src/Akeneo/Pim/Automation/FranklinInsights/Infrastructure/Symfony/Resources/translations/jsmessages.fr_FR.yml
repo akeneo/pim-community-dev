@@ -83,7 +83,7 @@ akeneo_franklin_insights:
         no_identifiers_mapping: 'Veuillez d''abord mapper les identifiants de votre catalog sur la page Paramètres > Franklin Insights avant d''abonner des produits.'
         insufficient_credits: "Désolé, impossible d'abonner ce produit à Franklin Insights. Vous n’avez pas assez de crédits."
         invalid_mapped_values: 'Désolé, impossible d''abonner ce produit à Franklin Insights. Veuillez vérifier que la combinaison des identifiants est valide.'
-        data_provider_error: 'Franklin a renvoyé une erreur lors de la tentative d''abonner le produit'
+        data_provider_error: 'Franklin a renvoyé une erreur lors de la tentative d''abonner le produit' #TODO: check with POs
         not_subscribed: 'Le produit n’est pas abonné'
         already_subscribed_product: 'Le produit est déjà abonné.'
         variant_product: 'Désolé, les produits variants ne peuvent pas être abonnés à Franklin Insights.'

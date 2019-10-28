@@ -53,7 +53,11 @@ pim_reference_entity:
         count: '{0} Sense entitats de referència|{1} {{ count }} Entitats de referència|]1,Inf] {{ count }} Entitats de referència'
         help:
           title: 'Benvingut a les entitats de referència!'
+          description_part_one: Enriquir la informació rellevant relacionada amb els productes (per exemple, marques, fabricants, colors, materials, ingredients...).
+          description_part_two: Li permetrà oferir una millor experiència del producte als seus clients.
           description_part_three: Feu clic al botó "Crea" per crear la teva primera entitat de referència, i estableixi els seus atributs i registres.
+          description_part_four: Desprès, per enllaçar amb productes, crea un tipus d'atribut de producte relacionat amb aquesta entitat de referència.
+          description_part_five: Per a més detalls, l'invitem a navegar per a aquest article.
     create:
       header:
         title: Crear
@@ -77,8 +81,13 @@ pim_reference_entity:
         success: Entitat de referència eliminada correctament.
         fail: S'ha produït un error durant l'eliminació de l'entitat de referència
   permission:
+    notification:
+      save:
+        success: Els permisos de l'entitat de referència s'han actualitzat correctament.
+        fail: Com a mínim un grup d'usuaris té que tenir permisos d'edició sobre a aquesta entitat
     no_data:
       title: No teniu cap grup d'usuaris
+      subtitle: Per gestionar els permisos de l'entitat de referència es necessari tenir com mínim un grup d'usuaris.
       link: Clic aquí per afegir el teu primer grup usuari
   record:
     validation:
@@ -188,6 +197,7 @@ pim_reference_entity:
         title: Crear
       subtitle: Entitats de referència
       title: Afegir nou atribut de registre
+      description: Els següents paràmetres, excepte l'etiqueta, no poden actualitzar-se desprès de la creació de l'atribut
       input:
         code: Codi (requerit)
         label: Etiqueta
@@ -195,6 +205,8 @@ pim_reference_entity:
         record_type: Entitat de referència per enllaçar (obligatori)
         value_per_locale: Valor per local
         value_per_channel: Valor per canal
+      placeholder:
+        record_type: Selecciona la seva entitat de referència vinculada
       confirm: Desar
     edit:
       delete: Eliminar l'atribut
@@ -274,7 +286,12 @@ pim_enrich:
           default_label: Si us plau, selecciona una entitat de referència
 permission:
   mass_action: Aplicar {{ rightLevel }} regles en tots els grups
+#Analytics
 pim_catalog_volume:
+  section:
+    reference_entity:
+      title: Eixos a l'entitat de referència
+      hint: Si esteu utilitzant les entitats de referència, aquí teniu ajuda dels eixos per controlar el volum.
   axis:
     count_reference_entity: Entitats de referència
     average_max_records_per_reference_entity: Registres per entitat de referencia

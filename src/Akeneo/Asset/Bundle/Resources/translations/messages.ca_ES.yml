@@ -61,7 +61,7 @@ pimee_product_asset:
     flash:
       delete:
         success: S'ha esborrat l'arxiu de referència.
-        error: No s'ha esborrat l'arxiu de referència.. S'ha produït un error.
+        error: No s'ha esborrat l'arxiu de referència. S'ha produït un error.
   enrich_variation:
     flash:
       transformation:
@@ -70,6 +70,7 @@ pimee_product_asset:
         image_height_error: No es pot generar la variació %channel% perquè la imatge carregada té una alçada més petita del mínim per a la transformació.
         not_applicable: No es pot generar la variació %channel%.
         non_registered: No s'ha registrat cap transformació %transformation% per la mime type %mimeType%. No es pot generar la variació %channel%.
+        missing_asset_transformation_for_channel: Impossible generar la variació del %channel%, si us plau, estableix una transformació d'actius per a aquest canal.
         error: No es pot generar la variació %channel%.
         success: Els arxius de variació s'han generat correctament.
       update:
@@ -125,7 +126,7 @@ pimee_product_asset:
     import: Importació
     executed: Càrrega en massa executada
     error:
-      upload: S'ha produït un error en la càrrega
+      upload: S'ha produït un error durant la càrrega
       code: Format de codi invàlid pel recurs
       localizable: Ja existeix un recurs però no se li pot aplicar cap configuració regional
       invalid_locale: La configuració regional està desactivada o no és vàlida

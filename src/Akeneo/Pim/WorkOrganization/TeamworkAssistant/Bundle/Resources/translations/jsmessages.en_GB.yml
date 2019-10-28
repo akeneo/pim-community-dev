@@ -1,6 +1,7 @@
 teamwork_assistant:
   common:
     required: Required
+    warning: Project calculation may take a while so your project may not be visible right away.
   grid:
     view_selector:
       create: Create project
@@ -14,7 +15,9 @@ teamwork_assistant:
   project:
     label: Name
     locale: Locale
+    label_maxlength: This value is too long. It should have {{ max }} characters.
     description: Description
+    due_date: Due Date
     due_date_past: You cannot select a date in the past.
     leaving_scope: You are leaving the project's scope.
   edit_project_modal:
@@ -27,3 +30,38 @@ teamwork_assistant:
     no_project: You have no current projects
     no_project_create: create a new project
     description: Description
+    due_date: Due date
+    todo: TODO
+    in_progress: IN PROGRESS
+    done: DONE
+    all_contributors: All contributors
+    display_products: Display products
+    placeholder:
+      contributor_selector: Search contributor
+      project_selector: Search project
+    completeness:
+      to_start: PRODUCTS TO START
+      in_progress: PRODUCTS IN PROGRESS
+      done: PRODUCTS DONE
+pim_datagrid:
+  view_selector:
+    project: Projects
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        refresh_project_completeness_calculation: Teamwork Assistant
+        project_calculation: Teamwork Assistant
+batch_jobs:
+  project_calculation:
+    project_calculation.label: Project calculation
+    prepare_project_calculation.label: Prepare the project calculation
+    clean_contributor_group.label: Check users permission on project's locale
+  refresh_project_completeness_calculation:
+    label: Refresh project completeness
+    refresh_project_completeness_calculation.label: Refresh project completeness
+pim_notification:
+  types:
+    project_created: A new project for you
+    project_finished: Project finished
+    project_calculation: Project calculation

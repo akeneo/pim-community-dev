@@ -74,6 +74,7 @@ pim_enrich:
       property:
         type:
           pim_assets_collection: Collection de ressources
+#TODO merge in 3.1: `pim_dashboard` should be renamed in `pim_import_export`
 pim_dashboard:
   widget:
     last_operations:

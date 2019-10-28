@@ -74,6 +74,7 @@ pim_enrich:
       property:
         type:
           pim_assets_collection: Sammlung von Assets
+#TODO merge in 3.1: `pim_dashboard` should be renamed in `pim_import_export`
 pim_dashboard:
   widget:
     last_operations:
@@ -220,8 +221,7 @@ pimee_enrich.mass_edit.asset:
 pim_catalog_volume:
   section:
     assets:
-      title: Achsen auf Assets
-      hint: Sie können das Volumen der Assets hier verfolgen.
+      title: Kennzahlen zu Assets
   axis:
     count_assets: Assets
     count_asset_categories: Assetkategorien

@@ -1,120 +1,48 @@
 pim_reference_entity:
-  app:
-    image:
-      wide:
-        upload: Træk og slip for at uploade eller klik her
-      small:
-        remove: Fjern
-        download: Hent
   reference_entity:
-    button:
-      save: Gem
-      save_permission: Gem
-      create: Opret
-    tab:
-      attribute: Egenskaber
-      properties: Egenskaber
-      permission: Rettigheder
-    properties:
-      identifier: Kode
-      label: Etiket
-      image: Billede
+    attribute:
+      attribute:
+        error:
+          render_list: 'Der opstod en fejl under gengivelsen af "{{ %attribute_code% }}"-attributten'
+          render_edit: 'Der opstod en fejl under gengivelsen af "{{ %attribute_code% }}"-attributten, yderligere egenskabsfelter'
     create:
-      header:
-        title: Opret
       input:
         label: Etiket
-      confirm: Gem
-    delete:
-      title: Attribut
-  record:
-    no_result:
-      subtitle: Prøv igen med nye søgekriterier.
-    button:
-      save: Gem
-      create: Tilføj ny
-      delete: Slet
-    enrich:
-      code: Kode
-      label: Etiket
-    create:
-      header:
-        title: Opret
-      input:
-        label: Etiket
-      confirm: Gem
-    grid:
-      filter:
-        completeness:
-          label: Fuldført
-      column:
-        code: Kode
-        image: Billede
-        label: Etiket
-        complete: Fuldført
-        action: Aktioner
-    tab:
-      enrich: Berige
-    completeness:
-      label: Fuldført
-  attribute:
-    default:
-      code: Kode
-      label: Etiket
-      image: Billede
-    type:
-      text: Tekst
-      image: Billede
-    create:
-      header:
-        title: Opret
-      input:
-        label: Etiket
-        type: Attributtype
-        value_per_locale: Værdi pr. landestandard
-        value_per_channel: Værdi pr. kanal
-      confirm: Gem
-    edit:
-      save: Gem
-      cancel: Annuller
-      input:
-        label: Etiket
-        type: Attributtype
-        value_per_locale: Værdi pr. landestandard
-        value_per_channel: Værdi pr. kanal
-        max_length: Maks. tegn
-        textarea: Tekstområde
-        max_file_size: Maks. filstørrelse (MB)
-        allowed_extensions: Tilladte filendelser
-        validation_rule: Valideringsregel
-        regular_expression: Regulære udtryk
-        options:
-          validation_rule:
-            none: Ingen
-            email: E-mail
-            regular_expression: Regulære udtryk
-            url: URL
-    delete:
-      title: Attribut
     notification:
       save:
-        success: Atributten blev opdateret.
+        success: Referenceenhed blev opdateret.
+        fail: Der opstod en fejl under gemningen af referenceenheden
       create:
-        success: Atributten blev oprettet.
+        success: Referenceenhed blev oprettet.
+        fail: Der opstod en fejl under oprettelsen af referenceenheden
       delete:
-        success: Atributten blev slettet.
-    options:
-      helper:
-        title: Etiket oversættelser
-  modal:
-    delete:
-      subtitle: Bekræft sletning
-      button:
-        cancel: Annuller
-        confirm: Slet
-pim_enrich:
-  entity:
-    attribute:
-      property:
-        section:
-          type_specific: Specifik type parametre
+        fail: Der opstod en fejl under sletningen af referenceenheden
+  record:
+    grid:
+      filter:
+        counter: '{{ matchesCount }} resultat|{{ matchesCount }} resultater'
+        completeness:
+          all: ALLE
+          'yes': 'JA'
+          'no': 'NEJ'
+    tab:
+      enrich: Berige
+    notification:
+      save:
+        fail: Der opstod en fejl under gemningen af arkivet
+      create:
+        fail: Der opstod en fejl under oprettelsen af arkivet
+      delete:
+        fail: Der opstod en fejl under sletningen af arkivet
+      delete_all:
+        fail: Der opstod en fejl under sletningen af alle referenceenhedens arkiver
+  attribute:
+    notification:
+      list:
+        fail: Der opstod en fejl under opdateringen af attribut-listen
+      save:
+        fail: Der opstod en fejl under gemningen af attributten
+      create:
+        fail: Der opstod en fejl under oprettelsen af attributten
+      delete:
+        fail: Der opstod en fejl under sletningen af attributten
