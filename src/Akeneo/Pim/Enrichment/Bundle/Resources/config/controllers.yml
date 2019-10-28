@@ -32,6 +32,9 @@ services:
                 date_formats: '%pim_catalog.localization.date_formats%'
 
     ### External API
+    pim_api.warmup_query_cache.dummy:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\DummyWarmupQueryCache'
+
     pim_api.controller.product:
         public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ProductController'
@@ -62,6 +65,7 @@ services:
             - '@security.token_storage'
             - '@akeneo.pim.enrichment.product.connector.get_product_from_identifiers'
             - '@pim_catalog.event_subscriber.product.on_save.api_aggregator_event_subscriber'
+            - '@pim_api.warmup_query_cache.dummy'
 
     pim_api.controller.product_model:
         public: true
@@ -88,6 +92,7 @@ services:
             - '@akeneo.pim.enrichment.product.connector.get_product_models_from_codes'
             - '@security.token_storage'
             - '@pim_catalog.event_subscriber.product_model.on_save.api_aggregator_event_subscriber'
+            - '@pim_api.warmup_query_cache.dummy'
             - '%pim_api.configuration%'
 
     pim_api.controller.category:
