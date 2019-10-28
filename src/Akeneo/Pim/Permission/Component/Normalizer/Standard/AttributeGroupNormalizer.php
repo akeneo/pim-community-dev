@@ -63,6 +63,7 @@ class AttributeGroupNormalizer implements NormalizerInterface, CacheableSupports
 
     public function hasCacheableSupportsMethod(): bool
     {
-        return true;
+        return $this->normalizer instanceof CacheableSupportsMethodInterface
+            && $this->normalizer->hasCacheableSupportsMethod();
     }
 }

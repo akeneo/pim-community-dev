@@ -68,6 +68,7 @@ class VersionNormalizer implements NormalizerInterface, CacheableSupportsMethodI
 
     public function hasCacheableSupportsMethod(): bool
     {
-        return true;
+        return $this->versionNormalizer instanceof CacheableSupportsMethodInterface
+            && $this->versionNormalizer->hasCacheableSupportsMethod();
     }
 }

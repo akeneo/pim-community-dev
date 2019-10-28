@@ -19,12 +19,13 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftIn
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Add metadata to product model normalized data concerning only the PIM Enterprise Edition
  */
-class ProductModelNormalizer implements NormalizerInterface
+class ProductModelNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     const WORKFLOW_STATUS_WORKING_COPY = 'working_copy';
     const WORKFLOW_STATUS_READ_ONLY = 'read_only';
@@ -72,6 +73,13 @@ class ProductModelNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $this->productModelNormalizer->supportsNormalization($data, $format);
+    }
+
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return $this->productModelNormalizer instanceof CacheableSupportsMethodInterface
+            && $this->productModelNormalizer->hasCacheableSupportsMethod();
     }
 
     /**
