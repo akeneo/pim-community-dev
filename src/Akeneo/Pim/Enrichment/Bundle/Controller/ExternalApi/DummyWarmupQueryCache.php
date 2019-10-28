@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Cache;
+namespace Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi;
 
 use Akeneo\Tool\Bundle\ApiBundle\Cache\WarmupQueryCache;
 use Symfony\Component\HttpFoundation\Request;

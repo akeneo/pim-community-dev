@@ -15,10 +15,12 @@ use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\AddParent;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\QueryCacheWarmer;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface;
+use Akeneo\Tool\Bundle\ApiBundle\Cache\WarmupQueryCache;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Akeneo\Tool\Component\Api\Exception\DocumentedHttpException;
@@ -136,6 +138,9 @@ class ProductController
     /** @var ApiAggregatorForProductPostSaveEventSubscriber */
     private $apiAggregatorForProductPostSave;
 
+    /** @var WarmupQueryCache */
+    private $queryCacheWarmer;
+
     public function __construct(
         NormalizerInterface $normalizer,
         IdentifiableObjectRepositoryInterface $channelRepository,
@@ -162,7 +167,8 @@ class ProductController
         ConnectorProductNormalizer $connectorProductNormalizer,
         TokenStorageInterface $tokenStorage,
         GetConnectorProducts $getConnectorProducts,
-        ApiAggregatorForProductPostSaveEventSubscriber $apiAggregatorForProductPostSave
+        ApiAggregatorForProductPostSaveEventSubscriber $apiAggregatorForProductPostSave,
+        WarmupQueryCache $warmupQueryCache
     ) {
         $this->normalizer = $normalizer;
         $this->channelRepository = $channelRepository;
@@ -190,6 +196,7 @@ class ProductController
         $this->tokenStorage = $tokenStorage;
         $this->getConnectorProducts = $getConnectorProducts;
         $this->apiAggregatorForProductPostSave = $apiAggregatorForProductPostSave;
+        $this->warmupQueryCache = $warmupQueryCache;
     }
 
     /**
@@ -381,6 +388,7 @@ class ProductController
      */
     public function partialUpdateListAction(Request $request): Response
     {
+        $this->warmupQueryCache->fromRequest($request);
         $resource = $request->getContent(true);
         $this->apiAggregatorForProductPostSave->activate();
         $response = $this->partialUpdateStreamResource->streamResponse($resource, [], function () {
