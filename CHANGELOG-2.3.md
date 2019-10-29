@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-8885: fix empty warning message on bulk action confirmation page
+
 # 2.3.69 (2019-10-24)
 
 ## Bug fixes
