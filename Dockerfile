@@ -57,12 +57,10 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
     usermod -d /srv/pim www-data && \
     mkdir -p /run/php
 
-#sed -i "s#listen = /run/php/php7.3-fpm.sock#listen = 9000#g" /etc/php/7.3/fpm/pool.d/www.conf && \
 
 COPY docker/php.ini /etc/php/7.3/cli/conf.d/99-akeneo.ini
 COPY docker/php.ini /etc/php/7.3/fpm/conf.d/99-akeneo.ini
 COPY docker/fpm.conf /etc/php/7.3/fpm/pool.d/zzz-akeneo.conf
-#COPY docker/php-fpm.conf /etc/php/7.3/fpm/php-fpm.conf
 
 #
 # Image used for development
