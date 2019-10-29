@@ -84,11 +84,6 @@ class UserController
     /** @var SecurityFacade|null */
     private $securityFacade;
 
-    /**
-     * @todo merge master:
-     *       - remove the $objectManager argument
-     *       - the last three arguments ($translator $remover $securityFacade) must not be nullable anymore
-     */
     public function __construct(
         TokenStorageInterface $tokenStorage,
         NormalizerInterface $normalizer,
@@ -104,7 +99,7 @@ class UserController
         RemoverInterface $remover,
         NumberFactory $numberFactory,
         TranslatorInterface $translator,
-        ?SecurityFacade $securityFacade = null
+        ?SecurityFacade $securityFacade
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->normalizer = $normalizer;
@@ -174,14 +169,11 @@ class UserController
         //code is useful to reach the route, cannot forget it in the query
         unset($data['code']);
 
-        // @todo remove this check when $securityFacade is not nullable anymore
-        if (null !== $this->securityFacade) {
-            if (!$this->securityFacade->isGranted('pim_user_role_edit')) {
-                unset($data['roles']);
-            }
-            if (!$this->securityFacade->isGranted('pim_user_group_edit')) {
-                unset($data['groups']);
-            }
+        if (!$this->securityFacade->isGranted('pim_user_role_edit')) {
+            unset($data['roles']);
+        }
+        if (!$this->securityFacade->isGranted('pim_user_group_edit')) {
+            unset($data['groups']);
         }
 
         return $this->updateUser($user, $data);
