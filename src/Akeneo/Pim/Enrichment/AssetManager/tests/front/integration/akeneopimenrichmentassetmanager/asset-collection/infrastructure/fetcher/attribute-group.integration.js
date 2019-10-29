@@ -7,7 +7,7 @@ beforeEach(async () => {
   page.on('request', interceptedRequest => {
     // Intercept the call to get the product attribute groups
     if (
-      'http://pim.com/rest/attribute-group/?options%5Blimit%5D=-1' === interceptedRequest.url() &&
+      'http://pim.com/rest/attribute-group/' === interceptedRequest.url() &&
       'GET' === interceptedRequest.method()
     ) {
       const attributeGroups = {
