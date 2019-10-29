@@ -1027,7 +1027,7 @@ pim_enrich:
     confirm: Confirmation
     product:
       title: Action de masse sur les produits
-      confirm: "{1}Vous êtes sur le point de mettre à jour un produit avec les renseignements suivants, merci de confirmer.|] 1, Inf [Vous êtes sur le point de mettre à jour {{ itemsCount }} produits avec les renseignements suivants, merci de confirmer."
+      confirm: "[0, 1]Vous êtes sur le point de mettre à jour un produit avec les renseignements suivants, merci de confirmer.|] 1, Inf [Vous êtes sur le point de mettre à jour {{ itemsCount }} produits avec les renseignements suivants, merci de confirmer."
       step:
         select:
           label: Choisir des produits

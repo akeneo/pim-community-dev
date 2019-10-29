@@ -1027,7 +1027,7 @@ pim_enrich:
     confirm: Confirmación
     product:
       title: Productos de acción masiva
-      confirm: "{1}Usted está a punto de actualizar un producto con la siguiente información, por favor confirmar. |] 1, Inf. [Usted está a punto de actualizar {{ itemsCount }} productos con la siguiente información, por favor confirmar."
+      confirm: "[0, 1]Usted está a punto de actualizar un producto con la siguiente información, por favor confirmar. |] 1, Inf. [Usted está a punto de actualizar {{ itemsCount }} productos con la siguiente información, por favor confirmar."
       step:
         select:
           label: Seleccione los productos

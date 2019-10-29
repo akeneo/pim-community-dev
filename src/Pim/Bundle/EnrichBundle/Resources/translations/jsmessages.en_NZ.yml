@@ -1023,7 +1023,7 @@ pim_enrich:
     confirm: Confirm
     product:
       title: Products bulk action
-      confirm: "{1}You are about to update a product with the following information, please confirm.|] 1, Inf [You are about to update {{ itemsCount }} products with the following information, please confirm."
+      confirm: "[0, 1]You are about to update a product with the following information, please confirm.|] 1, Inf [You are about to update {{ itemsCount }} products with the following information, please confirm."
       step:
         select:
           label: Choose products

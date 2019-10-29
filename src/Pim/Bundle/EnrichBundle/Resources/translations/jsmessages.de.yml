@@ -1027,7 +1027,7 @@ pim_enrich:
     confirm: Bestätigen
     product:
       title: Massenbearbeitung Produkte
-      confirm: "{1}Sie sind dabei, ein Produkt mit den folgenden Informationen zu aktualisieren. Bitte bestätigen Sie den Vorgang.|] 1, Inf [Sie sind dabei {{ itemsCount }} Produkte mit den folgenden Informationen zu aktualisieren. Bitte bestätigen Sie den Vorgang."
+      confirm: "[0, 1]Sie sind dabei, ein Produkt mit den folgenden Informationen zu aktualisieren. Bitte bestätigen Sie den Vorgang.|] 1, Inf [Sie sind dabei {{ itemsCount }} Produkte mit den folgenden Informationen zu aktualisieren. Bitte bestätigen Sie den Vorgang."
       step:
         select:
           label: Produkte auswählen

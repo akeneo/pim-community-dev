@@ -951,7 +951,7 @@ pim_enrich:
     previous: Tilbage
     product:
       title: Produkter bulk handling
-      confirm: "{1} Du er ved at opdatere et produkt med følgende oplysninger, bekræft venligst. |Du er ved at opdatere {{ itemsCount }} produkter med følgende oplysninger, bekræft venligst."
+      confirm: "[0, 1]Du er ved at opdatere et produkt med følgende oplysninger, bekræft venligst. |Du er ved at opdatere {{ itemsCount }} produkter med følgende oplysninger, bekræft venligst."
       step:
         select:
           label: Vælg produkter

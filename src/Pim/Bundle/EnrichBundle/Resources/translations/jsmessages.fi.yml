@@ -1024,7 +1024,7 @@ pim_enrich:
     confirm: Vahvista
     product:
       title: Tuotteiden massamuokkaus
-      confirm: "{1}Olet päivittämässä tuotetta seuraavilla tiedoilla, ole hyvä ja vahvista.|] 1, Inf [Olet päivittämässä tuotteita {{ itemsCount }} seuraavilla tiedoilla, ole hyvä ja vahvista."
+      confirm: "[0, 1]Olet päivittämässä tuotetta seuraavilla tiedoilla, ole hyvä ja vahvista.|] 1, Inf [Olet päivittämässä tuotteita {{ itemsCount }} seuraavilla tiedoilla, ole hyvä ja vahvista."
       step:
         select:
           label: Valitse tuotteet

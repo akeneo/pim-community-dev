@@ -1027,7 +1027,7 @@ pim_enrich:
     confirm: Conferma
     product:
       title: Azioni di massa sui prodotti
-      confirm: "{1}Si sta per aggiornare un prodotto con le informazioni seguenti, confermare.|] 1, Inf [Si stanno per aggiornare {{ itemsCount }} prodotti con le informazioni seguenti, confermare."
+      confirm: "[0, 1]Si sta per aggiornare un prodotto con le informazioni seguenti, confermare.|] 1, Inf [Si stanno per aggiornare {{ itemsCount }} prodotti con le informazioni seguenti, confermare."
       step:
         select:
           label: Scegli gli articoli

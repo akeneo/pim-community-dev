@@ -1027,7 +1027,7 @@ pim_enrich:
     confirm: Confirmar
     product:
       title: Acció en massa dels productes
-      confirm: "{1}Esteu a punt d'actualitzar un producte amb la informació següent, confirmeu-ho si us plau. | Esteu a punt d'actualitzar {{ itemsCount }} productes amb la informació següent, confirmeu-ho si us plau."
+      confirm: "[0, 1]Esteu a punt d'actualitzar un producte amb la informació següent, confirmeu-ho si us plau. | Esteu a punt d'actualitzar {{ itemsCount }} productes amb la informació següent, confirmeu-ho si us plau."
       step:
         select:
           label: Triar productes
