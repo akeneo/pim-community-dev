@@ -210,15 +210,16 @@
         padding-right: 0px !important;
 
         &.select2-result-label-attribute--suggested {
+            @bulletWidth: 8px;
             &:before {
                 content: " ";
                 position: absolute;
-                background-color: #81c9ca;
-                width: 8px;
-                height: 8px;
-                left: -5px;
-                border-radius: 8px;
-                top: 6px;
+                background-color: @AknGreen80;
+                width: @bulletWidth;
+                height: @bulletWidth;
+                left: (@bulletWidth / 1.6) * -1;
+                border-radius: @bulletWidth;
+                top: 50% - (@bulletWidth/2);
             }
         }
     }
