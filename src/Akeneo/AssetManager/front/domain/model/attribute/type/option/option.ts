@@ -1,15 +1,14 @@
 import {NormalizableAdditionalProperty} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import LabelCollection, {
-  createLabelCollection,
-  NormalizedLabelCollection,
+  denormalizeLabelCollection,
+  emptyLabelCollection,
+  getLabelInCollection,
 } from 'akeneoassetmanager/domain/model/label-collection';
-import OptionCode, {createCode} from 'akeneoassetmanager/domain/model/attribute/type/option/option-code';
-
-export type NormalizedOptionCode = string;
+import OptionCode, {denormalizeOptionCode} from 'akeneoassetmanager/domain/model/attribute/type/option/option-code';
 
 export type NormalizedOption = {
-  code: NormalizedOptionCode;
-  labels: NormalizedLabelCollection;
+  code: OptionCode;
+  labels: LabelCollection;
 };
 
 export class Option implements NormalizableAdditionalProperty {
@@ -18,7 +17,10 @@ export class Option implements NormalizableAdditionalProperty {
   }
 
   public static createFromNormalized(normalizedOption: NormalizedOption) {
-    return new Option(createCode(normalizedOption.code), createLabelCollection(normalizedOption.labels));
+    return new Option(
+      denormalizeOptionCode(normalizedOption.code),
+      denormalizeLabelCollection(normalizedOption.labels)
+    );
   }
 
   public static create(optionCode: OptionCode, labels: LabelCollection) {
@@ -26,21 +28,17 @@ export class Option implements NormalizableAdditionalProperty {
   }
 
   public static createEmpty() {
-    return new Option(OptionCode.create(''), createLabelCollection({}));
+    return new Option('', emptyLabelCollection());
   }
 
   public getLabel(locale: string, fallbackOnCode: boolean = true) {
-    if (!this.labels.hasLabel(locale)) {
-      return fallbackOnCode ? `[${this.code.stringValue()}]` : '';
-    }
-
-    return this.labels.getLabel(locale);
+    return getLabelInCollection(this.labels, locale, fallbackOnCode, this.code);
   }
 
   public normalize(): NormalizedOption {
     return {
-      code: this.code.normalize(),
-      labels: this.labels.normalize(),
+      code: this.code,
+      labels: this.labels,
     };
   }
 }

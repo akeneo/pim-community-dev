@@ -120,6 +120,8 @@ $rules = [
         'Akeneo\Tool\Component',
         'Doctrine\Common',
         'Akeneo\Asset\Component',
+        'Akeneo\Pim\Enrichment\AssetManager\Component',
+        'Akeneo\AssetManager\Infrastructure\PublicApi',
 
         // TIP-949: Assets should not be Reference Data
         'Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface',

@@ -7,14 +7,12 @@
  * file that was distributed with this source code.
  */
 
-import BaseView = require('pimui/js/view/base');
 import {getConnectionStatus} from '../fetcher/franklin-connection';
-import ConnectionStatus from '../model/connection-status';
-import FamilyMapping from '../model/family-mapping';
+import {AttributesMapping} from '../model/attributes-mapping';
+import {FamilyMappingStatus} from '../../react/domain/model/family-mapping-status.enum';
 
 const BaseController = require('pim/controller/front');
 const FormBuilder = require('pim/form-builder');
-const FetcherRegistry = require('pim/fetcher-registry');
 
 interface Route {
   name: string;
@@ -51,57 +49,63 @@ class EditAttributeMappingController extends BaseController {
   /**
    * {@inheritdoc}
    */
-  public renderForm(route: Route): any {
-    return getConnectionStatus(false).then((connectionStatus: ConnectionStatus) => {
+  public renderForm(route: Route) {
+    const promise = new Promise(async resolve => {
+      const connectionStatus = await getConnectionStatus(false);
       if (!connectionStatus.isActive) {
-        return FormBuilder.build('akeneo-franklin-insights-settings-inactive-connection').then((form: any) => {
-          this.on('pim:controller:can-leave', (event: any) => {
-            form.trigger('pim_enrich:form:can-leave', event);
-          });
-          form.setElement(this.$el).render();
+        const form = await FormBuilder.build('akeneo-franklin-insights-settings-inactive-connection');
 
-          return form;
+        this.on('pim:controller:can-leave', (event: any) => {
+          form.trigger('pim_enrich:form:can-leave', event);
         });
+        form.setElement(this.$el).render();
+
+        resolve(form);
       }
 
-      return FetcherRegistry.getFetcher('attributes-mapping-by-family')
-        .fetch(route.params.familyCode, {cached: false})
-        .then((familyMapping: FamilyMapping) => {
-          if (!this.active) {
-            return;
-          }
+      if (!this.active) {
+        return resolve();
+      }
 
-          this.setNavigationContext(route.params.familyCode);
+      this.setNavigationContext(route.params.familyCode);
 
-          return FormBuilder.build('akeneo-franklin-insights-settings-attributes-mapping-edit').then(
-            (form: BaseView) => {
-              this.on('pim:controller:can-leave', (event: CanLeaveEvent) => {
-                form.trigger('pim_enrich:form:can-leave', event);
-              });
-              form.setData(familyMapping);
-              form.trigger('pim_enrich:form:entity:post_fetch', familyMapping);
-              form.setElement(this.$el).render();
+      const form = await FormBuilder.build('akeneo-franklin-insights-settings-attributes-mapping-edit');
+      this.on('pim:controller:can-leave', (event: CanLeaveEvent) => {
+        form.trigger('pim_enrich:form:can-leave', event);
+      });
+      form.on('pim_enrich:form:entity:post_save', async () => {
+        await this.updateModel(form, route.params.familyCode);
+      });
 
-              form.on('pim_enrich:form:entity:post_save', () => {
-                FetcherRegistry.getFetcher('attributes-mapping-by-family')
-                  .fetch(route.params.familyCode, {cached: false})
-                  .then((savedFamilyMapping: FamilyMapping) => {
-                    form.setData(savedFamilyMapping);
-                    form.trigger('pim_enrich:form:entity:post_fetch', savedFamilyMapping);
-                    form.setElement(this.$el).render();
-                  });
-              });
+      await this.updateModel(form, route.params.familyCode);
 
-              return form;
-            }
-          );
-        });
+      resolve(form);
     });
+
+    const deferred = $.Deferred();
+
+    promise.then(deferred.resolve);
+    promise.catch(deferred.reject);
+
+    return deferred;
   }
 
   private setNavigationContext(familyCode: string): void {
     localStorage.setItem(this.config.lastMappingVisitedKey, 'attributes_mapping');
     localStorage.setItem(this.config.lastFamilyVisitedKey, familyCode);
+  }
+
+  private async updateModel(form: any, familyCode: string) {
+    const model: AttributesMapping = {
+      familyCode,
+      familyMappingStatus: FamilyMappingStatus.EMPTY,
+      hasUnsavedChanges: false,
+      attributeCount: 0,
+      mappedAttributeCount: 0
+    };
+    form.setData(model);
+    form.trigger('pim_enrich:form:entity:post_fetch');
+    form.setElement(this.$el).render();
   }
 }
 

@@ -20,9 +20,11 @@ use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Except
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\FranklinServerException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\InsufficientCreditsException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\InvalidTokenException;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\UnableToConnectToFranklinException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\SubscriptionCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\WarningCollection;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\ServerException;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -33,16 +35,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class SubscriptionWebService extends AbstractApi implements AuthenticatedApiInterface
 {
-    /**
-     * @param RequestCollection $request
-     *
-     * @throws BadRequestException
-     * @throws FranklinServerException
-     * @throws InsufficientCreditsException
-     * @throws InvalidTokenException
-     *
-     * @return ApiResponse
-     */
     public function subscribe(RequestCollection $request): ApiResponse
     {
         $route = $this->uriGenerator->generate('/api/subscriptions');
@@ -58,19 +50,43 @@ class SubscriptionWebService extends AbstractApi implements AuthenticatedApiInte
             }
 
             return new ApiResponse(new SubscriptionCollection($content), new WarningCollection($content));
+        } catch (ConnectException $e) {
+            $this->logger->error('Cannot connect to Ask Franklin to subscribe a product', [
+                'exception' => $e->getMessage(),
+                'route' => $route,
+            ]);
+            throw new UnableToConnectToFranklinException();
         } catch (ServerException | FranklinServerException $e) {
+            $this->logger->error('Something went wrong on Ask Franklin side during product subscription', [
+                'exception' => $e->getMessage(),
+                'route' => $route,
+                'request_body' => $request->toFormParams(),
+            ]);
             throw new FranklinServerException(sprintf(
-                'Something went wrong on Franklin side during product subscription: %s',
+                'Something went wrong on Ask Franklin side during product subscription: %s',
                 $e->getMessage()
             ));
         } catch (ClientException $e) {
             if (Response::HTTP_PAYMENT_REQUIRED === $e->getCode()) {
+                $this->logger->warning('Insufficient credits to subscribe products to Ask Franklin', [
+                    'exception' => $e->getMessage(),
+                    'route' => $route,
+                ]);
                 throw new InsufficientCreditsException();
             }
             if (Response::HTTP_UNAUTHORIZED === $e->getCode()) {
+                $this->logger->warning('Invalid token to subscribe products to Ask Franklin', [
+                    'exception' => $e->getMessage(),
+                    'route' => $route,
+                ]);
                 throw new InvalidTokenException();
             }
 
+            $this->logger->error('Invalid product subscription request sent to Ask Franklin', [
+                'exception' => $e->getMessage(),
+                'route' => $route,
+                'request_body' => $request->toFormParams(),
+            ]);
             throw new BadRequestException(sprintf(
                 'Something went wrong during product subscription: %s',
                 $e->getMessage()
@@ -78,16 +94,6 @@ class SubscriptionWebService extends AbstractApi implements AuthenticatedApiInte
         }
     }
 
-    /**
-     * @param string|null $uri
-     * @param \DateTime|null $updatedSince
-     *
-     * @throws BadRequestException
-     * @throws FranklinServerException
-     * @throws InvalidTokenException
-     *
-     * @return SubscriptionsCollection
-     */
     public function fetchProducts(string $uri = null, \DateTime $updatedSince = null): SubscriptionsCollection
     {
         if (null === $uri) {
@@ -103,28 +109,39 @@ class SubscriptionWebService extends AbstractApi implements AuthenticatedApiInte
             $response = $this->httpClient->request('GET', $route);
 
             return new SubscriptionsCollection($this, json_decode($response->getBody()->getContents(), true));
+        } catch (ConnectException $e) {
+            $this->logger->error('Cannot connect to Ask Franklin to fetch product data', [
+                'exception' => $e->getMessage(),
+                'route' => $route,
+            ]);
+            throw new UnableToConnectToFranklinException();
         } catch (ServerException $e) {
+            $this->logger->error('Something went wrong on Ask Franklin side during product data fetch', [
+                'exception' => $e->getMessage(),
+                'route' => $route,
+            ]);
             throw new FranklinServerException(
-                sprintf('Something went wrong on Franklin side during product subscription: %s.', $e->getMessage())
+                sprintf('Something went wrong on Franklin side during product data fetch: %s.', $e->getMessage())
             );
         } catch (ClientException $e) {
             if (Response::HTTP_UNAUTHORIZED === $e->getCode()) {
+                $this->logger->warning('Invalid token to fetch product data', [
+                    'exception' => $e->getMessage(),
+                    'route' => $route,
+                ]);
                 throw new InvalidTokenException();
             }
 
+            $this->logger->error('Invalid fetch product request sent to Ask Franklin', [
+                'exception' => $e->getMessage(),
+                'route' => $route,
+            ]);
             throw new BadRequestException(
-                sprintf('Something went wrong during product subscription: %s.', $e->getMessage())
+                sprintf('Something went wrong during product data fetch: %s.', $e->getMessage())
             );
         }
     }
 
-    /**
-     * @param string $subscriptionId
-     *
-     * @throws BadRequestException
-     * @throws FranklinServerException
-     * @throws InvalidTokenException
-     */
     public function unsubscribeProduct(string $subscriptionId): void
     {
         $route = $this->uriGenerator->generate(
@@ -133,29 +150,39 @@ class SubscriptionWebService extends AbstractApi implements AuthenticatedApiInte
 
         try {
             $this->httpClient->request('DELETE', $route);
+        } catch (ConnectException $e) {
+            $this->logger->error('Cannot connect to Ask Franklin to unsubscribe a product', [
+                'exception' => $e->getMessage(),
+                'route' => $route,
+            ]);
+            throw new UnableToConnectToFranklinException();
         } catch (ServerException $e) {
+            $this->logger->error('Something went wrong on Ask Franklin side during product unsubscription', [
+                'exception' => $e->getMessage(),
+                'route' => $route,
+            ]);
             throw new FranklinServerException(
                 sprintf('Something went wrong on Franklin side during product unsubscription: %s', $e->getMessage())
             );
         } catch (ClientException $e) {
             if (Response::HTTP_UNAUTHORIZED === $e->getCode()) {
+                $this->logger->warning('Invalid token to unsubscribe products to Ask Franklin', [
+                    'exception' => $e->getMessage(),
+                    'route' => $route,
+                ]);
                 throw new InvalidTokenException();
             }
 
+            $this->logger->error('Invalid product unsubscription request sent to Ask Franklin', [
+                'exception' => $e->getMessage(),
+                'route' => $route,
+            ]);
             throw new BadRequestException(
                 sprintf('Something went wrong during product unsubscription: %s', $e->getMessage())
             );
         }
     }
 
-    /**
-     * @param string $subscriptionId
-     * @param array $familyInfos
-     *
-     * @throws BadRequestException
-     * @throws FranklinServerException
-     * @throws InvalidTokenException
-     */
     public function updateFamilyInfos(string $subscriptionId, array $familyInfos): void
     {
         $route = $this->uriGenerator->generate(
@@ -163,24 +190,38 @@ class SubscriptionWebService extends AbstractApi implements AuthenticatedApiInte
         );
 
         try {
-            $this->httpClient->request(
-                'PUT',
-                $route,
-                [
-                    'form_params' => $familyInfos,
-                ]
-            );
+            $this->httpClient->request('PUT', $route, ['form_params' => $familyInfos]);
+        } catch (ConnectException $e) {
+            $this->logger->error('Cannot connect to Ask Franklin to update family infos', [
+                'exception' => $e->getMessage(),
+                'route' => $route,
+            ]);
+            throw new UnableToConnectToFranklinException();
         } catch (ServerException $e) {
+            $this->logger->error('Something went wrong on Ask Franklin side during family infos update', [
+                'exception' => $e->getMessage(),
+                'route' => $route,
+                'request_body' => $familyInfos,
+            ]);
             throw new FranklinServerException(
-                sprintf('Something went wrong on Franklin side during subscription update: %s', $e->getMessage())
+                sprintf('Something went wrong on Franklin side during family infos update: %s', $e->getMessage())
             );
         } catch (ClientException $e) {
             if (Response::HTTP_UNAUTHORIZED === $e->getCode()) {
+                $this->logger->warning('Invalid token to update family infos', [
+                    'exception' => $e->getMessage(),
+                    'route' => $route,
+                ]);
                 throw new InvalidTokenException();
             }
 
+            $this->logger->error('Invalid family infos update request sent to Ask Franklin', [
+                'exception' => $e->getMessage(),
+                'route' => $route,
+                'request_body' => $familyInfos,
+            ]);
             throw new BadRequestException(
-                sprintf('Something went wrong during subscription update: %s', $e->getMessage())
+                sprintf('Something went wrong during family infos update: %s', $e->getMessage())
             );
         }
     }

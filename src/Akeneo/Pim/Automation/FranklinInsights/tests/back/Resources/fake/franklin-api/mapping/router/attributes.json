@@ -79,6 +79,17 @@
       "to": null,
       "summary": [],
       "status": "pending"
+    },
+    {
+      "from": {
+          "id": "malformedAttribute",
+          "label": {
+              "en_us": "malformedAttribute"
+          },
+          "type": "text"
+      },
+      "summary": [],
+      "status": "pending"
     }
   ]
 }

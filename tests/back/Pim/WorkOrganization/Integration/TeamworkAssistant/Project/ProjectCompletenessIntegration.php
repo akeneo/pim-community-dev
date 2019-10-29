@@ -15,6 +15,7 @@ use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Datagrid\Filter\Project
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectCompleteness;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
 use AkeneoTestEnterprise\Pim\WorkOrganization\Integration\TeamworkAssistant\TeamworkAssistantTestCase;
+use PHPUnit\Framework\Assert;
 
 class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
 {
@@ -348,6 +349,36 @@ class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
     }
 
     /**
+     * See @https://akeneo.atlassian.net/browse/PIM-8818
+     *
+     * Given a locale specific attribute name on en_US
+     *  And this attribute is in the family super_usb_keys and required for channel ecommerce
+     *  And a project defined for channel ecommerce and locale fr_FR with a filter on the family super_usb_keys
+     *  And a product in family super_usb_keys without any value filled
+     * When the project calculation is done
+     * Then the number of product DONE in the project should be 1 as the attribute name is not required for fr_FR (locale specific)
+     */
+    public function test_product_is_in_done_when_it_is_complete_with_a_required_locale_specific_attribute()
+    {
+        $this->createAttributeSpecificForEnglishLocale('my_name');
+        $this->createFamilyWithRequiredAttributes('super_usb_keys', ['my_name']);
+        $this->createProductInFamily('super_usb_keys');
+
+        $project = $this->createProject('project', 'admin', 'fr_FR', 'ecommerce', [
+            [
+                'field'    => 'family',
+                'operator' => 'IN',
+                'value'    => ['super_usb_keys'],
+            ],
+        ]);
+
+        $projectCompleteness = $this->getProjectCompleteness($project);
+        $this->checkProductSelectionCount($projectCompleteness, 1, 'admin');
+        $this->checkProjectCompleteness($projectCompleteness, 0, 0, 1, 'admin');
+        $this->checkProjectCompletenessFilterForOwner($project, $projectCompleteness, 'admin');
+    }
+
+    /**
      * Check the number of products done, in progress or to do
      *
      * @param ProjectCompleteness $projectCompleteness
@@ -363,22 +394,20 @@ class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
         $expectedDone,
         $username
     ) {
-        $this->assertEquals(
-            $expectedTodo,
+        $expected = [$expectedTodo, $expectedInProgress, $expectedDone];
+        $actual = [
             $projectCompleteness->getProductsCountTodo(),
-            sprintf('Product count to do is invalid for %s', $username)
-        );
-
-        $this->assertEquals(
-            $expectedInProgress,
             $projectCompleteness->getProductsCountInProgress(),
-            sprintf('Product count in progress is invalid for %s', $username)
-        );
-
+            $projectCompleteness->getProductsCountDone()
+        ];
         $this->assertEquals(
-            $expectedDone,
-            $projectCompleteness->getProductsCountDone(),
-            sprintf('Product count done is invalid for %s', $username)
+            $expected,
+            $actual,
+            sprintf("Completeness [todo, in progress, done] is wrong for '%s'.\nExpected: %s\nActual:   %s",
+                $username,
+                json_encode($expected),
+                json_encode($actual)
+            )
         );
     }
 
@@ -399,23 +428,7 @@ class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
         $inProgress = count($repository->findProductIdentifiers($project, ProjectCompletenessFilter::OWNER_IN_PROGRESS, $username));
         $done = count($repository->findProductIdentifiers($project, ProjectCompletenessFilter::OWNER_DONE, $username));
 
-        $this->assertEquals(
-            $projectCompleteness->getProductsCountTodo(),
-            $todo,
-            sprintf('Product count with filter to do is invalid for %s', $username)
-        );
-
-        $this->assertEquals(
-            $projectCompleteness->getProductsCountInProgress(),
-            $inProgress,
-            sprintf('Product count with filter progress is invalid for %s', $username)
-        );
-
-        $this->assertEquals(
-            $projectCompleteness->getProductsCountDone(),
-            $done,
-            sprintf('Product count with filter done is invalid for %s', $username)
-        );
+        $this->checkProjectCompleteness($projectCompleteness, $todo, $inProgress, $done, $username);
     }
 
     /**
@@ -435,23 +448,7 @@ class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
         $inProgress = count($repository->findProductIdentifiers($project, ProjectCompletenessFilter::CONTRIBUTOR_IN_PROGRESS, $username));
         $done = count($repository->findProductIdentifiers($project, ProjectCompletenessFilter::CONTRIBUTOR_DONE, $username));
 
-        $this->assertEquals(
-            $projectCompleteness->getProductsCountTodo(),
-            $todo,
-            sprintf('Product count with filter to do is invalid for %s', $username)
-        );
-
-        $this->assertEquals(
-            $projectCompleteness->getProductsCountInProgress(),
-            $inProgress,
-            sprintf('Product count with filter progress is invalid for %s', $username)
-        );
-
-        $this->assertEquals(
-            $projectCompleteness->getProductsCountDone(),
-            $done,
-            sprintf('Product count with filter done is invalid for %s', $username)
-        );
+        $this->checkProjectCompleteness($projectCompleteness, $todo, $inProgress, $done, $username);
     }
 
     /**
@@ -473,5 +470,46 @@ class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
             $projectCompleteness->getProductsCountTodo(),
             sprintf('%s must edit/see %d product(s) for his/her project.', $username, $expectedCount)
         );
+    }
+
+    private function createAttributeSpecificForEnglishLocale(string $code): void
+    {
+        $data = [
+            'code' => $code,
+            'type' => 'pim_catalog_text',
+            'localizable' => false,
+            'scopable' => false,
+            'group' => 'other',
+            'available_locales' => ['en_US']
+        ];
+
+        $attribute = $this->get('pim_catalog.factory.attribute')->create();
+        $this->get('pim_catalog.updater.attribute')->update($attribute, $data);
+        $constraints = $this->get('validator')->validate($attribute);
+        Assert::assertCount(0, $constraints);
+        $this->get('pim_catalog.saver.attribute')->save($attribute);
+    }
+
+    private function createFamilyWithRequiredAttributes(string $familyCode, array $requiredAttributeCodes): void
+    {
+        $familyData = [
+            'code' => $familyCode,
+            'attributes' => array_merge(['sku'], $requiredAttributeCodes),
+            'attribute_requirements' => ['ecommerce' => array_merge(['sku'], $requiredAttributeCodes)]
+        ];
+
+        $family = $this
+            ->getFromTestContainer('akeneo_ee_integration_tests.builder.family')
+            ->build($familyData, true);
+
+        $this->getFromTestContainer('pim_catalog.saver.family')->save($family);
+    }
+
+    private function createProductInFamily(string $familyCode): void
+    {
+        $product = $this->get('pim_catalog.builder.product')->createProduct('product_identifier', $familyCode);
+        $constraints = $this->get('pim_catalog.validator.product')->validate($product);
+        Assert::assertCount(0, $constraints);
+        $this->get('pim_catalog.saver.product')->save($product);
     }
 }

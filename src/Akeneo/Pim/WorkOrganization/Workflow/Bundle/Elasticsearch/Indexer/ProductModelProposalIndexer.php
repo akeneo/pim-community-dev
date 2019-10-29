@@ -37,9 +37,11 @@ class ProductModelProposalIndexer implements IndexerInterface, BulkIndexerInterf
      */
     public function index($object, array $options = [])
     {
+        $indexRefresh = $options['index_refresh'] ?? Refresh::disable();
+
         $normalizedObject = $this->normalizer->normalize($object, ProductModelProposalNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_PROPOSAL_INDEX);
         $this->validateObjectNormalization($normalizedObject);
-        $this->productModelProposalClient->index($normalizedObject['id'], $normalizedObject);
+        $this->productModelProposalClient->index($normalizedObject['id'], $normalizedObject, $indexRefresh);
     }
 
     /**
@@ -79,6 +81,12 @@ class ProductModelProposalIndexer implements IndexerInterface, BulkIndexerInterf
             $this->productModelProposalClient->delete(
                 self::PRODUCT_MODEL_IDENTIFIER_PREFIX . (string) $objectId
             );
+        }
+
+        $indexRefresh = $options['index_refresh'] ?? Refresh::disable();
+
+        if ($indexRefresh instanceof Refresh && Refresh::ENABLE === $indexRefresh->getType()) {
+            $this->productModelProposalClient->refreshIndex();
         }
     }
 

@@ -29,7 +29,7 @@ Feature: Retrieve some family attributes from Franklin
     When I retrieve the attributes mapping for the family "webcam"
     Then the retrieved attributes mapping for the family "webcam" should be:
       | target_attribute_code  | target_attribute_label        | target_attribute_type | pim_attribute_code | status  |
-      | idontreallyknowwhatiam | An attribute that has no type | unknown               |                    | pending |
+      | color                  | Color                         | multiselect           |                    | pending |
 
   Scenario: Successfully retrieve an empty attributes mapping
     Given the family "camcorders"

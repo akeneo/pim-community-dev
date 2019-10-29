@@ -44,9 +44,8 @@ class Index extends Form
                         $closeElement = $select2->find('css', '.select2-search-choice-close');
                         if (null !== $closeElement && $closeElement->isVisible()) {
                             $closeElement->click();
-                            $values = array_filter(array_map('trim', $select2->getValues()));
 
-                            return $select2->isValid() && empty($values);
+                            return $select2->isValid();
                         };
 
                         return false;

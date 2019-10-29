@@ -21,10 +21,11 @@ import {setUpSidebar} from 'akeneoassetmanager/application/action/sidebar';
 import {updateActivatedLocales} from 'akeneoassetmanager/application/action/locale';
 import {updateChannels} from 'akeneoassetmanager/application/action/channel';
 import {updateCurrentTab} from 'akeneoassetmanager/application/event/sidebar';
-import {createCode} from 'akeneoassetmanager/domain/model/asset/code';
-import {createIdentifier as createAssetFamilyIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import {denormalizeAssetCode} from 'akeneoassetmanager/domain/model/asset/code';
 import {LocalePermission} from 'akeneoassetmanager/domain/model/permission/locale';
 import {updateAttributeList} from 'akeneoassetmanager/application/action/product/attribute';
+import {denormalizeAssetFamilyIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import Key from 'akeneoassetmanager/tools/key';
 
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
@@ -32,7 +33,7 @@ const userContext = require('pim/user-context');
 const fetcherRegistry = require('pim/fetcher-registry');
 
 const shortcutDispatcher = (store: any) => (event: KeyboardEvent) => {
-  if ('Escape' === event.code) {
+  if (Key.Escape === event.code) {
     store.dispatch({type: 'DISMISS'});
   }
 };
@@ -46,10 +47,13 @@ class AssetEditController extends BaseController {
     mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-asset-family'});
     $(window).on('beforeunload', this.beforeUnload);
 
-    const assetFamilyIdentifier = createAssetFamilyIdentifier(route.params.assetFamilyIdentifier);
+    const assetFamilyIdentifier = denormalizeAssetFamilyIdentifier(route.params.assetFamilyIdentifier);
 
     assetFetcher
-      .fetch(createAssetFamilyIdentifier(route.params.assetFamilyIdentifier), createCode(route.params.assetCode))
+      .fetch(
+        denormalizeAssetFamilyIdentifier(route.params.assetFamilyIdentifier),
+        denormalizeAssetCode(route.params.assetCode)
+      )
       .then(async (assetResult: AssetResult) => {
         this.store = createStore(true)(assetReducer);
         await this.store.dispatch(updateChannels() as any);

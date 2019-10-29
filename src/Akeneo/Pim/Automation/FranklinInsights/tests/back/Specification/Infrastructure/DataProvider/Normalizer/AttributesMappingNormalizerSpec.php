@@ -66,9 +66,14 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
         $this->normalize($attributesMapping)->shouldReturn([$expectedData]);
     }
 
-    public function it_normalizes_metric_attributes_with_its_unit(): void
+    public function it_normalizes_metric_attributes(): void
     {
-        $attrWeight = (new AttributeBuilder())->withCode('pim_weight')->withType(AttributeTypes::METRIC)->withDefaultMetricUnit('KILOGRAM')->build();
+        $attrWeight = (new AttributeBuilder())
+            ->withCode('pim_weight')
+            ->withType(AttributeTypes::METRIC)
+            ->withDefaultMetricUnit('KILOGRAM')
+            ->withMetricFamily('Weight')
+            ->build();
 
         $attributesMapping = new AttributesMapping(new FamilyCode('router'));
         $attributesMapping->map('weight', 'metric', $attrWeight, AttributeMappingStatus::ATTRIBUTE_ACTIVE);
@@ -80,6 +85,7 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
                 'label' => [],
                 'type' => 'metric',
                 'unit' => 'KILOGRAM',
+                'metric_family' => 'Weight',
             ],
             'status' => AttributeMapping::STATUS_ACTIVE,
         ];

@@ -3,7 +3,7 @@ import AssetFamily from 'akeneoassetmanager/domain/model/asset-family/asset-fami
 import hydrator from 'akeneoassetmanager/application/hydrator/asset-family';
 import hydrateAll from 'akeneoassetmanager/application/hydrator/hydrator';
 import {getJSON} from 'akeneoassetmanager/tools/fetch';
-import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/identifier';
+import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import errorHandler from 'akeneoassetmanager/infrastructure/tools/error-handler';
 import {Attribute, NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import hydrateAttribute from 'akeneoassetmanager/application/hydrator/attribute';
@@ -28,7 +28,7 @@ export type AssetFamilyResult = {
 export class AssetFamilyFetcherImplementation implements AssetFamilyFetcher {
   async fetch(identifier: AssetFamilyIdentifier): Promise<AssetFamilyResult> {
     const backendAssetFamily = await getJSON(
-      routing.generate('akeneo_asset_manager_asset_family_get_rest', {identifier: identifier.stringValue()})
+      routing.generate('akeneo_asset_manager_asset_family_get_rest', {identifier: identifier})
     ).catch(errorHandler);
 
     return {
@@ -38,7 +38,7 @@ export class AssetFamilyFetcherImplementation implements AssetFamilyFetcher {
         hydrateAttribute(normalizedAttribute)
       ),
       permission: {
-        assetFamilyIdentifier: identifier.stringValue(),
+        assetFamilyIdentifier: identifier,
         edit: backendAssetFamily.permission.edit,
       },
     };

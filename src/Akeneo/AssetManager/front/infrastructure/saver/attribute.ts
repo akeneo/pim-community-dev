@@ -4,6 +4,8 @@ import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 import MinimalAttribute from 'akeneoassetmanager/domain/model/attribute/minimal';
 import handleError from 'akeneoassetmanager/infrastructure/tools/error-handler';
 import {Attribute, NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import {assetFamilyIdentifierStringValue} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import {attributeIdentifierStringValue} from 'akeneoassetmanager/domain/model/attribute/identifier';
 
 const routing = require('routing');
 
@@ -23,8 +25,8 @@ export class AttributeSaverImplementation implements AttributeSaver {
 
     return await postJSON(
       routing.generate('akeneo_asset_manager_attribute_edit_rest', {
-        assetFamilyIdentifier: attribute.getAssetFamilyIdentifier().stringValue(),
-        attributeIdentifier: attribute.getIdentifier().identifier,
+        assetFamilyIdentifier: assetFamilyIdentifierStringValue(attribute.getAssetFamilyIdentifier()),
+        attributeIdentifier: attributeIdentifierStringValue(attribute.getIdentifier()),
       }),
       attribute.normalize()
     ).catch(handleError);
@@ -35,7 +37,7 @@ export class AttributeSaverImplementation implements AttributeSaver {
 
     return await postJSON(
       routing.generate('akeneo_asset_manager_attribute_create_rest', {
-        assetFamilyIdentifier: attribute.getAssetFamilyIdentifier().stringValue(),
+        assetFamilyIdentifier: assetFamilyIdentifierStringValue(attribute.getAssetFamilyIdentifier()),
       }),
       normalizedAttribute
     ).catch(handleError);

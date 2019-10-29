@@ -9,18 +9,16 @@ import Dropdown, {DropdownElement} from 'akeneoassetmanager/application/componen
 import {getLabel} from 'pimui/js/i18n';
 import {attributeSelected} from 'akeneoassetmanager/application/action/product/attribute';
 import NoResult from 'akeneoassetmanager/application/component/app/no-result';
-import {NormalizedCode} from 'akeneoassetmanager/domain/model/asset/code';
-import {
-  createCode,
-  NormalizedCode as NormalizedAttributeCode,
-} from 'akeneoassetmanager/domain/model/product/attribute/code';
-import {NormalizedIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
+import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/product/attribute';
 import NoAttribute from 'akeneoassetmanager/application/component/asset/edit/product/no-attribute';
 import Key from 'akeneoassetmanager/tools/key';
 import ItemsCounter from 'akeneoassetmanager/application/component/asset/index/items-counter';
 import {redirectToProductGrid} from 'akeneoassetmanager/application/event/router';
 import NotEnoughItems from 'akeneoassetmanager/application/component/asset/edit/product/not-enough-items';
+import AttributeCode, {denormalizeAttributeCode} from 'akeneoassetmanager/domain/model/attribute/code';
+import {productIdentifierStringValue} from 'akeneoassetmanager/domain/model/product/identifier';
 
 interface StateProps {
   context: {
@@ -31,8 +29,8 @@ interface StateProps {
   totalCount: number;
   attributes: DropdownElement[];
   selectedAttribute: NormalizedAttribute | null;
-  assetCode: NormalizedCode;
-  assetFamilyIdentifier: NormalizedIdentifier;
+  assetCode: AssetCode;
+  assetFamilyIdentifier: AssetFamilyIdentifier;
 }
 
 interface DispatchProps {
@@ -40,7 +38,7 @@ interface DispatchProps {
     onLinkedAttributeChange: (attributeCode: string) => void;
     onRedirectToProduct: (product: ProductModel) => void;
     onRedirectAttributeCreation: () => void;
-    onRedirectToProductGrid: (selectedAttribute: NormalizedAttributeCode, assetCode: NormalizedCode) => void;
+    onRedirectToProductGrid: (selectedAttribute: AttributeCode, assetCode: AssetCode) => void;
   };
 }
 
@@ -109,7 +107,7 @@ class Product extends React.Component<StateProps & DispatchProps> {
                       <div className="AknGrid-body">
                         {this.props.products.map((product: ProductModel) => (
                           <ItemView
-                            key={product.getIdentifier().stringValue()}
+                            key={productIdentifierStringValue(product.getIdentifier())}
                             product={product}
                             locale={this.props.context.locale}
                             onRedirectToProduct={this.props.events.onRedirectToProduct}
@@ -182,7 +180,7 @@ export default connect(
     return {
       events: {
         onLinkedAttributeChange: (attributeCode: string) => {
-          dispatch(attributeSelected(createCode(attributeCode)));
+          dispatch(attributeSelected(denormalizeAttributeCode(attributeCode)));
         },
         onRedirectToProduct: (product: ProductModel) => {
           dispatch(redirectToProduct(product));
@@ -190,7 +188,7 @@ export default connect(
         onRedirectAttributeCreation: () => {
           dispatch(redirectToAttributeCreation());
         },
-        onRedirectToProductGrid: (selectedAttribute: NormalizedAttributeCode, assetCode: NormalizedCode) => {
+        onRedirectToProductGrid: (selectedAttribute: AttributeCode, assetCode: AssetCode) => {
           dispatch(redirectToProductGrid(selectedAttribute, assetCode));
         },
       },

@@ -25,19 +25,7 @@ Feature: Display proposals in datagrid
       | product   | author | attribute | original | new |
       | my-jacket | Mary   | name      | Jackets  |     |
 
-  Scenario: Successfully propose to remove a price attribute
-    Given Mary proposed the following change to "my-jacket":
-      | field | value | tab       |
-      | Price | EUR   | Marketing |
-      | Price | 5 USD | Marketing |
-    When I am logged in as "Julia"
-    And I edit the "my-jacket" product
-    And I visit the "Proposals" column tab
-    Then I should see the following proposals:
-      | product   | author | attribute | original       | new   |
-      | my-jacket | Mary   | price     | €75.00, $45.00 | $5.00 |
-
-  Scenario: Successfully display only updated price attribute
+  Scenario: Successfully display an updated price attribute
     Given Mary proposed the following change to "my-jacket":
       | field | value | tab       |
       | Price | 5 USD | Marketing |
@@ -47,17 +35,3 @@ Feature: Display proposals in datagrid
     Then I should see the following proposals:
       | product   | author | attribute | original | new   |
       | my-jacket | Mary   | price     | $45.00   | $5.00 |
-
-  Scenario: Successfully display only new price attribute
-    Given the following product values:
-      | product   | attribute | value |
-      | my-jacket | price     |       |
-    And Mary proposed the following change to "my-jacket":
-      | field | value | tab       |
-      | Price | 5 USD | Marketing |
-    When I am logged in as "Julia"
-    And I edit the "my-jacket" product
-    And I visit the "Proposals" column tab
-    Then I should see the following proposals:
-      | product   | author | attribute | original | new   |
-      | my-jacket | Mary   | price     |          | $5.00 |

@@ -7,7 +7,7 @@ pimee_product_asset:
         manage: Hallinnoi assetteja
         manage_asset:
           title: Hallinnoi assetteja
-          cancel: Hylkää
+          cancel: Peruuta
           confirm: Vahvista
         title: Hallinnoi assetteja
         description: Valitse assetit, jotka haluat liittää tuotteelle
@@ -80,6 +80,7 @@ pim_title:
   pimee_product_asset_mass_upload: Tuo assetteja
   pimee_product_asset_index: Assetit
   pimee_product_asset_edit: Assetti {{ asset.label }} | Muokkaa
+  pimee_product_asset_view: Assetti {{ asset.label }} | Muokkaus
   pimee_asset_categorytree_index: Kategoriat
   pimee_asset_categorytree_edit: Kategoria {{ category.label }} | Muokkaa
 batch_jobs:

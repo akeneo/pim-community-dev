@@ -52,7 +52,6 @@ akeneo_franklin_insights:
           family_status:
             pending: 'Novos atributos do Franklin para revisar'
             full: 'Todos os atributos do Franklin foram mapeados'
-          types_mismatch_warning: 'Aviso: os tipos de atributos não são compatíveis.'
       constraint:
         missing_target_key: 'Faltando a chave destino para mapeamento'
         missing_attribute_key: 'A chave {{ expectedKey }} está faltando para mapear com a chave de destino "{{ targetKey }}"'
@@ -77,7 +76,7 @@ akeneo_franklin_insights:
         no_identifiers_mapping: 'Por favor, mapeie os identificadores de produto do seu catálogo em Configurações > Intuições do Franklin antes de inscrever produtos.'
         insufficient_credits: "Não foi possível inscrever o produto nas Intuições do Franklin. Você não tem crédito suficiente."
         invalid_mapped_values: 'Não foi possível inscrever o produto nas Intuições do Franklin. Por favor, inscreva o produto utilizando uma combinação válida de identificadores.'
-        data_provider_error: 'O Franklin retornou um erro ao tentar inscrever o produto'
+        data_provider_error: 'O Franklin retornou um erro ao tentar inscrever o produto' #TODO: check with POs
         not_subscribed: 'O produto não está inscrito'
         already_subscribed_product: 'O produto já está inscrito.'
         variant_product: 'As variantes de produtos não podem ser inscritas nas Intuições do Franklin.'
@@ -99,7 +98,6 @@ akeneo_franklin_insights:
         edit:
           title: '{{ familyLabel }} - {{ franklinAttributeLabel }} opções de atributo'
           sub_title: 'Conheça o Franklin, seu <span class="AknDescriptionHeader-title--highlight">assistente de informações de produtos com inteligência artificial</span>!'
-          description: 'Para ajudar a enriquecer seu catálogo, o Franklin precisa saber as opções de atributo do seu catálogo que correspondem às dele. <a href="#" target="_blank" class="AknDescriptionHeader-link">Leia mais</a>'
   product:
     edit:
       btn.push: Sugerir dados

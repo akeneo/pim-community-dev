@@ -1,6 +1,6 @@
 import {createValueCollection, generateKey} from 'akeneoassetmanager/domain/model/asset/value-collection';
 import {createValue} from 'akeneoassetmanager/domain/model/asset/value';
-import {denormalizeIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
+import {denormalizeAttributeIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
 import {denormalize as denormalizeTextData} from 'akeneoassetmanager/domain/model/asset/data/text';
 import {denormalize as denormalizeTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
 
@@ -79,12 +79,14 @@ describe('akeneo > asset family > domain > model > asset --- value collection', 
   });
 
   test('I can generate a value key', () => {
-    expect(generateKey(denormalizeIdentifier('description'), 'ecommerce', 'en_US')).toEqual(
+    expect(generateKey(denormalizeAttributeIdentifier('description'), 'ecommerce', 'en_US')).toEqual(
       'description_ecommerce_en_US'
     );
-    expect(generateKey(denormalizeIdentifier('description'), 'ecommerce', null)).toEqual('description_ecommerce');
-    expect(generateKey(denormalizeIdentifier('description'), null, 'en_US')).toEqual('description_en_US');
-    expect(generateKey(denormalizeIdentifier('description'), null, null)).toEqual('description');
+    expect(generateKey(denormalizeAttributeIdentifier('description'), 'ecommerce', null)).toEqual(
+      'description_ecommerce'
+    );
+    expect(generateKey(denormalizeAttributeIdentifier('description'), null, 'en_US')).toEqual('description_en_US');
+    expect(generateKey(denormalizeAttributeIdentifier('description'), null, null)).toEqual('description');
   });
 
   test('I cannot create an invalid value collection', () => {

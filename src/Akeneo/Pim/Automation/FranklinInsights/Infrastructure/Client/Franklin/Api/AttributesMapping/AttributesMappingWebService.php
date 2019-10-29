@@ -18,19 +18,16 @@ use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\Au
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\BadRequestException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\FranklinServerException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\InvalidTokenException;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\UnableToConnectToFranklinException;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\AttributesMapping;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\ServerException;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
- */
 class AttributesMappingWebService extends AbstractApi implements AuthenticatedApiInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function fetchByFamily(string $familyCode): AttributesMapping
     {
         $route = $this->uriGenerator->generate(sprintf('/api/mapping/%s/attributes', $familyCode));
@@ -43,8 +40,34 @@ class AttributesMappingWebService extends AbstractApi implements AuthenticatedAp
                 throw new FranklinServerException('Response data incorrect! No "mapping" key found');
             }
 
-            return new AttributesMapping($content['mapping']);
+            $attributesMapping = new AttributesMapping();
+
+            foreach ($content['mapping'] as $attribute) {
+                try {
+                    $attributesMapping->add(new AttributeMapping($attribute));
+                } catch (\Exception $e) {
+                    $this->logger->error('Unable to hydrate following AttributeMapping object', [
+                            'attribute' => $attribute,
+                            'error_message' => $e->getMessage()
+                        ]
+                    );
+                    continue;
+                }
+            }
+
+            return $attributesMapping;
+        } catch (ConnectException $e) {
+            $this->logger->error('Cannot connect to Ask Franklin to retrieve attributes mapping', [
+                'exception' => $e->getMessage(),
+                'route' => $route,
+            ]);
+            throw new UnableToConnectToFranklinException();
         } catch (ServerException | FranklinServerException $e) {
+            $this->logger->error('Something went wrong on Ask Franklin side when retrieving attributes mapping', [
+                'exception' => $e->getMessage(),
+                'route' => $route,
+                'family_code' => $familyCode,
+            ]);
             throw new FranklinServerException(
                 sprintf(
                     'Something went wrong on Franklin side when fetching the family attributes of family "%s" : %s',
@@ -54,9 +77,18 @@ class AttributesMappingWebService extends AbstractApi implements AuthenticatedAp
             );
         } catch (ClientException $e) {
             if (Response::HTTP_UNAUTHORIZED === $e->getCode()) {
+                $this->logger->warning('Invalid token to retrieve attributes mapping', [
+                    'exception' => $e->getMessage(),
+                    'route' => $route,
+                ]);
                 throw new InvalidTokenException();
             }
 
+            $this->logger->error('Invalid attributes mapping request sent to Ask Franklin', [
+                'exception' => $e->getMessage(),
+                'route' => $route,
+                'family_code' => $familyCode,
+            ]);
             throw new BadRequestException(sprintf(
                 'Something went wrong when fetching the family attributes of family "%s" : %s',
                 $familyCode,
@@ -65,9 +97,6 @@ class AttributesMappingWebService extends AbstractApi implements AuthenticatedAp
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function save(string $familyCode, array $mapping): void
     {
         $route = $this->uriGenerator->generate(sprintf('/api/mapping/%s/attributes', $familyCode));
@@ -76,21 +105,41 @@ class AttributesMappingWebService extends AbstractApi implements AuthenticatedAp
             $this->httpClient->request('PUT', $route, [
                 'form_params' => $mapping,
             ]);
+        } catch (ConnectException $e) {
+            $this->logger->error('Cannot connect to Ask Franklin to save attributes mapping', [
+                'exception' => $e->getMessage(),
+                'route' => $route,
+            ]);
+            throw new UnableToConnectToFranklinException();
         } catch (ServerException $e) {
+            $this->logger->error('Something went wrong on Ask Franklin side during attributes mapping saving', [
+                'exception' => $e->getMessage(),
+                'route' => $route,
+                'request_body' => $mapping,
+            ]);
             throw new FranklinServerException(
                 sprintf(
-                    'Something went wrong on Franklin side when fetching the attributes mapping of family "%s" : %s',
+                    'Something went wrong on Franklin side when saving the attributes mapping of family "%s" : %s',
                     $familyCode,
                     $e->getMessage()
                 )
             );
         } catch (ClientException $e) {
             if (Response::HTTP_UNAUTHORIZED === $e->getCode()) {
+                $this->logger->warning('Invalid token to save attributes mapping', [
+                    'exception' => $e->getMessage(),
+                    'route' => $route,
+                ]);
                 throw new InvalidTokenException();
             }
 
+            $this->logger->error('Invalid attributes mapping request sent to Ask Franklin', [
+                'exception' => $e->getMessage(),
+                'route' => $route,
+                'request_body' => $mapping,
+            ]);
             throw new BadRequestException(sprintf(
-                'Something went wrong when fetching the attributes mapping of family "%s" : %s',
+                'Something went wrong when saving the attributes mapping of family "%s" : %s',
                 $familyCode,
                 $e->getMessage()
             ));

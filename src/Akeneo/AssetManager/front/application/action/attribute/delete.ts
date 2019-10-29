@@ -5,7 +5,6 @@ import {
   notifyAttributeDeletionFailed,
 } from 'akeneoassetmanager/application/action/attribute/notify';
 import {attributeDeleted} from 'akeneoassetmanager/domain/event/attribute/list';
-import {createIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
 import {attributeEditionCancel} from 'akeneoassetmanager/domain/event/attribute/edit';
 import {updateAttributeList} from 'akeneoassetmanager/application/action/attribute/list';
@@ -18,7 +17,7 @@ export const deleteAttribute = (attributeIdentifier: AttributeIdentifier) => asy
   dispatch(attributeEditionCancel());
   dispatch(attributeDeleted(attributeIdentifier));
   try {
-    const assetFamilyIdentifier = createIdentifier(getState().form.data.identifier);
+    const assetFamilyIdentifier = getState().form.data.identifier;
     const errors = await attributeRemover.remove(assetFamilyIdentifier, attributeIdentifier);
 
     if (errors) {

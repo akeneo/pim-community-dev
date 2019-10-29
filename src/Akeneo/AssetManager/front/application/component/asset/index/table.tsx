@@ -15,7 +15,7 @@ import {getAttributeFilterKey, getCompletenessFilter, getFilter} from 'akeneoass
 import SearchField from 'akeneoassetmanager/application/component/asset/index/search-field';
 import CompletenessFilter, {CompletenessValue,} from 'akeneoassetmanager/application/component/asset/index/completeness-filter';
 import ItemsCounter from 'akeneoassetmanager/application/component/asset/index/items-counter';
-import {NormalizedAttributeIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
+import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
 
 interface TableState {
   locale: string;
@@ -203,19 +203,24 @@ export default class Table extends React.Component<TableProps, {columns: Column[
             <SearchField value={userSearch} onChange={this.props.onSearchUpdated} changeThreshold={250} />
             <ItemsCounter count={grid.matchesCount} />
             <div className="AknFilterBox-filterContainer AknFilterBox-filterContainer--inline">
-              {Object.keys(filterViews).map((attributeCode: NormalizedAttributeIdentifier) => {
+              {Object.keys(filterViews).map((attributeCode: AttributeIdentifier) => {
                 const View = filterViews[attributeCode].view;
                 const attribute = filterViews[attributeCode].attribute;
                 const filter = grid.filters.find((filter: Filter) => filter.field === getAttributeFilterKey(attribute));
 
                 return (
                   <div
-                    key={attribute.getCode().stringValue()}
+                    key={attribute.getCode()}
                     className="AknFilterBox-filter AknFilterBox-filter--relative AknFilterBox-filter--smallMargin"
-                    data-attribute={attribute.getCode().stringValue()}
+                    data-attribute={attribute.getCode()}
                     data-type={attribute.getType()}
                   >
-                    <View attribute={attribute} filter={filter} onFilterUpdated={onFilterUpdated} />
+                    <View
+                      attribute={attribute}
+                      filter={filter}
+                      onFilterUpdated={onFilterUpdated}
+                      context={{locale, channel}}
+                    />
                   </div>
                 );
               })}

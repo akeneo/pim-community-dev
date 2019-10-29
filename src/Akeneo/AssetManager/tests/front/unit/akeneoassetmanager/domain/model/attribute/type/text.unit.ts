@@ -1,11 +1,4 @@
 import {ConcreteTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
-import Identifier, {createIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
-import AssetFamilyIdentifier, {
-  createIdentifier as createAssetFamilyIdentifier,
-} from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import LabelCollection, {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
-import AttributeCode, {createCode} from 'akeneoassetmanager/domain/model/attribute/code';
-import {AttributeType} from 'akeneoassetmanager/domain/model/attribute/minimal';
 import {MaxLength} from 'akeneoassetmanager/domain/model/attribute/type/text/max-length';
 import {IsTextarea} from 'akeneoassetmanager/domain/model/attribute/type/text/is-textarea';
 import {IsRichTextEditor} from 'akeneoassetmanager/domain/model/attribute/type/text/is-rich-text-editor';
@@ -38,23 +31,14 @@ describe('akeneo > attribute > domain > model > attribute > type --- TextAttribu
 
   test('I cannot create an invalid ConcreteTextAttribute', () => {
     expect(() => {
-      new ConcreteTextAttribute(
-        createIdentifier('designer', 'description'),
-        createAssetFamilyIdentifier('designer'),
-        createCode('description'),
-        createLabelCollection({en_US: 'Description'}),
-        true,
-        false,
-        0,
-        true
-      );
+      new ConcreteTextAttribute('description', 'designer', 'description', {en_US: 'Description'}, true, false, 0, true);
     }).toThrow('Attribute expects a MaxLength as maxLength');
     expect(() => {
       new ConcreteTextAttribute(
-        createIdentifier('designer', 'description'),
-        createAssetFamilyIdentifier('designer'),
-        createCode('description'),
-        createLabelCollection({en_US: 'Description'}),
+        'description',
+        'designer',
+        'description',
+        {en_US: 'Description'},
         true,
         false,
         0,
@@ -64,10 +48,10 @@ describe('akeneo > attribute > domain > model > attribute > type --- TextAttribu
     }).toThrow('Attribute expects a Textarea as isTextarea');
     expect(() => {
       new ConcreteTextAttribute(
-        createIdentifier('designer', 'description'),
-        createAssetFamilyIdentifier('designer'),
-        createCode('description'),
-        createLabelCollection({en_US: 'Description'}),
+        'description',
+        'designer',
+        'description',
+        {en_US: 'Description'},
         true,
         false,
         0,
@@ -78,10 +62,10 @@ describe('akeneo > attribute > domain > model > attribute > type --- TextAttribu
     }).toThrow('Attribute expects a IsRichTextEditor as isRichTextEditor');
     expect(() => {
       new ConcreteTextAttribute(
-        createIdentifier('designer', 'description'),
-        createAssetFamilyIdentifier('designer'),
-        createCode('description'),
-        createLabelCollection({en_US: 'Description'}),
+        'description',
+        'designer',
+        'description',
+        {en_US: 'Description'},
         true,
         false,
         0,
@@ -93,10 +77,10 @@ describe('akeneo > attribute > domain > model > attribute > type --- TextAttribu
     }).toThrow('Attribute cannot be rich text editor and not textarea');
     expect(() => {
       new ConcreteTextAttribute(
-        createIdentifier('designer', 'description'),
-        createAssetFamilyIdentifier('designer'),
-        createCode('description'),
-        createLabelCollection({en_US: 'Description'}),
+        'description',
+        'designer',
+        'description',
+        {en_US: 'Description'},
         true,
         false,
         0,
@@ -108,10 +92,10 @@ describe('akeneo > attribute > domain > model > attribute > type --- TextAttribu
     }).toThrow('Attribute expects a ValidationRule as validationRule');
     expect(() => {
       new ConcreteTextAttribute(
-        createIdentifier('designer', 'description'),
-        createAssetFamilyIdentifier('designer'),
-        createCode('description'),
-        createLabelCollection({en_US: 'Description'}),
+        'description',
+        'designer',
+        'description',
+        {en_US: 'Description'},
         true,
         false,
         0,
@@ -124,10 +108,10 @@ describe('akeneo > attribute > domain > model > attribute > type --- TextAttribu
     }).toThrow('Attribute expects a RegularExpression as regularExpression');
     expect(() => {
       new ConcreteTextAttribute(
-        createIdentifier('designer', 'description'),
-        createAssetFamilyIdentifier('designer'),
-        createCode('description'),
-        createLabelCollection({en_US: 'Description'}),
+        'description',
+        'designer',
+        'description',
+        {en_US: 'Description'},
         true,
         false,
         0,
@@ -140,10 +124,10 @@ describe('akeneo > attribute > domain > model > attribute > type --- TextAttribu
     }).toThrow('Attribute cannot have a validation rule while being a textarea');
     expect(() => {
       new ConcreteTextAttribute(
-        createIdentifier('designer', 'description'),
-        createAssetFamilyIdentifier('designer'),
-        createCode('description'),
-        createLabelCollection({en_US: 'Description'}),
+        'description',
+        'designer',
+        'description',
+        {en_US: 'Description'},
         true,
         false,
         0,

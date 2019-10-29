@@ -31,11 +31,13 @@ define([
                 ajax: {
                     url: choiceUrl,
                     cache: true,
-                    data: function (term) {
+                    data: function (term, page) {
                         return {
                             search: term,
                             options: {
-                                locale: UserContext.get('uiLocale')
+                                locale: UserContext.get('uiLocale'),
+                                page: page,
+                                limit: 20
                             }
                         };
                     },

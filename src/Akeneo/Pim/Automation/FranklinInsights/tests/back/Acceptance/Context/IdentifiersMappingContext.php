@@ -381,17 +381,16 @@ class IdentifiersMappingContext implements Context
         $clientMappings = $this->fakeClient->getIdentifiersMapping();
         Assert::assertCount(count($expectedMappings), $clientMappings);
 
-        $franklinMappings = new AttributesMapping($clientMappings);
-        foreach ($franklinMappings as $index => $franklinMapping) {
+        foreach ($clientMappings as $index => $franklinMapping) {
             /** @var AttributeMapping $franklinMapping */
-            $franklinCode = $franklinMapping->getTargetAttributeCode();
-            $pimCode = $franklinMapping->getPimAttributeCode();
+            $franklinCode = $franklinMapping['from']['id'];
+            $pimCode = $franklinMapping['to']['id'];
             $expectedPimCode = $expectedMappings[$franklinCode];
 
             Assert::assertArrayHasKey($franklinCode, $expectedMappings);
-            Assert::assertEquals($expectedPimCode, $franklinMapping->getPimAttributeCode());
+            Assert::assertEquals($expectedPimCode, $pimCode);
             $expectedStatus = (null === $pimCode) ? AttributeMapping::STATUS_INACTIVE : AttributeMapping::STATUS_ACTIVE;
-            Assert::assertEquals($expectedStatus, $franklinMapping->getStatus());
+            Assert::assertEquals($expectedStatus, $franklinMapping['status']);
 
             $this->assertLabelsSentToFranklin($pimCode, $clientMappings[$index]);
         }

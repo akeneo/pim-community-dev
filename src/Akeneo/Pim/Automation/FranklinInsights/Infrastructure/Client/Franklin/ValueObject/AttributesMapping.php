@@ -18,18 +18,24 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\
  */
 class AttributesMapping implements \IteratorAggregate
 {
-    /** @var array */
+    /** @var AttributeMapping[] */
     private $attributes;
 
     /**
-     * @param array $attributes
+     * @param AttributeMapping[]
      */
-    public function __construct(array $attributes)
+    public function __construct(array $attributesMapping = [])
     {
-        $this->attributes = [];
-        foreach ($attributes as $attribute) {
-            $this->attributes[] = new AttributeMapping($attribute);
-        }
+        $this->attributes = array_filter($attributesMapping, function ($attributeMapping) {
+            return $attributeMapping instanceof AttributeMapping;
+        });
+    }
+
+    public function add(AttributeMapping $attributeMapping): self
+    {
+        $this->attributes[] = $attributeMapping;
+
+        return $this;
     }
 
     /**

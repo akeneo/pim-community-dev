@@ -38,7 +38,7 @@ const View = ({
   return (
     <div className="option-collection-selector-container AknSelectField">
       <Select2
-        id={`pim_asset_manager.asset.enrich.${value.attribute.getCode().stringValue()}`}
+        id={`pim_asset_manager.asset.enrich.${value.attribute.getCode()}`}
         className="AknSelectField"
         data={formatedOptions}
         value={data.isEmpty() ? [] : data.normalize()}

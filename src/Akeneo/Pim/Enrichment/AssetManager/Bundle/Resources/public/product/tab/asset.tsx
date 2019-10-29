@@ -6,7 +6,7 @@ import {createStore, Store, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
 import generate from 'akeneopimenrichmentassetmanager/assets-collection/application/value-generator';
 import {localeUpdated, channelUpdated} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
-import {valuesUpdated} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';
+import {valuesUpdated, labelsUpdated} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import {assetCollectionReducer, AssetCollectionState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/asset-collection';
 import {ThemeProvider} from 'styled-components';
 import {updateChannels, updateFamily} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/structure';
@@ -62,6 +62,7 @@ class AssetTabForm extends (Form as {new (config: any): any}) {
       const values = await generate(this.getFormData());
 
       this.store.dispatch(valuesUpdated(values));
+      this.store.dispatch(labelsUpdated(this.getFormData().meta.label));
     });
 
     //Validation errors

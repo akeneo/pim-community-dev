@@ -30,7 +30,7 @@ const View = ({
   return (
     <div className="asset-selector-container">
       <AssetSelector
-        id={`pim_asset_manager.asset.enrich.${value.attribute.getCode().stringValue()}`}
+        id={`pim_asset_manager.asset.enrich.${value.attribute.getCode()}`}
         value={value.data.assetData}
         locale={locale}
         channel={channel}

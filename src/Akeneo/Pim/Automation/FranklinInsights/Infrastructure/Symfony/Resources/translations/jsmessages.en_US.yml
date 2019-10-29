@@ -51,9 +51,10 @@ akeneo_franklin_insights:
                 create_attribute_success: '{0} Sorry, none of the {{ requestCount }} attributes have been created. |{1} Attribute successfully created and attached to the family "{{ family }}". |[2,Inf[ {{ successCount }} attributes out of {{ requestCount }} have been successfully created and attached to the family "{{ family }}".'
                 create_attribute_error: 'Sorry, an error occurred while creating or attaching the attribute to the family.'
                 suggest_attribute_mapping_error: 'Catalog attribute "[{{ catalogAttributeCode }}]" is already mapped on the Franklin attribute "{{ franklinAttributeLabel }}".'
-                add_attribute_to_family_success: '{1} Attribute "{{ attribute }}" successfully attached to the family "{{ family }}". |[2,Inf[ Attributes successfully attached to the family "{{ family }}".'
+                add_attribute_to_family_success: '{1} Attribute successfully attached to the family "{{ family }}". |[2,Inf[ Attributes successfully attached to the family "{{ family }}".'
                 add_attribute_to_family_error: 'Sorry, an error occurred while attaching the attribute to the family.'
             fields:
+                search_bar.placeholder: 'Search on Franklin attribute'
                 franklin_attribute: 'Franklin attribute'
                 franklin_attribute_type: '{{ type }} attribute'
                 franklin_value_sample: 'Value sample:'
@@ -79,7 +80,7 @@ akeneo_franklin_insights:
                     family_status:
                         pending: 'New Franklin attributes to review'
                         full: 'All Franklin attributes mapped'
-                    types_mismatch_warning: 'Warning: attributes types mismatch.'
+                    types_mismatch_warning: 'Warning : attributes types mismatch.'
                     family_progress:
                         title: 'Number of mapped attributes'
                         description: "Use this bar to see at a glance your work status"
@@ -116,6 +117,9 @@ akeneo_franklin_insights:
                 duplicated_pim_attribute: "Mapping can't be saved as you mapped several Franklin attributes to the same PIM attribute"
                 attribute_not_in_family_not_allowed: 'PIM attribute must be in the selected family.'
                 only_unknown_mapped_attributes: 'No attribute in the attributes mapping can be found'
+            search:
+                no_result_title: Sorry, there is no Franklin attribute for your search.
+                no_result_subtitle: Try again with new search criteria.
         product_subscription:
             flash:
                 create:

@@ -1,5 +1,5 @@
-import {NormalizedAttributeIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
 
 export interface ListState {
   attributes: NormalizedAttribute[] | null;
@@ -14,7 +14,7 @@ export default (
   }: {
     type: string;
     attributes: NormalizedAttribute[];
-    deletedAttributeIdentifier: NormalizedAttributeIdentifier;
+    deletedAttributeIdentifier: AttributeIdentifier;
   }
 ) => {
   switch (type) {

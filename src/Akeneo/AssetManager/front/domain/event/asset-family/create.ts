@@ -1,12 +1,12 @@
 import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
-import {NormalizedCode} from 'akeneoassetmanager/domain/model/code';
+import Code from 'akeneoassetmanager/domain/model/code';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 
 export const assetFamilyCreationStart = () => {
   return {type: 'ASSET_FAMILY_CREATION_START'};
 };
 
-export const assetFamilyCreationCodeUpdated = (value: NormalizedCode) => {
+export const assetFamilyCreationCodeUpdated = (value: Code) => {
   return {type: 'ASSET_FAMILY_CREATION_CODE_UPDATED', value};
 };
 

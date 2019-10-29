@@ -1,5 +1,7 @@
 import {getJSON} from 'akeneoassetmanager/tools/fetch';
-import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/identifier';
+import AssetFamilyIdentifier, {
+  assetFamilyIdentifierStringValue,
+} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import errorHandler from 'akeneoassetmanager/infrastructure/tools/error-handler';
 import {
   denormalizePermissionCollection,
@@ -17,7 +19,7 @@ export class PermissionFetcherImplementation implements PermissionFetcher {
   async fetch(identifier: AssetFamilyIdentifier): Promise<PermissionCollection> {
     const backendPermissions = await getJSON(
       routing.generate('akeneo_asset_manager_asset_family_permission_get_rest', {
-        assetFamilyIdentifier: identifier.stringValue(),
+        assetFamilyIdentifier: assetFamilyIdentifierStringValue(identifier),
       })
     ).catch(errorHandler);
 

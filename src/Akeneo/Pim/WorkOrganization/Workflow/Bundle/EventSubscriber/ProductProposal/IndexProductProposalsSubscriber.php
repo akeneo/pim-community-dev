@@ -15,6 +15,7 @@ use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Indexer\ProductPro
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\EntityWithValuesDraftEvents;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -70,9 +71,13 @@ class IndexProductProposalsSubscriber implements EventSubscriberInterface
             $changesToReview = $productProposal->getChangesToReview();
             if (!empty($changesToReview['values'])) {
                 $productProposal->setChanges($changesToReview);
-                $this->productProposalIndexer->index($productProposal);
+                $this->productProposalIndexer->index($productProposal, [
+                    'index_refresh' => Refresh::enable()
+                ]);
             } else {
-                $this->productProposalIndexer->remove($productProposal->getId());
+                $this->productProposalIndexer->remove($productProposal->getId(), [
+                    'index_refresh' => Refresh::enable()
+                ]);
             }
         }
     }

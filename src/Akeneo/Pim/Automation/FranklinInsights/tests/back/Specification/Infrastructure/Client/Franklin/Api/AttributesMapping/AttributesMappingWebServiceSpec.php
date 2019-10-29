@@ -22,15 +22,16 @@ use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\UriGen
 use PhpSpec\ObjectBehavior;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
 class AttributesMappingWebServiceSpec extends ObjectBehavior
 {
-    public function let(UriGenerator $uriGenerator, GuzzleClient $httpClient): void
+    public function let(UriGenerator $uriGenerator, GuzzleClient $httpClient, LoggerInterface $logger): void
     {
-        $this->beConstructedWith($uriGenerator, $httpClient);
+        $this->beConstructedWith($uriGenerator, $httpClient, $logger);
     }
 
     public function it_is_a_attributes_mapping_webservice(): void
@@ -71,6 +72,36 @@ class AttributesMappingWebServiceSpec extends ObjectBehavior
         $uriGenerator->generate($route)->willReturn('/my_route');
 
         $httpClient->request('PUT', '/my_route', ['form_params' => $mapping]);
+    }
+
+    public function it_logs_attributes_in_error(
+        ResponseInterface $apiResponse,
+        StreamInterface $stream,
+        $uriGenerator,
+        $httpClient,
+        $logger
+    )
+    {
+        $familyCode = new FamilyCode('router');
+        $route = sprintf('/api/mapping/%s/attributes', $familyCode);
+        $uriGenerator->generate($route)->willReturn('/my_route');
+
+        $apiResponse->getBody()->willReturn($stream);
+        $stream->getContents()->willReturn($this->getApiJsonReturn());
+
+        $httpClient->request('GET', '/my_route')->willReturn($apiResponse);
+
+        $attributesMapping = $this->fetchByFamily((string) $familyCode);
+
+        $logger->error(
+            'Unable to hydrate following AttributeMapping object',
+            [
+                'attribute' => ["from" => ["id" => "malformedAttribute", "label" => ["en_us" => "malformedAttribute"], "type" => "text"], "summary" => [], "status" => "pending"],
+                'error_message' => 'Missing key "to" in attribute'
+            ]
+        )->shouldBeCalled();
+
+        $attributesMapping->getIterator()->count()->shouldReturn(4);
     }
 
     private function getApiJsonReturn(): string

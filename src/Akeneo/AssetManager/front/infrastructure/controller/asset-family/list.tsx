@@ -12,13 +12,14 @@ import {
   catalogChannelChanged,
   uiLocaleChanged,
 } from 'akeneoassetmanager/domain/event/user';
+import Key from 'akeneoassetmanager/tools/key';
 
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
 const userContext = require('pim/user-context');
 
 const shortcutDispatcher = (store: any) => (event: KeyboardEvent) => {
-  if ('Escape' === event.code) {
+  if (Key.Escape === event.code) {
     store.dispatch({type: 'DISMISS'});
   }
 };
