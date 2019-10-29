@@ -11,3 +11,8 @@ services:
         class: 'Akeneo\Apps\Application\Query\FetchAppsHandler'
         arguments:
             - '@akeneo_app.persistence.repository.app'
+
+    akeneo_app.application.handler.fetch_app:
+        class: 'Akeneo\Apps\Application\Query\FetchAppHandler'
+        arguments:
+            - '@akeneo_app.persistence.repository.app'
