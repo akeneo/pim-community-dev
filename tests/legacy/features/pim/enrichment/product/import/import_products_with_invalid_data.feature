@@ -40,18 +40,18 @@ Feature: Execute a job
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    Then I should see the text "skipped 3"
+    Then I should see the text "skipped 5"
     And there should be 8 products
     And the product "SKU-001" should have the following value:
       | price | 100.00 EUR, 90.00 USD |
     And the product "SKU-002" should have the following value:
       | price | 50.00 EUR |
     And the product "SKU-003" should have the following value:
-      | price | |
+      | price | 12.00 EUR |
     And the product "SKU-004" should have the following value:
       | price | 98.00 EUR |
     And the product "SKU-005" should have the following value:
-      | price | 25.00 EUR |
+      | price | 32.00 USD |
     And the product "SKU-006" should have the following value:
       | price | 77.00 USD |
     And the product "SKU-007" should have the following value:
