@@ -32,24 +32,31 @@ liip_imagine:
             filters:
                 downscale: { max: [320, 240] }
                 strip:        ~
-        am_preview:
+
+        am_url_preview:
             quality:          95
             format:           jpg
             data_loader:      stream_data_loader
             filters:
                 background:
                     color: "#ffffff"
-        am_thumbnail_small:
+
+        am_url_thumbnail:
             quality:          95
             format:           png
             data_loader:      stream_data_loader
             filters:
-                thumbnail:    { size: [280, 280], mode: outbound }
-                strip:        ~
-        am_thumbnail:
+                thumbnail:    { size: [320, 320], mode: inset }
+
+        am_binary_preview:
+            quality:          95
+            format:           jpg
+            filters:
+                background:
+                    color: "#ffffff"
+
+        am_binary_thumbnail:
             quality:          95
             format:           png
-            data_loader:      stream_data_loader
             filters:
-                thumbnail:    { size: [320, 320], mode: outbound }
-                strip:        ~
+                thumbnail:    { size: [320, 320], mode: inset }
