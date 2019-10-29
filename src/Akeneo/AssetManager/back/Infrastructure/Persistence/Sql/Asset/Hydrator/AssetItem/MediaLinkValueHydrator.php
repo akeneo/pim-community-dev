@@ -16,7 +16,6 @@ namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Asse
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetItem\ImagePreviewUrlGenerator;
-use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetItemHydrator;
 
 /**
  * AssetItem Value hydrator for value of type "Url".
@@ -26,14 +25,6 @@ use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetItemH
  */
 class MediaLinkValueHydrator implements ValueHydratorInterface
 {
-    /** @var ImagePreviewUrlGenerator */
-    private $imagePreviewUrlGenerator;
-
-    public function __construct(ImagePreviewUrlGenerator $imagePreviewUrlGenerator)
-    {
-        $this->imagePreviewUrlGenerator = $imagePreviewUrlGenerator;
-    }
-
     public function supports(AbstractAttribute $attribute): bool
     {
         return $attribute instanceof MediaLinkAttribute;
@@ -41,12 +32,11 @@ class MediaLinkValueHydrator implements ValueHydratorInterface
 
     public function hydrate($normalizedValue, AbstractAttribute $attribute, array $context = []): array
     {
-        $attributeIdentifier = $attribute->getIdentifier()->stringValue();
-        $normalizedValue['data'] = $this->imagePreviewUrlGenerator->generate(
-            $normalizedValue['data'],
-            $attributeIdentifier,
-            AssetItemHydrator::THUMBNAIL_PREVIEW_TYPE
-        );
+        $url = sprintf('%s%s%s', $attribute->getPrefix()->normalize(), $normalizedValue['data'], $attribute->getSuffix()->normalize());
+        $normalizedValue['data'] = [
+            'filePath'         => $normalizedValue['data'],
+            'originalFilename' => basename($url)
+        ];
 
         return $normalizedValue;
     }

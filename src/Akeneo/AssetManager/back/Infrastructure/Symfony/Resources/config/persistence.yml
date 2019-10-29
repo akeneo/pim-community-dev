@@ -377,8 +377,6 @@ services:
 
     akeneo_assetmanager.infrastructure.persistence.asset_item.hydrator.media_link_hydrator:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetItem\MediaLinkValueHydrator
-        arguments:
-            - '@akeneo_assetmanager.infrastructure.persistence.asset.hydrator.image_preview_url_generator'
         tags:
             - { name: akeneo_assetmanager.asset_item_value_hydrator }
 
