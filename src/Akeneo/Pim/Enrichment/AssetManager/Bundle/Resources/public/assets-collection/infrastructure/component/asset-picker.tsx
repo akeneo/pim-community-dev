@@ -65,7 +65,7 @@ const ConfirmButton = styled(Button)`
 `;
 
 const Title = styled.div`
-  margin-bottom: 14px;
+  margin-bottom: 15px;
   width: 100%;
   color: ${(props: ThemedProps<void>) => props.theme.color.purple100};
   font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.title};
@@ -73,7 +73,7 @@ const Title = styled.div`
   text-align: center;
 `;
 const SubTitle = styled.div`
-  width: 100%
+  width: 100%;
   text-align: center;
   font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.default};
   color: ${(props: ThemedProps<void>) => props.theme.color.grey120};
