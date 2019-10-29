@@ -88,10 +88,10 @@ define(
                         currentLocale: options.locale,
                         missingValues: 'pim_enrich.form.product.panel.completeness.missing_values',
                         i18n: i18n
-                    }));
+                    })).show();
                 } else {
-                    // We drop the element for design issues, to avoid blank spaces.
-                    this.$el.remove();
+                    // We hide the element for design issues, to avoid blank spaces.
+                    this.$el.hide();
                 }
 
                 return this;
