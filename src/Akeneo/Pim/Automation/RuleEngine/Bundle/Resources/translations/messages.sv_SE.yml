@@ -2,13 +2,12 @@ pimee_catalog_rule:
   datagrid:
     rule-grid:
       actions:
-        delete: Ta bort
+        delete: Radera
         execute: Utför
       title: Regler
       column:
         code: Kod
         conditions: Villkor
-        actions: Åtgärd
         impacted_product_count:
           label: Berörda produkter
           count: '{0,1}%count% påverkas produkt |] 1 Inf [%count% påverkas produkter'
@@ -16,7 +15,7 @@ pimee_catalog_rule:
       mass_edit_action:
         impacted_product_count: Beräkna de påverkade produkterna
         execute: Utför
-        delete: Ta bort
+        delete: Radera
   actions:
     type:
       "copy": Sedan kopieras %from_field% till %to_field%
@@ -28,11 +27,6 @@ pimee_catalog_rule:
   condition:
     label: Om %field% %operator% %value%
     operators:
-      "STARTS WITH": börjar med
-      "ENDS WITH": slutar med
-      "CONTAINS": innehåller
-      "DOES NOT CONTAIN": innehåller inte
-      "EMPTY": är tom
       "NOT EMPTY": är inte tom
       "IN": in
       "NOT IN": inte i
@@ -40,13 +34,10 @@ pimee_catalog_rule:
       "NOT IN CHILDREN": inte i element
       "UNCLASSIFIED": är oklassificerade
       "IN OR UNCLASSIFIED": är oklassificerade eller i
-      "BETWEEN": mellan
-      "NOT BETWEEN": inte mellan
       "=": lika med
       "!=": inte jämnlikt
       ">": större än
       ">=": är lika med eller större än
-      "<": mindre än
       "<=": är lika med eller mindre än
   acl_group:
     rule: Regler
@@ -66,7 +57,6 @@ pimee_catalog_rule:
   product:
     tooltip:
       product_attribute_affected_by_a_rule.content: Värdet av detta attribut kan komma från regel <strong>%rule%</strong>. Det innebär att om villkoren för regeln är giltig, kommer din ändring att åsidosättas.
-      loading.title: Laddar...
     history: Tillämpad regel "%rule%"
   product_value:
     tooltip:
@@ -75,7 +65,7 @@ pimee_catalog_rule:
     product_rule_definition_reader.title: Produkt regel importera läsare
     rule_definition_processor.title: Produkten regel importera processor
     product_rule_definition_writer.title: Produkten regel importera skrivare
-    rules_execution.title: Regler utförande
+    rules_execution.title: Regler utföranden
   notification:
     rule:
       executed: Utförandet av regel klar

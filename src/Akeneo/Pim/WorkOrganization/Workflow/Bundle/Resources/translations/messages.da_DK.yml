@@ -69,7 +69,7 @@ pimee_workflow:
     refuse.title: Afvis forslagerne
   mass_edit_action:
     published:
-      page_title: Offentliggjorte produkter
+      page_title: Publicerede produkter
       page_subtitle: Masse redigere (1 offentliggjorte produkt) | Masse redigere (%count% offentliggjort produkter)
       title: Vælg handling
       subtitle: Vælg den handling, du ønsker at udføre på den valgte offentliggjorte produkt| Vælg den handling, du ønsker at udføre på de valgte %count% offentliggjort produkter
@@ -80,14 +80,11 @@ pimee_workflow:
         third: Konfigurér
         fourth: Bekræft
 btn:
-  publish: Publicér
+  publish: Udgiv
   unpublish: Afpublisér
   save working copy: Gem arbejdskopi
-  save draft: Gem kladde
   save working copy and next: Gem arbejdskopi og næste
-  save draft and next: Gem kladde og næste
   save working copy and finish: Gem arbejdskopi og afslut
-  save draft and finish: Gem kladde og afslut
   send for approval: Send til godkendelse
   sent for approval: Sendt til godkendelse
   editworkingcopy: Rediger arbejdskopi
@@ -107,7 +104,7 @@ flash:
       success: Forslaget er blevet fjernet.
 pim_menu:
   item:
-    published_product: Offentliggjorte produkter
+    published_product: Publicerede produkter
     proposal: Forslag
 confirmation:
   product:
@@ -129,7 +126,7 @@ job_execution.summary:
   proposal_updated: opdaterede forslag
   proposal_created: oprettede forslag
   proposal_skipped: oversprunget forslag (ingen forskelle)
-published products: Offentliggjorte produkter
+published products: Publicerede produkter
 pim_analytics:
   info_type:
     nb_published_products: Antallet af offentliggjorte produkt
@@ -146,9 +143,9 @@ pimee_dashboard:
 pim_enrich:
   mass_edit_action:
     publish:
-      label: Publicér
+      label: Udgiv
       description: Udgiv de udvalgte produkter, de nuværende offentliggjorte data vil blive slettet af de aktuelle data.
-      success_flash: Udvalgte produkter har været publiceret.
+      success_flash: Udvalgte produkter er publiceret.
       launched_flash: Jobbet "Publisering af produkt(er)" kører i øjeblikket.
       message:
         info: '%nbProducts% udvalgte produkter vil blive offentliggjort.'
