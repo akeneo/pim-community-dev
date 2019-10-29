@@ -99,7 +99,7 @@
     "text-loader": "0.0.1",
     "thread-loader": "^2.1.2",
     "ts-loader": "5.3.3",
-    "typescript": "3.3.3333",
+    "typescript": "^3.3.3333",
     "underscore": "1.8.3",
     "webpack": "4.29.6",
     "webpack-cli": "^3.2.3",
@@ -109,5 +109,9 @@
   },
   "resolutions": {
     "jest/**/ip-regex": "2.1.0"
-  }
+  },
+  "workspaces": [
+    "vendor/akeneo/pim-community-dev",
+    "vendor/akeneo/pim-community-dev/src/Akeneo/Apps/front"
+  ]
 }

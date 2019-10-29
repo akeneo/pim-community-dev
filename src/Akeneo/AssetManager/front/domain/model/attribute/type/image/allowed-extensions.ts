@@ -28,7 +28,7 @@ export class AllowedExtensions implements NormalizableAdditionalProperty {
       return false;
     }
     const invalidAllowedExtensions = value.filter(
-      (extension: string) => !Object.values(AllowedExtensionsOptions).includes(extension)
+      (extension: string) => !Object.values(AllowedExtensionsOptions).includes(extension as any)
     );
     return 0 === invalidAllowedExtensions.length;
   }

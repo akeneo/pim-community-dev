@@ -134,6 +134,10 @@ jobs:
                 name: Acceptance back (Asset Manager)
                 command: docker-compose run -u www-data --rm php vendor/bin/behat --config src/Akeneo/AssetManager/tests/back/behat.yml.dist --no-interaction --format=progress
                 when: always
+          - run:
+                name: Acceptance back (Apps)
+                command: docker-compose run -u www-data --rm php vendor/bin/behat --config vendor/akeneo/pim-community-dev/src/Akeneo/Apps/back/tests/Acceptance/behat.yml --no-interaction --format=progress --strict
+                when: always
           - store_test_results:
                 path: var/tests
           - store_artifacts:

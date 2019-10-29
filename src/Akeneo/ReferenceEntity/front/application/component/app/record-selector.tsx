@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as $ from 'jquery';
+import $ from 'jquery';
 import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
 import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 import {NormalizedItemRecord, NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';

@@ -9,7 +9,7 @@
 
 import * as Backbone from 'backbone';
 import {EventsHash} from 'backbone';
-import * as $ from 'jquery';
+import $ from 'jquery';
 import {ajax} from 'jquery';
 import * as _ from 'underscore';
 

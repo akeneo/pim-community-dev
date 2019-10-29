@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import * as $ from 'jquery';
+import $ from 'jquery';
 import BaseView = require('pimui/js/view/base');
 import * as _ from 'underscore';
 import SimpleSelectAttribute from '../common/simple-select-attribute';
