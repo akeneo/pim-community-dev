@@ -32,22 +32,6 @@ Feature: Import products coming from an external application
     And the english localizable value name of "SKU-001" should be "Donec"
     And the english tablet description of "SKU-002" should be "Pellentesque habitant morbi tristique senectus et netus et malesuada fames"
 
-  Scenario: Successfully import a csv file of product with carriage return in product description
-    Given the following CSV file to import:
-      """
-      sku;family;groups;categories;name-en_US;description-en_US-tablet
-      SKU-001;boots;CROSS;winter_boots;Donec;"dictum magna. Ut tincidunt
-      orci quis lectus.
-
-      Nullam suscipit,
-      est
-
-      "
-      """
-    When the products are imported via the job csv_footwear_product_import
-    Then there should be 1 products
-    And the english tablet description of "SKU-001" should be "dictum magna. Ut tincidunt|NL|orci quis lectus.|NL||NL|Nullam suscipit,|NL|est|NL||NL|"
-
   Scenario: Successfully ignore duplicate unique data
     Given the following CSV file to import:
       """
@@ -83,20 +67,6 @@ Feature: Import products coming from an external application
     Then there should be 1 product
     And the english localizable value name of "SKU-001" should be "Donec"
     And the english tablet description of "SKU-001" should be "dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est"
-
-  Scenario: Successfully import products prices
-    Given the following CSV file to import:
-      """
-      sku;price
-      SKU-001;"100 EUR, 90 USD"
-      SKU-002;50 EUR
-      """
-    When the products are imported via the job csv_footwear_product_import
-    Then there should be 2 products
-    And the product "SKU-001" should have the following value:
-      | price | 100.00 EUR, 90.00 USD |
-    And the product "SKU-002" should have the following value:
-      | price | 50.00 EUR |
 
   Scenario: Successfully update existing products prices
     Given the following product:
@@ -147,25 +117,6 @@ Feature: Import products coming from an external application
     Then there should be 1 product
     And there should be 1 product skipped because there is no difference
 
-  Scenario: Successfully import products with attributes with full numeric codes
-    Given the following family:
-      | code      | attributes           |
-      | my_family | name,123,description |
-    And the following CSV file to import:
-      """
-      sku;123;family;groups;categories;name-en_US;description-en_US-tablet
-      SKU-001;aaa;my_family;;winter_boots;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
-      SKU-002;bbb;my_family;;winter_boots;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames
-      """
-    When the products are imported via the job csv_footwear_product_import
-    Then there should be 2 product
-    And the product "SKU-001" should have the following values:
-      | name-en_US | Donec |
-      | 123        | aaa   |
-    And the product "SKU-002" should have the following values:
-      | name-en_US | Donex |
-      | 123        | bbb   |
-
   Scenario: Successfully import a csv file with sku and family column
     Given the following CSV file to import:
       """
@@ -197,73 +148,6 @@ Feature: Import products coming from an external application
     And product "SKU-002" should be enabled
     And product "SKU-003" should be disabled
     And product "SKU-004" should be enabled
-
-  Scenario: Successfully import a csv file of products without enabled column default no
-    Given the following product:
-      | sku     | name-en_US | description-en_US-tablet                    | enabled |
-      | SKU-001 | John Deere | Best of tractors                            | no      |
-      | SKU-002 | Class      | Leader in agricultural harvesting equipment | yes     |
-      | SKU-003 | Renault    | French Tractors                             | no      |
-    And the following CSV file to import:
-      """
-      sku;name-en_US;description-en_US-tablet
-      SKU-001;John Deere;Go fast with John Deere
-      SKU-002;Class;Ride with Class
-      SKU-003;Renault;French touch for tractors
-      SKU-004;New Holland;Faster tractors
-      """
-    When the products are imported via the job csv_footwear_product_import with options:
-      | enabled | no |
-    Then there should be 4 products
-    And product "SKU-001" should be disabled
-    And product "SKU-002" should be enabled
-    And product "SKU-003" should be disabled
-    And product "SKU-004" should be disabled
-
-  @javascript
-  Scenario: Successfully import products when category code is integer
-    Given I am logged in as "Julia"
-    And the following products:
-      | sku    |
-      | jacket |
-    And I am on the category "2014_collection" node creation page
-    And I fill in the following information:
-      | Code | 123 |
-    And I save the category
-    And the following CSV file to import:
-      """
-      sku;categories
-      jacket;123
-      """
-    When the products are imported via the job csv_footwear_product_import
-    Then the category of the product "jacket" should be "123"
-
-  @javascript
-  Scenario: Successfully import a csv file of products and the completeness should be computed
-    Given I am logged in as "Julia"
-    And the following CSV file to import:
-      """
-      sku;family;groups;categories;name-en_US;description-en_US-tablet;price;size;color
-      SKU-001;boots;similar_boots;winter_boots;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est;"100 EUR, 90 USD";40;
-      SKU-002;sneakers;;winter_boots;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames;"100 EUR, 90 USD";37;red
-      """
-    And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "csv_footwear_product_import" import job page
-    And I launch the import job
-    And I wait for the "csv_footwear_product_import" job to finish
-    And I am on the "SKU-001" product page
-    When I visit the "Completeness" column tab
-    And I should see the completeness:
-      | channel | locale | state   | missing_values | ratio |
-      | tablet  | en_US  | warning | 4              | 55%   |
-      | mobile  | en_US  | warning | 1              | 80%   |
-    And I am on the "SKU-002" product page
-    When I visit the "Completeness" column tab
-    And I should see the completeness:
-      | channel | locale | state   | missing_values | ratio |
-      | tablet  | en_US  | warning | 3              | 66%   |
-      | mobile  | en_US  | success | 0              | 100%  |
 
   @jira https://akeneo.atlassian.net/browse/PIM-6085
   @javascript

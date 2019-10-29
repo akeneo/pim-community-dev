@@ -31,6 +31,8 @@ class SimpleSelectConverter extends AbstractValueConverter
     {
         if ('' === $value) {
             $value = null;
+        } else {
+            $value = (string) $value;
         }
 
         return [$attributeFieldInfo['attribute']->getCode() => [[
