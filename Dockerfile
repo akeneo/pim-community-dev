@@ -125,7 +125,7 @@ COPY config config
 COPY public public
 COPY src src
 COPY upgrades upgrades
-COPY composer.json package.json yarn.lock .env .
+COPY composer.json package.json yarn.lock .env tsconfig.json .
 
 ENV APP_ENV=prod
 RUN mkdir var && \
