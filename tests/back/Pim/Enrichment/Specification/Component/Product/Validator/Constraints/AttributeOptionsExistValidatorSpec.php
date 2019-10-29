@@ -163,23 +163,4 @@ class AttributeOptionsExistValidatorSpec extends ObjectBehavior
 
         $this->validate($values, $constraint);
     }
-
-    // @todo @merge master/4.0: remove this test
-    function it_does_not_build_violations_for_empty_values(
-        GetExistingAttributeOptionCodes $getExistingAttributeOptionCodes,
-        ExecutionContextInterface $context
-    ) {
-        $getExistingAttributeOptionCodes->fromOptionCodesByAttributeCode(Argument::any())->shouldNotBeCalled();
-        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
-
-        $this->validate(
-            new WriteValueCollection(
-                [
-                    OptionValue::value('color', null),
-                    OptionsValue::value('sizes', []),
-                ]
-            ),
-            new AttributeOptionsExist()
-        );
-    }
 }

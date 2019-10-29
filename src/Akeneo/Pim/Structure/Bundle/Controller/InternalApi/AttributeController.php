@@ -102,7 +102,7 @@ class AttributeController
         NormalizerInterface $lightAttributeNormalizer,
         TranslatorInterface $translator,
         AttributeIsAFamilyVariantAxis $attributeIsAFamilyVariantAxisQuery,
-        ObjectRepository $channelRepository = null // TODO Merge remove null on master
+        ObjectRepository $channelRepository
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->normalizer = $normalizer;
@@ -470,11 +470,7 @@ class AttributeController
 
     private function channelCodesUsedAsConversionUnit(string $code): array
     {
-        // TODO Merge Remove this on master
         // TODO This method can be updated with a real SQL query (not in 2.3 because we can't filter on JSON columns)
-        if (null === $this->channelRepository) {
-            return [];
-        }
         $channelCodes = [];
         foreach ($this->channelRepository->findAll() as $channel) {
             $attributeCodes = array_keys($channel->getConversionUnits());

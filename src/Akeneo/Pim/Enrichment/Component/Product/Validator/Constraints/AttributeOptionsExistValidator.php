@@ -39,11 +39,7 @@ class AttributeOptionsExistValidator extends ConstraintValidator
 
         $optionValues = $values->filter(
             function (ValueInterface $value): bool {
-                // @todo @merge master/4.0: remove the tests on values emptiness as there will be no more empty values
-                // in clear, just let:
-                // return $value instanceof OptionValueInterface || $value instanceof OptionsValueInterface;
-                return ($value instanceof OptionValueInterface && null !== $value->getData()) ||
-                    ($value instanceof OptionsValueInterface && [] !== $value->getData());
+                return $value instanceof OptionValueInterface || $value instanceof OptionsValueInterface;
             }
         );
 
