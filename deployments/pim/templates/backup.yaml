@@ -1,0 +1,34 @@
+{{ if .Values.backup.enabled }}
+apiVersion: backup.akeneo.com/v2
+kind: Backup
+metadata:
+  name: {{ template "pim.fullName" . }}
+  labels:
+    app: {{ template "pim.fullName" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+    component: {{ template "pim.fullName" . }}
+    {{ include "pim.extraLabels" . | indent 4 }}
+    role: pim-backup
+spec:
+  jobLabel: {{ template "pim.fullName" . }}
+  projectId: {{ .Values.backup.projectId }}
+  zone: {{ .Values.backup.zone }}
+  snapshot:
+    schedule: {{ .Values.backup.snapshot.schedule }}
+    pvcNames:
+      - pvc-data-{{ .Release.Name }}-mysql-server-0
+{{ if .Values.backup.snapshot.export.enabled }}
+    export:
+      snapshotAge: {{ .Values.backup.snapshot.export.snapshotAge }}
+{{end }}
+    retentionPolicy:
+{{toYaml .Values.backup.snapshot.retentionPolicy | indent 6 }}
+  storage:
+    schedule: {{ .Values.backup.storage.schedule }}
+    sourcesUrls:
+      - gs://{{ .Values.pim.storage.bucketName }}
+    retentionPolicy:
+{{toYaml .Values.backup.storage.retentionPolicy | indent 6}}
+{{ end }}
