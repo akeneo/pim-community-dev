@@ -72,6 +72,8 @@ define(
                     this.setCollapsed(true);
                 }
 
+                this.delegateEvents();
+
                 return BaseForm.prototype.render.apply(this, arguments);
             },
 
