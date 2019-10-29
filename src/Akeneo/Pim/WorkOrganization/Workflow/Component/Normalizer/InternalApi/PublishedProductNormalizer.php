@@ -29,6 +29,7 @@ use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\Tool\Component\Versioning\Model\VersionInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -36,7 +37,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class PublishedProductNormalizer implements NormalizerInterface
+class PublishedProductNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /** @var StandardPublishedProductNormalizer */
     private $standardPublishedProductNormalizer;
@@ -188,6 +189,11 @@ class PublishedProductNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof PublishedProductInterface && 'internal_api' === $format;
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 
     private function getLabels(PublishedProductInterface $publishedProduct, ?string $scopeCode): array

@@ -35,7 +35,7 @@ class MassEditAssetIntegration extends TestCase
             ->get('akeneo_batch_queue.launcher.queue_job_launcher')
             ->launch($jobInstance, $user, $config);
 
-        $jobLauncher = new JobLauncher(static::$kernel);
+        $jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
         $jobLauncher->launchConsumerOnce();
         $jobLauncher->waitCompleteJobExecution($jobExecution);
 

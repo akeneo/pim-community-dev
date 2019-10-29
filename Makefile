@@ -70,10 +70,10 @@ cache:
 	rm -rf var/cache && $(PHP_RUN) bin/console cache:warmup
 
 composer.lock: composer.json
-	$(PHP_RUN) -d memory_limit=4G /usr/local/bin/composer update --no-interaction
+	$(PHP_RUN) -d memory_limit=5G /usr/local/bin/composer update --no-interaction
 
 vendor: composer.lock
-	$(PHP_RUN) -d memory_limit=4G /usr/local/bin/composer install --no-interaction
+	$(PHP_RUN) -d memory_limit=5G /usr/local/bin/composer install --no-interaction
 
 .PHONY: check-requirements
 check-requirements:

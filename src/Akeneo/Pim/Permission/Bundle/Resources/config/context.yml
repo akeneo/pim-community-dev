@@ -3,6 +3,7 @@ parameters:
 
 services:
     pim_user.context.user:
+        public: true
         class: '%pimee_security.context.user.class%'
         arguments:
             - '@security.token_storage'

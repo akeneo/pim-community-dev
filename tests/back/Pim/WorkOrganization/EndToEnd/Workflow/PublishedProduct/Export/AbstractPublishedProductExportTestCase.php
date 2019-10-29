@@ -18,7 +18,7 @@ class AbstractPublishedProductExportTestCase extends TestCase
     {
         parent::setUp();
 
-        $this->jobLauncher       = new JobLauncher(static::$kernel);
+        $this->jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
         $publishedProductManager = $this->get('pimee_workflow.manager.published_product');
 
         $productsToPublish = [];

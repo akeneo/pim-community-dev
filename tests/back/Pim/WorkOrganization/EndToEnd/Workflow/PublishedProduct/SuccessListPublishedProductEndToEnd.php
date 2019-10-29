@@ -547,8 +547,8 @@ JSON;
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href" : "http://localhost/api/rest/v1/published-products?page=1&with_count=false&pagination_type=page&limit=10&locales=en_US%2Czh_CN"},
-        "first" : {"href" : "http://localhost/api/rest/v1/published-products?page=1&with_count=false&pagination_type=page&limit=10&locales=en_US%2Czh_CN"}
+        "self"  : {"href" : "http://localhost/api/rest/v1/published-products?page=1&with_count=false&pagination_type=page&limit=10&locales=en_US,zh_CN"},
+        "first" : {"href" : "http://localhost/api/rest/v1/published-products?page=1&with_count=false&pagination_type=page&limit=10&locales=en_US,zh_CN"}
     },
     "current_page" : 1,
     "_embedded"    : {
@@ -739,8 +739,8 @@ JSON;
         $expected = <<<JSON
 {
     "_links"       : {
-        "self"  : {"href" : "http://localhost/api/rest/v1/published-products?page=1&with_count=false&pagination_type=page&limit=10&scope=tablet&locales=fr_FR&attributes=a_scopable_price%2Ca_metric%2Ca_localized_and_scopable_text_area"},
-        "first" : {"href" : "http://localhost/api/rest/v1/published-products?page=1&with_count=false&pagination_type=page&limit=10&scope=tablet&locales=fr_FR&attributes=a_scopable_price%2Ca_metric%2Ca_localized_and_scopable_text_area"}
+        "self"  : {"href" : "http://localhost/api/rest/v1/published-products?page=1&with_count=false&pagination_type=page&limit=10&scope=tablet&locales=fr_FR&attributes=a_scopable_price,a_metric,a_localized_and_scopable_text_area"},
+        "first" : {"href" : "http://localhost/api/rest/v1/published-products?page=1&with_count=false&pagination_type=page&limit=10&scope=tablet&locales=fr_FR&attributes=a_scopable_price,a_metric,a_localized_and_scopable_text_area"}
     },
     "current_page" : 1,
     "_embedded"    : {
@@ -916,7 +916,7 @@ JSON;
 
         $search = '{"a_metric":[{"operator":">","value":{"amount":"9","unit":"KILOWATT"}}]}';
         $client->request('GET', 'api/rest/v1/published-products?pagination_type=page&search=' . $search);
-        $searchEncoded = rawurlencode($search);
+        $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
         $expected = <<<JSON
 {
     "_links"       : {
@@ -972,7 +972,7 @@ JSON;
 
         $search = '{"categories":[{"operator":"IN", "value":["categoryB"]}], "a_yes_no":[{"operator":"=","value":true}]}';
         $client->request('GET', 'api/rest/v1/published-products?pagination_type=page&search=' . $search);
-        $searchEncoded = rawurlencode($search);
+        $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
         $expected = <<<JSON
 {
     "_links": {
@@ -995,7 +995,7 @@ JSON;
 
         $search = '{"completeness":[{"operator":"GREATER THAN ON ALL LOCALES","value":50,"locales":["fr_FR"],"scope":"ecommerce"}],"categories":[{"operator":"IN", "value":["categoryB"]}], "a_yes_no":[{"operator":"=","value":true}]}';
         $client->request('GET', 'api/rest/v1/published-products?search=' . $search);
-        $searchEncoded = rawurlencode($search);
+        $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
         $expected = <<<JSON
 {
     "_links": {
@@ -1049,9 +1049,9 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $id = [
-            'simple' => rawurlencode($this->getEncryptedId('simple')),
-            'localizable' => rawurlencode($this->getEncryptedId('localizable')),
-            'localizable_and_scopable' => rawurlencode($this->getEncryptedId('localizable_and_scopable')),
+            'simple' => $this->encodeStringWithSymfonyUrlGeneratorCompatibility($this->getEncryptedId('simple')),
+            'localizable' => $this->encodeStringWithSymfonyUrlGeneratorCompatibility($this->getEncryptedId('localizable')),
+            'localizable_and_scopable' => $this->encodeStringWithSymfonyUrlGeneratorCompatibility($this->getEncryptedId('localizable_and_scopable')),
         ];
 
         $client->request('GET', sprintf('api/rest/v1/published-products?pagination_type=search_after&limit=3&search_after=%s', $id['simple']));
@@ -1080,7 +1080,7 @@ JSON;
         $standardizedPublishedProducts = $this->getStandardizedPublishedProducts();
         $client = $this->createAuthenticatedClient();
 
-        $scopableEncryptedId = rawurlencode($this->getEncryptedId('scopable'));
+        $scopableEncryptedId = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($this->getEncryptedId('scopable'));
 
         $client->request('GET', sprintf('api/rest/v1/published-products?pagination_type=search_after&limit=4&search_after=%s', $scopableEncryptedId));
         $expected = <<<JSON

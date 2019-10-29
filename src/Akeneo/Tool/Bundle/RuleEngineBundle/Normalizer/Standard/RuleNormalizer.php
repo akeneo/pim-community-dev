@@ -12,6 +12,7 @@
 namespace Akeneo\Tool\Bundle\RuleEngineBundle\Normalizer\Standard;
 
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -19,7 +20,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  *
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
-class RuleNormalizer implements NormalizerInterface
+class RuleNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /**
      * {@inheritdoc}
@@ -51,5 +52,10 @@ class RuleNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof RuleDefinitionInterface;
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 }

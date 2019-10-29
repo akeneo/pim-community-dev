@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Common\Helper;
 
-use Akeneo\Test\Acceptance\User\InMemoryUserRepository;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
-use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\BrowserKit\Cookie;
-use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
@@ -30,28 +29,27 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AuthenticatedClientFactory
+class AuthenticatedClient
 {
     /** @var UserRepositoryInterface */
     private $userRepository;
 
-    /** @var KernelInterface */
-    private $kernel;
+    /** @var SessionInterface */
+    private $session;
 
-    public function __construct(InMemoryUserRepository $userRepository, KernelInterface $kernel)
-    {
+    public function __construct(
+        UserRepositoryInterface $userRepository,
+        SessionInterface $session
+    ) {
         $this->userRepository = $userRepository;
-        $this->kernel = $kernel;
+        $this->session = $session;
     }
 
-    public function logIn(string $username): Client
+    public function logIn(KernelBrowser $kernelBrowser, string $username): void
     {
         $user = $this->createUser($username);
-        $client = $this->createClient();
         $token = $this->getUserToken($user);
-        $this->createSession($client, $token);
-
-        return $client;
+        $this->createSession($kernelBrowser, $token);
     }
 
     private function createUser(string $username): User
@@ -64,27 +62,17 @@ class AuthenticatedClientFactory
         return $user;
     }
 
-    private function createClient(): Client
-    {
-        $client = new Client($this->kernel);
-        $client->disableReboot();
-        $client->followRedirects();
-
-        return $client;
-    }
-
     private function getUserToken(User $user): UsernamePasswordToken
     {
         return new UsernamePasswordToken($user, null, 'main', $user->getRoles());
     }
 
-    private function createSession(Client $client, TokenInterface $token): void
+    private function createSession(KernelBrowser $client, TokenInterface $token): void
     {
-        $session = $client->getContainer()->get('session');
-        $session->set('_security_main', serialize($token));
-        $session->save();
+        $this->session->set('_security_main', serialize($token));
+        $this->session->save();
 
-        $cookie = new Cookie($session->getName(), $session->getId());
+        $cookie = new Cookie($this->session->getName(), $this->session->getId());
         $client->getCookieJar()->set($cookie);
     }
 }

@@ -4,6 +4,9 @@ parameters:
     reference_entity_connector_maximum_records_to_process_per_request: 10
 
 services:
+    _defaults:
+        public: true
+
     # Repositories
     akeneo_referenceentity.infrastructure.persistence.repository.reference_entity:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryReferenceEntityRepository
@@ -206,11 +209,6 @@ services:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindValueKeysByAttributeType
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
-
-    akeneo_referenceentity.infrastructure.persistence.query.find_identifiers_by_reference_entity_and_codes:
-        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindIdentifiersByReferenceEntityAndCodes
-        arguments:
-            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
 
     akeneo_referenceentity.infrastructure.persistence.query.find_codes_by_identifiers:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindCodesByIdentifiers

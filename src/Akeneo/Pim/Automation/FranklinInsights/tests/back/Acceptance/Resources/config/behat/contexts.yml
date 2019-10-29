@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     akeneo_acceptance.context.franklin_insights.franklin_configuration:
         class: 'Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Context\FranklinConfigurationContext'
         arguments:

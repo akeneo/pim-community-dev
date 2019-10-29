@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\UI\Web\Asset;
 
-use Akeneo\AssetManager\Common\Helper\AuthenticatedClientFactory;
+use Akeneo\AssetManager\Common\Helper\AuthenticatedClient;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\MediaLinkImageGenerator;
@@ -29,9 +29,6 @@ final class ImagePreviewActionTest extends ControllerIntegrationTestCase
 {
     private const URL_VALUE_PREVIEW_ROUTE = 'akeneo_asset_manager_image_preview';
     private const FILENAME = '2016/04/Fred-site-web.jpg';
-
-    /* @var Client */
-    private $client;
 
     /** @var WebClientHelper */
     private $webClientHelper;
@@ -49,8 +46,7 @@ final class ImagePreviewActionTest extends ControllerIntegrationTestCase
     {
         parent::setUp();
 
-        $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), self::$kernel))
-            ->logIn('julia');
+        $this->get('akeneoasset_manager.tests.helper.authenticated_client')->logIn($this->client, 'julia');
         $this->webClientHelper = $this->get('akeneoasset_manager.tests.helper.web_client_helper');
         $this->fixturesLoader = $this->get('akeneoasset_manager.tests.helper.fixtures_loader');
 

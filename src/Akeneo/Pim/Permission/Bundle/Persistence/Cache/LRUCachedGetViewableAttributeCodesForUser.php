@@ -57,7 +57,11 @@ final class LRUCachedGetViewableAttributeCodesForUser implements GetViewableAttr
             return $result;
         };
 
-        return array_keys(array_filter($this->cache->getForKeys($attributeCodes, $fetchNonFoundAttributeCodes)));
+        $grantedAttributeCodes = array_keys(
+            array_filter($this->cache->getForKeys($attributeCodes, $fetchNonFoundAttributeCodes))
+        );
+
+        return array_map('strval', $grantedAttributeCodes);
     }
 
     private function resetCache(): void

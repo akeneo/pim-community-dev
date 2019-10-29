@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing;
 
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -21,7 +22,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class ProductProposalNormalizer implements NormalizerInterface
+class ProductProposalNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     public const INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX = 'indexing_product_and_product_model_proposal';
     private const FIELD_DOCUMENT_TYPE = 'document_type';
@@ -52,5 +53,10 @@ class ProductProposalNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ProductDraft && self::INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX === $format;
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 }

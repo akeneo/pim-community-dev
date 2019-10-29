@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     akeneo_referenceentity.tests.back.integration.connector.distribute.get_connector_record_context:
         class: Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Distribute\GetConnectorRecordContext
         arguments:

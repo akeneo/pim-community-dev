@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Permission\Component\Normalizer\Standard;
 
 use Akeneo\Pim\Permission\Bundle\Manager\JobProfileAccessManager;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -13,7 +14,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class JobInstanceNormalizer implements NormalizerInterface
+class JobInstanceNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /** @var NormalizerInterface */
     protected $normalizer;
@@ -58,5 +59,11 @@ class JobInstanceNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $this->normalizer->supportsNormalization($data, $format);
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return $this->normalizer instanceof CacheableSupportsMethodInterface
+            && $this->normalizer->hasCacheableSupportsMethod();
     }
 }

@@ -14,12 +14,13 @@ declare(strict_types=1);
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\InternalApi;
 
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompleteness;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
-class PublishedProductCompletenessNormalizer implements NormalizerInterface
+class PublishedProductCompletenessNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /**
      * {@inheritdoc}
@@ -41,5 +42,10 @@ class PublishedProductCompletenessNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof PublishedProductCompleteness && 'internal_api' === $format;
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 }

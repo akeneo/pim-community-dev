@@ -14,12 +14,13 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Permission\Component\Normalizer\Authorization;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Normalize a product model to get code and data needed to know if resource is granted or not.
  */
-class ProductModelNormalizer implements NormalizerInterface
+class ProductModelNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /**
      * {@inheritdoc}
@@ -38,5 +39,10 @@ class ProductModelNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof ProductModelInterface && 'authorization' === $format;
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 }

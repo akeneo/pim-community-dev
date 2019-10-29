@@ -44,7 +44,7 @@ class MassUploadAssetsInManyProductIntegration extends TestCase
         $fs->put($uploadMugFilePath, file_get_contents($originMugFilePath));
         $fs->put($uploadShoeFilePath, file_get_contents($originShoeFilePath));
 
-        $queueLauncher = new JobLauncher(static::$kernel);
+        $queueLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
         $jobPublisher = $this->get('akeneo_batch_queue.launcher.queue_job_launcher');
 
         $this->initializeCatalog();

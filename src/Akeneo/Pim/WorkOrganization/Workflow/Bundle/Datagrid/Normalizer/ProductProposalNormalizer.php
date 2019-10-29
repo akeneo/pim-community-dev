@@ -17,6 +17,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -24,7 +25,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  *
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
-class ProductProposalNormalizer implements NormalizerInterface
+class ProductProposalNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /** @var NormalizerInterface */
     private $standardNormalizer;
@@ -80,6 +81,11 @@ class ProductProposalNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ProductDraft && 'datagrid' === $format;
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 
     /**

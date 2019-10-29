@@ -15,12 +15,13 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\Pub
 
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompletenessCollection;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
-class CompletenessCollectionNormalizer implements NormalizerInterface
+class CompletenessCollectionNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /**
      * {@inheritdoc}
@@ -49,5 +50,10 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
                     ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
                 ]
             );
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 }

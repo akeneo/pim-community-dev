@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\UI\Web\ReferenceEntityPermission;
 
-use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClientFactory;
+use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClient;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntityPermission\PermissionDetails;
 use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
@@ -12,9 +12,6 @@ use Symfony\Bundle\FrameworkBundle\Client;
 
 class GetActionTest extends ControllerIntegrationTestCase
 {
-    /** @var Client */
-    private $client;
-
     /** @var WebClientHelper */
     private $webClientHelper;
 
@@ -22,8 +19,7 @@ class GetActionTest extends ControllerIntegrationTestCase
     {
         parent::setUp();
 
-        $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), self::$kernel))
-            ->logIn('julia');
+        $this->get('akeneoreference_entity.tests.helper.authenticated_client')->logIn($this->client, 'julia');
         $this->webClientHelper = $this->get('akeneoreference_entity.tests.helper.web_client_helper');
     }
 

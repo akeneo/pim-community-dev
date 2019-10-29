@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer;
 
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -20,7 +21,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  *
  * @author Christophe Chausseray <christophe.chausseray@akeneo.com>
  */
-class PublishedProductNormalizer implements NormalizerInterface
+class PublishedProductNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     const FIELD_ASSOCIATIONS = 'associations';
 
@@ -61,5 +62,10 @@ class PublishedProductNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof PublishedProductInterface && 'standard' === $format;
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 }
