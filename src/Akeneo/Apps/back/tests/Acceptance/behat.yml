@@ -1,0 +1,18 @@
+default:
+    extensions:
+        Behat\Symfony2Extension:
+            kernel:
+                bootstrap: 'config/bootstrap.php'
+                class: 'Kernel'
+                path: 'src/Kernel.php'
+                env: test_fake
+    suites:
+        default:
+            paths:
+                - 'src/Akeneo/Apps/back/tests/Acceptance/features'
+                - 'vendor/akeneo/pim-community-dev/src/Akeneo/Apps/back/tests/Acceptance/features'
+            contexts:
+                - Akeneo\Apps\Tests\Acceptance\Context\AppContext:
+                      - '@akeneo_app.persistence.repository.app'
+                      - '@akeneo_app.application.handler.fetch_apps'
+                      - '@akeneo_app.application.handler.create_app'

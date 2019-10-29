@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App should render 1`] = `
+<div
+  className="sc-bdVaJa Dsuco"
+  onClick={[Function]}
+>
+  <div
+    className="sc-htpNat iQoyqR"
+  >
+    <img
+      alt="Google Shopping"
+      className="sc-bwzfXH foaHqu"
+      src="test-file-stub"
+    />
+  </div>
+  <div
+    className="sc-bxivhb ffTZNS"
+    title="Google Shopping"
+  >
+    Google Shopping
+  </div>
+</div>
+`;

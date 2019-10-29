@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Breadcrumb should render multiple BreadcrumbItem 1`] = `
+<div
+  className="AknBreadcrumb"
+>
+  <span
+    className="AknBreadcrumb-item"
+  >
+    content
+  </span>
+  <span
+    className="AknBreadcrumb-item AknBreadcrumb-item--final"
+  >
+    content
+  </span>
+</div>
+`;

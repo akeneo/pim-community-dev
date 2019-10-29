@@ -83,6 +83,7 @@ const utils = {
             jquery: require.resolve('jquery'),
             underscore: require.resolve('underscore'),
             'pim/dropzonejs': require.resolve('dropzone'),
+            '@akeneo-pim-ce/apps': path.resolve(baseDir, 'public/bundles/akeneoapps-react/index.ts'),
         });
 
         return { config, aliases };

@@ -1,0 +1,9 @@
+akeneo_apps_list_rest:
+   path: '/rest/apps'
+   defaults: { _controller: akeneo_app.internal_api.controller.app:list }
+   methods: [GET]
+
+akeneo_apps_create_rest:
+   path: '/rest/apps'
+   defaults: { _controller: akeneo_app.internal_api.controller.app:create }
+   methods: [POST]

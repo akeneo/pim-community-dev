@@ -13,15 +13,18 @@
             "": "src/"
         },
         "psr-4": {
-            "Pim\\Upgrade\\": "upgrades/"
+            "Pim\\Upgrade\\": "upgrades/",
+            "Akeneo\\Apps\\": "src/Akeneo/Apps/back"
         }
     },
     "autoload-dev": {
         "psr-0": {
-            "Context": "tests/legacy/features/"
+            "Context": "tests/legacy/features/",
+            "Akeneo\\Apps\\": "src/Akeneo/Apps/back"
         },
         "psr-4": {
             "Pim\\Behat\\": "tests/legacy/features/Behat",
+            "Akeneo\\Apps\\Tests\\Acceptance\\": "src/Akeneo/Apps/back/tests/Acceptance",
             "AkeneoTest\\": "tests/back",
             "Akeneo\\Test\\IntegrationTestsBundle\\": "tests/back/Integration/IntegrationTestsBundle/",
             "Akeneo\\Test\\": "tests/back/"

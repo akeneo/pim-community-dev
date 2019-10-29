@@ -1,0 +1,4 @@
+{
+    "extends": "../tsconfig.json",
+    "include": ["unit", "__mocks__", "jest-fetch-mock.ts", "../types.d.ts"]
+}

@@ -2,15 +2,11 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es5",
-    "lib": ["es2017", "es6", "es7", "dom"],
+    "lib": ["dom", "es2015", "es2016", "es2017"],
     "sourceMap": true,
     "allowJs": true,
     "moduleResolution": "node",
-    "rootDir": "public/bundles",
-    "baseUrl": ".",
-    "paths": {
-      "*": ["*", "public/bundles/*"]
-    },
+    "baseUrl": "./public/bundles",
     "jsx": "react",
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
@@ -21,25 +17,11 @@
     "suppressImplicitAnyIndexErrors": false,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "removeComments": true
+    "removeComments": true,
+    "esModuleInterop": true
   },
-  "exclude": [
-    "node_modules",
-    "vendor",
-    "src",
-    "tests",
-    "packages",
-    "app",
-    "public/media",
-    "public/cache",
-    "var",
-    "features",
-    "spec",
-    "upgrades",
-    "public/css"
-  ],
-  "types": [
-    "typePatches",
-    "node"
+  "include": [
+    "public/bundles",
+    "frontend/types.d.ts"
   ]
 }

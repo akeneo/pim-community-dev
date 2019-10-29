@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NoApp should render 1`] = `
+<div
+  className="sc-bdVaJa kmXoBq"
+>
+  <img
+    className="sc-ifAKCX eVHvdA"
+    src="test-file-stub"
+  />
+  <div
+    className="sc-bwzfXH fSQTvU"
+  >
+    pim_apps.no_app.title
+  </div>
+  <div
+    className="sc-htpNat hTaSGc"
+  >
+    pim_apps.no_app.message
+     
+    <a
+      className="sc-bxivhb goiCAm"
+      onClick={[Function]}
+    >
+      pim_apps.no_app.message_link
+    </a>
+  </div>
+</div>
+`;
