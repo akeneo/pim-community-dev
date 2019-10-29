@@ -1,5 +1,20 @@
 # 2.3.x
 
+# 2.3.69 (2019-10-24)
+
+## Bug fixes
+
+- PIM-7963: fix datepicker width not adapting to the dropdown
+- GITHUB-10955: Remove database prefix in queries
+
+# 2.3.68 (2019-10-18)
+
+## Bug fixes
+
+- PIM-6976: fix max_characters attribute field not being nullable
+
+# 2.3.67 (2019-10-14)
+
 ## Bug fixes
 
 - PIM-7332: show an error message when a number attribute field reaches the PHP_INT_MAX.
