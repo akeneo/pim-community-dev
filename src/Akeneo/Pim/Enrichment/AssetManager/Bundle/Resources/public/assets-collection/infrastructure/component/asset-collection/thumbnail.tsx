@@ -5,7 +5,6 @@ import {
   Asset,
   assetWillNotMoveInCollection,
   getAssetLabel,
-  getImage,
   MoveDirection,
 } from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import Close from 'akeneoassetmanager/application/component/app/icon/close';
@@ -15,6 +14,7 @@ import Right from 'akeneoassetmanager/application/component/app/icon/right';
 import Left from 'akeneoassetmanager/application/component/app/icon/left';
 import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import {TransparentButton} from 'akeneoassetmanager/application/component/app/button';
+import {getAssetPreview, MediaPreviewTypes} from 'akeneoassetmanager/tools/media-url-generator';
 
 const Img = styled.img`
   width: 140px;
@@ -138,7 +138,9 @@ export const Thumbnail = ({
           )}
         </Overlay>
       ) : null}
-      <Img src={getImage(asset)} />
+      <Img
+        src={getAssetPreview(asset.image.filePath, asset.assetFamily.attributeAsImage, MediaPreviewTypes.Thumbnail)}
+      />
     </Container>
   );
 };

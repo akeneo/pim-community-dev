@@ -69,10 +69,6 @@ const denormalizeAsset = (asset: any): NormalizedItemAsset => {
     throw Error('The completeness is not well formated');
   }
 
-  if (!isString(asset.image)) {
-    throw Error('The image is not well formated');
-  }
-
   if (!isLabels(asset.labels)) {
     throw Error('The labels is not well formated');
   }

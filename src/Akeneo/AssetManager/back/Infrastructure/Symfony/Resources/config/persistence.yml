@@ -361,13 +361,6 @@ services:
     akeneo_assetmanager.infrastructure.persistence.asset.hydrator.asset_item_value_hydrator_registry:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetItem\ValueHydratorRegistry
 
-    akeneo_assetmanager.infrastructure.persistence.asset.hydrator.image_hydrator:
-        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetItem\ImageValueHydrator
-        arguments:
-            - '@akeneo_assetmanager.infrastructure.persistence.asset.hydrator.image_preview_url_generator'
-        tags:
-            - { name: akeneo_assetmanager.asset_item_value_hydrator }
-
     akeneo_assetmanager.infrastructure.persistence.asset_item.hydrator.asset_value:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetItem\AssetValueHydrator
         arguments:

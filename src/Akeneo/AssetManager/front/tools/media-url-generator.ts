@@ -4,6 +4,7 @@ import MediaLinkData from 'akeneoassetmanager/domain/model/asset/data/media-link
 import {MediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 import {suffixStringValue} from 'akeneoassetmanager/domain/model/attribute/type/media-link/suffix';
 import {prefixStringValue} from 'akeneoassetmanager/domain/model/attribute/type/media-link/prefix';
+import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
 
 export enum MediaPreviewTypes {
   Preview = 'preview',
@@ -65,4 +66,12 @@ export const getMediaLinkPreviewUrl = (
 
 export const getMediaLinkUrl = (mediaLink: MediaLinkData, attribute: MediaLinkAttribute): string => {
   return prefixStringValue(attribute.prefix) + mediaLink.stringValue() + suffixStringValue(attribute.suffix);
+};
+
+export const getAssetPreview = (
+  fileKey: string,
+  attributeIdentifier: AttributeIdentifier,
+  type: MediaPreviewTypes
+): string => {
+  return routing.generate('akeneo_asset_manager_image_preview', {type, attributeIdentifier, data: fileKey});
 };

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Asset, getAssetLabel, getImage} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
+import {Asset, getAssetLabel} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
 import styled from 'styled-components';
 import {Label} from 'akeneopimenrichmentassetmanager/platform/component/common/label';
@@ -7,6 +7,7 @@ import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reduc
 import Checkbox from 'akeneopimenrichmentassetmanager/platform/component/common/checkbox';
 import {akeneoTheme, ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import CompletenessBadge from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/mosaic/completeness-badge';
+import {MediaPreviewTypes, getAssetPreview} from 'akeneoassetmanager/tools/media-url-generator';
 
 type ContainerProps = {isDisabled: boolean};
 const Container = styled.div<ContainerProps>`
@@ -59,7 +60,7 @@ const AssetCard = ({
         <CompletenessBadge completeness={asset.completeness} />
       </AssetCompleteness>
       <Thumbnail
-        src={getImage(asset)}
+        src={getAssetPreview(asset.image.filePath, asset.assetFamily.attributeAsImage, MediaPreviewTypes.Thumbnail)}
         isSelected={isSelected}
         onClick={() => (!isDisabled ? onSelectionChange(asset.code, !isSelected) : null)}
       />

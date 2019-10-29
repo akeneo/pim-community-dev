@@ -18,7 +18,8 @@ export enum MoveDirection {
 
 export type AssetIdentifier = string;
 
-type Image = string;
+type Image = {filePath: string; originalFilename: string};
+const createEmptyImage = () => ({filePath: '', originalFilename: ''});
 export type Completeness = NormalizedCompleteness;
 export const getCompletenessPercentage = (completeness: Completeness) =>
   Math.floor((completeness.complete / completeness.required) * 100);
@@ -32,16 +33,12 @@ export type Asset = {
   completeness: Completeness;
 };
 
-export const getImage = (asset: Asset): Image => {
-  return asset.image;
-};
-
 export const isComplete = (asset: Asset) => asset.completeness.complete === asset.completeness.required;
 export const emptyAsset = (assetCode?: AssetCode): Asset => ({
   identifier: '',
   code: assetCode || '',
   labels: {},
-  image: '',
+  image: createEmptyImage(),
   assetFamily: emptyAssetFamily(),
   completeness: {
     complete: 0,

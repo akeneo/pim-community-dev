@@ -145,7 +145,7 @@ class AssetItemHydrator implements AssetItemHydratorInterface
         );
     }
 
-    private function getImage(array $valueCollection, string $attributeAsImageIdentifier): string
+    private function getImage(array $valueCollection, string $attributeAsImageIdentifier): array
     {
         $value = current(
             array_filter(
@@ -157,7 +157,10 @@ class AssetItemHydrator implements AssetItemHydratorInterface
         );
 
         if (false === $value) {
-            return $this->imagePreviewUrlGenerator->generate('', $attributeAsImageIdentifier, self::THUMBNAIL_PREVIEW_TYPE);
+            return [
+                'filePath' => '',
+                'originalFilename' => ''
+            ];
         }
 
         return $value['data'];
