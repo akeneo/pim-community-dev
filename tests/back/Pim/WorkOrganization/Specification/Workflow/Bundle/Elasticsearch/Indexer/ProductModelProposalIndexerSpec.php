@@ -120,11 +120,10 @@ class ProductModelProposalIndexerSpec extends ObjectBehavior
     function it_removes_product_model_proposal_and_refresh_index($productModelProposalClient)
     {
         $productModelProposalClient->search(
-            'pimee_workflow_product_proposal',
             ['query' => ['term' => ['id' => 'product_model_draft_1']]]
         )->willReturn(['hits' => ['total' => 1]]);
 
-        $productModelProposalClient->delete('pimee_workflow_product_proposal', 'product_model_draft_1')->shouldBeCalled();
+        $productModelProposalClient->delete('product_model_draft_1')->shouldBeCalled();
         $productModelProposalClient->refreshIndex()->shouldBeCalled();
 
         $this->remove(1, ['index_refresh' => Refresh::enable()])->shouldReturn(null);
