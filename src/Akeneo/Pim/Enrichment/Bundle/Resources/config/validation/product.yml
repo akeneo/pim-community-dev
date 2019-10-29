@@ -30,3 +30,4 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Product:
         values:
             - Symfony\Component\Validator\Constraints\Valid:
                 traverse: true
+            - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\AttributeOptionsExist: ~

@@ -316,6 +316,9 @@
     "phenx/php-font-lib": {
         "version": "0.2.2"
     },
+    "phenx/php-svg-lib": {
+        "version": "v0.3.3"
+    },
     "php-cs-fixer/diff": {
         "version": "v1.3.0"
     },
@@ -396,6 +399,9 @@
     },
     "react/promise": {
         "version": "v2.7.1"
+    },
+    "sabberworm/php-css-parser": {
+        "version": "8.3.0"
     },
     "sebastian/code-unit-reverse-lookup": {
         "version": "1.0.1"

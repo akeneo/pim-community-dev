@@ -35,6 +35,13 @@ services:
             - '@pim_catalog.updater.attribute'
             - '@validator'
 
+    test.attribute_option.builder:
+        class: 'Akeneo\Test\Common\EntityBuilder'
+        arguments:
+            - '@pim_catalog.factory.attribute_option'
+            - '@pim_catalog.updater.attribute_option'
+            - '@validator'
+
     test.attribute_group.builder:
         class: 'Akeneo\Test\Common\EntityBuilder'
         arguments:
@@ -84,6 +91,13 @@ services:
             - '@test.attribute.builder'
             - '@pim_catalog.repository.attribute_group'
             - '@test.attribute_group.builder'
+
+    test.attribute_option.context:
+        public: true
+        class: 'Akeneo\Test\Acceptance\AttributeOption\AttributeOptionContext'
+        arguments:
+            - '@test.attribute_option.builder'
+            - '@pim_catalog.repository.attribute_option'
 
     test.family.context:
         public: true

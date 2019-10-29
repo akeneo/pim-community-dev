@@ -73,7 +73,7 @@ class ListRootCategoriesWithCountHandlerSpec extends ObjectBehavior
         $listNotIncludingSubCategories,
         CategoryInterface $treeToExpand
     ) {
-        $userContext->getUserProductCategoryTree()->willReturn($treeToExpand);
+        $userContext->getAccessibleUserTree()->willReturn($treeToExpand);
         $treeToExpand->getRoot()->willReturn(1);
 
         $listNotIncludingSubCategories->list('en_US', 1, 1, null)->willReturn([

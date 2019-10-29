@@ -356,6 +356,7 @@ services:
             - '@pim_enrich.reader.database.grouped_product_and_product_model'
             - '@pim_enrich.connector.processor.mass_edit.product.update_value'
             - '@pim_enrich.writer.database.product_and_product_model_writer'
+            - '%pim_job_product_batch_size%'
 
     pim_enrich.step.add_to_category.mass_edit:
         class: '%pim_connector.step.item_step.class%'
@@ -366,6 +367,7 @@ services:
             - '@pim_enrich.reader.database.grouped_product_and_product_model'
             - '@pim_enrich.connector.processor.mass_edit.product.add_value'
             - '@pim_enrich.writer.database.product_and_product_model_writer'
+            - '%pim_job_product_batch_size%'
 
     pim_enrich.step.remove_from_category.mass_edit:
         class: '%pim_connector.step.item_step.class%'
@@ -376,6 +378,7 @@ services:
             - '@pim_enrich.reader.database.grouped_product_and_product_model'
             - '@pim_enrich.connector.processor.mass_edit.product.remove_value'
             - '@pim_enrich.writer.database.product_and_product_model_writer'
+            - '%pim_job_product_batch_size%'
 
     pim_enrich.step.add_association.mass_edit:
         class: '%pim_connector.step.item_step.class%'
@@ -386,6 +389,7 @@ services:
             - '@pim_enrich.reader.database.grouped_product_and_product_model'
             - '@pim_enrich.connector.processor.mass_edit.product.add_value'
             - '@pim_enrich.writer.database.product_and_product_model_writer'
+            - '%pim_job_product_batch_size%'
 
     pim_enrich.step.edit_common_attributes.mass_edit:
         class: '%pim_connector.step.item_step.class%'
@@ -407,6 +411,7 @@ services:
             - '@pim_enrich.reader.database.product_and_product_model'
             - '@pim_enrich.connector.processor.mass_edit.product.add_attribute_value'
             - '@pim_enrich.writer.database.product_and_product_model_writer'
+            - '%pim_job_product_batch_size%'
 
     pim_enrich.step.add_to_existing_product_model.mass_edit:
         class: '%pim_connector.step.item_step.class%'
@@ -417,6 +422,7 @@ services:
             - '@pim_enrich.reader.database.product'
             - '@pim_enrich.connector.processor.mass_edit.product.add_to_existing_product_model'
             - '@pim_enrich.writer.database.product_and_product_model_writer'
+            - '%pim_job_product_batch_size%'
 
     pim_enrich.step.delete_products_and_product_models.mass_edit:
         class: '%pim_connector.step.tasklet.class%'
@@ -435,6 +441,7 @@ services:
             - '@pim_enrich.reader.database.grouped_product_and_product_model'
             - '@pim_enrich.connector.processor.mass_edit.product.change_parent'
             - '@pim_enrich.writer.database.product_and_product_model_writer'
+            - '%pim_job_product_batch_size%'
 
     # Cleaner steps -------------------------------------------------------------------------------------------------
     pim_enrich.step.clean:

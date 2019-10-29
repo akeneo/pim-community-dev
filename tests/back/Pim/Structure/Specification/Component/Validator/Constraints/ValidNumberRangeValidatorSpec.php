@@ -2,10 +2,11 @@
 
 namespace Specification\Akeneo\Pim\Structure\Component\Validator\Constraints;
 
-use Akeneo\Pim\Structure\Component\Validator\Constraints\ValidNumberRangeValidator;
-use PhpSpec\ObjectBehavior;
+use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Validator\Constraints\ValidNumberRange;
+use Akeneo\Pim\Structure\Component\Validator\Constraints\ValidNumberRangeValidator;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
@@ -39,6 +40,28 @@ class ValidNumberRangeValidatorSpec extends ObjectBehavior
         $this->validate($attribute, $constraint);
     }
 
+    function it_adds_violation_when_max_reaches_the_php_int_max(
+        $context,
+        ValidNumberRange $constraint,
+        ConstraintViolationBuilderInterface $violation
+    ) {
+        $number = new Attribute();
+        $number->setNumberMax('555337203685477580742332342');
+
+        $context
+            ->buildViolation(
+                ValidNumberRange::PHP_INT_MAX_REACHED,
+                ['%php_int_max%' => PHP_INT_MAX]
+            )
+            ->shouldBeCalled()
+            ->willReturn($violation);
+
+        $violation->atPath('numberMax')->shouldBeCalled()->willReturn($violation);
+        $violation->addViolation()->shouldBeCalled();
+
+        $this->validate($number, $constraint);
+    }
+
     function it_adds_violation_when_min_is_negative_allowed_but_decimal_not_allowed(
         $context,
         AttributeInterface $attribute,
@@ -65,7 +88,7 @@ class ValidNumberRangeValidatorSpec extends ObjectBehavior
     function it_adds_violation_when_max_is_negative_allowed_but_decimal_not_allowed(
         $context,
         AttributeInterface $attribute,
-        \Akeneo\Pim\Structure\Component\Validator\Constraints\ValidNumberRange $constraint,
+        ValidNumberRange $constraint,
         ConstraintViolationBuilderInterface $violation
     ) {
         $attribute->isNegativeAllowed()->willReturn(true);
@@ -88,7 +111,7 @@ class ValidNumberRangeValidatorSpec extends ObjectBehavior
     function it_adds_violation_when_min_is_not_negative_allowed(
         $context,
         AttributeInterface $attribute,
-        \Akeneo\Pim\Structure\Component\Validator\Constraints\ValidNumberRange $constraint,
+        ValidNumberRange $constraint,
         ConstraintViolationBuilderInterface $violation
     ) {
         $attribute->isNegativeAllowed()->willReturn(false);
@@ -110,7 +133,7 @@ class ValidNumberRangeValidatorSpec extends ObjectBehavior
     function it_adds_violation_when_min_is_greater_than_max(
         $context,
         AttributeInterface $attribute,
-        \Akeneo\Pim\Structure\Component\Validator\Constraints\ValidNumberRange $constraint,
+        ValidNumberRange $constraint,
         ConstraintViolationBuilderInterface $violation
     ) {
         $attribute->getNumberMin()->willReturn(9);
