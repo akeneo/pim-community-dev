@@ -1,7 +1,8 @@
 services:
-    _defaults: { public: true }
     akeneo_app.internal_api.controller.app:
+        public: true
         class: 'Akeneo\Apps\Infrastructure\InternalApi\Controller\AppController'
         arguments:
             - '@akeneo_app.application.handler.create_app'
             - '@akeneo_app.application.handler.fetch_apps'
+            - '@oro_security.security_facade'
