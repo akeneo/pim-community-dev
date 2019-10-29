@@ -57,7 +57,9 @@ $rules = [
             // Dependency on constraint violations to correctly display errors on frontend
             'Symfony\Component\Validator\ConstraintViolationListInterface',
             // ACL dependency
+            'Symfony\Component\Security\Core\Exception\AccessDeniedException',
             'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
+            'Oro\Bundle\SecurityBundle\SecurityFacade',
         ]
     )->in('Akeneo\Apps\Infrastructure\InternalApi'),
 
