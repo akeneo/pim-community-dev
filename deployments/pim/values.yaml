@@ -120,7 +120,7 @@ pim:
     lastName: nil # Fill me
     email: nil # Fill me
     password: nil # Generate me with `pwgen -sB 22`
-    uiLocale: en_US # Change me if needs be
+    uiLocale: en_US # Change me if needed
   jobs:
     versioning-purge:
       enabled: true
