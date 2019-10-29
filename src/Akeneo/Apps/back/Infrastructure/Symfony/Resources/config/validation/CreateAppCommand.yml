@@ -1,11 +1,13 @@
 Akeneo\Apps\Application\Command\CreateAppCommand:
+    group_sequence:
+      - CreateAppCommand
+      - Business
     properties:
         code:
-            - Callback:
-                  callback: [Akeneo\Apps\Domain\Validation\App\AppCodeMustBeValid, validate]
+            - Callback: [Akeneo\Apps\Domain\Validation\App\AppCodeMustBeValid, validate]
+            - Akeneo\Apps\Application\Validation\App\CodeMustBeUnique:
+                groups: [Business]
         label:
-            - Callback:
-                  callback: [Akeneo\Apps\Domain\Validation\App\AppLabelMustBeValid, validate]
+            - Callback: [Akeneo\Apps\Domain\Validation\App\AppLabelMustBeValid, validate]
         flowType:
-            - Callback:
-                  callback: [Akeneo\Apps\Domain\Validation\App\FlowTypeMustBeValid, validate]
+            - Callback: [Akeneo\Apps\Domain\Validation\App\FlowTypeMustBeValid, validate]

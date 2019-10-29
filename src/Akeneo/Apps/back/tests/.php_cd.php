@@ -17,7 +17,7 @@ $rules = [
             'Akeneo\Apps\Domain',
 
             // Dependency on Symfony Validator to ease validation
-            'Symfony\Component\Validator\Validator\ValidatorInterface',
+            'Symfony\Component\Validator',
         ]
     )->in('Akeneo\Apps\Application'),
 

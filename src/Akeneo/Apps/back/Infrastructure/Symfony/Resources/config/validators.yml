@@ -1,0 +1,7 @@
+services:
+    akeneo_app.validators.app.code_must_be_unique:
+        class: Akeneo\Apps\Application\Validation\App\CodeMustBeUniqueValidator
+        arguments:
+          - '@akeneo_app.persistence.repository.app'
+        tags:
+          - { name: validator.constraint_validator, alias: apps_code_must_be_unique }
