@@ -28,6 +28,7 @@ Feature: Export products and product models
 
   Scenario: Successfully export 2 files on quick export
     When I display in the products grid the columns Label, Model description
+    And I filter by "label_or_identifier" with operator "equals" and value "amor"
     And I select row amor
     And I press "CSV (Grid context)" on the "Quick Export" dropdown button
     And I wait for the "csv_product_grid_context_quick_export" quick export to finish
