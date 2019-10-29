@@ -12,14 +12,10 @@ metadata:
     {{ include "pim.extraLabels" . | indent 4 }}
   annotations:
     kubernetes.io/ingress.class: traefik
-    certmanager.k8s.io/cluster-issuer: {{ .Values.certmanager.issuer }}
-    certmanager.k8s.io/acme-challenge-type: {{ .Values.certmanager.acme.challenge }}
-    certmanager.k8s.io/acme-dns01-provider: {{ .Values.certmanager.acme.dns01.provider }}
 spec:
   tls:
   - hosts:
     - {{ required ".Values.common.pimMasterDomain" .Values.common.pimMasterDomain }}
-    secretName: "{{ .Chart.Name }}-{{ .Release.Name }}"
   rules:
   - host: {{ required ".Values.common.pimMasterDomain" .Values.common.pimMasterDomain }}
     http:

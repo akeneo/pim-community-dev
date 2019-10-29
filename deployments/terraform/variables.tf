@@ -8,7 +8,7 @@ variable "google_project_zone" {
 }
 
 variable "papo_project_code" {
-  description = "Code of the project under the akeneo console"
+  description = "Code of the project on Akeneo portal"
 }
 
 variable "pager_duty_service_key" {

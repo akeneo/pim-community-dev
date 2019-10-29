@@ -60,5 +60,3 @@ elasticsearch:
         cpu: "25m"
         memory: "512Mi"
 
-certmanager:
-  issuer: letsencrypt-staging

@@ -75,13 +75,6 @@ mailer:
   port: nil # Generated with terraform template
   from_address: no-reply@akeneo.com
 
-certmanager:
-  issuer: letsencrypt-prod
-  acme:
-    challenge: dns01
-    dns01:
-      provider: clouddns
-
 image:
   pim:
     repository: eu.gcr.io/akeneo-ci/pim-enterprise-dev
