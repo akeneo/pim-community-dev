@@ -1,4 +1,4 @@
-akeneo_app_manage_settings:
-  type: action
-  label: akeneo_app.acl.manage_settings
-  group_name: akeneo_app.acl_group.apps
+akeneo_apps_manage_settings:
+    type: action
+    label: akeneo_apps.acl.manage_settings
+    group_name: oro_config_system

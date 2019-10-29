@@ -44,7 +44,7 @@ class AppController
 
     public function list()
     {
-        if (true !== $this->securityFacade->isGranted('akeneo_app_manage_settings')) {
+        if (true !== $this->securityFacade->isGranted('akeneo_apps_manage_settings')) {
             throw new AccessDeniedException();
         }
 
@@ -59,7 +59,7 @@ class AppController
 
     public function create(Request $request)
     {
-        if (true !== $this->securityFacade->isGranted('akeneo_app_manage_settings')) {
+        if (true !== $this->securityFacade->isGranted('akeneo_apps_manage_settings')) {
             throw new AccessDeniedException();
         }
 
