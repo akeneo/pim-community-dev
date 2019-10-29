@@ -23,7 +23,7 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
     apt-get --no-install-recommends --no-install-suggests --yes --quiet install \
         apt-transport-https \
         ca-certificates \
-        curl \
+        curl libcurl4-openssl-dev \
         gpg \
         gpg-agent && \
     apt-get clean && \
