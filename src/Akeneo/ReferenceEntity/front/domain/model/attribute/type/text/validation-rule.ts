@@ -19,7 +19,7 @@ export class ValidationRule implements NormalizableAdditionalProperty {
     Object.freeze(this);
   }
   public static isValid(value: any): boolean {
-    return typeof value === 'string' && Object.values(ValidationRuleOption).includes(value);
+    return typeof value === 'string' && Object.values(ValidationRuleOption).includes(value as any);
   }
   public static createFromNormalized(normalizedValidationRule: NormalizedValidationRule) {
     return new ValidationRule(normalizedValidationRule);

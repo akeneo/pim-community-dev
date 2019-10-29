@@ -1,5 +1,5 @@
 const BaseField = require('pim/form/common/fields/field');
-import * as $ from 'jquery';
+import $ from 'jquery';
 import referenceEntityFetcher from 'akeneoreferenceentity/infrastructure/fetcher/reference-entity';
 import ReferenceEntityListItem from 'akeneoreferenceentity/domain/model/reference-entity/list';
 const __ = require('oro/translator');

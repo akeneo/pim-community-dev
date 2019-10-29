@@ -16,7 +16,8 @@
         "psr-4": {
             "Pim\\Upgrade\\": "upgrades/",
             "Akeneo\\ReferenceEntity\\": "src/Akeneo/ReferenceEntity/back",
-            "Akeneo\\AssetManager\\": "src/Akeneo/AssetManager/back"
+            "Akeneo\\AssetManager\\": "src/Akeneo/AssetManager/back",
+            "Akeneo\\Apps\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Apps/back"
         },
         "exclude-from-classmap": [
             "vendor/akeneo/pim-community-dev/src/Kernel.php"
@@ -38,7 +39,8 @@
             "AkeneoEnterprise\\Test\\Acceptance\\": "tests/back/Acceptance/",
             "Akeneo\\Test\\Pim\\Automation\\FranklinInsights\\": "src/Akeneo/Pim/Automation/FranklinInsights/tests/back",
             "Akeneo\\ReferenceEntity\\": "src/Akeneo/ReferenceEntity/tests/back",
-            "Akeneo\\AssetManager\\": "src/Akeneo/AssetManager/tests/back"
+            "Akeneo\\AssetManager\\": "src/Akeneo/AssetManager/tests/back",
+            "Akeneo\\Apps\\Tests\\Acceptance\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Apps/back/tests/Acceptance"
         }
     },
     "require": {

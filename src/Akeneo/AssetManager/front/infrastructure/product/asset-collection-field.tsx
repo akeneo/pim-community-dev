@@ -1,4 +1,4 @@
-import * as $ from 'jquery';
+import $ from 'jquery';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import AssetSelector from 'akeneoassetmanager/application/component/app/asset-selector';
