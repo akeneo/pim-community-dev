@@ -4,6 +4,7 @@
 
 - PIM-8924: Fix permission of sorting attribute groups
 - PIM-8927: fix label translation on product model creation page
+- PIM-8928: Fix permission of sorting attributes inside an attribute group
 
 # 3.0.50 (2019-10-28)
 
