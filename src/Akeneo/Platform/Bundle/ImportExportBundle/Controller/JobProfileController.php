@@ -1,8 +1,9 @@
 <?php
 
+// TO REMOVE
+
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Controller;
 
-use Akeneo\Platform\Bundle\ImportExportBundle\Form\Type\JobInstanceFormType;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceFactory;
 use Akeneo\Tool\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
@@ -31,8 +32,6 @@ class JobProfileController
     /** @var string */
     protected $jobType;
 
-    /** @var JobInstanceFormType */
-    protected $jobInstanceFormType;
 
     /** @var JobInstanceFactory */
     protected $jobInstanceFactory;
@@ -60,7 +59,6 @@ class JobProfileController
         RouterInterface $router,
         FormFactoryInterface $formFactory,
         JobRegistry $jobRegistry,
-        JobInstanceFormType $jobInstanceFormType,
         JobInstanceFactory $jobInstanceFactory,
         EntityManagerInterface $entityManager,
         JobParametersFactory $jobParametersFactory,
@@ -70,9 +68,6 @@ class JobProfileController
         $this->jobRegistry = $jobRegistry;
         $this->jobType = $jobType;
 
-        $this->jobInstanceFormType = $jobInstanceFormType;
-        $this->jobInstanceFormType->setJobType($this->jobType);
-
         $this->jobInstanceFactory = $jobInstanceFactory;
         $this->formFactory = $formFactory;
         $this->router = $router;
@@ -80,51 +75,6 @@ class JobProfileController
         $this->entityManager = $entityManager;
         $this->jobParametersFactory = $jobParametersFactory;
         $this->translator = $translator;
-    }
-
-    /**
-     * Create a job instance
-     *
-     * @param Request $request
-     *
-     * @return Response
-     */
-    public function createAction(Request $request)
-    {
-        $jobInstance = $this->jobInstanceFactory->createJobInstance($this->getJobType());
-        $form = $this->formFactory->create(get_class($this->jobInstanceFormType), $jobInstance);
-
-        if ($request->isMethod('POST')) {
-            $form->handleRequest($request);
-
-            if ($form->isValid()) {
-                $job = $this->jobRegistry->get($jobInstance->getJobName());
-                $jobParameters = $this->jobParametersFactory->create($job);
-                $jobInstance->setRawParameters($jobParameters->all());
-
-                $this->entityManager->persist($jobInstance);
-                $this->entityManager->flush();
-
-                $message = sprintf('flash.%s.created', $this->getJobType());
-                $request->getSession()->getFlashBag()
-                    ->add('success', $this->translator->trans($message));
-
-                $url = $this->router->generate(
-                    sprintf('pim_importexport_%s_profile_edit', $this->getJobType()),
-                    ['code' => $jobInstance->getCode()]
-                );
-                $response = ['status' => 1, 'url' => $url];
-
-                return new Response(json_encode($response));
-            }
-        }
-
-        return $this->templating->renderResponse(
-            sprintf(self::DEFAULT_CREATE_TEMPLATE, ucfirst($jobInstance->getType())),
-            [
-                'form' => $form->createView()
-            ]
-        );
     }
 
     /**
