@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.17 (2019-10-30)
+
 ## Bug fixes:
 
 - PIM-8925: Fix PDF export when there is no option for a given locale for a select attribute
