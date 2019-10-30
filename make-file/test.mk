@@ -2,7 +2,7 @@ var/tests/%:
 	mkdir -p $@
 
 .PHONY: coupling-back
-coupling-back: structure-coupling-back user-management-coupling-back channel-coupling-back enrichment-coupling-back
+coupling-back: structure-coupling-back user-management-coupling-back channel-coupling-back enrichment-coupling-back apps-coupling-back
 
 .PHONY: check-pullup
 check-pullup:
@@ -20,7 +20,7 @@ lint-front:
 
 ### Unit tests
 .PHONY: unit-back
-unit-back:
+unit-back: apps-unit-back
 	$(call configure_ci_options, --format=junit > var/tests/phpspec/specs.xml)
 	${PHP_RUN} vendor/bin/phpspec run $(O)
 	$(call execute_on_ci_only, .circleci/find_non_executed_phpspec.sh)
@@ -31,7 +31,7 @@ unit-front:
 
 ### Acceptance tests
 .PHONY: acceptance-back
-acceptance-back:
+acceptance-back: apps-acceptance-back
 	${PHP_RUN} vendor/bin/behat -p acceptance --format pim --out var/tests/behat --format pretty --out std --colors
 
 .PHONY: acceptance-front

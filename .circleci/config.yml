@@ -97,7 +97,7 @@ jobs:
                 command: make unit-back CI=1
           - run:
                 name: Acceptance tests
-                command: make acceptance-back + docker-compose run -u www-data --rm php php vendor/bin/behat --strict --config src/Akeneo/Apps/back/tests/Acceptance/behat.yml
+                command: make acceptance-back
 
                 when: always
           - store_test_results:
@@ -206,10 +206,10 @@ jobs:
             at: ~/
         - run:
               name: Front linter
-              command: make lint-front + make apps-front-lint
+              command: make lint-front
         - run:
               name: Front unit tests
-              command: make unit-front + make apps-front-tests
+              command: make unit-front
         - run:
               name: Front acceptance tests
               command: make acceptance-front

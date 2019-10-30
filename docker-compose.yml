@@ -43,7 +43,7 @@ services:
       YARN_CACHE_FOLDER: '~/.yarn'
     volumes:
       - './:/srv/pim'
-      - '${HOST_YARN_CACHE_FOLDER:-~/.cache/yarn}:~/.yarn'
+      - '${HOST_YARN_CACHE_FOLDER:-~/.cache/yarn}:/home/node/.yarn'
     working_dir: '/srv/pim'
     networks:
       - 'pim'
