@@ -20,30 +20,6 @@ import {
 } from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {isLabels} from 'akeneoassetmanager/domain/model/utils';
 
-test('It should get the image from the asset', () => {
-  const image = '/rest/asset/image/thumbnail/iphone.jpg';
-  const asset = {
-    identifier: 'packshot_iphone_fingerprint',
-    code: 'iphone',
-    image,
-    assetFamily: {
-      identifier: 'packshot',
-      code: 'packshot',
-      labels: {en_US: 'Packshot'},
-      image: null,
-      attributeAsLabel: null,
-      attributeAsImage: null,
-    },
-    labels: {en_US: 'Iphone'},
-    completeness: {
-      complete: 2,
-      required: 3,
-    },
-  };
-
-  expect(getImage(asset)).toEqual(image);
-});
-
 test('The asset is complete', () => {
   const complete = {complete: 2, required: 2};
   const asset = {
@@ -90,7 +66,17 @@ test('It could return an empty asset', () => {
   const asset = {
     identifier: '',
     code: '',
-    image: '',
+    image: [
+      {
+        attribute: '',
+        channel: null,
+        locale: null,
+        data: {
+          filePath: '',
+          originalFilename: '',
+        },
+      },
+    ],
     assetFamily: {
       identifier: '',
       code: '',
@@ -149,12 +135,6 @@ test('I should be able to tell if an asset is in the collection', () => {
 });
 
 test('I should be able to empty the collection', () => {
-  const asset = {
-    identifier: 'packshot_iphone_fingerprint',
-    code: 'iphone',
-    labels: {en_US: 'Iphone'},
-  };
-
   expect(emptyCollection(['samsung', 'oneplus', 'iphone'])).toEqual([]);
 });
 

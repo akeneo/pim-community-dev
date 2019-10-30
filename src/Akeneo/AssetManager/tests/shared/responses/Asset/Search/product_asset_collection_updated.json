@@ -36,7 +36,15 @@
             "en_US": "Starck",
             "fr_FR": "Starck"
           },
-          "image": "/rest/asset_manager/image_preview/image_designer_ca1857d521a3e5dbc487791da82b7428/thumbnail?data=",
+          "image": [{
+              "channel": null,
+              "locale": null,
+              "attribute": "image_designer_ca1857d521a3e5dbc487791da82b7428",
+              "data": {
+                  "filePath": "",
+                  "originalFilename": ""
+              }
+          }],
           "values": {
             "label_designer_d00de54460082b239164135175588647_en_US": {
               "attribute": "label_designer_d00de54460082b239164135175588647",
@@ -77,7 +85,15 @@
             "en_US": "Coco chanel",
             "fr_FR": "Coco chanel"
           },
-          "image": "/rest/asset_manager/image_preview/image_designer_ca1857d521a3e5dbc487791da82b7428/thumbnail?data=",
+          "image": [{
+              "channel": null,
+              "locale": null,
+              "attribute": "image_designer_ca1857d521a3e5dbc487791da82b7428",
+              "data": {
+                  "filePath": "",
+                  "originalFilename": ""
+              }
+          }],
           "values": {
             "label_designer_d00de54460082b239164135175588647_en_US": {
               "attribute": "label_designer_d00de54460082b239164135175588647",
@@ -117,7 +133,15 @@
             "en_US": "Dyson",
             "fr_FR": "Vue de dos"
           },
-          "image": "/rest/asset_manager/image_preview/image_designer_ca1857d521a3e5dbc487791da82b7428/thumbnail?data=",
+          "image": [{
+              "channel": null,
+              "locale": null,
+              "attribute": "image_designer_ca1857d521a3e5dbc487791da82b7428",
+              "data": {
+                  "filePath": "",
+                  "originalFilename": ""
+              }
+          }],
           "values": {
             "label_designer_d00de54460082b239164135175588647_en_US": {
               "attribute": "label_designer_d00de54460082b239164135175588647",

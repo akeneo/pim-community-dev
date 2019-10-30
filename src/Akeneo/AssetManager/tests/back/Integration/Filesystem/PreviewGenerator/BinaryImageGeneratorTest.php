@@ -6,6 +6,7 @@ namespace Akeneo\AssetManager\Integration\Filesystem\PreviewGenerator;
 use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
 use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\BinaryImageGenerator;
 use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\PreviewGeneratorInterface;
+use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\PreviewGeneratorRegistry;
 use Akeneo\AssetManager\Integration\PreviewGeneratorIntegrationTestCase;
 
 /**
@@ -32,7 +33,7 @@ final class BinaryImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
      */
     public function it_can_support_only_image_attribute()
     {
-        $isSupported = $this->binaryImageGenerator->supports(self::FILENAME, $this->imageAttribute, BinaryImageGenerator::THUMBNAIL_TYPE);
+        $isSupported = $this->binaryImageGenerator->supports(self::FILENAME, $this->imageAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
         $this->assertTrue($isSupported);
     }
@@ -42,15 +43,15 @@ final class BinaryImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
      */
     public function it_can_support_only_supported_types_of_an_image_attribute()
     {
-        $isSupported = $this->binaryImageGenerator->supports(self::FILENAME, $this->imageAttribute, BinaryImageGenerator::THUMBNAIL_TYPE);
+        $isSupported = $this->binaryImageGenerator->supports(self::FILENAME, $this->imageAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
         $this->assertTrue($isSupported);
 
-        $isSupported = $this->binaryImageGenerator->supports(self::FILENAME, $this->imageAttribute, BinaryImageGenerator::THUMBNAIL_SMALL_TYPE);
+        $isSupported = $this->binaryImageGenerator->supports(self::FILENAME, $this->imageAttribute, PreviewGeneratorRegistry::THUMBNAIL_SMALL_TYPE);
 
         $this->assertTrue($isSupported);
 
-        $isSupported = $this->binaryImageGenerator->supports(self::FILENAME, $this->imageAttribute, BinaryImageGenerator::PREVIEW_TYPE);
+        $isSupported = $this->binaryImageGenerator->supports(self::FILENAME, $this->imageAttribute, PreviewGeneratorRegistry::PREVIEW_TYPE);
 
         $this->assertTrue($isSupported);
 
@@ -64,8 +65,8 @@ final class BinaryImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
      */
     public function it_get_a_preview_for_an_image_attribute()
     {
-        $this->binaryImageGenerator->supports('google-logo.png', $this->imageAttribute, BinaryImageGenerator::THUMBNAIL_TYPE);
-        $previewImage = $this->binaryImageGenerator->generate(self::FILENAME, $this->imageAttribute, BinaryImageGenerator::THUMBNAIL_TYPE);
+        $this->binaryImageGenerator->supports('google-logo.png', $this->imageAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
+        $previewImage = $this->binaryImageGenerator->generate(self::FILENAME, $this->imageAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
         $this->assertStringContainsString('media/cache/', $previewImage);
     }
@@ -75,12 +76,12 @@ final class BinaryImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
      */
     public function it_get_a_preview_for_an_image_attribute_from_the_cache()
     {
-        $this->binaryImageGenerator->supports('akeneo.png', $this->imageAttribute, BinaryImageGenerator::THUMBNAIL_TYPE);
-        $previewImage = $this->binaryImageGenerator->generate(self::FILENAME, $this->imageAttribute, BinaryImageGenerator::THUMBNAIL_TYPE);
+        $this->binaryImageGenerator->supports('akeneo.png', $this->imageAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
+        $previewImage = $this->binaryImageGenerator->generate(self::FILENAME, $this->imageAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
         $this->assertStringContainsString('media/cache/', $previewImage);
 
-        $previewImage = $this->binaryImageGenerator->generate(self::FILENAME, $this->imageAttribute, BinaryImageGenerator::THUMBNAIL_TYPE);
+        $previewImage = $this->binaryImageGenerator->generate(self::FILENAME, $this->imageAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
         $this->assertStringContainsString('media/cache/', $previewImage);
     }
@@ -90,11 +91,11 @@ final class BinaryImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
      */
     public function it_get_a_default_preview_for_an_unknown_image_media_link()
     {
-        $this->binaryImageGenerator->supports('test', $this->imageAttribute, BinaryImageGenerator::THUMBNAIL_TYPE);
-        $previewImage = $this->binaryImageGenerator->generate('test', $this->imageAttribute, BinaryImageGenerator::THUMBNAIL_TYPE);
+        $this->binaryImageGenerator->supports('test', $this->imageAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
+        $previewImage = $this->binaryImageGenerator->generate('test', $this->imageAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
         $this->assertStringContainsString(
-            sprintf('media/cache/%s/pim_asset_manager.default_image.image', BinaryImageGenerator::THUMBNAIL_TYPE),
+            sprintf('media/cache/%s/pim_asset_manager.default_image.image', BinaryImageGenerator::SUPPORTED_TYPES[PreviewGeneratorRegistry::THUMBNAIL_TYPE]),
             $previewImage
         );
     }

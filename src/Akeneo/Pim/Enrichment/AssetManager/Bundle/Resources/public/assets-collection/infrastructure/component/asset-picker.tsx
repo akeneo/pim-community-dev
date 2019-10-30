@@ -212,12 +212,12 @@ const useFilterViews = (
   assetFamilyIdentifier: AssetFamilyIdentifier,
   dataProvider: any,
   getFilterViews: (attributes: Attribute[]) => FilterViewCollection
-): FilterViewCollection => {
-  const [filterViews, setFilterViews] = React.useState<FilterViewCollection>([]);
+): FilterViewCollection | null => {
+  const [filterViews, setFilterViews] = React.useState<FilterViewCollection | null>(null);
 
   React.useEffect(() => {
     dataProvider.assetAttributesFetcher.fetchAll(assetFamilyIdentifier).then((attributes: Attribute[]) => {
-      setFilterViews(getFilterViews(attributes));
+      setFilterViews(sortFilterViewsByAttributeOrder(getFilterViews(attributes)));
     });
   }, [assetFamilyIdentifier]);
 
@@ -262,9 +262,7 @@ export const AssetPicker = ({
     setResultCollection,
     setResultCount
   );
-  const filterViews = sortFilterViewsByAttributeOrder(
-    useFilterViews(assetFamilyIdentifier, dataProvider, getFilterViews)
-  );
+  const filterViews = useFilterViews(assetFamilyIdentifier, dataProvider, getFilterViews);
 
   React.useEffect(() => {
     const cancelModalOnEscape = (event: KeyboardEvent) => (Key.Escape === event.code ? cancelModal() : null);
@@ -286,7 +284,7 @@ export const AssetPicker = ({
       >
         {__('pim_asset_manager.asset_collection.add_asset')}
       </Button>
-      {isOpen && filterViews.length !== 0 ? (
+      {isOpen && null !== filterViews ? (
         <Modal data-container="asset-picker">
           <Header>
             <CloseButton title={__('pim_asset_manager.close')} onClick={cancelModal} />

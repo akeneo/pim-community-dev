@@ -61,7 +61,6 @@ class DefaultImageProvider implements DefaultImageProviderInterface
                 $filter
             );
         }
-
         return $this->cacheManager->resolve($fileKey, $filter);
     }
 

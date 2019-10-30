@@ -28,12 +28,9 @@ use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 class MediaLinkImageGenerator implements PreviewGeneratorInterface
 {
     private const DEFAULT_IMAGE = 'pim_asset_manager.default_image.image'; // Should change depending on the preview type
-    public const THUMBNAIL_TYPE = 'thumbnail';
-    public const THUMBNAIL_SMALL_TYPE = 'thumbnail';
-    public const PREVIEW_TYPE = 'preview';
     public const SUPPORTED_TYPES = [
-        self::THUMBNAIL_TYPE => 'am_url_thumbnail',
-        self::PREVIEW_TYPE => 'am_url_preview',
+        PreviewGeneratorRegistry::THUMBNAIL_TYPE => 'am_url_thumbnail',
+        PreviewGeneratorRegistry::PREVIEW_TYPE => 'am_url_preview',
     ];
 
     /** @var DataManager  */

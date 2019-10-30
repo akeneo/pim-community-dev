@@ -105,7 +105,7 @@ class AssetItemHydratorSpec extends ObjectBehavior
             'attribute' => 'image',
             'channel'   => null,
             'locale'    => null,
-            'data'      => 'cottondry.png',
+            'data'      => 'cottondry',
         ];
         $textilesValue = [
             'attribute' => 'textiles',
@@ -121,7 +121,10 @@ class AssetItemHydratorSpec extends ObjectBehavior
                 'attribute' => 'image',
                 'channel'   => null,
                 'locale'    => null,
-                'data'      => 'https://mypim.com/preview_images/cottondry.png.png/500x500',
+                'data'      => [
+                    'filePath' => 'cottondry',
+                    'originalFilename' => 'cottondry.png',
+                ],
             ]
         );
         $valueHydrator->hydrate($textilesValue, $textilesAttribute, [])->willReturn($textilesValue);
@@ -142,10 +145,6 @@ class AssetItemHydratorSpec extends ObjectBehavior
             'attribute_as_image'      => 'image',
         ];
 
-        $imagePreviewUrlGenerator
-            ->generate('cottondry.png', 'image', 'thumbnail')
-            ->willReturn('https://mypim.com/preview_images/cottondry.png.png/500x500');
-
         $actualAssetItem = $this->hydrate($row, $assetQuery);
 
         $expectedAssetItem = new AssetItem();
@@ -153,7 +152,17 @@ class AssetItemHydratorSpec extends ObjectBehavior
         $expectedAssetItem->assetFamilyIdentifier = 'wash_instruction';
         $expectedAssetItem->code = 'dry_cotton';
         $expectedAssetItem->labels = ['fr_FR' => 'Lavage cotton à sec', 'en_US' => 'Cotton dry wash'];
-        $expectedAssetItem->image = 'https://mypim.com/preview_images/cottondry.png.png/500x500';
+        $expectedAssetItem->image = [
+            [
+                'attribute' => 'image',
+                'channel'   => null,
+                'locale'    => null,
+                'data'      => [
+                    'filePath' => 'cottondry',
+                    'originalFilename' => 'cottondry.png',
+                ]
+            ],
+        ];
         $expectedAssetItem->values = [
             'label-fr_FR' => [
                 'attribute' => 'label',
@@ -171,7 +180,10 @@ class AssetItemHydratorSpec extends ObjectBehavior
                 'attribute' => 'image',
                 'channel'   => null,
                 'locale'    => null,
-                'data'      => 'https://mypim.com/preview_images/cottondry.png.png/500x500'
+                'data'      => [
+                    'filePath' => 'cottondry',
+                    'originalFilename' => 'cottondry.png',
+                ]
             ],
             'textiles'    => [
                 'attribute' => 'textiles',
