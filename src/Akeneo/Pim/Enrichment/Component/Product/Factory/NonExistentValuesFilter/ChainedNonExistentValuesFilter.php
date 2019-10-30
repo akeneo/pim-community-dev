@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilte
 
 use Akeneo\Pim\Enrichment\Component\Product\Factory\EmptyValuesCleaner;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\TransformRawValuesCollections;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
  * The implementation of this non existent filter use a pivot format internally.
@@ -28,14 +29,24 @@ final class ChainedNonExistentValuesFilter implements ChainedNonExistentValuesFi
     /** @var TransformRawValuesCollections */
     private $transformRawValuesCollections;
 
+    /** @var IdentifiableObjectRepositoryInterface*/
+    private $localeRepository;
+
+    /** @var IdentifiableObjectRepositoryInterface*/
+    private $channelRepository;
+
     public function __construct(
         iterable $nonExistentValueFilters,
         EmptyValuesCleaner $emptyValuesCleaner,
-        TransformRawValuesCollections $transformRawValuesCollections
+        TransformRawValuesCollections $transformRawValuesCollections,
+        IdentifiableObjectRepositoryInterface $localeRepository,
+        IdentifiableObjectRepositoryInterface $channelRepository
     ) {
         $this->nonExistentValueFilters = $nonExistentValueFilters;
         $this->emptyValuesCleaner = $emptyValuesCleaner;
         $this->transformRawValuesCollections = $transformRawValuesCollections;
+        $this->localeRepository = $localeRepository;
+        $this->channelRepository = $channelRepository;
     }
 
     public function filterAll(array $rawValuesCollection): array
@@ -54,9 +65,8 @@ final class ChainedNonExistentValuesFilter implements ChainedNonExistentValuesFi
         );
 
         $filteredRawValuesCollectionIndexedByType = $result->addFilteredValuesIndexedByType($result->nonFilteredRawValuesCollectionIndexedByType());
-
         $filteredRawValuesCollection = $this->emptyValuesCleaner->cleanAllValues($filteredRawValuesCollectionIndexedByType->toRawValueCollection());
-
+        $filteredRawValuesCollection = $this->removeValuesWithNonExistentLocaleChannel($filteredRawValuesCollection);
         $filteredRawValuesCollection = $this->addIdentifiersWithOnlyUnknownAttributes($rawValuesCollection, $filteredRawValuesCollection);
 
         return $filteredRawValuesCollection;
@@ -71,7 +81,7 @@ final class ChainedNonExistentValuesFilter implements ChainedNonExistentValuesFi
     }
 
     /**
-     * The pivot format indexes per attribute the values in the products. If the only attribute in the product does not exist, data about this product are lost in the pivot format.
+     * The pivot format indexes per attribute the values in the products. If the only attribute in the product does not exist, data about this product is lost in the pivot format.
      *
      * The goal of this function is to add the data about this product (empty raw values) in the final result.
      */
@@ -80,5 +90,31 @@ final class ChainedNonExistentValuesFilter implements ChainedNonExistentValuesFi
         $emptyRawValuesCollection = array_fill_keys(array_keys($rawValuesCollection), []);
 
         return array_merge($emptyRawValuesCollection, $filteredRawValuesCollection);
+    }
+
+    private function removeValuesWithNonExistentLocaleChannel(array $rawValuesCollection)
+    {
+        $filteredRawValuesCollection = [];
+
+        foreach ($rawValuesCollection as $identifier => $rawValues) {
+            foreach ($rawValues as $attributeCode => $channelValues) {
+                foreach ($channelValues as $channelCode => $localeValues) {
+                    $channel = '<all_channels>' !== $channelCode ? $this->channelRepository->findOneByIdentifier($channelCode) : null;
+
+                    foreach ($localeValues as $localeCode => $data) {
+                        $locale = '<all_locales>' !== $localeCode ? $this->localeRepository->findOneByIdentifier($localeCode) : null;
+
+                        if (
+                            ($channelCode === '<all_channels>' || $channel !== null) &&
+                            ($localeCode === '<all_locales>' || ($locale !== null && $locale->isActivated()))
+                        ) {
+                            $filteredRawValuesCollection[$identifier][$attributeCode][$channelCode][$localeCode] = $data;
+                        }
+                    }
+                }
+            }
+        }
+
+        return $filteredRawValuesCollection;
     }
 }
