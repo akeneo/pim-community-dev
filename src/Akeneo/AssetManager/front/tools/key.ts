@@ -3,6 +3,8 @@ enum Key {
   Enter = 'Enter',
   Backspace = 'Backspace',
   Escape = 'Escape',
+  ArrowLeft = 'ArrowLeft',
+  ArrowRight = 'ArrowRight',
 }
 
 export default Key;

@@ -17,12 +17,12 @@ module.exports = async function(cucumber) {
   const getElement = createElementDecorator(config);
 
   Given('the user opens the asset picker', async function() {
-    const assetCollection = await await getElement(this.page, 'Designer asset collection');
+    const assetCollection = await getElement(this.page, 'Designer asset collection');
     await assetCollection.openPicker();
   });
 
   When('the user filters the assets', async function() {
-    const assetPicker = await await getElement(this.page, 'Asset picker');
+    const assetPicker = await getElement(this.page, 'Asset picker');
     const searchBar = await assetPicker.getSearchBar();
     await searchBar.search('s');
 
@@ -31,13 +31,13 @@ module.exports = async function(cucumber) {
   });
 
   When('the user picks one assets', async function() {
-    const assetPicker = await await getElement(this.page, 'Asset picker');
+    const assetPicker = await getElement(this.page, 'Asset picker');
     const mosaic = await assetPicker.getMosaic();
     await mosaic.select('dyson');
 
     const basket = await assetPicker.getBasket();
     await basket.containsAsset('dyson');
 
-    assetPicker.confirmSelection();
+    await assetPicker.confirmSelection();
   });
 };

@@ -9,7 +9,7 @@ import {
   removeAssetFromCollection,
 } from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import styled from 'styled-components';
-import __ from 'akeneoreferenceentity/tools/translator';
+import __ from 'akeneoassetmanager/tools/translator';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import {Button} from 'akeneoassetmanager/application/component/app/button';
 import AssetIllustration from 'akeneopimenrichmentassetmanager/platform/component/visual/illustration/asset';

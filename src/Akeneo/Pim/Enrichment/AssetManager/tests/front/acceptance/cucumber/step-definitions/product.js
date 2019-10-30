@@ -24,6 +24,10 @@ module.exports = async function(cucumber) {
       selector: 'div[data-attribute="designer"]',
       decorator: require('../decorator/asset-collection'),
     },
+    'Asset preview': {
+      selector: 'div[data-role="asset-preview-modal"]',
+      decorator: require('../decorator/asset-preview'),
+    },
   };
 
   const product = {
@@ -35,7 +39,7 @@ module.exports = async function(cucumber) {
 
   const getElement = createElementDecorator(config);
   const getAssetCollection = async page => {
-    return await await getElement(page, 'Designer asset collection');
+    return await getElement(page, 'Designer asset collection');
   };
 
   const assertAssetCodesToBe = async (page, expectedAssetCodes) => {
@@ -113,6 +117,24 @@ module.exports = async function(cucumber) {
     const coco = await assetCollection.getAsset('coco');
 
     await coco.move('right');
+  });
+
+  When('the user open the first asset preview', async function() {
+    const assetCollection = await getAssetCollection(this.page);
+    const starck = await assetCollection.getAsset('starck');
+
+    await starck.preview();
+  });
+
+  Then('the preview should be displayed', async function() {
+    await getElement(this.page, 'Asset preview');
+  });
+
+  Then('the first asset should be displayed', async function() {
+    const assetPreview = await getElement(this.page, 'Asset preview');
+    const image = await assetPreview.getImagePreviewed();
+
+    assert.strictEqual(await image.getCode(), 'Starck');
   });
 
   Then('the three assets in the collection should be displayed', async function() {

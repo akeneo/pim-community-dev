@@ -10,7 +10,7 @@ export const TransparentButton = styled.button`
   background: none;
   border: none;
   padding: 0;
-  margin: none
+  margin: 0;
 
   &:hover {
     cursor: pointer;

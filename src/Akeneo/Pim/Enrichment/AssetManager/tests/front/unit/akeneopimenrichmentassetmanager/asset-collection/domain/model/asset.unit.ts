@@ -5,6 +5,8 @@ import {
   getAssetLabel,
   removeAssetFromCollection,
   emptyCollection,
+  getPreviousAssetCode,
+  getNextAssetCode,
   addAssetToCollection,
   addAssetsToCollection,
   isAssetInCollection,
@@ -12,6 +14,7 @@ import {
   moveAssetInCollection,
   getAssetCodes,
   getAssetByCode,
+  sortAssetCollection,
 } from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {isLabels} from 'akeneoassetmanager/domain/model/utils';
 
@@ -153,6 +156,32 @@ test('I should be able to empty the collection', () => {
   expect(emptyCollection(['samsung', 'oneplus', 'iphone'])).toEqual([]);
 });
 
+test('I should be able to get the previous asset code in the collection', () => {
+  const assetCollection = ['samsung', 'oneplus', 'honor'];
+
+  let currentAssetCode = 'oneplus';
+  expect(getPreviousAssetCode(assetCollection, currentAssetCode)).toEqual('samsung');
+
+  currentAssetCode = 'samsung';
+  expect(getPreviousAssetCode(assetCollection, currentAssetCode)).toEqual('honor');
+
+  currentAssetCode = 'honor';
+  expect(getPreviousAssetCode(assetCollection, currentAssetCode)).toEqual('oneplus');
+});
+
+test('I should be able to get the next asset code in the collection', () => {
+  const assetCollection = ['samsung', 'oneplus', 'honor'];
+
+  let currentAssetCode = 'oneplus';
+  expect(getNextAssetCode(assetCollection, currentAssetCode)).toEqual('honor');
+
+  currentAssetCode = 'samsung';
+  expect(getNextAssetCode(assetCollection, currentAssetCode)).toEqual('oneplus');
+
+  currentAssetCode = 'honor';
+  expect(getNextAssetCode(assetCollection, currentAssetCode)).toEqual('samsung');
+});
+
 test('It should add asset in the collection', () => {
   const assetCollection = ['samsung', 'oneplus'];
   const assetCodeToAdd = 'honor';
@@ -196,7 +225,7 @@ test('I should be able to move assets', () => {
   ]);
 });
 
-test("I should not be able to move the last asset after it's current position", () => {
+test('I should not be able to move the last asset after its current position', () => {
   const asset = {
     identifier: 'packshot_iphone_fingerprint',
     code: 'iphone',
@@ -210,7 +239,7 @@ test("I should not be able to move the last asset after it's current position", 
   ]);
 });
 
-test("I should not be able to move the first asset before it's current position", () => {
+test('I should not be able to move the first asset before its current position', () => {
   const asset = {
     identifier: 'packshot_iphone_fingerprint',
     code: 'iphone',
@@ -238,7 +267,7 @@ test('I can get asset codes of a collection', () => {
   expect(getAssetCodes([iphone, samsung])).toEqual(['iphone', 'samsung']);
 });
 
-test('I can find an asset from a collection with his code', () => {
+test('I can find an asset from a collection with its code', () => {
   const assetCollection = [
     {
       identifier: 'packshot_iphone_fingerprint',
@@ -258,4 +287,52 @@ test('I can find an asset from a collection with his code', () => {
   };
 
   expect(getAssetByCode(assetCollection, 'honor')).toMatchObject(expectedAsset);
+});
+
+test('I can sort an asset collection by codes when the order is already valid', () => {
+  const assetCodes = ['honor', 'iphone'];
+  const assetCollection = [
+    {
+      identifier: 'packshot_honor_fingerprint',
+      code: 'honor',
+      labels: {en_US: 'Honor'},
+    },
+    {
+      identifier: 'packshot_iphone_fingerprint',
+      code: 'iphone',
+      labels: {en_US: 'Iphone'},
+    },
+  ];
+
+  expect(sortAssetCollection(assetCollection, assetCodes)).toEqual(assetCollection);
+});
+
+test('I can sort an asset collection by codes when the order is invalid', () => {
+  const assetCodes = ['honor', 'iphone'];
+  const assetCollection = [
+    {
+      identifier: 'packshot_iphone_fingerprint',
+      code: 'iphone',
+      labels: {en_US: 'Iphone'},
+    },
+    {
+      identifier: 'packshot_honor_fingerprint',
+      code: 'honor',
+      labels: {en_US: 'Honor'},
+    },
+  ];
+  const expectedAssetCollection = [
+    {
+      identifier: 'packshot_honor_fingerprint',
+      code: 'honor',
+      labels: {en_US: 'Honor'},
+    },
+    {
+      identifier: 'packshot_iphone_fingerprint',
+      code: 'iphone',
+      labels: {en_US: 'Iphone'},
+    },
+  ];
+
+  expect(sortAssetCollection(assetCollection, assetCodes)).toEqual(expectedAssetCollection);
 });

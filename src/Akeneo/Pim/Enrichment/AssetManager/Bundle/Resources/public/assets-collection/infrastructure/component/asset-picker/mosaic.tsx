@@ -9,7 +9,7 @@ import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
 import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import AssetCard from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/mosaic/asset-card';
 import styled from 'styled-components';
-import __ from 'akeneoreferenceentity/tools/translator';
+import __ from 'akeneoassetmanager/tools/translator';
 import MaximumSelectionReachedNotification from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/mosaic/maximum-selection-reached-notification';
 import EmptyResult from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/mosaic/empty-result';
 

@@ -28,7 +28,6 @@ pim_asset_manager:
   asset_picker:
     notification:
       maximum_selection_reached: You have reached the limit of {{ maxSelectionCount }} assets per collection, you can no longer add an asset to your collection.
-    close: Close the asset picker
     title: Add assets to your product
     sub_title: Choose the assets you want to attach to your product {{ productLabel }} in {{ attributeLabel }} collection
     no_result:
@@ -41,6 +40,14 @@ pim_asset_manager:
       empty_title: Your basket is empty
       remove_one_asset: Remove asset {{ assetName }} from asset selection
       remove_all_assets: Remove all
+  asset_preview:
+    previous: Previous asset
+    next: Next asset
+  close: Close the modal
+  breadcrumb:
+    products: Products
+  download: Download
+  fullscreen: Fullscreen
 
   #  app:
   #    image:

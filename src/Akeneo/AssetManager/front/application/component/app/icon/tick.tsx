@@ -1,9 +1,9 @@
 import * as React from 'react';
 
-const Tick = ({className}: {className?: string}) => (
+const Tick = ({className = ''}: {className?: string}) => (
   <svg width={16} height={16}>
     <path
-      className={undefined === className ? '' : className}
+      className={className}
       fill="none"
       stroke="#FFFFFF"
       strokeWidth={1}

@@ -7,6 +7,7 @@ const Container = styled.div`
   white-space: nowrap;
   color: ${(props: ThemedProps<void>) => props.theme.color.purple100};
   margin-left: 10px;
+  line-height: 16px;
 `;
 
 type ResultCountProps = {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import __ from 'akeneoreferenceentity/tools/translator';
+import __ from 'akeneoassetmanager/tools/translator';
 import styled from 'styled-components';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import AssetIllustration from 'akeneopimenrichmentassetmanager/platform/component/visual/illustration/asset';
