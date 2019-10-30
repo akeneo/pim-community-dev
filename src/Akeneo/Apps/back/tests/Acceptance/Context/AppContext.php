@@ -6,6 +6,8 @@ namespace Akeneo\Apps\Tests\Acceptance\Context;
 
 use Akeneo\Apps\Application\Command\CreateAppCommand;
 use Akeneo\Apps\Application\Command\CreateAppHandler;
+use Akeneo\Apps\Application\Query\FindAnAppHandler;
+use Akeneo\Apps\Application\Query\FindAnAppQuery;
 use Akeneo\Apps\Application\Query\FetchAppsHandler;
 use Akeneo\Apps\Domain\Exception\ConstraintViolationListException;
 use Akeneo\Apps\Domain\Model\Read\App;
@@ -25,16 +27,19 @@ class AppContext implements Context
 {
     private $appRepository;
     private $fetchAppsHandler;
+    private $findAnAppHandler;
     private $createAppHandler;
     private $violations;
 
     public function __construct(
         InMemoryAppRepository $appRepository,
         FetchAppsHandler $fetchAppsHandler,
+        FindAnAppHandler $findAnAppHandler,
         CreateAppHandler $createAppHandler
     ) {
         $this->appRepository = $appRepository;
         $this->fetchAppsHandler = $fetchAppsHandler;
+        $this->findAnAppHandler = $findAnAppHandler;
         $this->createAppHandler = $createAppHandler;
     }
 
@@ -84,6 +89,18 @@ class AppContext implements Context
         } catch (ConstraintViolationListException $violationList) {
             $this->violations = $violationList;
         }
+    }
+
+    /**
+     * @When I find the App :label
+     *
+     * @param string $label
+     */
+    public function iFindTheApp(string $label): void
+    {
+        $query = new FindAnAppQuery(self::slugify($label));
+        $app = $this->findAnAppHandler->handle($query);
+        Assert::eq($label, $app->label());
     }
 
     /**

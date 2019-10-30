@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Apps\Application\Query;
 
-use Akeneo\Apps\Application\Query\FetchAppHandler;
-use Akeneo\Apps\Application\Query\FetchAppQuery;
+use Akeneo\Apps\Application\Query\FindAnAppHandler;
+use Akeneo\Apps\Application\Query\FindAnAppQuery;
 use Akeneo\Apps\Domain\Model\Read\App;
 use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
 use Akeneo\Apps\Domain\Persistence\Repository\AppRepository;
@@ -16,7 +16,7 @@ use PhpSpec\ObjectBehavior;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class FetchAppHandlerSpec extends ObjectBehavior
+class FindAnAppHandlerSpec extends ObjectBehavior
 {
     function let(AppRepository $repository)
     {
@@ -25,7 +25,7 @@ class FetchAppHandlerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(FetchAppHandler::class);
+        $this->shouldHaveType(FindAnAppHandler::class);
     }
 
     function it_returns_an_app($repository)
@@ -34,7 +34,7 @@ class FetchAppHandlerSpec extends ObjectBehavior
 
         $repository->findOneByCode('bynder')->willReturn($app);
 
-        $query = new FetchAppQuery('bynder');
+        $query = new FindAnAppQuery('bynder');
         $this->handle($query)->shouldReturn($app);
     }
 
@@ -42,7 +42,7 @@ class FetchAppHandlerSpec extends ObjectBehavior
     {
         $repository->findOneByCode('bynder')->willReturn(null);
 
-        $query = new FetchAppQuery('bynder');
+        $query = new FindAnAppQuery('bynder');
         $this->handle($query)->shouldReturn(null);
     }
 }

@@ -12,7 +12,7 @@ use Akeneo\Apps\Domain\Persistence\Repository\AppRepository;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class FetchAppHandler
+class FindAnAppHandler
 {
     private $repository;
 
@@ -21,7 +21,7 @@ class FetchAppHandler
         $this->repository = $repository;
     }
 
-    public function handle(FetchAppQuery $query): ?App
+    public function handle(FindAnAppQuery $query): ?App
     {
         return $this->repository->findOneByCode($query->appCode());
     }
