@@ -499,10 +499,10 @@ class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
         ];
 
         $family = $this
-            ->getFromTestContainer('akeneo_ee_integration_tests.builder.family')
+            ->get('akeneo_ee_integration_tests.builder.family')
             ->build($familyData, true);
 
-        $this->getFromTestContainer('pim_catalog.saver.family')->save($family);
+        $this->get('pim_catalog.saver.family')->save($family);
     }
 
     private function createProductInFamily(string $familyCode): void
