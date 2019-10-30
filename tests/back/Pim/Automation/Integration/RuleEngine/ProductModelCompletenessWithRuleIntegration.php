@@ -2,13 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Bundle\RuleEngineBundle\tests\integration;
+namespace AkeneoTestEnterprise\Pim\Automation\Integration\RuleEngine;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use PHPUnit\Framework\Assert;
-use Pim\Component\Catalog\Model\ProductInterface;
 
 class ProductModelCompletenessWithRuleIntegration extends TestCase
 {
@@ -17,7 +15,7 @@ class ProductModelCompletenessWithRuleIntegration extends TestCase
      */
     public function test_descendant_products_indexation_during_import_with_rules(): void
     {
-        $jobLauncher = new JobLauncher(static::$kernel);
+        $jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
 
         $query = <<<SQL
 SELECT channel.code as channel_code, locale.code as locale_code, completeness.missing_count 
