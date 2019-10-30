@@ -105,6 +105,7 @@ export const Thumbnail = ({
   const removeLabel = __('pim_asset_manager.asset_collection.remove_one_asset', {
     assetName: getAssetLabel(asset, context.locale),
   });
+  debugger;
 
   const overlayRef = React.useRef(null);
   const handleOverlayClick = (event: React.MouseEvent) => {
@@ -138,9 +139,7 @@ export const Thumbnail = ({
           )}
         </Overlay>
       ) : null}
-      <Img
-        src={getAssetPreview(asset.image.filePath, asset.assetFamily.attributeAsImage, MediaPreviewTypes.Thumbnail)}
-      />
+      <Img src={getAssetPreview(asset, MediaPreviewTypes.Thumbnail)} />
     </Container>
   );
 };

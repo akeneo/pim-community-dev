@@ -25,6 +25,24 @@ const Title = styled.div`
 `;
 type ThumbnailProps = {isSelected: boolean};
 const Thumbnail = styled.img<ThumbnailProps>`
+  object-fit: contain;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+`;
+
+const AssetCompleteness = styled.div`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+`;
+
+const ImageContainer = styled.div`
+  width: 100%;
+  padding-top: 100%; /* 1:1 Aspect Ratio */
+  position: relative;
   border-width: ${(props: ThemedProps<ThumbnailProps>) => (props.isSelected ? '2px' : '1px')};
   width: ${(props: ThemedProps<ThumbnailProps>) => (props.isSelected ? 'calc(100% - 2px)' : '100%')};
   border-color: ${(props: ThemedProps<ThumbnailProps>) =>
@@ -32,13 +50,6 @@ const Thumbnail = styled.img<ThumbnailProps>`
   border-style: solid;
   margin-bottom: 6px;
   min-height: 140px;
-  object-fit: contain;
-`;
-
-const AssetCompleteness = styled.div`
-  position: absolute;
-  top: 10px;
-  right: 10px;
 `;
 
 const AssetCard = ({
@@ -56,14 +67,16 @@ const AssetCard = ({
 }) => {
   return (
     <Container data-asset={asset.code} data-selected={isSelected} isDisabled={isDisabled}>
+      <ImageContainer>
+        <Thumbnail
+          src={getAssetPreview(asset, MediaPreviewTypes.Thumbnail)}
+          isSelected={isSelected}
+          onClick={() => (!isDisabled ? onSelectionChange(asset.code, !isSelected) : null)}
+        />
+      </ImageContainer>
       <AssetCompleteness>
         <CompletenessBadge completeness={asset.completeness} />
       </AssetCompleteness>
-      <Thumbnail
-        src={getAssetPreview(asset.image.filePath, asset.assetFamily.attributeAsImage, MediaPreviewTypes.Thumbnail)}
-        isSelected={isSelected}
-        onClick={() => (!isDisabled ? onSelectionChange(asset.code, !isSelected) : null)}
-      />
       <Title>
         <Checkbox
           value={isSelected}

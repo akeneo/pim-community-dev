@@ -13,6 +13,7 @@ import {isNumber, isString, isLabels} from 'akeneoassetmanager/domain/model/util
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import {denormalizeAssetCode} from 'akeneoassetmanager/domain/model/asset/code';
+import {Query, SearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
 
 export const fetchAssetCollection = async (
   assetFamilyIdentifier: AssetFamilyIdentifier,
@@ -29,6 +30,18 @@ export const fetchAssetCollection = async (
   ]);
 
   return denormalizeAssetCollection(assetsResult, assetFamilyResult);
+};
+
+export const searchAssetCollection = async (
+  assetFamilyIdentifier: AssetFamilyIdentifier,
+  query: Query
+): Promise<SearchResult<Asset>> => {
+  const [searchResult, assetFamilyResult] = await Promise.all([
+    assetFetcher.search(query),
+    assetFamilyFetcher.fetch(denormalizeAssetFamilyIdentifier(assetFamilyIdentifier)),
+  ]);
+
+  return {...searchResult, items: denormalizeAssetCollection(searchResult.items, assetFamilyResult)};
 };
 
 const denormalizeAssetCollection = (assets: any, assetFamilyResult: any): Asset[] => {
@@ -52,7 +65,7 @@ const denormalizeAssetCollection = (assets: any, assetFamilyResult: any): Asset[
   );
 };
 
-const denormalizeAsset = (asset: any): NormalizedItemAsset => {
+const denormalizeAsset = (asset: any): Asset => {
   if (!isString(asset.identifier)) {
     throw Error('The identifier is not well formated');
   }

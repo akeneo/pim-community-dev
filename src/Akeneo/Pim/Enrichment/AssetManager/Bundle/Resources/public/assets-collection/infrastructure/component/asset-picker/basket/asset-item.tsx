@@ -65,11 +65,7 @@ const AssetItem = ({
       data-code={asset.code}
       className={isLoading ? 'AknLoadingPlaceHolderContainer' : ''}
     >
-      <AssetThumbnail
-        src={getAssetPreview(asset.image.filePath, asset.assetFamily.attributeAsImage, MediaPreviewTypes.Thumbnail)}
-        width={44}
-        height={44}
-      />
+      <AssetThumbnail src={getAssetPreview(asset, MediaPreviewTypes.Thumbnail)} width={44} height={44} />
       <AssetDetails>
         <AssetCode title={asset.code}>{asset.code}</AssetCode>
         <AssetLabel title={getAssetLabel(asset, context.locale)}>{getAssetLabel(asset, context.locale)}</AssetLabel>

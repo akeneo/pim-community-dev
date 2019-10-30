@@ -11,13 +11,11 @@ const memo = (React as any).memo;
 const CommonRow = memo(
   ({
     asset,
-    assetFamily,
     locale,
     placeholder = false,
     onRedirectToAsset,
   }: {
     asset: NormalizedItemAsset;
-    assetFamily: AssetFamily;
     locale: string;
     placeholder?: boolean;
   } & {
@@ -55,7 +53,7 @@ const CommonRow = memo(
             className="AknGrid-image AknLoadingPlaceHolder"
             width="44"
             height="44"
-            src={getAssetPreview(asset.image.filePath, assetFamily.getAttributeAsImage(), MediaPreviewTypes.Thumbnail)}
+            src={getAssetPreview(asset, MediaPreviewTypes.Thumbnail)}
           />
         </td>
         <td className="AknGrid-bodyCell" title={label}>

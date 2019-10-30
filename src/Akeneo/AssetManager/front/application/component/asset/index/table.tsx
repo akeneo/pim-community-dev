@@ -252,7 +252,6 @@ export default class Table extends React.Component<TableProps, {columns: Column[
                 <tbody className="AknGrid-body">
                   <CommonRows
                     assets={grid.assets}
-                    assetFamily={this.props.assetFamily}
                     locale={locale}
                     placeholder={placeholder}
                     onRedirectToAsset={onRedirectToAsset}

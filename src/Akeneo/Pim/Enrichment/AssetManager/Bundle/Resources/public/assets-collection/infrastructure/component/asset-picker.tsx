@@ -17,7 +17,6 @@ import {hasDataFilterView, getDataFilterView, FilterView} from 'akeneoassetmanag
 import {Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import SearchBar from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/search-bar';
 import fetchAllChannels from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/channel';
-import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import {Query} from 'akeneoassetmanager/domain/fetcher/fetcher';
@@ -41,6 +40,10 @@ import {
   SubTitle,
   ConfirmButton,
 } from 'akeneopimenrichmentassetmanager/platform/component/common/modal';
+import {
+  fetchAssetCollection,
+  searchAssetCollection,
+} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/asset';
 
 type AssetFamilyIdentifier = string;
 type AssetPickerProps = {
@@ -134,10 +137,10 @@ const createQuery = (
 const dataProvider = {
   assetFetcher: {
     fetchByCode: (assetFamilyIdentifier: AssetFamilyIdentifier, assetCodeCollection: AssetCode[], context: Context) => {
-      return assetFetcher.fetchByCodes(assetFamilyIdentifier, assetCodeCollection, context);
+      return fetchAssetCollection(assetFamilyIdentifier, assetCodeCollection, context);
     },
-    search: (query: Query) => {
-      return assetFetcher.search(query);
+    search: (assetFamilyIdentifier: AssetFamilyIdentifier, query: Query) => {
+      return searchAssetCollection(assetFamilyIdentifier, query);
     },
   },
   channelFetcher: {
@@ -155,6 +158,7 @@ const FIRST_PAGE_SIZE = 50;
 
 let totalRequestCount = 0;
 const useFetchResult = (
+  isOpen: boolean,
   dataProvider: any,
   assetFamilyIdentifier: AssetFamilyIdentifier,
   filters: Filter[],
@@ -165,6 +169,10 @@ const useFetchResult = (
   setResultCount: (count: number) => void
 ) => {
   React.useEffect(() => {
+    if (!isOpen) {
+      return;
+    }
+
     const query = createQuery(
       assetFamilyIdentifier,
       filters,
@@ -176,23 +184,24 @@ const useFetchResult = (
       FIRST_PAGE_SIZE
     );
     totalRequestCount++;
-    dataProvider.assetFetcher.search(query).then((searchResult: any) => {
+    dataProvider.assetFetcher.search(assetFamilyIdentifier, query).then((searchResult: any) => {
       const currentRequestCount = totalRequestCount;
       setResultCollection(searchResult.items);
       setResultCount(searchResult.matchesCount);
 
       if (searchResult.matchesCount > FIRST_PAGE_SIZE) {
-        fetchMoreResult(currentRequestCount)(query, setResultCollection);
+        fetchMoreResult(currentRequestCount)(assetFamilyIdentifier, query, setResultCollection);
       }
     });
-  }, [filters, searchValue, context, excludedAssetCollection]);
+  }, [filters, searchValue, context, excludedAssetCollection, isOpen]);
 };
 
 const fetchMoreResult = (currentRequestCount: number) => (
+  assetFamilyIdentifier: AssetFamilyIdentifier,
   query: Query,
   setResultCollection: (resultCollection: Asset[]) => void
 ) => {
-  dataProvider.assetFetcher.search({...query, size: MAX_RESULT}).then((searchResult: any) => {
+  dataProvider.assetFetcher.search(assetFamilyIdentifier, {...query, size: MAX_RESULT}).then((searchResult: any) => {
     if (currentRequestCount === totalRequestCount) {
       setResultCollection(searchResult.items);
     }
@@ -243,6 +252,7 @@ export const AssetPicker = ({
   };
 
   useFetchResult(
+    isOpen,
     dataProvider,
     assetFamilyIdentifier,
     filterCollection,

@@ -27,13 +27,12 @@ use Liip\ImagineBundle\Imagine\Filter\FilterManager;
  */
 class MediaLinkImageGenerator implements PreviewGeneratorInterface
 {
-    private const DEFAULT_IMAGE = 'pim_asset_manager.default_image.image';
+    private const DEFAULT_IMAGE = 'pim_asset_manager.default_image.image'; // Should change depending on the preview type
     public const THUMBNAIL_TYPE = 'thumbnail';
     public const THUMBNAIL_SMALL_TYPE = 'thumbnail';
     public const PREVIEW_TYPE = 'preview';
     public const SUPPORTED_TYPES = [
         self::THUMBNAIL_TYPE => 'am_url_thumbnail',
-        self::THUMBNAIL_SMALL_TYPE => 'am_url_thumbnail',
         self::PREVIEW_TYPE => 'am_url_preview',
     ];
 
@@ -77,12 +76,15 @@ class MediaLinkImageGenerator implements PreviewGeneratorInterface
             try {
                 $binary = $this->dataManager->find($previewType, $url);
             } catch (NotLoadableException $e) {
+                // Should change depending on the preview type
                 return $this->defaultImageProvider->getImageUrl(self::DEFAULT_IMAGE, $previewType);
             } catch (\LogicException $e) { //Here we catch different levels of exception to display a different default image in the future
                 // Trigerred when the mime type was not the good one
+                // Should change depending on the preview type
                 return $this->defaultImageProvider->getImageUrl(self::DEFAULT_IMAGE, $previewType);
             } catch (\Exception $e) {
                 // Triggered When a general exception arrised
+                // Should change depending on the preview type
                 return $this->defaultImageProvider->getImageUrl(self::DEFAULT_IMAGE, $previewType);
             }
 

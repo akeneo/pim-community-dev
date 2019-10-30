@@ -23,13 +23,13 @@ use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
  */
 class OtherGenerator implements PreviewGeneratorInterface
 {
+    public const DEFAULT_OTHER = 'pim_asset_manager.default_image.other';
     public const THUMBNAIL_TYPE = 'thumbnail';
     public const THUMBNAIL_SMALL_TYPE = 'thumbnail_small';
     public const PREVIEW_TYPE = 'preview';
 
     public const SUPPORTED_TYPES = [
         self::THUMBNAIL_TYPE => 'am_binary_thumbnail',
-        self::THUMBNAIL_SMALL_TYPE => 'am_binary_thumbnail',
         self::PREVIEW_TYPE => 'am_binary_preview'
     ];
 

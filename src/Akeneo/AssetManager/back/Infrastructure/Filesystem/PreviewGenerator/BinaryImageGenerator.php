@@ -32,7 +32,6 @@ class BinaryImageGenerator implements PreviewGeneratorInterface
     public const PREVIEW_TYPE = 'preview';
     public const SUPPORTED_TYPES = [
         self::THUMBNAIL_TYPE => 'am_binary_thumbnail',
-        self::THUMBNAIL_SMALL_TYPE => 'am_binary_thumbnail',
         self::PREVIEW_TYPE => 'am_binary_preview'
     ];
 

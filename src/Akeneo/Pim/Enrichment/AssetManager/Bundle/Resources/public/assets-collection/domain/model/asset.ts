@@ -18,8 +18,16 @@ export enum MoveDirection {
 
 export type AssetIdentifier = string;
 
-type Image = {filePath: string; originalFilename: string};
-const createEmptyImage = () => ({filePath: '', originalFilename: ''});
+type ImageCollection = ImageValue[];
+
+type ImageValue = {attribute: ''; channel: null; locale: null; data: {filePath: ''; originalFilename: ''}};
+const createEmptyImage = (): ImageValue => ({
+  attribute: '',
+  channel: null,
+  locale: null,
+  data: {filePath: '', originalFilename: ''},
+});
+const createEmptyImageCollection = (): ImageCollection => [createEmptyImage()];
 export type Completeness = NormalizedCompleteness;
 export const getCompletenessPercentage = (completeness: Completeness) =>
   Math.floor((completeness.complete / completeness.required) * 100);
@@ -27,7 +35,7 @@ export const getCompletenessPercentage = (completeness: Completeness) =>
 export type Asset = {
   identifier: AssetIdentifier;
   code: AssetCode;
-  image: Image;
+  image: ImageCollection;
   assetFamily: AssetFamily;
   labels: Labels;
   completeness: Completeness;
@@ -38,7 +46,7 @@ export const emptyAsset = (assetCode?: AssetCode): Asset => ({
   identifier: '',
   code: assetCode || '',
   labels: {},
-  image: createEmptyImage(),
+  image: createEmptyImageCollection(),
   assetFamily: emptyAssetFamily(),
   completeness: {
     complete: 0,
@@ -139,4 +147,3 @@ export const getAssetByCode = (assetCollection: Asset[], assetCode: AssetCode): 
 
 export const sortAssetCollection = (assetCollection: Asset[], assetCodes: AssetCode[]): Asset[] => {
   return [...assetCollection].sort((a, b) => assetCodes.indexOf(a.code) - assetCodes.indexOf(b.code));
-};

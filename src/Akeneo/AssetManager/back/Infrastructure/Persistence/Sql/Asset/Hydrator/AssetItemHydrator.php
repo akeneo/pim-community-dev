@@ -83,14 +83,14 @@ class AssetItemHydrator implements AssetItemHydratorInterface
         $attributeAsLabel = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_label'], $this->platform);
         $labels = $this->getLabels($valueCollection, $attributeAsLabel);
         $attributeAsImageIdentifier = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_image'], $this->platform);
-        $image = $this->getImage($valueCollection, $attributeAsImageIdentifier);
+        $images = $this->getImages($query, $valueCollection, $attributeAsImageIdentifier);
 
         $assetItem = new AssetItem();
         $assetItem->identifier = $identifier;
         $assetItem->assetFamilyIdentifier = $assetFamilyIdentifier;
         $assetItem->code = $code;
         $assetItem->labels = $labels;
-        $assetItem->image = $image;
+        $assetItem->image = $images;
         $assetItem->values = $valueCollection;
         $assetItem->completeness = $this->getCompleteness($query, $valueCollection);
 
@@ -145,25 +145,30 @@ class AssetItemHydrator implements AssetItemHydratorInterface
         );
     }
 
-    private function getImage(array $valueCollection, string $attributeAsImageIdentifier): array
+    private function getImages(AssetQuery $query, array $valueCollection, string $attributeAsImageIdentifier): array
     {
-        $value = current(
-            array_filter(
-                $valueCollection,
-                function (array $value) use ($attributeAsImageIdentifier) {
-                    return $value['attribute'] === $attributeAsImageIdentifier;
-                }
-            )
-        );
+        $images = array_values(array_filter(
+            $valueCollection,
+            function (array $value) use ($attributeAsImageIdentifier, $query) {
+                return $value['attribute'] === $attributeAsImageIdentifier &&
+                    (null === $value['channel'] || $query->getChannel() === $value['channel']) &&
+                    (null === $value['locale'] || $query->getLocale() === $value['locale']);
+            }
+        ));
 
-        if (false === $value) {
-            return [
-                'filePath' => '',
-                'originalFilename' => ''
-            ];
+        if (empty($images)) {
+            return [[
+                'channel' => null,
+                'locale' => null,
+                'attribute' => $attributeAsImageIdentifier,
+                'data' => [
+                    'filePath' => '',
+                    'originalFilename' => ''
+                ]
+            ]];
         }
 
-        return $value['data'];
+        return $images;
     }
 
     /**

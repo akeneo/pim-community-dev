@@ -149,7 +149,7 @@ class ReferenceEntityFilter extends AbstractAttributeFilter implements Attribute
             !empty($referenceEntityIdentifier) &&
             true === $this->referenceEntityExists->withIdentifier(ReferenceEntityIdentifier::fromString($referenceEntityIdentifier));
 
-        return $referenceEntityExists;
+        return $referenceEntityExists && in_array($attribute->getAttributeType(), $this->supportedAttributeTypes);
     }
 
     /**
