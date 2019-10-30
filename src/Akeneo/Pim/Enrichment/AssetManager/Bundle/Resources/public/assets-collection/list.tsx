@@ -9,7 +9,9 @@ import {
 import {
   AssetCode,
   LabelCollection,
+  ProductIdentifier,
   selectCurrentValues,
+  selectProductIdentifer,
   selectProductLabels,
   updateValueData,
   Value,
@@ -62,6 +64,7 @@ import AssetCounter from 'akeneopimenrichmentassetmanager/platform/component/com
 type ListStateProps = {
   attributes: Attribute[];
   values: ValueCollection;
+  productIdentifier: ProductIdentifier | null;
   productLabels: LabelCollection;
   family: Family | null;
   context: Context;
@@ -74,6 +77,7 @@ type ListDispatchProps = {
 
 type DisplayValuesProps = {
   values: ValueCollection;
+  productIdentifier: ProductIdentifier | null;
   productLabels: LabelCollection;
   family: Family | null;
   context: Context;
@@ -126,6 +130,7 @@ const DisplayValues = ({
   ruleRelations,
   onChange,
   errors,
+  productIdentifier,
   productLabels,
 }: DisplayValuesProps) => {
   return (
@@ -187,7 +192,8 @@ const DisplayValues = ({
           <RuleNotification attributeCode={value.attribute.code} ruleRelations={ruleRelations} />
           <ValidationErrorCollection attributeCode={value.attribute.code} context={context} errors={errors} />
           <AssetCollection
-            assetFamilyIdentifier={value.attribute.referenceDataName}
+            productIdentifier={productIdentifier}
+            productAttribute={value.attribute}
             assetCodes={value.data}
             context={context}
             readonly={!value.editable}
@@ -207,6 +213,7 @@ const List = ({
   context,
   ruleRelations,
   errors,
+  productIdentifier,
   productLabels,
   onChange,
 }: ListStateProps & ListDispatchProps) => {
@@ -222,6 +229,7 @@ const List = ({
           ruleRelations={ruleRelations}
           onChange={onChange}
           errors={errors}
+          productIdentifier={productIdentifier}
           productLabels={productLabels}
         />
       ) : (
@@ -258,6 +266,7 @@ export default connect(
     attributes: selectAttributeList(state),
     context: selectContext(state),
     values: selectCurrentValues(state),
+    productIdentifier: selectProductIdentifer(state),
     productLabels: selectProductLabels(state),
     family: selectFamily(state),
     ruleRelations: selectRuleRelations(state),

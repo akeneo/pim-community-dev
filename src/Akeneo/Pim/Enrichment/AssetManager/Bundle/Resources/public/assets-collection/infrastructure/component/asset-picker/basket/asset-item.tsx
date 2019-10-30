@@ -4,7 +4,7 @@ import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
 import {Asset, getAssetLabel} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
-import __ from 'akeneoreferenceentity/tools/translator';
+import __ from 'akeneoassetmanager/tools/translator';
 import {RemoveButton} from 'akeneoassetmanager/application/component/app/remove-button';
 
 const Container = styled.li`
@@ -72,7 +72,7 @@ const AssetItem = ({
         title={__('pim_asset_manager.asset_picker.basket.remove_one_asset', {
           assetName: getAssetLabel(asset, context.locale),
         })}
-        onAction={onRemove}
+        onClick={onRemove}
       />
     </Container>
   );

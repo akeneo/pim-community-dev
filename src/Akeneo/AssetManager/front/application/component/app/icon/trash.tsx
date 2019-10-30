@@ -1,8 +1,6 @@
 import * as React from 'react';
 
-const Trash = (
-  {color, title, ...props}: {color?: string; title?: string} & any = {color: '#67768A', title: 'Trash icon'}
-) => (
+const Trash = ({color = '#67768A', title = 'Trash icon', ...props}: {color?: string; title?: string} & any) => (
   <svg viewBox="0 0 24 24" width="24" height="24" {...props}>
     <title>{title}</title>
     <g stroke={color} fill="none" fillRule="evenodd" strokeLinecap="round" strokeLinejoin="round">

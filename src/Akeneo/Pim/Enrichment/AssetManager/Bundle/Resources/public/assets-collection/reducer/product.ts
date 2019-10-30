@@ -1,15 +1,17 @@
 import {Action} from 'redux';
 import {AssetCollectionState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/asset-collection';
-import {Value as CommonValue, sameValue} from 'akeneopimenrichmentassetmanager/enrich/domain/model/product';
+import {sameValue, Value as CommonValue} from 'akeneopimenrichmentassetmanager/enrich/domain/model/product';
 
 export type AssetCode = string;
 export type AssetCollectionData = AssetCode[];
 
+export type ProductIdentifier = string;
 export type ValueCollection = Value[];
 export type LabelCollection = {
   [locale: string]: string;
 };
 export type ProductState = {
+  identifier: ProductIdentifier | null;
   values: ValueCollection;
   labels: LabelCollection;
 };
@@ -18,8 +20,8 @@ export type Value = CommonValue & {
   data: AssetCollectionData;
 };
 export const productReducer = (
-  state: ProductState = {values: [], labels: {}},
-  action: ValuesUpdatedAction | ValueChangedAction | LabelsUpdatedAction
+  state: ProductState = {identifier: null, values: [], labels: {}},
+  action: ValuesUpdatedAction | ValueChangedAction | LabelsUpdatedAction | ProductIdentifierChangedAction
 ) => {
   switch (action.type) {
     case 'VALUE_COLLECTION_UPDATED':
@@ -32,6 +34,12 @@ export const productReducer = (
       state = {
         ...state,
         values: [...state.values.map((value: Value) => (sameValue(value, action.value) ? action.value : value))],
+      };
+      break;
+    case 'PRODUCT_IDENTIFIER_CHANGED':
+      state = {
+        ...state,
+        identifier: action.payload,
       };
       break;
     default:
@@ -56,6 +64,11 @@ export const valueChanged = (value: Value) => {
   return {type: 'VALUE_CHANGED', value};
 };
 
+type ProductIdentifierChangedAction = Action<'PRODUCT_IDENTIFIER_CHANGED'> & {payload: ProductIdentifier};
+export const productIdentifierChanged = (payload: ProductIdentifier) => {
+  return {type: 'PRODUCT_IDENTIFIER_CHANGED', payload};
+};
+
 export const selectProductLabels = (state: AssetCollectionState) => {
   return state.product.labels;
 };
@@ -68,6 +81,10 @@ export const selectCurrentValues = (state: AssetCollectionState) => {
     ({locale, channel}: Value) =>
       (locale === null || locale === currentLocale) && (channel === null || currentChannel === channel)
   );
+};
+
+export const selectProductIdentifer = (state: AssetCollectionState): ProductIdentifier | null => {
+  return state.product.identifier;
 };
 
 export const updateValueData = (value: Value, data: AssetCode[]): Value => {
