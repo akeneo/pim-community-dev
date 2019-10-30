@@ -220,6 +220,8 @@ services:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\ChainedNonExistentValuesFilter'
         arguments:
             - !tagged akeneo.pim.enrichment.factory.non_existent_values_filter
+            - '@akeneo.pim.enrichment.factory.empty_values_cleaner'
+            - '@akeneo.pim.enrichment.factory.transform_raw_values_collections'
 
     akeneo.pim.enrichment.factory.non_existent_values_filter.simple_select:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\NonExistentSimpleSelectValuesFilter'

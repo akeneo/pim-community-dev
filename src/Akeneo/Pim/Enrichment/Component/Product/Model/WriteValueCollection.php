@@ -52,9 +52,9 @@ class WriteValueCollection implements \Countable, \IteratorAggregate
         return new static($collection->toArray());
     }
 
-    public function toReadValueCollection(): ReadValueCollection
+    public static function fromReadValueCollection(ReadValueCollection $valueCollection): self
     {
-        return new ReadValueCollection($this->values);
+        return new self($valueCollection->toArray());
     }
 
     /**
