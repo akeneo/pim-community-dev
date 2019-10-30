@@ -116,6 +116,13 @@ final class ChainedNonExistentValuesFilterSpec extends ObjectBehavior
                         '<all_locales>' => null
                     ]
                 ]
+            ],
+            '123' => [
+                'description' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => null
+                    ]
+                ]
             ]
         ];
 
@@ -124,6 +131,15 @@ final class ChainedNonExistentValuesFilterSpec extends ObjectBehavior
                 'description' => [
                     [
                         'identifier' => 'productA',
+                        'values' => [
+                            '<all_channels>' => [
+                                '<all_locales>' => null
+                            ]
+                        ],
+                        'properties' => []
+                    ],
+                    [
+                        'identifier' => '123',
                         'values' => [
                             '<all_channels>' => [
                                 '<all_locales>' => null
@@ -139,7 +155,7 @@ final class ChainedNonExistentValuesFilterSpec extends ObjectBehavior
         $filter1->filter($ongoingRawValues)->willReturn($ongoingRawValues);
         $filter2->filter($ongoingRawValues)->willReturn($ongoingRawValues);
 
-        $this->filterAll($rawValuesCollection)->shouldBeLike(['productA' => []]);
+        $this->filterAll($rawValuesCollection)->shouldBeLike(['productA' => [], '123' => []]);
     }
 
 

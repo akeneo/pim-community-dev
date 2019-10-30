@@ -89,7 +89,7 @@ class ChainedNonExistentValuesFilter implements ChainedNonExistentValuesFilterIn
     {
         $emptyRawValuesCollection = array_fill_keys(array_keys($rawValuesCollection), []);
 
-        return array_merge($emptyRawValuesCollection, $filteredRawValuesCollection);
+        return $filteredRawValuesCollection + $emptyRawValuesCollection;
     }
 
     private function removeValuesWithNonExistentLocaleChannel(array $rawValuesCollection)
