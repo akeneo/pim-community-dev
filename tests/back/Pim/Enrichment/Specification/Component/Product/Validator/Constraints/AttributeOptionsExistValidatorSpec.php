@@ -164,6 +164,35 @@ class AttributeOptionsExistValidatorSpec extends ObjectBehavior
         $this->validate($values, $constraint);
     }
 
+    function it_does_not_take_case_into_account_when_comparing_options(
+        GetExistingAttributeOptionCodes $getExistingAttributeOptionCodes,
+        ExecutionContextInterface $context
+    ) {
+        $getExistingAttributeOptionCodes->fromOptionCodesByAttributeCode(
+            [
+                'color' => ['RED', 'Green'],
+                'fabrics' => ['cotton', 'WOOL', 'leATheR'],
+            ]
+        )->willReturn(
+            [
+                'color' => ['red', 'green'],
+                'fabrics' => ['Cotton', 'Wool', 'Leather'],
+            ]
+        );
+        $context->buildViolation(Argument::any(), Argument::any())->shouldNotBeCalled();
+
+        $this->validate(
+            new WriteValueCollection(
+                [
+                    OptionValue::localizableValue('color', 'RED', 'en_US'),
+                    OptionValue::localizableValue('color', 'Green', 'fr_FR'),
+                    OptionsValue::value('fabrics',['cotton', 'WOOL', 'leATheR']),
+                ]
+            ),
+            new AttributeOptionsExist()
+        );
+    }
+
     // @todo @merge master/4.0: remove this test
     function it_does_not_build_violations_for_empty_values(
         GetExistingAttributeOptionCodes $getExistingAttributeOptionCodes,

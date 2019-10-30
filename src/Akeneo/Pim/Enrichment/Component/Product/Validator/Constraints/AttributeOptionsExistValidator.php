@@ -52,10 +52,13 @@ class AttributeOptionsExistValidator extends ConstraintValidator
         }
 
         $existingOptionCodes = $this->getExistingOptionCodesIndexedByAttributeCodes($optionValues);
+        array_walk_recursive($existingOptionCodes, function (string &$value) {
+            $value = strtolower($value);
+        });
 
         foreach ($optionValues as $key => $value) {
             if ($value instanceof OptionValueInterface) {
-                if (!in_array($value->getData(), ($existingOptionCodes[$value->getAttributeCode()] ?? []))) {
+                if (!in_array(strtolower($value->getData()), ($existingOptionCodes[$value->getAttributeCode()] ?? []))) {
                     $this->context->buildViolation(
                         $constraint->message,
                         [
@@ -65,7 +68,7 @@ class AttributeOptionsExistValidator extends ConstraintValidator
                     )->atPath(sprintf('[%s]', $key))->addViolation();
                 }
             } elseif ($value instanceof OptionsValueInterface) {
-                $notExistingOptionCodes = array_diff($value->getData(), ($existingOptionCodes[$value->getAttributeCode()] ?? []));
+                $notExistingOptionCodes = array_diff(array_map('strtolower', $value->getData()), ($existingOptionCodes[$value->getAttributeCode()] ?? []));
                 if (!empty($notExistingOptionCodes)) {
                     $this->context->buildViolation(
                         $constraint->messagePlural,
