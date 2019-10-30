@@ -4,6 +4,10 @@ import {
   fetchAssetAttributes,
 } from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/attribute';
 import {
+  attributeGroupFetcher,
+  fetchAssetAttributeGroups,
+} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/attribute-group';
+import {
   permissionFetcher,
   fetchPermissions,
 } from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/permission';
@@ -16,8 +20,10 @@ import {CategoryCode} from 'akeneopimenrichmentassetmanager/enrich/domain/model/
 
 jest.mock('pim/fetcher-registry', () => {});
 fetchAssetAttributes = jest.fn();
+fetchAssetAttributeGroups = jest.fn();
 fetchPermissions = jest.fn();
 attributeFetcher = jest.fn();
+attributeGroupFetcher = jest.fn();
 permissionFetcher = jest.fn();
 
 test('It should generate a value collection from the product with all attributes editable', async () => {
@@ -37,6 +43,7 @@ test('It should generate a value collection from the product with all attributes
   const categoriesEditPermission = ['scanners'];
 
   fetchAssetAttributes.mockImplementation(attributeFetcher => () => getMockAssetAttributes(isReadOnly));
+  fetchAssetAttributeGroups.mockImplementation(attributeGroupFetcher => () => getMockAssetAttributeGroups());
   fetchPermissions.mockImplementation(permissionFetcher => () =>
     getMockPermissions(attributeGroupPermission, localePermission, categoriesEditPermission)
   );
@@ -51,6 +58,7 @@ test('It should generate a value collection from the product with all attributes
         group: 'marketing',
         isReadOnly: false,
         referenceDataName: 'packshot',
+        sort_order: 0,
       },
       locale: 'en_US',
       channel: 'ecommerce',
@@ -66,11 +74,28 @@ test('It should generate a value collection from the product with all attributes
         group: 'marketing',
         isReadOnly: false,
         referenceDataName: 'notices',
+        sort_order: 1,
       },
       locale: null,
       channel: 'ecommerce',
       data: [],
       editable: true,
+    },
+    {
+      attribute: {
+        code: 'video_presentation',
+        labels: {
+          en_US: 'Video Presentation',
+        },
+        group: 'technical',
+        isReadOnly: false,
+        referenceDataName: 'video_presentation',
+        sort_order: 0,
+      },
+      locale: null,
+      channel: 'ecommerce',
+      data: [],
+      editable: false,
     },
   ];
 
@@ -95,6 +120,7 @@ test('It should generate a value collection from the product with an attribute g
   const categoriesEditPermission = ['scanners'];
 
   fetchAssetAttributes.mockImplementation(attributeFetcher => () => getMockAssetAttributes(isReadOnly));
+  fetchAssetAttributeGroups.mockImplementation(attributeGroupFetcher => () => getMockAssetAttributeGroups());
   fetchPermissions.mockImplementation(permissionFetcher => () =>
     getMockPermissions(attributeGroupPermission, localePermission, categoriesEditPermission)
   );
@@ -109,6 +135,7 @@ test('It should generate a value collection from the product with an attribute g
         group: 'marketing',
         isReadOnly: false,
         referenceDataName: 'packshot',
+        sort_order: 0,
       },
       locale: 'en_US',
       channel: 'ecommerce',
@@ -124,6 +151,23 @@ test('It should generate a value collection from the product with an attribute g
         group: 'marketing',
         isReadOnly: false,
         referenceDataName: 'notices',
+        sort_order: 1,
+      },
+      locale: null,
+      channel: 'ecommerce',
+      data: [],
+      editable: false, // so the values aren't editable
+    },
+    {
+      attribute: {
+        code: 'video_presentation',
+        labels: {
+          en_US: 'Video Presentation',
+        },
+        group: 'technical',
+        isReadOnly: false,
+        referenceDataName: 'video_presentation',
+        sort_order: 0,
       },
       locale: null,
       channel: 'ecommerce',
@@ -157,6 +201,7 @@ test('It should generate a value collection from the product with a locale non e
   const categoriesEditPermission = ['scanners'];
 
   fetchAssetAttributes.mockImplementation(attributeFetcher => () => getMockAssetAttributes(isReadOnly));
+  fetchAssetAttributeGroups.mockImplementation(attributeGroupFetcher => () => getMockAssetAttributeGroups());
   fetchPermissions.mockImplementation(permissionFetcher => () =>
     getMockPermissions(attributeGroupPermission, localePermission, categoriesEditPermission)
   );
@@ -171,6 +216,7 @@ test('It should generate a value collection from the product with a locale non e
         group: 'marketing',
         isReadOnly: false,
         referenceDataName: 'packshot',
+        sort_order: 0,
       },
       locale: 'en_US',
       channel: 'ecommerce',
@@ -186,11 +232,28 @@ test('It should generate a value collection from the product with a locale non e
         group: 'marketing',
         isReadOnly: false,
         referenceDataName: 'notices',
+        sort_order: 1,
       },
       locale: null,
       channel: 'ecommerce',
       data: [],
       editable: true,
+    },
+    {
+      attribute: {
+        code: 'video_presentation',
+        labels: {
+          en_US: 'Video Presentation',
+        },
+        group: 'technical',
+        isReadOnly: false,
+        referenceDataName: 'video_presentation',
+        sort_order: 0,
+      },
+      locale: null,
+      channel: 'ecommerce',
+      data: [],
+      editable: false,
     },
   ];
 
@@ -215,6 +278,7 @@ test('It should generate a value collection from the product with a read only at
   const categoriesEditPermission = ['scanners'];
 
   fetchAssetAttributes.mockImplementation(attributeFetcher => () => getMockAssetAttributes(isReadOnly));
+  fetchAssetAttributeGroups.mockImplementation(attributeGroupFetcher => () => getMockAssetAttributeGroups());
   fetchPermissions.mockImplementation(permissionsFetcher => () =>
     getMockPermissions(attributeGroupPermission, localePermission, categoriesEditPermission)
   );
@@ -229,6 +293,7 @@ test('It should generate a value collection from the product with a read only at
         group: 'marketing',
         isReadOnly: true,
         referenceDataName: 'packshot',
+        sort_order: 0,
       },
       locale: 'en_US',
       channel: 'ecommerce',
@@ -244,6 +309,23 @@ test('It should generate a value collection from the product with a read only at
         group: 'marketing',
         isReadOnly: true,
         referenceDataName: 'notices',
+        sort_order: 1,
+      },
+      locale: null,
+      channel: 'ecommerce',
+      data: [],
+      editable: false, // so the values aren't editable
+    },
+    {
+      attribute: {
+        code: 'video_presentation',
+        labels: {
+          en_US: 'Video Presentation',
+        },
+        group: 'technical',
+        isReadOnly: true,
+        referenceDataName: 'video_presentation',
+        sort_order: 0,
       },
       locale: null,
       channel: 'ecommerce',
@@ -273,6 +355,7 @@ test('It should generate a value collection from the product with a non editable
   const categoriesEditPermission = ['scanners'];
 
   fetchAssetAttributes.mockImplementation(attributeFetcher => () => getMockAssetAttributes(isReadOnly));
+  fetchAssetAttributeGroups.mockImplementation(attributeGroupFetcher => () => getMockAssetAttributeGroups());
   fetchPermissions.mockImplementation(permissionFetcher => () =>
     getMockPermissions(attributeGroupPermission, localePermission, categoriesEditPermission)
   );
@@ -287,6 +370,7 @@ test('It should generate a value collection from the product with a non editable
         group: 'marketing',
         isReadOnly: false,
         referenceDataName: 'packshot',
+        sort_order: 0,
       },
       locale: 'en_US',
       channel: 'ecommerce',
@@ -302,11 +386,28 @@ test('It should generate a value collection from the product with a non editable
         group: 'marketing',
         isReadOnly: false,
         referenceDataName: 'notices',
+        sort_order: 1,
       },
       locale: null,
       channel: 'ecommerce',
       data: [],
       editable: true,
+    },
+    {
+      attribute: {
+        code: 'video_presentation',
+        labels: {
+          en_US: 'Video Presentation',
+        },
+        group: 'technical',
+        isReadOnly: false,
+        referenceDataName: 'video_presentation',
+        sort_order: 0,
+      },
+      locale: null,
+      channel: 'ecommerce',
+      data: [],
+      editable: false,
     },
   ];
 
@@ -330,6 +431,7 @@ test('It should generate a value collection from the product with all values if 
   const categoriesEditPermission = ['scanners'];
 
   fetchAssetAttributes.mockImplementation(attributeFetcher => () => getMockAssetAttributes(isReadOnly));
+  fetchAssetAttributeGroups.mockImplementation(attributeGroupFetcher => () => getMockAssetAttributeGroups());
   fetchPermissions.mockImplementation(permissionFetcher => () =>
     getMockPermissions(attributeGroupPermission, localePermission, categoriesEditPermission)
   );
@@ -346,6 +448,7 @@ test('It should generate a value collection from the product with all values if 
         group: 'marketing',
         isReadOnly: false,
         referenceDataName: 'packshot',
+        sort_order: 0,
       },
       locale: 'en_US',
       channel: 'ecommerce',
@@ -361,6 +464,23 @@ test('It should generate a value collection from the product with all values if 
         group: 'marketing',
         isReadOnly: false,
         referenceDataName: 'notices',
+        sort_order: 1,
+      },
+      locale: null,
+      channel: 'ecommerce',
+      data: [],
+      editable: true,
+    },
+    {
+      attribute: {
+        code: 'video_presentation',
+        labels: {
+          en_US: 'Video Presentation',
+        },
+        group: 'technical',
+        isReadOnly: false,
+        referenceDataName: 'video_presentation',
+        sort_order: 0,
       },
       locale: null,
       channel: 'ecommerce',
@@ -390,6 +510,7 @@ test('It should generate a value collection from the product with a non editable
   const categoriesEditPermission = [];
 
   fetchAssetAttributes.mockImplementation(attributeFetcher => () => getMockAssetAttributes(isReadOnly));
+  fetchAssetAttributeGroups.mockImplementation(attributeGroupFetcher => () => getMockAssetAttributeGroups());
   fetchPermissions.mockImplementation(permissionFetcher => () =>
     getMockPermissions(attributeGroupPermission, localePermission, categoriesEditPermission)
   );
@@ -404,6 +525,7 @@ test('It should generate a value collection from the product with a non editable
         group: 'marketing',
         isReadOnly: false,
         referenceDataName: 'packshot',
+        sort_order: 0,
       },
       locale: 'en_US',
       channel: 'ecommerce',
@@ -419,6 +541,23 @@ test('It should generate a value collection from the product with a non editable
         group: 'marketing',
         isReadOnly: false,
         referenceDataName: 'notices',
+        sort_order: 1,
+      },
+      locale: null,
+      channel: 'ecommerce',
+      data: [],
+      editable: false, // so the values aren't editable
+    },
+    {
+      attribute: {
+        code: 'video_presentation',
+        labels: {
+          en_US: 'Video Presentation',
+        },
+        group: 'technical',
+        isReadOnly: false,
+        referenceDataName: 'video_presentation',
+        sort_order: 0,
       },
       locale: null,
       channel: 'ecommerce',
@@ -448,6 +587,7 @@ test('It should generate a value collection from the product with editable categ
   const categoriesEditPermission = [];
 
   fetchAssetAttributes.mockImplementation(attributeFetcher => () => getMockAssetAttributes(isReadOnly));
+  fetchAssetAttributeGroups.mockImplementation(attributeGroupFetcher => () => getMockAssetAttributeGroups());
   fetchPermissions.mockImplementation(permissionFetcher => () =>
     getMockPermissions(attributeGroupPermission, localePermission, categoriesEditPermission)
   );
@@ -465,6 +605,7 @@ test('It should generate a value collection from the product with editable categ
         group: 'marketing',
         isReadOnly: false,
         referenceDataName: 'packshot',
+        sort_order: 0,
       },
       locale: 'en_US',
       channel: 'ecommerce',
@@ -480,11 +621,135 @@ test('It should generate a value collection from the product with editable categ
         group: 'marketing',
         isReadOnly: false,
         referenceDataName: 'notices',
+        sort_order: 1,
       },
       locale: null,
       channel: 'ecommerce',
       data: [],
       editable: true,
+    },
+    {
+      attribute: {
+        code: 'video_presentation',
+        labels: {
+          en_US: 'Video Presentation',
+        },
+        group: 'technical',
+        isReadOnly: false,
+        referenceDataName: 'video_presentation',
+        sort_order: 0,
+      },
+      locale: null,
+      channel: 'ecommerce',
+      data: [],
+      editable: false,
+    },
+  ];
+
+  const valueCollection = await generate(product);
+  expect(valueCollection).toEqual(expectedValueCollection);
+});
+
+test('It should consistently order a value collection even when the order is the same', async () => {
+  const attributeGroupPermission = {
+    code: 'marketing',
+    view: true,
+    edit: true,
+  };
+  const localePermission = {
+    code: 'en_US',
+    view: true,
+    edit: true,
+  };
+  const isReadOnly = false;
+  const attributesForThisLevel = ['video_presentation', 'packshot', 'notices'];
+  const categoriesEditPermission = [];
+
+  fetchAssetAttributes.mockImplementation(attributeFetcher => () => [
+    {
+      code: 'video_presentation',
+      labels: {
+        en_US: 'video_presentation',
+      },
+      group: 'marketing',
+      isReadOnly,
+      referenceDataName: 'video_presentation',
+      sort_order: 0,
+    },
+    {
+      code: 'packshot',
+      labels: {
+        en_US: 'packshot',
+      },
+      group: 'marketing',
+      isReadOnly,
+      referenceDataName: 'packshot',
+      sort_order: 0,
+    },
+    {
+      code: 'notices',
+      labels: {
+        en_US: 'notices',
+      },
+      group: 'marketing',
+      isReadOnly,
+      referenceDataName: 'notices',
+      sort_order: 0,
+    },
+  ]);
+  fetchAssetAttributeGroups.mockImplementation(attributeGroupFetcher => () => getMockAssetAttributeGroups());
+  fetchPermissions.mockImplementation(permissionFetcher => () =>
+    getMockPermissions(attributeGroupPermission, localePermission, categoriesEditPermission)
+  );
+  const product = getMockProduct(attributesForThisLevel);
+  const expectedValueCollection = [
+    {
+      attribute: {
+        code: 'notices',
+        labels: {
+          en_US: 'notices',
+        },
+        group: 'marketing',
+        isReadOnly: false,
+        referenceDataName: 'notices',
+        sort_order: 0,
+      },
+      locale: null,
+      channel: 'ecommerce',
+      data: [],
+      editable: false,
+    },
+    {
+      attribute: {
+        code: 'packshot',
+        labels: {
+          en_US: 'packshot',
+        },
+        group: 'marketing',
+        isReadOnly: false,
+        referenceDataName: 'packshot',
+        sort_order: 0,
+      },
+      locale: 'en_US',
+      channel: 'ecommerce',
+      data: ['iphone'],
+      editable: false,
+    },
+    {
+      attribute: {
+        code: 'video_presentation',
+        labels: {
+          en_US: 'video_presentation',
+        },
+        group: 'marketing',
+        isReadOnly: false,
+        referenceDataName: 'video_presentation',
+        sort_order: 0,
+      },
+      locale: null,
+      channel: 'ecommerce',
+      data: [],
+      editable: false,
     },
   ];
 
@@ -502,6 +767,7 @@ const getMockAssetAttributes = (isReadOnly: boolean) => {
       group: 'marketing',
       isReadOnly,
       referenceDataName: 'packshot',
+      sort_order: 0,
     },
     {
       code: 'notices',
@@ -511,8 +777,32 @@ const getMockAssetAttributes = (isReadOnly: boolean) => {
       group: 'marketing',
       isReadOnly,
       referenceDataName: 'notices',
+      sort_order: 1,
+    },
+    {
+      code: 'video_presentation',
+      labels: {
+        en_US: 'Video Presentation',
+      },
+      group: 'technical',
+      isReadOnly,
+      referenceDataName: 'video_presentation',
+      sort_order: 0,
     },
   ];
+};
+
+const getMockAssetAttributeGroups = () => {
+  return {
+    marketing: {
+      code: 'marketing',
+      sort_order: 0,
+    },
+    technical: {
+      code: 'technical',
+      sort_order: 1,
+    },
+  };
 };
 
 const getMockPermissions = (
@@ -556,6 +846,13 @@ const getMockProduct = (attributesForThisLevel: AttributeCode[]) => {
         },
       ],
       notices: [
+        {
+          data: [],
+          scope: 'ecommerce',
+          locale: null,
+        },
+      ],
+      video_presentation: [
         {
           data: [],
           scope: 'ecommerce',

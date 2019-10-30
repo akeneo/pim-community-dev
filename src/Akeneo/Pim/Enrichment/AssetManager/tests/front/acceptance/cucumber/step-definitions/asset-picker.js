@@ -4,7 +4,6 @@ module.exports = async function(cucumber) {
     decorators: {createElementDecorator},
   } = require('../test-helpers.js');
 
-  const {answerAssetAttributes} = require('../helpers/fetchers');
   const config = {
     'Asset picker': {
       selector: 'div[data-container="asset-picker"]',
@@ -18,7 +17,6 @@ module.exports = async function(cucumber) {
   const getElement = createElementDecorator(config);
 
   Given('the user opens the asset picker', async function() {
-    answerAssetAttributes(this.page);
     const assetCollection = await await getElement(this.page, 'Designer asset collection');
     await assetCollection.openPicker();
   });

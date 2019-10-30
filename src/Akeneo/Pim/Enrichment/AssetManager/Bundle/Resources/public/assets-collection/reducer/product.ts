@@ -31,7 +31,7 @@ export const productReducer = (
     case 'VALUE_CHANGED':
       state = {
         ...state,
-        values: [...state.values.filter((value: Value) => !sameValue(value, action.value)), action.value],
+        values: [...state.values.map((value: Value) => (sameValue(value, action.value) ? action.value : value))],
       };
       break;
     default:

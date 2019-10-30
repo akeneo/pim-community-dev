@@ -9,10 +9,12 @@ module.exports = async function(cucumber) {
   const {
     answerChannelList,
     answerRuleRelationList,
+    answerAttributeGroup,
     answerProductAttributeList,
     answerPermissionList,
     answerAssetFamilyDetails,
     answerAssetList,
+    answerAssetAttributes
   } = require('../helpers/fetchers');
 
   const {grantAllAcls} = require('../helpers/acl.js');
@@ -52,11 +54,13 @@ module.exports = async function(cucumber) {
   Given('an asset collection with three assets', async function() {
     answerChannelList(this.page);
     answerRuleRelationList(this.page);
+    answerAttributeGroup(this.page);
     answerProductAttributeList(this.page);
     answerPermissionList(this.page);
     answerAssetFamilyDetails(this.page);
     answerAssetList(this.page);
     grantAllAcls(this.page);
+    answerAssetAttributes(this.page);
 
     product.values.designer = [
       {
@@ -70,11 +74,13 @@ module.exports = async function(cucumber) {
   Given('an asset collection with two assets', async function() {
     answerChannelList(this.page);
     answerRuleRelationList(this.page);
+    answerAttributeGroup(this.page);
     answerProductAttributeList(this.page);
     answerPermissionList(this.page);
     answerAssetFamilyDetails(this.page);
     answerAssetList(this.page);
     grantAllAcls(this.page);
+    answerAssetAttributes(this.page);
 
     product.values.designer = [
       {
