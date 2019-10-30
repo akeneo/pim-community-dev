@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.51 (2019-10-30)
+
 ## Bug fixes
 
 - PIM-8924: Fix permission of sorting attribute groups
