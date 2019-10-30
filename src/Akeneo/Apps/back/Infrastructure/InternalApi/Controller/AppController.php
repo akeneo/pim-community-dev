@@ -7,6 +7,8 @@ namespace Akeneo\Apps\Infrastructure\InternalApi\Controller;
 use Akeneo\Apps\Application\Command\CreateAppCommand;
 use Akeneo\Apps\Application\Command\CreateAppHandler;
 use Akeneo\Apps\Application\Query\FetchAppsHandler;
+use Akeneo\Apps\Application\Query\FindAnAppHandler;
+use Akeneo\Apps\Application\Query\FindAnAppQuery;
 use Akeneo\Apps\Domain\Exception\ConstraintViolationListException;
 use Akeneo\Apps\Domain\Model\Read\App;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
@@ -29,20 +31,25 @@ class AppController
     /** @var FetchAppsHandler */
     private $fetchAppsHandler;
 
+    /** @var FindAnAppHandler */
+    private $findAnAppHandler;
+
     /** @var SecurityFacade */
     private $securityFacade;
 
     public function __construct(
         CreateAppHandler $createAppHandler,
         FetchAppsHandler $fetchAppsHandler,
+        FindAnAppHandler $findAnAppHandler,
         SecurityFacade $securityFacade
     ) {
         $this->createAppHandler = $createAppHandler;
         $this->fetchAppsHandler = $fetchAppsHandler;
+        $this->findAnAppHandler = $findAnAppHandler;
         $this->securityFacade = $securityFacade;
     }
 
-    public function list()
+    public function list(): JsonResponse
     {
         if (true !== $this->securityFacade->isGranted('akeneo_apps_manage_settings')) {
             throw new AccessDeniedException();
@@ -57,7 +64,7 @@ class AppController
         );
     }
 
-    public function create(Request $request)
+    public function create(Request $request): JsonResponse
     {
         if (true !== $this->securityFacade->isGranted('akeneo_apps_manage_settings')) {
             throw new AccessDeniedException();
@@ -82,6 +89,22 @@ class AppController
         }
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
+    }
+
+    public function get(Request $request): JsonResponse
+    {
+        if (true !== $this->securityFacade->isGranted('akeneo_apps_manage_settings')) {
+            throw new AccessDeniedException();
+        }
+
+        $query = new FindAnAppQuery($request->get('code', ''));
+        $app = $this->findAnAppHandler->handle($query);
+
+        if (null === $app) {
+            return new JsonResponse(null, Response::HTTP_BAD_REQUEST);
+        }
+
+        return new JsonResponse($app->normalize());
     }
 
     private function buildViolationResponse(ConstraintViolationListInterface $constraintViolationList): array
