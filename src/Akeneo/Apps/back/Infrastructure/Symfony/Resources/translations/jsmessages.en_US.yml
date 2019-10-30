@@ -29,6 +29,7 @@ akeneo.apps:
             too_long: 'Application code cannot exceeds 100 characters.'
             must_be_unique: 'Application code must be unique.'
         label:
+            required: 'Application label required.'
             too_long: 'Application label cannot exceeds 100 characters.'
         flow_type:
             invalid: 'Application flow type can be data_source, data_destination or others.'
