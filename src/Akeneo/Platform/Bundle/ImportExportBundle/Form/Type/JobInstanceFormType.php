@@ -2,7 +2,6 @@
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Form\Type;
 
-use Akeneo\Platform\Bundle\ImportExportBundle\Form\Subscriber\JobInstanceSubscriber;
 use Akeneo\Platform\Bundle\UIBundle\Form\Subscriber\DisableFieldSubscriber;
 use Akeneo\Tool\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
@@ -71,8 +70,6 @@ class JobInstanceFormType extends AbstractType
             ->addLabelField($builder)
             ->addConnectorField($builder)
             ->addJobNameField($builder);
-
-        $builder->addEventSubscriber(new JobInstanceSubscriber());
 
         foreach ($this->subscribers as $subscriber) {
             $builder->addEventSubscriber($subscriber);
