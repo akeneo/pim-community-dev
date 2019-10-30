@@ -42,7 +42,7 @@ spec:
         - name: php
           image: {{ template "pim.imageNameAndTag" . }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
-          command: ['sh', '-c', 'cd /srv/pim && php bin/console akeneo:batch:job-queue-consumer-daemon']
+          command: ['sh', '-c', 'cd /srv/pim && su www-data -s /bin/bash -c "php bin/console akeneo:batch:job-queue-consumer-daemon"']
           resources:
 {{ toYaml .Values.pim.resources | indent 12 }}
           volumeMounts:

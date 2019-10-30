@@ -75,12 +75,12 @@ image:
   pim:
     repository: eu.gcr.io/akeneo-ci/pim-enterprise-dev
     # image.pim.tag is added by the Jenkinsfile when running the CI, manually use "--set image.pim.tag x.y.z-AB"
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
     tag: master
   httpd:
     repository: httpd
     tag: 2.4.33
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
 
 pim:
   hook:
@@ -185,7 +185,7 @@ mysql:
     mysql:
       repository: mysql
       tag: "8.0.16"
-      pullPolicy: IfNotPresent
+      pullPolicy: Always
   common:
     class: ssd-retain
   mysql:

@@ -31,8 +31,6 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
     apt-get clean && \
     apt-get --yes autoremove --purge && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
-    echo 'deb https://packages.sury.org/php/ buster main' > /etc/apt/sources.list.d/sury.list && \
-    curl https://packages.sury.org/php/apt.gpg -O && apt-key add apt.gpg && rm apt.gpg && \
     apt-get update && \
     apt-get --yes install imagemagick \
         php7.3-fpm \
@@ -132,7 +130,7 @@ COPY composer.json package.json yarn.lock .env tsconfig.json .
 ENV APP_ENV=prod
 RUN mkdir var && \
     php -d 'memory_limit=3G' /usr/local/bin/composer install --no-scripts --no-interaction --no-ansi --no-dev --prefer-dist && \
-    bin/console pim:installer:assets --symlink --clean && \
+    bin/console pim:installer:assets --clean && \
     yarnpkg install --frozen-lockfile && \
     yarnpkg run less && \
     yarnpkg run webpack
@@ -147,14 +145,14 @@ ENV APP_ENV=prod \
 
 WORKDIR /srv/pim/
 # Copy the application with its dependencies
-COPY --from=builder  /srv/pim/bin bin
-COPY --from=builder  /srv/pim/config config
-COPY --from=builder  /srv/pim/public public
-COPY --from=builder  /srv/pim/src src
-COPY --from=builder  /srv/pim/upgrades upgrades
-COPY --from=builder  /srv/pim/var/cache/prod var/cache/prod
-COPY --from=builder  /srv/pim/vendor vendor
-COPY --from=builder  /srv/pim/.env .
+COPY --from=builder --chown=www-data:www-data /srv/pim/bin bin
+COPY --from=builder --chown=www-data:www-data /srv/pim/config config
+COPY --from=builder --chown=www-data:www-data /srv/pim/public public
+COPY --from=builder --chown=www-data:www-data /srv/pim/src src
+COPY --from=builder --chown=www-data:www-data /srv/pim/upgrades upgrades
+COPY --from=builder --chown=www-data:www-data /srv/pim/var/cache/prod var/cache/prod
+COPY --from=builder --chown=www-data:www-data /srv/pim/vendor vendor
+COPY --from=builder --chown=www-data:www-data /srv/pim/.env .
 
 # Prepare the application
 RUN rm -rf public/test_dist && \
