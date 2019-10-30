@@ -145,19 +145,19 @@ ENV APP_ENV=prod \
 
 WORKDIR /srv/pim/
 # Copy the application with its dependencies
-COPY --from=builder --chown=1000:1000 /srv/pim/bin bin
-COPY --from=builder --chown=1000:1000 /srv/pim/config config
-COPY --from=builder --chown=1000:1000 /srv/pim/public public
-COPY --from=builder --chown=1000:1000 /srv/pim/src src
-COPY --from=builder --chown=1000:1000 /srv/pim/upgrades upgrades
-COPY --from=builder --chown=1000:1000 /srv/pim/var var
-COPY --from=builder --chown=1000:1000 /srv/pim/vendor vendor
-COPY --from=builder --chown=1000:1000 /srv/pim/.env .
+COPY --from=builder  /srv/pim/bin bin
+COPY --from=builder  /srv/pim/config config
+COPY --from=builder  /srv/pim/public public
+COPY --from=builder  /srv/pim/src src
+COPY --from=builder  /srv/pim/upgrades upgrades
+COPY --from=builder  /srv/pim/var/cache/prod var/cache/prod
+COPY --from=builder  /srv/pim/vendor vendor
+COPY --from=builder  /srv/pim/.env .
 
 # Prepare the application
 RUN rm -rf public/test_dist && \
-    mkdir -p public/media var/logs/batch && chown -R www-data:www-data public/media var && \
-    rm -rf var/cache && su www-data -s /bin/bash bash -c "bin/console cache:warmup"
+    mkdir -p public/media && chown -R www-data:www-data public/media var && \
+    rm -rf var/cache && su www-data -s /bin/bash -c "bin/console cache:warmup"
 
 # Keep root as default user
 USER root
