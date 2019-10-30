@@ -165,7 +165,7 @@ class CompletenessForScopableAndLocalisableAttributeIntegration extends Abstract
                 [
                     'locale' => null,
                     'scope'  => null,
-                    'data'   => 'converse'
+                    'data'   => 'Converse'
                 ],
             ],
             'weather_conditions' => [

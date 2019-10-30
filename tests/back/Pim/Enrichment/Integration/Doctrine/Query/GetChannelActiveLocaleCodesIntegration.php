@@ -10,11 +10,11 @@ class GetChannelActiveLocaleCodesIntegration extends TestCase
 {
     public function testItGetsAllActiveLocalesForAChannel()
     {
-        $localeCodes = $this->getFromTestContainer('pim_catalog.query.get_channel_active_locale_codes')->execute('tablet');
+        $localeCodes = $this->get('pim_catalog.query.get_channel_active_locale_codes')->execute('tablet');
         sort($localeCodes);
         $this->assertSame(['de_DE', 'en_US', 'fr_FR'], $localeCodes);
 
-        $localeCodes = $this->getFromTestContainer('pim_catalog.query.get_channel_active_locale_codes')->execute('ecommerce_china');
+        $localeCodes = $this->get('pim_catalog.query.get_channel_active_locale_codes')->execute('ecommerce_china');
         sort($localeCodes);
         $this->assertSame(['en_US', 'zh_CN'], $localeCodes);
     }

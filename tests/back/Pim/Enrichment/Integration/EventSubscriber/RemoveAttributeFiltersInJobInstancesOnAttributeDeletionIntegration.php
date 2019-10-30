@@ -17,7 +17,7 @@ class RemoveAttributeFiltersInJobInstancesOnAttributeDeletionIntegration extends
         $jobInstance2 = $this->createJobInstanceWithAttributeFilter('job2', ['a_number', 'a_date', 'a_text']);
 
         $this
-            ->getFromTestContainer('pim_enrich.event_listener.remove_attribute_filter_in_job_instances')
+            ->get('pim_enrich.event_listener.remove_attribute_filter_in_job_instances')
             ->removeDeletedAttributeFromJobInstancesFilters(new GenericEvent((new Attribute())->setCode('a_text')));
 
         $rawParameters = $this->getJobParameters($jobInstance);
@@ -29,7 +29,7 @@ class RemoveAttributeFiltersInJobInstancesOnAttributeDeletionIntegration extends
 
     private function createJobInstanceWithAttributeFilter(string $jobCode, array $attributes)
     {
-        $entityManager = $this->getFromTestContainer('doctrine.orm.default_entity_manager');
+        $entityManager = $this->get('doctrine.orm.default_entity_manager');
         $jobInstance = new JobInstance('connector', JobInstance::TYPE_EXPORT, 'job_name');
         $jobInstance->setCode($jobCode);
         $jobInstance->setLabel($jobCode);
@@ -53,7 +53,7 @@ SELECT raw_parameters
 FROM akeneo_batch_job_instance
 WHERE id = :jobId
 SQL;
-        $stmt = $this->getFromTestContainer('doctrine.orm.entity_manager')->getConnection()->prepare($sql);
+        $stmt = $this->get('doctrine.orm.entity_manager')->getConnection()->prepare($sql);
         $stmt->bindValue('jobId', $jobInstance->getId());
         $stmt->execute();
         $rawParameters = unserialize($stmt->fetchColumn(0));
