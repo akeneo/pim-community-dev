@@ -23,7 +23,9 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
     apt-get --no-install-recommends --no-install-suggests --yes --quiet install \
         apt-transport-https \
         ca-certificates \
-        curl libcurl4-openssl-dev \
+        curl \
+        libcurl4-openssl-dev \
+        libssl-dev \
         gpg \
         gpg-agent && \
     apt-get clean && \
@@ -129,7 +131,7 @@ COPY composer.json package.json yarn.lock .env tsconfig.json .
 
 ENV APP_ENV=prod
 RUN mkdir var && \
-    php -d 'memory_limit=3G' /usr/local/bin/composer install --optimize-autoloader --no-scripts --no-interaction --no-ansi --no-dev --prefer-dist && \
+    php -d 'memory_limit=3G' /usr/local/bin/composer install --no-scripts --no-interaction --no-ansi --no-dev --prefer-dist && \
     bin/console pim:installer:assets --symlink --clean && \
     yarnpkg install --frozen-lockfile && \
     yarnpkg run less && \
