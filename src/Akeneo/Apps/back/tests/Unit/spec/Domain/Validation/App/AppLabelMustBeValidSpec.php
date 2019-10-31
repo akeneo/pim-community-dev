@@ -32,4 +32,14 @@ class AppLabelMustBeValidSpec extends ObjectBehavior
 
         $this->validate(str_repeat('A', 103), $context);
     }
+
+    function it_adds_a_violation_when_the_label_is_empty(
+        ExecutionContextInterface $context,
+        ConstraintViolationBuilderInterface $builder
+    ) {
+        $context->buildViolation('akeneo_apps.app.constraint.label.required')->willReturn($builder);
+        $builder->addViolation()->shouldBeCalled();
+
+        $this->validate('', $context);
+    }
 }

@@ -34,9 +34,11 @@ class AppLabelSpec extends ObjectBehavior
         $this->__toString()->shouldReturn('Magento Connector');
     }
 
-    function it_can_contains_an_empty_string()
+    function it_cannot_contains_an_empty_string()
     {
         $this->beConstructedWith('');
-        $this->__toString()->shouldReturn('');
+        $this->shouldThrow(
+            new \InvalidArgumentException('akeneo_apps.app.constraint.label.required')
+        )->duringInstantiation();
     }
 }

@@ -23,7 +23,7 @@ class AppCodeMustBeValidSpec extends ObjectBehavior
         $this->validate('magento', $context);
     }
 
-    function it_adds_a_violation_when_the_code_is_invalid(
+    function it_adds_a_violation_when_the_code_is_empty(
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $builder
     ) {
