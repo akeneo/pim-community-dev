@@ -184,6 +184,7 @@ const useFetchResult = (
       FIRST_PAGE_SIZE
     );
     totalRequestCount++;
+
     dataProvider.assetFetcher.search(assetFamilyIdentifier, query).then((searchResult: any) => {
       const currentRequestCount = totalRequestCount;
       setResultCollection(searchResult.items);

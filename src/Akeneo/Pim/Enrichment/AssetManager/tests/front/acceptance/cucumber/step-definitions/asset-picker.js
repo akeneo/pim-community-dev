@@ -30,7 +30,7 @@ module.exports = async function(cucumber) {
     filterCollection.filter('colors', 'red');
   });
 
-  When('the user picks one assets', async function() {
+  When('the user picks one asset', async function() {
     const assetPicker = await getElement(this.page, 'Asset picker');
     const mosaic = await assetPicker.getMosaic();
     await mosaic.select('dyson');

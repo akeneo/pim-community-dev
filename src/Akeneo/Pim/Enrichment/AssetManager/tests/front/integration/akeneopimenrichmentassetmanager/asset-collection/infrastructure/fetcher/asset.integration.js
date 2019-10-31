@@ -79,7 +79,8 @@ it('It fetches the asset collection', async () => {
       image: null,
       labels: {
         en_US: 'Packshot'
-      }
+      },
+      attributes: []
     },
     asset_family_identifier: '',
     code: 'iphone',

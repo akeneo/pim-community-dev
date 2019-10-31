@@ -85,8 +85,16 @@ class MediaLinkImageGenerator implements PreviewGeneratorInterface
                 return $this->defaultImageProvider->getImageUrl(self::DEFAULT_IMAGE, $previewType);
             }
 
+            try {
+                $file = $this->filterManager->applyFilter($binary, $previewType);
+            } catch (\Exception $e) {
+                // Triggered When a general exception arrised
+                // Should change depending on the preview type
+                return $this->defaultImageProvider->getImageUrl(self::DEFAULT_IMAGE, $previewType);
+            }
+
             $this->cacheManager->store(
-                $this->filterManager->applyFilter($binary, $previewType),
+                $file,
                 $url,
                 $previewType
             );

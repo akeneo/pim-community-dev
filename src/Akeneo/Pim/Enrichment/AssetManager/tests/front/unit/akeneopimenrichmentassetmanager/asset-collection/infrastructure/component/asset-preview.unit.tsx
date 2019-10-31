@@ -7,6 +7,14 @@ import {AssetPreview} from 'akeneopimenrichmentassetmanager/assets-collection/in
 import {getAssetByCode} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 
 const context = {locale: 'en_US', channel: 'ecommerce'};
+const assetFamily = {
+  attributes: [
+    {
+      identifier: 'image_packshot_99e561de-5ec8-47ba-833c-42e150fe8b7f',
+      type: 'media_link',
+    },
+  ],
+};
 const assetCollection = [
   {
     asset_family_identifier: 'packshot',
@@ -16,7 +24,7 @@ const assetCollection = [
         attribute: 'image_packshot_99e561de-5ec8-47ba-833c-42e150fe8b7f',
         locale: null,
         channel: null,
-        data: {filePath: '', originalFilename: ''},
+        data: {filePath: 'nice_file_path', originalFilename: ''},
       },
     ],
     identifier: 'packshot_Philips22PDL4906H_pa_e14f3b03-1929-4109-9b07-68e4f64bba74',
@@ -25,6 +33,7 @@ const assetCollection = [
       required: 3,
       complete: 2,
     },
+    assetFamily,
   },
   {
     code: 'iphone8_pack',
@@ -33,7 +42,7 @@ const assetCollection = [
         attribute: 'image_packshot_99e561de-5ec8-47ba-833c-42e150fe8b7f',
         locale: null,
         channel: null,
-        data: {filePath: '', originalFilename: ''},
+        data: {filePath: 'nice_file_path', originalFilename: ''},
       },
     ],
     asset_family_identifier: 'packshot',
@@ -43,6 +52,7 @@ const assetCollection = [
       complete: 2,
       required: 3,
     },
+    assetFamily,
   },
   {
     identifier: 'packshot_iphone7_pack_9c35ba44-e4f9-4a48-8250-4c554e6704a4',
@@ -53,7 +63,7 @@ const assetCollection = [
         attribute: 'image_packshot_99e561de-5ec8-47ba-833c-42e150fe8b7f',
         locale: null,
         channel: null,
-        data: {filePath: '', originalFilename: ''},
+        data: {filePath: 'nice_file_path', originalFilename: ''},
       },
     ],
     asset_family_identifier: 'packshot',
@@ -61,6 +71,7 @@ const assetCollection = [
       required: 3,
       complete: 2,
     },
+    assetFamily,
   },
 ];
 const attribute = {

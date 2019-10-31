@@ -71,6 +71,8 @@ export const getMediaLinkUrl = (mediaLink: MediaLinkData, attribute: MediaLinkAt
 export const getAssetPreview = (asset: any, type: MediaPreviewTypes): string => {
   const image = asset.image[0]; //This should be changed when we will display localisable/scopable images
 
+  if (undefined === image || '' === image.attribute) return '';
+
   return routing.generate('akeneo_asset_manager_image_preview', {
     type,
     attributeIdentifier: undefined !== image ? image.attribute : '',

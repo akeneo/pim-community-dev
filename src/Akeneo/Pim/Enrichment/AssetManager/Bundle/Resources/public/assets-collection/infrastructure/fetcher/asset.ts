@@ -14,6 +14,7 @@ import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import {denormalizeAssetCode} from 'akeneoassetmanager/domain/model/asset/code';
 import {Query, SearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
+import {NormalizedAttribute, Attribute} from 'web/bundles/akeneoassetmanager/domain/model/attribute/attribute';
 
 export const fetchAssetCollection = async (
   assetFamilyIdentifier: AssetFamilyIdentifier,
@@ -53,7 +54,10 @@ const denormalizeAssetCollection = (assets: any, assetFamilyResult: any): Asset[
     throw Error('not a valid assetFamily');
   }
 
-  const assetFamily = denormalizeAssetFamily(assetFamilyResult.assetFamily.normalize());
+  const assetFamily = denormalizeAssetFamily(
+    assetFamilyResult.assetFamily.normalize(),
+    assetFamilyResult.attributes.map((attribute: Attribute) => attribute.normalize())
+  );
 
   return assets.map(
     (asset: NormalizedItemAsset): Asset => {
@@ -105,7 +109,10 @@ const isCompleteness = (completeness: any): completeness is Completeness => {
   return true;
 };
 
-const denormalizeAssetFamily = (normalizedAssetFamily: NormalizedAssetFamily): AssetFamily => {
+const denormalizeAssetFamily = (
+  normalizedAssetFamily: NormalizedAssetFamily,
+  attributes: {attributes: NormalizedAttribute & any}[]
+): AssetFamily => {
   return {
     identifier: normalizedAssetFamily.identifier,
     code: normalizedAssetFamily.code,
@@ -113,5 +120,6 @@ const denormalizeAssetFamily = (normalizedAssetFamily: NormalizedAssetFamily): A
     image: normalizedAssetFamily.image,
     attributeAsLabel: normalizedAssetFamily.attribute_as_label,
     attributeAsImage: normalizedAssetFamily.attribute_as_image,
+    attributes: attributes,
   };
 };

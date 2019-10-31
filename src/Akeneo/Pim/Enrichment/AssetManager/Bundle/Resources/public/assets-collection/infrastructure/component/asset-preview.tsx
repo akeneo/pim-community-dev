@@ -86,14 +86,13 @@ export const AssetPreview = ({
     document.addEventListener('keydown', handleArrowNavigation);
     return () => document.removeEventListener('keydown', handleArrowNavigation);
   }, []);
-
   return (
     <Modal data-role="asset-preview-modal">
       <Container>
         <CloseButton title={__('pim_asset_manager.close')} onClick={onClose} />
         {/* TODO change arrow size */}
         <ArrowButton title={__('pim_asset_manager.asset_preview.previous')} onClick={setPreviousAsset}>
-          <Left color={akeneoTheme.color.grey100} />
+          <Left size={44} color={akeneoTheme.color.grey100} />
         </ArrowButton>
         <AssetContainer>
           <SubTitle>
@@ -112,7 +111,7 @@ export const AssetPreview = ({
           />
         </AssetContainer>
         <ArrowButton title={__('pim_asset_manager.asset_preview.next')} onClick={setNextAsset}>
-          <Right color={akeneoTheme.color.grey100} />
+          <Right size={44} color={akeneoTheme.color.grey100} />
         </ArrowButton>
       </Container>
     </Modal>
