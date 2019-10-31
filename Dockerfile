@@ -75,6 +75,7 @@ RUN apt-get update && \
     phpdismod xdebug && \
     mkdir /etc/php/7.3/enable-xdebug && \
     ln -s /etc/php/7.3/mods-available/xdebug.ini /etc/php/7.3/enable-xdebug/xdebug.ini && \
+    sed -i "s#listen = /run/php/php7.3-fpm.sock#listen = 9000#g" /etc/php/7.3/fpm/pool.d/www.conf && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -89,8 +90,7 @@ RUN version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") && \
     mkdir -p /tmp/blackfire && \
     curl -A "Docker" -L https://blackfire.io/api/v1/releases/client/linux_static/amd64 | tar zxp -C /tmp/blackfire && \
     mv /tmp/blackfire/blackfire /usr/bin/blackfire && \
-    rm -Rf /tmp/blackfire && \
-    sed -i "s#listen = /run/php/php7.3-fpm.sock#listen = 9000#g" /etc/php/7.3/fpm/pool.d/www.conf 
+    rm -Rf /tmp/blackfire
 
 COPY docker/build/xdebug.ini /etc/php/7.3/cli/conf.d/99-akeneo-xdebug.ini
 COPY docker/build/xdebug.ini /etc/php/7.3/fpm/conf.d/99-akeneo-xdebug.ini
