@@ -69,6 +69,8 @@ define(
                 notificationView.setElement(this.$('.notification')).render();
                 notificationView.refresh();
 
+                this.delegateEvents();
+
                 return BaseForm.prototype.render.apply(this, arguments);
             },
 

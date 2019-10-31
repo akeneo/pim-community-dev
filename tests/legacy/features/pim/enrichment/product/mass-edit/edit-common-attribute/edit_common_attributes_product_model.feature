@@ -25,7 +25,7 @@ Feature: Edit common attributes of many products and product models at once
       | clothing_size       | clothing | Clothing by color/size     | color,size     |                | color,size,composition |                      |
     And the following root product models:
       | code      | family_variant      | brand  |
-      | model-col | clothing_color_size | abibas |
+      | model-col | clothing_color_size | Abibas |
       | model-nin | clothing_size       |        |
     And the following sub product models:
       | code            | parent    | family_variant      | color | composition             |
@@ -34,7 +34,7 @@ Feature: Edit common attributes of many products and product models at once
       | sku         | family   | parent          | color | size | brand  | composition | weight   |
       | col-white-m | clothing | model-col-white |       | m    |        |             | 478 GRAM |
       | nin-s       | clothing | model-nin       | black | s    |        | 100% wool   |          |
-      | tool-tee    | clothing |                 | black | m    | ribouk |             |          |
+      | tool-tee    | clothing |                 | black | m    | Ribouk |             |          |
     And I am logged in as "Julia"
 
   @critical

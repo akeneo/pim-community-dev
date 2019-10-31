@@ -16,7 +16,7 @@ Feature: Update the product associations
 
   @critical
   Scenario: Successfully add an association
-    Given I press the "Add associations" button and wait for modal
+    Given I add associations
     And I search "pat"
     And I check the row "patrick"
     And the item picker basket should contain patrick
@@ -25,7 +25,7 @@ Feature: Update the product associations
     And I should see the text "1 product(s), 0 product model(s) and 0 group(s)"
 
   Scenario: Successfully delete an association
-    Given I press the "Add associations" button and wait for modal
+    Given I add associations
     And I search "pat"
     And I check the row "patrick"
     And the item picker basket should contain patrick
@@ -41,7 +41,7 @@ Feature: Update the product associations
   @critical
   Scenario: Successfully add a product model as association
     Given I should see the text "There are no associated products"
-    And I press the "Add associations" button and wait for modal
+    And I add associations
     And I should see the text "Add Cross sell associations"
     And I should see the text "Belt"
     And I search "juno"
@@ -54,7 +54,7 @@ Feature: Update the product associations
   @ce
   Scenario: Successfully delete a product model as association
     Given I should see the text "There are no associated products"
-    And I press the "Add associations" button and wait for modal
+    And I add associations
     And I should see the text "Add Cross sell associations"
     And I should see the text "Belt"
     And I search "juno"

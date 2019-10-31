@@ -16,7 +16,7 @@ Feature: Associate many products at once
     And I choose the "Associate" operation
     And I move on to the choose step
     And I choose the "Associate" operation
-    Given I press the "Add associations" button and wait for modal
+    Given I add associations
     And I check the row "Scarf"
     And the item picker basket should contain Scarf
     And I check the row "Sunglasses"
@@ -49,7 +49,7 @@ Feature: Associate many products at once
     And I choose the "Associate" operation
     And I move on to the choose step
     And I choose the "Associate" operation
-    Given I press the "Add associations" button and wait for modal
+    Given I add associations
     And I search "juno"
     And I check the row "juno"
     And the item picker basket should contain juno
@@ -78,7 +78,7 @@ Feature: Associate many products at once
     And I choose the "Associate" operation
     And I move on to the choose step
     And I choose the "Associate" operation
-    Given I press the "Add associations" button and wait for modal
+    Given I add associations
     And I check the row "Scarf"
     And the item picker basket should contain Scarf
     And I check the row "Sunglasses"

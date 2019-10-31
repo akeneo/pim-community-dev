@@ -177,7 +177,7 @@ Feature: Import families
     And I launch the import job
     And I wait for the "csv_footwear_family_import" job to finish
     Then I should see the text "Skipped 3"
-    And I should see the text "Property \"attribute_as_image\" only supports \"pim_catalog_image\", \"pim_assets_collection\" attribute type for the family: [wrong_family1]"
+    And I should see the text "Property \"attribute_as_image\" only supports \"pim_catalog_image\", \"pim_assets_collection\", \"pim_catalog_asset_collection\" attribute type for the family: [wrong_family1]"
     And I should see the text "Property \"attribute_as_image\" must not be scopable nor localizable for this family: [wrong_family1]"
     And I should see the text "Property \"attribute_as_image\" must belong to the family: [wrong_family2]"
     And I should see the text "Property \"attribute_as_image\" must not be scopable nor localizable for this family: [wrong_family3]"

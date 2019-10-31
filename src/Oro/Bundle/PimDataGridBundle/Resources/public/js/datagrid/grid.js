@@ -287,6 +287,11 @@ define(
             _listenToCommands: function () {
                 var grid = this;
 
+                mediator.clear('datagrid:setParam:' + grid.name);
+                mediator.clear('datagrid:removeParam:' + grid.name);
+                mediator.clear('datagrid:restoreState:' + grid.name);
+                mediator.clear('datagrid:doRefresh:' + grid.name);
+
                 mediator.on('datagrid:setParam:' + grid.name, function (param, value) {
                     grid.setAdditionalParameter(param, value);
                 });

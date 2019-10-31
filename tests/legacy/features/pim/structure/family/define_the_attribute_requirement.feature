@@ -35,16 +35,3 @@ Feature: Define the attribute requirement
     And I should not see the text "There are unsaved changes."
     And I visit the "Attributes" tab
     Then attribute "description" should not be required in channels mobile and tablet
-
-  @jira https://akeneo.atlassian.net/browse/PIM-7312
-  Scenario: Successfully add an attribute requirement for a newly created channel
-    Given the following channel:
-      | code      | label-en_US | currencies | locales | tree            |
-      | ecommerce | Ecommerce   | EUR,USD    | en_US   | 2014_collection |
-    When I visit the "Attributes" tab
-    Then attribute "name" should be required in channels mobile and tablet
-    But attribute "name" should not be required in channel ecommerce
-    When I switch the attribute "name" requirement in channel "ecommerce"
-    And I save the family
-    Then I should not see the text "There are unsaved changes."
-    And attribute "name" should be required in channel ecommerce

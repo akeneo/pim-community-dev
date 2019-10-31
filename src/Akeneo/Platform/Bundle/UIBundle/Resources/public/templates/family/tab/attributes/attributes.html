@@ -15,8 +15,10 @@
 
         <tbody class="AknGrid-bodyContainer <%- collapsed ? 'AknGrid-bodyContainer--collapsed': '' %>"  data-group="<%- group %>">
             <tr class="AknGrid-bodyRow AknGrid-bodyRow--highlight AknGrid-headerToggle group">
+                <td class="AknGrid-bodyCell AknGrid-bodyCell--tight">
+                    <div class="<%- collapsed ? 'AknGrid-expand' : 'AknGrid-expand AknGrid-expand--expanded' %>"></div>
+                </td>
                 <td class="AknGrid-bodyCell" colspan="<%- colspan %>">
-                    <i class="<%- collapsed ? 'icon-expand-alt' : 'icon-collapse-alt' %>"></i>
                     <%-
                         i18n.getLabel(
                             attributeGroup.labels,
@@ -37,7 +39,7 @@
                         <% isRequired = isAttributeRequirementRequired(attribute, channel) %>
                         <i
                             class="AknAcl-icon
-                                <%- isRequired ? 'AknAcl-icon--granted icon-ok required' : 'icon-circle non-required' %>
+                                <%- isRequired ? 'AknSelectButton AknSelectButton--selected required' : 'AknSelectButton non-required' %>
                                 <%- isAttributeEditable(channel.code, attribute.code, attribute.type) ? '' : 'AknAcl-disabled' %>"
                             data-attribute="<%- attribute.code %>"
                             data-type="<%- attribute.type %>"

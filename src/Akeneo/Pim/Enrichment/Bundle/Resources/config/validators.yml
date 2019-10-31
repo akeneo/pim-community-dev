@@ -100,6 +100,13 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: pim_unique_variant_axes_validator }
 
+    pim_catalog.validator.constraint.attribute_options_exist:
+        class: Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\AttributeOptionsExistValidator
+        arguments:
+            - '@akeneo.pim.structure.query.get_existing_attribute_option_codes_from_option_codes'
+        tags:
+            - { name: validator.constraint_validator, alias: attribute_options_exist_validator }
+
     pim_catalog.validator.constraint.not_empty_variant_axes:
         class: '%pim_catalog.validator.constraint.not_empty_variant_axes.class%'
         arguments:

@@ -1,5 +1,60 @@
 # 3.2.x
 
+## Bug fixes:
+
+- PIM-8925: Fix PDF export when there is no option for a given locale for a select attribute
+
+# 3.2.16 (2019-10-24)
+
+## Bug fixes:
+
+- GITHUB-10955: Remove database prefix in queries
+
+# 3.2.15 (2019-10-24)
+
+## Improvements
+
+- PIM-8909: Remove css.map links
+
+## Bug fixes:
+
+- PIM-8908: Fix asset default image always showing
+
+# 3.2.14 (2019-10-22)
+
+## Features
+
+- AOB-661: allow prefix of ES document `_id`
+
+## Bug fixes:
+
+- PIM-8893: update dompdf because the pdf export fail on some products
+- PIM-7963: Fix datepicker width not adapting to the dropdown
+
+# 3.2.13 (2019-10-18)
+
+## Bug fixes:
+
+- PIM-8773: Fix logout after opening a select2 dropdown
+- PIM-8879: Validate attribute options existence
+
+# 3.2.12 (2019-10-08)
+
+# 3.2.11 (2019-10-07)
+
+## Bug fixes:
+
+- PIM-8838: Force display of label and image in gallery mode even if they are not in the column list
+- PIM-8820: Avoid multiple refresh of the product grid on product delete
+- PIM-8838: Force display of identifier, label and image in gallery mode even if they are not in the column list
+
+# 3.2.10 (2019-10-02)
+
+## Bug fixes:
+
+- PIM-8820: Avoid multiple refresh of the product grid on product delete
+- PIM-8736: Fix error message on channel deletion
+
 # 3.2.9 (2019-09-23)
 
 ## Bug fixes:
