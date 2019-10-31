@@ -205,6 +205,12 @@ jobs:
         - attach_workspace:
             at: ~/
         - run:
+            name: Create yarn cache folder
+            command: mkdir -p  ~/.cache/yarn
+        - run:
+              name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+              command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
+        - run:
               name: Front linter
               command: make lint-front
         - run:

@@ -1,5 +1,5 @@
 var/tests/%:
-	mkdir -p $@
+	$(DOCKER_COMPOSE) run -u www-data --rm php mkdir -p $@
 
 .PHONY: coupling-back
 coupling-back: structure-coupling-back user-management-coupling-back channel-coupling-back enrichment-coupling-back apps-coupling-back
@@ -32,7 +32,7 @@ unit-front:
 ### Acceptance tests
 .PHONY: acceptance-back
 acceptance-back: apps-acceptance-back
-	${PHP_RUN} vendor/bin/behat -p acceptance --format pim --out var/tests/behat --format pretty --out std --colors
+	${PHP_RUN} vendor/bin/behat -p acceptance --format pim --out var/tests/behat --format progress --out std --colors
 
 .PHONY: acceptance-front
 acceptance-front:

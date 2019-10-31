@@ -40,7 +40,7 @@ services:
   node:
     image: 'akeneo/node:10'
     environment:
-      YARN_CACHE_FOLDER: '~/.yarn'
+      YARN_CACHE_FOLDER: '/home/node/.yarn'
     volumes:
       - './:/srv/pim'
       - '${HOST_YARN_CACHE_FOLDER:-~/.cache/yarn}:/home/node/.yarn'
