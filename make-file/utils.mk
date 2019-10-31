@@ -20,7 +20,7 @@
 #	$(PHP_RUN) vendor/bin/phpspec run $(O)
 
 define configure_ci_options
-    $(if $(filter $(CI),1),$(eval O=$(1)))
+    $(if $(filter $(CI),1),$(1) $(2), $(1))
 endef
 
 # This function execution a command if the var CI is set to "1".
