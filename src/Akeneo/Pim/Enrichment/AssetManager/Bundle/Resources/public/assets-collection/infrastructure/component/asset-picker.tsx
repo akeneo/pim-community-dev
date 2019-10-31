@@ -2,7 +2,11 @@ import * as React from 'react';
 import styled from 'styled-components';
 import {Button} from 'akeneoassetmanager/application/component/app/button';
 import __ from 'akeneoassetmanager/tools/translator';
-import {Asset} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
+import {
+  Asset,
+  canAddAssetToCollection,
+  addAssetsToCollection,
+} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
 import {Filter} from 'akeneoassetmanager/application/reducer/grid';
 import FilterCollection from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/filter-collection';
@@ -147,7 +151,6 @@ const dataProvider = {
 };
 
 const MAX_RESULT = 500;
-const MAX_SELECTION_SIZE = 50; // TODO: Use `canAddAssetToCollection` assets-collection/domain/model/asset.ts instead
 const FIRST_PAGE_SIZE = 50;
 
 let totalRequestCount = 0;
@@ -229,6 +232,7 @@ export const AssetPicker = ({
   const [context, setContext] = React.useState<Context>(initialContext);
 
   const resetModal = () => {
+    setSelection([]);
     setSearchValue('');
     setFilterCollection([]);
     setOpen(false);
@@ -259,8 +263,7 @@ export const AssetPicker = ({
     return () => document.removeEventListener('keydown', cancelModalOnEscape);
   }, []);
 
-  // TODO: Use `canAddAssetToCollection` assets-collection/domain/model/asset.ts instead
-  const hasReachMaximumSelection = MAX_SELECTION_SIZE === selection.length + excludedAssetCollection.length;
+  const canAddAsset = canAddAssetToCollection(addAssetsToCollection(excludedAssetCollection, selection));
 
   return (
     <React.Fragment>
@@ -268,10 +271,8 @@ export const AssetPicker = ({
         title={__('pim_asset_manager.asset_collection.add_asset_title')}
         buttonSize="medium"
         color="outline"
-        onClick={() => {
-          setSelection([]);
-          setOpen(true);
-        }}
+        isDisabled={!canAddAsset}
+        onClick={() => setOpen(true)}
       >
         {__('pim_asset_manager.asset_collection.add_asset')}
       </Button>
@@ -320,7 +321,7 @@ export const AssetPicker = ({
                 assetCollection={resultCollection}
                 context={context}
                 resultCount={resultCount}
-                hasReachMaximumSelection={hasReachMaximumSelection}
+                hasReachMaximumSelection={!canAddAsset}
                 onSelectionChange={(assetCodeCollection: AssetCode[]) => {
                   setSelection(assetCodeCollection);
                 }}

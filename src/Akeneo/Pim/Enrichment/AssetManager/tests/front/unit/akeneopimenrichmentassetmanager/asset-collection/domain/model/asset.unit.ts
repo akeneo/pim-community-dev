@@ -1,4 +1,5 @@
 import {
+  ASSET_COLLECTION_LIMIT,
   getImage,
   isComplete,
   emptyAsset,
@@ -7,6 +8,7 @@ import {
   emptyCollection,
   getPreviousAssetCode,
   getNextAssetCode,
+  canAddAssetToCollection,
   addAssetToCollection,
   addAssetsToCollection,
   isAssetInCollection,
@@ -180,6 +182,14 @@ test('I should be able to get the next asset code in the collection', () => {
 
   currentAssetCode = 'honor';
   expect(getNextAssetCode(assetCollection, currentAssetCode)).toEqual('samsung');
+});
+
+test('I should be able to tell if I can add an asset to the collection', () => {
+  const assetCollection = ['oneplus'];
+  const fullAssetCollection = new Array(ASSET_COLLECTION_LIMIT).fill('iphone');
+
+  expect(canAddAssetToCollection(assetCollection)).toBe(true);
+  expect(canAddAssetToCollection(fullAssetCollection)).toBe(false);
 });
 
 test('It should add asset in the collection', () => {

@@ -18,6 +18,7 @@ pim_asset_manager:
       text: 'There are no asset collection for the {{ family }} family!'
     notification:
       product_rule: 'This collection can be updated by a product rule:'
+      limit: 'You have reached the limit of {{ limit }} assets per collection, you can no longer add assets to your collection.'
     remove_one_asset: Remove asset {{ assetName }} from asset collection
     remove_all_assets: Remove all assets
     other_actions: Other actions
@@ -26,8 +27,6 @@ pim_asset_manager:
     move_asset_to_left: Move asset {{ assetName }} to the left
     move_asset_to_right: Move asset {{ assetName }} to the right
   asset_picker:
-    notification:
-      maximum_selection_reached: You have reached the limit of {{ maxSelectionCount }} assets per collection, you can no longer add an asset to your collection.
     title: Add assets to your product
     sub_title: Choose the assets you want to attach to your product {{ productLabel }} in {{ attributeLabel }} collection
     no_result:

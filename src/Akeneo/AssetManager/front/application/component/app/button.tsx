@@ -1,9 +1,11 @@
+import * as React from 'react';
 import styled from 'styled-components';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 
 type ButtonProps = {
   buttonSize?: 'micro' | 'medium' | 'default';
   color: 'green' | 'blue' | 'red' | 'grey' | 'outline';
+  isDisabled?: boolean;
 };
 
 export const TransparentButton = styled.button`
@@ -17,7 +19,11 @@ export const TransparentButton = styled.button`
   }
 `;
 
-export const Button = styled.div<ButtonProps>`
+export const Button: React.FunctionComponent<ButtonProps & any> = props => (
+  <StyledButton {...props} onClick={props.isDisabled ? undefined : props.onClick} />
+);
+
+const StyledButton = styled.div<ButtonProps>`
   text-align: center;
   cursor: pointer;
   text-transform: uppercase;
@@ -69,4 +75,11 @@ export const Button = styled.div<ButtonProps>`
       border: 1px solid transparent;
     `;
   }}
+
+  ${(props: ThemedProps<ButtonProps>) =>
+    props.isDisabled &&
+    `
+      cursor: not-allowed;
+      opacity: 0.5;
+  `}
 `;

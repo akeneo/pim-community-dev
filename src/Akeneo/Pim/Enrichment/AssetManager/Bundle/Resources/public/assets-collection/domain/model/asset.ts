@@ -9,6 +9,8 @@ import {getLabel} from 'pimui/js/i18n';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {assetcodesAreEqual} from 'akeneoassetmanager/domain/model/asset/code';
 
+export const ASSET_COLLECTION_LIMIT = 50;
+
 export enum MoveDirection {
   Before,
   After,
@@ -49,6 +51,10 @@ export const emptyAsset = (assetCode?: AssetCode): Asset => ({
 
 export const getAssetLabel = (asset: Asset, locale: LocaleCode): string => {
   return getLabel(asset.labels, locale, asset.code);
+};
+
+export const canAddAssetToCollection = (assetCollection: AssetCode[]): boolean => {
+  return assetCollection.length < ASSET_COLLECTION_LIMIT;
 };
 
 export const addAssetToCollection = (assetCollection: AssetCode[], codeToAdd: AssetCode): AssetCode[] => {

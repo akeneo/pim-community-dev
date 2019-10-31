@@ -10,6 +10,7 @@ import {
   moveAssetInCollection,
   getAssetCodes,
   sortAssetCollection,
+  canAddAssetToCollection,
 } from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {AssetCode, ProductIdentifier} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import styled from 'styled-components';
@@ -24,6 +25,7 @@ import {Thumbnail} from 'akeneopimenrichmentassetmanager/assets-collection/infra
 import {AssetPreview} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-preview';
 import {Attribute} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
 import Key from 'akeneoassetmanager/tools/key';
+import {AssetCollectionLimitNotification} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-collection/asset-collection-limit-notification';
 
 const AssetCard = styled.div<{readonly: boolean}>`
   display: flex;
@@ -125,6 +127,7 @@ export const AssetCollection = ({
       {/* Collection is not empty and is loaded (we also need to check assetCodes because in this case we don't update the fetched assets */}
       {0 !== assetCodes.length ? (
         <React.Fragment>
+          {!canAddAssetToCollection(assetCodes) && <AssetCollectionLimitNotification />}
           {assetCodes.map((assetCode: AssetCode) => {
             const asset = assets.find((asset: Asset) => asset.code === assetCode);
 
