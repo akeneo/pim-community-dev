@@ -154,6 +154,7 @@ services:
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
             - '@akeneo_assetmanager.infrastructure.registry.preview_generator'
+            - '@pim_asset.provider.default_image'
 
     # Connector
     akeneo_assetmanager.infrastructure.connector.action.asset.get:

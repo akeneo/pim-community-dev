@@ -88,7 +88,7 @@ class DraftApplier implements DraftApplierInterface
     protected function applyValues(EntityWithValuesInterface $entityWithValues, array $changesValues): void
     {
         foreach ($changesValues as $code => $values) {
-            if ($this->attributeExists($code)) {
+            if ($this->attributeExists((string) $code)) {
                 foreach ($values as $value) {
                     $this->propertySetter->setData(
                         $entityWithValues,

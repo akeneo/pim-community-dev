@@ -122,7 +122,6 @@ ALTER TABLE `akeneo_reference_entity_attribute`
 SET foreign_key_checks = 1;
 SQL;
         $this->sqlConnection->exec($sql);
-        $this->recordClient->resetIndex();
     }
 
     /**
@@ -534,7 +533,6 @@ SQL;
 
     private function indexRecords(): void
     {
-        $this->recordClient->resetIndex();
         $this->commandLauncher->executeForeground(
             sprintf('%s %s', IndexRecordsCommand::INDEX_RECORDS_COMMAND_NAME, '--all')
         );

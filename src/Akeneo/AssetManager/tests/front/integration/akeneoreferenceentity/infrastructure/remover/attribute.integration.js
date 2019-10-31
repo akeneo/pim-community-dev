@@ -20,15 +20,9 @@ describe('Akeneoassetfamily > infrastructure > remover > attribute', () => {
     });
 
     await page.evaluate(async () => {
-      const createIdentifier = require('akeneoassetmanager/domain/model/attribute/identifier').createIdentifier;
-      const createAssetFamilyIdentifier = require('akeneoassetmanager/domain/model/asset-family/identifier')
-        .createIdentifier;
       const remover = require('akeneoassetmanager/infrastructure/remover/attribute').default;
 
-      const attributeIdentifierToDelete = createIdentifier('name_1234');
-      const assetFamilyIdentifierToDelete = createAssetFamilyIdentifier('designer');
-
-      return await remover.remove(assetFamilyIdentifierToDelete, attributeIdentifierToDelete);
+      return await remover.remove('designer', 'name_1234');
     });
   });
 });

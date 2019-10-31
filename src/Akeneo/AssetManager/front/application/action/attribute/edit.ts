@@ -6,7 +6,7 @@ import {
   attributeEditionSubmission,
   attributeEditionCancel,
 } from 'akeneoassetmanager/domain/event/attribute/edit';
-import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
+import AttributeIdentifier, {attributeidentifiersAreEqual} from 'akeneoassetmanager/domain/model/attribute/identifier';
 import ValidationError, {createValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {
@@ -25,6 +25,7 @@ import {
 import {NormalizedOption, Option} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
 import {AttributeWithOptions} from 'akeneoassetmanager/domain/model/attribute/type/option';
 import attributeOptionSaver from 'akeneoassetmanager/infrastructure/saver/options';
+import {attributecodesAreEqual} from 'akeneoassetmanager/domain/model/attribute/code';
 
 export const saveAttribute = (dismiss: boolean = true) => async (
   dispatch: any,
@@ -111,8 +112,8 @@ export const attributeEditionStartByCode = (attributeCode: AttributeCode) => asy
     return;
   }
 
-  const attributeToEdit = state.attributes.attributes.find(
-    (attribute: NormalizedAttribute) => attribute.code === attributeCode.stringValue()
+  const attributeToEdit = state.attributes.attributes.find((attribute: NormalizedAttribute) =>
+    attributecodesAreEqual(attribute.code, attributeCode)
   );
 
   dispatch(attributeEditionStart(attributeToEdit));
@@ -127,8 +128,8 @@ export const attributeEditionStartByIdentifier = (attributeIdentifier: Attribute
     return;
   }
 
-  const attributeToEdit = state.attributes.attributes.find(
-    (attribute: NormalizedAttribute) => attribute.identifier === attributeIdentifier.stringValue()
+  const attributeToEdit = state.attributes.attributes.find((attribute: NormalizedAttribute) =>
+    attributeidentifiersAreEqual(attribute.identifier, attributeIdentifier)
   );
 
   dispatch(attributeEditionStart(attributeToEdit));

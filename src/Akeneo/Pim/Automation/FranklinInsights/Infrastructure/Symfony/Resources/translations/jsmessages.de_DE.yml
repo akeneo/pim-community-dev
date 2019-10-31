@@ -50,9 +50,10 @@ akeneo_franklin_insights:
         create_attribute_success: '{0} Sorry, keines der {{ requestCount }} Attribute wurde erstellt. |{1} Attribut wurde erfolgreich erstellt und an die Familie "{{ family }}". |[2,Inf[ {{ successCount }} Attribute von {{ requestCount }} wurden erfolgreich erstellt und der Familie "{{ family }}" beigefügt.'
         create_attribute_error: 'Leider ist ein Fehler beim Erstellen oder Anhängen des Attributs an die Familie aufgetreten.'
         suggest_attribute_mapping_error: 'Katalog-Attribut "[{{ catalogAttributeCode }}]" ist bereits auf dem Franklin-Attribut "{{ franklinAttributeLabel }}" zugeordnet.'
-        add_attribute_to_family_success: '{1} Attribut "{{ attribute }}" erfolgreich an die Familie "{{ family }}". |[2,Inf[ Attribute erfolgreich mit der Familie "{{ family }} " verbunden ".'
+        add_attribute_to_family_success: '{1} Attribut erfolgreich an die Familie "{{ family }}". |[2,Inf[ Attribute erfolgreich mit der Familie "{{ family }}" verbunden.'
         add_attribute_to_family_error: 'Leider ist ein Fehler aufgetreten, während das Attribut der Familie angehängt wurde.'
       fields:
+        search_bar.placeholder: 'Auf Franklin-Attribut suchen'
         franklin_attribute: 'Franklin-Attribut'
         franklin_attribute_type: '{{ type }} Attribut'
         franklin_value_sample: 'Wertmuster:'
@@ -78,7 +79,7 @@ akeneo_franklin_insights:
           family_status:
             pending: 'Neue Franklin Attribute zum überprüfen'
             full: 'Alle Franklin Attribute zugeordnet'
-          types_mismatch_warning: 'Warnung: Attributstypen passen nicht'
+          types_mismatch_warning: 'Warnung: Attribut Typen stimmen nicht überein.'
           family_progress:
             title: 'Anzahl der zugeordneten Attribute'
             description: "Benutze diese Leiste, um deinen Arbeitsstatus auf einen Blick zu sehen"
@@ -115,6 +116,9 @@ akeneo_franklin_insights:
         duplicated_pim_attribute: "Zuordnung kann nicht gespeichert werden, da Sie mehrere Franklin-Attribute auf das gleiche PIM-Attribut zugeordnet haben"
         attribute_not_in_family_not_allowed: 'PIM Attribut muss in der Familie ausgwählt werden.'
         only_unknown_mapped_attributes: 'Es kann kein Attribut in der Attributzuordnung gefunden werden'
+      search:
+        no_result_title: Es gibt kein Franklin-Attribut für Ihre Suche.
+        no_result_subtitle: Wiederholen Sie Ihre Suche mit anderen Suchkriterien.
     product_subscription:
       flash:
         create:

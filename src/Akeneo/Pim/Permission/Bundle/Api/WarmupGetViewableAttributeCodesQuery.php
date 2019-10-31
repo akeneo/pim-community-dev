@@ -64,7 +64,7 @@ final class WarmupGetViewableAttributeCodesQuery implements WarmupQueryCache
             $values = null !== $decodedLine && isset($decodedLine['values']) && is_array($decodedLine['values']) ?
                 $decodedLine['values'] :
                 [];
-            $attributeCodes[] = array_keys($values);
+            $attributeCodes[] = array_map('strval', array_keys($values));
         }
 
         return array_values(array_unique(array_merge_recursive(... $attributeCodes)));

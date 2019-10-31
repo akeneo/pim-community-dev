@@ -22,15 +22,9 @@ describe('Akeneoassetfamily > infrastructure > remover > asset', () => {
     });
 
     await page.evaluate(async () => {
-      const createAssetCode = require('akeneoassetmanager/domain/model/asset/code').createCode;
-      const createAssetFamilyIdentifier = require('akeneoassetmanager/domain/model/asset-family/identifier')
-        .createIdentifier;
       const remover = require('akeneoassetmanager/infrastructure/remover/asset').default;
 
-      const assetCodeToDelete = createAssetCode('starck');
-      const assetFamilyIdentifier = createAssetFamilyIdentifier('designer');
-
-      return await remover.remove(assetFamilyIdentifier, assetCodeToDelete);
+      return await remover.remove('designer', 'starck');
     });
   });
 
@@ -39,13 +33,9 @@ describe('Akeneoassetfamily > infrastructure > remover > asset', () => {
     await listenRequest(page, requestContract);
 
     await page.evaluate(async () => {
-      const createAssetFamilyIdentifier = require('akeneoassetmanager/domain/model/asset-family/identifier')
-        .createIdentifier;
       const remover = require('akeneoassetmanager/infrastructure/remover/asset').default;
 
-      const assetFamilyIdentifier = createAssetFamilyIdentifier('designer');
-
-      return await remover.removeAll(assetFamilyIdentifier);
+      return await remover.removeAll('designer');
     });
   });
 });

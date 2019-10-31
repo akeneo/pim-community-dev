@@ -64,6 +64,7 @@ class AttributesMappingNormalizer
 
             if (AttributeTypes::METRIC === $attribute->getType()) {
                 $normalizedPimAttribute['unit'] = $attribute->getDefaultMetricUnit();
+                $normalizedPimAttribute['metric_family'] = $attribute->getMetricFamily();
             }
         }
 

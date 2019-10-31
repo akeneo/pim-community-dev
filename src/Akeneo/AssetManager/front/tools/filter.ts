@@ -7,7 +7,7 @@ export const getFilter = (filters: Filter[], field: string): Filter | undefined 
 };
 
 export const getAttributeFilterKey = (attribute: Attribute) => {
-  return `values.${attribute.getIdentifier().stringValue()}`;
+  return `values.${attribute.getIdentifier()}`;
 };
 
 export const getCompletenessFilter = (filters: Filter[]): CompletenessValue => {

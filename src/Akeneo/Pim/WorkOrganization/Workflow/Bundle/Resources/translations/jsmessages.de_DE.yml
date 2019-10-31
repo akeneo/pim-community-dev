@@ -53,6 +53,9 @@ batch_jobs:
   csv_product_proposal_import:
     label: Produktvorschläge in CSV-Datei importieren
     import.label: Produktvorschlag-Import
+  csv_product_model_proposal_import:
+    label: Produktmodell-Vorschlag Import in CSV
+    import.label: Produktmodell-Vorschlag Import in CSV
   approve_product_draft:
     label: Vorschlag freigeben
     perform.label: Vorschlag freigeben
@@ -65,6 +68,9 @@ batch_jobs:
   xlsx_product_proposal_import:
     label: Produktvorschlag-Import aus XLSX
     import.label: Produktvorschlag-Import aus XLSX
+  xlsx_product_model_proposal_import:
+    label: Produktmodell-Vorschlag Import in XLSX
+    import.label: Produktmodell-Vorschlag Import in XLSX
   csv_published_product_quick_export:
     export.label: Schnellexport veröffentlichter Produkte als CSV
     perform.label: Schnellexport veröffentlichter Produkte als CSV

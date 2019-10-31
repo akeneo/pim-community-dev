@@ -1,6 +1,8 @@
 import AssetRemover from 'akeneoassetmanager/domain/remover/asset';
-import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
-import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import AssetCode, {assetCodeStringValue} from 'akeneoassetmanager/domain/model/asset/code';
+import AssetFamilyIdentifier, {
+  denormalizeAssetFamilyIdentifier,
+} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {deleteJSON} from 'akeneoassetmanager/tools/fetch';
 import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 import errorHandler from 'akeneoassetmanager/infrastructure/tools/error-handler';
@@ -15,8 +17,8 @@ export class AssetRemoverImplementation implements AssetRemover<AssetFamilyIdent
   async remove(assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode): Promise<ValidationError[] | null> {
     return await deleteJSON(
       routing.generate('akeneo_asset_manager_asset_delete_rest', {
-        assetCode: assetCode.stringValue(),
-        assetFamilyIdentifier: assetFamilyIdentifier.stringValue(),
+        assetCode: assetCodeStringValue(assetCode),
+        assetFamilyIdentifier: denormalizeAssetFamilyIdentifier(assetFamilyIdentifier),
       })
     ).catch(errorHandler);
   }
@@ -24,7 +26,7 @@ export class AssetRemoverImplementation implements AssetRemover<AssetFamilyIdent
   async removeAll(assetFamilyIdentifier: AssetFamilyIdentifier): Promise<ValidationError[] | null> {
     return await deleteJSON(
       routing.generate('akeneo_asset_manager_asset_delete_all_rest', {
-        assetFamilyIdentifier: assetFamilyIdentifier.stringValue(),
+        assetFamilyIdentifier: denormalizeAssetFamilyIdentifier(assetFamilyIdentifier),
       })
     ).catch(errorHandler);
   }

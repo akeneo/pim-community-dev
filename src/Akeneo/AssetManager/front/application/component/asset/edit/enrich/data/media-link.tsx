@@ -1,8 +1,10 @@
 import * as React from 'react';
+import __ from 'akeneoreferenceentity/tools/translator';
 import Value from 'akeneoassetmanager/domain/model/asset/value';
 import MediaLinkData, {create} from 'akeneoassetmanager/domain/model/asset/data/media-link';
 import {ConcreteMediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 import Key from 'akeneoassetmanager/tools/key';
+import {getMediaLinkPreviewUrl, getMediaLinkUrl, MediaPreviewTypes} from 'akeneoassetmanager/tools/media-url-generator';
 
 const View = ({
   value,
@@ -30,12 +32,27 @@ const View = ({
     onChange(newValue);
   };
 
+  const copyToClipboard = (text: string) => {
+    if ('clipboard' in navigator) {
+      // @ts-ignore eslint-disable-next-line flowtype/no-flow-fix-me-comments
+      navigator.clipboard.writeText(text);
+    }
+  };
+
+  const mediaDownloadUrl = getMediaLinkUrl(value.data, value.attribute);
+  const mediaPreviewUrl = getMediaLinkPreviewUrl(MediaPreviewTypes.ThumbnailSmall, value.data, value.attribute);
+
   return (
-    <React.Fragment>
+    <div className="AknMediaTypeField">
+      <img
+        src={mediaPreviewUrl}
+        className="AknMediaTypeField-preview"
+        alt={__('pim_asset_manager.attribute.media_type_preview')}
+      />
       <input
-        id={`pim_asset_manager.asset.enrich.${value.attribute.getCode().stringValue()}`}
+        id={`pim_asset_manager.asset.enrich.${value.attribute.getCode()}`}
         autoComplete="off"
-        className={`AknTextField AknTextField--narrow AknTextField--light
+        className={`AknTextField AknTextField--light
         ${value.attribute.valuePerLocale ? 'AknTextField--localizable' : ''}
         ${!canEditData ? 'AknTextField--disabled' : ''}`}
         value={value.data.stringValue()}
@@ -48,7 +65,18 @@ const View = ({
         disabled={!canEditData}
         readOnly={!canEditData}
       />
-    </React.Fragment>
+      <a
+        href={mediaDownloadUrl}
+        className="AknIconButton AknIconButton--light AknIconButton--download AknMediaTypeField-button"
+        target="_blank"
+      />
+      <button
+        className="AknIconButton AknIconButton--light AknIconButton--link AknMediaTypeField-button"
+        onClick={() => {
+          copyToClipboard(mediaDownloadUrl);
+        }}
+      />
+    </div>
   );
 };
 

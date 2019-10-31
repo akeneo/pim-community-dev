@@ -1,13 +1,19 @@
-import * as React from 'react'
+import * as React from 'react';
 import styled from 'styled-components';
 import {ThemedProps, opacity, akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
-import {Asset, getImage, getAssetLabel, MoveDirection, assetWillNotMoveInCollection} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
+import {
+  Asset,
+  getImage,
+  getAssetLabel,
+  MoveDirection,
+  assetWillNotMoveInCollection,
+} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import Close from 'akeneoassetmanager/application/component/app/icon/close';
 import __ from 'akeneoreferenceentity/tools/translator';
 import {ContextState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
 import Right from 'akeneoassetmanager/application/component/app/icon/right';
 import Left from 'akeneoassetmanager/application/component/app/icon/left';
-import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/values';
+import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import Key from 'akeneoassetmanager/tools/key';
 import {TransparentButton} from 'akeneoassetmanager/application/component/app/button';
 
@@ -47,7 +53,7 @@ const IconButton = styled(TransparentButton)`
   &:hover g {
     stroke: white;
   }
-`
+`;
 
 const TopLeftSvgButton = styled(IconButton)`
   position: absolute
@@ -56,50 +62,96 @@ const TopLeftSvgButton = styled(IconButton)`
   margin: 10px;
 `;
 
-const RemoveButton = ({title, onAction, ...props}: {title: string, onAction: () => void}) => (
-  <TopLeftSvgButton title={title} tabIndex={0} onClick={() => onAction()} {...props} onKeyPress={(event: React.KeyboardEvent<HTMLButtonElement>) => {
-    if (Key.Space === event.key) onAction();
-  }}>
-    <Close color={akeneoTheme.color.grey100} title="Remove"/>
+const RemoveButton = ({title, onAction, ...props}: {title: string; onAction: () => void}) => (
+  <TopLeftSvgButton
+    title={title}
+    tabIndex={0}
+    onClick={() => onAction()}
+    {...props}
+    onKeyPress={(event: React.KeyboardEvent<HTMLButtonElement>) => {
+      if (Key.Space === event.key) onAction();
+    }}
+  >
+    <Close color={akeneoTheme.color.grey100} title="Remove" />
   </TopLeftSvgButton>
-)
+);
 
-const MoveButton: React.FunctionComponent<{title: string, onAction: () => void}> = ({title, onAction, children, ...props}) => {
-  return <IconButton title={title} tabIndex={0} onClick={() => onAction()} {...props} onKeyPress={(event: React.KeyboardEvent<HTMLButtonElement>) => {
-    if (Key.Space === event.key) onAction();
-  }}>
-    {children}
-  </IconButton>
-}
+const MoveButton: React.FunctionComponent<{title: string; onAction: () => void}> = ({
+  title,
+  onAction,
+  children,
+  ...props
+}) => {
+  return (
+    <IconButton
+      title={title}
+      tabIndex={0}
+      onClick={() => onAction()}
+      {...props}
+      onKeyPress={(event: React.KeyboardEvent<HTMLButtonElement>) => {
+        if (Key.Space === event.key) onAction();
+      }}
+    >
+      {children}
+    </IconButton>
+  );
+};
 
-export const Thumbnail = ({asset, context, readonly, assetCollection, onRemove, onMove}: {asset: Asset, context: ContextState, readonly: boolean, assetCollection: AssetCode[], onRemove: () => void, onMove: (direction: MoveDirection) => void}) => {
+export const Thumbnail = ({
+  asset,
+  context,
+  readonly,
+  assetCollection,
+  onRemove,
+  onMove,
+}: {
+  asset: Asset;
+  context: ContextState;
+  readonly: boolean;
+  assetCollection: AssetCode[];
+  onRemove: () => void;
+  onMove: (direction: MoveDirection) => void;
+}) => {
   const moveAfterLabel = __('pim_asset_manager.asset_collection.move_asset_to_right', {
-    assetName: getAssetLabel(asset, context.locale)
+    assetName: getAssetLabel(asset, context.locale),
   });
   const moveBeforeLabel = __('pim_asset_manager.asset_collection.move_asset_to_left', {
-    assetName: getAssetLabel(asset, context.locale)
-  })
+    assetName: getAssetLabel(asset, context.locale),
+  });
   const removeLabel = __('pim_asset_manager.asset_collection.remove_one_asset', {
-    assetName: getAssetLabel(asset, context.locale)
-  })
+    assetName: getAssetLabel(asset, context.locale),
+  });
 
   return (
     <Container>
       {!readonly ? (
         <Overlay>
-            <RemoveButton title={removeLabel} onAction={onRemove} data-remove={asset.code}/>
+          <RemoveButton title={removeLabel} onAction={onRemove} data-remove={asset.code} />
           {!assetWillNotMoveInCollection(assetCollection, asset, MoveDirection.Before) ? (
-            <MoveButton title={moveBeforeLabel} onAction={() => onMove(MoveDirection.Before)} data-move-left={asset.code}>
+            <MoveButton
+              title={moveBeforeLabel}
+              onAction={() => onMove(MoveDirection.Before)}
+              data-move-left={asset.code}
+            >
               <Left color={akeneoTheme.color.grey100} />
             </MoveButton>
-          ) : <div />}
+          ) : (
+            <div />
+          )}
           {!assetWillNotMoveInCollection(assetCollection, asset, MoveDirection.After) ? (
-            <MoveButton title={moveAfterLabel} onAction={() => onMove(MoveDirection.After)} data-move-right={asset.code}>
+            <MoveButton
+              title={moveAfterLabel}
+              onAction={() => onMove(MoveDirection.After)}
+              data-move-right={asset.code}
+            >
               <Right color={akeneoTheme.color.grey100} />
             </MoveButton>
-          ) : <div />}
+          ) : (
+            <div />
+          )}
         </Overlay>
       ) : null}
-      <Img src={getImage(asset)}/>
-    </Container>)
-}
+      <Img src={getImage(asset)} />
+    </Container>
+  );
+};

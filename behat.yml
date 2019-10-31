@@ -680,7 +680,7 @@ legacy:
                 - vendor/akeneo/pim-community-dev/tests/legacy/features/platform/
                 - '%paths.base%/src/Akeneo/Pim/Automation/FranklinInsights/tests/features'
             filters:
-                tags: '~@skip&&~@skip-pef&&~@skip-nav&&~@doc&&~@unstable&&~@unstable-app&&~@deprecated&&~@ce&&~@critical'
+                tags: '~@skip&&~@skip-pef&&~@skip-nav&&~@doc&&~@unstable&&~@unstable-app&&~@deprecated&&~@ce&&~@critical&&~@acceptance-back'
             contexts:
                 - Context\EnterpriseFeatureContext:
                     -

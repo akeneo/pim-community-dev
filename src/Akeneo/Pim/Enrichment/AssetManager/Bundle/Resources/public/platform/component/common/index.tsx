@@ -9,14 +9,13 @@ export const Pill = styled.div`
   border-radius: 8px;
   margin: 0 6px;
   align-self: center;
-`
+`;
 
 export const Spacer = styled.div`
   flex: 1;
 `;
 
 export const Separator = styled.div`
-  border-left: 2px solid ${(props: ThemedProps<void>) => props.theme.color.grey100};
+  border-left: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey100};
   margin: 0 10px;
-  height: 24px;
 `;

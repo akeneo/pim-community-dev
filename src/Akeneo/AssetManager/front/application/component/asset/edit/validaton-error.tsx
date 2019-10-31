@@ -9,7 +9,7 @@ export const getErrorsView = (errors: ValidationError[], value: Value) => {
   const errorMessages = errors
     .filter(
       (error: ValidationError) =>
-        `values.${value.attribute.getCode().stringValue()}` === error.propertyPath &&
+        `values.${value.attribute.getCode()}` === error.propertyPath &&
         channelReferenceAreEqual(error.invalidValue.channel, value.channel) &&
         localeReferenceAreEqual(error.invalidValue.locale, value.locale)
     )

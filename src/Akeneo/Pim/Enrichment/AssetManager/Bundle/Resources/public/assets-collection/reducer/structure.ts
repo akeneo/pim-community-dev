@@ -1,10 +1,7 @@
 import {Action} from 'redux';
 import {AssetCollectionState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/asset-collection';
 import {Attribute} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
-import {
-  channelFetcher,
-  fetchChannels,
-} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/channel';
+import fetchAllChannels from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/channel';
 import {Family, FamilyCode} from 'akeneopimenrichmentassetmanager/platform/model/structure/family';
 import {
   familyFetcher,
@@ -101,7 +98,7 @@ export const selectRuleRelations = (state: AssetCollectionState): RuleRelation[]
 };
 
 export const updateChannels = () => async (dispatch: any) => {
-  const channels = await fetchChannels(channelFetcher())();
+  const channels = await fetchAllChannels();
   dispatch(channelListUpdated(channels));
 };
 

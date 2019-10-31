@@ -197,7 +197,7 @@ Actual conf: ${JSON.stringify({text: {}})}`);
       text: {
         filter: {
           filter: (attribute, filter, onFilterUpdated) => {
-            expect(attribute.getCode().stringValue()).toEqual('description');
+            expect(attribute.getCode()).toEqual('description');
 
             return true;
           },

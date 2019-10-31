@@ -161,6 +161,8 @@
         and `Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface`
     - add `Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface`, `Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser`
         and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
+- Change constructor of `Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Calculator` to remove `Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\ValueCompleteCheckerInterface` and `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`,
+    and add `Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator`. Also, protected method `findFilledAttributes()` was removed.        
 
 ### CLI commands
 

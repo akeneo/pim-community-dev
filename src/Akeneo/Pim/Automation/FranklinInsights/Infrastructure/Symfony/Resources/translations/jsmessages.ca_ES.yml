@@ -43,7 +43,9 @@ akeneo_franklin_insights:
     attributes_mapping:
       label: Mapatge dels atributs
       flash:
+        do_not_map_attribute_success: 'Atribut actualitzat correctament.'
         create_attribute_error: 'Ho sentim, s''ha produït un error al crear o adjuntar l''atribut a la família.'
+        add_attribute_to_family_error: 'Ho sentim, s''ha produït un error al adjuntar l''atribut a la família.'
       fields:
         franklin_attribute: 'Atribut de Franklin'
         franklin_attribute_type: '{{ type }} atribut'
@@ -54,6 +56,8 @@ akeneo_franklin_insights:
           inactive: Inactiu
         create_attribute:
           btn: Crear atribut
+        add_attribute_to_family:
+          btn: Afegir a la família
       module:
         subscribe:
           subscribe: 'Subscriure família a Franklin'
@@ -62,7 +66,21 @@ akeneo_franklin_insights:
           error: "Necessita crear una família en el catàleg per accedir a aquesta pàgina."
           family_status:
             pending: 'Nou atribut Franklin a revisar'
-          types_mismatch_warning: 'Atenció: incompatibilitat de tipus d''atributs.'
+        toolbar:
+          bulk_create_attribute: Crear atribut
+          bulk_add_to_family: Afegir a la família
+      modal:
+        deactivate_franklin_attribute:
+          subtitle: 'Estadístiques de Franklin'
+        bulk_create_attribute:
+          title: '{1} Crear 1 atribut |[2,Inf[ Crear {{ count }} atributs'
+          subtitle: 'Estadístiques de Franklin'
+          warning: '{1} Si us plau, confirma la creació d''un nou atribut. |[2,Inf[ Si us plau, confirma la creació de {{ count }} nous atributs.'
+          ok: Confirmar
+        bulk_add_to_family:
+          subtitle: 'Estadístiques de Franklin'
+          description: '{1} L''atribut seleccionat s''afegirà a la família |[2,Inf[ Els atributs seleccionats s''afegiran a la família'
+          ok: Confirmar
       constraint:
         missing_target_key: 'Falta l''objectiu clau pel mapatge'
         missing_attribute_key: 'Falta {{ expectedKey }} clau pel mapatge amb l''objectiu clau "{{ targetKey }}"'
@@ -81,7 +99,7 @@ akeneo_franklin_insights:
         no_identifiers_mapping: 'Si us plau, mapa els teus identificadors de producte de catàleg a Configuració > Abans de subscriure''s productes a Franklin Insights.'
         insufficient_credits: "Ho sentim, no ha pogut subscriure el producte a les estadístiques de Franklin. No té prou crèdit."
         invalid_mapped_values: 'Ho sentim, ha fallat la subscripció del producte a les estadístiques de Franklin. Si us plau subscriu el producte amb una combinació d''identificadors vàlid.'
-        data_provider_error: 'Franklin ha retornat un error en intentar subscriure el producte'
+        data_provider_error: 'Franklin ha retornat un error en intentar subscriure el producte' #TODO: check with POs
         not_subscribed: 'El producte no està subscrit'
         already_subscribed_product: 'El producte ja està subscrit.'
         variant_product: 'Ho sentim. Els productes variants no poden ser subscrits a Franklin Insights.'
@@ -101,7 +119,6 @@ akeneo_franklin_insights:
         edit:
           title: '{{ familyLabel }} - {{ franklinAttributeLabel }} opcions d''atribut'
           sub_title: 'Conegueu a Franklin, el teu <span class="AknDescriptionHeader-title--highlight">El teu Assistent IA d''Informació de Producte</span>!'
-          description: 'Per tal d''ajudar a enriquir el seu catàleg, Franklin haurà de saber les seves opcions d''atribut del catàleg per trobar coincidències. <a href="#" target="_blank" class="AknDescriptionHeader-link">Llegir més</a>'
   product:
     edit:
       btn.push: Suggerència de dades
@@ -111,6 +128,7 @@ akeneo_franklin_insights:
     flash:
       success: Codi d'activació de les estadístiques de Franklin guardat satisfactòriament.
       invalid: El codi d'activació no és vàlid, ho sento. Intenteu-ho de nou amb un vàlid, si us plau.
+      error: Ho sentim, ha sorgit un error.
     module:
       title:
         sub_title: 'Benvingut a <span class="AknDescriptionHeader-title--highlight">L''assistent IA d''informació de producte</span>!'

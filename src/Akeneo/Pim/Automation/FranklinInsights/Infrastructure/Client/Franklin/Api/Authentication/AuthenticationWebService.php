@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\
 
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\AbstractApi;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\ServerException;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -42,7 +43,20 @@ class AuthenticationWebService extends AbstractApi
             if (Response::HTTP_OK !== $response->getStatusCode()) {
                 return false;
             }
+        } catch (ConnectException $e) {
+            $this->logger->error('Cannot connect to Ask Franklin during authentication process', [
+                'exception' => $e->getMessage(),
+                'route' => $route,
+            ]);
+
+            return false;
         } catch (ServerException | ClientException $e) {
+            $this->logger->error('Authentication to Ask Franklin failed', [
+                'exception' => $e->getMessage(),
+                'route' => $route,
+                'token' => $token,
+            ]);
+
             return false;
         }
 

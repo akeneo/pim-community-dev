@@ -123,7 +123,7 @@ class AttributesMappingContext extends PimContext
         /** @var NodeElement $button */
         $button = $this->spin(
             function () use ($cell) {
-                return $cell->getParent()->find('css', 'td.create-attribute-button button');
+                return $cell->getParent()->find('css', 'button.create-attribute-button');
             },
             'Could not find create attribute button for "'.$franklinAttrLabel.'"'
         );

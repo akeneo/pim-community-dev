@@ -28,6 +28,7 @@ class AttributesMappingNormalizer
         foreach ($attributeMappingCollection as $attribute) {
             $normalizedAttributes[$attribute->getTargetAttributeCode()] = [
                 'franklinAttribute' => [
+                    'code' => $attribute->getTargetAttributeCode(),
                     'label' => $attribute->getTargetAttributeLabel(),
                     'type' => $attribute->getTargetAttributeType(),
                     'summary' => $attribute->getSummary() ?? [],

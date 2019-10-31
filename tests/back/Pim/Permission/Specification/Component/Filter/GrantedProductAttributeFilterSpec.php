@@ -63,7 +63,7 @@ class GrantedProductAttributeFilterSpec extends ObjectBehavior
                         'data' => 'My very awesome T-shirt',
                     ],
                 ],
-                '123' => [
+                123 => [
                     [
                         'locale' => 'en_US',
                         'scope' => null,
@@ -73,7 +73,7 @@ class GrantedProductAttributeFilterSpec extends ObjectBehavior
             ],
         ];
 
-        $getViewableAttributeCodesForUser->forAttributeCodes(['name', '123'], 42)->willReturn(['name', '123']);
+        $getViewableAttributeCodesForUser->forAttributeCodes(Argument::is(['name', '123']), 42)->willReturn(['name', '123']);
         $productAttributeFilter->filter($data)->willReturn($data);
 
         $this->filter($data)->shouldReturn($data);

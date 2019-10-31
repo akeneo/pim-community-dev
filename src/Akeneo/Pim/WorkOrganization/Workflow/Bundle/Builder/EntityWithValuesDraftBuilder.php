@@ -98,7 +98,7 @@ class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterf
                 $comparator = $this->comparatorRegistry->getAttributeComparator($attribute->type());
                 $diffAttribute = $comparator->compare(
                     $changes,
-                    $this->getOriginalValue($originalValues, $code, $changes['locale'], $changes['scope'])
+                    $this->getOriginalValue($originalValues, (string) $code, $changes['locale'], $changes['scope'])
                 );
 
                 if (null !== $diffAttribute) {

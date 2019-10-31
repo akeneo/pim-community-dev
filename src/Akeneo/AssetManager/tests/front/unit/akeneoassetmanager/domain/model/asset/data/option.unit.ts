@@ -1,5 +1,4 @@
 import {create, denormalize} from 'akeneoassetmanager/domain/model/asset/data/option';
-import {createCode} from 'akeneoassetmanager/domain/model/attribute/type/option/option-code';
 import {denormalize as denormalizeOptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
 
 const color = denormalizeOptionAttribute({
@@ -30,7 +29,7 @@ const color = denormalizeOptionAttribute({
 
 describe('akeneo > asset family > domain > model > option > data --- option', () => {
   test('I can create a new OptionData with a OptionCode value', () => {
-    expect(create(createCode('red')).normalize()).toEqual('red');
+    expect(create('red').normalize()).toEqual('red');
     expect(create(null).normalize()).toEqual(null);
   });
 
@@ -52,7 +51,7 @@ describe('akeneo > asset family > domain > model > option > data --- option', ()
   });
 
   test('I can get the code of an OptionData', () => {
-    expect(denormalize('red', color).getCode()).toEqual(createCode('red'));
+    expect(denormalize('red', color).getCode()).toEqual('red');
     expect(() => denormalize(null, color).getCode()).toThrow('Cannot get the option code on an empty OptionData');
   });
 

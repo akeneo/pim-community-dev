@@ -20,6 +20,8 @@ import {
     NormalizableAdditionalProperty,
     wrapNormalizableAdditionalProperty,
 } from 'akeneoassetmanager/domain/model/attribute/attribute';
+import Select2 from 'akeneoassetmanager/application/component/app/select2';
+import {MediaTypes, MediaType} from 'akeneoassetmanager/domain/model/attribute/type/media-link/media-type';
 
 const MediaLinkView = ({
   attribute,
@@ -113,6 +115,29 @@ const MediaLinkView = ({
           />
         </div>
         {getErrorsView(errors, 'suffix')}
+      </div>
+      <div className="AknFieldContainer" data-code="mediaType">
+        <div className="AknFieldContainer-header AknFieldContainer-header--light">
+          <label className="AknFieldContainer-label" htmlFor="pim_asset_manager.attribute.edit.input.media_type">
+            {__('pim_asset_manager.attribute.edit.input.media_type')}
+          </label>
+        </div>
+        <div className="AknFieldContainer-inputContainer">
+          <Select2
+            id="pim_asset_manager.attribute.edit.input.media_type"
+            name="media_type"
+            data={(MediaTypes as any) as {[choiceValue: string]: string}}
+            value={attribute.mediaType}
+            readOnly={!rights.attribute.edit}
+            configuration={{
+              minimumResultsForSearch: Infinity,
+            }}
+            onChange={(mediaType: MediaType) => {
+              onAdditionalPropertyUpdated('media_type', mediaType);
+            }}
+          />
+        </div>
+        {getErrorsView(errors, 'mediaType')}
       </div>
     </React.Fragment>
   );

@@ -361,11 +361,11 @@ Feature: Read a single product by applying rules
       | my-jacket | top_view           |                        |        |        |
       | my-jacket | length             | 55 CENTIMETER          |        |        |
       | my-jacket | width              |                        |        |        |
-      | my-jacket | weather_conditions | Hot,Cold               |        |        |
+      | my-jacket | weather_conditions | hot,cold               |        |        |
       | my-jacket | climate            |                        |        |        |
       | my-jacket | number_in_stock    | 800                    |        | mobile |
       | my-jacket | number_in_stock    |                        |        | tablet |
-      | my-jacket | main_color         | White                  |        |        |
+      | my-jacket | main_color         | white                  |        |        |
       | my-jacket | secondary_color    |                        |        |        |
       | my-jacket | name               | White jacket           | en_US  |        |
       | my-jacket | name               |                        | fr_FR  |        |
@@ -471,7 +471,7 @@ Feature: Read a single product by applying rules
       | my-jacket | number_in_stock    |                        |        | mobile |
       | my-jacket | number_in_stock    | 800                    |        | tablet |
       | my-jacket | main_color         |                        |        |        |
-      | my-jacket | secondary_color    | White                  |        |        |
+      | my-jacket | secondary_color    | white                  |        |        |
       | my-jacket | name               |                        | en_US  |        |
       | my-jacket | name               | White jacket           | fr_FR  |        |
       | my-jacket | description        |                        | en_US  | mobile |

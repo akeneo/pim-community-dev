@@ -426,14 +426,6 @@ class EntityWithValuesDraftManager
                     $value['locale'],
                     $value['scope']
                 );
-                $valueToRemove = $draft->getValues()->getByCodes(
-                    $attributeCode,
-                    $value['scope'],
-                    $value['locale']
-                );
-                if (null !== $valueToRemove) {
-                    $draft->getValues()->remove($valueToRemove);
-                }
             }
         }
 
@@ -451,7 +443,7 @@ class EntityWithValuesDraftManager
     {
         foreach ($appliedChanges as $attributeCode => $values) {
             foreach ($values as $value) {
-                $draft->removeChange($attributeCode, $value['locale'], $value['scope']);
+                $draft->removeChange((string) $attributeCode, $value['locale'], $value['scope']);
                 $valueToRemove = $draft->getValues()->getByCodes(
                     $attributeCode,
                     $value['scope'],

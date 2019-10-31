@@ -66,8 +66,8 @@ Feature: Export published products
       | filters  | {"structure":{"locales":["fr_FR","en_US","de_DE"],"scope":"mobile"},"data":[{"field": "updated", "operator": "SINCE LAST JOB", "value": "csv_clothing_mobile_published_product_export"}]} |
     And the following products:
       | sku       | family | categories        | price          | size | main_color |
-      | tee-white | tees   | winter_collection | 10 EUR, 15 USD | XL   | White      |
-      | tee-black | tees   | winter_collection | 10 EUR, 15 USD | XL   | Black      |
+      | tee-white | tees   | winter_collection | 10 EUR, 15 USD | XL   | white      |
+      | tee-black | tees   | winter_collection | 10 EUR, 15 USD | XL   | black      |
     And the following product values:
       | product   | attribute | value           | locale |
       | tee-white | name      | White tee       | en_US  |
@@ -108,8 +108,8 @@ Feature: Export published products
   Scenario: Export only the published products updated since a defined date
     Given the following products:
       | sku       | family | categories        | price          | size | main_color |
-      | tee-white | tees   | winter_collection | 10 EUR, 15 USD | XL   | White      |
-      | tee-black | tees   | winter_collection | 10 EUR, 15 USD | XL   | Black      |
+      | tee-white | tees   | winter_collection | 10 EUR, 15 USD | XL   | white      |
+      | tee-black | tees   | winter_collection | 10 EUR, 15 USD | XL   | black      |
     And the following product values:
       | product   | attribute | value           | locale |
       | tee-white | name      | White tee       | en_US  |

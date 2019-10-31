@@ -1,10 +1,4 @@
 import {ConcreteNumberAttribute} from 'akeneoassetmanager/domain/model/attribute/type/number';
-import Identifier, {createIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
-import AssetFamilyIdentifier, {
-  createIdentifier as createAssetFamilyIdentifier,
-} from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import LabelCollection, {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
-import AttributeCode, {createCode} from 'akeneoassetmanager/domain/model/attribute/code';
 import {MinValue} from 'akeneoassetmanager/domain/model/attribute/type/number/min-value';
 import {DecimalsAllowed} from 'akeneoassetmanager/domain/model/attribute/type/number/decimals-allowed';
 
@@ -30,28 +24,16 @@ describe('akeneo > attribute > domain > model > attribute > type --- NumberAttri
 
   test('I cannot create an invalid ConcreteNumberAttribute (wrong decimalsAllowed)', () => {
     expect(() => {
-      new ConcreteNumberAttribute(
-        createIdentifier('designer', 'age'),
-        createAssetFamilyIdentifier('designer'),
-        createCode('age'),
-        createLabelCollection({en_US: 'Age'}),
-        false,
-        false,
-        0,
-        true,
-        false,
-        12,
-        13
-      );
+      new ConcreteNumberAttribute('age', 'designer', 'age', {en_US: 'Age'}, false, false, 0, true, false, 12, 13);
     }).toThrow('Attribute expects a DecimalsAllowed as decimalsAllowed');
   });
   test('I cannot create an invalid ConcreteNumberAttribute (wrong MinValue)', () => {
     expect(() => {
       new ConcreteNumberAttribute(
-        createIdentifier('designer', 'age'),
-        createAssetFamilyIdentifier('designer'),
-        createCode('age'),
-        createLabelCollection({en_US: 'Age'}),
+        'age',
+        'designer',
+        'age',
+        {en_US: 'Age'},
         false,
         false,
         0,
@@ -66,10 +48,10 @@ describe('akeneo > attribute > domain > model > attribute > type --- NumberAttri
   test('I cannot create an invalid ConcreteNumberAttribute (wrong MaxValue)', () => {
     expect(() => {
       new ConcreteNumberAttribute(
-        createIdentifier('designer', 'age'),
-        createAssetFamilyIdentifier('designer'),
-        createCode('age'),
-        createLabelCollection({en_US: 'Age'}),
+        'age',
+        'designer',
+        'age',
+        {en_US: 'Age'},
         false,
         false,
         0,

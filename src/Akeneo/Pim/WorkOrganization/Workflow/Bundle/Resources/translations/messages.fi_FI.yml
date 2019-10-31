@@ -61,7 +61,7 @@ pimee_workflow:
     index: Hallitse julkaistuja tuotteita
   product:
     permission:
-      own: Arvostele / julkaise
+      own: Tarkista / julkaise
       edit: Muokkaa
       view: Näytä
   steps:

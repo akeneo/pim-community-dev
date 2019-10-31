@@ -1,6 +1,9 @@
 {
     "defaultSeverity": "error",
-    "extends": ["tslint:recommended"],
+    "extends": [
+        "tslint:recommended",
+        "tslint-react"
+    ],
     "rules": {
         "arrow-parens": [true, "ban-single-arg-parens"],
         "interface-name": [true, "never-prefix"],
@@ -20,6 +23,16 @@
                 "multiline": "never"
             }
         ],
-        "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore", "allow-pascal-case"]
+        "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore", "allow-pascal-case"],
+        "ordered-imports": false,
+        "no-any": false,
+        "no-empty": [true, "allow-empty-catch", "allow-empty-functions"],
+        "no-empty-interface": false,
+        "jsx-no-bind": false,
+        "jsx-no-lambda": false,
+        "jsx-no-multiline-js": false,
+        "jsx-self-close": false,
+        "jsx-alignment": true,
+        "jsx-wrap-multiline": false
     }
 }

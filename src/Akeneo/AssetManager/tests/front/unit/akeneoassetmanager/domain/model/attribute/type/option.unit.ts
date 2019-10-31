@@ -1,8 +1,4 @@
 import {ConcreteOptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
-import {createIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
-import {createIdentifier as createAssetFamilyIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
-import {createCode} from 'akeneoassetmanager/domain/model/attribute/code';
 import {Option} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
 
 const normalizedFavoriteColor = {
@@ -37,10 +33,10 @@ describe('akeneo > attribute > domain > model > attribute > type --- OptionAttri
   test('I cannot create an invalid ConcreteOptionAttribute', () => {
     expect(() => {
       new ConcreteOptionAttribute(
-        createIdentifier('designer', 'favorite_color'),
-        createAssetFamilyIdentifier('designer'),
-        createCode('favorite_color'),
-        createLabelCollection({en_US: 'Favorite color'}),
+        'favorite_color',
+        'designer',
+        'favorite_color',
+        {en_US: 'Favorite color'},
         true,
         false,
         0,

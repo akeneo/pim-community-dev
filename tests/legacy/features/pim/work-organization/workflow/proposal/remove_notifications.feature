@@ -43,15 +43,3 @@ Feature: Remove notifications
       | error | Julia Stark has deleted your proposal for the product Jacket | You're fired. |
     When I click on the notification "Julia Stark has deleted your proposal for the product Jacket"
     Then I should be on the product "my-jacket" edit page
-
-  Scenario: A notification is sent when I remove a proposal from the product draft page
-    Given I press the "Send" button in the popin
-    And I logout
-    And I am logged in as "Mary"
-    When I am on the dashboard page
-    Then I should have 1 new notification
-    And I should see notification:
-      | type  | message                                                      |
-      | error | Julia Stark has deleted your proposal for the product Jacket |
-    When I click on the notification "Julia Stark has deleted your proposal for the product Jacket"
-    Then I should be on the product "my-jacket" edit page

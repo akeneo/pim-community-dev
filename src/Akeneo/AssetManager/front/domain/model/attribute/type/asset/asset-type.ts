@@ -1,9 +1,11 @@
 import {NormalizableAdditionalProperty} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import AssetFamilyIdentifier, {
-  NormalizedIdentifier as NormalizedAssetFamilyIdentifier,
+  denormalizeAssetFamilyIdentifier,
+  assetFamilyIdentifierStringValue,
+  assetFamilyidentifiersAreEqual,
 } from 'akeneoassetmanager/domain/model/asset-family/identifier';
 
-export type NormalizedAssetType = NormalizedAssetFamilyIdentifier | null;
+export type NormalizedAssetType = AssetFamilyIdentifier | null;
 
 export class InvalidArgumentError extends Error {}
 export class InvalidCallError extends Error {}
@@ -16,10 +18,6 @@ export class AssetType implements NormalizableAdditionalProperty {
       return;
     }
 
-    if (!(assetType instanceof AssetFamilyIdentifier)) {
-      throw new InvalidArgumentError('AssetType expects a AssetFamilyIdentifier argument');
-    }
-
     Object.freeze(this);
   }
 
@@ -30,11 +28,11 @@ export class AssetType implements NormalizableAdditionalProperty {
   public static createFromNormalized(normalizedAssetType: NormalizedAssetType) {
     return null === normalizedAssetType
       ? new AssetType()
-      : new AssetType(AssetFamilyIdentifier.create(normalizedAssetType));
+      : new AssetType(denormalizeAssetFamilyIdentifier(normalizedAssetType));
   }
 
   public normalize(): NormalizedAssetType {
-    return undefined === this.assetType ? null : this.assetType.stringValue();
+    return undefined === this.assetType ? null : assetFamilyIdentifierStringValue(this.assetType);
   }
 
   public static createFromString(assetType: string) {
@@ -42,13 +40,15 @@ export class AssetType implements NormalizableAdditionalProperty {
   }
 
   public stringValue(): string {
-    return undefined === this.assetType ? '' : this.assetType.stringValue();
+    return undefined === this.assetType ? '' : assetFamilyIdentifierStringValue(this.assetType);
   }
 
   public equals(assetType: AssetType) {
     return (
       (undefined === this.assetType && undefined === assetType.assetType) ||
-      (undefined !== this.assetType && undefined !== assetType.assetType && this.assetType.equals(assetType.assetType))
+      (undefined !== this.assetType &&
+        undefined !== assetType.assetType &&
+        assetFamilyidentifiersAreEqual(this.assetType, assetType.assetType))
     );
   }
 

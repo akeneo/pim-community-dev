@@ -53,7 +53,7 @@ class GrantedProductAttributeFilter implements AttributeFilterInterface
 
         if (array_key_exists('values', $standardProduct) && is_array($standardProduct['values']) && -1 !== $userId) {
             $viewableLocaleCodes = $this->getViewableLocalesForUser->fetchAll($userId);
-            $attributeCodes = array_keys($standardProduct['values']);
+            $attributeCodes = array_map('strval', array_keys($standardProduct['values']));
             $grantedAttributeCodes = array_flip(
                 $this->getViewableAttributeCodesForUser->forAttributeCodes($attributeCodes, $userId)
             );

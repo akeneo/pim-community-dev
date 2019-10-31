@@ -78,6 +78,25 @@ final class ImagePreviewActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->assertResponse($response, 301, '');
     }
 
+    /**
+     * @test
+     */
+    public function it_fallbacks_to_the_default_image_if_the_attribute_is_not_found(): void
+    {
+        $this->client->followRedirects(false);
+        $this->webClientHelper->callRoute(
+            $this->client,
+            self::URL_VALUE_PREVIEW_ROUTE,
+            [
+                'data'                => self::FILENAME,
+                'attributeIdentifier' => 'unknown_attribute',
+                'type'                => MediaLinkImageGenerator::THUMBNAIL_TYPE
+            ]
+        );
+        $response = $this->client->getResponse();
+        $this->webClientHelper->assertResponse($response, 301, '');
+    }
+
     private function loadFixtures(): void
     {
         $fixtures = $this->fixturesLoader

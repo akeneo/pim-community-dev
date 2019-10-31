@@ -81,7 +81,7 @@ final class ListAssetContext implements Context
 
     /**
      * @When the user search for :searchInput
-    */
+     */
     public function theUserSearchFor($searchInput)
     {
         $query = AssetQuery::createFromNormalized([
@@ -99,7 +99,7 @@ final class ListAssetContext implements Context
                 [
                     'field' => 'asset_family',
                     'operator' => '=',
-                    'value' => 'packshot',
+                    'value' => 'designer',
                     'context' => []
                 ]
             ]
@@ -122,13 +122,13 @@ final class ListAssetContext implements Context
                 [
                     'field' => $filter,
                     'operator' => $operator,
-                    'value' => [$value],
+                    'value' => $value,
                     'context' => []
                 ],
                 [
                     'field' => 'asset_family',
                     'operator' => '=',
-                    'value' => 'packshot',
+                    'value' => 'designer',
                     'context' => []
                 ]
             ]
@@ -169,7 +169,7 @@ final class ListAssetContext implements Context
 
     /**
      * @When the user list the assets
-    */
+     */
     public function theUserListTheAssets()
     {
         $query = AssetQuery::createFromNormalized([
@@ -181,7 +181,7 @@ final class ListAssetContext implements Context
                 [
                     'field' => 'asset_family',
                     'operator' => '=',
-                    'value' => 'packshot',
+                    'value' => 'designer',
                     'context' => []
                 ]
             ]
@@ -192,13 +192,13 @@ final class ListAssetContext implements Context
 
     private function loadAsset(): void
     {
-        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('packshot');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
         $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
         $attributeAsLabel = $assetFamily->getAttributeAsLabelReference();
 
-        // FRONTVIEW
-        $assetCode = AssetCode::fromString('frontview');
-        $identifier = AssetIdentifier::fromString('packshot_frontview_29aea250-bc94-49b2-8259-bbc116410eb2');
+        // STARCK
+        $assetCode = AssetCode::fromString('starck');
+        $identifier = AssetIdentifier::fromString('designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2');
 
         $labelValue = Value::create(
             $attributeAsLabel->getIdentifier(),
@@ -215,9 +215,9 @@ final class ListAssetContext implements Context
         );
         $this->assetRepository->create($assetStarck);
 
-        // SIDEVIEW
-        $assetCode = AssetCode::fromString('sideview');
-        $identifier = AssetIdentifier::fromString('packshot_sideview_34aee120-fa95-4ff2-8439-bea116120e34');
+        // COCO
+        $assetCode = AssetCode::fromString('coco');
+        $identifier = AssetIdentifier::fromString('designer_coco_34aee120-fa95-4ff2-8439-bea116120e34');
 
         $labelValue = Value::create(
             $attributeAsLabel->getIdentifier(),
@@ -234,9 +234,9 @@ final class ListAssetContext implements Context
         );
         $this->assetRepository->create($assetCoco);
 
-        // BACKVIEW
-        $assetCode = AssetCode::fromString('backview');
-        $identifier = AssetIdentifier::fromString('packshot_backview_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd');
+        // DYSON
+        $assetCode = AssetCode::fromString('dyson');
+        $identifier = AssetIdentifier::fromString('designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd');
 
         $labelValue = Value::create(
             $attributeAsLabel->getIdentifier(),
@@ -257,10 +257,10 @@ final class ListAssetContext implements Context
     private function loadAssetFamily(): void
     {
         $assetFamily = AssetFamily::create(
-            AssetFamilyIdentifier::fromString('packshot'),
+            AssetFamilyIdentifier::fromString('designer'),
             [
-                'fr_FR' => 'Packshot',
-                'en_US' => 'Packshot',
+                'fr_FR' => 'Concepteur',
+                'en_US' => 'Designer',
             ],
             Image::createEmpty(),
             RuleTemplateCollection::empty()

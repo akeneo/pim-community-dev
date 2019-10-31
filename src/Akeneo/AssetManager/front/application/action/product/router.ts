@@ -1,9 +1,10 @@
 import {redirectToRoute} from 'akeneoassetmanager/application/event/router';
 import Product from 'akeneoassetmanager/domain/model/product/product';
+import {productIdentifierStringValue} from 'akeneoassetmanager/domain/model/product/identifier';
 
 export const redirectToProduct = (product: Product) => {
   return redirectToRoute(`pim_enrich_${product.getType()}_edit`, {
-    id: product.getId().stringValue(),
+    id: productIdentifierStringValue(product.getId()),
   });
 };
 

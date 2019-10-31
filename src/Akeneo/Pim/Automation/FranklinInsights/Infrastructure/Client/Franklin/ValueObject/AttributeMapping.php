@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping as AttributeMappingModel;
+
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
@@ -100,6 +102,8 @@ class AttributeMapping
     private function validateAttribute(array $attribute): void
     {
         $this->checkMandatoryKeys($attribute);
+
+        $this->validateAttributeType((string) $attribute['from']['type']);
         $this->validateStatus($attribute['status']);
 
         if (!isset($attribute['from']['id'])) {
@@ -124,6 +128,13 @@ class AttributeMapping
 
         if (!in_array($status, $allowedStatus)) {
             throw new \InvalidArgumentException(sprintf('The attribute status "%s" is invalid', $status));
+        }
+    }
+
+    private function validateAttributeType(string $franklinAttributeType): void
+    {
+        if (!in_array($franklinAttributeType, AttributeMappingModel::AUTHORIZED_ATTRIBUTE_TYPE_MAPPINGS)) {
+            throw new \InvalidArgumentException(sprintf('The franklin attribute type "%s" is not handled', $franklinAttributeType));
         }
     }
 

@@ -1,8 +1,4 @@
 import {ConcreteAssetAttribute} from 'akeneoassetmanager/domain/model/attribute/type/asset';
-import {createIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
-import {createIdentifier as createAssetFamilyIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
-import {createCode} from 'akeneoassetmanager/domain/model/attribute/code';
 import {AssetType} from 'akeneoassetmanager/domain/model/attribute/type/asset/asset-type';
 
 const normalizedBrand = {
@@ -29,16 +25,7 @@ describe('akeneo > attribute > domain > model > attribute > type --- AssetAttrib
   });
   test('I cannot create an invalid ConcreteAssetAttribute', () => {
     expect(() => {
-      new ConcreteAssetAttribute(
-        createIdentifier('designer', 'brand'),
-        createAssetFamilyIdentifier('designer'),
-        createCode('brand'),
-        createLabelCollection({en_US: 'Front View'}),
-        true,
-        false,
-        0,
-        true
-      );
+      new ConcreteAssetAttribute('brand', 'designer', 'brand', {en_US: 'Front View'}, true, false, 0, true);
     }).toThrow('Attribute expects a AssetType as assetType');
   });
 });

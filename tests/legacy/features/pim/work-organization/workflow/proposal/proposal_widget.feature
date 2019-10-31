@@ -24,25 +24,3 @@ Feature: Display proposal widget
     And the grid should contain 1 elements
     And I should see entity my-tee-shirt
     And I should see the text "Sandra"
-
-  Scenario: Successfully get redirected to correct Mary's proposal grid filtered on selected proposal
-    When I am on the dashboard page
-    And I click on the proposal to review created by "Mary" on the product "my-jacket"
-    Then I should be on the proposals index page
-    And the grid should contain 1 elements
-    And I should see entity my-jacket
-    And I should see the text "Mary"
-
-  Scenario: Successfully get redirected to correct Sandra's proposal grid filtered on selected proposal
-    When I am on the dashboard page
-    And I click on the proposal to review created by "Sandra" on the product "my-jacket"
-    Then I should be on the proposals index page
-    And the grid should contain 1 elements
-    And I should see entity my-jacket
-    And I should see the text "Sandra"
-
-  @jira https://akeneo.atlassian.net/browse/PIM-5934
-  Scenario: Successfully go to the proposal view
-    Given I am on the dashboard page
-    When I follow "View all proposals"
-    Then I should be on the proposals index page
