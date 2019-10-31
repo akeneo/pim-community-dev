@@ -47,6 +47,7 @@ class InMemoryAttributeOptionRepositorySpec extends ObjectBehavior
         );
 
         $this->findOneByIdentifier('hair_color.brown')->shouldReturn($brownHairColor);
+        $this->findOneByIdentifier('Eye_Color.Brown')->shouldReturn($brownEyeColor);
     }
 
     function it_does_not_find_an_attribute_option_by_identifier()

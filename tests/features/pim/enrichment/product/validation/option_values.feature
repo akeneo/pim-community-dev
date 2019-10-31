@@ -37,6 +37,14 @@ Feature: Validate simple and multi-select attributes of a product
     Then no error is raised
 
   @acceptance-back
+  Scenario: Providing existing options with the wrong case should not raise an error
+    When a product is created with values:
+      | attribute   | data                    | scope | locale |
+      | color       | Red                     |       |        |
+      | collections | Spring_2019,SUMMER_2019 |       |        |
+    Then no error is raised
+
+  @acceptance-back
   Scenario: Providing non-existing simple select options should raise an error
     When a product is created with values:
       | attribute   | data                                          | scope | locale |
