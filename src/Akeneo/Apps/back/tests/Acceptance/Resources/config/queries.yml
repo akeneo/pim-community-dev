@@ -1,0 +1,5 @@
+services:
+    akeneo_app.persistence.query.select_apps:
+        class: 'Akeneo\Apps\Infrastructure\Persistence\InMemory\Query\InMemorySelectAppsQuery'
+        arguments:
+            - '@akeneo_app.persistence.repository.app'

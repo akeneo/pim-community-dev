@@ -16,7 +16,7 @@ use Ramsey\Uuid\Uuid;
  */
 class InMemoryAppRepository implements AppRepository
 {
-    private $dataRows = [];
+    public $dataRows = [];
 
     public function generateId(): string
     {

@@ -1,0 +1,5 @@
+services:
+    akeneo_app.persistence.query.select_apps:
+        class: 'Akeneo\Apps\Infrastructure\Persistence\Dbal\Query\DbalSelectAppsQuery'
+        arguments:
+            - '@database_connection'

@@ -7,6 +7,7 @@ namespace spec\Akeneo\Apps\Application\Query;
 use Akeneo\Apps\Application\Query\FetchAppsHandler;
 use Akeneo\Apps\Domain\Model\Read\App;
 use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
+use Akeneo\Apps\Domain\Persistence\Query\SelectAppsQuery;
 use Akeneo\Apps\Domain\Persistence\Repository\AppRepository;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -18,9 +19,9 @@ use Prophecy\Argument;
  */
 class FetchAppsHandlerSpec extends ObjectBehavior
 {
-    public function let(AppRepository $repository)
+    public function let(SelectAppsQuery $selectAppsQuery)
     {
-        $this->beConstructedWith($repository);
+        $this->beConstructedWith($selectAppsQuery);
     }
 
     public function it_is_initializable()
@@ -28,14 +29,14 @@ class FetchAppsHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(FetchAppsHandler::class);
     }
 
-    public function it_fetches_apps($repository)
+    public function it_fetches_apps($selectAppsQuery)
     {
         $apps = [
             new App('42', 'magento', 'Magento Connector', FlowType::DATA_DESTINATION),
             new App('43', 'bynder', 'Bynder DAM', FlowType::OTHER),
         ];
 
-        $repository->fetchAll()->willReturn($apps);
+        $selectAppsQuery->execute()->willReturn($apps);
 
         $this->query()->shouldReturn($apps);
     }
