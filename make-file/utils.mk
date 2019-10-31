@@ -1,8 +1,9 @@
-# This function will set the var "O" with the given argument if the var CI is set to "1".
-# You need to use this function to configure your targets to run them on the CI:
-# $(call execute, XXX) where XXX is the target options.
+# This function will execute a command (first argument) and add command options (second argument) if CI=1
+# You need to use this function to configure your targets if they need specific options to be ran on the CI
 #
-# Example: $(call execute, --format=junit > spec.xml)
+# $(call execute, command, options)
+#
+# Example: $(call execute, vendor/bin/phpspec run, --format=junit > spec.xml)
 #
 # How to run tests? Let's take an example: run asset manager unit tests.
 #
@@ -14,10 +15,6 @@
 #
 # CAUTION:
 #  - use this function if your test tools do not support mutiple output format
-#  - the command in your target must use the var O
-#
-# unit-back:
-#	$(PHP_RUN) vendor/bin/phpspec run $(O)
 
 define execute
     $(if $(filter $(CI),1),$(1) $(2), $(1))
