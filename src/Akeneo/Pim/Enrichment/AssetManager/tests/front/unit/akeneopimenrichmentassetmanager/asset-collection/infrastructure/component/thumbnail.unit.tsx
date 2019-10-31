@@ -227,10 +227,10 @@ test('It trigger event on click by clicking', () => {
         readonly={false}
         assetCollection={['frontview', 'sideview', 'backview']}
         onRemove={() => {}}
+        onMove={() => {}}
         onClick={() => {
           clicked = true;
         }}
-        onMove={() => {}}
       />
     </ThemeProvider>
   );

@@ -6,6 +6,7 @@ import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
 import __ from 'akeneoassetmanager/tools/translator';
 import Download from 'akeneoassetmanager/application/component/app/icon/download';
 import Fullscreen from 'akeneoassetmanager/application/component/app/icon/fullscreen';
+import {MediaPreviewTypes, getAssetPreview} from 'akeneoassetmanager/tools/media-url-generator';
 
 const Container = styled.div`
   display: flex;
@@ -62,16 +63,21 @@ type PreviewProps = {
 };
 
 export const Preview = ({asset, context}: PreviewProps) => {
+  console.log(asset);
   return (
     <Container>
       <Border>
-        <Image src={asset.image} alt={getAssetLabel(asset, context.locale)} data-role="asset-preview" />
+        <Image
+          src={getAssetPreview(asset, MediaPreviewTypes.Preview)}
+          alt={getAssetLabel(asset, context.locale)}
+          data-role="asset-preview"
+        />
         <Actions>
-          <Action href={asset.image} download>
+          <Action href={'asset.image'} download>
             <Download />
             <Label>{__('pim_asset_manager.download')}</Label>
           </Action>
-          <Action href={asset.image} target="_blank">
+          <Action href={'asset.image'} target="_blank">
             <Fullscreen />
             <Label>{__('pim_asset_manager.fullscreen')}</Label>
           </Action>

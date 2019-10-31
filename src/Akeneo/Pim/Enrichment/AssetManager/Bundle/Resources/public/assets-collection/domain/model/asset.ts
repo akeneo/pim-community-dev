@@ -147,3 +147,4 @@ export const getAssetByCode = (assetCollection: Asset[], assetCode: AssetCode): 
 
 export const sortAssetCollection = (assetCollection: Asset[], assetCodes: AssetCode[]): Asset[] => {
   return [...assetCollection].sort((a, b) => assetCodes.indexOf(a.code) - assetCodes.indexOf(b.code));
+};

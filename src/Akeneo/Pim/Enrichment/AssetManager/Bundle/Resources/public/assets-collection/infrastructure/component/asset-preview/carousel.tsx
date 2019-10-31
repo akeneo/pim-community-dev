@@ -8,6 +8,7 @@ import {Attribute, getAttributeLabel} from 'akeneopimenrichmentassetmanager/plat
 import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import {Spacer} from 'akeneopimenrichmentassetmanager/platform/component/common';
+import {getAssetPreview, MediaPreviewTypes} from 'akeneoassetmanager/tools/media-url-generator';
 
 const AssetThumbnail = styled.img<{highlighted: boolean}>`
   border: 2px solid
@@ -64,7 +65,7 @@ export const Carousel = ({
           data-role={`carousel-thumbnail-${asset.code}`}
           key={asset.code}
           highlighted={selectedAssetCode === asset.code}
-          src={asset.image}
+          src={getAssetPreview(asset, MediaPreviewTypes.Thumbnail)}
           onClick={() => onAssetChange(asset.code)}
         />
       ))}
