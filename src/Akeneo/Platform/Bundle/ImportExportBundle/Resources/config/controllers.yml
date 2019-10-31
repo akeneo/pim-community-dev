@@ -1,40 +1,8 @@
 parameters:
-    pim_import_export.controller.import_profile.class:   Akeneo\Platform\Bundle\ImportExportBundle\Controller\ImportProfileController
-    pim_import_export.controller.export_profile.class:   Akeneo\Platform\Bundle\ImportExportBundle\Controller\ExportProfileController
     pim_import_export.controller.import_execution.class: Akeneo\Platform\Bundle\ImportExportBundle\Controller\ImportExecutionController
     pim_import_export.controller.export_execution.class: Akeneo\Platform\Bundle\ImportExportBundle\Controller\ExportExecutionController
 
 services:
-    pim_import_export.controller.export_profile:
-        public: true
-        class: '%pim_import_export.controller.export_profile.class%'
-        arguments:
-            - '@templating'
-            - '@router'
-            - '@form.factory'
-            - '@akeneo_batch.job.job_registry'
-            - '@pim_import_export.form.type.job_instance'
-            - '@akeneo_batch.job_instance_factory'
-            - '@doctrine.orm.entity_manager'
-            - '@akeneo_batch.job_parameters_factory'
-            - '@translator'
-            - export
-
-    pim_import_export.controller.import_profile:
-        public: true
-        class: '%pim_import_export.controller.import_profile.class%'
-        arguments:
-            - '@templating'
-            - '@router'
-            - '@form.factory'
-            - '@akeneo_batch.job.job_registry'
-            - '@pim_import_export.form.type.job_instance'
-            - '@akeneo_batch.job_instance_factory'
-            - '@doctrine.orm.entity_manager'
-            - '@akeneo_batch.job_parameters_factory'
-            - '@translator'
-            - import
-
     pim_import_export.controller.export_execution:
         public: true
         class: '%pim_import_export.controller.export_execution.class%'
