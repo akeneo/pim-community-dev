@@ -1,11 +1,10 @@
 import {create, denormalize} from 'akeneoassetmanager/domain/model/asset/data/asset-collection';
-import {createCode} from 'akeneoassetmanager/domain/model/asset/code';
 
 describe('akeneo > asset family > domain > model > asset > data --- asset collection', () => {
   test('I can create a new AssetData with a AssetCode collection value', () => {
     expect(create([]).normalize()).toEqual([]);
-    expect(create([createCode('starck')]).normalize()).toEqual(['starck']);
-    expect(create([createCode('starck'), createCode('dyson')]).normalize()).toEqual(['starck', 'dyson']);
+    expect(create(['starck']).normalize()).toEqual(['starck']);
+    expect(create(['starck', 'dyson']).normalize()).toEqual(['starck', 'dyson']);
   });
 
   test('I cannot create a new AssetData with a value other than a AssetCode collection', () => {

@@ -1,52 +1,39 @@
-export interface NormalizedLabelCollection {
-  [locale: string]: string;
-}
+import {isLabels, isString} from 'akeneoassetmanager/domain/model/utils';
+import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 
-class InvalidTypeError extends Error {}
-class UnknownLocaleError extends Error {}
+export type Label = string;
+type LabelCollection = {
+  [locale: string]: Label;
+};
+export default LabelCollection;
 
-const ensureString = (value: string) => {
-  if ('string' !== typeof value) {
-    throw new InvalidTypeError('LabelCollection expect only values as {"en_US": "My label"} to be created');
+export const denormalizeLabelCollection = (labelCollection: any) => {
+  if (!isLabels(labelCollection)) {
+    throw new Error('LabelCollection expect only values as {"en_US": "My label"} to be created');
   }
+
+  return {...labelCollection};
 };
 
-export default class LabelCollection {
-  private constructor(private labels: NormalizedLabelCollection) {
-    if ('object' !== typeof labels) {
-      throw new InvalidTypeError('LabelCollection expect only values as {"en_US": "My label"} to be created');
-    }
+export const setLabelInCollection = (labelCollection: LabelCollection, locale: LocaleCode, label: Label) => ({
+  ...labelCollection,
+  [locale]: label,
+});
 
-    Object.keys(labels).forEach((key: string) => {
-      ensureString(labels[key]);
-    });
+export const hasLabelInCollection = (labelCollection: LabelCollection, locale: LocaleCode) =>
+  isString(labelCollection[locale]) && labelCollection[locale].length > 0;
 
-    Object.freeze(this);
+export const getLabelInCollection = (
+  labelCollection: LabelCollection,
+  locale: LocaleCode,
+  fallbackOnCode: boolean = true,
+  code: string = ''
+) => {
+  if (!hasLabelInCollection(labelCollection, locale) && !fallbackOnCode) {
+    return '';
   }
 
-  public static create(labels: NormalizedLabelCollection): LabelCollection {
-    return new LabelCollection(labels);
-  }
+  return hasLabelInCollection(labelCollection, locale) ? labelCollection[locale] : `[${code}]`;
+};
 
-  public hasLabel(locale: string): boolean {
-    return 'string' === typeof this.labels[locale] && this.labels[locale].length > 0;
-  }
-
-  public getLabel(locale: string): string {
-    if (!this.hasLabel(locale)) {
-      throw new UnknownLocaleError(`The label for locale ${locale} doesn't exist`);
-    }
-
-    return this.labels[locale];
-  }
-
-  public setLabel(locale: string, label: string): LabelCollection {
-    return LabelCollection.create({...this.labels, [locale]: label});
-  }
-
-  public normalize(): NormalizedLabelCollection {
-    return this.labels;
-  }
-}
-
-export const createLabelCollection = LabelCollection.create;
+export const emptyLabelCollection = () => ({});

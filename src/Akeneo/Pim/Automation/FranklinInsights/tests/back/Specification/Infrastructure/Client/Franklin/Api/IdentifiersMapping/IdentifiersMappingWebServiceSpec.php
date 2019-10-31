@@ -22,14 +22,12 @@ use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\UriGen
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use PhpSpec\ObjectBehavior;
+use Psr\Log\LoggerInterface;
 
 class IdentifiersMappingWebServiceSpec extends ObjectBehavior
 {
-    public function let(
-        UriGenerator $uriGenerator,
-        GuzzleClient $httpClient
-    ): void {
-        $this->beConstructedWith($uriGenerator, $httpClient);
+    public function let(UriGenerator $uriGenerator, GuzzleClient $httpClient, LoggerInterface $logger): void {
+        $this->beConstructedWith($uriGenerator, $httpClient, $logger);
     }
 
     public function it_is_subscription_collection(): void

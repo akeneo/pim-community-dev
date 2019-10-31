@@ -14,8 +14,10 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Controller\Asset;
 
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
+use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\DefaultImageProviderInterface;
+use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\OtherGenerator;
 use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\PreviewGeneratorInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,10 +37,17 @@ class ImagePreviewAction
     /** @var PreviewGeneratorInterface  */
     private $previewGenerator;
 
-    public function __construct(AttributeRepositoryInterface $attributeRepository, PreviewGeneratorInterface $previewGenerator)
-    {
+    /** @var DefaultImageProviderInterface */
+    private $defaultImageProvider;
+
+    public function __construct(
+        AttributeRepositoryInterface $attributeRepository,
+        PreviewGeneratorInterface $previewGenerator,
+        DefaultImageProviderInterface $defaultImageProvider
+    ) {
         $this->attributeRepository = $attributeRepository;
         $this->previewGenerator = $previewGenerator;
+        $this->defaultImageProvider = $defaultImageProvider;
     }
 
     public function __invoke(
@@ -48,9 +57,12 @@ class ImagePreviewAction
     ): Response {
         $data = $request->get('data');
 
-        /** @var MediaLinkAttribute $attribute */
-        $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::fromString($attributeIdentifier));
-        $imagePreview = $this->previewGenerator->generate($data, $attribute, $type);
+        try {
+            $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::fromString($attributeIdentifier));
+            $imagePreview = $this->previewGenerator->generate($data, $attribute, $type);
+        } catch (AttributeNotFoundException $e) {
+            $imagePreview = $this->defaultImageProvider->getImageUrl(OtherGenerator::DEFAULT_OTHER, $type);
+        }
 
         return new RedirectResponse($imagePreview, Response::HTTP_MOVED_PERMANENTLY);
     }

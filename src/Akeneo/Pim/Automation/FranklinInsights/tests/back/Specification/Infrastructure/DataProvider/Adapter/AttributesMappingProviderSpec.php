@@ -20,6 +20,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Configurat
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\AttributesMapping\AttributesMappingWebService;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\AttributesMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Adapter\AttributesMappingProvider;
 use PhpSpec\ObjectBehavior;
@@ -47,29 +48,37 @@ class AttributesMappingProviderSpec extends ObjectBehavior
     public function it_gets_attributes_mapping($api): void
     {
         $api->setToken('valid-token')->shouldBeCalled();
-        $response = new AttributesMapping([
+
+        $attributesMapping = array_map(
+            function($attribute) {
+                return new AttributeMapping($attribute);
+            },
             [
-                'from' => [
-                    'id' => 'product_weight',
-                    'label' => [
-                        'en_us' => 'Product Weight',
+                [
+                    'from' => [
+                        'id' => 'product_weight',
+                        'label' => [
+                            'en_us' => 'Product Weight',
+                        ],
+                        'type' => 'metric',
                     ],
-                    'type' => 'metric',
+                    'to' => null,
+                    'summary' => ['23kg',  '12kg'],
+                    'status' => 'pending',
                 ],
-                'to' => null,
-                'summary' => ['23kg',  '12kg'],
-                'status' => 'pending',
-            ],
-            [
-                'from' => [
-                    'id' => 'color',
-                    'type' => 'multiselect',
+                [
+                    'from' => [
+                        'id' => 'color',
+                        'type' => 'multiselect',
+                    ],
+                    'to' => ['id' => 'color'],
+                    'status' => 'pending',
+                    'summary' => ['blue',  'red'],
                 ],
-                'to' => ['id' => 'color'],
-                'status' => 'pending',
-                'summary' => ['blue',  'red'],
-            ],
-        ]);
+            ]
+        );
+
+        $response = new AttributesMapping($attributesMapping);
         $api->fetchByFamily('camcorders')->willReturn($response);
 
         $attributeMappingCollection = $this->getAttributesMapping(new FamilyCode('camcorders'));

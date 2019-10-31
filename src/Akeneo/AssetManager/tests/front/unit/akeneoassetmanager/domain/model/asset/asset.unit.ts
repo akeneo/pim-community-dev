@@ -1,7 +1,3 @@
-import {createIdentifier as createAssetFamilyIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
-import {createCode} from 'akeneoassetmanager/domain/model/asset/code';
-import {createIdentifier as createAssetIdentifier} from 'akeneoassetmanager/domain/model/asset/identifier';
 import {createAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import {createEmptyFile} from 'akeneoassetmanager/domain/model/file';
 import {createValueCollection} from 'akeneoassetmanager/domain/model/asset/value-collection';
@@ -9,14 +5,14 @@ import {createValue} from 'akeneoassetmanager/domain/model/asset/value';
 import {denormalize as denormalizeTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
 import {denormalize as denormalizeTextData} from 'akeneoassetmanager/domain/model/asset/data/text';
 
-const michelIdentifier = createAssetIdentifier('michel');
-const designerIdentifier = createAssetFamilyIdentifier('designer');
-const michelCode = createCode('michel');
-const michelLabels = createLabelCollection({en_US: 'Michel'});
-const sofaIdentifier = createAssetFamilyIdentifier('sofa');
-const didierIdentifier = createAssetIdentifier('designer_didier_1');
-const didierCode = createCode('didier');
-const didierLabels = createLabelCollection({en_US: 'Didier'});
+const michelIdentifier = 'michel';
+const designerIdentifier = 'designer';
+const michelCode = 'michel';
+const michelLabels = {en_US: 'Michel'};
+const sofaIdentifier = 'sofa';
+const didierIdentifier = 'designer_didier_1';
+const didierCode = 'didier';
+const didierLabels = {en_US: 'Didier'};
 const emptyFile = createEmptyFile();
 const channelEcommerce = 'ecommerce';
 const localeEnUS = 'en_US';
@@ -76,33 +72,30 @@ describe('akeneo > asset > domain > model --- asset', () => {
 
   test('I cannot create a malformed asset', () => {
     expect(() => {
-      createAsset(michelIdentifier, designerIdentifier, didierCode);
-    }).toThrow('Asset expects a LabelCollection as labelCollection argument');
+      createAsset(michelIdentifier, undefined, '');
+    }).toThrow('Identifier expects a string as parameter to be created');
     expect(() => {
-      createAsset(michelIdentifier);
-    }).toThrow('Asset expects an AssetFamilyIdentifier as assetFamilyIdentifier argument');
+      createAsset(michelIdentifier, designerIdentifier);
+    }).toThrow('Code expects a string as parameter to be created');
     expect(() => {
-      createAsset();
-    }).toThrow('Asset expects a AssetIdentifier as identifier argument');
+      createAsset(undefined, '', '');
+    }).toThrow('Identifier expects a string as parameter to be created');
     expect(() => {
-      createAsset(12);
-    }).toThrow('Asset expects a AssetIdentifier as identifier argument');
-    expect(() => {
-      createAsset(michelIdentifier, designerIdentifier, didierCode, 52);
-    }).toThrow('Asset expects a LabelCollection as labelCollection argument');
+      createAsset(12, '', '');
+    }).toThrow('Identifier expects a string as parameter to be created');
     expect(() => {
       createAsset(michelIdentifier, designerIdentifier, didierCode, didierLabels);
     }).toThrow('Asset expects a File as image argument');
     expect(() => {
-      createAsset(michelIdentifier, sofaIdentifier, '12', michelLabels, emptyFile);
-    }).toThrow('Asset expects a AssetCode as code argument');
+      createAsset(michelIdentifier, sofaIdentifier, {nice: '12'}, michelLabels, emptyFile);
+    }).toThrow('Code expects a string as parameter to be created');
     expect(() => {
       createAsset(michelIdentifier, designerIdentifier, didierCode, didierLabels, emptyFile, '');
     }).toThrow('Asset expects a ValueCollection as valueCollection argument');
   });
 
   test('I can compare two asset', () => {
-    const michelLabels = createLabelCollection({en_US: 'Michel'});
+    const michelLabels = {en_US: 'Michel'};
     expect(
       createAsset(
         didierIdentifier,
@@ -153,7 +146,7 @@ describe('akeneo > asset > domain > model --- asset', () => {
         emptyFile,
         createValueCollection([])
       ).getLabelCollection()
-    ).toBe(didierLabels);
+    ).toEqual(didierLabels);
   });
 
   test('I can get the code of the asset', () => {

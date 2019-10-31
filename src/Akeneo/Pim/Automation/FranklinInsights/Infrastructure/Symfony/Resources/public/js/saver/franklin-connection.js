@@ -14,20 +14,12 @@
  *
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-define([
-    'underscore',
-    'pim/saver/base',
-    'routing'
-], (
-    _,
-    BaseSaver,
-    Routing
-) => {
+define(['underscore', 'pim/saver/base', 'routing'], (_, BaseSaver, Routing) => {
     return _.extend({}, BaseSaver, {
-        /**
-         * {@inheritdoc}
-         */
-        getUrl: function () {
+    /**
+     * {@inheritdoc}
+     */
+        getUrl: function() {
             return Routing.generate(__moduleConfig.url);
         }
     });

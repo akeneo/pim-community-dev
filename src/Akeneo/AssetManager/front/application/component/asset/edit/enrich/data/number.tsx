@@ -35,7 +35,7 @@ const View = ({
   return (
     <React.Fragment>
       <input
-        id={`pim_asset_manager.asset.enrich.${value.attribute.getCode().stringValue()}`}
+        id={`pim_asset_manager.asset.enrich.${value.attribute.getCode()}`}
         autoComplete="off"
         className={`AknTextField AknTextField--narrow AknTextField--light
           ${value.attribute.valuePerLocale ? 'AknTextField--localizable' : ''}

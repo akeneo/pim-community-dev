@@ -1,8 +1,4 @@
 import {ConcreteMediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
-import {createIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
-import {createIdentifier as createAssetFamilyIdentifier,} from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
-import {createCode} from 'akeneoassetmanager/domain/model/attribute/code';
 
 const normalizedMediaLink = {
   identifier: 'url',
@@ -28,36 +24,17 @@ describe('akeneo > attribute > domain > model > attribute > type --- MediaLinkAt
 
   test('I cannot create an invalid ConcreteMediaLinkAttribute', () => {
     expect(() => {
-      new ConcreteMediaLinkAttribute(
-        createIdentifier('designer', 'url'),
-        createAssetFamilyIdentifier('designer'),
-        createCode('url'),
-        createLabelCollection({en_US: 'Url'}),
-        true,
-        false,
-        0,
-        true
-      );
+      new ConcreteMediaLinkAttribute('url', 'designer', 'url', {en_US: 'Url'}, true, false, 0, true);
     }).toThrow('Attribute expects a valid Prefix as prefix');
     expect(() => {
-      new ConcreteMediaLinkAttribute(
-        createIdentifier('designer', 'url'),
-        createAssetFamilyIdentifier('designer'),
-        createCode('url'),
-        createLabelCollection({en_US: 'Url'}),
-        true,
-        false,
-        0,
-        true,
-        null
-      );
+      new ConcreteMediaLinkAttribute('url', 'designer', 'url', {en_US: 'Url'}, true, false, 0, true, null);
     }).toThrow('Attribute expects a valid Suffix as suffix');
     expect(() => {
       new ConcreteMediaLinkAttribute(
-        createIdentifier('designer', 'url'),
-        createAssetFamilyIdentifier('designer'),
-        createCode('url'),
-        createLabelCollection({en_US: 'Url'}),
+        'url',
+        'designer',
+        'url',
+        {en_US: 'Url'},
         true,
         false,
         0,

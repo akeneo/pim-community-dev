@@ -75,7 +75,6 @@ akeneo_franklin_insights:
           family_status:
             pending: 'Nuovi attributi Franklin da recensire'
             full: 'Tutti gli attributi Franklin mappati'
-          types_mismatch_warning: 'Attenzione: tipi di attributi non corrispondenti.'
           family_progress:
             title: 'Numero di attributi mappati'
             description: "Usa questa barra per vedere a priva vista lo stato del lavoro"
@@ -109,7 +108,7 @@ akeneo_franklin_insights:
         no_identifiers_mapping: 'Mappa gli identificatori del tuo catalogo prodotti in Impostazioni > Franklin Insights prima di iscrivere i prodotti.'
         insufficient_credits: "L'iscrizione dei prodotti a Franklin Insights non è andata a buon fine. Non disponi di credito sufficiente."
         invalid_mapped_values: 'L''iscrizione dei prodotti a Franklin Insights non è andata a buon fine. Iscrivi il prodotto con una combinazione valida di identificatori.'
-        data_provider_error: 'Franklin ha restituito un errore durante il tentativo di sottoscrivere il prodotto'
+        data_provider_error: 'Franklin ha restituito un errore durante il tentativo di sottoscrivere il prodotto' #TODO: check with POs
         not_subscribed: 'Il prodotto non è iscritto'
         already_subscribed_product: 'Il prodotto è già iscritto.'
         variant_product: 'I prodotti varianti non possono essere iscritti a Franklin Insights.'
@@ -131,7 +130,6 @@ akeneo_franklin_insights:
         edit:
           title: '{{ familyLabel }} - {{ franklinAttributeLabel }} opzioni attributo'
           sub_title: 'Conosci Franklin, il tuo <span class="AknDescriptionHeader-title--highlight">assistente AI Informazioni Prodotto</span>!'
-          description: 'Per aiutarti ad arricchire il tuo catalogo, Franklin avrà bisogno di sapere quali sono le opzioni attributo del tuo catalogo che corrispondono al suo. <a href="#" target="_blank" class="AknDescriptionHeader-link">Maggiori informazioni</a>'
   product:
     edit:
       btn.push: Suggerisci dati

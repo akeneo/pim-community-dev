@@ -1,5 +1,5 @@
-import {NormalizedCode as NormalizedAssetCode} from 'akeneoassetmanager/domain/model/asset/code';
-import {NormalizedCode as NormalizedAttributeCode} from 'akeneoassetmanager/domain/model/product/attribute/code';
+import AttributeCode from 'akeneoassetmanager/domain/model/product/attribute/code';
+import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 
 export const redirectToRoute = (
   route: string,
@@ -9,6 +9,6 @@ export const redirectToRoute = (
   return {type: 'REDIRECT_TO_ROUTE', route, params, options};
 };
 
-export const redirectToProductGrid = (selectedAttribute: NormalizedAttributeCode, assetCode: NormalizedAssetCode) => {
+export const redirectToProductGrid = (selectedAttribute: AttributeCode, assetCode: AssetCode) => {
   return {type: 'REDIRECT_TO_PRODUCT_GRID', selectedAttribute, assetCode};
 };

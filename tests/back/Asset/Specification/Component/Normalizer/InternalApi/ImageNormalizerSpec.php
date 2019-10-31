@@ -7,7 +7,10 @@ use Akeneo\Asset\Component\Model\Reference;
 use Akeneo\Asset\Component\Model\ReferenceInterface;
 use Akeneo\Asset\Component\Normalizer\InternalApi\ImageNormalizer;
 use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\AssetPreviewGenerator;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Pim\Enrichment\AssetManager\Component\Value\AssetCollectionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\FileNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryResolverInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValue;
@@ -23,9 +26,16 @@ class ImageNormalizerSpec extends ObjectBehavior
         FileNormalizer $fileNormalizer,
         LocaleRepositoryInterface $localeRepository,
         IdentifiableObjectRepositoryInterface $attributeRepository,
-        ReferenceDataRepositoryResolverInterface $repositoryResolver
+        ReferenceDataRepositoryResolverInterface $repositoryResolver,
+        AssetPreviewGenerator $assetPreviewGenerator
     ) {
-        $this->beConstructedWith($fileNormalizer, $localeRepository, $attributeRepository, $repositoryResolver);
+        $this->beConstructedWith(
+            $fileNormalizer,
+            $localeRepository,
+            $attributeRepository,
+            $repositoryResolver,
+            $assetPreviewGenerator
+        );
     }
 
     function it_is_initializable()
@@ -61,6 +71,54 @@ class ImageNormalizerSpec extends ObjectBehavior
         $fileNormalizer->normalize($fileInfo)->willReturn(['data file']);
 
         $this->normalize($value)->shouldReturn(['data file']);
+    }
+
+    function it_normalizes_an_asset_from_asset_manager(
+        $attributeRepository,
+        $repositoryResolver,
+        AssetPreviewGenerator $assetPreviewGenerator,
+        AssetInterface $asset,
+        AttributeInterface $attribute,
+        AssetCollectionValue $value,
+        AssetRepositoryInterface $referenceDataRepository,
+        AssetCode $assetA,
+        AssetCode $assetB
+    ) {
+        $attributeCode = 'assets-manager-collection';
+
+        $assetA->__toString()->willReturn('asset_a');
+        $assetB->__toString()->willReturn('asset_b');
+
+        $value->getAttributeCode()->willReturn($attributeCode);
+        $value->getData()->willReturn([$assetA, $assetB]);
+        $value->getScopeCode()->willReturn('mobile');
+        $value->getLocaleCode()->willReturn('en_US');
+        $attributeRepository->findOneByIdentifier($attributeCode)->willReturn($attribute);
+        $attribute->getReferenceDataName()->willReturn('packshot');
+
+        $repositoryResolver->resolve('assets')->willReturn($referenceDataRepository);
+        $referenceDataRepository->findOneByIdentifier($attributeCode)->willReturn($asset);
+
+        $assetPreviewGenerator->getImageUrl(
+            'asset_a',
+            'packshot',
+            'mobile',
+            'en_US',
+            'thumbnail'
+        )->willReturn('/rest/asset_manager/image_preview/AND_OTHER_STUFF');
+
+        $this->normalize($value)->shouldReturn([
+            'filePath' => '/rest/asset_manager/image_preview/AND_OTHER_STUFF',
+            'originalFilename' => ''
+        ]);
+    }
+
+    function it_normalizes_an_asset_from_asset_manager_to_null_if_no_data(
+        AssetCollectionValue $value
+    ) {
+        $value->getData()->willReturn([]);
+
+        $this->normalize($value)->shouldReturn(null);
     }
 
     function it_returns_null_if_there_is_no_data(

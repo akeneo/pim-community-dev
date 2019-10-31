@@ -1,26 +1,26 @@
-import {createCode} from 'akeneoassetmanager/domain/model/asset/code';
+import {
+  denormalizeAssetCode,
+  assetcodesAreEqual,
+  assetCodeStringValue,
+} from 'akeneoassetmanager/domain/model/asset/code';
 
 describe('akeneo > asset family > domain > model --- code', () => {
   test('I can create a new code with a string value', () => {
-    expect(createCode('michel').code).toBe('michel');
+    expect(denormalizeAssetCode('michel')).toBe('michel');
   });
 
   test('I cannot create a new code with a value other than a string', () => {
     expect(() => {
-      createCode(12);
+      denormalizeAssetCode(12);
     }).toThrow('Code expects a string as parameter to be created');
   });
 
   test('I can compare two codes', () => {
-    expect(createCode('michel').equals(createCode('didier'))).toBe(false);
-    expect(createCode('didier').equals(createCode('didier'))).toBe(true);
+    expect(assetcodesAreEqual(denormalizeAssetCode('michel'), denormalizeAssetCode('didier'))).toBe(false);
+    expect(assetcodesAreEqual(denormalizeAssetCode('didier'), denormalizeAssetCode('didier'))).toBe(true);
   });
 
   test('It has a string representation', () => {
-    expect(createCode('michel').stringValue()).toBe('michel');
-  });
-
-  test('I normalizes itself', () => {
-    expect(createCode('michel').normalize()).toBe('michel');
+    expect(assetCodeStringValue(denormalizeAssetCode('michel'))).toBe('michel');
   });
 });

@@ -1,60 +1,50 @@
 import LabelCollection, {
-  NormalizedLabelCollection,
-  createLabelCollection,
+  denormalizeLabelCollection,
+  getLabelInCollection,
 } from 'akeneoassetmanager/domain/model/label-collection';
-import Code, {NormalizedCode, createCode} from 'akeneoassetmanager/domain/model/code';
+import AttributeCode, {
+  denormalizeAttributeCode,
+  attributecodesAreEqual,
+} from 'akeneoassetmanager/domain/model/attribute/code';
 
 export interface NormalizedAssetFamilyCreation {
-  code: NormalizedCode;
-  labels: NormalizedLabelCollection;
+  code: AttributeCode;
+  labels: LabelCollection;
 }
 
 export default interface AssetFamilyCreation {
-  getCode: () => Code;
+  getCode: () => AttributeCode;
   getLabel: (locale: string, fallbackOnCode?: boolean) => string;
   equals: (assetFamilyCreation: AssetFamilyCreation) => boolean;
   normalize: () => NormalizedAssetFamilyCreation;
 }
-class InvalidArgumentError extends Error {}
 
 class AssetFamilyCreationImplementation implements AssetFamilyCreation {
-  private constructor(private code: Code, private labelCollection: LabelCollection) {
-    if (!(code instanceof Code)) {
-      throw new InvalidArgumentError('AssetFamilyCreation expects a Code as code argument');
-    }
-
-    if (!(labelCollection instanceof LabelCollection)) {
-      throw new InvalidArgumentError('AssetFamilyCreation expects a LabelCollection as labelCollection argument');
-    }
-
+  private constructor(private code: AttributeCode, private labelCollection: LabelCollection) {
     Object.freeze(this);
   }
 
-  public static create(code: Code, labelCollection: LabelCollection): AssetFamilyCreation {
+  public static create(code: AttributeCode, labelCollection: LabelCollection): AssetFamilyCreation {
     return new AssetFamilyCreationImplementation(code, labelCollection);
   }
 
   public static createEmpty(): AssetFamilyCreation {
-    return new AssetFamilyCreationImplementation(createCode(''), createLabelCollection({}));
+    return new AssetFamilyCreationImplementation(denormalizeAttributeCode(''), denormalizeLabelCollection({}));
   }
 
   public static createFromNormalized(normalizedAssetFamily: NormalizedAssetFamilyCreation): AssetFamilyCreation {
-    const code = createCode(normalizedAssetFamily.code);
-    const labelCollection = createLabelCollection(normalizedAssetFamily.labels);
+    const code = denormalizeAttributeCode(normalizedAssetFamily.code);
+    const labelCollection = denormalizeLabelCollection(normalizedAssetFamily.labels);
 
     return AssetFamilyCreationImplementation.create(code, labelCollection);
   }
 
-  public getCode(): Code {
+  public getCode(): AttributeCode {
     return this.code;
   }
 
   public getLabel(locale: string, fallbackOnCode: boolean = true) {
-    if (!this.labelCollection.hasLabel(locale)) {
-      return fallbackOnCode ? `[${this.getCode().stringValue()}]` : '';
-    }
-
-    return this.labelCollection.getLabel(locale);
+    return getLabelInCollection(this.labelCollection, locale, fallbackOnCode, this.getCode());
   }
 
   public getLabelCollection(): LabelCollection {
@@ -62,17 +52,16 @@ class AssetFamilyCreationImplementation implements AssetFamilyCreation {
   }
 
   public equals(assetFamilyCreation: AssetFamilyCreation): boolean {
-    return assetFamilyCreation.getCode().equals(this.code);
+    return attributecodesAreEqual(assetFamilyCreation.getCode(), this.code);
   }
 
   public normalize(): NormalizedAssetFamilyCreation {
     return {
-      code: this.getCode().stringValue(),
-      labels: this.getLabelCollection().normalize(),
+      code: this.getCode(),
+      labels: this.getLabelCollection(),
     };
   }
 }
 
-export const createAssetFamilyCreation = AssetFamilyCreationImplementation.create;
 export const createEmptyAssetFamilyCreation = AssetFamilyCreationImplementation.createEmpty;
 export const denormalizeAssetFamilyCreation = AssetFamilyCreationImplementation.createFromNormalized;

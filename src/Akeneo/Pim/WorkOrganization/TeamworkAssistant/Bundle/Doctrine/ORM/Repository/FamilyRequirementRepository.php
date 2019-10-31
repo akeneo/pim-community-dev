@@ -59,33 +59,51 @@ class FamilyRequirementRepository extends EntityRepository implements FamilyRequ
 
     /**
      * {@inheritdoc}
+     *
+     * An attribute is required for a product, channel and locale if
+     * - it belongs to the family and is required for this channel
+     * - it is not locale_specific OR is locale_specific for this locale
      */
     public function findRequiredAttributes(
         ProductInterface $product,
         ChannelInterface $channel,
         LocaleInterface $locale
     ) {
-        $queryBuilder = $this->createQueryBuilder('ar');
+        $connection = $this->_em->getConnection();
+        $sql = <<<SQL
+SELECT
+    JSON_ARRAYAGG(attribute.code) AS attribute_codes,
+    attribute_group.id AS attribute_group_id
+FROM 
+    pim_catalog_attribute_requirement requirement
+    INNER JOIN pim_catalog_attribute attribute ON requirement.attribute_id = attribute.id
+    INNER JOIN pim_catalog_attribute_group attribute_group ON attribute.group_id = attribute_group.id
+    LEFT JOIN pim_catalog_attribute_locale not_locale_specific ON attribute.id = not_locale_specific.attribute_id
+    LEFT JOIN pim_catalog_attribute_locale locale_specific ON attribute.id = locale_specific.attribute_id AND locale_specific.locale_id = :localeId
+WHERE 
+    requirement.family_id = :familyId
+    AND requirement.channel_id = :channelId
+    AND requirement.required = 1
+    AND (
+        not_locale_specific.locale_id IS NULL
+        OR
+        locale_specific.locale_id IS NOT NULL
+    )
+GROUP BY attribute_group_id
+SQL;
 
-        $queryBuilder->select('a.code as attribute_code, g.id as attribute_group_id')
-            ->leftJoin('ar.family', 'f')
-            ->leftJoin('ar.channel', 'c')
-            ->leftJoin('ar.attribute', 'a')
-            ->leftJoin('a.group', 'g')
-            ->where('f.code = :family_code')
-            ->andWhere('c.code = :channel_code')
-            ->andWhere('ar.required = :required')
-            ->setParameters([
-                'family_code'  => $product->getFamily()->getCode(),
-                'channel_code' => $channel->getCode(),
-                'required'     => true,
-            ]);
-
-        $familyRequirements = $queryBuilder->getQuery()->getArrayResult();
+        $rows = $connection->fetchAll(
+            $sql,
+            [
+                'localeId' => $locale->getId(),
+                'familyId' => $product->getFamily()->getId(),
+                'channelId' => $channel->getId()
+            ]
+        );
 
         $formattedRequirements = [];
-        foreach ($familyRequirements as $attribute) {
-            $formattedRequirements[$attribute['attribute_group_id']][] = $attribute['attribute_code'];
+        foreach ($rows as $row) {
+            $formattedRequirements[$row['attribute_group_id']] = json_decode($row['attribute_codes']);
         }
 
         return $formattedRequirements;

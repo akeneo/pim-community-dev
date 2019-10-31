@@ -6,9 +6,12 @@ import {
   removeAssetFromCollection,
   emptyCollection,
   addAssetToCollection,
+  addAssetsToCollection,
+  isAssetInCollection,
   MoveDirection,
   moveAssetInCollection,
   getAssetCodes,
+  getAssetByCode,
 } from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {isLabels} from 'akeneoassetmanager/domain/model/utils';
 
@@ -128,13 +131,16 @@ test('I should get a label from my asset', () => {
 });
 
 test('I should be able to remove an asset from the collection', () => {
-  const asset = {
-    identifier: 'packshot_iphone_fingerprint',
-    code: 'iphone',
-    labels: {en_US: 'Iphone'},
-  };
+  const assetCodeToRemove = 'iphone';
+  expect(removeAssetFromCollection(['samsung', 'oneplus', 'iphone'], assetCodeToRemove)).toEqual([
+    'samsung',
+    'oneplus',
+  ]);
+});
 
-  expect(removeAssetFromCollection(['samsung', 'oneplus', 'iphone'], asset)).toEqual(['samsung', 'oneplus']);
+test('I should be able to tell if an asset is in the collection', () => {
+  expect(isAssetInCollection('iphone', ['samsung', 'oneplus', 'iphone'])).toEqual(true);
+  expect(isAssetInCollection('UNKNOWN_ASSET_CODE', ['samsung', 'oneplus', 'iphone'])).toEqual(false);
 });
 
 test('I should be able to empty the collection', () => {
@@ -147,11 +153,18 @@ test('I should be able to empty the collection', () => {
   expect(emptyCollection(['samsung', 'oneplus', 'iphone'])).toEqual([]);
 });
 
+test('It should add asset in the collection', () => {
+  const assetCollection = ['samsung', 'oneplus'];
+  const assetCodeToAdd = 'honor';
+
+  expect(addAssetToCollection(assetCollection, assetCodeToAdd)).toEqual(['samsung', 'oneplus', 'honor']);
+});
+
 test('It should add assets in the collection', () => {
   const assetCollection = ['samsung', 'oneplus'];
   const assetCodes = ['honor', 'iphone'];
 
-  expect(addAssetToCollection(assetCollection, assetCodes)).toEqual(['samsung', 'oneplus', 'honor', 'iphone']);
+  expect(addAssetsToCollection(assetCollection, assetCodes)).toEqual(['samsung', 'oneplus', 'honor', 'iphone']);
 });
 
 test('I should be able to move assets', () => {
@@ -223,4 +236,26 @@ test('I can get asset codes of a collection', () => {
     labels: {en_US: 'Samsung'},
   };
   expect(getAssetCodes([iphone, samsung])).toEqual(['iphone', 'samsung']);
+});
+
+test('I can find an asset from a collection with his code', () => {
+  const assetCollection = [
+    {
+      identifier: 'packshot_iphone_fingerprint',
+      code: 'iphone',
+      labels: {en_US: 'Iphone'},
+    },
+    {
+      identifier: 'packshot_honor_fingerprint',
+      code: 'honor',
+      labels: {en_US: 'Honor'},
+    },
+  ];
+  const expectedAsset = {
+    identifier: 'packshot_honor_fingerprint',
+    code: 'honor',
+    labels: {en_US: 'Honor'},
+  };
+
+  expect(getAssetByCode(assetCollection, 'honor')).toMatchObject(expectedAsset);
 });

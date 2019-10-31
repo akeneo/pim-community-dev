@@ -2,7 +2,9 @@
 
 namespace Akeneo\Asset\Component\Normalizer\InternalApi;
 
+use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\AssetPreviewGenerator;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Pim\Enrichment\AssetManager\Component\Value\AssetCollectionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\FileNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer as BaseImageNormalizer;
@@ -29,17 +31,22 @@ class ImageNormalizer extends BaseImageNormalizer
     /** @var ReferenceDataRepositoryResolverInterface */
     protected $repositoryResolver;
 
+    /** @var AssetPreviewGenerator */
+    private $assetPreviewGenerator;
+
     public function __construct(
         FileNormalizer $fileNormalizer,
         LocaleRepositoryInterface $localeRepository,
         IdentifiableObjectRepositoryInterface $attributeRepository,
-        ReferenceDataRepositoryResolverInterface $repositoryResolver
+        ReferenceDataRepositoryResolverInterface $repositoryResolver,
+        AssetPreviewGenerator $assetPreviewGenerator
     ) {
         parent::__construct($fileNormalizer);
 
         $this->localeRepository = $localeRepository;
         $this->attributeRepository = $attributeRepository;
         $this->repositoryResolver = $repositoryResolver;
+        $this->assetPreviewGenerator = $assetPreviewGenerator;
     }
 
     /**
@@ -47,6 +54,10 @@ class ImageNormalizer extends BaseImageNormalizer
      */
     public function normalize(?ValueInterface $value, ?string $localeCode = null): ?array
     {
+        if ($value instanceof AssetCollectionValue) {
+            return $this->normalizeAssetManagerFile($value);
+        }
+
         if ($this->isAssetCollection($value)) {
             $assetCodes = $value->getData();
             if (empty($assetCodes)) {
@@ -83,5 +94,31 @@ class ImageNormalizer extends BaseImageNormalizer
 
         return (null !== $attribute &&
             $attribute->getReferenceDataName() === 'assets');
+    }
+
+    private function normalizeAssetManagerFile(AssetCollectionValue $value): ?array
+    {
+        $data = $value->getData();
+
+        if (empty($data)) {
+            return null;
+        }
+
+        $attribute = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
+        $assetFamilyIdentifier = $attribute->getReferenceDataName();
+
+        $assetCode = $data[0];
+        $filepath = $this->assetPreviewGenerator->getImageUrl(
+            (string) $assetCode,
+            $assetFamilyIdentifier,
+            $value->getScopeCode(),
+            $value->getLocaleCode(),
+            'thumbnail'
+        );
+
+        return [
+            'filePath' => $filepath,
+            'originalFilename' => '',
+        ];
     }
 }

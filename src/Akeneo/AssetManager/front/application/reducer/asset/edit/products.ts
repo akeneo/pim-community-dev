@@ -1,6 +1,6 @@
 import {NormalizedProduct} from 'akeneoassetmanager/domain/model/product/product';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/product/attribute';
-import {NormalizedCode as NormalizedAttributeCode} from 'akeneoassetmanager/domain/model/product/attribute/code';
+import AttributeCode from 'akeneoassetmanager/domain/model/product/attribute/code';
 
 export interface ProductsState {
   selectedAttribute: NormalizedAttribute | null;
@@ -16,10 +16,7 @@ const initProductsState = (): ProductsState => ({
   totalCount: 0,
 });
 
-const getAttribute = (
-  state: ProductsState,
-  attributeCode: NormalizedAttributeCode
-): NormalizedAttribute | undefined => {
+const getAttribute = (state: ProductsState, attributeCode: AttributeCode): NormalizedAttribute | undefined => {
   return state.attributes.find((attribute: any) => attributeCode === attribute.code);
 };
 

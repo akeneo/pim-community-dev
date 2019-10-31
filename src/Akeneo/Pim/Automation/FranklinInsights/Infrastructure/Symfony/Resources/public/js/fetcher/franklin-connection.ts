@@ -9,6 +9,8 @@
 
 import * as JQuery from 'jquery';
 
+import ConnectionStatus from '../model/connection-status';
+
 const Routing = require('routing');
 
 /**
@@ -27,7 +29,7 @@ export function getConfiguration(): JQueryPromise<any> {
 /**
  * Gets the status of the connection to Franklin.
  */
-export function getConnectionStatus(checkValidity: boolean): JQueryPromise<any> {
+export function getConnectionStatus(checkValidity: boolean): JQuery.jqXHR<ConnectionStatus> {
   const url = Routing.generate('akeneo_franklin_insights_connection_status_get', {checkValidity});
 
   return JQuery.get(url);

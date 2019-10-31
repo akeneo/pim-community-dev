@@ -29,7 +29,7 @@ class IsAssetFamilyConfigured extends Constraint
     public $invalidMessage = 'The asset family "%asset_family_identifier%" identifier is not valid';
 
     /** @var string */
-    public $emptyMessage = 'You need to define an asset family type for your attribute';
+    public $emptyMessage = 'You need to define an asset family for your attribute';
 
     /** @var string */
     public $propertyPath = 'reference_data_name';

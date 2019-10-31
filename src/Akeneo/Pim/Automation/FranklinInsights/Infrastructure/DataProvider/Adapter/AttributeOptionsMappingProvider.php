@@ -25,6 +25,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\Op
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\BadRequestException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\FranklinServerException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\InvalidTokenException;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\UnableToConnectToFranklinException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Converter\AttributeOptionsMappingConverter;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Normalizer\AttributeOptionsMappingNormalizer;
 
@@ -63,7 +64,7 @@ class AttributeOptionsMappingProvider extends AbstractProvider implements Attrib
             $franklinOptionsMapping = $this
                 ->api
                 ->fetchByFamilyAndAttribute((string) $familyCode, (string) $franklinAttributeId);
-        } catch (FranklinServerException $e) {
+        } catch (FranklinServerException | UnableToConnectToFranklinException $e) {
             throw DataProviderException::serverIsDown($e);
         } catch (InvalidTokenException $e) {
             throw DataProviderException::authenticationError($e);
@@ -95,7 +96,7 @@ class AttributeOptionsMappingProvider extends AbstractProvider implements Attrib
             $this->api->update((string) $familyCode, (string) $franklinAttributeId, $normalizedMapping);
         } catch (BadRequestException $e) {
             throw DataProviderException::badRequestError($e);
-        } catch (FranklinServerException $e) {
+        } catch (FranklinServerException | UnableToConnectToFranklinException $e) {
             throw DataProviderException::serverIsDown($e);
         } catch (InvalidTokenException $e) {
             throw DataProviderException::authenticationError($e);

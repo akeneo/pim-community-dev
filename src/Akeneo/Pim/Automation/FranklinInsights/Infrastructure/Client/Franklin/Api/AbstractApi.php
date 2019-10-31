@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\
 
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ClientInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\UriGenerator;
+use Psr\Log\LoggerInterface;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
@@ -27,16 +28,21 @@ class AbstractApi
     /** @var ClientInterface */
     protected $httpClient;
 
+    /** @var LoggerInterface */
+    protected $logger;
+
     /**
      * @param UriGenerator $uriGenerator
      * @param ClientInterface $httpClient
      */
     public function __construct(
         UriGenerator $uriGenerator,
-        ClientInterface $httpClient
+        ClientInterface $httpClient,
+        LoggerInterface $logger
     ) {
         $this->uriGenerator = $uriGenerator;
         $this->httpClient = $httpClient;
+        $this->logger = $logger;
     }
 
     /**

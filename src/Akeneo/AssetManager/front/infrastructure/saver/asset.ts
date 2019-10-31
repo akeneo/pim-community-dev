@@ -3,6 +3,8 @@ import Asset from 'akeneoassetmanager/domain/model/asset/asset';
 import {postJSON} from 'akeneoassetmanager/tools/fetch';
 import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 import handleError from 'akeneoassetmanager/infrastructure/tools/error-handler';
+import {assetCodeStringValue} from 'akeneoassetmanager/domain/model/asset/code';
+import {assetFamilyIdentifierStringValue} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 
 const routing = require('routing');
 
@@ -18,8 +20,8 @@ export class AssetSaverImplementation implements AssetSaver {
 
     return await postJSON(
       routing.generate('akeneo_asset_manager_asset_edit_rest', {
-        assetFamilyIdentifier: asset.getAssetFamilyIdentifier().stringValue(),
-        assetCode: asset.getCode().stringValue(),
+        assetFamilyIdentifier: assetFamilyIdentifierStringValue(asset.getAssetFamilyIdentifier()),
+        assetCode: assetCodeStringValue(asset.getCode()),
       }),
       normalizedAsset
     ).catch(handleError);
@@ -30,7 +32,7 @@ export class AssetSaverImplementation implements AssetSaver {
 
     return await postJSON(
       routing.generate('akeneo_asset_manager_asset_create_rest', {
-        assetFamilyIdentifier: asset.getAssetFamilyIdentifier().stringValue(),
+        assetFamilyIdentifier: assetFamilyIdentifierStringValue(asset.getAssetFamilyIdentifier()),
       }),
       normalizedAsset
     ).catch(handleError);

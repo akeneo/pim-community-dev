@@ -36,8 +36,6 @@ extensions:
         parent: akeneo-franklin-insights-settings-attributes-mapping-edit
         targetZone: buttons
         position: 0
-        config:
-            url: akeneo_franklin_insights_attributes_mapping_update
 
     akeneo-franklin-insights-settings-attributes-mapping-index-state:
         module: akeneo/franklin-insights/view/settings/attributes-mapping/state
@@ -79,7 +77,7 @@ extensions:
         parent: akeneo-franklin-insights-settings-attributes-mapping-index-tab-content
         targetZone: family-selector
         config:
-            fieldName: code
+            fieldName: familyCode
             label: pim_enrich.entity.family.uppercase_label
             choiceRoute: akeneo_franklin_insights_attributes_mapping_list
 
@@ -93,31 +91,3 @@ extensions:
         parent: akeneo-franklin-insights-settings-attributes-mapping-index-tab-content
         position: 30
         targetZone: mapping
-        config:
-            labels:
-                pending: akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.pending
-                active: akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.active
-                inactive: akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.inactive
-                franklinAttribute: akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_attribute
-                catalogAttribute: akeneo_franklin_insights.entity.identifier_mapping.fields.catalog_attribute
-
-    akeneo-franklin-insights-settings-attributes-mapping-index-front-search-filter:
-        module: akeneo/franklin-insights/view/common/front-search-filter
-        parent: akeneo-franklin-insights-settings-attributes-mapping-index-attribute-attributes-mapping
-        position: 10
-        targetZone: filters
-        config:
-            fieldName: 'franklinAttribute'
-
-    akeneo-franklin-insights-settings-attributes-mapping-index-status-filter:
-        module: akeneo/franklin-insights/view/common/status-filter
-        parent: akeneo-franklin-insights-settings-attributes-mapping-index-attribute-attributes-mapping
-        position: 20
-        targetZone: filters
-
-    akeneo-franklin-insights-settings-attributes-mapping-index-toolbar:
-        module: akeneo/franklin-insights/view/settings/attributes-mapping/toolbar
-        parent: akeneo-franklin-insights-settings-attributes-mapping-edit
-        targetZone: bottom-panel
-        position: 10
-        className: AknDefault-bottomPanel

@@ -283,6 +283,7 @@ pim_enrich:
           default_label: Por favor, selecione uma entidade de referência
 permission:
   mass_action: Aplicar a permissão {{ rightLevel }} em todos os grupos
+#Analytics
 pim_catalog_volume:
   section:
     reference_entity:

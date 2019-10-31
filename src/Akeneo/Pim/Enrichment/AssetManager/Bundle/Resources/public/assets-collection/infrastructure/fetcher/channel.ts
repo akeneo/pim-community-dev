@@ -9,7 +9,7 @@ const fetcherRegistry = require('pim/fetcher-registry');
  */
 export const channelFetcher = () => fetcherRegistry.getFetcher('channel');
 export const fetchChannels = (channelFetcher: any) => async (): Promise<Channel[]> => {
-  const channels = await promisify(channelFetcher.fetchAll());
+  const channels = await promisify(channelFetcher.fetchAll({filter_locales: false}));
 
   return denormalizeChannelCollection(channels);
 };
@@ -21,3 +21,6 @@ const denormalizeChannelCollection = (channels: any): Channel[] => {
 
   return channels.map((channel: any) => denormalizeChannel(channel));
 };
+
+const fetchAllChannels = async () => await fetchChannels(channelFetcher())();
+export default fetchAllChannels;

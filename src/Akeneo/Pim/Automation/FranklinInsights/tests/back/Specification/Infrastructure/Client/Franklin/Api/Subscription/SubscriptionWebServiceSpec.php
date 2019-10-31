@@ -30,16 +30,17 @@ use GuzzleHttp\Psr7\Response;
 use PhpSpec\ObjectBehavior;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * TODO: There are lot of spec to add.
  */
 class SubscriptionWebServiceSpec extends ObjectBehavior
 {
-    public function let(GuzzleClient $httpClient): void
+    public function let(GuzzleClient $httpClient, LoggerInterface $logger): void
     {
         $uriGenerator = new UriGenerator('BASE_URI');
-        $this->beConstructedWith($uriGenerator, $httpClient);
+        $this->beConstructedWith($uriGenerator, $httpClient, $logger);
     }
 
     public function it_is_a_subscription_web_service(): void

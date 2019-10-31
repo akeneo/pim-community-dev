@@ -4,10 +4,6 @@ import {
     ConcreteImageAttribute,
     denormalize as denormalizeImageAttribute
 } from 'akeneoassetmanager/domain/model/attribute/type/image';
-import {createIdentifier as denormalizeAttributeIdentifier} from 'akeneoassetmanager/domain/model/attribute/identifier';
-import {createIdentifier as createAssetFamilyIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import {createCode} from 'akeneoassetmanager/domain/model/attribute/code';
-import {createLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
 
 const description = denormalizeTextAttribute({
   identifier: 'description_1234',
@@ -41,7 +37,7 @@ const frontView = denormalizeImageAttribute({
 
 describe('akeneo > attribute > domain > model --- attribute', () => {
   test('I can create a new attribute with a identifier and labels', () => {
-    expect(description.getIdentifier()).toEqual(denormalizeAttributeIdentifier('description_1234'));
+    expect(description.getIdentifier()).toEqual('description_1234');
   });
 
   test('I can compare two attributes', () => {
@@ -51,39 +47,12 @@ describe('akeneo > attribute > domain > model --- attribute', () => {
 
   test('I cannot create a malformed attribute', () => {
     expect(() => {
-      new ConcreteImageAttribute(
-        denormalizeAttributeIdentifier('front_view_1234'),
-        createAssetFamilyIdentifier('designer'),
-        createCode('front_view'),
-        createLabelCollection({en_US: 'Front View'}),
-        true,
-        false,
-        0
-      );
+      new ConcreteImageAttribute('front_view_1234', 'designer', 'front_view', {en_US: 'Front View'}, true, false, 0);
     }).toThrow('Attribute expects a boolean as isRequired value');
 
     expect(() => {
-      new ConcreteImageAttribute(
-        denormalizeAttributeIdentifier('front_view_1234'),
-        createAssetFamilyIdentifier('designer'),
-        createCode('front_view'),
-        createLabelCollection({en_US: 'Front View'}),
-        true,
-        false
-      );
+      new ConcreteImageAttribute('front_view_1234', 'designer', 'front_view', {en_US: 'Front View'}, true, false);
     }).toThrow('Attribute expects a number as order');
-
-    expect(() => {
-      new ConcreteImageAttribute(
-        'front_view_1234',
-        createAssetFamilyIdentifier('designer'),
-        createCode('front_view'),
-        createLabelCollection({en_US: 'Front View'}),
-        true,
-        false,
-        0
-      );
-    }).toThrow('Attribute expects an AttributeIdentifier argument');
   });
 
   test('I can wrap a functionnal attribute in a normalizable object', () => {

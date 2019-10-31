@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -133,7 +134,8 @@ class EntityWithValuesDraftManagerSpec extends ObjectBehavior
         AttributeInterface $attribute,
         ProductInterface $product,
         EntityWithValuesDraftInterface $partialDraft,
-        WriteValueCollection $values
+        WriteValueCollection $values,
+        ValueInterface $value
     ) {
         $source = 'source';
         $sourceLabel = 'Source';
@@ -147,7 +149,7 @@ class EntityWithValuesDraftManagerSpec extends ObjectBehavior
         $draft->getSource()->willReturn($source);
         $draft->getSourceLabel()->willReturn($sourceLabel);
         $draft->getValues()->willReturn($values);
-        $values->getByCodes('sku', null, null)->willReturn(null);
+        $values->getByCodes('sku', null, null)->willReturn($value);
         $attribute->getCode()->willReturn('sku');
         $partialDraft->getEntityWithValue()->willReturn($product);
 

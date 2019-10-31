@@ -110,7 +110,7 @@ class AttributesMappingController
 
         return new JsonResponse([
             'code' => $identifier,
-            'mapping' => $this->attributesMappingNormalizer->normalize($familyAttributesMapping),
+            'mapping' => $this->attributesMappingNormalizer->normalize($familyAttributesMapping)
         ]);
     }
 
