@@ -268,6 +268,10 @@
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi` to
     - remove `Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface`
     - add `Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface`
+- Remove interface `Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\ValueCompleteCheckerInterface` and its concrete implementations:
+    `Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\ValueCompleteChecker`, `Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\MediaCompleteChecker`,
+    `Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\MetricCompleteChecker`, `Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\PriceCompleteChecker`
+    and `Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\SimpleCompleteChecker` 
 
 ### CLI Commands
 
@@ -347,3 +351,4 @@ If you want to purge the completeness in order to recalculate it, please use the
     - `string $jobName`
 - Remove `pim_catalog.event_subscriber.index_products`
 - Rename service `pim_catalog.doctrine.query.attribute_is_an_family_variant_axis` in `akeneo.pim.structure.query.attribute_is_an_family_variant_axis`
+- Remove `pim_catalog.completeness.checker`, `pim_catalog.completeness.checker.media`, `pim_catalog.completeness.checker.metric`, `pim_catalog.completeness.checker.price` and `pim_catalog.completeness.checker.simple`
