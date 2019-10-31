@@ -8,7 +8,7 @@ The frontend acceptance tests are run with [cucumber-js]() for the scenarios and
 
 #### 1. Make a dump of the form extensions using the FormExtensionProvider
 
-In our acceptance test definitions we can capture network requests called by the app and replace them with custom fixtures. When the app calls the form extensions endpoint we will return this dump. To create this dump, run `bin/console pim:installer:dump-extensions` and it will output a file at `web/test_dist/extensions.json`.
+In our acceptance test definitions we can capture network requests called by the app and replace them with custom fixtures. When the app calls the form extensions endpoint we will return this dump. To create this dump, run `yarn update-extensions` and it will output a file at `web/js/extensions.json`.
 
 #### 2. Use webpack to create a test version of our frontend bundle
 For this step, we build the app using custom entry points (`index.html` and `index.js` in `webpack/test/templates`). This allows us to replace the normal `index.html.twig` from the EnrichBundle and eventually only render the views that we want instead of the whole app.
