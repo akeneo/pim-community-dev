@@ -283,6 +283,7 @@
 - Remove class `Akeneo\Platform\Bundle\ImportExportBundle\Controller\JobProfileController`
 - Remove class `Akeneo\Platform\Bundle\ImportExportBundle\Form\Type\JobInstanceFormType`
 - Remove class `Akeneo\Platform\Bundle\ImportExportBundle\Form\Subscriber\JobInstanceSubscriber`
+- Remove class `Akeneo\Platform\Bundle\ImportExportBundle\Controller\Ui\JobTrackerController`
 
 ### CLI Commands
 
