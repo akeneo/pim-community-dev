@@ -7,6 +7,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\GetExistingReferenceDataCodes;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 /**
+ * As assets are reference data also, we handle it in this filter.
+ *
  * @author    Tamara Robichet <tamara.robichet@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -23,7 +25,15 @@ class NonExistentReferenceDataMultiSelectValuesFilter implements NonExistentValu
 
     public function filter(OnGoingFilteredRawValues $onGoingFilteredRawValues): OnGoingFilteredRawValues
     {
-        $selectValues = $onGoingFilteredRawValues->notFilteredValuesOfTypes(AttributeTypes::REFERENCE_DATA_MULTI_SELECT);
+        $filteredReferenceData = $this->filterByType($onGoingFilteredRawValues, AttributeTypes::REFERENCE_DATA_MULTI_SELECT);
+        $filteredAssets = $this->filterByType($filteredReferenceData, AttributeTypes::ASSETS_COLLECTION);
+
+        return $filteredAssets;
+    }
+
+    private function filterByType(OnGoingFilteredRawValues $onGoingFilteredRawValues, string $type): OnGoingFilteredRawValues
+    {
+        $selectValues = $onGoingFilteredRawValues->notFilteredValuesOfTypes($type);
 
         if (empty($selectValues)) {
             return $onGoingFilteredRawValues;
@@ -52,7 +62,7 @@ class NonExistentReferenceDataMultiSelectValuesFilter implements NonExistentValu
                 }
 
                 if ($multiSelectValues !== []) {
-                    $filteredValues[AttributeTypes::REFERENCE_DATA_MULTI_SELECT][$attributeCode][] = [
+                    $filteredValues[$type][$attributeCode][] = [
                         'identifier' => $productData['identifier'],
                         'values' => $multiSelectValues,
                         'properties' => $productData['properties']
