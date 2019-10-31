@@ -2,7 +2,6 @@
 
 namespace Context;
 
-use Akeneo\Asset\Bundle\Command\GenerateMissingVariationFilesCommand;
 use Akeneo\Asset\Component\Model\Asset;
 use Akeneo\Asset\Component\Model\AssetInterface;
 use Akeneo\Asset\Component\Model\CategoryInterface;
@@ -79,8 +78,6 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      */
     public function theFollowingProductDrafts(TableNode $table)
     {
-        $valueFactory = $this->getContainer()->get('pim_catalog.factory.value');
-
         foreach ($table->getHash() as $data) {
             $data = array_merge(
                 [
@@ -103,7 +100,6 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 $productDraft->setCreatedAt(new \DateTime($data['createdAt']));
             }
 
-            $values = [];
             if (isset($data['result'])) {
                 $changes = json_decode($data['result'], true);
                 if (null === $changes) {
@@ -117,20 +113,14 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 }
 
                 $productDraft->setChanges($changes);
+                $productDraft->setValues(WriteValueCollection::fromCollection($product->getValues()));
 
                 foreach ($changes['values'] as $code => $rawValue) {
-                    $attribute = $this->getContainer()->get('pim_catalog.repository.attribute')->findOneByIdentifier($code);
                     foreach ($rawValue as $value) {
-                        if (null === $value['data'] || '' === $value['data'] || [] === $value['data']) {
-                            $values[] = $valueFactory->createTemporaryNull($attribute, $value['scope'], $value['locale']);
-                        } else {
-                            $values[] = $valueFactory->create(
-                                $attribute,
-                                $value['scope'],
-                                $value['locale'],
-                                $value['data']
-                            );
-                        }
+                        $attribute = $this->getContainer()->get('pim_catalog.repository.attribute')
+                                          ->findOneByIdentifier($code);
+                        $this->getContainer()->get('pim_catalog.builder.entity_with_values')
+                            ->addOrReplaceValue($productDraft, $attribute, $value['locale'], $value['scope'], $value['data']);
                     }
                 }
             }
@@ -142,7 +132,6 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 $productDraft->markAsInProgress();
                 $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_DRAFT);
             }
-            $productDraft->setValues(new WriteValueCollection($values));
 
             $this->getContainer()->get('pimee_workflow.saver.product_draft')->save($productDraft);
             $this->getContainer()->get('akeneo_elasticsearch.client.product_proposal')->refreshIndex();
