@@ -54,7 +54,7 @@ class WarmupGetViewableAttributeCodesQuerySpec extends ObjectBehavior
 {"code":"other_code","values":{"color":[{"data":"blue"}],"name":[{"data":"product_name"}],"description":[{"data":"awesome description"}]}}
 JSON;
 
-        $getViewableAttributeCodesForUser->forAttributeCodes(['color', 'size', '123456', 'name', 'description'], 42)
+        $getViewableAttributeCodesForUser->forAttributeCodes(Argument::is(['color', 'size', '123456', 'name', 'description']), 42)
                                          ->shouldBeCalled();
 
         $request = new Request([], [], [], [], [], [], $content);
