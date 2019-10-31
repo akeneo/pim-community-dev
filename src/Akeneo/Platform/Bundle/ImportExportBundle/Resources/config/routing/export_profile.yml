@@ -1,24 +1,12 @@
 pim_importexport_export_profile_index:
     path: /
 
-pim_importexport_export_profile_create:
-    path: /create
-    defaults: { _controller: pim_import_export.controller.export_profile:createAction }
-
 pim_importexport_export_profile_show:
     path: /{code}
-    defaults: { _controller: pim_import_export.controller.export_profile:showAction }
     requirements:
         code: '[a-zA-Z0-9_]+'
 
 pim_importexport_export_profile_edit:
     path: /{code}/edit
-    defaults: { _controller: pim_import_export.controller.export_profile:editAction }
-    requirements:
-        code: '[a-zA-Z0-9_]+'
-
-pim_importexport_export_profile_report:
-    path: /{code}/reports
-    defaults: { _controller: pim_import_export.controller.export_profile:reportAction }
     requirements:
         code: '[a-zA-Z0-9_]+'
