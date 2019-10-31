@@ -20,7 +20,7 @@ lint-front:
 
 ### Unit tests
 .PHONY: unit-back
-unit-back: apps-unit-back
+unit-back: var/tests/phpspec apps-unit-back
 ifeq ($(CI),1)
 	${PHP_RUN} vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
 	.circleci/find_non_executed_phpspec.sh
