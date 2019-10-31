@@ -39,11 +39,12 @@ const Overlay = styled.div`
   justify-content: space-between;
 `;
 
-const Container = styled.div`
+const Container = styled.div<{readonly: boolean}>`
   position: relative;
   width: 140px;
   height: 140px;
-  outline: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey100};
+  outline: 1px solid ${(props: ThemedProps<{readonly: boolean}>) => props.theme.color.grey100};
+  opacity: ${(props: ThemedProps<{readonly: boolean}>) => (props.readonly ? 0.4 : 1)};
 
   &:hover ${Overlay} {
     opacity: 1;
@@ -113,7 +114,7 @@ export const Thumbnail = ({
   };
 
   return (
-    <Container>
+    <Container readonly={readonly}>
       {!readonly ? (
         <Overlay onClick={handleOverlayClick} ref={overlayRef} data-testid="overlay">
           <RemoveButton title={removeLabel} onClick={onRemove} data-remove={asset.code} />
