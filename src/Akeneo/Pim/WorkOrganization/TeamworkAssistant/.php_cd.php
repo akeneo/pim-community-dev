@@ -87,7 +87,7 @@ $rules = [
         // TIP-968: TWA depends on PIM/Enrichment
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator',
+        'Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator', // ideally it should be either public api or we should duplicate this algorithm in this context
 
         // TIP-971 ProjectRemoverInterface should not be linked to PIM/Enrichment or PIM/Structure
         'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface',
