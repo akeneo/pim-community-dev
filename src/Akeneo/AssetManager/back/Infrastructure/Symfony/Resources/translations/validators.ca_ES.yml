@@ -24,10 +24,16 @@ pim_asset_manager:
     validation:
       code:
         should_exist: 'No s''ha trobat el recurs'
+      text:
+        incompatible_with_regular_expression: 'Text incompatible amb l''expressió regular "%regular_expression%"'
+      file:
+        should_exist: 'L''arxiu "%file_path%" no s''ha trobat.'
       asset:
         should_exist: 'No s''ha trobat el recurs "%asset_code%".'
       asset_collection:
         should_exist: 'Els recursos "%asset_codes%" no s''han trobat.'
+      channel:
+        should_exist: 'El canal "%channel_identifier%" no existeix.'
       number:
         should_be_integer: 'Aquest camp té que ser un enter'
         integer_too_long: 'Aquest enter és massa gran'
