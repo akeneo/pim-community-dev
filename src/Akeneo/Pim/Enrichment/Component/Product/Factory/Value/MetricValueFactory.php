@@ -55,7 +55,7 @@ final class MetricValueFactory implements ValueFactory
             );
         }
 
-        if (!array_key_exists('amount', $data)) {
+        if (!isset($data['amount'])) {
             throw InvalidPropertyTypeException::arrayKeyExpected(
                 $attribute->code(),
                 'amount',
@@ -64,7 +64,7 @@ final class MetricValueFactory implements ValueFactory
             );
         }
 
-        if (!array_key_exists('unit', $data)) {
+        if (!isset($data['unit'])) {
             throw InvalidPropertyTypeException::arrayKeyExpected(
                 $attribute->code(),
                 'unit',
