@@ -4,12 +4,10 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Factory\Read;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidArgumentException;
-use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidAttributeException;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValidateAttribute;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactory as SingleValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -28,15 +26,9 @@ class ValueFactory
     /** @var array|SingleValueFactory[] */
     private $notIndexedValuesFactories;
 
-    /** @var IdentifiableObjectRepositoryInterface*/
-    private $localeRepository;
-
-    public function __construct(
-        iterable $valueFactories,
-        IdentifiableObjectRepositoryInterface $localeRepository
-    ) {
+    public function __construct(iterable $valueFactories)
+    {
         $this->notIndexedValuesFactories = $valueFactories;
-        $this->localeRepository = $localeRepository;
     }
 
     public function createWithoutCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
@@ -51,32 +43,8 @@ class ValueFactory
         }
 
         ValidateAttribute::validate($attribute, $channelCode, $localeCode);
-        $this->validateLocale($attribute, $localeCode);
 
         return $this->getFactory($attribute)->createByCheckingData($attribute, $channelCode, $localeCode, $data);
-    }
-
-    /**
-     * TODO: to remove once TIP-1353 done: add this validation in validators
-     */
-    private function validateLocale(Attribute $attribute, ?string $localeCode): void
-    {
-        if (null === $localeCode) {
-            return;
-        }
-
-        $locale = $this->localeRepository->findOneByIdentifier($localeCode);
-
-        if (null === $locale || !$locale->isActivated()) {
-            $message = 'Attribute "%s" expects an existing and activated locale, "%s" given.';
-
-            throw new InvalidAttributeException(
-                'attribute',
-                null,
-                self::class,
-                sprintf($message, $attribute->code(), $localeCode),
-            );
-        }
     }
 
     private function getFactory(Attribute $attribute): SingleValueFactory

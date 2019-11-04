@@ -1,0 +1,156 @@
+<?php
+
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
+
+use Akeneo\Channel\Component\Model\Channel;
+use Akeneo\Channel\Component\Model\Locale;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsString;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\LocalizableValues;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\LocalizableValuesValidator;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+use Symfony\Component\Validator\ConstraintValidatorInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
+
+class LocalizableValuesValidatorSpec extends ObjectBehavior
+{
+    function let(IdentifiableObjectRepositoryInterface $localeRepository, ExecutionContextInterface $context)
+    {
+        $this->beConstructedWith($localeRepository);
+        $this->initialize($context);
+    }
+
+    function it_is_a_constraint_validator()
+    {
+        $this->shouldImplement(ConstraintValidatorInterface::class);
+    }
+
+    function it_is_alocalizable_values_validator()
+    {
+        $this->shouldBeAnInstanceOf(LocalizableValuesValidator::class);
+    }
+
+    function it_throws_an_exception_when_provided_with_an_invalid_constraint()
+    {
+        $this->shouldThrow(UnexpectedTypeException::class)->during('validate', [new WriteValueCollection(), new IsString()]);
+    }
+
+    function it_only_validates_value_collections(
+        IdentifiableObjectRepositoryInterface $localeRepository,
+        ExecutionContextInterface $context
+    ) {
+        $localeRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
+        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
+
+        $this->validate(new \stdClass(), new LocalizableValues());
+    }
+
+    function it_onlmy_validates_localizable_values(
+        IdentifiableObjectRepositoryInterface $localeRepository,
+        ExecutionContextInterface $context
+    ) {
+        $localeRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
+        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
+
+        $values = new WriteValueCollection([
+            ScalarValue::value('text', 'some text'),
+            ScalarValue::scopableValue('number', 123, 'ecommerce'),
+            ScalarValue::scopableValue('number', 456, 'mobile'),
+        ]);
+
+        $this->validate($values, new LocalizableValues());
+    }
+
+    function it_adds_a_violation_if_a_locale_does_not_exist(
+        IdentifiableObjectRepositoryInterface $localeRepository,
+        ExecutionContextInterface $context,
+        ConstraintViolationBuilderInterface $violationBuilder
+    ) {
+        $constraint = new LocalizableValues();
+        $localeRepository->findOneByIdentifier('non_EXISTING')->willReturn(null);
+        $values = new WriteValueCollection(
+            [
+                ScalarValue::localizableValue('localizable_text', 'Lorem ipsum', 'non_EXISTING')
+            ]
+        );
+
+        $context->buildViolation($constraint->nonActiveLocaleMessage, [
+            '%attribute_code%' => 'localizable_text',
+            '%invalid_locale%' => 'non_EXISTING',
+        ])->willReturn($violationBuilder);
+        $violationBuilder->atPath('[localizable_text-<all_channels>-non_EXISTING]')->willReturn($violationBuilder);
+        $violationBuilder->addViolation()->shouldBeCalled();
+
+        $this->validate($values, $constraint);
+    }
+
+    function it_adds_a_violation_if_a_locale_is_not_activated(
+        IdentifiableObjectRepositoryInterface $localeRepository,
+        ExecutionContextInterface $context,
+        ConstraintViolationBuilderInterface $violationBuilder
+    ) {
+        $esDO = (new Locale())->setCode('es_DO');
+        $localeRepository->findOneByIdentifier('es_DO')->willReturn($esDO);
+
+        $frFR = (new Locale())->setCode('fr_FR');
+        $ecommerce = (new Channel())->setCode('ecommerce');
+        $frFR->addChannel($ecommerce);
+        $localeRepository->findOneByIdentifier('fr_FR')->willReturn($frFR);
+
+        $values = new WriteValueCollection(
+            [
+                ScalarValue::localizableValue('localizable_text', 'Lorem ipsum', 'es_DO'),
+            ]
+        );
+
+        $constraint = new LocalizableValues();
+        $context->buildViolation(
+            $constraint->nonActiveLocaleMessage,
+            [
+                '%attribute_code%' => 'localizable_text',
+                '%invalid_locale%' => 'es_DO',
+            ]
+        )->willReturn($violationBuilder);
+        $violationBuilder->atPath('[localizable_text-<all_channels>-es_DO]')->willReturn($violationBuilder);
+        $violationBuilder->addViolation()->shouldBeCalled();
+
+        $this->validate($values, $constraint);
+    }
+
+    function it_adds_a_violation_if_a_locale_is_not_bound_to_a_channel(
+        IdentifiableObjectRepositoryInterface $localeRepository,
+        ExecutionContextInterface $context,
+        ConstraintViolationBuilderInterface $violationBuilder
+    ) {
+        $frFR = (new Locale())->setCode('fr_FR');
+        $ecommerce = (new Channel())->setCode('ecommerce');
+        $frFR->addChannel($ecommerce);
+        $localeRepository->findOneByIdentifier('fr_FR')->willReturn($frFR);
+
+        $values = new WriteValueCollection(
+            [
+                ScalarValue::scopableLocalizableValue('scopable_localizable_text', 'Lorem ipsum', 'mobile', 'fr_FR'),
+                ScalarValue::scopableLocalizableValue('scopable_localizable_text', 'some other text', 'ecommerce', 'fr_FR'),
+            ]
+        );
+
+        $constraint = new LocalizableValues();
+        $context->buildViolation(
+            $constraint->invalidLocaleForChannelMessage,
+            [
+                '%attribute_code%' => 'scopable_localizable_text',
+                '%channel_code%' => 'mobile',
+                '%invalid_locale%' => 'fr_FR',
+            ]
+        )->willReturn($violationBuilder);
+        $violationBuilder->atPath('[scopable_localizable_text-mobile-fr_FR]')->willReturn($violationBuilder);
+        $violationBuilder->addViolation()->shouldBeCalled();
+
+        $this->validate($values, $constraint);
+    }
+}

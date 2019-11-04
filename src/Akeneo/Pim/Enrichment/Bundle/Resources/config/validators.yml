@@ -4,7 +4,6 @@ parameters:
     pim_catalog.validator.helper.attribute.class:                          Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper
     pim_catalog.validator.constraint.currency.class:                       Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\CurrencyValidator
     pim_catalog.validator.constraint.unique_value.class:                   Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\UniqueValueValidator
-    pim_catalog.validator.constraint.localizable_value.class:              Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\LocalizableValueValidator
     pim_catalog.validator.constraints.channel_validator.class:             Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ChannelValidator
     pim_catalog.validator.constraint_guesser.chained.class:                Akeneo\Pim\Enrichment\Component\Product\Validator\ChainedAttributeConstraintGuesser
     pim_catalog.validator.constraint_guesser.email.class:                  Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\EmailGuesser
@@ -169,12 +168,12 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: pim_scopable_values_validator }
 
-    pim_catalog.validator.constraint.localizable_value:
-        class: '%pim_catalog.validator.constraint.localizable_value.class%'
+    pim_catalog.validator.constraint.localizable_values:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\LocalizableValuesValidator'
         arguments:
             - '@pim_catalog.repository.cached_locale'
         tags:
-            - { name: validator.constraint_validator, alias: pim_localizable_value_validator }
+            - { name: validator.constraint_validator, alias: pim_localizable_values_validator }
 
     # Attribute constraint guesser
     pim_catalog.validator.constraint_guesser.chained_attribute:
