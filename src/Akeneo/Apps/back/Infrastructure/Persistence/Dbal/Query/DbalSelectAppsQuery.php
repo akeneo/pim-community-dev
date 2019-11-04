@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Infrastructure\Persistence\Dbal\Query;
 
-use Akeneo\Apps\Domain\Model\Read\App as ReadApp;
+use Akeneo\Apps\Domain\Model\Read\App;
 use Akeneo\Apps\Domain\Persistence\Query\SelectAppsQuery;
 use Doctrine\DBAL\Connection;
 
@@ -26,14 +26,14 @@ class DbalSelectAppsQuery implements SelectAppsQuery
     public function execute(): array
     {
         $selectSQL = <<<SQL
-SELECT BIN_TO_UUID(id) AS id, code, label, flow_type FROM akeneo_app ORDER BY created ASC
+SELECT code, label, flow_type FROM akeneo_app ORDER BY created ASC
 SQL;
 
         $dataRows = $this->dbalConnection->executeQuery($selectSQL)->fetchAll();
 
         $apps = [];
         foreach ($dataRows as $dataRow) {
-            $apps[] = new ReadApp($dataRow['id'], $dataRow['code'], $dataRow['label'], $dataRow['flow_type']);
+            $apps[] = new App($dataRow['code'], $dataRow['label'], $dataRow['flow_type']);
         }
 
         return $apps;

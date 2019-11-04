@@ -3,3 +3,8 @@ services:
         class: 'Akeneo\Apps\Infrastructure\Persistence\Dbal\Query\DbalSelectAppsQuery'
         arguments:
             - '@database_connection'
+
+    akeneo_app.persistence.query.select_app_and_credentials_by_code:
+        class: 'Akeneo\Apps\Infrastructure\Persistence\Dbal\Query\DbalSelectAppAndCredentialsByCodeQuery'
+        arguments:
+            - '@database_connection'
