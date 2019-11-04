@@ -8,7 +8,7 @@ services:
             - '@pim_catalog.validator.helper.attribute'
             - '@akeneo_referenceentity.infrastructure.persistence.query.record_exists'
             - '@akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'
-            - ['akeneo_reference_entity_collection']
+            - ['akeneo_reference_entity_collection', 'akeneo_reference_entity']
             - ['IN', 'EMPTY', 'NOT EMPTY', 'NOT IN']
         tags:
             - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 50 }
