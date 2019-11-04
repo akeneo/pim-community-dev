@@ -13,6 +13,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const isProd = process.argv && process.argv.indexOf('--env=prod') > -1;
 const {getModulePaths, createModuleRegistry} = require('./frontend/webpack/requirejs-utils');
 const {aliases, config} = getModulePaths(rootDir, __dirname);
+const JsonSchemaPlugin = require('./frontend/webpack/json-schema-plugin');
 
 createModuleRegistry(Object.keys(aliases), rootDir);
 
@@ -202,6 +203,16 @@ const webpackConfig = {
           path.resolve(rootDir, 'src')
         ],
       },
+
+      // Compile JSON schema to typescript
+      {
+        test: /\.schema\.json$/,
+        use: [
+          {
+            loader: path.resolve(__dirname, 'frontend/webpack/json-schema-loader'),
+          },
+        ],
+      },
     ],
   },
 
@@ -234,6 +245,8 @@ const webpackConfig = {
       'process.env.NODE_ENV': isProd ? JSON.stringify('production') : JSON.stringify('development'),
       'process.env.EDITION': JSON.stringify(process.env.EDITION),
     }),
+
+    new JsonSchemaPlugin(),
   ],
 };
 
