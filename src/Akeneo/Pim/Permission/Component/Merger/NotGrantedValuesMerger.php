@@ -133,7 +133,7 @@ class NotGrantedValuesMerger implements NotGrantedDataMergerInterface
         if (-1 !== $userId) {
             $grantedAttributeCodes = array_flip(
                 $this->getViewableAttributeCodes->forAttributeCodes(
-                    array_keys($fullEntityWithValues->getRawValues()),
+                    array_map('strval', array_keys($fullEntityWithValues->getRawValues())),
                     $userId
                 )
             );
