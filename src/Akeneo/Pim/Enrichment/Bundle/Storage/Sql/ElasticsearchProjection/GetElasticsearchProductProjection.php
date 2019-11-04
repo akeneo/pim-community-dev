@@ -341,7 +341,7 @@ SQL;
     }
 
     /**
-     * Create all value collections all at once.
+     * Create value collection for several products in batch to minimize IO and improve performance.
      *
      * @param [
      *          [
