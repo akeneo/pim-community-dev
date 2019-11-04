@@ -20,7 +20,7 @@ lint-front:
 
 ### Unit tests
 .PHONY: unit-back
-unit-back: apps-unit-back
+unit-back: var/tests/phpspec
 ifeq ($(CI),1)
 	${PHP_RUN} vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
 	.circleci/find_non_executed_phpspec.sh
@@ -47,9 +47,18 @@ integration-front:
 	$(YARN_RUN) integration
 
 .PHONY: integration-back
-integration-back:
+integration-back: var/tests/phpunit apps-integration-back
 ifeq ($(CI),1)
 	.circleci/run_phpunit.sh . PIM_Integration_Test
 else
-	${PHP_RUN} vendor/bin/phpunit -c . $(O)
+	${PHP_RUN} vendor/bin/phpunit -c . --testsuite PIM_Integration_Test $(O)
+endif
+
+### Integration tests
+.PHONY: end-to-end-back
+end-to-end-back: var/tests/phpunit
+ifeq ($(CI),1)
+	.circleci/run_phpunit.sh . End_to_End
+else
+	${PHP_RUN} vendor/bin/phpunit -c . --testsuite End_to_End $(O)
 endif
