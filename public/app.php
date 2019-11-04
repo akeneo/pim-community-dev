@@ -10,7 +10,7 @@ $shutDownCodeCoverage = RemoteCodeCoverage::bootstrap(
 //(bool)getenv('CODE_COVERAGE_ENABLED'),
     true,
     sys_get_temp_dir(),
-    __DIR__ . '/../app/phpunit.xml.dist'
+    __DIR__ . '/../phpunit.xml.dist'
 );
 
 if ($_SERVER['APP_DEBUG']) {

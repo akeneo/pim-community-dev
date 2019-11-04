@@ -245,4 +245,4 @@ acceptance:
         Liuggio\Fastest\Behat\ListFeaturesExtension\Extension: ~
         BehatLocalCodeCoverage\LocalCodeCoverageExtension:
             target_directory: '%paths.base%/var/coverage'
-            phpunit_xml_path: '%paths.base%/app/phpunit.xml.dist'
+            phpunit_xml_path: '%paths.base%/phpunit.xml.dist'

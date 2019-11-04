@@ -85,6 +85,10 @@ COPY docker/build/xdebug.ini /etc/php/7.3/fpm/conf.d/99-akeneo-xdebug.ini
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 RUN chmod +x /usr/local/bin/composer
 
+COPY docker/pcov.so /usr/lib/php/20180731/pcov.so
+RUN echo "extension=pcov.so" >> /etc/php/7.3/cli/conf.d/99-akeneo.ini
+RUN echo "extension=pcov.so" >> /etc/php/7.3/fpm/conf.d/99-akeneo.ini
+
 # Make XDEBUG activable at container start
 COPY docker/build/docker-php-entrypoint /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-php-entrypoint

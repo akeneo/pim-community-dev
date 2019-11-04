@@ -154,6 +154,9 @@
     "dompdf/dompdf": {
         "version": "v0.6.2"
     },
+    "drupol/phpspec-code-coverage": {
+        "version": "5.0.1"
+    },
     "egulias/email-validator": {
         "version": "2.1.11"
     },
@@ -255,6 +258,15 @@
     },
     "liuggio/fastest": {
         "version": "v1.6.1"
+    },
+    "matthiasnoback/behat-local-code-coverage-extension": {
+        "version": "v0.3.0"
+    },
+    "matthiasnoback/behat-remote-code-coverage-extension": {
+        "version": "v0.3.0"
+    },
+    "matthiasnoback/live-code-coverage": {
+        "version": "v1.1.0"
     },
     "monolog/monolog": {
         "version": "1.23.0"
@@ -364,6 +376,9 @@
     "phpunit/php-token-stream": {
         "version": "3.1.1"
     },
+    "phpunit/phpcov": {
+        "version": "6.0.0"
+    },
     "phpunit/phpunit": {
         "version": "4.7",
         "recipe": {
@@ -417,6 +432,9 @@
     },
     "sebastian/exporter": {
         "version": "3.1.2"
+    },
+    "sebastian/finder-facade": {
+        "version": "1.2.2"
     },
     "sebastian/global-state": {
         "version": "3.0.0"
@@ -798,6 +816,9 @@
     },
     "symfony/yaml": {
         "version": "v4.3.4"
+    },
+    "theseer/fdomdocument": {
+        "version": "1.6.6"
     },
     "theseer/tokenizer": {
         "version": "1.1.3"
