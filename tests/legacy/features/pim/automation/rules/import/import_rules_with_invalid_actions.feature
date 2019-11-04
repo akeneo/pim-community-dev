@@ -277,7 +277,7 @@ Feature: Import rules
     And I wait for the "clothing_rule_import" job to finish
     And I should see the text "skipped 2"
     And I should see the text "conditions[0]: Attribute \"name\" expects a locale, none given."
-    And I should see the text "actions[0]: Attribute \"description\" expects a locale, none given."
+    And I should see the text "actions[0]: Attribute \"description\" expects a channel code and a locale code, \"tablet\" channel code and \"\" locale code given."
     When I am on the "description" attribute page
     And I visit the "Rules" tab
     And I should see the text "Another good description"
@@ -391,7 +391,7 @@ Feature: Import rules
     And I wait for the "clothing_rule_import" job to finish
     And I should see the text "skipped 2"
     And I should see the text "conditions[0]: Attribute \"description\" expects a scope, none given."
-    And I should see the text "actions[0]: Attribute \"description\" expects a scope, none given."
+    And I should see the text "actions[0]: Attribute \"description\" expects a channel code and a locale code, \"\" channel code and \"en_US\" locale code given."
     When I am on the "description" attribute page
     And I visit the "Rules" tab
     And I should see the text "Another good description"

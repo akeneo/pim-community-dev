@@ -48,5 +48,5 @@ Feature: Import rules
     Then I should see the text "skipped 1"
     And I should see the text "Property \"sleeve_color\" expects a valid code. No reference data \"color\" with code \"red\" has been found, \"red,orange\" given"
     And I should see the text "Property \"sleeve_fabric\" expects a valid code. No reference data \"fabrics\" with code \"kevlar\" has been found, \"kevlar,chiffon\" given"
-    And I should see the text "Property \"sleeve_color\" expects a valid reference data code. The code of the reference data \"color\" does not exist, \"green\" given"
-    And I should see the text "Property \"sleeve_fabric\" expects a valid reference data code. The code of the reference data \"fabrics\" does not exist, \"kevlar\" given"
+    And I should see the text "Property \"sleeve_color\" expects a valid reference data code. The code \"green\" of the reference data \"color\" does not exist"
+    And I should see the text "Property \"sleeve_fabric\" expects valid codes. The following codes for reference data \"fabrics\" do not exist: \"kevlar, wool\""

@@ -49,8 +49,8 @@ Feature: Import products with an assets collection
     And I wait for the "csv_clothing_product_import" job to finish
     Then I should see the text "created 1"
     And I should see the text "skipped 2"
-    And I should see the text "Property \"gallery\" expects a valid reference data code. The code of the reference data \"assets\" does not exist, \"foo\" given."
-    And I should see the text "Property \"gallery\" expects a valid reference data code. The code of the reference data \"assets\" does not exist, \"bar\" given."
+    And I should see the text "Property \"gallery\" expects valid codes. The following codes for reference data \"assets\" do not exist: \"foo\""
+    And I should see the text "Property \"gallery\" expects valid codes. The following codes for reference data \"assets\" do not exist: \"bar\""
     Then there should be 1 products
     And the product "pant-2" should have the following values:
       | gallery | [minivan] |
