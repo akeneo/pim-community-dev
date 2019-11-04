@@ -1,0 +1,285 @@
+nameOverride: ""
+global:
+  extraLabels:
+    type: srnt
+    instanceName: nil # Generated with terraform template
+    pfid: nil # Generated with terraform template
+  monitoring:
+    enabled: false
+
+backup:
+  enabled: true
+  projectId: nil # Generated with terraform template
+  zone: nil # Generated with terraform template
+  snapshot:
+    schedule: "0 0 */1 * * *" # Once every hour: https://godoc.org/github.com/robfig/cron
+    retentionPolicy:
+      dailyBackups: 10
+      weeklyBackups: 4
+      monthlyBackups: 12
+      yearlyBackups: 10
+    export:
+      enabled: false
+      snapshotAge: 24h
+  storage:
+    schedule: "0 0 */24 * * *"
+    retentionPolicy:
+      dailyBackups: 10
+      weeklyBackups: 5
+      monthlyBackups: 12
+      yearlyBackups: 10
+
+common:
+  extraLabels: {}
+  pimMasterDomain: nil # Generated with terraform template
+  phpConfFPM:
+  - name: "PHP_CONF_MAX_EXECUTION_TIME"
+    value: "60"
+  - name: "PHP_CONF_MAX_INPUT_VARS"
+    value: "1000"
+  - name: "PHP_CONF_UPLOAD_LIMIT"
+    value: "512M"
+  - name: "PHP_CONF_MAX_POST_SIZE"
+    value: "512M"
+  - name: "PHP_CONF_MEMORY_LIMIT"
+    value: "512M"
+  - name: "PHP_CONF_DISPLAY_ERRORS"
+    value: "off"
+  - name: "PHP_CONF_ERROR_REPORTING"
+    value: "22527" # E_ALL & ~E_DEPRECATED & ~E_STRICT
+
+  phpConfCLI:
+  - name: "PHP_CONF_MAX_EXECUTION_TIME"
+    value: "0"
+  - name: "PHP_CONF_MAX_INPUT_VARS"
+    value: "1000"
+  - name: "PHP_CONF_UPLOAD_LIMIT"
+    value: "512M"
+  - name: "PHP_CONF_MAX_POST_SIZE"
+    value: "512M"
+  - name: "PHP_CONF_MEMORY_LIMIT"
+    value: "2G"
+  - name: "PHP_CONF_DISPLAY_ERRORS"
+    value: "off"
+  - name: "PHP_CONF_ERROR_REPORTING"
+    value: "22527" # E_ALL & ~E_DEPRECATED & ~E_STRICT
+
+mailer:
+  login: nil # Generated with terraform template
+  password: nil # Generated with terraform template
+  host: nil # Generated with terraform template
+  port: nil # Generated with terraform template
+  from_address: no-reply@akeneo.com
+
+image:
+  pim:
+    repository: eu.gcr.io/akeneo-ci/pim-enterprise-dev
+    # image.pim.tag is added by the Jenkinsfile when running the CI, manually use "--set image.pim.tag x.y.z-AB"
+    pullPolicy: Always
+    tag: master
+  httpd:
+    repository: httpd
+    tag: 2.4.33
+    pullPolicy: Always
+
+pim:
+  hook:
+    addAdmin:
+      enabled: true
+    installPim:
+      enabled: true
+    upgradePim:
+      enabled: false # Set me to true when upgrading to a minor version
+      hook: "pre-upgrade"
+    upgradeES:
+      enabled: false
+      hook: "pre-upgrade"
+  storage:
+    bucketName: nil
+    serviceAccountKey: nil
+  updateStrategy:
+    type: RollingUpdate
+  replicas: 1
+  numDaemon: 1
+  extraLabels: {}
+  secret: nil # Generate me with `uuidgen`
+  resources:
+    limits:
+      memory: "2048Mi"
+    requests:
+      cpu: "200m"
+      memory: "512Mi"
+  defaultCatalog: src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal
+  defaultAdminUser:
+    login : nil # Fill me
+    firstName: nil # Fill me
+    lastName: nil # Fill me
+    email: nil # Fill me
+    password: nil # Generate me with `pwgen -sB 22`
+    uiLocale: en_US # Change me if needed
+  jobs:
+    versioning-purge:
+      enabled: true
+      pimCommand: "pim:versioning:purge --more-than-days 90 --no-interaction --force"
+      schedule: "0 1 * * 0"
+    batch-purge:
+      enabled: true
+      pimCommand: "akeneo:batch:purge-job-execution"
+      schedule: "0 0 1 * *"
+    completeness-calculate:
+      enabled: true
+      pimCommand: "pim:completeness:calculate"
+      schedule: "0 2 1 * *"
+    rule-run:
+      enabled: true
+      pimCommand: "akeneo:rule:run"
+      schedule: "0 5 * * *"
+    versionning-refresh:
+      enabled: true
+      pimCommand: "pim:versioning:refresh"
+      schedule: "0 3 * * *"
+    volume-aggregate:
+      enabled: true
+      pimCommand: "pim:volume:aggregate"
+      schedule: "0 4 * * *"
+    send-expiration-notification:
+      enabled: true
+      pimCommand: "pim:asset:send-expiration-notification"
+      schedule: "0 1 * * *"
+    project-recalculate:
+      enabled: true
+      pimCommand: "pimee:project:recalculate"
+      schedule: "20 0 * * *"
+    project-notify-before-due-date:
+      enabled: true
+      pimCommand: "pimee:project:notify-before-due-date"
+      schedule: "0 2 * * *"
+    franklin-insights-fetch-products:
+      enabled: true
+      pimCommand: "pimee:franklin-insights:fetch-products"
+      schedule: "*/30 * * * *"
+    reference-entity-refresh-records:
+      enabled: true
+      pimCommand: "akeneo:reference-entity:refresh-records --all"
+      schedule: "0 23 * * *"
+
+# Onboarder
+onboarder:
+  enabled: false
+  hook:
+    setupOnboarderDatabase:
+      enabled: true
+      hook: "post-install"
+    importAdditionalOnboarderFixtures:
+      enabled: false
+      hook: "post-install"
+  pubsub:
+    topicPubMiddleware: nil
+    topicPubOnboarder: nil
+    topicCon: nil
+    queueName: nil
+  serviceAccount: nil
+
+mysql:
+  image:
+    mysql:
+      repository: mysql
+      tag: "8.0.16"
+      pullPolicy: Always
+  common:
+    class: ssd-retain
+  mysql:
+    dataDiskPath: "/var/lib/mysql/datadir/"
+    serviceName: pim-mysql
+    defaultUser: akeneo_pim
+    userPassword: 9vbtChLWrLsRhnKkjozHEqqL # Generate me with `pwgen -sB 22`
+    rootPassword: exKJXyqPcVRxsMv7J9W7MdCC # Generate me with `pwgen -sB 22`
+    defaultDatabase: akeneo_pim
+    dataDiskSize: 100Gi
+    stateful:
+      enabled: false
+    resources:
+      requests:
+        memory: 3072Mi
+    readinessProbe:
+      initialDelaySeconds: 5
+      periodSeconds: 120
+      timeoutSeconds: 30
+      successThreshold: 1
+      failureThreshold: 3
+
+memcached:
+  fullnameOverride: memcached
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: "1"
+      memory: "96Mi"
+    requests:
+      cpu: "30m"
+      memory: "64Mi"
+  memcached:
+    maxItemMemory: 64
+  pdbMinAvailable: 0
+
+elasticsearch:
+  appVersion: 7.3.2
+  image:
+    repository: docker.elastic.co/elasticsearch/elasticsearch-oss
+    tag: 7.3.2
+  fullnameOverride: elasticsearch
+  sysctlInitContainer:
+    enabled: false
+  cluster:
+    name: "pim-es"
+    env:
+      # See chart config map: https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/configmap.yaml
+      # And elasticsearch documentation: https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-gateway.html
+      MINIMUM_MASTER_NODES: null
+      EXPECTED_MASTER_NODES: null
+      RECOVER_AFTER_MASTER_NODES: null
+      EXPECTED_DATA_NODES: null
+      RECOVER_AFTER_DATA_NODES: null
+      #INITIAL_MASTER_NODES: "elasticsearch-master-0,elasticsearch-master-1"
+      cluster.initial_master_nodes: "elasticsearch-master-0"
+      discovery.seed_hosts: "elasticsearch-discovery"
+  client:
+    replicas: 1
+    heapSize: "128m"
+    resources:
+      limits:
+        cpu: "1"
+        memory: "512Mi"
+      requests:
+        cpu: "25m"
+        memory: "160Mi"
+  master:
+    replicas: 2
+    persistence:
+      size: 1Gi
+      storageClass: ssd-retain
+    heapSize: "256m"
+    resources:
+      limits:
+        cpu: "1"
+        memory: "512Mi"
+      requests:
+        cpu: "25m"
+        memory: "320Mi"
+    updateStrategy:
+      type: RollingUpdate
+  data:
+    replicas: 2
+    persistence:
+      size: 10Gi
+      storageClass: ssd-retain
+    heapSize: "1G"
+    resources:
+      limits:
+        cpu: "1"
+        memory: "1536Mi"
+      requests:
+        cpu: "25m"
+        memory: "1024Mi"
+    updateStrategy:
+      type: RollingUpdate

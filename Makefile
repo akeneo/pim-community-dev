@@ -157,7 +157,11 @@ php-image-dev:
 
 .PHONY: php-image-prod
 php-image-prod:
-	DOCKER_BUILDKIT=1 docker build --progress=plain --pull --tag eu.gcr.io/akeneo-cloud:${IMAGE_TAG} --target prod .
+	DOCKER_BUILDKIT=1 docker build --no-cache --progress=plain --pull --tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:${IMAGE_TAG} --target prod .
+
+.PHONY: push-php-image-prod
+push-php-image-prod:
+	docker push eu.gcr.io/akeneo-ci/pim-enterprise-dev:${IMAGE_TAG}
 
 .PHONY: php-images
 php-images: php-image-dev php-image-prod

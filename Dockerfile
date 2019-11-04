@@ -11,11 +11,26 @@ ENV PHP_CONF_DATE_TIMEZONE=UTC \
     PHP_CONF_MAX_INPUT_VARS=1000 \
     PHP_CONF_UPLOAD_LIMIT=40M \
     PHP_CONF_MAX_POST_SIZE=40M \
-    XDEBUG_ENABLED=0
+    XDEBUG_ENABLED=0 \
+    PHP_CONF_DISPLAY_ERRORS=0 \
+    PHP_CONF_DISPLAY_STARTUP_ERRORS=0
+
 
 RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/apt.conf.d/01-no-recommended && \
     echo 'path-exclude=/usr/share/man/*' > /etc/dpkg/dpkg.cfg.d/path_exclusions && \
     echo 'path-exclude=/usr/share/doc/*' >> /etc/dpkg/dpkg.cfg.d/path_exclusions && \
+    apt-get update && \
+    apt-get --no-install-recommends --no-install-suggests --yes --quiet install \
+        apt-transport-https \
+        ca-certificates \
+        curl \
+        libcurl4-openssl-dev \
+        libssl-dev \
+        gpg \
+        gpg-agent && \
+    apt-get clean && \
+    apt-get --yes autoremove --purge && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     apt-get update && \
     apt-get --yes install imagemagick \
         php7.3-fpm \
@@ -39,8 +54,9 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
     ln -s /usr/sbin/php-fpm7.3 /usr/local/sbin/php-fpm && \
     usermod --uid 1000 www-data && groupmod --gid 1000 www-data && \
     mkdir /srv/pim && \
-    sed -i "s#listen = /run/php/php7.3-fpm.sock#listen = 9000#g" /etc/php/7.3/fpm/pool.d/www.conf && \
+    usermod -d /srv/pim www-data && \
     mkdir -p /run/php
+
 
 COPY docker/php.ini /etc/php/7.3/cli/conf.d/99-akeneo.ini
 COPY docker/php.ini /etc/php/7.3/fpm/conf.d/99-akeneo.ini
@@ -59,6 +75,7 @@ RUN apt-get update && \
     phpdismod xdebug && \
     mkdir /etc/php/7.3/enable-xdebug && \
     ln -s /etc/php/7.3/mods-available/xdebug.ini /etc/php/7.3/enable-xdebug/xdebug.ini && \
+    sed -i "s#listen = /run/php/php7.3-fpm.sock#listen = 9000#g" /etc/php/7.3/fpm/pool.d/www.conf && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -109,12 +126,12 @@ COPY config config
 COPY public public
 COPY src src
 COPY upgrades upgrades
-COPY composer.json package.json yarn.lock .env .
+COPY composer.json package.json yarn.lock .env tsconfig.json .
 
 ENV APP_ENV=prod
 RUN mkdir var && \
-    php -d 'memory_limit=3G' /usr/local/bin/composer install --optimize-autoloader --no-scripts --no-interaction --no-ansi --no-dev --prefer-dist && \
-    bin/console pim:installer:assets --symlink --clean && \
+    php -d 'memory_limit=3G' /usr/local/bin/composer install --no-scripts --no-interaction --no-ansi --no-dev --prefer-dist && \
+    bin/console pim:installer:assets --clean && \
     yarnpkg install --frozen-lockfile && \
     yarnpkg run less && \
     yarnpkg run webpack
@@ -129,16 +146,19 @@ ENV APP_ENV=prod \
 
 WORKDIR /srv/pim/
 # Copy the application with its dependencies
-COPY --from=builder /srv/pim/bin bin
-COPY --from=builder /srv/pim/config config
-COPY --from=builder /srv/pim/public public
-COPY --from=builder /srv/pim/src src
-COPY --from=builder /srv/pim/upgrades upgrades
-COPY --from=builder /srv/pim/var var
-COPY --from=builder /srv/pim/vendor vendor
-COPY --from=builder /srv/pim/.env .
+COPY --from=builder --chown=www-data:www-data /srv/pim/bin bin
+COPY --from=builder --chown=www-data:www-data /srv/pim/config config
+COPY --from=builder --chown=www-data:www-data /srv/pim/public public
+COPY --from=builder --chown=www-data:www-data /srv/pim/src src
+COPY --from=builder --chown=www-data:www-data /srv/pim/upgrades upgrades
+COPY --from=builder --chown=www-data:www-data /srv/pim/var/cache/prod var/cache/prod
+COPY --from=builder --chown=www-data:www-data /srv/pim/vendor vendor
+COPY --from=builder --chown=www-data:www-data /srv/pim/.env .
 
 # Prepare the application
 RUN rm -rf public/test_dist && \
-    mkdir -p public/media var/logs/batch && chown -R www-data:www-data public/media var && \
-    rm -rf var/cache && su www-data -s /bin/bash bash -c "bin/console cache:warmup"
+    mkdir -p public/media && chown -R www-data:www-data public/media var && \
+    rm -rf var/cache && su www-data -s /bin/bash -c "bin/console cache:warmup"
+
+# Keep root as default user
+USER root
