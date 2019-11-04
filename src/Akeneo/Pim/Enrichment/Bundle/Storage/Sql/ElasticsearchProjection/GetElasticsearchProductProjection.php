@@ -67,18 +67,18 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
 
         $platform = $this->connection->getDatabasePlatform();
 
+        $rows = $this->createValueCollectionInBatchFromRows($rows);
+
         $results = [];
         foreach ($rows as $row) {
-            $rawValues = \json_decode($row['raw_values'], true);
+            $rawValues = $row['raw_values'];
 
             $productLabels = [];
             if (null !== $row['attribute_as_label_code'] && isset($rawValues[$row['attribute_as_label_code']])) {
                 $productLabels = $rawValues[$row['attribute_as_label_code']];
             }
 
-            // to optimize as batch
-            $valueCollection = $this->valueCollectionFactory->createFromStorageFormat($rawValues);
-            $values = $this->valuesNormalizer->normalize($valueCollection, self::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX);
+            $values = $this->valuesNormalizer->normalize($row['values'], self::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX);
 
             // use Type::DATETIME and not Type::DATETIME_IMMUTABLE as it's overridden in the PIM (UTCDateTimeType) to handle UTC correctly
             $results[$row['identifier']] = new ElasticsearchProductProjection(
@@ -338,5 +338,44 @@ SQL;
 
             return $row;
         }, $rows);
+    }
+
+    /**
+     * Create all value collections all at once.
+     *
+     * @param [
+     *          [
+     *              'identifier' => 'foo',
+     *              'raw_values' => ['attribute' => ['channel' => ['locale' => 'data' ]]]
+     *          ]
+     *        ]
+     *
+     * @return [
+     *          'foo' => [
+     *              'identifier' => 'foo',
+     *              'raw_values' => ['attribute' => ['channel' => ['locale' => 'data' ]]]
+     *              'values' => ValueCollection(...)
+     *          ]
+     *        ]
+     */
+    private function createValueCollectionInBatchFromRows(array $rows): array
+    {
+        $rowsIndexedByProductIdentifier = [];
+        foreach ($rows as $row) {
+            $row['raw_values'] = \json_decode($row['raw_values'], true);
+            $rowsIndexedByProductIdentifier[$row['identifier']] = $row;
+        }
+
+        $rawValuesCollection = [];
+        foreach ($rowsIndexedByProductIdentifier as $identifier => $rowIndexedByProductIdentifier) {
+            $rawValuesCollection[$identifier] = $rowIndexedByProductIdentifier['raw_values'];
+        }
+
+        $valueCollections = $this->valueCollectionFactory->createMultipleFromStorageFormat($rawValuesCollection);
+        foreach ($valueCollections as $identifier => $valueCollection) {
+            $rowsIndexedByProductIdentifier[$identifier]['values'] = $valueCollection;
+        }
+
+        return $rowsIndexedByProductIdentifier;
     }
 }
