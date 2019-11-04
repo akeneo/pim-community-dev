@@ -128,14 +128,10 @@ jobs:
                 command: APP_ENV=test make database
           - run:
                 name: PHPunit Integration
-                command: |
-                    TESTFILES=$(docker-compose run --rm -T php php .circleci/find_phpunit.php --testsuite PIM_Integration_Test | circleci tests split --split-by=timings)
-                    .circleci/run_phpunit.sh . $TESTFILES
+                command: make integration-back . PIM_Integration_Test
           - run:
                 name: PHPunit End to end
-                command: |
-                    TESTFILES=$(docker-compose run --rm -T php php .circleci/find_phpunit.php --testsuite End_to_End | circleci tests split --split-by=timings)
-                    .circleci/run_phpunit.sh . $TESTFILES
+                command: make integration-back . End_to_End
           - store_test_results:
                 path: var/tests/phpunit
           - store_artifacts:

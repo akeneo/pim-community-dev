@@ -45,3 +45,11 @@ acceptance-front:
 .PHONY: integration-front
 integration-front:
 	$(YARN_RUN) integration
+
+.PHONY: integration-back
+integration-back:
+ifeq ($(CI),1)
+	.circleci/run_phpunit.sh . PIM_Integration_Test
+else
+	${PHP_RUN} vendor/bin/phpunit -c . $(O)
+endif
