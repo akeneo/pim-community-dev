@@ -1,11 +1,12 @@
 #!/bin/sh
 
 # Usage:
-#   run_phpunit.sh path/to/phpunit.xml test_file_1 test_file_2 test_file_3 test_file_4...
+#   run_phpunit.sh path/to/phpunit.xml PIM_Integration_Test
 
 CONFIGDIR=$1
-shift
-TESTFILES=$@
+TESTSUITES=$2
+
+TESTFILES=$(docker-compose run -u www-data --rm -T php php .circleci/find_phpunit.php -c $CONFIGDIR --testsuite $TESTSUITES | circleci tests split --split-by=timings)
 
 fail=0
 for TESTFILE in $TESTFILES; do
