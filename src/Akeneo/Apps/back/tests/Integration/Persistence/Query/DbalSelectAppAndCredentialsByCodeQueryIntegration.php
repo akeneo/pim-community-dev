@@ -9,7 +9,6 @@ use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
 use Akeneo\Apps\Domain\Persistence\Query\SelectAppAndCredentialsByCodeQuery;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 
 /**
