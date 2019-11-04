@@ -69,8 +69,6 @@ Feature: Filter products by text field
       | postit | MyPostit |                  |
       | book   |          |                  |
       | mug    |          | MyMugDescription |
-    And the "postit" product has the "description" attribute
-    And the "book" product has the "name" attribute
     And I am on the products grid
     Then the grid should contain 3 elements
     And I should see products postit, book and mug

@@ -2,9 +2,11 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Builder;
 
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolverInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -15,9 +17,21 @@ class EntityWithValuesBuilderSpec extends ObjectBehavior
 {
     function let(
         AttributeValuesResolverInterface $valuesResolver,
-        ValueFactory $productValueFactory
+        ValueFactory $productValueFactory,
+        GetAttributes $getAttributesQuery
     ) {
-        $this->beConstructedWith($valuesResolver, $productValueFactory);
+        $getAttributesQuery->forCode('size')->willReturn(
+            new Attribute('size', AttributeTypes::OPTION_SIMPLE_SELECT, [], false, false, null, false, 'option')
+        );
+        $getAttributesQuery->forCode('color')->willReturn(
+            new Attribute('color', AttributeTypes::OPTION_SIMPLE_SELECT, [], true, true, null, false, 'option')
+        );
+        $getAttributesQuery->forCode('label')->willReturn(
+            new Attribute('label', AttributeTypes::TEXT, [], true, true, null, false, 'option')
+        );
+
+
+        $this->beConstructedWith($valuesResolver, $productValueFactory, $getAttributesQuery);
     }
 
     function it_adds_an_empty_product_value(
@@ -29,14 +43,7 @@ class EntityWithValuesBuilderSpec extends ObjectBehavior
         ValueInterface $colorValue
     ) {
         $size->getCode()->willReturn('size');
-        $size->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
-        $size->isLocalizable()->willReturn(false);
-        $size->isScopable()->willReturn(false);
-
         $color->getCode()->willReturn('color');
-        $color->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
-        $color->isLocalizable()->willReturn(true);
-        $color->isScopable()->willReturn(true);
 
         $product->getValue('size', null, null)->willReturn($sizeValue);
         $product->getValue('color', 'en_US', 'ecommerce')->willReturn($colorValue);
@@ -44,11 +51,12 @@ class EntityWithValuesBuilderSpec extends ObjectBehavior
         $product->removeValue($sizeValue)->willReturn($product);
         $product->removeValue($colorValue)->willReturn($product);
 
-        $productValueFactory->create($size, null, null, null)->willReturn($sizeValue);
-        $productValueFactory->create($color, 'ecommerce', 'en_US', null)->willReturn($colorValue);
+        $sizeAttribute = new Attribute('size', AttributeTypes::OPTION_SIMPLE_SELECT, [], false, false, null, false, 'option');
+        $colorAttribute = new Attribute('color', AttributeTypes::OPTION_SIMPLE_SELECT, [], true, true, null, false, 'option');
+        $productValueFactory->createByCheckingData($sizeAttribute, null, null, null)->willReturn($sizeValue);
+        $productValueFactory->createByCheckingData($colorAttribute, 'ecommerce', 'en_US', null)->willReturn($colorValue);
 
-        $product->addValue($sizeValue)->willReturn($product);
-        $product->addValue($colorValue)->willReturn($product);
+        $product->addValue(Argument::any())->shouldNotBecalled();
 
         $this->addOrReplaceValue($product, $size, null, null, null);
         $this->addOrReplaceValue($product, $color, 'en_US', 'ecommerce', null);
@@ -63,14 +71,7 @@ class EntityWithValuesBuilderSpec extends ObjectBehavior
         ValueInterface $colorValue
     ) {
         $size->getCode()->willReturn('size');
-        $size->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
-        $size->isLocalizable()->willReturn(false);
-        $size->isScopable()->willReturn(false);
-
         $color->getCode()->willReturn('color');
-        $color->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
-        $color->isLocalizable()->willReturn(true);
-        $color->isScopable()->willReturn(true);
 
         $product->getValue('size', null, null)->willReturn($sizeValue);
         $product->getValue('color', 'en_US', 'ecommerce')->willReturn($colorValue);
@@ -78,8 +79,11 @@ class EntityWithValuesBuilderSpec extends ObjectBehavior
         $product->removeValue($sizeValue)->willReturn($product);
         $product->removeValue($colorValue)->willReturn($product);
 
-        $productValueFactory->create($size, null, null, null)->willReturn($sizeValue);
-        $productValueFactory->create($color, 'ecommerce', 'en_US', 'red')->willReturn($colorValue);
+        $sizeAttribute = new Attribute('size', AttributeTypes::OPTION_SIMPLE_SELECT, [], false, false, null, false, 'option');
+        $colorAttribute = new Attribute('color', AttributeTypes::OPTION_SIMPLE_SELECT, [], true, true, null, false, 'option');
+
+        $productValueFactory->createByCheckingData($sizeAttribute, null, null, null)->willReturn($sizeValue);
+        $productValueFactory->createByCheckingData($colorAttribute, 'ecommerce', 'en_US', 'red')->willReturn($colorValue);
 
         $product->addValue($sizeValue)->willReturn($product);
         $product->addValue($colorValue)->willReturn($product);
@@ -95,15 +99,13 @@ class EntityWithValuesBuilderSpec extends ObjectBehavior
         ValueInterface $value
     ) {
         $label->getCode()->willReturn('label');
-        $label->getType()->willReturn(AttributeTypes::TEXT);
-        $label->isLocalizable()->willReturn(false);
-        $label->isScopable()->willReturn(false);
 
         $product->getValue('label', null, null)->willReturn(null);
 
         $product->removeValue(Argument::any())->shouldNotBeCalled();
 
-        $productValueFactory->create($label, null, null, 'foobar')->willReturn($value);
+        $labelAttribute = new Attribute('label', AttributeTypes::TEXT, [], true, true, null, false, 'option');
+        $productValueFactory->createByCheckingData($labelAttribute, null, null, 'foobar')->willReturn($value);
 
         $product->addValue($value)->willReturn($product);
 

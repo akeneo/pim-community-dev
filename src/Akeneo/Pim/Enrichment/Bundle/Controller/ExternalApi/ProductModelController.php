@@ -15,6 +15,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProd
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetConnectorProductModels;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
+use Akeneo\Tool\Bundle\ApiBundle\Cache\WarmupQueryCache;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Akeneo\Tool\Component\Api\Exception\DocumentedHttpException;
@@ -119,6 +120,9 @@ class ProductModelController
     /** @var ApiAggregatorForProductModelPostSaveEventSubscriber */
     private $apiAggregatorForProductModelPostSave;
 
+    /** @var WarmupQueryCache */
+    private $warmupQueryCache;
+
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         ProductQueryBuilderFactoryInterface $pqbSearchAfterFactory,
@@ -141,6 +145,7 @@ class ProductModelController
         GetConnectorProductModels $getConnectorProductModels,
         TokenStorageInterface $tokenStorage,
         ApiAggregatorForProductModelPostSaveEventSubscriber $apiAggregatorForProductModelPostSave,
+        WarmupQueryCache $warmupQueryCache,
         array $apiConfiguration
     ) {
         $this->pqbFactory = $pqbFactory;
@@ -164,6 +169,7 @@ class ProductModelController
         $this->getConnectorProductModels = $getConnectorProductModels;
         $this->tokenStorage = $tokenStorage;
         $this->apiAggregatorForProductModelPostSave = $apiAggregatorForProductModelPostSave;
+        $this->warmupQueryCache = $warmupQueryCache;
         $this->apiConfiguration = $apiConfiguration;
     }
 
@@ -312,6 +318,7 @@ class ProductModelController
      */
     public function partialUpdateListAction(Request $request): Response
     {
+        $this->warmupQueryCache->fromRequest($request);
         $resource = $request->getContent(true);
         $this->apiAggregatorForProductModelPostSave->activate();
         $response = $this->partialUpdateStreamResource->streamResponse($resource, [], function () {

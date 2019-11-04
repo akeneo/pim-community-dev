@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Category\Normalizer\ExternalApi;
 
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -10,7 +11,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CategoryNormalizer implements NormalizerInterface
+class CategoryNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /** @var NormalizerInterface */
     protected $stdNormalizer;
@@ -43,5 +44,10 @@ class CategoryNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof CategoryInterface && 'external_api' === $format;
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 }

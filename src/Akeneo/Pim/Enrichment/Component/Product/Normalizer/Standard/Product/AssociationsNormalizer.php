@@ -6,6 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProdu
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -15,7 +16,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AssociationsNormalizer implements NormalizerInterface
+class AssociationsNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /** @var GetAssociatedProductCodesByProduct */
     private $getAssociatedProductCodeByProduct;
@@ -44,6 +45,11 @@ class AssociationsNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof EntityWithAssociationsInterface && 'standard' === $format;
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 
     /**

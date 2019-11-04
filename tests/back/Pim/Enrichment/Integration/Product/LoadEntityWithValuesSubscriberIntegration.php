@@ -6,6 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql\SqlGetAttributes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Test\Integration\TestCase;
 
 /**
@@ -13,7 +14,6 @@ use Akeneo\Test\Integration\TestCase;
  */
 class LoadEntityWithValuesSubscriberIntegration extends TestCase
 {
-
     public function testLoadValuesForProductWithAllAttributes()
     {
         $product = $this->findProductByIdentifier('foo');
@@ -129,27 +129,14 @@ class LoadEntityWithValuesSubscriberIntegration extends TestCase
         return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
     }
 
-    /**
-     * @param string $attributeCode
-     *
-     * @return AttributeInterface
-     */
-    private function findAttributeByIdentifier($attributeCode)
+    private function findAttributeByIdentifier(string $attributeCode): Attribute
     {
-        return $this->get('pim_catalog.repository.attribute')->findOneByIdentifier($attributeCode);
+        return $this->get('akeneo.pim.structure.query.get_attributes')->forCode($attributeCode);
     }
 
-    /**
-     * @param AttributeInterface $attribute
-     * @param string             $scope
-     * @param string             $locale
-     * @param mixed              $data
-     *
-     * @return ValueInterface
-     */
-    private function createProductValue(AttributeInterface $attribute, $scope, $locale, $data)
+    private function createProductValue(Attribute $attribute, ?string $scope, ?string $locale, $data)
     {
-        return $this->get('pim_catalog.factory.value')->create(
+        return $this->get('akeneo.pim.enrichment.factory.value')->createByCheckingData(
             $attribute,
             $scope,
             $locale,
@@ -291,7 +278,7 @@ class LoadEntityWithValuesSubscriberIntegration extends TestCase
                     'scope'  => null,
                     'data'   => [
                         ['amount' => '45.00', 'currency' => 'USD'],
-                        ['amount' => '56.53', 'currency' => 'EUR']
+                        ['amount' => '56.53', 'currency' => 'EUR'],
                     ],
                 ],
             ],
@@ -355,7 +342,6 @@ class LoadEntityWithValuesSubscriberIntegration extends TestCase
                     'locale' => null,
                     'scope'  => 'ecommerce',
                     'data'   => [
-                        ['amount' => '15.00', 'currency' => 'EUR'],
                         ['amount' => '20.00', 'currency' => 'USD'],
                     ],
                 ],
@@ -364,7 +350,6 @@ class LoadEntityWithValuesSubscriberIntegration extends TestCase
                     'scope'  => 'tablet',
                     'data'   => [
                         ['amount' => '17.00', 'currency' => 'EUR'],
-                        ['amount' => '24.00', 'currency' => 'USD'],
                     ],
                 ],
             ],

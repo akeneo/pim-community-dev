@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -14,7 +15,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ParentsAssociationsNormalizer implements NormalizerInterface
+class ParentsAssociationsNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /**
      * {@inheritdoc}
@@ -59,6 +60,11 @@ class ParentsAssociationsNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof EntityWithAssociationsInterface && 'standard' === $format;
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 
     /**

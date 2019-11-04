@@ -187,7 +187,12 @@ class ChannelController
         }
 
         $channel = $this->getChannel($code);
-        $this->remover->remove($channel);
+
+        try {
+            $this->remover->remove($channel);
+        } catch (\LogicException $e) {
+            return new JsonResponse(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }

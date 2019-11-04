@@ -1,8 +1,10 @@
+#Entities
 Job: Lavoro
 Connector: Connettore
 pim_import_export:
   job: Lavoro
   connector: Connettore
+  ## Job status
   status:
     0: Pronto
   batch_status:
@@ -35,6 +37,7 @@ pim_import_export:
       property.title: Proprietà generali
       history.title: Cronologia
       job_content.title: Contenuto
+#Page titles:
 pim_title.export_profile.index: Gestione profili di esportazione
 pim_title.export_profile.edit: Profilo di esportazione %job.label% | Modifica
 pim_title.export_profile.show: Profilo di esportazione %job.label% | Visualizza
@@ -45,12 +48,14 @@ pim_title.import_profile.edit: Profilo di importazione %job.label% | Modifica
 pim_title.import_profile.show: Profilo di importazione %job.label% | Visualizza
 pim_title.import_execution.index: Importare la cronologia delle esecuzioni
 pim_title.import_execution.show: Importare le esecuzioni | Dettagli
+#Entity and page header titles
 export profile:
   title: Profilo di esportazione
   edit: modificare il profilo di esportazione
 import profile:
   title: Profilo di importazione
   edit: modificare il profilo di importazione
+#ACLs
 pim_importexport:
   acl:
     export_profile:
@@ -86,6 +91,7 @@ pim_importexport:
   acl_group:
     export: Profili di esportazione
     import: Profili di importazione
+#Buttons
 btn:
   create:
     export profile: crea il profilo di esportazione
@@ -93,10 +99,12 @@ btn:
 Upload and import now: Carica e importa ora
 import now: Importa ora
 export now: Esporta ora
+#Confirmation messages
 confirmation:
   remove:
     export profile: Sei sicuro di voler cancellare il profilo di esportazione %name%?
     import profile: Sei sicuro di voler cancellare il profilo di importazione %name%?
+#Flash messages
 flash:
   export:
     created: L'esportazione è stata creata con successo
@@ -108,15 +116,18 @@ flash:
     removed: L'importazione è stata rimossa
     updated: L'importazione è stato caricata con successo
     running: L'importazione è in esecuzione
+#Tabs
 General properties: Proprietà generali
 History: Cronologia
 pane.accordion:
   properties: Proprietà
   global_settings: Impostazioni Globali
   filters: Filtri
+#Popin titles
 popin.create:
   export_profile.title: Crea un nuovo profilo di esportazione
   import_profile.title: Crea un nuovo profilo di importazione
+#Job execution
 'Display item': Visualizza articoli
 'Hide item': Nascondi articoli
 'Collecting data about job execution...': Raccolta di dati sull'esecuzione del lavoro...
@@ -142,6 +153,7 @@ Warnings: Attenzione
 Summary: Riepilogo
 Start: Inizio
 End: Fine
+#Process tracker
 set_attribute_requirements: Imposta i requisiti degli attributi
 COMPLETED: Completato
 STARTING: In avvio

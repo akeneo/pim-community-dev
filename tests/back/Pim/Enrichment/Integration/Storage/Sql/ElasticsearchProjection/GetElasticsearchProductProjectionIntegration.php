@@ -4,14 +4,10 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\ElasticsearchProjection;
 
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductProjection;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Sanitizer\DateSanitizer;
-use Akeneo\Test\IntegrationTestsBundle\Sanitizer\MediaSanitizer;
-use AkeneoTest\Pim\Enrichment\Integration\Fixture\EntityBuilder;
-use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 
@@ -335,6 +331,144 @@ class GetElasticsearchProductProjectionIntegration extends TestCase
         Assert::assertSame($expectedAttributeCodesForThisLevel, $normalizedProductProjection['attributes_for_this_level']);
     }
 
+    public function test_it_gets_product_projection_values_of_a_product()
+    {
+        $this->createProductWithFamilyAndValues();
+        $query = $this->get('akeneo.pim.enrichment.product.query.get_elasticsearch_product_projection');
+        $productProjection = $query->fromProductIdentifiers(['bar'])['bar'];
+        $normalizedProductProjection = $productProjection->toArray();
+
+        $expectedValues = [
+            'values' => [
+                'a_date-date' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => '2016-06-14',
+                    ],
+                ],
+                'a_localizable_image-media' => [
+                    '<all_channels>' => [
+                        'en_US' => [
+                            'extension' => 'jpg',
+                            'key' => 'c/3/7/c/c37cd4f2b1b137fc30c76686a16f85a37b8768a3_akeneo.jpg',
+                            'hash' => 'cf2c863861dde58f45bdb32496d42ee3dc2b3c44',
+                            'mime_type' => 'image/jpeg',
+                            'original_filename' => 'akeneo.jpg',
+                            'size' => 10584,
+                            'storage' => 'catalogStorage',
+                        ],
+                        'fr_FR' => [
+                            'extension' => 'png',
+                            'key' => '6/c/e/1/6ce16e02c08751c6d2966063460c4da035283695_ziggy.png',
+                            'hash' => '6da161fe9cb463beeef71e26405ad208c7dc2af5',
+                            'mime_type' => 'image/png',
+                            'original_filename' => 'ziggy.png',
+                            'size' => 100855,
+                            'storage' => 'catalogStorage',
+                        ],
+                    ],
+                ],
+                'a_localized_and_scopable_text_area-textarea' => [
+                    'ecommerce' => [
+                        'en_US' => 'a text area for ecommerce in English',
+                    ],
+                    'tablet' => [
+                        'en_US' => 'a text area for tablets in English',
+                        'fr_FR' => 'une zone de texte pour les tablettes en français',
+                    ],
+                ],
+                'a_metric-metric' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => [
+                            'base_data' => '987654321987123.400000000000',
+                            'base_unit' => 'WATT',
+                            'data' => '987654321987.1234',
+                            'unit' => 'KILOWATT',
+                        ],
+                    ],
+                ],
+                'a_multi_select-options' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => ['optionA', 'optionB'],
+                    ],
+                ],
+                'a_number_float-decimal' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => '12.5678',
+                    ],
+                ],
+                'a_number_float_negative-decimal' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => '-99.8732',
+                    ],
+                ],
+                'a_number_integer-decimal' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => '42',
+                    ],
+                ],
+                'a_price-prices' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => [
+                            'EUR' => '56.53',
+                            'USD' => '45.00',
+                        ],
+                    ],
+                ],
+                'a_ref_data_multi_select-reference_data_options' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => [
+                            'cotton',
+                            'denim',
+                        ],
+                    ],
+                ],
+                'a_ref_data_simple_select-reference_data_option' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => 'purple-heart',
+                    ],
+                ],
+                'a_scopable_price-prices' => [
+                    'ecommerce' => [
+                        '<all_locales>' => [
+                            'USD' => '20.00',
+                        ],
+                    ],
+                    'tablet' => [
+                        '<all_locales>' => [
+                            'EUR' => '17.00',
+                        ],
+                    ],
+                ],
+                'a_simple_select-option' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => 'optionA',
+                    ],
+                ],
+                'a_text-text' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => 'Lorem ipsum dolor sit amet',
+                    ],
+                ],
+                'a_yes_no-boolean' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => false,
+                    ],
+                ],
+                'sku-text' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => 'bar',
+                    ],
+                ],
+            ],
+        ];
+
+        self::sanitizeMediaAttributeData($expectedValues);
+        self::sanitizeData($normalizedProductProjection);
+
+        Assert::assertArrayHasKey('values', $normalizedProductProjection);
+        Assert::assertEquals($expectedValues['values'], $normalizedProductProjection['values']);
+    }
+
     public function test_that_it_returns_latest_updated_date_of_the_product_and_ancestors_with_correct_timezone()
     {
         $this->createVariantProductWithTwoLevels();
@@ -374,6 +508,46 @@ class GetElasticsearchProductProjectionIntegration extends TestCase
     private function createProductWithFamily()
     {
         $product = $this->get('pim_catalog.builder.product')->createProduct('bar', 'familyA');
+        Assert::assertCount(0, $this->get('validator')->validate($product));
+        $this->get('pim_catalog.saver.product')->save($product);
+
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+    }
+
+    private function createProductWithFamilyAndValues()
+    {
+        $product = $this->get('pim_catalog.builder.product')->createProduct('bar', 'familyA');
+
+        $this->get('pim_catalog.updater.product')->update($product, [
+            'values' => [
+                'a_date' => [['locale' => null, 'scope' => null, 'data' => '2016-06-14 11:12:50']],
+                'a_localized_and_scopable_text_area' => [
+                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'data' => 'a text area for ecommerce in English'],
+                    ['scope' => 'tablet', 'locale' => 'en_US', 'data' => 'a text area for tablets in English'],
+                    ['scope' => 'tablet', 'locale' => 'fr_FR', 'data' => 'une zone de texte pour les tablettes en français'],
+                ],
+                'a_metric' => [['scope' => null, 'locale' => null, 'data' => ['amount' => 987654321987.1234, 'unit' => 'KILOWATT']]],
+                'a_multi_select' => [['scope' => null, 'locale' => null, 'data' => ['optionA', 'optionB']]],
+                'a_number_float' => [['scope' => null, 'locale' => null, 'data' => 12.5678]],
+                'a_number_float_negative' => [['scope' => null, 'locale' => null, 'data' => -99.8732]],
+                'a_number_integer' => [['scope' => null, 'locale' => null, 'data' => 42]],
+                'a_price' => [['scope' => null, 'locale' => null, 'data' => [['currency' => 'EUR', 'amount' => 56.53],['currency' => 'USD', 'amount' => 45.00]]]],
+                'a_scopable_price' => [
+                    ['scope' => 'ecommerce', 'locale' => null, 'data' => [['currency' => 'USD', 'amount' => 20]]],
+                    ['scope' => 'tablet', 'locale' => null, 'data' => [['currency' => 'EUR', 'amount' => 17]]],
+                ],
+                'a_localizable_image' => [
+                    ['scope' => null, 'locale' => 'en_US', 'data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))],
+                    ['scope' => null, 'locale' => 'fr_FR', 'data' => $this->getFileInfoKey($this->getFixturePath('ziggy.png'))],
+                ],
+                'a_simple_select' => [['scope' => null, 'locale' => null, 'data' => 'optionA']],
+                'a_text' => [['scope' => null, 'locale' => null, 'data' => 'Lorem ipsum dolor sit amet']],
+                'a_yes_no' => [['scope' => null, 'locale' => null, 'data' => false]],
+                'a_ref_data_multi_select' => [['scope' => null, 'locale' => null, 'data' => ['cotton', 'denim']]],
+                'a_ref_data_simple_select' => [['scope' => null, 'locale' => null, 'data' => 'purple-heart']],
+            ],
+        ]);
+
         Assert::assertCount(0, $this->get('validator')->validate($product));
         $this->get('pim_catalog.saver.product')->save($product);
 

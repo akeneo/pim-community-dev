@@ -188,7 +188,7 @@ class CategoryFilterIntegration extends AbstractProductQueryBuilderTestCase
             'parent'         => 'model-shoe',
             'categories'     => ['collection-2018'],
             'family_variant' => 'shoe_size_color',
-            'values'         => ['size' => [['data' => 'M', 'locale' => null, 'scope' => null]]],
+            'values'         => ['size' => [['data' => 'm', 'locale' => null, 'scope' => null]]],
         ]);
         $this->createVariantProduct('red-s', [
             'parent'     => 'model-s',

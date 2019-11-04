@@ -19,6 +19,7 @@ pim_measure:
     Energy: Energia
     CaseBox: Pakkaus
   units:
+    #Area
     ACRE: Eekkeri
     ARE: Aari
     ARPENT: Arpent
@@ -37,18 +38,22 @@ pim_measure:
     SQUARE_MILE: Neliömaili
     SQUARE_MILLIMETER: Neliömillimetri
     SQUARE_YARD: Neliöjaardi
+    #Binary
     BIT: Bitti
     BYTE: Tavu
     KILOBYTE: Kilotavu
     MEGABYTE: Megatavu
     GIGABYTE: Gigatavu
     TERABYTE: Teratavu
+    #Decibel
     DECIBEL: Desibeli
+    #Frequency
     GIGAHERTZ: Gigahertsi
     KILOHERTZ: Kilohertsi
     MEGAHERTZ: Megahertsi
     TERAHERTZ: Terahertsi
     HERTZ: Hertsi
+    #Length
     CENTIMETER: Senttimetri
     CHAIN: Mittaketju
     DECIMETER: Desimetri
@@ -63,11 +68,13 @@ pim_measure:
     MILE: Maili
     MILLIMETER: Millimetri
     YARD: Jaardi
+    #Power
     GIGAWATT: Gigawatti
     KILOWATT: Kilowatti
     MEGAWATT: Megawatti
     TERAWATT: Terawatti
     WATT: Watti
+    #Resistance
     MILLIOHM: Milliohmi
     CENTIOHM: Senttiohmi
     DECIOHM: Desiohmi
@@ -76,6 +83,7 @@ pim_measure:
     HECTOHM: Hehto-ohmi
     KILOHM: Kilo-ohmi
     MEGOHM: Megaohmi
+    #Voltage
     MILLIVOLT: Millivoltti
     CENTIVOLT: Senttivoltti
     DECIVOLT: Desivoltti
@@ -83,6 +91,7 @@ pim_measure:
     DEKAVOLT: Dekavoltti
     HECTOVOLT: Hehtovoltti
     KILOVOLT: Kilovoltti
+    #Intensity
     MILLIAMPERE: Milliampeeri
     CENTIAMPERE: Senttiampeeri
     DECIAMPERE: Desiampeeri
@@ -91,6 +100,7 @@ pim_measure:
     HECTOAMPERE: Hehtoampeeri
     KILOAMPERE: Kiloampeeri
     MEGAAMPERE: Mega-ampeeri
+    #ElectricCharge
     MILLIAMPEREHOUR: Milliampeeritunti
     AMPEREHOUR: Ampeeritunti
     MILLICOULOMB: Millicoulombi
@@ -100,6 +110,7 @@ pim_measure:
     DEKACOULOMB: Dekacoulombi
     HECTOCOULOMB: Hehtocoulombi
     KILOCOULOMB: Kilocoulombi
+    #Duration
     MILLISECOND: Millisekunti
     SECOND: Sekunti
     MINUTE: Minuutti
@@ -108,6 +119,7 @@ pim_measure:
     WEEK: Viikko
     MONTH: Kuukausi
     YEAR: Vuosi
+    #Speed
     FOOT_PER_SECOND: Jalkaa sekunnissa
     FOOT_PER_HOUR: Jalkaa tunnissa
     KILOMETER_PER_HOUR: Kilometriä tunnissa
@@ -116,11 +128,13 @@ pim_measure:
     METER_PER_SECOND: Metriä sekunnissa
     MILE_PER_HOUR: Mailia tunnissa
     YARD_PER_HOUR: Jaardia tunnissa
+    #Temperature
     CELSIUS: Celsius
     FAHRENHEIT: Fahrenheit
     KELVIN: Kelvin
     RANKINE: Rankine
     REAUMUR: Reaumur
+    #Volume
     BARREL: Tynnyri
     CENTILITER: Senttilitra
     CUBIC_CENTIMETER: Kuutiosenttimetri
@@ -136,6 +150,7 @@ pim_measure:
     MILLILITER: Millilitra
     OUNCE: Unssi
     PINT: Pintti
+    #Weight
     DENIER: Denier
     GRAIN: Graani
     GRAM: Gramma
@@ -146,6 +161,7 @@ pim_measure:
     ONCE: Unssi
     POUND: Pauna
     TON: Tonni
+    #Pressure
     BAR: Baari
     PASCAL: Pascal
     HECTOPASCAL: Hehtopascal
@@ -154,7 +170,9 @@ pim_measure:
     PSI: Paunaa per neliötuuma
     TORR: Torri
     MMHG: elohopeamillimetri
+    #Energy
     KILOCALORIE: Kilokalori
     KILOJOULE: kilojoule
+    #CaseBox
     PIECE: Kappale
     DOZEN: Tusina

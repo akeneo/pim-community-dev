@@ -1,0 +1,10 @@
+services:
+    ### Structure
+    akeneo.pim.structure.query.get_attributes:
+        class: 'Akeneo\Test\Acceptance\Attribute\InMemoryGetAttributes'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+    akeneo.pim.structure.query.get_existing_attribute_option_codes_from_option_codes:
+        class: 'Akeneo\Test\Acceptance\AttributeOption\InMemoryGetExistingAttributeOptionCodes'
+        arguments:
+            - '@pim_catalog.repository.attribute_option'

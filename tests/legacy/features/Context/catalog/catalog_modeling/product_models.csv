@@ -37,16 +37,16 @@ bacchus_orange;clothing_color_size;bacchus;master_men_pants_shorts,supplier_zaro
 bacchus_pink;clothing_color_size;bacchus;master_men_pants_shorts,supplier_zaro;;;files/bacchus_pink/image/bacchus.jpg;;;;;;;pink;;Bacchus pink;;;
 bacchus_yellow;clothing_color_size;bacchus;master_men_pants_shorts,supplier_zaro;;;files/bacchus_yellow/image/bacchus.jpg;;;;;;;yellow;;Bacchus yellow;;;
 brogueshoe;shoes_size;;master_men_shoes,supplier_abibas;brogueshoe;summer_2016;;;;Brogue shoe;267;abibas;;;;;;;
-brooksblue;shoes_size;;master_men_shoes;Brooks blue;Summer_2017;;;Brooks blue;Brooks blue;;;;blue;;Brooks blue;;;
-brookspink;shoes_size;;master_women_shoes;Brooks pink;Summer_2017;;;Brooks pink;Brooks pink;;;;pink;;Brooks pink;;;
+brooksblue;shoes_size;;master_men_shoes;Brooks blue;summer_2017;;;Brooks blue;Brooks blue;;;;blue;;Brooks blue;;;
+brookspink;shoes_size;;master_women_shoes;Brooks pink;summer_2017;;;Brooks pink;Brooks pink;;;;pink;;Brooks pink;;;
 caelus;clothing_color_size;;master_men_blazers_deals,supplier_mongo;Tuxedo with animal print;summer_2016;;;"Get ready to party in this tuxedo with animal print grabbing composed of a single-breasted jacket with 2 buttons and matching pants. Our skinny suits offer a perfect contemporary snowstorm.
 The model is 1.85 meters (6 feet 1 inch), wears a size 40 jacket and pants 32R.
 Dry clean only.";Caelus;999;mongo;600;;;;;;
 caelus_blue;clothing_color_size;caelus;master_men_blazers_deals,supplier_mongo;;;;;;;;;;blue;;Caelus blue;;;
 caelus_red;clothing_color_size;caelus;master_men_blazers_deals,supplier_mongo;;;;;;;;;;red;;Caelus red;;;
 climbingshoe;shoes_size;;master_men_shoes,print_shoes,supplier_abibas;climbingshoe;summer_2017;files/climbingshoe/image/climbingshoe.jpg;;;Climbing shoe;258;abibas;;;;;;;
-converseblack;shoes_size;;master_men_shoes,master_women_shoes;Converse black;Summer_2017;files/converseblack/image/feet-1842328_960_720.jpg;;Converse black;Converse black;;;;black;;Converse black;;;
-conversered;shoes_size;;master_men_shoes,master_women_shoes;Converse red;Summer_2017;files/conversered/image/converse-932667_960_720.jpg;;Converse red;Converse red;;;;red;;Converse red;;;
+converseblack;shoes_size;;master_men_shoes,master_women_shoes;Converse black;summer_2017;files/converseblack/image/feet-1842328_960_720.jpg;;Converse black;Converse black;;;;black;;Converse black;;;
+conversered;shoes_size;;master_men_shoes,master_women_shoes;Converse red;summer_2017;files/conversered/image/converse-932667_960_720.jpg;;Converse red;Converse red;;;;red;;Converse red;;;
 derby;shoes_size;;master_men_shoes,print_shoes,supplier_abibas;derby;summer_2016;;;;Derby shoe;123;abibas;;;;;;;
 diana;clothing_color_size;;master_women_dresses,print_clothing,supplier_zaro;diana;winter_2016;files/diana/image/diana2.jpg;;"Length: Short
 Lining: 100% polyester
@@ -61,7 +61,7 @@ diana_pink;clothing_color_size;diana;master_women_dresses,print_clothing,supplie
 diana_red;clothing_color_size;diana;master_women_dresses,print_clothing,supplier_zaro;;;files/diana_red/image/diana2.jpg;;;;;;;red;;Diana red;;;
 dionysos;clothing_colorsize;;master_men_blazers_deals,supplier_zaro;Black-breasted jacket;;;;;Dionysos;1099;zaro;800;;;;;;
 dressshoe;shoes_size;;master_men_shoes,supplier_abibas;;;files/dressshoe/image/dressshoe.jpg;;;Dress shoe;444;abibas;;;;;;;
-elegance;shoes_size;;master_men_shoes;elegance;Summer_2017;files/elegance/image/elegance.jpg;;;Elegance;;;;black;;Elegance;;;
+elegance;shoes_size;;master_men_shoes;elegance;summer_2017;files/elegance/image/elegance.jpg;;;Elegance;;;;black;;Elegance;;;
 eris;clothing_colorsize;;master_women_shirts,print_clothing,supplier_zaro;Relaxed with a classic or dynamic piec;spring_2016;;;"Relaxed with a classic or dynamic piece with an extravagant accessory: white blouse with it the Mexx brand, your look will be 100% successful!
 
 Length: normal
@@ -97,7 +97,7 @@ Composition: 67% cotton, 28% polyamide, 5% elastane
 Care instructions: machine wash at 30 ° C";Hera;699;mongo;400;;;;;;
 hermes;clothing_colorsize;;master_men_blazers,supplier_mongo;Suit Jacket Heritage multicolored;summer_2016;;;Suit Jacket Heritage multicolored checkered Prince of Wales with single breasted 2 button and skinny pants to match.;Hermes;799;mongo;800;;;;;;
 hestia;clothing_colorsize;;master_women_blouses_deals,supplier_zaro;hestia;winter_2016;;;Model: Model is 180 cm tall and wears a size 36;Hestia;499;zaro;700;;;;;;
-jack;clothing_color_size;;tshirts;jack;Summer_2017;;;;Jack;;;;;;;;;
+jack;clothing_color_size;;tshirts;jack;summer_2017;;;;Jack;;;;;;;;;
 jack_brown;clothing_color_size;jack;tshirts;;;;files/jack_brown/variation_image/t-shirt-marron.png;;;;;;brown;;Jack brown;;;
 jack_green;clothing_color_size;jack;tshirts;;;;files/jack_green/variation_image/t-shirt-green.jpg;;;;;;green;;Jack green;;;
 jellyshoes;shoes_size;;master_women_shoes,supplier_abibas;jellyshoes;winter_2016;;;;Jelly shoe;176;abibas;;;;;;;
@@ -125,7 +125,7 @@ Sleeve type: Long Sleeve
 Composition: 67% cotton, 28% polyamide, 5% elastane
 Care instructions: machine wash at 30 ° C";Minerva;799;mongo;600;;;;;;
 moccasin;shoes_size;;master_men_shoes,print_shoes,supplier_abibas;moccasin;spring_2015;;;;Moccasin;322;abibas;;;;;;;
-plain;clothing_color_size;;tshirts;plain;Summer_2017;;;;Plain;;;;;;;;;
+plain;clothing_color_size;;tshirts;plain;summer_2017;;;;Plain;;;;;;;;;
 plain_red;clothing_color_size;plain;tshirts;;;;files/plain_red/variation_image/plain_red.jpg;;;;;;red;;Plain red ;;;
 plain_white;clothing_color_size;plain;tshirts;;;;;;;;;;white;;Plain white;;;
 portunus;clothing_colorsize;;master_men_pants_shorts,print_clothing,supplier_zaro;Black shorts with pattern Christmas Santa tattoo;autumn_2016;;;Black shorts with pattern Christmas Santa tattoo. 100% cotton. Machine washable.;Portunus;599;zaro;400;;;;;;
@@ -144,7 +144,7 @@ Sleeve type: Long Sleeve
 Composition: 100% cotton
 Care instructions: machine wash at 30 ° C";Securitas;799;zaro;800;;;;;;
 stilleto;shoes_size;;master_women_shirts,print_clothing,supplier_zaro;stilleto;spring_2016;;;;Stiletto;123;abibas;;;;;;;
-stock;shoes_size;;master_women_shoes,supplier_abibas;stock;Summer_2017;files/stilleto/image/stilleto.jpg;;;Stock;;;;red;;Stock;;;
+stock;shoes_size;;master_women_shoes,supplier_abibas;stock;summer_2017;files/stilleto/image/stilleto.jpg;;;Stock;;;;red;;Stock;;;
 terminus;clothing_colorsize;;master_women_shoes;terminus;winter_2016;;;Short chino solid light gray. 100% cotton. Machine washable.;Terminus;499;zaro;700;;;;;;
 venus;clothing_colorsize;;master_men_pants_shorts,supplier_zaro;venus;spring_2015;files/terminus/image/terminus.jpg;;"Length: noon
 Cup: close to the body
@@ -163,11 +163,11 @@ model-tshirt-divided-battleship-grey;clothing_color_size;model-tshirt-divided;ts
 model-tshirt-divided-crimson-red;clothing_color_size;model-tshirt-divided;tshirts;;;files/model-tshirt-divided-red/image/red.png;files/model-tshirt-divided-red/variation_image/red.png;;;;;;crimson_red;;Divided crimson red;cotton;;
 model-tshirt-unique-color-kurt;clothing_size;;tshirts;T-shirt with a Kurt Cobain print motif;summer_2017;;;Divided slim T-shirt with 2 buttons in the honor of the legendary Kurt Cobain.;;;;;crimson_red;;;cotton;;
 model-braided-hat;accessories_size;;master_accessories_hats;Braided hat ;summer_2017;files/model-braided-hat/image/braided-hat.jpg;;Braided hat ;;;;;battleship_grey;;Braided hat battleship grey;wool;;Chapeau tressé
-model-tshirt-unique-size;clothing_color;;tshirts;T-shirt unique size;summer_2017;files/model-tshirt-unique-size/image/unique-size.jpg;;Divided slim T-shirt with 2 buttons. Unique size.;;;;;;;;cotton;U;
-model-running-shoes;shoes_size_color;;master_men_shoes;Running shoes;Summer_2017;;;Running shoes;;;;;;;;leather;;
+model-tshirt-unique-size;clothing_color;;tshirts;T-shirt unique size;summer_2017;files/model-tshirt-unique-size/image/unique-size.jpg;;Divided slim T-shirt with 2 buttons. Unique size.;;;;;;;;cotton;u;
+model-running-shoes;shoes_size_color;;master_men_shoes;Running shoes;summer_2017;;;Running shoes;;;;;;;;leather;;
 model-running-shoes-xxs;shoes_size_color;model-running-shoes;master_men_shoes;;;;;;;;;;;;Running shoes XXS;;xxs;
 model-running-shoes-m;shoes_size_color;model-running-shoes;master_men_shoes;;;;;;;;;;;;Running shoes M;;m;
 model-running-shoes-xxxl;shoes_size_color;model-running-shoes;master_men_shoes;;;;;;;;;;;;Running shoes 3XL;;xxxl;
-model-biker-jacket;clothing_material_size;;master_men_blazers;Biker jacket;Summer_2017;;;Biker jacket;;;;;;;;;;
+model-biker-jacket;clothing_material_size;;master_men_blazers;Biker jacket;summer_2017;;;Biker jacket;;;;;;;;;;
 model-biker-jacket-leather;clothing_material_size;model-biker-jacket;master_men_blazers;;;;;;;;;;antique_white;;Biker jacket leather;leather;;
 model-biker-jacket-polyester;clothing_material_size;model-biker-jacket;master_men_blazers;;;;;;;;;;antique_white;;Biker jacket polyester;polyester;;

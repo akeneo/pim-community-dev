@@ -18,6 +18,7 @@ use Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -27,7 +28,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductNormalizer implements NormalizerInterface
+class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /** @var string[] */
     protected $supportedFormat = ['internal_api'];
@@ -199,6 +200,11 @@ class ProductNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof ProductInterface && in_array($format, $this->supportedFormat);
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 
     /**

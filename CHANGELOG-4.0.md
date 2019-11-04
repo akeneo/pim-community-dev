@@ -268,6 +268,31 @@
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi` to
     - remove `Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface`
     - add `Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface`
+- Remove interface `Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\ValueCompleteCheckerInterface` and its concrete implementations:
+    `Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\ValueCompleteChecker`, `Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\MediaCompleteChecker`,
+    `Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\MetricCompleteChecker`, `Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\PriceCompleteChecker`
+    and `Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\SimpleCompleteChecker` 
+- Change constructors of `Akeneo\Platform\Bundle\ImportExportBundle\Controller\ExportExecutionController` and `Akeneo\Platform\Bundle\ImportExportBundle\Controller\ExportExecutionController` to remove
+  - `Symfony\Bundle\FrameworkBundle\Templating\EngineInterface`,
+  - `Symfony\Component\Translation\TranslatorInterface`,
+  - `Akeneo\Tool\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler`,
+  - `Akeneo\Tool\Bundle\BatchBundle\Manager\JobExecutionManager` and
+  - `$jobType`
+- Remove class `Akeneo\Platform\Bundle\ImportExportBundle\Controller\ExportProfileController`
+- Remove class `Akeneo\Platform\Bundle\ImportExportBundle\Controller\ImportProfileController`
+- Remove class `Akeneo\Platform\Bundle\ImportExportBundle\Controller\JobProfileController`
+- Remove class `Akeneo\Platform\Bundle\ImportExportBundle\Form\Type\JobInstanceFormType`
+- Remove class `Akeneo\Platform\Bundle\ImportExportBundle\Form\Subscriber\JobInstanceSubscriber`
+- Remove class `Akeneo\Platform\Bundle\ImportExportBundle\Controller\Ui\JobTrackerController`
+- Remove class `Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\AbstractEntityWithFamilyValuesFiller`
+- Remove class `Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyVariantValuesFiller`
+- Remove class `Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\ProductValuesFiller`
+- Remove interface `Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface`
+- Remove method `addAttribute` from `Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface`
+- Remove class `Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\AbstractEntityWithFamilyValuesFiller`
+- Remove class `Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyVariantValuesFiller`
+- Remove class `Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\ProductValuesFiller`
+- Remove interface `Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface`
 
 ### CLI Commands
 

@@ -60,7 +60,7 @@
         "doctrine/orm": "2.6.3",
         "doctrine/persistence": "1.1.0",
         "doctrine/reflection": "1.0.0",
-        "dompdf/dompdf" : "0.6.2@dev",
+        "dompdf/dompdf" : "0.8.3",
         "elasticsearch/elasticsearch": "7.2.2",
         "friendsofsymfony/jsrouting-bundle": "2.1.1",
         "friendsofsymfony/oauth-server-bundle": "1.6.2",
@@ -97,7 +97,8 @@
         "symfony/debug-bundle": "^4.3",
         "symfony/web-profiler-bundle": "^4.3",
         "symfony/web-server-bundle": "^4.3",
-        "symfony/lock": "^4.3"
+        "symfony/lock": "^4.3",
+        "symfony/yaml": "^4.3"
     },
     "require-dev": {
         "akeneo/php-coupling-detector": "0.3.*",

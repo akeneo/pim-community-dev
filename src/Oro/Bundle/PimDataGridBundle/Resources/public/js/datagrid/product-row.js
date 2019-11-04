@@ -34,9 +34,7 @@ define(
              * @return {Array} An array of column names
              */
             getRenderableColumns() {
-                const type = this.getCompletenessCellType();
-
-                return [type, 'massAction', 'rowActions'];
+                return ['massAction', 'rowActions'];
             },
 
             /**
@@ -52,7 +50,9 @@ define(
                     useLayerStyle: isProductModel,
                     label,
                     identifier: this.model.get('identifier'),
-                    imagePath: this.getThumbnailImagePath()
+                    imagePath: this.getThumbnailImagePath(),
+                    completenessText: this.getCompletenessText(),
+                    completenessClass: this.getCompletenessClass(),
                 };
             },
 
@@ -152,6 +152,49 @@ define(
                 } else if (columnName === 'rowActions') {
                     $('.AknIconButton', cellElement).addClass('AknIconButton--white');
                 }
+            },
+
+            getCompletenessText() {
+                if (this.isProductModel()) {
+                    const complete = this.model.get('complete_variant_products').complete;
+                    const total = this.model.get('complete_variant_products').total;
+
+                    return complete + ' / ' + total;
+                } else {
+                    const completeness = this.model.get('completeness');
+                    if (null !== completeness) {
+                        return completeness + '%';
+                    }
+                }
+
+                return null;
+            },
+
+            getCompletenessClass() {
+                if (this.isProductModel()) {
+                    const complete = this.model.get('complete_variant_products').complete;
+                    const total = this.model.get('complete_variant_products').total;
+                    if (complete === total) {
+                        return 'AknBadge--success';
+                    } else if (complete === 0) {
+                        return 'AknBadge--important';
+                    } else {
+                        return 'AknBadge--warning';
+                    }
+                } else {
+                    const completeness = this.model.get('completeness');
+                    if (null !== completeness) {
+                        if (completeness <= 0) {
+                            return 'AknBadge--important';
+                        } else if (completeness >= 100) {
+                            return 'AknBadge--success';
+                        } else {
+                            return 'AknBadge--warning';
+                        }
+                    }
+                }
+
+                return null;
             }
         });
     });

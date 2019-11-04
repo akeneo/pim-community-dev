@@ -3,6 +3,7 @@
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Normalizer;
 
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerAwareTrait;
@@ -15,7 +16,7 @@ use Symfony\Component\Translation\TranslatorInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class JobExecutionNormalizer implements NormalizerInterface, SerializerAwareInterface
+class JobExecutionNormalizer implements NormalizerInterface, SerializerAwareInterface, CacheableSupportsMethodInterface
 {
     use SerializerAwareTrait;
 
@@ -93,5 +94,10 @@ class JobExecutionNormalizer implements NormalizerInterface, SerializerAwareInte
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof JobExecution;
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 }

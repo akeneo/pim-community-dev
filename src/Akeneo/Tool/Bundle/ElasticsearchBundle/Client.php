@@ -37,6 +37,8 @@ class Client
     /** @var NativeClient */
     private $client;
 
+    private $idPrefix;
+
     /**
      * Configure the PHP Elasticsearch client.
      * To learn more, please see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_configuration.html}
@@ -46,12 +48,13 @@ class Client
      * @param array         $hosts
      * @param string        $indexName
      */
-    public function __construct(ClientBuilder $builder, Loader $configurationLoader, array $hosts, $indexName)
+    public function __construct(ClientBuilder $builder, Loader $configurationLoader, array $hosts, $indexName, string $idPrefix = '')
     {
         $this->builder = $builder;
         $this->configurationLoader = $configurationLoader;
         $this->hosts = $hosts;
         $this->indexName = $indexName;
+        $this->idPrefix = $idPrefix;
 
         $builder->setHosts($hosts);
         $this->client = $builder->build();
@@ -70,7 +73,7 @@ class Client
     {
         $params = [
             'index' => $this->indexName,
-            'id' => $id,
+            'id' => $this->idPrefix.$id,
             'body' => $body,
         ];
 
@@ -113,7 +116,7 @@ class Client
             $params['body'][] = [
                 'index' => [
                     '_index' => $this->indexName,
-                    '_id' => $document[$keyAsId],
+                    '_id' => $this->idPrefix.$document[$keyAsId],
                 ],
             ];
 
@@ -146,7 +149,7 @@ class Client
     {
         $params = [
             'index' => $this->indexName,
-            'id' => $id,
+            'id' => $this->idPrefix.$id,
         ];
 
         return $this->client->get($params);
@@ -191,7 +194,7 @@ class Client
     {
         $params = [
             'index' => $this->indexName,
-            'id' => $id,
+            'id' => $this->idPrefix.$id,
         ];
 
         return $this->client->delete($params);
@@ -210,7 +213,7 @@ class Client
             $params['body'][] = [
                 'delete' => [
                     '_index' => $this->indexName,
-                    '_id' => $identifier,
+                    '_id' => $this->idPrefix.$identifier,
                 ],
             ];
         }

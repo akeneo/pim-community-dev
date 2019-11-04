@@ -1444,7 +1444,7 @@ JSON;
     {
         "identifier": "product_family",
         "family": ["familyA"]
-    }
+    } 
 JSON;
         $client->request('PATCH', 'api/rest/v1/products/product_family', [], [], [], $data);
 
@@ -1485,7 +1485,7 @@ JSON;
 
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "a_text" expects a scalar as data, "array" given. Check the expected format on the API documentation.',
+            'message' => 'Property "a_text" expects a string as data, "array" given. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => "http://api.akeneo.com/api-reference.html#patch_products__code_"

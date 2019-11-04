@@ -6,6 +6,7 @@ use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 use Doctrine\Common\Util\ClassUtils;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -15,7 +16,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ChannelNormalizer implements NormalizerInterface
+class ChannelNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /** @var array $supportedFormats */
     protected $supportedFormats = ['internal_api'];
@@ -99,6 +100,11 @@ class ChannelNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof ChannelInterface && in_array($format, $this->supportedFormats);
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 
     /**

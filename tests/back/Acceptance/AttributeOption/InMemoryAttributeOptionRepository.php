@@ -47,8 +47,8 @@ class InMemoryAttributeOptionRepository implements AttributeOptionRepositoryInte
         [$attributeCode, $attributeOptionCode] = \explode('.', $identifier);
 
         foreach ($this->attributeOptions as $attributeOption) {
-            if ($attributeOption->getCode() === $attributeOptionCode
-                && $attributeOption->getAttribute()->getCode() === $attributeCode) {
+            if (strtolower($attributeOption->getCode()) === strtolower($attributeOptionCode)
+                && strtolower($attributeOption->getAttribute()->getCode()) === strtolower($attributeCode)) {
                 return $attributeOption;
             }
         }

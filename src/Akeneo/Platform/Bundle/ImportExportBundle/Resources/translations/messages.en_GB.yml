@@ -1,8 +1,10 @@
+#Entities
 Job: Работа
 Connector: Connector
 pim_import_export:
   job: Работа
   connector: Connector
+  ## Job status
   status:
     0: Ready
   batch_status:
@@ -35,6 +37,7 @@ pim_import_export:
       property.title: General properties
       history.title: History
       job_content.title: Content
+#Page titles:
 pim_title.export_profile.index: Export profiles management
 pim_title.export_profile.edit: Export profile %job.label% | Edit
 pim_title.export_profile.show: Export profile %job.label% | Show
@@ -45,12 +48,14 @@ pim_title.import_profile.edit: Import profile %job.label% | Edit
 pim_title.import_profile.show: Import profile %job.label% | Show
 pim_title.import_execution.index: Import executions history
 pim_title.import_execution.show: Import executions | Details
+#Entity and page header titles
 export profile:
   title: export profile
   edit: edit export profile
 import profile:
   title: import profile
   edit: edit import profile
+#ACLs
 pim_importexport:
   acl:
     export_profile:
@@ -86,6 +91,7 @@ pim_importexport:
   acl_group:
     export: Export profiles
     import: Import profiles
+#Buttons
 btn:
   create:
     export profile: create export profile
@@ -93,10 +99,12 @@ btn:
 Upload and import now: Upload and import now
 import now: Import now
 export now: Export now
+#Confirmation messages
 confirmation:
   remove:
     export profile: Are you sure you want to delete the export profile %name%?
     import profile: Are you sure you want to delete the import profile %name%?
+#Flash messages
 flash:
   export:
     created: The export has been successfully created
@@ -108,15 +116,18 @@ flash:
     removed: The import has been removed
     updated: The import has been successfully updated
     running: The import is running
+#Tabs
 General properties: General properties
 History: History
 pane.accordion:
   properties: Properties
   global_settings: Global settings
   filters: Filters
+#Popin titles
 popin.create:
   export_profile.title: Create a new export profile
   import_profile.title: Create a new import profile
+#Job execution
 'Display item': Display item
 'Hide item': Hide item
 'Collecting data about job execution...': Collecting data about job execution...
@@ -142,6 +153,7 @@ Warnings: Warnings
 Summary: Summary
 Start: Start
 End: End
+#Process tracker
 set_attribute_requirements: Set attributes requirements
 COMPLETED: Completed
 STARTING: Starting

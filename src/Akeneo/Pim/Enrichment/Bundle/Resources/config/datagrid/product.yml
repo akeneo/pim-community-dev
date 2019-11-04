@@ -61,6 +61,22 @@ datagrid:
             id:
                 type:          field
                 data_name:     search_id
+            label:
+                type:          field
+                data_name:     label
+            image:
+                data_name:     image
+                frontend_type: product-and-product-model-image
+            identifier:
+                type:          field
+                data_name:     identifier
+            completeness:
+                type:          field
+                frontend_type: completeness
+            complete_variant_products:
+                type:          field
+                data_name:     complete_variant_product
+                frontend_type: complete-variant-product
             document_type: ~
             technical_id: ~
             delete_link:

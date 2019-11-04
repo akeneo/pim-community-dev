@@ -72,6 +72,17 @@ final class OptionsValueFactorySpec extends ObjectBehavior
         $value->shouldBeLike(OptionsValue::value('an_attribute', ['michel', 'sardou']));
     }
 
+    public function it_throws_an_exception_if_it_is_not_an_array()
+    {
+        $this->shouldThrow(InvalidPropertyTypeException::class)
+            ->during('createByCheckingData', [
+                $this->getAttribute(true, true),
+                null,
+                null,
+                'foo'
+            ]);
+    }
+
     public function it_throws_an_exception_if_not_an_array_of_string()
     {
         $this->shouldThrow(InvalidPropertyTypeException::class)

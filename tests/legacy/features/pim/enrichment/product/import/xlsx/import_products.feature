@@ -31,15 +31,6 @@ Feature: Import XLSX products
     And the english localizable value name of "SKU-001" should be "Donec"
     And the english tablet description of "SKU-002" should be "Pellentesque habitant morbi tristique senectus et netus et malesuada fames"
 
-  @javascript
-  Scenario: Successfully import an XLSX file of product with carriage return in product description
-    Given I am logged in as "Julia"
-    And I am on the "xlsx_footwear_product_import" import job page
-    When I upload and import the file "product_with_carriage_return.xlsx"
-    And I wait for the "xlsx_footwear_product_import" job to finish
-    Then there should be 1 products
-    And the english tablet description of "SKU-001" should be "dictum magna.|NL||NL|Lorem ispum|NL|Est"
-
   Scenario: Successfully import a XLSX file of products with count columns less than count headers
     Given the following XLSX file to import:
       """
@@ -49,29 +40,6 @@ Feature: Import XLSX products
       """
     When the products are imported via the job xlsx_footwear_product_import
     Then there should be 2 products
-
-  @jira https://akeneo.atlassian.net/browse/PIM-5696
-  Scenario: Successfully import an XLSX file of products with numeric values in text attributes
-    Given the following XLSX file to import:
-      """
-      sku;family;groups;name-en_US;description-en_US-tablet
-      123;boots;CROSS;456;7890
-      """
-    When the products are imported via the job xlsx_footwear_product_import
-    Then there should be 1 product
-    And the english localizable value name of "123" should be "456"
-    And the english tablet description of "123" should be "7890"
-
-  Scenario: Successfully import a csv file for a product with a numeric data for an simple select attribute
-    Given the following XLSX file to import:
-      """
-      sku;rating
-      renault-kangoo;5
-      """
-    When the products are imported via the job xlsx_footwear_product_import
-    Then there should be 1 products
-    And the product "renault-kangoo" should have the following value:
-      | rating | 5 |
 
   @jira https://akeneo.atlassian.net/browse/PIM-6085
   @javascript

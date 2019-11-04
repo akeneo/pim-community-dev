@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Structure\Component\Normalizer\InternalApi;
 
 use Akeneo\Pim\Structure\Component\Model\ReferenceDataConfiguration;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -12,7 +13,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ReferenceDataConfigurationNormalizer implements NormalizerInterface
+class ReferenceDataConfigurationNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /** @var string[] */
     protected $supportedFormats = ['internal_api'];
@@ -35,5 +36,10 @@ class ReferenceDataConfigurationNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof ReferenceDataConfiguration && in_array($format, $this->supportedFormats);
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 }

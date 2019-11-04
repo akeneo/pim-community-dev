@@ -11,6 +11,7 @@ use Akeneo\UserManagement\Component\Event\UserEvent;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -80,6 +81,9 @@ class UserController
     /** @var TranslatorInterface */
     private $translator;
 
+    /** @var SecurityFacade|null */
+    private $securityFacade;
+
     public function __construct(
         TokenStorageInterface $tokenStorage,
         NormalizerInterface $normalizer,
@@ -94,7 +98,8 @@ class UserController
         Session $session,
         RemoverInterface $remover,
         NumberFactory $numberFactory,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        ?SecurityFacade $securityFacade
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->normalizer = $normalizer;
@@ -110,6 +115,7 @@ class UserController
         $this->remover = $remover;
         $this->numberFactory = $numberFactory;
         $this->translator = $translator;
+        $this->securityFacade = $securityFacade;
     }
 
     /**
@@ -162,6 +168,13 @@ class UserController
 
         //code is useful to reach the route, cannot forget it in the query
         unset($data['code']);
+
+        if (!$this->securityFacade->isGranted('pim_user_role_edit')) {
+            unset($data['roles']);
+        }
+        if (!$this->securityFacade->isGranted('pim_user_group_edit')) {
+            unset($data['groups']);
+        }
 
         return $this->updateUser($user, $data);
     }

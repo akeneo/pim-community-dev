@@ -16,7 +16,8 @@ services:
         class: '%pim_catalog.builder.entity_with_values.class%'
         arguments:
             - '@pim_catalog.resolver.attribute_values'
-            - '@pim_catalog.factory.value'
+            - '@akeneo.pim.enrichment.factory.value'
+            - '@akeneo.pim.structure.query.get_attributes'
 
     pim_pdf_generator.builder.dompdf:
         class: 'Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Builder\DompdfBuilder'

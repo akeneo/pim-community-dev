@@ -19,6 +19,7 @@ class BuilderSpec extends ObjectBehavior
         $attribute->getType()->shouldReturn(AttributeTypes::IDENTIFIER);
         $attribute->getCode()->shouldReturn('code');
         $attribute->isUnique()->shouldReturn(false);
+        $attribute->getBackendType()->shouldReturn(AttributeTypes::BACKEND_TYPE_TEXT);
 
     }
 
@@ -33,6 +34,7 @@ class BuilderSpec extends ObjectBehavior
         $attribute->isUnique()->shouldReturn(true);
         $attribute->isLocalizable()->shouldReturn(false);
         $attribute->isScopable()->shouldReturn(false);
+        $attribute->getBackendType()->shouldReturn(AttributeTypes::BACKEND_TYPE_TEXT);
     }
 
     function it_builds_a_unique_attribute()
@@ -46,6 +48,7 @@ class BuilderSpec extends ObjectBehavior
         $attribute->isUnique()->shouldReturn(true);
         $attribute->isLocalizable()->shouldReturn(false);
         $attribute->isScopable()->shouldReturn(false);
+        $attribute->getBackendType()->shouldReturn(AttributeTypes::BACKEND_TYPE_TEXT);
     }
 
     function it_builds_a_text_attribute()
@@ -58,6 +61,7 @@ class BuilderSpec extends ObjectBehavior
         $attribute->isUnique()->shouldReturn(false);
         $attribute->isLocalizable()->shouldReturn(false);
         $attribute->isScopable()->shouldReturn(false);
+        $attribute->getBackendType()->shouldReturn(AttributeTypes::BACKEND_TYPE_TEXT);
     }
 
     function it_builds_a_price_collection_attribute()
@@ -70,6 +74,8 @@ class BuilderSpec extends ObjectBehavior
         $attribute->isUnique()->shouldReturn(false);
         $attribute->isLocalizable()->shouldReturn(false);
         $attribute->isScopable()->shouldReturn(false);
+        $attribute->getBackendType()->shouldReturn(AttributeTypes::BACKEND_TYPE_PRICE);
+
     }
 
     function it_builds_a_localizable_and_scopable_attribute()
@@ -82,6 +88,7 @@ class BuilderSpec extends ObjectBehavior
         $attribute->isUnique()->shouldReturn(false);
         $attribute->isLocalizable()->shouldReturn(true);
         $attribute->isScopable()->shouldReturn(true);
+        $attribute->getBackendType()->shouldReturn(AttributeTypes::BACKEND_TYPE_TEXT);
     }
 
     function its_code_is_mutable()

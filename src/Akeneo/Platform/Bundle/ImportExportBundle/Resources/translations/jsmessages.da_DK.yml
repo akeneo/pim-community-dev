@@ -8,6 +8,7 @@ pim_connector:
       selector:
         modal:
           title: Kategorier udvalg
+        label: "{0}Alle produkter|{1}En valgt kategori|]1,Inf[{{ count }} valgte kategorier"
         title: Vælg kategorier
     locales:
       validation:
@@ -27,6 +28,10 @@ pim_import_export:
       flash:
         create:
           success: Importer profil oprettet
+        upload:
+          error: Det var ikke muligt at uploade filen. Dens størrelse overskrider muligvis den konfigurerede maks. uploadstørrelse på din PHP eller HTTP serverkonfiguration
+      page_title:
+        index: "]-Inf, 1] {{ count }} importprofil|]1, Inf [{{ count }} importprofiler"
       module:
         create:
           button: opret import profil
@@ -35,6 +40,8 @@ pim_import_export:
       flash:
         create:
           success: Eksport profil oprettet
+      page_title:
+        index: "]-Inf, 1] {{ count }} eksportprofil|]1, Inf [{{ count }} eksport-profiler"
       module:
         create:
           button: opret eksportprofil
@@ -82,6 +89,7 @@ pim_import_export:
           file_path:
             title: Fil sti
             help: Hvor skal den generede fil gemmes
+            help_import: Kataloget over den fil der skal bruges til import
           delimiter:
             title: Afgrænser
             help: Ét tegn bruges til at angive feltafgrænseren

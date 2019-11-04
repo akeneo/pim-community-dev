@@ -49,7 +49,7 @@ pim_enrich.entity.product:
       version: Versio
       author: Tekijä
       logged_at: Kirjautunut
-      from: Lähettäjä
+      from: Alkaen
       modified: Muutettu
       old_value: Vanha arvo
       new_value: Uusi arvo
@@ -79,7 +79,7 @@ pim_enrich.entity.product:
       save_and_next: Tallenna ja seuraava
       save_and_finish: Tallenna ja lopeta
     associations:
-      title: Määritteet
+      title: Assosiaatiot
       none_exist: Assosiaatiotyyppiä ei ole olemassa.
       show_products: Näytä tuotteet
       show_groups: Näytä ryhmät
@@ -258,7 +258,7 @@ pim_enrich.export.product:
     title: Yleiset asetukset
 pim_enrich.mass_edit.product:
   title: Tuotteiden massamuokkaus
-  confirm: "{1}Olet päivittämässä tuotetta seuraavilla tiedoilla. Olet hyvä ja vahvista.|]1, Inf[Olet päivittämässä {{ itemsCount }} tuotetta seuravilla tiedoilla. Ole hyvä ja vahvista."
+  confirm: "{1}Olet päivittämässä tuotetta seuraavilla tiedoilla. Olet hyvä ja vahvista.|]1, Inf[Olet päivittämässä {{ itemsCount }} tuotetta seuraavilla tiedoilla. Ole hyvä ja vahvista."
   step:
     select:
       label: Valitse tuotteet
