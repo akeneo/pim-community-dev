@@ -66,7 +66,6 @@ services:
         arguments:
             - !tagged akeneo.pim.enrichment.factory.product_value
             - '@pim_catalog.repository.cached_locale'
-            - '@pim_catalog.repository.cached_channel'
         # since we inject cached locale repository here, we have a problem: the wrong entity manager is injected into the LocaleRepository
         # the result is a conflict when inserting locale in Akeneo\Channel\Bundle\EventListener/ChannelLocaleSubscriber::updateChannel
         # this is probably due to FOS\OAuthServerBundle\Document/AccessTokenManager::_construct which load all the repository and so, Doctrine's subscribers

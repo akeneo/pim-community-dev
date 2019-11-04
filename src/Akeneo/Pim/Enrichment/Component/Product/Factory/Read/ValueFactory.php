@@ -31,17 +31,12 @@ class ValueFactory
     /** @var IdentifiableObjectRepositoryInterface*/
     private $localeRepository;
 
-    /** @var IdentifiableObjectRepositoryInterface*/
-    private $channelRepository;
-
     public function __construct(
         iterable $valueFactories,
-        IdentifiableObjectRepositoryInterface $localeRepository,
-        IdentifiableObjectRepositoryInterface $channelRepository
+        IdentifiableObjectRepositoryInterface $localeRepository
     ) {
         $this->notIndexedValuesFactories = $valueFactories;
         $this->localeRepository = $localeRepository;
-        $this->channelRepository = $channelRepository;
     }
 
     public function createWithoutCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
@@ -56,7 +51,6 @@ class ValueFactory
         }
 
         ValidateAttribute::validate($attribute, $channelCode, $localeCode);
-        $this->validateChannel($attribute, $channelCode);
         $this->validateLocale($attribute, $localeCode);
 
         return $this->getFactory($attribute)->createByCheckingData($attribute, $channelCode, $localeCode, $data);
@@ -81,29 +75,6 @@ class ValueFactory
                 null,
                 self::class,
                 sprintf($message, $attribute->code(), $localeCode),
-            );
-        }
-    }
-
-    /**
-     * TODO: to remove once TIP-1353 done: add this validation in validators
-     */
-    private function validateChannel(Attribute $attribute, ?string $channelCode): void
-    {
-        if (null === $channelCode) {
-            return;
-        }
-
-        $channel = $this->channelRepository->findOneByIdentifier($channelCode);
-
-        if (null === $channel) {
-            $message = 'Attribute "%s" expects an existing scope, "%s" given.';
-
-            throw new InvalidAttributeException(
-                'attribute',
-                null,
-                self::class,
-                sprintf($message, $attribute->code(), $channelCode),
             );
         }
     }

@@ -23,8 +23,7 @@ final class ValueFactorySpec extends ObjectBehavior
     public function let(
         SingleValueFactory $factory1,
         SingleValueFactory $factory2,
-        IdentifiableObjectRepositoryInterface $localeRepository,
-        IdentifiableObjectRepositoryInterface $channelRepository
+        IdentifiableObjectRepositoryInterface $localeRepository
     ) {
         $ecommerce = new Channel();
 
@@ -39,11 +38,9 @@ final class ValueFactorySpec extends ObjectBehavior
         $localeRepository->findOneByIdentifier('de_DE')->willReturn($deDE);
         $localeRepository->findOneByIdentifier('fr_FR')->willReturn(null);
 
-        $channelRepository->findOneByIdentifier('ecommerce')->willReturn($ecommerce);
-
         $factory1->supportedAttributeType()->willReturn('an_attribute_type1');
         $factory2->supportedAttributeType()->willReturn('an_attribute_type2');
-        $this->beConstructedWith([$factory1, $factory2], $localeRepository, $channelRepository);
+        $this->beConstructedWith([$factory1, $factory2], $localeRepository);
     }
 
     public function it_calls_the_right_factory_without_checking_data(SingleValueFactory $factory2, ValueInterface $value)
@@ -78,21 +75,8 @@ final class ValueFactorySpec extends ObjectBehavior
         $this->shouldThrow(InvalidAttributeException::class)->during(
             'createByCheckingData',
             [
-                new Attribute('an_attribute', 'non_supported_attribute_type', [], false, false, null, false, 'backend_type'),
+                new Attribute('an_attribute', 'an_attribute_type1', [], false, false, null, false, 'backend_type'),
                 'ecommerce',
-                null,
-                'data'
-            ]
-        );
-    }
-
-    public function it_throws_an_exception_if_channel_code_does_not_exist()
-    {
-        $this->shouldThrow(InvalidAttributeException::class)->during(
-            'createByCheckingData',
-            [
-                new Attribute('an_attribute', 'non_supported_attribute_type', [], true, false, null, false, 'backend_type'),
-                'tablet',
                 null,
                 'data'
             ]

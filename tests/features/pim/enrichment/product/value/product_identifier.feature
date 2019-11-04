@@ -6,6 +6,8 @@ Feature: Validate identifier attribute of a product
 
   Background:
     Given a catalog with the attribute "sku" as product identifier
+    And the following locales "en_US"
+    And the following "ecommerce" channel with locales "en_US"
 
   Scenario: Validate the unique constraint of identifier attribute
     Given a product with an identifier "foo"

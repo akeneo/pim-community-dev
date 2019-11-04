@@ -14,6 +14,8 @@ Feature: Validate simple and multi-select attributes of a product
       | color       | red         |
       | collections | spring_2019 |
       | collections | summer_2019 |
+    And the following locales "en_US"
+    And the following "ecommerce" channel with locales "en_US"
 
   @acceptance-back
   Scenario: Providing an existing simple select option should not raise an error

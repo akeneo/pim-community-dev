@@ -34,7 +34,7 @@ class InMemoryGetAttributes implements GetAttributes
                     $attribute->getType(),
                     $attribute->getProperties(),
                     $attribute->isLocalizable(),
-                    $attribute->isScopable(),
+                    (bool) $attribute->isScopable(),
                     $attribute->getMetricFamily(),
                     $attribute->isDecimalsAllowed(),
                     $attribute->getBackendType()

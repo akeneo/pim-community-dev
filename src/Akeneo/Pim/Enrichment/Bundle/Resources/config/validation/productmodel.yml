@@ -29,3 +29,4 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel:
                 traverse: true
             - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\AttributeOptionsExist: ~
             - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ReferenceDataOptionsExist: ~
+            - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ScopableValues: ~

@@ -7,19 +7,19 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 
 /**
+ * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeOptionsExist extends Constraint
+class ScopableValues extends Constraint
 {
-    public $message = 'Property "%attribute_code%" expects a valid code. The option "%invalid_option%" does not exist';
-    public $messagePlural = 'Property "%attribute_code%" expects valid codes. The following options do not exist: "%invalid_options%"';
+    public $unknownScopeMessage = 'Value "%attribute_code%" expects an existing channel, "%channel%" given';
 
     /**
      * {@inheritdoc}
      */
     public function validatedBy()
     {
-        return 'attribute_options_exist_validator';
+        return 'pim_scopable_values_validator';
     }
 }
