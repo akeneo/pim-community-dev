@@ -61,7 +61,7 @@ Feature: Delete an attribute linked to a reference entity
       | bio      | text  |
       | portrait | image |
 
-  @acceptance-front
+  # @acceptance-front
   Scenario: User doesn't have the right to delete a text attribute linked to a reference entity
     Given a valid reference entity
     And the user has the following rights:
