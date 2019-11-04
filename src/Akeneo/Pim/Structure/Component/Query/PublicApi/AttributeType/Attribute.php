@@ -27,7 +27,7 @@ final class Attribute
     /** @var ?string */
     private $metricFamily;
 
-    /** @var bool */
+    /** @var null|bool */
     private $decimalsAllowed;
 
     /** @var string */
@@ -40,7 +40,7 @@ final class Attribute
         bool $isLocalizable,
         bool $isScopable,
         ?string $metricFamily,
-        bool $decimalsAllowed,
+        ?bool $decimalsAllowed,
         string $backendType
     ) {
         $this->attributeCode = $attributeCode;
@@ -88,7 +88,7 @@ final class Attribute
         return $this->metricFamily;
     }
 
-    public function isDecimalsAllowed(): bool
+    public function isDecimalsAllowed(): ?bool
     {
         return $this->decimalsAllowed;
     }

@@ -107,6 +107,14 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: attribute_options_exist_validator }
 
+    pim_catalog.validator.constraint.reference_data_options_exist:
+        class: Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ReferenceDataOptionsExistValidator
+        arguments:
+            - '@akeneo.pim.enrichment.product.query.get_existing_reference_data_codes'
+            - '@pim_catalog.repository.cached_attribute'
+        tags:
+            - { name: validator.constraint_validator, alias: reference_data_options_exist_validator }
+
     pim_catalog.validator.constraint.not_empty_variant_axes:
         class: '%pim_catalog.validator.constraint.not_empty_variant_axes.class%'
         arguments:

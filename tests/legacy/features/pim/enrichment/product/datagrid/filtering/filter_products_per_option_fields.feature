@@ -17,7 +17,6 @@ Feature: Filter products per option
       | Shirt |       |      |
       | Sweat |       | M    |
       | Shoes | Black |      |
-    And the "Shirt" product has the "color and size" attributes
     And I am logged in as "Mary"
 
   @critical

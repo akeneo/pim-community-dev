@@ -22,9 +22,6 @@ final class GetExistingAttributeOptionCodes implements GetExistingAttributeOptio
         $this->connection = $connection;
     }
 
-    /**
-     * @param array $optionCodesIndexedByAttributeCodes ['color' => ['blue', 'red'], 'brand' => ['abscscd', 'weryet']]
-     */
     public function fromOptionCodesByAttributeCode(array $optionCodesIndexedByAttributeCodes): array
     {
         if (empty($optionCodesIndexedByAttributeCodes)) {
