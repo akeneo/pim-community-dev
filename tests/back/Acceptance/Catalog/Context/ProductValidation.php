@@ -7,7 +7,6 @@ namespace Akeneo\Test\Acceptance\Catalog\Context;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
 use Akeneo\Test\Common\EntityWithValue\Builder;
-use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -64,7 +63,8 @@ final class ProductValidation implements Context
             if (preg_match('/,/', $data)) {
                 $data = explode(',', $row['data']);
             }
-            $this->productBuilder->withValue($row['attribute'], $data);
+
+            $this->productBuilder->withValue($row['attribute'], $data, $row['locale'] ?? '', $row['scope'] ?? '');
         }
 
         $this->updatedProduct = $this->productBuilder->build(false);
