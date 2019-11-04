@@ -14,6 +14,7 @@ test('It render a thumbnail', () => {
           labels: {
             en_US: 'Sideview',
           },
+          image: [],
         }}
         context={{
           locale: 'en_US',
@@ -39,6 +40,7 @@ test('It render the first thumbnail of a collection', () => {
           labels: {
             en_US: 'Sideview',
           },
+          image: [],
         }}
         context={{
           locale: 'en_US',
@@ -64,6 +66,7 @@ test('It render the last thumbnail of a collection', () => {
           labels: {
             en_US: 'Sideview',
           },
+          image: [],
         }}
         context={{
           locale: 'en_US',
@@ -90,6 +93,7 @@ test('It render a readonly thumbnail', () => {
           labels: {
             en_US: 'Sideview',
           },
+          image: [],
         }}
         context={{
           locale: 'en_US',
@@ -117,6 +121,7 @@ test('It trigger event on remove asset by clicking', () => {
           labels: {
             en_US: 'Sideview',
           },
+          image: [],
         }}
         context={{
           locale: 'en_US',
@@ -147,6 +152,7 @@ test('It trigger event on move asset left by clicking', () => {
           labels: {
             en_US: 'Sideview',
           },
+          image: [],
         }}
         context={{
           locale: 'en_US',
@@ -179,6 +185,7 @@ test('It trigger event on move asset right by clicking', () => {
           labels: {
             en_US: 'Sideview',
           },
+          image: [],
         }}
         context={{
           locale: 'en_US',
@@ -211,6 +218,7 @@ test('It trigger event on click by clicking', () => {
           labels: {
             en_US: 'Sideview',
           },
+          image: [],
         }}
         context={{
           locale: 'en_US',

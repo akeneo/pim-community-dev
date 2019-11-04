@@ -8,39 +8,53 @@ import Basket from 'akeneopimenrichmentassetmanager/assets-collection/infrastruc
 
 const assetCollectionMock = [
   {
-      'identifier': 'packshot_iphone7_pack_71d34762-61a4-46ea-a9ae-6cc009a6d54d',
-      'asset_family_identifier': 'packshot',
-      'code': 'iphone7_pack',
-      'labels': {
-        'en_US': 'Iphone 7'
+    identifier: 'packshot_iphone7_pack_71d34762-61a4-46ea-a9ae-6cc009a6d54d',
+    asset_family_identifier: 'packshot',
+    code: 'iphone7_pack',
+    labels: {
+      en_US: 'Iphone 7',
+    },
+    image: [
+      {
+        attribute: 'image_packshot_2fc89c75-61a8-415d-9e58-3dc0ba41e3f9',
+        locale: null,
+        channel: null,
+        data: {filePath: '', originalFilename: ''},
       },
-      'image': '/rest/asset_manager/image_preview/image_packshot_2fc89c75-61a8-415d-9e58-3dc0ba41e3f9/thumbnail?data=',
+    ],
   },
   {
-      'identifier': 'packshot_iphone8_pack_4dd1b0e7-6977-413a-b436-9946be212c0d',
-      'asset_family_identifier': 'packshot',
-      'code': 'iphone8_pack',
-      'labels': {
-        'en_US': 'Iphone 8'
+    identifier: 'packshot_iphone8_pack_4dd1b0e7-6977-413a-b436-9946be212c0d',
+    asset_family_identifier: 'packshot',
+    code: 'iphone8_pack',
+    labels: {
+      en_US: 'Iphone 8',
+    },
+    image: [
+      {
+        attribute: 'image_packshot_2fc89c75-61a8-415d-9e58-3dc0ba41e3f9',
+        locale: null,
+        channel: null,
+        data: {filePath: '', originalFilename: ''},
       },
-      'image': '/rest/asset_manager/image_preview/image_packshot_2fc89c75-61a8-415d-9e58-3dc0ba41e3f9/thumbnail?data=',
-  }
+    ],
+  },
 ];
 const dataProvider = {
   assetFetcher: {
     fetchByCode: (assetFamilyIdentifier, selection) => {
-      return new Promise((resolve) => {
+      return new Promise(resolve => {
         act(() => {
           resolve(assetCollectionMock);
         });
       });
-    }
-  }
+    },
+  },
 };
 const assetFamilyIdentifier = 'packshot';
 const context = {
   channel: 'ecommerce',
-  locale: 'en_US'
+  locale: 'en_US',
 };
 const setSelection = jest.fn();
 
@@ -170,7 +184,7 @@ test('It can remove all the items from the basket', async () => {
           assetFamilyIdentifier={assetFamilyIdentifier}
           context={context}
           onSelectionChange={assetCodeCollection => {
-            actualSelection = assetCodeCollection
+            actualSelection = assetCodeCollection;
           }}
         />
       </ThemeProvider>,
@@ -178,7 +192,9 @@ test('It can remove all the items from the basket', async () => {
     );
   });
 
-  const removeAllButton = container.querySelector('div[title="pim_asset_manager.asset_picker.basket.remove_all_assets"]');
+  const removeAllButton = container.querySelector(
+    'div[title="pim_asset_manager.asset_picker.basket.remove_all_assets"]'
+  );
   expect(removeAllButton).toBeInTheDocument();
 
   await act(async () => {

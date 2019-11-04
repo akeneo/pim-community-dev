@@ -144,7 +144,7 @@ class AssetFamilyFilter extends AbstractAttributeFilter implements AttributeFilt
             !empty($assetFamilyIdentifier) &&
             true === $this->assetFamilyExists->withIdentifier(AssetFamilyIdentifier::fromString($assetFamilyIdentifier));
 
-        return $assetFamilyExists;
+        return $assetFamilyExists && in_array($attribute->getAttributeType(), $this->supportedAttributeTypes);
     }
 
     /**

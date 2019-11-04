@@ -66,3 +66,16 @@ export const getMediaLinkPreviewUrl = (
 export const getMediaLinkUrl = (mediaLink: MediaLinkData, attribute: MediaLinkAttribute): string => {
   return prefixStringValue(attribute.prefix) + mediaLink.stringValue() + suffixStringValue(attribute.suffix);
 };
+
+// The asset any is temporary and should be fixed when we create unified models
+export const getAssetPreview = (asset: any, type: MediaPreviewTypes): string => {
+  const image = asset.image[0]; //This should be changed when we will display localisable/scopable images
+
+  if (undefined === image || '' === image.attribute) return '';
+
+  return routing.generate('akeneo_asset_manager_image_preview', {
+    type,
+    attributeIdentifier: undefined !== image ? image.attribute : '',
+    data: undefined !== image ? image.data.filePath : '',
+  });
+};

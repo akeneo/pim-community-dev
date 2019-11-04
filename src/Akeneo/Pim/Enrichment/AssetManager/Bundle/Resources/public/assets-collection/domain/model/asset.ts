@@ -8,6 +8,10 @@ import {
 import {getLabel} from 'pimui/js/i18n';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {assetcodesAreEqual} from 'akeneoassetmanager/domain/model/asset/code';
+import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
+import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
+import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import {MEDIA_LINK_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 
 export const ASSET_COLLECTION_LIMIT = 50;
 
@@ -18,7 +22,22 @@ export enum MoveDirection {
 
 export type AssetIdentifier = string;
 
-type Image = string;
+type ImageCollection = ImageValue[];
+
+export type ImageData = {filePath: string; originalFilename: string};
+export type ImageValue = {
+  attribute: string;
+  channel: null;
+  locale: null;
+  data: ImageData;
+};
+const createEmptyImage = (): ImageValue => ({
+  attribute: '',
+  channel: null,
+  locale: null,
+  data: {filePath: '', originalFilename: ''},
+});
+const createEmptyImageCollection = (): ImageCollection => [createEmptyImage()];
 export type Completeness = NormalizedCompleteness;
 export const getCompletenessPercentage = (completeness: Completeness) =>
   Math.floor((completeness.complete / completeness.required) * 100);
@@ -26,14 +45,10 @@ export const getCompletenessPercentage = (completeness: Completeness) =>
 export type Asset = {
   identifier: AssetIdentifier;
   code: AssetCode;
-  image: Image;
+  image: ImageCollection;
   assetFamily: AssetFamily;
   labels: Labels;
   completeness: Completeness;
-};
-
-export const getImage = (asset: Asset): Image => {
-  return asset.image;
 };
 
 export const isComplete = (asset: Asset) => asset.completeness.complete === asset.completeness.required;
@@ -41,7 +56,7 @@ export const emptyAsset = (assetCode?: AssetCode): Asset => ({
   identifier: '',
   code: assetCode || '',
   labels: {},
-  image: '',
+  image: createEmptyImageCollection(),
   assetFamily: emptyAssetFamily(),
   completeness: {
     complete: 0,
@@ -142,4 +157,51 @@ export const getAssetByCode = (assetCollection: Asset[], assetCode: AssetCode): 
 
 export const sortAssetCollection = (assetCollection: Asset[], assetCodes: AssetCode[]): Asset[] => {
   return [...assetCollection].sort((a, b) => assetCodes.indexOf(a.code) - assetCodes.indexOf(b.code));
+};
+
+const getAssetMainImage = (asset: Asset, _context: Context): ImageValue | undefined => asset.image[0];
+
+export const assetHasMainImage = (asset: Asset, context: Context): asset is Asset => {
+  const image = getAssetMainImage(asset, context);
+
+  return undefined !== image && image.data.filePath !== '';
+};
+
+export const getAssetMainImageDownloadLink = (
+  asset: Asset,
+  context: Context,
+  getMediaLinkUrl: (data: ImageData, attribute: NormalizedAttribute) => string,
+  getMediaDownloadUrl: (path: string) => string
+): string => {
+  const imageValue = getAssetMainImage(asset, context) as ImageValue;
+
+  const attribute = getAttribute(asset.assetFamily.attributes, imageValue.attribute);
+
+  return MEDIA_LINK_ATTRIBUTE_TYPE === attribute.type
+    ? getMediaLinkUrl(imageValue.data, attribute)
+    : getMediaDownloadUrl(imageValue.data.filePath);
+};
+
+export const getAssetMainImageOriginalFilename = (asset: Asset, context: Context) =>
+  (getAssetMainImage(asset, context) as ImageValue).data.originalFilename;
+
+const getAttribute = (
+  attributes: NormalizedAttribute[],
+  attributeIdentifier: AttributeIdentifier
+): NormalizedAttribute => {
+  const attribute = attributes.find((attribute: NormalizedAttribute) => attribute.identifier === attributeIdentifier);
+
+  if (undefined === attribute) {
+    throw Error(`Attribute "${attributeIdentifier}" doesn't seems to exist`);
+  }
+
+  return attribute;
+};
+
+export const assetMainImageCanBeDownloaded = (asset: Asset, context: Context) => {
+  const imageValue = getAssetMainImage(asset, context) as ImageValue;
+
+  const attribute = getAttribute(asset.assetFamily.attributes, imageValue.attribute);
+
+  return MEDIA_LINK_ATTRIBUTE_TYPE !== attribute.type;
 };

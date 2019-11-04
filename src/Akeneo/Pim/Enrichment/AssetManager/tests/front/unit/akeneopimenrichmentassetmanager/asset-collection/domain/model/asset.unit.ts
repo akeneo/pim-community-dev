@@ -17,32 +17,11 @@ import {
   getAssetCodes,
   getAssetByCode,
   sortAssetCollection,
+  getAssetMainImageDownloadLink,
+  assetMainImageCanBeDownloaded,
+  getAssetMainImageOriginalFilename,
 } from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {isLabels} from 'akeneoassetmanager/domain/model/utils';
-
-test('It should get the image from the asset', () => {
-  const image = '/rest/asset/image/thumbnail/iphone.jpg';
-  const asset = {
-    identifier: 'packshot_iphone_fingerprint',
-    code: 'iphone',
-    image,
-    assetFamily: {
-      identifier: 'packshot',
-      code: 'packshot',
-      labels: {en_US: 'Packshot'},
-      image: null,
-      attributeAsLabel: null,
-      attributeAsImage: null,
-    },
-    labels: {en_US: 'Iphone'},
-    completeness: {
-      complete: 2,
-      required: 3,
-    },
-  };
-
-  expect(getImage(asset)).toEqual(image);
-});
 
 test('The asset is complete', () => {
   const complete = {complete: 2, required: 2};
@@ -90,7 +69,17 @@ test('It could return an empty asset', () => {
   const asset = {
     identifier: '',
     code: '',
-    image: '',
+    image: [
+      {
+        attribute: '',
+        channel: null,
+        locale: null,
+        data: {
+          filePath: '',
+          originalFilename: '',
+        },
+      },
+    ],
     assetFamily: {
       identifier: '',
       code: '',
@@ -149,12 +138,6 @@ test('I should be able to tell if an asset is in the collection', () => {
 });
 
 test('I should be able to empty the collection', () => {
-  const asset = {
-    identifier: 'packshot_iphone_fingerprint',
-    code: 'iphone',
-    labels: {en_US: 'Iphone'},
-  };
-
   expect(emptyCollection(['samsung', 'oneplus', 'iphone'])).toEqual([]);
 });
 
@@ -345,4 +328,206 @@ test('I can sort an asset collection by codes when the order is invalid', () => 
   ];
 
   expect(sortAssetCollection(assetCollection, assetCodes)).toEqual(expectedAssetCollection);
+});
+
+test('I can get the main image media link download link', () => {
+  const asset = {
+    identifier: '',
+    code: '',
+    image: [
+      {
+        attribute: 'main_image',
+        channel: null,
+        locale: null,
+        data: {
+          filePath: '',
+          originalFilename: '',
+        },
+      },
+    ],
+    assetFamily: {
+      identifier: '',
+      code: '',
+      labels: {},
+      image: {
+        filePath: '',
+        originalFilename: '',
+      },
+      attributeAsLabel: '',
+      attributeAsImage: 'main_image',
+      attributes: [
+        {
+          identifier: 'main_image',
+          type: 'media_link',
+        },
+      ],
+    },
+  };
+  expect(
+    getAssetMainImageDownloadLink(
+      asset,
+      {locale: 'en_US', channel: 'ecommerce'},
+      () => 'computed_media_link_route',
+      () => 'computed_binary_route'
+    )
+  ).toBe('computed_media_link_route');
+});
+
+test('I can get the main image binary download link', () => {
+  const asset = {
+    identifier: '',
+    code: '',
+    image: [
+      {
+        attribute: 'main_image',
+        channel: null,
+        locale: null,
+        data: {
+          filePath: '',
+          originalFilename: '',
+        },
+      },
+    ],
+    assetFamily: {
+      identifier: '',
+      code: '',
+      labels: {},
+      image: {
+        filePath: '',
+        originalFilename: '',
+      },
+      attributeAsLabel: '',
+      attributeAsImage: 'main_image',
+      attributes: [
+        {
+          identifier: 'main_image',
+          type: 'image',
+        },
+      ],
+    },
+  };
+  expect(
+    getAssetMainImageDownloadLink(
+      asset,
+      {locale: 'en_US', channel: 'ecommerce'},
+      () => 'computed_media_link_route',
+      () => 'computed_binary_route'
+    )
+  ).toBe('computed_binary_route');
+});
+
+test('I get an error when the attribute is not found', () => {
+  const asset = {
+    identifier: '',
+    code: '',
+    image: [
+      {
+        attribute: 'main_image',
+        channel: null,
+        locale: null,
+        data: {
+          filePath: '',
+          originalFilename: '',
+        },
+      },
+    ],
+    assetFamily: {
+      identifier: '',
+      code: '',
+      labels: {},
+      image: {
+        filePath: '',
+        originalFilename: '',
+      },
+      attributeAsLabel: '',
+      attributeAsImage: 'main_image',
+      attributes: [
+        {
+          identifier: 'another_attribute',
+          type: 'image',
+        },
+      ],
+    },
+  };
+  expect(() => {
+    getAssetMainImageDownloadLink(
+      asset,
+      {locale: 'en_US', channel: 'ecommerce'},
+      () => 'computed_media_link_route',
+      () => 'computed_binary_route'
+    );
+  }).toThrow();
+});
+
+test('I know if an asset main image can be downloaded', () => {
+  const asset = {
+    identifier: '',
+    code: '',
+    image: [
+      {
+        attribute: 'main_image',
+        channel: null,
+        locale: null,
+        data: {
+          filePath: '',
+          originalFilename: '',
+        },
+      },
+    ],
+    assetFamily: {
+      identifier: '',
+      code: '',
+      labels: {},
+      image: {
+        filePath: '',
+        originalFilename: '',
+      },
+      attributeAsLabel: '',
+      attributeAsImage: 'main_image',
+      attributes: [
+        {
+          identifier: 'main_image',
+          type: 'image',
+        },
+      ],
+    },
+  };
+  expect(assetMainImageCanBeDownloaded(asset, {locale: 'en_US', channel: 'ecommerce'})).toBeTruthy();
+});
+test('I can get the asset main image original filename', () => {
+  const asset = {
+    identifier: '',
+    code: '',
+    image: [
+      {
+        attribute: 'main_image',
+        channel: null,
+        locale: null,
+        data: {
+          filePath: '',
+          originalFilename: 'My nice filename.png',
+        },
+      },
+    ],
+    assetFamily: {
+      identifier: '',
+      code: '',
+      labels: {},
+      image: {
+        filePath: '',
+        originalFilename: '',
+      },
+      attributeAsLabel: '',
+      attributeAsImage: 'main_image',
+      attributes: [
+        {
+          identifier: 'main_image',
+          type: 'image',
+        },
+      ],
+    },
+  };
+  expect(getAssetMainImageOriginalFilename(asset, {locale: 'en_US', channel: 'ecommerce'})).toBe(
+    'My nice filename.png'
+  );
 });

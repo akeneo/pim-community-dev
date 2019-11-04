@@ -27,14 +27,10 @@ use Liip\ImagineBundle\Imagine\Filter\FilterManager;
  */
 class MediaLinkImageGenerator implements PreviewGeneratorInterface
 {
-    private const DEFAULT_IMAGE = 'pim_asset_manager.default_image.image';
-    public const THUMBNAIL_TYPE = 'thumbnail';
-    public const THUMBNAIL_SMALL_TYPE = 'thumbnail_small';
-    public const PREVIEW_TYPE = 'preview';
+    private const DEFAULT_IMAGE = 'pim_asset_manager.default_image.image'; // Should change depending on the preview type
     public const SUPPORTED_TYPES = [
-        self::THUMBNAIL_TYPE => 'am_thumbnail',
-        self::THUMBNAIL_SMALL_TYPE => 'am_thumbnail_small',
-        self::PREVIEW_TYPE => 'am_preview',
+        PreviewGeneratorRegistry::THUMBNAIL_TYPE => 'am_url_thumbnail',
+        PreviewGeneratorRegistry::PREVIEW_TYPE => 'am_url_preview',
     ];
 
     /** @var DataManager  */
@@ -71,27 +67,39 @@ class MediaLinkImageGenerator implements PreviewGeneratorInterface
     public function generate(string $data, AbstractAttribute $attribute, string $type): string
     {
         $url = sprintf('%s%s%s', $attribute->getPrefix()->normalize(), $data, $attribute->getSuffix()->normalize()) ;
+        $previewType = self::SUPPORTED_TYPES[$type];
 
-        if (!$this->cacheManager->isStored($url, self::SUPPORTED_TYPES[$type])) {
+        if (!$this->cacheManager->isStored($url, $previewType)) {
             try {
-                $binary = $this->dataManager->find(self::SUPPORTED_TYPES[$type], $url);
+                $binary = $this->dataManager->find($previewType, $url);
             } catch (NotLoadableException $e) {
-                return $this->defaultImageProvider->getImageUrl(self::DEFAULT_IMAGE, self::SUPPORTED_TYPES[$type]);
+                // Should change depending on the preview type
+                return $this->defaultImageProvider->getImageUrl(self::DEFAULT_IMAGE, $previewType);
             } catch (\LogicException $e) { //Here we catch different levels of exception to display a different default image in the future
                 // Trigerred when the mime type was not the good one
-                return $this->defaultImageProvider->getImageUrl(self::DEFAULT_IMAGE, self::SUPPORTED_TYPES[$type]);
+                // Should change depending on the preview type
+                return $this->defaultImageProvider->getImageUrl(self::DEFAULT_IMAGE, $previewType);
             } catch (\Exception $e) {
                 // Triggered When a general exception arrised
-                return $this->defaultImageProvider->getImageUrl(self::DEFAULT_IMAGE, self::SUPPORTED_TYPES[$type]);
+                // Should change depending on the preview type
+                return $this->defaultImageProvider->getImageUrl(self::DEFAULT_IMAGE, $previewType);
+            }
+
+            try {
+                $file = $this->filterManager->applyFilter($binary, $previewType);
+            } catch (\Exception $e) {
+                // Triggered When a general exception arrised
+                // Should change depending on the preview type
+                return $this->defaultImageProvider->getImageUrl(self::DEFAULT_IMAGE, $previewType);
             }
 
             $this->cacheManager->store(
-                $this->filterManager->applyFilter($binary, self::SUPPORTED_TYPES[$type]),
+                $file,
                 $url,
-                self::SUPPORTED_TYPES[$type]
+                $previewType
             );
         }
 
-        return $this->cacheManager->resolve($url, self::SUPPORTED_TYPES[$type]);
+        return $this->cacheManager->resolve($url, $previewType);
     }
 }
