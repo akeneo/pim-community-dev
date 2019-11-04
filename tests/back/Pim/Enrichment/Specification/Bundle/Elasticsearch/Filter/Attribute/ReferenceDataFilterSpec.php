@@ -65,9 +65,9 @@ class ReferenceDataFilterSpec extends ObjectBehavior
         AttributeInterface $tags,
         AttributeInterface $brands
     ) {
-        $registry->get('color')->willReturn($colorConfiguration);
-        $registry->get('tags')->willReturn(null);
-        $registry->get('brands')->willReturn(null);
+        $registry->has('color')->willReturn(true);
+        $registry->has('tags')->willReturn(false);
+        $registry->has('brands')->willReturn(false);
 
         $color->getReferenceDataName()->willReturn('color');
         $tags->getReferenceDataName()->willReturn('tags');
