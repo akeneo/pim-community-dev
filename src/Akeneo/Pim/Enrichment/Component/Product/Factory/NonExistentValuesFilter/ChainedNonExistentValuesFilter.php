@@ -9,7 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Factory\TransformRawValuesCollection
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
- * The implementation of this non existent filter use a pivot format internally.
+ * The implementation of this non existent filter uses a pivot format internally.
  * This pivot format helps to access the data by attribute type, in order to not iterate for each attribute type the whole raw value collection.
  *
  * We filter the data on this pivot format, and then re-transform it to raw values. We filter also null values and non existent channel or non activated locales.

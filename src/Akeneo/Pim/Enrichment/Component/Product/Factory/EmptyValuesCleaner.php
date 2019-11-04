@@ -8,7 +8,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Factory;
  * Do note that we don't store null values or empty arrays in the database. However, the consistency of the data in not guaranteed
  * in the JSON of the raw values.
  *
- * Therefore, when filtering on data non existing data, we can have values with empty arrays or empty data.
+ * Therefore, when filtering on non existing data, we can have values with empty arrays or empty data.
  * That's why we must filter it after doing it.
  *
  * @author    Anael Chardan <anael.chardan@akeneo.com>
@@ -21,8 +21,8 @@ final class EmptyValuesCleaner
      * @param array $rawValueCollections array of raw value collections
      * It allows to filter several raw values at once from different product or product models.
      * [
-     *    ['attribute_code' => [...], 'attribute_code_2' => [...]],
-     *    ['attribute_code' => [...]]
+     *    'product_identifier_1' => ['attribute_code' => [...], 'attribute_code_2' => [...]],
+     *    'product_identifier_2' => ['attribute_code' => [...]]
      * ]
      * @return array same format as passed in the parameter, but values are filtered
      */
