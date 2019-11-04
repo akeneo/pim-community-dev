@@ -14,14 +14,20 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class LocalizableValuesValidator extends ConstraintValidator
+final class LocalizableValuesValidator extends ConstraintValidator
 {
     /** @var IdentifiableObjectRepositoryInterface */
-    protected $localeRepository;
+    private $localeRepository;
 
-    public function __construct(IdentifiableObjectRepositoryInterface $localeRepository)
-    {
+    /** @var IdentifiableObjectRepositoryInterface */
+    private $attributeRepository;
+
+    public function __construct(
+        IdentifiableObjectRepositoryInterface $localeRepository,
+        IdentifiableObjectRepositoryInterface $attributeRepository
+    ) {
         $this->localeRepository = $localeRepository;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -46,6 +52,7 @@ class LocalizableValuesValidator extends ConstraintValidator
 
         foreach ($localizableValues as $key => $localizableValue) {
             $locale = $this->localeRepository->findOneByIdentifier($localizableValue->getLocaleCode());
+
             if (null === $locale || !$locale->isActivated()) {
                 $this->context->buildViolation(
                     $constraint->nonActiveLocaleMessage,
@@ -54,7 +61,11 @@ class LocalizableValuesValidator extends ConstraintValidator
                         '%invalid_locale%' => $localizableValue->getLocaleCode(),
                     ]
                 )->atPath(sprintf('[%s]', $key))->addViolation();
-            } elseif ($localizableValue->isScopable()) {
+
+                continue;
+            }
+
+            if ($localizableValue->isScopable()) {
                 $channelCodes = $locale->getChannels()->map(function (ChannelInterface $channel) {
                     return $channel->getCode();
                 })->toArray();
@@ -67,7 +78,20 @@ class LocalizableValuesValidator extends ConstraintValidator
                             '%invalid_locale%' => $localizableValue->getLocaleCode(),
                         ]
                     )->atPath(sprintf('[%s]', $key))->addViolation();
+
+                    continue;
                 }
+            }
+
+            $attribute = $this->attributeRepository->findOneByIdentifier($localizableValue->getAttributeCode());
+            if ($attribute->isLocaleSpecific() && !$attribute->hasLocaleSpecific($locale)) {
+                $this->context->buildViolation(
+                    $constraint->invalidLocaleSpecificMessage,
+                    [
+                        '%attribute_code%' => $localizableValue->getAttributeCode(),
+                        '%invalid_locale%' => $localizableValue->getLocaleCode(),
+                    ]
+                )->atPath(sprintf('[%s]', $key))->addViolation();
             }
         }
     }

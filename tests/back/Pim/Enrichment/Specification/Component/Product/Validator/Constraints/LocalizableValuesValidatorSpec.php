@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsString;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\LocalizableValues;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\LocalizableValuesValidator;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
+use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -19,9 +20,12 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class LocalizableValuesValidatorSpec extends ObjectBehavior
 {
-    function let(IdentifiableObjectRepositoryInterface $localeRepository, ExecutionContextInterface $context)
-    {
-        $this->beConstructedWith($localeRepository);
+    function let(
+        IdentifiableObjectRepositoryInterface $localeRepository,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        ExecutionContextInterface $context
+    ) {
+        $this->beConstructedWith($localeRepository, $attributeRepository);
         $this->initialize($context);
     }
 
@@ -122,8 +126,9 @@ class LocalizableValuesValidatorSpec extends ObjectBehavior
         $this->validate($values, $constraint);
     }
 
-    function it_adds_a_violation_if_a_locale_is_not_bound_to_a_channel(
+    function it_adds_a_violation_if_a_locale_is_not_bound_to_the_channel(
         IdentifiableObjectRepositoryInterface $localeRepository,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $violationBuilder
     ) {
@@ -131,6 +136,8 @@ class LocalizableValuesValidatorSpec extends ObjectBehavior
         $ecommerce = (new Channel())->setCode('ecommerce');
         $frFR->addChannel($ecommerce);
         $localeRepository->findOneByIdentifier('fr_FR')->willReturn($frFR);
+
+        $attributeRepository->findOneByIdentifier('scopable_localizable_text')->willReturn(new Attribute());
 
         $values = new WriteValueCollection(
             [
@@ -149,6 +156,48 @@ class LocalizableValuesValidatorSpec extends ObjectBehavior
             ]
         )->willReturn($violationBuilder);
         $violationBuilder->atPath('[scopable_localizable_text-mobile-fr_FR]')->willReturn($violationBuilder);
+        $violationBuilder->addViolation()->shouldBeCalled();
+
+        $this->validate($values, $constraint);
+    }
+
+    function it_adds_a_violation_if_a_locale_is_not_part_of_the_available_locales_for_a_locale_specific_attribute(
+        IdentifiableObjectRepositoryInterface $localeRepository,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        ExecutionContextInterface $context,
+        ConstraintViolationBuilderInterface $violationBuilder
+    ) {
+        $ecommerce = (new Channel())->setCode('ecommerce');
+
+        $frFR = (new Locale())->setCode('fr_FR');
+        $frFR->addChannel($ecommerce);
+        $localeRepository->findOneByIdentifier('fr_FR')->willReturn($frFR);
+
+        $enUS = (new Locale())->setCode('en_US');
+        $enUS->addChannel($ecommerce);
+        $localeRepository->findOneByIdentifier('en_US')->willReturn($enUS);
+
+        $localeSpecificAttribute = (new Attribute())->setCode('name');
+        $localeSpecificAttribute->setLocalizable(true);
+        $localeSpecificAttribute->addAvailableLocale($enUS);
+        $attributeRepository->findOneByIdentifier('name')->willReturn($localeSpecificAttribute);
+
+        $values = new WriteValueCollection(
+            [
+                ScalarValue::localizableValue('name', 'Product name', 'en_US'),
+                ScalarValue::localizableValue('name', 'Nom du produit', 'fr_FR'),
+            ]
+        );
+
+        $constraint = new LocalizableValues();
+        $context->buildViolation(
+            $constraint->invalidLocaleSpecificMessage,
+            [
+                '%attribute_code%' => 'name',
+                '%invalid_locale%' => 'fr_FR',
+            ]
+        )->willReturn($violationBuilder);
+        $violationBuilder->atPath('[name-<all_channels>-fr_FR]')->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($values, $constraint);

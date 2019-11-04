@@ -172,6 +172,7 @@ services:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\LocalizableValuesValidator'
         arguments:
             - '@pim_catalog.repository.cached_locale'
+            - '@pim_catalog.repository.cached_attribute'
         tags:
             - { name: validator.constraint_validator, alias: pim_localizable_values_validator }
 

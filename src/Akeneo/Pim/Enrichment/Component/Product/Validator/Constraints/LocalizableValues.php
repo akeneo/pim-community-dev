@@ -16,6 +16,9 @@ class LocalizableValues extends Constraint
     /** @var string */
     public $invalidLocaleForChannelMessage = 'Attribute "%attribute_code%" expects a valid locale, "%invalid_locale%" is not bound to channel "%channel_code%"';
 
+    /** @var string */
+    public $invalidLocaleSpecificMessage = '"%invalid_locale%" is not part of the available locales for the locale specific attribute "%attribute_code%"';
+
     /**
      * {@inheritdoc}
      */
