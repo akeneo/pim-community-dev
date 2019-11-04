@@ -18,7 +18,40 @@ data "template_file" "helm_pim_config" {
   }
 }
 
-resource "local_file" "helm_pim_config" {
-  content  = "${data.template_file.helm_pim_config.rendered}"
-  filename = "./tf-helm-pim-values.yaml"
+data "helm_repository" "stable" {
+  name = "stable"
+  url  = "https://kubernetes-charts.storage.googleapis.com"
+}
+
+data "helm_repository" "akeneo-charts-dev" {
+  name = "akeneo-charts-dev"
+  url  = "gs://akeneo-charts-dev"
+}
+
+data "helm_repository" "akeneo-charts" {
+  name = "akeneo-charts"
+  url  = "gs://akeneo-charts"
+}
+
+resource "null_resource" "helm_dependencies_update" {
+  provisioner "local-exec" {
+    interpreter = ["/usr/bin/env", "bash", "-c"]
+    command = <<EOF
+helm dependencies update ${path.module}/../pim/
+EOF
+  }
+}
+
+resource "helm_release" "pim" {
+  name      = "${local.pfid}"
+  chart     = "${path.module}/../pim/"
+  namespace = "${local.pfid}"
+  timeout   = "1500"
+  depends_on   = ["null_resource.helm_dependencies_update"]
+
+  values = [
+    "${file("values.yaml")}",
+    "${data.template_file.helm_pim_config.rendered}",
+  ]
+
 }

@@ -1,5 +1,15 @@
 version: 2.1
 jobs:
+  checkout:
+    docker:
+      - image: alpine/git
+    steps:
+      - checkout
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project
+
   build_dev:
     parameters:
         is_pull_request:
@@ -8,7 +18,8 @@ jobs:
     machine:
       image: ubuntu-1604:201903-01
     steps:
-      - checkout
+      - attach_workspace:
+            at: ~/
       - run:
           name: Copy docker-compose.override.yml.dist
           command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
@@ -240,6 +251,55 @@ jobs:
       - store_artifacts:
           path: var/logs
 
+  build_prod:
+      environment:
+        GOOGLE_PROJECT_ID: "akecld-saas-dev"
+        GOOGLE_COMPUTE_ZONE: "europe-west3-a"
+        CLUSTER_NAME: "europe-west3-a"
+      machine:
+        image: ubuntu-1604:201903-01
+      steps:
+          - attach_workspace:
+                at: ~/
+          - run:
+              name: Build prod PIM image
+              command: |
+                  echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+                  sudo apt-get update && sudo apt-get install apt-transport-https \
+                                                              ca-certificates \
+                                                              google-cloud-sdk
+                  echo ${GCLOUD_SERVICE_KEY} | gcloud auth activate-service-account --key-file=-
+                  gcloud config set project ${GOOGLE_PROJECT_ID}
+                  gcloud config set compute/zone ${GOOGLE_COMPUTE_ZONE}
+                  echo ${GCLOUD_SERVICE_KEY} > ${HOME}/gcloud-service-key.json
+                  echo 'export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"' >> $BASH_ENV
+                  gcloud auth configure-docker --quiet
+                  IMAGE_TAG=$CIRCLE_SHA1 make php-image-prod
+                  IMAGE_TAG=$CIRCLE_SHA1 make push-php-image-prod
+
+  tests:
+      machine:
+          image: ubuntu-1604:201903-01
+      steps:
+          -   attach_workspace:
+                  at: ~/
+          -   run:
+                  name: make tests
+                  command: |
+                      docker load -i pim-image-dev.tar
+                      docker load -i pim-image-prod.tar
+                      make tests
+
+  release:
+      machine:
+          image: ubuntu-1604:201903-01
+      steps:
+          -   attach_workspace:
+                  at: ~/
+          - run:
+              name: make release
+              command: make release
+
 workflows:
   version: 2
   pull_request:
@@ -250,9 +310,12 @@ workflows:
                     branches:
                         ignore:
                             - master
-          - build_dev:
+          - checkout:
                 requires:
                     - wait_for_user_approval
+          - build_dev:
+                requires:
+                    - checkout
           - back_static_and_acceptance:
                 requires:
                     - build_dev
@@ -294,3 +357,26 @@ workflows:
           - back_performance:
                 requires:
                     - back_behat_legacy
+  deployment:
+      triggers:
+          - schedule:
+                cron: "0 3 * * *"
+                filters:
+                    branches:
+                        only:
+                            - master
+      jobs:
+          - checkout
+          - build_dev:
+              requires:
+                    - checkout
+          - build_prod:
+                requires:
+                    - checkout
+          - tests:
+                requires:
+                    - build_dev
+                    - build_prod
+          - release:
+                requires:
+                    - tests

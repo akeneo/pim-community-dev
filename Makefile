@@ -179,9 +179,6 @@ php-image-prod:
 push-php-image-prod:
 	docker push eu.gcr.io/akeneo-ci/pim-enterprise-dev:${IMAGE_TAG}
 
-.PHONY: php-images
-php-images: php-image-dev php-image-prod
-
 .PHONY: up
 up:
 	$(DOCKER_COMPOSE) up -d --remove-orphan ${C}

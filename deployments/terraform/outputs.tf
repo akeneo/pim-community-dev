@@ -13,3 +13,7 @@ output "storage_bucket_location" {
 output "pfid" {
   value = "${local.pfid}"
 }
+
+output "tf-helm-pim-values" {
+  value = "${data.template_file.helm_pim_config.rendered}"
+}
