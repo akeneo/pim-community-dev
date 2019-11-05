@@ -125,9 +125,9 @@ class AppContext implements Context
         $code = self::slugify($label);
 
         $app = $this->appRepository->findOneByCode($code);
+
         Assert::isInstanceOf($app, WriteApp::class);
-        Assert::eq($code, $app->code());
-        Assert::eq($label, $app->label());
+        Assert::eq($code, (string) $app->code());
     }
 
     /**

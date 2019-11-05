@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Domain\Model\Read;
 
+use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
+
 /**
  * @author Romain Monceau <romain@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -54,5 +56,16 @@ class AppWithCredentials
     public function secret(): string
     {
         return $this->secret;
+    }
+
+    public function normalize(): array
+    {
+        return [
+            'code' => $this->code,
+            'label' => $this->label,
+            'flow_type' => $this->flowType,
+            'client_id' => $this->clientId,
+            'secret' => $this->secret,
+        ];
     }
 }
