@@ -16,4 +16,4 @@ services:
     akeneo_app.application.handler.find_an_app:
         class: 'Akeneo\Apps\Application\Query\FindAnAppHandler'
         arguments:
-            - '@akeneo_app.persistence.query.select_app_and_credentials_by_code'
+            - '@akeneo_app.persistence.query.select_app_with_credentials_by_code'

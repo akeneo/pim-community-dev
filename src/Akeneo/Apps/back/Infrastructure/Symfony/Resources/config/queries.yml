@@ -4,7 +4,7 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo_app.persistence.query.select_app_and_credentials_by_code:
-        class: 'Akeneo\Apps\Infrastructure\Persistence\Dbal\Query\DbalSelectAppAndCredentialsByCodeQuery'
+    akeneo_app.persistence.query.select_app_with_credentials_by_code:
+        class: 'Akeneo\Apps\Infrastructure\Persistence\Dbal\Query\DbalSelectAppWithCredentialsByCodeQuery'
         arguments:
             - '@database_connection'

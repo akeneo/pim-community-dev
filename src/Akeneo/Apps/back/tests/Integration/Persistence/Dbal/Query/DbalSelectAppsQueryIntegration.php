@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Apps\back\tests\Integration\Persistence\Query;
+namespace Akeneo\Apps\back\tests\Integration\Persistence\Dbal\Query;
 
 use Akeneo\Apps\back\tests\Integration\Fixtures\AppLoader;
 use Akeneo\Apps\Domain\Model\Read\App;
@@ -10,7 +10,6 @@ use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
 use Akeneo\Apps\Domain\Persistence\Query\SelectAppsQuery;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -46,6 +45,13 @@ class DbalSelectAppsQueryIntegration extends TestCase
         Assert::assertContainsOnlyInstancesOf(App::class, $apps);
         Assert::assertSame('magento', $apps[0]->code());
         Assert::assertSame('bynder', $apps[1]->code());
+    }
+
+    public function test_it_fetches_without_app()
+    {
+        $apps = $this->selectAppsQuery->execute();
+
+        Assert::assertCount(0, $apps);
     }
 
     protected function getConfiguration(): Configuration

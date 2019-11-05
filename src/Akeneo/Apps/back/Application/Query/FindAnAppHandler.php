@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Application\Query;
 
-use Akeneo\Apps\Domain\Model\Read\AppAndCredentials;
-use Akeneo\Apps\Domain\Persistence\Query\SelectAppAndCredentialsByCodeQuery;
+use Akeneo\Apps\Domain\Model\Read\AppWithCredentials;
+use Akeneo\Apps\Domain\Persistence\Query\SelectAppWithCredentialsByCodeQuery;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -14,16 +14,16 @@ use Akeneo\Apps\Domain\Persistence\Query\SelectAppAndCredentialsByCodeQuery;
  */
 class FindAnAppHandler
 {
-    /** @var SelectAppAndCredentialsByCodeQuery */
-    private $selectAppAndCredentialsByCodeQuery;
+    /** @var SelectAppWithCredentialsByCodeQuery */
+    private $selectAppWithCredentialsByCodeQuery;
 
-    public function __construct(SelectAppAndCredentialsByCodeQuery $selectAppAndCredentialsByCodeQuery)
+    public function __construct(SelectAppWithCredentialsByCodeQuery $selectAppWithCredentialsByCodeQuery)
     {
-        $this->selectAppAndCredentialsByCodeQuery = $selectAppAndCredentialsByCodeQuery;
+        $this->selectAppWithCredentialsByCodeQuery = $selectAppWithCredentialsByCodeQuery;
     }
 
-    public function handle(FindAnAppQuery $query): ?AppAndCredentials
+    public function handle(FindAnAppQuery $query): ?AppWithCredentials
     {
-        return $this->selectAppAndCredentialsByCodeQuery->execute($query->appCode());
+        return $this->selectAppWithCredentialsByCodeQuery->execute($query->appCode());
     }
 }

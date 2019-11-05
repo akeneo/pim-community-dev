@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Apps\back\tests\Integration\Persistence\Repository;
+namespace Akeneo\Apps\back\tests\Integration\Persistence\Dbal\Repository;
 
 use Akeneo\Apps\back\tests\Integration\Fixtures\AppLoader;
 use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
@@ -40,13 +40,7 @@ class DbalAppRepositoryIntegration extends TestCase
 
         $this->repository->create($app);
 
-        $query = <<<SQL
-    SELECT code, label, flow_type, client_id, user_id
-    FROM akeneo_app
-    WHERE code = :code
-SQL;
-        $statement = $this->dbal->executeQuery($query, ['code' => 'magento']);
-        $result = $statement->fetch();
+        $result = $this->selectAppFromDb('magento');
 
         Assert::assertSame('magento', $result['code']);
         Assert::assertSame('Magento connector', $result['label']);
@@ -55,6 +49,18 @@ SQL;
         Assert::assertIsInt((int) $result['client_id']);
         Assert::assertNotNull($result['user_id']);
         Assert::assertIsInt((int) $result['user_id']);
+    }
+
+    private function selectAppFromDb(string $code): array
+    {
+        $query = <<<SQL
+    SELECT code, label, flow_type, client_id, user_id
+    FROM akeneo_app
+    WHERE code = :code
+SQL;
+        $statement = $this->dbal->executeQuery($query, ['code' => $code]);
+
+        return $statement->fetch();
     }
 
     public function it_finds_one_app_by_code()
