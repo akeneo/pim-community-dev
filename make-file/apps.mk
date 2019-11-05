@@ -13,7 +13,7 @@ apps-acceptance-back: var/tests/behat/apps
 
 apps-integration-back:
 ifeq ($(CI),1)
-	.circleci/run_phpunit.sh . Akeneo_Apps_Integration
+	.circleci/run_phpunit.sh . .circleci/find_phpunit.php Akeneo_Apps_Integration
 else
 	${PHP_RUN} vendor/bin/phpunit -c . --testsuite Akeneo_Apps_Integration $(O)
 endif
