@@ -6,6 +6,8 @@ namespace Akeneo\Apps\Infrastructure\InternalApi\Controller;
 
 use Akeneo\Apps\Application\Command\CreateAppCommand;
 use Akeneo\Apps\Application\Command\CreateAppHandler;
+use Akeneo\Apps\Application\Command\UpdateAppCommand;
+use Akeneo\Apps\Application\Command\UpdateAppHandler;
 use Akeneo\Apps\Application\Query\FetchAppsHandler;
 use Akeneo\Apps\Application\Query\FindAnAppHandler;
 use Akeneo\Apps\Application\Query\FindAnAppQuery;
@@ -34,6 +36,9 @@ class AppController
     /** @var FindAnAppHandler */
     private $findAnAppHandler;
 
+    /** @var UpdateAppHandler */
+    private $updateAppHandler;
+
     /** @var SecurityFacade */
     private $securityFacade;
 
@@ -41,11 +46,13 @@ class AppController
         CreateAppHandler $createAppHandler,
         FetchAppsHandler $fetchAppsHandler,
         FindAnAppHandler $findAnAppHandler,
+        UpdateAppHandler $updateAppHandler,
         SecurityFacade $securityFacade
     ) {
         $this->createAppHandler = $createAppHandler;
         $this->fetchAppsHandler = $fetchAppsHandler;
         $this->findAnAppHandler = $findAnAppHandler;
+        $this->updateAppHandler = $updateAppHandler;
         $this->securityFacade = $securityFacade;
     }
 
@@ -105,6 +112,33 @@ class AppController
         }
 
         return new JsonResponse($app->normalize());
+    }
+
+    public function update(Request $request): JsonResponse
+    {
+        if (true !== $this->securityFacade->isGranted('akeneo_apps_manage_settings')) {
+            throw new AccessDeniedException();
+        }
+
+        $data = json_decode($request->getContent(), true);
+        // TODO: Valid JSON format
+
+        $command = new UpdateAppCommand($request->get('code', ''), $data['label'], $data['flow_type']);
+
+        try {
+            $this->updateAppHandler->handle($command);
+        } catch (ConstraintViolationListException $e) {
+            $errorList = $this->buildViolationResponse($e->getConstraintViolationList());
+
+            return new JsonResponse(
+                ['errors' => $errorList, 'message' => $e->getMessage()],
+                Response::HTTP_UNPROCESSABLE_ENTITY
+            );
+        } catch (\Exception $e) {
+            return new JsonResponse(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
+
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
     private function buildViolationResponse(ConstraintViolationListInterface $constraintViolationList): array
