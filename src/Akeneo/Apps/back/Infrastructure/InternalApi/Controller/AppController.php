@@ -66,7 +66,7 @@ class AppController
         $data = json_decode($request->getContent(), true);
         // TODO: Valid JSON format
 
-        $command = new CreateAppCommand($data['code'], $data['label'], $data['flowType']);
+        $command = new CreateAppCommand($data['code'], $data['label'], $data['flow_type']);
 
         try {
             $this->createAppHandler->handle($command);
@@ -74,11 +74,11 @@ class AppController
             $errorList = $this->buildViolationResponse($e->getConstraintViolationList());
 
             return new JsonResponse(
-                json_encode(['errors' => $errorList, 'message' => $e->getMessage()]),
+                ['errors' => $errorList, 'message' => $e->getMessage()],
                 Response::HTTP_UNPROCESSABLE_ENTITY
             );
         } catch (\Exception $e) {
-            return new JsonResponse(json_encode(['message' => $e->getMessage()]), Response::HTTP_BAD_REQUEST);
+            return new JsonResponse(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);

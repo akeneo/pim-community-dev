@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {PropsWithChildren, ReactNode} from 'react';
 import styled from 'styled-components';
 
 const SectionContainer = styled.header`
@@ -15,7 +15,7 @@ const Title = styled.div`
     color: #11324d;
 `;
 
-export const Section = ({title, children}: React.PropsWithChildren<{title: React.ReactNode}>) => (
+export const Section = ({title, children}: PropsWithChildren<{title: ReactNode}>) => (
     <SectionContainer>
         <Title>{title}</Title>
         {children}

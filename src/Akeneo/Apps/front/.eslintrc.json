@@ -13,6 +13,8 @@
     ],
     "rules": {
         "arrow-parens": ["warn", "as-needed"],
+        "indent": "off",
+        "newline-before-return": "off",
         "no-console": "warn",
         "@typescript-eslint/camelcase": ["error", {"properties": "never"}],
         "@typescript-eslint/explicit-function-return-type": "off",

@@ -1,7 +1,7 @@
 import React from 'react';
 import {Translate} from '../../shared/translate';
 import styled from 'styled-components';
-import imgSrc from '../../common/assets/illustrations/Api.svg';
+import imgUrl from '../../common/assets/illustrations/api.svg';
 
 const Container = styled.div`
     text-align: center;
@@ -30,7 +30,7 @@ const Image = styled.img`
 
 export const NoApp = ({onCreate}: {onCreate: () => void}) => (
     <Container>
-        <Image src={imgSrc} />
+        <Image src={imgUrl} />
         <Title>
             <Translate id='pim_apps.no_app.title' />
         </Title>

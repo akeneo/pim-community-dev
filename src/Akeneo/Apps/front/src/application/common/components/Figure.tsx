@@ -14,16 +14,20 @@ const Image = styled.img`
 
 const Mask = styled.div`
     position: relative;
+    ::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        background-color: #11324d;
+        opacity: 0;
+        box-sizing: border-box;
+        transition: opacity 0.2s ease-in-out;
+    }
     :hover {
         ::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            background-color: #11324d;
             opacity: 0.4;
-            box-sizing: border-box;
         }
     }
 `;

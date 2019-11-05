@@ -1,7 +1,7 @@
 import React from 'react';
 import {useHistory} from 'react-router';
-import {Figure, FigureImage, FigureCaption} from '../../common';
-import imgUrl from '../../common/assets/illustrations/Api.svg';
+import {Figure, FigureCaption, FigureImage} from '../../common';
+import imgUrl from '../../common/assets/illustrations/api.svg';
 
 interface Props {
     code: string;

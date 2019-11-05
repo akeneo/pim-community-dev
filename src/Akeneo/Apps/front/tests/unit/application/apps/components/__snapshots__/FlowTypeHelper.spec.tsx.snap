@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FlowTypeHelper should render 1`] = `
+Array [
+  "pim_apps.flow_type_helper.message",
+  " ",
+  <a
+    href="pim_apps.flow_type_helper.link_url"
+  >
+    pim_apps.flow_type_helper.link
+  </a>,
+]
+`;

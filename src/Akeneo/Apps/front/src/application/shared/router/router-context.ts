@@ -1,7 +1,7 @@
-import * as React from 'react';
+import {createContext} from 'react';
 import {Router} from './router.interface';
 
-export const RouterContext = React.createContext<Router>({
+export const RouterContext = createContext<Router>({
     generate: (route: string) => {
         console.log('Generate URL for route:', route);
 

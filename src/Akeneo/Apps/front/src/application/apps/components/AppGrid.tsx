@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {ReactNode} from 'react';
 import styled from 'styled-components';
 import {App as AppInterface} from '../../../domain/apps/app.interface';
 import {Section} from '../../common';
@@ -19,7 +19,7 @@ const Grid = styled.div`
 
 interface Props {
     apps: AppInterface[];
-    title: React.ReactNode;
+    title: ReactNode;
 }
 
 export const AppGrid = ({apps, title}: Props) => (

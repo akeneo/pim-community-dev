@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import {PropsWithChildren} from 'react';
 import {Button, Props} from './Button';
 

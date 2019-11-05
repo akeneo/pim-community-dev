@@ -1,6 +1,7 @@
-import * as React from 'react';
+import React, {useRef, useContext, useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {LegacyContext} from '../legacy-context';
+import {View} from 'backbone';
 
 interface Props {
     viewName: string;
@@ -14,19 +15,26 @@ const StyledPimView = styled.div<{rendered: boolean}>`
 `;
 
 export const PimView = ({viewName, className}: Props) => {
-    const el = React.useRef<HTMLDivElement>(null);
-    const [rendered, setRendered] = React.useState(false);
+    const el = useRef<HTMLDivElement>(null);
+    const [view, setView] = useState<View | null>(null);
 
-    const {viewBuilder} = React.useContext(LegacyContext);
-    React.useEffect(() => {
+    const {viewBuilder} = useContext(LegacyContext);
+    useEffect(() => {
         if (!viewBuilder) {
             return;
         }
-        viewBuilder.build(viewName).then((view: any) => {
+        viewBuilder.build(viewName).then((view: View) => {
             view.setElement(el.current).render();
-            setRendered(true);
+            setView(view);
         });
-    }, [viewName]);
+    }, [viewBuilder, viewName]);
 
-    return <StyledPimView className={className} ref={el} rendered={rendered} />;
+    useEffect(
+        () => () => {
+            view && view.remove();
+        },
+        [view]
+    );
+
+    return <StyledPimView className={className} ref={el} rendered={null !== view} />;
 };
