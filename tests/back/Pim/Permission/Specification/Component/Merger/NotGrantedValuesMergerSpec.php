@@ -26,7 +26,6 @@ class NotGrantedValuesMergerSpec extends ObjectBehavior
         GetViewableAttributeCodesForUserInterface $getViewableAttributeCodes,
         GetAllViewableLocalesForUser $getViewableLocaleCodesForUser,
         TokenStorageInterface $tokenStorage,
-        WriteValueCollectionFactory $valueCollectionFactory,
         TokenInterface $token,
         UserInterface $user
     ) {
@@ -35,12 +34,7 @@ class NotGrantedValuesMergerSpec extends ObjectBehavior
         $tokenStorage->getToken()->willReturn($token);
         $getViewableLocaleCodesForUser->fetchAll(42)->willReturn(['en_US']);
 
-        $this->beConstructedWith(
-            $getViewableAttributeCodes,
-            $getViewableLocaleCodesForUser,
-            $tokenStorage,
-            $valueCollectionFactory
-        );
+        $this->beConstructedWith($getViewableAttributeCodes, $getViewableLocaleCodesForUser, $tokenStorage);
     }
 
     function it_implements_a_not_granted_data_merger_interface()
@@ -66,19 +60,13 @@ class NotGrantedValuesMergerSpec extends ObjectBehavior
         WriteValueCollectionFactory $valueCollectionFactory
     ) {
         $fullProduct = new Product();
-        $fullProduct->setRawValues([
-            'text' => [
-                '<all_channels>' => [
-                    '<all_locales>' => 'a text'
-                ],
-            ],
-            'color' => [
-                '<all_channels>' => [
-                    'en_US' => 'yellow',
-                    'fr_FR' => 'red',
-                ],
-            ],
-        ]);
+        $fullProduct->setValues(new WriteValueCollection(
+            [
+                ScalarValue::value('123', 'a text'),
+                OptionValue::localizableValue('color', 'yellow', 'en_US'),
+                OptionValue::localizableValue('color', 'red', 'fr_FR'),
+            ]
+        ));
 
         $filteredProduct = new Product();
         $filteredProduct->setValues(new WriteValueCollection(
@@ -87,34 +75,13 @@ class NotGrantedValuesMergerSpec extends ObjectBehavior
            ]
         ));
 
-        $getViewableAttributeCodes->forAttributeCodes(['text', 'color'], 42)->willReturn(['color']);
-        $valueCollectionFactory->createFromStorageFormat(
-            [
-                'text' => [
-                    '<all_channels>' => [
-                        '<all_locales>' => 'a text'
-                    ],
-                ],
-                'color' => [
-                    '<all_channels>' => [
-                        'fr_FR' => 'red',
-                    ],
-                ],
-            ]
-        )->willReturn(
-            new WriteValueCollection(
-                [
-                    ScalarValue::value('text', 'a text'),
-                    OptionValue::localizableValue('color', 'red', 'fr_FR'),
-                ]
-            )
-        );
+        $getViewableAttributeCodes->forAttributeCodes(Argument::is(['123', 'color']), 42)->willReturn(['color']);
 
         $mergedEntity = $this->merge($filteredProduct, $fullProduct);
         $mergedEntity->shouldBeEqualTo($fullProduct);
         $mergedEntity->getValues()->shouldBeLike(new WriteValueCollection(
             [
-                ScalarValue::value('text', 'a text'),
+                ScalarValue::value('123', 'a text'),
                 OptionValue::localizableValue('color', 'red', 'fr_FR'),
                 OptionValue::localizableValue('color', 'blue', 'en_US'),
             ]
@@ -165,7 +132,6 @@ class NotGrantedValuesMergerSpec extends ObjectBehavior
                 OptionValue::value('size', 'XXL'),
             ]
         ));
-
 
         $getViewableAttributeCodes->forAttributeCodes(Argument::cetera())->shouldNotBeCalled();
 

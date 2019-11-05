@@ -20,7 +20,6 @@ services:
             - '@pimee_security.query.get_viewable_attribute_codes_for_user'
             - '@pimee_security.query.get_all_viewable_locales_for_user'
             - '@security.token_storage'
-            - '@akeneo.pim.enrichment.factory.write_value_collection'
 
     pimee_catalog.security.merger.merge_data_on_product:
         class: 'Akeneo\Pim\Permission\Component\Merger\MergeDataOnProduct'

@@ -157,8 +157,8 @@
     - add `Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface`, `Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser`
         and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
 - Change Constructor of `Akeneo\Pim\Permission\Component\Merger\NotGrantedValuesMerger` to
-    - remove `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface $attributeRepository`, `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface $localeRepository`
-        and `Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface`
+    - remove `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface $attributeRepository`, `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface $localeRepository`,
+        `Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface` and `Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory`
     - add `Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface`, `Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser`
         and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
 - Change constructor of `Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Calculator` to remove `Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\ValueCompleteCheckerInterface` and `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`,
