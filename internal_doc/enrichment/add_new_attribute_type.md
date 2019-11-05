@@ -6,14 +6,14 @@ This documentation will help you to add a new attribute type in the PIM.
 We will add a new attribute type called `Range`, defined by a min and a max value.
 This documentation will allow you to:
 - be able to save product (and product model) values with this attribute type,
+- index these values in the search engine
 - calculate the completeness of these entities,
 - update the values in the product edit form,
 - export your product values.
 
-This documentation will not:
-- cover the indexation of this field (you can take a look at `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\AbstractProductValueNormalizer`),
-- cover the search on the values defined on this attribute (you can take a look at `Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface`),
-- cover the import processes (take a look at `Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter\ValueConverterInterface`).
+This documentation will not cover:
+- the search on the values defined on this attribute (you can take a look at `Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface`),
+- the import processes (take a look at `Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter\ValueConverterInterface`).
 
 ## Step 1: Create the attribute type (backend)
 
@@ -69,7 +69,8 @@ use Acme\RangeBundle\Product\Value\RangeValue;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 class RangeValueFactory implements ValueFactory
 {
@@ -202,7 +203,106 @@ class RangeComparator implements ComparatorInterface
             - { name: pim_catalog.attribute.comparator }
 ```
 
-## Step 4: Completeness
+## Step 4: Indexing the values
+
+You'll now want to properly index the values in the search engine (Elasticsearch), at the following format:
+```json
+{  
+  "values": {
+    "my_range_attribute-range": {
+      "<all_channels>": {
+        "<all_locales>": {
+          "min": 0,
+          "max": 50
+        }
+      }
+    }
+  } 
+}
+```
+
+For this you will just need to create the adequate normalizer:
+
+```php
+<?php #src/Acme/RangeBundle/Product/Normalizer/Indexing/Value/RangeValueNormalizer.php
+
+namespace Acme\RangeBundle\Product\Normalizer\Indexing\Value;
+
+use Acme\RangeBundle\AttributeType\RangeType;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\AbstractProductValueNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
+
+class RangeValueNormalizer extends AbstractProductValueNormalizer implements CacheableSupportsMethodInterface 
+{
+    public function supportsNormalization($data,$format = null)
+    {
+        if (! $data instanceof ValueInterface) {
+            return false;
+        }
+
+        $attribute = $this->getAttributes->forCode($data->getAttributeCode());
+
+        return null !== $attribute && RangeType::RANGE === $attribute->backendType() && (
+                $format === ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
+            );
+    }
+    
+    protected function getNormalizedData(ValueInterface $value)
+    {
+        return $value->getData();
+    }
+    
+    public function hasCacheableSupportsMethod() : bool
+    {
+        return true;
+    }
+}
+```
+
+```yaml
+# src/Acme/RangeBundle/Resources/config/services.yml [...]
+    Acme\RangeBundle\Product\Normalizer\Indexing\Value\RangeValueValidator:        
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+        tags:
+            - { name: pim_indexing_serializer.normalizer, priority: 90 }
+```
+
+At some point, you'll probably want to perform searches on these values (although the implementation of the filters 
+is not described in this guide). In order to do this, you'll have to tell Elasticsearch how to manage your values,
+(here we want min and max considered as numbers), by registering new dynamic templates:
+
+```yaml
+# src/Acme/RangeBundle/Resources/elasticsearch/product_mapping.yml
+
+mappings:
+    dynamic_templates:
+        -
+            range_min:
+                path_match: 'values.*-range.*.min'
+                mapping:
+                    type: 'double'
+        -
+            range_max:
+                path_match: 'values.*-range.*.max'
+                mapping:
+                    type: 'double'
+```
+
+All you have to do now is include this file in the elasticsearch configuration:
+
+```yaml
+# src/Acme/RangeBundle/Resources/config/parameters.yml
+parameters:
+    elasticsearch_index_configuration_files:
+        - '%pim_ce_dev_src_folder_location%/src/Akeneo/Pim/Enrichment/Bundle/Resources/elasticsearch/settings.yml'
+        - '%pim_ce_dev_src_folder_location%/src/Akeneo/Pim/Enrichment/Bundle/Resources/elasticsearch/product_mapping.yml'
+        - '%kernel.project_dir%/src/Acme/RangeBundle/Resources/elasticsearch/product_mapping.yml'
+```
+
+## Step 5: Completeness
 
 To be able to compute the completeness, a value has to be defined as **complete** or **incomplete**.
 Since Akeneo PIM 4.0, we use the notion of masks to generate keys for each filled value.
@@ -252,7 +352,7 @@ class RangeMaskItemGenerator implements MaskItemGeneratorForAttributeType
         tags: [{ name: akeneo.pim.enrichment.completeness.mask_item_generator }]
 ```
 
-## Step 5: User Interface
+## Step 6: User Interface
 
 You will need to display a new field in the product edit form to be able to use your new attribute type.
 Add a new HTML template with 2 fields. 
@@ -375,7 +475,7 @@ pim_enrich.entity.attribute.property.type.range: 'Range'
 }
 ```
 
-## Step 6: Export values
+## Step 7: Export values
 
 If you want to be able to export values through flat files, you need to code how to convert a range value into a cell.
 Here, a value will be normalized like this: `[10...20]`.
