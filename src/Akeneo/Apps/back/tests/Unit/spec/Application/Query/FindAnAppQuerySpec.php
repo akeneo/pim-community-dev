@@ -14,17 +14,17 @@ use PhpSpec\ObjectBehavior;
  */
 class FindAnAppQuerySpec extends ObjectBehavior
 {
-    function let()
+    public function let()
     {
         $this->beConstructedWith('bynder');
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(FindAnAppQuery::class);
     }
 
-    function it_returns_an_application_code()
+    public function it_returns_an_application_code()
     {
         $this->appCode()->shouldReturn('bynder');
     }

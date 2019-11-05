@@ -5,8 +5,10 @@ namespace spec\Akeneo\Apps\Application\Validation\App;
 
 use Akeneo\Apps\Application\Validation\App\CodeMustBeUnique;
 use Akeneo\Apps\Application\Validation\App\CodeMustBeUniqueValidator;
-use Akeneo\Apps\Domain\Model\Read\App;
+use Akeneo\Apps\Domain\Model\ValueObject\ClientId;
 use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
+use Akeneo\Apps\Domain\Model\ValueObject\UserId;
+use Akeneo\Apps\Domain\Model\Write\App;
 use Akeneo\Apps\Domain\Persistence\Repository\AppRepository;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -22,9 +24,13 @@ class CodeMustBeUniqueValidatorSpec extends ObjectBehavior
         $this->initialize($context);
     }
 
-    public function it_is_a_constraint_validator(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(CodeMustBeUniqueValidator::class);
+    }
+
+    public function it_is_a_constraint_validator(): void
+    {
         $this->shouldImplement(ConstraintValidatorInterface::class);
     }
 
@@ -45,7 +51,9 @@ class CodeMustBeUniqueValidatorSpec extends ObjectBehavior
         $constraint = new CodeMustBeUnique();
         $repository
             ->findOneByCode('magento')
-            ->willReturn(new App('1', 'magento', 'Magento connector', FlowType::DATA_DESTINATION));
+            ->willReturn(
+                new App('magento', 'Magento connector', FlowType::DATA_DESTINATION, new ClientId(42), new UserId(50))
+            );
 
         $context->buildViolation('akeneo_apps.constraint.code.must_be_unique')
             ->shouldBeCalled()

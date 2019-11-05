@@ -30,7 +30,7 @@ class DbalSelectAppWithCredentialsByCodeQueryIntegration extends TestCase
         parent::setUp();
 
         $this->appLoader = $this->get('akeneo_app.fixtures.app_loader');
-        $this->selectAppWithCredentialsByCodeQuery = $this->get('akeneo_app.persistence.query.select_app_and_credentials_by_code');
+        $this->selectAppWithCredentialsByCodeQuery = $this->get('akeneo_app.persistence.query.select_app_with_credentials_by_code');
     }
 
     public function test_it_finds_an_app_with_its_credentials()
@@ -39,7 +39,7 @@ class DbalSelectAppWithCredentialsByCodeQueryIntegration extends TestCase
 
         $app = $this->selectAppWithCredentialsByCodeQuery->execute('magento');
 
-        Assert::isInstanceOf(AppWithCredentials::class, $app);
+        Assert::assertInstanceOf(AppWithCredentials::class, $app);
         Assert::assertSame('magento', $app->code());
         Assert::assertSame('Magento Connector', $app->label());
         Assert::assertSame(FlowType::DATA_DESTINATION, $app->flowType());

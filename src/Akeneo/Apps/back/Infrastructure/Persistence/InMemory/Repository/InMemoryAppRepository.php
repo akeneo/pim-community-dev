@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Infrastructure\Persistence\InMemory\Repository;
 
+use Akeneo\Apps\Domain\Model\ValueObject\ClientId;
+use Akeneo\Apps\Domain\Model\ValueObject\UserId;
 use Akeneo\Apps\Domain\Model\Write\App;
 use Akeneo\Apps\Domain\Persistence\Repository\AppRepository;
 
@@ -24,6 +26,8 @@ class InMemoryAppRepository implements AppRepository
             'flow_type' => (string) $app->flowType(),
             'client_id' => $app->clientId()->id(),
             'user_id' => $app->userId()->id(),
+            'random_id' => uniqid(),
+            'secret' => uniqid(),
         ];
     }
 
@@ -37,7 +41,9 @@ class InMemoryAppRepository implements AppRepository
         return new App(
             $dataRow['code'],
             $dataRow['label'],
-            $dataRow['flow_type']
+            $dataRow['flow_type'],
+            new ClientId($dataRow['client_id']),
+            new UserId($dataRow['user_id'])
         );
     }
 

@@ -6,11 +6,11 @@ namespace spec\Akeneo\Apps\Application\Command;
 use Akeneo\Apps\Application\Command\CreateAppCommand;
 use Akeneo\Apps\Application\Command\CreateAppHandler;
 use Akeneo\Apps\Application\Service\CreateClientInterface;
+use Akeneo\Apps\Application\Service\CreateUserInterface;
 use Akeneo\Apps\Domain\Exception\ConstraintViolationListException;
 use Akeneo\Apps\Domain\Model\ValueObject\ClientId;
-use Akeneo\Apps\Application\Service\CreateUserInterface;
-use Akeneo\Apps\Domain\Model\Write\App;
 use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
+use Akeneo\Apps\Domain\Model\Write\App;
 use Akeneo\Apps\Domain\Persistence\Repository\AppRepository;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -49,7 +49,6 @@ class CreateAppHandlerSpec extends ObjectBehavior
         $createClient->execute('Magento Connector')->shouldBeCalled()->willReturn($clientId);
         $createUser->execute('magento', 'Magento Connector', 'APP', 'magento', Argument::any())->shouldBeCalled();
 
-        $repository->generateId()->willReturn('471');
         $repository->create(Argument::type(App::class))->shouldBeCalled();
 
         $this->handle($command);
@@ -76,7 +75,6 @@ class CreateAppHandlerSpec extends ObjectBehavior
 
         $createClient->execute(Argument::any())->shouldNotBeCalled();
         $createUser->execute(Argument::cetera())->shouldNotBeCalled();
-        $repository->generateId()->shouldNotBeCalled();
         $repository->create(Argument::any())->shouldNotBeCalled();
 
         $this

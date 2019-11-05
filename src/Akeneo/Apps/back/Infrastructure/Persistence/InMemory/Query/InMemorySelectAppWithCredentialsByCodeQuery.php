@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\Apps\Infrastructure\Persistence\InMemory\Query;
 
 use Akeneo\Apps\Domain\Model\Read\App;
+use Akeneo\Apps\Domain\Model\Read\AppWithCredentials;
 use Akeneo\Apps\Domain\Persistence\Query\SelectAppsQuery;
+use Akeneo\Apps\Domain\Persistence\Query\SelectAppWithCredentialsByCodeQuery;
 use Akeneo\Apps\Infrastructure\Persistence\InMemory\Repository\InMemoryAppRepository;
 
 /**
@@ -13,7 +15,7 @@ use Akeneo\Apps\Infrastructure\Persistence\InMemory\Repository\InMemoryAppReposi
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class InMemorySelectAppsQuery implements SelectAppsQuery
+class InMemorySelectAppWithCredentialsByCodeQuery implements SelectAppWithCredentialsByCodeQuery
 {
     /** @var InMemoryAppRepository */
     private $appRepository;
@@ -23,13 +25,22 @@ class InMemorySelectAppsQuery implements SelectAppsQuery
         $this->appRepository = $appRepository;
     }
 
-    public function execute(): array
+    public function execute(string $code): ?AppWithCredentials
     {
-        $apps = [];
-        foreach ($this->appRepository->dataRows as $dataRow) {
-            $apps[] = new App($dataRow['code'], $dataRow['label'], $dataRow['flow_type']);
+        $dataRows = $this->appRepository->dataRows;
+
+        if (!isset($dataRows[$code])) {
+            return null;
         }
 
-        return $apps;
+        $dataRow = $dataRows[$code];
+
+        return new AppWithCredentials(
+            $dataRow['code'],
+            $dataRow['label'],
+            $dataRow['flow_type'],
+            $dataRow['random_id'],
+            $dataRow['secret'],
+        );
     }
 }

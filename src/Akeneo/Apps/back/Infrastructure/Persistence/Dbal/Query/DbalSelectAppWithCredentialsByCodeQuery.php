@@ -32,12 +32,15 @@ INNER JOIN pim_api_client client on app.client_id = client.id
 WHERE code = :code
 SQL;
         $dataRow = $this->dbalConnection->executeQuery($selectSQL, ['code' => $code])->fetch();
+        if (!$dataRow) {
+            return null;
+        }
 
         return new AppWithCredentials(
             $dataRow['code'],
             $dataRow['label'],
             $dataRow['flow_type'],
-            $dataRow['client_id'],
+            $dataRow['random_id'],
             $dataRow['secret']
         );
     }
