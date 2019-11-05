@@ -27,13 +27,6 @@ final class ReferenceEntityValueFactorySpec extends ObjectBehavior
         $this->supportedAttributeType()->shouldReturn(ReferenceEntityType::REFERENCE_ENTITY);
     }
 
-    public function it_supports_null()
-    {
-        $attribute = $this->getAttribute(true, true);
-        $value = $this->createByCheckingData($attribute, 'ecommerce', 'fr_FR', null);
-        $value->shouldBeLike(ReferenceEntityValue::scopableLocalizableValue('an_attribute', [], 'ecommerce', 'fr_FR'));
-    }
-
     public function it_creates_a_localizable_and_scopable_value()
     {
         $attribute = $this->getAttribute(true, true);
@@ -60,6 +53,18 @@ final class ReferenceEntityValueFactorySpec extends ObjectBehavior
         $attribute = $this->getAttribute(false, false);
         $value = $this->createWithoutCheckingData($attribute, null, null, 'michel');
         $value->shouldBeLike(ReferenceEntityValue::value('an_attribute', RecordCode::fromString('michel')));
+    }
+
+    public function it_throws_an_exception_if_the_value_is_null()
+    {
+        $attribute = $this->getAttribute(true, true);
+        $this->shouldThrow(InvalidPropertyTypeException::class)
+            ->during('createByCheckingData', [
+                $this->getAttribute(false, false),
+                null,
+                null,
+                null
+            ]);
     }
 
     public function it_throws_an_exception_if_not_an_array_of_string()

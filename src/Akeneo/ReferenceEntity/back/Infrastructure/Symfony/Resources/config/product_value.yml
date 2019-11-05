@@ -25,22 +25,6 @@ services:
             - { name: pim_enrich.provider.field, priority: 100 }
             - { name: pim_enrich.provider.empty_value, priority: 80 }
 
-    akeneo_referenceentity.factory.product_value.reference_entity_collection:
-        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Factory\ReferenceEntityCollectionValueFactory
-        public: false
-        arguments:
-            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
-        tags:
-            - { name: pim_catalog.factory.value }
-
-    akeneo_referenceentity.factory.product_value.reference_entity:
-        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Factory\ReferenceEntityValueFactory
-        public: false
-        arguments:
-            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
-        tags:
-            - { name: pim_catalog.factory.value }
-
     akeneo_referenceentity.comparator.attribute.reference_entity_collection:
         class: '%pim_catalog.comparator.attribute.options.class%'
         arguments:

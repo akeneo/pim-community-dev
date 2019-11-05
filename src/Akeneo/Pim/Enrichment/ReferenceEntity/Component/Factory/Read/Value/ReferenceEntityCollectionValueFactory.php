@@ -50,10 +50,6 @@ final class ReferenceEntityCollectionValueFactory implements ValueFactory
 
     public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
-        if (null === $data) {
-            return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
-        }
-
         if (!is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected(
                 $attribute->code(),

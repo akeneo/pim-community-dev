@@ -88,9 +88,9 @@ abstract class AbstractProductImportTestCase extends TestCase
 
         $values = [];
         foreach ($draftData['values'] as $code => $value) {
-            $attribute = $this->get('pim_catalog.repository.attribute')->findOneByIdentifier($code);
+            $attribute = $this->get('akeneo.pim.structure.query.get_attributes')->forCode($code);
             foreach ($value as $data) {
-                $values[] = $this->get('pim_catalog.factory.value')->create(
+                $values[] = $this->get('akeneo.pim.enrichment.factory.value')->createByCheckingData(
                     $attribute,
                     $data['scope'],
                     $data['locale'],

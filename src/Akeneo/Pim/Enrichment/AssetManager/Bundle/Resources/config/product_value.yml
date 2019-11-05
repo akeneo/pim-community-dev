@@ -12,14 +12,6 @@ services:
             - { name: pim_enrich.provider.field, priority: 100 }
             - { name: pim_enrich.provider.empty_value, priority: 80 }
 
-    akeneo_assetmanager.factory.product_value.asset_collection:
-        class: Akeneo\Pim\Enrichment\AssetManager\Component\Factory\AssetCollectionValueFactory
-        public: false
-        arguments:
-            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
-        tags:
-            - { name: pim_catalog.factory.value }
-
     akeneo_assetmanager.comparator.attribute.asset_multiple_link:
         public:    false
         class:     'Akeneo\Pim\Enrichment\AssetManager\Component\Comparator\Attribute\AssetCollectionComparator'

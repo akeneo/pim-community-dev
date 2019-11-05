@@ -30,7 +30,7 @@ services:
             - '@pim_catalog.repository.cached_attribute'
             - '@pimee_workflow.product_draft_renderer'
             - '@translator'
-            - '@pim_catalog.factory.value'
+            - '@akeneo.pim.enrichment.factory.value'
         tags:
             - { name: twig.extension }
 

@@ -18,7 +18,7 @@
 
 ### Elasticsearch
 
-`published_product_and_published_product_model` is removed as it was useless.
+`published_product_and_published_product_model` index is removed as it was useless.
 
 ### Doctrine mapping
 
@@ -163,7 +163,8 @@
         and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
 - Change constructor of `Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Calculator` to remove `Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\ValueCompleteCheckerInterface` and `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`,
     and add `Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator`. Also, protected method `findFilledAttributes()` was removed.        
-
+- Remove class `Akeneo\Pim\Enrichment\Asset\Component\AssetCollectionValueFactory`
+- Remove class `Akeneo\Pim\Enrichment\AssetManager\Component\Factory\AssetCollectionValueFactory`
 ### CLI commands
 
 The following CLI commands have been deleted:
@@ -204,3 +205,5 @@ The following CLI commands have been deleted:
 - Update `pimee_workflow.doctrine.query.proposal_product_and_product_model_query_builder_from_size_factory` to use `Akeneo\Pim\WorkOrganization\Workflow\Component\Query\ProductProposalAndProductModelProposalQueryBuilder`
 - Update `pimee_teamwork_assistant.controller.project_completeness_controller` to remove `@security.token_storage` as dependency
 - Update `pimee_catalog_rule.applier.product.saver` to remove `@pim_catalog.saver.product_model_descendants` as dependency
+- Remove `akeneo_referenceentity.factory.product_value.reference_entity_collection`
+- Remove `akeneo_referenceentity.factory.product_value.reference_entity`

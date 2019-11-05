@@ -49,15 +49,6 @@ services:
         tags:
             - { name: pim_notification.factory.notification }
 
-    pimee_product_asset.factory.product_value.asset_collection:
-        class: 'Akeneo\Pim\Enrichment\Asset\Component\AssetCollectionValueFactory'
-        public: false
-        arguments:
-            - '@pim_reference_data.repository_resolver'
-            - '%pim_reference_data.value.reference_data_collection.class%'
-        tags:
-            - { name: pim_catalog.factory.value }
-
     pimee_product_asset.factory.read.product_value.asset_collection:
         class: 'Akeneo\Pim\Enrichment\Asset\Component\ReadAssetCollectionValueFactory'
         public: false

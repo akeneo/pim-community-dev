@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Normalizer;
 
-use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -37,19 +37,19 @@ class ProductModelProposalNormalizer implements NormalizerInterface, CacheableSu
     /** @var ValueFactory */
     private $valueFactory;
 
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $attributeRepository;
+    /** @var GetAttributes */
+    private $getAttributesQuery;
 
     public function __construct(
         NormalizerInterface $standardNormalizer,
         NormalizerInterface $datagridNormlizer,
         ValueFactory $valueFactory,
-        IdentifiableObjectRepositoryInterface $attributeRepository
+        GetAttributes $getAttributesQuery
     ) {
         $this->standardNormalizer = $standardNormalizer;
         $this->datagridNormlizer = $datagridNormlizer;
         $this->valueFactory = $valueFactory;
-        $this->attributeRepository = $attributeRepository;
+        $this->getAttributesQuery = $getAttributesQuery;
     }
 
     /**
@@ -112,9 +112,9 @@ class ProductModelProposalNormalizer implements NormalizerInterface, CacheableSu
         $valueCollection = new WriteValueCollection();
 
         foreach ($changes['values'] as $code => $changeset) {
-            $attribute = $this->attributeRepository->findOneByIdentifier($code);
+            $attribute = $this->getAttributesQuery->forCode($code);
             foreach ($changeset as $index => $change) {
-                $value = $this->valueFactory->create(
+                $value = $this->valueFactory->createByCheckingData(
                     $attribute,
                     $change['scope'],
                     $change['locale'],

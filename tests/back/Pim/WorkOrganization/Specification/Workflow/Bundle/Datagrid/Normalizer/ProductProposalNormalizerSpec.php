@@ -2,11 +2,13 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Normalizer;
 
-use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
@@ -19,9 +21,9 @@ class ProductProposalNormalizerSpec extends ObjectBehavior
         NormalizerInterface $standardNormalizer,
         NormalizerInterface $datagridNormalizer,
         ValueFactory $valueFactory,
-        IdentifiableObjectRepositoryInterface $attributeRepository
+        GetAttributes $getAttributes
     ) {
-        $this->beConstructedWith($standardNormalizer, $datagridNormalizer, $valueFactory, $attributeRepository);
+        $this->beConstructedWith($standardNormalizer, $datagridNormalizer, $valueFactory, $getAttributes);
     }
 
     function it_should_implement()
@@ -37,14 +39,12 @@ class ProductProposalNormalizerSpec extends ObjectBehavior
     function it_normalizes(
         $standardNormalizer,
         $datagridNormalizer,
-        $valueFactory,
-        $attributeRepository,
+        ValueFactory $valueFactory,
+        GetAttributes $getAttributes,
         ProductDraft $productProposal,
         WriteValueCollection $valueCollection,
         ProductInterface $product,
-        ValueInterface $value,
-        AttributeInterface $attributeText,
-        AttributeInterface $attributeDescription
+        ValueInterface $value
     ) {
         $context = [
             'filter_types' => ['pim.transform.product_value.structured'],
@@ -72,10 +72,15 @@ class ProductProposalNormalizerSpec extends ObjectBehavior
         $productProposal->getCreatedAt()->willReturn($created);
         $productProposal->getValues()->willReturn($valueCollection);
         $productProposal->getChanges()->willReturn($changes);
-        $attributeRepository->findOneByIdentifier('text')->willReturn($attributeText);
-        $attributeRepository->findOneByIdentifier('description')->willReturn($attributeDescription);
-        $valueFactory->create($attributeText, null, null, 'my text')->willReturn($value);
-        $valueFactory->create($attributeDescription, Argument::cetera())->shouldNotBeCalled();
+
+        $textAttribute = new Attribute('text', 'pim_catalog_text', [], false, false, null, true, 'pim_catalog_text');
+        $descriptionAttribute = new Attribute('description', 'pim_catalog_text', [], false, false, null, true, 'pim_catalog_text');
+
+        $getAttributes->forCode('text')->willReturn($textAttribute);
+        $getAttributes->forCode('description')->willReturn($descriptionAttribute);
+
+        $valueFactory->createByCheckingData($textAttribute, null, null, 'my text')->willReturn($value);
+        $valueFactory->createByCheckingData($descriptionAttribute, Argument::cetera())->shouldNotBeCalled();
         $value->getAttributeCode()->willReturn('text');
         $value->getScopeCode()->willReturn(null);
         $value->getLocaleCode()->willReturn(null);

@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Normalizer;
 
-use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -36,19 +36,19 @@ class ProductProposalNormalizer implements NormalizerInterface, CacheableSupport
     /** @var ValueFactory */
     private $valueFactory;
 
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $attributeRepository;
+    /** @var GetAttributes */
+    private $getAttributesQuery;
 
     public function __construct(
         NormalizerInterface $standardNormalizer,
         NormalizerInterface $datagridNormlizer,
         ValueFactory $valueFactory,
-        IdentifiableObjectRepositoryInterface $attributeRepository
+        GetAttributes $getAttributesQuery
     ) {
         $this->standardNormalizer = $standardNormalizer;
         $this->datagridNormlizer = $datagridNormlizer;
         $this->valueFactory = $valueFactory;
-        $this->attributeRepository = $attributeRepository;
+        $this->getAttributesQuery = $getAttributesQuery;
     }
 
     /**
@@ -107,10 +107,10 @@ class ProductProposalNormalizer implements NormalizerInterface, CacheableSupport
         $valueCollection = new WriteValueCollection();
 
         foreach ($changes['values'] as $code => $changeset) {
-            $attribute = $this->attributeRepository->findOneByIdentifier($code);
+            $attribute = $this->getAttributesQuery->forCode($code);
             foreach ($changeset as $index => $change) {
                 if (!$this->isChangeDataNull($change['data'])) {
-                    $valueCollection->add($this->valueFactory->create(
+                    $valueCollection->add($this->valueFactory->createByCheckingData(
                         $attribute,
                         $change['scope'],
                         $change['locale'],
