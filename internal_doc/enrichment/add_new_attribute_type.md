@@ -55,43 +55,9 @@ services:
 
 ## Step 2: Create the values
 
-**Warning** For now, you have to create 2 value factories (one for reading purposes, another one for writing purposes).
-They are very similar, and will probably be refactored in the next months.
-
 For the sake of simplicity, we will re-use the same format both for back-end and front-end.
 A range value will be defined as an array, with `min` and `max` as keys.
 The factories are here to create localizable and scopable values, linked to a specific attribute.
-
-```php
-<?php #src/Acme/RangeBundle/Product/Factory/Write/Value/RangeValueFactory.php
-
-namespace Acme\RangeBundle\Product\Factory\Write\Value;
-
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\AbstractValueFactory;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-
-class RangeValueFactory extends AbstractValueFactory
-{
-    protected function prepareData(AttributeInterface $attribute, $data, bool $ignoreUnknownData)
-    {
-        if ($data === null) {
-            $data = ['min' => null, 'max' => null];
-        }
-        if (!is_array($data)) {
-            throw InvalidPropertyTypeException::arrayExpected($attribute->getCode(), static::class, $data);
-        }
-        if (!array_key_exists('min', $data)) {
-            throw InvalidPropertyTypeException::arrayKeyExpected($attribute->getCode(), 'min', static::class, $data);
-        }
-        if (!array_key_exists('max', $data)) {
-            throw InvalidPropertyTypeException::arrayKeyExpected($attribute->getCode(), 'max', static::class, $data);
-        }
-
-        return ['min' => $data['min'], 'max' => $data['max']];
-    }
-}
-```
 
 ```php
 <?php # src/Acme/RangeBundle/Product/Factory/Value/RangeValueFactory.php
@@ -103,7 +69,7 @@ use Acme\RangeBundle\Product\Value\RangeValue;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 class RangeValueFactory implements ValueFactory
 {
@@ -113,17 +79,37 @@ class RangeValueFactory implements ValueFactory
         ?string $localeCode, 
         $data
     ): ValueInterface {
-        if ($data === null) {
-            $data = ['min' => null, 'max' => null];
-        }
         if (!is_array($data)) {
-            throw InvalidPropertyTypeException::arrayExpected($attribute->code(), static::class, $data);
+            throw InvalidPropertyTypeException::arrayExpected(
+                $attribute->code(),
+                static::class,
+                $data
+            );
         }
-        if (!array_key_exists('min', $data)) {
-            throw InvalidPropertyTypeException::arrayKeyExpected($attribute->code(), 'min', static::class, $data);
+
+        if (!isset($data['min'])) {
+            throw InvalidPropertyTypeException::arrayKeyExpected(
+                $attribute->code(),
+                'min',
+                static::class,
+                $data
+            );
         }
-        if (!array_key_exists('max', $data)) {
-            throw InvalidPropertyTypeException::arrayKeyExpected($attribute->code(), 'max', static::class, $data);
+        
+        if (null === $data['min'] && null === $data['max']) {
+            throw InvalidPropertyException::valueNotEmptyExpected(
+                $attribute->code(),
+                static::class
+            );
+        }
+
+        if (!isset($data['max'])) {
+            throw InvalidPropertyTypeException::arrayKeyExpected(
+                $attribute->code(),
+                'max',
+                static::class,
+                $data
+            );
         }
 
         return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
@@ -153,15 +139,6 @@ class RangeValueFactory implements ValueFactory
 
 ```yaml
 # src/Acme/RangeBundle/Resources/config/services.yml [...]
-    acme.range.factory.write.value.range:
-        class: Acme\RangeBundle\Product\Factory\Write\Value\RangeValueFactory
-        public: false
-        arguments:
-            - 'Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue'
-            - 'range'
-        tags:
-            - { name: pim_catalog.factory.value }
-
     acme.range.factory.value.range:
         class: 'Acme\RangeBundle\Product\Factory\Value\RangeValueFactory'
         tags: ['akeneo.pim.enrichment.factory.product_value']
