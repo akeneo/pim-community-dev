@@ -16,6 +16,7 @@ namespace Akeneo\Pim\Permission\Component\Merger;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Permission\Component\NotGrantedDataMergerInterface;
 use Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser;
 use Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface;
@@ -23,6 +24,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Merge not granted values with new values. Example:
@@ -54,7 +56,6 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  *      ]
  *    }
  * }
- * (@see \Akeneo\Pim\Permission\Component\Factory\ValueCollectionFactory)
  *
  * When user will update "my_product":
  * {
@@ -95,19 +96,14 @@ class NotGrantedValuesMerger implements NotGrantedDataMergerInterface
     /** @var TokenStorageInterface */
     private $tokenStorage;
 
-    /** @var WriteValueCollectionFactory */
-    private $valueCollectionFactory;
-
     public function __construct(
         GetViewableAttributeCodesForUserInterface $getViewableAttributeCodes,
         GetAllViewableLocalesForUser $getViewableLocaleCodesForUser,
-        TokenStorageInterface $tokenStorage,
-        WriteValueCollectionFactory $valueCollectionFactory
+        TokenStorageInterface $tokenStorage
     ) {
         $this->getViewableAttributeCodes = $getViewableAttributeCodes;
         $this->getViewableLocaleCodesForUser = $getViewableLocaleCodesForUser;
         $this->tokenStorage = $tokenStorage;
-        $this->valueCollectionFactory = $valueCollectionFactory;
     }
 
     /**
@@ -127,50 +123,36 @@ class NotGrantedValuesMerger implements NotGrantedDataMergerInterface
             throw InvalidObjectException::objectExpected(ClassUtils::getClass($fullEntityWithValues), EntityWithValuesInterface::class);
         }
 
-        $rawValuesToMerge = [];
+        if ($filteredEntityWithValues instanceof EntityWithFamilyVariantInterface &&
+            null !== $filteredEntityWithValues->getFamilyVariant()
+        ) {
+            $originalValues = WriteValueCollection::fromCollection($fullEntityWithValues->getValuesForVariation());
+            $newValues = WriteValueCollection::fromCollection($filteredEntityWithValues->getValuesForVariation());
+        } else {
+            $originalValues = WriteValueCollection::fromCollection($fullEntityWithValues->getValues());
+            $newValues = WriteValueCollection::fromCollection($filteredEntityWithValues->getValues());
+        }
 
         $userId = $this->getUserId();
         if (-1 !== $userId) {
             $grantedAttributeCodes = array_flip(
                 $this->getViewableAttributeCodes->forAttributeCodes(
-                    array_map('strval', array_keys($fullEntityWithValues->getRawValues())),
+                    $originalValues->getAttributeCodes(),
                     $userId
                 )
             );
             $grantedLocaleCodes = $this->getViewableLocaleCodesForUser->fetchAll($userId);
 
-            foreach ($fullEntityWithValues->getRawValues() as $attributeCode => $values) {
-                if (!isset($grantedAttributeCodes[$attributeCode])) {
-                    $rawValuesToMerge[$attributeCode] = $values;
-                } else {
-                    foreach ($values as $channelCode => $localeRawValue) {
-                        foreach ($localeRawValue as $localeCode => $data) {
-                            if ('<all_locales>' !== $localeCode && !in_array($localeCode, $grantedLocaleCodes)) {
-                                $rawValuesToMerge[$attributeCode][$channelCode][$localeCode] = $data;
-                            }
-                        }
-                    }
+            foreach ($originalValues as $key => $originalValue) {
+                if (!isset($grantedAttributeCodes[$originalValue->getAttributeCode()]) ||
+                    ($originalValue->isLocalizable() && !in_array($originalValue->getLocaleCode(), $grantedLocaleCodes))
+                ) {
+                    Assert::false($newValues->containsKey($key));
+                    $newValues->add($originalValue);
                 }
             }
         }
-
-        if ($filteredEntityWithValues instanceof EntityWithFamilyVariantInterface &&
-            null !== $filteredEntityWithValues->getFamilyVariant()
-        ) {
-            $values = clone $filteredEntityWithValues->getValuesForVariation();
-        } else {
-            $values = clone $filteredEntityWithValues->getValues();
-        }
-
-        $fullEntityWithValues->setValues($values);
-
-        if (!empty($rawValuesToMerge)) {
-            $notGrantedValues = $this->valueCollectionFactory->createFromStorageFormat($rawValuesToMerge);
-
-            foreach ($notGrantedValues as $notGrantedValue) {
-                $fullEntityWithValues->addValue($notGrantedValue);
-            }
-        }
+        $fullEntityWithValues->setValues($newValues);
 
         return $fullEntityWithValues;
     }
