@@ -12,9 +12,6 @@ namespace Akeneo\Apps\Domain\Model\Read;
 class App
 {
     /** @var string */
-    private $id;
-
-    /** @var string */
     private $code;
 
     /** @var string */
@@ -23,17 +20,11 @@ class App
     /** @var string */
     private $flowType;
 
-    public function __construct(string $id, string $code, string $label, string $flowType)
+    public function __construct(string $code, string $label, string $flowType)
     {
-        $this->id = $id;
         $this->code = $code;
         $this->label = $label;
         $this->flowType = $flowType;
-    }
-
-    public function id(): string
-    {
-        return $this->id;
     }
 
     public function code(): string
@@ -54,7 +45,6 @@ class App
     public function normalize(): array
     {
         return [
-            'id' => $this->id,
             'code' => $this->code,
             'label' => $this->label,
             'flowType' => $this->flowType

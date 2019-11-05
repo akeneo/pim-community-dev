@@ -1,9 +1,16 @@
 akeneo_apps_list_rest:
-   path: '/rest/apps'
-   defaults: { _controller: akeneo_app.internal_api.controller.app:list }
-   methods: [GET]
+    path: '/rest/apps'
+    defaults: { _controller: akeneo_app.internal_api.controller.app:list }
+    methods: [GET]
 
 akeneo_apps_create_rest:
-   path: '/rest/apps'
-   defaults: { _controller: akeneo_app.internal_api.controller.app:create }
-   methods: [POST]
+    path: '/rest/apps'
+    defaults: { _controller: akeneo_app.internal_api.controller.app:create }
+    methods: [POST]
+
+akeneo_apps_get_rest:
+    path: '/rest/apps'
+    defaults: { _controller: akeneo_app.internal_api.controller.app:get }
+    methods: [POST]
+    requirements:
+        code: '[a-zA-Z0-9_]+'

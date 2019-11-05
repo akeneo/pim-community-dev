@@ -7,6 +7,10 @@ parameters:
     akeneo_integration_tests.launcher.job_launcher.class: Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher
     akeneo_integration_tests.launcher.job_execution_observer.class: Akeneo\Test\IntegrationTestsBundle\Jobs\JobExecutionObserver
 
+imports:
+    # Akeneo/Apps
+    - { resource: ../../../src/Akeneo/Apps/back/tests/Integration/Resources/config/loaders.yml }
+
 services:
 
     _defaults:

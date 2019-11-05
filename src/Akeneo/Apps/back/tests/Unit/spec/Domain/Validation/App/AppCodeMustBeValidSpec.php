@@ -11,19 +11,19 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class AppCodeMustBeValidSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(AppCodeMustBeValid::class);
     }
 
-    function it_does_not_build_violation_on_valid_code(ExecutionContextInterface $context)
+    public function it_does_not_build_violation_on_valid_code(ExecutionContextInterface $context)
     {
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
 
         $this->validate('magento', $context);
     }
 
-    function it_adds_a_violation_when_the_code_is_empty(
+    public function it_adds_a_violation_when_the_code_is_empty(
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $builder
     ) {

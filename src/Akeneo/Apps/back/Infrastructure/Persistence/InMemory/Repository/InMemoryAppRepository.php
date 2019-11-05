@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Infrastructure\Persistence\InMemory\Repository;
 
-use Akeneo\Apps\Domain\Model\Read\App as ReadApp;
-use Akeneo\Apps\Domain\Model\Write\App as WriteApp;
+use Akeneo\Apps\Domain\Model\ValueObject\ClientId;
+use Akeneo\Apps\Domain\Model\ValueObject\UserId;
+use Akeneo\Apps\Domain\Model\Write\App;
 use Akeneo\Apps\Domain\Persistence\Repository\AppRepository;
-use Ramsey\Uuid\Uuid;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -16,47 +16,34 @@ use Ramsey\Uuid\Uuid;
  */
 class InMemoryAppRepository implements AppRepository
 {
-    private $dataRows = [];
+    public $dataRows = [];
 
-    public function generateId(): string
-    {
-        return Uuid::uuid4()->toString();
-    }
-
-    public function create(WriteApp $app): void
+    public function create(App $app): void
     {
         $this->dataRows[(string) $app->code()] = [
-            'id' => (string) $app->id(),
             'code' => (string) $app->code(),
             'label' => (string) $app->label(),
             'flow_type' => (string) $app->flowType(),
             'client_id' => $app->clientId()->id(),
             'user_id' => $app->userId()->id(),
+            'random_id' => uniqid(),
+            'secret' => uniqid(),
         ];
     }
 
-    public function fetchAll(): array
-    {
-        $apps = [];
-        foreach ($this->dataRows as $dataRow) {
-            $apps[] = new ReadApp($dataRow['id'], $dataRow['code'], $dataRow['label'], $dataRow['flow_type']);
-        }
-
-        return $apps;
-    }
-
-    public function findOneByCode(string $code): ?ReadApp
+    public function findOneByCode(string $code): ?App
     {
         if (!isset($this->dataRows[$code])) {
             return null;
         }
         $dataRow = $this->dataRows[$code];
 
-        return new ReadApp(
-            $dataRow['id'],
+        return new App(
             $dataRow['code'],
             $dataRow['label'],
-            $dataRow['flow_type']
+            $dataRow['flow_type'],
+            new ClientId($dataRow['client_id']),
+            new UserId($dataRow['user_id'])
         );
     }
 

@@ -25,6 +25,7 @@ class AkeneoAppsExtension extends Extension
 
         $loader->load('cli.yml');
         $loader->load('handlers.yml');
+        $loader->load('queries.yml');
         $loader->load('repositories.yml');
         $loader->load('controllers.yml');
     }

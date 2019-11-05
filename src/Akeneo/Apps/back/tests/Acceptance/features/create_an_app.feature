@@ -12,4 +12,4 @@ Feature: Create an App
     When I create the destination App "Magento"
     Then the App "Magento" should exists
     And there should be 1 Apps
-    And I should have been warn that the code must be unique
+    And I should have been warn that the code is unique

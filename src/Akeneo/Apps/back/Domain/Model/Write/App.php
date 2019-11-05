@@ -18,9 +18,6 @@ use Akeneo\Apps\Domain\Model\ValueObject\UserId;
  */
 class App
 {
-    /** @var AppId */
-    private $id;
-
     /** @var AppCode */
     private $code;
 
@@ -37,24 +34,17 @@ class App
     private $userId;
 
     public function __construct(
-        string $id,
         string $code,
         string $label,
         string $flowType,
         ClientId $clientId,
         UserId $userId
     ) {
-        $this->id = new AppId($id);
         $this->code = new AppCode($code);
         $this->label = new AppLabel($label);
         $this->flowType = new FlowType($flowType);
         $this->clientId = $clientId;
         $this->userId = $userId;
-    }
-
-    public function id(): AppId
-    {
-        return $this->id;
     }
 
     public function code(): AppCode

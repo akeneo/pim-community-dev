@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Infrastructure\Persistence\Dbal\Repository;
 
-use Akeneo\Apps\Domain\Model\Read\App as ReadApp;
-use Akeneo\Apps\Domain\Model\Write\App as WriteApp;
+use Akeneo\Apps\Domain\Model\Write\App;
 use Akeneo\Apps\Domain\Persistence\Repository\AppRepository;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
@@ -25,36 +24,15 @@ class DbalAppRepository implements AppRepository
         $this->dbalConnection = $dbalConnection;
     }
 
-    public function generateId(): string
-    {
-        return Uuid::uuid4()->toString();
-    }
-
-    public function findOneByCode(string $code): ?ReadApp
-    {
-        $selectQuery = <<<SQL
-SELECT BIN_TO_UUID(id) AS id, code, label, flow_type
-FROM akeneo_app
-WHERE code = :code
-SQL;
-
-        $dataRow = $this->dbalConnection->executeQuery($selectQuery, ['code' => $code])->fetch();
-
-        return $dataRow ?
-            new ReadApp($dataRow['id'], $dataRow['code'], $dataRow['label'], $dataRow['flow_type']) :
-            null;
-    }
-
-    public function create(WriteApp $app): void
+    public function create(App $app): void
     {
         $insertSQL = <<<SQL
-INSERT INTO akeneo_app (id, client_id, user_id, code, label, flow_type)
-VALUES (UUID_TO_BIN(:id), :client_id, :user_id, :code, :label, :flow_type)
+INSERT INTO akeneo_app (client_id, user_id, code, label, flow_type)
+VALUES (:client_id, :user_id, :code, :label, :flow_type)
 SQL;
 
         $stmt = $this->dbalConnection->prepare($insertSQL);
         $stmt->execute([
-            'id' => (string) $app->id(),
             'client_id' => $app->clientId()->id(),
             'user_id' => $app->userId()->id(),
             'code' => (string) $app->code(),
@@ -63,19 +41,21 @@ SQL;
         ]);
     }
 
-    public function fetchAll(): array
+    public function findOneByCode(string $code): ?App
     {
-        $selectSQL = <<<SQL
-SELECT BIN_TO_UUID(id) AS id, code, label, flow_type FROM akeneo_app ORDER BY created ASC
+        $selectQuery = <<<SQL
+SELECT code, label, flow_type
+FROM akeneo_app
+WHERE code = :code
 SQL;
 
-        $dataRows = $this->dbalConnection->executeQuery($selectSQL)->fetchAll();
+        $dataRow = $this->dbalConnection->executeQuery($selectQuery, ['code' => $code])->fetch();
 
-        $apps = [];
-        foreach ($dataRows as $dataRow) {
-            $apps[] = new ReadApp($dataRow['id'], $dataRow['code'], $dataRow['label'], $dataRow['flow_type']);
-        }
-
-        return $apps;
+        return $dataRow ?
+            new App(
+                $dataRow['code'],
+                $dataRow['label'],
+                $dataRow['flow_type']
+            ) : null;
     }
 }

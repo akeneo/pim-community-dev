@@ -14,13 +14,13 @@ use PhpSpec\ObjectBehavior;
  */
 class AppLabelSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->beConstructedWith('Magento Connector');
         $this->shouldBeAnInstanceOf(AppLabel::class);
     }
 
-    function it_cannot_contains_a_string_longer_than_100_characters()
+    public function it_cannot_contains_a_string_longer_than_100_characters()
     {
         $this->beConstructedWith(str_repeat('a', 101));
         $this->shouldThrow(
@@ -28,13 +28,13 @@ class AppLabelSpec extends ObjectBehavior
         )->duringInstantiation();
     }
 
-    function it_returns_the_app_label_as_a_string()
+    public function it_returns_the_app_label_as_a_string()
     {
         $this->beConstructedWith('Magento Connector');
         $this->__toString()->shouldReturn('Magento Connector');
     }
 
-    function it_cannot_contains_an_empty_string()
+    public function it_cannot_contains_an_empty_string()
     {
         $this->beConstructedWith('');
         $this->shouldThrow(

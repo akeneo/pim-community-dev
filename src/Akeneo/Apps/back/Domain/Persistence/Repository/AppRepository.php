@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Domain\Persistence\Repository;
 
-use Akeneo\Apps\Domain\Model\Read\App as ReadApp;
-use Akeneo\Apps\Domain\Model\Write\App as WriteApp;
+use Akeneo\Apps\Domain\Model\Write\App;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -14,11 +13,7 @@ use Akeneo\Apps\Domain\Model\Write\App as WriteApp;
  */
 interface AppRepository
 {
-    public function findOneByCode(string $code): ?ReadApp;
+    public function findOneByCode(string $code): ?App;
 
-    public function create(WriteApp $app): void;
-
-    public function fetchAll(): array;
-
-    public function generateId(): string;
+    public function create(App $app): void;
 }

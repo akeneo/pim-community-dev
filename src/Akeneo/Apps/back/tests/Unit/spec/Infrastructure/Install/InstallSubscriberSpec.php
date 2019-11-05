@@ -16,12 +16,12 @@ use PhpSpec\ObjectBehavior;
  */
 class InstallSubscriberSpec extends ObjectBehavior
 {
-    function let(AssetsInstaller $assetsInstaller, Connection $dbalConnection)
+    public function let(AssetsInstaller $assetsInstaller, Connection $dbalConnection)
     {
         $this->beConstructedWith($assetsInstaller, $dbalConnection);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldBeAnInstanceOf(InstallSubscriber::class);
     }

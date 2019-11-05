@@ -2,25 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Apps\Domain\Model\ValueObject;
+namespace Akeneo\Apps\Application\Query;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class AppId
+class FindAnAppQuery
 {
     /** @var string */
-    private $id;
+    private $appCode;
 
-    public function __construct(string $id)
+    public function __construct(string $appCode)
     {
-        $this->id = $id;
+        $this->appCode = $appCode;
     }
 
-    public function __toString(): string
+    public function appCode(): string
     {
-        return $this->id;
+        return $this->appCode;
     }
 }

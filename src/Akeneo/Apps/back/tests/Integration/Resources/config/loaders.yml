@@ -1,0 +1,8 @@
+services:
+    akeneo_app.fixtures.app_loader:
+        class: 'Akeneo\Apps\back\tests\Integration\Fixtures\AppLoader'
+        arguments:
+            - '@database_connection'
+            - '@akeneo_app.service.client.create_client'
+            - '@akeneo_app.service.user.create_user'
+            - '@akeneo_app.persistence.repository.app'

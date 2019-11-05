@@ -12,19 +12,19 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class FlowTypeMustBeValidSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(FlowTypeMustBeValid::class);
     }
 
-    function it_does_not_build_violation_on_valid_flow_type(ExecutionContextInterface $context)
+    public function it_does_not_build_violation_on_valid_flow_type(ExecutionContextInterface $context)
     {
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
 
         $this->validate(FlowType::DATA_DESTINATION, $context);
     }
 
-    function it_adds_a_violation_when_the_flow_type_is_invalid(
+    public function it_adds_a_violation_when_the_flow_type_is_invalid(
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $builder
     ) {
