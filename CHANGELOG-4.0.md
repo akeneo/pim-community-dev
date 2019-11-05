@@ -8,6 +8,10 @@
 # Technical Improvements
 
 - TIP-1185: Use a single index "product_and_product_model_index" to search on product and product models, instead dedicated product/product model indexes
+- TIP-1159: Improve the performance of the calculation of the completeness
+- TIP-1225: Improve the performance of the indexation of the products
+- TIP-1174: Improve the performance of the indexation of the product models
+- TIP-1176: Improve the performance of the computation of product model descendant when updating a product. The "compute product model descendant" job does not exist anymore. The computation is now done synchronously thanks the improvement done in TIP-1225 and TIP-1174.
 
 ## BC breaks
 
@@ -293,6 +297,16 @@
 - Remove class `Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyVariantValuesFiller`
 - Remove class `Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\ProductValuesFiller`
 - Remove interface `Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface`
+- Remove class `Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory`
+- Remove class `Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\ScalarValueFactory`
+- Remove class `Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\MetricValueFactory`
+- Remove class `Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\PriceCollectionValueFactory`
+- Remove class `Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\OptionValueFactory`
+- Remove class `Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\OptionsValueFactory`
+- Remove class `Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\MediaValueFactory`
+- Remove class `Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\DateValueFactory`
+- Remove class `Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\ReferenceDataValueFactory`
+- Remove class `Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\ReferenceDataCollectionValueFactory`
 
 ### CLI Commands
 
@@ -372,3 +386,18 @@ If you want to purge the completeness in order to recalculate it, please use the
     - `string $jobName`
 - Remove `pim_catalog.event_subscriber.index_products`
 - Rename service `pim_catalog.doctrine.query.attribute_is_an_family_variant_axis` in `akeneo.pim.structure.query.attribute_is_an_family_variant_axis`
+- Remove `pim_catalog.factory.value`, please use `akeneo.pim.enrichment.factory.value` instead
+- Remove `pim_catalog.factory.value.text`
+- Remove `pim_catalog.factory.value.textarea`
+- Remove `pim_catalog.factory.value.number`
+- Remove `pim_catalog.factory.value.boolean`
+- Remove `pim_catalog.factory.value.identifier`
+- Remove `pim_catalog.factory.value.metric`
+- Remove `pim_catalog.factory.value.price_collection`
+- Remove `pim_catalog.factory.value.option`
+- Remove `pim_catalog.factory.value.options`
+- Remove `pim_catalog.factory.value.file`
+- Remove `pim_catalog.factory.value.image`
+- Remove `pim_catalog.factory.value.date`
+- Remove `pim_reference_data.factory.product_value.reference_data`
+- Remove `pim_reference_data.factory.product_value.reference_data_collection`

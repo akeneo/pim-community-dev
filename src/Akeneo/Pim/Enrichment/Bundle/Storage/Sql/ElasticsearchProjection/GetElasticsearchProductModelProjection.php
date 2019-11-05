@@ -59,13 +59,6 @@ class GetElasticsearchProductModelProjection implements GetElasticsearchProductM
         }
 
         foreach ($productModelCodes as $productModelCode) {
-            $valueCollection = $this
-                ->valueCollectionFactory
-                ->createFromStorageFormat($valuesAndProperties[$productModelCode]['values']);
-            $values = $this
-                ->valueCollectionNormalizer
-                ->normalize($valueCollection, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX);
-
             $productProjections[$productModelCode] = new ElasticsearchProductModelProjection(
                 $valuesAndProperties[$productModelCode]['id'],
                 $valuesAndProperties[$productModelCode]['code'],
@@ -77,7 +70,7 @@ class GetElasticsearchProductModelProjection implements GetElasticsearchProductM
                 $valuesAndProperties[$productModelCode]['category_codes'],
                 $valuesAndProperties[$productModelCode]['ancestor_category_codes'],
                 $valuesAndProperties[$productModelCode]['parent_code'],
-                $values,
+                $valuesAndProperties[$productModelCode]['values'],
                 $completeFilters[$productModelCode]['all_complete'],
                 $completeFilters[$productModelCode]['all_incomplete'],
                 $valuesAndProperties[$productModelCode]['parent_id'],
@@ -168,10 +161,12 @@ SQL;
             ['productModelCodes' => Connection::PARAM_STR_ARRAY]
         );
 
+        $rows = $this->createValueCollectionInBatchFromRows($rows);
+
         $platform = $this->connection->getDatabasePlatform();
         $results = [];
         foreach ($rows as $row) {
-            $values = json_decode($row['raw_values'], true);
+            $values = $row['raw_values'];
 
             $results[$row['code']] = [
                 'id' => (int) $row['id'],
@@ -185,10 +180,10 @@ SQL;
                 'family_code' => $row['family_code'],
                 'family_labels' => json_decode($row['family_labels'], true),
                 'family_variant_code' => $row['family_variant_code'],
-                'category_codes' => json_decode($row['category_codes']),
-                'ancestor_category_codes' => json_decode($row['ancestor_category_codes']),
+                'category_codes' => json_decode($row['category_codes'], true),
+                'ancestor_category_codes' => json_decode($row['ancestor_category_codes'], true),
                 'parent_code' => $row['parent_code'],
-                'values' => $values,
+                'values' => $this->valueCollectionNormalizer->normalize($row['values'], ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX),
                 'parent_id' => $row['parent_id'] ? (int) $row['parent_id'] : null,
                 'labels' => isset($values[$row['attribute_as_label_code']]) ? $values[$row['attribute_as_label_code']] : [],
             ];
@@ -367,5 +362,44 @@ SQL;
         }
 
         return $results;
+    }
+
+    /**
+     * Create value collection for several product models in batch to minimize IO and improve performance.
+     *
+     * @param [
+     *          [
+     *              'code' => 'foo',
+     *              'raw_values' => ['attribute' => ['channel' => ['locale' => 'data' ]]]
+     *          ]
+     *        ]
+     *
+     * @return [
+     *          'foo' => [
+     *              'code' => 'foo',
+     *              'raw_values' => ['attribute' => ['channel' => ['locale' => 'data' ]]]
+     *              'values' => ValueCollection(...)
+     *          ]
+     *        ]
+     */
+    private function createValueCollectionInBatchFromRows(array $rows): array
+    {
+        $rowsIndexedByProductModelCode = [];
+        foreach ($rows as $row) {
+            $row['raw_values'] = \json_decode($row['raw_values'], true);
+            $rowsIndexedByProductModelCode[$row['code']] = $row;
+        }
+
+        $rawValuesCollection = [];
+        foreach ($rowsIndexedByProductModelCode as $code => $rowIndexedByProductModelCode) {
+            $rawValuesCollection[$code] = $rowIndexedByProductModelCode['raw_values'];
+        }
+
+        $valueCollections = $this->valueCollectionFactory->createMultipleFromStorageFormat($rawValuesCollection);
+        foreach ($valueCollections as $code => $valueCollection) {
+            $rowsIndexedByProductModelCode[$code]['values'] = $valueCollection;
+        }
+
+        return $rowsIndexedByProductModelCode;
     }
 }

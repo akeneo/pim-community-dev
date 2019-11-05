@@ -30,9 +30,6 @@ final class SqlGetCompletenessProductMasks implements GetCompletenessProductMask
     /** @var GetAttributes */
     private $getAttributes;
 
-    /** @var EmptyValuesCleaner */
-    private $emptyValuesCleaner;
-
     /** @var NormalizerInterface */
     private $valuesNormalizer;
 
@@ -40,13 +37,11 @@ final class SqlGetCompletenessProductMasks implements GetCompletenessProductMask
         Connection $connection,
         MaskItemGenerator $maskItemGenerator,
         GetAttributes $getAttributes,
-        EmptyValuesCleaner $emptyValuesCleaner,
         NormalizerInterface $valuesNormalizer
     ) {
         $this->connection = $connection;
         $this->maskItemGenerator = $maskItemGenerator;
         $this->getAttributes = $getAttributes;
-        $this->emptyValuesCleaner = $emptyValuesCleaner;
         $this->valuesNormalizer = $valuesNormalizer;
     }
 
@@ -80,7 +75,7 @@ SQL;
                     'id' => $row['id'],
                     'identifier' => $row['identifier'],
                     'familyCode' => $row['familyCode'],
-                    'cleanedRawValues' => $this->cleanEmptyValues(json_decode($row['rawValues'], true)),
+                    'cleanedRawValues' => json_decode($row['rawValues'], true),
                 ];
             },
             $this->connection->executeQuery(
@@ -106,7 +101,7 @@ SQL;
             'id' => $id,
             'identifier' => $identifier,
             'familyCode' => $familyCode,
-            'cleanedRawValues' => $this->cleanEmptyValues($this->valuesNormalizer->normalize($values, 'storage')),
+            'cleanedRawValues' => $this->valuesNormalizer->normalize($values, 'storage'),
         ];
 
         return $this->buildProductMasks([$row])[0];
@@ -165,10 +160,5 @@ SQL;
         }
 
         return array_merge(...$masks);
-    }
-
-    private function cleanEmptyValues(array $rawValues): array
-    {
-        return $this->emptyValuesCleaner->cleanAllValues(['ID' => $rawValues])['ID'] ?? [];
     }
 }

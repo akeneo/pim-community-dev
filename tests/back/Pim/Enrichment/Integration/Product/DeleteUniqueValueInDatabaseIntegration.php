@@ -2,8 +2,6 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product;
 
-use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Common\EntityBuilder;

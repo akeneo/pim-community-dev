@@ -49,9 +49,9 @@ final class FileValueFactory implements ValueFactory
 
     public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data) : ValueInterface
     {
-        $fileInfo = $this->fileInfoRepository->findOneByIdentifier($data);
+        $file = $data instanceof FileInfoInterface ? $data : $this->getFile($data);
 
-        if ($fileInfo === null) {
+        if ($file === null) {
             throw InvalidPropertyException::validEntityCodeExpected(
                 $attribute->code(),
                 'fileinfo key',
