@@ -34,11 +34,8 @@ jobs:
               sudo chown -R 1000:1000 ~/.composer
               sudo chown -R 1000:1000 ~/.cache/yarn
       - run:
-            name: Install back dependencies
-            command: make vendor
-      - run:
-            name: Install front dependencies
-            command: make node_modules
+            name: Install back and front dependencies
+            command: make dependencies
       - run:
             name: Check PIM requirements
             command: |
@@ -85,35 +82,23 @@ jobs:
                 name: Load archived docker image
                 command: docker load -i php-pim-image.tar
           - run:
-                name: Generate dev cache for Symfony's Phpstan extension
-                command: APP_ENV=dev make cache
-          - run:
-                name: PhpSpec
-                command: docker-compose run -u www-data --rm -T php vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
-          - run:
-                name: Find non executed PhpSpec files
-                command: ./.circleci/find_non_executed_phpspec.sh
-          - run:
-                name: PhpCsFixer
-                command: docker-compose run --rm -T php vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
-                when: always
-          - run:
-                name: PhpCoupling Detector
-                command: make coupling
-                when: always
-          - run:
-                name: PHPStan
-                command: docker-compose run --rm -T php vendor/bin/phpstan analyse src/Akeneo/Pim -l 1
-                when: always
-          - run:
                 name: Check Pullup
-                command: docker-compose run --rm -T php bin/check-pullup
+                command: make check-pullup
                 when: always
           - run:
-                name: Acceptance back
-                command: |
-                    docker-compose run -u www-data --rm -T php vendor/bin/behat --strict -p acceptance -vv
-                    docker-compose run -u www-data --rm php php vendor/bin/behat --strict --config src/Akeneo/Apps/back/tests/Acceptance/behat.yml
+                name: Analyzes source code to flag programming errors, bugs, stylistic errors, and suspicious constructs
+                command: make lint-back
+          - run:
+                name: Code Coupling Detection
+                command: make coupling-back
+                when: always
+          - run:
+                name: Unit tests
+                command: make unit-back CI=1
+          - run:
+                name: Acceptance tests
+                command: make acceptance-back
+
                 when: always
           - store_test_results:
                 path: var/tests
@@ -220,27 +205,23 @@ jobs:
         - attach_workspace:
             at: ~/
         - run:
-            name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
-            command: sudo chown -R 1000:1000 ../project
+            name: Create yarn cache folder
+            command: mkdir -p  ~/.cache/yarn
         - run:
-            name: Front linter
-            command: |
-                docker-compose run --rm node yarn run lint
-                make apps-front-lint
+              name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+              command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
         - run:
-            name: Front unit tests
-            command: |
-                docker-compose run --rm node yarn run unit
-                make apps-front-tests
-            when: always
+              name: Front linter
+              command: make lint-front
         - run:
-            name: Front acceptance tests
-            command: MAX_RANDOM_LATENCY_MS=100 docker-compose run --rm node yarn run acceptance ./tests/features
-            when: always
+              name: Front unit tests
+              command: make unit-front
         - run:
-            name: Front integration tests
-            command: docker-compose run --rm node yarn run integration
-            when: always
+              name: Front acceptance tests
+              command: make acceptance-front
+        - run:
+              name: Front integration tests
+              command: make integration-front
 
 workflows:
   version: 2

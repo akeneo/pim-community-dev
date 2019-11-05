@@ -2,15 +2,14 @@ _APPS_YARN_RUN = $(YARN_EXEC) run --cwd=src/Akeneo/Apps/front/
 
 # Tests Back
 
-apps-back-coupling:
+apps-coupling-back:
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Apps/back/tests/.php_cd.php src/Akeneo/Apps/back
 
-apps-back-phpspec:
+apps-unit-back:
 	$(PHP_RUN) vendor/bin/phpspec run src/Akeneo/Apps/back/tests/Unit/spec/
 
-apps-back-acceptance:
-	docker-compose stop
-	$(PHP_RUN) vendor/bin/behat --strict --config src/Akeneo/Apps/back/tests/Acceptance/behat.yml
+apps-acceptance-back: var/tests/behat/apps
+	$(PHP_RUN) vendor/bin/behat --config src/Akeneo/Apps/back/tests/Acceptance/behat.yml --format pim --out var/tests/behat/apps --format progress --out std --colors
 
 apps-back-integration:
 	$(PHP_RUN) vendor/bin/phpunit -c phpunit.xml.dist --testsuite=Akeneo_Apps_Integration

@@ -1,5 +1,6 @@
 DOCKER_COMPOSE = docker-compose
-YARN_EXEC = $(DOCKER_COMPOSE) run -u node --rm node yarn
+NODE_RUN = $(DOCKER_COMPOSE) run -u node --rm node
+YARN_RUN = $(NODE_RUN) yarn
 PHP_RUN = $(DOCKER_COMPOSE) run -u www-data --rm php php
 PHP_EXEC = $(DOCKER_COMPOSE) exec -u www-data fpm php
 IMAGE_TAG ?= master
@@ -22,7 +23,7 @@ include make-file/*.mk
 ##
 
 node_modules: package.json
-	$(YARN_EXEC) install --frozen-lockfile
+	$(YARN_RUN) install --frozen-lockfile
 
 .PHONY: assets
 assets:
@@ -32,22 +33,22 @@ assets:
 .PHONY: css
 css:
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/css
-	$(YARN_EXEC) run less
+	$(YARN_RUN) run less
 
 .PHONY: javascript-prod
 javascript-prod:
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/dist
-	$(YARN_EXEC) run webpack
+	$(YARN_RUN) run webpack
 
 .PHONY: javascript-dev
 javascript-dev:
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/dist
-	$(YARN_EXEC) run webpack-dev
+	$(YARN_RUN) run webpack-dev
 
 .PHONY: javascript-test
 javascript-test:
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/dist
-	$(YARN_EXEC) run webpack-test
+	$(YARN_RUN) run webpack-test
 
 .PHONY: front
 front: assets css javascript-test javascript-dev
@@ -59,6 +60,9 @@ front: assets css javascript-test javascript-dev
 .PHONY: fix-cs-back
 fix-cs-back:
 	$(PHP_RUN) vendor/bin/php-cs-fixer fix --config=.php_cs.php
+
+var/cache/dev:
+	APP_ENV=dev make cache
 
 .PHONY: cache
 cache:
@@ -84,6 +88,17 @@ database:
 
 .PHONY: dependencies
 dependencies: vendor node_modules
+
+# Those targets ease the pim installation depending the Symfony environnement: behat, test, dev, prod.
+#
+# For instance :
+# If you need to debug a legacy behat please run `make pim-behat` before debugging
+# If you need to debug a phpunit please run `make pim-test` before debugging
+# If you want to use the PIM with the debug mode enabled please run `make pim-dev` to initialize the PIM
+#
+# Caution:
+# - Make sure your back and front dependencies are up to date (make dependencies).
+# - Make sure the docker php is built (make php-image-dev).
 
 .PHONY: pim-behat
 pim-behat:
