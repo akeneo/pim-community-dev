@@ -47,6 +47,16 @@ class InMemoryAppRepository implements AppRepository
         );
     }
 
+    public function update(App $app): void
+    {
+        if (!isset($this->dataRows[(string) $app->code()])) {
+            throw new \LogicException(sprintf('App "%s" never persisted!', (string) $app->code()));
+        }
+
+        $this->dataRows[(string) $app->code()]['label'] = (string) $app->label();
+        $this->dataRows[(string) $app->code()]['flow_type'] = (string) $app->flowType();
+    }
+
     public function count(): int
     {
         return count($this->dataRows);

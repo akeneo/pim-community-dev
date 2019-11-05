@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Apps\Domain\Model\Write;
 
 use Akeneo\Apps\Domain\Model\ValueObject\AppCode;
-use Akeneo\Apps\Domain\Model\ValueObject\AppId;
 use Akeneo\Apps\Domain\Model\ValueObject\AppLabel;
 use Akeneo\Apps\Domain\Model\ValueObject\ClientId;
 use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
@@ -70,5 +69,15 @@ class App
     public function userId(): UserId
     {
         return $this->userId;
+    }
+
+    public function setLabel(AppLabel $label): void
+    {
+        $this->label = $label;
+    }
+
+    public function setFlowType(FlowType $flowType): void
+    {
+        $this->flowType = $flowType;
     }
 }

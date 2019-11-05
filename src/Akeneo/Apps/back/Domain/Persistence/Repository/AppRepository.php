@@ -16,4 +16,6 @@ interface AppRepository
     public function findOneByCode(string $code): ?App;
 
     public function create(App $app): void;
+
+    public function update(App $app): void;
 }
