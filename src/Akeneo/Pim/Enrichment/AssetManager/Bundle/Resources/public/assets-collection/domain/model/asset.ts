@@ -192,7 +192,7 @@ const getAttribute = (
   const attribute = attributes.find((attribute: NormalizedAttribute) => attribute.identifier === attributeIdentifier);
 
   if (undefined === attribute) {
-    throw Error(`Attribute "${attributeIdentifier}" doesn't seems to exist`);
+    throw Error(`Attribute "${attributeIdentifier}" doesn't seem to exist`);
   }
 
   return attribute;
@@ -205,3 +205,6 @@ export const assetMainImageCanBeDownloaded = (asset: Asset, context: Context) =>
 
   return MEDIA_LINK_ATTRIBUTE_TYPE !== attribute.type;
 };
+
+export const getAttributeAsMainImage = (asset: Asset): NormalizedAttribute =>
+  getAttribute(asset.assetFamily.attributes, asset.assetFamily.attributeAsImage);
