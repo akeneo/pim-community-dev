@@ -23,6 +23,15 @@ final class NonExistentFileValueFilter implements NonExistentValuesFilter
         $this->fileInfoRepository = $fileInfoRepository;
     }
 
+    /**
+     * This filter remove all non existing value with file keys that does not exist anymore.
+     *
+     * Also, this filter replaces the keys "file/key" by the corresponding FileInfoInterface entity.
+     * This is done to improve the performance of the creation of the values later on in ImageValueFactory and FileValueFactory.
+     * As we execute here only one request, this replacement avoids 1 + n requests in these factories.
+     *
+     * @return OnGoingFilteredRawValues
+     */
     public function filter(OnGoingFilteredRawValues $onGoingFilteredRawValues): OnGoingFilteredRawValues
     {
         $filteredFiles = $this->filterByType($onGoingFilteredRawValues, AttributeTypes::FILE);
@@ -83,7 +92,7 @@ final class NonExistentFileValueFilter implements NonExistentValuesFilter
 
         /** @var FileInfoInterface $file */
         foreach ($files as $file) {
-            $filesIndexedByKey[$file->getKey()] = $file->getKey();
+            $filesIndexedByKey[$file->getKey()] = $file;
         }
 
         return $filesIndexedByKey;

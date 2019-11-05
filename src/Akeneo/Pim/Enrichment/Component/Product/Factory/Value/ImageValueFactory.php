@@ -28,6 +28,8 @@ final class ImageValueFactory implements ValueFactory
 
     public function createWithoutCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
+        // the data can be FileInfo as it's already loaded in \Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\NonExistentFileValueFilter
+        // this is done for performance reason to avoid 1 + n requests when hydrating the collection
         $file = $data instanceof FileInfoInterface ? $data : $this->getFile($data);
 
         $attributeCode = $attribute->code();

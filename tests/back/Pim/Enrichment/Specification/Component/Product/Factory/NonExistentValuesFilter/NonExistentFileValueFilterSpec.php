@@ -87,10 +87,10 @@ final class NonExistentFileValueFilterSpec extends ObjectBehavior
                 'an_image' => [
                     [
                         'identifier' => 'product_A',
-                        'values' => ['<all_channels>' => ['<all_locales>' => 'imageA']]
+                        'values' => ['<all_channels>' => ['<all_locales>' => $imageA]]
                     ], [
                         'identifier' => 'product_B',
-                        'values' => ['ecommerce' => ['en_US' => 'imageB']]
+                        'values' => ['ecommerce' => ['en_US' => $imageB]]
                     ], [
                         'identifier' => 'product_C',
                         'values' => ['<all_channels>' => ['<all_locales>' => null]]
@@ -101,10 +101,10 @@ final class NonExistentFileValueFilterSpec extends ObjectBehavior
                 'a_file' => [
                     [
                         'identifier' => 'product_A',
-                        'values' => ['<all_channels>' => ['<all_locales>' => 'fileA']]
+                        'values' => ['<all_channels>' => ['<all_locales>' => $fileA]]
                     ], [
                         'identifier' => 'product_B',
-                        'values' => ['ecommerce' => ['en_US' => 'fileB']]
+                        'values' => ['ecommerce' => ['en_US' => $fileB]]
                     ], [
                         'identifier' => 'product_C',
                         'values' => ['<all_channels>' => ['<all_locales>' => null]]
