@@ -22,9 +22,11 @@ use Webmozart\Assert\Assert;
 class MediaType
 {
     public const IMAGE = 'image';
+    public const PDF = 'pdf';
     public const OTHER = 'other';
     public const MEDIA_TYPES = [
         self::IMAGE,
+        self::PDF,
         self::OTHER
     ];
 
