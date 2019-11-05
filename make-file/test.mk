@@ -54,7 +54,7 @@ else
 	${PHP_RUN} vendor/bin/phpunit -c . --testsuite PIM_Integration_Test $(O)
 endif
 
-### Integration tests
+### End to end tests
 .PHONY: end-to-end-back
 end-to-end-back: var/tests/phpunit
 ifeq ($(CI),1)
@@ -62,3 +62,13 @@ ifeq ($(CI),1)
 else
 	${PHP_RUN} vendor/bin/phpunit -c . --testsuite End_to_End $(O)
 endif
+
+.PHONY: behat-legacy
+behat-legacy: var/tests/behat
+ifeq ($(CI),1)
+	.circleci/run_behat.sh $(SUITE)
+	.circleci/run_behat.sh critical
+else
+	${PHP_RUN} vendor/bin/behat -p legacy -s all ${0}
+endif
+

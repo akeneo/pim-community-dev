@@ -168,15 +168,8 @@ jobs:
             name: Install database
             command: APP_ENV=behat make database
       - run:
-            name: Non critical Behat
-            command: |
-                TESTFILES=$(docker-compose run --rm -T php vendor/bin/behat --list-scenarios -p legacy -s $TESTSUITE | circleci tests split --split-by=timings)
-                .circleci/run_behat.sh $TESTSUITE $TESTFILES
-      - run:
-            name: Critical Behat
-            command: |
-                TESTFILES=$(docker-compose run --rm -T php vendor/bin/behat --list-scenarios -p legacy -s critical | circleci tests split --split-by=timings)
-                .circleci/run_behat.sh critical $TESTFILES
+            name: Behat legacy
+            command: make behat-legacy SUITE=$TESTSUITE CI=1
       - run:
           name: Gather Junit test result files in the same directory to improve the render of failing tests
           command: |
