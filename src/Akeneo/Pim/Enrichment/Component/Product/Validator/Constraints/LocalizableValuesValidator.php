@@ -20,13 +20,18 @@ final class LocalizableValuesValidator extends ConstraintValidator
     private $localeRepository;
 
     /** @var IdentifiableObjectRepositoryInterface */
+    private $channelRepository;
+
+    /** @var IdentifiableObjectRepositoryInterface */
     private $attributeRepository;
 
     public function __construct(
         IdentifiableObjectRepositoryInterface $localeRepository,
+        IdentifiableObjectRepositoryInterface $channelRepository,
         IdentifiableObjectRepositoryInterface $attributeRepository
     ) {
         $this->localeRepository = $localeRepository;
+        $this->channelRepository = $channelRepository;
         $this->attributeRepository = $attributeRepository;
     }
 
@@ -66,10 +71,8 @@ final class LocalizableValuesValidator extends ConstraintValidator
             }
 
             if ($localizableValue->isScopable()) {
-                $channelCodes = $locale->getChannels()->map(function (ChannelInterface $channel) {
-                    return $channel->getCode();
-                })->toArray();
-                if (!in_array($localizableValue->getScopeCode(), $channelCodes)) {
+                $channel = $this->channelRepository->findOneByIdentifier($localizableValue->getScopeCode());
+                if (null !== $channel && !in_array($localizableValue->getLocaleCode(), $channel->getLocaleCodes())) {
                     $this->context->buildViolation(
                         $constraint->invalidLocaleForChannelMessage,
                         [

@@ -22,10 +22,11 @@ class LocalizableValuesValidatorSpec extends ObjectBehavior
 {
     function let(
         IdentifiableObjectRepositoryInterface $localeRepository,
+        IdentifiableObjectRepositoryInterface $channelRepository,
         IdentifiableObjectRepositoryInterface $attributeRepository,
         ExecutionContextInterface $context
     ) {
-        $this->beConstructedWith($localeRepository, $attributeRepository);
+        $this->beConstructedWith($localeRepository, $channelRepository, $attributeRepository);
         $this->initialize($context);
     }
 
@@ -34,7 +35,7 @@ class LocalizableValuesValidatorSpec extends ObjectBehavior
         $this->shouldImplement(ConstraintValidatorInterface::class);
     }
 
-    function it_is_alocalizable_values_validator()
+    function it_is_a_localizable_values_validator()
     {
         $this->shouldBeAnInstanceOf(LocalizableValuesValidator::class);
     }
@@ -54,7 +55,7 @@ class LocalizableValuesValidatorSpec extends ObjectBehavior
         $this->validate(new \stdClass(), new LocalizableValues());
     }
 
-    function it_onlmy_validates_localizable_values(
+    function it_only_validates_localizable_values(
         IdentifiableObjectRepositoryInterface $localeRepository,
         ExecutionContextInterface $context
     ) {
@@ -128,15 +129,17 @@ class LocalizableValuesValidatorSpec extends ObjectBehavior
 
     function it_adds_a_violation_if_a_locale_is_not_bound_to_the_channel(
         IdentifiableObjectRepositoryInterface $localeRepository,
+        IdentifiableObjectRepositoryInterface $channelRepository,
         IdentifiableObjectRepositoryInterface $attributeRepository,
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $violationBuilder
     ) {
-        $frFR = (new Locale())->setCode('fr_FR');
         $ecommerce = (new Channel())->setCode('ecommerce');
-        $frFR->addChannel($ecommerce);
+        $frFR = (new Locale())->setCode('fr_FR');
+        $ecommerce->addLocale($frFR);
         $localeRepository->findOneByIdentifier('fr_FR')->willReturn($frFR);
-
+        $channelRepository->findOneByIdentifier('ecommerce')->willReturn($ecommerce);
+        $channelRepository->findOneByIdentifier('mobile')->willReturn(new Channel());
         $attributeRepository->findOneByIdentifier('scopable_localizable_text')->willReturn(new Attribute());
 
         $values = new WriteValueCollection(
