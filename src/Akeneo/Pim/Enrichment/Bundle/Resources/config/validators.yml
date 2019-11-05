@@ -164,7 +164,7 @@ services:
     pim_catalog.validator.constraint.scopable_values_validator:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ScopableValuesValidator'
         arguments:
-            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.cached_channel'
         tags:
             - { name: validator.constraint_validator, alias: pim_scopable_values_validator }
 

@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ScopableValues
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ScopableValuesValidator;
 use Akeneo\Pim\Enrichment\Component\Product\Value\DateValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -24,14 +25,10 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
  */
 class ScopableValuesValidatorSpec extends ObjectBehavior
 {
-    function let(ChannelRepositoryInterface $channelRepository, ExecutionContextInterface $context)
+    function let(IdentifiableObjectRepositoryInterface $channelRepository, ExecutionContextInterface $context)
     {
         $this->beConstructedWith($channelRepository);
         $this->initialize($context);
-
-        $channel = new Channel();
-        $channel->setCode('ecommerce');
-        $channelRepository->findAll()->willReturn([$channel]);
     }
 
     function it_is_initializable()
@@ -44,8 +41,11 @@ class ScopableValuesValidatorSpec extends ObjectBehavior
         $this->shouldHaveType(ConstraintValidator::class);
     }
 
-    function it_validates_the_value_collection_with_valid_scope(ExecutionContextInterface $context)
-    {
+    function it_validates_the_value_collection_with_valid_scope(
+        IdentifiableObjectRepositoryInterface $channelRepository,
+        ExecutionContextInterface $context
+    ) {
+        $channelRepository->findOneByIdentifier('ecommerce')->willReturn(new Channel());
         $collection = new WriteValueCollection([
             ScalarValue::value('sku', 'my_identifier'),
             ScalarValue::scopableValue('description', 'An awesome description', 'ecommerce'),
@@ -58,9 +58,12 @@ class ScopableValuesValidatorSpec extends ObjectBehavior
     }
 
     function it_adds_a_violation_with_unknown_scope(
+        IdentifiableObjectRepositoryInterface $channelRepository,
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $violationBuilder
     ) {
+        $channelRepository->findOneByIdentifier('unknown')->willReturn(null);
+
         $constraint = new ScopableValues();
         $collection = new WriteValueCollection([
             ScalarValue::value('sku', 'my_identifier'),
@@ -72,6 +75,7 @@ class ScopableValuesValidatorSpec extends ObjectBehavior
             '%attribute_code%' => 'description',
             '%channel%' => 'unknown'
         ])->willReturn($violationBuilder);
+        $violationBuilder->atPath('[description-unknown-<all_locales>]')->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($collection, $constraint);

@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
 
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -20,13 +19,10 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class ScopableValuesValidator extends ConstraintValidator
 {
-    /** @var ChannelRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     private $channelRepository;
 
-    /** @var null|array */
-    private $indexedChannelCodes = null;
-
-    public function __construct(ChannelRepositoryInterface $channelRepository)
+    public function __construct(IdentifiableObjectRepositoryInterface $channelRepository)
     {
         $this->channelRepository = $channelRepository;
     }
@@ -34,41 +30,23 @@ class ScopableValuesValidator extends ConstraintValidator
     public function validate($values, Constraint $constraint)
     {
         if (!$constraint instanceof ScopableValues) {
-            throw new UnexpectedTypeException($constraint, AttributeOptionsExist::class);
+            throw new UnexpectedTypeException($constraint, ScopableValues::class);
         }
 
         if (!($values instanceof WriteValueCollection)) {
             return;
         }
 
-        $indexedChannelCodes = $this->getIndexedChannelCodes();
-
-        /** @var ValueInterface $value */
-        foreach ($values->getIterator() as $value) {
-            $channelCode = $value->getScopeCode();
-            if ($channelCode === null) {
-                continue;
-            }
-
-            if (!array_key_exists($channelCode, $indexedChannelCodes)) {
-                $this->context->buildViolation($constraint->unknownScopeMessage, [
-                    '%attribute_code%' => $value->getAttributeCode(),
-                    '%channel%' => $channelCode,
-                ])->addViolation();
+        foreach ($values as $key => $value) {
+            if ($value->isScopable() && null === $this->channelRepository->findOneByIdentifier($value->getScopeCode())) {
+                $this->context->buildViolation(
+                    $constraint->unknownScopeMessage,
+                    [
+                        '%attribute_code%' => $value->getAttributeCode(),
+                        '%channel%' => $value->getScopeCode(),
+                    ]
+                )->atPath(sprintf('[%s]', $key))->addViolation();
             }
         }
-    }
-
-    private function getIndexedChannelCodes(): array
-    {
-        if ($this->indexedChannelCodes === null) {
-            $channels = $this->channelRepository->findAll();
-
-            foreach ($channels as $channel) {
-                $this->indexedChannelCodes[$channel->getCode()] = 1;
-            }
-        }
-
-        return $this->indexedChannelCodes;
     }
 }
