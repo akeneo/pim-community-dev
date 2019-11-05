@@ -589,23 +589,6 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @param string $sku
-     * @param string $attributeCodes
-     *
-     * @Given /^the "([^"]*)" product has the "([^"]*)" attributes?$/
-     */
-    public function theProductHasTheAttributes($sku, $attributeCodes)
-    {
-        $product = $this->getProduct($sku);
-
-        foreach ($this->listToArray($attributeCodes) as $code) {
-            $this->getProductBuilder()->addAttribute($product, $this->getAttribute($code));
-        }
-        $this->validate($product);
-        $this->getProductSaver()->save($product);
-    }
-
-    /**
      * @param string $attribute
      * @param string $family
      *

@@ -64,22 +64,23 @@ services:
     akeneo.pim.enrichment.factory.value:
         class: Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueFactory
         arguments:
-            $valueFactories: !tagged akeneo.pim.enrichment.factory.product_value
+            - !tagged akeneo.pim.enrichment.factory.product_value
+            - '@pim_catalog.repository.cached_locale'
+            - '@pim_catalog.repository.cached_channel'
+        # since we inject cached locale repository here, we have a problem: the wrong entity manager is injected into the LocaleRepository
+        # the result is a conflict when inserting locale in Akeneo\Channel\Bundle\EventListener/ChannelLocaleSubscriber::updateChannel
+        # this is probably due to FOS\OAuthServerBundle\Document/AccessTokenManager::_construct which load all the repository and so, Doctrine's subscribers
+        # Declaring it as lazy is a workaround
+        lazy: true
 
     akeneo.pim.enrichment.factory.value_collection:
         class: Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactory
         arguments:
-            $valueFactory: '@akeneo.pim.enrichment.factory.value'
-            $getAttributeByCodes: '@akeneo.pim.structure.query.get_attributes'
-            $chainedNonExistentValuesFilter: '@akeneo.pim.enrichment.factory.non_existent_values_filter.chained'
-            $emptyValuesCleaner: '@akeneo.pim.enrichment.factory.empty_values_cleaner'
-            $transformRawValuesCollections: '@akeneo.pim.enrichment.factory.transform_raw_values_collections'
+            - '@akeneo.pim.enrichment.factory.value'
+            - '@akeneo.pim.structure.query.get_attributes'
+            - '@akeneo.pim.enrichment.factory.non_existent_values_filter.chained'
 
     akeneo.pim.enrichment.factory.write_value_collection:
         class: Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory
         arguments:
-            $valueFactory: '@akeneo.pim.enrichment.factory.value'
-            $getAttributeByCodes: '@akeneo.pim.structure.query.get_attributes'
-            $chainedNonExistentValuesFilter: '@akeneo.pim.enrichment.factory.non_existent_values_filter.chained'
-            $emptyValuesCleaner: '@akeneo.pim.enrichment.factory.empty_values_cleaner'
-            $transformRawValuesCollections: '@akeneo.pim.enrichment.factory.transform_raw_values_collections'
+            - '@akeneo.pim.enrichment.factory.value_collection'

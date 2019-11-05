@@ -30,7 +30,10 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface, Saver
      */
     public function __construct(array $attributes = [])
     {
-        $this->attributes = new ArrayCollection($attributes);
+        $this->attributes = new ArrayCollection();
+        foreach ($attributes as $attribute) {
+            $this->attributes->set($attribute->getCode(), $attribute);
+        }
     }
 
     /**

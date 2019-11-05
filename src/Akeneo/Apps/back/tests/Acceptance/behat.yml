@@ -1,5 +1,6 @@
 default:
     extensions:
+        Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
         Behat\Symfony2Extension:
             kernel:
                 bootstrap: 'config/bootstrap.php'

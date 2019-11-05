@@ -29,7 +29,7 @@ class NonExistentReferenceDataSimpleSelectValuesFilter implements NonExistentVal
             return $onGoingFilteredRawValues;
         }
 
-        $referenceDataCodes = $this->getExistingCodes($selectValues);
+        $referenceDataCodes = $this->getCaseInsensitiveExistingCodes($selectValues);
 
         $filteredValues = [];
 
@@ -40,11 +40,7 @@ class NonExistentReferenceDataSimpleSelectValuesFilter implements NonExistentVal
                 foreach ($productValues['values'] as $channel => $channelValues) {
                     foreach ($channelValues as $locale => $value) {
                         if (!is_array($value)) {
-                            if (in_array($value, $referenceDataCodes[$attributeCode])) {
-                                $simpleSelectValues[$channel][$locale] = $value;
-                            } else {
-                                $simpleSelectValues[$channel][$locale] = '';
-                            }
+                            $simpleSelectValues[$channel][$locale] = $referenceDataCodes[$attributeCode][strtolower($value)] ?? '';
                         }
                     }
                 }
@@ -61,7 +57,7 @@ class NonExistentReferenceDataSimpleSelectValuesFilter implements NonExistentVal
         return $onGoingFilteredRawValues->addFilteredValuesIndexedByType($filteredValues);
     }
 
-    private function getExistingCodes(array $selectValues): array
+    private function getCaseInsensitiveExistingCodes(array $selectValues): array
     {
         $referenceData = $this->getReferenceData($selectValues);
 
@@ -69,10 +65,13 @@ class NonExistentReferenceDataSimpleSelectValuesFilter implements NonExistentVal
 
         foreach ($referenceData as $attributeCode => $data) {
             foreach ($data as $referenceDataName => $values) {
-                $existingReferenceDataCodes[$attributeCode] = $this->getExistingReferenceDataCodes->fromReferenceDataNameAndCodes(
+                $existingCodes = $this->getExistingReferenceDataCodes->fromReferenceDataNameAndCodes(
                     $referenceDataName,
                     $values
                 );
+                foreach ($existingCodes as $existingCode) {
+                    $existingReferenceDataCodes[$attributeCode][strtolower($existingCode)] = $existingCode;
+                }
             }
         }
 

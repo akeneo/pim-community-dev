@@ -32,6 +32,9 @@ class Builder
     /** @var bool */
     private $scopable;
 
+    /** @var string */
+    private $backendType;
+
     public function __construct()
     {
         $this->code = Code::fromString('code');
@@ -39,6 +42,7 @@ class Builder
         $this->isUnique = false;
         $this->localizable = false;
         $this->scopable = false;
+        $this->backendType = AttributeTypes::BACKEND_TYPE_TEXT;
     }
 
     /**
@@ -52,6 +56,8 @@ class Builder
         $attribute->setUnique($this->isUnique);
         $attribute->setScopable($this->scopable);
         $attribute->setLocalizable($this->localizable);
+        $attribute->setDecimalsAllowed(false);
+        $attribute->setBackendType($this->backendType);
 
         return $attribute;
     }
@@ -71,6 +77,7 @@ class Builder
     public function aTextAttribute(): Builder
     {
         $this->type = new Type(AttributeTypes::TEXT);
+        $this->backendType = AttributeTypes::BACKEND_TYPE_TEXT;
 
         return $this;
     }
@@ -78,6 +85,7 @@ class Builder
     public function aPriceCollectionAttribute(): Builder
     {
         $this->type = new Type(AttributeTypes::PRICE_COLLECTION);
+        $this->backendType = AttributeTypes::BACKEND_TYPE_PRICE;
 
         return $this;
     }
@@ -89,6 +97,7 @@ class Builder
         $this->localizable = false;
         $this->scopable = false;
         $this->isUnique = true;
+        $this->backendType = AttributeTypes::BACKEND_TYPE_TEXT;
 
         return $this;
     }
@@ -102,6 +111,7 @@ class Builder
         $this->localizable = false;
         $this->scopable = false;
         $this->isUnique = true;
+        $this->backendType = AttributeTypes::BACKEND_TYPE_TEXT;
 
         return $this;
     }

@@ -3,7 +3,6 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Factory;
 
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\ChainedNonExistentValuesFilterInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\OnGoingFilteredRawValues;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueFactory as ReadValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
@@ -24,24 +23,14 @@ class ValueCollectionFactory
     /** @var ChainedNonExistentValuesFilterInterface */
     private $chainedNonExistentValuesFilter;
 
-    /** @var EmptyValuesCleaner */
-    private $emptyValuesCleaner;
-
-    /** @var TransformRawValuesCollections */
-    private $transformRawValuesCollections;
-
     public function __construct(
         ReadValueFactory $valueFactory,
         GetAttributes $getAttributeByCodes,
-        ChainedNonExistentValuesFilterInterface $chainedNonExistentValuesFilter,
-        EmptyValuesCleaner $emptyValuesCleaner,
-        TransformRawValuesCollections $transformRawValuesCollections
+        ChainedNonExistentValuesFilterInterface $chainedNonExistentValuesFilter
     ) {
         $this->valueFactory = $valueFactory;
         $this->getAttributeByCodes = $getAttributeByCodes;
         $this->chainedNonExistentValuesFilter = $chainedNonExistentValuesFilter;
-        $this->emptyValuesCleaner = $emptyValuesCleaner;
-        $this->transformRawValuesCollections = $transformRawValuesCollections;
     }
 
     public function createFromStorageFormat(array $rawValues): ReadValueCollection
@@ -53,23 +42,8 @@ class ValueCollectionFactory
 
     public function createMultipleFromStorageFormat(array $rawValueCollections): array
     {
-        $rawValueCollectionsIndexedByType = $this->transformRawValuesCollections->toValueCollectionsIndexedByType($rawValueCollections);
-
-        $filtered = $this->chainedNonExistentValuesFilter->filterAll(
-            OnGoingFilteredRawValues::fromNonFilteredValuesCollectionIndexedByType($rawValueCollectionsIndexedByType)
-        );
-
-        $rawValueCollection = $filtered->toRawValueCollection();
-
-        $cleanRawValueCollection = $this->emptyValuesCleaner->cleanAllValues($rawValueCollection);
-
-        $valueCollections = $this->createValues($cleanRawValueCollection);
-
-        $identifiersWithOnlyUnknownAttributes = array_diff(array_keys($rawValueCollections), array_keys($valueCollections));
-
-        foreach ($identifiersWithOnlyUnknownAttributes as $identifier) {
-            $valueCollections[$identifier] = new ReadValueCollection([]);
-        }
+        $filteredRawValuesCollection = $this->chainedNonExistentValuesFilter->filterAll($rawValueCollections);
+        $valueCollections = $this->createValues($filteredRawValuesCollection);
 
         return $valueCollections;
     }

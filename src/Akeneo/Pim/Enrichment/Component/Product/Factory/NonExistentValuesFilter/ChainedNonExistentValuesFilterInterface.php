@@ -11,7 +11,11 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilte
  *
  * For example, if you delete an option code, it will still be referenced in the product value of a product.
  * The values are not cleaned in live (in an ideal world, it should).
- * The goal of this class is to filter those non existent data, by batching requests.
+ * The goal of this class is to filter those non existent data.
+ *
+ * In order to minimize the number of requests, we accept several collection of raw values corresponding to several entities.
+ * For example, several 100 raw values of 100 different products. It allows to filter all non existent file (for example) of this
+ * 100 products with only one request. We avoid the 1+n problem this way. It drastically improves the performance.
  *
  * @author    Anael Chardan <anael.chardan@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -19,5 +23,10 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilte
  */
 interface ChainedNonExistentValuesFilterInterface
 {
-    public function filterAll(OnGoingFilteredRawValues $onGoingFilteredRawValues): OnGoingFilteredRawValues;
+    /**
+     * @param array $rawValuesCollection it take several raw values in input of several entities in order to batch requests
+     *
+     * @return array $rawValuesCollection without all non existent data (removed channel, option code, etc)
+     */
+    public function filterAll(array $rawValuesCollection): array;
 }

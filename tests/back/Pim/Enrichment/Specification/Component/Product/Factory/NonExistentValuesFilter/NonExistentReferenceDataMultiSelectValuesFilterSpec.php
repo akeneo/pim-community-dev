@@ -38,7 +38,7 @@ class NonExistentReferenceDataMultiSelectValuesFilterSpec extends ObjectBehavior
                                     'en_US' => ['MiChel', 'sardou'],
                                 ],
                                 'tablet' => [
-                                    'en_US' => ['jean', 'Claude', 'van', 'damm'],
+                                    'en_US' => ['jean', 'CLAUDE', 'van', 'damme'],
                                     'fr_FR' => ['des', 'fRaises'],
 
                                 ],
@@ -53,11 +53,10 @@ class NonExistentReferenceDataMultiSelectValuesFilterSpec extends ObjectBehavior
                             'identifier' => 'product_B',
                             'values' => [
                                 'mobile' => [
-                                    'en_US' => ['des', 'damm'],
+                                    'en_US' => ['des', 'damme'],
                                 ],
                                 'tablet' => [
-                                    'en_US' => ['Claude', 'fRaises'],
-
+                                    'en_US' => ['Claude', 'fRaiseS'],
                                 ],
                             ],
                             'properties' => [
@@ -85,19 +84,19 @@ class NonExistentReferenceDataMultiSelectValuesFilterSpec extends ObjectBehavior
             'MiChel',
             'sardou',
             'jean',
-            'Claude',
+            'CLAUDE',
             'van',
-            'damm',
+            'damme',
             'des',
             'fRaises'
         ];
 
         $getExistingReferenceDataCodes->fromReferenceDataNameAndCodes('some_reference_data', $referenceDataCodes)->willReturn(
-            ['MiChel', 'fRaises', 'whatever']
+            ['Michel', 'Fraises']
         );
 
-        $getExistingReferenceDataCodes->fromReferenceDataNameAndCodes('another_reference_data', ['des', 'damm', 'Claude', 'fRaises'])->willReturn(
-            ['Claude', 'damm']
+        $getExistingReferenceDataCodes->fromReferenceDataNameAndCodes('another_reference_data', ['des', 'damme', 'Claude', 'fRaiseS'])->willReturn(
+            ['Claude', 'Damme']
         );
 
         /** @var OnGoingFilteredRawValues $filteredCollection */
@@ -111,12 +110,11 @@ class NonExistentReferenceDataMultiSelectValuesFilterSpec extends ObjectBehavior
                             'identifier' => 'product_A',
                             'values' => [
                                 'ecommerce' => [
-                                    'en_US' => ['MiChel'],
+                                    'en_US' => ['Michel'],
                                 ],
                                 'tablet' => [
                                     'en_US' => [],
-                                    'fr_FR' => ['fRaises'],
-
+                                    'fr_FR' => ['Fraises'],
                                 ],
                             ],
                             'properties' => [
@@ -129,7 +127,7 @@ class NonExistentReferenceDataMultiSelectValuesFilterSpec extends ObjectBehavior
                             'identifier' => 'product_B',
                             'values' => [
                                 'mobile' => [
-                                    'en_US' => ['damm'],
+                                    'en_US' => ['Damme'],
                                 ],
                                 'tablet' => [
                                     'en_US' => ['Claude'],
