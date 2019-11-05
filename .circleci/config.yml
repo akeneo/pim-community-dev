@@ -13,7 +13,7 @@ jobs:
           name: Copy docker-compose.override.yml.dist
           command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
       - run:
-          name: Pull and build the latest Docker images
+          name: Build the latest Docker images
           command: |
               make php-image-dev
               docker save -o php-pim-image.tar akeneo/pim-dev/php:7.3
@@ -41,11 +41,8 @@ jobs:
                           /usr/local/bin/composer require "akeneo/pim-community-dev:dev-${CIRCLE_BRANCH}" --no-update ||
                           echo "No CE branch $CIRCLE_BRANCH found. I don't touch the composer.json file."
       - run:
-          name: Install back dependencies
-          command: make vendor
-      - run:
-          name: Install front dependencies
-          command: make node_modules
+          name: Install back and front dependencies
+          command: make dependencies
       - run:
           name: Check PIM requirements
           command: |
@@ -84,55 +81,22 @@ jobs:
                 name: Load archived docker image
                 command: docker load -i php-pim-image.tar
           - run:
-                name: Generate dev cache for Symfony's Phpstan extension
-                command: APP_ENV=dev make cache
-          - run:
-                name: PhpSpec
-                command: docker-compose run -u www-data --rm -T php vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
-          - run:
-                name: Find non executed PhpSpec files
-                command: vendor/akeneo/pim-community-dev/.circleci/find_non_executed_phpspec.sh
-          - run:
-                name: PhpSpec (Reference Entities)
-                command: docker-compose run -u www-data --rm php vendor/bin/phpspec run -c src/Akeneo/ReferenceEntity/tests/back/phpspec.yml.dist --no-interaction -vvv
-          - run:
-                name: PhpSpec (Asset Manager)
-                command: docker-compose run -u www-data --rm php vendor/bin/phpspec run -c src/Akeneo/AssetManager/tests/back/phpspec.yml.dist --no-interaction -vvv
-          - run:
-                name: PhpCsFixer
-                command: docker-compose run -u www-data --rm -T php vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
-                when: always
-          - run:
-                name: PhpCoupling Detector
-                command: make coupling
-                when: always
-          - run:
-                name: PHPStan (Reference Entities)
-                command: docker-compose run -u www-data --rm -T php vendor/bin/phpstan analyse --configuration src/Akeneo/ReferenceEntity/tests/back/phpstan.neon.dist
-                when: always
-          - run:
-                name: PHPStan (Asset Manager)
-                command: docker-compose run -u www-data --rm -T php vendor/bin/phpstan analyse --configuration src/Akeneo/AssetManager/tests/back/phpstan.neon.dist
-                when: always
-          - run:
-                name: PHPStan
-                command: docker-compose run -u www-data --rm -T php vendor/bin/phpstan analyse src/Akeneo/Pim -l 1
-                when: always
-          - run:
                 name: Check Pullup
-                command: docker-compose run -u www-data --rm -T php vendor/akeneo/pim-community-dev/bin/check-pullup
+                command: make check-pullup
                 when: always
           - run:
-                name: Acceptance back
-                command: docker-compose run -u www-data --rm php vendor/bin/behat --strict -p acceptance -vv
+                name: Analyzes source code to flag programming errors, bugs, stylistic errors, and suspicious constructs
+                command: make lint-back
+          - run:
+                name: Code Coupling Detection
+                command: make coupling-back
                 when: always
           - run:
-                name: Acceptance back (Reference Entities)
-                command: docker-compose run -u www-data --rm php vendor/bin/behat --config src/Akeneo/ReferenceEntity/tests/back/behat.yml.dist --no-interaction --format=progress
-                when: always
+                name: Unit tests
+                command: make unit-back CI=1
           - run:
-                name: Acceptance back (Asset Manager)
-                command: docker-compose run -u www-data --rm php vendor/bin/behat --config src/Akeneo/AssetManager/tests/back/behat.yml.dist --no-interaction --format=progress
+                name: Acceptance tests
+                command: make acceptance-back
                 when: always
           - run:
                 name: Acceptance back (Apps)
@@ -256,22 +220,23 @@ jobs:
         - attach_workspace:
             at: ~/
         - run:
-            name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
-            command: sudo chown -R 1000:1000 ../project
+              name: Create yarn cache folder
+              command: mkdir -p  ~/.cache/yarn
+        - run:
+              name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+              command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
         - run:
             name: Front linter
-            command: docker-compose run --rm node yarn run lint
-        - run:
-            name: Front linter (Franklin Insights)
-            command: |
-                docker-compose run --rm node ./node_modules/.bin/tslint -c src/Akeneo/Pim/Automation/FranklinInsights/tslint.json src/Akeneo/Pim/Automation/FranklinInsights/**/*.{ts,tsx}
-                docker-compose run --rm node ./node_modules/.bin/prettier --config src/Akeneo/Pim/Automation/FranklinInsights/.prettierrc.json --check src/Akeneo/Pim/Automation/FranklinInsights/**/*.{ts,tsx}
+            command: make lint-front
         - run:
             name: Front unit tests
-            command: docker-compose run --rm node yarn run unit
+            command: make unit-front
         - run:
             name: Front acceptance tests
-            command: MAX_RANDOM_LATENCY_MS=100 docker-compose run --rm node yarn run acceptance ./tests/features
+            command: make acceptance-front
+        - run:
+            name: Front integration tests
+            command: make integration-front
 
   back_performance:
     machine:

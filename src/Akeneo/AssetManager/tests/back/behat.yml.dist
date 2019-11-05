@@ -47,6 +47,7 @@ default:
             filters:
                 tags: '@integration-back'
     extensions:
+        Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
         FriendsOfBehat\SymfonyExtension:
             kernel:
                 path: src/Kernel.php

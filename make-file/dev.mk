@@ -2,13 +2,12 @@
 ## Run tests suite
 ##
 
-.PHONY: coupling
-coupling: twa-coupling asset-coupling franklin-insights-coupling reference-entity-coupling asset-manager-coupling rule-engine-coupling workflow-coupling permission-coupling
-
+# @deprecated please use the target unit-back or add target for your bounded context
 .PHONY: phpspec
-phpspec: asset-manager-phpspec reference-entity-phpspec
+phpspec:
 	${PHP_RUN} vendor/bin/phpspec run ${F}
 
+# @deprecated please use the target acceptance-back or add target for your bounded context
 .PHONY: acceptance
 acceptance:
 	${PHP_RUN} vendor/bin/behat -p acceptance ${F}
