@@ -49,7 +49,7 @@ integration-front:
 .PHONY: integration-back
 integration-back: var/tests/phpunit apps-integration-back
 ifeq ($(CI),1)
-	.circleci/run_phpunit.sh . PIM_Integration_Test
+	.circleci/run_phpunit.sh . .circleci/find_phpunit.php PIM_Integration_Test
 else
 	${PHP_RUN} vendor/bin/phpunit -c . --testsuite PIM_Integration_Test $(O)
 endif
@@ -58,7 +58,7 @@ endif
 .PHONY: end-to-end-back
 end-to-end-back: var/tests/phpunit
 ifeq ($(CI),1)
-	.circleci/run_phpunit.sh . End_to_End
+	.circleci/run_phpunit.sh . .circleci/find_phpunit.php End_to_End
 else
 	${PHP_RUN} vendor/bin/phpunit -c . --testsuite End_to_End $(O)
 endif
