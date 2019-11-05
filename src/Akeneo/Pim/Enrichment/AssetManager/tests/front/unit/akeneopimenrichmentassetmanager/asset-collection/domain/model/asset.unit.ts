@@ -20,6 +20,7 @@ import {
   getAssetMainImageDownloadLink,
   assetMainImageCanBeDownloaded,
   getAssetMainImageOriginalFilename,
+  assetHasCompleteness,
 } from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {isLabels} from 'akeneoassetmanager/domain/model/utils';
 
@@ -530,4 +531,28 @@ test('I can get the asset main image original filename', () => {
   expect(getAssetMainImageOriginalFilename(asset, {locale: 'en_US', channel: 'ecommerce'})).toBe(
     'My nice filename.png'
   );
+});
+test('I can know if the asset has a completeness', () => {
+  const asset = {
+    identifier: '',
+    code: '',
+    image: [],
+    assetFamily: {},
+    completeness: {
+      required: 10,
+      complete: 4,
+    },
+  };
+  expect(assetHasCompleteness(asset)).toBe(true);
+  const noCompletenessAsset = {
+    identifier: '',
+    code: '',
+    image: [],
+    assetFamily: {},
+    completeness: {
+      required: 0,
+      complete: 0,
+    },
+  };
+  expect(assetHasCompleteness(noCompletenessAsset)).toBe(false);
 });

@@ -1,5 +1,9 @@
 import * as React from 'react';
-import {Asset, getAssetLabel} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
+import {
+  Asset,
+  getAssetLabel,
+  assetHasCompleteness,
+} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
 import styled from 'styled-components';
 import {Label} from 'akeneopimenrichmentassetmanager/platform/component/common/label';
@@ -74,9 +78,11 @@ const AssetCard = ({
           onClick={() => (!isDisabled ? onSelectionChange(asset.code, !isSelected) : null)}
         />
       </ImageContainer>
-      <AssetCompleteness>
-        <CompletenessBadge completeness={asset.completeness} />
-      </AssetCompleteness>
+      {assetHasCompleteness(asset) && (
+        <AssetCompleteness>
+          <CompletenessBadge completeness={asset.completeness} />
+        </AssetCompleteness>
+      )}
       <Title>
         <Checkbox
           value={isSelected}

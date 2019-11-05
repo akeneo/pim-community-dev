@@ -6,7 +6,10 @@ namespace Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
+use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
@@ -152,24 +155,24 @@ CREATE TABLE `akeneo_asset_manager_asset_family_permissions` (
       ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-ALTER TABLE `akeneo_asset_manager_asset_family` 
-    ADD CONSTRAINT akeneoasset_manager_attribute_as_label_foreign_key 
-    FOREIGN KEY (attribute_as_label) 
+ALTER TABLE `akeneo_asset_manager_asset_family`
+    ADD CONSTRAINT akeneoasset_manager_attribute_as_label_foreign_key
+    FOREIGN KEY (attribute_as_label)
     REFERENCES akeneo_asset_manager_attribute (identifier)
     ON DELETE SET NULL;
-    
-ALTER TABLE `akeneo_asset_manager_asset_family`         
-    ADD CONSTRAINT akeneoasset_manager_attribute_as_image_foreign_key 
-    FOREIGN KEY (attribute_as_image) 
+
+ALTER TABLE `akeneo_asset_manager_asset_family`
+    ADD CONSTRAINT akeneoasset_manager_attribute_as_image_foreign_key
+    FOREIGN KEY (attribute_as_image)
     REFERENCES akeneo_asset_manager_attribute (identifier)
     ON DELETE SET NULL;
-    
-ALTER TABLE `akeneo_asset_manager_attribute`         
-    ADD CONSTRAINT attribute_asset_family_identifier_foreign_key 
-    FOREIGN KEY (`asset_family_identifier`) 
+
+ALTER TABLE `akeneo_asset_manager_attribute`
+    ADD CONSTRAINT attribute_asset_family_identifier_foreign_key
+    FOREIGN KEY (`asset_family_identifier`)
     REFERENCES `akeneo_asset_manager_asset_family` (identifier)
     ON DELETE CASCADE;
-    
+
 SET foreign_key_checks = 1;
 SQL;
         $this->sqlConnection->exec($sql);
@@ -215,9 +218,9 @@ SQL;
 //                ]
 //            ]
 //        ];
-
+        $packshotAssetFamilyIdentifier = AssetFamilyIdentifier::fromString('packshot');
         $packshot = AssetFamily::create(
-            AssetFamilyIdentifier::fromString('packshot'),
+            $packshotAssetFamilyIdentifier,
             ['en_US' => 'Packshots'],
             Image::createEmpty(),
             RuleTemplateCollection::empty()
@@ -228,7 +231,7 @@ SQL;
 
         $description = TextAttribute::createTextarea(
             AttributeIdentifier::create('packshot', 'description', 'fingerprint'),
-            AssetFamilyIdentifier::fromString('packshot'),
+            $packshotAssetFamilyIdentifier,
             AttributeCode::fromString('description'),
             LabelCollection::fromArray(['en_US' => 'Description']),
             AttributeOrder::fromInteger($order),
@@ -242,7 +245,7 @@ SQL;
 
         $datePublished = TextAttribute::createText(
             AttributeIdentifier::create('packshot', 'date_published', 'fingerprint'),
-            AssetFamilyIdentifier::fromString('packshot'),
+            $packshotAssetFamilyIdentifier,
             AttributeCode::fromString('date_published'),
             LabelCollection::fromArray(['en_US' => 'Date Published']),
             AttributeOrder::fromInteger($order),
@@ -257,7 +260,7 @@ SQL;
 
         $shootedBy = OptionAttribute::create(
             AttributeIdentifier::create('packshot', 'shooted_by', 'fingerprint'),
-            AssetFamilyIdentifier::fromString('packshot'),
+            $packshotAssetFamilyIdentifier,
             AttributeCode::fromString('shooted_by'),
             LabelCollection::fromArray(['en_US' => 'Shooted By']),
             AttributeOrder::fromInteger($order),
@@ -269,7 +272,7 @@ SQL;
 
         $original = MediaLinkAttribute::create(
             AttributeIdentifier::create('packshot', 'original', 'fingerprint'),
-            AssetFamilyIdentifier::fromString('packshot'),
+            $packshotAssetFamilyIdentifier,
             AttributeCode::fromString('original'),
             LabelCollection::fromArray(['en_US' => 'Original']),
             AttributeOrder::fromInteger($order),
@@ -284,7 +287,7 @@ SQL;
 
         $small = MediaLinkAttribute::create(
             AttributeIdentifier::create('packshot', 'small', 'fingerprint'),
-            AssetFamilyIdentifier::fromString('packshot'),
+            $packshotAssetFamilyIdentifier,
             AttributeCode::fromString('small'),
             LabelCollection::fromArray(['en_US' => 'Small']),
             AttributeOrder::fromInteger($order),
@@ -299,7 +302,7 @@ SQL;
 
         $linkedAttribute = TextAttribute::createText(
             AttributeIdentifier::create('packshot', 'linked_attribute', 'fingerprint'),
-            AssetFamilyIdentifier::fromString('packshot'),
+            $packshotAssetFamilyIdentifier,
             AttributeCode::fromString('linked_attribute'),
             LabelCollection::fromArray(['en_US' => 'Linked Attribute']),
             AttributeOrder::fromInteger($order),
@@ -314,7 +317,7 @@ SQL;
 
         $productSku = TextAttribute::createText(
             AttributeIdentifier::create('packshot', 'product_sku', 'fingerprint'),
-            AssetFamilyIdentifier::fromString('packshot'),
+            $packshotAssetFamilyIdentifier,
             AttributeCode::fromString('product_sku'),
             LabelCollection::fromArray(['en_US' => 'Product SKU']),
             AttributeOrder::fromInteger($order),
@@ -329,10 +332,26 @@ SQL;
         $this->attributeRepository->create($description);
         $this->attributeRepository->create($datePublished);
         $this->attributeRepository->create($shootedBy);
-//        $this->attributeRepository->create($original);
-//        $this->attributeRepository->create($small);
+        $this->attributeRepository->create($original);
+        $this->attributeRepository->create($small);
         $this->attributeRepository->create($linkedAttribute);
         $this->attributeRepository->create($productSku);
+
+        $attributes = $this->attributeRepository->findByAssetFamily($packshotAssetFamilyIdentifier);
+        $attributeAsLabel = current(array_filter($attributes, function (AbstractAttribute $attribute) {
+            return $attribute->getCode()->equals(AttributeCode::fromString('label'));
+        }));
+
+        $updatedPackshot = AssetFamily::createWithAttributes(
+            $packshotAssetFamilyIdentifier,
+            ['en_US' => 'Packshots'],
+            Image::createEmpty(),
+            AttributeAsLabelReference::createFromNormalized($attributeAsLabel->getIdentifier()->normalize()),
+            AttributeAsImageReference::createFromNormalized(AttributeIdentifier::create('packshot', 'original', 'fingerprint')->normalize()),
+            RuleTemplateCollection::empty()
+        );
+
+        $this->assetFamilyRepository->update($updatedPackshot);
     }
 
     private function loadPackshotAssets()
@@ -349,13 +368,12 @@ SQL;
                 'shooted_by' => [
                     ['channel' => null, 'locale' => null, 'data' => 'jean_jacques_photo']
                 ],
-                // These attributes are commented for now, to be uncommented once the front supports them
-//                'original' => [
-//                    ['channel' => null, 'locale' => null, 'data' => '22PDL4906H']
-//                ],
-//                'small' => [
-//                    ['channel' => null, 'locale' => null, 'data' => '22PDL4906H']
-//                ],
+                'original' => [
+                    ['channel' => null, 'locale' => null, 'data' => '22PDL4906H']
+                ],
+                'small' => [
+                    ['channel' => null, 'locale' => null, 'data' => '22PDL4906H']
+                ],
                 'linked_attribute' => [
                     ['channel' => null, 'locale' => null, 'data' => 'packshot']
                 ],
@@ -378,13 +396,12 @@ SQL;
                 'shooted_by' => [
                     ['channel' => null, 'locale' => null, 'data' => 'michel_pellicule']
                 ],
-                // These attributes are commented for now, to be uncommented once the front supports them
-//                'original' => [
-//                    ['channel' => null, 'locale' => null, 'data' => 'iphone8']
-//                ],
-//                'small' => [
-//                    ['channel' => null, 'locale' => null, 'data' => 'iphone8']
-//                ],
+                'original' => [
+                    ['channel' => null, 'locale' => null, 'data' => 'iphone8']
+                ],
+                'small' => [
+                    ['channel' => null, 'locale' => null, 'data' => 'iphone8']
+                ],
                 'linked_attribute' => [
                     ['channel' => null, 'locale' => null, 'data' => 'packshot']
                 ],
@@ -407,10 +424,9 @@ SQL;
                 'shooted_by' => [
                     ['channel' => null, 'locale' => null, 'data' => 'robert_photeau']
                 ],
-                // These attributes are commented for now, to be uncommented once the front supports them
-//                'original' => [
-//                    ['channel' => null, 'locale' => null, 'data' => 'iphone7']
-//                ],
+               'original' => [
+                    ['channel' => null, 'locale' => null, 'data' => 'iphone7']
+                ],
                 'linked_attribute' => [
                     ['channel' => null, 'locale' => null, 'data' => 'packshot']
                 ],
@@ -521,7 +537,7 @@ SQL;
         $this->attributeRepository->create($description);
         $this->attributeRepository->create($targetCountries);
         $this->attributeRepository->create($datePublished);
-//        $this->attributeRepository->create($original);
+        $this->attributeRepository->create($original);
         $this->attributeRepository->create($linkedAttribute);
         $this->attributeRepository->create($productSku);
     }
@@ -540,10 +556,9 @@ SQL;
                 'date_published' => [
                     ['channel' => null, 'locale' => null, 'data' => '02/05/2018']
                 ],
-                // These attributes are commented for now, to be uncommented once the front supports them
-//                'original' => [
-//                    ['channel' => null, 'locale' => null, 'data' => '22PDL4906H']
-//                ],
+                'original' => [
+                    ['channel' => null, 'locale' => null, 'data' => '22PDL4906H']
+                ],
                 'linked_attribute' => [
                     ['channel' => null, 'locale' => null, 'data' => 'notice']
                 ],
@@ -565,10 +580,9 @@ SQL;
                 'date_published' => [
                     ['channel' => null, 'locale' => null, 'data' => '22/02/1990']
                 ],
-                // These attributes are commented for now, to be uncommented once the front supports them
-//                'original' => [
-//                    ['channel' => null, 'locale' => null, 'data' => 'av36']
-//                ],
+                'original' => [
+                    ['channel' => null, 'locale' => null, 'data' => 'av36']
+                ],
                 'linked_attribute' => [
                     ['channel' => null, 'locale' => null, 'data' => 'notice']
                 ],
@@ -680,7 +694,7 @@ SQL;
         );
 
         $this->attributeRepository->create($videoTranscription);
-//        $this->attributeRepository->create($original);
+        $this->attributeRepository->create($original);
         $this->attributeRepository->create($linkedAttribute);
         $this->attributeRepository->create($productSku);
     }
@@ -693,10 +707,9 @@ SQL;
                 'video_transcription' => [
                     ['channel' => null, 'locale' => null, 'data' => 'Philips, a new generation.']
                 ],
-                // These attributes are commented for now, to be uncommented once the front supports them
-//                'original' => [
-//                    ['channel' => null, 'locale' => null, 'data' => '22PDL4906H']
-//                ],
+                'original' => [
+                    ['channel' => null, 'locale' => null, 'data' => '22PDL4906H']
+                ],
                 'linked_attribute' => [
                     ['channel' => null, 'locale' => null, 'data' => 'video']
                 ],

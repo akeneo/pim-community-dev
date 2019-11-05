@@ -53,7 +53,7 @@ class AssetDetailsHydratorSpec extends ObjectBehavior
             ValueKey::createFromNormalized('label_game_fingerprint_fr_FR'),
             ValueKey::createFromNormalized('main_image_game_fingerprint'),
         ]);
-
+        $imageAttribute->getIdentifier()->willReturn(AttributeIdentifier::fromString('main_image_game_fingerprint'));
         $indexedAttributes = [
             'label_game_fingerprint' => $labelAttribute,
             'main_image_game_fingerprint' => $imageAttribute,
@@ -143,7 +143,9 @@ class AssetDetailsHydratorSpec extends ObjectBehavior
         FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
         ValueHydratorInterface $valueHydrator,
         TextAttribute $descriptionAttribute,
-        Value $descriptionfrFR
+        ImageAttribute $imageAttribute,
+        Value $descriptionfrFR,
+        Value $image
     ) {
         $findValueKeysByAttributeType->find(
             AssetFamilyIdentifier::fromString('game'),
@@ -154,9 +156,11 @@ class AssetDetailsHydratorSpec extends ObjectBehavior
             ValueKey::createFromNormalized('description_game_fingerprint-fr_FR'),
             ValueKey::createFromNormalized('description_game_fingerprint-en_US'),
         ]);
-
+        $imageAttribute->getIdentifier()->willReturn(AttributeIdentifier::fromString('image_game_fingerprint'));
+        $imageAttribute->getType()->willReturn(ImageAttribute::ATTRIBUTE_TYPE);
         $indexedAttributes = [
             'description_game_fingerprint' => $descriptionAttribute,
+            'image_game_fingerprint' => $imageAttribute,
         ];
 
         $descriptionFrFrNormalized = [
@@ -165,10 +169,19 @@ class AssetDetailsHydratorSpec extends ObjectBehavior
             'locale'    => 'fr_FR',
             'data'      => 'Le fameux MMORPG PC de Blizzard',
         ];
+        $imageNormalized = [
+            'attribute' => 'image_game_fingerprint',
+            'channel'   => null,
+            'locale'    => null,
+            'data'      => ['filePath' => '', 'originalFilename' => ''],
+        ];
 
         $descriptionfrFR->isEmpty()->willReturn(false);
+        $image->isEmpty()->willReturn(true);
         $valueHydrator->hydrate($descriptionFrFrNormalized, $descriptionAttribute)->willReturn($descriptionfrFR);
+        $valueHydrator->hydrate($imageNormalized, $imageAttribute)->willReturn($image);
         $descriptionfrFR->normalize()->willReturn($descriptionFrFrNormalized);
+        $image->normalize()->willReturn($imageNormalized);
 
         $rawValues = [
             'description_game_fingerprint-fr_FR' => [
@@ -231,7 +244,7 @@ class AssetDetailsHydratorSpec extends ObjectBehavior
                 'asset_family_identifier' => 'game',
                 'value_collection'            => json_encode($rawValues),
                 'attribute_as_label'          => 'another_attribute_game_fingerprint',
-                'attribute_as_image'          => 'another_game_fingerprint',
+                'attribute_as_image'          => 'image_game_fingerprint',
             ],
             $emptyValues,
             $valueKeys,
