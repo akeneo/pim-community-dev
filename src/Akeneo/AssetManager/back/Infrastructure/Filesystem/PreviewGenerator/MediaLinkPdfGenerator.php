@@ -76,19 +76,19 @@ class MediaLinkPdfGenerator implements PreviewGeneratorInterface
             } catch (NotLoadableException $e) {
                 // Should change depending on the preview type
                 return $this->defaultImageProvider->getImageUrl(self::DEFAULT_IMAGE, $previewType);
-              } catch (\LogicException $e) { //Here we catch different levels of exception to display a different default image in the future
+            } catch (\LogicException $e) { //Here we catch different levels of exception to display a different default image in the future
                 // Trigerred when the mime type was not the good one
                 // Should change depending on the preview type
                 return $this->defaultImageProvider->getImageUrl(self::DEFAULT_IMAGE, $previewType);
-              } catch (\Exception $e) {
+            } catch (\Exception $e) {
                 // Triggered When a general exception arrised
                 // Should change depending on the preview type
                 return $this->defaultImageProvider->getImageUrl(self::DEFAULT_IMAGE, $previewType);
-              }
+            }
 
-              try {
+            try {
                 $file = $this->filterManager->applyFilter($binary, $previewType);
-              } catch (\Exception $e) {
+            } catch (\Exception $e) {
                 // Triggered When a general exception arrised
                 // Should change depending on the preview type
                 return $this->defaultImageProvider->getImageUrl(self::DEFAULT_IMAGE, $previewType);

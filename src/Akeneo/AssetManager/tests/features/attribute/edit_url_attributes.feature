@@ -55,5 +55,5 @@ Feature: Edit an URL attribute of an asset family
 
     Examples:
       | invalid_media_type | property_path | message                                                                          |
-      | "video"              | mediaType   | The media type given is not corresponding to the expected ones (image, other). |
-      | ""                   | mediaType   | The media type given is not corresponding to the expected ones (image, other). |
+      | "video"              | mediaType   | The media type given is not corresponding to the expected ones (image, pdf, other). |
+      | ""                   | mediaType   | The media type given is not corresponding to the expected ones (image, pdf, other). |

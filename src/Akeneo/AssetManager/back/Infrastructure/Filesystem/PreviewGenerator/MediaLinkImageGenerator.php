@@ -29,8 +29,9 @@ class MediaLinkImageGenerator implements PreviewGeneratorInterface
 {
     private const DEFAULT_IMAGE = 'pim_asset_manager.default_image.image'; // Should change depending on the preview type
     public const SUPPORTED_TYPES = [
-        PreviewGeneratorRegistry::THUMBNAIL_TYPE => 'am_url_thumbnail',
-        PreviewGeneratorRegistry::PREVIEW_TYPE => 'am_url_preview',
+        PreviewGeneratorRegistry::THUMBNAIL_TYPE => 'am_url_image_thumbnail',
+        PreviewGeneratorRegistry::THUMBNAIL_SMALL_TYPE => 'am_url_image_thumbnail',
+        PreviewGeneratorRegistry::PREVIEW_TYPE => 'am_url_image_preview',
     ];
 
     /** @var DataManager  */

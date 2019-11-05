@@ -15,7 +15,6 @@ namespace Akeneo\AssetManager\Infrastructure\Filesystem\Loader;
 
 use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\DefaultImageProviderInterface;
 use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\MediaLinkPdfGenerator;
-use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\PreviewGeneratorRegistry;
 use Liip\ImagineBundle\Binary\Loader\LoaderInterface;
 use Liip\ImagineBundle\Model\Binary;
 
@@ -47,7 +46,7 @@ class StreamPdfLoader implements LoaderInterface
 
         $imagick = new \Imagick();
         $imagick->setresolution(500, 500);
-        $imagick->setcolorspace(\IMagick::COLORSPACE_RGB);
+        $imagick->setcolorspace(\Imagick::COLORSPACE_RGB);
         $imagick->readImageBlob($file);
         $imagick->setImageFormat('jpeg');
 
