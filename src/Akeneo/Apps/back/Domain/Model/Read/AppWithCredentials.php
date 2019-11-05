@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Domain\Model\Read;
 
-use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
-
 /**
  * @author Romain Monceau <romain@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)

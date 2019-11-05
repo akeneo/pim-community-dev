@@ -3,12 +3,8 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Apps\Application\Command;
 
-use Akeneo\Apps\Application\Command\CreateAppCommand;
-use Akeneo\Apps\Application\Command\CreateAppHandler;
 use Akeneo\Apps\Application\Command\UpdateAppCommand;
 use Akeneo\Apps\Application\Command\UpdateAppHandler;
-use Akeneo\Apps\Application\Service\CreateClientInterface;
-use Akeneo\Apps\Application\Service\CreateUserInterface;
 use Akeneo\Apps\Domain\Exception\ConstraintViolationListException;
 use Akeneo\Apps\Domain\Model\ValueObject\ClientId;
 use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
@@ -17,7 +13,6 @@ use Akeneo\Apps\Domain\Model\Write\App;
 use Akeneo\Apps\Domain\Persistence\Repository\AppRepository;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;

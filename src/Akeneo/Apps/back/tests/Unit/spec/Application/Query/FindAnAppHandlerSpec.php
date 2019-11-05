@@ -6,11 +6,9 @@ namespace spec\Akeneo\Apps\Application\Query;
 
 use Akeneo\Apps\Application\Query\FindAnAppHandler;
 use Akeneo\Apps\Application\Query\FindAnAppQuery;
-use Akeneo\Apps\Domain\Model\Read\App;
 use Akeneo\Apps\Domain\Model\Read\AppWithCredentials;
 use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
 use Akeneo\Apps\Domain\Persistence\Query\SelectAppWithCredentialsByCodeQuery;
-use Akeneo\Apps\Domain\Persistence\Repository\AppRepository;
 use PhpSpec\ObjectBehavior;
 
 /**
