@@ -11,9 +11,9 @@ services:
     akeneo_app.application.handler.fetch_apps:
         class: 'Akeneo\Apps\Application\Query\FetchAppsHandler'
         arguments:
-            - '@akeneo_app.persistence.repository.app'
+            - '@akeneo_app.persistence.query.select_apps'
 
     akeneo_app.application.handler.find_an_app:
         class: 'Akeneo\Apps\Application\Query\FindAnAppHandler'
         arguments:
-            - '@akeneo_app.persistence.repository.app'
+            - '@akeneo_app.persistence.query.select_app_with_credentials_by_code'

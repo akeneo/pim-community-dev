@@ -7,7 +7,9 @@ namespace spec\Akeneo\Apps\Application\Query;
 use Akeneo\Apps\Application\Query\FindAnAppHandler;
 use Akeneo\Apps\Application\Query\FindAnAppQuery;
 use Akeneo\Apps\Domain\Model\Read\App;
+use Akeneo\Apps\Domain\Model\Read\AppWithCredentials;
 use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
+use Akeneo\Apps\Domain\Persistence\Query\SelectAppWithCredentialsByCodeQuery;
 use Akeneo\Apps\Domain\Persistence\Repository\AppRepository;
 use PhpSpec\ObjectBehavior;
 
@@ -18,29 +20,29 @@ use PhpSpec\ObjectBehavior;
  */
 class FindAnAppHandlerSpec extends ObjectBehavior
 {
-    function let(AppRepository $repository)
+    public function let(SelectAppWithCredentialsByCodeQuery $selectAppWithCredentialsByCodeQuery)
     {
-        $this->beConstructedWith($repository);
+        $this->beConstructedWith($selectAppWithCredentialsByCodeQuery);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(FindAnAppHandler::class);
     }
 
-    function it_returns_an_app($repository)
+    public function it_returns_an_app($selectAppWithCredentialsByCodeQuery)
     {
-        $app = new App('uuid', 'bynder', 'Bynder DAM', FlowType::OTHER);
+        $app = new AppWithCredentials('bynder', 'Bynder DAM', FlowType::OTHER, 'client_id', 'secret');
 
-        $repository->findOneByCode('bynder')->willReturn($app);
+        $selectAppWithCredentialsByCodeQuery->execute('bynder')->willReturn($app);
 
         $query = new FindAnAppQuery('bynder');
         $this->handle($query)->shouldReturn($app);
     }
 
-    function it_returns_null_when_the_app_does_not_exists($repository)
+    public function it_returns_null_when_the_app_does_not_exists($selectAppWithCredentialsByCodeQuery)
     {
-        $repository->findOneByCode('bynder')->willReturn(null);
+        $selectAppWithCredentialsByCodeQuery->execute('bynder')->willReturn(null);
 
         $query = new FindAnAppQuery('bynder');
         $this->handle($query)->shouldReturn(null);

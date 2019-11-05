@@ -14,13 +14,13 @@ use PhpSpec\ObjectBehavior;
  */
 class FlowTypeSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->beConstructedWith(FlowType::OTHER);
         $this->shouldBeAnInstanceOf(FlowType::class);
     }
 
-    function it_cannot_be_created_with_an_unknown_flow_type()
+    public function it_cannot_be_created_with_an_unknown_flow_type()
     {
         $this->beConstructedWith('foo');
         $this->shouldThrow(
@@ -28,25 +28,25 @@ class FlowTypeSpec extends ObjectBehavior
         )->duringInstantiation();
     }
 
-    function it_creates_a_data_destination_flow_type()
+    public function it_creates_a_data_destination_flow_type()
     {
         $this->beConstructedWith(FlowType::DATA_DESTINATION);
         $this->shouldBeAnInstanceOf(FlowType::class);
     }
 
-    function it_creates_a_data_source_flow_type()
+    public function it_creates_a_data_source_flow_type()
     {
         $this->beConstructedWith(FlowType::DATA_SOURCE);
         $this->shouldBeAnInstanceOf(FlowType::class);
     }
 
-    function it_creates_an_others_flow_type()
+    public function it_creates_an_others_flow_type()
     {
         $this->beConstructedWith(FlowType::OTHER);
         $this->shouldBeAnInstanceOf(FlowType::class);
     }
 
-    function it_returns_the_flow_type_as_string()
+    public function it_returns_the_flow_type_as_string()
     {
         $this->beConstructedWith(FlowType::DATA_SOURCE);
         $this->__toString()->shouldReturn(FlowType::DATA_SOURCE);

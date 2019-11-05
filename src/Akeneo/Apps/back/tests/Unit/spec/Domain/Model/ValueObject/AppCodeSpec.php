@@ -14,19 +14,19 @@ use PhpSpec\ObjectBehavior;
  */
 class AppCodeSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->beConstructedWith('magento');
         $this->shouldBeAnInstanceOf(AppCode::class);
     }
 
-    function it_cannot_contains_an_empty_string()
+    public function it_cannot_contains_an_empty_string()
     {
         $this->beConstructedWith('');
         $this->shouldThrow(new \InvalidArgumentException('akeneo_apps.app.constraint.code.required'))->duringInstantiation();
     }
 
-    function it_cannot_contains_a_string_longer_than_100_characters()
+    public function it_cannot_contains_a_string_longer_than_100_characters()
     {
         $this->beConstructedWith(str_repeat('a', 103));
         $this->shouldThrow(
@@ -34,7 +34,7 @@ class AppCodeSpec extends ObjectBehavior
         )->duringInstantiation();
     }
 
-    function it_contains_only_alphanumeric_characters()
+    public function it_contains_only_alphanumeric_characters()
     {
         $this->beConstructedWith('magento-connector');
         $this->shouldThrow(
@@ -42,7 +42,7 @@ class AppCodeSpec extends ObjectBehavior
         )->duringInstantiation();
     }
 
-    function it_returns_the_app_code_as_a_string()
+    public function it_returns_the_app_code_as_a_string()
     {
         $this->beConstructedWith('magento');
         $this->__toString()->shouldReturn('magento');

@@ -11,14 +11,14 @@ apps-unit-back:
 apps-acceptance-back: var/tests/behat/apps
 	$(PHP_RUN) vendor/bin/behat --config src/Akeneo/Apps/back/tests/Acceptance/behat.yml --format pim --out var/tests/behat/apps --format progress --out std --colors
 
-apps-back-integration:
+apps-integration-back:
 	$(PHP_RUN) vendor/bin/phpunit -c phpunit.xml.dist --testsuite=Akeneo_Apps_Integration
 
 apps-back:
-	make apps-back-coupling
-	make apps-back-phpspec
-	make apps-back-integration
-	make apps-back-acceptance
+	make apps-coupling-back
+	make apps-unit-back
+	make apps-integration-back
+	make apps-acceptance-back
 
 # Tests Front
 

@@ -27,13 +27,13 @@ class CreateUserSpec extends ObjectBehavior
         $this->beConstructedWith($userFactory, $userUpdater, $validator, $userSaver);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldBeAnInstanceOf(CreateUser::class);
         $this->shouldImplement(CreateUserInterface::class);
     }
 
-    function it_creates_a_user($userFactory, $userUpdater, $validator, $userSaver, User $user): void
+    public function it_creates_a_user($userFactory, $userUpdater, $validator, $userSaver, User $user): void
     {
         $userFactory->create()->willReturn($user);
         $userUpdater->update(
@@ -62,7 +62,7 @@ class CreateUserSpec extends ObjectBehavior
         $userId->id()->shouldReturn(1);
     }
 
-    function it_prevents_to_create_a_not_valid_user($userFactory, $userUpdater, $validator, $userSaver, User $user): void
+    public function it_prevents_to_create_a_not_valid_user($userFactory, $userUpdater, $validator, $userSaver, User $user): void
     {
         $userFactory->create()->willReturn($user);
         $userUpdater->update(

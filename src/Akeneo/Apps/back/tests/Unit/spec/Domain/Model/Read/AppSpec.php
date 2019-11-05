@@ -15,45 +15,38 @@ use PhpSpec\ObjectBehavior;
  */
 class AppSpec extends ObjectBehavior
 {
-    function let()
+    public function let()
     {
         $this->beConstructedWith(
-            '42',
             'magento',
             'Magento Connector',
             FlowType::DATA_DESTINATION
         );
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(App::class);
     }
 
-    function it_returns_the_id()
-    {
-        $this->id()->shouldReturn('42');
-    }
-
-    function it_returns_the_code()
+    public function it_returns_the_code()
     {
         $this->code()->shouldReturn('magento');
     }
 
-    function it_returns_the_label()
+    public function it_returns_the_label()
     {
         $this->label()->shouldReturn('Magento Connector');
     }
 
-    function it_returns_the_flow_type()
+    public function it_returns_the_flow_type()
     {
         $this->flowType()->shouldReturn(FlowType::DATA_DESTINATION);
     }
 
-    function it_normalizes_an_app()
+    public function it_normalizes_an_app()
     {
         $this->normalize()->shouldReturn([
-            'id' => '42',
             'code' => 'magento',
             'label' => 'Magento Connector',
             'flowType' => FlowType::DATA_DESTINATION

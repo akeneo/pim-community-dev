@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Application\Query;
 
+use Akeneo\Apps\Domain\Persistence\Query\SelectAppsQuery;
 use Akeneo\Apps\Domain\Persistence\Repository\AppRepository;
 
 /**
@@ -13,15 +14,16 @@ use Akeneo\Apps\Domain\Persistence\Repository\AppRepository;
  */
 class FetchAppsHandler
 {
-    private $repository;
+    /** @var SelectAppsQuery */
+    private $selectAppsQuery;
 
-    public function __construct(AppRepository $repository)
+    public function __construct(SelectAppsQuery $selectAppsQuery)
     {
-        $this->repository = $repository;
+        $this->selectAppsQuery = $selectAppsQuery;
     }
 
     public function query(): array
     {
-        return $this->repository->fetchAll();
+        return $this->selectAppsQuery->execute();
     }
 }

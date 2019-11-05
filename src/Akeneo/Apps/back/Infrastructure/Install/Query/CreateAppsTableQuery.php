@@ -13,8 +13,7 @@ final class CreateAppsTableQuery
 {
     const QUERY = <<<'SQL'
 CREATE TABLE IF NOT EXISTS akeneo_app(
-    id BINARY(16) PRIMARY KEY,
-    client_id INT NOT NULL,
+    client_id INT NOT NULL UNIQUE,
     user_id INT NOT NULL,
     code VARCHAR(100) NOT NULL,
     label VARCHAR(100) NOT NULL,

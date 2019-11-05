@@ -57,9 +57,7 @@ class CreateAppHandler
             uniqid() . '@akeneo.com'
         );
 
-        $appId = $this->repository->generateId();
         $app = new App(
-            $appId,
             $command->code(),
             $command->label(),
             $command->flowType(),

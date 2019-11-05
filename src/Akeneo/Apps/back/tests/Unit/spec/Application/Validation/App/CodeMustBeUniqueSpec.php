@@ -5,12 +5,18 @@ namespace spec\Akeneo\Apps\Application\Validation\App;
 
 use Akeneo\Apps\Application\Validation\App\CodeMustBeUnique;
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\Validator\Constraint;
 
 class CodeMustBeUniqueSpec extends ObjectBehavior
 {
-    public function it_is_a_constraint(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(CodeMustBeUnique::class);
+    }
+
+    public function it_is_a_constraint(): void
+    {
+        $this->shouldHaveType(Constraint::class);
     }
 
     public function it_provides_a_target(): void

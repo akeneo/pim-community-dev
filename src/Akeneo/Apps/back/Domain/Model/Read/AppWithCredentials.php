@@ -9,22 +9,26 @@ namespace Akeneo\Apps\Domain\Model\Read;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class App
+class AppWithCredentials
 {
     /** @var string */
     private $code;
-
     /** @var string */
     private $label;
-
     /** @var string */
     private $flowType;
+    /** @var string */
+    private $clientId;
+    /** @var string */
+    private $secret;
 
-    public function __construct(string $code, string $label, string $flowType)
+    public function __construct(string $code, string $label, string $flowType, string $clientId, string $secret)
     {
         $this->code = $code;
         $this->label = $label;
         $this->flowType = $flowType;
+        $this->clientId = $clientId;
+        $this->secret = $secret;
     }
 
     public function code(): string
@@ -42,12 +46,13 @@ class App
         return $this->flowType;
     }
 
-    public function normalize(): array
+    public function clientId(): string
     {
-        return [
-            'code' => $this->code,
-            'label' => $this->label,
-            'flowType' => $this->flowType
-        ];
+        return $this->clientId;
+    }
+
+    public function secret(): string
+    {
+        return $this->secret;
     }
 }

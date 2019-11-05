@@ -6,14 +6,13 @@ namespace Akeneo\Apps\Tests\Acceptance\Context;
 
 use Akeneo\Apps\Application\Command\CreateAppCommand;
 use Akeneo\Apps\Application\Command\CreateAppHandler;
+use Akeneo\Apps\Application\Query\FetchAppsHandler;
 use Akeneo\Apps\Application\Query\FindAnAppHandler;
 use Akeneo\Apps\Application\Query\FindAnAppQuery;
-use Akeneo\Apps\Application\Query\FetchAppsHandler;
 use Akeneo\Apps\Domain\Exception\ConstraintViolationListException;
 use Akeneo\Apps\Domain\Model\Read\App;
-use Akeneo\Apps\Domain\Model\ValueObject\AppCode;
-use Akeneo\Apps\Domain\Model\ValueObject\AppLabel;
 use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
+use Akeneo\Apps\Domain\Model\Write\App as WriteApp;
 use Akeneo\Apps\Infrastructure\Persistence\InMemory\Repository\InMemoryAppRepository;
 use Behat\Behat\Context\Context;
 use Webmozart\Assert\Assert;
@@ -111,7 +110,7 @@ class AppContext implements Context
         $code = self::slugify($label);
 
         $app = $this->appRepository->findOneByCode($code);
-        Assert::isInstanceOf($app, App::class);
+        Assert::isInstanceOf($app, WriteApp::class);
         Assert::eq($code, $app->code());
         Assert::eq($label, $app->label());
     }
@@ -127,9 +126,23 @@ class AppContext implements Context
     }
 
     /**
-     * @Then I should have been warn that the code must be unique
+     * @Then the App :label should have credentials
      */
-    public function iShouldHaveBeenWarnThatTheCodeMustBeUnique()
+    public function theAppShouldHaveCredentials(string $label): void
+    {
+        $code = self::slugify($label);
+
+        $query = new FindAnAppQuery(self::slugify($label));
+        $app = $this->findAnAppHandler->handle($query);
+        Assert::eq($label, $app->label());
+        Assert::notNull($app->clientId());
+        Assert::string($app->secret());
+    }
+
+    /**
+     * @Then I should have been warn that the code is unique
+     */
+    public function iShouldHaveBeenWarnThatTheCodeIsUnique()
     {
         Assert::isInstanceOf($this->violations, ConstraintViolationListException::class);
 

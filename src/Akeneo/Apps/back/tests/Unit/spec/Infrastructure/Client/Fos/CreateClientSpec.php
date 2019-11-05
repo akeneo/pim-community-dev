@@ -18,7 +18,7 @@ class CreateClientSpec extends ObjectBehavior
         $this->beConstructedWith($clientManager);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldBeAnInstanceOf(CreateClient::class);
         $this->shouldImplement(CreateClientInterface::class);
