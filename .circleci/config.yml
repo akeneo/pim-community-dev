@@ -87,17 +87,17 @@ jobs:
                 when: always
           - run:
                 name: Analyzes source code to flag programming errors, bugs, stylistic errors, and suspicious constructs
-                command: make lint-back
+                command: make lint-back CI=1
           - run:
                 name: Code Coupling Detection
-                command: make coupling-back
+                command: make coupling-back CI=1
                 when: always
           - run:
                 name: Unit tests
                 command: make unit-back CI=1
           - run:
                 name: Acceptance tests
-                command: make acceptance-back
+                command: make acceptance-back CI=1
 
                 when: always
           - store_test_results:
@@ -168,15 +168,8 @@ jobs:
             name: Install database
             command: APP_ENV=behat make database
       - run:
-            name: Non critical Behat
-            command: |
-                TESTFILES=$(docker-compose run --rm -T php vendor/bin/behat --list-scenarios -p legacy -s $TESTSUITE | circleci tests split --split-by=timings)
-                .circleci/run_behat.sh $TESTSUITE $TESTFILES
-      - run:
-            name: Critical Behat
-            command: |
-                TESTFILES=$(docker-compose run --rm -T php vendor/bin/behat --list-scenarios -p legacy -s critical | circleci tests split --split-by=timings)
-                .circleci/run_behat.sh critical $TESTFILES
+            name: Behat legacy
+            command: make end-to-end-legacy SUITE=$TESTSUITE CI=1
       - run:
           name: Gather Junit test result files in the same directory to improve the render of failing tests
           command: |
@@ -208,16 +201,16 @@ jobs:
               command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
         - run:
               name: Front linter
-              command: make lint-front
+              command: make lint-front CI=1
         - run:
               name: Front unit tests
-              command: make unit-front
+              command: make unit-front CI=1
         - run:
               name: Front acceptance tests
-              command: make acceptance-front
+              command: make acceptance-front CI=1
         - run:
               name: Front integration tests
-              command: make integration-front
+              command: make integration-front CI=1
 
 workflows:
   version: 2
