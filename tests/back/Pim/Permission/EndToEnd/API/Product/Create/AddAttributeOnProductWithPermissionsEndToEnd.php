@@ -116,7 +116,7 @@ JSON;
     "identifier": "my_product",
     "values": {
         "a_localized_and_scopable_text_area": [
-            {"data": "DE ecommerce", "locale": "de_DE", "scope": "ecommerce"}
+            {"data": "DE ecommerce", "locale": "de_DE", "scope": "tablet"}
         ]
     }
 }
@@ -135,7 +135,7 @@ JSON;
     "identifier": "my_product",
     "values": {
         "a_localized_and_scopable_text_area": [
-            {"data": "10.50", "locale": "fr_FR", "scope": "ecommerce"}
+            {"data": "10.50", "locale": "fr_FR", "scope": "tablet"}
         ]
     }
 }

@@ -198,15 +198,6 @@ class ValuesIntegration extends AbstractSecurityTestCase
         $this->assertSame($product->getValue('a_text')->getData(), 'The text bis');
     }
 
-    public function testCreateAProductWithLocaleNotFound()
-    {
-        $this->expectException(UnknownPropertyException::class);
-        $this->expectExceptionMessage('Attribute "a_localized_and_scopable_text_area" expects an existing and activated locale, "not_found" given.');
-
-        $this->generateToken('mary');
-        $this->createProduct('product', ['values' => ['a_localized_and_scopable_text_area' => [['data' => 'text', 'locale' => 'not_found', 'scope' => 'ecommerce']]]]);
-    }
-
     public function testCreateAProductWithLocaleNotViewable()
     {
         $this->expectException(UnknownPropertyException::class);

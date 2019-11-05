@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace AkeneoTestEnterprise\Pim\WorkOrganization\EndToEnd\Workflow\PublishedProduct;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\Product\AbstractProductTestCase;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
+use AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\Product\AbstractProductTestCase;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
@@ -51,9 +51,9 @@ abstract class AbstractPublishedProductTestCase extends AbstractProductTestCase
     "enabled": true,
     "values": {
         "a_localized_and_scopable_text_area": [
-            { "data": "DE ecommerce", "locale": "de_DE", "scope": "ecommerce" },
+            { "data": "DE ecommerce", "locale": "de_DE", "scope": "tablet" },
             { "data": "EN ecommerce", "locale": "en_US", "scope": "ecommerce" },
-            { "data": "FR ecommerce", "locale": "fr_FR", "scope": "ecommerce" }
+            { "data": "FR ecommerce", "locale": "fr_FR", "scope": "tablet" }
         ],
         "a_multi_select": [
             {"locale":null,"scope":null,"data":["optionA","optionB"]}
