@@ -117,6 +117,7 @@ const getMediaLinkPreviewView = (asset: Asset, context: Context) => {
   const attributeAsMainImage = getAttributeAsMainImage(asset) as NormalizedMediaLinkAttribute;
   switch (attributeAsMainImage.media_type) {
     case MediaTypes.image:
+    case MediaTypes.youtube:
     case MediaTypes.other:
       return (
         <>
