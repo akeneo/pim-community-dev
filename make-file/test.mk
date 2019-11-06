@@ -58,7 +58,7 @@ endif
 .PHONY: end-to-end-back
 end-to-end-back: var/tests/phpunit
 ifeq ($(CI),1)
-	.circleci/run_phpunit.sh . PIM_Integration_Test
+	.circleci/run_phpunit.sh . .circleci/find_phpunit.php End_to_End
 else
 	@echo Run end to end test locally is too long, please use the target define for your bounded context (ex: bounded-context-end-to-end-back)
 endif
