@@ -22,7 +22,7 @@ use Liip\ImagineBundle\Imagine\Data\DataManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 
 /**
- * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
+ * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
 class MediaLinkPdfGenerator implements PreviewGeneratorInterface

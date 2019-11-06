@@ -34,16 +34,6 @@ final class MediaLinkPdfGeneratorTest extends PreviewGeneratorIntegrationTestCas
     /**
      * @test
      */
-    public function it_can_support_media_type_image_of_an_media_link_attribute()
-    {
-        $isSupported = $this->mediaLinkPdfGenerator->supports(self::FILENAME, $this->mediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
-
-        $this->assertTrue($isSupported);
-    }
-
-    /**
-     * @test
-     */
     public function it_can_support_only_supported_type_image_of_an_media_link_attribute()
     {
         $isSupported = $this->mediaLinkPdfGenerator->supports(self::FILENAME, $this->mediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
@@ -68,7 +58,6 @@ final class MediaLinkPdfGeneratorTest extends PreviewGeneratorIntegrationTestCas
      */
     public function it_get_a_preview_for_an_image_media_link_attribute()
     {
-        $this->mediaLinkPdfGenerator->supports('2016/04/Ben-site-web.pdf', $this->mediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
         $previewImage = $this->mediaLinkPdfGenerator->generate(self::FILENAME, $this->mediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
         $this->assertStringContainsString('media/cache/', $previewImage);
@@ -79,7 +68,6 @@ final class MediaLinkPdfGeneratorTest extends PreviewGeneratorIntegrationTestCas
      */
     public function it_get_a_preview_for_an_image_media_link_attribute_from_the_cache()
     {
-        $this->mediaLinkPdfGenerator->supports('2016/04/Site-web-Nico.pdf', $this->mediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
         $previewImage = $this->mediaLinkPdfGenerator->generate(self::FILENAME, $this->mediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
         $this->assertStringContainsString('media/cache/', $previewImage);
