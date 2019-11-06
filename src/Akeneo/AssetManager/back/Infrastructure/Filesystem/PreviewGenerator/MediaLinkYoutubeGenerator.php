@@ -26,7 +26,7 @@ use Liip\ImagineBundle\Imagine\Filter\FilterManager;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  *            // Extract abstract class and use Template class pattern
  */
-class MediaLinkYoutubeGenerator implements PreviewGeneratorInterface
+class MediaLinkYoutubeGenerator extends AbstractPreviewGenerator
 {
     private const YOUTUBE_PREVIEW_URL = 'https://img.youtube.com/vi/%s/hqdefault.jpg';
     public const DEFAULT_IMAGE = 'pim_asset_manager.default_image.image'; // Should change depending on the preview type
@@ -36,30 +36,6 @@ class MediaLinkYoutubeGenerator implements PreviewGeneratorInterface
         PreviewGeneratorRegistry::PREVIEW_TYPE => 'am_url_image_preview',
     ];
 
-    /** @var DataManager  */
-    private $dataManager;
-
-    /** @var CacheManager  */
-    private $cacheManager;
-
-    /** @var FilterManager  */
-    private $filterManager;
-
-    /** @var DefaultImageProviderInterface  */
-    private $defaultImageProvider;
-
-    public function __construct(
-        DataManager $dataManager,
-        CacheManager $cacheManager,
-        FilterManager $filterManager,
-        DefaultImageProviderInterface $defaultImageProvider
-    ) {
-        $this->dataManager = $dataManager;
-        $this->cacheManager = $cacheManager;
-        $this->filterManager = $filterManager;
-        $this->defaultImageProvider = $defaultImageProvider;
-    }
-
     public function supports(string $data, AbstractAttribute $attribute, string $type): bool
     {
         return MediaLinkAttribute::ATTRIBUTE_TYPE === $attribute->getType()
@@ -67,42 +43,18 @@ class MediaLinkYoutubeGenerator implements PreviewGeneratorInterface
                && array_key_exists($type, self::SUPPORTED_TYPES);
     }
 
-    public function generate(string $data, AbstractAttribute $attribute, string $type): string
+    protected function getPreviewType(string $type): string
     {
-        $url = sprintf(self::YOUTUBE_PREVIEW_URL, $data) ;
-        $previewType = self::SUPPORTED_TYPES[$type];
+       return self::SUPPORTED_TYPES[$type];
+    }
 
-        if (!$this->cacheManager->isStored($url, $previewType)) {
-            try {
-                $binary = $this->dataManager->find($previewType, $url);
-            } catch (NotLoadableException $e) {
-                // Should change depending on the preview type
-                return $this->defaultImageProvider->getImageUrl(self::DEFAULT_IMAGE, $previewType);
-            } catch (\LogicException $e) { //Here we catch different levels of exception to display a different default image in the future
-                // Trigerred when the mime type was not the good one
-                // Should change depending on the preview type
-                return $this->defaultImageProvider->getImageUrl(self::DEFAULT_IMAGE, $previewType);
-            } catch (\Exception $e) {
-                // Triggered When a general exception arrised
-                // Should change depending on the preview type
-                return $this->defaultImageProvider->getImageUrl(self::DEFAULT_IMAGE, $previewType);
-            }
+    protected function generateUrl(string $data, AbstractAttribute $attribute): string
+    {
+        return sprintf(self::YOUTUBE_PREVIEW_URL, $data);
+    }
 
-            try {
-                $file = $this->filterManager->applyFilter($binary, $previewType);
-            } catch (\Exception $e) {
-                // Triggered When a general exception arrised
-                // Should change depending on the preview type
-                return $this->defaultImageProvider->getImageUrl(self::DEFAULT_IMAGE, $previewType);
-            }
-
-            $this->cacheManager->store(
-                $file,
-                $url,
-                $previewType
-            );
-        }
-
-        return $this->cacheManager->resolve($url, $previewType);
+    protected function defaultImage(): string
+    {
+        return self::DEFAULT_IMAGE;
     }
 }

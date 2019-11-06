@@ -162,6 +162,7 @@ const getPreviewView = (asset: Asset, context: Context) => {
   }
 };
 
+// TODO: add unit test for this component
 export const Preview = ({asset, context}: PreviewProps) => (
   <Container>
     <Border>{getPreviewView(asset, context)}</Border>
