@@ -5,23 +5,48 @@ import {ThemeProvider} from 'styled-components';
 import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import {AssetPreview} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-preview';
 import {getAssetByCode} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
+import {MediaTypes} from 'akeneoassetmanager/domain/model/attribute/type/media-link/media-type';
+import {MEDIA_LINK_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
+import {IMAGE_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/image';
 
 const context = {locale: 'en_US', channel: 'ecommerce'};
-const assetFamily = {
-  attributes: [
-    {
-      identifier: 'image_packshot_99e561de-5ec8-47ba-833c-42e150fe8b7f',
-      type: 'media_link',
-    },
-  ],
+const mediaLinkImageAttribute = {
+  identifier: 'media_link_image_attribute_identifier',
+  type: MEDIA_LINK_ATTRIBUTE_TYPE,
+  media_type: MediaTypes.image,
 };
+const mediaLinkOtherAttribute = {
+  identifier: 'media_link_other_attribute_identifier',
+  type: MEDIA_LINK_ATTRIBUTE_TYPE,
+  media_type: MediaTypes.other,
+};
+const mediaLinkUnknownAttribute = {
+  identifier: 'media_link_unknown_attribute_identifier',
+  type: MEDIA_LINK_ATTRIBUTE_TYPE,
+  media_type: 'UNKNOWN',
+};
+const imageAttribute = {
+  identifier: 'image_attribute_identifier',
+  type: IMAGE_ATTRIBUTE_TYPE,
+};
+const unknownAttribute = {
+  identifier: 'unknown_attribute_identifier',
+  type: 'UNKNOWN',
+};
+const attributes = [
+  mediaLinkImageAttribute,
+  mediaLinkOtherAttribute,
+  mediaLinkUnknownAttribute,
+  imageAttribute,
+  unknownAttribute,
+];
 const assetCollection = [
   {
     asset_family_identifier: 'packshot',
     code: 'Philips22PDL4906H_pack',
     image: [
       {
-        attribute: 'image_packshot_99e561de-5ec8-47ba-833c-42e150fe8b7f',
+        attribute: 'media_link_image_attribute_identifier',
         locale: null,
         channel: null,
         data: {filePath: 'nice_file_path', originalFilename: ''},
@@ -33,13 +58,16 @@ const assetCollection = [
       required: 3,
       complete: 2,
     },
-    assetFamily,
+    assetFamily: {
+      attributes,
+      attributeAsImage: 'media_link_image_attribute_identifier',
+    },
   },
   {
     code: 'iphone8_pack',
     image: [
       {
-        attribute: 'image_packshot_99e561de-5ec8-47ba-833c-42e150fe8b7f',
+        attribute: 'media_link_other_attribute_identifier',
         locale: null,
         channel: null,
         data: {filePath: 'nice_file_path', originalFilename: ''},
@@ -52,15 +80,19 @@ const assetCollection = [
       complete: 2,
       required: 3,
     },
-    assetFamily,
+    assetFamily: {
+      attributes,
+      attributeAsImage: 'media_link_other_attribute_identifier',
+    },
   },
+
   {
     identifier: 'packshot_iphone7_pack_9c35ba44-e4f9-4a48-8250-4c554e6704a4',
     labels: {en_US: 'iphone7_pack label'},
     code: 'iphone7_pack',
     image: [
       {
-        attribute: 'image_packshot_99e561de-5ec8-47ba-833c-42e150fe8b7f',
+        attribute: 'image_attribute_identifier',
         locale: null,
         channel: null,
         data: {filePath: 'nice_file_path', originalFilename: ''},
@@ -71,35 +103,98 @@ const assetCollection = [
       required: 3,
       complete: 2,
     },
-    assetFamily,
+    assetFamily: {
+      attributes,
+      attributeAsImage: 'image_attribute_identifier',
+    },
+  },
+  {
+    identifier: 'packshot_iphone12_pack_9c35ba44-e4f9-4a48-8250-4c554e6704a4',
+    labels: {en_US: 'iphone12_pack label'},
+    code: 'iphone12_pack',
+    image: [
+      {
+        attribute: 'unknown_attribute_identifier',
+        locale: null,
+        channel: null,
+        data: {filePath: 'nice_file_path', originalFilename: ''},
+      },
+    ],
+    asset_family_identifier: 'packshot',
+    completeness: {
+      required: 3,
+      complete: 2,
+    },
+    assetFamily: {
+      attributes,
+      attributeAsImage: 'unknown_attribute_identifier',
+    },
+  },
+  {
+    code: 'iphone6_pack',
+    image: [
+      {
+        attribute: 'media_link_unknown_attribute_identifier',
+        locale: null,
+        channel: null,
+        data: {filePath: 'nice_file_path', originalFilename: ''},
+      },
+    ],
+    asset_family_identifier: 'packshot',
+    identifier: 'packshot_iphone6_pack_daadf101-ec94-43a1-8609-2fff24d21c39',
+    labels: {en_US: 'iphone6_pack label'},
+    completeness: {
+      complete: 2,
+      required: 3,
+    },
+    assetFamily: {
+      attributes,
+      attributeAsImage: 'media_link_unknown_attribute_identifier',
+    },
   },
 ];
-const attribute = {
-  code: 'packshot',
-  labels: {
-    en_US: 'packshot',
-  },
-  group: 'marketing',
-  isReadOnly: false,
-  referenceDataName: 'packshot',
-};
 
-test('It displays the asset preview of the provided asset code', () => {
-  const initialAssetCode = 'iphone8_pack';
+test.each([
+  ['Philips22PDL4906H_pack', mediaLinkImageAttribute],
+  ['iphone8_pack', mediaLinkOtherAttribute],
+  ['iphone7_pack', imageAttribute],
+  ['iphone12_pack', unknownAttribute],
+])(
+  'It displays the preview of the provided asset code (%s), with attribute: %j',
+  (assetCode: string, productAttribute: any) => {
+    const {container} = render(
+      <ThemeProvider theme={akeneoTheme}>
+        <AssetPreview
+          context={context}
+          assetCollection={assetCollection}
+          initialAssetCode={assetCode}
+          productAttribute={productAttribute}
+          onClose={() => {}}
+        />
+      </ThemeProvider>
+    );
 
-  const {container} = render(
-    <ThemeProvider theme={akeneoTheme}>
-      <AssetPreview
-        context={context}
-        assetCollection={assetCollection}
-        initialAssetCode={initialAssetCode}
-        productAttribute={attribute}
-        onClose={() => {}}
-      />
-    </ThemeProvider>
-  );
+    expect(container.querySelector('[data-role="asset-preview"]')).toHaveAttribute('alt', `${assetCode} label`);
+  }
+);
 
-  expect(container.querySelector('[data-role="asset-preview"]')).toHaveAttribute('alt', 'iphone8_pack label');
+test('It should throw an error when the media type of the product media-link attribute is unknown ', () => {
+  const initialAssetCode = 'iphone6_pack';
+
+  const renderComponent = () =>
+    render(
+      <ThemeProvider theme={akeneoTheme}>
+        <AssetPreview
+          context={context}
+          assetCollection={assetCollection}
+          initialAssetCode={initialAssetCode}
+          productAttribute={mediaLinkUnknownAttribute}
+          onClose={() => {}}
+        />
+      </ThemeProvider>
+    );
+
+  expect(renderComponent).toThrowError('The preview type UNKNOWN is not supported');
 });
 
 test('It can display the previous asset in the collection', () => {
@@ -111,7 +206,7 @@ test('It can display the previous asset in the collection', () => {
         context={context}
         assetCollection={assetCollection}
         initialAssetCode={initialAssetCode}
-        productAttribute={attribute}
+        productAttribute={mediaLinkImageAttribute}
         onClose={() => {}}
       />
     </ThemeProvider>
@@ -131,7 +226,7 @@ test('It can display the previous asset in the collection using the left arrow',
         context={context}
         assetCollection={assetCollection}
         initialAssetCode={initialAssetCode}
-        productAttribute={attribute}
+        productAttribute={mediaLinkImageAttribute}
         onClose={() => {}}
       />
     </ThemeProvider>
@@ -151,7 +246,7 @@ test('It can display the next asset in the collection using the right arrow', ()
         context={context}
         assetCollection={assetCollection}
         initialAssetCode={initialAssetCode}
-        productAttribute={attribute}
+        productAttribute={mediaLinkImageAttribute}
         onClose={() => {}}
       />
     </ThemeProvider>
@@ -171,7 +266,7 @@ test('It can display the next asset in the collection', () => {
         context={context}
         assetCollection={assetCollection}
         initialAssetCode={initialAssetCode}
-        productAttribute={attribute}
+        productAttribute={mediaLinkImageAttribute}
         onClose={() => {}}
       />
     </ThemeProvider>
@@ -192,7 +287,7 @@ test('It can select an asset from the carousel', () => {
         context={context}
         assetCollection={assetCollection}
         initialAssetCode={initialAssetCode}
-        productAttribute={attribute}
+        productAttribute={mediaLinkImageAttribute}
         onClose={() => {}}
       />
     </ThemeProvider>
@@ -212,7 +307,7 @@ test('It should not display the modal when the provided asset code is null', () 
         context={context}
         assetCollection={assetCollection}
         initialAssetCode={initialAssetCode}
-        productAttribute={attribute}
+        productAttribute={mediaLinkImageAttribute}
         onClose={() => {}}
       />
     </ThemeProvider>
@@ -230,7 +325,7 @@ test('It should not display the modal when the provided asset code does not exis
         context={context}
         assetCollection={assetCollection}
         initialAssetCode={initialAssetCode}
-        productAttribute={attribute}
+        productAttribute={mediaLinkImageAttribute}
         onClose={() => {}}
       />
     </ThemeProvider>

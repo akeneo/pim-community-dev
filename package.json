@@ -39,7 +39,7 @@
     "@testing-library/user-event": "^7.1.2",
     "@types/draft-js": "^0.10.25",
     "@types/enzyme": "^3.1.12",
-    "@types/jest": "^22.2.3",
+    "@types/jest": "^24.0.22",
     "@types/styled-components": "^4.1.18",
     "babel-plugin-styled-components": "^1.10.6",
     "cucumber": "^4.0.0",

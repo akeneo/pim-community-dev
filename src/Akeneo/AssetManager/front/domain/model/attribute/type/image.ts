@@ -10,6 +10,8 @@ import {NormalizedAttribute, Attribute, ConcreteAttribute} from 'akeneoassetmana
 import {NormalizedMaxFileSize, MaxFileSize} from 'akeneoassetmanager/domain/model/attribute/type/image/max-file-size';
 import {NormalizedAllowedExtensions, AllowedExtensions} from './image/allowed-extensions';
 
+export const IMAGE_ATTRIBUTE_TYPE = 'image';
+
 export interface NormalizedImageAttribute extends NormalizedAttribute {
   type: 'image';
   allowed_extensions: NormalizedAllowedExtensions;
