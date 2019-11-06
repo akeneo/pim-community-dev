@@ -17,7 +17,7 @@ const ResultCounter = ({resultCount = null}: ResultCountProps) => {
 
   return (
     <Container>
-      {0 < resultCount
+      {1 < resultCount
         ? __('pim_asset_manager.grid.counter', {resultCount})
         : __('pim_asset_manager.grid.counter_empty')}
     </Container>

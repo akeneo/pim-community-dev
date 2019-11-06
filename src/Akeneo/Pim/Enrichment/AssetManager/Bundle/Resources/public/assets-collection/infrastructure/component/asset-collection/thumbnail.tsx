@@ -19,11 +19,7 @@ import {getAssetPreview, MediaPreviewTypes} from 'akeneoassetmanager/tools/media
 const Img = styled.img`
   width: 140px;
   height: 140px;
-  object-fit: cover;
-
-  &:hover {
-    object-fit: contain;
-  }
+  object-fit: contain;
 `;
 
 const Overlay = styled.div`
