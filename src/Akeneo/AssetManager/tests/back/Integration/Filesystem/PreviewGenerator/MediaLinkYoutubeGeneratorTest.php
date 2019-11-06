@@ -15,7 +15,7 @@ use Akeneo\AssetManager\Integration\PreviewGeneratorIntegrationTestCase;
  */
 final class MediaLinkYoutubeGeneratorTest extends PreviewGeneratorIntegrationTestCase
 {
-    protected const YOUTUBE_VIDEO_ID = 'video-id';
+    protected const YOUTUBE_VIDEO_ID = 'youtube-id';
 
     /** @var PreviewGeneratorInterface */
     private $mediaLinkYoutubeGenerator;
@@ -92,14 +92,14 @@ final class MediaLinkYoutubeGeneratorTest extends PreviewGeneratorIntegrationTes
     {
         $fixtures = $this->fixturesLoader
             ->assetFamily('designer')
-            ->withAttributes(['video'])
+            ->withAttributes(['youtube'])
             ->load();
-        $this->youtubeMediaLinkAttribute = $fixtures['attributes']['video'];
+        $this->youtubeMediaLinkAttribute = $fixtures['attributes']['youtube'];
 
         $this->fixturesLoader
             ->asset('designer', 'starck')
             ->withValues([
-                 'video' => [
+                 'youtube' => [
                      [
                          'channel' => null,
                          'locale' => null,

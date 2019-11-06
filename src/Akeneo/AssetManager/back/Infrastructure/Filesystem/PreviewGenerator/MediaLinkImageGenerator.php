@@ -41,7 +41,7 @@ class MediaLinkImageGenerator extends AbstractPreviewGenerator
             && array_key_exists($type, self::SUPPORTED_TYPES);
     }
 
-    function generateUrl(string $data, AbstractAttribute $attribute): string
+    protected function generateUrl(string $data, AbstractAttribute $attribute): string
     {
         return sprintf('%s%s%s', $attribute->getPrefix()->normalize(), $data, $attribute->getSuffix()->normalize());
     }

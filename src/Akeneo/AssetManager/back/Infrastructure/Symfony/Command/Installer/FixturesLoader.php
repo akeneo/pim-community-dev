@@ -633,6 +633,28 @@ class FixturesLoader
                 AttributeValuePerLocale::fromBoolean(false),
                 Prefix::fromString('https://my-stream.com'),
                 Suffix::empty(),
+                MediaType::fromString(MediaType::OTHER)
+            );
+        }
+
+        // Youtube
+        if (in_array('youtube', $this->loadedAttributes)) {
+            $attributes['youtube'] = MediaLinkAttribute::create(
+                $this->attributeRepository->nextIdentifier(
+                    $assetFamilyIdentifier,
+                    AttributeCode::fromString('youtube')
+                ),
+                $assetFamilyIdentifier,
+                AttributeCode::fromString('youtube'),
+                LabelCollection::fromArray([
+                    'en_US' => 'Youtube link',
+                ]),
+                $this->getOrderForAttribute('youtube'),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                Prefix::empty(),
+                Suffix::empty(),
                 MediaType::fromString(MediaType::YOUTUBE)
             );
         }

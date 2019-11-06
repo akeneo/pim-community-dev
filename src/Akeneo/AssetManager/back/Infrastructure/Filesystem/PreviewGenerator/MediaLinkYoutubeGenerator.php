@@ -24,7 +24,6 @@ use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 /**
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
- *            // Extract abstract class and use Template class pattern
  */
 class MediaLinkYoutubeGenerator extends AbstractPreviewGenerator
 {
@@ -45,7 +44,7 @@ class MediaLinkYoutubeGenerator extends AbstractPreviewGenerator
 
     protected function getPreviewType(string $type): string
     {
-       return self::SUPPORTED_TYPES[$type];
+        return self::SUPPORTED_TYPES[$type];
     }
 
     protected function generateUrl(string $data, AbstractAttribute $attribute): string
