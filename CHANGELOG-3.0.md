@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-8944: Add an attribute group permission check on the product variant creation button
+
 # 3.0.51 (2019-10-30)
 
 ## Bug fixes

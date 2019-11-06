@@ -176,8 +176,8 @@ define(
                 this.getEntityParentCode(targetLevel)
                     .then((parentCode) => {
                         this.isVariantProduct(parentCode)
-                            .then((isVariantProduct) => {
-                                if (!this.isCreationGranted(isVariantProduct)) {
+                            .then(async (isVariantProduct) => {
+                                if (!await this.isCreationGranted(isVariantProduct)) {
                                     return;
                                 }
 
@@ -196,15 +196,30 @@ define(
             },
 
             /**
-             * Tests the creation ACL depending on the entity type the user wants to create.
+             * Tests the identifier group permission and the creation ACL depending on the entity type the user wants
+             * to create.
              *
              * @param {boolean} isVariantProduct
              *
              * @returns {boolean}
              */
-            isCreationGranted: function(isVariantProduct) {
-                return (isVariantProduct && SecurityContext.isGranted('pim_enrich_product_create'))
-                    || (!isVariantProduct && SecurityContext.isGranted('pim_enrich_product_model_create'));
+            isCreationGranted: async function(isVariantProduct) {
+                if (!isVariantProduct && SecurityContext.isGranted('pim_enrich_product_model_create')) {
+                    return true;
+                }
+
+                if (!SecurityContext.isGranted('pim_enrich_product_create')) {
+                    return false;
+                }
+
+                const permissions = await FetcherRegistry.getFetcher('permission').fetchAll();
+                const identifierAttributes = await FetcherRegistry.getFetcher('attribute').getIdentifierAttribute();
+
+                const attributeGroupPermissions = permissions.attribute_groups.find(
+                    ({code}) => code === identifierAttributes.group
+                );
+
+                return attributeGroupPermissions.edit;
             },
 
             /**
