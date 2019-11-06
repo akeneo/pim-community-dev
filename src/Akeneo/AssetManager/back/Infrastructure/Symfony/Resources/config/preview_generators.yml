@@ -12,6 +12,16 @@ services:
         tags:
             - { name: akeneo_assetmanager.preview_generator }
 
+    akeneo_assetmanager.infrastructure.generator.media_link_pdf_generator:
+        class: Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\MediaLinkPdfGenerator
+        arguments:
+            - '@liip_imagine.data.manager'
+            - '@liip_imagine.cache.manager'
+            - '@liip_imagine.filter.manager'
+            - '@pim_asset.provider.default_image'
+        tags:
+            - { name: akeneo_assetmanager.preview_generator }
+
     akeneo_assetmanager.infrastructure.generator.media_link_image_generator:
         class: Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\MediaLinkImageGenerator
         arguments:
@@ -28,3 +38,16 @@ services:
             - '@pim_asset.provider.default_image'
         tags:
             - { name: akeneo_assetmanager.preview_generator }
+
+    akeneo_assetmanager.infrastructure.loader.stream_pdf_loader:
+        class: Akeneo\AssetManager\Infrastructure\Filesystem\Loader\StreamPdfLoader
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.loader.stream_loader'
+            - '@pim_asset.provider.default_image'
+        tags:
+            - { name: liip_imagine.binary.loader, loader: stream_pdf_loader }
+
+    akeneo_assetmanager.infrastructure.loader.stream_loader:
+            class: 'Liip\ImagineBundle\Binary\Loader\StreamLoader'
+            arguments:
+                - ''

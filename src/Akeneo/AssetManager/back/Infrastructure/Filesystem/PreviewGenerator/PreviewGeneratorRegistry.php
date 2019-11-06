@@ -25,7 +25,7 @@ class PreviewGeneratorRegistry implements PreviewGeneratorInterface
     private $previewGenerators;
 
     public const THUMBNAIL_TYPE = 'thumbnail';
-    public const THUMBNAIL_SMALL_TYPE = 'thumbnail';
+    public const THUMBNAIL_SMALL_TYPE = 'thumbnail_small';
     public const PREVIEW_TYPE = 'preview';
 
     public function register(PreviewGeneratorInterface $previewGenerator): void

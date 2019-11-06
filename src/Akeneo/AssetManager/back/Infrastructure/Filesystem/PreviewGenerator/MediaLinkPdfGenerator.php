@@ -22,16 +22,16 @@ use Liip\ImagineBundle\Imagine\Data\DataManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 
 /**
- * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
+ * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class MediaLinkImageGenerator implements PreviewGeneratorInterface
+class MediaLinkPdfGenerator implements PreviewGeneratorInterface
 {
-    private const DEFAULT_IMAGE = 'pim_asset_manager.default_image.image'; // Should change depending on the preview type
+    public const DEFAULT_IMAGE = 'pim_asset_manager.default_image.image'; // Should change depending on the preview type
     public const SUPPORTED_TYPES = [
-        PreviewGeneratorRegistry::THUMBNAIL_TYPE => 'am_url_image_thumbnail',
-        PreviewGeneratorRegistry::THUMBNAIL_SMALL_TYPE => 'am_url_image_thumbnail',
-        PreviewGeneratorRegistry::PREVIEW_TYPE => 'am_url_image_preview',
+        PreviewGeneratorRegistry::THUMBNAIL_TYPE => 'am_url_pdf_thumbnail',
+        PreviewGeneratorRegistry::THUMBNAIL_SMALL_TYPE => 'am_url_pdf_thumbnail',
+        PreviewGeneratorRegistry::PREVIEW_TYPE => 'am_url_pdf_preview',
     ];
 
     /** @var DataManager  */
@@ -61,7 +61,7 @@ class MediaLinkImageGenerator implements PreviewGeneratorInterface
     public function supports(string $data, AbstractAttribute $attribute, string $type): bool
     {
         return MediaLinkAttribute::ATTRIBUTE_TYPE === $attribute->getType()
-               && MediaType::IMAGE === $attribute->getMediaType()->normalize()
+               && MediaType::PDF === $attribute->getMediaType()->normalize()
                && array_key_exists($type, self::SUPPORTED_TYPES);
     }
 

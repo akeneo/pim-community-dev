@@ -593,6 +593,28 @@ class FixturesLoader
             );
         }
 
+        // NOTICE
+        if (in_array('notice', $this->loadedAttributes)) {
+            $attributes['notice'] = MediaLinkAttribute::create(
+                $this->attributeRepository->nextIdentifier(
+                    $assetFamilyIdentifier,
+                    AttributeCode::fromString('notice')
+                ),
+                $assetFamilyIdentifier,
+                AttributeCode::fromString('notice'),
+                LabelCollection::fromArray([
+                    'en_US' => 'Nickname',
+                ]),
+                $this->getOrderForAttribute('notice'),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                Prefix::fromString('https://www.akeneo.com/wp-content/uploads/'),
+                Suffix::empty(),
+                MediaType::fromString(MediaType::PDF)
+            );
+        }
+
         // VIDEO
         if (in_array('video', $this->loadedAttributes)) {
             $attributes['video'] = MediaLinkAttribute::create(

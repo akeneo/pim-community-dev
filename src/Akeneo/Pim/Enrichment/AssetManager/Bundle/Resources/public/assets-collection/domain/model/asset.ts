@@ -39,6 +39,8 @@ const createEmptyImage = (): ImageValue => ({
 });
 const createEmptyImageCollection = (): ImageCollection => [createEmptyImage()];
 export type Completeness = NormalizedCompleteness;
+
+export const assetHasCompleteness = (asset: Asset) => asset.completeness.required > 0;
 export const getCompletenessPercentage = (completeness: Completeness) =>
   Math.floor((completeness.complete / completeness.required) * 100);
 
