@@ -167,7 +167,7 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
 
     /**
      * @expectedException \Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException
-     * @expectedExceptionMessage Product "product" cannot be updated. It should be at least in an own category
+     * @expectedExceptionMessage Product "product" cannot be updated. You are only allowed to suggest proposals on this product
      */
     public function testFailToUpdateACategoryOnAProductOnlyViewable()
     {
@@ -179,7 +179,7 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
 
     /**
      * @expectedException \Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException
-     * @expectedExceptionMessage Product "product" cannot be updated. It should be at least in an own category
+     * @expectedExceptionMessage Product "product" cannot be updated. You are only allowed to suggest proposals on this product
      */
     public function testFailToUpdateGroupsOnAProductOnlyViewable()
     {
@@ -191,7 +191,7 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
 
     /**
      * @expectedException \Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException
-     * @expectedExceptionMessage Product "product" cannot be updated. It should be at least in an own category
+     * @expectedExceptionMessage Product "product" cannot be updated. You are only allowed to suggest proposals on this product
      */
     public function testFailToUpdateEnabledOnAProductOnlyViewable()
     {
@@ -203,7 +203,7 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
 
     /**
      * @expectedException \Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException
-     * @expectedExceptionMessage Product "product" cannot be updated. It should be at least in an own category
+     * @expectedExceptionMessage Product "product" cannot be updated. You are only allowed to suggest proposals on this product
      */
     public function testFailToUpdateFamilyOnAProductOnlyViewable()
     {
@@ -215,7 +215,7 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
 
     /**
      * @expectedException \Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException
-     * @expectedExceptionMessage Product "product" cannot be updated. It should be at least in an own category
+     * @expectedExceptionMessage Product "product" cannot be updated. You are only allowed to suggest proposals on this product
      */
     public function testFailToUpdateAssociationsOnAProductOnlyViewable()
     {
@@ -231,7 +231,7 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
 
     /**
      * @expectedException \Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException
-     * @expectedExceptionMessage Product "product" cannot be updated. It should be at least in an own category
+     * @expectedExceptionMessage Product "product" cannot be updated. You are only allowed to suggest proposals on this product
      */
     public function testFailToUpdateValuesOnAProductOnlyViewable()
     {

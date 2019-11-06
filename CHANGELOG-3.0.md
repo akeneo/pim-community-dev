@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-8945: Fix unclear error message on product updater
+
 # 3.0.51 (2019-10-30)
 
 # 3.0.50 (2019-10-28)
