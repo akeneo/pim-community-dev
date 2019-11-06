@@ -45,3 +45,20 @@ acceptance-front: asset-manager-acceptance-front
 .PHONY: integration-front
 integration-front:
 	$(YARN_RUN) integration
+
+.PHONY: integration-back
+integration-back: var/tests/phpunit franklin-insights-integration-back asset-manager-integration-back reference-entity-integration-back
+ifeq ($(CI),1)
+	vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh . vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php PIM_Integration_Test
+else
+	${PHP_RUN} vendor/bin/phpunit -c . --testsuite PIM_Integration_Test $(O)
+endif
+
+### End to end tests
+.PHONY: end-to-end-back
+end-to-end-back: var/tests/phpunit
+ifeq ($(CI),1)
+	vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh . vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php End_to_End
+else
+	${PHP_RUN} vendor/bin/phpunit -c . --testsuite End_to_End $(O)
+endif

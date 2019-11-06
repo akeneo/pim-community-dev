@@ -25,3 +25,11 @@ reference-entity-acceptance-back:
 .PHONY: reference-entity-acceptance-front
 reference-entity-acceptance-front:
 	$(YARN_RUN) acceptance-re
+
+.PHONY: reference-entity-integration-back
+reference-entity-integration-back: var/tests/phpunit
+ifeq ($(CI),1)
+	vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh src/Akeneo/ReferenceEntity/tests/back vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php ReferenceEntity_Integration_Test
+else
+	${PHP_RUN} vendor/bin/phpunit -c src/Akeneo/ReferenceEntity/tests/back --testsuite ReferenceEntity_Integration_Test $(O)
+endif

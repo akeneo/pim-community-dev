@@ -36,9 +36,13 @@ franklin-insights-unit-front-watch:
 franklin-insights-acceptance:
 	$(PHP_EXEC) vendor/bin/behat -p acceptance -s franklin-insights
 
-.PHONY: franklin-insights-integration
-franklin-insights-integration:
-	$(PHP_EXEC) vendor/bin/phpunit --testsuite=Franklin_Insights --testdox
+.PHONY: franklin-insights-integration-back
+franklin-insights-integration-back:
+ifeq ($(CI),1)
+	vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh . vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php Franklin_Insights
+else
+	${PHP_RUN} vendor/bin/phpunit -c . --testsuite Franklin_Insights --testdox $(O)
+endif
 
 .PHONY: franklin-insights-end-to-end
 franklin-insights-end-to-end:
@@ -52,4 +56,4 @@ franklin-insights-cs-fix:
 	$(YARN_EXEC) lint-fix
 
 .PHONY: franklin-insights-tests
-franklin-insights-tests: franklin-insights-coupling-back franklin-insights-lint-back franklin-insights-lint-front franklin-insights-unit franklin-insights-unit-front franklin-insights-acceptance franklin-insights-integration franklin-insights-end-to-end
+franklin-insights-tests: franklin-insights-coupling-back franklin-insights-lint-back franklin-insights-lint-front franklin-insights-unit franklin-insights-unit-front franklin-insights-acceptance franklin-insights-integration-back franklin-insights-end-to-end

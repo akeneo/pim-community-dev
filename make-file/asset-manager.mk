@@ -25,3 +25,11 @@ asset-manager-acceptance-back: var/tests/behat/asset-manager
 .PHONY: asset-manager-acceptance-front
 asset-manager-acceptance-front:
 	$(YARN_RUN) acceptance-am
+
+.PHONY: asset-manager-integration-back
+asset-manager-integration-back: var/tests/phpunit
+ifeq ($(CI),1)
+	vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh src/Akeneo/AssetManager/tests/back vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php AssetFamily_Integration_Test
+else
+	${PHP_RUN} vendor/bin/phpunit -c src/Akeneo/AssetManager/tests/back --testsuite AssetFamily_Integration_Test $(O)
+endif
