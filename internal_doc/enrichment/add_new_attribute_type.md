@@ -60,6 +60,33 @@ A range value will be defined as an array, with `min` and `max` as keys.
 The factories are here to create localizable and scopable values, linked to a specific attribute.
 
 ```php
+<?php # src/Acme/RangeBundle/Product/Value/RangeValue.php
+
+namespace Acme\RangeBundle\Product\Value;
+
+use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractValue;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+
+class RangeValue extends AbstractValue
+{
+    public function isEqual(ValueInterface $value) : bool
+    {
+        return $value instanceof RangeValue && $value->getData() === $this->getData();
+    }
+
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    public function __toString() : string
+    {
+        return sprintf('[%s...%s]', $this->data['min'] ?? '', $this->data['max'] ?? '');
+    }
+}
+```
+
+```php
 <?php # src/Acme/RangeBundle/Product/Factory/Value/RangeValueFactory.php
 
 namespace Acme\RangeBundle\Product\Factory\Value;
@@ -221,7 +248,7 @@ You'll now want to properly index the values in the search engine (Elasticsearch
 }
 ```
 
-For this you will just need to create the adequate normalizer:
+For this you will need to create the adequate normalizer:
 
 ```php
 <?php #src/Acme/RangeBundle/Product/Normalizer/Indexing/Value/RangeValueNormalizer.php
@@ -229,24 +256,16 @@ For this you will just need to create the adequate normalizer:
 namespace Acme\RangeBundle\Product\Normalizer\Indexing\Value;
 
 use Acme\RangeBundle\AttributeType\RangeType;
+use Acme\RangeBundle\Product\Value\RangeValue;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\AbstractProductValueNormalizer;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 
 class RangeValueNormalizer extends AbstractProductValueNormalizer implements CacheableSupportsMethodInterface 
 {
-    public function supportsNormalization($data,$format = null)
+    public function supportsNormalization($data, $format = null)
     {
-        if (! $data instanceof ValueInterface) {
-            return false;
-        }
-
-        $attribute = $this->getAttributes->forCode($data->getAttributeCode());
-
-        return null !== $attribute && RangeType::RANGE === $attribute->backendType() && (
-                $format === ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
-            );
+        return $data instanceof RangeValue;
     }
     
     protected function getNormalizedData(ValueInterface $value)
@@ -270,8 +289,11 @@ class RangeValueNormalizer extends AbstractProductValueNormalizer implements Cac
             - { name: pim_indexing_serializer.normalizer, priority: 90 }
 ```
 
-At some point, you'll probably want to perform searches on these values (although the implementation of the filters 
-is not described in this guide). In order to do this, you'll have to tell Elasticsearch how to manage your values,
+At some point, you'll probably want to perform searches on these values.
+
+**Warning:** this documentation does not describe the implementation of the filters (neither on backend nor frontend side)
+
+In order to do this, you'll have to tell Elasticsearch how to manage your values,
 (here we want min and max considered as numbers), by registering new dynamic templates:
 
 ```yaml
