@@ -154,41 +154,29 @@ const assetCollection = [
   },
 ];
 
-test('It displays the media-link-image preview of the provided asset code', () => {
-  const initialAssetCode = 'Philips22PDL4906H_pack';
+test.each([
+  ['Philips22PDL4906H_pack', mediaLinkImageAttribute],
+  ['iphone8_pack', mediaLinkOtherAttribute],
+  ['iphone7_pack', imageAttribute],
+  ['iphone12_pack', unknownAttribute],
+])(
+  'It displays the preview of the provided asset code (%s), with attribute: %j',
+  (assetCode: string, productAttribute: any) => {
+    const {container} = render(
+      <ThemeProvider theme={akeneoTheme}>
+        <AssetPreview
+          context={context}
+          assetCollection={assetCollection}
+          initialAssetCode={assetCode}
+          productAttribute={productAttribute}
+          onClose={() => {}}
+        />
+      </ThemeProvider>
+    );
 
-  const {container} = render(
-    <ThemeProvider theme={akeneoTheme}>
-      <AssetPreview
-        context={context}
-        assetCollection={assetCollection}
-        initialAssetCode={initialAssetCode}
-        productAttribute={mediaLinkImageAttribute}
-        onClose={() => {}}
-      />
-    </ThemeProvider>
-  );
-
-  expect(container.querySelector('[data-role="asset-preview"]')).toHaveAttribute('alt', 'Philips22PDL4906H_pack label');
-});
-
-test('It displays the media-link-other preview of the provided asset code', () => {
-  const initialAssetCode = 'iphone8_pack';
-
-  const {container} = render(
-    <ThemeProvider theme={akeneoTheme}>
-      <AssetPreview
-        context={context}
-        assetCollection={assetCollection}
-        initialAssetCode={initialAssetCode}
-        productAttribute={mediaLinkOtherAttribute}
-        onClose={() => {}}
-      />
-    </ThemeProvider>
-  );
-
-  expect(container.querySelector('[data-role="asset-preview"]')).toHaveAttribute('alt', 'iphone8_pack label');
-});
+    expect(container.querySelector('[data-role="asset-preview"]')).toHaveAttribute('alt', `${assetCode} label`);
+  }
+);
 
 test('It should throw an error when the media type of the product media-link attribute is unknown ', () => {
   const initialAssetCode = 'iphone6_pack';
@@ -207,42 +195,6 @@ test('It should throw an error when the media type of the product media-link att
     );
 
   expect(renderComponent).toThrowError('The preview type UNKNOWN is not supported');
-});
-
-test('It displays the image preview of the provided asset code', () => {
-  const initialAssetCode = 'iphone7_pack';
-
-  const {container} = render(
-    <ThemeProvider theme={akeneoTheme}>
-      <AssetPreview
-        context={context}
-        assetCollection={assetCollection}
-        initialAssetCode={initialAssetCode}
-        productAttribute={imageAttribute}
-        onClose={() => {}}
-      />
-    </ThemeProvider>
-  );
-
-  expect(container.querySelector('[data-role="asset-preview"]')).toHaveAttribute('alt', 'iphone7_pack label');
-});
-
-test('It displays the default preview of the provided asset code when the product attribute is of unknown type', () => {
-  const initialAssetCode = 'iphone12_pack';
-
-  const {container} = render(
-    <ThemeProvider theme={akeneoTheme}>
-      <AssetPreview
-        context={context}
-        assetCollection={assetCollection}
-        initialAssetCode={initialAssetCode}
-        productAttribute={unknownAttribute}
-        onClose={() => {}}
-      />
-    </ThemeProvider>
-  );
-
-  expect(container.querySelector('[data-role="asset-preview"]')).toHaveAttribute('alt', 'iphone12_pack label');
 });
 
 test('It can display the previous asset in the collection', () => {
