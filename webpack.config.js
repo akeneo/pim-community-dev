@@ -13,7 +13,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const isProd = process.argv && process.argv.indexOf('--env=prod') > -1;
 const {getModulePaths, createModuleRegistry} = require('./frontend/webpack/requirejs-utils');
 const {aliases, config} = getModulePaths(rootDir, __dirname);
-const JsonSchemaPlugin = require('./frontend/webpack/json-schema-plugin');
+const JsonSchemaResolverPlugin = require('./frontend/webpack/json-schema/resolver-plugin');
 
 createModuleRegistry(Object.keys(aliases), rootDir);
 
@@ -69,7 +69,10 @@ const webpackConfig = {
     symlinks: false,
     alias: _.mapKeys(aliases, (path, key) => `${key}$`),
     modules: [path.resolve('./web/bundles'), path.resolve('./node_modules')],
-    extensions: ['.js', '.json', '.ts', '.tsx']
+    extensions: ['.js', '.json', '.ts', '.tsx'],
+    plugins: [
+      new JsonSchemaResolverPlugin(),
+    ],
   },
   module: {
     rules: [
@@ -204,12 +207,12 @@ const webpackConfig = {
         ],
       },
 
-      // Compile JSON schema to typescript
+      // Compile JSON schema to typescript interfaces
       {
         test: /\.schema\.json$/,
         use: [
           {
-            loader: path.resolve(__dirname, 'frontend/webpack/json-schema-loader'),
+            loader: path.resolve(__dirname, 'frontend/webpack/json-schema/loader'),
           },
         ],
       },
@@ -245,8 +248,6 @@ const webpackConfig = {
       'process.env.NODE_ENV': isProd ? JSON.stringify('production') : JSON.stringify('development'),
       'process.env.EDITION': JSON.stringify(process.env.EDITION),
     }),
-
-    new JsonSchemaPlugin(),
   ],
 };
 
