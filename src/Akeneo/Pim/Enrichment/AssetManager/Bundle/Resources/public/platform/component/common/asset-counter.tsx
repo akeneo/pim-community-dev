@@ -18,7 +18,7 @@ const AssetCounter = ({resultCount = null}: ResultCountProps) => {
 
   return (
     <Container>
-      {0 < resultCount
+      {1 < resultCount
         ? __('pim_asset_manager.asset_collection.asset_count', {resultCount})
         : __('pim_asset_manager.asset_collection.asset_count_empty')}
     </Container>

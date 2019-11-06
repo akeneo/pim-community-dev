@@ -18,11 +18,7 @@ const AssetThumbnail = styled.img<{highlighted: boolean}>`
   height: 80px;
   margin: 20px 20px 0 0;
   ${(props: ThemedProps<{highlighted: boolean}>) => !props.highlighted && `opacity: 0.6`};
-  object-fit: cover;
-
-  &:hover {
-    object-fit: contain;
-  }
+  object-fit: contain;
 `;
 
 const Header = styled.div`
