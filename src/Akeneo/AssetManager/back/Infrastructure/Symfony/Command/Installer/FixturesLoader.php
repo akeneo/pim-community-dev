@@ -633,7 +633,7 @@ class FixturesLoader
                 AttributeValuePerLocale::fromBoolean(false),
                 Prefix::fromString('https://my-stream.com'),
                 Suffix::empty(),
-                MediaType::fromString(MediaType::OTHER)
+                MediaType::fromString(MediaType::YOUTUBE)
             );
         }
 

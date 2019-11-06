@@ -24,14 +24,16 @@ use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 /**
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
+ *            // Extract abstract class and use Template class pattern
  */
-class MediaLinkPdfGenerator implements PreviewGeneratorInterface
+class MediaLinkYoutubeGenerator implements PreviewGeneratorInterface
 {
+    private const YOUTUBE_PREVIEW_URL = 'https://img.youtube.com/vi/%s/hqdefault.jpg';
     public const DEFAULT_IMAGE = 'pim_asset_manager.default_image.image'; // Should change depending on the preview type
     public const SUPPORTED_TYPES = [
-        PreviewGeneratorRegistry::THUMBNAIL_TYPE => 'am_url_pdf_thumbnail',
-        PreviewGeneratorRegistry::THUMBNAIL_SMALL_TYPE => 'am_url_pdf_thumbnail',
-        PreviewGeneratorRegistry::PREVIEW_TYPE => 'am_url_pdf_preview',
+        PreviewGeneratorRegistry::THUMBNAIL_TYPE => 'am_url_image_thumbnail',
+        PreviewGeneratorRegistry::THUMBNAIL_SMALL_TYPE => 'am_url_image_thumbnail',
+        PreviewGeneratorRegistry::PREVIEW_TYPE => 'am_url_image_preview',
     ];
 
     /** @var DataManager  */
@@ -61,13 +63,13 @@ class MediaLinkPdfGenerator implements PreviewGeneratorInterface
     public function supports(string $data, AbstractAttribute $attribute, string $type): bool
     {
         return MediaLinkAttribute::ATTRIBUTE_TYPE === $attribute->getType()
-               && MediaType::PDF === $attribute->getMediaType()->normalize()
+               && MediaType::YOUTUBE === $attribute->getMediaType()->normalize()
                && array_key_exists($type, self::SUPPORTED_TYPES);
     }
 
     public function generate(string $data, AbstractAttribute $attribute, string $type): string
     {
-        $url = sprintf('%s%s%s', $attribute->getPrefix()->normalize(), $data, $attribute->getSuffix()->normalize()) ;
+        $url = sprintf(self::YOUTUBE_PREVIEW_URL, $data) ;
         $previewType = self::SUPPORTED_TYPES[$type];
 
         if (!$this->cacheManager->isStored($url, $previewType)) {
