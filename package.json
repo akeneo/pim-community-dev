@@ -82,6 +82,7 @@
     "extra-watch-webpack-plugin": "^1.0.3",
     "imports-loader": "0.8.0",
     "jquery": "3.4.0",
+    "json-schema-to-typescript": "^7.1.0",
     "less": "^3.9.0",
     "loader-utils": "1.2.3",
     "lodash": "4.17.14",
