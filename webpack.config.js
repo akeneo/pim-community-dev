@@ -12,6 +12,7 @@ const ExtraWatchWebpackPlugin = require('extra-watch-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const isProd = process.argv && process.argv.indexOf('--env=prod') > -1;
 const {getModulePaths, createModuleRegistry} = require('./frontend/webpack/requirejs-utils');
+const JsonSchemaResolverPlugin = require('./frontend/webpack/json-schema/json-schema-resolver-plugin');
 const {aliases, config} = getModulePaths(rootDir, __dirname);
 
 createModuleRegistry(Object.keys(aliases), rootDir);
@@ -68,7 +69,11 @@ const webpackConfig = {
     symlinks: false,
     alias: _.mapKeys(aliases, (path, key) => `${key}$`),
     modules: [path.resolve('./public/bundles'), path.resolve('./node_modules')],
-    extensions: ['.js', '.json', '.ts', '.tsx']
+    extensions: ['.js', '.json', '.ts', '.tsx'],
+    plugins: [
+      // Ensures typescript interfaces generated from JSON schemas are present
+      new JsonSchemaResolverPlugin(),
+    ]
   },
   module: {
     rules: [
@@ -180,6 +185,16 @@ const webpackConfig = {
         options: {
           outputPath: 'assets'
         },
+      },
+
+      // Compile JSON schema to typescript interfaces
+      {
+        test: /\.schema\.json$/,
+        use: [
+          {
+            loader: path.resolve(__dirname, 'frontend/webpack/json-schema/loader'),
+          },
+        ],
       },
 
       // Process the typescript loader files
