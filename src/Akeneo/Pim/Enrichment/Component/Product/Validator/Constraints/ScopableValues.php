@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class ScopableValues extends Constraint
 {
-    public $unknownScopeMessage = 'Value "%attribute_code%" expects an existing channel, "%channel%" given';
+    public $unknownScopeMessage = 'Attribute "%attribute_code%" expects an existing scope, "%channel%" given.';
 
     /**
      * {@inheritdoc}

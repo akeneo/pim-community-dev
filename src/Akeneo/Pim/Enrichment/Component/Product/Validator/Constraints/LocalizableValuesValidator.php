@@ -2,7 +2,6 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -72,6 +71,9 @@ final class LocalizableValuesValidator extends ConstraintValidator
 
             if ($localizableValue->isScopable()) {
                 $channel = $this->channelRepository->findOneByIdentifier($localizableValue->getScopeCode());
+                // this validator is not responsible for checking the existence of the channel (it is the responsibility
+                // of `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ScopableValuesValidator`),
+                // hence the `null !== $channel` test
                 if (null !== $channel && !in_array($localizableValue->getLocaleCode(), $channel->getLocaleCodes())) {
                     $this->context->buildViolation(
                         $constraint->invalidLocaleForChannelMessage,

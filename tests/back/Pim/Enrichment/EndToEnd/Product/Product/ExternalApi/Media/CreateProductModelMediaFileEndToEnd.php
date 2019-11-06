@@ -310,7 +310,7 @@ JSON;
     "errors": [
         {
             "property": "values",
-            "message": "Value \"a_localizable_scopable_image\" expects an existing channel, \"Oumuamua\" given",
+            "message": "Attribute \"a_localizable_scopable_image\" expects an existing scope, \"Oumuamua\" given.",
             "attribute": "a_localizable_scopable_image",
             "locale": "en_US",
             "scope": "Oumuamua"
@@ -348,7 +348,7 @@ JSON;
     "errors": [
         {
             "property": "values",
-            "message": "Attribute \"a_localizable_scopable_image\" expects an existing and activated locale, \"Esperanto\" given",
+            "message": "Attribute \"a_localizable_scopable_image\" expects an existing and activated locale, \"Esperanto\" given.",
             "attribute": "a_localizable_scopable_image",
             "locale": "Esperanto",
             "scope": "tablet"

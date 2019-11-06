@@ -11,13 +11,13 @@ use Symfony\Component\Validator\Constraint;
 class LocalizableValues extends Constraint
 {
     /** @var string */
-    public $nonActiveLocaleMessage = 'Attribute "%attribute_code%" expects an existing and activated locale, "%invalid_locale%" given';
+    public $nonActiveLocaleMessage = 'Attribute "%attribute_code%" expects an existing and activated locale, "%invalid_locale%" given.';
 
     /** @var string */
-    public $invalidLocaleForChannelMessage = 'Attribute "%attribute_code%" expects a valid locale, "%invalid_locale%" is not bound to channel "%channel_code%"';
+    public $invalidLocaleForChannelMessage = 'Attribute "%attribute_code%" expects a valid locale, "%invalid_locale%" is not bound to channel "%channel_code%".';
 
     /** @var string */
-    public $invalidLocaleSpecificMessage = '"%invalid_locale%" is not part of the available locales for the locale specific attribute "%attribute_code%"';
+    public $invalidLocaleSpecificMessage = '"%invalid_locale%" is not part of the available locales for the locale specific attribute "%attribute_code%".';
 
     /**
      * {@inheritdoc}
