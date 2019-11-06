@@ -6,15 +6,17 @@ namespace Akeneo\Apps\Tests\Acceptance\Context;
 
 use Akeneo\Apps\Application\Command\CreateAppCommand;
 use Akeneo\Apps\Application\Command\CreateAppHandler;
+use Akeneo\Apps\Application\Command\UpdateAppCommand;
+use Akeneo\Apps\Application\Command\UpdateAppHandler;
 use Akeneo\Apps\Application\Query\FetchAppsHandler;
 use Akeneo\Apps\Application\Query\FindAnAppHandler;
 use Akeneo\Apps\Application\Query\FindAnAppQuery;
 use Akeneo\Apps\Domain\Exception\ConstraintViolationListException;
-use Akeneo\Apps\Domain\Model\Read\App;
 use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
 use Akeneo\Apps\Domain\Model\Write\App as WriteApp;
 use Akeneo\Apps\Infrastructure\Persistence\InMemory\Repository\InMemoryAppRepository;
 use Behat\Behat\Context\Context;
+use Behat\Gherkin\Node\TableNode;
 use Webmozart\Assert\Assert;
 
 /**
@@ -28,18 +30,21 @@ class AppContext implements Context
     private $fetchAppsHandler;
     private $findAnAppHandler;
     private $createAppHandler;
+    private $updateAppHandler;
     private $violations;
 
     public function __construct(
         InMemoryAppRepository $appRepository,
         FetchAppsHandler $fetchAppsHandler,
         FindAnAppHandler $findAnAppHandler,
-        CreateAppHandler $createAppHandler
+        CreateAppHandler $createAppHandler,
+        UpdateAppHandler $updateAppHandler
     ) {
         $this->appRepository = $appRepository;
         $this->fetchAppsHandler = $fetchAppsHandler;
         $this->findAnAppHandler = $findAnAppHandler;
         $this->createAppHandler = $createAppHandler;
+        $this->updateAppHandler = $updateAppHandler;
     }
 
     /**
@@ -52,9 +57,6 @@ class AppContext implements Context
 
     /**
      * @Given the :flowType App :label has been created
-     *
-     * @param string $flowType
-     * @param string $label
      */
     public function theAppHasBeenCreated(string $flowType, string $label): void
     {
@@ -76,9 +78,6 @@ class AppContext implements Context
 
     /**
      * @When I create the :flowType App :label
-     *
-     * @param string $flowType
-     * @param string $label
      */
     public function iCreateTheApp(string $flowType, string $label): void
     {
@@ -91,9 +90,24 @@ class AppContext implements Context
     }
 
     /**
+     * @When I modify the App :label with:
+     */
+    public function iChangeTheOfTheAppBy(string $label, TableNode $table)
+    {
+        $code = self::slugify($label);
+        $newLabel = $table->getRow(1)[0];
+        $newFlowType = $table->getRow(1)[1];
+
+        try {
+            $command = new UpdateAppCommand($code, $newLabel, $newFlowType);
+            $this->updateAppHandler->handle($command);
+        } catch (ConstraintViolationListException $violationList) {
+            $this->violations = $violationList;
+        }
+    }
+
+    /**
      * @When I find the App :label
-     *
-     * @param string $label
      */
     public function iFindTheApp(string $label): void
     {
@@ -110,15 +124,13 @@ class AppContext implements Context
         $code = self::slugify($label);
 
         $app = $this->appRepository->findOneByCode($code);
+
         Assert::isInstanceOf($app, WriteApp::class);
-        Assert::eq($code, $app->code());
-        Assert::eq($label, $app->label());
+        Assert::eq($code, (string) $app->code());
     }
 
     /**
      * @Then There should be :count Apps
-     *
-     * @param int $count
      */
     public function thereShouldBeApps(int $count): void
     {
@@ -130,13 +142,31 @@ class AppContext implements Context
      */
     public function theAppShouldHaveCredentials(string $label): void
     {
-        $code = self::slugify($label);
-
         $query = new FindAnAppQuery(self::slugify($label));
         $app = $this->findAnAppHandler->handle($query);
         Assert::eq($label, $app->label());
         Assert::notNull($app->clientId());
         Assert::string($app->secret());
+    }
+
+    /**
+     * @Then the App :label label should be :expectedLabel
+     */
+    public function theAppLabelShouldBe(string $label, string $expectedLabel): void
+    {
+        $app = $this->appRepository->findOneByCode(self::slugify($label));
+
+        Assert::eq($expectedLabel, (string) $app->label());
+    }
+
+    /**
+     * @Then the App :label flow type should be :expectedFlowType
+     */
+    public function theAppFlowTypeShouldBe(string $label, string $expectedFlowType): void
+    {
+        $app = $this->appRepository->findOneByCode(self::slugify($label));
+
+        Assert::eq(self::defineFlowType($expectedFlowType), (string) $app->flowType());
     }
 
     /**

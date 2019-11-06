@@ -17,8 +17,8 @@ apps-integration-back:
 apps-back:
 	make apps-coupling-back
 	make apps-unit-back
-	make apps-integration-back
 	make apps-acceptance-back
+	make apps-integration-back
 
 # Tests Front
 

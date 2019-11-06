@@ -55,4 +55,15 @@ class AppWithCredentials
     {
         return $this->secret;
     }
+
+    public function normalize(): array
+    {
+        return [
+            'code' => $this->code,
+            'label' => $this->label,
+            'flow_type' => $this->flowType,
+            'client_id' => $this->clientId,
+            'secret' => $this->secret,
+        ];
+    }
 }

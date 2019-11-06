@@ -7,7 +7,6 @@ namespace Akeneo\Apps\Infrastructure\Persistence\Dbal\Repository;
 use Akeneo\Apps\Domain\Model\Write\App;
 use Akeneo\Apps\Domain\Persistence\Repository\AppRepository;
 use Doctrine\DBAL\Connection;
-use Ramsey\Uuid\Uuid;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -57,5 +56,21 @@ SQL;
                 $dataRow['label'],
                 $dataRow['flow_type']
             ) : null;
+    }
+
+    public function update(App $app): void
+    {
+        $updateQuery = <<<SQL
+UPDATE akeneo_app
+SET label = :label AND flow_type = :flow_type
+WHERE code = :code
+SQL;
+
+        $stmt = $this->dbalConnection->prepare($updateQuery);
+        $stmt->execute([
+            'code' => (string) $app->code(),
+            'label' => (string) $app->label(),
+            'flow_type' => (string) $app->flowType(),
+        ]);
     }
 }

@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace spec\Akeneo\Apps\Domain\Model\Write;
 
 use Akeneo\Apps\Domain\Model\ValueObject\AppCode;
-use Akeneo\Apps\Domain\Model\ValueObject\AppId;
 use Akeneo\Apps\Domain\Model\ValueObject\AppLabel;
 use Akeneo\Apps\Domain\Model\ValueObject\ClientId;
 use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
 use Akeneo\Apps\Domain\Model\ValueObject\UserId;
 use Akeneo\Apps\Domain\Model\Write\App;
 use PhpSpec\ObjectBehavior;
-use Ramsey\Uuid\Uuid;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -60,5 +58,21 @@ class AppSpec extends ObjectBehavior
     public function it_returns_the_user_id()
     {
         $this->userId()->shouldBeLike(new UserId(24));
+    }
+
+    public function it_changes_the_label()
+    {
+        $this->label()->shouldBeLike(new AppLabel('Magento Connector'));
+
+        $this->setLabel(new AppLabel('Bynder'));
+        $this->label()->shouldBeLike(new AppLabel('Bynder'));
+    }
+
+    public function it_changes_the_flow_type()
+    {
+        $this->flowType()->shouldBeLike(new FlowType(FlowType::DATA_DESTINATION));
+
+        $this->setFlowType(new FlowType(FlowType::OTHER));
+        $this->flowType()->shouldBeLike(new FlowType(FlowType::OTHER));
     }
 }

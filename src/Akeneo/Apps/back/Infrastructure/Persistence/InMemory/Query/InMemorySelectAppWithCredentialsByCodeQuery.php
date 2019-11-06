@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Infrastructure\Persistence\InMemory\Query;
 
-use Akeneo\Apps\Domain\Model\Read\App;
 use Akeneo\Apps\Domain\Model\Read\AppWithCredentials;
-use Akeneo\Apps\Domain\Persistence\Query\SelectAppsQuery;
 use Akeneo\Apps\Domain\Persistence\Query\SelectAppWithCredentialsByCodeQuery;
 use Akeneo\Apps\Infrastructure\Persistence\InMemory\Repository\InMemoryAppRepository;
 

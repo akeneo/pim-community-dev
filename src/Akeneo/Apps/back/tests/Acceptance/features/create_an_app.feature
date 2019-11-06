@@ -5,6 +5,8 @@ Feature: Create an App
     Given no App has been created
     When I create the destination App "Magento"
     Then the App "Magento" should exists
+    And the App "Magento" label should be Magento
+    And the App "Magento" flow type should be destination
     And there should be 1 Apps
 
   Scenario: Fail to create an App that already exists

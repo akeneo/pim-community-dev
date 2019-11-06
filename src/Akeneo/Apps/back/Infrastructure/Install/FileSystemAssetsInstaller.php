@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Infrastructure\Install;
 
-use Akeneo\Apps\Infrastructure\Install\AssetsInstaller;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;

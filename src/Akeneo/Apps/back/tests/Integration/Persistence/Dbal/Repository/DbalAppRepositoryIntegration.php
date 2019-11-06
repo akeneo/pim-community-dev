@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Akeneo\Apps\back\tests\Integration\Persistence\Dbal\Repository;
 
 use Akeneo\Apps\back\tests\Integration\Fixtures\AppLoader;
+use Akeneo\Apps\Domain\Model\ValueObject\AppLabel;
 use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
 use Akeneo\Apps\Domain\Model\Write\App;
 use Akeneo\Apps\Infrastructure\Persistence\Dbal\Repository\DbalAppRepository;
@@ -51,18 +52,6 @@ class DbalAppRepositoryIntegration extends TestCase
         Assert::assertIsInt((int) $result['user_id']);
     }
 
-    private function selectAppFromDb(string $code): array
-    {
-        $query = <<<SQL
-    SELECT code, label, flow_type, client_id, user_id
-    FROM akeneo_app
-    WHERE code = :code
-SQL;
-        $statement = $this->dbal->executeQuery($query, ['code' => $code]);
-
-        return $statement->fetch();
-    }
-
     public function it_finds_one_app_by_code()
     {
         $this->appLoader->createApp('magento', 'Magento Connector', FlowType::DATA_DESTINATION);
@@ -79,8 +68,39 @@ SQL;
         Assert::assertGreaterThan(0, $app->userId());
     }
 
+    public function it_updates_an_app_from_its_code()
+    {
+        $this->appLoader->createApp('magento', 'Magento Connector', FlowType::DATA_DESTINATION);
+
+        $app = $this->repository->findOneByCode('magento');
+        $app->setLabel(new AppLabel('Pimgento'));
+        $app->setFlowType(new FlowType(FlowType::OTHER));
+
+        $this->repository->update($app);
+
+        $result = $this->selectAppFromDb('magento');
+
+        Assert::assertSame('magento', $result['code']);
+        Assert::assertSame('Pimgento', $result['label']);
+        Assert::assertSame(FlowType::OTHER, $result['flow_type']);
+        Assert::assertNotNull($result['client_id']);
+        Assert::assertNotNull($result['user_id']);
+    }
+
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
+    }
+
+    private function selectAppFromDb(string $code): array
+    {
+        $query = <<<SQL
+    SELECT code, label, flow_type, client_id, user_id
+    FROM akeneo_app
+    WHERE code = :code
+SQL;
+        $statement = $this->dbal->executeQuery($query, ['code' => $code]);
+
+        return $statement->fetch();
     }
 }

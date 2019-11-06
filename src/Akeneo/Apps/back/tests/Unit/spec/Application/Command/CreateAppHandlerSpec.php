@@ -14,7 +14,7 @@ use Akeneo\Apps\Domain\Model\Write\App;
 use Akeneo\Apps\Domain\Persistence\Repository\AppRepository;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -58,19 +58,11 @@ class CreateAppHandlerSpec extends ObjectBehavior
         $validator,
         $repository,
         $createClient,
-        $createUser
+        $createUser,
+        ConstraintViolationInterface $violation
     ): void {
         $command = new CreateAppCommand('magento', 'Magento Connector', 'Wrong Flow Type');
-        $violations = new ConstraintViolationList([
-            new ConstraintViolation(
-                'wrong flow type',
-                'wrong',
-                [],
-                'wrong',
-                'flowtype',
-                'wrong'
-            )
-        ]);
+        $violations = new ConstraintViolationList([$violation->getWrappedObject()]);
         $validator->validate($command)->willReturn($violations);
 
         $createClient->execute(Argument::any())->shouldNotBeCalled();

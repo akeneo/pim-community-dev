@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Apps\Application\Query;
 
 use Akeneo\Apps\Domain\Persistence\Query\SelectAppsQuery;
-use Akeneo\Apps\Domain\Persistence\Repository\AppRepository;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
