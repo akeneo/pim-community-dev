@@ -6,14 +6,14 @@ This documentation will help you to add a new attribute type in the PIM.
 We will add a new attribute type called `Range`, defined by a min and a max value.
 This documentation will allow you to:
 - be able to save product (and product model) values with this attribute type,
+- index these values in the search engine
 - calculate the completeness of these entities,
 - update the values in the product edit form,
 - export your product values.
 
-This documentation will not:
-- cover the indexation of this field (you can take a look at `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\AbstractProductValueNormalizer`),
-- cover the search on the values defined on this attribute (you can take a look at `Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface`),
-- cover the import processes (take a look at `Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter\ValueConverterInterface`).
+This documentation will not cover:
+- the search on the values defined on this attribute (you can take a look at `Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface`),
+- the import processes (take a look at `Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter\ValueConverterInterface`).
 
 ## Step 1: Create the attribute type (backend)
 
@@ -55,40 +55,33 @@ services:
 
 ## Step 2: Create the values
 
-**Warning** For now, you have to create 2 value factories (one for reading purposes, another one for writing purposes).
-They are very similar, and will probably be refactored in the next months.
-
 For the sake of simplicity, we will re-use the same format both for back-end and front-end.
 A range value will be defined as an array, with `min` and `max` as keys.
 The factories are here to create localizable and scopable values, linked to a specific attribute.
 
 ```php
-<?php #src/Acme/RangeBundle/Product/Factory/Write/Value/RangeValueFactory.php
+<?php # src/Acme/RangeBundle/Product/Value/RangeValue.php
 
-namespace Acme\RangeBundle\Product\Factory\Write\Value;
+namespace Acme\RangeBundle\Product\Value;
 
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\AbstractValueFactory;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractValue;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
-class RangeValueFactory extends AbstractValueFactory
+class RangeValue extends AbstractValue
 {
-    protected function prepareData(AttributeInterface $attribute, $data, bool $ignoreUnknownData)
+    public function isEqual(ValueInterface $value) : bool
     {
-        if ($data === null) {
-            $data = ['min' => null, 'max' => null];
-        }
-        if (!is_array($data)) {
-            throw InvalidPropertyTypeException::arrayExpected($attribute->getCode(), static::class, $data);
-        }
-        if (!array_key_exists('min', $data)) {
-            throw InvalidPropertyTypeException::arrayKeyExpected($attribute->getCode(), 'min', static::class, $data);
-        }
-        if (!array_key_exists('max', $data)) {
-            throw InvalidPropertyTypeException::arrayKeyExpected($attribute->getCode(), 'max', static::class, $data);
-        }
+        return $value instanceof RangeValue && $value->getData() === $this->getData();
+    }
 
-        return ['min' => $data['min'], 'max' => $data['max']];
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    public function __toString() : string
+    {
+        return sprintf('[%s...%s]', $this->data['min'] ?? '', $this->data['max'] ?? '');
     }
 }
 ```
@@ -103,6 +96,7 @@ use Acme\RangeBundle\Product\Value\RangeValue;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 class RangeValueFactory implements ValueFactory
@@ -113,17 +107,37 @@ class RangeValueFactory implements ValueFactory
         ?string $localeCode, 
         $data
     ): ValueInterface {
-        if ($data === null) {
-            $data = ['min' => null, 'max' => null];
-        }
         if (!is_array($data)) {
-            throw InvalidPropertyTypeException::arrayExpected($attribute->code(), static::class, $data);
+            throw InvalidPropertyTypeException::arrayExpected(
+                $attribute->code(),
+                static::class,
+                $data
+            );
         }
-        if (!array_key_exists('min', $data)) {
-            throw InvalidPropertyTypeException::arrayKeyExpected($attribute->code(), 'min', static::class, $data);
+
+        if (!isset($data['min'])) {
+            throw InvalidPropertyTypeException::arrayKeyExpected(
+                $attribute->code(),
+                'min',
+                static::class,
+                $data
+            );
         }
-        if (!array_key_exists('max', $data)) {
-            throw InvalidPropertyTypeException::arrayKeyExpected($attribute->code(), 'max', static::class, $data);
+        
+        if (null === $data['min'] && null === $data['max']) {
+            throw InvalidPropertyException::valueNotEmptyExpected(
+                $attribute->code(),
+                static::class
+            );
+        }
+
+        if (!isset($data['max'])) {
+            throw InvalidPropertyTypeException::arrayKeyExpected(
+                $attribute->code(),
+                'max',
+                static::class,
+                $data
+            );
         }
 
         return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
@@ -153,15 +167,6 @@ class RangeValueFactory implements ValueFactory
 
 ```yaml
 # src/Acme/RangeBundle/Resources/config/services.yml [...]
-    acme.range.factory.write.value.range:
-        class: Acme\RangeBundle\Product\Factory\Write\Value\RangeValueFactory
-        public: false
-        arguments:
-            - 'Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue'
-            - 'range'
-        tags:
-            - { name: pim_catalog.factory.value }
-
     acme.range.factory.value.range:
         class: 'Acme\RangeBundle\Product\Factory\Value\RangeValueFactory'
         tags: ['akeneo.pim.enrichment.factory.product_value']
@@ -225,7 +230,101 @@ class RangeComparator implements ComparatorInterface
             - { name: pim_catalog.attribute.comparator }
 ```
 
-## Step 4: Completeness
+## Step 4: Indexing the values
+
+You'll now want to properly index the values in the search engine (Elasticsearch), at the following format:
+```json
+{  
+  "values": {
+    "my_range_attribute-range": {
+      "<all_channels>": {
+        "<all_locales>": {
+          "min": 0,
+          "max": 50
+        }
+      }
+    }
+  } 
+}
+```
+
+For this you will need to create the adequate normalizer:
+
+```php
+<?php #src/Acme/RangeBundle/Product/Normalizer/Indexing/Value/RangeValueNormalizer.php
+
+namespace Acme\RangeBundle\Product\Normalizer\Indexing\Value;
+
+use Acme\RangeBundle\AttributeType\RangeType;
+use Acme\RangeBundle\Product\Value\RangeValue;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\AbstractProductValueNormalizer;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
+
+class RangeValueNormalizer extends AbstractProductValueNormalizer implements CacheableSupportsMethodInterface 
+{
+    public function supportsNormalization($data, $format = null)
+    {
+        return $data instanceof RangeValue;
+    }
+    
+    protected function getNormalizedData(ValueInterface $value)
+    {
+        return $value->getData();
+    }
+    
+    public function hasCacheableSupportsMethod() : bool
+    {
+        return true;
+    }
+}
+```
+
+```yaml
+# src/Acme/RangeBundle/Resources/config/services.yml [...]
+    Acme\RangeBundle\Product\Normalizer\Indexing\Value\RangeValueValidator:        
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+        tags:
+            - { name: pim_indexing_serializer.normalizer, priority: 90 }
+```
+
+At some point, you'll probably want to perform searches on these values.
+
+**Warning:** this documentation does not describe the implementation of the filters (neither on backend nor frontend side)
+
+In order to do this, you'll have to tell Elasticsearch how to manage your values,
+(here we want min and max considered as numbers), by registering new dynamic templates:
+
+```yaml
+# src/Acme/RangeBundle/Resources/elasticsearch/product_mapping.yml
+
+mappings:
+    dynamic_templates:
+        -
+            range_min:
+                path_match: 'values.*-range.*.min'
+                mapping:
+                    type: 'double'
+        -
+            range_max:
+                path_match: 'values.*-range.*.max'
+                mapping:
+                    type: 'double'
+```
+
+All you have to do now is include this file in the elasticsearch configuration:
+
+```yaml
+# src/Acme/RangeBundle/Resources/config/parameters.yml
+parameters:
+    elasticsearch_index_configuration_files:
+        - '%pim_ce_dev_src_folder_location%/src/Akeneo/Pim/Enrichment/Bundle/Resources/elasticsearch/settings.yml'
+        - '%pim_ce_dev_src_folder_location%/src/Akeneo/Pim/Enrichment/Bundle/Resources/elasticsearch/product_mapping.yml'
+        - '%kernel.project_dir%/src/Acme/RangeBundle/Resources/elasticsearch/product_mapping.yml'
+```
+
+## Step 5: Completeness
 
 To be able to compute the completeness, a value has to be defined as **complete** or **incomplete**.
 Since Akeneo PIM 4.0, we use the notion of masks to generate keys for each filled value.
@@ -275,7 +374,7 @@ class RangeMaskItemGenerator implements MaskItemGeneratorForAttributeType
         tags: [{ name: akeneo.pim.enrichment.completeness.mask_item_generator }]
 ```
 
-## Step 5: User Interface
+## Step 6: User Interface
 
 You will need to display a new field in the product edit form to be able to use your new attribute type.
 Add a new HTML template with 2 fields. 
@@ -398,7 +497,7 @@ pim_enrich.entity.attribute.property.type.range: 'Range'
 }
 ```
 
-## Step 6: Export values
+## Step 7: Export values
 
 If you want to be able to export values through flat files, you need to code how to convert a range value into a cell.
 Here, a value will be normalized like this: `[10...20]`.
