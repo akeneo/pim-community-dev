@@ -71,6 +71,7 @@ const webpackConfig = {
     modules: [path.resolve('./web/bundles'), path.resolve('./node_modules')],
     extensions: ['.js', '.json', '.ts', '.tsx'],
     plugins: [
+      // Ensures typescript interfaces generated from JSON schemas are present
       new JsonSchemaResolverPlugin(),
     ],
   },

@@ -6,5 +6,4 @@ const colors = require('colors');
 module.exports = async function compile(schemaPath, typescriptPath) {
   const content = await compileFromFile(schemaPath);
   fs.writeFileSync(typescriptPath, content);
-  console.log(colors.grey('JSON schema to typescript: ', schemaPath));
 };
