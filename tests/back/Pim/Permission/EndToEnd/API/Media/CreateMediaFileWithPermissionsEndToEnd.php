@@ -30,8 +30,8 @@ class CreateMediaFileWithPermissionsEndToEnd extends AbstractMediaFileTestCase
             'values'     => [
                 'a_localized_and_scopable_text_area' => [
                     ['data' => 'EN ecommerce', 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                    ['data' => 'FR ecommerce', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                    ['data' => 'DE ecommerce', 'locale' => 'de_DE', 'scope' => 'ecommerce']
+                    ['data' => 'FR ecommerce', 'locale' => 'fr_FR', 'scope' => 'tablet'],
+                    ['data' => 'DE ecommerce', 'locale' => 'de_DE', 'scope' => 'tablet']
                 ],
                 'a_number_float' => [['data' => '12.05', 'locale' => null, 'scope' => null]],
                 'a_localizable_image' => [

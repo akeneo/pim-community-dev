@@ -75,7 +75,7 @@ class SuccessListPublishedProductEndToEnd extends AbstractPublishedProductTestCa
                 'a_localized_and_scopable_text_area' => [
                     ['data' => 'Big description', 'locale' => 'en_US', 'scope' => 'ecommerce'],
                     ['data' => 'Medium description', 'locale' => 'en_US', 'scope' => 'tablet'],
-                    ['data' => 'Grande description', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
+                    ['data' => 'Tolle Beschreibung', 'locale' => 'de_DE', 'scope' => 'tablet'],
                     ['data' => 'Description moyenne', 'locale' => 'fr_FR', 'scope' => 'tablet'],
                     ['data' => 'China description', 'locale' => 'zh_CN', 'scope' => 'ecommerce_china'],
                 ],
@@ -354,6 +354,7 @@ JSON;
                 "enabled"       : true,
                 "values"        : {
                     "a_localized_and_scopable_text_area" : [
+                        {"locale" : "de_DE", "scope" : "tablet", "data" : "Tolle Beschreibung"},
                         {"locale" : "en_US", "scope" : "tablet", "data" : "Medium description"},
                         {"locale" : "fr_FR", "scope" : "tablet", "data" : "Description moyenne"}
                     ]
@@ -1255,9 +1256,9 @@ JSON;
             "scope": "ecommerce",
             "data": "Big description"
         }, {
-            "locale": "fr_FR",
-            "scope": "ecommerce",
-            "data": "Grande description"
+            "locale": "de_DE",
+            "scope": "tablet",
+            "data": "Tolle Beschreibung"
         }, {
             "locale": "zh_CN",
             "scope": "ecommerce_china",
