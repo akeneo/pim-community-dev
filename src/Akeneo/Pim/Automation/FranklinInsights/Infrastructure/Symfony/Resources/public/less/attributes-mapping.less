@@ -81,7 +81,7 @@
                 }
 
                 &.suggestion .select2-choice {
-                    border-color: #81cccc;
+                    border-color: @AknGreen80;
                 }
             }
             .perfect-match {
@@ -94,11 +94,11 @@
                     position: absolute;
                     top: 0;
                     left: -30px;
-                    background: no-repeat url('/bundles/pimui/images/icon-checkwhite.svg') darken(@AknGreen, 5%) center center;
+                    background: no-repeat url('/bundles/pimui/images/icon-checkwhite.svg') @AknGreen center center;
                     background-size: 15px;
                 }
                 .select2-choice {
-                    border: 1px solid darken(@AknGreen, 5%);
+                    border: 1px solid @AknGreen;
                 }
             }
             .error {
@@ -108,12 +108,11 @@
             }
 
             .suggested-attribute {
-                position: absolute;
-                top: 10px;
-                left: -125px;
-                width: 120px;
-                text-align: right;
-                color: #81c9ca;
+                background: url("../images/info_icon_green_14x14px.svg") no-repeat 0px 3px;
+                padding-left: 16px;
+                color: @AknGreen;
+                margin-top: 3px;
+                font-size: 11px;
             }
         }
     }
@@ -147,18 +146,14 @@
                 color: @AknDarkBlue;
                 margin-top: 15px;
                 margin-bottom: 10px;
+            }
 
-                .family-progress-mapped {
-                    color: #67b373;
-                }
-
-                .family-progress-suggested {
-                    color: #81c9ca;
-                }
+            .AknProgress-bar {
+                background: @AknGreen120;
             }
 
             .AknProgress-bar--suggestions {
-                background: #81c9ca;
+                background: @AknGreen80;
             }
         }
 
@@ -215,15 +210,16 @@
         padding-right: 0px !important;
 
         &.select2-result-label-attribute--suggested {
+            @bulletWidth: 8px;
             &:before {
                 content: " ";
                 position: absolute;
-                background-color: #81c9ca;
-                width: 8px;
-                height: 8px;
-                left: -5px;
-                border-radius: 8px;
-                top: 6px;
+                background-color: @AknGreen80;
+                width: @bulletWidth;
+                height: @bulletWidth;
+                left: (@bulletWidth / 1.6) * -1;
+                border-radius: @bulletWidth;
+                top: 50% - (@bulletWidth/2);
             }
         }
     }

@@ -95,12 +95,14 @@ export const AttributeSelector = ({
   }
 
   return (
-    <div
-      className={
-        'AknFieldContainer-inputContainer ' + attributeMappingStateCssClass + (true === hasError ? ' error' : '')
-      }
-    >
-      <Select2 configuration={select2Configuration} value={selectedAttributeCode} onChange={onSelect} />
+    <div>
+      <div
+        className={
+          'AknFieldContainer-inputContainer ' + attributeMappingStateCssClass + (true === hasError ? ' error' : '')
+        }
+      >
+        <Select2 configuration={select2Configuration} value={selectedAttributeCode} onChange={onSelect} />
+      </div>
       {suggestedLabel}
     </div>
   );
