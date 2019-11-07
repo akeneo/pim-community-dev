@@ -21,7 +21,7 @@ use PHPUnit\Framework\Assert;
 /**
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-class ImportProductWithApiPerformance extends AbstractApiPerformance
+class ImportVariantProductsWithApiPerformance extends AbstractApiPerformance
 {
     private const VARIANT_PRODUCT_COUNT = 8;
     private const CATEGORY_COUNT = 3;
@@ -38,7 +38,7 @@ class ImportProductWithApiPerformance extends AbstractApiPerformance
         $clientConfiguration->setEnv('CI');
 
         $profileConfig = new Configuration();
-        $profileConfig->setTitle('Import product with the API');
+        $profileConfig->setTitle('Import variant products with the API');
 
         $profileConfig->defineMetric(
             new Metric('completeness_calculation', '=Akeneo\\Pim\\Enrichment\\Component\\Product\\Completeness\\CompletenessCalculator::fromProductIdentifiers')
