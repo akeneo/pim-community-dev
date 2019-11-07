@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-8953: User without "list users" permission can not access to other user pages
+
 # 2.3.69 (2019-10-24)
 
 ## Bug fixes
