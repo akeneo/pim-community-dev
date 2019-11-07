@@ -244,6 +244,8 @@ jobs:
           path: var/tests/phpunit
       - store_artifacts:
           path: var/tests/phpunit
+      - store_artifacts:
+          path: var/logs
 
 workflows:
   version: 2
