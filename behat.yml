@@ -183,6 +183,8 @@ acceptance:
                 - test.enrichment.enrichment_follow_up_context
                 - test.attribute.context
                 - test.attribute_option.context
+                - test.locale.context
+                - test.channel.context
             filters:
                 tags: '@acceptance-back'
         channel:

@@ -306,7 +306,16 @@ JSON;
         $expected = <<<JSON
 {
     "code": 422,
-    "message": "Attribute \"a_localizable_scopable_image\" expects an existing scope, \"Oumuamua\" given."
+    "message": "Validation failed.",
+    "errors": [
+        {
+            "property": "values",
+            "message": "Attribute \"a_localizable_scopable_image\" expects an existing scope, \"Oumuamua\" given.",
+            "attribute": "a_localizable_scopable_image",
+            "locale": "en_US",
+            "scope": "Oumuamua"
+        }
+    ]
 }
 JSON;
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
@@ -335,7 +344,16 @@ JSON;
         $expected = <<<JSON
 {
     "code": 422,
-    "message": "Attribute \"a_localizable_scopable_image\" expects an existing and activated locale, \"Esperanto\" given."
+    "message": "Validation failed.",
+    "errors": [
+        {
+            "property": "values",
+            "message": "Attribute \"a_localizable_scopable_image\" expects an existing and activated locale, \"Esperanto\" given.",
+            "attribute": "a_localizable_scopable_image",
+            "locale": "Esperanto",
+            "scope": "tablet"
+        }
+    ]
 }
 JSON;
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());

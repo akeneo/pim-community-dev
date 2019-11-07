@@ -51,6 +51,10 @@ class AttributeContext implements Context
                 $attributeData['group'] = 'MANDATORY_ATTRIBUTE_GROUP_CODE';
             }
 
+            if (isset($attributeData['available_locales'])) {
+                $attributeData['available_locales'] = array_filter(explode(',', $attributeData['available_locales']));
+            }
+
             $attribute = $this->attributeBuilder->build($attributeData);
             $this->attributeRepository->save($attribute);
         }

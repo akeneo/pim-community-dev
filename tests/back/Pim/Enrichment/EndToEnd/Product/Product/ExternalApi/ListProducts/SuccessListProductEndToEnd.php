@@ -83,7 +83,7 @@ class SuccessListProductEndToEnd extends AbstractProductTestCase
                 'a_localized_and_scopable_text_area' => [
                     ['data' => 'Big description', 'locale' => 'en_US', 'scope' => 'ecommerce'],
                     ['data' => 'Medium description', 'locale' => 'en_US', 'scope' => 'tablet'],
-                    ['data' => 'Grande description', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
+                    ['data' => 'Great description', 'locale' => 'en_US', 'scope' => 'ecommerce_china'],
                     ['data' => 'Description moyenne', 'locale' => 'fr_FR', 'scope' => 'tablet'],
                     ['data' => 'hum...', 'locale' => 'zh_CN', 'scope' => 'ecommerce_china'],
                 ]
@@ -884,9 +884,9 @@ JSON;
             "scope": "ecommerce",
             "data": "Big description"
         }, {
-            "locale": "fr_FR",
-            "scope": "ecommerce",
-            "data": "Grande description"
+            "locale": "en_US",
+            "scope": "ecommerce_china",
+            "data": "Great description"
         }, {
             "locale": "zh_CN",
             "scope": "ecommerce_china",
