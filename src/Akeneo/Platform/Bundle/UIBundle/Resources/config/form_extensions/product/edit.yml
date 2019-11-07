@@ -120,3 +120,8 @@ extensions:
         module: pimee/product-edit-form/attributes/read-only-attribute
         parent: pim-product-edit-form-attributes
         position: 100
+
+    pim-product-edit-form-variant-navigation:
+        module: pimee/product-edit-form/variant-navigation
+        parent: pim-product-edit-form
+        targetZone: navigation
