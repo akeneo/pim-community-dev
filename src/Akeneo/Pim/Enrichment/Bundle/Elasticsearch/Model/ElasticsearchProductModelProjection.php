@@ -66,6 +66,9 @@ final class ElasticsearchProductModelProjection
     /** @var string[] */
     private $attributesForThisLevel;
 
+    /** @var array */
+    private $additionalData = [];
+
     public function __construct(
         int $id,
         string $code,
@@ -83,7 +86,8 @@ final class ElasticsearchProductModelProjection
         ?int $parentId,
         array $labels,
         array $ancestorAttributeCodes,
-        array $attributesForThisLevel
+        array $attributesForThisLevel,
+        array $additionalData = []
     ) {
         $this->id = $id;
         $this->code = $code;
@@ -102,6 +106,33 @@ final class ElasticsearchProductModelProjection
         $this->labels = $labels;
         $this->ancestorAttributeCodes = $ancestorAttributeCodes;
         $this->attributesForThisLevel = $attributesForThisLevel;
+        $this->additionalData = $additionalData;
+    }
+
+    public function addAdditionalData(array $additionalData): ElasticsearchProductModelProjection
+    {
+        $additionalData = array_merge($this->additionalData, $additionalData);
+
+        return new self(
+            $this->id,
+            $this->code,
+            $this->createdDate,
+            $this->updatedDate,
+            $this->familyCode,
+            $this->familyLabels,
+            $this->familyVariantCode,
+            $this->categoryCodes,
+            $this->ancestorCategoryCodes,
+            $this->parentCode,
+            $this->values,
+            $this->allComplete,
+            $this->allIncomplete,
+            $this->parentId,
+            $this->labels,
+            $this->ancestorAttributeCodes,
+            $this->attributesForThisLevel,
+            $additionalData
+        );
     }
 
     public function toArray(): array

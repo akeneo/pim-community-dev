@@ -12,7 +12,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactory;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
