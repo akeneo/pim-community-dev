@@ -9,8 +9,8 @@ order to build the document that will be sent to Elasticsearch. The same
 logic is applied to the indexation of product models, with
 `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductModelProjection`.
 
-Thess classe are `final`, meaning we do not mean them to be extended nor
-overridden. However, you might want to add new properties to the
+These classes are `final`, meaning we do not mean them to be extended
+nor overridden. However, you might want to add new properties to the
 elasticsearch documents, in order to perform custom searches. Here is
 how you can achieve it:
 
@@ -137,13 +137,13 @@ scalars, arrays of scalars or objects (implementing the
 `\JsonSerializable` interface is a bonus). For more information see
 https://www.php.net/manual/en/function.json-encode.php
 
-- You can inject several
+- You can declare several implementations of
   `GetAdditionalPropertiesForProduct[Model]ProjectionInterface`, all you
   have to do is add the correct tag to their service definitions. If you
   need one of them to be executed first, you can set a priority as long
   with the tag name; services with higher priorities will be injected
-  first. The default priority is 0.
-  
+  (and executed) first. The default priority is 0.
+
 ```yaml
 # src/Acme/Bundle/MyCustomBundle/Resources/config/services.yml
 
