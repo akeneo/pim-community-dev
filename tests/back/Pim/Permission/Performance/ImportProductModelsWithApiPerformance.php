@@ -43,10 +43,10 @@ class ImportProductModelsWithApiPerformance extends AbstractApiPerformance
             new Metric('completeness_calculation', '=Akeneo\\Pim\\Enrichment\\Component\\Product\\Completeness\\CompletenessCalculator::fromProductIdentifiers')
         );
 
-        // Original value was 1848.
-        $profileConfig->assert('metrics.sql.queries.count < 1947', 'SQL queries');
-        // Original value: 14.4s
-        $profileConfig->assert('main.wall_time < 20s', 'Total time');
+        // Original value was 1236.
+        $profileConfig->assert('metrics.sql.queries.count < 1335', 'SQL queries');
+        // Original value: 10.9s
+        $profileConfig->assert('main.wall_time < 13s', 'Total time');
         // Original value: 39.1MB
         $profileConfig->assert('main.peak_memory < 50mb', 'Memory');
         // Ensure only 1 completeness calculation is done
