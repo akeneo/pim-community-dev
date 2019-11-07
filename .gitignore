@@ -31,5 +31,6 @@ coverage/*
 .env.behat.local
 .env.test.local
 .env.dev.local
-config/credentials_gcp.json
+.env.local.php
+config/gcp_credentials.json
 deployments/pim/charts/*

@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   fpm:
-    image: 'eu.gcr.io/akeneo-cloud:master'
+    image: 'eu.gcr.io/akeneo-ci/pim-enterprise-dev:master'
     working_dir: '/srv/pim'
     command: 'php-fpm -F'
     environment:
@@ -14,7 +14,7 @@ services:
       - 'pim'
 
   pim-daemon:
-    image: 'eu.gcr.io/akeneo-cloud:master'
+    image: 'eu.gcr.io/akeneo-ci/pim-enterprise-dev:master'
     working_dir: '/srv/pim'
     command: 'su www-data -s /bin/bash -c "cd /srv/pim && php bin/console akeneo:batch:job-queue-consumer-daemon"'
     environment:

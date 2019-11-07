@@ -130,11 +130,20 @@ COPY composer.json package.json yarn.lock .env tsconfig.json .
 
 ENV APP_ENV=prod
 RUN mkdir var && \
-    php -d 'memory_limit=3G' /usr/local/bin/composer install --no-scripts --no-interaction --no-ansi --no-dev --prefer-dist && \
+    php -d 'memory_limit=3G' /usr/local/bin/composer install \
+        --no-scripts \
+        --no-interaction \
+        --no-ansi \
+        --no-dev \
+        --prefer-dist \
+        --optimize-autoloader && \
+    composer dump-env prod && \
     bin/console pim:installer:assets --clean && \
     yarnpkg install --frozen-lockfile && \
     yarnpkg run less && \
-    yarnpkg run webpack
+    yarnpkg run webpack && \
+    find . -type d -name node_modules | xargs rm -rf && \
+    rm -rf public/test_dist
 
 #
 # Image used for production
@@ -153,11 +162,10 @@ COPY --from=builder --chown=www-data:www-data /srv/pim/src src
 COPY --from=builder --chown=www-data:www-data /srv/pim/upgrades upgrades
 COPY --from=builder --chown=www-data:www-data /srv/pim/var/cache/prod var/cache/prod
 COPY --from=builder --chown=www-data:www-data /srv/pim/vendor vendor
-COPY --from=builder --chown=www-data:www-data /srv/pim/.env .
+COPY --from=builder --chown=www-data:www-data /srv/pim/.env.local.php .
 
 # Prepare the application
-RUN rm -rf public/test_dist && \
-    mkdir -p public/media && chown -R www-data:www-data public/media var && \
+RUN mkdir -p public/media && chown -R www-data:www-data public/media var && \
     rm -rf var/cache && su www-data -s /bin/bash -c "bin/console cache:warmup"
 
 # Keep root as default user
