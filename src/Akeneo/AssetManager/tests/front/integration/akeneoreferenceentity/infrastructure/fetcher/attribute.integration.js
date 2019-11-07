@@ -66,12 +66,8 @@ describe('Akeneoassetfamily > infrastructure > fetcher > attribute', () => {
         code: 'description',
         assetFamilyIdentifier: 'designer',
         identifier: 'description_1234',
-        isRichTextEditor: {
-          isRichTextEditor: false,
-        },
-        isTextarea: {
-          isTextarea: true,
-        },
+        isRichTextEditor: false,
+        isTextarea: true,
         labelCollection: {en_US: 'Description'},
         maxLength: {
           maxLength: 12,
