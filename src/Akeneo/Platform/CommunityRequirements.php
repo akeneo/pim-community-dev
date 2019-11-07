@@ -172,11 +172,11 @@ class CommunityRequirements
             );
         }
 
-        $esIndexNames = $this->getEsIndexNamesWithUppercase();
+        $wrongEsAliases = $this->getEsAliasesWithUppercase();
         $requirements[] = new Requirement(
-            count($esIndexNames) === 0,
-            'Elasticsearch index names should not contain uppercase',
-            sprintf('Elasticsearch index names should not contain uppercase (%s)', join(', ', $esIndexNames))
+            count($wrongEsAliases) === 0,
+            'Elasticsearch aliases should not contain uppercase',
+            sprintf('Elasticsearch aliases should not contain uppercase (%s)', join(', ', $wrongEsAliases))
         );
 
         return $requirements;
@@ -239,9 +239,10 @@ class CommunityRequirements
         );
     }
 
-    protected function getEsIndexNamesWithUppercase(): array {
-        // We included the EE index names to avoid too much complexity for this use case.
-        // TODO Merge master; the index name list was updated.
+    protected function getEsAliasesWithUppercase(): array
+    {
+        // We included the EE aliases to avoid too much complexity for this use case.
+        // TODO Merge master; the alias list was updated.
         $esNames = [
             'product_index_name',
             'product_proposal_index_name',
