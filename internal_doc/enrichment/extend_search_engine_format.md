@@ -62,7 +62,7 @@ services:
             - { name: akeneo.pim.enrichment.product.query.indexing_additional_properties }
 ```
 
-## Append a property the product model projection
+## Append a property to the product model projection
 
 It's the exact same logic, except you'll need to implement
 `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductModelProjectionInterface`:
