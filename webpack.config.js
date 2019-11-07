@@ -192,7 +192,7 @@ const webpackConfig = {
         test: /\.schema\.json$/,
         use: [
           {
-            loader: path.resolve(__dirname, 'frontend/webpack/json-schema/loader'),
+            loader: path.resolve(__dirname, 'frontend/webpack/json-schema/json-schema-loader'),
           },
         ],
       },
