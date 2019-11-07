@@ -21,7 +21,7 @@ use PHPUnit\Framework\Assert;
 /**
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-class ImportProductsWithApiPerformance extends AbstractApiPerformance
+class ImportProductModelsWithApiPerformance extends AbstractApiPerformance
 {
     private const PRODUCT_MODEL_COUNT = 10;
     private const CATEGORY_COUNT = 3;
@@ -37,16 +37,16 @@ class ImportProductsWithApiPerformance extends AbstractApiPerformance
         $clientConfiguration->setEnv('CI');
 
         $profileConfig = new Configuration();
-        $profileConfig->setTitle('Import product with the API');
+        $profileConfig->setTitle('Import product models with the API');
 
         $profileConfig->defineMetric(
             new Metric('completeness_calculation', '=Akeneo\\Pim\\Enrichment\\Component\\Product\\Completeness\\CompletenessCalculator::fromProductIdentifiers')
         );
 
-        // Original value was 1848.
-        $profileConfig->assert('metrics.sql.queries.count < 1947', 'SQL queries');
-        // Original value: 14.4s
-        $profileConfig->assert('main.wall_time < 20s', 'Total time');
+        // Original value was 1236.
+        $profileConfig->assert('metrics.sql.queries.count < 1335', 'SQL queries');
+        // Original value: 10.9s
+        $profileConfig->assert('main.wall_time < 13s', 'Total time');
         // Original value: 39.1MB
         $profileConfig->assert('main.peak_memory < 50mb', 'Memory');
         // Ensure only 1 completeness calculation is done

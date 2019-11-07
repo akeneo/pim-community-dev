@@ -37,16 +37,16 @@ class ImportNonVariantProductsWithApiPerformance extends AbstractApiPerformance
         $clientConfiguration->setEnv('CI');
 
         $profileConfig = new Configuration();
-        $profileConfig->setTitle('Import product with the API');
+        $profileConfig->setTitle('Import non variant products with the API');
 
         $profileConfig->defineMetric(
             new Metric('completeness_calculation', '=Akeneo\\Pim\\Enrichment\\Component\\Product\\Completeness\\CompletenessCalculator::fromProductIdentifiers')
         );
 
-        // Original value was 2397.
-        $profileConfig->assert('metrics.sql.queries.count < 2496', 'SQL queries');
-        // Original value: 11.8s
-        $profileConfig->assert('main.wall_time < 18s', 'Total time');
+        // Original value was 1592.
+        $profileConfig->assert('metrics.sql.queries.count < 1691', 'SQL queries');
+        // Original value: 7.8s
+        $profileConfig->assert('main.wall_time < 10s', 'Total time');
         // Original value: 31.2MB
         $profileConfig->assert('main.peak_memory < 40mb', 'Memory');
         // Ensure only 1 completeness calculation is done
