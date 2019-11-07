@@ -4,6 +4,7 @@
 
 - PIM-8943: Display validation messages on family translations
 - PIM-8953: User without "list users" permission can not access to other user pages
+- PIM-6902: Forbid usage of uppercase in Elasticsearch indexes (see https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-create-index.html)
 
 # 3.2.17 (2019-10-30)
 
