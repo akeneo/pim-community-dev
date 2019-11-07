@@ -26,6 +26,9 @@ pim_asset_manager:
     dismiss_other_actions: Dismiss other actions
     move_asset_to_left: Move asset {{ assetName }} to the left
     move_asset_to_right: Move asset {{ assetName }} to the right
+    legacy_helper:
+      moved_to_assets_tab: To see the asset collection {{ label }}, go to the product's assets section.
+      is_missing_required: The asset collection {{ label }} is required. Enrich it in the product's assets section.
   asset_picker:
     title: Add assets to your product
     sub_title: Choose the assets you want to attach to your product {{ productLabel }} in {{ attributeLabel }} collection

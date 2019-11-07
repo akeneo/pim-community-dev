@@ -120,7 +120,6 @@ config:
         pim/controller/asset/edit: akeneoassetmanager/infrastructure/controller/asset/edit.tsx
 
         pim/attribute-edit-form/properties/asset-family: akeneoassetmanager/infrastructure/attribute/asset-single-link-field.ts
-        pim/asset-collection-field: akeneoassetmanager/infrastructure/product/asset-collection-field.tsx
         pim/asset-single-link-field: akeneoassetmanager/infrastructure/product/asset-single-link-field.tsx
 
         oro/datafilter/asset-collection-filter: akeneoassetmanager/infrastructure/product-grid/filter/attribute/asset-family-collection
