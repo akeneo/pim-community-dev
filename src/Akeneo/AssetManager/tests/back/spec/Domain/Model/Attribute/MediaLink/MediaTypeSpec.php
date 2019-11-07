@@ -15,7 +15,7 @@ class MediaTypeSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedThrough('fromString', ['image']);
+        $this->beConstructedThrough('fromString', [MediaType::IMAGE]);
     }
 
     function it_is_initializable()
@@ -26,6 +26,17 @@ class MediaTypeSpec extends ObjectBehavior
     function it_normalizes_itself()
     {
         $this->normalize()->shouldReturn('image');
+    }
+
+    function it_can_only_be_created_from_a_media_type_it_supports()
+    {
+        $this->beConstructedThrough('fromString', [MediaType::PDF]);
+    }
+
+    function it_throws_if_the_media_type_is_not_supported($mediaType)
+    {
+        $this->shouldThrow(\InvalidArgumentException::class)
+            ->during('fromString', ['unknown_media_type']);
     }
 
     public function it_throws_if_it_is_created_with_an_empty_value()

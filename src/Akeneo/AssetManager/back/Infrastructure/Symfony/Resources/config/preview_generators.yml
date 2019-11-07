@@ -22,6 +22,16 @@ services:
         tags:
             - { name: akeneo_assetmanager.preview_generator }
 
+    akeneo_assetmanager.infrastructure.generator.media_link_youtube_generator:
+        class: Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\MediaLinkYoutubeGenerator
+        arguments:
+            - '@liip_imagine.data.manager'
+            - '@liip_imagine.cache.manager'
+            - '@liip_imagine.filter.manager'
+            - '@pim_asset.provider.default_image'
+        tags:
+            - { name: akeneo_assetmanager.preview_generator }
+
     akeneo_assetmanager.infrastructure.generator.media_link_image_generator:
         class: Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\MediaLinkImageGenerator
         arguments:

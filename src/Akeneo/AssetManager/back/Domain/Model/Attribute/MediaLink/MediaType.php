@@ -23,10 +23,12 @@ class MediaType
 {
     public const IMAGE = 'image';
     public const PDF = 'pdf';
+    public const YOUTUBE = 'youtube';
     public const OTHER = 'other';
     public const MEDIA_TYPES = [
         self::IMAGE,
         self::PDF,
+        self::YOUTUBE,
         self::OTHER
     ];
 
@@ -35,6 +37,7 @@ class MediaType
 
     private function __construct(string $mediaType)
     {
+        Assert::true(in_array($mediaType, self::MEDIA_TYPES));
         $this->mediaType = $mediaType;
     }
 

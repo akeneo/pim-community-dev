@@ -117,6 +117,7 @@ const getMediaLinkPreviewView = (asset: Asset, context: Context) => {
   const attributeAsMainImage = getAttributeAsMainImage(asset) as NormalizedMediaLinkAttribute;
   switch (attributeAsMainImage.media_type) {
     case MediaTypes.image:
+    case MediaTypes.youtube:
     case MediaTypes.other:
       return (
         <>
@@ -161,6 +162,7 @@ const getPreviewView = (asset: Asset, context: Context) => {
   }
 };
 
+// TODO: add unit test for this component
 export const Preview = ({asset, context}: PreviewProps) => (
   <Container>
     <Border>{getPreviewView(asset, context)}</Border>
