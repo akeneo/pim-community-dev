@@ -1,0 +1,36 @@
+{
+  "type": "object",
+  "properties": {
+    "identifier": { "type": "string" },
+    "labels": {
+      "type": "object",
+      "patternProperties": {
+        "\\w+": { "type": "string" }
+      }
+    },
+    "image": {
+      "anyOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "properties": {
+            "filePath": { "type": "string" },
+            "originalFilename": { "type": "string" },
+            "size": { "type": "number" },
+            "mimeType": { "type": "string" },
+            "extension": { "type": "string" }
+          },
+          "required": [
+            "filePath",
+            "originalFilename"
+          ]
+        }
+      ]
+    },
+    "attribute_as_label": { "type": "string" },
+    "attribute_as_image": { "type": "string" }
+  },
+  "required": [
+    "identifier"
+  ]
+}
