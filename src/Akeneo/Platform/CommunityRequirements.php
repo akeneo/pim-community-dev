@@ -172,6 +172,13 @@ class CommunityRequirements
             );
         }
 
+        $wrongEsAliases = $this->getEsAliasesWithUppercase();
+        $requirements[] = new Requirement(
+            count($wrongEsAliases) === 0,
+            'Elasticsearch aliases should not contain uppercase',
+            sprintf('Elasticsearch aliases should not contain uppercase (%s)', join(', ', $wrongEsAliases))
+        );
+
         return $requirements;
     }
 
@@ -219,29 +226,7 @@ class CommunityRequirements
      */
     protected function getConnection() : PDO
     {
-        $file = file_get_contents($this->baseDir.'/app/config/parameters.yml');
-
-        if (false === $file) {
-            throw new RuntimeException(
-                'The file "app/config/parameters.yml" does not exist, please create it'
-            );
-        }
-
-        $parameters = Yaml::parse($file);
-
-        try {
-            if (null === $parameters) {
-                throw new RuntimeException(
-                    'Your PIM is not configured. Please fill the file "app/config/parameters.yml"'
-                );
-            }
-        } catch (RuntimeException $e) {
-            $parameters = Yaml::parse(file_get_contents($this->baseDir.'/app/config/parameters_test.yml'));
-
-            if (null === $parameters) {
-                throw $e;
-            }
-        }
+        $parameters = $this->getParameters();
 
         return new PDO(
             sprintf(
@@ -252,6 +237,35 @@ class CommunityRequirements
             $parameters['parameters']['database_user'],
             $parameters['parameters']['database_password']
         );
+    }
+
+    protected function getEsAliasesWithUppercase(): array
+    {
+        // We included the EE aliases to avoid too much complexity for this use case.
+        // TODO Merge master; the alias list was updated.
+        $esNames = [
+            'product_index_name',
+            'product_proposal_index_name',
+            'published_product_index_name',
+            'published_product_and_product_model_index_name',
+            'product_model_index_name',
+            'product_and_product_model_index_name',
+            'record_index_name',
+            'asset_index_name',
+        ];
+
+        $parameters = $this->getParameters();
+        $esNamesWithUppercase = [];
+        foreach ($esNames as $esName) {
+            if (isset($parameters['parameters'][$esName])) {
+                $value = $parameters['parameters'][$esName];
+                if (strtolower($value) !== $value) {
+                    $esNamesWithUppercase[] = $value;
+                }
+            }
+        }
+
+        return $esNamesWithUppercase;
     }
 
     protected function getBytes(string $val): float
@@ -281,5 +295,34 @@ class CommunityRequirements
         }
 
         return (float) $val;
+    }
+
+    protected function getParameters(): array
+    {
+        $file = file_get_contents($this->baseDir.'/app/config/parameters.yml');
+
+        if (false === $file) {
+            throw new RuntimeException(
+                'The file "app/config/parameters.yml" does not exist, please create it'
+            );
+        }
+
+        $parameters = Yaml::parse($file);
+
+        try {
+            if (null === $parameters) {
+                throw new RuntimeException(
+                    'Your PIM is not configured. Please fill the file "app/config/parameters.yml"'
+                );
+            }
+        } catch (RuntimeException $e) {
+            $parameters = Yaml::parse(file_get_contents($this->baseDir.'/app/config/parameters_test.yml'));
+
+            if (null === $parameters) {
+                throw $e;
+            }
+        }
+
+        return $parameters;
     }
 }
