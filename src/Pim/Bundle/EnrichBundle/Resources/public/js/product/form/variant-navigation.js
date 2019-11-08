@@ -176,8 +176,8 @@ define(
                 this.getEntityParentCode(targetLevel)
                     .then((parentCode) => {
                         this.isVariantProduct(parentCode)
-                            .then((isVariantProduct) => {
-                                if (!this.isCreationGranted(isVariantProduct)) {
+                            .then(async (isVariantProduct) => {
+                                if (!await this.isCreationGranted(isVariantProduct)) {
                                     return;
                                 }
 
@@ -200,9 +200,9 @@ define(
              *
              * @param {boolean} isVariantProduct
              *
-             * @returns {boolean}
+             * @returns {Promise<boolean>}
              */
-            isCreationGranted: function(isVariantProduct) {
+            isCreationGranted: async function(isVariantProduct) {
                 return (isVariantProduct && SecurityContext.isGranted('pim_enrich_product_create'))
                     || (!isVariantProduct && SecurityContext.isGranted('pim_enrich_product_model_create'));
             },
