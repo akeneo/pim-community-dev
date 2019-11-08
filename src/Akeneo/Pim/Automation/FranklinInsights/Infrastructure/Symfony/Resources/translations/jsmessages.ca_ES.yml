@@ -14,6 +14,7 @@ akeneo_franklin_insights:
     data_provider:
       ask_franklin_down: "Ho sentim, alguna cosa ha anat malament. Torna-ho a provar més tard."
       authentication_error: "Ho sentim, no s'ha pogut autenticar a Franklin Insights, el token no és vàlid. Introduïu un token vàlid o contacteu amb nosaltres per obtenir ajuda, si us plau."
+      bad_request_error: "Ho sentim. S'ha produït un problema durant la comunicació amb Franklin Insights. Contacteu amb l'administrador, si us plau."
     identifier_mapping:
       plural_label: Identificadors
       flash:
