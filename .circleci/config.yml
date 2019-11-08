@@ -94,7 +94,7 @@ jobs:
                 when: always
           - run:
                 name: Unit tests
-                command: make unit-back CI=1
+                command: make unit-back
           - run:
                 name: Acceptance tests
                 command: make acceptance-back
@@ -128,10 +128,10 @@ jobs:
                 command: APP_ENV=test make database
           - run:
                 name: PHPunit Integration
-                command: make integration-back CI=1
+                command: make integration-back
           - run:
                 name: PHPunit End to end
-                command: make end-to-end-back CI=1
+                command: make end-to-end-back
           - store_test_results:
                 path: var/tests/phpunit
           - store_artifacts:
@@ -168,15 +168,8 @@ jobs:
             name: Install database
             command: APP_ENV=behat make database
       - run:
-            name: Non critical Behat
-            command: |
-                TESTFILES=$(docker-compose run --rm -T php vendor/bin/behat --list-scenarios -p legacy -s $TESTSUITE | circleci tests split --split-by=timings)
-                .circleci/run_behat.sh $TESTSUITE $TESTFILES
-      - run:
-            name: Critical Behat
-            command: |
-                TESTFILES=$(docker-compose run --rm -T php vendor/bin/behat --list-scenarios -p legacy -s critical | circleci tests split --split-by=timings)
-                .circleci/run_behat.sh critical $TESTFILES
+            name: Behat legacy
+            command: make end-to-end-legacy SUITE=$TESTSUITE
       - run:
           name: Gather Junit test result files in the same directory to improve the render of failing tests
           command: |

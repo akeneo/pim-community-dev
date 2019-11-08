@@ -21,11 +21,11 @@ lint-front:
 ### Unit tests
 .PHONY: unit-back
 unit-back: var/tests/phpspec
-ifeq ($(CI),1)
+ifeq ($(CI),true)
 	${PHP_RUN} vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
 	.circleci/find_non_executed_phpspec.sh
 else
-	${PHP_RUN} vendor/bin/phpspec run $(O)
+	${PHP_RUN} vendor/bin/phpspec run
 endif
 
 .PHONY: unit-front
@@ -48,17 +48,36 @@ integration-front:
 
 .PHONY: integration-back
 integration-back: var/tests/phpunit apps-integration-back
-ifeq ($(CI),1)
+ifeq ($(CI),true)
 	.circleci/run_phpunit.sh . .circleci/find_phpunit.php PIM_Integration_Test
 else
-	${PHP_RUN} vendor/bin/phpunit -c . --testsuite PIM_Integration_Test $(O)
+	@echo Run integration test locally is too long, please use the target defined for your bounded context (ex: bounded-context-integration-back)
 endif
 
-### Integration tests
+### End to end tests
 .PHONY: end-to-end-back
 end-to-end-back: var/tests/phpunit
-ifeq ($(CI),1)
+ifeq ($(CI),true)
 	.circleci/run_phpunit.sh . .circleci/find_phpunit.php End_to_End
 else
-	${PHP_RUN} vendor/bin/phpunit -c . --testsuite End_to_End $(O)
+	@echo Run end to end test locally is too long, please use the target defined for your bounded context (ex: bounded-context-end-to-end-back)
 endif
+
+# How to debug a behat locally?
+# -----------------------------
+#
+# Run the following command:
+# make end-to-end-legacy O=my/feature/file.feature:23
+#
+# Don't forget to pass *O*ption to avoid to run the whole suite.
+# Please add dependencies to this tagert and let it die
+
+.PHONY: end-to-end-legacy
+end-to-end-legacy: var/tests/behat
+ifeq ($(CI),true)
+	.circleci/run_behat.sh $(SUITE)
+	.circleci/run_behat.sh critical
+else
+	${PHP_RUN} vendor/bin/behat -p legacy -s all ${0}
+endif
+
