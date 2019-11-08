@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes:
+
+- PIM-8943: Display validation messages on family translations
+
 # 3.2.17 (2019-10-30)
 
 ## Bug fixes:

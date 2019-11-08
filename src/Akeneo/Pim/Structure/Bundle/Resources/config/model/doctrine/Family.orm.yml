@@ -49,6 +49,7 @@ Akeneo\Pim\Structure\Component\Model\Family:
                 - detach
                 - remove
             orphanRemoval: true
+            indexBy: locale
         requirements:
             targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface
             mappedBy: family
