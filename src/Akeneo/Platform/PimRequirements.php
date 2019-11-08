@@ -22,6 +22,7 @@ class PimRequirements
 {
     const REQUIRED_PHP_VERSION = '7.3.0';
     const REQUIRED_GD_VERSION = '2.0';
+    const REQUIRED_GHOSTSCRIPT_VERSION = '9.27';
     const REQUIRED_CURL_VERSION = '7.0';
     const REQUIRED_ICU_VERSION = '4.2';
     const LOWEST_REQUIRED_MYSQL_VERSION = '8.0.16';
@@ -88,6 +89,14 @@ class PimRequirements
             null !== $gdVersion && version_compare($gdVersion, self::REQUIRED_GD_VERSION, '>='),
             'GD extension must be at least ' . self::REQUIRED_GD_VERSION,
             'Install and enable the <strong>GD</strong> extension at least ' . self::REQUIRED_GD_VERSION . ' version'
+        );
+
+        $isGhostScriptInstalled = !empty(shell_exec('which gs'));
+        $isGhostScriptVersionSupported = $this->isGhostScriptVersionSupported();
+        $requirements[] = new Requirement(
+            $isGhostScriptInstalled && $isGhostScriptVersionSupported,
+            'Ghostscript executable must be at least ' . self::REQUIRED_GHOSTSCRIPT_VERSION,
+            'Install the <strong>Ghostscript</strong> executable at least ' . self::REQUIRED_GHOSTSCRIPT_VERSION . ' version'
         );
 
         $requirements[] = new Requirement(
@@ -264,5 +273,21 @@ class PimRequirements
         }
 
         return true;
+    }
+
+    private function isGhostScriptVersionSupported(): bool
+    {
+        $currentGhostScriptVersion = trim(shell_exec('gs --version'));
+        if (null === $currentGhostScriptVersion) {
+            return false;
+        }
+
+        $isGhostScriptVersionSupported = version_compare(
+            $currentGhostScriptVersion,
+            self::REQUIRED_GHOSTSCRIPT_VERSION,
+            '>='
+        );
+
+        return $isGhostScriptVersionSupported;
     }
 }
