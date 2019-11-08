@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory;
 
-use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\ReadValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
@@ -10,8 +10,8 @@ use PhpSpec\ObjectBehavior;
 
 class WriteValueCollectionFactorySpec extends ObjectBehavior
 {
-    function let(ValueCollectionFactory $valueCollectionFactory) {
-        $this->beConstructedWith($valueCollectionFactory);
+    function let(ReadValueCollectionFactory $readValueCollectionFactory) {
+        $this->beConstructedWith($readValueCollectionFactory);
     }
 
     function it_is_initializable()
@@ -19,7 +19,7 @@ class WriteValueCollectionFactorySpec extends ObjectBehavior
         $this->shouldHaveType(WriteValueCollectionFactory::class);
     }
 
-    function it_creates_a_values_collection_from_the_storage_format_for_single_entity(ValueCollectionFactory $valueCollectionFactory) {
+    function it_creates_a_values_collection_from_the_storage_format_for_single_entity(ReadValueCollectionFactory $readValueCollectionFactory) {
         $rawValues = [
             'sku' => [
                 '<all_channels>' => [
@@ -37,11 +37,11 @@ class WriteValueCollectionFactorySpec extends ObjectBehavior
             ],
         ];
 
-        $valueCollectionFactory->createFromStorageFormat($rawValues)->willReturn(new ReadValueCollection());
+        $readValueCollectionFactory->createFromStorageFormat($rawValues)->willReturn(new ReadValueCollection());
         $this->createFromStorageFormat($rawValues)->shouldBeLike(new WriteValueCollection());
     }
 
-    function it_creates_a_values_collection_from_the_storage_format_for_several_entities(ValueCollectionFactory $valueCollectionFactory) {
+    function it_creates_a_values_collection_from_the_storage_format_for_several_entities(ReadValueCollectionFactory $readValueCollectionFactory) {
         $rawValues = [
             'product' => [
                 'sku' => [
@@ -61,7 +61,7 @@ class WriteValueCollectionFactorySpec extends ObjectBehavior
             ]
         ];
 
-        $valueCollectionFactory->createMultipleFromStorageFormat($rawValues)->willReturn(['product' => new ReadValueCollection()]);
+        $readValueCollectionFactory->createMultipleFromStorageFormat($rawValues)->willReturn(['product' => new ReadValueCollection()]);
         $this->createMultipleFromStorageFormat($rawValues)->shouldBeLike(['product' => new WriteValueCollection()]);
     }
 }

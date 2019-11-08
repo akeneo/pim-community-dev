@@ -161,9 +161,6 @@ $rules = [
         // TIP-929: Extract the Attribute part of the ValidMetricValidator
         'Akeneo\Pim\Structure\Component\Validator\Constraints\ValidMetric',
 
-        // TIP-930: ValueCollectionFactory should not log
-        'Psr\Log\LoggerInterface',
-
         // TIP-931: SearchQueryBuilder design problem
         'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder',
 

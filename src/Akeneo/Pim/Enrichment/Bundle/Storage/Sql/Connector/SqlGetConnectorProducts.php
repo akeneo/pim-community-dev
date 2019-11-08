@@ -13,7 +13,7 @@ use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetValuesAndPropertiesFromP
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\ReadValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Query;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -40,8 +40,8 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
     /** @var GetCategoryCodesByProductIdentifiers */
     private $getCategoryCodesByProductIdentifiers;
 
-    /** @var ValueCollectionFactory */
-    private $valueCollectionFactory;
+    /** @var ReadValueCollectionFactory */
+    private $readValueCollectionFactory;
 
     /** @var IdentifiableObjectRepositoryInterface */
     private $attributeRepository;
@@ -52,7 +52,7 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
         GetProductModelAssociationsByProductIdentifiers $getProductModelAssociationsByProductIdentifiers,
         GetGroupAssociationsByProductIdentifiers $getGroupAssociationsByProductIdentifiers,
         GetCategoryCodesByProductIdentifiers $getCategoryCodesByProductIdentifiers,
-        ValueCollectionFactory $valueCollectionFactory,
+        ReadValueCollectionFactory $readValueCollectionFactory,
         IdentifiableObjectRepositoryInterface $attributeRepository
     ) {
         $this->getValuesAndPropertiesFromProductIdentifiers = $getValuesAndPropertiesFromProductIdentifiers;
@@ -60,7 +60,7 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
         $this->getProductModelAssociationsByProductIdentifiers = $getProductModelAssociationsByProductIdentifiers;
         $this->getGroupAssociationsByProductIdentifiers = $getGroupAssociationsByProductIdentifiers;
         $this->getCategoryCodesByProductIdentifiers = $getCategoryCodesByProductIdentifiers;
-        $this->valueCollectionFactory = $valueCollectionFactory;
+        $this->readValueCollectionFactory = $readValueCollectionFactory;
         $this->attributeRepository = $attributeRepository;
     }
 
@@ -129,7 +129,7 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
             $rawValuesIndexedByProductIdentifier[$identifier] = $rawValues;
         }
 
-        $filteredRawValuesIndexedByProductIdentifier = $this->valueCollectionFactory->createMultipleFromStorageFormat($rawValuesIndexedByProductIdentifier);
+        $filteredRawValuesIndexedByProductIdentifier = $this->readValueCollectionFactory->createMultipleFromStorageFormat($rawValuesIndexedByProductIdentifier);
 
         $products = [];
         foreach ($productIdentifiers as $identifier) {

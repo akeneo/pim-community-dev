@@ -13,7 +13,7 @@ use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetValuesAndProperties
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModelList;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\ReadValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 
@@ -39,8 +39,8 @@ final class SqlGetConnectorProductModels implements Query\GetConnectorProductMod
     /** @var GetGroupAssociationsByProductModelCodes */
     private $getGroupAssociationsByProductModelCodes;
 
-    /** @var ValueCollectionFactory */
-    private $valueCollectionFactory;
+    /** @var ReadValueCollectionFactory */
+    private $readValueCollectionFactory;
 
     public function __construct(
         GetValuesAndPropertiesFromProductModelCodes $getValuesAndPropertiesFromProductModelCodes,
@@ -48,14 +48,14 @@ final class SqlGetConnectorProductModels implements Query\GetConnectorProductMod
         GetProductAssociationsByProductModelCodes $getProductAssociationsByProductModelCodes,
         GetProductModelsAssociationsByProductModelCodes $getProductModelAssociationsByProductModelCodes,
         GetGroupAssociationsByProductModelCodes $getGroupAssociationsByProductModelCodes,
-        ValueCollectionFactory $valueCollectionFactory
+        ReadValueCollectionFactory $readValueCollectionFactory
     ) {
         $this->getValuesAndPropertiesFromProductModelCodes = $getValuesAndPropertiesFromProductModelCodes;
         $this->getCategoryCodesByProductModelCodes = $getCategoryCodesByProductModelCodes;
         $this->getProductAssociationsByProductModelCodes = $getProductAssociationsByProductModelCodes;
         $this->getProductModelAssociationsByProductModelCodes = $getProductModelAssociationsByProductModelCodes;
         $this->getGroupAssociationsByProductModelCodes = $getGroupAssociationsByProductModelCodes;
-        $this->valueCollectionFactory = $valueCollectionFactory;
+        $this->readValueCollectionFactory = $readValueCollectionFactory;
     }
 
     /**
@@ -132,7 +132,7 @@ final class SqlGetConnectorProductModels implements Query\GetConnectorProductMod
             $rawValuesIndexedByProductModelCode[$productModelCode] = $rawValues;
         }
 
-        $filteredValuesIndexedByProductModelCode = $this->valueCollectionFactory->createMultipleFromStorageFormat(
+        $filteredValuesIndexedByProductModelCode = $this->readValueCollectionFactory->createMultipleFromStorageFormat(
             $rawValuesIndexedByProductModelCode
         );
 

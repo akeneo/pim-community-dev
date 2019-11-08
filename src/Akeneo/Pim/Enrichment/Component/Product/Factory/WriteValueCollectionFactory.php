@@ -11,11 +11,11 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
  */
 class WriteValueCollectionFactory
 {
-    /** @var ValueCollectionFactory */
+    /** @var ReadValueCollectionFactory */
     private $valueCollectionFactory;
 
     public function __construct(
-        ValueCollectionFactory $valueCollectionFactory
+        ReadValueCollectionFactory $valueCollectionFactory
     ) {
         $this->valueCollectionFactory = $valueCollectionFactory;
     }
