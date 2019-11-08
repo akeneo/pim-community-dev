@@ -173,7 +173,7 @@ services:
         arguments:
             - '@pim_catalog.repository.cached_locale'
             - '@pim_catalog.repository.cached_channel'
-            - '@pim_catalog.repository.cached_attribute'
+            - '@akeneo.pim.structure.query.get_attributes'
         tags:
             - { name: validator.constraint_validator, alias: pim_localizable_values_validator }
 
