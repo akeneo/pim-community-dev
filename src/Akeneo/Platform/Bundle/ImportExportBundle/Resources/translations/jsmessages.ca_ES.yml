@@ -89,6 +89,7 @@ pim_import_export:
           file_path:
             title: Ruta de l'arxiu
             help: On guardar l'arxiu generat al servidor
+            help_import: El directori del fitxer que s'utilitzarà per a la importació
           delimiter:
             title: Delimitador
             help: Caràcter utilitzat per definir el delimitador de camp
