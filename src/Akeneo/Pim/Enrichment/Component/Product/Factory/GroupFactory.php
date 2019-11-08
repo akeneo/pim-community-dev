@@ -15,9 +15,6 @@ use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
  */
 class GroupFactory implements SimpleFactoryInterface
 {
-    /** @var string */
-    protected $metricClass;
-
     /** @var GroupTypeRepositoryInterface */
     protected $groupTypeRepository;
 

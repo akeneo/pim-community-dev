@@ -1,6 +1,5 @@
 parameters:
     pim_catalog.factory.metric.class:                Akeneo\Pim\Enrichment\Component\Product\Factory\MetricFactory
-    pim_catalog.factory.price.class:                 Akeneo\Pim\Enrichment\Component\Product\Factory\PriceFactory
     pim_catalog.factory.group.class:                 Akeneo\Pim\Enrichment\Component\Product\Factory\GroupFactory
     pim_catalog.factory.product_unique_data.class:   Akeneo\Pim\Enrichment\Component\Product\Factory\ProductUniqueDataFactory
 
@@ -41,12 +40,6 @@ services:
             - '@akeneo_measure.measure_converter'
             - '@akeneo_measure.manager'
             - '%pim_catalog.entity.metric.class%'
-
-    pim_catalog.factory.price:
-        class: '%pim_catalog.factory.price.class%'
-        arguments:
-            - '@pim_catalog.repository.cached_currency'
-            - '%pim_catalog.entity.product_price.class%'
 
     pim_catalog.factory.group:
         class: '%pim_catalog.factory.group.class%'

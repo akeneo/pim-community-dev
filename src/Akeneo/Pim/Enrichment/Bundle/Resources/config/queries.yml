@@ -189,7 +189,7 @@ services:
             $getGroupAssociationsByProductIdentifiers: '@akeneo.pim.enrichment.product.query.get_group_associations_by_product_identifiers'
             $getProductAssociationsByProductIdentifiers: '@akeneo.pim.enrichment.product.query.get_product_associations_by_product_identifiers'
             $getCategoryCodesByProductIdentifiers: '@akeneo.pim.enrichment.product.query.category_codes_by_product_identifiers'
-            $valueCollectionFactory: '@akeneo.pim.enrichment.factory.value_collection'
+            $readValueCollectionFactory: '@akeneo.pim.enrichment.factory.read_value_collection'
             $attributeRepository: '@pim_catalog.repository.attribute'
 
     akeneo.pim.enrichment.product.connector.get_product_models_from_codes:
@@ -200,7 +200,7 @@ services:
             - '@akeneo.pim.enrichment.product_model.query.get_product_associations_by_product_model_codes'
             - '@akeneo.pim.enrichment.product_model.query.get_models_associations_by_product_model_codes'
             - '@akeneo.pim.enrichment.product_model.query.get_group_associations_by_product_model_codes'
-            - '@akeneo.pim.enrichment.factory.value_collection'
+            - '@akeneo.pim.enrichment.factory.read_value_collection'
 
 
     akeneo.pim.enrichment.product_model.query.count_product_models_and_children_product_models:
@@ -234,7 +234,7 @@ services:
         arguments:
             - '@database_connection'
             - '@pim_catalog.normalizer.indexing_product.product.product_value_collection'
-            - '@akeneo.pim.enrichment.factory.value_collection'
+            - '@akeneo.pim.enrichment.factory.read_value_collection'
             - !tagged akeneo.pim.enrichment.product.query.indexing_additional_properties
 
     akeneo.pim.enrichment.product.query.get_ancestor_product_model_codes:
@@ -246,7 +246,7 @@ services:
         class: Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ElasticsearchProjection\GetElasticsearchProductModelProjection
         arguments:
             - '@database_connection'
-            - '@akeneo.pim.enrichment.factory.value_collection'
+            - '@akeneo.pim.enrichment.factory.read_value_collection'
             - '@pim_catalog.normalizer.indexing_product.product.product_value_collection'
             - !tagged akeneo.pim.enrichment.product_model.query.indexing_additional_properties
 
