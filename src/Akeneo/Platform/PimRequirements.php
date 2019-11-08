@@ -96,7 +96,7 @@ class PimRequirements
         $requirements[] = new Requirement(
             $isGhostScriptInstalled && $isGhostScriptVersionSupported,
             'Ghostscript executable must be at least ' . self::REQUIRED_GHOSTSCRIPT_VERSION,
-            'Install the <strong>Ghostscript</strong> library at least ' . self::REQUIRED_GHOSTSCRIPT_VERSION . ' version'
+            'Install the <strong>Ghostscript</strong> executable at least ' . self::REQUIRED_GHOSTSCRIPT_VERSION . ' version'
         );
 
         $requirements[] = new Requirement(
