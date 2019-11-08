@@ -3,6 +3,7 @@
 ## Bug fixes:
 
 - PIM-8943: Display validation messages on family translations
+- PIM-8953: User without "list users" permission can not access to other user pages
 
 # 3.2.17 (2019-10-30)
 
