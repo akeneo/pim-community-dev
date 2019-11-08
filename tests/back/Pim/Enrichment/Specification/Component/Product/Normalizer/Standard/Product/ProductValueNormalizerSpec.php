@@ -59,7 +59,8 @@ class ProductValueNormalizerSpec extends ObjectBehavior
             false,
             null,
             false,
-            'text'
+            'text',
+            []
         );
 
         $getAttributes->forCode('attribute')->willReturn($attribute);
@@ -95,7 +96,8 @@ class ProductValueNormalizerSpec extends ObjectBehavior
             false,
             null,
             false,
-            'text'
+            'text',
+            []
         );
 
         $getAttributes->forCode('attribute')->willReturn($attribute);
@@ -131,7 +133,8 @@ class ProductValueNormalizerSpec extends ObjectBehavior
             true,
             null,
             false,
-            'text'
+            'text',
+            []
         );
 
         $getAttributes->forCode('attribute')->willReturn($attribute);
@@ -166,7 +169,8 @@ class ProductValueNormalizerSpec extends ObjectBehavior
             true,
             null,
             true,
-            'integer'
+            'integer',
+            []
         );
 
         $getAttributes->forCode('attribute')->willReturn($attribute);
@@ -201,7 +205,8 @@ class ProductValueNormalizerSpec extends ObjectBehavior
             true,
             null,
             false,
-            'integer'
+            'integer',
+            []
         );
 
         $getAttributes->forCode('attribute')->willReturn($attribute);
@@ -237,7 +242,8 @@ class ProductValueNormalizerSpec extends ObjectBehavior
             false,
             null,
             false,
-            'option'
+            'option',
+            []
         );
 
         $getAttributes->forCode('attribute')->willReturn($attribute);
@@ -273,7 +279,8 @@ class ProductValueNormalizerSpec extends ObjectBehavior
             false,
             null,
             false,
-            'options'
+            'options',
+            []
         );
 
         $getAttributes->forCode('attribute')->willReturn($attribute);

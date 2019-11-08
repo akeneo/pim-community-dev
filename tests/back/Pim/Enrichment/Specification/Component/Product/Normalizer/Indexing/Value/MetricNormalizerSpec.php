@@ -45,7 +45,8 @@ class MetricNormalizerSpec extends ObjectBehavior
             false,
             null,
             true,
-            'metric'
+            'metric',
+            []
         ));
         $getAttributes->forCode('my_text_attribute')->willReturn(new Attribute(
             'my_text_attribute',
@@ -55,7 +56,8 @@ class MetricNormalizerSpec extends ObjectBehavior
             false,
             null,
             true,
-            'text'
+            'text',
+            []
         ));
 
         $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
@@ -87,7 +89,8 @@ class MetricNormalizerSpec extends ObjectBehavior
             false,
             null,
             true,
-            'metric'
+            'metric',
+            []
         ));
 
         $this->normalize($metricValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
@@ -122,7 +125,8 @@ class MetricNormalizerSpec extends ObjectBehavior
             false,
             null,
             true,
-            'metric'
+            'metric',
+            []
         ));
 
         $this->normalize($metricValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
@@ -162,7 +166,8 @@ class MetricNormalizerSpec extends ObjectBehavior
             false,
             null,
             true,
-            'metric'
+            'metric',
+            []
         ));
 
         $this->normalize($metricValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
@@ -202,7 +207,8 @@ class MetricNormalizerSpec extends ObjectBehavior
             true,
             null,
             false,
-            'metric'
+            'metric',
+            []
         ));
 
         $this->normalize($metricValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([

@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -21,17 +22,17 @@ final class LocalizableValuesValidator extends ConstraintValidator
     /** @var IdentifiableObjectRepositoryInterface */
     private $channelRepository;
 
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $attributeRepository;
+    /** @var GetAttributes */
+    private $getAttributes;
 
     public function __construct(
         IdentifiableObjectRepositoryInterface $localeRepository,
         IdentifiableObjectRepositoryInterface $channelRepository,
-        IdentifiableObjectRepositoryInterface $attributeRepository
+        GetAttributes $getAttributes
     ) {
         $this->localeRepository = $localeRepository;
         $this->channelRepository = $channelRepository;
-        $this->attributeRepository = $attributeRepository;
+        $this->getAttributes = $getAttributes;
     }
 
     /**
@@ -53,6 +54,8 @@ final class LocalizableValuesValidator extends ConstraintValidator
                 return $value->isLocalizable();
             }
         );
+
+        $attributes = $this->getAttributes->forCodes($localizableValues->getAttributeCodes());
 
         foreach ($localizableValues as $key => $localizableValue) {
             $locale = $this->localeRepository->findOneByIdentifier($localizableValue->getLocaleCode());
@@ -88,8 +91,8 @@ final class LocalizableValuesValidator extends ConstraintValidator
                 }
             }
 
-            $attribute = $this->attributeRepository->findOneByIdentifier($localizableValue->getAttributeCode());
-            if ($attribute->isLocaleSpecific() && !$attribute->hasLocaleSpecific($locale)) {
+            $attribute = $attributes[$localizableValue->getAttributeCode()];
+            if ($attribute->isLocaleSpecific() && !in_array($localizableValue->getLocaleCode(), $attribute->availableLocaleCodes())) {
                 $this->context->buildViolation(
                     $constraint->invalidLocaleSpecificMessage,
                     [

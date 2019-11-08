@@ -33,6 +33,9 @@ final class Attribute
     /** @var string */
     private $backendType;
 
+    /** @var string[] */
+    private $availableLocaleCodes;
+
     public function __construct(
         string $attributeCode,
         string $attributeType,
@@ -41,7 +44,8 @@ final class Attribute
         bool $isScopable,
         ?string $metricFamily,
         ?bool $decimalsAllowed,
-        string $backendType
+        string $backendType,
+        array $availableLocaleCodes
     ) {
         $this->attributeCode = $attributeCode;
         $this->attributeType = $attributeType;
@@ -51,6 +55,7 @@ final class Attribute
         $this->metricFamily = $metricFamily;
         $this->decimalsAllowed = $decimalsAllowed;
         $this->backendType = $backendType;
+        $this->availableLocaleCodes = $availableLocaleCodes;
     }
 
     public function code(): string
@@ -96,5 +101,15 @@ final class Attribute
     public function backendType(): string
     {
         return $this->backendType;
+    }
+
+    public function isLocaleSpecific(): bool
+    {
+        return !empty($this->availableLocaleCodes);
+    }
+
+    public function availableLocaleCodes(): array
+    {
+        return $this->availableLocaleCodes;
     }
 }

@@ -37,7 +37,8 @@ class InMemoryGetAttributes implements GetAttributes
                     (bool) $attribute->isScopable(),
                     $attribute->getMetricFamily(),
                     $attribute->isDecimalsAllowed(),
-                    $attribute->getBackendType()
+                    $attribute->getBackendType(),
+                    $attribute->getAvailableLocaleCodes()
                 );
             }
         }

@@ -9,7 +9,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsString;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\LocalizableValues;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\LocalizableValuesValidator;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
-use Akeneo\Pim\Structure\Component\Model\Attribute;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -23,10 +25,10 @@ class LocalizableValuesValidatorSpec extends ObjectBehavior
     function let(
         IdentifiableObjectRepositoryInterface $localeRepository,
         IdentifiableObjectRepositoryInterface $channelRepository,
-        IdentifiableObjectRepositoryInterface $attributeRepository,
+        GetAttributes $getAttributes,
         ExecutionContextInterface $context
     ) {
-        $this->beConstructedWith($localeRepository, $channelRepository, $attributeRepository);
+        $this->beConstructedWith($localeRepository, $channelRepository, $getAttributes);
         $this->initialize($context);
     }
 
@@ -57,10 +59,12 @@ class LocalizableValuesValidatorSpec extends ObjectBehavior
 
     function it_only_validates_localizable_values(
         IdentifiableObjectRepositoryInterface $localeRepository,
+        GetAttributes $getAttributes,
         ExecutionContextInterface $context
     ) {
         $localeRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
+        $getAttributes->forCodes([])->willReturn([]);
 
         $values = new WriteValueCollection([
             ScalarValue::value('text', 'some text'),
@@ -73,6 +77,7 @@ class LocalizableValuesValidatorSpec extends ObjectBehavior
 
     function it_adds_a_violation_if_a_locale_does_not_exist(
         IdentifiableObjectRepositoryInterface $localeRepository,
+        GetAttributes $getAttributes,
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $violationBuilder
     ) {
@@ -83,6 +88,10 @@ class LocalizableValuesValidatorSpec extends ObjectBehavior
                 ScalarValue::localizableValue('localizable_text', 'Lorem ipsum', 'non_EXISTING')
             ]
         );
+
+        $getAttributes->forCodes(['localizable_text'])->willReturn([
+            'localizable_text' => new Attribute('localizable_text', AttributeTypes::TEXT, [], true, false, null, null, 'text', []),
+        ]);
 
         $context->buildViolation($constraint->nonActiveLocaleMessage, [
             '%attribute_code%' => 'localizable_text',
@@ -96,6 +105,7 @@ class LocalizableValuesValidatorSpec extends ObjectBehavior
 
     function it_adds_a_violation_if_a_locale_is_not_activated(
         IdentifiableObjectRepositoryInterface $localeRepository,
+        GetAttributes $getAttributes,
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $violationBuilder
     ) {
@@ -112,6 +122,10 @@ class LocalizableValuesValidatorSpec extends ObjectBehavior
                 ScalarValue::localizableValue('localizable_text', 'Lorem ipsum', 'es_DO'),
             ]
         );
+
+        $getAttributes->forCodes(['localizable_text'])->willReturn([
+            'localizable_text' => new Attribute('localizable_text', AttributeTypes::TEXT, [], true, false, null, null, 'text', []),
+        ]);
 
         $constraint = new LocalizableValues();
         $context->buildViolation(
@@ -130,7 +144,7 @@ class LocalizableValuesValidatorSpec extends ObjectBehavior
     function it_adds_a_violation_if_a_locale_is_not_bound_to_the_channel(
         IdentifiableObjectRepositoryInterface $localeRepository,
         IdentifiableObjectRepositoryInterface $channelRepository,
-        IdentifiableObjectRepositoryInterface $attributeRepository,
+        GetAttributes $getAttributes,
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $violationBuilder
     ) {
@@ -140,7 +154,6 @@ class LocalizableValuesValidatorSpec extends ObjectBehavior
         $localeRepository->findOneByIdentifier('fr_FR')->willReturn($frFR);
         $channelRepository->findOneByIdentifier('ecommerce')->willReturn($ecommerce);
         $channelRepository->findOneByIdentifier('mobile')->willReturn(new Channel());
-        $attributeRepository->findOneByIdentifier('scopable_localizable_text')->willReturn(new Attribute());
 
         $values = new WriteValueCollection(
             [
@@ -148,6 +161,10 @@ class LocalizableValuesValidatorSpec extends ObjectBehavior
                 ScalarValue::scopableLocalizableValue('scopable_localizable_text', 'some other text', 'ecommerce', 'fr_FR'),
             ]
         );
+
+        $getAttributes->forCodes(['scopable_localizable_text'])->willReturn([
+            'scopable_localizable_text' => new Attribute('scopable_localizable_text', AttributeTypes::TEXT, [], true, true, null, null, 'text', []),
+        ]);
 
         $constraint = new LocalizableValues();
         $context->buildViolation(
@@ -166,7 +183,7 @@ class LocalizableValuesValidatorSpec extends ObjectBehavior
 
     function it_adds_a_violation_if_a_locale_is_not_part_of_the_available_locales_for_a_locale_specific_attribute(
         IdentifiableObjectRepositoryInterface $localeRepository,
-        IdentifiableObjectRepositoryInterface $attributeRepository,
+        GetAttributes $getAttributes,
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $violationBuilder
     ) {
@@ -180,10 +197,9 @@ class LocalizableValuesValidatorSpec extends ObjectBehavior
         $enUS->addChannel($ecommerce);
         $localeRepository->findOneByIdentifier('en_US')->willReturn($enUS);
 
-        $localeSpecificAttribute = (new Attribute())->setCode('name');
-        $localeSpecificAttribute->setLocalizable(true);
-        $localeSpecificAttribute->addAvailableLocale($enUS);
-        $attributeRepository->findOneByIdentifier('name')->willReturn($localeSpecificAttribute);
+        $getAttributes->forCodes(['name'])->willReturn([
+            'name' => new Attribute('name', AttributeTypes::TEXT, [], true, false, null, null, 'text', ['en_US']),
+        ]);
 
         $values = new WriteValueCollection(
             [

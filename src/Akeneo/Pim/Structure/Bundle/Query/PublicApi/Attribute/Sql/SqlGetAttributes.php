@@ -28,8 +28,23 @@ final class SqlGetAttributes implements GetAttributes
         }
 
         $query = <<<SQL
-SELECT code, attribute_type, properties, is_scopable, is_localizable, metric_family, decimals_allowed, backend_type
-FROM pim_catalog_attribute
+WITH locale_specific_codes AS (
+    SELECT attribute_locale.attribute_id, JSON_ARRAYAGG(locale.code) AS locale_codes
+    FROM pim_catalog_attribute_locale attribute_locale
+    INNER JOIN pim_catalog_locale locale ON attribute_locale.locale_id = locale.id
+    GROUP BY attribute_locale.attribute_id
+)
+SELECT attribute.code,
+       attribute.attribute_type,
+       attribute.properties,
+       attribute.is_scopable,
+       attribute.is_localizable,
+       attribute.metric_family,
+       attribute.decimals_allowed,
+       attribute.backend_type,
+       COALESCE(locale_codes, JSON_ARRAY()) AS available_locale_codes
+FROM pim_catalog_attribute attribute
+    LEFT JOIN locale_specific_codes on attribute.id = attribute_id    
 WHERE code IN (:attributeCodes)
 SQL;
 
@@ -52,7 +67,8 @@ SQL;
                 boolval($rawAttribute['is_scopable']),
                 $rawAttribute['metric_family'],
                 boolval($rawAttribute['decimals_allowed']),
-                $rawAttribute['backend_type']
+                $rawAttribute['backend_type'],
+                json_decode($rawAttribute['available_locale_codes'])
             );
         }
 
