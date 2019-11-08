@@ -1,5 +1,18 @@
-define(['underscore', 'backbone', 'routing', 'oro/app'],
-function (_, Backbone, routing, app) {
+define([
+    'jquery',
+    'underscore',
+    'backbone',
+    'routing',
+    'oro/app',
+    'pim/error'
+], function (
+    $,
+    _,
+    Backbone,
+    routing,
+    app,
+    Error
+) {
     'use strict';
 
     var defaults = {
@@ -45,31 +58,19 @@ function (_, Backbone, routing, app) {
                 if (xhr.status === 403) {
                     options.message = options.forbiddenAccess;
                 }
-                this._processModal(xhr, options);
+
+                this._displayError(xhr, options);
             }
         },
 
-        /**
-         * Shows modal window
-         * @param {Object} xhr
-         * @param {Object} options
-         * @private
-         */
-        _processModal: function (xhr, options) {
-            var modal;
+        _displayError: function (xhr, options) {
             var message = options.message;
             if (app.debug) {
                 message += '<br><b>Debug:</b>' + xhr.responseText;
             }
 
-            modal = new Backbone.BootstrapModal({
-                title: options.header,
-                content: message,
-                buttonClass: 'AknButton--important',
-                cancelText: '',
-            });
-
-            modal.open();
+            const errorView = new Error(message, xhr.status);
+            errorView.setElement($('#container')).render();
         },
 
         /**
