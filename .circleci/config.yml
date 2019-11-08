@@ -277,18 +277,17 @@ jobs:
                   IMAGE_TAG=$CIRCLE_SHA1 make php-image-prod
                   IMAGE_TAG=$CIRCLE_SHA1 make push-php-image-prod
 
-  tests:
+  test_prod:
       machine:
           image: ubuntu-1604:201903-01
       steps:
           -   attach_workspace:
                   at: ~/
           -   run:
-                  name: make tests
+                  name: make test-prod
                   command: |
-                      docker load -i pim-image-dev.tar
                       docker load -i pim-image-prod.tar
-                      make tests
+                      make test-prod
 
   release:
       machine:
@@ -373,10 +372,25 @@ workflows:
           - build_prod:
                 requires:
                     - checkout
-          - tests:
+          - back_static_and_acceptance:
                 requires:
                     - build_dev
+          - front_static_acceptance_and_integration:
+                requires:
+                    - build_dev
+          - back_phpunit:
+                requires:
+                    - build_dev
+          - back_behat_legacy:
+                requires:
+                    - build_dev
+          - test_prod:
+                requires:
                     - build_prod
           - release:
                 requires:
-                    - tests
+                    - back_static_and_acceptance
+                    - front_static_acceptance_and_integration
+                    - back_phpunit
+                    - back_behat_legacy
+                    - test_prod
