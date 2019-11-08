@@ -266,7 +266,7 @@ pim_title:
   oro_default: Dashboard
   pim_enrich_attributegroup_index: Attributgruppen
   pim_enrich_attributegroup_create: Attributgruppen | Anlegen
-  pim_enrich_attributegroup_edit: Attributgruppe {{ group.label }}}}} | Bearbeiten
+  pim_enrich_attributegroup_edit: Attributgruppe {{ group.label }} | Bearbeiten
   pim_enrich_catalog_volume_index: Überwachung Katalogumfang
   pim_enrich_categorytree_index: Kategorie-Strukturbäume
   pim_enrich_categorytree_create: Kategorie-Strukturbäume | Anlegen
