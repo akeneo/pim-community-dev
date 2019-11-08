@@ -384,6 +384,7 @@ flash:
     updated: Atribut actualitzat correctament
     removed: L'atribut s'ha suprimit correctament
     identifier_not_removable: L'atribut identificador no es pot suprimir
+    used_as_conversion_unit: Aquest atribut no es pot eliminar perquè s'utilitza com a unitat de conversió al canal(s) %channelCodes%.
   attribute group:
     created: Grup d'atributs creat correctament
     updated: Grup d'atributs actualitzat correctament

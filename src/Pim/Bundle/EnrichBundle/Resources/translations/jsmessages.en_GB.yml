@@ -684,7 +684,7 @@ pim_enrich:
         import.upload: Upload and import now
         import.upload_file: Upload a file
       meta:
-        job: Работа
+        job: Job
         connector: Connector
       subsection:
         last_executions: Last executions
