@@ -45,6 +45,7 @@ Feature: Edit a user
       | Role (required) | Tata role |
     And I visit the "Permissions" tab
     And I grant rights to resource Edit users
+    And I grant rights to resource List users
     Then I save the role
     When I edit the "mary" user
     And I visit the "Groups and roles" tab
