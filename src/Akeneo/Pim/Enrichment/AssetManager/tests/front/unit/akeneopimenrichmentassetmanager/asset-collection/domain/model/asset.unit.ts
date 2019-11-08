@@ -343,7 +343,7 @@ test('I can get the main image media link download link', () => {
         channel: null,
         locale: null,
         data: {
-          filePath: '',
+          filePath: 'file_path',
           originalFilename: '',
         },
       },
@@ -362,61 +362,15 @@ test('I can get the main image media link download link', () => {
         {
           identifier: 'main_image',
           type: 'media_link',
+          prefix: 'http://test.com/',
+          suffix: '.jpg',
         },
       ],
     },
   };
-  expect(
-    getAssetMainImageDownloadLink(
-      asset,
-      {locale: 'en_US', channel: 'ecommerce'},
-      () => 'computed_media_link_route',
-      () => 'computed_binary_route'
-    )
-  ).toBe('computed_media_link_route');
-});
-
-test('I can get the main image binary download link', () => {
-  const asset = {
-    identifier: '',
-    code: '',
-    image: [
-      {
-        attribute: 'main_image',
-        channel: null,
-        locale: null,
-        data: {
-          filePath: '',
-          originalFilename: '',
-        },
-      },
-    ],
-    assetFamily: {
-      identifier: '',
-      code: '',
-      labels: {},
-      image: {
-        filePath: '',
-        originalFilename: '',
-      },
-      attributeAsLabel: '',
-      attributeAsImage: 'main_image',
-      attributes: [
-        {
-          identifier: 'main_image',
-          type: 'image',
-        },
-      ],
-    },
-  };
-  expect(
-    getAssetMainImageDownloadLink(
-      asset,
-      {locale: 'en_US', channel: 'ecommerce'},
-      () => 'computed_media_link_route',
-      () => 'computed_binary_route'
-    )
-  ).toBe('computed_binary_route');
+  expect(getAssetMainImageDownloadLink(asset, {locale: 'en_US', channel: 'ecommerce'})).toBe(
+    'http://test.com/file_path.jpg'
+  );
 });
 
 test('I get an error when the attribute is not found', () => {
@@ -453,12 +407,7 @@ test('I get an error when the attribute is not found', () => {
     },
   };
   expect(() => {
-    getAssetMainImageDownloadLink(
-      asset,
-      {locale: 'en_US', channel: 'ecommerce'},
-      () => 'computed_media_link_route',
-      () => 'computed_binary_route'
-    );
+    getAssetMainImageDownloadLink(asset, {locale: 'en_US', channel: 'ecommerce'});
   }).toThrow();
 });
 
