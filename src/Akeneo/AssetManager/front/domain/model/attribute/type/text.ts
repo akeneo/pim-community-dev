@@ -8,11 +8,6 @@ import LabelCollection, {denormalizeLabelCollection} from 'akeneoassetmanager/do
 import AttributeCode, {denormalizeAttributeCode} from 'akeneoassetmanager/domain/model/attribute/code';
 import {NormalizedAttribute, Attribute, ConcreteAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {MaxLength, NormalizedMaxLength} from 'akeneoassetmanager/domain/model/attribute/type/text/max-length';
-import {IsTextarea, NormalizedIsTextarea} from 'akeneoassetmanager/domain/model/attribute/type/text/is-textarea';
-import {
-  IsRichTextEditor,
-  NormalizedIsRichTextEditor,
-} from 'akeneoassetmanager/domain/model/attribute/type/text/is-rich-text-editor';
 import {
   ValidationRule,
   NormalizedValidationRule,
@@ -23,19 +18,21 @@ import {
   NormalizedRegularExpression,
 } from 'akeneoassetmanager/domain/model/attribute/type/text/regular-expression';
 
+export type IsRichTextEditor = boolean;
+export type IsTextarea = boolean;
 export type TextAdditionalProperty = MaxLength | IsTextarea | IsRichTextEditor | ValidationRule | RegularExpression;
 export type NormalizedTextAdditionalProperty =
   | NormalizedMaxLength
-  | NormalizedIsTextarea
-  | NormalizedIsRichTextEditor
+  | IsTextarea
+  | IsRichTextEditor
   | NormalizedValidationRule
   | NormalizedRegularExpression;
 
 export interface NormalizedTextAttribute extends NormalizedAttribute {
   type: 'text';
   max_length: NormalizedMaxLength;
-  is_textarea: NormalizedIsTextarea;
-  is_rich_text_editor: NormalizedIsRichTextEditor;
+  is_textarea: IsTextarea;
+  is_rich_text_editor: IsRichTextEditor;
   validation_rule: NormalizedValidationRule;
   regular_expression: NormalizedRegularExpression;
 }
@@ -83,15 +80,7 @@ export class ConcreteTextAttribute extends ConcreteAttribute implements TextAttr
       throw new InvalidArgumentError('Attribute expects a MaxLength as maxLength');
     }
 
-    if (!(isTextarea instanceof IsTextarea)) {
-      throw new InvalidArgumentError('Attribute expects a Textarea as isTextarea');
-    }
-
-    if (!(isRichTextEditor instanceof IsRichTextEditor)) {
-      throw new InvalidArgumentError('Attribute expects a IsRichTextEditor as isRichTextEditor');
-    }
-
-    if (false === isTextarea.booleanValue() && true === isRichTextEditor.booleanValue()) {
+    if (false === isTextarea && true === isRichTextEditor) {
       throw new InvalidArgumentError('Attribute cannot be rich text editor and not textarea');
     }
 
@@ -99,7 +88,7 @@ export class ConcreteTextAttribute extends ConcreteAttribute implements TextAttr
       throw new InvalidArgumentError('Attribute expects a ValidationRule as validationRule');
     }
 
-    if (true === isTextarea.booleanValue() && ValidationRuleOption.None !== validationRule.stringValue()) {
+    if (true === isTextarea && ValidationRuleOption.None !== validationRule.stringValue()) {
       throw new InvalidArgumentError('Attribute cannot have a validation rule while being a textarea');
     }
 
@@ -127,8 +116,8 @@ export class ConcreteTextAttribute extends ConcreteAttribute implements TextAttr
       normalizedTextAttribute.order,
       normalizedTextAttribute.is_required,
       MaxLength.createFromNormalized(normalizedTextAttribute.max_length),
-      IsTextarea.createFromNormalized(normalizedTextAttribute.is_textarea),
-      IsRichTextEditor.createFromNormalized(normalizedTextAttribute.is_rich_text_editor),
+      normalizedTextAttribute.is_textarea,
+      normalizedTextAttribute.is_rich_text_editor,
       ValidationRule.createFromNormalized(normalizedTextAttribute.validation_rule),
       RegularExpression.createFromNormalized(normalizedTextAttribute.regular_expression)
     );
@@ -139,8 +128,8 @@ export class ConcreteTextAttribute extends ConcreteAttribute implements TextAttr
       ...super.normalize(),
       type: 'text',
       max_length: this.maxLength.normalize(),
-      is_textarea: this.isTextarea.normalize(),
-      is_rich_text_editor: this.isRichTextEditor.normalize(),
+      is_textarea: this.isTextarea,
+      is_rich_text_editor: this.isRichTextEditor,
       validation_rule: this.validationRule.normalize(),
       regular_expression: this.regularExpression.normalize(),
     };

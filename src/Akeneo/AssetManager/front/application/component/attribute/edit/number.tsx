@@ -4,7 +4,6 @@ import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import Checkbox from 'akeneoassetmanager/application/component/app/checkbox';
 import {NumberAdditionalProperty, NumberAttribute} from 'akeneoassetmanager/domain/model/attribute/type/number';
-import {DecimalsAllowed} from 'akeneoassetmanager/domain/model/attribute/type/number/decimals-allowed';
 import {MinValue} from 'akeneoassetmanager/domain/model/attribute/type/number/min-value';
 import {MaxValue} from 'akeneoassetmanager/domain/model/attribute/type/number/max-value';
 import Key from 'akeneoassetmanager/tools/key';
@@ -44,18 +43,13 @@ const NumberView = ({
             <Checkbox
               readOnly={!rights.attribute.edit}
               id="pim_asset_manager.attribute.edit.input.decimals_allowed"
-              value={attribute.decimalsAllowed.booleanValue()}
-              onChange={(decimalsAllowed: boolean) =>
-                onAdditionalPropertyUpdated('decimals_allowed', DecimalsAllowed.createFromBoolean(decimalsAllowed))
-              }
+              value={attribute.decimalsAllowed}
+              onChange={(decimalsAllowed: boolean) => onAdditionalPropertyUpdated('decimals_allowed', decimalsAllowed)}
             />
             <span
               onClick={() => {
                 if (rights.attribute.edit) {
-                  onAdditionalPropertyUpdated(
-                    'decimals_allowed',
-                    DecimalsAllowed.createFromBoolean(!attribute.decimalsAllowed.booleanValue())
-                  );
+                  onAdditionalPropertyUpdated('decimals_allowed', !attribute.decimalsAllowed);
                 }
               }}
             >

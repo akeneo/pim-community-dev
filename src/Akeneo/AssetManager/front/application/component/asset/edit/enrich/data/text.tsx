@@ -33,8 +33,8 @@ const View = ({
 
   return (
     <React.Fragment>
-      {value.attribute.isTextarea.booleanValue() ? (
-        value.attribute.isRichTextEditor.booleanValue() ? (
+      {value.attribute.isTextarea ? (
+        value.attribute.isRichTextEditor ? (
           <RichTextEditor value={value.data.stringValue()} onChange={onValueChange} readOnly={!canEditData} />
         ) : (
           <textarea
