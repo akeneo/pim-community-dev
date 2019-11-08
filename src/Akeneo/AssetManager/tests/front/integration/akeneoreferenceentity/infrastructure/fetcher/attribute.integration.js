@@ -90,12 +90,8 @@ describe('Akeneoassetfamily > infrastructure > fetcher > attribute', () => {
         type: 'image',
         valuePerChannel: false,
         valuePerLocale: true,
-        allowedExtensions: {
-          allowedExtensions: ['jpg', 'png'],
-        },
-        maxFileSize: {
-          maxFileSize: '123.4',
-        },
+        allowedExtensions: ['jpg', 'png'],
+        maxFileSize: '123.4',
       },
     ]);
   });

@@ -1,9 +1,5 @@
-import {InvalidArgumentError} from '../media-link';
-
 export type NormalizedMediaType = string;
 export type MediaType = 'image' | 'pdf' | 'youtube' | 'other';
-
-const validMediaTypes = ['image', 'pdf', 'youtube', 'other'];
 
 export enum MediaTypes {
   image = 'image',
@@ -12,13 +8,15 @@ export enum MediaTypes {
   other = 'other',
 }
 
+const validMediaTypes = [MediaTypes.image, MediaTypes.pdf, MediaTypes.youtube, MediaTypes.other];
+
 export const isValidMediaType = (mediaType: NormalizedMediaType): mediaType is MediaType => {
-  return validMediaTypes.includes(mediaType);
+  return validMediaTypes.includes(mediaType as MediaTypes);
 };
 
 export const createMediaTypeFromNormalized = (mediaType: NormalizedMediaType): MediaType => {
   if (!isValidMediaType(mediaType)) {
-    throw new InvalidArgumentError(`MediaType should be ${validMediaTypes.join(',')}`);
+    throw new Error(`MediaType should be ${validMediaTypes.join(',')}`);
   }
 
   return mediaType;

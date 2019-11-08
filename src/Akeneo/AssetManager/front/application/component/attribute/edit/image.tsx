@@ -6,9 +6,14 @@ import Select2 from 'akeneoassetmanager/application/component/app/select2';
 import {ImageAttribute, ImageAdditionalProperty} from 'akeneoassetmanager/domain/model/attribute/type/image';
 import {
   AllowedExtensionsOptions,
-  AllowedExtensions,
+  normalizeAllowedExtension,
+  createAllowedExtensionFromArray,
 } from 'akeneoassetmanager/domain/model/attribute/type/image/allowed-extensions';
-import {MaxFileSize} from 'akeneoassetmanager/domain/model/attribute/type/image/max-file-size';
+import {
+  maxFileSizeStringValue,
+  isValidMaxFileSize,
+  createMaxFileSizeFromString,
+} from 'akeneoassetmanager/domain/model/attribute/type/image/max-file-size';
 import Key from 'akeneoassetmanager/tools/key';
 
 const ImageView = ({
@@ -49,18 +54,18 @@ const ImageView = ({
             className={inputTextClassName}
             id="pim_asset_manager.attribute.edit.input.max_file_size"
             name="max_file_size"
-            value={attribute.maxFileSize.stringValue()}
+            value={maxFileSizeStringValue(attribute.maxFileSize)}
             onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
               if (Key.Enter === event.key) onSubmit();
             }}
             onChange={(event: React.FormEvent<HTMLInputElement>) => {
-              if (!MaxFileSize.isValid(event.currentTarget.value)) {
-                event.currentTarget.value = attribute.maxFileSize.stringValue();
+              if (!isValidMaxFileSize(event.currentTarget.value)) {
+                event.currentTarget.value = maxFileSizeStringValue(attribute.maxFileSize);
                 event.preventDefault();
                 return;
               }
 
-              onAdditionalPropertyUpdated('max_file_size', MaxFileSize.createFromString(event.currentTarget.value));
+              onAdditionalPropertyUpdated('max_file_size', createMaxFileSizeFromString(event.currentTarget.value));
             }}
             readOnly={!rights.attribute.edit}
           />
@@ -81,14 +86,14 @@ const ImageView = ({
             id="pim_asset_manager.attribute.edit.input.allowed_extensions"
             name="allowed_extensions"
             data={(AllowedExtensionsOptions as any) as {[choiceValue: string]: string}}
-            value={attribute.allowedExtensions.arrayValue()}
+            value={normalizeAllowedExtension(attribute.allowedExtensions)}
             multiple={true}
             readOnly={!rights.attribute.edit}
             configuration={{
               allowClear: true,
             }}
             onChange={(allowedExtensions: string[]) => {
-              onAdditionalPropertyUpdated('allowed_extensions', AllowedExtensions.createFromArray(allowedExtensions));
+              onAdditionalPropertyUpdated('allowed_extensions', createAllowedExtensionFromArray(allowedExtensions));
             }}
           />
         </div>

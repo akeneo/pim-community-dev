@@ -1,5 +1,3 @@
-import {InvalidArgumentError} from '../media-link';
-
 export type Prefix = string | null;
 export type NormalizedPrefix = string | null;
 
@@ -13,7 +11,7 @@ export const createEmptyPrefix = (): Prefix => {
 
 export const createPrefixFromNormalized = (prefix: NormalizedPrefix): Prefix => {
   if (!isValidPrefix(prefix)) {
-    throw new InvalidArgumentError('Prefix should be a string');
+    throw new Error('Prefix should be a string');
   }
 
   return prefix;
