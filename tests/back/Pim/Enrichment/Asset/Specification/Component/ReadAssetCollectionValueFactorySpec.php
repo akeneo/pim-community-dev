@@ -3,10 +3,9 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Asset\Component;
 
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactory;
-use Akeneo\Pim\Enrichment\Component\Product\Query\GetExistingReferenceDataCodes;
-use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValue;
 use Akeneo\Asset\Bundle\AttributeType\AttributeTypes;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValue;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
@@ -78,6 +77,6 @@ final class ReadAssetCollectionValueFactorySpec extends ObjectBehavior
 
     private function getAttribute(bool $isLocalizable, bool $isScopable): Attribute
     {
-        return new Attribute('an_attribute', AttributeTypes::ASSETS_COLLECTION, ['reference_data_name' => 'color'], $isLocalizable, $isScopable, null, false, 'reference_data_options');
+        return new Attribute('an_attribute', AttributeTypes::ASSETS_COLLECTION, ['reference_data_name' => 'color'], $isLocalizable, $isScopable, null, false, 'reference_data_options', []);
     }
 }

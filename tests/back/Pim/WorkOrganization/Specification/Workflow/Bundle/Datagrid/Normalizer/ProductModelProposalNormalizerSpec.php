@@ -6,11 +6,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -71,7 +69,7 @@ class ProductModelProposalNormalizerSpec extends ObjectBehavior
         $productModelProposal->getValues()->willReturn($valueCollection);
 
         $productModelProposal->getChanges()->willReturn($changes);
-        $attribute = new Attribute('text', 'pim_catalog_text', [], false, false, null, true, 'pim_catalog_text');
+        $attribute = new Attribute('text', 'pim_catalog_text', [], false, false, null, true, 'pim_catalog_text', []);
         $getAttributesQuery->forCode('text')->willReturn($attribute);
         $valueFactory->createByCheckingData($attribute, null, null, 'my text')->willReturn($value);
         $value->getAttributeCode()->willReturn('text');
