@@ -46,7 +46,7 @@ SQL;
     {
         $selectQuery = <<<SQL
 SELECT code, label, flow_type, client_id, user_id
-FROM akeneo_app app
+FROM akeneo_app
 WHERE code = :code
 SQL;
 
@@ -66,7 +66,7 @@ SQL;
     {
         $updateQuery = <<<SQL
 UPDATE akeneo_app
-SET label = :label AND flow_type = :flow_type
+SET label = :label, flow_type = :flow_type
 WHERE code = :code
 SQL;
 
