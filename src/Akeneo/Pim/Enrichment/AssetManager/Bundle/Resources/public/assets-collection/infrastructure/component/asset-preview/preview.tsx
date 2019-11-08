@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import {
   Asset,
   getAssetLabel,
+  ImageData,
   getAssetMainImageDownloadLink,
   getAssetMainImageOriginalFilename,
   assetHasMainImage,
@@ -17,6 +18,7 @@ import Edit from 'akeneoassetmanager/application/component/app/icon/edit';
 import {
   MediaPreviewTypes,
   getAssetPreview,
+  getMediaDownloadUrl,
   getAssetEditUrl,
   copyToClipboard,
 } from 'akeneoassetmanager/tools/media-url-generator';
@@ -89,9 +91,18 @@ type PreviewProps = {
   context: Context;
 };
 
+export const getMediaLinkUrl = (image: ImageData, attribute: NormalizedMediaLinkAttribute): string => {
+  // TODO discuss this IRL
+  if (attribute.media_type === MediaTypes.youtube) return `https://youtube.com/watch?v=${image.filePath}`;
+
+  return `${null !== attribute.prefix ? attribute.prefix : ''}${image.filePath}${
+    null !== attribute.suffix ? attribute.suffix : ''
+  }`;
+};
+
 const DownloadAction = ({asset, context}: PreviewProps) => (
   <Action
-    href={getAssetMainImageDownloadLink(asset, context)}
+    href={getAssetMainImageDownloadLink(asset, context, getMediaLinkUrl, getMediaDownloadUrl)}
     download={getAssetMainImageOriginalFilename(asset, context)}
     target="_blank"
   >
@@ -101,7 +112,9 @@ const DownloadAction = ({asset, context}: PreviewProps) => (
 );
 
 const CopyUrlAction = ({asset, context}: PreviewProps) => (
-  <Action onClick={() => copyToClipboard(getAssetMainImageDownloadLink(asset, context))}>
+  <Action
+    onClick={() => copyToClipboard(getAssetMainImageDownloadLink(asset, context, getMediaLinkUrl, getMediaDownloadUrl))}
+  >
     <Link />
     <Label>{__('pim_asset_manager.asset_preview.copy_url')}</Label>
   </Action>

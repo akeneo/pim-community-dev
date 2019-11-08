@@ -180,7 +180,7 @@ const assetCollection = [
         attribute: 'media_link_youtube_attribute_identifier',
         locale: null,
         channel: null,
-        data: {filePath: 'nice_file_path', originalFilename: 'file_path'},
+        data: {filePath: 'nice_file_path', originalFilename: ''},
       },
     ],
     asset_family_identifier: 'packshot',
@@ -415,7 +415,7 @@ test('It should display the YouTube player when the product attribute is a YouTu
   expect(container.querySelector('[data-role="youtube-player"]')).toBeInTheDocument();
 });
 
-test('I should get the YouTube link when I click on the Copy URL button on the preview of an asset with a YouTube media link', () => {
+test('I should get the YouTube link when I click on the Copy URL button on the preview of an asset with a YouTube media link', async () => {
   class MockClipboard {
     text: string = '';
     writeText(text: string) {
@@ -445,5 +445,5 @@ test('I should get the YouTube link when I click on the Copy URL button on the p
 
   fireEvent.click(getByText('pim_asset_manager.asset_preview.copy_url'));
 
-  expect(mockClipboard.readText()).toEqual('https://youtube.com/watch?v=file_path');
+  expect(mockClipboard.readText()).toEqual('https://youtube.com/watch?v=nice_file_path');
 });
