@@ -2,7 +2,6 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\ReferenceEntity\Component\Normalizer;
 
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\AbstractProductValueNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Normalizer\ReferenceEntityCollectionValueNormalizer;
@@ -52,7 +51,8 @@ class ReferenceEntityCollectionValueNormalizerSpec extends ObjectBehavior {
             false,
             null,
             false,
-            AttributeTypes::BACKEND_TYPE_REF_DATA_OPTIONS
+            AttributeTypes::BACKEND_TYPE_REF_DATA_OPTIONS,
+            []
         ));
 
         $designerValue->getData()->willReturn([]);
@@ -89,7 +89,8 @@ class ReferenceEntityCollectionValueNormalizerSpec extends ObjectBehavior {
             false,
             null,
             false,
-            AttributeTypes::BACKEND_TYPE_REF_DATA_OPTIONS
+            AttributeTypes::BACKEND_TYPE_REF_DATA_OPTIONS,
+            []
         ));
 
         $dysonCode->__toString()->willReturn('dyson');

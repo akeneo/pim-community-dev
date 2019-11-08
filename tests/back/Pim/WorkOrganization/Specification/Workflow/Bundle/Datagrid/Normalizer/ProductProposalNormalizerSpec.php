@@ -6,11 +6,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -73,8 +71,8 @@ class ProductProposalNormalizerSpec extends ObjectBehavior
         $productProposal->getValues()->willReturn($valueCollection);
         $productProposal->getChanges()->willReturn($changes);
 
-        $textAttribute = new Attribute('text', 'pim_catalog_text', [], false, false, null, true, 'pim_catalog_text');
-        $descriptionAttribute = new Attribute('description', 'pim_catalog_text', [], false, false, null, true, 'pim_catalog_text');
+        $textAttribute = new Attribute('text', 'pim_catalog_text', [], false, false, null, true, 'pim_catalog_text', []);
+        $descriptionAttribute = new Attribute('description', 'pim_catalog_text', [], false, false, null, true, 'pim_catalog_text', []);
 
         $getAttributes->forCode('text')->willReturn($textAttribute);
         $getAttributes->forCode('description')->willReturn($descriptionAttribute);

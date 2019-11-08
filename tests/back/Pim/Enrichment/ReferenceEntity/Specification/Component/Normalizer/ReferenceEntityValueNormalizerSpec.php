@@ -50,7 +50,8 @@ class ReferenceEntityValueNormalizerSpec extends ObjectBehavior
             false,
             null,
             false,
-            AttributeTypes::BACKEND_TYPE_REF_DATA_OPTION
+            AttributeTypes::BACKEND_TYPE_REF_DATA_OPTION,
+            []
         ));
 
         $designerValue->getLocaleCode()->willReturn(null);
@@ -85,7 +86,8 @@ class ReferenceEntityValueNormalizerSpec extends ObjectBehavior
             false,
             null,
             false,
-            AttributeTypes::BACKEND_TYPE_REF_DATA_OPTION
+            AttributeTypes::BACKEND_TYPE_REF_DATA_OPTION,
+            []
         ));
 
         $designerValue->getLocaleCode()->willReturn(null);

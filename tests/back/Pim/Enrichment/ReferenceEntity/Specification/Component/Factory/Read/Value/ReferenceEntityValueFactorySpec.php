@@ -80,6 +80,6 @@ final class ReferenceEntityValueFactorySpec extends ObjectBehavior
 
     private function getAttribute(bool $isLocalizable, bool $isScopable): Attribute
     {
-        return new Attribute('an_attribute', ReferenceEntityType::REFERENCE_ENTITY, ['reference_data_name' => 'color'], $isLocalizable, $isScopable, null, false, 'reference_data_option');
+        return new Attribute('an_attribute', ReferenceEntityType::REFERENCE_ENTITY, ['reference_data_name' => 'color'], $isLocalizable, $isScopable, null, false, 'reference_data_option', []);
     }
 }
