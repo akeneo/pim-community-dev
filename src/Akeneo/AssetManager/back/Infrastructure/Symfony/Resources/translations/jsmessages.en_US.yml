@@ -45,11 +45,13 @@ pim_asset_manager:
   asset_preview:
     previous: Previous asset
     next: Next asset
+    empty_main_image: Your "main image" attribute is empty.
+    edit_asset: Edit asset
+    download: Download
+    copy_url: Copy URL
   close: Close the modal
   breadcrumb:
     products: Products
-  download: Download
-  fullscreen: Fullscreen
 
   #  app:
   #    image:

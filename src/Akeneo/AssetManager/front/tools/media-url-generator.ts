@@ -4,12 +4,20 @@ import MediaLinkData from 'akeneoassetmanager/domain/model/asset/data/media-link
 import {MediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 import {suffixStringValue} from 'akeneoassetmanager/domain/model/attribute/type/media-link/suffix';
 import {prefixStringValue} from 'akeneoassetmanager/domain/model/attribute/type/media-link/prefix';
+import {Asset} from 'web/bundles/akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 
 export enum MediaPreviewTypes {
   Preview = 'preview',
   Thumbnail = 'thumbnail',
   ThumbnailSmall = 'thumbnail_small',
 }
+
+export const copyToClipboard = (text: string) => {
+  if ('clipboard' in navigator) {
+    // @ts-ignore eslint-disable-next-line flowtype/no-flow-fix-me-comments
+    navigator.clipboard.writeText(text);
+  }
+};
 
 export const getImageShowUrl = (image: File, filter: string): string => {
   const path = !image.isEmpty() ? image.getFilePath() : 'undefined';
@@ -78,4 +86,12 @@ export const getAssetPreview = (asset: any, type: MediaPreviewTypes): string => 
     attributeIdentifier: undefined !== image ? image.attribute : '',
     data: undefined !== image ? image.data.filePath : '',
   });
+};
+
+export const getAssetEditUrl = (asset: Asset): string => {
+  const assetFamilyIdentifier = asset.assetFamily.identifier;
+  const assetCode = asset.code;
+
+  //TODO cleaner way?
+  return '#' + routing.generate('akeneo_asset_manager_asset_edit', {assetFamilyIdentifier, assetCode, tab: 'enrich'});
 };

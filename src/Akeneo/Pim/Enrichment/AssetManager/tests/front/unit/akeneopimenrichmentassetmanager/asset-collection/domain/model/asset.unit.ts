@@ -21,6 +21,8 @@ import {
   assetMainImageCanBeDownloaded,
   getAssetMainImageOriginalFilename,
   assetHasCompleteness,
+  assetHasMainImage,
+  getAttributeAsMainImage,
 } from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {isLabels} from 'akeneoassetmanager/domain/model/utils';
 
@@ -495,6 +497,7 @@ test('I know if an asset main image can be downloaded', () => {
   };
   expect(assetMainImageCanBeDownloaded(asset, {locale: 'en_US', channel: 'ecommerce'})).toBeTruthy();
 });
+
 test('I can get the asset main image original filename', () => {
   const asset = {
     identifier: '',
@@ -532,6 +535,7 @@ test('I can get the asset main image original filename', () => {
     'My nice filename.png'
   );
 });
+
 test('I can know if the asset has a completeness', () => {
   const asset = {
     identifier: '',
@@ -555,4 +559,82 @@ test('I can know if the asset has a completeness', () => {
     },
   };
   expect(assetHasCompleteness(noCompletenessAsset)).toBe(false);
+});
+
+test('I should be able to tell if an asset has a main image', () => {
+  const context = {locale: 'en_US', channel: 'ecommerce'};
+  const asset = {
+    identifier: '',
+    code: '',
+    image: [
+      {
+        attribute: 'main_image',
+        channel: null,
+        locale: null,
+        data: {
+          filePath: 'file_path',
+          originalFilename: 'My nice filename.png',
+        },
+      },
+    ],
+    assetFamily: {
+      identifier: '',
+      code: '',
+      labels: {},
+      image: {
+        filePath: '',
+        originalFilename: '',
+      },
+      attributeAsLabel: '',
+      attributeAsImage: 'main_image',
+      attributes: [
+        {
+          identifier: 'main_image',
+          type: 'image',
+        },
+      ],
+    },
+  };
+
+  const noImageAsset = {...asset, image: []};
+
+  expect(assetHasMainImage(asset, context)).toBe(true);
+  expect(assetHasMainImage(noImageAsset, context)).toBe(false);
+});
+
+test('I should be able to get the attribute as main image from the asset', () => {
+  const context = {locale: 'en_US', channel: 'ecommerce'};
+  const attribute = {
+    identifier: 'main_image',
+    type: 'image',
+  };
+  const asset = {
+    identifier: '',
+    code: '',
+    image: [
+      {
+        attribute: 'main_image',
+        channel: null,
+        locale: null,
+        data: {
+          filePath: 'file_path',
+          originalFilename: 'My nice filename.png',
+        },
+      },
+    ],
+    assetFamily: {
+      identifier: '',
+      code: '',
+      labels: {},
+      image: {
+        filePath: '',
+        originalFilename: '',
+      },
+      attributeAsLabel: '',
+      attributeAsImage: 'main_image',
+      attributes: [attribute],
+    },
+  };
+
+  expect(getAttributeAsMainImage(asset)).toBe(attribute);
 });
