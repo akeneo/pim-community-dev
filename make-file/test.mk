@@ -21,7 +21,7 @@ lint-front:
 ### Unit tests
 .PHONY: unit-back
 unit-back: var/tests/phpspec
-ifeq ($(CI),1)
+ifeq ($(CI),true)
 	${PHP_RUN} vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
 	.circleci/find_non_executed_phpspec.sh
 else
@@ -48,19 +48,19 @@ integration-front:
 
 .PHONY: integration-back
 integration-back: var/tests/phpunit apps-integration-back
-ifeq ($(CI),1)
+ifeq ($(CI),true)
 	.circleci/run_phpunit.sh . .circleci/find_phpunit.php PIM_Integration_Test
 else
-	@echo Run integration test locally is too long, please use the target define for your bounded context (ex: bounded-context-integration-back)
+	@echo Run integration test locally is too long, please use the target defined for your bounded context (ex: bounded-context-integration-back)
 endif
 
 ### End to end tests
 .PHONY: end-to-end-back
 end-to-end-back: var/tests/phpunit
-ifeq ($(CI),1)
+ifeq ($(CI),true)
 	.circleci/run_phpunit.sh . .circleci/find_phpunit.php End_to_End
 else
-	@echo Run end to end test locally is too long, please use the target define for your bounded context (ex: bounded-context-end-to-end-back)
+	@echo Run end to end test locally is too long, please use the target defined for your bounded context (ex: bounded-context-end-to-end-back)
 endif
 
 # How to debug a behat locally?
@@ -74,7 +74,7 @@ endif
 
 .PHONY: end-to-end-legacy
 end-to-end-legacy: var/tests/behat
-ifeq ($(CI),1)
+ifeq ($(CI),true)
 	.circleci/run_behat.sh $(SUITE)
 	.circleci/run_behat.sh critical
 else

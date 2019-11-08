@@ -87,17 +87,17 @@ jobs:
                 when: always
           - run:
                 name: Analyzes source code to flag programming errors, bugs, stylistic errors, and suspicious constructs
-                command: make lint-back CI=1
+                command: make lint-back
           - run:
                 name: Code Coupling Detection
-                command: make coupling-back CI=1
+                command: make coupling-back
                 when: always
           - run:
                 name: Unit tests
-                command: make unit-back CI=1
+                command: make unit-back
           - run:
                 name: Acceptance tests
-                command: make acceptance-back CI=1
+                command: make acceptance-back
 
                 when: always
           - store_test_results:
@@ -128,10 +128,10 @@ jobs:
                 command: APP_ENV=test make database
           - run:
                 name: PHPunit Integration
-                command: make integration-back CI=1
+                command: make integration-back
           - run:
                 name: PHPunit End to end
-                command: make end-to-end-back CI=1
+                command: make end-to-end-back
           - store_test_results:
                 path: var/tests/phpunit
           - store_artifacts:
@@ -169,7 +169,7 @@ jobs:
             command: APP_ENV=behat make database
       - run:
             name: Behat legacy
-            command: make end-to-end-legacy SUITE=$TESTSUITE CI=1
+            command: make end-to-end-legacy SUITE=$TESTSUITE
       - run:
           name: Gather Junit test result files in the same directory to improve the render of failing tests
           command: |
@@ -201,16 +201,16 @@ jobs:
               command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
         - run:
               name: Front linter
-              command: make lint-front CI=1
+              command: make lint-front
         - run:
               name: Front unit tests
-              command: make unit-front CI=1
+              command: make unit-front
         - run:
               name: Front acceptance tests
-              command: make acceptance-front CI=1
+              command: make acceptance-front
         - run:
               name: Front integration tests
-              command: make integration-front CI=1
+              command: make integration-front
 
 workflows:
   version: 2

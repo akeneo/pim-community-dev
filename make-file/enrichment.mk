@@ -8,7 +8,7 @@
 # - integration (back and front)
 # - end to end
 #
-# You should at least define a target for every kind of tests we previously list with the following pattern:
+# You should at least define a target for every kind of tests we previously listed with the following pattern:
 #
 # bounded-context-(lint|unit|acceptance|integration|end-to-end)-(back|front)
 #
@@ -17,13 +17,13 @@
 # How to define targets with a specfic configuration for the CI?
 # ==============================================================
 # For instance phpspec does not support multiple formats that means you can run the same command on the CI and locally.
-# If you need to do that you can use an environment variable named CI which is a "boolean".
+# If you need to do that you can use an environment variable named CI which is a "boolean" (don't forget, env vars are strings).
 # If its value equals 1 run the command configured for the CI otherwise configure it to run it locally.
 #
 # Example:
 # -------
 # target-name:
-# ifeq ($(CI),1)
+# ifeq ($(CI),true)
 #	execute a command on the CI
 # else
 #	execute a command locally
