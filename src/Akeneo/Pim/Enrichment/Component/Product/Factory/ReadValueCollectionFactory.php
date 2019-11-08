@@ -39,30 +39,22 @@ class ReadValueCollectionFactory
         return $this->createMultipleFromStorageFormat([$notUsedIdentifier => $rawValues])[$notUsedIdentifier];
     }
 
+    /**
+     * @param array $rawValueCollections
+     * @return ReadValueCollection[]
+     */
     public function createMultipleFromStorageFormat(array $rawValueCollections): array
     {
         $filteredRawValuesCollection = $this->chainedNonExistentValuesFilter->filterAll($rawValueCollections);
-        $valueCollections = $this->createValues($filteredRawValuesCollection);
 
-        return $valueCollections;
+        return $this->createMultipleFromStorageFormatWithoutFilter($filteredRawValuesCollection);
     }
 
-    private function getAttributesUsedByProducts(array $rawValueCollections): array
-    {
-        $attributeCodes = [];
-
-        foreach ($rawValueCollections as $productIdentifier => $rawValues) {
-            foreach (array_keys($rawValues) as $attributeCode) {
-                $attributeCodes[] = (string) $attributeCode;
-            }
-        }
-
-        $attributes = $this->getAttributeByCodes->forCodes(array_unique($attributeCodes));
-
-        return $attributes;
-    }
-
-    private function createValues(array $rawValueCollections): array
+    /**
+     * @param array $rawValueCollections
+     * @return ReadValueCollection[]
+     */
+    public function createMultipleFromStorageFormatWithoutFilter(array $rawValueCollections): array
     {
         $entities = [];
         $attributes = $this->getAttributesUsedByProducts($rawValueCollections);
@@ -97,5 +89,20 @@ class ReadValueCollectionFactory
         }
 
         return $entities;
+    }
+
+    private function getAttributesUsedByProducts(array $rawValueCollections): array
+    {
+        $attributeCodes = [];
+
+        foreach ($rawValueCollections as $productIdentifier => $rawValues) {
+            foreach (array_keys($rawValues) as $attributeCode) {
+                $attributeCodes[] = (string) $attributeCode;
+            }
+        }
+
+        $attributes = $this->getAttributeByCodes->forCodes(array_unique($attributeCodes));
+
+        return $attributes;
     }
 }

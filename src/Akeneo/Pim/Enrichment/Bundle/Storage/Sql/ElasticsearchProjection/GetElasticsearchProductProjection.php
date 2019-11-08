@@ -370,7 +370,9 @@ SQL;
             $rawValuesCollection[$identifier] = $rowIndexedByProductIdentifier['raw_values'];
         }
 
-        $valueCollections = $this->readValueCollectionFactory->createMultipleFromStorageFormat($rawValuesCollection);
+        $valueCollections = $this->readValueCollectionFactory->createMultipleFromStorageFormatWithoutFilter(
+            $rawValuesCollection
+        );
         foreach ($valueCollections as $identifier => $valueCollection) {
             $rowsIndexedByProductIdentifier[$identifier]['values'] = $valueCollection;
         }
