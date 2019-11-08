@@ -27,7 +27,8 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
         libcurl4-openssl-dev \
         libssl-dev \
         gpg \
-        gpg-agent && \
+        gpg-agent \
+        ghostscript && \
     apt-get clean && \
     apt-get --yes autoremove --purge && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
