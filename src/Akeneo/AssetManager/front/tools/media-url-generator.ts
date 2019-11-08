@@ -4,7 +4,6 @@ import MediaLinkData from 'akeneoassetmanager/domain/model/asset/data/media-link
 import {MediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 import {suffixStringValue} from 'akeneoassetmanager/domain/model/attribute/type/media-link/suffix';
 import {prefixStringValue} from 'akeneoassetmanager/domain/model/attribute/type/media-link/prefix';
-import {Asset} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 
 export enum MediaPreviewTypes {
   Preview = 'preview',
@@ -88,7 +87,8 @@ export const getAssetPreview = (asset: any, type: MediaPreviewTypes): string => 
   });
 };
 
-export const getAssetEditUrl = (asset: Asset): string => {
+// The asset any is temporary and should be fixed when we create unified models
+export const getAssetEditUrl = (asset: any): string => {
   const assetFamilyIdentifier = asset.assetFamily.identifier;
   const assetCode = asset.code;
 
