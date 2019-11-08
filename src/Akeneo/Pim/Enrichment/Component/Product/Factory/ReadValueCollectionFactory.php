@@ -51,6 +51,9 @@ class ReadValueCollectionFactory
     }
 
     /**
+     * Warning: use this method only for internal operations. Data can be inconsistent
+     * (cf. ChainedNonExistentValuesFilterInterface)
+     *
      * @param array $rawValueCollections
      * @return ReadValueCollection[]
      */
