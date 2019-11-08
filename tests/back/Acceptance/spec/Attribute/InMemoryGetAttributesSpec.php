@@ -43,7 +43,8 @@ class InMemoryGetAttributesSpec extends ObjectBehavior
                 false,
                 null,
                 false,
-                AttributeTypes::BACKEND_TYPE_TEXT
+                AttributeTypes::BACKEND_TYPE_TEXT,
+                []
             ),
             'sku_2' => new Attribute(
                 'sku_2',
@@ -53,7 +54,8 @@ class InMemoryGetAttributesSpec extends ObjectBehavior
                 false,
                 null,
                 false,
-                AttributeTypes::BACKEND_TYPE_TEXT
+                AttributeTypes::BACKEND_TYPE_TEXT,
+                []
             ),
         ]);
     }

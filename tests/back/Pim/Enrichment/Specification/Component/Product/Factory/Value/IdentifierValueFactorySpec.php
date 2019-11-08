@@ -9,7 +9,6 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use stdClass;
 
 /**
  * @author    Anael Chardan <anael.chardan@akeneo.com>
@@ -83,6 +82,6 @@ final class IdentifierValueFactorySpec extends ObjectBehavior
 
     private function getAttribute(bool $isLocalizable, bool $isScopable): Attribute
     {
-        return new Attribute('an_attribute', AttributeTypes::IDENTIFIER, [], $isLocalizable, $isScopable, null, false, 'text');
+        return new Attribute('an_attribute', AttributeTypes::IDENTIFIER, [], $isLocalizable, $isScopable, null, false, 'text', []);
     }
 }

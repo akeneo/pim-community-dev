@@ -43,7 +43,8 @@ class NumberNormalizerSpec extends ObjectBehavior
             false,
             null,
             true,
-            'decimal'
+            'decimal',
+            []
         ));
         $getAttributes->forCode('my_text_attribute')->willReturn(new Attribute(
             'my_text_attribute',
@@ -53,7 +54,8 @@ class NumberNormalizerSpec extends ObjectBehavior
             false,
             null,
             true,
-            'text'
+            'text',
+            []
         ));
 
         $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
@@ -86,7 +88,8 @@ class NumberNormalizerSpec extends ObjectBehavior
             false,
             null,
             false,
-            'decimal'
+            'decimal',
+            []
         ));
 
         $this->normalize($integerValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
@@ -115,7 +118,8 @@ class NumberNormalizerSpec extends ObjectBehavior
             false,
             null,
             false,
-            'decimal'
+            'decimal',
+            []
         ));
 
         $this->normalize($integerValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
@@ -144,7 +148,8 @@ class NumberNormalizerSpec extends ObjectBehavior
             false,
             null,
             true,
-            'decimal'
+            'decimal',
+            []
         ));
 
         $this->normalize($decimalValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
@@ -173,7 +178,8 @@ class NumberNormalizerSpec extends ObjectBehavior
             false,
             null,
             true,
-            'decimal'
+            'decimal',
+            []
         ));
 
         $this->normalize($decimalValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
@@ -202,7 +208,8 @@ class NumberNormalizerSpec extends ObjectBehavior
             false,
             null,
             false,
-            'decimal'
+            'decimal',
+            []
         ));
 
         $this->normalize($decimalValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
@@ -231,7 +238,8 @@ class NumberNormalizerSpec extends ObjectBehavior
             false,
             null,
             false,
-            'decimal'
+            'decimal',
+            []
         ));
 
         $this->normalize($decimalValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([

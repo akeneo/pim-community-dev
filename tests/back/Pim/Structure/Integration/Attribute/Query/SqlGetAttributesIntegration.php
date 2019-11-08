@@ -59,6 +59,14 @@ final class SqlGetAttributesIntegration extends TestCase
                 'scopable' => false,
                 'group' => 'other'
             ],
+            [
+                'code' => 'a_locale_specific_attribute',
+                'type' => AttributeTypes::BOOLEAN,
+                'localizable' => true,
+                'scopable' => false,
+                'group' => 'other',
+                'available_locales' => ['en_US'],
+            ],
         ]);
     }
 
@@ -66,7 +74,7 @@ final class SqlGetAttributesIntegration extends TestCase
     {
         $expected = $this->getExpected();
         $query = $this->getQuery();
-        $actual = $query->forCodes(['a_text', 'a_boolean', 'a_textarea', 'unknown_attribute_code', '123']);
+        $actual = $query->forCodes(['a_text', 'a_boolean', 'a_textarea', 'unknown_attribute_code', '123', 'a_locale_specific_attribute']);
         $this->assertEqualsCanonicalizing($expected, $actual);
     }
 
@@ -74,18 +82,19 @@ final class SqlGetAttributesIntegration extends TestCase
     {
         $expected = $this->getExpected();
         $query = $this->getCachedQuery();
-        $actual = $query->forCodes(['a_text', 'a_boolean', 'a_textarea', 'unknown_attribute_code', '123']);
+        $actual = $query->forCodes(['a_text', 'a_boolean', 'a_textarea', 'unknown_attribute_code', '123', 'a_locale_specific_attribute']);
         $this->assertEqualsCanonicalizing($expected, $actual);
     }
 
     public function getExpected(): array
     {
         return [
-            'a_text' => new Attribute('a_text', AttributeTypes::TEXT, [], false, false, null, false, 'text'),
-            'a_textarea' => new Attribute('a_textarea', AttributeTypes::TEXTAREA, [], false, false, null, false, 'textarea'),
-            'a_boolean' => new Attribute('a_boolean', AttributeTypes::BOOLEAN, [], false, false, null, false, 'boolean'),
+            'a_text' => new Attribute('a_text', AttributeTypes::TEXT, [], false, false, null, false, 'text', []),
+            'a_textarea' => new Attribute('a_textarea', AttributeTypes::TEXTAREA, [], false, false, null, false, 'textarea', []),
+            'a_boolean' => new Attribute('a_boolean', AttributeTypes::BOOLEAN, [], false, false, null, false, 'boolean', []),
             'unknown_attribute_code' => null,
-            '123' => new Attribute('123', AttributeTypes::TEXT, [], false, false, null, false, 'text')
+            '123' => new Attribute('123', AttributeTypes::TEXT, [], false, false, null, false, 'text', []),
+            'a_locale_specific_attribute' => new Attribute('a_locale_specific_attribute', AttributeTypes::BOOLEAN, [], true, false, null, null, 'boolean', ['en_US']),
         ];
     }
 
@@ -112,9 +121,9 @@ final class SqlGetAttributesIntegration extends TestCase
         $attributes = array_map(function (array $attributeData) {
             $attribute = $this->get('pim_catalog.factory.attribute')->create();
             $this->get('pim_catalog.updater.attribute')->update($attribute, $attributeData);
-            $constraints = $this->get('validator')->validate($attribute);
+            $constraintViolationss = $this->get('validator')->validate($attribute);
 
-            Assert::count($constraints, 0);
+            Assert::count($constraintViolationss, 0);
 
             return $attribute;
         }, $attributes);
