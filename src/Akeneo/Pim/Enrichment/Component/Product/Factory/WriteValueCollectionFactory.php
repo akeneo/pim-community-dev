@@ -14,9 +14,8 @@ class WriteValueCollectionFactory
     /** @var ReadValueCollectionFactory */
     private $readValueCollectionFactory;
 
-    public function __construct(
-        ReadValueCollectionFactory $readValueCollectionFactory
-    ) {
+    public function __construct(ReadValueCollectionFactory $readValueCollectionFactory)
+    {
         $this->readValueCollectionFactory = $readValueCollectionFactory;
     }
 
