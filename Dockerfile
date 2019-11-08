@@ -18,6 +18,7 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
     echo 'path-exclude=/usr/share/doc/*' >> /etc/dpkg/dpkg.cfg.d/path_exclusions && \
     apt-get update && \
     apt-get --yes install imagemagick \
+        ghostscript \
         php7.3-fpm \
         php7.3-cli \
         php7.3-intl \

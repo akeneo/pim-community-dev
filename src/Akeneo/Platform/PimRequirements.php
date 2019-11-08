@@ -277,12 +277,13 @@ class PimRequirements
 
     private function isGhostScriptVersionSupported(): bool
     {
-        $currentGhostScriptVersion = shell_exec('gs --version');
+        $currentGhostScriptVersion = trim(shell_exec('gs --version'));
         if (null === $currentGhostScriptVersion) {
             return false;
         }
 
-        $isGhostScriptVersionSupported = version_compare($currentGhostScriptVersion,
+        $isGhostScriptVersionSupported = version_compare(
+            $currentGhostScriptVersion,
             self::REQUIRED_GHOSTSCRIPT_VERSION,
             '>='
         );
