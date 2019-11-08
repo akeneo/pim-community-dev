@@ -29,7 +29,7 @@ $ vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/UserManagemen
 
 If you want to use `docker-compose`:
 ```bash
-$ docker-compose exec fpm vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/UserManagement/.php_cd.php src/Akeneo/UserManagement
+$ docker-compose run php vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/UserManagement/.php_cd.php src/Akeneo/UserManagement
 ```
 
 If you want to only run the rules on a specific folder:
@@ -56,7 +56,7 @@ $ vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
 
 If you want to use `docker-compose`:
 ```bash
-$ docker-compose exec fpm vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
+$ docker-compose run php vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
 ```
 
 If you want to only detect the violations for a specific folder:
@@ -89,7 +89,7 @@ $ vendor/bin/phpspec run
 
 If you want to use `docker-compose`:
 ```bash
-$ docker-compose exec fpm vendor/bin/phpspec run
+$ docker-compose run php vendor/bin/phpspec run
 ```
 
 If you want to run the tests from a specific folder:
@@ -122,7 +122,7 @@ $ phpunit -c phpunit.xml.dist
 
 If you want to use `docker-compose`:
 ```bash
-$ docker-compose exec fpm phpunit -c phpunit.xml.dist
+$ docker-compose run php phpunit -c phpunit.xml.dist
 ```
 
 If you want to run a specific test suite (in this example, the legacy unit tests suite):
@@ -168,7 +168,7 @@ $ vendor/bin/behat -p acceptance
 
 If you want to use `docker-compose`:
 ```bash
-$ docker-compose exec fpm vendor/bin/behat -p acceptance
+$ docker-compose run php vendor/bin/behat -p acceptance
 ```
 
 For each profile, you have at least one test suite. If you want to run the tests from a specific suite:
