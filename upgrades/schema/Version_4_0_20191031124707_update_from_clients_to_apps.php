@@ -39,7 +39,7 @@ final class Version_4_0_20191031124707_update_from_clients_to_apps
     public function down(Schema $schema) : void
     {
         $getAppsDataToClean = <<< SQL
-        SELECT id, user_id
+        SELECT code, user_id
         FROM akeneo_app
 SQL;
         $statement = $this->connection()->executeQuery($getAppsDataToClean);
@@ -47,11 +47,11 @@ SQL;
 
         $deleteApps = <<< SQL
         DELETE FROM akeneo_app
-        WHERE id IN (:apps)
+        WHERE code IN (:apps)
 SQL;
         $this->connection()->executeQuery(
             $deleteApps,
-            ['apps' => array_column($dataToClean, 'id')],
+            ['apps' => array_column($dataToClean, 'code')],
             ['apps' => Connection::PARAM_STR_ARRAY]
         );
 
@@ -103,7 +103,7 @@ SQL;
     private function countCreatedApps(): int
     {
         $countAppsQuery = <<< SQL
-SELECT count(id)
+SELECT count(code)
 FROM akeneo_app
 SQL;
         $countApps = $this->connection()->executeQuery($countAppsQuery);
