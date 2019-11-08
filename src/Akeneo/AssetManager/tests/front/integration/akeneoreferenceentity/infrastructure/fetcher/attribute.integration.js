@@ -69,15 +69,9 @@ describe('Akeneoassetfamily > infrastructure > fetcher > attribute', () => {
         isRichTextEditor: false,
         isTextarea: true,
         labelCollection: {en_US: 'Description'},
-        maxLength: {
-          maxLength: 12,
-        },
-        regularExpression: {
-          regularExpression: null,
-        },
-        validationRule: {
-          validationRule: 'none',
-        },
+        maxLength: 12,
+        regularExpression: null,
+        validationRule: 'none',
         order: 0,
         isRequired: true,
         type: 'text',

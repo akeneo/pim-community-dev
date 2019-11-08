@@ -1,10 +1,10 @@
 import {
+  IsTextarea,
+  MaxLength,
+  ValidationRule,
+  RegularExpression,
   ValidationRuleOption,
-  NormalizedValidationRule,
-} from 'akeneoassetmanager/domain/model/attribute/type/text/validation-rule';
-import {NormalizedRegularExpression} from 'akeneoassetmanager/domain/model/attribute/type/text/regular-expression';
-import {IsTextarea} from 'akeneoassetmanager/domain/model/attribute/type/text';
-import {NormalizedMaxLength} from 'akeneoassetmanager/domain/model/attribute/type/text/max-length';
+} from 'akeneoassetmanager/domain/model/attribute/type/text';
 import {
   NormalizedTextAttribute,
   NormalizedTextAdditionalProperty,
@@ -18,7 +18,7 @@ const textAttributeReducer = (
 ): NormalizedTextAttribute => {
   switch (propertyCode) {
     case 'max_length':
-      return {...normalizedAttribute, max_length: propertyValue as NormalizedMaxLength};
+      return {...normalizedAttribute, max_length: propertyValue as MaxLength};
     case 'is_textarea':
       const is_textarea = propertyValue as IsTextarea;
       return {
@@ -39,7 +39,7 @@ const textAttributeReducer = (
         is_rich_text_editor,
       };
     case 'validation_rule':
-      const validation_rule = propertyValue as NormalizedValidationRule;
+      const validation_rule = propertyValue as ValidationRule;
       if (true === normalizedAttribute.is_textarea) {
         return normalizedAttribute;
       }
@@ -51,7 +51,7 @@ const textAttributeReducer = (
           ValidationRuleOption.RegularExpression !== validation_rule ? null : normalizedAttribute.regular_expression,
       };
     case 'regular_expression':
-      const regular_expression = propertyValue as NormalizedRegularExpression;
+      const regular_expression = propertyValue as RegularExpression;
       if (
         true === normalizedAttribute.is_textarea ||
         ValidationRuleOption.RegularExpression !== normalizedAttribute.validation_rule
