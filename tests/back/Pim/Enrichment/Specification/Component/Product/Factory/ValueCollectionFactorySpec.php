@@ -3,7 +3,7 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory;
 
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\ChainedNonExistentValuesFilterInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\BooleanValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\IdentifierValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\NumberValueFactory;
