@@ -17,6 +17,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Provider\OwnerGroupsProvider;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Provider\UsersToNotifyProvider;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\EntityWithValuesDraftEvents;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
@@ -82,7 +83,8 @@ class SendForApprovalSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $usersToNotify = $this->usersProvider->getUsersToNotify($groupsToNotify);
+        $filters = ['locales' => $this->getChangeToReviewLocales($event->getSubject())];
+        $usersToNotify = $this->usersProvider->getUsersToNotify($groupsToNotify, $filters);
         if (empty($usersToNotify)) {
             return;
         }
@@ -126,5 +128,34 @@ class SendForApprovalSubscriber implements EventSubscriberInterface
             );
 
         $this->notifier->notify($notification, $usersToNotify);
+    }
+
+    /**
+     * Return the locales on which there is some changes to review.
+     * If a change is not localized, returns null.
+     *
+     * @param EntityWithValuesDraftInterface $entityWithValuesDraft
+     * @return string[]
+     */
+    private function getChangeToReviewLocales(EntityWithValuesDraftInterface $entityWithValuesDraft): ?array
+    {
+        $changes = $entityWithValuesDraft->getChangesToReview();
+
+        if (!isset($changes['values'])) {
+            return null;
+        }
+
+        $locales = [];
+        foreach ($changes['values'] as $code => $changeset) {
+            foreach ($changeset as $index => $change) {
+                if ($change['locale'] === null) {
+                    return null;
+                }
+
+                $locales[$change['locale']] = 1;
+            }
+        }
+
+        return array_keys($locales);
     }
 }

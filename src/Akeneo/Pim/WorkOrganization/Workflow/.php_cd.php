@@ -45,6 +45,7 @@ $rules = [
         'Akeneo\Pim\Permission\Component\NotGrantedDataMergerInterface',
         'Akeneo\Pim\Permission\Component\Authorization\DenyNotGrantedCategorizedEntity',
         'Akeneo\Pim\Permission\Component\Factory\FilteredEntityFactory',
+        'Akeneo\Pim\Permission\Component\Query\GetAccessGroupIdsForLocaleCode',
 
         // TIP-1024: Drop UserContext
         'Akeneo\UserManagement\Bundle\Context\UserContext',
