@@ -79,7 +79,7 @@ jobs:
           paths:
             - project
 
-  back_static_and_acceptance:
+  test_back_static_and_acceptance:
       machine:
           image: ubuntu-1604:201903-01
       steps:
@@ -120,7 +120,7 @@ jobs:
           - store_artifacts:
                 path: var/logs
 
-  back_phpunit:
+  test_back_phpunit:
       machine:
           image: ubuntu-1604:201903-01
       parallelism: 10
@@ -200,7 +200,7 @@ jobs:
       - store_artifacts:
           path: var/tests/screenshots
 
-  front_static_acceptance_and_integration:
+  test_front_static_acceptance_and_integration:
       machine:
           image: ubuntu-1604:201903-01
       steps:
@@ -277,18 +277,17 @@ jobs:
                   IMAGE_TAG=$CIRCLE_SHA1 make php-image-prod
                   IMAGE_TAG=$CIRCLE_SHA1 make push-php-image-prod
 
-  tests:
+  test_prod:
       machine:
           image: ubuntu-1604:201903-01
       steps:
           -   attach_workspace:
                   at: ~/
           -   run:
-                  name: make tests
+                  name: make test-prod
                   command: |
-                      docker load -i pim-image-dev.tar
                       docker load -i pim-image-prod.tar
-                      make tests
+                      make test-prod
 
   release:
       machine:
@@ -316,19 +315,19 @@ workflows:
           - build_dev:
                 requires:
                     - checkout
-          - back_static_and_acceptance:
+          - test_back_static_and_acceptance:
                 requires:
                     - build_dev
-          - front_static_acceptance_and_integration:
+          - test_front_static_acceptance_and_integration:
                 requires:
                     - build_dev
-          - back_phpunit:
+          - test_back_phpunit:
                 requires:
-                    - back_static_and_acceptance
-                    - front_static_acceptance_and_integration
+                    - test_back_static_and_acceptance
+                    - test_front_static_acceptance_and_integration
           - back_behat_legacy:
                 requires:
-                    - back_phpunit
+                    - test_back_phpunit
 
   nightly:
       triggers:
@@ -341,19 +340,19 @@ workflows:
       jobs:
           - build_dev:
                 is_pull_request: false
-          - back_static_and_acceptance:
+          - test_back_static_and_acceptance:
                 requires:
                     - build_dev
-          - front_static_acceptance_and_integration:
+          - test_front_static_acceptance_and_integration:
                 requires:
                     - build_dev
-          - back_phpunit:
+          - test_back_phpunit:
                 requires:
-                    - back_static_and_acceptance
-                    - front_static_acceptance_and_integration
+                    - test_back_static_and_acceptance
+                    - test_front_static_acceptance_and_integration
           - back_behat_legacy:
                 requires:
-                    - back_phpunit
+                    - test_back_phpunit
           - back_performance:
                 requires:
                     - back_behat_legacy
@@ -373,10 +372,25 @@ workflows:
           - build_prod:
                 requires:
                     - checkout
-          - tests:
+          - test_back_static_and_acceptance:
                 requires:
                     - build_dev
+          - test_front_static_acceptance_and_integration:
+                requires:
+                    - build_dev
+          - test_back_phpunit:
+                requires:
+                    - build_dev
+          - back_behat_legacy:
+                requires:
+                    - build_dev
+          - test_prod:
+                requires:
                     - build_prod
           - release:
                 requires:
-                    - tests
+                    - test_back_static_and_acceptance
+                    - test_front_static_acceptance_and_integration
+                    - test_back_phpunit
+                    - back_behat_legacy
+                    - test_prod
