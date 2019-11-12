@@ -79,7 +79,7 @@ export class ConcreteOptionAttribute extends ConcreteAttribute implements Option
     return {
       ...super.normalize(),
       type: 'option',
-      options: this.options.map((option: Option) => option),
+      options: this.options,
     };
   }
 

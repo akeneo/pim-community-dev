@@ -70,7 +70,7 @@ export class ConcreteOptionCollectionAttribute extends ConcreteAttribute impleme
     return {
       ...super.normalize(),
       type: 'option_collection',
-      options: this.options.map((option: Option) => option),
+      options: this.options,
     };
   }
 

@@ -12,7 +12,6 @@ import {NormalizedAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import {getLabel} from 'pimui/js/i18n';
 import {getAttributeFilterKey} from 'akeneoassetmanager/tools/filter';
 import {assetTypeIsEmpty} from 'akeneoassetmanager/domain/model/attribute/type/asset/asset-type';
-import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 
 const memo = (React as any).memo;
 const useState = (React as any).useState;
@@ -28,12 +27,14 @@ type AssetFilterViewProps = FilterViewProps & {
 const DEFAULT_OPERATOR = 'IN';
 
 const AssetFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, context}: AssetFilterViewProps) => {
-  if (
-    !(attribute instanceof ConcreteAssetAttribute || attribute instanceof ConcreteAssetCollectionAttribute) ||
-    !assetTypeIsEmpty(attribute.assetType)
-  ) {
+  if (!(attribute instanceof ConcreteAssetAttribute || attribute instanceof ConcreteAssetCollectionAttribute)) {
     return null;
   }
+
+  if (assetTypeIsEmpty(attribute.assetType)) {
+    return null;
+  }
+  const assetType = attribute.assetType;
 
   const [isOpen, setIsOpen] = useState(false);
   const [hydratedAssets, setHydratedAssets] = useState([]);
@@ -42,13 +43,8 @@ const AssetFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, c
   const value = rawValues.map((assetCode: string) => denormalizeAssetCode(assetCode));
 
   const updateHydratedAssets = async () => {
-    if (0 < value.length && !assetTypeIsEmpty(attribute.getAssetType())) {
-      const assets = await assetFetcher.fetchByCodes(
-        attribute.getAssetType() as AssetFamilyIdentifier, //Typescript is not smart enough to guess that a non empty asset type cannot be null
-        value,
-        context,
-        true
-      );
+    if (0 < value.length) {
+      const assets = await assetFetcher.fetchByCodes(assetType, value, context, true);
 
       setHydratedAssets(assets);
     }
@@ -108,7 +104,7 @@ const AssetFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, c
               </div>
               <AssetSelector
                 value={value}
-                assetFamilyIdentifier={attribute.getAssetType() as AssetFamilyIdentifier}
+                assetFamilyIdentifier={assetType}
                 multiple={true}
                 compact={true}
                 locale={denormalizeLocaleReference(context.locale)}
