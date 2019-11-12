@@ -7,15 +7,15 @@ import AssetFamilyIdentifier, {
 import LabelCollection, {denormalizeLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import AttributeCode, {denormalizeAttributeCode} from 'akeneoassetmanager/domain/model/attribute/code';
 import {Attribute, ConcreteAttribute, NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
-import {NormalizedOption, Option} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
+import {Option, createOptionFromNormalized} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
 import OptionCode, {optioncodesAreEqual} from 'akeneoassetmanager/domain/model/attribute/type/option/option-code';
 
 export interface NormalizedOptionAttribute extends NormalizedAttribute {
   type: 'option';
-  options: NormalizedOption[];
+  options: Option[];
 }
 
-export type NormalizedOptionAdditionalProperty = NormalizedOption;
+export type NormalizedOptionAdditionalProperty = Option;
 export type OptionAdditionalProperty = Option;
 export interface AttributeWithOptions {
   options: Option[];
@@ -54,12 +54,6 @@ export class ConcreteOptionAttribute extends ConcreteAttribute implements Option
       is_required
     );
 
-    options.map(option => {
-      if (!(option instanceof Option)) {
-        throw new InvalidArgumentError('Attribute expects a list of Option as options');
-      }
-    });
-
     Object.freeze(this);
   }
 
@@ -73,7 +67,7 @@ export class ConcreteOptionAttribute extends ConcreteAttribute implements Option
       normalizedOptionAttribute.value_per_locale,
       normalizedOptionAttribute.order,
       normalizedOptionAttribute.is_required,
-      normalizedOptionAttribute.options.map(Option.createFromNormalized)
+      normalizedOptionAttribute.options.map(createOptionFromNormalized)
     );
   }
 
@@ -85,7 +79,7 @@ export class ConcreteOptionAttribute extends ConcreteAttribute implements Option
     return {
       ...super.normalize(),
       type: 'option',
-      options: this.options.map((option: Option) => option.normalize()),
+      options: this.options.map((option: Option) => option),
     };
   }
 
