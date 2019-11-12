@@ -53,7 +53,7 @@ class ApiClientController
      *
      * @return Response
      *
-     * @AclAncestor("pim_enrich_api_connection_manage")
+     * @AclAncestor("akeneo_apps_manage_settings")
      */
     public function createAction(Request $request): Response
     {
@@ -91,7 +91,7 @@ class ApiClientController
      *
      * @return Response
      *
-     * @AclAncestor("pim_enrich_api_connection_manage")
+     * @AclAncestor("akeneo_apps_manage_settings")
      */
     public function revokeAction(Request $request, string $publicId): JsonResponse
     {
