@@ -102,7 +102,7 @@ const DownloadAction = ({asset, context}: PreviewProps) => (
 );
 
 const CopyUrlAction = ({asset, context}: PreviewProps) =>
-  canCopyToClipboard ? (
+  canCopyToClipboard() ? (
     <Action onClick={() => copyToClipboard(getAssetMainImageDownloadLink(asset, context))}>
       <Link />
       <Label>{__('pim_asset_manager.asset_preview.copy_url')}</Label>

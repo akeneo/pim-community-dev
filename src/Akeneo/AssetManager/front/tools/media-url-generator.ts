@@ -13,6 +13,8 @@ export enum MediaPreviewTypes {
 
 export const canCopyToClipboard = (): boolean => 'clipboard' in navigator;
 
+// TODO remove this comment when using typescript ^3.4
+// @ts-ignore eslint-disable-next-line flowtype/no-flow-fix-me-comments
 export const copyToClipboard = (text: string) => canCopyToClipboard() && navigator.clipboard.writeText(text);
 
 export const getImageShowUrl = (image: File, filter: string): string => {
