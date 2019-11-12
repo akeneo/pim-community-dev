@@ -11,25 +11,25 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
  */
 class WriteValueCollectionFactory
 {
-    /** @var ValueCollectionFactory */
-    private $valueCollectionFactory;
+    /** @var ReadValueCollectionFactory */
+    private $readValueCollectionFactory;
 
     public function __construct(
-        ValueCollectionFactory $valueCollectionFactory
+        ReadValueCollectionFactory $readValueCollectionFactory
     ) {
-        $this->valueCollectionFactory = $valueCollectionFactory;
+        $this->readValueCollectionFactory = $readValueCollectionFactory;
     }
 
     public function createFromStorageFormat(array $rawValues): WriteValueCollection
     {
-        $valueCollection = $this->valueCollectionFactory->createFromStorageFormat($rawValues);
+        $valueCollection = $this->readValueCollectionFactory->createFromStorageFormat($rawValues);
 
         return WriteValueCollection::fromReadValueCollection($valueCollection);
     }
 
     public function createMultipleFromStorageFormat(array $rawValueCollections): array
     {
-        $valueCollectionsList = $this->valueCollectionFactory->createMultipleFromStorageFormat($rawValueCollections);
+        $valueCollectionsList = $this->readValueCollectionFactory->createMultipleFromStorageFormat($rawValueCollections);
 
         $writeValueCollectionList = [];
         foreach ($valueCollectionsList as $identifier => $valueCollection) {

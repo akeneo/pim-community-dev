@@ -8,7 +8,7 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProduct
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductProjectionInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductProjection;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\ReadValueCollectionFactory;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -27,8 +27,8 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
     /** @var NormalizerInterface */
     private $valuesNormalizer;
 
-    /** @var ValueCollectionFactory */
-    private $valueCollectionFactory;
+    /** @var ReadValueCollectionFactory */
+    private $readValueCollectionFactory;
 
     /** @var GetAdditionalPropertiesForProductProjectionInterface[] */
     private $additionalDataProviders = [];
@@ -36,12 +36,12 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
     public function __construct(
         Connection $connection,
         NormalizerInterface $valuesNormalizer,
-        ValueCollectionFactory $valueCollectionFactory,
+        ReadValueCollectionFactory $readValueCollectionFactory,
         iterable $additionalDataProviders = []
     ) {
         $this->connection = $connection;
         $this->valuesNormalizer = $valuesNormalizer;
-        $this->valueCollectionFactory = $valueCollectionFactory;
+        $this->readValueCollectionFactory = $readValueCollectionFactory;
         $this->additionalDataProviders = $additionalDataProviders;
     }
 
@@ -370,7 +370,7 @@ SQL;
             $rawValuesCollection[$identifier] = $rowIndexedByProductIdentifier['raw_values'];
         }
 
-        $valueCollections = $this->valueCollectionFactory->createMultipleFromStorageFormat($rawValuesCollection);
+        $valueCollections = $this->readValueCollectionFactory->createMultipleFromStorageFormat($rawValuesCollection);
         foreach ($valueCollections as $identifier => $valueCollection) {
             $rowsIndexedByProductIdentifier[$identifier]['values'] = $valueCollection;
         }

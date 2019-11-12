@@ -3,7 +3,6 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Factory;
 
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\ChainedNonExistentValuesFilterInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueFactory as ReadValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 
@@ -12,9 +11,9 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ValueCollectionFactory
+class ReadValueCollectionFactory
 {
-    /** @var ReadValueFactory */
+    /** @var ValueFactory */
     private $valueFactory;
 
     /** @var GetAttributes */
@@ -24,7 +23,7 @@ class ValueCollectionFactory
     private $chainedNonExistentValuesFilter;
 
     public function __construct(
-        ReadValueFactory $valueFactory,
+        ValueFactory $valueFactory,
         GetAttributes $getAttributeByCodes,
         ChainedNonExistentValuesFilterInterface $chainedNonExistentValuesFilter
     ) {

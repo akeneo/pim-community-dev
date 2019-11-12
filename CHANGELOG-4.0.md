@@ -307,6 +307,7 @@
 - Remove class `Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\DateValueFactory`
 - Remove class `Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\ReferenceDataValueFactory`
 - Remove class `Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\ReferenceDataCollectionValueFactory`
+- Remove class `Akeneo\Pim\Enrichment\Component\Product\Factory\PriceFactory`
 
 ### CLI Commands
 
@@ -401,3 +402,4 @@ If you want to purge the completeness in order to recalculate it, please use the
 - Remove `pim_catalog.factory.value.date`
 - Remove `pim_reference_data.factory.product_value.reference_data`
 - Remove `pim_reference_data.factory.product_value.reference_data_collection`
+- Remove `pim_catalog.factory.price`
