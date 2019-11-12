@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Infrastructure\Persistence\Dbal\Repository;
 
+use Akeneo\Apps\Domain\Model\ValueObject\ClientId;
+use Akeneo\Apps\Domain\Model\ValueObject\UserId;
 use Akeneo\Apps\Domain\Model\Write\App;
 use Akeneo\Apps\Domain\Persistence\Repository\AppRepository;
 use Doctrine\DBAL\Connection;
@@ -43,7 +45,7 @@ SQL;
     public function findOneByCode(string $code): ?App
     {
         $selectQuery = <<<SQL
-SELECT code, label, flow_type
+SELECT code, label, flow_type, client_id, user_id
 FROM akeneo_app
 WHERE code = :code
 SQL;
@@ -54,7 +56,9 @@ SQL;
             new App(
                 $dataRow['code'],
                 $dataRow['label'],
-                $dataRow['flow_type']
+                $dataRow['flow_type'],
+                new ClientId((int) $dataRow['client_id']),
+                new UserId((int) $dataRow['user_id'])
             ) : null;
     }
 
@@ -62,7 +66,7 @@ SQL;
     {
         $updateQuery = <<<SQL
 UPDATE akeneo_app
-SET label = :label AND flow_type = :flow_type
+SET label = :label, flow_type = :flow_type
 WHERE code = :code
 SQL;
 
