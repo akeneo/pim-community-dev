@@ -67,6 +67,9 @@ class ReadValueCollectionFactory
 
             foreach ($valueCollection as $attributeCode => $channelRawValue) {
                 $attribute = $attributes[$attributeCode];
+                if ($attribute === null) {
+                    continue;
+                }
 
                 foreach ($channelRawValue as $channelCode => $localeRawValue) {
                     if ('<all_channels>' === $channelCode) {
