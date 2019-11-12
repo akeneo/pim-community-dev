@@ -1,5 +1,17 @@
 # 3.0.x
 
+# 3.0.53 (2019-11-12)
+
+# 3.0.52 (2019-11-08)
+
+# 3.0.51 (2019-10-30)
+
+## Bug fixes
+
+- PIM-8924: Fix permission of sorting attribute groups
+- PIM-8927: fix label translation on product model creation page
+- PIM-8928: Fix permission for sorting attributes inside an attribute group
+
 # 3.0.50 (2019-10-28)
 
 # 3.0.49 (2019-10-24)

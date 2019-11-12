@@ -159,6 +159,7 @@ extensions:
                 buttonText: pim_common.remove
             removeAttributeACL: pim_enrich_attributegroup_remove_attribute
             addAttributeACL: pim_enrich_attributegroup_add_attribute
+            sortAttributesACL: pim_enrich_attribute_sort
 
     pim-attribute-group-edit-form-attribute-add-attribute:
         module: pim/attribute-group/add-select/attribute
