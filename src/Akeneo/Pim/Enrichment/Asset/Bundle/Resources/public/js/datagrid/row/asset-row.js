@@ -20,7 +20,8 @@ define(['jquery', 'oro/datagrid/product-row'], function($, BaseRow) {
                 useLayerStyle: false,
                 identifier: '',
                 label,
-                imagePath
+                imagePath,
+                completenessText: null
             };
         },
 
