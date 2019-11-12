@@ -19,6 +19,7 @@ import {
   getAssetPreview,
   getAssetEditUrl,
   copyToClipboard,
+  canCopyToClipboard,
 } from 'akeneoassetmanager/tools/media-url-generator';
 import {
   NormalizedMediaLinkAttribute,
@@ -100,12 +101,13 @@ const DownloadAction = ({asset, context}: PreviewProps) => (
   </Action>
 );
 
-const CopyUrlAction = ({asset, context}: PreviewProps) => (
-  <Action onClick={() => copyToClipboard(getAssetMainImageDownloadLink(asset, context))}>
-    <Link />
-    <Label>{__('pim_asset_manager.asset_preview.copy_url')}</Label>
-  </Action>
-);
+const CopyUrlAction = ({asset, context}: PreviewProps) =>
+  canCopyToClipboard ? (
+    <Action onClick={() => copyToClipboard(getAssetMainImageDownloadLink(asset, context))}>
+      <Link />
+      <Label>{__('pim_asset_manager.asset_preview.copy_url')}</Label>
+    </Action>
+  ) : null;
 
 const EditAction = ({asset}: PreviewProps) => (
   <Action href={getAssetEditUrl(asset)} target="_blank">

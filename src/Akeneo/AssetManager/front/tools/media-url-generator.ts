@@ -11,12 +11,9 @@ export enum MediaPreviewTypes {
   ThumbnailSmall = 'thumbnail_small',
 }
 
-export const copyToClipboard = (text: string) => {
-  if ('clipboard' in navigator) {
-    // @ts-ignore eslint-disable-next-line flowtype/no-flow-fix-me-comments
-    navigator.clipboard.writeText(text);
-  }
-};
+export const canCopyToClipboard = (): boolean => 'clipboard' in navigator;
+
+export const copyToClipboard = (text: string) => canCopyToClipboard() && navigator.clipboard.writeText(text);
 
 export const getImageShowUrl = (image: File, filter: string): string => {
   const path = !image.isEmpty() ? image.getFilePath() : 'undefined';
