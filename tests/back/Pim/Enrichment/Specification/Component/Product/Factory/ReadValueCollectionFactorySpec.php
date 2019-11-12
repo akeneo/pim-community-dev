@@ -89,8 +89,9 @@ class ReadValueCollectionFactorySpec extends ObjectBehavior
         ));
     }
 
-    function it_creates_multiple_value_collections_without_filter(GetAttributes $getAttributeByCodes)
-    {
+    function it_creates_multiple_value_collections_without_filtering_inconsistent_data(
+        GetAttributes $getAttributeByCodes
+    ) {
         $sku = new Attribute('sku', AttributeTypes::IDENTIFIER, [], false, false, null, false, 'text', []);
         $description = new Attribute('description', AttributeTypes::TEXTAREA, [], true, true, null, false, 'textarea', []);
 
@@ -111,12 +112,18 @@ class ReadValueCollectionFactorySpec extends ObjectBehavior
 
                     ],
                 ],
+                'unknown' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => 'bar'
+                    ],
+                ],
             ],
         ];
 
-        $getAttributeByCodes->forCodes(['sku', 'description'])->willReturn(['sku' => $sku, 'description' => $description]);
+        $getAttributeByCodes->forCodes(['sku', 'description', 'unknown'])
+            ->willReturn(['sku' => $sku, 'description' => $description]);
 
-        $actualValues = $this->createMultipleFromStorageFormatWithoutFilter($rawValues);
+        $actualValues = $this->createMultipleFromStorageFormatWithoutFilteringInconsistentData($rawValues);
 
         $actualValues->shouldBeArray();
         $actualValues['identifier1']->shouldReturnAnInstanceOf(ReadValueCollection::class);

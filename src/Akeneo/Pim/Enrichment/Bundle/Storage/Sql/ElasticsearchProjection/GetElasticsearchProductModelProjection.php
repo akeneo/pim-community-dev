@@ -408,7 +408,7 @@ SQL;
             $rawValuesCollection[$code] = $rowIndexedByProductModelCode['raw_values'];
         }
 
-        $valueCollections = $this->readValueCollectionFactory->createMultipleFromStorageFormatWithoutFilter(
+        $valueCollections = $this->readValueCollectionFactory->createMultipleFromStorageFormatWithoutFilteringInconsistentData(
             $rawValuesCollection
         );
         foreach ($valueCollections as $code => $valueCollection) {
