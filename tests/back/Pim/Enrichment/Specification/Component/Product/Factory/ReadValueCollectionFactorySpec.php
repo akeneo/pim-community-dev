@@ -88,4 +88,45 @@ class ReadValueCollectionFactorySpec extends ObjectBehavior
             ]
         ));
     }
+
+    function it_creates_multiple_value_collections_without_filter(GetAttributes $getAttributeByCodes)
+    {
+        $sku = new Attribute('sku', AttributeTypes::IDENTIFIER, [], false, false, null, false, 'text', []);
+        $description = new Attribute('description', AttributeTypes::TEXTAREA, [], true, true, null, false, 'textarea', []);
+
+        $rawValues = [
+            'identifier1' => [
+                'sku' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => 'foo'
+                    ],
+                ],
+                'description' => [
+                    'ecommerce' => [
+                        'en_US' => 'a text area for ecommerce in English',
+                    ],
+                    'tablet' => [
+                        'en_US' => 'a text area for tablets in English',
+                        'fr_FR' => 'une zone de texte pour les tablettes en français',
+
+                    ],
+                ],
+            ],
+        ];
+
+        $getAttributeByCodes->forCodes(['sku', 'description'])->willReturn(['sku' => $sku, 'description' => $description]);
+
+        $actualValues = $this->createMultipleFromStorageFormatWithoutFilter($rawValues);
+
+        $actualValues->shouldBeArray();
+        $actualValues['identifier1']->shouldReturnAnInstanceOf(ReadValueCollection::class);
+        $actualValues['identifier1']->shouldBeLike(new ReadValueCollection(
+            [
+                ScalarValue::value('sku', 'foo'),
+                ScalarValue::scopableLocalizableValue('description', 'a text area for ecommerce in English', 'ecommerce', 'en_US'),
+                ScalarValue::scopableLocalizableValue('description', 'a text area for tablets in English', 'tablet', 'en_US'),
+                ScalarValue::scopableLocalizableValue('description', 'une zone de texte pour les tablettes en français', 'tablet', 'fr_FR'),
+            ]
+        ));
+    }
 }
