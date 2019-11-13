@@ -1,6 +1,12 @@
 import {Reducer} from 'react';
+import {
+    CHANGE,
+    SET_ERROR,
+    SET_VALIDATED,
+    CreateFormAction
+} from '../actions/create-form-actions';
 
-export interface FormState {
+export interface CreateFormState {
     controls: {
         [name: string]: {
             name: string;
@@ -16,29 +22,9 @@ export interface FormState {
     valid: boolean;
 }
 
-interface ChangeAction {
-    type: 'CHANGE';
-    name: string;
-    value: string;
-    dirty?: boolean;
-}
-
-interface ErrorAction {
-    type: 'ERROR';
-    name: string;
-    code: string;
-}
-
-interface SetValidatedAction {
-    type: 'SET_VALIDATED';
-    name: string;
-}
-
-export type Actions = ChangeAction | ErrorAction | SetValidatedAction;
-
-export const appFormReducer: Reducer<FormState, Actions> = (state, action) => {
+export const appFormReducer: Reducer<CreateFormState, CreateFormAction> = (state, action) => {
     switch (action.type) {
-        case 'CHANGE':
+        case CHANGE:
             return {
                 ...state,
                 controls: {
@@ -58,7 +44,7 @@ export const appFormReducer: Reducer<FormState, Actions> = (state, action) => {
                         .filter(({name}) => name !== action.name)
                         .some(({valid}) => false === valid),
             };
-        case 'ERROR':
+        case SET_ERROR:
             return {
                 ...state,
                 controls: {
@@ -74,7 +60,7 @@ export const appFormReducer: Reducer<FormState, Actions> = (state, action) => {
                 },
                 valid: false,
             };
-        case 'SET_VALIDATED':
+        case SET_VALIDATED:
             return {
                 ...state,
                 controls: {

@@ -3,12 +3,13 @@ import {FlowType} from '../../../domain/apps/flow-type.enum';
 import {Form, FormGroup, FormInput} from '../../common';
 import {FlowTypeHelper} from './FlowTypeHelper';
 import {FlowTypeSelect} from './FlowTypeSelect';
-import {FormState, Actions} from '../reducers/app-form-reducer';
+import {CreateFormState} from '../reducers/app-form-reducer';
+import {inputChanged, setError, setValidated, CreateFormAction} from '../actions/create-form-actions';
 import {sanitize} from '../../shared/sanitize';
 
 interface Props {
-    state: FormState;
-    dispatch: Dispatch<Actions>;
+    state: CreateFormState;
+    dispatch: Dispatch<CreateFormAction>;
 }
 
 export const AppForm = ({state, dispatch}: Props) => {
@@ -29,25 +30,14 @@ export const AppForm = ({state, dispatch}: Props) => {
 
             if (false === input.checkValidity()) {
                 if (input.validity.valueMissing) {
-                    dispatch({
-                        type: 'ERROR',
-                        name,
-                        code: `akeneo_apps.constraint.${name}.required`,
-                    });
+                    dispatch(setError(name, `akeneo_apps.constraint.${name}.required`));
                 }
                 if (input.validity.patternMismatch) {
-                    dispatch({
-                        type: 'ERROR',
-                        name,
-                        code: `akeneo_apps.constraint.${name}.invalid`,
-                    });
+                    dispatch(setError(name, `akeneo_apps.constraint.${name}.invalid`));
                 }
             }
 
-            dispatch({
-                type: 'SET_VALIDATED',
-                name,
-            });
+            dispatch(setValidated(name));
         });
     }, [state, dispatch]);
 
@@ -66,9 +56,9 @@ export const AppForm = ({state, dispatch}: Props) => {
     }, [state, dispatch]);
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) =>
-        dispatch({type: 'CHANGE', name: event.currentTarget.name, value: event.currentTarget.value});
+      dispatch(inputChanged(event.currentTarget.name, event.currentTarget.value));
 
-    const handleFlowTypeSelect = (flowType: FlowType) => dispatch({type: 'CHANGE', name: 'flow_type', value: flowType});
+    const handleFlowTypeSelect = (flowType: FlowType) => dispatch(inputChanged('flow_type', flowType));
 
     return (
         <Form>

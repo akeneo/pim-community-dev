@@ -7,7 +7,8 @@ import {isErr} from '../../shared/fetch/result';
 import {useRoute} from '../../shared/router';
 import {Translate} from '../../shared/translate';
 import {AppForm} from '../components/AppForm';
-import {appFormReducer, FormState} from '../reducers/app-form-reducer';
+import {appFormReducer, CreateFormState} from '../reducers/app-form-reducer';
+import {setError} from '../actions/create-form-actions';
 import {NotificationLevel, useNotify} from '../../shared/notify';
 import {TranslateContext} from '../../shared/translate';
 
@@ -19,7 +20,7 @@ interface ResultError {
     }>;
 }
 
-const initialState: FormState = {
+const initialState: CreateFormState = {
     controls: {
         code: {name: 'code', value: '', errors: {}, dirty: false, valid: false, validated: true},
         label: {name: 'label', value: '', errors: {}, dirty: false, valid: false, validated: true},
@@ -63,7 +64,7 @@ export const AppCreate = () => {
                     notify(NotificationLevel.ERROR, translate('pim_apps.create_app.flash.error'));
                     return;
                 }
-                result.error.errors.forEach(({name, reason}) => dispatch({type: 'ERROR', name, code: reason}));
+                result.error.errors.forEach(({name, reason}) => dispatch(setError(name, reason)));
                 return;
             }
 
