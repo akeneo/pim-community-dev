@@ -338,8 +338,11 @@ workflows:
                         only:
                             - master
       jobs:
+          - checkout
           - build_dev:
                 is_pull_request: false
+                requires:
+                    - checkout
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
