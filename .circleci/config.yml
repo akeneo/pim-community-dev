@@ -84,18 +84,6 @@ jobs:
           - run:
                 name: Check Pullup
                 command: make check-pullup
-          - run:
-                name: Generate dev cache for Symfony's Phpstan extension
-                command: APP_ENV=dev make cache
-          - run:
-                name: PhpSpec
-                command: docker-compose run -u www-data --rm -T php php -d memory_limit=6G vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
-          - run:
-                name: Find non executed PhpSpec files
-                command: ./.circleci/find_non_executed_phpspec.sh
-          - run:
-                name: PhpCsFixer
-                command: docker-compose run --rm -T php php -d memory_limit=6G vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
                 when: always
           - run:
                 name: Analyzes source code to flag programming errors, bugs, stylistic errors, and suspicious constructs
@@ -273,9 +261,13 @@ workflows:
           - back_static_and_acceptance:
                 requires:
                     - build_dev
+          - front_static_acceptance_and_integration:
+                requires:
+                    - build_dev
           - back_phpunit:
                 requires:
                     - back_static_and_acceptance
+                    - front_static_acceptance_and_integration
           - back_behat_legacy:
                 requires:
                     - back_phpunit
