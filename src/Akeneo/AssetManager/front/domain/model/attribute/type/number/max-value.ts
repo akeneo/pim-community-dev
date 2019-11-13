@@ -1,36 +1,24 @@
-import {InvalidArgumentError} from 'akeneoassetmanager/domain/model/attribute/type/number';
-
+export type MaxValue = string | null;
 export type NormalizedMaxValue = string | null;
 
-export class MaxValue {
-  public constructor(readonly maxValue: string | null) {
-    if (null !== maxValue && typeof maxValue !== 'string') {
-      throw new InvalidArgumentError('MaxValue needs to be a string');
-    }
-    Object.freeze(this);
+export const isValidMaxValue = (maxValue: NormalizedMaxValue): maxValue is MaxValue => {
+  return (typeof maxValue === 'string' && !isNaN(Number(maxValue))) || isNullMaxValue(maxValue) || '-' === maxValue;
+};
+
+export const createMaxValueFromNormalized = (maxValue: NormalizedMaxValue): MaxValue => {
+  if (!isValidMaxValue(maxValue)) {
+    throw new Error('MaxValue should be a string');
   }
 
-  public static isValid(value: any): boolean {
-    return (typeof value === 'string' && !isNaN(Number(value))) || null === value || '-' === value;
-  }
+  return maxValue;
+};
 
-  public static createFromNormalized(normalizedMaxValue: NormalizedMaxValue) {
-    return new MaxValue(normalizedMaxValue);
-  }
+export const createMaxValueFromString = (maxValue: string): MaxValue => {
+  return createMaxValueFromNormalized(maxValue === '' ? null : maxValue);
+};
 
-  public normalize(): NormalizedMaxValue {
-    return this.maxValue;
-  }
+export const maxValueStringValue = (maxValue: MaxValue): string => {
+  return isNullMaxValue(maxValue) ? '' : maxValue;
+};
 
-  public static createFromString(maxValue: string) {
-    return MaxValue.createFromNormalized(maxValue);
-  }
-
-  public stringValue(): string {
-    return null === this.maxValue ? '' : this.maxValue.toString();
-  }
-
-  public isNull(): boolean {
-    return null === this.maxValue || '' === this.maxValue;
-  }
-}
+export const isNullMaxValue = (maxValue: MaxValue): maxValue is null => null === maxValue;

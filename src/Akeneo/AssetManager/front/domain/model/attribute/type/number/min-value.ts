@@ -1,36 +1,24 @@
-import {InvalidArgumentError} from 'akeneoassetmanager/domain/model/attribute/type/number';
-
+export type MinValue = string | null;
 export type NormalizedMinValue = string | null;
 
-export class MinValue {
-  public constructor(readonly minValue: string | null) {
-    if (null !== minValue && typeof minValue !== 'string') {
-      throw new InvalidArgumentError('MinValue needs to be a string');
-    }
-    Object.freeze(this);
+export const isValidMinValue = (minValue: NormalizedMinValue): minValue is MinValue => {
+  return (typeof minValue === 'string' && !isNaN(Number(minValue))) || isNullMinValue(minValue) || '-' === minValue;
+};
+
+export const createMinValueFromNormalized = (minValue: NormalizedMinValue): MinValue => {
+  if (!isValidMinValue(minValue)) {
+    throw new Error('MinValue should be a string');
   }
 
-  public static isValid(value: any): boolean {
-    return (typeof value === 'string' && !isNaN(Number(value))) || null === value || '-' === value;
-  }
+  return minValue;
+};
 
-  public static createFromNormalized(normalizedMinValue: NormalizedMinValue) {
-    return new MinValue(normalizedMinValue);
-  }
+export const createMinValueFromString = (minValue: string): MinValue => {
+  return createMinValueFromNormalized(minValue === '' ? null : minValue);
+};
 
-  public normalize(): NormalizedMinValue {
-    return this.minValue;
-  }
+export const minValueStringValue = (minValue: MinValue): string => {
+  return isNullMinValue(minValue) ? '' : minValue;
+};
 
-  public static createFromString(minValue: string) {
-    return MinValue.createFromNormalized(minValue);
-  }
-
-  public stringValue(): string {
-    return null === this.minValue ? '' : this.minValue.toString();
-  }
-
-  public isNull(): boolean {
-    return null === this.minValue || '' === this.minValue;
-  }
-}
+export const isNullMinValue = (minValue: MinValue): minValue is null => null === minValue;

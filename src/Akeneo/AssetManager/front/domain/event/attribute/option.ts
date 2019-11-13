@@ -2,7 +2,7 @@ import {Option} from 'akeneoassetmanager/domain/model/attribute/type/option/opti
 import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 
 export const optionEditionStart = (options: Option[]) => {
-  return {type: 'OPTIONS_EDITION_START', options: options.map((option: Option) => option.normalize())};
+  return {type: 'OPTIONS_EDITION_START', options: options.map((option: Option) => option)};
 };
 
 export const optionEditionCancel = () => {

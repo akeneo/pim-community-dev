@@ -1,24 +1,29 @@
-import {AllowedExtensions} from 'akeneoassetmanager/domain/model/attribute/type/image/allowed-extensions';
+import {
+  isValidAllowedExtension,
+  createAllowedExtensionFromNormalized,
+  createAllowedExtensionFromArray,
+  normalizeAllowedExtension,
+} from 'akeneoassetmanager/domain/model/attribute/type/image/allowed-extensions';
 
 describe('akeneo > attribute > domain > model > attribute > type > image --- AllowedExtensions', () => {
   test('I can create a AllowedExtensions from normalized', () => {
-    expect(AllowedExtensions.createFromNormalized(['png', 'jpg']).normalize()).toEqual(['png', 'jpg']);
-    expect(AllowedExtensions.createFromNormalized([]).normalize()).toEqual([]);
-    expect(() => AllowedExtensions.createFromNormalized('true')).toThrow();
+    expect(createAllowedExtensionFromNormalized(['png', 'jpg'])).toEqual(['png', 'jpg']);
+    expect(createAllowedExtensionFromNormalized([])).toEqual([]);
+    expect(() => createAllowedExtensionFromNormalized('true')).toThrow();
   });
   test('I can validate a AllowedExtensions', () => {
-    expect(AllowedExtensions.isValid([])).toEqual(true);
-    expect(AllowedExtensions.isValid(['jpeg', 'png'])).toEqual(true);
-    expect(AllowedExtensions.isValid(['jped', 'webm'])).toEqual(false);
-    expect(AllowedExtensions.isValid('12')).toEqual(false);
-    expect(AllowedExtensions.isValid('1')).toEqual(false);
-    expect(AllowedExtensions.isValid(1)).toEqual(false);
-    expect(AllowedExtensions.isValid(0)).toEqual(false);
-    expect(AllowedExtensions.isValid(undefined)).toEqual(false);
-    expect(AllowedExtensions.isValid({})).toEqual(false);
+    expect(isValidAllowedExtension([])).toEqual(true);
+    expect(isValidAllowedExtension(['jpeg', 'png'])).toEqual(true);
+    expect(isValidAllowedExtension(['jped', 'webm'])).toEqual(false);
+    expect(isValidAllowedExtension('12')).toEqual(false);
+    expect(isValidAllowedExtension('1')).toEqual(false);
+    expect(isValidAllowedExtension(1)).toEqual(false);
+    expect(isValidAllowedExtension(0)).toEqual(false);
+    expect(isValidAllowedExtension(undefined)).toEqual(false);
+    expect(isValidAllowedExtension({})).toEqual(false);
   });
   test('I can create a AllowedExtensions from array', () => {
-    expect(AllowedExtensions.createFromArray([]).arrayValue()).toEqual([]);
-    expect(AllowedExtensions.createFromArray(['jpg']).arrayValue()).toEqual(['jpg']);
+    expect(normalizeAllowedExtension(createAllowedExtensionFromArray([]))).toEqual([]);
+    expect(normalizeAllowedExtension(createAllowedExtensionFromArray(['jpg']))).toEqual(['jpg']);
   });
 });

@@ -1,34 +1,49 @@
-import {AssetType} from 'akeneoassetmanager/domain/model/attribute/type/asset/asset-type';
+import {
+  createAssetTypeFromNormalized,
+  assetTypeStringValue,
+  isValidAssetType,
+  assetTypeAreEqual,
+  assetTypeIsEmpty,
+} from 'akeneoassetmanager/domain/model/attribute/type/asset/asset-type';
 
 describe('akeneo > attribute > domain > model > attribute > type > asset --- asset type', () => {
   test('I can create a AssetType from normalized', () => {
-    expect(AssetType.createFromNormalized('brand').normalize()).toEqual('brand');
-    expect(AssetType.createFromNormalized(null).normalize()).toEqual(null);
+    expect(createAssetTypeFromNormalized('brand')).toEqual('brand');
+    expect(createAssetTypeFromNormalized(null)).toEqual(null);
   });
 
   test('I can validate a AssetType', () => {
-    expect(AssetType.isValid('test')).toEqual(true);
-    expect(AssetType.isValid(null)).toEqual(false);
-    expect(AssetType.isValid(12)).toEqual(false);
-    expect(AssetType.isValid(null)).toEqual(false);
-    expect(AssetType.isValid({test: 'toto'})).toEqual(false);
+    expect(isValidAssetType('test')).toEqual(true);
+    expect(isValidAssetType(null)).toEqual(false);
+    expect(isValidAssetType(12)).toEqual(false);
+    expect(isValidAssetType(null)).toEqual(false);
+    expect(isValidAssetType({test: 'toto'})).toEqual(false);
   });
 
   test('I can create a AssetType from string', () => {
-    expect(AssetType.createFromString('brand').stringValue()).toEqual('brand');
-    expect(AssetType.createFromString('').stringValue()).toEqual('');
-    expect(() => AssetType.createFromString({my: 'object'})).toThrow();
+    expect(assetTypeStringValue(createAssetTypeFromNormalized('brand'))).toEqual('brand');
+    expect(assetTypeStringValue(createAssetTypeFromNormalized(''))).toEqual('');
+    expect(() => createAssetTypeFromNormalized({my: 'object'})).toThrow();
   });
 
   test('I can get the asset family identifier', () => {
-    expect(AssetType.createFromString('brand').getAssetFamilyIdentifier()).toEqual('brand');
-    expect(() => AssetType.createFromNormalized(null).getAssetFamilyIdentifier()).toThrow();
+    expect(createAssetTypeFromNormalized('brand')).toEqual('brand');
+  });
+  test('I can test if an asset type is empty', () => {
+    expect(assetTypeIsEmpty(createAssetTypeFromNormalized('brand'))).toEqual(false);
+    expect(assetTypeIsEmpty(createAssetTypeFromNormalized(null))).toEqual(true);
   });
 
   test('I can test if a asset type is equal to another one', () => {
-    expect(AssetType.createFromString('brand').equals(AssetType.createFromString('brand'))).toBe(true);
-    expect(AssetType.createFromString('brand').equals(AssetType.createFromString('designer'))).toBe(false);
-    expect(AssetType.createFromNormalized(null).equals(AssetType.createFromString('designer'))).toBe(false);
-    expect(AssetType.createFromNormalized(null).equals(AssetType.createFromNormalized(null))).toBe(true);
+    expect(assetTypeAreEqual(createAssetTypeFromNormalized('brand'), createAssetTypeFromNormalized('brand'))).toBe(
+      true
+    );
+    expect(assetTypeAreEqual(createAssetTypeFromNormalized('brand'), createAssetTypeFromNormalized('designer'))).toBe(
+      false
+    );
+    expect(assetTypeAreEqual(createAssetTypeFromNormalized(null), createAssetTypeFromNormalized('designer'))).toBe(
+      false
+    );
+    expect(assetTypeAreEqual(createAssetTypeFromNormalized(null), createAssetTypeFromNormalized(null))).toBe(true);
   });
 });

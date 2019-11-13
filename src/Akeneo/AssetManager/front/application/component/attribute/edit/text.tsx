@@ -3,13 +3,16 @@ import __ from 'akeneoassetmanager/tools/translator';
 import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import Dropdown, {DropdownElement} from 'akeneoassetmanager/application/component/app/dropdown';
-import {TextAttribute, TextAdditionalProperty} from 'akeneoassetmanager/domain/model/attribute/type/text';
-import {RegularExpression} from 'akeneoassetmanager/domain/model/attribute/type/text/regular-expression';
 import {
+  TextAttribute,
+  TextAdditionalProperty,
+  isValidMaxLength,
+  maxLengthStringValue,
+  createMaxLengthFromString,
+  createRegularExpressionFromString,
+  regularExpressionStringValue,
   ValidationRuleOption,
-  ValidationRule,
-} from 'akeneoassetmanager/domain/model/attribute/type/text/validation-rule';
-import {MaxLength} from 'akeneoassetmanager/domain/model/attribute/type/text/max-length';
+} from 'akeneoassetmanager/domain/model/attribute/type/text';
 import Checkbox from 'akeneoassetmanager/application/component/app/checkbox';
 import Key from 'akeneoassetmanager/tools/key';
 
@@ -91,18 +94,18 @@ const TextView = ({
             id="pim_asset_manager.attribute.edit.input.max_length"
             name="max_length"
             readOnly={!rights.attribute.edit}
-            value={attribute.maxLength.stringValue()}
+            value={maxLengthStringValue(attribute.maxLength)}
             onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
               if (Key.Enter === event.key) onSubmit();
             }}
             onChange={(event: React.FormEvent<HTMLInputElement>) => {
-              if (!MaxLength.isValid(event.currentTarget.value)) {
-                event.currentTarget.value = attribute.maxLength.stringValue();
+              if (!isValidMaxLength(event.currentTarget.value)) {
+                event.currentTarget.value = maxLengthStringValue(attribute.maxLength);
                 event.preventDefault();
                 return;
               }
 
-              onAdditionalPropertyUpdated('max_length', MaxLength.createFromString(event.currentTarget.value));
+              onAdditionalPropertyUpdated('max_length', createMaxLengthFromString(event.currentTarget.value));
             }}
           />
         </div>
@@ -173,9 +176,9 @@ const TextView = ({
               ItemView={AttributeValidationRuleItemView}
               label={__('pim_asset_manager.attribute.edit.input.validation_rule')}
               elements={getValidationRuleOptions()}
-              selectedElement={attribute.validationRule.stringValue()}
+              selectedElement={attribute.validationRule}
               onSelectionChange={(value: DropdownElement) =>
-                onAdditionalPropertyUpdated('validation_rule', ValidationRule.createFromString(value.identifier))
+                onAdditionalPropertyUpdated('validation_rule', value.identifier)
               }
               isOpenUp={true}
             />
@@ -183,7 +186,7 @@ const TextView = ({
           {getErrorsView(errors, 'validationRule')}
         </div>
       )}
-      {!attribute.isTextarea && attribute.validationRule.stringValue() === ValidationRuleOption.RegularExpression && (
+      {!attribute.isTextarea && attribute.validationRule === ValidationRuleOption.RegularExpression && (
         <div className="AknFieldContainer" data-code="regularExpression">
           <div className="AknFieldContainer-header AknFieldContainer-header--light">
             <label
@@ -201,14 +204,14 @@ const TextView = ({
               id="pim_asset_manager.attribute.edit.input.regular_expression"
               name="regular_expression"
               placeholder="/[a-z]+[0-9]*/"
-              value={attribute.regularExpression.stringValue()}
+              value={regularExpressionStringValue(attribute.regularExpression)}
               onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
                 if (Key.Enter === event.key) onSubmit();
               }}
               onChange={(event: React.FormEvent<HTMLInputElement>) =>
                 onAdditionalPropertyUpdated(
                   'regular_expression',
-                  RegularExpression.createFromString(event.currentTarget.value)
+                  createRegularExpressionFromString(event.currentTarget.value)
                 )
               }
             />

@@ -1,46 +1,26 @@
-import {InvalidArgumentError} from '../image';
-import {NormalizableAdditionalProperty} from 'akeneoassetmanager/domain/model/attribute/attribute';
+export type MaxFileSize = string | null;
 
-export class MaxFileSize implements NormalizableAdditionalProperty {
-  private constructor(readonly maxFileSize: string | null) {
-    if (!MaxFileSize.isValid(maxFileSize)) {
-      throw new InvalidArgumentError('MaxFileSize need to be a valid float or null');
-    }
-    Object.freeze(this);
+export const isValidMaxFileSize = (maxFileSize: string | null): maxFileSize is MaxFileSize => {
+  return (
+    isNullMaxFileSize(maxFileSize) ||
+    (typeof maxFileSize === 'string' && maxFileSize.length > 0 && null !== maxFileSize.match(/^[0-9]*\.?[0-9]*$/))
+  );
+};
+
+export const createMaxFileSizeFromNormalized = (maxFileSize: string | null): MaxFileSize => {
+  if (!isValidMaxFileSize(maxFileSize)) {
+    throw new Error('MaxFileSize should be a string');
   }
 
-  public static isValid(value: any): boolean {
-    // Regex: assert that the string start with an optional series of figures, an optional
-    // point and ends with an optional series of figures
-    // Examples:
-    // 1.234 -> match
-    // .345 -> match
-    // 123. -> match
-    // 123.344. -> no match
-    // 12e3.45 -> no match
-    return (
-      null === value || (typeof value === 'string' && value.length > 0 && null !== value.match(/^[0-9]*\.?[0-9]*$/))
-    );
-  }
+  return maxFileSize;
+};
 
-  public static createFromNormalized(normalizedMaxFileSize: NormalizedMaxFileSize) {
-    return new MaxFileSize(normalizedMaxFileSize);
-  }
+export const createMaxFileSizeFromString = (maxFileSize: string): MaxFileSize => {
+  return createMaxFileSizeFromNormalized(maxFileSize === '' ? null : maxFileSize);
+};
 
-  public normalize(): NormalizedMaxFileSize {
-    return this.maxFileSize;
-  }
+export const maxFileSizeStringValue = (maxFileSize: MaxFileSize): string => {
+  return isNullMaxFileSize(maxFileSize) ? '' : maxFileSize;
+};
 
-  public static createFromString(maxFileSize: string) {
-    return new MaxFileSize('' === maxFileSize ? null : maxFileSize);
-  }
-
-  public stringValue(): string {
-    return null === this.maxFileSize ? '' : this.maxFileSize.toString();
-  }
-
-  public isNull(): boolean {
-    return null === this.maxFileSize;
-  }
-}
-export type NormalizedMaxFileSize = string | null;
+export const isNullMaxFileSize = (maxFileSize: MaxFileSize): maxFileSize is null => null === maxFileSize;

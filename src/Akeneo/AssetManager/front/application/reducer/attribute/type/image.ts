@@ -2,8 +2,8 @@ import {
   NormalizedImageAttribute,
   NormalizedImageAdditionalProperty,
 } from 'akeneoassetmanager/domain/model/attribute/type/image';
-import {NormalizedMaxFileSize} from 'akeneoassetmanager/domain/model/attribute/type/image/max-file-size';
-import {NormalizedAllowedExtensions} from 'akeneoassetmanager/domain/model/attribute/type/image/allowed-extensions';
+import {MaxFileSize} from 'akeneoassetmanager/domain/model/attribute/type/image/max-file-size';
+import {AllowedExtensions} from 'akeneoassetmanager/domain/model/attribute/type/image/allowed-extensions';
 
 const imageAttributeReducer = (
   normalizedAttribute: NormalizedImageAttribute,
@@ -12,10 +12,10 @@ const imageAttributeReducer = (
 ): NormalizedImageAttribute => {
   switch (propertyCode) {
     case 'max_file_size':
-      const max_file_size = propertyValue as NormalizedMaxFileSize;
+      const max_file_size = propertyValue as MaxFileSize;
       return {...normalizedAttribute, max_file_size};
     case 'allowed_extensions':
-      const allowed_extensions = propertyValue as NormalizedAllowedExtensions;
+      const allowed_extensions = propertyValue as AllowedExtensions;
       return {...normalizedAttribute, allowed_extensions};
 
     default:

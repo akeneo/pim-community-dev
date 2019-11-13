@@ -56,14 +56,6 @@ export class ConcreteNumberAttribute extends ConcreteAttribute implements Number
       is_required
     );
 
-    if (!(minValue instanceof MinValue)) {
-      throw new Error('Attribute expects a MinValue as minValue');
-    }
-
-    if (!(maxValue instanceof MaxValue)) {
-      throw new Error('Attribute expects a MaxValue as maxValue');
-    }
-
     Object.freeze(this);
   }
 
@@ -78,8 +70,8 @@ export class ConcreteNumberAttribute extends ConcreteAttribute implements Number
       normalizedNumberAttribute.order,
       normalizedNumberAttribute.is_required,
       normalizedNumberAttribute.decimals_allowed,
-      new MinValue(normalizedNumberAttribute.min_value),
-      new MaxValue(normalizedNumberAttribute.max_value)
+      normalizedNumberAttribute.min_value,
+      normalizedNumberAttribute.max_value
     );
   }
 
@@ -88,8 +80,8 @@ export class ConcreteNumberAttribute extends ConcreteAttribute implements Number
       ...super.normalize(),
       type: 'number',
       decimals_allowed: this.decimalsAllowed,
-      min_value: this.minValue.normalize(),
-      max_value: this.maxValue.normalize(),
+      min_value: this.minValue,
+      max_value: this.maxValue,
     };
   }
 }

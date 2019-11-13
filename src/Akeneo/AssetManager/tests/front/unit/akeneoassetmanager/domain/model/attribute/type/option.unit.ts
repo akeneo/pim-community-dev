@@ -1,5 +1,5 @@
 import {ConcreteOptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
-import {Option} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
+import {createOptionFromNormalized} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
 
 const normalizedFavoriteColor = {
   identifier: 'favorite_color',
@@ -30,24 +30,8 @@ describe('akeneo > attribute > domain > model > attribute > type --- OptionAttri
     );
   });
 
-  test('I cannot create an invalid ConcreteOptionAttribute', () => {
-    expect(() => {
-      new ConcreteOptionAttribute(
-        'favorite_color',
-        'designer',
-        'favorite_color',
-        {en_US: 'Favorite color'},
-        true,
-        false,
-        0,
-        true,
-        ['hello']
-      );
-    }).toThrow('Attribute expects a list of Option as options');
-  });
-
   test('I can set options', () => {
-    const newOption = Option.createFromNormalized({code: 'new_option', labels: {}});
+    const newOption = createOptionFromNormalized({code: 'new_option', labels: {}});
     const optionAttribute = ConcreteOptionAttribute.createFromNormalized(normalizedFavoriteColor).setOptions([
       newOption,
     ]);
@@ -59,11 +43,11 @@ describe('akeneo > attribute > domain > model > attribute > type --- OptionAttri
 
   test('I get the options', () => {
     const options = ConcreteOptionAttribute.createFromNormalized(normalizedFavoriteColor).getOptions();
-    expect(options[0].normalize()).toEqual({
+    expect(options[0]).toEqual({
       code: 'red',
       labels: {en_US: 'Red'},
     });
-    expect(options[1].normalize()).toEqual({
+    expect(options[1]).toEqual({
       code: 'green',
       labels: {en_US: 'Green'},
     });

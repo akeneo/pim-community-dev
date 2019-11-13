@@ -14,7 +14,7 @@ import {
   optionEditionDelete,
 } from 'akeneoassetmanager/domain/event/attribute/option';
 import Key from 'akeneoassetmanager/tools/key';
-import {NormalizedOption, Option} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
+import {Option, createEmptyOption} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
 import hydrateAttribute from 'akeneoassetmanager/application/hydrator/attribute';
 import {AttributeWithOptions} from 'akeneoassetmanager/domain/model/attribute/type/option';
 import LocaleSwitcher from 'akeneoassetmanager/application/component/app/locale-switcher';
@@ -66,7 +66,7 @@ type DispatchProps = {
 };
 
 type StateProps = {
-  options: NormalizedOption[];
+  options: Option[];
   currentOptionId: number;
   isActive: boolean;
   isDirty: boolean;
@@ -244,7 +244,7 @@ const optionRow = ({
   );
 };
 
-const helperRow = ({locale, currentOption}: {locale: Locale; currentOption: NormalizedOption}) => {
+const helperRow = ({locale, currentOption}: {locale: Locale; currentOption: Option}) => {
   const label = currentOption.labels[locale.code] ? currentOption.labels[locale.code] : '';
 
   return (
@@ -287,7 +287,7 @@ class ManageOptionsView extends React.Component<ManageOptionsProps> {
     }
   }
 
-  updateRefs(options: NormalizedOption[]) {
+  updateRefs(options: Option[]) {
     this.labelInputReferences = [
       ...options.map(() => React.createRef<HTMLInputElement>()),
       React.createRef<HTMLInputElement>(),
@@ -342,7 +342,7 @@ class ManageOptionsView extends React.Component<ManageOptionsProps> {
   }
 
   render() {
-    const options = [...this.props.options, Option.createEmpty().normalize()];
+    const options = [...this.props.options, createEmptyOption()];
     const defaultCatalogLocale = this.props.structure.locales.filter(
       locale => locale.code === this.props.catalogLocale
     );
@@ -397,7 +397,7 @@ class ManageOptionsView extends React.Component<ManageOptionsProps> {
                           </tr>
                         </thead>
                         <tbody>
-                          {options.map((option: NormalizedOption, index: number) => {
+                          {options.map((option: Option, index: number) => {
                             return optionRow({
                               code: option.code,
                               label: option.labels[this.props.locale],

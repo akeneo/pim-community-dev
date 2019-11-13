@@ -27,7 +27,7 @@ export class AttributeOptionSaver {
       {
         identifier: normalizedOptionAttribute.identifier,
         asset_family_identifier: normalizedOptionAttribute.asset_family_identifier,
-        options: ((attribute as any) as AttributeWithOptions).getOptions().map((option: Option) => option.normalize()),
+        options: ((attribute as any) as AttributeWithOptions).getOptions().map((option: Option) => option),
       }
     ).catch(handleError);
   }
