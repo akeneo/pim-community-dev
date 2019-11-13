@@ -60,3 +60,8 @@ extensions:
         parent: pim-product-model-edit-form
         targetZone: self
         position: 100
+
+    pim-product-model-edit-form-variant-navigation:
+        module: pimee/product-edit-form/variant-navigation
+        parent: pim-product-model-edit-form
+        targetZone: navigation
