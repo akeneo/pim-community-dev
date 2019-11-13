@@ -11,6 +11,12 @@ export enum MediaPreviewTypes {
   ThumbnailSmall = 'thumbnail_small',
 }
 
+export const canCopyToClipboard = (): boolean => 'clipboard' in navigator;
+
+// TODO remove this comment when using typescript ^3.4
+// @ts-ignore eslint-disable-next-line flowtype/no-flow-fix-me-comments
+export const copyToClipboard = (text: string) => canCopyToClipboard() && navigator.clipboard.writeText(text);
+
 export const getImageShowUrl = (image: File, filter: string): string => {
   const path = !image.isEmpty() ? image.getFilePath() : 'undefined';
   const filename = encodeURIComponent(path);
@@ -78,4 +84,13 @@ export const getAssetPreview = (asset: any, type: MediaPreviewTypes): string => 
     attributeIdentifier: undefined !== image ? image.attribute : '',
     data: undefined !== image ? image.data.filePath : '',
   });
+};
+
+// The asset any is temporary and should be fixed when we create unified models
+export const getAssetEditUrl = (asset: any): string => {
+  const assetFamilyIdentifier = asset.assetFamily.identifier;
+  const assetCode = asset.code;
+
+  //TODO cleaner way?
+  return '#' + routing.generate('akeneo_asset_manager_asset_edit', {assetFamilyIdentifier, assetCode, tab: 'enrich'});
 };

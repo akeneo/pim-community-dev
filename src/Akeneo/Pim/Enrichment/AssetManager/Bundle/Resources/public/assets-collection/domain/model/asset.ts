@@ -11,7 +11,12 @@ import {assetcodesAreEqual} from 'akeneoassetmanager/domain/model/asset/code';
 import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
-import {MEDIA_LINK_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
+import {
+  MEDIA_LINK_ATTRIBUTE_TYPE,
+  NormalizedMediaLinkAttribute,
+} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
+import {MediaTypes, YOUTUBE_WATCH_URL} from 'akeneoassetmanager/domain/model/attribute/type/media-link/media-type';
+import {getMediaDownloadUrl} from 'akeneoassetmanager/tools/media-url-generator';
 
 export const ASSET_COLLECTION_LIMIT = 50;
 
@@ -169,18 +174,12 @@ export const assetHasMainImage = (asset: Asset, context: Context): asset is Asse
   return undefined !== image && image.data.filePath !== '';
 };
 
-export const getAssetMainImageDownloadLink = (
-  asset: Asset,
-  context: Context,
-  getMediaLinkUrl: (data: ImageData, attribute: NormalizedAttribute) => string,
-  getMediaDownloadUrl: (path: string) => string
-): string => {
+export const getAssetMainImageDownloadLink = (asset: Asset, context: Context): string => {
   const imageValue = getAssetMainImage(asset, context) as ImageValue;
-
   const attribute = getAttribute(asset.assetFamily.attributes, imageValue.attribute);
 
   return MEDIA_LINK_ATTRIBUTE_TYPE === attribute.type
-    ? getMediaLinkUrl(imageValue.data, attribute)
+    ? getMediaLinkUrl(imageValue.data, attribute as NormalizedMediaLinkAttribute)
     : getMediaDownloadUrl(imageValue.data.filePath);
 };
 
@@ -202,7 +201,6 @@ const getAttribute = (
 
 export const assetMainImageCanBeDownloaded = (asset: Asset, context: Context) => {
   const imageValue = getAssetMainImage(asset, context) as ImageValue;
-
   const attribute = getAttribute(asset.assetFamily.attributes, imageValue.attribute);
 
   return MEDIA_LINK_ATTRIBUTE_TYPE !== attribute.type;
@@ -210,3 +208,14 @@ export const assetMainImageCanBeDownloaded = (asset: Asset, context: Context) =>
 
 export const getAttributeAsMainImage = (asset: Asset): NormalizedAttribute =>
   getAttribute(asset.assetFamily.attributes, asset.assetFamily.attributeAsImage);
+
+export const getMediaLinkUrl = (image: ImageData, attribute: NormalizedMediaLinkAttribute): string => {
+  switch (attribute.media_type) {
+    case MediaTypes.youtube:
+      return YOUTUBE_WATCH_URL + image.originalFilename;
+    default:
+      return `${null !== attribute.prefix ? attribute.prefix : ''}${image.filePath}${
+        null !== attribute.suffix ? attribute.suffix : ''
+      }`;
+  }
+};

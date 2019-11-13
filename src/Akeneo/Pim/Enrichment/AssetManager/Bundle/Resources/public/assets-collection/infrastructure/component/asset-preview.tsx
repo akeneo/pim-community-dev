@@ -38,8 +38,8 @@ const AssetContainer = styled.div`
 
 const PreviewContainer = styled.div`
   display: flex;
-  height: calc(100vh - 350px);
-  min-height: 400px;
+  height: calc(100vh - 320px);
+  min-height: 450px;
 `;
 
 const ArrowButton = styled(TransparentButton)`

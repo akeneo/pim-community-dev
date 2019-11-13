@@ -37,7 +37,6 @@ export const SubTitle = styled.div`
   color: ${(props: ThemedProps<void>) => props.theme.color.grey120};
   font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.default};
   margin-bottom: 4px;
-  margin-top: 39px;
   text-align: center;
   text-transform: uppercase;
   width: 100%;

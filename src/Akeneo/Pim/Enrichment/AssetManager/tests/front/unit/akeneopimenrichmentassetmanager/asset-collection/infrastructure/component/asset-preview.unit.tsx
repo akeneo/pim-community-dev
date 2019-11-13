@@ -15,6 +15,11 @@ const mediaLinkImageAttribute = {
   type: MEDIA_LINK_ATTRIBUTE_TYPE,
   media_type: MediaTypes.image,
 };
+const mediaLinkYouTubeAttribute = {
+  identifier: 'media_link_youtube_attribute_identifier',
+  type: MEDIA_LINK_ATTRIBUTE_TYPE,
+  media_type: MediaTypes.youtube,
+};
 const mediaLinkOtherAttribute = {
   identifier: 'media_link_other_attribute_identifier',
   type: MEDIA_LINK_ATTRIBUTE_TYPE,
@@ -35,6 +40,7 @@ const unknownAttribute = {
 };
 const attributes = [
   mediaLinkImageAttribute,
+  mediaLinkYouTubeAttribute,
   mediaLinkOtherAttribute,
   mediaLinkUnknownAttribute,
   imageAttribute,
@@ -152,6 +158,43 @@ const assetCollection = [
       attributeAsImage: 'media_link_unknown_attribute_identifier',
     },
   },
+  {
+    code: 'iphone13_pack',
+    image: [],
+    asset_family_identifier: 'packshot',
+    identifier: 'packshot_iphone13_pack_daadf101-ec94-43a1-8609-2fff24d21c39',
+    labels: {en_US: 'iphone13_pack label'},
+    completeness: {
+      complete: 2,
+      required: 3,
+    },
+    assetFamily: {
+      attributes,
+      attributeAsImage: '',
+    },
+  },
+  {
+    code: 'iphone14_pack',
+    image: [
+      {
+        attribute: 'media_link_youtube_attribute_identifier',
+        locale: null,
+        channel: null,
+        data: {filePath: 'nice_file_path', originalFilename: 'file_path'},
+      },
+    ],
+    asset_family_identifier: 'packshot',
+    identifier: 'packshot_iphone14_pack_daadf101-ec94-43a1-8609-2fff24d21c39',
+    labels: {en_US: 'iphone14_pack label'},
+    completeness: {
+      complete: 2,
+      required: 3,
+    },
+    assetFamily: {
+      attributes,
+      attributeAsImage: 'media_link_youtube_attribute_identifier',
+    },
+  },
 ];
 
 test.each([
@@ -179,6 +222,7 @@ test.each([
 );
 
 test('It should throw an error when the media type of the product media-link attribute is unknown ', () => {
+  const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
   const initialAssetCode = 'iphone6_pack';
 
   const renderComponent = () =>
@@ -195,6 +239,7 @@ test('It should throw an error when the media type of the product media-link att
     );
 
   expect(renderComponent).toThrowError('The preview type UNKNOWN is not supported');
+  consoleError.mockRestore();
 });
 
 test('It can display the previous asset in the collection', () => {
@@ -332,4 +377,73 @@ test('It should not display the modal when the provided asset code does not exis
   );
 
   expect(container.querySelector('[data-role="asset-preview-modal"]')).toBeNull();
+});
+
+test('It should display the default image with a message when the asset has no main image', () => {
+  const initialAssetCode = 'iphone13_pack';
+
+  const {getByText} = render(
+    <ThemeProvider theme={akeneoTheme}>
+      <AssetPreview
+        context={context}
+        assetCollection={assetCollection}
+        initialAssetCode={initialAssetCode}
+        productAttribute={mediaLinkImageAttribute}
+        onClose={() => {}}
+      />
+    </ThemeProvider>
+  );
+
+  expect(getByText('pim_asset_manager.asset_preview.empty_main_image')).toBeInTheDocument();
+});
+
+test('It should display the YouTube player when the product attribute is a YouTube media link', () => {
+  const initialAssetCode = 'iphone14_pack';
+
+  const {container} = render(
+    <ThemeProvider theme={akeneoTheme}>
+      <AssetPreview
+        context={context}
+        assetCollection={assetCollection}
+        initialAssetCode={initialAssetCode}
+        productAttribute={mediaLinkYouTubeAttribute}
+        onClose={() => {}}
+      />
+    </ThemeProvider>
+  );
+
+  expect(container.querySelector('[data-role="youtube-player"]')).toBeInTheDocument();
+});
+
+test('I should get the YouTube link when I click on the Copy URL button on the preview of an asset with a YouTube media link', () => {
+  class MockClipboard {
+    text: string = '';
+    writeText(text: string) {
+      this.text = text;
+    }
+    readText() {
+      return this.text;
+    }
+  }
+
+  const mockClipboard = new MockClipboard();
+  Object.defineProperty(navigator, 'clipboard', {value: mockClipboard, writable: true});
+
+  const initialAssetCode = 'iphone14_pack';
+
+  const {getByText} = render(
+    <ThemeProvider theme={akeneoTheme}>
+      <AssetPreview
+        context={context}
+        assetCollection={assetCollection}
+        initialAssetCode={initialAssetCode}
+        productAttribute={mediaLinkYouTubeAttribute}
+        onClose={() => {}}
+      />
+    </ThemeProvider>
+  );
+
+  fireEvent.click(getByText('pim_asset_manager.asset_preview.copy_url'));
+
+  expect(mockClipboard.readText()).toEqual('https://youtube.com/watch?v=file_path');
 });
