@@ -45,8 +45,8 @@ before_install:
 
 install:
     - composer install --prefer-dist --no-interaction
-    - ./bin/console pim:install:assets --env=behat
-    - ./bin/console pim:install:db --withoutIndexes --withoutFixtures --env=behat
+    - ./bin/console pim:install:assets --env=dev
+    - ./bin/console pim:install:db --withoutIndexes --withoutFixtures --env=dev
     - yarn install --frozen-lockfile
     - yarn less
     - yarn webpack-test --env=prod
