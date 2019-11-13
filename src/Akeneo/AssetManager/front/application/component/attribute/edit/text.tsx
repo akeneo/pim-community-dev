@@ -3,15 +3,16 @@ import __ from 'akeneoassetmanager/tools/translator';
 import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import Dropdown, {DropdownElement} from 'akeneoassetmanager/application/component/app/dropdown';
-import {TextAttribute, TextAdditionalProperty} from 'akeneoassetmanager/domain/model/attribute/type/text';
-import {RegularExpression} from 'akeneoassetmanager/domain/model/attribute/type/text/regular-expression';
 import {
+  TextAttribute,
+  TextAdditionalProperty,
+  isValidMaxLength,
+  maxLengthStringValue,
+  createMaxLengthFromString,
+  createRegularExpressionFromString,
+  regularExpressionStringValue,
   ValidationRuleOption,
-  ValidationRule,
-} from 'akeneoassetmanager/domain/model/attribute/type/text/validation-rule';
-import {IsRichTextEditor} from 'akeneoassetmanager/domain/model/attribute/type/text/is-rich-text-editor';
-import {IsTextarea} from 'akeneoassetmanager/domain/model/attribute/type/text/is-textarea';
-import {MaxLength} from 'akeneoassetmanager/domain/model/attribute/type/text/max-length';
+} from 'akeneoassetmanager/domain/model/attribute/type/text';
 import Checkbox from 'akeneoassetmanager/application/component/app/checkbox';
 import Key from 'akeneoassetmanager/tools/key';
 
@@ -93,18 +94,18 @@ const TextView = ({
             id="pim_asset_manager.attribute.edit.input.max_length"
             name="max_length"
             readOnly={!rights.attribute.edit}
-            value={attribute.maxLength.stringValue()}
+            value={maxLengthStringValue(attribute.maxLength)}
             onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
               if (Key.Enter === event.key) onSubmit();
             }}
             onChange={(event: React.FormEvent<HTMLInputElement>) => {
-              if (!MaxLength.isValid(event.currentTarget.value)) {
-                event.currentTarget.value = attribute.maxLength.stringValue();
+              if (!isValidMaxLength(event.currentTarget.value)) {
+                event.currentTarget.value = maxLengthStringValue(attribute.maxLength);
                 event.preventDefault();
                 return;
               }
 
-              onAdditionalPropertyUpdated('max_length', MaxLength.createFromString(event.currentTarget.value));
+              onAdditionalPropertyUpdated('max_length', createMaxLengthFromString(event.currentTarget.value));
             }}
           />
         </div>
@@ -119,18 +120,13 @@ const TextView = ({
             <Checkbox
               readOnly={!rights.attribute.edit}
               id="pim_asset_manager.attribute.edit.input.textarea"
-              value={attribute.isTextarea.booleanValue()}
-              onChange={(isTextarea: boolean) =>
-                onAdditionalPropertyUpdated('is_textarea', IsTextarea.createFromBoolean(isTextarea))
-              }
+              value={attribute.isTextarea}
+              onChange={(isTextarea: boolean) => onAdditionalPropertyUpdated('is_textarea', isTextarea)}
             />
             <span
               onClick={() => {
                 if (rights.attribute.edit) {
-                  onAdditionalPropertyUpdated(
-                    'is_textarea',
-                    IsTextarea.createFromBoolean(!attribute.isTextarea.booleanValue())
-                  );
+                  onAdditionalPropertyUpdated('is_textarea', !attribute.isTextarea);
                 }
               }}
             >
@@ -140,7 +136,7 @@ const TextView = ({
         </div>
         {getErrorsView(errors, 'isTextarea')}
       </div>
-      {attribute.isTextarea.booleanValue() && (
+      {attribute.isTextarea && (
         <div className="AknFieldContainer AknFieldContainer--packed" data-code="isRichTextEditor">
           <div className="AknFieldContainer-header">
             <label
@@ -150,20 +146,14 @@ const TextView = ({
               <Checkbox
                 id="pim_asset_manager.attribute.edit.input.is_rich_text_editor"
                 readOnly={!rights.attribute.edit}
-                value={attribute.isRichTextEditor.booleanValue()}
+                value={attribute.isRichTextEditor}
                 onChange={(isrichTextEditor: boolean) =>
-                  onAdditionalPropertyUpdated(
-                    'is_rich_text_editor',
-                    IsRichTextEditor.createFromBoolean(isrichTextEditor)
-                  )
+                  onAdditionalPropertyUpdated('is_rich_text_editor', isrichTextEditor)
                 }
               />
               <span
                 onClick={() => {
-                  onAdditionalPropertyUpdated(
-                    'is_rich_text_editor',
-                    IsRichTextEditor.createFromBoolean(!attribute.isRichTextEditor.booleanValue())
-                  );
+                  onAdditionalPropertyUpdated('is_rich_text_editor', !attribute.isRichTextEditor);
                 }}
               >
                 {__('pim_asset_manager.attribute.edit.input.is_rich_text_editor')}
@@ -173,7 +163,7 @@ const TextView = ({
           {getErrorsView(errors, 'richTextEditor')}
         </div>
       )}
-      {!attribute.isTextarea.booleanValue() && (
+      {!attribute.isTextarea && (
         <div className="AknFieldContainer" data-code="validationRule">
           <div className="AknFieldContainer-header AknFieldContainer-header--light">
             <label className="AknFieldContainer-label" htmlFor="pim_asset_manager.attribute.edit.input.validation_rule">
@@ -186,9 +176,9 @@ const TextView = ({
               ItemView={AttributeValidationRuleItemView}
               label={__('pim_asset_manager.attribute.edit.input.validation_rule')}
               elements={getValidationRuleOptions()}
-              selectedElement={attribute.validationRule.stringValue()}
+              selectedElement={attribute.validationRule}
               onSelectionChange={(value: DropdownElement) =>
-                onAdditionalPropertyUpdated('validation_rule', ValidationRule.createFromString(value.identifier))
+                onAdditionalPropertyUpdated('validation_rule', value.identifier)
               }
               isOpenUp={true}
             />
@@ -196,40 +186,39 @@ const TextView = ({
           {getErrorsView(errors, 'validationRule')}
         </div>
       )}
-      {!attribute.isTextarea.booleanValue() &&
-        attribute.validationRule.stringValue() === ValidationRuleOption.RegularExpression && (
-          <div className="AknFieldContainer" data-code="regularExpression">
-            <div className="AknFieldContainer-header AknFieldContainer-header--light">
-              <label
-                className="AknFieldContainer-label"
-                htmlFor="pim_asset_manager.attribute.edit.input.regular_expression"
-              >
-                {__('pim_asset_manager.attribute.edit.input.regular_expression')}
-              </label>
-            </div>
-            <div className="AknFieldContainer-inputContainer">
-              <input
-                type="text"
-                autoComplete="off"
-                className={inputTextClassName}
-                id="pim_asset_manager.attribute.edit.input.regular_expression"
-                name="regular_expression"
-                placeholder="/[a-z]+[0-9]*/"
-                value={attribute.regularExpression.stringValue()}
-                onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
-                  if (Key.Enter === event.key) onSubmit();
-                }}
-                onChange={(event: React.FormEvent<HTMLInputElement>) =>
-                  onAdditionalPropertyUpdated(
-                    'regular_expression',
-                    RegularExpression.createFromString(event.currentTarget.value)
-                  )
-                }
-              />
-            </div>
-            {getErrorsView(errors, 'regularExpression')}
+      {!attribute.isTextarea && attribute.validationRule === ValidationRuleOption.RegularExpression && (
+        <div className="AknFieldContainer" data-code="regularExpression">
+          <div className="AknFieldContainer-header AknFieldContainer-header--light">
+            <label
+              className="AknFieldContainer-label"
+              htmlFor="pim_asset_manager.attribute.edit.input.regular_expression"
+            >
+              {__('pim_asset_manager.attribute.edit.input.regular_expression')}
+            </label>
           </div>
-        )}
+          <div className="AknFieldContainer-inputContainer">
+            <input
+              type="text"
+              autoComplete="off"
+              className={inputTextClassName}
+              id="pim_asset_manager.attribute.edit.input.regular_expression"
+              name="regular_expression"
+              placeholder="/[a-z]+[0-9]*/"
+              value={regularExpressionStringValue(attribute.regularExpression)}
+              onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
+                if (Key.Enter === event.key) onSubmit();
+              }}
+              onChange={(event: React.FormEvent<HTMLInputElement>) =>
+                onAdditionalPropertyUpdated(
+                  'regular_expression',
+                  createRegularExpressionFromString(event.currentTarget.value)
+                )
+              }
+            />
+          </div>
+          {getErrorsView(errors, 'regularExpression')}
+        </div>
+      )}
     </React.Fragment>
   );
 };

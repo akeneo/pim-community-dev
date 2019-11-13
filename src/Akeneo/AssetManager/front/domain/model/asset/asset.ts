@@ -30,7 +30,7 @@ export interface NormalizedAsset extends CommonNormalizedAsset {
 }
 
 export interface NormalizedItemAsset extends CommonNormalizedAsset {
-  image: string;
+  image: {filePath: string; originalFilename: string};
   values: NormalizedValue[];
   completeness: NormalizedCompleteness;
 }

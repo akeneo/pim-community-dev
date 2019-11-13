@@ -10,7 +10,14 @@ const assetCollection = [
   {
     asset_family_identifier: 'packshot',
     code: 'Philips22PDL4906H_pack',
-    image: '/rest/asset_manager/image_preview/image_packshot_99e561de-5ec8-47ba-833c-42e150fe8b7f/thumbnail?data=',
+    image: [
+      {
+        attribute: 'image_packshot_99e561de-5ec8-47ba-833c-42e150fe8b7f',
+        locale: null,
+        channel: null,
+        data: {filePath: '', originalFilename: ''},
+      },
+    ],
     identifier: 'packshot_Philips22PDL4906H_pa_e14f3b03-1929-4109-9b07-68e4f64bba74',
     labels: {en_US: 'YOLO GOAT'},
     completeness: {
@@ -20,7 +27,14 @@ const assetCollection = [
   },
   {
     code: 'iphone8_pack',
-    image: '/rest/asset_manager/image_preview/image_packshot_99e561de-5ec8-47ba-833c-42e150fe8b7f/thumbnail?data=',
+    image: [
+      {
+        attribute: 'image_packshot_99e561de-5ec8-47ba-833c-42e150fe8b7f',
+        locale: null,
+        channel: null,
+        data: {filePath: '', originalFilename: ''},
+      },
+    ],
     asset_family_identifier: 'packshot',
     identifier: 'packshot_iphone8_pack_daadf101-ec94-43a1-8609-2fff24d21c39',
     labels: [],
@@ -33,7 +47,14 @@ const assetCollection = [
     identifier: 'packshot_iphone7_pack_9c35ba44-e4f9-4a48-8250-4c554e6704a4',
     labels: [],
     code: 'iphone7_pack',
-    image: '/rest/asset_manager/image_preview/image_packshot_99e561de-5ec8-47ba-833c-42e150fe8b7f/thumbnail?data=',
+    image: [
+      {
+        attribute: 'image_packshot_99e561de-5ec8-47ba-833c-42e150fe8b7f',
+        locale: null,
+        channel: null,
+        data: {filePath: '', originalFilename: ''},
+      },
+    ],
     asset_family_identifier: 'packshot',
     completeness: {
       required: 3,

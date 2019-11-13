@@ -22,11 +22,18 @@ const Asset = async (nodeElement, createElementDecorator, page) => {
     await moveButton.click();
   };
 
+  const preview = async () => {
+    const assetCode = await getAssetCode();
+
+    const assetSelector = `[data-asset="${assetCode}"]`;
+    await nodeElement.click();
+  };
+
   const getAssetCode = async () => {
     return await page.evaluate(nodeElement => nodeElement.dataset.asset, nodeElement);
   };
 
-  return {remove, move, getAssetCode};
+  return {remove, move, preview, getAssetCode};
 };
 
 module.exports = Asset;

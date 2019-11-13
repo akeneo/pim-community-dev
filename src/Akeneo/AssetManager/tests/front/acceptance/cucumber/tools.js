@@ -21,6 +21,7 @@ const listenRequest = async function(page, requestContract, once = false) {
     requestContract.request.route,
     requestContract.request.query
   );
+
   const answerRequest = request => {
     if (
       url === request.url() &&
@@ -29,7 +30,7 @@ const listenRequest = async function(page, requestContract, once = false) {
         requestContract.request.body === request.postData())
     ) {
       answerJson(request, requestContract.response.body, requestContract.response.status);
-      page.removeListener('request', answerRequest);
+      if (once) page.removeListener('request', answerRequest);
     }
   };
   if (once) {

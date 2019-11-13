@@ -1,6 +1,4 @@
 import {ConcreteNumberAttribute} from 'akeneoassetmanager/domain/model/attribute/type/number';
-import {MinValue} from 'akeneoassetmanager/domain/model/attribute/type/number/min-value';
-import {DecimalsAllowed} from 'akeneoassetmanager/domain/model/attribute/type/number/decimals-allowed';
 
 const normalizedArea = {
   identifier: 'area_city_fingerprint',
@@ -20,46 +18,5 @@ const normalizedArea = {
 describe('akeneo > attribute > domain > model > attribute > type --- NumberAttribute', () => {
   test('I can create a ConcreteNumberAttribute from normalized', () => {
     expect(ConcreteNumberAttribute.createFromNormalized(normalizedArea).normalize()).toEqual(normalizedArea);
-  });
-
-  test('I cannot create an invalid ConcreteNumberAttribute (wrong decimalsAllowed)', () => {
-    expect(() => {
-      new ConcreteNumberAttribute('age', 'designer', 'age', {en_US: 'Age'}, false, false, 0, true, false, 12, 13);
-    }).toThrow('Attribute expects a DecimalsAllowed as decimalsAllowed');
-  });
-  test('I cannot create an invalid ConcreteNumberAttribute (wrong MinValue)', () => {
-    expect(() => {
-      new ConcreteNumberAttribute(
-        'age',
-        'designer',
-        'age',
-        {en_US: 'Age'},
-        false,
-        false,
-        0,
-        true,
-        new DecimalsAllowed(true),
-        12.12,
-        13
-      );
-    }).toThrow('Attribute expects a MinValue as minValue');
-  });
-
-  test('I cannot create an invalid ConcreteNumberAttribute (wrong MaxValue)', () => {
-    expect(() => {
-      new ConcreteNumberAttribute(
-        'age',
-        'designer',
-        'age',
-        {en_US: 'Age'},
-        false,
-        false,
-        0,
-        true,
-        new DecimalsAllowed(true),
-        new MinValue('12.12'),
-        13
-      );
-    }).toThrow('Attribute expects a MaxValue as maxValue');
   });
 });

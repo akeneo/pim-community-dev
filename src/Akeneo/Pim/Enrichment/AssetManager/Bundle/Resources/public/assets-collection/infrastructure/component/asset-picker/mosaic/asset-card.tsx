@@ -1,5 +1,9 @@
 import * as React from 'react';
-import {Asset, getAssetLabel, getImage} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
+import {
+  Asset,
+  getAssetLabel,
+  assetHasCompleteness,
+} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
 import styled from 'styled-components';
 import {Label} from 'akeneopimenrichmentassetmanager/platform/component/common/label';
@@ -7,6 +11,7 @@ import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reduc
 import Checkbox from 'akeneopimenrichmentassetmanager/platform/component/common/checkbox';
 import {akeneoTheme, ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import CompletenessBadge from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/mosaic/completeness-badge';
+import {MediaPreviewTypes, getAssetPreview} from 'akeneoassetmanager/tools/media-url-generator';
 
 type ContainerProps = {isDisabled: boolean};
 const Container = styled.div<ContainerProps>`
@@ -24,6 +29,24 @@ const Title = styled.div`
 `;
 type ThumbnailProps = {isSelected: boolean};
 const Thumbnail = styled.img<ThumbnailProps>`
+  object-fit: contain;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+`;
+
+const AssetCompleteness = styled.div`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+`;
+
+const ImageContainer = styled.div`
+  width: 100%;
+  padding-top: 100%; /* 1:1 Aspect Ratio */
+  position: relative;
   border-width: ${(props: ThemedProps<ThumbnailProps>) => (props.isSelected ? '2px' : '1px')};
   width: ${(props: ThemedProps<ThumbnailProps>) => (props.isSelected ? 'calc(100% - 2px)' : '100%')};
   border-color: ${(props: ThemedProps<ThumbnailProps>) =>
@@ -31,12 +54,6 @@ const Thumbnail = styled.img<ThumbnailProps>`
   border-style: solid;
   margin-bottom: 6px;
   min-height: 140px;
-`;
-
-const AssetCompleteness = styled.div`
-  position: absolute;
-  top: 10px;
-  right: 10px;
 `;
 
 const AssetCard = ({
@@ -54,14 +71,18 @@ const AssetCard = ({
 }) => {
   return (
     <Container data-asset={asset.code} data-selected={isSelected} isDisabled={isDisabled}>
-      <AssetCompleteness>
-        <CompletenessBadge completeness={asset.completeness} />
-      </AssetCompleteness>
-      <Thumbnail
-        src={getImage(asset)}
-        isSelected={isSelected}
-        onClick={() => (!isDisabled ? onSelectionChange(asset.code, !isSelected) : null)}
-      />
+      <ImageContainer>
+        <Thumbnail
+          src={getAssetPreview(asset, MediaPreviewTypes.Thumbnail)}
+          isSelected={isSelected}
+          onClick={() => (!isDisabled ? onSelectionChange(asset.code, !isSelected) : null)}
+        />
+      </ImageContainer>
+      {assetHasCompleteness(asset) && (
+        <AssetCompleteness>
+          <CompletenessBadge completeness={asset.completeness} />
+        </AssetCompleteness>
+      )}
       <Title>
         <Checkbox
           value={isSelected}

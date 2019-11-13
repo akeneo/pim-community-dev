@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {FilterView, FilterViewProps} from 'akeneoassetmanager/application/configuration/value';
 import {ConcreteOptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
-import {Option, NormalizedOption} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
+import {Option, getOptionLabel} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
 import Select2 from 'akeneoassetmanager/application/component/app/select2';
 import __ from 'akeneoassetmanager/tools/translator';
 import {ConcreteOptionCollectionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option-collection';
@@ -28,8 +28,8 @@ const OptionFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
 
   const availableOptions = attribute.getOptions().reduce(
     (availableOptions: {[choiceValue: string]: string}, option: Option) => {
-      const normalizedOption: NormalizedOption = option.normalize();
-      availableOptions[normalizedOption.code] = option.getLabel(context.locale);
+      const normalizedOption: Option = option;
+      availableOptions[normalizedOption.code] = getOptionLabel(option, context.locale);
 
       return availableOptions;
     },

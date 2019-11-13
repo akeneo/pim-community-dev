@@ -178,7 +178,7 @@ Feature: Create an attribute linked to an asset family
     When the user creates a media_link attribute "dam_image" to the asset family "city" with:
       | code  | labels                                   | is_required | order | value_per_channel | value_per_locale | media_type | prefix | suffix |
       | image | {"en_US": "Image", "fr_FR": "Image"}     | true        | 0     | false             | false            | video        | null   | null   |
-    Then there should be a validation error with message 'The media type given is not corresponding to the expected ones (image, other).'
+    Then there should be a validation error with message 'The media type given is not corresponding to the expected ones (image, pdf, youtube, other).'
 
   @acceptance-back
   Scenario: If no locale nor channel is set, their default value is set to false

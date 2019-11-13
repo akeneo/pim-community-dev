@@ -1,5 +1,4 @@
 import {ConcreteImageAttribute} from 'akeneoassetmanager/domain/model/attribute/type/image';
-import {MaxFileSize} from 'akeneoassetmanager/domain/model/attribute/type/image/max-file-size';
 
 const normalizedFrontView = {
   identifier: 'front_view',
@@ -18,24 +17,5 @@ const normalizedFrontView = {
 describe('akeneo > attribute > domain > model > attribute > type --- ImageAttribute', () => {
   test('I can create a ConcreteImageAttribute from normalized', () => {
     expect(ConcreteImageAttribute.createFromNormalized(normalizedFrontView).normalize()).toEqual(normalizedFrontView);
-  });
-  test('I cannot create an invalid ConcreteImageAttribute', () => {
-    expect(() => {
-      new ConcreteImageAttribute('front_view', 'designer', 'front_view', {en_US: 'Front View'}, true, false, 0, true);
-    }).toThrow('Attribute expects a MaxFileSize as maxFileSize');
-
-    expect(() => {
-      new ConcreteImageAttribute(
-        'front_view',
-        'designer',
-        'front_view',
-        {en_US: 'Front View'},
-        true,
-        false,
-        0,
-        true,
-        MaxFileSize.createFromNormalized('12.4')
-      );
-    }).toThrow('Attribute expects a AllowedExtension as allowedExtension');
   });
 });

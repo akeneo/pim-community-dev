@@ -40,4 +40,16 @@ abstract class ControllerIntegrationTestCase extends WebTestCase
     {
         return self::$container->get($service);
     }
+
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function tearDown(): void
+    {
+        $connectionCloser = $this->testKernel->getContainer()->get('akeneo_integration_tests.doctrine.connection.connection_closer');
+        $connectionCloser->closeConnections();
+
+        $this->testKernel->shutdown();
+    }
 }

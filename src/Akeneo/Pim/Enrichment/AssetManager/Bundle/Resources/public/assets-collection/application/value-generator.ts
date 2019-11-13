@@ -1,27 +1,32 @@
 import {
-  ValueCollection,
-  Value,
-  Product,
-  LegacyValueCollection,
-  Meta,
   CategoryCode,
   LegacyValue,
+  LegacyValueCollection,
+  Meta,
+  Product,
+  Value,
+  ValueCollection,
 } from 'akeneopimenrichmentassetmanager/enrich/domain/model/product';
 import {Attribute, AttributeCode} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
 import {
-  permissionFetcher,
-  fetchPermissions,
   AttributeGroupPermission,
-  LocalePermission,
   CategoryPermissions,
-  isLocaleEditable,
+  fetchPermissions,
   isAttributeGroupEditable,
+  isLocaleEditable,
+  LocalePermission,
+  permissionFetcher,
   Permissions,
 } from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/permission';
 import {
   attributeFetcher,
   fetchAssetAttributes,
 } from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/attribute';
+import {AttributeGroupCollection} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute-group';
+import {
+  attributeGroupFetcher,
+  fetchAssetAttributeGroups,
+} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/attribute-group';
 
 const transformValues = (legacyValues: LegacyValueCollection, assetAttributes: Attribute[]): ValueCollection => {
   const attributeCodes = assetAttributes.map((attribute: Attribute) => attribute.code);
@@ -60,12 +65,15 @@ const generate = async (product: Product): Promise<ValueCollection> => {
 
   let valueCollection: ValueCollection = transformValues(product.values, assetAttributes);
 
+  const assetAttributeGroups: AttributeGroupCollection = await fetchAssetAttributeGroups(attributeGroupFetcher())();
+
   const permissions: Permissions = await fetchPermissions(permissionFetcher())();
   valueCollection = filterAttributeGroups(valueCollection, permissions.attributeGroups);
   valueCollection = filterLocales(valueCollection, permissions.locales);
   valueCollection = filterReadOnlyAttribute(valueCollection);
   valueCollection = filterParentAttribute(valueCollection, product.meta);
   valueCollection = filterCategories(valueCollection, product.categories, permissions.categories);
+  valueCollection = sortByOrder(valueCollection, assetAttributeGroups);
 
   return valueCollection;
 };
@@ -122,6 +130,22 @@ const filterCategories = (
     ...value,
     editable: value.editable && categoryRight,
   }));
+};
+
+const sortByOrder = (values: ValueCollection, attributeGroups: AttributeGroupCollection): ValueCollection => {
+  return values.sort((a, b) => {
+    if (a.attribute.group === b.attribute.group) {
+      // there is a legacy bug when sometimes, 2 attributes will have the same sort_order.
+      // If that the case, order by code to keep visual consistency
+      if (a.attribute.sort_order === b.attribute.sort_order) {
+        return a.attribute.code.localeCompare(b.attribute.code);
+      }
+
+      return a.attribute.sort_order - b.attribute.sort_order;
+    }
+
+    return attributeGroups[a.attribute.group].sort_order - attributeGroups[b.attribute.group].sort_order;
+  });
 };
 
 export default generate;

@@ -16,6 +16,8 @@ namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\Asset\AssetDetails;
@@ -76,7 +78,7 @@ class AssetDetailsHydrator implements AssetDetailsHydratorInterface
         $allValues = $this->createEmptyValues($emptyValues, $normalizedValues);
 
         $labels = $this->getLabelsFromValues($valueCollection, $attributeAsLabel);
-        $assetImage = $this->getImage($valueCollection, $attributeAsImage);
+        $assetImage = $this->getImage($valueCollection, $attributes[$attributeAsImage]);
 
         $assetDetails = new AssetDetails(
             AssetIdentifier::fromString($assetIdentifier),
@@ -122,18 +124,27 @@ class AssetDetailsHydrator implements AssetDetailsHydratorInterface
         );
     }
 
-    private function getImage($valueCollection, $attributeAsImage): Image
+    private function getImage($valueCollection, AbstractAttribute $attributeAsImage): Image
     {
         $imageValue = array_filter(
             $valueCollection,
             function (array $value) use ($attributeAsImage) {
-                return $value['attribute'] === $attributeAsImage;
+                return $value['attribute'] === $attributeAsImage->getIdentifier()->normalize();
             }
         );
 
         $result = Image::createEmpty();
         if (!empty($imageValue)) {
             $imageValue = current($imageValue);
+
+            if (MediaLinkAttribute::ATTRIBUTE_TYPE === $attributeAsImage->getType()) {
+                $url = sprintf('%s%s%s', $attributeAsImage->getPrefix()->normalize(), $imageValue['data'], $attributeAsImage->getSuffix()->normalize());
+                $imageValue['data'] = [
+                    'filePath'         => $imageValue['data'],
+                    'originalFilename' => basename($url)
+                ];
+            }
+
             $file = new FileInfo();
             $file->setKey($imageValue['data']['filePath']);
             $file->setOriginalFilename($imageValue['data']['originalFilename']);

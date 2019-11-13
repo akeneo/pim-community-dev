@@ -83,6 +83,7 @@ pim_title:
   pimee_product_asset_mass_upload: Penjar recursos
   pimee_product_asset_index: Recursos
   pimee_product_asset_edit: Recurs {{ asset.label }} | Editar
+  pimee_product_asset_view: Recurs {{ asset.label }} | Vista
   pimee_asset_categorytree_index: Categories
   pimee_asset_categorytree_edit: Categoria {{ category.label }} | Editar
 batch_jobs:

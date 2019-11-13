@@ -9,5 +9,5 @@ Feature: Select a list of asset to put in an asset collection
         And the user go to the asset tab
         And the user opens the asset picker
         When the user filters the assets
-        And the user picks one assets
+        And the user picks one asset
 # Then the three assets in the collection should be displayed

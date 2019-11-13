@@ -4,9 +4,14 @@ import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import Checkbox from 'akeneoassetmanager/application/component/app/checkbox';
 import {NumberAdditionalProperty, NumberAttribute} from 'akeneoassetmanager/domain/model/attribute/type/number';
-import {DecimalsAllowed} from 'akeneoassetmanager/domain/model/attribute/type/number/decimals-allowed';
-import {MinValue} from 'akeneoassetmanager/domain/model/attribute/type/number/min-value';
-import {MaxValue} from 'akeneoassetmanager/domain/model/attribute/type/number/max-value';
+import {
+  minValueStringValue,
+  createMinValueFromString,
+} from 'akeneoassetmanager/domain/model/attribute/type/number/min-value';
+import {
+  maxValueStringValue,
+  createMaxValueFromString,
+} from 'akeneoassetmanager/domain/model/attribute/type/number/max-value';
 import Key from 'akeneoassetmanager/tools/key';
 import {unformatNumber, formatNumberForUILocale} from 'akeneoassetmanager/tools/format-number';
 
@@ -44,18 +49,13 @@ const NumberView = ({
             <Checkbox
               readOnly={!rights.attribute.edit}
               id="pim_asset_manager.attribute.edit.input.decimals_allowed"
-              value={attribute.decimalsAllowed.booleanValue()}
-              onChange={(decimalsAllowed: boolean) =>
-                onAdditionalPropertyUpdated('decimals_allowed', DecimalsAllowed.createFromBoolean(decimalsAllowed))
-              }
+              value={attribute.decimalsAllowed}
+              onChange={(decimalsAllowed: boolean) => onAdditionalPropertyUpdated('decimals_allowed', decimalsAllowed)}
             />
             <span
               onClick={() => {
                 if (rights.attribute.edit) {
-                  onAdditionalPropertyUpdated(
-                    'decimals_allowed',
-                    DecimalsAllowed.createFromBoolean(!attribute.decimalsAllowed.booleanValue())
-                  );
+                  onAdditionalPropertyUpdated('decimals_allowed', !attribute.decimalsAllowed);
                 }
               }}
             >
@@ -78,13 +78,13 @@ const NumberView = ({
             className={inputTextClassName}
             id="pim_asset_manager.attribute.edit.input.min_value"
             name="min_value"
-            value={formatNumberForUILocale(attribute.minValue.stringValue())}
+            value={formatNumberForUILocale(minValueStringValue(attribute.minValue))}
             onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
               if (Key.Enter === event.key) onSubmit();
             }}
             onChange={(event: React.FormEvent<HTMLInputElement>) => {
               const cleanedNumber = unformatNumber(event.currentTarget.value);
-              onAdditionalPropertyUpdated('min_value', MinValue.createFromString(cleanedNumber));
+              onAdditionalPropertyUpdated('min_value', createMinValueFromString(cleanedNumber));
             }}
             readOnly={!rights.attribute.edit}
           />
@@ -104,13 +104,13 @@ const NumberView = ({
             className={inputTextClassName}
             id="pim_asset_manager.attribute.edit.input.max_value"
             name="max_value"
-            value={formatNumberForUILocale(attribute.maxValue.stringValue())}
+            value={formatNumberForUILocale(maxValueStringValue(attribute.maxValue))}
             onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
               if (Key.Enter === event.key) onSubmit();
             }}
             onChange={(event: React.FormEvent<HTMLInputElement>) => {
               const cleanedNumber = unformatNumber(event.currentTarget.value);
-              onAdditionalPropertyUpdated('max_value', MaxValue.createFromString(cleanedNumber));
+              onAdditionalPropertyUpdated('max_value', createMaxValueFromString(cleanedNumber));
             }}
             readOnly={!rights.attribute.edit}
           />

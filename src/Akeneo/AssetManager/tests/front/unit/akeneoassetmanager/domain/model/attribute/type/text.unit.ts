@@ -1,9 +1,11 @@
-import {ConcreteTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
-import {MaxLength} from 'akeneoassetmanager/domain/model/attribute/type/text/max-length';
-import {IsTextarea} from 'akeneoassetmanager/domain/model/attribute/type/text/is-textarea';
-import {IsRichTextEditor} from 'akeneoassetmanager/domain/model/attribute/type/text/is-rich-text-editor';
-import {ValidationRule} from 'akeneoassetmanager/domain/model/attribute/type/text/validation-rule';
-import {RegularExpression} from 'akeneoassetmanager/domain/model/attribute/type/text/regular-expression';
+import {
+  ConcreteTextAttribute,
+  maxLengthStringValue,
+  isValidMaxLength,
+  createMaxLengthFromString,
+  createRegularExpressionFromString,
+  regularExpressionStringValue,
+} from 'akeneoassetmanager/domain/model/attribute/type/text';
 
 const normalizedDescription = {
   identifier: 'description',
@@ -29,11 +31,32 @@ describe('akeneo > attribute > domain > model > attribute > type --- TextAttribu
     );
   });
 
+  test('I can denormalize max length', () => {
+    expect(maxLengthStringValue(null)).toEqual('');
+    expect(maxLengthStringValue(12)).toEqual('12');
+  });
+  test('I can check if max length is valid', () => {
+    expect(isValidMaxLength('')).toEqual(true);
+    expect(isValidMaxLength(12)).toEqual(true);
+    expect(isValidMaxLength('12')).toEqual(true);
+    expect(isValidMaxLength(null)).toEqual(false);
+    expect(isValidMaxLength('nice')).toEqual(false);
+  });
+  test('I can create a max length from string', () => {
+    expect(createMaxLengthFromString('')).toEqual(null);
+    expect(createMaxLengthFromString('12')).toEqual(12);
+  });
+  test('I can denormalize regular expression', () => {
+    expect(createRegularExpressionFromString('')).toEqual(null);
+    expect(createRegularExpressionFromString('/test/')).toEqual('/test/');
+  });
+  test('I can create a regular expression from string', () => {
+    expect(regularExpressionStringValue(null)).toEqual('');
+    expect(regularExpressionStringValue('/test/')).toEqual('/test/');
+  });
+
   test('I cannot create an invalid ConcreteTextAttribute', () => {
     expect(() => {
-      new ConcreteTextAttribute('description', 'designer', 'description', {en_US: 'Description'}, true, false, 0, true);
-    }).toThrow('Attribute expects a MaxLength as maxLength');
-    expect(() => {
       new ConcreteTextAttribute(
         'description',
         'designer',
@@ -43,36 +66,9 @@ describe('akeneo > attribute > domain > model > attribute > type --- TextAttribu
         false,
         0,
         true,
-        MaxLength.createFromNormalized(12)
-      );
-    }).toThrow('Attribute expects a Textarea as isTextarea');
-    expect(() => {
-      new ConcreteTextAttribute(
-        'description',
-        'designer',
-        'description',
-        {en_US: 'Description'},
-        true,
+        12,
         false,
-        0,
-        true,
-        MaxLength.createFromNormalized(12),
-        IsTextarea.createFromNormalized(false)
-      );
-    }).toThrow('Attribute expects a IsRichTextEditor as isRichTextEditor');
-    expect(() => {
-      new ConcreteTextAttribute(
-        'description',
-        'designer',
-        'description',
-        {en_US: 'Description'},
-        true,
-        false,
-        0,
-        true,
-        MaxLength.createFromNormalized(12),
-        IsTextarea.createFromNormalized(false),
-        IsRichTextEditor.createFromNormalized(true)
+        true
       );
     }).toThrow('Attribute cannot be rich text editor and not textarea');
     expect(() => {
@@ -85,41 +81,10 @@ describe('akeneo > attribute > domain > model > attribute > type --- TextAttribu
         false,
         0,
         true,
-        MaxLength.createFromNormalized(12),
-        IsTextarea.createFromNormalized(false),
-        IsRichTextEditor.createFromNormalized(false)
-      );
-    }).toThrow('Attribute expects a ValidationRule as validationRule');
-    expect(() => {
-      new ConcreteTextAttribute(
-        'description',
-        'designer',
-        'description',
-        {en_US: 'Description'},
+        12,
         true,
         false,
-        0,
-        true,
-        MaxLength.createFromNormalized(12),
-        IsTextarea.createFromNormalized(false),
-        IsRichTextEditor.createFromNormalized(false),
-        ValidationRule.createFromNormalized('regular_expression')
-      );
-    }).toThrow('Attribute expects a RegularExpression as regularExpression');
-    expect(() => {
-      new ConcreteTextAttribute(
-        'description',
-        'designer',
-        'description',
-        {en_US: 'Description'},
-        true,
-        false,
-        0,
-        true,
-        MaxLength.createFromNormalized(12),
-        IsTextarea.createFromNormalized(true),
-        IsRichTextEditor.createFromNormalized(false),
-        ValidationRule.createFromNormalized('regular_expression')
+        'regular_expression'
       );
     }).toThrow('Attribute cannot have a validation rule while being a textarea');
     expect(() => {
@@ -132,11 +97,11 @@ describe('akeneo > attribute > domain > model > attribute > type --- TextAttribu
         false,
         0,
         true,
-        MaxLength.createFromNormalized(12),
-        IsTextarea.createFromNormalized(true),
-        IsRichTextEditor.createFromNormalized(false),
-        ValidationRule.createFromNormalized('none'),
-        RegularExpression.createFromNormalized('hey')
+        12,
+        true,
+        false,
+        'none',
+        'hey'
       );
     }).toThrow(
       'Attribute cannot have a regular expression while the validation rule is not ValidationRuleOption.RegularExpression'

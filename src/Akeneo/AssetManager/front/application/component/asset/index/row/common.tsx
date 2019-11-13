@@ -3,6 +3,8 @@ import {NormalizedItemAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import {getLabel} from 'pimui/js/i18n';
 import Completeness from 'akeneoassetmanager/domain/model/asset/completeness';
 import CompletenessLabel from 'akeneoassetmanager/application/component/app/completeness';
+import {getAssetPreview, MediaPreviewTypes} from 'akeneoassetmanager/tools/media-url-generator';
+import AssetFamily from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 
 const memo = (React as any).memo;
 
@@ -47,7 +49,12 @@ const CommonRow = memo(
         }}
       >
         <td className="AknGrid-bodyCell AknGrid-bodyCell--image">
-          <img className="AknGrid-image AknLoadingPlaceHolder" width="44" height="44" src={asset.image} />
+          <img
+            className="AknGrid-image AknLoadingPlaceHolder"
+            width="44"
+            height="44"
+            src={getAssetPreview(asset, MediaPreviewTypes.Thumbnail)}
+          />
         </td>
         <td className="AknGrid-bodyCell" title={label}>
           {label}
@@ -66,12 +73,14 @@ const CommonRow = memo(
 const CommonRows = memo(
   ({
     assets,
+    assetFamily,
     locale,
     placeholder,
     onRedirectToAsset,
     assetCount,
   }: {
     assets: NormalizedItemAsset[];
+    assetFamily: AssetFamily;
     locale: string;
     placeholder: boolean;
     onRedirectToAsset: (asset: NormalizedItemAsset) => void;
@@ -92,7 +101,14 @@ const CommonRows = memo(
       const placeholderCount = assetCount < 30 ? assetCount : 30;
 
       return Array.from(Array(placeholderCount).keys()).map(key => (
-        <CommonRow placeholder={placeholder} key={key} asset={asset} locale={locale} onRedirectToAsset={() => {}} />
+        <CommonRow
+          placeholder={placeholder}
+          key={key}
+          asset={asset}
+          assetFamily={assetFamily}
+          locale={locale}
+          onRedirectToAsset={() => {}}
+        />
       ));
     }
 
@@ -102,6 +118,7 @@ const CommonRows = memo(
           placeholder={false}
           key={asset.identifier}
           asset={asset}
+          assetFamily={assetFamily}
           locale={locale}
           onRedirectToAsset={onRedirectToAsset}
         />

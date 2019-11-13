@@ -22,7 +22,6 @@ import {
   optionEditionErrorOccured,
   optionEditionSucceeded,
 } from 'akeneoassetmanager/domain/event/attribute/option';
-import {NormalizedOption, Option} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
 import {AttributeWithOptions} from 'akeneoassetmanager/domain/model/attribute/type/option';
 import attributeOptionSaver from 'akeneoassetmanager/infrastructure/saver/options';
 import {attributecodesAreEqual} from 'akeneoassetmanager/domain/model/attribute/code';
@@ -73,7 +72,7 @@ export const saveOptions = () => async (dispatch: any, getState: () => EditState
   dispatch(optionEditionSubmission());
   const normalizedAttribute = getState().attribute.data;
   const attribute = (denormalizeAttribute(normalizedAttribute) as any) as AttributeWithOptions;
-  const options = getState().options.options.map((option: NormalizedOption) => Option.createFromNormalized(option));
+  const options = getState().options.options;
   const updatedAttribute = attribute.setOptions(options);
 
   try {

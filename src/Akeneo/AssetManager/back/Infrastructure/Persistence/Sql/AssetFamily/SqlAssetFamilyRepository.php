@@ -60,9 +60,9 @@ class SqlAssetFamilyRepository implements AssetFamilyRepositoryInterface
     {
         $serializedLabels = $this->getSerializedLabels($assetFamily);
         $insert = <<<SQL
-        INSERT INTO akeneo_asset_manager_asset_family 
-            (identifier, labels, attribute_as_label, attribute_as_image, rule_templates) 
-        VALUES 
+        INSERT INTO akeneo_asset_manager_asset_family
+            (identifier, labels, attribute_as_label, attribute_as_image, rule_templates)
+        VALUES
             (:identifier, :labels, :attributeAsLabel, :attributeAsImage, :ruleTemplates);
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
@@ -96,10 +96,10 @@ SQL;
         $serializedLabels = $this->getSerializedLabels($assetFamily);
         $update = <<<SQL
         UPDATE akeneo_asset_manager_asset_family
-        SET 
-            labels = :labels, 
-            image = :image, 
-            attribute_as_label = :attributeAsLabel, 
+        SET
+            labels = :labels,
+            image = :image,
+            attribute_as_label = :attributeAsLabel,
             attribute_as_image = :attributeAsImage,
             rule_templates = :ruleTemplates
         WHERE identifier = :identifier;

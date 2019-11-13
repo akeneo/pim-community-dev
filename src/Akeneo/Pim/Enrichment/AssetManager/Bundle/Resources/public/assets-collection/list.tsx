@@ -7,42 +7,44 @@ import {
   selectRuleRelations,
 } from 'akeneopimenrichmentassetmanager/assets-collection/reducer/structure';
 import {
-  selectCurrentValues,
-  ValueCollection,
-  Value,
   AssetCode,
-  updateValueData,
-  valueChanged,
-  selectProductLabels,
   LabelCollection,
+  ProductIdentifier,
+  selectCurrentValues,
+  selectProductIdentifer,
+  selectProductLabels,
+  updateValueData,
+  Value,
+  valueChanged,
+  ValueCollection,
 } from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import {selectContext} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
 import styled from 'styled-components';
 import __ from 'akeneoassetmanager/tools/translator';
 import {Label} from 'akeneopimenrichmentassetmanager/platform/component/common/label';
-import {getAttributeLabel, Attribute} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
+import {Attribute, getAttributeLabel} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
 import {
-  LocaleLabel,
   ChannelLabel,
+  ContextLabel,
+  LocaleLabel,
 } from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/context';
-import {ContextLabel} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/context';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
-import {Pill, Spacer, Separator} from 'akeneopimenrichmentassetmanager/platform/component/common';
+import {Pill, Separator, Spacer} from 'akeneopimenrichmentassetmanager/platform/component/common';
 import {AssetCollection} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-collection';
-import {isValueComplete, hasValues} from 'akeneopimenrichmentassetmanager/enrich/domain/model/product';
+import {hasValues, isValueComplete} from 'akeneopimenrichmentassetmanager/enrich/domain/model/product';
 import {Family} from 'akeneopimenrichmentassetmanager/platform/model/structure/family';
 import AssetIllustration from 'akeneopimenrichmentassetmanager/platform/component/visual/illustration/asset';
 import {
-  HelperSection,
   HelperIcon,
+  HelperSection,
   HelperSeparator,
-  HelperTitle,
   HelperText,
+  HelperTitle,
 } from 'akeneopimenrichmentassetmanager/platform/component/common/helper';
 import {
   NoDataSection,
-  NoDataTitle,
   NoDataText,
+  NoDataTitle,
 } from 'akeneopimenrichmentassetmanager/platform/component/common/no-data';
 import {RuleRelation} from 'akeneopimenrichmentassetmanager/platform/model/structure/rule-relation';
 import {RuleNotification} from 'akeneopimenrichmentassetmanager/platform/component/rule-notification';
@@ -62,6 +64,7 @@ import AssetCounter from 'akeneopimenrichmentassetmanager/platform/component/com
 type ListStateProps = {
   attributes: Attribute[];
   values: ValueCollection;
+  productIdentifier: ProductIdentifier | null;
   productLabels: LabelCollection;
   family: Family | null;
   context: Context;
@@ -74,6 +77,7 @@ type ListDispatchProps = {
 
 type DisplayValuesProps = {
   values: ValueCollection;
+  productIdentifier: ProductIdentifier | null;
   productLabels: LabelCollection;
   family: Family | null;
   context: Context;
@@ -89,23 +93,23 @@ const SectionTitle = styled.div`
   border-bottom: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey140};
 `;
 
-const AttributeBreadCrumb = styled.div`
+const AttributeBreadCrumb = styled.div<{readonly: boolean}>`
   font-size: 15px;
   font-weight: normal;
   text-transform: uppercase;
   white-space: nowrap;
-  color: ${(props: ThemedProps<void>) => props.theme.color.grey140};
+  color: ${(props: ThemedProps<{readonly: boolean}>) =>
+    props.readonly ? props.theme.color.grey100 : props.theme.color.grey140};
 `;
 
 const IncompleteIndicator = styled.div`
   display: flex;
 `;
 
-const AssetCollectionContainer = styled.div<{readonly: boolean}>`
+const AssetCollectionContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  opacity: ${(props: ThemedProps<{readonly: boolean}>) => (props.readonly ? 0.4 : 1)};
 `;
 
 const AssetCollectionList = styled.div`
@@ -126,23 +130,20 @@ const DisplayValues = ({
   ruleRelations,
   onChange,
   errors,
+  productIdentifier,
   productLabels,
 }: DisplayValuesProps) => {
   return (
     <React.Fragment>
       {values.map((value: Value) => (
-        <AssetCollectionContainer
-          key={value.attribute.code}
-          readonly={!value.editable}
-          data-attribute={value.attribute.code}
-        >
+        <AssetCollectionContainer key={value.attribute.code} data-attribute={value.attribute.code}>
           <SectionTitle>
             {!value.editable ? (
               <LockIconContainer>
                 <LockIcon />
               </LockIconContainer>
             ) : null}
-            <AttributeBreadCrumb>
+            <AttributeBreadCrumb readonly={!value.editable}>
               {value.attribute.group} / {getAttributeLabel(value.attribute, context.locale)}
             </AttributeBreadCrumb>
             {!isValueComplete(value, family, context.channel) ? (
@@ -191,7 +192,8 @@ const DisplayValues = ({
           <RuleNotification attributeCode={value.attribute.code} ruleRelations={ruleRelations} />
           <ValidationErrorCollection attributeCode={value.attribute.code} context={context} errors={errors} />
           <AssetCollection
-            assetFamilyIdentifier={value.attribute.referenceDataName}
+            productIdentifier={productIdentifier}
+            productAttribute={value.attribute}
             assetCodes={value.data}
             context={context}
             readonly={!value.editable}
@@ -211,6 +213,7 @@ const List = ({
   context,
   ruleRelations,
   errors,
+  productIdentifier,
   productLabels,
   onChange,
 }: ListStateProps & ListDispatchProps) => {
@@ -226,6 +229,7 @@ const List = ({
           ruleRelations={ruleRelations}
           onChange={onChange}
           errors={errors}
+          productIdentifier={productIdentifier}
           productLabels={productLabels}
         />
       ) : (
@@ -262,6 +266,7 @@ export default connect(
     attributes: selectAttributeList(state),
     context: selectContext(state),
     values: selectCurrentValues(state),
+    productIdentifier: selectProductIdentifer(state),
     productLabels: selectProductLabels(state),
     family: selectFamily(state),
     ruleRelations: selectRuleRelations(state),

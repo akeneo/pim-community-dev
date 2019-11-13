@@ -1,5 +1,4 @@
-import {InvalidArgumentError} from '../image';
-import {NormalizableAdditionalProperty} from 'akeneoassetmanager/domain/model/attribute/attribute';
+export type AllowedExtensions = AllowedExtensionsOptions[];
 
 export enum AllowedExtensionsOptions {
   gif = 'gif',
@@ -13,39 +12,28 @@ export enum AllowedExtensionsOptions {
   tif = 'tif',
   tiff = 'tiff',
 }
-export type NormalizedAllowedExtensions = AllowedExtensionsOptions[];
 
-export class AllowedExtensions implements NormalizableAdditionalProperty {
-  private constructor(readonly allowedExtensions: AllowedExtensionsOptions[]) {
-    if (!AllowedExtensions.isValid(allowedExtensions)) {
-      throw new InvalidArgumentError('AllowedExtensions need to be a valid array of allowed extensions');
-    }
-    Object.freeze(this);
+export const validAllowedExtensionsOptions = Object.values(AllowedExtensionsOptions);
+
+export const isValidAllowedExtension = (allowedExtensions: string[]): allowedExtensions is AllowedExtensions => {
+  if (!Array.isArray(allowedExtensions)) {
+    return false;
+  }
+  return !allowedExtensions.some((extension: string) => !Object.values(AllowedExtensionsOptions).includes(extension));
+};
+
+export const createAllowedExtensionFromNormalized = (allowedExtensions: string[]): AllowedExtensions => {
+  if (!isValidAllowedExtension(allowedExtensions)) {
+    throw new Error(`AllowedExtension should be ${validAllowedExtensionsOptions.join(',')}`);
   }
 
-  public static isValid(value: any): boolean {
-    if (!Array.isArray(value)) {
-      return false;
-    }
-    const invalidAllowedExtensions = value.filter(
-      (extension: string) => !Object.values(AllowedExtensionsOptions).includes(extension as any)
-    );
-    return 0 === invalidAllowedExtensions.length;
-  }
+  return allowedExtensions;
+};
 
-  public static createFromNormalized(normalizedAllowedExtensions: NormalizedAllowedExtensions) {
-    return new AllowedExtensions(normalizedAllowedExtensions);
-  }
+export const createAllowedExtensionFromArray = (allowedExtensions: string[]): AllowedExtensions => {
+  return createAllowedExtensionFromNormalized(allowedExtensions);
+};
 
-  public normalize(): NormalizedAllowedExtensions {
-    return this.allowedExtensions;
-  }
-
-  public static createFromArray(allowedExtensions: string[]) {
-    return new AllowedExtensions(allowedExtensions as AllowedExtensionsOptions[]);
-  }
-
-  public arrayValue(): string[] {
-    return this.allowedExtensions;
-  }
-}
+export const normalizeAllowedExtension = (allowedExtensions: AllowedExtensions): AllowedExtensions => {
+  return allowedExtensions;
+};

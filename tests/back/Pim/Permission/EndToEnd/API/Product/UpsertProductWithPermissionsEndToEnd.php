@@ -145,7 +145,7 @@ JSON;
         $expected = <<<JSON
 {
   "code": 403,
-  "message": "Product \"product_viewable_by_everybody_1\" cannot be updated. It should be at least in an own category."
+  "message": "Product \"product_viewable_by_everybody_1\" cannot be updated. You are only allowed to suggest proposals on this product."
 }
 JSON;
 

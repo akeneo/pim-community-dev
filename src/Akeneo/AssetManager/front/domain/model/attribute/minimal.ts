@@ -10,7 +10,10 @@ import AttributeCode, {
   denormalizeAttributeCode,
   attributeCodeStringValue,
 } from 'akeneoassetmanager/domain/model/attribute/code';
-import {AssetType, NormalizedAssetType} from 'akeneoassetmanager/domain/model/attribute/type/asset/asset-type';
+import {
+  AssetType,
+  createAssetTypeFromNormalized,
+} from 'akeneoassetmanager/domain/model/attribute/type/asset/asset-type';
 
 /**
  * @api
@@ -115,7 +118,7 @@ export class MinimalConcreteAttribute implements MinimalAttribute {
 }
 
 export interface MinimalAssetNormalizedAttribute extends MinimalNormalizedAttribute {
-  asset_type: NormalizedAssetType;
+  asset_type: AssetType;
 }
 
 export class MinimalAssetConcreteAttribute extends MinimalConcreteAttribute {
@@ -133,10 +136,6 @@ export class MinimalAssetConcreteAttribute extends MinimalConcreteAttribute {
     if (!isAssetAttributeType(type)) {
       throw new InvalidArgumentError('MinimalAssetAttribute type needs to be "asset" or "asset_collection"');
     }
-
-    if (!(assetType instanceof AssetType)) {
-      throw new InvalidArgumentError('Attribute expects a AssetType argument');
-    }
   }
 
   public static createFromNormalized(minimalNormalizedAttribute: MinimalAssetNormalizedAttribute) {
@@ -147,14 +146,14 @@ export class MinimalAssetConcreteAttribute extends MinimalConcreteAttribute {
       minimalNormalizedAttribute.type,
       minimalNormalizedAttribute.value_per_locale,
       minimalNormalizedAttribute.value_per_channel,
-      AssetType.createFromNormalized(minimalNormalizedAttribute.asset_type)
+      createAssetTypeFromNormalized(minimalNormalizedAttribute.asset_type)
     );
   }
 
   public normalize(): MinimalAssetNormalizedAttribute {
     return {
       ...super.normalize(),
-      asset_type: this.assetType.normalize(),
+      asset_type: this.assetType,
     };
   }
 }

@@ -33,7 +33,7 @@ final class OtherGeneratorTest extends PreviewGeneratorIntegrationTestCase
      */
     public function it_can_support_only_media_type_other_of_an_url_attribute()
     {
-        $isSupported = $this->otherGenerator->supports(self::FILENAME, $this->attribute, OtherGenerator::THUMBNAIL_TYPE);
+        $isSupported = $this->otherGenerator->supports(self::FILENAME, $this->attribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
         $this->assertTrue($isSupported);
     }
@@ -43,15 +43,15 @@ final class OtherGeneratorTest extends PreviewGeneratorIntegrationTestCase
      */
     public function it_can_support_only_supported_type_image_of_an_url_attribute()
     {
-        $isSupported = $this->otherGenerator->supports(self::FILENAME, $this->attribute, OtherGenerator::THUMBNAIL_TYPE);
+        $isSupported = $this->otherGenerator->supports(self::FILENAME, $this->attribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
         $this->assertTrue($isSupported);
 
-        $isSupported = $this->otherGenerator->supports(self::FILENAME, $this->attribute, OtherGenerator::THUMBNAIL_SMALL_TYPE);
+        $isSupported = $this->otherGenerator->supports(self::FILENAME, $this->attribute, PreviewGeneratorRegistry::THUMBNAIL_SMALL_TYPE);
 
         $this->assertTrue($isSupported);
 
-        $isSupported = $this->otherGenerator->supports(self::FILENAME, $this->attribute, OtherGenerator::PREVIEW_TYPE);
+        $isSupported = $this->otherGenerator->supports(self::FILENAME, $this->attribute, PreviewGeneratorRegistry::PREVIEW_TYPE);
 
         $this->assertTrue($isSupported);
 
@@ -65,11 +65,11 @@ final class OtherGeneratorTest extends PreviewGeneratorIntegrationTestCase
      */
     public function it_get_a_default_image()
     {
-        $this->otherGenerator->supports('test', $this->attribute, OtherGenerator::THUMBNAIL_TYPE);
-        $previewImage = $this->otherGenerator->generate('test', $this->attribute, OtherGenerator::THUMBNAIL_TYPE);
+        $this->otherGenerator->supports('test', $this->attribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
+        $previewImage = $this->otherGenerator->generate('test', $this->attribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
         $this->assertStringContainsString(
-            sprintf('media/cache/%s/pim_asset_manager.default_image.other', OtherGenerator::THUMBNAIL_TYPE),
+            sprintf('media/cache/%s/pim_asset_manager.default_image.other', OtherGenerator::SUPPORTED_TYPES[PreviewGeneratorRegistry::THUMBNAIL_TYPE]),
             $previewImage
         );
     }
