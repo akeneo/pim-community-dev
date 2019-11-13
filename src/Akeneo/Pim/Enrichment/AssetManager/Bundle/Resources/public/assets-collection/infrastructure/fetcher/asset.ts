@@ -14,7 +14,7 @@ import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import {denormalizeAssetCode} from 'akeneoassetmanager/domain/model/asset/code';
 import {Query, SearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
-import {NormalizedAttribute, Attribute} from 'web/bundles/akeneoassetmanager/domain/model/attribute/attribute';
+import {NormalizedAttribute, Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 
 export const fetchAssetCollection = async (
   assetFamilyIdentifier: AssetFamilyIdentifier,

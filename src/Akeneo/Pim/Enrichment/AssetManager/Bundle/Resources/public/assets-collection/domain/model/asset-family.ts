@@ -1,6 +1,6 @@
 import {Labels} from 'akeneopimenrichmentassetmanager/platform/model/label';
 import {NormalizedFile} from 'akeneoassetmanager/domain/model/file';
-import {NormalizedAttribute} from 'web/bundles/akeneoassetmanager/domain/model/attribute/attribute';
+import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 
 export type AssetFamilyIdentifier = string;
 type AssetFamilyCode = string;

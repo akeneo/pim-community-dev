@@ -19,7 +19,9 @@ export const isValidAllowedExtension = (allowedExtensions: string[]): allowedExt
   if (!Array.isArray(allowedExtensions)) {
     return false;
   }
-  return !allowedExtensions.some((extension: string) => !Object.values(AllowedExtensionsOptions).includes(extension));
+  return !allowedExtensions.some(
+    (extension: string) => !Object.values(AllowedExtensionsOptions).includes(extension as any)
+  );
 };
 
 export const createAllowedExtensionFromNormalized = (allowedExtensions: string[]): AllowedExtensions => {
