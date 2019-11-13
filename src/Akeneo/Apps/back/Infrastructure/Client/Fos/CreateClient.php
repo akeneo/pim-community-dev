@@ -32,4 +32,11 @@ class CreateClient implements CreateClientInterface
 
         return new ClientId($fosClient->getId());
     }
+
+    public function regenerateSecret(ClientId $clientId)
+    {
+        $fosClient = $this->clientManager->findClientBy(['id' => $clientId->id()]);
+        $fosClient->regenerateSecret();
+        $this->clientManager->updateClient($fosClient);
+    }
 }

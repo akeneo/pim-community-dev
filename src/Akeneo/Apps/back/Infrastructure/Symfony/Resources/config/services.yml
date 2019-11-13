@@ -11,3 +11,9 @@ services:
             - '@pim_user.updater.user'
             - '@validator'
             - '@pim_user.saver.user'
+
+    akeneo_app.service.client.regenerate_client_secret:
+        class: Akeneo\Apps\Infrastructure\Client\Fos\FosRegenerateClientSecret
+        arguments:
+            - '@fos_oauth_server.client_manager.default'
+            - '@database_connection'
