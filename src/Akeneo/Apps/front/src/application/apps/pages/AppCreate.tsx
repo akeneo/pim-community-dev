@@ -1,4 +1,4 @@
-import React, {useCallback, useReducer, useContext} from 'react';
+import React, {useReducer, useContext} from 'react';
 import {useHistory} from 'react-router';
 import {FlowType} from '../../../domain/apps/flow-type.enum';
 import {ApplyButton, Modal} from '../../common';
@@ -44,7 +44,7 @@ export const AppCreate = () => {
 
     const [state, dispatch] = useReducer(appFormReducer, initialState);
 
-    const handleSave = useCallback(() => {
+    const handleSave = async () => {
         if (false === state.valid) {
             return;
         }
@@ -54,24 +54,24 @@ export const AppCreate = () => {
             flow_type: state.controls.flow_type.value,
         };
 
-        fetch<undefined, ResultError>(url, {
+        const result = await fetch<undefined, ResultError>(url, {
             method: 'POST',
             headers: [['Content-type', 'application/json']],
             body: JSON.stringify(data),
-        }).then(result => {
-            if (isErr(result)) {
-                if (undefined === result.error.errors) {
-                    notify(NotificationLevel.ERROR, translate('pim_apps.create_app.flash.error'));
-                    return;
-                }
-                result.error.errors.forEach(({name, reason}) => dispatch(setError(name, reason)));
+        });
+
+        if (isErr(result)) {
+            if (undefined === result.error.errors) {
+                notify(NotificationLevel.ERROR, translate('pim_apps.create_app.flash.error'));
                 return;
             }
+            result.error.errors.forEach(({name, reason}) => dispatch(setError(name, reason)));
+            return;
+        }
 
-            notify(NotificationLevel.SUCCESS, translate('pim_apps.create_app.flash.success'));
-            history.push(`/apps/${data.code}/edit`);
-        });
-    }, [url, state, history, notify, translate]);
+        notify(NotificationLevel.SUCCESS, translate('pim_apps.create_app.flash.success'));
+        history.push(`/apps/${data.code}/edit`);
+    };
 
     return (
         <Modal
