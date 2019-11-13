@@ -44,7 +44,7 @@ pim_asset_manager:
   asset_preview:
     previous: Previous asset
     next: Next asset
-    empty_main_image: Your "attribute as main image" attribute is empty.
+    empty_main_image: This asset has no image.
     edit_asset: Edit asset
     download: Download
     copy_url: Copy URL
