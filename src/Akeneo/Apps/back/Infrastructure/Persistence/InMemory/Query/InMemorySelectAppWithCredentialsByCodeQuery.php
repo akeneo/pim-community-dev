@@ -37,7 +37,7 @@ class InMemorySelectAppWithCredentialsByCodeQuery implements SelectAppWithCreden
             $dataRow['code'],
             $dataRow['label'],
             $dataRow['flow_type'],
-            $dataRow['random_id'],
+            $dataRow['client_id'] .'_'. $dataRow['random_id'],
             $dataRow['secret'],
         );
     }
