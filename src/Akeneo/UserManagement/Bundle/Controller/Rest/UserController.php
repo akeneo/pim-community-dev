@@ -202,7 +202,7 @@ class UserController
 
         $token = $this->tokenStorage->getToken();
         $currentUser = null !== $token ? $token->getUser() : null;
-        if (null === $currentUser || $user->getId() !== $user->getId()) {
+        if (null === $currentUser || $currentUser->getId() !== $user->getId()) {
             throw new AccessDeniedHttpException();
         }
 
@@ -326,7 +326,7 @@ class UserController
      */
     private function updateUser(UserInterface $user, array $data): JsonResponse
     {
-        $previousUserName = $data['username'];
+        $previousUserName = $user->getUsername();
         if ($this->isPasswordUpdating($data)) {
             $passwordViolations = $this->validatePassword($user, $data);
             if ($passwordViolations->count() === 0) {
@@ -356,6 +356,7 @@ class UserController
                     );
                 }
             }
+            $this->objectManager->refresh($user);
 
             return new JsonResponse($normalizedViolations, Response::HTTP_BAD_REQUEST);
         }
