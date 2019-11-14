@@ -105,16 +105,6 @@ class GroupController
     }
 
     /**
-     * @return JsonResponse
-     */
-    public function indexAction()
-    {
-        $groups = $this->groupRepository->findAll();
-
-        return new JsonResponse($this->normalizer->normalize($groups, 'internal_api', $this->userContext->toArray()));
-    }
-
-    /**
      * @param Request $request
      *
      * @return JsonResponse

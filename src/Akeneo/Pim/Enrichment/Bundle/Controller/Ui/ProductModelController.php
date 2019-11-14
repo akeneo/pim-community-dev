@@ -4,7 +4,6 @@ namespace Akeneo\Pim\Enrichment\Bundle\Controller\Ui;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -23,7 +22,6 @@ class ProductModelController extends AbstractListCategoryController
 
     /**
      * @param ProductModelRepositoryInterface       $productModelRepository
-     * @param EntityWithFamilyValuesFillerInterface $valuesFiller
      * @param CategoryRepositoryInterface           $categoryRepository
      * @param SecurityFacade                        $securityFacade
      * @param string                                $categoryClass

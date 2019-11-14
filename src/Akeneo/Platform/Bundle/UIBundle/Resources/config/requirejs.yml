@@ -149,7 +149,6 @@ config:
           module: pim/base-fetcher
           options:
             urls:
-              list: pim_enrich_group_rest_index
               get: pim_enrich_group_rest_get
         sequential-edit:
           module: pim/base-fetcher

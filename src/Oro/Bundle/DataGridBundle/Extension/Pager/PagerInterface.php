@@ -44,48 +44,6 @@ interface PagerInterface
     public function getPage();
 
     /**
-     * Returns the previous page.
-     *
-     * @return int
-     */
-    public function getPreviousPage();
-
-    /**
-     * Returns the next page.
-     *
-     * @return integer
-     */
-    public function getNextPage();
-
-    /**
-     * Returns the last page number.
-     *
-     * @return integer
-     */
-    public function getLastPage();
-
-    /**
-     * Returns the first page number.
-     *
-     * @return integer
-     */
-    public function getFirstPage();
-
-    /**
-     * Returns an array of page numbers to use in pagination links.
-     *
-     * @param  integer $nbLinks The maximum number of page numbers to return
-     *
-     * @return array
-     */
-    public function getLinks($nbLinks = null);
-
-    /**
-     * @return boolean
-     */
-    public function haveToPaginate();
-
-    /**
      * Returns the number of results.
      *
      * @return integer

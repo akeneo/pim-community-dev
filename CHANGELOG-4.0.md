@@ -291,11 +291,7 @@
 - Remove class `Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\AbstractEntityWithFamilyValuesFiller`
 - Remove class `Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyVariantValuesFiller`
 - Remove class `Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\ProductValuesFiller`
-- Remove interface `Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface`
 - Remove method `addAttribute` from `Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface`
-- Remove class `Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\AbstractEntityWithFamilyValuesFiller`
-- Remove class `Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyVariantValuesFiller`
-- Remove class `Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\ProductValuesFiller`
 - Remove interface `Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface`
 - Remove class `Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory`
 - Remove class `Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\ScalarValueFactory`
@@ -308,6 +304,22 @@
 - Remove class `Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\ReferenceDataValueFactory`
 - Remove class `Akeneo\Pim\Enrichment\Component\Product\Factory\Write\Value\ReferenceDataCollectionValueFactory`
 - Remove class `Akeneo\Pim\Enrichment\Component\Product\Factory\PriceFactory`
+- Remove class `Akeneo\Pim\Enrichment\Bundle\Form\Subscriber\BindAssociationTargetsSubscriber`
+- Remove class `Akeneo\Pim\Enrichment\Bundle\Form\Type\GroupType`
+- Remove class `Akeneo\UserManagement\Bundle\Form\Event\UserFormBuilderEvent`
+- Remove class `Oro\Bundle\DataGridBundle\Datasource\Orm\ConstantPagerIterableResult`
+- Remove class `Oro\Bundle\DataGridBundle\Datasource\Orm\IterableResult`
+- Remove interface `Oro\Bundle\DataGridBundle\Datasource\Orm\IterableResultInterface`
+- Remove methods `getCurrentMaxLink`, `getLinks`, `haveToPaginate`, `getCursor`, `setCursor`, `getObjectByCursor`, `getCurrent`, `getNext`, `getPrevious`, `getFirstIndex`, `getLastIndex`, `getFirstPage`, `getLastPage`, `getNextPage`, `getPreviousPage`, `getMaxPageLinks`, `setMaxPageLinks`, `isFirstPage`, `isLastPage`, `current`, `key`, `next`, `rewind`, `valid`, `count`, `serialize`, `unserialize` from
+  - `Oro\Bundle\DataGridBundle\Extension\Pager\AbstractPager`
+  - `Oro\Bundle\DataGridBundle\Extension\Pager\DummyPager`
+  - `Oro\Bundle\DataGridBundle\Extension\Pager\Orm\Pager`
+  - `Oro\Bundle\DataGridBundle\Extension\Pager\PagerInterface`
+  - `Oro\Bundle\PimDataGridBundle\Extension\Pager\AbstractPager`
+  - `Oro\Bundle\PimDataGridBundle\Extension\Pager\Orm\Pager`
+- Remove class `Oro\Bundle\DataGridBundle\ORM\Query\BufferedQueryResultIterator`
+- Remove class `Oro\Bundle\PimDataGridBundle\EventSubscriber\DefaultViewSubscriber`
+
 
 ### CLI Commands
 
