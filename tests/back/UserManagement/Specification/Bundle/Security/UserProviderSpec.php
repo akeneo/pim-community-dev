@@ -2,10 +2,10 @@
 
 namespace Specification\Akeneo\UserManagement\Bundle\Security;
 
-use PhpSpec\ObjectBehavior;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
+use PhpSpec\ObjectBehavior;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserProviderSpec extends ObjectBehavior
 {
@@ -22,8 +22,8 @@ class UserProviderSpec extends ObjectBehavior
 
     function it_refreshes_a_user($userRepository, UserInterface $julia)
     {
-        $userRepository->findOneByIdentifier('julia')->willReturn($julia);
-        $julia->getUsername()->willReturn('julia');
+        $userRepository->find(42)->willReturn($julia);
+        $julia->getId()->willReturn(42);
         $this->refreshUser($julia)->shouldReturn($julia);
     }
 
