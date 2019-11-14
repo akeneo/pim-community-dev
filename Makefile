@@ -86,7 +86,7 @@ check-requirements:
 
 .PHONY: database
 database:
-	$(PHP_RUN) bin/console pim:installer:db ${O}
+	$(PHP_RUN) -d memory_limit=2G bin/console pim:installer:db ${O}
 
 ##
 ## PIM install
