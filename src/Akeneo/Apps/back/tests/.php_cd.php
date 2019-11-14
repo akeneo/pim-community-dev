@@ -23,9 +23,16 @@ $rules = [
 
     $builder->only(
         [
-            'Akeneo\Apps\Application\Service\CreateClientInterface',
-            'Akeneo\Apps\Domain\Model\ValueObject\ClientId',
+            'Akeneo\Apps\Application',
+            'Akeneo\Apps\Domain',
+
+            'Akeneo\Tool\Bundle\ApiBundle\Entity\Client',
+
+            'Doctrine\DBAL\Driver\Connection',
+
+            // OAuth server authentication
             'FOS\OAuthServerBundle\Model\ClientManagerInterface',
+            'FOS\OAuthServerBundle\Util\Random',
             'OAuth2\OAuth2',
         ]
     )->in('Akeneo\Apps\Infrastructure\Client'),
