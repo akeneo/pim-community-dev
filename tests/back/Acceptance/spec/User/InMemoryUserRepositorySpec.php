@@ -82,6 +82,16 @@ class InMemoryUserRepositorySpec extends ObjectBehavior
         $this->findBy(['username' => 'mary'])->shouldReturn([$user]);
     }
 
+    function it_finds_a_user_by_its_id()
+    {
+        $user = new User();
+        $user->setUsername('mary');
+        $user->setId(42);
+        $this->save($user);
+
+        $this->find(42)->shouldReturn($user);
+    }
+
     function it_does_not_find_users_by_criteria()
     {
         $user = new User();
