@@ -80,7 +80,7 @@ apps-back:
 	make apps-unit-back
 	make apps-acceptance-back
 	make apps-integration-back
-	make apps-endToEnd
+	make apps-e2e
 
 # Tests Front
 
