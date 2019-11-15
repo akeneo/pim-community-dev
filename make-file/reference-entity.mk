@@ -63,7 +63,7 @@ reference-entity-lint-back:
 .PHONY: reference-entity-unit-back
 reference-entity-unit-back: var/tests/phpspec
 ifeq ($(CI),true)
-	$(PHP_RUN) vendor/bin/phpspec run -c src/Akeneo/ReferenceEntity/tests/back/phpspec.yml.dist --format=junit > var/tests/phpspec/reference-entity.xml
+	$(DOCKER_COMPOSE) run -T -u www-data --rm php php vendor/bin/phpspec run -c src/Akeneo/ReferenceEntity/tests/back/phpspec.yml.dist --format=junit > var/tests/phpspec/reference-entity.xml
 else
 	$(PHP_RUN) vendor/bin/phpspec run -c src/Akeneo/ReferenceEntity/tests/back/phpspec.yml.dist $(O)
 endif
