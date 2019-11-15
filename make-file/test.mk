@@ -20,7 +20,7 @@ lint-front: franklin-insights-lint-front
 
 ### Unit tests
 .PHONY: unit-back
-unit-back: var/tests/phpspec asset-manager-unit-back reference-entity-unit-back
+unit-back: var/tests/phpspec reference-entity-unit-back asset-manager-unit-back
 ifeq ($(CI),true)
 	${PHP_RUN} vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
 	vendor/akeneo/pim-community-dev/.circleci/find_non_executed_phpspec.sh
@@ -38,7 +38,7 @@ acceptance-back: var/tests/behat reference-entity-acceptance-back asset-manager-
 	${PHP_RUN} vendor/bin/behat -p acceptance --format pim --out var/tests/behat --format progress --out std --colors
 
 .PHONY: acceptance-front
-acceptance-front: asset-manager-acceptance-front
+acceptance-front: reference-entity-acceptance-front asset-manager-acceptance-front
 	MAX_RANDOM_LATENCY_MS=100 $(YARN_RUN) acceptance run acceptance ./tests/features
 
 ### Integration tests
@@ -47,7 +47,7 @@ integration-front:
 	$(YARN_RUN) integration
 
 .PHONY: integration-back
-integration-back: var/tests/phpunit franklin-insights-integration-back asset-manager-integration-back reference-entity-integration-back
+integration-back: var/tests/phpunit franklin-insights-integration-back reference-entity-integration-back asset-manager-integration-back
 ifeq ($(CI),true)
 	vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh . vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php PIM_Integration_Test
 else
