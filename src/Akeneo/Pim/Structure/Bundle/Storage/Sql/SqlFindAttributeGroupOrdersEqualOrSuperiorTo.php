@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Bundle\Storage\Sql;
 
+use Akeneo\Pim\Structure\Component\AttributeGroup\Query\FindAttributeGroupOrdersEqualOrSuperiorTo;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
 use Doctrine\DBAL\Connection;
 
@@ -14,7 +15,7 @@ use Doctrine\DBAL\Connection;
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FindAttributeGroupOrdersEqualOrSuperiorTo
+class SqlFindAttributeGroupOrdersEqualOrSuperiorTo implements FindAttributeGroupOrdersEqualOrSuperiorTo
 {
     /** @var Connection */
     private $connection;

@@ -7,7 +7,7 @@ namespace AkeneoTest\Pim\Structure\Integration\AttributeGroup\Query;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
 use Akeneo\Test\Integration\TestCase;
 
-class FindAttributeGroupOrdersEqualOrSuperiorToIntegration extends TestCase
+class SqlFindAttributeGroupOrdersEqualOrSuperiorToIntegration extends TestCase
 {
     public function testQueryToGetAssociatedProductCodes()
     {

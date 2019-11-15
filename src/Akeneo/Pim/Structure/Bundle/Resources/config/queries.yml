@@ -35,6 +35,6 @@ services:
             - '@doctrine.orm.entity_manager'
 
     akeneo.pim.structure.query.find_attribute_group_orders_equal_or_superior_to:
-        class: 'Akeneo\Pim\Structure\Bundle\Storage\Sql\FindAttributeGroupOrdersEqualOrSuperiorTo'
+        class: 'Akeneo\Pim\Structure\Bundle\Storage\Sql\SqlFindAttributeGroupOrdersEqualOrSuperiorTo'
         arguments:
             - '@database_connection'
