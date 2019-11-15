@@ -26,7 +26,7 @@ export API_AUTH="$(echo -n $API_CLIENT:$API_SECRET | base64 -w 0 )"
 
 echo "Generate the catalog"
 
-docker pull akeneo/data-generator:3.0
+docker pull akeneo/data-generator:2.0
 
 ABSOLUTE_CATALOG_FILE=$(readlink -f -- $REFERENCE_CATALOG_FILE)
 
@@ -34,4 +34,4 @@ docker run \
   -t --network container:${PIM_HTTPD_CONTAINER} \
   -e API_CLIENT -e API_SECRET -e API_URL -e API_USER -e API_PASSWORD \
   -v "$ABSOLUTE_CATALOG_FILE:/app/akeneo-data-generator/app/catalog/product_api_catalog.yml" \
-  akeneo/data-generator:3.0 akeneo:api:generate-catalog --with-products --check-minimal-install product_api_catalog.yml
+  akeneo/data-generator:2.0 akeneo:api:generate-catalog --with-products --check-minimal-install product_api_catalog.yml
