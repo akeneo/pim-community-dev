@@ -21,3 +21,10 @@ akeneo_apps_update_rest:
     methods: [POST]
     requirements:
         code: '[a-zA-Z0-9_]+'
+
+akeneo_apps_regenerate_secret_rest:
+    path: '/rest/apps/regenerate-secret'
+    defaults: { _controller: akeneo_app.internal_api.controller.app:regenerate-secret }
+    methods: [POST]
+    requirements:
+        code: '[a-zA-Z0-9_]+'
