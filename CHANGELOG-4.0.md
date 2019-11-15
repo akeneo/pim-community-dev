@@ -27,6 +27,7 @@
 
 ### Codebase
 
+- Change constructor of `Akeneo\UserManagement\Bundle\Controller\Rest\UserController` to add `$securityFacade` as a non-nullable argument.
 - Remove class `Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager`
 - Remove service `pim_catalog.manager.completeness`
 - Remove class `Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessGenerator`

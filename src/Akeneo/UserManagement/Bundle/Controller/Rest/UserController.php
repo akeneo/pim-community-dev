@@ -81,7 +81,7 @@ class UserController
     /** @var TranslatorInterface */
     private $translator;
 
-    /** @var SecurityFacade|null */
+    /** @var SecurityFacade */
     private $securityFacade;
 
     public function __construct(
@@ -99,7 +99,7 @@ class UserController
         RemoverInterface $remover,
         NumberFactory $numberFactory,
         TranslatorInterface $translator,
-        ?SecurityFacade $securityFacade
+        SecurityFacade $securityFacade
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->normalizer = $normalizer;
@@ -144,6 +144,14 @@ class UserController
      */
     public function getAction(int $identifier): JsonResponse
     {
+        $token = $this->tokenStorage->getToken();
+        $currentUserIdentifier = null !== $token ? $token->getUser()->getId() : null;
+
+        if ($currentUserIdentifier !== $identifier &&
+            !$this->securityFacade->isGranted('pim_user_user_index')) {
+            throw new AccessDeniedHttpException();
+        }
+
         $user = $this->getUserOr404($identifier);
 
         return new JsonResponse($this->normalizer->normalize($user, 'internal_api'));

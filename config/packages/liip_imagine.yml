@@ -32,33 +32,46 @@ liip_imagine:
             filters:
                 downscale: { max: [320, 240] }
                 strip:        ~
-        am_preview:
+
+        am_url_image_preview:
             quality:          95
             format:           jpg
             data_loader:      stream_data_loader
             filters:
                 background:
                     color: "#ffffff"
-        am_thumbnail_small:
+
+        am_url_image_thumbnail:
             quality:          95
             format:           png
             data_loader:      stream_data_loader
             filters:
-                thumbnail:    { size: [280, 280], mode: outbound }
-                strip:        ~
-        am_thumbnail:
+                thumbnail:    { size: [320, 320], mode: inset }
+
+        am_binary_image_preview:
+            quality:          95
+            format:           jpg
+            filters:
+                background:
+                    color: "#ffffff"
+
+        am_binary_image_thumbnail:
             quality:          95
             format:           png
-            data_loader:      stream_data_loader
             filters:
-                thumbnail:    { size: [320, 320], mode: outbound }
-                strip:        ~
-    loaders:
-        default:
-            filesystem:
-                data_root:
-                    - "%kernel.project_dir%/public/"
-    resolvers:
-        default:
-            web_path:
-                web_root: "%kernel.project_dir%/public/"
+                thumbnail:    { size: [320, 320], mode: inset }
+
+        am_url_pdf_preview:
+            quality:          95
+            format:           jpg
+            data_loader:      stream_pdf_loader
+            filters:
+                background:
+                    color: "#ffffff"
+
+        am_url_pdf_thumbnail:
+            quality:          95
+            format:           png
+            data_loader:      stream_pdf_loader
+            filters:
+                thumbnail:    { size: [320, 320], mode: inset }

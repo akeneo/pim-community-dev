@@ -202,6 +202,7 @@ flash:
     removed: L'element ha estat suprimit
   attribute:
     identifier_not_removable: L'atribut identificador no es pot suprimir
+    used_as_conversion_unit: Aquest atribut no es pot eliminar perquè s'utilitza com a unitat de conversió al canal(s) %channelCodes%.
   category:
     removed: Categoria suprimida correctament
   tree:

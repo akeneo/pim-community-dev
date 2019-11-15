@@ -86,6 +86,12 @@ define([
              */
             onValidationError: function (event) {
                 this.validationErrors = event.response.translations ? event.response.translations : {};
+                this.locales.forEach((locale) => {
+                    const key = 'translations[' + locale.code + '].label';
+                    if (event.response[key]) {
+                        this.validationErrors[locale.code] = event.response[key];
+                    }
+                });
 
                 this.render();
             },

@@ -97,7 +97,8 @@ define(
                             i18n: i18n,
                             UserContext: UserContext,
                             __: __,
-                            hasRightToRemove: this.hasRightToRemove()
+                            hasRightToRemove: this.hasRightToRemove(),
+                            canSortAttributes: SecurityContext.isGranted(this.config.sortAttributesACL)
                         }));
 
                         this.$('.attribute-list').sortable({
