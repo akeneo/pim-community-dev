@@ -20,14 +20,12 @@ services:
 
     akeneo_app.application.handler.update_app:
         class: 'Akeneo\Apps\Application\Command\UpdateAppHandler'
-        public: true
         arguments:
             - '@validator'
             - '@akeneo_app.persistence.repository.app'
 
     akeneo_app.application.handler.regenerate_app_secret:
         class: 'Akeneo\Apps\Application\Command\RegenerateAppSecretHandler'
-        public: true
         arguments:
             - '@akeneo_app.persistence.repository.app'
             - '@akeneo_app.service.client.regenerate_client_secret'
