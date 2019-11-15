@@ -11,3 +11,9 @@ imports:
     - { resource: ../../../src/Akeneo/Apps/back/tests/Acceptance/Resources/config/queries.yml }
     - { resource: ../../../src/Akeneo/Apps/back/tests/Acceptance/Resources/config/repositories.yml }
     - { resource: ../../../src/Akeneo/Apps/back/tests/Acceptance/Resources/config/services.yml }
+
+services:
+    akeneo_integration_tests.doctrine.connection.connection_closer:
+        class: Akeneo\Test\IntegrationTestsBundle\Doctrine\Connection\ConnectionCloser
+        arguments:
+            - '@doctrine'
