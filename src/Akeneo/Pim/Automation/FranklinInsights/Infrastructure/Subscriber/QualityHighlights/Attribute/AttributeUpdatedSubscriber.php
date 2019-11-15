@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\QualityHighlights\Attribute;
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionIsActiveHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionIsActiveQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -24,15 +24,15 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 class AttributeUpdatedSubscriber implements EventSubscriberInterface
 {
-    /** @var GetConnectionStatusHandler */
-    private $connectionStatusHandler;
+    /** @var GetconnectionIsActiveHandler */
+    private $connectionIsActiveHandler;
 
     /** @var PendingItemsRepositoryInterface */
     private $pendingItemsRepository;
 
-    public function __construct(GetConnectionStatusHandler $connectionStatusHandler, PendingItemsRepositoryInterface $pendingItemsRepository)
+    public function __construct(GetConnectionIsActiveHandler $connectionIsActiveHandler, PendingItemsRepositoryInterface $pendingItemsRepository)
     {
-        $this->connectionStatusHandler = $connectionStatusHandler;
+        $this->connectionIsActiveHandler = $connectionIsActiveHandler;
         $this->pendingItemsRepository = $pendingItemsRepository;
     }
 
@@ -87,9 +87,7 @@ class AttributeUpdatedSubscriber implements EventSubscriberInterface
 
     private function isFranklinInsightsActivated(): bool
     {
-        $connectionStatus = $this->connectionStatusHandler->handle(new GetConnectionStatusQuery(false));
-
-        return $connectionStatus->isActive();
+        return $this->connectionIsActiveHandler->handle(new GetConnectionIsActiveQuery());
     }
 
     private function isTypeSupported(AttributeInterface $attribute): bool

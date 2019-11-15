@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\QualityHighlights\Product;
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionIsActiveHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionIsActiveQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -23,8 +23,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 final class ProductDeletedSubscriber implements EventSubscriberInterface
 {
-    /** @var GetConnectionStatusHandler */
-    private $connectionStatusHandler;
+    /** @var GetconnectionIsActiveHandler */
+    private $connectionIsActiveHandler;
 
     /** @var PendingItemsRepositoryInterface */
     private $pendingItemsRepository;
@@ -32,9 +32,9 @@ final class ProductDeletedSubscriber implements EventSubscriberInterface
     /** @var int */
     private $removedProductId;
 
-    public function __construct(GetConnectionStatusHandler $connectionStatusHandler, PendingItemsRepositoryInterface $pendingItemsRepository)
+    public function __construct(GetConnectionIsActiveHandler $connectionIsActiveHandler, PendingItemsRepositoryInterface $pendingItemsRepository)
     {
-        $this->connectionStatusHandler = $connectionStatusHandler;
+        $this->connectionIsActiveHandler = $connectionIsActiveHandler;
         $this->pendingItemsRepository = $pendingItemsRepository;
     }
 
@@ -76,8 +76,6 @@ final class ProductDeletedSubscriber implements EventSubscriberInterface
 
     private function isFranklinInsightsActivated(): bool
     {
-        $connectionStatus = $this->connectionStatusHandler->handle(new GetConnectionStatusQuery(false));
-
-        return $connectionStatus->isActive();
+        return $this->connectionIsActiveHandler->handle(new GetConnectionIsActiveQuery());
     }
 }

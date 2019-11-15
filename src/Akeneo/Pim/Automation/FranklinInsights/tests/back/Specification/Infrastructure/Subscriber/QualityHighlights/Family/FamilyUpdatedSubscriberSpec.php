@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\QualityHighlights\Family;
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\ConnectionStatus;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionIsActiveHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionIsActiveQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\QualityHighlights\Repository\PendingItemsRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use PhpSpec\ObjectBehavior;
@@ -15,18 +14,18 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 class FamilyUpdatedSubscriberSpec extends ObjectBehavior
 {
-    public function let(GetConnectionStatusHandler $connectionStatusHandler, PendingItemsRepositoryInterface $pendingItemsRepository)
+    public function let(GetConnectionIsActiveHandler $connectionIsActiveHandler, PendingItemsRepositoryInterface $pendingItemsRepository)
     {
-        $this->beConstructedWith($connectionStatusHandler, $pendingItemsRepository);
+        $this->beConstructedWith($connectionIsActiveHandler, $pendingItemsRepository);
     }
 
     public function it_is_only_applied_on_post_save_event_when_a_family_is_updated(
         GenericEvent $event,
         \stdClass $object,
-        $connectionStatusHandler
+        $connectionIsActiveHandler
     ): void {
         $event->getSubject()->willReturn($object);
-        $connectionStatusHandler->handle(Argument::any())->shouldNotBeCalled();
+        $connectionIsActiveHandler->handle(Argument::any())->shouldNotBeCalled();
 
         $this->onSave($event);
     }
@@ -34,13 +33,12 @@ class FamilyUpdatedSubscriberSpec extends ObjectBehavior
     public function it_is_only_applied_on_post_save_when_franklin_insights_is_activated(
         GenericEvent $event,
         FamilyInterface $family,
-        $connectionStatusHandler,
+        $connectionIsActiveHandler,
         $pendingItemsRepository
     ): void {
         $event->getSubject()->willReturn($family);
 
-        $connectionStatus = new ConnectionStatus(false, false, false, 0);
-        $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
+        $connectionIsActiveHandler->handle(new GetConnectionIsActiveQuery())->willReturn(false);
         $pendingItemsRepository->addUpdatedFamilyCode(Argument::any())->shouldNotBeCalled();
 
         $this->onSave($event);
@@ -49,14 +47,13 @@ class FamilyUpdatedSubscriberSpec extends ObjectBehavior
     public function it_saves_the_updated_family_code(
         GenericEvent $event,
         FamilyInterface $family,
-        $connectionStatusHandler,
+        $connectionIsActiveHandler,
         $pendingItemsRepository
     ): void {
         $family->getCode()->willReturn('headphones');
         $event->getSubject()->willReturn($family);
 
-        $connectionStatus = new ConnectionStatus(true, false, false, 0);
-        $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
+        $connectionIsActiveHandler->handle(new GetConnectionIsActiveQuery())->willReturn(true);
         $pendingItemsRepository->addUpdatedFamilyCode('headphones')->shouldBeCalled();
 
         $this->onSave($event);
@@ -66,15 +63,14 @@ class FamilyUpdatedSubscriberSpec extends ObjectBehavior
         GenericEvent $event,
         FamilyInterface $family1,
         FamilyInterface $family2,
-        $connectionStatusHandler,
+        $connectionIsActiveHandler,
         $pendingItemsRepository
     ): void {
         $family1->getCode()->willReturn('headphones');
         $family2->getCode()->willReturn('router');
         $event->getSubject()->willReturn([$family1, $family2]);
 
-        $connectionStatus = new ConnectionStatus(true, false, false, 0);
-        $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
+        $connectionIsActiveHandler->handle(new GetConnectionIsActiveQuery())->willReturn(true);
         $pendingItemsRepository->addUpdatedFamilyCode('headphones')->shouldBeCalled();
         $pendingItemsRepository->addUpdatedFamilyCode('router')->shouldBeCalled();
 
