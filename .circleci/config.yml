@@ -339,7 +339,7 @@ jobs:
                 name: Dump master with migrations database
                 command: |
                     export $(cat .env)
-                    docker-compose exec mysql mysqldump --no-data --skip-opt --skip-comments --password=$APP_DATABASE_PASSWORD --user=$APP_DATABASE_USER $APP_DATABASE_NAME > /tmp/dump_master_with_migrations.sql
+                    docker-compose exec -T mysql mysqldump --no-data --skip-opt --skip-comments --password=$APP_DATABASE_PASSWORD --user=$APP_DATABASE_USER $APP_DATABASE_NAME > /tmp/dump_master_with_migrations.sql
         -   run:
                 name: Install branch database
                 command: APP_ENV=test make database
@@ -347,7 +347,7 @@ jobs:
                 name: Dump branch database
                 command: |
                     export $(cat .env)
-                    docker-compose exec mysql mysqldump --no-data --skip-opt --skip-comments --password=$APP_DATABASE_PASSWORD --user=$APP_DATABASE_USER $APP_DATABASE_NAME > /tmp/dump_master.sql
+                    docker-compose exec -T mysql mysqldump --no-data --skip-opt --skip-comments --password=$APP_DATABASE_PASSWORD --user=$APP_DATABASE_USER $APP_DATABASE_NAME > /tmp/dump_master.sql
         -   run:
                 name: Compare database master+PR migrations from database PR
                 command: diff /tmp/dump_master_with_migrations.sql /tmp/dump_master.sql

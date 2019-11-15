@@ -22,7 +22,7 @@ lint-front: franklin-insights-lint-front
 .PHONY: unit-back
 unit-back: var/tests/phpspec asset-manager-unit-back reference-entity-unit-back
 ifeq ($(CI),true)
-	${PHP_RUN} vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
+	$(DOCKER_COMPOSE) run -T -u www-data --rm php php vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
 	vendor/akeneo/pim-community-dev/.circleci/find_non_executed_phpspec.sh
 else
 	${PHP_RUN} vendor/bin/phpspec run
