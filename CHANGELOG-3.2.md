@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.19 (2019-11-15)
+
 ## Bug fixes
 
 - PIM-8972: Fix the filtering on enabled published products
