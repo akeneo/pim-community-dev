@@ -52,7 +52,10 @@ class UserProvider implements UserProviderInterface
             throw new UnsupportedUserException(sprintf('User object of class "%s" is not supported.', $userClass));
         }
 
-        $reloadedUser = $this->loadUserByUsername($user->getUsername());
+        $reloadedUser = $this->userRepository->find($user->getId());
+        if (null === $reloadedUser) {
+            throw new UsernameNotFoundException(sprintf('User with id %s not found', json_encode($id)));
+        }
 
         return $reloadedUser;
     }
