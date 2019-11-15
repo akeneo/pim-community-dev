@@ -3,10 +3,9 @@ interface ChangeAction {
   type: typeof CHANGE;
   name: string;
   value: string;
-  dirty?: boolean;
 }
-const inputChanged = (name: string, value: string, dirty?: boolean): ChangeAction => (
-  {type: CHANGE, name, value, dirty}
+const inputChanged = (name: string, value: string): ChangeAction => (
+  {type: CHANGE, name, value}
 );
 
 const SET_ERROR = 'SET_ERROR';
@@ -25,15 +24,28 @@ const INVALID_FORM = 'INVALID_FORM';
 interface InvalidFormAction { type: typeof INVALID_FORM }
 const formIsInvalid = (): InvalidFormAction => ({ type: INVALID_FORM });
 
+const CODE_GENERATED = 'CODE_GENERATED';
+interface CodeGeneratedAction {
+  type: typeof CODE_GENERATED;
+  value: string;
+}
+const codeGenerated = (value: string): CodeGeneratedAction => ({ type: CODE_GENERATED, value });
 
-export type CreateFormAction = ChangeAction | SetErrorAction | ValidFormAction | InvalidFormAction;
+export type CreateFormAction =
+  ChangeAction |
+  SetErrorAction |
+  ValidFormAction |
+  InvalidFormAction |
+  CodeGeneratedAction;
 
 export {
   CHANGE,
   SET_ERROR,
   VALID_FORM,
   INVALID_FORM,
+  CODE_GENERATED,
   inputChanged,
+  codeGenerated,
   setError,
   formIsValid,
   formIsInvalid

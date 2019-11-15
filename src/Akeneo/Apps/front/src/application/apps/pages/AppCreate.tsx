@@ -2,7 +2,7 @@ import React from 'react';
 import {useHistory} from 'react-router';
 import {Modal} from '../../common';
 import {Translate} from '../../shared/translate';
-import {CreateAppForm} from '../components/CreateAppForm';
+import {AppCreateForm} from '../components/AppCreateForm';
 
 export const AppCreate = () => {
     const history = useHistory();
@@ -14,7 +14,7 @@ export const AppCreate = () => {
             description={<Translate id='pim_apps.create_app.description' />}
             onCancel={() => history.push('/apps')}
         >
-            <CreateAppForm />
+            <AppCreateForm />
         </Modal>
     );
 };

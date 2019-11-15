@@ -4,6 +4,7 @@ import {
     SET_ERROR,
     VALID_FORM,
     INVALID_FORM,
+    CODE_GENERATED,
     CreateFormAction
 } from '../actions/create-form-actions';
 
@@ -33,7 +34,20 @@ export const appFormReducer: Reducer<CreateFormState, CreateFormAction> = (state
                         ...state.controls[action.name],
                         value: action.value,
                         errors: {},
-                        dirty: undefined !== action.dirty ? action.dirty : true,
+                        dirty: true,
+                        valid: true,
+                    },
+                },
+            };
+        case CODE_GENERATED:
+            return {
+                ...state,
+                controls: {
+                    ...state.controls,
+                    code: {
+                        ...state.controls.code,
+                        value: action.value,
+                        errors: {},
                         valid: true,
                     },
                 },

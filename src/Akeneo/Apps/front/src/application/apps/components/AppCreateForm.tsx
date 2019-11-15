@@ -1,17 +1,21 @@
-import React, {ChangeEvent, useRef, useEffect, useContext, useReducer} from 'react';
+import React, {Dispatch, ChangeEvent, useRef, useEffect, useReducer, RefObject} from 'react';
 import {FlowType} from '../../../domain/apps/flow-type.enum';
 import {ApplyButton, Form, FormGroup, FormInput} from '../../common';
 import {FlowTypeHelper} from './FlowTypeHelper';
 import {FlowTypeSelect} from './FlowTypeSelect';
 import {appFormReducer, CreateFormState} from '../reducers/app-form-reducer';
-import {inputChanged, setError, formIsInvalid, formIsValid} from '../actions/create-form-actions';
-import {sanitize} from '../../shared/sanitize';
-import {Translate, TranslateContext} from '../../shared/translate';
-import {fetch} from '../../shared/fetch';
+import {
+    inputChanged,
+    setError,
+    formIsInvalid,
+    formIsValid,
+    codeGenerated,
+    CreateFormAction
+} from '../actions/create-form-actions';
 import {isErr} from '../../shared/fetch/result';
-import {NotificationLevel, useNotify} from '../../shared/notify';
-import {useRoute} from '../../shared/router';
-import {useHistory} from 'react-router';
+import {sanitize} from '../../shared/sanitize';
+import {Translate} from '../../shared/translate';
+import {useCreateApp, CreateAppData} from '../use-create-app';
 
 const initialState: CreateFormState = {
     controls: {
@@ -28,24 +32,12 @@ const initialState: CreateFormState = {
     valid: false,
 };
 
-interface ResultError {
-    message: string;
-    errors: Array<{
-        name: string;
-        reason: string;
-    }>;
-}
-
-export const CreateAppForm = () => {
-    const [state, dispatch] = useReducer(appFormReducer, initialState);
-
-    const codeInputRef = useRef<HTMLInputElement>(null);
-    const labelInputRef = useRef<HTMLInputElement>(null);
-
-    const url = useRoute('akeneo_apps_create_rest');
-    const notify = useNotify();
-    const translate = useContext(TranslateContext);
-    const history = useHistory();
+const useFormValidation = (
+    state: CreateFormState,
+    dispatch: Dispatch<CreateFormAction>,
+    codeInputRef: RefObject<HTMLInputElement>,
+    labelInputRef: RefObject<HTMLInputElement>
+) => {
     const isFirstRender = useRef(true);
 
     useEffect(() => {
@@ -61,7 +53,10 @@ export const CreateAppForm = () => {
             }
 
             const name = input.name;
-            if (false === input.checkValidity()) {
+            if (false === input.checkValidity() &&
+              0 === Object.keys(state.controls[name].errors).length &&
+              true === state.controls[name].dirty
+            ) {
                 if (input.validity.valueMissing) {
                     dispatch(setError(name, `akeneo_apps.constraint.${name}.required`));
                 }
@@ -70,7 +65,7 @@ export const CreateAppForm = () => {
                 }
             }
         });
-    }, [state.controls.code.value, state.controls.label.value, dispatch]);
+    }, [state.controls.code.value, state.controls.label.value, dispatch, codeInputRef, labelInputRef]);
 
     useEffect(() => {
         if (false === state.controls.label.valid ||
@@ -82,6 +77,15 @@ export const CreateAppForm = () => {
         }
         dispatch(formIsValid());
     }, [state.controls.label.valid, state.controls.code.valid]);
+};
+
+export const AppCreateForm = () => {
+    const [state, dispatch] = useReducer(appFormReducer, initialState);
+    const createNewApp = useCreateApp();
+
+    const codeInputRef = useRef<HTMLInputElement>(null);
+    const labelInputRef = useRef<HTMLInputElement>(null);
+    useFormValidation(state, dispatch, codeInputRef, labelInputRef);
 
     useEffect(() => {
         if (true === state.controls.code.dirty) {
@@ -93,36 +97,23 @@ export const CreateAppForm = () => {
             return;
         }
 
-        dispatch(inputChanged('code', value, false));
+        dispatch(codeGenerated(value));
     }, [state.controls.label.value, dispatch, state.controls.code.dirty, state.controls.code.value]);
 
     const handleSave = async () => {
         if (false === state.valid) {
             return;
         }
-        const data = {
+        const data: CreateAppData = {
             code: state.controls.code.value,
             label: state.controls.label.value,
-            flow_type: state.controls.flow_type.value,
+            flow_type: state.controls.flow_type.value as FlowType,
         };
 
-        const result = await fetch<undefined, ResultError>(url, {
-            method: 'POST',
-            headers: [['Content-type', 'application/json']],
-            body: JSON.stringify(data),
-        });
-
+        const result = await createNewApp(data);
         if (isErr(result)) {
-            if (undefined === result.error.errors) {
-                notify(NotificationLevel.ERROR, translate('pim_apps.create_app.flash.error'));
-                return;
-            }
             result.error.errors.forEach(({name, reason}) => dispatch(setError(name, reason)));
-            return;
         }
-
-        notify(NotificationLevel.SUCCESS, translate('pim_apps.create_app.flash.success'));
-        history.push(`/apps/${data.code}/edit`);
     };
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
