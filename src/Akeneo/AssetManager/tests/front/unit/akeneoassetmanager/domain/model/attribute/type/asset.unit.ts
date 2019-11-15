@@ -1,5 +1,4 @@
 import {ConcreteAssetAttribute} from 'akeneoassetmanager/domain/model/attribute/type/asset';
-import {AssetType} from 'akeneoassetmanager/domain/model/attribute/type/asset/asset-type';
 
 const normalizedBrand = {
   identifier: 'brand',
@@ -18,14 +17,7 @@ describe('akeneo > attribute > domain > model > attribute > type --- AssetAttrib
   test('I can create a ConcreteAssetAttribute from normalized', () => {
     expect(ConcreteAssetAttribute.createFromNormalized(normalizedBrand).normalize()).toEqual(normalizedBrand);
   });
-  test('I can create get a asset type', () => {
-    expect(ConcreteAssetAttribute.createFromNormalized(normalizedBrand).getAssetType()).toEqual(
-      AssetType.createFromString('brand')
-    );
-  });
-  test('I cannot create an invalid ConcreteAssetAttribute', () => {
-    expect(() => {
-      new ConcreteAssetAttribute('brand', 'designer', 'brand', {en_US: 'Front View'}, true, false, 0, true);
-    }).toThrow('Attribute expects a AssetType as assetType');
+  test('I can get the asset type from the attribute', () => {
+    expect(ConcreteAssetAttribute.createFromNormalized(normalizedBrand).getAssetType()).toEqual('brand');
   });
 });

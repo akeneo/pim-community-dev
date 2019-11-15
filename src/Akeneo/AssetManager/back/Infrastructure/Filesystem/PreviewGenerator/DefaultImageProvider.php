@@ -61,7 +61,6 @@ class DefaultImageProvider implements DefaultImageProviderInterface
                 $filter
             );
         }
-
         return $this->cacheManager->resolve($fileKey, $filter);
     }
 
@@ -74,7 +73,7 @@ class DefaultImageProvider implements DefaultImageProviderInterface
      *
      * @return Binary
      */
-    private function getImageBinary($fileType)
+    public function getImageBinary($fileType)
     {
         if (isset($this->defaultImages[$fileType])) {
             $image = $this->defaultImages[$fileType];

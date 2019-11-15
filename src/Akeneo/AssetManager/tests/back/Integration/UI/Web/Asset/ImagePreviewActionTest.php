@@ -16,11 +16,10 @@ namespace Akeneo\AssetManager\Integration\UI\Web\Asset;
 use Akeneo\AssetManager\Common\Helper\AuthenticatedClient;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
-use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\MediaLinkImageGenerator;
+use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\PreviewGeneratorRegistry;
 use Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer\FixturesLoader;
 use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
-use Symfony\Bundle\FrameworkBundle\Client;
 
 /**
  * @author Samir Boulil <samir.boulil@akeneo.com>
@@ -71,7 +70,7 @@ final class ImagePreviewActionTest extends ControllerIntegrationTestCase
             [
                 'data'                => self::FILENAME,
                 'attributeIdentifier' => $this->attribute->getIdentifier(),
-                'type'                => MediaLinkImageGenerator::THUMBNAIL_TYPE
+                'type'                => PreviewGeneratorRegistry::THUMBNAIL_TYPE
             ]
         );
         $response = $this->client->getResponse();
@@ -90,7 +89,7 @@ final class ImagePreviewActionTest extends ControllerIntegrationTestCase
             [
                 'data'                => self::FILENAME,
                 'attributeIdentifier' => 'unknown_attribute',
-                'type'                => MediaLinkImageGenerator::THUMBNAIL_TYPE
+                'type'                => PreviewGeneratorRegistry::THUMBNAIL_TYPE
             ]
         );
         $response = $this->client->getResponse();

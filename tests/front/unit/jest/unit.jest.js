@@ -25,6 +25,7 @@ const eeConfig = {
     'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/search-bar', // cannot test hooks + asynchronous fetching
     'akeneoassetmanager/application/component/app/channel-switcher.tsx',
     'akeneoassetmanager/application/component/app/locale-switcher.tsx',
+    'akeneoassetmanager/application/component/app/icon/',
 
     'src/Akeneo/AssetManager/front/tools',
     'vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/public/lib',
@@ -37,6 +38,7 @@ const eeConfig = {
     'src/Akeneo/Pim/Enrichment/AssetManager/Bundle/Resources/public/assets-collection/infrastructure/component/asset-picker/search-bar', // cannot test hooks + asynchronous fetching
     'src/Akeneo/AssetManager/front/application/component/app/channel-switcher.tsx',
     'src/Akeneo/AssetManager/front/application/component/app/locale-switcher.tsx',
+    'src/Akeneo/AssetManager/front/application/component/app/icon/',
   ],
 };
 

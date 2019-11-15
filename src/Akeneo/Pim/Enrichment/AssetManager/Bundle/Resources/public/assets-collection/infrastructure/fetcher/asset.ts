@@ -13,6 +13,8 @@ import {isNumber, isString, isLabels} from 'akeneoassetmanager/domain/model/util
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import {denormalizeAssetCode} from 'akeneoassetmanager/domain/model/asset/code';
+import {Query, SearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
+import {NormalizedAttribute, Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 
 export const fetchAssetCollection = async (
   assetFamilyIdentifier: AssetFamilyIdentifier,
@@ -31,6 +33,18 @@ export const fetchAssetCollection = async (
   return denormalizeAssetCollection(assetsResult, assetFamilyResult);
 };
 
+export const searchAssetCollection = async (
+  assetFamilyIdentifier: AssetFamilyIdentifier,
+  query: Query
+): Promise<SearchResult<Asset>> => {
+  const [searchResult, assetFamilyResult] = await Promise.all([
+    assetFetcher.search(query),
+    assetFamilyFetcher.fetch(denormalizeAssetFamilyIdentifier(assetFamilyIdentifier)),
+  ]);
+
+  return {...searchResult, items: denormalizeAssetCollection(searchResult.items, assetFamilyResult)};
+};
+
 const denormalizeAssetCollection = (assets: any, assetFamilyResult: any): Asset[] => {
   if (!Array.isArray(assets)) {
     throw Error('not a valid asset collection');
@@ -40,7 +54,10 @@ const denormalizeAssetCollection = (assets: any, assetFamilyResult: any): Asset[
     throw Error('not a valid assetFamily');
   }
 
-  const assetFamily = denormalizeAssetFamily(assetFamilyResult.assetFamily.normalize());
+  const assetFamily = denormalizeAssetFamily(
+    assetFamilyResult.assetFamily.normalize(),
+    assetFamilyResult.attributes.map((attribute: Attribute) => attribute.normalize())
+  );
 
   return assets.map(
     (asset: NormalizedItemAsset): Asset => {
@@ -52,7 +69,7 @@ const denormalizeAssetCollection = (assets: any, assetFamilyResult: any): Asset[
   );
 };
 
-const denormalizeAsset = (asset: any): NormalizedItemAsset => {
+const denormalizeAsset = (asset: any): Asset => {
   if (!isString(asset.identifier)) {
     throw Error('The identifier is not well formated');
   }
@@ -67,10 +84,6 @@ const denormalizeAsset = (asset: any): NormalizedItemAsset => {
 
   if (!isCompleteness(asset.completeness)) {
     throw Error('The completeness is not well formated');
-  }
-
-  if (!isString(asset.image)) {
-    throw Error('The image is not well formated');
   }
 
   if (!isLabels(asset.labels)) {
@@ -96,7 +109,10 @@ const isCompleteness = (completeness: any): completeness is Completeness => {
   return true;
 };
 
-const denormalizeAssetFamily = (normalizedAssetFamily: NormalizedAssetFamily): AssetFamily => {
+const denormalizeAssetFamily = (
+  normalizedAssetFamily: NormalizedAssetFamily,
+  attributes: {attributes: NormalizedAttribute & any}[]
+): AssetFamily => {
   return {
     identifier: normalizedAssetFamily.identifier,
     code: normalizedAssetFamily.code,
@@ -104,5 +120,6 @@ const denormalizeAssetFamily = (normalizedAssetFamily: NormalizedAssetFamily): A
     image: normalizedAssetFamily.image,
     attributeAsLabel: normalizedAssetFamily.attribute_as_label,
     attributeAsImage: normalizedAssetFamily.attribute_as_image,
+    attributes: attributes,
   };
 };

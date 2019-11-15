@@ -1,25 +1,25 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import {ThemedProps, opacity, akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
+import {akeneoTheme, opacity, ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import {
   Asset,
-  getImage,
+  assetWillNotMoveInCollection,
   getAssetLabel,
   MoveDirection,
-  assetWillNotMoveInCollection,
 } from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import Close from 'akeneoassetmanager/application/component/app/icon/close';
-import __ from 'akeneoreferenceentity/tools/translator';
+import __ from 'akeneoassetmanager/tools/translator';
 import {ContextState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
 import Right from 'akeneoassetmanager/application/component/app/icon/right';
 import Left from 'akeneoassetmanager/application/component/app/icon/left';
 import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
-import Key from 'akeneoassetmanager/tools/key';
 import {TransparentButton} from 'akeneoassetmanager/application/component/app/button';
+import {getAssetPreview, MediaPreviewTypes} from 'akeneoassetmanager/tools/media-url-generator';
 
 const Img = styled.img`
   width: 140px;
   height: 140px;
+  object-fit: contain;
 `;
 
 const Overlay = styled.div`
@@ -27,19 +27,20 @@ const Overlay = styled.div`
   width: 100%;
   height: 100%;
   padding: 10px;
-  background-color: ${(props: ThemedProps<void>) => opacity(props.theme.color.grey140, 0.6)}
+  background-color: ${(props: ThemedProps<void>) => opacity(props.theme.color.grey140, 0.6)};
   opacity: 0;
-  transition: opacity .2s ease-in-out;
+  transition: opacity 0.2s ease-in-out;
   display: flex;
   align-items: center;
   justify-content: space-between;
 `;
 
-const Container = styled.div`
+const Container = styled.div<{readonly: boolean}>`
   position: relative;
   width: 140px;
   height: 140px;
-  border: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey100}
+  outline: 1px solid ${(props: ThemedProps<{readonly: boolean}>) => props.theme.color.grey100};
+  opacity: ${(props: ThemedProps<{readonly: boolean}>) => (props.readonly ? 0.4 : 1)};
 
   &:hover ${Overlay} {
     opacity: 1;
@@ -56,46 +57,23 @@ const IconButton = styled(TransparentButton)`
 `;
 
 const TopLeftSvgButton = styled(IconButton)`
-  position: absolute
+  position: absolute;
   left: 0;
   top: 0;
   margin: 10px;
 `;
 
-const RemoveButton = ({title, onAction, ...props}: {title: string; onAction: () => void}) => (
-  <TopLeftSvgButton
-    title={title}
-    tabIndex={0}
-    onClick={() => onAction()}
-    {...props}
-    onKeyPress={(event: React.KeyboardEvent<HTMLButtonElement>) => {
-      if (Key.Space === event.key) onAction();
-    }}
-  >
-    <Close color={akeneoTheme.color.grey100} title="Remove" />
+const RemoveButton = ({title, ...props}: {title: string} & any) => (
+  <TopLeftSvgButton title={title} tabIndex={0} {...props}>
+    <Close color={akeneoTheme.color.grey100} title={title} />
   </TopLeftSvgButton>
 );
 
-const MoveButton: React.FunctionComponent<{title: string; onAction: () => void}> = ({
-  title,
-  onAction,
-  children,
-  ...props
-}) => {
-  return (
-    <IconButton
-      title={title}
-      tabIndex={0}
-      onClick={() => onAction()}
-      {...props}
-      onKeyPress={(event: React.KeyboardEvent<HTMLButtonElement>) => {
-        if (Key.Space === event.key) onAction();
-      }}
-    >
-      {children}
-    </IconButton>
-  );
-};
+const MoveButton: React.FunctionComponent<{title: string} & any> = ({title, children, ...props}) => (
+  <IconButton title={title} tabIndex={0} {...props}>
+    {children}
+  </IconButton>
+);
 
 export const Thumbnail = ({
   asset,
@@ -104,6 +82,7 @@ export const Thumbnail = ({
   assetCollection,
   onRemove,
   onMove,
+  onClick,
 }: {
   asset: Asset;
   context: ContextState;
@@ -111,6 +90,7 @@ export const Thumbnail = ({
   assetCollection: AssetCode[];
   onRemove: () => void;
   onMove: (direction: MoveDirection) => void;
+  onClick?: () => void;
 }) => {
   const moveAfterLabel = __('pim_asset_manager.asset_collection.move_asset_to_right', {
     assetName: getAssetLabel(asset, context.locale),
@@ -122,15 +102,22 @@ export const Thumbnail = ({
     assetName: getAssetLabel(asset, context.locale),
   });
 
+  const overlayRef = React.useRef(null);
+  const handleOverlayClick = (event: React.MouseEvent) => {
+    if (event.target === overlayRef.current) {
+      undefined !== onClick && onClick();
+    }
+  };
+
   return (
-    <Container>
+    <Container readonly={readonly}>
       {!readonly ? (
-        <Overlay>
-          <RemoveButton title={removeLabel} onAction={onRemove} data-remove={asset.code} />
+        <Overlay onClick={handleOverlayClick} ref={overlayRef} data-testid="overlay">
+          <RemoveButton title={removeLabel} onClick={onRemove} data-remove={asset.code} />
           {!assetWillNotMoveInCollection(assetCollection, asset, MoveDirection.Before) ? (
             <MoveButton
               title={moveBeforeLabel}
-              onAction={() => onMove(MoveDirection.Before)}
+              onClick={() => onMove(MoveDirection.Before)}
               data-move-left={asset.code}
             >
               <Left color={akeneoTheme.color.grey100} />
@@ -139,11 +126,7 @@ export const Thumbnail = ({
             <div />
           )}
           {!assetWillNotMoveInCollection(assetCollection, asset, MoveDirection.After) ? (
-            <MoveButton
-              title={moveAfterLabel}
-              onAction={() => onMove(MoveDirection.After)}
-              data-move-right={asset.code}
-            >
+            <MoveButton title={moveAfterLabel} onClick={() => onMove(MoveDirection.After)} data-move-right={asset.code}>
               <Right color={akeneoTheme.color.grey100} />
             </MoveButton>
           ) : (
@@ -151,7 +134,7 @@ export const Thumbnail = ({
           )}
         </Overlay>
       ) : null}
-      <Img src={getImage(asset)} />
+      <Img src={getAssetPreview(asset, MediaPreviewTypes.Thumbnail)} />
     </Container>
   );
 };

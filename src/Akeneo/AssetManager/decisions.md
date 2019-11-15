@@ -104,6 +104,7 @@ Cons: require more code and different for each attribute types.
 Follow up of [attribute deletion](#attribute-deletion-1): We discussed about the attribute deletion again.
 
 #### Problems:
+
 Having to keep the "timestamp" with the value all the time could be complicated and not wanted: we change the format (which is central in the PIM) of the data to get arround a technical problem. Also, we think that the fact that our current identifier (asset_family_identifier, identifier) is not time proof.
 
 Alongside those discussions, we rediscussed about UUID and still think that the DX can be much worst with this solution
@@ -186,36 +187,41 @@ To set values on the asset, we need to validate and update the value regarding t
 ##### Command Definition :
 
 Create a generic editAssetCommand which will have those properties :
+
 - assetFamilyIdentifier
 - code
 - labels
 - editAssetValueCommands (array of editAssetValueCommand typed by the attribute)
 
 Each editAssetValueCommand will have those properties :
+
 - attribute (the attribute object)
 - channel
 - label
 - data
-(Each of those commands will be created via a dedicated factory, registered as such in a registry).
+  (Each of those commands will be created via a dedicated factory, registered as such in a registry).
 
 To create the editAssetValueCommand typed by the attribute, we will have to :
- - create an associative array of attribute indexed by identifier for each asset family (QueryFunction)
- - get the attribute identifier of each raw value to be able to retrieve the attribute (thanks to the array create previously)
- - create the specific editAssetValueCommand of this attribute type
+
+- create an associative array of attribute indexed by identifier for each asset family (QueryFunction)
+- get the attribute identifier of each raw value to be able to retrieve the attribute (thanks to the array create previously)
+- create the specific editAssetValueCommand of this attribute type
 
 ##### Validation :
 
 As we have different validation by type of asset value, we have a dedicated validator by type of editAssetValueCommand.
 For instance, we will have :
- - EditFileValueCommandValidator to validate the EditFileValueCommand
- - EditTextValueCommandValidator to validate the EditTextValueCommand
+
+- EditFileValueCommandValidator to validate the EditFileValueCommand
+- EditTextValueCommandValidator to validate the EditTextValueCommand
 
 #### Set value on the asset :
 
 As we could have a different edit of a asset value, we have a dedicated updater by type of value.
 For instance, we will have :
- -  FileUpdater to update a asset value from the EditFileValueCommand
- -  TextUpdater to update a asset value from the EditTextValueCommand
+
+- FileUpdater to update a asset value from the EditFileValueCommand
+- TextUpdater to update a asset value from the EditTextValueCommand
 
 ## 05/10/2018
 
@@ -224,15 +230,17 @@ For instance, we will have :
 #### Problem:
 
 When a asset is updated:
- - From where do we send the event ?
- - what does it contain ?
- - What does the listener do (normalization or fetch a asset or both) ?
+
+- From where do we send the event ?
+- what does it contain ?
+- What does the listener do (normalization or fetch a asset or both) ?
 
 #### Proposed solution:
 
 For sure, we didn't wanted to directly index the asset from the repository so the SQL repository stays focus on interacting with the database and so it's easier to test.
 
 4 steps process:
+
 - An event is dispatched from the repository indicating the asset needs to be reindexed, from our point of view, it's a technical event: `AssetUpdatedEvent`
 - This event contains only the identifier of the asset to be reindexed
 - The listener (`IndexAssetListener`) uses this Id, to fetch the asset from the repository and passes it to an indexer `AssetIdexer` as an array
@@ -245,6 +253,7 @@ Later on, we can imagine that when calculating the completeness of products, we 
 ##### Challenges
 
 When the reindexation of a lot of assets is needed (like 1 million), how do we handle such a task ? The use of background jobs seems appropriate yet it raises questions like:
+
 - How long does it take to reindex such a volume of asset ?
 - It it going to block the job queue ?
 
@@ -259,6 +268,7 @@ This case can happen when an attribute text is removed from the enriched entity 
 Given we will need to expose the data about the asset families and assets through the API, as well as be able update those data,
 
 how will we handle those usecases regarding:
+
 - The transformation of json array into commands ?
 - Are those commands the same than the one we already have ?
 - Are they validated differently ? or do they reuse the validators we have ?
@@ -342,7 +352,8 @@ The search would be performed using the following query:
     ]
 
 ##### The issue:
-The issue with this indexing format is that whenever the structure of an asset family changes (ie, an attribute is removed), every assets belonging to this asset family *needs to be reindexed* to remove the values linked to the removed attribute.
+
+The issue with this indexing format is that whenever the structure of an asset family changes (ie, an attribute is removed), every assets belonging to this asset family _needs to be reindexed_ to remove the values linked to the removed attribute.
 
 This task can take some time and requires us to launch a background job responsible for the reindexing of the assets.
 
@@ -398,7 +409,7 @@ The search becomes:
         ]
     ]
 
-Whenever the "description" attribute is removed, we do not need to reindex the document as there  will be no way that a user will filter on it since it does not belong to the asset family's structure anymore (even if this attribute is recreated with the same code thanks to the uuid).
+Whenever the "description" attribute is removed, we do not need to reindex the document as there will be no way that a user will filter on it since it does not belong to the asset family's structure anymore (even if this attribute is recreated with the same code thanks to the uuid).
 
 The next time this asset is saved, the description value keys will be removed and the ES document will be clean.
 
@@ -413,9 +424,9 @@ We've run some benchmark trying to see how munch longer would it take for ES to 
 - Index 10 000 assets in the target format
 - Each asset has 100 attributes (non scopable non localizable which is the worst case scenario) (PO said it would never go higher than this 100 limit).
 - Perform the search by changing some axis as shown below:
-    - Number of words
-    - Is the search full text "*Borde*" or is it just a start with ("Bordea*")
-    - The number of attributes we search on
+  - Number of words
+  - Is the search full text "_Borde_" or is it just a start with ("Bordea\*")
+  - The number of attributes we search on
 
 ##### Mappings
 
@@ -427,10 +438,10 @@ What this means is that whenever we send a value which should be tokenized, ES w
 ##### Results
 
 |                                              | Search Model 1 "Keyword" | Search Model 2 "Flat keys" | Ratio |
-|----------------------------------------------|--------------------------|----------------------------|-------|
-| 10 words full text ("*bor*")                 | 45 ms                    | 3200 ms                    | x71   |
-| 3 words full text ("*bor*")                  | 15 ms                    | 650 ms                     | x43   |
-| 3 words start with ("bor*")                  | 6 ms                     | 150 ms                     | x37   |
+| -------------------------------------------- | ------------------------ | -------------------------- | ----- |
+| 10 words full text ("_bor_")                 | 45 ms                    | 3200 ms                    | x71   |
+| 3 words full text ("_bor_")                  | 15 ms                    | 650 ms                     | x43   |
+| 3 words start with ("bor\*")                 | 6 ms                     | 150 ms                     | x37   |
 | 3 words equals ("bordeaux")                  | 3 ms                     | 130 ms                     |       |
 | 3 words full text (search on 20 attributes)  |                          | 120 ms                     |       |
 | 3 words start with (search on 20 attributes) |                          | 40 ms                      |       |
@@ -443,7 +454,7 @@ To reach a satifying response time with the search model 2, we need to significa
 
 #### Status: Rejected
 
-*Decision*: *We will implement the search model 1 "keyword" and try to improve the indexing time as munch as we can so it does not become a bottleneck on the PIM*.
+_Decision_: _We will implement the search model 1 "keyword" and try to improve the indexing time as munch as we can so it does not become a bottleneck on the PIM_.
 
 ## 29/10/2018
 
@@ -469,6 +480,7 @@ With the asset family subject we needed to add new permission controls over loca
 ### Propositions:
 
 So we asked our product owner what was the best solution among those two:
+
 - The first one was to add a new dedicated permission "Allowed to edit asset family information". This solution will imply to split permission by object type (product, asset family, etc).
 - The second one, consist of generalize the existing permission "Allowed to edit product information" to become "Allowed to edit information" (wording may change of course).
 
@@ -486,6 +498,7 @@ If the need is to restrict rights on a particular type of entity, it's more of a
 
 Today the asset families suffer the same drawbacks of the product concerning entities linked to it.
 For instance:
+
 - When an attribute option is removed, the completeness results will be impacted for assets who had only this attribute option.
 - When a asset is removed, the completeness results will be impacted for assets only linked to the removed asset.
 - When all assets are removed, what happens to other assets referencing the removed assets ?
@@ -538,7 +551,6 @@ To support our new search usecases, we need to update the index with the "links"
         ],
     ]
 
-
 **When all assets of an asset family are removed**, we need to refresh all the assets refencing the removed assets.
 
     // All the assets of 'brand' have been removed, let's find all the assets linked to them to refresh them
@@ -586,10 +598,9 @@ To support our new search usecases, we need to update the index with the "links"
 
 ##### Results
 
-| Batch Size                | Refresh 10 000 assets    | Refresh 1 000 000 assets  |
-|---------------------------|---------------------------|---------------------------|
-| 100 Assets               | 35.87 s                   | ~1 hour                    |
-
+| Batch Size | Refresh 10 000 assets | Refresh 1 000 000 assets |
+| ---------- | --------------------- | ------------------------ |
+| 100 Assets | 35.87 s               | ~1 hour                  |
 
 ## 07/01/19
 
@@ -686,6 +697,7 @@ In order to search on values of the assets we will index the assets values index
 **Performing the search**
 
 When the filters are finally sent to the back-end, we have:
+
 - A channel the user is currently on
 - A locale the user is currently on
 - An attribute identifier
@@ -763,6 +775,7 @@ In order to search on values of the assets we will index the assets values just 
 **Performing the search**
 
 When the filters are finally sent to the back-end, we have:
+
 - A channel the user is currently on
 - A locale the user is currently on
 - An attribute identifier
@@ -798,18 +811,19 @@ The ES query should have the following format:
 Progress bar step: 1
 10 000 -> 345 (5m45) (29 assets/seconds)
 1 000 000 -> ?
-x = (1 000 000 * 345) / 10 000 => 9.5 hours
+x = (1 000 000 \* 345) / 10 000 => 9.5 hours
 
 Progress bar step: 100
 10 000 -> 286 (4m46) (35 assets/seconds)
 1 000 000 -> ?
-x = (1000000*286)/10000 => 8 hours
+x = (1000000\*286)/10000 => 8 hours
 
 After optim:
 10000 -> 180 (3mins) (55 assets/secs)
-x = (1000000*180)/10000 => 5 hours
+x = (1000000\*180)/10000 => 5 hours
 
 Pistes d'amélioration:
+
 - Bulk saving + bulk index (without event all done in the asset repository)
 - Bulk get assets from identifiers
 - Build SearchableAssets From Asset object instead of fetch from DB
@@ -825,6 +839,7 @@ To link the assets to a product, we decided to have a rule on the asset family. 
 the regarding asset family, it will execute the rule and link the asset to the product selected.
 
 The format used for the product link rules is following that :
+
 ```
 “product_link_rule”:{
   “product_selections”:[{
@@ -846,6 +861,7 @@ The format used for the product link rules is following that :
 However, to be faster in our development we decided to use the existing rule engine to execute it.
 The problem is the rule engine isn't able to read the latter format. So, we need to compile the rule in this
 following format :
+
 ```
 “rule_templates”:{
   “conditions”:[{
@@ -865,10 +881,9 @@ following format :
 }
 ```
 
-The question we were asking ourselves about this difference of those two formats is : 
+The question we were asking ourselves about this difference of those two formats is :
 
 "Should we have to update our Domain and the DB to be compliant with the format for the product link rules or keep the naming from the rule engine ?"
-
 
 ### Solution :
 
@@ -887,14 +902,31 @@ Like that, we are preventing all changes on the format used for the product link
 - Today, we don't have any validators for product link (except for JSON schema)
 - We cannot directly create a rule definition (from Automation/RuleEngine Bounded Context) from our product link rule because they hold dynamic placeholders that can only be resolved with an asset.
 - Yet, we want to make sure our user gets proper validation messages in cases where:
-    - A product attribute does not exist,
-    - An asset attribute does not exist
-    - An operator is not supported for the product attribute type
-    - etc.
+  - A product attribute does not exist,
+  - An asset attribute does not exist
+  - An operator is not supported for the product attribute type
+  - etc.
 
 #### Solution:
 
 We decided to reuse some parts of the rule Automation/RuleEngine bounded context validators to make sure the product link rule is executable by the rule engine.
-We will use the following validators to validate non-dynamic conditions or actions:
-    - Validators of ProductConditionInterface
-    - Validators of ProductActionInterface
+We will use the following validators to validate non-dynamic conditions or actions: - Validators of ProductConditionInterface - Validators of ProductActionInterface
+
+## 24/10/2019
+
+### Validation the format of the internal API
+
+#### Problem
+
+Right now there is no proper description of the format used between the frontend and the backend. It means that when we fetch informations using fetchers, we have to manually validate the response from the backend and then typescript relies on this manual validation to infer the response type.
+We also identified a need to enfore the format between the front and the back for our acceptance tests.
+
+#### Proposed solutions
+
+We propose to write json schema for each endpoints of the internal API. Then use a library (AJV) to generate typescript interfaces and validators. We will use those validators in fetchers to ensure that the data is properly formated at runtime. The generated interfaces will also be used to help typescript figuring which types are the backend data. All this work should be done in the infrastructure layer and fetcher will returns the current model types (domain models).
+The interfaces should be generated during the build phase (and not versionned ?)
+About the tests: our command should validate the request contracts using the internal api json schema.
+
+#### Discard solutions
+
+We also explored the idea of validating the domain models directly but it was not covering all our use cases (tests and error could happen during the normalisation phase)

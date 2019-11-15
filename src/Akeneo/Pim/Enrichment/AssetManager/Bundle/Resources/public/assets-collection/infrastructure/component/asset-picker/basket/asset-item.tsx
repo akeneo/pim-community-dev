@@ -4,8 +4,9 @@ import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
 import {Asset, getAssetLabel} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
-import __ from 'akeneoreferenceentity/tools/translator';
+import __ from 'akeneoassetmanager/tools/translator';
 import {RemoveButton} from 'akeneoassetmanager/application/component/app/remove-button';
+import {MediaPreviewTypes, getAssetPreview} from 'akeneoassetmanager/tools/media-url-generator';
 
 const Container = styled.li`
   padding: 10px 0;
@@ -19,6 +20,7 @@ const AssetThumbnail = styled.img`
   width: 44px;
   height: 44px;
   flex-shrink: 0;
+  object-fit: contain;
 `;
 
 const AssetDetails = styled.div`
@@ -63,7 +65,7 @@ const AssetItem = ({
       data-code={asset.code}
       className={isLoading ? 'AknLoadingPlaceHolderContainer' : ''}
     >
-      <AssetThumbnail src={asset.image} width={44} height={44} />
+      <AssetThumbnail src={getAssetPreview(asset, MediaPreviewTypes.Thumbnail)} width={44} height={44} />
       <AssetDetails>
         <AssetCode title={asset.code}>{asset.code}</AssetCode>
         <AssetLabel title={getAssetLabel(asset, context.locale)}>{getAssetLabel(asset, context.locale)}</AssetLabel>
@@ -72,7 +74,7 @@ const AssetItem = ({
         title={__('pim_asset_manager.asset_picker.basket.remove_one_asset', {
           assetName: getAssetLabel(asset, context.locale),
         })}
-        onAction={onRemove}
+        onClick={onRemove}
       />
     </Container>
   );

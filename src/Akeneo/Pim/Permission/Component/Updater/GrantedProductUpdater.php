@@ -161,7 +161,7 @@ class GrantedProductUpdater implements ObjectUpdaterInterface
 
             if (!empty($updatedProduct) || !empty($updatedAssociations)) {
                 throw new ResourceAccessDeniedException($product, sprintf(
-                    'Product "%s" cannot be updated. It should be at least in an own category.',
+                    'Product "%s" cannot be updated. You are only allowed to suggest proposals on this product.',
                     $product->getIdentifier()
                 ));
             }

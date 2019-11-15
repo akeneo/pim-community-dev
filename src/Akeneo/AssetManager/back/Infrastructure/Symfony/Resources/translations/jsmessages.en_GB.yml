@@ -4,7 +4,6 @@
 #akeneo_asset_manager_asset_edit: Edit an asset
 pim_asset_manager:
   asset_collection:
-    asset_count: '{{ count }} asset|{{ count }} assets'
     add_asset: 'Add asset'
     no_asset_in_collection: 'Sorry, there is no asset in this collection.'
     helper:

@@ -10,3 +10,4 @@ config:
                 pim_catalog_asset_collection: asset-collection
     paths:
         pim/product-edit-form/assets: akeneopimenrichmentassetmanager/product/tab/asset
+        pim/asset-collection-field: akeneopimenrichmentassetmanager/product/field/asset-collection/asset-collection-field

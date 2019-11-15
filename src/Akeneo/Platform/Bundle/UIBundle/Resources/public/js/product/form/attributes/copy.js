@@ -146,6 +146,11 @@ define(
                     scope: this.scope
                 };
 
+                // Assets are not in the PEF (they are in a dedicated tab) and therefore should not be copied.
+                if (params.field.fieldType === 'pim-asset-collection-field') {
+                    return false;
+                }
+
                 switch (this.currentSource.type) {
                     case 'working_copy':
                         this.getRoot().trigger('pim_enrich:form:field:can_be_copied', params);

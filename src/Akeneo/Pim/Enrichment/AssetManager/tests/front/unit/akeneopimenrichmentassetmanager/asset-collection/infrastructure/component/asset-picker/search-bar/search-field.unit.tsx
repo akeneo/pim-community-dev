@@ -84,9 +84,9 @@ test('It calls the onChange callback when it is updated', async () => {
   const newValue = 'SOME NEW SEARCH CRITERIA';
   const searchInput = container.querySelector('input');
   await act(async () => {
-    userEvent.type(searchInput, newValue);
+    await userEvent.type(searchInput, newValue);
+    jest.runAllTimers();
   });
-  jest.runAllTimers();
 
   expect(actualValue).toEqual(newValue);
 });

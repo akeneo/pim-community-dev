@@ -5,7 +5,7 @@ import {FilterView} from 'akeneoassetmanager/application/configuration/value';
 import {Filter} from 'akeneoassetmanager/application/reducer/grid';
 import {getAttributeFilterKey} from 'akeneoassetmanager/tools/filter';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
-import __ from 'akeneoreferenceentity/tools/translator';
+import __ from 'akeneoassetmanager/tools/translator';
 import {
   FilterViewCollection,
   FilterableAttribute,

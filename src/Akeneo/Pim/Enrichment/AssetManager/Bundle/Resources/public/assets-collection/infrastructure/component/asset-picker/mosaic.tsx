@@ -9,9 +9,9 @@ import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
 import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import AssetCard from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/mosaic/asset-card';
 import styled from 'styled-components';
-import __ from 'akeneoreferenceentity/tools/translator';
-import MaximumSelectionReachedNotification from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/mosaic/maximum-selection-reached-notification';
+import __ from 'akeneoassetmanager/tools/translator';
 import EmptyResult from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/mosaic/empty-result';
+import {AssetCollectionLimitNotification} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-collection/asset-collection-limit-notification';
 
 const Container = styled.div`
   height: 100%;
@@ -31,7 +31,6 @@ const MoreResults = styled.div`
 `;
 
 const MAX_DISPLAYED_ASSETS = 500;
-const MAX_SELECTION_SIZE = 50; // TODO: Use `canAddAssetToCollection` assets-collection/domain/model/asset.ts instead
 
 const Mosaic = ({
   context,
@@ -50,7 +49,7 @@ const Mosaic = ({
 }) => {
   return (
     <React.Fragment>
-      {hasReachMaximumSelection ? <MaximumSelectionReachedNotification maxSelectionCount={MAX_SELECTION_SIZE} /> : null}
+      {hasReachMaximumSelection && <AssetCollectionLimitNotification />}
       {assetCollection.length > 0 ? (
         <Container data-container="mosaic">
           <Grid>

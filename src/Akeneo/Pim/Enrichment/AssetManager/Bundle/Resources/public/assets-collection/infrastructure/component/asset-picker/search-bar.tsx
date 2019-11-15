@@ -22,7 +22,7 @@ type SearchProps = {
 
 const Container = styled.div`
   display: flex;
-  padding-bottom: 10px;
+  padding: 10px 0;
   border-bottom: 1px solid ${props => props.theme.color.grey100};
   align-items: center;
 `;

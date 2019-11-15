@@ -1,9 +1,12 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import {Button} from 'akeneoassetmanager/application/component/app/button';
-import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
-import __ from 'akeneoreferenceentity/tools/translator';
-import {Asset} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
+import __ from 'akeneoassetmanager/tools/translator';
+import {
+  Asset,
+  canAddAssetToCollection,
+  addAssetsToCollection,
+} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
 import {Filter} from 'akeneoassetmanager/application/reducer/grid';
 import FilterCollection from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/filter-collection';
@@ -14,7 +17,6 @@ import {hasDataFilterView, getDataFilterView, FilterView} from 'akeneoassetmanag
 import {Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import SearchBar from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/search-bar';
 import fetchAllChannels from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/channel';
-import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import {Query} from 'akeneoassetmanager/domain/fetcher/fetcher';
@@ -31,6 +33,17 @@ import {OptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/op
 import {OptionCollectionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option-collection';
 import {AssetAttribute} from 'akeneoassetmanager/domain/model/attribute/type/asset';
 import {AssetCollectionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/asset-collection';
+import {
+  Modal,
+  Header,
+  Title,
+  SubTitle,
+  ConfirmButton,
+} from 'akeneopimenrichmentassetmanager/platform/component/common/modal';
+import {
+  fetchAssetCollection,
+  searchAssetCollection,
+} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/asset';
 
 type AssetFamilyIdentifier = string;
 type AssetPickerProps = {
@@ -42,47 +55,6 @@ type AssetPickerProps = {
   onAssetPick: (assetCodes: AssetCode[]) => void;
 };
 
-const Modal = styled.div`
-  display: flex;
-  flex-direction: column;
-  border-radius: 0;
-  border: none;
-  top: 0;
-  left: 0;
-  position: fixed;
-  z-index: 1050;
-  background: white;
-  width: 100%;
-  height: 100%;
-  padding: 40px;
-  overflow-x: auto;
-`;
-
-const ConfirmButton = styled(Button)`
-  position: absolute;
-  top: 0;
-  right: 0;
-`;
-
-const Title = styled.div`
-  margin-bottom: 14px;
-  width: 100%;
-  color: ${(props: ThemedProps<void>) => props.theme.color.purple100};
-  font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.title};
-  line-height: ${(props: ThemedProps<void>) => props.theme.fontSize.title};
-  text-align: center;
-`;
-const SubTitle = styled.div`
-  width: 100%
-  text-align: center;
-  font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.default};
-  color: ${(props: ThemedProps<void>) => props.theme.color.grey120};
-  margin-bottom: 10px;
-`;
-
-const Header = styled.div`
-  position: relative;
-`;
 const Container = styled.div`
   display: flex;
   flex: 1;
@@ -165,10 +137,10 @@ const createQuery = (
 const dataProvider = {
   assetFetcher: {
     fetchByCode: (assetFamilyIdentifier: AssetFamilyIdentifier, assetCodeCollection: AssetCode[], context: Context) => {
-      return assetFetcher.fetchByCodes(assetFamilyIdentifier, assetCodeCollection, context);
+      return fetchAssetCollection(assetFamilyIdentifier, assetCodeCollection, context);
     },
-    search: (query: Query) => {
-      return assetFetcher.search(query);
+    search: (assetFamilyIdentifier: AssetFamilyIdentifier, query: Query) => {
+      return searchAssetCollection(assetFamilyIdentifier, query);
     },
   },
   channelFetcher: {
@@ -182,11 +154,11 @@ const dataProvider = {
 };
 
 const MAX_RESULT = 500;
-const MAX_SELECTION_SIZE = 50; // TODO: Use `canAddAssetToCollection` assets-collection/domain/model/asset.ts instead
 const FIRST_PAGE_SIZE = 50;
 
 let totalRequestCount = 0;
 const useFetchResult = (
+  isOpen: boolean,
   dataProvider: any,
   assetFamilyIdentifier: AssetFamilyIdentifier,
   filters: Filter[],
@@ -197,6 +169,10 @@ const useFetchResult = (
   setResultCount: (count: number) => void
 ) => {
   React.useEffect(() => {
+    if (!isOpen) {
+      return;
+    }
+
     const query = createQuery(
       assetFamilyIdentifier,
       filters,
@@ -208,23 +184,25 @@ const useFetchResult = (
       FIRST_PAGE_SIZE
     );
     totalRequestCount++;
-    dataProvider.assetFetcher.search(query).then((searchResult: any) => {
+
+    dataProvider.assetFetcher.search(assetFamilyIdentifier, query).then((searchResult: any) => {
       const currentRequestCount = totalRequestCount;
       setResultCollection(searchResult.items);
       setResultCount(searchResult.matchesCount);
 
       if (searchResult.matchesCount > FIRST_PAGE_SIZE) {
-        fetchMoreResult(currentRequestCount)(query, setResultCollection);
+        fetchMoreResult(currentRequestCount)(assetFamilyIdentifier, query, setResultCollection);
       }
     });
-  }, [filters, searchValue, context, excludedAssetCollection]);
+  }, [filters, searchValue, context, excludedAssetCollection, isOpen]);
 };
 
 const fetchMoreResult = (currentRequestCount: number) => (
+  assetFamilyIdentifier: AssetFamilyIdentifier,
   query: Query,
   setResultCollection: (resultCollection: Asset[]) => void
 ) => {
-  dataProvider.assetFetcher.search({...query, size: MAX_RESULT}).then((searchResult: any) => {
+  dataProvider.assetFetcher.search(assetFamilyIdentifier, {...query, size: MAX_RESULT}).then((searchResult: any) => {
     if (currentRequestCount === totalRequestCount) {
       setResultCollection(searchResult.items);
     }
@@ -235,12 +213,12 @@ const useFilterViews = (
   assetFamilyIdentifier: AssetFamilyIdentifier,
   dataProvider: any,
   getFilterViews: (attributes: Attribute[]) => FilterViewCollection
-): FilterViewCollection => {
-  const [filterViews, setFilterViews] = React.useState<FilterViewCollection>([]);
+): FilterViewCollection | null => {
+  const [filterViews, setFilterViews] = React.useState<FilterViewCollection | null>(null);
 
   React.useEffect(() => {
     dataProvider.assetAttributesFetcher.fetchAll(assetFamilyIdentifier).then((attributes: Attribute[]) => {
-      setFilterViews(getFilterViews(attributes));
+      setFilterViews(sortFilterViewsByAttributeOrder(getFilterViews(attributes)));
     });
   }, [assetFamilyIdentifier]);
 
@@ -264,6 +242,7 @@ export const AssetPicker = ({
   const [context, setContext] = React.useState<Context>(initialContext);
 
   const resetModal = () => {
+    setSelection([]);
     setSearchValue('');
     setFilterCollection([]);
     setOpen(false);
@@ -274,6 +253,7 @@ export const AssetPicker = ({
   };
 
   useFetchResult(
+    isOpen,
     dataProvider,
     assetFamilyIdentifier,
     filterCollection,
@@ -283,9 +263,7 @@ export const AssetPicker = ({
     setResultCollection,
     setResultCount
   );
-  const filterViews = sortFilterViewsByAttributeOrder(
-    useFilterViews(assetFamilyIdentifier, dataProvider, getFilterViews)
-  );
+  const filterViews = useFilterViews(assetFamilyIdentifier, dataProvider, getFilterViews);
 
   React.useEffect(() => {
     const cancelModalOnEscape = (event: KeyboardEvent) => (Key.Escape === event.code ? cancelModal() : null);
@@ -294,8 +272,7 @@ export const AssetPicker = ({
     return () => document.removeEventListener('keydown', cancelModalOnEscape);
   }, []);
 
-  // TODO: Use `canAddAssetToCollection` assets-collection/domain/model/asset.ts instead
-  const hasReachMaximumSelection = MAX_SELECTION_SIZE === selection.length + excludedAssetCollection.length;
+  const canAddAsset = canAddAssetToCollection(addAssetsToCollection(excludedAssetCollection, selection));
 
   return (
     <React.Fragment>
@@ -303,17 +280,15 @@ export const AssetPicker = ({
         title={__('pim_asset_manager.asset_collection.add_asset_title')}
         buttonSize="medium"
         color="outline"
-        onClick={() => {
-          setSelection([]);
-          setOpen(true);
-        }}
+        isDisabled={!canAddAsset}
+        onClick={() => setOpen(true)}
       >
         {__('pim_asset_manager.asset_collection.add_asset')}
       </Button>
-      {isOpen && filterViews.length !== 0 ? (
+      {isOpen && null !== filterViews ? (
         <Modal data-container="asset-picker">
           <Header>
-            <CloseButton onAction={cancelModal} title={__('pim_asset_manager.asset_picker.close')} />
+            <CloseButton title={__('pim_asset_manager.close')} onClick={cancelModal} />
             <Title>{__('pim_asset_manager.asset_picker.title')}</Title>
             <SubTitle>
               {__('pim_asset_manager.asset_picker.sub_title', {
@@ -355,7 +330,7 @@ export const AssetPicker = ({
                 assetCollection={resultCollection}
                 context={context}
                 resultCount={resultCount}
-                hasReachMaximumSelection={hasReachMaximumSelection}
+                hasReachMaximumSelection={!canAddAsset}
                 onSelectionChange={(assetCodeCollection: AssetCode[]) => {
                   setSelection(assetCodeCollection);
                 }}

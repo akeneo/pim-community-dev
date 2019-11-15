@@ -11,7 +11,7 @@ test('It should display a remove button', () => {
 
   const {container} = render(
     <ThemeProvider theme={akeneoTheme}>
-      <RemoveButton title={title} onAction={() => onRemove} />
+      <RemoveButton title={title} onClick={() => onRemove} />
     </ThemeProvider>
   );
 
@@ -26,7 +26,7 @@ test('It should apply an action when we click on the button', () => {
     <ThemeProvider theme={akeneoTheme}>
       <RemoveButton
         title={title}
-        onAction={() => {
+        onClick={() => {
           removeButtonClicked = true;
         }}
       />
@@ -34,29 +34,5 @@ test('It should apply an action when we click on the button', () => {
   );
 
   fireEvent.click(container.querySelector(`button[title="${title}"]`));
-  expect(removeButtonClicked).toEqual(true);
-});
-
-test('It should apply an action when we press space key on the button', () => {
-  const title = 'pim_asset_manager.asset_picker.basket.remove_one_asset';
-  let removeButtonClicked = false;
-
-  const {container} = render(
-    <ThemeProvider theme={akeneoTheme}>
-      <RemoveButton
-        title={title}
-        onAction={() => {
-          removeButtonClicked = true;
-        }}
-      />
-    </ThemeProvider>
-  );
-
-  fireEvent.keyPress(container.querySelector(`button[title="${title}"]`), {
-    key: ' ',
-    keyCode: 32,
-    charCode: 32,
-  });
-
   expect(removeButtonClicked).toEqual(true);
 });

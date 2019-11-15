@@ -7,14 +7,17 @@ import AssetFamilyIdentifier, {
 import LabelCollection, {denormalizeLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import AttributeCode, {denormalizeAttributeCode} from 'akeneoassetmanager/domain/model/attribute/code';
 import {NormalizedAttribute, Attribute, ConcreteAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
-import {AssetType, NormalizedAssetType} from 'akeneoassetmanager/domain/model/attribute/type/asset/asset-type';
+import {
+  AssetType,
+  createAssetTypeFromNormalized,
+} from 'akeneoassetmanager/domain/model/attribute/type/asset/asset-type';
 
 export interface NormalizedAssetAttribute extends NormalizedAttribute {
   type: 'asset';
-  asset_type: NormalizedAssetType;
+  asset_type: AssetType;
 }
 
-export type NormalizedAssetAdditionalProperty = NormalizedAssetType;
+export type NormalizedAssetAdditionalProperty = AssetType;
 
 export type AssetAdditionalProperty = AssetType;
 
@@ -50,10 +53,6 @@ export class ConcreteAssetAttribute extends ConcreteAttribute implements AssetAt
       is_required
     );
 
-    if (!(assetType instanceof AssetType)) {
-      throw new InvalidArgumentError('Attribute expects a AssetType as assetType');
-    }
-
     Object.freeze(this);
   }
 
@@ -67,7 +66,7 @@ export class ConcreteAssetAttribute extends ConcreteAttribute implements AssetAt
       normalizedAssetAttribute.value_per_channel,
       normalizedAssetAttribute.order,
       normalizedAssetAttribute.is_required,
-      AssetType.createFromNormalized(normalizedAssetAttribute.asset_type)
+      createAssetTypeFromNormalized(normalizedAssetAttribute.asset_type)
     );
   }
 
@@ -79,7 +78,7 @@ export class ConcreteAssetAttribute extends ConcreteAttribute implements AssetAt
     return {
       ...super.normalize(),
       type: 'asset',
-      asset_type: this.assetType.normalize(),
+      asset_type: this.assetType,
     };
   }
 }

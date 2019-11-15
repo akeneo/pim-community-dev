@@ -7,37 +7,48 @@ import AssetFamilyIdentifier, {
 import LabelCollection, {denormalizeLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import AttributeCode, {denormalizeAttributeCode} from 'akeneoassetmanager/domain/model/attribute/code';
 import {NormalizedAttribute, Attribute, ConcreteAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
-import {MaxLength, NormalizedMaxLength} from 'akeneoassetmanager/domain/model/attribute/type/text/max-length';
-import {IsTextarea, NormalizedIsTextarea} from 'akeneoassetmanager/domain/model/attribute/type/text/is-textarea';
-import {
-  IsRichTextEditor,
-  NormalizedIsRichTextEditor,
-} from 'akeneoassetmanager/domain/model/attribute/type/text/is-rich-text-editor';
-import {
-  ValidationRule,
-  NormalizedValidationRule,
-  ValidationRuleOption,
-} from 'akeneoassetmanager/domain/model/attribute/type/text/validation-rule';
-import {
-  RegularExpression,
-  NormalizedRegularExpression,
-} from 'akeneoassetmanager/domain/model/attribute/type/text/regular-expression';
 
+export enum ValidationRuleOption {
+  Email = 'email',
+  RegularExpression = 'regular_expression',
+  Url = 'url',
+  None = 'none',
+}
+
+export type ValidationRule = ValidationRuleOption;
+export type MaxLength = number | null;
+
+export const maxLengthStringValue = (maxLength: MaxLength): string =>
+  null === maxLength ? '' : maxLength.toString(10);
+export const isValidMaxLength = (value: any): value is MaxLength => {
+  return (!isNaN(parseInt(value)) && 0 < parseInt(value)) || '' === value;
+};
+export const createMaxLengthFromString = (maxLength: string): MaxLength =>
+  '' === maxLength ? null : parseInt(maxLength);
+
+export type RegularExpression = string | null;
+export const createRegularExpressionFromString = (regularExpression: string): RegularExpression =>
+  '' === regularExpression ? null : regularExpression;
+export const regularExpressionStringValue = (regularExpression: RegularExpression): string =>
+  null === regularExpression ? '' : regularExpression;
+
+export type IsRichTextEditor = boolean;
+export type IsTextarea = boolean;
 export type TextAdditionalProperty = MaxLength | IsTextarea | IsRichTextEditor | ValidationRule | RegularExpression;
 export type NormalizedTextAdditionalProperty =
-  | NormalizedMaxLength
-  | NormalizedIsTextarea
-  | NormalizedIsRichTextEditor
-  | NormalizedValidationRule
-  | NormalizedRegularExpression;
+  | MaxLength
+  | IsTextarea
+  | IsRichTextEditor
+  | ValidationRule
+  | RegularExpression;
 
 export interface NormalizedTextAttribute extends NormalizedAttribute {
   type: 'text';
-  max_length: NormalizedMaxLength;
-  is_textarea: NormalizedIsTextarea;
-  is_rich_text_editor: NormalizedIsRichTextEditor;
-  validation_rule: NormalizedValidationRule;
-  regular_expression: NormalizedRegularExpression;
+  max_length: MaxLength;
+  is_textarea: IsTextarea;
+  is_rich_text_editor: IsRichTextEditor;
+  validation_rule: ValidationRule;
+  regular_expression: RegularExpression;
 }
 
 export interface TextAttribute extends Attribute {
@@ -79,35 +90,15 @@ export class ConcreteTextAttribute extends ConcreteAttribute implements TextAttr
       is_required
     );
 
-    if (!(maxLength instanceof MaxLength)) {
-      throw new InvalidArgumentError('Attribute expects a MaxLength as maxLength');
-    }
-
-    if (!(isTextarea instanceof IsTextarea)) {
-      throw new InvalidArgumentError('Attribute expects a Textarea as isTextarea');
-    }
-
-    if (!(isRichTextEditor instanceof IsRichTextEditor)) {
-      throw new InvalidArgumentError('Attribute expects a IsRichTextEditor as isRichTextEditor');
-    }
-
-    if (false === isTextarea.booleanValue() && true === isRichTextEditor.booleanValue()) {
+    if (!isTextarea && isRichTextEditor) {
       throw new InvalidArgumentError('Attribute cannot be rich text editor and not textarea');
     }
 
-    if (!(validationRule instanceof ValidationRule)) {
-      throw new InvalidArgumentError('Attribute expects a ValidationRule as validationRule');
-    }
-
-    if (true === isTextarea.booleanValue() && ValidationRuleOption.None !== validationRule.stringValue()) {
+    if (isTextarea && ValidationRuleOption.None !== validationRule) {
       throw new InvalidArgumentError('Attribute cannot have a validation rule while being a textarea');
     }
 
-    if (!(regularExpression instanceof RegularExpression)) {
-      throw new InvalidArgumentError('Attribute expects a RegularExpression as regularExpression');
-    }
-
-    if (!regularExpression.isNull() && ValidationRuleOption.RegularExpression !== validationRule.stringValue()) {
+    if (null !== regularExpression && ValidationRuleOption.RegularExpression !== validationRule) {
       throw new InvalidArgumentError(
         'Attribute cannot have a regular expression while the validation rule is not ValidationRuleOption.RegularExpression'
       );
@@ -126,11 +117,11 @@ export class ConcreteTextAttribute extends ConcreteAttribute implements TextAttr
       normalizedTextAttribute.value_per_channel,
       normalizedTextAttribute.order,
       normalizedTextAttribute.is_required,
-      MaxLength.createFromNormalized(normalizedTextAttribute.max_length),
-      IsTextarea.createFromNormalized(normalizedTextAttribute.is_textarea),
-      IsRichTextEditor.createFromNormalized(normalizedTextAttribute.is_rich_text_editor),
-      ValidationRule.createFromNormalized(normalizedTextAttribute.validation_rule),
-      RegularExpression.createFromNormalized(normalizedTextAttribute.regular_expression)
+      normalizedTextAttribute.max_length,
+      normalizedTextAttribute.is_textarea,
+      normalizedTextAttribute.is_rich_text_editor,
+      normalizedTextAttribute.validation_rule,
+      normalizedTextAttribute.regular_expression
     );
   }
 
@@ -138,11 +129,11 @@ export class ConcreteTextAttribute extends ConcreteAttribute implements TextAttr
     return {
       ...super.normalize(),
       type: 'text',
-      max_length: this.maxLength.normalize(),
-      is_textarea: this.isTextarea.normalize(),
-      is_rich_text_editor: this.isRichTextEditor.normalize(),
-      validation_rule: this.validationRule.normalize(),
-      regular_expression: this.regularExpression.normalize(),
+      max_length: this.maxLength,
+      is_textarea: this.isTextarea,
+      is_rich_text_editor: this.isRichTextEditor,
+      validation_rule: this.validationRule,
+      regular_expression: this.regularExpression,
     };
   }
 }

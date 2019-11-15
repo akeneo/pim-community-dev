@@ -1,35 +1,41 @@
-import {MaxFileSize} from 'akeneoassetmanager/domain/model/attribute/type/image/max-file-size';
+import {
+  isValidMaxFileSize,
+  createMaxFileSizeFromString,
+  createMaxFileSizeFromNormalized,
+  maxFileSizeStringValue,
+  isNullMaxFileSize,
+} from 'akeneoassetmanager/domain/model/attribute/type/image/max-file-size';
 
 describe('akeneo > attribute > domain > model > attribute > type > text --- MaxFileSize', () => {
   test('I can create a MaxFileSize from normalized', () => {
-    expect(MaxFileSize.createFromNormalized('12.2').normalize()).toEqual('12.2');
-    expect(MaxFileSize.createFromNormalized(null).normalize()).toEqual(null);
-    expect(MaxFileSize.createFromNormalized(null).stringValue()).toEqual('');
-    expect(() => MaxFileSize.createFromNormalized('null')).toThrow();
+    expect(createMaxFileSizeFromNormalized('12.2')).toEqual('12.2');
+    expect(createMaxFileSizeFromNormalized(null)).toEqual(null);
+    expect(maxFileSizeStringValue(createMaxFileSizeFromNormalized(null))).toEqual('');
+    expect(() => createMaxFileSizeFromNormalized('null')).toThrow();
   });
   test('I can validate a MaxFileSize', () => {
-    expect(MaxFileSize.isValid('12.2')).toEqual(true);
-    expect(MaxFileSize.isValid(null)).toEqual(true);
-    expect(MaxFileSize.isValid('12')).toEqual(true);
-    expect(MaxFileSize.isValid('12.3')).toEqual(true);
-    expect(MaxFileSize.isValid('12.3a')).toEqual(false);
-    expect(MaxFileSize.isValid('a')).toEqual(false);
-    expect(MaxFileSize.isValid('a12')).toEqual(false);
-    expect(MaxFileSize.isValid({test: 'toto'})).toEqual(false);
+    expect(isValidMaxFileSize('12.2')).toEqual(true);
+    expect(isValidMaxFileSize(null)).toEqual(true);
+    expect(isValidMaxFileSize('12')).toEqual(true);
+    expect(isValidMaxFileSize('12.3')).toEqual(true);
+    expect(isValidMaxFileSize('12.3a')).toEqual(false);
+    expect(isValidMaxFileSize('a')).toEqual(false);
+    expect(isValidMaxFileSize('a12')).toEqual(false);
+    expect(isValidMaxFileSize({test: 'toto'})).toEqual(false);
   });
   test('I can create a MaxFileSize from string', () => {
-    expect(MaxFileSize.createFromString('12.2').normalize()).toEqual('12.2');
-    expect(MaxFileSize.createFromString('.3').normalize()).toEqual('.3');
-    expect(MaxFileSize.createFromString('12.').normalize()).toEqual('12.');
-    expect(MaxFileSize.createFromString('').normalize()).toEqual(null);
-    expect(MaxFileSize.createFromString('').stringValue()).toEqual('');
-    expect(MaxFileSize.createFromString('12').stringValue()).toEqual('12');
-    expect(() => MaxFileSize.createFromString({my: 'object'})).toThrow();
+    expect(createMaxFileSizeFromString('12.2')).toEqual('12.2');
+    expect(createMaxFileSizeFromString('.3')).toEqual('.3');
+    expect(createMaxFileSizeFromString('12.')).toEqual('12.');
+    expect(createMaxFileSizeFromString('')).toEqual(null);
+    expect(maxFileSizeStringValue(createMaxFileSizeFromString(''))).toEqual('');
+    expect(maxFileSizeStringValue(createMaxFileSizeFromString('12'))).toEqual('12');
+    expect(() => createMaxFileSizeFromString({my: 'object'})).toThrow();
   });
   test('I can know if the MaxFileSize is null', () => {
-    expect(MaxFileSize.createFromString('12.4').isNull()).toEqual(false);
-    expect(MaxFileSize.createFromString('').isNull()).toEqual(true);
-    expect(MaxFileSize.createFromNormalized('12.4').isNull()).toEqual(false);
-    expect(MaxFileSize.createFromNormalized(null).isNull()).toEqual(true);
+    expect(isNullMaxFileSize(createMaxFileSizeFromString('12.4'))).toEqual(false);
+    expect(isNullMaxFileSize(createMaxFileSizeFromString(''))).toEqual(true);
+    expect(isNullMaxFileSize(createMaxFileSizeFromNormalized('12.4'))).toEqual(false);
+    expect(isNullMaxFileSize(createMaxFileSizeFromNormalized(null))).toEqual(true);
   });
 });

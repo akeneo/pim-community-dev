@@ -27,13 +27,10 @@ use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 class BinaryImageGenerator implements PreviewGeneratorInterface
 {
     private const DEFAULT_IMAGE = 'pim_asset_manager.default_image.image';
-    public const THUMBNAIL_TYPE = 'thumbnail';
-    public const THUMBNAIL_SMALL_TYPE = 'thumbnail_small';
-    public const PREVIEW_TYPE = 'preview';
     public const SUPPORTED_TYPES = [
-        self::THUMBNAIL_TYPE,
-        self::THUMBNAIL_SMALL_TYPE,
-        self::PREVIEW_TYPE
+        PreviewGeneratorRegistry::THUMBNAIL_TYPE => 'am_binary_image_thumbnail',
+        PreviewGeneratorRegistry::THUMBNAIL_SMALL_TYPE => 'am_binary_image_thumbnail',
+        PreviewGeneratorRegistry::PREVIEW_TYPE => 'am_binary_image_preview'
     ];
 
     /** @var DataManager  */
@@ -63,25 +60,26 @@ class BinaryImageGenerator implements PreviewGeneratorInterface
     public function supports(string $data, AbstractAttribute $attribute, string $type): bool
     {
         return ImageAttribute::ATTRIBUTE_TYPE === $attribute->getType()
-               && in_array($type, self::SUPPORTED_TYPES);
+            && array_key_exists($type, self::SUPPORTED_TYPES);
     }
 
     public function generate(string $data, AbstractAttribute $attribute, string $type): string
     {
-        if (!$this->cacheManager->isStored($data, $type)) {
+        $previewType = self::SUPPORTED_TYPES[$type];
+        if (!$this->cacheManager->isStored($data, $previewType)) {
             try {
-                $binary = $this->dataManager->find($type, $data);
+                $binary = $this->dataManager->find($previewType, $data);
             } catch (NotLoadableException $e) {
-                return $this->defaultImageProvider->getImageUrl(self::DEFAULT_IMAGE, $type);
+                return $this->defaultImageProvider->getImageUrl(self::DEFAULT_IMAGE, $previewType);
             }
 
             $this->cacheManager->store(
-                $this->filterManager->applyFilter($binary, $type),
+                $this->filterManager->applyFilter($binary, $previewType),
                 $data,
-                $type
+                $previewType
             );
         }
 
-        return $this->cacheManager->resolve($data, $type);
+        return $this->cacheManager->resolve($data, $previewType);
     }
 }

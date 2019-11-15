@@ -1,62 +1,28 @@
-import {NormalizableAdditionalProperty} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import AssetFamilyIdentifier, {
-  denormalizeAssetFamilyIdentifier,
-  assetFamilyIdentifierStringValue,
   assetFamilyidentifiersAreEqual,
 } from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import {isString} from 'akeneoassetmanager/domain/model/utils';
 
-export type NormalizedAssetType = AssetFamilyIdentifier | null;
+export type AssetType = AssetFamilyIdentifier | null;
 
-export class InvalidArgumentError extends Error {}
-export class InvalidCallError extends Error {}
+export const isValidAssetType = (assetType: any): assetType is string => {
+  return isString(assetType);
+};
 
-export class AssetType implements NormalizableAdditionalProperty {
-  private constructor(readonly assetType?: AssetFamilyIdentifier) {
-    if (undefined === assetType) {
-      Object.freeze(this);
-
-      return;
-    }
-
-    Object.freeze(this);
+export const createAssetTypeFromNormalized = (normalizedAssetType: any) => {
+  if (!(isValidAssetType(normalizedAssetType) || null === normalizedAssetType)) {
+    throw new Error(`AssetType should be a valid string or null`);
   }
 
-  public static isValid(value: any): boolean {
-    return typeof value === 'string';
-  }
+  return normalizedAssetType;
+};
 
-  public static createFromNormalized(normalizedAssetType: NormalizedAssetType) {
-    return null === normalizedAssetType
-      ? new AssetType()
-      : new AssetType(denormalizeAssetFamilyIdentifier(normalizedAssetType));
-  }
+export const assetTypeAreEqual = (first: AssetType, second: AssetType): boolean => {
+  return (
+    (null === first && null === second) ||
+    (null !== first && null !== second && assetFamilyidentifiersAreEqual(first, second))
+  );
+};
 
-  public normalize(): NormalizedAssetType {
-    return undefined === this.assetType ? null : assetFamilyIdentifierStringValue(this.assetType);
-  }
-
-  public static createFromString(assetType: string) {
-    return '' === assetType ? AssetType.createFromNormalized(null) : AssetType.createFromNormalized(assetType);
-  }
-
-  public stringValue(): string {
-    return undefined === this.assetType ? '' : assetFamilyIdentifierStringValue(this.assetType);
-  }
-
-  public equals(assetType: AssetType) {
-    return (
-      (undefined === this.assetType && undefined === assetType.assetType) ||
-      (undefined !== this.assetType &&
-        undefined !== assetType.assetType &&
-        assetFamilyidentifiersAreEqual(this.assetType, assetType.assetType))
-    );
-  }
-
-  public getAssetFamilyIdentifier(): AssetFamilyIdentifier {
-    if (undefined === this.assetType) {
-      throw new InvalidCallError('The asset family identifier is undefined');
-    }
-
-    return this.assetType;
-  }
-}
+export const assetTypeStringValue = (assetType: AssetType) => (null === assetType ? '' : assetType);
+export const assetTypeIsEmpty = (assetType: AssetType): assetType is null => assetType === null;

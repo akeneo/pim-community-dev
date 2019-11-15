@@ -1,4 +1,8 @@
-import {Option} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
+import {
+  createOptionFromNormalized,
+  createEmptyOption,
+  getOptionLabel,
+} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
 
 const normalizedColors = {
   code: 'red',
@@ -7,22 +11,21 @@ const normalizedColors = {
 
 describe('akeneo > attribute > domain > model > attribute > type > option --- Option', () => {
   test('I can create an Option', () => {
-    expect(Option.create('red', {en_US: 'Red'}).normalize()).toEqual(normalizedColors);
+    expect(createOptionFromNormalized({code: 'red', labels: {en_US: 'Red'}})).toEqual(normalizedColors);
   });
   test('I can get the label of an Option', () => {
-    expect(Option.create('red', {en_US: 'Red'}).getLabel('en_US')).toEqual('Red');
-    expect(Option.create('red', {en_US: 'Red'}).getLabel('fr_FR')).toEqual('[red]');
-    expect(Option.create('red', {en_US: 'Red'}).getLabel('fr_FR', false)).toEqual('');
+    expect(getOptionLabel(createOptionFromNormalized({code: 'red', labels: {en_US: 'Red'}}), 'en_US')).toEqual('Red');
+    expect(getOptionLabel(createOptionFromNormalized({code: 'red', labels: {en_US: 'Red'}}), 'fr_FR')).toEqual('[red]');
   });
 
   test('I can create an empty Option', () => {
-    expect(Option.createEmpty().normalize()).toEqual({
+    expect(createEmptyOption()).toEqual({
       code: '',
       labels: {},
     });
   });
 
   test('I can create an Option from normalized', () => {
-    expect(Option.createFromNormalized(normalizedColors).normalize()).toEqual(normalizedColors);
+    expect(createOptionFromNormalized(normalizedColors)).toEqual(normalizedColors);
   });
 });

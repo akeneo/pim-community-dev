@@ -4,7 +4,6 @@
 #akeneo_asset_manager_asset_edit: Edit an asset
 pim_asset_manager:
   asset_collection:
-    asset_count: '{{ count }} assetti |{{ count }} assettia'
     add_asset: 'Lisää assetti'
     no_asset_in_collection: 'Pahoittelut, tässä kokoelmassa ei ole assetteja.'
     helper:
@@ -21,6 +20,8 @@ pim_asset_manager:
     other_actions: Muut toiminnot
     open_other_actions: Avaa muut toiminnot
     dismiss_other_actions: Hylkää muut toiminnot
+    move_asset_to_left: Siirrä assetti {{ assetName }} vasemmalle
+    move_asset_to_right: Siirrä assetti {{ assetName }} oikealle
   #breadcrumb: Asset Families
   #img: The main image of the asset family named "{{ label }}"
   #tab:

@@ -8,6 +8,16 @@ import __ from 'akeneoassetmanager/tools/translator';
 import Download from 'akeneoassetmanager/application/component/app/icon/download';
 import Import from 'akeneoassetmanager/application/component/app/illustration/import';
 import Key from 'akeneoassetmanager/tools/key';
+import styled from 'styled-components';
+
+const Img = styled.img`
+  margin: auto;
+  width: 100%;
+  max-height: 140px;
+  transition: filter 0.3s;
+  z-index: 0;
+  object-fit: contain;
+`;
 
 class Image extends React.Component<
   {
@@ -104,7 +114,7 @@ class Image extends React.Component<
 
   render() {
     const wide = this.props.wide;
-    const url = getImageShowUrl(this.props.image, true === this.props.wide ? 'preview' : 'thumbnail');
+    const url = getImageShowUrl(this.props.image, 'preview');
 
     // If the image is in read only mode, we return a simple version of the component
     if (undefined === this.props.onImageChange) {
@@ -112,10 +122,10 @@ class Image extends React.Component<
 
       return (
         <div className={className}>
-          {true === this.props.wide && !this.props.image.isEmpty() ? (
+          {!this.props.image.isEmpty() ? (
             <div className="AknImage-drop" style={{backgroundImage: `url("${url}")`}} />
           ) : null}
-          <img className="AknImage-display" src={url} />
+          {true === this.props.wide ? <img className="AknImage-display" src={url} /> : <Img src={url} />}
         </div>
       );
     }
@@ -133,9 +143,7 @@ class Image extends React.Component<
         : {width: `${this.state.ratio * 100}%`};
     return (
       <div className={className}>
-        {true === this.props.wide && !this.props.image.isEmpty() ? (
-          <div className="AknImage-drop" style={{backgroundImage: `url("${url}")`}} />
-        ) : null}
+        {!this.props.image.isEmpty() && <div className="AknImage-drop" style={{backgroundImage: `url("${url}")`}} />}
         <input
           id={this.props.id}
           className="AknImage-updater"
@@ -180,7 +188,7 @@ class Image extends React.Component<
         ) : null}
         {!this.props.image.isEmpty() ? (
           <div className="AknImage-displayContainer">
-            <img className="AknImage-display" src={url} />
+            {true === this.props.wide ? <img className="AknImage-display" src={url} /> : <Img src={url} />}
           </div>
         ) : null}
         {this.props.image.isEmpty() && undefined !== this.props.onImageChange ? (

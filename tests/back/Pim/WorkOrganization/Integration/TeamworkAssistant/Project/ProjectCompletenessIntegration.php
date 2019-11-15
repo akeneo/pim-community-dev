@@ -262,7 +262,6 @@ class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
         $this->checkProjectCompletenessFilterForContributor($project, $projectCompleteness, 'Marc');
     }
 
-
     /**
      * Check that the project completeness is computed depending on the locale accesses.
      *

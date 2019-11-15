@@ -15,6 +15,11 @@ const answerRuleRelationList = async page => {
 
   await listenRequest(page, requestContract);
 };
+const answerAttributeGroup = async page => {
+  const requestContract = getRequestContract('AttributeGroup/list.json');
+
+  await listenRequest(page, requestContract);
+};
 const answerProductAttributeList = async page => {
   const requestContract = getRequestContract('ProductAttribute/ok.json');
 
@@ -47,6 +52,7 @@ const answerAssetList = async page => {
 module.exports = {
   answerChannelList,
   answerRuleRelationList,
+  answerAttributeGroup,
   answerProductAttributeList,
   answerPermissionList,
   answerAssetFamilyDetails,

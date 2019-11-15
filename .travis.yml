@@ -9,16 +9,16 @@ branches:
     - /^(einrich|assets)-?.*$/
 
 # Extra dependencies
-services:
-  - mysql
+#services:
+#  - mysql
 
-# For mysql 5.7 instead of 5.6
-addons:
-  apt:
-    sources:
-      - mysql-5.7-trusty
-    packages:
-      - mysql-server
+## For mysql 5.7 instead of 5.6
+#addons:
+#  apt:
+#    sources:
+#      - mysql-5.7-trusty
+#    packages:
+#      - mysql-server
 
 sudo: false
 
@@ -31,6 +31,13 @@ cache:
 
 before_install:
     - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
+    # Mysql
+    - wget https://repo.mysql.com//mysql-apt-config_0.8.10-1_all.deb
+    - sudo dpkg -i mysql-apt-config_0.8.10-1_all.deb
+    - sudo apt-get update -q
+    - sudo apt-get install -q -y --allow-unauthenticated -o Dpkg::Options::=--force-confnew mysql-server
+    - sudo systemctl restart mysql
+    - sudo mysql_upgrade
     - nvm install 10.15.0
     - node tests/travis/check-changes.js $BRANCH src/Akeneo/ReferenceEntity/,.travis.yml,tests/travis/,tests/front,package.json,composer.json
     - node tests/travis/check-changes.js $BRANCH src/Akeneo/AssetManager/,.travis.yml,tests/travis/,tests/front,package.json,composer.json
@@ -45,8 +52,8 @@ before_install:
 
 install:
     - composer install --prefer-dist --no-interaction
-    - ./bin/console pim:install:assets --env=behat
-    - ./bin/console pim:install:db --withoutIndexes --withoutFixtures --env=behat
+    - ./bin/console pim:install:assets --env=travis
+    - ./bin/console pim:install:db --withoutIndexes --withoutFixtures --env=travis
     - yarn install --frozen-lockfile
     - yarn less
     - yarn webpack-test --env=prod

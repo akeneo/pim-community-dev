@@ -1,6 +1,6 @@
 import {NormalizedOptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
 import {NormalizedOptionCollectionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option-collection';
-import {NormalizedOption, Option} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
+import {Option, createEmptyOption} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
 import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 import sanitize from 'akeneoassetmanager/tools/sanitize';
 
@@ -17,7 +17,7 @@ export interface EditOptionState {
   isActive: boolean;
   isDirty: boolean;
   isSaving: boolean;
-  options: NormalizedOption[];
+  options: Option[];
   currentOptionId: number;
   errors: ValidationError[];
   originalData: string;
@@ -37,7 +37,7 @@ const initEditOptionState = (): EditOptionState => ({
 
 type Action = {
   type: string;
-  options: NormalizedOption[];
+  options: Option[];
   label: string;
   code: string;
   id: number;
@@ -45,12 +45,12 @@ type Action = {
   errors: ValidationError[];
 };
 
-const isDirty = (state: EditOptionState, newData: NormalizedOption[]) => {
+const isDirty = (state: EditOptionState, newData: Option[]) => {
   return state.originalData !== JSON.stringify(newData);
 };
 
 const labelReducer = (
-  option: NormalizedOption,
+  option: Option,
   {label, locale}: {label: string; locale: string},
   shouldGenerateCode: boolean
 ) => {
@@ -68,9 +68,9 @@ const labelReducer = (
   return {...option, code, labels: {...option.labels, [locale]: label}};
 };
 
-const filterEmptyOptions = (options: NormalizedOption[]) => {
+const filterEmptyOptions = (options: Option[]) => {
   return options.filter(
-    (option: NormalizedOption) =>
+    (option: Option) =>
       '' !== option.code || Object.keys(option.labels).some((locale: string) => '' !== option.labels[locale])
   );
 };
@@ -111,7 +111,7 @@ export const editOptionsReducer = (state: EditOptionState = initEditOptionState(
       newLabelOptions[id] =
         undefined !== newLabelOptions[id]
           ? labelReducer(newLabelOptions[id], action, shouldGenerateCode)
-          : labelReducer(Option.createEmpty().normalize(), action, true);
+          : labelReducer(createEmptyOption(), action, true);
 
       return {
         ...state,
@@ -122,7 +122,7 @@ export const editOptionsReducer = (state: EditOptionState = initEditOptionState(
     case 'OPTIONS_EDITION_CODE_UPDATED':
       const newCodeOptions = [...state.options];
       newCodeOptions[id] =
-        undefined !== newCodeOptions[id] ? {...newCodeOptions[id], code} : {...Option.createEmpty().normalize(), code};
+        undefined !== newCodeOptions[id] ? {...newCodeOptions[id], code} : {...createEmptyOption(), code};
 
       return {
         ...state,
@@ -145,7 +145,7 @@ export const editOptionsReducer = (state: EditOptionState = initEditOptionState(
       return {...state, isSaving: false, errors};
 
     case 'OPTIONS_EDITION_DELETE':
-      const filteredOptions = state.options.filter((_option: NormalizedOption, index: number) => index !== id);
+      const filteredOptions = state.options.filter((_option: Option, index: number) => index !== id);
       return {
         ...state,
         options: filteredOptions,

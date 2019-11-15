@@ -2,7 +2,7 @@ import * as React from 'react';
 import {NormalizedValue} from 'akeneoassetmanager/domain/model/asset/value';
 import {CellView} from 'akeneoassetmanager/application/configuration/value';
 import {Column} from 'akeneoassetmanager/application/reducer/grid';
-import {NormalizedOption} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
+import {Option} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
 import {NormalizedOptionCollectionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option-collection';
 import {getLabel} from 'pimui/js/i18n';
 
@@ -12,8 +12,8 @@ const OptionCollectionCellView: CellView = memo(({column, value}: {column: Colum
   const selectedOptionCollectionCodes = value.data;
   const normalizedOptionCollectionAttribute = column.attribute as NormalizedOptionCollectionAttribute;
   const selectedOptionCollectionLabels = normalizedOptionCollectionAttribute.options
-    .filter((option: NormalizedOption) => selectedOptionCollectionCodes.includes(option.code))
-    .map((selectedOption: NormalizedOption) => {
+    .filter((option: Option) => selectedOptionCollectionCodes.includes(option.code))
+    .map((selectedOption: Option) => {
       return getLabel(selectedOption.labels, column.locale, selectedOption.code);
     })
     .join(', ');

@@ -2,11 +2,15 @@ import $ from 'jquery';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import AssetSelector from 'akeneoassetmanager/application/component/app/asset-selector';
+import AssetSelectorLegacyHelper from 'akeneopimenrichmentassetmanager/product/field/asset-collection/asset-selector-legacy-helper';
 import AssetCode, {assetCodeStringValue, denormalizeAssetCode} from 'akeneoassetmanager/domain/model/asset/code';
 import {denormalizeChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
 import __ from 'akeneoassetmanager/tools/translator';
 import {denormalizeLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
 import {denormalizeAssetFamilyIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import {getMissingRequiredFields} from 'pimui/js/provider/to-fill-field-provider';
+import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
+import {ThemeProvider} from 'styled-components';
 
 const Field = require('pim/field');
 const UserContext = require('pim/user-context');
@@ -25,6 +29,28 @@ class AssetCollectionField extends (Field as {new (config: any): any}) {
   }
 
   renderInput(templateContext: any) {
+    if (this.isMassEdit(templateContext)) {
+      return this.renderLegacyInput(templateContext);
+    }
+
+    return this.renderIsDisabledMessage(templateContext);
+  }
+
+  renderIsDisabledMessage(templateContext: any): HTMLElement {
+    const container = document.createElement('div');
+    ReactDOM.render(
+      <ThemeProvider theme={akeneoTheme}>
+        <AssetSelectorLegacyHelper
+          label={templateContext.label}
+          isMissingRequired={this.isMissingRequired(templateContext)}
+        />
+      </ThemeProvider>,
+      container
+    );
+    return container;
+  }
+
+  renderLegacyInput(templateContext: any): HTMLElement {
     const container = document.createElement('div');
     ReactDOM.render(
       <AssetSelector
@@ -44,6 +70,29 @@ class AssetCollectionField extends (Field as {new (config: any): any}) {
       container
     );
     return container;
+  }
+
+  isMassEdit(templateContext: any): boolean {
+    // This should be temporary, we currently don't have an easy way to know the real context
+    return templateContext.context.entity.created === undefined;
+  }
+
+  isMissingRequired(templateContext: any): boolean {
+    const scope = UserContext.get('catalogScope');
+    const locale = UserContext.get('catalogLocale');
+    const product = templateContext.context.entity;
+
+    const requiredFields = getMissingRequiredFields(product, scope, locale);
+
+    if (0 === requiredFields.length) {
+      return false;
+    }
+
+    return requiredFields.indexOf(templateContext.attribute.code) !== -1;
+  }
+
+  renderCopyInput() {
+    return null;
   }
 
   getFieldValue(field: any) {
