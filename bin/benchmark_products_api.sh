@@ -46,7 +46,7 @@ boot_and_install_pim()
     export API_USER="admin"
     export API_PASSWORD="admin"
 
-    docker pull akeneo/data-generator:3.0
+    docker pull akeneo/data-generator:2.0
     docker pull akeneo/benchmark-api:3.0
 }
 
@@ -59,7 +59,7 @@ generate_reference_catalog()
         -t \
         -e API_CLIENT -e API_SECRET -e API_URL -e API_USER -e API_PASSWORD \
         -v "$ABSOLUTE_CATALOG_FILE:/app/akeneo-data-generator/app/catalog/product_api_catalog.yml" \
-        akeneo/data-generator:3.0 akeneo:api:generate-catalog --with-products --check-minimal-install product_api_catalog.yml
+        akeneo/data-generator:2.0 akeneo:api:generate-catalog --with-products --check-minimal-install product_api_catalog.yml
 }
 
 launch_bench()
