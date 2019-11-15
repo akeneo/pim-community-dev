@@ -2,7 +2,6 @@ parameters:
     pim_catalog.event_subscriber.create_attribute_requirement.class: Akeneo\Pim\Structure\Bundle\EventSubscriber\CreateAttributeRequirementSubscriber
     pim_catalog.event_subscriber.timestampable.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\TimestampableSubscriber
     pim_catalog.event_subscriber.reset_unique_validation.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ResetUniqueValidationSubscriber
-    pim_catalog.event_subscriber.index_products.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\IndexProductsSubscriber
 
 services:
     # Subscribers
