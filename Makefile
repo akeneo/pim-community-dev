@@ -72,7 +72,7 @@ var/cache/dev:
 
 .PHONY: cache
 cache:
-	rm -rf var/cache && $(PHP_RUN) bin/console cache:warmup
+	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache && $(PHP_RUN) bin/console cache:warmup
 
 composer.lock: composer.json
 	$(PHP_RUN) -d memory_limit=5G /usr/local/bin/composer update --no-interaction
@@ -86,7 +86,7 @@ check-requirements:
 
 .PHONY: database
 database:
-	$(PHP_RUN) bin/console pim:installer:db ${O}
+	$(PHP_RUN) -d memory_limit=2G bin/console pim:installer:db ${O}
 
 ##
 ## PIM install

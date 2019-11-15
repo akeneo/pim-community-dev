@@ -88,7 +88,6 @@ $rules = [
         'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\CategoryTreeController',
         'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\ProductController',
         'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\ProductModelController',
-        'Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface',
 
         //TODO: It shouldn't rely on model to do join (bounded contexts integration)
         'Akeneo\UserManagement\Component\Model\Group',
