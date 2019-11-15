@@ -2,7 +2,8 @@ import {Reducer} from 'react';
 import {
     CHANGE,
     SET_ERROR,
-    SET_VALIDATED,
+    VALID_FORM,
+    INVALID_FORM,
     CreateFormAction
 } from '../actions/create-form-actions';
 
@@ -16,7 +17,6 @@ export interface CreateFormState {
             };
             dirty: boolean;
             valid: boolean;
-            validated: boolean;
         };
     };
     valid: boolean;
@@ -35,14 +35,8 @@ export const appFormReducer: Reducer<CreateFormState, CreateFormAction> = (state
                         errors: {},
                         dirty: undefined !== action.dirty ? action.dirty : true,
                         valid: true,
-                        validated: false,
                     },
                 },
-                valid:
-                    false ===
-                    Object.values(state.controls)
-                        .filter(({name}) => name !== action.name)
-                        .some(({valid}) => false === valid),
             };
         case SET_ERROR:
             return {
@@ -60,16 +54,15 @@ export const appFormReducer: Reducer<CreateFormState, CreateFormAction> = (state
                 },
                 valid: false,
             };
-        case SET_VALIDATED:
+        case VALID_FORM:
             return {
                 ...state,
-                controls: {
-                    ...state.controls,
-                    [action.name]: {
-                        ...state.controls[action.name],
-                        validated: true,
-                    },
-                },
+                valid: true,
+            };
+        case INVALID_FORM:
+            return {
+                ...state,
+                valid: false,
             };
         default:
             throw new Error();
