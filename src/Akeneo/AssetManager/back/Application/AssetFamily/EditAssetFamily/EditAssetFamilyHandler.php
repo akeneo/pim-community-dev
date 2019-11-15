@@ -18,6 +18,7 @@ use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\File\FileExistsInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
+use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 
@@ -27,8 +28,6 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
  */
 class EditAssetFamilyHandler
 {
-    private const CATALOG_STORAGE_ALIAS = 'catalogStorage';
-
     /** @var AssetFamilyRepositoryInterface */
     private $assetFamilyRepository;
 
@@ -85,7 +84,7 @@ class EditAssetFamilyHandler
                 ->setOriginalFilename($imageData['originalFilename']);
         } else {
             $rawFile = new \SplFileInfo($imageData['filePath']);
-            $storedFile = $this->storer->store($rawFile, self::CATALOG_STORAGE_ALIAS);
+            $storedFile = $this->storer->store($rawFile, Storage::FILE_STORAGE_ALIAS);
         }
 
         $storedImage = Image::fromFileInfo($storedFile);

@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Integration\Persistence\InMemory;
 
 use Akeneo\AssetManager\Common\Fake\InMemoryMediaFileRepository;
 use Akeneo\AssetManager\Domain\Repository\MediaFileNotFoundException;
+use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use PHPUnit\Framework\TestCase;
 
@@ -62,7 +63,7 @@ class InMemoryMediaFileRepositoryTest extends TestCase
         $mediaFile->setSize(1024);
         $mediaFile->setExtension('jpg');
         $mediaFile->setHash('imagehash');
-        $mediaFile->setStorage('catalogStorage');
+        $mediaFile->setStorage(Storage::FILE_STORAGE_ALIAS);
 
         $this->mediaFileRepository->save($mediaFile);
 

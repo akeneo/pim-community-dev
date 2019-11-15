@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\Persistence\Helper;
 
+use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -46,7 +47,7 @@ class DatabaseHelper
     {
         $resetQuery = <<<SQL
             SET foreign_key_checks = 0;
-            
+
             DELETE FROM akeneo_asset_manager_attribute;
             DELETE FROM akeneo_asset_manager_asset;
             DELETE FROM akeneo_asset_manager_asset_family;
@@ -61,7 +62,7 @@ class DatabaseHelper
             DELETE FROM pimee_product_asset_category;
             DELETE FROM pim_catalog_locale;
             DELETE FROM akeneo_file_storage_file_info;
-            
+
             SET foreign_key_checks = 1;
 SQL;
         $this->sqlConnection->executeQuery($resetQuery);
@@ -134,9 +135,9 @@ SQL;
         $imagesQuery = <<<SQL
         INSERT INTO akeneo_file_storage_file_info (file_key, original_filename, mime_type, size, extension, hash, storage)
         VALUES
-        ('test/image_1.jpg', 'image_1.jpg', 'image/jpeg', 295739, 'jpg', '4d78843ea9e6c93b8677b80cb926c9c74c17aa6e', 'catalogStorage'),
-        ('test/image_2.jpg', 'image_2.jpg', 'image/jpeg', 97573, 'jpg', '61e3f10aad1db6bfa7d2eff35fee97d377dec01d', 'catalogStorage');
+        ('test/image_1.jpg', 'image_1.jpg', 'image/jpeg', 295739, 'jpg', '4d78843ea9e6c93b8677b80cb926c9c74c17aa6e', '%s'),
+        ('test/image_2.jpg', 'image_2.jpg', 'image/jpeg', 97573, 'jpg', '61e3f10aad1db6bfa7d2eff35fee97d377dec01d', '%s');
 SQL;
-        $this->sqlConnection->executeUpdate($imagesQuery);
+        $this->sqlConnection->executeUpdate(sprintf($imagesQuery, Storage::FILE_STORAGE_ALIAS, Storage::FILE_STORAGE_ALIAS));
     }
 }

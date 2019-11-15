@@ -39,6 +39,7 @@ use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\Asset\Connector\ConnectorAsset;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFilesystemProviderStub;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Behat\Behat\Context\Context;
@@ -266,7 +267,7 @@ class GetConnectorAssetContext implements Context
 
         $this->mediaFileRepository->save($imageFile);
 
-        $fileSystem = $this->filesystemProvider->getFileSystem('catalogStorage');
+        $fileSystem = $this->filesystemProvider->getFileSystem(Storage::FILE_STORAGE_ALIAS);
         $fileSystem->write('0/c/b/0/0cb0c0e115dedba676f8d1ad8343ec207ab54c7b_kartell.jpg', 'This represents the binary of an image');
     }
 

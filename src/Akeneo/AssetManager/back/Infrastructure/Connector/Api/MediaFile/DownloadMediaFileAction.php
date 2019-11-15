@@ -27,8 +27,6 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
  */
 class DownloadMediaFileAction
 {
-    private const FILE_STORAGE_ALIAS = 'catalogStorage';
-
     /** @var MediaFileRepositoryInterface */
     private $mediaFileRepository;
 
@@ -53,7 +51,7 @@ class DownloadMediaFileAction
             throw new NotFoundHttpException($exception->getMessage());
         }
 
-        $filesystem = $this->filesystemProvider->getFilesystem(self::FILE_STORAGE_ALIAS);
+        $filesystem = $this->filesystemProvider->getFilesystem(Storage::FILE_STORAGE_ALIAS);
         if (!$filesystem->has($fileCode)) {
             throw new NotFoundHttpException(sprintf('Media file "%s" is not present on the filesystem.', $fileCode));
         }

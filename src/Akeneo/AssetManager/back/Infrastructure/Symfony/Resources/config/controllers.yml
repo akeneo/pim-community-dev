@@ -156,6 +156,15 @@ services:
             - '@akeneo_assetmanager.infrastructure.registry.preview_generator'
             - '@pim_asset.provider.default_image'
 
+    akeneo_assetmanager.infrastructure.action.file_upload:
+        public: true
+        class: 'Akeneo\AssetManager\Infrastructure\Controller\File\UploadAction'
+        arguments:
+            - '@validator'
+            - '@akeneo_file_storage.file_storage.path_generator'
+            - '%tmp_storage_dir%'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
+
     # Connector
     akeneo_assetmanager.infrastructure.connector.action.asset.get:
         class: Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\GetConnectorAssetAction

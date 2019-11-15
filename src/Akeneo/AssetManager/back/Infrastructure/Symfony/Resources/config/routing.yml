@@ -102,6 +102,11 @@ akeneo_asset_manager_image_preview:
     defaults: { _controller: akeneo_assetmanager.infrastructure.action.image_preview }
     methods: [GET]
 
+akeneo_asset_manager_file_upload:
+    path: '/rest/asset_manager/file/upload'
+    defaults: { _controller: akeneo_assetmanager.infrastructure.action.file_upload }
+    methods: [POST]
+
 # API Connector
 akeneo_asset_manager_asset_family_rest_connector_get:
     path: '/api/rest/v1/asset-families/{code}'
