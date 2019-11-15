@@ -20,7 +20,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class RegenerateAppClientSecretEndToEnd extends ApiTestCase
 {
-
     public function test_it_disables_the_client_secret_and_tokens()
     {
         $createAppCommand = new CreateAppCommand('magento', 'Magento Connector', FlowType::DATA_DESTINATION);

@@ -73,7 +73,11 @@ else
 endif
 
 apps-e2e:
-	$(PHP_RUN) vendor/bin/phpunit -c phpunit.xml.dist --testsuite=Akeneo_Apps_EndToEnd
+ifeq ($(CI),true)
+	.circleci/run_phpunit.sh . .circleci/find_phpunit.php Akeneo_Apps_EndToEnd
+else
+	${PHP_RUN} vendor/bin/phpunit -c . --testsuite Akeneo_Apps_EndToEnd $(O)
+endif
 
 apps-back:
 	make apps-coupling-back
