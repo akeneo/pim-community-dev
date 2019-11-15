@@ -299,6 +299,60 @@ jobs:
               name: make release
               command: make release
 
+  test_migrations:
+      machine:
+        image: ubuntu-1604:201903-01
+      steps:
+        -   attach_workspace:
+                at: ~/
+        -   run:
+                name: Load php image
+                command: |
+                    docker load -i php-pim-image.tar
+                    APP_ENV=test C='mysql elasticsearch object-storage' make up
+                    vendor/akeneo/pim-community-dev/docker/wait_docker_up.sh
+        -   run:
+                name: Restore permissions on file
+                command: git checkout -- .
+        -   run:
+                name: Change owner on project dir after restoring cache
+                command: sudo chown -R 1000:1000 ../project/var
+        -   run:
+                name: Checkout master branch
+                command: git checkout -b realmaster --track origin/master
+        -   run:
+                name: Clean cache
+                command: APP_ENV=test make cache
+        -   run:
+                name: Install master database
+                command: APP_ENV=test make database
+        -   run:
+                name: Checkout PR branch
+                command: git checkout $CIRCLE_BRANCH
+        -   run:
+                name: Clean cache
+                command: APP_ENV=test make cache
+        -   run:
+                name: Launch branch migrations
+                command: docker-compose run -u www-data php bin/console doctrine:migrations:migrate --env=test --no-interaction
+        -   run:
+                name: Dump master with migrations database
+                command: |
+                    export $(cat .env)
+                    docker-compose exec mysql mysqldump --no-data --skip-opt --skip-comments --password=$APP_DATABASE_PASSWORD --user=$APP_DATABASE_USER $APP_DATABASE_NAME > /tmp/dump_master_with_migrations.sql
+        -   run:
+                name: Install branch database
+                command: APP_ENV=test make database
+        -   run:
+                name: Dump branch database
+                command: |
+                    export $(cat .env)
+                    docker-compose exec mysql mysqldump --no-data --skip-opt --skip-comments --password=$APP_DATABASE_PASSWORD --user=$APP_DATABASE_USER $APP_DATABASE_NAME > /tmp/dump_master.sql
+        -   run:
+                name: Compare database master+PR migrations from database PR
+                command: diff /tmp/dump_master_with_migrations.sql /tmp/dump_master.sql
+
+
 workflows:
   version: 2
   pull_request:
@@ -321,12 +375,17 @@ workflows:
           - test_front_static_acceptance_and_integration:
                 requires:
                     - build_dev
+          - test_migrations:
+                requires:
+                    - test_back_static_and_acceptance
+                    - test_front_static_acceptance_and_integration
           - test_back_phpunit:
                 requires:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
           - back_behat_legacy:
                 requires:
+                    - test_migrations
                     - test_back_phpunit
 
   nightly:
@@ -385,6 +444,9 @@ workflows:
                 requires:
                     - build_dev
           - back_behat_legacy:
+                requires:
+                    - build_dev
+          - test_migrations:
                 requires:
                     - build_dev
           - test_prod:
