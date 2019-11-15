@@ -12,7 +12,7 @@ check-pullup:
 .PHONY: lint-back
 lint-back: var/cache/dev
 	${PHP_RUN} vendor/bin/phpstan analyse src/Akeneo/Pim -l 1
-	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
+	${PHP_RUN} -d memory_limit=6G vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
 
 .PHONY: lint-front
 lint-front:
@@ -22,7 +22,7 @@ lint-front:
 .PHONY: unit-back
 unit-back: var/tests/phpspec
 ifeq ($(CI),true)
-	${PHP_RUN} vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
+	${PHP_RUN} -d memory_limit=6G vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
 	.circleci/find_non_executed_phpspec.sh
 else
 	${PHP_RUN} vendor/bin/phpspec run

@@ -15,7 +15,7 @@ jobs:
                 docker save -o php-pim-image.tar akeneo/pim-dev/php:7.3
       - run:
           name: Setup tests results folder and log folder
-          command: mkdir -p var/tests/behat var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.composer
+          command: mkdir -p var/tests/behat var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.composer var/coverage
       - run:
           name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
           command: sudo chown -R 1000:1000 ../project
@@ -106,6 +106,10 @@ jobs:
                 path: var/tests
           - store_artifacts:
                 path: var/logs
+          - persist_to_workspace:
+                root: ~/
+                paths:
+                    - project/var/coverage
 
   back_phpunit:
       machine:
@@ -138,6 +142,10 @@ jobs:
                 path: var/tests/phpunit
           - store_artifacts:
                 path: var/logs
+          - persist_to_workspace:
+                root: ~/
+                paths:
+                    - project/var/coverage
 
   back_behat_legacy:
     machine:
@@ -186,6 +194,10 @@ jobs:
           path: var/tests/screenshots
       - store_artifacts:
           path: var/logs
+      - persist_to_workspace:
+            root: ~/
+            paths:
+                - project/var/coverage
 
   front_static_acceptance_and_integration:
       machine:
@@ -211,6 +223,27 @@ jobs:
         - run:
               name: Front integration tests
               command: make integration-front
+
+  merge_code_coverage:
+      machine:
+          image: ubuntu-1604:201903-01
+      steps:
+          - attach_workspace:
+                at: ~/
+          - run:
+                name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+                command: sudo chown -R 1000:1000 ../project
+          - run:
+                name: Load archived docker image
+                command: docker load -i php-pim-image.tar
+          - run:
+                name: Merge Pcov files
+                command: |
+                    docker-compose run --rm -T php php -d memory_limit=6G vendor/bin/phpcov merge --html=./var/coverage/html ./var/coverage
+                    tar -czvf var/coverage.tar.gz var/coverage
+                no_output_timeout: 60m
+          - store_artifacts:
+                path: var/coverage.tar.gz
 
 workflows:
   version: 2
@@ -238,6 +271,9 @@ workflows:
           - back_behat_legacy:
                 requires:
                     - back_phpunit
+          - merge_code_coverage:
+                requires:
+                    - back_behat_legacy
 
   nightly:
       triggers:
