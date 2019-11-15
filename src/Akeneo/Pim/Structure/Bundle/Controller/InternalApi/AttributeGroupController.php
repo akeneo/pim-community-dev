@@ -295,10 +295,12 @@ class AttributeGroupController
 
         $this->saver->save($attributeGroup);
 
-        $attributes = $this->attributeRepository->findBy(['code' => array_keys($sortOrder)]);
-        foreach ($attributes as $attribute) {
-            $this->attributeUpdater->update($attribute, ['sort_order' => $sortOrder[$attribute->getCode()]]);
-            $this->attributeSaver->save($attribute);
+        if ($this->securityFacade->isGranted('pim_enrich_attribute_sort')) {
+            $attributes = $this->attributeRepository->findBy(['code' => array_keys($sortOrder)]);
+            foreach ($attributes as $attribute) {
+                $this->attributeUpdater->update($attribute, ['sort_order' => $sortOrder[$attribute->getCode()]]);
+                $this->attributeSaver->save($attribute);
+            }
         }
 
         $this->eventDispatcher->dispatch(

@@ -305,10 +305,8 @@ class Family implements FamilyInterface
         if (null === $locale) {
             return null;
         }
-        foreach ($this->getTranslations() as $translation) {
-            if ($translation->getLocale() == $locale) {
-                return $translation;
-            }
+        if ($this->translations->containsKey($locale)) {
+            return $this->translations->get($locale);
         }
 
         $translationClass = $this->getTranslationFQCN();
@@ -326,7 +324,7 @@ class Family implements FamilyInterface
     public function addTranslation(TranslationInterface $translation)
     {
         if (!$this->translations->contains($translation)) {
-            $this->translations->add($translation);
+            $this->translations->set($translation->getLocale(), $translation);
         }
 
         return $this;

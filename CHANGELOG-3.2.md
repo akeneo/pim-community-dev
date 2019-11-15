@@ -1,5 +1,16 @@
 # 3.2.x
 
+# 3.2.18 (2019-11-13)
+
+## Bug fixes:
+
+- PIM-8943: Display validation messages on family translations
+- PIM-8953: User without "list users" permission can not access to other user pages
+- PIM-6902: Forbid usage of uppercase in Elasticsearch aliases (see https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-create-index.html)
+- PIM-8961: Fix design of 403 error page
+
+# 3.2.17 (2019-10-30)
+
 ## Bug fixes:
 
 - PIM-8925: Fix PDF export when there is no option for a given locale for a select attribute

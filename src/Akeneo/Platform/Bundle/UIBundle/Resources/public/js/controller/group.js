@@ -10,7 +10,6 @@ define(
         'pim/user-context',
         'pim/dialog',
         'pim/page-title',
-        'pim/error',
         'pim/i18n'
     ],
     function (
@@ -22,7 +21,6 @@ define(
         UserContext,
         Dialog,
         PageTitle,
-        Error,
         i18n
     ) {
         return BaseController.extend({

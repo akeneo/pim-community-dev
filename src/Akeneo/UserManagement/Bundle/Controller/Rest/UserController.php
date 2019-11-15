@@ -144,6 +144,17 @@ class UserController
      */
     public function getAction(int $identifier): JsonResponse
     {
+        $token = $this->tokenStorage->getToken();
+        $currentUserIdentifier = null !== $token ? $token->getUser()->getId() : null;
+
+        // @todo remove this check when $securityFacade is not nullable anymore
+        if (null !== $this->securityFacade) {
+            if ($currentUserIdentifier !== $identifier &&
+                !$this->securityFacade->isGranted('pim_user_user_index')) {
+                throw new AccessDeniedHttpException();
+            }
+        }
+
         $user = $this->getUserOr404($identifier);
 
         return new JsonResponse($this->normalizer->normalize($user, 'internal_api'));

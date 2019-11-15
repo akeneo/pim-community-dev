@@ -15,8 +15,8 @@
             >
         </div>
         <% if (errors[locale.code]) { %>
-            <div class="AknFieldContainer-footer">
-                <span class="validation-error">
+            <div class="AknFieldContainer-footer AknFieldContainer-validationErrors">
+                <span class="AknFieldContainer-validationError validation-error">
                     <span class="error-message"><%- errors[locale.code].message %></span>
                 </span>
             </div>
