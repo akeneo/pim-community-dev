@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Query;
+namespace Akeneo\Pim\Structure\Bundle\Storage\Sql;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\DBAL\Connection;
 
 /**
  * Find all sort orders equals or superior to the given attribute group sort order.
@@ -16,24 +16,14 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class FindAttributeGroupOrdersEqualOrSuperiorTo
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    /** @var Connection */
+    private $connection;
 
-    /**
-     * @param EntityManagerInterface $entityManager
-     */
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(Connection $connection)
     {
-        $this->entityManager = $entityManager;
+        $this->connection = $connection;
     }
 
-    /**
-     * @param AttributeGroup $attributeGroup
-     *
-     * @throws \Doctrine\DBAL\DBALException
-     *
-     * @return string[]
-     */
     public function execute(AttributeGroup $attributeGroup): array
     {
         $sql = <<<SQL
@@ -43,7 +33,7 @@ class FindAttributeGroupOrdersEqualOrSuperiorTo
         AND ag.code != :attribute_group_code
         ORDER BY ag.sort_order ASC
 SQL;
-        $query = $this->entityManager->getConnection()->executeQuery(
+        $query = $this->connection->executeQuery(
             $sql,
             [
                 'attribute_group_code' => $attributeGroup->getCode(),
@@ -51,8 +41,6 @@ SQL;
             ]
         );
 
-        $results = $query->fetchAll(\PDO::FETCH_COLUMN);
-
-        return $results;
+        return $query->fetchAll(\PDO::FETCH_COLUMN);
     }
 }

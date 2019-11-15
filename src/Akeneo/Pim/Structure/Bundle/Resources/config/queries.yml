@@ -28,3 +28,13 @@ services:
         class: 'Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql\AttributeIsAFamilyVariantAxis'
         arguments:
             - '@doctrine.orm.entity_manager'
+
+    akeneo.pim.structure.query.find_family_variants_identifiers_by_attribute_axes:
+        class: 'Akeneo\Pim\Structure\Bundle\Storage\Sql\FamilyVariantsByAttributeAxes'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    akeneo.pim.structure.query.find_attribute_group_orders_equal_or_superior_to:
+        class: 'Akeneo\Pim\Structure\Bundle\Storage\Sql\FindAttributeGroupOrdersEqualOrSuperiorTo'
+        arguments:
+            - '@database_connection'

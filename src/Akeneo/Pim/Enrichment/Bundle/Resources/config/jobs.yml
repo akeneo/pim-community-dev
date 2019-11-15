@@ -212,7 +212,7 @@ services:
             - '@pim_catalog.repository.attribute_group'
             - '@pim_connector.reader.file.csv_attribute_group'
             - '@pim_catalog.saver.attribute_group'
-            - '@pim_catalog.doctrine.query.find_attribute_group_orders_equal_or_superior_to'
+            - '@akeneo.pim.structure.query.find_attribute_group_orders_equal_or_superior_to'
             - '@validator'
 
     pim_connector.tasklet.xlsx_attribute_group_import.ensure_attribute_group_order:
@@ -221,7 +221,7 @@ services:
             - '@pim_catalog.repository.attribute_group'
             - '@pim_connector.reader.file.xlsx_attribute_group'
             - '@pim_catalog.saver.attribute_group'
-            - '@pim_catalog.doctrine.query.find_attribute_group_orders_equal_or_superior_to'
+            - '@akeneo.pim.structure.query.find_attribute_group_orders_equal_or_superior_to'
             - '@validator'
 
     pim_connector.job.csv_group_import:
