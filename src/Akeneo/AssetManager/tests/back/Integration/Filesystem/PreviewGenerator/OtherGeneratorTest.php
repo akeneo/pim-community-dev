@@ -6,6 +6,7 @@ namespace Akeneo\AssetManager\Integration\Filesystem\PreviewGenerator;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\OtherGenerator;
 use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\PreviewGeneratorInterface;
+use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\PreviewGeneratorRegistry;
 use Akeneo\AssetManager\Integration\PreviewGeneratorIntegrationTestCase;
 
 /**
