@@ -22,8 +22,10 @@ include make-file/*.mk
 ## Front
 ##
 
+.PHONY: node_modules
 node_modules: package.json
 	$(YARN_RUN) install --frozen-lockfile
+	$(YARN_RUN) check --integrity
 
 .PHONY: assets
 assets:
