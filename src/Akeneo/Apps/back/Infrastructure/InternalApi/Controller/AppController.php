@@ -6,6 +6,8 @@ namespace Akeneo\Apps\Infrastructure\InternalApi\Controller;
 
 use Akeneo\Apps\Application\Command\CreateAppCommand;
 use Akeneo\Apps\Application\Command\CreateAppHandler;
+use Akeneo\Apps\Application\Command\RegenerateAppSecretCommand;
+use Akeneo\Apps\Application\Command\RegenerateAppSecretHandler;
 use Akeneo\Apps\Application\Command\UpdateAppCommand;
 use Akeneo\Apps\Application\Command\UpdateAppHandler;
 use Akeneo\Apps\Application\Query\FetchAppsHandler;
@@ -39,6 +41,9 @@ class AppController
     /** @var UpdateAppHandler */
     private $updateAppHandler;
 
+    /** @var RegenerateAppSecretHandler */
+    private $regenerateAppSecretHandler;
+
     /** @var SecurityFacade */
     private $securityFacade;
 
@@ -47,12 +52,14 @@ class AppController
         FetchAppsHandler $fetchAppsHandler,
         FindAnAppHandler $findAnAppHandler,
         UpdateAppHandler $updateAppHandler,
+        RegenerateAppSecretHandler $regenerateAppSecretHandler,
         SecurityFacade $securityFacade
     ) {
         $this->createAppHandler = $createAppHandler;
         $this->fetchAppsHandler = $fetchAppsHandler;
         $this->findAnAppHandler = $findAnAppHandler;
         $this->updateAppHandler = $updateAppHandler;
+        $this->regenerateAppSecretHandler = $regenerateAppSecretHandler;
         $this->securityFacade = $securityFacade;
     }
 
@@ -134,6 +141,22 @@ class AppController
                 ['errors' => $errorList, 'message' => $e->getMessage()],
                 Response::HTTP_UNPROCESSABLE_ENTITY
             );
+        } catch (\Exception $e) {
+            return new JsonResponse(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
+
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
+    }
+
+    public function regenerateSecret(Request $request): JsonResponse
+    {
+        if (true !== $this->securityFacade->isGranted('akeneo_apps_manage_settings')) {
+            throw new AccessDeniedException();
+        }
+
+        $command = new RegenerateAppSecretCommand($request->get('code', ''));
+        try {
+            $this->regenerateAppSecretHandler->handle($command);
         } catch (\Exception $e) {
             return new JsonResponse(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }

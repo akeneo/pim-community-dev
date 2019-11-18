@@ -26,7 +26,7 @@ class DbalSelectAppWithCredentialsByCodeQuery implements SelectAppWithCredential
     public function execute(string $code): ?AppWithCredentials
     {
         $selectSQL = <<<SQL
-SELECT app.code, app.label, app.flow_type, client.random_id, client.secret
+SELECT app.code, app.label, app.flow_type, app.client_id, client.random_id, client.secret
 FROM akeneo_app app 
 INNER JOIN pim_api_client client on app.client_id = client.id
 WHERE code = :code
@@ -40,7 +40,7 @@ SQL;
             $dataRow['code'],
             $dataRow['label'],
             $dataRow['flow_type'],
-            $dataRow['random_id'],
+            $dataRow['client_id'] .'_'. $dataRow['random_id'],
             $dataRow['secret']
         );
     }

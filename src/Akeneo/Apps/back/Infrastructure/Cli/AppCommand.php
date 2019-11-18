@@ -6,6 +6,8 @@ namespace Akeneo\Apps\Infrastructure\Cli;
 
 use Akeneo\Apps\Application\Command\CreateAppCommand;
 use Akeneo\Apps\Application\Command\CreateAppHandler;
+use Akeneo\Apps\Application\Command\RegenerateAppSecretCommand;
+use Akeneo\Apps\Application\Command\RegenerateAppSecretHandler;
 use Akeneo\Apps\Application\Query\FetchAppsHandler;
 use Akeneo\Apps\Domain\Exception\ConstraintViolationListException;
 use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
@@ -15,6 +17,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
+ * TODO: To remove
+ * @deprecated
+ *
  * @author Romain Monceau <romain@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
@@ -25,21 +30,18 @@ class AppCommand extends Command
 
     /** @var CreateAppHandler */
     private $createAppHandler;
-
     /** @var FetchAppsHandler */
     private $fetchAppsHandler;
+    /** @var RegenerateAppSecretHandler */
+    private $regenerateAppSecretHandler;
 
-    public function __construct(CreateAppHandler $createAppHandler, FetchAppsHandler $fetchAppsHandler)
+    public function __construct(CreateAppHandler $createAppHandler, FetchAppsHandler $fetchAppsHandler, RegenerateAppSecretHandler $regenerateAppSecretHandler)
     {
         parent::__construct();
 
         $this->createAppHandler = $createAppHandler;
         $this->fetchAppsHandler = $fetchAppsHandler;
-    }
-
-    protected function configure()
-    {
-        $this->setHidden(true);
+        $this->regenerateAppSecretHandler = $regenerateAppSecretHandler;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): void
@@ -55,6 +57,9 @@ class AppCommand extends Command
         $this->displayErrors($errorList);
         $apps = $this->fetchAppsHandler->query();
         $output->writeln(sprintf('<info>%s apps</info>', count($apps)));
+
+//        $command = new RegenerateAppSecretCommand('AS_400');
+//        $this->regenerateAppSecretHandler->handle($command);
     }
 
     private function createApp(string $code, string $label, string $flowType): array
@@ -89,7 +94,7 @@ class AppCommand extends Command
                 'flowType' => FlowType::DATA_SOURCE,
             ],
             [
-                'code' => 'MagentoConnector',
+                'code' => 'magento',
                 'label' => 'Magento Connector',
                 'flowType' => FlowType::DATA_DESTINATION,
             ],
