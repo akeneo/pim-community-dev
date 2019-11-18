@@ -23,7 +23,7 @@ class TransformationCollection
 
     private function __construct(array $transformations)
     {
-        Assert::allIsInstanceOf(Transformation::class, $transformations);
+        Assert::allIsInstanceOf($transformations, Transformation::class);
         $this->transformations = $transformations;
     }
 

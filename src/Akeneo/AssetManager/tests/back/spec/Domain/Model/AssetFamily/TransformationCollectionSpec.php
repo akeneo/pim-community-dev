@@ -18,7 +18,7 @@ class TransformationCollectionSpec extends ObjectBehavior
         Transformation $transformation,
         Transformation $otherTransformation
     ) {
-        $this->beConstructedThrough('create',[
+        $this->beConstructedThrough('create', [
             [
                 $transformation,
                 new \stdClass(),
@@ -26,11 +26,5 @@ class TransformationCollectionSpec extends ObjectBehavior
             ],
         ]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
-    }
-
-    // TODO ATR-28
-    function it_cannot_have_two_transformations_with_the_same_target()
-    {
-
     }
 }

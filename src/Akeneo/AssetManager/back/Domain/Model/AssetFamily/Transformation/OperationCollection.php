@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation;
 
+use Webmozart\Assert\Assert;
+
 final class OperationCollection implements \IteratorAggregate
 {
     /** @var Operation[] */
@@ -20,6 +22,7 @@ final class OperationCollection implements \IteratorAggregate
 
     private function __construct(array $operations)
     {
+        Assert::allIsInstanceOf($operations, Operation::class);
         $this->operations = $operations;
     }
 
@@ -28,7 +31,7 @@ final class OperationCollection implements \IteratorAggregate
         return new \ArrayIterator($this->operations);
     }
 
-    public static function create(array $operations): OperationCollection
+    public static function create(array $operations): self
     {
         return new self($operations);
     }

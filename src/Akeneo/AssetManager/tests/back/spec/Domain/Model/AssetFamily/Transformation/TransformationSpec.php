@@ -7,7 +7,6 @@ namespace spec\Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Source;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
-use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use PhpSpec\ObjectBehavior;
 
 class TransformationSpec extends ObjectBehavior
@@ -30,7 +29,7 @@ class TransformationSpec extends ObjectBehavior
         ]);
     }
 
-    // TODO add more tests loke this
+    // TODO add more tests like this
     function it_throws_an_exception_if_target_is_equal_to_source(Source $source, Target $target)
     {
         $source->getAttributeIdentifierAsString()->willReturn('sourceIdentifier');
