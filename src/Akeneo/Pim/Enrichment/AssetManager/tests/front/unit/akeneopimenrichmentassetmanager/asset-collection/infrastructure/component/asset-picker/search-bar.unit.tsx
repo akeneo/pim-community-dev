@@ -91,7 +91,7 @@ test('It displays a result count', () => {
     </ThemeProvider>
   );
 
-  expect(getByText('pim_asset_manager.grid.counter')).toBeInTheDocument();
+  expect(getByText('pim_asset_manager.result_counter')).toBeInTheDocument();
 });
 
 test('It does not load channels on first rendering', async () => {

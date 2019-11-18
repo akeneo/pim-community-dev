@@ -7,21 +7,13 @@ const Container = styled.div`
   white-space: nowrap;
   color: ${(props: ThemedProps<void>) => props.theme.color.purple100};
   margin-left: 10px;
+  line-height: 16px;
 `;
 
-type ResultCountProps = {
-  resultCount: number | null;
-};
-const ResultCounter = ({resultCount = null}: ResultCountProps) => {
-  if (resultCount === null) return null;
-
-  return (
-    <Container>
-      {1 < resultCount
-        ? __('pim_asset_manager.grid.counter', {resultCount})
-        : __('pim_asset_manager.grid.counter_empty')}
-    </Container>
-  );
+type ResultCounterProps = {
+  count: number | null;
+  labelKey?: string;
 };
 
-export default ResultCounter;
+export const ResultCounter = ({count = null, labelKey}: ResultCounterProps) =>
+  count === null ? null : <Container>{__(labelKey || 'pim_asset_manager.result_counter', {count}, count)}</Container>;
