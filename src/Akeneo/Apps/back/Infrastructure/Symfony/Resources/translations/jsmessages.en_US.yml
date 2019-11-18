@@ -36,6 +36,11 @@ pim_apps:
         flash:
             success: App successfully created.
             error: Sorry, an error occurred while creating the App.
+    edit_app:
+        subtitle: Settings
+        flash:
+            success: App successfully updated.
+            error: Sorry, an error occurred while editing the App.
 
 akeneo_apps:
     constraint:

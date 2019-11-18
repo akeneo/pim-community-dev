@@ -52,7 +52,7 @@
 # Make sure the tests run by the targets defined here does not run by the main targets too
 #
 
-_APPS_YARN_RUN = $(YARN_EXEC) run --cwd=src/Akeneo/Apps/front/
+_APPS_YARN_RUN = $(YARN_RUN) run --cwd=src/Akeneo/Apps/front/
 
 # Tests Back
 

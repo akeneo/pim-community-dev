@@ -10,67 +10,41 @@ exports[`PageHeader should render 1`] = `
     <div
       className="AknTitleContainer-mainContainer"
     >
-      <div
-        className="AknTitleContainer-line"
-      >
+      <div>
         <div
-          className="AknTitleContainer-breadcrumbs"
+          className="AknTitleContainer-line"
         >
-          breadcrumb
-        </div>
-        <div
-          className="AknTitleContainer-buttonsContainer"
-        >
-          user buttons
           <div
-            className="AknTitleContainer-actionsContainer AknButtonList"
+            className="AknTitleContainer-breadcrumbs"
           >
-            button 1
-            button 2
+            breadcrumb
+          </div>
+          <div
+            className="AknTitleContainer-buttonsContainer"
+          >
+            user buttons
+            <div
+              className="AknTitleContainer-actionsContainer AknButtonList"
+            >
+              button 1
+              button 2
+            </div>
           </div>
         </div>
-      </div>
-      <div
-        className="AknTitleContainer-line"
-      >
         <div
-          className="AknTitleContainer-title"
+          className="AknTitleContainer-line"
         >
-          title
+          <div
+            className="AknTitleContainer-title"
+          >
+            title
+          </div>
+          <div
+            className="AknTitleContainer-state"
+          />
         </div>
-        <div
-          className="AknTitleContainer-state"
-        />
-      </div>
-      <div
-        className="AknTitleContainer-line"
-      >
-        <div
-          className="AknTitleContainer-context AknButtonList"
-        />
-      </div>
-      <div
-        className="AknTitleContainer-line"
-      >
-        <div
-          className="AknTitleContainer-meta AknButtonList"
-        />
       </div>
     </div>
-  </div>
-  <div
-    className="AknTitleContainer-line"
-  >
-    <div
-      className="AknTitleContainer-navigation"
-    />
-  </div>
-  <div
-    className="AknTitleContainer-line"
-  >
-    <div
-      className="AknTitleContainer-search"
-    />
   </div>
 </header>
 `;

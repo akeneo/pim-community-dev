@@ -1,24 +1,51 @@
-import React from 'react';
+import React, {useRef, useState} from 'react';
 import {useHistory, useParams} from 'react-router';
+import {App} from '../../../domain/apps/app.interface';
+import {FlowType} from '../../../domain/apps/flow-type.enum';
 import {PimView} from '../../../infrastructure/pim-view/PimView';
-import {ApplyButton, Breadcrumb, BreadcrumbItem, PageHeader, Page} from '../../common';
-import {BreadcrumbRouterLink} from '../../shared/router';
+import {ApplyButton, Breadcrumb, BreadcrumbItem, Page, PageHeader} from '../../common';
+import {useFetch} from '../../shared/fetch';
+import {isErr} from '../../shared/fetch/result';
+import {BreadcrumbRouterLink, useRoute} from '../../shared/router';
 import {Translate} from '../../shared/translate';
+import {AppEditForm} from '../components/AppEditForm';
+import imgUrl from '../../common/assets/illustrations/api.svg';
 
 export const AppEdit = () => {
-    const {appId} = useParams();
     const history = useHistory();
+
+    const formRef = useRef<{submit: () => void}>(null);
+    const [formState, setFormState] = useState({hasUnsavedChanges: false, isValid: false});
+
+    const {code} = useParams() as {code: string};
+    const result = useFetch<{code: string; label: string; flow_type: FlowType}>(
+        useRoute('akeneo_apps_get_rest', {code})
+    );
+    if (isErr(result)) {
+        history.push('/apps');
+        return <></>;
+    }
+    if (undefined === result.data) {
+        return <></>;
+    }
+    const app: App = {
+        code: result.data.code,
+        label: result.data.label,
+        flowType: result.data.flow_type,
+    };
+
+    const handleSave = () => formRef.current && formRef.current.submit();
+
+    const handleChange = ({hasUnsavedChanges, isValid}: {hasUnsavedChanges: boolean; isValid: boolean}) =>
+        setFormState({hasUnsavedChanges, isValid});
 
     const breadcrumb = (
         <Breadcrumb>
             <BreadcrumbRouterLink route={'oro_config_configuration_system'}>
                 <Translate id='pim_menu.tab.system' />
             </BreadcrumbRouterLink>
-            <BreadcrumbItem onClick={() => history.push('/apps')}>
+            <BreadcrumbItem onClick={() => history.push('/apps')} isLast={false}>
                 <Translate id='pim_menu.item.apps' />
-            </BreadcrumbItem>
-            <BreadcrumbItem>
-                <Translate id='TRANSLATION_KEY.EDIT_APP' />
             </BreadcrumbItem>
         </Breadcrumb>
     );
@@ -31,17 +58,36 @@ export const AppEdit = () => {
     );
 
     const saveButton = (
-        <ApplyButton onClick={() => console.log('SAVE')} classNames={['AknButtonList-item']}>
-            <Translate id='TRANSLATION_KEY.SAVE' />
+        <ApplyButton
+            onClick={handleSave}
+            disabled={!formState.hasUnsavedChanges || !formState.isValid}
+            classNames={['AknButtonList-item']}
+        >
+            <Translate id='pim_common.save' />
         </ApplyButton>
+    );
+
+    const unsavedChangesMessage = (
+        <div className='updated-status'>
+            <span className='AknState'>
+                <Translate id='pim_common.entity_updated' />
+            </span>
+        </div>
     );
 
     return (
         <Page>
-            <PageHeader breadcrumb={breadcrumb} buttons={[saveButton]} userButtons={userButtons}>
-                <Translate id='pim_menu.item.apps' />
+            <PageHeader
+                breadcrumb={breadcrumb}
+                buttons={[saveButton]}
+                userButtons={userButtons}
+                state={formState.hasUnsavedChanges && unsavedChangesMessage}
+                imageSrc={imgUrl}
+            >
+                {app.label}
             </PageHeader>
-            EditApp {appId}
+
+            <AppEditForm ref={formRef} app={app} onChange={handleChange} />
         </Page>
     );
 };
