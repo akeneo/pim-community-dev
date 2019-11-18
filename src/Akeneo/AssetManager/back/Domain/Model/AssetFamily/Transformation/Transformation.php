@@ -15,7 +15,7 @@ namespace Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation;
 
 use Webmozart\Assert\Assert;
 
-final class Transformation
+class Transformation
 {
     /** @var Source */
     private $source;
