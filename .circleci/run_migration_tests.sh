@@ -22,6 +22,7 @@ echo "Export env vars from .env..."
 export $(cat .env)
 
 echo "Checkout master branch..."
+git branch -D realmaster || true
 git checkout -b realmaster --track origin/master
 
 echo "Clean cache..."
