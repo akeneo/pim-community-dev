@@ -26,16 +26,16 @@ git branch -D realmaster || true
 git checkout -b realmaster --track origin/master
 
 echo "Clean cache..."
-make cache
+APP_ENV=test make cache
 
 echo "Install master database and index..."
-make database
+APP_ENV=test make database
 
 echo "Checkout PR branch..."
 git checkout $PR_BRANCH
 
 echo "Clean cache..."
-make cache
+APP_ENV=test make cache
 
 echo "Launch branch migrations..."
 docker-compose run -u www-data php bin/console doctrine:migrations:migrate --env=test --no-interaction
@@ -47,7 +47,7 @@ echo "Dump master with migrations index..."
 curl -XGET 'localhost:9210/_all/_mapping'|json_pp --json_opt=canonical,pretty > /tmp/dump_master_index_with_migrations.json
 
 echo "Install branch database and index..."
-make database
+APP_ENV=test make database
 
 echo "Dump branch database..."
 docker-compose exec -T mysql mysqldump --no-data --skip-opt --skip-comments --password=$APP_DATABASE_PASSWORD --user=$APP_DATABASE_USER $APP_DATABASE_NAME > /tmp/dump_master_database.sql

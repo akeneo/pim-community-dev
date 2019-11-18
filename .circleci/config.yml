@@ -319,7 +319,7 @@ jobs:
                 command: sudo chown -R 1000:1000 ../project/var
         -   run:
                 name: Test missing database and index migrations
-                command: APP_ENV=test .circleci/run_migration_tests.sh $CIRCLE_BRANCH
+                command: .circleci/run_migration_tests.sh $CIRCLE_BRANCH
 
 workflows:
   version: 2
