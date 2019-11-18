@@ -60,7 +60,7 @@ const SearchBar = ({searchValue, onSearchChange, resultCount, context, onContext
   setLocaleIfNotExists(onContextChange, channels, context.channel, context.locale);
 
   return (
-    <Container data-container='search-bar'>
+    <Container data-container="search-bar">
       <SearchField
         value={searchValue}
         onChange={(newSearchValue: string) => {
