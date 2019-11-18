@@ -3,7 +3,6 @@
 namespace spec\Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollection;
 use PhpSpec\ObjectBehavior;
 
 class OperationCollectionSpec extends ObjectBehavior
@@ -11,7 +10,7 @@ class OperationCollectionSpec extends ObjectBehavior
     function it_creates_an_operation_collection(Operation $operation)
     {
         $this->beConstructedThrough('create', [[$operation]]);
-        $this->shouldHaveType(OperationCollection::class);
+        $this->getWrappedObject();
     }
 
     function it_throws_an_exception_when_a_collection_item_is_not_an_operation(Operation $thumbnail, Operation $resize)

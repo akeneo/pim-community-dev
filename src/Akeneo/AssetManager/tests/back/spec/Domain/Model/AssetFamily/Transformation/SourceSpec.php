@@ -54,9 +54,10 @@ class SourceSpec extends ObjectBehavior
                 null
             ]
         );
+        $this->getWrappedObject();
     }
 
-    function it_creates_a_source_for_a_non_scopable_localizable_attribute()
+    function it_creates_a_source_for_a_non_scopable_and_localizable_attribute()
     {
         $this->beConstructedThrough(
             'create',
@@ -66,6 +67,7 @@ class SourceSpec extends ObjectBehavior
                 LocaleIdentifier::fromCode('en_US')
             ]
         );
+        $this->getWrappedObject();
     }
 
     function it_creates_a_source_for_a_scopable_non_localizable_attribute()
@@ -78,6 +80,7 @@ class SourceSpec extends ObjectBehavior
                 null
             ]
         );
+        $this->getWrappedObject();
     }
 
     function it_creates_a_source_for_a_scopable_localizable_attribute()

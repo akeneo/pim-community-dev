@@ -51,6 +51,7 @@ class TargetSpec extends ObjectBehavior
             null,
             null
         ]);
+        $this->getWrappedObject();
     }
 
     function it_creates_a_target_for_a_non_scopable_localizable_attribute()
@@ -63,6 +64,7 @@ class TargetSpec extends ObjectBehavior
                 LocaleIdentifier::fromCode('en_US')
             ]
         );
+        $this->getWrappedObject();
     }
 
     function it_creates_a_target_for_a_scopable_non_localizable_attribute()
@@ -75,6 +77,7 @@ class TargetSpec extends ObjectBehavior
                 null
             ]
         );
+        $this->getWrappedObject();
     }
 
     function it_creates_a_target_for_a_scopable_localizable_attribute()
@@ -87,6 +90,7 @@ class TargetSpec extends ObjectBehavior
                 LocaleIdentifier::fromCode('fr_FR')
             ]
         );
+        $this->getWrappedObject();
     }
 
     function it_throws_an_exception_when_providing_a_channel_with_a_non_scopable_attribute()

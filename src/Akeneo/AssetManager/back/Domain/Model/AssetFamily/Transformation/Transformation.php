@@ -39,7 +39,7 @@ class Transformation
         $this->operations = $operations;
     }
 
-    public function create(Source $source, Target $target, OperationCollection $operations): self
+    public static function create(Source $source, Target $target, OperationCollection $operations): self
     {
         return new self($source, $target, $operations);
     }
