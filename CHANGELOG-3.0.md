@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.54 (2019-11-18)
+
 ## Bug fixes
 
 - PIM-8985: Fix label translation on family product selection
