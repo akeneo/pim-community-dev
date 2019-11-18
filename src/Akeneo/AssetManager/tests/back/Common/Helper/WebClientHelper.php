@@ -28,7 +28,7 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class WebClientHelper
 {
-    private const SHARED_RESPONSES_FILE_PATH_PREFIX = __DIR__ . '/../../../shared/responses/';
+    private const SHARED_RESPONSES_FILE_PATH_PREFIX = __DIR__ . '/../../Integration/Resources/config/responses/';
 
     /** @var RouterInterface */
     private $router;
