@@ -10,6 +10,7 @@ services:
             - '@security.token_storage'
             - '@pim_internal_api_serializer'
             - '@pim_user.repository.user'
+            - '@oro_security.security_facade'
 
     pim_user.controller.security_rest:
         class: '%pim_user.controller.security_rest.class%'
