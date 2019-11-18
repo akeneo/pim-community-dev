@@ -5,7 +5,7 @@ export default React.memo(({count, inline = false}: {count: number; inline?: boo
   return (
     <div className={`AknFilterBox-itemsCounter ${inline ? 'AknFilterBox-itemsCounter--inline' : ''}`}>
       {__(
-        'pim_asset_manager.grid.counter',
+        'pim_asset_manager.result_counter',
         {
           count: count,
         },

@@ -5,7 +5,7 @@ import __ from 'akeneoassetmanager/tools/translator';
 import Locale, {localeExists, LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import Channel, {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import SearchField from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/search-bar/search-field';
-import ResultCounter from 'akeneopimenrichmentassetmanager/platform/component/common/result-counter';
+import {ResultCounter} from 'akeneopimenrichmentassetmanager/platform/component/common/result-counter';
 import {Separator} from 'akeneopimenrichmentassetmanager/platform/component/common';
 import LocaleSwitcher from 'akeneoassetmanager/application/component/app/locale-switcher';
 import ChannelSwitcher from 'akeneoassetmanager/application/component/app/channel-switcher';
@@ -67,7 +67,7 @@ const SearchBar = ({searchValue, onSearchChange, resultCount, context, onContext
           onSearchChange(newSearchValue);
         }}
       />
-      <ResultCounter resultCount={resultCount} />
+      <ResultCounter count={resultCount} />
       <AdjustedSeparator />
       <ChannelSwitcher
         channelCode={context.channel}

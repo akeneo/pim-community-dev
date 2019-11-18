@@ -2,13 +2,13 @@ import * as React from 'react';
 import styled from 'styled-components';
 import {Asset} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
-import AssetCounter from 'akeneopimenrichmentassetmanager/platform/component/common/asset-counter';
 import __ from 'akeneoassetmanager/tools/translator';
 import {Attribute, getAttributeLabel} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
 import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import {Spacer} from 'akeneopimenrichmentassetmanager/platform/component/common';
 import {getAssetPreview, MediaPreviewTypes} from 'akeneoassetmanager/tools/media-url-generator';
+import {ResultCounter} from 'akeneopimenrichmentassetmanager/platform/component/common/result-counter';
 
 const AssetThumbnail = styled.img<{highlighted: boolean}>`
   border: 2px solid
@@ -53,7 +53,7 @@ export const Carousel = ({
     <React.Fragment>
       <Header>
         <Title>{getAttributeLabel(productAttribute, context.locale)}</Title>
-        <AssetCounter resultCount={assetCollection.length} />
+        <ResultCounter count={assetCollection.length} labelKey={'pim_asset_manager.asset_collection.asset_counter'} />
         <Spacer />
       </Header>
       {assetCollection.map(asset => (
