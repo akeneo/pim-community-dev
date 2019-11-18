@@ -59,7 +59,7 @@ import {
 } from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {AssetPicker} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker';
 import LockIcon from 'akeneopimenrichmentassetmanager/platform/component/visual/icon/lock';
-import AssetCounter from 'akeneopimenrichmentassetmanager/platform/component/common/asset-counter';
+import {ResultCounter} from 'akeneopimenrichmentassetmanager/platform/component/common/result-counter';
 
 type ListStateProps = {
   attributes: Attribute[];
@@ -153,7 +153,7 @@ const DisplayValues = ({
               </IncompleteIndicator>
             ) : null}
             <Spacer />
-            <AssetCounter resultCount={value.data.length} />
+            <ResultCounter count={value.data.length} labelKey={'pim_asset_manager.asset_collection.asset_counter'} />
             <Separator />
             {value.channel !== null || value.locale !== null ? (
               <React.Fragment>
@@ -235,14 +235,14 @@ const List = ({
       ) : (
         <React.Fragment>
           <HelperSection>
-            <HelperIcon src="/bundles/pimui/images/illustrations/Asset.svg" />
+            <HelperIcon src='/bundles/pimui/images/illustrations/Asset.svg' />
             <HelperSeparator />
             <HelperTitle>
               👋 {__('pim_asset_manager.asset_collection.helper.title')}
               <HelperText>
                 {__('pim_asset_manager.asset_collection.helper.text', {family: familyLabel})}
                 <br />
-                <a href="#">{__('pim_asset_manager.asset_collection.helper.link')}</a>
+                <a href='#'>{__('pim_asset_manager.asset_collection.helper.link')}</a>
               </HelperText>
             </HelperTitle>
           </HelperSection>
@@ -252,7 +252,7 @@ const List = ({
             <NoDataText>
               {__('pim_asset_manager.asset_collection.no_asset.text', {family: familyLabel})}
               <Spacer />
-              <a href="#">{__('pim_asset_manager.asset_collection.helper.link')}</a>
+              <a href='#'>{__('pim_asset_manager.asset_collection.helper.link')}</a>
             </NoDataText>
           </NoDataSection>
         </React.Fragment>
