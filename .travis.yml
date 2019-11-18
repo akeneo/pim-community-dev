@@ -3,10 +3,10 @@ language: php
 php:
     - 7.3
 
-# Only build branches starting by "einrich-""
+# Only build branches starting by einrich- or assets- or AST-
 branches:
     only:
-        - /^(einrich|assets)-?.*$/
+        - /^(einrich|assets|AST)-?.*$/
 
 # Extra dependencies
 services:
@@ -73,7 +73,7 @@ jobs:
               - docker-compose run -u www-data --rm php php vendor/bin/phpunit -c src/Akeneo/ReferenceEntity/tests/back --testsuite ReferenceEntity_Integration_Test
 
         - stage: Asset Manager Tests
-          if: branch =~ /^assets-?.*$/
+          if: branch =~ /^(assets|AST)-?.*$/
           script:
               - make unit-front
               - make asset-manager-acceptance-front
