@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation;
 
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
-use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Webmozart\Assert\Assert;
 
 class Source
@@ -25,33 +25,33 @@ class Source
     /** @var AttributeIdentifier */
     private $attributeIdentifier;
 
-    /** @var ChannelIdentifier|null */
-    private $channelIdentifier;
+    /** @var ChannelReference */
+    private $channelReference;
 
-    /** @var LocaleIdentifier|null */
-    private $localeIdentifier;
+    /** @var LocaleReference */
+    private $localeReference;
 
     private function __construct(
         AttributeIdentifier $attributeIdentifier,
-        ?ChannelIdentifier $channelIdentifier,
-        ?LocaleIdentifier $localeIdentifier
+        ChannelReference $channelReference,
+        LocaleReference $localeReference
     ) {
         $this->attributeIdentifier = $attributeIdentifier;
-        $this->channelIdentifier = $channelIdentifier;
-        $this->localeIdentifier = $localeIdentifier;
+        $this->channelReference = $channelReference;
+        $this->localeReference = $localeReference;
     }
 
     public static function create(
         AbstractAttribute $attribute,
-        ?ChannelIdentifier $channelIdentifier,
-        ?LocaleIdentifier $localeIdentifier
+        ChannelReference $channelReference,
+        LocaleReference $localeReference
     ): self {
         //TODO: see if we have to add explicit error message
         Assert::isInstanceOf($attribute, ImageAttribute::class);
-        $attribute->hasValuePerChannel() ? Assert::notNull($channelIdentifier) : Assert::null($channelIdentifier);
-        $attribute->hasValuePerLocale() ? Assert::notNull($localeIdentifier) : Assert::null($localeIdentifier);
+        $attribute->hasValuePerChannel() ? Assert::false($channelReference->isEmpty()) : Assert::true($channelReference->isEmpty());
+        $attribute->hasValuePerLocale() ? Assert::false($localeReference->isEmpty()) : Assert::true($localeReference->isEmpty());
 
-        return new self($attribute->getIdentifier(), $channelIdentifier, $localeIdentifier);
+        return new self($attribute->getIdentifier(), $channelReference, $localeReference);
     }
 
     public function getAttributeIdentifierAsString(): string
@@ -59,13 +59,13 @@ class Source
         return $this->attributeIdentifier->stringValue();
     }
 
-    public function getChannelIdentifierAsString(): ?string
+    public function getChannelReference(): ChannelReference
     {
-        return $this->channelIdentifier ? $this->channelIdentifier->normalize() : null;
+        return $this->channelReference;
     }
 
-    public function getLocaleIdentifierAsString(): ?string
+    public function getLocaleReference(): LocaleReference
     {
-        return $this->localeIdentifier ? $this->localeIdentifier->normalize() : null;
+        return $this->localeReference;
     }
 }

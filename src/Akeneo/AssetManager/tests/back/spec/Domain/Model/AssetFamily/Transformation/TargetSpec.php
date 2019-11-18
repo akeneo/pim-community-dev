@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation;
 
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
@@ -39,29 +41,32 @@ class TargetSpec extends ObjectBehavior
             AttributeLimit::limitless(),
             AttributeLimit::limitless()
         );
-        $this->beConstructedThrough('create', [$attribute, null, null]);
+        $this->beConstructedThrough('create', [$attribute, ChannelReference::noReference(), LocaleReference::noReference()]);
 
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
     function it_creates_a_target_for_a_non_scopable_non_localizable_attribute()
     {
-        $this->beConstructedThrough('create', [
-            $this->createImageAttribute(false, false),
-            null,
-            null
-        ]);
+        $this->beConstructedThrough(
+            'create',
+            [
+                $this->createImageAttribute(false, false),
+                ChannelReference::noReference(),
+                LocaleReference::noReference()
+            ]
+        );
         $this->getWrappedObject();
     }
 
-    function it_creates_a_target_for_a_non_scopable_localizable_attribute()
+    function it_creates_a_target_for_a_non_scopable_and_localizable_attribute()
     {
         $this->beConstructedThrough(
             'create',
             [
                 $this->createImageAttribute(false, true),
-                null,
-                LocaleIdentifier::fromCode('en_US')
+                ChannelReference::noReference(),
+                LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US'))
             ]
         );
         $this->getWrappedObject();
@@ -73,8 +78,8 @@ class TargetSpec extends ObjectBehavior
             'create',
             [
                 $this->createImageAttribute(true, false),
-                ChannelIdentifier::fromCode('ecommerce'),
-                null
+                ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
+                LocaleReference::noReference()
             ]
         );
         $this->getWrappedObject();
@@ -86,8 +91,8 @@ class TargetSpec extends ObjectBehavior
             'create',
             [
                 $this->createImageAttribute(true, true),
-                ChannelIdentifier::fromCode('tablet'),
-                LocaleIdentifier::fromCode('fr_FR')
+                ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('tablet')),
+                LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR'))
             ]
         );
         $this->getWrappedObject();
@@ -99,8 +104,8 @@ class TargetSpec extends ObjectBehavior
             'create',
             [
                 $this->createImageAttribute(false, false),
-                ChannelIdentifier::fromCode('ecommerce'),
-                null
+                ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
+                LocaleReference::noReference()
             ]
         );
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
@@ -112,8 +117,8 @@ class TargetSpec extends ObjectBehavior
             'create',
             [
                 $this->createImageAttribute(true, false),
-                null,
-                null
+                ChannelReference::noReference(),
+                LocaleReference::noReference()
             ]
         );
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
@@ -125,8 +130,8 @@ class TargetSpec extends ObjectBehavior
             'create',
             [
                 $this->createImageAttribute(false, false),
-                null,
-                LocaleIdentifier::fromCode('en_US'),
+                ChannelReference::noReference(),
+                LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
             ]
         );
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
@@ -138,8 +143,8 @@ class TargetSpec extends ObjectBehavior
             'create',
             [
                 $this->createImageAttribute(false, true),
-                null,
-                null,
+                ChannelReference::noReference(),
+                LocaleReference::noReference(),
             ]
         );
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();

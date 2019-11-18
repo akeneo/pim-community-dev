@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation;
 
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Source;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
+use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use PhpSpec\ObjectBehavior;
 
 class TransformationSpec extends ObjectBehavior
@@ -16,11 +20,11 @@ class TransformationSpec extends ObjectBehavior
         $source->getAttributeIdentifierAsString()->willReturn('sourceIdentifier');
         $target->getAttributeIdentifierAsString()->willReturn('targetIdentifier');
 
-        $source->getChannelIdentifierAsString()->willReturn(null);
-        $target->getChannelIdentifierAsString()->willReturn(null);
+        $source->getChannelReference()->willReturn(ChannelReference::noReference());
+        $target->getChannelReference()->willReturn(ChannelReference::noReference());
 
-        $source->getLocaleIdentifierAsString()->willReturn(null);
-        $target->getLocaleIdentifierAsString()->willReturn(null);
+        $source->getLocaleReference()->willReturn(LocaleReference::noReference());
+        $target->getLocaleReference()->willReturn(LocaleReference::noReference());
 
         $this->beConstructedThrough('create', [
             $source,
@@ -35,11 +39,11 @@ class TransformationSpec extends ObjectBehavior
         $source->getAttributeIdentifierAsString()->willReturn('sourceIdentifier');
         $target->getAttributeIdentifierAsString()->willReturn('sourceIdentifier');
 
-        $source->getChannelIdentifierAsString()->willReturn('ecommerce');
-        $target->getChannelIdentifierAsString()->willReturn('print');
+        $source->getChannelReference()->willReturn(ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')));
+        $target->getChannelReference()->willReturn(ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('print')));
 
-        $source->getLocaleIdentifierAsString()->willReturn(null);
-        $target->getLocaleIdentifierAsString()->willReturn(null);
+        $source->getLocaleReference()->willReturn(LocaleReference::noReference());
+        $target->getLocaleReference()->willReturn(LocaleReference::noReference());
 
         $this->beConstructedThrough('create', [
             $source,
@@ -55,11 +59,11 @@ class TransformationSpec extends ObjectBehavior
         $source->getAttributeIdentifierAsString()->willReturn('sourceIdentifier');
         $target->getAttributeIdentifierAsString()->willReturn('sourceIdentifier');
 
-        $source->getChannelIdentifierAsString()->willReturn('ecommerce');
-        $target->getChannelIdentifierAsString()->willReturn('ecommerce');
+        $source->getChannelReference()->willReturn(ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')));
+        $target->getChannelReference()->willReturn(ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')));
 
-        $source->getLocaleIdentifierAsString()->willReturn('en_US');
-        $target->getLocaleIdentifierAsString()->willReturn('fr_FR');
+        $source->getLocaleReference()->willReturn(LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')));
+        $target->getLocaleReference()->willReturn(LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')));
 
         $this->beConstructedThrough('create', [
             $source,
@@ -74,11 +78,11 @@ class TransformationSpec extends ObjectBehavior
         $source->getAttributeIdentifierAsString()->willReturn('sourceIdentifier');
         $target->getAttributeIdentifierAsString()->willReturn('sourceIdentifier');
 
-        $source->getChannelIdentifierAsString()->willReturn(null);
-        $target->getChannelIdentifierAsString()->willReturn(null);
+        $source->getChannelReference()->willReturn(ChannelReference::noReference());
+        $target->getChannelReference()->willReturn(ChannelReference::noReference());
 
-        $source->getLocaleIdentifierAsString()->willReturn(null);
-        $target->getLocaleIdentifierAsString()->willReturn(null);
+        $source->getLocaleReference()->willReturn(LocaleReference::noReference());
+        $target->getLocaleReference()->willReturn(LocaleReference::noReference());
 
         $this->beConstructedThrough('create', [
             $source,
@@ -94,11 +98,11 @@ class TransformationSpec extends ObjectBehavior
         $source->getAttributeIdentifierAsString()->willReturn('sourceIdentifier');
         $target->getAttributeIdentifierAsString()->willReturn('sourceIdentifier');
 
-        $source->getChannelIdentifierAsString()->willReturn('ecommerce');
-        $target->getChannelIdentifierAsString()->willReturn('ecommerce');
+        $source->getChannelReference()->willReturn(ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')));
+        $target->getChannelReference()->willReturn(ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')));
 
-        $source->getLocaleIdentifierAsString()->willReturn(null);
-        $target->getLocaleIdentifierAsString()->willReturn(null);
+        $source->getLocaleReference()->willReturn(LocaleReference::noReference());
+        $target->getLocaleReference()->willReturn(LocaleReference::noReference());
 
         $this->beConstructedThrough('create', [
             $source,
@@ -114,11 +118,11 @@ class TransformationSpec extends ObjectBehavior
         $source->getAttributeIdentifierAsString()->willReturn('sourceIdentifier');
         $target->getAttributeIdentifierAsString()->willReturn('sourceIdentifier');
 
-        $source->getChannelIdentifierAsString()->willReturn(null);
-        $target->getChannelIdentifierAsString()->willReturn(null);
+        $source->getChannelReference()->willReturn(ChannelReference::noReference());
+        $target->getChannelReference()->willReturn(ChannelReference::noReference());
 
-        $source->getLocaleIdentifierAsString()->willReturn('en_US');
-        $target->getLocaleIdentifierAsString()->willReturn('en_US');
+        $source->getLocaleReference()->willReturn(LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')));
+        $target->getLocaleReference()->willReturn(LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')));
 
         $this->beConstructedThrough('create', [
             $source,
@@ -134,11 +138,11 @@ class TransformationSpec extends ObjectBehavior
         $source->getAttributeIdentifierAsString()->willReturn('sourceIdentifier');
         $target->getAttributeIdentifierAsString()->willReturn('sourceIdentifier');
 
-        $source->getChannelIdentifierAsString()->willReturn('ecommerce');
-        $target->getChannelIdentifierAsString()->willReturn('ecommerce');
+        $source->getChannelReference()->willReturn(ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')));
+        $target->getChannelReference()->willReturn(ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')));
 
-        $source->getLocaleIdentifierAsString()->willReturn('en_US');
-        $target->getLocaleIdentifierAsString()->willReturn('en_US');
+        $source->getLocaleReference()->willReturn(LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')));
+        $target->getLocaleReference()->willReturn(LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')));
 
         $this->beConstructedThrough('create', [
             $source,

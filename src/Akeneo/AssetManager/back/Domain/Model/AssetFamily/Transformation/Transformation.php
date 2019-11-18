@@ -30,8 +30,8 @@ class Transformation
     {
         Assert::false(
             $source->getAttributeIdentifierAsString() === $target->getAttributeIdentifierAsString() &&
-            $source->getChannelIdentifierAsString() === $target->getChannelIdentifierAsString() &&
-            $source->getLocaleIdentifierAsString() === $target->getLocaleIdentifierAsString()
+            $source->getChannelReference()->equals($target->getChannelReference()) &&
+            $source->getLocaleReference()->equals($target->getLocaleReference())
         );
 
         $this->source = $source;
