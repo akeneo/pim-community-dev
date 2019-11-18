@@ -20,7 +20,7 @@ use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Webmozart\Assert\Assert;
 
-final class Source
+class Source
 {
     /** @var AttributeIdentifier */
     private $attributeIdentifier;
@@ -52,5 +52,20 @@ final class Source
         $attribute->hasValuePerLocale() ? Assert::notNull($localeIdentifier) : Assert::null($localeIdentifier);
 
         return new self($attribute->getIdentifier(), $channelIdentifier, $localeIdentifier);
+    }
+
+    public function getAttributeIdentifierAsString(): string
+    {
+        return $this->attributeIdentifier->stringValue();
+    }
+
+    public function getChannelIdentifierAsString(): ?string
+    {
+        return $this->channelIdentifier ? $this->channelIdentifier->normalize() : null;
+    }
+
+    public function getLocaleIdentifierAsString(): ?string
+    {
+        return $this->localeIdentifier ? $this->localeIdentifier->normalize() : null;
     }
 }

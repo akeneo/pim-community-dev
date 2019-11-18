@@ -11,10 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation;
+namespace Akeneo\AssetManager\Domain\Model\AssetFamily;
 
-final class TransformationCollection
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
+
+class TransformationCollection
 {
-    /** @var TransformationCollection */
+    /** @var Transformation[] */
     private $transformations;
 }

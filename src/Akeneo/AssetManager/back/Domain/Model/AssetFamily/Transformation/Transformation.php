@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation;
 
+use Webmozart\Assert\Assert;
+
 final class Transformation
 {
     /** @var Source */
@@ -24,5 +26,21 @@ final class Transformation
     /** @var OperationCollection */
     private $operations;
 
+    private function __construct(Source $source, Target $target, OperationCollection $operations)
+    {
+        Assert::false(
+            $source->getAttributeIdentifierAsString() === $target->getAttributeIdentifierAsString() &&
+            $source->getChannelIdentifierAsString() === $target->getChannelIdentifierAsString() &&
+            $source->getLocaleIdentifierAsString() === $target->getLocaleIdentifierAsString()
+        );
 
+        $this->source = $source;
+        $this->target = $target;
+        $this->operations = $operations;
+    }
+
+    public function create(Source $source, Target $target, OperationCollection $operations): self
+    {
+        return new self($source, $target, $operations);
+    }
 }
