@@ -9,5 +9,3 @@
     4. [Search of product and product model](enrichment/search_specification_on_elasticsearch.rst)
 3. [Standard format](standard_format.md)
 4. [Running the tests](tests/running_the_tests.md)
-5. Frontend
-    1. [Yarn workspaces](frontend/yarn-workspaces.md)
