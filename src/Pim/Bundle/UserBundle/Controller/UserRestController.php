@@ -76,6 +76,7 @@ class UserRestController
         $token = $this->tokenStorage->getToken();
         $currentUserId = null !== $token ? $token->getUser()->getId() : null;
 
+        // To not report in 3.x (it's already fixed)
         if (null !== $this->securityFacade) {
             if ($currentUserId !== $user->getId() &&
                 !$this->securityFacade->isGranted('pim_user_user_index')) {
