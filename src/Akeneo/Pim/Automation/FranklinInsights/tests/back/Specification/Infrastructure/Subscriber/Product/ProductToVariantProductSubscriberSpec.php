@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Product;
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionIsActiveHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionIsActiveQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductHandler;
@@ -33,12 +34,11 @@ class ProductToVariantProductSubscriberSpec extends ObjectBehavior
 {
     public function let(
         UnsubscribeProductHandler $unsubscribeProductHandler,
-        GetConnectionStatusHandler $connectionStatusHandler
+        GetConnectionIsActiveHandler $connectionIsActiveHandler
     ): void {
-        $this->beConstructedWith($unsubscribeProductHandler, $connectionStatusHandler);
+        $this->beConstructedWith($unsubscribeProductHandler, $connectionIsActiveHandler);
 
-        $connectionStatus = new ConnectionStatus(true, false, false, 0);
-        $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
+        $connectionIsActiveHandler->handle(new GetConnectionIsActiveQuery())->willReturn(true);
     }
 
     public function it_is_a_product_family_removal_subscriber(): void
@@ -82,13 +82,12 @@ class ProductToVariantProductSubscriberSpec extends ObjectBehavior
         GenericEvent $event,
         ProductInterface $product,
         UnsubscribeProductHandler $unsubscribeProductHandler,
-        $connectionStatusHandler
+        $connectionIsActiveHandler
     ): void {
         $event->getSubject()->willReturn($product);
         $product->isVariant()->willReturn(true);
 
-        $connectionStatus = new ConnectionStatus(false, false, false, 0);
-        $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
+        $connectionIsActiveHandler->handle(new GetConnectionIsActiveQuery())->willReturn(false);
 
         $unsubscribeProductHandler->handle()->shouldNotBeCalled();
 

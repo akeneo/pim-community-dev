@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Product;
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionIsActiveHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionIsActiveQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductHandler;
@@ -42,16 +43,15 @@ class ProductFamilyUpdateSubscriberSpec extends ObjectBehavior
         SelectProductFamilyIdQuery $selectProductFamilyIdQuery,
         UnsubscribeProductHandler $unsubscribeProductHandler,
         UpdateSubscriptionFamilyHandler $updateSubscriptionFamilyHandler,
-        GetConnectionStatusHandler $connectionStatusHandler
+        GetConnectionIsActiveHandler $connectionIsActiveHandler
     ): void {
-        $connectionStatus = new ConnectionStatus(true, false, false, 0);
-        $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
+        $connectionIsActiveHandler->handle(new GetConnectionIsActiveQuery())->willReturn(true);
 
         $this->beConstructedWith(
             $selectProductFamilyIdQuery,
             $unsubscribeProductHandler,
             $updateSubscriptionFamilyHandler,
-            $connectionStatusHandler
+            $connectionIsActiveHandler
         );
     }
 
@@ -104,15 +104,14 @@ class ProductFamilyUpdateSubscriberSpec extends ObjectBehavior
         $selectProductFamilyIdQuery,
         $unsubscribeProductHandler,
         $updateSubscriptionFamilyHandler,
-        $connectionStatusHandler,
+        $connectionIsActiveHandler,
         ProductInterface $product,
         ProductInterface $savedProduct
     ): void {
         $product->getId()->willReturn(42);
         $savedProduct->getId()->willReturn(42);
 
-        $connectionStatus = new ConnectionStatus(false, false, false, 0);
-        $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
+        $connectionIsActiveHandler->handle(new GetConnectionIsActiveQuery())->willReturn(false);
 
         $selectProductFamilyIdQuery->execute(Argument::any())->shouldNotBeCalled();
         $unsubscribeProductHandler->handle(Argument::any())->shouldNotBeCalled();

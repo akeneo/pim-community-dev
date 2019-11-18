@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Product;
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionIsActiveHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionIsActiveQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UpdateSubscriptionFamilyCommand;
@@ -48,19 +48,19 @@ class ProductFamilyUpdateSubscriber implements EventSubscriberInterface
     /** @var array */
     private $productsToUpdateSubscriptionFamily = [];
 
-    /** @var GetConnectionStatusHandler */
-    private $connectionStatusHandler;
+    /** @var GetConnectionIsActiveHandler */
+    private $connectionIsActiveHandler;
 
     public function __construct(
         SelectProductFamilyIdQueryInterface $selectProductFamilyIdQuery,
         UnsubscribeProductHandler $unsubscribeProductHandler,
         UpdateSubscriptionFamilyHandler $updateSubscriptionFamilyHandler,
-        GetConnectionStatusHandler $connectionStatusHandler
+        GetConnectionIsActiveHandler $connectionIsActiveHandler
     ) {
         $this->selectProductFamilyIdQuery = $selectProductFamilyIdQuery;
         $this->unsubscribeProductHandler = $unsubscribeProductHandler;
         $this->updateSubscriptionFamilyHandler = $updateSubscriptionFamilyHandler;
-        $this->connectionStatusHandler = $connectionStatusHandler;
+        $this->connectionIsActiveHandler = $connectionIsActiveHandler;
     }
 
     /**
@@ -166,8 +166,6 @@ class ProductFamilyUpdateSubscriber implements EventSubscriberInterface
      */
     private function isFranklinInsightsActivated(): bool
     {
-        $connectionStatus = $this->connectionStatusHandler->handle(new GetConnectionStatusQuery(false));
-
-        return $connectionStatus->isActive();
+        return $this->connectionIsActiveHandler->handle(new GetConnectionIsActiveQuery());
     }
 }

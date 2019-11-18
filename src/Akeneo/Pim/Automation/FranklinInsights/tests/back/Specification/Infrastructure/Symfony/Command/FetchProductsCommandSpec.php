@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Symfony\Command;
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionIsActiveHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Service\ScheduleFetchProductsInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\ConnectionStatus;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -27,13 +26,13 @@ class FetchProductsCommandSpec extends ObjectBehavior
 {
     public function let(
         ContainerInterface $container,
-        GetConnectionStatusHandler $getConnectionStatusHandler,
+        GetConnectionIsActiveHandler $getConnectionIsActiveHandler,
         ScheduleFetchProductsInterface $scheduleFetchProducts
     ): void {
         $container->get('akeneo.pim.automation.franklin_insights.connector.job_launcher.schedule_fetch_products')
             ->willReturn($scheduleFetchProducts);
-        $container->get('akeneo.pim.automation.franklin_insights.application.configuration.query.get_connection_status_handler')
-            ->willReturn($getConnectionStatusHandler);
+        $container->get('akeneo.pim.automation.franklin_insights.application.configuration.query.get_connection_is_active_handler')
+            ->willReturn($getConnectionIsActiveHandler);
 
         $this->setContainer($container);
     }
@@ -49,14 +48,12 @@ class FetchProductsCommandSpec extends ObjectBehavior
     }
 
     public function it_launches_the_job_when_the_connection_is_active(
-        $getConnectionStatusHandler,
+        $getConnectionIsActiveHandler,
         ScheduleFetchProductsInterface $scheduleFetchProducts,
         InputInterface $input,
         OutputInterface $output
     ): void {
-        $connectionStatus = new ConnectionStatus(true, false, false, 0);
-
-        $getConnectionStatusHandler->handle(Argument::any())->willReturn($connectionStatus);
+        $getConnectionIsActiveHandler->handle(Argument::any())->willReturn(true);
 
         $scheduleFetchProducts->schedule()->shouldBeCalled();
 
@@ -64,14 +61,12 @@ class FetchProductsCommandSpec extends ObjectBehavior
     }
 
     public function it_stops_when_the_connection_is_inactive(
-        $getConnectionStatusHandler,
+        $getConnectionIsActiveHandler,
         ScheduleFetchProductsInterface $scheduleFetchProducts,
         InputInterface $input,
         OutputInterface $output
     ): void {
-        $connectionStatus = new ConnectionStatus(false, false, false, 0);
-
-        $getConnectionStatusHandler->handle(Argument::any())->willReturn($connectionStatus);
+        $getConnectionIsActiveHandler->handle(Argument::any())->willReturn(false);
 
         $scheduleFetchProducts->schedule()->shouldNotBeCalled();
 

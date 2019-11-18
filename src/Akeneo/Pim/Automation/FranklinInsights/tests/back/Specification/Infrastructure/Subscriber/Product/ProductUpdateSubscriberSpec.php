@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Product;
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionIsActiveHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionIsActiveQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Service\ResubscribeProductsInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValues;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValuesCollection;
@@ -30,17 +29,16 @@ class ProductUpdateSubscriberSpec extends ObjectBehavior
         ProductSubscriptionRepositoryInterface $subscriptionRepository,
         SelectProductIdentifierValuesQueryInterface $selectProductIdentifierValuesQuery,
         ResubscribeProductsInterface $resubscribeProducts,
-        GetConnectionStatusHandler $connectionStatusHandler
+        GetConnectionIsActiveHandler$connectionIsActiveHandler
     ): void {
         $this->beConstructedWith(
             $subscriptionRepository,
             $selectProductIdentifierValuesQuery,
             $resubscribeProducts,
-            $connectionStatusHandler
+            $connectionIsActiveHandler
         );
 
-        $connectionStatus = new ConnectionStatus(true, false, false, 0);
-        $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
+        $connectionIsActiveHandler->handle(new GetConnectionIsActiveQuery())->willReturn(true);
     }
 
     public function it_is_an_event_subscriber(): void
@@ -104,13 +102,12 @@ class ProductUpdateSubscriberSpec extends ObjectBehavior
         $subscriptionRepository,
         $selectProductIdentifierValuesQuery,
         $resubscribeProducts,
-        $connectionStatusHandler,
+        $connectionIsActiveHandler,
         ProductInterface $product
     ): void {
         $product->getId()->willReturn(42);
 
-        $connectionStatus = new ConnectionStatus(false, false, false, 0);
-        $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
+        $connectionIsActiveHandler->handle(new GetConnectionIsActiveQuery())->willReturn(false);
 
         $subscriptionRepository->findByProductIds(Argument::any())->shouldNotBeCalled();
         $selectProductIdentifierValuesQuery->execute(Argument::any())->shouldNotBeCalled();
