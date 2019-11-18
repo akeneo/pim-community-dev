@@ -11,6 +11,7 @@
 ## Bug fixes
 
 - PIM-8964: Fix gallery display of assets
+- PIM-8957: Securely display an embedded item in the richtext editor
 
 # 3.2.17 (2019-10-30)
 
