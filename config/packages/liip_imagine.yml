@@ -1,4 +1,5 @@
 liip_imagine:
+    driver: imagick
     data_loader: flysystem_data_loader
     filter_sets:
         avatar_med:
