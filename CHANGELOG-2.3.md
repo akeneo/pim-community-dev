@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-7027: fix completeness visibility on product edit form
+- PIM-8965: Fix misleading error messages due to all-caps formatting
 - PIM-8954: Forbid user without "list users" permission to access other user data
 
 # 2.3.69 (2019-10-24)
