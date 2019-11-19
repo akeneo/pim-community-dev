@@ -39,6 +39,14 @@ class TransformationCollection
         return new self($transformations);
     }
 
+    public function normalize(): array
+    {
+        return array_map(function ($transformation) {
+            /** @var Transformation $transformation */
+            return $transformation->normalize();
+        }, $this->transformations);
+    }
+
     private function add(Transformation $transformation)
     {
         foreach ($this->transformations as $existingTransformation) {

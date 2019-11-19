@@ -15,4 +15,5 @@ namespace Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation;
 
 interface Operation
 {
+    public function normalize(): array;
 }

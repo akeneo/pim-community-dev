@@ -93,4 +93,13 @@ class Target implements TransformationReference
             $this->getChannelReference()->equals($reference->getChannelReference()) &&
             $this->getLocaleReference()->equals($reference->getLocaleReference());
     }
+
+    public function normalize(): array
+    {
+        return [
+            'attribute' => $this->attributeIdentifier->normalize(),
+            'channel' => $this->channelReference->normalize(),
+            'locale' => $this->localeReference->normalize(),
+        ];
+    }
 }

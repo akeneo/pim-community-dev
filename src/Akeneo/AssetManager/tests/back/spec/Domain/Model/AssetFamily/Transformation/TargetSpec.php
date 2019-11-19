@@ -188,6 +188,24 @@ class TargetSpec extends ObjectBehavior
         $this->equals($reference)->shouldReturn(false);
     }
 
+    function it_normalizes_a_source()
+    {
+        $this->beConstructedThrough(
+            'create',
+            [
+                $this->createImageAttribute(true, true),
+                ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
+                LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+            ]
+        );
+
+        $this->normalize()->shouldReturn([
+            'attribute' => 'image_identifier',
+            'channel' => 'ecommerce',
+            'locale' => 'en_US'
+        ]);
+    }
+
     private function createImageAttribute(bool $scopable, bool $localizable): ImageAttribute
     {
         return ImageAttribute::create(

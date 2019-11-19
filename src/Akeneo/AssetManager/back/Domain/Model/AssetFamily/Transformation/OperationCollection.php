@@ -35,4 +35,12 @@ final class OperationCollection implements \IteratorAggregate
     {
         return new self($operations);
     }
+
+    public function normalize(): array
+    {
+        return array_map(function ($operation) {
+            /** @var Operation $operation */
+            return $operation->normalize();
+        }, $this->operations);
+    }
 }
