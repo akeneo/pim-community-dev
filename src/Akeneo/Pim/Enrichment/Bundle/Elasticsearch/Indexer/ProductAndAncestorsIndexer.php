@@ -9,6 +9,11 @@ use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterf
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductModelIndexerInterface;
 
 /**
+ * Indexer responsible for the indexation of product entities and parent product model entities of the products.
+ * It indexes parent product model because the ES document of these parent entities contains information about the children product.
+ *
+ * This indexer SHOULD be used when you update a product, as you have to update the parent document in Elasticsearch.
+ *
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
