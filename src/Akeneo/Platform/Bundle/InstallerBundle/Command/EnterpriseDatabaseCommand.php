@@ -78,8 +78,25 @@ CREATE TABLE `pimee_teamwork_assistant_project_product` (
   CONSTRAINT product_selection_project_foreign_key FOREIGN KEY (`project_id`) REFERENCES `pimee_teamwork_assistant_project` (id) ON DELETE CASCADE,
   CONSTRAINT product_selection_product_foreign_key FOREIGN KEY (`product_id`) REFERENCES `pim_catalog_product` (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 SQL;
 
         $this->connection->exec($sql);
+
+        $this->connection->executeQuery(<<<SQL
+            DROP TABLE IF EXISTS pimee_sso_log
+SQL
+        );
+
+        $this->connection->executeQuery(<<<SQL
+            CREATE TABLE pimee_sso_log (
+              time DATETIME,
+              channel VARCHAR(255),
+              level TINYINT,
+              message TEXT,
+              INDEX(time)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+SQL
+        );
     }
 }

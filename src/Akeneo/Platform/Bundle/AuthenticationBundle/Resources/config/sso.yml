@@ -64,6 +64,7 @@ services:
 
     Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\DbTableLogHandler:
         arguments:
+            - '@akeneo_authentication.sso.configuration.repository'
             - '@database_connection'
             - 10
             - 'error'

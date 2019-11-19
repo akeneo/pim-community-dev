@@ -51,7 +51,7 @@ integration-back: var/tests/phpunit franklin-insights-integration-back reference
 ifeq ($(CI),true)
 	vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh . vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php PIM_Integration_Test
 else
-	@echo Run integration test locally is too long, please use the target defined for your bounded context (ex: bounded-context-integration-back)
+	@echo Run integration test locally is too long, please use the target defined for your bounded context \(ex: bounded-context-integration-back\)
 endif
 
 ### End to end tests
@@ -60,7 +60,7 @@ end-to-end-back: var/tests/phpunit
 ifeq ($(CI),true)
 	vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh . vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php End_to_End
 else
-	@echo Run end to end test locally is too long, please use the target defined for your bounded context (ex: bounded-context-end-to-end-back)
+	@echo Run end to end test locally is too long, please use the target defined for your bounded context \(ex: bounded-context-end-to-end-back\)
 endif
 
 # How to debug a behat locally?

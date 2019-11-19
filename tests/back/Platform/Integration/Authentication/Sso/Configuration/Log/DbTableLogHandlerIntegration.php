@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace AkeneoTestEnterprise\Platform\Integration\Authentication\Sso\Log;
 
 use Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\DbTableLogHandler;
+use Akeneo\Platform\Component\Authentication\Sso\Configuration\Configuration;
+use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\Repository;
 use Akeneo\Test\Integration\TestCase;
 use Monolog\Logger;
 
@@ -12,8 +14,9 @@ final class DbTableLogHandlerIntegration extends TestCase
     public function testItInsertsLogEntries(): void
     {
         $connection = $this->get('database_connection');
+        $configRepo = new EnabledConfigurationRepository();
 
-        $handler = new DbTableLogHandler($connection);
+        $handler = new DbTableLogHandler($configRepo, $connection);
 
         $handler->handle(
             [
@@ -42,8 +45,9 @@ final class DbTableLogHandlerIntegration extends TestCase
     public function testItDoesntRotateIfNoNeedTo(): void
     {
         $connection = $this->get('database_connection');
+        $configRepo = new EnabledConfigurationRepository();
 
-        $handler = new DbTableLogHandler($connection, 0);
+        $handler = new DbTableLogHandler($configRepo, $connection, 0);
 
         $handler->handle(
             [
@@ -92,8 +96,9 @@ final class DbTableLogHandlerIntegration extends TestCase
     public function testItRotatesOldEntries(): void
     {
         $connection = $this->get('database_connection');
+        $configRepo = new EnabledConfigurationRepository();
 
-        $handler = new DbTableLogHandler($connection, 10);
+        $handler = new DbTableLogHandler($configRepo, $connection, 10);
 
         $handler->handle(
             [
@@ -153,10 +158,11 @@ final class DbTableLogHandlerIntegration extends TestCase
     public function testItIntegratesWithMonolog()
     {
         $connection = $this->get('database_connection');
+        $configRepo = new EnabledConfigurationRepository();
 
         $logger = new Logger('my_test_logger');
 
-        $handler = new DbTableLogHandler($connection, 0);
+        $handler = new DbTableLogHandler($configRepo, $connection, 0);
 
         $logger->pushHandler($handler);
 
@@ -214,3 +220,31 @@ final class DbTableLogHandlerIntegration extends TestCase
 
 }
 
+final class EnabledConfigurationRepository implements Repository
+{
+    public function find(string $code): Configuration
+    {
+        return Configuration::fromArray(
+            'enabledConfiguration',
+            [
+                'isEnabled' => true,
+                'identityProvider' => [
+                    'entityId' => 'http://www.example.com/',
+                    'signOnUrl' => 'http://www.example.com/signon',
+                    'logoutUrl' => 'http://www.example.com/logout',
+                    'certificate' => 'my mock certificate'
+                ],
+                'serviceProvider' => [
+                    'entityId' => 'http://www.example.com/',
+                    'certificate' => 'my mock certificate',
+                    'privateKey' => 'my mock private key'
+                ]
+            ]
+        );
+    }
+
+    public function save(Configuration $configurationRoot): void
+    {
+        throw new \LogicException("Mock configuration repository will not save configuration.");
+    }
+}
