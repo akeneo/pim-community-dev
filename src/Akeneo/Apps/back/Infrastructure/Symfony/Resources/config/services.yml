@@ -4,6 +4,11 @@ services:
         arguments:
             - '@fos_oauth_server.client_manager.default'
 
+    akeneo_app.service.client.delete_client:
+        class: Akeneo\Apps\Infrastructure\Client\Fos\DeleteClient
+        arguments:
+            - '@fos_oauth_server.client_manager.default'
+
     akeneo_app.service.user.create_user:
         class: Akeneo\Apps\Infrastructure\User\Internal\CreateUser
         arguments:
@@ -11,6 +16,12 @@ services:
             - '@pim_user.updater.user'
             - '@validator'
             - '@pim_user.saver.user'
+
+    akeneo_app.service.user.delete_user:
+        class: Akeneo\Apps\Infrastructure\User\Internal\DeleteUser
+        arguments:
+            - '@pim_user.repository.user'
+            - '@pim_user.remover.user'
 
     akeneo_app.service.client.regenerate_client_secret:
         class: Akeneo\Apps\Infrastructure\Client\Fos\FosRegenerateClientSecret

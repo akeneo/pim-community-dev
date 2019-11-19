@@ -6,10 +6,8 @@ namespace Akeneo\Apps\Infrastructure\User\Internal;
 
 use Akeneo\Apps\Application\Service\DeleteUserInterface;
 use Akeneo\Apps\Domain\Model\ValueObject\UserId;
-use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 
 /**
  * @author Pierre Jolly <pierre.jolly@akeneo.com>
@@ -18,56 +16,26 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class DeleteUser implements DeleteUserInterface
 {
-    /** @var SimpleFactoryInterface */
-    private $userFactory;
+    /** @var UserRepositoryInterface*/
+    private $repository;
 
-    /** @var ObjectUpdaterInterface */
-    private $userUpdater;
+    /** @var RemoverInterface*/
+    private $remover;
 
-    /** @var ValidatorInterface */
-    private $validator;
-
-    /** @var SaverInterface */
-    private $userSaver;
-
-    public function __construct(
-        SimpleFactoryInterface $userFactory,
-        ObjectUpdaterInterface $userUpdater,
-        ValidatorInterface $validator,
-        SaverInterface $userSaver
-    ) {
-        $this->userFactory = $userFactory;
-        $this->userUpdater = $userUpdater;
-        $this->validator = $validator;
-        $this->userSaver = $userSaver;
+    public function __construct(UserRepositoryInterface $repository, RemoverInterface $remover)
+    {
+        $this->repository = $repository;
+        $this->remover = $remover;
     }
 
     public function execute(UserId $userId): void
     {
-//        $user = $this->userFactory->create();
-//        $this->userUpdater->update(
-//            $user,
-//            [
-//                'username' => $username,
-//                'password' => $username,
-//                'first_name' => $firstname,
-//                'last_name' => $lastname,
-//                'email' => $email,
-//            ]
-//        );
-//
-//        $errors = $this->validator->validate($user);
-//        if (0 < count($errors)) {
-//            $errorMessages = [];
-//            foreach ($errors as $error) {
-//                $errorMessages[] = $error->getPropertyPath() . ': ' . $error->getMessage();
-//            }
-//
-//            throw new \LogicException("The user creation failed :\n" . implode("\n", $errorMessages));
-//        }
-//
-//        $this->userSaver->save($user);
-//
-//        return new UserId($user->getId());
+        $user = $this->repository->find($userId->id());
+
+        if (null === $user) {
+            throw new \InvalidArgumentException(sprintf('user with id "%s" does not exist', $userId->id()));
+        }
+
+        $this->remover->remove($user);
     }
 }

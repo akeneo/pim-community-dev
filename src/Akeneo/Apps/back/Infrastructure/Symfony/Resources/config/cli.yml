@@ -7,3 +7,10 @@ services:
             - '@akeneo_app.application.handler.regenerate_app_secret'
         tags:
             - { name: 'console.command' }
+
+    DeleteAppCommand:
+        class: Akeneo\Apps\Infrastructure\Cli\DeleteAppCommand
+        arguments:
+            - '@akeneo_app.application.handler.delete_app'
+        tags:
+            - { name: 'console.command' }
