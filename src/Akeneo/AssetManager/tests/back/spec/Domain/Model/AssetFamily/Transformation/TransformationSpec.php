@@ -93,7 +93,7 @@ class TransformationSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_throws_an_exception_if_target_is_equal_to_source_in_scope(Source $source, Target $target)
+    function it_throws_an_exception_if_target_is_equal_to_source_with_a_scope(Source $source, Target $target)
     {
         $source->getAttributeIdentifierAsString()->willReturn('sourceIdentifier');
         $target->getAttributeIdentifierAsString()->willReturn('sourceIdentifier');
@@ -113,7 +113,7 @@ class TransformationSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_throws_an_exception_if_target_is_equal_to_source_in_channel(Source $source, Target $target)
+    function it_throws_an_exception_if_target_is_equal_to_source_with_a_channel(Source $source, Target $target)
     {
         $source->getAttributeIdentifierAsString()->willReturn('sourceIdentifier');
         $target->getAttributeIdentifierAsString()->willReturn('sourceIdentifier');
@@ -133,7 +133,7 @@ class TransformationSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_throws_an_exception_if_target_is_equal_to_source_in_scope_and_channel(Source $source, Target $target)
+    function it_throws_an_exception_if_target_is_equal_to_source_with_a_scope_and_a_channel(Source $source, Target $target)
     {
         $source->getAttributeIdentifierAsString()->willReturn('sourceIdentifier');
         $target->getAttributeIdentifierAsString()->willReturn('sourceIdentifier');

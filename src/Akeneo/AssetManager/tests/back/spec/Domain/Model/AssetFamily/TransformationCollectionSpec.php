@@ -7,6 +7,8 @@ use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Source;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
+use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use PhpSpec\ObjectBehavior;
 
 class TransformationCollectionSpec extends ObjectBehavior
@@ -18,8 +20,10 @@ class TransformationCollectionSpec extends ObjectBehavior
     ) {
         $transformation->getTarget()->willReturn($target);
         $transformation->getSource()->willReturn($source);
+
         $target->getAttributeIdentifierAsString()->willReturn('target');
         $source->getAttributeIdentifierAsString()->willReturn('source');
+
         $this->beConstructedThrough('create', [[$transformation]]);
         $this->getWrappedObject();
     }
@@ -32,6 +36,7 @@ class TransformationCollectionSpec extends ObjectBehavior
     ) {
         $transformation1->getTarget()->willReturn($target1);
         $transformation2->getTarget()->willReturn($target2);
+
         $target1->getAttributeIdentifierAsString()->willReturn('target_attribute_1');
         $target2->getAttributeIdentifierAsString()->willReturn('target_attribute_2');
 
@@ -49,22 +54,19 @@ class TransformationCollectionSpec extends ObjectBehavior
         Transformation $transformation1,
         Transformation $transformation2,
         Target $target1,
-        Target $target2,
-        ChannelReference $channelReference1,
-        ChannelReference $channelReference2,
-        LocaleReference $localeReference1,
-        LocaleReference $localeReference2
+        Target $target2
     ) {
         $transformation1->getTarget()->willReturn($target1);
         $transformation2->getTarget()->willReturn($target2);
-        $target1->getAttributeIdentifierAsString()->willReturn('target_attribute');
-        $target2->getAttributeIdentifierAsString()->willReturn('target_attribute');
-        $target1->getChannelReference()->willReturn($channelReference1);
-        $target2->getChannelReference()->willReturn($channelReference2);
-        $channelReference1->equals($channelReference2)->willReturn(true);
-        $target1->getLocaleReference()->willReturn($localeReference1);
-        $target2->getLocaleReference()->willReturn($localeReference2);
-        $localeReference1->equals($localeReference2)->willReturn(true);
+
+        $target1->getAttributeIdentifierAsString()->willReturn('same_target_attribute');
+        $target2->getAttributeIdentifierAsString()->willReturn('same_target_attribute');
+
+        $target1->getChannelReference()->willReturn(ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')));
+        $target2->getChannelReference()->willReturn(ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')));
+        
+        $target1->getLocaleReference()->willReturn(LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')));
+        $target2->getLocaleReference()->willReturn(LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')));
 
         $this->beConstructedThrough('create', [
             [
@@ -81,11 +83,7 @@ class TransformationCollectionSpec extends ObjectBehavior
         Target $target1,
         Target $target2,
         Source $source1,
-        Source $source2,
-        ChannelReference $channelReferenceTarget1,
-        ChannelReference $channelReferenceSource2,
-        LocaleReference $localeReferenceTarget1,
-        LocaleReference $localeReferenceSource2
+        Source $source2
     ) {
         $transformation1->getTarget()->willReturn($target1);
         $transformation2->getTarget()->willReturn($target2);
@@ -94,14 +92,15 @@ class TransformationCollectionSpec extends ObjectBehavior
 
         $target1->getAttributeIdentifierAsString()->willReturn('same_attribute');
         $source1->getAttributeIdentifierAsString()->willReturn('source_attribute');
+
         $target2->getAttributeIdentifierAsString()->willReturn('target_attribute');
         $source2->getAttributeIdentifierAsString()->willReturn('same_attribute');
-        $target1->getChannelReference()->willReturn($channelReferenceTarget1);
-        $source2->getChannelReference()->willReturn($channelReferenceSource2);
-        $channelReferenceTarget1->equals($channelReferenceSource2)->willReturn(true);
-        $target1->getLocaleReference()->willReturn($localeReferenceTarget1);
-        $source2->getLocaleReference()->willReturn($localeReferenceSource2);
-        $localeReferenceTarget1->equals($localeReferenceSource2)->willReturn(true);
+
+        $target1->getChannelReference()->willReturn(ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')));
+        $source2->getChannelReference()->willReturn(ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')));
+
+        $target1->getLocaleReference()->willReturn(LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')));
+        $source2->getLocaleReference()->willReturn(LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')));
 
         $this->beConstructedThrough('create', [
             [
