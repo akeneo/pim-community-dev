@@ -71,6 +71,19 @@ class Source implements TransformationReference
         return new self($attribute->getIdentifier(), $channelReference, $localeReference);
     }
 
+    public static function createFromNormalized(array $normalizedSource): self
+    {
+        Assert::keyExists($normalizedSource, 'attribute');
+        Assert::keyExists($normalizedSource, 'channel');
+        Assert::keyExists($normalizedSource, 'locale');
+
+        return new self(
+            AttributeIdentifier::fromString($normalizedSource['attribute']),
+            ChannelReference::createfromNormalized($normalizedSource['channel']),
+            LocaleReference::createFromNormalized($normalizedSource['locale'])
+        );
+    }
+
     public function getAttributeIdentifier(): AttributeIdentifier
     {
         return $this->attributeIdentifier;

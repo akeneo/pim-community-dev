@@ -31,4 +31,21 @@ class OperationCollectionSpec extends ObjectBehavior
 
         $this->normalize()->shouldReturn([$normalizedOperation1, $normalizedOperation2]);
     }
+
+    function it_can_be_instantiated_from_normalized_format()
+    {
+        $normalizedOperations = [
+            [
+                'name' => 'resize',
+                'parameters' => [
+                    'width' => 200,
+                    'height' => 150,
+                ],
+            ],
+        ];
+
+        $this->beConstructedThrough('createFromNormalized', [$normalizedOperations]);
+        // @TODO: obviously this test should fail (but it does not at the moment), it will force us to fix once ATR-27 is merged
+        $this->getIterator()->shouldHaveCount(0);
+    }
 }

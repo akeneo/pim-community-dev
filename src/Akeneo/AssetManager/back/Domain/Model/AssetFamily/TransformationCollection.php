@@ -41,9 +41,36 @@ class TransformationCollection implements \Countable
 
     public function normalize(): array
     {
-        return array_map(function (Transformation $transformation) {
-            return $transformation->normalize();
-        }, $this->transformations);
+        return array_map(
+            function (Transformation $transformation) {
+                return $transformation->normalize();
+            },
+            $this->transformations
+        );
+    }
+
+    public static function empty(): self
+    {
+        return new self([]);
+    }
+
+    public static function createFromNormalized(array $normalizedTransformations): self
+    {
+        Assert::allIsArray($normalizedTransformations);
+
+        return new self(
+            array_map(
+                function (array $normalizedTransformation): Transformation {
+                    return Transformation::createFromNormalized($normalizedTransformation);
+                },
+                $normalizedTransformations
+            )
+        );
+    }
+
+    public function count(): int
+    {
+        return count($this->transformations);
     }
 
     private function add(Transformation $transformation)
@@ -55,20 +82,12 @@ class TransformationCollection implements \Countable
 
             if ($existingTransformation->getTarget()->equals($transformation->getSource()) ||
                 $transformation->getTarget()->equals($existingTransformation->getSource())) {
-                throw new \InvalidArgumentException('You can not define a transformation having a source as a target of another transformation');
+                throw new \InvalidArgumentException(
+                    'You can not define a transformation having a source as a target of another transformation'
+                );
             }
         }
 
         $this->transformations[] = $transformation;
-    }
-
-    public static function empty(): self
-    {
-        return new self([]);
-    }
-
-    public function count(): int
-    {
-        return count($this->transformations);
     }
 }

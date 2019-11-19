@@ -69,4 +69,44 @@ class TransformationSpec extends ObjectBehavior
             ]
         ]);
     }
+
+    function it_can_be_created_from_normalized_format()
+    {
+        $normalizedTransformation = [
+            'source' => [
+                'attribute' => 'my-source-attribute',
+                'channel' => null,
+                'locale' => null,
+            ],
+            'target' => [
+                'attribute' => 'my-localizable-target',
+                'channel' => null,
+                'locale' => 'en_US',
+            ],
+            'operations' => [
+                [
+                    'name' => 'resize',
+                    'parameters' => [
+                        'width' => 200,
+                        'height' => 160,
+                    ],
+                ],
+                [
+                    'scale' => 'resize',
+                    'parameters' => [
+                        'ratio' => '90%',
+                    ],
+                ],
+            ],
+        ];
+
+        $this->beConstructedThrough('createFromNormalized', [$normalizedTransformation]);
+        $this->getSource()->getAttributeIdentifier()->stringValue()->shouldReturn('my-source-attribute');
+        $this->getSource()->getChannelReference()->normalize()->shouldReturn(null);
+        $this->getSource()->getLocaleReference()->normalize()->shouldReturn(null);
+
+        $this->getTarget()->getAttributeIdentifier()->stringValue()->shouldReturn('my-localizable-target');
+        $this->getTarget()->getChannelReference()->normalize()->shouldReturn(null);
+        $this->getTarget()->getLocaleReference()->normalize()->shouldReturn('en_US');
+    }
 }

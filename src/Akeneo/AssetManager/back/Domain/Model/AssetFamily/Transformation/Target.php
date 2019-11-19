@@ -71,6 +71,19 @@ class Target implements TransformationReference
         return new self($attribute->getIdentifier(), $channelReference, $localeReference);
     }
 
+    public static function createFromNormalized(array $normalizedTarget): self
+    {
+        Assert::keyExists($normalizedTarget, 'attribute');
+        Assert::keyExists($normalizedTarget, 'channel');
+        Assert::keyExists($normalizedTarget, 'locale');
+
+        return new self(
+            AttributeIdentifier::fromString($normalizedTarget['attribute']),
+            ChannelReference::createfromNormalized($normalizedTarget['channel']),
+            LocaleReference::createFromNormalized($normalizedTarget['locale'])
+        );
+    }
+
     public function getAttributeIdentifier(): AttributeIdentifier
     {
         return $this->attributeIdentifier;

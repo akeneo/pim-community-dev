@@ -7,7 +7,7 @@ namespace spec\Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Source;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationReference;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
@@ -204,6 +204,24 @@ class SourceSpec extends ObjectBehavior
             'channel' => 'ecommerce',
             'locale' => 'en_US'
         ]);
+    }
+
+    function it_can_be_instantiated_from_normalized_format()
+    {
+        $normalizedSource = [
+            'attribute' => 'image_identifier',
+            'channel' => 'ecommerce',
+            'locale' => 'en_US',
+        ];
+        $this->beConstructedThrough('createFromNormalized', [$normalizedSource]);
+
+        $comparedSource = Source::create(
+            $this->createImageAttribute(true, true),
+            ChannelReference::createfromNormalized('ecommerce'),
+            LocaleReference::createFromNormalized('en_US')
+        );
+
+        $this->shouldBeLike($comparedSource);
     }
 
     private function createImageAttribute(bool $scopable, bool $localizable): ImageAttribute
