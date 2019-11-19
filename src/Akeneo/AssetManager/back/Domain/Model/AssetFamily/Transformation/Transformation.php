@@ -48,4 +48,9 @@ class Transformation
     {
         return $this->target;
     }
+
+    public function getSource(): Source
+    {
+        return $this->source;
+    }
 }
