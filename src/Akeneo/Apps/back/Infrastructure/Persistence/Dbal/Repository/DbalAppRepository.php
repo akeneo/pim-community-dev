@@ -77,4 +77,17 @@ SQL;
             'flow_type' => (string) $app->flowType(),
         ]);
     }
+
+    public function delete(App $app): void
+    {
+        $deleteQuery = <<<SQL
+DELETE FROM akeneo_app
+WHERE code = :code
+SQL;
+
+        $stmt = $this->dbalConnection->prepare($deleteQuery);
+        $stmt->execute([
+            'code' => (string) $app->code(),
+        ]);
+    }
 }

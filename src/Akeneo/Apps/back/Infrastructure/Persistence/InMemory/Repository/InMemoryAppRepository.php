@@ -57,6 +57,15 @@ class InMemoryAppRepository implements AppRepository
         $this->dataRows[(string) $app->code()]['flow_type'] = (string) $app->flowType();
     }
 
+    public function delete(App $app): void
+    {
+        if (!isset($this->dataRows[(string) $app->code()])) {
+            throw new \LogicException(sprintf('App "%s" never persisted!', (string) $app->code()));
+        }
+
+        unset($this->dataRows[(string) $app->code()]);
+    }
+
     public function count(): int
     {
         return count($this->dataRows);
