@@ -25,7 +25,7 @@ class DeleteClient implements DeleteClientInterface
 
     public function execute(ClientId $clientId): void
     {
-        $fosClient = $this->clientManager->findClientByPublicId($clientId);
+        $fosClient = $this->clientManager->findClientBy(['id' => $clientId->id()]);
         $this->clientManager->deleteClient($fosClient);
     }
 }
