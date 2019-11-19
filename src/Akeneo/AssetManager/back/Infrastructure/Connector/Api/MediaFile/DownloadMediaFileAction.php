@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Infrastructure\Connector\Api\MediaFile;
 
 use Akeneo\AssetManager\Domain\Repository\MediaFileNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\MediaFileRepositoryInterface;
+use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
 use Symfony\Component\HttpFoundation\Response;

@@ -59,6 +59,7 @@ reference-entity-coupling-back:
 .PHONY: reference-entity-lint-back
 reference-entity-lint-back:
 	$(PHP_RUN) vendor/bin/phpstan analyse --configuration src/Akeneo/ReferenceEntity/tests/back/phpstan.neon.dist
+	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php src/Akeneo/ReferenceEntity/back
 
 .PHONY: reference-entity-unit-back
 reference-entity-unit-back: var/tests/phpspec

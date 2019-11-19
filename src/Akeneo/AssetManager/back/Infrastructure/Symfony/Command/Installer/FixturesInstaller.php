@@ -47,7 +47,7 @@ use Doctrine\DBAL\Connection;
  */
 class FixturesInstaller
 {
-    public const ICE_CAT_DEMO_DEV_CATALOG = 'PimEnterpriseInstallerBundle:icecat_demo_dev';
+    public const ICE_CAT_DEMO_DEV_CATALOG = 'src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev';
     private const NUMBER_OF_FAKE_ASSET_TO_CREATE = 10000;
 
     /** @var Connection */
