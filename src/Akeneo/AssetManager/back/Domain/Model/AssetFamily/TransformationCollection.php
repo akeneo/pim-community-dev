@@ -16,7 +16,7 @@ namespace Akeneo\AssetManager\Domain\Model\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
 use Webmozart\Assert\Assert;
 
-class TransformationCollection
+class TransformationCollection implements \Countable
 {
     /** @var Transformation[] */
     private $transformations = [];
@@ -60,5 +60,15 @@ class TransformationCollection
         }
 
         $this->transformations[] = $transformation;
+    }
+
+    public static function empty(): self
+    {
+        return new self([]);
+    }
+
+    public function count(): int
+    {
+        return count($this->transformations);
     }
 }
