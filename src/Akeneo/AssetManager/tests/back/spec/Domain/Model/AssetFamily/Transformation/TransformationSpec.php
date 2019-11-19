@@ -90,7 +90,7 @@ class TransformationSpec extends ObjectBehavior
             OperationCollection::create([]),
         ]);
 
-        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+        $this->shouldThrow(new \InvalidArgumentException('A transformation can not have the same source and target'))->duringInstantiation();
     }
 
     function it_throws_an_exception_if_target_is_equal_to_source_with_a_scope(Source $source, Target $target)
@@ -110,7 +110,7 @@ class TransformationSpec extends ObjectBehavior
             OperationCollection::create([]),
         ]);
 
-        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+        $this->shouldThrow(new \InvalidArgumentException('A transformation can not have the same source and target'))->duringInstantiation();
     }
 
     function it_throws_an_exception_if_target_is_equal_to_source_with_a_channel(Source $source, Target $target)
@@ -130,7 +130,7 @@ class TransformationSpec extends ObjectBehavior
             OperationCollection::create([]),
         ]);
 
-        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+        $this->shouldThrow(new \InvalidArgumentException('A transformation can not have the same source and target'))->duringInstantiation();
     }
 
     function it_throws_an_exception_if_target_is_equal_to_source_with_a_scope_and_a_channel(Source $source, Target $target)
@@ -150,6 +150,6 @@ class TransformationSpec extends ObjectBehavior
             OperationCollection::create([]),
         ]);
 
-        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+        $this->shouldThrow(new \InvalidArgumentException('A transformation can not have the same source and target'))->duringInstantiation();
     }
 }

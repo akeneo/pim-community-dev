@@ -31,8 +31,8 @@ class Transformation
         Assert::false(
             $source->getAttributeIdentifierAsString() === $target->getAttributeIdentifierAsString() &&
             $source->getChannelReference()->equals($target->getChannelReference()) &&
-            $source->getLocaleReference()->equals($target->getLocaleReference())
-        );
+            $source->getLocaleReference()->equals($target->getLocaleReference()),
+        'A transformation can not have the same source and target');
 
         $this->source = $source;
         $this->target = $target;

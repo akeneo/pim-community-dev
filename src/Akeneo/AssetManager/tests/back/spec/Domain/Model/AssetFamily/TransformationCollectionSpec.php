@@ -64,7 +64,7 @@ class TransformationCollectionSpec extends ObjectBehavior
 
         $target1->getChannelReference()->willReturn(ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')));
         $target2->getChannelReference()->willReturn(ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')));
-        
+
         $target1->getLocaleReference()->willReturn(LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')));
         $target2->getLocaleReference()->willReturn(LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')));
 
@@ -74,7 +74,7 @@ class TransformationCollectionSpec extends ObjectBehavior
                 $transformation2
             ]
         ]);
-        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+        $this->shouldThrow(new \InvalidArgumentException('You can not define 2 transformation with the same target'))->duringInstantiation();
     }
 
     function it_throws_an_exception_when_a_source_is_a_target_of_another_transformation(
@@ -108,6 +108,6 @@ class TransformationCollectionSpec extends ObjectBehavior
                 $transformation2
             ]
         ]);
-        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+        $this->shouldThrow(new \InvalidArgumentException('You can not define a transformation having a source as a target of another transformation'))->duringInstantiation();
     }
 }

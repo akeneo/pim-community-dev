@@ -108,7 +108,7 @@ class SourceSpec extends ObjectBehavior
                 LocaleReference::noReference()
             ]
         );
-        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+        $this->shouldThrow(new \InvalidArgumentException('Attribute "image_identifier" is not scopable, you cannot define a channel'))->duringInstantiation();
     }
 
     function it_throws_an_exception_when_not_providing_a_channel_with_a_scopable_attribute()
@@ -121,7 +121,7 @@ class SourceSpec extends ObjectBehavior
                 LocaleReference::noReference()
             ]
         );
-        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+        $this->shouldThrow(new \InvalidArgumentException('Attribute "image_identifier" is scopable, you must define a channel'))->duringInstantiation();
     }
 
     function it_throws_an_exception_when_providing_a_locale_with_a_non_localizable_attribute()
@@ -134,7 +134,7 @@ class SourceSpec extends ObjectBehavior
                 LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
             ]
         );
-        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+        $this->shouldThrow(new \InvalidArgumentException('Attribute "image_identifier" is not localizable, you cannot define a locale'))->duringInstantiation();
     }
 
     function it_throws_an_exception_when_not_providing_a_locale_with_a_localizable_attribute()
@@ -147,7 +147,7 @@ class SourceSpec extends ObjectBehavior
                 LocaleReference::noReference(),
             ]
         );
-        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+        $this->shouldThrow(new \InvalidArgumentException('Attribute "image_identifier" is localizable, you must define a locale'))->duringInstantiation();
     }
 
     private function createImageAttribute(bool $scopable, bool $localizable): ImageAttribute

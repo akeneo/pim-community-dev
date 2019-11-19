@@ -46,10 +46,27 @@ class Source
         ChannelReference $channelReference,
         LocaleReference $localeReference
     ): self {
-        //TODO: see if we have to add explicit error message
         Assert::isInstanceOf($attribute, ImageAttribute::class);
-        $attribute->hasValuePerChannel() ? Assert::false($channelReference->isEmpty()) : Assert::true($channelReference->isEmpty());
-        $attribute->hasValuePerLocale() ? Assert::false($localeReference->isEmpty()) : Assert::true($localeReference->isEmpty());
+
+        $attribute->hasValuePerChannel() ?
+            Assert::false(
+                $channelReference->isEmpty(),
+                sprintf('Attribute "%s" is scopable, you must define a channel', $attribute->getIdentifier()->stringValue())
+            ) :
+            Assert::true(
+                $channelReference->isEmpty(),
+                sprintf('Attribute "%s" is not scopable, you cannot define a channel', $attribute->getIdentifier()->stringValue())
+            );
+
+        $attribute->hasValuePerLocale() ?
+            Assert::false(
+                $localeReference->isEmpty(),
+                sprintf('Attribute "%s" is localizable, you must define a locale', $attribute->getIdentifier()->stringValue())
+            ) :
+            Assert::true(
+                $localeReference->isEmpty(),
+                sprintf('Attribute "%s" is not localizable, you cannot define a locale', $attribute->getIdentifier()->stringValue())
+            );
 
         return new self($attribute->getIdentifier(), $channelReference, $localeReference);
     }
