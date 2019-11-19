@@ -7,7 +7,7 @@
                 "integer"
             ]
         },
-        "body": {"$ref":  "src/Akeneo/AssetManager/definitions/asset-family-BIS-schema.json"},
+        "body": {"$ref":  "src/Akeneo/AssetManager/definitions/asset-family.schema.json"},
         "_links": {
             "type": "object"
         }

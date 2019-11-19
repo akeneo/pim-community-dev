@@ -2,7 +2,7 @@
     "title": "AssetFamily",
     "type": "object",
     "properties": {
-        "identifier": { "type": "boolean" },
+        "identifier": { "type": "string" },
         "labels": {
             "type": "object",
             "patternProperties": {
@@ -48,12 +48,16 @@
                     "is_textarea": { "type": "boolean" },
                     "is_rich_text_editor": { "type": "boolean" },
                     "validation_rule": { "type": "string" },
-                    "regular_expression": { "type": "string" },
+                    "regular_expression": { "type": ["string", "null"] },
                     "max_file_size": { "type": "string" },
                     "allowed_extensions": {
                         "type": "array",
                         "items": { "type": "string" }
                     },
+                    "min_value": { "type": "string"},
+                    "max_value": { "type": "string"},
+                    "decimals_allowed": { "type": "boolean"},
+                    "asset_type": { "type": "string"},
                     "options": {
                         "type": "array",
                         "items": {
