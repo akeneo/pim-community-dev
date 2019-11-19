@@ -28,11 +28,7 @@ class Transformation
 
     private function __construct(Source $source, Target $target, OperationCollection $operations)
     {
-        Assert::false(
-            $source->getAttributeIdentifierAsString() === $target->getAttributeIdentifierAsString() &&
-            $source->getChannelReference()->equals($target->getChannelReference()) &&
-            $source->getLocaleReference()->equals($target->getLocaleReference()),
-        'A transformation can not have the same source and target');
+        Assert::false($source->equals($target), 'A transformation can not have the same source and target');
 
         $this->source = $source;
         $this->target = $target;

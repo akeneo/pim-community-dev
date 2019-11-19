@@ -20,7 +20,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
 use Webmozart\Assert\Assert;
 
-class Source
+class Source implements TransformationReference
 {
     /** @var AttributeIdentifier */
     private $attributeIdentifier;
@@ -71,9 +71,9 @@ class Source
         return new self($attribute->getIdentifier(), $channelReference, $localeReference);
     }
 
-    public function getAttributeIdentifierAsString(): string
+    public function getAttributeIdentifier(): AttributeIdentifier
     {
-        return $this->attributeIdentifier->stringValue();
+        return $this->attributeIdentifier;
     }
 
     public function getChannelReference(): ChannelReference
@@ -84,5 +84,13 @@ class Source
     public function getLocaleReference(): LocaleReference
     {
         return $this->localeReference;
+    }
+
+    public function equals(TransformationReference $reference): bool
+    {
+        return
+            $this->getAttributeIdentifier()->equals($reference->getAttributeIdentifier()) &&
+            $this->getChannelReference()->equals($reference->getChannelReference()) &&
+            $this->getLocaleReference()->equals($reference->getLocaleReference());
     }
 }

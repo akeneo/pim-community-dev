@@ -19,7 +19,7 @@ use Webmozart\Assert\Assert;
 class TransformationCollection
 {
     /** @var Transformation[] */
-    private $transformations;
+    private $transformations = [];
 
     /**
      * @param Transformation[] $transformations
@@ -27,14 +27,9 @@ class TransformationCollection
     private function __construct(array $transformations)
     {
         Assert::allIsInstanceOf($transformations, Transformation::class);
-        Assert::false(
-            self::hasDuplicateTarget($transformations),
-            'You can not define 2 transformation with the same target'
-        );
-        Assert::false(
-            self::sourceIsTarget($transformations),
-            'You can not define a transformation having a source as a target of another transformation'
-        );
+        foreach ($transformations as $transformation) {
+            $this->add($transformation);
+        }
 
         $this->transformations = $transformations;
     }
@@ -44,51 +39,19 @@ class TransformationCollection
         return new self($transformations);
     }
 
-    /**
-     * @param Transformation[] $transformations
-     * @return bool
-     */
-    private static function hasDuplicateTarget(array $transformations): bool
+    private function add(Transformation $transformation)
     {
-        foreach ($transformations as $transformation1) {
-            foreach ($transformations as $transformation2) {
-                if ($transformation1 !== $transformation2) {
-                    $target1 = $transformation1->getTarget();
-                    $target2 = $transformation2->getTarget();
-                    if ($target1->getAttributeIdentifierAsString() === $target2->getAttributeIdentifierAsString() &&
-                        $target1->getChannelReference()->equals($target2->getChannelReference()) &&
-                        $target1->getLocaleReference()->equals($target2->getLocaleReference())
-                    ) {
-                        return true;
-                    }
-                }
+        foreach ($this->transformations as $existingTransformation) {
+            if ($existingTransformation->getTarget()->equals($transformation->getTarget())) {
+                throw new \InvalidArgumentException('You can not define 2 transformation with the same target');
+            }
+
+            if ($existingTransformation->getTarget()->equals($transformation->getSource()) ||
+                $transformation->getTarget()->equals($existingTransformation->getSource())) {
+                throw new \InvalidArgumentException('You can not define a transformation having a source as a target of another transformation');
             }
         }
 
-        return false;
-    }
-
-    /**
-     * @param Transformation[] $transformations
-     * @return bool
-     */
-    private static function sourceIsTarget(array $transformations): bool
-    {
-        foreach ($transformations as $transformation1) {
-            foreach ($transformations as $transformation2) {
-                if ($transformation1 !== $transformation2) {
-                    $target = $transformation1->getTarget();
-                    $source = $transformation2->getSource();
-                    if ($target->getAttributeIdentifierAsString() === $source->getAttributeIdentifierAsString() &&
-                        $target->getChannelReference()->equals($source->getChannelReference()) &&
-                        $target->getLocaleReference()->equals($source->getLocaleReference())
-                    ) {
-                        return true;
-                    }
-                }
-            }
-        }
-
-        return false;
+        $this->transformations[] = $transformation;
     }
 }
