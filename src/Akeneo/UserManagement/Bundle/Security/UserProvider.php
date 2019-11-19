@@ -54,7 +54,7 @@ class UserProvider implements UserProviderInterface
 
         $reloadedUser = $this->userRepository->find($user->getId());
         if (null === $reloadedUser) {
-            throw new UsernameNotFoundException(sprintf('User with id %s not found', json_encode($id)));
+            throw new UsernameNotFoundException(sprintf('User with id %d not found', $user->getId()));
         }
 
         return $reloadedUser;
@@ -65,6 +65,6 @@ class UserProvider implements UserProviderInterface
      */
     public function supportsClass($class)
     {
-        return is_subclass_of($class, 'Symfony\Component\Security\Core\User\UserInterface');
+        return is_subclass_of($class, 'Akeneo\UserManagement\Component\Model\UserInterface');
     }
 }
