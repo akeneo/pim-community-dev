@@ -6,6 +6,7 @@ namespace Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator;
 
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Liip\ImagineBundle\Exception\Binary\Loader\NotLoadableException;
+use Liip\ImagineBundle\Exception\Imagine\Filter\NonExistingFilterException;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Data\DataManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
@@ -48,7 +49,19 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
         $url = $this->generateUrl($data, $attribute);
         $previewType = $this->getPreviewType($type);
 
-        if (!$this->cacheManager->isStored($url, $previewType)) {
+        try {
+            $isStored = $this->cacheManager->isStored($url, $previewType);
+        } catch (NonExistingFilterException $e) {
+            // Should change depending on the preview type
+            // Trigerred if the thumbnail configuration is not there
+            return $this->defaultImageProvider->getImageUrl($this->defaultImage(), $previewType);
+        }catch (\Exception $e) {
+            // Should change depending on the preview type
+            // Trigerred if the thumbnail cache fetching is not working
+            return $this->defaultImageProvider->getImageUrl($this->defaultImage(), $previewType);
+        }
+
+        if (!$isStored) {
             try {
                 $binary = $this->dataManager->find($previewType, $url);
             } catch (NotLoadableException $e) {
