@@ -62,16 +62,19 @@ class DumpRequirePathsCommand extends Command
 
     /**
      * Collect an array of requirejs.yml paths for each bundle
+     * @param string $rootDir
      * @return array
      */
-    protected function collectConfigPaths()
+    protected function collectConfigPaths(string $rootDir)
     {
         $paths = array();
+        $rootDir = realpath($rootDir . '/../') . '/';
 
         foreach ($this->bundles as $bundle) {
             $reflection = new \ReflectionClass($bundle);
             $fileName = dirname($reflection->getFilename());
-            $paths[] = $fileName;
+            $relativeFileName = substr($fileName, strlen($rootDir));
+            $paths[] = $relativeFileName;
         }
 
         return $paths;
