@@ -19,6 +19,8 @@ pim_asset_manager:
     notification:
       product_rule: 'This collection can be updated by a product rule:'
       limit: 'You have reached the limit of {{ limit }} assets per collection, you can no longer add assets to your collection.'
+    edit_asset: Edit asset
+    remove_asset: Remove asset
     remove_one_asset: Remove asset {{ assetName }} from asset collection
     remove_all_assets: Remove all assets
     other_actions: Other actions

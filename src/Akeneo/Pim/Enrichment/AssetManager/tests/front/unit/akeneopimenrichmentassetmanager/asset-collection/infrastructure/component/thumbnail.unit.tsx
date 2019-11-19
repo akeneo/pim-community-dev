@@ -5,17 +5,22 @@ import {ThemeProvider} from 'styled-components';
 import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import {Thumbnail} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-collection/thumbnail';
 
+const asset = {
+  code: 'sideview',
+  labels: {
+    en_US: 'Sideview',
+  },
+  image: [],
+  assetFamily: {
+    identifier: 'assetFamilyIdentifier',
+  },
+};
+
 test('It render a thumbnail', () => {
   const {getByText} = render(
     <ThemeProvider theme={akeneoTheme}>
       <Thumbnail
-        asset={{
-          code: 'sideview',
-          labels: {
-            en_US: 'Sideview',
-          },
-          image: [],
-        }}
+        asset={asset}
         context={{
           locale: 'en_US',
           channel: 'ecommerce',
@@ -27,7 +32,7 @@ test('It render a thumbnail', () => {
       />
     </ThemeProvider>
   );
-  expect(getByText('pim_asset_manager.asset_collection.remove_one_asset')).toBeInTheDocument();
+  expect(getByText('pim_asset_manager.asset_collection.remove_asset')).toBeInTheDocument();
   expect(getByText('Left')).toBeInTheDocument();
   expect(getByText('Right')).toBeInTheDocument();
 });
@@ -35,13 +40,7 @@ test('It render the first thumbnail of a collection', () => {
   const {getByText, queryByText} = render(
     <ThemeProvider theme={akeneoTheme}>
       <Thumbnail
-        asset={{
-          code: 'sideview',
-          labels: {
-            en_US: 'Sideview',
-          },
-          image: [],
-        }}
+        asset={asset}
         context={{
           locale: 'en_US',
           channel: 'ecommerce',
@@ -53,7 +52,7 @@ test('It render the first thumbnail of a collection', () => {
       />
     </ThemeProvider>
   );
-  expect(getByText('pim_asset_manager.asset_collection.remove_one_asset')).toBeInTheDocument();
+  expect(getByText('pim_asset_manager.asset_collection.remove_asset')).toBeInTheDocument();
   expect(queryByText('Left')).not.toBeInTheDocument();
   expect(getByText('Right')).toBeInTheDocument();
 });
@@ -61,13 +60,7 @@ test('It render the last thumbnail of a collection', () => {
   const {getByText, queryByText} = render(
     <ThemeProvider theme={akeneoTheme}>
       <Thumbnail
-        asset={{
-          code: 'sideview',
-          labels: {
-            en_US: 'Sideview',
-          },
-          image: [],
-        }}
+        asset={asset}
         context={{
           locale: 'en_US',
           channel: 'ecommerce',
@@ -79,7 +72,7 @@ test('It render the last thumbnail of a collection', () => {
       />
     </ThemeProvider>
   );
-  expect(getByText('pim_asset_manager.asset_collection.remove_one_asset')).toBeInTheDocument();
+  expect(getByText('pim_asset_manager.asset_collection.remove_asset')).toBeInTheDocument();
   expect(queryByText('Right')).not.toBeInTheDocument();
   expect(getByText('Left')).toBeInTheDocument();
 });
@@ -88,13 +81,7 @@ test('It render a readonly thumbnail', () => {
   const {queryByText} = render(
     <ThemeProvider theme={akeneoTheme}>
       <Thumbnail
-        asset={{
-          code: 'sideview',
-          labels: {
-            en_US: 'Sideview',
-          },
-          image: [],
-        }}
+        asset={asset}
         context={{
           locale: 'en_US',
           channel: 'ecommerce',
@@ -106,7 +93,7 @@ test('It render a readonly thumbnail', () => {
       />
     </ThemeProvider>
   );
-  expect(queryByText('pim_asset_manager.asset_collection.remove_one_asset')).not.toBeInTheDocument();
+  expect(queryByText('pim_asset_manager.asset_collection.remove_asset')).not.toBeInTheDocument();
   expect(queryByText('Left')).not.toBeInTheDocument();
   expect(queryByText('Right')).not.toBeInTheDocument();
 });
@@ -116,13 +103,7 @@ test('It trigger event on remove asset by clicking', () => {
   const {getByText} = render(
     <ThemeProvider theme={akeneoTheme}>
       <Thumbnail
-        asset={{
-          code: 'sideview',
-          labels: {
-            en_US: 'Sideview',
-          },
-          image: [],
-        }}
+        asset={asset}
         context={{
           locale: 'en_US',
           channel: 'ecommerce',
@@ -137,7 +118,7 @@ test('It trigger event on remove asset by clicking', () => {
     </ThemeProvider>
   );
 
-  fireEvent.click(getByText('pim_asset_manager.asset_collection.remove_one_asset'));
+  fireEvent.click(getByText('pim_asset_manager.asset_collection.remove_asset'));
   expect(isRemoved).toEqual(true);
 });
 
@@ -147,13 +128,7 @@ test('It trigger event on move asset left by clicking', () => {
   const {getByText} = render(
     <ThemeProvider theme={akeneoTheme}>
       <Thumbnail
-        asset={{
-          code: 'sideview',
-          labels: {
-            en_US: 'Sideview',
-          },
-          image: [],
-        }}
+        asset={asset}
         context={{
           locale: 'en_US',
           channel: 'ecommerce',
@@ -180,13 +155,7 @@ test('It trigger event on move asset right by clicking', () => {
   const {getByText} = render(
     <ThemeProvider theme={akeneoTheme}>
       <Thumbnail
-        asset={{
-          code: 'sideview',
-          labels: {
-            en_US: 'Sideview',
-          },
-          image: [],
-        }}
+        asset={asset}
         context={{
           locale: 'en_US',
           channel: 'ecommerce',
@@ -213,13 +182,7 @@ test('It trigger event on click by clicking', () => {
   const {getByTestId} = render(
     <ThemeProvider theme={akeneoTheme}>
       <Thumbnail
-        asset={{
-          code: 'sideview',
-          labels: {
-            en_US: 'Sideview',
-          },
-          image: [],
-        }}
+        asset={asset}
         context={{
           locale: 'en_US',
           channel: 'ecommerce',
