@@ -2,6 +2,9 @@
 
 namespace spec\Akeneo\AssetManager\Domain\Model\AssetFamily;
 
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
 use PhpSpec\ObjectBehavior;
 
@@ -14,15 +17,52 @@ class TransformationCollectionSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_a_collection_item_is_not_a_transformation(
-        Transformation $transformation,
-        Transformation $otherTransformation
+        Transformation $transformation1,
+        Transformation $transformation2,
+        Target $target1,
+        Target $target2
     ) {
+        $transformation1->getTarget()->willReturn($target1);
+        $transformation2->getTarget()->willReturn($target2);
+        $target1->getAttributeIdentifierAsString()->willReturn('target_attribute_1');
+        $target2->getAttributeIdentifierAsString()->willReturn('target_attribute_2');
+
         $this->beConstructedThrough('create', [
             [
-                $transformation,
+                $transformation1,
                 new \stdClass(),
-                $otherTransformation,
+                $transformation2,
             ],
+        ]);
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
+    function it_throws_an_exception_when_2_transformations_have_the_same_target(
+        Transformation $transformation1,
+        Transformation $transformation2,
+        Target $target1,
+        Target $target2,
+        ChannelReference $channelReference1,
+        ChannelReference $channelReference2,
+        LocaleReference $localeReference1,
+        LocaleReference $localeReference2
+    ) {
+        $transformation1->getTarget()->willReturn($target1);
+        $transformation2->getTarget()->willReturn($target2);
+        $target1->getAttributeIdentifierAsString()->willReturn('target_attribute');
+        $target2->getAttributeIdentifierAsString()->willReturn('target_attribute');
+        $target1->getChannelReference()->willReturn($channelReference1);
+        $target2->getChannelReference()->willReturn($channelReference2);
+        $channelReference1->equals($channelReference2)->willReturn(true);
+        $target1->getLocaleReference()->willReturn($localeReference1);
+        $target2->getLocaleReference()->willReturn($localeReference2);
+        $localeReference1->equals($localeReference2)->willReturn(true);
+
+        $this->beConstructedThrough('create', [
+            [
+                $transformation1,
+                $transformation2
+            ]
         ]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }

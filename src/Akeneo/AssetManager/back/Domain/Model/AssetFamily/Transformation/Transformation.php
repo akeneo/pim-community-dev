@@ -43,4 +43,9 @@ class Transformation
     {
         return new self($source, $target, $operations);
     }
+
+    public function getTarget(): Target
+    {
+        return $this->target;
+    }
 }
