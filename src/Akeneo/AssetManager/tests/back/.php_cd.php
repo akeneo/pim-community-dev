@@ -21,6 +21,9 @@ $rules = [
         'Symfony\Component\EventDispatcher\EventSubscriberInterface',
         'Symfony\Component\EventDispatcher\Event',
         'Webmozart\Assert\Assert',
+
+        //TODO: use a proper image storer interface for EditAssetFamilyHandler
+        'Akeneo\AssetManager\Infrastructure\Filesystem\Storage'
     ])->in('Akeneo\AssetManager\Application'),
     $builder->only([
         'Akeneo\AssetManager\Application',

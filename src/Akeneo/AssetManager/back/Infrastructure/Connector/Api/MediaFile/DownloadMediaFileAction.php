@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Infrastructure\Connector\Api\MediaFile;
 
 use Akeneo\AssetManager\Domain\Repository\MediaFileNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\MediaFileRepositoryInterface;
+use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,8 +28,6 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
  */
 class DownloadMediaFileAction
 {
-    private const FILE_STORAGE_ALIAS = 'catalogStorage';
-
     /** @var MediaFileRepositoryInterface */
     private $mediaFileRepository;
 
@@ -53,7 +52,7 @@ class DownloadMediaFileAction
             throw new NotFoundHttpException($exception->getMessage());
         }
 
-        $filesystem = $this->filesystemProvider->getFilesystem(self::FILE_STORAGE_ALIAS);
+        $filesystem = $this->filesystemProvider->getFilesystem(Storage::FILE_STORAGE_ALIAS);
         if (!$filesystem->has($fileCode)) {
             throw new NotFoundHttpException(sprintf('Media file "%s" is not present on the filesystem.', $fileCode));
         }

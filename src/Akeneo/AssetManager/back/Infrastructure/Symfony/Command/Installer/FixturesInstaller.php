@@ -32,6 +32,7 @@ use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\ValueHydratorInterface;
 use Akeneo\AssetManager\Infrastructure\Symfony\Command\IndexAssetsCommand;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
@@ -46,8 +47,7 @@ use Doctrine\DBAL\Connection;
  */
 class FixturesInstaller
 {
-    public const ICE_CAT_DEMO_DEV_CATALOG = 'PimEnterpriseInstallerBundle:icecat_demo_dev';
-    private const CATALOG_STORAGE_ALIAS = 'catalogStorage';
+    public const ICE_CAT_DEMO_DEV_CATALOG = 'src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev';
     private const NUMBER_OF_FAKE_ASSET_TO_CREATE = 10000;
 
     /** @var Connection */
@@ -726,7 +726,7 @@ SQL;
         $path = sprintf('/../../Resources/fixtures/files/%s.jpg', $code);
         $rawFile = new \SplFileInfo(__DIR__ . $path);
 
-        return $this->storer->store($rawFile, self::CATALOG_STORAGE_ALIAS);
+        return $this->storer->store($rawFile, Storage::FILE_STORAGE_ALIAS);
     }
 
     private function indexAssets(): void

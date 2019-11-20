@@ -59,6 +59,8 @@ asset-manager-coupling-back:
 .PHONY: asset-manager-lint-back
 asset-manager-lint-back:
 	$(PHP_RUN) vendor/bin/phpstan analyse --configuration src/Akeneo/AssetManager/tests/back/phpstan.neon.dist
+	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php src/Akeneo/AssetManager/back
+	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php src/Akeneo/Pim/Enrichment/AssetManager/
 
 .PHONY: asset-manager-unit-back
 asset-manager-unit-back:

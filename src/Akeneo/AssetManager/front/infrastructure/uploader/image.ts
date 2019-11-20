@@ -49,4 +49,4 @@ export class ConcreteImageUploader implements Uploader<Image> {
   }
 }
 
-export default ConcreteImageUploader.create($, routing, 'pim_enrich_media_rest_post');
+export default ConcreteImageUploader.create($, routing, 'akeneo_asset_manager_file_upload');

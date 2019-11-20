@@ -30,8 +30,6 @@ use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
  */
 class EditAssetHandler
 {
-    private const CATALOG_STORAGE_ALIAS = 'catalogStorage';
-
     /** @var ValueUpdaterRegistryInterface  */
     private $valueUpdaterRegistry;
 
