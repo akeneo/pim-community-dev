@@ -37,14 +37,6 @@ services:
         arguments:
             - '@pim_user.repository.group'
 
-    pim_enrich.controller.rest.api_client:
-        public: true
-        class: 'Akeneo\UserManagement\Bundle\Controller\ApiClientController'
-        arguments:
-            - '@fos_oauth_server.client_manager.default'
-            - '@validator'
-            - '@pim_internal_api_serializer'
-
     pim_user.controller.user_role_rest:
         public: true
         class: 'Akeneo\UserManagement\Bundle\Controller\Rest\UserRoleController'

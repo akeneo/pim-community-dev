@@ -238,18 +238,6 @@ pim_enrich.entity.fallback:
       leave: Êtes-vous sûr(e) de vouloir quitter cette page ?
       discard_changes: Vous perdrez les modifications effectuées sur {{ entity }} si vous quittez la page.
       discard_changes_title: Êtes-vous sûr(e) ?
-pim_enrich.entity.api_connection:
-  flash:
-    create:
-      success: Connexion API créée avec succès
-    delete:
-      success: La connexion API a été révoquée avec succès
-      fail: Impossible de révoquer cette connexion API
-  page_title:
-    index: "] -Inf, 1]{{ count }} connexion API|]1, Inf[{{ count }} connexions API"
-  module:
-    revoke:
-      confirm: Voulez-vous vraiment révoquer cette connexion API ?
 pim_enrich.entity.job_execution:
   page_title:
     index: "]-Inf, 1]{{ count }} opération|]1, Inf[{{ count }} opérations"
