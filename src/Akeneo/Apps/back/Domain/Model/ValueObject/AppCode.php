@@ -16,6 +16,8 @@ class AppCode
 
     public function __construct(string $code)
     {
+        $code = trim($code);
+        
         if (empty($code)) {
             throw new \InvalidArgumentException(sprintf(self::CONSTRAINT_KEY, 'required'));
         }

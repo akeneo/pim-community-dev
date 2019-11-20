@@ -16,6 +16,8 @@ class AppLabel
 
     public function __construct(string $label)
     {
+        $label = trim($label);
+
         if (empty($label)) {
             throw new \InvalidArgumentException(sprintf(self::CONSTRAINT_KEY, 'required'));
         }
