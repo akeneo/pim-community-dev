@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b04592dac6c3e6f3a92e7958bd1abce5",
+    "content-hash": "ff85c464dfb7857fa815e3c5c6375910",
     "packages": [
         {
             "name": "ass/xmlsecurity",
@@ -1648,16 +1648,16 @@
         },
         {
             "name": "elasticsearch/elasticsearch",
-            "version": "v7.2.2",
+            "version": "v7.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/elastic/elasticsearch-php.git",
-                "reference": "eefeaa8decab4056d6457d179147cd885faf6653"
+                "reference": "830a6f6fdb4a6b7005ff914fe761e1a92ebb5cb8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/elastic/elasticsearch-php/zipball/eefeaa8decab4056d6457d179147cd885faf6653",
-                "reference": "eefeaa8decab4056d6457d179147cd885faf6653",
+                "url": "https://api.github.com/repos/elastic/elasticsearch-php/zipball/830a6f6fdb4a6b7005ff914fe761e1a92ebb5cb8",
+                "reference": "830a6f6fdb4a6b7005ff914fe761e1a92ebb5cb8",
                 "shasum": ""
             },
             "require": {
@@ -1704,7 +1704,7 @@
                 "elasticsearch",
                 "search"
             ],
-            "time": "2019-08-30T08:20:06+00:00"
+            "time": "2019-11-19T15:10:44+00:00"
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",
@@ -1905,33 +1905,32 @@
         },
         {
             "name": "friendsofsymfony/rest-bundle",
-            "version": "2.5.0",
+            "version": "2.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSRestBundle.git",
-                "reference": "a5fc73b84bdb2f0fdf58a717b322ceb6997f7bf3"
+                "reference": "54758949bff9fc520997415341323eebf3f54892"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSRestBundle/zipball/a5fc73b84bdb2f0fdf58a717b322ceb6997f7bf3",
-                "reference": "a5fc73b84bdb2f0fdf58a717b322ceb6997f7bf3",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSRestBundle/zipball/54758949bff9fc520997415341323eebf3f54892",
+                "reference": "54758949bff9fc520997415341323eebf3f54892",
                 "shasum": ""
             },
             "require": {
                 "doctrine/inflector": "^1.0",
-                "php": "^5.5.9|~7.0",
+                "php": "^7.1",
                 "psr/log": "^1.0",
-                "symfony/config": "^3.4|^4.0",
-                "symfony/debug": "^3.4|^4.0",
-                "symfony/dependency-injection": "^3.4|^4.0",
-                "symfony/event-dispatcher": "^3.4|^4.0",
-                "symfony/finder": "^3.4|^4.0",
-                "symfony/framework-bundle": "^3.4|^4.0",
-                "symfony/http-foundation": "^3.4|^4.0",
-                "symfony/http-kernel": "^3.4|^4.0",
-                "symfony/routing": "^3.4|^4.0",
-                "symfony/security-core": "^3.4|^4.0",
-                "symfony/templating": "^3.4|^4.0",
+                "symfony/config": "^3.4|^4.3",
+                "symfony/debug": "^3.4|^4.3",
+                "symfony/dependency-injection": "^3.4|^4.3",
+                "symfony/event-dispatcher": "^3.4|^4.3",
+                "symfony/finder": "^3.4|^4.3",
+                "symfony/framework-bundle": "^3.4|^4.3",
+                "symfony/http-foundation": "^3.4|^4.3",
+                "symfony/http-kernel": "^3.4|^4.3",
+                "symfony/routing": "^3.4|^4.3",
+                "symfony/security-core": "^3.4|^4.3",
                 "willdurand/jsonp-callback-validator": "^1.0",
                 "willdurand/negotiation": "^2.0"
             },
@@ -1946,19 +1945,19 @@
                 "phpoption/phpoption": "^1.1",
                 "psr/http-message": "^1.0",
                 "sensio/framework-extra-bundle": "^3.0.13|^4.0|^5.0",
-                "symfony/asset": "^3.4|^4.0",
-                "symfony/browser-kit": "^3.4|^4.0",
-                "symfony/css-selector": "^3.4|^4.0",
-                "symfony/dependency-injection": "^2.7.20|^3.0|^4.0",
-                "symfony/expression-language": "~2.7|^3.0|^4.0",
-                "symfony/form": "^3.4|^4.0",
+                "symfony/asset": "^3.4|^4.3",
+                "symfony/browser-kit": "^3.4|^4.3",
+                "symfony/css-selector": "^3.4|^4.3",
+                "symfony/expression-language": "^3.4|^4.3",
+                "symfony/form": "^3.4|^4.3",
                 "symfony/phpunit-bridge": "^4.1.8",
-                "symfony/security-bundle": "^3.4|^4.0",
-                "symfony/serializer": "^2.7.11|^3.0.4|^4.0",
-                "symfony/twig-bundle": "^3.4|^4.0",
-                "symfony/validator": "^3.4|^4.0",
-                "symfony/web-profiler-bundle": "^3.4|^4.0",
-                "symfony/yaml": "^3.4|^4.0"
+                "symfony/security-bundle": "^3.4|^4.3",
+                "symfony/serializer": "^3.4|^4.3",
+                "symfony/templating": "^3.4|^4.3",
+                "symfony/twig-bundle": "^3.4|^4.3",
+                "symfony/validator": "^3.4|^4.3",
+                "symfony/web-profiler-bundle": "^3.4|^4.3",
+                "symfony/yaml": "^3.4|^4.3"
             },
             "suggest": {
                 "jms/serializer-bundle": "Add support for advanced serialization capabilities, recommended, requires ^2.0|^3.0",
@@ -1970,7 +1969,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.5-dev"
+                    "dev-master": "2.6-dev"
                 }
             },
             "autoload": {
@@ -1991,12 +1990,12 @@
                     "email": "smith@pooteeweet.org"
                 },
                 {
-                    "name": "FriendsOfSymfony Community",
-                    "homepage": "https://github.com/friendsofsymfony/FOSRestBundle/contributors"
-                },
-                {
                     "name": "Konstantin Kudryashov",
                     "email": "ever.zet@gmail.com"
+                },
+                {
+                    "name": "FriendsOfSymfony Community",
+                    "homepage": "https://github.com/friendsofsymfony/FOSRestBundle/contributors"
                 }
             ],
             "description": "This Bundle provides various tools to rapidly develop RESTful API's with Symfony",
@@ -2004,7 +2003,7 @@
             "keywords": [
                 "rest"
             ],
-            "time": "2019-01-03T13:05:12+00:00"
+            "time": "2019-10-21T08:22:30+00:00"
         },
         {
             "name": "gedmo/doctrine-extensions",
@@ -2429,55 +2428,55 @@
         },
         {
             "name": "liip/imagine-bundle",
-            "version": "2.0.0",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipImagineBundle.git",
-                "reference": "66959e113d1976d0b23a2617771c2c65d62ea44b"
+                "reference": "2cf633e0f335a9f1f0bb9d55726a73aca9259ea4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/66959e113d1976d0b23a2617771c2c65d62ea44b",
-                "reference": "66959e113d1976d0b23a2617771c2c65d62ea44b",
+                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/2cf633e0f335a9f1f0bb9d55726a73aca9259ea4",
+                "reference": "2cf633e0f335a9f1f0bb9d55726a73aca9259ea4",
                 "shasum": ""
             },
             "require": {
-                "imagine/imagine": "^0.7.1,<0.8",
+                "imagine/imagine": "^0.7.1|^1.1",
                 "php": "^7.1",
-                "symfony/asset": "^3.0|^4.0",
-                "symfony/filesystem": "^3.0|^4.0",
-                "symfony/finder": "^3.0|^4.0",
-                "symfony/framework-bundle": "^3.0|^4.0",
-                "symfony/options-resolver": "^3.0|^4.0",
-                "symfony/process": "^3.0|^4.0",
-                "symfony/templating": "^3.0|^4.0",
-                "symfony/translation": "^3.0|^4.0"
+                "symfony/asset": "^3.4|^4.2",
+                "symfony/filesystem": "^3.4|^4.2",
+                "symfony/finder": "^3.4|^4.2",
+                "symfony/framework-bundle": "^3.4|^4.2",
+                "symfony/options-resolver": "^3.4|^4.2",
+                "symfony/process": "^3.4|^4.2",
+                "symfony/templating": "^3.4|^4.2",
+                "symfony/translation": "^3.4|^4.2"
             },
             "require-dev": {
                 "amazonwebservices/aws-sdk-for-php": "^1.0",
                 "aws/aws-sdk-php": "^2.4",
                 "doctrine/cache": "^1.1",
                 "doctrine/orm": "^2.3",
-                "enqueue/enqueue-bundle": "^0.7|^0.8",
+                "enqueue/enqueue-bundle": "^0.9",
                 "ext-gd": "*",
                 "friendsofphp/php-cs-fixer": "^2.10",
                 "league/flysystem": "^1.0",
                 "psr/log": "^1.0",
-                "symfony/browser-kit": "^3.0|^4.0",
-                "symfony/console": "^3.0|^4.0",
-                "symfony/dependency-injection": "^3.0|^4.0",
-                "symfony/form": "^3.0|^4.0",
-                "symfony/phpunit-bridge": "^3.0|^4.0",
-                "symfony/validator": "^3.0|^4.0",
-                "symfony/yaml": "^3.0|^4.0",
-                "twig/twig": "^1.12|^2.0"
+                "symfony/browser-kit": "^3.4|^4.2",
+                "symfony/console": "^3.4|^4.2",
+                "symfony/dependency-injection": "^3.4|^4.2",
+                "symfony/form": "^3.4|^4.2",
+                "symfony/phpunit-bridge": "^4.3",
+                "symfony/validator": "^3.4|^4.2",
+                "symfony/yaml": "^3.4|^4.2",
+                "twig/twig": "^1.34|^2.4"
             },
             "suggest": {
                 "alcaeus/mongo-php-adapter": "required on PHP >= 7.0 to use mongo components with mongodb extension",
                 "amazonwebservices/aws-sdk-for-php": "required to use AWS version 1 cache resolver",
                 "aws/aws-sdk-php": "required to use AWS version 2/3 cache resolver",
                 "doctrine/mongodb-odm": "required to use mongodb-backed doctrine components",
-                "enqueue/enqueue-bundle": "^0.7 add if you like to process images in background",
+                "enqueue/enqueue-bundle": "^0.9 add if you like to process images in background",
                 "ext-exif": "required to read EXIF metadata from images",
                 "ext-gd": "required to use gd driver",
                 "ext-gmagick": "required to use gmagick driver",
@@ -2491,7 +2490,8 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-1.0": "1.7-dev"
+                    "dev-1.0": "1.7-dev",
+                    "dev-master": "2.x-dev"
                 }
             },
             "autoload": {
@@ -2525,7 +2525,7 @@
                 "symfony",
                 "transformation"
             ],
-            "time": "2018-04-30T09:53:17+00:00"
+            "time": "2019-10-04T05:45:14+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -2658,33 +2658,34 @@
         },
         {
             "name": "ocramius/proxy-manager",
-            "version": "2.1.1",
+            "version": "2.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Ocramius/ProxyManager.git",
-                "reference": "e18ac876b2e4819c76349de8f78ccc8ef1554cd7"
+                "reference": "4d154742e31c35137d5374c998e8f86b54db2e2f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Ocramius/ProxyManager/zipball/e18ac876b2e4819c76349de8f78ccc8ef1554cd7",
-                "reference": "e18ac876b2e4819c76349de8f78ccc8ef1554cd7",
+                "url": "https://api.github.com/repos/Ocramius/ProxyManager/zipball/4d154742e31c35137d5374c998e8f86b54db2e2f",
+                "reference": "4d154742e31c35137d5374c998e8f86b54db2e2f",
                 "shasum": ""
             },
             "require": {
-                "ocramius/package-versions": "^1.1.1",
-                "php": "^7.1.0",
-                "zendframework/zend-code": "^3.1.0"
+                "ocramius/package-versions": "^1.1.3",
+                "php": "^7.2.0",
+                "zendframework/zend-code": "^3.3.0"
             },
             "require-dev": {
-                "couscous/couscous": "^1.5.2",
+                "couscous/couscous": "^1.6.1",
                 "ext-phar": "*",
-                "humbug/humbug": "dev-master@DEV",
-                "nikic/php-parser": "^3.0.4",
+                "humbug/humbug": "1.0.0-RC.0@RC",
+                "nikic/php-parser": "^3.1.1",
+                "padraic/phpunit-accelerator": "dev-master@DEV",
                 "phpbench/phpbench": "^0.12.2",
-                "phpstan/phpstan": "^0.6.4",
-                "phpunit/phpunit": "^5.6.4",
-                "phpunit/phpunit-mock-objects": "^3.4.1",
-                "squizlabs/php_codesniffer": "^2.7.0"
+                "phpstan/phpstan": "dev-master#856eb10a81c1d27c701a83f167dc870fd8f4236a as 0.9.999",
+                "phpstan/phpstan-phpunit": "dev-master#5629c0a1f4a9c417cb1077cf6693ad9753895761",
+                "phpunit/phpunit": "^6.4.3",
+                "squizlabs/php_codesniffer": "^2.9.1"
             },
             "suggest": {
                 "ocramius/generated-hydrator": "To have very fast object to array to object conversion for ghost objects",
@@ -2723,20 +2724,20 @@
                 "proxy pattern",
                 "service proxies"
             ],
-            "time": "2017-05-04T11:12:50+00:00"
+            "time": "2019-08-10T08:37:15+00:00"
         },
         {
             "name": "oneup/flysystem-bundle",
-            "version": "3.0.3",
+            "version": "3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/1up-lab/OneupFlysystemBundle.git",
-                "reference": "f144242c765e4d3e0a20551f71e76b33cc0a2c0f"
+                "reference": "697cb9bdf86b578ac77932511375ab8f29f3c5d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/1up-lab/OneupFlysystemBundle/zipball/f144242c765e4d3e0a20551f71e76b33cc0a2c0f",
-                "reference": "f144242c765e4d3e0a20551f71e76b33cc0a2c0f",
+                "url": "https://api.github.com/repos/1up-lab/OneupFlysystemBundle/zipball/697cb9bdf86b578ac77932511375ab8f29f3c5d8",
+                "reference": "697cb9bdf86b578ac77932511375ab8f29f3c5d8",
                 "shasum": ""
             },
             "require": {
@@ -2788,7 +2789,10 @@
             "autoload": {
                 "psr-4": {
                     "Oneup\\FlysystemBundle\\": ""
-                }
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -2816,7 +2820,7 @@
                 "abstraction",
                 "filesystem"
             ],
-            "time": "2018-12-03T08:14:22+00:00"
+            "time": "2019-04-26T13:11:17+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -3401,16 +3405,16 @@
         },
         {
             "name": "symfony/acl-bundle",
-            "version": "v1.0.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/acl-bundle.git",
-                "reference": "78553a279dd2b7c85062255f0599990b36ebf448"
+                "reference": "5b32179c5319105cfc58884c279d76497f8a63b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/acl-bundle/zipball/78553a279dd2b7c85062255f0599990b36ebf448",
-                "reference": "78553a279dd2b7c85062255f0599990b36ebf448",
+                "url": "https://api.github.com/repos/symfony/acl-bundle/zipball/5b32179c5319105cfc58884c279d76497f8a63b4",
+                "reference": "5b32179c5319105cfc58884c279d76497f8a63b4",
                 "shasum": ""
             },
             "require": {
@@ -3458,7 +3462,7 @@
             ],
             "description": "Symfony AclBundle",
             "homepage": "https://symfony.com",
-            "time": "2018-01-03T11:21:11+00:00"
+            "time": "2019-05-06T11:48:10+00:00"
         },
         {
             "name": "symfony/asset",
@@ -5232,16 +5236,16 @@
         },
         {
             "name": "symfony/polyfill-apcu",
-            "version": "v1.4.0",
+            "version": "v1.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-apcu.git",
-                "reference": "2e7965b8cdfbba50d0092d3f6dca97dddec409e2"
+                "reference": "71ce80635d5dcd67772b4dda00b86068595f64d5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-apcu/zipball/2e7965b8cdfbba50d0092d3f6dca97dddec409e2",
-                "reference": "2e7965b8cdfbba50d0092d3f6dca97dddec409e2",
+                "url": "https://api.github.com/repos/symfony/polyfill-apcu/zipball/71ce80635d5dcd67772b4dda00b86068595f64d5",
+                "reference": "71ce80635d5dcd67772b4dda00b86068595f64d5",
                 "shasum": ""
             },
             "require": {
@@ -5250,10 +5254,13 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.4-dev"
+                    "dev-master": "1.12-dev"
                 }
             },
             "autoload": {
+                "psr-4": {
+                    "Symfony\\Polyfill\\Apcu\\": ""
+                },
                 "files": [
                     "bootstrap.php"
                 ]
@@ -5281,7 +5288,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2017-06-09T08:25:21+00:00"
+            "time": "2019-08-06T08:03:45+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -7484,24 +7491,24 @@
         },
         {
             "name": "webmozart/assert",
-            "version": "1.3.0",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webmozart/assert.git",
-                "reference": "0df1908962e7a3071564e857d86874dad1ef204a"
+                "reference": "88e6d84706d09a236046d686bbea96f07b3a34f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozart/assert/zipball/0df1908962e7a3071564e857d86874dad1ef204a",
-                "reference": "0df1908962e7a3071564e857d86874dad1ef204a",
+                "url": "https://api.github.com/repos/webmozart/assert/zipball/88e6d84706d09a236046d686bbea96f07b3a34f4",
+                "reference": "88e6d84706d09a236046d686bbea96f07b3a34f4",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.3.3 || ^7.0"
+                "php": "^5.3.3 || ^7.0",
+                "symfony/polyfill-ctype": "^1.8"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.6",
-                "sebastian/version": "^1.0.1"
+                "phpunit/phpunit": "^4.8.36 || ^7.5.13"
             },
             "type": "library",
             "extra": {
@@ -7530,7 +7537,7 @@
                 "check",
                 "validate"
             ],
-            "time": "2018-01-29T19:49:41+00:00"
+            "time": "2019-08-24T08:43:50+00:00"
         },
         {
             "name": "willdurand/jsonp-callback-validator",
