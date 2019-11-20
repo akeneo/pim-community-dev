@@ -41,8 +41,7 @@ class TransformationCollection
 
     public function normalize(): array
     {
-        return array_map(function ($transformation) {
-            /** @var Transformation $transformation */
+        return array_map(function (Transformation $transformation) {
             return $transformation->normalize();
         }, $this->transformations);
     }

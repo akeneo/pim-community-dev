@@ -188,7 +188,7 @@ class TargetSpec extends ObjectBehavior
         $this->equals($reference)->shouldReturn(false);
     }
 
-    function it_normalizes_a_source()
+    function it_normalizes_a_target()
     {
         $this->beConstructedThrough(
             'create',
