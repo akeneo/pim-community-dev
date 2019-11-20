@@ -55,7 +55,7 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
             // Should change depending on the preview type
             // Trigerred if the thumbnail configuration is not there
             return $this->defaultImageProvider->getImageUrl($this->defaultImage(), $previewType);
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             // Should change depending on the preview type
             // Trigerred if the thumbnail cache fetching is not working
             return $this->defaultImageProvider->getImageUrl($this->defaultImage(), $previewType);
