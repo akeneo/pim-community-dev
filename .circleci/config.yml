@@ -351,7 +351,7 @@ jobs:
               name: make release
               command: make release
 
-  test_migrations:
+  test_missing_structure_migrations:
       machine:
         image: ubuntu-1604:201903-01
       steps:
@@ -370,7 +370,7 @@ jobs:
                 name: Change owner on project dir after restoring cache
                 command: sudo chown -R 1000:1000 ../project/var
         -   run:
-                name: Test missing database and index migrations
+                name: Test missing database and index structure migrations
                 command: .circleci/run_migration_tests.sh $CIRCLE_BRANCH
 
 workflows:
@@ -395,7 +395,7 @@ workflows:
           - test_front_static_acceptance_and_integration:
                 requires:
                     - build_dev
-          - test_migrations:
+          - test_missing_structure_migrations:
                 requires:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
@@ -405,11 +405,12 @@ workflows:
                     - test_front_static_acceptance_and_integration
           - back_behat_legacy:
                 requires:
-                    - test_migrations
+                    - test_missing_structure_migrations
                     - test_back_phpunit
           - back_performance:
                 requires:
-                    - test_migrations
+                    - test_back_data_migrations
+                    - test_back_missing_structure_migrations
                     - test_back_phpunit
 
   nightly:
