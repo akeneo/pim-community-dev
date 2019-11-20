@@ -30,8 +30,8 @@ akeneo_apps_delete_rest:
         code: '[a-zA-Z0-9_]+'
 
 akeneo_apps_regenerate_secret_rest:
-    path: '/rest/apps/regenerate-secret'
-    defaults: { _controller: akeneo_app.internal_api.controller.app:regenerate-secret }
+    path: '/rest/apps/{code}/regenerate-secret'
+    defaults: { _controller: akeneo_app.internal_api.controller.app:regenerateSecret }
     methods: [POST]
     requirements:
         code: '[a-zA-Z0-9_]+'

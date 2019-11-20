@@ -3,17 +3,17 @@
 exports[`App should render 1`] = `
 Array [
   <header
-    className="sc-EHOje cfzsAe"
+    className="sc-bZQynM hKjmOG"
   >
     <div
-      className="sc-bZQynM iirico"
+      className="sc-gzVnrw hGWTJJ"
     >
       pim_apps.edit_app.subtitle
     </div>
   </header>,
   <br />,
-  <form
-    className="AknFormContainer"
+  <div
+    className="sc-gZMcBi jqfxvQ"
   >
     <div
       className="AknFieldContainer"
@@ -108,7 +108,7 @@ Array [
         className="AknFieldContainer-footer"
       >
         <div
-          className="sc-ifAKCX gLCJQQ"
+          className="sc-EHOje leYcrp"
         >
           pim_apps.flow_type_helper.message
            
@@ -120,6 +120,6 @@ Array [
         </div>
       </div>
     </div>
-  </form>,
+  </div>,
 ]
 `;

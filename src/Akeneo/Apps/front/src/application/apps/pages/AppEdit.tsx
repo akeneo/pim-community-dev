@@ -1,17 +1,28 @@
 import {FormikHelpers, useFormik} from 'formik';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useHistory, useParams} from 'react-router';
-import {App} from '../../../domain/apps/app.interface';
+import styled from 'styled-components';
+import {AppCredentials as AppCredentialsInterface} from '../../../domain/apps/app-credentials.interface';
+import {App as AppInterface} from '../../../domain/apps/app.interface';
 import {FlowType} from '../../../domain/apps/flow-type.enum';
 import {PimView} from '../../../infrastructure/pim-view/PimView';
 import {ApplyButton, Breadcrumb, BreadcrumbItem, Page, PageHeader} from '../../common';
 import imgUrl from '../../common/assets/illustrations/api.svg';
+import {useFetch} from '../../shared/fetch';
 import {isErr, isOk} from '../../shared/fetch/result';
-import {BreadcrumbRouterLink} from '../../shared/router';
+import {BreadcrumbRouterLink, useRoute} from '../../shared/router';
 import {Translate} from '../../shared/translate';
+import {AppCredentials} from '../components/AppCredentials';
 import {AppEditForm} from '../components/AppEditForm';
-import {useFetchApp} from '../use-fetch-app';
 import {useUpdateApp} from '../use-update-app';
+
+interface FetchAppData {
+    code: string;
+    label: string;
+    flow_type: FlowType;
+    secret: string;
+    client_id: string;
+}
 
 export interface FormValues {
     label: string;
@@ -39,11 +50,31 @@ export const AppEdit = () => {
 
     const {code} = useParams<{code: string}>();
 
+    const [app, setApp] = useState<AppInterface | undefined>();
+    const [credentials, setCrendentials] = useState<AppCredentialsInterface | undefined>();
+
+    const fetchAppUrl = useRoute('akeneo_apps_get_rest', {code});
+    const result = useFetch<FetchAppData>(fetchAppUrl);
+    if (isErr(result)) {
+        history.push('/apps');
+    }
+
+    useEffect(() => {
+        if (isOk(result)) {
+            setApp({
+                code: result.data.code,
+                label: result.data.label,
+                flowType: result.data.flow_type,
+            });
+            setCrendentials({
+                clientId: result.data.client_id,
+                secret: result.data.secret,
+            });
+        }
+    }, [result]);
+
     const updateApp = useUpdateApp(code);
-    const handleSubmit = async (
-        {label, flowType}: FormValues,
-        {setSubmitting, resetForm}: FormikHelpers<FormValues>
-    ) => {
+    const handleSubmit = async ({label, flowType}: FormValues, {setSubmitting}: FormikHelpers<FormValues>) => {
         const result = await updateApp({
             code,
             label,
@@ -52,11 +83,10 @@ export const AppEdit = () => {
         setSubmitting(false);
 
         if (isOk(result)) {
-            resetForm({
-                values: {
-                    label: label,
-                    flowType: flowType,
-                },
+            setApp({
+                code,
+                label,
+                flowType,
             });
         }
     };
@@ -67,29 +97,22 @@ export const AppEdit = () => {
         validate,
     });
 
-    const result = useFetchApp(code);
     useEffect(() => {
-        if (isOk(result)) {
-            const app: App = result.data;
-
-            formik.resetForm({
-                values: {
-                    label: app.label,
-                    flowType: app.flowType,
-                },
-            });
+        if (!app) {
+            return;
         }
 
-        if (isErr(result)) {
-            history.push('/apps');
-        }
-    }, [result]);
+        formik.resetForm({
+            values: {
+                label: app.label,
+                flowType: app.flowType,
+            },
+        });
+    }, [app]);
 
-    if (!isOk(result)) {
+    if (!app || !credentials) {
         return <></>;
     }
-
-    const app: App = result.data;
 
     return (
         <Page>
@@ -108,7 +131,7 @@ export const AppEdit = () => {
                     <ApplyButton
                         key={0}
                         onClick={() => formik.submitForm()}
-                        disabled={!formik.isValid || formik.isSubmitting}
+                        disabled={!formik.dirty || !formik.isValid || formik.isSubmitting}
                         classNames={['AknButtonList-item']}
                     >
                         <Translate id='pim_common.save' />
@@ -134,7 +157,24 @@ export const AppEdit = () => {
                 {app.label}
             </PageHeader>
 
-            <AppEditForm app={app} formik={formik} />
+            <Layout>
+                <div>
+                    <AppEditForm app={app} formik={formik} />
+                </div>
+                <div>
+                    <AppCredentials code={app.code} appCredentials={credentials} />
+                </div>
+            </Layout>
         </Page>
     );
 };
+
+const Layout = styled.div`
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-column-gap: 40px;
+
+    @media (max-width: 980px) {
+        grid-template-columns: auto;
+    }
+`;
