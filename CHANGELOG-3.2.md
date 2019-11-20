@@ -1,5 +1,7 @@
 # 3.2.x
 
+- PIM-8995: Fix the completeness widget (dashboard) for channels having no translations
+
 # 3.2.20 (2019-11-20)
 
 # 3.2.19 (2019-11-15)
