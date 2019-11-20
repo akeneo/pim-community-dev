@@ -124,7 +124,7 @@ CSV;
         ];
 
         $expectedWarnings = [
-            'Product "productB" cannot be updated. It should be at least in an own category.',
+            'Product "productB" cannot be updated. You are only allowed to suggest proposals on this product.',
         ];
 
         $this->assertAuthenticatedImport($importCSV, 'mary', $expected, 2, 0, 1, $expectedWarnings);

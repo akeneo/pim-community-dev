@@ -1,44 +1,30 @@
-import {NormalizableAdditionalProperty} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import LabelCollection, {
   denormalizeLabelCollection,
   emptyLabelCollection,
-  getLabelInCollection,
 } from 'akeneoassetmanager/domain/model/label-collection';
 import OptionCode, {denormalizeOptionCode} from 'akeneoassetmanager/domain/model/attribute/type/option/option-code';
+import LocaleReference, {localeReferenceIsEmpty} from 'akeneoassetmanager/domain/model/locale-reference';
+import {getLabel} from 'pimui/js/i18n';
 
-export type NormalizedOption = {
+export type Option = {
   code: OptionCode;
   labels: LabelCollection;
 };
 
-export class Option implements NormalizableAdditionalProperty {
-  private constructor(readonly code: OptionCode, readonly labels: LabelCollection) {
-    Object.freeze(this);
-  }
+export const createOptionFromNormalized = (normalizedOption: any): Option => {
+  return {
+    code: denormalizeOptionCode(normalizedOption.code),
+    labels: denormalizeLabelCollection(normalizedOption.labels),
+  };
+};
 
-  public static createFromNormalized(normalizedOption: NormalizedOption) {
-    return new Option(
-      denormalizeOptionCode(normalizedOption.code),
-      denormalizeLabelCollection(normalizedOption.labels)
-    );
-  }
+export const getOptionLabel = (option: Option, locale: LocaleReference): string => {
+  return localeReferenceIsEmpty(locale) ? `[${option.code}]` : getLabel(option.labels, locale, option.code);
+};
 
-  public static create(optionCode: OptionCode, labels: LabelCollection) {
-    return new Option(optionCode, labels);
-  }
-
-  public static createEmpty() {
-    return new Option('', emptyLabelCollection());
-  }
-
-  public getLabel(locale: string, fallbackOnCode: boolean = true) {
-    return getLabelInCollection(this.labels, locale, fallbackOnCode, this.code);
-  }
-
-  public normalize(): NormalizedOption {
-    return {
-      code: this.code,
-      labels: this.labels,
-    };
-  }
-}
+export const createEmptyOption = (): Option => {
+  return {
+    code: '',
+    labels: emptyLabelCollection(),
+  };
+};

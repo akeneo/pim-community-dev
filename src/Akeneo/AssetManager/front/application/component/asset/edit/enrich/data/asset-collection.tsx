@@ -7,6 +7,7 @@ import __ from 'akeneoassetmanager/tools/translator';
 import AssetCollectionData from 'akeneoassetmanager/domain/model/asset/data/asset-collection';
 import ChannelReference from 'akeneoassetmanager/domain/model/channel-reference';
 import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
+import {assetTypeIsEmpty} from 'akeneoassetmanager/domain/model/attribute/type/asset/asset-type';
 
 const View = ({
   value,
@@ -21,11 +22,10 @@ const View = ({
   onChange: (value: Value) => void;
   canEditData: boolean;
 }) => {
-  if (!(value.data instanceof AssetCollectionData)) {
+  const attribute = value.attribute as AssetAttribute;
+  if (!(value.data instanceof AssetCollectionData) || assetTypeIsEmpty(attribute.assetType)) {
     return null;
   }
-
-  const attribute = value.attribute as AssetAttribute;
 
   return (
     //The first children of a FieldContainer will stretch to the full width if not contained in a div.
@@ -38,7 +38,7 @@ const View = ({
         locale={locale}
         channel={channel}
         placeholder={__('pim_asset_manager.asset.selector.no_value')}
-        assetFamilyIdentifier={attribute.assetType.getAssetFamilyIdentifier()}
+        assetFamilyIdentifier={attribute.assetType}
         readOnly={!canEditData}
         onChange={(assetCodes: AssetCode[]) => {
           if (canEditData) {

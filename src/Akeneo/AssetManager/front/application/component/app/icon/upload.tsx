@@ -1,8 +1,6 @@
 import * as React from 'react';
 
-const Download = (
-  {color, title, ...props}: {color?: string; title?: string} & any = {color: '#67768A', title: 'Download icon'}
-) => (
+const Download = ({color = '#67768A', title = 'Download icon', ...props}: {color?: string; title?: string} & any) => (
   <svg viewBox="0 0 24 24" {...props}>
     <g fill="none" fillRule="evenodd" strokeLinecap="round" strokeLinejoin="round">
       <g stroke={color}>

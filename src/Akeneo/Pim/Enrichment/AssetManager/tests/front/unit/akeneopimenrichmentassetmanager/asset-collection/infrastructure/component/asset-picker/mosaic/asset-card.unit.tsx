@@ -10,7 +10,7 @@ const asset = {
   labels: {
     en_US: 'iPhone X',
   },
-  image: 'my_image_url',
+  image: [{attribute: 'nice', locale: null, channel: null, data: {filePath: 'my_image_url', originalFilename: ''}}],
   completeness: {},
 };
 
@@ -26,7 +26,7 @@ test('It displays an unselected asset card', () => {
       />
     </ThemeProvider>
   );
-  expect(container.querySelector('img').src).toEqual(`http://localhost/${asset.image}`);
+  expect(container.querySelector('img').src).toEqual('');
   expect(container.querySelector('[data-checked="false"]')).toBeInTheDocument();
   expect(getByText(asset.labels.en_US)).toBeInTheDocument();
 });
@@ -43,7 +43,7 @@ test('It displays selected asset card', () => {
       />
     </ThemeProvider>
   );
-  expect(container.querySelector('img').src).toEqual(`http://localhost/${asset.image}`);
+  expect(container.querySelector('img').src).toEqual('');
   expect(container.querySelector('[data-checked="true"]')).toBeInTheDocument();
   expect(getByText(asset.labels.en_US)).toBeInTheDocument();
 });

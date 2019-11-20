@@ -1,8 +1,8 @@
 import * as React from 'react';
 import Value from 'akeneoassetmanager/domain/model/asset/value';
-import LocaleReference, {localeReferenceStringValue} from 'akeneoassetmanager/domain/model/locale-reference';
+import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
 import Select2 from 'akeneoassetmanager/application/component/app/select2';
-import {NormalizedOption, Option} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
+import {Option, getOptionLabel} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
 import OptionCollectionData, {
   denormalize as denormalizeOptionCollectionData,
 } from 'akeneoassetmanager/domain/model/asset/data/option-collection';
@@ -29,8 +29,7 @@ const View = ({
   const attribute = value.attribute as OptionCollectionAttribute;
 
   const formatedOptions = attribute.options.reduce((formatedOptions: {[code: string]: string}, option: Option) => {
-    const normalizedOption: NormalizedOption = option.normalize();
-    formatedOptions[normalizedOption.code] = option.getLabel(localeReferenceStringValue(locale));
+    formatedOptions[option.code] = getOptionLabel(option, locale);
 
     return formatedOptions;
   }, {});

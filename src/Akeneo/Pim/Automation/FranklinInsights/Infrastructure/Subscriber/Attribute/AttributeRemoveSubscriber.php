@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Attribute;
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionIsActiveHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionIsActiveQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveIdentifiersMappingCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveIdentifiersMappingHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Service\RemoveAttributesFromMappingInterface;
@@ -42,8 +42,8 @@ class AttributeRemoveSubscriber implements EventSubscriberInterface
     /** @var array */
     private $familyCodes = [];
 
-    /** @var GetConnectionStatusHandler */
-    private $connectionStatusHandler;
+    /** @var GetConnectionIsActiveHandler */
+    private $connectionIsActiveHandler;
 
     /** @var IdentifiersMappingRepositoryInterface */
     private $identifiersMappingRepository;
@@ -51,23 +51,16 @@ class AttributeRemoveSubscriber implements EventSubscriberInterface
     /** @var SaveIdentifiersMappingHandler */
     private $saveIdentifiersMappingHandler;
 
-    /**
-     * @param SelectFamilyCodesByAttributeQueryInterface $familyCodesByAttributeQuery
-     * @param RemoveAttributesFromMappingInterface $removeAttributesFromMapping
-     * @param GetConnectionStatusHandler $connectionStatusHandler
-     * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
-     * @param SaveIdentifiersMappingHandler $saveIdentifiersMappingHandler
-     */
     public function __construct(
         SelectFamilyCodesByAttributeQueryInterface $familyCodesByAttributeQuery,
         RemoveAttributesFromMappingInterface $removeAttributesFromMapping,
-        GetConnectionStatusHandler $connectionStatusHandler,
+        GetConnectionIsActiveHandler $connectionIsActiveHandler,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         SaveIdentifiersMappingHandler $saveIdentifiersMappingHandler
     ) {
         $this->familyCodesByAttributeQuery = $familyCodesByAttributeQuery;
         $this->removeAttributesFromMapping = $removeAttributesFromMapping;
-        $this->connectionStatusHandler = $connectionStatusHandler;
+        $this->connectionIsActiveHandler = $connectionIsActiveHandler;
         $this->identifiersMappingRepository = $identifiersMappingRepository;
         $this->saveIdentifiersMappingHandler = $saveIdentifiersMappingHandler;
     }
@@ -123,9 +116,7 @@ class AttributeRemoveSubscriber implements EventSubscriberInterface
      */
     private function isFranklinInsightsActivated(): bool
     {
-        $connectionStatus = $this->connectionStatusHandler->handle(new GetConnectionStatusQuery(false));
-
-        return $connectionStatus->isActive();
+        return $this->connectionIsActiveHandler->handle(new GetConnectionIsActiveQuery());
     }
 
     /**

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Symfony\Command;
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionIsActiveHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionIsActiveQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Service\ScheduleFetchProductsInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,8 +27,8 @@ class FetchProductsCommand extends ContainerAwareCommand
     /** @var ScheduleFetchProductsInterface */
     private $scheduleFetchProducts;
 
-    /** @var GetConnectionStatusHandler */
-    private $getConnectionStatusHandler;
+    /** @var GetConnectionIsActiveHandler */
+    private $getConnectionIsActiveHandler;
 
     protected function configure(): void
     {
@@ -40,15 +40,15 @@ class FetchProductsCommand extends ContainerAwareCommand
     protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->scheduleFetchProducts = $this->getContainer()->get('akeneo.pim.automation.franklin_insights.connector.job_launcher.schedule_fetch_products');
-        $this->getConnectionStatusHandler = $this->getContainer()->get(
-            'akeneo.pim.automation.franklin_insights.application.configuration.query.get_connection_status_handler'
+        $this->getConnectionIsActiveHandler = $this->getContainer()->get(
+            'akeneo.pim.automation.franklin_insights.application.configuration.query.get_connection_is_active_handler'
         );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
-        $connectionStatus = $this->getConnectionStatusHandler->handle(new GetConnectionStatusQuery(false));
-        if (false === $connectionStatus->isActive()) {
+        $connectionIsActive = $this->getConnectionIsActiveHandler->handle(new GetConnectionIsActiveQuery());
+        if (false === $connectionIsActive) {
             return;
         }
 

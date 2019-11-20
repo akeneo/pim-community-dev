@@ -168,7 +168,7 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
     public function testFailToUpdateACategoryOnAProductOnlyViewable()
     {
         $this->expectException(ResourceAccessDeniedException::class);
-        $this->expectExceptionMessage('Product "product" cannot be updated. It should be at least in an own category');
+        $this->expectExceptionMessage('Product "product" cannot be updated. You are only allowed to suggest proposals on this product.');
 
         $product = $this->saveProduct('product', ['categories' => ['categoryA1']]);
         $this->generateToken('mary');
@@ -179,7 +179,7 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
     public function testFailToUpdateGroupsOnAProductOnlyViewable()
     {
         $this->expectException(ResourceAccessDeniedException::class);
-        $this->expectExceptionMessage('Product "product" cannot be updated. It should be at least in an own category');
+        $this->expectExceptionMessage('Product "product" cannot be updated. You are only allowed to suggest proposals on this product.');
 
         $product = $this->saveProduct('product', ['categories' => ['categoryA1']]);
         $this->generateToken('mary');
@@ -190,7 +190,7 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
     public function testFailToUpdateEnabledOnAProductOnlyViewable()
     {
         $this->expectException(ResourceAccessDeniedException::class);
-        $this->expectExceptionMessage('Product "product" cannot be updated. It should be at least in an own category');
+        $this->expectExceptionMessage('Product "product" cannot be updated. You are only allowed to suggest proposals on this product.');
 
         $product = $this->saveProduct('product', ['categories' => ['categoryA1']]);
         $this->generateToken('mary');
@@ -201,7 +201,7 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
     public function testFailToUpdateFamilyOnAProductOnlyViewable()
     {
         $this->expectException(ResourceAccessDeniedException::class);
-        $this->expectExceptionMessage('Product "product" cannot be updated. It should be at least in an own category');
+        $this->expectExceptionMessage('Product "product" cannot be updated. You are only allowed to suggest proposals on this product.');
 
         $product = $this->saveProduct('product', ['categories' => ['categoryA1']]);
         $this->generateToken('mary');
@@ -212,7 +212,7 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
     public function testFailToUpdateAssociationsOnAProductOnlyViewable()
     {
         $this->expectException(ResourceAccessDeniedException::class);
-        $this->expectExceptionMessage('Product "product" cannot be updated. It should be at least in an own category');
+        $this->expectExceptionMessage('Product "product" cannot be updated. You are only allowed to suggest proposals on this product.');
 
         $product = $this->saveProduct('product', ['categories' => ['categoryA1']]);
         $this->generateToken('mary');
@@ -227,7 +227,7 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
     public function testFailToUpdateValuesOnAProductOnlyViewable()
     {
         $this->expectException(ResourceAccessDeniedException::class);
-        $this->expectExceptionMessage('Product "product" cannot be updated. It should be at least in an own category');
+        $this->expectExceptionMessage('Product "product" cannot be updated. You are only allowed to suggest proposals on this product.');
 
         $product = $this->saveProduct('product', ['categories' => ['categoryA1']]);
         $this->generateToken('mary');

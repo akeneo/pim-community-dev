@@ -5,6 +5,11 @@ import {getErrorsView} from 'akeneoassetmanager/application/component/app/valida
 import {AssetAttribute} from 'akeneoassetmanager/domain/model/attribute/type/asset';
 import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
 import AssetFamily from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {
+  assetTypeAreEqual,
+  assetTypeStringValue,
+  assetTypeIsEmpty,
+} from 'akeneoassetmanager/domain/model/attribute/type/asset/asset-type';
 
 type Props = {
   attribute: AssetAttribute;
@@ -19,21 +24,23 @@ class AssetView extends React.Component<Props, {assetFamily: AssetFamily | null}
   }
 
   async componentDidUpdate(prevProps: Props) {
-    if (!this.props.attribute.getAssetType().equals(prevProps.attribute.getAssetType())) {
+    if (!assetTypeAreEqual(this.props.attribute.getAssetType(), prevProps.attribute.getAssetType())) {
       this.updateAssetFamily();
     }
   }
 
   async updateAssetFamily() {
-    const assetFamilyResult = await assetFamilyFetcher.fetch(this.props.attribute.assetType.getAssetFamilyIdentifier());
-    this.setState({assetFamily: assetFamilyResult.assetFamily});
+    if (!assetTypeIsEmpty(this.props.attribute.assetType)) {
+      const assetFamilyResult = await assetFamilyFetcher.fetch(this.props.attribute.assetType);
+      this.setState({assetFamily: assetFamilyResult.assetFamily});
+    }
   }
 
   render() {
     const value =
       null !== this.state.assetFamily
         ? (this.state.assetFamily as any).getLabel(this.props.locale)
-        : this.props.attribute.assetType.stringValue();
+        : assetTypeStringValue(this.props.attribute.assetType);
 
     return (
       <React.Fragment>

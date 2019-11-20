@@ -66,22 +66,12 @@ describe('Akeneoassetfamily > infrastructure > fetcher > attribute', () => {
         code: 'description',
         assetFamilyIdentifier: 'designer',
         identifier: 'description_1234',
-        isRichTextEditor: {
-          isRichTextEditor: false,
-        },
-        isTextarea: {
-          isTextarea: true,
-        },
+        isRichTextEditor: false,
+        isTextarea: true,
         labelCollection: {en_US: 'Description'},
-        maxLength: {
-          maxLength: 12,
-        },
-        regularExpression: {
-          regularExpression: null,
-        },
-        validationRule: {
-          validationRule: 'none',
-        },
+        maxLength: 12,
+        regularExpression: null,
+        validationRule: 'none',
         order: 0,
         isRequired: true,
         type: 'text',
@@ -100,12 +90,8 @@ describe('Akeneoassetfamily > infrastructure > fetcher > attribute', () => {
         type: 'image',
         valuePerChannel: false,
         valuePerLocale: true,
-        allowedExtensions: {
-          allowedExtensions: ['jpg', 'png'],
-        },
-        maxFileSize: {
-          maxFileSize: '123.4',
-        },
+        allowedExtensions: ['jpg', 'png'],
+        maxFileSize: '123.4',
       },
     ]);
   });

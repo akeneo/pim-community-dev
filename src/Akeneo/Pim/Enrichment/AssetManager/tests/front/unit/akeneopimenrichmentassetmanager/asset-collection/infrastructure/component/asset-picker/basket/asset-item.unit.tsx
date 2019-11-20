@@ -10,24 +10,20 @@ const asset = {
   labels: {
     en_US: 'iPhone X',
   },
-  image: 'my_image_url',
+  image: [{attribute: 'nice', locale: null, channel: null, data: {filePath: 'my_image_url', originalFilename: ''}}],
 };
 
 const context = {
   channel: 'ecommerce',
-  locale: 'en_US'
-}
+  locale: 'en_US',
+};
 
 const onRemove = jest.fn();
 
 test('It should display an item', () => {
   const {container, getByText} = render(
     <ThemeProvider theme={akeneoTheme}>
-      <AssetItem
-        asset={asset}
-        context={context}
-        onRemove={onRemove}
-      />
+      <AssetItem asset={asset} context={context} onRemove={onRemove} />
     </ThemeProvider>
   );
 
@@ -39,12 +35,7 @@ test('It should display an item', () => {
 test('It should display a placeholder when the asset is loading', () => {
   const {container} = render(
     <ThemeProvider theme={akeneoTheme}>
-      <AssetItem
-        asset={asset}
-        context={context}
-        onRemove={onRemove}
-        isLoading={true}
-      />
+      <AssetItem asset={asset} context={context} onRemove={onRemove} isLoading={true} />
     </ThemeProvider>
   );
 

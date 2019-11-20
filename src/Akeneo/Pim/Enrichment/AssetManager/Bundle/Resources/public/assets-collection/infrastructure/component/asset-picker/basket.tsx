@@ -9,7 +9,7 @@ import {
   removeAssetFromCollection,
 } from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import styled from 'styled-components';
-import __ from 'akeneoreferenceentity/tools/translator';
+import __ from 'akeneoassetmanager/tools/translator';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import {Button} from 'akeneoassetmanager/application/component/app/button';
 import AssetIllustration from 'akeneopimenrichmentassetmanager/platform/component/visual/illustration/asset';
@@ -34,8 +34,7 @@ const Container = styled.div`
 `;
 
 const Title = styled.div`
-  padding-bottom: 10px;
-  padding-top: 4px;
+  line-height: 43px;
   border-bottom: 1px solid ${(props: ThemedProps<void>) => props.theme.color.purple100};
   color: ${(props: ThemedProps<void>) => props.theme.color.purple120};
   font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.small};

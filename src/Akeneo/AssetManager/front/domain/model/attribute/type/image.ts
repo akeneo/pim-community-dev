@@ -7,16 +7,18 @@ import AssetFamilyIdentifier, {
 import LabelCollection, {denormalizeLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import AttributeCode, {denormalizeAttributeCode} from 'akeneoassetmanager/domain/model/attribute/code';
 import {NormalizedAttribute, Attribute, ConcreteAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
-import {NormalizedMaxFileSize, MaxFileSize} from 'akeneoassetmanager/domain/model/attribute/type/image/max-file-size';
-import {NormalizedAllowedExtensions, AllowedExtensions} from './image/allowed-extensions';
+import {MaxFileSize} from 'akeneoassetmanager/domain/model/attribute/type/image/max-file-size';
+import {AllowedExtensions} from 'akeneoassetmanager/domain/model/attribute/type/image/allowed-extensions';
+
+export const IMAGE_ATTRIBUTE_TYPE = 'image';
 
 export interface NormalizedImageAttribute extends NormalizedAttribute {
   type: 'image';
-  allowed_extensions: NormalizedAllowedExtensions;
-  max_file_size: NormalizedMaxFileSize;
+  allowed_extensions: AllowedExtensions;
+  max_file_size: MaxFileSize;
 }
 
-export type NormalizedImageAdditionalProperty = NormalizedMaxFileSize | NormalizedAllowedExtensions;
+export type NormalizedImageAdditionalProperty = MaxFileSize | AllowedExtensions;
 
 export type ImageAdditionalProperty = MaxFileSize | AllowedExtensions;
 
@@ -53,14 +55,6 @@ export class ConcreteImageAttribute extends ConcreteAttribute implements ImageAt
       is_required
     );
 
-    if (!(maxFileSize instanceof MaxFileSize)) {
-      throw new InvalidArgumentError('Attribute expects a MaxFileSize as maxFileSize');
-    }
-
-    if (!(allowedExtensions instanceof AllowedExtensions)) {
-      throw new InvalidArgumentError('Attribute expects a AllowedExtension as allowedExtension');
-    }
-
     Object.freeze(this);
   }
 
@@ -74,8 +68,8 @@ export class ConcreteImageAttribute extends ConcreteAttribute implements ImageAt
       normalizedImageAttribute.value_per_channel,
       normalizedImageAttribute.order,
       normalizedImageAttribute.is_required,
-      MaxFileSize.createFromNormalized(normalizedImageAttribute.max_file_size),
-      AllowedExtensions.createFromNormalized(normalizedImageAttribute.allowed_extensions)
+      normalizedImageAttribute.max_file_size,
+      normalizedImageAttribute.allowed_extensions
     );
   }
 
@@ -83,8 +77,8 @@ export class ConcreteImageAttribute extends ConcreteAttribute implements ImageAt
     return {
       ...super.normalize(),
       type: 'image',
-      max_file_size: this.maxFileSize.normalize(),
-      allowed_extensions: this.allowedExtensions.normalize(),
+      max_file_size: this.maxFileSize,
+      allowed_extensions: this.allowedExtensions,
     };
   }
 }

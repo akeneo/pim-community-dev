@@ -118,7 +118,14 @@ class SqlFindAssetItemsForIdentifiersAndQueryTest extends SqlIntegrationTestCase
             ]
         ];
         $starck->completeness = ['complete' => 0, 'required' => 0];
-        $starck->image = sprintf('/rest/asset_manager/image_preview/%s/thumbnail?data=', $imageIdentifier);
+        $starck->image = [
+            [
+                'attribute' => $imageIdentifier,
+                'locale' => null,
+                'channel' => null,
+                'data' => ['filePath' => '', 'originalFilename' => '']
+            ]
+        ];
 
         $coco = new AssetItem();
         $coco->identifier = (string) $this->cocoIdentifier;
@@ -134,7 +141,14 @@ class SqlFindAssetItemsForIdentifiersAndQueryTest extends SqlIntegrationTestCase
             ]
         ];
         $coco->completeness = ['complete' => 0, 'required' => 0];
-        $coco->image = sprintf('/rest/asset_manager/image_preview/%s/thumbnail?data=', $imageIdentifier);
+        $coco->image = [
+            [
+                'attribute' => $imageIdentifier,
+                'locale' => null,
+                'channel' => null,
+                'data' => ['filePath' => '', 'originalFilename' => '']
+            ]
+        ];
 
         $this->assertAssetItem($starck, $assetItems[0]);
         $this->assertAssetItem($coco, $assetItems[1]);

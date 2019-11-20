@@ -39,7 +39,7 @@ final class Provider implements UserProviderInterface
     {
         if (!$this->isSSOEnabled()) {
             // If SSO is disabled, we want the next chained user provider to check if the user is valid.
-            // The following exception is catched and silent.
+            // The following exception is caught and silent.
             throw new UsernameNotFoundException('SSO feature is not enabled, let another UserProvider do its job.');
         }
 
@@ -61,7 +61,12 @@ final class Provider implements UserProviderInterface
             throw new UnsupportedUserException(sprintf('User object of class "%s" is not supported.', $userClass));
         }
 
-        return $this->loadUserByUsername($user->getUsername());
+        $reloadedUser = $this->userRepository->find($user->getId());
+        if (null === $reloadedUser) {
+            throw new UsernameNotFoundException(sprintf('User with id %d not found', $user->getId()));
+        }
+
+        return $reloadedUser;
     }
 
     /**
@@ -69,7 +74,7 @@ final class Provider implements UserProviderInterface
      */
     public function supportsClass($class)
     {
-        return is_subclass_of($class, 'Symfony\Component\Security\Core\User\UserInterface');
+        return is_subclass_of($class, 'Akeneo\UserManagement\Component\Model\UserInterface');
     }
 
     private function isSSOEnabled(): bool

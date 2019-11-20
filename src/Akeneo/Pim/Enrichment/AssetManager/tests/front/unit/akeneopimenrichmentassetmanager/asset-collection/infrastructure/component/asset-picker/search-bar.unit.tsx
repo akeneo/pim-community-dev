@@ -23,20 +23,23 @@ afterEach(() => {
   container = null;
 });
 
-test('It displays a search input with an initialized value', () => {
+test('It displays a search input with an initialized value', async () => {
   const expectedSearchValue = 'SEARCH VALUE';
-  const {container} = render(
-    <ThemeProvider theme={akeneoTheme}>
-      <SearchBar
-        dataProvider={emptyDataProvider}
-        searchValue={expectedSearchValue}
-        context={{}}
-        resultCount={0}
-        onSearchChange={() => {}}
-        onContextChange={() => {}}
-      />
-    </ThemeProvider>
-  );
+  await act(async () => {
+    ReactDOM.render(
+      <ThemeProvider theme={akeneoTheme}>
+        <SearchBar
+          dataProvider={emptyDataProvider}
+          searchValue={expectedSearchValue}
+          context={{}}
+          resultCount={0}
+          onSearchChange={() => {}}
+          onContextChange={() => {}}
+        />
+      </ThemeProvider>,
+      container
+    );
+  });
 
   expect(container.querySelector('input').value).toEqual(expectedSearchValue);
 });
@@ -66,9 +69,9 @@ test('It triggers the onSearchChange when the search field changes', async () =>
   const expectedValue = 'SOME NEW SEARCH CRITERIA';
   const searchInput = container.querySelector('input');
   await act(async () => {
-    userEvent.type(searchInput, expectedValue);
+    await userEvent.type(searchInput, expectedValue);
+    jest.runAllTimers();
   });
-  jest.runAllTimers();
 
   expect(actualValue).toEqual(expectedValue);
 });

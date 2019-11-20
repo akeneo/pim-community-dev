@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Datagrid;
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionIsActiveHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionIsActiveQuery;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration;
@@ -26,15 +26,12 @@ class ConfigureProductGridListener
 {
     private const PRODUCT_DATAGRID_NAME = 'product-grid';
 
-    /** @var GetConnectionStatusHandler */
-    private $connectionStatusHandler;
+    /** @var GetConnectionIsActiveHandler */
+    private $connectionIsActiveHandler;
 
-    /**
-     * @param GetConnectionStatusHandler $connectionStatusHandler
-     */
-    public function __construct(GetConnectionStatusHandler $connectionStatusHandler)
+    public function __construct(GetConnectionIsActiveHandler $connectionIsActiveHandler)
     {
-        $this->connectionStatusHandler = $connectionStatusHandler;
+        $this->connectionIsActiveHandler = $connectionIsActiveHandler;
     }
 
     /**
@@ -90,10 +87,6 @@ class ConfigureProductGridListener
      */
     private function isFranklinConnectionsActive(): bool
     {
-        $connectionStatus = $this->connectionStatusHandler->handle(
-            new GetConnectionStatusQuery(false)
-        );
-
-        return $connectionStatus->isActive();
+        return $this->connectionIsActiveHandler->handle(new GetConnectionIsActiveQuery());
     }
 }

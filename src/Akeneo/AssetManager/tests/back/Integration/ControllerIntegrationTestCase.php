@@ -50,4 +50,16 @@ abstract class ControllerIntegrationTestCase extends KernelTestCase
         $this->testKernel = new \AppKernelTest('test_fake', false);
         $this->testKernel->boot();
     }
+
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function tearDown(): void
+    {
+        $connectionCloser = $this->testKernel->getContainer()->get('akeneo_integration_tests.doctrine.connection.connection_closer');
+        $connectionCloser->closeConnections();
+
+        $this->testKernel->shutdown();
+    }
 }

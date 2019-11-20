@@ -7,19 +7,16 @@ import AssetFamilyIdentifier, {
 import LabelCollection, {denormalizeLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import AttributeCode, {denormalizeAttributeCode} from 'akeneoassetmanager/domain/model/attribute/code';
 import {NormalizedAttribute, Attribute, ConcreteAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
-import {
-  DecimalsAllowed,
-  NormalizedDecimalsAllowed,
-} from 'akeneoassetmanager/domain/model/attribute/type/number/decimals-allowed';
 import {MinValue, NormalizedMinValue} from 'akeneoassetmanager/domain/model/attribute/type/number/min-value';
 import {MaxValue, NormalizedMaxValue} from 'akeneoassetmanager/domain/model/attribute/type/number/max-value';
 
+export type DecimalsAllowed = boolean;
 export type NumberAdditionalProperty = DecimalsAllowed | MinValue | MaxValue;
-export type NormalizedNumberAdditionalProperty = NormalizedDecimalsAllowed | NormalizedMinValue | NormalizedMaxValue;
+export type NormalizedNumberAdditionalProperty = DecimalsAllowed | NormalizedMinValue | NormalizedMaxValue;
 
 export interface NormalizedNumberAttribute extends NormalizedAttribute {
   type: 'number';
-  decimals_allowed: NormalizedDecimalsAllowed;
+  decimals_allowed: DecimalsAllowed;
   min_value: NormalizedMinValue;
   max_value: NormalizedMaxValue;
 }
@@ -59,18 +56,6 @@ export class ConcreteNumberAttribute extends ConcreteAttribute implements Number
       is_required
     );
 
-    if (!(decimalsAllowed instanceof DecimalsAllowed)) {
-      throw new Error('Attribute expects a DecimalsAllowed as decimalsAllowed');
-    }
-
-    if (!(minValue instanceof MinValue)) {
-      throw new Error('Attribute expects a MinValue as minValue');
-    }
-
-    if (!(maxValue instanceof MaxValue)) {
-      throw new Error('Attribute expects a MaxValue as maxValue');
-    }
-
     Object.freeze(this);
   }
 
@@ -84,9 +69,9 @@ export class ConcreteNumberAttribute extends ConcreteAttribute implements Number
       normalizedNumberAttribute.value_per_channel,
       normalizedNumberAttribute.order,
       normalizedNumberAttribute.is_required,
-      new DecimalsAllowed(normalizedNumberAttribute.decimals_allowed),
-      new MinValue(normalizedNumberAttribute.min_value),
-      new MaxValue(normalizedNumberAttribute.max_value)
+      normalizedNumberAttribute.decimals_allowed,
+      normalizedNumberAttribute.min_value,
+      normalizedNumberAttribute.max_value
     );
   }
 
@@ -94,9 +79,9 @@ export class ConcreteNumberAttribute extends ConcreteAttribute implements Number
     return {
       ...super.normalize(),
       type: 'number',
-      decimals_allowed: this.decimalsAllowed.normalize(),
-      min_value: this.minValue.normalize(),
-      max_value: this.maxValue.normalize(),
+      decimals_allowed: this.decimalsAllowed,
+      min_value: this.minValue,
+      max_value: this.maxValue,
     };
   }
 }

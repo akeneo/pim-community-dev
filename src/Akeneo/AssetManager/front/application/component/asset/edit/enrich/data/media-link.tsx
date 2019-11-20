@@ -5,6 +5,7 @@ import MediaLinkData, {create} from 'akeneoassetmanager/domain/model/asset/data/
 import {ConcreteMediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 import Key from 'akeneoassetmanager/tools/key';
 import {getMediaLinkPreviewUrl, getMediaLinkUrl, MediaPreviewTypes} from 'akeneoassetmanager/tools/media-url-generator';
+import {copyToClipboard} from 'akeneoassetmanager/tools/media-url-generator';
 
 const View = ({
   value,
@@ -30,13 +31,6 @@ const View = ({
     const newValue = value.setData(newData);
 
     onChange(newValue);
-  };
-
-  const copyToClipboard = (text: string) => {
-    if ('clipboard' in navigator) {
-      // @ts-ignore eslint-disable-next-line flowtype/no-flow-fix-me-comments
-      navigator.clipboard.writeText(text);
-    }
   };
 
   const mediaDownloadUrl = getMediaLinkUrl(value.data, value.attribute);

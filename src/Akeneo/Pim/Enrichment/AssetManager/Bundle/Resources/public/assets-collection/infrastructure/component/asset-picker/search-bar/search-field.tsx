@@ -1,8 +1,10 @@
 import * as React from 'react';
-import __ from 'akeneoreferenceentity/tools/translator';
+import {useEffect, useState} from 'react';
+import __ from 'akeneoassetmanager/tools/translator';
 import styled from 'styled-components';
 import SearchIcon from 'akeneoassetmanager/application/component/app/icon/search';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
+import useDebounce from 'akeneopimenrichmentassetmanager/platform/hook/use-debounce';
 
 type SearchFieldProps = {
   value: string;
@@ -13,9 +15,11 @@ const Container = styled.div`
   display: flex;
   flex: 1;
 `;
+
 const SearchLogo = styled(SearchIcon)`
   margin-right: 6px;
 `;
+
 const SearchInput = styled.input`
   flex: 1;
   outline: none;
@@ -24,21 +28,21 @@ const SearchInput = styled.input`
   font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.default};
 `;
 
-let timer: any = null;
 const SearchField = ({value, onChange}: SearchFieldProps) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
-  if (null !== inputRef.current) {
-    inputRef.current.focus();
-  }
+  const [userSearch, setUserSearch] = useState(value);
+  const debouncedUserSearch = useDebounce(userSearch, 250);
 
-  const onInputUpdated = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const userSearch = event.currentTarget.value;
-    if (null !== timer) {
-      clearTimeout(timer as any);
-    }
-    timer = setTimeout(() => {
-      onChange(userSearch);
-    }, 250) as any;
+  useEffect(() => {
+    null !== inputRef.current && inputRef.current.focus();
+  }, []);
+
+  useEffect(() => {
+    '' !== debouncedUserSearch && onChange(debouncedUserSearch);
+  }, [debouncedUserSearch]);
+
+  const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUserSearch(event.target.value);
   };
 
   return (
@@ -48,8 +52,8 @@ const SearchField = ({value, onChange}: SearchFieldProps) => {
         type="text"
         autoComplete="off"
         placeholder={__('pim_asset_manager.asset.grid.search')}
-        defaultValue={value}
-        onChange={onInputUpdated}
+        defaultValue={userSearch}
+        onChange={onInputChange}
         ref={inputRef}
       />
     </Container>

@@ -7,17 +7,13 @@ namespace spec\Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetItem\ImagePreviewUrlGenerator;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Suffix;
+use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Prefix;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetItem\ValueHydratorInterface;
 use PhpSpec\ObjectBehavior;
 
 class MediaLinkValueHydratorSpec extends ObjectBehavior
 {
-    public function let(ImagePreviewUrlGenerator $imagePreviewUrlGenerator)
-    {
-        $this->beConstructedWith($imagePreviewUrlGenerator);
-    }
-
     public function it_is_initializable()
     {
         $this->shouldImplement(ValueHydratorInterface::class);
@@ -34,23 +30,22 @@ class MediaLinkValueHydratorSpec extends ObjectBehavior
     public function it_generates_the_url_to_get_the_preview_of_the_url_attribute(
         MediaLinkAttribute $urlAttribute,
         AttributeIdentifier $attributeIdentifier,
-        ImagePreviewUrlGenerator $imagePreviewUrlGenerator
+        Prefix $prefix,
+        Suffix $suffix
     ) {
-        $previewUrl = 'https://my-pim.com/images/house.png/500x500';
-
         $urlAttribute->getIdentifier()->willReturn($attributeIdentifier);
+        $urlAttribute->getPrefix()->willReturn($prefix);
+        $prefix->normalize()->willReturn('http://nice.com/');
+        $urlAttribute->getSuffix()->willReturn($suffix);
+        $suffix->normalize()->willReturn('.png');
         $attributeIdentifier->stringValue()->willReturn('front_picture_finrgerprint');
-
-        $imagePreviewUrlGenerator
-            ->generate('house.png', 'front_picture_finrgerprint', 'thumbnail')
-            ->willReturn($previewUrl);
 
         $this->hydrate(
             [
                 'attribute' => 'front_picture_finrgerprint',
                 'locale'    => null,
                 'channel'   => null,
-                'data'      => 'house.png',
+                'data'      => 'house',
             ],
             $urlAttribute
         )->shouldReturn(
@@ -58,7 +53,10 @@ class MediaLinkValueHydratorSpec extends ObjectBehavior
                 'attribute' => 'front_picture_finrgerprint',
                 'locale'    => null,
                 'channel'   => null,
-                'data'      => $previewUrl,
+                'data'      => [
+                    'filePath' => 'house',
+                    'originalFilename' => 'house.png'
+                ],
             ]
         );
     }

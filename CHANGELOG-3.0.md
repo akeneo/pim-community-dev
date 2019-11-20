@@ -1,5 +1,16 @@
 # 3.0.x
 
+# 3.0.53 (2019-11-12)
+
+# 3.0.52 (2019-11-08)
+
+## Bug fixes
+
+- PIM-8945: Fix unclear error message on product updater
+- PIM-8944: Add permission check on product variant creation button
+
+# 3.0.51 (2019-10-30)
+
 # 3.0.50 (2019-10-28)
 
 # 3.0.49 (2019-10-24)

@@ -53,6 +53,9 @@ batch_jobs:
   csv_product_proposal_import:
     label: Importació en CSV de la proposta de producte
     import.label: Importació de la proposta de producte
+  csv_product_model_proposal_import:
+    label: Importació de la proposta del model de producte en CSV
+    import.label: Importació de la proposta del model de producte en CSV
   approve_product_draft:
     label: Aprovar la proposta
     perform.label: Aprovar la proposta
@@ -65,6 +68,9 @@ batch_jobs:
   xlsx_product_proposal_import:
     label: Importació en XLSX del producte proposat
     import.label: Importació en XLSX del producte proposat
+  xlsx_product_model_proposal_import:
+    label: Importació de la proposta del model de producte en XLSX
+    import.label: Importació de la proposta del model de producte en XLSX
   csv_published_product_quick_export:
     export.label: Exportació ràpida dels productes publicats en Csv
     perform.label: Exportació ràpida dels productes publicats en Csv
@@ -89,6 +95,7 @@ pim_notification:
     pimee_workflow_product_draft_notification_approve: Proposta aprovada
     pimee_workflow_product_draft_notification_refuse: Proposta rebutjada
     pimee_workflow_product_draft_notification_remove: Proposta esborrada
+    pimee_workflow_product_draft_notification_sent: Propostes enviades
 pimee_dashboard:
   widget:
     product_drafts:

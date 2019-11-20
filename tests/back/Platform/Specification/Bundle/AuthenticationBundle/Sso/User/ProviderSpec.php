@@ -12,12 +12,13 @@ use Akeneo\Platform\Component\Authentication\Sso\Configuration\IsEnabled;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\Repository;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\ServiceProvider;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Url;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\User;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class ProviderSpec extends ObjectBehavior
@@ -75,15 +76,18 @@ class ProviderSpec extends ObjectBehavior
         $this->loadUserByUsername('julia@example.com')->shouldReturn($julia);
     }
 
-    function it_refreshes_a_user($userRepository, $configRepository)
+    function it_refreshes_a_user($userRepository, UserInterface $julia)
     {
-        $ssoConfiguration = $this->getEnabledConfiguration();
-        $configRepository->find('authentication_sso')->shouldBeCalled()->willReturn($ssoConfiguration);
+        $julia->getId()->willReturn(42);
+        $userRepository->find(42)->willReturn($julia);
 
-        $julia = new User('julia@example.com', 'kitten123');
-
-        $userRepository->findOneBy(['username' => 'julia@example.com'])->willReturn($julia);
         $this->refreshUser($julia)->shouldReturn($julia);
+    }
+
+    function it_throws_an_exception_if_user_class_is_not_supported($userRepository)
+    {
+        $julia = new User('julia@example.com', 'kitten123');
+        $this->shouldThrow(UnsupportedUserException::class)->during('refreshUser', [$julia]);
     }
 
     private function getEnabledConfiguration(): Configuration

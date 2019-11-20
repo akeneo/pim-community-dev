@@ -1,0 +1,5 @@
+pim_asset_manager:
+  product_value:
+    validation:
+      asset_multiple_link:
+        limit_reached: 'Ha arribat al límit de %limit% de recursos per col·lecció. Ja no pots afegir recursos a la seva col·lecció.'

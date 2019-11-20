@@ -1,5 +1,5 @@
 import {editReducer} from 'akeneoassetmanager/application/reducer/attribute/edit';
-import {ValidationRuleOption} from 'akeneoassetmanager/domain/model/attribute/type/text/validation-rule';
+import {ValidationRuleOption} from 'akeneoassetmanager/domain/model/attribute/type/text';
 
 const normalizedDescription = {
   identifier: 'description_1234',

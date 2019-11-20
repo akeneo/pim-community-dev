@@ -68,10 +68,6 @@ describe('akeneo > attribute > domain > model --- minimal attribute', () => {
     }).toThrow('Attribute expects a boolean as valuePerChannel');
 
     expect(() => {
-      new MinimalAssetConcreteAttribute('designer', 'brands', {en_US: 'Brands'}, 'asset', true, false);
-    }).toThrow('Attribute expects a AssetType argument');
-
-    expect(() => {
       new MinimalAssetConcreteAttribute('designer', 'brands', {en_US: 'Brands'}, 'text', true, false);
     }).toThrow('MinimalAssetAttribute type needs to be "asset" or "asset_collection"');
 

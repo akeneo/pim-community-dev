@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Product;
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionIsActiveHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionIsActiveQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Service\ResubscribeProductsInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
@@ -40,25 +40,19 @@ class ProductUpdateSubscriber implements EventSubscriberInterface
     /** @var ResubscribeProductsInterface */
     private $resubscribeProducts;
 
-    /** @var GetConnectionStatusHandler */
-    private $connectionStatusHandler;
+    /** @var GetConnectionIsActiveHandler */
+    private $connectionIsActiveHandler;
 
-    /**
-     * @param ProductSubscriptionRepositoryInterface $subscriptionRepository
-     * @param SelectProductIdentifierValuesQueryInterface $selectProductIdentifierValuesQuery
-     * @param ResubscribeProductsInterface $resubscribeProducts
-     * @param GetConnectionStatusHandler $connectionStatusHandler
-     */
     public function __construct(
         ProductSubscriptionRepositoryInterface $subscriptionRepository,
         SelectProductIdentifierValuesQueryInterface $selectProductIdentifierValuesQuery,
         ResubscribeProductsInterface $resubscribeProducts,
-        GetConnectionStatusHandler $connectionStatusHandler
+        GetConnectionIsActiveHandler $connectionIsActiveHandler
     ) {
         $this->subscriptionRepository = $subscriptionRepository;
         $this->selectProductIdentifierValuesQuery = $selectProductIdentifierValuesQuery;
         $this->resubscribeProducts = $resubscribeProducts;
-        $this->connectionStatusHandler = $connectionStatusHandler;
+        $this->connectionIsActiveHandler = $connectionIsActiveHandler;
     }
 
     /**
@@ -176,8 +170,6 @@ class ProductUpdateSubscriber implements EventSubscriberInterface
      */
     private function isFranklinInsightsActivated(): bool
     {
-        $connectionStatus = $this->connectionStatusHandler->handle(new GetConnectionStatusQuery(false));
-
-        return $connectionStatus->isActive();
+        return $this->connectionIsActiveHandler->handle(new GetConnectionIsActiveQuery());
     }
 }

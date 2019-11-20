@@ -1,5 +1,20 @@
 # 3.2.x
 
+# 3.2.19 (2019-11-15)
+
+## Bug fixes
+
+- PIM-8972: Fix the filtering on enabled published products
+
+# 3.2.18 (2019-11-13)
+
+## Bug fixes
+
+- PIM-8964: Fix gallery display of assets
+- PIM-8957: Securely display an embedded item in the richtext editor
+
+# 3.2.17 (2019-10-30)
+
 # 3.2.16 (2019-10-24)
 
 # 3.2.15 (2019-10-24)
