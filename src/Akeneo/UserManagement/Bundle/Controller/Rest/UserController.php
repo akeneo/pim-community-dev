@@ -9,6 +9,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Event\UserEvent;
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
@@ -72,6 +73,9 @@ class UserController
     /** @var Session */
     private $session;
 
+    /** @var ObjectManager */
+    private $objectManager;
+
     /** @var NumberFactory */
     private $numberFactory;
 
@@ -86,7 +90,6 @@ class UserController
 
     /**
      * @todo merge master:
-     *       - remove the $objectManager argument
      *       - the last three arguments ($translator $remover $securityFacade) must not be nullable anymore
      */
     public function __construct(
@@ -101,6 +104,7 @@ class UserController
         UserPasswordEncoderInterface $encoder,
         EventDispatcherInterface $eventDispatcher,
         Session $session,
+        ObjectManager $objectManager,
         RemoverInterface $remover,
         NumberFactory $numberFactory,
         TranslatorInterface $translator,
@@ -117,6 +121,7 @@ class UserController
         $this->encoder = $encoder;
         $this->eventDispatcher = $eventDispatcher;
         $this->session = $session;
+        $this->objectManager = $objectManager;
         $this->remover = $remover;
         $this->numberFactory = $numberFactory;
         $this->translator = $translator;
@@ -335,7 +340,7 @@ class UserController
      */
     private function updateUser(UserInterface $user, array $data): JsonResponse
     {
-        $previousUserName = $data['username'];
+        $previousUserName = $user->getUsername();
         if ($this->isPasswordUpdating($data)) {
             $passwordViolations = $this->validatePassword($user, $data);
             if ($passwordViolations->count() === 0) {
@@ -365,6 +370,7 @@ class UserController
                     );
                 }
             }
+            $this->objectManager->refresh($user);
 
             return new JsonResponse($normalizedViolations, Response::HTTP_BAD_REQUEST);
         }
