@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.70 (2019-11-20)
+
 ## Bug fixes
 
 - PIM-7027: fix completeness visibility on product edit form
