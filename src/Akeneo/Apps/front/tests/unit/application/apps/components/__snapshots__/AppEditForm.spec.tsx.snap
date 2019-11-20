@@ -3,10 +3,10 @@
 exports[`App should render 1`] = `
 Array [
   <header
-    className="sc-EHOje cfzsAe"
+    className="sc-gzVnrw gGrLow"
   >
     <div
-      className="sc-bZQynM iirico"
+      className="sc-htoDjs jrHPzG"
     >
       pim_apps.edit_app.subtitle
     </div>

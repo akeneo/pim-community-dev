@@ -6,6 +6,7 @@ import {Form} from './components/form/Form';
 import {FormGroup} from './components/form/FormGroup';
 import {FormInput} from './components/form/FormInput';
 import {Helper, HelperLink, HelperTitle} from './components/Helper';
+import {Loading} from './components/Loading';
 import {Modal} from './components/Modal';
 import {Page} from './components/Page';
 import {PageHeader} from './components/PageHeader';
@@ -25,6 +26,7 @@ export {
     Helper,
     HelperLink,
     HelperTitle,
+    Loading,
     Modal,
     Page,
     PageHeader,

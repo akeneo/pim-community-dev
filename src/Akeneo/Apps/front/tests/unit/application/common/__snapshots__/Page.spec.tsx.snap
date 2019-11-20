@@ -15,7 +15,7 @@ exports[`Page should render 1`] = `
     className="AknDefault-contentWithBottom"
   >
     <div
-      className="AknDefault-mainContent"
+      className="sc-bZQynM dvEohD AknDefault-mainContent"
     >
       content
     </div>

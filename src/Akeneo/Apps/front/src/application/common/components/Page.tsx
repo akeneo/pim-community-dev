@@ -1,4 +1,5 @@
 import React, {PropsWithChildren} from 'react';
+import styled from 'styled-components';
 
 export const Page = ({children}: PropsWithChildren<{}>) => (
     <div className='AknDefault-contentWithColumn'>
@@ -7,7 +8,12 @@ export const Page = ({children}: PropsWithChildren<{}>) => (
         </div>
 
         <div className='AknDefault-contentWithBottom'>
-            <div className='AknDefault-mainContent'>{children}</div>
+            <Content className='AknDefault-mainContent'>{children}</Content>
         </div>
     </div>
 );
+
+const Content = styled.div`
+    display: flex;
+    flex-direction: column;
+`;

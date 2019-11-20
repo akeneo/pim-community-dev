@@ -3,13 +3,13 @@ import {useHistory, useParams} from 'react-router';
 import {App} from '../../../domain/apps/app.interface';
 import {FlowType} from '../../../domain/apps/flow-type.enum';
 import {PimView} from '../../../infrastructure/pim-view/PimView';
-import {ApplyButton, Breadcrumb, BreadcrumbItem, Page, PageHeader} from '../../common';
+import {ApplyButton, Breadcrumb, BreadcrumbItem, Loading, Page, PageHeader} from '../../common';
+import imgUrl from '../../common/assets/illustrations/api.svg';
 import {useFetch} from '../../shared/fetch';
 import {isErr} from '../../shared/fetch/result';
 import {BreadcrumbRouterLink, useRoute} from '../../shared/router';
 import {Translate} from '../../shared/translate';
 import {AppEditForm} from '../components/AppEditForm';
-import imgUrl from '../../common/assets/illustrations/api.svg';
 
 export const AppEdit = () => {
     const history = useHistory();
@@ -25,10 +25,7 @@ export const AppEdit = () => {
         history.push('/apps');
         return <></>;
     }
-    if (undefined === result.data) {
-        return <></>;
-    }
-    const app: App = {
+    const app: App | undefined = result.data && {
         code: result.data.code,
         label: result.data.label,
         flowType: result.data.flow_type,
@@ -84,10 +81,10 @@ export const AppEdit = () => {
                 state={formState.hasUnsavedChanges && unsavedChangesMessage}
                 imageSrc={imgUrl}
             >
-                {app.label}
+                {app && app.label}
             </PageHeader>
 
-            <AppEditForm ref={formRef} app={app} onChange={handleChange} />
+            {app ? <AppEditForm ref={formRef} app={app} onChange={handleChange} /> : <Loading />}
         </Page>
     );
 };
