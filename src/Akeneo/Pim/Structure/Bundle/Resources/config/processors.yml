@@ -1,0 +1,9 @@
+services:
+    pim_enrich.connector.processor.mass_edit.family.set_requirements:
+        class: 'Akeneo\Pim\Structure\Component\Processor\MassEdit\SetAttributeRequirements'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.factory.attribute_requirement'
+            - '@validator'
+            - '@akeneo_storage_utils.doctrine.object_detacher'

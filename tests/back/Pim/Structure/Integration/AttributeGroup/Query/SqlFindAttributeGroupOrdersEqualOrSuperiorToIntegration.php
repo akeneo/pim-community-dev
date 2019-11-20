@@ -7,11 +7,11 @@ namespace AkeneoTest\Pim\Structure\Integration\AttributeGroup\Query;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
 use Akeneo\Test\Integration\TestCase;
 
-class FindAttributeGroupOrdersEqualOrSuperiorToIntegration extends TestCase
+class SqlFindAttributeGroupOrdersEqualOrSuperiorToIntegration extends TestCase
 {
     public function testQueryToGetAssociatedProductCodes()
     {
-        $query = $this->get('pim_catalog.doctrine.query.find_attribute_group_orders_equal_or_superior_to');
+        $query = $this->get('akeneo.pim.structure.query.find_attribute_group_orders_equal_or_superior_to');
 
         $attributeGroup = new AttributeGroup();
         $attributeGroup->setCode('whatever');

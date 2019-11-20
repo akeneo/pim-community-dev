@@ -1,10 +1,10 @@
 <?php
 
-namespace Specification\Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Query;
+namespace Specification\Akeneo\Pim\Structure\Bundle\Storage\Sql;
 
+use Akeneo\Pim\Structure\Bundle\Storage\Sql\FamilyVariantsByAttributeAxes;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Query\FamilyVariantsByAttributeAxes;
 use Akeneo\Pim\Structure\Component\FamilyVariant\Query\FamilyVariantsByAttributeAxesInterface;
 
 class FamilyVariantsByAttributeAxesSpec extends ObjectBehavior

@@ -320,7 +320,13 @@
   - `Oro\Bundle\PimDataGridBundle\Extension\Pager\Orm\Pager`
 - Remove class `Oro\Bundle\DataGridBundle\ORM\Query\BufferedQueryResultIterator`
 - Remove class `Oro\Bundle\PimDataGridBundle\EventSubscriber\DefaultViewSubscriber`
-
+- Move class from `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Query\FamilyVariantsByAttributeAxes` to `Akeneo\Pim\Structure\Bundle\Storage\Sql\FamilyVariantsByAttributeAxes`
+- Move class from `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Query\FindAttributeGroupOrdersEqualOrSuperiorTo` to `Akeneo\Pim\Structure\Bundle\Storage\Sql\SqlFindAttributeGroupOrdersEqualOrSuperiorTo` and change constructor to
+    - remove `Doctrine\ORM\EntityManagerInterface`
+    - add `Doctrine\DBAL\Connection`
+- Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\EnsureConsistentAttributeGroupOrderTasklet` to
+    - remove `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Query\FindAttributeGroupOrdersEqualOrSuperiorTo` (implementation class)
+    - add `Akeneo\Pim\Structure\Component\AttributeGroup\Query\FindAttributeGroupOrdersEqualOrSuperiorTo` (interface)
 
 ### CLI Commands
 
@@ -416,3 +422,5 @@ If you want to purge the completeness in order to recalculate it, please use the
 - Remove `pim_reference_data.factory.product_value.reference_data`
 - Remove `pim_reference_data.factory.product_value.reference_data_collection`
 - Remove `pim_catalog.factory.price`
+- Rename service `pim_catalog.doctrine.query.find_attribute_group_orders_equal_or_superior_to` in `akeneo.pim.structure.query.find_attribute_group_orders_equal_or_superior_to`
+- Rename service `pim_catalog.doctrine.query.find_family_variants_identifiers_by_attribute_axes` in `akeneo.pim.structure.query.find_family_variants_identifiers_by_attribute_axes`

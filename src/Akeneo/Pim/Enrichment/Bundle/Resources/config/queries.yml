@@ -19,16 +19,6 @@ services:
         arguments:
             - '@database_connection'
 
-    pim_catalog.doctrine.query.find_family_variants_identifiers_by_attribute_axes:
-        class: 'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Query\FamilyVariantsByAttributeAxes'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-
-    pim_catalog.doctrine.query.find_attribute_group_orders_equal_or_superior_to:
-        class: 'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Query\FindAttributeGroupOrdersEqualOrSuperiorTo'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-
     pim_catalog.query.get_associated_product_codes_by_product:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetAssociatedProductCodesByProductFromDB'
         arguments:

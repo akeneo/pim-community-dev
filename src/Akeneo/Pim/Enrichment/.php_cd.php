@@ -151,7 +151,7 @@ $rules = [
 
         // TIP-927: Move EnsureConsistentAttributeGroupOrderTasklet to Structure
         'Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface',
-        'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Query\FindAttributeGroupOrdersEqualOrSuperiorTo', //should not use bundle in component
+        'Akeneo\Pim\Structure\Component\AttributeGroup\Query\FindAttributeGroupOrdersEqualOrSuperiorTo',
 
         // TIP-928: PIM/Enrichment should not be linked to AssociationType
         'Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface',
