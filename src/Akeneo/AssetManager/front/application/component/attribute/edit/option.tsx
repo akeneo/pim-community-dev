@@ -5,13 +5,13 @@ import {getLabel} from 'pimui/js/i18n';
 import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {
-    optionEditionCancel,
-    optionEditionCodeUpdated,
-    optionEditionDelete,
-    optionEditionLabelUpdated,
-    optionEditionSelected,
-    optionEditionStart,
-    optionEditionSubmission,
+  optionEditionCancel,
+  optionEditionCodeUpdated,
+  optionEditionDelete,
+  optionEditionLabelUpdated,
+  optionEditionSelected,
+  optionEditionStart,
+  optionEditionSubmission,
 } from 'akeneoassetmanager/domain/event/attribute/option';
 import Key from 'akeneoassetmanager/tools/key';
 import {Option, createEmptyOption} from 'akeneoassetmanager/domain/model/attribute/type/option/option';

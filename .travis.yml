@@ -48,7 +48,6 @@ install:
     - vendor/akeneo/pim-community-dev/docker/wait_docker_up.sh
     - make check-requirements
     - make assets
-    - make css
     - make javascript-test
     - make javascript-dev
     - sudo chown -R 1000:1000 ../pim-enterprise-dev

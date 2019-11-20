@@ -1,9 +1,9 @@
 import {
-    notifyAllRecordsDeletionFailed,
-    notifyAllRecordsWellDeleted,
-    notifyRecordDeleteFailed,
-    notifyRecordDeletionErrorOccurred,
-    notifyRecordWellDeleted,
+  notifyAllRecordsDeletionFailed,
+  notifyAllRecordsWellDeleted,
+  notifyRecordDeleteFailed,
+  notifyRecordDeletionErrorOccurred,
+  notifyRecordWellDeleted,
 } from 'akeneoreferenceentity/application/action/record/notify';
 import recordRemover from 'akeneoreferenceentity/infrastructure/remover/record';
 import ValidationError, {createValidationError} from 'akeneoreferenceentity/domain/model/validation-error';

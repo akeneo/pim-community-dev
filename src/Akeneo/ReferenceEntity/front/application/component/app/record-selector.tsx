@@ -11,9 +11,9 @@ import {denormalizeFile} from 'akeneoreferenceentity/domain/model/file';
 import {getLabel} from 'pimui/js/i18n';
 import __ from 'akeneoreferenceentity/tools/translator';
 import {
-    getCompletenessClass,
-    getLabel as getCompletenessLabel,
-    getTranslationKey,
+  getCompletenessClass,
+  getLabel as getCompletenessLabel,
+  getTranslationKey,
 } from 'akeneoreferenceentity/application/component/app/completeness';
 import Completeness from 'akeneoreferenceentity/domain/model/record/completeness';
 

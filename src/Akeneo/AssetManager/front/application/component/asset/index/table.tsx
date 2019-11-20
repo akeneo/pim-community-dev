@@ -13,7 +13,9 @@ import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {getLabel} from 'pimui/js/i18n';
 import {getAttributeFilterKey, getCompletenessFilter, getFilter} from 'akeneoassetmanager/tools/filter';
 import SearchField from 'akeneoassetmanager/application/component/asset/index/search-field';
-import CompletenessFilter, {CompletenessValue,} from 'akeneoassetmanager/application/component/asset/index/completeness-filter';
+import CompletenessFilter, {
+  CompletenessValue,
+} from 'akeneoassetmanager/application/component/asset/index/completeness-filter';
 import ItemsCounter from 'akeneoassetmanager/application/component/asset/index/items-counter';
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
 

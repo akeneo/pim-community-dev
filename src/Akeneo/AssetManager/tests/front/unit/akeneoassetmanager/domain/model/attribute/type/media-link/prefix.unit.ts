@@ -1,10 +1,10 @@
 import {
-    createEmptyPrefix,
-    createPrefixFromNormalized,
-    createPrefixFromString,
-    isValidPrefix,
-    normalizePrefix,
-    prefixStringValue,
+  createEmptyPrefix,
+  createPrefixFromNormalized,
+  createPrefixFromString,
+  isValidPrefix,
+  normalizePrefix,
+  prefixStringValue,
 } from 'akeneoassetmanager/domain/model/attribute/type/media-link/prefix';
 
 describe('akeneo > attribute > domain > model > attribute > type > media-link --- prefix', () => {

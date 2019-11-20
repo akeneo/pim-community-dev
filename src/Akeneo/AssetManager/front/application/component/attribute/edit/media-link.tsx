@@ -5,20 +5,20 @@ import {getErrorsView} from 'akeneoassetmanager/application/component/app/valida
 import {MediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 import Key from 'akeneoassetmanager/tools/key';
 import {
-    createPrefixFromString,
-    isValidPrefix,
-    NormalizedPrefix,
-    prefixStringValue,
+  createPrefixFromString,
+  isValidPrefix,
+  NormalizedPrefix,
+  prefixStringValue,
 } from 'akeneoassetmanager/domain/model/attribute/type/media-link/prefix';
 import {
-    createSuffixFromString,
-    isValidSuffix,
-    NormalizedSuffix,
-    suffixStringValue,
+  createSuffixFromString,
+  isValidSuffix,
+  NormalizedSuffix,
+  suffixStringValue,
 } from 'akeneoassetmanager/domain/model/attribute/type/media-link/suffix';
 import {
-    NormalizableAdditionalProperty,
-    wrapNormalizableAdditionalProperty,
+  NormalizableAdditionalProperty,
+  wrapNormalizableAdditionalProperty,
 } from 'akeneoassetmanager/domain/model/attribute/attribute';
 import Select2 from 'akeneoassetmanager/application/component/app/select2';
 import {MediaTypes, MediaType} from 'akeneoassetmanager/domain/model/attribute/type/media-link/media-type';

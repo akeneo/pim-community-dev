@@ -1,29 +1,32 @@
 import AttributeIdentifier, {
-  denormalizeAttributeIdentifier,} from 'akeneoassetmanager/domain/model/attribute/identifier';
-import AssetFamilyIdentifier, {denormalizeAssetFamilyIdentifier,} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+  denormalizeAttributeIdentifier,
+} from 'akeneoassetmanager/domain/model/attribute/identifier';
+import AssetFamilyIdentifier, {
+  denormalizeAssetFamilyIdentifier,
+} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import LabelCollection, {denormalizeLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import AttributeCode, {denormalizeAttributeCode} from 'akeneoassetmanager/domain/model/attribute/code';
 import {Attribute, ConcreteAttribute, NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {
-    createPrefixFromNormalized,
-    isValidPrefix,
-    NormalizedPrefix,
-    normalizePrefix,
-    Prefix,
+  createPrefixFromNormalized,
+  isValidPrefix,
+  NormalizedPrefix,
+  normalizePrefix,
+  Prefix,
 } from 'akeneoassetmanager/domain/model/attribute/type/media-link/prefix';
 import {
-    createSuffixFromNormalized,
-    isValidSuffix,
-    NormalizedSuffix,
-    normalizeSuffix,
-    Suffix,
+  createSuffixFromNormalized,
+  isValidSuffix,
+  NormalizedSuffix,
+  normalizeSuffix,
+  Suffix,
 } from 'akeneoassetmanager/domain/model/attribute/type/media-link/suffix';
 import {
-    createMediaTypeFromNormalized,
-    isValidMediaType,
-    MediaType,
-    NormalizedMediaType,
-    normalizeMediaType,
+  createMediaTypeFromNormalized,
+  isValidMediaType,
+  MediaType,
+  NormalizedMediaType,
+  normalizeMediaType,
 } from 'akeneoassetmanager/domain/model/attribute/type/media-link/media-type';
 
 export type NormalizedMediaLinkAdditionalProperty = NormalizedPrefix | NormalizedSuffix | NormalizedMediaType;

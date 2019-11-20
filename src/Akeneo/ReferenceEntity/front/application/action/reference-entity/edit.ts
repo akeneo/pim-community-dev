@@ -1,19 +1,21 @@
 import {
-    referenceEntityEditionErrorOccurred,
-    referenceEntityEditionImageUpdated,
-    referenceEntityEditionLabelUpdated,
-    referenceEntityEditionReceived,
-    referenceEntityEditionSucceeded,
-    referenceEntityEditionUpdated,
-    referenceEntityRecordCountUpdated,
+  referenceEntityEditionErrorOccurred,
+  referenceEntityEditionImageUpdated,
+  referenceEntityEditionLabelUpdated,
+  referenceEntityEditionReceived,
+  referenceEntityEditionSucceeded,
+  referenceEntityEditionUpdated,
+  referenceEntityRecordCountUpdated,
 } from 'akeneoreferenceentity/domain/event/reference-entity/edit';
 import {
-    notifyReferenceEntitySaveFailed,
-    notifyReferenceEntityWellSaved,
+  notifyReferenceEntitySaveFailed,
+  notifyReferenceEntityWellSaved,
 } from 'akeneoreferenceentity/application/action/reference-entity/notify';
 import {denormalizeReferenceEntity} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 import referenceEntitySaver from 'akeneoreferenceentity/infrastructure/saver/reference-entity';
-import referenceEntityFetcher, {ReferenceEntityResult,} from 'akeneoreferenceentity/infrastructure/fetcher/reference-entity';
+import referenceEntityFetcher, {
+  ReferenceEntityResult,
+} from 'akeneoreferenceentity/infrastructure/fetcher/reference-entity';
 import ValidationError, {createValidationError} from 'akeneoreferenceentity/domain/model/validation-error';
 import File from 'akeneoreferenceentity/domain/model/file';
 import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';

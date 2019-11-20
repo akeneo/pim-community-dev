@@ -1,26 +1,26 @@
 import attributeSaver from 'akeneoreferenceentity/infrastructure/saver/attribute';
 import {
-    attributeEditionCancel,
-    attributeEditionErrorOccurred,
-    attributeEditionStart as attributeEditionStartEvent,
-    attributeEditionSubmission,
-    attributeEditionSucceeded,
+  attributeEditionCancel,
+  attributeEditionErrorOccurred,
+  attributeEditionStart as attributeEditionStartEvent,
+  attributeEditionSubmission,
+  attributeEditionSucceeded,
 } from 'akeneoreferenceentity/domain/event/attribute/edit';
 import AttributeIdentifier from 'akeneoreferenceentity/domain/model/attribute/identifier';
 import ValidationError, {createValidationError} from 'akeneoreferenceentity/domain/model/validation-error';
 import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
 import {
-    notifyAttributeSaveFailed,
-    notifyAttributeSaveValidationError,
+  notifyAttributeSaveFailed,
+  notifyAttributeSaveValidationError,
 } from 'akeneoreferenceentity/application/action/attribute/notify';
 import {updateAttributeList} from 'akeneoreferenceentity/application/action/attribute/list';
 import AttributeCode from 'akeneoreferenceentity/domain/model/code';
 import denormalizeAttribute from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
 import {Attribute, NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import {
-    optionEditionErrorOccurred,
-    optionEditionSubmission,
-    optionEditionSucceeded,
+  optionEditionErrorOccurred,
+  optionEditionSubmission,
+  optionEditionSucceeded,
 } from 'akeneoreferenceentity/domain/event/attribute/option';
 import {NormalizedOption, Option} from 'akeneoreferenceentity/domain/model/attribute/type/option/option';
 import {AttributeWithOptions} from 'akeneoreferenceentity/domain/model/attribute/type/option';

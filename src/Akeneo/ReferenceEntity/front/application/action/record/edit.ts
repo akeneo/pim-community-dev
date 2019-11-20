@@ -1,17 +1,17 @@
 import {
-    recordEditionErrorOccurred,
-    recordEditionImageUpdated,
-    recordEditionLabelUpdated,
-    recordEditionReceived,
-    recordEditionSubmission,
-    recordEditionSucceeded,
-    recordEditionUpdated,
-    recordEditionValueUpdated,
+  recordEditionErrorOccurred,
+  recordEditionImageUpdated,
+  recordEditionLabelUpdated,
+  recordEditionReceived,
+  recordEditionSubmission,
+  recordEditionSucceeded,
+  recordEditionUpdated,
+  recordEditionValueUpdated,
 } from 'akeneoreferenceentity/domain/event/record/edit';
 import {
-    notifyRecordSaveFailed,
-    notifyRecordSaveValidationError,
-    notifyRecordWellSaved,
+  notifyRecordSaveFailed,
+  notifyRecordSaveValidationError,
+  notifyRecordWellSaved,
 } from 'akeneoreferenceentity/application/action/record/notify';
 import recordSaver from 'akeneoreferenceentity/infrastructure/saver/record';
 import recordFetcher, {RecordResult} from 'akeneoreferenceentity/infrastructure/fetcher/record';

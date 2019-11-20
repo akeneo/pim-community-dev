@@ -3,9 +3,9 @@ import {connect} from 'react-redux';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import Form from 'akeneoassetmanager/application/component/asset-family/edit/form';
 import {
-    assetFamilyImageUpdated,
-    assetFamilyLabelUpdated,
-    saveAssetFamily,
+  assetFamilyImageUpdated,
+  assetFamilyLabelUpdated,
+  saveAssetFamily,
 } from 'akeneoassetmanager/application/action/asset-family/edit';
 import {deleteAssetFamily} from 'akeneoassetmanager/application/action/asset-family/delete';
 import __ from 'akeneoassetmanager/tools/translator';
