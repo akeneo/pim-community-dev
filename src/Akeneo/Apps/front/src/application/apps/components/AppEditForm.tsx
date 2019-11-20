@@ -1,11 +1,12 @@
 import {FormikProps} from 'formik';
 import React from 'react';
 import {App} from '../../../domain/apps/app.interface';
-import {Form, FormGroup, FormInput, Section} from '../../common';
+import {FormGroup, FormInput, Section} from '../../common';
 import {Translate} from '../../shared/translate';
 import {FormValues} from '../pages/AppEdit';
 import {FlowTypeHelper} from './FlowTypeHelper';
 import {FlowTypeSelect} from './FlowTypeSelect';
+import styled from 'styled-components';
 
 interface Props {
     app: App;
@@ -19,7 +20,7 @@ export const AppEditForm = ({app, formik: {values, handleChange, setFieldValue, 
 
             <br />
 
-            <Form>
+            <Container>
                 <FormGroup controlId='code' label='pim_apps.app.code'>
                     <FormInput type='text' defaultValue={app.code} disabled />
                 </FormGroup>
@@ -45,7 +46,12 @@ export const AppEditForm = ({app, formik: {values, handleChange, setFieldValue, 
                         onChange={flowType => setFieldValue('flowType', flowType)}
                     />
                 </FormGroup>
-            </Form>
+            </Container>
         </>
     );
 };
+
+const Container = styled.div`
+    width: 100%;
+    max-width: 400px;
+`;

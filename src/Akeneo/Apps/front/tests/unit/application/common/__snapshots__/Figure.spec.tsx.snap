@@ -2,17 +2,17 @@
 
 exports[`Figure should render 1`] = `
 <div
-  className="sc-bdVaJa Dsuco"
+  className="sc-bwzfXH ivdGIV"
 >
   <div
-    className="sc-htpNat dZGjrQ"
+    className="sc-bxivhb gNwQRU"
   >
     <img
-      className="sc-bwzfXH foaHqu"
+      className="sc-htpNat fWxVNi"
     />
   </div>
   <div
-    className="sc-bxivhb ffTZNS"
+    className="sc-ifAKCX bcBuic"
   />
 </div>
 `;

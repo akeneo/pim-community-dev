@@ -44,6 +44,8 @@ pim_apps:
 
 akeneo_apps:
     app:
+        client_id: Client ID
+        secret: Secret
         constraint:
             code:
                 required: App code is required.
@@ -55,3 +57,22 @@ akeneo_apps:
                 too_long: App label is too long. It should have 100 characters or less.
             flow_type:
                 invalid: App flow type can only be 'data_source', 'data_destination' or 'other'.
+    edit_app:
+        credentials:
+            title: Credentials
+            helper: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+            action:
+                copy: Copy to clipboard
+                regenerate: Regenerate
+            flash:
+                copied: '{{ name }} copied to clipboard'
+    regenerate_secret:
+        title: Confirm regeneration
+        description: Are you sure you want to regenerate the app secret?
+        link: Check out the consequences of this action right here.
+        link_url: https://www.akeneo.com/
+        action:
+            regenerate: Regenerate
+        flash:
+            success: App secret successfully regenerated.
+            error: Sorry, an error occurred while regenerating the app secret.

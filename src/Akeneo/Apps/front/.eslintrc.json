@@ -12,15 +12,16 @@
         "plugin:react/recommended"
     ],
     "rules": {
-        "arrow-parens": ["warn", "as-needed"],
-        "indent": "off",
-        "newline-before-return": "off",
-        "no-console": "warn",
         "@typescript-eslint/camelcase": ["error", {"properties": "never"}],
         "@typescript-eslint/explicit-function-return-type": "off",
-        "react/display-name": "off",
+        "arrow-parens": ["warn", "as-needed"],
+        "indent": "off",
+        "max-len": ["error", {"code": 120, "ignoreStrings": true}],
+        "newline-before-return": "off",
+        "no-console": "warn",
         "react-hooks/exhaustive-deps": "warn",
-        "react-hooks/rules-of-hooks": "error"
+        "react-hooks/rules-of-hooks": "error",
+        "react/display-name": "off"
     },
     "settings": {
         "react": {
