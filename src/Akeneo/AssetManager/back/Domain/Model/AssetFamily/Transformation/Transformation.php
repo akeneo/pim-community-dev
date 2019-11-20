@@ -40,20 +40,6 @@ class Transformation
         return new self($source, $target, $operations);
     }
 
-    public static function createFromNormalized(array $normalizedTransformation): self
-    {
-        Assert::keyExists($normalizedTransformation, 'source', '@TODO: message source');
-        Assert::keyExists($normalizedTransformation, 'target', '@TODO: message target');
-        Assert::keyExists($normalizedTransformation, 'operations', '@TODO: message operations');
-        Assert::allIsArray($normalizedTransformation, '@TODO: message');
-
-        return new self(
-            Source::createFromNormalized($normalizedTransformation['source']),
-            Target::createFromNormalized($normalizedTransformation['target']),
-            OperationCollection::createFromNormalized($normalizedTransformation['operations'])
-        );
-    }
-
     public function getTarget(): Target
     {
         return $this->target;

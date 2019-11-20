@@ -2,12 +2,24 @@
 
 namespace spec\Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation;
 
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ColorspaceOperation;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ThumbnailOperation;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationFactory;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCollectionFactory;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use PhpSpec\ObjectBehavior;
 
 class TransformationCollectionFactorySpec extends ObjectBehavior
 {
+    function let()
+    {
+        $factory = new OperationFactory([
+            ThumbnailOperation::class,
+            ColorspaceOperation::class
+        ]);
+        $this->beConstructedWith($factory);
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType(TransformationCollectionFactory::class);
@@ -28,7 +40,20 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
                         'channel' => null,
                         'locale' => null,
                     ],
-                    'operations' => [],
+                    'operations' => [
+                        [
+                            'type' => 'thumbnail',
+                            'parameters' => [
+                                'width' => 200,
+                            ],
+                        ],
+                        [
+                            'type' => 'colorspace',
+                            'parameters' => [
+                                'colorspace' => 'grey',
+                            ]
+                        ]
+                    ],
                 ],
                 [
                     'source' => [
@@ -41,7 +66,15 @@ class TransformationCollectionFactorySpec extends ObjectBehavior
                         'channel' => null,
                         'locale' => null,
                     ],
-                    'operations' => [],
+                    'operations' => [
+                        [
+                            'type' => 'thumbnail',
+                            'parameters' => [
+                                'width' => 200,
+                                'height' => 200,
+                            ],
+                        ],
+                    ],
                 ],
             ]
         );

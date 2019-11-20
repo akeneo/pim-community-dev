@@ -26,7 +26,7 @@ class OperationFactoryTest extends KernelTestCase
     {
         parent::setUp();
         static::bootKernel(['debug' => false]);
-        $this->operationFactory = self::$container->get('akeneo_assetmanager.domain.transformation.operation_factory');
+        $this->operationFactory = self::$container->get(OperationFactory::class);
     }
 
     public function test_it_returns_a_colorspace_operation()

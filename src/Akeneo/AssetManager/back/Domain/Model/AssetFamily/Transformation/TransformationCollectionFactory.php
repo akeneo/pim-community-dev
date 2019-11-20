@@ -18,8 +18,13 @@ use Webmozart\Assert\Assert;
 
 class TransformationCollectionFactory
 {
-    // TODO ATR-27: constructor, ...
-    private $operationResolver;
+    /** @var OperationFactory */
+    private $operationFactory;
+
+    public function __construct(OperationFactory $operationFactory)
+    {
+        $this->operationFactory = $operationFactory;
+    }
 
     public function fromNormalized(array $normalizedTransformations): TransformationCollection
     {
@@ -46,15 +51,12 @@ class TransformationCollectionFactory
             Source::createFromNormalized($normalizedTransformation['source']),
             Target::createFromNormalized($normalizedTransformation['target']),
             OperationCollection::create(
-                []
-                /* TODO: uncomment after ATR-27
                 array_map(
                     function (array $normalizedOperation): Operation {
                         return $this->buildOperation($normalizedOperation);
                     },
                     $normalizedTransformation['operations']
                 )
-                */
             )
         );
     }
@@ -62,11 +64,10 @@ class TransformationCollectionFactory
     private function buildOperation(array $normalizedOperation): Operation
     {
         Assert::keyExists($normalizedOperation, 'type');
-        $parameters = $normalizedOperation['parameters'] ?? [];
-        Assert::isArray($parameters);
+        Assert::stringNotEmpty($normalizedOperation['type']);
+        Assert::keyExists($normalizedOperation, 'parameters');
+        Assert::isArray($normalizedOperation['parameters']);
 
-        $operationClass = $this->operationResolver->resolve($normalizedOperation['type']);
-
-        return $operationClass::create($parameters);
+        return $this->operationFactory->create($normalizedOperation['type'], $normalizedOperation['parameters']);
     }
 }
