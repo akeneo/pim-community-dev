@@ -42,11 +42,4 @@ final class OperationCollection implements \IteratorAggregate
             return $operation->normalize();
         }, $this->operations);
     }
-
-    public static function createFromNormalized(array $normalizedOperations): self
-    {
-        Assert::allIsArray($normalizedOperations);
-        // @TODO: instantiate operations
-        return new self([]);
-    }
 }

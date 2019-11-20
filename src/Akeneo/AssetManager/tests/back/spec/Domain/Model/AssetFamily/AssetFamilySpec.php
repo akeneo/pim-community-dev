@@ -98,11 +98,6 @@ class AssetFamilySpec extends ObjectBehavior
         $this->getImage()->shouldBe($image);
     }
 
-    public function it_is_created_with_an_empty_transformation_collection()
-    {
-        $this->getTransformationCollection()->shouldHaveCount(0);
-    }
-
     public function it_updates_transformation_collection(
         TransformationCollection $transformations
     ) {

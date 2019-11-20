@@ -16,7 +16,7 @@ namespace Akeneo\AssetManager\Domain\Model\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
 use Webmozart\Assert\Assert;
 
-class TransformationCollection implements \Countable
+class TransformationCollection
 {
     /** @var Transformation[] */
     private $transformations = [];
@@ -49,28 +49,9 @@ class TransformationCollection implements \Countable
         );
     }
 
-    public static function empty(): self
+    public static function noTransformation(): self
     {
         return new self([]);
-    }
-
-    public static function createFromNormalized(array $normalizedTransformations): self
-    {
-        Assert::allIsArray($normalizedTransformations);
-
-        return new self(
-            array_map(
-                function (array $normalizedTransformation): Transformation {
-                    return Transformation::createFromNormalized($normalizedTransformation);
-                },
-                $normalizedTransformations
-            )
-        );
-    }
-
-    public function count(): int
-    {
-        return count($this->transformations);
     }
 
     private function add(Transformation $transformation)

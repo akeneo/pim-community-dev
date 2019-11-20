@@ -79,7 +79,7 @@ class AssetFamily
             AttributeAsLabelReference::noReference(),
             AttributeAsImageReference::noReference(),
             $ruleTemplateCollection,
-            TransformationCollection::empty()
+            TransformationCollection::noTransformation()
         );
     }
 
@@ -100,7 +100,7 @@ class AssetFamily
             $attributeAsLabel,
             $attributeAsImage,
             $ruleTemplateCollection,
-            TransformationCollection::empty()
+            TransformationCollection::noTransformation()
         );
     }
 
