@@ -20,7 +20,3 @@ security_rest:
 
 old_oro_routes:
     resource: "@PimUserBundle/Resources/config/routing/old_oro_routes.yml"
-
-api_connection:
-    resource: '@PimUserBundle/Resources/config/routing/api_connection.yml'
-    prefix: /client
