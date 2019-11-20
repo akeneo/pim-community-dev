@@ -4,7 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
+<<<<<<< HEAD
     "content-hash": "0889f01dbde2ca13a7e57cd4ffb2cd33",
+=======
+    "content-hash": "b04592dac6c3e6f3a92e7958bd1abce5",
+>>>>>>> TIP-1264 Upgrade Doctrine (#11099)
     "packages": [
         {
             "name": "ass/xmlsecurity",
