@@ -26,15 +26,14 @@ const OptionFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const availableOptions = attribute.getOptions().reduce(
-    (availableOptions: {[choiceValue: string]: string}, option: Option) => {
+  const availableOptions = attribute
+    .getOptions()
+    .reduce((availableOptions: {[choiceValue: string]: string}, option: Option) => {
       const normalizedOption: Option = option;
       availableOptions[normalizedOption.code] = getOptionLabel(option, context.locale);
 
       return availableOptions;
-    },
-    {} as {[label: string]: string}
-  );
+    }, {} as {[label: string]: string});
 
   const emptyFilter = () => {
     setIsOpen(false);

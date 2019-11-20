@@ -1,7 +1,7 @@
 import AttributeIdentifier, {attributeidentifiersAreEqual} from 'akeneoassetmanager/domain/model/attribute/identifier';
 import MinimalAttribute, {
-    MinimalConcreteAttribute,
-    MinimalNormalizedAttribute,
+  MinimalConcreteAttribute,
+  MinimalNormalizedAttribute,
 } from 'akeneoassetmanager/domain/model/attribute/minimal';
 import AttributeCode from 'akeneoassetmanager/domain/model/attribute/code';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';

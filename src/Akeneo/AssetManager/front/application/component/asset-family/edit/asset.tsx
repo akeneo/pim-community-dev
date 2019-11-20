@@ -11,23 +11,25 @@ import {assetCreationStart} from 'akeneoassetmanager/domain/event/asset/create';
 import {deleteAllAssetFamilyAssets, deleteAsset} from 'akeneoassetmanager/application/action/asset/delete';
 import {breadcrumbConfiguration} from 'akeneoassetmanager/application/component/asset-family/edit';
 import {
-    completenessFilterUpdated,
-    filterUpdated,
-    needMoreResults,
-    searchUpdated,
-    updateAssetResults,
+  completenessFilterUpdated,
+  filterUpdated,
+  needMoreResults,
+  searchUpdated,
+  updateAssetResults,
 } from 'akeneoassetmanager/application/action/asset/search';
 import {Column, Filter} from 'akeneoassetmanager/application/reducer/grid';
-import AssetFamilyIdentifier, {denormalizeAssetFamilyIdentifier,} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import AssetFamilyIdentifier, {
+  denormalizeAssetFamilyIdentifier,
+} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import AssetCode, {denormalizeAssetCode} from 'akeneoassetmanager/domain/model/asset/code';
 import DeleteModal from 'akeneoassetmanager/application/component/app/delete-modal';
 import {cancelDeleteModal, openDeleteModal} from 'akeneoassetmanager/application/event/confirmDelete';
 import {
-    CellView,
-    FilterView,
-    getDataCellView,
-    getDataFilterView,
-    hasDataFilterView,
+  CellView,
+  FilterView,
+  getDataCellView,
+  getDataFilterView,
+  hasDataFilterView,
 } from 'akeneoassetmanager/application/configuration/value';
 import Locale from 'akeneoassetmanager/domain/model/locale';
 import Channel from 'akeneoassetmanager/domain/model/channel';

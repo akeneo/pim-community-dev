@@ -1,8 +1,8 @@
 import {denormalize as denormalizeTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
 import {wrapNormalizableAdditionalProperty} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {
-    ConcreteImageAttribute,
-    denormalize as denormalizeImageAttribute
+  ConcreteImageAttribute,
+  denormalize as denormalizeImageAttribute,
 } from 'akeneoassetmanager/domain/model/attribute/type/image';
 
 const description = denormalizeTextAttribute({

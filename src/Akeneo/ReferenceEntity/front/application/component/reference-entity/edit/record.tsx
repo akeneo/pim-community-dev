@@ -5,29 +5,33 @@ import {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record
 import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
 import {redirectToRecord} from 'akeneoreferenceentity/application/action/record/router';
 import __ from 'akeneoreferenceentity/tools/translator';
-import ReferenceEntity, {denormalizeReferenceEntity,} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
+import ReferenceEntity, {
+  denormalizeReferenceEntity,
+} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 import Header from 'akeneoreferenceentity/application/component/reference-entity/edit/header';
 import {recordCreationStart} from 'akeneoreferenceentity/domain/event/record/create';
 import {deleteAllReferenceEntityRecords, deleteRecord} from 'akeneoreferenceentity/application/action/record/delete';
 import {breadcrumbConfiguration} from 'akeneoreferenceentity/application/component/reference-entity/edit';
 import {
-    completenessFilterUpdated,
-    filterUpdated,
-    needMoreResults,
-    searchUpdated,
-    updateRecordResults,
+  completenessFilterUpdated,
+  filterUpdated,
+  needMoreResults,
+  searchUpdated,
+  updateRecordResults,
 } from 'akeneoreferenceentity/application/action/record/search';
 import {Column, Filter} from 'akeneoreferenceentity/application/reducer/grid';
-import ReferenceEntityIdentifier, {createIdentifier as createReferenceIdentifier,} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+import ReferenceEntityIdentifier, {
+  createIdentifier as createReferenceIdentifier,
+} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 import RecordCode, {createCode as createRecordCode} from 'akeneoreferenceentity/domain/model/record/code';
 import DeleteModal from 'akeneoreferenceentity/application/component/app/delete-modal';
 import {cancelDeleteModal, openDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
 import {
-    CellView,
-    FilterView,
-    getDataCellView,
-    getDataFilterView,
-    hasDataFilterView,
+  CellView,
+  FilterView,
+  getDataCellView,
+  getDataFilterView,
+  hasDataFilterView,
 } from 'akeneoreferenceentity/application/configuration/value';
 import Locale from 'akeneoreferenceentity/domain/model/locale';
 import Channel from 'akeneoreferenceentity/domain/model/channel';

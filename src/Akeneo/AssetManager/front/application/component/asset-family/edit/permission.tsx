@@ -9,9 +9,9 @@ import PermissionCollectionEditor from 'akeneoassetmanager/tools/component/permi
 import {FormState} from 'akeneoassetmanager/application/reducer/state';
 import {permissionEditionUpdated} from 'akeneoassetmanager/domain/event/asset-family/permission';
 import {
-    denormalizePermissionCollection,
-    PermissionCollection,
-    RightLevel,
+  denormalizePermissionCollection,
+  PermissionCollection,
+  RightLevel,
 } from 'akeneoassetmanager/domain/model/asset-family/permission';
 import {savePermission} from 'akeneoassetmanager/application/action/asset-family/permission';
 import {canEditAssetFamily} from 'akeneoassetmanager/application/reducer/right';
