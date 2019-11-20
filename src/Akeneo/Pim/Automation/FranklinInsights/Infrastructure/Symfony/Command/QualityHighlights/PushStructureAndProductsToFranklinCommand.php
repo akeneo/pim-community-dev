@@ -21,7 +21,9 @@ class PushStructureAndProductsToFranklinCommand extends Command
 {
     private const NAME = 'pimee:franklin-insights:quality-highlights:push-structure-and-products';
 
-    private const DEFAULT_BATCH_SIZE = 10;
+    private const DEFAULT_BATCH_ATTRIBUTE_SIZE = 10;
+    private const DEFAULT_BATCH_FAMILY_SIZE = 10;
+    private const DEFAULT_BATCH_PRODUCT_SIZE = 500;
 
     /** @var PendingItemsRepositoryInterface */
     private $pendingItemsRepository;
@@ -58,13 +60,21 @@ class PushStructureAndProductsToFranklinCommand extends Command
     {
         $this->setName(self::NAME)
             ->setDescription('Push catalog structure and products to Franklin API endpoints in order to compute Quality Highlights')
-            ->addOption('batch', 'b', InputOption::VALUE_OPTIONAL, 'Send the entities by batch', self::DEFAULT_BATCH_SIZE);
+            ->addOption('batch-attributes', 'a', InputOption::VALUE_OPTIONAL, 'Number of attributes type entity to push in one HTTP call', self::DEFAULT_BATCH_ATTRIBUTE_SIZE)
+            ->addOption('batch-families', 'f', InputOption::VALUE_OPTIONAL, 'Number of families type entity to push in one HTTP call', self::DEFAULT_BATCH_FAMILY_SIZE)
+            ->addOption('batch-products', 'p', InputOption::VALUE_OPTIONAL, 'Number of products type entity to push in one HTTP call', self::DEFAULT_BATCH_PRODUCT_SIZE);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $batchSize = filter_var($input->getOption('batch'), FILTER_VALIDATE_INT);
-        $batchSize = false === $batchSize ? self::DEFAULT_BATCH_SIZE : intval($batchSize);
+        $batchAttributesSize = filter_var($input->getOption('batch-attributes'), FILTER_VALIDATE_INT);
+        $batchAttributesSize = false === $batchAttributesSize ? self::DEFAULT_BATCH_ATTRIBUTE_SIZE : intval($batchAttributesSize);
+
+        $batchFamiliesSize = filter_var($input->getOption('batch-families'), FILTER_VALIDATE_INT);
+        $batchFamiliesSize = false === $batchFamiliesSize ? self::DEFAULT_BATCH_FAMILY_SIZE : intval($batchFamiliesSize);
+
+        $batchProductsSize = filter_var($input->getOption('batch-products'), FILTER_VALIDATE_INT);
+        $batchProductsSize = false === $batchProductsSize ? self::DEFAULT_BATCH_PRODUCT_SIZE : intval($batchProductsSize);
 
         $io = new SymfonyStyle($input, $output);
 
@@ -80,11 +90,11 @@ class PushStructureAndProductsToFranklinCommand extends Command
 
         //The following order is important and must not be changed Attributes, then Families, then products.
         $io->section('Synchronize Attributes');
-        $this->synchronizeAttributes->synchronize($lock, $batchSize);
+        $this->synchronizeAttributes->synchronize($lock, $batchAttributesSize);
         $io->section('Synchronize Families');
-        $this->synchronizeFamilies->synchronize($lock, $batchSize);
+        $this->synchronizeFamilies->synchronize($lock, $batchFamiliesSize);
         $io->section('Synchronize Products');
-        $this->synchronizeProductsWithFranklin->synchronize($lock, $batchSize);
+        $this->synchronizeProductsWithFranklin->synchronize($lock, $batchProductsSize);
     }
 
     private function isFranklinInsightsActivated(): bool
