@@ -15,3 +15,10 @@ parameters:
     asset_family_connector_maximum_assets_to_process_per_request: 100
     # Maximum rule templates per asset families
     asset_manager_rule_template_by_asset_family_limit: 2
+    # List of available operations
+    asset_manager_transformation_operation:
+        - 'Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ColorspaceOperation'
+        - 'Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ResizeOperation'
+        - 'Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ResolutionOperation'
+        - 'Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ScaleOperation'
+        - 'Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ThumbnailOperation'

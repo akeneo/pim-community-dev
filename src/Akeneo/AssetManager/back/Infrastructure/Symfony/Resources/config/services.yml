@@ -91,3 +91,8 @@ services:
             - '%asset_index_name%'
         tags:
             - { name: console.command }
+
+    akeneo_assetmanager.domain.transformation.operation_factory:
+        class: Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationFactory
+        arguments:
+            - '%asset_manager_transformation_operation%'

@@ -15,5 +15,20 @@ namespace Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation;
 
 interface Operation
 {
+    /**
+     * Returns the type of the operation.
+     *
+     * @return string
+     */
+    public static function getType(): string;
+
+    /**
+     * Returns an operation object from array parameters.
+     *
+     * @param array $parameters
+     * @return Operation
+     */
+    public static function create(array $parameters): Operation;
+
     public function normalize(): array;
 }
