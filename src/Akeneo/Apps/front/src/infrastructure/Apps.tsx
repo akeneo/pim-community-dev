@@ -1,5 +1,7 @@
 import React from 'react';
+import {ThemeProvider} from 'styled-components';
 import {Index} from '../application/apps/pages/Index';
+import {theme} from '../application/common/theme';
 import {NotifyContext, NotifyInterface} from '../application/shared/notify';
 import {RouterContext, RouterInterface} from '../application/shared/router';
 import {TranslateContext, TranslateInterface} from '../application/shared/translate';
@@ -29,7 +31,9 @@ export const Apps = ({router, translate, viewBuilder, notify}: Props) => {
 
     return (
         <Providers>
-            <Index />
+            <ThemeProvider theme={theme}>
+                <Index />
+            </ThemeProvider>
         </Providers>
     );
 };

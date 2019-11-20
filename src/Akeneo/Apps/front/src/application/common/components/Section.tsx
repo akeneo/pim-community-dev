@@ -1,5 +1,6 @@
 import React, {PropsWithChildren, ReactNode} from 'react';
 import styled from 'styled-components';
+import {PropsWithTheme} from '../theme';
 
 const SectionContainer = styled.header`
     display: flex;
@@ -12,7 +13,7 @@ const Title = styled.div`
     line-height: 44px;
     font-size: 13px;
     text-transform: uppercase;
-    color: #11324d;
+    color: ${({theme}: PropsWithTheme) => theme.color.darkBlue};
 `;
 
 export const Section = ({title, children}: PropsWithChildren<{title: ReactNode}>) => (

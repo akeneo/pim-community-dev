@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import {PropsWithTheme} from '../theme';
 
 export const Figure = styled.div`
     cursor: pointer;
@@ -7,7 +8,7 @@ export const Figure = styled.div`
 
 const Image = styled.img`
     width: 100%;
-    border: 1px solid #a1a9b7;
+    border: 1px solid ${({theme}: PropsWithTheme) => theme.color.grey};
     display: block;
     box-sizing: border-box;
 `;
