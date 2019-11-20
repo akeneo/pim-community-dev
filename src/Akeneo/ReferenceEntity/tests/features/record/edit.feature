@@ -519,7 +519,7 @@ Feature: Edit an record
     When the user saves the valid record with a simple option value
     Then the user should see a success message on the edit page
 
-  @acceptance-front
+  @acceptance-front @skip
   Scenario: Updating a record with an invalid simple option value
     Given a valid record with an option attribute
     And the user has the locale permission to edit the record

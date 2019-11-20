@@ -49,4 +49,13 @@ class Transformation
     {
         return $this->source;
     }
+
+    public function normalize(): array
+    {
+        return [
+            'source' => $this->source->normalize(),
+            'target' => $this->target->normalize(),
+            'operations' => $this->operations->normalize()
+        ];
+    }
 }

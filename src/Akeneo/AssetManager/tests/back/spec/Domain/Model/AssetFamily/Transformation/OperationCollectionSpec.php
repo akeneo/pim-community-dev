@@ -18,4 +18,17 @@ class OperationCollectionSpec extends ObjectBehavior
         $this->beConstructedThrough('create', [[$thumbnail, new \stdClass(), $resize]]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
+
+    function it_normalizes_an_operation_collection(
+        Operation $operation1,
+        Operation $operation2
+    ) {
+        $this->beConstructedThrough('create', [[$operation1, $operation2]]);
+        $normalizedOperation1 = ['key' => 'value operation 1'];
+        $normalizedOperation2 = ['key' => 'value operation 2'];
+        $operation1->normalize()->willReturn($normalizedOperation1);
+        $operation2->normalize()->willReturn($normalizedOperation2);
+
+        $this->normalize()->shouldReturn([$normalizedOperation1, $normalizedOperation2]);
+    }
 }

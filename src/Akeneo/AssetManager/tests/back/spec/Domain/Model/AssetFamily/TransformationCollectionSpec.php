@@ -80,4 +80,34 @@ class TransformationCollectionSpec extends ObjectBehavior
         ]);
         $this->shouldThrow(new \InvalidArgumentException('You can not define a transformation having a source as a target of another transformation'))->duringInstantiation();
     }
+
+    function it_normalizes_a_transformation_collection(
+        Transformation $transformation1,
+        Transformation $transformation2,
+        Target $target1,
+        Target $target2,
+        Source $source1,
+        Source $source2
+    ) {
+        $this->beConstructedThrough('create', [[ $transformation1, $transformation2 ]]);
+
+        $transformation1->getTarget()->willReturn($target1);
+        $transformation2->getTarget()->willReturn($target2);
+        $transformation1->getSource()->willReturn($source1);
+        $transformation2->getSource()->willReturn($source2);
+        $target1->equals($target2)->willReturn(false);
+        $target1->equals($source2)->willReturn(false);
+        $target2->equals($source1)->willReturn(false);
+
+        $normalizedTransformation1 = ['key' => 'normalized transformation 1'];
+        $normalizedTransformation2 = ['key' => 'normalized transformation 2'];
+
+        $transformation1->normalize()->willReturn($normalizedTransformation1);
+        $transformation2->normalize()->willReturn($normalizedTransformation2);
+
+        $this->normalize()->shouldReturn([
+            $normalizedTransformation1,
+            $normalizedTransformation2,
+        ]);
+    }
 }

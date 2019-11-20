@@ -61,9 +61,9 @@ class SqlAssetFamilyRepository implements AssetFamilyRepositoryInterface
         $serializedLabels = $this->getSerializedLabels($assetFamily);
         $insert = <<<SQL
         INSERT INTO akeneo_asset_manager_asset_family
-            (identifier, labels, attribute_as_label, attribute_as_image, rule_templates)
+            (identifier, labels, attribute_as_label, attribute_as_image, rule_templates, transformations)
         VALUES
-            (:identifier, :labels, :attributeAsLabel, :attributeAsImage, :ruleTemplates);
+            (:identifier, :labels, :attributeAsLabel, :attributeAsImage, :ruleTemplates, :transformations);
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $insert,
@@ -72,7 +72,9 @@ SQL;
                 'labels' => $serializedLabels,
                 'attributeAsLabel' => $assetFamily->getAttributeAsLabelReference()->normalize(),
                 'attributeAsImage' => $assetFamily->getAttributeAsImageReference()->normalize(),
-                'ruleTemplates' => json_encode($assetFamily->getRuleTemplateCollection()->normalize())
+                'ruleTemplates' => json_encode($assetFamily->getRuleTemplateCollection()->normalize()),
+                // TODO ATR-25
+                'transformations' => json_encode([]),
             ]
         );
         if ($affectedRows !== 1) {

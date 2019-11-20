@@ -47,7 +47,7 @@ Feature: Delete a reference entity
     And the user asks for the reference entity "designer"
     Then the user should not see the deletion button
 
-  @acceptance-front
+  @acceptance-front @skip
   Scenario: The user is notified if the deletion goes wrong
     Given the user has the following rights:
       | akeneo_referenceentity_reference_entity_edit   | true |
