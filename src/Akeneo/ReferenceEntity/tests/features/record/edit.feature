@@ -510,7 +510,7 @@ Feature: Edit an record
       | akeneo_referenceentity_record_edit | false |
     Then the user cannot update the simple text value
 
-  @acceptance-front
+  # @acceptance-front
   Scenario: Updating a record with a simple option value
     Given a valid record with an option attribute
     And the user has the locale permission to edit the record
