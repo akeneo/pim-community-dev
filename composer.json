@@ -40,7 +40,9 @@
             "Akeneo\\Test\\Pim\\Automation\\FranklinInsights\\": "src/Akeneo/Pim/Automation/FranklinInsights/tests/back",
             "Akeneo\\ReferenceEntity\\": "src/Akeneo/ReferenceEntity/tests/back",
             "Akeneo\\AssetManager\\": "src/Akeneo/AssetManager/tests/back",
-            "Akeneo\\Apps\\Tests\\Acceptance\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Apps/back/tests/Acceptance"
+            "Akeneo\\Apps\\Tests\\Acceptance\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Apps/back/tests/Acceptance",
+            "Pim\\Upgrade\\Schema\\Tests\\": "vendor/akeneo/pim-community-dev/upgrades/test_schema/",
+            "Pimee\\Upgrade\\Schema\\Tests\\": "upgrades/test_schema/"
         }
     },
     "require": {
