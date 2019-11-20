@@ -1,6 +1,0 @@
-Akeneo\Tool\Bundle\ApiBundle\Entity\Client:
-    properties:
-        label:
-            - NotBlank: ~
-            - Length:
-                max: 255
