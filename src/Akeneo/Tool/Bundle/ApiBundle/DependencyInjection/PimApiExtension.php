@@ -36,6 +36,5 @@ class PimApiExtension extends Extension
         $loader->load('security.yml');
         $loader->load('serializers.yml');
         $loader->load('stream.yml');
-        $loader->load('cli_commands.yml');
     }
 }
