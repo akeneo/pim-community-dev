@@ -1,11 +1,11 @@
 import {useContext} from 'react';
+import {useHistory} from 'react-router';
+import {FlowType} from '../../domain/apps/flow-type.enum';
 import {fetch} from '../shared/fetch';
 import {isErr} from '../shared/fetch/result';
 import {NotificationLevel, useNotify} from '../shared/notify';
 import {useRoute} from '../shared/router';
 import {TranslateContext} from '../shared/translate';
-import {useHistory} from "react-router";
-import {FlowType} from "../../domain/apps/flow-type.enum";
 
 interface ResultError {
     message: string;

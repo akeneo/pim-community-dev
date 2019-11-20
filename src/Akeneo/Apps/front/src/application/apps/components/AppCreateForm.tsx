@@ -1,21 +1,21 @@
-import React, {Dispatch, ChangeEvent, useRef, useEffect, useReducer, RefObject} from 'react';
+import React, {ChangeEvent, Dispatch, RefObject, useEffect, useReducer, useRef} from 'react';
 import {FlowType} from '../../../domain/apps/flow-type.enum';
 import {ApplyButton, Form, FormGroup, FormInput} from '../../common';
-import {FlowTypeHelper} from './FlowTypeHelper';
-import {FlowTypeSelect} from './FlowTypeSelect';
-import {appFormReducer, CreateFormState} from '../reducers/app-form-reducer';
-import {
-    inputChanged,
-    setError,
-    formIsInvalid,
-    formIsValid,
-    codeGenerated,
-    CreateFormAction
-} from '../actions/create-form-actions';
 import {isErr} from '../../shared/fetch/result';
 import {sanitize} from '../../shared/sanitize';
 import {Translate} from '../../shared/translate';
-import {useCreateApp, CreateAppData} from '../use-create-app';
+import {
+    codeGenerated,
+    CreateFormAction,
+    formIsInvalid,
+    formIsValid,
+    inputChanged,
+    setError,
+} from '../actions/create-form-actions';
+import {appFormReducer, CreateFormState} from '../reducers/app-form-reducer';
+import {CreateAppData, useCreateApp} from '../use-create-app';
+import {FlowTypeHelper} from './FlowTypeHelper';
+import {FlowTypeSelect} from './FlowTypeSelect';
 
 const initialState: CreateFormState = {
     controls: {
@@ -38,14 +38,7 @@ const useFormValidation = (
     codeInputRef: RefObject<HTMLInputElement>,
     labelInputRef: RefObject<HTMLInputElement>
 ) => {
-    const isFirstRender = useRef(true);
-
     useEffect(() => {
-        if (isFirstRender.current) {
-            isFirstRender.current = false;
-
-            return;
-        }
         [codeInputRef, labelInputRef].forEach(inputRef => {
             const input = inputRef.current;
             if (null === input) {
@@ -53,30 +46,29 @@ const useFormValidation = (
             }
 
             const name = input.name;
-            if (false === input.checkValidity() &&
-              0 === Object.keys(state.controls[name].errors).length &&
-              true === state.controls[name].dirty
+            if (
+                false === input.checkValidity() &&
+                0 === Object.keys(state.controls[name].errors).length &&
+                true === state.controls[name].dirty
             ) {
                 if (input.validity.valueMissing) {
-                    dispatch(setError(name, `akeneo_apps.constraint.${name}.required`));
+                    dispatch(setError(name, `akeneo_apps.app.constraint.${name}.required`));
                 }
                 if (input.validity.patternMismatch) {
-                    dispatch(setError(name, `akeneo_apps.constraint.${name}.invalid`));
+                    dispatch(setError(name, `akeneo_apps.app.constraint.${name}.invalid`));
                 }
             }
         });
-    }, [state.controls.code.value, state.controls.label.value, dispatch, codeInputRef, labelInputRef]);
+    }, [dispatch, codeInputRef, labelInputRef, state.controls]);
 
     useEffect(() => {
-        if (false === state.controls.label.valid ||
-          false === state.controls.code.valid
-        ) {
+        if (false === state.controls.label.valid || false === state.controls.code.valid) {
             dispatch(formIsInvalid());
 
             return;
         }
         dispatch(formIsValid());
-    }, [state.controls.label.valid, state.controls.code.valid]);
+    }, [dispatch, state.controls.label.valid, state.controls.code.valid]);
 };
 
 export const AppCreateForm = () => {
@@ -98,7 +90,7 @@ export const AppCreateForm = () => {
         }
 
         dispatch(codeGenerated(value));
-    }, [state.controls.label.value, dispatch, state.controls.code.dirty, state.controls.code.value]);
+    }, [dispatch, state.controls.label.value, state.controls.code.value, state.controls.code.dirty]);
 
     const handleSave = async () => {
         if (false === state.valid) {

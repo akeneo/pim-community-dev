@@ -1,11 +1,11 @@
 import {Reducer} from 'react';
 import {
     CHANGE,
+    CODE_GENERATED,
+    CreateFormAction,
+    INVALID_FORM,
     SET_ERROR,
     VALID_FORM,
-    INVALID_FORM,
-    CODE_GENERATED,
-    CreateFormAction
 } from '../actions/create-form-actions';
 
 export interface CreateFormState {
