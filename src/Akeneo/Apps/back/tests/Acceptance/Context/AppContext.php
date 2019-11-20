@@ -178,7 +178,7 @@ class AppContext implements Context
 
         foreach ($this->violations->getConstraintViolationList() as $violation) {
             if ('code' === $violation->getPropertyPath() &&
-                'akeneo_apps.constraint.code.must_be_unique' === $violation->getMessage()
+                'akeneo_apps.app.constraint.code.must_be_unique' === $violation->getMessage()
             ) {
                 return;
             }

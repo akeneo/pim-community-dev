@@ -61,6 +61,6 @@ describe('App', () => {
         (input.instance() as any).value = '';
         input.simulate('change');
 
-        expect(component.text()).toContain('akeneo_apps.constraint.label.required');
+        expect(component.text()).toContain('akeneo_apps.app.constraint.label.required');
     });
 });

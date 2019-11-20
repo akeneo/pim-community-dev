@@ -58,10 +58,10 @@ const useFormValidation = (
               true === state.controls[name].dirty
             ) {
                 if (input.validity.valueMissing) {
-                    dispatch(setError(name, `akeneo_apps.constraint.${name}.required`));
+                    dispatch(setError(name, `akeneo_apps.app.constraint.${name}.required`));
                 }
                 if (input.validity.patternMismatch) {
-                    dispatch(setError(name, `akeneo_apps.constraint.${name}.invalid`));
+                    dispatch(setError(name, `akeneo_apps.app.constraint.${name}.invalid`));
                 }
             }
         });

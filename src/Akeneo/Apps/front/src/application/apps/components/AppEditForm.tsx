@@ -44,7 +44,7 @@ export const AppEditForm = forwardRef(({app, onChange}: Props, ref: Ref<{submit:
         if (false === input.checkValidity() && 0 === labelControl.errors.length) {
             const errors = [];
             if (input.validity.valueMissing) {
-                errors.push('akeneo_apps.constraint.label.required');
+                errors.push('akeneo_apps.app.constraint.label.required');
             }
             setLabelControl({...labelControl, errors});
         }
