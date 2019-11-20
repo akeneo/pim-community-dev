@@ -20,7 +20,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
 use Webmozart\Assert\Assert;
 
-class Target
+class Target implements TransformationReference
 {
     /** @var AttributeIdentifier */
     private $attributeIdentifier;
@@ -46,17 +46,34 @@ class Target
         ChannelReference $channelReference,
         LocaleReference $localeReference
     ): self {
-        //TODO: see if we have to add explicit error message
         Assert::isInstanceOf($attribute, ImageAttribute::class);
-        $attribute->hasValuePerChannel() ? Assert::false($channelReference->isEmpty()) : Assert::true($channelReference->isEmpty());
-        $attribute->hasValuePerLocale() ? Assert::false($localeReference->isEmpty()) : Assert::true($localeReference->isEmpty());
+
+        $attribute->hasValuePerChannel() ?
+            Assert::false(
+                $channelReference->isEmpty(),
+                sprintf('Attribute "%s" is scopable, you must define a channel', $attribute->getIdentifier()->stringValue())
+            ) :
+            Assert::true(
+                $channelReference->isEmpty(),
+                sprintf('Attribute "%s" is not scopable, you cannot define a channel', $attribute->getIdentifier()->stringValue())
+            );
+
+        $attribute->hasValuePerLocale() ?
+            Assert::false(
+                $localeReference->isEmpty(),
+                sprintf('Attribute "%s" is localizable, you must define a locale', $attribute->getIdentifier()->stringValue())
+            ) :
+            Assert::true(
+                $localeReference->isEmpty(),
+                sprintf('Attribute "%s" is not localizable, you cannot define a locale', $attribute->getIdentifier()->stringValue())
+            );
 
         return new self($attribute->getIdentifier(), $channelReference, $localeReference);
     }
 
-    public function getAttributeIdentifierAsString(): string
+    public function getAttributeIdentifier(): AttributeIdentifier
     {
-        return $this->attributeIdentifier->stringValue();
+        return $this->attributeIdentifier;
     }
 
     public function getChannelReference(): ChannelReference
@@ -67,5 +84,13 @@ class Target
     public function getLocaleReference(): LocaleReference
     {
         return $this->localeReference;
+    }
+
+    public function equals(TransformationReference $reference): bool
+    {
+        return
+            $this->getAttributeIdentifier()->equals($reference->getAttributeIdentifier()) &&
+            $this->getChannelReference()->equals($reference->getChannelReference()) &&
+            $this->getLocaleReference()->equals($reference->getLocaleReference());
     }
 }

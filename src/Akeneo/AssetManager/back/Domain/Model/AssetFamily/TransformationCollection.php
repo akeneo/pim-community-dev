@@ -19,16 +19,39 @@ use Webmozart\Assert\Assert;
 class TransformationCollection
 {
     /** @var Transformation[] */
-    private $transformations;
+    private $transformations = [];
 
+    /**
+     * @param Transformation[] $transformations
+     */
     private function __construct(array $transformations)
     {
         Assert::allIsInstanceOf($transformations, Transformation::class);
+        foreach ($transformations as $transformation) {
+            $this->add($transformation);
+        }
+
         $this->transformations = $transformations;
     }
 
     public static function create(array $transformations): self
     {
         return new self($transformations);
+    }
+
+    private function add(Transformation $transformation)
+    {
+        foreach ($this->transformations as $existingTransformation) {
+            if ($existingTransformation->getTarget()->equals($transformation->getTarget())) {
+                throw new \InvalidArgumentException('You can not define 2 transformation with the same target');
+            }
+
+            if ($existingTransformation->getTarget()->equals($transformation->getSource()) ||
+                $transformation->getTarget()->equals($existingTransformation->getSource())) {
+                throw new \InvalidArgumentException('You can not define a transformation having a source as a target of another transformation');
+            }
+        }
+
+        $this->transformations[] = $transformation;
     }
 }

@@ -7,6 +7,7 @@ namespace spec\Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationReference;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeDecimalsAllowed;
@@ -108,7 +109,7 @@ class TargetSpec extends ObjectBehavior
                 LocaleReference::noReference()
             ]
         );
-        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+        $this->shouldThrow(new \InvalidArgumentException('Attribute "image_identifier" is not scopable, you cannot define a channel'))->duringInstantiation();
     }
 
     function it_throws_an_exception_when_not_providing_a_channel_with_a_scopable_attribute()
@@ -121,7 +122,7 @@ class TargetSpec extends ObjectBehavior
                 LocaleReference::noReference()
             ]
         );
-        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+        $this->shouldThrow(new \InvalidArgumentException('Attribute "image_identifier" is scopable, you must define a channel'))->duringInstantiation();
     }
 
     function it_throws_an_exception_when_providing_a_locale_with_a_non_localizable_attribute()
@@ -134,7 +135,7 @@ class TargetSpec extends ObjectBehavior
                 LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
             ]
         );
-        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+        $this->shouldThrow(new \InvalidArgumentException('Attribute "image_identifier" is not localizable, you cannot define a locale'))->duringInstantiation();
     }
 
     function it_throws_an_exception_when_not_providing_a_locale_with_a_localizable_attribute()
@@ -147,7 +148,44 @@ class TargetSpec extends ObjectBehavior
                 LocaleReference::noReference(),
             ]
         );
-        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+        $this->shouldThrow(new \InvalidArgumentException('Attribute "image_identifier" is localizable, you must define a locale'))->duringInstantiation();
+    }
+
+
+    function it_equals_localizable_and_scopable_attribute(TransformationReference $reference)
+    {
+        $this->beConstructedThrough(
+            'create',
+            [
+                $this->createImageAttribute(true, true),
+                ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
+                LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+            ]
+        );
+
+        $reference->getAttributeIdentifier()->willReturn(AttributeIdentifier::fromString('image_identifier'));
+        $reference->getChannelReference()->willReturn(ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')));
+        $reference->getLocaleReference()->willReturn(LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')));
+
+        $this->equals($reference)->shouldReturn(true);
+    }
+
+    function it_does_not_equal_localizable_and_scopable_attribute(TransformationReference $reference)
+    {
+        $this->beConstructedThrough(
+            'create',
+            [
+                $this->createImageAttribute(true, true),
+                ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
+                LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+            ]
+        );
+
+        $reference->getAttributeIdentifier()->willReturn(AttributeIdentifier::fromString('image_identifier'));
+        $reference->getChannelReference()->willReturn(ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')));
+        $reference->getLocaleReference()->willReturn(LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')));
+
+        $this->equals($reference)->shouldReturn(false);
     }
 
     private function createImageAttribute(bool $scopable, bool $localizable): ImageAttribute

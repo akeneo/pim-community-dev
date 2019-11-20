@@ -28,11 +28,7 @@ class Transformation
 
     private function __construct(Source $source, Target $target, OperationCollection $operations)
     {
-        Assert::false(
-            $source->getAttributeIdentifierAsString() === $target->getAttributeIdentifierAsString() &&
-            $source->getChannelReference()->equals($target->getChannelReference()) &&
-            $source->getLocaleReference()->equals($target->getLocaleReference())
-        );
+        Assert::false($source->equals($target), 'A transformation can not have the same source and target');
 
         $this->source = $source;
         $this->target = $target;
@@ -42,5 +38,15 @@ class Transformation
     public static function create(Source $source, Target $target, OperationCollection $operations): self
     {
         return new self($source, $target, $operations);
+    }
+
+    public function getTarget(): Target
+    {
+        return $this->target;
+    }
+
+    public function getSource(): Source
+    {
+        return $this->source;
     }
 }
