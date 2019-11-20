@@ -13,15 +13,16 @@ services:
         tags:
             - { name: akeneo_assetmanager.create_attribute_command_factory }
 
-    akeneo_assetmanager.application.factory.create_asset_attribute_command_factory:
-        class: Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFactory\CreateAssetAttributeCommandFactory
-        tags:
-            - { name: akeneo_assetmanager.create_attribute_command_factory }
+    # Will be activated again when we will do the link to reference entity
+    # akeneo_assetmanager.application.factory.create_asset_attribute_command_factory:
+    #     class: Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFactory\CreateAssetAttributeCommandFactory
+    #     tags:
+    #         - { name: akeneo_assetmanager.create_attribute_command_factory }
 
-    akeneo_assetmanager.application.factory.create_asset_collection_attribute_command_factory:
-        class: Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFactory\CreateAssetCollectionAttributeCommandFactory
-        tags:
-            - { name: akeneo_assetmanager.create_attribute_command_factory }
+    # akeneo_assetmanager.application.factory.create_asset_collection_attribute_command_factory:
+    #     class: Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFactory\CreateAssetCollectionAttributeCommandFactory
+    #     tags:
+    #         - { name: akeneo_assetmanager.create_attribute_command_factory }
 
     akeneo_assetmanager.application.factory.create_option_attribute_command_factory:
         class: Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFactory\CreateOptionAttributeCommandFactory
