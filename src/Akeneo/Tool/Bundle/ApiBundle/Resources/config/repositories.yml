@@ -1,14 +1,7 @@
 parameters:
-    pim_api.repository.client.class: Akeneo\Tool\Bundle\ApiBundle\Doctrine\ORM\Repository\ClientRepository
     pim_api.repository.api_resource.class: Akeneo\Tool\Bundle\ApiBundle\Doctrine\ORM\Repository\ApiResourceRepository
 
 services:
-    pim_api.repository.client:
-        class: '%pim_api.repository.client.class%'
-        arguments:
-            - '@fos_oauth_server.entity_manager'
-            - '%fos_oauth_server.model.client.class%'
-
     pim_api.repository.product_model:
         class: 'Akeneo\Tool\Bundle\ApiBundle\Doctrine\ORM\Repository\ProductModelRepository'
         arguments:
