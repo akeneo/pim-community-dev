@@ -21,7 +21,7 @@ export const Button = ({
     }
 
     return (
-        <button onClick={onClick} className={classNames.join(' ')} disabled={disabled}>
+        <button type='button' onClick={onClick} className={classNames.join(' ')} disabled={disabled}>
             {children}
             {undefined !== count && <span className='AknButton--withSuffix'>{count}</span>}
         </button>

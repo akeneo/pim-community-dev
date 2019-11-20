@@ -5,6 +5,7 @@ exports[`ApplyButton should have the apply style 1`] = `
   className="AknButton--apply AknButton"
   disabled={false}
   onClick={[Function]}
+  type="button"
 >
   content
 </button>
