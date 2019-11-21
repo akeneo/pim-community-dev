@@ -35,6 +35,7 @@ class AkeneoAssetManagerExtension extends Extension
         $loader->load('attribute_command_factories.yml');
         $loader->load('asset_command_factories.yml');
         $loader->load('controllers.yml');
+        $loader->load('compute_transformations.yml');
         $loader->load('files.yml');
         $loader->load('filters.yml');
         $loader->load('handlers.yml');
