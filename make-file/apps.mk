@@ -88,18 +88,18 @@ apps-back:
 
 # Tests Front
 
-apps-front-tests:
+apps-unit-front:
 	$(_APPS_YARN_RUN) jest
 
-apps-front-lint:
+apps-lint-front:
 	$(_APPS_YARN_RUN) eslint
 	$(_APPS_YARN_RUN) prettier --check
 
 # Development
 
-apps-front-tests-watch:
+apps-unit-front_watch:
 	$(_APPS_YARN_RUN) jest --watchAll --coverage
 
-apps-front-lint-fix:
+apps-lint-front_fix:
 	$(_APPS_YARN_RUN) eslint --fix
 	$(_APPS_YARN_RUN) prettier --write
