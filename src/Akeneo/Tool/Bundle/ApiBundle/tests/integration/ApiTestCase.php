@@ -256,7 +256,7 @@ abstract class ApiTestCase extends WebTestCase
             return '';
         });
 
-        $client = $this->createAuthenticatedClient([], [], null, null, $username, $password);
+        $client = $this->createAuthenticatedClient([], [], 'test');
         $client->setServerParameter('CONTENT_TYPE', StreamResourceResponse::CONTENT_TYPE);
         $client->request($method, $uri, $parameters, $files, $server, $content, $changeHistory);
 
@@ -268,39 +268,6 @@ abstract class ApiTestCase extends WebTestCase
         ];
 
         return $response;
-    }
-
-    protected function createAdminUser(): UserInterface
-    {
-        $user = $this->get('pim_user.factory.user')->create();
-        $user->setUsername(self::USERNAME);
-        $user->setPlainPassword(self::PASSWORD);
-        $user->setEmail('admin@example.com');
-        $user->setSalt('E1F53135E559C253');
-        $user->setFirstName('John');
-        $user->setLastName('Doe');
-
-        $this->get('pim_user.manager')->updatePassword($user);
-
-        $adminRole = $this->get('pim_user.repository.role')->findOneByIdentifier('ROLE_ADMINISTRATOR');
-        if (null !== $adminRole) {
-            $user->addRole($adminRole);
-        }
-
-        $userRole = $this->get('pim_user.repository.role')->findOneByIdentifier(User::ROLE_DEFAULT);
-        if (null !== $userRole) {
-            $user->removeRole($userRole);
-        }
-
-        $group = $this->get('pim_user.repository.group')->findOneByIdentifier('IT support');
-        if (null !== $group) {
-            $user->addGroup($group);
-        }
-
-        $this->get('validator')->validate($user);
-        $this->get('pim_user.saver.user')->save($user);
-
-        return $user;
     }
 
     /**
