@@ -5,7 +5,7 @@ namespace Akeneo\Test\IntegrationTestsBundle\Security;
 use Akeneo\UserManagement\Component\Factory\UserFactory;
 use Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface;
 use Akeneo\UserManagement\Component\Repository\RoleRepositoryInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
@@ -24,14 +24,14 @@ final class SystemUserAuthenticator
     /** @var RoleRepositoryInterface */
     private $roleRepository;
 
-    /** @var TokenStorage */
+    /** @var TokenStorageInterface */
     private $tokenStorage;
 
     public function __construct(
         UserFactory $userFactory,
         GroupRepositoryInterface $groupRepository,
         RoleRepositoryInterface $roleRepository,
-        TokenStorage $tokenStorage
+        TokenStorageInterface $tokenStorage
     ) {
         $this->userFactory = $userFactory;
         $this->groupRepository = $groupRepository;
