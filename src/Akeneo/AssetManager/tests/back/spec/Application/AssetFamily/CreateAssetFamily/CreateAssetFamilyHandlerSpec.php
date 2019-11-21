@@ -48,7 +48,8 @@ class CreateAssetFamilyHandlerSpec extends ObjectBehavior
                         ]
                     ]
                 ]
-            ]
+            ],
+            []
         );
 
         $assetFamilyRepository->create(Argument::that(function ($assetFamily) {

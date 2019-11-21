@@ -1940,6 +1940,7 @@ final class EditAssetContext implements Context
         $createCommand = new CreateAssetFamilyCommand(
             $assetFamilyIdentifier,
             [],
+            [],
             []
         );
 

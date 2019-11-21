@@ -138,6 +138,7 @@ final class EditAssetFamilyContext implements Context
                 'en_US' => 'Designer',
                 'fr_FR' => 'Concepteur'
             ],
+            [],
             []
         );
 
@@ -231,7 +232,7 @@ final class EditAssetFamilyContext implements Context
 
         $label = json_decode($label);
 
-        $createCommand = new CreateAssetFamilyCommand($identifier, [$localCode => $label], []);
+        $createCommand = new CreateAssetFamilyCommand($identifier, [$localCode => $label], [], []);
 
         $violations = $this->validator->validate($createCommand);
         if ($violations->count() > 0) {
@@ -246,7 +247,7 @@ final class EditAssetFamilyContext implements Context
      */
     public function anImageOnAnAssetFamilyWitPathAndFilename(string $identifier, string $filePath, string $filename): void
     {
-        $createCommand = new CreateAssetFamilyCommand($identifier, [], []);
+        $createCommand = new CreateAssetFamilyCommand($identifier, [], [], []);
 
         $violations = $this->validator->validate($createCommand);
         if ($violations->count() > 0) {
@@ -349,7 +350,7 @@ final class EditAssetFamilyContext implements Context
     public function anEmptyRuleTemplateCollectionOnTheAssetFamily(string $code)
     {
         $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
-        $createCommand = new CreateAssetFamilyCommand($code, [], []);
+        $createCommand = new CreateAssetFamilyCommand($code, [], [], []);
         $violations = $this->validator->validate($createCommand);
         if ($violations->count() > 0) {
             throw new \LogicException(sprintf('Cannot create asset family: %s', $violations->get(0)->getMessage()));

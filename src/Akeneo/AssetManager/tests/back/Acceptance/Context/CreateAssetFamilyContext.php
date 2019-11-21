@@ -107,7 +107,8 @@ final class CreateAssetFamilyContext implements Context
         $command = new CreateAssetFamilyCommand(
             $identifier,
             json_decode($updates['labels'] ?? '[]', true),
-            json_decode($updates['product_link_rules'] ?? '[]', true)
+            json_decode($updates['product_link_rules'] ?? '[]', true),
+            []
         );
 
         $this->createAssetFamily($command);
@@ -126,6 +127,7 @@ final class CreateAssetFamilyContext implements Context
             $actualAssetFamily
         );
         $this->assertSameProductLinkRules(json_decode($expectedInformation['product_link_rules'] ?? '[]', true), $actualAssetFamily);
+        // TODO: assert transformations?
     }
 
     private function assertSameLabels(array $expectedLabels, AssetFamily $actualAssetFamily)
@@ -171,6 +173,7 @@ final class CreateAssetFamilyContext implements Context
             $command = new CreateAssetFamilyCommand(
                 uniqid(),
                 [],
+                [],
                 []
             );
             $this->createAssetFamily($command);
@@ -183,7 +186,7 @@ final class CreateAssetFamilyContext implements Context
     public function theUserCreatesAnAssetFamilyWithACollectionOfRuleTemplates(string $code): void
     {
         $ruleTemplate = $this->staticRuleTemplate();
-        $command = new CreateAssetFamilyCommand($code, [], [$ruleTemplate]);
+        $command = new CreateAssetFamilyCommand($code, [], [$ruleTemplate], []);
         $this->createAssetFamily($command);
     }
 
@@ -215,7 +218,8 @@ final class CreateAssetFamilyContext implements Context
         $command = new CreateAssetFamilyCommand(
             $code,
             ['en_US' => ucfirst($code)],
-            $ruleTemplates
+            $ruleTemplates,
+            []
         );
 
         $this->createAssetFamily($command);
@@ -231,7 +235,8 @@ final class CreateAssetFamilyContext implements Context
         $createAssetFamilyWithInvalidProductLinkRulesCommand = new CreateAssetFamilyCommand(
             self::ASSET_FAMILY_IDENTIFIER,
             [],
-            $invalidProductLinkRules
+            $invalidProductLinkRules,
+            []
         );
         $this->createAssetFamily($createAssetFamilyWithInvalidProductLinkRulesCommand);
     }
@@ -253,7 +258,8 @@ final class CreateAssetFamilyContext implements Context
         $createAssetFamilyWithEmptyProductSelection = new CreateAssetFamilyCommand(
             self::ASSET_FAMILY_IDENTIFIER,
             [],
-            $emptyProductSelection
+            $emptyProductSelection,
+            []
         );
         $this->createAssetFamily($createAssetFamilyWithEmptyProductSelection);
     }
@@ -267,7 +273,8 @@ final class CreateAssetFamilyContext implements Context
         $createAssetFamilyWithEmptyProductAssignment = new CreateAssetFamilyCommand(
             self::ASSET_FAMILY_IDENTIFIER,
             [],
-            $emptyProductAssignment
+            $emptyProductAssignment,
+            []
         );
         $this->createAssetFamily($createAssetFamilyWithEmptyProductAssignment);
     }
@@ -287,7 +294,8 @@ final class CreateAssetFamilyContext implements Context
         $createAssetFamilyWithInvalidProductLinkRulesCommand = new CreateAssetFamilyCommand(
             self::ASSET_FAMILY_IDENTIFIER,
             [],
-            $productLinkRuleRefencingAnUnexistingAttribute
+            $productLinkRuleRefencingAnUnexistingAttribute,
+            []
         );
         $this->createAssetFamily($createAssetFamilyWithInvalidProductLinkRulesCommand);
     }
@@ -314,7 +322,8 @@ final class CreateAssetFamilyContext implements Context
         $createAssetFamilyWithInvalidProductLinkRulesCommand = new CreateAssetFamilyCommand(
             self::ASSET_FAMILY_IDENTIFIER,
             [],
-            $productLinkRuleRefencingAnUnexistingAttribute
+            $productLinkRuleRefencingAnUnexistingAttribute,
+            []
         );
         $this->createAssetFamily($createAssetFamilyWithInvalidProductLinkRulesCommand);
     }
@@ -341,7 +350,8 @@ final class CreateAssetFamilyContext implements Context
         $createAssetFamilyWithInvalidProductLinkRulesCommand = new CreateAssetFamilyCommand(
             self::ASSET_FAMILY_IDENTIFIER,
             [],
-            $productLinkRuleRefencingAnUnexistingAttribute
+            $productLinkRuleRefencingAnUnexistingAttribute,
+            []
         );
         $this->createAssetFamily($createAssetFamilyWithInvalidProductLinkRulesCommand);
     }

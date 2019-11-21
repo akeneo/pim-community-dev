@@ -104,7 +104,8 @@ class CreateOrUpdateAssetFamilyAction
             $createAssetFamilyCommand = new CreateAssetFamilyCommand(
                 $normalizedAssetFamily['code'],
                 $normalizedAssetFamily['labels'] ?? [],
-                $normalizedAssetFamily['product_link_rules'] ?? []
+                $normalizedAssetFamily['product_link_rules'] ?? [],
+                $normalizedAssetFamily['transformations'] ?? []
             );
 
             $violations = $this->validator->validate($createAssetFamilyCommand);
