@@ -44,21 +44,21 @@ class CreateAppCommand extends Command
         $this
             ->setDescription('Creates a new pair of client id / secret for the web API')
             ->addArgument(
-                'label',
+                'code',
                 InputArgument::REQUIRED,
-                'Sets a label to ease the administration of client ids.'
+                'Sets a code to ease the administration of client ids.'
             )
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $label = $input->getArgument('label');
+        $code = $input->getArgument('code');
 
-        $command = new \Akeneo\Apps\Application\Command\CreateAppCommand($label, $label, FlowType::OTHER);
+        $command = new \Akeneo\Apps\Application\Command\CreateAppCommand($code, $code, FlowType::OTHER);
         $this->createAppHandler->handle($command);
 
-        $query = new FindAnAppQuery($label);
+        $query = new FindAnAppQuery($code);
         $app = $this->findAnAppHandler->handle($query);
 
         $output->writeln([
