@@ -123,7 +123,7 @@ abstract class ApiTestCase extends WebTestCase
 
         $input  = new ArrayInput([
             'command' => 'akeneo:app:create',
-            'label'   => null !== $label ? $label : 'Api test case client',
+            'label'   => null !== $label ? $label : 'Api_test_case_client',
         ]);
         $output = new BufferedOutput();
 
