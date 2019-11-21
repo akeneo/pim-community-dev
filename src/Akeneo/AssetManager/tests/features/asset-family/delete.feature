@@ -47,7 +47,6 @@ Feature: Delete an asset family
     And the user asks for the asset family "designer"
     Then the user should not see the deletion button
 
-  @acceptance-front
   Scenario: The user is notified if the deletion goes wrong
     Given the user has the following rights:
       | akeneo_assetmanager_asset_family_edit   | true |
