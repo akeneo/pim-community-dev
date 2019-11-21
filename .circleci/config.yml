@@ -69,7 +69,7 @@ jobs:
           paths:
             - project
 
-  back_static_and_acceptance:
+  test_back_static_and_acceptance:
       machine:
           image: ubuntu-1604:201903-01
       steps:
@@ -107,7 +107,7 @@ jobs:
           - store_artifacts:
                 path: var/logs
 
-  back_phpunit:
+  test_back_phpunit:
       machine:
           image: ubuntu-1604:201903-01
       parallelism: 10
@@ -187,7 +187,7 @@ jobs:
       - store_artifacts:
           path: var/logs
 
-  front_static_acceptance_and_integration:
+  test_front_static_acceptance_and_integration:
       machine:
           image: ubuntu-1604:201903-01
       steps:
@@ -225,19 +225,19 @@ workflows:
           - build_dev:
                 requires:
                     - wait_for_user_approval
-          - back_static_and_acceptance:
+          - test_back_static_and_acceptance:
                 requires:
                     - build_dev
-          - front_static_acceptance_and_integration:
+          - test_front_static_acceptance_and_integration:
                 requires:
                     - build_dev
-          - back_phpunit:
+          - test_back_phpunit:
                 requires:
-                    - back_static_and_acceptance
-                    - front_static_acceptance_and_integration
+                    - test_back_static_and_acceptance
+                    - test_front_static_acceptance_and_integration
           - back_behat_legacy:
                 requires:
-                    - back_phpunit
+                    - test_back_phpunit
 
   nightly:
       triggers:
@@ -249,16 +249,16 @@ workflows:
                             - master
       jobs:
           - build_dev
-          - back_static_and_acceptance:
+          - test_back_static_and_acceptance:
                 requires:
                     - build_dev
-          - front_static_acceptance_and_integration:
+          - test_front_static_acceptance_and_integration:
                 requires:
                     - build_dev
-          - back_phpunit:
+          - test_back_phpunit:
                 requires:
-                    - back_static_and_acceptance
-                    - front_static_acceptance_and_integration
+                    - test_back_static_and_acceptance
+                    - test_front_static_acceptance_and_integration
           - back_behat_legacy:
                 requires:
-                    - back_phpunit
+                    - test_back_phpunit
