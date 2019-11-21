@@ -1,13 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Structure\Bundle\EventSubscriber;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Factory\AttributeRequirementFactory;
+use Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;
 use Akeneo\Pim\Structure\Component\Model\Family;
 use Doctrine\Common\EventSubscriber;
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Events;
 
 /**
  * Create attribute requirements for each family attributes after creating a channel
@@ -22,14 +27,13 @@ class CreateAttributeRequirementSubscriber implements EventSubscriber
     /** @var AttributeRequirementFactory */
     protected $requirementFactory;
 
-    /**
-     * Constructor
-     *
-     * @param AttributeRequirementFactory $requirementFactory
-     */
-    public function __construct(AttributeRequirementFactory $requirementFactory)
+    /** @var Connection */
+    private $dbConnection;
+
+    public function __construct(AttributeRequirementFactory $requirementFactory, Connection $dbConnection)
     {
         $this->requirementFactory = $requirementFactory;
+        $this->dbConnection = $dbConnection;
     }
 
     /**
@@ -37,7 +41,7 @@ class CreateAttributeRequirementSubscriber implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return ['prePersist'];
+        return [Events::postPersist];
     }
 
     /**
@@ -45,7 +49,7 @@ class CreateAttributeRequirementSubscriber implements EventSubscriber
      *
      * @param LifecycleEventArgs $event
      */
-    public function prePersist(LifecycleEventArgs $event)
+    public function postPersist(LifecycleEventArgs $event)
     {
         $entity = $event->getEntity();
 
@@ -57,6 +61,7 @@ class CreateAttributeRequirementSubscriber implements EventSubscriber
         $families = $entityManager->getRepository(Family::class)->findAll();
 
         foreach ($families as $family) {
+            $familyRequirements = [];
             foreach ($family->getAttributes() as $attribute) {
                 $requirement = $this->requirementFactory->createAttributeRequirement(
                     $attribute,
@@ -64,8 +69,33 @@ class CreateAttributeRequirementSubscriber implements EventSubscriber
                     AttributeTypes::IDENTIFIER === $attribute->getType()
                 );
                 $requirement->setFamily($family);
-                $entityManager->persist($requirement);
+                $familyRequirements[] = $requirement;
             }
+            $this->persistAttributeRequirements($familyRequirements);
         }
+    }
+
+    private function persistAttributeRequirements(array $attributeRequirements): void
+    {
+        if (empty($attributeRequirements)) {
+            return;
+        }
+
+        $values = array_map(function (AttributeRequirementInterface $attributeRequirement) {
+            return sprintf(
+                '(%d,%d,%d,%d)',
+                $attributeRequirement->getFamily()->getId(),
+                $attributeRequirement->getAttribute()->getId(),
+                $attributeRequirement->getChannel()->getId(),
+                $attributeRequirement->isRequired()
+            );
+        }, $attributeRequirements);
+
+        $sql = sprintf(
+            'INSERT INTO pim_catalog_attribute_requirement (family_id, attribute_id, channel_id, required) VALUES %s',
+            implode(',', $values)
+        );
+
+        $this->dbConnection->executeQuery($sql);
     }
 }

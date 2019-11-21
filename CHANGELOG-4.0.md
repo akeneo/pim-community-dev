@@ -12,6 +12,7 @@
 - TIP-1225: Improve the performance of the indexation of the products
 - TIP-1174: Improve the performance of the indexation of the product models
 - TIP-1176: Improve the performance of the computation of product model descendant when updating a product. The "compute product model descendant" job does not exist anymore. The computation is now done synchronously thanks the improvement done in TIP-1225 and TIP-1174.
+- PIM-8990: Improve the performance of the creation of the attributes requirements when a channel is created
 
 ## BC breaks
 
@@ -327,6 +328,8 @@
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\EnsureConsistentAttributeGroupOrderTasklet` to
     - remove `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Query\FindAttributeGroupOrdersEqualOrSuperiorTo` (implementation class)
     - add `Akeneo\Pim\Structure\Component\AttributeGroup\Query\FindAttributeGroupOrdersEqualOrSuperiorTo` (interface)
+- Change constructor of `Akeneo\Pim\Structure\Bundle\EventSubscriber\CreateAttributeRequirementSubscriber` to add `Doctrine\DBAL\Connection`
+- Remove method `prePersist` from `Akeneo\Pim\Structure\Bundle\EventSubscriber\CreateAttributeRequirementSubscriber`
 
 ### CLI Commands
 

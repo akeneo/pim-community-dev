@@ -3,9 +3,11 @@
 namespace Specification\Akeneo\Pim\Structure\Bundle\EventSubscriber;
 
 use Akeneo\Pim\Structure\Component\Model\Family;
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Events;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Factory\AttributeRequirementFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -18,13 +20,14 @@ class CreateAttributeRequirementSubscriberSpec extends ObjectBehavior
 {
     function let(
         AttributeRequirementFactory $requirementFactory,
+        Connection $dbConnection,
         LifecycleEventArgs $eventArgs,
         ChannelInterface $channel,
         EntityManagerInterface $entityManager,
         EntityRepository $repository,
         FamilyInterface $family
     ) {
-        $this->beConstructedWith($requirementFactory);
+        $this->beConstructedWith($requirementFactory, $dbConnection);
 
         $eventArgs->getEntity()
             ->willReturn($channel);
@@ -40,6 +43,9 @@ class CreateAttributeRequirementSubscriberSpec extends ObjectBehavior
 
         $family->getAttributes()
             ->willReturn([]);
+
+        $channel->getId()->willReturn(7);
+        $family->getId()->willReturn(23);
     }
 
     public function it_is_an_event_subscriber()
@@ -50,12 +56,13 @@ class CreateAttributeRequirementSubscriberSpec extends ObjectBehavior
     public function it_subscribes_to_prePersist()
     {
         $this->getSubscribedEvents()
-            ->shouldReturn(['prePersist']);
+            ->shouldReturn([Events::postPersist]);
     }
 
     public function it_ignores_non_ChannelInterface_entity(
         $eventArgs,
-        $entityManager
+        $entityManager,
+        $dbConnection
     ) {
         $eventArgs->getEntity()
             ->willReturn(null)
@@ -64,16 +71,20 @@ class CreateAttributeRequirementSubscriberSpec extends ObjectBehavior
         $eventArgs->getEntityManager()
             ->shouldNotBeCalled();
 
-        $entityManager->persist(Argument::any())
+        $entityManager->getRepository(Argument::any())
             ->shouldNotBeCalled();
 
-        $this->prePersist($eventArgs)
+        $dbConnection->executeQuery(Argument::any())
+            ->shouldNotBeCalled();
+
+        $this->postPersist($eventArgs)
             ->shouldReturn(null);
     }
 
     public function it_does_not_create_requirement_without_family(
         $eventArgs,
         $entityManager,
+        $dbConnection,
         $repository,
         $family
     ) {
@@ -90,19 +101,16 @@ class CreateAttributeRequirementSubscriberSpec extends ObjectBehavior
         $family->getAttributes()
             ->shouldNotBeCalled();
 
-        $entityManager->persist(Argument::any())
+        $dbConnection->executeQuery(Argument::any())
             ->shouldNotBeCalled();
 
-        $entityManager->persist(Argument::any())
-            ->shouldNotBeCalled();
-
-        $this->prePersist($eventArgs)
+        $this->postPersist($eventArgs)
             ->shouldReturn(null);
     }
 
     public function it_does_not_create_requirements_for_family_without_attributes(
         $eventArgs,
-        $entityManager,
+        $dbConnection,
         $repository,
         $family
     ) {
@@ -114,10 +122,10 @@ class CreateAttributeRequirementSubscriberSpec extends ObjectBehavior
             ->willReturn([])
             ->shouldBeCalled();
 
-        $entityManager->persist(Argument::any())
+        $dbConnection->executeQuery(Argument::any())
             ->shouldNotBeCalled();
 
-        $this->prePersist($eventArgs)
+        $this->postPersist($eventArgs)
             ->shouldReturn(null);
     }
 
@@ -125,7 +133,7 @@ class CreateAttributeRequirementSubscriberSpec extends ObjectBehavior
         $requirementFactory,
         $eventArgs,
         $channel,
-        $entityManager,
+        $dbConnection,
         $family,
         AttributeInterface $attribute,
         AttributeRequirementInterface $attributeRequirement
@@ -145,10 +153,15 @@ class CreateAttributeRequirementSubscriberSpec extends ObjectBehavior
         $attributeRequirement->setFamily($family)
             ->shouldBeCalled();
 
-        $entityManager->persist(Argument::any())
+        $attributeRequirement->getChannel()->willReturn($channel);
+        $attributeRequirement->getAttribute()->willReturn($attribute);
+        $attributeRequirement->getFamily()->willReturn($family);
+        $attributeRequirement->isRequired()->willReturn(false);
+
+        $dbConnection->executeQuery(Argument::any())
             ->shouldBeCalled();
 
-        $this->prePersist($eventArgs)
+        $this->postPersist($eventArgs)
             ->shouldReturn(null);
     }
 }

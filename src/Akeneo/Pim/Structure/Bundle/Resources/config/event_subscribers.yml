@@ -50,5 +50,6 @@ services:
         class: 'Akeneo\Pim\Structure\Bundle\EventSubscriber\CreateAttributeRequirementSubscriber'
         arguments:
             - '@pim_catalog.factory.attribute_requirement'
+            - '@database_connection'
         tags:
             - { name: doctrine.event_subscriber }
