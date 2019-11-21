@@ -102,6 +102,62 @@ class AssetFamilyValidator
                         'additionalProperties' => false,
                     ],
                 ],
+                'transformations' => [
+                    'type' => 'array',
+                    'items' => [
+                        'type' => 'object',
+                        'properties' => [
+                            'source' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'attribute' => [
+                                        'type' => 'string',
+                                    ],
+                                    'channel' => [
+                                        'type' => ['string', 'null'],
+                                    ],
+                                    'locale' => [
+                                        'type' => ['string', 'null'],
+                                    ],
+                                ],
+                                'required' => ['attribute', 'channel', 'locale'],
+                                'additionalProperties' => false,
+                            ],
+                            'target' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'attribute' => [
+                                        'type' => 'string',
+                                    ],
+                                    'channel' => [
+                                        'type' => ['string', 'null'],
+                                    ],
+                                    'locale' => [
+                                        'type' => ['string', 'null'],
+                                    ],
+                                ],
+                            ],
+                            'operations' => [
+                                'type' => 'array',
+                                'items' => [
+                                    'type' => 'object',
+                                    'properties' => [
+                                        'type' => [
+                                            'type' => 'string',
+                                        ],
+                                        'parameters' => [
+                                            'type' => 'object',
+                                        ],
+                                        'required' => ['type'],
+                                        'additionalProperties' => false,
+                                    ],
+                                ],
+                            ],
+                        ],
+                        'required' => ['source', 'target', 'operations'],
+                        'additionalProperties' => false,
+                    ],
+                ],
                 '_links' => [
                     'type' => 'object'
                 ]
