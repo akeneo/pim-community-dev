@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration;
 
+use Akeneo\Apps\Application\Command\CreateAppCommand;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
@@ -121,7 +122,7 @@ abstract class ApiTestCase extends WebTestCase
         $consoleApp->setAutoExit(false);
 
         $input  = new ArrayInput([
-            'command' => 'pim:oauth-server:create-client',
+            'command' => 'akeneo:app:create',
             'label'   => null !== $label ? $label : 'Api test case client',
         ]);
         $output = new BufferedOutput();
@@ -129,7 +130,7 @@ abstract class ApiTestCase extends WebTestCase
         $consoleApp->run($input, $output);
 
         $content = $output->fetch();
-        preg_match('/client_id: (.+)\nsecret: (.+)\nlabel: (.+)$/', $content, $matches);
+        preg_match('/client_id: (.+)\nsecret: (.+)$/', $content, $matches);
 
         return [$matches[1], $matches[2]];
     }
