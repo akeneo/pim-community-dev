@@ -234,6 +234,34 @@ jobs:
               name: Test missing database and index structure migrations
               command: .circleci/detect_structure_changes.sh $CIRCLE_BRANCH
 
+  test_back_data_migrations:
+      machine:
+          image: ubuntu-1604:201903-01
+      steps:
+          - attach_workspace:
+                at: ~/
+          - run:
+                name: Change owner on project dir in order to archive the project into the workspace
+                command: sudo chown -R 1000:1000 ../project
+          - run:
+                name: Start containers
+                command: |
+                    docker load -i php-pim-image.tar
+                    APP_ENV=test C='fpm mysql elasticsearch object-storage' make up
+                    docker/wait_docker_up.sh
+          - run:
+                name: Install database
+                command: APP_ENV=test make database
+          - run:
+                name: PhpUnit Migration
+                command: make migration-back
+          - store_test_results:
+                path: var/tests/phpunit
+          - store_artifacts:
+                path: var/tests/phpunit
+          - store_artifacts:
+                path: var/logs
+
 workflows:
   version: 2
   pull_request:
@@ -257,12 +285,17 @@ workflows:
                 requires:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
+          - test_back_data_migrations:
+                requires:
+                    - test_back_static_and_acceptance
+                    - test_front_static_acceptance_and_integration
           - test_back_phpunit:
                 requires:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
           - back_behat_legacy:
                 requires:
+                    - test_back_data_migrations
                     - test_back_missing_structure_migrations
                     - test_back_phpunit
 
