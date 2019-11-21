@@ -12,7 +12,7 @@ use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConf
 use Oro\Bundle\FilterBundle\Filter\FilterInterface;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration;
-use Oro\Bundle\PimDataGridBundle\Datasource\DatasourceAdapterResolver;
+use Oro\Bundle\PimDataGridBundle\Datasource\DatasourceAdapterResolverInterface;
 use Oro\Bundle\PimDataGridBundle\Datasource\DatasourceTypes;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -39,19 +39,14 @@ class FilterExtension extends AbstractExtension
     protected $translator;
 
     /**
-     * @var DatasourceAdapterResolver
+     * @var DatasourceAdapterResolverInterface
      */
     protected $adapterResolver;
 
-    /**
-     * @param RequestParameters         $requestParams
-     * @param TranslatorInterface       $translator
-     * @param DatasourceAdapterResolver $adapterResolver
-     */
     public function __construct(
         RequestParameters $requestParams,
         TranslatorInterface $translator,
-        DatasourceAdapterResolver $adapterResolver
+        DatasourceAdapterResolverInterface $adapterResolver
     ) {
         parent::__construct($requestParams);
 
