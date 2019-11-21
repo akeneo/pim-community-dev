@@ -56,7 +56,7 @@ class CreateAppCommand extends Command
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $label = $input->getArgument('label');
 
