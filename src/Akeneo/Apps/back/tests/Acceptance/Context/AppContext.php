@@ -6,6 +6,8 @@ namespace Akeneo\Apps\Tests\Acceptance\Context;
 
 use Akeneo\Apps\Application\Command\CreateAppCommand;
 use Akeneo\Apps\Application\Command\CreateAppHandler;
+use Akeneo\Apps\Application\Command\DeleteAppCommand;
+use Akeneo\Apps\Application\Command\DeleteAppHandler;
 use Akeneo\Apps\Application\Command\UpdateAppCommand;
 use Akeneo\Apps\Application\Command\UpdateAppHandler;
 use Akeneo\Apps\Application\Query\FetchAppsHandler;
@@ -30,6 +32,7 @@ class AppContext implements Context
     private $fetchAppsHandler;
     private $findAnAppHandler;
     private $createAppHandler;
+    private $deleteAppHandler;
     private $updateAppHandler;
     private $violations;
 
@@ -38,12 +41,14 @@ class AppContext implements Context
         FetchAppsHandler $fetchAppsHandler,
         FindAnAppHandler $findAnAppHandler,
         CreateAppHandler $createAppHandler,
+        DeleteAppHandler $deleteAppHandler,
         UpdateAppHandler $updateAppHandler
     ) {
         $this->appRepository = $appRepository;
         $this->fetchAppsHandler = $fetchAppsHandler;
         $this->findAnAppHandler = $findAnAppHandler;
         $this->createAppHandler = $createAppHandler;
+        $this->deleteAppHandler = $deleteAppHandler;
         $this->updateAppHandler = $updateAppHandler;
     }
 
@@ -90,6 +95,17 @@ class AppContext implements Context
     }
 
     /**
+     * @When I delete the :label App
+     */
+    public function iDeleteTheApp(string $label): void
+    {
+        $code = self::slugify($label);
+
+        $command = new DeleteAppCommand($code);
+        $this->deleteAppHandler->handle($command);
+    }
+
+    /**
      * @When I modify the App :label with:
      */
     public function iChangeTheOfTheAppBy(string $label, TableNode $table)
@@ -117,9 +133,9 @@ class AppContext implements Context
     }
 
     /**
-     * @Then the App :label should exists
+     * @Then the App :label should exist
      */
-    public function theAppShouldExists(string $label): void
+    public function theAppShouldExist(string $label): void
     {
         $code = self::slugify($label);
 
@@ -127,6 +143,18 @@ class AppContext implements Context
 
         Assert::isInstanceOf($app, WriteApp::class);
         Assert::eq($code, (string) $app->code());
+    }
+
+    /**
+     * @Then the App :label should not exist
+     */
+    public function theAppShouldNotExist(string $label): void
+    {
+        $code = self::slugify($label);
+
+        $app = $this->appRepository->findOneByCode($code);
+
+        Assert::null($app);
     }
 
     /**

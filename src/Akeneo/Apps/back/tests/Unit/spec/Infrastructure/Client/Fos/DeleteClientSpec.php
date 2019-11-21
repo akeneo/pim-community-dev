@@ -8,8 +8,8 @@ use Akeneo\Apps\Domain\Model\ValueObject\ClientId;
 use Akeneo\Apps\Infrastructure\Client\Fos\DeleteClient;
 use Akeneo\Tool\Bundle\ApiBundle\Entity\Client;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
-use OAuth2\OAuth2;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 /**
  * @author Pierre Jolly <pierre.jolly@akeneo.com>
@@ -29,18 +29,26 @@ class DeleteClientSpec extends ObjectBehavior
         $this->shouldImplement(DeleteClientInterface::class);
     }
 
-    public function it_deletes_a_client(Client $client, $clientManager)
+    public function it_deletes_a_client($clientManager)
     {
-        $clientManager->createClient()->willReturn($client);
-        $client->setLabel('new_app')->shouldBeCalled();
-        $client
-            ->setAllowedGrantTypes([OAuth2::GRANT_TYPE_USER_CREDENTIALS, OAuth2::GRANT_TYPE_REFRESH_TOKEN])
-            ->shouldBeCalled();
-        $clientManager->updateClient($client)->shouldBeCalled();
-        $client->getId()->willReturn(1);
+        $client = new Client();
+        $clientId = new ClientId(1);
 
-        $clientId = $this->execute('new_app');
-        $clientId->shouldBeAnInstanceOf(ClientId::class);
-        $clientId->id()->shouldReturn(1);
+        $clientManager->findClientBy(['id' => $clientId->id()])->willReturn($client);
+
+        $clientManager->deleteClient($client)->shouldBeCalled();
+
+        $this->execute($clientId);
+    }
+
+    public function it_throws_an_exception_if_client_not_found($clientManager)
+    {
+        $clientId = new ClientId(1);
+
+        $clientManager->findClientBy(['id' => $clientId->id()])->willReturn(null);
+        $clientManager->deleteClient(Argument::any())->shouldNotBeCalled();
+
+        $this->shouldThrow(new \InvalidArgumentException('Client with id "1" not found.'))
+            ->during('execute', [$clientId]);
     }
 }

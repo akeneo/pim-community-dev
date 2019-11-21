@@ -6,6 +6,6 @@ Feature: Update an App
     When I modify the App "Magento" with:
       | label    | flow_type |
       | Pimgento | other     |
-    Then the App "Magento" should exists
+    Then the App "Magento" should exist
     And the App "Magento" label should be Pimgento
     And the App "Magento" flow type should be other

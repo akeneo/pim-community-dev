@@ -6,6 +6,7 @@ namespace Akeneo\Apps\Infrastructure\Client\Fos;
 
 use Akeneo\Apps\Application\Service\DeleteClientInterface;
 use Akeneo\Apps\Domain\Model\ValueObject\ClientId;
+use Akeneo\Tool\Bundle\ApiBundle\Entity\Client;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 
 /**
@@ -25,7 +26,19 @@ class DeleteClient implements DeleteClientInterface
 
     public function execute(ClientId $clientId): void
     {
-        $fosClient = $this->clientManager->findClientBy(['id' => $clientId->id()]);
+        $fosClient = $this->findClient($clientId);
         $this->clientManager->deleteClient($fosClient);
+    }
+
+    private function findClient(ClientId $clientId): Client
+    {
+        $fosClient = $this->clientManager->findClientBy(['id' => $clientId->id()]);
+        if (null === $fosClient) {
+            throw new \InvalidArgumentException(
+                sprintf('Client with id "%s" not found.', $clientId->id())
+            );
+        }
+
+        return $fosClient;
     }
 }

@@ -8,14 +8,11 @@ use Akeneo\Apps\Application\Command\DeleteAppCommand;
 use Akeneo\Apps\Application\Command\DeleteAppHandler;
 use Akeneo\Apps\Application\Service\DeleteClientInterface;
 use Akeneo\Apps\Application\Service\DeleteUserInterface;
-use Akeneo\Apps\Domain\Exception\ConstraintViolationListException;
 use Akeneo\Apps\Domain\Model\ValueObject\ClientId;
+use Akeneo\Apps\Domain\Model\ValueObject\UserId;
 use Akeneo\Apps\Domain\Model\Write\App;
 use Akeneo\Apps\Domain\Persistence\Repository\AppRepository;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\Validator\ConstraintViolationInterface;
-use Symfony\Component\Validator\ConstraintViolationList;
 
 /**
  * @author Pierre Jolly <pierre.jolly@akeneo.com>
@@ -40,14 +37,21 @@ class DeleteAppHandlerSpec extends ObjectBehavior
     public function it_deletes_an_app(
         $repository,
         $deleteClient,
-        $deleteUser
+        $deleteUser,
+        App $magentoApp
     ): void {
         $command = new DeleteAppCommand('magento');
 
-        $deleteClient->execute('magento')->shouldBeCalled();
-        $deleteUser->execute('magento')->shouldBeCalled();
+        $repository->findOneByCode('magento')->willReturn($magentoApp);
+        $repository->delete($magentoApp)->shouldBeCalled();
 
-        $repository->delete('magento')->shouldBeCalled();
+        $magentoClientId = new ClientId(1);
+        $magentoApp->clientId()->willReturn($magentoClientId);
+        $deleteClient->execute($magentoClientId)->shouldBeCalled();
+
+        $magentoUserId = new UserId(1);
+        $magentoApp->userId()->willReturn($magentoUserId);
+        $deleteUser->execute($magentoUserId)->shouldBeCalled();
 
         $this->handle($command);
     }

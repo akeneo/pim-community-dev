@@ -16,7 +16,7 @@ class DeleteAppCommandSpec extends ObjectBehavior
 {
     public function let()
     {
-        $this->beConstructedWith('Magento');
+        $this->beConstructedWith('magento');
     }
 
     public function it_is_initializable()
@@ -26,6 +26,6 @@ class DeleteAppCommandSpec extends ObjectBehavior
 
     public function it_returns_the_code()
     {
-        $this->code()->shouldReturn('Magento');
+        $this->code()->shouldReturn('magento');
     }
 }

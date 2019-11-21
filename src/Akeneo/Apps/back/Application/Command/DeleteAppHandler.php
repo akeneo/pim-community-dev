@@ -37,9 +37,16 @@ class DeleteAppHandler
     public function handle(DeleteAppCommand $command): void
     {
         $app = $this->repository->findOneByCode($command->code());
+        if (null === $app) {
+            throw new \InvalidArgumentException(
+                sprintf('App with code "%s" does not exist', $command->code())
+            );
+        }
+
         $this->repository->delete($app);
 
-        $this->deleteClient->execute($app->clientId());
         $this->deleteUser->execute($app->userId());
+        $this->deleteClient->execute($app->clientId());
+
     }
 }
