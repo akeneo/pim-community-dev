@@ -3,18 +3,17 @@
 namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration;
 
 use Akeneo\Apps\Application\Command\CreateAppCommand;
+use Akeneo\Apps\Application\Query\FindAnAppQuery;
+use Akeneo\Apps\Domain\Model\Read\AppWithCredentials;
+use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
-use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Client;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
@@ -72,25 +71,14 @@ abstract class ApiTestCase extends WebTestCase
      *
      * @return Client
      */
-    protected function createAuthenticatedClient(
-        array $options = [],
-        array $server = [],
-        $clientId = null,
-        $secret = null,
-        $username = self::USERNAME,
-        $password = self::PASSWORD,
-        $accessToken = null,
-        $refreshToken = null
-    ) {
+    protected function createAuthenticatedClient(array $options = [], array $server = [], ?string $appCode = 'Test_API') {
         $options = array_merge($options, ['debug' => false]);
 
-        if (null === $clientId || null === $secret) {
-            list($clientId, $secret) = $this->createOAuthClient();
-        }
+        $app = $this->createOAuthClient($appCode);
+        $username = $appCode;
+        $password = $appCode;
 
-        if (null === $accessToken || null === $refreshToken) {
-            list($accessToken, $refreshToken) = $this->authenticate($clientId, $secret, $username, $password);
-        }
+        list($accessToken, $refreshToken) = $this->authenticate($app->clientId(), $app->secret(), $username, $password);
 
         $client = static::createClient($options, $server);
         $client->setServerParameter('HTTP_AUTHORIZATION', 'Bearer '.$accessToken);
@@ -112,27 +100,19 @@ abstract class ApiTestCase extends WebTestCase
     /**
      * Creates a new OAuth client and returns its client id and secret.
      *
-     * @param string|null $label
+     * @param string $code
      *
-     * @return string[]
+     * @return App
      */
-    protected function createOAuthClient(?string $label = null): array
+    protected function createOAuthClient(string $code): AppWithCredentials
     {
-        $consoleApp = new Application(static::$kernel);
-        $consoleApp->setAutoExit(false);
+        $cmd = new CreateAppCommand($code, $code, FlowType::OTHER);
+        $this->get('akeneo_app.application.handler.create_app')->handle($cmd);
 
-        $input  = new ArrayInput([
-            'command' => 'akeneo:app:create',
-            'label'   => null !== $label ? $label : 'Api_test_case_client',
-        ]);
-        $output = new BufferedOutput();
+        $query = new FindAnAppQuery($code);
+        $app = $this->get('akeneo_app.application.handler.find_an_app')->handle($query);
 
-        $consoleApp->run($input, $output);
-
-        $content = $output->fetch();
-        preg_match('/client_id: (.+)\nsecret: (.+)$/', $content, $matches);
-
-        return [$matches[1], $matches[2]];
+        return $app;
     }
 
     /**
