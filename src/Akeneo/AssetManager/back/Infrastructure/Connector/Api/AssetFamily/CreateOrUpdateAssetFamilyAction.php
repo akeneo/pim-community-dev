@@ -119,7 +119,8 @@ class CreateOrUpdateAssetFamilyAction
             $normalizedAssetFamily['labels'] ?? [],
             null,
             $normalizedAssetFamily['attribute_as_main_media'] ?? null,
-            $normalizedAssetFamily['product_link_rules'] ?? []
+            $normalizedAssetFamily['product_link_rules'] ?? [],
+            $normalizedAssetFamily['transformations'] ?? []
         );
 
         if (array_key_exists('image', $normalizedAssetFamily)) {
