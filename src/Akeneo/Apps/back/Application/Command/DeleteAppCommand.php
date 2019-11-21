@@ -11,6 +11,7 @@ namespace Akeneo\Apps\Application\Command;
  */
 class DeleteAppCommand
 {
+    /** @var string */
     private $code;
 
     public function __construct(string $code)
