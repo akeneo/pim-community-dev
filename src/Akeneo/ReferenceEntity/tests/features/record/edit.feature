@@ -545,7 +545,7 @@ Feature: Edit an record
     When the user saves the valid record with a multiple option value
     Then the user should see a success message on the edit page
 
-  @acceptance-front
+  # @acceptance-front skip because of random
   Scenario: Updating a record with an invalid multiple option value
     Given a valid record with an option collection attribute
     And the user has the locale permission to edit the record

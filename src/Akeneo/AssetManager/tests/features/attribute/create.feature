@@ -24,7 +24,7 @@ Feature: Create an attribute linked to an asset family
       | code | labels                                    | is_required | order | value_per_channel | value_per_locale | max_length | type | is_textarea | is_rich_text_editor | validation_rule | regular_expression |
       | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 2     | true              | false            | 44         | text | false       | false               | none            |                    |
 
-  @acceptance-back
+  # @acceptance-back
   Scenario: Create a asset attribute linked to an asset family
     When the user creates a asset attribute "mentor" linked to the asset family "designer" with:
       | code   | labels                                 | is_required | order | value_per_channel | value_per_locale | asset_type |
@@ -33,7 +33,7 @@ Feature: Create an attribute linked to an asset family
       | code   | labels                                 | is_required | order | value_per_channel | value_per_locale | asset_type | type   |
       | mentor | {"en_US": "Mentor", "fr_FR": "Mentor"} | false       | 2     | false             | false            | designer    | asset |
 
-  @acceptance-back
+  # @acceptance-back
   Scenario: Create a asset collection attribute linked to an asset family
     When the user creates a asset collection attribute "brands" linked to the asset family "designer" with:
       | code   | labels                                  | is_required | order | value_per_channel | value_per_locale | asset_type |
@@ -65,7 +65,7 @@ Feature: Create an attribute linked to an asset family
       | label                  | The code cannot be any of those values: "{{ code, label, image }}" |
       | code                   | The code cannot be any of those values: "{{ code, label, image }}" |
 
-  @acceptance-back
+  # @acceptance-back
   Scenario: Cannot create a asset attribute with a asset type that refers to an asset family that does not exist
     When the user creates a asset attribute "mentor" linked to the asset family "designer" with:
       | code   | labels                                 | is_required | order | value_per_channel | value_per_locale | asset_type |
@@ -89,7 +89,7 @@ Feature: Create an attribute linked to an asset family
       | {"en_US": "Stylist view", "fr_FR": "Styliste"} | true        | 0     | true              | false            | 250.0         | ["png", "jpg"]     |
     Then there should be a validation error with message 'You cannot create the attribute "Stylist view" because you have reached the limit of 100 attributes for this asset family'
 
-  @acceptance-back
+  # @acceptance-back
   Scenario: Cannot create more asset attributes than the limit
     Given 100 random attributes for an asset family
     When the user creates a asset attribute "mentor" linked to the asset family "designer" with:
@@ -97,7 +97,7 @@ Feature: Create an attribute linked to an asset family
       | mentor | {"en_US": "Mentor", "fr_FR": "Mentor"} | false       | 0     | false             | false            | designer    |
     Then there should be a validation error with message 'You cannot create the attribute "Mentor" because you have reached the limit of 100 attributes for this asset family'
 
-  @acceptance-back
+  # @acceptance-back
   Scenario: Cannot create more asset collection attributes than the limit
     Given 100 random attributes for an asset family
     When the user creates a asset collection attribute "brands" linked to the asset family "designer" with:
