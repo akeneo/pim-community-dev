@@ -4,6 +4,11 @@ services:
         arguments:
             - '@akeneo_batch_queue.queue.publish_job_to_queue'
 
+    akeneo_assetmanager.infrastructure.job.compute_transformations_launcher:
+        class: Akeneo\AssetManager\Infrastructure\Job\ComputeTransformationLauncher
+        arguments:
+            - '@akeneo_batch_queue.queue.publish_job_to_queue'
+
     akeneo_assetmanager.infrastructure.job.provider.link_assets_to_products:
         class: 'Akeneo\AssetManager\Infrastructure\Job\Provider\LinkAssetsToProducts'
         tags:
