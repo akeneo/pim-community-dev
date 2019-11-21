@@ -10,6 +10,8 @@ const relative_filename = path.relative(process.cwd(), __filename);
 
 const help = () => {
   console.log(`
+Convert a given JSON Schema file (or several) to generate their respective TypeScript interface.
+
 Usage: node ${relative_filename} <source> <target>
 
 where <source> is either a filepath or a directory 
