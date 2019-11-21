@@ -244,9 +244,7 @@ abstract class ApiTestCase extends WebTestCase
         array $files = [],
         array $server = [],
         $content = null,
-        $changeHistory = true,
-        $username = self::USERNAME,
-        $password = self::PASSWORD
+        $changeHistory = true
     ) {
         $streamedContent = '';
 
