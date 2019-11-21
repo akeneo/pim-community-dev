@@ -71,7 +71,8 @@ abstract class ApiTestCase extends WebTestCase
      *
      * @return Client
      */
-    protected function createAuthenticatedClient(array $options = [], array $server = [], ?string $appCode = 'Test_API') {
+    protected function createAuthenticatedClient(array $options = [], array $server = [], ?string $appCode = 'Test_API')
+    {
         $options = array_merge($options, ['debug' => false]);
 
         $app = $this->createOAuthClient($appCode);
