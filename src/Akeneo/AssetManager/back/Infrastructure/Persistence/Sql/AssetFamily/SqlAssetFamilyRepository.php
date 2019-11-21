@@ -18,9 +18,8 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplate;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
-use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCollectionFactory;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
@@ -41,15 +40,17 @@ class SqlAssetFamilyRepository implements AssetFamilyRepositoryInterface
     /** @var EventDispatcherInterface */
     private $eventDispatcher;
 
-    /**
-     * @param Connection $sqlConnection
-     */
+    /** @var TransformationCollectionFactory */
+    private $transformationCollectionFactory;
+
     public function __construct(
         Connection $sqlConnection,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        TransformationCollectionFactory $transformationCollectionFactory
     ) {
         $this->sqlConnection = $sqlConnection;
         $this->eventDispatcher = $eventDispatcher;
+        $this->transformationCollectionFactory = $transformationCollectionFactory;
     }
 
     /**
@@ -73,8 +74,7 @@ SQL;
                 'attributeAsLabel' => $assetFamily->getAttributeAsLabelReference()->normalize(),
                 'attributeAsImage' => $assetFamily->getAttributeAsImageReference()->normalize(),
                 'ruleTemplates' => json_encode($assetFamily->getRuleTemplateCollection()->normalize()),
-                // TODO ATR-25
-                'transformations' => json_encode([]),
+                'transformations' => json_encode($assetFamily->getTransformationCollection()->normalize()),
             ]
         );
         if ($affectedRows !== 1) {
@@ -103,7 +103,8 @@ SQL;
             image = :image,
             attribute_as_label = :attributeAsLabel,
             attribute_as_image = :attributeAsImage,
-            rule_templates = :ruleTemplates
+            rule_templates = :ruleTemplates,
+            transformations = :transformations
         WHERE identifier = :identifier;
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
@@ -114,7 +115,8 @@ SQL;
                 'image' => $assetFamily->getImage()->isEmpty() ? null : $assetFamily->getImage()->getKey(),
                 'attributeAsLabel' => $assetFamily->getAttributeAsLabelReference()->normalize(),
                 'attributeAsImage' => $assetFamily->getAttributeAsImageReference()->normalize(),
-                'ruleTemplates' => json_encode($assetFamily->getRuleTemplateCollection()->normalize())
+                'ruleTemplates' => json_encode($assetFamily->getRuleTemplateCollection()->normalize()),
+                'transformations' => json_encode($assetFamily->getTransformationCollection()->normalize()),
             ]
         );
 
@@ -128,7 +130,7 @@ SQL;
     public function getByIdentifier(AssetFamilyIdentifier $identifier): AssetFamily
     {
         $fetch = <<<SQL
-        SELECT af.identifier, af.labels, fi.image, af.attribute_as_label, af.attribute_as_image, af.rule_templates
+        SELECT af.identifier, af.labels, fi.image, af.attribute_as_label, af.attribute_as_image, af.rule_templates, transformations
         FROM akeneo_asset_manager_asset_family af
         LEFT JOIN (
           SELECT file_key, JSON_OBJECT("file_key", file_key, "original_filename", original_filename) as image
@@ -153,14 +155,15 @@ SQL;
             null !== $result['image'] ? json_decode($result['image'], true) : null,
             $result['attribute_as_label'],
             $result['attribute_as_image'],
-            $result['rule_templates']
+            $result['rule_templates'],
+            $result['transformations']
         );
     }
 
     public function all(): \Iterator
     {
         $selectAllQuery = <<<SQL
-        SELECT identifier, labels, attribute_as_label, attribute_as_image, rule_templates
+        SELECT identifier, labels, attribute_as_label, attribute_as_image, rule_templates, transformations
         FROM akeneo_asset_manager_asset_family;
 SQL;
         $statement = $this->sqlConnection->executeQuery($selectAllQuery);
@@ -174,7 +177,8 @@ SQL;
                 null,
                 $result['attribute_as_label'],
                 $result['attribute_as_image'],
-                $result['rule_templates']
+                $result['rule_templates'],
+                $result['transformations']
             );
         }
     }
@@ -216,7 +220,8 @@ SQL;
         ?array $image,
         ?string $attributeAsLabel,
         ?string $attributeAsImage,
-        string $normalizedRuleTemplates
+        string $normalizedRuleTemplates,
+        string $transformationCollection
     ): AssetFamily {
         $platform = $this->sqlConnection->getDatabasePlatform();
 
@@ -224,6 +229,7 @@ SQL;
         $identifier = Type::getType(Type::STRING)->convertToPhpValue($identifier, $platform);
         $entityImage = $this->hydrateImage($image);
         $ruleTemplateCollection = $this->hydrateRuleTemplates($normalizedRuleTemplates);
+        $transformationCollection = $this->transformationCollectionFactory->fromNormalized(json_decode($transformationCollection, true));
 
         $assetFamily = AssetFamily::createWithAttributes(
             AssetFamilyIdentifier::fromString($identifier),
@@ -234,7 +240,7 @@ SQL;
             $ruleTemplateCollection
         );
 
-        return $assetFamily;
+        return $assetFamily->withTransformationCollection($transformationCollection);
     }
 
     private function getSerializedLabels(AssetFamily $assetFamily): string

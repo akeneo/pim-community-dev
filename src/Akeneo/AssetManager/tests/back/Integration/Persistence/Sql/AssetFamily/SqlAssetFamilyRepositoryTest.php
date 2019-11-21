@@ -16,6 +16,11 @@ namespace Akeneo\AssetManager\Integration\Persistence\Sql\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Source;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
@@ -144,6 +149,27 @@ class SqlAssetFamilyRepositoryTest extends SqlIntegrationTestCase
     /**
      * @test
      */
+    public function it_updates_a_family_with_transformations_and_returns_it()
+    {
+        $identifier = AssetFamilyIdentifier::fromString('identifier');
+        $assetFamily = AssetFamily::create(
+            $identifier,
+            ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'],
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
+        );
+        $this->repository->create($assetFamily);
+
+        $assetFamily = $assetFamily->withTransformationCollection($this->getTransformationCollection());
+        $this->repository->update($assetFamily);
+
+        $assetFamilyFound = $this->repository->getByIdentifier($identifier);
+        $this->assertAssetFamily($assetFamily, $assetFamilyFound);
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_if_the_identifier_is_not_found()
     {
         $this->expectException(AssetFamilyNotFoundException::class);
@@ -249,7 +275,6 @@ class SqlAssetFamilyRepositoryTest extends SqlIntegrationTestCase
     /**
      * @param $assetFamilyExpected
      * @param $assetFamilyFound
-     *
      */
     private function assertAssetFamily(
         AssetFamily $assetFamilyExpected,
@@ -265,6 +290,11 @@ class SqlAssetFamilyRepositoryTest extends SqlIntegrationTestCase
             $this->assertEquals($assetFamilyExpected->getLabel($localeCode),
                                 $assetFamilyFound->getLabel($localeCode));
         }
+
+        $this->assertEquals(
+            $assetFamilyExpected->getTransformationCollection(),
+            $assetFamilyFound->getTransformationCollection()
+        );
     }
 
     private function getRuleTemplate(): array
@@ -284,6 +314,19 @@ class SqlAssetFamilyRepositoryTest extends SqlIntegrationTestCase
                 ]
             ]
         ];
+    }
+
+    private function getTransformationCollection(): TransformationCollection
+    {
+        return TransformationCollection::create(
+            [
+                Transformation::create(
+                    Source::createFromNormalized(['attribute' => 'main_image', 'channel' => null, 'locale' => null]),
+                    Target::createFromNormalized(['attribute' => 'thumbnail', 'channel' => null, 'locale' => null]),
+                    OperationCollection::create([])
+                ),
+            ]
+        );
     }
 
     private function resetDB()

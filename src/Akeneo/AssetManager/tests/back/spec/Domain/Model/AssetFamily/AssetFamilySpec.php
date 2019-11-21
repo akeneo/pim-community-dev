@@ -16,6 +16,7 @@ namespace spec\Akeneo\AssetManager\Domain\Model\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use PhpSpec\ObjectBehavior;
@@ -95,5 +96,12 @@ class AssetFamilySpec extends ObjectBehavior
     {
         $this->updateImage($image);
         $this->getImage()->shouldBe($image);
+    }
+
+    public function it_updates_transformation_collection(
+        TransformationCollection $transformations
+    ) {
+        $assetFamily = $this->withTransformationCollection($transformations);
+        $assetFamily->getTransformationCollection()->shouldReturn($transformations);
     }
 }

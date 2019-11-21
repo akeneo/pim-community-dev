@@ -43,13 +43,17 @@ class AssetFamily
     /** @var RuleTemplateCollection  */
     private $ruleTemplateCollection;
 
+    /** @var TransformationCollection */
+    private $transformationCollection;
+
     private function __construct(
         AssetFamilyIdentifier $identifier,
         LabelCollection $labelCollection,
         Image $image,
         AttributeAsLabelReference $attributeAsLabel,
         AttributeAsImageReference $attributeAsImage,
-        RuleTemplateCollection $ruleTemplateCollection
+        RuleTemplateCollection $ruleTemplateCollection,
+        TransformationCollection $transformationCollection
     ) {
         $this->identifier = $identifier;
         $this->labelCollection = $labelCollection;
@@ -57,6 +61,7 @@ class AssetFamily
         $this->attributeAsLabel = $attributeAsLabel;
         $this->attributeAsImage = $attributeAsImage;
         $this->ruleTemplateCollection = $ruleTemplateCollection;
+        $this->transformationCollection = $transformationCollection;
     }
 
     public static function create(
@@ -73,7 +78,8 @@ class AssetFamily
             $image,
             AttributeAsLabelReference::noReference(),
             AttributeAsImageReference::noReference(),
-            $ruleTemplateCollection
+            $ruleTemplateCollection,
+            TransformationCollection::noTransformation()
         );
     }
 
@@ -93,7 +99,8 @@ class AssetFamily
             $image,
             $attributeAsLabel,
             $attributeAsImage,
-            $ruleTemplateCollection
+            $ruleTemplateCollection,
+            TransformationCollection::noTransformation()
         );
     }
 
@@ -162,5 +169,23 @@ class AssetFamily
     public function updateRuleTemplateCollection(RuleTemplateCollection $ruleTemplateCollection): void
     {
         $this->ruleTemplateCollection = $ruleTemplateCollection;
+    }
+
+    public function getTransformationCollection(): TransformationCollection
+    {
+        return $this->transformationCollection;
+    }
+
+    public function withTransformationCollection(TransformationCollection $transformationCollection): self
+    {
+        return new self(
+            $this->identifier,
+            $this->labelCollection,
+            $this->image,
+            $this->attributeAsLabel,
+            $this->attributeAsImage,
+            $this->ruleTemplateCollection,
+            $transformationCollection
+        );
     }
 }

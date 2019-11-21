@@ -68,11 +68,11 @@ services:
             - { name: kernel.event_subscriber }
 
     akeneo_assetmanager.infrastructure.asset_family.subscribers.refresh_asset_subscriber:
-            class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Subscribers\RefreshAssetsSubscriber
-            arguments:
-                - '@pim_catalog.command_launcher'
-            tags:
-                - { name: kernel.event_subscriber }
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Subscribers\RefreshAssetsSubscriber
+        arguments:
+            - '@pim_catalog.command_launcher'
+        tags:
+            - { name: kernel.event_subscriber }
 
     akeneo_assetmanager.common.helper.fixtures_loader:
         class: Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer\FixturesLoader
@@ -92,7 +92,11 @@ services:
         tags:
             - { name: console.command }
 
-    akeneo_assetmanager.domain.transformation.operation_factory:
-        class: Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationFactory
+    # asset transformation factories
+    Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCollectionFactory:
+        arguments:
+            - '@Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationFactory'
+
+    Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationFactory:
         arguments:
             - '%asset_manager_transformation_operation%'

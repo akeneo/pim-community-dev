@@ -5,6 +5,7 @@ services:
         arguments:
             - '@database_connection'
             - '@event_dispatcher'
+            - '@Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCollectionFactory'
 
     akeneo_assetmanager.infrastructure.persistence.repository.attribute:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlAttributeRepository

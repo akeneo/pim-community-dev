@@ -7,6 +7,7 @@ namespace spec\Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationReference;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
@@ -151,7 +152,6 @@ class TargetSpec extends ObjectBehavior
         $this->shouldThrow(new \InvalidArgumentException('Attribute "image_identifier" is localizable, you must define a locale'))->duringInstantiation();
     }
 
-
     function it_equals_localizable_and_scopable_attribute(TransformationReference $reference)
     {
         $this->beConstructedThrough(
@@ -204,6 +204,24 @@ class TargetSpec extends ObjectBehavior
             'channel' => 'ecommerce',
             'locale' => 'en_US'
         ]);
+    }
+
+    function it_can_be_instantiated_from_normalized_format()
+    {
+        $normalizedSource = [
+            'attribute' => 'image_identifier',
+            'channel' => 'ecommerce',
+            'locale' => 'en_US',
+        ];
+        $this->beConstructedThrough('createFromNormalized', [$normalizedSource]);
+
+        $comparedTarget = Target::create(
+            $this->createImageAttribute(true, true),
+            ChannelReference::createfromNormalized('ecommerce'),
+            LocaleReference::createFromNormalized('en_US')
+        );
+
+        $this->shouldBeLike($comparedTarget);
     }
 
     private function createImageAttribute(bool $scopable, bool $localizable): ImageAttribute
