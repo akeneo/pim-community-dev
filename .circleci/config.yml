@@ -212,6 +212,28 @@ jobs:
               name: Front integration tests
               command: make integration-front
 
+  test_back_missing_structure_migrations:
+      machine:
+          image: ubuntu-1604:201903-01
+      steps:
+        - attach_workspace:
+              at: ~/
+        - run:
+              name: Load php image
+              command: |
+                  docker load -i php-pim-image.tar
+                  APP_ENV=test C='mysql elasticsearch object-storage' make up
+                  docker/wait_docker_up.sh
+        - run:
+              name: Restore permissions on files
+              command: git checkout -- .
+        - run:
+              name: Change owner on project dir after restoring cache
+              command: sudo chown -R 1000:1000 ../project/var
+        - run:
+              name: Test missing database and index structure migrations
+              command: .circleci/detect_structure_changes.sh $CIRCLE_BRANCH
+
 workflows:
   version: 2
   pull_request:
@@ -231,12 +253,17 @@ workflows:
           - test_front_static_acceptance_and_integration:
                 requires:
                     - build_dev
+          - test_back_missing_structure_migrations:
+                requires:
+                    - test_back_static_and_acceptance
+                    - test_front_static_acceptance_and_integration
           - test_back_phpunit:
                 requires:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
           - back_behat_legacy:
                 requires:
+                    - test_back_missing_structure_migrations
                     - test_back_phpunit
 
   nightly:
