@@ -5,13 +5,11 @@
 </colgroup>
 <thead>
     <tr>
-        <th class="AknGrid-headerCell"><%- code_label %></th>
+        <th class="AknGrid-headerCell" style="position: sticky; top: 133px; z-index: 1; background-color: white; background-clip: padding-box;"><%- code_label %></th>
         <% _.each(locales, function (locale) { %>
-            <th class="AknGrid-headerCell">
-                <%- locale %>
-            </th>
+            <th class="AknGrid-headerCell" style="position: sticky; top: 133px; z-index: 1; background-color: white; background-clip: padding-box;"><%- locale %></th>
         <% }); %>
-        <th class="AknGrid-headerCell AknGrid-headerCell--right"><%- _.__('pim_common.actions') %></th>
+        <th class="AknGrid-headerCell AknGrid-headerCell--right" style="position: sticky; top: 133px; z-index: 1; background-color: white; background-clip: padding-box;"><%- _.__('pim_common.actions') %></th>
     </tr>
 </thead>
 <tbody></tbody>
