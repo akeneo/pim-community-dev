@@ -47,14 +47,14 @@ module.exports = async function(cucumber) {
   const getElement = createElementDecorator(config);
 
   const showRecordTab = async function(page) {
-    const sidebar = await await getElement(page, 'Sidebar');
+    const sidebar = await getElement(page, 'Sidebar');
     await sidebar.clickOnTab('record');
   };
 
   Then('the list of records should be:', async function(expectedRecords) {
     await showRecordTab(this.page);
 
-    const recordList = await await getElement(this.page, 'Records');
+    const recordList = await getElement(this.page, 'Records');
     const isValid = await expectedRecords.hashes().reduce(async (isValid, expectedRecord) => {
       return (await isValid) && (await recordList.hasRecord(expectedRecord.identifier));
     }, true);
@@ -64,7 +64,7 @@ module.exports = async function(cucumber) {
   Then('the list of records should be empty', async function() {
     await showRecordTab(this.page);
 
-    const records = await await getElement(this.page, 'Records');
+    const records = await getElement(this.page, 'Records');
     const isEmpty = await records.isEmpty();
 
     assert.strictEqual(isEmpty, true);
@@ -73,7 +73,7 @@ module.exports = async function(cucumber) {
   Then('the list of records should not be empty', async function() {
     await showRecordTab(this.page);
 
-    const records = await await getElement(this.page, 'Records');
+    const records = await getElement(this.page, 'Records');
     const isEmpty = await records.isEmpty();
 
     assert.strictEqual(isEmpty, false);
@@ -104,10 +104,10 @@ module.exports = async function(cucumber) {
     const requestContract = getRequestContract('Record/DeleteAll/ok.json');
     await listenRequest(this.page, requestContract);
 
-    const header = await await getElement(this.page, 'Header');
-    header.clickOnDeleteButton();
+    const header = await getElement(this.page, 'Header');
+    await header.clickOnDeleteButton();
 
-    const modalPage = await await getElement(this.page, 'Modal');
+    const modalPage = await getElement(this.page, 'Modal');
     await modalPage.confirmDeletion();
   });
 
@@ -121,22 +121,22 @@ module.exports = async function(cucumber) {
       await dialog.accept();
     });
 
-    const header = await await getElement(this.page, 'Header');
-    header.clickOnDeleteButton();
+    const header = await getElement(this.page, 'Header');
+    await header.clickOnDeleteButton();
 
-    const modalPage = await await getElement(this.page, 'Modal');
+    const modalPage = await getElement(this.page, 'Modal');
     await modalPage.confirmDeletion();
   });
 
   Then('the user should see the successfull deletion notification', async function() {
-    const recordsPage = await await getElement(this.page, 'Records');
+    const recordsPage = await getElement(this.page, 'Records');
     const hasSuccessNotification = await recordsPage.hasSuccessNotification();
 
     assert.strictEqual(hasSuccessNotification, true);
   });
 
   Then('the user should see the failed deletion notification', async function() {
-    const recordsPage = await await getElement(this.page, 'Records');
+    const recordsPage = await getElement(this.page, 'Records');
     const hasSuccessNotification = await recordsPage.hasErrorNotification();
 
     assert.strictEqual(hasSuccessNotification, true);
@@ -145,7 +145,7 @@ module.exports = async function(cucumber) {
   Then('the user should not see the delete all button', async function() {
     await showRecordTab(this.page);
 
-    const header = await await getElement(this.page, 'Header');
+    const header = await getElement(this.page, 'Header');
     const isDeleteButtonVisible = await header.isDeleteButtonVisible();
 
     assert.strictEqual(isDeleteButtonVisible, false);
@@ -154,7 +154,7 @@ module.exports = async function(cucumber) {
   Then('the list of records should be:', async function(expectedRecords) {
     await showRecordTab(this.page);
 
-    const recordList = await await getElement(this.page, 'Records');
+    const recordList = await getElement(this.page, 'Records');
     const isValid = await expectedRecords.hashes().reduce(async (isValid, expectedRecord) => {
       return (await isValid) && (await recordList.hasRecord(expectedRecord.identifier));
     }, true);
@@ -182,7 +182,7 @@ module.exports = async function(cucumber) {
   });
 
   Then('the user should see that {string} is complete at {int}%', async function(recordCode, completeLevel) {
-    const recordList = await await getElement(this.page, 'Records');
+    const recordList = await getElement(this.page, 'Records');
 
     const starckRecord = currentRequestContract.response.body.items.find(item => item.code === recordCode);
     const completeness = await recordList.getRecordCompleteness(starckRecord.identifier);
@@ -197,7 +197,7 @@ module.exports = async function(cucumber) {
 
     await listenRequest(this.page, requestContract);
 
-    const recordList = await await getElement(this.page, 'Records');
+    const recordList = await getElement(this.page, 'Records');
     await recordList.search(searchInput);
   });
 
@@ -206,7 +206,7 @@ module.exports = async function(cucumber) {
 
     await listenRequest(this.page, requestContract);
 
-    const recordList = await await getElement(this.page, 'Records');
+    const recordList = await getElement(this.page, 'Records');
     await recordList.filterOption('colors', ['red']);
   });
 
@@ -215,7 +215,7 @@ module.exports = async function(cucumber) {
 
     await listenRequest(this.page, requestContract);
 
-    const recordList = await await getElement(this.page, 'Records');
+    const recordList = await getElement(this.page, 'Records');
     await recordList.filterLink('city', 'paris');
   });
 
@@ -224,7 +224,7 @@ module.exports = async function(cucumber) {
 
     await listenRequest(this.page, requestContract);
 
-    const recordList = await await getElement(this.page, 'Records');
+    const recordList = await getElement(this.page, 'Records');
     await recordList.completeFilter('yes');
   });
 
@@ -233,12 +233,12 @@ module.exports = async function(cucumber) {
 
     await listenRequest(this.page, requestContract);
 
-    const recordList = await await getElement(this.page, 'Records');
+    const recordList = await getElement(this.page, 'Records');
     await recordList.completeFilter('no');
   });
 
   Then('the user should see a filtered list of records', async function() {
-    const recordList = await await getElement(this.page, 'Records');
+    const recordList = await getElement(this.page, 'Records');
     const isValid = await [
       'designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd',
       'designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2',
@@ -249,7 +249,7 @@ module.exports = async function(cucumber) {
   });
 
   Then('the user should see a filtered list of red records', async function() {
-    const recordList = await await getElement(this.page, 'Records');
+    const recordList = await getElement(this.page, 'Records');
     const isValid = await [
       'designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd',
       'designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2',
@@ -260,7 +260,7 @@ module.exports = async function(cucumber) {
   });
 
   Then('the user should see a filtered list of records linked to paris', async function() {
-    const recordList = await await getElement(this.page, 'Records');
+    const recordList = await getElement(this.page, 'Records');
     const isValid = await [
       'designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd',
       'designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2',
@@ -271,18 +271,18 @@ module.exports = async function(cucumber) {
   });
 
   Then('I switch to another locale in the record grid', async function() {
-    const recordList = await await getElement(this.page, 'Records');
+    const recordList = await getElement(this.page, 'Records');
     await recordList.search('other_s');
 
     const requestContract = getRequestContract('Record/Search/no_result_fr.json');
 
     await listenRequest(this.page, requestContract);
-    await (await await getElement(this.page, 'ChannelSwitcher')).switchChannel('mobile');
-    await (await await getElement(this.page, 'LocaleSwitcher')).switchLocale('fr_FR');
+    await (await getElement(this.page, 'ChannelSwitcher')).switchChannel('mobile');
+    await (await getElement(this.page, 'LocaleSwitcher')).switchLocale('fr_FR');
   });
 
   Then('the user should see an unfiltered list of records', async function() {
-    const recordList = await await getElement(this.page, 'Records');
+    const recordList = await getElement(this.page, 'Records');
     const expectedRecordIdentifiers = [
       'designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd',
       'designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2',
@@ -295,7 +295,7 @@ module.exports = async function(cucumber) {
   });
 
   Then('the user should see a list of complete records', async function() {
-    const recordList = await await getElement(this.page, 'Records');
+    const recordList = await getElement(this.page, 'Records');
 
     const expectedRecordIdentifiers = ['brand_coco_0134dc3e-3def-4afr-85ef-e81b2d6e95fd'];
 
@@ -307,7 +307,7 @@ module.exports = async function(cucumber) {
   });
 
   Then('the user should see a list of uncomplete records', async function() {
-    const recordList = await await getElement(this.page, 'Records');
+    const recordList = await getElement(this.page, 'Records');
     const expectedRecordIdentifiers = ['designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd'];
 
     for (const expectedRecordIdentifier of expectedRecordIdentifiers) {

@@ -92,13 +92,13 @@ module.exports = async function(cucumber) {
   When('the user creates a record of {string} with:', async function(referenceEntityIdentifier, updates) {
     const record = convertItemTable(updates)[0];
 
-    const sidebar = await await getElement(this.page, 'Sidebar');
+    const sidebar = await getElement(this.page, 'Sidebar');
     await sidebar.clickOnTab('record');
 
-    const header = await await getElement(this.page, 'Header');
+    const header = await getElement(this.page, 'Header');
     await header.clickOnCreateButton();
 
-    const modal = await await getElement(this.page, 'Modal');
+    const modal = await getElement(this.page, 'Modal');
     await modal.fillField('pim_reference_entity.record.create.input.code', record.code);
     if (record.labels !== undefined && record.labels.en_US !== undefined) {
       await modal.fillField('pim_reference_entity.record.create.input.label', record.labels.en_US);
@@ -106,7 +106,7 @@ module.exports = async function(cucumber) {
   });
 
   Given('the user toggles the sequantial creation', async function() {
-    const modal = await await getElement(this.page, 'Modal');
+    const modal = await getElement(this.page, 'Modal');
     await modal.toggleCreateAnother();
   });
 
@@ -116,7 +116,7 @@ module.exports = async function(cucumber) {
   });
 
   When('the user saves the record', async function() {
-    const modal = await await getElement(this.page, 'Modal');
+    const modal = await getElement(this.page, 'Modal');
     await modal.save();
   });
 
@@ -126,7 +126,7 @@ module.exports = async function(cucumber) {
 
     await listRecordUpdated(this.page, referenceEntityIdentifier, recordIdentifier, record.code, record.labels);
 
-    const records = await await getElement(this.page, 'Records');
+    const records = await getElement(this.page, 'Records');
     await records.hasRecord(recordIdentifier);
 
     if (record.labels !== undefined && record.labels.en_US !== undefined) {
@@ -144,10 +144,10 @@ module.exports = async function(cucumber) {
   });
 
   Then('the user cannot create a record', async function() {
-    const sidebar = await await getElement(this.page, 'Sidebar');
+    const sidebar = await getElement(this.page, 'Sidebar');
     await sidebar.clickOnTab('record');
 
-    const header = await await getElement(this.page, 'Header');
+    const header = await getElement(this.page, 'Header');
     const isCreateButtonVisible = await header.isCreateButtonVisible();
 
     assert.strictEqual(isCreateButtonVisible, false);

@@ -32,15 +32,15 @@ const Edit = async (nodeElement, createElementDecorator, page) => {
   };
 
   const getSidebar = async () => {
-    return await await getElement(page, 'Sidebar');
+    return await getElement(page, 'Sidebar');
   };
 
   const getLocaleSwitcher = async () => {
-    return await await getElement(page, 'LocaleSwitcher');
+    return await getElement(page, 'LocaleSwitcher');
   };
 
   const getChannelSwitcher = async () => {
-    return await await getElement(page, 'ChannelSwitcher');
+    return await getElement(page, 'ChannelSwitcher');
   };
 
   const getCompletenessValue = async () => {
@@ -50,10 +50,10 @@ const Edit = async (nodeElement, createElementDecorator, page) => {
   };
 
   const getEnrich = async () => {
-    const sidebar = await await getElement(page, 'Sidebar');
+    const sidebar = await getElement(page, 'Sidebar');
     await sidebar.clickOnTab('enrich');
 
-    return await await getElement(page, 'Enrich');
+    return await getElement(page, 'Enrich');
   };
 
   const isUpdated = async () => {

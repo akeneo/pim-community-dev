@@ -86,14 +86,14 @@ module.exports = async function(cucumber) {
       await document.getElementById('app').appendChild(controller.el);
     });
 
-    const grid = await await getElement(this.page, 'Grid');
+    const grid = await getElement(this.page, 'Grid');
     const isLoaded = await grid.isLoaded();
 
     assert.equal(isLoaded, true);
   });
 
   Then('the user gets a selection of {int} items out of {int} items in total', async function(count, total) {
-    const grid = await await getElement(this.page, 'Grid');
+    const grid = await getElement(this.page, 'Grid');
     const rows = await grid.getRowsAfterLoading();
     assert.equal(rows.length, count);
 
@@ -102,12 +102,12 @@ module.exports = async function(cucumber) {
   });
 
   Then('the user gets a reference entity {string}', async function(identifier) {
-    const grid = await await getElement(this.page, 'Grid');
+    const grid = await getElement(this.page, 'Grid');
     await grid.hasRow(identifier);
   });
 
   Then('there is no reference entity', async function() {
-    const grid = await await getElement(this.page, 'Grid');
+    const grid = await getElement(this.page, 'Grid');
     const rows = await grid.getRows();
     assert.equal(rows.length, 0);
   });

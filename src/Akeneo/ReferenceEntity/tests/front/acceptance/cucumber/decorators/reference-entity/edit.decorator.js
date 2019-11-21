@@ -37,29 +37,29 @@ const Edit = async (nodeElement, createElementDecorator, page) => {
   };
 
   const getSidebar = async () => {
-    return await await getElement(page, 'Sidebar');
+    return await getElement(page, 'Sidebar');
   };
 
   const getLocaleSwitcher = async () => {
-    return await await getElement(page, 'LocaleSwitcher');
+    return await getElement(page, 'LocaleSwitcher');
   };
 
   const getChannelSwitcher = async () => {
-    return await await getElement(page, 'ChannelSwitcher');
+    return await getElement(page, 'ChannelSwitcher');
   };
 
   const getProperties = async () => {
-    const sidebar = await await getElement(page, 'Sidebar');
+    const sidebar = await getElement(page, 'Sidebar');
     await sidebar.clickOnTab('property');
 
-    return await await getElement(page, 'Properties');
+    return await getElement(page, 'Properties');
   };
 
   const getPermission = async () => {
-    const sidebar = await await getElement(page, 'Sidebar');
+    const sidebar = await getElement(page, 'Sidebar');
     await sidebar.clickOnTab('permission');
 
-    return await await getElement(page, 'Permission');
+    return await getElement(page, 'Permission');
   };
 
   const isUpdated = async () => {

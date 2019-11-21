@@ -61,7 +61,7 @@ module.exports = async function(cucumber) {
     expectedIdentifier,
     expectedLabel
   ) {
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     const properties = await editPage.getProperties();
     const identifierValue = await properties.getIdentifier();
     assert.strictEqual(identifierValue, expectedIdentifier);
@@ -73,7 +73,7 @@ module.exports = async function(cucumber) {
   When('the user updates the reference entity {string} with:', async function(identifier, updates) {
     await askForReferenceEntity.apply(this, [identifier]);
 
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     const properties = await editPage.getProperties();
     await properties.isLoaded();
     await changeReferenceEntity(editPage, identifier, updates);
@@ -83,7 +83,7 @@ module.exports = async function(cucumber) {
 
   When('the user changes the reference entity {string} with:', async function(identifier, updates) {
     await askForReferenceEntity.apply(this, [identifier]);
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     const properties = await editPage.getProperties();
     await properties.isLoaded();
 
@@ -93,7 +93,7 @@ module.exports = async function(cucumber) {
   Then('the reference entity {string} should be:', async function(identifier, updates) {
     const referenceEntity = convertItemTable(updates)[0];
 
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     const properties = await editPage.getProperties();
     const identifierValue = await properties.getIdentifier();
     assert.strictEqual(identifierValue, referenceEntity.identifier);
@@ -111,12 +111,12 @@ module.exports = async function(cucumber) {
   });
 
   Then('the user saves the changes', async function() {
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     await editPage.save();
   });
 
   Then('the user should see the saved notification', async function() {
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     const hasSuccessNotification = await editPage.hasSuccessNotification();
 
     assert.strictEqual(hasSuccessNotification, true);
@@ -135,16 +135,16 @@ module.exports = async function(cucumber) {
   });
 
   Then('the user should see the saved notification error', async function() {
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     const hasErrorNotification = await editPage.hasErrorNotification();
 
     assert.strictEqual(hasErrorNotification, true);
   });
 
   When('the user deletes the reference entity {string}', async function(identifier) {
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     await editPage.getProperties();
-    const header = await await getElement(this.page, 'Header');
+    const header = await getElement(this.page, 'Header');
 
     this.page.once('request', request => {
       if (`http://pim.com/rest/reference_entity/${identifier}` === request.url() && 'DELETE' === request.method()) {
@@ -158,14 +158,14 @@ module.exports = async function(cucumber) {
 
     await header.clickOnDeleteButton();
 
-    const modalPage = await await getElement(this.page, 'Modal');
+    const modalPage = await getElement(this.page, 'Modal');
     await modalPage.confirmDeletion();
   });
 
   When('the user fails to delete the reference entity {string}', async function(identifier) {
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     await editPage.getProperties();
-    const header = await await getElement(this.page, 'Header');
+    const header = await getElement(this.page, 'Header');
     const response = JSON.stringify([
       {
         messageTemplate: 'pim_reference_entity.reference_entity.validation.records.should_have_no_record',
@@ -193,14 +193,14 @@ module.exports = async function(cucumber) {
 
     await header.clickOnDeleteButton();
 
-    const modalPage = await await getElement(this.page, 'Modal');
+    const modalPage = await getElement(this.page, 'Modal');
     await modalPage.confirmDeletion();
   });
 
   When('the user refuses to delete the current reference entity', async function() {
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     await editPage.getProperties();
-    const header = await await getElement(this.page, 'Header');
+    const header = await getElement(this.page, 'Header');
 
     const dismissDelete = async dialog => {
       this.page.removeListener('dialog', dismissDelete);
@@ -212,28 +212,28 @@ module.exports = async function(cucumber) {
   });
 
   Then('the user should see the deleted notification', async function() {
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     const hasSuccessNotification = await editPage.hasSuccessNotification();
 
     assert.strictEqual(hasSuccessNotification, true);
   });
 
   Then('the user should see the delete notification error', async function() {
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     const hasErrorNotification = await editPage.hasErrorNotification();
 
     assert.strictEqual(hasErrorNotification, true);
   });
 
   Then('the user should not be notified that deletion has been made', async function() {
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     const hasNoNotification = await editPage.hasNoNotification();
 
     assert.strictEqual(hasNoNotification, true);
   });
 
   Then('the user should not see the deletion button', async function() {
-    const header = await await getElement(this.page, 'Header');
+    const header = await getElement(this.page, 'Header');
     const isDeleteButtonVisible = await header.isDeleteButtonVisible();
 
     assert.strictEqual(isDeleteButtonVisible, false);
@@ -241,7 +241,7 @@ module.exports = async function(cucumber) {
 
   Then('the label of the reference entity {string} should be read only', async function(identifier) {
     await askForReferenceEntity.apply(this, [identifier]);
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     const properties = await editPage.getProperties();
     await properties.isLoaded();
 
@@ -249,7 +249,7 @@ module.exports = async function(cucumber) {
   });
 
   Then('the save button should not be displayed', async function() {
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     await editPage.hasNoSaveButton();
   });
 };

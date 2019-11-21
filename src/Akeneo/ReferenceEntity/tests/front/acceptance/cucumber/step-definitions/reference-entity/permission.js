@@ -35,7 +35,7 @@ module.exports = async function(cucumber) {
   });
 
   When('the user sets the following permissions for the reference entity:', async function(permissions) {
-    const editView = await await getElement(this.page, 'Edit');
+    const editView = await getElement(this.page, 'Edit');
     const permissionView = await editView.getPermission();
 
     for (const permission of convertItemTable(permissions)) {
@@ -58,7 +58,7 @@ module.exports = async function(cucumber) {
   Then(
     'there should be a {string} permission right for the user group {string} on the reference entity',
     async function(rightLevel, groupName) {
-      const editView = await await getElement(this.page, 'Edit');
+      const editView = await getElement(this.page, 'Edit');
       const permissionView = await editView.getPermission();
       const actualRightLevel = await permissionView.getRightLevel(groupName);
 
@@ -67,8 +67,8 @@ module.exports = async function(cucumber) {
   );
 
   Then('the user should be warned that he needs to create user groups first', async function() {
-    const editView = await await getElement(this.page, 'Edit');
+    const editView = await getElement(this.page, 'Edit');
     const permissionView = await editView.getPermission();
-    permissionView.isEmpty();
+    await permissionView.isEmpty();
   });
 };

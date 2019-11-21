@@ -36,7 +36,7 @@ module.exports = async function(cucumber) {
   });
 
   Then('the user should be on the edit page', async function() {
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     const isLoaded = await editPage.isLoaded();
 
     assert.strictEqual(isLoaded, true);
@@ -51,14 +51,14 @@ module.exports = async function(cucumber) {
   });
 
   Then('the user should be notified that modification have been made', async function() {
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     const isUpdated = await editPage.isUpdated();
 
     assert.strictEqual(isUpdated, true);
   });
 
   Then('the user shouldn\'t be notified that modification have been made', async function() {
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     const isSaved = await editPage.isSaved();
 
     assert.strictEqual(isSaved, true);

@@ -87,10 +87,10 @@ module.exports = async function(cucumber) {
       await document.getElementById('app').appendChild(controller.el);
     });
 
-    const header = await await getElement(this.page, 'Header');
+    const header = await getElement(this.page, 'Header');
     await header.clickOnCreateButton();
 
-    const modal = await await getElement(this.page, 'Modal');
+    const modal = await getElement(this.page, 'Modal');
     await modal.fillField('pim_reference_entity.reference_entity.create.input.code', identifier);
     if (referenceEntity.labels !== undefined && referenceEntity.labels.en_US !== undefined) {
       await modal.fillField('pim_reference_entity.reference_entity.create.input.label', referenceEntity.labels.en_US);
@@ -98,16 +98,16 @@ module.exports = async function(cucumber) {
   });
 
   When('the user saves the reference entity', async function() {
-    const modal = await await getElement(this.page, 'Modal');
+    const modal = await getElement(this.page, 'Modal');
     await modal.save();
   });
 
   Then('there is a reference entity {string} with:', async function(identifier, updates) {
     const referenceEntity = convertItemTable(updates)[0];
 
-    listReferenceEntityUpdated(this.page, identifier, referenceEntity.labels);
+    await listReferenceEntityUpdated(this.page, identifier, referenceEntity.labels);
 
-    const grid = await await getElement(this.page, 'Grid');
+    const grid = await getElement(this.page, 'Grid');
     await grid.hasRow(identifier);
 
     if (referenceEntity.labels !== undefined && referenceEntity.labels.en_US !== undefined) {
@@ -125,13 +125,13 @@ module.exports = async function(cucumber) {
   });
 
   Then('a validation message is displayed {string}', async function(expectedMessage) {
-    const modal = await await getElement(this.page, 'Modal');
+    const modal = await getElement(this.page, 'Modal');
     const actualMesssage = await modal.getValidationMessageForCode();
     assert.strictEqual(expectedMessage, actualMesssage);
   });
 
   Then('the user should not be able to create a reference entity', async function() {
-    const header = await await getElement(this.page, 'Header');
+    const header = await getElement(this.page, 'Header');
     assert.strictEqual(false, await header.isCreateButtonVisible());
   });
 };

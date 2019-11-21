@@ -184,7 +184,7 @@ module.exports = async function(cucumber) {
       recordCode
     );
     await this.page.waitFor('.AknDefault-mainContent[data-tab="enrich"] .content');
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
     const isLoaded = await enrich.isLoaded();
     assert.strictEqual(isLoaded, true);
@@ -214,14 +214,14 @@ module.exports = async function(cucumber) {
 
   Then('the record should be:', async function(updates) {
     const record = convertItemTable(updates)[0];
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
 
     await (await editPage.getChannelSwitcher()).switchChannel('mobile');
     for (let locale in record.labels) {
       const label = record.labels[locale];
       await (await editPage.getLocaleSwitcher()).switchLocale(locale);
-      const labelValue = await await enrich.getLabel();
+      const labelValue = await enrich.getLabel();
       assert.strictEqual(labelValue, label);
     }
   });
@@ -229,7 +229,7 @@ module.exports = async function(cucumber) {
   When('the user saves the valid record', async function() {
     await loadEditRecord.apply(this, ['Record/Edit/details_ok.json']);
 
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
     await enrich.fillField('pim_reference_entity.record.enrich.name', 'Starck');
     await editPage.save();
@@ -238,7 +238,7 @@ module.exports = async function(cucumber) {
   When('the user saves the valid record with a simple text value', async function() {
     await loadEditRecord.apply(this, ['Record/Edit/text_value_ok.json']);
 
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
     await enrich.fillField('pim_reference_entity.record.enrich.name', 'Starck');
     await editPage.save();
@@ -247,7 +247,7 @@ module.exports = async function(cucumber) {
   When('the user saves the valid record with a number value', async function() {
     await loadEditRecord.apply(this, ['Record/Edit/number_value_ok.json']);
 
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
     await enrich.fillField('pim_reference_entity.record.enrich.age', '39');
     await editPage.save();
@@ -256,7 +256,7 @@ module.exports = async function(cucumber) {
   When('the user saves the valid record with a number out of range', async function() {
     await loadEditRecord.apply(this, ['Record/Edit/invalid_number_out_of_range.json']);
 
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
     await enrich.fillField('pim_reference_entity.record.enrich.age', '-39');
     await editPage.save();
@@ -266,7 +266,7 @@ module.exports = async function(cucumber) {
     await loadEditRecord.apply(this, ['Record/Edit/image_value_ok.json']);
     await answerMedia.apply(this);
 
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
     await enrich.fillUploadField(
       'pim_reference_entity.record.enrich.portrait',
@@ -278,7 +278,7 @@ module.exports = async function(cucumber) {
   When('the user saves the valid record with a simple option value', async function() {
     await loadEditRecord.apply(this, ['Record/Edit/option_value_ok.json']);
 
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
     await enrich.fillSelectField('pim_reference_entity.record.enrich.option', 'red');
     await editPage.save();
@@ -287,7 +287,7 @@ module.exports = async function(cucumber) {
   When('the user saves the valid record with a multiple option value', async function() {
     await loadEditRecord.apply(this, ['Record/Edit/option_collection_value_ok.json']);
 
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
     await enrich.fillSelectField('pim_reference_entity.record.enrich.option_collection', 'red');
     await editPage.save();
@@ -296,7 +296,7 @@ module.exports = async function(cucumber) {
   When('the user saves the valid record with an invalid simple text value', async function() {
     await loadEditRecord.apply(this, ['Record/Edit/invalid_text_value.json']);
 
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
     await enrich.fillField('pim_reference_entity.record.enrich.website', 'hello world');
     await editPage.save();
@@ -305,7 +305,7 @@ module.exports = async function(cucumber) {
   When('the user saves the valid record with an invalid simple option value', async function() {
     await loadEditRecord.apply(this, ['Record/Edit/invalid_option_value.json']);
 
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
     await enrich.fillSelectField('pim_reference_entity.record.enrich.option', 'red');
     await editPage.save();
@@ -314,7 +314,7 @@ module.exports = async function(cucumber) {
   When('the user saves the valid record with an invalid multiple option value', async function() {
     await loadEditRecord.apply(this, ['Record/Edit/invalid_option_collection_value.json']);
 
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
     await enrich.fillSelectField('pim_reference_entity.record.enrich.option_collection', 'red');
     await editPage.save();
@@ -324,7 +324,7 @@ module.exports = async function(cucumber) {
     await loadEditRecord.apply(this, ['Record/Edit/image_value_ok.json']);
     await answerMedia.apply(this);
 
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
     await enrich.fillUploadField(
       'pim_reference_entity.record.enrich.portrait',
@@ -336,18 +336,18 @@ module.exports = async function(cucumber) {
   When('the user deletes the record', async function() {
     await loadEditRecord.apply(this, ['Record/Delete/ok.json']);
 
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
     await enrich.clickOnDeleteButton();
 
-    const modalPage = await await getElement(this.page, 'Modal');
+    const modalPage = await getElement(this.page, 'Modal');
     await modalPage.confirmDeletion();
   });
 
   When('the user saves the valid record with a single record linked', async function() {
     await loadEditRecord.apply(this, ['Record/Edit/record_value_ok.json']);
 
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
     await enrich.fillRecordSelectField('pim_reference_entity.record.enrich.linked_brand', 'ikea');
     await editPage.save();
@@ -356,20 +356,20 @@ module.exports = async function(cucumber) {
   When('the user saves the valid record with a multiple record linked', async function() {
     await loadEditRecord.apply(this, ['Record/Edit/record_collection_value_ok.json']);
 
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
     await enrich.fillRecordSelectField('pim_reference_entity.record.enrich.linked_cities', 'paris,lisbonne,moscou');
     await editPage.save();
   });
 
   Then('the user should see a success message on the edit page', async function() {
-    const edit = await await getElement(this.page, 'Edit');
+    const edit = await getElement(this.page, 'Edit');
     const hasSuccessNotification = await edit.hasSuccessNotification();
     assert.strictEqual(hasSuccessNotification, true);
   });
 
   Then('the user should see the validation error on the edit page : {string}', async function(expectedError) {
-    const edit = await await getElement(this.page, 'Edit');
+    const edit = await getElement(this.page, 'Edit');
     const error = await edit.getValidationMessageForCode();
     assert.strictEqual(error, expectedError);
   });
@@ -381,7 +381,7 @@ module.exports = async function(cucumber) {
       currentRequestContract.request.query.referenceEntityIdentifier,
     ]);
 
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
     const hasDeleteButton = await enrich.hasDeleteButton();
 
@@ -389,7 +389,7 @@ module.exports = async function(cucumber) {
   });
 
   Then('the user should see a completeness bullet point on the required field: {string}', async function(field) {
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
     const isFilled = await enrich.isFilled(field);
 
@@ -397,13 +397,13 @@ module.exports = async function(cucumber) {
   });
 
   When('the user fill the {string} field with: {string}', async function(fieldCode, value) {
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
     await enrich.fillField('pim_reference_entity.record.enrich.' + fieldCode, value);
   });
 
   Then('the user should not see a completeness bullet point on the required field: {string}', async function(field) {
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
     const isFilled = await enrich.isFilled(field);
 
@@ -411,7 +411,7 @@ module.exports = async function(cucumber) {
   });
 
   Then('the user should see the completeness percentage with a value of {string}', async function(value) {
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     const completenessValue = await editPage.getCompletenessValue();
 
     assert.strictEqual(completenessValue, 'Complete: ' + value);
@@ -420,7 +420,7 @@ module.exports = async function(cucumber) {
   Then('the user cannot save the record', async function() {
     await loadEditRecord.apply(this, ['Record/Edit/details_ok.json']);
 
-    const header = await await getElement(this.page, 'Header');
+    const header = await getElement(this.page, 'Header');
     const isCreateButtonVisible = await header.isCreateButtonVisible();
 
     assert.strictEqual(isCreateButtonVisible, false);
@@ -429,7 +429,7 @@ module.exports = async function(cucumber) {
   Then('the user cannot update the simple text value', async function() {
     await loadEditRecord.apply(this, ['Record/Edit/text_value_ok.json']);
 
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
     const isDisabledTextField = await enrich.isDisabledTextField('pim_reference_entity.record.enrich.name');
 
@@ -439,7 +439,7 @@ module.exports = async function(cucumber) {
   Then('the user cannot update the simple option value', async function() {
     await loadEditRecord.apply(this, ['Record/Edit/option_value_ok.json']);
 
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
     const isDisabledSelectField = await enrich.isDisabledSelectField('pim_reference_entity.record.enrich.option');
 
@@ -449,7 +449,7 @@ module.exports = async function(cucumber) {
   Then('the user cannot update the multiple option value', async function() {
     await loadEditRecord.apply(this, ['Record/Edit/option_collection_value_ok.json']);
 
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
     const isDisabledSelectField = await enrich.isDisabledSelectField(
       'pim_reference_entity.record.enrich.option_collection'
@@ -461,7 +461,7 @@ module.exports = async function(cucumber) {
   Then('the user cannot update the single record linked value', async function() {
     await loadEditRecord.apply(this, ['Record/Edit/record_value_ok.json']);
 
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
     const isDisabledRecordSelectField = await enrich.isDisabledRecordSelectField(
       'pim_reference_entity.record.enrich.linked_brand'
@@ -473,7 +473,7 @@ module.exports = async function(cucumber) {
   Then('the user cannot update the multiple record linked value', async function() {
     await loadEditRecord.apply(this, ['Record/Edit/record_collection_value_ok.json']);
 
-    const editPage = await await getElement(this.page, 'Edit');
+    const editPage = await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
     const isDisabledRecordSelectField = await enrich.isDisabledRecordSelectField(
       'pim_reference_entity.record.enrich.linked_cities'
