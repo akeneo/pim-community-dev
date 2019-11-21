@@ -1,6 +1,6 @@
 <?php
 
-namespace AkeneoTest\Pim\Enrichment\Upgrade;
+namespace Pim\Upgrade\Schema\Tests;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -11,7 +11,7 @@ use Doctrine\DBAL\Connection;
  *
  * @group ce
  */
-class RemoveProductModelEmptyRawValuesIntegration extends TestCase
+class Version_4_0_20190917080512_remove_product_model_empty_raw_values_Integration extends TestCase
 {
     use ExecuteMigrationTrait;
 

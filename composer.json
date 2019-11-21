@@ -27,7 +27,8 @@
             "Akeneo\\Apps\\Tests\\Acceptance\\": "src/Akeneo/Apps/back/tests/Acceptance",
             "AkeneoTest\\": "tests/back",
             "Akeneo\\Test\\IntegrationTestsBundle\\": "tests/back/Integration/IntegrationTestsBundle/",
-            "Akeneo\\Test\\": "tests/back/"
+            "Akeneo\\Test\\": "tests/back/",
+            "Pim\\Upgrade\\Schema\\Tests\\": "upgrades/test_schema/"
         }
     },
     "require": {
