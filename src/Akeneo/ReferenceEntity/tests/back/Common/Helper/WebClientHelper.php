@@ -95,7 +95,7 @@ HTML;
         Assert::assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode(), 'Expected 403 Forbidden response');
         Assert::assertSame(
             $expectedForbiddenContent,
-            $response->getContent(),
+            ltrim($response->getContent()),
             'The content of the 403 forbidden response is not the same'
         );
     }
