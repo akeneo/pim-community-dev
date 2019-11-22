@@ -1,5 +1,8 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-8992: Do not allow to import attribute code with line-feed characters
 - PIM-8991: Forbid user without "list users" permission to access other user data
 
 # 3.0.54 (2019-11-18)

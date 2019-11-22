@@ -13,7 +13,7 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DatasourceAdapterResolver
+class DatasourceAdapterResolver implements DatasourceAdapterResolverInterface
 {
     /** @var string */
     protected $ormAdapter;
@@ -43,7 +43,7 @@ class DatasourceAdapterResolver
      *
      * @return string
      */
-    public function getAdapterClass($datasourceType)
+    public function getAdapterClass($datasourceType): string
     {
         if (in_array($datasourceType, $this->productDatasources)) {
             return $this->productOrmAdapter;
@@ -57,7 +57,7 @@ class DatasourceAdapterResolver
      *
      * @param mixed $datasource
      */
-    public function addProductDatasource($datasource)
+    public function addProductDatasource($datasource): void
     {
         $this->productDatasources[] = $datasource;
     }
