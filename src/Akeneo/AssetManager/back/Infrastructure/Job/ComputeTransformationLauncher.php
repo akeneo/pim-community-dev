@@ -13,11 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Job;
 
+use Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationLauncherInterface;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueue;
 use Webmozart\Assert\Assert;
 
-class ComputeTransformationLauncher
+class ComputeTransformationLauncher implements ComputeTransformationLauncherInterface
 {
     /** @var PublishJobToQueue */
     private $publishJobToQueue;

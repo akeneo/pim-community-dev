@@ -2,22 +2,22 @@
 
 namespace spec\Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets;
 
+use Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationLauncherInterface;
 use Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationsCommand;
 use Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationsHandler;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
-use Akeneo\AssetManager\Infrastructure\Job\ComputeTransformationLauncher;
 use PhpSpec\ObjectBehavior;
 
 class ComputeTransformationsHandlerSpec extends ObjectBehavior
 {
-    function let(ComputeTransformationLauncher $computeTransformationLauncher)
+    function let(ComputeTransformationLauncherInterface $computeTransformationLauncher)
     {
         $this->beConstructedWith($computeTransformationLauncher);
         $this->shouldHaveType(ComputeTransformationsHandler::class);
     }
 
     function it_handles_compute_transformations_command(
-        ComputeTransformationLauncher $computeTransformationLauncher,
+        ComputeTransformationLauncherInterface $computeTransformationLauncher,
         ComputeTransformationsCommand $command
     ) {
         $command->getAssetCodes()->willReturn(['assetCode1', 'assetCode2']);

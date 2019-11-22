@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets;
 
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
-use Akeneo\AssetManager\Infrastructure\Job\ComputeTransformationLauncher;
 
 class ComputeTransformationsHandler
 {
-    /** @var ComputeTransformationLauncher */
+    /** @var ComputeTransformationLauncherInterface */
     private $computeTransformationLauncher;
 
-    public function __construct(ComputeTransformationLauncher $computeTransformationLauncher)
+    public function __construct(ComputeTransformationLauncherInterface $computeTransformationLauncher)
     {
         $this->computeTransformationLauncher = $computeTransformationLauncher;
     }
