@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator;
 
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
-use Liip\ImagineBundle\Exception\Binary\Loader\NotLoadableException;
-use Liip\ImagineBundle\Exception\Imagine\Filter\NonExistingFilterException;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Data\DataManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
+use Psr\Log\LoggerInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -30,69 +29,121 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
     /** @var FilterManager */
     protected $filterManager;
 
+    /** @var LoggerInterface */
+    protected $logger;
+
     public function __construct(
         DataManager $dataManager,
         CacheManager $cacheManager,
         FilterManager $filterManager,
-        DefaultImageProviderInterface $defaultImageProvider
+        DefaultImageProviderInterface $defaultImageProvider,
+        LoggerInterface $logger
     ) {
         $this->dataManager = $dataManager;
         $this->cacheManager = $cacheManager;
         $this->filterManager = $filterManager;
         $this->defaultImageProvider = $defaultImageProvider;
+        $this->logger = $logger;
     }
 
     abstract public function supports(string $data, AbstractAttribute $attribute, string $type): bool;
 
+    /**
+     * {@inheritDoc}
+     */
     public function generate(string $data, AbstractAttribute $attribute, string $type): string
     {
+        if (!$this->isBase64Encoded($data)) {
+            $this->logger->error(
+                'The preview generator for type requires a base64 encoded input.',
+                [
+                    'data'      => $data,
+                    'attribute' => $attribute->normalize(),
+                ]
+            );
+
+            return $this->getDefaultImageUrl($type);
+        }
+
+        $data = base64_decode($data, true);
         $url = $this->generateUrl($data, $attribute);
+        $filename = $this->createCacheFilename($url, $type);
         $previewType = $this->getPreviewType($type);
 
         try {
-            $isStored = $this->cacheManager->isStored($url, $previewType);
-        } catch (NonExistingFilterException $e) {
-            // Should change depending on the preview type
-            // Trigerred if the thumbnail configuration is not there
-            return $this->defaultImageProvider->getImageUrl($this->defaultImage(), $previewType);
-        } catch (\Exception $e) {
-            // Should change depending on the preview type
-            // Trigerred if the thumbnail cache fetching is not working
-            return $this->defaultImageProvider->getImageUrl($this->defaultImage(), $previewType);
-        }
+            $isStored = $this->cacheManager->isStored($filename, $previewType);
 
-        if (!$isStored) {
-            try {
+            if (!$isStored) {
                 $binary = $this->dataManager->find($previewType, $url);
-            } catch (NotLoadableException $e) {
-                // Should change depending on the preview type
-                return $this->defaultImageProvider->getImageUrl($this->defaultImage(), $previewType);
-            } catch (\LogicException $e) { //Here we catch different levels of exception to display a different default image in the future
-                // Trigerred when the mime type was not the good one
-                // Should change depending on the preview type
-                return $this->defaultImageProvider->getImageUrl($this->defaultImage(), $previewType);
-            } catch (\Exception $e) {
-                // Triggered When a general exception arrised
-                // Should change depending on the preview type
-                return $this->defaultImageProvider->getImageUrl($this->defaultImage(), $previewType);
-            }
-
-            try {
                 $file = $this->filterManager->applyFilter($binary, $previewType);
-            } catch (\Exception $e) {
-                // Triggered When a general exception arrised
-                // Should change depending on the preview type
-                return $this->defaultImageProvider->getImageUrl($this->defaultImage(), $previewType);
-            }
 
-            $this->cacheManager->store(
-                $file,
-                $url,
-                $previewType
+                $this->cacheManager->store(
+                    $file,
+                    $filename,
+                    $previewType
+                );
+            }
+        } catch (\Exception $exception) {
+            $this->logger->error('Exception when trying to create a thumbnail',
+                [
+                    'data'      => $data,
+                    'attribute' => $attribute->normalize(),
+                    'exception' => [
+                        'type'    => get_class($exception),
+                        'message' => $exception->getMessage(),
+                        'trace'   => $exception->getTrace(),
+                    ],
+                ]
             );
+
+            return $this->getDefaultImageUrl($type);
         }
 
-        return $this->cacheManager->resolve($url, $previewType);
+        return $this->cacheManager->resolve($filename, $previewType);
+    }
+
+    /**
+     * Check whether the given string is correctly encoded in base64
+     */
+    private function isBase64Encoded(string $data): bool
+    {
+        $decoded = base64_decode($data, true);
+
+        return $decoded && base64_encode($decoded) === $data;
+    }
+
+    /**
+     * Create an unique filename for the given url.
+     * The file extension is calculated from the preview type configuration.
+     *
+     * @param string $url
+     * @param string $type
+     *
+     * @return string
+     */
+    private function createCacheFilename(string $url, string $type): string
+    {
+        $previewFilterId = $this->getPreviewType($type);
+        $previewFilterConfiguration = $this->filterManager->getFilterConfiguration()->get($previewFilterId);
+        $previewFormat = $previewFilterConfiguration['format'] ?? \pathinfo($url, PATHINFO_EXTENSION) ?? null;
+
+        $hashedFilename = sha1($url);
+        $fileExtension = $previewFormat !== null ? sprintf('.%s', $previewFormat) : '';
+
+        return $hashedFilename . $fileExtension;
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return string
+     */
+    private function getDefaultImageUrl(string $type): string
+    {
+        $previewType = $this->getPreviewType($type);
+        $defaultImage = $this->defaultImage();
+
+        return $this->defaultImageProvider->getImageUrl($defaultImage, $previewType);
     }
 
     abstract protected function getPreviewType(string $type): string;

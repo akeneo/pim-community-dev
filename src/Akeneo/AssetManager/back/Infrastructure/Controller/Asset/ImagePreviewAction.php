@@ -34,7 +34,7 @@ class ImagePreviewAction
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
-    /** @var PreviewGeneratorInterface  */
+    /** @var PreviewGeneratorInterface */
     private $previewGenerator;
 
     /** @var DefaultImageProviderInterface */

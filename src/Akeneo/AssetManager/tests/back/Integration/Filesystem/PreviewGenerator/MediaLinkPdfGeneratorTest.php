@@ -58,7 +58,11 @@ final class MediaLinkPdfGeneratorTest extends PreviewGeneratorIntegrationTestCas
      */
     public function it_get_a_preview_for_an_image_media_link_attribute()
     {
-        $previewImage = $this->mediaLinkPdfGenerator->generate(self::FILENAME, $this->mediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
+        $previewImage = $this->mediaLinkPdfGenerator->generate(
+            $this->data(),
+            $this->mediaLinkAttribute,
+            PreviewGeneratorRegistry::THUMBNAIL_TYPE
+        );
 
         $this->assertStringContainsString('media/cache/', $previewImage);
     }
@@ -68,11 +72,11 @@ final class MediaLinkPdfGeneratorTest extends PreviewGeneratorIntegrationTestCas
      */
     public function it_get_a_preview_for_an_image_media_link_attribute_from_the_cache()
     {
-        $previewImage = $this->mediaLinkPdfGenerator->generate(self::FILENAME, $this->mediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
+        $previewImage = $this->mediaLinkPdfGenerator->generate($this->data(), $this->mediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
         $this->assertStringContainsString('media/cache/', $previewImage);
 
-        $previewImage = $this->mediaLinkPdfGenerator->generate(self::FILENAME, $this->mediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
+        $previewImage = $this->mediaLinkPdfGenerator->generate($this->data(), $this->mediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
         $this->assertStringContainsString('media/cache/', $previewImage);
     }
@@ -83,7 +87,22 @@ final class MediaLinkPdfGeneratorTest extends PreviewGeneratorIntegrationTestCas
     public function it_get_a_default_preview_for_an_unknown_image_mediaLink()
     {
         $this->mediaLinkPdfGenerator->supports('test', $this->mediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
-        $previewImage = $this->mediaLinkPdfGenerator->generate('test', $this->mediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
+        $previewImage = $this->mediaLinkPdfGenerator->generate(base64_encode('test'), $this->mediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
+
+        $type = MediaLinkPdfGenerator::SUPPORTED_TYPES[PreviewGeneratorRegistry::THUMBNAIL_TYPE];
+        $this->assertStringContainsString(
+            sprintf('media/cache/%s/pim_asset_manager.default_image.image', $type),
+            $previewImage
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_a_default_preview_if_the_media_link_is_not_encoded_in_base64()
+    {
+        $data = 'this is not base64';
+        $previewImage = $this->mediaLinkPdfGenerator->generate($data, $this->mediaLinkAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
         $type = MediaLinkPdfGenerator::SUPPORTED_TYPES[PreviewGeneratorRegistry::THUMBNAIL_TYPE];
         $this->assertStringContainsString(
@@ -114,5 +133,10 @@ final class MediaLinkPdfGeneratorTest extends PreviewGeneratorIntegrationTestCas
                  ]
             ])
             ->load();
+    }
+
+    private function data(): string
+    {
+        return base64_encode(self::FILENAME);
     }
 }
