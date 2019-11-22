@@ -11,7 +11,7 @@ class GetAccessTokenIntegration extends ApiTestCase
     public function testGetAccessTokenWithJsonContentType()
     {
         $client = static::createClient();
-        list($clientId, $secret) = $this->createOAuthClient();
+        list($clientId, $secret) = $this->createOAuthClient('test_api');
 
         $client->request('POST', 'api/oauth/v1/token',
             [
@@ -41,7 +41,7 @@ class GetAccessTokenIntegration extends ApiTestCase
     public function testGetAccessTokenWithFormUrlEncodedContentType()
     {
         $client = static::createClient();
-        list($clientId, $secret) = $this->createOAuthClient();
+        list($clientId, $secret) = $this->createOAuthClient('test_api');
 
         $client->request('POST', 'api/oauth/v1/token',
             [
@@ -71,7 +71,7 @@ class GetAccessTokenIntegration extends ApiTestCase
     public function testGetAccessTokenWithBadContentType()
     {
         $client = static::createClient();
-        list($clientId, $secret) = $this->createOAuthClient();
+        list($clientId, $secret) = $this->createOAuthClient('test_api');;
 
         $client->request('POST', 'api/oauth/v1/token',
             [
@@ -102,7 +102,7 @@ JSON;
     public function testMissingGrantType()
     {
         $client = static::createClient();
-        list($clientId, $secret) = $this->createOAuthClient();
+        list($clientId, $secret) = $this->createOAuthClient('test_api');;
 
         $client->request('POST', 'api/oauth/v1/token',
             [
@@ -129,7 +129,7 @@ JSON;
     public function testInvalidGrantType()
     {
         $client = static::createClient();
-        list($clientId, $secret) = $this->createOAuthClient();
+        list($clientId, $secret) = $this->createOAuthClient('test_api');;
 
         $client->request('POST', 'api/oauth/v1/token',
             [
@@ -157,7 +157,7 @@ JSON;
     public function testUnauthorizedGrantType()
     {
         $client = static::createClient();
-        list($clientId, $secret) = $this->createOAuthClient();
+        list($clientId, $secret) = $this->createOAuthClient('test_api');;
 
         $client->request('POST', 'api/oauth/v1/token',
             [
@@ -185,7 +185,7 @@ JSON;
     public function testInvalidClientId()
     {
         $client = static::createClient();
-        list($clientId, $secret) = $this->createOAuthClient();
+        list($clientId, $secret) = $this->createOAuthClient('test_api');;
 
         $client->request('POST', 'api/oauth/v1/token',
             [
@@ -213,7 +213,7 @@ JSON;
     public function testInvalidSecret()
     {
         $client = static::createClient();
-        list($clientId, $secret) = $this->createOAuthClient();
+        list($clientId, $secret) = $this->createOAuthClient('test_api');;
 
         $client->request('POST', 'api/oauth/v1/token',
             [
@@ -241,7 +241,7 @@ JSON;
     public function testMissingUsername()
     {
         $client = static::createClient();
-        list($clientId, $secret) = $this->createOAuthClient();
+        list($clientId, $secret) = $this->createOAuthClient('test_api');;
 
         $client->request('POST', 'api/oauth/v1/token',
             [
@@ -268,7 +268,7 @@ JSON;
     public function testMissingPassword()
     {
         $client = static::createClient();
-        list($clientId, $secret) = $this->createOAuthClient();
+        list($clientId, $secret) = $this->createOAuthClient('test_api');;
 
         $client->request('POST', 'api/oauth/v1/token',
             [
@@ -295,7 +295,7 @@ JSON;
     public function testUserNotFound()
     {
         $client = static::createClient();
-        list($clientId, $secret) = $this->createOAuthClient();
+        list($clientId, $secret) = $this->createOAuthClient('test_api');;
 
         $client->request('POST', 'api/oauth/v1/token',
             [

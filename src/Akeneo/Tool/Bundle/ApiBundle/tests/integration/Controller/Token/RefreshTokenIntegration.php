@@ -10,7 +10,7 @@ class RefreshTokenIntegration extends ApiTestCase
 {
     public function testRefreshToken()
     {
-        list($clientId, $secret) = $this->createOAuthClient();
+        list($clientId, $secret) = $this->createOAuthClient('test_api');;
         list($accessToken, $refreshToken) = $this->authenticate($clientId, $secret, self::USERNAME, self::PASSWORD);
 
         $client = $this->createAuthenticatedClient(
@@ -49,7 +49,7 @@ class RefreshTokenIntegration extends ApiTestCase
 
     public function testRefreshTokenWithFormUrlEncodedContentType()
     {
-        list($clientId, $secret) = $this->createOAuthClient();
+        list($clientId, $secret) = $this->createOAuthClient('test_api');;
         list($accessToken, $refreshToken) = $this->authenticate($clientId, $secret, self::USERNAME, self::PASSWORD);
 
         $client = $this->createAuthenticatedClient(
@@ -89,7 +89,7 @@ class RefreshTokenIntegration extends ApiTestCase
 
     public function testMissingRefreshToken()
     {
-        list($clientId, $secret) = $this->createOAuthClient();
+        list($clientId, $secret) = $this->createOAuthClient('test_api');;
         $client = $this->createAuthenticatedClient([], [], $clientId, $secret);
 
         $client->request('POST', 'api/oauth/v1/token',
@@ -114,7 +114,7 @@ class RefreshTokenIntegration extends ApiTestCase
 
     public function testInvalidRefreshToken()
     {
-        list($clientId, $secret) = $this->createOAuthClient();
+        list($clientId, $secret) = $this->createOAuthClient('test_api');;
         $client = $this->createAuthenticatedClient([], [], $clientId, $secret);
 
         $client->request('POST', 'api/oauth/v1/token',

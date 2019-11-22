@@ -103,7 +103,7 @@ abstract class ApiTestCase extends WebTestCase
      *
      * @param string $code
      *
-     * @return App
+     * @return AppWithCredentials
      */
     protected function createOAuthClient(string $code): AppWithCredentials
     {
