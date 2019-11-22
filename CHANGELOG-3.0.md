@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-8990: Create only the attributes requirements of the identifier attribute when a channel is created
+
 # 3.0.55 (2019-11-22)
 
 ## Bug fixes
