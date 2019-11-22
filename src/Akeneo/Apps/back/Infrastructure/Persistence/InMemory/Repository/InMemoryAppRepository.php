@@ -59,11 +59,9 @@ class InMemoryAppRepository implements AppRepository
 
     public function delete(App $app): void
     {
-        if (!isset($this->dataRows[(string) $app->code()])) {
-            throw new \LogicException(sprintf('App "%s" never persisted!', (string) $app->code()));
+        if (isset($this->dataRows[(string) $app->code()])) {
+            unset($this->dataRows[(string) $app->code()]);
         }
-
-        unset($this->dataRows[(string) $app->code()]);
     }
 
     public function count(): int
