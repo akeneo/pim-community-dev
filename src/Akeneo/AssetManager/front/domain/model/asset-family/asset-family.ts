@@ -7,7 +7,7 @@ import LabelCollection, {
   getLabelInCollection,
   denormalizeLabelCollection,
 } from 'akeneoassetmanager/domain/model/label-collection';
-import File, {NormalizedFile, denormalizeFile, createEmptyFile} from 'akeneoassetmanager/domain/model/file';
+import {File, createFileFromNormalized, createEmptyFile} from 'akeneoassetmanager/domain/model/file';
 import AttributeIdentifier, {
   denormalizeAttributeIdentifier,
 } from 'akeneoassetmanager/domain/model/attribute/identifier';
@@ -16,7 +16,7 @@ export interface NormalizedAssetFamily {
   identifier: string;
   code: string;
   labels: LabelCollection;
-  image: NormalizedFile;
+  image: File;
   attribute_as_label: AttributeIdentifier;
   attribute_as_image: AttributeIdentifier;
 }
@@ -31,7 +31,6 @@ export default interface AssetFamily {
   equals: (assetFamily: AssetFamily) => boolean;
   normalize: () => NormalizedAssetFamily;
 }
-class InvalidArgumentError extends Error {}
 
 class AssetFamilyImplementation implements AssetFamily {
   private constructor(
@@ -41,10 +40,6 @@ class AssetFamilyImplementation implements AssetFamily {
     private attributeAsLabel: AttributeIdentifier,
     private attributeAsImage: AttributeIdentifier
   ) {
-    if (!(image instanceof File)) {
-      throw new InvalidArgumentError('AssetFamily expects a File as image argument');
-    }
-
     Object.freeze(this);
   }
 
@@ -61,7 +56,7 @@ class AssetFamilyImplementation implements AssetFamily {
   public static createFromNormalized(normalizedAssetFamily: NormalizedAssetFamily): AssetFamily {
     const identifier = denormalizeAssetFamilyIdentifier(normalizedAssetFamily.identifier);
     const labelCollection = denormalizeLabelCollection(normalizedAssetFamily.labels);
-    const image = denormalizeFile(normalizedAssetFamily.image);
+    const image = createFileFromNormalized(normalizedAssetFamily.image);
     const attributeAsLabel = denormalizeAttributeIdentifier(normalizedAssetFamily.attribute_as_label);
     const attributeAsImage = denormalizeAttributeIdentifier(normalizedAssetFamily.attribute_as_image);
 
@@ -101,7 +96,7 @@ class AssetFamilyImplementation implements AssetFamily {
       identifier: this.getIdentifier(),
       code: this.getIdentifier(),
       labels: this.getLabelCollection(),
-      image: this.getImage().normalize(),
+      image: this.getImage(),
       attribute_as_label: this.getAttributeAsLabel().normalize(),
       attribute_as_image: this.getAttributeAsImage().normalize(),
     };

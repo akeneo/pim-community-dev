@@ -1,6 +1,6 @@
 import {NormalizedAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
-import File from 'akeneoassetmanager/domain/model/file';
+import {File} from 'akeneoassetmanager/domain/model/file';
 
 export const assetFamilyEditionReceived = (assetFamily: NormalizedAssetFamily) => {
   return {type: 'ASSET_FAMILY_EDITION_RECEIVED', assetFamily};
@@ -19,7 +19,7 @@ export const assetFamilyEditionLabelUpdated = (value: string, locale: string) =>
 };
 
 export const assetFamilyEditionImageUpdated = (image: File) => {
-  return {type: 'ASSET_FAMILY_EDITION_IMAGE_UPDATED', image: image.normalize()};
+  return {type: 'ASSET_FAMILY_EDITION_IMAGE_UPDATED', image: image};
 };
 
 export const assetFamilyEditionSubmission = () => {

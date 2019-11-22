@@ -1,4 +1,4 @@
-import File, {NormalizedFile} from 'akeneoassetmanager/domain/model/file';
+import {File} from 'akeneoassetmanager/domain/model/file';
 import AssetFamilyIdentifier, {
   denormalizeAssetFamilyIdentifier,
 } from 'akeneoassetmanager/domain/model/asset-family/identifier';
@@ -25,7 +25,7 @@ interface CommonNormalizedAsset {
 }
 
 export interface NormalizedAsset extends CommonNormalizedAsset {
-  image: NormalizedFile;
+  image: File;
   values: NormalizedValue[];
 }
 
@@ -36,7 +36,7 @@ export interface NormalizedItemAsset extends CommonNormalizedAsset {
 }
 
 export interface NormalizedMinimalAsset extends CommonNormalizedAsset {
-  image: NormalizedFile;
+  image: File;
   values: NormalizedMinimalValue[];
 }
 
@@ -70,9 +70,6 @@ class AssetImplementation implements Asset {
     private image: File,
     private valueCollection: ValueCollection
   ) {
-    if (!(image instanceof File)) {
-      throw new InvalidArgumentError('Asset expects a File as image argument');
-    }
     if (!(valueCollection instanceof ValueCollection)) {
       throw new InvalidArgumentError('Asset expects a ValueCollection as valueCollection argument');
     }
@@ -136,7 +133,7 @@ class AssetImplementation implements Asset {
       asset_family_identifier: this.getAssetFamilyIdentifier(),
       code: assetCodeStringValue(this.code),
       labels: this.getLabelCollection(),
-      image: this.getImage().normalize(),
+      image: this.getImage(),
       values: this.valueCollection.normalize(),
     };
   }
@@ -147,7 +144,7 @@ class AssetImplementation implements Asset {
       asset_family_identifier: this.getAssetFamilyIdentifier(),
       code: assetCodeStringValue(this.code),
       labels: this.getLabelCollection(),
-      image: this.getImage().normalize(),
+      image: this.getImage(),
       values: this.valueCollection.normalizeMinimal(),
     };
   }

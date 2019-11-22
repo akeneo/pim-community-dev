@@ -1,5 +1,5 @@
 const routing = require('routing');
-import File from 'akeneoassetmanager/domain/model/file';
+import {File, isFileEmpty} from 'akeneoassetmanager/domain/model/file';
 import MediaLinkData from 'akeneoassetmanager/domain/model/asset/data/media-link';
 import {MediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 import {suffixStringValue} from 'akeneoassetmanager/domain/model/attribute/type/media-link/suffix';
@@ -18,14 +18,14 @@ export const canCopyToClipboard = (): boolean => 'clipboard' in navigator;
 export const copyToClipboard = (text: string) => canCopyToClipboard() && navigator.clipboard.writeText(text);
 
 export const getImageShowUrl = (image: File, filter: string): string => {
-  const path = !image.isEmpty() ? image.getFilePath() : 'undefined';
+  const path = !isFileEmpty(image) ? image.filePath : 'undefined';
   const filename = encodeURIComponent(path);
 
   return routing.generate('pim_enrich_media_show', {filename, filter});
 };
 
 export const getImageDownloadUrl = (image: File): string => {
-  const path = !image.isEmpty() ? image.getFilePath() : 'undefined';
+  const path = !isFileEmpty(image) ? image.filePath : 'undefined';
   const filename = encodeURIComponent(path);
 
   return routing.generate('pim_enrich_media_download', {filename});

@@ -1,151 +1,107 @@
-import File, {createFile, createEmptyFile, denormalizeFile} from 'akeneoassetmanager/domain/model/file';
+import {createFileFromNormalized, areFilesEqual, isFileInStorage} from 'akeneoassetmanager/domain/model/file';
 
 describe('akeneo > asset family > domain > model --- file', () => {
-  test('I can create a new uploaded file', () => {
-    expect(createFile('file/path.png', 'my_filename.png').normalize()).toEqual({
-      originalFilename: 'my_filename.png',
-      filePath: 'file/path.png',
-    });
-    expect(createFile().normalize()).toBe(null);
-    expect(createEmptyFile().normalize()).toBe(null);
-  });
-
-  test('I can create a new stored file', () => {
-    expect(createFile('file/path.png', 'my_filename.png', 10, 'image/png', 'png').normalize()).toEqual({
-      originalFilename: 'my_filename.png',
-      filePath: 'file/path.png',
-      size: 10,
-      mimeType: 'image/png',
-      extension: 'png',
-    });
-    expect(createFile().normalize()).toBe(null);
-    expect(createEmptyFile().normalize()).toBe(null);
-  });
-
-  test('I cannot create a new file in an invalid state', () => {
-    expect(() => {
-      createFile(12);
-    }).toThrow('File expects a non empty string as filePath to be created');
-    expect(() => {
-      createFile('my/path.png');
-    }).toThrow('File expects a non empty string as originalFilename to be created');
-  });
-
   test('I can get the filepath or original filename for an uploaded file', () => {
     expect(
-      denormalizeFile({
+      createFileFromNormalized({
         originalFilename: 'my_filename.png',
         filePath: 'file/path.png',
-      }).getFilePath()
+      }).filePath
     ).toBe('file/path.png');
     expect(
-      denormalizeFile({
+      createFileFromNormalized({
         originalFilename: 'my_filename.png',
         filePath: 'file/path.png',
-      }).getOriginalFilename()
+      }).originalFilename
     ).toBe('my_filename.png');
   });
 
   test('I can test if the file is stored', () => {
     expect(
-      denormalizeFile({
-        originalFilename: 'my_filename.png',
-        filePath: 'file/path.png',
-      }).isInStorage()
+      isFileInStorage(
+        createFileFromNormalized({
+          originalFilename: 'my_filename.png',
+          filePath: 'file/path.png',
+        })
+      )
     ).toBe(true);
     expect(
-      denormalizeFile({
-        originalFilename: 'my_filename.png',
-        filePath: '/tmp/file/path.png',
-      }).isInStorage()
+      isFileInStorage(
+        createFileFromNormalized({
+          originalFilename: 'my_filename.png',
+          filePath: '/tmp/file/path.png',
+        })
+      )
     ).toBe(false);
   });
 
   test('I can get the file information for an stored file', () => {
     expect(
-      denormalizeFile({
+      createFileFromNormalized({
         originalFilename: 'my_filename.png',
         filePath: 'file/path.png',
         size: 10,
         mimeType: 'image/png',
         extension: 'png',
-      }).getFilePath()
+      }).filePath
     ).toBe('file/path.png');
     expect(
-      denormalizeFile({
+      createFileFromNormalized({
         originalFilename: 'my_filename.png',
         filePath: 'file/path.png',
         size: 10,
         mimeType: 'image/png',
         extension: 'png',
-      }).getOriginalFilename()
+      }).originalFilename
     ).toBe('my_filename.png');
     expect(
-      denormalizeFile({
+      createFileFromNormalized({
         originalFilename: 'my_filename.png',
         filePath: 'file/path.png',
         size: 10,
         mimeType: 'image/png',
         extension: 'png',
-      }).getSize()
+      }).size
     ).toBe(10);
     expect(
-      denormalizeFile({
+      createFileFromNormalized({
         originalFilename: 'my_filename.png',
         filePath: 'file/path.png',
         size: 10,
         mimeType: 'image/png',
         extension: 'png',
-      }).getMimeType()
+      }).mimeType
     ).toBe('image/png');
     expect(
-      denormalizeFile({
+      createFileFromNormalized({
         originalFilename: 'my_filename.png',
         filePath: 'file/path.png',
         size: 10,
         mimeType: 'image/png',
         extension: 'png',
-      }).getExtension()
+      }).extension
     ).toBe('png');
   });
 
-  test('I cannot get the file information if the file is empty', () => {
-    expect(() => {
-      createFile().getFilePath();
-    }).toThrow('You cannot get the file path on an empty file');
-    expect(() => {
-      createFile().getOriginalFilename();
-    }).toThrow('You cannot get the original filename on an empty file');
-    expect(() => {
-      createFile().getSize();
-    }).toThrow('You cannot get the size on an uploaded or empty file');
-    expect(() => {
-      createFile().getMimeType();
-    }).toThrow('You cannot get the mime type on an uploaded or empty file');
-    expect(() => {
-      createFile().getExtension();
-    }).toThrow('You cannot get the extension on an uploaded or empty file');
-  });
-
   test('I can denormalize a file', () => {
-    expect(denormalizeFile(null).normalize()).toBe(null);
+    expect(createFileFromNormalized(null)).toBe(null);
     expect(
-      denormalizeFile({
+      createFileFromNormalized({
         originalFilename: 'my_filename.png',
         filePath: 'file/path.png',
-      }).normalize()
+      })
     ).toEqual({
       originalFilename: 'my_filename.png',
       filePath: 'file/path.png',
     });
     expect(
-      denormalizeFile({
+      createFileFromNormalized({
         originalFilename: 'my_filename.png',
         filePath: 'file/path.png',
         size: 10,
         mimeType: 'image/png',
         extension: 'png',
-      }).normalize()
+      })
     ).toEqual({
       originalFilename: 'my_filename.png',
       filePath: 'file/path.png',
@@ -157,14 +113,15 @@ describe('akeneo > asset family > domain > model --- file', () => {
 
   test('I can test if a file is equal to another', () => {
     expect(
-      denormalizeFile({
-        originalFilename: 'my_filename.png',
-        filePath: 'file/path.png',
-        size: 10,
-        mimeType: 'image/png',
-        extension: 'png',
-      }).equals(
-        denormalizeFile({
+      areFilesEqual(
+        createFileFromNormalized({
+          originalFilename: 'my_filename.png',
+          filePath: 'file/path.png',
+          size: 10,
+          mimeType: 'image/png',
+          extension: 'png',
+        }),
+        createFileFromNormalized({
           originalFilename: 'my_filename.png',
           filePath: 'file/path.png',
           size: 10,
@@ -174,14 +131,15 @@ describe('akeneo > asset family > domain > model --- file', () => {
       )
     ).toBe(true);
     expect(
-      denormalizeFile({
-        originalFilename: 'another_filename.png',
-        filePath: 'file/path.png',
-        size: 10,
-        mimeType: 'image/png',
-        extension: 'png',
-      }).equals(
-        denormalizeFile({
+      areFilesEqual(
+        createFileFromNormalized({
+          originalFilename: 'another_filename.png',
+          filePath: 'file/path.png',
+          size: 10,
+          mimeType: 'image/png',
+          extension: 'png',
+        }),
+        createFileFromNormalized({
           originalFilename: 'my_filename.png',
           filePath: 'file/path.png',
           size: 10,
@@ -191,13 +149,16 @@ describe('akeneo > asset family > domain > model --- file', () => {
       )
     ).toBe(false);
     expect(
-      denormalizeFile({
-        originalFilename: 'another_filename.png',
-        filePath: 'file/path.png',
-        size: 10,
-        mimeType: 'image/png',
-        extension: 'png',
-      }).equals(12)
+      areFilesEqual(
+        createFileFromNormalized({
+          originalFilename: 'another_filename.png',
+          filePath: 'file/path.png',
+          size: 10,
+          mimeType: 'image/png',
+          extension: 'png',
+        }),
+        12
+      )
     ).toBe(false);
   });
 });

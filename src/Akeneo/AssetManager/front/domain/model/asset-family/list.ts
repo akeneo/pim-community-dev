@@ -6,12 +6,12 @@ import AssetIdentifier, {
   assetFamilyidentifiersAreEqual,
   denormalizeAssetFamilyIdentifier,
 } from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import File, {NormalizedFile, denormalizeFile} from 'akeneoassetmanager/domain/model/file';
+import {File, createFileFromNormalized} from 'akeneoassetmanager/domain/model/file';
 
 export interface NormalizedAssetFamilyListItem {
   identifier: AssetIdentifier;
   labels: LabelCollection;
-  image: NormalizedFile;
+  image: File;
 }
 
 export default interface AssetFamilyListItem {
@@ -21,7 +21,6 @@ export default interface AssetFamilyListItem {
   equals: (assetFamilyListItem: AssetFamilyListItem) => boolean;
   normalize: () => NormalizedAssetFamilyListItem;
 }
-class InvalidArgumentError extends Error {}
 
 class AssetFamilyListItemImplementation implements AssetFamilyListItem {
   private constructor(
@@ -29,10 +28,6 @@ class AssetFamilyListItemImplementation implements AssetFamilyListItem {
     private labelCollection: LabelCollection,
     private image: File
   ) {
-    if (!(image instanceof File)) {
-      throw new InvalidArgumentError('AssetFamilyListItem expects a File as image argument');
-    }
-
     Object.freeze(this);
   }
 
@@ -48,14 +43,14 @@ class AssetFamilyListItemImplementation implements AssetFamilyListItem {
     return new AssetFamilyListItemImplementation(
       denormalizeAssetFamilyIdentifier(''),
       denormalizeLabelCollection({}),
-      denormalizeFile(null)
+      createFileFromNormalized(null)
     );
   }
 
   public static createFromNormalized(normalizedAssetFamily: NormalizedAssetFamilyListItem): AssetFamilyListItem {
     const identifier = denormalizeAssetFamilyIdentifier(normalizedAssetFamily.identifier);
     const labelCollection = denormalizeLabelCollection(normalizedAssetFamily.labels);
-    const image = denormalizeFile(normalizedAssetFamily.image);
+    const image = createFileFromNormalized(normalizedAssetFamily.image);
 
     return AssetFamilyListItemImplementation.create(identifier, labelCollection, image);
   }
@@ -84,7 +79,7 @@ class AssetFamilyListItemImplementation implements AssetFamilyListItem {
     return {
       identifier: this.getIdentifier(),
       labels: this.getLabelCollection(),
-      image: this.getImage().normalize(),
+      image: this.getImage(),
     };
   }
 }
