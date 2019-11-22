@@ -68,6 +68,7 @@ class ValueCollectionSpec extends ObjectBehavior
                     'size' => 1024,
                     'mimeType' => 'image/png',
                     'extension' => 'png',
+                    'updatedAt' => (new \DateTime())->format(\DateTime::ISO8601),
                 ],
             ],
         ]);
@@ -99,7 +100,8 @@ class ValueCollectionSpec extends ObjectBehavior
                     'originalFilename' => 'my_file.png',
                     'size' => 1024,
                     'mimeType' => 'image/png',
-                    'extension' => 'png'
+                    'extension' => 'png',
+                    'updatedAt' => (new \DateTime())->format(\DateTime::ISO8601),
                 ],
             ],
         ]);
@@ -131,7 +133,8 @@ class ValueCollectionSpec extends ObjectBehavior
                     'originalFilename' => 'my_file.png',
                     'size' => 1024,
                     'mimeType' => 'image/png',
-                    'extension' => 'png'
+                    'extension' => 'png',
+                    'updatedAt' => (new \DateTime())->format(\DateTime::ISO8601),
                 ],
             ],
             'name_designer_fingerprint_mobile_fr_FR' => [

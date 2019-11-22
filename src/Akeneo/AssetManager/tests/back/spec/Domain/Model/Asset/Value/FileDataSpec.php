@@ -22,7 +22,8 @@ class FileDataSpec extends ObjectBehavior
                 'originalFilename' => 'file.ext',
                 'size' => 1024,
                 'mimeType' => 'image/ext',
-                'extension' => 'ext'
+                'extension' => 'ext',
+                'updatedAt' => '2019-11-22T15:16:21+0000',
             ]
         ]);
     }
@@ -83,7 +84,8 @@ class FileDataSpec extends ObjectBehavior
                 'originalFilename' => 'file.ext',
                 'size' => 1024,
                 'mimeType' => 'image/ext',
-                'extension' => 'ext'
+                'extension' => 'ext',
+                'updatedAt' => '2019-11-22T15:16:21+0000',
             ]
         );
     }

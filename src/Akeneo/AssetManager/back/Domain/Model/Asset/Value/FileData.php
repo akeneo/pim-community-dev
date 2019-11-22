@@ -18,6 +18,7 @@ class FileData implements ValueDataInterface
     private const FILE_SIZE = 'size';
     private const MIME_TYPE = 'mimeType';
     private const EXTENSION = 'extension';
+    private const UPDATED_AT = 'updatedAt';
 
     /** @var string */
     private $key;
@@ -34,9 +35,18 @@ class FileData implements ValueDataInterface
     /** @var string */
     private $extension;
 
+    /** @var \DateTime */
+    private $updatedAt;
+
     // TODO: make the optional args mandatory
-    private function __construct(string $key, string $originalFilename, ?int $size = 0, ?string $mimeType = '', ?string $extension = '')
-    {
+    private function __construct(
+        string $key,
+        string $originalFilename,
+        ?int $size = 0,
+        ?string $mimeType = '',
+        ?string $extension = '',
+        ?\DateTime $updatedAt = null
+    ) {
         Assert::stringNotEmpty($key, 'File data key cannot be empty');
         Assert::stringNotEmpty($originalFilename, 'Original filename data cannot be empty');
 
@@ -45,6 +55,7 @@ class FileData implements ValueDataInterface
         $this->size = $size;
         $this->mimeType = $mimeType;
         $this->extension = $extension;
+        $this->updatedAt = $updatedAt ?? new \DateTime();
     }
 
     /**
@@ -58,6 +69,7 @@ class FileData implements ValueDataInterface
             self::FILE_SIZE => $this->size,
             self::MIME_TYPE => $this->mimeType,
             self::EXTENSION => $this->extension,
+            self::UPDATED_AT => $this->updatedAt->format(\DateTime::ISO8601),
         ];
     }
 
@@ -87,6 +99,7 @@ class FileData implements ValueDataInterface
             self::FILE_SIZE,
             self::MIME_TYPE,
             self::EXTENSION,
+            self::UPDATED_AT,
         ];
 
         foreach ($keys as $key) {
@@ -95,12 +108,19 @@ class FileData implements ValueDataInterface
             ));
         }
 
+        $updatedAt = \DateTime::createFromFormat(\DateTime::ISO8601, $normalizedData[self::UPDATED_AT]);
+        if (false === $updatedAt) {
+            var_dump($normalizedData[self::UPDATED_AT]);
+            $updatedAt = null;
+        }
+
         return new self(
             $normalizedData[self::KEY],
             $normalizedData[self::ORIGINAL_FILENAME],
             $normalizedData[self::FILE_SIZE],
             $normalizedData[self::MIME_TYPE],
-            $normalizedData[self::EXTENSION]
+            $normalizedData[self::EXTENSION],
+            $updatedAt
         );
     }
 }
