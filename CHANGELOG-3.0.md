@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.55 (2019-11-22)
+
 ## Bug fixes
 
 - PIM-8992: Do not allow to import attribute code with line-feed characters
