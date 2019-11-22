@@ -47,6 +47,5 @@ class DeleteAppHandler
 
         $this->deleteUser->execute($app->userId());
         $this->deleteClient->execute($app->clientId());
-
     }
 }
