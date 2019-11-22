@@ -70,7 +70,7 @@ var/cache/dev:
 
 .PHONY: cache
 cache:
-	rm -rf var/cache && $(PHP_RUN) bin/console cache:warmup
+	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache && $(PHP_RUN) bin/console cache:warmup
 
 composer.lock: composer.json
 	$(PHP_RUN) -d memory_limit=4G /usr/local/bin/composer update
