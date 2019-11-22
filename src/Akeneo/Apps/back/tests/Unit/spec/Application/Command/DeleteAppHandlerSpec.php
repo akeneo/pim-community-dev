@@ -9,6 +9,7 @@ use Akeneo\Apps\Application\Command\DeleteAppHandler;
 use Akeneo\Apps\Application\Service\DeleteClientInterface;
 use Akeneo\Apps\Application\Service\DeleteUserInterface;
 use Akeneo\Apps\Domain\Model\ValueObject\ClientId;
+use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
 use Akeneo\Apps\Domain\Model\ValueObject\UserId;
 use Akeneo\Apps\Domain\Model\Write\App;
 use Akeneo\Apps\Domain\Persistence\Repository\AppRepository;
@@ -37,20 +38,18 @@ class DeleteAppHandlerSpec extends ObjectBehavior
     public function it_deletes_an_app(
         $repository,
         $deleteClient,
-        $deleteUser,
-        App $magentoApp
+        $deleteUser
     ): void {
-        $command = new DeleteAppCommand('magento');
+        $magentoClientId = new ClientId(1);
+        $magentoUserId = new UserId(1);
+        $magentoApp = new App('magento', 'Magento', FlowType::OTHER, $magentoClientId, $magentoUserId);
+
+        $command = new DeleteAppCommand((string) $magentoApp->code());
 
         $repository->findOneByCode('magento')->willReturn($magentoApp);
         $repository->delete($magentoApp)->shouldBeCalled();
 
-        $magentoClientId = new ClientId(1);
-        $magentoApp->clientId()->willReturn($magentoClientId);
         $deleteClient->execute($magentoClientId)->shouldBeCalled();
-
-        $magentoUserId = new UserId(1);
-        $magentoApp->userId()->willReturn($magentoUserId);
         $deleteUser->execute($magentoUserId)->shouldBeCalled();
 
         $this->handle($command);
