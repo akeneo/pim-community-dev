@@ -16,14 +16,14 @@ namespace Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
 use Webmozart\Assert\Assert;
 
 class Source implements TransformationReference
 {
-    /** @var AttributeIdentifier */
-    private $attributeIdentifier;
+    /** @var AttributeCode */
+    private $attributeCode;
 
     /** @var ChannelReference */
     private $channelReference;
@@ -32,11 +32,11 @@ class Source implements TransformationReference
     private $localeReference;
 
     private function __construct(
-        AttributeIdentifier $attributeIdentifier,
+        AttributeCode $attributeCode,
         ChannelReference $channelReference,
         LocaleReference $localeReference
     ) {
-        $this->attributeIdentifier = $attributeIdentifier;
+        $this->attributeCode = $attributeCode;
         $this->channelReference = $channelReference;
         $this->localeReference = $localeReference;
     }
@@ -51,24 +51,24 @@ class Source implements TransformationReference
         $attribute->hasValuePerChannel() ?
             Assert::false(
                 $channelReference->isEmpty(),
-                sprintf('Attribute "%s" is scopable, you must define a channel', $attribute->getIdentifier()->stringValue())
+                sprintf('Attribute "%s" is scopable, you must define a channel', (string) $attribute->getCode())
             ) :
             Assert::true(
                 $channelReference->isEmpty(),
-                sprintf('Attribute "%s" is not scopable, you cannot define a channel', $attribute->getIdentifier()->stringValue())
+                sprintf('Attribute "%s" is not scopable, you cannot define a channel', (string) $attribute->getCode())
             );
 
         $attribute->hasValuePerLocale() ?
             Assert::false(
                 $localeReference->isEmpty(),
-                sprintf('Attribute "%s" is localizable, you must define a locale', $attribute->getIdentifier()->stringValue())
+                sprintf('Attribute "%s" is localizable, you must define a locale', (string) $attribute->getCode())
             ) :
             Assert::true(
                 $localeReference->isEmpty(),
-                sprintf('Attribute "%s" is not localizable, you cannot define a locale', $attribute->getIdentifier()->stringValue())
+                sprintf('Attribute "%s" is not localizable, you cannot define a locale', (string) $attribute->getCode())
             );
 
-        return new self($attribute->getIdentifier(), $channelReference, $localeReference);
+        return new self($attribute->getCode(), $channelReference, $localeReference);
     }
 
     public static function createFromNormalized(array $normalizedSource): self
@@ -78,15 +78,15 @@ class Source implements TransformationReference
         Assert::keyExists($normalizedSource, 'locale');
 
         return new self(
-            AttributeIdentifier::fromString($normalizedSource['attribute']),
+            AttributeCode::fromString($normalizedSource['attribute']),
             ChannelReference::createfromNormalized($normalizedSource['channel']),
             LocaleReference::createFromNormalized($normalizedSource['locale'])
         );
     }
 
-    public function getAttributeIdentifier(): AttributeIdentifier
+    public function getAttributeCode(): AttributeCode
     {
-        return $this->attributeIdentifier;
+        return $this->attributeCode;
     }
 
     public function getChannelReference(): ChannelReference
@@ -102,7 +102,7 @@ class Source implements TransformationReference
     public function equals(TransformationReference $reference): bool
     {
         return
-            $this->getAttributeIdentifier()->equals($reference->getAttributeIdentifier()) &&
+            $this->getAttributeCode()->equals($reference->getAttributeCode()) &&
             $this->getChannelReference()->equals($reference->getChannelReference()) &&
             $this->getLocaleReference()->equals($reference->getLocaleReference());
     }
@@ -110,7 +110,7 @@ class Source implements TransformationReference
     public function normalize(): array
     {
         return [
-            'attribute' => $this->attributeIdentifier->normalize(),
+            'attribute' => (string) $this->attributeCode,
             'channel' => $this->channelReference->normalize(),
             'locale' => $this->localeReference->normalize(),
         ];

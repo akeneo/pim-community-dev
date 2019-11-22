@@ -15,11 +15,11 @@ namespace Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation;
 
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
-use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 
 interface TransformationReference
 {
-    public function getAttributeIdentifier(): AttributeIdentifier;
+    public function getAttributeCode(): AttributeCode;
 
     public function getChannelReference(): ChannelReference;
 

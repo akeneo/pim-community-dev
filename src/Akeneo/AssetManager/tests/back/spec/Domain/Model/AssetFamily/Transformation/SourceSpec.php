@@ -110,7 +110,7 @@ class SourceSpec extends ObjectBehavior
                 LocaleReference::noReference()
             ]
         );
-        $this->shouldThrow(new \InvalidArgumentException('Attribute "image_identifier" is not scopable, you cannot define a channel'))->duringInstantiation();
+        $this->shouldThrow(new \InvalidArgumentException('Attribute "my_source" is not scopable, you cannot define a channel'))->duringInstantiation();
     }
 
     function it_throws_an_exception_when_not_providing_a_channel_with_a_scopable_attribute()
@@ -123,7 +123,7 @@ class SourceSpec extends ObjectBehavior
                 LocaleReference::noReference()
             ]
         );
-        $this->shouldThrow(new \InvalidArgumentException('Attribute "image_identifier" is scopable, you must define a channel'))->duringInstantiation();
+        $this->shouldThrow(new \InvalidArgumentException('Attribute "my_source" is scopable, you must define a channel'))->duringInstantiation();
     }
 
     function it_throws_an_exception_when_providing_a_locale_with_a_non_localizable_attribute()
@@ -136,7 +136,7 @@ class SourceSpec extends ObjectBehavior
                 LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
             ]
         );
-        $this->shouldThrow(new \InvalidArgumentException('Attribute "image_identifier" is not localizable, you cannot define a locale'))->duringInstantiation();
+        $this->shouldThrow(new \InvalidArgumentException('Attribute "my_source" is not localizable, you cannot define a locale'))->duringInstantiation();
     }
 
     function it_throws_an_exception_when_not_providing_a_locale_with_a_localizable_attribute()
@@ -149,7 +149,7 @@ class SourceSpec extends ObjectBehavior
                 LocaleReference::noReference(),
             ]
         );
-        $this->shouldThrow(new \InvalidArgumentException('Attribute "image_identifier" is localizable, you must define a locale'))->duringInstantiation();
+        $this->shouldThrow(new \InvalidArgumentException('Attribute "my_source" is localizable, you must define a locale'))->duringInstantiation();
     }
 
     function it_equals_localizable_and_scopable_attribute(TransformationReference $reference)
@@ -163,7 +163,7 @@ class SourceSpec extends ObjectBehavior
             ]
         );
 
-        $reference->getAttributeIdentifier()->willReturn(AttributeIdentifier::fromString('image_identifier'));
+        $reference->getAttributeCode()->willReturn(AttributeCode::fromString('my_source'));
         $reference->getChannelReference()->willReturn(ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')));
         $reference->getLocaleReference()->willReturn(LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')));
 
@@ -181,7 +181,7 @@ class SourceSpec extends ObjectBehavior
             ]
         );
 
-        $reference->getAttributeIdentifier()->willReturn(AttributeIdentifier::fromString('image_identifier'));
+        $reference->getAttributeCode()->willReturn(AttributeCode::fromString('my_source'));
         $reference->getChannelReference()->willReturn(ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')));
         $reference->getLocaleReference()->willReturn(LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')));
 
@@ -200,7 +200,7 @@ class SourceSpec extends ObjectBehavior
         );
 
         $this->normalize()->shouldReturn([
-            'attribute' => 'image_identifier',
+            'attribute' => 'my_source',
             'channel' => 'ecommerce',
             'locale' => 'en_US'
         ]);
@@ -209,7 +209,7 @@ class SourceSpec extends ObjectBehavior
     function it_can_be_instantiated_from_normalized_format()
     {
         $normalizedSource = [
-            'attribute' => 'image_identifier',
+            'attribute' => 'my_source',
             'channel' => 'ecommerce',
             'locale' => 'en_US',
         ];
