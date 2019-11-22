@@ -16,20 +16,20 @@ Feature: Validate identifier attribute of a product
 
   Scenario: Fail to create a product with an identifier that contains a comma
     When a product is created with identifier "foo,bar"
-    Then the error "This field should not contain any comma or semicolon or surrounding space." is raised
+    Then the error "This field should not contain any comma or semicolon or leading/trailing space" is raised
 
   Scenario: Fail to create a product with an identifier that contains a semicolon
     When a product is created with identifier "foo;bar"
-    Then the error "This field should not contain any comma or semicolon or surrounding space." is raised
+    Then the error "This field should not contain any comma or semicolon or leading/trailing space" is raised
 
   Scenario: Fail to create a product with an identifier that ends with a space
     When a product is created with identifier "foo "
-    Then the error "This field should not contain any comma or semicolon or surrounding space." is raised
+    Then the error "This field should not contain any comma or semicolon or leading/trailing space" is raised
 
   Scenario: Fail to create a product with an identifier that starts with a space
     When a product is created with identifier " foo"
-    Then the error "This field should not contain any comma or semicolon or surrounding space." is raised
+    Then the error "This field should not contain any comma or semicolon or leading/trailing space" is raised
 
   Scenario: Fail to create a product with an identifier surrounded by spaces
     When a product is created with identifier " foo "
-    Then the error "This field should not contain any comma or semicolon or surrounding space." is raised
+    Then the error "This field should not contain any comma or semicolon or leading/trailing space" is raised
