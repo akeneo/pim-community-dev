@@ -13,8 +13,22 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets;
 
+use Webmozart\Assert\Assert;
+
 class ComputeTransformationsCommand
 {
     /** @var string[] */
-    public $assetCodes;
+    private $assetCodes;
+
+    public function __construct(array $assetCodes)
+    {
+        Assert::allIsInstanceOf($assetCodes, 'string');
+
+        $this->assetCodes = $assetCodes;
+    }
+
+    public function getAssetCodes(): array
+    {
+        return $this->assetCodes;
+    }
 }

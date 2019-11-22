@@ -17,10 +17,10 @@ class ComputeTransformationsHandlerSpec extends ObjectBehavior
     }
 
     function it_handles_compute_transformations_command(
-        ComputeTransformationLauncher $computeTransformationLauncher
+        ComputeTransformationLauncher $computeTransformationLauncher,
+        ComputeTransformationsCommand $command
     ) {
-        $command = new ComputeTransformationsCommand();
-        $command->assetCodes = ['assetCode1', 'assetCode2'];
+        $command->getAssetCodes()->willReturn(['assetCode1', 'assetCode2']);
 
         $computeTransformationLauncher
             ->launch([AssetCode::fromString('assetCode1'), AssetCode::fromString('assetCode2')])

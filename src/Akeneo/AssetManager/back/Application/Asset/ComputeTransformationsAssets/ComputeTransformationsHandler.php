@@ -30,6 +30,6 @@ class ComputeTransformationsHandler
     {
         $this->computeTransformationLauncher->launch(array_map(function ($assetCode) {
             return AssetCode::fromString($assetCode);
-        }, $command->assetCodes));
+        }, $command->getAssetCodes()));
     }
 }
