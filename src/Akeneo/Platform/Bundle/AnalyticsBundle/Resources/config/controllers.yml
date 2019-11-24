@@ -15,3 +15,10 @@ services:
         arguments:
             - '@templating'
             - '@pim_analytics.data_collector.chained'
+
+    pim_analytics.controller.changelog:
+        public: true
+        class: Akeneo\Platform\Bundle\AnalyticsBundle\Controller\ChangelogController
+        arguments:
+            -
+                ce: '%pim_ce_dev_src_folder_location%'
