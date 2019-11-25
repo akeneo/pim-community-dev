@@ -11,7 +11,12 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 
 /**
- * Product model indexer, define custom logic and options for product model indexing in the search engine.
+ * Indexer responsible for the indexation of product model entities. This indexer DOES NOT index children products that can
+ * contain information about the parent product models, such as the inherited values from the parent product model.
+ *
+ * This indexer SHOULD NOT be used when you update a product model, as you have to update the parent document in Elasticsearch.
+ *
+ * Please use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelDescendantsAndAncestorsIndexer in that case.
  *
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)

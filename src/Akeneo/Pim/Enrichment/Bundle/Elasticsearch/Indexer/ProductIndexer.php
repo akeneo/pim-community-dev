@@ -11,8 +11,11 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 
 /**
- * Indexer responsible for the indexing of products entities. Each product should be normalized in the right format
- * prior to be indexed in the ES product and product model index.
+ * Indexer responsible for the indexation of product entities. This indexer DOES NOT index product model ancestors that can
+ * contain information about the product children, such as number of complete products.
+ *
+ * This indexer SHOULD NOT be used when you update a product, as you have to update the parent document in Elasticsearch.
+ * Please use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer in that case.
  *
  * @author    Julien Janvier <j.janvier@gmail.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)

@@ -226,10 +226,6 @@ class EntityBuilder
         $this->productModelUpdater->update($productModel, $data);
         $this->productModelSaver->save($productModel);
 
-        while ($this->jobLauncher->hasJobInQueue()) {
-            $this->jobLauncher->launchConsumerOnce();
-        }
-
         $this->esClient->refreshIndex();
     }
 

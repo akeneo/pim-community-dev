@@ -20,7 +20,7 @@ class DeleteByQueryIntegration extends AbstractPimCatalogTestCase
             ],
         ]);
 
-        sleep(1); // delete_by_query is async
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         $productsFound = $this->getSearchQueryResults([
             'query' => [

@@ -26,8 +26,6 @@ class ExportCompletenessFilterIntegration extends AbstractProductQueryBuilderTes
 
         $this->get('akeneo_integration_tests.catalog.fixture.completeness_filter')
             ->loadProductModelTree();
-
-        sleep(2);
     }
 
     /**
