@@ -56,7 +56,8 @@ class EditStoredFileValueCommandFactory implements EditValueCommandFactoryInterf
             $storedFile['originalFilename'] ?? null,
             $storedFile['size'] ?? null,
             $storedFile['mimeType'] ?? null,
-            $storedFile['extension'] ?? null
+            $storedFile['extension'] ?? null,
+            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ISO8601, $storedFile['updatedAt'])
         );
         return $command;
     }

@@ -59,7 +59,8 @@ class StoredFileUpdaterSpec extends ObjectBehavior
             'rillettes.png',
             2048,
             'image/png',
-            'png'
+            'png',
+            \DateTime::createFromFormat(\DateTimeInterface::ISO8601, '2019-11-22T15:16:21+0000')
         );
 
         $asset->findValue(Argument::type(ValueKey::class))
@@ -90,7 +91,8 @@ class StoredFileUpdaterSpec extends ObjectBehavior
             'jambon.png',
             2048,
             'image/png',
-            'png'
+            'png',
+            \DateTime::createFromFormat(\DateTimeInterface::ISO8601, '2019-11-22T15:16:21+0000')
         );
 
         $asset->findValue(Argument::type(ValueKey::class))

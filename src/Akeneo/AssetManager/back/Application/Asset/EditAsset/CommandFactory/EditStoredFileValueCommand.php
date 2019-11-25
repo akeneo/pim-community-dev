@@ -36,6 +36,9 @@ class EditStoredFileValueCommand extends AbstractEditValueCommand
     /** @var string */
     public $extension;
 
+    /** @var \DateTimeInterface */
+    public $updatedAt;
+
     public function __construct(
         ImageAttribute $attribute,
         ?string $channel,
@@ -44,7 +47,8 @@ class EditStoredFileValueCommand extends AbstractEditValueCommand
         ?string $originalFilename,
         ?int $size,
         ?string $mimeType,
-        ?string $extension
+        ?string $extension,
+        \DateTimeInterface $updatedAt
     ) {
         parent::__construct($attribute, $channel, $locale);
 
@@ -53,5 +57,6 @@ class EditStoredFileValueCommand extends AbstractEditValueCommand
         $this->size = $size;
         $this->mimeType = $mimeType;
         $this->extension = $extension;
+        $this->updatedAt = $updatedAt;
     }
 }

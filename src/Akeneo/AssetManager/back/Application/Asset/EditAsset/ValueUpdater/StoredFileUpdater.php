@@ -15,7 +15,6 @@ namespace Akeneo\AssetManager\Application\Asset\EditAsset\ValueUpdater;
 
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\AbstractEditValueCommand;
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditStoredFileValueCommand;
-use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditUploadedFileValueCommand;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\FileData;
@@ -60,7 +59,7 @@ class StoredFileUpdater implements ValueUpdaterInterface
 
     private function getFileData(
         Asset $asset,
-        $command,
+        EditStoredFileValueCommand $command,
         AbstractAttribute $attribute,
         ChannelReference $channelReference,
         LocaleReference $localeReference
@@ -76,7 +75,7 @@ class StoredFileUpdater implements ValueUpdaterInterface
             $fileInfo->setMimeType($command->mimeType);
             $fileInfo->setExtension($command->extension);
 
-            $fileData = FileData::createFromFileinfo($fileInfo, new \DateTimeImmutable());
+            $fileData = FileData::createFromFileinfo($fileInfo, $command->updatedAt);
         } else {
             $fileData = $existingValue->getData();
         }

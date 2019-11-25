@@ -137,6 +137,7 @@ class EditStoredFileValueCommandFactorySpec extends ObjectBehavior
                 'size' => 42,
                 'mimeType' => '',
                 'extension' => '',
+                'updatedAt' => '2019-11-22T15:16:21+0000',
             ]
         ];
 
@@ -146,6 +147,7 @@ class EditStoredFileValueCommandFactorySpec extends ObjectBehavior
             'size' => 1024,
             'mimeType' => 'image/png',
             'extension' => 'png',
+            'updatedAt' => '2019-11-22T15:16:21+0000',
         ]);
 
         $expectedCommand = new EditStoredFileValueCommand(
@@ -156,7 +158,8 @@ class EditStoredFileValueCommandFactorySpec extends ObjectBehavior
             'stark_portrait.png',
             1024,
             'image/png',
-            'png'
+            'png',
+            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ISO8601, '2019-11-22T15:16:21+0000')
         );
 
         $this->create($imageAttribute, $normalizedValue)->shouldBeLike($expectedCommand);
@@ -178,6 +181,7 @@ class EditStoredFileValueCommandFactorySpec extends ObjectBehavior
             'size' => 1024,
             'mimeType' => 'image/png',
             'extension' => 'png',
+            'updatedAt' => '2019-11-22T15:16:21+0000',
         ]);
 
         $expectedCommand = new EditStoredFileValueCommand(
@@ -188,7 +192,8 @@ class EditStoredFileValueCommandFactorySpec extends ObjectBehavior
             'stark_portrait.png',
             1024,
             'image/png',
-            'png'
+            'png',
+            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ISO8601, '2019-11-22T15:16:21+0000')
         );
 
         $this->create($imageAttribute, $normalizedValue)->shouldBeLike($expectedCommand);
