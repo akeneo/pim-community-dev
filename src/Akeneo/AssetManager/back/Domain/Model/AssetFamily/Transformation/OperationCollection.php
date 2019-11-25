@@ -31,6 +31,10 @@ final class OperationCollection implements \IteratorAggregate
         return new \ArrayIterator($this->operations);
     }
 
+    /**
+     * @param Operation[] $operations
+     * @return OperationCollection
+     */
     public static function create(array $operations): self
     {
         return new self($operations);

@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace spec\Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCollectionFactory;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
@@ -28,10 +30,11 @@ class ConnectorAssetFamilyHydratorSpec extends ObjectBehavior
 {
     function let(
         Connection $connection,
-        ConnectorProductLinkRulesHydrator $productLinkRulesHydrator
+        ConnectorProductLinkRulesHydrator $productLinkRulesHydrator,
+        TransformationCollectionFactory $transformationCollectionFactory
     ) {
         $connection->getDatabasePlatform()->willReturn(new MySqlPlatform());
-        $this->beConstructedWith($connection, $productLinkRulesHydrator);
+        $this->beConstructedWith($connection, $productLinkRulesHydrator, $transformationCollectionFactory);
     }
 
     function it_is_initializable()
@@ -39,7 +42,10 @@ class ConnectorAssetFamilyHydratorSpec extends ObjectBehavior
         $this->shouldHaveType(ConnectorAssetFamilyHydrator::class);
     }
 
-    function it_hydrates_a_connector_asset_family(ConnectorProductLinkRulesHydrator $productLinkRulesHydrator) {
+    function it_hydrates_a_connector_asset_family(
+        ConnectorProductLinkRulesHydrator $productLinkRulesHydrator,
+        TransformationCollectionFactory $transformationCollectionFactory
+    ) {
         $row = [
             'identifier'                  => 'designer',
             'image_file_key'              => 'test/image_1.jpg',
@@ -53,7 +59,8 @@ class ConnectorAssetFamilyHydratorSpec extends ObjectBehavior
                     'conditions' => 'FAKE',
                     'actions' => 'FAKE',
                 ]
-            ])
+            ]),
+            'transformations' => json_encode([['fake_transformation']]),
         ];
 
         $file = new FileInfo();
@@ -73,6 +80,11 @@ class ConnectorAssetFamilyHydratorSpec extends ObjectBehavior
             ]
         ]);
 
+        $transformationCollection = TransformationCollection::noTransformation();
+        $transformationCollectionFactory->fromNormalized([
+            ['fake_transformation'],
+        ])->willReturn($transformationCollection);
+
         $expectedAssetFamily = new ConnectorAssetFamily(
             AssetFamilyIdentifier::fromString('designer'),
             LabelCollection::fromArray([
@@ -85,13 +97,17 @@ class ConnectorAssetFamilyHydratorSpec extends ObjectBehavior
                     'product_selections' => 'FAKE',
                     'assign_assets_to' => 'FAKE',
                 ]
-            ]
+            ],
+            $transformationCollection
         );
 
         $this->hydrate($row)->shouldBeLike($expectedAssetFamily);
     }
 
-    function it_hydrates_an_asset_family_without_image(ConnectorProductLinkRulesHydrator $productLinkRulesHydrator) {
+    function it_hydrates_an_asset_family_without_image(
+        ConnectorProductLinkRulesHydrator $productLinkRulesHydrator,
+        TransformationCollectionFactory $transformationCollectionFactory
+    ) {
         $row = [
             'identifier'                  => 'designer',
             'image_file_key'              => null,
@@ -100,8 +116,14 @@ class ConnectorAssetFamilyHydratorSpec extends ObjectBehavior
                 'en_US' => 'Designer',
                 'fr_FR' => 'Designer',
             ]),
-            'rule_templates' => json_encode([])
+            'rule_templates' => json_encode([]),
+            'transformations' => json_encode([['fake_transformation']]),
         ];
+
+        $transformationCollection = TransformationCollection::noTransformation();
+        $transformationCollectionFactory->fromNormalized([
+            ['fake_transformation'],
+        ])->willReturn($transformationCollection);
 
         $expectedAssetFamily = new ConnectorAssetFamily(
             AssetFamilyIdentifier::fromString('designer'),
@@ -110,7 +132,8 @@ class ConnectorAssetFamilyHydratorSpec extends ObjectBehavior
                 'fr_FR' => 'Designer',
             ]),
             Image::createEmpty(),
-            []
+            [],
+            $transformationCollection
         );
 
         $productLinkRulesHydrator->hydrate([])->willReturn([]);

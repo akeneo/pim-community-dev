@@ -14,6 +14,12 @@ declare(strict_types=1);
 namespace spec\Akeneo\AssetManager\Domain\Query\AssetFamily\Connector;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ThumbnailOperation;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Source;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
@@ -26,8 +32,16 @@ class ConnectorAssetFamilySpec extends ObjectBehavior
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('starck');
         $labelCollection = LabelCollection::fromArray([
             'en_US' => 'Stark',
-            'fr_FR' => 'Stark'
+            'fr_FR' => 'Stark',
         ]);
+
+        $transformation = Transformation::create(
+            Source::createFromNormalized(['attribute' => 'main', 'channel' => null, 'locale' => null]),
+            Target::createFromNormalized(['attribute' => 'target', 'channel' => null, 'locale' => null]),
+            OperationCollection::create([
+                ThumbnailOperation::create(['width' => 100, 'height' => 80]),
+            ])
+        );
 
         $this->beConstructedWith(
             $assetFamilyIdentifier,
@@ -50,7 +64,8 @@ class ConnectorAssetFamilySpec extends ObjectBehavior
                         ],
                     ]
                 ]
-            ]
+            ],
+            TransformationCollection::create([$transformation])
         );
     }
 
@@ -85,7 +100,27 @@ class ConnectorAssetFamilySpec extends ObjectBehavior
                         ],
                     ]
                 ]
-            ]
+            ],
+            'transformations' => [
+                [
+                    'source' => [
+                        'attribute' => 'main',
+                        'channel' => null,
+                        'locale' => null,
+                    ],
+                    'target' => [
+                        'attribute' => 'target',
+                        'channel' => null,
+                        'locale' => null,
+                    ],
+                    'operations' => [
+                        [
+                            'type' => 'thumbnail',
+                            'parameters' => ['width' => 100, 'height' => 80],
+                        ],
+                    ],
+                ],
+            ],
         ]);
     }
 }

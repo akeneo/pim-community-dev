@@ -3,7 +3,6 @@
 namespace Akeneo\AssetManager\Infrastructure\Connector\Api\AssetFamily;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyExistsInterface;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\FindConnectorAssetFamilyByAssetFamilyIdentifierInterface;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\AssetFamily\Hal\AddHalDownloadLinkToAssetFamilyImage;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -15,18 +14,13 @@ class GetConnectorAssetFamilyAction
     /** @var FindConnectorAssetFamilyByAssetFamilyIdentifierInterface */
     private $findConnectorAssetFamily;
 
-    /** @var AssetFamilyExistsInterface */
-    private $assetFamilyExists;
-
     /** @var AddHalDownloadLinkToAssetFamilyImage */
     private $addHalLinksToAssetFamilyImage;
 
     public function __construct(
         FindConnectorAssetFamilyByAssetFamilyIdentifierInterface $findConnectorAssetFamily,
-        AssetFamilyExistsInterface $assetFamilyExists,
         AddHalDownloadLinkToAssetFamilyImage $addHalLinksToImageValues
     ) {
-        $this->assetFamilyExists = $assetFamilyExists;
         $this->findConnectorAssetFamily = $findConnectorAssetFamily;
         $this->addHalLinksToAssetFamilyImage = $addHalLinksToImageValues;
     }

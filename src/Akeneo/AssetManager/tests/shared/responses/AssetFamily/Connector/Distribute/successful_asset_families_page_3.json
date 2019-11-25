@@ -29,7 +29,8 @@
             "labels": {
               "fr_FR": "Marque"
             },
-            "product_link_rules": []
+            "product_link_rules": [],
+            "transformations": []
           }
         ]
       }

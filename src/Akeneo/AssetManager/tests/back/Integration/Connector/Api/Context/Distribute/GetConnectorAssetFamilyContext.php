@@ -19,6 +19,12 @@ use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ThumbnailOperation;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Source;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
@@ -89,11 +95,20 @@ class GetConnectorAssetFamilyContext implements Context
             ]
         ];
 
+        $transformationCollection = TransformationCollection::create([
+            Transformation::create(
+                Source::createFromNormalized(['attribute' => 'main', 'channel' => null, 'locale' => null]),
+                Target::createFromNormalized(['attribute' => 'target', 'channel' => null, 'locale' => null]),
+                OperationCollection::create([ThumbnailOperation::create(['width' => 100, 'height' => 80])])
+            )
+        ]);
+
         $assetFamily = new ConnectorAssetFamily(
             $assetFamilyIdentifier,
             LabelCollection::fromArray(['fr_FR' => 'Marque']),
             Image::fromFileInfo($imageInfo),
-            $productLinkRules
+            $productLinkRules,
+            $transformationCollection
         );
 
         $this->findConnectorAssetFamily->save(

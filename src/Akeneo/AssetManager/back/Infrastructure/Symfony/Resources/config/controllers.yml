@@ -209,7 +209,6 @@ services:
         class: Akeneo\AssetManager\Infrastructure\Connector\Api\AssetFamily\GetConnectorAssetFamilyAction
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_connector_asset_family_by_asset_family_identifier'
-            - '@akeneo_assetmanager.infrastructure.persistence.query.asset_family_exists'
             - '@akeneo_assetmanager.infrasctucture.connector.add_hal_download_link_to_asset_family_image'
 
     akeneo_assetmanager.infrastructure.connector.action.asset_families.get:

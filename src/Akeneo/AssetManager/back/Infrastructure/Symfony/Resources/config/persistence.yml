@@ -385,6 +385,7 @@ services:
         arguments:
             - '@database_connection'
             - '@akeneo_assetmanager.infrastructure.persistence.asset_family.hydrator.connector_product_link_rules'
+            - '@Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCollectionFactory'
 
     akeneo_assetmanager.infrastructure.persistence.asset_family.hydrator.connector_product_link_rules:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\ConnectorProductLinkRulesHydrator

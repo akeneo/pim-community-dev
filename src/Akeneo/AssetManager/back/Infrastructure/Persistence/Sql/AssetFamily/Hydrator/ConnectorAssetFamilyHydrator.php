@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCollectionFactory;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
@@ -34,12 +35,17 @@ class ConnectorAssetFamilyHydrator
     /** @var ConnectorProductLinkRulesHydrator */
     private $productLinkRulesHydrator;
 
+    /** @var TransformationCollectionFactory */
+    private $transformationCollectionFactory;
+
     public function __construct(
         Connection $connection,
-        ConnectorProductLinkRulesHydrator $productLinkRulesHydrator
+        ConnectorProductLinkRulesHydrator $productLinkRulesHydrator,
+        TransformationCollectionFactory $transformationCollectionFactory
     ) {
         $this->platform = $connection->getDatabasePlatform();
         $this->productLinkRulesHydrator = $productLinkRulesHydrator;
+        $this->transformationCollectionFactory = $transformationCollectionFactory;
     }
 
     public function hydrate(array $row): ConnectorAssetFamily
@@ -54,6 +60,8 @@ class ConnectorAssetFamilyHydrator
             ->convertToPHPValue($row['image_original_filename'], $this->platform);
         $ruleTemplates = Type::getType(Type::JSON_ARRAY)
             ->convertToPHPValue($row['rule_templates'], $this->platform);
+        $transformations = Type::getType(Type::JSON_ARRAY)
+            ->convertToPHPValue($row['transformations'], $this->platform);
 
         $image = Image::createEmpty();
 
@@ -70,7 +78,8 @@ class ConnectorAssetFamilyHydrator
             AssetFamilyIdentifier::fromString($identifier),
             LabelCollection::fromArray($labels),
             $image,
-            $productLinkRules
+            $productLinkRules,
+            $this->transformationCollectionFactory->fromNormalized($transformations)
         );
 
         return $connectorAssetFamily;

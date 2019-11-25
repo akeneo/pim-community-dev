@@ -31,6 +31,29 @@
             }
           ]
         }
+      ],
+      "transformations": [
+        {
+          "source": {
+            "attribute": "main",
+            "channel": null,
+            "locale": null
+          },
+          "target": {
+            "attribute": "target",
+            "channel": null,
+            "locale": null
+          },
+          "operations": [
+            {
+              "type": "thumbnail",
+              "parameters": {
+                "width": 100,
+                "height": 80
+              }
+            }
+          ]
+        }
       ]
     }
   }
