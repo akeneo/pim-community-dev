@@ -37,7 +37,7 @@ class FileFetcher implements FileFetcherInterface
 
         if (false === $stream = $filesystem->readStream($fileKey)) {
             throw new FileTransferException(
-                sprintf('Unable to fetch the file "%s" from the filesystem.', $fileKey)
+                sprintf('Unable to open stream from file "%s" from the filesystem.', $fileKey)
             );
         }
 
@@ -51,7 +51,7 @@ class FileFetcher implements FileFetcherInterface
 
         if (false === file_put_contents($localPathname, $stream)) {
             throw new FileTransferException(
-                sprintf('Unable to fetch the file "%s" from the filesystem.', $fileKey)
+                sprintf('Unable to send stream to file "%s" from the filesystem.', $fileKey)
             );
         }
 
