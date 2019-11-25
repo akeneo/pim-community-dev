@@ -35,9 +35,9 @@ class DbalAppRepositoryIntegration extends TestCase
 
     public function test_it_saves_a_new_app()
     {
-        $clientId = $this->appLoader->createClient('magento');
+        $client = $this->appLoader->createClient('magento');
         $userId = $this->appLoader->createUser('magento', 'Magento connector');
-        $app = new App('magento', 'Magento connector', FlowType::DATA_DESTINATION, $clientId, $userId);
+        $app = new App('magento', 'Magento connector', FlowType::DATA_DESTINATION, $client->id(), $userId);
 
         $this->repository->create($app);
 
