@@ -2,6 +2,7 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Fixture;
 
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use AkeneoTest\Pim\Enrichment\Integration\Fixture;
 
 /**
@@ -9,14 +10,18 @@ use AkeneoTest\Pim\Enrichment\Integration\Fixture;
  */
 class CompletenessFilter
 {
+    /** @var Client */
+    private $client;
+
     /** @var Fixture\EntityBuilder */
     private $entityBuilder;
 
     /**
      * @param EntityBuilder $entityBuilder
      */
-    public function __construct(Fixture\EntityBuilder $entityBuilder)
+    public function __construct(Client $client, Fixture\EntityBuilder $entityBuilder)
     {
+        $this->client = $client;
         $this->entityBuilder = $entityBuilder;
     }
 
@@ -209,5 +214,7 @@ class CompletenessFilter
                 ],
             ],
         ]);
+
+        $this->client->refreshIndex();
     }
 }

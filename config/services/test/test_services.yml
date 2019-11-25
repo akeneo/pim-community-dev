@@ -133,6 +133,7 @@ services:
     akeneo_integration_tests.catalog.fixture.completeness_filter:
         class: 'AkeneoTest\Pim\Enrichment\Integration\Fixture\CompletenessFilter'
         arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@akeneo_integration_tests.catalog.fixture.build_entity'
 
     akeneo_integration_tests.launcher.job_launcher:

@@ -12,7 +12,7 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 /**
  * Test product models and their descendants have been correctly indexed after being saved.
  */
-class SavingProductModelDescendantsIntegration extends TestCase
+class IndexProductModelDescendantsIntegration extends TestCase
 {
     /** @var Client */
     private $esProductAndProductModelClient;
@@ -37,8 +37,6 @@ class SavingProductModelDescendantsIntegration extends TestCase
     {
         $this->createProductsAndProductModelsTree('seed');
         $this->get('doctrine.orm.entity_manager')->clear();
-        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
-        sleep(5);
 
         $rootProductModel = $this->get('pim_catalog.repository.product_model')
             ->findOneByIdentifier('seed_root_product_model');
@@ -52,10 +50,6 @@ class SavingProductModelDescendantsIntegration extends TestCase
         ]);
 
         $this->get('pim_catalog.saver.product_model')->save($rootProductModel);
-
-        while ($this->jobLauncher->hasJobInQueue()) {
-            $this->jobLauncher->launchConsumerOnce();
-        }
 
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
@@ -82,40 +76,6 @@ class SavingProductModelDescendantsIntegration extends TestCase
                 ],
             ]
         );
-    }
-
-    public function testProductModelDescendantsCompletenessIsCalculatedOnUnitarySave()
-    {
-        $this->createProductsAndProductModelsTree('seed');
-        $this->get('doctrine.orm.entity_manager')->clear();
-        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
-        sleep(5);
-
-        $this->assertCompletenessForChannel('seed_variant_product_2', 'ecommerce', 5);
-        $this->get('doctrine.orm.entity_manager')->clear();
-        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
-        sleep(5);
-
-        $rootProductModel = $this->get('pim_catalog.repository.product_model')
-            ->findOneByIdentifier('seed_root_product_model');
-
-        $this->get('pim_catalog.updater.product_model')->update($rootProductModel, [
-            'values' => [
-                'a_date' => [
-                    ['locale' => null, 'scope' => null, 'data' => '2016-06-13T00:00:00+02:00'],
-                ],
-            ],
-        ]);
-
-        $this->get('pim_catalog.saver.product_model')->save($rootProductModel);
-
-        while ($this->jobLauncher->hasJobInQueue()) {
-            $this->jobLauncher->launchConsumerOnce();
-        }
-
-        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
-
-        $this->assertCompletenessForChannel('seed_variant_product_2', 'ecommerce', 10);
     }
 
     /**
@@ -167,27 +127,7 @@ class SavingProductModelDescendantsIntegration extends TestCase
         $entityBuilder->createVariantProduct($seed . '_variant_product_3', 'familyA', 'familyVariantA1', $subProductModel2, []);
         $entityBuilder->createVariantProduct($seed . '_variant_product_4', 'familyA', 'familyVariantA1', $subProductModel2, []);
 
-    }
-
-    /**
-     * @param string $productName
-     * @param string $expectedChannelCode
-     * @param int    $expectedRatio
-     */
-    private function assertCompletenessForChannel(string $productName, string $expectedChannelCode, int $expectedRatio): void
-    {
-        $productVariant2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier($productName);
-        $completenessCollection = $this->getProductCompletenesses()->fromProductId($productVariant2->getId());
-
-        foreach ($completenessCollection as $completeness) {
-            if ($expectedChannelCode === $completeness->channelCode()) {
-                $this->assertSame(
-                    $expectedRatio,
-                    $completeness->ratio(),
-                    sprintf('Expect ratio to be "%s", "%s" given', $expectedRatio, $completeness->ratio())
-                );
-            }
-        }
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
     }
 
     private function authenticateUserAdmin(): void
@@ -195,10 +135,5 @@ class SavingProductModelDescendantsIntegration extends TestCase
         $user = $this->get('pim_user.provider.user')->loadUserByUsername('admin');
         $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
         $this->get('security.token_storage')->setToken($token);
-    }
-
-    private function getProductCompletenesses(): GetProductCompletenesses
-    {
-        return $this->get('akeneo.pim.enrichment.product.query.get_product_completenesses');
     }
 }
