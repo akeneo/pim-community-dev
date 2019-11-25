@@ -63,11 +63,24 @@ Array [
           id="label"
           maxLength={100}
           name="label"
-          onChange={[Function]}
+          onChange={[MockFunction handleChange]}
           required={true}
           type="text"
           value="Bynder"
         />
+      </div>
+      <div
+        className="AknFieldContainer-footer"
+      >
+        <div
+          className="AknFieldContainer-validationErrors"
+        >
+          <span
+            className="AknFieldContainer-validationError"
+          >
+            error_message
+          </span>
+        </div>
       </div>
     </div>
     <div
