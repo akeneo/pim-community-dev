@@ -126,10 +126,6 @@ pim:
       enabled: true
       pimCommand: "akeneo:batch:purge-job-execution"
       schedule: "0 0 1 * *"
-    completeness-calculate:
-      enabled: true
-      pimCommand: "pim:completeness:calculate"
-      schedule: "0 2 1 * *"
     rule-run:
       enabled: true
       pimCommand: "akeneo:rule:run"
