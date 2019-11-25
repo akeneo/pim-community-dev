@@ -1,5 +1,16 @@
 # 2.3.x
 
+# 2.3.71 (2019-11-25)
+
+# 2.3.70 (2019-11-20)
+
+## Bug fixes
+
+- PIM-7027: fix completeness visibility on product edit form
+- PIM-8965: Fix misleading error messages due to all-caps formatting
+- PIM-8954: Forbid user without "list users" permission to access other user data
+- PIM-8989: fix attributes order in the list of attributes
+
 # 2.3.69 (2019-10-24)
 
 ## Bug fixes
