@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Job;
 
 use Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationLauncherInterface;
-use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueue;
 use Webmozart\Assert\Assert;
 
@@ -29,16 +29,16 @@ class ComputeTransformationLauncher implements ComputeTransformationLauncherInte
     }
 
     /**
-     * @param AssetCode[] $assetCodes
+     * @param AssetIdentifier[] $assetIdentifiers
      */
-    public function launch(array $assetCodes): void
+    public function launch(array $assetIdentifiers): void
     {
-        Assert::allIsInstanceOf($assetCodes, AssetCode::class);
+        Assert::allIsInstanceOf($assetIdentifiers, AssetIdentifier::class);
 
         $config = [
-            'asset_codes' => array_map(function (AssetCode $assetCode) {
-                return (string) $assetCode;
-            }, $assetCodes),
+            'asset_identifiers' => array_map(function (AssetIdentifier $assetIdentifier) {
+                return (string) $assetIdentifier;
+            }, $assetIdentifiers),
         ];
 
         $this->publishJobToQueue->publish(

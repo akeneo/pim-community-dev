@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Job;
 
 use Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationsExecutor;
-use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
@@ -38,8 +38,8 @@ class ComputeTransformations implements TaskletInterface
 
     public function execute()
     {
-        $this->computeTransformationsExecutor->execute(array_map(function (string $assetCode) {
-            return AssetCode::fromString($assetCode);
-        }, $this->stepExecution->getJobParameters()->get('asset_codes')));
+        $this->computeTransformationsExecutor->execute(array_map(function (string $assetIdentifier) {
+            return AssetIdentifier::fromString($assetIdentifier);
+        }, $this->stepExecution->getJobParameters()->get('asset_identifiers')));
     }
 }

@@ -3,7 +3,7 @@
 namespace spec\Akeneo\AssetManager\Infrastructure\Job;
 
 use Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationsExecutor;
-use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Infrastructure\Job\ComputeTransformations;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -26,10 +26,10 @@ class ComputeTransformationsSpec extends ObjectBehavior
         JobParameters $jobParameters
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('asset_codes')->willReturn(['assetCode1', 'assetCode2']);
+        $jobParameters->get('asset_identifiers')->willReturn(['assetIdentifier1', 'assetIdentifier2']);
 
         $computeTransformationsExecutor
-            ->execute([AssetCode::fromString('assetCode1'), AssetCode::fromString('assetCode2')])
+            ->execute([AssetIdentifier::fromString('assetIdentifier1'), AssetIdentifier::fromString('assetIdentifier2')])
             ->shouldBeCalledOnce();
 
         $this->execute();

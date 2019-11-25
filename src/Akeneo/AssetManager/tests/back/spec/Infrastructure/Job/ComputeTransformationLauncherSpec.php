@@ -2,7 +2,7 @@
 
 namespace spec\Akeneo\AssetManager\Infrastructure\Job;
 
-use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Infrastructure\Job\ComputeTransformationLauncher;
 use Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueue;
 use PhpSpec\ObjectBehavior;
@@ -25,10 +25,10 @@ class ComputeTransformationLauncherSpec extends ObjectBehavior
     {
         $publishJobToQueue->publish(
             'asset_manager_compute_transformations', [
-                'asset_codes' => ['assetCode1', 'assetCode2']
+                'asset_identifiers' => ['assetIdentifier1', 'assetIdentifier2']
             ]
         )->shouldBeCalledOnce();
 
-        $this->launch([AssetCode::fromString('assetCode1'), AssetCode::fromString('assetCode2')]);
+        $this->launch([AssetIdentifier::fromString('assetIdentifier1'), AssetIdentifier::fromString('assetIdentifier2')]);
     }
 }

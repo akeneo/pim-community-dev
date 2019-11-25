@@ -13,17 +13,17 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets;
 
-use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Webmozart\Assert\Assert;
 
 class ComputeTransformationsExecutor
 {
     /**
-     * @param AssetCode[] $assetCodes
+     * @param AssetIdentifier[] $assetIdentifiers
      */
-    public function execute(array $assetCodes)
+    public function execute(array $assetIdentifiers)
     {
-        Assert::allIsInstanceOf($assetCodes, AssetCode::class);
+        Assert::allIsInstanceOf($assetIdentifiers, AssetIdentifier::class);
 
         throw new \Exception('TODO; to implement');
     }

@@ -15,5 +15,5 @@ namespace Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets;
 
 interface ComputeTransformationLauncherInterface
 {
-    public function launch(array $assetCodes): void;
+    public function launch(array $assetIdentifiers): void;
 }

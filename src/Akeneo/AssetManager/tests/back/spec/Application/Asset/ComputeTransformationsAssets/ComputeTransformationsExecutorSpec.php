@@ -3,7 +3,7 @@
 namespace spec\Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets;
 
 use Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationsExecutor;
-use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use PhpSpec\ObjectBehavior;
 
 class ComputeTransformationsExecutorSpec extends ObjectBehavior
@@ -13,7 +13,7 @@ class ComputeTransformationsExecutorSpec extends ObjectBehavior
         $this->shouldHaveType(ComputeTransformationsExecutor::class);
     }
 
-    function it_only_accepts_asset_codes()
+    function it_only_accepts_asset_identifiers()
     {
         $this->shouldThrow(\InvalidArgumentException::class)->during('execute', [[new \stdClass()]]);
     }
@@ -23,6 +23,6 @@ class ComputeTransformationsExecutorSpec extends ObjectBehavior
     {
         $this
             ->shouldThrow(new \Exception('TODO; to implement'))
-            ->during('execute', [[AssetCode::fromString('assetCode1')]]);
+            ->during('execute', [[AssetIdentifier::fromString('assetIdentifier1')]]);
     }
 }

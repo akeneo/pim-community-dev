@@ -5,7 +5,7 @@ namespace spec\Akeneo\AssetManager\Application\Asset\ComputeTransformationsAsset
 use Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationLauncherInterface;
 use Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationsCommand;
 use Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationsHandler;
-use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use PhpSpec\ObjectBehavior;
 
 class ComputeTransformationsHandlerSpec extends ObjectBehavior
@@ -20,10 +20,10 @@ class ComputeTransformationsHandlerSpec extends ObjectBehavior
         ComputeTransformationLauncherInterface $computeTransformationLauncher,
         ComputeTransformationsCommand $command
     ) {
-        $command->getAssetCodes()->willReturn(['assetCode1', 'assetCode2']);
+        $command->getAssetIdentifiers()->willReturn(['assetIdentifier1', 'assetIdentifier2']);
 
         $computeTransformationLauncher
-            ->launch([AssetCode::fromString('assetCode1'), AssetCode::fromString('assetCode2')])
+            ->launch([AssetIdentifier::fromString('assetIdentifier1'), AssetIdentifier::fromString('assetIdentifier2')])
             ->shouldBeCalledOnce();
 
         $this->handle($command);

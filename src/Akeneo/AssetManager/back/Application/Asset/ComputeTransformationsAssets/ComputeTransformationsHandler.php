@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets;
 
-use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 
 class ComputeTransformationsHandler
 {
@@ -27,8 +27,8 @@ class ComputeTransformationsHandler
 
     public function handle(ComputeTransformationsCommand $command): void
     {
-        $this->computeTransformationLauncher->launch(array_map(function ($assetCode) {
-            return AssetCode::fromString($assetCode);
-        }, $command->getAssetCodes()));
+        $this->computeTransformationLauncher->launch(array_map(function ($assetIdenfier) {
+            return AssetIdentifier::fromString($assetIdenfier);
+        }, $command->getAssetIdentifiers()));
     }
 }

@@ -18,17 +18,17 @@ use Webmozart\Assert\Assert;
 class ComputeTransformationsCommand
 {
     /** @var string[] */
-    private $assetCodes;
+    private $assetIdentifiers;
 
-    public function __construct(array $assetCodes)
+    public function __construct(array $assetIdentifiers)
     {
-        Assert::allIsInstanceOf($assetCodes, 'string');
+        Assert::allStringNotEmpty($assetIdentifiers);
 
-        $this->assetCodes = $assetCodes;
+        $this->assetIdentifiers = $assetIdentifiers;
     }
 
-    public function getAssetCodes(): array
+    public function getAssetIdentifiers(): array
     {
-        return $this->assetCodes;
+        return $this->assetIdentifiers;
     }
 }
