@@ -101,18 +101,14 @@ class PublishProductTasklet extends AbstractProductPublisherTasklet implements T
                     continue;
                 }
 
-                $violations = $this->validator->validate($entityWithFamily);
                 $isAuthorized = $this->authorizationChecker->isGranted(Attributes::OWN, $entityWithFamily);
 
-                if (0 === $violations->count() && $isAuthorized) {
+                if ($isAuthorized) {
                     $this->stepExecution->incrementSummaryInfo('mass_published');
                 } else {
                     $this->stepExecution->incrementSummaryInfo('skipped_products');
                     $invalidEntitiesWithFamily[$index] = $entityWithFamily;
 
-                    if (0 < $violations->count()) {
-                        $this->addWarningMessage($violations, $entityWithFamily);
-                    }
                     if (!$isAuthorized) {
                         $this->stepExecution->addWarning(
                             'pim_enrich.mass_edit_action.publish.message.error',

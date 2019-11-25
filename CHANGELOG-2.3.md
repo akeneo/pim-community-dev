@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-8993: Fix mass publish product by removing validation
+
 # 2.3.70 (2019-11-20)
 
 # 2.3.69 (2019-10-24)
