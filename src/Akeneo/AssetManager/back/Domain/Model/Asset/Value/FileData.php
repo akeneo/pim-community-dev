@@ -110,7 +110,6 @@ class FileData implements ValueDataInterface
 
         $updatedAt = \DateTime::createFromFormat(\DateTime::ISO8601, $normalizedData[self::UPDATED_AT]);
         if (false === $updatedAt) {
-            var_dump($normalizedData[self::UPDATED_AT]);
             $updatedAt = null;
         }
 
@@ -122,5 +121,10 @@ class FileData implements ValueDataInterface
             $normalizedData[self::EXTENSION],
             $updatedAt
         );
+    }
+
+    public function getUpdatedAt(): ?\DateTime
+    {
+        return $this->updatedAt;
     }
 }

@@ -14,9 +14,10 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Domain\Model\AssetFamily;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
+use Traversable;
 use Webmozart\Assert\Assert;
 
-class TransformationCollection
+class TransformationCollection implements \IteratorAggregate
 {
     /** @var Transformation[] */
     private $transformations = [];
@@ -70,5 +71,10 @@ class TransformationCollection
         }
 
         $this->transformations[] = $transformation;
+    }
+
+    public function getIterator()
+    {
+        return new \ArrayIterator($this->transformations);
     }
 }
