@@ -68,7 +68,7 @@ SQL;
         Assert::assertNotNull($jobId);
 
         $sql = <<<SQL
-INSERT INTO akeneo_pim.akeneo_batch_job_execution (id, job_instance_id, pid, user, status, start_time, end_time, create_time, updated_time, health_check_time, exit_code, exit_description, failure_exceptions, log_file, raw_parameters)
+INSERT INTO akeneo_batch_job_execution (id, job_instance_id, pid, user, status, start_time, end_time, create_time, updated_time, health_check_time, exit_code, exit_description, failure_exceptions, log_file, raw_parameters)
 VALUES
 (1000, $jobId, null, 'admin', 2, null, null, '2019-10-07 07:50:24', null, null, 'UNKNOWN', '', 'a:0:{}', null, '{"product_model_codes": ["pm1"]}'),
 (1001, $jobId, null, 'admin', 2, null, null, '2019-10-07 07:51:36', null, null, 'UNKNOWN', '', 'a:0:{}', null, '{"product_model_codes": ["pm1", "pm2"]}')
@@ -77,7 +77,7 @@ SQL;
         $this->getConnection()->exec($sql);
 
         $sql = <<<SQL
-INSERT INTO akeneo_pim.akeneo_batch_job_execution_queue (id, job_execution_id, options, consumer, create_time, updated_time)
+INSERT INTO akeneo_batch_job_execution_queue (id, job_execution_id, options, consumer, create_time, updated_time)
 VALUES
 (2000, 1000, '{"env": "prod"}', null, '2019-10-07 07:50:24', null),
 (2001, 1001, '{"env": "prod"}', null, '2019-10-07 07:51:36', null)
