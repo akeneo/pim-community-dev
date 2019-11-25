@@ -6,6 +6,7 @@ namespace Akeneo\Apps\Application\Command;
 use Akeneo\Apps\Application\Service\CreateClientInterface;
 use Akeneo\Apps\Application\Service\CreateUserInterface;
 use Akeneo\Apps\Domain\Exception\ConstraintViolationListException;
+use Akeneo\Apps\Domain\Model\Read\AppWithCredentials;
 use Akeneo\Apps\Domain\Model\Write\App;
 use Akeneo\Apps\Domain\Persistence\Repository\AppRepository;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -49,11 +50,14 @@ class CreateAppHandler
         }
 
         $clientId = $this->createClient->execute($command->label());
+
+        $username = $command->code();
+        $password = $command->code();
         $userId = $this->createUser->execute(
-            $command->code(),
+            $username,
             $command->label(),
             'APP',
-            $command->code(),
+            $password,
             uniqid() . '@akeneo.com'
         );
 
