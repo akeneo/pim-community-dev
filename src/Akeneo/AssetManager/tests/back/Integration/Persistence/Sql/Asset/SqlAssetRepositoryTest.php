@@ -229,7 +229,7 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
                     $assetFamily->getAttributeAsImageReference()->getIdentifier(),
                     ChannelReference::noReference(),
                     LocaleReference::noReference(),
-                    FileData::createFromFileinfo($imageInfo)
+                    FileData::createFromFileinfo($imageInfo, \DateTimeImmutable::createFromFormat(\DateTimeImmutable::ISO8601, '2019-11-22T15:16:21+0000'))
                 ),
                 Value::create(
                     $this->fixturesDesigner['attributes']['name']->getIdentifier(),
@@ -241,7 +241,7 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
                     $this->fixturesDesigner['attributes']['main_image']->getIdentifier(),
                     ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('mobile')),
                     LocaleReference::noReference(),
-                    FileData::createFromFileinfo($fileInfo)
+                    FileData::createFromFileinfo($fileInfo, \DateTimeImmutable::createFromFormat(\DateTimeImmutable::ISO8601, '2019-11-22T15:16:21+0000'))
                 )
             ])
         );
@@ -331,7 +331,7 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
                     $this->fixturesDesigner['attributes']['main_image']->getIdentifier(),
                     ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('mobile')),
                     LocaleReference::noReference(),
-                    FileData::createFromFileinfo($fileInfo)
+                    FileData::createFromFileinfo($fileInfo, \DateTimeImmutable::createFromFormat(\DateTimeImmutable::ISO8601, '2019-11-22T15:16:21+0000'))
                 ),
                 Value::create(
                     $this->fixturesDesigner['attributes']['website']->getIdentifier(),

@@ -273,7 +273,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             AttributeIdentifier::fromString('label_designer_29aea250-bc94-49b2-8259-bbc116410eb2'),
             ChannelReference::noReference(),
             LocaleReference::noReference(),
-            FileData::createFromFileinfo($imageInfo)
+            FileData::createFromFileinfo($imageInfo, \DateTimeImmutable::createFromFormat(\DateTimeImmutable::ISO8601, '2019-11-22T15:16:21+0000'))
         );
 
         $labelValueEnUS = Value::create(

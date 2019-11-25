@@ -36,7 +36,7 @@ class EditStoredFileValueCommand extends AbstractEditValueCommand
     /** @var string */
     public $extension;
 
-    /** @var \DateTimeInterface */
+    /** @var ?\DateTimeInterface */
     public $updatedAt;
 
     public function __construct(
@@ -48,7 +48,7 @@ class EditStoredFileValueCommand extends AbstractEditValueCommand
         ?int $size,
         ?string $mimeType,
         ?string $extension,
-        \DateTimeInterface $updatedAt
+        ?\DateTimeInterface $updatedAt
     ) {
         parent::__construct($attribute, $channel, $locale);
 

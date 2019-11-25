@@ -348,7 +348,7 @@ final class EditAssetContext implements Context
             ),
             ChannelReference::noReference(),
             LocaleReference::noReference(),
-            FileData::createFromFileinfo($file)
+            FileData::createFromFileinfo($file, \DateTimeImmutable::createFromFormat(\DateTimeImmutable::ISO8601, '2019-11-22T15:16:21+0000'))
         );
         $this->createAsset($fileValue);
     }
@@ -1287,6 +1287,7 @@ final class EditAssetContext implements Context
                         'size' => self::DUMMY_IMAGE_SIZE,
                         'mimeType' => self::DUMMY_IMAGE_MIMETYPE,
                         'extension' => self::DUMMY_IMAGE_EXTENSION,
+                        'updatedAt' => '2019-11-22T15:16:21+0000'
                     ],
                 ],
             ],
@@ -1339,6 +1340,7 @@ final class EditAssetContext implements Context
             'size' => self::DUMMY_IMAGE_SIZE,
             'mimeType' => self::DUMMY_IMAGE_MIMETYPE,
             'extension' => self::INVALID_IMAGE_EXTENSION,
+            'updatedAt' => '2019-11-22T15:16:21+0000',
         ];
         $this->findFileData->save($fileData);
 
@@ -1371,6 +1373,7 @@ final class EditAssetContext implements Context
             'size' => self::DUMMY_IMAGE_SIZE,
             'mimeType' => self::INVALID_IMAGE_MIMETYPE,
             'extension' => self::DUMMY_IMAGE_EXTENSION,
+            'updatedAt' => '2019-11-22T15:16:21+0000'
         ];
         $this->findFileData->save($fileData);
 
@@ -1454,6 +1457,7 @@ final class EditAssetContext implements Context
                         'size' => self::DUMMY_IMAGE_SIZE,
                         'mimeType' => self::DUMMY_IMAGE_MIMETYPE,
                         'extension' => self::DUMMY_IMAGE_EXTENSION,
+                        'updatedAt' => '2019-11-22T15:16:21+0000',
                     ],
                 ],
             ],
@@ -1474,6 +1478,7 @@ final class EditAssetContext implements Context
             'size' => self::DUMMY_IMAGE_SIZE,
             'mimeType' => self::DUMMY_IMAGE_MIMETYPE,
             'extension' => self::DUMMY_IMAGE_EXTENSION,
+            'updatedAt' => '2019-11-22T15:16:21+0000',
         ];
         $this->findFileData->save($fileData);
 
@@ -1530,6 +1535,7 @@ final class EditAssetContext implements Context
             'size' => self::WRONG_IMAGE_SIZE,
             'mimeType' => self::DUMMY_IMAGE_MIMETYPE,
             'extension' => self::DUMMY_IMAGE_EXTENSION,
+            'updatedAt' => '2019-11-22T15:16:21+0000',
         ];
         $this->findFileData->save($fileData);
 
@@ -1636,6 +1642,7 @@ final class EditAssetContext implements Context
             'size' => self::DUMMY_IMAGE_SIZE,
             'mimeType' => self::DUMMY_IMAGE_MIMETYPE,
             'extension' => self::WRONG_EXTENSION,
+            'updatedAt' => '2019-11-22T15:16:21+0000',
         ];
         $this->findFileData->save($fileData);
 
@@ -2560,6 +2567,7 @@ final class EditAssetContext implements Context
             'size' => self::DUMMY_IMAGE_SIZE,
             'mimeType' => self::DUMMY_IMAGE_MIMETYPE,
             'extension' => self::DUMMY_IMAGE_EXTENSION,
+            'updatedAt' => '2019-11-22T15:16:21+0000',
         ], $override);
         $this->findFileData->save($fileData);
 

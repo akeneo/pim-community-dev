@@ -111,6 +111,9 @@ class FileData implements ValueDataInterface
             ));
         }
 
+        var_dump('NORMALIZED DATZA');
+        var_dump($normalizedData);
+
         $updatedAt = \DateTimeImmutable::createFromFormat(\DateTimeInterface::ISO8601, $normalizedData[self::UPDATED_AT]);
         if (false === $updatedAt) {
             $updatedAt = null;
