@@ -11,7 +11,7 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 
 /**
- * Indexer responsible for the indexation of product model entities. This indexer DOES NOT index children product that can
+ * Indexer responsible for the indexation of product model entities. This indexer DOES NOT index children products that can
  * contain information about the parent product models, such as the inherited values from the parent product model.
  *
  * This indexer SHOULD NOT be used when you update a product model, as you have to update the parent document in Elasticsearch.

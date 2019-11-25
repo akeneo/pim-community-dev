@@ -15,7 +15,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductModelIndexerI
  * It indexes product model ancestor as the ES product model documents contain some data about the children (is complete/is not complete for example).
  *
  * This indexer SHOULD be used when you update a product model, as you have to update the children documents in Elasticsearch.
-
+ *
+ * The Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelIndexer exists only to be used in this class (SRP).
+ *
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
