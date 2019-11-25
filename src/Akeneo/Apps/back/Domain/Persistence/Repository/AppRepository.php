@@ -18,4 +18,6 @@ interface AppRepository
     public function create(App $app): void;
 
     public function update(App $app): void;
+
+    public function delete(App $app): void;
 }

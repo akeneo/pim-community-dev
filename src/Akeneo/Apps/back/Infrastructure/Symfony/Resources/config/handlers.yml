@@ -24,6 +24,13 @@ services:
             - '@validator'
             - '@akeneo_app.persistence.repository.app'
 
+    akeneo_app.application.handler.delete_app:
+        class: 'Akeneo\Apps\Application\Command\DeleteAppHandler'
+        arguments:
+            - '@akeneo_app.persistence.repository.app'
+            - '@akeneo_app.service.client.delete_client'
+            - '@akeneo_app.service.user.delete_user'
+
     akeneo_app.application.handler.regenerate_app_secret:
         class: 'Akeneo\Apps\Application\Command\RegenerateAppSecretHandler'
         arguments:

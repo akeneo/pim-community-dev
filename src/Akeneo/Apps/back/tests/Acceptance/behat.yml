@@ -18,4 +18,5 @@ default:
                       - '@akeneo_app.application.handler.fetch_apps'
                       - '@akeneo_app.application.handler.find_an_app'
                       - '@akeneo_app.application.handler.create_app'
+                      - '@akeneo_app.application.handler.delete_app'
                       - '@akeneo_app.application.handler.update_app'
