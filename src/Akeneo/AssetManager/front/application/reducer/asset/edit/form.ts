@@ -2,7 +2,7 @@ import {NormalizedAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import formState, {FormState} from 'akeneoassetmanager/application/reducer/state';
 import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 import {combineReducers} from 'redux';
-import {NormalizedFile} from 'akeneoassetmanager/domain/model/file';
+import {File} from 'akeneoassetmanager/domain/model/file';
 import {NormalizedValue} from 'akeneoassetmanager/domain/model/asset/value';
 
 export interface EditionFormState {
@@ -34,7 +34,7 @@ const dataReducer = (
     asset: NormalizedAsset;
     label: string;
     locale: string;
-    image: NormalizedFile;
+    image: File;
     value: NormalizedValue;
   }
 ) => {

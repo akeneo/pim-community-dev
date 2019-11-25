@@ -6,7 +6,7 @@ import LabelCollection, {
   denormalizeLabelCollection,
   getLabelInCollection,
 } from 'akeneoassetmanager/domain/model/label-collection';
-import File, {NormalizedFile, denormalizeFile} from 'akeneoassetmanager/domain/model/file';
+import {File, createFileFromNormalized} from 'akeneoassetmanager/domain/model/file';
 import Completeness, {
   NormalizedCompleteness,
   denormalizeCompleteness,
@@ -24,7 +24,7 @@ export interface NormalizedProduct {
   identifier: NormalizedProductIdentifier;
   type: ProductType;
   labels: LabelCollection;
-  image: NormalizedFile;
+  image: File;
   completeness: NormalizedCompleteness;
 }
 
@@ -53,9 +53,6 @@ class ProductImplementation implements Product {
     if (!['product', 'product_model'].includes(type)) {
       throw new InvalidArgumentError('Product expects an ProductType as type argument');
     }
-    if (!(image instanceof File)) {
-      throw new InvalidArgumentError('Product expects a File as image argument');
-    }
     if (!(completeness instanceof Completeness)) {
       throw new InvalidArgumentError('Product expects a Completeness as completeness argument');
     }
@@ -79,7 +76,7 @@ class ProductImplementation implements Product {
     const type = normalizedProduct.type;
     const identifier = denormalizeProductIdentifier(normalizedProduct.identifier);
     const labelCollection = denormalizeLabelCollection(normalizedProduct.labels);
-    const image = denormalizeFile(normalizedProduct.image);
+    const image = createFileFromNormalized(normalizedProduct.image);
     const completeness = denormalizeCompleteness(normalizedProduct.completeness);
 
     return ProductImplementation.create(id, identifier, type, labelCollection, image, completeness);
@@ -123,7 +120,7 @@ class ProductImplementation implements Product {
       identifier: this.getIdentifier(),
       type: this.getType(),
       labels: this.getLabelCollection(),
-      image: this.getImage().normalize(),
+      image: this.getImage(),
       completeness: this.getCompleteness().normalize(),
     };
   }

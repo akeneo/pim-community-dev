@@ -16,7 +16,7 @@ import {
 import assetSaver from 'akeneoassetmanager/infrastructure/saver/asset';
 import assetFetcher, {AssetResult} from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import ValidationError, {createValidationError} from 'akeneoassetmanager/domain/model/validation-error';
-import File from 'akeneoassetmanager/domain/model/file';
+import {File} from 'akeneoassetmanager/domain/model/file';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset/edit';
 import {redirectToAssetIndex} from 'akeneoassetmanager/application/action/asset/router';
 import denormalizeAsset from 'akeneoassetmanager/application/denormalizer/asset';

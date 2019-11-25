@@ -1,5 +1,5 @@
 import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
-import File from 'akeneoassetmanager/domain/model/file';
+import {File} from 'akeneoassetmanager/domain/model/file';
 import Asset from 'akeneoassetmanager/domain/model/asset/asset';
 import Value from 'akeneoassetmanager/domain/model/asset/value';
 
@@ -16,7 +16,7 @@ export const assetEditionLabelUpdated = (label: string, locale: string) => {
 };
 
 export const assetEditionImageUpdated = (image: File) => {
-  return {type: 'ASSET_EDITION_IMAGE_UPDATED', image: image.normalize()};
+  return {type: 'ASSET_EDITION_IMAGE_UPDATED', image};
 };
 
 export const assetEditionValueUpdated = (value: Value) => {

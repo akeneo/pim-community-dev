@@ -84,9 +84,6 @@ describe('akeneo > asset > domain > model --- asset', () => {
       createAsset(12, '', '');
     }).toThrow('Identifier expects a string as parameter to be created');
     expect(() => {
-      createAsset(michelIdentifier, designerIdentifier, didierCode, didierLabels);
-    }).toThrow('Asset expects a File as image argument');
-    expect(() => {
       createAsset(michelIdentifier, sofaIdentifier, {nice: '12'}, michelLabels, emptyFile);
     }).toThrow('Code expects a string as parameter to be created');
     expect(() => {

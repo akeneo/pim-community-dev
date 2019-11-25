@@ -17,15 +17,6 @@ describe('akeneo > asset family > domain > model --- asset family', () => {
     );
   });
 
-  test('I cannot create a malformed asset family', () => {
-    expect(() => {
-      createAssetFamilyListItem(michelIdentifier, michelLabels, {
-        filePath: 'my_path.png',
-        originalFilename: 'path.png',
-      });
-    }).toThrow('AssetFamilyListItem expects a File as image argument');
-  });
-
   test('I can compare two asset families', () => {
     const michelLabels = {en_US: 'Michel'};
     expect(

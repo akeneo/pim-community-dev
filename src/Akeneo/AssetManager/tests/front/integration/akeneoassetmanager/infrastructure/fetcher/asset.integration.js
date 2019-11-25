@@ -24,7 +24,7 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset', () => {
       asset: {
         code: 'starck',
         identifier: 'designer_starck_a1677570-a278-444b-ab46-baa1db199392',
-        image: {},
+        image: null,
         labelCollection: {fr_FR: 'Philippe Starck'},
         assetFamilyIdentifier: 'designer',
         valueCollection: {
@@ -128,7 +128,7 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset', () => {
                 valuePerLocale: false,
               },
               channel: null,
-              data: {fileData: {}},
+              data: {fileData: null},
               locale: null,
             },
             {

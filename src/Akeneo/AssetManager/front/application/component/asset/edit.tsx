@@ -12,7 +12,7 @@ import Asset, {NormalizedAsset} from 'akeneoassetmanager/domain/model/asset/asse
 import {assetImageUpdated, backToAssetFamily, saveAsset} from 'akeneoassetmanager/application/action/asset/edit';
 import {deleteAsset} from 'akeneoassetmanager/application/action/asset/delete';
 import EditState from 'akeneoassetmanager/application/component/app/edit-state';
-import File from 'akeneoassetmanager/domain/model/file';
+import {File} from 'akeneoassetmanager/domain/model/file';
 import Locale from 'akeneoassetmanager/domain/model/locale';
 import {channelChanged, localeChanged} from 'akeneoassetmanager/application/action/asset/user';
 import LocaleSwitcher from 'akeneoassetmanager/application/component/app/locale-switcher';

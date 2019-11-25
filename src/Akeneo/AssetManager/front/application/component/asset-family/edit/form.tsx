@@ -5,7 +5,7 @@ import Flag from 'akeneoassetmanager/tools/component/flag';
 import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import {createLocaleFromCode} from 'akeneoassetmanager/domain/model/locale';
-import File from 'akeneoassetmanager/domain/model/file';
+import {File} from 'akeneoassetmanager/domain/model/file';
 import Image from 'akeneoassetmanager/application/component/app/image';
 import Key from 'akeneoassetmanager/tools/key';
 import {assetFamilyIdentifierStringValue} from 'akeneoassetmanager/domain/model/asset-family/identifier';

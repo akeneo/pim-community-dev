@@ -13,7 +13,7 @@ import {EditionFormState} from 'akeneoassetmanager/application/reducer/asset-fam
 import AssetFamily, {denormalizeAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
 import {breadcrumbConfiguration} from 'akeneoassetmanager/application/component/asset-family/edit';
-import File from 'akeneoassetmanager/domain/model/file';
+import {File} from 'akeneoassetmanager/domain/model/file';
 const securityContext = require('pim/security-context');
 import DeleteModal from 'akeneoassetmanager/application/component/app/delete-modal';
 import {cancelDeleteModal, openDeleteModal} from 'akeneoassetmanager/application/event/confirmDelete';

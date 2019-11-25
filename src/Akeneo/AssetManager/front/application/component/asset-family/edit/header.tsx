@@ -6,7 +6,7 @@ import Image from 'akeneoassetmanager/application/component/app/image';
 import {connect} from 'react-redux';
 import LocaleSwitcher from 'akeneoassetmanager/application/component/app/locale-switcher';
 import PimView from 'akeneoassetmanager/infrastructure/component/pim-view';
-import File from 'akeneoassetmanager/domain/model/file';
+import {File} from 'akeneoassetmanager/domain/model/file';
 import Locale from 'akeneoassetmanager/domain/model/locale';
 import {EditState as State} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {catalogLocaleChanged, catalogChannelChanged} from 'akeneoassetmanager/domain/event/user';

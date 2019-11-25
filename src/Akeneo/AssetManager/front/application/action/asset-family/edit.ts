@@ -15,7 +15,7 @@ import {denormalizeAssetFamily} from 'akeneoassetmanager/domain/model/asset-fami
 import assetFamilySaver from 'akeneoassetmanager/infrastructure/saver/asset-family';
 import assetFamilyFetcher, {AssetFamilyResult} from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
 import ValidationError, {createValidationError} from 'akeneoassetmanager/domain/model/validation-error';
-import File from 'akeneoassetmanager/domain/model/file';
+import {File} from 'akeneoassetmanager/domain/model/file';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {assetFamilyPermissionChanged} from 'akeneoassetmanager/domain/event/user';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';

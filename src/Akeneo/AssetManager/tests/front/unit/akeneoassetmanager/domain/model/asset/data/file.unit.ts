@@ -1,20 +1,16 @@
 import {create, denormalize} from 'akeneoassetmanager/domain/model/asset/data/file';
-import File, {NormalizedFile, denormalizeFile} from 'akeneoassetmanager/domain/model/file';
+import File, {createFileFromNormalized} from 'akeneoassetmanager/domain/model/file';
 
 describe('akeneo > asset family > domain > model > asset > data --- file', () => {
   test('I can create a new FileData with a File value', () => {
     expect(
-      create(denormalizeFile({originalFilename: 'starck.png', filePath: '/a/g/d/f/fzefzgezgafzgzg.png'})).normalize()
+      create(
+        createFileFromNormalized({originalFilename: 'starck.png', filePath: '/a/g/d/f/fzefzgezgafzgzg.png'})
+      ).normalize()
     ).toEqual({
       originalFilename: 'starck.png',
       filePath: '/a/g/d/f/fzefzgezgafzgzg.png',
     });
-  });
-
-  test('I cannot create a new FileData with a value other than a File', () => {
-    expect(() => {
-      create(12);
-    }).toThrow('FileData expects a File as parameter to be created');
   });
 
   test('I can normalize a FileData', () => {
@@ -27,11 +23,7 @@ describe('akeneo > asset family > domain > model > asset > data --- file', () =>
   });
 
   test('I can get the file of a FileData', () => {
-    expect(
-      denormalize({originalFilename: 'starck.png', filePath: '/a/g/d/f/fzefzgezgafzgzg.png'})
-        .getFile()
-        .normalize()
-    ).toEqual({
+    expect(denormalize({originalFilename: 'starck.png', filePath: '/a/g/d/f/fzefzgezgafzgzg.png'}).getFile()).toEqual({
       originalFilename: 'starck.png',
       filePath: '/a/g/d/f/fzefzgezgafzgzg.png',
     });
@@ -47,13 +39,13 @@ describe('akeneo > asset family > domain > model > asset > data --- file', () =>
   test('I can test if a file is equal to another', () => {
     expect(
       create(
-        denormalizeFile({
+        createFileFromNormalized({
           originalFilename: 'my_filename.png',
           filePath: 'file/path.png',
         })
       ).equals(
         create(
-          denormalizeFile({
+          createFileFromNormalized({
             originalFilename: 'my_filename.png',
             filePath: 'file/path.png',
           })
@@ -62,13 +54,13 @@ describe('akeneo > asset family > domain > model > asset > data --- file', () =>
     ).toBe(true);
     expect(
       create(
-        denormalizeFile({
+        createFileFromNormalized({
           originalFilename: 'another_filename.png',
           filePath: 'file/path.png',
         })
       ).equals(
         create(
-          denormalizeFile({
+          createFileFromNormalized({
             originalFilename: 'my_filename.png',
             filePath: 'file/path.png',
           })
@@ -77,7 +69,7 @@ describe('akeneo > asset family > domain > model > asset > data --- file', () =>
     ).toBe(false);
     expect(
       create(
-        denormalizeFile({
+        createFileFromNormalized({
           originalFilename: 'another_filename.png',
           filePath: 'file/path.png',
         })

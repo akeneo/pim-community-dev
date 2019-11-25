@@ -2,7 +2,7 @@ import {NormalizedAssetFamily} from 'akeneoassetmanager/domain/model/asset-famil
 import formState, {FormState} from 'akeneoassetmanager/application/reducer/state';
 import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 import {combineReducers} from 'redux';
-import {NormalizedFile} from 'akeneoassetmanager/domain/model/file';
+import {File} from 'akeneoassetmanager/domain/model/file';
 
 export interface EditionFormState {
   state: FormState;
@@ -27,7 +27,7 @@ const dataReducer = (
     value,
     locale,
     image,
-  }: {type: string; assetFamily: NormalizedAssetFamily; value: string; locale: string; image: NormalizedFile}
+  }: {type: string; assetFamily: NormalizedAssetFamily; value: string; locale: string; image: File}
 ) => {
   switch (type) {
     case 'ASSET_FAMILY_EDITION_RECEIVED':

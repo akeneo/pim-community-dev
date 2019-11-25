@@ -1,5 +1,5 @@
 import {Labels} from 'akeneopimenrichmentassetmanager/platform/model/label';
-import {NormalizedFile} from 'akeneoassetmanager/domain/model/file';
+import {File} from 'akeneoassetmanager/domain/model/file';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 
 export type AssetFamilyIdentifier = string;
@@ -10,7 +10,7 @@ export type AssetFamily = {
   identifier: AssetFamilyIdentifier;
   code: AssetFamilyCode;
   labels: Labels;
-  image: NormalizedFile;
+  image: File;
   attributeAsLabel: AttributeIdentifier;
   attributeAsImage: AttributeIdentifier;
   attributes: (NormalizedAttribute & any)[];

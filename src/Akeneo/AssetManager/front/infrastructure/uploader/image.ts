@@ -1,5 +1,5 @@
 import Uploader from 'akeneoassetmanager/domain/uploader/uploader';
-import Image, {denormalizeFile, NormalizedFile} from 'akeneoassetmanager/domain/model/file';
+import {File as Image, createFileFromNormalized} from 'akeneoassetmanager/domain/model/file';
 import * as $ from 'jquery';
 
 const routing = require('routing');
@@ -39,8 +39,9 @@ export class ConcreteImageUploader implements Uploader<Image> {
             return xhr;
           },
         })
-        .then((normalizedFile: NormalizedFile) => {
-          resolve(denormalizeFile(normalizedFile));
+        .then((file: File) => {
+          //TODO: Should be BackendFile instead of File. We will rework this after the JSON schema merge
+          resolve(createFileFromNormalized(file));
         })
         .fail((response: any) => {
           reject(response.responseJSON);

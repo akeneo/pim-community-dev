@@ -3,7 +3,7 @@ import Image from 'akeneoassetmanager/application/component/app/image';
 import Value from 'akeneoassetmanager/domain/model/asset/value';
 import FileData, {create} from 'akeneoassetmanager/domain/model/asset/data/file';
 import __ from 'akeneoassetmanager/tools/translator';
-import File from 'akeneoassetmanager/domain/model/file';
+import {File} from 'akeneoassetmanager/domain/model/file';
 import {localeReferenceStringValue} from 'akeneoassetmanager/domain/model/locale-reference';
 
 const View = ({

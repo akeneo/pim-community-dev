@@ -25,12 +25,6 @@ describe('akeneo > asset family > domain > model --- asset family', () => {
     ).toBe(michelIdentifier);
   });
 
-  test('I cannot create a malformed asset family', () => {
-    expect(() => {
-      createAssetFamily(michelIdentifier, michelLabels, {filePath: 'my_path.png', originalFilename: 'path.png'});
-    }).toThrow('AssetFamily expects a File as image argument');
-  });
-
   test('I can compare two asset families', () => {
     const michelLabels = {en_US: 'Michel'};
     expect(

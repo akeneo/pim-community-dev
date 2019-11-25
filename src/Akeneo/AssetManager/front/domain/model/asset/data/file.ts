@@ -1,17 +1,11 @@
-import File, {NormalizedFile, denormalizeFile} from 'akeneoassetmanager/domain/model/file';
+import {File, createFileFromNormalized, isFileEmpty, areFilesEqual} from 'akeneoassetmanager/domain/model/file';
 import ValueData from 'akeneoassetmanager/domain/model/asset/data';
 
-class InvalidTypeError extends Error {}
-
-export type NormalizedFileData = NormalizedFile;
+export type NormalizedFileData = File;
 
 class FileData extends ValueData {
   private constructor(readonly fileData: File) {
     super();
-
-    if (!(fileData instanceof File)) {
-      throw new InvalidTypeError('FileData expects a File as parameter to be created');
-    }
 
     Object.freeze(this);
   }
@@ -21,7 +15,7 @@ class FileData extends ValueData {
   }
 
   public static createFromNormalized(normalizedFileData: NormalizedFileData): FileData {
-    return new FileData(denormalizeFile(normalizedFileData));
+    return new FileData(createFileFromNormalized(normalizedFileData));
   }
 
   public getFile() {
@@ -29,15 +23,15 @@ class FileData extends ValueData {
   }
 
   public isEmpty(): boolean {
-    return this.fileData.isEmpty();
+    return isFileEmpty(this.fileData);
   }
 
   public equals(data: ValueData): boolean {
-    return data instanceof FileData && this.fileData.equals(data.fileData);
+    return data instanceof FileData && areFilesEqual(this.fileData, data.fileData);
   }
 
   public normalize(): NormalizedFileData {
-    return this.fileData.normalize();
+    return this.fileData;
   }
 }
 
