@@ -10,20 +10,28 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeDecimalsAllowed;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIsRichTextEditor;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeLimit;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\AttributeOption;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\OptionCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\MediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Prefix;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Suffix;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\NumberAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
@@ -35,6 +43,7 @@ use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\ValueHydratorInterface;
 use Akeneo\AssetManager\Infrastructure\Symfony\Command\IndexAssetsCommand;
+use Akeneo\AssetManager\Infrastructure\Validation\Attribute\DecimalsAllowed;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\Console\CommandLauncher;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
@@ -49,6 +58,11 @@ class FixturesInstaller
 {
     public const ICE_CAT_DEMO_DEV_CATALOG = 'src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev';
     private const NUMBER_OF_FAKE_ASSET_TO_CREATE = 10000;
+    private const ATMOSPHERE_ASSET_FAMILY_IDENTIFIER = 'atmosphere';
+    private const PACKSHOT_ASSET_FAMILY_IDENTIFIER = 'packshot';
+    private const NOTICE_ASSET_FAMILY_IDENTIFIER = 'notice';
+    private const VIDEO_ASSET_FAMILY_IDENTIFIER = 'video';
+    private const ZOOM_ON_MATERIAL_ASSET_FAMILY_IDENTIFIER = 'zoom_on_material';
 
     /** @var Connection */
     private $sqlConnection;
@@ -183,7 +197,7 @@ SQL;
      * In order to correctly escape values of assets, escape as follow:
      * \n => \\\\n
      * ' => \\'
-     * " => \\\"
+     * ' => \\\'
      */
     public function loadCatalog(string $catalogName): void
     {
@@ -191,19 +205,243 @@ SQL;
             return;
         }
 
-        $this->loadPackshots();
-        $this->loadNotices();
-        $this->loadVideoPresentation();
+        $this->loadAtmospheres();
+        $this->loadAtmosphereAssets();
 
+        $this->loadPackshots();
         $this->loadPackshotAssets();
+
+        $this->loadNotices();
         $this->loadNoticeAssets();
+
+        $this->loadVideoPresentation();
         $this->loadVideoPresentationAssets();
+
+        $this->loadZoomOnMaterial();
+        $this->loadZoomOnMaterialAssets();
 
         $this->indexAssets();
     }
 
     private function loadPackshots(): void
     {
+        // Asset family
+        $atmosphereAssetFamilyIdentifier = AssetFamilyIdentifier::fromString(self::PACKSHOT_ASSET_FAMILY_IDENTIFIER);
+        $atmosphere = AssetFamily::create(
+            $atmosphereAssetFamilyIdentifier,
+            ['en_US' => 'Packshot'],
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
+        );
+        $this->assetFamilyRepository->create($atmosphere);
+
+        // Attributes
+        $tags = OptionCollectionAttribute::create(
+            AttributeIdentifier::create(self::PACKSHOT_ASSET_FAMILY_IDENTIFIER, 'tags', 'fingerprint'),
+            $atmosphereAssetFamilyIdentifier,
+            AttributeCode::fromString('tags'),
+            LabelCollection::fromArray(['en_US' => 'Tags']),
+            AttributeOrder::fromInteger(2),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false)
+        );
+        $tags->addOption(AttributeOption::create(OptionCode::fromString('furniture'), LabelCollection::fromArray(['en_US' => 'Furniture'])));
+        $tags->addOption(AttributeOption::create(OptionCode::fromString('wood'), LabelCollection::fromArray(['en_US' => 'Wood'])));
+        $tags->addOption(AttributeOption::create(OptionCode::fromString('brown'), LabelCollection::fromArray(['en_US' => 'Brown'])));
+        $tags->addOption(AttributeOption::create(OptionCode::fromString('dimensions'), LabelCollection::fromArray(['en_US' => 'Dimensions'])));
+        $tags->addOption(AttributeOption::create(OptionCode::fromString('table'), LabelCollection::fromArray(['en_US' => 'Table'])));
+        $tags->addOption(AttributeOption::create(OptionCode::fromString('gray'), LabelCollection::fromArray(['en_US' => 'Gray'])));
+        $tags->addOption(AttributeOption::create(OptionCode::fromString('white'), LabelCollection::fromArray(['en_US' => 'White'])));
+        $tags->addOption(AttributeOption::create(OptionCode::fromString('blue'), LabelCollection::fromArray(['en_US' => 'Blue'])));
+        $this->attributeRepository->create($tags);
+    }
+
+    private function loadPackshotAssets()
+    {
+        $this->fixturesLoader
+            ->asset(self::PACKSHOT_ASSET_FAMILY_IDENTIFIER, 'absorb_packshot_1')
+            ->withValues([
+                'tags' => [
+                    ['channel' => null, 'locale' => null, 'data' => ['furniture']]
+                ],
+                'image' => [
+                    [
+                        'channel' => null,
+                        'locale'  => null,
+                        'data'    => [
+                            'size'             => 5396,
+                            'filePath'         => $this->uploadImage('absorb_packshot_1')->getKey(),
+                            'mimeType'         => 'image/jpeg',
+                            'extension'        => 'jpeg',
+                            'originalFilename' => 'absorb_packshot_1.jpg',
+                        ],
+                    ],
+                ],
+                'label' => [
+                    ['channel' => null, 'locale' => 'en_US', 'data' => 'Absorb packshot 1']
+                ],
+            ])
+            ->load();
+
+        $this->fixturesLoader
+            ->asset(self::PACKSHOT_ASSET_FAMILY_IDENTIFIER, 'absorb_packshot_2')
+            ->withValues([
+                'image' => [
+                    [
+                        'channel' => null,
+                        'locale'  => null,
+                        'data'    => [
+                            'size'             => 5396,
+                            'filePath'         => $this->uploadImage('absorb_packshot_2')->getKey(),
+                            'mimeType'         => 'image/jpeg',
+                            'extension'        => 'jpeg',
+                            'originalFilename' => 'absorb_packshot_2.jpg',
+                        ],
+                    ],
+                ],
+                'label' => [
+                    ['channel' => null, 'locale' => 'en_US', 'data' => 'Absorb packshot 2']
+                ],
+            ])
+            ->load();
+
+        $this->fixturesLoader
+            ->asset(self::PACKSHOT_ASSET_FAMILY_IDENTIFIER, 'absorb_packshot_3')
+            ->withValues([
+                'image' => [
+                    [
+                        'channel' => null,
+                        'locale'  => null,
+                        'data'    => [
+                            'size'             => 5396,
+                            'filePath'         => $this->uploadImage('absorb_packshot_3')->getKey(),
+                            'mimeType'         => 'image/jpeg',
+                            'extension'        => 'jpeg',
+                            'originalFilename' => 'absorb_packshot_3.jpg',
+                        ],
+                    ],
+                ],
+                'label' => [
+                    ['channel' => null, 'locale' => 'en_US', 'data' => 'Absorb packshot 3']
+                ],
+            ])
+            ->load();
+
+        $this->fixturesLoader
+            ->asset(self::PACKSHOT_ASSET_FAMILY_IDENTIFIER, 'absorb_packshot_4')
+            ->withValues([
+                'image' => [
+                    [
+                        'channel' => null,
+                        'locale'  => null,
+                        'data'    => [
+                            'size'             => 5496,
+                            'filePath'         => $this->uploadImage('absorb_packshot_4')->getKey(),
+                            'mimeType'         => 'image/jpeg',
+                            'extension'        => 'jpeg',
+                            'originalFilename' => 'absorb_packshot_4.jpg',
+                        ],
+                    ],
+                ],
+                'label' => [
+                    ['channel' => null, 'locale' => 'en_US', 'data' => 'Absorb packshot 4']
+                ],
+            ])
+            ->load();
+
+        $this->fixturesLoader
+            ->asset(self::PACKSHOT_ASSET_FAMILY_IDENTIFIER, 'admete_packshot_1')
+            ->withValues([
+                'image' => [
+                    [
+                        'channel' => null,
+                        'locale'  => null,
+                        'data'    => [
+                            'size'             => 5596,
+                            'filePath'         => $this->uploadImage('admete_packshot_1')->getKey(),
+                            'mimeType'         => 'image/jpeg',
+                            'extension'        => 'jpeg',
+                            'originalFilename' => 'admete_packshot_1.jpg',
+                        ],
+                    ],
+                ],
+                'label' => [
+                    ['channel' => null, 'locale' => 'en_US', 'data' => 'Admete packshot 1']
+                ],
+            ])
+            ->load();
+
+        $this->fixturesLoader
+            ->asset(self::PACKSHOT_ASSET_FAMILY_IDENTIFIER, 'admete_packshot_2')
+            ->withValues([
+                'image' => [
+                    [
+                        'channel' => null,
+                        'locale'  => null,
+                        'data'    => [
+                            'size'             => 5596,
+                            'filePath'         => $this->uploadImage('admete_packshot_2')->getKey(),
+                            'mimeType'         => 'image/jpeg',
+                            'extension'        => 'jpeg',
+                            'originalFilename' => 'admete_packshot_2.jpg',
+                        ],
+                    ],
+                ],
+                'label' => [
+                    ['channel' => null, 'locale' => 'en_US', 'data' => 'Admete packshot 2']
+                ],
+            ])
+            ->load();
+
+        $this->fixturesLoader
+            ->asset(self::PACKSHOT_ASSET_FAMILY_IDENTIFIER, 'admete_packshot_3')
+            ->withValues([
+                'image' => [
+                    [
+                        'channel' => null,
+                        'locale'  => null,
+                        'data'    => [
+                            'size'             => 5596,
+                            'filePath'         => $this->uploadImage('admete_packshot_3')->getKey(),
+                            'mimeType'         => 'image/jpeg',
+                            'extension'        => 'jpeg',
+                            'originalFilename' => 'admete_packshot_3.jpg',
+                        ],
+                    ],
+                ],
+                'label' => [
+                    ['channel' => null, 'locale' => 'en_US', 'data' => 'Admete packshot 3']
+                ],
+            ])
+            ->load();
+
+        $this->fixturesLoader
+            ->asset(self::PACKSHOT_ASSET_FAMILY_IDENTIFIER, 'admete_packshot_4')
+            ->withValues([
+                'image' => [
+                    [
+                        'channel' => null,
+                        'locale'  => null,
+                        'data'    => [
+                            'size'             => 5596,
+                            'filePath'         => $this->uploadImage('admete_packshot_4')->getKey(),
+                            'mimeType'         => 'image/jpeg',
+                            'extension'        => 'jpeg',
+                            'originalFilename' => 'admete_packshot_4.jpg',
+                        ],
+                    ],
+                ],
+                'label' => [
+                    ['channel' => null, 'locale' => 'en_US', 'data' => 'Admete packshot 4']
+                ],
+            ])
+            ->load();
+    }
+
+    private function loadAtmospheres(): void
+    {
+        // Asset family
 //        $ruleTemplate = [
 //            'product_selections' => [
 //                [
@@ -219,220 +457,119 @@ SQL;
 //                ]
 //            ]
 //        ];
-        $packshotAssetFamilyIdentifier = AssetFamilyIdentifier::fromString('packshot');
-        $packshot = AssetFamily::create(
-            $packshotAssetFamilyIdentifier,
-            ['en_US' => 'Packshots'],
+        $atmosphereAssetFamilyIdentifier = AssetFamilyIdentifier::fromString(self::ATMOSPHERE_ASSET_FAMILY_IDENTIFIER);
+        $atmosphere = AssetFamily::create(
+            $atmosphereAssetFamilyIdentifier,
+            ['en_US' => 'Athmospheres'],
             Image::createEmpty(),
             RuleTemplateCollection::empty()
         );
+        $this->assetFamilyRepository->create($atmosphere);
 
-        $this->assetFamilyRepository->create($packshot);
+        // Attributes
         $order = 2;
-
-        $description = TextAttribute::createTextarea(
-            AttributeIdentifier::create('packshot', 'description', 'fingerprint'),
-            $packshotAssetFamilyIdentifier,
-            AttributeCode::fromString('description'),
-            LabelCollection::fromArray(['en_US' => 'Description']),
+        $linkAtmosphere = MediaLinkAttribute::create(
+            AttributeIdentifier::create(self::ATMOSPHERE_ASSET_FAMILY_IDENTIFIER, 'link_atmosphere', 'fingerprint'),
+            $atmosphereAssetFamilyIdentifier,
+            AttributeCode::fromString('link_atmosphere'),
+            LabelCollection::fromArray(['en_US' => 'Link atmosphere']),
             AttributeOrder::fromInteger($order),
-            AttributeIsRequired::fromBoolean(false),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(true),
-            AttributeMaxLength::noLimit(),
-            AttributeIsRichTextEditor::fromBoolean(true)
-        );
-        $order++;
-
-        $datePublished = TextAttribute::createText(
-            AttributeIdentifier::create('packshot', 'date_published', 'fingerprint'),
-            $packshotAssetFamilyIdentifier,
-            AttributeCode::fromString('date_published'),
-            LabelCollection::fromArray(['en_US' => 'Date Published']),
-            AttributeOrder::fromInteger($order),
-            AttributeIsRequired::fromBoolean(false),
+            AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            AttributeMaxLength::noLimit(),
-            AttributeValidationRule::none(),
-            AttributeRegularExpression::createEmpty()
+            Prefix::empty(),
+            Suffix::empty(),
+            MediaType::fromString(MediaType::IMAGE)
         );
         $order++;
 
-        $shootedBy = OptionAttribute::create(
-            AttributeIdentifier::create('packshot', 'shooted_by', 'fingerprint'),
-            $packshotAssetFamilyIdentifier,
-            AttributeCode::fromString('shooted_by'),
-            LabelCollection::fromArray(['en_US' => 'Shooted By']),
+        $tags = OptionCollectionAttribute::create(
+            AttributeIdentifier::create(self::ATMOSPHERE_ASSET_FAMILY_IDENTIFIER, 'tags', 'fingerprint'),
+            $atmosphereAssetFamilyIdentifier,
+            AttributeCode::fromString('tags'),
+            LabelCollection::fromArray(['en_US' => 'Tags']),
             AttributeOrder::fromInteger($order),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
         );
-        $order++;
+        $tags->addOption(AttributeOption::create(OptionCode::fromString('diningroom'), LabelCollection::fromArray(['en_US' => 'Dining Room'])));
+        $tags->addOption(AttributeOption::create(OptionCode::fromString('furniture'), LabelCollection::fromArray(['en_US' => 'Furniture'])));
+        $tags->addOption(AttributeOption::create(OptionCode::fromString('brown'), LabelCollection::fromArray(['en_US' => 'Brown'])));
+        $tags->addOption(AttributeOption::create(OptionCode::fromString('wood'), LabelCollection::fromArray(['en_US' => 'Wood'])));
 
-        $original = MediaLinkAttribute::create(
-            AttributeIdentifier::create('packshot', 'original', 'fingerprint'),
-            $packshotAssetFamilyIdentifier,
-            AttributeCode::fromString('original'),
-            LabelCollection::fromArray(['en_US' => 'Original']),
-            AttributeOrder::fromInteger($order),
-            AttributeIsRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            Prefix::fromString('https://custom-dam.com/packshots/'),
-            Suffix::fromString('/original'),
-            MediaType::fromString(MediaType::IMAGE)
-        );
-        $order++;
+        $this->attributeRepository->create($tags);
+        $this->attributeRepository->create($linkAtmosphere);
 
-        $small = MediaLinkAttribute::create(
-            AttributeIdentifier::create('packshot', 'small', 'fingerprint'),
-            $packshotAssetFamilyIdentifier,
-            AttributeCode::fromString('small'),
-            LabelCollection::fromArray(['en_US' => 'Small']),
-            AttributeOrder::fromInteger($order),
-            AttributeIsRequired::fromBoolean(false),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            Prefix::fromString('https://custom-dam.com/packshots/'),
-            Suffix::fromString('/small'),
-            MediaType::fromString(MediaType::IMAGE)
-        );
-        $order++;
-
-        $linkedAttribute = TextAttribute::createText(
-            AttributeIdentifier::create('packshot', 'linked_attribute', 'fingerprint'),
-            $packshotAssetFamilyIdentifier,
-            AttributeCode::fromString('linked_attribute'),
-            LabelCollection::fromArray(['en_US' => 'Linked Attribute']),
-            AttributeOrder::fromInteger($order),
-            AttributeIsRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            AttributeMaxLength::noLimit(),
-            AttributeValidationRule::none(),
-            AttributeRegularExpression::createEmpty()
-        );
-        $order++;
-
-        $productSku = TextAttribute::createText(
-            AttributeIdentifier::create('packshot', 'product_sku', 'fingerprint'),
-            $packshotAssetFamilyIdentifier,
-            AttributeCode::fromString('product_sku'),
-            LabelCollection::fromArray(['en_US' => 'Product SKU']),
-            AttributeOrder::fromInteger($order),
-            AttributeIsRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            AttributeMaxLength::noLimit(),
-            AttributeValidationRule::fromString(AttributeValidationRule::REGULAR_EXPRESSION),
-            AttributeRegularExpression::fromString('/^(\w-?)*/')
-        );
-
-        $this->attributeRepository->create($description);
-        $this->attributeRepository->create($datePublished);
-        $this->attributeRepository->create($shootedBy);
-        $this->attributeRepository->create($original);
-        $this->attributeRepository->create($small);
-        $this->attributeRepository->create($linkedAttribute);
-        $this->attributeRepository->create($productSku);
-
-        $attributes = $this->attributeRepository->findByAssetFamily($packshotAssetFamilyIdentifier);
-        $attributeAsLabel = current(array_filter($attributes, function (AbstractAttribute $attribute) {
-            return $attribute->getCode()->equals(AttributeCode::fromString('label'));
-        }));
-
-        $updatedPackshot = AssetFamily::createWithAttributes(
-            $packshotAssetFamilyIdentifier,
-            ['en_US' => 'Packshots'],
+        $attributeAsLabel = $this->defaultAttributeAsLabel($atmosphereAssetFamilyIdentifier);
+        $updatedAtmosphere = AssetFamily::createWithAttributes(
+            $atmosphereAssetFamilyIdentifier,
+            ['en_US' => 'Atmosphere'],
             Image::createEmpty(),
-            AttributeAsLabelReference::createFromNormalized($attributeAsLabel->getIdentifier()->normalize()),
-            AttributeAsImageReference::createFromNormalized(AttributeIdentifier::create('packshot', 'original', 'fingerprint')->normalize()),
+            AttributeAsLabelReference::fromAttributeIdentifier($attributeAsLabel->getIdentifier()),
+            AttributeAsImageReference::fromAttributeIdentifier($linkAtmosphere->getIdentifier()),
             RuleTemplateCollection::empty()
         );
 
-        $this->assetFamilyRepository->update($updatedPackshot);
+        $this->assetFamilyRepository->update($updatedAtmosphere);
     }
 
-    private function loadPackshotAssets()
+    private function loadAtmosphereAssets()
     {
         $this->fixturesLoader
-            ->asset('packshot', 'Philips22PDL4906H_pack')
+            ->asset(self::ATMOSPHERE_ASSET_FAMILY_IDENTIFIER, 'absorb_atmosphere_1')
             ->withValues([
-                'description' => [
-                    ['channel' => null, 'locale' => 'en_US', 'data' => 'Used technical ref only.']
+                'tags' => [
+                    ['channel' => null, 'locale' => null, 'data' => ['diningroom', 'wood', 'brown']]
                 ],
-                'date_published' => [
-                    ['channel' => null, 'locale' => null, 'data' => '18/02/2018']
+                'link_atmosphere' => [
+                    ['channel' => null, 'locale' => null, 'data' => 'https://image.noelshack.com/fichiers/2019/47/3/1574262641-db0b2ad8949e903860d840bb8f0e83524dbf2cae-sdbtay005zdb-uk-tayma-3-door-sideboard-acacia-and-brass-sale-buy-lb02.jpg']
                 ],
-                'shooted_by' => [
-                    ['channel' => null, 'locale' => null, 'data' => 'jean_jacques_photo']
+                'label' => [
+                    ['channel' => null, 'locale' => 'en_US', 'data' => 'Absorb atmosphere 1']
                 ],
-                'original' => [
-                    ['channel' => null, 'locale' => null, 'data' => '22PDL4906H']
+            ])
+            ->load();
+        $this->fixturesLoader
+            ->asset(self::ATMOSPHERE_ASSET_FAMILY_IDENTIFIER, 'absorb_atmosphere_2')
+            ->withValues([
+                'tags' => [
+                    ['channel' => null, 'locale' => null, 'data' => ['diningroom', 'wood']]
                 ],
-                'small' => [
-                    ['channel' => null, 'locale' => null, 'data' => '22PDL4906H']
+                'link_atmosphere' => [
+                    ['channel' => null, 'locale' => null, 'data' => 'https://image.noelshack.com/fichiers/2019/47/3/1574262649-26c3f534b3fc1a9c974b4bbda790f5c13df80e0f-sdbtay005zdb-uk-tayma-3-door-sideboard-acacia-and-brass-sale-buy-lb03.jpg']
                 ],
-                'linked_attribute' => [
-                    ['channel' => null, 'locale' => null, 'data' => 'packshot']
-                ],
-                'product_sku' => [
-                    ['channel' => null, 'locale' => null, 'data' => '10638601']
+                'label' => [
+                    ['channel' => null, 'locale' => 'en_US', 'data' => 'Absorb atmosphere 2']
                 ],
             ])
             ->load();
 
         $this->fixturesLoader
-            ->asset('packshot', 'iphone8_pack')
+            ->asset(self::ATMOSPHERE_ASSET_FAMILY_IDENTIFIER, 'admete_atmosphere_1')
             ->withValues([
-                'description' => [
-                    ['channel' => null, 'locale' => 'en_US', 'data' => 'You should probably buy it.'],
-                    ['channel' => null, 'locale' => 'fr_FR', 'data' => 'Vous devriez probablement l\'acheter.']
+                'tags' => [
+                    ['channel' => null, 'locale' => null, 'data' => ['diningroom']]
                 ],
-                'date_published' => [
-                    ['channel' => null, 'locale' => null, 'data' => '18/05/2017']
+                'link_atmosphere' => [
+                    ['channel' => null, 'locale' => null, 'data' => 'https://image.noelshack.com/fichiers/2019/47/3/1574268551-eceb1a8fbb526c7cca49b09a027c9d5476693c13-tblboo013gry-uk-boone-extra-large-dining-table-grey-lb03.jpg']
                 ],
-                'shooted_by' => [
-                    ['channel' => null, 'locale' => null, 'data' => 'michel_pellicule']
-                ],
-                'original' => [
-                    ['channel' => null, 'locale' => null, 'data' => 'iphone8']
-                ],
-                'small' => [
-                    ['channel' => null, 'locale' => null, 'data' => 'iphone8']
-                ],
-                'linked_attribute' => [
-                    ['channel' => null, 'locale' => null, 'data' => 'packshot']
-                ],
-                'product_sku' => [
-                    ['channel' => null, 'locale' => null, 'data' => 'apple_iphone_8']
+                'label' => [
+                    ['channel' => null, 'locale' => 'en_US', 'data' => 'Admete Atmosphere 1']
                 ],
             ])
             ->load();
-
         $this->fixturesLoader
-            ->asset('packshot', 'iphone7_pack')
+            ->asset(self::ATMOSPHERE_ASSET_FAMILY_IDENTIFIER, 'admete_atmosphere_2')
             ->withValues([
-                'description' => [
-                    ['channel' => null, 'locale' => 'en_US', 'data' => 'You should probably buy it.'],
-                    ['channel' => null, 'locale' => 'fr_FR', 'data' => 'Vous devriez probablement l\'acheter.']
+                'tags' => [
+                    ['channel' => null, 'locale' => null, 'data' => ['diningroom', 'wood', 'furniture']]
                 ],
-                'date_published' => [
-                    ['channel' => null, 'locale' => null, 'data' => '18/05/2017']
+                'link_atmosphere' => [
+                    ['channel' => null, 'locale' => null, 'data' => 'https://image.noelshack.com/fichiers/2019/47/3/1574268555-f03ba52452a83e38faef867773b42270064a6bd9-tblboo013gry-uk-boone-extra-large-dining-table-grey-lb02.jpg']
                 ],
-                'shooted_by' => [
-                    ['channel' => null, 'locale' => null, 'data' => 'robert_photeau']
-                ],
-               'original' => [
-                    ['channel' => null, 'locale' => null, 'data' => 'iphone7']
-                ],
-                'linked_attribute' => [
-                    ['channel' => null, 'locale' => null, 'data' => 'packshot']
-                ],
-                'product_sku' => [
-                    ['channel' => null, 'locale' => null, 'data' => 'apple_iphone_7']
+                'label' => [
+                    ['channel' => null, 'locale' => 'en_US', 'data' => 'Admete Atmosphere 2']
                 ],
             ])
             ->load();
@@ -440,155 +577,84 @@ SQL;
 
     private function loadNotices(): void
     {
+        // Asset family
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString(self::NOTICE_ASSET_FAMILY_IDENTIFIER);
         $notice = AssetFamily::create(
-            AssetFamilyIdentifier::fromString('notice'),
+            $assetFamilyIdentifier,
             ['en_US' => 'Notices'],
             Image::createEmpty(),
             RuleTemplateCollection::empty()
         );
-
         $this->assetFamilyRepository->create($notice);
+
+        // Attributes
         $order = 2;
-
-        $description = TextAttribute::createTextarea(
-            AttributeIdentifier::create('notice', 'description', 'fingerprint'),
-            AssetFamilyIdentifier::fromString('notice'),
-            AttributeCode::fromString('description'),
-            LabelCollection::fromArray(['en_US' => 'Description']),
-            AttributeOrder::fromInteger($order),
-            AttributeIsRequired::fromBoolean(false),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(true),
-            AttributeMaxLength::noLimit(),
-            AttributeIsRichTextEditor::fromBoolean(true)
-        );
-        $order++;
-
-        $targetCountries = OptionCollectionAttribute::create(
-            AttributeIdentifier::create('notice', 'target_countries', 'fingerprint'),
-            AssetFamilyIdentifier::fromString('notice'),
-            AttributeCode::fromString('target_countries'),
-            LabelCollection::fromArray(['en_US' => 'Target Countries']),
-            AttributeOrder::fromInteger($order),
-            AttributeIsRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false)
-        );
-        $order++;
-
-        $datePublished = TextAttribute::createText(
-            AttributeIdentifier::create('notice', 'date_published', 'fingerprint'),
-            AssetFamilyIdentifier::fromString('notice'),
-            AttributeCode::fromString('date_published'),
-            LabelCollection::fromArray(['en_US' => 'Date Published']),
-            AttributeOrder::fromInteger($order),
-            AttributeIsRequired::fromBoolean(false),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            AttributeMaxLength::noLimit(),
-            AttributeValidationRule::none(),
-            AttributeRegularExpression::createEmpty()
-        );
-        $order++;
-
-        $original = MediaLinkAttribute::create(
-            AttributeIdentifier::create('notice', 'original', 'fingerprint'),
-            AssetFamilyIdentifier::fromString('notice'),
-            AttributeCode::fromString('original'),
-            LabelCollection::fromArray(['en_US' => 'Original']),
+        $linkPDF = MediaLinkAttribute::create(
+            AttributeIdentifier::create(self::NOTICE_ASSET_FAMILY_IDENTIFIER, 'link_pdf', 'fingerprint'),
+            $assetFamilyIdentifier,
+            AttributeCode::fromString('link_pdf'),
+            LabelCollection::fromArray(['en_US' => 'PDF Link']),
             AttributeOrder::fromInteger($order),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            Prefix::fromString('https://custom-dam.com/pdf-notices/'),
-            Suffix::fromString('/original'),
-            MediaType::fromString(MediaType::OTHER)
+            Prefix::empty(),
+            Suffix::empty(),
+            MediaType::fromString(MediaType::PDF)
         );
         $order++;
 
-        $linkedAttribute = TextAttribute::createText(
-            AttributeIdentifier::create('notice', 'linked_attribute', 'fingerprint'),
-            AssetFamilyIdentifier::fromString('notice'),
-            AttributeCode::fromString('linked_attribute'),
-            LabelCollection::fromArray(['en_US' => 'Linked Attribute']),
-            AttributeOrder::fromInteger($order),
-            AttributeIsRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            AttributeMaxLength::noLimit(),
-            AttributeValidationRule::none(),
-            AttributeRegularExpression::createEmpty()
-        );
-        $order++;
-
-        $productSku = TextAttribute::createText(
-            AttributeIdentifier::create('notice', 'product_sku', 'fingerprint'),
-            AssetFamilyIdentifier::fromString('notice'),
+        $yearOfPublication = NumberAttribute::create(
+            AttributeIdentifier::create(self::NOTICE_ASSET_FAMILY_IDENTIFIER, 'product_sku', 'fingerprint'),
+            $assetFamilyIdentifier,
             AttributeCode::fromString('product_sku'),
             LabelCollection::fromArray(['en_US' => 'Product SKU']),
             AttributeOrder::fromInteger($order),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            AttributeMaxLength::noLimit(),
-            AttributeValidationRule::fromString(AttributeValidationRule::REGULAR_EXPRESSION),
-            AttributeRegularExpression::fromString('/^(\w-?)*/')
+            AttributeDecimalsAllowed::fromBoolean(false),
+            AttributeLimit::fromString('2000'),
+            AttributeLimit::fromString('2020')
         );
 
-        $this->attributeRepository->create($description);
-        $this->attributeRepository->create($targetCountries);
-        $this->attributeRepository->create($datePublished);
-        $this->attributeRepository->create($original);
-        $this->attributeRepository->create($linkedAttribute);
-        $this->attributeRepository->create($productSku);
+        $this->attributeRepository->create($linkPDF);
+        $this->attributeRepository->create($yearOfPublication);
+
+        $attributeAsLabel = $this->defaultAttributeAsLabel($assetFamilyIdentifier);
+
+        $updatedAtmosphere = AssetFamily::createWithAttributes(
+            $assetFamilyIdentifier,
+            ['en_US' => 'Atmosphere'],
+            Image::createEmpty(),
+            AttributeAsLabelReference::fromAttributeIdentifier($attributeAsLabel->getIdentifier()),
+            AttributeAsImageReference::fromAttributeIdentifier($linkPDF->getIdentifier()),
+            RuleTemplateCollection::empty()
+        );
+
+        $this->assetFamilyRepository->update($updatedAtmosphere);
+
     }
 
     private function loadNoticeAssets(): void
     {
         $this->fixturesLoader
-            ->asset('notice', 'Philips22PDL4906H_notice')
+            ->asset(self::NOTICE_ASSET_FAMILY_IDENTIFIER, 'absorb_notice_2')
             ->withValues([
-                'description' => [
-                    ['channel' => null, 'locale' => 'en_US', 'data' => 'Used technical ref only.']
-                ],
-                'target_countries' => [
-                    ['channel' => null, 'locale' => null, 'data' => ['united_kingdom', 'united_states', 'ireland']]
-                ],
-                'date_published' => [
-                    ['channel' => null, 'locale' => null, 'data' => '02/05/2018']
-                ],
-                'original' => [
-                    ['channel' => null, 'locale' => null, 'data' => '22PDL4906H']
-                ],
-                'linked_attribute' => [
-                    ['channel' => null, 'locale' => null, 'data' => 'notice']
-                ],
-                'product_sku' => [
-                    ['channel' => null, 'locale' => null, 'data' => '10638601']
+                'link_pdf' => [
+                    ['channel' => null, 'locale' => null, 'data' => 'https://www.ikea.com/fr/fr/manuals/stockholm-buffet__AA-2180177-1_pub.pdf']
                 ],
             ])
             ->load();
 
         $this->fixturesLoader
-            ->asset('notice', 'av36')
+            ->asset(self::NOTICE_ASSET_FAMILY_IDENTIFIER, 'absorb_notice_3')
             ->withValues([
-                'description' => [
-                    ['channel' => null, 'locale' => 'en_US', 'data' => 'French technical notice of the Avision AV36.']
+                'label' => [
+                    ['channel' => null, 'locale' => 'en_US', 'data' => 'Absorb Notice 3']
                 ],
-                'target_countries' => [
-                    ['channel' => null, 'locale' => null, 'data' => ['france']]
-                ],
-                'date_published' => [
-                    ['channel' => null, 'locale' => null, 'data' => '22/02/1990']
-                ],
-                'original' => [
-                    ['channel' => null, 'locale' => null, 'data' => 'av36']
-                ],
-                'linked_attribute' => [
-                    ['channel' => null, 'locale' => null, 'data' => 'notice']
-                ],
-                'product_sku' => [
-                    ['channel' => null, 'locale' => null, 'data' => '12249740']
+                'link_pdf' => [
+                    ['channel' => null, 'locale' => null, 'data' => 'https://www.ikea.com/fr/fr/assembly_instructions/besta-structure__AA-1272068-5_pub.pdf']
                 ],
             ])
             ->load();
@@ -626,96 +692,124 @@ SQL;
 //                ]
 //            ]
 //        ];
-        $videoPresentation = AssetFamily::create(
-            AssetFamilyIdentifier::fromString('video_presentation'),
-            ['en_US' => 'Video Presentation'],
+        $video = AssetFamily::create(
+            AssetFamilyIdentifier::fromString(self::VIDEO_ASSET_FAMILY_IDENTIFIER),
+            ['en_US' => 'Video'],
             Image::createEmpty(),
             RuleTemplateCollection::empty()
         );
 
-        $this->assetFamilyRepository->create($videoPresentation);
+        $this->assetFamilyRepository->create($video);
         $order = 2;
 
-        $videoTranscription = TextAttribute::createTextarea(
-            AttributeIdentifier::create('video_presentation', 'video_transcription', 'fingerprint'),
-            AssetFamilyIdentifier::fromString('video_presentation'),
-            AttributeCode::fromString('video_transcription'),
-            LabelCollection::fromArray(['en_US' => 'Video Transcription']),
-            AttributeOrder::fromInteger($order),
-            AttributeIsRequired::fromBoolean(false),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            AttributeMaxLength::noLimit(),
-            AttributeIsRichTextEditor::fromBoolean(false)
-        );
-        $order++;
-
-        $original = MediaLinkAttribute::create(
-            AttributeIdentifier::create('video_presentation', 'original', 'fingerprint'),
-            AssetFamilyIdentifier::fromString('video_presentation'),
-            AttributeCode::fromString('original'),
-            LabelCollection::fromArray(['en_US' => 'Original']),
+        $youtube = MediaLinkAttribute::create(
+            AttributeIdentifier::create(self::VIDEO_ASSET_FAMILY_IDENTIFIER, 'youtube', 'fingerprint'),
+            AssetFamilyIdentifier::fromString(self::VIDEO_ASSET_FAMILY_IDENTIFIER),
+            AttributeCode::fromString('youtube'),
+            LabelCollection::fromArray(['en_US' => 'Youtube']),
             AttributeOrder::fromInteger($order),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            Prefix::fromString('https://custom-dam.com/video/presentation'),
+            Prefix::empty(),
             Suffix::empty(),
-            MediaType::fromString(MediaType::OTHER)
+            MediaType::fromString(MediaType::YOUTUBE)
         );
-        $order++;
+        $this->attributeRepository->create($youtube);
 
-        $linkedAttribute = TextAttribute::createText(
-            AttributeIdentifier::create('video_presentation', 'linked_attribute', 'fingerprint'),
-            AssetFamilyIdentifier::fromString('video_presentation'),
-            AttributeCode::fromString('linked_attribute'),
-            LabelCollection::fromArray(['en_US' => 'Linked Attribute']),
-            AttributeOrder::fromInteger($order),
-            AttributeIsRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            AttributeMaxLength::noLimit(),
-            AttributeValidationRule::none(),
-            AttributeRegularExpression::createEmpty()
-        );
-        $order++;
-
-        $productSku = TextAttribute::createText(
-            AttributeIdentifier::create('video_presentation', 'product_sku', 'fingerprint'),
-            AssetFamilyIdentifier::fromString('video_presentation'),
-            AttributeCode::fromString('product_sku'),
-            LabelCollection::fromArray(['en_US' => 'Product SKU']),
-            AttributeOrder::fromInteger($order),
-            AttributeIsRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            AttributeMaxLength::noLimit(),
-            AttributeValidationRule::fromString(AttributeValidationRule::REGULAR_EXPRESSION),
-            AttributeRegularExpression::fromString('/^(\w-?)*/')
-        );
-
-        $this->attributeRepository->create($videoTranscription);
-        $this->attributeRepository->create($original);
-        $this->attributeRepository->create($linkedAttribute);
-        $this->attributeRepository->create($productSku);
+        $updatedVideos = $this->assetFamilyRepository->getByIdentifier($video->getIdentifier());
+        $updatedVideos->updateAttributeAsImageReference(AttributeAsImageReference::fromAttributeIdentifier($youtube->getIdentifier()));
+        $this->assetFamilyRepository->update($updatedVideos);
     }
 
     private function loadVideoPresentationAssets(): void
     {
         $this->fixturesLoader
-            ->asset('video_presentation', 'Philips22PDL4906H_video')
+            ->asset(self::VIDEO_ASSET_FAMILY_IDENTIFIER, 'absorb_video')
             ->withValues([
-                'video_transcription' => [
-                    ['channel' => null, 'locale' => null, 'data' => 'Philips, a new generation.']
+                'youtube' => [
+                    ['channel' => null, 'locale' => null, 'data' => 'mueojG-Id-8']
                 ],
-                'original' => [
-                    ['channel' => null, 'locale' => null, 'data' => '22PDL4906H']
+                'label' => [
+                    ['channel' => null, 'locale' => 'en_US', 'data' => 'Absorb promotional video']
                 ],
-                'linked_attribute' => [
-                    ['channel' => null, 'locale' => null, 'data' => 'video']
+            ])
+            ->load();
+    }
+
+    private function loadZoomOnMaterial(): void
+    {
+        $zoomOnMaterial = AssetFamily::create(
+            AssetFamilyIdentifier::fromString(self::ZOOM_ON_MATERIAL_ASSET_FAMILY_IDENTIFIER),
+            ['en_US' => 'Zoom on material'],
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
+        );
+
+        $this->assetFamilyRepository->create($zoomOnMaterial);
+        $order = 2;
+
+        $zoomImage = ImageAttribute::create(
+            AttributeIdentifier::create(self::ZOOM_ON_MATERIAL_ASSET_FAMILY_IDENTIFIER, 'zoom_image', 'fingerprint'),
+            AssetFamilyIdentifier::fromString(self::ZOOM_ON_MATERIAL_ASSET_FAMILY_IDENTIFIER),
+            AttributeCode::fromString('zoom_image'),
+            LabelCollection::fromArray(['en_US' => 'Zoom image', 'fr_FR' => 'Zoom sur image']),
+            AttributeOrder::fromInteger($order),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxFileSize::noLimit(),
+            AttributeAllowedExtensions::fromList(AttributeAllowedExtensions::ALL_ALLOWED)
+        );
+        $this->attributeRepository->create($zoomImage);
+
+        $updatedZoomOnMaterial = $this->assetFamilyRepository->getByIdentifier($zoomOnMaterial->getIdentifier());
+        $updatedZoomOnMaterial->updateAttributeAsImageReference(AttributeAsImageReference::fromAttributeIdentifier($zoomImage->getIdentifier()));
+        $this->assetFamilyRepository->update($updatedZoomOnMaterial);
+    }
+
+    private function loadZoomOnMaterialAssets(): void
+    {
+        $this->fixturesLoader
+            ->asset(self::ZOOM_ON_MATERIAL_ASSET_FAMILY_IDENTIFIER, 'absorb_zoom')
+            ->withValues([
+                'zoom_image' => [
+                    [
+                        'channel' => 'ecommerce',
+                        'locale'  => 'en_US',
+                        'data'    => [
+                            'size'             => 5596,
+                            'filePath'         => $this->uploadImage('admete_zoom_en_US')->getKey(),
+                            'mimeType'         => 'image/jpeg',
+                            'extension'        => 'jpeg',
+                            'originalFilename' => 'admete_zoom_en_US.jpg',
+                        ],
+                    ],
+                    [
+                        'channel' => 'ecommerce',
+                        'locale'  => 'fr_FR',
+                        'data'    => [
+                            'size'             => 5596,
+                            'filePath'         => $this->uploadImage('admete_zoom_fr_FR')->getKey(),
+                            'mimeType'         => 'image/jpeg',
+                            'extension'        => 'jpeg',
+                            'originalFilename' => 'admete_zoom_fr_FR.jpg',
+                        ],
+                    ],
+                    [
+                        'channel' => 'ecommerce',
+                        'locale'  => 'de_DE',
+                        'data'    => [
+                            'size'             => 5596,
+                            'filePath'         => $this->uploadImage('admete_zoom_de_DE')->getKey(),
+                            'mimeType'         => 'image/jpeg',
+                            'extension'        => 'jpeg',
+                            'originalFilename' => 'admete_zoom_de_DE.jpg',
+                        ],
+                    ],
                 ],
-                'product_sku' => [
-                    ['channel' => null, 'locale' => null, 'data' => '10638601']
+                'label' => [
+                    ['channel' => null, 'locale' => 'en_US', 'data' => 'Absorb Zoom on material']
                 ],
             ])
             ->load();
@@ -735,5 +829,29 @@ SQL;
             sprintf('%s %s', IndexAssetsCommand::INDEX_ASSETS_COMMAND_NAME, '--all')
         );
         $this->assetClient->refreshIndex();
+    }
+
+    private function defaultAttributeAsLabel(AssetFamilyIdentifier $atmosphereAssetFamilyIdentifier): AbstractAttribute
+    {
+        $attributes = $this->attributeRepository->findByAssetFamily($atmosphereAssetFamilyIdentifier);
+        $attributeAsLabel = current(array_filter($attributes,
+            function (AbstractAttribute $attribute) {
+                return $attribute->getCode()->equals(AttributeCode::fromString('label'));
+            }
+        ));
+
+        return $attributeAsLabel;
+    }
+
+    private function defaultAttributeAsImage(AssetFamilyIdentifier $atmosphereAssetFamilyIdentifier): AbstractAttribute
+    {
+        $attributes = $this->attributeRepository->findByAssetFamily($atmosphereAssetFamilyIdentifier);
+        $attributeAsImage = current(array_filter($attributes,
+            function (AbstractAttribute $attribute) {
+                return $attribute->getCode()->equals(AttributeCode::fromString('image'));
+            }
+        ));
+
+        return $attributeAsImage;
     }
 }
