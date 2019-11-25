@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Apps\back\tests\Integration\Service;
+namespace Akeneo\Apps\back\tests\Integration\User\Internal;
 
 use Akeneo\Apps\Application\Service\CreateUserInterface;
 use Akeneo\Apps\Domain\Model\ValueObject\UserId;
