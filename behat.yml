@@ -44,8 +44,6 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                 - Pim\Behat\Context\Domain\Enrich\CompletenessContext:
                     - 'Context\EnterpriseFeatureContext'
-                - Pim\Behat\Context\Domain\Enrich\GridPaginationContext:
-                    - 'Context\EnterpriseFeatureContext'
                 - Pim\Behat\Context\Domain\Enrich\ProductGroupContext:
                     - 'Context\EnterpriseFeatureContext'
                 - Pim\Behat\Context\Domain\Enrich\ProductModelContext:
@@ -230,8 +228,6 @@ legacy:
                 - Pim\Behat\Context\Domain\Enrich\AttributeTabContext:
                     - 'Context\EnterpriseFeatureContext'
                 - Pim\Behat\Context\Domain\Enrich\CompletenessContext:
-                    - 'Context\EnterpriseFeatureContext'
-                - Pim\Behat\Context\Domain\Enrich\GridPaginationContext:
                     - 'Context\EnterpriseFeatureContext'
                 - Pim\Behat\Context\Domain\Enrich\ProductGroupContext:
                     - 'Context\EnterpriseFeatureContext'
@@ -420,8 +416,6 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                 - Pim\Behat\Context\Domain\Enrich\CompletenessContext:
                     - 'Context\EnterpriseFeatureContext'
-                - Pim\Behat\Context\Domain\Enrich\GridPaginationContext:
-                    - 'Context\EnterpriseFeatureContext'
                 - Pim\Behat\Context\Domain\Enrich\ProductGroupContext:
                     - 'Context\EnterpriseFeatureContext'
                 - Pim\Behat\Context\Domain\Enrich\ProductModelContext:
@@ -569,8 +563,6 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                 - Pim\Behat\Context\Domain\Enrich\CompletenessContext:
                     - 'Context\EnterpriseFeatureContext'
-                - Pim\Behat\Context\Domain\Enrich\GridPaginationContext:
-                    - 'Context\EnterpriseFeatureContext'
                 - Pim\Behat\Context\Domain\Enrich\ProductGroupContext:
                     - 'Context\EnterpriseFeatureContext'
                 - Pim\Behat\Context\Domain\Enrich\ProductModelContext:
@@ -717,8 +709,6 @@ legacy:
                 - Pim\Behat\Context\Domain\Enrich\AttributeTabContext:
                     - 'Context\EnterpriseFeatureContext'
                 - Pim\Behat\Context\Domain\Enrich\CompletenessContext:
-                    - 'Context\EnterpriseFeatureContext'
-                - Pim\Behat\Context\Domain\Enrich\GridPaginationContext:
                     - 'Context\EnterpriseFeatureContext'
                 - Pim\Behat\Context\Domain\Enrich\ProductGroupContext:
                     - 'Context\EnterpriseFeatureContext'
