@@ -119,7 +119,7 @@ class BulkMediaFetcher
         } catch (FileTransferException $e) {
             $this->addError(
                 $media,
-                sprintf('The media has not been found or is not currently available', $e->getMessage())
+                sprintf('The media has not been found or is not currently available. %s', $e->getMessage())
             );
         } catch (\LogicException $e) {
             $this->addError($media, sprintf('The media has not been copied. %s', $e->getMessage()));
