@@ -49,7 +49,7 @@ class CreateAppHandler
             throw new ConstraintViolationListException($violations);
         }
 
-        $clientId = $this->createClient->execute($command->label());
+        $client = $this->createClient->execute($command->label());
 
         $username = $command->code();
         $password = $command->code();
@@ -65,7 +65,7 @@ class CreateAppHandler
             $command->code(),
             $command->label(),
             $command->flowType(),
-            $clientId,
+            $client->id(),
             $userId
         );
         $this->repository->create($app);

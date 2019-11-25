@@ -30,12 +30,11 @@ class RegenerateAppSecretHandlerSpec extends ObjectBehavior
 
     public function it_regenerates_a_client_secret($repository, $regenerateClientSecret): void
     {
-        $clientId = new ClientId(42);
         $userId = new UserId(72);
-        $app = new App('magento', 'Magento Connector', FlowType::DATA_DESTINATION, $clientId, $userId);
+        $app = new App('magento', 'Magento Connector', FlowType::DATA_DESTINATION, 42, $userId);
 
         $repository->findOneByCode('magento')->willReturn($app);
-        $regenerateClientSecret->execute($clientId)->shouldBeCalled();
+        $regenerateClientSecret->execute(new ClientId(42))->shouldBeCalled();
 
         $command = new RegenerateAppSecretCommand('magento');
         $this->handle($command);

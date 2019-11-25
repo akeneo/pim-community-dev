@@ -8,6 +8,7 @@ use Akeneo\Apps\Application\Command\CreateAppHandler;
 use Akeneo\Apps\Application\Service\CreateClientInterface;
 use Akeneo\Apps\Application\Service\CreateUserInterface;
 use Akeneo\Apps\Domain\Exception\ConstraintViolationListException;
+use Akeneo\Apps\Domain\Model\Read\Client;
 use Akeneo\Apps\Domain\Model\ValueObject\ClientId;
 use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
 use Akeneo\Apps\Domain\Model\Write\App;
@@ -45,8 +46,8 @@ class CreateAppHandlerSpec extends ObjectBehavior
         $violations = new ConstraintViolationList([]);
         $validator->validate($command)->willReturn($violations);
 
-        $clientId = new ClientId(42);
-        $createClient->execute('Magento Connector')->shouldBeCalled()->willReturn($clientId);
+        $client = new Client(42, '42_myclientId', 'secret');
+        $createClient->execute('Magento Connector')->shouldBeCalled()->willReturn($client);
         $createUser->execute('magento', 'Magento Connector', 'APP', 'magento', Argument::any())->shouldBeCalled();
 
         $repository->create(Argument::type(App::class))->shouldBeCalled();
