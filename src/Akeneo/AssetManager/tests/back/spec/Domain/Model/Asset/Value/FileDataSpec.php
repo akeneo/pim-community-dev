@@ -72,7 +72,7 @@ class FileDataSpec extends ObjectBehavior
         $fileInfo->getKey()->willReturn('A9E87F76A6F87A87E68F768A7E6F');
         $fileInfo->getOriginalFilename()->willReturn('file.ext');
 
-        $this->beConstructedThrough('createFromFileinfo', [$fileInfo]);
+        $this->beConstructedThrough('createFromFileinfo', [$fileInfo, new \DateTimeImmutable()]);
         $this->shouldBeAnInstanceOf(FileData::class);
     }
 

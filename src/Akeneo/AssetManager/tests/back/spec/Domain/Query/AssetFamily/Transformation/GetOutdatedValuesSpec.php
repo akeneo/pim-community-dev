@@ -9,6 +9,7 @@ use Akeneo\AssetManager\Domain\Model\Asset\Value\FileData;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\NumberData;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Source;
@@ -66,7 +67,7 @@ class GetOutdatedValuesSpec extends ObjectBehavior
         $asset->findValue(ValueKey::createFromNormalized($sourceKey))->willReturn(null);
         $asset->findValue(ValueKey::createFromNormalized($targetKey))->willReturn($targetValue);
 
-        $this->fromAsset($asset, $transformationCollection)->shouldReturn([]);
+        $this->fromAsset($asset, $transformationCollection)->shouldBeLike(ValueCollection::fromValues([]));
     }
 
     function it_returns_target_if_there_is_no_target_value(
@@ -90,7 +91,7 @@ class GetOutdatedValuesSpec extends ObjectBehavior
             EmptyData::create()
         );
 
-        $this->fromAsset($asset, $transformationCollection)->shouldBeLike([$targetValue]);
+        $this->fromAsset($asset, $transformationCollection)->shouldBeLike(ValueCollection::fromValues([$targetValue]));
     }
 
     function it_returns_nothing_if_source_value_is_not_a_file(
@@ -108,7 +109,7 @@ class GetOutdatedValuesSpec extends ObjectBehavior
 
         $sourceValue->getData()->willReturn($wrongData);
 
-        $this->fromAsset($asset, $transformationCollection)->shouldReturn([]);
+        $this->fromAsset($asset, $transformationCollection)->shouldBeLike(ValueCollection::fromValues([]));
     }
 
     function it_returns_nothing_if_target_value_is_not_a_file(
@@ -128,7 +129,7 @@ class GetOutdatedValuesSpec extends ObjectBehavior
         $sourceValue->getData()->willReturn($sourceData);
         $targetValue->getData()->willReturn($wrongData);
 
-        $this->fromAsset($asset, $transformationCollection)->shouldReturn([]);
+        $this->fromAsset($asset, $transformationCollection)->shouldBeLike(ValueCollection::fromValues([]));
     }
 
     function it_returns_target_if_source_has_no_timestamp(
@@ -148,8 +149,9 @@ class GetOutdatedValuesSpec extends ObjectBehavior
         $sourceValue->getData()->willReturn($sourceData);
         $sourceData->getUpdatedAt()->willReturn(null);
         $targetValue->getData()->willReturn($targetData);
+        $targetValue->getValueKey()->willReturn(ValueKey::createFromNormalized('targetKey'));
 
-        $this->fromAsset($asset, $transformationCollection)->shouldReturn([$targetValue]);
+        $this->fromAsset($asset, $transformationCollection)->shouldBeLike(ValueCollection::fromValues([$targetValue->getWrappedObject()]));
     }
 
     function it_returns_target_if_target_has_no_timestamp(
@@ -171,8 +173,9 @@ class GetOutdatedValuesSpec extends ObjectBehavior
 
         $targetValue->getData()->willReturn($targetData);
         $targetData->getUpdatedAt()->willReturn(null);
+        $targetValue->getValueKey()->willReturn(ValueKey::createFromNormalized('targetKey'));
 
-        $this->fromAsset($asset, $transformationCollection)->shouldReturn([$targetValue]);
+        $this->fromAsset($asset, $transformationCollection)->shouldBeLike(ValueCollection::fromValues([$targetValue->getWrappedObject()]));
     }
 
     function it_returns_nothing_if_source_was_updated_before_target(
@@ -197,7 +200,7 @@ class GetOutdatedValuesSpec extends ObjectBehavior
         $targetValue->getData()->willReturn($targetData);
         $targetData->getUpdatedAt()->willReturn($dateTimeTarget);
 
-        $this->fromAsset($asset, $transformationCollection)->shouldReturn([]);
+        $this->fromAsset($asset, $transformationCollection)->shouldBeLike(ValueCollection::fromValues([]));
     }
 
     function it_returns_target_if_source_was_updated_after_target(
@@ -221,8 +224,9 @@ class GetOutdatedValuesSpec extends ObjectBehavior
         $sourceData->getUpdatedAt()->willReturn($dateTimeSource);
         $targetValue->getData()->willReturn($targetData);
         $targetData->getUpdatedAt()->willReturn($dateTimeTarget);
+        $targetValue->getValueKey()->willReturn(ValueKey::createFromNormalized('targetKey'));
 
-        $this->fromAsset($asset, $transformationCollection)->shouldReturn([$targetValue]);
+        $this->fromAsset($asset, $transformationCollection)->shouldBeLike(ValueCollection::fromValues([$targetValue->getWrappedObject()]));
     }
 
     private function getStandardTransformationCollection(): TransformationCollection

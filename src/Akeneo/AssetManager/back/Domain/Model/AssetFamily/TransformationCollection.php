@@ -73,7 +73,7 @@ class TransformationCollection implements \IteratorAggregate
         $this->transformations[] = $transformation;
     }
 
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->transformations);
     }

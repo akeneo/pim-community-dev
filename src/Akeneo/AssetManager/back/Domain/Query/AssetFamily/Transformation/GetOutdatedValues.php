@@ -46,8 +46,8 @@ class GetOutdatedValues
     public function fromAsset(
         Asset $asset,
         TransformationCollection $transformationCollection
-    ): array {
-        $result = [];
+    ): ValueCollection {
+        $targetValues = [];
         foreach ($transformationCollection as $transformation) {
             /** @var Transformation $transformation */
             $sourceValue = $this->getValue($asset, $transformation->getSource());
@@ -58,7 +58,7 @@ class GetOutdatedValues
             }
 
             if ($targetValue === null) {
-                $result[] = $this->createEmptyValue($asset, $transformation);
+                $targetValues[] = $this->createEmptyValue($asset, $transformation);
 
                 continue;
             }
@@ -71,11 +71,11 @@ class GetOutdatedValues
                 null === $targetValue->getData()->getUpdatedAt() ||
                 $sourceValue->getData()->getUpdatedAt() > $targetValue->getData()->getUpdatedAt()
             ) {
-                $result[] = $targetValue;
+                $targetValues[] = $targetValue;
             }
         }
 
-        return $result;
+        return ValueCollection::fromValues($targetValues);
     }
 
     private function getValue(Asset $asset, TransformationReference $reference): ?Value

@@ -38,7 +38,7 @@ class ValueCollectionSpec extends ObjectBehavior
                     AttributeIdentifier::fromString('image_designer_fingerprint'),
                     ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('mobile')),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
-                    FileData::createFromFileinfo($file)
+                    FileData::createFromFileinfo($file, new \DateTimeImmutable())
                 ),
             ],
         ]);

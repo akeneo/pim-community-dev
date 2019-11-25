@@ -76,7 +76,7 @@ class StoredFileUpdater implements ValueUpdaterInterface
             $fileInfo->setMimeType($command->mimeType);
             $fileInfo->setExtension($command->extension);
 
-            $fileData = FileData::createFromFileinfo($fileInfo);
+            $fileData = FileData::createFromFileinfo($fileInfo, new \DateTimeImmutable());
         } else {
             $fileData = $existingValue->getData();
         }
