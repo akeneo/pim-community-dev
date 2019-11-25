@@ -27,6 +27,9 @@ class CreateAssetFamilyCommand
     /** @var array */
     public $productLinkRules;
 
+    /** @var array */
+    public $transformations = [];
+
     public function __construct(string $identifier, array $labels, array $productLinkRules)
     {
         $this->identifier = $identifier;

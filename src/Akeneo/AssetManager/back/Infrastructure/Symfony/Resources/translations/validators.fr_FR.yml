@@ -16,6 +16,9 @@ pim_asset_manager:
       should_exist: 'La famille de ressources numériques "%asset_family_code%" n''existe pas.'
       rule_template:
         limit_reached: 'Vous ne pouvez pas créer la famille de ressources "%asset_family_label%" car vous avez atteint le nombre maximum de %limit% de produits liés'
+      transformation:
+        limit_reached: 'Vous ne pouvez pas créer ou modifier la famille de ressources "%asset_family_label%" car vous avez atteint le nombre maximum de %limit% de transformations'
+        same_operation_twice: 'Vous ne pouvez pas créer ou modifier la famille de ressources "%asset_family_label%" car l''operation "operation_type" est utilisée plusieurs fois dans une seule transformation'
   asset:
     validation:
       code:

@@ -30,11 +30,21 @@ class EditAssetFamilyCommand
     /** @var array */
     public $productLinkRules;
 
-    public function __construct(string $identifier, array $labels, ?array $image, array $productLinkRules)
-    {
+    /** @var array */
+    public $transformations;
+
+    public function __construct(
+        string $identifier,
+        array $labels,
+        ?array $image,
+        array $productLinkRules,
+        // @TODO in ATR-29: remove default value
+        array $transformations = []
+    ) {
         $this->identifier = $identifier;
         $this->labels = $labels;
         $this->image = $image;
         $this->productLinkRules = $productLinkRules;
+        $this->transformations = $transformations;
     }
 }

@@ -271,3 +271,15 @@ services:
         class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\GetAssetCollectionTypeAdapter
         arguments:
             - '@pim_catalog.repository.attribute'
+
+    Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ThereShouldBeLessTransformationThanLimitValidator:
+        class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ThereShouldBeLessTransformationThanLimitValidator
+        arguments:
+            - '%asset_manager_transformations_by_asset_family_limit%'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ThereShouldBeLessTransformationThanLimitValidator' }
+
+    Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\TransformationCanNotHaveSameOperationTwiceValidator:
+        class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\TransformationCanNotHaveSameOperationTwiceValidator
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\TransformationCanNotHaveSameOperationTwiceValidator' }
