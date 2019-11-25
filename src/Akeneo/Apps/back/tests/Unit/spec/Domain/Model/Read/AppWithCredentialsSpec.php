@@ -22,7 +22,9 @@ class AppWithCredentialsSpec extends ObjectBehavior
             'Magento Connector',
             FlowType::DATA_DESTINATION,
             'my_custom_client_id',
-            'my_secret'
+            'my_secret',
+            'my_username',
+            'my_password'
         );
     }
 
@@ -56,6 +58,16 @@ class AppWithCredentialsSpec extends ObjectBehavior
         $this->secret()->shouldReturn('my_secret');
     }
 
+    public function it_returns_the_username()
+    {
+        $this->username()->shouldReturn('my_username');
+    }
+
+    public function it_returns_the_password()
+    {
+        $this->password()->shouldReturn('my_password');
+    }
+
     public function it_normalizes_an_app_with_credentials()
     {
         $this->normalize()->shouldReturn([
@@ -64,6 +76,21 @@ class AppWithCredentialsSpec extends ObjectBehavior
             'flow_type' => FlowType::DATA_DESTINATION,
             'client_id' => 'my_custom_client_id',
             'secret' => 'my_secret',
+            'username' => 'my_username',
+            'password' => 'my_password',
         ]);
+    }
+
+    public function it_creates_an_app_with_credentials_without_password()
+    {
+        $this->beConstructedWith(
+            'magento',
+            'Magento Connector',
+            FlowType::DATA_DESTINATION,
+            'my_custom_client_id',
+            'my_secret',
+            'my_username'
+        );
+        $this->password()->shouldBeNull();
     }
 }
