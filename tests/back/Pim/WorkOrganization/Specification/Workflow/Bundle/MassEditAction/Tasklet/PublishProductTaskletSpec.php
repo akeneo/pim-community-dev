@@ -105,65 +105,6 @@ class PublishProductTaskletSpec extends ObjectBehavior
         $this->execute();
     }
 
-    function it_executes_a_mass_publish_operation_with_a_configuration_with_invalid_items(
-        $paginatorFactory,
-        $manager,
-        $cursor,
-        $validator,
-        $authorizationChecker,
-        $stepExecution,
-        ProductInterface $product1,
-        ProductInterface $product2,
-        JobParameters $jobParameters
-    ) {
-        $configuration = [
-            'filters' => [
-                [
-                    'field'    => 'sku',
-                    'operator' => 'IN',
-                    'value'    => ['1000', '1001']
-                ]
-            ],
-            'actions' => []
-        ];
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('filters')->willReturn($configuration['filters']);
-        $jobParameters->get('actions')->willReturn($configuration['actions']);
-
-        $productsPage = [
-            [
-                $product1,
-                $product2
-            ]
-        ];
-        $paginatorFactory->createPaginator($cursor)->willReturn($productsPage);
-
-        $authorizationChecker->isGranted(Attributes::OWN, $product1)->willReturn(true);
-        $authorizationChecker->isGranted(Attributes::OWN, $product2)->willReturn(true);
-
-        $violation1 = new ConstraintViolation('error1', 'spec', [], '', '', $product1);
-        $violation2 = new ConstraintViolation('error2', 'spec', [], '', '', $product2);
-
-        $violations = new ConstraintViolationList([$violation1, $violation2]);
-
-        $stepExecution->incrementSummaryInfo('mass_edited')->shouldNotBeCalled(2);
-        $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalledTimes(2);
-
-        $validator->validate($product1)->willReturn($violations);
-        $validator->validate($product2)->willReturn($violations);
-
-        $stepExecution->addWarning(
-            Argument::any(),
-            [],
-            Argument::type(InvalidItemInterface::class)
-        )->shouldBeCalledTimes(4);
-
-        $manager->publishAll([])->shouldBeCalled();
-
-        $this->setStepExecution($stepExecution);
-        $this->execute($configuration);
-    }
-
     function it_skips_product_when_user_does_not_have_own_right_on_it(
         $paginatorFactory,
         $manager,
