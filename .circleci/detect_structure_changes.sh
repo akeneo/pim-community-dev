@@ -24,6 +24,12 @@ export $(cat .env)
 echo "Checkout master branch..."
 git branch -D realmaster || true
 git checkout -b realmaster --track origin/master
+if [ -d "vendor/akeneo/pim-community-dev" ]; then
+    pushd vendor/akeneo/pim-community-dev
+    git branch -D realmaster || true
+    git checkout -b realmaster --track origin/master
+    popd
+fi
 
 echo "Clean cache..."
 APP_ENV=test make cache
@@ -33,6 +39,11 @@ APP_ENV=test make database
 
 echo "Checkout PR branch..."
 git checkout $PR_BRANCH
+if [ -d "vendor/akeneo/pim-community-dev" ]; then
+    pushd vendor/akeneo/pim-community-dev
+    (curl --output /dev/null --silent --head --fail https://github.com/akeneo/pim-community-dev/tree/${PR_BRANCH} && git checkout $PR_BRANCH) || true
+    popd
+fi
 
 echo "Clean cache..."
 APP_ENV=test make cache
