@@ -16,7 +16,7 @@ Feature: Delete one record
     When the user tries to delete record that does not exist
     Then an exception is thrown
 
-  @acceptance-front
+  @acceptance-front @skip
   Scenario: Deleting a record
     Given a valid record
     And the user has the locale permission to edit the record
