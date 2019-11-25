@@ -14,7 +14,7 @@ class Changelog
     /** @var string */
     private $currentSection = '';
 
-    public function parseFile(string $filepath): void
+    public function parseFile(string $filepath, string $edition): void
     {
         $handle = fopen($filepath, 'r');
 
@@ -23,21 +23,22 @@ class Changelog
             $this->currentSection = null;
 
             while (($buffer = fgets($handle, 4096)) !== false) {
-                $this->parseLine($buffer);
+                $this->parseLine($buffer, $edition);
             }
         } finally {
             fclose($handle);
         }
     }
 
-    private function parseLine(string $line): void
+    private function parseLine(string $line, string $edition): void
     {
         if (empty(trim($line))) {
             return;
         }
 
         if (preg_match(self::PATTERN_VERSION, trim($line), $matches)) {
-            $this->currentVersion = $this->addVersion($matches[1], $matches[2] ?? '');
+            $name = sprintf('%s %s', strtoupper($edition), $matches[1]);
+            $this->currentVersion = $this->addVersion($name, $matches[2] ?? '');
             $this->currentSection = '';
         } elseif (preg_match(self::PATTERN_SECTION, trim($line), $matches)) {
             $this->currentSection = $matches[1];

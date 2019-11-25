@@ -17,4 +17,5 @@ services:
     pim_analytics.controller.changelog:
         class: Akeneo\Platform\Bundle\AnalyticsBundle\Controller\ChangelogController
         arguments:
-            - ['%pim_ce_dev_src_folder_location%']
+            -
+                ce: '%pim_ce_dev_src_folder_location%'

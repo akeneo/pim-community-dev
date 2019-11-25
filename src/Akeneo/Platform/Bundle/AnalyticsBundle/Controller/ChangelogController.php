@@ -30,9 +30,9 @@ class ChangelogController extends Controller
     public function indexAction()
     {
         $changelog = new Changelog();
-        foreach ($this->changelogDirectories as $changelogFolder) {
+        foreach ($this->changelogDirectories as $edition => $changelogFolder) {
             foreach (glob($changelogFolder . '/CHANGELOG-*.md') as $changelogFile) {
-                $changelog->parseFile($changelogFile);
+                $changelog->parseFile($changelogFile, $edition);
             }
         }
 
