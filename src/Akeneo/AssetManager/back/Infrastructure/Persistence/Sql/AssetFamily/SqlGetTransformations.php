@@ -52,12 +52,11 @@ class SqlGetTransformations implements GetTransformations
 WITH
 grouped_asset_family AS (
     SELECT
-        asset.asset_family_identifier,
-        GROUP_CONCAT(asset.identifier) AS asset_identifiers
-    FROM akeneo_asset_manager_asset asset
-        JOIN akeneo_asset_manager_asset_family asset_family ON asset.asset_family_identifier = asset_family.identifier
-    WHERE asset.identifier IN (:identifiers)
-    GROUP BY asset.asset_family_identifier
+        asset_family_identifier,
+        GROUP_CONCAT(identifier) AS asset_identifiers
+    FROM akeneo_asset_manager_asset
+    WHERE identifier IN (:identifiers)
+    GROUP BY asset_family_identifier
 )
 SELECT
     grouped_asset_family.asset_family_identifier,
