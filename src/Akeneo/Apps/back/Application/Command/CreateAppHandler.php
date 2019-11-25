@@ -42,7 +42,7 @@ class CreateAppHandler
         $this->createUser = $createUser;
     }
 
-    public function handle(CreateAppCommand $command): void
+    public function handle(CreateAppCommand $command): AppWithCredentials
     {
         $violations = $this->validator->validate($command);
         if ($violations->count() > 0) {
@@ -69,5 +69,15 @@ class CreateAppHandler
             $userId
         );
         $this->repository->create($app);
+
+        return new AppWithCredentials(
+            $command->code(),
+            $command->label(),
+            $command->flowType(),
+            $client->clientId(),
+            $client->secret(),
+            $username,
+            $password
+        );
     }
 }

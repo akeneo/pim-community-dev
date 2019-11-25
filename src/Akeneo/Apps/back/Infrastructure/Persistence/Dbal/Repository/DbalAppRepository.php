@@ -57,7 +57,7 @@ SQL;
                 $dataRow['code'],
                 $dataRow['label'],
                 $dataRow['flow_type'],
-                new ClientId((int) $dataRow['client_id']),
+                (int) $dataRow['client_id'],
                 new UserId((int) $dataRow['user_id'])
             ) : null;
     }
