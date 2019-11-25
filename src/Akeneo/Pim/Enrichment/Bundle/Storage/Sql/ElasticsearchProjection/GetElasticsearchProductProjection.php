@@ -242,7 +242,7 @@ WITH
             JSON_ARRAYAGG(attribute.code) as attribute_codes_at_variant_product_level
         FROM 
             (SELECT DISTINCT family_variant_id, product_lvl_in_attribute_set FROM product WHERE family_variant_id IS NOT NULL) family_variant
-            JOIN akeneo_pim.pim_catalog_family_variant_has_variant_attribute_sets family_variant_attribute_set ON family_variant_attribute_set.family_variant_id = family_variant.family_variant_id
+            JOIN pim_catalog_family_variant_has_variant_attribute_sets family_variant_attribute_set ON family_variant_attribute_set.family_variant_id = family_variant.family_variant_id
             JOIN pim_catalog_variant_attribute_set_has_attributes attribute_in_set ON attribute_in_set.variant_attribute_set_id = family_variant_attribute_set.variant_attribute_sets_id
             JOIN pim_catalog_family_variant_attribute_set attribute_set ON attribute_set.id = family_variant_attribute_set.variant_attribute_sets_id
             JOIN pim_catalog_attribute attribute ON attribute.id = attribute_in_set.attributes_id
