@@ -190,6 +190,12 @@ services:
         arguments:
             - '@database_connection'
 
+    Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlFindTransformationsForAsset:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlFindTransformationsForAsset
+        arguments:
+            - '@database_connection'
+            - '@Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCollectionFactory'
+
     # Attributes query functions
     akeneo_assetmanager.infrastructure.persistence.query.attribute_exists:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlAttributeExists
