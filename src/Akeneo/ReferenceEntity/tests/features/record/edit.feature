@@ -562,7 +562,7 @@ Feature: Edit an record
       | akeneo_referenceentity_record_edit | false |
     Then the user cannot update the multiple option value
 
-  @acceptance-front
+  @acceptance-front @skip
   Scenario: Display bullet point for the completeness when a required field isn't filled
     Given a valid record
     And the user has the locale permission to edit the record
