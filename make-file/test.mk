@@ -38,8 +38,7 @@ acceptance-back: var/tests/behat reference-entity-acceptance-back asset-manager-
 	${PHP_RUN} vendor/bin/behat -p acceptance --format pim --out var/tests/behat --format progress --out std --colors
 
 .PHONY: acceptance-front
-acceptance-front: reference-entity-acceptance-front asset-manager-acceptance-front
-	MAX_RANDOM_LATENCY_MS=100 $(YARN_RUN) acceptance run acceptance ./tests/features
+acceptance-front: MAX_RANDOM_LATENCY_MS=100 $(YARN_RUN) acceptance run acceptance ./tests/features
 
 ### Integration tests
 .PHONY: integration-front
