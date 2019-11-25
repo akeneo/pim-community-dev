@@ -11,7 +11,6 @@ import {
   notifyAssetFamilyWellSaved,
   notifyAssetFamilySaveFailed,
 } from 'akeneoassetmanager/application/action/asset-family/notify';
-import {denormalizeAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import assetFamilySaver from 'akeneoassetmanager/infrastructure/saver/asset-family';
 import assetFamilyFetcher, {AssetFamilyResult} from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
 import ValidationError, {createValidationError} from 'akeneoassetmanager/domain/model/validation-error';
@@ -21,7 +20,7 @@ import {assetFamilyPermissionChanged} from 'akeneoassetmanager/domain/event/user
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 
 export const saveAssetFamily = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
-  const assetFamily = denormalizeAssetFamily(getState().form.data);
+  const assetFamily = getState().form.data;
 
   try {
     const errors = await assetFamilySaver.save(assetFamily);
@@ -42,7 +41,7 @@ export const saveAssetFamily = () => async (dispatch: any, getState: () => EditS
   dispatch(assetFamilyEditionSucceeded());
   dispatch(notifyAssetFamilyWellSaved());
 
-  dispatch(refreshAssetFamily(assetFamily.getIdentifier()));
+  dispatch(refreshAssetFamily(assetFamily.identifier));
 };
 
 export const refreshAssetFamily = (
@@ -53,7 +52,7 @@ export const refreshAssetFamily = (
   if (refreshDataForm) {
     dispatch(assetFamilyAssetCountUpdated(assetFamilyResult.assetCount));
   }
-  dispatch(assetFamilyEditionReceived(assetFamilyResult.assetFamily.normalize()));
+  dispatch(assetFamilyEditionReceived(assetFamilyResult.assetFamily));
   dispatch(assetFamilyPermissionChanged(assetFamilyResult.permission));
 };
 

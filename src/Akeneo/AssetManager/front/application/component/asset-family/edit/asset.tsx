@@ -5,7 +5,7 @@ import {NormalizedAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {redirectToAsset} from 'akeneoassetmanager/application/action/asset/router';
 import __ from 'akeneoassetmanager/tools/translator';
-import AssetFamily, {denormalizeAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
 import {assetCreationStart} from 'akeneoassetmanager/domain/event/asset/create';
 import {deleteAllAssetFamilyAssets, deleteAsset} from 'akeneoassetmanager/application/action/asset/delete';
@@ -176,8 +176,8 @@ class Assets extends React.Component<StateProps & DispatchProps, {cellViews: Cel
     return (
       <React.Fragment>
         <Header
-          label={assetFamily.getLabel(context.locale)}
-          image={assetFamily.getImage()}
+          label={getAssetFamilyLabel(assetFamily, context.locale)}
+          image={assetFamily.image}
           primaryAction={() => {
             return rights.asset.create ? (
               <button className="AknButton AknButton--action" onClick={events.onAssetCreationStart}>
@@ -225,7 +225,7 @@ class Assets extends React.Component<StateProps & DispatchProps, {cellViews: Cel
             <div className="AknGridContainer-noDataImage AknGridContainer-noDataImage--asset-family" />
             <div className="AknGridContainer-noDataTitle">
               {__('pim_asset_manager.asset.no_data.title', {
-                entityLabel: assetFamily.getLabel(context.locale),
+                entityLabel: getAssetFamilyLabel(assetFamily, context.locale),
               })}
             </div>
             <div className="AknGridContainer-noDataSubtitle">{__('pim_asset_manager.asset.no_data.subtitle')}</div>
@@ -234,7 +234,7 @@ class Assets extends React.Component<StateProps & DispatchProps, {cellViews: Cel
         {confirmDelete.isActive && undefined === confirmDelete.identifier && (
           <DeleteModal
             message={__('pim_asset_manager.asset.delete_all.confirm', {
-              entityIdentifier: assetFamily.getIdentifier(),
+              entityIdentifier: assetFamily.identifier,
             })}
             title={__('pim_asset_manager.asset.delete.title')}
             onConfirm={() => {
@@ -250,10 +250,7 @@ class Assets extends React.Component<StateProps & DispatchProps, {cellViews: Cel
             })}
             title={__('pim_asset_manager.asset.delete.title')}
             onConfirm={() => {
-              events.onDeleteAsset(
-                assetFamily.getIdentifier(),
-                denormalizeAssetCode(confirmDelete.identifier as string)
-              );
+              events.onDeleteAsset(assetFamily.identifier, denormalizeAssetCode(confirmDelete.identifier as string));
             }}
             onCancel={events.onCancelDeleteModal}
           />
@@ -265,7 +262,7 @@ class Assets extends React.Component<StateProps & DispatchProps, {cellViews: Cel
 
 export default connect(
   (state: EditState): StateProps => {
-    const assetFamily = denormalizeAssetFamily(state.form.data);
+    const assetFamily = state.form.data;
     const assets = undefined === state.grid || undefined === state.grid.items ? [] : state.grid.items;
     const page = undefined === state.grid || undefined === state.grid.query.page ? 0 : state.grid.query.page;
     const filters = undefined === state.grid || undefined === state.grid.query.filters ? [] : state.grid.query.filters;

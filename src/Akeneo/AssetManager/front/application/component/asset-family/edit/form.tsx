@@ -1,6 +1,6 @@
 import * as React from 'react';
 import __ from 'akeneoassetmanager/tools/translator';
-import {NormalizedAssetFamily, denormalizeAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import Flag from 'akeneoassetmanager/tools/component/flag';
 import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
@@ -12,7 +12,7 @@ import {assetFamilyIdentifierStringValue} from 'akeneoassetmanager/domain/model/
 
 interface FormProps {
   locale: string;
-  data: NormalizedAssetFamily;
+  data: AssetFamily;
   errors: ValidationError[];
   rights: {
     locale: {
@@ -52,7 +52,7 @@ export default class EditForm extends React.Component<FormProps> {
   };
 
   render() {
-    const assetFamily = denormalizeAssetFamily(this.props.data);
+    const assetFamily = this.props.data;
     const canEditLabel = this.props.rights.assetFamily.edit && this.props.rights.locale.edit;
     const canEditImage = this.props.rights.assetFamily.edit;
 
@@ -75,7 +75,7 @@ export default class EditForm extends React.Component<FormProps> {
               name="identifier"
               id="pim_asset_manager.asset_family.properties.identifier"
               className="AknTextField AknTextField--light AknTextField--disabled"
-              value={assetFamilyIdentifierStringValue(assetFamily.getIdentifier())}
+              value={assetFamilyIdentifierStringValue(assetFamily.identifier)}
               readOnly
             />
           </div>
@@ -98,7 +98,7 @@ export default class EditForm extends React.Component<FormProps> {
               name="label"
               id="pim_asset_manager.asset_family.properties.label"
               className={`AknTextField AknTextField--light ${true === canEditLabel ? '' : 'AknTextField--disabled'}`}
-              value={assetFamily.getLabel(this.props.locale, false)}
+              value={getAssetFamilyLabel(assetFamily, this.props.locale, false)}
               onChange={this.updateLabel}
               onKeyDown={this.keyDown}
               ref={this.labelInput}
@@ -125,9 +125,9 @@ export default class EditForm extends React.Component<FormProps> {
           <div className="AknFieldContainer-inputContainer">
             <Image
               alt={__('pim_asset_manager.asset_family.img', {
-                '{{ label }}': assetFamily.getLabel(this.props.locale),
+                '{{ label }}': getAssetFamilyLabel(assetFamily, this.props.locale),
               })}
-              image={assetFamily.getImage()}
+              image={assetFamily.image}
               wide={true}
               onImageChange={this.props.onImageUpdated}
               readOnly={!canEditImage}

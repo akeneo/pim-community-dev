@@ -1,5 +1,5 @@
 import {Query, SearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
-import AssetFamily from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import hydrator from 'akeneoassetmanager/application/hydrator/asset-family';
 import hydrateAll from 'akeneoassetmanager/application/hydrator/hydrator';
 import {getJSON} from 'akeneoassetmanager/tools/fetch';

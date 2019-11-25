@@ -7,7 +7,7 @@ import {CreateState} from 'akeneoassetmanager/application/reducer/attribute/crea
 import CreateAttributeModal from 'akeneoassetmanager/application/component/attribute/create';
 import ManageOptionsView from 'akeneoassetmanager/application/component/attribute/edit/option';
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
-import AssetFamily, {denormalizeAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {attributeEditionStartByIdentifier} from 'akeneoassetmanager/application/action/attribute/edit';
 import AttributeEditForm from 'akeneoassetmanager/application/component/attribute/edit';
 import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
@@ -202,8 +202,8 @@ class AttributesView extends React.Component<CreateProps> {
     return (
       <React.Fragment>
         <Header
-          label={this.props.assetFamily.getLabel(this.props.context.locale)}
-          image={this.props.assetFamily.getImage()}
+          label={getAssetFamilyLabel(this.props.assetFamily, this.props.context.locale)}
+          image={this.props.assetFamily.image}
           primaryAction={(defaultFocus: React.RefObject<any>) => {
             return this.props.rights.attribute.create ? (
               <button
@@ -261,7 +261,7 @@ class AttributesView extends React.Component<CreateProps> {
               <div className="AknGridContainer-noData AknGridContainer-noData--small">
                 <div className="AknGridContainer-noDataTitle">
                   {__('pim_asset_manager.attribute.no_data.title', {
-                    entityLabel: this.props.assetFamily.getLabel(this.props.context.locale),
+                    entityLabel: getAssetFamilyLabel(this.props.assetFamily, this.props.context.locale),
                   })}
                 </div>
                 <div className="AknGridContainer-noDataSubtitle">
@@ -306,7 +306,7 @@ export default connect(
             canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
         },
       },
-      assetFamily: denormalizeAssetFamily(state.form.data),
+      assetFamily: state.form.data,
       createAttribute: state.createAttribute,
       editAttribute: state.attribute.isActive,
       options: state.options,

@@ -4,7 +4,7 @@ import {getLabel} from 'pimui/js/i18n';
 import Completeness from 'akeneoassetmanager/domain/model/asset/completeness';
 import CompletenessLabel from 'akeneoassetmanager/application/component/app/completeness';
 import {getAssetPreview, MediaPreviewTypes} from 'akeneoassetmanager/tools/media-url-generator';
-import AssetFamily from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 
 const memo = (React as any).memo;
 

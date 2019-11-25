@@ -25,7 +25,7 @@ import {getAttributeView} from 'akeneoassetmanager/application/configuration/att
 import Key from 'akeneoassetmanager/tools/key';
 import Trash from 'akeneoassetmanager/application/component/app/icon/trash';
 import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-boundary';
-import AssetFamily, {denormalizeAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 
 interface OwnProps {
   rights: {
@@ -149,11 +149,8 @@ class Edit extends React.Component<EditProps> {
     // This will be simplyfied in the near future
     const displayDeleteButton =
       this.props.rights.attribute.delete &&
-      !attributeidentifiersAreEqual(
-        this.props.assetFamily.getAttributeAsLabel(),
-        this.props.attribute.getIdentifier()
-      ) &&
-      !attributeidentifiersAreEqual(this.props.assetFamily.getAttributeAsImage(), this.props.attribute.getIdentifier());
+      !attributeidentifiersAreEqual(this.props.assetFamily.attribute_as_label, this.props.attribute.getIdentifier()) &&
+      !attributeidentifiersAreEqual(this.props.assetFamily.attribute_as_image, this.props.attribute.getIdentifier());
 
     return (
       <React.Fragment>
@@ -330,7 +327,7 @@ export default connect(
       isActive: state.attribute.isActive,
       attribute: denormalizeAttribute(state.attribute.data),
       errors: state.attribute.errors,
-      assetFamily: denormalizeAssetFamily(state.form.data),
+      assetFamily: state.form.data,
       isSaving: state.attribute.isSaving,
       context: {
         locale: state.user.catalogLocale,

@@ -2,7 +2,7 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import __ from 'akeneoassetmanager/tools/translator';
-import {denormalizeAssetFamily, NormalizedAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
 import {breadcrumbConfiguration} from 'akeneoassetmanager/application/component/asset-family/edit';
 import PermissionCollectionEditor from 'akeneoassetmanager/tools/component/permission';
@@ -20,7 +20,7 @@ const securityContext = require('pim/security-context');
 const routing = require('routing');
 
 interface StateProps {
-  assetFamily: NormalizedAssetFamily;
+  assetFamily: AssetFamily;
   permission: {
     data: PermissionCollection;
     state: FormState;
@@ -49,13 +49,13 @@ class Permission extends React.Component<StateProps & DispatchProps> {
   props: StateProps & DispatchProps;
 
   render() {
-    const assetFamily = denormalizeAssetFamily(this.props.assetFamily);
+    const assetFamily = this.props.assetFamily;
 
     return (
       <React.Fragment>
         <Header
-          label={assetFamily.getLabel(this.props.context.locale)}
-          image={assetFamily.getImage()}
+          label={getAssetFamilyLabel(assetFamily, this.props.context.locale)}
+          image={assetFamily.image}
           primaryAction={(defaultFocus: React.RefObject<any>) => {
             return this.props.rights.assetFamily.edit && !this.props.permission.data.isEmpty() ? (
               <button

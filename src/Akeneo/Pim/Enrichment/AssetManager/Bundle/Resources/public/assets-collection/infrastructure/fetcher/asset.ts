@@ -1,13 +1,12 @@
 import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
 import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
-import {denormalizeAssetFamilyIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import AssetFamilyIdentifier, {
+  denormalizeAssetFamilyIdentifier,
+} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {NormalizedItemAsset} from 'akeneoassetmanager/domain/model/asset/asset';
-import {NormalizedAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
-import {
-  AssetFamilyIdentifier,
-  AssetFamily,
-} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset-family';
+import {AssetFamily as AssetManagerAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family'; //TODO: only temporary to fix the model in asset manager
+import {AssetFamily} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset-family';
 import {Asset, Completeness} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {isNumber, isString, isLabels} from 'akeneoassetmanager/domain/model/utils';
 import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
@@ -110,7 +109,7 @@ const isCompleteness = (completeness: any): completeness is Completeness => {
 };
 
 const denormalizeAssetFamily = (
-  normalizedAssetFamily: NormalizedAssetFamily,
+  normalizedAssetFamily: AssetManagerAssetFamily,
   attributes: {attributes: NormalizedAttribute & any}[]
 ): AssetFamily => {
   return {
@@ -118,8 +117,8 @@ const denormalizeAssetFamily = (
     code: normalizedAssetFamily.code,
     labels: normalizedAssetFamily.labels,
     image: normalizedAssetFamily.image,
-    attributeAsLabel: normalizedAssetFamily.attribute_as_label,
-    attributeAsImage: normalizedAssetFamily.attribute_as_image,
+    attribute_as_label: normalizedAssetFamily.attribute_as_label,
+    attribute_as_image: normalizedAssetFamily.attribute_as_image,
     attributes: attributes,
   };
 };

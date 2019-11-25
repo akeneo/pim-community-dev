@@ -1,4 +1,4 @@
-import {NormalizedAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import formState, {FormState} from 'akeneoassetmanager/application/reducer/state';
 import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 import {combineReducers} from 'redux';
@@ -6,14 +6,14 @@ import {File} from 'akeneoassetmanager/domain/model/file';
 
 export interface EditionFormState {
   state: FormState;
-  data: NormalizedAssetFamily;
+  data: AssetFamily;
   errors: ValidationError[];
 }
 
 const stateReducer = formState('assetFamily', 'ASSET_FAMILY_EDITION_UPDATED', 'ASSET_FAMILY_EDITION_RECEIVED');
 
 const dataReducer = (
-  state: NormalizedAssetFamily = {
+  state: AssetFamily = {
     identifier: '',
     code: '',
     labels: {},
@@ -27,7 +27,7 @@ const dataReducer = (
     value,
     locale,
     image,
-  }: {type: string; assetFamily: NormalizedAssetFamily; value: string; locale: string; image: File}
+  }: {type: string; assetFamily: AssetFamily; value: string; locale: string; image: File}
 ) => {
   switch (type) {
     case 'ASSET_FAMILY_EDITION_RECEIVED':

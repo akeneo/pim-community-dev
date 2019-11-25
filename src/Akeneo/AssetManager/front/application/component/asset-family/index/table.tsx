@@ -1,6 +1,6 @@
 import * as React from 'react';
 import ItemView from 'akeneoassetmanager/application/component/asset-family/index/item';
-import AssetFamily, {createEmptyAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {AssetFamily, createEmptyAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {assetFamilyIdentifierStringValue} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 
 interface TableState {
@@ -54,7 +54,7 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
 
       return (
         <ItemView
-          key={assetFamilyIdentifierStringValue(assetFamily.getIdentifier())}
+          key={assetFamilyIdentifierStringValue(assetFamily.identifier)}
           assetFamily={assetFamily}
           locale={locale}
           onRedirectToAssetFamily={onRedirectToAssetFamily}

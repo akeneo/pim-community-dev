@@ -10,7 +10,7 @@ import {
 import {deleteAssetFamily} from 'akeneoassetmanager/application/action/asset-family/delete';
 import __ from 'akeneoassetmanager/tools/translator';
 import {EditionFormState} from 'akeneoassetmanager/application/reducer/asset-family/edit/form';
-import AssetFamily, {denormalizeAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
 import {breadcrumbConfiguration} from 'akeneoassetmanager/application/component/asset-family/edit';
 import {File} from 'akeneoassetmanager/domain/model/file';
@@ -76,14 +76,14 @@ class Properties extends React.Component<StateProps & DispatchProps> {
   };
 
   render() {
-    const assetFamily = denormalizeAssetFamily(this.props.form.data);
-    const label = assetFamily.getLabel(this.props.context.locale);
+    const assetFamily = this.props.form.data;
+    const label = getAssetFamilyLabel(assetFamily, this.props.context.locale);
 
     return (
       <React.Fragment>
         <Header
-          label={assetFamily.getLabel(this.props.context.locale)}
-          image={assetFamily.getImage()}
+          label={getAssetFamilyLabel(assetFamily, this.props.context.locale)}
+          image={assetFamily.image}
           primaryAction={(defaultFocus: React.RefObject<any>) => {
             return this.props.rights.assetFamily.edit ? (
               <button

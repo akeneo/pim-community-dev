@@ -1,30 +1,15 @@
-import {Labels} from 'akeneopimenrichmentassetmanager/platform/model/label';
-import {File} from 'akeneoassetmanager/domain/model/file';
+import {
+  AssetFamily as AssetFamilyModel,
+  createEmptyAssetFamily,
+} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 
-export type AssetFamilyIdentifier = string;
-type AssetFamilyCode = string;
-type AttributeIdentifier = string;
-
-export type AssetFamily = {
-  identifier: AssetFamilyIdentifier;
-  code: AssetFamilyCode;
-  labels: Labels;
-  image: File;
-  attributeAsLabel: AttributeIdentifier;
-  attributeAsImage: AttributeIdentifier;
+//Still not perfect but it's a first step
+export type AssetFamily = AssetFamilyModel & {
   attributes: (NormalizedAttribute & any)[];
 };
 
 export const emptyAssetFamily = (): AssetFamily => ({
-  identifier: '',
-  code: '',
-  image: {
-    filePath: '',
-    originalFilename: '',
-  },
-  labels: {},
-  attributeAsLabel: '',
-  attributeAsImage: '',
+  ...createEmptyAssetFamily(),
   attributes: [],
 });

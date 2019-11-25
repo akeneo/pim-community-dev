@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import __ from 'akeneoassetmanager/tools/translator';
 import Table from 'akeneoassetmanager/application/component/asset-family/index/table';
 import Breadcrumb from 'akeneoassetmanager/application/component/app/breadcrumb';
-import AssetFamily from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import PimView from 'akeneoassetmanager/infrastructure/component/pim-view';
 import {redirectToAssetFamily} from 'akeneoassetmanager/application/action/asset-family/router';
 import {IndexState} from 'akeneoassetmanager/application/reducer/asset-family/index';
@@ -214,7 +214,7 @@ export default connect(
     return {
       events: {
         onRedirectToAssetFamily: (assetFamilyCreation: AssetFamily) => {
-          dispatch(redirectToAssetFamily(assetFamilyCreation.getIdentifier(), 'asset'));
+          dispatch(redirectToAssetFamily(assetFamilyCreation.identifier, 'asset'));
         },
         onCreationStart: () => {
           dispatch(assetFamilyCreationStart());

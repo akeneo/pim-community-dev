@@ -207,7 +207,7 @@ export const assetMainImageCanBeDownloaded = (asset: Asset, context: Context) =>
 };
 
 export const getAttributeAsMainImage = (asset: Asset): NormalizedAttribute =>
-  getAttribute(asset.assetFamily.attributes, asset.assetFamily.attributeAsImage);
+  getAttribute(asset.assetFamily.attributes, asset.assetFamily.attribute_as_image);
 
 export const getMediaLinkUrl = (image: ImageData, attribute: NormalizedMediaLinkAttribute): string => {
   switch (attribute.media_type) {

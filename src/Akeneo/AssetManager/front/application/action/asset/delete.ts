@@ -9,7 +9,7 @@ import assetRemover from 'akeneoassetmanager/infrastructure/remover/asset';
 import ValidationError, {createValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {updateAssetResults} from 'akeneoassetmanager/application/action/asset/search';
 import {redirectToAssetIndex} from 'akeneoassetmanager/application/action/asset/router';
-import AssetFamily from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {closeDeleteModal} from 'akeneoassetmanager/application/event/confirmDelete';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
@@ -44,7 +44,7 @@ export const deleteAsset = (
 
 export const deleteAllAssetFamilyAssets = (assetFamily: AssetFamily) => async (dispatch: any): Promise<void> => {
   try {
-    const errors = await assetRemover.removeAll(assetFamily.getIdentifier());
+    const errors = await assetRemover.removeAll(assetFamily.identifier);
 
     if (errors) {
       const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
@@ -53,7 +53,7 @@ export const deleteAllAssetFamilyAssets = (assetFamily: AssetFamily) => async (d
       return;
     }
 
-    dispatch(notifyAllAssetsWellDeleted(assetFamily.getIdentifier()));
+    dispatch(notifyAllAssetsWellDeleted(assetFamily.identifier));
     dispatch(updateAssetResults());
     dispatch(closeDeleteModal());
   } catch (error) {

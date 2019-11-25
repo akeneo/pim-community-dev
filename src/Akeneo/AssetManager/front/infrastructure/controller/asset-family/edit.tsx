@@ -58,19 +58,17 @@ class AssetFamilyEditController extends BaseController {
       .fetch(denormalizeAssetFamilyIdentifier(route.params.identifier))
       .then(async (assetFamilyResult: AssetFamilyResult) => {
         this.store = createStore(true)(assetFamilyReducer);
-        const assetFamilyIdentifier = assetFamilyResult.assetFamily.getIdentifier();
+        const assetFamilyIdentifier = assetFamilyResult.assetFamily.identifier;
         const filters = this.getFilters(assetFamilyIdentifier);
 
-        permissionFetcher
-          .fetch(assetFamilyResult.assetFamily.getIdentifier())
-          .then((permissions: PermissionCollection) => {
-            this.store.dispatch(permissionEditionReceived(permissions));
-          });
+        permissionFetcher.fetch(assetFamilyResult.assetFamily.identifier).then((permissions: PermissionCollection) => {
+          this.store.dispatch(permissionEditionReceived(permissions));
+        });
 
         // Not idea, maybe we should discuss about it
         await this.store.dispatch(updateChannels() as any);
         this.store.dispatch(updateActivatedLocales() as any);
-        this.store.dispatch(assetFamilyEditionReceived(assetFamilyResult.assetFamily.normalize()));
+        this.store.dispatch(assetFamilyEditionReceived(assetFamilyResult.assetFamily));
         this.store.dispatch(assetFamilyAssetCountUpdated(assetFamilyResult.assetCount));
         this.store.dispatch(defaultCatalogLocaleChanged(userContext.get('catalogLocale')));
         this.store.dispatch(catalogLocaleChanged(userContext.get('catalogLocale')));
