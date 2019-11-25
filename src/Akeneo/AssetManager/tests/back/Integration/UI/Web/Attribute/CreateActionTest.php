@@ -59,7 +59,8 @@ class CreateActionTest extends ControllerIntegrationTestCase
     }
 
     /**
-     * @test
+     * TODO: enable back when we will enable it again on reference entity
+     * @ test
      */
     public function it_creates_a_asset_attribute(): void
     {
@@ -67,7 +68,8 @@ class CreateActionTest extends ControllerIntegrationTestCase
     }
 
     /**
-     * @test
+     * TODO: enable back when we will enable it again on reference entity
+     * @ test
      */
     public function it_creates_a_asset_collection_attribute(): void
     {
