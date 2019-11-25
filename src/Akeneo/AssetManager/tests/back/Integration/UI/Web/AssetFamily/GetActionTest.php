@@ -182,20 +182,6 @@ class GetActionTest extends ControllerIntegrationTestCase
             ],
         ];
 
-        $city = new AttributeDetails();
-        $city->identifier = 'city_designer_79eb100099b9a8bf52609e00b7ee307e';
-        $city->assetFamilyIdentifier = 'designer';
-        $city->code = 'city';
-        $city->isRequired = false;
-        $city->order = 5;
-        $city->valuePerChannel = false;
-        $city->valuePerLocale = false;
-        $city->type = 'asset';
-        $city->labels = ['en_US' => 'City'];
-        $city->additionalProperties = [
-            'asset_type' => 'city'
-        ];
-
         $birthdate = new AttributeDetails();
         $birthdate->identifier = 'year_of_birth_designer_79eb100099b9a8bf52609e00b7ee307e';
         $birthdate->assetFamilyIdentifier = 'designer';
@@ -218,7 +204,6 @@ class GetActionTest extends ControllerIntegrationTestCase
             $portrait,
             $favoriteColor,
             $colors,
-            $city,
             $birthdate
         ];
         $queryHandler->save($entityItem);
