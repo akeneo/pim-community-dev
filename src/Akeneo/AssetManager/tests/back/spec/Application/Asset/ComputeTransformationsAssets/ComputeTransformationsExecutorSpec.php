@@ -5,12 +5,12 @@ namespace spec\Akeneo\AssetManager\Application\Asset\ComputeTransformationsAsset
 use Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationsExecutor;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
-use Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\FindTransformationsForAsset;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\GetTransformations;
 use PhpSpec\ObjectBehavior;
 
 class ComputeTransformationsExecutorSpec extends ObjectBehavior
 {
-    public function let(FindTransformationsForAsset $findTransformationsForAsset)
+    public function let(GetTransformations $findTransformationsForAsset)
     {
         $this->beConstructedWith($findTransformationsForAsset);
     }
@@ -26,7 +26,7 @@ class ComputeTransformationsExecutorSpec extends ObjectBehavior
     }
 
     // TODO
-    function it_does_nothing(FindTransformationsForAsset $findTransformationsForAsset)
+    function it_does_nothing(GetTransformations $findTransformationsForAsset)
     {
         $assetIdentifiers = [AssetIdentifier::fromString('identifier1')];
 

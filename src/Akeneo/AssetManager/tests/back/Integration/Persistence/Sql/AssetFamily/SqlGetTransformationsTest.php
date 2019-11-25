@@ -31,13 +31,13 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
-use Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlFindTransformationsForAsset;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlGetTransformations;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 
-class SqlFindTransformationsForAssetTest extends SqlIntegrationTestCase
+class SqlGetTransformationsTest extends SqlIntegrationTestCase
 {
-    /** @var SqlFindTransformationsForAsset */
+    /** @var SqlGetTransformations */
     private $sqlFindTransformationsForAsset;
 
     /** @var AssetFamilyRepositoryInterface */
@@ -50,7 +50,7 @@ class SqlFindTransformationsForAssetTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->sqlFindTransformationsForAsset = $this->get(SqlFindTransformationsForAsset::class);
+        $this->sqlFindTransformationsForAsset = $this->get(SqlGetTransformations::class);
         $this->assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
         $this->assetRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset');
         $this->resetDB();

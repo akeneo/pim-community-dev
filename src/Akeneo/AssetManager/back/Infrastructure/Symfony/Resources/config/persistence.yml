@@ -190,8 +190,8 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlFindTransformationsForAsset:
-        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlFindTransformationsForAsset
+    Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlGetTransformations:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlGetTransformations
         arguments:
             - '@database_connection'
             - '@Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCollectionFactory'

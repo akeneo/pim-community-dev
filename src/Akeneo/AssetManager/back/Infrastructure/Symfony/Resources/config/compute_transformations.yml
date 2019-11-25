@@ -2,4 +2,4 @@ services:
     akeneo_assetmanager.application.asset.compute_transformations.executor:
         class: Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationsExecutor
         arguments:
-            - '@Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlFindTransformationsForAsset'
+            - '@Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlGetTransformations'

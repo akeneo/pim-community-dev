@@ -14,15 +14,16 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation;
 
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 
-interface FindTransformationsForAsset
+interface GetTransformations
 {
     /**
      * Returns an indexed array with asset string identifier as key
      * and an instance of TransformationCollection in value.
      *
      * @param AssetIdentifier[] $assetIdentifiers
-     * @return array
+     * @return TransformationCollection[]
      */
     public function fromAssetIdentifiers(array $assetIdentifiers): array;
 }

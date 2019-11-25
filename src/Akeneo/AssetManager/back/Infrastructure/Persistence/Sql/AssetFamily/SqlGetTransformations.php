@@ -15,11 +15,11 @@ namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily;
 
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCollectionFactory;
-use Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\FindTransformationsForAsset;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\GetTransformations;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 
-class SqlFindTransformationsForAsset implements FindTransformationsForAsset
+class SqlGetTransformations implements GetTransformations
 {
     /** @var Connection */
     private $connection;
