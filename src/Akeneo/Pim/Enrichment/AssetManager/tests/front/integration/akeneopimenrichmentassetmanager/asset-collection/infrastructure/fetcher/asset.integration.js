@@ -24,10 +24,9 @@ beforeEach(async () => {
           'originalFilename': ''
         })
         .withAttributes([])
-        .withAttributeAsImage('')
-        .withAttributeAsLabel('')
+        .withAttributeAsImage('main_image')
+        .withAttributeAsLabel('label')
         .build();
-
       interceptedRequest.respond({
         contentType: 'application/json',
         body: JSON.stringify(assetFamily),
@@ -76,8 +75,8 @@ it('It fetches the asset collection', async () => {
   // Check the asset collection returned by the fetcher is the expected one
   expect(response).toEqual([{
     assetFamily: {
-      attributeAsImage: '',
-      attributeAsLabel: '',
+      attributeAsImage: 'main_image',
+      attributeAsLabel: 'label',
       code: 'packshot',
       identifier: 'packshot',
       image: {
@@ -89,7 +88,7 @@ it('It fetches the asset collection', async () => {
       },
       attributes: []
     },
-    asset_family_identifier: '',
+    asset_family_identifier: 'packshot',
     code: 'iphone',
     completeness: {
       complete: 2,

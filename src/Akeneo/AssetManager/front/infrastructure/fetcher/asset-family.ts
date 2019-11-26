@@ -8,8 +8,11 @@ import errorHandler from 'akeneoassetmanager/infrastructure/tools/error-handler'
 import {Attribute, NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import hydrateAttribute from 'akeneoassetmanager/application/hydrator/attribute';
 import {AssetFamilyPermission} from 'akeneoassetmanager/domain/model/permission/asset-family';
-import AssetFamilyListItem, {denormalizeAssetFamilyListItem} from 'akeneoassetmanager/domain/model/asset-family/list';
 import validateBackendAssetFamily from 'akeneoassetmanager/infrastructure/validator/asset-family';
+import {
+  AssetFamilyListItem,
+  createAssetFamilyListItemFromNormalized,
+} from 'akeneoassetmanager/domain/model/asset-family/list';
 
 const routing = require('routing');
 
@@ -52,7 +55,7 @@ export class AssetFamilyFetcherImplementation implements AssetFamilyFetcher {
       errorHandler
     );
 
-    return hydrateAll<AssetFamilyListItem>(denormalizeAssetFamilyListItem)(backendAssetFamilies.items);
+    return hydrateAll<AssetFamilyListItem>(createAssetFamilyListItemFromNormalized)(backendAssetFamilies.items);
   }
 
   async search(): Promise<SearchResult<AssetFamilyListItem>> {
@@ -60,7 +63,7 @@ export class AssetFamilyFetcherImplementation implements AssetFamilyFetcher {
       errorHandler
     );
 
-    const items = hydrateAll<AssetFamilyListItem>(denormalizeAssetFamilyListItem)(backendAssetFamilies.items);
+    const items = hydrateAll<AssetFamilyListItem>(createAssetFamilyListItemFromNormalized)(backendAssetFamilies.items);
 
     return {
       items,

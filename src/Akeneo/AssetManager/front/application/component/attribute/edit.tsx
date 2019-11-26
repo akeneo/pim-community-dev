@@ -149,8 +149,8 @@ class Edit extends React.Component<EditProps> {
     // This will be simplyfied in the near future
     const displayDeleteButton =
       this.props.rights.attribute.delete &&
-      !attributeidentifiersAreEqual(this.props.assetFamily.attribute_as_label, this.props.attribute.getIdentifier()) &&
-      !attributeidentifiersAreEqual(this.props.assetFamily.attribute_as_image, this.props.attribute.getIdentifier());
+      !attributeidentifiersAreEqual(this.props.assetFamily.attributeAsLabel, this.props.attribute.getIdentifier()) &&
+      !attributeidentifiersAreEqual(this.props.assetFamily.attributeAsImage, this.props.attribute.getIdentifier());
 
     return (
       <React.Fragment>

@@ -1,4 +1,4 @@
-import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {AssetFamily, createEmptyAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import formState, {FormState} from 'akeneoassetmanager/application/reducer/state';
 import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 import {combineReducers} from 'redux';
@@ -13,14 +13,7 @@ export interface EditionFormState {
 const stateReducer = formState('assetFamily', 'ASSET_FAMILY_EDITION_UPDATED', 'ASSET_FAMILY_EDITION_RECEIVED');
 
 const dataReducer = (
-  state: AssetFamily = {
-    identifier: '',
-    code: '',
-    labels: {},
-    image: null,
-    attribute_as_image: '',
-    attribute_as_label: '',
-  },
+  state: AssetFamily = createEmptyAssetFamily(),
   {
     type,
     assetFamily,

@@ -1,16 +1,16 @@
 import * as React from 'react';
 import ItemView from 'akeneoassetmanager/application/component/asset-family/index/item';
-import {AssetFamily, createEmptyAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {assetFamilyIdentifierStringValue} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import {AssetFamilyListItem, createEmptyAssetFamilyListItem} from 'akeneoassetmanager/domain/model/asset-family/list';
 
 interface TableState {
   locale: string;
-  assetFamilies: AssetFamily[];
+  assetFamilies: AssetFamilyListItem[];
   isLoading: boolean;
 }
 
 interface TableDispatch {
-  onRedirectToAssetFamily: (assetFamily: AssetFamily) => void;
+  onRedirectToAssetFamily: (assetFamily: AssetFamilyListItem) => void;
 }
 
 interface TableProps extends TableState, TableDispatch {}
@@ -27,13 +27,13 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
   }
 
   renderItems(
-    assetFamilies: AssetFamily[],
+    assetFamilies: AssetFamilyListItem[],
     locale: string,
     isLoading: boolean,
-    onRedirectToAssetFamily: (assetFamily: AssetFamily) => void
+    onRedirectToAssetFamily: (assetFamily: AssetFamilyListItem) => void
   ): JSX.Element | JSX.Element[] {
     if (0 === assetFamilies.length && isLoading) {
-      const assetFamily = createEmptyAssetFamily();
+      const assetFamily = createEmptyAssetFamilyListItem();
 
       return Array(4)
         .fill('placeholder')
@@ -49,7 +49,7 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
         ));
     }
 
-    return assetFamilies.map((assetFamily: AssetFamily, index: number) => {
+    return assetFamilies.map((assetFamily: AssetFamilyListItem, index: number) => {
       const itemPosition = index - this.state.nextItemToAddPosition;
 
       return (

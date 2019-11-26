@@ -22,6 +22,7 @@ class AssetFamilyBuilder {
 
   withIdentifier(identifier) {
     this.assetFamily.identifier = identifier;
+    this.assetFamily.code = identifier;
 
     return this;
   }
