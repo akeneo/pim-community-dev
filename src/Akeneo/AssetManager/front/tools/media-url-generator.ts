@@ -1,9 +1,7 @@
 const routing = require('routing');
 import {File, isFileEmpty} from 'akeneoassetmanager/domain/model/file';
 import MediaLinkData from 'akeneoassetmanager/domain/model/asset/data/media-link';
-import {
-  MediaLinkAttribute
-} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
+import {MediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 import {suffixStringValue} from 'akeneoassetmanager/domain/model/attribute/type/media-link/suffix';
 import {prefixStringValue} from 'akeneoassetmanager/domain/model/attribute/type/media-link/prefix';
 
