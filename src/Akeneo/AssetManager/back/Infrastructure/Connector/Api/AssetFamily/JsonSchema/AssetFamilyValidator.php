@@ -31,6 +31,7 @@ class AssetFamilyValidator
     {
         return [
             'type' => 'object',
+            'required' => ['code'],
             'properties' => [
                 'code' => [
                     'type' => ['string'],
@@ -41,14 +42,9 @@ class AssetFamilyValidator
                         '.+' => ['type' => 'string'],
                     ],
                 ],
-                /** /!\ /!\ /!\ /!\
-                 * Crappy fix to remove the possibility of updating the image of the asset family on the API side.
-                 * @todo : To remove if the functional decide to not have an image on the asset family
-                 * @todo : Check the PR https://github.com/akeneo/pim-enterprise-dev/pull/6651 for real fix
-                 */
-//                'image' => [
-//                    'type' => ['string', 'null']
-//                ],
+                'attribute_as_image' => [
+                    'type' => ['string'],
+                ],
                 'product_link_rules' => [
                     'type'  => 'array',
                     'items' => [
@@ -110,7 +106,6 @@ class AssetFamilyValidator
                     'type' => 'object'
                 ]
             ],
-            'required' => ['code'],
             'additionalProperties' => false,
         ];
     }

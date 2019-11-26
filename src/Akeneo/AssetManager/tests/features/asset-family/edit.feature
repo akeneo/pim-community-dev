@@ -43,6 +43,24 @@ Feature: Edit an asset family
       | "/path/image.jpg" | false          | This value should not be blank.      |
       | "/path/image.jpg" | 150            | This value should be of type string. |
 
+  @acceptance-back
+  Scenario: Updating an asset family to change its attribute as image
+    Given an asset family with an image attribute "main_picture"
+    When the user updates the attribute as image to be "main_picture"
+    Then the attribute as image should be "main_picture"
+
+  @acceptance-back @error
+  Scenario: Cannot update an asset family if the provided attribute as image does not exist
+    Given an asset family with an image attribute "main_picture"
+    When the user updates the attribute as image to be "toto_picture"
+    Then there should be a validation error with message 'The attribute "toto_picture" set as image for the asset family does not exist'
+
+  @acceptance-back @error
+  Scenario: Cannot update an asset family if the provided attribute type is invalid
+    Given an asset family with an image attribute "main_picture"
+    When the user updates the attribute as image to be "label"
+    Then there should be a validation error with message 'The attribute set as image for the asset family should be of type: media_link, image'
+
   # Product link rules
   @acceptance-back
   Scenario: Updating an asset family to set a collection of static rule templates

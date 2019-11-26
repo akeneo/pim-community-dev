@@ -126,14 +126,16 @@ final class ConstraintViolationsContext implements Context
 
     public function assertViolation(string $expectedMessage): void
     {
-        $found = false;
+        $violationMessages = array();
         foreach ($this->violations as $violation) {
-            if ($expectedMessage === $violation->getMessage()) {
-                $found = true;
-            }
+            $violationMessages[] = $violation->getMessage();
         }
 
-        Assert::assertTrue($found, sprintf('Expected violation with message "%s" not found.', $expectedMessage));
+        Assert::assertContains(
+            $expectedMessage,
+            $violationMessages,
+            sprintf('Could not find violation "%s" in the violations list: ("%s")', $expectedMessage, implode('", "', $violationMessages))
+        );
     }
 
     public function hasViolations(): bool

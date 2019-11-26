@@ -13,9 +13,12 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Query\Attribute\GetAttributeIdentifierInterface;
 use Akeneo\AssetManager\Domain\Query\File\FileExistsInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
@@ -37,12 +40,17 @@ class EditAssetFamilyHandler
     /** @var FileExistsInterface */
     private $fileExists;
 
+    /** @var GetAttributeIdentifierInterface */
+    private $getAttributeIdentifier;
+
     public function __construct(
         AssetFamilyRepositoryInterface $assetFamilyRepository,
+        GetAttributeIdentifierInterface $getAttributeIdentifier,
         FileStorerInterface $storer,
         FileExistsInterface $fileExists
     ) {
         $this->assetFamilyRepository = $assetFamilyRepository;
+        $this->getAttributeIdentifier = $getAttributeIdentifier;
         $this->storer = $storer;
         $this->fileExists = $fileExists;
     }
@@ -69,6 +77,17 @@ class EditAssetFamilyHandler
             }
         } else {
             $assetFamily->updateImage(Image::createEmpty());
+        }
+
+        $attributeAsImage = $editAssetFamilyCommand->attributeAsImage;
+        if (null !== $attributeAsImage) {
+            $attributeAsImageIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+                AssetFamilyIdentifier::fromString($editAssetFamilyCommand->identifier),
+                AttributeCode::fromString($attributeAsImage)
+            );
+            $assetFamily->updateAttributeAsImageReference(
+                AttributeAsImageReference::fromAttributeIdentifier($attributeAsImageIdentifier)
+            );
         }
 
         $this->assetFamilyRepository->update($assetFamily);

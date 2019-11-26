@@ -11,6 +11,7 @@ Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyComma
     constraints:
         - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\ProductLinkRulesShouldBeExecutable: { groups: [other_constraints] }
         - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ThereShouldBeLessRuleTemplateThanLimit: { groups: [other_constraints] }
+        - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\AttributeAsImage: { groups: [other_constraints] }
 
 Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyCommand:
     group_sequence:

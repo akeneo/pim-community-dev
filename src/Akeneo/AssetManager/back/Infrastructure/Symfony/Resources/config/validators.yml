@@ -20,6 +20,14 @@ services:
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset_family.should_exist' }
 
+    akeneo_assetmanager.infrastructure.validation.asset_family.attribute_as_image:
+        class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\AttributeAsImageValidator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.attribute_exists'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.get_attribute_type'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset_family.attribute_as_image' }
+
     akeneo_assetmanager.infrastructure.validation.attribute.attribute_should_not_exist:
         class: Akeneo\AssetManager\Infrastructure\Validation\Attribute\AttributeShouldNotExistValidator
         arguments:

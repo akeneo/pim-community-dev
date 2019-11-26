@@ -4,6 +4,7 @@ services:
         class: Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyHandler
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@akeneoassetmanager.infrastructure.persistence.query.get_attribute_identifier'
             - '@akeneo_file_storage.file_storage.file.file_storer'
             - '@akeneo_assetmanager.infrastructure.persistence.query.file_exists'
 

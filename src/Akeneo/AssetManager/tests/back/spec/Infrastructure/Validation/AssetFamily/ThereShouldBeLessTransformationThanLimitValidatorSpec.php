@@ -51,7 +51,7 @@ class ThereShouldBeLessTransformationThanLimitValidatorSpec extends ObjectBehavi
                 ],
             ],
         ];
-        $command = new EditAssetFamilyCommand('id', [], [], [], $transformations);
+        $command = new EditAssetFamilyCommand('id', [], [], null, [], $transformations);
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
 
         $this->validate($command, new ThereShouldBeLessTransformationThanLimit());
@@ -78,7 +78,7 @@ class ThereShouldBeLessTransformationThanLimitValidatorSpec extends ObjectBehavi
                 'operations' => [],
             ],
         ];
-        $command = new EditAssetFamilyCommand('id', [], [], [], $transformations);
+        $command = new EditAssetFamilyCommand('id', [], [], null, [], $transformations);
         $context->buildViolation(ThereShouldBeLessTransformationThanLimit::ERROR_MESSAGE)
             ->willReturn($constraintViolationBuilder, $constraintViolationBuilder);
         $constraintViolationBuilder->setParameter('%asset_family_identifier%', 'id')->willReturn($constraintViolationBuilder);

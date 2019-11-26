@@ -58,7 +58,7 @@ class TransformationCanNotHaveSameOperationTwiceValidatorSpec extends ObjectBeha
                 ],
             ],
         ];
-        $command = new EditAssetFamilyCommand('id', [], [], [], $transformations);
+        $command = new EditAssetFamilyCommand('id', [], [], null, [], $transformations);
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
 
         $this->validate($command, new TransformationCanNotHaveSameOperationTwice());
@@ -92,7 +92,7 @@ class TransformationCanNotHaveSameOperationTwiceValidatorSpec extends ObjectBeha
                 ],
             ],
         ];
-        $command = new EditAssetFamilyCommand('id', [], [], [], $transformations);
+        $command = new EditAssetFamilyCommand('id', [], [], null, [], $transformations);
         $context->buildViolation(TransformationCanNotHaveSameOperationTwice::ERROR_MESSAGE)
             ->willReturn($constraintViolationBuilder, $constraintViolationBuilder);
         $constraintViolationBuilder->setParameter('%asset_family_identifier%', 'id')->willReturn($constraintViolationBuilder);

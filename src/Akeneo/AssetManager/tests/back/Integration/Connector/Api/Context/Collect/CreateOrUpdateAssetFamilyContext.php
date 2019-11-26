@@ -149,7 +149,7 @@ class CreateOrUpdateAssetFamilyContext implements Context
             RuleTemplateCollection::createFromProductLinkRules([$ruleTemplate])
         );
 
-        Assert::assertEquals($frontview, $expectedFrontview);
+        Assert::assertEquals($expectedFrontview, $frontview);
     }
 
     /**

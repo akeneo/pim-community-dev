@@ -117,6 +117,7 @@ class CreateOrUpdateAssetFamilyAction
             $normalizedAssetFamily['code'],
             $normalizedAssetFamily['labels'] ?? [],
             null,
+            $normalizedAssetFamily['attribute_as_image'] ?? null,
             $normalizedAssetFamily['product_link_rules'] ?? []
         );
 

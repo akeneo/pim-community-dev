@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\UI\Web\AssetFamily;
 
-use Akeneo\AssetManager\Common\Helper\AuthenticatedClient;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
@@ -24,7 +23,6 @@ use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
 use Akeneo\Channel\Component\Model\Locale;
 use PHPUnit\Framework\Assert;
-use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Response;
 
 class EditActionTest extends ControllerIntegrationTestCase
@@ -54,6 +52,7 @@ class EditActionTest extends ControllerIntegrationTestCase
                 'en_US' => 'foo',
                 'fr_FR' => 'bar',
             ],
+            'attributeAsImage' => 'image',
             'image'      => [
                 'filePath'         => '/path/image.jpg',
                 'originalFilename' => 'image.jpg'
