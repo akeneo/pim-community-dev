@@ -31,30 +31,30 @@ class InMemoryFindAssetIdentifiersForQuery implements FindIdentifiersForQueryInt
 
     /** @var string[] */
     private $requestContracts = [
-        'src/Akeneo/AssetManager/tests/shared/responses/Asset/Search/city_and_color_filtered.json',
-        'src/Akeneo/AssetManager/tests/shared/responses/Asset/Search/code_filtered.json',
-        'src/Akeneo/AssetManager/tests/shared/responses/Asset/Search/code_filtered_with_not_in_operator.json',
-        'src/Akeneo/AssetManager/tests/shared/responses/Asset/Search/color_filtered.json',
-        'src/Akeneo/AssetManager/tests/shared/responses/Asset/Search/desynchronized_asset_family_identifier.json',
-        'src/Akeneo/AssetManager/tests/shared/responses/Asset/Search/no_result.json',
-        'src/Akeneo/AssetManager/tests/shared/responses/Asset/Search/not_filtered.json',
-        'src/Akeneo/AssetManager/tests/shared/responses/Asset/Search/uncomplete_filtered.json',
-        'src/Akeneo/AssetManager/tests/shared/responses/Asset/Search/city_filtered.json',
-        'src/Akeneo/AssetManager/tests/shared/responses/Asset/Search/code_label_and_code_filtered.json',
-        'src/Akeneo/AssetManager/tests/shared/responses/Asset/Search/complete_filtered.json',
-        'src/Akeneo/AssetManager/tests/shared/responses/Asset/Search/no_result_fr.json',
-        'src/Akeneo/AssetManager/tests/shared/responses/Asset/Search/ok.json',
+        'src/Akeneo/AssetManager/tests/front/integration/responses/Asset/Search/city_and_color_filtered.json',
+        'src/Akeneo/AssetManager/tests/front/integration/responses/Asset/Search/code_filtered.json',
+        'src/Akeneo/AssetManager/tests/front/integration/responses/Asset/Search/code_filtered_with_not_in_operator.json',
+        'src/Akeneo/AssetManager/tests/front/integration/responses/Asset/Search/color_filtered.json',
+        'src/Akeneo/AssetManager/tests/front/integration/responses/Asset/Search/desynchronized_asset_family_identifier.json',
+        'src/Akeneo/AssetManager/tests/front/integration/responses/Asset/Search/no_result.json',
+        'src/Akeneo/AssetManager/tests/front/integration/responses/Asset/Search/not_filtered.json',
+        'src/Akeneo/AssetManager/tests/front/integration/responses/Asset/Search/uncomplete_filtered.json',
+        'src/Akeneo/AssetManager/tests/front/integration/responses/Asset/Search/city_filtered.json',
+        'src/Akeneo/AssetManager/tests/front/integration/responses/Asset/Search/code_label_and_code_filtered.json',
+        'src/Akeneo/AssetManager/tests/front/integration/responses/Asset/Search/complete_filtered.json',
+        'src/Akeneo/AssetManager/tests/front/integration/responses/Asset/Search/no_result_fr.json',
+        'src/Akeneo/AssetManager/tests/front/integration/responses/Asset/Search/ok.json',
     ];
 
     /** @var string[] */
     private $requestContractsApi = [
-        'src/Akeneo/AssetManager/tests/shared/responses/Asset/Connector/Distribute/successful_brand_assets_for_ecommerce_channel.json',
-        'src/Akeneo/AssetManager/tests/shared/responses/Asset/Connector/Distribute/successful_complete_brand_assets.json',
-        'src/Akeneo/AssetManager/tests/shared/responses/Asset/Connector/Distribute/successful_brand_assets_page_1.json',
-        'src/Akeneo/AssetManager/tests/shared/responses/Asset/Connector/Distribute/successful_brand_assets_page_2.json',
-        'src/Akeneo/AssetManager/tests/shared/responses/Asset/Connector/Distribute/successful_brand_assets_page_3.json',
-        'src/Akeneo/AssetManager/tests/shared/responses/Asset/Connector/Distribute/successful_brand_assets_page_4.json',
-        'src/Akeneo/AssetManager/tests/shared/responses/Asset/Connector/Distribute/updated_since_brand_assets_page_1.json',
+        'src/Akeneo/AssetManager/tests/front/integration/responses/Asset/Connector/Distribute/successful_brand_assets_for_ecommerce_channel.json',
+        'src/Akeneo/AssetManager/tests/front/integration/responses/Asset/Connector/Distribute/successful_complete_brand_assets.json',
+        'src/Akeneo/AssetManager/tests/front/integration/responses/Asset/Connector/Distribute/successful_brand_assets_page_1.json',
+        'src/Akeneo/AssetManager/tests/front/integration/responses/Asset/Connector/Distribute/successful_brand_assets_page_2.json',
+        'src/Akeneo/AssetManager/tests/front/integration/responses/Asset/Connector/Distribute/successful_brand_assets_page_3.json',
+        'src/Akeneo/AssetManager/tests/front/integration/responses/Asset/Connector/Distribute/successful_brand_assets_page_4.json',
+        'src/Akeneo/AssetManager/tests/front/integration/responses/Asset/Connector/Distribute/updated_since_brand_assets_page_1.json',
     ];
 
     /**

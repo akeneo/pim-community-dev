@@ -7,7 +7,7 @@ const {
 
 const getRequestContract = fileName => {
   return JSON.parse(
-    fs.readFileSync(`${process.cwd()}/src/Akeneo/AssetManager/tests/shared/responses/${fileName}`, 'utf-8')
+    fs.readFileSync(`${process.cwd()}/src/Akeneo/AssetManager/tests/front/integration/responses/${fileName}`, 'utf-8')
   );
 };
 
