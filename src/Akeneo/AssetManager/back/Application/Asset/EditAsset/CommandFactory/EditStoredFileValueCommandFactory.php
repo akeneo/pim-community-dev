@@ -47,6 +47,7 @@ class EditStoredFileValueCommandFactory implements EditValueCommandFactoryInterf
     {
         $fileKey = $normalizedValue['data']['filePath'] ?? $normalizedValue['data'];
         $storedFile = is_string($fileKey) ? $this->findFileData->find($fileKey) : [];
+        $updatedAt = $normalizedValue['data']['updatedAt'] ?? ($storedFile['updatedAt'] ?? null);
 
         $command = new EditStoredFileValueCommand(
             $attribute,
@@ -57,9 +58,8 @@ class EditStoredFileValueCommandFactory implements EditValueCommandFactoryInterf
             $storedFile['size'] ?? null,
             $storedFile['mimeType'] ?? null,
             $storedFile['extension'] ?? null,
-            $storedFile['updatedAt'] ?
-                \DateTimeImmutable::createFromFormat(\DateTimeInterface::ISO8601, $storedFile['updatedAt']) :
-                null
+            // TODO Move all command factories into Infra folder and split for each adapter (UI, API, external API)
+            $updatedAt ?? (new \DateTimeImmutable())->format(\DateTimeInterface::ISO8601)
         );
         return $command;
     }

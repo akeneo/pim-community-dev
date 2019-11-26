@@ -170,6 +170,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             'size' => 1000,
             'mimeType' => 'image/png',
             'extension' => 'png',
+            'updatedAt' => '2019-11-22T15:16:21+0000',
         ];
         $this->findFileData->save($fileData);
         $this->webClientHelper->assertRequest($this->client, 'Asset/Edit/image_value_ok.json');

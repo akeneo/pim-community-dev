@@ -24,7 +24,8 @@
             "originalFilename": "philou.gif",
             "size": 2024,
             "mimeType": "image/gif",
-            "extension": "gif"
+            "extension": "gif",
+            "updatedAt": "2019-11-22T15:16:21+0000"
           }
         }
       ]
@@ -54,6 +55,7 @@
               "size":null,
               "mimeType":null,
               "extension":null,
+              "updatedAt":"2019-11-22T15:16:21+0000",
               "attribute":{
                 "maxFileSizeLimit":false,
                 "type":"image",
@@ -94,6 +96,7 @@
           "size":null,
           "mimeType":null,
           "extension":null,
+          "updatedAt":"2019-11-22T15:16:21+0000",
           "attribute":{
             "maxFileSizeLimit":false,
             "type":"image",

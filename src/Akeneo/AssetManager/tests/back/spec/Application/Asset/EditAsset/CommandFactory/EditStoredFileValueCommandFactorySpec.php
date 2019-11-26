@@ -9,6 +9,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Query\File\FindFileDataByFileKeyInterface;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class EditStoredFileValueCommandFactorySpec extends ObjectBehavior
 {
@@ -159,7 +160,7 @@ class EditStoredFileValueCommandFactorySpec extends ObjectBehavior
             1024,
             'image/png',
             'png',
-            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ISO8601, '2019-11-22T15:16:21+0000')
+            '2019-11-22T15:16:21+0000'
         );
 
         $this->create($imageAttribute, $normalizedValue)->shouldBeLike($expectedCommand);
@@ -193,9 +194,30 @@ class EditStoredFileValueCommandFactorySpec extends ObjectBehavior
             1024,
             'image/png',
             'png',
-            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ISO8601, '2019-11-22T15:16:21+0000')
+            '2019-11-22T15:16:21+0000'
         );
 
         $this->create($imageAttribute, $normalizedValue)->shouldBeLike($expectedCommand);
+    }
+
+    function it_sets_the_updated_at_to_the_current_datetime_if_it_does_not_exist(
+        ImageAttribute $imageAttribute,
+        FindFileDataByFileKeyInterface $findFileData
+    ) {
+        $normalizedValue = [
+            'channel' => 'ecommerce',
+            'locale' => 'de_DE',
+            'data' => '/tmp/stark_portrait.png'
+        ];
+
+        $findFileData->find('/tmp/stark_portrait.png')->willReturn([
+            'filePath' => '/tmp/stark_portrait.png',
+            'originalFilename' => 'stark_portrait.png',
+            'size' => 1024,
+            'mimeType' => 'image/png',
+            'extension' => 'png',
+        ]);
+
+        $this->create($imageAttribute, $normalizedValue)->updatedAt->shouldBeString();
     }
 }
