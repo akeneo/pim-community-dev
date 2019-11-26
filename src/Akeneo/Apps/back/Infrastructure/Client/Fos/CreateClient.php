@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Akeneo\Apps\Infrastructure\Client\Fos;
 
 use Akeneo\Apps\Application\Service\CreateClientInterface;
-use Akeneo\Apps\Domain\Model\ValueObject\ClientId;
+use Akeneo\Apps\Domain\Model\Read\Client;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use OAuth2\OAuth2;
 
@@ -23,20 +23,13 @@ class CreateClient implements CreateClientInterface
         $this->clientManager = $clientManager;
     }
 
-    public function execute(string $label): ClientId
+    public function execute(string $label): Client
     {
         $fosClient = $this->clientManager->createClient();
         $fosClient->setLabel($label);
         $fosClient->setAllowedGrantTypes([OAuth2::GRANT_TYPE_USER_CREDENTIALS, OAuth2::GRANT_TYPE_REFRESH_TOKEN]);
         $this->clientManager->updateClient($fosClient);
 
-        return new ClientId($fosClient->getId());
-    }
-
-    public function regenerateSecret(ClientId $clientId)
-    {
-        $fosClient = $this->clientManager->findClientBy(['id' => $clientId->id()]);
-        $fosClient->regenerateSecret();
-        $this->clientManager->updateClient($fosClient);
+        return new Client($fosClient->getId(), $fosClient->getPublicId(), $fosClient->getSecret());
     }
 }

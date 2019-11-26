@@ -36,13 +36,13 @@ class App
         string $code,
         string $label,
         string $flowType,
-        ClientId $clientId,
+        int $clientId,
         UserId $userId
     ) {
         $this->code = new AppCode($code);
         $this->label = new AppLabel($label);
         $this->flowType = new FlowType($flowType);
-        $this->clientId = $clientId;
+        $this->clientId = new ClientId($clientId);
         $this->userId = $userId;
     }
 

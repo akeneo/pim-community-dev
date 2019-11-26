@@ -42,7 +42,7 @@ class InMemoryAppRepository implements AppRepository
             $dataRow['code'],
             $dataRow['label'],
             $dataRow['flow_type'],
-            new ClientId($dataRow['client_id']),
+            $dataRow['client_id'],
             new UserId($dataRow['user_id'])
         );
     }

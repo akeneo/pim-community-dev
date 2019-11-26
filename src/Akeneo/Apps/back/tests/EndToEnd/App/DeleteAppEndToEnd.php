@@ -25,12 +25,16 @@ class DeleteAppEndToEnd extends ApiTestCase
     public function test_it_deletes_the_app_and_client_and_user()
     {
         $createAppCommand = new CreateAppCommand('magento', 'Magento Connector', FlowType::DATA_DESTINATION);
-        $this->get('akeneo_app.application.handler.create_app')->handle($createAppCommand);
+        $appWithCredentials = $this->get('akeneo_app.application.handler.create_app')->handle($createAppCommand);
 
-        $findAnAppQuery = new FindAnAppQuery('magento');
-        $app = $this->get('akeneo_app.application.handler.find_an_app')->handle($findAnAppQuery);
-
-        $apiClient = $this->createAuthenticatedClient([], [], $app->clientId(), $app->secret(), 'magento', 'magento');
+        $apiClient = $this->createAuthenticatedClient(
+            [],
+            [],
+            $appWithCredentials->clientId(),
+            $appWithCredentials->secret(),
+            $appWithCredentials->username(),
+            $appWithCredentials->password()
+        );
         $apiClient->request('GET', 'api/rest/v1/attributes');
 
         $this->get('doctrine.orm.entity_manager')->clear();
@@ -41,13 +45,13 @@ class DeleteAppEndToEnd extends ApiTestCase
         $apiClient->reload();
         Assert::assertEquals(Response::HTTP_UNAUTHORIZED, $apiClient->getResponse()->getStatusCode());
 
-        $countApp = $this->countApp($app->code());
+        $countApp = $this->countApp($appWithCredentials->code());
         Assert::assertEquals(0, $countApp);
 
-        $countClient = $this->countClient($app->clientId());
+        $countClient = $this->countClient($appWithCredentials->secret());
         Assert::assertEquals(0, $countClient);
 
-        $countUser = $this->countUser($app->label());
+        $countUser = $this->countUser($appWithCredentials->username());
         Assert::assertEquals(0, $countUser);
     }
 
@@ -61,67 +65,31 @@ class DeleteAppEndToEnd extends ApiTestCase
 
     private function countApp(string $appCode): int
     {
-        $dbalConnection = $this->get('database_connection');
-
         $selectSql = <<<SQL
-SELECT count(code)
-FROM akeneo_app
-WHERE code = :code
+SELECT count(code) FROM akeneo_app WHERE code = :code
 SQL;
+        $stmt = $this->get('database_connection')->executeQuery($selectSql, ['code' => $appCode]);
 
-        $stmt = $dbalConnection->executeQuery(
-            $selectSql,
-            [
-                'code' => $appCode,
-            ]
-        );
-
-        $count = $stmt->fetchColumn();
-
-        return (int) $count;
+        return (int) $stmt->fetchColumn();
     }
 
-    private function countClient(string $clientId): int
+    private function countClient(string $secret): int
     {
-        $dbalConnection = $this->get('database_connection');
-
         $selectSql = <<<SQL
-SELECT count(id)
-FROM pim_api_client
-WHERE id = :id
+SELECT count(id) FROM pim_api_client WHERE secret = :secret
 SQL;
+        $stmt = $this->get('database_connection')->executeQuery($selectSql, ['secret' => $secret]);
 
-        $stmt = $dbalConnection->executeQuery(
-            $selectSql,
-            [
-                'id' => $clientId,
-            ]
-        );
-
-        $count = $stmt->fetchColumn();
-
-        return (int) $count;
+        return (int) $stmt->fetchColumn();
     }
 
     private function countUser(string $username): int
     {
-        $dbalConnection = $this->get('database_connection');
-
         $selectSql = <<<SQL
-SELECT count(id)
-FROM oro_user
-WHERE username = :username
+SELECT count(id) FROM oro_user WHERE username = :username
 SQL;
+        $stmt = $this->get('database_connection')->executeQuery($selectSql, ['username' => $username]);
 
-        $stmt = $dbalConnection->executeQuery(
-            $selectSql,
-            [
-                'username' => $username,
-            ]
-        );
-
-        $count = $stmt->fetchColumn();
-
-        return (int) $count;
+        return (int) $stmt->fetchColumn();
     }
 }

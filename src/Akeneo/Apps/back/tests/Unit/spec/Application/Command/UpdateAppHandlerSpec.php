@@ -40,7 +40,7 @@ class UpdateAppHandlerSpec extends ObjectBehavior
         $violations = new ConstraintViolationList([]);
         $validator->validate($command)->willReturn($violations);
 
-        $app = new App('magento', 'Magento Connector', FlowType::OTHER, new ClientId(42), new UserId(50));
+        $app = new App('magento', 'Magento Connector', FlowType::OTHER, 42, new UserId(50));
         $repository->findOneByCode('magento')->willReturn($app);
         $repository->update(Argument::type(App::class))->shouldBeCalled();
 

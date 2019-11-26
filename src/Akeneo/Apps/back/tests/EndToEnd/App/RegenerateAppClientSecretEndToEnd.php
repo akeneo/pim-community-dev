@@ -23,12 +23,16 @@ class RegenerateAppClientSecretEndToEnd extends ApiTestCase
     public function test_it_disables_the_client_secret_and_tokens()
     {
         $createAppCommand = new CreateAppCommand('magento', 'Magento Connector', FlowType::DATA_DESTINATION);
-        $this->get('akeneo_app.application.handler.create_app')->handle($createAppCommand);
+        $appWithCredentials = $this->get('akeneo_app.application.handler.create_app')->handle($createAppCommand);
 
-        $findAnAppQuery = new FindAnAppQuery('magento');
-        $app = $this->get('akeneo_app.application.handler.find_an_app')->handle($findAnAppQuery);
-
-        $apiClient = $this->createAuthenticatedClient([], [], $app->clientId(), $app->secret(), 'magento', 'magento');
+        $apiClient = $this->createAuthenticatedClient(
+            [],
+            [],
+            $appWithCredentials->clientId(),
+            $appWithCredentials->secret(),
+            $appWithCredentials->username(),
+            $appWithCredentials->password()
+        );
         $apiClient->request('GET', 'api/rest/v1/attributes');
         Assert::assertEquals(Response::HTTP_OK, $apiClient->getResponse()->getStatusCode());
 

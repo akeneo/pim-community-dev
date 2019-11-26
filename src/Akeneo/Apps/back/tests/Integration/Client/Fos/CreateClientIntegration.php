@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Akeneo\Apps\back\tests\Integration\Client\Fos;
 
 use Akeneo\Apps\Application\Service\CreateClientInterface;
-use Akeneo\Apps\Domain\Model\ValueObject\ClientId;
+use Akeneo\Apps\Domain\Model\Read\Client;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
@@ -16,9 +16,12 @@ class CreateClientIntegration extends TestCase
 
     public function test_that_it_creates_a_client()
     {
-        $clientId = $this->createClient->execute('Magento connector');
+        $client = $this->createClient->execute('Magento connector');
 
-        Assert::assertInstanceOf(ClientId::class, $clientId);
+        Assert::assertInstanceOf(Client::class, $client);
+        Assert::assertGreaterThan(0, $client->id());
+        Assert::assertIsString($client->clientId());
+        Assert::assertIsString($client->secret());
     }
 
     protected function setUp(): void

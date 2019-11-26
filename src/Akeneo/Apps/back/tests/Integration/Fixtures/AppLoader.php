@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\back\tests\Integration\Fixtures;
 
+use Akeneo\Apps\Domain\Model\Read\Client;
 use Akeneo\Apps\Domain\Model\ValueObject\ClientId;
 use Akeneo\Apps\Domain\Model\ValueObject\UserId;
 use Akeneo\Apps\Domain\Persistence\Repository\AppRepository;
@@ -34,7 +35,7 @@ class AppLoader
 
     public function createApp(string $code, string $label, string $flowType)
     {
-        $clientId = $this->createClient($label);
+        $client = $this->createClient($label);
         $userId = $this->createUser($code, $label);
 
         $insertSql = <<<SQL
@@ -45,7 +46,7 @@ SQL;
         $this->dbalConnection->executeQuery(
             $insertSql,
             [
-                'client_id' => $clientId->id(),
+                'client_id' => $client->id(),
                 'user_id' => $userId->id(),
                 'code' => $code,
                 'label' => $label,
@@ -54,7 +55,7 @@ SQL;
         );
     }
 
-    public function createClient(string $label): ClientId
+    public function createClient(string $label): Client
     {
         return $this->createClient->execute($label);
     }

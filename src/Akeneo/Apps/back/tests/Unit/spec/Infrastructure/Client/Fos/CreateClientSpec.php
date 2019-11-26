@@ -4,9 +4,10 @@ declare(strict_types=1);
 namespace spec\Akeneo\Apps\Infrastructure\Client\Fos;
 
 use Akeneo\Apps\Application\Service\CreateClientInterface;
+use Akeneo\Apps\Domain\Model\Read\Client;
 use Akeneo\Apps\Domain\Model\ValueObject\ClientId;
 use Akeneo\Apps\Infrastructure\Client\Fos\CreateClient;
-use Akeneo\Tool\Bundle\ApiBundle\Entity\Client;
+use Akeneo\Tool\Bundle\ApiBundle\Entity\Client as FosClient;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use OAuth2\OAuth2;
 use PhpSpec\ObjectBehavior;
@@ -24,18 +25,24 @@ class CreateClientSpec extends ObjectBehavior
         $this->shouldImplement(CreateClientInterface::class);
     }
 
-    public function it_creates_a_client_with_a_label(Client $client, $clientManager)
+    public function it_creates_a_client_with_a_label(FosClient $fosClient, $clientManager)
     {
-        $clientManager->createClient()->willReturn($client);
-        $client->setLabel('new_app')->shouldBeCalled();
-        $client
+        $clientManager->createClient()->willReturn($fosClient);
+        $fosClient->setLabel('new_app')->shouldBeCalled();
+        $fosClient
             ->setAllowedGrantTypes([OAuth2::GRANT_TYPE_USER_CREDENTIALS, OAuth2::GRANT_TYPE_REFRESH_TOKEN])
             ->shouldBeCalled();
-        $clientManager->updateClient($client)->shouldBeCalled();
-        $client->getId()->willReturn(1);
 
-        $clientId = $this->execute('new_app');
-        $clientId->shouldBeAnInstanceOf(ClientId::class);
-        $clientId->id()->shouldReturn(1);
+        $clientManager->updateClient($fosClient)->shouldBeCalled();
+
+        $fosClient->getId()->willReturn(1);
+        $fosClient->getPublicId()->willReturn('1_myclientid');
+        $fosClient->getSecret()->willReturn('my_client_secret');
+
+        $clientVO = $this->execute('new_app');
+        $clientVO->shouldBeAnInstanceOf(Client::class);
+        $clientVO->id()->shouldReturn(1);
+        $clientVO->clientId()->shouldReturn('1_myclientid');
+        $clientVO->secret()->shouldReturn('my_client_secret');
     }
 }

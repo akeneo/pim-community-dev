@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Apps\Infrastructure\Client\Fake;
 
 use Akeneo\Apps\Application\Service\CreateClientInterface;
-use Akeneo\Apps\Domain\Model\ValueObject\ClientId;
+use Akeneo\Apps\Domain\Model\Read\Client;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -14,8 +14,8 @@ use Akeneo\Apps\Domain\Model\ValueObject\ClientId;
  */
 class CreateClient implements CreateClientInterface
 {
-    public function execute(string $label): ClientId
+    public function execute(string $label): Client
     {
-        return new ClientId(806);
+        return new Client(806, '806_public_id', 'my_secret');
     }
 }

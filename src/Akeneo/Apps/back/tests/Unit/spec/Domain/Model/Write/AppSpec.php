@@ -25,7 +25,7 @@ class AppSpec extends ObjectBehavior
             'magento',
             'Magento Connector',
             FlowType::DATA_DESTINATION,
-            new ClientId(42),
+            42,
             new UserId(24)
         );
     }

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Apps\Application\Service;
 
-use Akeneo\Apps\Domain\Model\ValueObject\ClientId;
+use Akeneo\Apps\Domain\Model\Read\Client;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -12,5 +12,5 @@ use Akeneo\Apps\Domain\Model\ValueObject\ClientId;
  */
 interface CreateClientInterface
 {
-    public function execute(string $label): ClientId;
+    public function execute(string $label): Client;
 }

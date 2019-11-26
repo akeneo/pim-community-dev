@@ -30,7 +30,7 @@ class FindAnAppHandlerSpec extends ObjectBehavior
 
     public function it_returns_an_app($selectAppWithCredentialsByCodeQuery)
     {
-        $app = new AppWithCredentials('bynder', 'Bynder DAM', FlowType::OTHER, 'client_id', 'secret');
+        $app = new AppWithCredentials('bynder', 'Bynder DAM', FlowType::OTHER, 'client_id', 'secret', 'username');
 
         $selectAppWithCredentialsByCodeQuery->execute('bynder')->willReturn($app);
 

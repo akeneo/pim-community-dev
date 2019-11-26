@@ -42,7 +42,7 @@ class DeleteAppHandlerSpec extends ObjectBehavior
     ): void {
         $magentoClientId = new ClientId(1);
         $magentoUserId = new UserId(1);
-        $magentoApp = new App('magento', 'Magento', FlowType::OTHER, $magentoClientId, $magentoUserId);
+        $magentoApp = new App('magento', 'Magento', FlowType::OTHER, 1, $magentoUserId);
 
         $command = new DeleteAppCommand((string) $magentoApp->code());
 
