@@ -46,6 +46,8 @@ akeneo_apps:
     app:
         client_id: Client ID
         secret: Secret
+        username: Username
+        password: Password
         constraint:
             code:
                 required: App code is required.

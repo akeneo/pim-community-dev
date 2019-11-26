@@ -1,6 +1,6 @@
 import React, {ReactNode} from 'react';
 import styled from 'styled-components';
-import {PropsWithTheme} from '../../common/theme';
+import {PropsWithTheme} from '../../../common/theme';
 
 export const CredentialList = styled.div`
     display: grid;
@@ -10,16 +10,16 @@ export const CredentialList = styled.div`
 export const CredentialListItem = ({
     label,
     children: value,
-    action,
+    actions,
 }: {
     label: ReactNode;
     children: ReactNode;
-    action: ReactNode;
+    actions: ReactNode;
 }) => (
     <>
         <LabelColumn>{label}</LabelColumn>
         <ValueColumn>{value}</ValueColumn>
-        <ActionColumn>{action}</ActionColumn>
+        <ActionsColumn>{actions}</ActionsColumn>
     </>
 );
 
@@ -42,9 +42,20 @@ const ValueColumn = styled(Column)`
     text-overflow: ellipsis;
 `;
 
-const ActionColumn = styled(Column)`
+const ActionsColumn = styled(Column)`
     align-items: center;
     display: flex;
     justify-content: flex-end;
     padding-right: 20px;
+
+    > * {
+        margin: 0 5px;
+
+        :first-child {
+            margin-left: 0;
+        }
+        :last-child {
+            margin-right: 0;
+        }
+    }
 `;
