@@ -34,6 +34,8 @@ pim_asset_manager:
         transformation:
             limit_reached: 'You cannot create or update the asset family "%asset_family_identifier%" because you have reached the limit of %limit% transformations'
             same_operation_twice: 'You cannot create or update the asset family "%asset_family_identifier%" because the operation "operation_type" is specified twice in a single transformation'
+            source_can_not_be_a_target: 'The attribute source "%attribute_code%" can not be an attribute target of a transformation.'
+            attribute_reference_should_exist: 'The attribute "%attribute_code%" does not exist for this asset family'
     asset:
         validation:
             code:

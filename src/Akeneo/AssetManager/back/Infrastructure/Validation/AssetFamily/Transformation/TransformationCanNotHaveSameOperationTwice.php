@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily;
+namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Transformation;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Symfony\Component\Validator\Constraint;
@@ -20,9 +20,9 @@ use Symfony\Component\Validator\Constraint;
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class ThereShouldBeLessTransformationThanLimit extends Constraint
+class TransformationCanNotHaveSameOperationTwice extends Constraint
 {
-    public const ERROR_MESSAGE = 'pim_asset_manager.asset_family.validation.transformation.limit_reached';
+    public const ERROR_MESSAGE = 'pim_asset_manager.asset_family.validation.transformation.same_operation_twice';
 
     /** @var AssetFamilyIdentifier */
     private $assetFamilyIdentifier;
@@ -46,6 +46,6 @@ class ThereShouldBeLessTransformationThanLimit extends Constraint
 
     public function validatedBy()
     {
-        return ThereShouldBeLessTransformationThanLimitValidator::class;
+        return TransformationCanNotHaveSameOperationTwiceValidator::class;
     }
 }

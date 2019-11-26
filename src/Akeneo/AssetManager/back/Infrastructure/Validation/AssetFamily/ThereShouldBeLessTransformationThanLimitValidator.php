@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily;
 
-use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyCommand;
-use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyCommand;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -29,50 +27,26 @@ class ThereShouldBeLessTransformationThanLimitValidator extends ConstraintValida
         $this->maxTransformationByAssetFamilyLimit = $maxTransformationByAssetFamilyLimit;
     }
 
-    public function validate($command, Constraint $constraint): void
-    {
-        $this->checkConstraintType($constraint);
-        $this->checkCommandType($command);
-        $this->validateCommand($command);
-    }
-
-    /**
-     * @throws UnexpectedTypeException
-     */
-    private function checkConstraintType(Constraint $constraint): void
+    public function validate($transformations, Constraint $constraint)
     {
         if (!$constraint instanceof ThereShouldBeLessTransformationThanLimit) {
-            throw new UnexpectedTypeException($constraint, self::class);
+            throw new UnexpectedTypeException($constraint, ThereShouldBeLessTransformationThanLimit::class);
         }
-    }
 
-    /**
-     * @throws \InvalidArgumentException
-     */
-    private function checkCommandType($command): void
-    {
-        if (!$command instanceof CreateAssetFamilyCommand && !$command instanceof EditAssetFamilyCommand) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expected argument to be of class "%s" or "%s", "%s" given',
-                    CreateAssetFamilyCommand::class,
-                    EditAssetFamilyCommand::class,
-                    get_class($command)
-                )
-            );
+        if (!is_array($transformations)) {
+            throw new \InvalidArgumentException('transformations must be an array.');
         }
-    }
 
-    private function validateCommand($command): void
-    {
-        $total = count($command->transformations);
+        $total = count($transformations);
 
         if ($total > $this->maxTransformationByAssetFamilyLimit) {
-            $this->context->buildViolation(ThereShouldBeLessTransformationThanLimit::ERROR_MESSAGE)
-                ->setParameter('%asset_family_identifier%', $command->identifier)
-                ->setParameter('%limit%', $this->maxTransformationByAssetFamilyLimit)
-                ->atPath('transformations')
-                ->addViolation();
+            $this->context->buildViolation(
+                ThereShouldBeLessTransformationThanLimit::ERROR_MESSAGE,
+                [
+                    '%asset_family_identifier%' => $constraint->getAssetFamilyIdentifier()->__toString(),
+                    '%limit%' => $this->maxTransformationByAssetFamilyLimit,
+                ]
+            )->addViolation();
         }
     }
 }

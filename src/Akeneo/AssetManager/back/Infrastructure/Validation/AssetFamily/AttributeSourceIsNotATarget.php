@@ -15,9 +15,13 @@ namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily;
 
 use Symfony\Component\Validator\Constraint;
 
-class TransformationCanNotHaveSameOperationTwice extends Constraint
+/**
+ * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
+ * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
+ */
+class AttributeSourceIsNotATarget extends Constraint
 {
-    public const ERROR_MESSAGE = 'pim_asset_manager.asset_family.validation.transformation.same_operation_twice';
+    public const ERROR_MESSAGE = 'pim_asset_manager.asset_family.validation.source_can_not_be_a_target';
 
     public function getTargets()
     {
@@ -26,6 +30,6 @@ class TransformationCanNotHaveSameOperationTwice extends Constraint
 
     public function validatedBy()
     {
-        return TransformationCanNotHaveSameOperationTwiceValidator::class;
+        return AttributeSourceIsNotATargetValidator::class;
     }
 }
