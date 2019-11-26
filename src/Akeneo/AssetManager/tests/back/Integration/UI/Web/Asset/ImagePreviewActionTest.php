@@ -74,7 +74,7 @@ final class ImagePreviewActionTest extends ControllerIntegrationTestCase
             ]
         );
         $response = $this->client->getResponse();
-        $this->webClientHelper->assertResponse($response, 301, '');
+        $this->webClientHelper->assertResponse($response, 302, '');
     }
 
     /**
@@ -93,7 +93,7 @@ final class ImagePreviewActionTest extends ControllerIntegrationTestCase
             ]
         );
         $response = $this->client->getResponse();
-        $this->webClientHelper->assertResponse($response, 301, '');
+        $this->webClientHelper->assertResponse($response, 302, '');
     }
 
     private function loadFixtures(): void
