@@ -1,93 +1,140 @@
-import React, {useRef, useState} from 'react';
+import {FormikHelpers, useFormik} from 'formik';
+import React, {useEffect} from 'react';
 import {useHistory, useParams} from 'react-router';
 import {App} from '../../../domain/apps/app.interface';
 import {FlowType} from '../../../domain/apps/flow-type.enum';
 import {PimView} from '../../../infrastructure/pim-view/PimView';
 import {ApplyButton, Breadcrumb, BreadcrumbItem, Page, PageHeader} from '../../common';
-import {useFetch} from '../../shared/fetch';
-import {isErr} from '../../shared/fetch/result';
-import {BreadcrumbRouterLink, useRoute} from '../../shared/router';
+import imgUrl from '../../common/assets/illustrations/api.svg';
+import {isErr, isOk} from '../../shared/fetch/result';
+import {BreadcrumbRouterLink} from '../../shared/router';
 import {Translate} from '../../shared/translate';
 import {AppEditForm} from '../components/AppEditForm';
-import imgUrl from '../../common/assets/illustrations/api.svg';
+import {useFetchApp} from '../use-fetch-app';
+import {useUpdateApp} from '../use-update-app';
+
+export interface FormValues {
+    label: string;
+    flowType: FlowType;
+}
+
+export interface FormErrors {
+    label?: string;
+    flowType?: string;
+}
+
+const initialValues: FormValues = {label: '', flowType: FlowType.OTHER};
+
+const validate = ({label}: FormValues): FormErrors => {
+    const errors: FormErrors = {};
+    if (!label || label.trim().length === 0) {
+        errors.label = 'akeneo_apps.app.constraint.label.required';
+    }
+
+    return errors;
+};
 
 export const AppEdit = () => {
     const history = useHistory();
 
-    const formRef = useRef<{submit: () => void}>(null);
-    const [formState, setFormState] = useState({hasUnsavedChanges: false, isValid: false});
+    const {code} = useParams<{code: string}>();
 
-    const {code} = useParams() as {code: string};
-    const result = useFetch<{code: string; label: string; flow_type: FlowType}>(
-        useRoute('akeneo_apps_get_rest', {code})
-    );
-    if (isErr(result)) {
-        history.push('/apps');
-        return <></>;
-    }
-    if (undefined === result.data) {
-        return <></>;
-    }
-    const app: App = {
-        code: result.data.code,
-        label: result.data.label,
-        flowType: result.data.flow_type,
+    const updateApp = useUpdateApp(code);
+    const handleSubmit = async (
+        {label, flowType}: FormValues,
+        {setSubmitting, resetForm}: FormikHelpers<FormValues>
+    ) => {
+        const result = await updateApp({
+            code,
+            label,
+            flowType,
+        });
+        setSubmitting(false);
+
+        if (isOk(result)) {
+            resetForm({
+                values: {
+                    label: label,
+                    flowType: flowType,
+                },
+            });
+        }
     };
 
-    const handleSave = () => formRef.current && formRef.current.submit();
+    const formik = useFormik({
+        initialValues,
+        onSubmit: handleSubmit,
+        validate,
+    });
 
-    const handleChange = ({hasUnsavedChanges, isValid}: {hasUnsavedChanges: boolean; isValid: boolean}) =>
-        setFormState({hasUnsavedChanges, isValid});
+    const result = useFetchApp(code);
+    useEffect(() => {
+        if (isOk(result)) {
+            const app: App = result.data;
 
-    const breadcrumb = (
-        <Breadcrumb>
-            <BreadcrumbRouterLink route={'oro_config_configuration_system'}>
-                <Translate id='pim_menu.tab.system' />
-            </BreadcrumbRouterLink>
-            <BreadcrumbItem onClick={() => history.push('/apps')} isLast={false}>
-                <Translate id='pim_menu.item.apps' />
-            </BreadcrumbItem>
-        </Breadcrumb>
-    );
+            formik.resetForm({
+                values: {
+                    label: app.label,
+                    flowType: app.flowType,
+                },
+            });
+        }
 
-    const userButtons = (
-        <PimView
-            className='AknTitleContainer-userMenuContainer AknTitleContainer-userMenu'
-            viewName='pim-apps-user-navigation'
-        />
-    );
+        if (isErr(result)) {
+            history.push('/apps');
+        }
+    }, [result]);
 
-    const saveButton = (
-        <ApplyButton
-            onClick={handleSave}
-            disabled={!formState.hasUnsavedChanges || !formState.isValid}
-            classNames={['AknButtonList-item']}
-        >
-            <Translate id='pim_common.save' />
-        </ApplyButton>
-    );
+    if (!isOk(result)) {
+        return <></>;
+    }
 
-    const unsavedChangesMessage = (
-        <div className='updated-status'>
-            <span className='AknState'>
-                <Translate id='pim_common.entity_updated' />
-            </span>
-        </div>
-    );
+    const app: App = result.data;
 
     return (
         <Page>
             <PageHeader
-                breadcrumb={breadcrumb}
-                buttons={[saveButton]}
-                userButtons={userButtons}
-                state={formState.hasUnsavedChanges && unsavedChangesMessage}
+                breadcrumb={
+                    <Breadcrumb>
+                        <BreadcrumbRouterLink route={'oro_config_configuration_system'}>
+                            <Translate id='pim_menu.tab.system' />
+                        </BreadcrumbRouterLink>
+                        <BreadcrumbItem onClick={() => history.push('/apps')} isLast={false}>
+                            <Translate id='pim_menu.item.apps' />
+                        </BreadcrumbItem>
+                    </Breadcrumb>
+                }
+                buttons={[
+                    <ApplyButton
+                        key={0}
+                        onClick={() => formik.submitForm()}
+                        disabled={!formik.isValid || formik.isSubmitting}
+                        classNames={['AknButtonList-item']}
+                    >
+                        <Translate id='pim_common.save' />
+                    </ApplyButton>,
+                ]}
+                userButtons={
+                    <PimView
+                        className='AknTitleContainer-userMenuContainer AknTitleContainer-userMenu'
+                        viewName='pim-apps-user-navigation'
+                    />
+                }
+                state={
+                    formik.dirty && (
+                        <div className='updated-status'>
+                            <span className='AknState'>
+                                <Translate id='pim_common.entity_updated' />
+                            </span>
+                        </div>
+                    )
+                }
                 imageSrc={imgUrl}
             >
                 {app.label}
             </PageHeader>
 
-            <AppEditForm ref={formRef} app={app} onChange={handleChange} />
+            <AppEditForm app={app} formik={formik} />
         </Page>
     );
 };

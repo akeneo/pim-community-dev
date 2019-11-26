@@ -1,4 +1,3 @@
-import {mount} from 'enzyme';
 import * as React from 'react';
 import {ThemeProvider} from 'styled-components';
 import {AppEditForm} from '../../../../../src/application/apps/components/AppEditForm';
@@ -17,50 +16,25 @@ const bynderApp: App = {
     flowType: FlowType.DATA_SOURCE,
 };
 
+const formik = {
+    values: {
+        label: bynderApp.label,
+        flowType: bynderApp.flowType,
+    },
+    errors: {
+        label: 'error_message',
+    },
+    handleChange: jest.fn().mockName('handleChange'),
+} as any;
+
 describe('App', () => {
     it('should render', () => {
         const component = createWithTheme(
             <ThemeProvider theme={theme}>
-                <AppEditForm app={bynderApp} onChange={() => undefined} />
+                <AppEditForm app={bynderApp} formik={formik} />
             </ThemeProvider>
         );
 
         expect(component.toJSON()).toMatchSnapshot();
-    });
-
-    it('should trigger the `onChange` callback after a change in the form', () => {
-        const handleChange = jest.fn();
-
-        const component = mount(
-            <ThemeProvider theme={theme}>
-                <AppEditForm app={bynderApp} onChange={handleChange} />
-            </ThemeProvider>
-        );
-
-        const input = component.find('input[name="label"]');
-
-        input.simulate('change');
-        (input.instance() as any).value = '';
-        input.simulate('change');
-
-        expect(handleChange).toHaveBeenNthCalledWith(1, {hasUnsavedChanges: true, isValid: true});
-        expect(handleChange).toHaveBeenNthCalledWith(2, {hasUnsavedChanges: true, isValid: false});
-    });
-
-    it('should display an error message if the label input is empty', () => {
-        const handleChange = jest.fn();
-
-        const component = mount(
-            <ThemeProvider theme={theme}>
-                <AppEditForm app={bynderApp} onChange={handleChange} />
-            </ThemeProvider>
-        );
-
-        const input = component.find('input[name="label"]');
-
-        (input.instance() as any).value = '';
-        input.simulate('change');
-
-        expect(component.text()).toContain('akeneo_apps.app.constraint.label.required');
     });
 });
