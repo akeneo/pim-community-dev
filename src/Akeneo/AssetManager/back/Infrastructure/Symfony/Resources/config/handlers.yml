@@ -108,3 +108,8 @@ services:
         class: Akeneo\AssetManager\Application\Asset\LinkAssets\LinkAssetsHandler
         arguments:
             - '@akeneo_assetmanager.infrastructure.job.product_link_rule_launcher'
+
+    akeneo_assetmanager.application.asset.compute_transformations.handler:
+        class: Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationsHandler
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.job.compute_transformations_launcher'

@@ -41,7 +41,7 @@ echo "Launch branch migrations..."
 docker-compose run -u www-data php bin/console doctrine:migrations:migrate --env=test --no-interaction
 
 echo "Dump master with migrations database..."
-docker-compose exec -T mysql mysqldump --no-data --skip-opt --skip-comments --password=$APP_DATABASE_PASSWORD --user=$APP_DATABASE_USER $APP_DATABASE_NAME > /tmp/dump_master_database_with_migrations.sql
+docker-compose exec -T mysql mysqldump --no-data --skip-opt --skip-comments --password=$APP_DATABASE_PASSWORD --user=$APP_DATABASE_USER $APP_DATABASE_NAME | sed 's/ AUTO_INCREMENT=[0-9]*\b//g' > /tmp/dump_master_database_with_migrations.sql
 
 echo "Dump master with migrations index..."
 docker-compose exec -T elasticsearch curl -XGET "$APP_INDEX_HOSTS/_all/_mapping"|json_pp --json_opt=canonical,pretty > /tmp/dump_master_index_with_migrations.json
@@ -50,7 +50,7 @@ echo "Install branch database and indexes..."
 APP_ENV=test make database
 
 echo "Dump branch database..."
-docker-compose exec -T mysql mysqldump --no-data --skip-opt --skip-comments --password=$APP_DATABASE_PASSWORD --user=$APP_DATABASE_USER $APP_DATABASE_NAME > /tmp/dump_master_database.sql
+docker-compose exec -T mysql mysqldump --no-data --skip-opt --skip-comments --password=$APP_DATABASE_PASSWORD --user=$APP_DATABASE_USER $APP_DATABASE_NAME | sed 's/ AUTO_INCREMENT=[0-9]*\b//g' > /tmp/dump_master_database.sql
 
 echo "Dump branch index..."
 docker-compose exec -T elasticsearch curl -XGET "$APP_INDEX_HOSTS/_all/_mapping"|json_pp --json_opt=canonical,pretty > /tmp/dump_master_index.json
