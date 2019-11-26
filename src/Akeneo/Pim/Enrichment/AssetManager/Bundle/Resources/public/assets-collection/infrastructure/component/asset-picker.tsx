@@ -248,6 +248,7 @@ export const AssetPicker = ({
     setOpen(false);
   };
   const cancelModal = () => {
+    if (!isOpen) return;
     onAssetPick([]);
     resetModal();
   };
