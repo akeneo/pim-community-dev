@@ -1,0 +1,109 @@
+{
+    "request": {
+        "method": "PATCH",
+        "route": "akeneo_asset_manager_assets_rest_connector_create_or_update",
+        "query": {
+            "assetFamilyIdentifier": "frontview"
+        },
+        "body": [
+            {
+                "code": "house",
+                "values": {
+                    "label": [
+                        {
+                            "locale": "en_US",
+                            "channel": null,
+                            "data": "House updated english label"
+                        },
+                        {
+                            "locale": "fr_FR",
+                            "channel": null,
+                            "data": "House updated french label"
+                        }
+                    ],
+                    "name": [
+                        {
+                            "channel": null,
+                            "locale": "en_US",
+                            "data": "House updated english name"
+                        },
+                        {
+                            "channel": null,
+                            "locale": "fr_FR",
+                            "data": null
+                        }
+                    ],
+                    "description": [
+                        {
+                            "locale": "en_US",
+                            "channel": "ecommerce",
+                            "data": "House english description"
+                        }
+                    ]
+                }
+            },
+            {
+                "code": "flower",
+                "values": {
+                    "label": [
+                        {
+                            "locale": "en_US",
+                            "channel": null,
+                            "data": "Flower updated english label"
+                        }
+                    ],
+                    "name": [
+                        {
+                            "channel": null,
+                            "locale": "en_US",
+                            "data": "Updated Flower english name"
+                        }
+                    ],
+                    "description": [
+                        {
+                            "locale": "en_US",
+                            "channel": "ecommerce",
+                            "data": null
+                        }
+                    ]
+                }
+            },
+            {
+                "code": "phone",
+                "values": {
+                    "label": [
+                        {
+                            "locale": "en_US",
+                            "channel": null,
+                            "data": "Phone label"
+                        }
+                    ],
+                    "name": [
+                        {
+                            "channel": null,
+                            "locale": "en_US",
+                            "data": "Phone name"
+                        }
+                    ]
+                }
+            }
+       ]
+    },
+    "response": {
+        "status": 200,
+        "body": [
+            {
+                "code": "house",
+                "status_code": 204
+            },
+            {
+                "code": "flower",
+                "status_code": 204
+            },
+            {
+                "code": "phone",
+                "status_code": 201
+            }
+        ]
+    }
+}

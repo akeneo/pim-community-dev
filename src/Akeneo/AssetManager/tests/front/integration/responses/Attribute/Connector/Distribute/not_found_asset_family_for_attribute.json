@@ -1,0 +1,17 @@
+{
+  "request": {
+    "method": "GET",
+    "route": "akeneo_asset_manager_asset_family_attribute_rest_connector_get",
+    "query": {
+      "assetFamilyIdentifier": "wrong_asset_family",
+      "code": "description"
+    }
+  },
+  "response": {
+    "status": 404,
+    "body": {
+      "code": 404,
+      "message":"Asset family \"wrong_asset_family\" does not exist."
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "request": {
+    "method": "POST",
+    "route": "akeneo_asset_manager_attribute_create_rest",
+    "query": {
+      "assetFamilyIdentifier": "designer"
+    },
+    "body": {
+      "asset_family_identifier": "designer",
+      "code": "niceattribute",
+      "type": "asset_collection",
+      "labels": {
+        "en_US": "Nice attribute"
+      },
+      "value_per_locale": false,
+      "value_per_channel": true,
+      "asset_type": "brands"
+    }
+  },
+  "response": {
+    "status": 204,
+    "body": ""
+  }
+}

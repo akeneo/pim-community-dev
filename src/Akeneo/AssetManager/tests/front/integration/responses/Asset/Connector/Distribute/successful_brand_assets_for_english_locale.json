@@ -1,0 +1,123 @@
+{
+    "request": {
+        "method": "GET",
+        "route": "akeneo_asset_manager_assets_rest_connector_get",
+        "query": {
+            "assetFamilyIdentifier": "brand",
+            "locales": "en_US"
+        }
+    },
+    "response": {
+        "status": 200,
+        "body": {
+            "_links": {
+                "self": {
+                    "href": "http://localhost/api/rest/v1/asset-families/brand/assets?locales=en_US"
+                },
+                "first": {
+                    "href": "http://localhost/api/rest/v1/asset-families/brand/assets?locales=en_US"
+                },
+                "next": {
+                    "href": "http://localhost/api/rest/v1/asset-families/brand/assets?locales=en_US&search_after=brand_3"
+                }
+            },
+            "_embedded": {
+                "items": [
+                    {
+                        "_links": {
+                            "self": {
+                                "href": "http://localhost/api/rest/v1/asset-families/brand/assets/brand_1"
+                            }
+                        },
+                        "code": "brand_1",
+                        "values": {
+                            "label": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "value": "English label for brand_1"
+                                }
+                            ],
+                            "description": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": "ecommerce",
+                                    "data": "Description for the brand number 1"
+                                }
+                            ],
+                            "country": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "data": "Italy"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "_links": {
+                            "self": {
+                                "href": "http://localhost/api/rest/v1/asset-families/brand/assets/brand_2"
+                            }
+                        },
+                        "code": "brand_2",
+                        "values": {
+                            "label": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "value": "English label for brand_2"
+                                }
+                            ],
+                            "description": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": "ecommerce",
+                                    "data": "Description for the brand number 2"
+                                }
+                            ],
+                            "country": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "data": "Italy"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "_links": {
+                            "self": {
+                                "href": "http://localhost/api/rest/v1/asset-families/brand/assets/brand_3"
+                            }
+                        },
+                        "code": "brand_3",
+                        "values": {
+                            "label": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "value": "English label for brand_3"
+                                }
+                            ],
+                            "description": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": "ecommerce",
+                                    "data": "Description for the brand number 3"
+                                }
+                            ],
+                            "country": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "data": "Italy"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}

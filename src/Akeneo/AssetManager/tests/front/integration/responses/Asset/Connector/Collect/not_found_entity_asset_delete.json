@@ -1,0 +1,18 @@
+{
+    "request": {
+        "method": "DELETE",
+        "route": "akeneo_asset_manager_asset_rest_connector_delete",
+        "query": {
+            "assetFamilyIdentifier": "packshot",
+            "code": "wrong_asset"
+        },
+        "body": {}
+    },
+    "response": {
+        "status": 404,
+        "body":  {
+            "code": 404,
+            "message": "Resource `wrong_asset` does not exist."
+        }
+    }
+}

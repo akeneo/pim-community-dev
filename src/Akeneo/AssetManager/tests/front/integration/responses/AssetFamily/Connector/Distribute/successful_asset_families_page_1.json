@@ -1,0 +1,106 @@
+{
+  "request": {
+    "method": "GET",
+    "route": "akeneo_asset_manager_asset_families_rest_connector_get",
+    "query": {}
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "_links": {
+        "self": {
+          "href": "http://localhost/api/rest/v1/asset-families"
+        },
+        "first": {
+          "href": "http://localhost/api/rest/v1/asset-families"
+        },
+        "next": {
+          "href": "http://localhost/api/rest/v1/asset-families?search_after=asset_family_3"
+        }
+      },
+      "_embedded": {
+        "items": [
+          {
+            "_links": {
+              "self": {
+                "href": "http://localhost/api/rest/v1/asset-families/asset_family_1"
+              }
+            },
+            "code": "asset_family_1",
+            "labels": {
+              "fr_FR": "Marque"
+            },
+            "product_link_rules": [
+              {
+                "product_selections": [
+                  {
+                    "field": "sku",
+                    "operator": "EQUALS",
+                    "value": "{{product_ref}}",
+                    "locale": null
+                  }
+                ],
+                "assign_assets_to": [
+                  {
+                    "attribute": "user_instructions",
+                    "locale": "{{locale}}",
+                    "mode": "replace"
+                  }
+                ]
+              }
+            ],
+            "transformations": [
+              {
+                "source": {
+                  "attribute": "main",
+                  "channel": null,
+                  "locale": null
+                },
+                "target": {
+                  "attribute": "target",
+                  "channel": null,
+                  "locale": null
+                },
+                "operations": [
+                  {
+                    "type": "thumbnail",
+                    "parameters": {
+                      "width": 100,
+                      "height": 80
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "_links": {
+              "self": {
+                "href": "http://localhost/api/rest/v1/asset-families/asset_family_2"
+              }
+            },
+            "code": "asset_family_2",
+            "labels": {
+              "fr_FR": "Marque"
+            },
+            "product_link_rules": [],
+            "transformations": []
+          },
+          {
+            "_links": {
+              "self": {
+                "href": "http://localhost/api/rest/v1/asset-families/asset_family_3"
+              }
+            },
+            "code": "asset_family_3",
+            "labels": {
+              "fr_FR": "Marque"
+            },
+            "product_link_rules": [],
+            "transformations": []
+          }
+        ]
+      }
+    }
+  }
+}
