@@ -22,6 +22,8 @@ interface FetchAppData {
     flow_type: FlowType;
     secret: string;
     client_id: string;
+    username: string;
+    password: string;
 }
 
 export interface FormValues {
@@ -51,7 +53,7 @@ export const AppEdit = () => {
     const {code} = useParams<{code: string}>();
 
     const [app, setApp] = useState<AppInterface | undefined>();
-    const [credentials, setCrendentials] = useState<AppCredentialsInterface | undefined>();
+    const [credentials, setCredentials] = useState<AppCredentialsInterface | undefined>();
 
     const fetchAppUrl = useRoute('akeneo_apps_get_rest', {code});
     const result = useFetch<FetchAppData>(fetchAppUrl);
@@ -66,9 +68,11 @@ export const AppEdit = () => {
                 label: result.data.label,
                 flowType: result.data.flow_type,
             });
-            setCrendentials({
+            setCredentials({
                 clientId: result.data.client_id,
                 secret: result.data.secret,
+                username: result.data.username,
+                password: result.data.password,
             });
         }
     }, [result]);
@@ -111,7 +115,7 @@ export const AppEdit = () => {
     }, [app]);
 
     if (!app || !credentials) {
-        return <></>;
+        return null;
     }
 
     return (
@@ -162,7 +166,7 @@ export const AppEdit = () => {
                     <AppEditForm app={app} formik={formik} />
                 </div>
                 <div>
-                    <AppCredentials code={app.code} appCredentials={credentials} />
+                    <AppCredentials code={app.code} credentials={credentials} />
                 </div>
             </Layout>
         </Page>
