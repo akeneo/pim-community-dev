@@ -45,11 +45,17 @@ class StreamPdfLoader implements LoaderInterface
         }
 
         $imagick = new \Imagick();
-        $imagick->setresolution(500, 500);
-        $imagick->setcolorspace(\Imagick::COLORSPACE_RGB);
         $imagick->readImageBlob($file);
+        $imagick->setResolution(72, 72);
+        $imagick->setColorspace(\Imagick::COLORSPACE_RGB);
+        $imagick->setCompression(\Imagick::COMPRESSION_JPEG);
+        $imagick->setCompressionQuality(60);
         $imagick->setImageFormat('jpeg');
+        $imagick->resetIterator();
 
-        return new Binary($imagick->getimageblob(), $imagick->getImageMimeType());
+        $content = $imagick->getImageBlob();
+        $imagick->destroy();
+
+        return new Binary($content, 'image/jpeg', 'jpeg');
     }
 }

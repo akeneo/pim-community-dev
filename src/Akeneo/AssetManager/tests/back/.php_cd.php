@@ -44,6 +44,7 @@ $rules = [
         'Akeneo\UserManagement\Component\Model\GroupInterface', // Because of an EventSubscriber on UserGroup deletion
         'Liip\ImagineBundle',
         'Akeneo\Pim\Automation\RuleEngine',
+        'Psr\Log\LoggerInterface',
 
         // TODO: asset families should not depend on PIM
         'Akeneo\Pim\Enrichment\AssetManager\Component',
