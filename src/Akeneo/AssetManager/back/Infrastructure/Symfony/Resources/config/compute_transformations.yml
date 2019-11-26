@@ -3,3 +3,8 @@ services:
         class: Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationsExecutor
         arguments:
             - '@Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlGetTransformations'
+
+    akeneo_assetmanager.infrastructure.filter.colorspace:
+        class: Akeneo\AssetManager\Infrastructure\Filesystem\Filter\ColorspaceFilter
+        tags:
+            - { name: 'liip_imagine.filter.loader', loader: colorspace }
