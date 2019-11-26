@@ -46,9 +46,7 @@ class CursorFactory implements CursorFactoryInterface
      */
     public function createCursor($queryBuilder, array $options = [])
     {
-        if (!isset($options['page_size'])) {
-            $pageSize = $this->pageSize;
-        }
+        $pageSize = $options['page_size'] ?? $this->pageSize;
 
         return new $this->cursorClass($queryBuilder, $this->entityManager, $pageSize);
     }

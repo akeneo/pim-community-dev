@@ -22,8 +22,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class VersionPurger implements VersionPurgerInterface
 {
-    const BULK_THRESHOLD = 1000;
-
     /** @var VersionRepositoryInterface */
     protected $versionRepository;
 
@@ -85,7 +83,7 @@ class VersionPurger implements VersionPurgerInterface
                 $versionsPurgedCount++;
                 $versionsToPurge[] = $version;
 
-                if (count($versionsToPurge) >= self::BULK_THRESHOLD) {
+                if (count($versionsToPurge) >= $options['batch_size']) {
                     $this->versionRemover->removeAll($versionsToPurge);
                     $this->objectDetacher->detachAll($versionsToPurge);
                     $versionsToPurge = [];
@@ -155,10 +153,12 @@ class VersionPurger implements VersionPurgerInterface
                 'days_number'   => 90,
                 'date_operator' => '<',
                 'limit_date'    => new \DateTime('now', new \DateTimeZone('UTC')),
+                'batch_size'    => 100,
             ]
         );
         $optionResolver
             ->setAllowedTypes('days_number', 'int')
+            ->setAllowedTypes('batch_size', 'int')
             ->setAllowedValues('date_operator', ['<', '>']);
 
         $optionResolver->setNormalizer('limit_date', function (Options $options, $value) {
