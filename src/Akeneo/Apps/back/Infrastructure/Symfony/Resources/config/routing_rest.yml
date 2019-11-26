@@ -22,6 +22,13 @@ akeneo_apps_update_rest:
     requirements:
         code: '[a-zA-Z0-9_]+'
 
+akeneo_apps_delete_rest:
+    path: '/rest/apps/{code}'
+    defaults: { _controller: akeneo_app.internal_api.controller.app:delete }
+    methods: [DELETE]
+    requirements:
+        code: '[a-zA-Z0-9_]+'
+
 akeneo_apps_regenerate_secret_rest:
     path: '/rest/apps/regenerate-secret'
     defaults: { _controller: akeneo_app.internal_api.controller.app:regenerate-secret }
