@@ -68,7 +68,7 @@ const copyAndCompile = async (jsonSchemaSource, jsonSchemaTarget) => {
   let typescriptFilepath = jsonSchemaTarget.replace(JSON_SCHEMA_EXT, TYPESCRIPT_EXT);
 
   fs.copyFileSync(jsonSchemaSource, jsonSchemaTarget);
-  fs.writeFileSync(typescriptFilepath, await compileFromFile(jsonSchemaSource));
+  fs.writeFileSync(typescriptFilepath, await compileFromFile(jsonSchemaSource, {cwd: path.dirname(jsonSchemaSource)}));
 };
 
 (async () => {
