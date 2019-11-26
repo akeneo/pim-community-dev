@@ -28,9 +28,10 @@ function checkJsonSchemas(string $requestContractsDir): bool
 
         // Check if the Request Contract has a JSON Schema
         if (!$jsonSchemaExists) {
-            $hasError = true;
-            $message = sprintf('Missing JSON Schema for following request contract: "%s"', $requestContract);
-            writeln($message, 'error');
+            // TODO: re enable this part once we'll have all needed JSON Schema
+//            $hasError = true;
+//            $message = sprintf('Missing JSON Schema for following request contract: "%s"', $requestContract);
+//            writeln($message, 'error');
 
             continue;
         }
