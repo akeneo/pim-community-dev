@@ -1,4 +1,5 @@
 {
+    "$id": "akeneoasseetmanager/asset-family/asset-family",
     "title": "AssetFamily",
     "type": "object",
     "properties": {
@@ -10,7 +11,7 @@
             }
         },
         "image": {
-            "type": "object",
+            "type": ["object", "null"],
             "properties": {
                 "filePath": { "type": "string" },
                 "originalFilename": { "type": "string" },
@@ -27,7 +28,7 @@
         "asset_count": { "type": "integer" },
         "attributes": {
             "type": "array",
-            "items": {"$ref":  "attribute.schema.json"}
+            "items": {"$id": "akeneoasseetmanager/asset-family/attribute"}
         },
         "permission": {
             "type": "object",

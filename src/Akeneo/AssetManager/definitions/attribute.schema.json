@@ -1,4 +1,5 @@
 {
+    "$id": "akeneoasseetmanager/asset-family/attribute",
     "title": "Attribute",
     "type": "object",
     "properties": {
