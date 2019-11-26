@@ -131,13 +131,6 @@ function getRequestContracts(string $requestContractsDir): array
     return $result;
 }
 
-function getRequestContractKey(string $requestContract): string
-{
-    $requestContractsRoot = sprintf('%s/shared/responses/', __DIR__);
-
-    return str_replace('//', '/', str_replace($requestContractsRoot, '', $requestContract));
-}
-
 /**
  * Main
  */
