@@ -32,11 +32,6 @@ class SearchVersionAfterCursor implements CursorInterface
     private $pageSize;
 
     /**
-     * @var int
-     */
-    private $key = 0;
-
-    /**
      * @var \Generator
      */
     private $iterator;
@@ -71,7 +66,6 @@ class SearchVersionAfterCursor implements CursorInterface
      */
     public function next()
     {
-        $this->key++;
         $this->iterator->next();
     }
 
@@ -80,7 +74,7 @@ class SearchVersionAfterCursor implements CursorInterface
      */
     public function key()
     {
-        return $this->key;
+        return $this->iterator->key();
     }
 
     /**
@@ -88,7 +82,7 @@ class SearchVersionAfterCursor implements CursorInterface
      */
     public function valid()
     {
-        return $this->key() < $this->count();
+        return $this->iterator->valid();
     }
 
     /**
@@ -96,7 +90,6 @@ class SearchVersionAfterCursor implements CursorInterface
      */
     public function rewind()
     {
-        $this->key = 0;
         $this->iterator = $this->iterator();
         $this->iterator->rewind();
     }
@@ -106,11 +99,7 @@ class SearchVersionAfterCursor implements CursorInterface
      */
     public function count()
     {
-        if (null !== $this->count) {
-            return $this->count;
-        }
-
-        return $this->count = $this->countQueryResults($this->queryBuilder);
+        return $this->countQueryResults($this->queryBuilder);
     }
 
     private function countQueryResults(QueryBuilder $queryBuilder): int
@@ -137,15 +126,13 @@ class SearchVersionAfterCursor implements CursorInterface
             $qb->orderBy(sprintf('%s.id', $rootAlias))
                 ->setMaxResults($this->pageSize);
 
-            if (0 === $this->countQueryResults($qb)) {
+            $rows = $qb->getQuery()->getResult();
+
+            if (count($rows) === 0) {
                 return null;
             }
 
-            $rows = $qb->getQuery()->iterate();
-
-            foreach ($rows as $row) {
-                /** @var VersionInterface $entity */
-                $entity = $row[0];
+            foreach ($rows as $entity) {
                 yield $entity;
                 $lastId = $entity->getId();
             }
