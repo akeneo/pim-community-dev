@@ -108,6 +108,12 @@ services:
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
 
+    Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlGetTransformations:
+        class: Akeneo\AssetManager\Common\Fake\InMemoryGetTransformations
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+
     akeneo_assetmanager.infrastructure.persistence.query.find_attribute_next_order:
         class: Akeneo\AssetManager\Common\Fake\InMemoryFindAttributeNextOrder
         arguments:

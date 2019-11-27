@@ -14,16 +14,29 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets;
 
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\GetTransformations;
 use Webmozart\Assert\Assert;
 
 class ComputeTransformationsExecutor
 {
+    /** @var GetTransformations */
+    private $getTransformations;
+
+    public function __construct(GetTransformations $getTransformations)
+    {
+        $this->getTransformations = $getTransformations;
+    }
+
     /**
      * @param AssetIdentifier[] $assetIdentifiers
      */
-    public function execute(array $assetIdentifiers)
+    public function execute(array $assetIdentifiers): void
     {
         Assert::allIsInstanceOf($assetIdentifiers, AssetIdentifier::class);
+
+        $transformationsPerAssetIdentifier = $this->getTransformations->fromAssetIdentifiers(
+            $assetIdentifiers
+        );
 
         throw new \Exception('TODO; to implement');
     }
