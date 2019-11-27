@@ -687,6 +687,9 @@ class FixturesLoader
             $attribute = current(array_filter($attributes, function (AbstractAttribute $attribute) use ($attributeCode) {
                 return (string) $attribute->getCode() === $attributeCode;
             }));
+            if (!$attribute) {
+                throw new \RuntimeException(sprintf('Impossible to load value for attribute "%s", attribute not found.', $attributeCode));
+            }
 
             foreach ($values as $value) {
                 $asset->setValue($this->valueHydrator->hydrate($value, $attribute));
