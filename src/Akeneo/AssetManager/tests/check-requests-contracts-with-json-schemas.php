@@ -49,7 +49,7 @@ function checkJsonSchemas(string $requestContractsDir): bool
         $validator->validate($normalizedResponse, $jsonSchema);
 
         $errors = $validator->getErrors();
-        if(!empty($validator->getErrors())) {
+        if (!empty($validator->getErrors())) {
             $hasError = true;
             displayJsonSchemaErrors($errors, $requestContract);
         }
