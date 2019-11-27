@@ -20,10 +20,19 @@ describe('Akeneoassetfamily > infrastructure > saver > asset-family', () => {
     });
 
     const response = await page.evaluate(async () => {
-      const createAssetFamilyFromNormalized = require('akeneoassetmanager/domain/model/asset-family/asset-family').createAssetFamilyFromNormalized;
+      const createAssetFamilyFromNormalized = require('akeneoassetmanager/domain/model/asset-family/asset-family')
+        .createAssetFamilyFromNormalized;
       const createEmptyFile = require('akeneoassetmanager/domain/model/file').createEmptyFile;
 
-      const savedSofa = createAssetFamilyFromNormalized({code: 'sofa', identifier: 'sofa', labels: {en_US: 'Sofa', fr_FR: 'Canapé'}, image: createEmptyFile(), attributeAsImage: '', attributeAsLabel: ''});
+      const savedSofa = createAssetFamilyFromNormalized({
+        code: 'sofa',
+        identifier: 'sofa',
+        labels: {en_US: 'Sofa', fr_FR: 'Canapé'},
+        image: createEmptyFile(),
+        attribute_as_image: 'main_image',
+        attribute_as_label: 'label'
+      }
+      );
       const saver = require('akeneoassetmanager/infrastructure/saver/asset-family').default;
 
       return await saver.save(savedSofa);
@@ -46,11 +55,19 @@ describe('Akeneoassetfamily > infrastructure > saver > asset-family', () => {
     });
 
     const response = await page.evaluate(async () => {
-      const createAssetFamilyFromNormalized = require('akeneoassetmanager/domain/model/asset-family/asset-family').createAssetFamilyFromNormalized;
+      const createAssetFamilyFromNormalized = require('akeneoassetmanager/domain/model/asset-family/asset-family')
+        .createAssetFamilyFromNormalized;
       const createEmptyFile = require('akeneoassetmanager/domain/model/file').createEmptyFile;
       const saver = require('akeneoassetmanager/infrastructure/saver/asset-family').default;
 
-      const sofaCreated = createAssetFamilyFromNormalized({code: 'sofa', identifier: 'sofa', labels: {en_US: 'Sofa', fr_FR: 'Canapé'}, image: createEmptyFile(), attributeAsImage: '', attributeAsLabel: ''});
+      const sofaCreated = createAssetFamilyFromNormalized({
+        code: 'sofa',
+        identifier: 'sofa',
+        labels: {en_US: 'Sofa', fr_FR: 'Canapé'},
+        image: createEmptyFile(),
+        attribute_as_image: 'main_image',
+        attribute_as_label: 'label'
+      });
 
       return await saver.create(sofaCreated);
     });
@@ -101,7 +118,8 @@ describe('Akeneoassetfamily > infrastructure > saver > asset-family', () => {
     });
 
     const response = await page.evaluate(async () => {
-      const createAssetFamilyFromNormalized = require('akeneoassetmanager/domain/model/asset-family/asset-family').createAssetFamilyFromNormalized;
+      const createAssetFamilyFromNormalized = require('akeneoassetmanager/domain/model/asset-family/asset-family')
+        .createAssetFamilyFromNormalized;
       const createEmptyFile = require('akeneoassetmanager/domain/model/file').createEmptyFile;
       const saver = require('akeneoassetmanager/infrastructure/saver/asset-family').default;
 
@@ -110,8 +128,8 @@ describe('Akeneoassetfamily > infrastructure > saver > asset-family', () => {
         code: 'invalid/identifier',
         labels: {en_US: 'Sofa', fr_FR: 'Canapé'},
         image: createEmptyFile(),
-        attributeAsImage: '',
-        attributeAsLabel: ''
+        attribute_as_image: 'main_image',
+        attribute_as_label: 'label'
       });
 
       return await saver.create(sofaCreated);

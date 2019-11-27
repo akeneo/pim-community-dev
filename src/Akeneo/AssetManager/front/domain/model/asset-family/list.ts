@@ -33,5 +33,5 @@ export const getAssetFamilyListItemLabel = (
 ): string => {
   return getLabelInCollection(assetFamily.labels, locale, fallbackOnCode, assetFamily.identifier);
 };
-export const assetFamilyAreEqual = (first: AssetFamilyListItem, second: AssetFamilyListItem): boolean =>
+export const assetFamilyListItemAreEqual = (first: AssetFamilyListItem, second: AssetFamilyListItem): boolean =>
   assetFamilyidentifiersAreEqual(first.identifier, second.identifier);

@@ -36,8 +36,8 @@ export const createAssetFamilyFromNormalized = (normalizedAssetFamily: any): Ass
   code: denormalizeAssetFamilyIdentifier(normalizedAssetFamily.identifier),
   labels: denormalizeLabelCollection(normalizedAssetFamily.labels),
   image: createFileFromNormalized(normalizedAssetFamily.image),
-  attributeAsImage: denormalizeAttributeIdentifier(normalizedAssetFamily.attribute_as_label),
-  attributeAsLabel: denormalizeAttributeIdentifier(normalizedAssetFamily.attribute_as_image),
+  attributeAsImage: denormalizeAttributeIdentifier(normalizedAssetFamily.attribute_as_image),
+  attributeAsLabel: denormalizeAttributeIdentifier(normalizedAssetFamily.attribute_as_label),
 });
 export const getAssetFamilyLabel = (
   assetFamily: AssetFamily,

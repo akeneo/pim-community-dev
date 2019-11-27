@@ -27,7 +27,7 @@ beforeEach(async () => {
         .withAttributeAsImage('main_image')
         .withAttributeAsLabel('label')
         .build();
-      interceptedRequest.respond({
+        interceptedRequest.respond({
         contentType: 'application/json',
         body: JSON.stringify(assetFamily),
       });
@@ -88,7 +88,7 @@ it('It fetches the asset collection', async () => {
       },
       attributes: []
     },
-    asset_family_identifier: 'packshot',
+    asset_family_identifier: '',
     code: 'iphone',
     completeness: {
       complete: 2,

@@ -1,19 +1,19 @@
 import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 import {
-  NormalizedAssetFamilyCreation,
+  AssetFamilyCreation,
   createEmptyAssetFamilyCreation,
 } from 'akeneoassetmanager/domain/model/asset-family/creation';
 import sanitize from 'akeneoassetmanager/tools/sanitize';
 
 export interface CreateState {
   active: boolean;
-  data: NormalizedAssetFamilyCreation;
+  data: AssetFamilyCreation;
   errors: ValidationError[];
 }
 
 const initCreationState = (): CreateState => ({
   active: false,
-  data: createEmptyAssetFamilyCreation().normalize(),
+  data: createEmptyAssetFamilyCreation(),
   errors: [],
 });
 

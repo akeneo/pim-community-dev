@@ -1,4 +1,4 @@
-import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
+import assetFamilyFetcher, {AssetFamilyResult} from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
 import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import {AssetCode} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import AssetFamilyIdentifier, {
@@ -13,7 +13,7 @@ import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import {denormalizeAssetCode} from 'akeneoassetmanager/domain/model/asset/code';
 import {Query, SearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
 import {NormalizedAttribute, Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
-import {createAssetFamilyFromNormalized} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {AssetFamily as AssetManagerAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 
 export const fetchAssetCollection = async (
   assetFamilyIdentifier: AssetFamilyIdentifier,
@@ -40,7 +40,7 @@ export const searchAssetCollection = async (
   return {...searchResult, items: denormalizeAssetCollection(searchResult.items, assetFamilyResult)};
 };
 
-const denormalizeAssetCollection = (assets: any, assetFamilyResult: any): Asset[] => {
+const denormalizeAssetCollection = (assets: any, assetFamilyResult: AssetFamilyResult): Asset[] => {
   //TODO: we should move this back to asset manager
   if (!Array.isArray(assets)) {
     throw Error('not a valid asset collection');
@@ -106,11 +106,12 @@ const isCompleteness = (completeness: any): completeness is Completeness => {
 };
 
 const denormalizeAssetFamily = (
-  normalizedAssetFamily: any,
-  attributes: {attributes: NormalizedAttribute & any}[]
+  normalizedAssetFamily: AssetManagerAssetFamily,
+  attributes: (NormalizedAttribute & any)[]
 ): AssetFamily => {
+  debugger;
   return {
-    ...createAssetFamilyFromNormalized(normalizedAssetFamily),
+    ...normalizedAssetFamily,
     attributes,
   };
 };
