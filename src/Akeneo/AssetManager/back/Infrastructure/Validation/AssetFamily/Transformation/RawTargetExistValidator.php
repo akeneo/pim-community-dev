@@ -21,6 +21,7 @@ use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Webmozart\Assert\Assert;
 
 class RawTargetExistValidator extends ConstraintValidator
 {
@@ -38,9 +39,7 @@ class RawTargetExistValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, RawTargetExist::class);
         }
 
-        if (!is_array($rawTarget)) {
-            throw new \InvalidArgumentException('target must be an array.');
-        }
+        Assert::isArray($rawTarget, 'target must be an array.');
 
         $attributes = $this->attributeRepository->findByAssetFamily($constraint->getAssetFamilyIdentifier());
         $foundAttribute = null;

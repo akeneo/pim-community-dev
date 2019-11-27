@@ -16,6 +16,7 @@ namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Transformati
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Webmozart\Assert\Assert;
 
 class TransformationCanNotHaveSameOperationTwiceValidator extends ConstraintValidator
 {
@@ -25,9 +26,7 @@ class TransformationCanNotHaveSameOperationTwiceValidator extends ConstraintVali
             throw new UnexpectedTypeException($constraint, TransformationCanNotHaveSameOperationTwice::class);
         }
 
-        if (!is_array($operations)) {
-            throw new \InvalidArgumentException('operations must be an array.');
-        }
+        Assert::isArray($operations, 'operations must be an array.');
 
         $definedOperationTypes = [];
         foreach ($operations as $operation) {

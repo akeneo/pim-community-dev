@@ -17,6 +17,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationFactory
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Webmozart\Assert\Assert;
 
 class OperationShouldBeInstantiableValidator extends ConstraintValidator
 {
@@ -34,9 +35,7 @@ class OperationShouldBeInstantiableValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, OperationShouldBeInstantiable::class);
         }
 
-        if (!is_array($operation)) {
-            throw new \InvalidArgumentException('operation must be an array.');
-        }
+        Assert::isArray($operation, 'operation must be an array.');
 
         try {
             $this->operationFactory->create($operation['type'], $operation['parameters']);

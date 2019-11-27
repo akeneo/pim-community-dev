@@ -18,6 +18,7 @@ use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyC
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Webmozart\Assert\Assert;
 
 class ThereShouldBeLessTransformationThanLimitValidator extends ConstraintValidator
 {
@@ -40,10 +41,7 @@ class ThereShouldBeLessTransformationThanLimitValidator extends ConstraintValida
             return;
         }
 
-        if (!is_array($command->transformations)) {
-            throw new \InvalidArgumentException('transformations must be an array.');
-        }
-
+        Assert::isArray($command->transformations, 'transformations must be an array.');
         $total = count($command->transformations);
 
         if ($total > $this->maxTransformationByAssetFamilyLimit) {
