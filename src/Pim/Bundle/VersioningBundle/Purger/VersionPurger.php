@@ -22,6 +22,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class VersionPurger implements VersionPurgerInterface
 {
+    /** @deprecated not used internally anymore */
+    const BULK_THRESHOLD = 1000;
+
     /** @var VersionRepositoryInterface */
     protected $versionRepository;
 

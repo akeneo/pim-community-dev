@@ -4,11 +4,9 @@ namespace Pim\Bundle\VersioningBundle\Doctrine\ORM;
 
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositoryInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
-use Akeneo\Component\Versioning\Model\Version;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
-use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 
 /**
@@ -147,7 +145,12 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
             $qb->setParameter('limit_date', $options['limit_date'], Type::DATETIME);
         }
 
-        return $this->cursorFactory->createCursor($qb, ['page_size' => $options['batch_size'] ?? 100]);
+        $cursorOptions = [];
+        if (isset($options['batch_size'])) {
+            $cursorOptions['page_size'] = $options['batch_size'];
+        }
+
+        return $this->cursorFactory->createCursor($qb, $cursorOptions);
     }
 
     /**
