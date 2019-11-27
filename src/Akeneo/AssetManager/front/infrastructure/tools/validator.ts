@@ -3,12 +3,12 @@ const Ajv = require('ajv');
 
 const ajv = new Ajv();
 
-export const isValidAgainstSchema = (data: any, schema: object): any => {
+export const isValidAgainstSchema = <T>(data: any, schema: object): data is T => {
   return ajv.validate(schema, data);
 };
 
-export const validateAgainstSchema = (data: any, schema: object): any => {
-  const isValid = isValidAgainstSchema(data, schema);
+export const validateAgainstSchema = <T>(data: any, schema: object): T => {
+  const isValid = isValidAgainstSchema<T>(data, schema);
 
   if (!isValid) {
     console.warn('validator errors', ajv.errors);

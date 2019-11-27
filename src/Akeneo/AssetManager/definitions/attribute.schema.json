@@ -1,6 +1,6 @@
 {
     "$id": "akeneoasseetmanager/asset-family/attribute",
-    "title": "Attribute",
+    "title": "BackendAttribute",
     "type": "object",
     "properties": {
         "type": { "type": "string" },
