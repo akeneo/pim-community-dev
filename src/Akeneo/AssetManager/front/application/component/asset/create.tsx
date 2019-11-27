@@ -11,7 +11,7 @@ import {
 } from 'akeneoassetmanager/domain/event/asset/create';
 import {createAsset} from 'akeneoassetmanager/application/action/asset/create';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
-import AssetFamily, {denormalizeAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {createLocaleFromCode} from 'akeneoassetmanager/domain/model/locale';
 import Key from 'akeneoassetmanager/tools/key';
 import Checkbox from 'akeneoassetmanager/application/component/app/checkbox';
@@ -85,7 +85,10 @@ class Create extends React.Component<CreateProps, {createAnother: boolean}> {
                     <div className="AknFullPage-subTitle">{__('pim_asset_manager.asset.create.subtitle')}</div>
                     <div className="AknFullPage-title">
                       {__('pim_asset_manager.asset.create.title', {
-                        entityLabel: this.props.assetFamily.getLabel(this.props.context.locale).toLowerCase(),
+                        entityLabel: getAssetFamilyLabel(
+                          this.props.assetFamily,
+                          this.props.context.locale
+                        ).toLowerCase(),
                       })}
                     </div>
                   </div>
@@ -192,7 +195,7 @@ export default connect(
       context: {
         locale: state.user.catalogLocale,
       },
-      assetFamily: denormalizeAssetFamily(state.form.data),
+      assetFamily: state.form.data,
     };
   },
   (dispatch: any): DispatchProps => {

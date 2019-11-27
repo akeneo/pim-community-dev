@@ -5,10 +5,7 @@ test('It could return an empty asset family', () => {
     identifier: '',
     code: '',
     labels: {},
-    image: {
-      filePath: '',
-      originalFilename: '',
-    },
+    image: null,
     attributeAsLabel: '',
     attributeAsImage: '',
   };

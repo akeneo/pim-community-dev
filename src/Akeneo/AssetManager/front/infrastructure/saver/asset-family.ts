@@ -1,8 +1,8 @@
-import AssetFamily from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {postJSON} from 'akeneoassetmanager/tools/fetch';
 import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 import handleError from 'akeneoassetmanager/infrastructure/tools/error-handler';
-import AssetFamilyCreation from 'akeneoassetmanager/domain/model/asset-family/creation';
+import {AssetFamilyCreation} from 'akeneoassetmanager/domain/model/asset-family/creation';
 import {assetFamilyIdentifierStringValue} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 
 const routing = require('routing');
@@ -20,17 +20,16 @@ export class AssetFamilySaverImplementation implements AssetFamilySaver {
   async save(assetFamily: AssetFamily): Promise<ValidationError[] | null> {
     return await postJSON(
       routing.generate('akeneo_asset_manager_asset_family_edit_rest', {
-        identifier: assetFamilyIdentifierStringValue(assetFamily.getIdentifier()),
+        identifier: assetFamilyIdentifierStringValue(assetFamily.identifier),
       }),
-      assetFamily.normalize()
+      assetFamily
     ).catch(handleError);
   }
 
   async create(assetFamilyCreation: AssetFamilyCreation): Promise<ValidationError[] | null> {
-    return await postJSON(
-      routing.generate('akeneo_asset_manager_asset_family_create_rest'),
-      assetFamilyCreation.normalize()
-    ).catch(handleError);
+    return await postJSON(routing.generate('akeneo_asset_manager_asset_family_create_rest'), assetFamilyCreation).catch(
+      handleError
+    );
   }
 }
 

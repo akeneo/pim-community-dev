@@ -13,9 +13,7 @@ import __ from 'akeneoassetmanager/tools/translator';
 import * as React from 'react';
 import {connect} from 'react-redux';
 import Key from 'akeneoassetmanager/tools/key';
-import AssetFamilyCreation, {
-  denormalizeAssetFamilyCreation,
-} from 'akeneoassetmanager/domain/model/asset-family/creation';
+import {AssetFamilyCreation, getAssetFamilyCreationLabel} from 'akeneoassetmanager/domain/model/asset-family/creation';
 import {codeStringValue} from 'akeneoassetmanager/domain/model/code';
 
 interface StateProps {
@@ -93,7 +91,7 @@ class Create extends React.Component<CreateProps> {
                         className="AknTextField AknTextField--light"
                         id="pim_asset_manager.asset_family.create.input.label"
                         name="label"
-                        value={this.props.data.getLabel(this.props.context.locale, false)}
+                        value={getAssetFamilyCreationLabel(this.props.data, this.props.context.locale, false)}
                         onChange={this.onLabelUpdate}
                         onKeyPress={this.onKeyPress}
                       />
@@ -121,7 +119,7 @@ class Create extends React.Component<CreateProps> {
                         className="AknTextField AknTextField--light"
                         id="pim_asset_manager.asset_family.create.input.code"
                         name="code"
-                        value={codeStringValue(this.props.data.getCode())}
+                        value={codeStringValue(this.props.data.code)}
                         onChange={this.onCodeUpdate}
                         onKeyPress={this.onKeyPress}
                       />
@@ -150,7 +148,7 @@ class Create extends React.Component<CreateProps> {
 export default connect(
   (state: IndexState): StateProps => {
     return {
-      data: denormalizeAssetFamilyCreation(state.create.data),
+      data: state.create.data,
       errors: state.create.errors,
       context: {
         locale: state.user.catalogLocale,

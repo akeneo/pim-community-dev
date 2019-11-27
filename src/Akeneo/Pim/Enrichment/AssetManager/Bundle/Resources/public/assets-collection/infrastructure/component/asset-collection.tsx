@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {AssetFamilyIdentifier} from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset-family';
 import {
   Asset,
   isComplete,
@@ -26,6 +25,7 @@ import {AssetPreview} from 'akeneopimenrichmentassetmanager/assets-collection/in
 import {Attribute} from 'akeneopimenrichmentassetmanager/platform/model/structure/attribute';
 import Key from 'akeneoassetmanager/tools/key';
 import {AssetCollectionLimitNotification} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-collection/asset-collection-limit-notification';
+import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 
 const AssetCard = styled.div`
   display: flex;

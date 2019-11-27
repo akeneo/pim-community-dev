@@ -87,10 +87,7 @@ test('It could return an empty asset', () => {
       identifier: '',
       code: '',
       labels: {},
-      image: {
-        filePath: '',
-        originalFilename: '',
-      },
+      image: null,
       attributeAsLabel: '',
       attributeAsImage: '',
     },

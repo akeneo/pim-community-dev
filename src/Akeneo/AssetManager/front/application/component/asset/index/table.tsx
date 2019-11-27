@@ -5,7 +5,7 @@ import NoResult from 'akeneoassetmanager/application/component/app/no-result';
 import {NormalizedAsset} from 'akeneoassetmanager/domain/model/asset/asset';
 import * as React from 'react';
 import __ from 'akeneoassetmanager/tools/translator';
-import AssetFamily from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {Column, Filter} from 'akeneoassetmanager/application/reducer/grid';
 import {CellViews, FilterViews} from 'akeneoassetmanager/application/component/asset-family/edit/asset';
 import {MAX_DISPLAYED_ASSETS} from 'akeneoassetmanager/application/action/asset/search';
@@ -231,7 +231,7 @@ export default class Table extends React.Component<TableProps, {columns: Column[
           </div>
         </div>
         {noResult ? (
-          <NoResult entityLabel={this.props.assetFamily.getLabel(locale)} />
+          <NoResult entityLabel={getAssetFamilyLabel(this.props.assetFamily, locale)} />
         ) : (
           <div
             className="AknDefault-horizontalScrollContainer"

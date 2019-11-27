@@ -1,5 +1,4 @@
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
-import {denormalizeAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import attributeFetcher from 'akeneoassetmanager/infrastructure/fetcher/attribute';
 import {attributeListUpdated} from 'akeneoassetmanager/domain/event/attribute/list';
 import {updateColumns} from 'akeneoassetmanager/application/event/search';
@@ -24,9 +23,9 @@ import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/ident
 export class InvalidArgument extends Error {}
 
 export const updateAttributeList = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
-  const assetFamily = denormalizeAssetFamily(getState().form.data);
+  const assetFamily = getState().form.data;
   try {
-    const attributes = await attributeFetcher.fetchAll(assetFamily.getIdentifier());
+    const attributes = await attributeFetcher.fetchAll(assetFamily.identifier);
     dispatch(attributeListGotUpdated(attributes));
   } catch (error) {
     dispatch(notifyAttributeListUpdateFailed());
@@ -41,8 +40,8 @@ export const attributeListGotUpdated = (attributes: Attribute[]) => (
 ): void => {
   dispatch(attributeListUpdated(attributes));
 
-  const assetFamily = denormalizeAssetFamily(getState().form.data);
-  const columnsToExclude = [assetFamily.getAttributeAsImage(), assetFamily.getAttributeAsLabel()];
+  const assetFamily = getState().form.data;
+  const columnsToExclude = [assetFamily.attributeAsImage, assetFamily.attributeAsLabel];
 
   dispatch(updateColumns(getColumns(attributes, getState().structure.channels, columnsToExclude)));
 };

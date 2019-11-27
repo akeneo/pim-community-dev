@@ -25,7 +25,7 @@ import {getErrorsView} from 'akeneoassetmanager/application/component/app/valida
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import Close from 'akeneoassetmanager/application/component/app/icon/close';
 import Flag from 'akeneoassetmanager/tools/component/flag';
-import {NormalizedAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import AssetFamilyCode from 'akeneoassetmanager/domain/model/asset-family/code';
 
 const securityContext = require('pim/security-context');
 
@@ -76,7 +76,7 @@ type StateProps = {
   structure: {
     locales: Locale[];
   };
-  assetFamily: NormalizedAssetFamily;
+  assetFamilyCode: AssetFamilyCode;
   catalogLocale: string;
   numberOfLockedOptions: any;
 };
@@ -362,7 +362,7 @@ class ManageOptionsView extends React.Component<ManageOptionsProps> {
                 <div className="AknFullPage-content">
                   <div className="AknFullPage-titleContainer">
                     <div className="AknFullPage-subTitle">
-                      {__('pim_asset_manager.attribute.options.sub_title')} / {this.props.assetFamily.code}
+                      {__('pim_asset_manager.attribute.options.sub_title')} / {this.props.assetFamilyCode}
                     </div>
                     <div className="AknFullPage-title">
                       {__('pim_asset_manager.attribute.edit.input.manage_options.quick_edit.label')}
@@ -483,7 +483,7 @@ export default connect(
       attribute: state.attribute.data,
       isDirty: state.options.isDirty,
       numberOfLockedOptions: state.options.numberOfLockedOptions,
-      assetFamily: state.form.data,
+      assetFamilyCode: state.form.data.code,
       catalogLocale: state.user.defaultCatalogLocale,
       rights: {
         locale: {

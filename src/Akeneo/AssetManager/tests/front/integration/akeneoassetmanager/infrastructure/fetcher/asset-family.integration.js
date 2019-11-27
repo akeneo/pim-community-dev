@@ -73,7 +73,8 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset-family', () => {
         attributeAsImage: '',
         attributeAsLabel: '',
         identifier: 'sofa',
-        labelCollection: {
+        code: 'sofa',
+        labels: {
           en_US: 'Sofa',
           fr_FR: 'Canapé',
         },

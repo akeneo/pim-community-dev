@@ -1,11 +1,7 @@
 import * as React from 'react';
-import AssetFamily from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {getImageShowUrl} from 'akeneoassetmanager/tools/media-url-generator';
-import {
-  assetFamilyidentifiersAreEqual,
-  denormalizeAssetFamilyIdentifier,
-  assetFamilyIdentifierStringValue,
-} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import {AssetFamilyListItem, getAssetFamilyListItemLabel} from 'akeneoassetmanager/domain/model/asset-family/list';
+import {isEmptyAssetFamilyIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 const router = require('pim/router');
 
 export default ({
@@ -14,16 +10,16 @@ export default ({
   isLoading = false,
   onRedirectToAssetFamily,
 }: {
-  assetFamily: AssetFamily;
+  assetFamily: AssetFamilyListItem;
   locale: string;
   isLoading?: boolean;
   position: number;
 } & {
-  onRedirectToAssetFamily: (assetFamily: AssetFamily) => void;
+  onRedirectToAssetFamily: (assetFamily: AssetFamilyListItem) => void;
 }) => {
-  const path = !assetFamilyidentifiersAreEqual(assetFamily.getIdentifier(), denormalizeAssetFamilyIdentifier(''))
+  const path = !isEmptyAssetFamilyIdentifier(assetFamily.identifier)
     ? `#${router.generate('akeneo_asset_manager_asset_family_edit', {
-        identifier: assetFamilyIdentifierStringValue(assetFamily.getIdentifier()),
+        identifier: assetFamily.identifier,
         tab: 'asset',
       })}`
     : '';
@@ -31,11 +27,11 @@ export default ({
   return (
     <a
       href={path}
-      title={assetFamily.getLabel(locale)}
+      title={getAssetFamilyListItemLabel(assetFamily, locale)}
       className={`AknGrid-bodyRow AknGrid-bodyRow--thumbnail AknGrid-bodyRow--withoutTopBorder ${
         isLoading ? 'AknLoadingPlaceHolder' : ''
       }`}
-      data-identifier={assetFamilyIdentifierStringValue(assetFamily.getIdentifier())}
+      data-identifier={assetFamily.identifier}
       onClick={event => {
         event.preventDefault();
 
@@ -47,11 +43,11 @@ export default ({
       <span
         className="AknGrid-fullImage"
         style={{
-          backgroundImage: `url("${getImageShowUrl(assetFamily.getImage(), 'thumbnail')}")`,
+          backgroundImage: `url("${getImageShowUrl(assetFamily.image, 'thumbnail')}")`,
         }}
       />
-      <span className="AknGrid-title">{assetFamily.getLabel(locale)}</span>
-      <span className="AknGrid-subTitle">{assetFamilyIdentifierStringValue(assetFamily.getIdentifier())}</span>
+      <span className="AknGrid-title">{getAssetFamilyListItemLabel(assetFamily, locale)}</span>
+      <span className="AknGrid-subTitle">{assetFamily.identifier}</span>
       <span className="AknGrid-bodyCell AknGrid-bodyCell--tight AknGrid-bodyCell--checkbox" />
       <span className="AknGrid-bodyCell AknGrid-bodyCell--actions">
         <div className="AknButtonList AknButtonList--right AknButtonList--expanded" />

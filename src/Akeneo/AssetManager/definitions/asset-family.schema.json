@@ -4,6 +4,7 @@
     "type": "object",
     "properties": {
         "identifier": { "type": "string" },
+        "code": { "type": "string" },
         "labels": {
             "type": "object",
             "patternProperties": {

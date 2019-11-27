@@ -1,8 +1,8 @@
-import {NormalizedAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import ValidationError from 'akeneoassetmanager/domain/model/validation-error';
 import {File} from 'akeneoassetmanager/domain/model/file';
 
-export const assetFamilyEditionReceived = (assetFamily: NormalizedAssetFamily) => {
+export const assetFamilyEditionReceived = (assetFamily: AssetFamily) => {
   return {type: 'ASSET_FAMILY_EDITION_RECEIVED', assetFamily};
 };
 
@@ -10,7 +10,7 @@ export const assetFamilyAssetCountUpdated = (assetCount: number) => {
   return {type: 'GRID_TOTAL_COUNT_UPDATED', totalCount: assetCount};
 };
 
-export const assetFamilyEditionUpdated = (assetFamily: NormalizedAssetFamily) => {
+export const assetFamilyEditionUpdated = (assetFamily: AssetFamily) => {
   return {type: 'ASSET_FAMILY_EDITION_UPDATED', assetFamily};
 };
 

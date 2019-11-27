@@ -1,5 +1,5 @@
 import {hydrator} from 'akeneoassetmanager/application/hydrator/asset-family';
-import {denormalizeAssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {createAssetFamilyFromNormalized} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 
 describe('akeneo > asset family > application > hydrator --- asset family', () => {
   test('I can hydrate a new asset family', () => {
@@ -10,7 +10,7 @@ describe('akeneo > asset family > application > hydrator --- asset family', () =
       expect(attribute_as_label).toEqual('name');
       expect(attribute_as_image).toEqual('picture');
 
-      return denormalizeAssetFamily({identifier, labels, image, attribute_as_label, attribute_as_image});
+      return createAssetFamilyFromNormalized({identifier, labels, image, attribute_as_label, attribute_as_image});
     });
 
     expect(

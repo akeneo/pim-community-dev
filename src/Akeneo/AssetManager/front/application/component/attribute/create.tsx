@@ -19,7 +19,7 @@ import Dropdown, {DropdownElement} from 'akeneoassetmanager/application/componen
 import {createLocaleFromCode} from 'akeneoassetmanager/domain/model/locale';
 import {getAttributeTypes, AttributeType} from 'akeneoassetmanager/application/configuration/attribute';
 import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
-import AssetFamily from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {getImageShowUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import {isAssetAttributeType} from 'akeneoassetmanager/domain/model/attribute/minimal';
 import Key from 'akeneoassetmanager/tools/key';
@@ -268,8 +268,8 @@ class Create extends React.Component<CreateProps> {
                           ItemView={AssetTypeItemView}
                           label={__('pim_asset_manager.attribute.create.input.asset_type')}
                           elements={this.state.assetFamilies.map((assetFamily: AssetFamily) => ({
-                            identifier: assetFamily.getIdentifier(),
-                            label: assetFamily.getLabel(this.props.context.locale),
+                            identifier: assetFamily.identifier,
+                            label: getAssetFamilyLabel(assetFamily, this.props.context.locale),
                             original: assetFamily,
                           }))}
                           selectedElement={this.props.data.asset_type}
