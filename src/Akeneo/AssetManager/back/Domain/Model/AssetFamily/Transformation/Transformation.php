@@ -50,6 +50,11 @@ class Transformation
         return $this->source;
     }
 
+    public function getOperationCollection(): OperationCollection
+    {
+        return $this->operations;
+    }
+
     public function normalize(): array
     {
         return [
