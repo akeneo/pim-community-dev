@@ -40,10 +40,7 @@ class OperationShouldBeInstantiableValidator extends ConstraintValidator
         try {
             $this->operationFactory->create($operation['type'], $operation['parameters']);
         } catch (\InvalidArgumentException $e) {
-            $this->context->buildViolation(
-            // TODO: fix errror message
-                $e->getMessage()
-            )->addViolation();
+            $this->context->buildViolation($e->getMessage())->addViolation();
         }
     }
 }
