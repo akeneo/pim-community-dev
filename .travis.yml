@@ -78,6 +78,7 @@ jobs:
               - make asset-manager-acceptance-front
               - make integration-front
               - make asset-manager-coupling-back
+              - make asset-manager-static-back
               - make asset-manager-lint-back
               - make asset-manager-unit-back
               - make asset-manager-acceptance-back

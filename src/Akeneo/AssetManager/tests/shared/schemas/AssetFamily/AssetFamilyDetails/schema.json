@@ -1,0 +1,19 @@
+{
+    "id": "asset-family",
+    "type": "object",
+    "properties": {
+        "status": {
+            "type": [
+                "integer"
+            ]
+        },
+        "body": {"$ref":  "src/Akeneo/AssetManager/definitions/asset-family.schema.json"},
+        "_links": {
+            "type": "object"
+        }
+    },
+    "required": [
+        "status"
+    ],
+    "additionalProperties": false
+}

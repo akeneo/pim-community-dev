@@ -1,0 +1,181 @@
+{
+  "request": {
+    "method": "PUT",
+    "route": "akeneo_asset_manager_asset_index_rest",
+    "query": {
+      "assetFamilyIdentifier": "designer"
+    },
+    "body": {
+      "channel": "ecommerce",
+      "locale": "en_US",
+      "size": 200,
+      "page": 0,
+      "filters": [
+        {
+          "field": "asset_family",
+          "operator": "=",
+          "value": "designer"
+        },
+        {
+          "field": "code",
+          "operator": "IN",
+          "value": ["starck", "coco", "dyson"]
+        }
+      ]
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "items": [
+        {
+          "identifier": "designer_starck_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd",
+          "asset_family_identifier": "designer",
+          "code": "starck",
+          "labels": {
+            "en_US": "Starck",
+            "fr_FR": "Starck"
+          },
+          "image": [{
+              "channel": null,
+              "locale": null,
+              "attribute": "image_designer_ca1857d521a3e5dbc487791da82b7428",
+              "data": {
+                  "filePath": "",
+                  "originalFilename": ""
+              }
+          }],
+          "values": {
+            "label_designer_d00de54460082b239164135175588647_en_US": {
+              "attribute": "label_designer_d00de54460082b239164135175588647",
+              "channel": null,
+              "locale": "en_US",
+              "data": "Starck"
+            },
+            "label_designer_d00de54460082b239164135175588647_fr_FR": {
+              "attribute": "label_designer_d00de54460082b239164135175588647",
+              "channel": null,
+              "locale": "fr_FR",
+              "data": "Vue de face"
+            },
+            "colors_designer_52609e00b7ee307e79eb100099b9a8bf": {
+              "attribute": "colors_designer_52609e00b7ee307e79eb100099b9a8bf",
+              "channel": null,
+              "locale": null,
+              "data": "red"
+            },
+            "image_designer_52609e00b7ee307e79eb100099b9a8bf": {
+              "attribute": "image_designer_52609e00b7ee307e79eb100099b9a8bf",
+              "channel": null,
+              "locale": null,
+              "data": "5/6/a/5/56a5955ca1fbdf74d8d18ca6e5f62bc74b867a5d_designer.jpg"
+            }
+          },
+          "completeness": {
+            "complete": 0,
+            "required": 1
+          }
+        },
+
+        {
+          "identifier": "designer_coco_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd",
+          "asset_family_identifier": "designer",
+          "code": "coco",
+          "labels": {
+            "en_US": "Coco chanel",
+            "fr_FR": "Coco chanel"
+          },
+          "image": [{
+              "channel": null,
+              "locale": null,
+              "attribute": "image_designer_ca1857d521a3e5dbc487791da82b7428",
+              "data": {
+                  "filePath": "",
+                  "originalFilename": ""
+              }
+          }],
+          "values": {
+            "label_designer_d00de54460082b239164135175588647_en_US": {
+              "attribute": "label_designer_d00de54460082b239164135175588647",
+              "channel": null,
+              "locale": "en_US",
+              "data": "Coco chanel"
+            },
+            "label_designer_d00de54460082b239164135175588647_fr_FR": {
+              "attribute": "label_designer_d00de54460082b239164135175588647",
+              "channel": null,
+              "locale": "fr_FR",
+              "data": "Vue de côté"
+            },
+            "colors_designer_52609e00b7ee307e79eb100099b9a8bf": {
+              "attribute": "colors_designer_52609e00b7ee307e79eb100099b9a8bf",
+              "channel": null,
+              "locale": null,
+              "data": "red"
+            },
+            "image_designer_52609e00b7ee307e79eb100099b9a8bf": {
+              "attribute": "image_designer_52609e00b7ee307e79eb100099b9a8bf",
+              "channel": null,
+              "locale": null,
+              "data": "5/6/a/5/56a5955ca1fbdf74d8d18ca6e5f62bc74b867a5d_designer.jpg"
+            }
+          },
+          "completeness": {
+            "complete": 0,
+            "required": 1
+          }
+        },
+        {
+          "identifier": "designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd",
+          "asset_family_identifier": "designer",
+          "code": "dyson",
+          "labels": {
+            "en_US": "Dyson",
+            "fr_FR": "Vue de dos"
+          },
+          "image": [{
+              "channel": null,
+              "locale": null,
+              "attribute": "image_designer_ca1857d521a3e5dbc487791da82b7428",
+              "data": {
+                  "filePath": "",
+                  "originalFilename": ""
+              }
+          }],
+          "values": {
+            "label_designer_d00de54460082b239164135175588647_en_US": {
+              "attribute": "label_designer_d00de54460082b239164135175588647",
+              "channel": null,
+              "locale": "en_US",
+              "data": "Dyson"
+            },
+            "label_designer_d00de54460082b239164135175588647_fr_FR": {
+              "attribute": "label_designer_d00de54460082b239164135175588647",
+              "channel": null,
+              "locale": "fr_FR",
+              "data": "Vue de dos"
+            },
+            "colors_designer_52609e00b7ee307e79eb100099b9a8bf": {
+              "attribute": "colors_designer_52609e00b7ee307e79eb100099b9a8bf",
+              "channel": null,
+              "locale": null,
+              "data": "red"
+            },
+            "image_designer_52609e00b7ee307e79eb100099b9a8bf": {
+              "attribute": "image_designer_52609e00b7ee307e79eb100099b9a8bf",
+              "channel": null,
+              "locale": null,
+              "data": "5/6/a/5/56a5955ca1fbdf74d8d18ca6e5f62bc74b867a5d_designer.jpg"
+            }
+          },
+          "completeness": {
+            "complete": 0,
+            "required": 1
+          }
+        }
+      ],
+      "matches_count": 1,
+      "total_count": 3
+    }
+  }
+}

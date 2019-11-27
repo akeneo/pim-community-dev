@@ -19,6 +19,10 @@ beforeEach(async () => {
         .withLabels({
           en_US: 'Packshot',
         })
+        .withImage({
+          'filePath': '',
+          'originalFilename': ''
+        })
         .withAttributes([])
         .withAttributeAsImage('')
         .withAttributeAsLabel('')
@@ -76,7 +80,10 @@ it('It fetches the asset collection', async () => {
       attributeAsLabel: '',
       code: 'packshot',
       identifier: 'packshot',
-      image: null,
+      image: {
+        'filePath': '',
+        'originalFilename': ''
+      },
       labels: {
         en_US: 'Packshot'
       },

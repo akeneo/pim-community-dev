@@ -4,5 +4,5 @@ parameters:
         - %rootDir%/../../../src/Akeneo/AssetManager
     excludes_analyse:
         - %rootDir%/../../../src/Akeneo/AssetManager/tests/back/spec/*
-        - %rootDir%/../../../src/Akeneo/AssetManager/tests/check-requests-contracts.php
         - %rootDir%/../../../src/Akeneo/AssetManager/tests/check-fake-implementations.php
+        - %rootDir%/../../../src/Akeneo/AssetManager/tests/check-requests-contracts-with-json-schemas.php

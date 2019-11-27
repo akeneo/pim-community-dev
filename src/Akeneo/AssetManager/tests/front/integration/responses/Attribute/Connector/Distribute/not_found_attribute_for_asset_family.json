@@ -1,0 +1,17 @@
+{
+  "request": {
+    "method": "GET",
+    "route": "akeneo_asset_manager_asset_family_attribute_rest_connector_get",
+    "query": {
+      "assetFamilyIdentifier": "brand_test",
+      "code": "nonexistent"
+    }
+  },
+  "response": {
+    "status": 404,
+    "body": {
+      "code": 404,
+      "message":"Attribute \"nonexistent\" does not exist for the asset family \"brand_test\"."
+    }
+  }
+}

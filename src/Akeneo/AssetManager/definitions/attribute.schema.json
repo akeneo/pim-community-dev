@@ -1,0 +1,67 @@
+{
+    "$id": "akeneoasseetmanager/asset-family/attribute",
+    "title": "BackendAttribute",
+    "type": "object",
+    "properties": {
+        "type": { "type": "string" },
+        "identifier": { "type": "string" },
+        "asset_family_identifier": { "type": "string" },
+        "code": { "type": "string" },
+        "labels": {
+            "type": "object",
+            "patternProperties": {
+                ".+": { "type": "string" }
+            }
+        },
+        "is_required": { "type": "boolean" },
+        "order": { "type": "integer" },
+        "value_per_locale": { "type": "boolean" },
+        "value_per_channel": { "type": "boolean" },
+        "max_length": { "type": "integer" },
+        "is_textarea": { "type": "boolean" },
+        "is_rich_text_editor": { "type": "boolean" },
+        "validation_rule": { "type": "string" },
+        "regular_expression": { "type": ["string", "null"] },
+        "max_file_size": { "type": "string" },
+        "allowed_extensions": {
+            "type": "array",
+            "items": { "type": "string" }
+        },
+        "min_value": { "type": "string"},
+        "max_value": { "type": "string"},
+        "decimals_allowed": { "type": "boolean"},
+        "asset_type": { "type": "string"},
+        "options": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "code": { "type": "string" },
+                    "labels": {
+                        "type": "object",
+                        "patternProperties": {
+                            ".+": { "type": "string" }
+                        }
+                    }
+                },
+                "required": [
+                    "code",
+                    "labels"
+                ],
+                "additionalProperties": false
+            }
+        }
+    },
+    "required": [
+        "type",
+        "identifier",
+        "asset_family_identifier",
+        "code",
+        "labels",
+        "is_required",
+        "order",
+        "value_per_locale",
+        "value_per_channel"
+    ],
+    "additionalProperties": false
+}

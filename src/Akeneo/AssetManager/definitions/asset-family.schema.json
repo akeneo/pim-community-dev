@@ -1,0 +1,55 @@
+{
+    "$id": "akeneoasseetmanager/asset-family/asset-family",
+    "title": "BackendAssetFamily",
+    "type": "object",
+    "properties": {
+        "identifier": { "type": "string" },
+        "labels": {
+            "type": "object",
+            "patternProperties": {
+                ".+": { "type": "string" }
+            }
+        },
+        "image": {
+            "type": ["object", "null"],
+            "properties": {
+                "filePath": { "type": "string" },
+                "originalFilename": { "type": "string" },
+                "size": { "type": "number" },
+                "mimeType": { "type": "string" },
+                "extension": { "type": "string" }
+            },
+            "required": [
+                "filePath",
+                "originalFilename"
+            ],
+            "additionalProperties": false
+        },
+        "asset_count": { "type": "integer" },
+        "attributes": {
+            "type": "array",
+            "items": {"$id": "akeneoasseetmanager/asset-family/attribute"}
+        },
+        "permission": {
+            "type": "object",
+            "patternProperties": {
+                ".+": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "attribute_as_label": { "type": "string" },
+        "attribute_as_image": { "type": "string" }
+    },
+    "required": [
+        "identifier",
+        "labels",
+        "image",
+        "asset_count",
+        "attributes",
+        "permission",
+        "attribute_as_label",
+        "attribute_as_image"
+    ],
+    "additionalProperties": false
+}

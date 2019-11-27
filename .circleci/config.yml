@@ -103,6 +103,9 @@ jobs:
                 command: make coupling-back
                 when: always
           - run:
+                name: Static tests
+                command: make asset-manager-static-back
+          - run:
                 name: Unit tests
                 command: make unit-back
           - run:

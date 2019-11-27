@@ -1,0 +1,49 @@
+{
+    "request": {
+        "method": "PATCH",
+        "route": "akeneo_asset_manager_asset_rest_connector_create_or_update",
+        "query": {
+            "assetFamilyIdentifier": "frontview",
+            "code": "house"
+        },
+        "body": {
+            "code": "house",
+            "values": {
+                "description": [
+                    {
+                        "locale": "en_US",
+                        "channel": "unknown_channel",
+                        "data": "House english description"
+                    },
+                    {
+                        "locale": "fr_FR",
+                        "channel": "ecommerce",
+                        "data": "House french description."
+                    },
+                    {
+                        "locale": "de_DE",
+                        "channel": "ecommerce",
+                        "data": "House german description."
+                    }
+                ]
+            }
+        }
+    },
+    "response": {
+        "status": 422,
+        "body": {
+            "code": 422,
+            "message": "The asset has data that does not comply with the business rules.",
+            "errors": [
+                {
+                    "property": "values.description",
+                    "message": "The channel \"unknown_channel\" does not exist."
+                },
+                {
+                    "property": "values.description",
+                    "message": "The locale \"de_DE\" is not activated for the channel \"ecommerce\"."
+                }
+            ]
+        }
+    }
+}

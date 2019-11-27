@@ -62,6 +62,11 @@ asset-manager-lint-back:
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php src/Akeneo/AssetManager/back
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php src/Akeneo/Pim/Enrichment/AssetManager/
 
+.PHONY: asset-manager-static-back
+asset-manager-static-back:
+	$(PHP_RUN) src/Akeneo/AssetManager/tests/check-fake-implementations.php
+	$(PHP_RUN) src/Akeneo/AssetManager/tests/check-requests-contracts-with-json-schemas.php
+
 .PHONY: asset-manager-unit-back
 asset-manager-unit-back:
 ifeq ($(CI),true)

@@ -9,6 +9,7 @@ import {Attribute, NormalizedAttribute} from 'akeneoassetmanager/domain/model/at
 import hydrateAttribute from 'akeneoassetmanager/application/hydrator/attribute';
 import {AssetFamilyPermission} from 'akeneoassetmanager/domain/model/permission/asset-family';
 import AssetFamilyListItem, {denormalizeAssetFamilyListItem} from 'akeneoassetmanager/domain/model/asset-family/list';
+import validateBackendAssetFamily from 'akeneoassetmanager/infrastructure/validator/asset-family';
 
 const routing = require('routing');
 
@@ -27,9 +28,11 @@ export type AssetFamilyResult = {
 
 export class AssetFamilyFetcherImplementation implements AssetFamilyFetcher {
   async fetch(identifier: AssetFamilyIdentifier): Promise<AssetFamilyResult> {
-    const backendAssetFamily = await getJSON(
+    const data = await getJSON(
       routing.generate('akeneo_asset_manager_asset_family_get_rest', {identifier: identifier})
     ).catch(errorHandler);
+
+    const backendAssetFamily = validateBackendAssetFamily(data);
 
     return {
       assetFamily: hydrator(backendAssetFamily),

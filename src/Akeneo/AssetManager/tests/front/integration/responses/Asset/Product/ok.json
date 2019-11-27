@@ -1,0 +1,42 @@
+{
+  "request": {
+    "method": "GET",
+    "route": "akeneo_asset_manager_product_get_linked_product",
+    "query": {
+      "attributeCode": "designers",
+      "assetCode": "starck",
+      "assetFamilyIdentifier": "designer",
+      "channel": "ecommerce",
+      "locale": "en_US"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "items": [
+        {
+          "id": 1,
+          "identifier": "1111111304",
+          "label": "[1111111304]",
+          "document_type": "product",
+          "image": null,
+          "completeness": null,
+          "variant_product_completenesses": null
+        },
+        {
+          "id": 1,
+          "identifier": "model-braided-hat",
+          "label": "[model-braided-hat]",
+          "document_type": "product_model",
+          "image": null,
+          "completeness": null,
+          "variant_product_completenesses": {
+            "completeChildren": 0,
+            "totalChildren": 0
+          }
+        }
+      ],
+      "total_count": 2
+    }
+  }
+}
