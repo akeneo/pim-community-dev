@@ -45,6 +45,7 @@ $rules = [
         'Liip\ImagineBundle',
         'Akeneo\Pim\Automation\RuleEngine',
         'Psr\Log\LoggerInterface',
+        'Imagine\Image',
 
         // TODO: asset families should not depend on PIM
         'Akeneo\Pim\Enrichment\AssetManager\Component',
