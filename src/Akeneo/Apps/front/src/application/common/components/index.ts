@@ -10,7 +10,7 @@ import {FormGroup} from './form/FormGroup';
 import {FormInput} from './form/FormInput';
 import {Helper, HelperLink, HelperTitle} from './Helper';
 import {Modal} from './Modal';
-import {Page} from './Page';
+import {PageContent} from './PageContent';
 import {PageHeader} from './PageHeader';
 import {Section} from './Section';
 import {Select2} from './Select2';
@@ -33,7 +33,7 @@ export {
     IconButton,
     ImportantButton,
     Modal,
-    Page,
+    PageContent,
     PageHeader,
     Section,
     Select2,

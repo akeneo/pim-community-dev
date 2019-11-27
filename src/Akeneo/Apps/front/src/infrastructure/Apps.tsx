@@ -1,11 +1,12 @@
-import React from 'react';
+import React, {useReducer} from 'react';
 import {ThemeProvider} from 'styled-components';
+import {AppsStateContext} from '../application/apps/app-state-context';
 import {Index} from '../application/apps/pages/Index';
+import {reducer} from '../application/apps/reducers/apps-reducer';
 import {theme} from '../application/common/theme';
 import {NotifyContext, NotifyInterface} from '../application/shared/notify';
 import {RouterContext, RouterInterface} from '../application/shared/router';
 import {TranslateContext, TranslateInterface} from '../application/shared/translate';
-import {composeProviders} from './compose-providers';
 import {LegacyContext} from './legacy-context';
 import {ViewBuilder} from './pim-view/view-builder';
 
@@ -17,23 +18,25 @@ interface Props {
 }
 
 export const Apps = ({router, translate, viewBuilder, notify}: Props) => {
-    const Providers = composeProviders(
-        [RouterContext.Provider, router],
-        [TranslateContext.Provider, translate],
-        [NotifyContext.Provider, notify],
-        [
-            LegacyContext.Provider,
-            {
-                viewBuilder,
-            },
-        ]
-    );
+    const [app, dispatch] = useReducer(reducer, {});
 
     return (
-        <Providers>
-            <ThemeProvider theme={theme}>
-                <Index />
-            </ThemeProvider>
-        </Providers>
+        <AppsStateContext.Provider value={[app, dispatch]}>
+            <RouterContext.Provider value={router}>
+                <TranslateContext.Provider value={translate}>
+                    <NotifyContext.Provider value={notify}>
+                        <LegacyContext.Provider
+                            value={{
+                                viewBuilder,
+                            }}
+                        >
+                            <ThemeProvider theme={theme}>
+                                <Index />
+                            </ThemeProvider>
+                        </LegacyContext.Provider>
+                    </NotifyContext.Provider>
+                </TranslateContext.Provider>
+            </RouterContext.Provider>
+        </AppsStateContext.Provider>
     );
 };
