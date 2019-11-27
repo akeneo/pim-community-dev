@@ -16,10 +16,6 @@ namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
- * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
- */
 class ThereShouldBeLessTransformationThanLimit extends Constraint
 {
     public const ERROR_MESSAGE = 'pim_asset_manager.asset_family.validation.transformation.limit_reached';

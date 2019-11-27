@@ -29,7 +29,7 @@ class ThereShouldBeLessTransformationThanLimitValidator extends ConstraintValida
         $this->maxTransformationByAssetFamilyLimit = $maxTransformationByAssetFamilyLimit;
     }
 
-    public function validate($command, Constraint $constraint)
+    public function validate($command, Constraint $constraint): void
     {
         $this->checkCommandType($command);
         if (!$constraint instanceof ThereShouldBeLessTransformationThanLimit) {
