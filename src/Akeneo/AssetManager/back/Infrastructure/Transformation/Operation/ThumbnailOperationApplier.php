@@ -25,9 +25,15 @@ class ThumbnailOperationApplier implements OperationApplier
     /** @var FilterManager */
     private $filterManager;
 
-    public function __construct(FilterManager $filterManager)
-    {
+    /** @var TemporaryFileFactory */
+    private $temporaryFileFactory;
+
+    public function __construct(
+        FilterManager $filterManager,
+        TemporaryFileFactory $temporaryFileFactory
+    ) {
         $this->filterManager = $filterManager;
+        $this->temporaryFileFactory = $temporaryFileFactory;
     }
 
     public function supports(Operation $operation): bool
@@ -53,9 +59,6 @@ class ThumbnailOperationApplier implements OperationApplier
             ]
         ]);
 
-        $tmpFile = tempnam(sys_get_temp_dir(), 'asset_manager_operation');
-        file_put_contents($tmpFile, $computedImage->getContent());
-
-        return new File($tmpFile, false);
+        return $this->temporaryFileFactory->createFromContent($computedImage->getContent());
     }
 }

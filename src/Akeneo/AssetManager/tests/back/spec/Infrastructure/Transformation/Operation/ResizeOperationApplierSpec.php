@@ -5,18 +5,18 @@ namespace spec\Akeneo\AssetManager\Infrastructure\Transformation\Operation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ColorspaceOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ResizeOperation;
 use Akeneo\AssetManager\Infrastructure\Transformation\Operation\ResizeOperationApplier;
+use Akeneo\AssetManager\Infrastructure\Transformation\Operation\TemporaryFileFactory;
 use Liip\ImagineBundle\Binary\BinaryInterface;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use Liip\ImagineBundle\Model\FileBinary;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpFoundation\File\File;
-use Webmozart\Assert\Assert;
 
 class ResizeOperationApplierSpec extends ObjectBehavior
 {
-    function let(FilterManager $filterManager)
+    function let(FilterManager $filterManager, TemporaryFileFactory $temporaryFileFactory)
     {
-        $this->beConstructedWith($filterManager);
+        $this->beConstructedWith($filterManager, $temporaryFileFactory);
         $this->shouldHaveType(ResizeOperationApplier::class);
     }
 
@@ -30,6 +30,7 @@ class ResizeOperationApplierSpec extends ObjectBehavior
 
     function it_apply_resize(
         FilterManager $filterManager,
+        TemporaryFileFactory $temporaryFileFactory,
         ResizeOperation $operation,
         BinaryInterface $computedImage
     ) {
@@ -45,11 +46,8 @@ class ResizeOperationApplierSpec extends ObjectBehavior
             ]
         ])->shouldBeCalledOnce()->willReturn($computedImage);
         $computedImage->getContent()->willReturn('imageContent');
+        $temporaryFileFactory->createFromContent('imageContent')->shouldBeCalled()->willReturn($file);
 
-        $result = $this->apply($file, $operation);
-        $result->shouldBeAnInstanceOf(File::class);
-        $result->getPath()->shouldEqual(sys_get_temp_dir());
-        $result->getFilename()->shouldStartWith('asset_manager_operation');
-        Assert::eq(file_get_contents($result->getPathname()->getWrappedObject()), ('imageContent'));
+        $this->apply($file, $operation);
     }
 }
