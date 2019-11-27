@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\AssetManager\Infrastructure\Validation\AssetFamily;
 
 use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyCommand;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ThereShouldBeLessTransformationThanLimit;
 use Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ThereShouldBeLessTransformationThanLimitValidator;
 use Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\TransformationCanNotHaveSameOperationTwice;

@@ -80,9 +80,7 @@ class TransformationCollectionValidator extends ConstraintValidator
                         new TransformationCanNotHaveSameOperationTwice($assetFamilyIdentifier),
                     ],
                 ]),
-                new ThereShouldBeLessTransformationThanLimit($assetFamilyIdentifier),
             ]),
-            new AttributeSourceIsNotATarget(),
         ];
 
         $violations = $this->validator->validate($command->transformations, $constraint);

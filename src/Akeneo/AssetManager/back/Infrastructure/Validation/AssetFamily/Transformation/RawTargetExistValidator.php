@@ -45,7 +45,7 @@ class RawTargetExistValidator extends ConstraintValidator
         $attributes = $this->attributeRepository->findByAssetFamily($constraint->getAssetFamilyIdentifier());
         $foundAttribute = null;
         foreach ($attributes as $attribute) {
-            if ($attribute->getCode() === $rawTarget['attribute']) {
+            if ($attribute->getCode()->__toString() === $rawTarget['attribute']) {
                 $foundAttribute = $attribute;
 
                 break;
@@ -54,6 +54,7 @@ class RawTargetExistValidator extends ConstraintValidator
 
         if ($foundAttribute instanceof AbstractAttribute) {
             $this->validateAttribute($rawTarget, $foundAttribute);
+            return;
         }
 
         $this->context->buildViolation(

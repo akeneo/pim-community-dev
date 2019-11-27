@@ -32,13 +32,10 @@ class TransformationCanNotHaveSameOperationTwiceValidator extends ConstraintVali
         $definedOperationTypes = [];
         foreach ($operations as $operation) {
             if (in_array($operation['type'], $definedOperationTypes)) {
-                $this->context->buildViolation(
-                    TransformationCanNotHaveSameOperationTwice::ERROR_MESSAGE,
-                    [
-                        '%asset_family_identifier%' => $constraint->getAssetFamilyIdentifier()->__toString(),
-                        '%operation_type%' => $operation['type'],
-                    ]
-                )->addViolation();
+                $this->context->buildViolation(TransformationCanNotHaveSameOperationTwice::ERROR_MESSAGE)
+                    ->setParameter('%asset_family_identifier%', $constraint->getAssetFamilyIdentifier()->__toString())
+                    ->setParameter('%operation_type%', $operation['type'])
+                    ->addViolation();
             }
 
             $definedOperationTypes[] = $operation['type'];

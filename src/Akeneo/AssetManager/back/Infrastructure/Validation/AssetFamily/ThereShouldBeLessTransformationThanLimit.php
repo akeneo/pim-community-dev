@@ -24,21 +24,6 @@ class ThereShouldBeLessTransformationThanLimit extends Constraint
 {
     public const ERROR_MESSAGE = 'pim_asset_manager.asset_family.validation.transformation.limit_reached';
 
-    /** @var AssetFamilyIdentifier */
-    private $assetFamilyIdentifier;
-
-    public function __construct(AssetFamilyIdentifier $assetFamilyIdentifier)
-    {
-        parent::__construct();
-
-        $this->assetFamilyIdentifier = $assetFamilyIdentifier;
-    }
-
-    public function getAssetFamilyIdentifier(): AssetFamilyIdentifier
-    {
-        return $this->assetFamilyIdentifier;
-    }
-
     public function getTargets()
     {
         return self::CLASS_CONSTRAINT;

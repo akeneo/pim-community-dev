@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily;
 
+use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyCommand;
+use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyCommand;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Source;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Target;
 use Symfony\Component\Validator\Constraint;
@@ -25,21 +27,26 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class AttributeSourceIsNotATargetValidator extends ConstraintValidator
 {
-    public function validate($transformations, Constraint $constraint)
+    public function validate($command, Constraint $constraint)
     {
+        $this->checkCommandType($command);
         if (!$constraint instanceof AttributeSourceIsNotATarget) {
             throw new UnexpectedTypeException($constraint, AttributeSourceIsNotATarget::class);
         }
 
-        if (!is_array($transformations)) {
+        if (null === $command->transformations) {
+            return;
+        }
+
+        if (!is_array($command->transformations)) {
             throw new \InvalidArgumentException('transformations must be an array.');
         }
 
         $targets = array_map(function (array $transformation) {
             return Target::createFromNormalized($transformation['target']);
-        }, $transformations);
+        }, $command->transformations);
 
-        foreach ($transformations as $transformation) {
+        foreach ($command->transformations as $transformation) {
             $source = Source::createFromNormalized($transformation['source']);
 
             if ($this->thereIsATargetEqualToTheSource($source, $targets)) {
@@ -67,5 +74,22 @@ class AttributeSourceIsNotATargetValidator extends ConstraintValidator
         }
 
         return false;
+    }
+
+    /**
+     * @throws \InvalidArgumentException
+     */
+    private function checkCommandType($command): void
+    {
+        if (!$command instanceof CreateAssetFamilyCommand && !$command instanceof EditAssetFamilyCommand) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Expected argument to be of class "%s" or "%s", "%s" given',
+                    CreateAssetFamilyCommand::class,
+                    EditAssetFamilyCommand::class,
+                    get_class($command)
+                )
+            );
+        }
     }
 }

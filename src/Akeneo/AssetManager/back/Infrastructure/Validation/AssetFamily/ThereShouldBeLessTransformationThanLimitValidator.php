@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily;
 
+use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyCommand;
+use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyCommand;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -27,26 +29,45 @@ class ThereShouldBeLessTransformationThanLimitValidator extends ConstraintValida
         $this->maxTransformationByAssetFamilyLimit = $maxTransformationByAssetFamilyLimit;
     }
 
-    public function validate($transformations, Constraint $constraint)
+    public function validate($command, Constraint $constraint)
     {
+        $this->checkCommandType($command);
         if (!$constraint instanceof ThereShouldBeLessTransformationThanLimit) {
             throw new UnexpectedTypeException($constraint, ThereShouldBeLessTransformationThanLimit::class);
         }
 
-        if (!is_array($transformations)) {
+        if (null === $command->transformations) {
+            return;
+        }
+
+        if (!is_array($command->transformations)) {
             throw new \InvalidArgumentException('transformations must be an array.');
         }
 
-        $total = count($transformations);
+        $total = count($command->transformations);
 
         if ($total > $this->maxTransformationByAssetFamilyLimit) {
-            $this->context->buildViolation(
-                ThereShouldBeLessTransformationThanLimit::ERROR_MESSAGE,
-                [
-                    '%asset_family_identifier%' => $constraint->getAssetFamilyIdentifier()->__toString(),
-                    '%limit%' => $this->maxTransformationByAssetFamilyLimit,
-                ]
-            )->addViolation();
+            $this->context->buildViolation(ThereShouldBeLessTransformationThanLimit::ERROR_MESSAGE)
+                ->setParameter('%asset_family_identifier%', $command->identifier)
+                ->setParameter('%limit%', $this->maxTransformationByAssetFamilyLimit)
+                ->addViolation();
+        }
+    }
+
+    /**
+     * @throws \InvalidArgumentException
+     */
+    private function checkCommandType($command): void
+    {
+        if (!$command instanceof CreateAssetFamilyCommand && !$command instanceof EditAssetFamilyCommand) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Expected argument to be of class "%s" or "%s", "%s" given',
+                    CreateAssetFamilyCommand::class,
+                    EditAssetFamilyCommand::class,
+                    get_class($command)
+                )
+            );
         }
     }
 }
