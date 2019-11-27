@@ -288,7 +288,6 @@
 - Remove class `Akeneo\Platform\Bundle\ImportExportBundle\Controller\JobProfileController`
 - Remove class `Akeneo\Platform\Bundle\ImportExportBundle\Form\Type\JobInstanceFormType`
 - Remove class `Akeneo\Platform\Bundle\ImportExportBundle\Form\Subscriber\JobInstanceSubscriber`
-- Remove class `Akeneo\Platform\Bundle\ImportExportBundle\Controller\Ui\JobTrackerController`
 - Remove class `Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\AbstractEntityWithFamilyValuesFiller`
 - Remove class `Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyVariantValuesFiller`
 - Remove class `Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\ProductValuesFiller`
@@ -327,6 +326,11 @@
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\EnsureConsistentAttributeGroupOrderTasklet` to
     - remove `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Query\FindAttributeGroupOrdersEqualOrSuperiorTo` (implementation class)
     - add `Akeneo\Pim\Structure\Component\AttributeGroup\Query\FindAttributeGroupOrdersEqualOrSuperiorTo` (interface)
+- Change constructor of `Akeneo\Platform\Bundle\ImportExportBundle\Controller\Ui\JobTrackerController` to remove
+    - `Symfony\Bundle\FrameworkBundle\Templating\EngineInterface`
+    - `Symfony\Component\Translation\TranslatorInterface`
+    - `Symfony\Component\Serializer\SerializerInterface`
+    - `Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager`
 
 ### CLI Commands
 
