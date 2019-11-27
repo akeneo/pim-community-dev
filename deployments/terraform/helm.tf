@@ -23,11 +23,6 @@ data "helm_repository" "stable" {
   url  = "https://kubernetes-charts.storage.googleapis.com"
 }
 
-data "helm_repository" "akeneo-charts-dev" {
-  name = "akeneo-charts-dev"
-  url  = "gs://akeneo-charts-dev"
-}
-
 data "helm_repository" "akeneo-charts" {
   name = "akeneo-charts"
   url  = "gs://akeneo-charts"
@@ -46,7 +41,7 @@ resource "helm_release" "pim" {
   name      = "${local.pfid}"
   chart     = "${path.module}/../pim/"
   namespace = "${local.pfid}"
-  timeout   = "1500"
+  timeout   = "1501"
   depends_on   = ["null_resource.helm_dependencies_update"]
 
   values = [

@@ -1,0 +1,38 @@
+image:
+  pim:
+    repository: eu.gcr.io/akeneo-ci/pim-enterprise-dev
+    pullPolicy: Always
+    tag: master
+
+pim:
+  secret: 5f559ffb-5b36-4922-9481-022057992057
+  defaultAdminUser:
+    login : pim-ci
+    firstName: test1
+    lastName: test2
+    email: pim-ci@akeneo.fr
+    password: oFVFp9oAEibTCiqJe3omkm
+    uiLocale: fr_FR 
+ 
+mysql:
+  common:
+    class: standard
+  mysql:
+    innodbBufferPoolSize: 2G
+    innodb_buffer_pool_instances: 16
+    maxConnections: 151
+    maxAllowedPacket: 4M
+    dataDiskSize: 5Gi
+    userPassword: 9vbtChLWrLsRhnKkjozHEqqL
+    rootPassword: exKJXyqPcVRxsMv7J9W7MdCC
+   
+elasticsearch:
+  master:
+    persistence:
+      size: 1Gi
+      storageClass: standard
+  data:
+    persistence:
+      size: 15Gi
+      storageClass: standard
+

@@ -188,8 +188,8 @@ mysql:
     dataDiskPath: "/var/lib/mysql/datadir/"
     serviceName: pim-mysql
     defaultUser: akeneo_pim
-    userPassword: 9vbtChLWrLsRhnKkjozHEqqL # Generate me with `pwgen -sB 22`
-    rootPassword: exKJXyqPcVRxsMv7J9W7MdCC # Generate me with `pwgen -sB 22`
+    userPassword: nil # Generate me with `pwgen -sB 22`
+    rootPassword: nil # Generate me with `pwgen -sB 22`
     defaultDatabase: akeneo_pim
     dataDiskSize: 100Gi
     stateful:
