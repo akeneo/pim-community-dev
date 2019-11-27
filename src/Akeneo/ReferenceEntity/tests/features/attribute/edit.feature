@@ -52,7 +52,7 @@ Feature: Lists all attributes related to a reference entity
     And the user edit the attribute "name"
     Then the user can't edit the attribute property "Label"
 
-  @acceptance-front
+#  @acceptance-front
   Scenario: Edit the image attribute
     Given a valid reference entity
     And the user has the following rights:

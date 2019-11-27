@@ -350,6 +350,9 @@ pim_asset_manager:
       button:
         cancel: Cancel
         confirm: Delete
+  media_link:
+    download: Download
+    copy: Copy link to clipboard
 
 pim_enrich:
   confirmation:

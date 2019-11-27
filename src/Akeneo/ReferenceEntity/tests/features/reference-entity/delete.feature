@@ -30,6 +30,7 @@ Feature: Delete a reference entity
     When the user deletes the reference entity "designer"
     Then the user should see the deleted notification
 
+#  @acceptance-front
   Scenario: Dismiss the deletion of a reference entity from the edit view
     Given the user has the following rights:
       | akeneo_referenceentity_reference_entity_edit   | true |

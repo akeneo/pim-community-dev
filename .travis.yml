@@ -69,7 +69,7 @@ jobs:
               - APP_ENV=test C='fpm mysql elasticsearch object-storage' make up
               - vendor/akeneo/pim-community-dev/docker/wait_docker_up.sh
               - APP_ENV=test make database
-              - docker-compose run -u www-data --rm php php vendor/bin/phpunit -c src/Akeneo/ReferenceEntity/tests/back --testsuite ReferenceEntity_Integration_Test
+              - docker-compose run -T -u www-data --rm php php vendor/bin/phpunit -c src/Akeneo/ReferenceEntity/tests/back --testsuite ReferenceEntity_Integration_Test
 
         - stage: Asset Manager Tests
           if: branch =~ /^(assets|AST)-?.*$/
@@ -86,7 +86,7 @@ jobs:
               - APP_ENV=test C='fpm mysql elasticsearch object-storage' make up
               - vendor/akeneo/pim-community-dev/docker/wait_docker_up.sh
               - APP_ENV=test make database
-              - docker-compose run -u www-data --rm php php vendor/bin/phpunit -c src/Akeneo/AssetManager/tests/back --testsuite AssetFamily_Integration_Test
+              - docker-compose run -T -u www-data --rm php php vendor/bin/phpunit -c src/Akeneo/AssetManager/tests/back --testsuite AssetFamily_Integration_Test
 
 before_cache:
     - docker save -o docker_images/images.tar akeneo/pim-dev/php:7.3
