@@ -3,21 +3,21 @@
 exports[`AppGrid should render 1`] = `
 Array [
   <header
-    className="sc-bZQynM hKjmOG"
+    className="sc-gzVnrw gGrLow"
   >
     <div
-      className="sc-gzVnrw hGWTJJ"
+      className="sc-htoDjs jrHPzG"
     >
       others
     </div>
     <div
-      className="sc-gZMcBi jsvHPQ"
+      className="sc-gqjmRU iErXiM"
     >
       pim_apps.app_count
     </div>
   </header>,
   <div
-    className="sc-gqjmRU iMuEgc"
+    className="sc-VigVT koULHL"
   />,
 ]
 `;

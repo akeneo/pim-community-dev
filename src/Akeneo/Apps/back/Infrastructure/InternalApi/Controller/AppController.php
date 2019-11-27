@@ -97,7 +97,7 @@ class AppController
         $command = new CreateAppCommand($data['code'], $data['label'], $data['flow_type']);
 
         try {
-            $this->createAppHandler->handle($command);
+            $app = $this->createAppHandler->handle($command);
         } catch (ConstraintViolationListException $e) {
             $errorList = $this->buildViolationResponse($e->getConstraintViolationList());
 
@@ -109,7 +109,7 @@ class AppController
             return new JsonResponse(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
-        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
+        return new JsonResponse($app->normalize());
     }
 
     public function get(Request $request): JsonResponse

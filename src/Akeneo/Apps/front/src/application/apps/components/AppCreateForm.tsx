@@ -1,9 +1,10 @@
 import React, {ChangeEvent, Dispatch, RefObject, useEffect, useReducer, useRef} from 'react';
 import {FlowType} from '../../../domain/apps/flow-type.enum';
 import {ApplyButton, Form, FormGroup, FormInput} from '../../common';
-import {isErr} from '../../shared/fetch/result';
+import {isErr, isOk} from '../../shared/fetch/result';
 import {sanitize} from '../../shared/sanitize';
 import {Translate} from '../../shared/translate';
+import {appWithCredentialsFetched} from '../actions/apps-actions';
 import {
     codeGenerated,
     CreateFormAction,
@@ -12,6 +13,7 @@ import {
     inputChanged,
     setError,
 } from '../actions/create-form-actions';
+import {useAppsState} from '../app-state-context';
 import {appFormReducer, CreateFormState} from '../reducers/app-form-reducer';
 import {CreateAppData, useCreateApp} from '../use-create-app';
 import {FlowTypeHelper} from './FlowTypeHelper';
@@ -72,6 +74,8 @@ const useFormValidation = (
 };
 
 export const AppCreateForm = () => {
+    const [, appsDispatch] = useAppsState();
+
     const [state, dispatch] = useReducer(appFormReducer, initialState);
     const createNewApp = useCreateApp();
 
@@ -105,6 +109,19 @@ export const AppCreateForm = () => {
         const result = await createNewApp(data);
         if (isErr(result)) {
             result.error.errors.forEach(({name, reason}) => dispatch(setError(name, reason)));
+        }
+        if (isOk(result)) {
+            appsDispatch(
+                appWithCredentialsFetched({
+                    code: result.data.code,
+                    label: result.data.label,
+                    flowType: result.data.flow_type,
+                    clientId: result.data.client_id,
+                    secret: result.data.secret,
+                    username: result.data.username,
+                    password: result.data.password,
+                })
+            );
         }
     };
 
