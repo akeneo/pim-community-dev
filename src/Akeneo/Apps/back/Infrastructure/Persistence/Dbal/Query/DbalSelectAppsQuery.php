@@ -26,14 +26,14 @@ class DbalSelectAppsQuery implements SelectAppsQuery
     public function execute(): array
     {
         $selectSQL = <<<SQL
-SELECT code, label, flow_type FROM akeneo_app ORDER BY created ASC
+SELECT code, label, flow_type, image FROM akeneo_app ORDER BY created ASC
 SQL;
 
         $dataRows = $this->dbalConnection->executeQuery($selectSQL)->fetchAll();
 
         $apps = [];
         foreach ($dataRows as $dataRow) {
-            $apps[] = new App($dataRow['code'], $dataRow['label'], $dataRow['flow_type']);
+            $apps[] = new App($dataRow['code'], $dataRow['label'], $dataRow['flow_type'], $dataRow['image']);
         }
 
         return $apps;

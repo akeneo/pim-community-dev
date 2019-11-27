@@ -20,11 +20,15 @@ class App
     /** @var string */
     private $flowType;
 
-    public function __construct(string $code, string $label, string $flowType)
+    /** @var string|null */
+    private $image;
+
+    public function __construct(string $code, string $label, string $flowType, ?string $image = null)
     {
         $this->code = $code;
         $this->label = $label;
         $this->flowType = $flowType;
+        $this->image = $image;
     }
 
     public function code(): string
@@ -42,12 +46,18 @@ class App
         return $this->flowType;
     }
 
+    public function image(): ?string
+    {
+        return $this->image;
+    }
+
     public function normalize(): array
     {
         return [
             'code' => $this->code,
             'label' => $this->label,
-            'flowType' => $this->flowType
+            'flowType' => $this->flowType,
+            'image' => $this->image,
         ];
     }
 }

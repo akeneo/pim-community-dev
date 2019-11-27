@@ -46,6 +46,7 @@ class DbalSelectAppWithCredentialsByCodeQueryIntegration extends TestCase
         Assert::assertNotNull($app->clientId());
         Assert::assertNotNull($app->secret());
         Assert::assertNotNull($app->username());
+        Assert::assertNull($app->image());
     }
 
     public function test_it_does_not_find_an_app_from_its_code()

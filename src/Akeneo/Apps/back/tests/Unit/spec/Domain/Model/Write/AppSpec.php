@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\Apps\Domain\Model\Write;
 
 use Akeneo\Apps\Domain\Model\ValueObject\AppCode;
+use Akeneo\Apps\Domain\Model\ValueObject\AppImage;
 use Akeneo\Apps\Domain\Model\ValueObject\AppLabel;
 use Akeneo\Apps\Domain\Model\ValueObject\ClientId;
 use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
@@ -58,6 +59,33 @@ class AppSpec extends ObjectBehavior
     public function it_returns_the_user_id()
     {
         $this->userId()->shouldBeLike(new UserId(24));
+    }
+
+    public function it_provides_the_image()
+    {
+        $this->beConstructedWith(
+            'magento',
+            'Magento Connector',
+            FlowType::DATA_DESTINATION,
+            42,
+            new UserId(24),
+            'a/b/c/image_path.jpg'
+        );
+
+        $this->image()->shouldBeLike(new AppImage('a/b/c/image_path.jpg'));
+    }
+
+    public function it_is_instantiable_without_image()
+    {
+        $this->image()->shouldBeNull();
+    }
+
+    public function it_changes_the_image()
+    {
+        $this->image()->shouldBeNull();
+        $image = new AppImage('a/b/c/image_path.jpg');
+        $this->setImage($image);
+        $this->image()->shouldReturn($image);
     }
 
     public function it_changes_the_label()

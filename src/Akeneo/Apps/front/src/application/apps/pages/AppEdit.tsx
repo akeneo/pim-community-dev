@@ -24,13 +24,13 @@ import {useAppsState} from '../app-state-context';
 import {AppCredentials} from '../components/AppCredentials';
 import {AppEditForm} from '../components/AppEditForm';
 import {useMediaUrlGenerator} from '../use-media-url-generator';
-import {App} from "../../../domain/apps/app.interface";
+import {App} from '../../../domain/apps/app.interface';
 
 interface FetchAppData {
     code: string;
     label: string;
     flow_type: FlowType;
-    image: string|null;
+    image: string | null;
     secret: string;
     client_id: string;
     username: string;
@@ -40,7 +40,7 @@ interface FetchAppData {
 export interface FormValues {
     label: string;
     flowType: FlowType;
-    image: string|null;
+    image: string | null;
 }
 
 export interface FormErrors {
@@ -169,14 +169,13 @@ const HeaderContent = ({app}: HeaderProps) => {
             ]}
             userButtons={
                 <PimView
-                  className='AknTitleContainer-userMenuContainer AknTitleContainer-userMenu'
-                  viewName='pim-apps-user-navigation'
+                    className='AknTitleContainer-userMenuContainer AknTitleContainer-userMenu'
+                    viewName='pim-apps-user-navigation'
                 />
             }
             state={<FormState />}
-            imageSrc={null === formik.values.image ?
-              defaultImageUrl :
-              generateMediaUrl(formik.values.image, 'thumbnail')
+            imageSrc={
+                null === formik.values.image ? defaultImageUrl : generateMediaUrl(formik.values.image, 'thumbnail')
             }
         >
             {app.label}

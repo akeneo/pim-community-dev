@@ -27,7 +27,7 @@ class InMemorySelectAppsQuery implements SelectAppsQuery
     {
         $apps = [];
         foreach ($this->appRepository->dataRows as $dataRow) {
-            $apps[] = new App($dataRow['code'], $dataRow['label'], $dataRow['flow_type']);
+            $apps[] = new App($dataRow['code'], $dataRow['label'], $dataRow['flow_type'], $dataRow['image']);
         }
 
         return $apps;

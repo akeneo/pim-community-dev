@@ -50,9 +50,9 @@ export const AppEditForm = ({app}: Props) => {
                 </FormGroup>
 
                 <FormGroup
-                  controlId='image'
-                  label='pim_apps.app.image'
-                  errors={errors.image ? [errors.image] : undefined}
+                    controlId='image'
+                    label='pim_apps.app.image'
+                    errors={errors.image ? [errors.image] : undefined}
                 >
                     <ImageUploader
                         image={values.image}

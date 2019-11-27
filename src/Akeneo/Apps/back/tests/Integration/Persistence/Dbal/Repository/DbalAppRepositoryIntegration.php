@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Akeneo\Apps\back\tests\Integration\Persistence\Dbal\Repository;
 
 use Akeneo\Apps\back\tests\Integration\Fixtures\AppLoader;
+use Akeneo\Apps\Domain\Model\ValueObject\AppImage;
 use Akeneo\Apps\Domain\Model\ValueObject\AppLabel;
 use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
 use Akeneo\Apps\Domain\Model\Write\App;
@@ -43,6 +44,7 @@ class DbalAppRepositoryIntegration extends TestCase
         Assert::assertSame('magento', (string) $app->code());
         Assert::assertSame('Magento Connector', (string) $app->label());
         Assert::assertSame(FlowType::DATA_DESTINATION, (string) $app->flowType());
+        Assert::assertNull($app->image());
         Assert::assertIsInt($app->clientId()->id());
         Assert::assertGreaterThan(0, $app->clientId()->id());
         Assert::assertIsInt($app->userId()->id());
@@ -56,6 +58,7 @@ class DbalAppRepositoryIntegration extends TestCase
         $app = $this->repository->findOneByCode('magento');
         $app->setLabel(new AppLabel('Pimgento'));
         $app->setFlowType(new FlowType(FlowType::OTHER));
+        $app->setImage(new AppImage('a/b/c/app_image.jpg'));
 
         $this->repository->update($app);
 
@@ -64,6 +67,7 @@ class DbalAppRepositoryIntegration extends TestCase
         Assert::assertSame('magento', $result['code']);
         Assert::assertSame('Pimgento', $result['label']);
         Assert::assertSame(FlowType::OTHER, $result['flow_type']);
+        Assert::assertSame('a/b/c/app_image.jpg' , $result['image']);
         Assert::assertNotNull($result['client_id']);
         Assert::assertNotNull($result['user_id']);
     }
@@ -76,7 +80,7 @@ class DbalAppRepositoryIntegration extends TestCase
     private function selectAppFromDb(string $code): array
     {
         $query = <<<SQL
-    SELECT code, label, flow_type, client_id, user_id
+    SELECT code, label, flow_type, client_id, user_id, image
     FROM akeneo_app
     WHERE code = :code
 SQL;

@@ -17,7 +17,7 @@ interface ResultValue {
     code: string;
     label: string;
     flow_type: FlowType;
-    image: string|null;
+    image: string | null;
     client_id: string;
     secret: string;
     username: string;

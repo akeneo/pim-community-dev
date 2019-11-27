@@ -6,9 +6,15 @@ export const Figure = styled.div`
     cursor: pointer;
 `;
 
+const ImageContainer = styled.div`
+    border: 1px solid ${({theme}: PropsWithTheme) => theme.color.grey};
+    height: 140px;
+    overflow: hidden;
+    display: flex;
+`;
+
 const Image = styled.img`
     width: 100%;
-    border: 1px solid ${({theme}: PropsWithTheme) => theme.color.grey};
     display: block;
     box-sizing: border-box;
 `;
@@ -36,7 +42,9 @@ const Mask = styled.div`
 export const FigureImage = ({...props}) => (
     <>
         <Mask>
-            <Image {...props} />
+            <ImageContainer>
+                <Image {...props} />
+            </ImageContainer>
         </Mask>
     </>
 );

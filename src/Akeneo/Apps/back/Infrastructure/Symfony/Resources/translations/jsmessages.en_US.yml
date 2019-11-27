@@ -72,7 +72,11 @@ akeneo_apps:
                 too_long: App label is too long. It should have 100 characters or less.
             flow_type:
                 invalid: App flow type can only be 'data_source', 'data_destination' or 'other'.
+            image:
+                must_exist: The image you trying to update App with must exist.
     edit_app:
+        image_uploader:
+            extension_not_allowed: Sorry, the file you are trying to upload has an extension not allowed.
         credentials:
             title: Credentials
             helper: Lorem ipsum dolor sit amet, consectetur adipiscing elit

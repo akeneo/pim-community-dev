@@ -39,4 +39,20 @@ class UpdateAppCommandSpec extends ObjectBehavior
     {
         $this->flowType()->shouldReturn(FlowType::DATA_DESTINATION);
     }
+
+    public function it_returns_null_if_there_is_no_image()
+    {
+        $this->image()->shouldReturn(null);
+    }
+
+    public function it_returns_the_image()
+    {
+        $this->beConstructedWith(
+            'magento',
+            'Magento Connector',
+            FlowType::DATA_DESTINATION,
+            'a/b/c/the_path.jpg'
+        );
+        $this->image()->shouldReturn('a/b/c/the_path.jpg');
+    }
 }

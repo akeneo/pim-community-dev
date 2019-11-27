@@ -1,17 +1,17 @@
-import React, {useContext} from 'react';
+import React, {useContext, useRef} from 'react';
 import {useImageUploader} from '../use-image-uploader';
 import {useMediaUrlGenerator} from '../use-media-url-generator';
 import {Translate, TranslateContext} from '../../shared/translate';
 import styled from 'styled-components';
 import {PropsWithTheme} from '../../common/theme';
 import Trash from '../../common/assets/icons/trash';
-import {isErr, isOk} from '../../shared/fetch/result';
+import {isErr} from '../../shared/fetch-result/result';
 import {NotificationLevel, useNotify} from '../../shared/notify';
 import defaultImageUrl from '../../common/assets/illustrations/api.svg';
 
 interface Props {
-    image: string|null;
-    onChange: (image: string|null) => void;
+    image: string | null;
+    onChange: (image: string | null) => void;
     onError: (error: string) => void;
 }
 
@@ -20,10 +20,17 @@ const HelperLink = styled.a`
     text-decoration: underline;
     font-weight: 700;
 `;
-
-const DefaultImage = styled.img`
-    max-height: 140px;
+const ImagePreview = styled.img`
+    max-height: 120px;
     width: auto;
+    margin-top: 10px;
+`;
+const Container = styled.div`
+    flex-basis: 100%;
+    height: auto;
+`;
+const Helper = styled.span`
+    margin: 0 0 20px 0;
 `;
 
 const ImageUploader = ({image, onChange, onError}: Props) => {
@@ -32,6 +39,7 @@ const ImageUploader = ({image, onChange, onError}: Props) => {
     const generateMediaUrl = useMediaUrlGenerator();
     const notify = useNotify();
     const translate = useContext(TranslateContext);
+    const ref = useRef<HTMLInputElement>(null);
 
     const upload = async (file: File) => {
         const result = await imageUploader(file);
@@ -48,13 +56,10 @@ const ImageUploader = ({image, onChange, onError}: Props) => {
             return null;
         }
 
-        if (isOk(result)) {
-            return result.data.filePath;
-        }
-        return null;
+        return result.value.filePath;
     };
 
-    const onInputChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleInputChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         if (null !== event.target.files) {
             const mediaUrl = await upload(event.target.files[0]);
             if (null !== mediaUrl) {
@@ -62,52 +67,46 @@ const ImageUploader = ({image, onChange, onError}: Props) => {
             }
         }
     };
+    const handleRemove = () => {
+        onChange(null);
+        if (null !== ref.current) {
+            ref.current.value = '';
+        }
+    };
 
     const previewImage = image ? generateMediaUrl(image) : null;
 
     return (
         <>
-            <div className={containerClassName}>
+            <Container className={containerClassName}>
                 <input
-                  type='file'
-                  accept='.jpg, .jpeg, .gif, .png, .wbmp, .xbm, .webp, .bmp'
-                  onChange={onInputChange}
-                  className='AknImage-updater'
+                    type='file'
+                    accept='.jpg, .jpeg, .gif, .png, .wbmp, .xbm, .webp, .bmp'
+                    onChange={handleInputChange}
+                    className='AknImage-updater'
+                    ref={ref}
                 />
 
-                {null === previewImage && (
-                    <div className='AknImage-uploader'>
-                        <DefaultImage
-                            src={defaultImageUrl}
-                            alt={''}
-                        />
-                        <span className='AknImage-uploaderIllustration' />
-                        <span className='AknImage-uploaderHelper'>
-                            <Translate id={'pim_apps.edit_image.upload_helper'} />{' '}
-                            <HelperLink href='#'>
-                                <Translate id={'pim_apps.edit_image.click_here'} />
-                            </HelperLink>.
+                <div className='AknImage-uploader'>
+                    <ImagePreview src={null === previewImage ? defaultImageUrl : previewImage} alt={''} />
+                    <Helper className='AknImage-uploaderHelper'>
+                        <Translate id={'pim_apps.edit_image.upload_helper'} />{' '}
+                        <HelperLink href='#'>
+                            <Translate id={'pim_apps.edit_image.click_here'} />
+                        </HelperLink>
+                        .
+                    </Helper>
+                </div>
+
+                {null !== previewImage && (
+                    <div className='AknImage-action'>
+                        <span className='AknImage-actionItem' onClick={handleRemove}>
+                            <Trash color='#ffffff' className='AknImage-actionItemIcon' />{' '}
+                            <Translate id={'pim_apps.edit_image.remove_helper'} />
                         </span>
                     </div>
                 )}
-                {null !== previewImage && (
-                    <>
-                        <div className='AknImage-action'>
-                            <span className='AknImage-actionItem' onClick={() => onChange(null)}>
-                                <Trash color='#ffffff' className='AknImage-actionItemIcon' />{' '}
-                                <Translate id={'pim_apps.edit_image.remove_helper'} />
-                            </span>
-                        </div>
-                        <div className='AknImage-displayContainer'>
-                            <img
-                                className='AknImage-display'
-                                src={previewImage}
-                                alt={''}
-                            />
-                        </div>
-                    </>
-                )}
-            </div>
+            </Container>
         </>
     );
 };

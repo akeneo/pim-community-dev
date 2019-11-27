@@ -20,10 +20,11 @@ import {Translate, TranslateContext} from '../../shared/translate';
 import {appsFetched} from '../actions/apps-actions';
 import {useAppsState} from '../app-state-context';
 import {AppGrid} from '../components/AppGrid';
+import {App} from '../../../domain/apps/app.interface';
 
 const MAXIMUM_NUMBER_OF_ALLOWED_APPS = 50;
 
-type ResultValue = Array<{code: string; label: string; flowType: FlowType}>;
+type ResultValue = Array<App>;
 
 export const AppList = () => {
     const history = useHistory();

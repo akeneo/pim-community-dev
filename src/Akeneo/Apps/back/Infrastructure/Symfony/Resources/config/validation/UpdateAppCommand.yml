@@ -1,8 +1,13 @@
 Akeneo\Apps\Application\Command\UpdateAppCommand:
     group_sequence:
       - UpdateAppCommand
+      - Business
     properties:
         label:
             - Callback: [Akeneo\Apps\Domain\Validation\App\AppLabelMustBeValid, validate]
         flowType:
             - Callback: [Akeneo\Apps\Domain\Validation\App\FlowTypeMustBeValid, validate]
+        image:
+            - Callback: [Akeneo\Apps\Domain\Validation\App\AppImageMustBeValid, validate]
+            - Akeneo\Apps\Application\Validation\App\ImageMustExist:
+                  groups: [Business]

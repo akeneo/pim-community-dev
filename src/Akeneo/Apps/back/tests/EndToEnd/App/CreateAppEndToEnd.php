@@ -30,6 +30,7 @@ class CreateAppEndToEnd extends TestCase
         Assert::assertEquals('magento', $appWithCredentials->code());
         Assert::assertEquals('Magento Connector', $appWithCredentials->label());
         Assert::assertEquals(FlowType::DATA_DESTINATION, $appWithCredentials->flowType());
+        Assert::assertNull($appWithCredentials->image());
 
         Assert::assertEquals(1, $this->countApp('magento'));
         Assert::assertEquals(1, $this->countClient($appWithCredentials->secret()));
