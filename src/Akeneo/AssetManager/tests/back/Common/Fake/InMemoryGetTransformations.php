@@ -54,7 +54,6 @@ class InMemoryGetTransformations implements GetTransformations
                 if ($assetFamily instanceof AssetFamily) {
                     $transformations[$assetIdentifier->__toString()] = $assetFamily->getTransformationCollection();
                 }
-
             }
         }
 
