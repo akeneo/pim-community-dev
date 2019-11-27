@@ -9,6 +9,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Query\File\FindFileDataByFileKeyInterface;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class EditStoredFileValueCommandFactorySpec extends ObjectBehavior
 {
@@ -137,6 +138,7 @@ class EditStoredFileValueCommandFactorySpec extends ObjectBehavior
                 'size' => 42,
                 'mimeType' => '',
                 'extension' => '',
+                'updatedAt' => '2019-11-22T15:16:21+0000',
             ]
         ];
 
@@ -146,6 +148,7 @@ class EditStoredFileValueCommandFactorySpec extends ObjectBehavior
             'size' => 1024,
             'mimeType' => 'image/png',
             'extension' => 'png',
+            'updatedAt' => '2019-11-22T15:16:21+0000',
         ]);
 
         $expectedCommand = new EditStoredFileValueCommand(
@@ -156,7 +159,8 @@ class EditStoredFileValueCommandFactorySpec extends ObjectBehavior
             'stark_portrait.png',
             1024,
             'image/png',
-            'png'
+            'png',
+            '2019-11-22T15:16:21+0000'
         );
 
         $this->create($imageAttribute, $normalizedValue)->shouldBeLike($expectedCommand);
@@ -178,6 +182,7 @@ class EditStoredFileValueCommandFactorySpec extends ObjectBehavior
             'size' => 1024,
             'mimeType' => 'image/png',
             'extension' => 'png',
+            'updatedAt' => '2019-11-22T15:16:21+0000',
         ]);
 
         $expectedCommand = new EditStoredFileValueCommand(
@@ -188,9 +193,31 @@ class EditStoredFileValueCommandFactorySpec extends ObjectBehavior
             'stark_portrait.png',
             1024,
             'image/png',
-            'png'
+            'png',
+            '2019-11-22T15:16:21+0000'
         );
 
         $this->create($imageAttribute, $normalizedValue)->shouldBeLike($expectedCommand);
+    }
+
+    function it_sets_the_updated_at_to_the_current_datetime_if_it_does_not_exist(
+        ImageAttribute $imageAttribute,
+        FindFileDataByFileKeyInterface $findFileData
+    ) {
+        $normalizedValue = [
+            'channel' => 'ecommerce',
+            'locale' => 'de_DE',
+            'data' => '/tmp/stark_portrait.png'
+        ];
+
+        $findFileData->find('/tmp/stark_portrait.png')->willReturn([
+            'filePath' => '/tmp/stark_portrait.png',
+            'originalFilename' => 'stark_portrait.png',
+            'size' => 1024,
+            'mimeType' => 'image/png',
+            'extension' => 'png',
+        ]);
+
+        $this->create($imageAttribute, $normalizedValue)->updatedAt->shouldBeString();
     }
 }

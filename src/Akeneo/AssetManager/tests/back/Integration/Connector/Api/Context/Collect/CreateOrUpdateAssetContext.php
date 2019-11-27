@@ -248,7 +248,8 @@ class CreateOrUpdateAssetContext implements Context
             'originalFilename' => 'house.jpg',
             'size'             => 128,
             'mimeType'         => 'image/jpeg',
-            'extension'        => 'jpg'
+            'extension'        => 'jpg',
+            'updatedAt'        => '2019-11-22T15:16:21+0000',
         ]);
         $this->fileExists->save('2/4/3/7/24378761474c58aeee26016ee881b3b15069de52_house.jpg');
     }
@@ -311,7 +312,7 @@ class CreateOrUpdateAssetContext implements Context
                     $mainImageIdentifier,
                     ChannelReference::noReference(),
                     LocaleReference::noReference(),
-                    FileData::createFromFileinfo($mainImageInfo)
+                    FileData::createFromFileinfo($mainImageInfo, \DateTimeImmutable::createFromFormat(\DateTimeImmutable::ISO8601, '2019-11-22T15:16:21+0000'))
                 ),
                 Value::create(
                     AttributeIdentifier::fromString('name_frontview_fingerprint'),
@@ -329,7 +330,7 @@ class CreateOrUpdateAssetContext implements Context
                     AttributeIdentifier::fromString('cover_image_frontview_fingerprint'),
                     ChannelReference::noReference(),
                     LocaleReference::noReference(),
-                    FileData::createFromFileinfo($coverImageInfo)
+                    FileData::createFromFileinfo($coverImageInfo, \DateTimeImmutable::createFromFormat(\DateTimeImmutable::ISO8601, '2019-11-22T15:16:21+0000'))
                 ),
             ])
         );
@@ -511,7 +512,7 @@ class CreateOrUpdateAssetContext implements Context
                     $mainImageIdentifier,
                     ChannelReference::noReference(),
                     LocaleReference::noReference(),
-                    FileData::createFromFileinfo($mainImageInfo)
+                    FileData::createFromFileinfo($mainImageInfo, \DateTimeImmutable::createFromFormat(\DateTimeImmutable::ISO8601, '2019-11-22T15:16:21+0000'))
                 ),
                 Value::create(
                     AttributeIdentifier::fromString('name_frontview_fingerprint'),
@@ -743,7 +744,7 @@ class CreateOrUpdateAssetContext implements Context
                     $mainImageIdentifier,
                     ChannelReference::noReference(),
                     LocaleReference::noReference(),
-                    FileData::createFromFileinfo($mainImageInfo)
+                    FileData::createFromFileinfo($mainImageInfo, \DateTimeImmutable::createFromFormat(\DateTimeImmutable::ISO8601, '2019-11-22T15:16:21+0000'))
                 ),
                 Value::create(
                     AttributeIdentifier::fromString('name_frontview_fingerprint'),

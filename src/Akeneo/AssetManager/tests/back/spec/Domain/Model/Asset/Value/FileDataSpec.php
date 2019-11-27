@@ -22,7 +22,8 @@ class FileDataSpec extends ObjectBehavior
                 'originalFilename' => 'file.ext',
                 'size' => 1024,
                 'mimeType' => 'image/ext',
-                'extension' => 'ext'
+                'extension' => 'ext',
+                'updatedAt' => '2019-11-22T15:16:21+0000',
             ]
         ]);
     }
@@ -66,12 +67,14 @@ class FileDataSpec extends ObjectBehavior
         $this->shouldThrow('\InvalidArgumentException')->duringInstantiation();
     }
 
-    public function it_can_be_constructed_from_a_file_info(FileInfoInterface $fileInfo)
-    {
+    public function it_can_be_constructed_from_a_file_info(FileInfoInterface $fileInfo) {
         $fileInfo->getKey()->willReturn('A9E87F76A6F87A87E68F768A7E6F');
         $fileInfo->getOriginalFilename()->willReturn('file.ext');
 
-        $this->beConstructedThrough('createFromFileinfo', [$fileInfo]);
+        $this->beConstructedThrough('createFromFileinfo', [
+            $fileInfo,
+            \DateTimeImmutable::createFromFormat(\DateTimeImmutable::ISO8601, '2019-11-22T15:16:21+0000')
+        ]);
         $this->shouldBeAnInstanceOf(FileData::class);
     }
 
@@ -83,7 +86,8 @@ class FileDataSpec extends ObjectBehavior
                 'originalFilename' => 'file.ext',
                 'size' => 1024,
                 'mimeType' => 'image/ext',
-                'extension' => 'ext'
+                'extension' => 'ext',
+                'updatedAt' => '2019-11-22T15:16:21+0000',
             ]
         );
     }

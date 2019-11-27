@@ -17,8 +17,7 @@ use PhpSpec\ObjectBehavior;
 
 class ValueCollectionSpec extends ObjectBehavior
 {
-    function let()
-    {
+    function let() {
         $file = new FileInfo();
         $file->setKey('/a/file/key');
         $file->setOriginalFilename('my_file.png');
@@ -38,7 +37,10 @@ class ValueCollectionSpec extends ObjectBehavior
                     AttributeIdentifier::fromString('image_designer_fingerprint'),
                     ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('mobile')),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
-                    FileData::createFromFileinfo($file)
+                    FileData::createFromFileinfo(
+                        $file,
+                        \DateTimeImmutable::createFromFormat(\DateTimeImmutable::ISO8601, '2019-11-22T15:16:21+0000')
+                    )
                 ),
             ],
         ]);
@@ -68,6 +70,7 @@ class ValueCollectionSpec extends ObjectBehavior
                     'size' => 1024,
                     'mimeType' => 'image/png',
                     'extension' => 'png',
+                    'updatedAt' => '2019-11-22T15:16:21+0000',
                 ],
             ],
         ]);
@@ -99,7 +102,8 @@ class ValueCollectionSpec extends ObjectBehavior
                     'originalFilename' => 'my_file.png',
                     'size' => 1024,
                     'mimeType' => 'image/png',
-                    'extension' => 'png'
+                    'extension' => 'png',
+                    'updatedAt' => '2019-11-22T15:16:21+0000',
                 ],
             ],
         ]);
@@ -131,7 +135,8 @@ class ValueCollectionSpec extends ObjectBehavior
                     'originalFilename' => 'my_file.png',
                     'size' => 1024,
                     'mimeType' => 'image/png',
-                    'extension' => 'png'
+                    'extension' => 'png',
+                    'updatedAt' => '2019-11-22T15:16:21+0000',
                 ],
             ],
             'name_designer_fingerprint_mobile_fr_FR' => [

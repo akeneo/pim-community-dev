@@ -157,7 +157,8 @@ class SqlFindAssetDetailsTest extends SqlIntegrationTestCase
                     'originalFilename' => 'image_2.jpg',
                     'size' => 100,
                     'mimeType' => 'image/jpg',
-                    'extension' => '.jpg'
+                    'extension' => '.jpg',
+                    'updatedAt' => '2019-11-22T15:16:21+0000',
                 ],
                 'locale' => null,
                 'channel' => null,
@@ -218,7 +219,8 @@ class SqlFindAssetDetailsTest extends SqlIntegrationTestCase
                 'originalFilename' => 'image_2.jpg',
                 'size' => 100,
                 'mimeType' => 'image/jpg',
-                'extension' => '.jpg'
+                'extension' => '.jpg',
+                'updatedAt' => '2019-11-22T15:16:21+0000',
             ])
         );
 

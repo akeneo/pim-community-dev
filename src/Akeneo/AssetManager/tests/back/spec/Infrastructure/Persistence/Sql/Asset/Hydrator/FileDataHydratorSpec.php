@@ -27,11 +27,12 @@ class FileDataHydratorSpec extends ObjectBehavior
     function it_hydrates_image_data(ImageAttribute $image)
     {
         $imageData = $this->hydrate([
-            'filePath'          => '/a/file/key',
+            'filePath' => '/a/file/key',
             'originalFilename' => 'my_image.png',
             'size' => 1024,
             'mimeType' => 'image/png',
             'extension' => 'png',
+            'updatedAt' => '2019-11-22T15:01:22+0000'
         ], $image);
         $imageData->shouldBeAnInstanceOf(FileData::class);
         $imageData->normalize()->shouldReturn([
@@ -40,6 +41,7 @@ class FileDataHydratorSpec extends ObjectBehavior
             'size' => 1024,
             'mimeType' => 'image/png',
             'extension' => 'png',
+            'updatedAt' => '2019-11-22T15:01:22+0000'
         ]);
     }
 }

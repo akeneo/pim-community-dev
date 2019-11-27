@@ -67,7 +67,7 @@ class InMemoryAssetRepositoryTest extends TestCase
                     AttributeIdentifier::fromString('image_designer_fingerprint'),
                     ChannelReference::noReference(),
                     LocaleReference::noReference(),
-                    FileData::createFromFileinfo($imageInfo)
+                    FileData::createFromFileinfo($imageInfo, \DateTimeImmutable::createFromFormat(\DateTimeImmutable::ISO8601, '2019-11-22T15:16:21+0000'))
                 ),
             ])
         );

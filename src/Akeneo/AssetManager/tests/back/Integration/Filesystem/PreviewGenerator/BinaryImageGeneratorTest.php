@@ -122,7 +122,8 @@ final class BinaryImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
                              'originalFilename' => self::FILENAME,
                              'size' => 12,
                              'mimeType' => 'image/png',
-                             'extension' => '.png'
+                             'extension' => '.png',
+                             'updatedAt' => '2019-11-22T15:16:21+0000',
                          ],
                      ]
                  ]

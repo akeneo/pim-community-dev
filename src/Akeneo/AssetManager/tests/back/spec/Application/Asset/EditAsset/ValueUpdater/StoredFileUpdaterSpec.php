@@ -24,8 +24,6 @@ use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
-use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
-use PhpParser\Node\Arg;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -59,7 +57,8 @@ class StoredFileUpdaterSpec extends ObjectBehavior
             'rillettes.png',
             2048,
             'image/png',
-            'png'
+            'png',
+            '2019-11-22T15:16:21+0000'
         );
 
         $asset->findValue(Argument::type(ValueKey::class))
@@ -90,7 +89,8 @@ class StoredFileUpdaterSpec extends ObjectBehavior
             'jambon.png',
             2048,
             'image/png',
-            'png'
+            'png',
+            '2019-11-22T15:16:21+0000'
         );
 
         $asset->findValue(Argument::type(ValueKey::class))

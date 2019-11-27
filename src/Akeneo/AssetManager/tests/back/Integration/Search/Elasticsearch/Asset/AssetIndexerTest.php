@@ -237,6 +237,7 @@ class AssetIndexerTest extends SearchIntegrationTestCase
                                 'size'             => 1024,
                                 'mimeType'         => 'image/gif',
                                 'extension'        => 'gif',
+                                'updatedAt'        => '2019-11-22T15:16:21+0000',
                             ]
                         )
                     ),
@@ -272,6 +273,7 @@ class AssetIndexerTest extends SearchIntegrationTestCase
                                 'size'             => 1024,
                                 'mimeType'         => 'image/gif',
                                 'extension'        => 'gif',
+                                'updatedAt'        => '2019-11-22T15:16:21+0000',
                             ]
                         )
                     ),

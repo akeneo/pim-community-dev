@@ -179,7 +179,7 @@ class GetConnectorAssetsContext implements Context
                         AttributeIdentifier::fromString('main_image_brand_fingerprint'),
                         ChannelReference::noReference(),
                         LocaleReference::noReference(),
-                        FileData::createFromFileinfo($mainImageInfo)
+                        FileData::createFromFileinfo($mainImageInfo, \DateTimeImmutable::createFromFormat(\DateTimeImmutable::ISO8601, '2019-11-22T15:16:21+0000'))
                     ),
                 ])
             );
@@ -308,7 +308,7 @@ class GetConnectorAssetsContext implements Context
                         AttributeIdentifier::fromString('main_image_brand_fingerprint'),
                         ChannelReference::noReference(),
                         LocaleReference::noReference(),
-                        FileData::createFromFileinfo($mainImageInfo)
+                        FileData::createFromFileinfo($mainImageInfo, \DateTimeImmutable::createFromFormat(\DateTimeImmutable::ISO8601, '2019-11-22T15:16:21+0000'))
                     ),
                 ])
             );

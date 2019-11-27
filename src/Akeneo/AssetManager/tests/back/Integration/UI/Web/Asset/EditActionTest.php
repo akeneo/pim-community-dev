@@ -170,6 +170,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             'size' => 1000,
             'mimeType' => 'image/png',
             'extension' => 'png',
+            'updatedAt' => '2019-11-22T15:16:21+0000',
         ];
         $this->findFileData->save($fileData);
         $this->webClientHelper->assertRequest($this->client, 'Asset/Edit/image_value_ok.json');
@@ -273,7 +274,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             AttributeIdentifier::fromString('label_designer_29aea250-bc94-49b2-8259-bbc116410eb2'),
             ChannelReference::noReference(),
             LocaleReference::noReference(),
-            FileData::createFromFileinfo($imageInfo)
+            FileData::createFromFileinfo($imageInfo, \DateTimeImmutable::createFromFormat(\DateTimeImmutable::ISO8601, '2019-11-22T15:16:21+0000'))
         );
 
         $labelValueEnUS = Value::create(

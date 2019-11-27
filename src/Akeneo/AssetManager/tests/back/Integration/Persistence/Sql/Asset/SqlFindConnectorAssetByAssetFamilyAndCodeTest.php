@@ -213,7 +213,7 @@ class SqlFindConnectorAssetByAssetFamilyAndCodeTest extends SqlIntegrationTestCa
                     AttributeIdentifier::fromString('main_image_designer_fingerprint'),
                     ChannelReference::noReference(),
                     LocaleReference::noReference(),
-                    FileData::createFromFileinfo($fileInfo)
+                    FileData::createFromFileinfo($fileInfo, \DateTimeImmutable::createFromFormat(\DateTimeImmutable::ISO8601, '2019-11-22T15:16:21+0000'))
                 ),
                 Value::create(
                     AttributeIdentifier::fromString('country_designer_fingerprint'),
