@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-8999: Hide the download button in the asset preview modal when there is no variation
+
 # 3.0.56 (2019-11-27)
 
 # 3.0.55 (2019-11-22)
