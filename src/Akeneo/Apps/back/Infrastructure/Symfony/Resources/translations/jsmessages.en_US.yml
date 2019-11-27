@@ -15,6 +15,7 @@ pim_apps:
         code: Code
         label: Label
         flow_type: Flow type
+        image: Image
     flow_type:
         data_source: Data source | Data sources
         data_destination: Data destination | Data destinations
@@ -28,6 +29,13 @@ pim_apps:
         message: Wondering what flow type is?
         link: We can help you right here!
         link_url: https://www.akeneo.com/
+    edit_image:
+        upload_helper: Change your image, drag and drop or
+        remove_helper: Remove the image
+        click_here: click here
+        flash:
+            extension_not_allowed: Sorry, the file you are trying to upload has an extension not allowed.
+
     app_count: '{{ count }} app | {{ count }} apps'
     no_app:
         title: No app declared yet.
@@ -94,7 +102,7 @@ akeneo_apps:
             error: Sorry, an error occurred while regenerating the app secret.
     delete_app:
         title: Confirm deletion
-        description: Are you sure you want to delete the app? Not sure about the impacts? 
+        description: Are you sure you want to delete the app? Not sure about the impacts?
         link: Here is what will happen.
         link_url: https://www.akeneo.com/
         flash:

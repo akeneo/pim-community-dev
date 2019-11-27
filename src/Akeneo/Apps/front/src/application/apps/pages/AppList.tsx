@@ -2,7 +2,7 @@ import React, {useContext, useEffect} from 'react';
 import {useHistory} from 'react-router';
 import {FlowType} from '../../../domain/apps/flow-type.enum';
 import {PimView} from '../../../infrastructure/pim-view/PimView';
-import {NoApp} from '../../apps/components/NoApp';
+import {NoApp} from '../components/NoApp';
 import {
     ApplyButton,
     Breadcrumb,

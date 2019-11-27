@@ -13,7 +13,7 @@ import {
     PageHeader,
     SecondaryActionsDropdownButton,
 } from '../../common';
-import imgUrl from '../../common/assets/illustrations/api.svg';
+import defaultImageUrl from '../../common/assets/illustrations/api.svg';
 import {fetchResult} from '../../shared/fetch-result';
 import {isOk} from '../../shared/fetch-result/result';
 import {BreadcrumbRouterLink, useRoute} from '../../shared/router';
@@ -23,11 +23,14 @@ import {useUpdateApp} from '../api-hooks/use-update-app';
 import {useAppsState} from '../app-state-context';
 import {AppCredentials} from '../components/AppCredentials';
 import {AppEditForm} from '../components/AppEditForm';
+import {useMediaUrlGenerator} from '../use-media-url-generator';
+import {App} from "../../../domain/apps/app.interface";
 
 interface FetchAppData {
     code: string;
     label: string;
     flow_type: FlowType;
+    image: string|null;
     secret: string;
     client_id: string;
     username: string;
@@ -37,11 +40,13 @@ interface FetchAppData {
 export interface FormValues {
     label: string;
     flowType: FlowType;
+    image: string|null;
 }
 
 export interface FormErrors {
     label?: string;
     flowType?: string;
+    image?: Array<string>;
 }
 
 const validate = ({label}: FormValues): FormErrors => {
@@ -79,11 +84,12 @@ export const AppEdit = () => {
     }, [dispatch, fetchAppUrl, history]);
 
     const updateApp = useUpdateApp(code);
-    const handleSubmit = async ({label, flowType}: FormValues, {setSubmitting}: FormikHelpers<FormValues>) => {
+    const handleSubmit = async ({label, flowType, image}: FormValues, {setSubmitting}: FormikHelpers<FormValues>) => {
         const result = await updateApp({
             code,
             label,
             flowType,
+            image,
         });
         setSubmitting(false);
 
@@ -93,6 +99,7 @@ export const AppEdit = () => {
                     code,
                     label,
                     flowType,
+                    image,
                 })
             );
         } else {
@@ -108,41 +115,13 @@ export const AppEdit = () => {
     const initialValues: FormValues = {
         label: app.label,
         flowType: app.flowType,
+        image: app.image,
     };
 
     return (
         <Formik initialValues={initialValues} onSubmit={handleSubmit} validate={validate} enableReinitialize>
             <>
-                <PageHeader
-                    breadcrumb={
-                        <Breadcrumb>
-                            <BreadcrumbRouterLink route={'oro_config_configuration_system'}>
-                                <Translate id='pim_menu.tab.system' />
-                            </BreadcrumbRouterLink>
-                            <BreadcrumbItem onClick={() => history.push('/apps')} isLast={false}>
-                                <Translate id='pim_menu.item.apps' />
-                            </BreadcrumbItem>
-                        </Breadcrumb>
-                    }
-                    buttons={[
-                        <SecondaryActionsDropdownButton key={0}>
-                            <DropdownLink onClick={() => history.push(`/apps/${app.code}/delete`)}>
-                                <Translate id='pim_common.delete' />
-                            </DropdownLink>
-                        </SecondaryActionsDropdownButton>,
-                        <SaveButton key={1} />,
-                    ]}
-                    userButtons={
-                        <PimView
-                            className='AknTitleContainer-userMenuContainer AknTitleContainer-userMenu'
-                            viewName='pim-apps-user-navigation'
-                        />
-                    }
-                    state={<FormState />}
-                    imageSrc={imgUrl}
-                >
-                    {app.label}
-                </PageHeader>
+                <HeaderContent app={app} />
 
                 <PageContent>
                     <Layout>
@@ -156,6 +135,52 @@ export const AppEdit = () => {
                 </PageContent>
             </>
         </Formik>
+    );
+};
+
+interface HeaderProps {
+    app: App;
+}
+
+const HeaderContent = ({app}: HeaderProps) => {
+    const history = useHistory();
+    const formik = useFormikContext<FormValues>();
+    const generateMediaUrl = useMediaUrlGenerator();
+
+    return (
+        <PageHeader
+            breadcrumb={
+                <Breadcrumb>
+                    <BreadcrumbRouterLink route={'oro_config_configuration_system'}>
+                        <Translate id='pim_menu.tab.system' />
+                    </BreadcrumbRouterLink>
+                    <BreadcrumbItem onClick={() => history.push('/apps')} isLast={false}>
+                        <Translate id='pim_menu.item.apps' />
+                    </BreadcrumbItem>
+                </Breadcrumb>
+            }
+            buttons={[
+                <SecondaryActionsDropdownButton key={0}>
+                    <DropdownLink onClick={() => history.push(`/apps/${app.code}/delete`)}>
+                        <Translate id='pim_common.delete' />
+                    </DropdownLink>
+                </SecondaryActionsDropdownButton>,
+                <SaveButton key={1} />,
+            ]}
+            userButtons={
+                <PimView
+                  className='AknTitleContainer-userMenuContainer AknTitleContainer-userMenu'
+                  viewName='pim-apps-user-navigation'
+                />
+            }
+            state={<FormState />}
+            imageSrc={null === formik.values.image ?
+              defaultImageUrl :
+              generateMediaUrl(formik.values.image, 'thumbnail')
+            }
+        >
+            {app.label}
+        </PageHeader>
     );
 };
 
