@@ -1,10 +1,10 @@
 <?php
 
-namespace spec\Akeneo\AssetManager\Infrastructure\Operation;
+namespace spec\Akeneo\AssetManager\Infrastructure\Transformation\Operation;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ColorspaceOperation;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ThumbnailOperation;
-use Akeneo\AssetManager\Infrastructure\Operation\ThumbnailOperationApplier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ResizeOperation;
+use Akeneo\AssetManager\Infrastructure\Transformation\Operation\ResizeOperationApplier;
 use Liip\ImagineBundle\Binary\BinaryInterface;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use Liip\ImagineBundle\Model\FileBinary;
@@ -12,25 +12,25 @@ use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpFoundation\File\File;
 use Webmozart\Assert\Assert;
 
-class ThumbnailOperationApplierSpec extends ObjectBehavior
+class ResizeOperationApplierSpec extends ObjectBehavior
 {
     function let(FilterManager $filterManager)
     {
         $this->beConstructedWith($filterManager);
-        $this->shouldHaveType(ThumbnailOperationApplier::class);
+        $this->shouldHaveType(ResizeOperationApplier::class);
     }
 
-    function it_supports_only_thumbnail_operation(
-        ThumbnailOperation $operation,
+    function it_supports_only_resize_operation(
+        ResizeOperation $operation,
         ColorspaceOperation $wrongOperation
     ) {
         $this->supports($operation)->shouldReturn(true);
         $this->supports($wrongOperation)->shouldReturn(false);
     }
 
-    function it_apply_thumbnail(
+    function it_apply_resize(
         FilterManager $filterManager,
-        ThumbnailOperation $operation,
+        ResizeOperation $operation,
         BinaryInterface $computedImage
     ) {
         $file = new File(__DIR__ . '/akeneo.png');
@@ -39,7 +39,7 @@ class ThumbnailOperationApplierSpec extends ObjectBehavior
         $image = new FileBinary($file->getPath(), $file->getMimeType());
         $filterManager->applyFilters($image, [
             'filters' => [
-                'thumbnail' => [
+                'resize' => [
                     'size' => [800, 600]
                 ]
             ]

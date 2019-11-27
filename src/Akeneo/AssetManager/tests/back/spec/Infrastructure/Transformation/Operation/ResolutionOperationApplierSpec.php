@@ -1,10 +1,10 @@
 <?php
 
-namespace spec\Akeneo\AssetManager\Infrastructure\Operation;
+namespace spec\Akeneo\AssetManager\Infrastructure\Transformation\Operation;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ColorspaceOperation;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ResizeOperation;
-use Akeneo\AssetManager\Infrastructure\Operation\ColorspaceOperationApplier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ResolutionOperation;
+use Akeneo\AssetManager\Infrastructure\Transformation\Operation\ResolutionOperationApplier;
 use Liip\ImagineBundle\Binary\BinaryInterface;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use Liip\ImagineBundle\Model\FileBinary;
@@ -12,34 +12,38 @@ use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpFoundation\File\File;
 use Webmozart\Assert\Assert;
 
-class ColorspaceOperationApplierSpec extends ObjectBehavior
+class ResolutionOperationApplierSpec extends ObjectBehavior
 {
     function let(FilterManager $filterManager)
     {
         $this->beConstructedWith($filterManager);
-        $this->shouldHaveType(ColorspaceOperationApplier::class);
+        $this->shouldHaveType(ResolutionOperationApplier::class);
     }
 
-    function it_supports_only_colorspace_operation(
-        ColorspaceOperation $operation,
-        ResizeOperation $wrongOperation
+    function it_supports_only_resolution_operation(
+        ResolutionOperation $operation,
+        ColorspaceOperation $wrongOperation
     ) {
         $this->supports($operation)->shouldReturn(true);
         $this->supports($wrongOperation)->shouldReturn(false);
     }
 
-    function it_apply_colorspace(
+    function it_apply_resolution(
         FilterManager $filterManager,
-        ColorspaceOperation $operation,
+        ResolutionOperation $operation,
         BinaryInterface $computedImage
     ) {
         $file = new File(__DIR__ . '/akeneo.png');
-        $operation->getColorspace()->willReturn('cmyk');
+        $operation->getResolutionUnit()->willReturn('ppc');
+        $operation->getResolutionX()->willReturn(800);
+        $operation->getResolutionY()->willReturn(600);
         $image = new FileBinary($file->getPath(), $file->getMimeType());
         $filterManager->applyFilters($image, [
             'filters' => [
-                'colorspace' => [
-                    'colorspace' => 'cmyk'
+                'resample' => [
+                    'unit' => 'ppc',
+                    'x' => 800,
+                    'y' => 600
                 ]
             ]
         ])->shouldBeCalledOnce()->willReturn($computedImage);

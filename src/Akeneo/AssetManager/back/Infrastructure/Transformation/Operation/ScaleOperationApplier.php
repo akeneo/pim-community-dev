@@ -11,17 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\AssetManager\Infrastructure\Operation;
+namespace Akeneo\AssetManager\Infrastructure\Transformation\Operation;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ThumbnailOperation;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ScaleOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationApplier;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use Liip\ImagineBundle\Model\FileBinary;
 use Symfony\Component\HttpFoundation\File\File;
 use Webmozart\Assert\Assert;
 
-class ThumbnailOperationApplier implements OperationApplier
+class ScaleOperationApplier implements OperationApplier
 {
     /** @var FilterManager */
     private $filterManager;
@@ -33,23 +33,25 @@ class ThumbnailOperationApplier implements OperationApplier
 
     public function supports(Operation $operation): bool
     {
-        return $operation instanceof ThumbnailOperation;
+        return $operation instanceof ScaleOperation;
     }
 
     /**
      * @param File $file
-     * @param ThumbnailOperation $thumbnailOperation
+     * @param ScaleOperation $scaleOperation
      * @return File
      */
-    public function apply(File $file, Operation $thumbnailOperation): File
+    public function apply(File $file, Operation $scaleOperation): File
     {
-        Assert::isInstanceOf($thumbnailOperation, ThumbnailOperation::class);
+        Assert::isInstanceOf($scaleOperation, ScaleOperation::class);
 
         $image = new FileBinary($file->getPath(), $file->getMimeType());
         $computedImage = $this->filterManager->applyFilters($image, [
             'filters' => [
-                'thumbnail' => [
-                    'size' => [$thumbnailOperation->getWidth(), $thumbnailOperation->getHeight()]
+                'scale' => $scaleOperation->getRatioPercent() ? [
+                    'to' => $scaleOperation->getRatioPercent() / 100
+                ] : [
+                    'dim' => [$scaleOperation->getWidth(), $scaleOperation->getHeight()]
                 ]
             ]
         ]);

@@ -1,11 +1,10 @@
 <?php
 
-namespace spec\Akeneo\AssetManager\Infrastructure\Operation;
+namespace spec\Akeneo\AssetManager\Infrastructure\Transformation\Operation;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ColorspaceOperation;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ResizeOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ScaleOperation;
-use Akeneo\AssetManager\Infrastructure\Operation\ScaleOperationApplier;
+use Akeneo\AssetManager\Infrastructure\Transformation\Operation\ScaleOperationApplier;
 use Liip\ImagineBundle\Binary\BinaryInterface;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use Liip\ImagineBundle\Model\FileBinary;

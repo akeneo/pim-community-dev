@@ -11,17 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\AssetManager\Infrastructure\Operation;
+namespace Akeneo\AssetManager\Infrastructure\Transformation\Operation;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ScaleOperation;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ThumbnailOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationApplier;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use Liip\ImagineBundle\Model\FileBinary;
 use Symfony\Component\HttpFoundation\File\File;
 use Webmozart\Assert\Assert;
 
-class ScaleOperationApplier implements OperationApplier
+class ThumbnailOperationApplier implements OperationApplier
 {
     /** @var FilterManager */
     private $filterManager;
@@ -33,25 +33,23 @@ class ScaleOperationApplier implements OperationApplier
 
     public function supports(Operation $operation): bool
     {
-        return $operation instanceof ScaleOperation;
+        return $operation instanceof ThumbnailOperation;
     }
 
     /**
      * @param File $file
-     * @param ScaleOperation $scaleOperation
+     * @param ThumbnailOperation $thumbnailOperation
      * @return File
      */
-    public function apply(File $file, Operation $scaleOperation): File
+    public function apply(File $file, Operation $thumbnailOperation): File
     {
-        Assert::isInstanceOf($scaleOperation, ScaleOperation::class);
+        Assert::isInstanceOf($thumbnailOperation, ThumbnailOperation::class);
 
         $image = new FileBinary($file->getPath(), $file->getMimeType());
         $computedImage = $this->filterManager->applyFilters($image, [
             'filters' => [
-                'scale' => $scaleOperation->getRatioPercent() ? [
-                    'to' => $scaleOperation->getRatioPercent() / 100
-                ] : [
-                    'dim' => [$scaleOperation->getWidth(), $scaleOperation->getHeight()]
+                'thumbnail' => [
+                    'size' => [$thumbnailOperation->getWidth(), $thumbnailOperation->getHeight()]
                 ]
             ]
         ]);

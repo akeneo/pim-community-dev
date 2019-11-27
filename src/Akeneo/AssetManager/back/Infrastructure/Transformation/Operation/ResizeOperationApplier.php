@@ -11,17 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\AssetManager\Infrastructure\Operation;
+namespace Akeneo\AssetManager\Infrastructure\Transformation\Operation;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ColorspaceOperation;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ResizeOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationApplier;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use Liip\ImagineBundle\Model\FileBinary;
 use Symfony\Component\HttpFoundation\File\File;
 use Webmozart\Assert\Assert;
 
-class ColorspaceOperationApplier implements OperationApplier
+class ResizeOperationApplier implements OperationApplier
 {
     /** @var FilterManager */
     private $filterManager;
@@ -33,23 +33,23 @@ class ColorspaceOperationApplier implements OperationApplier
 
     public function supports(Operation $operation): bool
     {
-        return $operation instanceof ColorspaceOperation;
+        return $operation instanceof ResizeOperation;
     }
 
     /**
      * @param File $file
-     * @param ColorspaceOperation $colorspaceOperation
+     * @param ResizeOperation $resizeOperation
      * @return File
      */
-    public function apply(File $file, Operation $colorspaceOperation): File
+    public function apply(File $file, Operation $resizeOperation): File
     {
-        Assert::isInstanceOf($colorspaceOperation, ColorspaceOperation::class);
+        Assert::isInstanceOf($resizeOperation, ResizeOperation::class);
 
         $image = new FileBinary($file->getPath(), $file->getMimeType());
         $computedImage = $this->filterManager->applyFilters($image, [
             'filters' => [
-                'colorspace' => [
-                    'colorspace' => $colorspaceOperation->getColorspace()
+                'resize' => [
+                    'size' => [$resizeOperation->getWidth(), $resizeOperation->getHeight()]
                 ]
             ]
         ]);
