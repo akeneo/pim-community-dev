@@ -605,10 +605,10 @@ SQL;
         $order++;
 
         $yearOfPublication = NumberAttribute::create(
-            AttributeIdentifier::create(self::NOTICE_ASSET_FAMILY_IDENTIFIER, 'product_sku', 'fingerprint'),
+            AttributeIdentifier::create(self::NOTICE_ASSET_FAMILY_IDENTIFIER, 'year_publication', 'fingerprint'),
             $assetFamilyIdentifier,
-            AttributeCode::fromString('product_sku'),
-            LabelCollection::fromArray(['en_US' => 'Product SKU']),
+            AttributeCode::fromString('year_publication'),
+            LabelCollection::fromArray(['en_US' => 'Year of publication']),
             AttributeOrder::fromInteger($order),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
@@ -625,7 +625,7 @@ SQL;
 
         $updatedAtmosphere = AssetFamily::createWithAttributes(
             $assetFamilyIdentifier,
-            ['en_US' => 'Atmosphere'],
+            ['en_US' => 'Notice'],
             Image::createEmpty(),
             AttributeAsLabelReference::fromAttributeIdentifier($attributeAsLabel->getIdentifier()),
             AttributeAsImageReference::fromAttributeIdentifier($linkPDF->getIdentifier()),
@@ -633,7 +633,6 @@ SQL;
         );
 
         $this->assetFamilyRepository->update($updatedAtmosphere);
-
     }
 
     private function loadNoticeAssets(): void
