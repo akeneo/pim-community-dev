@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class AttributeSourceIsNotATarget extends Constraint
 {
-    public const ERROR_MESSAGE = 'pim_asset_manager.asset_family.validation.source_can_not_be_a_target';
+    public const ERROR_MESSAGE = 'pim_asset_manager.asset_family.validation.transformation.source_can_not_be_a_target';
 
     public function getTargets()
     {

@@ -36,7 +36,7 @@ class OperationFactorySpec extends ObjectBehavior
 
     function it_fails_when_operation_type_is_not_found()
     {
-        $this->shouldThrow(new \InvalidArgumentException("Operation 'unknown' is unknown."))
+        $this->shouldThrow(new \InvalidArgumentException('Operation "unknown" is unknown.'))
             ->during('create', ['unknown', []]);
     }
 }

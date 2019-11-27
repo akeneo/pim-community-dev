@@ -19,6 +19,8 @@ pim_asset_manager:
       transformation:
         limit_reached: 'Vous ne pouvez pas créer ou modifier la famille de ressources "%asset_family_label%" car vous avez atteint le nombre maximum de %limit% de transformations'
         same_operation_twice: 'Vous ne pouvez pas créer ou modifier la famille de ressources "%asset_family_label%" car l''operation "operation_type" est utilisée plusieurs fois dans une seule transformation'
+        source_can_not_be_a_target: 'L''attribut source "%attribute_code%" ne peut pas être l''attribut source d''une transformation.'
+        attribute_reference_should_exist: 'L''attribut "%attribute_code%" n''existe pas pour cette famille'
   asset:
     validation:
       code:

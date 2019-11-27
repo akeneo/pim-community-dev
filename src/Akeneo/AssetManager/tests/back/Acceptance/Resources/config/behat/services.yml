@@ -33,6 +33,8 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
             - '@validator'
+            - '@akeneo_assetmanager.tests.back.acceptance.context.constraint_violations_context'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.channel_exists'
 
     akeneo_assetmanager.tests.back.acceptance.context.delete_asset_family_context:
         class: Akeneo\AssetManager\Acceptance\Context\DeleteAssetFamilyContext
