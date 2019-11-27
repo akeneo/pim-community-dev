@@ -26,7 +26,9 @@ use Akeneo\AssetManager\Domain\Query\Attribute\GetAttributeIdentifierInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
 
 /**
- * @author Pierre Allard <pierre.allard@akeneo.com>
+ * The goal of this class is to detect which asset values are outdated, regarding the transformations to apply.
+ * For it, we use the updatedAt property of an asset value. If the source was updated after the target, it means
+ * that the target has to be recalculated.
  */
 class GetOutdatedValues
 {
