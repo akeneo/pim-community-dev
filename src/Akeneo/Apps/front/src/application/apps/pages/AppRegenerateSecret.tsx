@@ -6,6 +6,8 @@ import {isErr} from '../../shared/fetch/result';
 import {useRoute} from '../../shared/router';
 import {Translate, TranslateContext} from '../../shared/translate';
 import {useNotify, NotificationLevel} from '../../shared/notify';
+import styled from 'styled-components';
+import {PropsWithTheme} from '../../common/theme';
 
 export const AppRegenerateSecret = () => {
     const history = useHistory();
@@ -37,9 +39,9 @@ export const AppRegenerateSecret = () => {
         <>
             <Translate id='akeneo_apps.regenerate_secret.description' />
             &nbsp;
-            <a href={translate('akeneo_apps.regenerate_secret.link_url')}>
+            <Link href={translate('akeneo_apps.regenerate_secret.link_url')}>
                 <Translate id='akeneo_apps.regenerate_secret.link' />
-            </a>
+            </Link>
         </>
     );
 
@@ -61,3 +63,8 @@ export const AppRegenerateSecret = () => {
         </Modal>
     );
 };
+
+const Link = styled.a`
+    color: ${({theme}: PropsWithTheme) => theme.color.blue};
+    text-decoration: underline;
+`;

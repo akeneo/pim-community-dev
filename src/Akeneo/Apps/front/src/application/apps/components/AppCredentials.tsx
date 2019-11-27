@@ -37,7 +37,13 @@ export const AppCredentials: FC<Props> = ({code, credentials: credentials}: Prop
                 <CopiableCredential label={translate('akeneo_apps.app.username')}>
                     {credentials.username}
                 </CopiableCredential>
-                <Credential label={translate('akeneo_apps.app.password')}>{credentials.password}</Credential>
+                {credentials.password ? (
+                    <CopiableCredential label={translate('akeneo_apps.app.password')}>
+                        {credentials.password}
+                    </CopiableCredential>
+                ) : (
+                    <Credential label={translate('akeneo_apps.app.password')}>••••••••</Credential>
+                )}
             </CredentialList>
         </>
     );

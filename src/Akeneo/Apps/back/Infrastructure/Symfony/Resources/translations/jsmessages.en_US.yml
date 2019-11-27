@@ -70,8 +70,8 @@ akeneo_apps:
                 copied: '{{ name }} copied to clipboard'
     regenerate_secret:
         title: Confirm regeneration
-        description: Are you sure you want to regenerate the app secret?
-        link: Check out the consequences of this action right here.
+        description: Are you sure you want to regenerate the app secret? Not sure about the impacts?
+        link: Here is what will happen.
         link_url: https://www.akeneo.com/
         action:
             regenerate: Regenerate
