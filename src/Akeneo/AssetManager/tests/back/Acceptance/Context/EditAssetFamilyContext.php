@@ -1610,7 +1610,7 @@ final class EditAssetFamilyContext implements Context
      */
     public function theUserUpdatesTheAttributeAsMainMediaToBe($attributeAsMainMedia)
     {
-        $editCommand = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, []);
+        $editCommand = new EditAssetFamilyCommand(self::ASSET_FAMILY_IDENTIFIER, [], null, $attributeAsMainMedia, [], []);
 
         $this->editAssetFamily($editCommand);
     }

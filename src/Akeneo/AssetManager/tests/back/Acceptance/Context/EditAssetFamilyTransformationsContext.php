@@ -98,6 +98,7 @@ class EditAssetFamilyTransformationsContext implements Context
                     'en_US' => ucfirst($familyIdentifier),
                 ],
                 null,
+                null,
                 [],
                 [
                     [
@@ -127,6 +128,7 @@ class EditAssetFamilyTransformationsContext implements Context
                     'en_US' => ucfirst($familyIdentifier),
                 ],
                 null,
+                null,
                 [],
                 []
             )
@@ -144,6 +146,7 @@ class EditAssetFamilyTransformationsContext implements Context
                 [
                     'en_US' => sprintf('My updated label for %s', $familyIdentifier),
                 ],
+                null,
                 null,
                 [],
                 null
