@@ -373,4 +373,51 @@ class RangeValidatorSpec extends ObjectBehavior
 
         $this->validate(null, $constraint);
     }
+
+    /**
+     * This allows to have a proper message "This value should be between 1 and 9.22E18.", but only if the value have no maximum value but is superior to integer php limit (as we can't store it).
+     * If it's inferior to php limit value, the desired message is just "This value should be 1 or more." (for example).
+     */
+    function it_forces_max_values_at_php_integer_limit_when_value_is_not_bound_by_a_maximum_value_but_is_superior_to_integer_php_limit(
+        ExecutionContextInterface $context,
+        Range $constraint,
+        ConstraintViolationBuilderInterface $violation
+    ) {
+        $constraint->min = 10;
+
+        $context
+            ->buildViolation($constraint->notInRangeMessage)
+            ->shouldBeCalled()
+            ->willReturn($violation);
+
+        $violation->setParameter('{{ value }}', Argument::any())->shouldBeCalled()->willReturn($violation);
+        $violation->setParameter('{{ min }}', 10)->shouldBeCalled()->willReturn($violation);
+        $violation->setParameter('{{ max }}', PHP_INT_MAX)->shouldBeCalled()->willReturn($violation);
+        $violation->setCode(Argument::any())->shouldBeCalled()->willReturn($violation);
+        $violation->addViolation()->shouldBeCalled();
+
+        $this->validate('6666666666666666666666666666666666666', $constraint);
+    }
+
+    function it_forces_max_values_at_integer_php_limit_when_the_maximum_limit_is_superior_to_integer_php_limit(
+        ExecutionContextInterface $context,
+        Range $constraint,
+        ConstraintViolationBuilderInterface $violation
+    ) {
+        $constraint->min = 10;
+        $constraint->max = '6666666666666666666666666666666666666';
+
+        $context
+            ->buildViolation($constraint->notInRangeMessage)
+            ->shouldBeCalled()
+            ->willReturn($violation);
+
+        $violation->setParameter('{{ value }}', Argument::any())->shouldBeCalled()->willReturn($violation);
+        $violation->setParameter('{{ min }}', 10)->shouldBeCalled()->willReturn($violation);
+        $violation->setParameter('{{ max }}', PHP_INT_MAX)->shouldBeCalled()->willReturn($violation);
+        $violation->setCode(Argument::any())->shouldBeCalled()->willReturn($violation);
+        $violation->addViolation()->shouldBeCalled();
+
+        $this->validate('6666666666666666666666666666666666666', $constraint);
+    }
 }
