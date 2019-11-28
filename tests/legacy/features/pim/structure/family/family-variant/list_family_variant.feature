@@ -8,7 +8,7 @@ Feature: list family variant
     Given the "catalog_modeling" catalog configuration
     And I am logged in as "Peter"
 
-  Scenario: Successfully edit a family
+  Scenario: Successfully list the families
     Given I am on the "Clothing" family page
     And I visit the "Variants" tab
     Then the grid should contain 5 elements

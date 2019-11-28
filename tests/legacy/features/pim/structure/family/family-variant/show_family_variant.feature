@@ -18,13 +18,3 @@ Feature: show family variant
     And I should see the text "Variation name"
     And I should see the text "Variant attributes level one"
     And I should see the text "Variant attributes level two"
-
-  Scenario: Successfully show a family variant with one axes
-    Given I am on the "Clothing" family page
-    And I visit the "Variants" tab
-    And I click on the "Clothing by color/size" row
-    Then I should see the text "clothing_colorsize"
-    And I should see the text "Color, Size (Variant axis)"
-    And I should see the text "Variation name"
-    And I should see the text "Variant attributes level one"
-    And I should not see the text "Variant attributes level two"

@@ -24,29 +24,3 @@ Feature: Export family variants in XLSX
       | accessories_size       | accessories | Accessories by size           | Accessories by size           | Accessoires par taille           | size           |                | sku,weight,variation_name,size,ean                            |                                                 |
       | shoes_size_color       | shoes       | Schuhe nach Größe und Farbe   | Shoes by size and color       | Chaussures par taille et couleur | size           | color          | weight,variation_name,size,eu_shoes_size                      | sku,image,variation_image,composition,color,ean |
       | clothing_material_size | clothing    | Clothing by material and size | Clothing by material and size | Vêtements par matière et taille  | material       | size           | variation_name,variation_image,composition,color,material     | sku,weight,size,ean                             |
-
-  Scenario: I successfully create and use a family variant export in XLSX
-    Given the "catalog_modeling" catalog configuration
-    And I am logged in as "Peter"
-    And I am on the exports page
-    When I create a new export
-    And I fill in the following information in the popin:
-      | Code  | family_variant_export         |
-      | Label | Family variant export in XLSX |
-      | Job   | Family variant export in XLSX |
-    And I press the "Save" button
-    Then I should not see the text "There are unsaved changes"
-    When I am on the exports page
-    And I click on the "Family variant export in XLSX" row
-    And I launch the export job
-    And I wait for the "family_variant_export" job to finish
-    Then exported xlsx file of "family_variant_export" should contain:
-      | code                   | family      | label-de_DE                   | label-en_US                   | label-fr_FR                      | variant-axes_1 | variant-axes_2 | variant-attributes_1                                          | variant-attributes_2                            |
-      | clothing_color_size    | clothing    | Kleidung nach Farbe und Größe | Clothing by color and size    | Vêtements par couleur et taille  | color          | size           | variation_name,variation_image,composition,color,material     | sku,weight,size,ean                             |
-      | shoes_size             | shoes       | Schuhe nach Größe             | Shoes by size                 | Chaussures par taille            | eu_shoes_size  |                | sku,weight,size,eu_shoes_size,ean                             |                                                 |
-      | clothing_colorsize     | clothing    | Kleidung nach Farbe/Größe     | Clothing by color/size        | Vêtements par couleur/taille     | color,size     |                | sku,variation_name,variation_image,composition,color,size,ean |                                                 |
-      | clothing_size          | clothing    | Kleidung nach Größe           | Clothing by size              | Vêtements par taille             | size           |                | sku,weight,size,ean                                           |                                                 |
-      | clothing_color         | clothing    | Kleidung nach Farbe           | Clothing by color             | Vêtements par couleur            | color          |                | sku,variation_name,variation_image,composition,color,ean      |                                                 |
-      | accessories_size       | accessories | Accessories by size           | Accessories by size           | Accessoires par taille           | size           |                | sku,weight,variation_name,size,ean                            |                                                 |
-      | shoes_size_color       | shoes       | Schuhe nach Größe und Farbe   | Shoes by size and color       | Chaussures par taille et couleur | size           | color          | weight,variation_name,size,eu_shoes_size                      | sku,image,variation_image,composition,color,ean |
-      | clothing_material_size | clothing    | Clothing by material and size | Clothing by material and size | Vêtements par matière et taille  | material       | size           | variation_name,variation_image,composition,color,material     | sku,weight,size,ean                             |
