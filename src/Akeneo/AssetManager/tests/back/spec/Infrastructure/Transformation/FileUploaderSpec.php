@@ -1,12 +1,11 @@
 <?php
 
-namespace spec\Akeneo\AssetManager\Infrastructure\Transformation\Operation;
+namespace spec\Akeneo\AssetManager\Infrastructure\Transformation;
 
-use Akeneo\AssetManager\Infrastructure\Transformation\Operation\FileUploader;
+use Akeneo\AssetManager\Infrastructure\Transformation\FileUploader;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use League\Flysystem\Filesystem;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\File\File;
 
 class FileUploaderSpec extends ObjectBehavior
@@ -21,7 +20,7 @@ class FileUploaderSpec extends ObjectBehavior
         FilesystemProvider $filesystemProvider,
         Filesystem $filesystem
     ) {
-        $file = new File(__DIR__ . '/akeneo.png');
+        $file = new File(__DIR__ . '/Operation/akeneo.png');
         $filesystemProvider->getFilesystem('assetManagerStorage')->willReturn($filesystem);
         $filesystem->put('/path/to/file', file_get_contents(__DIR__ . '/akeneo.png'))->willReturn(true);
 

@@ -11,10 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\AssetManager\Infrastructure\Transformation\Operation;
+namespace Akeneo\AssetManager\Infrastructure\Transformation;
 
 use Akeneo\AssetManager\Domain\Repository\MediaFileNotFoundException;
 use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
+use Akeneo\AssetManager\Infrastructure\Transformation\Operation\TemporaryFileFactory;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Symfony\Component\HttpFoundation\File\File;
 

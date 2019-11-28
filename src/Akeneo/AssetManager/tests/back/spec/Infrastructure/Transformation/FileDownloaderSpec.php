@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Akeneo\AssetManager\Infrastructure\Transformation\Operation;
+namespace spec\Akeneo\AssetManager\Infrastructure\Transformation;
 
-use Akeneo\AssetManager\Infrastructure\Transformation\Operation\FileDownloader;
+use Akeneo\AssetManager\Infrastructure\Transformation\FileDownloader;
 use Akeneo\AssetManager\Infrastructure\Transformation\Operation\TemporaryFileFactory;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use League\Flysystem\FilesystemInterface;
@@ -24,7 +24,7 @@ class FileDownloaderSpec extends ObjectBehavior
         TemporaryFileFactory $temporaryFileFactory,
         FilesystemInterface $filesystem
     ) {
-        $file = new File(__DIR__ . '/akeneo.png');
+        $file = new File(__DIR__ . '/Operation/akeneo.png');
         $filesystemProvider->getFilesystem('assetManagerStorage')->willReturn($filesystem);
         $filesystem->has('/path/to/file')->willReturn(true);
         $filesystem->read('/path/to/file')->willReturn('fileContent');
