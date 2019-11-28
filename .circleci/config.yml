@@ -407,6 +407,10 @@ workflows:
                 requires:
                     - test_migrations
                     - test_back_phpunit
+          - back_performance:
+                requires:
+                    - test_migrations
+                    - test_back_phpunit
 
   nightly:
       triggers:

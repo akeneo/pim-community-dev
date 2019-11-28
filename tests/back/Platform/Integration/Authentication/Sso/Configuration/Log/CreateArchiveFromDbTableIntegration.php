@@ -69,21 +69,7 @@ final class CreateArchiveFromDbTableIntegration extends TestCase
     {
         $configRepo = new EnabledConfigurationRepository();
         $connection = $this->get('database_connection');
-        $handler = new DbTableLogHandler($configRepo, $connection, 1);
-
-        $handler->handle(
-            [
-                'message' => 'My nice message',
-                'context' => [],
-                'level' =>  Logger::DEBUG,
-                'level_name' => Logger::getLevelName(Logger::DEBUG),
-                'channel' => 'authentication',
-                'datetime' => new \DateTime('2013-01-01 13:43:25 GMT+2'),
-                'extra' => array()
-            ]
-        );
-
-        $handler->close();
+        $handler = new DbTableLogHandler($configRepo, $connection);
 
         $archiveCreate = $this->get('akeneo_authentication.sso.log.create_archive_from_db_table');
         $this->archiveFile = $archiveCreate->create();
@@ -106,6 +92,12 @@ final class CreateArchiveFromDbTableIntegration extends TestCase
         if (null !== $this->archiveFile) {
             unlink($this->archiveFile->getPathname());
         }
+
+        $connection = $this->get('database_connection');
+        if ($connection->getSchemaManager()->tablesExist('pimee_sso_log') == true) {
+            $connection->executeQuery('TRUNCATE TABLE pimee_sso_log');
+        }
+
     }
 
     protected function getConfiguration()

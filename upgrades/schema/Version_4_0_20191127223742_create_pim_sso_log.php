@@ -5,7 +5,7 @@ namespace Pim\Upgrade\Schema;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version_4_0_20191114152642_create_pim_sso_log extends AbstractMigration
+final class Version_4_0_20191127223742_create_pim_sso_log extends AbstractMigration
 {
     public function up(Schema $schema) : void
     {

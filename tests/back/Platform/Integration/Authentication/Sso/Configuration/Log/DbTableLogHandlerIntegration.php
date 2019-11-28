@@ -5,6 +5,7 @@ namespace AkeneoTestEnterprise\Platform\Integration\Authentication\Sso\Log;
 
 use Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\DbTableLogHandler;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Configuration;
+use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\EnabledConfigurationRepository;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\Repository;
 use Akeneo\Test\Integration\TestCase;
 use Monolog\Logger;
@@ -42,119 +43,6 @@ final class DbTableLogHandlerIntegration extends TestCase
         );
     }
 
-    public function testItDoesntRotateIfNoNeedTo(): void
-    {
-        $connection = $this->get('database_connection');
-        $configRepo = new EnabledConfigurationRepository();
-
-        $handler = new DbTableLogHandler($configRepo, $connection, 0);
-
-        $handler->handle(
-            [
-                'message' => 'My old nice message',
-                'context' => [],
-                'level' =>  Logger::DEBUG,
-                'level_name' => Logger::getLevelName(Logger::DEBUG),
-                'channel' => 'authentication',
-                'datetime' => new \DateTime('2012-01-01 13:43:25 GMT+2'),
-                'extra' => array()
-            ]
-        );
-
-        $handler->handle(
-            [
-                'message' => 'My new nice message',
-                'context' => [],
-                'level' =>  Logger::DEBUG,
-                'level_name' => Logger::getLevelName(Logger::DEBUG),
-                'channel' => 'authentication',
-                'datetime' => new \DateTime('2013-01-01 13:43:25 GMT+2'),
-                'extra' => array()
-            ]
-        );
-
-        $handler->close();
-
-        $this->assertLogTableIsSame(
-            [
-                [
-                    'channel' => 'authentication',
-                    'level' =>  Logger::DEBUG,
-                    'message' => "[2012-01-01 13:43:25] authentication.DEBUG: My old nice message [] []\n",
-                    'time' => '2012-01-01 11:43:25'
-                ],
-                [
-                    'channel' => 'authentication',
-                    'level' =>  Logger::DEBUG,
-                    'message' => "[2013-01-01 13:43:25] authentication.DEBUG: My new nice message [] []\n",
-                    'time' => '2013-01-01 11:43:25'
-                ]
-            ]
-        );
-    }
-
-    public function testItRotatesOldEntries(): void
-    {
-        $connection = $this->get('database_connection');
-        $configRepo = new EnabledConfigurationRepository();
-
-        $handler = new DbTableLogHandler($configRepo, $connection, 10);
-
-        $handler->handle(
-            [
-                'message' => 'My very old nice message',
-                'context' => [],
-                'level' =>  Logger::DEBUG,
-                'level_name' => Logger::getLevelName(Logger::DEBUG),
-                'channel' => 'authentication',
-                'datetime' => (new \DateTime('11 days ago GMT+2'))->setTime(14,0),
-                'extra' => array()
-            ]
-        );
-
-        $handler->handle(
-            [
-                'message' => 'My old nice message',
-                'context' => [],
-                'level' =>  Logger::DEBUG,
-                'level_name' => Logger::getLevelName(Logger::DEBUG),
-                'channel' => 'authentication',
-                'datetime' => (new \DateTime('11 days ago GMT+2'))->setTime(16,0),
-                'extra' => array()
-            ]
-        );
-
-        $lastEntryTime = (new \DateTime('today GMT+2'))->setTime(15,0);
-
-        $handler->handle(
-            [
-                'message' => 'My new nice message',
-                'context' => [],
-                'level' =>  Logger::DEBUG,
-                'level_name' => Logger::getLevelName(Logger::DEBUG),
-                'channel' => 'authentication',
-                'datetime' => $lastEntryTime,
-                'extra' => array()
-            ]
-        );
-
-        $handler->close();
-
-        $this->assertLogTableIsSame(
-            [
-                [
-                    'channel' => 'authentication',
-                    'level' =>  Logger::DEBUG,
-                    'message' => sprintf(
-                        "[%s] authentication.DEBUG: My new nice message [] []\n",
-                        $lastEntryTime->setTimezone(new \DateTimeZone('GMT+2'))->format('Y-m-d H:i:s')
-                    ),
-                    'time' => $lastEntryTime->setTimezone(new \DateTimeZone('UTC'))->format('Y-m-d H:i:s')
-                ]
-            ]
-        );
-    }
-
     public function testItIntegratesWithMonolog()
     {
         $connection = $this->get('database_connection');
@@ -162,7 +50,7 @@ final class DbTableLogHandlerIntegration extends TestCase
 
         $logger = new Logger('my_test_logger');
 
-        $handler = new DbTableLogHandler($configRepo, $connection, 0);
+        $handler = new DbTableLogHandler($configRepo, $connection);
 
         $logger->pushHandler($handler);
 
@@ -216,35 +104,5 @@ final class DbTableLogHandlerIntegration extends TestCase
     protected function getConfiguration()
     {
         return null;
-    }
-
-}
-
-final class EnabledConfigurationRepository implements Repository
-{
-    public function find(string $code): Configuration
-    {
-        return Configuration::fromArray(
-            'enabledConfiguration',
-            [
-                'isEnabled' => true,
-                'identityProvider' => [
-                    'entityId' => 'http://www.example.com/',
-                    'signOnUrl' => 'http://www.example.com/signon',
-                    'logoutUrl' => 'http://www.example.com/logout',
-                    'certificate' => 'my mock certificate'
-                ],
-                'serviceProvider' => [
-                    'entityId' => 'http://www.example.com/',
-                    'certificate' => 'my mock certificate',
-                    'privateKey' => 'my mock private key'
-                ]
-            ]
-        );
-    }
-
-    public function save(Configuration $configurationRoot): void
-    {
-        throw new \LogicException("Mock configuration repository will not save configuration.");
     }
 }

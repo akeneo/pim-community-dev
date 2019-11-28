@@ -92,7 +92,7 @@ SQL
             CREATE TABLE pimee_sso_log (
               time DATETIME,
               channel VARCHAR(255),
-              level TINYINT,
+              level SMALLINT,
               message TEXT,
               INDEX(time)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

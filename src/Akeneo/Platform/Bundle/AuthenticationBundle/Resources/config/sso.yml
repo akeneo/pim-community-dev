@@ -66,5 +66,11 @@ services:
         arguments:
             - '@akeneo_authentication.sso.configuration.repository'
             - '@database_connection'
-            - 10
             - 'error'
+
+    Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\RotateLogCommand:
+        arguments:
+            - '@akeneo_authentication.sso.configuration.repository'
+            - '@database_connection'
+        tags:
+            - { name: console.command }

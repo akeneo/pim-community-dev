@@ -20,10 +20,6 @@ use Monolog\Logger;
 
 /**
  * This Monolog handler logs message into a table in the current database.
- * The table is created automatically if it does not exists.
- *
- * The handler cleans up log entries older than the specified number of
- * days. 0 means no limit.
  */
 final class DbTableLogHandler extends AbstractProcessingHandler
 {
@@ -38,22 +34,17 @@ final class DbTableLogHandler extends AbstractProcessingHandler
     /** @var bool */
     private $ssoEnabled;
 
-    /** @®ar int */
-    private $maxDays = 0;
-
     /** @static string */
     const TABLE_NAME = 'pimee_sso_log';
 
     public function __construct(
         Repository $configRepository,
         Connection $connection,
-        int $maxDays = 0,
         $level = Logger::DEBUG,
         bool $bubble = true
     ) {
         $this->configRepository = $configRepository;
         $this->connection = $connection;
-        $this->maxDays = $maxDays;
 
         parent::__construct($level, $bubble);
     }
@@ -82,34 +73,6 @@ final class DbTableLogHandler extends AbstractProcessingHandler
             'level' => $record['level'],
             'message' => $record['formatted']
         ));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function close()
-    {
-        parent::close();
-
-        if ($this->isSSOEnabled()) {
-            $this->rotate();
-        }
-    }
-
-    private function rotate(): void
-    {
-        if (0 === $this->maxDays) {
-            return;
-        }
-
-        $expirationDate = new \DateTime(sprintf("%s days ago", $this->maxDays));
-
-        $this->connection->executeQuery(
-            sprintf('DELETE FROM %s WHERE time < :expirationTime', self::TABLE_NAME),
-            [
-                'expirationTime' => $this->connection->convertToDatabaseValue($expirationDate, 'datetime')
-            ]
-        );
     }
 
     private function isSSOEnabled(): bool
