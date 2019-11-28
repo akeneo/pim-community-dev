@@ -368,7 +368,7 @@ class EditAssetFamilyTransformationsContext implements Context
     public function thereShouldBeAValidationErrorStatingThatAnOperationIsSetTwice()
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
-            'You cannot create or update the asset family "packshot" because the operation "operation_type" is specified twice in a single transformation'
+            'You cannot update the asset family "packshot" because the operation "operation_type" is specified twice in a single transformation'
         );
     }
 
@@ -378,7 +378,7 @@ class EditAssetFamilyTransformationsContext implements Context
     public function thereShouldBeAValidationErrorStatingThatTheTransformationLimitIsReached()
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
-            'You cannot create or update the asset family "packshot" because you have reached the limit of 10 transformations'
+            'You cannot update the asset family "packshot" because you have reached the limit of 10 transformations'
         );
     }
 

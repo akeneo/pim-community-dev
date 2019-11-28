@@ -127,7 +127,6 @@ final class CreateAssetFamilyContext implements Context
             $actualAssetFamily
         );
         $this->assertSameProductLinkRules(json_decode($expectedInformation['product_link_rules'] ?? '[]', true), $actualAssetFamily);
-        // TODO: assert transformations?
     }
 
     private function assertSameLabels(array $expectedLabels, AssetFamily $actualAssetFamily)
