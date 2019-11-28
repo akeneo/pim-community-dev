@@ -22,8 +22,7 @@ Feature: Edit a user groups and roles
       | Roles | |
     And I save the user
     Then I should see the text "There are unsaved changes."
-    And I should see the text "You must select at least 1 role"
-    And the user "admin" should still have 2 roles
+    And I should see the text "You must select at least 1 role" And the user "admin" should still have 2 roles
 
   Scenario: Assign a role to a user from the role page
     Given I edit the "Catalog manager" role
