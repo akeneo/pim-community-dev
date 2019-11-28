@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-8987: Add --batch-size option to pim:versioning:purge command and add a workaround for the memory leak inside.
+
 # 2.3.71 (2019-11-25)
 
 # 2.3.70 (2019-11-20)
