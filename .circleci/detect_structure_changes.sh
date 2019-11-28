@@ -45,6 +45,11 @@ if [ -d "vendor/akeneo/pim-community-dev" ]; then
     popd
 fi
 
+echo "Copy CE migrations into EE if necessary..."
+if [ -d "vendor/akeneo/pim-community-dev" ]; then
+    cp -R vendor/akeneo/pim-community-dev/upgrades/schema/* upgrades/schema
+fi
+
 echo "Clean cache..."
 APP_ENV=test make cache
 
