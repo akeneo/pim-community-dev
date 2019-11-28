@@ -60,7 +60,7 @@ SQL;
                 AssetIdentifier::fromString($rawResult['identifier']),
                 AssetCode::fromString($rawResult['code']),
                 AssetFamilyIdentifier::fromString($rawResult['asset_family_identifier']),
-                ValueCollection::fromValues(json_decode($rawResult['value_collection'], true))
+                json_decode($rawResult['value_collection'], true)
             );
         }
 

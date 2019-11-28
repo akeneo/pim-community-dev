@@ -15,11 +15,10 @@ namespace Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation;
 
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
-use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
 /**
- * Domain model used for the transformations.
+ * Read model used for the transformations.
  */
 class TransformationAsset
 {
@@ -32,18 +31,38 @@ class TransformationAsset
     /** @var AssetFamilyIdentifier */
     private $assetFamilyIdentifier;
 
-    /** @var ValueCollection */
-    private $valueCollection;
+    /** @var array */
+    private $rawValueCollection;
 
     public function __construct(
         AssetIdentifier $identifier,
         AssetCode $code,
         AssetFamilyIdentifier $assetFamilyIdentifier,
-        ValueCollection $valueCollection
+        array $rawValueCollection
     ) {
         $this->identifier = $identifier;
         $this->code = $code;
         $this->assetFamilyIdentifier = $assetFamilyIdentifier;
-        $this->valueCollection = $valueCollection;
+        $this->rawValueCollection = $rawValueCollection;
+    }
+
+    public function getIdentifier(): AssetIdentifier
+    {
+        return $this->identifier;
+    }
+
+    public function getCode(): AssetCode
+    {
+        return $this->code;
+    }
+
+    public function getAssetFamilyIdentifier(): AssetFamilyIdentifier
+    {
+        return $this->assetFamilyIdentifier;
+    }
+
+    public function getRawValueCollection(): array
+    {
+        return $this->rawValueCollection;
     }
 }
