@@ -242,39 +242,6 @@ class EditAssetFamilyHandlerSpec extends ObjectBehavior
         $this->__invoke($editAssetFamilyCommand);
     }
 
-    function it_edits_an_asset_family_with_an_empty_attribute_as_image(
-        AssetFamilyRepositoryInterface $repository,
-        AssetFamily $assetFamily,
-        EditAssetFamilyCommand $editAssetFamilyCommand,
-        Image $image
-    ) {
-        $editAssetFamilyCommand->identifier = 'designer';
-        $editAssetFamilyCommand->labels = [];
-        $editAssetFamilyCommand->productLinkRules = [];
-        $editAssetFamilyCommand->attributeAsImage = null;
-
-        $repository->getByIdentifier(Argument::type(AssetFamilyIdentifier::class))
-            ->willReturn($assetFamily);
-
-        $assetFamily->updateLabels(Argument::type(LabelCollection::class))
-            ->shouldBeCalled();
-
-        $assetFamily->updateImage(Argument::that(function ($image) {
-            return $image instanceof Image && $image->isEmpty();
-        }))
-            ->shouldBeCalled();
-
-        $assetFamily->updateRuleTemplateCollection(Argument::type(RuleTemplateCollection::class))
-            ->shouldBeCalled();
-
-        $assetFamily->updateAttributeAsImageReference(Argument::type(AttributeAsImageReference::class))
-            ->shouldNotBeCalled();
-
-        $repository->update($assetFamily)->shouldBeCalled();
-
-        $this->__invoke($editAssetFamilyCommand);
-    }
-
     function it_edits_an_asset_family_with_an_empty_attribute_as_main_media(
         AssetFamilyRepositoryInterface $repository,
         AssetFamily $assetFamily,
