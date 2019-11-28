@@ -184,6 +184,44 @@ SQL;
     }
 
     /**
+     * @throws AttributeNotFoundException
+     * @throws DBALException
+     */
+    public function getByCodeAndAssetFamilyIdentifier(AttributeCode $code, AssetFamilyIdentifier $assetFamilyIdentifier): AbstractAttribute
+    {
+        $fetch = <<<SQL
+        SELECT
+            identifier,
+            code,
+            asset_family_identifier,
+            labels,
+            attribute_type,
+            attribute_order,
+            is_required,
+            value_per_channel,
+            value_per_locale,
+            additional_properties
+        FROM akeneo_asset_manager_attribute
+        WHERE asset_family_identifier = :asset_family_identifier
+            AND code = :code;
+SQL;
+        $statement = $this->sqlConnection->executeQuery(
+            $fetch,
+            [
+                'asset_family_identifier' => $assetFamilyIdentifier,
+                'code' => $code
+            ]
+        );
+        $result = $statement->fetch();
+
+        if (!$result) {
+            throw AttributeNotFoundException::withAssetFamilyAndAttributeCode($assetFamilyIdentifier, $code);
+        }
+
+        return $this->attributeHydratorRegistry->getHydrator($result)->hydrate($result);
+    }
+
+    /**
      * @param AssetFamilyIdentifier $assetFamilyIdentifier
      *
      * @return AbstractAttribute[]
