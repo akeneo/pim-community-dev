@@ -39,8 +39,6 @@ class AttributeSourceIsNotATargetValidator extends ConstraintValidator
             return;
         }
 
-        Assert::isArray($command->transformations, 'transformations must be an array.');
-
         $targets = array_map(function (array $transformation) {
             return Target::createFromNormalized($transformation['target']);
         }, $command->transformations);

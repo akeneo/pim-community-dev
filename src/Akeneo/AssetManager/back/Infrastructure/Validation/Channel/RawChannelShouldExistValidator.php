@@ -16,7 +16,9 @@ namespace Akeneo\AssetManager\Infrastructure\Validation\Channel;
 use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
 use Akeneo\AssetManager\Domain\Query\Channel\ChannelExistsInterface;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Validation;
 
 class RawChannelShouldExistValidator extends ConstraintValidator
 {
@@ -37,8 +39,11 @@ class RawChannelShouldExistValidator extends ConstraintValidator
             return;
         }
 
-        if (!is_string($rawChannel)) {
-            throw new \InvalidArgumentException('Channel must be a string.');
+        $validator = Validation::createValidator();
+        $violations = $validator->validate($rawChannel, new Assert\Type('string'));
+        foreach ($violations as $violation) {
+            $this->context->addViolation($violation->getMessage(), $violation->getParameters());
+            return;
         }
 
         $channelIdentifier = ChannelIdentifier::fromCode($rawChannel);

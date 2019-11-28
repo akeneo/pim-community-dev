@@ -41,7 +41,6 @@ class ThereShouldBeLessTransformationThanLimitValidator extends ConstraintValida
             return;
         }
 
-        Assert::isArray($command->transformations, 'transformations must be an array.');
         $total = count($command->transformations);
 
         if ($total > $this->maxTransformationByAssetFamilyLimit) {

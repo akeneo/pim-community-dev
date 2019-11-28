@@ -19,9 +19,10 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Source;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
-use Webmozart\Assert\Assert;
+use Symfony\Component\Validator\Validation;
 
 class RawSourceExistValidator extends ConstraintValidator
 {
@@ -39,7 +40,12 @@ class RawSourceExistValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, RawSourceExist::class);
         }
 
-        Assert::isArray($rawSource, 'source must be an array.');
+        $validator = Validation::createValidator();
+        $violations = $validator->validate($rawSource, new Assert\Type('array'));
+        foreach ($violations as $violation) {
+            $this->context->addViolation($violation->getMessage(), $violation->getParameters());
+            return;
+        }
 
         $attributes = $this->attributeRepository->findByAssetFamily($constraint->getAssetFamilyIdentifier());
         $foundAttribute = null;
