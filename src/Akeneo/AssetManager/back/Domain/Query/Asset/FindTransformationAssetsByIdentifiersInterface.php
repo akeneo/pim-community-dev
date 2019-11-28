@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Domain\Query\Asset;
 
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Asset;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationAsset;
 
 interface FindTransformationAssetsByIdentifiersInterface
 {
     /**
      * @param string[] $assetIdentifiers
      *
-     * @return Asset
+     * @return TransformationAsset
      */
     public function find(array $assetIdentifiers): array;
 }

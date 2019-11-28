@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset;
 
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Asset;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationAsset;
 use Akeneo\AssetManager\Domain\Query\Asset\FindTransformationAssetsByIdentifiersInterface;
 use Doctrine\DBAL\Connection;
 
@@ -52,7 +52,7 @@ SQL;
 
         $results = [];
         foreach ($rawResults as $rawResult) {
-            $results[$rawResult['identifier']] = new Asset(
+            $results[$rawResult['identifier']] = new TransformationAsset(
                 $rawResult['identifier'],
                 $rawResult['code'],
                 $rawResult['asset_family_identifier'],

@@ -16,7 +16,7 @@ namespace Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation;
 /**
  * Domain model used for the transformations.
  */
-class Asset
+class TransformationAsset
 {
     /** @var string */
     private $identifier;
