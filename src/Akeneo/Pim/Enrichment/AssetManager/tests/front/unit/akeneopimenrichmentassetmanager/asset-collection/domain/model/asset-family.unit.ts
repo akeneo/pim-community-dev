@@ -7,7 +7,7 @@ test('It could return an empty asset family', () => {
     labels: {},
     image: null,
     attributeAsLabel: '',
-    attributeAsImage: '',
+    attributeAsMainMedia: '',
   };
 
   expect(emptyAssetFamily()).toMatchObject(assetFamily);

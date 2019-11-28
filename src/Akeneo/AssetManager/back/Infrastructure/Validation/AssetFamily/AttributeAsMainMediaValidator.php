@@ -28,7 +28,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  * @author    Valentin Dijkstra <valentin.dijkstra@akeneo.com>
  * @copyright 2019 Akeneo SAS (https://www.akeneo.com)
  */
-class AttributeAsImageValidator extends ConstraintValidator
+class AttributeAsMainMediaValidator extends ConstraintValidator
 {
     private const VALID_ATTRIBUTE_TYPES = [MediaLinkAttribute::ATTRIBUTE_TYPE, ImageAttribute::ATTRIBUTE_TYPE];
 
@@ -46,12 +46,12 @@ class AttributeAsImageValidator extends ConstraintValidator
 
     public function validate($editAssetFamilyCommand, Constraint $constraint)
     {
-        if (!$constraint instanceof AttributeAsImage) {
+        if (!$constraint instanceof AttributeAsMainMedia) {
             throw new UnexpectedTypeException($constraint, self::class);
         }
 
-        // We validate only if the attributeAsImage is present
-        if (null !== $editAssetFamilyCommand->attributeAsImage) {
+        // We validate only if the attributeAsMainMedia is present
+        if (null !== $editAssetFamilyCommand->attributeAsMainMedia) {
             $this->validateAttributeExists($editAssetFamilyCommand) &&
             $this->validateAttributeType($editAssetFamilyCommand);
         }
@@ -61,13 +61,13 @@ class AttributeAsImageValidator extends ConstraintValidator
     {
         $attributeExists = $this->attributeExists->withAssetFamilyAndCode(
             AssetFamilyIdentifier::fromString($editAssetFamilyCommand->identifier),
-            AttributeCode::fromString($editAssetFamilyCommand->attributeAsImage)
+            AttributeCode::fromString($editAssetFamilyCommand->attributeAsMainMedia)
         );
 
         if (!$attributeExists) {
-            $this->context->buildViolation(AttributeAsImage::ATTRIBUTE_NOT_FOUND)
-                ->setParameter('%attribute_as_image%', $editAssetFamilyCommand->attributeAsImage)
-                ->atPath('attribute_as_image')
+            $this->context->buildViolation(AttributeAsMainMedia::ATTRIBUTE_NOT_FOUND)
+                ->setParameter('%attribute_as_main_media%', $editAssetFamilyCommand->attributeAsMainMedia)
+                ->atPath('attribute_as_main_media')
                 ->addViolation();
         }
 
@@ -78,13 +78,13 @@ class AttributeAsImageValidator extends ConstraintValidator
     {
         $attributeType = $this->getAttributeType->fetch(
             AssetFamilyIdentifier::fromString($editAssetFamilyCommand->identifier),
-            AttributeCode::fromString($editAssetFamilyCommand->attributeAsImage)
+            AttributeCode::fromString($editAssetFamilyCommand->attributeAsMainMedia)
         );
 
         if (!in_array($attributeType, self::VALID_ATTRIBUTE_TYPES)) {
-            $this->context->buildViolation(AttributeAsImage::INVALID_ATTRIBUTE_TYPE)
-                ->setParameter('%valid_attribute_as_image_types%', implode(', ', self::VALID_ATTRIBUTE_TYPES))
-                ->atPath('attribute_as_image')
+            $this->context->buildViolation(AttributeAsMainMedia::INVALID_ATTRIBUTE_TYPE)
+                ->setParameter('%valid_attribute_as_main_media_types%', implode(', ', self::VALID_ATTRIBUTE_TYPES))
+                ->atPath('attribute_as_main_media')
                 ->addViolation();
         }
     }

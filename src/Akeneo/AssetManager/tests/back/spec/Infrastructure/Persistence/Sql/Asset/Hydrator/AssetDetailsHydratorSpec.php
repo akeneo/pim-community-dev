@@ -84,13 +84,13 @@ class AssetDetailsHydratorSpec extends ObjectBehavior
             [
                 'identifier'                  => 'wow_game_A8E76F8A76E87F6A',
                 'code'                        => 'world_of_warcraft',
-                'asset_family_identifier' => 'game',
+                'asset_family_identifier'     => 'game',
                 'value_collection'            => json_encode([
                     'label_game_fingerprint_fr_FR' => $labelFrFrNormalized,
                     'label_game_fingerprint_en_US' => $labelenUSNormalized,
                 ]),
                 'attribute_as_label'          => 'label_game_fingerprint',
-                'attribute_as_image'          => 'main_image_game_fingerprint',
+                'attribute_as_main_media'     => 'main_image_game_fingerprint',
             ],
             [
                 'label_game_fingerprint_fr_FR' => [
@@ -241,10 +241,10 @@ class AssetDetailsHydratorSpec extends ObjectBehavior
             [
                 'identifier'                  => 'wow_game_A8E76F8A76E87F6A',
                 'code'                        => 'world_of_warcraft',
-                'asset_family_identifier' => 'game',
+                'asset_family_identifier'     => 'game',
                 'value_collection'            => json_encode($rawValues),
                 'attribute_as_label'          => 'another_attribute_game_fingerprint',
-                'attribute_as_image'          => 'image_game_fingerprint',
+                'attribute_as_main_media'     => 'image_game_fingerprint',
             ],
             $emptyValues,
             $valueKeys,

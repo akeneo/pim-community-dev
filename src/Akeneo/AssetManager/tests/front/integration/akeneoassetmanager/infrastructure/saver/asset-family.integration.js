@@ -29,7 +29,7 @@ describe('Akeneoassetfamily > infrastructure > saver > asset-family', () => {
         identifier: 'sofa',
         labels: {en_US: 'Sofa', fr_FR: 'Canapé'},
         image: createEmptyFile(),
-        attribute_as_image: 'main_image',
+        attribute_as_main_media: 'main_image',
         attribute_as_label: 'label'
       }
       );
@@ -65,7 +65,7 @@ describe('Akeneoassetfamily > infrastructure > saver > asset-family', () => {
         identifier: 'sofa',
         labels: {en_US: 'Sofa', fr_FR: 'Canapé'},
         image: createEmptyFile(),
-        attribute_as_image: 'main_image',
+        attribute_as_main_media: 'main_image',
         attribute_as_label: 'label'
       });
 
@@ -128,7 +128,7 @@ describe('Akeneoassetfamily > infrastructure > saver > asset-family', () => {
         code: 'invalid/identifier',
         labels: {en_US: 'Sofa', fr_FR: 'Canapé'},
         image: createEmptyFile(),
-        attribute_as_image: 'main_image',
+        attribute_as_main_media: 'main_image',
         attribute_as_label: 'label'
       });
 

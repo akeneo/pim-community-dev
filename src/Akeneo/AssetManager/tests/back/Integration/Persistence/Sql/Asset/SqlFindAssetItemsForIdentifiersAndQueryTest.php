@@ -101,7 +101,7 @@ class SqlFindAssetItemsForIdentifiersAndQueryTest extends SqlIntegrationTestCase
         $assetFamily = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family')
             ->getByIdentifier(AssetFamilyIdentifier::fromString('designer'));
         $labelIdentifier = $assetFamily->getAttributeAsLabelReference()->getIdentifier()->normalize();
-        $imageIdentifier = $assetFamily->getAttributeAsImageReference()->getIdentifier()->normalize();
+        $imageIdentifier = $assetFamily->getAttributeAsMainMediaReference()->getIdentifier()->normalize();
         $attributeAsLabelValueKey = $labelIdentifier . '_fr_FR';
 
         $starck = new AssetItem();

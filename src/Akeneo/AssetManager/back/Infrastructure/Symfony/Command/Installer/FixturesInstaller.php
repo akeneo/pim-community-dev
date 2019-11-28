@@ -6,8 +6,8 @@ namespace Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
@@ -127,7 +127,7 @@ CREATE TABLE `akeneo_asset_manager_asset_family` (
     `labels` JSON NOT NULL,
     `image` VARCHAR(255) NULL,
     `attribute_as_label` VARCHAR(255) NULL,
-    `attribute_as_image` VARCHAR(255) NULL,
+    `attribute_as_main_media` VARCHAR(255) NULL,
     `rule_templates` JSON NOT NULL,
     `transformations` JSON NOT NULL,
     PRIMARY KEY (`identifier`)
@@ -177,8 +177,8 @@ ALTER TABLE `akeneo_asset_manager_asset_family`
     ON DELETE SET NULL;
 
 ALTER TABLE `akeneo_asset_manager_asset_family`
-    ADD CONSTRAINT akeneoasset_manager_attribute_as_image_foreign_key
-    FOREIGN KEY (attribute_as_image)
+    ADD CONSTRAINT akeneoasset_manager_attribute_as_main_media_foreign_key
+    FOREIGN KEY (attribute_as_main_media)
     REFERENCES akeneo_asset_manager_attribute (identifier)
     ON DELETE SET NULL;
 
@@ -515,7 +515,7 @@ SQL;
             ['en_US' => 'Atmosphere'],
             Image::createEmpty(),
             AttributeAsLabelReference::fromAttributeIdentifier($attributeAsLabel->getIdentifier()),
-            AttributeAsImageReference::fromAttributeIdentifier($linkAtmosphere->getIdentifier()),
+            AttributeAsMainMediaReference::fromAttributeIdentifier($linkAtmosphere->getIdentifier()),
             RuleTemplateCollection::empty()
         );
 
@@ -636,7 +636,7 @@ SQL;
             ['en_US' => 'Notice'],
             Image::createEmpty(),
             AttributeAsLabelReference::fromAttributeIdentifier($attributeAsLabel->getIdentifier()),
-            AttributeAsImageReference::fromAttributeIdentifier($linkPDF->getIdentifier()),
+            AttributeAsMainMediaReference::fromAttributeIdentifier($linkPDF->getIdentifier()),
             RuleTemplateCollection::empty()
         );
 
@@ -725,7 +725,7 @@ SQL;
         $this->attributeRepository->create($youtube);
 
         $updatedVideos = $this->assetFamilyRepository->getByIdentifier($video->getIdentifier());
-        $updatedVideos->updateAttributeAsImageReference(AttributeAsImageReference::fromAttributeIdentifier($youtube->getIdentifier()));
+        $updatedVideos->updateAttributeAsMainMediaReference(AttributeAsMainMediaReference::fromAttributeIdentifier($youtube->getIdentifier()));
         $this->assetFamilyRepository->update($updatedVideos);
     }
 
@@ -771,7 +771,7 @@ SQL;
         $this->attributeRepository->create($zoomImage);
 
         $updatedZoomOnMaterial = $this->assetFamilyRepository->getByIdentifier($zoomOnMaterial->getIdentifier());
-        $updatedZoomOnMaterial->updateAttributeAsImageReference(AttributeAsImageReference::fromAttributeIdentifier($zoomImage->getIdentifier()));
+        $updatedZoomOnMaterial->updateAttributeAsMainMediaReference(AttributeAsMainMediaReference::fromAttributeIdentifier($zoomImage->getIdentifier()));
         $this->assetFamilyRepository->update($updatedZoomOnMaterial);
     }
 
@@ -853,15 +853,15 @@ SQL;
         return $attributeAsLabel;
     }
 
-    private function defaultAttributeAsImage(AssetFamilyIdentifier $atmosphereAssetFamilyIdentifier): AbstractAttribute
+    private function defaultAttributeAsMainMedia(AssetFamilyIdentifier $atmosphereAssetFamilyIdentifier): AbstractAttribute
     {
         $attributes = $this->attributeRepository->findByAssetFamily($atmosphereAssetFamilyIdentifier);
-        $attributeAsImage = current(array_filter($attributes,
+        $attributeAsMainMedia = current(array_filter($attributes,
             function (AbstractAttribute $attribute) {
                 return $attribute->getCode()->equals(AttributeCode::fromString('image'));
             }
         ));
 
-        return $attributeAsImage;
+        return $attributeAsMainMedia;
     }
 }

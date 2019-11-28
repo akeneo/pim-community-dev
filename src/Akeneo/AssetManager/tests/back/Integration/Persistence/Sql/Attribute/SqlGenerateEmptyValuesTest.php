@@ -63,7 +63,7 @@ class SqlGenerateEmptyValuesTest extends SqlIntegrationTestCase
         $assetFamily = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family')
             ->getByIdentifier($designer);
         $attributeAsLabelIdentifier = $assetFamily->getAttributeAsLabelReference()->getIdentifier();
-        $attributeAsImageIdentifier = $assetFamily->getAttributeAsImageReference()->getIdentifier();
+        $attributeAsMainMediaIdentifier = $assetFamily->getAttributeAsMainMediaReference()->getIdentifier();
 
         $this->assertCount(15, $emptyValues);
         $this->assertArrayHasKey(sprintf('%s', $image->getIdentifier()), $emptyValues);
@@ -80,7 +80,7 @@ class SqlGenerateEmptyValuesTest extends SqlIntegrationTestCase
         $this->assertArrayHasKey(sprintf('%s_en_US', $attributeAsLabelIdentifier), $emptyValues);
         $this->assertArrayHasKey(sprintf('%s_fr_FR', $attributeAsLabelIdentifier), $emptyValues);
         $this->assertArrayHasKey(sprintf('%s_de_DE', $attributeAsLabelIdentifier), $emptyValues);
-        $this->assertArrayHasKey(sprintf('%s', $attributeAsImageIdentifier), $emptyValues);
+        $this->assertArrayHasKey(sprintf('%s', $attributeAsMainMediaIdentifier), $emptyValues);
 
         $this->assertSame([
             'data' => null,

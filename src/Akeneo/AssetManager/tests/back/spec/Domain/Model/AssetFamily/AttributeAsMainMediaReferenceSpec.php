@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace spec\Akeneo\AssetManager\Domain\Model\AssetFamily;
 
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
 use PhpSpec\ObjectBehavior;
 
-class AttributeAsImageReferenceSpec extends ObjectBehavior
+class AttributeAsMainMediaReferenceSpec extends ObjectBehavior
 {
     function let()
     {
@@ -17,7 +17,7 @@ class AttributeAsImageReferenceSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(AttributeAsImageReference::class);
+        $this->shouldHaveType(AttributeAsMainMediaReference::class);
     }
 
     function it_can_be_constructed_with_no_attribute()

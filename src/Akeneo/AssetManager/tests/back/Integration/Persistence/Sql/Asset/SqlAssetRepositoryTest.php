@@ -226,7 +226,7 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
                     TextData::fromString('Starck')
                 ),
                 Value::create(
-                    $assetFamily->getAttributeAsImageReference()->getIdentifier(),
+                    $assetFamily->getAttributeAsMainMediaReference()->getIdentifier(),
                     ChannelReference::noReference(),
                     LocaleReference::noReference(),
                     FileData::createFromFileinfo($imageInfo, \DateTimeImmutable::createFromFormat(\DateTimeImmutable::ISO8601, '2019-11-22T15:16:21+0000'))

@@ -49,7 +49,7 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset-family', () => {
             originalFilename: 'sofa.jpg',
           })
           .withAttributes([])
-          .withAttributeAsImage('')
+          .withAttributeAsMainMedia('')
           .withAttributeAsLabel('')
           .build();
 
@@ -70,7 +70,7 @@ describe('Akeneoassetfamily > infrastructure > fetcher > asset-family', () => {
       attributes: [],
       assetCount: 123,
       assetFamily: {
-        attributeAsImage: '',
+        attributeAsMainMedia: '',
         attributeAsLabel: '',
         identifier: 'sofa',
         code: 'sofa',

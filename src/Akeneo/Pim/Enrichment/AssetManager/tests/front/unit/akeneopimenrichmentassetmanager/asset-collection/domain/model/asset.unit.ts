@@ -17,12 +17,12 @@ import {
   getAssetCodes,
   getAssetByCode,
   sortAssetCollection,
-  getAssetMainImageDownloadLink,
-  assetMainImageCanBeDownloaded,
-  getAssetMainImageOriginalFilename,
+  getAssetMainMediaDownloadLink,
+  assetMainMediaCanBeDownloaded,
+  getAssetMainMediaOriginalFilename,
   assetHasCompleteness,
-  assetHasMainImage,
-  getAttributeAsMainImage,
+  assetHasMainMedia,
+  getAttributeAsMainMedia,
 } from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {isLabels} from 'akeneoassetmanager/domain/model/utils';
 
@@ -38,7 +38,7 @@ test('The asset is complete', () => {
       labels: {en_US: 'Packshot'},
       image: null,
       attributeAsLabel: null,
-      attributeAsImage: null,
+      attributeAsMainMedia: null,
     },
     labels: {en_US: 'Iphone'},
     completeness: complete,
@@ -59,7 +59,7 @@ test('The asset is incomplete', () => {
       labels: {en_US: 'Packshot'},
       image: null,
       attributeAsLabel: null,
-      attributeAsImage: null,
+      attributeAsMainMedia: null,
     },
     labels: {en_US: 'Iphone'},
     completeness: incomplete,
@@ -89,7 +89,7 @@ test('It could return an empty asset', () => {
       labels: {},
       image: null,
       attributeAsLabel: '',
-      attributeAsImage: '',
+      attributeAsMainMedia: '',
     },
     labels: {},
     completeness: {
@@ -354,7 +354,7 @@ test('I can get the main image media link download link', () => {
         originalFilename: '',
       },
       attributeAsLabel: '',
-      attributeAsImage: 'main_image',
+      attributeAsMainMedia: 'main_image',
       attributes: [
         {
           identifier: 'main_image',
@@ -365,7 +365,7 @@ test('I can get the main image media link download link', () => {
       ],
     },
   };
-  expect(getAssetMainImageDownloadLink(asset, {locale: 'en_US', channel: 'ecommerce'})).toBe(
+  expect(getAssetMainMediaDownloadLink(asset, {locale: 'en_US', channel: 'ecommerce'})).toBe(
     'http://test.com/file_path.jpg'
   );
 });
@@ -394,7 +394,7 @@ test('I get an error when the attribute is not found', () => {
         originalFilename: '',
       },
       attributeAsLabel: '',
-      attributeAsImage: 'main_image',
+      attributeAsMainMedia: 'main_image',
       attributes: [
         {
           identifier: 'another_attribute',
@@ -404,7 +404,7 @@ test('I get an error when the attribute is not found', () => {
     },
   };
   expect(() => {
-    getAssetMainImageDownloadLink(asset, {locale: 'en_US', channel: 'ecommerce'});
+    getAssetMainMediaDownloadLink(asset, {locale: 'en_US', channel: 'ecommerce'});
   }).toThrow();
 });
 
@@ -432,7 +432,7 @@ test('I know if an asset main image can be downloaded', () => {
         originalFilename: '',
       },
       attributeAsLabel: '',
-      attributeAsImage: 'main_image',
+      attributeAsMainMedia: 'main_image',
       attributes: [
         {
           identifier: 'main_image',
@@ -441,7 +441,7 @@ test('I know if an asset main image can be downloaded', () => {
       ],
     },
   };
-  expect(assetMainImageCanBeDownloaded(asset, {locale: 'en_US', channel: 'ecommerce'})).toBeTruthy();
+  expect(assetMainMediaCanBeDownloaded(asset, {locale: 'en_US', channel: 'ecommerce'})).toBeTruthy();
 });
 
 test('I can get the asset main image original filename', () => {
@@ -468,7 +468,7 @@ test('I can get the asset main image original filename', () => {
         originalFilename: '',
       },
       attributeAsLabel: '',
-      attributeAsImage: 'main_image',
+      attributeAsMainMedia: 'main_image',
       attributes: [
         {
           identifier: 'main_image',
@@ -477,7 +477,7 @@ test('I can get the asset main image original filename', () => {
       ],
     },
   };
-  expect(getAssetMainImageOriginalFilename(asset, {locale: 'en_US', channel: 'ecommerce'})).toBe(
+  expect(getAssetMainMediaOriginalFilename(asset, {locale: 'en_US', channel: 'ecommerce'})).toBe(
     'My nice filename.png'
   );
 });
@@ -532,7 +532,7 @@ test('I should be able to tell if an asset has a main image', () => {
         originalFilename: '',
       },
       attributeAsLabel: '',
-      attributeAsImage: 'main_image',
+      attributeAsMainMedia: 'main_image',
       attributes: [
         {
           identifier: 'main_image',
@@ -544,8 +544,8 @@ test('I should be able to tell if an asset has a main image', () => {
 
   const assetWithoutMainImage = {...assetWithMainImage, image: []};
 
-  expect(assetHasMainImage(assetWithMainImage, context)).toBe(true);
-  expect(assetHasMainImage(assetWithoutMainImage, context)).toBe(false);
+  expect(assetHasMainMedia(assetWithMainImage, context)).toBe(true);
+  expect(assetHasMainMedia(assetWithoutMainImage, context)).toBe(false);
 });
 
 test('I should be able to get the attribute as main image from the asset', () => {
@@ -576,10 +576,10 @@ test('I should be able to get the attribute as main image from the asset', () =>
         originalFilename: '',
       },
       attributeAsLabel: '',
-      attributeAsImage: 'main_image',
+      attributeAsMainMedia: 'main_image',
       attributes: [attribute],
     },
   };
 
-  expect(getAttributeAsMainImage(asset)).toBe(attribute);
+  expect(getAttributeAsMainMedia(asset)).toBe(attribute);
 });

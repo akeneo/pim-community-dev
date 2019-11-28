@@ -60,7 +60,7 @@ class SqlFindAttributesIndexedByIdentifierTest extends SqlIntegrationTestCase
     private $attributeAsLabel;
 
     /** @var AbstractAttribute */
-    private $attributeAsImage;
+    private $attributeAsMainMedia;
 
     public function setUp(): void
     {
@@ -85,7 +85,7 @@ class SqlFindAttributesIndexedByIdentifierTest extends SqlIntegrationTestCase
             'regex_designer_test'            => $this->customRegex,
             'image_designer_test'            => $this->imageAttribute,
             $this->attributeAsLabel->getIdentifier()->normalize() => $this->attributeAsLabel,
-            $this->attributeAsImage->getIdentifier()->normalize() => $this->attributeAsImage,
+            $this->attributeAsMainMedia->getIdentifier()->normalize() => $this->attributeAsMainMedia,
         ];
         $this->assertCount(7, $actualAttributes);
         foreach ($expectedAttributes as $expectedIdentifier => $expectedAttribute) {
@@ -206,9 +206,9 @@ class SqlFindAttributesIndexedByIdentifierTest extends SqlIntegrationTestCase
         $attributesRepository->create($this->imageAttribute);
 
         $attributesRepository->deleteByIdentifier($assetFamilyWithoutAttributes->getAttributeAsLabelReference()->getIdentifier());
-        $attributesRepository->deleteByIdentifier($assetFamilyWithoutAttributes->getAttributeAsImageReference()->getIdentifier());
+        $attributesRepository->deleteByIdentifier($assetFamilyWithoutAttributes->getAttributeAsMainMediaReference()->getIdentifier());
 
         $this->attributeAsLabel = $attributesRepository->getByIdentifier($assetFamilyWithAttributes->getAttributeAsLabelReference()->getIdentifier());
-        $this->attributeAsImage = $attributesRepository->getByIdentifier($assetFamilyWithAttributes->getAttributeAsImageReference()->getIdentifier());
+        $this->attributeAsMainMedia = $attributesRepository->getByIdentifier($assetFamilyWithAttributes->getAttributeAsMainMediaReference()->getIdentifier());
     }
 }

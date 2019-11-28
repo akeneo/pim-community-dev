@@ -14,21 +14,21 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Integration\Persistence\InMemory;
 
 use Akeneo\AssetManager\Common\Fake\InMemoryAssetFamilyRepository;
-use Akeneo\AssetManager\Common\Fake\InMemoryFindAssetFamilyAttributeAsImage;
+use Akeneo\AssetManager\Common\Fake\InMemoryFindAssetFamilyAttributeAsMainMedia;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Model\Image;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-class InMemoryFindAssetFamilyAttributeAsImageTest extends TestCase
+class InMemoryFindAssetFamilyAttributeAsMainMediaTest extends TestCase
 {
-    /** @var InMemoryFindAssetFamilyAttributeAsImage */
-    private $findAssetFamilyAttributeAsImage;
+    /** @var InMemoryFindAssetFamilyAttributeAsMainMedia */
+    private $findAssetFamilyAttributeAsMainMedia;
 
     /** @var InMemoryAssetFamilyRepository */
     private $assetFamilyRepository;
@@ -38,15 +38,15 @@ class InMemoryFindAssetFamilyAttributeAsImageTest extends TestCase
         $this->assetFamilyRepository = new InMemoryAssetFamilyRepository(
             new EventDispatcher()
         );
-        $this->findAssetFamilyAttributeAsImage = new InMemoryFindAssetFamilyAttributeAsImage($this->assetFamilyRepository);
+        $this->findAssetFamilyAttributeAsMainMedia = new InMemoryFindAssetFamilyAttributeAsMainMedia($this->assetFamilyRepository);
     }
 
     /**
      * @test
      */
-    public function it_finds_the_attribute_as_image_of_an_asset_family()
+    public function it_finds_the_attribute_as_main_media_of_an_asset_family()
     {
-        $expectedAttributeAsImage = AttributeAsImageReference::fromAttributeIdentifier(
+        $expectedAttributeAsMainMedia = AttributeAsMainMediaReference::fromAttributeIdentifier(
             AttributeIdentifier::fromString('image')
         );
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
@@ -56,24 +56,24 @@ class InMemoryFindAssetFamilyAttributeAsImageTest extends TestCase
             [],
             Image::createEmpty(),
             AttributeAsLabelReference::noReference(),
-            $expectedAttributeAsImage,
+            $expectedAttributeAsMainMedia,
             RuleTemplateCollection::empty()
         );
         $this->assetFamilyRepository->create($assetFamily);
 
-        $attributeAsImage = $this->findAssetFamilyAttributeAsImage->find($assetFamilyIdentifier);
+        $attributeAsMainMedia = $this->findAssetFamilyAttributeAsMainMedia->find($assetFamilyIdentifier);
 
-        $this->assertSame($expectedAttributeAsImage, $attributeAsImage);
+        $this->assertSame($expectedAttributeAsMainMedia, $attributeAsMainMedia);
     }
 
     /**
      * @test
      */
-    public function it_returns_an_empty_attribute_as_image_if_the_asset_family_was_not_found()
+    public function it_returns_an_empty_attribute_as_main_media_if_the_asset_family_was_not_found()
     {
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('unknown');
-        $attributeAsImage = $this->findAssetFamilyAttributeAsImage->find($assetFamilyIdentifier);
+        $attributeAsMainMedia = $this->findAssetFamilyAttributeAsMainMedia->find($assetFamilyIdentifier);
 
-        $this->assertTrue($attributeAsImage->isEmpty());
+        $this->assertTrue($attributeAsMainMedia->isEmpty());
     }
 }

@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Domain\Query\AssetFamily;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
 
-interface FindAssetFamilyAttributeAsImageInterface
+interface FindAssetFamilyAttributeAsMainMediaInterface
 {
-    public function find(AssetFamilyIdentifier $assetFamilyIdentifier): AttributeAsImageReference;
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier): AttributeAsMainMediaReference;
 }

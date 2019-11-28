@@ -22,8 +22,8 @@ use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ColorspaceOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ThumbnailOperation;
@@ -119,7 +119,7 @@ class InMemoryGetTransformationsTest extends TestCase
             [],
             Image::createEmpty(),
             AttributeAsLabelReference::noReference(),
-            AttributeAsImageReference::noReference(),
+            AttributeAsMainMediaReference::noReference(),
             RuleTemplateCollection::empty()
         );
         $assetFamily = $assetFamily->withTransformationCollection($transformationCollection);

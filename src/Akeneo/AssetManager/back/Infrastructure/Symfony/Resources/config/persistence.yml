@@ -79,8 +79,8 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_attribute_as_image:
-        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlFindAssetFamilyAttributeAsImage
+    akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_attribute_as_main_media:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlFindAssetFamilyAttributeAsMainMedia
         arguments:
             - '@database_connection'
 

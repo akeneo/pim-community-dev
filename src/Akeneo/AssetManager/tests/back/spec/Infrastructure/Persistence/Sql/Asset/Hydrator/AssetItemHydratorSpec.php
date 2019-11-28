@@ -45,7 +45,7 @@ class AssetItemHydratorSpec extends ObjectBehavior
         $this->shouldHaveType(AssetItemHydrator::class);
     }
 
-    public function it_hydrates_a_asset_item_with_attribute_as_image_is_image_value(
+    public function it_hydrates_a_asset_item_with_attribute_as_main_media_value(
         AssetQuery $assetQuery,
         FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocales,
         FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
@@ -142,7 +142,7 @@ class AssetItemHydratorSpec extends ObjectBehavior
             'code'                    => 'dry_cotton',
             'value_collection'        => json_encode($values),
             'attribute_as_label'      => 'label',
-            'attribute_as_image'      => 'image',
+            'attribute_as_main_media'      => 'image',
         ];
 
         $actualAssetItem = $this->hydrate($row, $assetQuery);

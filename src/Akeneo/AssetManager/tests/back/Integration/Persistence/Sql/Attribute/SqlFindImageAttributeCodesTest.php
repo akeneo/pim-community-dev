@@ -174,7 +174,7 @@ class SqlFindImageAttributeCodesTest extends SqlIntegrationTestCase
 
         $this->attributesRepository->create($name);
         $this->attributesRepository->create($email);
-        $this->attributesRepository->deleteByIdentifier($assetFamily->getAttributeAsImageReference()->getIdentifier());
+        $this->attributesRepository->deleteByIdentifier($assetFamily->getAttributeAsMainMediaReference()->getIdentifier());
     }
 
     private function resetDB(): void

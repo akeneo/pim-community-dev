@@ -12,7 +12,7 @@ use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueDataInterface;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
@@ -44,7 +44,7 @@ class AssetPreviewGeneratorSpec extends ObjectBehavior
         ImagePreviewUrlGenerator $imagePreviewUrlGenerator,
         Asset $asset,
         AssetFamily $assetFamily,
-        AttributeAsImageReference $attributeAsImageReference,
+        AttributeAsMainMediaReference $attributeAsMainMediaReference,
         AttributeIdentifier $attributeIdentifier,
         AbstractAttribute $attribute,
         Value $value,
@@ -58,8 +58,8 @@ class AssetPreviewGeneratorSpec extends ObjectBehavior
         $assetFamilyRepository->getByIdentifier(AssetFamilyIdentifier::fromString('packshot'))
             ->willReturn($assetFamily);
 
-        $assetFamily->getAttributeAsImageReference()->willReturn($attributeAsImageReference);
-        $attributeAsImageReference->getIdentifier()->willReturn($attributeIdentifier);
+        $assetFamily->getAttributeAsMainMediaReference()->willReturn($attributeAsMainMediaReference);
+        $attributeAsMainMediaReference->getIdentifier()->willReturn($attributeIdentifier);
         $attributeIdentifier->stringValue()->willReturn('packshot');
         $attributeIdentifier->normalize()->willReturn('packshot');
 
@@ -97,7 +97,7 @@ class AssetPreviewGeneratorSpec extends ObjectBehavior
         ImagePreviewUrlGenerator $imagePreviewUrlGenerator,
         Asset $asset,
         AssetFamily $assetFamily,
-        AttributeAsImageReference $attributeAsImageReference,
+        AttributeAsMainMediaReference $attributeAsMainMediaReference,
         AttributeIdentifier $attributeIdentifier,
         AbstractAttribute $attribute,
         Value $value,
@@ -111,8 +111,8 @@ class AssetPreviewGeneratorSpec extends ObjectBehavior
         $assetFamilyRepository->getByIdentifier(AssetFamilyIdentifier::fromString('packshot'))
             ->willReturn($assetFamily);
 
-        $assetFamily->getAttributeAsImageReference()->willReturn($attributeAsImageReference);
-        $attributeAsImageReference->getIdentifier()->willReturn($attributeIdentifier);
+        $assetFamily->getAttributeAsMainMediaReference()->willReturn($attributeAsMainMediaReference);
+        $attributeAsMainMediaReference->getIdentifier()->willReturn($attributeIdentifier);
         $attributeIdentifier->stringValue()->willReturn('packshot');
         $attributeIdentifier->normalize()->willReturn('packshot');
 

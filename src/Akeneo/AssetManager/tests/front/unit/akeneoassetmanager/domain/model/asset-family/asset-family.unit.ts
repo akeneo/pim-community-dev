@@ -10,7 +10,7 @@ const michelIdentifier = 'michel';
 const michelLabels = {en_US: 'Michel'};
 const didierIdentifier = 'didier';
 const didierLabels = {en_US: 'Didier'};
-const attributeAsImage = 'name';
+const attributeAsMainMedia = 'name';
 const attributeAsLabel = 'portrait';
 
 describe('akeneo > asset family > domain > model --- asset family', () => {
@@ -22,7 +22,7 @@ describe('akeneo > asset family > domain > model --- asset family', () => {
         labels: michelLabels,
         image: createEmptyFile(),
         attribute_as_label: attributeAsLabel,
-        attribute_as_image: attributeAsImage,
+        attribute_as_main_media: attributeAsMainMedia,
       }).identifier
     ).toBe(michelIdentifier);
   });
@@ -37,7 +37,7 @@ describe('akeneo > asset family > domain > model --- asset family', () => {
           labels: michelLabels,
           image: createEmptyFile(),
           attribute_as_label: 'name_michel_fingerprint',
-          attribute_as_image: 'image_michel_fingerprint',
+          attribute_as_main_media: 'image_michel_fingerprint',
         }),
         createAssetFamilyFromNormalized({
           identifier: didierIdentifier,
@@ -45,7 +45,7 @@ describe('akeneo > asset family > domain > model --- asset family', () => {
           labels: didierLabels,
           image: createEmptyFile(),
           attribute_as_label: 'name_michel_fingerprint',
-          attribute_as_image: 'image_michel_fingerprint',
+          attribute_as_main_media: 'image_michel_fingerprint',
         })
       )
     ).toBe(true);
@@ -57,7 +57,7 @@ describe('akeneo > asset family > domain > model --- asset family', () => {
           labels: michelLabels,
           image: createEmptyFile(),
           attribute_as_label: 'name_michel_fingerprint',
-          attribute_as_image: 'image_michel_fingerprint',
+          attribute_as_main_media: 'image_michel_fingerprint',
         }),
         createAssetFamilyFromNormalized({
           identifier: michelIdentifier,
@@ -65,7 +65,7 @@ describe('akeneo > asset family > domain > model --- asset family', () => {
           labels: michelLabels,
           image: createEmptyFile(),
           attribute_as_label: 'name_michel_fingerprint',
-          attribute_as_image: 'image_michel_fingerprint',
+          attribute_as_main_media: 'image_michel_fingerprint',
         })
       )
     ).toBe(false);
@@ -80,7 +80,7 @@ describe('akeneo > asset family > domain > model --- asset family', () => {
           labels: michelLabels,
           image: createEmptyFile(),
           attribute_as_label: 'name_michel_fingerprint',
-          attribute_as_image: 'image_michel_fingerprint',
+          attribute_as_main_media: 'image_michel_fingerprint',
         }),
         'en_US'
       )
@@ -93,7 +93,7 @@ describe('akeneo > asset family > domain > model --- asset family', () => {
           labels: michelLabels,
           image: createEmptyFile(),
           attribute_as_label: 'name_michel_fingerprint',
-          attribute_as_image: 'image_michel_fingerprint',
+          attribute_as_main_media: 'image_michel_fingerprint',
         }),
         'fr_FR'
       )
@@ -106,7 +106,7 @@ describe('akeneo > asset family > domain > model --- asset family', () => {
           labels: michelLabels,
           image: createEmptyFile(),
           attribute_as_label: 'name_michel_fingerprint',
-          attribute_as_image: 'image_michel_fingerprint',
+          attribute_as_main_media: 'image_michel_fingerprint',
         }),
         'fr_FR',
         false
@@ -122,7 +122,7 @@ describe('akeneo > asset family > domain > model --- asset family', () => {
         labels: michelLabels,
         image: createEmptyFile(),
         attribute_as_label: 'name_michel_fingerprint',
-        attribute_as_image: 'image_michel_fingerprint',
+        attribute_as_main_media: 'image_michel_fingerprint',
       }).labels
     ).toEqual(michelLabels);
   });
@@ -135,7 +135,7 @@ describe('akeneo > asset family > domain > model --- asset family', () => {
       code: '',
       labels: {},
       image: null,
-      attributeAsImage: '',
+      attributeAsMainMedia: '',
       attributeAsLabel: '',
     });
   });

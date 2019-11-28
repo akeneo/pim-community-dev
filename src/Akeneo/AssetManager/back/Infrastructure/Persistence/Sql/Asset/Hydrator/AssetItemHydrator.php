@@ -82,8 +82,8 @@ class AssetItemHydrator implements AssetItemHydratorInterface
 
         $attributeAsLabel = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_label'], $this->platform);
         $labels = $this->getLabels($valueCollection, $attributeAsLabel);
-        $attributeAsImageIdentifier = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_image'], $this->platform);
-        $images = $this->getImages($query, $valueCollection, $attributeAsImageIdentifier);
+        $attributeAsMainMediaIdentifier = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_main_media'], $this->platform);
+        $images = $this->getImages($query, $valueCollection, $attributeAsMainMediaIdentifier);
 
         $assetItem = new AssetItem();
         $assetItem->identifier = $identifier;
@@ -145,12 +145,12 @@ class AssetItemHydrator implements AssetItemHydratorInterface
         );
     }
 
-    private function getImages(AssetQuery $query, array $valueCollection, string $attributeAsImageIdentifier): array
+    private function getImages(AssetQuery $query, array $valueCollection, string $attributeAsMainMediaIdentifier): array
     {
         $images = array_values(array_filter(
             $valueCollection,
-            function (array $value) use ($attributeAsImageIdentifier, $query) {
-                return $value['attribute'] === $attributeAsImageIdentifier &&
+            function (array $value) use ($attributeAsMainMediaIdentifier, $query) {
+                return $value['attribute'] === $attributeAsMainMediaIdentifier &&
                     (null === $value['channel'] || $query->getChannel() === $value['channel']) &&
                     (null === $value['locale'] || $query->getLocale() === $value['locale']);
             }
@@ -160,7 +160,7 @@ class AssetItemHydrator implements AssetItemHydratorInterface
             return [[
                 'channel' => null,
                 'locale' => null,
-                'attribute' => $attributeAsImageIdentifier,
+                'attribute' => $attributeAsMainMediaIdentifier,
                 'data' => [
                     'filePath' => '',
                     'originalFilename' => ''

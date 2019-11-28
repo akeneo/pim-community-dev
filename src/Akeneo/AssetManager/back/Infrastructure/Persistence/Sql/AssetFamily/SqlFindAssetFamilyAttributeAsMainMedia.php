@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
-use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyAttributeAsImageInterface;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyAttributeAsMainMediaInterface;
 use Doctrine\DBAL\Connection;
 
-class SqlFindAssetFamilyAttributeAsImage implements FindAssetFamilyAttributeAsImageInterface
+class SqlFindAssetFamilyAttributeAsMainMedia implements FindAssetFamilyAttributeAsMainMediaInterface
 {
     /** @var Connection */
     private $sqlConnection;
@@ -28,10 +28,10 @@ class SqlFindAssetFamilyAttributeAsImage implements FindAssetFamilyAttributeAsIm
         $this->sqlConnection = $sqlConnection;
     }
 
-    public function find(AssetFamilyIdentifier $assetFamilyIdentifier): AttributeAsImageReference
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier): AttributeAsMainMediaReference
     {
         $query = <<<SQL
-        SELECT attribute_as_image
+        SELECT attribute_as_main_media
         FROM akeneo_asset_manager_asset_family
         WHERE identifier = :identifier;
 SQL;
@@ -39,11 +39,11 @@ SQL;
             'identifier' => (string) $assetFamilyIdentifier,
         ]);
 
-        $attributeAsImage = $statement->fetchColumn();
+        $attributeAsMainMedia = $statement->fetchColumn();
         $statement->closeCursor();
 
-        return false === $attributeAsImage ?
-            AttributeAsImageReference::noReference() :
-            AttributeAsImageReference::createFromNormalized($attributeAsImage);
+        return false === $attributeAsMainMedia ?
+            AttributeAsMainMediaReference::noReference() :
+            AttributeAsMainMediaReference::createFromNormalized($attributeAsMainMedia);
     }
 }

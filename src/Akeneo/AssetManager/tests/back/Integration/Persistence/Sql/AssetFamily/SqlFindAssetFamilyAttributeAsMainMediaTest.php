@@ -15,7 +15,7 @@ namespace Akeneo\AssetManager\Integration\Persistence\Sql\AssetFamily;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
@@ -31,16 +31,16 @@ use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyAttributeAsLabelInterface;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
-class SqlFindAssetFamilyAttributeAsImageTest extends SqlIntegrationTestCase
+class SqlFindAssetFamilyAttributeAsMainMediaTest extends SqlIntegrationTestCase
 {
-    /** @var FindAssetFamilyAttributeAsLabelInterface */
-    private $findAttributeAsImage;
+    /** @var FindAssetFamilyAttributeAsMainMediaInterface */
+    private $findAttributeAsMainMedia;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->findAttributeAsImage = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_attribute_as_image');
+        $this->findAttributeAsMainMedia = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_attribute_as_main_media');
         $this->resetDB();
         $this->loadFixtures();
     }
@@ -48,27 +48,27 @@ class SqlFindAssetFamilyAttributeAsImageTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_finds_the_attribute_as_image_of_an_asset_family()
+    public function it_finds_the_attribute_as_main_media_of_an_asset_family()
     {
         $assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
         $assetFamily = $assetFamilyRepository->getByIdentifier(AssetFamilyIdentifier::fromString('designer'));
 
-        $expectedAttributeAsImage = $assetFamily->getAttributeAsImageReference();
+        $expectedAttributeAsMainMedia = $assetFamily->getAttributeAsMainMediaReference();
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
-        $attributeAsImage = $this->findAttributeAsImage->find($assetFamilyIdentifier);
+        $attributeAsMainMedia = $this->findAttributeAsMainMedia->find($assetFamilyIdentifier);
 
-        $this->assertEquals($expectedAttributeAsImage, $attributeAsImage);
+        $this->assertEquals($expectedAttributeAsMainMedia, $attributeAsMainMedia);
     }
 
     /**
      * @test
      */
-    public function it_returns_an_empty_attribute_as_image_if_the_asset_family_was_not_found()
+    public function it_returns_an_empty_attribute_as_main_media_if_the_asset_family_was_not_found()
     {
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('unknown');
-        $attributeAsImage = $this->findAttributeAsImage->find($assetFamilyIdentifier);
+        $attributeAsMainMedia = $this->findAttributeAsMainMedia->find($assetFamilyIdentifier);
 
-        $this->assertTrue($attributeAsImage->isEmpty());
+        $this->assertTrue($attributeAsMainMedia->isEmpty());
     }
 
     private function loadFixtures(): void

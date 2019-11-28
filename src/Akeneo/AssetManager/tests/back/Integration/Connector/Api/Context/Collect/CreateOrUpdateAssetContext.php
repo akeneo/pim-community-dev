@@ -270,11 +270,11 @@ class CreateOrUpdateAssetContext implements Context
             AssetCode::fromString(self::HOUSE_ASSET_CODE)
         );
 
-        $labelIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+        $attributeAsLabelIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
             $assetFamilyIdentifier,
             AttributeCode::fromString('label')
         );
-        $mainImageIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+        $attributeAsMainMediaIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
             $assetFamilyIdentifier,
             AttributeCode::fromString('image')
         );
@@ -297,19 +297,19 @@ class CreateOrUpdateAssetContext implements Context
             AssetCode::fromString(self::HOUSE_ASSET_CODE),
             ValueCollection::fromValues([
                 Value::create(
-                    $labelIdentifier,
+                    $attributeAsLabelIdentifier,
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
                     TextData::fromString('House updated english label')
                 ),
                 Value::create(
-                    $labelIdentifier,
+                    $attributeAsLabelIdentifier,
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
                     TextData::fromString('House updated french label')
                 ),
                 Value::create(
-                    $mainImageIdentifier,
+                    $attributeAsMainMediaIdentifier,
                     ChannelReference::noReference(),
                     LocaleReference::noReference(),
                     FileData::createFromFileinfo($mainImageInfo, \DateTimeImmutable::createFromFormat(\DateTimeImmutable::ISO8601, '2019-11-22T15:16:21+0000'))
@@ -477,11 +477,11 @@ class CreateOrUpdateAssetContext implements Context
     public function theAssetsExistingBothInTheErpAndThePimAreCorrectlySynchronizedInThePimWithTheInformationFromTheErp()
     {
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER);
-        $labelIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+        $attributeAsLabelIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
             $assetFamilyIdentifier,
             AttributeCode::fromString('label')
         );
-        $mainImageIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+        $attributeAsMainMediaIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
             $assetFamilyIdentifier,
             AttributeCode::fromString('image')
         );
@@ -497,19 +497,19 @@ class CreateOrUpdateAssetContext implements Context
             AssetCode::fromString(self::HOUSE_ASSET_CODE),
             ValueCollection::fromValues([
                 Value::create(
-                    $labelIdentifier,
+                    $attributeAsLabelIdentifier,
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
                     TextData::fromString('House updated english label')
                 ),
                 Value::create(
-                    $labelIdentifier,
+                    $attributeAsLabelIdentifier,
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
                     TextData::fromString('House updated french label')
                 ),
                 Value::create(
-                    $mainImageIdentifier,
+                    $attributeAsMainMediaIdentifier,
                     ChannelReference::noReference(),
                     LocaleReference::noReference(),
                     FileData::createFromFileinfo($mainImageInfo, \DateTimeImmutable::createFromFormat(\DateTimeImmutable::ISO8601, '2019-11-22T15:16:21+0000'))
@@ -542,7 +542,7 @@ class CreateOrUpdateAssetContext implements Context
             AssetCode::fromString(self::FLOWER_ASSET_CODE),
             ValueCollection::fromValues([
                 Value::create(
-                    $labelIdentifier,
+                    $attributeAsLabelIdentifier,
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
                     TextData::fromString('Flower updated english label')
@@ -720,11 +720,11 @@ class CreateOrUpdateAssetContext implements Context
             ->setKey('0/c/b/0/0cb0c0e115dedba676f8d1ad8343ec207ab54c7b_house.jpg');
 
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER);
-        $labelIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+        $attributeAsLabelIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
             $assetFamilyIdentifier,
             AttributeCode::fromString('label')
         );
-        $mainImageIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+        $attributeAsMainMediaIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
             $assetFamilyIdentifier,
             AttributeCode::fromString('image')
         );
@@ -735,13 +735,13 @@ class CreateOrUpdateAssetContext implements Context
             AssetCode::fromString(self::HOUSE_ASSET_CODE),
             ValueCollection::fromValues([
                 Value::create(
-                    $labelIdentifier,
+                    $attributeAsLabelIdentifier,
                     ChannelReference::noReference(),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
                     TextData::fromString('House English label')
                 ),
                 Value::create(
-                    $mainImageIdentifier,
+                    $attributeAsMainMediaIdentifier,
                     ChannelReference::noReference(),
                     LocaleReference::noReference(),
                     FileData::createFromFileinfo($mainImageInfo, \DateTimeImmutable::createFromFormat(\DateTimeImmutable::ISO8601, '2019-11-22T15:16:21+0000'))

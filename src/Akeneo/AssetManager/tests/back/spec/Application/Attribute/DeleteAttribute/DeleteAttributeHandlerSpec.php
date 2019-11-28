@@ -18,10 +18,10 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\AssetManager\Domain\Model\Attribute\ImageAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyAttributeAsImageInterface;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyAttributeAsMainMediaInterface;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyAttributeAsLabelInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use PhpSpec\ObjectBehavior;
@@ -30,7 +30,7 @@ class DeleteAttributeHandlerSpec extends ObjectBehavior
 {
     public function let(
         FindAssetFamilyAttributeAsLabelInterface $findAssetFamilyAttributeAsLabel,
-        FindAssetFamilyAttributeAsImageInterface $findAssetFamilyAttributeAsImage,
+        FindAssetFamilyAttributeAsMainMediaInterface $findAssetFamilyAttributeAsMainMedia,
         AttributeRepositoryInterface $repository
     ) {
         $nameDesignerTest = TextAttribute::createText(
@@ -47,7 +47,7 @@ class DeleteAttributeHandlerSpec extends ObjectBehavior
             AttributeRegularExpression::createEmpty()
         );
 
-        $labelAttribute = TextAttribute::createText(
+        $attributeAsLabel = TextAttribute::createText(
             AttributeIdentifier::fromString('label'),
             AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('label'),
@@ -61,7 +61,7 @@ class DeleteAttributeHandlerSpec extends ObjectBehavior
             AttributeRegularExpression::createEmpty()
         );
 
-        $mainImageAttribute = ImageAttribute::create(
+        $attributeAsMainMedia = ImageAttribute::create(
             AttributeIdentifier::fromString('image'),
             AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('image'),
@@ -75,18 +75,18 @@ class DeleteAttributeHandlerSpec extends ObjectBehavior
         );
 
 
-        $repository->getByIdentifier(AttributeIdentifier::fromString('label'))->willReturn($labelAttribute);
+        $repository->getByIdentifier(AttributeIdentifier::fromString('label'))->willReturn($attributeAsLabel);
         $repository->getByIdentifier(AttributeIdentifier::fromString('name_designer_test'))->willReturn($nameDesignerTest);
-        $repository->getByIdentifier(AttributeIdentifier::fromString('image'))->willReturn($mainImageAttribute);
+        $repository->getByIdentifier(AttributeIdentifier::fromString('image'))->willReturn($attributeAsMainMedia);
 
         $findAssetFamilyAttributeAsLabel
             ->find(AssetFamilyIdentifier::fromString('designer'))
             ->willReturn(AttributeAsLabelReference::fromAttributeIdentifier(AttributeIdentifier::fromString('label')));
-        $findAssetFamilyAttributeAsImage
+        $findAssetFamilyAttributeAsMainMedia
             ->find(AssetFamilyIdentifier::fromString('designer'))
-            ->willReturn(AttributeAsImageReference::fromAttributeIdentifier(AttributeIdentifier::fromString('image')));
+            ->willReturn(AttributeAsMainMediaReference::fromAttributeIdentifier(AttributeIdentifier::fromString('image')));
 
-        $this->beConstructedWith($findAssetFamilyAttributeAsLabel, $findAssetFamilyAttributeAsImage, $repository);
+        $this->beConstructedWith($findAssetFamilyAttributeAsLabel, $findAssetFamilyAttributeAsMainMedia, $repository);
     }
 
     function it_is_initializable()
@@ -121,7 +121,7 @@ class DeleteAttributeHandlerSpec extends ObjectBehavior
         $this->shouldThrow(\LogicException::class)->during('__invoke', [$command]);
     }
 
-    function it_cannot_delete_an_attribute_when_used_as_attribute_as_image_of_the_asset_family(
+    function it_cannot_delete_an_attribute_when_used_as_attribute_as_main_media_of_the_asset_family(
         AttributeRepositoryInterface $repository
     ) {
         $command = new DeleteAttributeCommand(

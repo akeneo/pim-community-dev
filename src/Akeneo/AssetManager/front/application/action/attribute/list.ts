@@ -41,7 +41,7 @@ export const attributeListGotUpdated = (attributes: Attribute[]) => (
   dispatch(attributeListUpdated(attributes));
 
   const assetFamily = getState().form.data;
-  const columnsToExclude = [assetFamily.attributeAsImage, assetFamily.attributeAsLabel];
+  const columnsToExclude = [assetFamily.attributeAsMainMedia, assetFamily.attributeAsLabel];
 
   dispatch(updateColumns(getColumns(attributes, getState().structure.channels, columnsToExclude)));
 };

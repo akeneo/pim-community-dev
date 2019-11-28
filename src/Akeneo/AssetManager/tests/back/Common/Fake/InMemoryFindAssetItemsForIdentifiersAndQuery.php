@@ -64,7 +64,7 @@ class InMemoryFindAssetItemsForIdentifiersAndQuery implements FindAssetItemsForI
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($assetFamilyFilter['value']);
         $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
         $attributeAsLabel = $assetFamily->getAttributeAsLabelReference();
-        $attributeAsImage = $assetFamily->getAttributeAsImageReference();
+        $attributeAsMainMedia = $assetFamily->getAttributeAsMainMediaReference();
 
         $query = AssetQuery::createFromNormalized([
            'locale' => $query->getChannel(),
@@ -83,7 +83,7 @@ class InMemoryFindAssetItemsForIdentifiersAndQuery implements FindAssetItemsForI
 
         $normalizedAssetItems = array_values(array_filter(array_map(function (string $identifier) use (
             $attributeAsLabel,
-            $attributeAsImage
+            $attributeAsMainMedia
         ) {
             try {
                 $asset = $this->assetRepository->getByIdentifier(AssetIdentifier::fromString($identifier));
@@ -96,7 +96,7 @@ class InMemoryFindAssetItemsForIdentifiersAndQuery implements FindAssetItemsForI
                 'asset_family_identifier' => (string) $asset->getAssetFamilyIdentifier(),
                 'code' => (string) $asset->getCode(),
                 'value_collection' => json_encode($asset->getValues()->normalize()),
-                'attribute_as_image' => $attributeAsImage->normalize(),
+                'attribute_as_main_media' => $attributeAsMainMedia->normalize(),
                 'attribute_as_label' => $attributeAsLabel->normalize()
             ];
 

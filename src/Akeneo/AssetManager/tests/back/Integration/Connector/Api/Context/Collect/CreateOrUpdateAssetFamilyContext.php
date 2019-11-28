@@ -22,8 +22,8 @@ use Akeneo\AssetManager\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
@@ -126,11 +126,11 @@ class CreateOrUpdateAssetFamilyContext implements Context
         );
 
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('frontview');
-        $labelIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+        $attributeAsLabelIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
             $assetFamilyIdentifier,
             AttributeCode::fromString('label')
         );
-        $mainImageIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+        $attributeAsMainMediaIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
             $assetFamilyIdentifier,
             AttributeCode::fromString('image')
         );
@@ -144,8 +144,8 @@ class CreateOrUpdateAssetFamilyContext implements Context
                 'fr_FR' => 'Frontview french label',
             ],
             Image::createEmpty(),
-            AttributeAsLabelReference::fromAttributeIdentifier($labelIdentifier),
-            AttributeAsImageReference::fromAttributeIdentifier($mainImageIdentifier),
+            AttributeAsLabelReference::fromAttributeIdentifier($attributeAsLabelIdentifier),
+            AttributeAsMainMediaReference::fromAttributeIdentifier($attributeAsMainMediaIdentifier),
             RuleTemplateCollection::createFromProductLinkRules([$ruleTemplate])
         );
 
@@ -201,11 +201,11 @@ class CreateOrUpdateAssetFamilyContext implements Context
         );
 
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('brand');
-        $labelIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+        $attributeAsLabelIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
             $assetFamilyIdentifier,
             AttributeCode::fromString('label')
         );
-        $mainImageIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+        $attributeAsMainMediaIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
             $assetFamilyIdentifier,
             AttributeCode::fromString('image')
         );
@@ -219,8 +219,8 @@ class CreateOrUpdateAssetFamilyContext implements Context
                 'fr_FR' => 'Brand french label',
             ],
             Image::createEmpty(),
-            AttributeAsLabelReference::fromAttributeIdentifier($labelIdentifier),
-            AttributeAsImageReference::fromAttributeIdentifier($mainImageIdentifier),
+            AttributeAsLabelReference::fromAttributeIdentifier($attributeAsLabelIdentifier),
+            AttributeAsMainMediaReference::fromAttributeIdentifier($attributeAsMainMediaIdentifier),
             RuleTemplateCollection::createFromProductLinkRules([$ruleTemplate])
         );
 

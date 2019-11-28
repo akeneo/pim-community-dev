@@ -7,7 +7,7 @@ namespace spec\Akeneo\AssetManager\Application\AssetFamily\Subscribers;
 use Akeneo\AssetManager\Application\AssetFamily\Subscribers\SetNullOnDefaultAttributesDeletionSubscriber;
 use Akeneo\AssetManager\Domain\Event\BeforeAttributeDeletedEvent;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
@@ -29,17 +29,17 @@ class SetNullOnDefaultAttributesDeletionSubscriberSpec extends ObjectBehavior
     function it_subscribes_to_events()
     {
         $this::getSubscribedEvents()->shouldReturn([
-            BeforeAttributeDeletedEvent::class => 'beforeAttributeAsLabelOrImageIsDeleted',
+            BeforeAttributeDeletedEvent::class => 'beforeAttributeAsLabelOrMainMediaIsDeleted',
         ]);
     }
 
-    function it_unsets_attribute_as_label_or_image_when_the_attribute_is_deleted(
+    function it_unsets_attribute_as_label_or_main_media_when_the_attribute_is_deleted(
         AssetFamilyRepositoryInterface $assetFamilyRepository,
         AssetFamilyIdentifier $assetFamilyIdentifier,
         AttributeIdentifier $attributeIdentifierLabel,
         AttributeIdentifier $attributeIdentifierImage,
         AttributeAsLabelReference $attributeAsLabelReference,
-        AttributeAsImageReference $attributeAsImageReference,
+        AttributeAsMainMediaReference $attributeAsMainMediaReference,
         BeforeAttributeDeletedEvent $event,
         AssetFamily $assetFamily
     ) {
@@ -50,13 +50,13 @@ class SetNullOnDefaultAttributesDeletionSubscriberSpec extends ObjectBehavior
             ->willReturn($assetFamily);
 
         $assetFamily->getAttributeAsLabelReference()->willReturn($attributeAsLabelReference);
-        $assetFamily->getAttributeAsImageReference()->willReturn($attributeAsImageReference);
+        $assetFamily->getAttributeAsMainMediaReference()->willReturn($attributeAsMainMediaReference);
 
         $attributeAsLabelReference->isEmpty()->willReturn(false);
-        $attributeAsImageReference->isEmpty()->willReturn(false);
+        $attributeAsMainMediaReference->isEmpty()->willReturn(false);
 
         $attributeAsLabelReference->getIdentifier()->willReturn($attributeIdentifierLabel);
-        $attributeAsImageReference->getIdentifier()->willReturn($attributeIdentifierImage);
+        $attributeAsMainMediaReference->getIdentifier()->willReturn($attributeIdentifierImage);
 
         $attributeIdentifierLabel->equals($attributeIdentifierLabel)->willReturn(true);
         $attributeIdentifierLabel->equals($attributeIdentifierImage)->willReturn(false);
@@ -66,6 +66,6 @@ class SetNullOnDefaultAttributesDeletionSubscriberSpec extends ObjectBehavior
 
         $assetFamilyRepository->update($assetFamily)->shouldBeCalled();
 
-        $this->beforeAttributeAsLabelOrImageIsDeleted($event);
+        $this->beforeAttributeAsLabelOrMainMediaIsDeleted($event);
     }
 }

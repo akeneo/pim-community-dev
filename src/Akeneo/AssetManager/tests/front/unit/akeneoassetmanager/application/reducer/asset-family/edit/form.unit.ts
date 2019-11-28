@@ -3,7 +3,7 @@ import reducer from 'akeneoassetmanager/application/reducer/asset-family/edit/fo
 const initialState = {
   data: {
     attributeAsLabel: '',
-    attributeAsImage: '',
+    attributeAsMainMedia: '',
     identifier: '',
     code: '',
     labels: {},

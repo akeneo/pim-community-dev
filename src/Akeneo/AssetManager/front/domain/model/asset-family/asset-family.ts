@@ -20,7 +20,7 @@ export interface AssetFamily {
   labels: LabelCollection;
   image: File;
   attributeAsLabel: AttributeIdentifier;
-  attributeAsImage: AttributeIdentifier;
+  attributeAsMainMedia: AttributeIdentifier;
 }
 
 export const createEmptyAssetFamily = (): AssetFamily => ({
@@ -28,7 +28,7 @@ export const createEmptyAssetFamily = (): AssetFamily => ({
   code: '',
   labels: emptyLabelCollection(),
   image: createEmptyFile(),
-  attributeAsImage: '',
+  attributeAsMainMedia: '',
   attributeAsLabel: '',
 });
 export const createAssetFamilyFromNormalized = (normalizedAssetFamily: any): AssetFamily => ({
@@ -36,7 +36,7 @@ export const createAssetFamilyFromNormalized = (normalizedAssetFamily: any): Ass
   code: denormalizeAssetFamilyIdentifier(normalizedAssetFamily.identifier),
   labels: denormalizeLabelCollection(normalizedAssetFamily.labels),
   image: createFileFromNormalized(normalizedAssetFamily.image),
-  attributeAsImage: denormalizeAttributeIdentifier(normalizedAssetFamily.attribute_as_image),
+  attributeAsMainMedia: denormalizeAttributeIdentifier(normalizedAssetFamily.attribute_as_main_media),
   attributeAsLabel: denormalizeAttributeIdentifier(normalizedAssetFamily.attribute_as_label),
 });
 export const getAssetFamilyLabel = (

@@ -3,10 +3,10 @@ import styled from 'styled-components';
 import {
   Asset,
   getAssetLabel,
-  getAssetMainImageDownloadLink,
-  getAssetMainImageOriginalFilename,
-  assetHasMainImage,
-  getAttributeAsMainImage,
+  getAssetMainMediaDownloadLink,
+  getAssetMainMediaOriginalFilename,
+  assetHasMainMedia,
+  getAttributeAsMainMedia as getAttributeAsMainMedia,
 } from 'akeneopimenrichmentassetmanager/assets-collection/domain/model/asset';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import {Context} from 'akeneopimenrichmentassetmanager/platform/model/context';
@@ -92,8 +92,8 @@ type PreviewProps = {
 
 const DownloadAction = ({asset, context}: PreviewProps) => (
   <Action
-    href={getAssetMainImageDownloadLink(asset, context)}
-    download={getAssetMainImageOriginalFilename(asset, context)}
+    href={getAssetMainMediaDownloadLink(asset, context)}
+    download={getAssetMainMediaOriginalFilename(asset, context)}
     target="_blank"
   >
     <Download />
@@ -103,7 +103,7 @@ const DownloadAction = ({asset, context}: PreviewProps) => (
 
 const CopyUrlAction = ({asset, context}: PreviewProps) =>
   canCopyToClipboard() ? (
-    <Action onClick={() => copyToClipboard(getAssetMainImageDownloadLink(asset, context))}>
+    <Action onClick={() => copyToClipboard(getAssetMainMediaDownloadLink(asset, context))}>
       <Link />
       <Label>{__('pim_asset_manager.asset_preview.copy_url')}</Label>
     </Action>
@@ -127,14 +127,14 @@ const getBinaryPreviewView = (asset: Asset, context: Context) => (
 );
 
 const getMediaLinkPreviewView = (asset: Asset, context: Context) => {
-  const mediaLinkAttribute = getAttributeAsMainImage(asset) as NormalizedMediaLinkAttribute;
+  const mediaLinkAttribute = getAttributeAsMainMedia(asset) as NormalizedMediaLinkAttribute;
 
   switch (mediaLinkAttribute.media_type) {
     case MediaTypes.youtube:
       return (
         <>
           <YouTubePlayer
-            src={YOUTUBE_EMBED_URL + getAssetMainImageOriginalFilename(asset, context)}
+            src={YOUTUBE_EMBED_URL + getAssetMainMediaOriginalFilename(asset, context)}
             data-role="youtube-player"
           />
           <Actions>
@@ -170,7 +170,7 @@ const PreviewImage = ({asset, context}: PreviewProps) => (
 );
 
 const getPreviewView = (asset: Asset, context: Context) => {
-  if (!assetHasMainImage(asset, context))
+  if (!assetHasMainMedia(asset, context))
     return (
       <>
         <PreviewImage asset={asset} context={context} />
@@ -181,9 +181,9 @@ const getPreviewView = (asset: Asset, context: Context) => {
       </>
     );
 
-  const attributeAsMainImage = getAttributeAsMainImage(asset);
+  const attributeAsMainMedia = getAttributeAsMainMedia(asset);
 
-  switch (attributeAsMainImage.type) {
+  switch (attributeAsMainMedia.type) {
     case MEDIA_LINK_ATTRIBUTE_TYPE:
       return getMediaLinkPreviewView(asset, context);
     case IMAGE_ATTRIBUTE_TYPE:

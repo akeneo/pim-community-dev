@@ -66,7 +66,7 @@ const assetCollection = [
     },
     assetFamily: {
       attributes,
-      attributeAsImage: 'media_link_image_attribute_identifier',
+      attributeAsMainMedia: 'media_link_image_attribute_identifier',
     },
   },
   {
@@ -88,7 +88,7 @@ const assetCollection = [
     },
     assetFamily: {
       attributes,
-      attributeAsImage: 'media_link_other_attribute_identifier',
+      attributeAsMainMedia: 'media_link_other_attribute_identifier',
     },
   },
 
@@ -111,7 +111,7 @@ const assetCollection = [
     },
     assetFamily: {
       attributes,
-      attributeAsImage: 'image_attribute_identifier',
+      attributeAsMainMedia: 'image_attribute_identifier',
     },
   },
   {
@@ -133,7 +133,7 @@ const assetCollection = [
     },
     assetFamily: {
       attributes,
-      attributeAsImage: 'unknown_attribute_identifier',
+      attributeAsMainMedia: 'unknown_attribute_identifier',
     },
   },
   {
@@ -155,7 +155,7 @@ const assetCollection = [
     },
     assetFamily: {
       attributes,
-      attributeAsImage: 'media_link_unknown_attribute_identifier',
+      attributeAsMainMedia: 'media_link_unknown_attribute_identifier',
     },
   },
   {
@@ -170,7 +170,7 @@ const assetCollection = [
     },
     assetFamily: {
       attributes,
-      attributeAsImage: '',
+      attributeAsMainMedia: '',
     },
   },
   {
@@ -192,7 +192,7 @@ const assetCollection = [
     },
     assetFamily: {
       attributes,
-      attributeAsImage: 'media_link_youtube_attribute_identifier',
+      attributeAsMainMedia: 'media_link_youtube_attribute_identifier',
     },
   },
 ];

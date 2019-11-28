@@ -1,6 +1,11 @@
 import * as React from 'react';
 
-const Link = ({color = '#67768A', title = 'Link icon', size = 24, ...props}: {color?: string; title?: string; size?: number} & any) => (
+const Link = ({
+  color = '#67768A',
+  title = 'Link icon',
+  size = 24,
+  ...props
+}: {color?: string; title?: string; size?: number} & any) => (
   <svg viewBox="0 0 24 24" width={size} height={size} {...props}>
     <g fill="none" fillRule="evenodd" stroke={color} strokeLinecap="round" strokeLinejoin="round" strokeWidth="1">
       <path

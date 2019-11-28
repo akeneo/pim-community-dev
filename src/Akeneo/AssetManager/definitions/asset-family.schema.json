@@ -40,7 +40,7 @@
             }
         },
         "attribute_as_label": { "type": "string" },
-        "attribute_as_image": { "type": "string" }
+        "attribute_as_main_media": { "type": "string" }
     },
     "required": [
         "identifier",
@@ -50,7 +50,7 @@
         "attributes",
         "permission",
         "attribute_as_label",
-        "attribute_as_image"
+        "attribute_as_main_media"
     ],
     "additionalProperties": false
 }

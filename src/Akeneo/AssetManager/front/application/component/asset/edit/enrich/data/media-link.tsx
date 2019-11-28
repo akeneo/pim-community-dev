@@ -8,7 +8,7 @@ import {
   copyToClipboard,
   getMediaLinkPreviewUrl,
   getMediaLinkUrl,
-  MediaPreviewTypes
+  MediaPreviewTypes,
 } from 'akeneoassetmanager/tools/media-url-generator';
 import styled, {ThemeProvider} from 'styled-components';
 import {akeneoTheme, ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
@@ -90,10 +90,7 @@ const View = ({
   return (
     <ThemeProvider theme={akeneoTheme}>
       <Container>
-        <Thumbnail
-          src={mediaPreviewUrl}
-          alt={__('pim_asset_manager.attribute.media_type_preview')}
-        />
+        <Thumbnail src={mediaPreviewUrl} alt={__('pim_asset_manager.attribute.media_type_preview')} />
         <input
           id={`pim_asset_manager.asset.enrich.${value.attribute.getCode()}`}
           autoComplete="off"
@@ -110,11 +107,7 @@ const View = ({
           disabled={!canEditData}
           readOnly={!canEditData}
         />
-        <ActionLink
-          href={mediaDownloadUrl}
-          target="_blank"
-          title={__('pim_asset_manager.media_link.download')}
-        >
+        <ActionLink href={mediaDownloadUrl} target="_blank" title={__('pim_asset_manager.media_link.download')}>
           <DownloadIcon
             color={akeneoTheme.color.grey100}
             size={20}
@@ -127,11 +120,7 @@ const View = ({
             copyToClipboard(mediaDownloadUrl);
           }}
         >
-          <LinkIcon
-            color={akeneoTheme.color.grey100}
-            size={20}
-            title={__('pim_asset_manager.media_link.copy')}
-          />
+          <LinkIcon color={akeneoTheme.color.grey100} size={20} title={__('pim_asset_manager.media_link.copy')} />
         </ActionButton>
       </Container>
     </ThemeProvider>

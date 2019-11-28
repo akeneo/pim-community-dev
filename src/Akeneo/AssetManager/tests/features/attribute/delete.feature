@@ -18,9 +18,9 @@ Feature: Delete an attribute linked to an asset family
     Then it is not possible to delete the attribute as label linked to this entity
 
   @acceptance-back
-  Scenario: Cannot delete the attribute as image linked to an asset family
+  Scenario: Cannot delete the attribute as main media linked to an asset family
     Given a valid asset family
-    Then it is not possible to delete the attribute as image linked to this entity
+    Then it is not possible to delete the attribute as main media linked to this entity
 
   @acceptance-front
   Scenario: Delete a text attribute linked to an asset family

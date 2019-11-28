@@ -28,7 +28,7 @@ class EditAssetFamilyCommand
     public $image;
 
     /** @var string|null */
-    public $attributeAsImage;
+    public $attributeAsMainMedia;
 
     /** @var array */
     public $productLinkRules;
@@ -40,7 +40,7 @@ class EditAssetFamilyCommand
         string $identifier,
         array $labels,
         ?array $image,
-        ?string $attributeAsImage,
+        ?string $attributeAsMainMedia,
         array $productLinkRules,
         // @TODO in ATR-29: remove default value
         array $transformations = []
@@ -48,7 +48,7 @@ class EditAssetFamilyCommand
         $this->identifier = $identifier;
         $this->labels = $labels;
         $this->image = $image;
-        $this->attributeAsImage = $attributeAsImage;
+        $this->attributeAsMainMedia = $attributeAsMainMedia;
         $this->productLinkRules = $productLinkRules;
         $this->transformations = $transformations;
     }

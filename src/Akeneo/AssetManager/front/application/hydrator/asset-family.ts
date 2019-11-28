@@ -5,7 +5,7 @@ import {BackendAssetFamily} from 'akeneoassetmanager/infrastructure/model/asset-
 export const hydrator = (
   createAssetFamilyFromNormalized: (normalizedAssetFamily: BackendAssetFamily) => AssetFamily
 ) => (backendAssetFamily: any): AssetFamily => {
-  const expectedKeys = ['identifier', 'labels', 'image', 'attribute_as_image', 'attribute_as_label'];
+  const expectedKeys = ['identifier', 'labels', 'image', 'attribute_as_main_media', 'attribute_as_label'];
 
   validateKeys(backendAssetFamily, expectedKeys, 'The provided raw asset family seems to be malformed.');
   return createAssetFamilyFromNormalized(backendAssetFamily);

@@ -132,10 +132,10 @@ class SqlFindConnectorAttributesByAssetFamilyIdentifierTest extends SqlIntegrati
         $assetFamily = $this->assetFamilyRepository
             ->getByIdentifier(AssetFamilyIdentifier::fromString($assetFamilyIdentifier));
         $attributeAsLabelIdentifier = $assetFamily->getAttributeAsLabelReference()->getIdentifier();
-        $attributeAsImageIdentifier = $assetFamily->getAttributeAsImageReference()->getIdentifier();
+        $attributeAsMainMediaIdentifier = $assetFamily->getAttributeAsMainMediaReference()->getIdentifier();
 
         $attributeAsLabel = $this->attributeRepository->getByIdentifier($attributeAsLabelIdentifier);
-        $attributeAsImage = $this->attributeRepository->getByIdentifier($attributeAsImageIdentifier);
+        $attributeAsMainMedia = $this->attributeRepository->getByIdentifier($attributeAsMainMediaIdentifier);
 
         return [
             new ConnectorAttribute(
@@ -154,7 +154,7 @@ class SqlFindConnectorAttributesByAssetFamilyIdentifierTest extends SqlIntegrati
                 ]
             ),
             new ConnectorAttribute(
-                $attributeAsImage->getCode(),
+                $attributeAsMainMedia->getCode(),
                 LabelCollection::fromArray([]),
                 'image',
                 AttributeValuePerLocale::fromBoolean(false),

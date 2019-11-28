@@ -16,15 +16,15 @@ namespace Akeneo\AssetManager\Domain\Model\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 
 /**
- * An AttributeAsImageReference represents an attribute used as main image for an Asset Family.
+ * An AttributeAsMainMediaReference represents an attribute used as main media for an Asset Family.
  *
- * If there is an attribute, then the AttributeAsImageReference is the AttributeIdentifier of the attribute
+ * If there is an attribute, then the AttributeAsMainMediaReference is the AttributeIdentifier of the attribute
  * If there is no attribute then it is null
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2019 Akeneo SAS (https://www.akeneo.com)
  */
-class AttributeAsImageReference
+class AttributeAsMainMediaReference
 {
     /** @var AttributeIdentifier|null */
     private $identifier;
@@ -47,7 +47,7 @@ class AttributeAsImageReference
     public static function createFromNormalized(?string $nomalizedIdentifier): self
     {
         if (null === $nomalizedIdentifier) {
-            return AttributeAsImageReference::noReference();
+            return AttributeAsMainMediaReference::noReference();
         }
 
         return self::fromAttributeIdentifier(AttributeIdentifier::fromString($nomalizedIdentifier));

@@ -50,7 +50,7 @@ Feature: Create an asset family
       | designer   | {"en_US": "Designer", "fr_FR": "Designer"} | label              |
 
   @acceptance-back
-  Scenario: An attribute as image is created alongside the asset family
+  Scenario: An attribute as main media is created alongside the asset family
     When the user creates an asset family "designer" with:
       | labels                                     |
       | {"en_US": "Designer", "fr_FR": "Designer"} |
@@ -58,8 +58,8 @@ Feature: Create an asset family
       | code  | labels | is_required | order | value_per_channel | value_per_locale | max_file_size | allowed_extensions | type  |
       | image | {}     | false       | 1     | false             | false            | null          | []                 | image |
     And the asset family "designer" should be:
-      | identifier | labels                                     | attribute_as_image |
-      | designer   | {"en_US": "Designer", "fr_FR": "Designer"} | image              |
+      | identifier | labels                                     | attribute_as_main_media |
+      | designer   | {"en_US": "Designer", "fr_FR": "Designer"} | image                   |
 
   @acceptance-back
   Scenario: Creating an asset family with a collection of static rule templates

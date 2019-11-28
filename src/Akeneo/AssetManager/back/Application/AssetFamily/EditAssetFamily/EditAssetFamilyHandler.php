@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Image;
@@ -79,14 +79,14 @@ class EditAssetFamilyHandler
             $assetFamily->updateImage(Image::createEmpty());
         }
 
-        $attributeAsImage = $editAssetFamilyCommand->attributeAsImage;
-        if (null !== $attributeAsImage) {
-            $attributeAsImageIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
+        $attributeAsMainMedia = $editAssetFamilyCommand->attributeAsMainMedia;
+        if (null !== $attributeAsMainMedia) {
+            $attributeAsMainMediaIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
                 AssetFamilyIdentifier::fromString($editAssetFamilyCommand->identifier),
-                AttributeCode::fromString($attributeAsImage)
+                AttributeCode::fromString($attributeAsMainMedia)
             );
-            $assetFamily->updateAttributeAsImageReference(
-                AttributeAsImageReference::fromAttributeIdentifier($attributeAsImageIdentifier)
+            $assetFamily->updateAttributeAsMainMediaReference(
+                AttributeAsMainMediaReference::fromAttributeIdentifier($attributeAsMainMediaIdentifier)
             );
         }
 

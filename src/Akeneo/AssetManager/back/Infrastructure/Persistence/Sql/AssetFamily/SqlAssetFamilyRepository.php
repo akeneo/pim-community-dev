@@ -16,8 +16,8 @@ namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily;
 use Akeneo\AssetManager\Domain\Event\AssetFamilyCreatedEvent;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationCollectionFactory;
 use Akeneo\AssetManager\Domain\Model\Image;
@@ -62,9 +62,9 @@ class SqlAssetFamilyRepository implements AssetFamilyRepositoryInterface
         $serializedLabels = $this->getSerializedLabels($assetFamily);
         $insert = <<<SQL
         INSERT INTO akeneo_asset_manager_asset_family
-            (identifier, labels, attribute_as_label, attribute_as_image, rule_templates, transformations)
+            (identifier, labels, attribute_as_label, attribute_as_main_media, rule_templates, transformations)
         VALUES
-            (:identifier, :labels, :attributeAsLabel, :attributeAsImage, :ruleTemplates, :transformations);
+            (:identifier, :labels, :attributeAsLabel, :attributeAsMainMedia, :ruleTemplates, :transformations);
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $insert,
@@ -72,7 +72,7 @@ SQL;
                 'identifier' => (string) $assetFamily->getIdentifier(),
                 'labels' => $serializedLabels,
                 'attributeAsLabel' => $assetFamily->getAttributeAsLabelReference()->normalize(),
-                'attributeAsImage' => $assetFamily->getAttributeAsImageReference()->normalize(),
+                'attributeAsMainMedia' => $assetFamily->getAttributeAsMainMediaReference()->normalize(),
                 'ruleTemplates' => json_encode($assetFamily->getRuleTemplateCollection()->normalize()),
                 'transformations' => json_encode($assetFamily->getTransformationCollection()->normalize()),
             ]
@@ -102,7 +102,7 @@ SQL;
             labels = :labels,
             image = :image,
             attribute_as_label = :attributeAsLabel,
-            attribute_as_image = :attributeAsImage,
+            attribute_as_main_media = :attributeAsMainMedia,
             rule_templates = :ruleTemplates,
             transformations = :transformations
         WHERE identifier = :identifier;
@@ -114,7 +114,7 @@ SQL;
                 'labels' => $serializedLabels,
                 'image' => $assetFamily->getImage()->isEmpty() ? null : $assetFamily->getImage()->getKey(),
                 'attributeAsLabel' => $assetFamily->getAttributeAsLabelReference()->normalize(),
-                'attributeAsImage' => $assetFamily->getAttributeAsImageReference()->normalize(),
+                'attributeAsMainMedia' => $assetFamily->getAttributeAsMainMediaReference()->normalize(),
                 'ruleTemplates' => json_encode($assetFamily->getRuleTemplateCollection()->normalize()),
                 'transformations' => json_encode($assetFamily->getTransformationCollection()->normalize()),
             ]
@@ -130,7 +130,7 @@ SQL;
     public function getByIdentifier(AssetFamilyIdentifier $identifier): AssetFamily
     {
         $fetch = <<<SQL
-        SELECT af.identifier, af.labels, fi.image, af.attribute_as_label, af.attribute_as_image, af.rule_templates, transformations
+        SELECT af.identifier, af.labels, fi.image, af.attribute_as_label, af.attribute_as_main_media, af.rule_templates, transformations
         FROM akeneo_asset_manager_asset_family af
         LEFT JOIN (
           SELECT file_key, JSON_OBJECT("file_key", file_key, "original_filename", original_filename) as image
@@ -154,7 +154,7 @@ SQL;
             $result['labels'],
             null !== $result['image'] ? json_decode($result['image'], true) : null,
             $result['attribute_as_label'],
-            $result['attribute_as_image'],
+            $result['attribute_as_main_media'],
             $result['rule_templates'],
             $result['transformations']
         );
@@ -163,7 +163,7 @@ SQL;
     public function all(): \Iterator
     {
         $selectAllQuery = <<<SQL
-        SELECT identifier, labels, attribute_as_label, attribute_as_image, rule_templates, transformations
+        SELECT identifier, labels, attribute_as_label, attribute_as_main_media, rule_templates, transformations
         FROM akeneo_asset_manager_asset_family;
 SQL;
         $statement = $this->sqlConnection->executeQuery($selectAllQuery);
@@ -176,7 +176,7 @@ SQL;
                 $result['labels'],
                 null,
                 $result['attribute_as_label'],
-                $result['attribute_as_image'],
+                $result['attribute_as_main_media'],
                 $result['rule_templates'],
                 $result['transformations']
             );
@@ -219,7 +219,7 @@ SQL;
         string $normalizedLabels,
         ?array $image,
         ?string $attributeAsLabel,
-        ?string $attributeAsImage,
+        ?string $attributeAsMainMedia,
         string $normalizedRuleTemplates,
         string $transformationCollection
     ): AssetFamily {
@@ -236,7 +236,7 @@ SQL;
             $labels,
             $entityImage,
             AttributeAsLabelReference::createFromNormalized($attributeAsLabel),
-            AttributeAsImageReference::createFromNormalized($attributeAsImage),
+            AttributeAsMainMediaReference::createFromNormalized($attributeAsMainMedia),
             $ruleTemplateCollection
         );
 

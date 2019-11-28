@@ -15,7 +15,7 @@ class AssetFamilyBuilder {
       attributes: [],
       asset_count: 123,
       attribute_as_label: '',
-      attribute_as_image: '',
+      attribute_as_main_media: '',
       permission: {edit: true},
     };
   }
@@ -45,8 +45,8 @@ class AssetFamilyBuilder {
     return this;
   }
 
-  withAttributeAsImage(attribute) {
-    this.assetFamily.attribute_as_image = attribute;
+  withAttributeAsMainMedia(attribute) {
+    this.assetFamily.attribute_as_main_media = attribute;
 
     return this;
   }

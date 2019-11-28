@@ -64,8 +64,8 @@ class AssetPreviewGenerator
         $code = AssetCode::fromString($assetCode);
         $asset = $this->assetRepository->getByAssetFamilyAndCode($familyIdentifier, $code);
         $family = $this->assetFamilyRepository->getByIdentifier($familyIdentifier);
-        $attributeAsImageIdentifier = $family->getAttributeAsImageReference()->getIdentifier();
-        $attribute = $this->attributeRepository->getByIdentifier($attributeAsImageIdentifier);
+        $attributeAsMainMediaIdentifier = $family->getAttributeAsMainMediaReference()->getIdentifier();
+        $attribute = $this->attributeRepository->getByIdentifier($attributeAsMainMediaIdentifier);
 
         $channelReference = $attribute->hasValuePerChannel()
             ? ChannelReference::createfromNormalized($channelCode)
@@ -76,7 +76,7 @@ class AssetPreviewGenerator
             : LocaleReference::noReference();
 
         $valueKey = ValueKey::create(
-            $attributeAsImageIdentifier,
+            $attributeAsMainMediaIdentifier,
             $channelReference,
             $localeReference
         );
@@ -92,7 +92,7 @@ class AssetPreviewGenerator
 
         return $this->imagePreviewUrlGenerator->generate(
             $rawData,
-            $attributeAsImageIdentifier->stringValue(),
+            $attributeAsMainMediaIdentifier->stringValue(),
             $format
         );
     }

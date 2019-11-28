@@ -44,22 +44,22 @@ Feature: Edit an asset family
       | "/path/image.jpg" | 150            | This value should be of type string. |
 
   @acceptance-back
-  Scenario: Updating an asset family to change its attribute as image
+  Scenario: Updating an asset family to change its attribute as main media
     Given an asset family with an image attribute "main_picture"
-    When the user updates the attribute as image to be "main_picture"
-    Then the attribute as image should be "main_picture"
+    When the user updates the attribute as main media to be "main_picture"
+    Then the attribute as main media should be "main_picture"
 
   @acceptance-back @error
-  Scenario: Cannot update an asset family if the provided attribute as image does not exist
+  Scenario: Cannot update an asset family if the provided attribute as main media does not exist
     Given an asset family with an image attribute "main_picture"
-    When the user updates the attribute as image to be "toto_picture"
-    Then there should be a validation error with message 'The attribute "toto_picture" set as image for the asset family does not exist'
+    When the user updates the attribute as main media to be "toto_picture"
+    Then there should be a validation error with message 'The attribute "toto_picture" set as main media for the asset family does not exist'
 
   @acceptance-back @error
   Scenario: Cannot update an asset family if the provided attribute type is invalid
     Given an asset family with an image attribute "main_picture"
-    When the user updates the attribute as image to be "label"
-    Then there should be a validation error with message 'The attribute set as image for the asset family should be of type: media_link, image'
+    When the user updates the attribute as main media to be "label"
+    Then there should be a validation error with message 'The attribute set as main media for the asset family should be of type: media_link, image'
 
   # Product link rules
   @acceptance-back
@@ -424,8 +424,8 @@ Feature: Edit an asset family
     When the user changes the asset family "designer" with:
       | labels | {"en_US": "Stylist", "fr_FR": "Styliste"} |
     Then the saved asset family "designer" will be:
-      | identifier | labels                                       | image | permission     | attribute_as_label | attribute_as_image |
-      | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} | null  | {"edit": true} |                    |                    |
+      | identifier | labels                                       | image | permission     | attribute_as_label | attribute_as_main_media |
+      | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} | null  | {"edit": true} |                    |                         |
     And the user saves the changes
     And the user shouldn't be notified that modification have been made
     And the user should see the saved notification

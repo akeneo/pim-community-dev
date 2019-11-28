@@ -360,7 +360,7 @@ final class EditAssetContext implements Context
     {
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER);
         $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
-        $attributeAsImage = $assetFamily->getAttributeAsImageReference();
+        $attributeAsMainMedia = $assetFamily->getAttributeAsMainMediaReference();
 
         $fileData = $this->initUploadedFileData();
 
@@ -370,7 +370,7 @@ final class EditAssetContext implements Context
             'labels' => [],
             'values' => [
                 [
-                    'attribute' => $attributeAsImage->normalize(),
+                    'attribute' => $attributeAsMainMedia->normalize(),
                     'channel'   => null,
                     'locale'    => null,
                     'data'      => $fileData,
@@ -402,7 +402,7 @@ final class EditAssetContext implements Context
     {
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER);
         $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
-        $attributeAsImage = $assetFamily->getAttributeAsImageReference();
+        $attributeAsMainMedia = $assetFamily->getAttributeAsMainMediaReference();
 
         $filePath = json_decode($filePath);
         $filename = json_decode($filename);
@@ -412,7 +412,7 @@ final class EditAssetContext implements Context
             'code' => self::ASSET_CODE,
             'values' => [
                 [
-                    'attribute' => $attributeAsImage->normalize(),
+                    'attribute' => $attributeAsMainMedia->normalize(),
                     'channel'   => null,
                     'locale'    => null,
                     'data'      => [
@@ -865,7 +865,7 @@ final class EditAssetContext implements Context
 
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER);
         $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
-        $attributeAsImage = $assetFamily->getAttributeAsImageReference();
+        $attributeAsMainMedia = $assetFamily->getAttributeAsMainMediaReference();
         $asset = $this->assetRepository->getByAssetFamilyAndCode(
             $assetFamilyIdentifier,
             AssetCode::fromString(self::ASSET_CODE)
@@ -873,7 +873,7 @@ final class EditAssetContext implements Context
 
         $assetImage = $this->getImage(
             $asset->getValues()->normalize(),
-            $attributeAsImage->getIdentifier()->normalize()
+            $attributeAsMainMedia->getIdentifier()->normalize()
         );
         Assert::false($assetImage === null);
 
@@ -893,7 +893,7 @@ final class EditAssetContext implements Context
 
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER);
         $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
-        $attributeAsImage = $assetFamily->getAttributeAsImageReference();
+        $attributeAsMainMedia = $assetFamily->getAttributeAsMainMediaReference();
         $asset = $this->assetRepository->getByAssetFamilyAndCode(
             AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
             AssetCode::fromString(self::ASSET_CODE)
@@ -901,7 +901,7 @@ final class EditAssetContext implements Context
 
         $assetImage = $this->getImage(
             $asset->getValues()->normalize(),
-            $attributeAsImage->getIdentifier()->normalize()
+            $attributeAsMainMedia->getIdentifier()->normalize()
         );
         Assert::true($assetImage === null);
     }
@@ -2538,15 +2538,15 @@ final class EditAssetContext implements Context
         );
     }
 
-    private function getImage(array $valueCollection, string $attributeAsImage)
+    private function getImage(array $valueCollection, string $attributeAsMainMedia)
     {
         $emptyImage = null;
 
         $value = current(
             array_filter(
                 $valueCollection,
-                function (array $value) use ($attributeAsImage) {
-                    return $value['attribute'] === $attributeAsImage;
+                function (array $value) use ($attributeAsMainMedia) {
+                    return $value['attribute'] === $attributeAsMainMedia;
                 }
             )
         );

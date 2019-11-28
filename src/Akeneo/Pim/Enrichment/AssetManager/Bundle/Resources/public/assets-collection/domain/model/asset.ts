@@ -166,16 +166,16 @@ export const sortAssetCollection = (assetCollection: Asset[], assetCodes: AssetC
   return [...assetCollection].sort((a, b) => assetCodes.indexOf(a.code) - assetCodes.indexOf(b.code));
 };
 
-const getAssetMainImage = (asset: Asset, _context: Context): ImageValue | undefined => asset.image[0];
+const getAssetMainMedia = (asset: Asset, _context: Context): ImageValue | undefined => asset.image[0];
 
-export const assetHasMainImage = (asset: Asset, context: Context): asset is Asset => {
-  const image = getAssetMainImage(asset, context);
+export const assetHasMainMedia = (asset: Asset, context: Context): asset is Asset => {
+  const image = getAssetMainMedia(asset, context);
 
   return undefined !== image && image.data.filePath !== '';
 };
 
-export const getAssetMainImageDownloadLink = (asset: Asset, context: Context): string => {
-  const imageValue = getAssetMainImage(asset, context) as ImageValue;
+export const getAssetMainMediaDownloadLink = (asset: Asset, context: Context): string => {
+  const imageValue = getAssetMainMedia(asset, context) as ImageValue;
   const attribute = getAttribute(asset.assetFamily.attributes, imageValue.attribute);
 
   return MEDIA_LINK_ATTRIBUTE_TYPE === attribute.type
@@ -183,8 +183,8 @@ export const getAssetMainImageDownloadLink = (asset: Asset, context: Context): s
     : getMediaDownloadUrl(imageValue.data.filePath);
 };
 
-export const getAssetMainImageOriginalFilename = (asset: Asset, context: Context) =>
-  (getAssetMainImage(asset, context) as ImageValue).data.originalFilename;
+export const getAssetMainMediaOriginalFilename = (asset: Asset, context: Context) =>
+  (getAssetMainMedia(asset, context) as ImageValue).data.originalFilename;
 
 const getAttribute = (
   attributes: NormalizedAttribute[],
@@ -199,15 +199,15 @@ const getAttribute = (
   return attribute;
 };
 
-export const assetMainImageCanBeDownloaded = (asset: Asset, context: Context) => {
-  const imageValue = getAssetMainImage(asset, context) as ImageValue;
+export const assetMainMediaCanBeDownloaded = (asset: Asset, context: Context) => {
+  const imageValue = getAssetMainMedia(asset, context) as ImageValue;
   const attribute = getAttribute(asset.assetFamily.attributes, imageValue.attribute);
 
   return MEDIA_LINK_ATTRIBUTE_TYPE !== attribute.type;
 };
 
-export const getAttributeAsMainImage = (asset: Asset): NormalizedAttribute =>
-  getAttribute(asset.assetFamily.attributes, asset.assetFamily.attributeAsImage);
+export const getAttributeAsMainMedia = (asset: Asset): NormalizedAttribute =>
+  getAttribute(asset.assetFamily.attributes, asset.assetFamily.attributeAsMainMedia);
 
 export const getMediaLinkUrl = (image: ImageData, attribute: NormalizedMediaLinkAttribute): string => {
   switch (attribute.media_type) {

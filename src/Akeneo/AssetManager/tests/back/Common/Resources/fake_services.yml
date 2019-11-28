@@ -221,8 +221,8 @@ services:
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
 
-    akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_attribute_as_image:
-        class: Akeneo\AssetManager\Common\Fake\InMemoryFindAssetFamilyAttributeAsImage
+    akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_attribute_as_main_media:
+        class: Akeneo\AssetManager\Common\Fake\InMemoryFindAssetFamilyAttributeAsMainMedia
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
 

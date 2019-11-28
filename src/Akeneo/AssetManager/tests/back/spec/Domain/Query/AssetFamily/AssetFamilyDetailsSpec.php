@@ -9,7 +9,7 @@ use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyDetails;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeDetails;
 use PhpSpec\ObjectBehavior;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
 
 class AssetFamilyDetailsSpec extends ObjectBehavior
 {
@@ -37,7 +37,7 @@ class AssetFamilyDetailsSpec extends ObjectBehavior
         ];
         $this->isAllowedToEdit = false;
         $this->attributeAsLabel = AttributeAsLabelReference::noReference();
-        $this->attributeAsImage = AttributeAsImageReference::noReference();
+        $this->attributeAsMainMedia = AttributeAsMainMediaReference::noReference();
 
         $name->normalize()->willReturn(['code' => 'name']);
 
@@ -62,7 +62,7 @@ class AssetFamilyDetailsSpec extends ObjectBehavior
                     'edit' => false
                 ],
                 'attribute_as_label' => null,
-                'attribute_as_image' => null,
+                'attribute_as_main_media' => null,
             ]
         );
     }

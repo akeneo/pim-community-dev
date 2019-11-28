@@ -11,7 +11,7 @@
         "en_US": "Brand english label",
         "fr_FR": "Brand french label"
       },
-      "attribute_as_image": "image",
+      "attribute_as_main_media": "image",
       "product_link_rules": [
         {
           "product_selections": [

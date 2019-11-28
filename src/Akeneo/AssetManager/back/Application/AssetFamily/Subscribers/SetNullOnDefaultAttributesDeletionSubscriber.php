@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Application\AssetFamily\Subscribers;
 
 use Akeneo\AssetManager\Domain\Event\BeforeAttributeDeletedEvent;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -38,23 +38,23 @@ class SetNullOnDefaultAttributesDeletionSubscriber implements EventSubscriberInt
     public static function getSubscribedEvents()
     {
         return [
-            BeforeAttributeDeletedEvent::class => 'beforeAttributeAsLabelOrImageIsDeleted',
+            BeforeAttributeDeletedEvent::class => 'beforeAttributeAsLabelOrMainMediaIsDeleted',
         ];
     }
 
-    public function beforeAttributeAsLabelOrImageIsDeleted(BeforeAttributeDeletedEvent $beforeAttributeDeletedEvent): void
+    public function beforeAttributeAsLabelOrMainMediaIsDeleted(BeforeAttributeDeletedEvent $beforeAttributeDeletedEvent): void
     {
         $assetFamily = $this->assetFamilyRepository->getByIdentifier($beforeAttributeDeletedEvent->getAssetFamilyIdentifier());
 
         $attributeAsLabel = $assetFamily->getAttributeAsLabelReference();
-        $attributeAsImage = $assetFamily->getAttributeAsImageReference();
+        $attributeAsMainMedia = $assetFamily->getAttributeAsMainMediaReference();
 
         if (!$attributeAsLabel->isEmpty() && $beforeAttributeDeletedEvent->getAttributeIdentifier()->equals($attributeAsLabel->getIdentifier())) {
             $assetFamily->updateAttributeAsLabelReference(AttributeAsLabelReference::noReference());
         }
 
-        if (!$attributeAsImage->isEmpty() && $beforeAttributeDeletedEvent->getAttributeIdentifier()->equals($attributeAsImage->getIdentifier())) {
-            $assetFamily->updateAttributeAsImageReference(AttributeAsImageReference::noReference());
+        if (!$attributeAsMainMedia->isEmpty() && $beforeAttributeDeletedEvent->getAttributeIdentifier()->equals($attributeAsMainMedia->getIdentifier())) {
+            $assetFamily->updateAttributeAsMainMediaReference(AttributeAsMainMediaReference::noReference());
         }
 
         $this->assetFamilyRepository->update($assetFamily);

@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Common\Fake;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
-use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyAttributeAsImageInterface;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyAttributeAsMainMediaInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyNotFoundException;
 
-class InMemoryFindAssetFamilyAttributeAsImage implements FindAssetFamilyAttributeAsImageInterface
+class InMemoryFindAssetFamilyAttributeAsMainMedia implements FindAssetFamilyAttributeAsMainMediaInterface
 {
     /** @var InMemoryAssetFamilyRepository */
     private $assetFamilyRepository;
@@ -28,14 +28,14 @@ class InMemoryFindAssetFamilyAttributeAsImage implements FindAssetFamilyAttribut
         $this->assetFamilyRepository = $assetFamilyRepository;
     }
 
-    public function find(AssetFamilyIdentifier $assetFamilyIdentifier): AttributeAsImageReference
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier): AttributeAsMainMediaReference
     {
         try {
             $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
         } catch (AssetFamilyNotFoundException $e) {
-            return AttributeAsImageReference::noReference();
+            return AttributeAsMainMediaReference::noReference();
         }
 
-        return $assetFamily->getAttributeAsImageReference();
+        return $assetFamily->getAttributeAsMainMediaReference();
     }
 }

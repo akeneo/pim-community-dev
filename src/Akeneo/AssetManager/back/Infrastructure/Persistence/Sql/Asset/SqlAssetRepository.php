@@ -192,7 +192,7 @@ SQL;
     public function getByIdentifier(AssetIdentifier $identifier): Asset
     {
         $fetch = <<<SQL
-        SELECT asset.identifier, asset.code, asset.asset_family_identifier, asset.value_collection, reference.attribute_as_label, reference.attribute_as_image
+        SELECT asset.identifier, asset.code, asset.asset_family_identifier, asset.value_collection, reference.attribute_as_label, reference.attribute_as_main_media
         FROM akeneo_asset_manager_asset AS asset
         INNER JOIN akeneo_asset_manager_asset_family AS reference
             ON reference.identifier = asset.asset_family_identifier

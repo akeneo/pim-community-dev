@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyDetails;
@@ -75,7 +75,7 @@ class SqlFindAssetFamilyDetails implements FindAssetFamilyDetailsInterface
             $result['original_filename'],
             $attributesDetails,
             $result['attribute_as_label'],
-            $result['attribute_as_image']
+            $result['attribute_as_main_media']
         );
     }
 
@@ -86,7 +86,7 @@ class SqlFindAssetFamilyDetails implements FindAssetFamilyDetailsInterface
             re.identifier,
             re.labels,
             re.attribute_as_label,
-            re.attribute_as_image,
+            re.attribute_as_main_media,
             fi.file_key,
             fi.original_filename, (
                 SELECT count(*) FROM akeneo_asset_manager_asset WHERE asset_family_identifier = :identifier
@@ -118,7 +118,7 @@ SQL;
         ?string $originalFilename,
         array $attributesDetails,
         ?string $attributeAsLabel,
-        ?string $attributeAsImage
+        ?string $attributeAsMainMedia
     ): AssetFamilyDetails {
         $platform = $this->sqlConnection->getDatabasePlatform();
         $activatedLocales = $this->findActivatedLocales->findAll();
@@ -144,7 +144,7 @@ SQL;
         $assetFamilyItem->assetCount = $assetCount;
         $assetFamilyItem->attributes = $attributesDetails;
         $assetFamilyItem->attributeAsLabel = AttributeAsLabelReference::createFromNormalized($attributeAsLabel);
-        $assetFamilyItem->attributeAsImage = AttributeAsImageReference::createFromNormalized($attributeAsImage);
+        $assetFamilyItem->attributeAsMainMedia = AttributeAsMainMediaReference::createFromNormalized($attributeAsMainMedia);
 
         return $assetFamilyItem;
     }

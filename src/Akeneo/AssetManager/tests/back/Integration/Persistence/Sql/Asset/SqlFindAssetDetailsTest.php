@@ -105,7 +105,7 @@ class SqlFindAssetDetailsTest extends SqlIntegrationTestCase
             $assetFamily->getAttributeAsLabelReference()->getIdentifier()
         );
         $imageAttribute = $this->attributeRepository->getByIdentifier(
-            $assetFamily->getAttributeAsImageReference()->getIdentifier()
+            $assetFamily->getAttributeAsMainMediaReference()->getIdentifier()
         );
 
         $expectedValues = [
@@ -211,7 +211,7 @@ class SqlFindAssetDetailsTest extends SqlIntegrationTestCase
             TextData::fromString('Philippe Starck')
         );
         $imageValue = Value::create(
-            $assetFamily->getAttributeAsImageReference()->getIdentifier(),
+            $assetFamily->getAttributeAsMainMediaReference()->getIdentifier(),
             ChannelReference::noReference(),
             LocaleReference::noReference(),
             FileData::createFromNormalize([

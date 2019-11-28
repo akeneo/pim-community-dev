@@ -42,7 +42,7 @@ class AssetFamilyValidator
                         '.+' => ['type' => 'string'],
                     ],
                 ],
-                'attribute_as_image' => [
+                'attribute_as_main_media' => [
                     'type' => ['string'],
                 ],
                 'product_link_rules' => [

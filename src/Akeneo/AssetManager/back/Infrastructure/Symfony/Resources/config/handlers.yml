@@ -41,7 +41,7 @@ services:
         class: Akeneo\AssetManager\Application\Attribute\DeleteAttribute\DeleteAttributeHandler
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_attribute_as_label'
-            - '@akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_attribute_as_image'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_attribute_as_main_media'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
 
     akeneo_assetmanager.application.attribute.edit_attribute_handler:

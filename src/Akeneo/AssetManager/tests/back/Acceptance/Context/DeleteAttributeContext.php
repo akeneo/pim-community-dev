@@ -80,9 +80,9 @@ class DeleteAttributeContext implements Context
     }
 
     /**
-     * @Then /^it is not possible to delete the attribute as image linked to this entity$/
+     * @Then /^it is not possible to delete the attribute as main media linked to this entity$/
      */
-    public function itIsNotPossibleToDeleteTheAttributeAsImageLinkedToThisEntity()
+    public function itIsNotPossibleToDeleteTheAttributeAsMainMediaLinkedToThisEntity()
     {
         $identifier = $this->getAttributeIdentifier->withAssetFamilyAndCode(
             AssetFamilyIdentifier::fromString('designer'),
@@ -95,7 +95,7 @@ class DeleteAttributeContext implements Context
         try {
             ($this->deleteAttributeHandler)($command);
 
-            throw new \Exception('Attribute as image has been deleted but it should not.');
+            throw new \Exception('Attribute as main media has been deleted but it should not.');
         } catch (\LogicException $e) {
         }
     }

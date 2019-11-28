@@ -24,7 +24,7 @@ beforeEach(async () => {
           'originalFilename': ''
         })
         .withAttributes([])
-        .withAttributeAsImage('main_image')
+        .withAttributeAsMainMedia('main_image')
         .withAttributeAsLabel('label')
         .build();
         interceptedRequest.respond({
@@ -75,7 +75,7 @@ it('It fetches the asset collection', async () => {
   // Check the asset collection returned by the fetcher is the expected one
   expect(response).toEqual([{
     assetFamily: {
-      attributeAsImage: 'main_image',
+      attributeAsMainMedia: 'main_image',
       attributeAsLabel: 'label',
       code: 'packshot',
       identifier: 'packshot',

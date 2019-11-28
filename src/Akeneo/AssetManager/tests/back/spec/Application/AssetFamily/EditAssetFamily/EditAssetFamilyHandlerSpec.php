@@ -6,7 +6,7 @@ use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyC
 use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyHandler;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsImageReference;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsMainMediaReference;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
@@ -200,18 +200,18 @@ class EditAssetFamilyHandlerSpec extends ObjectBehavior
         $this->__invoke($editAssetFamilyCommand);
     }
 
-    function it_edits_an_asset_family_with_an_attribute_as_image(
+    function it_edits_an_asset_family_with_an_attribute_as_main_media(
         AssetFamilyRepositoryInterface $repository,
         GetAttributeIdentifierInterface $getAttributeIdentifier,
         AssetFamily $assetFamily,
         EditAssetFamilyCommand $editAssetFamilyCommand,
         Image $image,
-        AttributeIdentifier $attributeAsImageIdentifier
+        AttributeIdentifier $attributeAsMainMediaIdentifier
     ) {
         $editAssetFamilyCommand->identifier = 'designer';
         $editAssetFamilyCommand->labels = [];
         $editAssetFamilyCommand->productLinkRules = [];
-        $editAssetFamilyCommand->attributeAsImage = 'new_attribute';
+        $editAssetFamilyCommand->attributeAsMainMedia = 'new_attribute';
 
         $repository->getByIdentifier(Argument::type(AssetFamilyIdentifier::class))
             ->willReturn($assetFamily);
@@ -229,10 +229,10 @@ class EditAssetFamilyHandlerSpec extends ObjectBehavior
         $getAttributeIdentifier->withAssetFamilyAndCode(
             AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('new_attribute')
-        )->willReturn($attributeAsImageIdentifier);
+        )->willReturn($attributeAsMainMediaIdentifier);
 
-        $assetFamily->updateAttributeAsImageReference(
-            AttributeAsImageReference::fromAttributeIdentifier($attributeAsImageIdentifier->getWrappedObject())
+        $assetFamily->updateAttributeAsMainMediaReference(
+            AttributeAsMainMediaReference::fromAttributeIdentifier($attributeAsMainMediaIdentifier->getWrappedObject())
         )->shouldBeCalled();
 
         $repository->update($assetFamily)->shouldBeCalled();
@@ -240,7 +240,7 @@ class EditAssetFamilyHandlerSpec extends ObjectBehavior
         $this->__invoke($editAssetFamilyCommand);
     }
 
-    function it_edits_an_asset_family_with_an_empty_attribute_as_image(
+    function it_edits_an_asset_family_with_an_empty_attribute_as_main_media(
         AssetFamilyRepositoryInterface $repository,
         AssetFamily $assetFamily,
         EditAssetFamilyCommand $editAssetFamilyCommand,
@@ -249,7 +249,7 @@ class EditAssetFamilyHandlerSpec extends ObjectBehavior
         $editAssetFamilyCommand->identifier = 'designer';
         $editAssetFamilyCommand->labels = [];
         $editAssetFamilyCommand->productLinkRules = [];
-        $editAssetFamilyCommand->attributeAsImage = null;
+        $editAssetFamilyCommand->attributeAsMainMedia = null;
 
         $repository->getByIdentifier(Argument::type(AssetFamilyIdentifier::class))
             ->willReturn($assetFamily);
@@ -265,7 +265,7 @@ class EditAssetFamilyHandlerSpec extends ObjectBehavior
         $assetFamily->updateRuleTemplateCollection(Argument::type(RuleTemplateCollection::class))
             ->shouldBeCalled();
 
-        $assetFamily->updateAttributeAsImageReference(Argument::type(AttributeAsImageReference::class))
+        $assetFamily->updateAttributeAsMainMediaReference(Argument::type(AttributeAsMainMediaReference::class))
             ->shouldNotBeCalled();
 
         $repository->update($assetFamily)->shouldBeCalled();

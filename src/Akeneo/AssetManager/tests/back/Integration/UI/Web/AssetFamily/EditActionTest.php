@@ -52,7 +52,7 @@ class EditActionTest extends ControllerIntegrationTestCase
                 'en_US' => 'foo',
                 'fr_FR' => 'bar',
             ],
-            'attributeAsImage' => 'image',
+            'attributeAsMainMedia' => 'image',
             'image'      => [
                 'filePath'         => '/path/image.jpg',
                 'originalFilename' => 'image.jpg'

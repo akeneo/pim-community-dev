@@ -60,7 +60,7 @@ class AssetDetailsHydrator implements AssetDetailsHydratorInterface
         array $attributes
     ): AssetDetails {
         $attributeAsLabel = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_label'], $this->platform);
-        $attributeAsImage = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_image'], $this->platform);
+        $attributeAsMainMedia = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_main_media'], $this->platform);
         $valueCollection = Type::getType(Type::JSON_ARRAY)->convertToPHPValue($row['value_collection'], $this->platform);
         $assetIdentifier = Type::getType(Type::STRING)
             ->convertToPHPValue($row['identifier'], $this->platform);
@@ -78,7 +78,7 @@ class AssetDetailsHydrator implements AssetDetailsHydratorInterface
         $allValues = $this->createEmptyValues($emptyValues, $normalizedValues);
 
         $labels = $this->getLabelsFromValues($valueCollection, $attributeAsLabel);
-        $assetImage = $this->getImage($valueCollection, $attributes[$attributeAsImage]);
+        $assetImage = $this->getImage($valueCollection, $attributes[$attributeAsMainMedia]);
 
         $assetDetails = new AssetDetails(
             AssetIdentifier::fromString($assetIdentifier),
@@ -124,12 +124,12 @@ class AssetDetailsHydrator implements AssetDetailsHydratorInterface
         );
     }
 
-    private function getImage($valueCollection, AbstractAttribute $attributeAsImage): Image
+    private function getImage($valueCollection, AbstractAttribute $attributeAsMainMedia): Image
     {
         $imageValue = array_filter(
             $valueCollection,
-            function (array $value) use ($attributeAsImage) {
-                return $value['attribute'] === $attributeAsImage->getIdentifier()->normalize();
+            function (array $value) use ($attributeAsMainMedia) {
+                return $value['attribute'] === $attributeAsMainMedia->getIdentifier()->normalize();
             }
         );
 
@@ -137,8 +137,8 @@ class AssetDetailsHydrator implements AssetDetailsHydratorInterface
         if (!empty($imageValue)) {
             $imageValue = current($imageValue);
 
-            if (MediaLinkAttribute::ATTRIBUTE_TYPE === $attributeAsImage->getType()) {
-                $url = sprintf('%s%s%s', $attributeAsImage->getPrefix()->normalize(), $imageValue['data'], $attributeAsImage->getSuffix()->normalize());
+            if (MediaLinkAttribute::ATTRIBUTE_TYPE === $attributeAsMainMedia->getType()) {
+                $url = sprintf('%s%s%s', $attributeAsMainMedia->getPrefix()->normalize(), $imageValue['data'], $attributeAsMainMedia->getSuffix()->normalize());
                 $imageValue['data'] = [
                     'filePath'         => $imageValue['data'],
                     'originalFilename' => basename($url)

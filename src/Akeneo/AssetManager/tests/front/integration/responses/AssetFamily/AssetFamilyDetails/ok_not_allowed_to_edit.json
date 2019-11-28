@@ -156,7 +156,7 @@
                 "edit": false
             },
             "attribute_as_label": "designer_name_123456",
-            "attribute_as_image": "designer_portrait_123456"
+            "attribute_as_main_media": "designer_portrait_123456"
         }
     }
 }

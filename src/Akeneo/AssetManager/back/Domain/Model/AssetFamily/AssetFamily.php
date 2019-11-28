@@ -23,7 +23,7 @@ use Akeneo\AssetManager\Domain\Model\LabelCollection;
 class AssetFamily
 {
     public const DEFAULT_ATTRIBUTE_AS_LABEL_CODE = 'label';
-    public const DEFAULT_ATTRIBUTE_AS_IMAGE_CODE = 'image';
+    public const DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE = 'image';
 
     /** @var AssetFamilyIdentifier */
     private $identifier;
@@ -37,8 +37,8 @@ class AssetFamily
     /** @var AttributeAsLabelReference */
     private $attributeAsLabel;
 
-    /** @var AttributeAsImageReference */
-    private $attributeAsImage;
+    /** @var AttributeAsMainMediaReference */
+    private $attributeAsMainMedia;
 
     /** @var RuleTemplateCollection  */
     private $ruleTemplateCollection;
@@ -51,7 +51,7 @@ class AssetFamily
         LabelCollection $labelCollection,
         Image $image,
         AttributeAsLabelReference $attributeAsLabel,
-        AttributeAsImageReference $attributeAsImage,
+        AttributeAsMainMediaReference $attributeAsMainMedia,
         RuleTemplateCollection $ruleTemplateCollection,
         TransformationCollection $transformationCollection
     ) {
@@ -59,7 +59,7 @@ class AssetFamily
         $this->labelCollection = $labelCollection;
         $this->image = $image;
         $this->attributeAsLabel = $attributeAsLabel;
-        $this->attributeAsImage = $attributeAsImage;
+        $this->attributeAsMainMedia = $attributeAsMainMedia;
         $this->ruleTemplateCollection = $ruleTemplateCollection;
         $this->transformationCollection = $transformationCollection;
     }
@@ -77,7 +77,7 @@ class AssetFamily
             $labelCollection,
             $image,
             AttributeAsLabelReference::noReference(),
-            AttributeAsImageReference::noReference(),
+            AttributeAsMainMediaReference::noReference(),
             $ruleTemplateCollection,
             TransformationCollection::noTransformation()
         );
@@ -88,7 +88,7 @@ class AssetFamily
         array $rawLabelCollection,
         Image $image,
         AttributeAsLabelReference $attributeAsLabel,
-        AttributeAsImageReference $attributeAsImage,
+        AttributeAsMainMediaReference $attributeAsMainMedia,
         RuleTemplateCollection $ruleTemplateCollection
     ): self {
         $labelCollection = LabelCollection::fromArray($rawLabelCollection);
@@ -98,7 +98,7 @@ class AssetFamily
             $labelCollection,
             $image,
             $attributeAsLabel,
-            $attributeAsImage,
+            $attributeAsMainMedia,
             $ruleTemplateCollection,
             TransformationCollection::noTransformation()
         );
@@ -151,14 +151,14 @@ class AssetFamily
         $this->attributeAsLabel = $attributeAsLabel;
     }
 
-    public function getAttributeAsImageReference(): AttributeAsImageReference
+    public function getAttributeAsMainMediaReference(): AttributeAsMainMediaReference
     {
-        return $this->attributeAsImage;
+        return $this->attributeAsMainMedia;
     }
 
-    public function updateAttributeAsImageReference(AttributeAsImageReference $attributeAsImage): void
+    public function updateAttributeAsMainMediaReference(AttributeAsMainMediaReference $attributeAsMainMedia): void
     {
-        $this->attributeAsImage = $attributeAsImage;
+        $this->attributeAsMainMedia = $attributeAsMainMedia;
     }
 
     public function getRuleTemplateCollection(): RuleTemplateCollection
@@ -183,7 +183,7 @@ class AssetFamily
             $this->labelCollection,
             $this->image,
             $this->attributeAsLabel,
-            $this->attributeAsImage,
+            $this->attributeAsMainMedia,
             $this->ruleTemplateCollection,
             $transformationCollection
         );

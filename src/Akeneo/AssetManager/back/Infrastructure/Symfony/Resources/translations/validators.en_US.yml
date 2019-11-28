@@ -28,9 +28,9 @@ pim_asset_manager:
                 channel_not_supported_for_field: 'You cannot specify a channel for the field "%product_field%"'
                 locale_not_supported_for_field: 'You cannot specify a locale for the field "%product_field%"'
                 assignmement_attribute_does_not_support_this_asset_family: 'The product attribute "%product_attribute_code%" cannot contain assets of asset family "%asset_family_identifier%"'
-            attribute_as_image:
-                not_found: 'The attribute "%attribute_as_image%" set as image for the asset family does not exist'
-                invalid_type: 'The attribute set as image for the asset family should be of type: %valid_attribute_as_image_types%'
+            attribute_as_main_media:
+                not_found: 'The attribute "%attribute_as_main_media%" set as main media for the asset family does not exist'
+                invalid_type: 'The attribute set as main media for the asset family should be of type: %valid_attribute_as_main_media_types%'
         transformation:
             limit_reached: 'You cannot create or update the asset family "%asset_family_identifier%" because you have reached the limit of %limit% transformations'
             same_operation_twice: 'You cannot create or update the asset family "%asset_family_identifier%" because the operation "operation_type" is specified twice in a single transformation'
