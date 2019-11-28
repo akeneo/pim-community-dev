@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes:
+
+ - PIM-8996: Display an error when a file upload failed
+
 # 3.2.21 (2019-11-22)
 
 - PIM-8995: Fix the completeness widget (dashboard) for channels having no translations
