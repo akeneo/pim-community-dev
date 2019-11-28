@@ -13,28 +13,33 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation;
 
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+
 /**
  * Domain model used for the transformations.
  */
 class TransformationAsset
 {
-    /** @var string */
+    /** @var AssetIdentifier */
     private $identifier;
 
-    /** @var string */
+    /** @var AssetCode */
     private $code;
 
-    /** @var string */
+    /** @var AssetFamilyIdentifier */
     private $assetFamilyIdentifier;
 
-    /** @var array */
+    /** @var ValueCollection */
     private $valueCollection;
 
     public function __construct(
-        string $identifier,
-        string $code,
-        string $assetFamilyIdentifier,
-        array $valueCollection
+        AssetIdentifier $identifier,
+        AssetCode $code,
+        AssetFamilyIdentifier $assetFamilyIdentifier,
+        ValueCollection $valueCollection
     ) {
         $this->identifier = $identifier;
         $this->code = $code;

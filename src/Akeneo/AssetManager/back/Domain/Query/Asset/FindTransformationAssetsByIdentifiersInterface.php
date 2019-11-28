@@ -20,7 +20,7 @@ interface FindTransformationAssetsByIdentifiersInterface
     /**
      * @param string[] $assetIdentifiers
      *
-     * @return TransformationAsset
+     * @return TransformationAsset[]
      */
     public function find(array $assetIdentifiers): array;
 }

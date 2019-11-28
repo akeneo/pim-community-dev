@@ -13,11 +13,15 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset;
 
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationAsset;
 use Akeneo\AssetManager\Domain\Query\Asset\FindTransformationAssetsByIdentifiersInterface;
 use Doctrine\DBAL\Connection;
 
-class SqlFindConnectorAssetsByIdentifiers implements FindTransformationAssetsByIdentifiersInterface
+class SqlFindTransformationAssetsByIdentifiers implements FindTransformationAssetsByIdentifiersInterface
 {
     /** @var Connection */
     private $sqlConnection;
@@ -53,10 +57,10 @@ SQL;
         $results = [];
         foreach ($rawResults as $rawResult) {
             $results[$rawResult['identifier']] = new TransformationAsset(
-                $rawResult['identifier'],
-                $rawResult['code'],
-                $rawResult['asset_family_identifier'],
-                json_decode($rawResult['value_collection'], true)
+                AssetIdentifier::fromString($rawResult['identifier']),
+                AssetCode::fromString($rawResult['code']),
+                AssetFamilyIdentifier::fromString($rawResult['asset_family_identifier']),
+                ValueCollection::fromValues(json_decode($rawResult['value_collection'], true))
             );
         }
 
