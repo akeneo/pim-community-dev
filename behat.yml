@@ -33,8 +33,6 @@ contexts: &context
             - 'Context\FeatureContext'
     -   Pim\Behat\Context\Domain\Enrich\CompletenessContext:
             - 'Context\FeatureContext'
-    -   Pim\Behat\Context\Domain\Enrich\GridPaginationContext:
-            - 'Context\FeatureContext'
     -   Pim\Behat\Context\Domain\Enrich\ProductGroupContext:
             - 'Context\FeatureContext'
     -   Pim\Behat\Context\Domain\Enrich\ProductModelContext:

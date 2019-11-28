@@ -4,11 +4,10 @@ interface Props {
     subTitle: ReactNode;
     title: ReactNode;
     description: ReactNode;
-    buttons: ReactNode;
     onCancel: () => void;
 }
 
-export const Modal = ({subTitle, title, description, children, buttons, onCancel}: PropsWithChildren<Props>) => {
+export const Modal = ({subTitle, title, description, children, onCancel}: PropsWithChildren<Props>) => {
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => 'Escape' === event.code && onCancel();
         document.addEventListener('keydown', handleKeyDown, true);
@@ -32,8 +31,6 @@ export const Modal = ({subTitle, title, description, children, buttons, onCancel
                         </div>
 
                         {children}
-
-                        <div className='AknButtonList'>{buttons}</div>
                     </div>
                 </div>
             </div>

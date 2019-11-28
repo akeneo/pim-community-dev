@@ -2,7 +2,7 @@
 
 namespace Pim\Upgrade\Schema;
 
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelDescendantsIndexer;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelDescendantsAndAncestorsIndexer;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelIndexer;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\EmptyValuesCleaner;
 use Doctrine\DBAL\Schema\Schema;
@@ -91,8 +91,8 @@ final class Version_4_0_20190917080512_remove_product_model_empty_raw_values
         return $this->container->get('pim_catalog.elasticsearch.indexer.product_model');
     }
 
-    private function getProductModelDescendantsIndexer(): ProductModelDescendantsIndexer
+    private function getProductModelDescendantsIndexer(): ProductModelDescendantsAndAncestorsIndexer
     {
-        return $this->container->get('pim_catalog.elasticsearch.indexer.product_model_descendance');
+        return $this->container->get('pim_catalog.elasticsearch.indexer.product_model_descendants_and_ancestors');
     }
 }

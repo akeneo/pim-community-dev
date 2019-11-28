@@ -42,7 +42,7 @@ class InMemoryAppRepository implements AppRepository
             $dataRow['code'],
             $dataRow['label'],
             $dataRow['flow_type'],
-            new ClientId($dataRow['client_id']),
+            $dataRow['client_id'],
             new UserId($dataRow['user_id'])
         );
     }
@@ -55,6 +55,13 @@ class InMemoryAppRepository implements AppRepository
 
         $this->dataRows[(string) $app->code()]['label'] = (string) $app->label();
         $this->dataRows[(string) $app->code()]['flow_type'] = (string) $app->flowType();
+    }
+
+    public function delete(App $app): void
+    {
+        if (isset($this->dataRows[(string) $app->code()])) {
+            unset($this->dataRows[(string) $app->code()]);
+        }
     }
 
     public function count(): int

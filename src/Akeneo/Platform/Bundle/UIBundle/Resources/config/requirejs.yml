@@ -149,7 +149,6 @@ config:
           module: pim/base-fetcher
           options:
             urls:
-              list: pim_enrich_group_rest_index
               get: pim_enrich_group_rest_get
         sequential-edit:
           module: pim/base-fetcher
@@ -406,11 +405,6 @@ config:
           module: pim/controller/job-execution
         oro_config_configuration_system:
           module: pim/controller/system
-        pim_enrich_api_connection_index:
-          module: pim/controller/common/index
-          aclResourceId: pim_enrich_api_connection_manage
-          config:
-            entity: api-connection
         pim_enrich_catalog_volume_index:
           module: pim/controller/catalog-volume
         pim_user_security_logout:

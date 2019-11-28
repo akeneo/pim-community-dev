@@ -2,7 +2,6 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM;
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 
 /**
@@ -30,62 +29,5 @@ class QueryBuilderUtility
             }
         }
         $qb->setParameters($parameters);
-    }
-
-    /**
-     * @deprecated Will be removed in 4.0
-     *
-     * Replaces name of tables in DBAL queries
-     *
-     * @param EntityManager $em
-     * @param string        $entityName
-     * @param string        $sql
-     *
-     * @return string
-     */
-    public static function prepareDBALQuery($em, $entityName, $sql)
-    {
-        $productMetadata = $em->getClassMetadata($entityName);
-
-        $categoryMapping = $productMetadata->getAssociationMapping('categories');
-        $familyMapping = $productMetadata->getAssociationMapping('family');
-        $valueMetadata = self::getProductValueMetadata($em, $entityName);
-
-        $attributeMapping = $valueMetadata->getAssociationMapping('attribute');
-        $attributeMetadata = $em->getClassMetadata($attributeMapping['targetEntity']);
-
-        $familyMetadata = $em->getClassMetadata($familyMapping['targetEntity']);
-
-        $attributeFamMapping = $familyMetadata->getAssociationMapping('attributes');
-
-        return strtr(
-            $sql,
-            [
-                '%category_join_table%'    => $categoryMapping['joinTable']['name'],
-                '%product_table%'          => $productMetadata->getTableName(),
-                '%product_value_table%'    => $valueMetadata->getTableName(),
-                '%attribute_table%'        => $attributeMetadata->getTableName(),
-                '%family_table%'           => $familyMetadata->getTableName(),
-                '%family_attribute_table%' => $attributeFamMapping['joinTable']['name']
-            ]
-        );
-    }
-
-    /**
-     * @deprecated Will be removed in 4.0
-     *
-     * Get metadata of product value table
-     *
-     * @param EntityManager $em
-     * @param string        $entityName
-     *
-     * @return \Doctrine\ORM\Mapping\ClassMetadata
-     */
-    public static function getProductValueMetadata(EntityManager $em, $entityName)
-    {
-        $productMetadata = $em->getClassMetadata($entityName);
-        $valueMapping = $productMetadata->getAssociationMapping('values');
-
-        return $em->getClassMetadata($valueMapping['targetEntity']);
     }
 }

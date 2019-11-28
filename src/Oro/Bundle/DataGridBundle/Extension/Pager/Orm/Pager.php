@@ -69,17 +69,6 @@ class Pager extends AbstractPager implements PagerInterface
     /**
      * {@inheritdoc}
      */
-    public function serialize()
-    {
-        $vars = get_object_vars($this);
-        unset($vars['qb']);
-
-        return serialize($vars);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function init()
     {
         $this->resetIterator();
@@ -152,20 +141,5 @@ class Pager extends AbstractPager implements PagerInterface
     public function setParameter($name, $value)
     {
         $this->parameters[$name] = $value;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function retrieveObject($offset)
-    {
-        $queryForRetrieve = clone $this->getQueryBuilder();
-        $queryForRetrieve
-            ->setFirstResult($offset - 1)
-            ->setMaxResults(1);
-
-        $results = $queryForRetrieve->getQuery()->execute();
-
-        return $results[0];
     }
 }

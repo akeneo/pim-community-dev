@@ -45,6 +45,7 @@ class DbalSelectAppWithCredentialsByCodeQueryIntegration extends TestCase
         Assert::assertSame(FlowType::DATA_DESTINATION, $app->flowType());
         Assert::assertNotNull($app->clientId());
         Assert::assertNotNull($app->secret());
+        Assert::assertNotNull($app->username());
     }
 
     public function test_it_does_not_find_an_app_from_its_code()

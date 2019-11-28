@@ -137,7 +137,7 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
 
         $isRegistredReferenceData = null !== $referenceDataName &&
             !empty($referenceDataName) &&
-            null !== $this->registry->get($attribute->getReferenceDataName());
+            $this->registry->has($attribute->getReferenceDataName());
 
         return $isRegistredReferenceData;
     }

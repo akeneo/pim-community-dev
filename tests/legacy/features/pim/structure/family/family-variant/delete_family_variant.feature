@@ -17,11 +17,3 @@ Feature: Delete a family variant
     When I click on the "Delete" action of the row which contains "empty_family_variant"
     And I confirm the deletion
     Then I should not see the text "empty_family_variant"
-
-  Scenario: Unsuccessfully delete a family variant used by product models
-    Given I am on the "Clothing" family page
-    And I visit the "Variants" tab
-    When I click on the "Delete" action of the row which contains "Clothing by size"
-    And I confirm the deletion
-    And I should see the text "Clothing by size"
-

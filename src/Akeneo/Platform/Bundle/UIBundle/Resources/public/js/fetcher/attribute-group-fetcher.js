@@ -45,11 +45,7 @@ define([
                 }
 
                 this.entityListPromise = $.getJSON(
-                    Routing.generate(this.options.urls.list, {
-                        options: {
-                            limit: -1
-                        }
-                    })
+                    Routing.generate(this.options.urls.list)
                 ).then(_.identity).promise();
             }
 

@@ -8,6 +8,8 @@ use Akeneo\Apps\Application\Command\CreateAppHandler;
 use Akeneo\Apps\Application\Service\CreateClientInterface;
 use Akeneo\Apps\Application\Service\CreateUserInterface;
 use Akeneo\Apps\Domain\Exception\ConstraintViolationListException;
+use Akeneo\Apps\Domain\Model\Read\AppWithCredentials;
+use Akeneo\Apps\Domain\Model\Read\Client;
 use Akeneo\Apps\Domain\Model\ValueObject\ClientId;
 use Akeneo\Apps\Domain\Model\ValueObject\FlowType;
 use Akeneo\Apps\Domain\Model\Write\App;
@@ -45,13 +47,41 @@ class CreateAppHandlerSpec extends ObjectBehavior
         $violations = new ConstraintViolationList([]);
         $validator->validate($command)->willReturn($violations);
 
-        $clientId = new ClientId(42);
-        $createClient->execute('Magento Connector')->shouldBeCalled()->willReturn($clientId);
+        $client = new Client(42, '42_myclientId', 'secret');
+        $createClient->execute('Magento Connector')->shouldBeCalled()->willReturn($client);
         $createUser->execute('magento', 'Magento Connector', 'APP', 'magento', Argument::any())->shouldBeCalled();
 
         $repository->create(Argument::type(App::class))->shouldBeCalled();
 
         $this->handle($command);
+    }
+
+    public function it_returns_an_app_with_credentials(
+        $validator,
+        $repository,
+        $createClient,
+        $createUser
+    ): void {
+        $command = new CreateAppCommand('magento', 'Magento Connector', FlowType::DATA_DESTINATION);
+
+        $violations = new ConstraintViolationList([]);
+        $validator->validate($command)->willReturn($violations);
+
+        $client = new Client(42, '42_myclientId', 'secret');
+        $createClient->execute('Magento Connector')->shouldBeCalled()->willReturn($client);
+        $createUser->execute('magento', 'Magento Connector', 'APP', 'magento', Argument::any())->shouldBeCalled();
+
+        $repository->create(Argument::type(App::class))->shouldBeCalled();
+
+        $appWithCredentials = $this->handle($command);
+        $appWithCredentials->shouldBeAnInstanceOf(AppWithCredentials::class);
+        $appWithCredentials->code()->shouldReturn('magento');
+        $appWithCredentials->label()->shouldReturn('Magento Connector');
+        $appWithCredentials->flowType()->shouldReturn(FlowType::DATA_DESTINATION);
+        $appWithCredentials->clientId()->shouldReturn('42_myclientId');
+        $appWithCredentials->secret()->shouldReturn('secret');
+        $appWithCredentials->username()->shouldReturn('magento');
+        $appWithCredentials->password()->shouldReturn('magento');
     }
 
     public function it_throws_a_constraint_exception_when_something_is_invalid(

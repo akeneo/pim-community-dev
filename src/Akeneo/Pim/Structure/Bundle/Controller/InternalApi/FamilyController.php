@@ -305,7 +305,7 @@ class FamilyController
                 ];
             }
 
-            return new JsonResponse($errors, Response::HTTP_CONFLICT);
+            return new JsonResponse($errors, Response::HTTP_BAD_REQUEST);
         }
 
         $this->saver->save($family);

@@ -49,5 +49,6 @@ class AkeneoPimStructureExtension extends Extension
         $loader->load('steps.yml');
         $loader->load('commands.yml');
         $loader->load('queries.yml');
+        $loader->load('processors.yml');
     }
 }

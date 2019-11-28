@@ -1,13 +1,3 @@
-pim_comment_comment_create:
-    path:  /comment/create
-    defaults: { _controller: pim_comment.controller.comment:createAction }
-    methods: [GET, POST]
-
-pim_comment_comment_reply:
-    path:  /comment/reply
-    defaults: { _controller: pim_comment.controller.comment:replyAction }
-    methods: [GET, POST]
-
 pim_comment_comment_delete:
     path: /comment/{id}/remove
     defaults: { _controller: pim_comment.controller.comment:deleteAction }

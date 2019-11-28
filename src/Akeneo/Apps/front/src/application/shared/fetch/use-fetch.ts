@@ -1,9 +1,9 @@
 import {useEffect, useState} from 'react';
 import fetch from './fetch';
-import {ok, Result} from './result';
+import {await, Result} from './result';
 
-export const useFetch = <T, E>(input: RequestInfo, init?: RequestInit): Result<T | undefined, E> => {
-    const [result, setResult] = useState<Result<T | undefined, E>>(ok(undefined));
+export const useFetch = <T, E = unknown>(input: RequestInfo, init?: RequestInit) => {
+    const [result, setResult] = useState<Result<T, E>>(await());
 
     useEffect(() => {
         fetch<T, E>(input, init).then(setResult);

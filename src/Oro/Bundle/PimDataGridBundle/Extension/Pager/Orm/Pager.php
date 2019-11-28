@@ -57,17 +57,6 @@ class Pager extends AbstractPager implements PagerInterface
     /**
      * {@inheritdoc}
      */
-    public function serialize()
-    {
-        $vars = get_object_vars($this);
-        unset($vars['qb']);
-
-        return serialize($vars);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function init()
     {
         $this->setNbResults($this->computeNbResult());

@@ -57,48 +57,6 @@ class DummyPager implements PagerInterface
     /**
      * {@inheritdoc}
      */
-    public function getPreviousPage()
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getNextPage()
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getLastPage()
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getFirstPage()
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getLinks($nbLinks = null)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function haveToPaginate()
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getNbResults()
     {
     }

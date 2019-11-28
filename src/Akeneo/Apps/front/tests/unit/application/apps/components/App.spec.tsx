@@ -2,12 +2,14 @@ import {mount} from 'enzyme';
 import {createMemoryHistory} from 'history';
 import * as React from 'react';
 import {MemoryRouter, Router} from 'react-router';
-import {create} from 'react-test-renderer';
+import {ThemeProvider} from 'styled-components';
 import {App} from '../../../../../src/application/apps/components/App';
+import {theme} from '../../../../../src/application/common/theme';
+import {createWithTheme} from '../../../../utils/create-with-theme';
 
 describe('App', () => {
     it('should render', () => {
-        const component = create(
+        const component = createWithTheme(
             <MemoryRouter>
                 <App code={'google-shopping'} label={'Google Shopping'} />
             </MemoryRouter>
@@ -19,9 +21,11 @@ describe('App', () => {
     it('should redirect to the app edit page when clicked', () => {
         const history = createMemoryHistory();
         const component = mount(
-            <Router history={history}>
-                <App code={'google-shopping'} label={'Google Shopping'} />
-            </Router>
+            <ThemeProvider theme={theme}>
+                <Router history={history}>
+                    <App code={'google-shopping'} label={'Google Shopping'} />
+                </Router>
+            </ThemeProvider>
         );
 
         component.simulate('click');

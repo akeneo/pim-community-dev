@@ -6,7 +6,7 @@
 # - unit (back and front)
 # - acceptance (back and front)
 # - integration (back and front)
-# - end to end
+# - end to end (API and UI)
 #
 # You should at least define a target for every kind of tests we previously listed with the following pattern:
 #
@@ -52,7 +52,7 @@
 # Make sure the tests run by the targets defined here does not run by the main targets too
 #
 
-_APPS_YARN_RUN = $(YARN_EXEC) run --cwd=src/Akeneo/Apps/front/
+_APPS_YARN_RUN = $(YARN_RUN) run --cwd=src/Akeneo/Apps/front/
 
 # Tests Back
 
@@ -72,26 +72,34 @@ else
 	${PHP_RUN} vendor/bin/phpunit -c . --testsuite Akeneo_Apps_Integration $(O)
 endif
 
+apps-e2e:
+ifeq ($(CI),true)
+	.circleci/run_phpunit.sh . .circleci/find_phpunit.php Akeneo_Apps_EndToEnd
+else
+	${PHP_RUN} vendor/bin/phpunit -c . --testsuite Akeneo_Apps_EndToEnd $(O)
+endif
+
 apps-back:
 	make apps-coupling-back
 	make apps-unit-back
 	make apps-acceptance-back
 	make apps-integration-back
+	make apps-e2e
 
 # Tests Front
 
-apps-front-tests:
+apps-unit-front:
 	$(_APPS_YARN_RUN) jest
 
-apps-front-lint:
+apps-lint-front:
 	$(_APPS_YARN_RUN) eslint
 	$(_APPS_YARN_RUN) prettier --check
 
 # Development
 
-apps-front-tests-watch:
+apps-unit-front_watch:
 	$(_APPS_YARN_RUN) jest --watchAll --coverage
 
-apps-front-lint-fix:
+apps-lint-front_fix:
 	$(_APPS_YARN_RUN) eslint --fix
 	$(_APPS_YARN_RUN) prettier --write

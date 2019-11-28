@@ -57,7 +57,7 @@ SQL;
                 $dataRow['code'],
                 $dataRow['label'],
                 $dataRow['flow_type'],
-                new ClientId((int) $dataRow['client_id']),
+                (int) $dataRow['client_id'],
                 new UserId((int) $dataRow['user_id'])
             ) : null;
     }
@@ -75,6 +75,19 @@ SQL;
             'code' => (string) $app->code(),
             'label' => (string) $app->label(),
             'flow_type' => (string) $app->flowType(),
+        ]);
+    }
+
+    public function delete(App $app): void
+    {
+        $deleteQuery = <<<SQL
+DELETE FROM akeneo_app
+WHERE code = :code
+SQL;
+
+        $stmt = $this->dbalConnection->prepare($deleteQuery);
+        $stmt->execute([
+            'code' => (string) $app->code(),
         ]);
     }
 }

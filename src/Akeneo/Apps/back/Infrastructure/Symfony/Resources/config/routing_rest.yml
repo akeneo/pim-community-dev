@@ -9,15 +9,29 @@ akeneo_apps_create_rest:
     methods: [POST]
 
 akeneo_apps_get_rest:
-    path: '/rest/apps'
+    path: '/rest/apps/{code}'
     defaults: { _controller: akeneo_app.internal_api.controller.app:get }
     methods: [GET]
     requirements:
         code: '[a-zA-Z0-9_]+'
 
 akeneo_apps_update_rest:
-    path: '/rest/apps'
+    path: '/rest/apps/{code}'
     defaults: { _controller: akeneo_app.internal_api.controller.app:update }
+    methods: [POST]
+    requirements:
+        code: '[a-zA-Z0-9_]+'
+
+akeneo_apps_delete_rest:
+    path: '/rest/apps/{code}'
+    defaults: { _controller: akeneo_app.internal_api.controller.app:delete }
+    methods: [DELETE]
+    requirements:
+        code: '[a-zA-Z0-9_]+'
+
+akeneo_apps_regenerate_secret_rest:
+    path: '/rest/apps/regenerate-secret'
+    defaults: { _controller: akeneo_app.internal_api.controller.app:regenerate-secret }
     methods: [POST]
     requirements:
         code: '[a-zA-Z0-9_]+'

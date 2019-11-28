@@ -36,16 +36,22 @@ pim_apps:
         flash:
             success: App successfully created.
             error: Sorry, an error occurred while creating the App.
+    edit_app:
+        subtitle: Settings
+        flash:
+            success: App successfully updated.
+            error: Sorry, an error occurred while editing the App.
 
 akeneo_apps:
-    constraint:
-        code:
-            required: App code is required.
-            invalid: App code may contain only letters, numbers and underscores.
-            too_long: App code is too long. It should have 100 characters or less.
-            must_be_unique: App code must be unique.
-        label:
-            required: App label is required.
-            too_long: App label is too long. It should have 100 characters or less.
-        flow_type:
-            invalid: App flow type can only be 'data_source', 'data_destination' or 'other'.
+    app:
+        constraint:
+            code:
+                required: App code is required.
+                invalid: App code may contain only letters, numbers and underscores.
+                too_long: App code is too long. It should have 100 characters or less.
+                must_be_unique: App code must be unique.
+            label:
+                required: App label is required.
+                too_long: App label is too long. It should have 100 characters or less.
+            flow_type:
+                invalid: App flow type can only be 'data_source', 'data_destination' or 'other'.

@@ -15,21 +15,21 @@ lint-back: var/cache/dev
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
 
 .PHONY: lint-front
-lint-front:
+lint-front: apps-lint-front
 	$(YARN_RUN) lint
 
 ### Unit tests
 .PHONY: unit-back
 unit-back: var/tests/phpspec
 ifeq ($(CI),true)
-	${PHP_RUN} vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
+	$(DOCKER_COMPOSE) run -T -u www-data --rm php php vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
 	.circleci/find_non_executed_phpspec.sh
 else
 	${PHP_RUN} vendor/bin/phpspec run
 endif
 
 .PHONY: unit-front
-unit-front:
+unit-front: apps-unit-front
 	$(YARN_RUN) unit
 
 ### Acceptance tests
