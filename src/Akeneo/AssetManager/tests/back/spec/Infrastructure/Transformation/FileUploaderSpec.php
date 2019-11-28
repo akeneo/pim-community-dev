@@ -22,7 +22,7 @@ class FileUploaderSpec extends ObjectBehavior
     ) {
         $file = new File(__DIR__ . '/Operation/akeneo.png');
         $filesystemProvider->getFilesystem('assetManagerStorage')->willReturn($filesystem);
-        $filesystem->put('/path/to/file', file_get_contents(__DIR__ . '/akeneo.png'))->willReturn(true);
+        $filesystem->put('/path/to/file', file_get_contents(__DIR__ . '/Operation/akeneo.png'))->willReturn(true);
 
         $this->put($file, '/path/to/file');
     }

@@ -65,7 +65,7 @@ class AssetItemHydrator implements AssetItemHydratorInterface
         $this->imagePreviewUrlGenerator = $imagePreviewUrlGenerator;
     }
 
-    public function hydrate(array $row, AssetQuery $query, $context = []): AssetItem
+    public function hydrate(array $row, AssetQuery $query, array $context = []): AssetItem
     {
         $identifier = Type::getType(Type::STRING)->convertToPHPValue($row['identifier'], $this->platform);
         $assetFamilyIdentifier = Type::getType(Type::STRING)->convertToPHPValue(
@@ -120,7 +120,6 @@ class AssetItemHydrator implements AssetItemHydratorInterface
         $channelIdentifier = ChannelIdentifier::fromCode($query->getChannel());
         $localeIdentifiers = LocaleIdentifierCollection::fromNormalized([$query->getLocale()]);
 
-        /** @var ValueKeyCollection $result */
         $result = $this->findRequiredValueKeyCollectionForChannelAndLocales->find(
             $assetFamilyIdentifier,
             $channelIdentifier,
