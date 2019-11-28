@@ -10,14 +10,6 @@ Feature: Define the attribute requirement
     And I am on the "Boots" family page
 
   @critical
-  Scenario: Successfully display the attribute requirements
-    Given I visit the "Attributes" tab
-    Then attribute "name" should be required in channels mobile and tablet
-    And attribute "lace_color" should not be required in channels mobile and tablet
-    And attribute "side_view" should be required in channel tablet
-    And attribute "side_view" should not be required in channel mobile
-
-  @critical
   Scenario: Successfully make an attribute required for a channel
     Given I visit the "Attributes" tab
     And I switch the attribute "rating" requirement in channel "mobile"

@@ -15,22 +15,6 @@ Feature: Set the attribute used as the main picture
       | Bags | brand      |
     And I am logged in as "Peter"
 
-  Scenario: Successfully show default value for attribute_as_image
-    Given I am on the "Bags" family page
-    Then I should see the text "Not selected"
-
-  Scenario: Successfully change attribute_as_image
-    Given I am on the "Bags" family page
-    And I visit the "Attributes" tab
-    And I add available attribute Image
-    And I visit the "Properties" tab
-    And I fill in the following information:
-      | Attribute used as the main picture | Image |
-    And I save the family
-    And I should not see the text "There are unsaved changes."
-    When I am on the "Bags" family page
-    Then I should see the text "Image"
-
   Scenario: Successfully disallow removal of attribute_as_image from attributes
     Given I am on the "Bags" family page
     And I visit the "Attributes" tab
