@@ -67,10 +67,6 @@ Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommand:
             - Akeneo\AssetManager\Infrastructure\Validation\Asset\Code: ~
         assetFamilyIdentifier:
             - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Identifier: ~
-        labels:
-            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\LabelCollection: ~
-        image:
-            - Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\Image: ~
     constraints:
         - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditAssetValueCommands: ~
 

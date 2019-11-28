@@ -73,8 +73,6 @@ class EditAssetHandlerSpec extends ObjectBehavior
         $editAssetCommand = new EditAssetCommand(
             'brand',
             'sony',
-            [],
-            null,
             [$editDescriptionCommand]
         );
 
