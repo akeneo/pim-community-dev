@@ -40,7 +40,9 @@ class ConnectorAssetFamilySpec extends ObjectBehavior
             Target::createFromNormalized(['attribute' => 'target', 'channel' => null, 'locale' => null]),
             OperationCollection::create([
                 ThumbnailOperation::create(['width' => 100, 'height' => 80]),
-            ])
+            ]),
+            '',
+            '_2'
         );
 
         $this->beConstructedWith(
@@ -119,6 +121,8 @@ class ConnectorAssetFamilySpec extends ObjectBehavior
                             'parameters' => ['width' => 100, 'height' => 80],
                         ],
                     ],
+                    'filename_prefix' => '',
+                    'filename_suffix' => '_2',
                 ],
             ],
         ]);

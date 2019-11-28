@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation;
 
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ResizeOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ThumbnailOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollection;
@@ -22,6 +21,8 @@ class TransformationSpec extends ObjectBehavior
             $source,
             $target,
             OperationCollection::create([]),
+            'prefix',
+            'suffix',
         ]);
         $this->getWrappedObject();
     }
@@ -34,6 +35,8 @@ class TransformationSpec extends ObjectBehavior
             $source,
             $target,
             OperationCollection::create([]),
+            'prefix',
+            'suffix',
         ]);
 
         $this->shouldThrow(new \InvalidArgumentException('A transformation can not have the same source and target'))->duringInstantiation();
@@ -49,12 +52,12 @@ class TransformationSpec extends ObjectBehavior
         $this->beConstructedThrough('create', [
             $source,
             $target,
-            OperationCollection::create([$operation1, $operation2])
+            OperationCollection::create([$operation1, $operation2]),
+            'prefix',
+            'suffix',
         ]);
         $normalizedSource = ['key' => 'normalized source'];
         $normalizedTarget = ['key' => 'normalized target'];
-        $normalizedOperation1 = ['key' => 'normalized operation 1'];
-        $normalizedOperation2 = ['key' => 'normalized operation 2'];
 
         $source->normalize()->willReturn($normalizedSource);
         $target->normalize()->willReturn($normalizedTarget);
@@ -65,7 +68,52 @@ class TransformationSpec extends ObjectBehavior
             'operations' => [
                 $operation1->normalize(),
                 $operation2->normalize()
-            ]
+            ],
+            'filename_prefix' => 'prefix',
+            'filename_suffix' => 'suffix',
         ]);
+    }
+
+    function it_can_construct_transformation_with_only_prefix(Source $source, Target $target)
+    {
+        $source->equals($target)->willReturn(false);
+
+        $this->beConstructedThrough('create', [
+            $source,
+            $target,
+            OperationCollection::create([]),
+            'prefix',
+            '   ',
+        ]);
+        $this->getWrappedObject();
+    }
+
+    function it_can_construct_transformation_with_only_suffix(Source $source, Target $target)
+    {
+        $source->equals($target)->willReturn(false);
+
+        $this->beConstructedThrough('create', [
+            $source,
+            $target,
+            OperationCollection::create([]),
+            '   ',
+            'suffix',
+        ]);
+        $this->getWrappedObject();
+    }
+
+    function it_can_not_construct_transformation_without_prefix_and_suffix(Source $source, Target $target)
+    {
+        $source->equals($target)->willReturn(false);
+
+        $this->beConstructedThrough('create', [
+            $source,
+            $target,
+            OperationCollection::create([]),
+            '   ',
+            '   ',
+        ]);
+        $this->shouldThrow(new \InvalidArgumentException('A transformation must have at least a filename prefix or a filename suffix'))
+            ->duringInstantiation();
     }
 }

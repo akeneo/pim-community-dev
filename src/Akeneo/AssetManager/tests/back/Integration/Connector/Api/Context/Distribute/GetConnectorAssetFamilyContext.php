@@ -99,7 +99,9 @@ class GetConnectorAssetFamilyContext implements Context
             Transformation::create(
                 Source::createFromNormalized(['attribute' => 'main', 'channel' => null, 'locale' => null]),
                 Target::createFromNormalized(['attribute' => 'target', 'channel' => null, 'locale' => null]),
-                OperationCollection::create([ThumbnailOperation::create(['width' => 100, 'height' => 80])])
+                OperationCollection::create([ThumbnailOperation::create(['width' => 100, 'height' => 80])]),
+                '1_',
+                '_2'
             )
         ]);
 

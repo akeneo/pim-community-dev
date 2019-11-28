@@ -243,7 +243,9 @@ class GetOutdatedValuesSpec extends ObjectBehavior
                     ChannelReference::noReference(),
                     LocaleReference::noReference()
                 ),
-                OperationCollection::create([])
+                OperationCollection::create([]),
+                '',
+                '_2'
             )
         ]);
 

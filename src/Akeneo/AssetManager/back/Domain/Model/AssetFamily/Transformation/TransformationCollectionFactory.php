@@ -46,6 +46,10 @@ class TransformationCollectionFactory
         Assert::keyExists($normalizedTransformation, 'operations');
         Assert::isArray($normalizedTransformation['operations']);
         Assert::allIsArray($normalizedTransformation['operations']);
+        Assert::keyExists($normalizedTransformation, 'filename_prefix');
+        Assert::string($normalizedTransformation['filename_prefix']);
+        Assert::keyExists($normalizedTransformation, 'filename_suffix');
+        Assert::string($normalizedTransformation['filename_suffix']);
 
         return Transformation::create(
             Source::createFromNormalized($normalizedTransformation['source']),
@@ -57,7 +61,9 @@ class TransformationCollectionFactory
                     },
                     $normalizedTransformation['operations']
                 )
-            )
+            ),
+            $normalizedTransformation['filename_prefix'],
+            $normalizedTransformation['filename_suffix']
         );
     }
 

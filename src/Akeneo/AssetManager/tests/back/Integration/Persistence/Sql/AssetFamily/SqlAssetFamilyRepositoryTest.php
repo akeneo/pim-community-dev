@@ -323,7 +323,9 @@ class SqlAssetFamilyRepositoryTest extends SqlIntegrationTestCase
                 Transformation::create(
                     Source::createFromNormalized(['attribute' => 'main_image', 'channel' => null, 'locale' => null]),
                     Target::createFromNormalized(['attribute' => 'thumbnail', 'channel' => null, 'locale' => null]),
-                    OperationCollection::create([])
+                    OperationCollection::create([]),
+                    '1_',
+                    '_2'
                 ),
             ]
         );

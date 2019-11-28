@@ -43,6 +43,8 @@ class EditAssetFamilyTransformationsContext implements Context
                 ['type' => 'scale', 'parameters' => ['ratio' => 75]],
                 ['type' => 'colorspace', 'parameters' => ['colorspace' => 'grey']],
             ],
+            'filename_prefix' => '1_',
+            'filename_suffix' => '_2'
         ],
         [
             'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
@@ -50,6 +52,8 @@ class EditAssetFamilyTransformationsContext implements Context
             'operations' => [
                 ['type' => 'scale', 'parameters' => ['ratio' => 75]],
             ],
+            'filename_prefix' => '1_',
+            'filename_suffix' => '_2'
         ],
         [
             'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
@@ -57,6 +61,8 @@ class EditAssetFamilyTransformationsContext implements Context
             'operations' => [
                 ['type' => 'scale', 'parameters' => ['ratio' => 75]],
             ],
+            'filename_prefix' => '1_',
+            'filename_suffix' => '_2'
         ],
         [
             'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
@@ -65,6 +71,8 @@ class EditAssetFamilyTransformationsContext implements Context
                 ['type' => 'scale', 'parameters' => ['ratio' => 75]],
                 ['type' => 'thumbnail', 'parameters' => ['width' => 100, 'height' => 80]],
             ],
+            'filename_prefix' => '1_',
+            'filename_suffix' => '_2'
         ],
     ];
 
@@ -150,6 +158,8 @@ class EditAssetFamilyTransformationsContext implements Context
                         'parameters' => ['ratio' => 75],
                     ],
                 ],
+                'filename_prefix' => '1_',
+                'filename_suffix' => '_2'
             ],
         ]);
     }
@@ -188,6 +198,8 @@ class EditAssetFamilyTransformationsContext implements Context
                 'source' => ['attribute' => 'unknown', 'channel' => null, 'locale' => null],
                 'target' => ['attribute' => 'target', 'channel' => null, 'locale' => null],
                 'operations' => [],
+                'filename_prefix' => '1_',
+                'filename_suffix' => '_2'
             ],
         ]);
     }
@@ -202,6 +214,8 @@ class EditAssetFamilyTransformationsContext implements Context
                 'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
                 'target' => ['attribute' => 'unknown', 'channel' => null, 'locale' => null],
                 'operations' => [],
+                'filename_prefix' => '1_',
+                'filename_suffix' => '_2'
             ],
         ]);
     }
@@ -216,11 +230,15 @@ class EditAssetFamilyTransformationsContext implements Context
                 'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
                 'target' => ['attribute' => 'target', 'channel' => null, 'locale' => null],
                 'operations' => [],
+                'filename_prefix' => '1_',
+                'filename_suffix' => '_2'
             ],
             [
                 'source' => ['attribute' => 'target', 'channel' => null, 'locale' => null],
                 'target' => ['attribute' => 'target2', 'channel' => null, 'locale' => null],
                 'operations' => [],
+                'filename_prefix' => '1_',
+                'filename_suffix' => '_2'
             ],
         ]);
     }
@@ -239,6 +257,8 @@ class EditAssetFamilyTransformationsContext implements Context
                     ['type' => 'colorspace', 'parameters' => ['colorspace' => 'rgb']],
                     ['type' => 'scale', 'parameters' => ['ratio' => 80]],
                 ],
+                'filename_prefix' => '1_',
+                'filename_suffix' => '_2'
             ],
         ]);
     }
@@ -257,17 +277,23 @@ class EditAssetFamilyTransformationsContext implements Context
                 'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
                 'target' => ['attribute' => 'target_scopable', 'channel' => $scope, 'locale' => null],
                 'operations' => [],
+                'filename_prefix' => '1_',
+                'filename_suffix' => '_2'
             ];
             foreach (['fr_FR', 'en_US', 'en_GB'] as $locale) {
                 $transformations[] = [
                     'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
                     'target' => ['attribute' => 'target_localizable', 'channel' => null, 'locale' => $locale],
                     'operations' => [],
+                    'filename_prefix' => '1_',
+                    'filename_suffix' => '_2'
                 ];
                 $transformations[] = [
                     'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
                     'target' => ['attribute' => 'target_scopable_localizable', 'channel' => $scope, 'locale' => $locale],
                     'operations' => [],
+                    'filename_prefix' => '1_',
+                    'filename_suffix' => '_2'
                 ];
             }
         }
@@ -287,6 +313,8 @@ class EditAssetFamilyTransformationsContext implements Context
                 'operations' => [
                     ['type' => 'unknown', 'parameters' => ['foo' => 'bar']],
                 ],
+                'filename_prefix' => '1_',
+                'filename_suffix' => '_2'
             ],
         ]);
     }
@@ -303,6 +331,8 @@ class EditAssetFamilyTransformationsContext implements Context
                 'operations' => [
                     ['type' => 'colorspace', 'parameters' => ['foo' => 'bar']],
                 ],
+                'filename_prefix' => '1_',
+                'filename_suffix' => '_2'
             ],
         ]);
     }

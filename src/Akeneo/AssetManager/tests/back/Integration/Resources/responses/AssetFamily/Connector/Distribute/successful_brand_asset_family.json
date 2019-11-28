@@ -52,7 +52,9 @@
                 "height": 80
               }
             }
-          ]
+          ],
+          "filename_prefix": "1_",
+          "filename_suffix": "_2"
         }
       ]
     }

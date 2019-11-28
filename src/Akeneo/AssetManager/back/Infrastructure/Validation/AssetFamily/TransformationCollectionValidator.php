@@ -79,6 +79,8 @@ class TransformationCollectionValidator extends ConstraintValidator
                         ]),
                         new TransformationCanNotHaveSameOperationTwice($assetFamilyIdentifier),
                     ],
+                    'filename_prefix' => new Assert\Type('string'),
+                    'filename_suffix' => new Assert\Type('string'),
                 ]),
             ]),
         ];
