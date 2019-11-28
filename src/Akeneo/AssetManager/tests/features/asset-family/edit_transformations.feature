@@ -46,7 +46,7 @@ Feature: Edit the transformations of an asset family
     Then there should be a validation error stating that the source is equal to the target
 
   @acceptance-back @error
-  Scenario: Can not update transformations when an operation is set twice in a a transformation
+  Scenario: Can not update transformations when an operation is set twice in a transformation
     Given an asset family "packshot" with no transformation
     When the user edits the "packshot" family to add a transformation with duplicate operations
     Then there should be a validation error stating that an operation is set twice
@@ -68,3 +68,9 @@ Feature: Edit the transformations of an asset family
     Given an asset family "packshot" with no transformation
     When the user edits the "packshot" family to add a transformation with wrong parameters for operation
     Then there should be a validation error stating that operation is not instantiable
+
+  @acceptance-back @error
+  Scenario: Can not update transformations when filename is set twice
+    Given an asset family "packshot" with no transformation
+    When the user edits the "packshot" family to add transformations with same source and filename
+    Then there should be a validation error stating that filename is not unique

@@ -44,7 +44,7 @@ class EditAssetFamilyTransformationsContext implements Context
                 ['type' => 'colorspace', 'parameters' => ['colorspace' => 'grey']],
             ],
             'filename_prefix' => '1_',
-            'filename_suffix' => '_2'
+            'filename_suffix' => '_3'
         ],
         [
             'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
@@ -53,7 +53,7 @@ class EditAssetFamilyTransformationsContext implements Context
                 ['type' => 'scale', 'parameters' => ['ratio' => 75]],
             ],
             'filename_prefix' => '1_',
-            'filename_suffix' => '_2'
+            'filename_suffix' => '_4'
         ],
         [
             'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
@@ -62,7 +62,7 @@ class EditAssetFamilyTransformationsContext implements Context
                 ['type' => 'scale', 'parameters' => ['ratio' => 75]],
             ],
             'filename_prefix' => '1_',
-            'filename_suffix' => '_2'
+            'filename_suffix' => '_5'
         ],
         [
             'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
@@ -72,7 +72,7 @@ class EditAssetFamilyTransformationsContext implements Context
                 ['type' => 'thumbnail', 'parameters' => ['width' => 100, 'height' => 80]],
             ],
             'filename_prefix' => '1_',
-            'filename_suffix' => '_2'
+            'filename_suffix' => '_6'
         ],
     ];
 
@@ -338,6 +338,29 @@ class EditAssetFamilyTransformationsContext implements Context
     }
 
     /**
+     * @When the user edits the :familyIdentifier family to add transformations with same source and filename
+     */
+    public function theUserEditsTheFamilyToAddTransformationsWithSameSourceAndFilename(string $familyIdentifier)
+    {
+        $this->editTransformationForAssetFamily($familyIdentifier, [
+            [
+                'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
+                'target' => ['attribute' => 'target', 'channel' => null, 'locale' => null],
+                'operations' => [],
+                'filename_prefix' => '  1_',
+                'filename_suffix' => '_2  '
+            ],
+            [
+                'source' => ['attribute' => 'main_image', 'channel' => null, 'locale' => null],
+                'target' => ['attribute' => 'target2', 'channel' => null, 'locale' => null],
+                'operations' => [],
+                'filename_prefix' => '1_',
+                'filename_suffix' => '_2'
+            ],
+        ]);
+    }
+
+    /**
      * @Then the :familyIdentifier family should have :count transformation
      */
     public function theFamilyShouldHaveATransformation(string $familyIdentifier, int $count): void
@@ -429,6 +452,16 @@ class EditAssetFamilyTransformationsContext implements Context
     {
         $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
             "Key 'colorspace' must exist in parameters."
+        );
+    }
+
+    /**
+     * @Then there should be a validation error stating that filename is not unique
+     */
+    public function thereShouldBeAValidationErrorStatingThatFilenameIsNotUnique()
+    {
+        $this->constraintViolationsContext->thereShouldBeAValidationErrorWithMessage(
+            'The filename with prefix "1_" and suffix "_2" already exists for attribute source "main_image"'
         );
     }
 
