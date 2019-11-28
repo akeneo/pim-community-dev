@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Integration\Persistence\Sql\Attribute;
 
 use Akeneo\AssetManager\Common\Fake\EventDispatcherMock;
 use Akeneo\AssetManager\Domain\Event\AttributeDeletedEvent;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
@@ -469,6 +470,27 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
         $this->attributeRepository->create($expectedAttribute);
 
         $this->assertEquals(4, $this->attributeRepository->countByAssetFamily($designerIdentifier));
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_attribute_from_its_code_and_asset_family_identifier()
+    {
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $attributeCode = AttributeCode::fromString('name');
+        $identifier = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute')
+            ->nextIdentifier($assetFamilyIdentifier, $attributeCode);
+        $textAttribute = $this->createAttributeWithIdentifier($identifier);
+        $this->attributeRepository->create($textAttribute);
+
+        $this->assertEquals(
+            $this->attributeRepository->getByCodeAndAssetFamilyIdentifier($attributeCode, $assetFamilyIdentifier),
+            $textAttribute
+        );
+
+        $this->expectException(AttributeNotFoundException::class);
+        $this->attributeRepository->getByCodeAndAssetFamilyIdentifier($attributeCode, AssetFamilyIdentifier::fromString('foo'));
     }
 
     private function assertAttribute(
