@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatus;
 
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Send back services status in JSON format.

@@ -2,25 +2,32 @@
 
 namespace Specification\Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker;
 
-use Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\ElasticsearchChecker;
-use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry;
+use Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\FileStorageChecker;
+use League\Flysystem\MountManager;
 use PhpSpec\ObjectBehavior;
 
-class ElasticsearchCheckerSpec extends ObjectBehavior
+class FileStorageCheckerSpec extends ObjectBehavior
 {
-    function it_returns_a_ok_status_with_all_working_es_clients(
-        ClientRegistry $clientRegistry,
-        Client $productClient,
-        Client $draftClient
+    function let(
+        MountManager $mountManager,
+        FilesystemInterface $assetFilesystem,
+        FilesystemInterface $catalogFilesystem,
+        FilesystemInterface $tmpFilesystem
     ) {
-        $productClient->hasIndex()->willReturn(true);
-        $draftClient->hasIndex()->willReturn(true);
+        $filesystemConfig = [
+            'asset_storage' => ['adapter' => 'asset_storage_adapter', 'mount' => 'assetStorage' ],
+            'catalog_storage' => ['adapter' => 'catalog_storage_adapter', 'mount' => 'catalogStorage' ],
+            'tmp_storage' => ['adapter' => 'tmp_storage_adapter', 'mount' => 'tmpStorage' ],
+        ];
+        $mountManager->getFilesystem('assetStorage')->willReturn($assetFilesystem);
+        $mountManager->getFilesystem('catalogStorage')->willReturn($catalogFilesystem);
+        $mountManager->getFilesystem('tmpStorage')->willReturn($tmpFilesystem);
 
-        $clientRegistry->getClients()->willReturn([$productClient, $draftClient]);
+        $this->beConstructedWith($mountManager, $filesystemConfig);
+    }
 
-        $this->beConstructedWith($clientRegistry);
-        $this->shouldHaveType(ElasticsearchChecker::class);
+    function it_returns_a_ok_status_with_all_working_filesystems() {
+        $this->shouldHaveType(FileStorageChecker::class);
 
         $status = $this->status();
         $status->isOk()->shouldReturn(true);
